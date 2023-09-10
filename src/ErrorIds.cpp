@@ -138,6 +138,8 @@ void initErrors()
 
     SWAG_ERROR(Syn0097, "unexpected '#elif'                             $ '#elif' found without a preceding '#if' directive");
     SWAG_ERROR(Syn0098, "unexpected '#else'                             $ '#else' found without a preceding '#if' or '#elif' directive");
+    SWAG_ERROR(Syn0101, "unexpected 'elif'                              $ 'elif' found without a preceding 'if'");
+    SWAG_ERROR(Syn0102, "unexpected 'else'                              $ 'else' found without a preceding 'if' or 'elif'");
 
     SWAG_ERROR(Syn0001, "'#global export' already defined               $ the directive '#global export' should only be defined once");
 
@@ -149,15 +151,18 @@ void initErrors()
     SWAG_ERROR(Syn0017, "missing '#placeholder' identifier              $ expected an identifier after '#placeholder', found '%s' instead");
     SWAG_ERROR(Syn0196, "missing '#type' type                           $ expected a valid type after '#type', found '%s' instead");
     SWAG_ERROR(Syn0119, "missing '@mixin' number                        $ a '@mixin' variable name should be followed by a number such as '@mixin0', '@mixin1', etc.");
-    SWAG_ERROR(Syn0023, "missing '@alias' number                        $ a '@alias' variable name should be followed by a number such as '@alias0', '@alias1', etc.");
+    SWAG_ERROR(Syn0023, "missing '@alias' number                        $ an '@alias' variable name should be followed by a number such as '@alias0', '@alias1', etc.");
 
     SWAG_ERROR(Syn0034, "invalid use of '#mixin' block                  $ a '#mixin' block is only valid within a breakable statement such as 'loop', 'visit', 'for', etc.");
+    SWAG_ERROR(Syn0016, "invalid '#mixin' replacement keyword           $ a '#mixin' block accepts only 'break' and 'continue' as replacements, found '%s' instead");
+    SWAG_ERROR(Syn0015, "empty '#mixin' replacement block               $ an empty 'mixin' block is useless $ add content to the '#mixin' block or consider removing it");
+
+    SWAG_ERROR(Syn0032, "out of range '@mixin' number                   $ a '@mixin' number should be in the range [0, 31], found '%u'");
+    SWAG_ERROR(Syn0043, "out of range '@alias' number                   $ an '@alias' number should be in the range [0, 31], found '%u'");
 
     SWAG_ERROR(Syn0082, "expected '#global #if' expression");
     SWAG_ERROR(Syn0083, "expected '#if' expression");
     SWAG_ERROR(Syn0033, "'#message' function needs 'Swag.CompilerMsgMask' parameter");
-    SWAG_ERROR(Syn0016, "'#mixin' has invalid replacement '%s'");
-    SWAG_ERROR(Syn0015, "'#mixin' has no replacement block");
     SWAG_ERROR(Syn0211, "expected '#up' scopes count as literal, found '%s'");
     SWAG_ERROR(Syn0209, "'#up' value range: 1 to 255");
     SWAG_ERROR(Syn0215, "'#validifx' not allowed for struct");
@@ -167,13 +172,10 @@ void initErrors()
     SWAG_ERROR(Syn0018, "'%s' not needed with '#global export' - file is public");
     SWAG_ERROR(Syn0022, "'.' in 'with' needs identifier next");
     SWAG_ERROR(Syn0180, "'.' in statement only valid within 'with' block");
-    SWAG_ERROR(Syn0043, "'@alias' number range: [0, 31] ('%u' given)");
     SWAG_ERROR(Syn0135, "'Self' invalid outside 'impl', 'struct', or 'interface'");
     SWAG_ERROR(Syn0024, "']' in array type declaration can't have line break");
     SWAG_ERROR(Syn0061, "'const' not allowed for 'func'");
     SWAG_ERROR(Syn0181, "'default' is already defined");
-    SWAG_ERROR(Syn0101, "'elif' without matching 'if' found");
-    SWAG_ERROR(Syn0102, "'else' without matching 'if' found");
     SWAG_ERROR(Syn0143, "'for' not allowed in enum implementation");
     SWAG_ERROR(Syn0084, "expected 'if' boolean expression before '{'");
     SWAG_ERROR(Syn0104, "'impl' block generation allowed only in '#message' with 'Swag.CompilerMsgMask.AttributeGen'");
@@ -331,7 +333,6 @@ void initErrors()
     SWAG_ERROR(Syn0111, "variable name '%s' can't start with '@'");
     SWAG_ERROR(Syn0069, "expected variable name, found '%s'");
     SWAG_ERROR(Syn0113, "version '%s' is invalid");
-    SWAG_ERROR(Syn0032, nullptr);
     SWAG_ERROR(Syn0052, nullptr);
     SWAG_ERROR(Syn0131, nullptr);
     SWAG_ERROR(Syn0220, nullptr);

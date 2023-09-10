@@ -98,14 +98,14 @@ bool Parser::doCompilerMixin(AstNode* parent, AstNode** result)
     SWAG_CHECK(doIdentifierRef(node, &dummyResult));
 
     // Replacement parameters
-    if (token.id == TokenId::SymLeftCurly)
+    if (token.id == TokenId::SymLeftCurly && !(token.flags & TOKENPARSE_LAST_EOL))
     {
         auto startLoc = token.startLocation;
         SWAG_VERIFY(node->ownerBreakable, error(token, Err(Syn0034)));
         SWAG_CHECK(eatToken());
+        SWAG_VERIFY(token.id != TokenId::SymRightCurly, error(token, Err(Syn0015)));
         if (token.id != TokenId::KwdBreak && token.id != TokenId::KwdContinue)
             return error(token, Fmt(Err(Syn0016), token.ctext()));
-        SWAG_VERIFY(token.id != TokenId::SymRightCurly, error(token, Err(Syn0015)));
 
         node->allocateExtension(ExtensionKind::Owner);
 
