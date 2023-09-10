@@ -96,11 +96,11 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
             auto nodeFct = CastAst<AstFuncDecl>(node->ownerFct, AstNodeKind::FuncDecl);
             auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
             if (typeFct->parameters.size() == 0 || !(typeFct->parameters[0]->typeInfo->isSelf()))
-                note = Diagnostic::note(node->ownerFct, node->ownerFct->token, Nte(Hlp0029));
+                note = Diagnostic::note(node->ownerFct, node->ownerFct->token, Nte(Nte0129));
             else if (typeFct->parameters.size() && typeFct->parameters[0]->typeInfo->isSelf() && !(typeFct->parameters[0]->typeInfo->flags & TYPEINFO_HAS_USING))
-                note = Diagnostic::note(nodeFct->parameters->childs.front(), Nte(Hlp0028));
+                note = Diagnostic::note(nodeFct->parameters->childs.front(), Nte(Nte0128));
             else
-                note = Diagnostic::note(Nte(Hlp0002));
+                note = Diagnostic::note(Nte(Nte0102));
         }
     }
 
@@ -355,7 +355,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
                         if (symOver->typeInfo->isPointer())
                         {
                             diag.hint  = Hnt(Hnt0024);
-                            auto note1 = Diagnostic::note(Fmt(Nte(Hlp0005), symName->name.c_str(), symName->name.c_str()));
+                            auto note1 = Diagnostic::note(Fmt(Nte(Nte0105), symName->name.c_str(), symName->name.c_str()));
                             return context->report(diag, note1, note);
                         }
                         else

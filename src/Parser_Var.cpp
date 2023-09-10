@@ -329,8 +329,8 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
                 {
                     Diagnostic diag{sourceFile, token, Err(Syn0200)};
                     diag.hint  = Fmt(Hnt(Hnt0117), typeExpr->identifier->token.ctext());
-                    auto note  = Diagnostic::note(Fmt(Nte(Hlp0051), typeExpr->identifier->token.ctext()));
-                    auto note1 = Diagnostic::note(Nte(Hlp0052));
+                    auto note  = Diagnostic::note(Fmt(Nte(Nte0151), typeExpr->identifier->token.ctext()));
+                    auto note1 = Diagnostic::note(Nte(Nte0152));
                     return context->report(diag, note, note1);
                 }
             }

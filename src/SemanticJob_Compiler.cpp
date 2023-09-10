@@ -145,7 +145,7 @@ bool SemanticJob::doExecuteCompilerNode(SemanticContext* context, AstNode* node,
                 else
                 {
                     Diagnostic diag{node, Fmt(Err(Err0281), realType->getDisplayNameC())};
-                    diag.hint = Nte(Hlp0036);
+                    diag.hint = Nte(Nte0136);
                     return context->report(diag);
                 }
             }

@@ -165,7 +165,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
             if (identifierFlags & IDENTIFIER_TYPE_DECL)
             {
                 Diagnostic diag{identifier, token, Fmt(Err(Syn0128), identifier->token.ctext())};
-                auto       note = Diagnostic::note(Nte(Hlp0035));
+                auto       note = Diagnostic::note(Nte(Nte0135));
                 return context->report(diag, note);
             }
 

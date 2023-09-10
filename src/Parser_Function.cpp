@@ -458,9 +458,9 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
             {
                 SWAG_ASSERT(hasMissingType);
                 if (!missingTypes && *hasMissingType)
-                    return error(allParams->childs.back(), Err(Syn0170), Nte(Hlp0019));
+                    return error(allParams->childs.back(), Err(Syn0170), Nte(Nte0119));
                 if (oneParamDone && !(*hasMissingType) && missingTypes)
-                    return error(allParams->childs.back(), Err(Syn0090), Nte(Hlp0019));
+                    return error(allParams->childs.back(), Err(Syn0090), Nte(Nte0119));
                 *hasMissingType = *hasMissingType || missingTypes;
             }
 
@@ -577,10 +577,10 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
             return error(token, Err(Syn0039), nullptr, Hnt(Hnt0042));
 
         if (funcNode->ownerStructScope->kind == ScopeKind::Enum)
-            return error(token, Err(Syn0038), Nte(Hlp0007), Hnt(Hnt0042));
+            return error(token, Err(Syn0038), Nte(Nte0107), Hnt(Hnt0042));
 
         if (funcNode->ownerStructScope->kind != ScopeKind::Struct)
-            return error(token, Err(Syn0039), Nte(Hlp0007), Hnt(Hnt0042));
+            return error(token, Err(Syn0039), Nte(Nte0107), Hnt(Hnt0042));
     }
 
     if (typeFuncId == TokenId::Invalid)
@@ -681,7 +681,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         isIntrinsic = token.text[0] == '@';
         if (isIntrinsic)
         {
-            SWAG_VERIFY(sourceFile->isBootstrapFile || sourceFile->isRuntimeFile, error(token, Fmt(Err(Syn0106), token.ctext()), Nte(Hlp0008)));
+            SWAG_VERIFY(sourceFile->isBootstrapFile || sourceFile->isRuntimeFile, error(token, Fmt(Err(Syn0106), token.ctext()), Nte(Nte0108)));
         }
         else
         {
@@ -975,7 +975,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
         {
             {
                 PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, []()
-                                  { return Nte(Hlp0045); });
+                                  { return Nte(Nte0145); });
                 SWAG_CHECK(eatToken(TokenId::SymVertical, "to start the capture block"));
             }
 
@@ -1057,7 +1057,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
     {
         // Do not accept a specified return type if lambda parameters are deduced
         if (acceptMissingType && hasMissingType && *hasMissingType)
-            return error(token, Err(Syn0165), Nte(Hlp0018));
+            return error(token, Err(Syn0165), Nte(Nte0118));
 
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
@@ -1141,7 +1141,7 @@ bool Parser::doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** r
     auto lambdaDecl = CastAst<AstFuncDecl>(lambda, AstNodeKind::FuncDecl);
     lambdaDecl->specFlags |= AstFuncDecl::SPECFLAG_IS_LAMBDA_EXPRESSION;
     if (!lambda->ownerFct && lambdaDecl->captureParameters)
-        return error(lambdaDecl, Err(Syn0153), Nte(Hlp0017));
+        return error(lambdaDecl, Err(Syn0153), Nte(Nte0117));
 
     // Lambda sub function will be resolved by the owner function
     if (lambda->ownerFct)

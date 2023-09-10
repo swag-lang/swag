@@ -125,28 +125,28 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     if (!parent)
     {
         Diagnostic diag{node, node->tokenName, Fmt(Err(Err0067), node->token.ctext())};
-        auto       note = Diagnostic::note(Nte(Hlp0015));
+        auto       note = Diagnostic::note(Nte(Nte0115));
         return context->report(diag, note);
     }
 
     if (node->ownerScope->kind == ScopeKind::Impl)
     {
         Diagnostic diag{node, node->tokenName, Fmt(Err(Err0494), node->token.ctext())};
-        auto       note = Diagnostic::note(Nte(Hlp0015));
+        auto       note = Diagnostic::note(Nte(Nte0115));
         return context->report(diag, note);
     }
 
     if ((node->ownerScope->owner->attributeFlags & ATTRIBUTE_PUBLIC) && !(node->attributeFlags & ATTRIBUTE_PUBLIC))
     {
         Diagnostic diag{node, node->tokenName, Fmt(Err(Err0503), node->token.ctext())};
-        auto       note = Diagnostic::note(Nte(Hlp0026));
+        auto       note = Diagnostic::note(Nte(Nte0126));
         return context->report(diag, note);
     }
 
     if (!(node->ownerScope->owner->attributeFlags & ATTRIBUTE_PUBLIC) && (node->attributeFlags & ATTRIBUTE_PUBLIC))
     {
         Diagnostic diag{node, node->tokenName, Fmt(Err(Err0506), node->token.ctext())};
-        auto       note = Diagnostic::note(Nte(Hlp0027));
+        auto       note = Diagnostic::note(Nte(Nte0127));
         return context->report(diag, note);
     }
 
@@ -330,7 +330,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
 
         Diagnostic diag{node, node->tokenName, Fmt(Err(Err0078), name.c_str())};
         diag.hint = appendMsg;
-        auto note = Diagnostic::note(Nte(Hlp0014));
+        auto note = Diagnostic::note(Nte(Nte0114));
         return context->report(diag, note);
     }
 

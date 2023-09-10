@@ -53,7 +53,7 @@ bool SemanticJob::resolveNameAlias(SemanticContext* context)
             back->resolvedSymbolName->kind == SymbolKind::TypeAlias ||
             back->resolvedSymbolName->kind == SymbolKind::Struct)
         {
-            note = Diagnostic::note(node, node->kwdLoc, Fmt(Nte(Hlp0025), Naming::aKindName(back->resolvedSymbolName->kind).c_str()));
+            note = Diagnostic::note(node, node->kwdLoc, Fmt(Nte(Nte0125), Naming::aKindName(back->resolvedSymbolName->kind).c_str()));
         }
 
         return context->report(diag, note);
@@ -1083,7 +1083,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->callParameters->specFlags & AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT))
         {
             Diagnostic diag{identifier, identifier->token, Fmt(Err(Syn0128), identifier->typeInfo->name.c_str())};
-            auto       note = Diagnostic::note(Nte(Hlp0035));
+            auto       note = Diagnostic::note(Nte(Nte0135));
             return context->report(diag, note);
         }
 
@@ -3228,7 +3228,7 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
                 Diagnostic diag{dependentVar, Fmt(Err(Err0117), dependentVar->typeInfo->getDisplayNameC())};
                 diag.hint  = Hnt(Hnt0081);
                 auto note  = Diagnostic::note(dep.node->ownerFct, dep.node->ownerFct->token, Nte(Nte0056));
-                auto note1 = Diagnostic::note(Nte(Hlp0043));
+                auto note1 = Diagnostic::note(Nte(Nte0143));
                 return context->report(diag, note, note1);
             }
             else
@@ -3236,7 +3236,7 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
                 Diagnostic diag{dep.node, Fmt(Err(Err0117), dependentVar->typeInfo->getDisplayNameC())};
                 diag.hint  = Hnt(Hnt0081);
                 auto note  = Diagnostic::note(dependentVar, Nte(Nte0021));
-                auto note1 = Diagnostic::note(Nte(Hlp0043));
+                auto note1 = Diagnostic::note(Nte(Nte0143));
                 return context->report(diag, note, note1);
             }
         }

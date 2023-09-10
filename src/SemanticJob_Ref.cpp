@@ -82,7 +82,7 @@ bool SemanticJob::checkCanTakeAddress(SemanticContext* context, AstNode* node)
             return context->report(diag);
         }
 
-        auto note = Diagnostic::note(Nte(Hlp0022));
+        auto note = Diagnostic::note(Nte(Nte0122));
         return context->report({node, Fmt(Err(Err0469), node->typeInfo->getDisplayNameC()), Diagnostic::isType(node->typeInfo)}, note);
     }
 
@@ -487,7 +487,7 @@ bool SemanticJob::resolveKeepRef(SemanticContext* context)
         {
             diag.hint = Hnt(Hnt0109);
             diag.addRange(front, Fmt(Hnt(Hnt0108), typeInfo->getDisplayNameC()));
-            auto note = Diagnostic::note(front, Fmt(Nte(Hlp0049), front->token.ctext()));
+            auto note = Diagnostic::note(front, Fmt(Nte(Nte0149), front->token.ctext()));
             return context->report(diag, note);
         }
         else

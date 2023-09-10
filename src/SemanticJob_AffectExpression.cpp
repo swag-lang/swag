@@ -28,7 +28,7 @@ bool SemanticJob::resolveMove(SemanticContext* context)
             Diagnostic diag{right, Fmt(Err(Err0559), right->typeInfo->getDisplayNameC())};
             if (right->resolvedSymbolOverload && right->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
             {
-                auto note = Diagnostic::note(Nte(Hlp0016));
+                auto note = Diagnostic::note(Nte(Nte0116));
                 return context->report(diag, note);
             }
 
@@ -61,7 +61,7 @@ bool SemanticJob::resolveAfterKnownType(SemanticContext* context)
     {
         Diagnostic diag{mpl, Err(Err0185)};
         diag.addRange(node, Diagnostic::isType(node->typeInfo));
-        auto note = Diagnostic::note(Nte(Hlp0003));
+        auto note = Diagnostic::note(Nte(Nte0103));
         return context->report(diag, note);
     }
 
@@ -163,7 +163,7 @@ bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, As
             if (hint.empty())
                 hint = Diagnostic::isType(left->typeInfo);
             diag.addRange(left, hint);
-            auto note1 = Diagnostic::note(Nte(Hlp0016));
+            auto note1 = Diagnostic::note(Nte(Nte0116));
             return context->report(diag, note, note1);
         }
         else if (left->typeInfo->isConstPointerRef())
@@ -532,7 +532,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 Diagnostic diag{node, node->token, Err(Err0192)};
                 diag.hint = Hnt(Hnt0061);
                 diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-                auto note = Diagnostic::note(Nte(Hlp0046));
+                auto note = Diagnostic::note(Nte(Nte0146));
                 return context->report(diag, note);
             }
 
