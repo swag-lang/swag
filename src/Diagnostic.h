@@ -216,5 +216,4 @@ struct Diagnostic
     bool forceSourceFile = false;
     bool isNote          = false;
     bool closeFileName   = false;
-    bool canBeMerged     = true;
 };

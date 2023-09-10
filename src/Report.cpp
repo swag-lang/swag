@@ -71,21 +71,18 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
         // Transform a note in a hint
         if (note->errorLevel == DiagnosticLevel::Note)
         {
-            if (note->canBeMerged)
+            if (note->hint.empty() && note->hasLocation)
             {
-                if (note->hint.empty() && note->hasLocation)
+                note->showErrorLevel = false;
+                if (!note->noteHeader.empty())
                 {
-                    note->showErrorLevel = false;
-                    if (!note->noteHeader.empty())
-                    {
-                        note->hint = note->noteHeader;
-                        note->hint += " ";
-                    }
-
-                    note->hint += note->textMsg;
-                    note->textMsg.clear();
-                    note->showRange = true;
+                    note->hint = note->noteHeader;
+                    note->hint += " ";
                 }
+
+                note->hint += note->textMsg;
+                note->textMsg.clear();
+                note->showRange = true;
             }
         }
 
@@ -104,8 +101,6 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
                 continue;
             if (!note1->display)
                 continue;
-            if (!note1->canBeMerged)
-                continue;
 
             auto sourceFile0 = Report::getDiagFile(*note);
             auto sourceFile1 = Report::getDiagFile(*note1);
@@ -121,28 +116,6 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
                 note1->textMsg.empty())
             {
                 note1->showFileName = false;
-            }
-
-            // A note/help without a range can be merged to the hint of the main error message (if not already defined)
-            if (note->ranges.size() &&
-                note1->ranges.empty() &&
-                !note1->forceSourceFile &&
-                (note1->errorLevel == DiagnosticLevel::Note))
-            {
-                for (auto& r : note->ranges)
-                {
-                    if (r.errorLevel == DiagnosticLevel::Error || r.errorLevel == DiagnosticLevel::Panic)
-                    {
-                        if (r.hint.empty())
-                        {
-                            r.hint = note1->textMsg;
-                            note->remarks.insert(note->remarks.end(), note1->remarks.begin(), note1->remarks.end());
-                            note1->display = false;
-                        }
-
-                        break;
-                    }
-                }
             }
 
             // Move ranges from note to note if they share the same line of code, and they do not overlap

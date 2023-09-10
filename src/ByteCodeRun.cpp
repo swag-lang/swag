@@ -4191,14 +4191,10 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         returnValue = SWAG_EXCEPTION_CONTINUE_EXECUTION;
 #endif
 
-        level              = DiagnosticLevel::Exception;
-        userMsg            = Err(Err0435);
-        auto note1         = Diagnostic::note(Nte(Nte0022));
-        auto note2         = Diagnostic::note(Nte(Nte0009));
-        note1->canBeMerged = false;
-        note2->canBeMerged = false;
-        notes.push_back(note1);
-        notes.push_back(note2);
+        level   = DiagnosticLevel::Exception;
+        userMsg = Err(Err0435);
+        notes.push_back(Diagnostic::note(Nte(Nte0022)));
+        notes.push_back(Diagnostic::note(Nte(Nte0009)));
     }
 
     // Message
@@ -4206,9 +4202,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
 
     if (!g_CommandLine.dbgCallStack)
     {
-        auto note         = Diagnostic::note(Nte(Nte0087));
-        note->canBeMerged = false;
-        notes.push_back(note);
+        notes.push_back(Diagnostic::note(Nte(Nte0087)));
     }
 
     SourceFile dummyFile;
