@@ -420,31 +420,6 @@ void Module::buildTypesSlice()
     }
 }
 
-bool Module::canGenerateLegit()
-{
-    // Normal module
-    if (kind != ModuleKind::Test)
-    {
-        if (!g_CommandLine.outputLegit)
-            return false;
-    }
-
-    // The test folder could generate normal modules (libraries) too
-    else
-    {
-        if (!g_CommandLine.test)
-            return false;
-        if (!g_CommandLine.outputTest)
-            return false;
-        if (!byteCodeTestFunc.empty())
-            return false;
-        if (g_CommandLine.scriptMode)
-            return false;
-    }
-
-    return true;
-}
-
 SourceFile* Module::findFile(const Utf8& fileName)
 {
     for (auto p : files)
@@ -1005,7 +980,7 @@ bool Module::mustGenerateTestExe()
         return false;
     if (kind != ModuleKind::Test)
         return false;
-    if (byteCodeTestFunc.empty())
+    if (!hasTestFuncs)
         return false;
     if (g_CommandLine.scriptMode)
         return false;
@@ -1013,6 +988,31 @@ bool Module::mustGenerateTestExe()
         return false;
     if (shouldHaveError || shouldHaveWarning)
         return false;
+
+    return true;
+}
+
+bool Module::mustGenerateLegit()
+{
+    // Normal module
+    if (kind != ModuleKind::Test)
+    {
+        if (!g_CommandLine.outputLegit)
+            return false;
+    }
+
+    // The test folder could generate normal modules (libraries) too
+    else
+    {
+        if (!g_CommandLine.test)
+            return false;
+        if (!g_CommandLine.outputTest)
+            return false;
+        if (hasTestFuncs)
+            return false;
+        if (g_CommandLine.scriptMode)
+            return false;
+    }
 
     return true;
 }

@@ -196,7 +196,7 @@ struct Module
 
     bool     mustOutputSomething();
     bool     mustGenerateTestExe();
-    bool     canGenerateLegit();
+    bool     mustGenerateLegit();
     void     setHasBeenBuilt(uint32_t buildResult);
     uint32_t getHasBeenBuilt();
     void     flushGenFiles();
@@ -327,4 +327,5 @@ struct Module
     bool acceptsCompileString = true;
     bool acceptsCompileImpl   = true;
     bool hasCycleError        = false;
+    bool hasTestFuncs         = false;
 };

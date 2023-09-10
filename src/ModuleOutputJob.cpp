@@ -74,7 +74,7 @@ JobResult ModuleOutputJob::execute()
             }
 
             // Precompile the normal version
-            if (module->canGenerateLegit())
+            if (module->mustGenerateLegit())
             {
                 auto preCompileJob                             = Allocator::alloc<ModulePrepOutputStage1Job>();
                 preCompileJob->module                          = module;
@@ -116,7 +116,7 @@ JobResult ModuleOutputJob::execute()
             }
 
             // Precompile the normal version
-            if (module->canGenerateLegit())
+            if (module->mustGenerateLegit())
             {
                 auto preCompileJob                             = Allocator::alloc<ModulePrepOutputStage2Job>();
                 preCompileJob->module                          = module;
@@ -172,7 +172,7 @@ JobResult ModuleOutputJob::execute()
 
         // Compile the official normal version, except if it comes from the test folder (because
         // there's no official version for the test folder, only a test executable)
-        if (module->canGenerateLegit())
+        if (module->mustGenerateLegit())
         {
             auto compileJob             = Allocator::alloc<ModuleGenOutputJob>();
             compileJob->module          = module;

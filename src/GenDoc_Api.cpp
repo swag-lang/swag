@@ -177,7 +177,7 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
         else
         {
             SyntaxColorContext cxt;
-            cxt.mode = SyntaxColorMode::ForDoc;
+            cxt.mode  = SyntaxColorMode::ForDoc;
             auto name = syntaxColor(n1->token.text, cxt);
             helpContent += Fmt("<a href=\"#%s\">%s</a>", toRef(n1->getScopedName()).c_str(), name.c_str());
         }

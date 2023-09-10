@@ -599,6 +599,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         switch (typeFuncId)
         {
         case TokenId::CompilerFuncTest:
+            module->hasTestFuncs = true;
             funcNode->token.text = "__test" + to_string(id);
             funcNode->attributeFlags |= ATTRIBUTE_TEST_FUNC | ATTRIBUTE_SHARP_FUNC;
             break;
