@@ -345,7 +345,7 @@ bool Parser::doCompilerForeignLib(AstNode* parent, AstNode** result)
     node->semanticFct = SemanticJob::resolveCompilerForeignLib;
 
     SWAG_CHECK(eatToken());
-    SWAG_VERIFY(token.id == TokenId::LiteralString, error(token, Err(Syn0002)));
+    SWAG_VERIFY(token.id == TokenId::LiteralString, error(token, Fmt(Err(Syn0002), token.ctext())));
 
     AstNode* literal;
     SWAG_CHECK(doLiteral(node, &literal));

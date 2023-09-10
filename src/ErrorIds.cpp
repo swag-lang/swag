@@ -17,9 +17,6 @@ Utf8 g_E[MAX_ERRORS];
     }
 void initErrors()
 {
-    // rephrase those errors in a  more concise and profesionnal way, without changing the format or the placeholders, without adding upper case letters:
-    // rephrase those messages, which are meant to help a user, in a more natural and profesionnal way, without changing the format or the placeholders, without adding upper case letters:
-
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -121,13 +118,16 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
+    // change the error to make it more clear to the user. keep the look and feel of the error :
+
     SWAG_ERROR(Syn0121, "invalid use of access modifier         $ the '%s' access modifier can only be used at the global scope");
     SWAG_ERROR(Syn0183, "invalid use of '#dependencies'         $ the directive '#dependencies' can only be used within 'module.swg' or '.swgs' files");
     SWAG_ERROR(Syn0182, "invalid use of '#dependencies'         $ the directive '#dependencies' must be placed at file level");
     SWAG_ERROR(Syn0097, "unexpected '#elif'                     $ '#elif' found without a preceding '#if' directive");
     SWAG_ERROR(Syn0098, "unexpected '#else'                     $ '#else' found without a preceding '#if' or '#elif' directive");
+    SWAG_ERROR(Syn0002, "missing '#foreignlib' string argument  $ expected the library name, found '%s' instead $ use '#foreignlib \"path/to/library\"' to specify the library to import");
+
     SWAG_ERROR(Syn0001, "'#global export' is already defined");
-    SWAG_ERROR(Syn0002, "'#global foreignlib' requires a string next");
     SWAG_ERROR(Syn0082, "expected '#global if' expression");
     SWAG_ERROR(Syn0204, "'#global testerror' needs at least one match string");
     SWAG_ERROR(Syn0003, "'#global testerror' only valid in './tests' folder");
