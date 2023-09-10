@@ -82,7 +82,7 @@ bool SemanticJob::resolveWhile(SemanticContext* context)
     if (node->boolExpression->hasComputedValue() && node->boolExpression->computedValue->reg.b)
     {
         Diagnostic diag{node->boolExpression, Err(Err0880)};
-        auto       note = Diagnostic::help(Hlp(Hlp0030));
+        auto       note = Diagnostic::note(Nte(Hlp0030));
         return context->report(diag, note);
     }
 

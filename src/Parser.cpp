@@ -14,7 +14,7 @@ bool Parser::error(AstNode* node, const Utf8& msg, const char* help, const char*
     Diagnostic  diag{node, msg.c_str()};
     Diagnostic* note = nullptr;
     if (help)
-        note = Diagnostic::help(help);
+        note = Diagnostic::note(help);
     if (hint)
         diag.hint = hint;
     return context->report(diag, note);
@@ -25,7 +25,7 @@ bool Parser::error(const Token& tk, const Utf8& msg, const char* help, const cha
     Diagnostic  diag{sourceFile, tk, msg.c_str()};
     Diagnostic* note = nullptr;
     if (help)
-        note = Diagnostic::help(help);
+        note = Diagnostic::note(help);
     if (hint)
         diag.hint = hint;
     return context->report(diag, note);
@@ -36,7 +36,7 @@ bool Parser::error(const SourceLocation& startLocation, const SourceLocation& en
     Diagnostic  diag{sourceFile, startLocation, endLocation, msg.c_str()};
     Diagnostic* note = nullptr;
     if (help)
-        note = Diagnostic::help(help);
+        note = Diagnostic::note(help);
     return context->report(diag, note);
 }
 

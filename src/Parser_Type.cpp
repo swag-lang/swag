@@ -491,7 +491,7 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, ui
     if (token.id == TokenId::SymLeftParen)
     {
         Diagnostic diag{sourceFile, token, Fmt(Err(Syn0066), token.ctext())};
-        auto       note = Diagnostic::help(sourceFile, token, Hlp(Hlp0004));
+        auto       note = Diagnostic::note(sourceFile, token, Nte(Hlp0004));
         return context->report(diag, note);
     }
 

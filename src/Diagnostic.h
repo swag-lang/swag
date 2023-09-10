@@ -13,7 +13,6 @@ enum class DiagnosticLevel
     Warning,
     Verbose,
     Note,
-    Help,
     Panic,
     Exception,
 };
@@ -130,10 +129,6 @@ struct Diagnostic
     static Diagnostic* note(SourceFile* file, const Token& token, const Utf8& msg) { return new Diagnostic{file, token, msg, DiagnosticLevel::Note}; }
     static Diagnostic* note(SourceFile* file, const SourceLocation& start, const SourceLocation& end, const Utf8& msg) { return new Diagnostic{file, start, end, msg, DiagnosticLevel::Note}; }
     static Diagnostic* note(AstNode* node, const Utf8& msg) { return new Diagnostic{node, msg, DiagnosticLevel::Note}; }
-    static Diagnostic* help(const Utf8& msg) { return new Diagnostic{msg, DiagnosticLevel::Help}; }
-    static Diagnostic* help(AstNode* node, const Token& token, const Utf8& msg) { return new Diagnostic{node, token, msg, DiagnosticLevel::Help}; }
-    static Diagnostic* help(SourceFile* file, const Token& token, const Utf8& msg) { return new Diagnostic{file, token, msg, DiagnosticLevel::Help}; }
-    static Diagnostic* help(AstNode* node, const Utf8& msg) { return new Diagnostic{node, msg, DiagnosticLevel::Help}; }
     // clang-format on
 
     void setup();

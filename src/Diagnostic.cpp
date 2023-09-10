@@ -34,7 +34,6 @@ void Diagnostic::setup()
     switch (errorLevel)
     {
     case DiagnosticLevel::Note:
-    case DiagnosticLevel::Help:
         showMultipleCodeLines = false;
         break;
     default:
@@ -188,12 +187,6 @@ void Diagnostic::printErrorLevel()
             g_Log.print(noteHeader);
             g_Log.print(": ");
         }
-        break;
-    case DiagnosticLevel::Help:
-        if (emptyMarginBefore)
-            printMargin(true);
-        g_Log.setColor(noteColor);
-        g_Log.print("help: ");
         break;
     default:
         break;
@@ -465,7 +458,6 @@ void Diagnostic::setColorRanges(DiagnosticLevel level)
         g_Log.setColor(warningColor);
         break;
     case DiagnosticLevel::Note:
-    case DiagnosticLevel::Help:
         g_Log.setColor(rangeNoteColor);
         break;
     default:

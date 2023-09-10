@@ -93,7 +93,7 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
             {
                 Diagnostic diag{sourceFile, token, Err(Syn0185)};
                 diag.hint = Hnt(Hnt0098);
-                auto note = Diagnostic::help(arrayNode, arrayNode->token, Hlp(Hlp0047));
+                auto note = Diagnostic::note(arrayNode, arrayNode->token, Nte(Hlp0047));
                 return context->report(diag, note);
             }
 
@@ -137,7 +137,7 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
         }
 
         SWAG_CHECK(eatToken(TokenId::SymRightSquare));
-        SWAG_VERIFY(token.id != TokenId::SymLeftSquare, error(token, Err(Syn0139), Hlp(Hlp0006)));
+        SWAG_VERIFY(token.id != TokenId::SymLeftSquare, error(token, Err(Syn0139), Nte(Hlp0006)));
     }
 
     return true;
@@ -1292,7 +1292,7 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
         else if (token.text == g_LangSpec->name_noerr)
             node->deferKind = DeferKind::NoError;
         else
-            return error(token, Fmt(Err(Syn0142), token.ctext()), Hlp(Hlp0023));
+            return error(token, Fmt(Err(Syn0142), token.ctext()), Nte(Hlp0023));
 
         SWAG_CHECK(eatToken());
         SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the 'defer' argument"));

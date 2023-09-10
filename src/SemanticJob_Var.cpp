@@ -75,8 +75,8 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
         Diagnostic diag{varDecl, varDecl->token, Fmt(Err(Err0293), numUnpack, typeStruct->fields.size())};
         diag.hint = Fmt(Hnt(Hnt0067), numUnpack);
         diag.addRange(varDecl->assignment, Fmt(Hnt(Hnt0068), typeStruct->fields.size()));
-        PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Help, []()
-                          { return Hlp(Hlp0033); });
+        PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, []()
+                          { return Nte(Hlp0033); });
         return context->report(diag);
     }
 
@@ -569,7 +569,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
         if (!ownerFct)
         {
-            auto note = Diagnostic::help(Hlp(Hlp0020));
+            auto note = Diagnostic::note(Nte(Hlp0020));
             return context->report({node, Fmt(Err(Syn0112), node->token.ctext())}, note);
         }
     }
@@ -587,7 +587,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
         if (!ownerFct)
         {
-            auto note = Diagnostic::help(Hlp(Hlp0010));
+            auto note = Diagnostic::note(Nte(Hlp0010));
             return context->report({node, node->token, Fmt(Err(Syn0112), node->token.ctext())}, note);
         }
     }

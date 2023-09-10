@@ -68,8 +68,8 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
                 note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
         }
 
-        // Transform a note/help in a hint
-        if (note->errorLevel == DiagnosticLevel::Note || note->errorLevel == DiagnosticLevel::Help)
+        // Transform a note in a hint
+        if (note->errorLevel == DiagnosticLevel::Note)
         {
             if (note->canBeMerged)
             {
@@ -127,7 +127,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
             if (note->ranges.size() &&
                 note1->ranges.empty() &&
                 !note1->forceSourceFile &&
-                (note1->errorLevel == DiagnosticLevel::Note || note1->errorLevel == DiagnosticLevel::Help))
+                (note1->errorLevel == DiagnosticLevel::Note))
             {
                 for (auto& r : note->ranges)
                 {
@@ -153,7 +153,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
                 note->endLocation.line == note1->endLocation.line &&
                 note1->ranges.size() &&
                 !note1->forceSourceFile &&
-                (note1->errorLevel == DiagnosticLevel::Note || note1->errorLevel == DiagnosticLevel::Help))
+                (note1->errorLevel == DiagnosticLevel::Note))
             {
                 for (size_t i = 0; i < note1->ranges.size(); i++)
                 {

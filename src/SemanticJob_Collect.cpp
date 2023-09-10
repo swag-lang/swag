@@ -443,7 +443,7 @@ bool SemanticJob::collectConstantAssignment(SemanticContext* context, DataSegmen
         if (!typeAssign->isArray() && !typeAssign->isListArray())
         {
             Diagnostic diag{node->assignment, Fmt(Err(Err0500), typeAssign->getDisplayNameC())};
-            auto       note = Diagnostic::help(Hlp(Hlp0050));
+            auto       note = Diagnostic::note(Nte(Hlp0050));
             return context->report(diag, note);
         }
     }

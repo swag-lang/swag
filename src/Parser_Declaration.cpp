@@ -21,7 +21,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
         if (id->kind != AstNodeKind::VarDecl)
         {
             Diagnostic diag{id->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Syn0157)};
-            auto       note = Diagnostic::help(Hlp(Hlp0039));
+            auto       note = Diagnostic::note(Nte(Hlp0039));
             return context->report(diag, note);
         }
 
@@ -36,7 +36,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
         if (id->kind == AstNodeKind::StatementNoScope)
         {
             Diagnostic diag{node->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Syn0157)};
-            auto       note = Diagnostic::help(Hlp(Hlp0039));
+            auto       note = Diagnostic::note(Nte(Hlp0039));
             return context->report(diag, note);
         }
 
@@ -477,7 +477,7 @@ bool Parser::doEmbeddedStatement(AstNode* parent, AstNode** result)
 
     // Empty statement
     if (token.id == TokenId::SymSemiColon)
-        return error(token, Err(Syn0187), Hlp(Hlp0053));
+        return error(token, Err(Syn0187), Nte(Hlp0053));
 
     // One single line, but we need a scope too
     auto     newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
@@ -1031,7 +1031,7 @@ bool Parser::doTopLevelInstruction(AstNode* parent, AstNode** result)
         if (token.id == TokenId::SymEqual || token.id == TokenId::SymColon)
         {
             Diagnostic diag{sourceFile, token, Fmt(Err(Syn0198), token.ctext(), (*result)->token.ctext())};
-            auto       help = Diagnostic::help(Hlp(Hlp0054));
+            auto       help = Diagnostic::note(Nte(Hlp0054));
             return context->report(diag, help);
         }
         break;

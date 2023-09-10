@@ -48,7 +48,7 @@ bool SemanticJob::preprocessMatchError(SemanticContext* context, OneTryMatch& on
         bi.badSignatureParameterIdx == 0)
     {
         auto ufcs  = match.parameters[0];
-        auto note  = Diagnostic::help(ufcs, ufcs->token, Hlp(Hlp0044));
+        auto note  = Diagnostic::note(ufcs, ufcs->token, Nte(Hlp0044));
         note->hint = Hnt(Hnt0094);
         result1.push_back(note);
     }

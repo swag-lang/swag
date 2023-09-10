@@ -11,7 +11,6 @@ struct SourceFile;
 enum class ErrCxtStepKind
 {
     Note,
-    Help,
     Generic,
     Inline,
     CompileTime,

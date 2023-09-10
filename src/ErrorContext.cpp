@@ -91,7 +91,6 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
                 break;
 
             case ErrCxtStepKind::Note:
-            case ErrCxtStepKind::Help:
                 exp.hide = msg.empty();
                 break;
 
@@ -120,9 +119,6 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
             switch (exp.type)
             {
             case ErrCxtStepKind::Note:
-                break;
-            case ErrCxtStepKind::Help:
-                level = DiagnosticLevel::Help;
                 break;
             case ErrCxtStepKind::Export:
                 msg = Fmt(Nte(Nte0060), name.c_str());

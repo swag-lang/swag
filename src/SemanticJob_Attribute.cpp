@@ -418,7 +418,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         flags |= ATTRIBUTE_EXPORT_TYPE_NOZERO;
                     else
                     {
-                        auto note = Diagnostic::help(Hlp(Hlp0013));
+                        auto note = Diagnostic::note(Nte(Hlp0013));
                         return context->report({child, attrParam->token, Fmt(Err(Err0599), w.c_str())}, note);
                     }
                 }
@@ -469,7 +469,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
 
                         if (!done)
                         {
-                            auto note = Diagnostic::help(Hlp(Hlp0011));
+                            auto note = Diagnostic::note(Nte(Hlp0011));
                             return context->report({child, attrParam->token, Fmt(Err(Err0593), w.c_str())}, note);
                         }
                     }
@@ -517,7 +517,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         }
                         else
                         {
-                            auto note = Diagnostic::help(Hlp(Hlp0012));
+                            auto note = Diagnostic::note(Nte(Hlp0012));
                             return context->report({child, attrParam->token, Fmt(Err(Err0594), w.c_str())}, note);
                         }
                     }
@@ -569,7 +569,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         }
                         else
                         {
-                            auto note = Diagnostic::help(Hlp(Hlp0048));
+                            auto note = Diagnostic::note(Nte(Hlp0048));
                             return context->report({child, attrParam->token, Fmt(Err(Err0693), w.c_str())}, note);
                         }
                     }

@@ -328,8 +328,8 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
     {
         PushErrCxtStep ec(context, expression, ErrCxtStepKind::Hint2, [expression]()
                           { return Diagnostic::isType(expression->typeInfo); });
-        PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::Help, []()
-                           { return Hlp(Hlp0032); });
+        PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::Note, []()
+                           { return Nte(Hlp0032); });
         SWAG_CHECK(TypeManager::makeCompatibles(context, expression, ifZero, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
 
         node->typeInfo    = expression->typeInfo;

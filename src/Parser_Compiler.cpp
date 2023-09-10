@@ -213,7 +213,7 @@ bool Parser::doCompilerValidIf(AstNode* parent, AstNode** result)
         parent->token.text == g_LangSpec->name_opPostCopy ||
         parent->token.text == g_LangSpec->name_opPostMove)
     {
-        return error(node, Fmt(Err(Syn0137), parent->token.ctext()), Hlp(Hlp0034));
+        return error(node, Fmt(Err(Syn0137), parent->token.ctext()), Nte(Hlp0034));
     }
 
     ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND | AST_IN_VALIDIF);

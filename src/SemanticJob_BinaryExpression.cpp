@@ -35,7 +35,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
             Diagnostic diag{node, node->token, Err(Err0192), Diagnostic::isType(leftTypeInfo)};
             diag.hint = Hnt(Hnt0061);
             diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-            auto note = Diagnostic::help(Hlp(Hlp0046));
+            auto note = Diagnostic::note(Nte(Hlp0046));
             return context->report(diag, note);
         }
 
@@ -60,7 +60,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
             Diagnostic diag{node, node->token, Err(Err0192), Diagnostic::isType(rightTypeInfo)};
             diag.hint = Hnt(Hnt0061);
             diag.addRange(right, Diagnostic::isType(rightTypeInfo));
-            auto note = Diagnostic::help(Hlp(Hlp0046));
+            auto note = Diagnostic::note(Nte(Hlp0046));
             return context->report(diag, note);
         }
 
@@ -104,7 +104,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         {
             Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
             diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-            auto note = Diagnostic::help(Hlp(Hlp0040));
+            auto note = Diagnostic::note(Nte(Hlp0040));
             return context->report(diag, note);
         }
         else
@@ -251,7 +251,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
             Diagnostic diag{node, node->token, Err(Err0192), Diagnostic::isType(leftTypeInfo)};
             diag.hint = Hnt(Hnt0061);
             diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-            auto note = Diagnostic::help(Hlp(Hlp0046));
+            auto note = Diagnostic::note(Nte(Hlp0046));
             return context->report(diag, note);
         }
 
