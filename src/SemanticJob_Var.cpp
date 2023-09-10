@@ -332,7 +332,7 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
     if (identifier->callParameters)
     {
         Diagnostic diag{assign, Err(Err0295)};
-        diag.hint = Hnt(Hnt0009);
+        diag.hint = Hnt(Hnt0045);
         diag.addRange(identifier->callParameters, Hnt(Hnt0007));
         return context->report(diag);
     }

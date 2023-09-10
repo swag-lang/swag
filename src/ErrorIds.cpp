@@ -857,7 +857,7 @@ void initErrors()
     SWAG_ERROR(Err0667, "struct incompatible with 'Swag.Opaque'; file globally exported");
     SWAG_ERROR(Err0673, "struct member '%s' missing for 'Swag.Offset' attribute relocation");
     SWAG_ERROR(Err0029, "struct member aliasing not allowed");
-    SWAG_ERROR(Err0295, "struct mustn't be initialized twice");
+    SWAG_ERROR(Err0295, "duplicate initialization of struct");
     SWAG_ERROR(Err0281, "struct of type '%s' not 'Swag.ConstExpr'; can't evaluate at compile time");
     SWAG_ERROR(Err0662, "expected struct or enum, found '%s' as %s");
     SWAG_ERROR(Err0666, "struct requires public access for 'Swag.Opaque'");
@@ -1296,12 +1296,12 @@ void initErrors()
     SWAG_ERROR(Hnt0050, "local variable declared with 'let' is immutable");
     SWAG_ERROR(Hnt0071, "missing parameter identified");
     SWAG_ERROR(Hnt0118, "no matching start for multi-line comment '/*' was found");
-    SWAG_ERROR(Hnt0007, "noted as the initial initialization");
-    SWAG_ERROR(Hnt0081, "noted as the primary instance");
+    SWAG_ERROR(Hnt0007, "initial initialization noted here");
+    SWAG_ERROR(Hnt0081, "primary instance noted here");
     SWAG_ERROR(Hnt0106, "observed an immutable struct parameter");
-    SWAG_ERROR(Hnt0045, "observed as the second initialization");
-    SWAG_ERROR(Hnt0009, "observed as the secondary instance");
-    SWAG_ERROR(Hnt0066, "observed tuple unpacking");
+    SWAG_ERROR(Hnt0045, "second initialization observed");
+    SWAG_ERROR(Hnt0009, "secondary instance observed");
+    SWAG_ERROR(Hnt0066, "tuple unpacking observed");
     SWAG_ERROR(Hnt0115, "one function declares 'throw' while the other doesn't");
     SWAG_ERROR(Hnt0112, "only the address of a returned reference can be taken, and this is %s");
     SWAG_ERROR(Hnt0109, "operation not allowed on non-pointer types");
