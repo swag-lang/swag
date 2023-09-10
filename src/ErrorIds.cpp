@@ -141,7 +141,8 @@ void initErrors()
     SWAG_ERROR(Syn0101, "unexpected 'elif'                              $ 'elif' found without a preceding 'if'");
     SWAG_ERROR(Syn0102, "unexpected 'else'                              $ 'else' found without a preceding 'if' or 'elif'");
 
-    SWAG_ERROR(Syn0001, "'#global export' already defined               $ the directive '#global export' should only be defined once");
+    SWAG_ERROR(Syn0001, "'#global export' already defined               $ only one '#global export' is allowed per file");
+    SWAG_ERROR(Syn0181, "'default' already defined                      $ only one 'default' statement is allowed per 'switch'");
 
     SWAG_ERROR(Syn0002, "missing '#foreignlib' string argument          $ expected the library name after '#foreignlib', found '%s' instead $ use '#foreignlib \"path/to/library\"' to specify the library to import");
     SWAG_ERROR(Syn0204, "missing '#global testerror' string argument    $ expected the error string to check after '#global testerror', found '%s' instead");
@@ -169,6 +170,12 @@ void initErrors()
     SWAG_ERROR(Syn0030, "unexpected 'var' in struct                     $ 'var' is unnecessary in struct variable declarations $ struct variables should be declared as 'fieldName: Type' without 'var'");
     SWAG_ERROR(Syn0144, "unexpected 'retval' return type                $ 'retval' is only valid as a local variable type");
 
+    SWAG_ERROR(Syn0158, "empty 'case' statement                         $ a 'case' statement should never be empty");
+    SWAG_ERROR(Syn0052, "empty 'default' statement                      $ a 'default' statement should never be empty");
+
+    SWAG_ERROR(Syn0053, "expected 'case' or 'default'");
+    SWAG_ERROR(Syn0055, "'case' expression needed before ':'");
+    SWAG_ERROR(Syn0056, "'case' expression needed before 'break'");
     SWAG_ERROR(Syn0082, "expected '#global #if' expression");
     SWAG_ERROR(Syn0083, "expected '#if' expression");
     SWAG_ERROR(Syn0033, "'#message' function needs 'Swag.CompilerMsgMask' parameter");
@@ -184,7 +191,6 @@ void initErrors()
     SWAG_ERROR(Syn0135, "'Self' invalid outside 'impl', 'struct', or 'interface'");
     SWAG_ERROR(Syn0024, "']' in array type declaration can't have line break");
     SWAG_ERROR(Syn0061, "'const' not allowed for 'func'");
-    SWAG_ERROR(Syn0181, "'default' is already defined");
     SWAG_ERROR(Syn0143, "'for' not allowed in enum implementation");
     SWAG_ERROR(Syn0104, "'impl' block generation allowed only in '#message' with 'Swag.CompilerMsgMask.AttributeGen'");
     SWAG_ERROR(Syn0085, "expected 'loop' evaluation expression before '{'");
@@ -207,8 +213,6 @@ void initErrors()
     SWAG_ERROR(Syn0096, "expected array type after dimensions, found '%s'");
     SWAG_ERROR(Syn0072, "expected attribute name, found '%s'");
     SWAG_ERROR(Syn0038, "avoid declaring methods in 'enum impl' block");
-    SWAG_ERROR(Syn0055, "'case' expression needed before ':'");
-    SWAG_ERROR(Syn0056, "'case' expression needed before 'break'");
     SWAG_ERROR(Syn0057, "expected capture argument between ',' and '|'");
     SWAG_ERROR(Syn0123, "block kind (%s) and type of '%s' (%s) mismatch");
     SWAG_ERROR(Syn0207, "block not allowed after 'discard try/assume/catch'");
@@ -221,7 +225,6 @@ void initErrors()
     SWAG_ERROR(Syn0117, "duplicate '#import' version definition");
     SWAG_ERROR(Syn0047, "EOF reached, expected '%s' %s");
     SWAG_ERROR(Syn0073, "expected embedded instruction or curly block");
-    SWAG_ERROR(Syn0158, "empty 'case' statement");
     SWAG_ERROR(Syn0159, "empty attribute usage");
     SWAG_ERROR(Syn0160, "empty expression found");
     SWAG_ERROR(Syn0124, "empty initializer list");
@@ -232,7 +235,6 @@ void initErrors()
     SWAG_ERROR(Syn0048, "expected '%s' %s, found '%s'");
     SWAG_ERROR(Syn0049, "expected '(' for closure parameters");
     SWAG_ERROR(Syn0050, "expected ',' or ']', found '%s'");
-    SWAG_ERROR(Syn0053, "expected 'case' or 'default'");
     SWAG_ERROR(Syn0095, "expected 'func' or 'closure' instead of 'mtd'");
     SWAG_ERROR(Syn0031, "expected '{' instead of '%s'");
     SWAG_ERROR(Syn0184, "expected constant name, found '%s'");
@@ -335,7 +337,6 @@ void initErrors()
     SWAG_ERROR(Syn0111, "variable name '%s' can't start with '@'");
     SWAG_ERROR(Syn0069, "expected variable name, found '%s'");
     SWAG_ERROR(Syn0113, "version '%s' is invalid");
-    SWAG_ERROR(Syn0052, nullptr);
     SWAG_ERROR(Syn0131, nullptr);
     SWAG_ERROR(Syn0220, nullptr);
     SWAG_ERROR(Syn0080, nullptr);
@@ -1411,6 +1412,9 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
+    SWAG_ERROR(Nte0138, "add a 'break' if you want to exit without any action");
+    SWAG_ERROR(Nte0137, "add a 'break' to exit, or use 'fallthrough' to continue to the next 'case'");
+
     SWAG_ERROR(Nte0042, "'%s' is a function missing the 'Swag.ConstExpr' attribute");
     SWAG_ERROR(Nte0041, "'%s' is a variable; variables within expressions aren't evaluated at compile-time");
     SWAG_ERROR(Nte0077, "'%s' might represent either a singular type or a field name");
@@ -1508,7 +1512,6 @@ void initErrors()
     SWAG_ERROR(Nte0112, "'Swag.Optim' should have either 'bytecode' or 'backend' as its value");
     SWAG_ERROR(Nte0145, "'closure' should be accompanied by capture parameters enclosed in '|...|'");
     SWAG_ERROR(Nte0139, "'with' should be paired with a single variable");
-    SWAG_ERROR(Nte0138, "a 'break' should be added");
     SWAG_ERROR(Nte0121, "a generic argument must be a literal or a type");
     SWAG_ERROR(Nte0124, "a standard function in an 'impl' block shouldn't overshadow a function from the matching interface");
     SWAG_ERROR(Nte0115, "a struct special function should be defined within the corresponding 'impl' scope");
@@ -1536,7 +1539,6 @@ void initErrors()
     SWAG_ERROR(Nte0127, "internal structs shouldn't export their special functions");
     SWAG_ERROR(Nte0107, "methods are reserved for structs and interfaces");
     SWAG_ERROR(Nte0150, "only variables can be initialized in this manner");
-    SWAG_ERROR(Nte0137, "please include a 'break' or a 'fallthrough'");
     SWAG_ERROR(Nte0146, "pointer arithmetic is only valid for pointers declared with '^', not '*'");
     SWAG_ERROR(Nte0126, "public structs should export all their special functions");
     SWAG_ERROR(Nte0109, "struct member names that begin with 'item' are reserved by the language");

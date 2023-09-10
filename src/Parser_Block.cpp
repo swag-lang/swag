@@ -162,9 +162,9 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
             // Instructions
             ScopedBreakable scopedBreakable(this, switchNode);
             if (token.id == TokenId::KwdCase || token.id == TokenId::KwdDefault)
-                return error(previousToken, Err(Syn0158), Nte(Nte0137));
+                return error(previousToken, isDefault ? Err(Syn0052) : Err(Syn0158), Nte(Nte0137));
             if (token.id == TokenId::SymRightCurly)
-                return error(previousToken, Err(Syn0158), Nte(Nte0138));
+                return error(previousToken, isDefault ? Err(Syn0052) : Err(Syn0158), Nte(Nte0138));
             while (token.id != TokenId::KwdCase && token.id != TokenId::KwdDefault && token.id != TokenId::SymRightCurly)
                 SWAG_CHECK(doEmbeddedInstruction(statement, &dummyResult));
         }
