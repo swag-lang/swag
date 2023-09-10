@@ -409,13 +409,13 @@ void Diagnostic::collectSourceCode()
     }
 }
 
-Utf8 Diagnostic::syntax(const Utf8& line)
+Utf8 Diagnostic::syntax(const Utf8& line, SyntaxColorContext &cxt)
 {
     if (!g_CommandLine.logColors)
         return line;
     if (!g_CommandLine.errorSyntaxColor)
         return line;
-    return syntaxColor(line, SyntaxColorMode::ForLog);
+    return syntaxColor(line, cxt);
 }
 
 void Diagnostic::printSourceCode(bool verboseMode)
@@ -427,6 +427,8 @@ void Diagnostic::printSourceCode(bool verboseMode)
         printMargin(true);
 
     // Print all lines except the one that really contains the relevant stuff (and ranges)
+    SyntaxColorContext cxt;
+    cxt.mode = SyntaxColorMode::ForLog;
     for (size_t i = 0; i < lines.size(); i++)
     {
         const char* pz = lines[i].c_str();
@@ -443,7 +445,7 @@ void Diagnostic::printSourceCode(bool verboseMode)
         else
         {
             g_Log.setColor(LogColor::White);
-            colored = syntax(lines[i].c_str() + minBlanks);
+            colored = syntax(lines[i].c_str() + minBlanks, cxt);
         }
 
         g_Log.print(colored);

@@ -4,6 +4,7 @@
 #include "ErrorIds.h"
 struct SourceFile;
 struct TypeInfo;
+struct SyntaxColorContext;
 enum class LogColor;
 
 enum class DiagnosticLevel
@@ -144,7 +145,7 @@ struct Diagnostic
     void collectSourceCode();
     void sortRanges();
     void collectRanges();
-    Utf8 syntax(const Utf8& line);
+    Utf8 syntax(const Utf8& line, SyntaxColorContext& cxt);
     void printSourceCode(bool verboseMode);
     void printSourceLine();
     void printErrorLevel();

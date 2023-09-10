@@ -210,7 +210,11 @@ void GenDoc::outputCode(const Utf8& code, uint32_t flags)
     // Syntax coloration
     Utf8 codeText;
     if (flags & GENDOC_CODE_SYNTAX_COL)
-        codeText = syntaxColor(repl, SyntaxColorMode::ForDoc);
+    {
+        SyntaxColorContext cxt;
+        cxt.mode = SyntaxColorMode::ForDoc;
+        codeText = syntaxColor(repl, cxt);
+    }
     else
     {
         codeText = Fmt("<span class=\"%s\">", SYN_CODE);

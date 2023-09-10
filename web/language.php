@@ -595,17 +595,17 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <h2 id="003_comments">Comments</h2><p>Let's start with the basics. Swag support classical single-line and multi-line comments. </p>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// Single-line comment</span>
 
-/*
-    <span class="SCst">Multi</span>-line comment on...
+<span class="SCmt">/*
+    Multi-line comment on...
     ... multiple lines
-*/
+*/</span>
 
 <span class="SKwd">const</span> <span class="SCst">A</span> = <span class="SNum">0</span> <span class="SCmt">// This is a constant with the value '0' assigned to it</span>
-<span class="SKwd">const</span> <span class="SCst">B</span> = /* <span class="SKwd">false</span> */ <span class="SKwd">true</span></span></code>
+<span class="SKwd">const</span> <span class="SCst">B</span> = <span class="SCmt">/* false */</span> <span class="SKwd">true</span></span></code>
 </div>
 <p>Nested comments are supported. </p>
-<div class="code-block"><code><span class="SCde">/*
-    /* <span class="SCst">You</span> can also nest multi-line comments */
+<div class="code-block"><code><span class="SCmt">/*
+    */ You can also nest multi-line comments */
 */</span></code>
 </div>
 
@@ -1865,8 +1865,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmt">// But the following would generate an error as you cannot affect 's16' to 's8'</span>
     <span class="SCmt">// without an explicit cast(s16).</span>
 
-    <span class="SCmt">// var z0: s16 = 1</span>
-    <span class="SCmt">// var z1: s8 = z0</span>
+    <span class="SCmt">// let z0: s16 = 1</span>
+    <span class="SCmt">// let z1: s8 = z0</span>
 }</span></code>
 </div>
 
@@ -7829,7 +7829,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="231_003_Pages">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 09-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.25.0</div>
+Generated on 10-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.25.0</div>
 </div>
 </div>
 </div>

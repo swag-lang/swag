@@ -220,9 +220,10 @@ static Utf8 getColor(SyntaxColorMode mode, SyntaxColor color)
     return "";
 }
 
-Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
+Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
 {
-    const char* pz = line.c_str();
+    auto        mode = context.mode;
+    const char* pz   = line.c_str();
     uint32_t    c, offset;
     Utf8        result;
 
@@ -230,6 +231,58 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
     pz           = Utf8::decodeUtf8(pz, c, offset);
     while (c)
     {
+        // Multi-line comment
+        if (context.multiLineCommentLevel || (c == '/' && pz[0] == '*'))
+        {
+            result += getColor(mode, SyntaxColor::SyntaxComment);
+
+            result += c;
+            if (!context.multiLineCommentLevel)
+            {
+                result += *pz++;
+                context.multiLineCommentLevel++;
+            }
+
+            while (*pz)
+            {
+                if (pz[0] == '/' && pz[1] == '*')
+                {
+                    context.multiLineCommentLevel++;
+                    result += "*/";
+                    pz += 2;
+                    continue;
+                }
+
+                if (pz[0] == '*' && pz[1] == '/')
+                {
+                    result += "*/";
+                    pz += 2;
+                    context.multiLineCommentLevel--;
+                    if (context.multiLineCommentLevel == 0)
+                        break;
+                    continue;
+                }
+
+                result += *pz++;
+            }
+
+            pz = Utf8::decodeUtf8(pz, c, offset);
+            result += getColor(mode, SyntaxColor::SyntaxDefault);
+            continue;
+        }
+
+        // Line comment
+        if (c == '/' && pz[0] == '/')
+        {
+            result += getColor(mode, SyntaxColor::SyntaxComment);
+            result += c;
+            while (*pz && !SWAG_IS_EOL(*pz))
+                result += *pz++;
+            pz = Utf8::decodeUtf8(pz, c, offset);
+            result += getColor(mode, SyntaxColor::SyntaxDefault);
+            continue;
+        }
+
         // Attribute
         if (c == '#' && *pz == '[')
         {
@@ -322,18 +375,6 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorMode mode)
             }
 
             if (*pz == '`')
-                result += *pz++;
-            pz = Utf8::decodeUtf8(pz, c, offset);
-            result += getColor(mode, SyntaxColor::SyntaxDefault);
-            continue;
-        }
-
-        // Line comment
-        if (c == '/' && pz[0] == '/')
-        {
-            result += getColor(mode, SyntaxColor::SyntaxComment);
-            result += c;
-            while (*pz && !SWAG_IS_EOL(*pz))
                 result += *pz++;
             pz = Utf8::decodeUtf8(pz, c, offset);
             result += getColor(mode, SyntaxColor::SyntaxDefault);

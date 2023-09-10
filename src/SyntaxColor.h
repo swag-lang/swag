@@ -41,5 +41,11 @@ enum class SyntaxColorMode
     ForLog,
 };
 
+struct SyntaxColorContext
+{
+    SyntaxColorMode mode;
+    int             multiLineCommentLevel = 0;
+};
+
 uint32_t getSyntaxColor(SyntaxColorMode mode, SyntaxColor color, float lum);
-Utf8     syntaxColor(const Utf8& line, SyntaxColorMode mode);
+Utf8     syntaxColor(const Utf8& line, SyntaxColorContext& context);
