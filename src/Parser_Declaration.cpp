@@ -111,7 +111,7 @@ bool Parser::doCheckPublicInternalPrivate(Token& tokenAttr)
 bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
 {
     SWAG_ASSERT(token.id == TokenId::KwdPublic || token.id == TokenId::KwdInternal);
-    SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, Fmt(Err(Syn0032), token.ctext())));
+    SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, Fmt(Err(Syn0121), token.ctext())));
     SWAG_VERIFY(!sourceFile->forceExport, error(token, Fmt(Err(Syn0018), token.ctext())));
 
     uint32_t attr      = 0;
@@ -166,7 +166,7 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
 
 bool Parser::doPrivate(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, Fmt(Err(Syn0032), token.ctext())));
+    SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, Fmt(Err(Syn0121), token.ctext())));
 
     auto privName = token;
     auto attrUse  = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);

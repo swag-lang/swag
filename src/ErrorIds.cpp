@@ -35,7 +35,7 @@ void initErrors()
     SWAG_ERROR(Fat0008, "[fatal] failed to create target directory '%s'");
     SWAG_ERROR(Fat0009, "[fatal] failed to delete directory '%s'");
     SWAG_ERROR(Fat0010, "[fatal] failed to delete file '%s'");
-    SWAG_ERROR(Fat0019, "[fatal] insufficient memory");
+    SWAG_ERROR(Fat0019, "[fatal] not enough memory");
     SWAG_ERROR(Fat0015, "[fatal] invalid '--tag:%s' value (%s)");
     SWAG_ERROR(Fat0012, "[fatal] invalid module '%s'; missing configuration file '%s'");
     SWAG_ERROR(Fat0013, "[fatal] invalid script file extension; expected '.swgs' found '%s'");
@@ -43,13 +43,13 @@ void initErrors()
     SWAG_ERROR(Fat0016, "[fatal] invalid workspace '%s'; missing 'modules/' or 'tests/' subfolder");
     SWAG_ERROR(Fat0018, "[fatal] module '%s' already exists in '/modules'");
     SWAG_ERROR(Fat0020, "[fatal] script file '%s' not found");
-    SWAG_ERROR(Fat0027, "[fatal] script file '%s' not found");
-    SWAG_ERROR(Fat0017, "[fatal] script file missing; use '--file:<filename>.swgs'");
+    SWAG_ERROR(Fat0017, "[fatal] script file missing (use '--file:<filename>.swgs')");
     SWAG_ERROR(Fat0023, "[fatal] unexpected compile tag value '%s' (use '--tag:%s')");
     SWAG_ERROR(Fat0024, "[fatal] unknown compile tag type '%s' (use '--tag:%s')");
     SWAG_ERROR(Fat0025, "[fatal] workspace folder '%s' already exists");
     SWAG_ERROR(Fat0026, "[fatal] workspace folder '%s' not found");
     SWAG_ERROR(Fat0011, "[fatal] expected workspace folder '--workspace'");
+    SWAG_ERROR(Fat0027, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -62,55 +62,54 @@ void initErrors()
     SWAG_ERROR(Saf0034, "[safety 'boundcheck'] lower bound > upper bound");
     SWAG_ERROR(Saf0004, "[safety 'boundcheck'] slice error: lower > upper");
     SWAG_ERROR(Saf0005, "[safety 'boundcheck'] slice error: upper out of bounds");
-    SWAG_ERROR(Saf0003, "[safety 'math'] '@abs' overflow (type: '%s')");
-    SWAG_ERROR(Saf0027, "[safety 'math'] '@acos' invalid arg (type: '%s')");
-    SWAG_ERROR(Saf0026, "[safety 'math'] '@asin' invalid arg (type: '%s')");
-    SWAG_ERROR(Saf0023, "[safety 'math'] '@log' invalid arg (type: '%s')");
-    SWAG_ERROR(Saf0025, "[safety 'math'] '@log10' invalid arg (type: '%s')");
-    SWAG_ERROR(Saf0024, "[safety 'math'] '@log2' invalid arg (type: '%s')");
-    SWAG_ERROR(Saf0022, "[safety 'math'] '@sqrt' invalid arg (type: '%s')");
-    SWAG_ERROR(Saf0007, "[safety 'math'] divide by zero");
+    SWAG_ERROR(Saf0003, "[safety 'math'] '@abs' overflow (type is '%s')");
+    SWAG_ERROR(Saf0027, "[safety 'math'] '@acos' invalid arg (type is '%s')");
+    SWAG_ERROR(Saf0026, "[safety 'math'] '@asin' invalid arg (type is '%s')");
+    SWAG_ERROR(Saf0023, "[safety 'math'] '@log' invalid arg (type is '%s')");
+    SWAG_ERROR(Saf0025, "[safety 'math'] '@log10' invalid arg (type is '%s')");
+    SWAG_ERROR(Saf0024, "[safety 'math'] '@log2' invalid arg (type is '%s')");
+    SWAG_ERROR(Saf0022, "[safety 'math'] '@sqrt' invalid arg (type is '%s')");
+    SWAG_ERROR(Saf0007, "[safety 'math'] division by zero");
     SWAG_ERROR(Saf0021, "[safety 'nan'] invalid float (NaN)");
-    SWAG_ERROR(Saf0001, "[safety 'null'] null pointer dereferenced");
+    SWAG_ERROR(Saf0001, "[safety 'null'] dereferencing a null pointer");
     SWAG_ERROR(Saf0032, "[safety 'overflow'] '%I64d' negative for unsigned '%s'");
     SWAG_ERROR(Saf0033, "[safety 'overflow'] '%I64u' unfit for type '%s'");
     SWAG_ERROR(Saf0030, "[safety 'overflow'] '%g' negative for unsigned '%s'");
     SWAG_ERROR(Saf0031, "[safety 'overflow'] '%g' unfit for type '%s'");
     SWAG_ERROR(Saf0006, "[safety 'overflow'] negative value '%s' to unsigned '%s'");
-    SWAG_ERROR(Saf0010, "[safety 'overflow'] overflow in '*' (type: '%s')");
-    SWAG_ERROR(Saf0009, "[safety 'overflow'] overflow in '*=' (type: '%s')");
-    SWAG_ERROR(Saf0012, "[safety 'overflow'] overflow in '+' (type: '%s')");
-    SWAG_ERROR(Saf0011, "[safety 'overflow'] overflow in '+=' (type: '%s')");
-    SWAG_ERROR(Saf0014, "[safety 'overflow'] overflow in '-' (type: '%s')");
-    SWAG_ERROR(Saf0013, "[safety 'overflow'] overflow in '-=' (type: '%s')");
-    SWAG_ERROR(Saf0015, "[safety 'overflow'] overflow in '<<' (type: '%s')");
-    SWAG_ERROR(Saf0016, "[safety 'overflow'] overflow in '>>' (type: '%s')");
-    SWAG_ERROR(Saf0017, "[safety 'overflow'] overflow in negative (type: '%s')");
+    SWAG_ERROR(Saf0010, "[safety 'overflow'] overflow in '*' (type is '%s')");
+    SWAG_ERROR(Saf0009, "[safety 'overflow'] overflow in '*=' (type is '%s')");
+    SWAG_ERROR(Saf0012, "[safety 'overflow'] overflow in '+' (type is '%s')");
+    SWAG_ERROR(Saf0011, "[safety 'overflow'] overflow in '+=' (type is '%s')");
+    SWAG_ERROR(Saf0014, "[safety 'overflow'] overflow in '-' (type is '%s')");
+    SWAG_ERROR(Saf0013, "[safety 'overflow'] overflow in '-=' (type is '%s')");
+    SWAG_ERROR(Saf0015, "[safety 'overflow'] overflow in '<<' (type is '%s')");
+    SWAG_ERROR(Saf0016, "[safety 'overflow'] overflow in '>>' (type is '%s')");
+    SWAG_ERROR(Saf0017, "[safety 'overflow'] overflow in negative (type is '%s')");
     SWAG_ERROR(Saf0018, "[safety 'overflow'] truncation from '%s' to '%s'");
     SWAG_ERROR(Saf0029, "[safety 'overflow'] value '%s' ('%I64u' in decimal) unfit for type '%s'");
-    SWAG_ERROR(Saf0019, "[safety 'switch'] unexpected value ('Swag.Complete')");
+    SWAG_ERROR(Saf0019, "[safety 'switch'] switch unexpected value ('Swag.Complete')");
     SWAG_ERROR(Saf0035, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Tkn0023, "invalid float number syntax          $ the fractional part should not start with '_'");
-    SWAG_ERROR(Tkn0024, "invalid float number syntax          $ the exponent part should not start with '_'");
-    SWAG_ERROR(Tkn0002, "invalid float number syntax          $ exponent in the scientific notation must contain at least one digit");
-    SWAG_ERROR(Tkn0003, "invalid binary number syntax         $ binary literals should only contain '0' or '1', found '%s' instead");
-    SWAG_ERROR(Tkn0001, "incomplete binary number syntax      $ binary literals require at least one '0' or '1' digit");
-    SWAG_ERROR(Tkn0004, "invalid hexadecimal number syntax    $ hexadecimal literals can only contain digits 0-9, A-F, and a-f, found '%s' instead");
-    SWAG_ERROR(Tkn0007, "incomplete hexadecimal number syntax $ hexadecimal literals require at least one valid digit (0-9, A-F, a-f)");
-    SWAG_ERROR(Tkn0020, "invalid number format                $ consecutive digit separators '_' are not allowed");
-    SWAG_ERROR(Tkn0009, "invalid number format                $ this hexadecimal number has too many digits to fit within a 64-bit representation");
-    SWAG_ERROR(Tkn0029, "invalid number format                $ this binary number has too many digits to fit within a 64-bit representation");
-    SWAG_ERROR(Tkn0021, "invalid number format                $ a number should not end with a digit separator '_'");
-    SWAG_ERROR(Tkn0022, "invalid number format                $ a number should not start with a digit separator '_'");
-    SWAG_ERROR(Tkn0019, "invalid number prefix                $ expected '0x' for hexadecimal or '0b' for binary, found '%s' instead");
-    SWAG_ERROR(Tkn0008, "number out of range                  $ this literal number exceeds 64 bits and is out of allowable range");
-    SWAG_ERROR(Tkn0028, "invalid character                    $ the character '%s' is not recognized in this context");
-
+    SWAG_ERROR(Tkn0023, "invalid float number syntax                       $ the fractional part should not start with '_'");
+    SWAG_ERROR(Tkn0024, "invalid float number syntax                       $ the exponent part should not start with '_'");
+    SWAG_ERROR(Tkn0002, "invalid float number syntax                       $ exponent in the scientific notation must contain at least one digit");
+    SWAG_ERROR(Tkn0003, "invalid binary number syntax                      $ binary literals should only contain '0' or '1', found '%s' instead");
+    SWAG_ERROR(Tkn0001, "incomplete binary number syntax                   $ binary literals require at least one '0' or '1' digit");
+    SWAG_ERROR(Tkn0004, "invalid hexadecimal number syntax                 $ hexadecimal literals can only contain digits 0-9, A-F, and a-f, found '%s' instead");
+    SWAG_ERROR(Tkn0007, "incomplete hexadecimal number syntax              $ hexadecimal literals require at least one valid digit (0-9, A-F, a-f)");
+    SWAG_ERROR(Tkn0020, "invalid number format                             $ consecutive digit separators '_' are not allowed");
+    SWAG_ERROR(Tkn0009, "invalid number format                             $ this hexadecimal number has too many digits to fit within a 64-bit representation");
+    SWAG_ERROR(Tkn0029, "invalid number format                             $ this binary number has too many digits to fit within a 64-bit representation");
+    SWAG_ERROR(Tkn0021, "invalid number format                             $ a number should not end with a digit separator '_'");
+    SWAG_ERROR(Tkn0022, "invalid number format                             $ a number should not start with a digit separator '_'");
+    SWAG_ERROR(Tkn0019, "invalid number prefix                             $ expected '0x' for hexadecimal or '0b' for binary, found '%s' instead");
+    SWAG_ERROR(Tkn0008, "number out of range                               $ this literal number exceeds 64 bits and is out of allowable range");
+    SWAG_ERROR(Tkn0028, "invalid character                                 $ the character '%s' is not recognized in this context");
     SWAG_ERROR(Tkn0025, "unexpected end of file within comment             $ this multi-line comment is missing its closing '*/'");
     SWAG_ERROR(Tkn0026, "character literal is missing its closing backtick $ expected a closing backtick '`' before the end of the line");
     SWAG_ERROR(Tkn0018, "string literal is missing its closing '\"'        $ expected a closing quotation mark '\"' before the end of the line $ if you want a multi-line string, use the syntax \"\"\"string\"\"\"");
@@ -122,11 +121,11 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Syn0032, "%s definition required at file or namespace scope");
-    SWAG_ERROR(Syn0183, "'#dependencies' is only for 'module.swg'");
-    SWAG_ERROR(Syn0182, "'#dependencies' must be at file level");
-    SWAG_ERROR(Syn0097, "'#elif' without matching '#if' found");
-    SWAG_ERROR(Syn0098, "'#else' without matching '#if' found");
+    SWAG_ERROR(Syn0121, "invalid use of access modifier         $ the '%s' access modifier can only be used at the global scope");
+    SWAG_ERROR(Syn0183, "invalid use of '#dependencies'         $ the directive '#dependencies' can only be used within 'module.swg' or '.swgs' files");
+    SWAG_ERROR(Syn0182, "invalid use of '#dependencies'         $ the directive '#dependencies' must be placed at file level");
+    SWAG_ERROR(Syn0097, "unexpected '#elif'                     $ '#elif' found without a preceding '#if' directive");
+    SWAG_ERROR(Syn0098, "unexpected '#else'                     $ '#else' found without a preceding '#if' or '#elif' directive");
     SWAG_ERROR(Syn0001, "'#global export' is already defined");
     SWAG_ERROR(Syn0002, "'#global foreignlib' requires a string next");
     SWAG_ERROR(Syn0082, "expected '#global if' expression");
@@ -185,7 +184,6 @@ void initErrors()
     SWAG_ERROR(Syn0030, "'var' not needed for struct field");
     SWAG_ERROR(Syn0086, "expected 'visit' evaluation expression before '{'");
     SWAG_ERROR(Syn0087, "expected 'while' boolean expression before '{'");
-    SWAG_ERROR(Syn0121, "access '%s' allowed only in global scope");
     SWAG_ERROR(Syn0190, "affectation start after unnamed parameters found");
     SWAG_ERROR(Syn0060, "after ''', literal type qualifier required");
     SWAG_ERROR(Syn0051, "after variable name '%s', expected ':' not a literal");
@@ -328,6 +326,7 @@ void initErrors()
     SWAG_ERROR(Syn0111, "variable name '%s' can't start with '@'");
     SWAG_ERROR(Syn0069, "expected variable name, found '%s'");
     SWAG_ERROR(Syn0113, "version '%s' is invalid");
+    SWAG_ERROR(Syn0032, nullptr);
     SWAG_ERROR(Syn0052, nullptr);
     SWAG_ERROR(Syn0131, nullptr);
     SWAG_ERROR(Syn0220, nullptr);
@@ -394,7 +393,7 @@ void initErrors()
     SWAG_ERROR(Err0617, "'#validif' validation failed for '%s'");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
     SWAG_ERROR(Err0089, "'%s' can't be compile-time evaluated");
-    SWAG_ERROR(Err0085, "'%s' can't be dereferenced as struct or pointer to struct (type: '%s')");
+    SWAG_ERROR(Err0085, "'%s' can't be dereferenced as struct or pointer to struct (type is '%s')");
     SWAG_ERROR(Err0194, "'%s' can't be dereferenced by index; pointer arithmetic not allowed");
     SWAG_ERROR(Err0788, "'%s' can't have 'null' as the first parameter");
     SWAG_ERROR(Err0498, "'%s' count must be integer, found '%s'");
@@ -474,7 +473,7 @@ void initErrors()
     SWAG_ERROR(Err0634, "'fallthrough' valid only in 'case' block");
     SWAG_ERROR(Err0633, "'fallthrough' valid only in 'switch' block");
     SWAG_ERROR(Err0289, "'impl' not within 'impl for' block");
-    SWAG_ERROR(Err0559, "'move' not applicable to immutable expression (type: '%s')");
+    SWAG_ERROR(Err0559, "'move' not applicable to immutable expression (type is '%s')");
     SWAG_ERROR(Err0619, "'moveref' can't be 'const'");
     SWAG_ERROR(Err0126, "'opSlice' must return string or slice ('%s' given)");
     SWAG_ERROR(Err0075, "'opVisit' must have 'Swag.Macro' attribute");
@@ -494,7 +493,7 @@ void initErrors()
     SWAG_ERROR(Err0689, "'using' on variable not allowed in '%s' scope");
     SWAG_ERROR(Err0486, "'void' pointer dereference not allowed");
     SWAG_ERROR(Err0149, "'void' type can't be declared as variable or constant");
-    SWAG_ERROR(Err0073, "'with' invalid on enum variable (type: '%s')");
+    SWAG_ERROR(Err0073, "'with' invalid on enum variable (type is '%s')");
     SWAG_ERROR(Err0703, "'with' invalid on type '%s' (expected namespace, enum, struct)");
     SWAG_ERROR(Err0310, "hidden 'with' variable '%s' used only to scope function '%s'");
     SWAG_ERROR(Err0445, "@cvaarg of type '%s' promoted to '%s' at call");
@@ -849,7 +848,7 @@ void initErrors()
     SWAG_ERROR(Err0069, "special function '%s' expects type '%s', found '%s'");
     SWAG_ERROR(Err0065, "special function '%s' return type mismatch (expected '%s', found '%s')");
     SWAG_ERROR(Err0743, "special function can't have 'Swag.Inline' attribute");
-    SWAG_ERROR(Err0625, "special visit name for struct only (type: '%s')");
+    SWAG_ERROR(Err0625, "special visit name for struct only (type is '%s')");
     SWAG_ERROR(Err0536, "stack exceeded (limit '--stack-size:%s')");
     SWAG_ERROR(Err0096, "standalone expression found");
     SWAG_ERROR(Err0765, "struct '%s' has 'Swag.NoCopy'; 'opPostCopy' redundant");
