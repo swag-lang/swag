@@ -21,7 +21,7 @@ bool Parser::doTypeAlias(AstNode* parent, AstNode** result)
     SWAG_CHECK(checkIsValidUserName(node));
 
     SWAG_CHECK(eatToken());
-    SWAG_CHECK(eatToken(TokenId::SymEqual));
+    SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify the aliased type"));
 
     AstNode* expr;
     SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &expr));
@@ -115,7 +115,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
     }
 
     auto startLoc = token.startLocation;
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen, "to start the list of parameters"));
     if (token.id != TokenId::SymRightParen)
     {
         if (!params)
@@ -392,7 +392,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
         ScopedStruct     ss(this, structNode->scope);
 
         auto startLoc = token.startLocation;
-        SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+        SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the struct body"));
         while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
             SWAG_CHECK(doStructBody(contentNode, SyntaxStructType::Struct, &dummyResult));
         SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc));
@@ -570,7 +570,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
         }
 
         auto rightSquareToken = token;
-        SWAG_CHECK(eatToken(TokenId::SymRightSquare));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightSquare, leftSquareToken.startLocation));
         if (token.flags & TOKENPARSE_LAST_EOL)
         {
             if (exprFlags & EXPR_FLAG_TYPE_EXPR)

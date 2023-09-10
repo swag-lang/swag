@@ -169,12 +169,12 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
                 return context->report(diag, note);
             }
 
-            SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+            SWAG_CHECK(eatToken());
             SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightParen));
         }
         else if (!(token.flags & TOKENPARSE_LAST_BLANK) && token.id == TokenId::SymLeftCurly)
         {
-            SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+            SWAG_CHECK(eatToken());
             SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightCurly));
             identifier->callParameters->specFlags |= AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT;
         }
@@ -194,7 +194,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
             if (!(token.flags & TOKENPARSE_LAST_EOL) && !(identifierFlags & IDENTIFIER_NO_FCT_PARAMS) && token.id == TokenId::SymLeftParen)
             {
                 // :SilentCall
-                SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+                SWAG_CHECK(eatToken());
                 identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, parent);
                 identifier->inheritTokenLocation(token);
                 identifier->token.text = "";
@@ -404,7 +404,7 @@ bool Parser::doNameAlias(AstNode* parent, AstNode** result)
     SWAG_CHECK(checkIsValidUserName(node));
 
     SWAG_CHECK(eatToken());
-    SWAG_CHECK(eatToken(TokenId::SymEqual));
+    SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify the aliased name"));
 
     AstNode* expr;
     SWAG_CHECK(doIdentifierRef(node, &expr, IDENTIFIER_NO_FCT_PARAMS | IDENTIFIER_NO_ARRAY));

@@ -16,14 +16,14 @@ bool Parser::doIntrinsicTag(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     auto startLoc = token.startLocation;
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen, "to start the list of arguments"));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
 
     if (node->tokenId == TokenId::IntrinsicGetTag)
     {
-        SWAG_CHECK(eatToken(TokenId::SymComma));
+        SWAG_CHECK(eatToken(TokenId::SymComma, "to specify the second argument"));
         SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &dummyResult));
-        SWAG_CHECK(eatToken(TokenId::SymComma));
+        SWAG_CHECK(eatToken(TokenId::SymComma, "to specify the third argument"));
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
     }
 
@@ -114,7 +114,7 @@ bool Parser::doCompilerMixin(AstNode* parent, AstNode** result)
         {
             auto tokenId = token.id;
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(eatToken(TokenId::SymEqual));
+            SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify another '#mixin' block argument"));
             SWAG_CHECK(doEmbeddedInstruction(nullptr, &stmt));
             node->replaceTokens[tokenId] = stmt;
             node->extOwner()->nodesToFree.push_back(stmt);
@@ -587,7 +587,7 @@ bool Parser::doIntrinsicLocation(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     auto startLoc = token.startLocation;
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen, "to start the list of arguments"));
 
     ScopedFlags sc(this, AST_SILENT_CHECK);
     SWAG_CHECK(doIdentifierRef(exprNode, &dummyResult, IDENTIFIER_NO_PARAMS));
@@ -605,7 +605,7 @@ bool Parser::doIntrinsicDefined(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     auto startLoc = token.startLocation;
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen, "to start the list of arguments"));
 
     ScopedFlags sc(this, AST_SILENT_CHECK);
     SWAG_CHECK(doIdentifierRef(exprNode, &dummyResult, IDENTIFIER_NO_PARAMS));
@@ -642,7 +642,7 @@ bool Parser::doIntrinsicInclude(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     auto startLoc = token.startLocation;
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen, "to start the list of arguments"));
 
     ScopedFlags sc(this, AST_SILENT_CHECK);
     SWAG_CHECK(doExpression(exprNode, EXPR_FLAG_NONE, &dummyResult));
@@ -722,7 +722,7 @@ bool Parser::doCompilerImport(AstNode* parent)
             if (token.text == g_LangSpec->name_location)
             {
                 SWAG_CHECK(eatToken());
-                SWAG_CHECK(eatToken(TokenId::SymEqual));
+                SWAG_CHECK(eatToken(TokenId::SymEqual, "to define the second argument"));
                 SWAG_VERIFY(tokenLocation.text.empty(), error(token, Err(Syn0116)));
                 SWAG_VERIFY(token.id == TokenId::LiteralString, error(token, Fmt(Err(Syn0109), token.ctext())));
                 tokenLocation = token;
@@ -733,7 +733,7 @@ bool Parser::doCompilerImport(AstNode* parent)
             if (token.text == g_LangSpec->name_version)
             {
                 SWAG_CHECK(eatToken());
-                SWAG_CHECK(eatToken(TokenId::SymEqual));
+                SWAG_CHECK(eatToken(TokenId::SymEqual, "to define the second argument"));
                 SWAG_VERIFY(tokenVersion.text.empty(), error(token, Err(Syn0117)));
                 SWAG_VERIFY(token.id == TokenId::LiteralString, error(token, Fmt(Err(Syn0113), token.ctext())));
                 tokenVersion = token;

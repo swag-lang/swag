@@ -74,7 +74,7 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
     typeNode->semanticFct = SemanticJob::resolveEnumType;
     if (token.id == TokenId::SymColon)
     {
-        SWAG_CHECK(eatToken(TokenId::SymColon));
+        SWAG_CHECK(eatToken());
         SWAG_CHECK(doTypeExpression(typeNode, EXPR_FLAG_NONE, &dummyResult));
     }
 
@@ -171,7 +171,7 @@ bool Parser::doEnumValue(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
     if (token.id == TokenId::SymEqual)
     {
-        SWAG_CHECK(eatToken(TokenId::SymEqual));
+        SWAG_CHECK(eatToken());
         SWAG_CHECK(doExpression(enumValue, EXPR_FLAG_NONE, &dummyResult));
     }
 

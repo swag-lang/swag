@@ -49,7 +49,8 @@ bool Parser::doLiteral(AstNode* parent, AstNode** result)
 
 bool Parser::doArrayPointerIndex(AstNode** exprNode)
 {
-    SWAG_CHECK(eatToken(TokenId::SymLeftSquare));
+    auto startToken = token.startLocation;
+    SWAG_CHECK(eatToken(TokenId::SymLeftSquare, "to specify the index"));
 
     AstNode* firstExpr = nullptr;
 
@@ -105,7 +106,7 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
         }
 
         *exprNode = arrayNode;
-        SWAG_CHECK(eatToken(TokenId::SymRightSquare));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightSquare, startToken));
     }
 
     // Deref by index
@@ -133,10 +134,10 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
             *exprNode = arrayNode;
             if (token.id != TokenId::SymComma)
                 break;
-            SWAG_CHECK(eatToken(TokenId::SymComma));
+            SWAG_CHECK(eatToken());
         }
 
-        SWAG_CHECK(eatToken(TokenId::SymRightSquare));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightSquare, startToken));
         SWAG_VERIFY(token.id != TokenId::SymLeftSquare, error(token, Err(Syn0139), Nte(Nte0106)));
     }
 
@@ -153,7 +154,7 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     auto startLoc = token.startLocation;
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen, "to define the list of arguments"));
     SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Syn0044)));
 
     // Three parameters
@@ -161,9 +162,9 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
     {
         AstNode* params = Ast::newFuncCallParams(sourceFile, node, this);
         SWAG_CHECK(doExpression(params, EXPR_FLAG_NONE, &dummyResult));
-        SWAG_CHECK(eatToken(TokenId::SymComma));
+        SWAG_CHECK(eatToken(TokenId::SymComma, "to specify the second argument"));
         SWAG_CHECK(doExpression(params, EXPR_FLAG_NONE, &dummyResult));
-        SWAG_CHECK(eatToken(TokenId::SymComma));
+        SWAG_CHECK(eatToken(TokenId::SymComma, "tp specify the third argument"));
         SWAG_CHECK(doExpression(params, EXPR_FLAG_NONE, &dummyResult));
     }
 
@@ -173,7 +174,7 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
              node->tokenId == TokenId::IntrinsicMakeAny)
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
-        SWAG_CHECK(eatToken(TokenId::SymComma));
+        SWAG_CHECK(eatToken(TokenId::SymComma, "to specify the second argument"));
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
     }
 
@@ -181,7 +182,7 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
     else if (node->tokenId == TokenId::IntrinsicCVaArg)
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
-        SWAG_CHECK(eatToken(TokenId::SymComma));
+        SWAG_CHECK(eatToken(TokenId::SymComma, "to specify the second argument"));
         SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &dummyResult));
     }
 
@@ -1128,7 +1129,7 @@ bool Parser::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
         Ast::addChildBack(triNode, boolExpression);
 
         SWAG_CHECK(doExpression(triNode, exprFlags, &dummyResult));
-        SWAG_CHECK(eatToken(TokenId::SymColon));
+        SWAG_CHECK(eatToken(TokenId::SymColon, "to specify the ternary expression second argument"));
         SWAG_CHECK(doExpression(triNode, exprFlags, &dummyResult));
     }
 
@@ -1204,7 +1205,7 @@ bool Parser::doExpressionListTuple(AstNode* parent, AstNode** result)
 
         if (token.id != TokenId::SymComma)
             break;
-        SWAG_CHECK(eatToken(TokenId::SymComma));
+        SWAG_CHECK(eatToken());
     }
 
     initNode->token.endLocation = token.endLocation;
@@ -1217,6 +1218,7 @@ bool Parser::doExpressionListArray(AstNode* parent, AstNode** result)
     auto initNode         = Ast::newNode<AstExpressionList>(this, AstNodeKind::ExpressionList, sourceFile, parent);
     *result               = initNode;
     initNode->semanticFct = SemanticJob::resolveExpressionListArray;
+    auto startLoc         = token.startLocation;
     SWAG_CHECK(eatToken());
 
     if (token.id == TokenId::SymRightSquare)
@@ -1233,11 +1235,11 @@ bool Parser::doExpressionListArray(AstNode* parent, AstNode** result)
 
         if (token.id != TokenId::SymComma)
             break;
-        SWAG_CHECK(eatToken(TokenId::SymComma));
+        SWAG_CHECK(eatToken());
     }
 
     initNode->token.endLocation = token.endLocation;
-    SWAG_CHECK(eatToken(TokenId::SymRightSquare));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightSquare, startLoc));
     return true;
 }
 
@@ -1630,7 +1632,7 @@ bool Parser::doInit(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     auto startLoc = token.startLocation;
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen, "to start the list of arguments"));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->expression));
 
     if (token.id == TokenId::SymComma)
@@ -1643,7 +1645,7 @@ bool Parser::doInit(AstNode* parent, AstNode** result)
 
     if (token.id == TokenId::SymLeftParen)
     {
-        SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+        SWAG_CHECK(eatToken());
         SWAG_CHECK(doFuncCallParameters(node, &node->parameters, TokenId::SymRightParen));
     }
 
@@ -1674,7 +1676,7 @@ bool Parser::doDropCopyMove(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     auto startLoc = token.startLocation;
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen, "to start the list of arguments"));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->expression));
 
     if (token.id == TokenId::SymComma)

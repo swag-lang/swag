@@ -25,8 +25,8 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
 
     SWAG_ERROR(Fat0002, "[fatal] cache directory '%s' not found");
-    SWAG_ERROR(Fat0021, "[fatal] compiler bootstrap issues detected");
-    SWAG_ERROR(Fat0022, "[fatal] compiler runtime issues detected");
+    SWAG_ERROR(Fat0021, "[fatal] failed due to compiler bootstrap issues");
+    SWAG_ERROR(Fat0022, "[fatal] failed due to compiler runtime issues");
     SWAG_ERROR(Fat0003, "[fatal] failed to create cache directory '%s'");
     SWAG_ERROR(Fat0004, "[fatal] failed to create directory '%s'");
     SWAG_ERROR(Fat0005, "[fatal] failed to create file '%s'");
@@ -216,7 +216,7 @@ void initErrors()
     SWAG_ERROR(Syn0160, "empty expression found");
     SWAG_ERROR(Syn0124, "empty initializer list");
     SWAG_ERROR(Syn0187, "empty statement ';' found");
-    SWAG_ERROR(Syn0188, "end of comment '*/' after %s detected");
+    SWAG_ERROR(Syn0188, "unexpected end of comment '*/' after %s");
     SWAG_ERROR(Syn0074, "expected enum name, found '%s'");
     SWAG_ERROR(Syn0075, "expected enum value identifier, found '%s'");
     SWAG_ERROR(Syn0048, "expected '%s' %s, found '%s'");
@@ -305,14 +305,14 @@ void initErrors()
     SWAG_ERROR(Syn0169, "special variable name '%s' error, '@mixin' requires number ('%s' provided)");
     SWAG_ERROR(Syn0128, "struct '%s' requires '{}' for initialization, not '()'");
     SWAG_ERROR(Syn0133, "to declare interface function, use 'func' or 'mtd', not '%s'");
-    SWAG_ERROR(Syn0054, "to start %s body, expected '{', found ';'");
+    SWAG_ERROR(Syn0054, "expected '{' to start %s body, found ';'");
     SWAG_ERROR(Syn0064, "top-level instruction required");
     SWAG_ERROR(Syn0046, "tuple definition is empty");
     SWAG_ERROR(Syn0134, "tuple types in generics not supported");
     SWAG_ERROR(Syn0177, "unexpected tuple unpacking in %s");
-    SWAG_ERROR(Syn0189, "type declaration after unnamed parameters detected");
+    SWAG_ERROR(Syn0189, "unexpected type declaration after unnamed parameters");
     SWAG_ERROR(Syn0066, "expected type declaration, found '%s'");
-    SWAG_ERROR(Syn0197, "type declaration for 'self' parameter detected");
+    SWAG_ERROR(Syn0197, "unexpected type declaration for 'self' parameter");
     SWAG_ERROR(Syn0067, "expected type in tuple definition, found '%s'");
     SWAG_ERROR(Syn0213, "type or default value needed for generic constant '%s'");
     SWAG_ERROR(Syn0219, "type suffix not allowed for %s literal");
@@ -828,7 +828,7 @@ void initErrors()
     SWAG_ERROR(Err0047, "right expression address not accessible");
     SWAG_ERROR(Err0431, "runtime variable '%s' set to zero; immutable at compile time");
     SWAG_ERROR(Err0490, "second '@init' parameter must be integer; '%s' provided");
-    SWAG_ERROR(Err0419, "semantic cycle detected in %s resolution for '%s'");
+    SWAG_ERROR(Err0419, "semantic cycle detected in %s resolution of '%s'");
     SWAG_ERROR(Err0027, "semantic resolution failure");
     SWAG_ERROR(Err0173, "shift operand should be 'u32', not '%s'");
     SWAG_ERROR(Err0450, "expected single generic parameter for function '%s'; '%d' provided");

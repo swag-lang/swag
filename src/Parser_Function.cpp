@@ -17,7 +17,7 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** re
     if (token.id == TokenId::SymLeftParen)
     {
         multi = true;
-        SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+        SWAG_CHECK(eatToken());
     }
 
     while (token.id != TokenId::SymRightParen)
@@ -70,7 +70,7 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** re
 
         case TokenId::CompilerType:
         {
-            SWAG_CHECK(eatToken(TokenId::CompilerType));
+            SWAG_CHECK(eatToken());
             AstNode* resNode;
             SWAG_CHECK(doTypeExpression(param, EXPR_FLAG_NONE, &resNode));
             resNode->specFlags |= AstType::SPECFLAG_FORCE_TYPE;
@@ -86,7 +86,7 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** re
             break;
         if (token.id == TokenId::SymRightParen)
             break;
-        SWAG_CHECK(eatToken(TokenId::SymComma));
+        SWAG_CHECK(eatToken(TokenId::SymComma, "to define another argument, or ')' to end"));
     }
 
     if (multi)
@@ -469,7 +469,7 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
 
             oneParamDone    = true;
             auto tokenComma = token;
-            SWAG_CHECK(eatToken(TokenId::SymComma));
+            SWAG_CHECK(eatToken(TokenId::SymComma, "to define another parameter, or ')' to end"));
             if (token.id == TokenId::SymRightParen)
                 return context->report({allParams, tokenComma, Err(Syn0202)});
 
@@ -487,7 +487,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
     *result        = allParams;
 
     auto startLoc = token.startLocation;
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen, "to start the list of generic parameters"));
     SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Syn0092)));
 
     while (token.id != TokenId::SymRightParen)
@@ -753,7 +753,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
         auto      startLoc = token.startLocation;
-        SWAG_CHECK(eatToken(TokenId::SymLeftParen));
+        SWAG_CHECK(eatToken(TokenId::SymLeftParen, "to start the list of arguments"));
         SWAG_VERIFY(token.id != TokenId::SymRightParen, error(funcNode, Err(Syn0033)));
         SWAG_CHECK(doExpression(funcNode, EXPR_FLAG_NONE, &funcNode->parameters));
         SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
@@ -770,7 +770,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
             typeNode->specFlags |= AstFuncDecl::SPECFLAG_RETURN_DEFINED;
             Scoped    scoped(this, newScope);
             ScopedFct scopedFct(this, funcNode);
-            SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
+            SWAG_CHECK(eatToken());
             SWAG_VERIFY(token.id != TokenId::KwdRetVal, error(token, Err(Syn0144)));
             AstNode* typeExpression;
             SWAG_CHECK(doTypeExpression(typeNode, EXPR_FLAG_NONE, &typeExpression));
@@ -778,7 +778,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 
         if (token.id == TokenId::KwdThrow)
         {
-            SWAG_CHECK(eatToken(TokenId::KwdThrow));
+            SWAG_CHECK(eatToken());
             funcNode->specFlags |= AstFuncDecl::SPECFLAG_THROW;
             funcNode->typeInfo->flags |= TYPEINFO_CAN_THROW;
         }
@@ -1013,7 +1013,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
             }
 
             capture->token.endLocation = token.endLocation;
-            SWAG_CHECK(eatToken(TokenId::SymVertical));
+            SWAG_CHECK(eatToken());
         }
 
         SWAG_VERIFY(token.id == TokenId::SymLeftParen, error(token, Err(Syn0049)));
@@ -1061,7 +1061,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
 
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
-        SWAG_CHECK(eatToken(TokenId::SymMinusGreat));
+        SWAG_CHECK(eatToken());
         AstNode* typeExpression;
         SWAG_CHECK(doTypeExpression(typeNode, EXPR_FLAG_NONE, &typeExpression));
         Ast::setForceConstType(typeExpression);

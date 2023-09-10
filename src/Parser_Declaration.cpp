@@ -365,7 +365,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
             break;
         }
 
-        SWAG_CHECK(eatToken(TokenId::SymDot));
+        SWAG_CHECK(eatToken());
         parent       = namespaceNode;
         currentScope = newScope;
     }
@@ -415,7 +415,7 @@ bool Parser::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
     *result   = node;
 
     auto startLoc = token.startLocation;
-    SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+    SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the statement block"));
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
         SWAG_CHECK(doTopLevelInstruction(node, &dummyResult));
     SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc));
@@ -429,7 +429,7 @@ bool Parser::doCurlyStatement(AstNode* parent, AstNode** result)
 
     bool isGlobal = currentScope->isGlobalOrImpl();
     auto startLoc = token.startLocation;
-    SWAG_CHECK(eatToken(TokenId::SymLeftCurly));
+    SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the statement block"));
 
     if (isGlobal)
     {

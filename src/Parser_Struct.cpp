@@ -525,7 +525,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
 
         if (token.id == TokenId::KwdThrow)
         {
-            SWAG_CHECK(eatToken(TokenId::KwdThrow));
+            SWAG_CHECK(eatToken());
             typeNode->specFlags |= AstTypeLambda::SPECFLAG_CAN_THROW;
             funcNode->specFlags |= AstFuncDecl::SPECFLAG_THROW;
         }

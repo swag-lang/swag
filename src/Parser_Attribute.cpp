@@ -81,13 +81,13 @@ bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
 
             if (token.id != TokenId::SymRightSquare)
             {
-                SWAG_CHECK(eatToken(TokenId::SymComma));
+                SWAG_CHECK(eatToken(TokenId::SymComma, "to defined another attribute, or ']' to end"));
                 SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0072), token.ctext())));
             }
         }
 
         attrBlockNode->token.endLocation = token.endLocation;
-        SWAG_CHECK(eatToken(TokenId::SymRightSquare));
+        SWAG_CHECK(eatToken(TokenId::SymRightSquare, "to end the attribute list"));
         if (single)
             break;
     }
