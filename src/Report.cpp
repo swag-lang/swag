@@ -29,6 +29,22 @@ static bool fuzzySameLine(uint32_t line1, uint32_t line2)
 
 static void cleanNotes(Vector<Diagnostic*>& notes)
 {
+    // Error message can have differents parts separated by '$'
+    auto         err = notes[0];
+    Vector<Utf8> parts;
+    Utf8::tokenize(err->textMsg, '$', parts, true, true);
+    if (parts.size() > 1)
+    {
+        err->textMsg = parts[0];
+        if (err->hint.empty())
+            err->hint = parts[1];
+        else
+        {
+            auto newNote = Diagnostic::note(err->sourceFile, err->startLocation, err->endLocation, parts[1]);
+            notes.push_back(newNote);
+        }
+    }
+
     for (auto note : notes)
     {
         if (!note->display)

@@ -95,26 +95,27 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Tkn0023, "'_' shouldn't initiate a fractional part");
-    SWAG_ERROR(Tkn0024, "'_' shouldn't initiate an exponent part");
-    SWAG_ERROR(Tkn0003, "expected binary digit, found '%s'");
-    SWAG_ERROR(Tkn0001, "binary number requires at least one digit");
-    SWAG_ERROR(Tkn0020, "consecutive digit separators '_' disallowed");
-    SWAG_ERROR(Tkn0002, "exponent must contain a digit");
-    SWAG_ERROR(Tkn0004, "expected hexadecimal digit, found '%s'");
-    SWAG_ERROR(Tkn0007, "hexadecimal number requires at least one digit");
-    SWAG_ERROR(Tkn0019, "invalid number prefix '%s', expected '0x' or '0b'");
-    SWAG_ERROR(Tkn0008, "literal number exceeds 64 bits");
-    SWAG_ERROR(Tkn0009, "literal number has excess digits");
-    SWAG_ERROR(Tkn0021, "literal number shouldn't end with '_'");
-    SWAG_ERROR(Tkn0022, "literal number shouldn't start with '_'");
-    SWAG_ERROR(Tkn0028, "unanticipated character '%s'");
-    SWAG_ERROR(Tkn0027, "unexpected EOF in character literal");
-    SWAG_ERROR(Tkn0025, "unexpected EOF in comment");
-    SWAG_ERROR(Tkn0017, "unexpected EOF in string literal");
-    SWAG_ERROR(Tkn0026, "unexpected EOL in character literal");
-    SWAG_ERROR(Tkn0018, "unexpected EOL in string literal");
-    SWAG_ERROR(Tkn0029, nullptr);
+    SWAG_ERROR(Tkn0023, "invalid float number syntax          $ the fractional part should not start with '_'");
+    SWAG_ERROR(Tkn0024, "invalid float number syntax          $ the exponent part should not start with '_'");
+    SWAG_ERROR(Tkn0002, "invalid float number syntax          $ exponent in the scientific notation must contain at least one digit");
+    SWAG_ERROR(Tkn0003, "invalid binary number syntax         $ binary literals should only contain '0' or '1', found '%s' instead");
+    SWAG_ERROR(Tkn0001, "incomplete binary number syntax      $ binary literals require at least one '0' or '1' digit");
+    SWAG_ERROR(Tkn0004, "invalid hexadecimal number syntax    $ hexadecimal literals can only contain digits 0-9, A-F, and a-f, found '%s' instead");
+    SWAG_ERROR(Tkn0007, "incomplete hexadecimal number syntax $ hexadecimal literals require at least one valid digit (0-9, A-F, a-f)");
+    SWAG_ERROR(Tkn0020, "invalid number format                $ consecutive digit separators '_' are not allowed");
+    SWAG_ERROR(Tkn0009, "invalid number format                $ this hexadecimal number has too many digits to fit within a 64-bit representation");
+    SWAG_ERROR(Tkn0029, "invalid number format                $ this binary number has too many digits to fit within a 64-bit representation");
+    SWAG_ERROR(Tkn0021, "invalid number format                $ a number should not end with a digit separator '_'");
+    SWAG_ERROR(Tkn0022, "invalid number format                $ a number should not start with a digit separator '_'");
+    SWAG_ERROR(Tkn0019, "invalid number prefix                $ expected '0x' for hexadecimal or '0b' for binary, found '%s' instead");
+    SWAG_ERROR(Tkn0008, "number out of range                  $ this literal number exceeds 64 bits and is out of allowable range");
+    SWAG_ERROR(Tkn0028, "invalid character                    $ the character '%s' is not recognized in this context");
+
+    SWAG_ERROR(Tkn0025, "unexpected end of file within comment             $ this multi-line comment is missing its closing '*/'");
+    SWAG_ERROR(Tkn0026, "character literal is missing its closing backtick $ expected a closing backtick '`' for the character literal before the end of the line");
+    SWAG_ERROR(Tkn0017, "string literal is missing its closing '\"'        $ expected a closing quotation mark '\"' for the string literal before the end of the file");
+    SWAG_ERROR(Tkn0018, "string literal is missing its closing '\"'        $ expected a closing quotation mark '\"' for the string literal before the end of the line");
+    SWAG_ERROR(Tkn0027, nullptr);
     SWAG_ERROR(Tkn0030, nullptr);
 
     /////////////////////////////////////////////////////////////////////
@@ -1351,7 +1352,7 @@ void initErrors()
     SWAG_ERROR(Hnt0030, "this argument has been named");
     SWAG_ERROR(Hnt0031, "this argument lacks a name");
     SWAG_ERROR(Hnt0072, "this array is empty");
-    SWAG_ERROR(Hnt0041, "this comment doesn't have a closing tag");
+    SWAG_ERROR(Hnt0041, nullptr);
     SWAG_ERROR(Hnt0117, "this could be the start of initializing '%s' or beginning a new block");
     SWAG_ERROR(Hnt0024, "this denotes a pointer type declaration due to '*'");
     SWAG_ERROR(Hnt0010, "this denotes a tuple type");

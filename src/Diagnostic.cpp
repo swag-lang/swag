@@ -402,7 +402,7 @@ void Diagnostic::collectSourceCode()
     }
 }
 
-Utf8 Diagnostic::syntax(const Utf8& line, SyntaxColorContext &cxt)
+Utf8 Diagnostic::syntax(const Utf8& line, SyntaxColorContext& cxt)
 {
     if (!g_CommandLine.logColors)
         return line;

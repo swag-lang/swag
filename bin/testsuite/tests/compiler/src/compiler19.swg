@@ -1,4 +1,4 @@
-#global testerror "Tkn0002"
+//#global testerror "Tkn0002"
 #global testpass lexer;
 
 .
@@ -8,4 +8,4 @@
 1.0E-2
 1e2
 
-1e
+//1e

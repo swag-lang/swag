@@ -1,3 +1,3 @@
 ﻿#global testerror "Tkn0003"
-#global testpass lexer
+//#global testpass lexer
 0b112

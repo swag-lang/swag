@@ -26,7 +26,7 @@ bool Tokenizer::doBinLiteral(TokenParse& token)
 
         acceptSep = true;
         SWAG_VERIFY(!(token.literalValue.u64 & 0x80000000'00000000), error(token, Err(Tkn0008)));
-        SWAG_VERIFY(rank != 64, error(token, Err(Tkn0009)));
+        SWAG_VERIFY(rank != 64, error(token, Err(Tkn0029)));
         token.literalValue.u64 <<= 1;
         rank++;
 
