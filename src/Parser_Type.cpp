@@ -336,7 +336,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
 
     if (token.id == TokenId::KwdThrow)
     {
-        SWAG_CHECK(eatToken(TokenId::KwdThrow));
+        SWAG_CHECK(eatToken());
         node->specFlags |= AstTypeLambda::SPECFLAG_CAN_THROW;
     }
 
@@ -717,7 +717,7 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
     auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftParen, "after 'cast'"));
     SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &dummyResult));
-    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "the end the 'cast' type expression"));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the 'cast' type expression"));
 
     SWAG_CHECK(doUnaryExpression(node, EXPR_FLAG_NONE, &dummyResult));
     return true;
