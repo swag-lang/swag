@@ -53,7 +53,7 @@ A bunch of `#global` can be put **at the top** of a source file.
 #global namespace Toto
 
 // A #if for the whole file
-#global if DEBUG == true
+#global #if DEBUG == true
 
 // Some attributes can be assigned to the full file
 #global #[Swag.Safety("", true)]

@@ -1,4 +1,4 @@
-#global if #os == Swag.TargetOs.Windows
+#global #if #os == Swag.TargetOs.Windows
 using Win32, Core, Pixel, Gdi32
 
 public struct ApplicationNative

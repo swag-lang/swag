@@ -383,7 +383,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
     }
 
     /////////////////////////////////
-    else if (token.id == TokenId::KwdIf)
+    else if (token.id == TokenId::CompilerIf)
     {
         auto node = Ast::newNode<AstIf>(this, AstNodeKind::CompilerIf, sourceFile, parent);
         *result   = node;

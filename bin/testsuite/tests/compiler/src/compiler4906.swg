@@ -1,0 +1,3 @@
+//#global #if
+
+func toto(){}

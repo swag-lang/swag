@@ -1,4 +1,4 @@
-#global if #os == Swag.TargetOs.Windows
+#global #if #os == Swag.TargetOs.Windows
 using Core, Pixel, Gui, Math
 
 const W = 1024

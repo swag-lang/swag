@@ -1,4 +1,4 @@
-#global if #os == Swag.TargetOs.Windows
+#global #if #os == Swag.TargetOs.Windows
 using Core, Win32, XAudio2
 
 struct DriverNative

@@ -1,4 +1,4 @@
-﻿/*#global if Core.ASSERT
+﻿/*#global #if Core.ASSERT
 #global testerror
 
 

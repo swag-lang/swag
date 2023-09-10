@@ -1,4 +1,4 @@
-#global if true
+#global #if true
 #global namespace NP
 using BB, AA
 

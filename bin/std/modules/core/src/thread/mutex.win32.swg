@@ -1,4 +1,4 @@
-#global if WINDOWS
+#global #if WINDOWS
 #global public
 #global namespace Sync
 using Win32

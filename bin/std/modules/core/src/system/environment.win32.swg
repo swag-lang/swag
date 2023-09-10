@@ -1,4 +1,4 @@
-#global if WINDOWS
+#global #if WINDOWS
 #global namespace Env
 using Win32
 

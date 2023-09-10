@@ -1,4 +1,4 @@
-#global if WINDOWS
+#global #if WINDOWS
 #global public
 #global namespace Path
 using Win32

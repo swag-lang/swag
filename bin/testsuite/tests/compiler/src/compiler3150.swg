@@ -1,4 +1,4 @@
-#global if #os == Swag.TargetOs.Windows and #arch == Swag.TargetArch.X86_64
+#global #if #os == Swag.TargetOs.Windows and #arch == Swag.TargetArch.X86_64
 
 func toto(str: string, x: cvarargs)
 {

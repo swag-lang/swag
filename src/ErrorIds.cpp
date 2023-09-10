@@ -126,8 +126,8 @@ void initErrors()
     SWAG_ERROR(Syn0097, "unexpected '#elif'                     $ '#elif' found without a preceding '#if' directive");
     SWAG_ERROR(Syn0098, "unexpected '#else'                     $ '#else' found without a preceding '#if' or '#elif' directive");
     SWAG_ERROR(Syn0002, "missing '#foreignlib' string argument  $ expected the library name, found '%s' instead $ use '#foreignlib \"path/to/library\"' to specify the library to import");
+    SWAG_ERROR(Syn0001, "'#global export' already defined       $ the directive '#global export' should only be defined once");
 
-    SWAG_ERROR(Syn0001, "'#global export' is already defined");
     SWAG_ERROR(Syn0082, "expected '#global if' expression");
     SWAG_ERROR(Syn0204, "'#global testerror' needs at least one match string");
     SWAG_ERROR(Syn0003, "'#global testerror' only valid in './tests' folder");

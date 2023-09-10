@@ -1,4 +1,4 @@
-#global if WINDOWS
+#global #if WINDOWS
 #global public
 #global namespace Threading
 using Win32

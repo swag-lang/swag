@@ -1,4 +1,4 @@
-#global if #os == Swag.TargetOs.Windows
+#global #if #os == Swag.TargetOs.Windows
 using Swag, Core, Win32, Ogl, Gdi32
 
 public struct NativeRenderOgl

@@ -1,4 +1,4 @@
-#global if WINDOWS
+#global #if WINDOWS
 #global public
 #global namespace Input
 using Win32, Math
