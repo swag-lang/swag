@@ -120,37 +120,44 @@ void initErrors()
 
     // change the error to make it more clear to the user. keep the look and feel of the error :
 
-    SWAG_ERROR(Syn0121, "invalid use of access modifier         $ the '%s' access modifier can only be used at the global scope");
-    SWAG_ERROR(Syn0183, "invalid use of '#dependencies'         $ the directive '#dependencies' can only be used within 'module.swg' or '.swgs' files");
-    SWAG_ERROR(Syn0182, "invalid use of '#dependencies'         $ the directive '#dependencies' must be placed at file level");
-    SWAG_ERROR(Syn0097, "unexpected '#elif'                     $ '#elif' found without a preceding '#if' directive");
-    SWAG_ERROR(Syn0098, "unexpected '#else'                     $ '#else' found without a preceding '#if' or '#elif' directive");
-    SWAG_ERROR(Syn0002, "missing '#foreignlib' string argument  $ expected the library name, found '%s' instead $ use '#foreignlib \"path/to/library\"' to specify the library to import");
-    SWAG_ERROR(Syn0001, "'#global export' already defined       $ the directive '#global export' should only be defined once");
+    SWAG_ERROR(Syn0121, "invalid use of access modifier                 $ the '%s' access modifier can only be used at the global scope");
 
-    SWAG_ERROR(Syn0082, "expected '#global if' expression");
-    SWAG_ERROR(Syn0204, "'#global testerror' needs at least one match string");
-    SWAG_ERROR(Syn0003, "'#global testerror' only valid in './tests' folder");
-    SWAG_ERROR(Syn0205, "'#global testwarning' needs at least one match string");
-    SWAG_ERROR(Syn0004, "'#global testwarning' only valid in './tests' folder");
-    SWAG_ERROR(Syn0005, "'#global using' is only for 'module.swg'");
-    SWAG_ERROR(Syn0006, "'#global' must be at file start");
+    SWAG_ERROR(Syn0183, "incorrectly placed '#dependencies'             $ '#dependencies' can only be used within 'module.swg' or '.swgs' files");
+    SWAG_ERROR(Syn0005, "incorrectly placed '#global using'             $ '#global using' can only be used within 'module.swg' or '.swgs' files");
+    SWAG_ERROR(Syn0009, "incorrectly placed '#import'                   $ '#import' can only be used within 'module.swg' or '.swgs' files");
+    SWAG_ERROR(Syn0013, "incorrectly placed '#include'                  $ '#include' can only be used within 'module.swg' or '.swgs' files");
+    SWAG_ERROR(Syn0003, "incorrectly placed '#global testerror'         $ '#global testerror' is only valid in a test file from the './tests' folder");
+    SWAG_ERROR(Syn0004, "incorrectly placed '#global testwarning'       $ '#global testwarning' is only valid in a test file from the './tests' folder");
+    SWAG_ERROR(Syn0182, "incorrectly placed '#dependencies'             $ '#dependencies' must be placed at the file level");
+    SWAG_ERROR(Syn0008, "incorrectly placed '#import'                   $ '#import' must be placed just under a '#dependencies' block");
+    SWAG_ERROR(Syn0012, "incorrectly placed '#include'                  $ '#include' must be placed just under a '#dependencies' block");
+    SWAG_ERROR(Syn0010, "incorrectly placed '#import'                   $ '#import' must be placed within the '#dependencies' block");
+    SWAG_ERROR(Syn0014, "incorrectly placed '#include'                  $ '#include' must be placed within the '#dependencies' block");
+    SWAG_ERROR(Syn0006, "incorrectly placed '#global' directive         $ '#global' should be placed at the very top of the file");
+    SWAG_ERROR(Syn0035, "incorrectly placed '#placeholder'              $ '#placeholder' must be placed within a top level scope");
+
+    SWAG_ERROR(Syn0097, "unexpected '#elif'                             $ '#elif' found without a preceding '#if' directive");
+    SWAG_ERROR(Syn0098, "unexpected '#else'                             $ '#else' found without a preceding '#if' or '#elif' directive");
+
+    SWAG_ERROR(Syn0001, "'#global export' already defined               $ the directive '#global export' should only be defined once");
+
+    SWAG_ERROR(Syn0002, "missing '#foreignlib' string argument          $ expected the library name after '#foreignlib', found '%s' instead $ use '#foreignlib \"path/to/library\"' to specify the library to import");
+    SWAG_ERROR(Syn0204, "missing '#global testerror' string argument    $ expected the error string to check after '#global testerror', found '%s' instead");
+    SWAG_ERROR(Syn0205, "missing '#global testwarning' string argument  $ expected the warning string to check after '#global testwarning', found '%s' instead");
+    SWAG_ERROR(Syn0007, "missing '#import' string argument              $ expected the module name to import after '#import', found '%s' instead");
+    SWAG_ERROR(Syn0011, "missing '#include' string argument             $ expected the file name to include after '#include', found '%s' instead");
+    SWAG_ERROR(Syn0017, "missing '#placeholder' identifier              $ expected an identifier after '#placeholder', found '%s' instead");
+    SWAG_ERROR(Syn0196, "missing '#type' type                           $ expected a valid type after '#type', found '%s' instead");
+    SWAG_ERROR(Syn0119, "missing '@mixin' number                        $ a '@mixin' variable name should be followed by a number such as '@mixin0', '@mixin1', etc.");
+    SWAG_ERROR(Syn0023, "missing '@alias' number                        $ a '@alias' variable name should be followed by a number such as '@alias0', '@alias1', etc.");
+
+    SWAG_ERROR(Syn0034, "invalid use of '#mixin' block                  $ a '#mixin' block is only valid within a breakable statement such as 'loop', 'visit', 'for', etc.");
+
+    SWAG_ERROR(Syn0082, "expected '#global #if' expression");
     SWAG_ERROR(Syn0083, "expected '#if' expression");
-    SWAG_ERROR(Syn0009, "'#import' is only for 'module.swg'");
-    SWAG_ERROR(Syn0008, "'#import' must be at top level scope");
-    SWAG_ERROR(Syn0010, "'#import' must be within '#dependencies'");
-    SWAG_ERROR(Syn0007, "'#import' requires a string next");
-    SWAG_ERROR(Syn0013, "'#include' is only for 'module.swg'");
-    SWAG_ERROR(Syn0012, "'#include' must be at top level scope");
-    SWAG_ERROR(Syn0014, "'#include' must be within '#dependencies'");
-    SWAG_ERROR(Syn0011, "'#include' requires a string next");
     SWAG_ERROR(Syn0033, "'#message' function needs 'Swag.CompilerMsgMask' parameter");
-    SWAG_ERROR(Syn0034, "'#mixin' block valid only in breakable statements ('loop', 'visit', 'for'...)");
     SWAG_ERROR(Syn0016, "'#mixin' has invalid replacement '%s'");
     SWAG_ERROR(Syn0015, "'#mixin' has no replacement block");
-    SWAG_ERROR(Syn0035, "'#placeholder' must be top-level");
-    SWAG_ERROR(Syn0017, "'#placeholder' needs an identifier next");
-    SWAG_ERROR(Syn0196, "'#type' requires type name (got '%s')");
     SWAG_ERROR(Syn0211, "expected '#up' scopes count as literal, found '%s'");
     SWAG_ERROR(Syn0209, "'#up' value range: 1 to 255");
     SWAG_ERROR(Syn0215, "'#validifx' not allowed for struct");
@@ -160,9 +167,7 @@ void initErrors()
     SWAG_ERROR(Syn0018, "'%s' not needed with '#global export' - file is public");
     SWAG_ERROR(Syn0022, "'.' in 'with' needs identifier next");
     SWAG_ERROR(Syn0180, "'.' in statement only valid within 'with' block");
-    SWAG_ERROR(Syn0023, "'@alias' needs a number next");
     SWAG_ERROR(Syn0043, "'@alias' number range: [0, 31] ('%u' given)");
-    SWAG_ERROR(Syn0119, "'@mixin' variable should be followed by a number");
     SWAG_ERROR(Syn0135, "'Self' invalid outside 'impl', 'struct', or 'interface'");
     SWAG_ERROR(Syn0024, "']' in array type declaration can't have line break");
     SWAG_ERROR(Syn0061, "'const' not allowed for 'func'");

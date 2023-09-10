@@ -1,4 +1,4 @@
 #global testerror "Tkn0018"
-"tototo
+const a = "tototo
 #global xxxx
 to"
