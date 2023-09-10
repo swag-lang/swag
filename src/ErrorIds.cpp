@@ -112,9 +112,9 @@ void initErrors()
     SWAG_ERROR(Tkn0028, "invalid character                    $ the character '%s' is not recognized in this context");
 
     SWAG_ERROR(Tkn0025, "unexpected end of file within comment             $ this multi-line comment is missing its closing '*/'");
-    SWAG_ERROR(Tkn0026, "character literal is missing its closing backtick $ expected a closing backtick '`' for the character literal before the end of the line");
-    SWAG_ERROR(Tkn0017, "string literal is missing its closing '\"'        $ expected a closing quotation mark '\"' for the string literal before the end of the file");
-    SWAG_ERROR(Tkn0018, "string literal is missing its closing '\"'        $ expected a closing quotation mark '\"' for the string literal before the end of the line");
+    SWAG_ERROR(Tkn0026, "character literal is missing its closing backtick $ expected a closing backtick '`' before the end of the line");
+    SWAG_ERROR(Tkn0018, "string literal is missing its closing '\"'        $ expected a closing quotation mark '\"' before the end of the line $ if you want a multi-line string, use the syntax \"\"\"string\"\"\"");
+    SWAG_ERROR(Tkn0017, nullptr);
     SWAG_ERROR(Tkn0027, nullptr);
     SWAG_ERROR(Tkn0030, nullptr);
 

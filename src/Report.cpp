@@ -43,6 +43,12 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
             auto newNote = Diagnostic::note(err->sourceFile, err->startLocation, err->endLocation, parts[1]);
             notes.push_back(newNote);
         }
+
+        for (int i = 2; i < parts.size(); i++)
+        {
+            auto newNote = Diagnostic::note(parts[i]);
+            notes.push_back(newNote);
+        }
     }
 
     for (auto note : notes)

@@ -1,4 +1,4 @@
-//#global testerror "Tkn0018"
+#global testerror "Tkn0018"
 "tototo
 #global xxxx
 to"

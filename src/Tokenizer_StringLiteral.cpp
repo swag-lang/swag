@@ -85,7 +85,7 @@ bool Tokenizer::doStringLiteral(TokenParse& token, char rawChar, bool multiline)
             if (!c)
             {
                 location = token.startLocation;
-                error(token, Err(Tkn0017));
+                error(token, Err(Tkn0018));
                 return false;
             }
 
@@ -233,7 +233,7 @@ bool Tokenizer::doCharacterLiteral(TokenParse& token)
         if (!c)
         {
             location = token.startLocation;
-            error(token, Err(Tkn0017));
+            error(token, Err(Tkn0026));
             return false;
         }
 
