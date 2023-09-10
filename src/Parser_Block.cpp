@@ -104,7 +104,7 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
     bool           hasDefault  = false;
     while (token.id != TokenId::SymRightCurly && token.id != TokenId::EndOfFile)
     {
-        SWAG_VERIFY(token.id == TokenId::KwdCase || token.id == TokenId::KwdDefault, error(token, Err(Syn0053)));
+        SWAG_VERIFY(token.id == TokenId::KwdCase || token.id == TokenId::KwdDefault, error(token, Fmt(Err(Syn0053), token.ctext())));
         bool isDefault = token.id == TokenId::KwdDefault;
         SWAG_VERIFY(!isDefault || !hasDefault, error(token, Err(Syn0181)));
         if (isDefault)

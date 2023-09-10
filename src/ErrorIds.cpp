@@ -172,8 +172,8 @@ void initErrors()
 
     SWAG_ERROR(Syn0158, "empty 'case' statement                         $ a 'case' statement should never be empty");
     SWAG_ERROR(Syn0052, "empty 'default' statement                      $ a 'default' statement should never be empty");
+    SWAG_ERROR(Syn0053, "invalid 'switch' block content                 $ expected 'case' or 'default', found '%s' instead");
 
-    SWAG_ERROR(Syn0053, "expected 'case' or 'default'");
     SWAG_ERROR(Syn0055, "'case' expression needed before ':'");
     SWAG_ERROR(Syn0056, "'case' expression needed before 'break'");
     SWAG_ERROR(Syn0082, "expected '#global #if' expression");
