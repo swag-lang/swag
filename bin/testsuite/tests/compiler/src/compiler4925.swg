@@ -1,12 +1,12 @@
-#global testerror "Syn0055"
+#global testerror "Syn0056"
 
 //#[Swag.PrintBc]
 #test
 {
-    var a = 0
+    let a = 0
     switch a
     {
-        case :
+        case 0, :
         break
     }
 }

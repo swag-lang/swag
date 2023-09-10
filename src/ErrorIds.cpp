@@ -166,6 +166,7 @@ void initErrors()
     SWAG_ERROR(Syn0084, "missing 'if' boolean expression                $ expected a boolean expression before the block start '{'");
     SWAG_ERROR(Syn0087, "missing 'while' boolean expression             $ expected a boolean expression before the block start '{'");
     SWAG_ERROR(Syn0086, "missing 'visit' expression                     $ expected the element to visit before the block start '{'");
+    SWAG_ERROR(Syn0055, "missing 'case' expression                      $ expected the 'case' expression before ':'");
 
     SWAG_ERROR(Syn0030, "unexpected 'var' in struct                     $ 'var' is unnecessary in struct variable declarations $ struct variables should be declared as 'fieldName: Type' without 'var'");
     SWAG_ERROR(Syn0144, "unexpected 'retval' return type                $ 'retval' is only valid as a local variable type");
@@ -173,9 +174,8 @@ void initErrors()
     SWAG_ERROR(Syn0158, "empty 'case' statement                         $ a 'case' statement should never be empty");
     SWAG_ERROR(Syn0052, "empty 'default' statement                      $ a 'default' statement should never be empty");
     SWAG_ERROR(Syn0053, "invalid 'switch' block content                 $ expected 'case' or 'default', found '%s' instead");
+    SWAG_ERROR(Syn0056, "incomplete 'case' expression list              $ expected another expression after ',' and before ':' $ ',' indicates a list of 'case' expressions; provide the next expression or consider removing the ','");
 
-    SWAG_ERROR(Syn0055, "'case' expression needed before ':'");
-    SWAG_ERROR(Syn0056, "'case' expression needed before 'break'");
     SWAG_ERROR(Syn0082, "expected '#global #if' expression");
     SWAG_ERROR(Syn0083, "expected '#if' expression");
     SWAG_ERROR(Syn0033, "'#message' function needs 'Swag.CompilerMsgMask' parameter");

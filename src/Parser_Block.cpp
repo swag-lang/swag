@@ -127,7 +127,6 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
         if (!isDefault)
         {
             SWAG_VERIFY(token.id != TokenId::SymColon, error(token, Err(Syn0055)));
-            SWAG_VERIFY(token.id != TokenId::KwdBreak, error(token, Err(Syn0056)));
             while (token.id != TokenId::SymColon)
             {
                 AstNode* expression;
@@ -138,6 +137,7 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
                 if (token.id != TokenId::SymComma)
                     break;
                 SWAG_CHECK(eatToken());
+                SWAG_VERIFY(token.id != TokenId::SymColon, error(token, Err(Syn0056)));
             }
         }
 
