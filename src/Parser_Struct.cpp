@@ -454,7 +454,6 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
     case TokenId::KwdVar:
     {
         Diagnostic diag{parent, token, Err(Syn0030)};
-        diag.hint = Hnt(Hnt0026);
         return context->report(diag);
     }
 

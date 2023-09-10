@@ -150,8 +150,8 @@ void initErrors()
     SWAG_ERROR(Syn0011, "missing '#include' string argument             $ expected the file name to include after '#include', found '%s' instead");
     SWAG_ERROR(Syn0017, "missing '#placeholder' identifier              $ expected an identifier after '#placeholder', found '%s' instead");
     SWAG_ERROR(Syn0196, "missing '#type' type                           $ expected a valid type after '#type', found '%s' instead");
-    SWAG_ERROR(Syn0119, "missing '@mixin' number                        $ a '@mixin' variable name should be followed by a number such as '@mixin0', '@mixin1', etc.");
-    SWAG_ERROR(Syn0023, "missing '@alias' number                        $ an '@alias' variable name should be followed by a number such as '@alias0', '@alias1', etc.");
+    SWAG_ERROR(Syn0119, "missing '@mixin' number                        $ '@mixin' variable names should end with a number such as '@mixin0', '@mixin1', etc.");
+    SWAG_ERROR(Syn0023, "missing '@alias' number                        $ '@alias' variable names should end with a number such as '@alias0', '@alias1', etc.");
 
     SWAG_ERROR(Syn0034, "invalid use of '#mixin' block                  $ a '#mixin' block is only valid within a breakable statement such as 'loop', 'visit', 'for', etc.");
     SWAG_ERROR(Syn0016, "invalid '#mixin' replacement keyword           $ a '#mixin' block accepts only 'break' and 'continue' as replacements, found '%s' instead");
@@ -159,6 +159,15 @@ void initErrors()
 
     SWAG_ERROR(Syn0032, "out of range '@mixin' number                   $ a '@mixin' number should be in the range [0, 31], found '%u'");
     SWAG_ERROR(Syn0043, "out of range '@alias' number                   $ an '@alias' number should be in the range [0, 31], found '%u'");
+    SWAG_ERROR(Syn0168, "invalid '@mixin' number                        $ '@mixin' variable names should end with a number, found '%s' instead");
+    SWAG_ERROR(Syn0169, "invalid '@alias' number                        $ '@alias' variable names should end with a number, found '%s' instead");
+
+    SWAG_ERROR(Syn0084, "missing 'if' boolean expression                $ expected a boolean expression before the block start '{'");
+    SWAG_ERROR(Syn0087, "missing 'while' boolean expression             $ expected a boolean expression before the block start '{'");
+    SWAG_ERROR(Syn0086, "missing 'visit' expression                     $ expected the element to visit before the block start '{'");
+
+    SWAG_ERROR(Syn0030, "unexpected 'var' in struct                     $ 'var' is unnecessary in struct variable declarations $ struct variables should be declared as 'fieldName: Type' without 'var'");
+    SWAG_ERROR(Syn0144, "unexpected 'retval' return type                $ 'retval' is only valid as a local variable type");
 
     SWAG_ERROR(Syn0082, "expected '#global #if' expression");
     SWAG_ERROR(Syn0083, "expected '#if' expression");
@@ -177,20 +186,15 @@ void initErrors()
     SWAG_ERROR(Syn0061, "'const' not allowed for 'func'");
     SWAG_ERROR(Syn0181, "'default' is already defined");
     SWAG_ERROR(Syn0143, "'for' not allowed in enum implementation");
-    SWAG_ERROR(Syn0084, "expected 'if' boolean expression before '{'");
     SWAG_ERROR(Syn0104, "'impl' block generation allowed only in '#message' with 'Swag.CompilerMsgMask.AttributeGen'");
     SWAG_ERROR(Syn0085, "expected 'loop' evaluation expression before '{'");
     SWAG_ERROR(Syn0217, "'moveref' invalid after 'const'");
     SWAG_ERROR(Syn0025, "'mtd' is for struct or interface only");
-    SWAG_ERROR(Syn0144, "'retval' invalid as return type");
     SWAG_ERROR(Syn0186, "'safe' and 'bit' cast modifiers can't coexist");
     SWAG_ERROR(Syn0027, "'self' is for 'impl' block only");
     SWAG_ERROR(Syn0026, "'self' is for struct or 'impl' block only");
     SWAG_ERROR(Syn0028, "'throw' is for function use only");
     SWAG_ERROR(Syn0029, "'using' is invalid for interface member");
-    SWAG_ERROR(Syn0030, "'var' not needed for struct field");
-    SWAG_ERROR(Syn0086, "expected 'visit' evaluation expression before '{'");
-    SWAG_ERROR(Syn0087, "expected 'while' boolean expression before '{'");
     SWAG_ERROR(Syn0190, "affectation start after unnamed parameters found");
     SWAG_ERROR(Syn0060, "after ''', literal type qualifier required");
     SWAG_ERROR(Syn0051, "after variable name '%s', expected ':' not a literal");
@@ -307,8 +311,6 @@ void initErrors()
     SWAG_ERROR(Syn0062, "single identifier %s required");
     SWAG_ERROR(Syn0114, "slice upper bound expects integer, found '%s'");
     SWAG_ERROR(Syn0185, "slicing operator '..<' needs upper bound expression");
-    SWAG_ERROR(Syn0168, "special variable name '%s' error, '@alias' requires number ('%s' provided)");
-    SWAG_ERROR(Syn0169, "special variable name '%s' error, '@mixin' requires number ('%s' provided)");
     SWAG_ERROR(Syn0128, "struct '%s' requires '{}' for initialization, not '()'");
     SWAG_ERROR(Syn0133, "to declare interface function, use 'func' or 'mtd', not '%s'");
     SWAG_ERROR(Syn0054, "expected '{' to start %s body, found ';'");

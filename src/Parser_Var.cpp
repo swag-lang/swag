@@ -37,7 +37,7 @@ bool Parser::checkIsValidVarName(AstNode* node)
             while (pz != endpz)
             {
                 if (!SWAG_IS_DIGIT(*pz))
-                    return error(node->token, Fmt(Err(Syn0169), node->token.ctext(), node->token.ctext() + 6));
+                    return error(node->token, Fmt(Err(Syn0168), node->token.ctext() + 6));
                 num *= 10;
                 num += *pz - '0';
                 pz++;
@@ -63,7 +63,7 @@ bool Parser::checkIsValidVarName(AstNode* node)
             while (pz != endpz)
             {
                 if (!SWAG_IS_DIGIT(*pz))
-                    return error(node->token, Fmt(Err(Syn0168), node->token.ctext(), node->token.ctext() + 6));
+                    return error(node->token, Fmt(Err(Syn0169), node->token.ctext() + 6));
                 num *= 10;
                 num += *pz - '0';
                 pz++;
