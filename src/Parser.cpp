@@ -90,7 +90,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
         hint = Hnt(Hnt0014);
         break;
     case InvalidTokenError::EmbeddedInstruction:
-        msg += Err(Syn0073);
+        msg += Fmt(Err(Syn0073), token.ctext());
         break;
     case InvalidTokenError::LeftExpression:
         msg += Err(Syn0059);
@@ -105,15 +105,15 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
     }
 
     if (Tokenizer::isSymbol(token.id))
-        msg += Fmt(", found symbol '%s' ", token.ctext());
+        msg += Fmt(", found symbol '%s' instead", token.ctext());
     else if (token.id == TokenId::Identifier)
-        msg += Fmt(", found identifier '%s' ", token.ctext());
+        msg += Fmt(", found identifier '%s' instead", token.ctext());
     else if (token.id == TokenId::NativeType)
-        msg += Fmt(", found type '%s' ", token.ctext());
+        msg += Fmt(", found type '%s' instead", token.ctext());
     else if (Tokenizer::isKeyword(token.id))
-        msg += Fmt(", found keyword '%s' ", token.ctext());
+        msg += Fmt(", found keyword '%s' instead", token.ctext());
     else
-        msg += Fmt(", found '%s' ", token.ctext());
+        msg += Fmt(", found '%s' instead", token.ctext());
 
     return error(token, msg, nullptr, hint);
 }

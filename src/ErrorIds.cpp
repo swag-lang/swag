@@ -239,13 +239,16 @@ void initErrors()
 
     SWAG_ERROR(Syn0123, "'impl' kind mismatch              $ the implementation kind (%s) and the type of '%s' (%s) are not the same");
 
-    SWAG_ERROR(Syn0116, "duplicate '#import' location definition");
-    SWAG_ERROR(Syn0117, "duplicate '#import' version definition");
+    SWAG_ERROR(Syn0116, "duplicated '#import' location     $ the '#import' location has already been defined");
+    SWAG_ERROR(Syn0117, "duplicated '#import' version      $ the '#import' version has already been defined");
+
+    SWAG_ERROR(Syn0073, "invalid embedded instruction      $ expected an embedded instruction or a curly block");
+    SWAG_ERROR(Syn0064, "invalid top-level instruction     $ expected a top-level instruction");
+    SWAG_ERROR(Syn0124, "empty array literal               $ an array literal should contain at least one value");
+
     SWAG_ERROR(Syn0047, "EOF reached, expected '%s' %s");
-    SWAG_ERROR(Syn0073, "expected embedded instruction or curly block");
     SWAG_ERROR(Syn0159, "empty attribute usage");
     SWAG_ERROR(Syn0160, "empty expression found");
-    SWAG_ERROR(Syn0124, "empty initializer list");
     SWAG_ERROR(Syn0187, "empty statement ';' found");
     SWAG_ERROR(Syn0188, "unexpected end of comment '*/' after %s");
     SWAG_ERROR(Syn0074, "expected enum name, found '%s'");
@@ -325,7 +328,6 @@ void initErrors()
     SWAG_ERROR(Syn0128, "struct '%s' requires '{}' for initialization, not '()'");
     SWAG_ERROR(Syn0133, "to declare interface function, use 'func' or 'mtd', not '%s'");
     SWAG_ERROR(Syn0054, "expected '{' to start %s body, found ';'");
-    SWAG_ERROR(Syn0064, "top-level instruction required");
     SWAG_ERROR(Syn0046, "tuple definition is empty");
     SWAG_ERROR(Syn0134, "tuple types in generics not supported");
     SWAG_ERROR(Syn0177, "unexpected tuple unpacking in %s");
