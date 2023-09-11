@@ -976,7 +976,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
             {
                 PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, []()
                                   { return Nte(Nte0145); });
-                SWAG_CHECK(eatToken(TokenId::SymVertical, "to start the capture block"));
+                SWAG_CHECK(eatToken(TokenId::SymVertical, "to start the closure capture block"));
             }
 
             while (token.id != TokenId::SymVertical)
@@ -1016,7 +1016,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
             SWAG_CHECK(eatToken());
         }
 
-        SWAG_VERIFY(token.id == TokenId::SymLeftParen, error(token, Err(Syn0049)));
+        SWAG_VERIFY(token.id == TokenId::SymLeftParen, error(token, Fmt(Err(Syn0049), token.ctext())));
         typeInfo->flags |= TYPEINFO_CLOSURE;
     }
     else

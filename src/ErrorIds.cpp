@@ -254,15 +254,16 @@ void initErrors()
     SWAG_ERROR(Syn0146, "missing enum name                 $ expected the enum name before the start of the type definition ':'");
     SWAG_ERROR(Syn0140, "missing enum name                 $ expected the enum name before the start of the body '{'");
     SWAG_ERROR(Syn0074, "invalid enum name                 $ expected the enum name, found '%s' instead");
+    SWAG_ERROR(Syn0075, "invalid enum identifier           $ expected an enum value identifier, found '%s' instead");
+    SWAG_ERROR(Syn0049, "invalid closure parameters        $ expected '(' to start the list of parameters of the closure, found '%s' instead");
+    SWAG_ERROR(Syn0095, "unexpected 'mtd'                  $ expected 'func' or 'closure' instead of 'mtd' to declare a lambda type");
+    SWAG_ERROR(Syn0115, "invalid 'visit' name              $ expected 'visit' specialized name, found '%s' instead");
+    SWAG_ERROR(Syn0214, "missing 'visit' name              $ expected the 'visit' specialized name between '()' $ if you are using the default 'visit', consider removing the parenthesis");
 
-    SWAG_ERROR(Syn0075, "expected enum value identifier, found '%s'");
     SWAG_ERROR(Syn0048, "expected '%s' %s, found '%s'");
-    SWAG_ERROR(Syn0049, "expected '(' for closure parameters");
     SWAG_ERROR(Syn0050, "expected ',' or ']', found '%s'");
-    SWAG_ERROR(Syn0095, "expected 'func' or 'closure' instead of 'mtd'");
     SWAG_ERROR(Syn0031, "expected '{' instead of '%s'");
     SWAG_ERROR(Syn0184, "expected constant name, found '%s'");
-    SWAG_ERROR(Syn0115, "expected opVisit special name");
     SWAG_ERROR(Syn0112, "expected parameter name, found '%s'");
     SWAG_ERROR(Syn0063, "expected struct name, found '%s'");
     SWAG_ERROR(Syn0070, "expecting type (':') or assignment ('=') of %s, found '%s'");
@@ -355,7 +356,6 @@ void initErrors()
     SWAG_ERROR(Syn0120, "array size must precede type name");
     SWAG_ERROR(Syn0096, "expected array type after dimensions, found '%s'");
 
-    SWAG_ERROR(Syn0214, nullptr);
     SWAG_ERROR(Syn0025, nullptr);
     SWAG_ERROR(Syn0131, nullptr);
     SWAG_ERROR(Syn0220, nullptr);

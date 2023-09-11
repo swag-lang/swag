@@ -245,7 +245,8 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
     {
         auto startLoc = token.startLocation;
         SWAG_CHECK(eatToken());
-        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Err(Syn0115)));
+        SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Syn0214)));
+        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0115), token.ctext())));
         node->extraNameToken = token;
         SWAG_CHECK(eatToken());
         SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the 'visit' argument"));
