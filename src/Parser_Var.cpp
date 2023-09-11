@@ -307,7 +307,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
 
             Diagnostic diag{sourceFile, token, Fmt(Err(Syn0070), ofWhat.c_str(), token.ctext())};
             if (token.id == TokenId::SymEqualEqual)
-                diag.hint = Hnt(Hnt0131);
+                return context->report(diag, Diagnostic::note(Nte(Nte0108)));
             return context->report(diag);
         }
 

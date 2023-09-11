@@ -1582,7 +1582,7 @@ void initErrors()
     SWAG_ERROR(Nte0129, "use 'mtd' instead of 'func' to implicitly declare 'using self' as the initial parameter");
     SWAG_ERROR(Nte0103, "you can assign a lambda to a closure type, but not vice versa");
     SWAG_ERROR(Nte0149, "you might want to get the address of '%s' using '&'");
-    SWAG_ERROR(Nte0108, nullptr);
+    SWAG_ERROR(Nte0108, "'==' is the comparison operator; did you intend to use '='?");
     SWAG_ERROR(Nte0091, nullptr);
     SWAG_ERROR(Nte0092, nullptr);
     SWAG_ERROR(Nte0093, nullptr);
