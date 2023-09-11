@@ -40,7 +40,7 @@ bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
     }
 
     SWAG_VERIFY(token.id != TokenId::SymMinusGreat, error(token, Err(Syn0138), Nte(Nte0100)));
-    SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, Err(Syn0088), Nte(Nte0101)));
+    SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, Err(Syn0088), Nte(Nte0100)));
     SWAG_CHECK(eatSemiCol("attribute definition"));
 
     //////

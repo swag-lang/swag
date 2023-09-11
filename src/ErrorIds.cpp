@@ -1537,8 +1537,6 @@ void initErrors()
     SWAG_ERROR(Nte0121, "a generic argument must be a literal or a type");
     SWAG_ERROR(Nte0124, "a standard function in an 'impl' block shouldn't overshadow a function from the matching interface");
     SWAG_ERROR(Nte0115, "a struct special function should be defined within the corresponding 'impl' scope");
-    SWAG_ERROR(Nte0101, "attribute declarations shouldn't be tagged with 'throw'");
-    SWAG_ERROR(Nte0100, "attribute declarations shouldn't have return values prefixed with '->'");
     SWAG_ERROR(Nte0132, "both parts of an 'orelse' should be of identical type");
     SWAG_ERROR(Nte0125, "consider 'typealias' to create an alias for %s");
     SWAG_ERROR(Nte0142, "consider using 'func' instead of 'mtd'");
@@ -1577,7 +1575,9 @@ void initErrors()
     SWAG_ERROR(Nte0129, "use 'mtd' instead of 'func' to implicitly declare 'using self' as the initial parameter");
     SWAG_ERROR(Nte0103, "you can assign a lambda to a closure type, but not vice versa");
     SWAG_ERROR(Nte0149, "you might want to get the address of '%s' using '&'");
-    SWAG_ERROR(Nte0108, "'==' is the comparison operator; did you intend to use '='?");
+    SWAG_ERROR(Nte0108, "'==' is the comparison operator; did you intend to affect something with '='?");
+    SWAG_ERROR(Nte0100, "an attribute is not a function; please consider removing it");
+    SWAG_ERROR(Nte0101, nullptr);
     SWAG_ERROR(Nte0117, nullptr);
     SWAG_ERROR(Nte0107, nullptr);
     SWAG_ERROR(Nte0123, nullptr);
