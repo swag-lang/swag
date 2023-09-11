@@ -7,6 +7,7 @@
 #include "Log.h"
 #include "LanguageSpec.h"
 #include "SyntaxColor.h"
+#include "Report.h"
 
 void Diagnostic::setupColors(bool verboseMode)
 {

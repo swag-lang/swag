@@ -4200,11 +4200,6 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     // Message
     /////////////////////
 
-    if (!g_CommandLine.dbgCallStack)
-    {
-        notes.push_back(Diagnostic::note(Nte(Nte0087)));
-    }
-
     SourceFile dummyFile;
     dummyFile.path = Utf8{location->fileName};
 
@@ -4235,6 +4230,9 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
 
     // Get error context
     runContext->callerContext->extract(*diag, notes);
+
+    if (!g_CommandLine.dbgCallStack)
+        notes.push_back(Diagnostic::note(Nte(Nte0087)));
 
     if (runContext->ip != runContext->bc->out)
         runContext->ip--;

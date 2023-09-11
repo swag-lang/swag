@@ -124,8 +124,12 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
             if (!note1->display)
                 continue;
 
-            auto sourceFile0 = Report::getDiagFile(*note);
-            auto sourceFile1 = Report::getDiagFile(*note1);
+            auto sourceFile0 = note->sourceFile;
+            if (sourceFile0 && sourceFile0->fileForSourceLocation)
+                sourceFile0 = sourceFile0->fileForSourceLocation;
+            auto sourceFile1 = note1->sourceFile;
+            if (sourceFile1 && sourceFile1->fileForSourceLocation)
+                sourceFile1 = sourceFile1->fileForSourceLocation;
 
             // No need to repeat the same source file line reference
             if (fuzzySameLine(note->startLocation.line, note1->startLocation.line) &&
