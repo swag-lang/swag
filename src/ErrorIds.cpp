@@ -192,8 +192,9 @@ void initErrors()
 
     SWAG_ERROR(Syn0215, "unexpected '#validifx' in struct               $ '#validifx' is not allowed for a struct, this is only valid for functions $ consider using '#validif' instead");
     SWAG_ERROR(Syn0020, "invalid expression                             $ the directive '%s' can't be used as an expression $ this directive can only be used as a statement");
-    SWAG_ERROR(Syn0021, "invalid error catching                         $ treating a return error with '%s' can only be done inside a function, macro or mixin");
-    SWAG_ERROR(Syn0147, "invalid error catching                         $ '%s' cannot be nested in a '%s' expression $ you should use only one 'try', 'catch' or 'assume'");
+    SWAG_ERROR(Syn0021, "misplaced error catching                       $ treating a return error with '%s' can only be done inside a function, macro or mixin");
+    SWAG_ERROR(Syn0147, "misplaced error catching                       $ '%s' cannot be nested in a '%s' expression $ you should use only one 'try', 'catch' or 'assume'");
+    SWAG_ERROR(Syn0028, "misplaced 'throw'                              $ raising an error with 'throw' is only valid within a function, macro or mixin");
 
     SWAG_ERROR(Syn0019, "identifier expected                            $ expected a function call after '%s', found '%s' instead");
 
@@ -209,18 +210,18 @@ void initErrors()
     SWAG_ERROR(Syn0217, "incompatible use of 'moveref' qualifier          $ the 'moveref' qualifier cannot be combined with an immutable ('const') expression");
     SWAG_ERROR(Syn0186, "incompatible use of cast modifiers               $ the '%s' and '%s' cast modifiers are mutually exclusive and cannot be used together");
 
+    SWAG_ERROR(Syn0029, "misplaced 'using' in interface                   $ 'using' can't be associated with an interface member");
+    SWAG_ERROR(Syn0190, "invalid assignment                               $ assignments are not allowed for unnamed parameters ('?')");
+    SWAG_ERROR(Syn0060, "invalid type suffix                              $ expected an identifier or a type after the start of a type suffix ''', found '%s' instead");
+    SWAG_ERROR(Syn0051, "missing ':'                                      $ a ':' is expected here after the 'loop' variable name '%s' $ syntax is 'loop [variable:] count'");
+    SWAG_ERROR(Syn0071, "invalid alias name                               $ expected the alias name after '%s', found '%s' instead");
+
     SWAG_ERROR(Syn0146, nullptr);
     SWAG_ERROR(Syn0140, nullptr);
     SWAG_ERROR(Syn0214, nullptr);
     SWAG_ERROR(Syn0025, nullptr);
     SWAG_ERROR(Syn0026, nullptr);
 
-    SWAG_ERROR(Syn0028, "'throw' is for function use only");
-    SWAG_ERROR(Syn0029, "'using' is invalid for interface member");
-    SWAG_ERROR(Syn0190, "affectation start after unnamed parameters found");
-    SWAG_ERROR(Syn0060, "after ''', literal type qualifier required");
-    SWAG_ERROR(Syn0051, "after variable name '%s', expected ':' not a literal");
-    SWAG_ERROR(Syn0071, "expected alias name, found '%s'");
     SWAG_ERROR(Syn0195, "ambiguous lambda type parameter declaration");
     SWAG_ERROR(Syn0200, "ambiguous syntax");
     SWAG_ERROR(Syn0212, "expected another 'visit' variable name before ':'");
@@ -1287,7 +1288,7 @@ void initErrors()
     SWAG_ERROR(Hnt0103, "add '#type' before '%s' or specify a type if this is a field name");
     SWAG_ERROR(Hnt0121, "an implicit '@countof' is present here");
     SWAG_ERROR(Hnt0044, "arguments should follow in '()'");
-    SWAG_ERROR(Hnt0099, "assignments to unnamed parameters ('?') aren't allowed");
+    SWAG_ERROR(Hnt0099, "this is an unnamed '?' parameter");
     SWAG_ERROR(Hnt0096, "attribute is unexpected");
     SWAG_ERROR(Hnt0104, "consider adding '&' to get the address of this expression");
     SWAG_ERROR(Hnt0025, "consider casting with 'cast(%s)'");

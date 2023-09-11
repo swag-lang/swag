@@ -346,7 +346,6 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             if (unnamedTokens.size() == parent->childs.size())
             {
                 Diagnostic diag{sourceFile, token, Err(Syn0190)};
-                diag.hint = Hnt(Hnt0061);
                 diag.addRange(unnamedTokens.front(), Hnt(Hnt0099));
                 for (size_t i = 1; i < unnamedTokens.size(); i++)
                     diag.addRange(unnamedTokens[i], "");

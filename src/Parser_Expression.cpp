@@ -22,7 +22,7 @@ bool Parser::doLiteral(AstNode* parent, AstNode** result)
         if (node->tokenId == TokenId::LiteralCharacter || node->tokenId == TokenId::LiteralNumber)
         {
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::NativeType, error(token, Err(Syn0060)));
+            SWAG_VERIFY(token.id == TokenId::Identifier || token.id == TokenId::NativeType, error(token, Fmt(Err(Syn0060), token.ctext())));
             auto identifierRef = Ast::newIdentifierRef(sourceFile, node, this);
             SWAG_CHECK(doIdentifier(identifierRef, IDENTIFIER_NO_PARAMS | IDENTIFIER_TYPE_DECL));
             identifierRef->childs.back()->semanticFct = SemanticJob::resolveLiteralSuffix;
