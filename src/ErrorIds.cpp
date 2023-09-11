@@ -274,8 +274,6 @@ void initErrors()
     SWAG_ERROR(Syn0077, "invalid identifier                $ a valid identifier is expected here");
     SWAG_ERROR(Syn0218, "invalid identifier                $ expected an identifier, found %s '%s' instead");
     SWAG_ERROR(Syn0078, "invalid identifier                $ expected an identifier, found '%s' instead");
-    SWAG_ERROR(Syn0079, nullptr);
-    SWAG_ERROR(Syn0206, nullptr);
     SWAG_ERROR(Syn0138, "unexpected attribute return type  $ an attribute cannot have a return type starting with '->'");
     SWAG_ERROR(Syn0088, "unexpected 'throw' qualifier      $ an attribute cannot have the 'throw' qualifier as it cannot raise errors");
     SWAG_ERROR(Syn0142, "invalid 'defer' mode              $ '%s' is not a valid 'defer' mode $ the valid defer modes are 'defer(err)' and 'defer(noerr)'");
@@ -357,10 +355,10 @@ void initErrors()
     SWAG_ERROR(Syn0068, "expected variable declaration");
     SWAG_ERROR(Syn0069, "expected variable name, found '%s'");
     SWAG_ERROR(Syn0113, "version '%s' is invalid");
-
     SWAG_ERROR(Syn0120, "array size must precede type name");
     SWAG_ERROR(Syn0096, "expected array type after dimensions, found '%s'");
-
+    SWAG_ERROR(Syn0079, nullptr);
+    SWAG_ERROR(Syn0206, nullptr);
     SWAG_ERROR(Syn0131, nullptr);
     SWAG_ERROR(Syn0220, nullptr);
     SWAG_ERROR(Syn0080, nullptr);
@@ -1328,7 +1326,6 @@ void initErrors()
     SWAG_ERROR(Hnt0001, "invalid arguments passed to this intrinsic");
     SWAG_ERROR(Hnt0050, "local variable declared with 'let' is immutable");
     SWAG_ERROR(Hnt0071, "missing parameter identified");
-    SWAG_ERROR(Hnt0118, nullptr);
     SWAG_ERROR(Hnt0007, "initial initialization noted here");
     SWAG_ERROR(Hnt0081, "primary instance noted here");
     SWAG_ERROR(Hnt0106, "observed an immutable struct parameter");
@@ -1347,8 +1344,6 @@ void initErrors()
     SWAG_ERROR(Hnt0037, "pointer can be dereferenced using 'dref'");
     SWAG_ERROR(Hnt0101, "use '#type' before '%s' if it's a type, or specify a type with ':' if this is a parameter name");
     SWAG_ERROR(Hnt0046, "prefix with '#run' to enforce a compile-time call");
-    SWAG_ERROR(Hnt0107, nullptr);
-    SWAG_ERROR(Hnt0042, nullptr);
     SWAG_ERROR(Hnt0055, "requires explicit initialization");
     SWAG_ERROR(Hnt0012, "return (%s) should be of type '%s'");
     SWAG_ERROR(Hnt0053, "should be 'const' but isn't");
@@ -1384,7 +1379,6 @@ void initErrors()
     SWAG_ERROR(Hnt0030, "this argument has been named");
     SWAG_ERROR(Hnt0031, "this argument lacks a name");
     SWAG_ERROR(Hnt0072, "this array is empty");
-    SWAG_ERROR(Hnt0117, nullptr);
     SWAG_ERROR(Hnt0024, "this denotes a pointer type declaration due to '*'");
     SWAG_ERROR(Hnt0010, "this denotes a tuple type");
     SWAG_ERROR(Hnt0006, "this element can't be accessed");
@@ -1422,10 +1416,14 @@ void initErrors()
     SWAG_ERROR(Hnt0002, "this value can only be converted to type '%s' with a dynamic call to 'opAffect'");
     SWAG_ERROR(Hnt0014, "unexpected in global scope");
     SWAG_ERROR(Hnt0097, "unnamed parameters ('?') shouldn't have a specified type");
-    SWAG_ERROR(Hnt0048, nullptr);
     SWAG_ERROR(Hnt0095, "you can't reference this runtime %s from the %s");
     SWAG_ERROR(Hnt0130, "consider adding scope '%s' before '.'");
     SWAG_ERROR(Hnt0131, "did you intend to use '='?");
+    SWAG_ERROR(Hnt0118, nullptr);
+    SWAG_ERROR(Hnt0107, nullptr);
+    SWAG_ERROR(Hnt0042, nullptr);
+    SWAG_ERROR(Hnt0117, nullptr);
+    SWAG_ERROR(Hnt0048, nullptr);
     SWAG_ERROR(Hnt0041, nullptr);
     SWAG_ERROR(Hnt0132, nullptr);
     SWAG_ERROR(Hnt0133, nullptr);
@@ -1542,7 +1540,6 @@ void initErrors()
     SWAG_ERROR(Nte0101, "attribute declarations shouldn't be tagged with 'throw'");
     SWAG_ERROR(Nte0100, "attribute declarations shouldn't have return values prefixed with '->'");
     SWAG_ERROR(Nte0132, "both parts of an 'orelse' should be of identical type");
-    SWAG_ERROR(Nte0117, nullptr);
     SWAG_ERROR(Nte0125, "consider 'typealias' to create an alias for %s");
     SWAG_ERROR(Nte0142, "consider using 'func' instead of 'mtd'");
     SWAG_ERROR(Nte0102, "could 'self' be missing?");
@@ -1560,7 +1557,6 @@ void initErrors()
     SWAG_ERROR(Nte0118, "if lambda parameter types are inferred, the return type will also be inferred");
     SWAG_ERROR(Nte0119, "in lambda parameters, inferred and specified types shouldn't be combined");
     SWAG_ERROR(Nte0127, "internal structs shouldn't export their special functions");
-    SWAG_ERROR(Nte0107, nullptr);
     SWAG_ERROR(Nte0150, "only variables can be initialized in this manner");
     SWAG_ERROR(Nte0146, "pointer arithmetic is only valid for pointers declared with '^', not '*'");
     SWAG_ERROR(Nte0126, "public structs should export all their special functions");
@@ -1569,7 +1565,6 @@ void initErrors()
     SWAG_ERROR(Nte0111, "the allowed safety values are 'boundcheck|overflow|math|switch|unreachable|any|bool|nan|sanity|null'");
     SWAG_ERROR(Nte0148, "the correct values for 'Swag.Match' are 'validif|self'");
     SWAG_ERROR(Nte0131, "the interface member can also be declared with 'mtd' instead of 'func'");
-    SWAG_ERROR(Nte0123, nullptr);
     SWAG_ERROR(Nte0144, "this appears to be a potentially invalid UFCS call");
     SWAG_ERROR(Nte0143, "this is ambiguous; consider removing one 'using'");
     SWAG_ERROR(Nte0135, "this is reserved for function calls");
@@ -1583,6 +1578,9 @@ void initErrors()
     SWAG_ERROR(Nte0103, "you can assign a lambda to a closure type, but not vice versa");
     SWAG_ERROR(Nte0149, "you might want to get the address of '%s' using '&'");
     SWAG_ERROR(Nte0108, "'==' is the comparison operator; did you intend to use '='?");
+    SWAG_ERROR(Nte0117, nullptr);
+    SWAG_ERROR(Nte0107, nullptr);
+    SWAG_ERROR(Nte0123, nullptr);
     SWAG_ERROR(Nte0091, nullptr);
     SWAG_ERROR(Nte0092, nullptr);
     SWAG_ERROR(Nte0093, nullptr);
