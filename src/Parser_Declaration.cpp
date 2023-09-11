@@ -899,7 +899,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_VERIFY(withNode, error(token, Err(Syn0180)));
         Token tokenDot = token;
         eatToken();
-        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Err(Syn0022)));
+        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0022), token.ctext())));
         return doLeftInstruction(parent, result, CastAst<AstWith>(withNode, AstNodeKind::With));
         return true;
     }

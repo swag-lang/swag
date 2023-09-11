@@ -193,7 +193,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
             if (token.text == g_LangSpec->name_self)
             {
                 curIsAlone = false;
-                SWAG_VERIFY(currentStructScope, error(token, Err(Syn0026)));
+                SWAG_VERIFY(currentStructScope, error(token, Err(Syn0027)));
                 SWAG_CHECK(eatToken());
                 typeExpr = Ast::newTypeExpression(sourceFile, params);
                 typeExpr->typeFlags |= isConst ? TYPEFLAG_IS_CONST : 0;
@@ -520,7 +520,6 @@ bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
         if (token.id == TokenId::KwdMoveRef)
         {
             Diagnostic diag{sourceFile, token, Err(Syn0217)};
-            diag.hint = Hnt(Hnt0048);
             return context->report(diag);
         }
     }
@@ -706,7 +705,7 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
 
     if ((mdfFlags & MODIFIER_BIT) && (mdfFlags & MODIFIER_OVERFLOW))
     {
-        return error(node, Err(Syn0186));
+        return error(node, Fmt(Err(Syn0186), "bit", "over"));
     }
 
     if (mdfFlags & MODIFIER_UNCONST)

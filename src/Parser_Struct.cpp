@@ -42,7 +42,6 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         if (scopeKind == ScopeKind::Enum)
         {
             Diagnostic diag{implNode, token, Err(Syn0143)};
-            diag.hint = Hnt(Hnt0061);
             diag.addRange(kindLoc, Hnt(Hnt0085));
             return context->report(diag);
         }
@@ -321,7 +320,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 
     // '#validif' block
     if (token.id == TokenId::CompilerValidIfx)
-        return error(token, Err(Syn0215), Hnt(Hnt0107));
+        return error(token, Err(Syn0215));
     if (token.id == TokenId::CompilerValidIf)
     {
         Scoped       scoped(this, newScope);

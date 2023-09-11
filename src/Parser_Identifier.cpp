@@ -65,9 +65,10 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
     // #up to change the scope
     if (token.id == TokenId::CompilerUp)
     {
-        auto backTickToken = token;
+        auto upToken = token;
         SWAG_CHECK(eatToken());
-        token.startLocation = backTickToken.startLocation;
+        auto startLoc       = token.startLocation;
+        token.startLocation = upToken.startLocation;
 
         if (token.id == TokenId::SymQuestion)
             return error(token, Fmt(Err(Syn0206), token.ctext()));
@@ -75,12 +76,11 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         scopeUpValue.id               = TokenId::CompilerUp;
         scopeUpValue.literalType      = LiteralType::TT_UNTYPED_INT;
         scopeUpValue.literalValue.u64 = 1;
-        scopeUpValue.startLocation    = backTickToken.startLocation;
-        scopeUpValue.endLocation      = backTickToken.endLocation;
+        scopeUpValue.startLocation    = upToken.startLocation;
+        scopeUpValue.endLocation      = upToken.endLocation;
 
         if (token.id == TokenId::SymLeftParen)
         {
-            auto startLoc = token.startLocation;
             SWAG_CHECK(eatToken());
 
             if (token.id != TokenId::LiteralNumber)
@@ -89,9 +89,9 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
             if (token.literalType != LiteralType::TT_UNTYPED_INT && token.literalType != LiteralType::TT_U8)
                 return error(token, Fmt(Err(Syn0210), token.ctext()));
             if (token.literalValue.u64 > 255)
-                return error(token, Fmt(Err(Syn0209), token.ctext()));
+                return error(token, Fmt(Err(Syn0209), token.literalValue.u64));
             if (token.literalValue.u8 == 0)
-                return error(token, Fmt(Err(Syn0209), token.ctext()));
+                return error(token, Fmt(Err(Syn0082), token.ctext()));
 
             scopeUpValue = token;
             SWAG_CHECK(eatToken());
@@ -362,11 +362,11 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
     }
     else
     {
-        SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, Fmt(Err(Syn0147), node->token.ctext())));
-        SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, Fmt(Err(Syn0214), node->token.ctext())));
-        SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, Fmt(Err(Syn0140), node->token.ctext())));
-        SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, Fmt(Err(Syn0146), node->token.ctext())));
-        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0019), node->token.ctext())));
+        SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, Fmt(Err(Syn0147), token.ctext(), node->token.ctext())));
+        SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, Fmt(Err(Syn0147), token.ctext(), node->token.ctext())));
+        SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, Fmt(Err(Syn0147), token.ctext(), node->token.ctext())));
+        SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, Fmt(Err(Syn0147), token.ctext(), node->token.ctext())));
+        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0019), node->token.ctext(), token.ctext())));
         SWAG_CHECK(doIdentifierRef(node, &dummyResult));
     }
 
@@ -381,10 +381,10 @@ bool Parser::doThrow(AstNode* parent, AstNode** result)
     node->semanticFct = SemanticJob::resolveThrow;
     SWAG_CHECK(eatToken());
 
-    SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, Fmt(Err(Syn0147), node->token.ctext())));
-    SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, Fmt(Err(Syn0214), node->token.ctext())));
-    SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, Fmt(Err(Syn0140), node->token.ctext())));
-    SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, Fmt(Err(Syn0146), node->token.ctext())));
+    SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, Fmt(Err(Syn0147), token.ctext(), node->token.ctext())));
+    SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, Fmt(Err(Syn0147), token.ctext(), node->token.ctext())));
+    SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, Fmt(Err(Syn0147), token.ctext(), node->token.ctext())));
+    SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, Fmt(Err(Syn0147), token.ctext(), node->token.ctext())));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
     return true;
 }

@@ -38,11 +38,11 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
         err->textMsg = parts[0];
         if (err->hint.empty())
             err->hint = parts[1];
-        else
+        /*else
         {
             auto newNote = Diagnostic::note(err->sourceFile, err->startLocation, err->endLocation, parts[1]);
             notes.push_back(newNote);
-        }
+        }*/
 
         for (int i = 2; i < parts.size(); i++)
         {

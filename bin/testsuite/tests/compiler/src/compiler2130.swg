@@ -1,4 +1,3 @@
-
 #global testerror "Syn0122"
 
 #test

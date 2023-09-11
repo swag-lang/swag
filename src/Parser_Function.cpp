@@ -218,8 +218,8 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             paramNode->token.text = g_LangSpec->name_self;
         }
 
-        SWAG_CHECK(eatToken());
         SWAG_VERIFY(paramNode->ownerStructScope, error(token, Err(Syn0027)));
+        SWAG_CHECK(eatToken());
 
         // For an enum, 'self' is replaced with the type itself, not a pointer to the type like for a struct
         if (paramNode->ownerStructScope->kind == ScopeKind::Enum)
@@ -682,7 +682,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         isIntrinsic = token.text[0] == '@';
         if (isIntrinsic)
         {
-            SWAG_VERIFY(sourceFile->isBootstrapFile || sourceFile->isRuntimeFile, error(token, Fmt(Err(Syn0106), token.ctext()), Nte(Nte0108)));
+            SWAG_VERIFY(sourceFile->isBootstrapFile || sourceFile->isRuntimeFile, error(token, Fmt(Err(Syn0106), token.ctext())));
         }
         else
         {
