@@ -1,4 +1,4 @@
-#global testerror
+#global testerror "Err0567"
 using Core, Math
 
 //#[Swag.PrintBc]

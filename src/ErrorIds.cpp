@@ -255,6 +255,10 @@ void initErrors()
     SWAG_ERROR(Syn0140, "missing enum name                 $ expected the enum name before the start of the body '{'");
     SWAG_ERROR(Syn0074, "invalid enum name                 $ expected the enum name, found '%s' instead");
     SWAG_ERROR(Syn0075, "invalid enum identifier           $ expected an enum value identifier, found '%s' instead");
+
+    SWAG_ERROR(Syn0063, "invalid struct name               $ expected the struct name, found '%s' instead");
+    SWAG_ERROR(Syn0025, "missing struct name               $ expected the struct name before the start of the body '{'");
+
     SWAG_ERROR(Syn0049, "invalid closure parameters        $ expected '(' to start the list of parameters of the closure, found '%s' instead");
     SWAG_ERROR(Syn0095, "unexpected 'mtd'                  $ expected 'func' or 'closure' instead of 'mtd' to declare a lambda type");
     SWAG_ERROR(Syn0115, "invalid 'visit' name              $ expected 'visit' specialized name, found '%s' instead");
@@ -265,7 +269,6 @@ void initErrors()
     SWAG_ERROR(Syn0031, "expected '{' instead of '%s'");
     SWAG_ERROR(Syn0184, "expected constant name, found '%s'");
     SWAG_ERROR(Syn0112, "expected parameter name, found '%s'");
-    SWAG_ERROR(Syn0063, "expected struct name, found '%s'");
     SWAG_ERROR(Syn0070, "expecting type (':') or assignment ('=') of %s, found '%s'");
     SWAG_ERROR(Syn0076, "expected expression");
     SWAG_ERROR(Syn0090, "expected function parameter type or assignment (':' or '=')");
@@ -356,7 +359,6 @@ void initErrors()
     SWAG_ERROR(Syn0120, "array size must precede type name");
     SWAG_ERROR(Syn0096, "expected array type after dimensions, found '%s'");
 
-    SWAG_ERROR(Syn0025, nullptr);
     SWAG_ERROR(Syn0131, nullptr);
     SWAG_ERROR(Syn0220, nullptr);
     SWAG_ERROR(Syn0080, nullptr);

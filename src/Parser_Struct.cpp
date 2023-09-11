@@ -234,6 +234,7 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
 
 bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 {
+    SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Err(Syn0025)));
     SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0063), token.ctext())));
     structNode->inheritTokenName(token);
     SWAG_CHECK(checkIsValidUserName(structNode, &token));
