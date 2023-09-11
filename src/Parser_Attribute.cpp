@@ -81,7 +81,8 @@ bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
 
             if (token.id != TokenId::SymRightSquare)
             {
-                SWAG_CHECK(eatToken(TokenId::SymComma, "to defined another attribute, or ']' to end"));
+                SWAG_CHECK(eatToken(TokenId::SymComma, "to use another attribute, or ']' to end"));
+                SWAG_VERIFY(token.id != TokenId::SymLeftParen, error(token, Err(Syn0026)));
                 SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0072), token.ctext())));
             }
         }

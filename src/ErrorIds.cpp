@@ -215,20 +215,24 @@ void initErrors()
     SWAG_ERROR(Syn0060, "invalid type suffix                              $ expected an identifier or a type after the start of a type suffix ''', found '%s' instead");
     SWAG_ERROR(Syn0051, "missing ':'                                      $ a ':' is expected here after the 'loop' variable name '%s' $ syntax is 'loop [variable:] count'");
     SWAG_ERROR(Syn0071, "invalid alias name                               $ expected the alias name after '%s', found '%s' instead");
+    SWAG_ERROR(Syn0132, "out of range array dimensions                    $ array dimensions cannot exceed '254'");
 
     SWAG_ERROR(Syn0146, nullptr);
     SWAG_ERROR(Syn0140, nullptr);
     SWAG_ERROR(Syn0214, nullptr);
     SWAG_ERROR(Syn0025, nullptr);
-    SWAG_ERROR(Syn0026, nullptr);
 
-    SWAG_ERROR(Syn0195, "ambiguous lambda type parameter declaration");
-    SWAG_ERROR(Syn0200, "ambiguous syntax");
-    SWAG_ERROR(Syn0212, "expected another 'visit' variable name before ':'");
-    SWAG_ERROR(Syn0132, "array dimensions exceed maximum of '254'");
-    SWAG_ERROR(Syn0120, "array size must precede type name");
-    SWAG_ERROR(Syn0096, "expected array type after dimensions, found '%s'");
-    SWAG_ERROR(Syn0072, "expected attribute name, found '%s'");
+    SWAG_ERROR(Syn0200, "ambiguous syntax                  $ ambiguity arises between initializing '%s' and starting a new block");
+    SWAG_ERROR(Syn0195, "ambiguous syntax                  $ ambiguous declaration within lambda type parameters");
+
+    SWAG_ERROR(Syn0212, "missing 'visit' variable          $ expected another 'visit' variable name after ',' and before ':' $ the first 'visit' variable is the value, the second one is the index");
+
+SWAG_ERROR(Syn0120, "array size must precede type name");
+SWAG_ERROR(Syn0096, "expected array type after dimensions, found '%s'");
+
+    SWAG_ERROR(Syn0072, "invalid attribute name            $ expected an attribute name, found '%s' instead");
+    SWAG_ERROR(Syn0026, "missing attribute name            $ expected an attribute name before '('");
+
     SWAG_ERROR(Syn0038, "avoid declaring methods in 'enum impl' block");
     SWAG_ERROR(Syn0057, "expected capture argument between ',' and '|'");
     SWAG_ERROR(Syn0123, "block kind (%s) and type of '%s' (%s) mismatch");
@@ -1329,7 +1333,7 @@ void initErrors()
     SWAG_ERROR(Hnt0088, "parameter set with a default value");
     SWAG_ERROR(Hnt0013, "place this on a new line or separate with ';'");
     SWAG_ERROR(Hnt0037, "pointer can be dereferenced using 'dref'");
-    SWAG_ERROR(Hnt0101, "precede with '#type' before '%s' or specify a type if this is a parameter");
+    SWAG_ERROR(Hnt0101, "use '#type' before '%s' if it's a type, or specify a type with ':' if this is a parameter name");
     SWAG_ERROR(Hnt0046, "prefix with '#run' to enforce a compile-time call");
     SWAG_ERROR(Hnt0107, nullptr);
     SWAG_ERROR(Hnt0042, "replace this with 'func'");
@@ -1368,7 +1372,7 @@ void initErrors()
     SWAG_ERROR(Hnt0030, "this argument has been named");
     SWAG_ERROR(Hnt0031, "this argument lacks a name");
     SWAG_ERROR(Hnt0072, "this array is empty");
-    SWAG_ERROR(Hnt0117, "this could be the start of initializing '%s' or beginning a new block");
+    SWAG_ERROR(Hnt0117, nullptr);
     SWAG_ERROR(Hnt0024, "this denotes a pointer type declaration due to '*'");
     SWAG_ERROR(Hnt0010, "this denotes a tuple type");
     SWAG_ERROR(Hnt0006, "this element can't be accessed");
@@ -1425,8 +1429,8 @@ void initErrors()
 
     SWAG_ERROR(Nte0042, "'%s' is a function missing the 'Swag.ConstExpr' attribute");
     SWAG_ERROR(Nte0041, "'%s' is a variable; variables within expressions aren't evaluated at compile-time");
-    SWAG_ERROR(Nte0077, "'%s' might represent either a singular type or a field name");
-    SWAG_ERROR(Nte0076, "'%s' might represent either a singular type or a parameter name");
+    SWAG_ERROR(Nte0077, "'%s' might represent either a type or a field name");
+    SWAG_ERROR(Nte0076, "'%s' might represent either a type or a parameter name");
     SWAG_ERROR(Nte0001, "'%s' serves as a %s for type '%s' that lacks a subscope");
     SWAG_ERROR(Nte0017, "'%s' was located within '%s' due to a 'using' field");
     SWAG_ERROR(Nte0005, "a 'string' is expected as the return type of an #ast block is 'string'");
@@ -1533,11 +1537,11 @@ void initErrors()
     SWAG_ERROR(Nte0154, "did you forget 'var' or 'const' when declaring a global variable or constant?");
     SWAG_ERROR(Nte0128, "do you need a 'using' before 'self'?");
     SWAG_ERROR(Nte0153, "employ '{}' for an intentional empty statement");
-    SWAG_ERROR(Nte0152, "for a new block's start, consider placing '{' on a new line");
+    SWAG_ERROR(Nte0152, "to begin a new block, consider moving '{' to a new line");
     SWAG_ERROR(Nte0130, "for an infinite loop, use 'loop { ... }'");
     SWAG_ERROR(Nte0104, "for lambda declaration, use 'func(' or 'closure('");
     SWAG_ERROR(Nte0106, "for multi-dimensional array access, use [x, y], not [x][y]");
-    SWAG_ERROR(Nte0151, "for the start of a struct initialization block, consider eliminating spaces between '%s' and '{'");
+    SWAG_ERROR(Nte0151, "to initiate a struct initialization of '%s', remove spaces between '%s' and '{'");
     SWAG_ERROR(Nte0136, "force the evaluation using '#run'");
     SWAG_ERROR(Nte0114, "function names that start with 'op' followed by an uppercase letter are reserved for struct special functions");
     SWAG_ERROR(Nte0116, "function parameters are immutable and can't be modified");
