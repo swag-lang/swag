@@ -245,13 +245,16 @@ void initErrors()
     SWAG_ERROR(Syn0073, "invalid embedded instruction      $ expected an embedded instruction or a curly block");
     SWAG_ERROR(Syn0064, "invalid top-level instruction     $ expected a top-level instruction");
     SWAG_ERROR(Syn0124, "empty array literal               $ an array literal should contain at least one value");
+    SWAG_ERROR(Syn0159, "invalid empty attribute           $ an attribute should contain at least one value $ you should specify the attribute name between '[]'");
+    SWAG_ERROR(Syn0187, "invalid empty statement ';'       $ a semicolon ';' cannot be used alone to mark an empty statement");
 
-    SWAG_ERROR(Syn0047, "EOF reached, expected '%s' %s");
-    SWAG_ERROR(Syn0159, "empty attribute usage");
-    SWAG_ERROR(Syn0160, "empty expression found");
-    SWAG_ERROR(Syn0187, "empty statement ';' found");
-    SWAG_ERROR(Syn0188, "unexpected end of comment '*/' after %s");
-    SWAG_ERROR(Syn0074, "expected enum name, found '%s'");
+    SWAG_ERROR(Syn0188, "unexpected end of comment         $ unexpected end of multi-line comment '*/' after %s $ beginning '/*' of multi-line comment is missing");
+    SWAG_ERROR(Syn0160, "unexpected empty expression       $ the expression '()' is empty and not allowed here");
+
+    SWAG_ERROR(Syn0146, "missing enum name                 $ expected the enum name before the start of the type definition ':'");
+    SWAG_ERROR(Syn0140, "missing enum name                 $ expected the enum name before the start of the body '{'");
+    SWAG_ERROR(Syn0074, "invalid enum name                 $ expected the enum name, found '%s' instead");
+
     SWAG_ERROR(Syn0075, "expected enum value identifier, found '%s'");
     SWAG_ERROR(Syn0048, "expected '%s' %s, found '%s'");
     SWAG_ERROR(Syn0049, "expected '(' for closure parameters");
@@ -267,6 +270,7 @@ void initErrors()
     SWAG_ERROR(Syn0090, "expected function parameter type or assignment (':' or '=')");
     SWAG_ERROR(Syn0091, "expected function parameters before '{'");
     SWAG_ERROR(Syn0092, "expected generic parameters");
+    SWAG_ERROR(Syn0047, "EOF reached, expected '%s' %s");
     SWAG_ERROR(Syn0162, "unexpected generic parameters");
     SWAG_ERROR(Syn0161, "unexpected generic parameters for variable '%s'");
     SWAG_ERROR(Syn0036, "global 'using' must be at file start");
@@ -351,8 +355,6 @@ void initErrors()
     SWAG_ERROR(Syn0120, "array size must precede type name");
     SWAG_ERROR(Syn0096, "expected array type after dimensions, found '%s'");
 
-    SWAG_ERROR(Syn0146, nullptr);
-    SWAG_ERROR(Syn0140, nullptr);
     SWAG_ERROR(Syn0214, nullptr);
     SWAG_ERROR(Syn0025, nullptr);
     SWAG_ERROR(Syn0131, nullptr);
@@ -1322,7 +1324,7 @@ void initErrors()
     SWAG_ERROR(Hnt0001, "invalid arguments passed to this intrinsic");
     SWAG_ERROR(Hnt0050, "local variable declared with 'let' is immutable");
     SWAG_ERROR(Hnt0071, "missing parameter identified");
-    SWAG_ERROR(Hnt0118, "no matching start for multi-line comment '/*' was found");
+    SWAG_ERROR(Hnt0118, nullptr);
     SWAG_ERROR(Hnt0007, "initial initialization noted here");
     SWAG_ERROR(Hnt0081, "primary instance noted here");
     SWAG_ERROR(Hnt0106, "observed an immutable struct parameter");

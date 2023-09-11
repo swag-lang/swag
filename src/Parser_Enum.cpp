@@ -21,6 +21,8 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
     }
 
     SWAG_CHECK(eatToken());
+    SWAG_VERIFY(token.id != TokenId::SymColon, error(token, Err(Syn0146)));
+    SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Err(Syn0140)));
     SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0074), token.ctext())));
     enumNode->inheritTokenName(token);
     SWAG_CHECK(checkIsValidUserName(enumNode));
