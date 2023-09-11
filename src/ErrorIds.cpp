@@ -136,6 +136,8 @@ void initErrors()
     SWAG_ERROR(Syn0014, "misplaced '#include'                           $ '#include' must be placed within the '#dependencies' block");
     SWAG_ERROR(Syn0006, "misplaced '#global' directive                  $ '#global' should be placed at the very top of the file");
     SWAG_ERROR(Syn0035, "misplaced '#placeholder'                       $ '#placeholder' must be placed within a top level scope");
+    SWAG_ERROR(Syn0036, "misplaced top-level 'using'                    $ a top-level 'using' must be placed before any other declarations");
+    SWAG_ERROR(Syn0167, "invalid pass name                              $ '%s' is not recognized as a valid compiler pass name");
 
     SWAG_ERROR(Syn0097, "unexpected '#elif'                             $ '#elif' found without a preceding '#if' directive");
     SWAG_ERROR(Syn0098, "unexpected '#else'                             $ '#else' found without a preceding '#if' or '#elif' directive");
@@ -180,8 +182,8 @@ void initErrors()
     SWAG_ERROR(Syn0053, "invalid 'switch' block content                 $ expected 'case' or 'default', found '%s' instead");
     SWAG_ERROR(Syn0056, "incomplete 'case' expression list              $ expected another expression after ',' and before ':' $ ',' indicates a list of 'case' expressions; provide the next expression or consider removing the ','");
 
-    SWAG_ERROR(Syn0201, "incomplete arguments list      $ expected another call argument after ',' $ either provide an additional argument or remove the trailing ','");
-    SWAG_ERROR(Syn0202, "incomplete parameters list     $ expected another function parameter after ',' $ either provide an additional parameter or remove the trailing ','");
+    SWAG_ERROR(Syn0201, "incomplete arguments list                      $ expected another call argument after ',' $ either provide an additional argument or remove the trailing ','");
+    SWAG_ERROR(Syn0202, "incomplete parameters list                     $ expected another function parameter after ',' $ either provide an additional parameter or remove the trailing ','");
 
     SWAG_ERROR(Syn0111, "invalid variable name                          $ a variable name ('%s') cannot start with '@', this is reserved for intrinsics $ only '@mixin' and '@alias' are possible in that case");
     SWAG_ERROR(Syn0106, "invalid function name                          $ a function name ('%s') cannot start with '@', this is reserved for intrinsics");
@@ -222,8 +224,8 @@ void initErrors()
     SWAG_ERROR(Syn0071, "invalid alias name                               $ expected the alias name after '%s', found '%s' instead");
     SWAG_ERROR(Syn0132, "out of range array dimensions                    $ array dimensions cannot exceed '254'");
 
-    SWAG_ERROR(Syn0200, "ambiguous syntax                  $ ambiguity arises between initializing '%s' and starting a new block");
-    SWAG_ERROR(Syn0195, "ambiguous syntax                  $ ambiguous declaration within lambda type parameters");
+    SWAG_ERROR(Syn0200, "ambiguous syntax                       $ ambiguity arises between initializing '%s' and starting a new block");
+    SWAG_ERROR(Syn0195, "ambiguous syntax                       $ ambiguous declaration within lambda type parameters");
 
     SWAG_ERROR(Syn0212, "missing 'visit' variable               $ expected another 'visit' variable between ',' and ':' $ the first 'visit' variable is the value, the second one is the index");
     SWAG_ERROR(Syn0057, "missing 'closure' capture variable     $ expected another capture variable between ',' and '|' $ add another variable or consider removing the trailing comma");
@@ -278,19 +280,23 @@ void initErrors()
     SWAG_ERROR(Syn0088, "unexpected 'throw' qualifier      $ an attribute cannot have the 'throw' qualifier as it cannot raise errors");
     SWAG_ERROR(Syn0142, "invalid 'defer' mode              $ '%s' is not a valid 'defer' mode $ the valid defer modes are 'defer(err)' and 'defer(noerr)'");
 
+    SWAG_ERROR(Syn0184, "invalid constant name             $ expected a constant name, found '%s' instead");
+    SWAG_ERROR(Syn0112, "invalid parameter name            $ expected a parameter name, found '%s' instead");
+    SWAG_ERROR(Syn0091, "missing function parameters       $ expected the function parameters between '()' before the start of the body '{' $ if you want to declare a function without parameters, consider adding '()' after the name");
+    SWAG_ERROR(Syn0044, "missing intrinsic arguments       $ expected the intrinsic arguments between '()'");
+
+    SWAG_ERROR(Syn0179, "unused return value               $ the return value of the intrinsic '%s' should be used");
+
+    SWAG_ERROR(Syn0157, "invalid identifier list           $ 'with' does not support multiple identifiers");
+    SWAG_ERROR(Syn0065, "invalid variable list             $ 'if' does not support multiples variable declarations");
+
     SWAG_ERROR(Syn0048, "expected '%s' %s, found '%s'");
     SWAG_ERROR(Syn0031, "expected '{' instead of '%s'");
-    SWAG_ERROR(Syn0184, "expected constant name, found '%s'");
-    SWAG_ERROR(Syn0112, "expected parameter name, found '%s'");
     SWAG_ERROR(Syn0076, "expected expression");
-    SWAG_ERROR(Syn0091, "expected function parameters before '{'");
     SWAG_ERROR(Syn0092, "expected generic parameters");
     SWAG_ERROR(Syn0047, "EOF reached, expected '%s' %s");
-    SWAG_ERROR(Syn0036, "global 'using' must be at file start");
     SWAG_ERROR(Syn0042, "in tuple unpacking, expected variable name or '?', found '%s'");
     SWAG_ERROR(Syn0125, "instruction modifier '%s' already used");
-    SWAG_ERROR(Syn0127, "intrinsic '%s' return value must be used");
-    SWAG_ERROR(Syn0044, "intrinsic parameter expression shouldn't be empty");
     SWAG_ERROR(Syn0136, "invalid '#global' instruction '%s'");
     SWAG_ERROR(Syn0137, "invalid '#validif/#validifx' on function '%s'");
     SWAG_ERROR(Syn0139, "invalid '[' for multi-dimensional array access");
@@ -300,7 +306,6 @@ void initErrors()
     SWAG_ERROR(Syn0163, "invalid interface lambda declaration");
     SWAG_ERROR(Syn0208, "invalid operator '='");
     SWAG_ERROR(Syn0166, "invalid parameter name '%s'");
-    SWAG_ERROR(Syn0167, "invalid pass name '%s'");
     SWAG_ERROR(Syn0172, "invalid symbol '%s' in type declaration");
     SWAG_ERROR(Syn0199, "invalid token '%s' in lambda type; expected ',' or ')'");
     SWAG_ERROR(Syn0175, "invalid token '%s' in tuple type; expected ',' or '}'");
@@ -317,8 +322,6 @@ void initErrors()
     SWAG_ERROR(Syn0100, "missing opening '[' for ']'");
     SWAG_ERROR(Syn0103, "missing opening '{' for '}'");
     SWAG_ERROR(Syn0126, "modifier '%s' invalid for '%s'");
-    SWAG_ERROR(Syn0157, "multi-variable declaration not allowed in 'with'");
-    SWAG_ERROR(Syn0065, "multiple variable declarations in 'if' assignment found");
     SWAG_ERROR(Syn0110, "named parameter '%s' is invalid");
     SWAG_ERROR(Syn0118, "namespace '%s' is compiler-reserved");
     SWAG_ERROR(Syn0040, "namespace definition required at file scope or within another namespace");
@@ -329,7 +332,6 @@ void initErrors()
     SWAG_ERROR(Syn0037, "need line break or ';' before '%s' to close %s");
     SWAG_ERROR(Syn0045, "only 'self' follows 'const' before function parameter name");
     SWAG_ERROR(Syn0149, "operator '==' invalid, use '='");
-    SWAG_ERROR(Syn0179, "return value of intrinsic '%s' not used");
     SWAG_ERROR(Syn0062, "single identifier %s required");
     SWAG_ERROR(Syn0114, "slice upper bound expects integer, found '%s'");
     SWAG_ERROR(Syn0185, "slicing operator '..<' needs upper bound expression");
@@ -372,6 +374,7 @@ void initErrors()
     SWAG_ERROR(Syn0154, nullptr);
     SWAG_ERROR(Syn0155, nullptr);
     SWAG_ERROR(Syn0156, nullptr);
+    SWAG_ERROR(Syn0127, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -1393,7 +1396,6 @@ void initErrors()
     SWAG_ERROR(Hnt0017, "this function is tagged with the 'Swag.Inline' attribute");
     SWAG_ERROR(Hnt0015, "this function is tagged with the 'Swag.Macro' attribute");
     SWAG_ERROR(Hnt0016, "this function is tagged with the 'Swag.Mixin' attribute");
-    SWAG_ERROR(Hnt0008, "this intrinsic's return value must be utilized");
     SWAG_ERROR(Hnt0018, "this is a constant");
     SWAG_ERROR(Hnt0079, "this is a lambda expression");
     SWAG_ERROR(Hnt0028, "this is a literal, but a type was expected");
@@ -1419,6 +1421,7 @@ void initErrors()
     SWAG_ERROR(Hnt0095, "you can't reference this runtime %s from the %s");
     SWAG_ERROR(Hnt0130, "consider adding scope '%s' before '.'");
     SWAG_ERROR(Hnt0131, "did you intend to use '='?");
+    SWAG_ERROR(Hnt0008, nullptr);
     SWAG_ERROR(Hnt0118, nullptr);
     SWAG_ERROR(Hnt0107, nullptr);
     SWAG_ERROR(Hnt0042, nullptr);
@@ -1533,7 +1536,7 @@ void initErrors()
     SWAG_ERROR(Nte0120, "'@mixin' is permitted exclusively inside a 'Swag.Mixin' function");
     SWAG_ERROR(Nte0112, "'Swag.Optim' should have either 'bytecode' or 'backend' as its value");
     SWAG_ERROR(Nte0145, "'closure' should be accompanied by capture parameters enclosed in '|...|'");
-    SWAG_ERROR(Nte0139, "'with' should be paired with a single variable");
+    SWAG_ERROR(Nte0139, "'with' should be followed by a single identifier");
     SWAG_ERROR(Nte0121, "a generic argument must be a literal or a type");
     SWAG_ERROR(Nte0124, "a standard function in an 'impl' block shouldn't overshadow a function from the matching interface");
     SWAG_ERROR(Nte0115, "a struct special function should be defined within the corresponding 'impl' scope");

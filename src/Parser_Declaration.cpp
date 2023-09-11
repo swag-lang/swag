@@ -906,7 +906,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 
     default:
         if (Tokenizer::isIntrinsicReturn(token.id))
-            return error(token, Fmt(Err(Syn0179), token.ctext()), nullptr, Hnt(Hnt0008));
+            return error(token, Fmt(Err(Syn0179), token.ctext()));
         return invalidTokenError(InvalidTokenError::EmbeddedInstruction);
     }
 

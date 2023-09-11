@@ -1,4 +1,4 @@
-#global testerror "Syn0127"
+#global testerror "Syn0179"
 #test
 {
 	discard @countof("1")

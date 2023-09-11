@@ -287,7 +287,7 @@ bool Parser::doDiscard(AstNode* parent, AstNode** result)
         break;
     default:
         if (Tokenizer::isIntrinsicReturn(token.id))
-            return error(token, Fmt(Err(Syn0127), token.ctext()), nullptr, Hnt(Hnt0008));
+            return error(token, Fmt(Err(Syn0179), token.ctext()));
         return error(token, Fmt(Err(Syn0173), token.ctext()));
     }
 
