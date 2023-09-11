@@ -277,6 +277,7 @@ void initErrors()
     SWAG_ERROR(Syn0079, nullptr);
     SWAG_ERROR(Syn0206, nullptr);
     SWAG_ERROR(Syn0138, "unexpected attribute return type  $ an attribute cannot have a return type starting with '->'");
+    SWAG_ERROR(Syn0088, "unexpected 'throw' qualifier      $ an attribute cannot have the 'throw' qualifier as it cannot raise errors");
     SWAG_ERROR(Syn0142, "invalid 'defer' mode              $ '%s' is not a valid 'defer' mode $ the valid defer modes are 'defer(err)' and 'defer(noerr)'");
 
     SWAG_ERROR(Syn0048, "expected '%s' %s, found '%s'");
@@ -296,7 +297,6 @@ void initErrors()
     SWAG_ERROR(Syn0137, "invalid '#validif/#validifx' on function '%s'");
     SWAG_ERROR(Syn0139, "invalid '[' for multi-dimensional array access");
     SWAG_ERROR(Syn0192, "invalid 'const' before lambda parameter");
-    SWAG_ERROR(Syn0088, "invalid 'throw' in attribute declaration");
     SWAG_ERROR(Syn0150, "invalid attribute ('%s') after '%s'");
     SWAG_ERROR(Syn0148, "invalid expression in 'with'");
     SWAG_ERROR(Syn0163, "invalid interface lambda declaration");
