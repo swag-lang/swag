@@ -71,7 +71,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         token.startLocation = upToken.startLocation;
 
         if (token.id == TokenId::SymQuestion)
-            return error(token, Fmt(Err(Syn0206), token.ctext()));
+            return error(token, Fmt(Err(Syn0218), "symbol", token.ctext()));
 
         scopeUpValue.id               = TokenId::CompilerUp;
         scopeUpValue.literalType      = LiteralType::TT_UNTYPED_INT;
@@ -100,11 +100,11 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
     }
 
     if (token.id == TokenId::SymQuestion && !(identifierFlags & IDENTIFIER_ACCEPT_QUESTION))
-        return error(token, Fmt(Err(Syn0206), token.ctext()));
+        return error(token, Fmt(Err(Syn0218), "symbol", token.ctext()));
     if (token.id != TokenId::SymQuestion && Tokenizer::isSymbol(token.id))
-        return error(token, Fmt(Err(Syn0206), token.ctext()));
+        return error(token, Fmt(Err(Syn0218), "symbol", token.ctext()));
     if (Tokenizer::isLiteral(token.id))
-        return error(token, Fmt(Err(Syn0079), token.ctext()));
+        return error(token, Fmt(Err(Syn0218), "literal", token.ctext()));
     if (token.id == TokenId::EndOfFile)
         return error(token, Err(Syn0077));
 

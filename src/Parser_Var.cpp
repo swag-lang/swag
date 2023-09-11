@@ -15,9 +15,9 @@ bool Parser::checkIsValidVarName(AstNode* node)
     {
         auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (identifier->genericParameters)
-            return error(identifier->genericParameters, Fmt(Err(Syn0161), identifier->token.ctext()), nullptr, Hnt(Hnt0026));
+            return error(identifier->genericParameters, Fmt(Err(Syn0161), identifier->token.ctext()));
         if (identifier->callParameters)
-            return error(identifier->callParameters, Fmt(Err(Syn0216), identifier->token.ctext()), nullptr, Hnt(Hnt0026));
+            return error(identifier->callParameters, Fmt(Err(Syn0216), identifier->token.ctext()));
     }
 
     if (node->token.text[0] != '@')
@@ -298,7 +298,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
             switch (leftNode->kind)
             {
             case AstNodeKind::IdentifierRef:
-                ofWhat = kind == AstNodeKind::ConstDecl ? Fmt("constant '%s'", leftNode->token.ctext()) : Fmt("variable '%s'", leftNode->token.ctext());
+                ofWhat = kind == AstNodeKind::ConstDecl ? "constant" : "variable";
                 break;
             default:
                 ofWhat = kind == AstNodeKind::ConstDecl ? "constants" : "variables";

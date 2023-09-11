@@ -1294,7 +1294,7 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
         else if (token.text == g_LangSpec->name_noerr)
             node->deferKind = DeferKind::NoError;
         else
-            return error(token, Fmt(Err(Syn0142), token.ctext()), Nte(Nte0123));
+            return error(token, Fmt(Err(Syn0142), token.ctext()));
 
         SWAG_CHECK(eatToken());
         SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the 'defer' argument"));
