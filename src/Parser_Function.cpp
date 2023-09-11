@@ -573,13 +573,13 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     if (isMethod || isConstMethod)
     {
         if (!funcNode->ownerStructScope)
-            return error(token, Err(Syn0039), nullptr, Hnt(Hnt0042));
+            return error(token, Err(Syn0039));
 
         if (funcNode->ownerStructScope->kind == ScopeKind::Enum)
-            return error(token, Err(Syn0038), Nte(Nte0107), Hnt(Hnt0042));
+            return error(token, Err(Syn0038));
 
         if (funcNode->ownerStructScope->kind != ScopeKind::Struct)
-            return error(token, Err(Syn0039), Nte(Nte0107), Hnt(Hnt0042));
+            return error(token, Err(Syn0039));
     }
 
     if (typeFuncId == TokenId::Invalid)
@@ -1141,7 +1141,7 @@ bool Parser::doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** r
     auto lambdaDecl = CastAst<AstFuncDecl>(lambda, AstNodeKind::FuncDecl);
     lambdaDecl->specFlags |= AstFuncDecl::SPECFLAG_IS_LAMBDA_EXPRESSION;
     if (!lambda->ownerFct && lambdaDecl->captureParameters)
-        return error(lambdaDecl, Err(Syn0153), Nte(Nte0117));
+        return error(lambdaDecl, Err(Syn0153));
 
     // Lambda sub function will be resolved by the owner function
     if (lambda->ownerFct)

@@ -180,6 +180,9 @@ void initErrors()
     SWAG_ERROR(Syn0053, "invalid 'switch' block content                 $ expected 'case' or 'default', found '%s' instead");
     SWAG_ERROR(Syn0056, "incomplete 'case' expression list              $ expected another expression after ',' and before ':' $ ',' indicates a list of 'case' expressions; provide the next expression or consider removing the ','");
 
+    SWAG_ERROR(Syn0201, "incomplete arguments list      $ expected another call argument after ',' $ either provide an additional argument or remove the trailing ','");
+    SWAG_ERROR(Syn0202, "incomplete parameters list     $ expected another function parameter after ',' $ either provide an additional parameter or remove the trailing ','");
+
     SWAG_ERROR(Syn0111, "invalid variable name                          $ a variable name ('%s') cannot start with '@', this is reserved for intrinsics $ only '@mixin' and '@alias' are possible in that case");
     SWAG_ERROR(Syn0106, "invalid function name                          $ a function name ('%s') cannot start with '@', this is reserved for intrinsics");
     SWAG_ERROR(Syn0089, "invalid function name                          $ expected a function name, found '%s'");
@@ -212,36 +215,30 @@ void initErrors()
 
     SWAG_ERROR(Syn0029, "misplaced 'using' in interface                   $ 'using' can't be associated with an interface member");
     SWAG_ERROR(Syn0190, "invalid assignment                               $ assignments are not allowed for unnamed parameters ('?')");
+    SWAG_ERROR(Syn0194, "invalid default value                            $ lambda parameters cannot have a default value");
+    SWAG_ERROR(Syn0193, "invalid default value                            $ 'self' cannot have a default value");
     SWAG_ERROR(Syn0060, "invalid type suffix                              $ expected an identifier or a type after the start of a type suffix ''', found '%s' instead");
     SWAG_ERROR(Syn0051, "missing ':'                                      $ a ':' is expected here after the 'loop' variable name '%s' $ syntax is 'loop [variable:] count'");
     SWAG_ERROR(Syn0071, "invalid alias name                               $ expected the alias name after '%s', found '%s' instead");
     SWAG_ERROR(Syn0132, "out of range array dimensions                    $ array dimensions cannot exceed '254'");
 
-    SWAG_ERROR(Syn0146, nullptr);
-    SWAG_ERROR(Syn0140, nullptr);
-    SWAG_ERROR(Syn0214, nullptr);
-    SWAG_ERROR(Syn0025, nullptr);
-
     SWAG_ERROR(Syn0200, "ambiguous syntax                  $ ambiguity arises between initializing '%s' and starting a new block");
     SWAG_ERROR(Syn0195, "ambiguous syntax                  $ ambiguous declaration within lambda type parameters");
 
-    SWAG_ERROR(Syn0212, "missing 'visit' variable          $ expected another 'visit' variable name after ',' and before ':' $ the first 'visit' variable is the value, the second one is the index");
-
-SWAG_ERROR(Syn0120, "array size must precede type name");
-SWAG_ERROR(Syn0096, "expected array type after dimensions, found '%s'");
+    SWAG_ERROR(Syn0212, "missing 'visit' variable               $ expected another 'visit' variable between ',' and ':' $ the first 'visit' variable is the value, the second one is the index");
+    SWAG_ERROR(Syn0057, "missing 'closure' capture variable     $ expected another capture variable between ',' and '|' $ add another variable or consider removing the trailing comma");
 
     SWAG_ERROR(Syn0072, "invalid attribute name            $ expected an attribute name, found '%s' instead");
     SWAG_ERROR(Syn0026, "missing attribute name            $ expected an attribute name before '('");
 
-    SWAG_ERROR(Syn0038, "avoid declaring methods in 'enum impl' block");
-    SWAG_ERROR(Syn0057, "expected capture argument between ',' and '|'");
-    SWAG_ERROR(Syn0123, "block kind (%s) and type of '%s' (%s) mismatch");
-    SWAG_ERROR(Syn0207, "block not allowed after 'discard try/assume/catch'");
-    SWAG_ERROR(Syn0153, "closure definition invalid at global level");
-    SWAG_ERROR(Syn0201, "comma misplaced, expect ')' or argument");
-    SWAG_ERROR(Syn0202, "comma misplaced, expect ')' or parameter");
-    SWAG_ERROR(Syn0194, "default value invalid for lambda parameter");
-    SWAG_ERROR(Syn0193, "default value not allowed for 'self'");
+    SWAG_ERROR(Syn0038, "misplaced 'mtd' in enum           $ 'mtd' is only valid within a struct implementation block $ you could replace 'mtd' with 'func'");
+    SWAG_ERROR(Syn0039, "misplaced 'mtd'                   $ 'mtd' is only valid within a struct implementation block $ you could replace 'mtd' with 'func'");
+
+    SWAG_ERROR(Syn0207, "invalid block start               $ a block start '{' is not allowed after 'discard try/assume/catch'");
+    SWAG_ERROR(Syn0153, "misplaced closure                 $ a closure definition is not valid at the global level $ closures can only be defined within functions");
+
+    SWAG_ERROR(Syn0123, "'impl' kind mismatch              $ the implementation kind (%s) and the type of '%s' (%s) are not the same");
+
     SWAG_ERROR(Syn0116, "duplicate '#import' location definition");
     SWAG_ERROR(Syn0117, "duplicate '#import' version definition");
     SWAG_ERROR(Syn0047, "EOF reached, expected '%s' %s");
@@ -304,7 +301,6 @@ SWAG_ERROR(Syn0096, "expected array type after dimensions, found '%s'");
     SWAG_ERROR(Syn0059, "left expression required");
     SWAG_ERROR(Syn0109, "location '%s' is invalid");
     SWAG_ERROR(Syn0203, "expected match string after ',', found '%'");
-    SWAG_ERROR(Syn0039, "methods should be in 'impl' block only");
     SWAG_ERROR(Syn0176, "missing comma");
     SWAG_ERROR(Syn0099, "missing opening '(' for ')'");
     SWAG_ERROR(Syn0100, "missing opening '[' for ']'");
@@ -349,6 +345,14 @@ SWAG_ERROR(Syn0096, "expected array type after dimensions, found '%s'");
     SWAG_ERROR(Syn0068, "expected variable declaration");
     SWAG_ERROR(Syn0069, "expected variable name, found '%s'");
     SWAG_ERROR(Syn0113, "version '%s' is invalid");
+
+    SWAG_ERROR(Syn0120, "array size must precede type name");
+    SWAG_ERROR(Syn0096, "expected array type after dimensions, found '%s'");
+
+    SWAG_ERROR(Syn0146, nullptr);
+    SWAG_ERROR(Syn0140, nullptr);
+    SWAG_ERROR(Syn0214, nullptr);
+    SWAG_ERROR(Syn0025, nullptr);
     SWAG_ERROR(Syn0131, nullptr);
     SWAG_ERROR(Syn0220, nullptr);
     SWAG_ERROR(Syn0080, nullptr);
@@ -1336,7 +1340,7 @@ SWAG_ERROR(Syn0096, "expected array type after dimensions, found '%s'");
     SWAG_ERROR(Hnt0101, "use '#type' before '%s' if it's a type, or specify a type with ':' if this is a parameter name");
     SWAG_ERROR(Hnt0046, "prefix with '#run' to enforce a compile-time call");
     SWAG_ERROR(Hnt0107, nullptr);
-    SWAG_ERROR(Hnt0042, "replace this with 'func'");
+    SWAG_ERROR(Hnt0042, nullptr);
     SWAG_ERROR(Hnt0055, "requires explicit initialization");
     SWAG_ERROR(Hnt0012, "return (%s) should be of type '%s'");
     SWAG_ERROR(Hnt0053, "should be 'const' but isn't");
@@ -1530,7 +1534,7 @@ SWAG_ERROR(Syn0096, "expected array type after dimensions, found '%s'");
     SWAG_ERROR(Nte0101, "attribute declarations shouldn't be tagged with 'throw'");
     SWAG_ERROR(Nte0100, "attribute declarations shouldn't have return values prefixed with '->'");
     SWAG_ERROR(Nte0132, "both parts of an 'orelse' should be of identical type");
-    SWAG_ERROR(Nte0117, "closures can only be defined within functions");
+    SWAG_ERROR(Nte0117, nullptr);
     SWAG_ERROR(Nte0125, "consider 'typealias' to create an alias for %s");
     SWAG_ERROR(Nte0142, "consider using 'func' instead of 'mtd'");
     SWAG_ERROR(Nte0102, "could 'self' be missing?");
@@ -1548,7 +1552,7 @@ SWAG_ERROR(Syn0096, "expected array type after dimensions, found '%s'");
     SWAG_ERROR(Nte0118, "if lambda parameter types are inferred, the return type will also be inferred");
     SWAG_ERROR(Nte0119, "in lambda parameters, inferred and specified types shouldn't be combined");
     SWAG_ERROR(Nte0127, "internal structs shouldn't export their special functions");
-    SWAG_ERROR(Nte0107, "methods are reserved for structs and interfaces");
+    SWAG_ERROR(Nte0107, nullptr);
     SWAG_ERROR(Nte0150, "only variables can be initialized in this manner");
     SWAG_ERROR(Nte0146, "pointer arithmetic is only valid for pointers declared with '^', not '*'");
     SWAG_ERROR(Nte0126, "public structs should export all their special functions");
