@@ -291,6 +291,8 @@ void initErrors()
     SWAG_ERROR(Syn0134, "unsupported tuple type                            $ tuple types are not supported for generic parameters");
     SWAG_ERROR(Syn0058, "invalid generic parameter name                    $ expected an identifier as the generic name, found '%s' instead");
     SWAG_ERROR(Syn0092, "missing generic parameter                         $ expected at least one generic parameter between '()' $ consider removing '()' if this is not generic");
+    SWAG_ERROR(Syn0062, "invalid compound name                             $ expected a single identifier %s $ consider using a single name without the '.' character");
+    SWAG_ERROR(Syn0128, "invalid struct initialization                     $ expected '{}' to initialize a struct, and not '()' which is reserved for function calls");
 
     SWAG_ERROR(Syn0048, "expected '%s' %s, found '%s'");
     SWAG_ERROR(Syn0076, "expected expression");
@@ -306,8 +308,6 @@ void initErrors()
     SWAG_ERROR(Syn0037, "need line break or ';' before '%s' to close %s");
     SWAG_ERROR(Syn0045, "only 'self' follows 'const' before function parameter name");
     SWAG_ERROR(Syn0149, "operator '==' invalid, use '='");
-    SWAG_ERROR(Syn0062, "single identifier %s required");
-    SWAG_ERROR(Syn0128, "struct '%s' requires '{}' for initialization, not '()'");
     SWAG_ERROR(Syn0133, "to declare interface function, use 'func' or 'mtd', not '%s'");
     SWAG_ERROR(Syn0177, "unexpected tuple unpacking in %s");
     SWAG_ERROR(Syn0171, "unexpected symbol '%s' after %s");
@@ -1530,7 +1530,6 @@ void initErrors()
     SWAG_ERROR(Nte0131, "the interface member can also be declared with 'mtd' instead of 'func'");
     SWAG_ERROR(Nte0144, "this appears to be a potentially invalid UFCS call");
     SWAG_ERROR(Nte0143, "this is ambiguous; consider removing one 'using'");
-    SWAG_ERROR(Nte0135, "this is reserved for function calls");
     SWAG_ERROR(Nte0141, "this parameter type doesn't have related memory storage");
     SWAG_ERROR(Nte0122, "this specific constant doesn't have associated memory storage");
     SWAG_ERROR(Nte0105, "to dereference variable '%s' as in C, employ 'dref %s'");
@@ -1542,6 +1541,7 @@ void initErrors()
     SWAG_ERROR(Nte0149, "you might want to get the address of '%s' using '&'");
     SWAG_ERROR(Nte0108, "'==' is the comparison operator; did you intend to affect something with '='?");
     SWAG_ERROR(Nte0100, "an attribute is not a function; please consider removing it");
+    SWAG_ERROR(Nte0135, nullptr);
     SWAG_ERROR(Nte0134, nullptr);
     SWAG_ERROR(Nte0118, nullptr);
     SWAG_ERROR(Nte0119, nullptr);

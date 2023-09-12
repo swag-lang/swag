@@ -46,7 +46,10 @@ bool Parser::checkIsValidUserName(AstNode* node, Token* loc)
 bool Parser::checkIsSingleIdentifier(AstNode* node, const char* msg)
 {
     if (!testIsSingleIdentifier(node))
+    {
         return error(node, Fmt(Err(Syn0062), msg));
+    }
+
     return true;
 }
 
@@ -164,9 +167,8 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         {
             if (identifierFlags & IDENTIFIER_TYPE_DECL)
             {
-                Diagnostic diag{identifier, token, Fmt(Err(Syn0128), identifier->token.ctext())};
-                auto       note = Diagnostic::note(Nte(Nte0135));
-                return context->report(diag, note);
+                Diagnostic diag{identifier, token, Err(Syn0128)};
+                return context->report(diag);
             }
 
             SWAG_CHECK(eatToken());

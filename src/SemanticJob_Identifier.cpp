@@ -1080,11 +1080,12 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             identifier->flags |= AST_CONST_EXPR;
 
         // Be sure it's the NAME{} syntax
-        if (identifier->callParameters && !(identifier->flags & AST_GENERATED) && !(identifier->callParameters->specFlags & AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT))
+        if (identifier->callParameters &&
+            !(identifier->flags & AST_GENERATED) &&
+            !(identifier->callParameters->specFlags & AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT))
         {
-            Diagnostic diag{identifier, identifier->token, Fmt(Err(Syn0128), identifier->typeInfo->name.c_str())};
-            auto       note = Diagnostic::note(Nte(Nte0135));
-            return context->report(diag, note);
+            Diagnostic diag{identifier, identifier->token, Err(Syn0128)};
+            return context->report(diag);
         }
 
         // A struct with parameters is in fact the creation of a temporary variable
