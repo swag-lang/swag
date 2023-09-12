@@ -439,7 +439,7 @@ bool Parser::doBreak(AstNode* parent, AstNode** result)
 
     if (token.id != TokenId::SymSemiColon)
     {
-        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Err(Syn0108)));
+        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0108), token.ctext())));
         node->label = token;
         SWAG_CHECK(eatToken());
     }

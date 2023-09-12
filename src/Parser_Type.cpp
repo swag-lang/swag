@@ -164,7 +164,6 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                 else if (tokenName.text == g_LangSpec->name_self)
                 {
                     Diagnostic diag(sourceFile, token, Err(Syn0197));
-                    diag.hint = Hnt(Hnt0102);
                     return context->report(diag);
                 }
                 else

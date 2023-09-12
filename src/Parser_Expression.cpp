@@ -33,13 +33,13 @@ bool Parser::doLiteral(AstNode* parent, AstNode** result)
             {
             case TokenId::KwdTrue:
             case TokenId::KwdFalse:
-                return error(token, Fmt(Err(Syn0219), "a bool"));
+                return error(token, Fmt(Err(Syn0219), "'bool' literals"));
             case TokenId::LiteralString:
-                return error(token, Fmt(Err(Syn0219), "a string"));
+                return error(token, Fmt(Err(Syn0219), "'string' literals"));
             case TokenId::KwdNull:
                 return error(token, Fmt(Err(Syn0219), "'null'"));
             default:
-                return error(token, Fmt(Err(Syn0219), "that kind of"));
+                return error(token, Fmt(Err(Syn0219), "that kind of literal"));
             }
         }
     }
@@ -93,7 +93,6 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
             if (arrayNode->specFlags & AstArrayPointerSlicing::SPECFLAG_EXCLUDE_UP)
             {
                 Diagnostic diag{sourceFile, token, Err(Syn0185)};
-                diag.hint = Hnt(Hnt0098);
                 auto note = Diagnostic::note(arrayNode, arrayNode->token, Nte(Nte0147));
                 return context->report(diag, note);
             }
@@ -978,9 +977,9 @@ bool Parser::doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
     bool isBinary = false;
     if ((token.id == TokenId::KwdOr) || (token.id == TokenId::KwdAnd))
     {
-        auto binaryNode         = Ast::newNode<AstBinaryOpNode>(this, AstNodeKind::BinaryOp, sourceFile, parent);
+        auto binaryNode = Ast::newNode<AstBinaryOpNode>(this, AstNodeKind::BinaryOp, sourceFile, parent);
         binaryNode->semanticFct = SemanticJob::resolveBoolExpression;
-        binaryNode->token       = token;
+        binaryNode->token = token;
 
         Ast::addChildBack(binaryNode, leftNode);
         SWAG_CHECK(eatToken());
@@ -988,6 +987,8 @@ bool Parser::doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
         leftNode = binaryNode;
         isBinary = true;
     }
+    else if (token.id == TokenId::SymAmpersandAmpersand || token.id == TokenId::SymVerticalVertical)
+        return invalidTokenError(InvalidTokenError::EmbeddedInstruction);
 
     if (!isBinary)
         Ast::addChildBack(parent, leftNode);

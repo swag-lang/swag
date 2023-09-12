@@ -118,247 +118,213 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    // change the error to make it more clear to the user. keep the look and feel of the error :
+    SWAG_ERROR(Syn0001, "'#global export' already defined                  $ only one '#global export' is allowed per file");
+    SWAG_ERROR(Syn0181, "'default' already defined                         $ only one 'default' statement is allowed per 'switch'");
+    SWAG_ERROR(Syn0123, "'impl' kind mismatch                              $ the implementation kind (%s) and the type of '%s' (%s) are not the same");
+    SWAG_ERROR(Syn0200, "ambiguous syntax                                  $ ambiguity arises between initializing '%s' and starting a new block");
+    SWAG_ERROR(Syn0195, "ambiguous syntax                                  $ ambiguous declaration within lambda type parameters");
+    SWAG_ERROR(Syn0116, "duplicated '#import' location                     $ the '#import' location has already been defined");
+    SWAG_ERROR(Syn0117, "duplicated '#import' version                      $ the '#import' version has already been defined");
+    SWAG_ERROR(Syn0015, "empty '#mixin' replacement block                  $ an empty 'mixin' block is useless $ add content to the '#mixin' block or consider removing it");
+    SWAG_ERROR(Syn0158, "empty 'case' statement                            $ a 'case' statement should never be empty");
+    SWAG_ERROR(Syn0052, "empty 'default' statement                         $ a 'default' statement should never be empty");
+    SWAG_ERROR(Syn0124, "empty array literal                               $ an array literal should contain at least one value");
+    SWAG_ERROR(Syn0019, "identifier expected                               $ expected a function call after '%s', found '%s' instead");
+    SWAG_ERROR(Syn0217, "incompatible use of 'moveref' qualifier           $ the 'moveref' qualifier cannot be combined with an immutable ('const') expression");
+    SWAG_ERROR(Syn0186, "incompatible use of cast modifiers                $ the '%s' and '%s' cast modifiers are mutually exclusive and cannot be used together");
+    SWAG_ERROR(Syn0056, "incomplete 'case' expression list                 $ expected another expression after ',' and before ':' $ ',' indicates a list of 'case' expressions; provide the next expression or consider removing the ','");
+    SWAG_ERROR(Syn0201, "incomplete arguments list                         $ expected another call argument after ',' $ either provide an additional argument or remove the trailing ','");
+    SWAG_ERROR(Syn0202, "incomplete parameters list                        $ expected another parameter after ',' $ either provide an additional parameter or remove the trailing ','");
+    SWAG_ERROR(Syn0016, "invalid '#mixin' replacement keyword              $ a '#mixin' block accepts only 'break' and 'continue' as replacements, found '%s' instead");
+    SWAG_ERROR(Syn0211, "invalid '#up' count                               $ expected an integer literal for the '#up' count, found '%s' instead");
+    SWAG_ERROR(Syn0082, "invalid '#up' count                               $ the '#up' count cannot be zero");
+    SWAG_ERROR(Syn0210, "invalid '#up' count                               $ the '#up' count should be an untype integer in the range [1, 255], found '%s'");
+    SWAG_ERROR(Syn0169, "invalid '@alias' number                           $ '@alias' variable names should end with a number, found '%s' instead");
+    SWAG_ERROR(Syn0168, "invalid '@mixin' number                           $ '@mixin' variable names should end with a number, found '%s' instead");
+    SWAG_ERROR(Syn0142, "invalid 'defer' mode                              $ '%s' is not a valid 'defer' mode $ the valid defer modes are 'defer(err)' and 'defer(noerr)'");
+    SWAG_ERROR(Syn0053, "invalid 'switch' block content                    $ expected 'case' or 'default', found '%s' instead");
+    SWAG_ERROR(Syn0115, "invalid 'visit' name                              $ expected 'visit' specialized name, found '%s' instead");
+    SWAG_ERROR(Syn0071, "invalid alias name                                $ expected the alias name after '%s', found '%s' instead");
+    SWAG_ERROR(Syn0190, "invalid assignment                                $ assignments are not allowed for unnamed parameters ('?')");
+    SWAG_ERROR(Syn0072, "invalid attribute name                            $ expected an attribute name, found '%s' instead");
+    SWAG_ERROR(Syn0050, "invalid attribute usage                           $ expected ',' for a new attribute name, or ']' to end the list, found '%s' instead");
+    SWAG_ERROR(Syn0104, "invalid auto-generated 'impl' block               $ 'impl' block generation is permissible only within a '#message' with 'Swag.CompilerMsgMask.AttributeGen'");
+    SWAG_ERROR(Syn0207, "invalid block start                               $ a block start '{' is not allowed after 'discard try/assume/catch'");
+    SWAG_ERROR(Syn0049, "invalid closure parameters                        $ expected '(' to start the list of parameters of the closure, found '%s' instead");
+    SWAG_ERROR(Syn0184, "invalid constant name                             $ expected a constant name, found '%s' instead");
+    SWAG_ERROR(Syn0193, "invalid default value                             $ 'self' cannot have a default value");
+    SWAG_ERROR(Syn0194, "invalid default value                             $ lambda parameters cannot have a default value");
+    SWAG_ERROR(Syn0073, "invalid embedded instruction                      $ expected an embedded instruction or a curly block");
+    SWAG_ERROR(Syn0159, "invalid empty attribute                           $ an attribute should contain at least one value $ you should specify the attribute name between '[]'");
+    SWAG_ERROR(Syn0187, "invalid empty statement ';'                       $ a semicolon ';' cannot be used alone to mark an empty statement");
+    SWAG_ERROR(Syn0075, "invalid enum identifier                           $ expected an enum value identifier, found '%s' instead");
+    SWAG_ERROR(Syn0074, "invalid enum name                                 $ expected the enum name, found '%s' instead");
+    SWAG_ERROR(Syn0020, "invalid expression                                $ the directive '%s' can't be used as an expression $ this directive can only be used as a statement");
+    SWAG_ERROR(Syn0106, "invalid function name                             $ a function name ('%s') cannot start with '@', this is reserved for intrinsics");
+    SWAG_ERROR(Syn0089, "invalid function name                             $ expected a function name, found '%s'");
+    SWAG_ERROR(Syn0077, "invalid identifier                                $ a valid identifier is expected here");
+    SWAG_ERROR(Syn0218, "invalid identifier                                $ expected an identifier, found %s '%s' instead");
+    SWAG_ERROR(Syn0078, "invalid identifier                                $ expected an identifier, found '%s' instead");
+    SWAG_ERROR(Syn0157, "invalid identifier list                           $ 'with' does not support multiple identifiers");
+    SWAG_ERROR(Syn0112, "invalid parameter name                            $ expected a parameter name, found '%s' instead");
+    SWAG_ERROR(Syn0167, "invalid pass name                                 $ '%s' is not recognized as a valid compiler pass name");
+    SWAG_ERROR(Syn0022, "invalid reference to 'with' block                 $ an identifier is expected after '.', found '%s' instead");
+    SWAG_ERROR(Syn0063, "invalid struct name                               $ expected the struct name, found '%s' instead");
+    SWAG_ERROR(Syn0064, "invalid top-level instruction                     $ expected a top-level instruction");
+    SWAG_ERROR(Syn0060, "invalid type suffix                               $ expected an identifier or a type after the start of a type suffix ''', found '%s' instead");
+    SWAG_ERROR(Syn0034, "invalid use of '#mixin' block                     $ a '#mixin' block is only valid within a breakable statement such as 'loop', 'visit', 'for', etc.");
+    SWAG_ERROR(Syn0121, "invalid use of access modifier                    $ the '%s' access modifier can only be used at the global scope");
+    SWAG_ERROR(Syn0065, "invalid variable list                             $ 'if' does not support multiples variable declarations");
+    SWAG_ERROR(Syn0111, "invalid variable name                             $ a variable name ('%s') cannot start with '@', this is reserved for intrinsics $ only '@mixin' and '@alias' are possible in that case");
+    SWAG_ERROR(Syn0161, "invalid variable name                             $ unexpected generic parameters after variable name '%s'");
+    SWAG_ERROR(Syn0216, "invalid variable name                             $ unexpected parameters after variable name '%s'");
+    SWAG_ERROR(Syn0183, "misplaced '#dependencies'                         $ '#dependencies' can only be used within 'module.swg' or '.swgs' files");
+    SWAG_ERROR(Syn0182, "misplaced '#dependencies'                         $ '#dependencies' must be placed at the file level");
+    SWAG_ERROR(Syn0003, "misplaced '#global testerror'                     $ '#global testerror' is only valid in a test file from the './tests' folder");
+    SWAG_ERROR(Syn0004, "misplaced '#global testwarning'                   $ '#global testwarning' is only valid in a test file from the './tests' folder");
+    SWAG_ERROR(Syn0005, "misplaced '#global using'                         $ '#global using' can only be used within 'module.swg' or '.swgs' files");
+    SWAG_ERROR(Syn0006, "misplaced '#global' directive                     $ '#global' should be placed at the very top of the file");
+    SWAG_ERROR(Syn0009, "misplaced '#import'                               $ '#import' can only be used within 'module.swg' or '.swgs' files");
+    SWAG_ERROR(Syn0008, "misplaced '#import'                               $ '#import' must be placed just under a '#dependencies' block");
+    SWAG_ERROR(Syn0010, "misplaced '#import'                               $ '#import' must be placed within the '#dependencies' block");
+    SWAG_ERROR(Syn0013, "misplaced '#include'                              $ '#include' can only be used within 'module.swg' or '.swgs' files");
+    SWAG_ERROR(Syn0012, "misplaced '#include'                              $ '#include' must be placed just under a '#dependencies' block");
+    SWAG_ERROR(Syn0014, "misplaced '#include'                              $ '#include' must be placed within the '#dependencies' block");
+    SWAG_ERROR(Syn0035, "misplaced '#placeholder'                          $ '#placeholder' must be placed within a top level scope");
+    SWAG_ERROR(Syn0135, "misplaced 'Self' type                             $ the 'Self' type is only valid within an 'impl', 'struct', or 'interface' block");
+    SWAG_ERROR(Syn0061, "misplaced 'const' qualifier                       $ the 'const' qualifier is not allowed for 'func', but only for 'mtd'");
+    SWAG_ERROR(Syn0039, "misplaced 'mtd'                                   $ 'mtd' is only valid within a struct implementation block $ you could replace 'mtd' with 'func'");
+    SWAG_ERROR(Syn0038, "misplaced 'mtd' in enum                           $ 'mtd' is only valid within a struct implementation block $ you could replace 'mtd' with 'func'");
+    SWAG_ERROR(Syn0027, "misplaced 'self'                                  $ the 'self' keyword is only valid within an 'impl' block of an enum or a struct");
+    SWAG_ERROR(Syn0028, "misplaced 'throw'                                 $ raising an error with 'throw' is only valid within a function, macro or mixin");
+    SWAG_ERROR(Syn0029, "misplaced 'using' in interface                    $ 'using' can't be associated with an interface member");
+    SWAG_ERROR(Syn0153, "misplaced closure                                 $ a closure definition is not valid at the global level $ closures can only be defined within functions");
+    SWAG_ERROR(Syn0147, "misplaced error catching                          $ '%s' cannot be nested in a '%s' expression $ you should use only one 'try', 'catch' or 'assume'");
+    SWAG_ERROR(Syn0021, "misplaced error catching                          $ treating a return error with '%s' can only be done inside a function, macro or mixin");
+    SWAG_ERROR(Syn0180, "misplaced reference to 'with' block               $ statements starting with the '.' operator are only valid within a 'with' block");
+    SWAG_ERROR(Syn0036, "misplaced top-level 'using'                       $ a top-level 'using' must be placed before any other declarations");
+    SWAG_ERROR(Syn0070, "missing %s type                                   $ expected the start of the type declaration ':', or an assignment with '=', found '%s' instead");
+    SWAG_ERROR(Syn0002, "missing '#foreignlib' string argument             $ expected the library name after '#foreignlib', found '%s' instead $ use '#foreignlib \"path/to/library\"' to specify the library to import");
+    SWAG_ERROR(Syn0204, "missing '#global testerror' string argument       $ expected the error string to check after '#global testerror', found '%s' instead");
+    SWAG_ERROR(Syn0205, "missing '#global testwarning' string argument     $ expected the warning string to check after '#global testwarning', found '%s' instead");
+    SWAG_ERROR(Syn0083, "missing '#if' boolean expression                  $ expected a boolean expression before '%s'");
+    SWAG_ERROR(Syn0007, "missing '#import' string argument                 $ expected the module name to import after '#import', found '%s' instead");
+    SWAG_ERROR(Syn0011, "missing '#include' string argument                $ expected the file name to include after '#include', found '%s' instead");
+    SWAG_ERROR(Syn0033, "missing '#message' parameter                      $ '#message' requests a parameter of type 'Swag.CompilerMsgMask'");
+    SWAG_ERROR(Syn0017, "missing '#placeholder' identifier                 $ expected an identifier after '#placeholder', found '%s' instead");
+    SWAG_ERROR(Syn0196, "missing '#type' type                              $ expected a valid type after '#type', found '%s' instead");
+    SWAG_ERROR(Syn0051, "missing ':'                                       $ a ':' is expected here after the 'loop' variable name '%s' $ syntax is 'loop [variable:] count'");
+    SWAG_ERROR(Syn0023, "missing '@alias' number                           $ '@alias' variable names should end with a number such as '@alias0', '@alias1', etc.");
+    SWAG_ERROR(Syn0119, "missing '@mixin' number                           $ '@mixin' variable names should end with a number such as '@mixin0', '@mixin1', etc.");
+    SWAG_ERROR(Syn0055, "missing 'case' expression                         $ expected the 'case' expression before '%s'");
+    SWAG_ERROR(Syn0057, "missing 'closure' capture variable                $ expected another capture variable between ',' and '|' $ add another variable or consider removing the trailing comma");
+    SWAG_ERROR(Syn0084, "missing 'if' boolean expression                   $ expected a boolean expression before '%s'");
+    SWAG_ERROR(Syn0085, "missing 'loop' count                              $ expected the 'loop' count expression before '%s'");
+    SWAG_ERROR(Syn0086, "missing 'visit' expression                        $ expected the element to visit before '%s'");
+    SWAG_ERROR(Syn0214, "missing 'visit' name                              $ expected the 'visit' specialized name between '()' $ if you are using the default 'visit', consider removing the parenthesis");
+    SWAG_ERROR(Syn0212, "missing 'visit' variable                          $ expected another 'visit' variable between ',' and ':' $ the first 'visit' variable is the value, the second one is the index");
+    SWAG_ERROR(Syn0087, "missing 'while' boolean expression                $ expected a boolean expression before '%s'");
+    SWAG_ERROR(Syn0026, "missing attribute name                            $ expected an attribute name before '('");
+    SWAG_ERROR(Syn0140, "missing enum name                                 $ expected the enum name before the start of the body '{'");
+    SWAG_ERROR(Syn0146, "missing enum name                                 $ expected the enum name before the start of the type definition ':'");
+    SWAG_ERROR(Syn0091, "missing function parameters                       $ expected the function parameters between '()' before the start of the body '{' $ if you want to declare a function without parameters, consider adding '()' after the name");
+    SWAG_ERROR(Syn0044, "missing intrinsic arguments                       $ expected the intrinsic arguments between '()'");
+    SWAG_ERROR(Syn0025, "missing struct name                               $ expected the struct name before the start of the body '{'");
+    SWAG_ERROR(Syn0209, "out of range '#up' count                          $ the '#up' count should be in the range [1, 255], found '%u'");
+    SWAG_ERROR(Syn0043, "out of range '@alias' number                      $ an '@alias' number should be in the range [0, 31], found '%u'");
+    SWAG_ERROR(Syn0032, "out of range '@mixin' number                      $ a '@mixin' number should be in the range [0, 31], found '%u'");
+    SWAG_ERROR(Syn0132, "out of range array dimensions                     $ array dimensions cannot exceed '254'");
+    SWAG_ERROR(Syn0018, "redundant access modifier                         $ the '%s' access modifier is unnecessary because of '#global export' $ remove the 'public' modifier, as '#global export' ensures all declarations in this file are publicly accessible");
+    SWAG_ERROR(Syn0122, "reserved identifier                               $ the identifier '%s' starts with '__', this is language-reserved $ identifiers starting with '__' are typically reserved for compiler-internal or system use");
+    SWAG_ERROR(Syn0097, "unexpected '#elif'                                $ '#elif' found without a preceding '#if' directive");
+    SWAG_ERROR(Syn0098, "unexpected '#else'                                $ '#else' found without a preceding '#if' or '#elif' directive");
+    SWAG_ERROR(Syn0215, "unexpected '#validifx' in struct                  $ '#validifx' is not allowed for a struct, this is only valid for functions $ consider using '#validif' instead");
+    SWAG_ERROR(Syn0101, "unexpected 'elif'                                 $ 'elif' found without a preceding 'if'");
+    SWAG_ERROR(Syn0102, "unexpected 'else'                                 $ 'else' found without a preceding 'if' or 'elif'");
+    SWAG_ERROR(Syn0143, "unexpected 'for' keyword                          $ the 'for' keyword is not valid in an enum implementation");
+    SWAG_ERROR(Syn0095, "unexpected 'mtd'                                  $ expected 'func' or 'closure' instead of 'mtd' to declare a lambda type");
+    SWAG_ERROR(Syn0144, "unexpected 'retval' return type                   $ 'retval' is only valid as a local variable type");
+    SWAG_ERROR(Syn0088, "unexpected 'throw' qualifier                      $ an attribute cannot have the 'throw' qualifier as it cannot raise errors");
+    SWAG_ERROR(Syn0030, "unexpected 'var' in struct                        $ 'var' is unnecessary in struct variable declarations $ struct variables should be declared as 'fieldName: Type' without 'var'");
+    SWAG_ERROR(Syn0138, "unexpected attribute return type                  $ an attribute cannot have a return type starting with '->'");
+    SWAG_ERROR(Syn0160, "unexpected empty expression                       $ the expression '()' is empty and not allowed here");
+    SWAG_ERROR(Syn0188, "unexpected end of comment                         $ unexpected end of multi-line comment '*/' after %s $ beginning '/*' of multi-line comment is missing");
+    SWAG_ERROR(Syn0162, "unexpected generic parameters                     $ expected an non-generic name without generic parameters starting with '''");
+    SWAG_ERROR(Syn0024, "unexpected line break in array type declaration   $ the type of the array should be placed on the same line as the array dimensions");
+    SWAG_ERROR(Syn0179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
 
-    SWAG_ERROR(Syn0121, "invalid use of access modifier                 $ the '%s' access modifier can only be used at the global scope");
-    SWAG_ERROR(Syn0018, "redundant access modifier                      $ the '%s' access modifier is unnecessary because of '#global export' $ remove the 'public' modifier, as '#global export' ensures all declarations in this file are publicly accessible");
-
-    SWAG_ERROR(Syn0183, "misplaced '#dependencies'                      $ '#dependencies' can only be used within 'module.swg' or '.swgs' files");
-    SWAG_ERROR(Syn0005, "misplaced '#global using'                      $ '#global using' can only be used within 'module.swg' or '.swgs' files");
-    SWAG_ERROR(Syn0009, "misplaced '#import'                            $ '#import' can only be used within 'module.swg' or '.swgs' files");
-    SWAG_ERROR(Syn0013, "misplaced '#include'                           $ '#include' can only be used within 'module.swg' or '.swgs' files");
-    SWAG_ERROR(Syn0003, "misplaced '#global testerror'                  $ '#global testerror' is only valid in a test file from the './tests' folder");
-    SWAG_ERROR(Syn0004, "misplaced '#global testwarning'                $ '#global testwarning' is only valid in a test file from the './tests' folder");
-    SWAG_ERROR(Syn0182, "misplaced '#dependencies'                      $ '#dependencies' must be placed at the file level");
-    SWAG_ERROR(Syn0008, "misplaced '#import'                            $ '#import' must be placed just under a '#dependencies' block");
-    SWAG_ERROR(Syn0012, "misplaced '#include'                           $ '#include' must be placed just under a '#dependencies' block");
-    SWAG_ERROR(Syn0010, "misplaced '#import'                            $ '#import' must be placed within the '#dependencies' block");
-    SWAG_ERROR(Syn0014, "misplaced '#include'                           $ '#include' must be placed within the '#dependencies' block");
-    SWAG_ERROR(Syn0006, "misplaced '#global' directive                  $ '#global' should be placed at the very top of the file");
-    SWAG_ERROR(Syn0035, "misplaced '#placeholder'                       $ '#placeholder' must be placed within a top level scope");
-    SWAG_ERROR(Syn0036, "misplaced top-level 'using'                    $ a top-level 'using' must be placed before any other declarations");
-    SWAG_ERROR(Syn0167, "invalid pass name                              $ '%s' is not recognized as a valid compiler pass name");
-
-    SWAG_ERROR(Syn0097, "unexpected '#elif'                             $ '#elif' found without a preceding '#if' directive");
-    SWAG_ERROR(Syn0098, "unexpected '#else'                             $ '#else' found without a preceding '#if' or '#elif' directive");
-    SWAG_ERROR(Syn0101, "unexpected 'elif'                              $ 'elif' found without a preceding 'if'");
-    SWAG_ERROR(Syn0102, "unexpected 'else'                              $ 'else' found without a preceding 'if' or 'elif'");
-
-    SWAG_ERROR(Syn0001, "'#global export' already defined               $ only one '#global export' is allowed per file");
-    SWAG_ERROR(Syn0181, "'default' already defined                      $ only one 'default' statement is allowed per 'switch'");
-
-    SWAG_ERROR(Syn0002, "missing '#foreignlib' string argument          $ expected the library name after '#foreignlib', found '%s' instead $ use '#foreignlib \"path/to/library\"' to specify the library to import");
-    SWAG_ERROR(Syn0204, "missing '#global testerror' string argument    $ expected the error string to check after '#global testerror', found '%s' instead");
-    SWAG_ERROR(Syn0205, "missing '#global testwarning' string argument  $ expected the warning string to check after '#global testwarning', found '%s' instead");
-    SWAG_ERROR(Syn0007, "missing '#import' string argument              $ expected the module name to import after '#import', found '%s' instead");
-    SWAG_ERROR(Syn0011, "missing '#include' string argument             $ expected the file name to include after '#include', found '%s' instead");
-    SWAG_ERROR(Syn0017, "missing '#placeholder' identifier              $ expected an identifier after '#placeholder', found '%s' instead");
-    SWAG_ERROR(Syn0196, "missing '#type' type                           $ expected a valid type after '#type', found '%s' instead");
-    SWAG_ERROR(Syn0119, "missing '@mixin' number                        $ '@mixin' variable names should end with a number such as '@mixin0', '@mixin1', etc.");
-    SWAG_ERROR(Syn0023, "missing '@alias' number                        $ '@alias' variable names should end with a number such as '@alias0', '@alias1', etc.");
-
-    SWAG_ERROR(Syn0034, "invalid use of '#mixin' block                  $ a '#mixin' block is only valid within a breakable statement such as 'loop', 'visit', 'for', etc.");
-    SWAG_ERROR(Syn0016, "invalid '#mixin' replacement keyword           $ a '#mixin' block accepts only 'break' and 'continue' as replacements, found '%s' instead");
-    SWAG_ERROR(Syn0015, "empty '#mixin' replacement block               $ an empty 'mixin' block is useless $ add content to the '#mixin' block or consider removing it");
-
-    SWAG_ERROR(Syn0032, "out of range '@mixin' number                   $ a '@mixin' number should be in the range [0, 31], found '%u'");
-    SWAG_ERROR(Syn0043, "out of range '@alias' number                   $ an '@alias' number should be in the range [0, 31], found '%u'");
-    SWAG_ERROR(Syn0168, "invalid '@mixin' number                        $ '@mixin' variable names should end with a number, found '%s' instead");
-    SWAG_ERROR(Syn0169, "invalid '@alias' number                        $ '@alias' variable names should end with a number, found '%s' instead");
-
-    SWAG_ERROR(Syn0084, "missing 'if' boolean expression                $ expected a boolean expression before '%s'");
-    SWAG_ERROR(Syn0083, "missing '#if' boolean expression               $ expected a boolean expression before '%s'");
-    SWAG_ERROR(Syn0087, "missing 'while' boolean expression             $ expected a boolean expression before '%s'");
-    SWAG_ERROR(Syn0086, "missing 'visit' expression                     $ expected the element to visit before '%s'");
-    SWAG_ERROR(Syn0055, "missing 'case' expression                      $ expected the 'case' expression before '%s'");
-    SWAG_ERROR(Syn0085, "missing 'loop' count                           $ expected the 'loop' count expression before '%s'");
-    SWAG_ERROR(Syn0033, "missing '#message' parameter                   $ '#message' requests a parameter of type 'Swag.CompilerMsgMask'");
-
-    SWAG_ERROR(Syn0030, "unexpected 'var' in struct                     $ 'var' is unnecessary in struct variable declarations $ struct variables should be declared as 'fieldName: Type' without 'var'");
-    SWAG_ERROR(Syn0144, "unexpected 'retval' return type                $ 'retval' is only valid as a local variable type");
-
-    SWAG_ERROR(Syn0158, "empty 'case' statement                         $ a 'case' statement should never be empty");
-    SWAG_ERROR(Syn0052, "empty 'default' statement                      $ a 'default' statement should never be empty");
-    SWAG_ERROR(Syn0053, "invalid 'switch' block content                 $ expected 'case' or 'default', found '%s' instead");
-    SWAG_ERROR(Syn0056, "incomplete 'case' expression list              $ expected another expression after ',' and before ':' $ ',' indicates a list of 'case' expressions; provide the next expression or consider removing the ','");
-
-    SWAG_ERROR(Syn0201, "incomplete arguments list                      $ expected another call argument after ',' $ either provide an additional argument or remove the trailing ','");
-    SWAG_ERROR(Syn0202, "incomplete parameters list                     $ expected another function parameter after ',' $ either provide an additional parameter or remove the trailing ','");
-
-    SWAG_ERROR(Syn0111, "invalid variable name                          $ a variable name ('%s') cannot start with '@', this is reserved for intrinsics $ only '@mixin' and '@alias' are possible in that case");
-    SWAG_ERROR(Syn0106, "invalid function name                          $ a function name ('%s') cannot start with '@', this is reserved for intrinsics");
-    SWAG_ERROR(Syn0089, "invalid function name                          $ expected a function name, found '%s'");
-
-    SWAG_ERROR(Syn0122, "reserved identifier                            $ the identifier '%s' starts with '__', this is language-reserved $ identifiers starting with '__' are typically reserved for compiler-internal or system use");
-    SWAG_ERROR(Syn0211, "invalid '#up' count                            $ expected an integer literal for the '#up' count, found '%s' instead");
-    SWAG_ERROR(Syn0209, "out of range '#up' count                       $ the '#up' count should be in the range [1, 255], found '%u'");
-    SWAG_ERROR(Syn0082, "invalid '#up' count                            $ the '#up' count cannot be zero");
-    SWAG_ERROR(Syn0210, "invalid '#up' count                            $ the '#up' count should be an untype integer in the range [1, 255], found '%s'");
-
-    SWAG_ERROR(Syn0215, "unexpected '#validifx' in struct               $ '#validifx' is not allowed for a struct, this is only valid for functions $ consider using '#validif' instead");
-    SWAG_ERROR(Syn0020, "invalid expression                             $ the directive '%s' can't be used as an expression $ this directive can only be used as a statement");
-    SWAG_ERROR(Syn0021, "misplaced error catching                       $ treating a return error with '%s' can only be done inside a function, macro or mixin");
-    SWAG_ERROR(Syn0147, "misplaced error catching                       $ '%s' cannot be nested in a '%s' expression $ you should use only one 'try', 'catch' or 'assume'");
-    SWAG_ERROR(Syn0028, "misplaced 'throw'                              $ raising an error with 'throw' is only valid within a function, macro or mixin");
-
-    SWAG_ERROR(Syn0019, "identifier expected                            $ expected a function call after '%s', found '%s' instead");
-
-    SWAG_ERROR(Syn0022, "invalid reference to 'with' block                $ an identifier is expected after '.', found '%s' instead");
-    SWAG_ERROR(Syn0180, "misplaced reference to 'with' block              $ statements starting with the '.' operator are only valid within a 'with' block");
-    SWAG_ERROR(Syn0135, "misplaced 'Self' type                            $ the 'Self' type is only valid within an 'impl', 'struct', or 'interface' block");
-    SWAG_ERROR(Syn0027, "misplaced 'self'                                 $ the 'self' keyword is only valid within an 'impl' block of an enum or a struct");
-    SWAG_ERROR(Syn0024, "unexpected line break in array type declaration  $ the type of the array should be placed on the same line as the array dimensions");
-    SWAG_ERROR(Syn0061, "misplaced 'const' qualifier                      $ the 'const' qualifier is not allowed for 'func', but only for 'mtd'");
-    SWAG_ERROR(Syn0143, "unexpected 'for' keyword                         $ the 'for' keyword is not valid in an enum implementation");
-    SWAG_ERROR(Syn0104, "invalid auto-generated 'impl' block              $ 'impl' block generation is permissible only within a '#message' with 'Swag.CompilerMsgMask.AttributeGen'");
-
-    SWAG_ERROR(Syn0217, "incompatible use of 'moveref' qualifier          $ the 'moveref' qualifier cannot be combined with an immutable ('const') expression");
-    SWAG_ERROR(Syn0186, "incompatible use of cast modifiers               $ the '%s' and '%s' cast modifiers are mutually exclusive and cannot be used together");
-
-    SWAG_ERROR(Syn0029, "misplaced 'using' in interface                   $ 'using' can't be associated with an interface member");
-    SWAG_ERROR(Syn0190, "invalid assignment                               $ assignments are not allowed for unnamed parameters ('?')");
-    SWAG_ERROR(Syn0194, "invalid default value                            $ lambda parameters cannot have a default value");
-    SWAG_ERROR(Syn0193, "invalid default value                            $ 'self' cannot have a default value");
-    SWAG_ERROR(Syn0060, "invalid type suffix                              $ expected an identifier or a type after the start of a type suffix ''', found '%s' instead");
-    SWAG_ERROR(Syn0051, "missing ':'                                      $ a ':' is expected here after the 'loop' variable name '%s' $ syntax is 'loop [variable:] count'");
-    SWAG_ERROR(Syn0071, "invalid alias name                               $ expected the alias name after '%s', found '%s' instead");
-    SWAG_ERROR(Syn0132, "out of range array dimensions                    $ array dimensions cannot exceed '254'");
-
-    SWAG_ERROR(Syn0200, "ambiguous syntax                       $ ambiguity arises between initializing '%s' and starting a new block");
-    SWAG_ERROR(Syn0195, "ambiguous syntax                       $ ambiguous declaration within lambda type parameters");
-
-    SWAG_ERROR(Syn0212, "missing 'visit' variable               $ expected another 'visit' variable between ',' and ':' $ the first 'visit' variable is the value, the second one is the index");
-    SWAG_ERROR(Syn0057, "missing 'closure' capture variable     $ expected another capture variable between ',' and '|' $ add another variable or consider removing the trailing comma");
-
-    SWAG_ERROR(Syn0072, "invalid attribute name            $ expected an attribute name, found '%s' instead");
-    SWAG_ERROR(Syn0026, "missing attribute name            $ expected an attribute name before '('");
-
-    SWAG_ERROR(Syn0038, "misplaced 'mtd' in enum           $ 'mtd' is only valid within a struct implementation block $ you could replace 'mtd' with 'func'");
-    SWAG_ERROR(Syn0039, "misplaced 'mtd'                   $ 'mtd' is only valid within a struct implementation block $ you could replace 'mtd' with 'func'");
-
-    SWAG_ERROR(Syn0207, "invalid block start               $ a block start '{' is not allowed after 'discard try/assume/catch'");
-    SWAG_ERROR(Syn0153, "misplaced closure                 $ a closure definition is not valid at the global level $ closures can only be defined within functions");
-
-    SWAG_ERROR(Syn0123, "'impl' kind mismatch              $ the implementation kind (%s) and the type of '%s' (%s) are not the same");
-
-    SWAG_ERROR(Syn0116, "duplicated '#import' location     $ the '#import' location has already been defined");
-    SWAG_ERROR(Syn0117, "duplicated '#import' version      $ the '#import' version has already been defined");
-
-    SWAG_ERROR(Syn0073, "invalid embedded instruction      $ expected an embedded instruction or a curly block");
-    SWAG_ERROR(Syn0064, "invalid top-level instruction     $ expected a top-level instruction");
-    SWAG_ERROR(Syn0124, "empty array literal               $ an array literal should contain at least one value");
-    SWAG_ERROR(Syn0159, "invalid empty attribute           $ an attribute should contain at least one value $ you should specify the attribute name between '[]'");
-    SWAG_ERROR(Syn0187, "invalid empty statement ';'       $ a semicolon ';' cannot be used alone to mark an empty statement");
-
-    SWAG_ERROR(Syn0188, "unexpected end of comment         $ unexpected end of multi-line comment '*/' after %s $ beginning '/*' of multi-line comment is missing");
-    SWAG_ERROR(Syn0160, "unexpected empty expression       $ the expression '()' is empty and not allowed here");
-
-    SWAG_ERROR(Syn0146, "missing enum name                 $ expected the enum name before the start of the type definition ':'");
-    SWAG_ERROR(Syn0140, "missing enum name                 $ expected the enum name before the start of the body '{'");
-    SWAG_ERROR(Syn0074, "invalid enum name                 $ expected the enum name, found '%s' instead");
-    SWAG_ERROR(Syn0075, "invalid enum identifier           $ expected an enum value identifier, found '%s' instead");
-
-    SWAG_ERROR(Syn0063, "invalid struct name               $ expected the struct name, found '%s' instead");
-    SWAG_ERROR(Syn0025, "missing struct name               $ expected the struct name before the start of the body '{'");
-
-    SWAG_ERROR(Syn0049, "invalid closure parameters        $ expected '(' to start the list of parameters of the closure, found '%s' instead");
-    SWAG_ERROR(Syn0095, "unexpected 'mtd'                  $ expected 'func' or 'closure' instead of 'mtd' to declare a lambda type");
-    SWAG_ERROR(Syn0115, "invalid 'visit' name              $ expected 'visit' specialized name, found '%s' instead");
-    SWAG_ERROR(Syn0214, "missing 'visit' name              $ expected the 'visit' specialized name between '()' $ if you are using the default 'visit', consider removing the parenthesis");
-    SWAG_ERROR(Syn0050, "invalid attribute usage           $ expected ',' for a new attribute name, or ']' to end the list, found '%s' instead");
-    SWAG_ERROR(Syn0162, "unexpected generic parameters     $ expected an non-generic name without generic parameters starting with '''");
-
-    SWAG_ERROR(Syn0161, "invalid variable name             $ unexpected generic parameters after variable name '%s'");
-    SWAG_ERROR(Syn0216, "invalid variable name             $ unexpected parameters after variable name '%s'");
-    SWAG_ERROR(Syn0090, "missing parameters type           $ expected the start of the type declaration ':', or an assignment with '='");
-    SWAG_ERROR(Syn0070, "missing %s type                   $ expected the start of the type declaration ':', or an assignment with '=', found '%s' instead");
-
-    SWAG_ERROR(Syn0077, "invalid identifier                $ a valid identifier is expected here");
-    SWAG_ERROR(Syn0218, "invalid identifier                $ expected an identifier, found %s '%s' instead");
-    SWAG_ERROR(Syn0078, "invalid identifier                $ expected an identifier, found '%s' instead");
-    SWAG_ERROR(Syn0138, "unexpected attribute return type  $ an attribute cannot have a return type starting with '->'");
-    SWAG_ERROR(Syn0088, "unexpected 'throw' qualifier      $ an attribute cannot have the 'throw' qualifier as it cannot raise errors");
-    SWAG_ERROR(Syn0142, "invalid 'defer' mode              $ '%s' is not a valid 'defer' mode $ the valid defer modes are 'defer(err)' and 'defer(noerr)'");
-
-    SWAG_ERROR(Syn0184, "invalid constant name             $ expected a constant name, found '%s' instead");
-    SWAG_ERROR(Syn0112, "invalid parameter name            $ expected a parameter name, found '%s' instead");
-    SWAG_ERROR(Syn0091, "missing function parameters       $ expected the function parameters between '()' before the start of the body '{' $ if you want to declare a function without parameters, consider adding '()' after the name");
-    SWAG_ERROR(Syn0044, "missing intrinsic arguments       $ expected the intrinsic arguments between '()'");
-
-    SWAG_ERROR(Syn0179, "unused return value               $ the return value of the intrinsic '%s' should be used");
-
-    SWAG_ERROR(Syn0157, "invalid identifier list           $ 'with' does not support multiple identifiers");
-    SWAG_ERROR(Syn0065, "invalid variable list             $ 'if' does not support multiples variable declarations");
+    SWAG_ERROR(Syn0189, "unexpected type declaration                       $ unexpected type declaration after unnamed parameters");
+    SWAG_ERROR(Syn0192, "unexpected 'const'                                $ unexpected 'const' before a lambda parameter name");
+    SWAG_ERROR(Syn0042, "unexpected tuple unpacking name                   $ expected a variable name or '?' when unpacking a tuple, found '%s' instead");
+    SWAG_ERROR(Syn0125, "duplicated instruction modifier                   $ the instruction modifier '%s' has already been defined");
+    SWAG_ERROR(Syn0197, "unexpected type declaration                       $ unexpected type declaration after 'self' $ 'self' is implicitly typed; consider removing the redundant type");
+    SWAG_ERROR(Syn0191, "unexpected lambda parameter name                  $ unexpected name when declaring a lambda type $ consider removing the name");
+    SWAG_ERROR(Syn0090, "missing lambda parameter type                     $ expected the start of the type declaration ':', or an assignment with '=' $ when declaring lambda parameters, you should not combined inferred and explicit types");
+    SWAG_ERROR(Syn0170, "unexpected lambda parameter type                  $ unexpected type $ when declaring lambda parameters, you should not combined inferred and explicit types");
+    SWAG_ERROR(Syn0165, "unexpected lambda return type                     $ unexpected return type when parameters type are inferred $ when inferring lambda parameter types, the return type should also be inferred");
+    SWAG_ERROR(Syn0099, "unexpected ')'                                    $ symbol ')' found without a preceding '('");
+    SWAG_ERROR(Syn0100, "unexpected ']'                                    $ symbol ']' found without a preceding '['");
+    SWAG_ERROR(Syn0103, "unexpected '}'                                    $ symbol '}' found without a preceding '{'");
+    SWAG_ERROR(Syn0109, "invalid '#import' location                        $ expected a '#import' location path, found '%' instead");
+    SWAG_ERROR(Syn0113, "invalid '#import' location                        $ expected a '#import' version as a string, found '%' instead");
+    SWAG_ERROR(Syn0118, "reserved namespace name                           $ the namespace '%s' is reserved by the compiler");
+    SWAG_ERROR(Syn0164, "invalid '#scope' identifier                       $ expected the '#scope' identifier, found '%s' instead");
+    SWAG_ERROR(Syn0185, "missing slicing upper bound                       $ expected an upper bound expression after '..<'");
+    SWAG_ERROR(Syn0105, "invalid logical operator                          $ expected '%s' for logical test, found '%s' instead");
+    SWAG_ERROR(Syn0069, "invalid variable name                             $ expected a variable name, found '%s' instead");
+    SWAG_ERROR(Syn0108, "invalid 'break' scope name                        $ expected the scope name after 'break', found '%' instead");
+    SWAG_ERROR(Syn0148, "invalid 'with' expression                         $ expected a 'with' valid expression");
+    SWAG_ERROR(Syn0136, "invalid '#global' instruction                     $ '%s' is not recognized as a valid '#global' instruction");
+    SWAG_ERROR(Syn0137, "unexpected '#validif/#validifx'                   $ the '#validif/#validifx' directive is not allowed on special function '%s' $ '#validif' and '#validifx' are not valid for 'opDrop', 'opPostCopy', and 'opPostMove'");
+    SWAG_ERROR(Syn0178, "invalid operator modifier                         $ '%s' is not recognized as a valid operator modifier");
+    SWAG_ERROR(Syn0126, "unexpected operator modifier                      $ the operator modifier '%s' cannot be applied to '%s'");
+    SWAG_ERROR(Syn0040, "misplaced namespace                               $ a namespace should be defined in the top-level scope or within another namespace");
+    SWAG_ERROR(Syn0093, "empty namespace name                              $ expected the namespace name before '%s'");
+    SWAG_ERROR(Syn0041, "invalid namespace name                            $ expected the namespace name, found '%s' instead");
+    SWAG_ERROR(Syn0054, "empty compiler function body                      $ %s requires a body; expected '{' but found ';' instead");
+    SWAG_ERROR(Syn0219, "unexpected type suffix                            $ %s should not be followed by a type suffix");
 
     SWAG_ERROR(Syn0048, "expected '%s' %s, found '%s'");
-    SWAG_ERROR(Syn0031, "expected '{' instead of '%s'");
     SWAG_ERROR(Syn0076, "expected expression");
+    SWAG_ERROR(Syn0031, "expected '{' instead of '%s'");
     SWAG_ERROR(Syn0092, "expected generic parameters");
     SWAG_ERROR(Syn0047, "EOF reached, expected '%s' %s");
-    SWAG_ERROR(Syn0042, "in tuple unpacking, expected variable name or '?', found '%s'");
-    SWAG_ERROR(Syn0125, "instruction modifier '%s' already used");
-    SWAG_ERROR(Syn0136, "invalid '#global' instruction '%s'");
-    SWAG_ERROR(Syn0137, "invalid '#validif/#validifx' on function '%s'");
     SWAG_ERROR(Syn0139, "invalid '[' for multi-dimensional array access");
-    SWAG_ERROR(Syn0192, "invalid 'const' before lambda parameter");
     SWAG_ERROR(Syn0150, "invalid attribute ('%s') after '%s'");
-    SWAG_ERROR(Syn0148, "invalid expression in 'with'");
     SWAG_ERROR(Syn0163, "invalid interface lambda declaration");
     SWAG_ERROR(Syn0208, "invalid operator '='");
-    SWAG_ERROR(Syn0166, "invalid parameter name '%s'");
     SWAG_ERROR(Syn0172, "invalid symbol '%s' in type declaration");
     SWAG_ERROR(Syn0199, "invalid token '%s' in lambda type; expected ',' or ')'");
-    SWAG_ERROR(Syn0175, "invalid token '%s' in tuple type; expected ',' or '}'");
-    SWAG_ERROR(Syn0108, "label name invalid; add ';' or use valid identifier");
-    SWAG_ERROR(Syn0107, "label name should be a valid identifier");
-    SWAG_ERROR(Syn0191, "unexpected lambda parameter name");
-    SWAG_ERROR(Syn0170, "unexpected lambda parameter type");
-    SWAG_ERROR(Syn0165, "unexpected lambda return type");
     SWAG_ERROR(Syn0059, "left expression required");
-    SWAG_ERROR(Syn0109, "location '%s' is invalid");
-    SWAG_ERROR(Syn0203, "expected match string after ',', found '%'");
     SWAG_ERROR(Syn0176, "missing comma");
-    SWAG_ERROR(Syn0099, "missing opening '(' for ')'");
-    SWAG_ERROR(Syn0100, "missing opening '[' for ']'");
-    SWAG_ERROR(Syn0103, "missing opening '{' for '}'");
-    SWAG_ERROR(Syn0126, "modifier '%s' invalid for '%s'");
     SWAG_ERROR(Syn0110, "named parameter '%s' is invalid");
-    SWAG_ERROR(Syn0118, "namespace '%s' is compiler-reserved");
-    SWAG_ERROR(Syn0040, "namespace definition required at file scope or within another namespace");
-    SWAG_ERROR(Syn0093, "expected namespace name before ';'");
-    SWAG_ERROR(Syn0094, "expected namespace name before '{'");
-    SWAG_ERROR(Syn0041, "namespace name must be identifier ('%s' given)");
     SWAG_ERROR(Syn0058, "need generic name or type");
     SWAG_ERROR(Syn0037, "need line break or ';' before '%s' to close %s");
     SWAG_ERROR(Syn0045, "only 'self' follows 'const' before function parameter name");
     SWAG_ERROR(Syn0149, "operator '==' invalid, use '='");
     SWAG_ERROR(Syn0062, "single identifier %s required");
-    SWAG_ERROR(Syn0114, "slice upper bound expects integer, found '%s'");
-    SWAG_ERROR(Syn0185, "slicing operator '..<' needs upper bound expression");
     SWAG_ERROR(Syn0128, "struct '%s' requires '{}' for initialization, not '()'");
     SWAG_ERROR(Syn0133, "to declare interface function, use 'func' or 'mtd', not '%s'");
-    SWAG_ERROR(Syn0054, "expected '{' to start %s body, found ';'");
-    SWAG_ERROR(Syn0046, "tuple definition is empty");
     SWAG_ERROR(Syn0134, "tuple types in generics not supported");
     SWAG_ERROR(Syn0177, "unexpected tuple unpacking in %s");
-    SWAG_ERROR(Syn0189, "unexpected type declaration after unnamed parameters");
     SWAG_ERROR(Syn0066, "expected type declaration, found '%s'");
-    SWAG_ERROR(Syn0197, "unexpected type declaration for 'self' parameter");
     SWAG_ERROR(Syn0067, "expected type in tuple definition, found '%s'");
     SWAG_ERROR(Syn0213, "type or default value needed for generic constant '%s'");
-    SWAG_ERROR(Syn0219, "type suffix not allowed for %s literal");
-    SWAG_ERROR(Syn0164, "unexpected label identifier '%s'");
     SWAG_ERROR(Syn0171, "unexpected symbol '%s' after %s");
     SWAG_ERROR(Syn0198, "unexpected symbol '%s' following identifier '%s'");
     SWAG_ERROR(Syn0173, "unexpected token '%s' after 'discard'");
     SWAG_ERROR(Syn0174, "unexpected token '%s' following '%s'");
-    SWAG_ERROR(Syn0178, "unknown operator modifier '%s'");
-    SWAG_ERROR(Syn0105, "use '%s' for logical test, '%s' is invalid");
     SWAG_ERROR(Syn0068, "expected variable declaration");
-    SWAG_ERROR(Syn0069, "expected variable name, found '%s'");
-    SWAG_ERROR(Syn0113, "version '%s' is invalid");
     SWAG_ERROR(Syn0120, "array size must precede type name");
     SWAG_ERROR(Syn0096, "expected array type after dimensions, found '%s'");
+
+    SWAG_ERROR(Syn0094, nullptr);
+    SWAG_ERROR(Syn0175, nullptr);
+    SWAG_ERROR(Syn0203, nullptr);
+    SWAG_ERROR(Syn0046, nullptr);
+    SWAG_ERROR(Syn0107, nullptr);
+    SWAG_ERROR(Syn0114, nullptr);
+    SWAG_ERROR(Syn0166, nullptr);
     SWAG_ERROR(Syn0079, nullptr);
     SWAG_ERROR(Syn0206, nullptr);
     SWAG_ERROR(Syn0131, nullptr);
@@ -453,8 +419,8 @@ void initErrors()
     SWAG_ERROR(Err0201, "'%s' references itself, causing recursion");
     SWAG_ERROR(Err0496, "'%s' second parameter must be pointer, found '%s'");
     SWAG_ERROR(Err0497, "'%s' second parameter should point to '%s', points to '%s'");
-    SWAG_ERROR(Err0137, "'%s' shouldn't be in struct special function ('%s')");
-    SWAG_ERROR(Err0858, "'%s' shouldn't have line break %s");
+    SWAG_ERROR(Err0137, "'%s' should not be in struct special function ('%s')");
+    SWAG_ERROR(Err0858, "'%s' should not have line break %s");
     SWAG_ERROR(Err0772, "expected '%s' type expression after 'return'");
     SWAG_ERROR(Err0125, "'%s' with call parameters is type '%s', not a function");
     SWAG_ERROR(Err0605, "'@abs' exceeds integer limit");
@@ -1297,7 +1263,7 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
 
     SWAG_ERROR(Hnt0111, "'moveref' and 'ref' can't be used together");
-    SWAG_ERROR(Hnt0102, "'self' has already been typed. Please remove the redundant type");
+    SWAG_ERROR(Hnt0102, nullptr);
     SWAG_ERROR(Hnt0087, "'self' should be the first parameter");
     SWAG_ERROR(Hnt0077, "...than this");
     SWAG_ERROR(Hnt0120, "a 'bool' type is expected here");
@@ -1373,7 +1339,6 @@ void initErrors()
     SWAG_ERROR(Hnt0063, "the type evaluates to '%s'");
     SWAG_ERROR(Hnt0032, "the type is '%s' (consider an explicit 'cast(%s)' if needed)");
     SWAG_ERROR(Hnt0011, "the type is identified as '%s'");
-    SWAG_ERROR(Hnt0098, "the upper bound is expected");
     SWAG_ERROR(Hnt0083, "there's a missing '%s' of type '%s'");
     SWAG_ERROR(Hnt0049, "there's an implied first parameter 'self'");
     SWAG_ERROR(Hnt0070, "this %s has the 'Swag.Compiler' attribute");
@@ -1417,10 +1382,11 @@ void initErrors()
     SWAG_ERROR(Hnt0040, "this value is a 'typeinfo'");
     SWAG_ERROR(Hnt0002, "this value can only be converted to type '%s' with a dynamic call to 'opAffect'");
     SWAG_ERROR(Hnt0014, "unexpected in global scope");
-    SWAG_ERROR(Hnt0097, "unnamed parameters ('?') shouldn't have a specified type");
+    SWAG_ERROR(Hnt0097, "unnamed parameters ('?') should not have an explicitly specified type");
     SWAG_ERROR(Hnt0095, "you can't reference this runtime %s from the %s");
     SWAG_ERROR(Hnt0130, "consider adding scope '%s' before '.'");
     SWAG_ERROR(Hnt0131, "did you intend to use '='?");
+    SWAG_ERROR(Hnt0098, nullptr);
     SWAG_ERROR(Hnt0008, nullptr);
     SWAG_ERROR(Hnt0118, nullptr);
     SWAG_ERROR(Hnt0107, nullptr);
@@ -1531,14 +1497,14 @@ void initErrors()
     SWAG_ERROR(Nte0058, "unable to determine type '%s'");
     SWAG_ERROR(Nte0065, "unable to resolve %s '%s'");
     SWAG_ERROR(Nte0090, "referenced %s '%s'");
-    SWAG_ERROR(Nte0134, "'#validif' and '#validifx' are not valid with 'opDrop', 'opPostCopy', or 'opPostMove'");
+    SWAG_ERROR(Nte0134, nullptr);
     SWAG_ERROR(Nte0110, "'@alias' is only valid within a 'Swag.Macro' or 'Swag.Mixin' function");
     SWAG_ERROR(Nte0120, "'@mixin' is permitted exclusively inside a 'Swag.Mixin' function");
     SWAG_ERROR(Nte0112, "'Swag.Optim' should have either 'bytecode' or 'backend' as its value");
     SWAG_ERROR(Nte0145, "'closure' should be accompanied by capture parameters enclosed in '|...|'");
     SWAG_ERROR(Nte0139, "'with' should be followed by a single identifier");
     SWAG_ERROR(Nte0121, "a generic argument must be a literal or a type");
-    SWAG_ERROR(Nte0124, "a standard function in an 'impl' block shouldn't overshadow a function from the matching interface");
+    SWAG_ERROR(Nte0124, "a standard function in an 'impl' block should not overshadow a function from the matching interface");
     SWAG_ERROR(Nte0115, "a struct special function should be defined within the corresponding 'impl' scope");
     SWAG_ERROR(Nte0132, "both parts of an 'orelse' should be of identical type");
     SWAG_ERROR(Nte0125, "consider 'typealias' to create an alias for %s");
@@ -1555,9 +1521,9 @@ void initErrors()
     SWAG_ERROR(Nte0136, "force the evaluation using '#run'");
     SWAG_ERROR(Nte0114, "function names that start with 'op' followed by an uppercase letter are reserved for struct special functions");
     SWAG_ERROR(Nte0116, "function parameters are immutable and can't be modified");
-    SWAG_ERROR(Nte0118, "if lambda parameter types are inferred, the return type will also be inferred");
-    SWAG_ERROR(Nte0119, "in lambda parameters, inferred and specified types shouldn't be combined");
-    SWAG_ERROR(Nte0127, "internal structs shouldn't export their special functions");
+    SWAG_ERROR(Nte0118, nullptr);
+    SWAG_ERROR(Nte0119, nullptr);
+    SWAG_ERROR(Nte0127, "internal structs should not export their special functions");
     SWAG_ERROR(Nte0150, "only variables can be initialized in this manner");
     SWAG_ERROR(Nte0146, "pointer arithmetic is only valid for pointers declared with '^', not '*'");
     SWAG_ERROR(Nte0126, "public structs should export all their special functions");
@@ -1572,7 +1538,7 @@ void initErrors()
     SWAG_ERROR(Nte0141, "this parameter type doesn't have related memory storage");
     SWAG_ERROR(Nte0122, "this specific constant doesn't have associated memory storage");
     SWAG_ERROR(Nte0105, "to dereference variable '%s' as in C, employ 'dref %s'");
-    SWAG_ERROR(Nte0147, "to slice to the end, use '..'");
+    SWAG_ERROR(Nte0147, "if you want to slice to the end, consider using '..' instead");
     SWAG_ERROR(Nte0140, "use '++' for compile-time string append operations");
     SWAG_ERROR(Nte0133, "use '?' to unpack and ignore a variable");
     SWAG_ERROR(Nte0129, "use 'mtd' instead of 'func' to implicitly declare 'using self' as the initial parameter");

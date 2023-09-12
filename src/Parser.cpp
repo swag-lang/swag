@@ -46,11 +46,11 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
     {
     case TokenId::SymAmpersandAmpersand:
         if (kind == InvalidTokenError::EmbeddedInstruction)
-            return error(token, Fmt(Err(Syn0105), "&&", "and"));
+            return error(token, Fmt(Err(Syn0105), "and", "&&"));
         break;
     case TokenId::SymVerticalVertical:
         if (kind == InvalidTokenError::EmbeddedInstruction)
-            return error(token, Fmt(Err(Syn0105), "||", "or"));
+            return error(token, Fmt(Err(Syn0105), "or", "||"));
         break;
     case TokenId::KwdElse:
         if (kind == InvalidTokenError::EmbeddedInstruction)

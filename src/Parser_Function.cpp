@@ -252,7 +252,6 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
         if (token.id == TokenId::SymColon)
         {
             Diagnostic diag(paramNode, token, Err(Syn0197));
-            diag.hint = Hnt(Hnt0102);
             return context->report(diag);
         }
     }
@@ -275,7 +274,8 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
                 unnamedTokens.push_back(token);
             }
 
-            SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0166), token.ctext())));
+            SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Fmt(Err(Syn0202), token.ctext())));
+            SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0112), token.ctext())));
             SWAG_CHECK(eatToken());
             otherVariables.push_back(otherVarNode);
         }
@@ -289,7 +289,6 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             if (unnamedTokens.size() == parent->childs.size())
             {
                 Diagnostic diag{sourceFile, token, Err(Syn0189)};
-                diag.hint = Hnt(Hnt0061);
                 diag.addRange(unnamedTokens.front(), Hnt(Hnt0097));
                 for (size_t i = 1; i < unnamedTokens.size(); i++)
                     diag.addRange(unnamedTokens[i], "");
@@ -457,9 +456,9 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
             {
                 SWAG_ASSERT(hasMissingType);
                 if (!missingTypes && *hasMissingType)
-                    return error(allParams->childs.back(), Err(Syn0170), Nte(Nte0119));
+                    return error(allParams->childs.back(), Err(Syn0170));
                 if (oneParamDone && !(*hasMissingType) && missingTypes)
-                    return error(allParams->childs.back(), Err(Syn0090), Nte(Nte0119));
+                    return error(allParams->childs.back(), Err(Syn0090));
                 *hasMissingType = *hasMissingType || missingTypes;
             }
 
@@ -810,7 +809,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         SWAG_CHECK(doCompilerValidIf(funcNode, &funcNode->validif));
     }
 
-    // If we have now a semi colon, then this is an empty function, like a forward decl in c++
+    // If we have now a semicolon, then this is an empty function, like a forward decl in c++
     if (token.id == TokenId::SymSemiColon)
     {
         SWAG_VERIFY(!funcForCompiler, error(token, Fmt(Err(Syn0054), funcNode->getDisplayNameC())));
@@ -1057,7 +1056,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
     {
         // Do not accept a specified return type if lambda parameters are deduced
         if (acceptMissingType && hasMissingType && *hasMissingType)
-            return error(token, Err(Syn0165), Nte(Nte0118));
+            return error(token, Err(Syn0165));
 
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
