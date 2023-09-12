@@ -490,12 +490,9 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, ui
     if (token.id == TokenId::SymLeftParen)
     {
         Diagnostic diag{sourceFile, token, Fmt(Err(Syn0066), token.ctext())};
-        auto       note = Diagnostic::note(sourceFile, token, Nte(Nte0104));
+        auto       note = Diagnostic::note(Nte(Nte0104));
         return context->report(diag, note);
     }
-
-    if (Tokenizer::isSymbol(token.id))
-        return error(token, Fmt(Err(Syn0172), token.ctext()));
 
     // Generic error
     return error(token, Fmt(Err(Syn0066), token.ctext()));

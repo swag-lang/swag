@@ -134,7 +134,7 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
             if (token.id == TokenId::SymColon)
             {
                 if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->childs.size() != 1)
-                    return context->report({paramExpression, Fmt(Err(Syn0110), token.ctext())});
+                    return context->report({paramExpression, Err(Syn0110)});
                 param->allocateExtension(ExtensionKind::Misc);
                 param->extMisc()->isNamed = paramExpression->childs.front();
                 param->allocateExtension(ExtensionKind::Owner);
@@ -503,7 +503,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
             SWAG_CHECK(eatToken());
         }
 
-        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Err(Syn0058)));
+        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0058), token.ctext())));
         auto oneParam = Ast::newVarDecl(sourceFile, token.text, allParams, this, AstNodeKind::FuncDeclParam);
         oneParam->flags |= AST_IS_GENERIC;
         SWAG_CHECK(eatToken());
@@ -542,11 +542,12 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
             oneParam->specFlags |= AstVarDecl::SPECFLAG_GENERIC_CONSTANT;
 
         if (isConstant && !oneParam->type && !oneParam->assignment)
-            return error(oneParam, Fmt(Err(Syn0213), oneParam->token.ctext()));
+            return error(token, Fmt(Err(Syn0070), token.ctext()));
 
         if (token.id != TokenId::SymComma)
             break;
         SWAG_CHECK(eatToken());
+        SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Syn0202)));
     }
 
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));

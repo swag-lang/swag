@@ -294,18 +294,13 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
 
         if (token.id != TokenId::SymColon && token.id != TokenId::SymEqual)
         {
-            Utf8 ofWhat;
-            switch (leftNode->kind)
-            {
-            case AstNodeKind::IdentifierRef:
-                ofWhat = kind == AstNodeKind::ConstDecl ? "constant" : "variable";
-                break;
-            default:
-                ofWhat = kind == AstNodeKind::ConstDecl ? "constants" : "variables";
-                break;
-            }
+            Utf8 msg;
+            if (kind == AstNodeKind::ConstDecl)
+                msg = Fmt(Err(Syn0070), token.ctext());
+            else
+                msg = Fmt(Err(Syn0172), token.ctext());
 
-            Diagnostic diag{sourceFile, token, Fmt(Err(Syn0070), ofWhat.c_str(), token.ctext())};
+            Diagnostic diag{sourceFile, token, msg};
             if (token.id == TokenId::SymEqualEqual)
                 return context->report(diag, Diagnostic::note(Nte(Nte0108)));
             return context->report(diag);

@@ -203,7 +203,6 @@ void initErrors()
     SWAG_ERROR(Syn0021, "misplaced error catching                          $ treating a return error with '%s' can only be done inside a function, macro or mixin");
     SWAG_ERROR(Syn0180, "misplaced reference to 'with' block               $ statements starting with the '.' operator are only valid within a 'with' block");
     SWAG_ERROR(Syn0036, "misplaced top-level 'using'                       $ a top-level 'using' must be placed before any other declarations");
-    SWAG_ERROR(Syn0070, "missing %s type                                   $ expected the start of the type declaration ':', or an assignment with '=', found '%s' instead");
     SWAG_ERROR(Syn0002, "missing '#foreignlib' string argument             $ expected the library name after '#foreignlib', found '%s' instead $ use '#foreignlib \"path/to/library\"' to specify the library to import");
     SWAG_ERROR(Syn0204, "missing '#global testerror' string argument       $ expected the error string to check after '#global testerror', found '%s' instead");
     SWAG_ERROR(Syn0205, "missing '#global testwarning' string argument     $ expected the warning string to check after '#global testwarning', found '%s' instead");
@@ -283,41 +282,42 @@ void initErrors()
     SWAG_ERROR(Syn0041, "invalid namespace name                            $ expected the namespace name, found '%s' instead");
     SWAG_ERROR(Syn0054, "empty compiler function body                      $ %s requires a body; expected '{' but found ';' instead");
     SWAG_ERROR(Syn0219, "unexpected type suffix                            $ %s should not be followed by a type suffix");
+    SWAG_ERROR(Syn0173, "invalid 'discard' call                            $ expected a discardable call after 'discard', found '%s' instead");
+    SWAG_ERROR(Syn0110, "invalid named argument                            $ expected a named argument before ':'");
+    SWAG_ERROR(Syn0066, "invalid type declaration                          $ expected a type declaration, found '%s' instead");
+    SWAG_ERROR(Syn0067, "invalid type declaration                          $ expected type in tuple definition, found '%s'");
+    SWAG_ERROR(Syn0070, "missing constant type                             $ expected the start of the type declaration ':', or an assignment with '=', found '%s' instead");
+    SWAG_ERROR(Syn0172, "missing variable type                             $ expected the start of the type declaration ':', or an assignment with '=', found '%s' instead");
+    SWAG_ERROR(Syn0134, "unsupported tuple type                            $ tuple types are not supported for generic parameters");
+    SWAG_ERROR(Syn0058, "invalid generic parameter name                    $ expected an identifier as the generic name, found '%s' instead");
+    SWAG_ERROR(Syn0092, "missing generic parameter                         $ expected at least one generic parameter between '()' $ consider removing '()' if this is not generic");
 
     SWAG_ERROR(Syn0048, "expected '%s' %s, found '%s'");
     SWAG_ERROR(Syn0076, "expected expression");
     SWAG_ERROR(Syn0031, "expected '{' instead of '%s'");
-    SWAG_ERROR(Syn0092, "expected generic parameters");
     SWAG_ERROR(Syn0047, "EOF reached, expected '%s' %s");
     SWAG_ERROR(Syn0139, "invalid '[' for multi-dimensional array access");
     SWAG_ERROR(Syn0150, "invalid attribute ('%s') after '%s'");
     SWAG_ERROR(Syn0163, "invalid interface lambda declaration");
     SWAG_ERROR(Syn0208, "invalid operator '='");
-    SWAG_ERROR(Syn0172, "invalid symbol '%s' in type declaration");
     SWAG_ERROR(Syn0199, "invalid token '%s' in lambda type; expected ',' or ')'");
     SWAG_ERROR(Syn0059, "left expression required");
     SWAG_ERROR(Syn0176, "missing comma");
-    SWAG_ERROR(Syn0110, "named parameter '%s' is invalid");
-    SWAG_ERROR(Syn0058, "need generic name or type");
     SWAG_ERROR(Syn0037, "need line break or ';' before '%s' to close %s");
     SWAG_ERROR(Syn0045, "only 'self' follows 'const' before function parameter name");
     SWAG_ERROR(Syn0149, "operator '==' invalid, use '='");
     SWAG_ERROR(Syn0062, "single identifier %s required");
     SWAG_ERROR(Syn0128, "struct '%s' requires '{}' for initialization, not '()'");
     SWAG_ERROR(Syn0133, "to declare interface function, use 'func' or 'mtd', not '%s'");
-    SWAG_ERROR(Syn0134, "tuple types in generics not supported");
     SWAG_ERROR(Syn0177, "unexpected tuple unpacking in %s");
-    SWAG_ERROR(Syn0066, "expected type declaration, found '%s'");
-    SWAG_ERROR(Syn0067, "expected type in tuple definition, found '%s'");
-    SWAG_ERROR(Syn0213, "type or default value needed for generic constant '%s'");
     SWAG_ERROR(Syn0171, "unexpected symbol '%s' after %s");
     SWAG_ERROR(Syn0198, "unexpected symbol '%s' following identifier '%s'");
-    SWAG_ERROR(Syn0173, "unexpected token '%s' after 'discard'");
     SWAG_ERROR(Syn0174, "unexpected token '%s' following '%s'");
     SWAG_ERROR(Syn0068, "expected variable declaration");
     SWAG_ERROR(Syn0120, "array size must precede type name");
     SWAG_ERROR(Syn0096, "expected array type after dimensions, found '%s'");
 
+    SWAG_ERROR(Syn0213, nullptr);
     SWAG_ERROR(Syn0094, nullptr);
     SWAG_ERROR(Syn0175, nullptr);
     SWAG_ERROR(Syn0203, nullptr);
@@ -1405,7 +1405,6 @@ void initErrors()
 
     SWAG_ERROR(Nte0138, "add a 'break' if you want to exit without any action");
     SWAG_ERROR(Nte0137, "add a 'break' to exit, or use 'fallthrough' to continue to the next 'case'");
-
     SWAG_ERROR(Nte0042, "'%s' is a function missing the 'Swag.ConstExpr' attribute");
     SWAG_ERROR(Nte0041, "'%s' is a variable; variables within expressions aren't evaluated at compile-time");
     SWAG_ERROR(Nte0077, "'%s' might represent either a type or a field name");
@@ -1497,7 +1496,6 @@ void initErrors()
     SWAG_ERROR(Nte0058, "unable to determine type '%s'");
     SWAG_ERROR(Nte0065, "unable to resolve %s '%s'");
     SWAG_ERROR(Nte0090, "referenced %s '%s'");
-    SWAG_ERROR(Nte0134, nullptr);
     SWAG_ERROR(Nte0110, "'@alias' is only valid within a 'Swag.Macro' or 'Swag.Mixin' function");
     SWAG_ERROR(Nte0120, "'@mixin' is permitted exclusively inside a 'Swag.Mixin' function");
     SWAG_ERROR(Nte0112, "'Swag.Optim' should have either 'bytecode' or 'backend' as its value");
@@ -1515,14 +1513,12 @@ void initErrors()
     SWAG_ERROR(Nte0153, "employ '{}' for an intentional empty statement");
     SWAG_ERROR(Nte0152, "to begin a new block, consider moving '{' to a new line");
     SWAG_ERROR(Nte0130, "for an infinite loop, use 'loop { ... }'");
-    SWAG_ERROR(Nte0104, "for lambda declaration, use 'func(' or 'closure('");
+    SWAG_ERROR(Nte0104, "if you want to declare a lambda type, use 'func(' or 'closure('");
     SWAG_ERROR(Nte0106, "for multi-dimensional array access, use [x, y], not [x][y]");
     SWAG_ERROR(Nte0151, "to initiate a struct initialization of '%s', remove spaces between '%s' and '{'");
     SWAG_ERROR(Nte0136, "force the evaluation using '#run'");
     SWAG_ERROR(Nte0114, "function names that start with 'op' followed by an uppercase letter are reserved for struct special functions");
     SWAG_ERROR(Nte0116, "function parameters are immutable and can't be modified");
-    SWAG_ERROR(Nte0118, nullptr);
-    SWAG_ERROR(Nte0119, nullptr);
     SWAG_ERROR(Nte0127, "internal structs should not export their special functions");
     SWAG_ERROR(Nte0150, "only variables can be initialized in this manner");
     SWAG_ERROR(Nte0146, "pointer arithmetic is only valid for pointers declared with '^', not '*'");
@@ -1546,6 +1542,9 @@ void initErrors()
     SWAG_ERROR(Nte0149, "you might want to get the address of '%s' using '&'");
     SWAG_ERROR(Nte0108, "'==' is the comparison operator; did you intend to affect something with '='?");
     SWAG_ERROR(Nte0100, "an attribute is not a function; please consider removing it");
+    SWAG_ERROR(Nte0134, nullptr);
+    SWAG_ERROR(Nte0118, nullptr);
+    SWAG_ERROR(Nte0119, nullptr);
     SWAG_ERROR(Nte0101, nullptr);
     SWAG_ERROR(Nte0117, nullptr);
     SWAG_ERROR(Nte0107, nullptr);
