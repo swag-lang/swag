@@ -219,6 +219,7 @@ bool Tokenizer::nextToken(TokenParse& token)
         if (c == 0)
         {
             token.id          = TokenId::EndOfFile;
+            token.text        = "<end of file>";
             token.endLocation = token.startLocation;
             return true;
         }

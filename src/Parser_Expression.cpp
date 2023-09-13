@@ -137,7 +137,7 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
         }
 
         SWAG_CHECK(eatCloseToken(TokenId::SymRightSquare, startToken));
-        SWAG_VERIFY(token.id != TokenId::SymLeftSquare, error(token, Err(Syn0139), Nte(Nte0106)));
+        SWAG_VERIFY(token.id != TokenId::SymLeftSquare, error(token, Err(Syn0139)));
     }
 
     return true;
@@ -153,7 +153,7 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     auto startLoc = token.startLocation;
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen, "to define the list of arguments"));
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen, "to start the list of arguments"));
     SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Syn0044)));
 
     // Three parameters
@@ -960,7 +960,7 @@ bool Parser::doCompareExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
     }
 
     if (!(exprFlags & EXPR_FLAG_NAMED_PARAM) || leftNode->kind != AstNodeKind::IdentifierRef)
-        SWAG_VERIFY(token.id != TokenId::SymEqual, error(token, Err(Syn0208), Hnt(Hnt0082)));
+        SWAG_VERIFY(token.id != TokenId::SymEqual, error(token, Err(Syn0208), Nte(Nte0135)));
 
     Ast::addChildBack(parent, leftNode);
     *result = leftNode;

@@ -340,10 +340,10 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
         contentNode->extSemantic()->semanticBeforeFct = SemanticJob::preResolveStructContent;
 
         auto startLoc = token.startLocation;
-        SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the struct body"));
+        SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the 'struct' body"));
         while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
             SWAG_CHECK(doStructBody(contentNode, structType, &dummyResult));
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the struct body"));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the 'struct' body"));
     }
 
     return true;

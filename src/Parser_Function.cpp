@@ -152,7 +152,7 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
 
             auto tokenComma = token;
             if (callParams->specFlags & AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT)
-                SWAG_CHECK(eatToken(TokenId::SymComma, "in struct initialization parameters"));
+                SWAG_CHECK(eatToken(TokenId::SymComma, "in 'struct' initialization parameters"));
             else
                 SWAG_CHECK(eatToken(TokenId::SymComma, "in function call parameters"));
 
@@ -976,7 +976,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
             {
                 PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, []()
                                   { return Nte(Nte0145); });
-                SWAG_CHECK(eatToken(TokenId::SymVertical, "to start the closure capture block"));
+                SWAG_CHECK(eatToken(TokenId::SymVertical, "to start the 'closure' capture block"));
             }
 
             while (token.id != TokenId::SymVertical)

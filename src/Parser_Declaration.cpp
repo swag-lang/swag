@@ -101,10 +101,15 @@ bool Parser::doCheckPublicInternalPrivate(Token& tokenAttr)
     case TokenId::KwdNamespace:
         break;
     case TokenId::SymAttrStart:
-        return error(token, Fmt(Err(Syn0150), token.ctext(), tokenAttr.ctext()), nullptr, Fmt(Hnt(Hnt0043), tokenAttr.ctext()));
+        return error(token, Fmt(Err(Syn0150), tokenAttr.ctext(), tokenAttr.ctext()));
+    case TokenId::KwdPublic:
+    case TokenId::KwdPrivate:
+    case TokenId::KwdInternal:
+        return error(token, Fmt(Err(Syn0031), token.ctext(), tokenAttr.ctext()));
     default:
-        return error(token, Fmt(Err(Syn0174), token.ctext(), tokenAttr.ctext()));
+        return error(token, Fmt(Err(Syn0174), tokenAttr.ctext(), token.ctext(), token.ctext()));
     }
+
     return true;
 }
 

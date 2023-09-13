@@ -1,4 +1,3 @@
-
 #global testerror "Syn0174"
 
 struct T

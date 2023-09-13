@@ -98,7 +98,7 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
     }
 
     auto startLoc = token.startLocation;
-    SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the switch body"));
+    SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the 'switch' body"));
 
     AstSwitchCase* defaultCase = nullptr;
     bool           hasDefault  = false;
@@ -142,9 +142,9 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
         }
 
         if (isDefault)
-            SWAG_CHECK(eatToken(TokenId::SymColon, "after 'default' statement"));
+            SWAG_CHECK(eatToken(TokenId::SymColon, "after the 'default' statement"));
         else
-            SWAG_CHECK(eatToken(TokenId::SymColon, "after 'case' statement"));
+            SWAG_CHECK(eatToken(TokenId::SymColon, "after the 'case' statement"));
 
         // Content
         {
@@ -177,7 +177,7 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
         switchNode->cases.push_back(defaultCase);
     }
 
-    SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the switch body"));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the 'switch' body"));
 
     return true;
 }
@@ -272,7 +272,7 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
         while (token.id != TokenId::SymColon)
         {
             auto prevToken = token;
-            SWAG_CHECK(eatToken(TokenId::SymComma, "to define another name alias, or ':' to specify the visit variable"));
+            SWAG_CHECK(eatToken(TokenId::SymComma, "to define another alias name, or ':' to specify the visit variable"));
             SWAG_VERIFY(token.id != TokenId::SymColon, error(prevToken, Err(Syn0212)));
             SWAG_CHECK(doIdentifierRef(nullptr, &node->expression));
             SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a 'visit' variable name"));
@@ -281,7 +281,7 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
             node->expression->release();
         }
 
-        SWAG_CHECK(eatToken(TokenId::SymColon, "to specify the visit variable"));
+        SWAG_CHECK(eatToken(TokenId::SymColon, "to define the 'visit' variable"));
         SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Err(Syn0086)));
         SWAG_CHECK(doExpression(node, EXPR_FLAG_SIMPLE, &node->expression));
     }

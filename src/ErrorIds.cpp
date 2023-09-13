@@ -294,29 +294,30 @@ void initErrors()
     SWAG_ERROR(Syn0062, "invalid compound name                             $ expected a single identifier %s $ consider using a single name without the '.' character");
     SWAG_ERROR(Syn0128, "invalid struct initialization                     $ expected '{}' to initialize a struct, and not '()' which is reserved for function calls");
 
-    SWAG_ERROR(Syn0048, "expected '%s' %s, found '%s'");
-    SWAG_ERROR(Syn0076, "expected expression");
-    SWAG_ERROR(Syn0031, "expected '{' instead of '%s'");
-    SWAG_ERROR(Syn0047, "EOF reached, expected '%s' %s");
-    SWAG_ERROR(Syn0139, "invalid '[' for multi-dimensional array access");
-    SWAG_ERROR(Syn0150, "invalid attribute ('%s') after '%s'");
-    SWAG_ERROR(Syn0163, "invalid interface lambda declaration");
-    SWAG_ERROR(Syn0208, "invalid operator '='");
+    SWAG_ERROR(Syn0037, "missing end of line                               $ expected a line break or ';' before '%s' to close %s");                                                                          
+    SWAG_ERROR(Syn0076, "invalid expression                                $ expected an expression");
+    SWAG_ERROR(Syn0139, "unexpected '['                                    $ nested square brackets '[..][..]' are not allowed for multi-dimensional array access $ to access elements in a multi-dimensional array, use the format [x, y] and not [x][y]");
+    SWAG_ERROR(Syn0150, "misplaced attribute                               $ unexpected start of an attribute after '%s' $ attributes should be placed before access modifiers; consider moving the attribute before '%s'");
+    SWAG_ERROR(Syn0048, "expected '%s'                                     $ expected '%s' %s, found '%s' instead");
+    SWAG_ERROR(Syn0031, "access modifier already defined                   $ invalid use of '%s' access modifier previously specifying '%s'");
+    SWAG_ERROR(Syn0174, "misplaced access modifier                         $ misuse of '%s' before '%s'; '%s' cannot be prefixed with an access modifier");
+    SWAG_ERROR(Syn0163, "misplaced function declaration                    $ functions cannot be directly declared inside structs $ functions should be declared inside 'impl' blocks");
+    SWAG_ERROR(Syn0208, "unexpected affectation                            $ unexpected usage of the assignement operator '=' inside an expression");
+
     SWAG_ERROR(Syn0199, "invalid token '%s' in lambda type; expected ',' or ')'");
     SWAG_ERROR(Syn0059, "left expression required");
     SWAG_ERROR(Syn0176, "missing comma");
-    SWAG_ERROR(Syn0037, "need line break or ';' before '%s' to close %s");
     SWAG_ERROR(Syn0045, "only 'self' follows 'const' before function parameter name");
     SWAG_ERROR(Syn0149, "operator '==' invalid, use '='");
     SWAG_ERROR(Syn0133, "to declare interface function, use 'func' or 'mtd', not '%s'");
     SWAG_ERROR(Syn0177, "unexpected tuple unpacking in %s");
     SWAG_ERROR(Syn0171, "unexpected symbol '%s' after %s");
     SWAG_ERROR(Syn0198, "unexpected symbol '%s' following identifier '%s'");
-    SWAG_ERROR(Syn0174, "unexpected token '%s' following '%s'");
     SWAG_ERROR(Syn0068, "expected variable declaration");
     SWAG_ERROR(Syn0120, "array size must precede type name");
     SWAG_ERROR(Syn0096, "expected array type after dimensions, found '%s'");
 
+    SWAG_ERROR(Syn0047, nullptr);
     SWAG_ERROR(Syn0213, nullptr);
     SWAG_ERROR(Syn0094, nullptr);
     SWAG_ERROR(Syn0175, nullptr);
@@ -1275,13 +1276,13 @@ void initErrors()
     SWAG_ERROR(Hnt0096, "attribute is unexpected");
     SWAG_ERROR(Hnt0104, "consider adding '&' to get the address of this expression");
     SWAG_ERROR(Hnt0025, "consider casting with 'cast(%s)'");
-    SWAG_ERROR(Hnt0043, "consider moving this before '%s'");
+    SWAG_ERROR(Hnt0043, nullptr);
     SWAG_ERROR(Hnt0026, "consider removing this");
     SWAG_ERROR(Hnt0074, "copying an array of structs is not allowed here");
     SWAG_ERROR(Hnt0100, "default parameters of a lambda or closure can't be redefined");
     SWAG_ERROR(Hnt0085, "detected an enum implementation block");
     SWAG_ERROR(Hnt0122, "detected thrown error");
-    SWAG_ERROR(Hnt0082, "did you intend to use '=='?")
+    SWAG_ERROR(Hnt0082, nullptr)
     SWAG_ERROR(Hnt0034, "doesn't return any value");
     SWAG_ERROR(Hnt0080, "either remove this or replace with the scope '%s'");
     SWAG_ERROR(Hnt0035, "expecting an identifier, but found an alias");
@@ -1514,7 +1515,7 @@ void initErrors()
     SWAG_ERROR(Nte0152, "to begin a new block, consider moving '{' to a new line");
     SWAG_ERROR(Nte0130, "for an infinite loop, use 'loop { ... }'");
     SWAG_ERROR(Nte0104, "if you want to declare a lambda type, use 'func(' or 'closure('");
-    SWAG_ERROR(Nte0106, "for multi-dimensional array access, use [x, y], not [x][y]");
+    SWAG_ERROR(Nte0106, nullptr);
     SWAG_ERROR(Nte0151, "to initiate a struct initialization of '%s', remove spaces between '%s' and '{'");
     SWAG_ERROR(Nte0136, "force the evaluation using '#run'");
     SWAG_ERROR(Nte0114, "function names that start with 'op' followed by an uppercase letter are reserved for struct special functions");
@@ -1541,7 +1542,7 @@ void initErrors()
     SWAG_ERROR(Nte0149, "you might want to get the address of '%s' using '&'");
     SWAG_ERROR(Nte0108, "'==' is the comparison operator; did you intend to affect something with '='?");
     SWAG_ERROR(Nte0100, "an attribute is not a function; please consider removing it");
-    SWAG_ERROR(Nte0135, nullptr);
+    SWAG_ERROR(Nte0135, "if you were trying to compare values, you should use '==' instead");
     SWAG_ERROR(Nte0134, nullptr);
     SWAG_ERROR(Nte0118, nullptr);
     SWAG_ERROR(Nte0119, nullptr);

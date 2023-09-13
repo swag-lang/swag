@@ -1,7 +1,3 @@
-
-
-//#[Swag.PrintBc]
-
 #global testerror "Syn0139"
 func toto()
 {
