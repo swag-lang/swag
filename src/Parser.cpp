@@ -40,7 +40,7 @@ bool Parser::error(const SourceLocation& startLocation, const SourceLocation& en
     return context->report(diag, note);
 }
 
-bool Parser::invalidTokenError(InvalidTokenError kind)
+bool Parser::invalidTokenError(InvalidTokenError kind, AstNode* parent)
 {
     switch (token.id)
     {
@@ -68,7 +68,6 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
         if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
             return error(token, Err(Syn0097));
         break;
-
     case TokenId::SymRightParen:
         return error(token, Err(Syn0099));
     case TokenId::SymRightCurly:
@@ -81,41 +80,30 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
     }
 
     Utf8 msg;
-    Utf8 hint;
+    Utf8 note;
 
     switch (kind)
     {
     case InvalidTokenError::TopLevelInstruction:
-        msg += Err(Syn0064);
-        hint = Hnt(Hnt0014);
+        msg  = Fmt(Err(Syn0064), token.ctext());
+        note = Nte(Nte0106);
         break;
     case InvalidTokenError::EmbeddedInstruction:
-        msg += Fmt(Err(Syn0073), token.ctext());
+        msg = Fmt(Err(Syn0073), token.ctext());
         break;
     case InvalidTokenError::LeftExpression:
-        msg += Err(Syn0059);
+        msg = Fmt(Err(Syn0059), token.ctext());
         break;
     case InvalidTokenError::LeftExpressionVar:
-        msg += Err(Syn0068);
-        hint = Fmt(Hnt(Hnt0129), token.ctext());
+        msg  = Fmt(Err(Syn0069), token.ctext());
+        note = Fmt(Nte(Nte0154), token.ctext());
         break;
     case InvalidTokenError::PrimaryExpression:
-        msg += Err(Syn0076);
+        msg = Fmt(Err(Syn0059), token.ctext());
         break;
     }
 
-    if (Tokenizer::isSymbol(token.id))
-        msg += Fmt(", found symbol '%s' instead", token.ctext());
-    else if (token.id == TokenId::Identifier)
-        msg += Fmt(", found identifier '%s' instead", token.ctext());
-    else if (token.id == TokenId::NativeType)
-        msg += Fmt(", found type '%s' instead", token.ctext());
-    else if (Tokenizer::isKeyword(token.id))
-        msg += Fmt(", found keyword '%s' instead", token.ctext());
-    else
-        msg += Fmt(", found '%s' instead", token.ctext());
-
-    return error(token, msg, nullptr, hint);
+    return error(token, msg, note.empty() ? nullptr : note.c_str());
 }
 
 bool Parser::eatToken()

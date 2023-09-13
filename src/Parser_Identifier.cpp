@@ -57,8 +57,7 @@ bool Parser::checkIsIdentifier(TokenParse& tokenParse, const char* msg)
 {
     if (tokenParse.id == TokenId::Identifier)
         return true;
-    Utf8 hint = Fmt(Hnt(Hnt0129), tokenParse.ctext());
-    return error(tokenParse, msg, nullptr, hint);
+    return error(tokenParse, msg, Fmt(Nte(Nte0154), tokenParse.ctext()));
 }
 
 bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)

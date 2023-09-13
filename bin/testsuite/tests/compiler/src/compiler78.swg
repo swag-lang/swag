@@ -1,4 +1,4 @@
-﻿#global testerror "Syn0076";
+﻿#global testerror "Syn0059";
 
 typealias str = string;
 var a: str = "coucou";

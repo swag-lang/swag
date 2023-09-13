@@ -378,9 +378,9 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
 
     case TokenId::CompilerType:
     {
-        eatToken();
         if (exprFlags & EXPR_FLAG_SIMPLE)
-            return invalidTokenError(InvalidTokenError::PrimaryExpression);
+            return invalidTokenError(InvalidTokenError::PrimaryExpression, parent);
+        eatToken();
         AstNode* resNode;
         SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, &resNode));
         *result = resNode;
@@ -397,19 +397,19 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
     case TokenId::SymAsterisk:
     case TokenId::SymCircumflex:
         if (exprFlags & EXPR_FLAG_SIMPLE)
-            return invalidTokenError(InvalidTokenError::PrimaryExpression);
+            return invalidTokenError(InvalidTokenError::PrimaryExpression, parent);
         SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));
         break;
 
     case TokenId::SymLeftCurly:
         if (exprFlags & EXPR_FLAG_SIMPLE)
-            return invalidTokenError(InvalidTokenError::PrimaryExpression);
+            return invalidTokenError(InvalidTokenError::PrimaryExpression, parent);
         SWAG_CHECK(doExpressionListTuple(parent, result));
         break;
 
     case TokenId::SymLeftSquare:
         if (exprFlags & EXPR_FLAG_SIMPLE)
-            return invalidTokenError(InvalidTokenError::PrimaryExpression);
+            return invalidTokenError(InvalidTokenError::PrimaryExpression, parent);
 
         // We can differentiate between a literal array and a type array by looking at what's next
         else if (exprFlags & (EXPR_FLAG_TYPEOF | EXPR_FLAG_PARAMETER))
@@ -433,7 +433,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
     case TokenId::KwdFunc:
     case TokenId::KwdClosure:
         if (exprFlags & EXPR_FLAG_SIMPLE)
-            return invalidTokenError(InvalidTokenError::PrimaryExpression);
+            return invalidTokenError(InvalidTokenError::PrimaryExpression, parent);
 
         if (exprFlags & EXPR_FLAG_TYPEOF)
             SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));
@@ -446,7 +446,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
         break;
 
     default:
-        return invalidTokenError(InvalidTokenError::PrimaryExpression);
+        return invalidTokenError(InvalidTokenError::PrimaryExpression, parent);
     }
 
     return true;

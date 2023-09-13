@@ -980,7 +980,7 @@ bool Module::mustGenerateTestExe()
         return false;
     if (kind != ModuleKind::Test)
         return false;
-    if (!hasTestFuncs)
+    if (buildCfg.backendKind != BuildCfgBackendKind::Executable)
         return false;
     if (g_CommandLine.scriptMode)
         return false;
@@ -1008,7 +1008,7 @@ bool Module::mustGenerateLegit()
             return false;
         if (!g_CommandLine.outputTest)
             return false;
-        if (hasTestFuncs)
+        if (buildCfg.backendKind == BuildCfgBackendKind::Executable)
             return false;
         if (g_CommandLine.scriptMode)
             return false;

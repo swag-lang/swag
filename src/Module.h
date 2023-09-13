@@ -327,5 +327,4 @@ struct Module
     bool acceptsCompileString = true;
     bool acceptsCompileImpl   = true;
     bool hasCycleError        = false;
-    bool hasTestFuncs         = false;
 };

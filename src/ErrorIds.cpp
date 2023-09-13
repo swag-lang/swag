@@ -168,13 +168,12 @@ void initErrors()
     SWAG_ERROR(Syn0184, "invalid constant name                             $ expected a constant name, found '%s' instead");
     SWAG_ERROR(Syn0193, "invalid default value                             $ 'self' cannot have a default value");
     SWAG_ERROR(Syn0194, "invalid default value                             $ lambda parameters cannot have a default value");
-    SWAG_ERROR(Syn0073, "invalid embedded instruction                      $ expected an embedded instruction or a curly block");
+    SWAG_ERROR(Syn0073, "invalid embedded instruction                      $ expected an embedded instruction or a curly block, found '%s' instead");
     SWAG_ERROR(Syn0159, "invalid empty attribute                           $ an attribute should contain at least one value $ you should specify the attribute name between '[]'");
     SWAG_ERROR(Syn0187, "invalid empty statement ';'                       $ a semicolon ';' cannot be used alone to mark an empty statement");
     SWAG_ERROR(Syn0075, "invalid enum identifier                           $ expected an enum value identifier, found '%s' instead");
     SWAG_ERROR(Syn0074, "invalid enum name                                 $ expected the enum name, found '%s' instead");
-    SWAG_ERROR(Syn0076, "invalid expression                                $ expected an expression");
-    SWAG_ERROR(Syn0059, "invalid expression                                $ expected an expression");
+    SWAG_ERROR(Syn0059, "invalid expression                                $ expected an expression, found '%s' instead");
     SWAG_ERROR(Syn0020, "invalid expression                                $ the directive '%s' can't be used as an expression $ this directive can only be used as a statement");
     SWAG_ERROR(Syn0133, "invalid function declaration                      $ expected 'func' or 'mtd' to declare an interface function, found '%s' instead $ to declare a function within an interface, use 'func' or 'mtd'");
     SWAG_ERROR(Syn0106, "invalid function name                             $ a function name ('%s') cannot start with '@', this is reserved for intrinsics");
@@ -193,7 +192,7 @@ void initErrors()
     SWAG_ERROR(Syn0022, "invalid reference to 'with' block                 $ an identifier is expected after '.', found '%s' instead");
     SWAG_ERROR(Syn0128, "invalid struct initialization                     $ expected '{}' to initialize a struct, and not '()' which is reserved for function calls");
     SWAG_ERROR(Syn0063, "invalid struct name                               $ expected the struct name, found '%s' instead");
-    SWAG_ERROR(Syn0064, "invalid top-level instruction                     $ expected a top-level instruction");
+    SWAG_ERROR(Syn0064, "invalid top-level instruction                     $ expected a top-level instruction, found '%s' instead");
     SWAG_ERROR(Syn0066, "invalid type declaration                          $ expected a type declaration, found '%s' instead");
     SWAG_ERROR(Syn0096, "invalid type declaration                          $ expected the array type after its dimensions, found '%s' instead");
     SWAG_ERROR(Syn0067, "invalid type declaration                          $ expected type in tuple definition, found '%s'");
@@ -202,7 +201,6 @@ void initErrors()
     SWAG_ERROR(Syn0121, "invalid use of access modifier                    $ the '%s' access modifier can only be used at the global scope");
     SWAG_ERROR(Syn0065, "invalid variable list                             $ 'if' does not support multiples variable declarations");
     SWAG_ERROR(Syn0111, "invalid variable name                             $ a variable name ('%s') cannot start with '@', this is reserved for intrinsics $ only '@mixin' and '@alias' are possible in that case");
-    SWAG_ERROR(Syn0068, "invalid variable name                             $ expected a variable name");
     SWAG_ERROR(Syn0069, "invalid variable name                             $ expected a variable name, found '%s' instead");
     SWAG_ERROR(Syn0161, "invalid variable name                             $ unexpected generic parameters after variable name '%s'");
     SWAG_ERROR(Syn0216, "invalid variable name                             $ unexpected parameters after variable name '%s'");
@@ -311,6 +309,8 @@ void initErrors()
     SWAG_ERROR(Syn0219, "unexpected type suffix                            $ %s should not be followed by a type suffix");
     SWAG_ERROR(Syn0134, "unsupported tuple type                            $ tuple types are not supported for generic parameters");
     SWAG_ERROR(Syn0179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
+    SWAG_ERROR(Syn0076, nullptr);
+    SWAG_ERROR(Syn0068, nullptr);
     SWAG_ERROR(Syn0171, nullptr);
     SWAG_ERROR(Syn0176, nullptr);
     SWAG_ERROR(Syn0047, nullptr);
@@ -1260,7 +1260,6 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
 
     SWAG_ERROR(Hnt0111, "'moveref' and 'ref' can't be used together");
-    SWAG_ERROR(Hnt0102, nullptr);
     SWAG_ERROR(Hnt0087, "'self' should be the first parameter");
     SWAG_ERROR(Hnt0077, "...than this");
     SWAG_ERROR(Hnt0120, "a 'bool' type is expected here");
@@ -1272,13 +1271,11 @@ void initErrors()
     SWAG_ERROR(Hnt0096, "attribute is unexpected");
     SWAG_ERROR(Hnt0104, "consider adding '&' to get the address of this expression");
     SWAG_ERROR(Hnt0025, "consider casting with 'cast(%s)'");
-    SWAG_ERROR(Hnt0043, nullptr);
     SWAG_ERROR(Hnt0026, "consider removing this");
     SWAG_ERROR(Hnt0074, "copying an array of structs is not allowed here");
     SWAG_ERROR(Hnt0100, "default parameters of a lambda or closure can't be redefined");
     SWAG_ERROR(Hnt0085, "detected an enum implementation block");
     SWAG_ERROR(Hnt0122, "detected thrown error");
-    SWAG_ERROR(Hnt0082, nullptr)
     SWAG_ERROR(Hnt0034, "doesn't return any value");
     SWAG_ERROR(Hnt0080, "either remove this or replace with the scope '%s'");
     SWAG_ERROR(Hnt0035, "expecting an identifier, but found an alias");
@@ -1306,7 +1303,6 @@ void initErrors()
     SWAG_ERROR(Hnt0061, "operation not allowed");
     SWAG_ERROR(Hnt0113, "parameter mismatch detected");
     SWAG_ERROR(Hnt0088, "parameter set with a default value");
-    SWAG_ERROR(Hnt0013, nullptr);
     SWAG_ERROR(Hnt0037, "pointer can be dereferenced using 'dref'");
     SWAG_ERROR(Hnt0101, "use '#type' before '%s' if it's a type, or specify a type with ':' if this is a parameter name");
     SWAG_ERROR(Hnt0046, "prefix with '#run' to enforce a compile-time call");
@@ -1330,7 +1326,6 @@ void initErrors()
     SWAG_ERROR(Hnt0039, "the function call returns an immutable '%s'");
     SWAG_ERROR(Hnt0093, "the function doesn't accept type '%s' as its first argument");
     SWAG_ERROR(Hnt0062, "the initial value suggests that all other types should be '%s'");
-    SWAG_ERROR(Hnt0129, "the keyword '%s' can't be used as an identifier");
     SWAG_ERROR(Hnt0086, "the parent scope for 'impl' is '%s', however the parent scope for '%s' is '%s'");
     SWAG_ERROR(Hnt0128, "the tuple is represented as %s");
     SWAG_ERROR(Hnt0063, "the type evaluates to '%s'");
@@ -1378,11 +1373,16 @@ void initErrors()
     SWAG_ERROR(Hnt0067, "this unpacks into '%d' variable(s)");
     SWAG_ERROR(Hnt0040, "this value is a 'typeinfo'");
     SWAG_ERROR(Hnt0002, "this value can only be converted to type '%s' with a dynamic call to 'opAffect'");
-    SWAG_ERROR(Hnt0014, "unexpected in global scope");
     SWAG_ERROR(Hnt0097, "unnamed parameters ('?') should not have an explicitly specified type");
     SWAG_ERROR(Hnt0095, "you can't reference this runtime %s from the %s");
     SWAG_ERROR(Hnt0130, "consider adding scope '%s' before '.'");
     SWAG_ERROR(Hnt0131, "did you intend to use '='?");
+    SWAG_ERROR(Hnt0102, nullptr);
+    SWAG_ERROR(Hnt0043, nullptr);
+    SWAG_ERROR(Hnt0082, nullptr)
+    SWAG_ERROR(Hnt0013, nullptr);
+    SWAG_ERROR(Hnt0129, nullptr);
+    SWAG_ERROR(Hnt0014, nullptr);
     SWAG_ERROR(Hnt0098, nullptr);
     SWAG_ERROR(Hnt0008, nullptr);
     SWAG_ERROR(Hnt0118, nullptr);
@@ -1505,13 +1505,13 @@ void initErrors()
     SWAG_ERROR(Nte0125, "consider 'typealias' to create an alias for %s");
     SWAG_ERROR(Nte0142, "consider using 'func' instead of 'mtd'");
     SWAG_ERROR(Nte0102, "could 'self' be missing?");
-    SWAG_ERROR(Nte0154, nullptr);
+    SWAG_ERROR(Nte0154, "the keyword '%s' can't be used as an identifier");
     SWAG_ERROR(Nte0128, "do you need a 'using' before 'self'?");
     SWAG_ERROR(Nte0153, "employ '{}' for an intentional empty statement");
     SWAG_ERROR(Nte0152, "to begin a new block, consider moving '{' to a new line");
     SWAG_ERROR(Nte0130, "for an infinite loop, use 'loop { ... }'");
     SWAG_ERROR(Nte0104, "if you want to declare a lambda type, use 'func(' or 'closure('");
-    SWAG_ERROR(Nte0106, nullptr);
+    SWAG_ERROR(Nte0106, "this is unexpected in global scope");
     SWAG_ERROR(Nte0151, "to initiate a struct initialization of '%s', remove spaces between '%s' and '{'");
     SWAG_ERROR(Nte0136, "force the evaluation using '#run'");
     SWAG_ERROR(Nte0114, "function names that start with 'op' followed by an uppercase letter are reserved for struct special functions");
@@ -1530,7 +1530,6 @@ void initErrors()
     SWAG_ERROR(Nte0141, "this parameter type doesn't have related memory storage");
     SWAG_ERROR(Nte0122, "this specific constant doesn't have associated memory storage");
     SWAG_ERROR(Nte0105, "to dereference variable '%s' as in C, employ 'dref %s'");
-    SWAG_ERROR(Nte0147, nullptr);
     SWAG_ERROR(Nte0140, "use '++' for compile-time string append operations");
     SWAG_ERROR(Nte0133, "use '?' to unpack and ignore a variable");
     SWAG_ERROR(Nte0129, "use 'mtd' instead of 'func' to implicitly declare 'using self' as the initial parameter");
@@ -1539,6 +1538,7 @@ void initErrors()
     SWAG_ERROR(Nte0108, "'==' is the comparison operator; did you intend to affect something with '='?");
     SWAG_ERROR(Nte0100, "an attribute is not a function; please consider removing it");
     SWAG_ERROR(Nte0135, "if you were trying to compare values, you should use '==' instead");
+    SWAG_ERROR(Nte0147, nullptr);
     SWAG_ERROR(Nte0134, nullptr);
     SWAG_ERROR(Nte0118, nullptr);
     SWAG_ERROR(Nte0119, nullptr);

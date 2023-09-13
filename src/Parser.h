@@ -84,7 +84,7 @@ struct Parser
     bool error(const Token& tk, const Utf8& msg, const char* help = nullptr, const char* hint = nullptr);
     bool error(AstNode* node, const Utf8& msg, const char* help = nullptr, const char* hint = nullptr);
     bool error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg, const char* help = nullptr);
-    bool invalidTokenError(InvalidTokenError kind);
+    bool invalidTokenError(InvalidTokenError kind, AstNode* parent = nullptr);
 
     bool eatToken();
     bool eatCloseToken(TokenId id, const SourceLocation& start, const char* msg = "");
