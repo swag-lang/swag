@@ -6,34 +6,6 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 
-bool Parser::doTypeAlias(AstNode* parent, AstNode** result)
-{
-    auto node         = Ast::newNode<AstAlias>(this, AstNodeKind::TypeAlias, sourceFile, parent);
-    node->kwdLoc      = token;
-    node->semanticFct = SemanticJob::resolveUsing;
-
-    *result = node;
-    SWAG_CHECK(eatToken());
-
-    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0071), node->token.ctext(), token.ctext())));
-    node->inheritTokenName(token);
-    node->inheritTokenLocation(token);
-    SWAG_CHECK(checkIsValidUserName(node));
-
-    SWAG_CHECK(eatToken());
-    SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify the aliased type"));
-
-    AstNode* expr;
-    SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &expr));
-    SWAG_CHECK(eatSemiCol("'typealias' expression"));
-
-    node->allocateExtension(ExtensionKind::Semantic);
-    node->extSemantic()->semanticBeforeFct = SemanticJob::resolveTypeAliasBefore;
-    node->semanticFct                      = SemanticJob::resolveTypeAlias;
-    node->resolvedSymbolName               = currentScope->symTable.registerSymbolName(context, node, SymbolKind::TypeAlias);
-    return true;
-}
-
 bool Parser::doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeVarDecl)
 {
     auto node         = Ast::newNode<AstTypeLambda>(this, AstNodeKind::TypeLambda, sourceFile, parent);

@@ -136,7 +136,7 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
     if (token.id != id)
     {
         Utf8       related = Tokenizer::tokenToName(id);
-        Diagnostic diag{sourceFile, token, Fmt(Err(Syn0048), Tokenizer::tokenToName(id).c_str(), Tokenizer::tokenToName(id).c_str(), msg, token.ctext())};
+        Diagnostic diag{sourceFile, token, Fmt(Err(Syn0068), Tokenizer::tokenToName(id).c_str(), Tokenizer::tokenToName(id).c_str(), msg, token.ctext())};
         auto       note             = Diagnostic::note(sourceFile, start, start, Fmt(Nte(Nte0020), related.c_str()));
         note->showMultipleCodeLines = token.startLocation.line != start.line;
         return context->report(diag, note);

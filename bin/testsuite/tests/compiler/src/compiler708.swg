@@ -1,4 +1,4 @@
-#global testerror "Syn0048"
+#global testerror "Syn0068"
 #test
 {
 	loop(i: 2)

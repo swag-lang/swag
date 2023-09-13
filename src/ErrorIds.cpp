@@ -268,6 +268,7 @@ void initErrors()
     SWAG_ERROR(Syn0090, "missing lambda parameter type                     $ expected the start of the type declaration ':', or an assignment with '=' $ when declaring lambda parameters, you should not combined inferred and explicit types");
     SWAG_ERROR(Syn0185, "missing slicing upper bound                       $ expected an upper bound expression after '..<' $ if you want to slice to the end, consider using '..' instead");
     SWAG_ERROR(Syn0025, "missing struct name                               $ expected the struct name before the start of the body '{'");
+    SWAG_ERROR(Syn0068, "missing closing '%s'                              $ expected '%s' %s, found '%s' instead");
     SWAG_ERROR(Syn0172, "missing variable type                             $ expected the start of the type declaration ':', or an assignment with '=', found '%s' instead");
     SWAG_ERROR(Syn0209, "out of range '#up' count                          $ the '#up' count should be in the range [1, 255], found '%u'");
     SWAG_ERROR(Syn0043, "out of range '@alias' number                      $ an '@alias' number should be in the range [0, 31], found '%u'");
@@ -310,7 +311,6 @@ void initErrors()
     SWAG_ERROR(Syn0219, "unexpected type suffix                            $ %s should not be followed by a type suffix");
     SWAG_ERROR(Syn0134, "unsupported tuple type                            $ tuple types are not supported for generic parameters");
     SWAG_ERROR(Syn0179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
-    SWAG_ERROR(Syn0068, nullptr);
     SWAG_ERROR(Syn0171, nullptr);
     SWAG_ERROR(Syn0176, nullptr);
     SWAG_ERROR(Syn0047, nullptr);
@@ -1466,7 +1466,7 @@ void initErrors()
     SWAG_ERROR(Nte0040, "here is '%s'");
     SWAG_ERROR(Nte0069, "runtime argument corresponding to '%s' can be found here");
     SWAG_ERROR(Nte0081, "should conform to type '%s'");
-    SWAG_ERROR(Nte0020, "to complete this you need '%s'");
+    SWAG_ERROR(Nte0020, "to close this you need '%s'");
     SWAG_ERROR(Nte0043, "the %s '%s' wasn't found in '%s'. The alternative from '%s' was selected");
     SWAG_ERROR(Nte0074, "the UFCS argument is derived from 'this'");
     SWAG_ERROR(Nte0084, "the UFCS argument is derived from an implicit 'using const self' parameter");
