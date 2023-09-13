@@ -134,7 +134,7 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
             if (token.id == TokenId::SymColon)
             {
                 if (paramExpression->kind != AstNodeKind::IdentifierRef || paramExpression->childs.size() != 1)
-                    return context->report({paramExpression, Err(Syn0110)});
+                    return context->report({paramExpression, Fmt(Err(Syn0110), paramExpression->token.ctext())});
                 param->allocateExtension(ExtensionKind::Misc);
                 param->extMisc()->isNamed = paramExpression->childs.front();
                 param->allocateExtension(ExtensionKind::Owner);

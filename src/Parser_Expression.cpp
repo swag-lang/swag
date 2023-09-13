@@ -93,8 +93,7 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
             if (arrayNode->specFlags & AstArrayPointerSlicing::SPECFLAG_EXCLUDE_UP)
             {
                 Diagnostic diag{sourceFile, token, Err(Syn0185)};
-                auto note = Diagnostic::note(arrayNode, arrayNode->token, Nte(Nte0147));
-                return context->report(diag, note);
+                return context->report(diag);
             }
 
             arrayNode->upperBound = Ast::newNode<AstNode>(this, AstNodeKind::AutoSlicingUp, sourceFile, arrayNode);
@@ -988,7 +987,9 @@ bool Parser::doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
         isBinary = true;
     }
     else if (token.id == TokenId::SymAmpersandAmpersand || token.id == TokenId::SymVerticalVertical)
+    {
         return invalidTokenError(InvalidTokenError::EmbeddedInstruction);
+    }
 
     if (!isBinary)
         Ast::addChildBack(parent, leftNode);

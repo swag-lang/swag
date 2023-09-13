@@ -127,7 +127,7 @@ void initErrors()
     SWAG_ERROR(Syn0116, "duplicated '#import' location                     $ the '#import' location has already been defined");
     SWAG_ERROR(Syn0117, "duplicated '#import' version                      $ the '#import' version has already been defined");
     SWAG_ERROR(Syn0125, "duplicated instruction modifier                   $ the instruction modifier '%s' has already been defined");
-    SWAG_ERROR(Syn0015, "empty '#mixin' replacement block                  $ an empty 'mixin' block is useless $ add content to the '#mixin' block or consider removing it");
+    SWAG_ERROR(Syn0015, "empty '#mixin' replacement block                  $ an empty 'mixin' block is useless $ add some content to the '#mixin' block or consider removing it");
     SWAG_ERROR(Syn0158, "empty 'case' statement                            $ a 'case' statement should never be empty");
     SWAG_ERROR(Syn0052, "empty 'default' statement                         $ a 'default' statement should never be empty");
     SWAG_ERROR(Syn0124, "empty array literal                               $ an array literal should contain at least one value");
@@ -185,7 +185,7 @@ void initErrors()
     SWAG_ERROR(Syn0078, "invalid identifier                                $ expected an identifier, found '%s' instead");
     SWAG_ERROR(Syn0157, "invalid identifier list                           $ 'with' does not support multiple identifiers");
     SWAG_ERROR(Syn0105, "invalid logical operator                          $ expected '%s' for logical test, found '%s' instead");
-    SWAG_ERROR(Syn0110, "invalid named argument                            $ expected a named argument before ':'");
+    SWAG_ERROR(Syn0110, "invalid named argument                            $ expected a named argument before ':', found '%s' instead");
     SWAG_ERROR(Syn0041, "invalid namespace name                            $ expected the namespace name, found '%s' instead");
     SWAG_ERROR(Syn0178, "invalid operator modifier                         $ '%s' is not recognized as a valid operator modifier");
     SWAG_ERROR(Syn0112, "invalid parameter name                            $ expected a parameter name, found '%s' instead");
@@ -264,10 +264,10 @@ void initErrors()
     SWAG_ERROR(Syn0140, "missing enum name                                 $ expected the enum name before the start of the body '{'");
     SWAG_ERROR(Syn0146, "missing enum name                                 $ expected the enum name before the start of the type definition ':'");
     SWAG_ERROR(Syn0091, "missing function parameters                       $ expected the function parameters between '()' before the start of the body '{' $ if you want to declare a function without parameters, consider adding '()' after the name");
-    SWAG_ERROR(Syn0092, "missing generic parameter                         $ expected at least one generic parameter between '()' $ consider removing '()' if this is not generic");
+    SWAG_ERROR(Syn0092, "missing generic parameters                        $ expected at least one generic parameter between '()' $ consider removing '()' if this is not generic");
     SWAG_ERROR(Syn0044, "missing intrinsic arguments                       $ expected the intrinsic arguments between '()'");
     SWAG_ERROR(Syn0090, "missing lambda parameter type                     $ expected the start of the type declaration ':', or an assignment with '=' $ when declaring lambda parameters, you should not combined inferred and explicit types");
-    SWAG_ERROR(Syn0185, "missing slicing upper bound                       $ expected an upper bound expression after '..<'");
+    SWAG_ERROR(Syn0185, "missing slicing upper bound                       $ expected an upper bound expression after '..<' $ if you want to slice to the end, consider using '..' instead");
     SWAG_ERROR(Syn0025, "missing struct name                               $ expected the struct name before the start of the body '{'");
     SWAG_ERROR(Syn0172, "missing variable type                             $ expected the start of the type declaration ':', or an assignment with '=', found '%s' instead");
     SWAG_ERROR(Syn0209, "out of range '#up' count                          $ the '#up' count should be in the range [1, 255], found '%u'");
@@ -1530,7 +1530,7 @@ void initErrors()
     SWAG_ERROR(Nte0141, "this parameter type doesn't have related memory storage");
     SWAG_ERROR(Nte0122, "this specific constant doesn't have associated memory storage");
     SWAG_ERROR(Nte0105, "to dereference variable '%s' as in C, employ 'dref %s'");
-    SWAG_ERROR(Nte0147, "if you want to slice to the end, consider using '..' instead");
+    SWAG_ERROR(Nte0147, nullptr);
     SWAG_ERROR(Nte0140, "use '++' for compile-time string append operations");
     SWAG_ERROR(Nte0133, "use '?' to unpack and ignore a variable");
     SWAG_ERROR(Nte0129, "use 'mtd' instead of 'func' to implicitly declare 'using self' as the initial parameter");
