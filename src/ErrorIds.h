@@ -15,5 +15,3 @@ extern void initErrors();
 extern Utf8 Err(ErrorID idx);
 extern Utf8 Nte(ErrorID idx);
 extern Utf8 ErrNte(ErrorID idx, bool forNote);
-extern Utf8 Hnt(ErrorID idx);
-extern Utf8 Hlp(ErrorID idx);

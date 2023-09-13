@@ -107,9 +107,9 @@ bool Generic::updateGenericParameters(SemanticContext*              context,
 
                 Diagnostic diag{errNode, errNode->token, Utf8::format(Err(Err0808), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
                 if (errType && errType->isUntypedInteger())
-                    diag.hint = Hnt(Hnt0052);
+                    diag.hint = Nte(Nte1052);
                 else if (errType && errType->isUntypedFloat())
-                    diag.hint = Hnt(Hnt0052);
+                    diag.hint = Nte(Nte1052);
                 return context->report(diag);
             }
         }
@@ -773,7 +773,7 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
                         if (!param->assignment)
                         {
                             Diagnostic diag{node->sourceFile, node->type->token, Fmt(Err(Err0721), typeExpr->identifier->resolvedSymbolName->name.c_str())};
-                            diag.hint = Hnt(Hnt0056);
+                            diag.hint = Nte(Nte1056);
                             return context->report(diag, Diagnostic::hereIs(typeExpr->identifier->resolvedSymbolOverload));
                         }
 
@@ -827,7 +827,7 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
                     if (!param->assignment)
                     {
                         Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0715), identifier->resolvedSymbolName->name.c_str())};
-                        diag.hint = Hnt(Hnt0056);
+                        diag.hint = Nte(Nte1056);
                         return context->report(diag, Diagnostic::hereIs(identifier->resolvedSymbolOverload));
                     }
 
@@ -864,8 +864,8 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
                 if (contextualNode)
                 {
                     Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0715), node->token.ctext())};
-                    diag.hint = Hnt(Hnt0057);
-                    diag.addRange(contextualNode, Hnt(Hnt0056));
+                    diag.hint = Nte(Nte1057);
+                    diag.addRange(contextualNode, Nte(Nte1056));
                     return context->report(diag);
                 }
             }

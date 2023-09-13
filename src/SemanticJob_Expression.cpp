@@ -266,7 +266,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
     if (typeInfo->isStruct())
     {
         Diagnostic diag{node->sourceFile, node->token, Err(Err0342)};
-        diag.hint = Hnt(Hnt0061);
+        diag.hint = Nte(Nte1061);
         diag.addRange(expression, Diagnostic::isType(typeInfo));
         return context->report(diag);
     }
@@ -278,7 +278,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
              !typeInfo->isLambdaClosure())
     {
         Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0332), typeInfo->getDisplayNameC())};
-        diag.hint = Hnt(Hnt0061);
+        diag.hint = Nte(Nte1061);
         diag.addRange(expression, Diagnostic::isType(typeInfo));
         return context->report(diag);
     }

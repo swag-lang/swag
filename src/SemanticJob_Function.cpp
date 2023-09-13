@@ -171,8 +171,8 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
             if (defaultValueDone)
             {
                 Diagnostic diag{nodeParam, Fmt(Err(Err0738), Naming::niceParameterRank((int) index).c_str())};
-                diag.hint = Hnt(Hnt0089);
-                diag.addRange(firstParamWithDef, Hnt(Hnt0088));
+                diag.hint = Nte(Nte1089);
+                diag.addRange(firstParamWithDef, Nte(Nte1088));
                 return context->report(diag);
             }
         }
@@ -316,8 +316,8 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         if (funcNode->attributeFlags & ATTRIBUTE_TEST_FUNC)
         {
             SWAG_VERIFY(module->kind == ModuleKind::Test, context->report({funcNode, Err(Err0744)}));
-            SWAG_VERIFY(funcNode->returnType->typeInfo->isVoid(), context->report({funcNode->returnType, Err(Err0745), Hnt(Hnt0026)}));
-            SWAG_VERIFY(!funcNode->parameters || funcNode->parameters->childs.size() == 0, context->report({funcNode->parameters, Err(Err0746), Hnt(Hnt0026)}));
+            SWAG_VERIFY(funcNode->returnType->typeInfo->isVoid(), context->report({funcNode->returnType, Err(Err0745), Nte(Nte1026)}));
+            SWAG_VERIFY(!funcNode->parameters || funcNode->parameters->childs.size() == 0, context->report({funcNode->parameters, Err(Err0746), Nte(Nte1026)}));
         }
 
         if (funcNode->attributeFlags & ATTRIBUTE_PUBLIC)
@@ -497,7 +497,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         if (typeNode->typeInfo->getCA()->isVoid())
         {
             Diagnostic diag{typeNode->sourceFile, typeNode->token.startLocation, front->token.endLocation, Err(Err0732)};
-            diag.hint = Hnt(Hnt0026);
+            diag.hint = Nte(Nte1026);
             return context->report(diag);
         }
     }
@@ -592,7 +592,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
         if (funcNode->genericParameters)
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC), context->report({funcNode->genericParameters, Fmt(Err(Err0752), funcNode->token.ctext()), Hnt(Hnt0026)}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC), context->report({funcNode->genericParameters, Fmt(Err(Err0752), funcNode->token.ctext()), Nte(Nte1026)}));
             funcNode->flags |= AST_IS_GENERIC;
         }
 
@@ -829,7 +829,7 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
         if (!funcNode->returnType->typeInfo->isVoid() && (funcNode->attributeFlags & ATTRIBUTE_CALLEE_RETURN))
         {
             Diagnostic diag{funcNode->returnType->childs.front(), Err(Err0766)};
-            diag.hint = Hnt(Hnt0026);
+            diag.hint = Nte(Nte1026);
             return context->report(diag);
         }
         // The function returns nothing but has the 'Swag.Discardable' attribute
@@ -1384,7 +1384,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
                                         ATTRIBUTE_TEST_FUNC))
         {
             if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC)
-                return context->report({child, Fmt(Err(Err0052), funcNode->getDisplayNameC()), Hnt(Hnt0026)});
+                return context->report({child, Fmt(Err(Err0052), funcNode->getDisplayNameC()), Nte(Nte1026)});
         }
     }
 
@@ -1393,7 +1393,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     if (returnType->isVoid() && !concreteType->isVoid())
     {
         Diagnostic diag{child, Fmt(Err(Err0774), concreteType->getDisplayNameC(), funcNode->getDisplayNameC())};
-        diag.hint = Hnt(Hnt0026);
+        diag.hint = Nte(Nte1026);
 
         if (node->ownerInline && !(node->semFlags & SEMFLAG_EMBEDDED_RETURN))
         {
@@ -1831,7 +1831,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
                             if (alias.text == r.second)
                             {
                                 Diagnostic diag{id, alias, Fmt(Err(Err0780), alias.ctext())};
-                                diag.hint = Hnt(Hnt0026);
+                                diag.hint = Nte(Nte1026);
                                 return context->report(diag);
                             }
                         }
@@ -1842,7 +1842,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
                         if (alias.text == r.second)
                         {
                             Diagnostic diag{id, alias, Fmt(Err(Err0780), alias.ctext())};
-                            diag.hint = Hnt(Hnt0026);
+                            diag.hint = Nte(Nte1026);
                             return context->report(diag);
                         }
                     }

@@ -33,7 +33,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         if (!leftTypeInfo->isPointerArithmetic() && !context->forDebugger)
         {
             Diagnostic diag{node, node->token, Err(Err0192), Diagnostic::isType(leftTypeInfo)};
-            diag.hint = Hnt(Hnt0061);
+            diag.hint = Nte(Nte1061);
             diag.addRange(left, Diagnostic::isType(leftTypeInfo));
             auto note = Diagnostic::note(Nte(Nte0146));
             return context->report(diag, note);
@@ -42,7 +42,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         if (leftTypeInfo->isPointerTo(NativeTypeKind::Void))
         {
             Diagnostic diag{node, node->token, Err(Err0111)};
-            diag.hint = Hnt(Hnt0061);
+            diag.hint = Nte(Nte1061);
             diag.addRange(left, Diagnostic::isType(leftTypeInfo));
             return context->report(diag);
         }
@@ -58,7 +58,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         if (!rightTypeInfo->isPointerArithmetic() && !context->forDebugger)
         {
             Diagnostic diag{node, node->token, Err(Err0192), Diagnostic::isType(rightTypeInfo)};
-            diag.hint = Hnt(Hnt0061);
+            diag.hint = Nte(Nte1061);
             diag.addRange(right, Diagnostic::isType(rightTypeInfo));
             auto note = Diagnostic::note(Nte(Nte0146));
             return context->report(diag, note);
@@ -67,7 +67,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         if (rightTypeInfo->isPointerTo(NativeTypeKind::Void))
         {
             Diagnostic diag{node, node->token, Err(Err0111)};
-            diag.hint = Hnt(Hnt0061);
+            diag.hint = Nte(Nte1061);
             diag.addRange(right, Diagnostic::isType(rightTypeInfo));
             return context->report(diag);
         }
@@ -110,7 +110,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         else
         {
             Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-            diag.hint = Hnt(Hnt0061);
+            diag.hint = Nte(Nte1061);
             diag.addRange(left, Diagnostic::isType(leftTypeInfo));
             return context->report(diag);
         }
@@ -118,7 +118,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     default:
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-        diag.hint = Hnt(Hnt0061);
+        diag.hint = Nte(Nte1061);
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
@@ -249,7 +249,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
         if (!leftTypeInfo->isPointerArithmetic() && !context->forDebugger)
         {
             Diagnostic diag{node, node->token, Err(Err0192), Diagnostic::isType(leftTypeInfo)};
-            diag.hint = Hnt(Hnt0061);
+            diag.hint = Nte(Nte1061);
             diag.addRange(left, Diagnostic::isType(leftTypeInfo));
             auto note = Diagnostic::note(Nte(Nte0146));
             return context->report(diag, note);
@@ -282,7 +282,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
     default:
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-        diag.hint = Hnt(Hnt0061);
+        diag.hint = Nte(Nte1061);
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
@@ -402,7 +402,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
     default:
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-        diag.hint = Hnt(Hnt0061);
+        diag.hint = Nte(Nte1061);
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
@@ -534,7 +534,7 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
     default:
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-        diag.hint = Hnt(Hnt0061);
+        diag.hint = Nte(Nte1061);
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
@@ -550,12 +550,12 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
             if (right->computedValue->reg.s32 == 0)
-                return context->report({right, Err(Err0150), Hnt(Hnt0033)});
+                return context->report({right, Err(Err0150), Nte(Nte1033)});
             node->computedValue->reg.s64 = left->computedValue->reg.s32 / right->computedValue->reg.s32;
             break;
         case NativeTypeKind::S64:
             if (right->computedValue->reg.s64 == 0)
-                return context->report({right, Err(Err0150), Hnt(Hnt0033)});
+                return context->report({right, Err(Err0150), Nte(Nte1033)});
             node->computedValue->reg.s64 = left->computedValue->reg.s64 / right->computedValue->reg.s64;
             break;
         case NativeTypeKind::U8:
@@ -563,22 +563,22 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
             if (right->computedValue->reg.u32 == 0)
-                return context->report({right, Err(Err0150), Hnt(Hnt0033)});
+                return context->report({right, Err(Err0150), Nte(Nte1033)});
             node->computedValue->reg.u64 = left->computedValue->reg.u32 / right->computedValue->reg.u32;
             break;
         case NativeTypeKind::U64:
             if (right->computedValue->reg.u64 == 0)
-                return context->report({right, Err(Err0150), Hnt(Hnt0033)});
+                return context->report({right, Err(Err0150), Nte(Nte1033)});
             node->computedValue->reg.u64 = left->computedValue->reg.u64 / right->computedValue->reg.u64;
             break;
         case NativeTypeKind::F32:
             if (right->computedValue->reg.f32 == 0)
-                return context->report({right, Err(Err0150), Hnt(Hnt0033)});
+                return context->report({right, Err(Err0150), Nte(Nte1033)});
             node->computedValue->reg.f32 = left->computedValue->reg.f32 / right->computedValue->reg.f32;
             break;
         case NativeTypeKind::F64:
             if (right->computedValue->reg.f64 == 0)
-                return context->report({right, Err(Err0150), Hnt(Hnt0033)});
+                return context->report({right, Err(Err0150), Nte(Nte1033)});
             node->computedValue->reg.f64 = left->computedValue->reg.f64 / right->computedValue->reg.f64;
             break;
         default:
@@ -587,7 +587,7 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
     }
     else if (right->isConstant0())
     {
-        return context->report({right, Err(Err0150), Hnt(Hnt0033)});
+        return context->report({right, Err(Err0150), Nte(Nte1033)});
     }
     else if (module->mustOptimizeBytecode(node))
     {
@@ -639,13 +639,13 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
         if (rightTypeInfo->isNativeFloat())
         {
             Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), rightTypeInfo->getDisplayNameC())};
-            diag.hint = Hnt(Hnt0061);
+            diag.hint = Nte(Nte1061);
             diag.addRange(right, Diagnostic::isType(rightTypeInfo));
             return context->report(diag);
         }
 
         Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-        diag.hint = Hnt(Hnt0061);
+        diag.hint = Nte(Nte1061);
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
@@ -661,12 +661,12 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
             if (right->computedValue->reg.s32 == 0)
-                return context->report({right, Err(Err0150), Hnt(Hnt0033)});
+                return context->report({right, Err(Err0150), Nte(Nte1033)});
             node->computedValue->reg.s64 = left->computedValue->reg.s32 % right->computedValue->reg.s32;
             break;
         case NativeTypeKind::S64:
             if (right->computedValue->reg.s64 == 0)
-                return context->report({right, Err(Err0150), Hnt(Hnt0033)});
+                return context->report({right, Err(Err0150), Nte(Nte1033)});
             node->computedValue->reg.s64 = left->computedValue->reg.s64 % right->computedValue->reg.s64;
             break;
         case NativeTypeKind::U8:
@@ -674,12 +674,12 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
             if (right->computedValue->reg.u32 == 0)
-                return context->report({right, Err(Err0150), Hnt(Hnt0033)});
+                return context->report({right, Err(Err0150), Nte(Nte1033)});
             node->computedValue->reg.u64 = left->computedValue->reg.u32 % right->computedValue->reg.u32;
             break;
         case NativeTypeKind::U64:
             if (right->computedValue->reg.u64 == 0)
-                return context->report({right, Err(Err0150), Hnt(Hnt0033)});
+                return context->report({right, Err(Err0150), Nte(Nte1033)});
             node->computedValue->reg.u64 = left->computedValue->reg.u64 % right->computedValue->reg.u64;
             break;
         default:
@@ -723,7 +723,7 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
     default:
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-        diag.hint = Hnt(Hnt0061);
+        diag.hint = Nte(Nte1061);
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
@@ -834,7 +834,7 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
     default:
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-        diag.hint = Hnt(Hnt0061);
+        diag.hint = Nte(Nte1061);
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
@@ -958,7 +958,7 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
     default:
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-        diag.hint = Hnt(Hnt0061);
+        diag.hint = Nte(Nte1061);
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
@@ -1094,16 +1094,16 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     if (leftTypeInfo->isAny())
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-        diag.hint = Hnt(Hnt0061);
-        diag.addRange(left, Hnt(Hnt0116));
+        diag.hint = Nte(Nte1061);
+        diag.addRange(left, Nte(Nte1116));
         return context->report(diag);
     }
 
     if (rightTypeInfo->isAny())
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0183), node->token.ctext(), rightTypeInfo->getDisplayNameC())};
-        diag.hint = Hnt(Hnt0061);
-        diag.addRange(right, Hnt(Hnt0116));
+        diag.hint = Nte(Nte1061);
+        diag.addRange(right, Nte(Nte1116));
         return context->report(diag);
     }
 
@@ -1179,7 +1179,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
     {
         Diagnostic diag{left, Fmt(Err(Err0170), leftTypeInfo->getDisplayNameC())};
         diag.hint = Diagnostic::isType(leftTypeInfo);
-        diag.addRange(node->token, Hnt(Hnt0061));
+        diag.addRange(node->token, Nte(Nte1061));
         return context->report(diag);
     }
 
@@ -1258,7 +1258,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
     {
         Diagnostic diag{left, Fmt(Err(Err0172), leftTypeInfo->getDisplayNameC())};
         diag.hint = Diagnostic::isType(leftTypeInfo);
-        diag.addRange(node->token, Hnt(Hnt0061));
+        diag.addRange(node->token, Nte(Nte1061));
         return context->report(diag);
     }
 

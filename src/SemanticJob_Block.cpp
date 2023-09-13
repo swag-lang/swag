@@ -22,7 +22,7 @@ bool SemanticJob::resolveIf(SemanticContext* context)
     {
         PushErrCxtStep ec(
             context, node, ErrCxtStepKind::Hint2, [node]()
-            { return Hnt(Hnt0120); },
+            { return Nte(Nte1120); },
             true);
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
     }
@@ -63,7 +63,7 @@ bool SemanticJob::resolveWhile(SemanticContext* context)
     {
         PushErrCxtStep ec(
             context, node, ErrCxtStepKind::Hint2, [node]()
-            { return Hnt(Hnt0120); },
+            { return Nte(Nte1120); },
             true);
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
     }
@@ -392,7 +392,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     {
         // No default for a complete switch
         auto back = node->cases.back();
-        SWAG_VERIFY(!back->expressions.empty(), context->report({back, back->token, Err(Err0616), Hnt(Hnt0026)}));
+        SWAG_VERIFY(!back->expressions.empty(), context->report({back, back->token, Err(Err0616), Nte(Nte1026)}));
 
         if (node->typeInfo->isEnum())
         {
@@ -552,7 +552,7 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
             {
                 PushErrCxtStep ec(
                     context, node, ErrCxtStepKind::Hint2, [node]()
-                    { return Hnt(Hnt0121); },
+                    { return Nte(Nte1121); },
                     true);
                 SWAG_CHECK(resolveIntrinsicCountOf(context, node->expression, node->expression));
                 if (context->result != ContextResult::Done)
@@ -666,14 +666,14 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     if (!node->extraNameToken.text.empty())
     {
         Diagnostic diag{node, node->extraNameToken, Fmt(Err(Err0625), typeInfo->getDisplayNameC())};
-        diag.hint = Hnt(Hnt0026);
+        diag.hint = Nte(Nte1026);
         return context->report(diag);
     }
 
     if (node->aliasNames.size() > 2)
     {
         Diagnostic diag{node, node->aliasNames[2], Fmt(Err(Err0626), node->aliasNames.size())};
-        diag.hint = Hnt(Hnt0026);
+        diag.hint = Nte(Nte1026);
         return context->report(diag);
     }
 
@@ -889,15 +889,15 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
                 typePtr->pointedType->isStruct() ||
                 typePtr->pointedType->isString())
             {
-                return context->report({node->expression, Fmt(Err(Err0628), typeInfo->getDisplayNameC()), Hnt(Hnt0037)});
+                return context->report({node->expression, Fmt(Err(Err0628), typeInfo->getDisplayNameC()), Nte(Nte1037)});
             }
             else
             {
-                return context->report({node->expression, Fmt(Err(Err0628), typeInfo->getDisplayNameC()), Hnt(Hnt0036)});
+                return context->report({node->expression, Fmt(Err(Err0628), typeInfo->getDisplayNameC()), Nte(Nte1036)});
             }
         }
 
-        return context->report({node->expression, Fmt(Err(Err0629), typeInfo->getDisplayNameC()), Hnt(Hnt0006)});
+        return context->report({node->expression, Fmt(Err(Err0629), typeInfo->getDisplayNameC()), Nte(Nte1006)});
     }
 
     node->expression->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;

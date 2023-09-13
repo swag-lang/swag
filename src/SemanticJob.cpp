@@ -145,7 +145,7 @@ bool SemanticJob::checkIsConstExpr(JobContext* context, bool test, AstNode* expr
     if (expression->hasSpecialFuncCall())
     {
         Diagnostic diag{expression, expression->token, Fmt(Err(Err0281), expression->typeInfo->getDisplayNameC())};
-        diag.hint = Fmt(Hnt(Hnt0047), expression->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str());
+        diag.hint = Fmt(Nte(Nte1047), expression->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str());
         return context->report(diag, computeNonConstExprNote(expression));
     }
 
@@ -173,14 +173,14 @@ bool SemanticJob::checkTypeIsNative(SemanticContext* context, TypeInfo* leftType
     if (!leftTypeInfo->isNative())
     {
         Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0005), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-        diag.hint = Hnt(Hnt0061);
+        diag.hint = Nte(Nte1061);
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
     else
     {
         Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0005), node->token.ctext(), rightTypeInfo->getDisplayNameC())};
-        diag.hint = Hnt(Hnt0061);
+        diag.hint = Nte(Nte1061);
         diag.addRange(right, Diagnostic::isType(rightTypeInfo));
         return context->report(diag);
     }
@@ -202,7 +202,7 @@ bool SemanticJob::notAllowed(SemanticContext* context, AstNode* node, TypeInfo* 
     }
 
     Diagnostic diag{node, node->token, text};
-    diag.hint = Hnt(Hnt0061);
+    diag.hint = Nte(Nte1061);
     if (hintType)
         diag.addRange(hintType, Diagnostic::isType(typeInfo));
     return context->report(diag);

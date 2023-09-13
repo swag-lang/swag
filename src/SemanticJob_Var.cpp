@@ -51,7 +51,7 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
     if (!typeVar->isStruct())
     {
         Diagnostic diag{varDecl, varDecl->token, Fmt(Err(Err0291), typeVar->getDisplayNameC())};
-        diag.hint = Hnt(Hnt0066);
+        diag.hint = Nte(Nte1066);
         if (varDecl->assignment)
             diag.addRange(varDecl->assignment, Diagnostic::isType(TypeManager::concreteType(varDecl->assignment->typeInfo)));
         else if (varDecl->type)
@@ -65,16 +65,16 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
     if (typeStruct->fields.size() == 0)
     {
         Diagnostic diag{varDecl, varDecl->token, Err(Err0292)};
-        diag.hint = Hnt(Hnt0066);
-        diag.addRange(varDecl->assignment, Hnt(Hnt0069));
+        diag.hint = Nte(Nte1066);
+        diag.addRange(varDecl->assignment, Nte(Nte1069));
         return context->report(diag);
     }
 
     if (numUnpack < typeStruct->fields.size())
     {
         Diagnostic diag{varDecl, varDecl->token, Fmt(Err(Err0293), numUnpack, typeStruct->fields.size())};
-        diag.hint = Fmt(Hnt(Hnt0067), numUnpack);
-        diag.addRange(varDecl->assignment, Fmt(Hnt(Hnt0068), typeStruct->fields.size()));
+        diag.hint = Fmt(Nte(Nte1067), numUnpack);
+        diag.addRange(varDecl->assignment, Fmt(Nte(Nte1068), typeStruct->fields.size()));
         PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, []()
                           { return Nte(Nte0133); });
         return context->report(diag);
@@ -83,8 +83,8 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
     if (numUnpack > typeStruct->fields.size())
     {
         Diagnostic diag{varDecl, varDecl->token, Fmt(Err(Err0713), numUnpack, typeStruct->fields.size())};
-        diag.hint = Fmt(Hnt(Hnt0067), numUnpack);
-        diag.addRange(varDecl->assignment, Fmt(Hnt(Hnt0068), typeStruct->fields.size()));
+        diag.hint = Fmt(Nte(Nte1067), numUnpack);
+        diag.addRange(varDecl->assignment, Fmt(Nte(Nte1068), typeStruct->fields.size()));
         return context->report(diag);
     }
 
@@ -130,7 +130,7 @@ bool SemanticJob::resolveVarDeclAfterType(SemanticContext* context)
             varDecl->type->typeInfo->isCVariadic())
         {
             Diagnostic diag{varDecl, varDecl->assignToken, Err(Err0685)};
-            diag.hint = Hnt(Hnt0061);
+            diag.hint = Nte(Nte1061);
             diag.addRange(varDecl->type, Diagnostic::isType(varDecl->type->typeInfo));
             return context->report(diag);
         }
@@ -332,8 +332,8 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
     if (identifier->callParameters)
     {
         Diagnostic diag{assign, Err(Err0295)};
-        diag.hint = Hnt(Hnt0045);
-        diag.addRange(identifier->callParameters, Hnt(Hnt0007));
+        diag.hint = Nte(Nte1045);
+        diag.addRange(identifier->callParameters, Nte(Nte1007));
         return context->report(diag);
     }
 
@@ -535,7 +535,7 @@ bool SemanticJob::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl
     if (paramIdx >= (uint32_t) typeLambda->parameters.count)
     {
         Diagnostic diag{nodeParam, Fmt(Err(Err0026), (uint32_t) typeLambda->parameters.count, (uint32_t) nodeParam->parent->childs.count)};
-        diag.hint = Hnt(Hnt0026);
+        diag.hint = Nte(Nte1026);
         return context->report(diag);
     }
 
@@ -725,7 +725,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             if (!ok)
             {
                 Diagnostic diag{node, Fmt(Err(Err0848), node->token.ctext(), typeEnum->getDisplayNameC())};
-                diag.hint = Hnt(Hnt0055);
+                diag.hint = Nte(Nte1055);
                 auto note = Diagnostic::hereIs(concreteNodeType->declNode, false, true);
                 return context->report(diag, note);
             }
@@ -833,7 +833,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(concreteNodeType, TypeInfoKind::Array);
         if (typeArray->count == UINT32_MAX && !node->assignment)
-            return context->report({node->type, Err(Err0303), Hnt(Hnt0072)});
+            return context->report({node->type, Err(Err0303), Nte(Nte1072)});
 
         // Deduce size of array
         if (typeArray->count == UINT32_MAX)
@@ -852,14 +852,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (isCompilerConstant)
         {
             Diagnostic diag{node->assignment, Err(Err0298)};
-            diag.hint = Hnt(Hnt0061);
+            diag.hint = Nte(Nte1061);
             return context->report(diag);
         }
 
         if (node->specFlags & AstVarDecl::SPECFLAG_IS_LET)
         {
             Diagnostic diag{node->assignment, Err(Err0873)};
-            diag.hint = Hnt(Hnt0061);
+            diag.hint = Nte(Nte1061);
             return context->report(diag);
         }
     }
@@ -920,8 +920,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                     if (!(node->extMisc()->resolvedUserOpSymbolOverload->node->attributeFlags & ATTRIBUTE_CONSTEXPR))
                     {
                         Diagnostic diag{node->assignment, Err(Err0906)};
-                        diag.hint = Fmt(Hnt(Hnt0002), leftConcreteType->getDisplayNameC());
-                        diag.addRange(node->assignToken, Fmt(Hnt(Hnt0047), g_LangSpec->name_opAffect.c_str()));
+                        diag.hint = Fmt(Nte(Nte1002), leftConcreteType->getDisplayNameC());
+                        diag.addRange(node->assignToken, Fmt(Nte(Nte1047), g_LangSpec->name_opAffect.c_str()));
                         return context->report(diag);
                     }
                 }
@@ -939,7 +939,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         {
             if (!leftConcreteType->isConst())
             {
-                Diagnostic diag{node->type, Err(Err0306), Fmt(Hnt(Hnt0004), leftConcreteType->getDisplayNameC())};
+                Diagnostic diag{node->type, Err(Err0306), Fmt(Nte(Nte1004), leftConcreteType->getDisplayNameC())};
                 diag.addRange(node->assignment, Diagnostic::isType(rightConcreteType));
                 return context->report(diag);
             }
@@ -968,7 +968,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 if (nodeWhere->kind == AstNodeKind::IdentifierRef)
                     nodeWhere = nodeWhere->childs.back();
                 Diagnostic diag{nodeWhere, nodeWhere->token, Err(Err0163)};
-                diag.hint = Hnt(Hnt0034);
+                diag.hint = Nte(Nte1034);
                 return context->report(diag, Diagnostic::hereIs(over));
             }
 

@@ -393,7 +393,7 @@ bool SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfo
             notes.push_back(note);
         }
 
-        diag.hint = Fmt(Hnt(Hnt0047), name.c_str());
+        diag.hint = Fmt(Nte(Nte1047), name.c_str());
         return context->report(diag, notes);
     }
 
@@ -496,7 +496,7 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
             Diagnostic diag{context->node, context->node->token, Fmt(Err(Err0889), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
             auto       note0 = Diagnostic::note(right->childs.front(), Fmt(Nte(Nte0057), suffix.c_str()));
             auto       note1 = Diagnostic::hereIs(leftTypeInfo->declNode, false, true);
-            diag.hint        = Fmt(Hnt(Hnt0047), g_LangSpec->name_opAffectSuffix.c_str());
+            diag.hint        = Fmt(Nte(Nte1047), g_LangSpec->name_opAffectSuffix.c_str());
             diag.addRange(left->token, Diagnostic::isType(leftTypeInfo));
             return context->report(diag, note0, note1);
         }
@@ -522,7 +522,7 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
             Diagnostic diag{right, Fmt(Err(Err0908), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC())};
             diag.hint = Diagnostic::isType(rightTypeInfo);
             diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-            auto note  = Diagnostic::note(context->node, context->node->token, Fmt(Hnt(Hnt0047), g_LangSpec->name_opAffect.c_str()));
+            auto note  = Diagnostic::note(context->node, context->node->token, Fmt(Nte(Nte1047), g_LangSpec->name_opAffect.c_str()));
             auto note1 = Diagnostic::hereIs(leftTypeInfo->declNode->resolvedSymbolOverload);
             return context->report(diag, note, note1);
         }
@@ -567,14 +567,14 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
         if (!opConst)
         {
             Diagnostic diag{left->parent->sourceFile, left->parent->token, Fmt(Err(Err0079), name.c_str(), leftType->getDisplayNameC())};
-            diag.hint = Fmt(Hnt(Hnt0047), name.c_str());
+            diag.hint = Fmt(Nte(Nte1047), name.c_str());
             diag.addRange(left, Diagnostic::isType(leftType));
             return context->report(diag, note);
         }
         else
         {
             Diagnostic diag{left->parent->sourceFile, left->parent->token, Fmt(Err(Err0186), name.c_str(), leftType->getDisplayNameC(), opConst)};
-            diag.hint = Fmt(Hnt(Hnt0047), name.c_str());
+            diag.hint = Fmt(Nte(Nte1047), name.c_str());
             diag.addRange(left, Diagnostic::isType(leftType));
             return context->report(diag, note);
         }
@@ -623,7 +623,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
             { return Fmt(Nte(Nte0051), name.c_str(), leftType->getDisplayNameC()); },
             true);
         Diagnostic diag(left, Fmt(Err(Err0715), name.c_str()));
-        diag.hint = Hnt(Hnt0056);
+        diag.hint = Nte(Nte1056);
         return context->report(diag);
     }
 

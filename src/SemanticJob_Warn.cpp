@@ -95,7 +95,7 @@ bool SemanticJob::warnUnusedFunction(Module* moduleToGen, ByteCode* one)
 
     Diagnostic diag{funcDecl, funcDecl->tokenName, Fmt(Err(Wrn0008), funcDecl->token.ctext()), DiagnosticLevel::Warning};
     if (!funcDecl->isSpecialFunctionName())
-        diag.hint = Fmt(Hnt(Hnt0092), funcDecl->token.ctext());
+        diag.hint = Fmt(Nte(Nte1092), funcDecl->token.ctext());
     return Report::report(diag);
 }
 
@@ -174,7 +174,7 @@ bool SemanticJob::warnUnusedVariables(SemanticContext* context, Scope* scope)
         if (overload->flags & OVERLOAD_VAR_LOCAL)
         {
             Diagnostic diag{front, front->token, Fmt(Err(Wrn0002), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
-            diag.hint = Fmt(Hnt(Hnt0092), sym->name.c_str());
+            diag.hint = Fmt(Nte(Nte1092), sym->name.c_str());
             isOk      = isOk && context->report(diag);
         }
         else if (overload->flags & OVERLOAD_VAR_FUNC_PARAM)
@@ -191,27 +191,27 @@ bool SemanticJob::warnUnusedVariables(SemanticContext* context, Scope* scope)
             if (front->isGeneratedSelf())
             {
                 Diagnostic diag{front->ownerFct, front->ownerFct->token, Fmt(Err(Wrn0005), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
-                diag.hint = Hnt(Hnt0049);
+                diag.hint = Nte(Nte1049);
                 auto note = Diagnostic::note(Nte(Nte0142));
                 isOk      = isOk && context->report(diag, note);
             }
             else
             {
                 Diagnostic diag{front, front->token, Fmt(Err(Wrn0004), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
-                diag.hint = Fmt(Hnt(Hnt0092), sym->name.c_str());
+                diag.hint = Fmt(Nte(Nte1092), sym->name.c_str());
                 isOk      = isOk && context->report(diag);
             }
         }
         else if (overload->flags & OVERLOAD_VAR_CAPTURE)
         {
             Diagnostic diag{front, front->token, Fmt(Err(Wrn0006), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
-            diag.hint = Hnt(Hnt0026);
+            diag.hint = Nte(Nte1026);
             isOk      = isOk && context->report(diag);
         }
         else if (overload->flags & OVERLOAD_CONSTANT)
         {
             Diagnostic diag{front, front->token, Fmt(Err(Wrn0007), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
-            diag.hint = Fmt(Hnt(Hnt0092), sym->name.c_str());
+            diag.hint = Fmt(Nte(Nte1092), sym->name.c_str());
             isOk      = isOk && context->report(diag);
         }
     }

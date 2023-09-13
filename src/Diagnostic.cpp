@@ -668,9 +668,9 @@ Utf8 Diagnostic::isType(TypeInfo* typeInfo)
 
     Utf8 str;
     if (typeInfo->isTuple() || typeInfo->isListTuple())
-        str = Hnt(Hnt0010);
+        str = Nte(Nte1010);
     else
-        str = Fmt(Hnt(Hnt0011), typeInfo->getDisplayNameC());
+        str = Fmt(Nte(Nte1011), typeInfo->getDisplayNameC());
 
     if (typeInfo->isAlias())
     {
@@ -687,7 +687,7 @@ Utf8 Diagnostic::isType(AstNode* node)
     if (!node->typeInfo)
         return "";
     if (node->resolvedSymbolOverload)
-        return Fmt(Hnt(Hnt0084), Naming::kindName(node->resolvedSymbolOverload).c_str(), node->typeInfo->getDisplayNameC());
+        return Fmt(Nte(Nte1084), Naming::kindName(node->resolvedSymbolOverload).c_str(), node->typeInfo->getDisplayNameC());
     return isType(node->typeInfo);
 }
 

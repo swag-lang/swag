@@ -49,7 +49,7 @@ bool SemanticJob::preprocessMatchError(SemanticContext* context, OneTryMatch& on
     {
         auto ufcs  = match.parameters[0];
         auto note  = Diagnostic::note(ufcs, ufcs->token, Nte(Nte0144));
-        note->hint = Hnt(Hnt0094);
+        note->hint = Nte(Nte1094);
         result1.push_back(note);
     }
 
@@ -116,7 +116,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         {
             if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_TRY_COERCE | CASTFLAG_JUST_CHECK))
             {
-                hintMsg = Fmt(Hnt(Hnt0025), bi.badSignatureRequestedType->name.c_str());
+                hintMsg = Fmt(Nte(Nte1025), bi.badSignatureRequestedType->name.c_str());
                 break;
             }
         }
@@ -125,7 +125,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         {
             if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK))
             {
-                hintMsg = Fmt(Hnt(Hnt0025), bi.badSignatureRequestedType->name.c_str());
+                hintMsg = Fmt(Nte(Nte1025), bi.badSignatureRequestedType->name.c_str());
                 break;
             }
         }
@@ -157,8 +157,8 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     {
         SWAG_ASSERT(failedParam);
         SWAG_ASSERT(badParamIdx >= 2);
-        diag = new Diagnostic{failedParam, Fmt(Err(Err0006), Naming::niceArgumentRank(badParamIdx).c_str()), Hnt(Hnt0031)};
-        diag->addRange(callParameters->childs[badParamIdx - 2], Hnt(Hnt0030));
+        diag = new Diagnostic{failedParam, Fmt(Err(Err0006), Naming::niceArgumentRank(badParamIdx).c_str()), Nte(Nte1031)};
+        diag->addRange(callParameters->childs[badParamIdx - 2], Nte(Nte1030));
         result0.push_back(diag);
         return;
     }
@@ -181,10 +181,10 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     {
         SWAG_ASSERT(failedParam && failedParam->hasExtMisc() && failedParam->extMisc()->isNamed);
         diag         = new Diagnostic{failedParam->extMisc()->isNamed, Fmt(Err(Err0011), failedParam->extMisc()->isNamed->token.ctext())};
-        diag->hint   = Hnt(Hnt0009);
+        diag->hint   = Nte(Nte1009);
         size_t other = oneTry.symMatchContext.badSignatureInfos.badSignatureNum1;
         SWAG_ASSERT(other < callParameters->childs.size());
-        diag->addRange(callParameters->childs[other], Hnt(Hnt0059));
+        diag->addRange(callParameters->childs[other], Nte(Nte1059));
         result0.push_back(diag);
         return;
     }
@@ -192,7 +192,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     case MatchResult::MissingParameters:
     {
         diag       = new Diagnostic{callParameters ? callParameters : node, Fmt(Err(Err0020), refNiceName.c_str())};
-        diag->hint = Hnt(Hnt0044);
+        diag->hint = Nte(Nte1044);
         result0.push_back(diag);
 
         auto note = Diagnostic::hereIs(overload);
@@ -210,7 +210,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         else
             diag = new Diagnostic{node, node->token, Fmt(Err(Err0016), refNiceName.c_str())};
         if (!callParameters)
-            diag->hint = Hnt(Hnt0044);
+            diag->hint = Nte(Nte1044);
 
         result0.push_back(diag);
 
@@ -276,7 +276,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         SWAG_ASSERT(site);
         diag = new Diagnostic{site, Fmt(Err(Err0026), match.badSignatureInfos.badSignatureNum2, match.badSignatureInfos.badSignatureNum1)};
         if (failedParam)
-            diag->hint = Hnt(Hnt0026);
+            diag->hint = Nte(Nte1026);
         result0.push_back(diag);
 
         auto note = Diagnostic::hereIs(overload);
@@ -307,7 +307,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                       match.badSignatureInfos.badSignatureNum2,
                                       match.badSignatureInfos.badSignatureNum1)};
             if (genericParameters)
-                diag->hint = Hnt(Hnt0026);
+                diag->hint = Nte(Nte1026);
         }
 
         result0.push_back(diag);
@@ -372,7 +372,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                   Fmt(Err(Err0095),
                                       bi.badSignatureRequestedType->getDisplayNameC(),
                                       bi.badSignatureGivenType->getDisplayNameC())};
-            hintMsg = Fmt(Hnt(Hnt0093), bi.badSignatureGivenType->getDisplayNameC());
+            hintMsg = Fmt(Nte(Nte1093), bi.badSignatureGivenType->getDisplayNameC());
             if (oneTry.dependentVar->isGeneratedSelf())
             {
                 if (bi.badSignatureGivenType->isConst())
@@ -401,7 +401,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             auto nodeCall = diagNode->parent->childs.back();
             hintMsg       = Diagnostic::isType(bi.badSignatureGivenType);
             if (!oneTry.overload->node->isSpecialFunctionName())
-                diag->addRange(nodeCall->token, Fmt(Hnt(Hnt0093), bi.badSignatureGivenType->getDisplayNameC()));
+                diag->addRange(nodeCall->token, Fmt(Nte(Nte1093), bi.badSignatureGivenType->getDisplayNameC()));
         }
         else if (paramNode && paramNode->typeInfo->isSelf() && bi.badSignatureParameterIdx == 0)
         {
@@ -489,7 +489,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                   refNiceName.c_str(),
                                   bi.badSignatureGivenType->getDisplayNameC(),
                                   bi.badSignatureRequestedType->getDisplayNameC())};
-        diag->hint = Fmt(Hnt(Hnt0063), bi.badSignatureRequestedType->getDisplayNameC());
+        diag->hint = Fmt(Nte(Nte1063), bi.badSignatureRequestedType->getDisplayNameC());
         result0.push_back(diag);
         return;
     }
@@ -514,7 +514,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                   Fmt(Err(Err0054),
                                       Naming::niceArgumentRank(badParamIdx).c_str(),
                                       refNiceName.c_str())};
-            diag->hint = Hnt(Hnt0028);
+            diag->hint = Nte(Nte1028);
         }
         else if (match.flags & SymbolMatchContext::MATCH_ERROR_TYPE_VALUE)
         {
@@ -522,7 +522,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                   Fmt(Err(Err0057),
                                       Naming::niceArgumentRank(badParamIdx).c_str(),
                                       refNiceName.c_str())};
-            diag->hint = Hnt(Hnt0027);
+            diag->hint = Nte(Nte1027);
         }
         else
         {

@@ -242,7 +242,7 @@ bool SemanticJob::checkAccess(JobContext* context, AstNode* node)
         if (onNode && onNode->kind == AstNodeKind::FuncDeclType)
             diag.addRange(onNode, Diagnostic::isType(onNode->typeInfo));
 
-        Diagnostic* note  = Diagnostic::note(culprit, culprit->token, Fmt(Hnt(Hnt0127), Naming::kindName(culprit->resolvedSymbolOverload).c_str(), accessCulprit));
+        Diagnostic* note  = Diagnostic::note(culprit, culprit->token, Fmt(Nte(Nte1127), Naming::kindName(culprit->resolvedSymbolOverload).c_str(), accessCulprit));
         Diagnostic* note1 = nullptr;
         if (culprit->resolvedSymbolOverload->node != culprit)
             note1 = Diagnostic::hereIs(culprit);

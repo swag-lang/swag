@@ -385,14 +385,14 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
     }
     else if (castError == CastErrorType::Const)
     {
-        hint = Hnt(Hnt0022);
+        hint = Nte(Nte1022);
         msg  = Fmt(ErrNte(Err0418, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
     else if (castError == CastErrorType::SliceArray)
     {
         auto to   = CastTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
         auto from = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
-        hint      = Fmt(Hnt(Hnt0123), from->totalCount, from->finalType->getDisplayNameC(), to->pointedType->getDisplayNameC());
+        hint      = Fmt(Nte(Nte1123), from->totalCount, from->finalType->getDisplayNameC(), to->pointedType->getDisplayNameC());
     }
     else if (toType->isPointerArithmetic() && !fromType->isPointerArithmetic())
     {
@@ -415,7 +415,7 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
     }
     else if (fromType->isPointerToTypeInfo() && !toType->isPointerToTypeInfo())
     {
-        hint = Hnt(Hnt0040);
+        hint = Nte(Nte1040);
         msg  = Fmt(ErrNte(Err0177, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
     else if (fromType->isClosure() && toType->isLambda())
@@ -428,12 +428,12 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
         if (fromTypeFunc->firstDefaultValueIdx != UINT32_MAX)
         {
             msg  = Fmt(ErrNte(Err0690, forNote));
-            hint = Hnt(Hnt0100);
+            hint = Nte(Nte1100);
         }
     }
     else if (!fromType->isPointer() && toType->isPointerRef())
     {
-        hint = Fmt(Hnt(Hnt0108), fromType->getDisplayNameC());
+        hint = Fmt(Nte(Nte1108), fromType->getDisplayNameC());
     }
     else if (toType->isTuple() && fromType->isTuple())
     {
@@ -480,7 +480,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
             if (TypeManager::makeCompatibles(context, toType, fromType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK))
             {
                 Diagnostic diag{fromNode, Fmt(Err(Err0175), fromType->getDisplayNameC(), toType->getDisplayNameC())};
-                diag.hint    = Fmt(Hnt(Hnt0032), fromType->getDisplayNameC(), toType->getDisplayNameC());
+                diag.hint    = Fmt(Nte(Nte1032), fromType->getDisplayNameC(), toType->getDisplayNameC());
                 diag.lowPrio = true;
                 diag.remarks = remarks;
                 return context->report(diag);
@@ -2384,7 +2384,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             else if (toTypeStruct->fields.size() < child->childs.size())
             {
                 Diagnostic diag{child->childs[toTypeStruct->fields.count], Fmt(Err(Err0197), toTypeStruct->getDisplayNameC(), toTypeStruct->fields.size(), child->childs.size())};
-                diag.hint = Hnt(Hnt0026);
+                diag.hint = Nte(Nte1026);
                 return context->report(diag);
             }
 
@@ -2399,22 +2399,22 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             {
                 auto       badParamIdx = symContext.badSignatureInfos.badSignatureParameterIdx;
                 auto       failedParam = child->childs[badParamIdx];
-                Diagnostic diag{failedParam, Fmt(Err(Err0006), Naming::niceArgumentRank(badParamIdx + 1).c_str()), Hnt(Hnt0031)};
+                Diagnostic diag{failedParam, Fmt(Err(Err0006), Naming::niceArgumentRank(badParamIdx + 1).c_str()), Nte(Nte1031)};
                 auto       otherParam = child->childs[badParamIdx - 1];
                 if (otherParam->hasExtMisc() && otherParam->extMisc()->isNamed)
                     otherParam = otherParam->extMisc()->isNamed;
-                diag.addRange(otherParam, Hnt(Hnt0030));
+                diag.addRange(otherParam, Nte(Nte1030));
                 return context->report(diag);
             }
             case MatchResult::DuplicatedNamedParameter:
             {
                 auto       failedParam = child->childs[symContext.badSignatureInfos.badSignatureParameterIdx];
                 Diagnostic diag{failedParam->extMisc()->isNamed, Fmt(Err(Err0011), failedParam->extMisc()->isNamed->token.ctext())};
-                diag.hint       = Hnt(Hnt0009);
+                diag.hint       = Nte(Nte1009);
                 auto otherParam = child->childs[symContext.badSignatureInfos.badSignatureNum1];
                 if (otherParam->hasExtMisc() && otherParam->extMisc()->isNamed)
                     otherParam = otherParam->extMisc()->isNamed;
-                diag.addRange(otherParam, Hnt(Hnt0059));
+                diag.addRange(otherParam, Nte(Nte1059));
                 return context->report(diag);
             }
             case MatchResult::InvalidNamedParameter:
@@ -2473,7 +2473,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
         if (fromNode)
         {
             PushErrCxtStep ec(context, fromNode->childs.front(), ErrCxtStepKind::Hint2, [convertTo]()
-                              { return Fmt(Hnt(Hnt0062), convertTo->getDisplayNameC()); });
+                              { return Fmt(Nte(Nte1062), convertTo->getDisplayNameC()); });
             SWAG_CHECK(TypeManager::makeCompatibles(context, convertTo, fromTypeList->subTypes[i]->typeInfo, nullptr, child, castFlags | CASTFLAG_TRY_COERCE));
         }
         else

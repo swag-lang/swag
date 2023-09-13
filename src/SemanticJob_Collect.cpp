@@ -380,8 +380,8 @@ bool SemanticJob::collectAssignment(SemanticContext* context, DataSegment* stora
             auto overload = assign->resolvedSymbolOverload;
             if (node->type && (node->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
             {
-                Diagnostic diag{assign, Err(Err0645), Hnt(Hnt0045)};
-                diag.addRange(node->type, Hnt(Hnt0007));
+                Diagnostic diag{assign, Err(Err0645), Nte(Nte1045)};
+                diag.addRange(node->type, Nte(Nte1007));
                 return context->report(diag);
             }
 

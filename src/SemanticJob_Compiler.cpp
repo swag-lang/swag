@@ -33,7 +33,7 @@ Diagnostic* SemanticJob::computeNonConstExprNote(AstNode* node)
                     if (!(c->resolvedSymbolOverload->node->attributeFlags & ATTRIBUTE_CONSTEXPR))
                     {
                         auto result  = Diagnostic::note(c, c->token, Fmt(Nte(Nte0042), c->resolvedSymbolName->name.c_str()));
-                        result->hint = Hnt(Hnt0046);
+                        result->hint = Nte(Nte1046);
                         return result;
                     }
 
@@ -125,7 +125,7 @@ bool SemanticJob::doExecuteCompilerNode(SemanticContext* context, AstNode* node,
             if (node->hasSpecialFuncCall())
             {
                 Diagnostic diag{node, Fmt(Err(Err0281), realType->getDisplayNameC())};
-                diag.hint = Fmt(Hnt(Hnt0047), node->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str());
+                diag.hint = Fmt(Nte(Nte1047), node->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str());
                 return context->report(diag);
             }
 

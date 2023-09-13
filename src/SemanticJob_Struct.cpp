@@ -222,7 +222,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             if (itfSymbol)
             {
                 Diagnostic diag{childFct, childFct->tokenName, Fmt(Err(Err0280), childFct->token.text.c_str(), typeInterface->name.c_str())};
-                diag.hint = Hnt(Hnt0124);
+                diag.hint = Nte(Nte1124);
                 auto hlp  = Diagnostic::note(Nte(Nte0124));
                 return context->report(diag, hlp);
             }
@@ -278,7 +278,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             case MatchResult::BadSignature:
             {
                 Diagnostic diag{childFct->parameters->childs[bi.badSignatureNum2], Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
-                diag.hint = Hnt(Hnt0113);
+                diag.hint = Nte(Nte1113);
                 auto note = Diagnostic::note(typeLambda->parameters[bi.badSignatureNum1]->declNode, Fmt(Nte(Nte0081), typeLambda->parameters[bi.badSignatureNum1]->typeInfo->getDisplayNameC()));
                 return context->report(diag, note);
             }
@@ -286,7 +286,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             case MatchResult::MissingReturnType:
             {
                 Diagnostic diag{child, child->token, Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
-                diag.hint = Hnt(Hnt0114);
+                diag.hint = Nte(Nte1114);
                 auto note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Fmt(Nte(Nte0083), typeLambda->returnType->getDisplayNameC()));
                 return context->report(diag, note);
             }
@@ -294,7 +294,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             case MatchResult::NoReturnType:
             {
                 Diagnostic diag{childFct->returnType, Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
-                diag.hint = Hnt(Hnt0026);
+                diag.hint = Nte(Nte1026);
                 auto note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0082));
                 return context->report(diag, note);
             }
@@ -310,7 +310,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             case MatchResult::MismatchThrow:
             {
                 Diagnostic diag{child, child->token, Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
-                diag.hint       = Hnt(Hnt0115);
+                diag.hint       = Nte(Nte1115);
                 auto note       = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0002));
                 note->showRange = false;
                 return context->report(diag, note);
@@ -523,7 +523,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
             if (typeLambda->parameters.size() == 0)
             {
                 Diagnostic diag{varDecl->type, Fmt(Err(Err0677), child->token.ctext())};
-                diag.hint = Hnt(Hnt0087);
+                diag.hint = Nte(Nte1087);
 
                 if (varDecl->specFlags & AstVarDecl::SPECFLAG_GEN_ITF)
                 {
@@ -685,7 +685,7 @@ bool SemanticJob::checkImplScopes(SemanticContext* context, AstImpl* node, Scope
         }
 
         Diagnostic diag{node, node->token, Fmt(Err(Err0661), node->token.ctext())};
-        diag.hint = Fmt(Hnt(Hnt0086), scopeImpl->parentScope->getFullName().c_str(), node->token.ctext(), scope->parentScope->getFullName().c_str());
+        diag.hint = Fmt(Nte(Nte1086), scopeImpl->parentScope->getFullName().c_str(), node->token.ctext(), scope->parentScope->getFullName().c_str());
         return context->report(diag, note);
     }
 
@@ -705,7 +705,7 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
     }
 
     auto typeIdentifier = node->identifier->resolvedSymbolOverload->typeInfo;
-    SWAG_VERIFY(!typeIdentifier->isAlias(), context->report({node->identifier, Err(Err0664), Hnt(Hnt0035)}));
+    SWAG_VERIFY(!typeIdentifier->isAlias(), context->report({node->identifier, Err(Err0664), Nte(Nte1035)}));
 
     switch (typeInfo->kind)
     {

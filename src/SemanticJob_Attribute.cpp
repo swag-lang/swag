@@ -172,7 +172,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     {
         auto       nakedName = Naming::kindName(checkNode);
         Diagnostic diag{oneAttribute, Fmt(Err(Err0583), oneAttribute->token.ctext(), specificMsg)};
-        diag.hint  = Hnt(Hnt0096);
+        diag.hint  = Nte(Nte1096);
         auto note1 = Diagnostic::note(checkNode, Fmt(Nte(Nte0019), nakedName.c_str()));
         return context->report(diag, note1, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
     }
@@ -182,14 +182,14 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
         if (nakedName == "<node>")
         {
             Diagnostic diag{oneAttribute, Fmt(Err(Err0586), oneAttribute->token.ctext())};
-            diag.hint = Hnt(Hnt0096);
+            diag.hint = Nte(Nte1096);
             return context->report(diag, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
         }
         else
         {
             auto       nakedName1 = Naming::kindName(checkNode);
             Diagnostic diag{oneAttribute, Fmt(Err(Err0588), oneAttribute->token.ctext(), nakedName.c_str())};
-            diag.hint  = Hnt(Hnt0096);
+            diag.hint  = Nte(Nte1096);
             auto note1 = Diagnostic::note(checkNode, checkNode->token, Fmt(Nte(Nte0026), nakedName1.c_str()));
             return context->report(diag, note1, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
         }

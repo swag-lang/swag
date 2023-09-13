@@ -79,7 +79,7 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
     if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->flags & OVERLOAD_VAR_STRUCT)
     {
         name = "the struct member";
-        hint = Fmt(Hnt(Hnt0003), node->resolvedSymbolOverload->symbol->ownerTable->scope->name.c_str());
+        hint = Fmt(Nte(Nte1003), node->resolvedSymbolOverload->symbol->ownerTable->scope->name.c_str());
     }
 
     Diagnostic  diag{node, Fmt(Err(Err0013), name.c_str(), node->resolvedSymbolName->name.c_str()), hint};
@@ -354,13 +354,13 @@ bool SemanticJob::resolveType(SemanticContext* context)
                     {
                         if (symOver->typeInfo->isPointer())
                         {
-                            diag.hint  = Hnt(Hnt0024);
+                            diag.hint  = Nte(Nte1024);
                             auto note1 = Diagnostic::note(Fmt(Nte(Nte0105), symName->name.c_str(), symName->name.c_str()));
                             return context->report(diag, note1, note);
                         }
                         else
                         {
-                            diag.hint = Hnt(Hnt0024);
+                            diag.hint = Nte(Nte1024);
                             return context->report(diag, note);
                         }
                     }
@@ -515,7 +515,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
         !typeC->isStruct())
     {
         Diagnostic diag{typeNode->sourceFile, typeNode->locConst, Fmt(Err(Err0250), typeNode->typeInfo->getDisplayNameC())};
-        diag.hint = Hnt(Hnt0026);
+        diag.hint = Nte(Nte1026);
         return context->report(diag);
     }
 

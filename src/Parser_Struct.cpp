@@ -42,7 +42,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         if (scopeKind == ScopeKind::Enum)
         {
             Diagnostic diag{implNode, token, Err(Syn0143)};
-            diag.addRange(kindLoc, Hnt(Hnt0085));
+            diag.addRange(kindLoc, Nte(Nte1085));
             return context->report(diag);
         }
 

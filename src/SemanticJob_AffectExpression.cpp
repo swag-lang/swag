@@ -119,7 +119,7 @@ bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, As
             if (child->isFunctionCall() && (child->typeInfo->isConst() || child->typeInfo->isStruct()))
             {
                 left = child;
-                hint = Fmt(Hnt(Hnt0039), left->typeInfo->getDisplayNameC());
+                hint = Fmt(Nte(Nte1039), left->typeInfo->getDisplayNameC());
                 break;
             }
 
@@ -159,7 +159,7 @@ bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, As
     {
         if (left == left->parent->childs.back())
         {
-            Diagnostic diag{node, node->token, Fmt(Err(Err0740), left->resolvedSymbolName->name.c_str()), Hnt(Hnt0061)};
+            Diagnostic diag{node, node->token, Fmt(Err(Err0740), left->resolvedSymbolName->name.c_str()), Nte(Nte1061)};
             if (hint.empty())
                 hint = Diagnostic::isType(left->typeInfo);
             diag.addRange(left, hint);
@@ -168,15 +168,15 @@ bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, As
         }
         else if (left->typeInfo->isConstPointerRef())
         {
-            Diagnostic diag{node, node->token, Fmt(Err(Err0740), left->resolvedSymbolName->name.c_str()), Hnt(Hnt0061)};
+            Diagnostic diag{node, node->token, Fmt(Err(Err0740), left->resolvedSymbolName->name.c_str()), Nte(Nte1061)};
             if (hint.empty())
-                hint = Hnt(Hnt0106);
+                hint = Nte(Nte1106);
             diag.addRange(left, hint);
             return context->report(diag, note);
         }
         else
         {
-            Diagnostic diag{node, node->token, Fmt(Err(Err0740), left->resolvedSymbolName->name.c_str()), Hnt(Hnt0061)};
+            Diagnostic diag{node, node->token, Fmt(Err(Err0740), left->resolvedSymbolName->name.c_str()), Nte(Nte1061)};
             if (hint.empty())
                 hint = Diagnostic::isType(left);
             diag.addRange(left, hint);
@@ -186,15 +186,15 @@ bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, As
 
     if (left->resolvedSymbolOverload && left->resolvedSymbolOverload->flags & OVERLOAD_IS_LET)
     {
-        Diagnostic diag{node, node->token, Err(Err0564), Hnt(Hnt0061)};
-        diag.addRange(left, Hnt(Hnt0050));
+        Diagnostic diag{node, node->token, Err(Err0564), Nte(Nte1061)};
+        diag.addRange(left, Nte(Nte1050));
         note = Diagnostic::hereIs(left->resolvedSymbolOverload->node);
         return context->report(diag, note);
     }
 
     if (left->flags & AST_L_VALUE)
     {
-        Diagnostic diag{node, node->token, Err(Err0564), Hnt(Hnt0061)};
+        Diagnostic diag{node, node->token, Err(Err0564), Nte(Nte1061)};
         if (hint.empty())
             hint = Diagnostic::isType(left);
         diag.addRange(left, hint);
@@ -203,14 +203,14 @@ bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, As
 
     if (left->resolvedSymbolOverload && left->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE)
     {
-        Diagnostic diag{node, node->token, Err(Err0564), Hnt(Hnt0061)};
+        Diagnostic diag{node, node->token, Err(Err0564), Nte(Nte1061)};
         if (hint.empty())
-            hint = Hnt(Hnt0018);
+            hint = Nte(Nte1018);
         diag.addRange(left, hint);
         return context->report(diag);
     }
 
-    Diagnostic diag{node, node->token, Err(Err0565), Hnt(Hnt0061)};
+    Diagnostic diag{node, node->token, Err(Err0565), Nte(Nte1061)};
     if (hint.empty())
         hint = Diagnostic::isType(left);
     diag.addRange(left, hint);
@@ -278,7 +278,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     if (leftTypeInfo->isAny() && node->tokenId != TokenId::SymEqual)
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0570), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-        diag.hint = Hnt(Hnt0061);
+        diag.hint = Nte(Nte1061);
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
@@ -530,7 +530,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             if (!leftTypeInfo->isPointerArithmetic())
             {
                 Diagnostic diag{node, node->token, Err(Err0192)};
-                diag.hint = Hnt(Hnt0061);
+                diag.hint = Nte(Nte1061);
                 diag.addRange(left, Diagnostic::isType(leftTypeInfo));
                 auto note = Diagnostic::note(Nte(Nte0146));
                 return context->report(diag, note);
@@ -539,7 +539,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             if (leftTypeInfo->isPointerTo(NativeTypeKind::Void))
             {
                 Diagnostic diag{node, node->token, Err(Err0111)};
-                diag.hint = Hnt(Hnt0061);
+                diag.hint = Nte(Nte1061);
                 diag.addRange(left, Diagnostic::isType(leftTypeInfo));
                 return context->report(diag);
             }

@@ -282,7 +282,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
 
                     Diagnostic diag{sourceFile, tokenAmb, Err(Syn0195)};
                     auto       note = Diagnostic::note(lastParameter, Fmt(Nte(Nte0076), lastParameter->type->token.ctext()));
-                    note->hint      = Fmt(Hnt(Hnt0101), lastParameter->type->token.ctext());
+                    note->hint      = Fmt(Nte(Nte1101), lastParameter->type->token.ctext());
                     return context->report(diag, note);
                 }
 
