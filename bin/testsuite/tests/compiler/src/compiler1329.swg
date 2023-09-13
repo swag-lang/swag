@@ -1,4 +1,4 @@
-#global testerror "Syn0171"
+#global testerror "Syn0037"
 
 interface toto
 {

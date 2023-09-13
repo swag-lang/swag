@@ -1,4 +1,4 @@
-#global testerror "Syn0171"
+#global testerror "Syn0037"
 
 func(T, N: u32) toto()
 #validif

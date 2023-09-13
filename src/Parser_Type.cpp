@@ -318,8 +318,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                 lastParameter = param;
             }
 
-            SWAG_VERIFY(token.id == TokenId::SymComma || token.id == TokenId::SymRightParen, error(token, Fmt(Err(Syn0199), token.ctext())));
-            if (token.id == TokenId::SymRightParen)
+            if (token.id != TokenId::SymComma)
                 break;
             SWAG_CHECK(eatToken());
         }

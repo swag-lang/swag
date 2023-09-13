@@ -1036,8 +1036,7 @@ bool Parser::doTopLevelInstruction(AstNode* parent, AstNode** result)
         if (token.id == TokenId::SymEqual || token.id == TokenId::SymColon)
         {
             Diagnostic diag{sourceFile, token, Fmt(Err(Syn0198), token.ctext(), (*result)->token.ctext())};
-            auto       help = Diagnostic::note(Nte(Nte0154));
-            return context->report(diag, help);
+            return context->report(diag);
         }
         break;
 

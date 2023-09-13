@@ -168,9 +168,7 @@ bool Parser::eatSemiCol(const char* msg)
             token = st;
         }
 
-        if (Tokenizer::isSymbol(token.id))
-            return error(token, Fmt(Err(Syn0171), token.ctext(), msg));
-        return error(token, Fmt(Err(Syn0037), token.ctext(), msg), nullptr, Hnt(Hnt0013));
+        return error(token, Fmt(Err(Syn0037), msg, token.ctext()));
     }
 
     if (token.id == TokenId::SymSemiColon)

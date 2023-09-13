@@ -111,8 +111,8 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
             SWAG_CHECK(eatToken());
             if (token.id == TokenId::SymVertical)
                 break;
-            SWAG_VERIFY(token.id == TokenId::SymComma, error(token, Err(Syn0176)));
-            SWAG_CHECK(eatToken());
+            SWAG_CHECK(eatToken(TokenId::SymComma, "to declare another alias name"));
+            SWAG_VERIFY(token.id != TokenId::SymVertical, error(token, Err(Syn0199)));
         }
 
         SWAG_CHECK(eatToken());
@@ -212,9 +212,10 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
         bool isConst = false;
         if (token.id == TokenId::KwdConst)
         {
-            isConst = true;
+            auto constToken = token;
+            isConst         = true;
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(token.id == TokenId::Identifier && token.text == g_LangSpec->name_self, error(token, Err(Syn0045)));
+            SWAG_VERIFY(token.id == TokenId::Identifier && token.text == g_LangSpec->name_self, error(constToken, Fmt(Err(Syn0045), token.ctext())));
             paramNode->token.text = g_LangSpec->name_self;
         }
 
