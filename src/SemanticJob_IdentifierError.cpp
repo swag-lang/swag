@@ -1201,7 +1201,7 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
                 {
                     auto altEnum    = prevIdentifier->identifierExtension->alternateEnum;
                     diag            = new Diagnostic{node, node->token, Fmt(Err(Err0492), node->token.ctext(), altEnum->getDisplayNameC(), Naming::kindName(identifierRef->startScope->kind).c_str(), displayName.c_str())};
-                    auto note       = Diagnostic::note(altEnum->declNode, altEnum->declNode->token, Fmt(Nte(Nte0029), altEnum->getDisplayNameC()));
+                    auto note       = Diagnostic::hereIs(altEnum->declNode, false, true);
                     note->showRange = false;
                     notes.push_back(note);
                 }
@@ -1226,8 +1226,7 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
                 case AstNodeKind::InterfaceDecl:
                 case AstNodeKind::EnumDecl:
                 {
-                    auto note       = Diagnostic::note(identifierRef->startScope->owner, identifierRef->startScope->owner->token, Fmt(Nte(Nte0029), displayName.c_str()));
-                    note->showRange = false;
+                    auto note = Diagnostic::hereIs(identifierRef->startScope->owner, false, true);
                     notes.push_back(note);
                     break;
                 }

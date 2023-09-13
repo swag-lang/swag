@@ -75,13 +75,14 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     auto newScope = Ast::newScope(implNode, structName, scopeKind, currentScope, true);
     if (scopeKind != newScope->kind)
     {
-        Diagnostic diag{implNode, Fmt(Err(Syn0123), Naming::kindName(scopeKind).c_str(), implNode->token.ctext(), Naming::kindName(newScope->kind).c_str())};
+        Diagnostic  diag{implNode, Fmt(Err(Syn0123), Naming::kindName(scopeKind).c_str(), implNode->token.ctext(), Naming::kindName(newScope->kind).c_str())};
+        auto        note  = Diagnostic::hereIs(newScope->owner, false, true);
+        Diagnostic* note1 = nullptr;
         if (newScope->kind == ScopeKind::Enum)
-            diag.hint = Fmt(Hnt(Hnt0019), implNode->token.ctext());
+            note1 = Diagnostic::note(Fmt(Nte(Nte0147), implNode->token.ctext()));
         else if (newScope->kind == ScopeKind::Struct)
-            diag.hint = Fmt(Hnt(Hnt0020), implNode->token.ctext());
-        auto note = Diagnostic::note(newScope->owner, newScope->owner->token, Fmt(Nte(Nte0027), implNode->token.ctext()));
-        return context->report(diag, note);
+            note1 = Diagnostic::note(Fmt(Nte(Nte0134), implNode->token.ctext()));
+        return context->report(diag, note, note1);
     }
 
     implNode->structScope = newScope;
@@ -255,7 +256,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
             {
                 auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
                 Diagnostic diag{implNode->identifier, Fmt(Err(Syn0123), Naming::kindName(newScope->kind).c_str(), implNode->token.ctext(), Naming::kindName(ScopeKind::Struct).c_str())};
-                auto       note = Diagnostic::note(structNode, Fmt(Nte(Nte0027), implNode->token.ctext()));
+                auto       note = Diagnostic::hereIs(structNode, false, true);
                 return context->report(diag, note);
             }
             else

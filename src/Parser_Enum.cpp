@@ -38,9 +38,9 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
             {
                 auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
                 Diagnostic diag{implNode->identifier, Fmt(Err(Syn0123), Naming::kindName(newScope->kind).c_str(), implNode->token.ctext(), Naming::kindName(ScopeKind::Enum).c_str())};
-                diag.hint = Fmt(Hnt(Hnt0019), implNode->token.ctext());
-                auto note = Diagnostic::note(enumNode, enumNode->token, Fmt(Nte(Nte0027), implNode->token.ctext()));
-                return context->report(diag, note);
+                auto       note  = Diagnostic::hereIs(enumNode, false, true);
+                auto       note1 = Diagnostic::note(Fmt(Nte(Nte0147), implNode->token.ctext()));
+                return context->report(diag, note, note1);
             }
             else
             {

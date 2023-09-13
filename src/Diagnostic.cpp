@@ -703,6 +703,28 @@ Diagnostic* Diagnostic::hereIs(AstNode* node, bool forceShowRange, bool forceNod
         return note;
     }
 
+    switch (node->kind)
+    {
+    case AstNodeKind::EnumDecl:
+    {
+        auto note       = Diagnostic::note(node, node->token, Fmt(Nte(Nte0090), "the declaration of enum", node->token.ctext()));
+        note->showRange = forceShowRange;
+        return note;
+    }
+    case AstNodeKind::StructDecl:
+    {
+        auto note       = Diagnostic::note(node, node->token, Fmt(Nte(Nte0090), "the declaration of struct", node->token.ctext()));
+        note->showRange = forceShowRange;
+        return note;
+    }
+    case AstNodeKind::FuncDecl:
+    {
+        auto note       = Diagnostic::note(node, node->token, Fmt(Nte(Nte0090), "the declaration of function", node->token.ctext()));
+        note->showRange = forceShowRange;
+        return note;
+    }
+    }
+
     auto note       = Diagnostic::note(node, node->token, Fmt(Nte(Nte0040), node->token.ctext()));
     note->showRange = forceShowRange;
     return note;

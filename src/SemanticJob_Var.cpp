@@ -726,7 +726,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             {
                 Diagnostic diag{node, Fmt(Err(Err0848), node->token.ctext(), typeEnum->getDisplayNameC())};
                 diag.hint = Hnt(Hnt0055);
-                auto note = Diagnostic::note(concreteNodeType->declNode, concreteNodeType->declNode->token, Fmt(Nte(Nte0027), concreteNodeType->getDisplayNameC()));
+                auto note = Diagnostic::hereIs(concreteNodeType->declNode, false, true);
                 return context->report(diag, note);
             }
         }

@@ -1,4 +1,3 @@
-
 #global testerror "Syn0123"
 
 enum RGBRGB
