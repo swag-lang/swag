@@ -131,6 +131,7 @@ struct Tokenizer
     static bool isKeyword(TokenId id)           { return g_TokenFlags[(int) id] & TOKEN_KWD; }
     static bool isSymbol(TokenId id)            { return g_TokenFlags[(int) id] & TOKEN_SYM; }
     static bool isLiteral(TokenId id)           { return g_TokenFlags[(int) id] & TOKEN_LITERAL; }
+    static bool isCompiler(TokenId id)          { return g_TokenFlags[(int) id] & TOKEN_COMPILER; }
     static bool isIntrinsicReturn(TokenId id)   { return g_TokenFlags[(int) id] & TOKEN_INTRINSIC_RETURN; }
     static bool isIntrinsicNoReturn(TokenId id) { return g_TokenFlags[(int) id] & TOKEN_INTRINSIC_NORETURN; }
     // clang-format on

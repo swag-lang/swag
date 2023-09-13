@@ -174,6 +174,7 @@ void initErrors()
     SWAG_ERROR(Syn0075, "invalid enum identifier                           $ expected an enum value identifier, found '%s' instead");
     SWAG_ERROR(Syn0074, "invalid enum name                                 $ expected the enum name, found '%s' instead");
     SWAG_ERROR(Syn0059, "invalid expression                                $ expected an expression, found '%s' instead");
+    SWAG_ERROR(Syn0076, "invalid expression                                $ expected an expression after %s, found '%s' instead");
     SWAG_ERROR(Syn0020, "invalid expression                                $ the directive '%s' can't be used as an expression $ this directive can only be used as a statement");
     SWAG_ERROR(Syn0133, "invalid function declaration                      $ expected 'func' or 'mtd' to declare an interface function, found '%s' instead $ to declare a function within an interface, use 'func' or 'mtd'");
     SWAG_ERROR(Syn0106, "invalid function name                             $ a function name ('%s') cannot start with '@', this is reserved for intrinsics");
@@ -309,7 +310,6 @@ void initErrors()
     SWAG_ERROR(Syn0219, "unexpected type suffix                            $ %s should not be followed by a type suffix");
     SWAG_ERROR(Syn0134, "unsupported tuple type                            $ tuple types are not supported for generic parameters");
     SWAG_ERROR(Syn0179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
-    SWAG_ERROR(Syn0076, nullptr);
     SWAG_ERROR(Syn0068, nullptr);
     SWAG_ERROR(Syn0171, nullptr);
     SWAG_ERROR(Syn0176, nullptr);

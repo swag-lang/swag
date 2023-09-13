@@ -95,11 +95,28 @@ bool Parser::invalidTokenError(InvalidTokenError kind, AstNode* parent)
         msg = Fmt(Err(Syn0059), token.ctext());
         break;
     case InvalidTokenError::LeftExpressionVar:
-        msg  = Fmt(Err(Syn0069), token.ctext());
-        note = Fmt(Nte(Nte0154), token.ctext());
+        msg = Fmt(Err(Syn0069), token.ctext());
+        if (Tokenizer::isSymbol(token.id))
+            note = Fmt(Nte(Nte0154), token.ctext());
         break;
     case InvalidTokenError::PrimaryExpression:
-        msg = Fmt(Err(Syn0059), token.ctext());
+        if (parent && Tokenizer::isKeyword(parent->tokenId))
+        {
+            Utf8 forWhat = Fmt("'%s'", parent->token.ctext());
+            msg          = Fmt(Err(Syn0076), forWhat.c_str(), token.ctext());
+        }
+        else if (parent && Tokenizer::isCompiler(parent->tokenId))
+        {
+            Utf8 forWhat = Fmt("the compiler directive '%s'", parent->token.ctext());
+            msg          = Fmt(Err(Syn0076), forWhat.c_str(), token.ctext());
+        }
+        else if (parent && Tokenizer::isSymbol(parent->tokenId))
+        {
+            Utf8 forWhat = Fmt("the symbol '%s'", parent->token.ctext());
+            msg          = Fmt(Err(Syn0076), forWhat.c_str(), token.ctext());
+        }
+        else
+            msg = Fmt(Err(Syn0059), token.ctext());
         break;
     }
 
