@@ -220,7 +220,7 @@ void initErrors()
     SWAG_ERROR(Syn0064, "invalid top-level instruction                     $ expected a top-level instruction, found '%s' instead");
     SWAG_ERROR(Syn0066, "invalid type declaration                          $ expected a type declaration, found '%s' instead");
     SWAG_ERROR(Syn0096, "invalid type declaration                          $ expected the array type after its dimensions, found '%s' instead");
-    SWAG_ERROR(Syn0067, "invalid type declaration                          $ expected type in tuple definition, found '%s'");
+    SWAG_ERROR(Syn0067, "invalid type declaration                          $ expected a type in the tuple definition, found '%s' instead");
     SWAG_ERROR(Syn0060, "invalid type suffix                               $ expected an identifier or a type after the start of a type suffix ''', found '%s' instead");
     SWAG_ERROR(Syn0034, "invalid use of '#mixin' block                     $ a '#mixin' block is only valid within a breakable statement such as 'loop', 'visit', 'for', etc.");
     SWAG_ERROR(Syn0121, "invalid use of access modifier                    $ the '%s' access modifier can only be used at the global scope");
@@ -1514,10 +1514,10 @@ void initErrors()
     SWAG_ERROR(Nte0103, "you can assign a lambda to a closure type, but not vice versa");
     SWAG_ERROR(Nte1095, "you can't reference this runtime %s from the %s");
     SWAG_ERROR(Nte0149, "you might want to get the address of '%s' using '&'");
-    SWAG_ERROR(Nte1020, nullptr);
-    SWAG_ERROR(Nte1102, nullptr);
-    SWAG_ERROR(Nte1043, nullptr);
-    SWAG_ERROR(Nte1082, nullptr)
+    SWAG_ERROR(Nte1020, "the symbol '...' is used to declare variadic function parameters, which is not valid in this context");
+    SWAG_ERROR(Nte1102, "occured while parsing the default value of the generic type '%s'");
+    SWAG_ERROR(Nte1043, "if you want to declare a generic constant, consider adding 'const' before '%s'");
+    SWAG_ERROR(Nte1082, "if you want to retrieve the type of an expression, consider using '@decltype' instead")
     SWAG_ERROR(Nte1013, nullptr);
     SWAG_ERROR(Nte1129, nullptr);
     SWAG_ERROR(Nte1014, nullptr);

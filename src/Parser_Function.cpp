@@ -530,11 +530,30 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
         {
             SWAG_CHECK(eatToken());
             if (isConstant)
+            {
                 SWAG_CHECK(doAssignmentExpression(oneParam, &oneParam->assignment));
-            else if (isType || !oneParam->type)
+            }
+            else if (isType)
+            {
                 SWAG_CHECK(doTypeExpression(oneParam, EXPR_FLAG_NONE, &oneParam->assignment));
+            }
+            else if (!oneParam->type)
+            {
+                isType = true;
+                PushErrCxtStep ec(
+                    context, oneParam, ErrCxtStepKind::Hint2, [oneParam]()
+                    { return Fmt(Nte(Nte1102), oneParam->token.ctext()); },
+                    true);
+                PushErrCxtStep ec1(
+                    context, nullptr, ErrCxtStepKind::Note, [oneParam]()
+                    { return Fmt(Nte(Nte1043), oneParam->token.ctext()); },
+                    true);
+                SWAG_CHECK(doTypeExpression(oneParam, EXPR_FLAG_NONE, &oneParam->assignment));
+            }
             else
+            {
                 SWAG_CHECK(doAssignmentExpression(oneParam, &oneParam->assignment));
+            }
         }
 
         if (isType)

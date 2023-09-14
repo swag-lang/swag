@@ -459,15 +459,18 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, ui
         return context->report(diag);
     }
 
+    Diagnostic* note = nullptr;
     if (token.id == TokenId::SymLeftParen)
-    {
-        Diagnostic diag{sourceFile, token, Fmt(Err(Syn0066), token.ctext())};
-        auto       note = Diagnostic::note(Nte(Nte0104));
-        return context->report(diag, note);
-    }
+        note = Diagnostic::note(Nte(Nte0104));
+    else if (token.id == TokenId::SymDotDotDot)
+        note = Diagnostic::note(Nte(Nte1020));
+    else if (Tokenizer::isKeyword(token.id))
+        note = Diagnostic::note(Fmt(Nte(Nte0154), token.ctext()));
+    else if (token.id == TokenId::IntrinsicTypeOf || token.id == TokenId::IntrinsicKindOf)
+        note = Diagnostic::note(Nte(Nte1082));
 
-    // Generic error
-    return error(token, Fmt(Err(Syn0066), token.ctext()));
+    Diagnostic diag{sourceFile, token, Fmt(Err(Syn0066), token.ctext())};
+    return context->report(diag, note);
 }
 
 bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
