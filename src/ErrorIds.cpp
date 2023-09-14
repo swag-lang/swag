@@ -111,13 +111,13 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Tkn0023, "invalid float number syntax                       $ the fractional part should not start with '_'");
-    SWAG_ERROR(Tkn0024, "invalid float number syntax                       $ the exponent part should not start with '_'");
-    SWAG_ERROR(Tkn0002, "invalid float number syntax                       $ exponent in the scientific notation must contain at least one digit");
-    SWAG_ERROR(Tkn0003, "invalid binary number syntax                      $ binary literals should only contain '0' or '1', found '%s' instead");
-    SWAG_ERROR(Tkn0001, "incomplete binary number syntax                   $ binary literals require at least one '0' or '1' digit");
-    SWAG_ERROR(Tkn0004, "invalid hexadecimal number syntax                 $ hexadecimal literals can only contain digits 0-9, A-F, and a-f, found '%s' instead");
-    SWAG_ERROR(Tkn0007, "incomplete hexadecimal number syntax              $ hexadecimal literals require at least one valid digit (0-9, A-F, a-f)");
+    SWAG_ERROR(Tkn0001, "incomplete binary number format                   $ binary literals require at least one '0' or '1' digit");
+    SWAG_ERROR(Tkn0007, "incomplete hexadecimal number format              $ hexadecimal literals require at least one valid digit (0-9, A-F, a-f)");
+    SWAG_ERROR(Tkn0023, "invalid float number format                       $ the fractional part should not start with '_'");
+    SWAG_ERROR(Tkn0024, "invalid float number format                       $ the exponent part should not start with '_'");
+    SWAG_ERROR(Tkn0002, "invalid float number format                       $ exponent in the scientific notation must contain at least one digit");
+    SWAG_ERROR(Tkn0003, "invalid binary number format                      $ binary literals should only contain '0' or '1', found '%s' instead");
+    SWAG_ERROR(Tkn0004, "invalid hexadecimal number format                 $ hexadecimal literals can only contain digits 0-9, A-F, and a-f, found '%s' instead");
     SWAG_ERROR(Tkn0020, "invalid number format                             $ consecutive digit separators '_' are not allowed");
     SWAG_ERROR(Tkn0009, "invalid number format                             $ this hexadecimal number has too many digits to fit within a 64-bit representation");
     SWAG_ERROR(Tkn0029, "invalid number format                             $ this binary number has too many digits to fit within a 64-bit representation");
