@@ -55,10 +55,7 @@ bool Parser::checkIsIdentifier(TokenParse& tokenParse, const char* msg)
 {
     if (tokenParse.id == TokenId::Identifier)
         return true;
-    Utf8 note;
-    if (Tokenizer::isKeyword(tokenParse.id))
-        note = Fmt(Nte(Nte0154), tokenParse.ctext());
-    return error(tokenParse, msg, note);
+    return invalidIdentifierError(tokenParse, msg);
 }
 
 bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
@@ -74,7 +71,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         token.startLocation = upToken.startLocation;
 
         if (token.id == TokenId::SymQuestion)
-            return error(token, Fmt(Err(Syn0078), token.ctext()));
+            return invalidIdentifierError(token);
 
         scopeUpValue.id               = TokenId::CompilerUp;
         scopeUpValue.literalType      = LiteralType::TT_UNTYPED_INT;
@@ -109,7 +106,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         !Tokenizer::isIntrinsicReturn(token.id) &&
         !Tokenizer::isIntrinsicNoReturn(token.id))
     {
-        return error(token, Fmt(Err(Syn0078), token.ctext()));
+        return invalidIdentifierError(token);
     }
 
     auto identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, parent);
@@ -242,11 +239,11 @@ bool Parser::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t identif
         break;
 
     case TokenId::NativeType:
-        return context->report({sourceFile, token, Fmt(Err(Syn0078), token.ctext())});
+        return invalidIdentifierError(token);
 
     default:
         if (Tokenizer::isKeyword(token.id))
-            return context->report({sourceFile, token, Fmt(Err(Syn0078), token.ctext())});
+            return invalidIdentifierError(token);
 
         SWAG_CHECK(doIdentifier(identifierRef, identifierFlags));
         break;
@@ -431,6 +428,7 @@ bool Parser::doNameAlias(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(eatToken());
     SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify the aliased name"));
+    SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Syn0218), token.ctext())));
 
     AstNode* expr;
     SWAG_CHECK(doIdentifierRef(node, &expr, IDENTIFIER_NO_FCT_PARAMS | IDENTIFIER_NO_ARRAY));

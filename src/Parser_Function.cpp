@@ -772,7 +772,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
         auto      startLoc = token.startLocation;
-        SWAG_CHECK(eatToken(TokenId::SymLeftParen, "to start the list of arguments"));
+        SWAG_CHECK(eatTokenErr(TokenId::SymLeftParen, Err(Syn0175)));
         SWAG_VERIFY(token.id != TokenId::SymRightParen, error(funcNode, Err(Syn0033)));
         SWAG_CHECK(doExpression(funcNode, EXPR_FLAG_NONE, &funcNode->parameters));
         SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));

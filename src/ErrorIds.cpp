@@ -181,6 +181,7 @@ void initErrors()
     SWAG_ERROR(Syn0115, "invalid 'visit' name                              $ expected 'visit' specialized name, found '%s' instead");
     SWAG_ERROR(Syn0148, "invalid 'with' expression                         $ expected a 'with' valid expression");
     SWAG_ERROR(Syn0071, "invalid alias name                                $ expected the alias name after '%s', found '%s' instead");
+    SWAG_ERROR(Syn0218, "invalid alias name                                $ expected an identifier for name aliasing, found '%s' instead");
     SWAG_ERROR(Syn0190, "invalid assignment                                $ assignments are not allowed for unnamed parameters ('?')");
     SWAG_ERROR(Syn0072, "invalid attribute name                            $ expected an attribute name, found '%s' instead");
     SWAG_ERROR(Syn0050, "invalid attribute usage                           $ expected ',' for a new attribute name, or ']' to end the list, found '%s' instead");
@@ -334,8 +335,9 @@ void initErrors()
     SWAG_ERROR(Syn0219, "unexpected type suffix                            $ %s should not be followed by a type suffix");
     SWAG_ERROR(Syn0134, "unsupported tuple type                            $ tuple types are not supported for generic parameters");
     SWAG_ERROR(Syn0179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
-    SWAG_ERROR(Syn0218, nullptr);
-    SWAG_ERROR(Syn0175, nullptr);
+
+    SWAG_ERROR(Syn0175, "missing '(' before arguments                      $ expected '(' to start the list of arguments, found '%s' instead");
+
     SWAG_ERROR(Syn0203, nullptr);
     SWAG_ERROR(Syn0046, nullptr);
     SWAG_ERROR(Syn0107, nullptr);

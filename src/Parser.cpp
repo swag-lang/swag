@@ -151,6 +151,17 @@ bool Parser::invalidTokenError(InvalidTokenError kind, AstNode* parent)
     return error(token, msg, note.empty() ? nullptr : note.c_str());
 }
 
+bool Parser::invalidIdentifierError(TokenParse& tokenParse, const char* msg)
+{
+    Diagnostic* note = nullptr;
+
+    if (Tokenizer::isKeyword(tokenParse.id))
+        note = Diagnostic::note(Fmt(Nte(Nte0154), tokenParse.ctext()));
+
+    Diagnostic diag{sourceFile, token, msg ? msg : Fmt(Err(Syn0078), token.ctext()).c_str()};
+    return context->report(diag, note);
+}
+
 bool Parser::eatToken()
 {
     SWAG_CHECK(tokenizer.nextToken(token));
@@ -174,10 +185,28 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
     return true;
 }
 
+bool Parser::eatTokenErr(TokenId id, const Utf8& err)
+{
+    SWAG_ASSERT(msg);
+    if (token.id != id)
+    {
+        Diagnostic diag{sourceFile, token, Fmt(err.c_str(), token.ctext())};
+        return context->report(diag);
+    }
+
+    SWAG_CHECK(eatToken());
+    return true;
+}
+
 bool Parser::eatToken(TokenId id, const char* msg)
 {
     SWAG_ASSERT(msg);
-    SWAG_VERIFY(token.id == id, error(token, Fmt(Err(Syn0048), Tokenizer::tokenToName(id).c_str(), Tokenizer::tokenToName(id).c_str(), msg, token.ctext())));
+    if (token.id != id)
+    {
+        Diagnostic diag{sourceFile, token, Fmt(Err(Syn0048), Tokenizer::tokenToName(id).c_str(), Tokenizer::tokenToName(id).c_str(), msg, token.ctext())};
+        return context->report(diag);
+    }
+
     SWAG_CHECK(eatToken());
     return true;
 }

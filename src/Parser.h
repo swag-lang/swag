@@ -85,10 +85,12 @@ struct Parser
     bool error(AstNode* node, const Utf8& msg, const char* help = nullptr, const char* hint = nullptr);
     bool error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg, const char* help = nullptr);
     bool invalidTokenError(InvalidTokenError kind, AstNode* parent = nullptr);
+    bool invalidIdentifierError(TokenParse& tokenParse, const char* msg = nullptr);
 
     bool eatToken();
     bool eatCloseToken(TokenId id, const SourceLocation& start, const char* msg = "");
     bool eatToken(TokenId id, const char* msg);
+    bool eatTokenErr(TokenId id, const Utf8& err);
     bool eatSemiCol(const char* msg);
 
     bool        testIsSingleIdentifier(AstNode* node);
