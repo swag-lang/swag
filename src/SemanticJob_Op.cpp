@@ -325,8 +325,8 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         searchList.push_back(g_LangSpec->name_opIndexAffect);
         searchList.push_back(g_LangSpec->name_opVisit);
 
-        findClosestMatches(context, node->tokenName.text, searchList, best);
-        Utf8 appendMsg = findClosestMatchesMsg(context, best);
+        findClosestMatches(node->tokenName.text, searchList, best);
+        Utf8 appendMsg = findClosestMatchesMsg(best);
 
         Diagnostic diag{node, node->tokenName, Fmt(Err(Err0078), name.c_str())};
         diag.hint = appendMsg;

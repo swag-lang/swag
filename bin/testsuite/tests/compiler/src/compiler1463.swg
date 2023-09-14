@@ -1,3 +1,2 @@
-
-#global testerror "Syn0111"
+#global testerror "Tkn0027"
 var @toto = 0

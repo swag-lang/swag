@@ -1,3 +1,4 @@
+/*
 #global skip // no more relative pointers (18 july 2021)
 //#[Swag.PrintBc]
 struct AA
@@ -15,3 +16,4 @@ var G = 666
     @reloc(&x, &y)
     @assert(x.ptr[0] == 666)
 }
+*/

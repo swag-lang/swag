@@ -107,7 +107,7 @@ struct Tokenizer
     void     eatChar(uint32_t c, unsigned offset);
 
     bool doMultiLineComment(TokenParse& token);
-    void doIdentifier(TokenParse& token);
+    bool doIdentifier(TokenParse& token);
     bool doNumberLiteral(TokenParse& token, uint32_t c);
     bool doHexLiteral(TokenParse& token);
     bool doBinLiteral(TokenParse& token);

@@ -1,2 +1,2 @@
-#global testerror "Syn0111"
+#global testerror "Tkn0027"
 var @typealias = 0

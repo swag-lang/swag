@@ -336,7 +336,7 @@ bool Tokenizer::nextToken(TokenParse& token)
             }
             else
             {
-                doIdentifier(token);
+                SWAG_CHECK(doIdentifier(token));
             }
 
             token.endLocation = location;
@@ -347,7 +347,7 @@ bool Tokenizer::nextToken(TokenParse& token)
         ///////////////////////////////////////////
         if (c == '@')
         {
-            doIdentifier(token);
+            SWAG_CHECK(doIdentifier(token));
             token.endLocation = location;
 
             if (!token.text.count)
@@ -363,7 +363,7 @@ bool Tokenizer::nextToken(TokenParse& token)
         ///////////////////////////////////////////
         if (SWAG_IS_ALPHA(c) || c == '_')
         {
-            doIdentifier(token);
+            SWAG_CHECK(doIdentifier(token));
             token.endLocation = location;
             return true;
         }

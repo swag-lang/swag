@@ -117,6 +117,8 @@ void initErrors()
     SWAG_ERROR(Tkn0024, "invalid float number format                       $ the exponent part should not start with '_'");
     SWAG_ERROR(Tkn0002, "invalid float number format                       $ exponent in the scientific notation must contain at least one digit");
     SWAG_ERROR(Tkn0003, "invalid binary number format                      $ binary literals should only contain '0' or '1', found '%s' instead");
+    SWAG_ERROR(Tkn0017, "invalid compiler directive                        $ '%s' is not a valid compiler directive starting with '#'");
+    SWAG_ERROR(Tkn0027, "invalid intrinsic                                 $ '%s' is not a valid intrinsic starting with '@'");
     SWAG_ERROR(Tkn0004, "invalid hexadecimal number format                 $ hexadecimal literals can only contain digits 0-9, A-F, and a-f, found '%s' instead");
     SWAG_ERROR(Tkn0020, "invalid number format                             $ consecutive digit separators '_' are not allowed");
     SWAG_ERROR(Tkn0009, "invalid number format                             $ this hexadecimal number has too many digits to fit within a 64-bit representation");
@@ -129,8 +131,6 @@ void initErrors()
     SWAG_ERROR(Tkn0025, "unexpected end of file within comment             $ this multi-line comment is missing its closing '*/'");
     SWAG_ERROR(Tkn0026, "character literal is missing its closing backtick $ expected a closing backtick '`' before the end of the line");
     SWAG_ERROR(Tkn0018, "string literal is missing its closing '\"'        $ expected a closing quotation mark '\"' before the end of the line $ if you want a multi-line string, use the syntax \"\"\"string\"\"\"");
-    SWAG_ERROR(Tkn0017, nullptr);
-    SWAG_ERROR(Tkn0027, nullptr);
     SWAG_ERROR(Tkn0030, nullptr);
 
     /////////////////////////////////////////////////////////////////////

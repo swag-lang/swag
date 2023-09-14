@@ -318,8 +318,8 @@ struct SemanticJob : public Job
     static void         setDefaultAccess(AstNode* node);
     static bool         canHaveGlobalAccess(AstNode* node);
 
-    static Utf8           findClosestMatchesMsg(SemanticContext* context, Vector<Utf8>& best);
-    static void           findClosestMatches(SemanticContext* context, const Utf8& searchName, const Vector<Utf8>& searchList, Vector<Utf8>& result);
+    static void           findClosestMatches(const Utf8& searchName, const Vector<Utf8>& searchList, Vector<Utf8>& result);
+    static Utf8           findClosestMatchesMsg(Vector<Utf8>& best);
     static void           findClosestMatches(SemanticContext* context, AstNode* node, const VectorNative<AlternativeScope>& scopeHierarchy, Vector<Utf8>& best, IdentifierSearchFor searchFor = IdentifierSearchFor::Whatever);
     static Utf8           findClosestMatchesMsg(SemanticContext* context, AstNode* node, const VectorNative<AlternativeScope>& scopeHierarchy, IdentifierSearchFor searchFor = IdentifierSearchFor::Whatever);
     static bool           isFunctionButNotACall(SemanticContext* context, AstNode* node, SymbolName* symbol);

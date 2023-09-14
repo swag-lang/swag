@@ -1,3 +1,2 @@
-﻿
-#global testerror "Err0122";
+﻿#global testerror "Tkn0017";
 #unittest

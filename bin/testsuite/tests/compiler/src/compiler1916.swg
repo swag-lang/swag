@@ -1,5 +1,4 @@
-
-#global testerror "Syn0174"
+#global testerror "Tkn0017"
 
 func toto()
 {

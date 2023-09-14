@@ -960,7 +960,26 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
     return context->report(diag, notes);
 }
 
-void SemanticJob::findClosestMatches(SemanticContext* context, const Utf8& searchName, const Vector<Utf8>& searchList, Vector<Utf8>& result)
+Utf8 SemanticJob::findClosestMatchesMsg(Vector<Utf8>& best)
+{
+    Utf8 appendMsg;
+    switch (best.size())
+    {
+    case 1:
+        appendMsg = Fmt("do you mean '%s'?", best[0].c_str());
+        break;
+    case 2:
+        appendMsg = Fmt("do you mean '%s' or '%s'?", best[0].c_str(), best[1].c_str());
+        break;
+    case 3:
+        appendMsg = Fmt("do you mean '%s', '%s' or '%s'?", best[0].c_str(), best[1].c_str(), best[2].c_str());
+        break;
+    }
+
+    return appendMsg;
+}
+
+void SemanticJob::findClosestMatches(const Utf8& searchName, const Vector<Utf8>& searchList, Vector<Utf8>& result)
 {
     uint32_t bestScore = UINT32_MAX;
     result.clear();
@@ -1007,25 +1026,6 @@ void SemanticJob::findClosestMatches(SemanticContext* context, const Utf8& searc
             bestScore = score;
         }
     }
-}
-
-Utf8 SemanticJob::findClosestMatchesMsg(SemanticContext* context, Vector<Utf8>& best)
-{
-    Utf8 appendMsg;
-    switch (best.size())
-    {
-    case 1:
-        appendMsg = Fmt("do you mean '%s' ?", best[0].c_str());
-        break;
-    case 2:
-        appendMsg = Fmt("do you mean '%s' or '%s' ?", best[0].c_str(), best[1].c_str());
-        break;
-    case 3:
-        appendMsg = Fmt("do you mean '%s', '%s' or '%s' ?", best[0].c_str(), best[1].c_str(), best[2].c_str());
-        break;
-    }
-
-    return appendMsg;
 }
 
 void SemanticJob::findClosestMatches(SemanticContext* context, AstNode* node, const VectorNative<AlternativeScope>& scopeHierarchy, Vector<Utf8>& best, IdentifierSearchFor searchFor)
@@ -1100,14 +1100,14 @@ void SemanticJob::findClosestMatches(SemanticContext* context, AstNode* node, co
         }
     }
 
-    findClosestMatches(context, node->token.text, searchList, best);
+    findClosestMatches(node->token.text, searchList, best);
 }
 
 Utf8 SemanticJob::findClosestMatchesMsg(SemanticContext* context, AstNode* node, const VectorNative<AlternativeScope>& scopeHierarchy, IdentifierSearchFor searchFor)
 {
     Vector<Utf8> best;
     findClosestMatches(context, node, scopeHierarchy, best, searchFor);
-    return findClosestMatchesMsg(context, best);
+    return findClosestMatchesMsg(best);
 }
 
 void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node)
