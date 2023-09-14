@@ -976,9 +976,9 @@ bool Parser::doBoolExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
     bool isBinary = false;
     if ((token.id == TokenId::KwdOr) || (token.id == TokenId::KwdAnd))
     {
-        auto binaryNode = Ast::newNode<AstBinaryOpNode>(this, AstNodeKind::BinaryOp, sourceFile, parent);
+        auto binaryNode         = Ast::newNode<AstBinaryOpNode>(this, AstNodeKind::BinaryOp, sourceFile, parent);
         binaryNode->semanticFct = SemanticJob::resolveBoolExpression;
-        binaryNode->token = token;
+        binaryNode->token       = token;
 
         Ast::addChildBack(binaryNode, leftNode);
         SWAG_CHECK(eatToken());
@@ -1324,6 +1324,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t ide
             if (token.id != TokenId::SymComma)
                 break;
             SWAG_CHECK(eatToken());
+            SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Syn0176)));
         }
 
         SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the tuple unpacking"));
@@ -1371,6 +1372,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t ide
             if (token.id != TokenId::SymComma)
                 break;
             SWAG_CHECK(eatToken());
+            SWAG_VERIFY(token.id != TokenId::SymEqual && token.id != TokenId::SymSemiColon, error(token, Err(Syn0171)));
 
             if (!multi)
             {

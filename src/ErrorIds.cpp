@@ -160,6 +160,8 @@ void initErrors()
     SWAG_ERROR(Syn0199, "incomplete alias list                             $ expected another alias name after ',' $ either provide an additional alias name or remove the trailing ','");
     SWAG_ERROR(Syn0201, "incomplete arguments list                         $ expected another call argument after ',' $ either provide an additional argument or remove the trailing ','");
     SWAG_ERROR(Syn0202, "incomplete parameters list                        $ expected another parameter after ',' $ either provide an additional parameter or remove the trailing ','");
+    SWAG_ERROR(Syn0171, "incomplete variables list                         $ expected another variable name after ',' $ either provide an additional variable name or remove the trailing ','");
+    SWAG_ERROR(Syn0176, "incomplete tuple unpacking                        $ expected another variable name after ',' $ either provide an additional variable name or remove the trailing ','");
     SWAG_ERROR(Syn0136, "invalid '#global' instruction                     $ '%s' is not recognized as a valid '#global' instruction");
     SWAG_ERROR(Syn0109, "invalid '#import' location                        $ expected a '#import' location path, found '%' instead");
     SWAG_ERROR(Syn0113, "invalid '#import' location                        $ expected a '#import' version as a string, found '%' instead");
@@ -330,8 +332,6 @@ void initErrors()
     SWAG_ERROR(Syn0219, "unexpected type suffix                            $ %s should not be followed by a type suffix");
     SWAG_ERROR(Syn0134, "unsupported tuple type                            $ tuple types are not supported for generic parameters");
     SWAG_ERROR(Syn0179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
-    SWAG_ERROR(Syn0171, nullptr);
-    SWAG_ERROR(Syn0176, nullptr);
     SWAG_ERROR(Syn0047, nullptr);
     SWAG_ERROR(Syn0213, nullptr);
     SWAG_ERROR(Syn0094, nullptr);
