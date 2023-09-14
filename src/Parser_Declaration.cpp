@@ -623,7 +623,7 @@ bool Parser::doCompilerScopeBreakable(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
     if (token.id != TokenId::SymLeftCurly)
     {
-        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0164), token.ctext())));
+        SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Syn0164), token.ctext())));
         labelNode->inheritTokenName(token);
         labelNode->inheritTokenLocation(token);
         SWAG_CHECK(eatToken());
@@ -904,7 +904,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_VERIFY(withNode, error(token, Err(Syn0180)));
         Token tokenDot = token;
         eatToken();
-        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0022), token.ctext())));
+        SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Syn0022), token.ctext())));
         return doLeftInstruction(parent, result, CastAst<AstWith>(withNode, AstNodeKind::With));
         return true;
     }

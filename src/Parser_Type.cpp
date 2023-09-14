@@ -111,7 +111,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                 thisIsAType = true;
                 curIsAlone  = false;
                 SWAG_CHECK(eatToken());
-                SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0196), token.ctext())));
+                SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Syn0196), token.ctext())));
             }
 
             if (token.id == TokenId::KwdConst)

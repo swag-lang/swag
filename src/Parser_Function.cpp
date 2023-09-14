@@ -106,7 +106,7 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
         SWAG_CHECK(eatToken());
         while (token.id != TokenId::SymVertical)
         {
-            SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Err(Syn0077)));
+            SWAG_CHECK(checkIsIdentifier(token, Err(Syn0077)));
             callParams->aliasNames.push_back(token);
             SWAG_CHECK(eatToken());
             if (token.id == TokenId::SymVertical)
@@ -276,7 +276,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             }
 
             SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Fmt(Err(Syn0202), token.ctext())));
-            SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0112), token.ctext())));
+            SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Syn0112), token.ctext())));
             SWAG_CHECK(eatToken());
             otherVariables.push_back(otherVarNode);
         }
@@ -504,7 +504,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
             SWAG_CHECK(eatToken());
         }
 
-        SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0058), token.ctext())));
+        SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Syn0058), token.ctext())));
         auto oneParam = Ast::newVarDecl(sourceFile, token.text, allParams, this, AstNodeKind::FuncDeclParam);
         oneParam->flags |= AST_IS_GENERIC;
         SWAG_CHECK(eatToken());

@@ -15,7 +15,7 @@ bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
     attrNode->semanticFct                      = SemanticJob::resolveAttrDecl;
 
     SWAG_CHECK(eatToken());
-    SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0072), token.ctext())));
+    SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Syn0072), token.ctext())));
 
     attrNode->inheritTokenName(token);
 
@@ -83,7 +83,7 @@ bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
             {
                 SWAG_CHECK(eatToken(TokenId::SymComma, "to use another attribute, or ']' to end"));
                 SWAG_VERIFY(token.id != TokenId::SymLeftParen, error(token, Err(Syn0026)));
-                SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Syn0072), token.ctext())));
+                SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Syn0072), token.ctext())));
             }
         }
 
