@@ -106,23 +106,45 @@ bool Parser::invalidTokenError(InvalidTokenError kind, AstNode* parent)
             note = Fmt(Nte(Nte0154), token.ctext());
         break;
     case InvalidTokenError::PrimaryExpression:
-        if (parent && Tokenizer::isKeyword(parent->tokenId))
+
+        // Bad character syntax as an expression
+        if (token.id == TokenId::SymQuote)
         {
-            Utf8 forWhat = Fmt("'%s'", parent->token.ctext());
-            msg          = Fmt(Err(Syn0076), forWhat.c_str(), token.ctext());
+            auto startToken = token;
+            eatToken();
+            auto inToken = token;
+            eatToken();
+            if (token.id == TokenId::SymQuote)
+            {
+                Diagnostic diag{sourceFile, startToken.startLocation, token.endLocation, Fmt(Err(Syn0094), inToken.ctext())};
+                return context->report(diag);
+            }
+
+            token = startToken;
         }
-        else if (parent && Tokenizer::isCompiler(parent->tokenId))
+
+        // Default more generic message
+        msg = Fmt(Err(Syn0059), token.ctext());
+
+        if (parent)
         {
-            Utf8 forWhat = Fmt("the compiler directive '%s'", parent->token.ctext());
-            msg          = Fmt(Err(Syn0076), forWhat.c_str(), token.ctext());
+            if (Tokenizer::isKeyword(parent->tokenId))
+            {
+                Utf8 forWhat = Fmt("'%s'", parent->token.ctext());
+                msg          = Fmt(Err(Syn0076), forWhat.c_str(), token.ctext());
+            }
+            else if (Tokenizer::isCompiler(parent->tokenId))
+            {
+                Utf8 forWhat = Fmt("the compiler directive '%s'", parent->token.ctext());
+                msg          = Fmt(Err(Syn0076), forWhat.c_str(), token.ctext());
+            }
+            else if (Tokenizer::isSymbol(parent->tokenId))
+            {
+                Utf8 forWhat = Fmt("the symbol '%s'", parent->token.ctext());
+                msg          = Fmt(Err(Syn0076), forWhat.c_str(), token.ctext());
+            }
         }
-        else if (parent && Tokenizer::isSymbol(parent->tokenId))
-        {
-            Utf8 forWhat = Fmt("the symbol '%s'", parent->token.ctext());
-            msg          = Fmt(Err(Syn0076), forWhat.c_str(), token.ctext());
-        }
-        else
-            msg = Fmt(Err(Syn0059), token.ctext());
+
         break;
     }
 

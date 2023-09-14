@@ -1,2 +1,2 @@
-#global testerror "Syn0076";
-#assert '1' / '2';
+#global testerror "Err0238";
+#assert `1` / `2`;

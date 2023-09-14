@@ -186,6 +186,7 @@ void initErrors()
     SWAG_ERROR(Syn0050, "invalid attribute usage                           $ expected ',' for a new attribute name, or ']' to end the list, found '%s' instead");
     SWAG_ERROR(Syn0104, "invalid auto-generated 'impl' block               $ 'impl' block generation is permissible only within a '#message' with 'Swag.CompilerMsgMask.AttributeGen'");
     SWAG_ERROR(Syn0207, "invalid block start                               $ a block start '{' is not allowed after 'discard try/assume/catch'");
+    SWAG_ERROR(Syn0094, "invalid character syntax                          $ characters should be delimited with backticks '`' and not quotes $ consider using the syntax `%s` instead");
     SWAG_ERROR(Syn0049, "invalid closure parameters                        $ expected '(' to start the list of parameters of the closure, found '%s' instead");
     SWAG_ERROR(Syn0062, "invalid compound name                             $ expected a single identifier %s $ consider using a single name without the '.' character");
     SWAG_ERROR(Syn0184, "invalid constant name                             $ expected a constant name, found '%s' instead");
@@ -334,7 +335,6 @@ void initErrors()
     SWAG_ERROR(Syn0219, "unexpected type suffix                            $ %s should not be followed by a type suffix");
     SWAG_ERROR(Syn0134, "unsupported tuple type                            $ tuple types are not supported for generic parameters");
     SWAG_ERROR(Syn0179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
-    SWAG_ERROR(Syn0094, nullptr);
     SWAG_ERROR(Syn0175, nullptr);
     SWAG_ERROR(Syn0203, nullptr);
     SWAG_ERROR(Syn0046, nullptr);
@@ -643,8 +643,8 @@ void initErrors()
     SWAG_ERROR(Err0054, "expected type but got value for generic %s in %s");
     SWAG_ERROR(Err0057, "expected value but got type for generic %s in %s");
     SWAG_ERROR(Err0012, "expected expression; type found");
-    SWAG_ERROR(Err0615, "expression not compile-time evaluable with 'Swag.Complete'");
-    SWAG_ERROR(Err0798, "expression not compile-time evaluable");
+    SWAG_ERROR(Err0615, "expression cannot be evaluated at compile-time ('Swag.Complete')");
+    SWAG_ERROR(Err0798, "expression cannot be evaluated at compile-time");
     SWAG_ERROR(Err0488, "expression of type '%s' not dereferenceable");
     SWAG_ERROR(Err0569, "expression of type 'void' not assignable");
     SWAG_ERROR(Err0240, "expression type mismatch; expected 'code', found '%s'");
