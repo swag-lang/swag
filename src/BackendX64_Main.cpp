@@ -173,13 +173,14 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     emitInternalCallExt(pp, module, thisInit, pp.pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
 
     // Call to test functions
-    if (buildParameters.compileType == BackendCompileType::Test && !module->byteCodeTestFunc.empty())
+    if (buildParameters.compileType == BackendCompileType::Test)
     {
         for (auto bc : module->byteCodeTestFunc)
         {
             auto node = bc->node;
             if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
                 continue;
+
             emitCall(pp, bc->getCallName());
         }
     }

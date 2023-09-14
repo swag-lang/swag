@@ -234,7 +234,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     auto funcTypeVoid = llvm::FunctionType::get(VOID_TY(), false);
 
     // Call to test functions
-    if (buildParameters.compileType == BackendCompileType::Test && !module->byteCodeTestFunc.empty())
+    if (buildParameters.compileType == BackendCompileType::Test)
     {
         for (auto bc : module->byteCodeTestFunc)
         {
