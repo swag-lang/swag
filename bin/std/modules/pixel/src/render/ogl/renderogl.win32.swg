@@ -15,13 +15,13 @@ public struct RenderingContext
 
 public impl NativeRenderOgl
 {
-    #[Warn("wrn0004", WarnLevel.Disable)]
+    #[Warn("wrn0002", WarnLevel.Disable)]
     mtd createContext(hWnd: HWND, width, height: s32, mainRC: HGLRC = null)->RenderingContext throw
     {
         return try createContext(GetDC(hWnd), width, height, mainRC)
     }
 
-    #[Warn("wrn0005", WarnLevel.Disable)]
+    #[Warn("wrn0002", WarnLevel.Disable)]
     mtd createContext(hdc: HDC, width, height: s32, mainRC: HGLRC = null)->RenderingContext throw
     {
         var result: retval
@@ -45,20 +45,20 @@ public impl NativeRenderOgl
         return result
     }
 
-    #[Warn("wrn0005", WarnLevel.Disable)]
+    #[Warn("wrn0002", WarnLevel.Disable)]
     mtd dropContext(rc: RenderingContext)
     {
         catch wglMakeCurrent(null, null)
         catch wglDeleteContext(rc.hRC)
     }
 
-    #[Warn("wrn0004", WarnLevel.Disable)]
+    #[Warn("wrn0002", WarnLevel.Disable)]
     func setCurrentContext(using self, rc: RenderingContext)
     {
         catch wglMakeCurrent(rc.hDC, rc.hRC)
     }
 
-    #[Warn("wrn0004", WarnLevel.Disable)]
+    #[Warn("wrn0002", WarnLevel.Disable)]
     func swapBuffers(using self, rc: RenderingContext)
     {
         assume SwapBuffers(rc.hDC)

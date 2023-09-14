@@ -251,7 +251,7 @@ void initErrors()
     SWAG_ERROR(Syn0153, "misplaced closure                                 $ a closure definition is not valid at the global level $ closures can only be defined within functions");
     SWAG_ERROR(Syn0147, "misplaced error catching                          $ '%s' can't be nested in a '%s' expression $ you should use only one 'try', 'catch' or 'assume'");
     SWAG_ERROR(Syn0021, "misplaced error catching                          $ treating a return error with '%s' can only be done inside a function, macro or mixin");
-    SWAG_ERROR(Syn0163, "misplaced function declaration                    $ functions can't be directly declared inside structs $ functions should be declared inside 'impl' blocks");
+    SWAG_ERROR(Syn0163, "misplaced function declaration                    $ functions can't be directly declared inside structs $ functions associated with structs should be declared inside 'impl' blocks");
     SWAG_ERROR(Syn0040, "misplaced namespace                               $ a namespace should be defined in the top-level scope or within another namespace");
     SWAG_ERROR(Syn0180, "misplaced reference to 'with' block               $ statements starting with the '.' operator are only valid within a 'with' block");
     SWAG_ERROR(Syn0036, "misplaced top-level 'using'                       $ a top-level 'using' must be placed before any other declarations");

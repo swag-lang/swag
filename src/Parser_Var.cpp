@@ -306,6 +306,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
             return context->report(diag);
         }
 
+        // Type
         AstNode* type = nullptr;
         if (token.id == TokenId::SymColon)
         {
@@ -330,6 +331,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
             }
         }
 
+        // Value
         AstNode* assign      = nullptr;
         auto     assignToken = token;
         if (token.id == TokenId::SymEqual)
@@ -339,10 +341,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
             Ast::removeFromParent(assign);
         }
 
-        // Be sure we will be able to have a type
-        if (!type && !assign)
-            return error(leftNode->token, Err(Syn0131));
-
+        // Treat all
         SWAG_CHECK(doVarDeclExpression(parent, leftNode, type, assign, assignToken, kind, result, forLet));
         leftNode->release();
 
