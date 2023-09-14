@@ -56,7 +56,7 @@ bool Parser::checkIsIdentifier(TokenParse& tokenParse, const char* msg)
     if (tokenParse.id == TokenId::Identifier)
         return true;
     Utf8 note;
-    if(Tokenizer::isKeyword(tokenParse.id))
+    if (Tokenizer::isKeyword(tokenParse.id))
         note = Fmt(Nte(Nte0154), tokenParse.ctext());
     return error(tokenParse, msg, note);
 }
@@ -273,6 +273,7 @@ bool Parser::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t identif
 
 bool Parser::doDiscard(AstNode* parent, AstNode** result)
 {
+    auto discardToken = token;
     SWAG_CHECK(eatToken());
 
     AstNode* idRef;
@@ -289,7 +290,12 @@ bool Parser::doDiscard(AstNode* parent, AstNode** result)
         break;
     default:
         if (Tokenizer::isIntrinsicReturn(token.id))
-            return error(token, Fmt(Err(Syn0179), token.ctext()));
+        {
+            Diagnostic diag{sourceFile, token, Fmt(Err(Syn0179), token.ctext())};
+            auto       note = Diagnostic::note(sourceFile, discardToken, Nte(Nte1019));
+            return context->report(diag, note);
+        }
+
         return error(token, Fmt(Err(Syn0173), token.ctext()));
     }
 

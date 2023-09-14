@@ -1270,6 +1270,7 @@ void initErrors()
     SWAG_ERROR(Nte0120, "'@mixin' is permitted exclusively inside a 'Swag.Mixin' function");
     SWAG_ERROR(Nte0112, "'Swag.Optim' should have either 'bytecode' or 'backend' as its value");
     SWAG_ERROR(Nte0145, "'closure' should be accompanied by capture parameters enclosed in '|...|'");
+    SWAG_ERROR(Nte1019, "'discard' cannot be used with an intrinsic, as an intrinsic result should always be used");
     SWAG_ERROR(Nte1111, "'moveref' and 'ref' can't be used together");
     SWAG_ERROR(Nte1087, "'self' should be the first parameter");
     SWAG_ERROR(Nte0139, "'with' should be followed by a single identifier");
@@ -1513,7 +1514,6 @@ void initErrors()
     SWAG_ERROR(Nte0103, "you can assign a lambda to a closure type, but not vice versa");
     SWAG_ERROR(Nte1095, "you can't reference this runtime %s from the %s");
     SWAG_ERROR(Nte0149, "you might want to get the address of '%s' using '&'");
-    SWAG_ERROR(Nte1019, nullptr);
     SWAG_ERROR(Nte1020, nullptr);
     SWAG_ERROR(Nte1102, nullptr);
     SWAG_ERROR(Nte1043, nullptr);
