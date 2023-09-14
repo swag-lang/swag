@@ -74,7 +74,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         token.startLocation = upToken.startLocation;
 
         if (token.id == TokenId::SymQuestion)
-            return error(token, Fmt(Err(Syn0218), "symbol", token.ctext()));
+            return error(token, Fmt(Err(Syn0078), token.ctext()));
 
         scopeUpValue.id               = TokenId::CompilerUp;
         scopeUpValue.literalType      = LiteralType::TT_UNTYPED_INT;
@@ -102,15 +102,6 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         }
     }
 
-    if (token.id == TokenId::SymQuestion && !(identifierFlags & IDENTIFIER_ACCEPT_QUESTION))
-        return error(token, Fmt(Err(Syn0218), "symbol", token.ctext()));
-    if (token.id != TokenId::SymQuestion && Tokenizer::isSymbol(token.id))
-        return error(token, Fmt(Err(Syn0218), "symbol", token.ctext()));
-    if (Tokenizer::isLiteral(token.id))
-        return error(token, Fmt(Err(Syn0218), "literal", token.ctext()));
-    if (token.id == TokenId::EndOfFile)
-        return error(token, Err(Syn0077));
-
     if (token.id != TokenId::Identifier &&
         token.id != TokenId::NativeType &&
         token.id != TokenId::SymQuestion &&
@@ -136,7 +127,6 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         identifier->specFlags |= AstIdentifier::SPECFLAG_NO_INLINE;
 
     SWAG_CHECK(eatToken());
-
     SWAG_CHECK(checkIsValidUserName(identifier));
 
     // Replace "Self" with the corresponding struct name
@@ -252,11 +242,11 @@ bool Parser::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t identif
         break;
 
     case TokenId::NativeType:
-        return context->report({sourceFile, token, Fmt(Err(Syn0218), "type", token.ctext())});
+        return context->report({sourceFile, token, Fmt(Err(Syn0078), token.ctext())});
 
     default:
         if (Tokenizer::isKeyword(token.id))
-            return context->report({sourceFile, token, Fmt(Err(Syn0218), "keyword", token.ctext())});
+            return context->report({sourceFile, token, Fmt(Err(Syn0078), token.ctext())});
 
         SWAG_CHECK(doIdentifier(identifierRef, identifierFlags));
         break;

@@ -1,4 +1,4 @@
-#global testerror "Syn0218"
+#global testerror "Syn0078"
 #test
 {
     a,b,c,d,e,f,var g = 666'u64

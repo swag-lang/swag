@@ -204,9 +204,8 @@ void initErrors()
     SWAG_ERROR(Syn0106, "invalid function name                             $ a function name ('%s') can't start with '@', this is reserved for intrinsics");
     SWAG_ERROR(Syn0089, "invalid function name                             $ expected a function name, found '%s'");
     SWAG_ERROR(Syn0058, "invalid generic parameter name                    $ expected an identifier as the generic name, found '%s' instead");
-    SWAG_ERROR(Syn0077, "invalid identifier                                $ a valid identifier is expected here");
-    SWAG_ERROR(Syn0218, "invalid identifier                                $ expected an identifier, found %s '%s' instead");
     SWAG_ERROR(Syn0078, "invalid identifier                                $ expected an identifier, found '%s' instead");
+    SWAG_ERROR(Syn0077, "invalid identifier                                $ expected an identifier here");
     SWAG_ERROR(Syn0157, "invalid identifier list                           $ 'with' does not support multiple identifiers");
     SWAG_ERROR(Syn0105, "invalid logical operator                          $ expected '%s' for logical test, found '%s' instead");
     SWAG_ERROR(Syn0110, "invalid named argument                            $ expected a named argument before ':', found '%s' instead");
@@ -335,6 +334,7 @@ void initErrors()
     SWAG_ERROR(Syn0219, "unexpected type suffix                            $ %s should not be followed by a type suffix");
     SWAG_ERROR(Syn0134, "unsupported tuple type                            $ tuple types are not supported for generic parameters");
     SWAG_ERROR(Syn0179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
+    SWAG_ERROR(Syn0218, nullptr);
     SWAG_ERROR(Syn0175, nullptr);
     SWAG_ERROR(Syn0203, nullptr);
     SWAG_ERROR(Syn0046, nullptr);
