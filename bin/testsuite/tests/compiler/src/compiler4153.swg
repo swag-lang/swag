@@ -1,6 +1,6 @@
-#global testwarning "wrn0007"
+#global testwarning "wrn0002"
 //#[Swag.PrintBc]
-#[Swag.Warn("wrn0007", Swag.WarnLevel.Enable)]
+#[Swag.Warn("wrn0002", Swag.WarnLevel.Enable)]
 #test
 {
     const A = 0

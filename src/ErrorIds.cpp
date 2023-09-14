@@ -92,6 +92,25 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
+    SWAG_ERROR(San0006, "[sanity] null %s dereference: '%s'");
+    SWAG_ERROR(San0005, "[sanity] null pointer dereference");
+    SWAG_ERROR(San0002, "[sanity] return of %s: '%s'");
+    SWAG_ERROR(San0001, "[sanity] return of local or temporary variable");
+    SWAG_ERROR(San0010, "[sanity] stack overflow: offset '%lld', size '%lld'");
+    SWAG_ERROR(San0004, "[sanity] uninitialized %s usage: '%s'");
+    SWAG_ERROR(San0003, "[sanity] uninitialized stack memory usage");
+    SWAG_ERROR(San0007, "[sanity] division by zero");
+    SWAG_ERROR(San0008, "[sanity] division by zero: %s '%s'");
+    SWAG_ERROR(San0009, nullptr);
+    SWAG_ERROR(San0011, nullptr);
+    SWAG_ERROR(San0012, nullptr);
+    SWAG_ERROR(San0013, nullptr);
+    SWAG_ERROR(San0014, nullptr);
+
+    /////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
+
     SWAG_ERROR(Tkn0023, "invalid float number syntax                       $ the fractional part should not start with '_'");
     SWAG_ERROR(Tkn0024, "invalid float number syntax                       $ the exponent part should not start with '_'");
     SWAG_ERROR(Tkn0002, "invalid float number syntax                       $ exponent in the scientific notation must contain at least one digit");
@@ -338,6 +357,26 @@ void initErrors()
     SWAG_ERROR(Syn0155, nullptr);
     SWAG_ERROR(Syn0156, nullptr);
     SWAG_ERROR(Syn0127, nullptr);
+
+    /////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////
+
+    SWAG_ERROR(Wrn0003, "deprecated usage          $ %s '%s' is deprecated (attribute 'Swag.Deprecated')");
+    SWAG_ERROR(Wrn0002, "unused %s                 $ %s '%s' is not used");
+    SWAG_ERROR(Wrn0001, "unreachable code          $ this code is not reachable and will never execute");
+    SWAG_ERROR(Wrn0009, "unchanged local variable  $ the variable '%s' remains unchanged after its declaration $ if you don't intend to modify it, consider declaring it with 'let' instead of 'var' for immutability");
+    SWAG_ERROR(Wrn0010, "unchanged local variable  $ the variable 'a' is declared but its value is never set or modified");
+    SWAG_ERROR(Wrn0011, "%s");
+    SWAG_ERROR(Wrn0004, nullptr);
+    SWAG_ERROR(Wrn0005, nullptr);
+    SWAG_ERROR(Wrn0006, nullptr);
+    SWAG_ERROR(Wrn0007, nullptr);
+    SWAG_ERROR(Wrn0008, nullptr);
+    SWAG_ERROR(Wrn0012, nullptr);
+    SWAG_ERROR(Wrn0013, nullptr);
+    SWAG_ERROR(Wrn0014, nullptr);
+    SWAG_ERROR(Wrn0015, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -1220,45 +1259,6 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Wrn0003, "%s '%s' is deprecated (tag: 'Swag.Deprecated')");
-    SWAG_ERROR(Wrn0002, "%s '%s' not used");
-    SWAG_ERROR(Wrn0004, "%s '%s' not used");
-    SWAG_ERROR(Wrn0005, "%s '%s' not used");
-    SWAG_ERROR(Wrn0006, "%s '%s' not used");
-    SWAG_ERROR(Wrn0007, "%s '%s' not used");
-    SWAG_ERROR(Wrn0011, "%s");
-    SWAG_ERROR(Wrn0001, "code not reachable");
-    SWAG_ERROR(Wrn0008, "function '%s' not used");
-    SWAG_ERROR(Wrn0009, "local variable '%s' constant; suggest 'let' declaration");
-    SWAG_ERROR(Wrn0010, "variable '%s' set but not modified");
-    SWAG_ERROR(Wrn0012, nullptr);
-    SWAG_ERROR(Wrn0013, nullptr);
-    SWAG_ERROR(Wrn0014, nullptr);
-    SWAG_ERROR(Wrn0015, nullptr);
-
-    /////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////
-
-    SWAG_ERROR(San0006, "[sanity] null %s dereference: '%s'");
-    SWAG_ERROR(San0005, "[sanity] null pointer dereference");
-    SWAG_ERROR(San0002, "[sanity] return of %s: '%s'");
-    SWAG_ERROR(San0001, "[sanity] return of local or temporary variable");
-    SWAG_ERROR(San0010, "[sanity] stack overflow: offset '%lld', size '%lld'");
-    SWAG_ERROR(San0004, "[sanity] uninitialized %s usage: '%s'");
-    SWAG_ERROR(San0003, "[sanity] uninitialized stack memory usage");
-    SWAG_ERROR(San0007, "[sanity] zero division");
-    SWAG_ERROR(San0008, "[sanity] zero division: %s '%s'");
-    SWAG_ERROR(San0009, nullptr);
-    SWAG_ERROR(San0011, nullptr);
-    SWAG_ERROR(San0012, nullptr);
-    SWAG_ERROR(San0013, nullptr);
-    SWAG_ERROR(San0014, nullptr);
-
-    /////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////
-
     SWAG_ERROR(Nte0042, "'%s' is a function missing the 'Swag.ConstExpr' attribute");
     SWAG_ERROR(Nte0041, "'%s' is a variable; variables within expressions aren't evaluated at compile-time");
     SWAG_ERROR(Nte0077, "'%s' might represent either a type or a field name");
@@ -1354,9 +1354,9 @@ void initErrors()
     SWAG_ERROR(Nte1047, "hidden call to '%s' detected");
     SWAG_ERROR(Nte1119, "identified an enum value");
     SWAG_ERROR(Nte1059, "identified as the first usage");
-    SWAG_ERROR(Nte1005, "if intended, initialize with 'undefined'");
-    SWAG_ERROR(Nte1124, "if intended, please add 'impl' before this");
-    SWAG_ERROR(Nte1092, "if intentional, rename this to '_%s'");
+    SWAG_ERROR(Nte1005, "if intended, consider initializing with 'undefined'");
+    SWAG_ERROR(Nte1124, "if intended, consider add 'impl' before this");
+    SWAG_ERROR(Nte1092, "if this is intentional, consider renaming it to '_%s' to indicate it's unused");
     SWAG_ERROR(Nte1023, "if you don't need the return value, prefix this call with 'discard'");
     SWAG_ERROR(Nte0104, "if you want to declare a lambda type, use 'func(' or 'closure('");
     SWAG_ERROR(Nte0135, "if you were trying to compare values, you should use '==' instead");
@@ -1401,10 +1401,10 @@ void initErrors()
     SWAG_ERROR(Nte0069, "runtime argument corresponding to '%s' can be found here");
     SWAG_ERROR(Nte1045, "second initialization observed");
     SWAG_ERROR(Nte1009, "secondary instance observed");
-    SWAG_ERROR(Nte1053, "should be 'const' but isn't");
-    SWAG_ERROR(Nte1021, "should be a pointer type");
-    SWAG_ERROR(Nte1058, "should be an integer type");
-    SWAG_ERROR(Nte1004, "should be designated as 'const %s'");
+    SWAG_ERROR(Nte1053, "this should be 'const' but isn't");
+    SWAG_ERROR(Nte1021, "this should be a pointer type");
+    SWAG_ERROR(Nte1058, "this should be an integer type");
+    SWAG_ERROR(Nte1004, "this should be designated as 'const %s'");
     SWAG_ERROR(Nte1056, "should be succeeded by generic arguments");
     SWAG_ERROR(Nte1052, "should cast to a sized integer like 's32', 's64', etc.");
     SWAG_ERROR(Nte1051, "should cast to either 'f32' or 'f64'");
@@ -1501,13 +1501,13 @@ void initErrors()
     SWAG_ERROR(Nte0020, "to close this you need '%s'");
     SWAG_ERROR(Nte0105, "to dereference variable '%s' as in C, employ 'dref %s'");
     SWAG_ERROR(Nte0151, "to initiate a struct initialization of '%s', remove spaces between '%s' and '{'");
-    SWAG_ERROR(Nte1066, "tuple unpacking observed");
-    SWAG_ERROR(Nte0052, "type '%s' is expected due to %s");
-    SWAG_ERROR(Nte0058, "unable to determine type '%s'");
+    SWAG_ERROR(Nte1066, "here is the tuple unpacking");
+    SWAG_ERROR(Nte0052, "the type '%s' is expected due to %s");
+    SWAG_ERROR(Nte0058, "unable to resolve type '%s'");
     SWAG_ERROR(Nte0065, "unable to resolve %s '%s'");
     SWAG_ERROR(Nte1097, "unnamed parameters ('?') should not have an explicitly specified type");
     SWAG_ERROR(Nte1101, "use '#type' before '%s' if it's a type, or specify a type with ':' if this is a parameter name");
-    SWAG_ERROR(Nte0140, "use '++' for compile-time string append operations");
+    SWAG_ERROR(Nte0140, "use '++' to append strings at compile-time");
     SWAG_ERROR(Nte0133, "use '?' to unpack and ignore a variable");
     SWAG_ERROR(Nte0129, "use 'mtd' instead of 'func' to implicitly declare 'using self' as the initial parameter");
     SWAG_ERROR(Nte0103, "you can assign a lambda to a closure type, but not vice versa");
