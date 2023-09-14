@@ -69,11 +69,17 @@ bool Parser::invalidTokenError(InvalidTokenError kind, AstNode* parent)
             return error(token, Err(Syn0097));
         break;
     case TokenId::SymRightParen:
-        return error(token, Err(Syn0099));
+        if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
+            return error(token, Err(Syn0099));
+        break;
     case TokenId::SymRightCurly:
-        return error(token, Err(Syn0103));
+        if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
+            return error(token, Err(Syn0103));
+        break;
     case TokenId::SymRightSquare:
-        return error(token, Err(Syn0100));
+        if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
+            return error(token, Err(Syn0100));
+        break;
 
     default:
         break;
@@ -96,7 +102,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind, AstNode* parent)
         break;
     case InvalidTokenError::LeftExpressionVar:
         msg = Fmt(Err(Syn0069), token.ctext());
-        if (Tokenizer::isSymbol(token.id))
+        if (Tokenizer::isKeyword(token.id))
             note = Fmt(Nte(Nte0154), token.ctext());
         break;
     case InvalidTokenError::PrimaryExpression:

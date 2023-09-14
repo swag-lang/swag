@@ -57,7 +57,9 @@ bool Parser::checkIsIdentifier(TokenParse& tokenParse, const char* msg)
 {
     if (tokenParse.id == TokenId::Identifier)
         return true;
-    return error(tokenParse, msg, Fmt(Nte(Nte0154), tokenParse.ctext()));
+    if(Tokenizer::isKeyword(tokenParse.id))
+        return error(tokenParse, msg, Fmt(Nte(Nte0154), tokenParse.ctext()));
+    return error(tokenParse, msg);
 }
 
 bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)

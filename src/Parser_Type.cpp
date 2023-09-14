@@ -293,6 +293,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
             if (token.id != TokenId::SymComma)
                 break;
             SWAG_CHECK(eatToken());
+            SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Syn0202)));
         }
     }
 
@@ -533,6 +534,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
             if (token.id != TokenId::SymComma)
                 break;
             SWAG_CHECK(eatToken());
+            SWAG_VERIFY(token.id != TokenId::SymRightSquare, error(token, Err(Syn0213)));
         }
 
         auto rightSquareToken = token;

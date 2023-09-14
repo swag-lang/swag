@@ -162,6 +162,8 @@ void initErrors()
     SWAG_ERROR(Syn0202, "incomplete parameters list                        $ expected another parameter after ',' $ either provide an additional parameter or remove the trailing ','");
     SWAG_ERROR(Syn0171, "incomplete variables list                         $ expected another variable name after ',' $ either provide an additional variable name or remove the trailing ','");
     SWAG_ERROR(Syn0176, "incomplete tuple unpacking                        $ expected another variable name after ',' $ either provide an additional variable name or remove the trailing ','");
+    SWAG_ERROR(Syn0047, "incomplete indexing                               $ expected another expression after ',' $ either provide an additional expression or remove the trailing ','");
+    SWAG_ERROR(Syn0213, "incomplete array dimensions                       $ expected another dimension after ',' $ either provide an additional dimension or remove the trailing ','");
     SWAG_ERROR(Syn0136, "invalid '#global' instruction                     $ '%s' is not recognized as a valid '#global' instruction");
     SWAG_ERROR(Syn0109, "invalid '#import' location                        $ expected a '#import' location path, found '%' instead");
     SWAG_ERROR(Syn0113, "invalid '#import' location                        $ expected a '#import' version as a string, found '%' instead");
@@ -302,9 +304,7 @@ void initErrors()
     SWAG_ERROR(Syn0098, "unexpected '#else'                                $ '#else' found without a preceding '#if' or '#elif' directive");
     SWAG_ERROR(Syn0137, "unexpected '#validif/#validifx'                   $ the '#validif/#validifx' directive is not allowed on special function '%s' $ '#validif' and '#validifx' are not valid for 'opDrop', 'opPostCopy', and 'opPostMove'");
     SWAG_ERROR(Syn0215, "unexpected '#validifx' in struct                  $ '#validifx' is not allowed for a struct, this is only valid for functions $ consider using '#validif' instead");
-    SWAG_ERROR(Syn0099, "unexpected ')'                                    $ symbol ')' found without a preceding '('");
     SWAG_ERROR(Syn0139, "unexpected '['                                    $ nested square brackets '[..][..]' are not allowed for multi-dimensional array access $ to access elements in a multi-dimensional array, use the format [x, y] and not [x][y]");
-    SWAG_ERROR(Syn0100, "unexpected ']'                                    $ symbol ']' found without a preceding '['");
     SWAG_ERROR(Syn0192, "unexpected 'const'                                $ unexpected 'const' before a lambda parameter name");
     SWAG_ERROR(Syn0101, "unexpected 'elif'                                 $ 'elif' found without a preceding 'if'");
     SWAG_ERROR(Syn0102, "unexpected 'else'                                 $ 'else' found without a preceding 'if' or 'elif'");
@@ -313,6 +313,8 @@ void initErrors()
     SWAG_ERROR(Syn0144, "unexpected 'retval' return type                   $ 'retval' is only valid as a local variable type");
     SWAG_ERROR(Syn0088, "unexpected 'throw' qualifier                      $ an attribute can't have the 'throw' qualifier as it can't raise errors");
     SWAG_ERROR(Syn0030, "unexpected 'var' in struct                        $ 'var' is unnecessary in struct variable declarations $ struct variables should be declared as 'fieldName: Type' without 'var'");
+    SWAG_ERROR(Syn0099, "unexpected ')'                                    $ symbol ')' found without a preceding '('");
+    SWAG_ERROR(Syn0100, "unexpected ']'                                    $ symbol ']' found without a preceding '['");
     SWAG_ERROR(Syn0103, "unexpected '}'                                    $ symbol '}' found without a preceding '{'");
     SWAG_ERROR(Syn0208, "unexpected affectation                            $ unexpected usage of the assignement operator '=' inside an expression");
     SWAG_ERROR(Syn0138, "unexpected attribute return type                  $ an attribute can't have a return type starting with '->'");
@@ -332,8 +334,6 @@ void initErrors()
     SWAG_ERROR(Syn0219, "unexpected type suffix                            $ %s should not be followed by a type suffix");
     SWAG_ERROR(Syn0134, "unsupported tuple type                            $ tuple types are not supported for generic parameters");
     SWAG_ERROR(Syn0179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
-    SWAG_ERROR(Syn0047, nullptr);
-    SWAG_ERROR(Syn0213, nullptr);
     SWAG_ERROR(Syn0094, nullptr);
     SWAG_ERROR(Syn0175, nullptr);
     SWAG_ERROR(Syn0203, nullptr);

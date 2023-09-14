@@ -133,6 +133,7 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
             if (token.id != TokenId::SymComma)
                 break;
             SWAG_CHECK(eatToken());
+            SWAG_VERIFY(token.id != TokenId::SymRightSquare, error(token, Err(Syn0047)));
         }
 
         SWAG_CHECK(eatCloseToken(TokenId::SymRightSquare, startToken));
