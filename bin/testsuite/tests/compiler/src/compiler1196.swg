@@ -1,4 +1,3 @@
-
 #global testerror "Err0112"
 
 const A = false

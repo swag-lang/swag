@@ -321,7 +321,8 @@ bool Ast::convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* ass
     contentNode->allocateExtension(ExtensionKind::Semantic);
     contentNode->extSemantic()->semanticBeforeFct = SemanticJob::preResolveStructContent;
     contentNode->addAlternativeScope(assignment->ownerScope);
-    structNode->content = contentNode;
+    structNode->content        = contentNode;
+    structNode->originalParent = assignment;
 
     auto typeList = CastTypeInfo<TypeInfoList>(assignment->typeInfo, TypeInfoKind::TypeListTuple);
     Utf8 varName;

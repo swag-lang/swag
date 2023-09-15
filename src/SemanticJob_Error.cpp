@@ -1136,8 +1136,6 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
         collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, COLLECT_ALL);
     }
 
-    Utf8 appendMsg = findClosestMatchesMsg(context, node, scopeHierarchy, searchFor);
-
     Vector<const Diagnostic*> notes;
     Diagnostic*               diag = nullptr;
 
@@ -1173,8 +1171,9 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
 
         if (typeRef && typeRef->isTuple())
         {
-            diag      = new Diagnostic{node, Fmt(Err(Err0093), node->token.ctext())};
-            auto note = Diagnostic::note(identifierRef->startScope->owner, Nte(Nte0030));
+            diag            = new Diagnostic{node, Fmt(Err(Err0093), node->token.ctext())};
+            auto structNode = CastAst<AstStruct>(identifierRef->startScope->owner, AstNodeKind::StructDecl);
+            auto note       = Diagnostic::note(structNode->originalParent ? structNode->originalParent : identifierRef->startScope->owner, Nte(Nte0030));
             notes.push_back(note);
         }
         else
@@ -1207,10 +1206,7 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
                 }
                 else if (typeWhere)
                 {
-                    Utf8 what = "identifier";
-                    if (node->callParameters)
-                        what = "function";
-                    diag = new Diagnostic{node, node->token, Fmt(Err(Err0112), what.c_str(), node->token.ctext(), typeWhere->getDisplayNameC())};
+                    diag = new Diagnostic{node, node->token, Fmt(Err(Err0112), node->token.ctext(), typeWhere->getDisplayNameC())};
                     if (prevIdentifier)
                         diag->addRange(prevIdentifier, Diagnostic::isType(prevIdentifier));
                 }
@@ -1241,14 +1237,9 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
     symbolErrorRemarks(context, v, node, diag);
     symbolErrorNotes(context, v, node, diag, notes);
 
-    if (diag->hint.empty())
-        diag->hint = appendMsg;
-    else
-    {
-        diag->textMsg += " (";
-        diag->textMsg += appendMsg;
-        diag->textMsg += ")";
-    }
+    Utf8 appendMsg = findClosestMatchesMsg(context, node, scopeHierarchy, searchFor);
+    if (!appendMsg.empty())
+        notes.push_back(Diagnostic::note(appendMsg));
 
     context->report(*diag, notes);
 }
