@@ -399,6 +399,7 @@ void initErrors()
     SWAG_ERROR(Err0112, "unknown identifier            $ the identifier '%s' can't be found in '%s'");
     SWAG_ERROR(Err0110, "unknown identifier            $ the identifier '%s' can't be found in %s '%s'");
     SWAG_ERROR(Err0821, "unknown identifier            $ the variable '%s' from the struct '%s' has no corresponding member");
+    SWAG_ERROR(Err0723, "type mismatch                 $ type mismatch for field '%s'; expected '%s', found '%s'");
 
     SWAG_ERROR(Err0097, "%s '%s' isn't used as the first parameter in '%s'");
     SWAG_ERROR(Err0521, "%s '%s' not used as primary argument for function '%s'");
@@ -663,8 +664,6 @@ void initErrors()
     SWAG_ERROR(Err0045, "failed to create '%s' process (::CreatePipe)");
     SWAG_ERROR(Err0223, "failed to open #load file '%s'");
     SWAG_ERROR(Err0510, "failed to retrieve file '%s' for module dependency '%s'");
-    SWAG_ERROR(Err0723, "field '%s' type mismatch; expected '%s', found '%s'");
-    SWAG_ERROR(Err0050, "field '%s' type mismatch; expected '%s', found '%s'");
     SWAG_ERROR(Err0603, "file '%s' deletion failed");
     SWAG_ERROR(Err0509, "file '%s' inaccessible");
     SWAG_ERROR(Err0508, "file '%s' not found in module folder '%s'");
@@ -993,6 +992,7 @@ void initErrors()
     SWAG_ERROR(Err0308, "variable type deduction failed; expression is 'null'");
     SWAG_ERROR(Err0734, "variadic parameter must be last");
     SWAG_ERROR(Err0880, "while condition is always true");
+    SWAG_ERROR(Err0050, nullptr);
     SWAG_ERROR(Err0394, nullptr);
     SWAG_ERROR(Err0890, nullptr);
     SWAG_ERROR(Err0019, nullptr);

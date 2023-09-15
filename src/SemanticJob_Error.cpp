@@ -360,9 +360,9 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
             diag            = new Diagnostic{diagNode,
-                                  Fmt(Err(Err0050),
-                                      bi.badSignatureRequestedType->getDisplayNameC(),
+                                  Fmt(Err(Err0723),
                                       typeStruct->fields[badParamIdx - 1]->name.c_str(),
+                                      bi.badSignatureRequestedType->getDisplayNameC(),
                                       bi.badSignatureGivenType->getDisplayNameC())};
         }
         else if (oneTry.ufcs && bi.badSignatureParameterIdx == 0 && oneTry.dependentVar)
