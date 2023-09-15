@@ -173,8 +173,8 @@ namespace Swag
     // Change the behavior of a given warning or list of warnings.
     // For example:
     // ```swag
-    // #[Swag.Warn("wrn0004", Swag.WarnLevel.Error)
-    // #[Swag.Warn("wrn0003|wrn0004", Swag.WarnLevel.Disable)
+    // #[Swag.Warn("wrn0002", Swag.WarnLevel.Error)
+    // #[Swag.Warn("wrn0003|wrn0002", Swag.WarnLevel.Disable)
     // #global #[Swag.Warn("wrn0001", Swag.WarnLevel.Enable)]
     // ```
     // You can also change the warning behaviors for the whole module in your [BuildCfg]
