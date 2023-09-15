@@ -337,8 +337,8 @@ void initErrors()
     SWAG_ERROR(Syn0219, "unexpected type suffix                            $ %s should not be followed by a type suffix");
     SWAG_ERROR(Syn0134, "unsupported tuple type                            $ tuple types are not supported for generic parameters");
     SWAG_ERROR(Syn0179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
-    SWAG_ERROR(Syn0046, nullptr);
-    SWAG_ERROR(Syn0107, nullptr);
+    SWAG_ERROR(Syn0046, "unexpected identifier                             $ unexpected identifier '%s' after '%s' at global scope");
+    SWAG_ERROR(Syn0107, "missing call arguments                            $ missing the call arguments after '%s' $ only mixin calls with arguments are valid at global scope");
     SWAG_ERROR(Syn0114, nullptr);
     SWAG_ERROR(Syn0166, nullptr);
     SWAG_ERROR(Syn0079, nullptr);
@@ -387,6 +387,7 @@ void initErrors()
     SWAG_ERROR(Err0013, "not a value                   $ %s '%s' is not a valid value in this context");
     SWAG_ERROR(Err0003, "not a value                   $ this is an implicit reference to a static struct member of '%s'");
     SWAG_ERROR(Err0305, "symbol already defined        $ the %s '%s' has already been defined %s");
+    SWAG_ERROR(Err0105, "invalid function call         $ cannot call '%s' because the function is declared but not defined");
 
     SWAG_ERROR(Err0097, "%s '%s' isn't used as the first parameter in '%s'");
     SWAG_ERROR(Err0112, "%s '%s' not found in '%s'");
@@ -623,7 +624,6 @@ void initErrors()
     SWAG_ERROR(Err0591, "duplicate attribute '%s'; missing 'Swag.AttrMulti' in declaration");
     SWAG_ERROR(Err0169, "duplicate module named '%s' found (path: '%s')");
     SWAG_ERROR(Err0610, "empty 'switch' body found");
-    SWAG_ERROR(Err0105, "empty function call '%s'");
     SWAG_ERROR(Err0683, "empty interface '%s' found");
     SWAG_ERROR(Err0164, "empty slice dereference");
     SWAG_ERROR(Err0142, "empty string dereference");

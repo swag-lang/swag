@@ -63,7 +63,9 @@ TODO
 ****************************************
 
 -------------------------------------
-@compilererror/warning with an optional hint for the error
+warning ?
+    var a = 1
+    a = 2
 -------------------------------------
 fast math ? (faire les tests de float en u32/U64 comme avant la prise en charge de nan)
 -------------------------------------

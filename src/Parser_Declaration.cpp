@@ -1030,13 +1030,34 @@ bool Parser::doTopLevelInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(doCompilerForeignLib(parent, result));
         break;
     case TokenId::Identifier:
+    {
         SWAG_CHECK(doIdentifierRef(parent, result, IDENTIFIER_GLOBAL));
+
+        if (token.id == TokenId::Identifier)
+        {
+            Diagnostic diag{sourceFile, token, Fmt(Err(Syn0046), token.ctext(), (*result)->token.ctext())};
+            return context->report(diag);
+        }
+
         if (token.id == TokenId::SymEqual || token.id == TokenId::SymColon)
         {
             Diagnostic diag{sourceFile, token, Fmt(Err(Syn0198), token.ctext(), (*result)->token.ctext())};
             return context->report(diag);
         }
+
+        auto last = (*result)->childs.back();
+        if (last->kind == AstNodeKind::Identifier)
+        {
+            auto id = CastAst<AstIdentifier>(last, AstNodeKind::Identifier);
+            if (!id->callParameters)
+            {
+                Diagnostic diag{sourceFile, last->token, Fmt(Err(Syn0107), (*result)->token.ctext())};
+                return context->report(diag);
+            }
+        }
+
         break;
+    }
 
     default:
         return invalidTokenError(InvalidTokenError::TopLevelInstruction);

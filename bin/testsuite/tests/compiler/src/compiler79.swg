@@ -1,2 +1,2 @@
-﻿#global testerror "Syn0198"
+﻿#global testerror "Syn0046"
 type str: 1
