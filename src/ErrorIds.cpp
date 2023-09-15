@@ -382,12 +382,12 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Err0113, "overload ambiguity     $ %d overloads found for '%s', but none matched the provided arguments");
-    SWAG_ERROR(Err0520, "mismatch access        $ %s '%s' can't be public due to %s '%s' with '%s' access");
-    SWAG_ERROR(Err0013, "not a value            $ %s '%s' is not a valid value in this context");
-    SWAG_ERROR(Err0003, "not a value            $ this is an implicit reference to a static struct member of '%s'");
+    SWAG_ERROR(Err0113, "overload ambiguity            $ %d overloads found for '%s', but none matched the provided arguments");
+    SWAG_ERROR(Err0520, "mismatch access               $ %s '%s' can't be public due to %s '%s' with '%s' access");
+    SWAG_ERROR(Err0013, "not a value                   $ %s '%s' is not a valid value in this context");
+    SWAG_ERROR(Err0003, "not a value                   $ this is an implicit reference to a static struct member of '%s'");
+    SWAG_ERROR(Err0305, "symbol already defined        $ the %s '%s' has already been defined %s");
 
-    SWAG_ERROR(Err0305, "symbol '%s' already defined");
     SWAG_ERROR(Err0394, "symbol '%s' defined as %s");
     SWAG_ERROR(Err0097, "%s '%s' isn't used as the first parameter in '%s'");
     SWAG_ERROR(Err0112, "%s '%s' not found in '%s'");

@@ -329,8 +329,7 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, Typ
         Diagnostic diag{node, *token, Fmt(Err(Err0394), symbol->name.c_str(), Naming::aKindName(symbol->kind).c_str())};
         auto       front = symbol->nodes.front();
         auto       note  = Diagnostic::note(front, front->token, Nte(Nte0036));
-        context->report(diag, note);
-        return false;
+        return context->report(diag, note);
     }
 
     if (symbol->kind == SymbolKind::Namespace)
@@ -343,7 +342,7 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, Typ
     if (!canOverload && !symbol->overloads.empty())
     {
         auto firstOverload = symbol->overloads[0];
-        return SemanticJob::duplicatedSymbolError(context, node->sourceFile, *token, symbol, firstOverload->node);
+        return SemanticJob::duplicatedSymbolError(context, node->sourceFile, *token, symbol, firstOverload->symbol->kind, firstOverload->node);
     }
 
     // A symbol with the same type already exists
@@ -357,7 +356,7 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, Typ
             !(overload->node->flags & AST_HAS_SELECT_IF))
         {
             auto firstOverload = overload;
-            return SemanticJob::duplicatedSymbolError(context, node->sourceFile, *token, symbol, firstOverload->node);
+            return SemanticJob::duplicatedSymbolError(context, node->sourceFile, *token, symbol, firstOverload->symbol->kind, firstOverload->node);
         }
     }
 

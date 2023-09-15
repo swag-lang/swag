@@ -2145,7 +2145,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
 
             auto symbol = overloads[0]->overload->symbol;
             auto match  = matches[0];
-            return duplicatedSymbolError(context, node->sourceFile, node->token, symbol, match->symbolOverload->node);
+            return duplicatedSymbolError(context, node->sourceFile, node->token, symbol, match->symbolOverload->symbol->kind, match->symbolOverload->node);
         }
 
         return true;
@@ -2245,71 +2245,70 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         if (!node)
             node = context->node;
         auto symbol = overloads[0]->overload->symbol;
+
         if (flags & MIP_FOR_GHOSTING)
         {
-            AstNode* otherNode = nullptr;
+            AstNode*   otherNode = nullptr;
+            SymbolKind otherKind = SymbolKind::Invalid;
             for (auto match : matches)
             {
                 if (match->symbolOverload->node != node && !match->symbolOverload->node->isParentOf(node))
                 {
+                    otherKind = match->symbolOverload->symbol->kind;
                     otherNode = match->symbolOverload->node;
                     break;
                 }
             }
 
             SWAG_ASSERT(otherNode);
-            duplicatedSymbolError(context, node->sourceFile, node->token, symbol, otherNode);
+            return duplicatedSymbolError(context, node->sourceFile, node->token, symbol, otherKind, otherNode);
         }
-        else
+
+        Diagnostic                diag{node, node->token, Fmt(Err(Err0116), symbol->name.c_str())};
+        Vector<const Diagnostic*> notes;
+        for (auto match : matches)
         {
-            Diagnostic                diag{node, node->token, Fmt(Err(Err0116), symbol->name.c_str())};
-            Vector<const Diagnostic*> notes;
-            for (auto match : matches)
+            auto        overload = match->symbolOverload;
+            Diagnostic* note     = nullptr;
+
+            if (overload->typeInfo->isFuncAttr())
             {
-                auto        overload = match->symbolOverload;
-                Diagnostic* note     = nullptr;
-
-                if (overload->typeInfo->isFuncAttr())
+                if (overload->typeInfo->flags & TYPEINFO_FROM_GENERIC)
                 {
-                    if (overload->typeInfo->flags & TYPEINFO_FROM_GENERIC)
-                    {
-                        auto         typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
-                        AstFuncDecl* funcNode = CastAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
-                        auto         orgNode  = funcNode->originalGeneric ? funcNode->originalGeneric : overload->typeInfo->declNode;
-                        auto         couldBe  = Fmt(Nte(Nte0045), orgNode->typeInfo->getDisplayNameC());
-                        note                  = Diagnostic::note(overload->node, overload->node->token, couldBe);
-                        note->remarks.push_back(Fmt(Nte(Nte0047), overload->typeInfo->getDisplayNameC()));
-                    }
-                    else
-                    {
-                        auto couldBe = Fmt(Nte(Nte0048), overload->typeInfo->getDisplayNameC());
-                        note         = Diagnostic::note(overload->node, overload->node->token, couldBe);
-                    }
-
-                    if (!overload->typeInfo->isLambdaClosure())
-                        note->showRange = false;
-                }
-                else if (overload->typeInfo->isStruct())
-                {
-                    auto couldBe    = Fmt(Nte(Nte0049), overload->typeInfo->getDisplayNameC());
-                    note            = Diagnostic::note(overload->node, overload->node->token, couldBe);
-                    note->showRange = false;
+                    auto         typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+                    AstFuncDecl* funcNode = CastAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
+                    auto         orgNode  = funcNode->originalGeneric ? funcNode->originalGeneric : overload->typeInfo->declNode;
+                    auto         couldBe  = Fmt(Nte(Nte0045), orgNode->typeInfo->getDisplayNameC());
+                    note                  = Diagnostic::note(overload->node, overload->node->token, couldBe);
+                    note->remarks.push_back(Fmt(Nte(Nte0047), overload->typeInfo->getDisplayNameC()));
                 }
                 else
                 {
-                    auto concreteType = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
-                    auto couldBe      = Fmt(Nte(Nte0050), Naming::aKindName(match->symbolOverload).c_str(), concreteType->getDisplayNameC());
-                    note              = Diagnostic::note(overload->node, overload->node->token, couldBe);
+                    auto couldBe = Fmt(Nte(Nte0048), overload->typeInfo->getDisplayNameC());
+                    note         = Diagnostic::note(overload->node, overload->node->token, couldBe);
                 }
 
-                note->noteHeader = "could be";
-                notes.push_back(note);
+                if (!overload->typeInfo->isLambdaClosure())
+                    note->showRange = false;
+            }
+            else if (overload->typeInfo->isStruct())
+            {
+                auto couldBe    = Fmt(Nte(Nte0049), overload->typeInfo->getDisplayNameC());
+                note            = Diagnostic::note(overload->node, overload->node->token, couldBe);
+                note->showRange = false;
+            }
+            else
+            {
+                auto concreteType = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
+                auto couldBe      = Fmt(Nte(Nte0050), Naming::aKindName(match->symbolOverload).c_str(), concreteType->getDisplayNameC());
+                note              = Diagnostic::note(overload->node, overload->node->token, couldBe);
             }
 
-            context->report(diag, notes);
+            note->noteHeader = "could be";
+            notes.push_back(note);
         }
 
-        return false;
+        return context->report(diag, notes);
     }
 
     return true;
