@@ -1019,10 +1019,10 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         if (node->tokenId != TokenId::SymVertical &&
             node->tokenId != TokenId::SymAmpersand &&
             node->tokenId != TokenId::SymCircumflex)
-            return notAllowed(context, node, leftTypeInfo);
+            return notAllowedError(context, node, leftTypeInfo);
 
         if (leftTypeInfo->isEnum() && !(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS) && rightTypeInfo == leftTypeInfo)
-            return notAllowed(context, node, leftTypeInfo, "because the enum is not marked with 'Swag.EnumFlags'");
+            return notAllowedError(context, node, leftTypeInfo, "because the enum is not marked with 'Swag.EnumFlags'");
 
         if (leftTypeInfo->isEnum() && !(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS))
             return context->report({node, Fmt(Err(Err0037), node->token.ctext(), leftTypeInfo->getDisplayNameC())});

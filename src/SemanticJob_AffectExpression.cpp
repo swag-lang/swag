@@ -251,9 +251,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             if (node->tokenId != TokenId::SymVerticalEqual &&
                 node->tokenId != TokenId::SymAmpersandEqual &&
                 node->tokenId != TokenId::SymCircumflexEqual)
-                return notAllowed(context, node, leftTypeInfo, nullptr, left);
+                return notAllowedError(context, node, leftTypeInfo, nullptr, left);
             if (!(leftTypeInfo->getCA()->flags & TYPEINFO_ENUM_FLAGS) || !(rightTypeInfo->getCA()->flags & TYPEINFO_ENUM_FLAGS))
-                return notAllowed(context, node, leftTypeInfo, "because the enum is not marked with 'Swag.EnumFlags'", left);
+                return notAllowedError(context, node, leftTypeInfo, "because the enum is not marked with 'Swag.EnumFlags'", left);
             forEnumFlags = true;
         }
     }
@@ -465,7 +465,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             leftTypeInfo->nativeType == NativeTypeKind::F32 ||
             leftTypeInfo->nativeType == NativeTypeKind::F64)
         {
-            return notAllowed(context, node, leftTypeInfo);
+            return notAllowedError(context, node, leftTypeInfo);
         }
 
         break;
@@ -504,7 +504,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             leftTypeInfo->nativeType == NativeTypeKind::F32 ||
             leftTypeInfo->nativeType == NativeTypeKind::F64)
         {
-            return notAllowed(context, node, leftTypeInfo);
+            return notAllowedError(context, node, leftTypeInfo);
         }
         break;
     }
@@ -563,7 +563,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             leftTypeInfo->nativeType == NativeTypeKind::String ||
             leftTypeInfo->nativeType == NativeTypeKind::CString)
         {
-            return notAllowed(context, node, leftTypeInfo);
+            return notAllowedError(context, node, leftTypeInfo);
         }
         break;
     }
@@ -593,7 +593,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             leftTypeInfo->nativeType == NativeTypeKind::String ||
             leftTypeInfo->nativeType == NativeTypeKind::CString)
         {
-            return notAllowed(context, node, leftTypeInfo);
+            return notAllowedError(context, node, leftTypeInfo);
         }
         break;
     }
@@ -626,7 +626,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             leftTypeInfo->nativeType == NativeTypeKind::String ||
             leftTypeInfo->nativeType == NativeTypeKind::CString)
         {
-            return notAllowed(context, node, leftTypeInfo);
+            return notAllowedError(context, node, leftTypeInfo);
         }
         break;
     }

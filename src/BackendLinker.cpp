@@ -183,7 +183,7 @@ namespace BackendLinker
         {
             // 09/14/2023
             // If there's no test function to compile, in release x64, num-cores 1, because of a test filter on a file which should raise an error,
-            // then lld never ends because of codeview. Don't know why !! But anyway, in that case, this is not necessary to generate debug infos, 
+            // then lld never ends because of codeview. Don't know why !! But anyway, in that case, this is not necessary to generate debug infos,
             // because there's nothing to debug !
             if (module->kind != ModuleKind::Test || !module->byteCodeTestFunc.empty())
             {

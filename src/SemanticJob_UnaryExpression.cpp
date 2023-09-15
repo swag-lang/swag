@@ -237,7 +237,7 @@ bool SemanticJob::resolveUnaryOp(SemanticContext* context)
     if (typeInfo->isEnum())
     {
         if (!(typeInfo->flags & TYPEINFO_ENUM_FLAGS))
-            return notAllowed(context, op, typeInfo, "because the enum is not marked with 'Swag.EnumFlags'");
+            return notAllowedError(context, op, typeInfo, "because the enum is not marked with 'Swag.EnumFlags'");
     }
 
     // :ConcreteRef

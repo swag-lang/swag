@@ -387,6 +387,8 @@ void initErrors()
     SWAG_ERROR(Err0013, "not a value            $ %s '%s' is not a valid value in this context");
     SWAG_ERROR(Err0003, "not a value            $ this is an implicit reference to a static struct member of '%s'");
 
+    SWAG_ERROR(Err0305, "symbol '%s' already defined");
+    SWAG_ERROR(Err0394, "symbol '%s' defined as %s");
     SWAG_ERROR(Err0097, "%s '%s' isn't used as the first parameter in '%s'");
     SWAG_ERROR(Err0112, "%s '%s' not found in '%s'");
     SWAG_ERROR(Err0521, "%s '%s' not used as primary argument for function '%s'");
@@ -906,8 +908,6 @@ void initErrors()
     SWAG_ERROR(Err0613, "switch value '%d' already defined");
     SWAG_ERROR(Err0614, "switch value '%f' already defined");
     SWAG_ERROR(Err0611, "switch value '%s' already defined");
-    SWAG_ERROR(Err0305, "symbol '%s' already defined");
-    SWAG_ERROR(Err0394, "symbol '%s' defined as %s");
     SWAG_ERROR(Err0346, "symbol '%s' defined in parent scope");
     SWAG_ERROR(Err0890, "symbol '%s' exists as name alias");
     SWAG_ERROR(Err0108, "test function '%s' called from runtime '%s'");

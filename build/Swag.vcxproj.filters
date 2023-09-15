@@ -629,6 +629,9 @@
     <ClCompile Include="..\src\GenDoc_Pages.cpp">
       <Filter>GenDoc</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\SemanticJob_Err.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
