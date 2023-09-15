@@ -719,7 +719,7 @@ bool Parser::doCompilerImport(AstNode* parent)
             if (token.text == g_LangSpec->name_location)
             {
                 SWAG_CHECK(eatToken());
-                SWAG_CHECK(eatToken(TokenId::SymEqual, "to define the second argument"));
+                SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify the location"));
                 SWAG_VERIFY(tokenLocation.text.empty(), error(token, Err(Syn0116)));
                 SWAG_VERIFY(token.id == TokenId::LiteralString, error(token, Fmt(Err(Syn0109), token.ctext())));
                 tokenLocation = token;
@@ -730,7 +730,7 @@ bool Parser::doCompilerImport(AstNode* parent)
             if (token.text == g_LangSpec->name_version)
             {
                 SWAG_CHECK(eatToken());
-                SWAG_CHECK(eatToken(TokenId::SymEqual, "to define the second argument"));
+                SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify the version"));
                 SWAG_VERIFY(tokenVersion.text.empty(), error(token, Err(Syn0117)));
                 SWAG_VERIFY(token.id == TokenId::LiteralString, error(token, Fmt(Err(Syn0113), token.ctext())));
                 tokenVersion = token;

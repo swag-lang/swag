@@ -270,6 +270,7 @@ void initErrors()
     SWAG_ERROR(Syn0033, "missing '#message' parameter                      $ '#message' requests a parameter of type 'Swag.CompilerMsgMask'");
     SWAG_ERROR(Syn0017, "missing '#placeholder' identifier                 $ expected an identifier after '#placeholder', found '%s' instead");
     SWAG_ERROR(Syn0196, "missing '#type' type                              $ expected a valid type after '#type', found '%s' instead");
+    SWAG_ERROR(Syn0175, "missing '(' before arguments                      $ expected '(' to start the list of arguments, found '%s' instead");
     SWAG_ERROR(Syn0051, "missing ':'                                       $ a ':' is expected here after the 'loop' variable name '%s' $ syntax is 'loop [variable:] count'");
     SWAG_ERROR(Syn0023, "missing '@alias' number                           $ '@alias' variable names should end with a number such as '@alias0', '@alias1', etc.");
     SWAG_ERROR(Syn0119, "missing '@mixin' number                           $ '@mixin' variable names should end with a number such as '@mixin0', '@mixin1', etc.");
@@ -335,9 +336,6 @@ void initErrors()
     SWAG_ERROR(Syn0219, "unexpected type suffix                            $ %s should not be followed by a type suffix");
     SWAG_ERROR(Syn0134, "unsupported tuple type                            $ tuple types are not supported for generic parameters");
     SWAG_ERROR(Syn0179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
-
-    SWAG_ERROR(Syn0175, "missing '(' before arguments                      $ expected '(' to start the list of arguments, found '%s' instead");
-
     SWAG_ERROR(Syn0203, nullptr);
     SWAG_ERROR(Syn0046, nullptr);
     SWAG_ERROR(Syn0107, nullptr);
@@ -384,9 +382,11 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Err0113, "%d overloads found for '%s'; none matched");
-    SWAG_ERROR(Err0520, "%s '%s' can't be public due to %s '%s' with '%s' access");
-    SWAG_ERROR(Err0013, "%s '%s' isn't a value in this context");
+    SWAG_ERROR(Err0113, "overload ambiguity     $ %d overloads found for '%s', but none matched the provided arguments");
+    SWAG_ERROR(Err0520, "mismatch access        $ %s '%s' can't be public due to %s '%s' with '%s' access");
+    SWAG_ERROR(Err0013, "not a value            $ %s '%s' is not a valid value in this context");
+    SWAG_ERROR(Err0003, "not a value            $ this is an implicit reference to a static struct member of '%s'");
+
     SWAG_ERROR(Err0097, "%s '%s' isn't used as the first parameter in '%s'");
     SWAG_ERROR(Err0112, "%s '%s' not found in '%s'");
     SWAG_ERROR(Err0521, "%s '%s' not used as primary argument for function '%s'");
@@ -995,7 +995,6 @@ void initErrors()
     SWAG_ERROR(Err0308, "variable type deduction failed; expression is 'null'");
     SWAG_ERROR(Err0734, "variadic parameter must be last");
     SWAG_ERROR(Err0880, "while condition is always true");
-    SWAG_ERROR(Err0003, nullptr);
     SWAG_ERROR(Err0019, nullptr);
     SWAG_ERROR(Err0025, nullptr);
     SWAG_ERROR(Err0055, nullptr);
@@ -1312,7 +1311,7 @@ void initErrors()
     SWAG_ERROR(Nte1085, "detected an enum implementation block");
     SWAG_ERROR(Nte1122, "detected thrown error");
     SWAG_ERROR(Nte1131, "did you intend to use '='?");
-    SWAG_ERROR(Nte0128, "do you need a 'using' before 'self'?");
+    SWAG_ERROR(Nte0128, "consider adding 'using' before 'self' if you intend to access members of the instance directly");
     SWAG_ERROR(Nte1034, "doesn't return any value");
     SWAG_ERROR(Nte1080, "either remove this or replace with the scope '%s'");
     SWAG_ERROR(Nte0153, "employ '{}' for an intentional empty statement");
@@ -1453,7 +1452,7 @@ void initErrors()
     SWAG_ERROR(Nte1049, "there's an implied first parameter 'self'");
     SWAG_ERROR(Nte1070, "this %s has the 'Swag.Compiler' attribute");
     SWAG_ERROR(Nte1084, "this %s is of type '%s'");
-    SWAG_ERROR(Nte1127, "this %s is set to '%s' access");
+    SWAG_ERROR(Nte1127, "this %s has '%s' access");
     SWAG_ERROR(Nte0006, "this 'using' field is convertible");
     SWAG_ERROR(Nte0144, "this appears to be a potentially invalid UFCS call");
     SWAG_ERROR(Nte1030, "this argument has been named");
@@ -1488,7 +1487,7 @@ void initErrors()
     SWAG_ERROR(Nte1076, "this needs to be in lowercase");
     SWAG_ERROR(Nte1089, "this parameter should also have a default value");
     SWAG_ERROR(Nte0141, "this parameter type doesn't have related memory storage");
-    SWAG_ERROR(Nte1003, "this references a static struct member of '%s'");
+    SWAG_ERROR(Nte1003, nullptr);
     SWAG_ERROR(Nte1075, "this should be a namespace, function, or variable instead of a type");
     SWAG_ERROR(Nte1125, "this slice appears to be null or empty");
     SWAG_ERROR(Nte0122, "this specific constant doesn't have associated memory storage");
@@ -1512,7 +1511,7 @@ void initErrors()
     SWAG_ERROR(Nte1101, "use '#type' before '%s' if it's a type, or specify a type with ':' if this is a parameter name");
     SWAG_ERROR(Nte0140, "use '++' to append strings at compile-time");
     SWAG_ERROR(Nte0133, "use '?' to unpack and ignore a variable");
-    SWAG_ERROR(Nte0129, "use 'mtd' instead of 'func' to implicitly declare 'using self' as the initial parameter");
+    SWAG_ERROR(Nte0129, "use 'mtd' instead of 'func' to implicitly declare 'using self' as the first parameter");
     SWAG_ERROR(Nte0103, "you can assign a lambda to a closure type, but not vice versa");
     SWAG_ERROR(Nte1095, "you can't reference this runtime %s from the %s");
     SWAG_ERROR(Nte0149, "you might want to get the address of '%s' using '&'");
@@ -1520,7 +1519,7 @@ void initErrors()
     SWAG_ERROR(Nte1102, "occured while parsing the default value of the generic type '%s'");
     SWAG_ERROR(Nte1043, "if you want to declare a generic constant, consider adding 'const' before '%s'");
     SWAG_ERROR(Nte1082, "if you want to retrieve the type of an expression, consider using '@decltype' instead")
-    SWAG_ERROR(Nte1013, nullptr);
+    SWAG_ERROR(Nte1013, "it seems like you're trying to access a nested property of '%s', but '%s' itself isn't a value");
     SWAG_ERROR(Nte1129, nullptr);
     SWAG_ERROR(Nte1014, nullptr);
     SWAG_ERROR(Nte1098, nullptr);

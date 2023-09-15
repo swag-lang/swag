@@ -72,37 +72,40 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
         }
     }
 
-    Utf8 name = Naming::kindName(node->resolvedSymbolName->kind);
-    Utf8 hint;
-
     // Reference to a static struct member
     if (node->resolvedSymbolOverload && node->resolvedSymbolOverload->flags & OVERLOAD_VAR_STRUCT)
     {
-        name = "the struct member";
-        hint = Fmt(Nte(Nte1003), node->resolvedSymbolOverload->symbol->ownerTable->scope->name.c_str());
+        Diagnostic  diag{node, Fmt(Err(Err0003), node->resolvedSymbolOverload->symbol->ownerTable->scope->name.c_str())};
+        Diagnostic* note = nullptr;
+
+        // Missing self ?
+        if (node->childs.size() <= 1 &&
+            node->ownerStructScope &&
+            node->ownerStructScope == context->node->ownerStructScope &&
+            node->ownerFct)
+        {
+            if (node->ownerStructScope->symTable.find(node->resolvedSymbolName->name))
+            {
+                auto nodeFct = CastAst<AstFuncDecl>(node->ownerFct, AstNodeKind::FuncDecl);
+                auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+                if (typeFct->parameters.size() == 0 || !(typeFct->parameters[0]->typeInfo->isSelf()))
+                    note = Diagnostic::note(node->ownerFct, node->ownerFct->token, Nte(Nte0129));
+                else if (typeFct->parameters.size() && typeFct->parameters[0]->typeInfo->isSelf() && !(typeFct->parameters[0]->typeInfo->flags & TYPEINFO_HAS_USING))
+                    note = Diagnostic::note(nodeFct->parameters->childs.front(), Nte(Nte0128));
+                else
+                    note = Diagnostic::note(Nte(Nte0102));
+            }
+        }
+
+        return context->report(diag, note);
     }
 
-    Diagnostic  diag{node, Fmt(Err(Err0013), name.c_str(), node->resolvedSymbolName->name.c_str()), hint};
+    Diagnostic  diag{node, Fmt(Err(Err0013), Naming::kindName(node->resolvedSymbolName->kind).c_str(), node->resolvedSymbolName->name.c_str())};
     Diagnostic* note = nullptr;
 
-    // Missing self ?
-    if (node->childs.size() <= 1 &&
-        node->ownerStructScope &&
-        node->ownerStructScope == context->node->ownerStructScope &&
-        node->ownerFct)
-    {
-        if (node->ownerStructScope->symTable.find(node->resolvedSymbolName->name))
-        {
-            auto nodeFct = CastAst<AstFuncDecl>(node->ownerFct, AstNodeKind::FuncDecl);
-            auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
-            if (typeFct->parameters.size() == 0 || !(typeFct->parameters[0]->typeInfo->isSelf()))
-                note = Diagnostic::note(node->ownerFct, node->ownerFct->token, Nte(Nte0129));
-            else if (typeFct->parameters.size() && typeFct->parameters[0]->typeInfo->isSelf() && !(typeFct->parameters[0]->typeInfo->flags & TYPEINFO_HAS_USING))
-                note = Diagnostic::note(nodeFct->parameters->childs.front(), Nte(Nte0128));
-            else
-                note = Diagnostic::note(Nte(Nte0102));
-        }
-    }
+    // struct.field
+    if (node->resolvedSymbolName && node->resolvedSymbolName->kind == SymbolKind::Struct)
+        note = Diagnostic::note(Fmt(Nte(Nte1013), node->resolvedSymbolName->name.c_str(), node->resolvedSymbolName->name.c_str()));
 
     return context->report(diag, note);
 }

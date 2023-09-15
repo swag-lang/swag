@@ -485,8 +485,9 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
     auto allParams = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclParams, sourceFile, parent);
     *result        = allParams;
 
+    SWAG_ASSERT(token.id == TokenId::SymLeftParen);
     auto startLoc = token.startLocation;
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen, "to start the list of generic parameters"));
+    eatToken();
     SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Syn0092)));
 
     while (token.id != TokenId::SymRightParen)
