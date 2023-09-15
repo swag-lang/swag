@@ -1252,3 +1252,31 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
 
     context->report(*diag, notes);
 }
+
+bool SemanticJob::notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg, AstNode* hintType)
+{
+    Utf8 text = Fmt(Err(Err0005), node->token.ctext(), typeInfo->getDisplayNameC());
+    if (msg)
+    {
+        text += " ";
+        text += msg;
+    }
+
+    Diagnostic diag{node, node->token, text};
+    diag.hint = Nte(Nte1061);
+    if (hintType)
+        diag.addRange(hintType, Diagnostic::isType(typeInfo));
+    return context->report(diag);
+}
+
+bool SemanticJob::duplicatedSymbolError(ErrorContext* context, SourceFile* sourceFile, Token& token, SymbolName* symbol, AstNode* otherSymbolDecl)
+{
+    Diagnostic diag{sourceFile, token, Fmt(Err(Err0305), symbol->name.c_str())};
+    auto       note = Diagnostic::note(otherSymbolDecl, otherSymbolDecl->token, Nte(Nte0036));
+    return context->report(diag, note);
+}
+
+bool SemanticJob::error(SemanticContext* context, const Utf8& msg)
+{
+    return context->report({context->node, msg});
+}

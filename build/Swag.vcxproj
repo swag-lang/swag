@@ -581,8 +581,7 @@
     <ClCompile Include="..\src\SemanticJob_CompareExpression.cpp" />
     <ClCompile Include="..\src\SemanticJob_Compiler.cpp" />
     <ClCompile Include="..\src\SemanticJob_Declaration.cpp" />
-    <ClCompile Include="..\src\SemanticJob_Err.cpp" />
-    <ClCompile Include="..\src\SemanticJob_IdentifierError.cpp" />
+    <ClCompile Include="..\src\SemanticJob_Error.cpp" />
     <ClCompile Include="..\src\SemanticJob_Literal.cpp" />
     <ClCompile Include="..\src\SemanticJob_Op.cpp" />
     <ClCompile Include="..\src\SemanticJob_Intrinsic.cpp" />

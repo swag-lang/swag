@@ -5,6 +5,7 @@
 #include "Ast.h"
 #include "Module.h"
 #include "Naming.h"
+#include "SemanticJob.h"
 
 void SymTable::release()
 {
@@ -341,11 +342,8 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, Typ
         canOverload = true;
     if (!canOverload && !symbol->overloads.empty())
     {
-        auto       firstOverload = symbol->overloads[0];
-        Diagnostic diag{node, *token, Fmt(Err(Err0305), symbol->name.c_str())};
-        auto       note = Diagnostic::note(firstOverload->node, firstOverload->node->token, Nte(Nte0036));
-        context->report(diag, note);
-        return false;
+        auto firstOverload = symbol->overloads[0];
+        return SemanticJob::duplicatedSymbolError(context, node->sourceFile, *token, symbol, firstOverload->node);
     }
 
     // A symbol with the same type already exists
@@ -358,11 +356,8 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, Typ
             !(node->flags & AST_HAS_SELECT_IF) &&
             !(overload->node->flags & AST_HAS_SELECT_IF))
         {
-            auto       firstOverload = overload;
-            Diagnostic diag{node, *token, Fmt(Err(Err0305), symbol->name.c_str())};
-            auto       note = Diagnostic::note(firstOverload->node, firstOverload->node->token, Nte(Nte0036));
-            context->report(diag, note);
-            return false;
+            auto firstOverload = overload;
+            return SemanticJob::duplicatedSymbolError(context, node->sourceFile, *token, symbol, firstOverload->node);
         }
     }
 

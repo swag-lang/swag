@@ -187,7 +187,6 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
 
 bool Parser::eatTokenErr(TokenId id, const Utf8& err)
 {
-    SWAG_ASSERT(msg);
     if (token.id != id)
     {
         Diagnostic diag{sourceFile, token, Fmt(err.c_str(), token.ctext())};

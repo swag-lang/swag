@@ -8,6 +8,34 @@
 #include "Report.h"
 #include "Naming.h"
 
+bool SemanticJob::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right)
+{
+    if (leftTypeInfo->isNative() && rightTypeInfo->isNative())
+        return true;
+    auto node = context->node;
+
+    if (!leftTypeInfo->isNative())
+    {
+        Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0005), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+        diag.hint = Nte(Nte1061);
+        diag.addRange(left, Diagnostic::isType(leftTypeInfo));
+        return context->report(diag);
+    }
+    else
+    {
+        Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0005), node->token.ctext(), rightTypeInfo->getDisplayNameC())};
+        diag.hint = Nte(Nte1061);
+        diag.addRange(right, Diagnostic::isType(rightTypeInfo));
+        return context->report(diag);
+    }
+}
+
+bool SemanticJob::checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+{
+    SWAG_VERIFY(typeInfo->isNative(), notAllowedError(context, node, typeInfo));
+    return true;
+}
+
 bool SemanticJob::sendCompilerMsgTypeDecl(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;

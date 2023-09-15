@@ -386,9 +386,6 @@
     <ClCompile Include="..\src\SemanticJob_Literal.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SemanticJob_IdentifierError.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\ByteCodeOptimizer_DupBlocks.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
@@ -629,7 +626,7 @@
     <ClCompile Include="..\src\GenDoc_Pages.cpp">
       <Filter>GenDoc</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SemanticJob_Err.cpp">
+    <ClCompile Include="..\src\SemanticJob_Error.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
   </ItemGroup>

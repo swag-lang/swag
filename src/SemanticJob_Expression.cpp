@@ -6,6 +6,33 @@
 #include "LanguageSpec.h"
 #include "ErrorIds.h"
 
+bool SemanticJob::checkIsConstExpr(JobContext* context, bool test, AstNode* expression, const Utf8& errMsg, const Utf8& errParam)
+{
+    if (test)
+        return true;
+
+    if (expression->hasSpecialFuncCall())
+    {
+        Diagnostic diag{expression, expression->token, Fmt(Err(Err0281), expression->typeInfo->getDisplayNameC())};
+        diag.hint = Fmt(Nte(Nte1047), expression->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str());
+        return context->report(diag, computeNonConstExprNote(expression));
+    }
+
+    if (errMsg.length() && errParam.length())
+    {
+        Diagnostic diag{expression, Fmt(errMsg.c_str(), errParam.c_str())};
+        return context->report(diag, computeNonConstExprNote(expression));
+    }
+
+    Diagnostic diag{expression, errMsg.length() ? errMsg : Err(Err0798)};
+    return context->report(diag, computeNonConstExprNote(expression));
+}
+
+bool SemanticJob::checkIsConstExpr(JobContext* context, AstNode* expression, const Utf8& errMsg, const Utf8& errParam)
+{
+    return checkIsConstExpr(context, expression->flags & AST_CONST_EXPR, expression, errMsg, errParam);
+}
+
 bool SemanticJob::resolveExplicitNoInit(SemanticContext* context)
 {
     auto node = context->node;

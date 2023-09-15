@@ -2143,11 +2143,9 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             if (!node)
                 node = context->node;
 
-            auto       symbol = overloads[0]->overload->symbol;
-            auto       match  = matches[0];
-            Diagnostic diag{node, Fmt(Err(Err0305), symbol->name.c_str())};
-            auto       note = Diagnostic::note(match->symbolOverload->node, match->symbolOverload->node->token, Nte(Nte0036));
-            return context->report(diag, note);
+            auto symbol = overloads[0]->overload->symbol;
+            auto match  = matches[0];
+            return duplicatedSymbolError(context, node->sourceFile, node->token, symbol, match->symbolOverload->node);
         }
 
         return true;
@@ -2249,19 +2247,18 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         auto symbol = overloads[0]->overload->symbol;
         if (flags & MIP_FOR_GHOSTING)
         {
-            Diagnostic  diag{node, node->token, Fmt(Err(Err0305), symbol->name.c_str())};
-            Diagnostic* note = nullptr;
+            AstNode* otherNode = nullptr;
             for (auto match : matches)
             {
                 if (match->symbolOverload->node != node && !match->symbolOverload->node->isParentOf(node))
                 {
-                    note = Diagnostic::note(match->symbolOverload->node, match->symbolOverload->node->token, Nte(Nte0036));
+                    otherNode = match->symbolOverload->node;
                     break;
                 }
             }
 
-            SWAG_ASSERT(note);
-            context->report(diag, note);
+            SWAG_ASSERT(otherNode);
+            duplicatedSymbolError(context, node->sourceFile, node->token, symbol, otherNode);
         }
         else
         {

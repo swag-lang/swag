@@ -237,7 +237,6 @@ struct SemanticJob : public Job
     static bool checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl* funcNode, AstNode* node);
     static bool checkCanTakeAddress(SemanticContext* context, AstNode* node);
     static bool checkIsConcreteOrType(SemanticContext* context, AstNode* node, bool typeOnly = false);
-    static bool checkPublicAlias(SemanticContext* context, AstNode* node);
     static bool checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode);
     static Utf8 checkLiteralValue(ComputedValue& computedValue, LiteralType& literalType, Register& literalValue, TypeInfo* typeSuffix, bool negApplied);
     static bool checkCanThrow(SemanticContext* context);
@@ -255,7 +254,8 @@ struct SemanticJob : public Job
     static bool warnDeprecated(SemanticContext* context, AstNode* identifier);
 
     static bool error(SemanticContext* context, const Utf8& msg);
-    static bool notAllowedError(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg = nullptr, AstNode* hintType = nullptr);
+    static bool notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg = nullptr, AstNode* hintType = nullptr);
+    static bool duplicatedSymbolError(ErrorContext* context, SourceFile* sourceFile, Token& token, SymbolName* symbol, AstNode* otherSymbolDecl);
     static bool preprocessMatchError(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1);
     static void getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1);
     static void symbolErrorRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag);

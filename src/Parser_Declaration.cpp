@@ -344,9 +344,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
             }
             else if (symbol->kind != SymbolKind::Namespace)
             {
-                Diagnostic diag{sourceFile, token.startLocation, token.endLocation, Fmt(Err(Err0305), symbol->name.c_str())};
-                auto       note = Diagnostic::note(symbol->nodes.front(), symbol->nodes.front()->token, Nte(Nte0036));
-                return context->report(diag, note);
+                return SemanticJob::duplicatedSymbolError(context, sourceFile, token, symbol, symbol->nodes.front());
             }
             else
                 newScope = CastTypeInfo<TypeInfoNamespace>(symbol->overloads[0]->typeInfo, TypeInfoKind::Namespace)->scope;
