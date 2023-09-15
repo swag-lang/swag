@@ -2145,7 +2145,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
 
             auto symbol = overloads[0]->overload->symbol;
             auto match  = matches[0];
-            return duplicatedSymbolError(context, node->sourceFile, node->token, symbol, match->symbolOverload->symbol->kind, match->symbolOverload->node);
+            return duplicatedSymbolError(context, node->sourceFile, node->token, symbol->kind, symbol->name, match->symbolOverload->symbol->kind, match->symbolOverload->node);
         }
 
         return true;
@@ -2261,7 +2261,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             }
 
             SWAG_ASSERT(otherNode);
-            return duplicatedSymbolError(context, node->sourceFile, node->token, symbol, otherKind, otherNode);
+            return duplicatedSymbolError(context, node->sourceFile, node->token, symbol->kind, symbol->name, otherKind, otherNode);
         }
 
         Diagnostic                diag{node, node->token, Fmt(Err(Err0116), symbol->name.c_str())};

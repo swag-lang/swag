@@ -44,7 +44,8 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
             }
             else
             {
-                Diagnostic diag{enumNode->sourceFile, token, Fmt(Err(Err0394), enumNode->token.ctext(), Naming::aKindName(newScope->kind).c_str())};
+                Utf8       asA = Fmt("as %s", Naming::aKindName(newScope->kind).c_str());
+                Diagnostic diag{enumNode->sourceFile, token, Fmt(Err(Err0305), "enum", enumNode->token.ctext(), asA.c_str())};
                 auto       note = Diagnostic::note(newScope->owner, newScope->owner->token, Nte(Nte0036));
                 return context->report(diag, note);
             }

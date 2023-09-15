@@ -1269,13 +1269,19 @@ bool SemanticJob::notAllowedError(ErrorContext* context, AstNode* node, TypeInfo
     return context->report(diag);
 }
 
-bool SemanticJob::duplicatedSymbolError(ErrorContext* context, SourceFile* sourceFile, Token& token, SymbolName* symbol, SymbolKind otherKind, AstNode* otherSymbolDecl)
+bool SemanticJob::duplicatedSymbolError(ErrorContext* context,
+                                        SourceFile*   sourceFile,
+                                        Token&        token,
+                                        SymbolKind    thisKind,
+                                        const Utf8&   thisName,
+                                        SymbolKind    otherKind,
+                                        AstNode*      otherSymbolDecl)
 {
     Utf8 as;
-    if (symbol->kind != otherKind)
+    if (thisKind != otherKind)
         as = Fmt("as %s", Naming::aKindName(otherKind).c_str());
 
-    Diagnostic diag{sourceFile, token, Fmt(Err(Err0305), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str(), as.c_str())};
+    Diagnostic diag{sourceFile, token, Fmt(Err(Err0305), Naming::kindName(thisKind).c_str(), thisName.c_str(), as.c_str())};
 
     auto note = Diagnostic::note(otherSymbolDecl, otherSymbolDecl->token, Nte(Nte0036));
     return context->report(diag, note);

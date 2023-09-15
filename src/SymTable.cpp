@@ -326,10 +326,8 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, Typ
     // A symbol with a different kind already exists
     if (symbol->kind != kind)
     {
-        Diagnostic diag{node, *token, Fmt(Err(Err0394), symbol->name.c_str(), Naming::aKindName(symbol->kind).c_str())};
-        auto       front = symbol->nodes.front();
-        auto       note  = Diagnostic::note(front, front->token, Nte(Nte0036));
-        return context->report(diag, note);
+        auto front = symbol->nodes.front();
+        return SemanticJob::duplicatedSymbolError(context, node->sourceFile, *token, kind, symbol->name, symbol->kind, front);
     }
 
     if (symbol->kind == SymbolKind::Namespace)
@@ -342,7 +340,7 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, Typ
     if (!canOverload && !symbol->overloads.empty())
     {
         auto firstOverload = symbol->overloads[0];
-        return SemanticJob::duplicatedSymbolError(context, node->sourceFile, *token, symbol, firstOverload->symbol->kind, firstOverload->node);
+        return SemanticJob::duplicatedSymbolError(context, node->sourceFile, *token, symbol->kind, symbol->name, firstOverload->symbol->kind, firstOverload->node);
     }
 
     // A symbol with the same type already exists
@@ -356,7 +354,7 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, Typ
             !(overload->node->flags & AST_HAS_SELECT_IF))
         {
             auto firstOverload = overload;
-            return SemanticJob::duplicatedSymbolError(context, node->sourceFile, *token, symbol, firstOverload->symbol->kind, firstOverload->node);
+            return SemanticJob::duplicatedSymbolError(context, node->sourceFile, *token, symbol->kind, symbol->name, firstOverload->symbol->kind, firstOverload->node);
         }
     }
 
@@ -370,16 +368,17 @@ bool SymTable::registerNameAlias(ErrorContext* context, AstNode* node, SymbolNam
 
     if (!symbol->overloads.empty())
     {
-        if (symbol->kind != SymbolKind::NameAlias)
+        auto firstOverload = symbol->overloads[0];
+        for (auto over : symbol->overloads)
         {
-            auto       firstOverload = symbol->overloads[0];
-            Diagnostic diag{node, Fmt(Err(Err0394), symbol->name.c_str(), Naming::aKindName(symbol->kind).c_str())};
-            auto       note = Diagnostic::note(firstOverload->node, Nte(Nte0036));
-            return context->report(diag, note);
+            if (over->symbol->name == symbol->name)
+            {
+                firstOverload = over;
+                break;
+            }
         }
 
-        Diagnostic diag{node, Fmt(Err(Err0890), symbol->name.c_str())};
-        return context->report(diag);
+        return SemanticJob::duplicatedSymbolError(context, node->sourceFile, node->token, SymbolKind::NameAlias, symbol->name, symbol->kind, firstOverload->node);
     }
 
     SWAG_ASSERT(!otherSymbol->cptOverloads);

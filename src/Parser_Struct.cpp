@@ -261,7 +261,8 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
             }
             else
             {
-                Diagnostic diag{structNode->sourceFile, token, Fmt(Err(Err0394), structNode->token.ctext(), Naming::aKindName(newScope->kind).c_str())};
+                Utf8       asA = Fmt("as %s", Naming::aKindName(newScope->kind).c_str());
+                Diagnostic diag{structNode->sourceFile, token, Fmt(Err(Err0305), "struct", structNode->token.ctext(), asA.c_str())};
                 auto       note = Diagnostic::note(newScope->owner, Nte(Nte0036));
                 return context->report(diag, note);
             }

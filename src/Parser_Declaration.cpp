@@ -344,10 +344,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
             }
             else if (symbol->kind != SymbolKind::Namespace)
             {
-                SymbolName mySymbol;
-                mySymbol.kind = SymbolKind::Namespace;
-                mySymbol.name = symbol->name;
-                return SemanticJob::duplicatedSymbolError(context, sourceFile, token, &mySymbol, symbol->kind, symbol->nodes.front());
+                return SemanticJob::duplicatedSymbolError(context, sourceFile, token, SymbolKind::Namespace, symbol->name, symbol->kind, symbol->nodes.front());
             }
             else
                 newScope = CastTypeInfo<TypeInfoNamespace>(symbol->overloads[0]->typeInfo, TypeInfoKind::Namespace)->scope;

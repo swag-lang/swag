@@ -255,7 +255,7 @@ struct SemanticJob : public Job
 
     static bool error(SemanticContext* context, const Utf8& msg);
     static bool notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg = nullptr, AstNode* hintType = nullptr);
-    static bool duplicatedSymbolError(ErrorContext* context, SourceFile* sourceFile, Token& token, SymbolName* symbol, SymbolKind otherKind, AstNode* otherSymbolDecl);
+    static bool duplicatedSymbolError(ErrorContext* context, SourceFile* sourceFile, Token& token, SymbolKind thisKind, const Utf8& thisName, SymbolKind otherKind, AstNode* otherSymbolDecl);
     static bool preprocessMatchError(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1);
     static void getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1);
     static void symbolErrorRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag);
