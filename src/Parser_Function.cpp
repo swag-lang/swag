@@ -1036,7 +1036,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
             SWAG_CHECK(eatToken());
         }
 
-        SWAG_VERIFY(token.id == TokenId::SymLeftParen, error(token, Fmt(Err(Syn0049), token.ctext())));
+        SWAG_VERIFY(token.id == TokenId::SymLeftParen, error(token, Fmt(Err(Syn0203), token.ctext())));
         typeInfo->flags |= TYPEINFO_CLOSURE;
     }
     else
