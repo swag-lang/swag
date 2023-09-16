@@ -415,6 +415,9 @@ void initErrors()
     SWAG_ERROR(Err0742, "unexpected function body      $ a function tagged with the '#[Swag.Foreign]' attribute can't have a body");
     SWAG_ERROR(Err0811, "invalid module name           $ the '#[Swag.Foreign]' module name can't be empty");
     SWAG_ERROR(Err0813, "invalid module name           $ unexpected symbol '.' in the '#[Swag.Foreign]' module name $ a '#[Swag.Foreign]' module name can't have an extension, consider removing it");
+    SWAG_ERROR(Err0253, "invalid escape format         $ the '\\U' escape code requires 8 hexadecimal digits");
+    SWAG_ERROR(Err0224, "invalid escape format         $ the '\\u' escape code requires 4 hexadecimal digits");
+    SWAG_ERROR(Err0184, "invalid escape format         $ the '\\x' escape code requires 2 hexadecimal digits");
 
     SWAG_ERROR(Err0097, "%s '%s' isn't used as the first parameter in '%s'");
     SWAG_ERROR(Err0521, "%s '%s' not used as primary argument for function '%s'");
@@ -507,9 +510,6 @@ void initErrors()
     SWAG_ERROR(Err0297, "'Swag.Discardable' only for lambda variable; '%s' found");
     SWAG_ERROR(Err0595, "'Swag.Pack' value is 0 or power of two (given: '%d')");
     SWAG_ERROR(Err0601, "'Swag.Using' is empty");
-    SWAG_ERROR(Err0253, "'\\U' escape requires 8 codes");
-    SWAG_ERROR(Err0224, "'\\u' escape requires 4 codes");
-    SWAG_ERROR(Err0184, "'\\x' escape requires 2 codes");
     SWAG_ERROR(Err0632, "'break' valid only in breakable block");
     SWAG_ERROR(Err0729, "'code' is valid only in 'Swag.Macro' or 'Swag.Mixin' function");
     SWAG_ERROR(Err0859, "'compileString' not executable in this context (too late)");
@@ -735,7 +735,6 @@ void initErrors()
     SWAG_ERROR(Err0061, "insufficient arguments for function '%s' (expected '%d', found '%d')");
     SWAG_ERROR(Err0035, "insufficient generic arguments for %s");
     SWAG_ERROR(Err0544, "insufficient generic parameters for function '%s'");
-    SWAG_ERROR(Err0158, "insufficient hexadecimal digits: %s");
     SWAG_ERROR(Err0203, "insufficient initializers (%d expected, %d given)");
     SWAG_ERROR(Err0010, "interface can be compared to 'null' or another interface only");
     SWAG_ERROR(Err0646, "expected interface; '%s' is %s");
@@ -767,7 +766,6 @@ void initErrors()
     SWAG_ERROR(Err0494, "invalid function '%s' in 'impl for' block");
     SWAG_ERROR(Err0070, "invalid generic %s for %s ('%s' expected, '%s' given)");
     SWAG_ERROR(Err0135, "invalid generic parameters for %s '%s'");
-    SWAG_ERROR(Err0174, "invalid hexadecimal digit '%c' in %s");
     SWAG_ERROR(Err0679, "invalid interface member type (expected 'self', found '%s')");
     SWAG_ERROR(Err0439, "invalid literal suffix type '%s'");
     SWAG_ERROR(Err0387, "invalid number conversion for literal '%I64u'");
@@ -988,6 +986,8 @@ void initErrors()
     SWAG_ERROR(Err0308, "variable type deduction failed; expression is 'null'");
     SWAG_ERROR(Err0734, "variadic parameter must be last");
     SWAG_ERROR(Err0880, "while condition is always true");
+    SWAG_ERROR(Err0158, nullptr);
+    SWAG_ERROR(Err0174, nullptr);
     SWAG_ERROR(Err0745, nullptr);
     SWAG_ERROR(Err0746, nullptr);
     SWAG_ERROR(Err0747, nullptr);

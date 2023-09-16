@@ -9,7 +9,7 @@
 #include "LanguageSpec.h"
 #include "Ast.h"
 
-bool SemanticJob::getDigitHexa(SemanticContext* context, const char** _pz, int& result, const char* errMsg)
+bool SemanticJob::getDigitHexa(SemanticContext* context, const SourceLocation& startLoc, const char* pzs, const char** _pz, int& result, const char* errMsg)
 {
     auto node = context->node;
     auto pz   = *_pz;
@@ -18,12 +18,9 @@ bool SemanticJob::getDigitHexa(SemanticContext* context, const char** _pz, int& 
 
     if (!SWAG_IS_HEX(c))
     {
-        auto loc = node->token.startLocation;
-        loc.column += (uint32_t) (pz - node->computedValue->text.c_str());
-        if (c == '"')
-            return context->report({node->sourceFile, loc, Fmt(Err(Err0158), errMsg)});
-        else
-            return context->report({node->sourceFile, loc, Fmt(Err(Err0174), c, errMsg)});
+        auto endLoc = startLoc;
+        endLoc.column += (uint32_t) (*_pz - pzs);
+        return context->report({node->sourceFile, startLoc, endLoc, errMsg});
     }
 
     if (c >= 'a' && c <= 'z')
@@ -53,14 +50,23 @@ bool SemanticJob::processLiteralString(SemanticContext* context)
     while (pz - start < len)
     {
         auto c = *pz++;
+        loc.column += 1;
 
         if (c != '\\')
         {
             result.append(c);
+            if (SWAG_IS_EOL(c))
+            {
+                loc.column = 0;
+                loc.line += 1;
+            }
+
             continue;
         }
 
         c = *pz++;
+        loc.column += 1;
+
         switch (c)
         {
         case '0':
@@ -103,43 +109,48 @@ bool SemanticJob::processLiteralString(SemanticContext* context)
         {
             int  c1, c2;
             auto msg = Err(Err0184);
-            SWAG_CHECK(getDigitHexa(context, &pz, c1, msg));
-            SWAG_CHECK(getDigitHexa(context, &pz, c2, msg));
+            auto pzs = pz;
+            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c1, msg));
+            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c2, msg));
             char32_t cw = (c1 << 4) + c2;
             result.append((char) cw);
+            loc.column += 2;
             continue;
         }
         case 'u':
         {
             int  c1, c2, c3, c4;
             auto msg = Err(Err0224);
-            SWAG_CHECK(getDigitHexa(context, &pz, c1, msg));
-            SWAG_CHECK(getDigitHexa(context, &pz, c2, msg));
-            SWAG_CHECK(getDigitHexa(context, &pz, c3, msg));
-            SWAG_CHECK(getDigitHexa(context, &pz, c4, msg));
+            auto pzs = pz;
+            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c1, msg));
+            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c2, msg));
+            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c3, msg));
+            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c4, msg));
             char32_t cw = (c1 << 12) + (c2 << 8) + (c3 << 4) + c4;
             result.append(cw);
+            loc.column += 4;
             continue;
         }
         case 'U':
         {
             int  c1, c2, c3, c4, c5, c6, c7, c8;
             auto msg = Err(Err0253);
-            SWAG_CHECK(getDigitHexa(context, &pz, c1, msg));
-            SWAG_CHECK(getDigitHexa(context, &pz, c2, msg));
-            SWAG_CHECK(getDigitHexa(context, &pz, c3, msg));
-            SWAG_CHECK(getDigitHexa(context, &pz, c4, msg));
-            SWAG_CHECK(getDigitHexa(context, &pz, c5, msg));
-            SWAG_CHECK(getDigitHexa(context, &pz, c6, msg));
-            SWAG_CHECK(getDigitHexa(context, &pz, c7, msg));
-            SWAG_CHECK(getDigitHexa(context, &pz, c8, msg));
+            auto pzs = pz;
+            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c1, msg));
+            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c2, msg));
+            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c3, msg));
+            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c4, msg));
+            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c5, msg));
+            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c6, msg));
+            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c7, msg));
+            SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c8, msg));
             char32_t cw = (c1 << 28) + (c2 << 24) + (c3 << 20) + (c4 << 16) + (c5 << 12) + (c6 << 8) + (c7 << 4) + c8;
             result.append(cw);
+            loc.column += 8;
             continue;
         }
         }
 
-        loc.column += (uint32_t) (pz - start);
         return context->report({node->sourceFile, loc, Fmt(Err(Err0259), c)});
     }
 

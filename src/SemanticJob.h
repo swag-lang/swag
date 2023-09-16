@@ -343,7 +343,7 @@ struct SemanticJob : public Job
     static void           setVarDeclResolve(AstVarDecl* varNode);
     static bool           convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags, uint32_t castFlags = 0);
     static DataSegment*   getSegmentForVar(SemanticContext* context, AstVarDecl* node);
-    static bool           getDigitHexa(SemanticContext* context, const char** pz, int& result, const char* errMsg);
+    static bool           getDigitHexa(SemanticContext* context, const SourceLocation& startLoc, const char* pzs, const char** pz, int& result, const char* errMsg);
     static bool           processLiteralString(SemanticContext* context);
     static bool           computeExpressionListTupleType(SemanticContext* context, AstNode* node);
     static bool           getUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** result, AstNode** resultLeaf);
