@@ -191,8 +191,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
     case MatchResult::MissingParameters:
     {
-        diag       = new Diagnostic{callParameters ? callParameters : node, Fmt(Err(Err0020), refNiceName.c_str())};
-        diag->hint = Nte(Nte1044);
+        diag = new Diagnostic{callParameters ? callParameters : node, Fmt(Err(Err0020), refNiceName.c_str())};
         result0.push_back(diag);
 
         auto note = Diagnostic::hereIs(overload);
@@ -209,8 +208,6 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             diag = new Diagnostic{node, node->token, Fmt(Err(Err0157), refNiceName.c_str())};
         else
             diag = new Diagnostic{node, node->token, Fmt(Err(Err0016), refNiceName.c_str())};
-        if (!callParameters)
-            diag->hint = Nte(Nte1044);
 
         result0.push_back(diag);
 

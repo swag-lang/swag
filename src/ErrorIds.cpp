@@ -154,8 +154,8 @@ void initErrors()
     SWAG_ERROR(Syn0093, "empty namespace name                              $ expected the namespace name before '%s'");
     SWAG_ERROR(Syn0048, "expected '%s'                                     $ expected '%s' %s, found '%s' instead");
     SWAG_ERROR(Syn0019, "identifier expected                               $ expected a function call after '%s', found '%s' instead");
-    SWAG_ERROR(Syn0217, "incompatible use of 'moveref' qualifier           $ the 'moveref' qualifier can't be combined with an immutable ('const') expression");
-    SWAG_ERROR(Syn0186, "incompatible use of cast modifiers                $ the '%s' and '%s' cast modifiers are mutually exclusive and can't be used together");
+    SWAG_ERROR(Syn0217, "conflicting 'moveref' qualifier                   $ the 'moveref' qualifier can't be combined with an immutable ('const') expression");
+    SWAG_ERROR(Syn0186, "conflicting cast modifiers                        $ the '%s' and '%s' cast modifiers are mutually exclusive and can't be used together");
     SWAG_ERROR(Syn0056, "incomplete 'case' expression list                 $ expected another expression after ',' and before ':' $ ',' indicates a list of 'case' expressions; provide the next expression or consider removing the ','");
     SWAG_ERROR(Syn0199, "incomplete alias list                             $ expected another alias name after ',' $ either provide an additional alias name or remove the trailing ','");
     SWAG_ERROR(Syn0201, "incomplete arguments list                         $ expected another call argument after ',' $ either provide an additional argument or remove the trailing ','");
@@ -401,19 +401,24 @@ void initErrors()
     SWAG_ERROR(Err0821, "unknown identifier            $ the variable '%s' from the struct '%s' has no corresponding member");
     SWAG_ERROR(Err0723, "type mismatch                 $ type mismatch for field '%s'; expected '%s', found '%s'");
 
+    SWAG_ERROR(Err0512, "invalid attribute use         $ a %s can't have the '#[Swag.CalleeReturn]' attribute");
+    SWAG_ERROR(Err0860, "invalid attribute use         $ a %s can't have the '#[Swag.NotGeneric]' attribute");
+    SWAG_ERROR(Err0763, "invalid attribute use         $ a %s can't have the '#[Swag.Inline]' attribute");
+    SWAG_ERROR(Err0761, "invalid attribute use         $ a %s can't have the '#[Swag.Macro]' attribute");
+    SWAG_ERROR(Err0762, "invalid attribute use         $ a %s can't have the '#[Swag.Mixin]' attribute");
+    SWAG_ERROR(Err0757, "conflicting attributes        $ the '#[Swag.Macro]' and '#[Swag.Inline]' attributes are mutually exclusive, the %s can't have both");
+    SWAG_ERROR(Err0759, "conflicting attributes        $ the '#[Swag.Mixin]' and '#[Swag.Inline]' attributes are mutually exclusive, the %s can't have both");
+    SWAG_ERROR(Err0758, "conflicting attributes        $ the '#[Swag.Macro]' and '#[Swag.Mixin]' attributes are mutually exclusive, the %s can't have both");
+    SWAG_ERROR(Err0075, "missing attribute             $ 'opVisit' functions must have the '#[Swag.Macro]' attribute");
+    SWAG_ERROR(Err0744, "misplaced '#test' function    $ #test' functions can only be declared in test modules (in the './tests' folder)");
+    SWAG_ERROR(Err0020, "missing arguments             $ %s has missing arguments");
+    SWAG_ERROR(Err0742, "unexpected function body      $ a function tagged with the '#[Swag.Foreign]' attribute can't have a body");
+    SWAG_ERROR(Err0811, "invalid module name           $ the '#[Swag.Foreign]' module name can't be empty");
+    SWAG_ERROR(Err0813, "invalid module name           $ unexpected symbol '.' in the '#[Swag.Foreign]' module name $ a '#[Swag.Foreign]' module name can't have an extension, consider removing it");
+
     SWAG_ERROR(Err0097, "%s '%s' isn't used as the first parameter in '%s'");
     SWAG_ERROR(Err0521, "%s '%s' not used as primary argument for function '%s'");
     SWAG_ERROR(Err0086, "%s '%s' used only to scope function '%s'");
-    SWAG_ERROR(Err0747, "%s can't be public");
-    SWAG_ERROR(Err0512, "%s can't have 'Swag.CalleeReturn' attribute");
-    SWAG_ERROR(Err0763, "%s can't have 'Swag.Inline' attribute");
-    SWAG_ERROR(Err0761, "%s can't have 'Swag.Macro' attribute");
-    SWAG_ERROR(Err0762, "%s can't have 'Swag.Mixin' attribute");
-    SWAG_ERROR(Err0860, "%s can't have 'Swag.NotGeneric' attribute");
-    SWAG_ERROR(Err0757, "%s can't have both 'Swag.Macro' and 'Swag.Inline'");
-    SWAG_ERROR(Err0758, "%s can't have both 'Swag.Macro' and 'Swag.Mixin'");
-    SWAG_ERROR(Err0759, "%s can't have both 'Swag.Mixin' and 'Swag.Inline'");
-    SWAG_ERROR(Err0760, "%s can't have both 'Swag.Mixin' and 'Swag.Macro'");
     SWAG_ERROR(Err0505, "%s exceeded, max size is '0x%I64x' bytes");
     SWAG_ERROR(Err0755, "%s must have 'Swag.Macro' or 'Swag.Mixin' to use 'Swag.CalleeReturn'");
     SWAG_ERROR(Err0606, "%s must return a value");
@@ -439,7 +444,6 @@ void initErrors()
     SWAG_ERROR(Err0804, "'#message' block needs 'Swag.CompilerMsgMask' param (given: '%s')");
     SWAG_ERROR(Err0198, "'#run' block not for expression use");
     SWAG_ERROR(Err0348, "'#self' is for functions only");
-    SWAG_ERROR(Err0744, "'#test' functions are for test modules in './tests'");
     SWAG_ERROR(Err0136, "'#up' identifier valid only within 'Swag.Macro' function");
     SWAG_ERROR(Err0617, "'#validif' validation failed for '%s'");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
@@ -501,12 +505,7 @@ void initErrors()
     SWAG_ERROR(Err0596, "'Swag.Align' value must be power of two (given: '%d')");
     SWAG_ERROR(Err0753, "'Swag.Complete' attribute invalid for function '%s'");
     SWAG_ERROR(Err0297, "'Swag.Discardable' only for lambda variable; '%s' found");
-    SWAG_ERROR(Err0742, "'Swag.Foreign' attributed function can't have a body");
-    SWAG_ERROR(Err0811, "'Swag.Foreign' module name can't be empty");
-    SWAG_ERROR(Err0813, "'Swag.Foreign' module name can't start with '.' extension");
     SWAG_ERROR(Err0595, "'Swag.Pack' value is 0 or power of two (given: '%d')");
-    SWAG_ERROR(Err0745, "'Swag.Test' attributed function mustn't have a return value");
-    SWAG_ERROR(Err0746, "'Swag.Test' attributed function mustn't have parameters");
     SWAG_ERROR(Err0601, "'Swag.Using' is empty");
     SWAG_ERROR(Err0253, "'\\U' escape requires 8 codes");
     SWAG_ERROR(Err0224, "'\\u' escape requires 4 codes");
@@ -524,7 +523,6 @@ void initErrors()
     SWAG_ERROR(Err0559, "'move' not applicable to immutable expression (type is '%s')");
     SWAG_ERROR(Err0619, "'moveref' can't be 'const'");
     SWAG_ERROR(Err0126, "'opSlice' must return string or slice ('%s' given)");
-    SWAG_ERROR(Err0075, "'opVisit' must have 'Swag.Macro' attribute");
     SWAG_ERROR(Err0342, "'orelse' operator not valid on struct");
     SWAG_ERROR(Err0332, "'orelse' operator not valid on type '%s'");
     SWAG_ERROR(Err0517, "'ref' requires pointer/reference, found type '%s'");
@@ -559,7 +557,6 @@ void initErrors()
     SWAG_ERROR(Err0034, "ambiguous struct '%s' to interface '%s' conversion");
     SWAG_ERROR(Err0116, "ambiguous symbol '%s' resolution");
     SWAG_ERROR(Err0011, "argument '%s' already defined");
-    SWAG_ERROR(Err0020, "expected arguments '()' when calling %s");
     SWAG_ERROR(Err0485, "array access requires integer type ('%s' given)");
     SWAG_ERROR(Err0021, "array dimension inevaluable at compile time");
     SWAG_ERROR(Err0023, "array dimension is 0");
@@ -892,7 +889,6 @@ void initErrors()
     SWAG_ERROR(Err0072, "special function '%s' expects 'string', found '%s'");
     SWAG_ERROR(Err0069, "special function '%s' expects type '%s', found '%s'");
     SWAG_ERROR(Err0065, "special function '%s' return type mismatch (expected '%s', found '%s')");
-    SWAG_ERROR(Err0743, "special function can't have 'Swag.Inline' attribute");
     SWAG_ERROR(Err0625, "special visit name for struct only (type is '%s')");
     SWAG_ERROR(Err0536, "stack exceeded (limit '--stack-size:%s')");
     SWAG_ERROR(Err0096, "standalone expression found");
@@ -992,6 +988,11 @@ void initErrors()
     SWAG_ERROR(Err0308, "variable type deduction failed; expression is 'null'");
     SWAG_ERROR(Err0734, "variadic parameter must be last");
     SWAG_ERROR(Err0880, "while condition is always true");
+    SWAG_ERROR(Err0745, nullptr);
+    SWAG_ERROR(Err0746, nullptr);
+    SWAG_ERROR(Err0747, nullptr);
+    SWAG_ERROR(Err0743, nullptr);
+    SWAG_ERROR(Err0760, nullptr);
     SWAG_ERROR(Err0050, nullptr);
     SWAG_ERROR(Err0394, nullptr);
     SWAG_ERROR(Err0890, nullptr);
@@ -1292,7 +1293,6 @@ void initErrors()
     SWAG_ERROR(Nte0045, "an instance of the generic function '%s'");
     SWAG_ERROR(Nte0067, "anticipating '%s' based on function return type");
     SWAG_ERROR(Nte0019, "applied on this %s");
-    SWAG_ERROR(Nte1044, "arguments should follow in '()'");
     SWAG_ERROR(Nte0038, "associated command line option: '%s'");
     SWAG_ERROR(Nte1096, "attribute is unexpected");
     SWAG_ERROR(Nte0025, "attribute reference: '%s'");
@@ -1372,7 +1372,7 @@ void initErrors()
     SWAG_ERROR(Nte0057, "literal suffix reference: '%s'");
     SWAG_ERROR(Nte1050, "local variable declared with 'let' is immutable");
     SWAG_ERROR(Nte0089, "missing %s of specified type '%s'");
-    SWAG_ERROR(Nte0088, "missing item '%s' of type '%s'");
+    SWAG_ERROR(Nte0088, "missing parameter '%s' of type '%s'");
     SWAG_ERROR(Nte1071, "missing parameter identified");
     SWAG_ERROR(Nte0034, "missing value reference can be found here");
     SWAG_ERROR(Nte0012, "note: Use '-w:<path>' or '--workspace:<path>' to specify a valid workspace folder or run swag from an appropriate workspace");
@@ -1487,7 +1487,6 @@ void initErrors()
     SWAG_ERROR(Nte1076, "this needs to be in lowercase");
     SWAG_ERROR(Nte1089, "this parameter should also have a default value");
     SWAG_ERROR(Nte0141, "this parameter type doesn't have related memory storage");
-    SWAG_ERROR(Nte1003, nullptr);
     SWAG_ERROR(Nte1075, "this should be a namespace, function, or variable instead of a type");
     SWAG_ERROR(Nte1125, "this slice appears to be null or empty");
     SWAG_ERROR(Nte0122, "this specific constant doesn't have associated memory storage");
@@ -1520,6 +1519,8 @@ void initErrors()
     SWAG_ERROR(Nte1043, "if you want to declare a generic constant, consider adding 'const' before '%s'");
     SWAG_ERROR(Nte1082, "if you want to retrieve the type of an expression, consider using '@decltype' instead")
     SWAG_ERROR(Nte1013, "it seems like you're trying to access a nested property of '%s', but '%s' itself isn't a value");
+    SWAG_ERROR(Nte1003, nullptr);
+    SWAG_ERROR(Nte1044, nullptr);
     SWAG_ERROR(Nte1129, nullptr);
     SWAG_ERROR(Nte1014, nullptr);
     SWAG_ERROR(Nte1098, nullptr);

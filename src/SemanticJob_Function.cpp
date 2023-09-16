@@ -308,21 +308,9 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 
     if (!(funcNode->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
     {
-        if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC)
-        {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, Err(Err0743)}));
-        }
-
         if (funcNode->attributeFlags & ATTRIBUTE_TEST_FUNC)
         {
             SWAG_VERIFY(module->kind == ModuleKind::Test, context->report({funcNode, Err(Err0744)}));
-            SWAG_VERIFY(funcNode->returnType->typeInfo->isVoid(), context->report({funcNode->returnType, Err(Err0745), Nte(Nte1026)}));
-            SWAG_VERIFY(!funcNode->parameters || funcNode->parameters->childs.size() == 0, context->report({funcNode->parameters, Err(Err0746), Nte(Nte1026)}));
-        }
-
-        if (funcNode->attributeFlags & ATTRIBUTE_PUBLIC)
-        {
-            SWAG_VERIFY(funcNode->ownerScope->isGlobalOrImpl(), context->report({funcNode, Fmt(Err(Err0747), funcNode->getDisplayNameC())}));
         }
     }
 
@@ -547,7 +535,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         if (funcNode->attributeFlags & ATTRIBUTE_MIXIN)
         {
             SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, funcNode->token, Fmt(Err(Err0759), funcNode->getDisplayNameC())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, funcNode->token, Fmt(Err(Err0760), funcNode->getDisplayNameC())}));
+            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, funcNode->token, Fmt(Err(Err0758), funcNode->getDisplayNameC())}));
             funcNode->attributeFlags |= ATTRIBUTE_INLINE;
             funcNode->attributeFlags |= ATTRIBUTE_MACRO;
         }
