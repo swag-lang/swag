@@ -692,14 +692,14 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         {
             if (dep->location != tokenLocation.text && !tokenLocation.text.empty() && !dep->location.empty())
             {
-                Diagnostic diag{importNode, tokenLocation, Fmt(Err(Err0284), dep->location.c_str())};
+                Diagnostic diag{importNode, tokenLocation, Fmt(Err(Err0284), dep->name.c_str(), dep->location.c_str())};
                 auto       note = Diagnostic::note(dep->node, Nte(Nte0037));
                 return Report::report(diag, note);
             }
 
             if (dep->version != tokenVersion.text && !tokenVersion.text.empty() && !dep->version.empty())
             {
-                Diagnostic diag{importNode, tokenVersion, Fmt(Err(Err0286), dep->version.c_str())};
+                Diagnostic diag{importNode, tokenVersion, Fmt(Err(Err0286), dep->name.c_str(), dep->version.c_str())};
                 auto       note = Diagnostic::note(dep->node, Nte(Nte0037));
                 return Report::report(diag, note);
             }
@@ -724,7 +724,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
     if (splits.size() != 3 || splits[0].empty() || splits[1].empty() || splits[2].empty())
     {
         Diagnostic diag{importNode, tokenVersion, Err(Err0288)};
-        auto       note = Diagnostic::note(dep->node, Nte(Nte0085));
+        auto       note = Diagnostic::note(Nte(Nte0085));
         return Report::report(diag, note);
     }
 
@@ -756,7 +756,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
             if (!isdigit(splits[i][j]))
             {
                 Diagnostic diag{importNode, tokenVersion, Err(Err0288)};
-                auto       note = Diagnostic::note(dep->node, Err(Nte0085));
+                auto       note = Diagnostic::note(Err(Nte0085));
                 return Report::report(diag, note);
             }
         }
@@ -765,7 +765,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         if (*setVer < 0)
         {
             Diagnostic diag{importNode, tokenVersion, Err(Err0288)};
-            auto       note = Diagnostic::note(dep->node, Err(Nte0085));
+            auto       note = Diagnostic::note(Err(Nte0085));
             return Report::report(diag, note);
         }
 

@@ -564,9 +564,16 @@ bool ModuleDepManager::execute()
         auto cmp = compareVersions(dep->verNum, dep->revNum, dep->buildNum, module->buildCfg.moduleVersion, module->buildCfg.moduleRevision, module->buildCfg.moduleBuildNum);
         if (cmp != CompareVersionResult::EQUAL)
         {
-            Diagnostic diag{dep->node,
-                            Fmt(Err(Err0518), dep->name.c_str(), dep->version.c_str(), dep->resolvedLocation.c_str())};
-            Report::report(diag);
+            if (dep->resolvedLocation.empty())
+            {
+                Diagnostic diag{dep->node, Fmt(Err(Err2030), dep->name.c_str(), dep->version.c_str())};
+                Report::report(diag);
+            }
+            else
+            {
+                Diagnostic diag{dep->node, Fmt(Err(Err0518), dep->name.c_str(), dep->version.c_str(), dep->resolvedLocation.c_str())};
+                Report::report(diag);
+            }
             ok = false;
         }
 
