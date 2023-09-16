@@ -645,7 +645,7 @@ bool Parser::doIntrinsicInclude(AstNode* parent, AstNode** result)
     SWAG_CHECK(doExpression(exprNode, EXPR_FLAG_NONE, &dummyResult));
 
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
-    exprNode->semanticFct = SemanticJob::resolveCompilerInclude;
+    exprNode->semanticFct = SemanticJob::resolveIntrinsicInclude;
     return true;
 }
 

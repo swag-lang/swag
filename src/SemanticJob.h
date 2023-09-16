@@ -458,7 +458,7 @@ struct SemanticJob : public Job
     static bool resolveCompilerSpecialValue(SemanticContext* context);
     static bool resolveIntrinsicDefined(SemanticContext* context);
     static bool resolveIntrinsicLocation(SemanticContext* context);
-    static bool resolveCompilerInclude(SemanticContext* context);
+    static bool resolveIntrinsicInclude(SemanticContext* context);
     static bool resolveUserOpCommutative(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right);
     static bool resolveUserOp(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, uint32_t ropFlags = 0);
     static bool resolveUserOp(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, VectorNative<AstNode*>& params, uint32_t ropFlags = 0);

@@ -232,9 +232,9 @@ void initErrors()
     SWAG_ERROR(Err1009, "misplaced '#import'                               $ '#import' can only be used within 'module.swg' or '.swgs' files");
     SWAG_ERROR(Err1008, "misplaced '#import'                               $ '#import' must be placed just under a '#dependencies' block");
     SWAG_ERROR(Err1010, "misplaced '#import'                               $ '#import' must be placed within the '#dependencies' block");
-    SWAG_ERROR(Err1013, "misplaced '#include'                              $ '#include' can only be used within 'module.swg' or '.swgs' files");
-    SWAG_ERROR(Err1012, "misplaced '#include'                              $ '#include' must be placed just under a '#dependencies' block");
-    SWAG_ERROR(Err1014, "misplaced '#include'                              $ '#include' must be placed within the '#dependencies' block");
+    SWAG_ERROR(Err1013, "misplaced '#load'                                 $ '#load' can only be used within 'module.swg' or '.swgs' files");
+    SWAG_ERROR(Err1012, "misplaced '#load'                                 $ '#load' must be placed just under a '#dependencies' block");
+    SWAG_ERROR(Err1014, "misplaced '#load'                                 $ '#load' must be placed within the '#dependencies' block");
     SWAG_ERROR(Err1035, "misplaced '#placeholder'                          $ '#placeholder' must be placed within a top level scope");
     SWAG_ERROR(Err1135, "misplaced 'Self' type                             $ the 'Self' type is only valid within an 'impl', 'struct', or 'interface' block");
     SWAG_ERROR(Err1045, "misplaced 'const'                                 $ expected 'self' after 'const' when declaring a function parameter, found '%s' instead");
@@ -260,7 +260,7 @@ void initErrors()
     SWAG_ERROR(Err1205, "missing '#global testwarning' string argument     $ expected the warning string to check after '#global testwarning', found '%s' instead");
     SWAG_ERROR(Err1083, "missing '#if' boolean expression                  $ expected a boolean expression before '%s'");
     SWAG_ERROR(Err1007, "missing '#import' string argument                 $ expected the module name to import after '#import', found '%s' instead");
-    SWAG_ERROR(Err1011, "missing '#include' string argument                $ expected the file name to include after '#include', found '%s' instead");
+    SWAG_ERROR(Err1011, "missing '@include' string argument                $ expected the file name to include after '@include', found '%s' instead");
     SWAG_ERROR(Err1033, "missing '#message' parameter                      $ '#message' requests a parameter of type 'Swag.CompilerMsgMask'");
     SWAG_ERROR(Err1017, "missing '#placeholder' identifier                 $ expected an identifier after '#placeholder', found '%s' instead");
     SWAG_ERROR(Err1196, "missing '#type' type                              $ expected a valid type after '#type', found '%s' instead");
@@ -392,6 +392,11 @@ void initErrors()
     SWAG_ERROR(Err2026, "character literal is missing its closing backtick $ expected a closing backtick '`' before the end of the line");
     SWAG_ERROR(Err2018, "string literal is missing its closing '\"'        $ expected a closing quotation mark '\"' before the end of the line $ if you want a multi-line string, use the syntax \"\"\"string\"\"\"");
 
+    SWAG_ERROR(Err0243, "mismatch type                                     $ '@include' requires a path as a string type, got '%s'");
+    SWAG_ERROR(Err0242, "compile-time evaluation required                  $ '@include' requited its filename argument to be evaluated at compile-time");
+    SWAG_ERROR(Err0244, "unknown file                                      $ the file named '%s' can't be located or accessed");
+    SWAG_ERROR(Err0223, "file open error                                   $ failed to open the '@include' file '%s'");
+
     SWAG_ERROR(Err0097, "%s '%s' isn't used as the first parameter in '%s'");
     SWAG_ERROR(Err0521, "%s '%s' not used as primary argument for function '%s'");
     SWAG_ERROR(Err0086, "%s '%s' used only to scope function '%s'");
@@ -410,7 +415,6 @@ void initErrors()
     SWAG_ERROR(Err0284, "'#import' location already defined as '%s'");
     SWAG_ERROR(Err0288, "'#import' version format is invalid");
     SWAG_ERROR(Err0286, "'#import' version is '%s'");
-    SWAG_ERROR(Err0243, "'#load' requires string type (got '%s')");
     SWAG_ERROR(Err0239, "'#macro' is for 'Swag.Macro' functions only");
     SWAG_ERROR(Err0269, "'#main' function expected");
     SWAG_ERROR(Err0739, "'#main' function previously defined");
@@ -528,7 +532,7 @@ void initErrors()
     SWAG_ERROR(Err0116, "ambiguous symbol '%s' resolution");
     SWAG_ERROR(Err0011, "argument '%s' already defined");
     SWAG_ERROR(Err0485, "array access requires integer type ('%s' given)");
-    SWAG_ERROR(Err0021, "array dimension inevaluable at compile time");
+    SWAG_ERROR(Err0021, "array dimension cannot be evaluated at compile time");
     SWAG_ERROR(Err0023, "array dimension is 0");
     SWAG_ERROR(Err0022, "array dimension must be integer ('%s' given)");
     SWAG_ERROR(Err0148, "array of 'void' type can't be declared");
@@ -537,7 +541,7 @@ void initErrors()
     SWAG_ERROR(Err0588, "attribute '%s' incompatible with %s");
     SWAG_ERROR(Err0583, "attribute '%s' only applies to %s");
     SWAG_ERROR(Err0582, "expected attribute; '%s' is %s");
-    SWAG_ERROR(Err0602, "attribute parameter inevaluable at compile time");
+    SWAG_ERROR(Err0602, "attribute parameter cannot be evaluated at compile time");
     SWAG_ERROR(Err0036, "backend error: windows sdk folder not found");
     SWAG_ERROR(Err0833, "bit inversion disallowed on type '%s'");
     SWAG_ERROR(Err0032, "bitcasting from '%s' not allowed (expected integer, pointer, rune, or float)");
@@ -629,16 +633,13 @@ void initErrors()
     SWAG_ERROR(Err0607, "expressionless switch can't be 'Swag.Complete'");
     SWAG_ERROR(Err0051, "failed to add '%s' to 'PATH' variable");
     SWAG_ERROR(Err0045, "failed to create '%s' process (::CreatePipe)");
-    SWAG_ERROR(Err0223, "failed to open #load file '%s'");
     SWAG_ERROR(Err0510, "failed to retrieve file '%s' for module dependency '%s'");
     SWAG_ERROR(Err0603, "file '%s' deletion failed");
     SWAG_ERROR(Err0509, "file '%s' inaccessible");
     SWAG_ERROR(Err0508, "file '%s' not found in module folder '%s'");
-    SWAG_ERROR(Err0244, "file '%s' not located");
     SWAG_ERROR(Err0524, "file '%s' write access denied");
     SWAG_ERROR(Err0525, "file '%s' write failure");
     SWAG_ERROR(Err0314, "file format must be ascii, utf-8, or utf-8-bom");
-    SWAG_ERROR(Err0242, "filename not compile-time evaluable");
     SWAG_ERROR(Err0258, "foreign function '%s' unresolved");
     SWAG_ERROR(Err0754, "function '%s' attribute mismatch with 'Swag.Implicit'");
     SWAG_ERROR(Err0478, "function '%s' can't have generic parameters");
@@ -1250,7 +1251,7 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Nte0042, "'%s' is a function missing the 'Swag.ConstExpr' attribute");
+    SWAG_ERROR(Nte0042, "the function '%s' is not marked with the '#[Swag.ConstExpr]' attribute");
     SWAG_ERROR(Nte0041, "'%s' is a variable; variables within expressions aren't evaluated at compile-time");
     SWAG_ERROR(Nte0077, "'%s' might represent either a type or a field name");
     SWAG_ERROR(Nte0076, "'%s' might represent either a type or a parameter name");
@@ -1381,7 +1382,7 @@ void initErrors()
     SWAG_ERROR(Nte1037, "pointer can be dereferenced using 'dref'");
     SWAG_ERROR(Nte0086, "possibly derived from enum '%s'");
     SWAG_ERROR(Nte0022, "potential issue detected in your program's compile-time component");
-    SWAG_ERROR(Nte1046, "prefix with '#run' to enforce a compile-time call");
+    SWAG_ERROR(Nte1046, "you can prefix with '#run' to force a compile-time call");
     SWAG_ERROR(Nte1081, "primary instance noted here");
     SWAG_ERROR(Nte0054, "problem arose during the '#validif' validation of the call to '%s'");
     SWAG_ERROR(Nte0061, "problem encountered during generic instantiation of '%s'");
