@@ -419,6 +419,8 @@ void initErrors()
     SWAG_ERROR(Err0224, "invalid escape format         $ the '\\u' escape code requires 4 hexadecimal digits");
     SWAG_ERROR(Err0184, "invalid escape format         $ the '\\x' escape code requires 2 hexadecimal digits");
     SWAG_ERROR(Err0234, "mismatch return type          $ an '#ast' block must return a string, got '%s'");
+    SWAG_ERROR(Err0255, "misplaced compiler directive  $ '#callerfunction' can only be used when declaring a function parameter");
+    SWAG_ERROR(Err0254, "misplaced compiler directive  $ '#callerlocation' can only be used when declaring a function parameter");
 
     SWAG_ERROR(Err0097, "%s '%s' isn't used as the first parameter in '%s'");
     SWAG_ERROR(Err0521, "%s '%s' not used as primary argument for function '%s'");
@@ -433,8 +435,6 @@ void initErrors()
     SWAG_ERROR(Err0433, "%s");
     SWAG_ERROR(Err0567, "%s");
     SWAG_ERROR(Err0401, "%s");
-    SWAG_ERROR(Err0255, "'#callerfunction' is for function parameter declarations only");
-    SWAG_ERROR(Err0254, "'#callerlocation' is for function parameter declarations only");
     SWAG_ERROR(Err0336, "'#import' has build number ('%d') but lacks revision");
     SWAG_ERROR(Err0335, "'#import' has revision ('%d') but lacks major version");
     SWAG_ERROR(Err0284, "'#import' location already defined as '%s'");
