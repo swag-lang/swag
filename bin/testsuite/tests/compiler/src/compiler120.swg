@@ -1,4 +1,4 @@
-#global testerror "Syn0118"
+#global testerror "Err1118"
 namespace Swag
 {
 }

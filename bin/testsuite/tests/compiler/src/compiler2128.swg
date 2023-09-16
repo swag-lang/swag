@@ -1,5 +1,5 @@
 
-#global testerror "Syn0062"
+#global testerror "Err1062"
 
 namespace A
 {

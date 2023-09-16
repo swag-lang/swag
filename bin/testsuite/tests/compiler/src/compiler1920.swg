@@ -1,4 +1,4 @@
-#global testerror "Tkn0017"
+#global testerror "Err2017"
 
 struct(T) C1920
 {

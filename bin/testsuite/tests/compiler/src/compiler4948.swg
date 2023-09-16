@@ -1,4 +1,4 @@
-#global testerror "Syn0115"
+#global testerror "Err1115"
 #test
 {
     visit(0) x: toto

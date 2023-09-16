@@ -1,4 +1,4 @@
-#global testerror "Syn0183"
+#global testerror "Err1183"
 #dependencies
 {
 }

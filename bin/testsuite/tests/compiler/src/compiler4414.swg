@@ -1,4 +1,4 @@
-#global testerror "Syn0217"
+#global testerror "Err1217"
 using Swag
 
 func toto(x: const moveref s32)

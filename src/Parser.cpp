@@ -46,39 +46,39 @@ bool Parser::invalidTokenError(InvalidTokenError kind, AstNode* parent)
     {
     case TokenId::SymAmpersandAmpersand:
         if (kind == InvalidTokenError::EmbeddedInstruction)
-            return error(token, Fmt(Err(Syn0105), "and", "&&"));
+            return error(token, Fmt(Err(Err1105), "and", "&&"));
         break;
     case TokenId::SymVerticalVertical:
         if (kind == InvalidTokenError::EmbeddedInstruction)
-            return error(token, Fmt(Err(Syn0105), "or", "||"));
+            return error(token, Fmt(Err(Err1105), "or", "||"));
         break;
     case TokenId::KwdElse:
         if (kind == InvalidTokenError::EmbeddedInstruction)
-            return error(token, Err(Syn0102));
+            return error(token, Err(Err1102));
         break;
     case TokenId::KwdElif:
         if (kind == InvalidTokenError::EmbeddedInstruction)
-            return error(token, Err(Syn0101));
+            return error(token, Err(Err1101));
         break;
     case TokenId::CompilerElse:
         if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-            return error(token, Err(Syn0098));
+            return error(token, Err(Err1098));
         break;
     case TokenId::CompilerElseIf:
         if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-            return error(token, Err(Syn0097));
+            return error(token, Err(Err1097));
         break;
     case TokenId::SymRightParen:
         if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-            return error(token, Err(Syn0099));
+            return error(token, Err(Err1099));
         break;
     case TokenId::SymRightCurly:
         if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-            return error(token, Err(Syn0103));
+            return error(token, Err(Err1103));
         break;
     case TokenId::SymRightSquare:
         if (kind == InvalidTokenError::EmbeddedInstruction || kind == InvalidTokenError::TopLevelInstruction)
-            return error(token, Err(Syn0100));
+            return error(token, Err(Err1100));
         break;
 
     default:
@@ -91,17 +91,17 @@ bool Parser::invalidTokenError(InvalidTokenError kind, AstNode* parent)
     switch (kind)
     {
     case InvalidTokenError::TopLevelInstruction:
-        msg  = Fmt(Err(Syn0064), token.ctext());
+        msg  = Fmt(Err(Err1064), token.ctext());
         note = Nte(Nte0106);
         break;
     case InvalidTokenError::EmbeddedInstruction:
-        msg = Fmt(Err(Syn0073), token.ctext());
+        msg = Fmt(Err(Err1073), token.ctext());
         break;
     case InvalidTokenError::LeftExpression:
-        msg = Fmt(Err(Syn0059), token.ctext());
+        msg = Fmt(Err(Err1059), token.ctext());
         break;
     case InvalidTokenError::LeftExpressionVar:
-        msg = Fmt(Err(Syn0069), token.ctext());
+        msg = Fmt(Err(Err1069), token.ctext());
         if (Tokenizer::isKeyword(token.id))
             note = Fmt(Nte(Nte0154), token.ctext());
         break;
@@ -116,7 +116,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind, AstNode* parent)
             eatToken();
             if (token.id == TokenId::SymQuote)
             {
-                Diagnostic diag{sourceFile, startToken.startLocation, token.endLocation, Fmt(Err(Syn0094), inToken.ctext())};
+                Diagnostic diag{sourceFile, startToken.startLocation, token.endLocation, Fmt(Err(Err1094), inToken.ctext())};
                 return context->report(diag);
             }
 
@@ -124,24 +124,24 @@ bool Parser::invalidTokenError(InvalidTokenError kind, AstNode* parent)
         }
 
         // Default more generic message
-        msg = Fmt(Err(Syn0059), token.ctext());
+        msg = Fmt(Err(Err1059), token.ctext());
 
         if (parent)
         {
             if (Tokenizer::isKeyword(parent->tokenId))
             {
                 Utf8 forWhat = Fmt("'%s'", parent->token.ctext());
-                msg          = Fmt(Err(Syn0076), forWhat.c_str(), token.ctext());
+                msg          = Fmt(Err(Err1076), forWhat.c_str(), token.ctext());
             }
             else if (Tokenizer::isCompiler(parent->tokenId))
             {
                 Utf8 forWhat = Fmt("the compiler directive '%s'", parent->token.ctext());
-                msg          = Fmt(Err(Syn0076), forWhat.c_str(), token.ctext());
+                msg          = Fmt(Err(Err1076), forWhat.c_str(), token.ctext());
             }
             else if (Tokenizer::isSymbol(parent->tokenId))
             {
                 Utf8 forWhat = Fmt("the symbol '%s'", parent->token.ctext());
-                msg          = Fmt(Err(Syn0076), forWhat.c_str(), token.ctext());
+                msg          = Fmt(Err(Err1076), forWhat.c_str(), token.ctext());
             }
         }
 
@@ -158,7 +158,7 @@ bool Parser::invalidIdentifierError(TokenParse& tokenParse, const char* msg)
     if (Tokenizer::isKeyword(tokenParse.id))
         note = Diagnostic::note(Fmt(Nte(Nte0154), tokenParse.ctext()));
 
-    Diagnostic diag{sourceFile, token, msg ? msg : Fmt(Err(Syn0078), token.ctext()).c_str()};
+    Diagnostic diag{sourceFile, token, msg ? msg : Fmt(Err(Err1078), token.ctext()).c_str()};
     return context->report(diag, note);
 }
 
@@ -175,7 +175,7 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
     if (token.id != id)
     {
         Utf8       related = Tokenizer::tokenToName(id);
-        Diagnostic diag{sourceFile, token, Fmt(Err(Syn0068), Tokenizer::tokenToName(id).c_str(), Tokenizer::tokenToName(id).c_str(), msg, token.ctext())};
+        Diagnostic diag{sourceFile, token, Fmt(Err(Err1068), Tokenizer::tokenToName(id).c_str(), Tokenizer::tokenToName(id).c_str(), msg, token.ctext())};
         auto       note             = Diagnostic::note(sourceFile, start, start, Fmt(Nte(Nte0020), related.c_str()));
         note->showMultipleCodeLines = token.startLocation.line != start.line;
         return context->report(diag, note);
@@ -202,7 +202,7 @@ bool Parser::eatToken(TokenId id, const char* msg)
     SWAG_ASSERT(msg);
     if (token.id != id)
     {
-        Diagnostic diag{sourceFile, token, Fmt(Err(Syn0048), Tokenizer::tokenToName(id).c_str(), Tokenizer::tokenToName(id).c_str(), msg, token.ctext())};
+        Diagnostic diag{sourceFile, token, Fmt(Err(Err1048), Tokenizer::tokenToName(id).c_str(), Tokenizer::tokenToName(id).c_str(), msg, token.ctext())};
         return context->report(diag);
     }
 
@@ -223,13 +223,13 @@ bool Parser::eatSemiCol(const char* msg)
             if (token.id == TokenId::SymSlash)
             {
                 token.startLocation = st.startLocation;
-                return error(token, Fmt(Err(Syn0188), msg));
+                return error(token, Fmt(Err(Err1188), msg));
             }
 
             token = st;
         }
 
-        return error(token, Fmt(Err(Syn0037), msg, token.ctext()));
+        return error(token, Fmt(Err(Err1037), msg, token.ctext()));
     }
 
     if (token.id == TokenId::SymSemiColon)

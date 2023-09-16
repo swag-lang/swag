@@ -1,3 +1,3 @@
 
-#global testerror "Tkn0007";
+#global testerror "Err2007";
 0x

@@ -1084,7 +1084,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             !(identifier->flags & AST_GENERATED) &&
             !(identifier->callParameters->specFlags & AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT))
         {
-            Diagnostic diag{identifier, identifier->token, Err(Syn0128)};
+            Diagnostic diag{identifier, identifier->token, Err(Err1128)};
             return context->report(diag);
         }
 

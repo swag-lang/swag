@@ -1,2 +1,2 @@
-#global testerror "Tkn0020";
+#global testerror "Err2020";
 0x111__aa

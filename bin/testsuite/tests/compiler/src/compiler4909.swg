@@ -1,3 +1,3 @@
-#global testerror "Syn0009"
+#global testerror "Err1009"
 
 #import "toto"

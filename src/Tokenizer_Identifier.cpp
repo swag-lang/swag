@@ -27,7 +27,7 @@ bool Tokenizer::doIdentifier(TokenParse& token)
     else if (token.text[0] == '#')
     {
         token.endLocation = location;
-        Diagnostic diag{sourceFile, token, Fmt(Err(Tkn0017), token.ctext())};
+        Diagnostic diag{sourceFile, token, Fmt(Err(Err2017), token.ctext())};
 
         Vector<Utf8> searchList{};
         for (int i = 0; i < (int) g_LangSpec->keywords.allocated; i++)
@@ -49,7 +49,7 @@ bool Tokenizer::doIdentifier(TokenParse& token)
         if (!token.text.startsWith(g_LangSpec->name_atalias) && !token.text.startsWith(g_LangSpec->name_atmixin))
         {
             token.endLocation = location;
-            Diagnostic diag{sourceFile, token, Fmt(Err(Tkn0027), token.ctext())};
+            Diagnostic diag{sourceFile, token, Fmt(Err(Err2027), token.ctext())};
 
             Vector<Utf8> searchList{};
             for (int i = 0; i < (int) g_LangSpec->keywords.allocated; i++)

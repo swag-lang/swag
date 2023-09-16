@@ -1,4 +1,4 @@
-#global testerror "Syn0057"
+#global testerror "Err1057"
 
 //#[Swag.PrintBc, Swag.Optim("", false)]
 #test

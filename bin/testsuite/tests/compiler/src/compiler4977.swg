@@ -1,4 +1,4 @@
-#global testerror "Syn0045"
+#global testerror "Err1045"
 
 func toto(const a: s32)
 {

@@ -1,2 +1,2 @@
-#global testerror "Tkn0008"
+#global testerror "Err2008"
 18446744073709551616

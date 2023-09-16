@@ -1,4 +1,4 @@
-#global testerror "Syn0188"
+#global testerror "Err1188"
 #test
 {
     toto()*/

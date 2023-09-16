@@ -440,7 +440,7 @@ bool Ast::convertStructParamsToTmpVar(SemanticContext* context, AstIdentifier* i
 
     // Be sure it's the NAME{} syntax
     if (!(identifier->callParameters->specFlags & AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT))
-        return context->report({callP, Fmt(Err(Syn0128), identifier->typeInfo->name.c_str())});
+        return context->report({callP, Fmt(Err(Err1128), identifier->typeInfo->name.c_str())});
 
     auto varParent = identifier->identifierRef()->parent;
     while (varParent->kind == AstNodeKind::ExpressionList)

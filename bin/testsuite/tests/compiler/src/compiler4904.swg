@@ -1,4 +1,4 @@
-#global testerror "Syn0098"
+#global testerror "Err1098"
 #else
 {
     #print "toto"

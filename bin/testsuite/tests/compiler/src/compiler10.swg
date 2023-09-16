@@ -1,2 +1,2 @@
-#global testerror "Tkn0021";
+#global testerror "Err2021";
 0x111_

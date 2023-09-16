@@ -1,4 +1,4 @@
-#global testerror "Syn0025"
+#global testerror "Err1025"
 #test
 {
     struct

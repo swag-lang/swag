@@ -1,3 +1,3 @@
 
-#global testerror "Syn0064";
+#global testerror "Err1064";
 0xFFFFFFFF'vfffv

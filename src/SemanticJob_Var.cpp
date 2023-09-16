@@ -570,7 +570,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (!ownerFct)
         {
             auto note = Diagnostic::note(Nte(Nte0120));
-            return context->report({node, Fmt(Err(Syn0112), node->token.ctext())}, note);
+            return context->report({node, Fmt(Err(Err1112), node->token.ctext())}, note);
         }
     }
 
@@ -588,7 +588,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (!ownerFct)
         {
             auto note = Diagnostic::note(Nte(Nte0110));
-            return context->report({node, node->token, Fmt(Err(Syn0112), node->token.ctext())}, note);
+            return context->report({node, node->token, Fmt(Err(Err1112), node->token.ctext())}, note);
         }
     }
 

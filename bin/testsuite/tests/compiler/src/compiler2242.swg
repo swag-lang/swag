@@ -1,5 +1,5 @@
 
-#global testerror "Syn0066"
+#global testerror "Err1066"
 
 func mix(v, val: typealias)
 {

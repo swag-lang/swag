@@ -1,4 +1,4 @@
-#global testerror "Syn0033"
+#global testerror "Err1033"
 
 #message()
 {

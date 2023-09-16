@@ -1,2 +1,2 @@
-#global testerror "Syn0099";
+#global testerror "Err1099";
 )

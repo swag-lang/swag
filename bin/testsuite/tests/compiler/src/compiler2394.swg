@@ -1,2 +1,2 @@
-﻿#global testerror "Tkn0004"
+﻿#global testerror "Err2004"
 0xAG

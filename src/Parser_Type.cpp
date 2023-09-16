@@ -111,7 +111,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                 thisIsAType = true;
                 curIsAlone  = false;
                 SWAG_CHECK(eatToken());
-                SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Syn0196), token.ctext())));
+                SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err1196), token.ctext())));
             }
 
             if (token.id == TokenId::KwdConst)
@@ -135,13 +135,13 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                 }
                 else if (tokenName.text == g_LangSpec->name_self)
                 {
-                    Diagnostic diag(sourceFile, token, Err(Syn0197));
+                    Diagnostic diag(sourceFile, token, Err(Err1197));
                     return context->report(diag);
                 }
                 else
                 {
-                    SWAG_VERIFY(inTypeVarDecl, error(tokenName, Err(Syn0191)));
-                    SWAG_VERIFY(!isConst, error(constToken, Err(Syn0192)));
+                    SWAG_VERIFY(inTypeVarDecl, error(tokenName, Err(Err1191)));
+                    SWAG_VERIFY(!isConst, error(constToken, Err(Err1192)));
 
                     namedParam        = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, nullptr);
                     namedParam->token = tokenName;
@@ -164,14 +164,14 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
             if (token.text == g_LangSpec->name_self)
             {
                 curIsAlone = false;
-                SWAG_VERIFY(currentStructScope, error(token, Err(Syn0027)));
+                SWAG_VERIFY(currentStructScope, error(token, Err(Err1027)));
                 SWAG_CHECK(eatToken());
                 typeExpr = Ast::newTypeExpression(sourceFile, params);
                 typeExpr->typeFlags |= isConst ? TYPEFLAG_IS_CONST : 0;
                 typeExpr->typeFlags |= TYPEFLAG_IS_SELF | TYPEFLAG_IS_PTR | TYPEFLAG_IS_SUB_TYPE;
                 typeExpr->identifier = Ast::newIdentifierRef(sourceFile, currentStructScope->name, typeExpr, this);
                 if (token.id == TokenId::SymEqual)
-                    return error(token, Err(Syn0193));
+                    return error(token, Err(Err1193));
             }
             // ...
             else if (token.id == TokenId::SymDotDotDot)
@@ -225,7 +225,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                 typeExpr->extMisc()->isNamed = namedParam;
             }
 
-            SWAG_VERIFY(token.id != TokenId::SymEqual || inTypeVarDecl, error(token, Err(Syn0194)));
+            SWAG_VERIFY(token.id != TokenId::SymEqual || inTypeVarDecl, error(token, Err(Err1194)));
 
             // If we are in a type declaration, generate a variable and not just a type
             if (inTypeVarDecl)
@@ -280,7 +280,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                     tokenAmb.startLocation = lastParameter->token.startLocation;
                     tokenAmb.endLocation   = token.startLocation;
 
-                    Diagnostic diag{sourceFile, tokenAmb, Err(Syn0195)};
+                    Diagnostic diag{sourceFile, tokenAmb, Err(Err1195)};
                     auto       note = Diagnostic::note(lastParameter, Fmt(Nte(Nte0076), lastParameter->type->token.ctext()));
                     note->hint      = Fmt(Nte(Nte1101), lastParameter->type->token.ctext());
                     return context->report(diag, note);
@@ -293,7 +293,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
             if (token.id != TokenId::SymComma)
                 break;
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Syn0202)));
+            SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Err1202)));
         }
     }
 
@@ -447,7 +447,7 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, ui
 
     if (token.id == TokenId::KwdFunc || token.id == TokenId::KwdClosure || token.id == TokenId::KwdMethod)
     {
-        SWAG_VERIFY(token.id != TokenId::KwdMethod, context->report({sourceFile, token, Err(Syn0095)}));
+        SWAG_VERIFY(token.id != TokenId::KwdMethod, context->report({sourceFile, token, Err(Err1095)}));
         SWAG_CHECK(doLambdaClosureType(node, &node->identifier, inTypeVarDecl));
         return true;
     }
@@ -455,7 +455,7 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, ui
     // Specific error messages
     if (node->parent && node->parent->kind == AstNodeKind::TupleContent)
     {
-        Diagnostic diag{sourceFile, token, Fmt(Err(Syn0067), token.ctext())};
+        Diagnostic diag{sourceFile, token, Fmt(Err(Err1067), token.ctext())};
         return context->report(diag);
     }
 
@@ -469,7 +469,7 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, ui
     else if (token.id == TokenId::IntrinsicTypeOf || token.id == TokenId::IntrinsicKindOf)
         note = Diagnostic::note(Nte(Nte1082));
 
-    Diagnostic diag{sourceFile, token, Fmt(Err(Syn0066), token.ctext())};
+    Diagnostic diag{sourceFile, token, Fmt(Err(Err1066), token.ctext())};
     return context->report(diag, note);
 }
 
@@ -490,7 +490,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
 
         if (token.id == TokenId::KwdMoveRef)
         {
-            Diagnostic diag{sourceFile, token, Err(Syn0217)};
+            Diagnostic diag{sourceFile, token, Err(Err1217)};
             return context->report(diag);
         }
     }
@@ -531,13 +531,13 @@ bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
             }
 
             if (node->arrayDim == 254)
-                return error(token, Err(Syn0132));
+                return error(token, Err(Err1132));
             node->arrayDim++;
             SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
             if (token.id != TokenId::SymComma)
                 break;
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(token.id != TokenId::SymRightSquare, error(token, Err(Syn0213)));
+            SWAG_VERIFY(token.id != TokenId::SymRightSquare, error(token, Err(Err1213)));
         }
 
         auto rightSquareToken = token;
@@ -547,19 +547,19 @@ bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
             if (exprFlags & EXPR_FLAG_TYPE_EXPR)
             {
                 if (inTypeVarDecl)
-                    return context->report({sourceFile, rightSquareToken, Err(Syn0024)});
-                Diagnostic diag{sourceFile, rightSquareToken, Err(Syn0024)};
+                    return context->report({sourceFile, rightSquareToken, Err(Err1024)});
+                Diagnostic diag{sourceFile, rightSquareToken, Err(Err1024)};
                 return context->report(diag);
             }
             else
             {
-                return error(rightSquareToken, Err(Syn0024));
+                return error(rightSquareToken, Err(Err1024));
             }
         }
 
         if (token.id == TokenId::SymComma)
         {
-            Diagnostic diag{sourceFile, token, Fmt(Err(Syn0096), token.ctext())};
+            Diagnostic diag{sourceFile, token, Fmt(Err(Err1096), token.ctext())};
             return context->report(diag);
         }
 
@@ -628,7 +628,7 @@ bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
     // This is a lambda
     if (token.id == TokenId::KwdFunc || token.id == TokenId::KwdClosure || token.id == TokenId::KwdMethod)
     {
-        SWAG_VERIFY(token.id != TokenId::KwdMethod, context->report({sourceFile, token, Err(Syn0095)}));
+        SWAG_VERIFY(token.id != TokenId::KwdMethod, context->report({sourceFile, token, Err(Err1095)}));
         SWAG_CHECK(doLambdaClosureType(parent, result, exprFlags & EXPR_FLAG_IN_VAR_DECL));
         return true;
     }
@@ -677,7 +677,7 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
 
     if ((mdfFlags & MODIFIER_BIT) && (mdfFlags & MODIFIER_OVERFLOW))
     {
-        return error(node, Fmt(Err(Syn0186), "bit", "over"));
+        return error(node, Fmt(Err(Err1186), "bit", "over"));
     }
 
     if (mdfFlags & MODIFIER_UNCONST)

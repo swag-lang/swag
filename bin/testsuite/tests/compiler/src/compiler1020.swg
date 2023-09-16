@@ -1,4 +1,4 @@
-#global testerror "Tkn0027"
+#global testerror "Err2027"
 func @toto()
 {
 }

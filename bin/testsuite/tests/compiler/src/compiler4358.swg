@@ -1,4 +1,4 @@
-#global testerror "Syn0215"
+#global testerror "Err1215"
 struct(T) Point
     #validifx T == s32
 {

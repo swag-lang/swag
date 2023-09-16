@@ -1,2 +1,2 @@
-#global testerror "Tkn0018";
+#global testerror "Err2018";
 "c

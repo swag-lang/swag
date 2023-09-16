@@ -1,4 +1,4 @@
-#global testerror "Syn0123"
+#global testerror "Err1123"
 
 impl enum TOTO
 {

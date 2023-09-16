@@ -12,7 +12,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     *result               = implNode;
     implNode->semanticFct = SemanticJob::resolveImpl;
 
-    SWAG_VERIFY(module->acceptsCompileImpl, context->report({implNode, Err(Syn0104)}));
+    SWAG_VERIFY(module->acceptsCompileImpl, context->report({implNode, Err(Err1104)}));
 
     auto scopeKind = ScopeKind::Struct;
     SWAG_CHECK(eatToken());
@@ -41,7 +41,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     {
         if (scopeKind == ScopeKind::Enum)
         {
-            Diagnostic diag{implNode, token, Err(Syn0143)};
+            Diagnostic diag{implNode, token, Err(Err1143)};
             diag.addRange(kindLoc, Nte(Nte1085));
             return context->report(diag);
         }
@@ -57,7 +57,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         implInterface                             = true;
 
         auto last = CastAst<AstIdentifier>(identifierStruct->childs.back(), AstNodeKind::Identifier);
-        SWAG_VERIFY(!last->genericParameters, context->report({last->genericParameters, Err(Syn0162)}));
+        SWAG_VERIFY(!last->genericParameters, context->report({last->genericParameters, Err(Err1162)}));
     }
     else
     {
@@ -75,7 +75,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     auto newScope = Ast::newScope(implNode, structName, scopeKind, currentScope, true);
     if (scopeKind != newScope->kind)
     {
-        Diagnostic  diag{implNode, Fmt(Err(Syn0123), Naming::kindName(scopeKind).c_str(), implNode->token.ctext(), Naming::kindName(newScope->kind).c_str())};
+        Diagnostic  diag{implNode, Fmt(Err(Err1123), Naming::kindName(scopeKind).c_str(), implNode->token.ctext(), Naming::kindName(newScope->kind).c_str())};
         auto        note  = Diagnostic::hereIs(newScope->owner, false, true);
         Diagnostic* note1 = nullptr;
         if (newScope->kind == ScopeKind::Enum)
@@ -235,8 +235,8 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
 
 bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 {
-    SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Err(Syn0025)));
-    SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Syn0063), token.ctext())));
+    SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Err(Err1025)));
+    SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err1063), token.ctext())));
     structNode->inheritTokenName(token);
     SWAG_CHECK(checkIsValidUserName(structNode, &token));
 
@@ -255,7 +255,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
             if (newScope->owner->kind == AstNodeKind::Impl)
             {
                 auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-                Diagnostic diag{implNode->identifier, Fmt(Err(Syn0123), Naming::kindName(newScope->kind).c_str(), implNode->token.ctext(), Naming::kindName(ScopeKind::Struct).c_str())};
+                Diagnostic diag{implNode->identifier, Fmt(Err(Err1123), Naming::kindName(newScope->kind).c_str(), implNode->token.ctext(), Naming::kindName(ScopeKind::Struct).c_str())};
                 auto       note = Diagnostic::hereIs(structNode, false, true);
                 return context->report(diag, note);
             }
@@ -323,7 +323,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 
     // '#validif' block
     if (token.id == TokenId::CompilerValidIfx)
-        return error(token, Err(Syn0215));
+        return error(token, Err(Err1215));
     if (token.id == TokenId::CompilerValidIf)
     {
         Scoped       scoped(this, newScope);
@@ -434,7 +434,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
     case TokenId::KwdUsing:
     {
         ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
-        SWAG_VERIFY(structType != SyntaxStructType::Interface, context->report({parent, token, Err(Syn0029)}));
+        SWAG_VERIFY(structType != SyntaxStructType::Interface, context->report({parent, token, Err(Err1029)}));
         SWAG_CHECK(eatToken());
         auto structNode = CastAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl);
         structNode->specFlags |= AstStruct::SPECFLAG_HAS_USING;
@@ -455,14 +455,14 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
 
     case TokenId::KwdVar:
     {
-        Diagnostic diag{parent, token, Err(Syn0030)};
+        Diagnostic diag{parent, token, Err(Err1030)};
         return context->report(diag);
     }
 
     case TokenId::KwdMethod:
     case TokenId::KwdFunc:
     {
-        SWAG_VERIFY(structType == SyntaxStructType::Interface, error(token, Err(Syn0163)));
+        SWAG_VERIFY(structType == SyntaxStructType::Interface, error(token, Err(Err1163)));
 
         auto kind = token.id;
         SWAG_CHECK(eatToken());
@@ -472,7 +472,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
 
         if (token.id == TokenId::KwdConst)
         {
-            SWAG_VERIFY(isMethod, error(token, Err(Syn0061)));
+            SWAG_VERIFY(isMethod, error(token, Err(Err1061)));
             isConstMethod = true;
             SWAG_CHECK(eatToken());
         }
@@ -481,7 +481,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         funcNode->specFlags |= AstFuncDecl::SPECFLAG_EMPTY_FCT;
 
         SWAG_CHECK(checkIsValidUserName(funcNode));
-        SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Syn0089), token.ctext())));
+        SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err1089), token.ctext())));
         SWAG_CHECK(eatToken());
 
         auto scope = Ast::newScope(funcNode, "", ScopeKind::Function, parent->ownerStructScope);
@@ -548,7 +548,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
     // A normal declaration
     default:
     {
-        SWAG_VERIFY(structType != SyntaxStructType::Interface, error(token, Fmt(Err(Syn0133), token.ctext())));
+        SWAG_VERIFY(structType != SyntaxStructType::Interface, error(token, Fmt(Err(Err1133), token.ctext())));
         ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
         SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl, true));
         break;

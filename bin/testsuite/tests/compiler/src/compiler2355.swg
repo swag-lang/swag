@@ -1,4 +1,4 @@
-#global testerror "Syn0107"
+#global testerror "Err1107"
 
 var G = 0
 G

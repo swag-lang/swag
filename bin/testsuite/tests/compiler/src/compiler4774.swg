@@ -1,2 +1,2 @@
-#global testerror "Syn0198"
+#global testerror "Err1198"
 a: s32 = 0

@@ -1,2 +1,2 @@
-#global testerror "Syn0168"
+#global testerror "Err1168"
 var @mixin45AA = 0

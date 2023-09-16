@@ -1,3 +1,3 @@
-#global testerror "Syn0112"
+#global testerror "Err1112"
 
 var @alias0 = 0

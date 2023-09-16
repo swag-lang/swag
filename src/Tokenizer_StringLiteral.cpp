@@ -77,7 +77,7 @@ bool Tokenizer::doStringLiteral(TokenParse& token, char rawChar, bool multiline)
             if (!multiline && SWAG_IS_EOL(c))
             {
                 token.startLocation = location;
-                error(token, Err(Tkn0018));
+                error(token, Err(Err2018));
                 return false;
             }
 
@@ -85,7 +85,7 @@ bool Tokenizer::doStringLiteral(TokenParse& token, char rawChar, bool multiline)
             if (!c)
             {
                 location = token.startLocation;
-                error(token, Err(Tkn0018));
+                error(token, Err(Err2018));
                 return false;
             }
 
@@ -225,7 +225,7 @@ bool Tokenizer::doCharacterLiteral(TokenParse& token)
         if (SWAG_IS_EOL(c))
         {
             token.startLocation = location;
-            error(token, Err(Tkn0026));
+            error(token, Err(Err2026));
             return false;
         }
 
@@ -233,7 +233,7 @@ bool Tokenizer::doCharacterLiteral(TokenParse& token)
         if (!c)
         {
             location = token.startLocation;
-            error(token, Err(Tkn0026));
+            error(token, Err(Err2026));
             return false;
         }
 

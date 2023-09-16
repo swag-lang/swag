@@ -1,2 +1,2 @@
-#global testerror "Tkn0023"
+#global testerror "Err2023"
 1._45

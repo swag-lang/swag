@@ -1,4 +1,4 @@
-#global testerror "Syn0030"
+#global testerror "Err1030"
 enum OT
 {
 	A = 1

@@ -20,7 +20,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
         SWAG_CHECK(doVarDecl(node, &id));
         if (id->kind != AstNodeKind::VarDecl)
         {
-            Diagnostic diag{id->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Syn0157)};
+            Diagnostic diag{id->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Err1157)};
             auto       note = Diagnostic::note(Nte(Nte0139));
             return context->report(diag, note);
         }
@@ -35,7 +35,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
 
         if (id->kind == AstNodeKind::StatementNoScope)
         {
-            Diagnostic diag{node->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Syn0157)};
+            Diagnostic diag{node->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Err1157)};
             auto       note = Diagnostic::note(Nte(Nte0139));
             return context->report(diag, note);
         }
@@ -43,7 +43,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
         if (id->kind != AstNodeKind::IdentifierRef &&
             id->kind != AstNodeKind::VarDecl &&
             id->kind != AstNodeKind::AffectOp)
-            return error(node->token, Err(Syn0148));
+            return error(node->token, Err(Err1148));
 
         id->allocateExtension(ExtensionKind::Semantic);
         if (id->kind == AstNodeKind::IdentifierRef)
@@ -101,13 +101,13 @@ bool Parser::doCheckPublicInternalPrivate(Token& tokenAttr)
     case TokenId::KwdNamespace:
         break;
     case TokenId::SymAttrStart:
-        return error(token, Fmt(Err(Syn0150), tokenAttr.ctext(), tokenAttr.ctext()));
+        return error(token, Fmt(Err(Err1150), tokenAttr.ctext(), tokenAttr.ctext()));
     case TokenId::KwdPublic:
     case TokenId::KwdPrivate:
     case TokenId::KwdInternal:
-        return error(token, Fmt(Err(Syn0031), token.ctext(), tokenAttr.ctext()));
+        return error(token, Fmt(Err(Err1031), token.ctext(), tokenAttr.ctext()));
     default:
-        return error(token, Fmt(Err(Syn0174), tokenAttr.ctext(), token.ctext(), token.ctext()));
+        return error(token, Fmt(Err(Err1174), tokenAttr.ctext(), token.ctext(), token.ctext()));
     }
 
     return true;
@@ -116,8 +116,8 @@ bool Parser::doCheckPublicInternalPrivate(Token& tokenAttr)
 bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
 {
     SWAG_ASSERT(token.id == TokenId::KwdPublic || token.id == TokenId::KwdInternal);
-    SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, Fmt(Err(Syn0121), token.ctext())));
-    SWAG_VERIFY(!sourceFile->forceExport, error(token, Fmt(Err(Syn0018), token.ctext())));
+    SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, Fmt(Err(Err1121), token.ctext())));
+    SWAG_VERIFY(!sourceFile->forceExport, error(token, Fmt(Err(Err1018), token.ctext())));
 
     uint32_t attr      = 0;
     Scope*   newScope  = currentScope;
@@ -171,7 +171,7 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
 
 bool Parser::doPrivate(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, Fmt(Err(Syn0121), token.ctext())));
+    SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, Fmt(Err(Err1121), token.ctext())));
 
     auto privName = token;
     auto attrUse  = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
@@ -236,7 +236,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
                     break;
             default:
             {
-                Diagnostic diag{sourceFile, token, Err(Syn0036)};
+                Diagnostic diag{sourceFile, token, Err(Err1036)};
                 auto       note = Diagnostic::note(child, child->token, Nte(Nte0024));
                 return context->report(diag, note);
             }
@@ -266,7 +266,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
 
 bool Parser::doNamespace(AstNode* parent, AstNode** result)
 {
-    SWAG_VERIFY(currentScope->isGlobal(), error(token, Err(Syn0040)));
+    SWAG_VERIFY(currentScope->isGlobal(), error(token, Err(Err1040)));
     SWAG_CHECK(doNamespace(parent, result, false, false));
     return true;
 }
@@ -308,19 +308,19 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
             break;
         case TokenId::SymLeftCurly:
             if (!privName)
-                return error(token, Fmt(Err(Syn0093), "{"));
+                return error(token, Fmt(Err(Err1093), "{"));
             break;
         case TokenId::SymSemiColon:
-            return error(token, Fmt(Err(Syn0093), ";"));
+            return error(token, Fmt(Err(Err1093), ";"));
         default:
             if (!privName)
-                return error(token, Fmt(Err(Syn0041), token.ctext()));
+                return error(token, Fmt(Err(Err1041), token.ctext()));
             break;
         }
 
         // Be sure this is not the swag namespace, except for a runtime file
         if (!sourceFile->isBootstrapFile && !sourceFile->isRuntimeFile)
-            SWAG_VERIFY(!namespaceNode->token.text.compareNoCase(g_LangSpec->name_Swag), error(token, Fmt(Err(Syn0118), token.ctext())));
+            SWAG_VERIFY(!namespaceNode->token.text.compareNoCase(g_LangSpec->name_Swag), error(token, Fmt(Err(Err1118), token.ctext())));
 
         // Add/Get namespace
         {
@@ -480,7 +480,7 @@ bool Parser::doEmbeddedStatement(AstNode* parent, AstNode** result)
 
     // Empty statement
     if (token.id == TokenId::SymSemiColon)
-        return error(token, Err(Syn0187), Nte(Nte0153));
+        return error(token, Err(Err1187), Nte(Nte0153));
 
     // One single line, but we need a scope too
     auto     newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
@@ -621,7 +621,7 @@ bool Parser::doCompilerScopeBreakable(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
     if (token.id != TokenId::SymLeftCurly)
     {
-        SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Syn0164), token.ctext())));
+        SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err1164), token.ctext())));
         labelNode->inheritTokenName(token);
         labelNode->inheritTokenLocation(token);
         SWAG_CHECK(eatToken());
@@ -894,22 +894,22 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::KwdPublic:
     case TokenId::KwdInternal:
     case TokenId::KwdPrivate:
-        return error(token, Fmt(Err(Syn0121), token.ctext()));
+        return error(token, Fmt(Err(Err1121), token.ctext()));
 
     case TokenId::SymDot:
     {
         auto withNode = parent->findParent(AstNodeKind::With);
-        SWAG_VERIFY(withNode, error(token, Err(Syn0180)));
+        SWAG_VERIFY(withNode, error(token, Err(Err1180)));
         Token tokenDot = token;
         eatToken();
-        SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Syn0022), token.ctext())));
+        SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err1022), token.ctext())));
         return doLeftInstruction(parent, result, CastAst<AstWith>(withNode, AstNodeKind::With));
         return true;
     }
 
     default:
         if (Tokenizer::isIntrinsicReturn(token.id))
-            return error(token, Fmt(Err(Syn0179), token.ctext()));
+            return error(token, Fmt(Err(Err1179), token.ctext()));
         return invalidTokenError(InvalidTokenError::EmbeddedInstruction);
     }
 
@@ -1035,13 +1035,13 @@ bool Parser::doTopLevelInstruction(AstNode* parent, AstNode** result)
 
         if (token.id == TokenId::Identifier)
         {
-            Diagnostic diag{sourceFile, token, Fmt(Err(Syn0046), token.ctext(), (*result)->token.ctext())};
+            Diagnostic diag{sourceFile, token, Fmt(Err(Err1046), token.ctext(), (*result)->token.ctext())};
             return context->report(diag);
         }
 
         if (token.id == TokenId::SymEqual || token.id == TokenId::SymColon)
         {
-            Diagnostic diag{sourceFile, token, Fmt(Err(Syn0198), token.ctext(), (*result)->token.ctext())};
+            Diagnostic diag{sourceFile, token, Fmt(Err(Err1198), token.ctext(), (*result)->token.ctext())};
             return context->report(diag);
         }
 
@@ -1051,7 +1051,7 @@ bool Parser::doTopLevelInstruction(AstNode* parent, AstNode** result)
             auto id = CastAst<AstIdentifier>(last, AstNodeKind::Identifier);
             if (!id->callParameters)
             {
-                Diagnostic diag{sourceFile, last->token, Fmt(Err(Syn0107), (*result)->token.ctext())};
+                Diagnostic diag{sourceFile, last->token, Fmt(Err(Err1107), (*result)->token.ctext())};
                 return context->report(diag);
             }
         }

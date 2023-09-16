@@ -1,3 +1,3 @@
-#global testerror "Syn0054"
+#global testerror "Err1054"
 
 #init;

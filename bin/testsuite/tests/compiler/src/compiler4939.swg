@@ -1,4 +1,4 @@
-#global testerror "Syn0029"
+#global testerror "Err1029"
 
 interface A
 {
