@@ -1,7 +1,3 @@
-
-;
-
-//#[Swag.PrintBc]
 #global testerror "Err0801";
 #test
 {

@@ -250,8 +250,8 @@ void initErrors()
     SWAG_ERROR(Err1096, "invalid type declaration                          $ expected the array type after its dimensions, found '%s' instead");
     SWAG_ERROR(Err1067, "invalid type declaration                          $ expected a type in the tuple definition, found '%s' instead");
     SWAG_ERROR(Err1060, "invalid type suffix                               $ expected an identifier or a type after the start of a type suffix ''', found '%s' instead");
-    SWAG_ERROR(Err1034, "invalid use of '#mixin' block                     $ a '#mixin' block is only valid within a breakable statement such as 'loop', 'visit', 'for', etc.");
-    SWAG_ERROR(Err1121, "invalid use of access modifier                    $ the '%s' access modifier can only be used at the global scope");
+    SWAG_ERROR(Err1034, "misplaced '#mixin' block                          $ a '#mixin' block is only valid within a breakable statement such as 'loop', 'visit', 'for', etc.");
+    SWAG_ERROR(Err1121, "misplaced access modifier                         $ the '%s' access modifier can only be used at the global scope");
     SWAG_ERROR(Err1065, "invalid variable list                             $ 'if' does not support multiples variable declarations");
     SWAG_ERROR(Err1111, "invalid variable name                             $ a variable name ('%s') can't start with '@', this is reserved for intrinsics $ only '@mixin' and '@alias' are possible in that case");
     SWAG_ERROR(Err1069, "invalid variable name                             $ expected a variable name, found '%s' instead");
@@ -408,6 +408,34 @@ void initErrors()
     SWAG_ERROR(Err2030, "dependency error                                  $ cannot resolve the dependency to the module '%s' because version '%s' was not found");
     SWAG_ERROR(Err0516, "dependency error                                  $ cannot resolve the dependency to the module '%s' because of a version mismatched");
 
+    SWAG_ERROR(Err0800, "unsupported type      $ the intrinsic '@countof' does not accept an argument of type 'tuple'");
+    SWAG_ERROR(Err0796, "unsupported type      $ the intrinsic '@dataof' does not accept an argument of type 'tuple'");
+    SWAG_ERROR(Err0801, "unsupported type      $ the intrinsic '@countof' requires an integer argument, got '%s'");
+    SWAG_ERROR(Err0797, "unsupported type      $ the intrinsic '@dataof' does not accept an argument of type '%s'");
+    SWAG_ERROR(Err0442, "misplaced '@cvastart' $ the intrinsic '@cvastart' can only be used in a function with a final parameter of type 'cvarargs'");
+    SWAG_ERROR(Err0630, "misplaced '@index'    $ the intrinsic '@index' is only valid within a breakable statement such as 'loop', 'visit', 'for', etc.");
+    SWAG_ERROR(Err0489, "unsupported type      $ the intrinsic '@init' require a pointer as a first argument, got '%s'");
+    SWAG_ERROR(Err0084, "unsupported type      $ the intrinsic '@runes' requires a string as an argument, got '%s'");
+    SWAG_ERROR(Err0806, "misplaced '@spread'   $ the intrinsic '@spread' can only be used as a function argument");
+    SWAG_ERROR(Err0493, "forbidden '@postcopy' $ the intrinsic '@postcopy' cannot be called on type '%s' because of '#[Swag.NoCopy]'");
+    SWAG_ERROR(Err0730, "unsupported type      $ the intrinsic '@mkstring' requires a pointer to 'u8' as a first argument, got '%s'");
+
+    SWAG_ERROR(Err0793, "unsupported type      $ the intrinsic '@mkinterface' requires a pointer or a struct as first argument, got '%s'");
+    SWAG_ERROR(Err0794, "unsupported type      $ the intrinsic '@mkinterface' requires a type as a second argument, got '%s'");
+    SWAG_ERROR(Err0795, "unsupported type      $ the intrinsic '@mkinterface' requires an interface name as a third argument, got '%s'");
+
+    SWAG_ERROR(Err0283, "'@gettag' expects default value, found type");
+    SWAG_ERROR(Err0245, "'@gettag' expects name, found type");
+    SWAG_ERROR(Err0301, "'@mixin' number range: [0, 9] (given: '%u')");
+    SWAG_ERROR(Err0790, "'@mkany' can't use 'null' as first parameter");
+    SWAG_ERROR(Err0792, "'@mkany' expects 'typeinfo' or type for second parameter, found '%s'");
+    SWAG_ERROR(Err0789, "'@mkany' requires pointer as first parameter");
+    SWAG_ERROR(Err0785, "'@mkcallback' function limit exceeded: max '%d' parameters, found '%d'");
+    SWAG_ERROR(Err0786, "'@mkcallback' not allowed with function returning '%s'");
+    SWAG_ERROR(Err0784, "'@mkcallback' requires lambda for first parameter");
+    SWAG_ERROR(Err0783, "'@mkforeign' expects 'const *void' as second parameter");
+    SWAG_ERROR(Err0782, "'@mkforeign' requires lambda type first");
+
     SWAG_ERROR(Err0097, "%s '%s' isn't used as the first parameter in '%s'");
     SWAG_ERROR(Err0521, "%s '%s' not used as primary argument for function '%s'");
     SWAG_ERROR(Err0086, "%s '%s' used only to scope function '%s'");
@@ -457,31 +485,6 @@ void initErrors()
     SWAG_ERROR(Err0772, "expected '%s' type expression after 'return'");
     SWAG_ERROR(Err0125, "'%s' with call parameters is type '%s', not a function");
     SWAG_ERROR(Err0605, "'@abs' exceeds integer limit");
-    SWAG_ERROR(Err0800, "'@countof' not allowed on tuple type");
-    SWAG_ERROR(Err0801, "'@countof' requires integer, found '%s'");
-    SWAG_ERROR(Err0442, "'@cvastart' must only be in a function with a final parameter of 'cvarargs'");
-    SWAG_ERROR(Err0796, "'@dataof' not allowed on tuple type");
-    SWAG_ERROR(Err0797, "'@dataof' not suitable for type '%s'");
-    SWAG_ERROR(Err0283, "'@gettag' expects default value, found type");
-    SWAG_ERROR(Err0245, "'@gettag' expects name, found type");
-    SWAG_ERROR(Err0630, "'@index' limited to breakable loops");
-    SWAG_ERROR(Err0489, "'@init' first parameter must be pointer, found '%s'");
-    SWAG_ERROR(Err0301, "'@mixin' number range: [0, 9] (given: '%u')");
-    SWAG_ERROR(Err0790, "'@mkany' can't use 'null' as first parameter");
-    SWAG_ERROR(Err0792, "'@mkany' expects 'typeinfo' or type for second parameter, found '%s'");
-    SWAG_ERROR(Err0789, "'@mkany' requires pointer as first parameter");
-    SWAG_ERROR(Err0785, "'@mkcallback' function limit exceeded: max '%d' parameters, found '%d'");
-    SWAG_ERROR(Err0786, "'@mkcallback' not allowed with function returning '%s'");
-    SWAG_ERROR(Err0784, "'@mkcallback' requires lambda for first parameter");
-    SWAG_ERROR(Err0783, "'@mkforeign' expects 'const *void' as second parameter");
-    SWAG_ERROR(Err0782, "'@mkforeign' requires lambda type first");
-    SWAG_ERROR(Err0794, "'@mkinterface' expects typeinfo second");
-    SWAG_ERROR(Err0795, "'@mkinterface' requires interface third");
-    SWAG_ERROR(Err0793, "'@mkinterface' requires single-dimension pointer or struct first");
-    SWAG_ERROR(Err0730, "'@mkstring' requires 'u8' pointer first");
-    SWAG_ERROR(Err0493, "'@postcopy' call denied on type '%s' with 'Swag.NoCopy'");
-    SWAG_ERROR(Err0084, "'@runes' requires string, found '%s'");
-    SWAG_ERROR(Err0806, "'@spread' only valid as function argument");
     SWAG_ERROR(Err0852, "'AttributeUsage.KindMsgGen' valid only with 'AttributeUsage.Struct' or 'AttributeUsage.Enum'");
     SWAG_ERROR(Err0596, "'Swag.Align' value must be power of two (given: '%d')");
     SWAG_ERROR(Err0753, "'Swag.Complete' attribute invalid for function '%s'");
@@ -1448,8 +1451,8 @@ void initErrors()
     SWAG_ERROR(Nte1030, "this argument has been named");
     SWAG_ERROR(Nte1031, "this argument lacks a name");
     SWAG_ERROR(Nte1072, "this array is empty");
-    SWAG_ERROR(Nte1024, "this denotes a pointer type declaration due to '*'");
-    SWAG_ERROR(Nte1010, "this denotes a tuple type");
+    SWAG_ERROR(Nte1024, "this is a pointer type declaration due to '*'");
+    SWAG_ERROR(Nte1010, "this is a tuple type");
     SWAG_ERROR(Nte1006, "this element can't be accessed");
     SWAG_ERROR(Nte1090, "this expression evaluates to '%f'");
     SWAG_ERROR(Nte1091, "this expression evaluates to '%lld'");
