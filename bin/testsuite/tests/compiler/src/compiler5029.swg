@@ -1,7 +1,7 @@
 #global testerror "Err0708"
-enum A: u8
+enum A: u64
 {
 	Red = 0;
-	Green = Swag.U8.Max;
+	Green = Swag.U64.Max;
 	Blue;
 }

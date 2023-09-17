@@ -1,7 +1,7 @@
 #global testerror "Saf0035"
-enum A: u8
+enum A: s8
 {
 	Red = 0;
-	Green = 1;
-	Blue = 256;
+	Green = -200
+	Blue;
 }

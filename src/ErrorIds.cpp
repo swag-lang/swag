@@ -53,12 +53,12 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
 
     SWAG_ERROR(Saf0002, "[safety 'any'] invalid cast from 'any' to '%s'");
-    SWAG_ERROR(Saf0028, "[safety 'any'] null value; can't cast to '%s'");
+    SWAG_ERROR(Saf0028, "[safety 'any'] invalid cast of a null value to '%s'");
     SWAG_ERROR(Saf0020, "[safety 'bool'] invalid boolean value");
     SWAG_ERROR(Saf0008, "[safety 'boundcheck'] index out of bounds");
-    SWAG_ERROR(Saf0034, "[safety 'boundcheck'] lower bound > upper bound");
-    SWAG_ERROR(Saf0004, "[safety 'boundcheck'] slice error: lower > upper");
-    SWAG_ERROR(Saf0005, "[safety 'boundcheck'] slice error: upper out of bounds");
+    SWAG_ERROR(Saf0034, "[safety 'boundcheck'] range error, lower > upper");
+    SWAG_ERROR(Saf0004, "[safety 'boundcheck'] slice error, lower > upper");
+    SWAG_ERROR(Saf0005, "[safety 'boundcheck'] slice error, upper out of bounds");
     SWAG_ERROR(Saf0003, "[safety 'math'] '@abs' overflow (type is '%s')");
     SWAG_ERROR(Saf0027, "[safety 'math'] '@acos' invalid argument (type is '%s')");
     SWAG_ERROR(Saf0026, "[safety 'math'] '@asin' invalid argument (type is '%s')");
@@ -69,11 +69,12 @@ void initErrors()
     SWAG_ERROR(Saf0007, "[safety 'math'] division by zero");
     SWAG_ERROR(Saf0021, "[safety 'nan'] invalid float (NaN)");
     SWAG_ERROR(Saf0001, "[safety 'null'] dereferencing a null pointer");
-    SWAG_ERROR(Saf0032, "[safety 'overflow'] '%I64d' negative for unsigned '%s'");
-    SWAG_ERROR(Saf0033, "[safety 'overflow'] '%I64u' unfit for type '%s'");
-    SWAG_ERROR(Saf0030, "[safety 'overflow'] '%g' negative for unsigned '%s'");
-    SWAG_ERROR(Saf0031, "[safety 'overflow'] '%g' unfit for type '%s'");
-    SWAG_ERROR(Saf0006, "[safety 'overflow'] negative value '%s' to unsigned '%s'");
+    SWAG_ERROR(Saf0032, "[safety 'overflow'] negative value '%I64d' to unsigned type '%s'");
+    SWAG_ERROR(Saf0006, "[safety 'overflow'] negative value '%s' to unsigned type '%s'");
+    SWAG_ERROR(Saf0030, "[safety 'overflow'] negative value '%g' to unsigned type '%s'");
+    SWAG_ERROR(Saf0033, "[safety 'overflow'] value '%I64u' does not fit in type '%s'");
+    SWAG_ERROR(Saf0035, "[safety 'overflow'] value '%I64d' does not fit in type '%s'");
+    SWAG_ERROR(Saf0031, "[safety 'overflow'] value '%g' does not fit in type '%s'");
     SWAG_ERROR(Saf0010, "[safety 'overflow'] overflow in '*' (type is '%s')");
     SWAG_ERROR(Saf0009, "[safety 'overflow'] overflow in '*=' (type is '%s')");
     SWAG_ERROR(Saf0012, "[safety 'overflow'] overflow in '+' (type is '%s')");
@@ -82,11 +83,10 @@ void initErrors()
     SWAG_ERROR(Saf0013, "[safety 'overflow'] overflow in '-=' (type is '%s')");
     SWAG_ERROR(Saf0015, "[safety 'overflow'] overflow in '<<' (type is '%s')");
     SWAG_ERROR(Saf0016, "[safety 'overflow'] overflow in '>>' (type is '%s')");
-    SWAG_ERROR(Saf0017, "[safety 'overflow'] overflow in negative (type is '%s')");
+    SWAG_ERROR(Saf0017, "[safety 'overflow'] overflow in '-' (type is '%s')");
     SWAG_ERROR(Saf0018, "[safety 'overflow'] truncation from '%s' to '%s'");
-    SWAG_ERROR(Saf0029, "[safety 'overflow'] value '%s' ('%I64u' in decimal) unfit for type '%s'");
-    SWAG_ERROR(Saf0019, "[safety 'switch'] switch unexpected value ('Swag.Complete')");
-    SWAG_ERROR(Saf0035, nullptr);
+    SWAG_ERROR(Saf0029, "[safety 'overflow'] value '%s' ('%I64u' in decimal) does not fit in type '%s'");
+    SWAG_ERROR(Saf0019, "[safety 'switch'] unexpected switch value ('Swag.Complete')");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -441,6 +441,11 @@ void initErrors()
     SWAG_ERROR(Err0632, "misplaced 'break'                                 $ 'break' is only valid within a breakable block such as 'loop', 'visit', 'for', etc.");
     SWAG_ERROR(Err0637, "misplaced 'continue'                              $ 'continue' is only valid within a breakable block such as 'loop', 'visit', 'for', etc.");
     SWAG_ERROR(Err0729, "misplaced 'code'                                  $ 'code' is only valid within a '#[Swag.Macro]' or '#[Swag.Mixin]' function");
+    SWAG_ERROR(Err0101, "forbidden call                                    $ a direct call to 'opDrop' is forbidden $ consider using '@drop' instead'");
+    SWAG_ERROR(Err0100, "forbidden call                                    $ a direct call to 'opInit' is forbidden $ consider using '@init' instead'");
+    SWAG_ERROR(Err0103, "forbidden call                                    $ a direct call to 'opPostCopy' is forbidden $ consider using '@postcopy' instead'");
+    SWAG_ERROR(Err0104, "forbidden call                                    $ a direct call to 'opPostMove' is forbidden $ consider using '@postmove' instead'");
+    SWAG_ERROR(Err0708, "out of range enum value                           $ the enum value '%s' exceeds the valid range of type '%s'");
 
     SWAG_ERROR(Err0097, "%s '%s' isn't used as the first parameter in '%s'");
     SWAG_ERROR(Err0521, "%s '%s' not used as primary argument for function '%s'");
@@ -925,18 +930,6 @@ void initErrors()
     SWAG_ERROR(Err0799, "unsupported '@stringof' usage");
     SWAG_ERROR(Err0056, "unsupported x64 OS '%s'");
     SWAG_ERROR(Err0780, "unused alias '%s'; consider removal");
-    SWAG_ERROR(Err0101, "use '@drop' instead of 'opDrop'");
-    SWAG_ERROR(Err0100, "use '@init' instead of 'opInit'");
-    SWAG_ERROR(Err0103, "use '@postcopy' instead of 'opPostCopy'");
-    SWAG_ERROR(Err0104, "use '@postmove' instead of 'opPostMove'");
-    SWAG_ERROR(Err0717, "value '%s' exceeds 's16' range");
-    SWAG_ERROR(Err0718, "value '%s' exceeds 's32' range");
-    SWAG_ERROR(Err0719, "value '%s' exceeds 's64' range");
-    SWAG_ERROR(Err0716, "value '%s' exceeds 's8' range");
-    SWAG_ERROR(Err0710, "value '%s' exceeds 'u16' range");
-    SWAG_ERROR(Err0712, "value '%s' exceeds 'u32' range");
-    SWAG_ERROR(Err0714, "value '%s' exceeds 'u64' range");
-    SWAG_ERROR(Err0708, "value '%s' exceeds 'u8' range");
     SWAG_ERROR(Err0144, "value '%s' not found in enum '%s'");
     SWAG_ERROR(Err0706, "value '%s' of type '%s' requires initialization");
     SWAG_ERROR(Err0687, "expected value below 256");
@@ -947,6 +940,13 @@ void initErrors()
     SWAG_ERROR(Err0734, "variadic parameter must be last");
     SWAG_ERROR(Err0880, "while condition is always true");
 
+    SWAG_ERROR(Err0717, nullptr);
+    SWAG_ERROR(Err0718, nullptr);
+    SWAG_ERROR(Err0719, nullptr);
+    SWAG_ERROR(Err0716, nullptr);
+    SWAG_ERROR(Err0710, nullptr);
+    SWAG_ERROR(Err0712, nullptr);
+    SWAG_ERROR(Err0714, nullptr);
     SWAG_ERROR(Err0606, nullptr);
     SWAG_ERROR(Err0427, nullptr);
     SWAG_ERROR(Err0426, nullptr);

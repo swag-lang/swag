@@ -1344,13 +1344,13 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             return true;
 
         if (identifier->token.text == g_LangSpec->name_opInit)
-            return context->report({identifier, Err(Err0100)});
+            return context->report({identifier, identifier->token, Err(Err0100)});
         if (identifier->token.text == g_LangSpec->name_opDrop)
-            return context->report({identifier, Err(Err0101)});
+            return context->report({identifier, identifier->token, Err(Err0101)});
         if (identifier->token.text == g_LangSpec->name_opPostCopy)
-            return context->report({identifier, Err(Err0103)});
+            return context->report({identifier, identifier->token, Err(Err0103)});
         if (identifier->token.text == g_LangSpec->name_opPostMove)
-            return context->report({identifier, Err(Err0104)});
+            return context->report({identifier, identifier->token, Err(Err0104)});
 
         // Be sure this is not a 'forward' decl
         if (funcDecl->isEmptyFct() && !funcDecl->isForeign() && identifier->token.text[0] != '@')

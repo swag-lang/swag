@@ -49,6 +49,8 @@ bool TypeManager::errorOutOfRange(SemanticContext* context, AstNode* fromNode, T
     case NativeTypeKind::F64:
         return context->report({fromNode, Fmt(Err(Saf0031), fromNode->computedValue->reg.f64, toType->getDisplayNameC())});
     default:
+        if (fromType->isNativeIntegerSigned())
+            return context->report({fromNode, Fmt(Err(Saf0035), fromNode->computedValue->reg.s64, toType->getDisplayNameC())});
         return context->report({fromNode, Fmt(Err(Saf0033), fromNode->computedValue->reg.u64, toType->getDisplayNameC())});
     }
 }

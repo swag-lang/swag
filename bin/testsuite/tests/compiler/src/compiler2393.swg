@@ -1,2 +1,2 @@
-﻿#global testerror "Saf0033";
-var a11: s32 = 2147483648;
+﻿#global testerror "Saf0035"
+var a11: s32 = 2147483648

@@ -248,7 +248,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
             {
             case NativeTypeKind::U8:
                 if (enumNode->computedValue->reg.u8 == UINT8_MAX)
-                    return context->report({valNode, Fmt(Err(Err0708), valNode->token.ctext())});
+                    return context->report({valNode, Fmt(Err(Err0708), valNode->token.ctext(), rawType->getDisplayNameC())});
                 if (isFlags && enumNode->computedValue->reg.u8)
                 {
                     auto n = enumNode->computedValue->reg.u8;
@@ -260,7 +260,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
                 break;
             case NativeTypeKind::U16:
                 if (enumNode->computedValue->reg.u16 == UINT16_MAX)
-                    return context->report({valNode, Fmt(Err(Err0710), valNode->token.ctext())});
+                    return context->report({valNode, Fmt(Err(Err0708), valNode->token.ctext(), rawType->getDisplayNameC())});
                 if (isFlags && enumNode->computedValue->reg.u16)
                 {
                     auto n = enumNode->computedValue->reg.u16;
@@ -272,7 +272,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
                 break;
             case NativeTypeKind::U32:
                 if (enumNode->computedValue->reg.u32 == UINT32_MAX)
-                    return context->report({valNode, Fmt(Err(Err0712), valNode->token.ctext())});
+                    return context->report({valNode, Fmt(Err(Err0708), valNode->token.ctext(), rawType->getDisplayNameC())});
                 if (isFlags && enumNode->computedValue->reg.u32)
                 {
                     auto n = enumNode->computedValue->reg.u32;
@@ -284,7 +284,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
                 break;
             case NativeTypeKind::U64:
                 if (enumNode->computedValue->reg.u64 == UINT64_MAX)
-                    return context->report({valNode, Fmt(Err(Err0714), valNode->token.ctext())});
+                    return context->report({valNode, Fmt(Err(Err0708), valNode->token.ctext(), rawType->getDisplayNameC())});
                 if (isFlags && enumNode->computedValue->reg.u64)
                 {
                     auto n = enumNode->computedValue->reg.u64;
@@ -297,22 +297,22 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
 
             case NativeTypeKind::S8:
                 if (enumNode->computedValue->reg.s8 <= INT8_MIN || enumNode->computedValue->reg.s8 >= INT8_MAX)
-                    return context->report({valNode, Fmt(Err(Err0716), valNode->token.ctext())});
+                    return context->report({valNode, Fmt(Err(Err0708), valNode->token.ctext(), rawType->getDisplayNameC())});
                 enumNode->computedValue->reg.s8++;
                 break;
             case NativeTypeKind::S16:
                 if (enumNode->computedValue->reg.s16 <= INT16_MIN || enumNode->computedValue->reg.s16 >= INT16_MAX)
-                    return context->report({valNode, Fmt(Err(Err0717), valNode->token.ctext())});
+                    return context->report({valNode, Fmt(Err(Err0708), valNode->token.ctext(), rawType->getDisplayNameC())});
                 enumNode->computedValue->reg.s16++;
                 break;
             case NativeTypeKind::S32:
                 if (enumNode->computedValue->reg.s32 <= INT32_MIN || enumNode->computedValue->reg.s32 >= INT32_MAX)
-                    return context->report({valNode, Fmt(Err(Err0718), valNode->token.ctext())});
+                    return context->report({valNode, Fmt(Err(Err0708), valNode->token.ctext(), rawType->getDisplayNameC())});
                 enumNode->computedValue->reg.s32++;
                 break;
             case NativeTypeKind::S64:
                 if (enumNode->computedValue->reg.s64 <= INT64_MIN || enumNode->computedValue->reg.s64 >= INT64_MAX)
-                    return context->report({valNode, Fmt(Err(Err0719), valNode->token.ctext())});
+                    return context->report({valNode, Fmt(Err(Err0708), valNode->token.ctext(), rawType->getDisplayNameC())});
                 enumNode->computedValue->reg.s64++;
                 break;
             default:
