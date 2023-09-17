@@ -550,7 +550,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
 
     SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_COMPLETE) || funcNode->token.text == g_LangSpec->name_opAffect || funcNode->token.text == g_LangSpec->name_opAffectSuffix, context->report({funcNode, funcNode->token, Fmt(Err(Err0753), funcNode->token.ctext())}));
     SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_IMPLICIT) || funcNode->token.text == g_LangSpec->name_opAffect || funcNode->token.text == g_LangSpec->name_opAffectSuffix || funcNode->token.text == g_LangSpec->name_opCast, context->report({funcNode, funcNode->token, Fmt(Err(Err0754), funcNode->token.ctext())}));
-    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_CALLEE_RETURN) || (funcNode->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO)), context->report({funcNode, funcNode->token, Fmt(Err(Err0755), funcNode->getDisplayNameC())}));
+    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_CALLEE_RETURN) || (funcNode->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO)), context->report({funcNode, funcNode->token, Fmt(Err(Err0755), funcNode->token.ctext())}));
 
     // Implicit attribute cannot be used on a generic function
     // This is because "extra" generic parameters must be specified and not deduced, and this is not possible for an implicit cast

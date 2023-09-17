@@ -350,9 +350,9 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 if (*it == ATTRIBUTE_INLINE && (flags & ATTRIBUTE_NO_INLINE))
                     return context->report({child, Err(Err0083)});
                 if (*it == ATTRIBUTE_NO_INLINE && (flags & ATTRIBUTE_INLINE))
-                    return context->report({child, Err(Err0691)});
+                    return context->report({child, Err(Err0083)});
                 if (*it == ATTRIBUTE_TLS && (flags & ATTRIBUTE_COMPILER))
-                    return context->report({child, Err(Err0159)});
+                    return context->report({child, Err(Err0147)});
                 if (*it == ATTRIBUTE_COMPILER && (flags & ATTRIBUTE_TLS))
                     return context->report({child, Err(Err0147)});
             }

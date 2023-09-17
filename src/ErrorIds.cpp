@@ -475,12 +475,19 @@ void initErrors()
     SWAG_ERROR(Err0884, "invalid capture                                   $ can't capture '%s' because it's not a plain old data struct $ a struct is not plain old data if it contains 'opDrop', 'opPostCopy' or 'opPostMove'");
     SWAG_ERROR(Err0073, "invalid 'with'                                    $ 'with' is invalid on an enum variable (type is '%s')");
     SWAG_ERROR(Err0703, "invalid 'with'                                    $ 'with' is invalid on type '%s' $ expected a namespace, an enum, a struct or a pointer to struct");
-                                                                           
+    SWAG_ERROR(Err0147, "conflicting attributes                            $ the '#[Swag.Compiler]' and '#[Swag.Tls]' attributes are mutually exclusive");
+    SWAG_ERROR(Err0083, "conflicting attributes                            $ the '#[Swag.Inline]' and '#[Swag.NoInline]' attributes are mutually exclusive");
+    SWAG_ERROR(Err0595, "invalid packing value                             $ the '#[Swag.Pack]' argument must be 0 or a power of two, got '%d'");
+    SWAG_ERROR(Err0596, "invalid align value                               $ the '#[Swag.Align]' argument must be a power of two, got '%d'");
+    SWAG_ERROR(Err0297, "misplaced attribute                               $ the '#[Swag.Discardable]' attribute can only be applied to lambda variables, got '%s'");
+    SWAG_ERROR(Err0753, "misplaced attribute                               $ the '#[Swag.Complete]' attribute can't be applied to function '%s'");
+    SWAG_ERROR(Err0755, "misplaced attribute                               $ the '#[Swag.CalleeReturn]' attribute can't be applied to function '%s' $ '#[Swag.CalledReturn]' can only be applied to a macro ('#[Swag.Macro]') or a mixin ('#[Swag.Mixin]')");
+
+    SWAG_ERROR(Err0601, "'Swag.Using' is empty");
     SWAG_ERROR(Err0097, "%s '%s' isn't used as the first parameter in '%s'");
     SWAG_ERROR(Err0521, "%s '%s' not used as primary argument for function '%s'");
     SWAG_ERROR(Err0086, "%s '%s' used only to scope function '%s'");
     SWAG_ERROR(Err0505, "%s exceeded, max size is '0x%I64x' bytes");
-    SWAG_ERROR(Err0755, "%s must have 'Swag.Macro' or 'Swag.Mixin' to use 'Swag.CalleeReturn'");
     SWAG_ERROR(Err0738, "%s needs a default value as preceding parameter has one");
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0834, "%s size exceeded");
@@ -518,11 +525,6 @@ void initErrors()
     SWAG_ERROR(Err0772, "expected '%s' type expression after 'return'");
     SWAG_ERROR(Err0125, "'%s' with call parameters is type '%s', not a function");
     SWAG_ERROR(Err0852, "'AttributeUsage.KindMsgGen' valid only with 'AttributeUsage.Struct' or 'AttributeUsage.Enum'");
-    SWAG_ERROR(Err0596, "'Swag.Align' value must be power of two (given: '%d')");
-    SWAG_ERROR(Err0753, "'Swag.Complete' attribute invalid for function '%s'");
-    SWAG_ERROR(Err0297, "'Swag.Discardable' only for lambda variable; '%s' found");
-    SWAG_ERROR(Err0595, "'Swag.Pack' value is 0 or power of two (given: '%d')");
-    SWAG_ERROR(Err0601, "'Swag.Using' is empty");
     SWAG_ERROR(Err0859, "'compileString' not executable in this context (too late)");
     SWAG_ERROR(Err0704, "'cstring' is not a valid enum; use 'string'");
     SWAG_ERROR(Err0446, "'cvarargs' parameter type is non-transferable");
@@ -604,10 +606,6 @@ void initErrors()
     SWAG_ERROR(Err0238, "compiler assertion failure");
     SWAG_ERROR(Err0060, "compiler constant not for runtime reference");
     SWAG_ERROR(Err0119, "complex generic type deduction (embedded tuples)");
-    SWAG_ERROR(Err0147, "conflict: 'Swag.Compiler' attribute with existing 'Swag.Tls'");
-    SWAG_ERROR(Err0083, "conflict: 'Swag.Inline' with existing 'Swag.NoInline'");
-    SWAG_ERROR(Err0691, "conflict: 'Swag.NoInline' with existing 'Swag.Inline'");
-    SWAG_ERROR(Err0159, "conflict: 'Swag.Tls' with existing 'Swag.Compiler'");
     SWAG_ERROR(Err0311, "constant creation failed due to generic type '%s'");
     SWAG_ERROR(Err0805, "constant must be unsigned; found '%I64d'");
     SWAG_ERROR(Err0802, "constant must be unsigned; found '%d'");
@@ -932,6 +930,8 @@ void initErrors()
     SWAG_ERROR(Err0308, "variable type deduction failed; expression is 'null'");
     SWAG_ERROR(Err0734, "variadic parameter must be last");
 
+    SWAG_ERROR(Err0159, nullptr);
+    SWAG_ERROR(Err0691, nullptr);
     SWAG_ERROR(Err0830, nullptr);
     SWAG_ERROR(Err0831, nullptr);
     SWAG_ERROR(Err0360, nullptr);
