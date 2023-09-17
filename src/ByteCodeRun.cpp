@@ -4173,10 +4173,9 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
             // Additional panic infos
             if (runContext->internalPanicSymbol)
             {
-                auto node  = runContext->internalPanicSymbol->node;
-                auto note  = Diagnostic::hereIs(node, false, true);
-                note->hint = runContext->internalPanicHint;
-                notes.push_back(note);
+                notes.push_back(Diagnostic::hereIs(runContext->internalPanicSymbol->node, false, true));
+                if (!runContext->internalPanicHint.empty())
+                    notes.push_back(Diagnostic::note(runContext->internalPanicHint));
             }
 
             break;

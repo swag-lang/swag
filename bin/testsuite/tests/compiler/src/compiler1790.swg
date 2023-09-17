@@ -1,5 +1,4 @@
-
-#global testerror "assertion failed"
+#global testerror "Err0431"
 
 //#[Swag.PrintBc]
 #run
@@ -8,7 +7,7 @@
 }
 
 //#[Swag.PrintBc]
-#init
+#test
 {
     @assert(G == 1)
 }

@@ -52,41 +52,41 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Saf0002, "[safety 'any'] invalid cast from 'any' to '%s'");
-    SWAG_ERROR(Saf0028, "[safety 'any'] invalid cast of a null value to '%s'");
-    SWAG_ERROR(Saf0020, "[safety 'bool'] invalid boolean value");
-    SWAG_ERROR(Saf0008, "[safety 'boundcheck'] index out of bounds");
-    SWAG_ERROR(Saf0034, "[safety 'boundcheck'] range error, lower > upper");
-    SWAG_ERROR(Saf0004, "[safety 'boundcheck'] slice error, lower > upper");
-    SWAG_ERROR(Saf0005, "[safety 'boundcheck'] slice error, upper out of bounds");
-    SWAG_ERROR(Saf0003, "[safety 'math'] '@abs' overflow (type is '%s')");
-    SWAG_ERROR(Saf0027, "[safety 'math'] '@acos' invalid argument (type is '%s')");
-    SWAG_ERROR(Saf0026, "[safety 'math'] '@asin' invalid argument (type is '%s')");
-    SWAG_ERROR(Saf0023, "[safety 'math'] '@log' invalid argument (type is '%s')");
-    SWAG_ERROR(Saf0025, "[safety 'math'] '@log10' invalid argument (type is '%s')");
-    SWAG_ERROR(Saf0024, "[safety 'math'] '@log2' invalid argument (type is '%s')");
-    SWAG_ERROR(Saf0022, "[safety 'math'] '@sqrt' invalid argument (type is '%s')");
-    SWAG_ERROR(Saf0007, "[safety 'math'] division by zero");
-    SWAG_ERROR(Saf0021, "[safety 'nan'] invalid float (NaN)");
-    SWAG_ERROR(Saf0001, "[safety 'null'] dereferencing a null pointer");
-    SWAG_ERROR(Saf0032, "[safety 'overflow'] negative value '%I64d' to unsigned type '%s'");
-    SWAG_ERROR(Saf0006, "[safety 'overflow'] negative value '%s' to unsigned type '%s'");
-    SWAG_ERROR(Saf0030, "[safety 'overflow'] negative value '%g' to unsigned type '%s'");
-    SWAG_ERROR(Saf0033, "[safety 'overflow'] value '%I64u' does not fit in type '%s'");
-    SWAG_ERROR(Saf0035, "[safety 'overflow'] value '%I64d' does not fit in type '%s'");
-    SWAG_ERROR(Saf0031, "[safety 'overflow'] value '%g' does not fit in type '%s'");
-    SWAG_ERROR(Saf0010, "[safety 'overflow'] overflow in '*' (type is '%s')");
-    SWAG_ERROR(Saf0009, "[safety 'overflow'] overflow in '*=' (type is '%s')");
-    SWAG_ERROR(Saf0012, "[safety 'overflow'] overflow in '+' (type is '%s')");
-    SWAG_ERROR(Saf0011, "[safety 'overflow'] overflow in '+=' (type is '%s')");
-    SWAG_ERROR(Saf0014, "[safety 'overflow'] overflow in '-' (type is '%s')");
-    SWAG_ERROR(Saf0013, "[safety 'overflow'] overflow in '-=' (type is '%s')");
-    SWAG_ERROR(Saf0015, "[safety 'overflow'] overflow in '<<' (type is '%s')");
-    SWAG_ERROR(Saf0016, "[safety 'overflow'] overflow in '>>' (type is '%s')");
-    SWAG_ERROR(Saf0017, "[safety 'overflow'] overflow in '-' (type is '%s')");
-    SWAG_ERROR(Saf0018, "[safety 'overflow'] truncation from '%s' to '%s'");
-    SWAG_ERROR(Saf0029, "[safety 'overflow'] value '%s' ('%I64u' in decimal) does not fit in type '%s'");
-    SWAG_ERROR(Saf0019, "[safety 'switch'] unexpected switch value ('Swag.Complete')");
+    SWAG_ERROR(Saf0002, "[safety 'any'] $ invalid cast from 'any' to '%s'");
+    SWAG_ERROR(Saf0028, "[safety 'any'] $ invalid cast of a null value to '%s'");
+    SWAG_ERROR(Saf0020, "[safety 'bool'] $ invalid boolean value");
+    SWAG_ERROR(Saf0008, "[safety 'boundcheck'] $ index out of bounds");
+    SWAG_ERROR(Saf0034, "[safety 'boundcheck'] $ range error, lower > upper");
+    SWAG_ERROR(Saf0004, "[safety 'boundcheck'] $ slice error, lower > upper");
+    SWAG_ERROR(Saf0005, "[safety 'boundcheck'] $ slice error, upper out of bounds");
+    SWAG_ERROR(Saf0003, "[safety 'math'] $ '@abs' overflow (type is '%s')");
+    SWAG_ERROR(Saf0027, "[safety 'math'] $ '@acos' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0026, "[safety 'math'] $ '@asin' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0023, "[safety 'math'] $ '@log' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0025, "[safety 'math'] $ '@log10' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0024, "[safety 'math'] $ '@log2' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0022, "[safety 'math'] $ '@sqrt' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0007, "[safety 'math'] $ division by zero");
+    SWAG_ERROR(Saf0021, "[safety 'nan'] $ invalid float (NaN)");
+    SWAG_ERROR(Saf0001, "[safety 'null'] $ dereferencing a null pointer");
+    SWAG_ERROR(Saf0032, "[safety 'overflow'] $ negative value '%I64d' on unsigned type '%s'");
+    SWAG_ERROR(Saf0006, "[safety 'overflow'] $ negative value '%s' on unsigned type '%s'");
+    SWAG_ERROR(Saf0030, "[safety 'overflow'] $ negative value '%g' on unsigned type '%s'");
+    SWAG_ERROR(Saf0029, "[safety 'overflow'] $ value '%s' ('%I64u' in decimal) does not fit in type '%s'");
+    SWAG_ERROR(Saf0033, "[safety 'overflow'] $ value '%I64u' does not fit in type '%s'");
+    SWAG_ERROR(Saf0035, "[safety 'overflow'] $ value '%I64d' does not fit in type '%s'");
+    SWAG_ERROR(Saf0031, "[safety 'overflow'] $ value '%g' does not fit in type '%s'");
+    SWAG_ERROR(Saf0010, "[safety 'overflow'] $ overflow in '*' (type is '%s')");
+    SWAG_ERROR(Saf0009, "[safety 'overflow'] $ overflow in '*=' (type is '%s')");
+    SWAG_ERROR(Saf0012, "[safety 'overflow'] $ overflow in '+' (type is '%s')");
+    SWAG_ERROR(Saf0011, "[safety 'overflow'] $ overflow in '+=' (type is '%s')");
+    SWAG_ERROR(Saf0014, "[safety 'overflow'] $ overflow in '-' (type is '%s')");
+    SWAG_ERROR(Saf0013, "[safety 'overflow'] $ overflow in '-=' (type is '%s')");
+    SWAG_ERROR(Saf0015, "[safety 'overflow'] $ overflow in '<<' (type is '%s')");
+    SWAG_ERROR(Saf0016, "[safety 'overflow'] $ overflow in '>>' (type is '%s')");
+    SWAG_ERROR(Saf0017, "[safety 'overflow'] $ overflow in '-' (type is '%s')");
+    SWAG_ERROR(Saf0018, "[safety 'overflow'] $ truncation from '%s' to '%s'");
+    SWAG_ERROR(Saf0019, "[safety 'switch'] $ unexpected switch value ('Swag.Complete')");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -446,6 +446,7 @@ void initErrors()
     SWAG_ERROR(Err0103, "forbidden call                                    $ a direct call to 'opPostCopy' is forbidden $ consider using '@postcopy' instead'");
     SWAG_ERROR(Err0104, "forbidden call                                    $ a direct call to 'opPostMove' is forbidden $ consider using '@postmove' instead'");
     SWAG_ERROR(Err0708, "out of range enum value                           $ the enum value '%s' exceeds the valid range of type '%s'");
+    SWAG_ERROR(Err0431, "immutable global variable                         $ the global variable '%s' is immutable at compile-time because it's initialized to 0");
 
     SWAG_ERROR(Err0097, "%s '%s' isn't used as the first parameter in '%s'");
     SWAG_ERROR(Err0521, "%s '%s' not used as primary argument for function '%s'");
@@ -538,7 +539,7 @@ void initErrors()
     SWAG_ERROR(Err0116, "ambiguous symbol '%s' resolution");
     SWAG_ERROR(Err0011, "argument '%s' already defined");
     SWAG_ERROR(Err0485, "array access requires integer type ('%s' given)");
-    SWAG_ERROR(Err0021, "array dimension cannot be evaluated at compile time");
+    SWAG_ERROR(Err0021, "array dimension cannot be evaluated at compile-time");
     SWAG_ERROR(Err0023, "array dimension is 0");
     SWAG_ERROR(Err0022, "array dimension must be integer ('%s' given)");
     SWAG_ERROR(Err0148, "array of 'void' type can't be declared");
@@ -547,7 +548,7 @@ void initErrors()
     SWAG_ERROR(Err0588, "attribute '%s' incompatible with %s");
     SWAG_ERROR(Err0583, "attribute '%s' only applies to %s");
     SWAG_ERROR(Err0582, "expected attribute; '%s' is %s");
-    SWAG_ERROR(Err0602, "attribute parameter cannot be evaluated at compile time");
+    SWAG_ERROR(Err0602, "attribute parameter cannot be evaluated at compile-time");
     SWAG_ERROR(Err0036, "backend error: windows sdk folder not found");
     SWAG_ERROR(Err0833, "bit inversion disallowed on type '%s'");
     SWAG_ERROR(Err0032, "bitcasting from '%s' not allowed (expected integer, pointer, rune, or float)");
@@ -563,7 +564,7 @@ void initErrors()
     SWAG_ERROR(Err0881, "can't find an 'enum' or a 'with' for '%s' prefixed with '.'");
     SWAG_ERROR(Err0320, "can't slice '%s'; 'opSlice' not found in type '%s'");
     SWAG_ERROR(Err0627, "can't visit variadic type by pointer");
-    SWAG_ERROR(Err0237, "can't evaluate '%s' message at compile time");
+    SWAG_ERROR(Err0237, "can't evaluate '%s' message at compile-time");
     SWAG_ERROR(Err0500, "can't initialize constant array with a single value: type '%s'");
     SWAG_ERROR(Err0206, "can't reference %s '%s': different stack frame");
     SWAG_ERROR(Err0686, "can't use 'code' parameter in '%s' expression following %s '%s'");
@@ -586,7 +587,7 @@ void initErrors()
     SWAG_ERROR(Err0720, "cmd error: invalid argument '%s'");
     SWAG_ERROR(Err0523, "cmd error: unsupported arch '%s' for x64 backend");
     SWAG_ERROR(Err0522, "cmd error: unsupported os '%s' for x64 backend");
-    SWAG_ERROR(Err0435, "compile time execution exception");
+    SWAG_ERROR(Err0435, "compile-time execution exception");
     SWAG_ERROR(Err0091, "compile-time %s '%s' inaccessible from runtime %s");
     SWAG_ERROR(Err0107, "compile-time function '%s' called from runtime %s");
     SWAG_ERROR(Err0238, "compiler assertion failure");
@@ -665,8 +666,8 @@ void initErrors()
     SWAG_ERROR(Err0094, "function call returning nothing can't be discarded");
     SWAG_ERROR(Err0764, "function can't return type '%s'");
     SWAG_ERROR(Err0078, "function name '%s' is reserved");
-    SWAG_ERROR(Err0102, "function param type '%s' not evaluatable at compile time");
-    SWAG_ERROR(Err0090, "function parameter of type '%s' can't be evaluated at compile time");
+    SWAG_ERROR(Err0102, "function param type '%s' not evaluatable at compile-time");
+    SWAG_ERROR(Err0090, "function parameter of type '%s' can't be evaluated at compile-time");
     SWAG_ERROR(Err0160, "function pointer can't be assigned to a constant");
     SWAG_ERROR(Err0163, "function returns no value to retrieve");
     SWAG_ERROR(Err0766, "function with 'Swag.CalleeReturn' must not return value");
@@ -831,7 +832,6 @@ void initErrors()
     SWAG_ERROR(Err0114, "return value address (type '%s') not accessible");
     SWAG_ERROR(Err0779, "return value needed; return type inferred as '%s'");
     SWAG_ERROR(Err0047, "right expression address not accessible");
-    SWAG_ERROR(Err0431, "runtime variable '%s' set to zero; immutable at compile time");
     SWAG_ERROR(Err0490, "second '@init' parameter must be integer; '%s' provided");
     SWAG_ERROR(Err0419, "semantic cycle detected in %s resolution of '%s'");
     SWAG_ERROR(Err0027, "semantic resolution failure");
@@ -862,7 +862,7 @@ void initErrors()
     SWAG_ERROR(Err0673, "struct member '%s' missing for 'Swag.Offset' attribute relocation");
     SWAG_ERROR(Err0029, "struct member aliasing not allowed");
     SWAG_ERROR(Err0295, "duplicate initialization of struct");
-    SWAG_ERROR(Err0281, "struct of type '%s' not 'Swag.ConstExpr'; can't evaluate at compile time");
+    SWAG_ERROR(Err0281, "struct of type '%s' not 'Swag.ConstExpr'; can't evaluate at compile-time");
     SWAG_ERROR(Err0662, "expected struct or enum, found '%s' as %s");
     SWAG_ERROR(Err0666, "struct requires public access for 'Swag.Opaque'");
     SWAG_ERROR(Err0532, "suffix literals like '%s' are for struct conversions only");
@@ -884,7 +884,7 @@ void initErrors()
     SWAG_ERROR(Err0028, "tuple type mismatch");
     SWAG_ERROR(Err0624, "tuple type visitation not allowed");
     SWAG_ERROR(Err0292, "tuple unpacking failed; no fields found");
-    SWAG_ERROR(Err0321, "tuple value contains non-'Swag.ConstExpr' member; can't evaluate at compile time");
+    SWAG_ERROR(Err0321, "tuple value contains non-'Swag.ConstExpr' member; can't evaluate at compile-time");
     SWAG_ERROR(Err0482, "tuples can't be dereferenced as pointers or arrays");
     SWAG_ERROR(Err0252, "type '%s' and '%s' from command line for '%s' mismatch");
     SWAG_ERROR(Err0058, "type '%s' can't be converted to constant expression");
@@ -1312,9 +1312,9 @@ void initErrors()
     SWAG_ERROR(Nte0050, "entity %s of type '%s'");
     SWAG_ERROR(Nte0049, "entity reference: '%s'");
     SWAG_ERROR(Nte0033, "error during the '#validifx' validation of the call to '%s'");
-    SWAG_ERROR(Nte0070, "evaluation failed during compile time");
-    SWAG_ERROR(Nte0087, "execute swag with '--callstack' to obtain contextual details");
-    SWAG_ERROR(Nte0009, "execute swag with '--dbg-catch' to initiate the bytecode debugger when an exception arises");
+    SWAG_ERROR(Nte0070, "evaluation failed during compile-time");
+    SWAG_ERROR(Nte0087, "you can execute swag with '--callstack' to obtain more contextual details");
+    SWAG_ERROR(Nte0009, "you can execute swag with '--dbg-catch' to initiate the bytecode debugger when an exception is raised");
     SWAG_ERROR(Nte0002, "expected match");
     SWAG_ERROR(Nte1035, "expecting an identifier, but found an alias");
     SWAG_ERROR(Nte0130, "for an infinite loop, use 'loop { ... }'");
@@ -1348,8 +1348,8 @@ void initErrors()
     SWAG_ERROR(Nte1047, "hidden call to '%s' detected");
     SWAG_ERROR(Nte1119, "identified an enum value");
     SWAG_ERROR(Nte1059, "identified as the first usage");
-    SWAG_ERROR(Nte1005, "if intended, consider initializing with 'undefined'");
-    SWAG_ERROR(Nte1124, "if intended, consider add 'impl' before this");
+    SWAG_ERROR(Nte1005, "if this is intended, consider initializing the global variable with 'undefined' instead of zero");
+    SWAG_ERROR(Nte1124, "if this is intended, consider adding 'impl' before this");
     SWAG_ERROR(Nte1092, "if this is intentional, consider renaming it to '_%s' to indicate it's unused");
     SWAG_ERROR(Nte1023, "if you don't need the return value, prefix this call with 'discard'");
     SWAG_ERROR(Nte0104, "if you want to declare a lambda type, use 'func(' or 'closure('");
@@ -1455,7 +1455,7 @@ void initErrors()
     SWAG_ERROR(Nte1090, "this expression evaluates to '%f'");
     SWAG_ERROR(Nte1091, "this expression evaluates to '%lld'");
     SWAG_ERROR(Nte1033, "this expression results in 0");
-    SWAG_ERROR(Nte0071, "this function call couldn't be evaluated at compile time");
+    SWAG_ERROR(Nte0071, "this function call couldn't be evaluated at compile-time");
     SWAG_ERROR(Nte1057, "this function can't be instantiated");
     SWAG_ERROR(Nte1073, "this function doesn't support UFCS of type '%s'");
     SWAG_ERROR(Nte1078, "this function doesn't support aliased names");
