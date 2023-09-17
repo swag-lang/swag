@@ -976,12 +976,12 @@ bool SemanticJob::resolveCaptureFuncCallParams(SemanticContext* context)
                 return true;
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeField, TypeInfoKind::Struct);
             if (!typeStruct->isPlainOldData())
-                return context->report({c, Fmt(Err(Err0884), c->token.ctext()), Diagnostic::isType(c->typeInfo)});
+                return context->report({c, Fmt(Err(Err0884), c->token.ctext())});
             continue;
         }
 
         if (typeField->isClosure())
-            return context->report({c, Fmt(Err(Err0875), c->token.ctext()), Diagnostic::isType(c->typeInfo)});
+            return context->report({c, Fmt(Err(Err0875), c->token.ctext())});
         return context->report({c, Fmt(Err(Err0887), c->token.ctext(), typeField->getDisplayNameC()), Diagnostic::isType(c->typeInfo)});
     }
 

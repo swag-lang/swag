@@ -470,7 +470,12 @@ void initErrors()
     SWAG_ERROR(Err0387, "invalid literal                                   $ invalid number conversion for literal '%I64u'");
     SWAG_ERROR(Err0769, "misplaced 'retval'                                $ the 'retval' special type can only be used within a function body");
     SWAG_ERROR(Err0771, "invalid 'retval'                                  $ the 'retval' special type is not allowed in a function that returns nothing");
-
+    SWAG_ERROR(Err0617, "failed '#validif'                                 $ the '#validif' validation has failed for '%s'");
+    SWAG_ERROR(Err0875, "invalid capture                                   $ can't capture '%s' because it's a closure $ capturing a closure type is not supported");
+    SWAG_ERROR(Err0884, "invalid capture                                   $ can't capture '%s' because it's not a plain old data struct $ a struct is not plain old data if it contains 'opDrop', 'opPostCopy' or 'opPostMove'");
+    SWAG_ERROR(Err0073, "invalid 'with'                                    $ 'with' is invalid on an enum variable (type is '%s')");
+    SWAG_ERROR(Err0703, "invalid 'with'                                    $ 'with' is invalid on type '%s' $ expected a namespace, an enum, a struct or a pointer to struct");
+                                                                           
     SWAG_ERROR(Err0097, "%s '%s' isn't used as the first parameter in '%s'");
     SWAG_ERROR(Err0521, "%s '%s' not used as primary argument for function '%s'");
     SWAG_ERROR(Err0086, "%s '%s' used only to scope function '%s'");
@@ -483,7 +488,6 @@ void initErrors()
     SWAG_ERROR(Err0567, "%s");
     SWAG_ERROR(Err0401, "%s");
     SWAG_ERROR(Err0804, "'#message' block needs 'Swag.CompilerMsgMask' param (given: '%s')");
-    SWAG_ERROR(Err0617, "'#validif' validation failed for '%s'");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
     SWAG_ERROR(Err0089, "'%s' can't be compile-time evaluated");
     SWAG_ERROR(Err0085, "'%s' can't be dereferenced as struct or pointer to struct (type is '%s')");
@@ -540,8 +544,6 @@ void initErrors()
     SWAG_ERROR(Err0689, "'using' on variable not allowed in '%s' scope");
     SWAG_ERROR(Err0486, "'void' pointer dereference not allowed");
     SWAG_ERROR(Err0149, "'void' type can't be declared as variable or constant");
-    SWAG_ERROR(Err0073, "'with' invalid on enum variable (type is '%s')");
-    SWAG_ERROR(Err0703, "'with' invalid on type '%s' (expected namespace, enum, struct)");
     SWAG_ERROR(Err0310, "hidden 'with' variable '%s' used only to scope function '%s'");
     SWAG_ERROR(Err0445, "@cvaarg of type '%s' promoted to '%s' at call");
     SWAG_ERROR(Err0465, "address of %s not accessible");
@@ -577,8 +579,6 @@ void initErrors()
     SWAG_ERROR(Err0015, "bytecode stack overflow (limit '--stack-size:%s')");
     SWAG_ERROR(Err0571, "can't assign to %s '%s'");
     SWAG_ERROR(Err0740, "can't assign to '%s' as it's immutable");
-    SWAG_ERROR(Err0875, "can't capture '%s', it's a closure");
-    SWAG_ERROR(Err0884, "can't capture '%s', not a plain data struct (has 'opDrop', 'opPostCopy' or 'opPostMove')");
     SWAG_ERROR(Err0709, "can't deduce flag value of '%s' as previous value isn't power of two");
     SWAG_ERROR(Err0309, "can't deduce type of %s '%s'");
     SWAG_ERROR(Err0881, "can't find an 'enum' or a 'with' for '%s' prefixed with '.'");
@@ -1399,7 +1399,7 @@ void initErrors()
     SWAG_ERROR(Nte1046, "you can prefix with '#run' to force a compile-time call");
     SWAG_ERROR(Nte1081, "primary instance noted here");
     SWAG_ERROR(Nte0054, "problem arose during the '#validif' validation of the call to '%s'");
-    SWAG_ERROR(Nte0061, "problem encountered during generic instantiation of '%s'");
+    SWAG_ERROR(Nte0061, "occured during the generic instantiation of '%s'");
     SWAG_ERROR(Nte0055, "problem matching type with the other part of the conditional expression");
     SWAG_ERROR(Nte0126, "public structs should export all their special functions");
     SWAG_ERROR(Nte1055, "requires explicit initialization");
