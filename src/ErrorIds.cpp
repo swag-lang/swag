@@ -461,6 +461,25 @@ void initErrors()
     SWAG_ERROR(Err0708, "out of range enum value                           $ the enum value '%s' exceeds the valid range of type '%s'");
     SWAG_ERROR(Err0431, "immutable global variable                         $ the global variable '%s' is immutable at compile-time because it's initialized to 0");
     SWAG_ERROR(Err0880, "infinite 'while'                                  $ the while condition is always 'true', which creates an infinite loop $ if you intentionally want to create an infinite loop, consider using a loop without argument 'loop { ... }'");
+    SWAG_ERROR(Err0707, "missing test error                                $ expected at leat one error, but none was raised");
+    SWAG_ERROR(Err0580, "missing test warning                              $ expected at leat one warning, but none was raised");
+
+    SWAG_ERROR(Err0360, "number '%I64d' exceeds 's16' range");
+    SWAG_ERROR(Err0361, "number '%I64d' exceeds 's32' range");
+    SWAG_ERROR(Err0359, "number '%I64d' exceeds 's8' range");
+    SWAG_ERROR(Err0362, "number '%I64u' exceeds 'rune' range");
+    SWAG_ERROR(Err0422, "number '%I64u' exceeds 's16' range");
+    SWAG_ERROR(Err0429, "number '%I64u' exceeds 's32' range");
+    SWAG_ERROR(Err0430, "number '%I64u' exceeds 's64' range");
+    SWAG_ERROR(Err0415, "number '%I64u' exceeds 's8' range");
+    SWAG_ERROR(Err0357, "number '%I64u' exceeds 'u16' range");
+    SWAG_ERROR(Err0358, "number '%I64u' exceeds 'u32' range");
+    SWAG_ERROR(Err0341, "number '%I64u' exceeds 'u8' range");
+
+    SWAG_ERROR(Err0832, "number '%I64d' negation invalid: '%I64u' out of 's64' range");
+    SWAG_ERROR(Err0830, "number '%d' negation invalid: '%u' out of 's16' range");
+    SWAG_ERROR(Err0831, "number '%d' negation invalid: '%u' out of 's32' range");
+    SWAG_ERROR(Err0829, "number '%d' negation invalid: '%u' out of 's8' range");
 
     SWAG_ERROR(Err0097, "%s '%s' isn't used as the first parameter in '%s'");
     SWAG_ERROR(Err0521, "%s '%s' not used as primary argument for function '%s'");
@@ -784,23 +803,6 @@ void initErrors()
     SWAG_ERROR(Err0579, "no pointer arithmetic with operand type '%s'");
     SWAG_ERROR(Err0741, "non-contiguous '@alias' in function '%s' (missing '@alias%u')");
     SWAG_ERROR(Err0146, "null pointer dereference");
-    SWAG_ERROR(Err0360, "number '%I64d' exceeds 's16' range");
-    SWAG_ERROR(Err0361, "number '%I64d' exceeds 's32' range");
-    SWAG_ERROR(Err0359, "number '%I64d' exceeds 's8' range");
-    SWAG_ERROR(Err0832, "number '%I64d' negation invalid: '%I64u' out of 's64' range");
-    SWAG_ERROR(Err0362, "number '%I64u' exceeds 'rune' range");
-    SWAG_ERROR(Err0422, "number '%I64u' exceeds 's16' range");
-    SWAG_ERROR(Err0429, "number '%I64u' exceeds 's32' range");
-    SWAG_ERROR(Err0430, "number '%I64u' exceeds 's64' range");
-    SWAG_ERROR(Err0415, "number '%I64u' exceeds 's8' range");
-    SWAG_ERROR(Err0357, "number '%I64u' exceeds 'u16' range");
-    SWAG_ERROR(Err0358, "number '%I64u' exceeds 'u32' range");
-    SWAG_ERROR(Err0341, "number '%I64u' exceeds 'u8' range");
-    SWAG_ERROR(Err0830, "number '%d' negation invalid: '%u' out of 's16' range");
-    SWAG_ERROR(Err0831, "number '%d' negation invalid: '%u' out of 's32' range");
-    SWAG_ERROR(Err0829, "number '%d' negation invalid: '%u' out of 's8' range");
-    SWAG_ERROR(Err0707, "expected one test error; none raised");
-    SWAG_ERROR(Err0580, "expected one test warning; none raised");
     SWAG_ERROR(Err0809, "operation '%s' doesn't support left type '%s'");
     SWAG_ERROR(Err0778, "operation '%s' doesn't support right type '%s'");
     SWAG_ERROR(Err0001, "operation '%s' incompatible with type '%s'");

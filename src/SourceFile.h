@@ -29,6 +29,8 @@ struct SourceFile
     Utf8                   externalContent;
     Vector<Utf8>           shouldHaveErrorString;
     Vector<Utf8>           shouldHaveWarningString;
+    Token                  tokenHasError;
+    Token                  tokenHasWarning;
 
     Module*     module                = nullptr;
     AstNode*    astRoot               = nullptr;

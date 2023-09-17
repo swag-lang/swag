@@ -493,6 +493,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
             SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, context->report({sourceFile, token, Err(Err1003)}));
             SWAG_CHECK(eatToken());
             SWAG_VERIFY(token.id == TokenId::LiteralString, context->report({sourceFile, token, Fmt(Err(Err1204), token.ctext())}));
+            sourceFile->tokenHasError   = token;
             sourceFile->shouldHaveError = true;
             module->shouldHaveError     = true;
             sourceFile->shouldHaveErrorString.push_back(token.text);
@@ -504,6 +505,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
             SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, context->report({sourceFile, token, Err(Err1004)}));
             SWAG_CHECK(eatToken());
             SWAG_VERIFY(token.id == TokenId::LiteralString, context->report({sourceFile, token, Fmt(Err(Err1205), token.ctext())}));
+            sourceFile->tokenHasWarning   = token;
             sourceFile->shouldHaveWarning = true;
             module->shouldHaveWarning     = true;
             sourceFile->shouldHaveWarningString.push_back(token.text);
