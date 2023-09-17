@@ -483,6 +483,8 @@ void initErrors()
     SWAG_ERROR(Err0753, "misplaced attribute                               $ the '#[Swag.Complete]' attribute can't be applied to function '%s'");
     SWAG_ERROR(Err0755, "misplaced attribute                               $ the '#[Swag.CalleeReturn]' attribute can't be applied to function '%s' $ '#[Swag.CalledReturn]' can only be applied to a macro ('#[Swag.Macro]') or a mixin ('#[Swag.Mixin]')");
     SWAG_ERROR(Err0601, "missing arguments                                 $ the '#[Swag.Using]' attribute should have at least one argument");
+    SWAG_ERROR(Err0481, "invalid dereference                               $ derefencing type '%s' is not valid");
+    SWAG_ERROR(Err0486, "invalid dereference                               $ dereferencing a pointer to 'void' is not valid");
 
     SWAG_ERROR(Err0097, "%s '%s' isn't used as the first parameter in '%s'");
     SWAG_ERROR(Err0521, "%s '%s' not used as primary argument for function '%s'");
@@ -544,7 +546,6 @@ void initErrors()
     SWAG_ERROR(Err0669, "'using' on field valid only for struct (given: '%s')");
     SWAG_ERROR(Err0822, "'using' on pointer variable valid only for struct pointer (pointed type: '%s')");
     SWAG_ERROR(Err0689, "'using' on variable not allowed in '%s' scope");
-    SWAG_ERROR(Err0486, "'void' pointer dereference not allowed");
     SWAG_ERROR(Err0149, "'void' type can't be declared as variable or constant");
     SWAG_ERROR(Err0310, "hidden 'with' variable '%s' used only to scope function '%s'");
     SWAG_ERROR(Err0445, "@cvaarg of type '%s' promoted to '%s' at call");
@@ -880,7 +881,6 @@ void initErrors()
     SWAG_ERROR(Err0252, "type '%s' and '%s' from command line for '%s' mismatch");
     SWAG_ERROR(Err0058, "type '%s' can't be converted to constant expression");
     SWAG_ERROR(Err0889, "type '%s' can't be initialized with '%s': missing 'opAffectSuffix' in '%s'");
-    SWAG_ERROR(Err0481, "type '%s' dereference not allowed");
     SWAG_ERROR(Err0807, "type '%s' expression unspreadable");
     SWAG_ERROR(Err0629, "type '%s' expression unvisitable with 'visit'");
     SWAG_ERROR(Err0887, "type '%s' not capturable for '%s'");

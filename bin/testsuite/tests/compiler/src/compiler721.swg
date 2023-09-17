@@ -1,6 +1,3 @@
-
-
-//#[Swag.PrintBc]
 #global testerror "Err0486"
 #test
 {

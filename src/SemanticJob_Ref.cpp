@@ -611,7 +611,6 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         if (typePtr->pointedType->isVoid())
         {
             Diagnostic diag{arrayNode->access, Err(Err0486)};
-            diag.hint = Nte(Nte1110);
             diag.addRange(arrayNode->array, Diagnostic::isType(typePtr));
             return context->report(diag);
         }
@@ -634,7 +633,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         }
         else
         {
-            Diagnostic diag{arrayNode->array, Fmt(Err(Err0481), arrayType->getDisplayNameC()), Diagnostic::isType(arrayType)};
+            Diagnostic diag{arrayNode->array, Fmt(Err(Err0481), arrayType->getDisplayNameC())};
             if (arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DREF)
                 diag.addRange(arrayNode->token.startLocation, arrayNode->token.endLocation, Nte(Nte1060));
             return context->report(diag);
