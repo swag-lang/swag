@@ -1,2 +1,2 @@
-#global testerror "Err0341"
+#global testerror "Err0415"
 var x = 0xFFFFFFFF'u8

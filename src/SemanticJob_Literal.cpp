@@ -274,37 +274,37 @@ Utf8 SemanticJob::checkLiteralValue(ComputedValue& computedValue, LiteralType& l
         {
         case NativeTypeKind::U8:
             if (computedValue.reg.u64 > UINT8_MAX)
-                return Fmt(Err(Err0341), computedValue.reg.u64);
+                return Fmt(Fmt(Err(Err0415), computedValue.reg.u64, "u8"));
             break;
         case NativeTypeKind::U16:
             if (computedValue.reg.u64 > UINT16_MAX)
-                return Fmt(Err(Err0357), computedValue.reg.u64);
+                return Fmt(Fmt(Err(Err0415), computedValue.reg.u64, "u16"));
             break;
         case NativeTypeKind::U32:
             if (computedValue.reg.u64 > UINT32_MAX)
-                return Fmt(Err(Err0358), computedValue.reg.u64);
+                return Fmt(Fmt(Err(Err0415), computedValue.reg.u64, "u32"));
             break;
         case NativeTypeKind::U64:
             break;
 
         case NativeTypeKind::S8:
             if (computedValue.reg.s64 < INT8_MIN || computedValue.reg.s64 > INT8_MAX)
-                return Fmt(Err(Err0359), computedValue.reg.s64);
+                return Fmt(Err(Err0359), computedValue.reg.s64, "s8");
             break;
         case NativeTypeKind::S16:
             if (computedValue.reg.s64 < INT16_MIN || computedValue.reg.s64 > INT16_MAX)
-                return Fmt(Err(Err0360), computedValue.reg.s64);
+                return Fmt(Err(Err0359), computedValue.reg.s64, "s16");
             break;
         case NativeTypeKind::S32:
             if (computedValue.reg.s64 < INT32_MIN || computedValue.reg.s64 > INT32_MAX)
-                return Fmt(Err(Err0361), computedValue.reg.s64);
+                return Fmt(Err(Err0359), computedValue.reg.s64, "s32");
             break;
         case NativeTypeKind::S64:
             break;
 
         case NativeTypeKind::Rune:
             if (computedValue.reg.u64 > UINT32_MAX)
-                return Fmt(Err(Err0362), computedValue.reg.u64);
+                return Fmt(Fmt(Err(Err0415), computedValue.reg.u64, "rune"));
             break;
 
         case NativeTypeKind::F32:
@@ -327,39 +327,39 @@ Utf8 SemanticJob::checkLiteralValue(ComputedValue& computedValue, LiteralType& l
         {
         case NativeTypeKind::U8:
             if (computedValue.reg.u64 > UINT8_MAX)
-                return Fmt(Err(Err0341), computedValue.reg.u64);
+                return Fmt(Fmt(Err(Err0415), computedValue.reg.u64, "u8"));
             break;
         case NativeTypeKind::U16:
             if (computedValue.reg.u64 > UINT16_MAX)
-                return Fmt(Err(Err0357), computedValue.reg.u64);
+                return Fmt(Fmt(Err(Err0415), computedValue.reg.u64, "u16"));
             break;
         case NativeTypeKind::U32:
             if (computedValue.reg.u64 > UINT32_MAX)
-                return Fmt(Err(Err0358), computedValue.reg.u64);
+                return Fmt(Fmt(Err(Err0415), computedValue.reg.u64, "u32"));
             break;
         case NativeTypeKind::U64:
             break;
 
         case NativeTypeKind::S8:
             if (computedValue.reg.u64 > UINT8_MAX)
-                return Fmt(Err(Err0415), computedValue.reg.u64);
+                return Fmt(Fmt(Err(Err0415), computedValue.reg.u64, "s8"));
             break;
         case NativeTypeKind::S16:
             if (computedValue.reg.u64 > UINT16_MAX)
-                return Fmt(Err(Err0422), computedValue.reg.u64);
+                return Fmt(Fmt(Err(Err0415), computedValue.reg.u64, "s16"));
             break;
         case NativeTypeKind::S32:
             if (computedValue.reg.u64 > UINT32_MAX)
-                return Fmt(Err(Err0429), computedValue.reg.u64);
+                return Fmt(Fmt(Err(Err0415), computedValue.reg.u64, "s32"));
             break;
         case NativeTypeKind::S64:
             if (computedValue.reg.u64 > (uint64_t) INT64_MAX + 1)
-                return Fmt(Err(Err0430), computedValue.reg.u64);
+                return Fmt(Fmt(Err(Err0415), computedValue.reg.u64, "s64"));
             break;
 
         case NativeTypeKind::Rune:
             if (computedValue.reg.u64 > UINT32_MAX)
-                return Fmt(Err(Err0362), computedValue.reg.u64);
+                return Fmt(Fmt(Err(Err0415), computedValue.reg.u64, "rune"));
             break;
 
         default:

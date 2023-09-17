@@ -463,24 +463,14 @@ void initErrors()
     SWAG_ERROR(Err0880, "infinite 'while'                                  $ the while condition is always 'true', which creates an infinite loop $ if you intentionally want to create an infinite loop, consider using a loop without argument 'loop { ... }'");
     SWAG_ERROR(Err0707, "missing test error                                $ expected at leat one error, but none was raised");
     SWAG_ERROR(Err0580, "missing test warning                              $ expected at leat one warning, but none was raised");
-
-    SWAG_ERROR(Err0360, "number '%I64d' exceeds 's16' range");
-    SWAG_ERROR(Err0361, "number '%I64d' exceeds 's32' range");
-    SWAG_ERROR(Err0359, "number '%I64d' exceeds 's8' range");
-    SWAG_ERROR(Err0362, "number '%I64u' exceeds 'rune' range");
-    SWAG_ERROR(Err0422, "number '%I64u' exceeds 's16' range");
-    SWAG_ERROR(Err0429, "number '%I64u' exceeds 's32' range");
-    SWAG_ERROR(Err0430, "number '%I64u' exceeds 's64' range");
-    SWAG_ERROR(Err0415, "number '%I64u' exceeds 's8' range");
-    SWAG_ERROR(Err0357, "number '%I64u' exceeds 'u16' range");
-    SWAG_ERROR(Err0358, "number '%I64u' exceeds 'u32' range");
-    SWAG_ERROR(Err0341, "number '%I64u' exceeds 'u8' range");
+    SWAG_ERROR(Err0359, "literal overflow                                  $ the number '%I64d' is too large for type '%s'");
+    SWAG_ERROR(Err0415, "literal overflow                                  $ the number '%I64u' is too large for type 's8'");
+    SWAG_ERROR(Err0387, "invalid literal                                   $ invalid number conversion for literal '%I64u'");
 
     SWAG_ERROR(Err0832, "number '%I64d' negation invalid: '%I64u' out of 's64' range");
     SWAG_ERROR(Err0830, "number '%d' negation invalid: '%u' out of 's16' range");
     SWAG_ERROR(Err0831, "number '%d' negation invalid: '%u' out of 's32' range");
     SWAG_ERROR(Err0829, "number '%d' negation invalid: '%u' out of 's8' range");
-
     SWAG_ERROR(Err0097, "%s '%s' isn't used as the first parameter in '%s'");
     SWAG_ERROR(Err0521, "%s '%s' not used as primary argument for function '%s'");
     SWAG_ERROR(Err0086, "%s '%s' used only to scope function '%s'");
@@ -761,7 +751,6 @@ void initErrors()
     SWAG_ERROR(Err0135, "invalid generic parameters for %s '%s'");
     SWAG_ERROR(Err0679, "invalid interface member type (expected 'self', found '%s')");
     SWAG_ERROR(Err0439, "invalid literal suffix type '%s'");
-    SWAG_ERROR(Err0387, "invalid number conversion for literal '%I64u'");
     SWAG_ERROR(Err0593, "invalid safety value '%s'");
     SWAG_ERROR(Err0576, "invalid scope move of '%d'");
     SWAG_ERROR(Err0077, "invalid second parameter for '%s' (not type '%s')");
@@ -945,6 +934,15 @@ void initErrors()
     SWAG_ERROR(Err0308, "variable type deduction failed; expression is 'null'");
     SWAG_ERROR(Err0734, "variadic parameter must be last");
 
+    SWAG_ERROR(Err0360, nullptr);
+    SWAG_ERROR(Err0361, nullptr);
+    SWAG_ERROR(Err0422, nullptr);
+    SWAG_ERROR(Err0429, nullptr);
+    SWAG_ERROR(Err0430, nullptr);
+    SWAG_ERROR(Err0362, nullptr);
+    SWAG_ERROR(Err0341, nullptr);
+    SWAG_ERROR(Err0357, nullptr);
+    SWAG_ERROR(Err0358, nullptr);
     SWAG_ERROR(Err0519, nullptr);
     SWAG_ERROR(Err0724, nullptr);
     SWAG_ERROR(Err0728, nullptr);

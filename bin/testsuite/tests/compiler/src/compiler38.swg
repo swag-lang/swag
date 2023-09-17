@@ -1,3 +1,3 @@
-﻿#global testerror "Err0362";
+﻿#global testerror "Err0415"
 
-var x = 0xFFFFFFFF_FFFFFFFF'rune;
+var x = 0xFFFFFFFF_FFFFFFFF'rune
