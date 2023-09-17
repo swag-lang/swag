@@ -77,20 +77,19 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
         auto typeNode   = node->childs[1];
         auto defaultVal = node->childs[2];
         SWAG_CHECK(evaluateConstExpression(context, nameNode));
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
         SWAG_CHECK(evaluateConstExpression(context, defaultVal));
-        if (context->result == ContextResult::Pending)
+        if (context->result != ContextResult::Done)
             return true;
 
         SWAG_CHECK(checkIsConstExpr(context, nameNode->hasComputedValue(), nameNode, Err(Err0248), node->token.text));
-        SWAG_VERIFY(!nameNode->isConstantGenTypeInfo(), context->report({nameNode, Err(Err0245)}));
         SWAG_VERIFY(nameNode->typeInfo->isString(), context->report({nameNode, Fmt(Err(Err0249), node->token.ctext(), nameNode->typeInfo->getDisplayNameC())}));
-        SWAG_VERIFY(!defaultVal->isConstantGenTypeInfo(), context->report({defaultVal, Err(Err0283)}));
+        SWAG_VERIFY(defaultVal->computedValue, context->report({defaultVal, Fmt(Err(Err0283), typeNode->typeInfo->getDisplayNameC())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, defaultVal->typeInfo, nullptr, defaultVal, CASTFLAG_DEFAULT));
 
-        node->typeInfo = typeNode->typeInfo;
         node->setFlagsValueIsComputed();
+        node->typeInfo = typeNode->typeInfo;
 
         auto tag = g_Workspace->hasTag(nameNode->computedValue->text);
         if (tag)
@@ -127,13 +126,20 @@ bool SemanticJob::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode
 
     // Check first parameter
     if (!typeFirst->isLambdaClosure())
-        return context->report({node, Err(Err0784)});
+        return context->report({first, Fmt(Err(Err0784), typeFirst->getDisplayNameC())});
 
     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeFirst, TypeInfoKind::LambdaClosure);
     if (typeFunc->parameters.size() > SWAG_LIMIT_CB_MAX_PARAMS)
-        return context->report({first, Fmt(Err(Err0785), SWAG_LIMIT_CB_MAX_PARAMS, typeFunc->parameters.size()), Diagnostic::isType(typeFunc)});
+    {
+        Diagnostic diag{first, Fmt(Err(Err0785), SWAG_LIMIT_CB_MAX_PARAMS, typeFunc->parameters.size())};
+        return context->report(diag, Diagnostic::hereIs(typeFunc->declNode));
+    }
+
     if (typeFunc->numReturnRegisters() > 1)
-        return context->report({first, Fmt(Err(Err0786), typeFunc->returnType->getDisplayNameC()), Diagnostic::isType(typeFunc)});
+    {
+        Diagnostic diag{first, Fmt(Err(Err0786), typeFunc->returnType->getDisplayNameC())};
+        return context->report(diag, Diagnostic::hereIs(typeFunc->declNode));
+    }
 
     node->typeInfo    = first->typeInfo;
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeCallback;
@@ -177,7 +183,7 @@ bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* nod
 
     // Check first parameter
     if (!first->typeInfo->isPointer())
-        return context->report({first, Err(Err0789)});
+        return context->report({first, Fmt(Err(Err0789), first->typeInfo->getDisplayNameC())});
 
     auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
     if (!ptrPointer->pointedType)
@@ -192,9 +198,8 @@ bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* nod
 
         if (!TypeManager::makeCompatibles(context, ptrPointer->pointedType, realType, nullptr, second, CASTFLAG_JUST_CHECK))
         {
-            Diagnostic diag{first, Err(Err0791)};
-            diag.hint = Diagnostic::isType(first->typeInfo);
-            diag.addRange(second->token, Diagnostic::isType(second->typeInfo));
+            Diagnostic diag{first, Fmt(Err(Err0791), first->typeInfo->getDisplayNameC(), realType->getDisplayNameC())};
+            diag.addRange(second->token, Diagnostic::isType(realType));
             return context->report(diag);
         }
     }
@@ -202,7 +207,7 @@ bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* nod
     if (context->result != ContextResult::Done)
         return true;
     if (!second->typeInfo->isPointerToTypeInfo())
-        return context->report({node, Fmt(Err(Err0792), second->typeInfo->getDisplayNameC())});
+        return context->report({second, Fmt(Err(Err0792), second->typeInfo->getDisplayNameC())});
 
     node->typeInfo    = g_TypeMgr->typeInfoAny;
     node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeAny;

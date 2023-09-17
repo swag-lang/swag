@@ -408,33 +408,28 @@ void initErrors()
     SWAG_ERROR(Err2030, "dependency error                                  $ cannot resolve the dependency to the module '%s' because version '%s' was not found");
     SWAG_ERROR(Err0516, "dependency error                                  $ cannot resolve the dependency to the module '%s' because of a version mismatched");
 
-    SWAG_ERROR(Err0800, "unsupported type      $ the intrinsic '@countof' does not accept an argument of type 'tuple'");
-    SWAG_ERROR(Err0796, "unsupported type      $ the intrinsic '@dataof' does not accept an argument of type 'tuple'");
-    SWAG_ERROR(Err0801, "unsupported type      $ the intrinsic '@countof' requires an integer argument, got '%s'");
-    SWAG_ERROR(Err0797, "unsupported type      $ the intrinsic '@dataof' does not accept an argument of type '%s'");
-    SWAG_ERROR(Err0442, "misplaced '@cvastart' $ the intrinsic '@cvastart' can only be used in a function with a final parameter of type 'cvarargs'");
-    SWAG_ERROR(Err0630, "misplaced '@index'    $ the intrinsic '@index' is only valid within a breakable statement such as 'loop', 'visit', 'for', etc.");
-    SWAG_ERROR(Err0489, "unsupported type      $ the intrinsic '@init' require a pointer as a first argument, got '%s'");
-    SWAG_ERROR(Err0084, "unsupported type      $ the intrinsic '@runes' requires a string as an argument, got '%s'");
-    SWAG_ERROR(Err0806, "misplaced '@spread'   $ the intrinsic '@spread' can only be used as a function argument");
-    SWAG_ERROR(Err0493, "forbidden '@postcopy' $ the intrinsic '@postcopy' cannot be called on type '%s' because of '#[Swag.NoCopy]'");
-    SWAG_ERROR(Err0730, "unsupported type      $ the intrinsic '@mkstring' requires a pointer to 'u8' as a first argument, got '%s'");
-
-    SWAG_ERROR(Err0793, "unsupported type      $ the intrinsic '@mkinterface' requires a pointer or a struct as first argument, got '%s'");
-    SWAG_ERROR(Err0794, "unsupported type      $ the intrinsic '@mkinterface' requires a type as a second argument, got '%s'");
-    SWAG_ERROR(Err0795, "unsupported type      $ the intrinsic '@mkinterface' requires an interface name as a third argument, got '%s'");
-
-    SWAG_ERROR(Err0283, "'@gettag' expects default value, found type");
-    SWAG_ERROR(Err0245, "'@gettag' expects name, found type");
-    SWAG_ERROR(Err0301, "'@mixin' number range: [0, 9] (given: '%u')");
-    SWAG_ERROR(Err0790, "'@mkany' can't use 'null' as first parameter");
-    SWAG_ERROR(Err0792, "'@mkany' expects 'typeinfo' or type for second parameter, found '%s'");
-    SWAG_ERROR(Err0789, "'@mkany' requires pointer as first parameter");
-    SWAG_ERROR(Err0785, "'@mkcallback' function limit exceeded: max '%d' parameters, found '%d'");
-    SWAG_ERROR(Err0786, "'@mkcallback' not allowed with function returning '%s'");
-    SWAG_ERROR(Err0784, "'@mkcallback' requires lambda for first parameter");
-    SWAG_ERROR(Err0783, "'@mkforeign' expects 'const *void' as second parameter");
-    SWAG_ERROR(Err0782, "'@mkforeign' requires lambda type first");
+    SWAG_ERROR(Err0800, "unsupported type       $ the intrinsic '@countof' does not accept an argument of type 'tuple'");
+    SWAG_ERROR(Err0796, "unsupported type       $ the intrinsic '@dataof' does not accept an argument of type 'tuple'");
+    SWAG_ERROR(Err0801, "unsupported type       $ the intrinsic '@countof' requires an integer argument, got '%s' instead");
+    SWAG_ERROR(Err0797, "unsupported type       $ the intrinsic '@dataof' does not accept an argument of type '%s'");
+    SWAG_ERROR(Err0442, "misplaced '@cvastart'  $ the intrinsic '@cvastart' can only be used in a function with a final parameter of type 'cvarargs'");
+    SWAG_ERROR(Err0630, "misplaced '@index'     $ the intrinsic '@index' is only valid within a breakable statement such as 'loop', 'visit', 'for', etc.");
+    SWAG_ERROR(Err0489, "unsupported type       $ the intrinsic '@init' require a pointer as a first argument, got '%s' instead");
+    SWAG_ERROR(Err0084, "unsupported type       $ the intrinsic '@runes' requires a string as an argument, got '%s' instead");
+    SWAG_ERROR(Err0806, "misplaced '@spread'    $ the intrinsic '@spread' can only be used as a function argument");
+    SWAG_ERROR(Err0493, "forbidden '@postcopy'  $ the intrinsic '@postcopy' cannot be called on type '%s' because of '#[Swag.NoCopy]'");
+    SWAG_ERROR(Err0730, "unsupported type       $ the intrinsic '@mkstring' requires a pointer to 'u8' as a first argument, got '%s' instead");
+    SWAG_ERROR(Err0793, "unsupported type       $ the intrinsic '@mkinterface' requires a pointer or a struct as first argument, got '%s' instead");
+    SWAG_ERROR(Err0794, "unsupported type       $ the intrinsic '@mkinterface' requires a type as a second argument, got '%s' instead");
+    SWAG_ERROR(Err0795, "unsupported type       $ the intrinsic '@mkinterface' requires an interface name as a third argument, got '%s' instead");
+    SWAG_ERROR(Err0283, "invalid argument       $ the intrinsic '@gettag' expects a default value of type '%s' as the last argument");
+    SWAG_ERROR(Err0790, "invalid argument       $ the intrinsic '@mkany' can' have 'null' as a first argument");
+    SWAG_ERROR(Err0789, "invalid argument       $ the intrinsic '@mkany' requires a pointer as a first argument, got '%s' instead");
+    SWAG_ERROR(Err0792, "invalid argument       $ the intrinsic '@mkany' expects a type as the second argument, got '%s' instead");
+    SWAG_ERROR(Err0791, "'@mkany' inconsistency $ the pointer type '%s' and the '@mkany' second argument '%s' are unrelated");
+    SWAG_ERROR(Err0784, "invalid argument       $ the intrinsic '@mkcallback' requires a pointer to function argument, got '%s' instead");
+    SWAG_ERROR(Err0785, "unsupported callback   $ the intrinsic '@mkcallback' does not allow a function with more than '%d' parameters, found '%d'");
+    SWAG_ERROR(Err0786, "unsupported callback   $ the intrinsic '@mkcallback' does not allow a function returning '%s'");
 
     SWAG_ERROR(Err0097, "%s '%s' isn't used as the first parameter in '%s'");
     SWAG_ERROR(Err0521, "%s '%s' not used as primary argument for function '%s'");
@@ -691,7 +686,6 @@ void initErrors()
     SWAG_ERROR(Err0175, "implicit casting from '%s' to '%s' not allowed");
     SWAG_ERROR(Err0124, "improper lambda call; '%s' isn't a variable (it's %s)");
     SWAG_ERROR(Err0674, "improper struct member name '%s'");
-    SWAG_ERROR(Err0791, "inconsistency in '@mkany'; value pointer and type are unrelated");
     SWAG_ERROR(Err0470, "incorrect address expression");
     SWAG_ERROR(Err0597, "incorrect attribute usage");
     SWAG_ERROR(Err0132, "incorrect file scope reference");
@@ -961,6 +955,10 @@ void initErrors()
     SWAG_ERROR(Err0308, "variable type deduction failed; expression is 'null'");
     SWAG_ERROR(Err0734, "variadic parameter must be last");
     SWAG_ERROR(Err0880, "while condition is always true");
+    SWAG_ERROR(Err0245, nullptr);
+    SWAG_ERROR(Err0301, nullptr);
+    SWAG_ERROR(Err0782, nullptr);
+    SWAG_ERROR(Err0783, nullptr);
     SWAG_ERROR(Err1114, nullptr);
     SWAG_ERROR(Err1166, nullptr);
     SWAG_ERROR(Err1079, nullptr);
@@ -1438,7 +1436,7 @@ void initErrors()
     SWAG_ERROR(Nte0080, "the type '%s' fails to meet the given constraint");
     SWAG_ERROR(Nte1063, "the type evaluates to '%s'");
     SWAG_ERROR(Nte1032, "the type is '%s' (consider an explicit 'cast(%s)' if needed)");
-    SWAG_ERROR(Nte1011, "the type is identified as '%s'");
+    SWAG_ERROR(Nte1011, "this type is '%s'");
     SWAG_ERROR(Nte0085, "the version format should be 'version.revision.buildnum', where each number is either >= 0 or the '?' character");
     SWAG_ERROR(Nte0051, "there's a concealed call to '%s' for the type '%s'");
     SWAG_ERROR(Nte1083, "there's a missing '%s' of type '%s'");
