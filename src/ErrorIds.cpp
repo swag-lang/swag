@@ -482,8 +482,8 @@ void initErrors()
     SWAG_ERROR(Err0297, "misplaced attribute                               $ the '#[Swag.Discardable]' attribute can only be applied to lambda variables, got '%s'");
     SWAG_ERROR(Err0753, "misplaced attribute                               $ the '#[Swag.Complete]' attribute can't be applied to function '%s'");
     SWAG_ERROR(Err0755, "misplaced attribute                               $ the '#[Swag.CalleeReturn]' attribute can't be applied to function '%s' $ '#[Swag.CalledReturn]' can only be applied to a macro ('#[Swag.Macro]') or a mixin ('#[Swag.Mixin]')");
+    SWAG_ERROR(Err0601, "missing arguments                                 $ the '#[Swag.Using]' attribute should have at least one argument");
 
-    SWAG_ERROR(Err0601, "'Swag.Using' is empty");
     SWAG_ERROR(Err0097, "%s '%s' isn't used as the first parameter in '%s'");
     SWAG_ERROR(Err0521, "%s '%s' not used as primary argument for function '%s'");
     SWAG_ERROR(Err0086, "%s '%s' used only to scope function '%s'");

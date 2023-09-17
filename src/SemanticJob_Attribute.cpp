@@ -724,9 +724,12 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
         }
 
         // The rest (default parameters)
-        auto funcDecl = CastAst<AstAttrDecl>(resolved->node, AstNodeKind::AttrDecl);
-        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(resolved->typeInfo, TypeInfoKind::FuncAttr);
-        for (int i = numParams; i < (int) typeFunc->parameters.size(); i++)
+        auto funcDecl    = CastAst<AstAttrDecl>(resolved->node, AstNodeKind::AttrDecl);
+        auto typeFunc    = CastTypeInfo<TypeInfoFuncAttr>(resolved->typeInfo, TypeInfoKind::FuncAttr);
+        auto countParams = (int) typeFunc->parameters.size();
+        if (typeFunc->isVariadic())
+            countParams--;
+        for (int i = numParams; i < countParams; i++)
         {
             auto param = CastAst<AstVarDecl>(funcDecl->parameters->childs[i], AstNodeKind::FuncDeclParam);
             SWAG_ASSERT(param->assignment);
