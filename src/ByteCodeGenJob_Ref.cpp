@@ -184,14 +184,16 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context, TypeInfo* type
     if (typeInfo->isFuncAttr())
     {
         truncRegisterRC(context, node->resultRegisterRC, 1);
-        EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+        auto inst       = EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+        inst->d.pointer = (uint8_t*) node->resolvedSymbolOverload;
         return true;
     }
 
     if (typeInfo->isPointer())
     {
         truncRegisterRC(context, node->resultRegisterRC, 1);
-        EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+        auto inst       = EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+        inst->d.pointer = (uint8_t*) node->resolvedSymbolOverload;
         return true;
     }
 

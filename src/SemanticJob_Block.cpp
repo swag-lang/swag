@@ -82,8 +82,7 @@ bool SemanticJob::resolveWhile(SemanticContext* context)
     if (node->boolExpression->hasComputedValue() && node->boolExpression->computedValue->reg.b)
     {
         Diagnostic diag{node->boolExpression, Err(Err0880)};
-        auto       note = Diagnostic::note(Nte(Nte0130));
-        return context->report(diag, note);
+        return context->report(diag);
     }
 
     node->byteCodeFct = ByteCodeGenJob::emitLoop;

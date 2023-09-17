@@ -1249,10 +1249,13 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
                 SWAG_CHECK(checkStackInitialized(cxt, addr, 8));
                 SWAG_CHECK(getStackValue(*ra, cxt, addr, 8));
                 ra->reg.u64 = *(uint64_t*) addr;
+                if (ip->d.pointer)
+                    ra->overload = (SymbolOverload*) ip->d.pointer;
                 break;
             }
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->kind = ValueKind::Unknown;
+            ra->kind     = ValueKind::Unknown;
+            ra->overload = nullptr;
             break;
 
         case ByteCodeOp::AffectOpPlusEqS8:

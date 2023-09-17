@@ -1,5 +1,6 @@
 #global #[Swag.Safety("overflow", true)]
 #global testerror "Saf0033"
+#global testerror "Saf0035"
 
 #assert cast(s8) 256 == 0
 #assert cast(s8) 257 == 0

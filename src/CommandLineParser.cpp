@@ -294,7 +294,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
             {
                 if (!g_CommandLine.ignoreBadParams)
                 {
-                    Report::error(Fmt(Err(Err0720), command.c_str()));
+                    Report::error(Fmt(Err(Fat0036), command.c_str()));
                     result = false;
                 }
                 continue;
@@ -308,7 +308,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
         {
             if (!g_CommandLine.ignoreBadParams)
             {
-                Report::error(Fmt(Err(Err0720), command.c_str()));
+                Report::error(Fmt(Err(Fat0036), command.c_str()));
                 result = false;
             }
 
@@ -336,7 +336,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
 
             if (index == (int) tokens.size())
             {
-                Report::error(Fmt(Err(Err0722), it->first.c_str(), arg->param));
+                Report::error(Fmt(Err(Fat0033), it->first.c_str(), arg->param));
                 result = false;
                 continue;
             }
@@ -362,7 +362,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
 
             if (index == (int) tokens.size())
             {
-                Report::error(Fmt(Err(Err0722), it->first.c_str(), arg->param));
+                Report::error(Fmt(Err(Fat0033), it->first.c_str(), arg->param));
                 result = false;
                 continue;
             }
@@ -376,7 +376,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
                 *(bool*) arg->buffer = false;
             else
             {
-                Report::error(Fmt(Err(Err0724), it->first.c_str(), argument.c_str()));
+                Report::error(Fmt(Err(Fat0031), it->first.c_str(), argument.c_str()));
                 result = false;
                 continue;
             }
@@ -386,7 +386,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
         {
             if (argument.empty())
             {
-                Report::error(Fmt(Err(Err0725), it->first.c_str(), argument.c_str()));
+                Report::error(Fmt(Err(Fat0034), it->first.c_str(), argument.c_str()));
                 result = false;
                 continue;
             }
@@ -399,7 +399,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
         {
             if (argument.empty())
             {
-                Report::error(Fmt(Err(Err0725), it->first.c_str(), argument.c_str()));
+                Report::error(Fmt(Err(Fat0034), it->first.c_str(), argument.c_str()));
                 result = false;
                 continue;
             }
@@ -412,7 +412,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
         {
             if (argument.empty())
             {
-                Report::error(Fmt(Err(Err0725), it->first.c_str(), argument.c_str()));
+                Report::error(Fmt(Err(Fat0034), it->first.c_str(), argument.c_str()));
                 result = false;
                 continue;
             }
@@ -440,9 +440,9 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
             if (!thisIsAnInt)
             {
                 if (argument.empty())
-                    Report::error(Fmt(Err(Err0727), it->first.c_str()));
+                    Report::error(Fmt(Err(Fat0035), it->first.c_str()));
                 else
-                    Report::error(Fmt(Err(Err0728), it->first.c_str(), argument.c_str()));
+                    Report::error(Fmt(Err(Fat0032), it->first.c_str(), argument.c_str()));
                 result = false;
                 continue;
             }

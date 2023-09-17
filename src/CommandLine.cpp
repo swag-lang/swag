@@ -14,14 +14,14 @@ bool CommandLine::check()
     stackSizeRT = (uint32_t) Allocator::alignSize(stackSizeRT);
     if (stackSizeRT < SWAG_LIMIT_MIN_STACK || stackSizeRT > SWAG_LIMIT_MAX_STACK)
     {
-        Report::error(Fmt(Err(Err0519), Utf8::toNiceSize(stackSizeRT).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MIN_STACK).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MAX_STACK).c_str()));
+        Report::error(Fmt(Err(Fat0030), Utf8::toNiceSize(stackSizeRT).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MIN_STACK).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MAX_STACK).c_str()));
         return false;
     }
 
     stackSizeBC = (uint32_t) Allocator::alignSize(stackSizeBC);
     if (stackSizeBC < SWAG_LIMIT_MIN_STACK || stackSizeBC > SWAG_LIMIT_MAX_STACK)
     {
-        Report::error(Fmt(Err(Err0519), Utf8::toNiceSize(stackSizeBC).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MIN_STACK).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MAX_STACK).c_str()));
+        Report::error(Fmt(Err(Fat0030), Utf8::toNiceSize(stackSizeBC).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MIN_STACK).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MAX_STACK).c_str()));
         return false;
     }
 
@@ -37,13 +37,13 @@ bool CommandLine::check()
     {
         if (target.os != SwagTargetOs::Windows)
         {
-            Report::error(Fmt(Err(Err0522), Backend::getOsName(target)));
+            Report::error(Fmt(Err(Fat0038), Backend::getOsName(target)));
             return false;
         }
 
         if (target.arch != SwagTargetArch::X86_64)
         {
-            Report::error(Fmt(Err(Err0523), Backend::getArchName(target)));
+            Report::error(Fmt(Err(Fat0037), Backend::getArchName(target)));
             return false;
         }
     }

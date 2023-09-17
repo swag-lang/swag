@@ -1181,13 +1181,17 @@ bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
     {
         // Deref capture context. If 0, no context.
         node->extMisc()->additionalRegisterRC += reserveRegisterRC(context);
-        EMIT_INST2(context, ByteCodeOp::DeRef64, node->extMisc()->additionalRegisterRC[1], node->extMisc()->additionalRegisterRC[0])->c.u64 = 8;
+        auto inst       = EMIT_INST2(context, ByteCodeOp::DeRef64, node->extMisc()->additionalRegisterRC[1], node->extMisc()->additionalRegisterRC[0]);
+        inst->c.u64     = 8;
+        inst->d.pointer = (uint8_t*) context->node->resolvedSymbolOverload;
 
-        // If 0, keep it 0, otherwhise compte the capture context context by adding that offset to the address of the closure storage
-        EMIT_INST2(context, ByteCodeOp::MulAddVC64, node->extMisc()->additionalRegisterRC[1], node->extMisc()->additionalRegisterRC[0])->c.u64 = 16;
+        // If 0, keep it 0, otherwhise get the capture context by adding that offset to the address of the closure storage
+        inst        = EMIT_INST2(context, ByteCodeOp::MulAddVC64, node->extMisc()->additionalRegisterRC[1], node->extMisc()->additionalRegisterRC[0]);
+        inst->c.u64 = 16;
 
         // Deref function pointer
-        EMIT_INST2(context, ByteCodeOp::DeRef64, node->extMisc()->additionalRegisterRC[0], node->extMisc()->additionalRegisterRC[0]);
+        inst            = EMIT_INST2(context, ByteCodeOp::DeRef64, node->extMisc()->additionalRegisterRC[0], node->extMisc()->additionalRegisterRC[0]);
+        inst->d.pointer = (uint8_t*) context->node->resolvedSymbolOverload;
     }
 
     emitSafetyNullCheck(context, node->extMisc()->additionalRegisterRC[0]);
