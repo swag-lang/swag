@@ -468,6 +468,8 @@ void initErrors()
     SWAG_ERROR(Err0829, "literal overflow                                  $ cannot negate number '%d' because '%u' is too large for type 's8'");
     SWAG_ERROR(Err0832, "literal overflow                                  $ cannot negate number '%I64d' because '%I64u' is too large for type 's64'");
     SWAG_ERROR(Err0387, "invalid literal                                   $ invalid number conversion for literal '%I64u'");
+    SWAG_ERROR(Err0769, "misplaced 'retval'                                $ the 'retval' special type can only be used within a function body");
+    SWAG_ERROR(Err0771, "invalid 'retval'                                  $ the 'retval' special type is not allowed in a function that returns nothing");
 
     SWAG_ERROR(Err0097, "%s '%s' isn't used as the first parameter in '%s'");
     SWAG_ERROR(Err0521, "%s '%s' not used as primary argument for function '%s'");
@@ -527,8 +529,6 @@ void initErrors()
     SWAG_ERROR(Err0342, "'orelse' operator not valid on struct");
     SWAG_ERROR(Err0332, "'orelse' operator not valid on type '%s'");
     SWAG_ERROR(Err0517, "'ref' requires pointer/reference, found type '%s'");
-    SWAG_ERROR(Err0771, "'retval' type not allowed in a void return function");
-    SWAG_ERROR(Err0769, "'retval' type restricted to function bodies");
     SWAG_ERROR(Err0654, "'self' required as first parameter for interface function '%s'");
     SWAG_ERROR(Err0306, "'slice' type must be 'const' given const right expression");
     SWAG_ERROR(Err0236, "expected 'string' type for '%s' message, found '%s'");

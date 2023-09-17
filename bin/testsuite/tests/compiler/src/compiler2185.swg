@@ -1,4 +1,3 @@
-
 #global testerror "Err0769"
 
 struct ST
