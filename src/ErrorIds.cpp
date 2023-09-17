@@ -431,6 +431,10 @@ void initErrors()
     SWAG_ERROR(Err0785, "unsupported callback   $ the intrinsic '@mkcallback' does not allow a function with more than '%d' parameters, found '%d'");
     SWAG_ERROR(Err0786, "unsupported callback   $ the intrinsic '@mkcallback' does not allow a function returning '%s'");
 
+    SWAG_ERROR(Err0635, "misplaced 'fallthrough' $ 'fallthrough' is invalid in the last 'case' of a 'switch'");
+    SWAG_ERROR(Err0634, "misplaced 'fallthrough' $ 'fallthrough' is only valid within a 'case' block");
+    SWAG_ERROR(Err0633, "misplaced 'fallthrough' $ 'fallthrough' is only valid within a 'switch'");
+
     SWAG_ERROR(Err0097, "%s '%s' isn't used as the first parameter in '%s'");
     SWAG_ERROR(Err0521, "%s '%s' not used as primary argument for function '%s'");
     SWAG_ERROR(Err0086, "%s '%s' used only to scope function '%s'");
@@ -492,9 +496,6 @@ void initErrors()
     SWAG_ERROR(Err0637, "'continue' valid only in breakable loop ('for', 'visit', 'loop', 'while')");
     SWAG_ERROR(Err0704, "'cstring' is not a valid enum; use 'string'");
     SWAG_ERROR(Err0446, "'cvarargs' parameter type is non-transferable");
-    SWAG_ERROR(Err0635, "'fallthrough' invalid in last 'case' of 'switch'");
-    SWAG_ERROR(Err0634, "'fallthrough' valid only in 'case' block");
-    SWAG_ERROR(Err0633, "'fallthrough' valid only in 'switch' block");
     SWAG_ERROR(Err0289, "'impl' not within 'impl for' block");
     SWAG_ERROR(Err0559, "'move' not applicable to immutable expression (type is '%s')");
     SWAG_ERROR(Err0619, "'moveref' can't be 'const'");

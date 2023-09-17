@@ -1051,6 +1051,7 @@ bool SemanticJob::resolveFallThrough(SemanticContext* context)
         parent = parent->parent;
     SWAG_VERIFY(parent && parent->kind == AstNodeKind::SwitchCase, context->report({node, Err(Err0634)}));
     node->switchCase = CastAst<AstSwitchCase>(parent, AstNodeKind::SwitchCase);
+    SWAG_VERIFY(node->switchCase->caseIndex != -1, context->report({node, Err(Err0634)}));
 
     // 'fallthrough' cannot be used on the last case, this has no sens
     auto switchBlock = CastAst<AstSwitch>(node->ownerBreakable, AstNodeKind::Switch);
