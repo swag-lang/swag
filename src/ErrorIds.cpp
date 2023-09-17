@@ -250,7 +250,7 @@ void initErrors()
     SWAG_ERROR(Err1096, "invalid type declaration                          $ expected the array type after its dimensions, found '%s' instead");
     SWAG_ERROR(Err1067, "invalid type declaration                          $ expected a type in the tuple definition, found '%s' instead");
     SWAG_ERROR(Err1060, "invalid type suffix                               $ expected an identifier or a type after the start of a type suffix ''', found '%s' instead");
-    SWAG_ERROR(Err1034, "misplaced '#mixin' block                          $ a '#mixin' block is only valid within a breakable statement such as 'loop', 'visit', 'for', etc.");
+    SWAG_ERROR(Err1034, "misplaced '#mixin' block                          $ a '#mixin' block is only valid within a breakable block such as 'loop', 'visit', 'for', etc.");
     SWAG_ERROR(Err1121, "misplaced access modifier                         $ the '%s' access modifier can only be used at the global scope");
     SWAG_ERROR(Err1065, "invalid variable list                             $ 'if' does not support multiples variable declarations");
     SWAG_ERROR(Err1111, "invalid variable name                             $ a variable name ('%s') can't start with '@', this is reserved for intrinsics $ only '@mixin' and '@alias' are possible in that case");
@@ -413,7 +413,7 @@ void initErrors()
     SWAG_ERROR(Err0801, "unsupported type                                  $ the intrinsic '@countof' requires an integer argument, got '%s' instead");
     SWAG_ERROR(Err0797, "unsupported type                                  $ the intrinsic '@dataof' does not accept an argument of type '%s'");
     SWAG_ERROR(Err0442, "misplaced '@cvastart'                             $ the intrinsic '@cvastart' can only be used in a function with a final parameter of type 'cvarargs'");
-    SWAG_ERROR(Err0630, "misplaced '@index'                                $ the intrinsic '@index' is only valid within a breakable statement such as 'loop', 'visit', 'for', etc.");
+    SWAG_ERROR(Err0630, "misplaced '@index'                                $ the intrinsic '@index' is only valid within a breakable block such as 'loop', 'visit', 'for', etc.");
     SWAG_ERROR(Err0489, "unsupported type                                  $ the intrinsic '@init' require a pointer as a first argument, got '%s' instead");
     SWAG_ERROR(Err0084, "unsupported type                                  $ the intrinsic '@runes' requires a string as an argument, got '%s' instead");
     SWAG_ERROR(Err0806, "misplaced '@spread'                               $ the intrinsic '@spread' can only be used as a function argument");
@@ -433,25 +433,28 @@ void initErrors()
     SWAG_ERROR(Err0635, "misplaced 'fallthrough'                           $ 'fallthrough' is invalid in the last 'case' of a 'switch'");
     SWAG_ERROR(Err0634, "misplaced 'fallthrough'                           $ 'fallthrough' is only valid within a 'case' block");
     SWAG_ERROR(Err0633, "misplaced 'fallthrough'                           $ 'fallthrough' is only valid within a 'switch'");
+    SWAG_ERROR(Err0239, "misplaced '#macro'                                $ '#macro' can only be used within a '#[Swag.Macro]' function");
+    SWAG_ERROR(Err0348, "misplaced '#self'                                 $ '#self' can only be used within functions");
+    SWAG_ERROR(Err0136, "misplaced '#up'                                   $ '#up' can only be used within a '#[Swag.Macro]' function");                    
+    SWAG_ERROR(Err0748, "missing return value                              $ not all control paths of %s returns a value");
+    SWAG_ERROR(Err0749, "missing return value                              $ the %s returns type '%s' but lacks a 'return' in its body");
+    SWAG_ERROR(Err0632, "misplaced 'break'                                 $ 'break' is only valid within a breakable block such as 'loop', 'visit', 'for', etc.");
+    SWAG_ERROR(Err0637, "misplaced 'continue'                              $ 'continue' is only valid within a breakable block such as 'loop', 'visit', 'for', etc.");
+    SWAG_ERROR(Err0729, "misplaced 'code'                                  $ 'code' is only valid within a '#[Swag.Macro]' or '#[Swag.Mixin]' function");
 
     SWAG_ERROR(Err0097, "%s '%s' isn't used as the first parameter in '%s'");
     SWAG_ERROR(Err0521, "%s '%s' not used as primary argument for function '%s'");
     SWAG_ERROR(Err0086, "%s '%s' used only to scope function '%s'");
     SWAG_ERROR(Err0505, "%s exceeded, max size is '0x%I64x' bytes");
     SWAG_ERROR(Err0755, "%s must have 'Swag.Macro' or 'Swag.Mixin' to use 'Swag.CalleeReturn'");
-    SWAG_ERROR(Err0606, "%s must return a value");
     SWAG_ERROR(Err0738, "%s needs a default value as preceding parameter has one");
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
-    SWAG_ERROR(Err0749, "%s returns type '%s' but lacks 'return' in body");
     SWAG_ERROR(Err0834, "%s size exceeded");
     SWAG_ERROR(Err0433, "%s");
     SWAG_ERROR(Err0567, "%s");
     SWAG_ERROR(Err0401, "%s");
-    SWAG_ERROR(Err0239, "'#macro' is for 'Swag.Macro' functions only");
     SWAG_ERROR(Err0804, "'#message' block needs 'Swag.CompilerMsgMask' param (given: '%s')");
     SWAG_ERROR(Err0198, "'#run' block not for expression use");
-    SWAG_ERROR(Err0348, "'#self' is for functions only");
-    SWAG_ERROR(Err0136, "'#up' identifier valid only within 'Swag.Macro' function");
     SWAG_ERROR(Err0617, "'#validif' validation failed for '%s'");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
     SWAG_ERROR(Err0089, "'%s' can't be compile-time evaluated");
@@ -488,10 +491,7 @@ void initErrors()
     SWAG_ERROR(Err0297, "'Swag.Discardable' only for lambda variable; '%s' found");
     SWAG_ERROR(Err0595, "'Swag.Pack' value is 0 or power of two (given: '%d')");
     SWAG_ERROR(Err0601, "'Swag.Using' is empty");
-    SWAG_ERROR(Err0632, "'break' valid only in breakable block");
-    SWAG_ERROR(Err0729, "'code' is valid only in 'Swag.Macro' or 'Swag.Mixin' function");
     SWAG_ERROR(Err0859, "'compileString' not executable in this context (too late)");
-    SWAG_ERROR(Err0637, "'continue' valid only in breakable loop ('for', 'visit', 'loop', 'while')");
     SWAG_ERROR(Err0704, "'cstring' is not a valid enum; use 'string'");
     SWAG_ERROR(Err0446, "'cvarargs' parameter type is non-transferable");
     SWAG_ERROR(Err0289, "'impl' not within 'impl for' block");
@@ -773,7 +773,6 @@ void initErrors()
     SWAG_ERROR(Err0111, "no pointer arithmetic on 'void' type");
     SWAG_ERROR(Err0579, "no pointer arithmetic with operand type '%s'");
     SWAG_ERROR(Err0741, "non-contiguous '@alias' in function '%s' (missing '@alias%u')");
-    SWAG_ERROR(Err0748, "not all control paths of %s yield a return value");
     SWAG_ERROR(Err0146, "null pointer dereference");
     SWAG_ERROR(Err0360, "number '%I64d' exceeds 's16' range");
     SWAG_ERROR(Err0361, "number '%I64d' exceeds 's32' range");
@@ -948,6 +947,7 @@ void initErrors()
     SWAG_ERROR(Err0734, "variadic parameter must be last");
     SWAG_ERROR(Err0880, "while condition is always true");
 
+    SWAG_ERROR(Err0606, nullptr);
     SWAG_ERROR(Err0427, nullptr);
     SWAG_ERROR(Err0426, nullptr);
     SWAG_ERROR(Err0428, nullptr);

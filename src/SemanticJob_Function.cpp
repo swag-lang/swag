@@ -326,10 +326,8 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
             if (!(funcNode->semFlags & SEMFLAG_SCOPE_HAS_RETURN))
             {
                 if (funcNode->semFlags & SEMFLAG_FCT_HAS_RETURN)
-                    return context->report({funcNode, funcNode->token, Fmt(Err(Err0748), funcNode->getDisplayNameC())});
-                if (!funcNode->returnType->childs.empty())
-                    return context->report({funcNode->returnType->childs.front(), Fmt(Err(Err0749), funcNode->getDisplayNameC(), funcNode->returnType->typeInfo->getDisplayNameC())});
-                return context->report({funcNode, funcNode->token, Fmt(Err(Err0749), funcNode->getDisplayNameC(), funcNode->returnType->typeInfo->getDisplayNameC())});
+                    return context->report({funcNode->returnType, Fmt(Err(Err0748), funcNode->getDisplayNameC())});
+                return context->report({funcNode->returnType, Fmt(Err(Err0749), funcNode->getDisplayNameC(), funcNode->returnType->typeInfo->getDisplayNameC())});
             }
         }
     }

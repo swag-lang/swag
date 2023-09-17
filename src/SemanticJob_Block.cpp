@@ -206,8 +206,8 @@ bool SemanticJob::resolveInlineAfter(SemanticContext* context)
             if (!(node->semFlags & SEMFLAG_SCOPE_HAS_RETURN))
             {
                 if (node->semFlags & SEMFLAG_FCT_HAS_RETURN)
-                    return context->report({fct, Fmt(Err(Err0748), fct->getDisplayNameC())});
-                return context->report({fct, Fmt(Err(Err0606), fct->getDisplayNameC())});
+                    return context->report({fct->returnType, Fmt(Err(Err0748), fct->getDisplayNameC())});
+                return context->report({fct->returnType, Fmt(Err(Err0749), fct->getDisplayNameC(), fct->returnType->typeInfo->getDisplayNameC())});
             }
         }
     }

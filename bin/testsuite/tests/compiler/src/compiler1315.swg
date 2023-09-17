@@ -1,6 +1,5 @@
-#global testerror "Err0239"
-//#[Swag.PrintBc]
-#test
+#[Swag.Macro]
+func toto()
 {
     var cpt = 6
 
@@ -15,4 +14,9 @@
     }
 
     @assert(cpt == 6)
+}
+
+#test
+{
+    toto()
 }

@@ -1,7 +1,4 @@
-
-;
-
-#global testerror "Err0749";
+#global testerror "Err0749"
 func main () -> bool
 {
 }
