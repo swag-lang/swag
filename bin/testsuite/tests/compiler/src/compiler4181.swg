@@ -1,8 +1,9 @@
-#global testerror "Err0425"
+#global testerror "Saf0022"
 
 #[Swag.Optim("", false)]
+#[Swag.Safety("", true)]
 #[Swag.Safety("sanity", true)]
-func toto()
+#test
 {
     var y = -10'f32
     y *= 2

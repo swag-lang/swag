@@ -1,7 +1,7 @@
-#global testerror "Err0605"
+#global testerror "Saf0003"
 #assert #run @compiler().getBuildCfg().byteCodeOptimizeLevel >= 0
 
-#[Swag.Safety("math", false)]
+#[Swag.Safety("math", true)]
 #test
 {
     const y = -128's8

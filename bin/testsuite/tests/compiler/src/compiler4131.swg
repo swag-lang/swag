@@ -1,4 +1,4 @@
-#global testerror "Err0417"
+//#global testerror "Err0417"
 #assert #run @compiler().getBuildCfg().byteCodeOptimizeLevel >= 0
 
 #[Swag.Safety("nan", false)]
@@ -7,5 +7,5 @@
 {
     let y = Swag.F32.Nan
     let x = @pow(y, 2)
-    @print(x)
+    //@print(x)
 }
