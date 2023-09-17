@@ -151,7 +151,7 @@ void initErrors()
     SWAG_ERROR(Err1031, "access modifier already defined                   $ invalid use of '%s' access modifier previously specifying '%s'");
     SWAG_ERROR(Err1200, "ambiguous syntax                                  $ ambiguity arises between initializing '%s' and starting a new block");
     SWAG_ERROR(Err1195, "ambiguous syntax                                  $ ambiguous declaration within lambda type parameters");
-    SWAG_ERROR(Err2026, "character literal is missing its closing backtick $ expected a closing backtick '`' before the end of the line");
+    SWAG_ERROR(Err2026, "missing character literal closing backtick        $ expected a closing backtick '`' before the end of the line");
     SWAG_ERROR(Err0242, "compile-time evaluation required                  $ '@include' requited its filename argument to be evaluated at compile-time");
     SWAG_ERROR(Err1217, "conflicting 'moveref' qualifier                   $ the 'moveref' qualifier can't be combined with an immutable ('const') expression");
     SWAG_ERROR(Err0757, "conflicting attributes                            $ the '#[Swag.Macro]' and '#[Swag.Inline]' attributes are mutually exclusive, the %s can't have both");
@@ -465,12 +465,10 @@ void initErrors()
     SWAG_ERROR(Err0580, "missing test warning                              $ expected at leat one warning, but none was raised");
     SWAG_ERROR(Err0359, "literal overflow                                  $ the number '%I64d' is too large for type '%s'");
     SWAG_ERROR(Err0415, "literal overflow                                  $ the number '%I64u' is too large for type 's8'");
+    SWAG_ERROR(Err0829, "literal overflow                                  $ cannot negate number '%d' because '%u' is too large for type 's8'");
+    SWAG_ERROR(Err0832, "literal overflow                                  $ cannot negate number '%I64d' because '%I64u' is too large for type 's64'");
     SWAG_ERROR(Err0387, "invalid literal                                   $ invalid number conversion for literal '%I64u'");
 
-    SWAG_ERROR(Err0832, "number '%I64d' negation invalid: '%I64u' out of 's64' range");
-    SWAG_ERROR(Err0830, "number '%d' negation invalid: '%u' out of 's16' range");
-    SWAG_ERROR(Err0831, "number '%d' negation invalid: '%u' out of 's32' range");
-    SWAG_ERROR(Err0829, "number '%d' negation invalid: '%u' out of 's8' range");
     SWAG_ERROR(Err0097, "%s '%s' isn't used as the first parameter in '%s'");
     SWAG_ERROR(Err0521, "%s '%s' not used as primary argument for function '%s'");
     SWAG_ERROR(Err0086, "%s '%s' used only to scope function '%s'");
@@ -934,6 +932,8 @@ void initErrors()
     SWAG_ERROR(Err0308, "variable type deduction failed; expression is 'null'");
     SWAG_ERROR(Err0734, "variadic parameter must be last");
 
+    SWAG_ERROR(Err0830, nullptr);
+    SWAG_ERROR(Err0831, nullptr);
     SWAG_ERROR(Err0360, nullptr);
     SWAG_ERROR(Err0361, nullptr);
     SWAG_ERROR(Err0422, nullptr);

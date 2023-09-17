@@ -55,17 +55,17 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, Ast
         {
         case NativeTypeKind::S8:
             if (child->computedValue->reg.s8 <= INT8_MIN)
-                return context->report({child, Fmt(Err(Err0829), child->computedValue->reg.s8, -child->computedValue->reg.s8)});
+                return context->report({child, Fmt(Err(Err0829), child->computedValue->reg.s8, -child->computedValue->reg.s8, "s8")});
             child->computedValue->reg.s64 = -child->computedValue->reg.s8;
             break;
         case NativeTypeKind::S16:
             if (child->computedValue->reg.s16 <= INT16_MIN)
-                return context->report({child, Fmt(Err(Err0830), child->computedValue->reg.s16, -child->computedValue->reg.s16)});
+                return context->report({child, Fmt(Err(Err0829), child->computedValue->reg.s16, -child->computedValue->reg.s16, "s16")});
             child->computedValue->reg.s64 = -child->computedValue->reg.s16;
             break;
         case NativeTypeKind::S32:
             if (child->computedValue->reg.s32 <= INT32_MIN)
-                return context->report({child, Fmt(Err(Err0831), child->computedValue->reg.s32, -child->computedValue->reg.s32)});
+                return context->report({child, Fmt(Err(Err0829), child->computedValue->reg.s32, -child->computedValue->reg.s32, "s32")});
             child->computedValue->reg.s64 = -child->computedValue->reg.s32;
             if (typeInfo->isUntypedInteger())
             {
