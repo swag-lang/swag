@@ -1050,8 +1050,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     SWAG_VERIFY(node->typeInfo, context->report({node, Fmt(Err(Err0309), Naming::kindName(node).c_str(), node->token.ctext())}));
 
     // Type should be a correct one
-    SWAG_VERIFY(!node->typeInfo->isPointerNull(), context->report({node, Err(Err0308)}));
-    SWAG_VERIFY(!node->typeInfo->isVoid(), context->report({node, Err(Err0149)}));
+    SWAG_VERIFY(!node->typeInfo->isPointerNull(), context->report({node->assignment ? node->assignment : node, Err(Err0308)}));
+    SWAG_VERIFY(!node->typeInfo->isVoid(), context->report({node->type ? node->type : node, Err(Err0149)}));
 
     // A 'let' for a struct make the type const
     if (node->specFlags & AstVarDecl::SPECFLAG_IS_LET && node->typeInfo->isStruct())
