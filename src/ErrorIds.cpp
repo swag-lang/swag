@@ -518,6 +518,8 @@ void initErrors()
     SWAG_ERROR(Err0022, "invalid array dimension                           $ the array dimension must be an integer, got '%s' instead");
     SWAG_ERROR(Err0137, "misplaced '%s'                                    $ '%s' can't be used in a struct special function ('%s')");
     SWAG_ERROR(Err0138, "misplaced '%s'                                    $ '%s' can only be used inside a function marked with 'throw', but '%s' isn't");
+    SWAG_ERROR(Err0734, "misplaced variadic parameter                      $ a variadic parameter must be the last one");
+    SWAG_ERROR(Err0498, "invalid argument                                  $ the '%s' count must be an integer, got '%s' instead");
 
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
@@ -525,7 +527,6 @@ void initErrors()
     SWAG_ERROR(Err0085, "'%s' can't be dereferenced as struct or pointer to struct (type is '%s')");
     SWAG_ERROR(Err0194, "'%s' can't be dereferenced by index; pointer arithmetic not allowed");
     SWAG_ERROR(Err0788, "'%s' can't have 'null' as the first parameter");
-    SWAG_ERROR(Err0498, "'%s' count must be integer, found '%s'");
     SWAG_ERROR(Err0495, "'%s' first parameter must be pointer, found '%s'");
     SWAG_ERROR(Err0127, "'%s' has call parameters but is %s, not a function");
     SWAG_ERROR(Err0535, "'%s' is for error-raising functions");
@@ -924,7 +925,6 @@ void initErrors()
     SWAG_ERROR(Err0436, "variable declared with 'let' requires explicit initialization");
     SWAG_ERROR(Err0645, "variable double initialized with type and assignment");
     SWAG_ERROR(Err0308, "variable type deduction failed; expression is 'null'");
-    SWAG_ERROR(Err0734, "variadic parameter must be last");
 
     SWAG_ERROR(Err0612, nullptr);
     SWAG_ERROR(Err0608, nullptr);
