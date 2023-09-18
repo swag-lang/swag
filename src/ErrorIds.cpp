@@ -536,6 +536,12 @@ void initErrors()
     SWAG_ERROR(Err0321, "compile-time evaluation required                  $ the operation on the tuple cannot be done compile-time $ in order to make that kind of compile-time evaluation, the tuple should be '#[Swag.ConstExpr]'");
     SWAG_ERROR(Err0089, "compile-time evaluation required                  $ '%s' can't be evaluated at compile-time");
     SWAG_ERROR(Err0206, "invalid stack frame reference                     $ you can't reference %s '%s' because it's in a different stack frame");
+    SWAG_ERROR(Err0704, "invalid enum type                                 $ the type 'cstring' is not a valid enum type $ consider using 'string' instead");
+    SWAG_ERROR(Err0446, "non-transferable 'cvarargs' type                  $ a parameter with the type 'cvarargs' cannot be passed to another function");
+    SWAG_ERROR(Err0125, "invalid function call                             $ '%s' has call parameters but the type '%s' is not a function");
+    SWAG_ERROR(Err0127, "invalid function call                             $ '%s' has call parameters but is %s, not a function");
+    SWAG_ERROR(Err0201, "recursive evaluation                              $ the struct '%s' references itself, which is causing a recursion");
+    SWAG_ERROR(Err0772, "missing return value                              $ expected an expression of type '%s' after 'return'");
 
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
@@ -543,7 +549,6 @@ void initErrors()
     SWAG_ERROR(Err0194, "'%s' can't be dereferenced by index; pointer arithmetic not allowed");
     SWAG_ERROR(Err0788, "'%s' can't have 'null' as the first parameter");
     SWAG_ERROR(Err0495, "'%s' first parameter must be pointer, found '%s'");
-    SWAG_ERROR(Err0127, "'%s' has call parameters but is %s, not a function");
     SWAG_ERROR(Err0535, "'%s' is for error-raising functions");
     SWAG_ERROR(Err0139, "'%s' is for function calls, but '%s' is %s");
     SWAG_ERROR(Err0671, "'%s' is generic; '%s' lacks generic parameters");
@@ -553,16 +558,11 @@ void initErrors()
     SWAG_ERROR(Err0787, "'%s' needs pointer as first parameter");
     SWAG_ERROR(Err0248, "'%s' parameter can't be compiled");
     SWAG_ERROR(Err0249, "'%s' parameter must be string, found '%s'");
-    SWAG_ERROR(Err0201, "'%s' references itself, causing recursion");
     SWAG_ERROR(Err0496, "'%s' second parameter must be pointer, found '%s'");
     SWAG_ERROR(Err0497, "'%s' second parameter should point to '%s', points to '%s'");
     SWAG_ERROR(Err0858, "'%s' should not have line break %s");
-    SWAG_ERROR(Err0772, "expected '%s' type expression after 'return'");
-    SWAG_ERROR(Err0125, "'%s' with call parameters is type '%s', not a function");
     SWAG_ERROR(Err0852, "'AttributeUsage.KindMsgGen' valid only with 'AttributeUsage.Struct' or 'AttributeUsage.Enum'");
     SWAG_ERROR(Err0859, "'compileString' not executable in this context (too late)");
-    SWAG_ERROR(Err0704, "'cstring' is not a valid enum; use 'string'");
-    SWAG_ERROR(Err0446, "'cvarargs' parameter type is non-transferable");
     SWAG_ERROR(Err0289, "'impl' not within 'impl for' block");
     SWAG_ERROR(Err0559, "'move' not applicable to immutable expression (type is '%s')");
     SWAG_ERROR(Err0619, "'moveref' can't be 'const'");
@@ -1297,7 +1297,7 @@ void initErrors()
     SWAG_ERROR(Nte0100, "an attribute is not a function; please consider removing it");
     SWAG_ERROR(Nte1121, "an implicit '@countof' is present here");
     SWAG_ERROR(Nte0045, "an instance of the generic function '%s'");
-    SWAG_ERROR(Nte0067, "anticipating '%s' based on function return type");
+    SWAG_ERROR(Nte0067, "'%s' is needed because of the function return type");
     SWAG_ERROR(Nte0019, "applied on this %s");
     SWAG_ERROR(Nte0038, "associated command line option: '%s'");
     SWAG_ERROR(Nte1096, "attribute is unexpected");
@@ -1357,7 +1357,7 @@ void initErrors()
     SWAG_ERROR(Nte0015, "here is the reference");
     SWAG_ERROR(Nte0030, "here is the tuple's definition");
     SWAG_ERROR(Nte0039, "here is the variable's declaration");
-    SWAG_ERROR(Nte0064, "here's the field causing the recursion");
+    SWAG_ERROR(Nte0064, "here is the field causing the recursion");
     SWAG_ERROR(Nte1047, "hidden call to '%s' detected");
     SWAG_ERROR(Nte1119, "identified an enum value");
     SWAG_ERROR(Nte1059, "this is the first usage");
