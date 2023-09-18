@@ -521,6 +521,9 @@ void initErrors()
     SWAG_ERROR(Err0734, "misplaced variadic parameter                      $ a variadic parameter must be the last one");
     SWAG_ERROR(Err0498, "invalid argument                                  $ the '%s' count must be an integer, got '%s' instead");
 
+    SWAG_ERROR(Err0342, "invalid 'orelse' type $ the 'orelse' operator does not accept the type 'struct' as an argument");
+    SWAG_ERROR(Err0332, "invalid 'orelse' type $ the 'orelse' operator dnoes not accept the type '%s' as an argument");
+
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
     SWAG_ERROR(Err0089, "'%s' can't be compile-time evaluated");
@@ -552,8 +555,6 @@ void initErrors()
     SWAG_ERROR(Err0559, "'move' not applicable to immutable expression (type is '%s')");
     SWAG_ERROR(Err0619, "'moveref' can't be 'const'");
     SWAG_ERROR(Err0126, "'opSlice' must return string or slice ('%s' given)");
-    SWAG_ERROR(Err0342, "'orelse' operator not valid on struct");
-    SWAG_ERROR(Err0332, "'orelse' operator not valid on type '%s'");
     SWAG_ERROR(Err0517, "'ref' requires pointer/reference, found type '%s'");
     SWAG_ERROR(Err0654, "'self' required as first parameter for interface function '%s'");
     SWAG_ERROR(Err0306, "'slice' type must be 'const' given const right expression");

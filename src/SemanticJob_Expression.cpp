@@ -285,7 +285,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, ifZero));
 
     SWAG_CHECK(evaluateConstExpression(context, expression, ifZero));
-    if (context->result == ContextResult::Pending)
+    if (context->result != ContextResult::Done)
         return true;
 
     auto typeInfo = TypeManager::concreteType(expression->typeInfo);
@@ -293,7 +293,6 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
     if (typeInfo->isStruct())
     {
         Diagnostic diag{node->sourceFile, node->token, Err(Err0342)};
-        diag.hint = Nte(Nte1061);
         diag.addRange(expression, Diagnostic::isType(typeInfo));
         return context->report(diag);
     }
@@ -305,7 +304,6 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
              !typeInfo->isLambdaClosure())
     {
         Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0332), typeInfo->getDisplayNameC())};
-        diag.hint = Nte(Nte1061);
         diag.addRange(expression, Diagnostic::isType(typeInfo));
         return context->report(diag);
     }
