@@ -319,8 +319,6 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
 
     auto typeSwitch = TypeManager::concreteType(node->typeInfo);
 
-    // Verify switch expression type is valid
-    SWAG_VERIFY(!typeSwitch->isAny(), context->report({node->expression, Err(Err0608)}));
     switch (typeSwitch->kind)
     {
     case TypeInfoKind::Slice:
@@ -369,7 +367,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                         if (expr->isConstantGenTypeInfo())
                             return context->report({expr, Fmt(Err(Err0611), expr->token.ctext())}, note);
                         if (expr->typeInfo->isEnum())
-                            return context->report({expr, Fmt(Err(Err0612), expr->token.ctext())}, note);
+                            return context->report({expr, Fmt(Err(Err0611), expr->token.ctext())}, note);
                         if (typeExpr->isNativeInteger())
                             return context->report({expr, Fmt(Err(Err0613), expr->computedValue->reg.u64)}, note);
                         return context->report({expr, Fmt(Err(Err0614), expr->computedValue->reg.f64)}, note);

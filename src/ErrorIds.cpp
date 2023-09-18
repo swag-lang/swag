@@ -500,6 +500,17 @@ void initErrors()
     SWAG_ERROR(Err0263, "invalid character literal                         $ can't convert the character literal '0x%x' to 'u8', this is out of range");
     SWAG_ERROR(Err0909, "invalid unicode value                             $ value '0x%x is not a valid unicode code point, and can't be converted to UTF8");
     SWAG_ERROR(Err0262, "invalid character literal                         $ the character literal '%s' seems to be a string and not a character");
+    SWAG_ERROR(Err0603, "file error                                        $ failed to delete file '%s'");
+    SWAG_ERROR(Err0509, "file error                                        $ failed to access file '%s'");
+    SWAG_ERROR(Err0508, "file error                                        $ the file '%s' can't be found in the module folder '%s'");
+    SWAG_ERROR(Err0524, "file error                                        $ failed to open file '%s' for writing");
+    SWAG_ERROR(Err0525, "file error                                        $ failed to write to file '%s'");
+    SWAG_ERROR(Err0314, "file error                                        $ the file format must be ASCII, UTF-8, or UTF-8-BOM");
+    SWAG_ERROR(Err0620, "incomplete switch                                 $ the value '%s.%s' is missing");
+    SWAG_ERROR(Err0613, "'switch' value already defined                    $ the 'switch' value '%d' has already been defined");
+    SWAG_ERROR(Err0614, "'switch' value already defined                    $ the 'switch' value '%f' has already been defined");
+    SWAG_ERROR(Err0611, "'switch' value already defined                    $ the 'switch' value '%s' has already been defined");
+    SWAG_ERROR(Err0609, "invalid 'switch' type                             $ 'switch' does not accept an expression of type '%s'");
 
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
@@ -649,12 +660,6 @@ void initErrors()
     SWAG_ERROR(Err0051, "failed to add '%s' to 'PATH' variable");
     SWAG_ERROR(Err0045, "failed to create '%s' process (::CreatePipe)");
     SWAG_ERROR(Err0510, "failed to retrieve file '%s' for module dependency '%s'");
-    SWAG_ERROR(Err0603, "file '%s' deletion failed");
-    SWAG_ERROR(Err0509, "file '%s' inaccessible");
-    SWAG_ERROR(Err0508, "file '%s' not found in module folder '%s'");
-    SWAG_ERROR(Err0524, "file '%s' write access denied");
-    SWAG_ERROR(Err0525, "file '%s' write failure");
-    SWAG_ERROR(Err0314, "file format must be ascii, utf-8, or utf-8-bom");
     SWAG_ERROR(Err0258, "foreign function '%s' unresolved");
     SWAG_ERROR(Err0754, "function '%s' attribute mismatch with 'Swag.Implicit'");
     SWAG_ERROR(Err0478, "function '%s' can't have generic parameters");
@@ -749,7 +754,6 @@ void initErrors()
     SWAG_ERROR(Err0593, "invalid safety value '%s'");
     SWAG_ERROR(Err0576, "invalid scope move of '%d'");
     SWAG_ERROR(Err0077, "invalid second parameter for '%s' (not type '%s')");
-    SWAG_ERROR(Err0609, "invalid switch type '%s'");
     SWAG_ERROR(Err0697, "invalid type '%s' for 'Swag.EnumFlags' (unsigned integer required)");
     SWAG_ERROR(Err0698, "invalid type '%s' for 'Swag.EnumIndex' (integer required)");
     SWAG_ERROR(Err0170, "invalid type '%s' for operator '<<' (integer required)");
@@ -856,12 +860,6 @@ void initErrors()
     SWAG_ERROR(Err0662, "expected struct or enum, found '%s' as %s");
     SWAG_ERROR(Err0666, "struct requires public access for 'Swag.Opaque'");
     SWAG_ERROR(Err0532, "suffix literals like '%s' are for struct conversions only");
-    SWAG_ERROR(Err0612, "switch enum value '%s' already defined");
-    SWAG_ERROR(Err0620, "switch incomplete; missing '%s.%s'");
-    SWAG_ERROR(Err0608, "switch type 'any' requires concrete casting");
-    SWAG_ERROR(Err0613, "switch value '%d' already defined");
-    SWAG_ERROR(Err0614, "switch value '%f' already defined");
-    SWAG_ERROR(Err0611, "switch value '%s' already defined");
     SWAG_ERROR(Err0346, "symbol '%s' defined in parent scope");
     SWAG_ERROR(Err0108, "test function '%s' called from runtime '%s'");
     SWAG_ERROR(Err0578, "too many variadic parameters ('%d' given, max: '%d')");
@@ -928,6 +926,8 @@ void initErrors()
     SWAG_ERROR(Err0308, "variable type deduction failed; expression is 'null'");
     SWAG_ERROR(Err0734, "variadic parameter must be last");
 
+    SWAG_ERROR(Err0612, nullptr);
+    SWAG_ERROR(Err0608, nullptr);
     SWAG_ERROR(Err0910, nullptr);
     SWAG_ERROR(Err0086, nullptr);
     SWAG_ERROR(Err0521, nullptr);
@@ -1350,7 +1350,7 @@ void initErrors()
     SWAG_ERROR(Nte0035, "here is the other '#import'");
     SWAG_ERROR(Nte0036, "here is the other definition");
     SWAG_ERROR(Nte0063, "here is the other return statement");
-    SWAG_ERROR(Nte0014, "here is the other value reference");
+    SWAG_ERROR(Nte0014, "here is the other definition");
     SWAG_ERROR(Nte0037, "here is the previous definition");
     SWAG_ERROR(Nte0024, "here is the prior declaration");
     SWAG_ERROR(Nte0032, "here is the problematic attribute");
@@ -1378,7 +1378,7 @@ void initErrors()
     SWAG_ERROR(Nte0089, "missing %s of specified type '%s'");
     SWAG_ERROR(Nte0088, "missing parameter '%s' of type '%s'");
     SWAG_ERROR(Nte1071, "missing parameter identified");
-    SWAG_ERROR(Nte0034, "missing value reference can be found here");
+    SWAG_ERROR(Nte0034, "the missing value can be found here");
     SWAG_ERROR(Nte0012, "note: Use '-w:<path>' or '--workspace:<path>' to specify a valid workspace folder or run swag from an appropriate workspace");
     SWAG_ERROR(Nte1106, "observed an immutable struct parameter");
     SWAG_ERROR(Nte1115, "one function declares 'throw' while the other doesn't");
