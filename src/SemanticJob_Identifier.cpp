@@ -791,7 +791,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         !prevNode->typeInfo->isStruct())
     {
         Diagnostic diag{prevNode, Fmt(Err(Err0085), prevNode->token.ctext(), prevNode->typeInfo->getDisplayNameC())};
-        diag.hint = Diagnostic::isType(prevNode->typeInfo);
         return context->report(diag);
     }
 

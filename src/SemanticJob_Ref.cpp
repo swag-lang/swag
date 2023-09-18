@@ -601,7 +601,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     {
         if (!arrayType->isPointerArithmetic() && !(arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DREF))
         {
-            Diagnostic diag{arrayNode->array, Fmt(Err(Err0194), arrayNode->resolvedSymbolName->name.c_str()), Diagnostic::isType(arrayType)};
+            Diagnostic diag{arrayNode->array, Fmt(Err(Err0194), arrayNode->resolvedSymbolName->name.c_str(), arrayType->getDisplayNameC())};
             return context->report(diag);
         }
 
@@ -859,7 +859,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     {
         if (!arrayType->isPointerArithmetic() && !(arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DREF))
         {
-            Diagnostic diag{arrayNode->array, Fmt(Err(Err0194), arrayNode->resolvedSymbolName->name.c_str()), Diagnostic::isType(arrayType)};
+            Diagnostic diag{arrayNode->array, Fmt(Err(Err0194), arrayNode->resolvedSymbolName->name.c_str(), arrayType->getDisplayNameC())};
             return context->report(diag);
         }
 

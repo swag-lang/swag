@@ -547,10 +547,13 @@ void initErrors()
     SWAG_ERROR(Err0795, "unsupported type                                  $ the intrinsic '@mkinterface' requires an interface name as a third argument, got '%s' instead");
     SWAG_ERROR(Err1179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
 
+    SWAG_ERROR(Err0238, "compiler assertion failed                         $ the '#assert' expression was evaluated to false");
+    SWAG_ERROR(Err0056, "unsupported OS                                    $ the OS '%s' is not supported by the x64 backend");
+    SWAG_ERROR(Err0085, "invalid dereference                               $ '%s' has type '%s' and can't be dereferenced like a struct or a pointer to struct");
+    SWAG_ERROR(Err0194, "invalid dereference                               $ '%s' has type '%s' and can't be dereferenced by index because pointer arithmetic is not allowed");
+
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
-    SWAG_ERROR(Err0085, "'%s' can't be dereferenced as struct or pointer to struct (type is '%s')");
-    SWAG_ERROR(Err0194, "'%s' can't be dereferenced by index; pointer arithmetic not allowed");
     SWAG_ERROR(Err0788, "'%s' can't have 'null' as the first parameter");
     SWAG_ERROR(Err0495, "'%s' first parameter must be pointer, found '%s'");
     SWAG_ERROR(Err0535, "'%s' is for error-raising functions");
@@ -623,7 +626,6 @@ void initErrors()
     SWAG_ERROR(Err0185, "closure can't be assigned to a lambda type");
     SWAG_ERROR(Err0091, "compile-time %s '%s' inaccessible from runtime %s");
     SWAG_ERROR(Err0107, "compile-time function '%s' called from runtime %s");
-    SWAG_ERROR(Err0238, "compiler assertion failure");
     SWAG_ERROR(Err0060, "compiler constant not for runtime reference");
     SWAG_ERROR(Err0119, "complex generic type deduction (embedded tuples)");
     SWAG_ERROR(Err0311, "constant creation failed due to generic type '%s'");
@@ -912,7 +914,6 @@ void initErrors()
     SWAG_ERROR(Err0827, "unsigned type '%s' negation invalid");
     SWAG_ERROR(Err0803, "unsupported '@nameof' usage");
     SWAG_ERROR(Err0799, "unsupported '@stringof' usage");
-    SWAG_ERROR(Err0056, "unsupported x64 OS '%s'");
     SWAG_ERROR(Err0780, "unused alias '%s'; consider removal");
     SWAG_ERROR(Err0144, "value '%s' not found in enum '%s'");
     SWAG_ERROR(Err0706, "value '%s' of type '%s' requires initialization");
@@ -1448,7 +1449,7 @@ void initErrors()
     SWAG_ERROR(Nte1032, "the type is '%s' (consider an explicit 'cast(%s)' if needed)");
     SWAG_ERROR(Nte1011, "this type is '%s'");
     SWAG_ERROR(Nte0085, "the version format should be 'version.revision.buildnum', where each number is either >= 0 or the '?' character");
-    SWAG_ERROR(Nte0051, "there's a concealed call to '%s' for the type '%s'");
+    SWAG_ERROR(Nte0051, "there's an hidden call to '%s' for the type '%s'");
     SWAG_ERROR(Nte1083, "there's a missing '%s' of type '%s'");
     SWAG_ERROR(Nte1049, "there's an implied first parameter 'self'");
     SWAG_ERROR(Nte1070, "this %s has the 'Swag.Compiler' attribute");
