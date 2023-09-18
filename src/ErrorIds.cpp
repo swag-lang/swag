@@ -551,6 +551,7 @@ void initErrors()
     SWAG_ERROR(Err0056, "unsupported OS                                    $ the OS '%s' is not supported by the x64 backend");
     SWAG_ERROR(Err0085, "invalid dereference                               $ '%s' has type '%s' and can't be dereferenced like a struct or a pointer to struct");
     SWAG_ERROR(Err0194, "invalid dereference                               $ '%s' has type '%s' and can't be dereferenced by index because pointer arithmetic is not allowed");
+    SWAG_ERROR(Err0126, "invalid return type                               $ the function 'opSlice' must return a string or a slice, got '%s' instead");
 
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
@@ -573,7 +574,6 @@ void initErrors()
     SWAG_ERROR(Err0289, "'impl' not within 'impl for' block");
     SWAG_ERROR(Err0559, "'move' not applicable to immutable expression (type is '%s')");
     SWAG_ERROR(Err0619, "'moveref' can't be 'const'");
-    SWAG_ERROR(Err0126, "'opSlice' must return string or slice ('%s' given)");
     SWAG_ERROR(Err0517, "'ref' requires pointer/reference, found type '%s'");
     SWAG_ERROR(Err0654, "'self' required as first parameter for interface function '%s'");
     SWAG_ERROR(Err0306, "'slice' type must be 'const' given const right expression");

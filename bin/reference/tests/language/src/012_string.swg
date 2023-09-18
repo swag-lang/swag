@@ -173,7 +173,7 @@ An escape sequence can also be used to specify an ascii or a unicode value.
     {
         const a = "\x26"        // 1 byte, hexadecimal, extended ascii
         const b = "\u2626"      // 2 bytes, hexadecimal, unicode 16 bits
-        const c = "\U26262626"  // 4 bytes, hexadecimal, unicode 32 bits
+        const c = "\U00101234"  // 4 bytes, hexadecimal, unicode 32 bits
     }
 
     {
