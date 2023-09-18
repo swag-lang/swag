@@ -531,12 +531,10 @@ void initErrors()
     SWAG_ERROR(Err0102, "compile-time evaluation required                  $ the function parameter of type '%s' can't be evaluated at compile-time");
     SWAG_ERROR(Err0670, "compile-time evaluation required                  $ the initialization expression can't be evaluated at compile-time");
     SWAG_ERROR(Err0128, "compile-time evaluation required                  $ the type constraint can't be evaluated at compile-time");
-
-    SWAG_ERROR(Err0090, nullptr);
-    SWAG_ERROR(Err0906, "initial value not compile-time evaluable; 'opAffect' isn't 'Swag.ConstExpr'");
-    SWAG_ERROR(Err0281, "struct of type '%s' not 'Swag.ConstExpr'; can't evaluate at compile-time");
-    SWAG_ERROR(Err0321, "tuple value contains non-'Swag.ConstExpr' member; can't evaluate at compile-time");
-    SWAG_ERROR(Err0089, "'%s' can't be compile-time evaluated");
+    SWAG_ERROR(Err0906, "compile-time evaluation required                  $ the initial value can't be evaluated at compile-time $ in order to make that kind of compile-time evaluation, 'opAffect' should be '#[Swag.ConstExpr]'");
+    SWAG_ERROR(Err0281, "compile-time evaluation required                  $ the operation on struct '%s' cannot be done compile-time $ in order to make that kind of compile-time evaluation, the struct should be '#[Swag.ConstExpr]'");
+    SWAG_ERROR(Err0321, "compile-time evaluation required                  $ the operation on the tuple cannot be done compile-time $ in order to make that kind of compile-time evaluation, the tuple should be '#[Swag.ConstExpr]'");
+    SWAG_ERROR(Err0089, "compile-time evaluation required                  $ '%s' can't be evaluated at compile-time");
 
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
@@ -927,6 +925,7 @@ void initErrors()
     SWAG_ERROR(Err0645, "variable double initialized with type and assignment");
     SWAG_ERROR(Err0308, "variable type deduction failed; expression is 'null'");
 
+    SWAG_ERROR(Err0090, nullptr);
     SWAG_ERROR(Err0612, nullptr);
     SWAG_ERROR(Err0608, nullptr);
     SWAG_ERROR(Err0910, nullptr);
