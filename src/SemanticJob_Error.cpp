@@ -181,7 +181,6 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     {
         SWAG_ASSERT(failedParam && failedParam->hasExtMisc() && failedParam->extMisc()->isNamed);
         diag         = new Diagnostic{failedParam->extMisc()->isNamed, Fmt(Err(Err0011), failedParam->extMisc()->isNamed->token.ctext())};
-        diag->hint   = Nte(Nte1009);
         size_t other = oneTry.symMatchContext.badSignatureInfos.badSignatureNum1;
         SWAG_ASSERT(other < callParameters->childs.size());
         diag->addRange(callParameters->childs[other], Nte(Nte1059));

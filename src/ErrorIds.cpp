@@ -520,9 +520,9 @@ void initErrors()
     SWAG_ERROR(Err0138, "misplaced '%s'                                    $ '%s' can only be used inside a function marked with 'throw', but '%s' isn't");
     SWAG_ERROR(Err0734, "misplaced variadic parameter                      $ a variadic parameter must be the last one");
     SWAG_ERROR(Err0498, "invalid argument                                  $ the '%s' count must be an integer, got '%s' instead");
-
-    SWAG_ERROR(Err0342, "invalid 'orelse' type $ the 'orelse' operator does not accept the type 'struct' as an argument");
-    SWAG_ERROR(Err0332, "invalid 'orelse' type $ the 'orelse' operator dnoes not accept the type '%s' as an argument");
+    SWAG_ERROR(Err0342, "invalid 'orelse' type                             $ the 'orelse' operator does not accept the type 'struct' as an argument");
+    SWAG_ERROR(Err0332, "invalid 'orelse' type                             $ the 'orelse' operator dnoes not accept the type '%s' as an argument");
+    SWAG_ERROR(Err0011, "argument already defined                          $ the named argument '%s' has already been defined");
 
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
@@ -580,7 +580,6 @@ void initErrors()
     SWAG_ERROR(Err0182, "ambiguous special function '%s' resolution");
     SWAG_ERROR(Err0034, "ambiguous struct '%s' to interface '%s' conversion");
     SWAG_ERROR(Err0116, "ambiguous symbol '%s' resolution");
-    SWAG_ERROR(Err0011, "argument '%s' already defined");
     SWAG_ERROR(Err0485, "array access requires integer type ('%s' given)");
     SWAG_ERROR(Err0148, "array of 'void' type can't be declared");
     SWAG_ERROR(Err0303, "array size undeduced; missing initialization");
@@ -1361,7 +1360,7 @@ void initErrors()
     SWAG_ERROR(Nte0064, "here's the field causing the recursion");
     SWAG_ERROR(Nte1047, "hidden call to '%s' detected");
     SWAG_ERROR(Nte1119, "identified an enum value");
-    SWAG_ERROR(Nte1059, "identified as the first usage");
+    SWAG_ERROR(Nte1059, "this is the first usage");
     SWAG_ERROR(Nte1005, "if this is intended, consider initializing the global variable with 'undefined' instead of zero");
     SWAG_ERROR(Nte1124, "if this is intended, consider adding 'impl' before this");
     SWAG_ERROR(Nte1092, "if this is intentional, consider renaming it to '_%s' to indicate it's unused");
