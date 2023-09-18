@@ -423,7 +423,6 @@ void initErrors()
 
     SWAG_ERROR(Err0800, "unsupported type                                  $ the intrinsic '@countof' does not accept an argument of type 'tuple'");
     SWAG_ERROR(Err0796, "unsupported type                                  $ the intrinsic '@dataof' does not accept an argument of type 'tuple'");
-    SWAG_ERROR(Err0801, "unsupported type                                  $ the intrinsic '@countof' requires an integer argument, got '%s' instead");
     SWAG_ERROR(Err0797, "unsupported type                                  $ the intrinsic '@dataof' does not accept an argument of type '%s'");
     SWAG_ERROR(Err0442, "misplaced '@cvastart'                             $ the intrinsic '@cvastart' can only be used in a function with a final parameter of type 'cvarargs'");
     SWAG_ERROR(Err0630, "misplaced '@index'                                $ the intrinsic '@index' is only valid within a breakable block such as 'loop', 'visit', 'for', etc.");
@@ -542,6 +541,10 @@ void initErrors()
     SWAG_ERROR(Err0127, "invalid function call                             $ '%s' has call parameters but is %s, not a function");
     SWAG_ERROR(Err0201, "recursive evaluation                              $ the struct '%s' references itself, which is causing a recursion");
     SWAG_ERROR(Err0772, "missing return value                              $ expected an expression of type '%s' after 'return'");
+    SWAG_ERROR(Err0133, "unresolved identifier                             $ failed to resolve identifier '%s'");
+    SWAG_ERROR(Err0801, "invalid '@countof' argument                       $ the intrinsic '@countof' requires an integer argument, got '%s' instead");
+    SWAG_ERROR(Err0802, "invalid '@countof' argument                       $ the intrinsic '@countof' requires a positive argument, got '%d'");
+    SWAG_ERROR(Err0805, "invalid '@countof' argument                       $ the intrinsic '@countof' requires a positive argument, got '%I64d'");
 
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
@@ -599,7 +602,6 @@ void initErrors()
     SWAG_ERROR(Err0588, "attribute '%s' incompatible with %s");
     SWAG_ERROR(Err0583, "attribute '%s' only applies to %s");
     SWAG_ERROR(Err0582, "expected attribute; '%s' is %s");
-    SWAG_ERROR(Err0036, "backend error: windows sdk folder not found");
     SWAG_ERROR(Err0833, "bit inversion disallowed on type '%s'");
     SWAG_ERROR(Err0032, "bitcasting from '%s' not allowed (expected integer, pointer, rune, or float)");
     SWAG_ERROR(Err0033, "bitcasting to larger type not allowed ('%s' from '%s')");
@@ -626,8 +628,6 @@ void initErrors()
     SWAG_ERROR(Err0060, "compiler constant not for runtime reference");
     SWAG_ERROR(Err0119, "complex generic type deduction (embedded tuples)");
     SWAG_ERROR(Err0311, "constant creation failed due to generic type '%s'");
-    SWAG_ERROR(Err0805, "constant must be unsigned; found '%I64d'");
-    SWAG_ERROR(Err0802, "constant must be unsigned; found '%d'");
     SWAG_ERROR(Err0298, "constants need explicit initialization");
     SWAG_ERROR(Err0586, "context inappropriate for attribute '%s'");
     SWAG_ERROR(Err0231, "copying '%s' forbidden by 'Swag.NoCopy' on struct");
@@ -909,7 +909,6 @@ void initErrors()
     SWAG_ERROR(Err0293, "unpacking mismatch: '%u' variable(s) versus '%u' field(s) in tuple");
     SWAG_ERROR(Err0598, "unrecognized attribute '%s'");
     SWAG_ERROR(Err0259, "unrecognized escape sequence '%c'");
-    SWAG_ERROR(Err0133, "unresolved identifier '%s'");
     SWAG_ERROR(Err0681, "unresolved interface due to generic type '%s'");
     SWAG_ERROR(Err0672, "unresolved struct '%s' due to generic type '%s'");
     SWAG_ERROR(Err0827, "unsigned type '%s' negation invalid");
@@ -925,6 +924,7 @@ void initErrors()
     SWAG_ERROR(Err0645, "variable double initialized with type and assignment");
     SWAG_ERROR(Err0308, "variable type deduction failed; expression is 'null'");
 
+    SWAG_ERROR(Err0036, nullptr);
     SWAG_ERROR(Err0090, nullptr);
     SWAG_ERROR(Err0612, nullptr);
     SWAG_ERROR(Err0608, nullptr);
