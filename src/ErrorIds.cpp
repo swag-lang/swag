@@ -516,6 +516,8 @@ void initErrors()
     SWAG_ERROR(Err0021, "invalid array dimension                           $ the array dimension can't be evaluated at compile-time");
     SWAG_ERROR(Err0023, "invalid array dimension                           $ the array dimension is 0");
     SWAG_ERROR(Err0022, "invalid array dimension                           $ the array dimension must be an integer, got '%s' instead");
+    SWAG_ERROR(Err0137, "misplaced '%s'                                    $ '%s' can't be used in a struct special function ('%s')");
+    SWAG_ERROR(Err0138, "misplaced '%s'                                    $ '%s' can only be used inside a function marked with 'throw', but '%s' isn't");
 
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
@@ -526,7 +528,6 @@ void initErrors()
     SWAG_ERROR(Err0498, "'%s' count must be integer, found '%s'");
     SWAG_ERROR(Err0495, "'%s' first parameter must be pointer, found '%s'");
     SWAG_ERROR(Err0127, "'%s' has call parameters but is %s, not a function");
-    SWAG_ERROR(Err0138, "'%s' is for 'throw' functions, but '%s' isn't");
     SWAG_ERROR(Err0535, "'%s' is for error-raising functions");
     SWAG_ERROR(Err0139, "'%s' is for function calls, but '%s' is %s");
     SWAG_ERROR(Err0671, "'%s' is generic; '%s' lacks generic parameters");
@@ -539,7 +540,6 @@ void initErrors()
     SWAG_ERROR(Err0201, "'%s' references itself, causing recursion");
     SWAG_ERROR(Err0496, "'%s' second parameter must be pointer, found '%s'");
     SWAG_ERROR(Err0497, "'%s' second parameter should point to '%s', points to '%s'");
-    SWAG_ERROR(Err0137, "'%s' should not be in struct special function ('%s')");
     SWAG_ERROR(Err0858, "'%s' should not have line break %s");
     SWAG_ERROR(Err0772, "expected '%s' type expression after 'return'");
     SWAG_ERROR(Err0125, "'%s' with call parameters is type '%s', not a function");

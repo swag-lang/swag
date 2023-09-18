@@ -5113,10 +5113,10 @@ bool SemanticJob::checkCanThrow(SemanticContext* context)
     auto parentFct = (node->semFlags & SEMFLAG_EMBEDDED_RETURN) ? node->ownerInline->func : node->ownerFct;
 
     if (parentFct->isSpecialFunctionName())
-        return context->report({node, node->token, Fmt(Err(Err0137), node->token.ctext(), parentFct->token.ctext())});
+        return context->report({node, node->token, Fmt(Err(Err0137), node->token.ctext(), node->token.ctext(), parentFct->token.ctext())});
 
     if (!(parentFct->typeInfo->flags & TYPEINFO_CAN_THROW) && !(parentFct->attributeFlags & ATTRIBUTE_SHARP_FUNC))
-        return context->report({node, node->token, Fmt(Err(Err0138), node->token.ctext(), parentFct->token.ctext())});
+        return context->report({node, node->token, Fmt(Err(Err0138), node->token.ctext(), node->token.ctext(), parentFct->token.ctext())});
 
     return true;
 }
