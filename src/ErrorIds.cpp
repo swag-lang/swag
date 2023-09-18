@@ -552,6 +552,8 @@ void initErrors()
     SWAG_ERROR(Err0085, "invalid dereference                               $ '%s' has type '%s' and can't be dereferenced like a struct or a pointer to struct");
     SWAG_ERROR(Err0194, "invalid dereference                               $ '%s' has type '%s' and can't be dereferenced by index because pointer arithmetic is not allowed");
     SWAG_ERROR(Err0126, "invalid return type                               $ the function 'opSlice' must return a string or a slice, got '%s' instead");
+    SWAG_ERROR(Err0419, "semantic cycle                                    $ a cycle has been detected during the resolution of %s '%s'");
+    SWAG_ERROR(Err0027, "failed semantic");
 
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
@@ -831,8 +833,6 @@ void initErrors()
     SWAG_ERROR(Err0779, "return value needed; return type inferred as '%s'");
     SWAG_ERROR(Err0047, "right expression address not accessible");
     SWAG_ERROR(Err0490, "second '@init' parameter must be integer; '%s' provided");
-    SWAG_ERROR(Err0419, "semantic cycle detected in %s resolution of '%s'");
-    SWAG_ERROR(Err0027, "semantic resolution failure");
     SWAG_ERROR(Err0173, "shift operand should be 'u32', not '%s'");
     SWAG_ERROR(Err0450, "expected single generic parameter for function '%s'; '%d' provided");
     SWAG_ERROR(Err0882, "size exceeded: '%u' bytes vs max '%u'");
@@ -1429,7 +1429,7 @@ void initErrors()
     SWAG_ERROR(Nte0148, "the correct values for 'Swag.Match' are 'validif|self'");
     SWAG_ERROR(Nte0056, "the counterpart is an implicit 'using self' as an initial parameter");
     SWAG_ERROR(Nte1000, "the divisor expression evaluates to zero");
-    SWAG_ERROR(Nte0046, "the entity %s '%s' awaits resolution of %s '%s'");
+    SWAG_ERROR(Nte0046, "the %s '%s' is waiting for the resolution of %s '%s'");
     SWAG_ERROR(Nte0011, "the entity %s is tagged with 'Swag.CalleeReturn', implying the return is utilized within %s");
     SWAG_ERROR(Nte1039, "the function call returns an immutable '%s'");
     SWAG_ERROR(Nte1093, "the function doesn't accept type '%s' as its first argument");
