@@ -553,7 +553,9 @@ void initErrors()
     SWAG_ERROR(Err0194, "invalid dereference                               $ '%s' has type '%s' and can't be dereferenced by index because pointer arithmetic is not allowed");
     SWAG_ERROR(Err0126, "invalid return type                               $ the function 'opSlice' must return a string or a slice, got '%s' instead");
     SWAG_ERROR(Err0419, "semantic cycle                                    $ a cycle has been detected during the resolution of %s '%s'");
-    SWAG_ERROR(Err0027, "failed semantic");
+    SWAG_ERROR(Err0027, "failed semantic                                   $ cannot resolve this");
+    SWAG_ERROR(Err0248, "compile-time evaluation required                  $ the '%s' argument can't be evaluated at compile-time");
+    SWAG_ERROR(Err0249, "unsupported type                                  $ the intrinsic '%s' requires a string as an argument, got '%s' instead");
 
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
@@ -566,8 +568,6 @@ void initErrors()
     SWAG_ERROR(Err0600, "'%s' lacks 'Swag.AttributeUsage.File'; avoid '#global'");
     SWAG_ERROR(Err0711, "'%s' needs block pointer as first parameter");
     SWAG_ERROR(Err0787, "'%s' needs pointer as first parameter");
-    SWAG_ERROR(Err0248, "'%s' parameter can't be compiled");
-    SWAG_ERROR(Err0249, "'%s' parameter must be string, found '%s'");
     SWAG_ERROR(Err0496, "'%s' second parameter must be pointer, found '%s'");
     SWAG_ERROR(Err0497, "'%s' second parameter should point to '%s', points to '%s'");
     SWAG_ERROR(Err0858, "'%s' should not have line break %s");
@@ -1429,7 +1429,7 @@ void initErrors()
     SWAG_ERROR(Nte0148, "the correct values for 'Swag.Match' are 'validif|self'");
     SWAG_ERROR(Nte0056, "the counterpart is an implicit 'using self' as an initial parameter");
     SWAG_ERROR(Nte1000, "the divisor expression evaluates to zero");
-    SWAG_ERROR(Nte0046, "the %s '%s' is waiting for the resolution of %s '%s'");
+    SWAG_ERROR(Nte0046, "the %s '%s' is waiting for %s '%s' to be solved");
     SWAG_ERROR(Nte0011, "the entity %s is tagged with 'Swag.CalleeReturn', implying the return is utilized within %s");
     SWAG_ERROR(Nte1039, "the function call returns an immutable '%s'");
     SWAG_ERROR(Nte1093, "the function doesn't accept type '%s' as its first argument");
