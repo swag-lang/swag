@@ -5383,8 +5383,8 @@
 <div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Swag_Warn">Warn</a></span>(what: <span class="STpe">string</span>, level: <span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_WarnLevel">WarnLevel</a></span>)</span></code>
 </div>
 <p> For example: </p>
-<div class="code-block"><code><span class="SAtr">#[Swag.Warn("wrn0004", Swag.WarnLevel.Error)
- #[Swag.Warn("wrn0003|wrn0004", Swag.WarnLevel.Disable)
+<div class="code-block"><code><span class="SAtr">#[Swag.Warn("wrn0002", Swag.WarnLevel.Error)
+ #[Swag.Warn("wrn0003|wrn0002", Swag.WarnLevel.Disable)
  #global #[Swag.Warn("wrn0001", Swag.WarnLevel.Enable)]</span></code>
 </div>
 <p> You can also change the warning behaviors for the whole module in your <a href="#Swag_BuildCfg">BuildCfg</a> </p>
@@ -5415,7 +5415,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 10-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.25.0</div>
+Generated on 18-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.25.0</div>
 </div>
 </div>
 </div>

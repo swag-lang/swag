@@ -25349,7 +25349,7 @@ Changes that are supported from V to V+1 are :</span></code>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">swap</span>(x: *<span class="SCst">T</span>, y: *<span class="SCst">T</span>)</span></code>
 </div>
 <div class="swag-watermark">
-Generated on 10-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.25.0</div>
+Generated on 18-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.25.0</div>
 </div>
 </div>
 </div>

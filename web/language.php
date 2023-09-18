@@ -1312,7 +1312,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     {
         <span class="SKwd">const</span> a = <span class="SStr">"\x26"</span>        <span class="SCmt">// 1 byte, hexadecimal, extended ascii</span>
         <span class="SKwd">const</span> b = <span class="SStr">"\u2626"</span>      <span class="SCmt">// 2 bytes, hexadecimal, unicode 16 bits</span>
-        <span class="SKwd">const</span> c = <span class="SStr">"\U26262626"</span>  <span class="SCmt">// 4 bytes, hexadecimal, unicode 32 bits</span>
+        <span class="SKwd">const</span> c = <span class="SStr">"\U00101234"</span>  <span class="SCmt">// 4 bytes, hexadecimal, unicode 32 bits</span>
     }
 
     {
@@ -7171,7 +7171,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SCmp">#global</span> <span class="SKwd">namespace</span> <span class="SCst">Toto</span>
 
 <span class="SCmt">// A #if for the whole file</span>
-<span class="SCmp">#global</span> <span class="SLgc">if</span> <span class="SCst">DEBUG</span> == <span class="SKwd">true</span>
+<span class="SCmp">#global</span> <span class="SCmp">#if</span> <span class="SCst">DEBUG</span> == <span class="SKwd">true</span>
 
 <span class="SCmt">// Some attributes can be assigned to the full file</span>
 <span class="SCmp">#global</span> <span class="SAtr">#[Swag.Safety("", true)]</span>
@@ -7829,7 +7829,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="231_003_Pages">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 10-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.25.0</div>
+Generated on 18-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.25.0</div>
 </div>
 </div>
 </div>
