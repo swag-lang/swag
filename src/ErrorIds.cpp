@@ -535,6 +535,7 @@ void initErrors()
     SWAG_ERROR(Err0281, "compile-time evaluation required                  $ the operation on struct '%s' cannot be done compile-time $ in order to make that kind of compile-time evaluation, the struct should be '#[Swag.ConstExpr]'");
     SWAG_ERROR(Err0321, "compile-time evaluation required                  $ the operation on the tuple cannot be done compile-time $ in order to make that kind of compile-time evaluation, the tuple should be '#[Swag.ConstExpr]'");
     SWAG_ERROR(Err0089, "compile-time evaluation required                  $ '%s' can't be evaluated at compile-time");
+    SWAG_ERROR(Err0206, "invalid stack frame reference                     $ you can't reference %s '%s' because it's in a different stack frame");
 
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
@@ -612,7 +613,6 @@ void initErrors()
     SWAG_ERROR(Err0320, "can't slice '%s'; 'opSlice' not found in type '%s'");
     SWAG_ERROR(Err0627, "can't visit variadic type by pointer");
     SWAG_ERROR(Err0500, "can't initialize constant array with a single value: type '%s'");
-    SWAG_ERROR(Err0206, "can't reference %s '%s': different stack frame");
     SWAG_ERROR(Err0686, "can't use 'code' parameter in '%s' expression following %s '%s'");
     SWAG_ERROR(Err0177, "casting from '%s' to '%s' not allowed");
     SWAG_ERROR(Err0907, "casting from '%s' to pointer type denied (only 'u64' accepted)");
@@ -1404,7 +1404,7 @@ void initErrors()
     SWAG_ERROR(Nte0126, "public structs should export all their special functions");
     SWAG_ERROR(Nte1055, "requires explicit initialization");
     SWAG_ERROR(Nte1012, "return (%s) should be of type '%s'");
-    SWAG_ERROR(Nte0069, "runtime argument corresponding to '%s' can be found here");
+    SWAG_ERROR(Nte0069, "here is the runtime argument corresponding to '%s'");
     SWAG_ERROR(Nte1045, "second initialization observed");
     SWAG_ERROR(Nte1009, "secondary instance observed");
     SWAG_ERROR(Nte1053, "this should be 'const' but isn't");
