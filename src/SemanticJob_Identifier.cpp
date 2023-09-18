@@ -808,12 +808,14 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
     {
         if (prevNode->kind == AstNodeKind::Identifier && prevNode->specFlags & AstIdentifier::SPECFLAG_FROM_WITH)
         {
-            Diagnostic diag{prevNode, Fmt(Err(Err0310), prevNode->token.ctext(), symbol->name.c_str())};
-            diag.hint           = Fmt(Nte(Nte1130), identifierRef->startScope->name.c_str());
-            auto prevIdentifier = CastAst<AstIdentifier>(prevNode, AstNodeKind::Identifier);
-            auto widthNode      = prevIdentifier->identifierExtension->fromAlternateVar;
-            auto note           = Diagnostic::note(oneMatch.oneOverload->overload->node, Fmt(Nte(Nte1073), prevNode->typeInfo->getDisplayNameC()));
-            return context->report(diag, Diagnostic::hereIs(widthNode, false, true), note);
+            Diagnostic                diag{prevNode, Fmt(Err(Err0310), prevNode->token.ctext(), symbol->name.c_str())};
+            Vector<const Diagnostic*> notes;
+            auto                      prevIdentifier = CastAst<AstIdentifier>(prevNode, AstNodeKind::Identifier);
+            auto                      widthNode      = prevIdentifier->identifierExtension->fromAlternateVar;
+            notes.push_back(Diagnostic::note(oneMatch.oneOverload->overload->node, Fmt(Nte(Nte1073), prevNode->typeInfo->getDisplayNameC())));
+            notes.push_back(Diagnostic::hereIs(widthNode, false, true));
+            notes.push_back(Diagnostic::note(Fmt(Nte(Nte1130), identifierRef->startScope->name.c_str())));
+            return context->report(diag, notes);
         }
 
         if (oneMatch.oneOverload->scope == identifierRef->startScope)
@@ -822,8 +824,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             diag.addRange(identifier->token, Fmt(Nte(Nte1073), prevNode->typeInfo->getDisplayNameC()));
             Vector<const Diagnostic*> notes;
             notes.push_back(Diagnostic::note(Fmt(Nte(Nte1001), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), prevNode->token.ctext(), symbol->name.c_str())));
-            notes.push_back(Diagnostic::note(Fmt(Nte(Nte1080), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), identifierRef->startScope->name.c_str())));
             notes.push_back(Diagnostic::hereIs(oneMatch.oneOverload->overload));
+            notes.push_back(Diagnostic::note(Fmt(Nte(Nte1080), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), identifierRef->startScope->name.c_str())));
             return context->report(diag, notes);
         }
 

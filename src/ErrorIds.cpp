@@ -489,7 +489,6 @@ void initErrors()
     SWAG_ERROR(Err0433, "%s");
     SWAG_ERROR(Err0567, "%s");
     SWAG_ERROR(Err0401, "%s");
-    SWAG_ERROR(Err0097, "misused UFCS                                      $ the %s '%s' is not used as the first argument when calling '%s'");
     SWAG_ERROR(Err0505, "compiler limit reached                            $ the size of the %s is too big (maximum size is '0x%I64x' bytes)");
     SWAG_ERROR(Err0834, "compiler limit reached                            $ the size of the data segment '%s' is too big (maximum size is '0x%I64x' bytes)");
     SWAG_ERROR(Err0738, "missing default value                             $ the %s needs a default value as a preceding parameter has one");
@@ -511,6 +510,12 @@ void initErrors()
     SWAG_ERROR(Err0614, "'switch' value already defined                    $ the 'switch' value '%f' has already been defined");
     SWAG_ERROR(Err0611, "'switch' value already defined                    $ the 'switch' value '%s' has already been defined");
     SWAG_ERROR(Err0609, "invalid 'switch' type                             $ 'switch' does not accept an expression of type '%s'");
+    SWAG_ERROR(Err0097, "misused UFCS                                      $ the %s '%s' is not used as the first argument when calling '%s'");
+    SWAG_ERROR(Err0310, "misused UFCS                                      $ the hidden 'with' variable '%s' is not used as the first argument when calling '%s'");
+    SWAG_ERROR(Err0705, "invalid enum type                                 $ the type '%s' is not a valid enum type");
+    SWAG_ERROR(Err0021, "invalid array dimension                           $ the array dimension can't be evaluated at compile-time");
+    SWAG_ERROR(Err0023, "invalid array dimension                           $ the array dimension is 0");
+    SWAG_ERROR(Err0022, "invalid array dimension                           $ the array dimension must be an integer, got '%s' instead");
 
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
@@ -525,7 +530,6 @@ void initErrors()
     SWAG_ERROR(Err0535, "'%s' is for error-raising functions");
     SWAG_ERROR(Err0139, "'%s' is for function calls, but '%s' is %s");
     SWAG_ERROR(Err0671, "'%s' is generic; '%s' lacks generic parameters");
-    SWAG_ERROR(Err0705, "'%s' is not a valid enum type");
     SWAG_ERROR(Err0696, "'%s' is only valid as a function parameter");
     SWAG_ERROR(Err0600, "'%s' lacks 'Swag.AttributeUsage.File'; avoid '#global'");
     SWAG_ERROR(Err0711, "'%s' needs block pointer as first parameter");
@@ -560,7 +564,6 @@ void initErrors()
     SWAG_ERROR(Err0822, "'using' on pointer variable valid only for struct pointer (pointed type: '%s')");
     SWAG_ERROR(Err0689, "'using' on variable not allowed in '%s' scope");
     SWAG_ERROR(Err0149, "'void' type can't be declared as variable or constant");
-    SWAG_ERROR(Err0310, "hidden 'with' variable '%s' used only to scope function '%s'");
     SWAG_ERROR(Err0445, "@cvaarg of type '%s' promoted to '%s' at call");
     SWAG_ERROR(Err0465, "address of %s not accessible");
     SWAG_ERROR(Err0501, "address of 'let' declared local variable inaccessible");
@@ -577,9 +580,6 @@ void initErrors()
     SWAG_ERROR(Err0116, "ambiguous symbol '%s' resolution");
     SWAG_ERROR(Err0011, "argument '%s' already defined");
     SWAG_ERROR(Err0485, "array access requires integer type ('%s' given)");
-    SWAG_ERROR(Err0021, "array dimension cannot be evaluated at compile-time");
-    SWAG_ERROR(Err0023, "array dimension is 0");
-    SWAG_ERROR(Err0022, "array dimension must be integer ('%s' given)");
     SWAG_ERROR(Err0148, "array of 'void' type can't be declared");
     SWAG_ERROR(Err0303, "array size undeduced; missing initialization");
     SWAG_ERROR(Err0572, "assignment not allowed; '%s' is %s");
@@ -1268,7 +1268,7 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
 
     SWAG_ERROR(Nte0042, "the function '%s' is not marked with the '#[Swag.ConstExpr]' attribute");
-    SWAG_ERROR(Nte0041, "'%s' is a variable; variables within expressions aren't evaluated at compile-time");
+    SWAG_ERROR(Nte0041, "'%s' is a variable and variables within expressions can't be evaluated at compile-time");
     SWAG_ERROR(Nte0077, "'%s' might represent either a type or a field name");
     SWAG_ERROR(Nte0076, "'%s' might represent either a type or a parameter name");
     SWAG_ERROR(Nte0001, "'%s' is %s of type '%s' and does not have a subscope");
