@@ -173,6 +173,8 @@ void initErrors()
     SWAG_ERROR(Err0281, "compile-time evaluation required                  $ the operation on struct '%s' cannot be done compile-time $ in order to make that kind of compile-time evaluation, the struct should be '#[Swag.ConstExpr]'");
     SWAG_ERROR(Err0321, "compile-time evaluation required                  $ the operation on the tuple cannot be done compile-time $ in order to make that kind of compile-time evaluation, the tuple should be '#[Swag.ConstExpr]'");
     SWAG_ERROR(Err0089, "compile-time evaluation required                  $ '%s' can't be evaluated at compile-time");
+    SWAG_ERROR(Err0248, "compile-time evaluation required                  $ the '%s' argument can't be evaluated at compile-time");
+    SWAG_ERROR(Err0238, "compiler assertion failed                         $ the '#assert' expression was evaluated to false");
     SWAG_ERROR(Err0505, "compiler limit reached                            $ the size of the %s is too big (maximum size is '0x%I64x' bytes)");
     SWAG_ERROR(Err0834, "compiler limit reached                            $ the size of the data segment '%s' is too big (maximum size is '0x%I64x' bytes)");
     SWAG_ERROR(Err1217, "conflicting 'moveref' qualifier                   $ the 'moveref' qualifier can't be combined with an immutable ('const') expression");
@@ -199,6 +201,7 @@ void initErrors()
     SWAG_ERROR(Err0435, "exception!                                        $ compile-time execution exception");
     SWAG_ERROR(Err1048, "expected '%s'                                     $ expected '%s' %s, found '%s' instead");
     SWAG_ERROR(Err0617, "failed '#validif'                                 $ the '#validif' validation has failed for '%s'");
+    SWAG_ERROR(Err0027, "failed semantic                                   $ cannot resolve this");
     SWAG_ERROR(Err0603, "file error                                        $ failed to delete file '%s'");
     SWAG_ERROR(Err0509, "file error                                        $ failed to access file '%s'");
     SWAG_ERROR(Err0508, "file error                                        $ the file '%s' can't be found in the module folder '%s'");
@@ -291,6 +294,8 @@ void initErrors()
     SWAG_ERROR(Err1194, "invalid default value                             $ lambda parameters can't have a default value");
     SWAG_ERROR(Err0481, "invalid dereference                               $ derefencing type '%s' is not valid");
     SWAG_ERROR(Err0486, "invalid dereference                               $ dereferencing a pointer to 'void' is not valid");
+    SWAG_ERROR(Err0085, "invalid dereference                               $ '%s' has type '%s' and can't be dereferenced like a struct or a pointer to struct");
+    SWAG_ERROR(Err0194, "invalid dereference                               $ '%s' has type '%s' and can't be dereferenced by index because pointer arithmetic is not allowed");
     SWAG_ERROR(Err1073, "invalid embedded instruction                      $ expected an embedded instruction or a curly block, found '%s' instead");
     SWAG_ERROR(Err1159, "invalid empty attribute                           $ an attribute should contain at least one value $ you should specify the attribute name between '[]'");
     SWAG_ERROR(Err1187, "invalid empty statement ';'                       $ a semicolon ';' can't be used alone to mark an empty statement");
@@ -338,6 +343,7 @@ void initErrors()
     SWAG_ERROR(Err1112, "invalid parameter name                            $ expected a parameter name, found '%s' instead");
     SWAG_ERROR(Err1167, "invalid pass name                                 $ '%s' is not recognized as a valid compiler pass name");
     SWAG_ERROR(Err1022, "invalid reference to 'with' block                 $ an identifier is expected after '.', found '%s' instead");
+    SWAG_ERROR(Err0126, "invalid return type                               $ the function 'opSlice' must return a string or a slice, got '%s' instead");
     SWAG_ERROR(Err0206, "invalid stack frame reference                     $ you can't reference %s '%s' because it's in a different stack frame");
     SWAG_ERROR(Err1128, "invalid struct initialization                     $ expected '{}' to initialize a struct, and not '()' which is reserved for function calls");
     SWAG_ERROR(Err1063, "invalid struct name                               $ expected the struct name, found '%s' instead");
@@ -481,6 +487,7 @@ void initErrors()
     SWAG_ERROR(Err1018, "redundant access modifier                         $ the '%s' access modifier is unnecessary because of '#global export' $ consider removing the 'public' modifier, as '#global export' ensures all declarations in this file are publicly accessible");
     SWAG_ERROR(Err1122, "reserved identifier                               $ the identifier '%s' starts with '__', this is language-reserved $ identifiers starting with '__' are typically reserved for compiler-internal or system use");
     SWAG_ERROR(Err1118, "reserved namespace name                           $ the namespace '%s' is reserved by the compiler");
+    SWAG_ERROR(Err0419, "semantic cycle                                    $ a cycle has been detected during the resolution of %s '%s'");
     SWAG_ERROR(Err2018, "string literal is missing its closing '\"'        $ expected a closing quotation mark '\"' before the end of the line $ if you want a multi-line string, use the syntax \"\"\"string\"\"\"");
     SWAG_ERROR(Err0305, "symbol already defined                            $ the %s '%s' has already been defined %s");
     SWAG_ERROR(Err0723, "type mismatch                                     $ type mismatch for field '%s'; expected '%s', found '%s'");
@@ -531,8 +538,9 @@ void initErrors()
     SWAG_ERROR(Err0112, "unknown identifier                                $ the identifier '%s' can't be found in '%s'");
     SWAG_ERROR(Err0110, "unknown identifier                                $ the identifier '%s' can't be found in %s '%s'");
     SWAG_ERROR(Err0821, "unknown identifier                                $ the variable '%s' from the struct '%s' has no corresponding member");
-    SWAG_ERROR(Err0133, "unresolved identifier                             $ failed to resolve identifier '%s'");
+    SWAG_ERROR(Err0133, "unresolved identifier                             $ the identifier '%s' can't be solved");
     SWAG_ERROR(Err0911, "unsuitable struct for union                       $ the struct '%s' is not suitable for union because it contains an '%s' function");
+    SWAG_ERROR(Err0056, "unsupported OS                                    $ the OS '%s' is not supported by the x64 backend");
     SWAG_ERROR(Err0785, "unsupported callback                              $ the intrinsic '@mkcallback' does not allow a function with more than '%d' parameters, found '%d'");
     SWAG_ERROR(Err0786, "unsupported callback                              $ the intrinsic '@mkcallback' does not allow a function returning '%s'");
     SWAG_ERROR(Err1134, "unsupported tuple type                            $ tuple types are not supported for generic parameters");
@@ -545,17 +553,8 @@ void initErrors()
     SWAG_ERROR(Err0793, "unsupported type                                  $ the intrinsic '@mkinterface' requires a pointer or a struct as first argument, got '%s' instead");
     SWAG_ERROR(Err0794, "unsupported type                                  $ the intrinsic '@mkinterface' requires a type as a second argument, got '%s' instead");
     SWAG_ERROR(Err0795, "unsupported type                                  $ the intrinsic '@mkinterface' requires an interface name as a third argument, got '%s' instead");
-    SWAG_ERROR(Err1179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
-
-    SWAG_ERROR(Err0238, "compiler assertion failed                         $ the '#assert' expression was evaluated to false");
-    SWAG_ERROR(Err0056, "unsupported OS                                    $ the OS '%s' is not supported by the x64 backend");
-    SWAG_ERROR(Err0085, "invalid dereference                               $ '%s' has type '%s' and can't be dereferenced like a struct or a pointer to struct");
-    SWAG_ERROR(Err0194, "invalid dereference                               $ '%s' has type '%s' and can't be dereferenced by index because pointer arithmetic is not allowed");
-    SWAG_ERROR(Err0126, "invalid return type                               $ the function 'opSlice' must return a string or a slice, got '%s' instead");
-    SWAG_ERROR(Err0419, "semantic cycle                                    $ a cycle has been detected during the resolution of %s '%s'");
-    SWAG_ERROR(Err0027, "failed semantic                                   $ cannot resolve this");
-    SWAG_ERROR(Err0248, "compile-time evaluation required                  $ the '%s' argument can't be evaluated at compile-time");
     SWAG_ERROR(Err0249, "unsupported type                                  $ the intrinsic '%s' requires a string as an argument, got '%s' instead");
+    SWAG_ERROR(Err1179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
 
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
