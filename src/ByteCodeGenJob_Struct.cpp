@@ -858,7 +858,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
             needDrop = true;
         if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
-            SWAG_VERIFY(!(structNode->specFlags & AstStruct::SPECFLAG_UNION), context->report({typeParam->declNode, Fmt(Err(Err0911), typeStructVar->getDisplayNameC())}));
+            SWAG_VERIFY(!(structNode->specFlags & AstStruct::SPECFLAG_UNION), context->report({typeParam->declNode, Fmt(Err(Err0911), typeStructVar->getDisplayNameC(), "opDrop")}));
     }
 
     typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_DROP;
@@ -972,7 +972,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
             needPostCopy = true;
         if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
-            SWAG_VERIFY(!(structNode->specFlags & AstStruct::SPECFLAG_UNION), context->report({typeParam->declNode, Fmt(Err(Err0909), typeStructVar->getDisplayNameC())}));
+            SWAG_VERIFY(!(structNode->specFlags & AstStruct::SPECFLAG_UNION), context->report({typeParam->declNode, Fmt(Err(Err0911), typeStructVar->getDisplayNameC(), "opPostCopy")}));
     }
 
     typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_COPY;
@@ -1084,7 +1084,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
             needPostMove = true;
         if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
-            SWAG_VERIFY(!(structNode->specFlags & AstStruct::SPECFLAG_UNION), context->report({typeParam->declNode, Fmt(Err(Err0910), typeStructVar->getDisplayNameC())}));
+            SWAG_VERIFY(!(structNode->specFlags & AstStruct::SPECFLAG_UNION), context->report({typeParam->declNode, Fmt(Err(Err0911), typeStructVar->getDisplayNameC(), "opPostMove")}));
     }
 
     typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_MOVE;

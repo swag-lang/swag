@@ -486,16 +486,19 @@ void initErrors()
     SWAG_ERROR(Err0481, "invalid dereference                               $ derefencing type '%s' is not valid");
     SWAG_ERROR(Err0486, "invalid dereference                               $ dereferencing a pointer to 'void' is not valid");
 
-    SWAG_ERROR(Err0097, "%s '%s' isn't used as the first parameter in '%s'");
-    SWAG_ERROR(Err0521, "%s '%s' not used as primary argument for function '%s'");
-    SWAG_ERROR(Err0086, "%s '%s' used only to scope function '%s'");
-    SWAG_ERROR(Err0505, "%s exceeded, max size is '0x%I64x' bytes");
-    SWAG_ERROR(Err0738, "%s needs a default value as preceding parameter has one");
-    SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
-    SWAG_ERROR(Err0834, "%s size exceeded");
     SWAG_ERROR(Err0433, "%s");
     SWAG_ERROR(Err0567, "%s");
     SWAG_ERROR(Err0401, "%s");
+    SWAG_ERROR(Err0097, "misused UFCS                                      $ the %s '%s' is not used as the first argument when calling '%s'");
+    SWAG_ERROR(Err0505, "compiler limit reached                            $ the size of the %s is too big (maximum size is '0x%I64x' bytes)");
+    SWAG_ERROR(Err0834, "compiler limit reached                            $ the size of the data segment '%s' is too big (maximum size is '0x%I64x' bytes)");
+    SWAG_ERROR(Err0738, "missing default value                             $ the %s needs a default value as a preceding parameter has one");
+
+    SWAG_ERROR(Err0911, "unsuitable struct for union                       $ the struct '%s' is not suitable for union because it contains an '%s' function");
+    SWAG_ERROR(Err0909, nullptr);
+    SWAG_ERROR(Err0910, nullptr);
+
+    SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0804, "'#message' block needs 'Swag.CompilerMsgMask' param (given: '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
     SWAG_ERROR(Err0089, "'%s' can't be compile-time evaluated");
@@ -514,9 +517,6 @@ void initErrors()
     SWAG_ERROR(Err0600, "'%s' lacks 'Swag.AttributeUsage.File'; avoid '#global'");
     SWAG_ERROR(Err0711, "'%s' needs block pointer as first parameter");
     SWAG_ERROR(Err0787, "'%s' needs pointer as first parameter");
-    SWAG_ERROR(Err0911, "'%s' not suitable for union; contains 'opDrop'");
-    SWAG_ERROR(Err0909, "'%s' not suitable for union; contains 'opPostCopy'");
-    SWAG_ERROR(Err0910, "'%s' not suitable for union; contains 'opPostMove'");
     SWAG_ERROR(Err0248, "'%s' parameter can't be compiled");
     SWAG_ERROR(Err0249, "'%s' parameter must be string, found '%s'");
     SWAG_ERROR(Err0201, "'%s' references itself, causing recursion");
@@ -930,6 +930,8 @@ void initErrors()
     SWAG_ERROR(Err0308, "variable type deduction failed; expression is 'null'");
     SWAG_ERROR(Err0734, "variadic parameter must be last");
 
+    SWAG_ERROR(Err0086, nullptr);
+    SWAG_ERROR(Err0521, nullptr);
     SWAG_ERROR(Err0159, nullptr);
     SWAG_ERROR(Err0691, nullptr);
     SWAG_ERROR(Err0830, nullptr);
@@ -1266,7 +1268,6 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Nte0130, nullptr);
     SWAG_ERROR(Nte0042, "the function '%s' is not marked with the '#[Swag.ConstExpr]' attribute");
     SWAG_ERROR(Nte0041, "'%s' is a variable; variables within expressions aren't evaluated at compile-time");
     SWAG_ERROR(Nte0077, "'%s' might represent either a type or a field name");
@@ -1320,7 +1321,7 @@ void initErrors()
     SWAG_ERROR(Nte1131, "did you intend to use '='?");
     SWAG_ERROR(Nte0128, "consider adding 'using' before 'self' if you intend to access members of the instance directly");
     SWAG_ERROR(Nte1034, "doesn't return any value");
-    SWAG_ERROR(Nte1080, "either remove this or replace with the scope '%s'");
+    SWAG_ERROR(Nte1080, "consider removing the %s or replace it with the scope '%s'");
     SWAG_ERROR(Nte0153, "employ '{}' for an intentional empty statement");
     SWAG_ERROR(Nte0053, "entity %s '%s' awaits the generation of type '%s'");
     SWAG_ERROR(Nte0050, "entity %s of type '%s'");
@@ -1391,7 +1392,7 @@ void initErrors()
     SWAG_ERROR(Nte0075, "origin of instantiation type '%s' is here");
     SWAG_ERROR(Nte0066, "parameter '%s' of %s can be found here");
     SWAG_ERROR(Nte1113, "parameter mismatch detected");
-    SWAG_ERROR(Nte1088, "parameter set with a default value");
+    SWAG_ERROR(Nte1088, "this previous parameter has a default value");
     SWAG_ERROR(Nte0146, "pointer arithmetic is only valid for pointers declared with '^', not '*'");
     SWAG_ERROR(Nte1037, "pointer can be dereferenced using 'dref'");
     SWAG_ERROR(Nte0086, "possibly derived from enum '%s'");
@@ -1489,7 +1490,6 @@ void initErrors()
     SWAG_ERROR(Nte0106, "this is unexpected in global scope");
     SWAG_ERROR(Nte1038, "this isn't a constant");
     SWAG_ERROR(Nte1076, "this needs to be in lowercase");
-    SWAG_ERROR(Nte1089, "this parameter should also have a default value");
     SWAG_ERROR(Nte0141, "this parameter type doesn't have related memory storage");
     SWAG_ERROR(Nte1075, "this should be a namespace, function, or variable instead of a type");
     SWAG_ERROR(Nte1125, "this slice appears to be null or empty");
@@ -1523,7 +1523,10 @@ void initErrors()
     SWAG_ERROR(Nte1043, "if you want to declare a generic constant, consider adding 'const' before '%s'");
     SWAG_ERROR(Nte1082, "if you want to retrieve the type of an expression, consider using '@decltype' instead")
     SWAG_ERROR(Nte1013, "it seems like you're trying to access a nested property of '%s', but '%s' itself isn't a value");
-    SWAG_ERROR(Nte1001, nullptr);
+    SWAG_ERROR(Nte1001, "the % s '%s' has only been used as a scope to find function '%s'");
+
+    SWAG_ERROR(Nte1089, nullptr);
+    SWAG_ERROR(Nte0130, nullptr);
     SWAG_ERROR(Nte1003, nullptr);
     SWAG_ERROR(Nte1044, nullptr);
     SWAG_ERROR(Nte1129, nullptr);

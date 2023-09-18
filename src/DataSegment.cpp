@@ -165,7 +165,7 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, uint8_t** resultPtr)
         if (!overflow)
         {
             overflow = true;
-            Report::error(module, Fmt(Err(Err0834), name));
+            Report::error(module, Fmt(Err(Err0834), name, SWAG_LIMIT_SEGMENT));
         }
     }
 

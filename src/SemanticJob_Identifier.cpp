@@ -818,15 +818,17 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
 
         if (oneMatch.oneOverload->scope == identifierRef->startScope)
         {
-            Diagnostic diag{prevNode, Fmt(Err(Err0086), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), prevNode->token.ctext(), symbol->name.c_str())};
+            Diagnostic diag{prevNode, Fmt(Err(Err0097), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), prevNode->token.ctext(), symbol->name.c_str())};
             diag.addRange(identifier->token, Fmt(Nte(Nte1073), prevNode->typeInfo->getDisplayNameC()));
-            diag.hint = Fmt(Nte(Nte1080), identifierRef->startScope->name.c_str());
-            return context->report(diag, Diagnostic::hereIs(oneMatch.oneOverload->overload));
+            Vector<const Diagnostic*> notes;
+            notes.push_back(Diagnostic::note(Fmt(Nte(Nte1001), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), prevNode->token.ctext(), symbol->name.c_str())));
+            notes.push_back(Diagnostic::note(Fmt(Nte(Nte1080), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), identifierRef->startScope->name.c_str())));
+            notes.push_back(Diagnostic::hereIs(oneMatch.oneOverload->overload));
+            return context->report(diag, notes);
         }
 
-        Diagnostic diag{prevNode, Fmt(Err(Err0521), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), prevNode->token.ctext(), symbol->name.c_str())};
+        Diagnostic diag{prevNode, Fmt(Err(Err0097), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), prevNode->token.ctext(), symbol->name.c_str())};
         diag.addRange(identifier->token, Fmt(Nte(Nte1073), prevNode->typeInfo->getDisplayNameC()));
-        diag.hint = Diagnostic::isType(prevNode->typeInfo);
         return context->report(diag, Diagnostic::hereIs(oneMatch.oneOverload->overload));
     }
 
@@ -1314,7 +1316,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             auto prev = identifier->identifierRef()->childs[childIdx - 1];
             if (prev->resolvedSymbolName && prev->resolvedSymbolName->kind == SymbolKind::Variable && !(prev->flags & AST_FROM_UFCS))
             {
-                return context->report({prev, Fmt(Err(Err0097), Naming::kindName(prev->resolvedSymbolOverload->node).c_str(), prev->token.ctext(), identifier->token.ctext()), Nte(Nte1026)});
+                Diagnostic diag{prev, Fmt(Err(Err0097), Naming::kindName(prev->resolvedSymbolOverload->node).c_str(), prev->token.ctext(), identifier->token.ctext())};
+                diag.addRange(identifier->token, Fmt(Nte(Nte1073), prev->typeInfo->getDisplayNameC()));
+                return context->report(diag, Diagnostic::hereIs(funcDecl));
             }
         }
 
