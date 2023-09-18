@@ -513,7 +513,7 @@ void initErrors()
     SWAG_ERROR(Err0097, "misused UFCS                                      $ the %s '%s' is not used as the first argument when calling '%s'");
     SWAG_ERROR(Err0310, "misused UFCS                                      $ the hidden 'with' variable '%s' is not used as the first argument when calling '%s'");
     SWAG_ERROR(Err0705, "invalid enum type                                 $ the type '%s' is not a valid enum type");
-    SWAG_ERROR(Err0021, "invalid array dimension                           $ the array dimension can't be evaluated at compile-time");
+    SWAG_ERROR(Err0021, "compile-time evaluation required                  $ the array dimension can't be evaluated at compile-time");
     SWAG_ERROR(Err0023, "invalid array dimension                           $ the array dimension is 0");
     SWAG_ERROR(Err0022, "invalid array dimension                           $ the array dimension must be an integer, got '%s' instead");
     SWAG_ERROR(Err0137, "misplaced '%s'                                    $ '%s' can't be used in a struct special function ('%s')");
@@ -523,10 +523,23 @@ void initErrors()
     SWAG_ERROR(Err0342, "invalid 'orelse' type                             $ the 'orelse' operator does not accept the type 'struct' as an argument");
     SWAG_ERROR(Err0332, "invalid 'orelse' type                             $ the 'orelse' operator dnoes not accept the type '%s' as an argument");
     SWAG_ERROR(Err0011, "argument already defined                          $ the named argument '%s' has already been defined");
+    SWAG_ERROR(Err0602, "compile-time evaluation required                  $ the attribute parameter can't be evaluated at compile-time");
+    SWAG_ERROR(Err0237, "compile-time evaluation required                  $ the '%s' message can't be evaluated at compile-time");
+    SWAG_ERROR(Err0435, "exception!                                        $ compile-time execution exception");
+    SWAG_ERROR(Err0615, "compile-time evaluation required                  $ the 'case' expression can't be evaluated at compile-time $ the 'switch' is marked as '#[Swag.Complete]', so the expression must be constant");
+    SWAG_ERROR(Err0798, "compile-time evaluation required                  $ the expression can't be evaluated at compile-time");
+    SWAG_ERROR(Err0102, "compile-time evaluation required                  $ the function parameter of type '%s' can't be evaluated at compile-time");
+    SWAG_ERROR(Err0670, "compile-time evaluation required                  $ the initialization expression can't be evaluated at compile-time");
+    SWAG_ERROR(Err0128, "compile-time evaluation required                  $ the type constraint can't be evaluated at compile-time");
+
+    SWAG_ERROR(Err0090, nullptr);
+    SWAG_ERROR(Err0906, "initial value not compile-time evaluable; 'opAffect' isn't 'Swag.ConstExpr'");
+    SWAG_ERROR(Err0281, "struct of type '%s' not 'Swag.ConstExpr'; can't evaluate at compile-time");
+    SWAG_ERROR(Err0321, "tuple value contains non-'Swag.ConstExpr' member; can't evaluate at compile-time");
+    SWAG_ERROR(Err0089, "'%s' can't be compile-time evaluated");
 
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
-    SWAG_ERROR(Err0089, "'%s' can't be compile-time evaluated");
     SWAG_ERROR(Err0085, "'%s' can't be dereferenced as struct or pointer to struct (type is '%s')");
     SWAG_ERROR(Err0194, "'%s' can't be dereferenced by index; pointer arithmetic not allowed");
     SWAG_ERROR(Err0788, "'%s' can't have 'null' as the first parameter");
@@ -587,7 +600,6 @@ void initErrors()
     SWAG_ERROR(Err0588, "attribute '%s' incompatible with %s");
     SWAG_ERROR(Err0583, "attribute '%s' only applies to %s");
     SWAG_ERROR(Err0582, "expected attribute; '%s' is %s");
-    SWAG_ERROR(Err0602, "attribute parameter cannot be evaluated at compile-time");
     SWAG_ERROR(Err0036, "backend error: windows sdk folder not found");
     SWAG_ERROR(Err0833, "bit inversion disallowed on type '%s'");
     SWAG_ERROR(Err0032, "bitcasting from '%s' not allowed (expected integer, pointer, rune, or float)");
@@ -601,7 +613,6 @@ void initErrors()
     SWAG_ERROR(Err0881, "can't find an 'enum' or a 'with' for '%s' prefixed with '.'");
     SWAG_ERROR(Err0320, "can't slice '%s'; 'opSlice' not found in type '%s'");
     SWAG_ERROR(Err0627, "can't visit variadic type by pointer");
-    SWAG_ERROR(Err0237, "can't evaluate '%s' message at compile-time");
     SWAG_ERROR(Err0500, "can't initialize constant array with a single value: type '%s'");
     SWAG_ERROR(Err0206, "can't reference %s '%s': different stack frame");
     SWAG_ERROR(Err0686, "can't use 'code' parameter in '%s' expression following %s '%s'");
@@ -611,7 +622,6 @@ void initErrors()
     SWAG_ERROR(Err0418, "casting from immutable ('%s') to mutable ('%s') not allowed");
     SWAG_ERROR(Err0041, "casting from value pointer ('%s') to block pointer ('%s') not allowed");
     SWAG_ERROR(Err0185, "closure can't be assigned to a lambda type");
-    SWAG_ERROR(Err0435, "compile-time execution exception");
     SWAG_ERROR(Err0091, "compile-time %s '%s' inaccessible from runtime %s");
     SWAG_ERROR(Err0107, "compile-time function '%s' called from runtime %s");
     SWAG_ERROR(Err0238, "compiler assertion failure");
@@ -652,8 +662,6 @@ void initErrors()
     SWAG_ERROR(Err0054, "expected type but got value for generic %s in %s");
     SWAG_ERROR(Err0057, "expected value but got type for generic %s in %s");
     SWAG_ERROR(Err0012, "expected expression; type found");
-    SWAG_ERROR(Err0615, "expression can't be evaluated at compile-time ('Swag.Complete')");
-    SWAG_ERROR(Err0798, "expression can't be evaluated at compile-time");
     SWAG_ERROR(Err0488, "expression of type '%s' not dereferenceable");
     SWAG_ERROR(Err0569, "expression of type 'void' not assignable");
     SWAG_ERROR(Err0240, "expression type mismatch; expected 'code', found '%s'");
@@ -680,8 +688,6 @@ void initErrors()
     SWAG_ERROR(Err0094, "function call returning nothing can't be discarded");
     SWAG_ERROR(Err0764, "function can't return type '%s'");
     SWAG_ERROR(Err0078, "function name '%s' is reserved");
-    SWAG_ERROR(Err0102, "function param type '%s' not evaluatable at compile-time");
-    SWAG_ERROR(Err0090, "function parameter of type '%s' can't be evaluated at compile-time");
     SWAG_ERROR(Err0160, "function pointer can't be assigned to a constant");
     SWAG_ERROR(Err0163, "function returns no value to retrieve");
     SWAG_ERROR(Err0766, "function with 'Swag.CalleeReturn' must not return value");
@@ -712,8 +718,6 @@ void initErrors()
     SWAG_ERROR(Err0187, "index missing for array dereference '%s'");
     SWAG_ERROR(Err0180, "index missing for slice dereference '%s'");
     SWAG_ERROR(Err0468, "index out of bounds (given: '%I64u', max: '%I64u')");
-    SWAG_ERROR(Err0906, "initial value not compile-time evaluable; 'opAffect' isn't 'Swag.ConstExpr'");
-    SWAG_ERROR(Err0670, "initialization can't be evaluated at compile-time");
     SWAG_ERROR(Err0307, "initialization is 'void'");
     SWAG_ERROR(Err0848, "expected initialization of '%s'; enum '%s' lacks zero value");
     SWAG_ERROR(Err0473, "inline function address not accessible");
@@ -857,7 +861,6 @@ void initErrors()
     SWAG_ERROR(Err0673, "struct member '%s' missing for 'Swag.Offset' attribute relocation");
     SWAG_ERROR(Err0029, "struct member aliasing not allowed");
     SWAG_ERROR(Err0295, "duplicate initialization of struct");
-    SWAG_ERROR(Err0281, "struct of type '%s' not 'Swag.ConstExpr'; can't evaluate at compile-time");
     SWAG_ERROR(Err0662, "expected struct or enum, found '%s' as %s");
     SWAG_ERROR(Err0666, "struct requires public access for 'Swag.Opaque'");
     SWAG_ERROR(Err0532, "suffix literals like '%s' are for struct conversions only");
@@ -873,7 +876,6 @@ void initErrors()
     SWAG_ERROR(Err0028, "tuple type mismatch");
     SWAG_ERROR(Err0624, "tuple type visitation not allowed");
     SWAG_ERROR(Err0292, "tuple unpacking failed; no fields found");
-    SWAG_ERROR(Err0321, "tuple value contains non-'Swag.ConstExpr' member; can't evaluate at compile-time");
     SWAG_ERROR(Err0482, "tuples can't be dereferenced as pointers or arrays");
     SWAG_ERROR(Err0252, "type '%s' and '%s' from command line for '%s' mismatch");
     SWAG_ERROR(Err0058, "type '%s' can't be converted to constant expression");
@@ -886,7 +888,6 @@ void initErrors()
     SWAG_ERROR(Err0291, "type '%s' unpacking failed; expected struct or tuple");
     SWAG_ERROR(Err0181, "type 'any' without cast compared only to 'null'");
     SWAG_ERROR(Err0118, "type constraint failed on '%s'");
-    SWAG_ERROR(Err0128, "type constraint not evaluable at compile-time");
     SWAG_ERROR(Err0678, "type constraint should yield 'bool' ('%s' given)");
     SWAG_ERROR(Err0017, "type declaration error; '%s' isn't a type (it's %s)");
     SWAG_ERROR(Err0810, "type is unevaluable in this context; it's generic");
@@ -1398,7 +1399,7 @@ void initErrors()
     SWAG_ERROR(Nte0022, "potential issue detected in your program's compile-time component");
     SWAG_ERROR(Nte1046, "you can prefix with '#run' to force a compile-time call");
     SWAG_ERROR(Nte1081, "primary instance noted here");
-    SWAG_ERROR(Nte0054, "problem arose during the '#validif' validation of the call to '%s'");
+    SWAG_ERROR(Nte0054, "occured during the '#validif' validation of the call to '%s'");
     SWAG_ERROR(Nte0061, "occured during the generic instantiation of '%s'");
     SWAG_ERROR(Nte0055, "problem matching type with the other part of the conditional expression");
     SWAG_ERROR(Nte0126, "public structs should export all their special functions");
@@ -1468,7 +1469,7 @@ void initErrors()
     SWAG_ERROR(Nte1090, "this expression evaluates to '%f'");
     SWAG_ERROR(Nte1091, "this expression evaluates to '%lld'");
     SWAG_ERROR(Nte1033, "this expression results in 0");
-    SWAG_ERROR(Nte0071, "this function call couldn't be evaluated at compile-time");
+    SWAG_ERROR(Nte0071, "this function call can't be evaluated at compile-time");
     SWAG_ERROR(Nte1057, "this function can't be instantiated");
     SWAG_ERROR(Nte1073, "this function doesn't support UFCS of type '%s'");
     SWAG_ERROR(Nte1078, "this function doesn't support aliased names");

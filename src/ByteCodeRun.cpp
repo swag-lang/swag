@@ -4153,18 +4153,21 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         {
         case SwagExceptionKind::Error:
         default:
-            level   = DiagnosticLevel::Error;
-            userMsg = Fmt(Err(Err0567), txt.c_str());
+            level = DiagnosticLevel::Error;
+            if (!Diagnostic::hastErrorId(txt))
+                userMsg = Fmt(Err(Err0567), txt.c_str());
+            else
+                userMsg = txt;
             break;
         case SwagExceptionKind::Warning:
-            level   = DiagnosticLevel::Warning;
-            userMsg = Fmt(Err(Wrn0011), txt.c_str());
+            level = DiagnosticLevel::Warning;
+            if (!Diagnostic::hastErrorId(txt))
+                userMsg = Fmt(Err(Wrn0011), txt.c_str());
+            else
+                userMsg = txt;
             break;
         case SwagExceptionKind::Panic:
             level = DiagnosticLevel::Panic;
-
-            // Panic can come from the compiler, with an already existing error number (like for safety checks).
-            // So be sure we don't have one already.
             if (!Diagnostic::hastErrorId(txt))
                 userMsg = Fmt(Err(Err0401), txt.c_str());
             else

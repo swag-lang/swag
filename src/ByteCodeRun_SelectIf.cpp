@@ -139,7 +139,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
     {
         if (!getVariadicSI(context, ip, &registersRC[ip->a.u32], &registersRC[ip->b.u32]))
         {
-            callInternalCompilerError(context, ip, Fmt(Err(Err0090), solved->typeInfo->getDisplayNameC()));
+            callInternalCompilerError(context, ip, Fmt(Err(Err0102), solved->typeInfo->getDisplayNameC()));
             return;
         }
 
@@ -168,7 +168,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
             return;
         }
 
-        callInternalCompilerError(context, ip, Fmt(Err(Err0090), solved->typeInfo->getDisplayNameC()));
+        callInternalCompilerError(context, ip, Fmt(Err(Err0102), solved->typeInfo->getDisplayNameC()));
         return;
     }
 
