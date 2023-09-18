@@ -591,7 +591,7 @@ void Utf8::append(uint32_t utf)
         buffer[count++] = (uint8_t) (((utf >> 6) & 0x3F) | 0x80);
         buffer[count++] = (uint8_t) (((utf >> 0) & 0x3F) | 0x80);
     }
-    else if (utf <= 0x10FFFF)
+    else if (utf <= MAX_ENCODED_UNICODE)
     {
         reserve(count + 5);
         buffer[count++] = (uint8_t) (((utf >> 18) & 0x07) | 0xF0);

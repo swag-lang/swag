@@ -16,6 +16,8 @@ struct SwagSlice;
 
 struct Utf8
 {
+    static const char32_t MAX_ENCODED_UNICODE = 0x10FFFF;
+
     char*    buffer    = nullptr;
     uint32_t count     = 0;
     uint32_t allocated = 0;

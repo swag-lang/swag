@@ -493,13 +493,15 @@ void initErrors()
     SWAG_ERROR(Err0505, "compiler limit reached                            $ the size of the %s is too big (maximum size is '0x%I64x' bytes)");
     SWAG_ERROR(Err0834, "compiler limit reached                            $ the size of the data segment '%s' is too big (maximum size is '0x%I64x' bytes)");
     SWAG_ERROR(Err0738, "missing default value                             $ the %s needs a default value as a preceding parameter has one");
-
     SWAG_ERROR(Err0911, "unsuitable struct for union                       $ the struct '%s' is not suitable for union because it contains an '%s' function");
-    SWAG_ERROR(Err0909, nullptr);
-    SWAG_ERROR(Err0910, nullptr);
+    SWAG_ERROR(Err0804, "invalid parameter                                 $ the '#message' block needs a parameter of type 'Swag.CompilerMsgMask', got '%s'");
+    SWAG_ERROR(Err0302, "invalid character literal                         $ can't convert a character literal to type '%s'");
+    SWAG_ERROR(Err0287, "invalid character literal                         $ can't convert the character literal '0x%x' to 'u16', this is out of range");
+    SWAG_ERROR(Err0263, "invalid character literal                         $ can't convert the character literal '0x%x' to 'u8', this is out of range");
+    SWAG_ERROR(Err0909, "invalid unicode value                             $ value '0x%x is not a valid unicode code point, and can't be converted to UTF8");
+    SWAG_ERROR(Err0262, "invalid character literal                         $ the character literal '%s' seems to be a string and not a character");
 
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
-    SWAG_ERROR(Err0804, "'#message' block needs 'Swag.CompilerMsgMask' param (given: '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
     SWAG_ERROR(Err0089, "'%s' can't be compile-time evaluated");
     SWAG_ERROR(Err0085, "'%s' can't be dereferenced as struct or pointer to struct (type is '%s')");
@@ -596,10 +598,6 @@ void initErrors()
     SWAG_ERROR(Err0178, "casting from closure to lambda not allowed");
     SWAG_ERROR(Err0418, "casting from immutable ('%s') to mutable ('%s') not allowed");
     SWAG_ERROR(Err0041, "casting from value pointer ('%s') to block pointer ('%s') not allowed");
-    SWAG_ERROR(Err0302, "char literal to '%s' conversion not possible");
-    SWAG_ERROR(Err0287, "char literal to 'u16' exceeds max value '%u'");
-    SWAG_ERROR(Err0263, "char literal to 'u8' exceeds max value '%u'");
-    SWAG_ERROR(Err0262, "character literal '%s' interpreted as string");
     SWAG_ERROR(Err0185, "closure can't be assigned to a lambda type");
     SWAG_ERROR(Err0435, "compile-time execution exception");
     SWAG_ERROR(Err0091, "compile-time %s '%s' inaccessible from runtime %s");
@@ -930,6 +928,7 @@ void initErrors()
     SWAG_ERROR(Err0308, "variable type deduction failed; expression is 'null'");
     SWAG_ERROR(Err0734, "variadic parameter must be last");
 
+    SWAG_ERROR(Err0910, nullptr);
     SWAG_ERROR(Err0086, nullptr);
     SWAG_ERROR(Err0521, nullptr);
     SWAG_ERROR(Err0159, nullptr);

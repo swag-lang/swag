@@ -145,6 +145,8 @@ bool SemanticJob::processLiteralString(SemanticContext* context)
             SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c7, msg));
             SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c8, msg));
             char32_t cw = (c1 << 28) + (c2 << 24) + (c3 << 20) + (c4 << 16) + (c5 << 12) + (c6 << 8) + (c7 << 4) + c8;
+            if (cw > Utf8::MAX_ENCODED_UNICODE)
+                return context->report({node->sourceFile, loc, Fmt(Err(Err0909), cw)});
             result.append(cw);
             loc.column += 8;
             continue;
@@ -471,7 +473,7 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
     node->computedValue->text = node->token.text;
     node->flags |= AST_R_VALUE;
 
-    processLiteralString(context);
+    SWAG_CHECK(processLiteralString(context));
 
     // Suffix
     auto suffix = node->childs.empty() ? nullptr : node->childs.front();
