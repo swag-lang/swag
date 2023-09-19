@@ -153,13 +153,12 @@ bool SemanticJob::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* n
 
     // Must start with a pointer of the same type as the slice
     if (!first->typeInfo->isPointer())
-        return context->report({first, Fmt(Err(Err0787), name), Diagnostic::isType(first->typeInfo)});
+        return context->report({first, Fmt(Err(Err0787), name, first->typeInfo->getDisplayNameC())});
     if (!first->typeInfo->isPointerArithmetic() && !first->typeInfo->isCString())
-        return context->report({first, Fmt(Err(Err0711), name), Diagnostic::isType(first->typeInfo)});
+        return context->report({first, Fmt(Err(Err0711), name, first->typeInfo->getDisplayNameC())});
 
     auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
-    if (!ptrPointer->pointedType)
-        return context->report({first, Fmt(Err(Err0788), name)});
+    SWAG_ASSERT(ptrPointer->pointedType);
 
     // Slice count
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, second->typeInfo, nullptr, second, CASTFLAG_TRY_COERCE));
@@ -183,7 +182,7 @@ bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* nod
 
     // Check first parameter
     if (!first->typeInfo->isPointer())
-        return context->report({first, Fmt(Err(Err0789), first->typeInfo->getDisplayNameC())});
+        return context->report({first, Fmt(Err(Err0787), node->token.ctext(), first->typeInfo->getDisplayNameC())});
 
     auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
     if (!ptrPointer->pointedType)

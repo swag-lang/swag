@@ -2,5 +2,5 @@
 
 #test
 {
-    let a = @mkany(0, 0)
+    @postcopy(0)
 }

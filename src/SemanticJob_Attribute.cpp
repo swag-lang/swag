@@ -681,7 +681,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
         auto resolved     = identifier->resolvedSymbolOverload;
         if (resolvedName->kind != SymbolKind::Attribute)
         {
-            Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0598), resolvedName->name.c_str())};
+            Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0598), resolvedName->name.c_str(), Naming::aKindName(resolvedName->kind).c_str())};
             context->report(diag, Diagnostic::hereIs(resolved));
             return false;
         }

@@ -261,7 +261,6 @@ void initErrors()
     SWAG_ERROR(Err0596, "invalid align value                               $ the '#[Swag.Align]' argument must be a power of two, got '%d'");
     SWAG_ERROR(Err0283, "invalid argument                                  $ the intrinsic '@gettag' expects a default value of type '%s' as the last argument");
     SWAG_ERROR(Err0790, "invalid argument                                  $ the intrinsic '@mkany' can' have 'null' as a first argument");
-    SWAG_ERROR(Err0789, "invalid argument                                  $ the intrinsic '@mkany' requires a pointer as a first argument, got '%s' instead");
     SWAG_ERROR(Err0792, "invalid argument                                  $ the intrinsic '@mkany' expects a type as the second argument, got '%s' instead");
     SWAG_ERROR(Err0784, "invalid argument                                  $ the intrinsic '@mkcallback' requires a pointer to function argument, got '%s' instead");
     SWAG_ERROR(Err0498, "invalid argument                                  $ the '%s' count must be an integer, got '%s' instead");
@@ -547,7 +546,6 @@ void initErrors()
     SWAG_ERROR(Err0800, "unsupported type                                  $ the intrinsic '@countof' does not accept an argument of type 'tuple'");
     SWAG_ERROR(Err0796, "unsupported type                                  $ the intrinsic '@dataof' does not accept an argument of type 'tuple'");
     SWAG_ERROR(Err0797, "unsupported type                                  $ the intrinsic '@dataof' does not accept an argument of type '%s'");
-    SWAG_ERROR(Err0489, "unsupported type                                  $ the intrinsic '@init' require a pointer as a first argument, got '%s' instead");
     SWAG_ERROR(Err0084, "unsupported type                                  $ the intrinsic '@runes' requires a string as an argument, got '%s' instead");
     SWAG_ERROR(Err0730, "unsupported type                                  $ the intrinsic '@mkstring' requires a pointer to 'u8' as a first argument, got '%s' instead");
     SWAG_ERROR(Err0793, "unsupported type                                  $ the intrinsic '@mkinterface' requires a pointer or a struct as first argument, got '%s' instead");
@@ -556,17 +554,23 @@ void initErrors()
     SWAG_ERROR(Err0249, "unsupported type                                  $ the intrinsic '%s' requires a string as an argument, got '%s' instead");
     SWAG_ERROR(Err1179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
 
+    SWAG_ERROR(Err0598, "invalid attribute                                 $ '%s' is not an attribute but is %s");
+    SWAG_ERROR(Err0259, "invalid escape code                               $ '%c' is not a valid escape code");
+    SWAG_ERROR(Err0787, "invalid argument                                  $ the intrinsic '%s' requires a pointer as a first argument, got '%s' instead");
+    SWAG_ERROR(Err0711, "invalid argument                                  $ the intrinsic '%s' requires a block pointer as a first argument, got '%s' instead");
+
+    SWAG_ERROR(Err0789, nullptr);
+    SWAG_ERROR(Err0495, nullptr);
+    SWAG_ERROR(Err0788, nullptr);
+    SWAG_ERROR(Err0489, nullptr);
+
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
-    SWAG_ERROR(Err0788, "'%s' can't have 'null' as the first parameter");
-    SWAG_ERROR(Err0495, "'%s' first parameter must be pointer, found '%s'");
     SWAG_ERROR(Err0535, "'%s' is for error-raising functions");
     SWAG_ERROR(Err0139, "'%s' is for function calls, but '%s' is %s");
     SWAG_ERROR(Err0671, "'%s' is generic; '%s' lacks generic parameters");
     SWAG_ERROR(Err0696, "'%s' is only valid as a function parameter");
     SWAG_ERROR(Err0600, "'%s' lacks 'Swag.AttributeUsage.File'; avoid '#global'");
-    SWAG_ERROR(Err0711, "'%s' needs block pointer as first parameter");
-    SWAG_ERROR(Err0787, "'%s' needs pointer as first parameter");
     SWAG_ERROR(Err0496, "'%s' second parameter must be pointer, found '%s'");
     SWAG_ERROR(Err0497, "'%s' second parameter should point to '%s', points to '%s'");
     SWAG_ERROR(Err0858, "'%s' should not have line break %s");
@@ -906,8 +910,6 @@ void initErrors()
     SWAG_ERROR(Err0008, "unknown named parameter '%s'");
     SWAG_ERROR(Err0282, "unpacking mismatch: '%d' variable(s) versus '%d' element(s)");
     SWAG_ERROR(Err0293, "unpacking mismatch: '%u' variable(s) versus '%u' field(s) in tuple");
-    SWAG_ERROR(Err0598, "unrecognized attribute '%s'");
-    SWAG_ERROR(Err0259, "unrecognized escape sequence '%c'");
     SWAG_ERROR(Err0681, "unresolved interface due to generic type '%s'");
     SWAG_ERROR(Err0672, "unresolved struct '%s' due to generic type '%s'");
     SWAG_ERROR(Err0827, "unsigned type '%s' negation invalid");

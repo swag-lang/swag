@@ -2,5 +2,5 @@
 
 #test
 {
-    let a = @mkany(0, 0)
+    var x = @mkslice(0, 0)
 }
