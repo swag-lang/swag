@@ -833,7 +833,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(concreteNodeType, TypeInfoKind::Array);
         if (typeArray->count == UINT32_MAX && !node->assignment)
-            return context->report({node->type, Err(Err0303), Nte(Nte1072)});
+            return context->report({node->type, Err(Err0303)});
 
         // Deduce size of array
         if (typeArray->count == UINT32_MAX)

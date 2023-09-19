@@ -241,7 +241,7 @@ void initErrors()
     SWAG_ERROR(Err1210, "invalid '#up' count                               $ the '#up' count should be an untype integer in the range [1, 255], found '%s'");
     SWAG_ERROR(Err1169, "invalid '@alias' number                           $ '@alias' variable names should end with a number, found '%s' instead");
     SWAG_ERROR(Err0801, "invalid '@countof' argument                       $ the intrinsic '@countof' requires an integer argument, got '%s' instead");
-    SWAG_ERROR(Err0802, "invalid '@countof' argument                       $ the intrinsic '@countof' requires a positive argument, got '%d'");
+    SWAG_ERROR(Err0802, "invalid '@countof' argument                       $ the intrinsic '@countof' requires a positive argument, got '%d' instead");
     SWAG_ERROR(Err0805, "invalid '@countof' argument                       $ the intrinsic '@countof' requires a positive argument, got '%I64d'");
     SWAG_ERROR(Err1168, "invalid '@mixin' number                           $ '@mixin' variable names should end with a number, found '%s' instead");
     SWAG_ERROR(Err1108, "invalid 'break' scope name                        $ expected the scope name after 'break', found '%' instead");
@@ -567,6 +567,14 @@ void initErrors()
     SWAG_ERROR(Err0822, "misplaced 'using'                                 $ 'using' on a pointer variable is only valid for struct pointers, got a pointer to '%s' instead");
     SWAG_ERROR(Err0695, "misplaced 'using'                                 $ 'using' cannot be associated with type '%s' $ expected a namespace, a struct, an enum or a variable");
     SWAG_ERROR(Err0689, "misplaced 'using'                                 $ 'using' on a variable is not allowed in '%s' scope");
+    SWAG_ERROR(Err0485, "unsupported type                                  $ the array access index must be an integer, got '%s' instead");
+    SWAG_ERROR(Err0148, "unsupported array type                            $ cannot declare a static array of type 'void'");
+    SWAG_ERROR(Err0303, "invalid array size                                $ the size of the array can't be deduced because of a missing initialization");
+
+    SWAG_ERROR(Err0465, "invalid address                                   $ can't take the address of %s $ this is not a variable");
+    SWAG_ERROR(Err0469, "invalid address                                   $ can't take the address of a constant of type '%s' $ this type of constant does not have an associated memory storage");
+    SWAG_ERROR(Err0462, "invalid address                                   $ can't take the address of a function parameter of type '%s' $ this type of parameter does not have an associated memory storage");
+    SWAG_ERROR(Err0501, "invalid address                                   $ can't take the address of a variable declared with 'let'");
 
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
@@ -585,10 +593,6 @@ void initErrors()
     SWAG_ERROR(Err0306, "'slice' type must be 'const' given const right expression");
     SWAG_ERROR(Err0236, "expected 'string' type for '%s' message, found '%s'");
     SWAG_ERROR(Err0445, "@cvaarg of type '%s' promoted to '%s' at call");
-    SWAG_ERROR(Err0465, "address of %s not accessible");
-    SWAG_ERROR(Err0501, "address of 'let' declared local variable inaccessible");
-    SWAG_ERROR(Err0469, "address of constant type '%s' not accessible");
-    SWAG_ERROR(Err0462, "address of function parameter type '%s' not accessible");
     SWAG_ERROR(Err0664, "alias not supported as block name");
     SWAG_ERROR(Err0099, "aliased identifiers in non-macro/function '%s'");
     SWAG_ERROR(Err0814, "alignment inexpressible due to generic expression");
@@ -598,9 +602,6 @@ void initErrors()
     SWAG_ERROR(Err0182, "ambiguous special function '%s' resolution");
     SWAG_ERROR(Err0034, "ambiguous struct '%s' to interface '%s' conversion");
     SWAG_ERROR(Err0116, "ambiguous symbol '%s' resolution");
-    SWAG_ERROR(Err0485, "array access requires integer type ('%s' given)");
-    SWAG_ERROR(Err0148, "array of 'void' type can't be declared");
-    SWAG_ERROR(Err0303, "array size undeduced; missing initialization");
     SWAG_ERROR(Err0572, "assignment not allowed; '%s' is %s");
     SWAG_ERROR(Err0588, "attribute '%s' incompatible with %s");
     SWAG_ERROR(Err0583, "attribute '%s' only applies to %s");
@@ -1407,7 +1408,6 @@ void initErrors()
     SWAG_ERROR(Nte1009, "secondary instance observed");
     SWAG_ERROR(Nte1053, "this should be 'const' but isn't");
     SWAG_ERROR(Nte1021, "this should be a pointer type");
-    SWAG_ERROR(Nte1058, "this should be an integer type");
     SWAG_ERROR(Nte1004, "this should be designated as 'const %s'");
     SWAG_ERROR(Nte1056, "should be succeeded by generic arguments");
     SWAG_ERROR(Nte1052, "should cast to a sized integer like 's32', 's64', etc.");
@@ -1459,7 +1459,6 @@ void initErrors()
     SWAG_ERROR(Nte0144, "this appears to be a potentially invalid UFCS call");
     SWAG_ERROR(Nte1030, "this argument has been named");
     SWAG_ERROR(Nte1031, "this argument lacks a name");
-    SWAG_ERROR(Nte1072, "this array is empty");
     SWAG_ERROR(Nte1024, "this is a pointer type declaration due to '*'");
     SWAG_ERROR(Nte1010, "this is a tuple type");
     SWAG_ERROR(Nte1006, "this element can't be accessed");
@@ -1481,16 +1480,13 @@ void initErrors()
     SWAG_ERROR(Nte1029, "this is a parameter");
     SWAG_ERROR(Nte1036, "this is a pointer and can't be accessed");
     SWAG_ERROR(Nte1027, "this is a type but a literal was expected");
-    SWAG_ERROR(Nte1054, "this is a type, not a value");
     SWAG_ERROR(Nte0143, "this is ambiguous; consider removing one 'using'");
     SWAG_ERROR(Nte1099, "this is an unnamed '?' parameter");
     SWAG_ERROR(Nte0106, "this is unexpected in global scope");
     SWAG_ERROR(Nte1038, "this isn't a constant");
     SWAG_ERROR(Nte1076, "this needs to be in lowercase");
-    SWAG_ERROR(Nte0141, "this parameter type doesn't have related memory storage");
     SWAG_ERROR(Nte1075, "this should be a namespace, function, or variable instead of a type");
     SWAG_ERROR(Nte1125, "this slice appears to be null or empty");
-    SWAG_ERROR(Nte0122, "this specific constant doesn't have associated memory storage");
     SWAG_ERROR(Nte1126, "this string seems to be null or empty");
     SWAG_ERROR(Nte1068, "this tuple has '%d' field(s)");
     SWAG_ERROR(Nte1069, "this tuple seems to be empty");
@@ -1521,7 +1517,11 @@ void initErrors()
     SWAG_ERROR(Nte1082, "if you want to retrieve the type of an expression, consider using '@decltype' instead")
     SWAG_ERROR(Nte1013, "it seems like you're trying to access a nested property of '%s', but '%s' itself isn't a value");
     SWAG_ERROR(Nte1001, "the % s '%s' has only been used as a scope to find function '%s'");
-
+    SWAG_ERROR(Nte0141, nullptr);
+    SWAG_ERROR(Nte0122, nullptr);
+    SWAG_ERROR(Nte1054, nullptr);
+    SWAG_ERROR(Nte1072, nullptr);
+    SWAG_ERROR(Nte1058, nullptr);
     SWAG_ERROR(Nte1089, nullptr);
     SWAG_ERROR(Nte0130, nullptr);
     SWAG_ERROR(Nte1003, nullptr);

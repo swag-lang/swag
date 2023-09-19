@@ -78,12 +78,11 @@ bool SemanticJob::checkCanTakeAddress(SemanticContext* context, AstNode* node)
         if (node->resolvedSymbolName->kind != SymbolKind::Variable)
         {
             Diagnostic diag{node, Fmt(Err(Err0465), Naming::aKindName(node->resolvedSymbolName->kind).c_str())};
-            diag.hint = Nte(Nte1054);
             return context->report(diag);
         }
 
-        auto note = Diagnostic::note(Nte(Nte0122));
-        return context->report({node, Fmt(Err(Err0469), node->typeInfo->getDisplayNameC()), Diagnostic::isType(node->typeInfo)}, note);
+        Diagnostic diag{node, Fmt(Err(Err0469), node->typeInfo->getDisplayNameC())};
+        return context->report(diag);
     }
 
     return true;
@@ -593,7 +592,10 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
 
     auto accessType = TypeManager::concreteType(arrayNode->access->typeInfo);
     if (!(accessType->isNativeInteger()) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
-        return context->report({arrayNode->access, Fmt(Err(Err0485), arrayNode->access->typeInfo->getDisplayNameC())});
+    {
+        Diagnostic diag{arrayNode->access, Fmt(Err(Err0485), arrayNode->access->typeInfo->getDisplayNameC())};
+        return context->report(diag);
+    }
 
     switch (arrayType->kind)
     {
@@ -826,7 +828,6 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     if (!(accessType->isNativeInteger()) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
     {
         Diagnostic diag{arrayNode->access, Fmt(Err(Err0485), arrayNode->access->typeInfo->getDisplayNameC())};
-        diag.hint = Nte(Nte1058);
         return context->report(diag);
     }
 

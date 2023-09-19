@@ -278,8 +278,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             else
             {
                 Diagnostic diag{node, node->token, Fmt(Err(Err0462), typeInfo->getDisplayNameC())};
-                auto       note = Diagnostic::note(Nte(Nte0141));
-                return context->report(diag, note);
+                return context->report(diag);
             }
         }
         else if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !(node->flags & AST_UFCS_FCT))

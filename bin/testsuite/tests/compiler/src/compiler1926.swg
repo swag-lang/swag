@@ -1,4 +1,3 @@
-
 #global testerror "Err0303"
 
 typealias A = [] s32
