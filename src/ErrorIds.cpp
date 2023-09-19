@@ -581,7 +581,13 @@ void initErrors()
     SWAG_ERROR(Err0099, "unexpected aliased names                          $ unexpected alias when calling '%s' because it's not a macro or a mixin");
     SWAG_ERROR(Err0664, "unexpected type alias                             $ expected a direct type as an 'impl' block name, got a type alias instead");
     SWAG_ERROR(Err0709, "missing enum flag value                           $ can't deduce the value of flag '%s' as the previous value isn't a power of two");
+    SWAG_ERROR(Err0307, "invalid type                                      $ the initialization expression has type 'void'");
+    SWAG_ERROR(Err0091, "invalid access from runtime                       $ the compile-time %s '%s' can't be accessed from runtime function '%s'");
+    SWAG_ERROR(Err0107, "invalid access from runtime                       $ the compile-time function '%s' can't be accessed from runtime function '%s'");
+    SWAG_ERROR(Err0060, "invalid access from runtime                       $ this compile-time constant can't be accessed from runtime");
+    SWAG_ERROR(Err0144, "unknown enum value                                $ the enumeration value '%s' was not found in the enum '%s'");
 
+    SWAG_ERROR(Err0706, "value '%s' of type '%s' requires initialization");
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
     SWAG_ERROR(Err0671, "'%s' is generic; '%s' lacks generic parameters");
@@ -623,9 +629,6 @@ void initErrors()
     SWAG_ERROR(Err0418, "casting from immutable ('%s') to mutable ('%s') not allowed");
     SWAG_ERROR(Err0041, "casting from value pointer ('%s') to block pointer ('%s') not allowed");
     SWAG_ERROR(Err0185, "closure can't be assigned to a lambda type");
-    SWAG_ERROR(Err0091, "compile-time %s '%s' inaccessible from runtime %s");
-    SWAG_ERROR(Err0107, "compile-time function '%s' called from runtime %s");
-    SWAG_ERROR(Err0060, "compiler constant not for runtime reference");
     SWAG_ERROR(Err0119, "complex generic type deduction (embedded tuples)");
     SWAG_ERROR(Err0311, "constant creation failed due to generic type '%s'");
     SWAG_ERROR(Err0298, "constants need explicit initialization");
@@ -715,7 +718,6 @@ void initErrors()
     SWAG_ERROR(Err0187, "index missing for array dereference '%s'");
     SWAG_ERROR(Err0180, "index missing for slice dereference '%s'");
     SWAG_ERROR(Err0468, "index out of bounds (given: '%I64u', max: '%I64u')");
-    SWAG_ERROR(Err0307, "initialization is 'void'");
     SWAG_ERROR(Err0848, "expected initialization of '%s'; enum '%s' lacks zero value");
     SWAG_ERROR(Err0473, "inline function address not accessible");
     SWAG_ERROR(Err0733, "inline function with variadic parameters unsupported");
@@ -859,7 +861,6 @@ void initErrors()
     SWAG_ERROR(Err0666, "struct requires public access for 'Swag.Opaque'");
     SWAG_ERROR(Err0532, "suffix literals like '%s' are for struct conversions only");
     SWAG_ERROR(Err0346, "symbol '%s' defined in parent scope");
-    SWAG_ERROR(Err0108, "test function '%s' called from runtime '%s'");
     SWAG_ERROR(Err0578, "too many variadic parameters ('%d' given, max: '%d')");
     SWAG_ERROR(Err0893, "top-level declaration conflict for generic symbol '%s'");
     SWAG_ERROR(Err0574, "tuple assignment incompatible with right expression");
@@ -909,12 +910,11 @@ void initErrors()
     SWAG_ERROR(Err0803, "unsupported '@nameof' usage");
     SWAG_ERROR(Err0799, "unsupported '@stringof' usage");
     SWAG_ERROR(Err0780, "unused alias '%s'; consider removal");
-    SWAG_ERROR(Err0144, "value '%s' not found in enum '%s'");
-    SWAG_ERROR(Err0706, "value '%s' of type '%s' requires initialization");
-    SWAG_ERROR(Err0687, "expected value below 256");
     SWAG_ERROR(Err0312, "variable creation failed due to generic type '%s'");
     SWAG_ERROR(Err0436, "variable declared with 'let' requires explicit initialization");
     SWAG_ERROR(Err0645, "variable double initialized with type and assignment");
+    SWAG_ERROR(Err0687, nullptr);
+    SWAG_ERROR(Err0108, nullptr);
     SWAG_ERROR(Err0496, nullptr);
     SWAG_ERROR(Err0497, nullptr);
     SWAG_ERROR(Err0789, nullptr);
@@ -1448,7 +1448,8 @@ void initErrors()
     SWAG_ERROR(Nte0051, "there's an hidden call to '%s' for the type '%s'");
     SWAG_ERROR(Nte1083, "there's a missing '%s' of type '%s'");
     SWAG_ERROR(Nte1049, "there's an implied first parameter 'self'");
-    SWAG_ERROR(Nte1070, "this %s has the 'Swag.Compiler' attribute");
+    SWAG_ERROR(Nte1070, "this %s has the '#[Swag.Compiler]' attribute, which makes it compile-time only");
+    SWAG_ERROR(Nte1064, "this function has the '#[Swag.Compiler]' attribute, which makes it compile-time only");
     SWAG_ERROR(Nte1084, "this %s is of type '%s'");
     SWAG_ERROR(Nte1127, "this %s has '%s' access");
     SWAG_ERROR(Nte0006, "this 'using' field is convertible");
@@ -1465,11 +1466,9 @@ void initErrors()
     SWAG_ERROR(Nte1057, "this function can't be instantiated");
     SWAG_ERROR(Nte1073, "this function does not support UFCS of type '%s'");
     SWAG_ERROR(Nte1078, "this function does not support aliased names");
-    SWAG_ERROR(Nte1064, "this function is tagged with the 'Swag.Compiler' attribute");
     SWAG_ERROR(Nte1017, "this function is tagged with the 'Swag.Inline' attribute");
     SWAG_ERROR(Nte1015, "this function is tagged with the 'Swag.Macro' attribute");
     SWAG_ERROR(Nte1016, "this function is tagged with the 'Swag.Mixin' attribute");
-    SWAG_ERROR(Nte1065, "this function is tagged with the 'Swag.Test' attribute");
     SWAG_ERROR(Nte1018, "this is a constant");
     SWAG_ERROR(Nte1079, "this is a lambda expression");
     SWAG_ERROR(Nte1028, "this is a literal, but a type was expected");
@@ -1513,6 +1512,7 @@ void initErrors()
     SWAG_ERROR(Nte1082, "if you want to retrieve the type of an expression, consider using '@decltype' instead")
     SWAG_ERROR(Nte1013, "it seems like you're trying to access a nested property of '%s', but '%s' itself isn't a value");
     SWAG_ERROR(Nte1001, "the % s '%s' has only been used as a scope to find function '%s'");
+    SWAG_ERROR(Nte1065, nullptr);
     SWAG_ERROR(Nte1035, nullptr);
     SWAG_ERROR(Nte1096, nullptr);
     SWAG_ERROR(Nte0141, nullptr);

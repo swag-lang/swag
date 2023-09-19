@@ -3113,7 +3113,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             break;
         case ByteCodeOp::MakeCompilerSegPointer:
-            return Report::report({ip->node, Err(Err0060)});
+            return Report::report({ip->node, ip->node->token, Err(Err0060)});
 
             /////////////////////////////////////
 

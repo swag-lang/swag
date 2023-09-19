@@ -1,4 +1,3 @@
-
 #global testerror "Err0107"
 
 #[Swag.Compiler]

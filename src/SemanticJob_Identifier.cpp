@@ -1191,9 +1191,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             auto fctAttributes = ownerFct->attributeFlags;
             if (!(fctAttributes & ATTRIBUTE_COMPILER) && (overload->node->attributeFlags & ATTRIBUTE_COMPILER) && !(ownerFct->flags & AST_RUN_BLOCK))
             {
-                Diagnostic diag{identifier, Fmt(Err(Err0091), Naming::kindName(overload->node).c_str(), overload->node->token.ctext(), ownerFct->getDisplayNameC())};
-                diag.hint = Fmt(Nte(Nte1070), Naming::kindName(overload->node).c_str());
-                return context->report(diag);
+                Diagnostic diag{identifier, Fmt(Err(Err0091), Naming::kindName(overload->node).c_str(), overload->node->token.ctext(), ownerFct->token.ctext())};
+                auto       note = Diagnostic::note(overload->node, overload->node->token, Fmt(Nte(Nte1070), Naming::kindName(overload->node).c_str()));
+                return context->report(diag, note);
             }
         }
 
@@ -1388,16 +1388,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
 
                 if (!(fctAttributes & ATTRIBUTE_COMPILER) && (funcDecl->attributeFlags & ATTRIBUTE_COMPILER) && !(identifier->flags & AST_RUN_BLOCK))
                 {
-                    Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0107), funcDecl->token.ctext(), ownerFct->getDisplayNameC())};
-                    diag.hint = Nte(Nte1064);
-                    return context->report(diag, Diagnostic::hereIs(overload));
-                }
-
-                if (!(fctAttributes & ATTRIBUTE_TEST_FUNC) && (funcDecl->attributeFlags & ATTRIBUTE_TEST_FUNC))
-                {
-                    Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0108), funcDecl->token.ctext(), ownerFct->getDisplayNameC())};
-                    diag.hint = Nte(Nte1065);
-                    return context->report(diag, Diagnostic::hereIs(overload));
+                    Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0107), funcDecl->token.ctext(), ownerFct->token.ctext())};
+                    auto       note = Diagnostic::note(overload->node, overload->node->token, Nte(Nte1064));
+                    return context->report(diag, note);
                 }
             }
         }
@@ -2969,12 +2962,13 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
                     {
                         if (hasEnum.size())
                         {
-                            Diagnostic diag{identifierRef, Fmt(Err(Err0144), node->token.ctext(), hasEnum[0].second->getDisplayNameC())};
-                            diag.hint        = findClosestMatchesMsg(context, node, {{hasEnum[0].second->scope}});
-                            Diagnostic* note = nullptr;
+                            Diagnostic                diag{identifierRef, Fmt(Err(Err0144), node->token.ctext(), hasEnum[0].second->getDisplayNameC())};
+                            Vector<const Diagnostic*> notes;
+                            notes.push_back(Diagnostic::note(findClosestMatchesMsg(context, node, {{hasEnum[0].second->scope}})));
                             if (hasEnum[0].first)
-                                note = Diagnostic::note(hasEnum[0].first, Diagnostic::isType(hasEnum[0].first));
-                            return context->report(diag, note, Diagnostic::hereIs(hasEnum[0].second->declNode));
+                                notes.push_back(Diagnostic::note(hasEnum[0].first, Diagnostic::isType(hasEnum[0].first)));
+                            notes.push_back(Diagnostic::hereIs(hasEnum[0].second->declNode));
+                            return context->report(diag, notes);
                         }
 
                         Diagnostic diag{identifierRef, Fmt(Err(Err0881), node->token.ctext())};
