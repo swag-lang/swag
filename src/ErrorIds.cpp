@@ -570,11 +570,14 @@ void initErrors()
     SWAG_ERROR(Err0485, "unsupported type                                  $ the array access index must be an integer, got '%s' instead");
     SWAG_ERROR(Err0148, "unsupported array type                            $ cannot declare a static array of type 'void'");
     SWAG_ERROR(Err0303, "invalid array size                                $ the size of the array can't be deduced because of a missing initialization");
-
     SWAG_ERROR(Err0465, "invalid address                                   $ can't take the address of %s $ this is not a variable");
     SWAG_ERROR(Err0469, "invalid address                                   $ can't take the address of a constant of type '%s' $ this type of constant does not have an associated memory storage");
     SWAG_ERROR(Err0462, "invalid address                                   $ can't take the address of a function parameter of type '%s' $ this type of parameter does not have an associated memory storage");
     SWAG_ERROR(Err0501, "invalid address                                   $ can't take the address of a variable declared with 'let'");
+    SWAG_ERROR(Err0588, "misplaced attribute                               $ the attribute '%s' can't be associated with %s");
+    SWAG_ERROR(Err0583, "misplaced attribute                               $ the attribute '%s' can only be applied to %s");
+    SWAG_ERROR(Err0582, "invalid attribute                                 $ expected an attribute, but '%s' is %s");
+    SWAG_ERROR(Err0586, "misplaced attribute                               $ unexpected usage of the attribute '%s' in this context");
 
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
@@ -603,9 +606,6 @@ void initErrors()
     SWAG_ERROR(Err0034, "ambiguous struct '%s' to interface '%s' conversion");
     SWAG_ERROR(Err0116, "ambiguous symbol '%s' resolution");
     SWAG_ERROR(Err0572, "assignment not allowed; '%s' is %s");
-    SWAG_ERROR(Err0588, "attribute '%s' incompatible with %s");
-    SWAG_ERROR(Err0583, "attribute '%s' only applies to %s");
-    SWAG_ERROR(Err0582, "expected attribute; '%s' is %s");
     SWAG_ERROR(Err0833, "bit inversion disallowed on type '%s'");
     SWAG_ERROR(Err0032, "bitcasting from '%s' not allowed (expected integer, pointer, rune, or float)");
     SWAG_ERROR(Err0033, "bitcasting to larger type not allowed ('%s' from '%s')");
@@ -631,7 +631,6 @@ void initErrors()
     SWAG_ERROR(Err0119, "complex generic type deduction (embedded tuples)");
     SWAG_ERROR(Err0311, "constant creation failed due to generic type '%s'");
     SWAG_ERROR(Err0298, "constants need explicit initialization");
-    SWAG_ERROR(Err0586, "context inappropriate for attribute '%s'");
     SWAG_ERROR(Err0231, "copying '%s' forbidden by 'Swag.NoCopy' on struct");
     SWAG_ERROR(Err0685, "default value for variadic parameter not allowed");
     SWAG_ERROR(Err0604, "directory creation '%s' failed");
@@ -1297,9 +1296,8 @@ void initErrors()
     SWAG_ERROR(Nte1121, "an implicit '@countof' is present here");
     SWAG_ERROR(Nte0045, "an instance of the generic function '%s'");
     SWAG_ERROR(Nte0067, "'%s' is needed because of the function return type");
-    SWAG_ERROR(Nte0019, "applied on this %s");
+    SWAG_ERROR(Nte0019, "but it is applied on this %s");
     SWAG_ERROR(Nte0038, "associated command line option: '%s'");
-    SWAG_ERROR(Nte1096, "attribute is unexpected");
     SWAG_ERROR(Nte0025, "attribute reference: '%s'");
     SWAG_ERROR(Nte0132, "both parts of an 'orelse' should be of identical type");
     SWAG_ERROR(Nte0060, "complication during the public export of '%s'");
@@ -1517,6 +1515,7 @@ void initErrors()
     SWAG_ERROR(Nte1082, "if you want to retrieve the type of an expression, consider using '@decltype' instead")
     SWAG_ERROR(Nte1013, "it seems like you're trying to access a nested property of '%s', but '%s' itself isn't a value");
     SWAG_ERROR(Nte1001, "the % s '%s' has only been used as a scope to find function '%s'");
+    SWAG_ERROR(Nte1096, nullptr);
     SWAG_ERROR(Nte0141, nullptr);
     SWAG_ERROR(Nte0122, nullptr);
     SWAG_ERROR(Nte1054, nullptr);
