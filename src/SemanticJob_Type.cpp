@@ -620,15 +620,25 @@ bool SemanticJob::resolveExplicitBitCast(SemanticContext* context)
     if (!typeInfo->isNativeInteger() &&
         !typeInfo->isNativeFloat() &&
         !typeInfo->isRune())
-        return context->report({typeNode, Fmt(Err(Err0031), typeInfo->getDisplayNameC())});
+    {
+        Diagnostic diag{typeNode, Fmt(Err(Err0031), typeInfo->getDisplayNameC())};
+        return context->report(diag);
+    }
 
     if (!exprTypeInfo->isNativeInteger() &&
         !exprTypeInfo->isNativeFloat() &&
         !exprTypeInfo->isRune() &&
         !exprTypeInfo->isPointer())
-        return context->report({exprNode, Fmt(Err(Err0032), exprTypeInfo->getDisplayNameC())});
+    {
+        Diagnostic diag{exprNode, Fmt(Err(Err0032), exprTypeInfo->getDisplayNameC())};
+        return context->report(diag);
+    }
 
-    SWAG_VERIFY(typeInfo->sizeOf <= exprTypeInfo->sizeOf, context->report({exprNode, Fmt(Err(Err0033), typeInfo->getDisplayNameC(), exprTypeInfo->getDisplayNameC())}));
+    if (typeInfo->sizeOf > exprTypeInfo->sizeOf)
+    {
+        Diagnostic diag{exprNode, Fmt(Err(Err0033), exprTypeInfo->getDisplayNameC(), typeInfo->getDisplayNameC())};
+        return context->report(diag);
+    }
 
     node->typeInfo    = typeNode->typeInfo;
     node->byteCodeFct = ByteCodeGenJob::emitPassThrough;

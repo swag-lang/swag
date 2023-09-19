@@ -159,7 +159,6 @@ void initErrors()
     SWAG_ERROR(Err1200, "ambiguous syntax                                  $ ambiguity arises between initializing '%s' and starting a new block");
     SWAG_ERROR(Err1195, "ambiguous syntax                                  $ ambiguous declaration within lambda type parameters");
     SWAG_ERROR(Err0011, "argument already defined                          $ the named argument '%s' has already been defined");
-    SWAG_ERROR(Err0536, "bytecode stack overflow                           $ the required size has exceeded the limit '--stack-size:%s'");
     SWAG_ERROR(Err0242, "compile-time evaluation required                  $ '@include' requited its filename argument to be evaluated at compile-time");
     SWAG_ERROR(Err0021, "compile-time evaluation required                  $ the array dimension can't be evaluated at compile-time");
     SWAG_ERROR(Err0602, "compile-time evaluation required                  $ the attribute parameter can't be evaluated at compile-time");
@@ -586,8 +585,12 @@ void initErrors()
     SWAG_ERROR(Err0107, "invalid access from runtime                       $ the compile-time function '%s' can't be accessed from runtime function '%s'");
     SWAG_ERROR(Err0060, "invalid access from runtime                       $ this compile-time constant can't be accessed from runtime");
     SWAG_ERROR(Err0144, "unknown enum value                                $ the enumeration value '%s' was not found in the enum '%s'");
+    SWAG_ERROR(Err0706, "missing initialization                            $ the enumeration value '%s' has type '%s' which requires an initialization");
+    SWAG_ERROR(Err0032, "invalid bitcast                                   $ bitcasting from type '%s' is not allowed $ expected an integer, a rune, a float or a pointer");
+    SWAG_ERROR(Err0033, "invalid bitcast                                   $ bitcasting to a larger type is not allowed ('%s' to '%s')");
+    SWAG_ERROR(Err0031, "invalid bitcast                                   $ bitcasting to type '%s' is not allowed $ expected integer, rune, or float");
+    SWAG_ERROR(Err0536, "bytecode stack overflow                           $ the required size has exceeded the limit '--stack-size:%s'");
 
-    SWAG_ERROR(Err0706, "value '%s' of type '%s' requires initialization");
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
     SWAG_ERROR(Err0671, "'%s' is generic; '%s' lacks generic parameters");
@@ -612,10 +615,7 @@ void initErrors()
     SWAG_ERROR(Err0116, "ambiguous symbol '%s' resolution");
     SWAG_ERROR(Err0572, "assignment not allowed; '%s' is %s");
     SWAG_ERROR(Err0833, "bit inversion disallowed on type '%s'");
-    SWAG_ERROR(Err0032, "bitcasting from '%s' not allowed (expected integer, pointer, rune, or float)");
-    SWAG_ERROR(Err0033, "bitcasting to larger type not allowed ('%s' from '%s')");
     SWAG_ERROR(Err0261, "boolean literal to '%s' conversion not possible");
-    SWAG_ERROR(Err0015, "bytecode stack overflow (limit '--stack-size:%s')");
     SWAG_ERROR(Err0571, "can't assign to %s '%s'");
     SWAG_ERROR(Err0740, "can't assign to '%s' as it's immutable");
     SWAG_ERROR(Err0881, "can't find an 'enum' or a 'with' for '%s' prefixed with '.'");
@@ -747,7 +747,6 @@ void initErrors()
     SWAG_ERROR(Err0530, "invalid 'ref' after 'moveref'");
     SWAG_ERROR(Err0694, "invalid 'using' type");
     SWAG_ERROR(Err0731, "invalid attribute parameter type '%s'");
-    SWAG_ERROR(Err0031, "invalid bitcast type '%s' (integer, rune, or float expected)");
     SWAG_ERROR(Err0655, "invalid first parameter type (expected 'self', found '%s')");
     SWAG_ERROR(Err0317, "invalid floating point suffix, found type '%s'");
     SWAG_ERROR(Err0494, "invalid function '%s' in 'impl for' block");
@@ -913,6 +912,7 @@ void initErrors()
     SWAG_ERROR(Err0312, "variable creation failed due to generic type '%s'");
     SWAG_ERROR(Err0436, "variable declared with 'let' requires explicit initialization");
     SWAG_ERROR(Err0645, "variable double initialized with type and assignment");
+    SWAG_ERROR(Err0015, nullptr);
     SWAG_ERROR(Err0687, nullptr);
     SWAG_ERROR(Err0108, nullptr);
     SWAG_ERROR(Err0496, nullptr);
