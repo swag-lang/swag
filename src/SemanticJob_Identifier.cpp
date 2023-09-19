@@ -841,7 +841,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         identifier->parent == identifierRef &&
         identifierRef->childs.back() != identifier)
     {
-        return context->report({identifier, Fmt(Err(Err0187), symbol->name.c_str()), Diagnostic::isType(identifier->typeInfo)});
+        return context->report({identifier, Fmt(Err(Err0187), symbol->name.c_str(), identifier->typeInfo->getDisplayNameC())});
     }
 
     // A.X and A is a slice : missing index
@@ -852,7 +852,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         identifier->parent == identifierRef &&
         identifierRef->childs.back() != identifier)
     {
-        return context->report({identifier, Fmt(Err(Err0180), symbol->name.c_str()), Diagnostic::isType(identifier->typeInfo)});
+        return context->report({identifier, Fmt(Err(Err0180), symbol->name.c_str(), identifier->typeInfo->getDisplayNameC())});
     }
 
     // Reapply back the values of the match to the call parameter node

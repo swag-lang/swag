@@ -590,6 +590,20 @@ void initErrors()
     SWAG_ERROR(Err0033, "invalid bitcast                                   $ bitcasting to a larger type is not allowed ('%s' to '%s')");
     SWAG_ERROR(Err0031, "invalid bitcast                                   $ bitcasting to type '%s' is not allowed $ expected integer, rune, or float");
     SWAG_ERROR(Err0536, "bytecode stack overflow                           $ the required size has exceeded the limit '--stack-size:%s'");
+    SWAG_ERROR(Err0187, "missing dereference index                         $ an index is missing to dereference the array '%s' of type '%s' $ consider adding the index between brackets '[index]'");
+    SWAG_ERROR(Err0180, "missing dereference index                         $ an index is missing to dereference the slice '%s' of type '%s' $ consider adding the index between brackets '[index]'");
+
+    SWAG_ERROR(Err0009, "slice comparison allowed only with 'null'");
+    SWAG_ERROR(Err0367, "slice lower bound type mismatch; expected integer, found '%s'");
+    SWAG_ERROR(Err0059, "slice of type '%s' can't be converted to constant expression");
+    SWAG_ERROR(Err0688, "slice upper bound exclusion not possible; bound is zero");
+    SWAG_ERROR(Err0477, "slicing bound '%I64u' exceeds limit (max: '%I64u')");
+    SWAG_ERROR(Err0475, "slicing invalid for type '%s'");
+    SWAG_ERROR(Err0474, "slicing invalid on multi-dimensional array");
+    SWAG_ERROR(Err0476, "slicing lower bound '%I64u' greater than upper bound '%I64u'");
+    SWAG_ERROR(Err0320, "can't slice '%s'; 'opSlice' not found in type '%s'");
+    SWAG_ERROR(Err0164, "empty slice dereference");
+    SWAG_ERROR(Err0701, "enum slice type '%s' must be 'const'");
 
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
@@ -619,7 +633,6 @@ void initErrors()
     SWAG_ERROR(Err0571, "can't assign to %s '%s'");
     SWAG_ERROR(Err0740, "can't assign to '%s' as it's immutable");
     SWAG_ERROR(Err0881, "can't find an 'enum' or a 'with' for '%s' prefixed with '.'");
-    SWAG_ERROR(Err0320, "can't slice '%s'; 'opSlice' not found in type '%s'");
     SWAG_ERROR(Err0627, "can't visit variadic type by pointer");
     SWAG_ERROR(Err0500, "can't initialize constant array with a single value: type '%s'");
     SWAG_ERROR(Err0686, "can't use 'code' parameter in '%s' expression following %s '%s'");
@@ -641,12 +654,10 @@ void initErrors()
     SWAG_ERROR(Err0169, "duplicate module named '%s' found (path: '%s')");
     SWAG_ERROR(Err0610, "empty 'switch' body found");
     SWAG_ERROR(Err0683, "empty interface '%s' found");
-    SWAG_ERROR(Err0164, "empty slice dereference");
     SWAG_ERROR(Err0142, "empty string dereference");
     SWAG_ERROR(Err0820, "enum '%s' already defined");
     SWAG_ERROR(Err0700, "enum array type '%s' must be 'const'");
     SWAG_ERROR(Err0699, "enum array type dimension unspecified ('%s' given)");
-    SWAG_ERROR(Err0701, "enum slice type '%s' must be 'const'");
     SWAG_ERROR(Err0702, "expected enum type, found '%s'");
     SWAG_ERROR(Err0636, "enum visitation by pointer not allowed");
     SWAG_ERROR(Err0534, "error in '%s'; use 'try', 'assume', or 'catch'");
@@ -715,8 +726,6 @@ void initErrors()
     SWAG_ERROR(Err0597, "incorrect attribute usage");
     SWAG_ERROR(Err0132, "incorrect file scope reference");
     SWAG_ERROR(Err0226, "index access denied: 'opIndex' not found in type '%s'");
-    SWAG_ERROR(Err0187, "index missing for array dereference '%s'");
-    SWAG_ERROR(Err0180, "index missing for slice dereference '%s'");
     SWAG_ERROR(Err0468, "index out of bounds (given: '%I64u', max: '%I64u')");
     SWAG_ERROR(Err0848, "expected initialization of '%s'; enum '%s' lacks zero value");
     SWAG_ERROR(Err0473, "inline function address not accessible");
@@ -834,14 +843,6 @@ void initErrors()
     SWAG_ERROR(Err0450, "expected single generic parameter for function '%s'; '%d' provided");
     SWAG_ERROR(Err0882, "size exceeded: '%u' bytes vs max '%u'");
     SWAG_ERROR(Err0812, "size indeterminate; expression is generic");
-    SWAG_ERROR(Err0009, "slice comparison allowed only with 'null'");
-    SWAG_ERROR(Err0367, "slice lower bound type mismatch; expected integer, found '%s'");
-    SWAG_ERROR(Err0059, "slice of type '%s' can't be converted to constant expression");
-    SWAG_ERROR(Err0688, "slice upper bound exclusion not possible; bound is zero");
-    SWAG_ERROR(Err0477, "slicing bound '%I64u' exceeds limit (max: '%I64u')");
-    SWAG_ERROR(Err0475, "slicing invalid for type '%s'");
-    SWAG_ERROR(Err0474, "slicing invalid on multi-dimensional array");
-    SWAG_ERROR(Err0476, "slicing lower bound '%I64u' greater than upper bound '%I64u'");
     SWAG_ERROR(Err0153, "source file '%s' read error");
     SWAG_ERROR(Err0074, "special function '%s' expects 'bool', found '%s'");
     SWAG_ERROR(Err0072, "special function '%s' expects 'string', found '%s'");
