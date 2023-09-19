@@ -558,18 +558,19 @@ void initErrors()
     SWAG_ERROR(Err0259, "invalid escape code                               $ '%c' is not a valid escape code");
     SWAG_ERROR(Err0787, "invalid argument                                  $ the intrinsic '%s' requires a pointer as a first argument, got '%s' instead");
     SWAG_ERROR(Err0711, "invalid argument                                  $ the intrinsic '%s' requires a block pointer as a first argument, got '%s' instead");
-
-    SWAG_ERROR(Err0789, nullptr);
-    SWAG_ERROR(Err0495, nullptr);
-    SWAG_ERROR(Err0788, nullptr);
-    SWAG_ERROR(Err0489, nullptr);
+    SWAG_ERROR(Err0139, "misplaced error catching                          $ '%s' can only be associated with function calls, but '%s' is %s");
+    SWAG_ERROR(Err0535, "misplaced error catching                          $ unexpected '%s' because function '%s' cannot raise an error");
+    SWAG_ERROR(Err0696, "misplaced type                                    $ '%s' is only valid when declaring a function parameter");
+    SWAG_ERROR(Err0668, "misplaced 'using'                                 $ 'using' is not valid on a constant");
+    SWAG_ERROR(Err0692, "misplaced 'using'                                 $ 'using' is not valid on a variable with type '%s'");
+    SWAG_ERROR(Err0669, "misplaced 'using'                                 $ 'using' on a field is only valid for struct and pointer to struct, got '%s' instead");
+    SWAG_ERROR(Err0822, "misplaced 'using'                                 $ 'using' on a pointer variable is only valid for struct pointers, got a pointer to '%s' instead");
+    SWAG_ERROR(Err0695, "misplaced 'using'                                 $ 'using' cannot be associated with type '%s' $ expected a namespace, a struct, an enum or a variable");
+    SWAG_ERROR(Err0689, "misplaced 'using'                                 $ 'using' on a variable is not allowed in '%s' scope");
 
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
-    SWAG_ERROR(Err0535, "'%s' is for error-raising functions");
-    SWAG_ERROR(Err0139, "'%s' is for function calls, but '%s' is %s");
     SWAG_ERROR(Err0671, "'%s' is generic; '%s' lacks generic parameters");
-    SWAG_ERROR(Err0696, "'%s' is only valid as a function parameter");
     SWAG_ERROR(Err0600, "'%s' lacks 'Swag.AttributeUsage.File'; avoid '#global'");
     SWAG_ERROR(Err0496, "'%s' second parameter must be pointer, found '%s'");
     SWAG_ERROR(Err0497, "'%s' second parameter should point to '%s', points to '%s'");
@@ -583,12 +584,6 @@ void initErrors()
     SWAG_ERROR(Err0654, "'self' required as first parameter for interface function '%s'");
     SWAG_ERROR(Err0306, "'slice' type must be 'const' given const right expression");
     SWAG_ERROR(Err0236, "expected 'string' type for '%s' message, found '%s'");
-    SWAG_ERROR(Err0668, "'using' invalid on a constant");
-    SWAG_ERROR(Err0695, "'using' invalid on type '%s' (expected namespace, struct, enum or variable)");
-    SWAG_ERROR(Err0692, "'using' invalid on variable type '%s'");
-    SWAG_ERROR(Err0669, "'using' on field valid only for struct (given: '%s')");
-    SWAG_ERROR(Err0822, "'using' on pointer variable valid only for struct pointer (pointed type: '%s')");
-    SWAG_ERROR(Err0689, "'using' on variable not allowed in '%s' scope");
     SWAG_ERROR(Err0445, "@cvaarg of type '%s' promoted to '%s' at call");
     SWAG_ERROR(Err0465, "address of %s not accessible");
     SWAG_ERROR(Err0501, "address of 'let' declared local variable inaccessible");
@@ -923,6 +918,10 @@ void initErrors()
     SWAG_ERROR(Err0436, "variable declared with 'let' requires explicit initialization");
     SWAG_ERROR(Err0645, "variable double initialized with type and assignment");
 
+    SWAG_ERROR(Err0789, nullptr);
+    SWAG_ERROR(Err0495, nullptr);
+    SWAG_ERROR(Err0788, nullptr);
+    SWAG_ERROR(Err0489, nullptr);
     SWAG_ERROR(Err0036, nullptr);
     SWAG_ERROR(Err0090, nullptr);
     SWAG_ERROR(Err0612, nullptr);

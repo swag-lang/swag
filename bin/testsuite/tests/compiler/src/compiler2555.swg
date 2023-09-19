@@ -5,6 +5,8 @@
     try toto()
 }
 
+func toto() {}
+/*
 func toto()
 {
     titi()
@@ -14,4 +16,4 @@ func toto()
 func titi()
 {
 #if false throw "toto"
-}
+}*/

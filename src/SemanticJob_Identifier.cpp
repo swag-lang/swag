@@ -5134,7 +5134,7 @@ bool SemanticJob::checkCanCatch(SemanticContext* context)
     }
 
     auto lastChild = identifierRef->childs.back();
-    return context->report({node, Fmt(Err(Err0139), node->token.ctext(), lastChild->token.ctext(), Naming::aKindName(lastChild->resolvedSymbolName->kind).c_str())});
+    return context->report({node, node->token, Fmt(Err(Err0139), node->token.ctext(), lastChild->token.ctext(), Naming::aKindName(lastChild->resolvedSymbolName->kind).c_str())});
 }
 
 bool SemanticJob::resolveTryBlock(SemanticContext* context)

@@ -1461,7 +1461,7 @@ bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* srcNo
         {
             if (!srcNode)
                 srcNode = typeInfoFunc->declNode;
-            Diagnostic diag{parent, parent->token, Fmt(Err(Err0535), parent->token.ctext())};
+            Diagnostic diag{parent, parent->token, Fmt(Err(Err0535), parent->token.ctext(), srcNode->token.ctext())};
             return context->report(diag, Diagnostic::hereIs(srcNode));
         }
     }
