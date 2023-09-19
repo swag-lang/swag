@@ -1336,7 +1336,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             {
                 auto       cp = identifier->callParameters;
                 Diagnostic diag{cp->sourceFile, cp->aliasNames.front().startLocation, cp->aliasNames.back().endLocation, Fmt(Err(Err0099), identifier->token.ctext())};
-                diag.hint = Nte(Nte1026);
                 diag.addRange(identifier->token, Nte(Nte1078));
                 return context->report(diag);
             }

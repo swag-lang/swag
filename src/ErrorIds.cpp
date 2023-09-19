@@ -578,13 +578,14 @@ void initErrors()
     SWAG_ERROR(Err0583, "misplaced attribute                               $ the attribute '%s' can only be applied to %s");
     SWAG_ERROR(Err0582, "invalid attribute                                 $ expected an attribute, but '%s' is %s");
     SWAG_ERROR(Err0586, "misplaced attribute                               $ unexpected usage of the attribute '%s' in this context");
+    SWAG_ERROR(Err0099, "unexpected aliased names                          $ unexpected alias when calling '%s' because it's not a macro or a mixin");
+    SWAG_ERROR(Err0664, "unexpected type alias                             $ expected a direct type as an 'impl' block name, got a type alias instead");
+    SWAG_ERROR(Err0709, "missing enum flag value                           $ can't deduce the value of flag '%s' as the previous value isn't a power of two");
 
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
     SWAG_ERROR(Err0671, "'%s' is generic; '%s' lacks generic parameters");
     SWAG_ERROR(Err0600, "'%s' lacks 'Swag.AttributeUsage.File'; avoid '#global'");
-    SWAG_ERROR(Err0496, "'%s' second parameter must be pointer, found '%s'");
-    SWAG_ERROR(Err0497, "'%s' second parameter should point to '%s', points to '%s'");
     SWAG_ERROR(Err0858, "'%s' should not have line break %s");
     SWAG_ERROR(Err0852, "'AttributeUsage.KindMsgGen' valid only with 'AttributeUsage.Struct' or 'AttributeUsage.Enum'");
     SWAG_ERROR(Err0859, "'compileString' not executable in this context (too late)");
@@ -596,8 +597,6 @@ void initErrors()
     SWAG_ERROR(Err0306, "'slice' type must be 'const' given const right expression");
     SWAG_ERROR(Err0236, "expected 'string' type for '%s' message, found '%s'");
     SWAG_ERROR(Err0445, "@cvaarg of type '%s' promoted to '%s' at call");
-    SWAG_ERROR(Err0664, "alias not supported as block name");
-    SWAG_ERROR(Err0099, "aliased identifiers in non-macro/function '%s'");
     SWAG_ERROR(Err0814, "alignment inexpressible due to generic expression");
     SWAG_ERROR(Err0200, "ambiguous cast: multiple fields of type '%s' with 'using' in '%s'");
     SWAG_ERROR(Err0080, "ambiguous enum value '%s' resolution");
@@ -613,7 +612,6 @@ void initErrors()
     SWAG_ERROR(Err0015, "bytecode stack overflow (limit '--stack-size:%s')");
     SWAG_ERROR(Err0571, "can't assign to %s '%s'");
     SWAG_ERROR(Err0740, "can't assign to '%s' as it's immutable");
-    SWAG_ERROR(Err0709, "can't deduce flag value of '%s' as previous value isn't power of two");
     SWAG_ERROR(Err0881, "can't find an 'enum' or a 'with' for '%s' prefixed with '.'");
     SWAG_ERROR(Err0320, "can't slice '%s'; 'opSlice' not found in type '%s'");
     SWAG_ERROR(Err0627, "can't visit variadic type by pointer");
@@ -917,7 +915,8 @@ void initErrors()
     SWAG_ERROR(Err0312, "variable creation failed due to generic type '%s'");
     SWAG_ERROR(Err0436, "variable declared with 'let' requires explicit initialization");
     SWAG_ERROR(Err0645, "variable double initialized with type and assignment");
-
+    SWAG_ERROR(Err0496, nullptr);
+    SWAG_ERROR(Err0497, nullptr);
     SWAG_ERROR(Err0789, nullptr);
     SWAG_ERROR(Err0495, nullptr);
     SWAG_ERROR(Err0788, nullptr);
@@ -1327,7 +1326,6 @@ void initErrors()
     SWAG_ERROR(Nte0087, "you can execute swag with '--callstack' to obtain more contextual details");
     SWAG_ERROR(Nte0009, "you can execute swag with '--dbg-catch' to initiate the bytecode debugger when an exception is raised");
     SWAG_ERROR(Nte0002, "expected match");
-    SWAG_ERROR(Nte1035, "expecting an identifier, but found an alias");
     SWAG_ERROR(Nte0136, "force the evaluation using '#run'");
     SWAG_ERROR(Nte0114, "function names that start with 'op' followed by an uppercase letter are reserved for struct special functions");
     SWAG_ERROR(Nte0116, "function parameters are immutable and can't be modified");
@@ -1465,8 +1463,8 @@ void initErrors()
     SWAG_ERROR(Nte1033, "this expression results in 0");
     SWAG_ERROR(Nte0071, "this function call can't be evaluated at compile-time");
     SWAG_ERROR(Nte1057, "this function can't be instantiated");
-    SWAG_ERROR(Nte1073, "this function doesn't support UFCS of type '%s'");
-    SWAG_ERROR(Nte1078, "this function doesn't support aliased names");
+    SWAG_ERROR(Nte1073, "this function does not support UFCS of type '%s'");
+    SWAG_ERROR(Nte1078, "this function does not support aliased names");
     SWAG_ERROR(Nte1064, "this function is tagged with the 'Swag.Compiler' attribute");
     SWAG_ERROR(Nte1017, "this function is tagged with the 'Swag.Inline' attribute");
     SWAG_ERROR(Nte1015, "this function is tagged with the 'Swag.Macro' attribute");
@@ -1515,6 +1513,7 @@ void initErrors()
     SWAG_ERROR(Nte1082, "if you want to retrieve the type of an expression, consider using '@decltype' instead")
     SWAG_ERROR(Nte1013, "it seems like you're trying to access a nested property of '%s', but '%s' itself isn't a value");
     SWAG_ERROR(Nte1001, "the % s '%s' has only been used as a scope to find function '%s'");
+    SWAG_ERROR(Nte1035, nullptr);
     SWAG_ERROR(Nte1096, nullptr);
     SWAG_ERROR(Nte0141, nullptr);
     SWAG_ERROR(Nte0122, nullptr);
