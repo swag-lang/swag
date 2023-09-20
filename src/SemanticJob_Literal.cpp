@@ -193,17 +193,6 @@ Utf8 SemanticJob::checkLiteralValue(ComputedValue& computedValue, LiteralType& l
 
     switch (literalType)
     {
-    case LiteralType::TT_BOOL:
-        if (typeSuffix->isNativeInteger())
-        {
-            computedValue.reg.u64 = computedValue.reg.b;
-            break;
-        }
-
-        if (typeSuffix->nativeType != NativeTypeKind::Bool)
-            return Fmt(Err(Err0261), typeSuffix->getDisplayNameC());
-        break;
-
     case LiteralType::TT_CHARACTER:
     case LiteralType::TT_CHARACTER_ESCAPE:
     {

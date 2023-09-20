@@ -170,7 +170,6 @@ bool SemanticJob::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
     case NativeTypeKind::Any:
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0833), typeInfo->getDisplayNameC())};
-        diag.hint = Nte(Nte1061);
         diag.addRange(child, Nte(Nte1116));
         return context->report(diag);
     }
@@ -178,7 +177,6 @@ bool SemanticJob::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
     default:
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0833), typeInfo->getDisplayNameC())};
-        diag.hint = Nte(Nte1061);
         diag.addRange(child, Diagnostic::isType(child));
         return context->report(diag);
     }

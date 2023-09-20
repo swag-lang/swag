@@ -606,6 +606,7 @@ void initErrors()
     SWAG_ERROR(Err0320, "invalid slicing                                   $ can't slice '%s' because 'opSlice' was not found in type '%s'");
     SWAG_ERROR(Err0164, "null dereference                                  $ attempt to dereference a null pointer");
     SWAG_ERROR(Err0701, "invalid enum type                                 $ the enum slice type '%s' should be declared as 'const' $ consider declaring the type with 'const %s' instead");
+    SWAG_ERROR(Err0833, "invalid operation                                 $ the bit inversion operation '~' is not allowed on type '%s'");
 
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
@@ -630,8 +631,6 @@ void initErrors()
     SWAG_ERROR(Err0034, "ambiguous struct '%s' to interface '%s' conversion");
     SWAG_ERROR(Err0116, "ambiguous symbol '%s' resolution");
     SWAG_ERROR(Err0572, "assignment not allowed; '%s' is %s");
-    SWAG_ERROR(Err0833, "bit inversion disallowed on type '%s'");
-    SWAG_ERROR(Err0261, "boolean literal to '%s' conversion not possible");
     SWAG_ERROR(Err0571, "can't assign to %s '%s'");
     SWAG_ERROR(Err0740, "can't assign to '%s' as it's immutable");
     SWAG_ERROR(Err0881, "can't find an 'enum' or a 'with' for '%s' prefixed with '.'");
@@ -912,6 +911,7 @@ void initErrors()
     SWAG_ERROR(Err0312, "variable creation failed due to generic type '%s'");
     SWAG_ERROR(Err0436, "variable declared with 'let' requires explicit initialization");
     SWAG_ERROR(Err0645, "variable double initialized with type and assignment");
+    SWAG_ERROR(Err0261, nullptr);
     SWAG_ERROR(Err0146, nullptr);
     SWAG_ERROR(Err0015, nullptr);
     SWAG_ERROR(Err0687, nullptr);
