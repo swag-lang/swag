@@ -593,17 +593,19 @@ void initErrors()
     SWAG_ERROR(Err0187, "missing dereference index                         $ an index is missing to dereference the array '%s' of type '%s' $ consider adding the index between brackets '[index]'");
     SWAG_ERROR(Err0180, "missing dereference index                         $ an index is missing to dereference the slice '%s' of type '%s' $ consider adding the index between brackets '[index]'");
 
-    SWAG_ERROR(Err0009, "slice comparison allowed only with 'null'");
-    SWAG_ERROR(Err0367, "slice lower bound type mismatch; expected integer, found '%s'");
-    SWAG_ERROR(Err0059, "slice of type '%s' can't be converted to constant expression");
-    SWAG_ERROR(Err0688, "slice upper bound exclusion not possible; bound is zero");
-    SWAG_ERROR(Err0477, "slicing bound '%I64u' exceeds limit (max: '%I64u')");
-    SWAG_ERROR(Err0475, "slicing invalid for type '%s'");
-    SWAG_ERROR(Err0474, "slicing invalid on multi-dimensional array");
-    SWAG_ERROR(Err0476, "slicing lower bound '%I64u' greater than upper bound '%I64u'");
-    SWAG_ERROR(Err0320, "can't slice '%s'; 'opSlice' not found in type '%s'");
-    SWAG_ERROR(Err0164, "empty slice dereference");
-    SWAG_ERROR(Err0701, "enum slice type '%s' must be 'const'");
+    SWAG_ERROR(Err0009, "invalid comparison                                $ slice comparison is only allowed with 'null', got '%s'");
+    SWAG_ERROR(Err0010, "invalid comparison                                $ interface comparison is only allowed with 'null' or another interface, got '%s'");
+    SWAG_ERROR(Err0181, "invalid comparison                                $ 'any' comparison is only allowed with 'null', got '%s'");
+    SWAG_ERROR(Err0059, "compile-time evaluation required                  $ a slice of type '%s' can't be converted to a compile-time value");
+    SWAG_ERROR(Err0367, "invalid slicing                                   $ the slicing lower bound type is invalid, expected an integer, got '%s' instead");
+    SWAG_ERROR(Err0688, "invalid slicing                                   $ the slicing upper bound exclusion with '..<' is not possible because it is zero");
+    SWAG_ERROR(Err0477, "invalid slicing                                   $ the slicing bound '%I64u' is out of range (max is '%I64u')");
+    SWAG_ERROR(Err0475, "invalid slicing                                   $ slicing is invalid for type '%s'");
+    SWAG_ERROR(Err0474, "invalid slicing                                   $ slicing is invalid on a multi-dimensional array");
+    SWAG_ERROR(Err0476, "invalid slicing                                   $ the slicing lower bound '%I64u' is greater than the upper bound '%I64u'");
+    SWAG_ERROR(Err0320, "invalid slicing                                   $ can't slice '%s' because 'opSlice' was not found in type '%s'");
+    SWAG_ERROR(Err0164, "null dereference                                  $ attempt to dereference a null pointer");
+    SWAG_ERROR(Err0701, "invalid enum type                                 $ the enum slice type '%s' should be declared as 'const' $ consider declaring the type with 'const %s' instead");
 
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
@@ -738,7 +740,6 @@ void initErrors()
     SWAG_ERROR(Err0035, "insufficient generic arguments for %s");
     SWAG_ERROR(Err0544, "insufficient generic parameters for function '%s'");
     SWAG_ERROR(Err0203, "insufficient initializers (%d expected, %d given)");
-    SWAG_ERROR(Err0010, "interface can be compared to 'null' or another interface only");
     SWAG_ERROR(Err0646, "expected interface; '%s' is %s");
     SWAG_ERROR(Err0680, "interface member initialization failed");
     SWAG_ERROR(Err0682, "interface member relocation with 'Swag.Offset' not allowed");
@@ -802,7 +803,6 @@ void initErrors()
     SWAG_ERROR(Err0111, "no pointer arithmetic on 'void' type");
     SWAG_ERROR(Err0579, "no pointer arithmetic with operand type '%s'");
     SWAG_ERROR(Err0741, "non-contiguous '@alias' in function '%s' (missing '@alias%u')");
-    SWAG_ERROR(Err0146, "null pointer dereference");
     SWAG_ERROR(Err0809, "operation '%s' doesn't support left type '%s'");
     SWAG_ERROR(Err0778, "operation '%s' doesn't support right type '%s'");
     SWAG_ERROR(Err0001, "operation '%s' incompatible with type '%s'");
@@ -881,7 +881,6 @@ void initErrors()
     SWAG_ERROR(Err0161, "type '%s' not convertible to constant array; 'opCount' is '0'");
     SWAG_ERROR(Err0162, "type '%s' not convertible; 'opSlice' returns empty slice");
     SWAG_ERROR(Err0291, "type '%s' unpacking failed; expected struct or tuple");
-    SWAG_ERROR(Err0181, "type 'any' without cast compared only to 'null'");
     SWAG_ERROR(Err0118, "type constraint failed on '%s'");
     SWAG_ERROR(Err0678, "type constraint should yield 'bool' ('%s' given)");
     SWAG_ERROR(Err0017, "type declaration error; '%s' isn't a type (it's %s)");
@@ -913,6 +912,7 @@ void initErrors()
     SWAG_ERROR(Err0312, "variable creation failed due to generic type '%s'");
     SWAG_ERROR(Err0436, "variable declared with 'let' requires explicit initialization");
     SWAG_ERROR(Err0645, "variable double initialized with type and assignment");
+    SWAG_ERROR(Err0146, nullptr);
     SWAG_ERROR(Err0015, nullptr);
     SWAG_ERROR(Err0687, nullptr);
     SWAG_ERROR(Err0108, nullptr);
@@ -1281,7 +1281,7 @@ void initErrors()
     SWAG_ERROR(Nte1111, "'moveref' and 'ref' can't be used together");
     SWAG_ERROR(Nte1087, "'self' should be the first parameter");
     SWAG_ERROR(Nte0139, "'with' should be followed by a single identifier");
-    SWAG_ERROR(Nte1077, "...than this");
+    SWAG_ERROR(Nte1077, "this should be lower than this");
     SWAG_ERROR(Nte1120, "a 'bool' type is expected here");
     SWAG_ERROR(Nte0005, "a 'string' is expected as the return type of an #ast block is 'string'");
     SWAG_ERROR(Nte0121, "a generic argument must be a literal or a type");
@@ -1354,7 +1354,7 @@ void initErrors()
     SWAG_ERROR(Nte0030, "here is the tuple's definition");
     SWAG_ERROR(Nte0039, "here is the variable's declaration");
     SWAG_ERROR(Nte0064, "here is the field causing the recursion");
-    SWAG_ERROR(Nte1047, "hidden call to '%s' detected");
+    SWAG_ERROR(Nte1047, "there's an hidden call to '%s'");
     SWAG_ERROR(Nte1119, "identified an enum value");
     SWAG_ERROR(Nte1059, "this is the first usage");
     SWAG_ERROR(Nte1005, "if this is intended, consider initializing the global variable with 'undefined' instead of zero");
@@ -1409,7 +1409,7 @@ void initErrors()
     SWAG_ERROR(Nte1056, "should be succeeded by generic arguments");
     SWAG_ERROR(Nte1052, "should cast to a sized integer like 's32', 's64', etc.");
     SWAG_ERROR(Nte1051, "should cast to either 'f32' or 'f64'");
-    SWAG_ERROR(Nte1116, "should cast to the base 'any' type");
+    SWAG_ERROR(Nte1116, "consider casting to the underlying 'any' type");
     SWAG_ERROR(Nte0081, "should conform to type '%s'");
     SWAG_ERROR(Nte1108, "should point to '%s'");
     SWAG_ERROR(Nte1094, "should this be removed?")

@@ -122,9 +122,9 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
 
     case TypeInfoKind::Slice:
     {
-        auto front = typeNode->childs.front();
-        auto hint  = Fmt(Nte(Nte1004), rawTypeInfo->getDisplayNameC());
-        SWAG_VERIFY(rawTypeInfo->isConst(), context->report({front, Fmt(Err(Err0701), rawTypeInfo->getDisplayNameC()), hint}));
+        auto       front = typeNode->childs.front();
+        Diagnostic diag{front, Fmt(Err(Err0701), rawTypeInfo->getDisplayNameC(), rawTypeInfo->getDisplayNameC())};
+        SWAG_VERIFY(rawTypeInfo->isConst(), context->report(diag));
         return true;
     }
 

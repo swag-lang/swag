@@ -306,7 +306,6 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         if (!node->upperBound->computedValue->reg.u64)
         {
             Diagnostic diag{node->upperBound, Err(Err0688)};
-            diag.hint = Nte(Nte1033);
             return context->report(diag);
         }
 
@@ -321,7 +320,6 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         if (typeInfoArray->totalCount != typeInfoArray->count)
         {
             Diagnostic diag{node, node->token, Err(Err0474)};
-            diag.hint = Nte(Nte1061);
             diag.addRange(node->array, Diagnostic::isType(typeInfoArray));
             return context->report(diag);
         }
@@ -408,7 +406,6 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         if (node->lowerBound->computedValue->reg.u64 > node->upperBound->computedValue->reg.u64)
         {
             Diagnostic diag{node->lowerBound, Fmt(Err(Err0476), node->lowerBound->computedValue->reg.u64, node->upperBound->computedValue->reg.u64)};
-            diag.hint = Nte(Nte1076);
             diag.addRange(node->upperBound, Nte(Nte1077));
             return context->report(diag);
         }
@@ -884,7 +881,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
             auto storageSegment = arrayNode->array->computedValue->storageSegment;
             if (!storageSegment)
             {
-                Diagnostic diag{arrayNode, Err(Err0146)};
+                Diagnostic diag{arrayNode, Err(Err0164)};
                 return context->report(diag);
             }
 

@@ -36,13 +36,14 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
     if (parts.size() > 1)
     {
         err->textMsg = parts[0];
-        if (err->hint.empty())
-            err->hint = parts[1];
-        /*else
+
+        if (!err->hint.empty())
         {
-            auto newNote = Diagnostic::note(err->sourceFile, err->startLocation, err->endLocation, parts[1]);
+            auto newNote = Diagnostic::note(err->sourceFile, err->startLocation, err->endLocation, err->hint);
             notes.push_back(newNote);
-        }*/
+        }
+
+        err->hint = parts[1];
 
         for (int i = 2; i < parts.size(); i++)
         {

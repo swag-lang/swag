@@ -44,7 +44,11 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
             {
             case ErrCxtStepKind::MsgPrio:
                 if (diag.lowPrio)
+                {
                     diag.textMsg = msg;
+                    diag.hint.clear();
+                }
+
                 exp.hide = true;
                 break;
 

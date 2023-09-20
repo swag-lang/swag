@@ -413,8 +413,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         // Slice can only be compared to null
         if (leftTypeInfo->isSlice())
         {
-            Diagnostic diag{node->sourceFile, node->token, Err(Err0009)};
-            diag.hint = Nte(Nte1061);
+            Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0009), rightTypeInfo->getDisplayNameC())};
             diag.addRange(left, Diagnostic::isType(leftTypeInfo));
             diag.addRange(right, Diagnostic::isType(rightTypeInfo));
             return context->report(diag);
@@ -423,8 +422,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         // Interface can only be compared to null ar to another interface
         if (leftTypeInfo->isInterface() && !rightTypeInfo->isInterface())
         {
-            Diagnostic diag{node->sourceFile, node->token, Err(Err0010)};
-            diag.hint = Nte(Nte1061);
+            Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0010), rightTypeInfo->getDisplayNameC())};
             diag.addRange(left, Diagnostic::isType(leftTypeInfo));
             diag.addRange(right, Diagnostic::isType(rightTypeInfo));
             return context->report(diag);
@@ -433,8 +431,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         // Any can only be compared to null
         if (leftTypeInfo->isAny())
         {
-            Diagnostic diag{node->sourceFile, node->token, Err(Err0181)};
-            diag.hint = Nte(Nte1061);
+            Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0181), rightTypeInfo->getDisplayNameC())};
             diag.addRange(left, leftTypeInfo->isAny() ? Nte(Nte1116) : Diagnostic::isType(leftTypeInfo));
             diag.addRange(right, rightTypeInfo->isAny() ? Nte(Nte1116) : Diagnostic::isType(rightTypeInfo));
             return context->report(diag);
