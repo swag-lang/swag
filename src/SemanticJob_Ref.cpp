@@ -476,7 +476,6 @@ bool SemanticJob::resolveKeepRef(SemanticContext* context)
         if (front->kind == AstNodeKind::IdentifierRef && front->childs.front()->kind == AstNodeKind::ArrayPointerIndex)
         {
             diag.addRange(front, Nte(Nte1104));
-            diag.hint = Fmt(Nte(Nte1105), typeInfo->getDisplayNameC());
             return context->report(diag);
         }
         else if (front->kind == AstNodeKind::IdentifierRef)

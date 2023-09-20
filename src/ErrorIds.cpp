@@ -608,8 +608,8 @@ void initErrors()
     SWAG_ERROR(Err0701, "invalid enum type                                 $ the enum slice type '%s' should be declared as 'const' $ consider declaring the type with 'const %s' instead");
     SWAG_ERROR(Err0833, "invalid operation                                 $ the bit inversion operation '~' is not allowed on type '%s'");
     SWAG_ERROR(Err0559, "invalid move                                      $ 'move' is not applicable on an immutable expression (type is '%s')");
+    SWAG_ERROR(Err0517, "invalid reference                                 $ 'ref' requires a pointer or a reference as an expression, got '%s' instead");
 
-    SWAG_ERROR(Err0517, "'ref' requires pointer/reference, found type '%s'");
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
     SWAG_ERROR(Err0671, "'%s' is generic; '%s' lacks generic parameters");
@@ -1382,7 +1382,6 @@ void initErrors()
     SWAG_ERROR(Nte0150, "only variables can be initialized in this manner");
     SWAG_ERROR(Nte1110, "operation not allowed because 'void' doesn't have a size");
     SWAG_ERROR(Nte1109, "operation not allowed on non-pointer types");
-    SWAG_ERROR(Nte1105, "operation not allowed on type '%s'");
     SWAG_ERROR(Nte1061, "operation not allowed");
     SWAG_ERROR(Nte0075, "origin of instantiation type '%s' is here");
     SWAG_ERROR(Nte0066, "parameter '%s' of %s can be found here");
@@ -1513,6 +1512,7 @@ void initErrors()
     SWAG_ERROR(Nte1082, "if you want to retrieve the type of an expression, consider using '@decltype' instead")
     SWAG_ERROR(Nte1013, "it seems like you're trying to access a nested property of '%s', but '%s' itself isn't a value");
     SWAG_ERROR(Nte1001, "the % s '%s' has only been used as a scope to find function '%s'");
+    SWAG_ERROR(Nte1105, nullptr);
     SWAG_ERROR(Nte1065, nullptr);
     SWAG_ERROR(Nte1035, nullptr);
     SWAG_ERROR(Nte1096, nullptr);
