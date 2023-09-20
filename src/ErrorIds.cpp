@@ -607,7 +607,9 @@ void initErrors()
     SWAG_ERROR(Err0164, "null dereference                                  $ attempt to dereference a null pointer");
     SWAG_ERROR(Err0701, "invalid enum type                                 $ the enum slice type '%s' should be declared as 'const' $ consider declaring the type with 'const %s' instead");
     SWAG_ERROR(Err0833, "invalid operation                                 $ the bit inversion operation '~' is not allowed on type '%s'");
+    SWAG_ERROR(Err0559, "invalid move                                      $ 'move' is not applicable on an immutable expression (type is '%s')");
 
+    SWAG_ERROR(Err0517, "'ref' requires pointer/reference, found type '%s'");
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
     SWAG_ERROR(Err0671, "'%s' is generic; '%s' lacks generic parameters");
@@ -616,9 +618,6 @@ void initErrors()
     SWAG_ERROR(Err0852, "'AttributeUsage.KindMsgGen' valid only with 'AttributeUsage.Struct' or 'AttributeUsage.Enum'");
     SWAG_ERROR(Err0859, "'compileString' not executable in this context (too late)");
     SWAG_ERROR(Err0289, "'impl' not within 'impl for' block");
-    SWAG_ERROR(Err0559, "'move' not applicable to immutable expression (type is '%s')");
-    SWAG_ERROR(Err0619, "'moveref' can't be 'const'");
-    SWAG_ERROR(Err0517, "'ref' requires pointer/reference, found type '%s'");
     SWAG_ERROR(Err0654, "'self' required as first parameter for interface function '%s'");
     SWAG_ERROR(Err0306, "'slice' type must be 'const' given const right expression");
     SWAG_ERROR(Err0236, "expected 'string' type for '%s' message, found '%s'");
@@ -911,6 +910,7 @@ void initErrors()
     SWAG_ERROR(Err0312, "variable creation failed due to generic type '%s'");
     SWAG_ERROR(Err0436, "variable declared with 'let' requires explicit initialization");
     SWAG_ERROR(Err0645, "variable double initialized with type and assignment");
+    SWAG_ERROR(Err0619, nullptr);
     SWAG_ERROR(Err0261, nullptr);
     SWAG_ERROR(Err0146, nullptr);
     SWAG_ERROR(Err0015, nullptr);

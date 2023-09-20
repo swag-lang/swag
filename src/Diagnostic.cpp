@@ -354,7 +354,17 @@ void Diagnostic::reportCompact(bool verboseMode)
     setupColors(verboseMode);
     printErrorLevel();
     printSourceLine();
-    g_Log.print(textMsg);
+
+    Vector<Utf8> tokens;
+    textMsg.tokenize(textMsg, '$', tokens, true, true);
+
+    g_Log.print(tokens[0]);
+    if (tokens.size() > 1)
+    {
+        g_Log.print(": ");
+        g_Log.print(tokens[1]);
+    }
+
     g_Log.eol();
 }
 
