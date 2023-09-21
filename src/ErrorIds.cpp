@@ -363,7 +363,6 @@ void initErrors()
     SWAG_ERROR(Err0415, "literal overflow                                  $ the number '%I64u' is too large for type 's8'");
     SWAG_ERROR(Err0829, "literal overflow                                  $ cannot negate number '%d' because '%u' is too large for type 's8'");
     SWAG_ERROR(Err0832, "literal overflow                                  $ cannot negate number '%I64d' because '%I64u' is too large for type 's64'");
-    SWAG_ERROR(Err0520, "mismatch access                                   $ %s '%s' can't be public due to %s '%s' with '%s' access");
     SWAG_ERROR(Err0234, "mismatch return type                              $ an '#ast' block must return a string, got '%s'");
     SWAG_ERROR(Err0243, "mismatch type                                     $ '@include' requires a path as a string type, got '%s'");
     SWAG_ERROR(Err1183, "misplaced '#dependencies'                         $ '#dependencies' can only be used within 'module.swg' or '.swgs' files");
@@ -551,7 +550,6 @@ void initErrors()
     SWAG_ERROR(Err0794, "unsupported type                                  $ the intrinsic '@mkinterface' requires a type as a second argument, got '%s' instead");
     SWAG_ERROR(Err0795, "unsupported type                                  $ the intrinsic '@mkinterface' requires an interface name as a third argument, got '%s' instead");
     SWAG_ERROR(Err0249, "unsupported type                                  $ the intrinsic '%s' requires a string as an argument, got '%s' instead");
-    SWAG_ERROR(Err1179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
 
     SWAG_ERROR(Err0598, "invalid attribute                                 $ '%s' is not an attribute but is %s");
     SWAG_ERROR(Err0259, "invalid escape code                               $ '%c' is not a valid escape code");
@@ -625,6 +623,15 @@ void initErrors()
     SWAG_ERROR(Err0702, "invalid enum type                                 $ the type '%s' cannot be used as an enum type");
     SWAG_ERROR(Err0087, "misplaced function call                           $ a function call can't be done at global scope");
     SWAG_ERROR(Err0078, "reserved function name                            $ the function name '%s' is reserved by the compiler");
+    SWAG_ERROR(Err0520, "mismatch access                                   $ %s '%s' can't be public due to %s '%s' with '%s' access");
+    SWAG_ERROR(Err0503, "mismatch access                                   $ special function '%s' can't be internal because the struct has 'public' access");
+    SWAG_ERROR(Err0506, "mismatch access                                   $ special function '%s' can't be public because the struct has 'internal' access");
+    SWAG_ERROR(Err0098, "invalid function call                             $ call to function '%s' requires arguments between '()' and not '{}'");
+    SWAG_ERROR(Err1179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
+    SWAG_ERROR(Err0109, "unused return value                               $ the return value of the function '%s' should be used $ if you don't need the return value, consider prefixing the call with 'discard'");
+    SWAG_ERROR(Err0092, "unused return value                               $ the return value of the lambda '%s' should be used $ if you don't need the return value, consider prefixing the call with 'discard'");
+    SWAG_ERROR(Err0163, "invalid return value assignment                   $ the function does not return a value");
+    SWAG_ERROR(Err0766, "unexpected return value                           $ a function with the '#[Swag.CalleeReturn]' attribute must not declare a return value");
 
     SWAG_ERROR(Err0258, "foreign function '%s' unresolved");
     SWAG_ERROR(Err0754, "function '%s' attribute mismatch with 'Swag.Implicit'");
@@ -632,20 +639,14 @@ void initErrors()
     SWAG_ERROR(Err0752, "function '%s' can't be generic with 'Swag.NotGeneric' attribute");
     SWAG_ERROR(Err0280, "function '%s' in interface '%s' lacks 'impl' marker");
     SWAG_ERROR(Err0751, "function '%s' is generic despite 'Swag.NotGeneric' attribute");
-    SWAG_ERROR(Err0503, "function '%s' is internal; corresponding struct is public");
-    SWAG_ERROR(Err0506, "function '%s' is public; corresponding struct is internal");
     SWAG_ERROR(Err0024, "function '%s' not found in interface '%s'");
     SWAG_ERROR(Err0067, "function '%s' outside 'impl' block");
-    SWAG_ERROR(Err0098, "function '%s' requires '()' not '{}' for call");
-    SWAG_ERROR(Err0109, "function '%s' return value not used");
     SWAG_ERROR(Err0652, "function '%s' signature mismatch for interface '%s'");
     SWAG_ERROR(Err0004, "function '%s' unusable; '%s' failed");
     SWAG_ERROR(Err0767, "function '%s' with 'Swag.Discardable' must not return value");
     SWAG_ERROR(Err0094, "function call returning nothing can't be discarded");
     SWAG_ERROR(Err0764, "function can't return type '%s'");
     SWAG_ERROR(Err0160, "function pointer can't be assigned to a constant");
-    SWAG_ERROR(Err0163, "function returns no value to retrieve");
-    SWAG_ERROR(Err0766, "function with 'Swag.CalleeReturn' must not return value");
 
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
     SWAG_ERROR(Err0858, "'%s' should not have line break %s");
@@ -769,7 +770,6 @@ void initErrors()
     SWAG_ERROR(Err0172, "invalid type '%s' for operator '>>' (integer required)");
     SWAG_ERROR(Err0815, "invalid usage of %s as generic argument ('%s')");
     SWAG_ERROR(Err0639, "label '%s' previously defined");
-    SWAG_ERROR(Err0092, "lambda '%s' return value not used");
     SWAG_ERROR(Err0690, "lambda default parameters inconsistency");
     SWAG_ERROR(Err0564, "left expression immutable; assignment forbidden");
     SWAG_ERROR(Err0565, "left expression isn't a value; assignment forbidden");
@@ -1315,7 +1315,6 @@ void initErrors()
     SWAG_ERROR(Nte1122, "detected thrown error");
     SWAG_ERROR(Nte1131, "did you intend to use '='?");
     SWAG_ERROR(Nte0128, "consider adding 'using' before 'self' if you intend to access members of the instance directly");
-    SWAG_ERROR(Nte1034, "doesn't return any value");
     SWAG_ERROR(Nte1080, "consider removing the %s or replace it with the scope '%s'");
     SWAG_ERROR(Nte0153, "employ '{}' for an intentional empty statement");
     SWAG_ERROR(Nte0053, "entity %s '%s' awaits the generation of type '%s'");
@@ -1508,6 +1507,7 @@ void initErrors()
     SWAG_ERROR(Nte1082, "if you want to retrieve the type of an expression, consider using '@decltype' instead")
     SWAG_ERROR(Nte1013, "it seems like you're trying to access a nested property of '%s', but '%s' itself isn't a value");
     SWAG_ERROR(Nte1001, "the % s '%s' has only been used as a scope to find function '%s'");
+    SWAG_ERROR(Nte1034, nullptr);
     SWAG_ERROR(Nte1063, nullptr);
     SWAG_ERROR(Nte0131, nullptr);
     SWAG_ERROR(Nte1087, nullptr);

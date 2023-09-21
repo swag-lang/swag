@@ -1259,8 +1259,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
                     if (!(overload->node->attributeFlags & ATTRIBUTE_DISCARDABLE) && !(identifier->flags & AST_DISCARD))
                     {
                         Diagnostic diag(identifier, identifier->token, Fmt(Err(Err0092), overload->node->token.ctext()));
-                        diag.hint = Nte(Nte1023);
-                        auto note = Diagnostic::note(overload->node, overload->node->token, Nte(Nte0039));
+                        auto       note = Diagnostic::note(overload->node, overload->node->token, Nte(Nte0039));
                         return context->report(diag, note);
                     }
                     else
@@ -1451,7 +1450,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
                 if (!(funcDecl->attributeFlags & ATTRIBUTE_DISCARDABLE) && !(identifier->flags & AST_DISCARD))
                 {
                     Diagnostic diag(identifier, identifier->token, Fmt(Err(Err0109), overload->node->token.ctext()));
-                    diag.hint = Nte(Nte1023);
                     return context->report(diag, Diagnostic::hereIs(overload));
                 }
                 else

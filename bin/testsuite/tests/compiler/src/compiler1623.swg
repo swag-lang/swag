@@ -1,4 +1,3 @@
-
 #global testerror "Err0766"
 
 #[Swag.Mixin, Swag.CalleeReturn]

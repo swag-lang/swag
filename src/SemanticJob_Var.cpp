@@ -968,7 +968,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 if (nodeWhere->kind == AstNodeKind::IdentifierRef)
                     nodeWhere = nodeWhere->childs.back();
                 Diagnostic diag{nodeWhere, nodeWhere->token, Err(Err0163)};
-                diag.hint = Nte(Nte1034);
                 return context->report(diag, Diagnostic::hereIs(over));
             }
 

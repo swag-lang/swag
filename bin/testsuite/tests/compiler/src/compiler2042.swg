@@ -1,4 +1,3 @@
-
 #global testerror "Err0098"
 
 func titi()

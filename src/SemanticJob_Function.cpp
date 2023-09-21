@@ -814,7 +814,6 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
         if (!funcNode->returnType->typeInfo->isVoid() && (funcNode->attributeFlags & ATTRIBUTE_CALLEE_RETURN))
         {
             Diagnostic diag{funcNode->returnType->childs.front(), Err(Err0766)};
-            diag.hint = Nte(Nte1026);
             return context->report(diag);
         }
         // The function returns nothing but has the 'Swag.Discardable' attribute
