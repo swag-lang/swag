@@ -329,9 +329,9 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
         Utf8 appendMsg = findClosestMatchesMsg(best);
 
         Diagnostic diag{node, node->tokenName, Fmt(Err(Err0078), name.c_str())};
-        diag.hint = appendMsg;
-        auto note = Diagnostic::note(Nte(Nte0114));
-        return context->report(diag, note);
+        auto       note  = Diagnostic::note(node, node->tokenName, appendMsg);
+        auto       note1 = Diagnostic::note(Nte(Nte0114));
+        return context->report(diag, note, note1);
     }
 
     return true;
