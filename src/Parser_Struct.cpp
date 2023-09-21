@@ -494,7 +494,6 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
         auto        varNode = Ast::newVarDecl(sourceFile, funcNode->token.text, parent, this);
         varNode->inheritTokenLocation(funcNode->token);
-        varNode->specFlags |= AstVarDecl::SPECFLAG_GEN_ITF;
         SemanticJob::setVarDeclResolve(varNode);
         varNode->flags |= AST_R_VALUE;
 

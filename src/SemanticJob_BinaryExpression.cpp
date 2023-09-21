@@ -550,12 +550,12 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
             if (right->computedValue->reg.s32 == 0)
-                return context->report({right, Err(Err0150), Nte(Nte1033)});
+                return context->report({right, Err(Err0150)});
             node->computedValue->reg.s64 = left->computedValue->reg.s32 / right->computedValue->reg.s32;
             break;
         case NativeTypeKind::S64:
             if (right->computedValue->reg.s64 == 0)
-                return context->report({right, Err(Err0150), Nte(Nte1033)});
+                return context->report({right, Err(Err0150)});
             node->computedValue->reg.s64 = left->computedValue->reg.s64 / right->computedValue->reg.s64;
             break;
         case NativeTypeKind::U8:
@@ -563,22 +563,22 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
             if (right->computedValue->reg.u32 == 0)
-                return context->report({right, Err(Err0150), Nte(Nte1033)});
+                return context->report({right, Err(Err0150)});
             node->computedValue->reg.u64 = left->computedValue->reg.u32 / right->computedValue->reg.u32;
             break;
         case NativeTypeKind::U64:
             if (right->computedValue->reg.u64 == 0)
-                return context->report({right, Err(Err0150), Nte(Nte1033)});
+                return context->report({right, Err(Err0150)});
             node->computedValue->reg.u64 = left->computedValue->reg.u64 / right->computedValue->reg.u64;
             break;
         case NativeTypeKind::F32:
             if (right->computedValue->reg.f32 == 0)
-                return context->report({right, Err(Err0150), Nte(Nte1033)});
+                return context->report({right, Err(Err0150)});
             node->computedValue->reg.f32 = left->computedValue->reg.f32 / right->computedValue->reg.f32;
             break;
         case NativeTypeKind::F64:
             if (right->computedValue->reg.f64 == 0)
-                return context->report({right, Err(Err0150), Nte(Nte1033)});
+                return context->report({right, Err(Err0150)});
             node->computedValue->reg.f64 = left->computedValue->reg.f64 / right->computedValue->reg.f64;
             break;
         default:
@@ -587,7 +587,7 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
     }
     else if (right->isConstant0())
     {
-        return context->report({right, Err(Err0150), Nte(Nte1033)});
+        return context->report({right, Err(Err0150)});
     }
     else if (module->mustOptimizeBytecode(node))
     {
@@ -661,12 +661,12 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
         case NativeTypeKind::S16:
         case NativeTypeKind::S32:
             if (right->computedValue->reg.s32 == 0)
-                return context->report({right, Err(Err0150), Nte(Nte1033)});
+                return context->report({right, Err(Err0150)});
             node->computedValue->reg.s64 = left->computedValue->reg.s32 % right->computedValue->reg.s32;
             break;
         case NativeTypeKind::S64:
             if (right->computedValue->reg.s64 == 0)
-                return context->report({right, Err(Err0150), Nte(Nte1033)});
+                return context->report({right, Err(Err0150)});
             node->computedValue->reg.s64 = left->computedValue->reg.s64 % right->computedValue->reg.s64;
             break;
         case NativeTypeKind::U8:
@@ -674,12 +674,12 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
         case NativeTypeKind::U32:
         case NativeTypeKind::Rune:
             if (right->computedValue->reg.u32 == 0)
-                return context->report({right, Err(Err0150), Nte(Nte1033)});
+                return context->report({right, Err(Err0150)});
             node->computedValue->reg.u64 = left->computedValue->reg.u32 % right->computedValue->reg.u32;
             break;
         case NativeTypeKind::U64:
             if (right->computedValue->reg.u64 == 0)
-                return context->report({right, Err(Err0150), Nte(Nte1033)});
+                return context->report({right, Err(Err0150)});
             node->computedValue->reg.u64 = left->computedValue->reg.u64 % right->computedValue->reg.u64;
             break;
         default:

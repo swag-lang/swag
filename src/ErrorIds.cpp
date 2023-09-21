@@ -609,6 +609,16 @@ void initErrors()
     SWAG_ERROR(Err0833, "invalid operation                                 $ the bit inversion operation '~' is not allowed on type '%s'");
     SWAG_ERROR(Err0559, "invalid move                                      $ 'move' is not applicable on an immutable expression (type is '%s')");
     SWAG_ERROR(Err0517, "invalid reference                                 $ 'ref' requires a pointer or a reference as an expression, got '%s' instead");
+    SWAG_ERROR(Err0740, "forbidden assign                                  $ can't assign to '%s' because it's immutable");
+    SWAG_ERROR(Err0572, "forbidden assign                                  $ can't assign to '%s' is %s");
+    SWAG_ERROR(Err0571, "forbidden assign                                  $ can't assign from'%s' is %s");
+    SWAG_ERROR(Err0150, "division by zero                                  $ this expression evaluates to 0");
+    SWAG_ERROR(Err0610, "empty 'switch'                                    $ the body of the 'switch' is empty $ consider adding some cases, or removing it");
+    SWAG_ERROR(Err0683, "empty 'interface'                                 $ the interface '%s' should contain at least one function declaration");
+    SWAG_ERROR(Err0677, "incomplete interface function                     $ the interface member '%s' should have at least 'self' as the first parameter $ consider declaring the interface function with 'mtd' instead of 'func'");
+    SWAG_ERROR(Err0679, "invalid interface function                        $ the first parameter should be 'self', got '%s' instead $ consider declaring the interface function with 'mtd' instead of 'func'");
+
+    SWAG_ERROR(Err0116, "ambiguous symbol $ ambiguous resolution of symbol '%s'");
 
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
@@ -618,7 +628,6 @@ void initErrors()
     SWAG_ERROR(Err0852, "'AttributeUsage.KindMsgGen' valid only with 'AttributeUsage.Struct' or 'AttributeUsage.Enum'");
     SWAG_ERROR(Err0859, "'compileString' not executable in this context (too late)");
     SWAG_ERROR(Err0289, "'impl' not within 'impl for' block");
-    SWAG_ERROR(Err0654, "'self' required as first parameter for interface function '%s'");
     SWAG_ERROR(Err0306, "'slice' type must be 'const' given const right expression");
     SWAG_ERROR(Err0236, "expected 'string' type for '%s' message, found '%s'");
     SWAG_ERROR(Err0445, "@cvaarg of type '%s' promoted to '%s' at call");
@@ -628,10 +637,6 @@ void initErrors()
     SWAG_ERROR(Err0115, "ambiguous generic %s '%s' resolution");
     SWAG_ERROR(Err0182, "ambiguous special function '%s' resolution");
     SWAG_ERROR(Err0034, "ambiguous struct '%s' to interface '%s' conversion");
-    SWAG_ERROR(Err0116, "ambiguous symbol '%s' resolution");
-    SWAG_ERROR(Err0572, "assignment not allowed; '%s' is %s");
-    SWAG_ERROR(Err0571, "can't assign to %s '%s'");
-    SWAG_ERROR(Err0740, "can't assign to '%s' as it's immutable");
     SWAG_ERROR(Err0881, "can't find an 'enum' or a 'with' for '%s' prefixed with '.'");
     SWAG_ERROR(Err0627, "can't visit variadic type by pointer");
     SWAG_ERROR(Err0500, "can't initialize constant array with a single value: type '%s'");
@@ -648,12 +653,9 @@ void initErrors()
     SWAG_ERROR(Err0231, "copying '%s' forbidden by 'Swag.NoCopy' on struct");
     SWAG_ERROR(Err0685, "default value for variadic parameter not allowed");
     SWAG_ERROR(Err0604, "directory creation '%s' failed");
-    SWAG_ERROR(Err0150, "division by zero");
     SWAG_ERROR(Err0018, "documentation page '%s' not found");
     SWAG_ERROR(Err0591, "duplicate attribute '%s'; missing 'Swag.AttrMulti' in declaration");
     SWAG_ERROR(Err0169, "duplicate module named '%s' found (path: '%s')");
-    SWAG_ERROR(Err0610, "empty 'switch' body found");
-    SWAG_ERROR(Err0683, "empty interface '%s' found");
     SWAG_ERROR(Err0142, "empty string dereference");
     SWAG_ERROR(Err0820, "enum '%s' already defined");
     SWAG_ERROR(Err0700, "enum array type '%s' must be 'const'");
@@ -755,12 +757,10 @@ void initErrors()
     SWAG_ERROR(Err0530, "invalid 'ref' after 'moveref'");
     SWAG_ERROR(Err0694, "invalid 'using' type");
     SWAG_ERROR(Err0731, "invalid attribute parameter type '%s'");
-    SWAG_ERROR(Err0655, "invalid first parameter type (expected 'self', found '%s')");
     SWAG_ERROR(Err0317, "invalid floating point suffix, found type '%s'");
     SWAG_ERROR(Err0494, "invalid function '%s' in 'impl for' block");
     SWAG_ERROR(Err0070, "invalid generic %s for %s ('%s' expected, '%s' given)");
     SWAG_ERROR(Err0135, "invalid generic parameters for %s '%s'");
-    SWAG_ERROR(Err0679, "invalid interface member type (expected 'self', found '%s')");
     SWAG_ERROR(Err0439, "invalid literal suffix type '%s'");
     SWAG_ERROR(Err0593, "invalid safety value '%s'");
     SWAG_ERROR(Err0576, "invalid scope move of '%d'");
@@ -779,7 +779,6 @@ void initErrors()
     SWAG_ERROR(Err0873, "local variable with 'let' requires initialization");
     SWAG_ERROR(Err0471, "macro function address not accessible");
     SWAG_ERROR(Err0076, "max call level reached; limit '--max-recurse:%d'");
-    SWAG_ERROR(Err0677, "minimum of one parameter required for interface member '%s'");
     SWAG_ERROR(Err0828, "minus operation invalid for type '%s'");
     SWAG_ERROR(Err0106, "mismatched 'self' parameter ('%s' expected, '%s' given)");
     SWAG_ERROR(Err0568, "mismatched types in '%s' assignment ('%s' vs '%s')");
@@ -910,6 +909,8 @@ void initErrors()
     SWAG_ERROR(Err0312, "variable creation failed due to generic type '%s'");
     SWAG_ERROR(Err0436, "variable declared with 'let' requires explicit initialization");
     SWAG_ERROR(Err0645, "variable double initialized with type and assignment");
+    SWAG_ERROR(Err0654, nullptr);
+    SWAG_ERROR(Err0655, nullptr);
     SWAG_ERROR(Err0619, nullptr);
     SWAG_ERROR(Err0261, nullptr);
     SWAG_ERROR(Err0146, nullptr);
@@ -1279,7 +1280,6 @@ void initErrors()
     SWAG_ERROR(Nte0145, "'closure' should be accompanied by capture parameters enclosed in '|...|'");
     SWAG_ERROR(Nte1019, "'discard' can't be accociated with an intrinsic, as an intrinsic result should always be used");
     SWAG_ERROR(Nte1111, "'moveref' and 'ref' can't be used together");
-    SWAG_ERROR(Nte1087, "'self' should be the first parameter");
     SWAG_ERROR(Nte0139, "'with' should be followed by a single identifier");
     SWAG_ERROR(Nte1077, "this should be lower than this");
     SWAG_ERROR(Nte1120, "a 'bool' type is expected here");
@@ -1320,8 +1320,8 @@ void initErrors()
     SWAG_ERROR(Nte1080, "consider removing the %s or replace it with the scope '%s'");
     SWAG_ERROR(Nte0153, "employ '{}' for an intentional empty statement");
     SWAG_ERROR(Nte0053, "entity %s '%s' awaits the generation of type '%s'");
-    SWAG_ERROR(Nte0050, "entity %s of type '%s'");
-    SWAG_ERROR(Nte0049, "entity reference: '%s'");
+    SWAG_ERROR(Nte0050, "%s of type '%s'");
+    SWAG_ERROR(Nte0049, "the struct '%s'");
     SWAG_ERROR(Nte0033, "error during the '#validifx' validation of the call to '%s'");
     SWAG_ERROR(Nte0070, "evaluation failed during compile-time");
     SWAG_ERROR(Nte0087, "you can execute swag with '--callstack' to obtain more contextual details");
@@ -1330,7 +1330,7 @@ void initErrors()
     SWAG_ERROR(Nte0136, "force the evaluation using '#run'");
     SWAG_ERROR(Nte0114, "function names that start with 'op' followed by an uppercase letter are reserved for struct special functions");
     SWAG_ERROR(Nte0116, "function parameters are immutable and can't be modified");
-    SWAG_ERROR(Nte0048, "function reference: '%s'");
+    SWAG_ERROR(Nte0048, "a function of type '%s'");
     SWAG_ERROR(Nte0068, "generic parameter '%s' of %s can be found here");
     SWAG_ERROR(Nte0008, "here is %s '%s'");
     SWAG_ERROR(Nte0090, "here is %s '%s'");
@@ -1432,7 +1432,6 @@ void initErrors()
     SWAG_ERROR(Nte1062, "the initial value suggests that all other types should be '%s'");
     SWAG_ERROR(Nte0083, "the interface declaration returns type '%s'");
     SWAG_ERROR(Nte0082, "the interface declaration yields no return");
-    SWAG_ERROR(Nte0131, "the interface member can also be declared with 'mtd' instead of 'func'");
     SWAG_ERROR(Nte0154, "the keyword '%s' can't be used as an identifier");
     SWAG_ERROR(Nte1086, "the parent scope for 'impl' is '%s', however the parent scope for '%s' is '%s'");
     SWAG_ERROR(Nte0047, "the resulting type is '%s'");
@@ -1461,7 +1460,6 @@ void initErrors()
     SWAG_ERROR(Nte1006, "this element can't be accessed");
     SWAG_ERROR(Nte1090, "this expression evaluates to '%f'");
     SWAG_ERROR(Nte1091, "this expression evaluates to '%lld'");
-    SWAG_ERROR(Nte1033, "this expression results in 0");
     SWAG_ERROR(Nte0071, "this function call can't be evaluated at compile-time");
     SWAG_ERROR(Nte1057, "this function can't be instantiated");
     SWAG_ERROR(Nte1073, "this function does not support UFCS of type '%s'");
@@ -1512,6 +1510,9 @@ void initErrors()
     SWAG_ERROR(Nte1082, "if you want to retrieve the type of an expression, consider using '@decltype' instead")
     SWAG_ERROR(Nte1013, "it seems like you're trying to access a nested property of '%s', but '%s' itself isn't a value");
     SWAG_ERROR(Nte1001, "the % s '%s' has only been used as a scope to find function '%s'");
+    SWAG_ERROR(Nte0131, nullptr);
+    SWAG_ERROR(Nte1087, nullptr);
+    SWAG_ERROR(Nte1033, nullptr);
     SWAG_ERROR(Nte1105, nullptr);
     SWAG_ERROR(Nte1065, nullptr);
     SWAG_ERROR(Nte1035, nullptr);

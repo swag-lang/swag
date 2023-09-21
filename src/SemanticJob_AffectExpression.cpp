@@ -159,27 +159,21 @@ bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, As
     {
         if (left == left->parent->childs.back())
         {
-            Diagnostic diag{node, node->token, Fmt(Err(Err0740), left->resolvedSymbolName->name.c_str()), Nte(Nte1061)};
-            if (hint.empty())
-                hint = Diagnostic::isType(left->typeInfo);
-            diag.addRange(left, hint);
+            Diagnostic diag{node, node->token, Fmt(Err(Err0740), left->resolvedSymbolName->name.c_str())};
+            diag.addRange(left, Diagnostic::isType(left->typeInfo));
             auto note1 = Diagnostic::note(Nte(Nte0116));
             return context->report(diag, note, note1);
         }
         else if (left->typeInfo->isConstPointerRef())
         {
-            Diagnostic diag{node, node->token, Fmt(Err(Err0740), left->resolvedSymbolName->name.c_str()), Nte(Nte1061)};
-            if (hint.empty())
-                hint = Nte(Nte1106);
-            diag.addRange(left, hint);
+            Diagnostic diag{node, node->token, Fmt(Err(Err0740), left->resolvedSymbolName->name.c_str())};
+            diag.addRange(left, Diagnostic::isType(left->typeInfo));
             return context->report(diag, note);
         }
         else
         {
-            Diagnostic diag{node, node->token, Fmt(Err(Err0740), left->resolvedSymbolName->name.c_str()), Nte(Nte1061)};
-            if (hint.empty())
-                hint = Diagnostic::isType(left);
-            diag.addRange(left, hint);
+            Diagnostic diag{node, node->token, Fmt(Err(Err0740), left->resolvedSymbolName->name.c_str())};
+            diag.addRange(left, Diagnostic::isType(left->typeInfo));
             return context->report(diag, note);
         }
     }
@@ -356,7 +350,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             !rightTypeInfo->isInterface() &&
             !rightTypeInfo->isArray() &&
             !rightTypeInfo->isAlias())
-            return context->report({right, Fmt(Err(Err0572), rightTypeInfo->getDisplayNameC(), Naming::aKindName(rightTypeInfo).c_str())});
+            return context->report({right, Fmt(Err(Err0572), Naming::aKindName(rightTypeInfo).c_str(), rightTypeInfo->getDisplayNameC())});
 
         if (forStruct)
         {

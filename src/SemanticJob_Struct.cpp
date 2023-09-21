@@ -326,13 +326,6 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             }
         }
 
-        // First parameter in the impl block must be a pointer to the struct
-        SWAG_VERIFY(typeFunc->parameters.size(), context->report({child, Fmt(Err(Err0654), child->token.ctext())}));
-        auto firstParamType = typeFunc->parameters[0]->typeInfo;
-        SWAG_VERIFY(firstParamType->isPointer(), context->report({typeFunc->parameters[0]->declNode, Fmt(Err(Err0655), firstParamType->getDisplayNameC())}));
-        auto firstParamPtr = CastTypeInfo<TypeInfoPointer>(firstParamType, TypeInfoKind::Pointer);
-        SWAG_VERIFY(firstParamPtr->pointedType == typeStruct, context->report({typeFunc->parameters[0]->declNode, Fmt(Err(Err0655), firstParamType->getDisplayNameC())}));
-
         // use resolvedUserOpSymbolOverload to store the match
         mapItToFunc[itfSymbol]           = child;
         mapItIdxToFunc[itfSymbol->index] = (AstFuncDecl*) child;
@@ -523,14 +516,6 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
             if (typeLambda->parameters.size() == 0)
             {
                 Diagnostic diag{varDecl->type, Fmt(Err(Err0677), child->token.ctext())};
-                diag.hint = Nte(Nte1087);
-
-                if (varDecl->specFlags & AstVarDecl::SPECFLAG_GEN_ITF)
-                {
-                    auto note = Diagnostic::note(Nte(Nte0131));
-                    return context->report(diag, note);
-                }
-
                 return context->report(diag);
             }
 
