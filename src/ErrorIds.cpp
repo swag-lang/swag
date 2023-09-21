@@ -621,7 +621,6 @@ void initErrors()
     SWAG_ERROR(Err0080, "ambiguous symbol                                  $ ambiguous resolution of the enum value '%s'");
     SWAG_ERROR(Err0182, "ambiguous symbol                                  $ ambiguous resolution of the special function '%s'");
 
-    SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
     SWAG_ERROR(Err0671, "'%s' is generic; '%s' lacks generic parameters");
     SWAG_ERROR(Err0600, "'%s' lacks 'Swag.AttributeUsage.File'; avoid '#global'");
@@ -907,6 +906,7 @@ void initErrors()
     SWAG_ERROR(Err0312, "variable creation failed due to generic type '%s'");
     SWAG_ERROR(Err0436, "variable declared with 'let' requires explicit initialization");
     SWAG_ERROR(Err0645, "variable double initialized with type and assignment");
+    SWAG_ERROR(Err0777, nullptr);
     SWAG_ERROR(Err0654, nullptr);
     SWAG_ERROR(Err0655, nullptr);
     SWAG_ERROR(Err0619, nullptr);
@@ -1438,7 +1438,6 @@ void initErrors()
     SWAG_ERROR(Nte1128, "the tuple is represented as %s");
     SWAG_ERROR(Nte0079, "the type '%s' doesn't meet the constraint '%s'");
     SWAG_ERROR(Nte0080, "the type '%s' fails to meet the given constraint");
-    SWAG_ERROR(Nte1063, "the type evaluates to '%s'");
     SWAG_ERROR(Nte1032, "the type is '%s' (consider an explicit 'cast(%s)' if needed)");
     SWAG_ERROR(Nte1011, "this type is '%s'");
     SWAG_ERROR(Nte0085, "the version format should be 'version.revision.buildnum', where each number is either >= 0 or the '?' character");
@@ -1508,6 +1507,7 @@ void initErrors()
     SWAG_ERROR(Nte1082, "if you want to retrieve the type of an expression, consider using '@decltype' instead")
     SWAG_ERROR(Nte1013, "it seems like you're trying to access a nested property of '%s', but '%s' itself isn't a value");
     SWAG_ERROR(Nte1001, "the % s '%s' has only been used as a scope to find function '%s'");
+    SWAG_ERROR(Nte1063, nullptr);
     SWAG_ERROR(Nte0131, nullptr);
     SWAG_ERROR(Nte1087, nullptr);
     SWAG_ERROR(Nte1033, nullptr);

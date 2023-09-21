@@ -473,54 +473,6 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         context.semContext->castErrorFlags    = 0;
         context.semContext->castErrorType     = CastErrorType::Zero;
 
-        // If we are in a generic context, we need to be sure that this will create a valid type
-        if (context.genericReplaceTypes.size())
-        {
-            bool      invalidType      = false;
-            TypeInfo* concreteTypeInfo = nullptr;
-            switch (wantedTypeInfo->kind)
-            {
-            case TypeInfoKind::Slice:
-            {
-                concreteTypeInfo = Generic::doTypeSubstitution(context.genericReplaceTypes, wantedTypeInfo);
-                auto typeSlice   = CastTypeInfo<TypeInfoSlice>(concreteTypeInfo, TypeInfoKind::Slice);
-                if (typeSlice->pointedType->isArray() ||
-                    typeSlice->pointedType->isSlice())
-                {
-                    invalidType = true;
-                }
-                break;
-            }
-
-            case TypeInfoKind::Array:
-            {
-                concreteTypeInfo = Generic::doTypeSubstitution(context.genericReplaceTypes, wantedTypeInfo);
-                auto typeArry    = CastTypeInfo<TypeInfoArray>(concreteTypeInfo, TypeInfoKind::Array);
-                if (typeArry->pointedType->isSlice())
-                {
-                    invalidType = true;
-                }
-                break;
-            }
-
-            default:
-                break;
-            }
-
-            if (invalidType)
-            {
-                if (context.result == MatchResult::Ok)
-                {
-                    context.badSignatureInfos.badSignatureParameterIdx  = (int) i;
-                    context.badSignatureInfos.badSignatureRequestedType = concreteTypeInfo;
-                    context.badSignatureInfos.badSignatureGivenType     = wantedTypeInfo;
-                    SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
-                }
-
-                context.result = MatchResult::BadGenericType;
-            }
-        }
-
         bool same = TypeManager::makeCompatibles(context.semContext, wantedTypeInfo, callTypeInfo, nullptr, nullptr, castFlags);
         if (context.semContext->result != ContextResult::Done)
             return;
@@ -544,8 +496,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
                 SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
             }
 
-            if (context.result != MatchResult::BadGenericType)
-                context.result = MatchResult::BadSignature;
+            context.result = MatchResult::BadSignature;
         }
         else if (wantedTypeInfo->isGeneric())
         {

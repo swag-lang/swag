@@ -476,20 +476,6 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         return;
     }
 
-    case MatchResult::BadGenericType:
-    {
-        SWAG_ASSERT(callParameters);
-        diag       = new Diagnostic{match.parameters[bi.badSignatureParameterIdx],
-                              Fmt(Err(Err0777),
-                                  Naming::niceArgumentRank(badParamIdx).c_str(),
-                                  refNiceName.c_str(),
-                                  bi.badSignatureGivenType->getDisplayNameC(),
-                                  bi.badSignatureRequestedType->getDisplayNameC())};
-        diag->hint = Fmt(Nte(Nte1063), bi.badSignatureRequestedType->getDisplayNameC());
-        result0.push_back(diag);
-        return;
-    }
-
     case MatchResult::CannotDeduceGenericType:
     {
         SWAG_ASSERT(callParameters);
