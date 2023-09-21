@@ -592,7 +592,6 @@ void initErrors()
     SWAG_ERROR(Err0536, "bytecode stack overflow                           $ the required size has exceeded the limit '--stack-size:%s'");
     SWAG_ERROR(Err0187, "missing dereference index                         $ an index is missing to dereference the array '%s' of type '%s' $ consider adding the index between brackets '[index]'");
     SWAG_ERROR(Err0180, "missing dereference index                         $ an index is missing to dereference the slice '%s' of type '%s' $ consider adding the index between brackets '[index]'");
-
     SWAG_ERROR(Err0009, "invalid comparison                                $ slice comparison is only allowed with 'null', got '%s'");
     SWAG_ERROR(Err0010, "invalid comparison                                $ interface comparison is only allowed with 'null' or another interface, got '%s'");
     SWAG_ERROR(Err0181, "invalid comparison                                $ 'any' comparison is only allowed with 'null', got '%s'");
@@ -617,8 +616,10 @@ void initErrors()
     SWAG_ERROR(Err0683, "empty 'interface'                                 $ the interface '%s' should contain at least one function declaration");
     SWAG_ERROR(Err0677, "incomplete interface function                     $ the interface member '%s' should have at least 'self' as the first parameter $ consider declaring the interface function with 'mtd' instead of 'func'");
     SWAG_ERROR(Err0679, "invalid interface function                        $ the first parameter should be 'self', got '%s' instead $ consider declaring the interface function with 'mtd' instead of 'func'");
-
-    SWAG_ERROR(Err0116, "ambiguous symbol $ ambiguous resolution of symbol '%s'");
+    SWAG_ERROR(Err0685, "unexpected default value                          $ default value for variadic parameters are not allowed");
+    SWAG_ERROR(Err0116, "ambiguous symbol                                  $ ambiguous resolution of the symbol '%s'");
+    SWAG_ERROR(Err0080, "ambiguous symbol                                  $ ambiguous resolution of the enum value '%s'");
+    SWAG_ERROR(Err0182, "ambiguous symbol                                  $ ambiguous resolution of the special function '%s'");
 
     SWAG_ERROR(Err0777, "%s of %s yields invalid generic type ('%s' to '%s')");
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
@@ -633,9 +634,7 @@ void initErrors()
     SWAG_ERROR(Err0445, "@cvaarg of type '%s' promoted to '%s' at call");
     SWAG_ERROR(Err0814, "alignment inexpressible due to generic expression");
     SWAG_ERROR(Err0200, "ambiguous cast: multiple fields of type '%s' with 'using' in '%s'");
-    SWAG_ERROR(Err0080, "ambiguous enum value '%s' resolution");
     SWAG_ERROR(Err0115, "ambiguous generic %s '%s' resolution");
-    SWAG_ERROR(Err0182, "ambiguous special function '%s' resolution");
     SWAG_ERROR(Err0034, "ambiguous struct '%s' to interface '%s' conversion");
     SWAG_ERROR(Err0881, "can't find an 'enum' or a 'with' for '%s' prefixed with '.'");
     SWAG_ERROR(Err0627, "can't visit variadic type by pointer");
@@ -651,7 +650,6 @@ void initErrors()
     SWAG_ERROR(Err0311, "constant creation failed due to generic type '%s'");
     SWAG_ERROR(Err0298, "constants need explicit initialization");
     SWAG_ERROR(Err0231, "copying '%s' forbidden by 'Swag.NoCopy' on struct");
-    SWAG_ERROR(Err0685, "default value for variadic parameter not allowed");
     SWAG_ERROR(Err0604, "directory creation '%s' failed");
     SWAG_ERROR(Err0018, "documentation page '%s' not found");
     SWAG_ERROR(Err0591, "duplicate attribute '%s'; missing 'Swag.AttrMulti' in declaration");
@@ -1389,7 +1387,7 @@ void initErrors()
     SWAG_ERROR(Nte1088, "this previous parameter has a default value");
     SWAG_ERROR(Nte0146, "pointer arithmetic is only valid for pointers declared with '^', not '*'");
     SWAG_ERROR(Nte1037, "pointer can be dereferenced using 'dref'");
-    SWAG_ERROR(Nte0086, "possibly derived from enum '%s'");
+    SWAG_ERROR(Nte0086, "possibly comes from enum '%s'");
     SWAG_ERROR(Nte0022, "potential issue detected in your program's compile-time component");
     SWAG_ERROR(Nte1046, "you can prefix with '#run' to force a compile-time call");
     SWAG_ERROR(Nte1081, "primary instance noted here");

@@ -387,13 +387,13 @@ bool SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfo
     {
         Diagnostic                diag{context->node, Fmt(Err(Err0182), name.c_str())};
         Vector<const Diagnostic*> notes;
+        notes.push_back(Diagnostic::note(context->node, Fmt(Nte(Nte1047), name.c_str())));
         for (auto& f : results)
         {
             auto note = Diagnostic::note(f.usingField->declNode, Fmt(Nte(Nte0017), name.c_str(), f.parentStruct->getDisplayNameC()));
             notes.push_back(note);
         }
 
-        diag.hint = Fmt(Nte(Nte1047), name.c_str());
         return context->report(diag, notes);
     }
 

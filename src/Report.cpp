@@ -40,7 +40,10 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
         if (!err->hint.empty())
         {
             auto newNote = Diagnostic::note(err->sourceFile, err->startLocation, err->endLocation, err->hint);
-            notes.push_back(newNote);
+            if (notes.size() == 1)
+                notes.push_back(newNote);
+            else
+                notes.insert(++notes.begin(), newNote);
         }
 
         err->hint = parts[1];
