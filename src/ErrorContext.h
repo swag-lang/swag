@@ -17,9 +17,7 @@ enum class ErrCxtStepKind
     ValidIf,
     ValidIfx,
     Export,
-    Hint2,
     HereIs,
-    MsgPrio,
 };
 
 struct ErrorCxtStep

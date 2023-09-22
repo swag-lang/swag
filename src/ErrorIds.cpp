@@ -403,7 +403,7 @@ void initErrors()
     SWAG_ERROR(Err1028, "misplaced 'throw'                                 $ raising an error with 'throw' is only valid within a function, macro or mixin");
     SWAG_ERROR(Err1029, "misplaced 'using' in interface                    $ 'using' can't be associated with an interface member");
     SWAG_ERROR(Err1121, "misplaced access modifier                         $ the '%s' access modifier can only be used at the global scope");
-    SWAG_ERROR(Err1174, "misplaced access modifier                         $ misuse of '%s' before '%s'; '%s' can't be prefixed with an access modifier");
+    SWAG_ERROR(Err1174, "misplaced access modifier                         $ misuse of '%s' before '%s' $ '%s' can't be prefixed with an access modifier");
     SWAG_ERROR(Err1120, "misplaced array size                              $ the size of the array must be placed before the type name");
     SWAG_ERROR(Err1150, "misplaced attribute                               $ unexpected start of an attribute after '%s' $ attributes should be placed before access modifiers; consider moving the attribute before '%s'");
     SWAG_ERROR(Err0297, "misplaced attribute                               $ the '#[Swag.Discardable]' attribute can only be applied to lambda variables, got '%s'");
@@ -589,7 +589,6 @@ void initErrors()
     SWAG_ERROR(Err0010, "invalid comparison                                $ interface comparison is only allowed with 'null' or another interface, got '%s'");
     SWAG_ERROR(Err0181, "invalid comparison                                $ 'any' comparison is only allowed with 'null', got '%s'");
     SWAG_ERROR(Err0059, "compile-time evaluation required                  $ a slice of type '%s' can't be converted to a compile-time value");
-    SWAG_ERROR(Err0367, "invalid slicing                                   $ the slicing lower bound type is invalid, expected an integer, got '%s' instead");
     SWAG_ERROR(Err0688, "invalid slicing                                   $ the slicing upper bound exclusion with '..<' is not possible because it is zero");
     SWAG_ERROR(Err0477, "invalid slicing                                   $ the slicing bound '%I64u' is out of range (max is '%I64u')");
     SWAG_ERROR(Err0475, "invalid slicing                                   $ slicing is invalid for type '%s'");
@@ -697,16 +696,16 @@ void initErrors()
     SWAG_ERROR(Err0500, "invalid initialization                            $ can't initialize a constant array (type is '%s') with one single value");
     SWAG_ERROR(Err0737, "invalid default parameter                         $ '%s' can't be used as a default parameter");
     SWAG_ERROR(Err0200, "ambiguous cast                                    $ there are multiple 'using' fields of type '%s' in '%s'");
+    SWAG_ERROR(Err0177, "mismatch types                                    $ casting from '%s' to '%s' is not allowed");
+    SWAG_ERROR(Err0907, "mismatch types                                    $ casting from '%s' to pointer type is not allowed $ only conversion from type 'u64' is accepted");
+    SWAG_ERROR(Err0178, "mismatch types                                    $ casting from closure to lambda is not allowed");
+    SWAG_ERROR(Err0418, "mismatch types                                    $ casting from an immutable type '%s' to a mutable one '%s' is not allowed");
+    SWAG_ERROR(Err0041, "mismatch types                                    $ casting from a value pointer '%s' to a block pointer '%s' is not allowed");
 
     SWAG_ERROR(Err0115, "ambiguous generic %s '%s' resolution");
     SWAG_ERROR(Err0034, "ambiguous struct '%s' to interface '%s' conversion");
     SWAG_ERROR(Err0881, "can't find an 'enum' or a 'with' for '%s' prefixed with '.'");
     SWAG_ERROR(Err0686, "can't use 'code' parameter in '%s' expression following %s '%s'");
-    SWAG_ERROR(Err0177, "casting from '%s' to '%s' not allowed");
-    SWAG_ERROR(Err0907, "casting from '%s' to pointer type denied (only 'u64' accepted)");
-    SWAG_ERROR(Err0178, "casting from closure to lambda not allowed");
-    SWAG_ERROR(Err0418, "casting from immutable ('%s') to mutable ('%s') not allowed");
-    SWAG_ERROR(Err0041, "casting from value pointer ('%s') to block pointer ('%s') not allowed");
     SWAG_ERROR(Err0185, "closure can't be assigned to a lambda type");
     SWAG_ERROR(Err0119, "complex generic type deduction (embedded tuples)");
     SWAG_ERROR(Err0231, "copying '%s' forbidden by 'Swag.NoCopy' on struct");
@@ -899,6 +898,7 @@ void initErrors()
     SWAG_ERROR(Err0008, "unknown named parameter '%s'");
     SWAG_ERROR(Err0681, "unresolved interface due to generic type '%s'");
     SWAG_ERROR(Err0672, "unresolved struct '%s' due to generic type '%s'");
+    SWAG_ERROR(Err0367, nullptr);
     SWAG_ERROR(Err0282, nullptr);
     SWAG_ERROR(Err0236, nullptr);
     SWAG_ERROR(Err0858, nullptr);
@@ -1382,7 +1382,7 @@ void initErrors()
     SWAG_ERROR(Nte0086, "possibly comes from enum '%s'");
     SWAG_ERROR(Nte0022, "potential issue detected in your program's compile-time component");
     SWAG_ERROR(Nte1081, "primary instance noted here");
-    SWAG_ERROR(Nte0055, "problem matching type with the other part of the conditional expression");
+    SWAG_ERROR(Nte0055, "trying to match the type of the other part of the conditional expression");
     SWAG_ERROR(Nte0126, "public structs should export all their special functions");
     SWAG_ERROR(Nte1055, "requires explicit initialization");
     SWAG_ERROR(Nte1012, "return (%s) should be of type '%s'");
@@ -1428,7 +1428,7 @@ void initErrors()
     SWAG_ERROR(Nte0079, "the type '%s' doesn't meet the constraint '%s'");
     SWAG_ERROR(Nte0080, "the type '%s' fails to meet the given constraint");
     SWAG_ERROR(Nte0052, "the type '%s' is expected due to %s");
-    SWAG_ERROR(Nte1032, "the type is '%s' (consider an explicit 'cast(%s)' if needed)");
+    SWAG_ERROR(Nte1032, "consider adding an explicit 'cast(%s)' if necessary");
     SWAG_ERROR(Nte0085, "the version format should be 'version.revision.buildnum', where each number is either >= 0 or the '?' character");
     SWAG_ERROR(Nte1083, "there's a missing '%s' of type '%s'");
     SWAG_ERROR(Nte0051, "there's an hidden call to '%s' for the type '%s'");
@@ -1498,7 +1498,7 @@ void initErrors()
     SWAG_ERROR(Nte0149, "you might want to get the address of '%s' using '&'");
     SWAG_ERROR(Nte1126, "this string appears to be null or empty");
     SWAG_ERROR(Nte1006, "the number of values to initialize ('%d') is greater than one");
-    SWAG_ERROR(Nte1037, nullptr);
+    SWAG_ERROR(Nte1037, "the slicing lower bound type is invalid, expected an integer, got '%s' instead");
     SWAG_ERROR(Nte1036, nullptr);
     SWAG_ERROR(Nte1119, nullptr);
     SWAG_ERROR(Nte1021, nullptr);

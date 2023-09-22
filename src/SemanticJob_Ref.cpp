@@ -290,13 +290,13 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     uint64_t maxBound = 0;
 
     {
-        PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::MsgPrio, [node]()
-                          { return Fmt(Err(Err0367), node->lowerBound->typeInfo->getDisplayNameC()); });
+        PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [node]()
+                          { return Fmt(Nte(Nte1037), node->lowerBound->typeInfo->getDisplayNameC()); });
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, node->lowerBound, CASTFLAG_TRY_COERCE));
     }
     {
-        PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::MsgPrio, [node]()
-                          { return Fmt(Err(Err0367), node->lowerBound->typeInfo->getDisplayNameC()); });
+        PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [node]()
+                          { return Fmt(Nte(Nte1037), node->lowerBound->typeInfo->getDisplayNameC()); });
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, node->upperBound, CASTFLAG_TRY_COERCE));
     }
 
@@ -1041,7 +1041,6 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     return true;
 }
 
-#pragma optimize("", off)
 bool SemanticJob::resolveInit(SemanticContext* context)
 {
     auto job                = context->job;

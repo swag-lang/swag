@@ -18,14 +18,7 @@ bool SemanticJob::resolveIf(SemanticContext* context)
 
     // :ConcreteRef
     node->boolExpression->typeInfo = getConcreteTypeUnRef(node->boolExpression, CONCRETE_ALL);
-
-    {
-        PushErrCxtStep ec(
-            context, node, ErrCxtStepKind::Hint2, [node]()
-            { return Nte(Nte1120); },
-            true);
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
-    }
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
 
     // Do not generate backend if 'if' is constant, and has already been evaluated
     if (module->mustOptimizeBytecode(node) && node->boolExpression->hasComputedValue())
@@ -59,14 +52,7 @@ bool SemanticJob::resolveWhile(SemanticContext* context)
 
     // :ConcreteRef
     node->boolExpression->typeInfo = getConcreteTypeUnRef(node->boolExpression, CONCRETE_ALL);
-
-    {
-        PushErrCxtStep ec(
-            context, node, ErrCxtStepKind::Hint2, [node]()
-            { return Nte(Nte1120); },
-            true);
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
-    }
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
 
     // Do not evaluate while if it's constant and false
     if (module->mustOptimizeBytecode(node) && node->boolExpression->hasComputedValue())
@@ -548,7 +534,7 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
 
             {
                 PushErrCxtStep ec(
-                    context, node, ErrCxtStepKind::Hint2, [node]()
+                    context, node, ErrCxtStepKind::Note, [node]()
                     { return Nte(Nte1121); },
                     true);
                 SWAG_CHECK(resolveIntrinsicCountOf(context, node->expression, node->expression));

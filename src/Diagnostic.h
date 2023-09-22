@@ -212,7 +212,6 @@ struct Diagnostic
     bool emptyMarginBefore = true;
 
     bool hasLocation     = false;
-    bool lowPrio         = false;
     bool forceSourceFile = false;
     bool isNote          = false;
     bool closeFileName   = false;

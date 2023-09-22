@@ -541,10 +541,6 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
             else if (!oneParam->type)
             {
                 isType = true;
-                PushErrCxtStep ec(
-                    context, oneParam, ErrCxtStepKind::Hint2, [oneParam]()
-                    { return Fmt(Nte(Nte1102), oneParam->token.ctext()); },
-                    true);
                 PushErrCxtStep ec1(
                     context, nullptr, ErrCxtStepKind::Note, [oneParam]()
                     { return Fmt(Nte(Nte1043), oneParam->token.ctext()); },

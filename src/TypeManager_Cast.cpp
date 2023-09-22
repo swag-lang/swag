@@ -470,41 +470,27 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
     if (!(castFlags & CASTFLAG_JUST_CHECK))
     {
         // More specific message
-        Utf8         hint, msg;
-        Vector<Utf8> remarks;
+        Utf8                      hint, msg;
+        Vector<const Diagnostic*> notes;
+        Vector<Utf8>              remarks;
         getCastErrorMsg(msg, hint, remarks, toType, fromType, castFlags, castErrorType);
-
         SWAG_ASSERT(fromNode);
+
+        if (msg.empty())
+            msg = Fmt(Err(Err0177), fromType->getDisplayNameC(), toType->getDisplayNameC());
+        if (!hint.empty())
+            notes.push_back(Diagnostic::note(fromNode, hint));
 
         // Is there an explicit cast possible ?
         if (!(castFlags & CASTFLAG_EXPLICIT) || (castFlags & CASTFLAG_COERCE))
         {
             if (TypeManager::makeCompatibles(context, toType, fromType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK))
-            {
-                Diagnostic diag{fromNode, Fmt(Err(Err0175), fromType->getDisplayNameC(), toType->getDisplayNameC())};
-                diag.hint    = Fmt(Nte(Nte1032), fromType->getDisplayNameC(), toType->getDisplayNameC());
-                diag.lowPrio = true;
-                diag.remarks = remarks;
-                return context->report(diag);
-            }
+                notes.push_back(Diagnostic::note(Fmt(Nte(Nte1032), toType->getDisplayNameC())));
         }
 
-        // A specific error message ?
-        if (!msg.empty())
-        {
-            if (hint.empty())
-                hint = Diagnostic::isType(fromType);
-            Diagnostic diag{fromNode, msg, hint};
-            diag.remarks = remarks;
-            return context->report(diag);
-        }
-
-        // General cast error
-        Diagnostic diag{fromNode, Fmt(Err(Err0177), fromType->getDisplayNameC(), toType->getDisplayNameC())};
-        diag.hint    = hint.empty() ? Diagnostic::isType(fromType) : hint;
-        diag.lowPrio = true;
+        Diagnostic diag{fromNode, msg};
         diag.remarks = remarks;
-        return context->report(diag);
+        return context->report(diag, notes);
     }
 
     return false;
@@ -2435,9 +2421,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
                 auto           childJ = child->childs[j];
                 TypeInfoParam* fieldJ = symContext.solvedCallParameters[j];
 
-                auto           oldType = childJ->typeInfo;
-                PushErrCxtStep ec{context, childJ, ErrCxtStepKind::MsgPrio, [fieldJ, childJ]()
-                                  { return Fmt(Err(Err0723), fieldJ->name.c_str(), fieldJ->typeInfo->getDisplayNameC(), childJ->typeInfo->getDisplayNameC()); }};
+                auto oldType = childJ->typeInfo;
                 SWAG_CHECK(TypeManager::makeCompatibles(context, fieldJ->typeInfo, childJ->typeInfo, nullptr, childJ, castFlags | CASTFLAG_TRY_COERCE));
                 if (childJ->typeInfo != oldType)
                     hasChanged = true;
@@ -2473,8 +2457,6 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
 
         if (fromNode)
         {
-            PushErrCxtStep ec(context, fromNode->childs.front(), ErrCxtStepKind::Hint2, [convertTo]()
-                              { return Fmt(Nte(Nte1062), convertTo->getDisplayNameC()); });
             SWAG_CHECK(TypeManager::makeCompatibles(context, convertTo, fromTypeList->subTypes[i]->typeInfo, nullptr, child, castFlags | CASTFLAG_TRY_COERCE));
         }
         else
@@ -3662,8 +3644,6 @@ bool TypeManager::promoteLeft(SemanticContext* context, AstNode* left, AstNode* 
 
 bool TypeManager::makeCompatibles(SemanticContext* context, AstNode* leftNode, AstNode* rightNode, uint64_t castFlags)
 {
-    PushErrCxtStep ec(context, leftNode, ErrCxtStepKind::Hint2, [leftNode]()
-                      { return Diagnostic::isType(leftNode->typeInfo); });
     SWAG_CHECK(makeCompatibles(context, leftNode->typeInfo, leftNode, rightNode, castFlags));
     return true;
 }

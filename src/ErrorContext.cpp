@@ -42,37 +42,6 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
 
             switch (exp.type)
             {
-            case ErrCxtStepKind::MsgPrio:
-                if (diag.lowPrio)
-                {
-                    diag.textMsg = msg;
-                    diag.hint.clear();
-                }
-
-                exp.hide = true;
-                break;
-
-            case ErrCxtStepKind::Hint2:
-                exp.hide = true;
-                if (exp.node)
-                {
-                    SourceLocation start, end;
-                    if (exp.locIsToken)
-                    {
-                        start = exp.node->token.startLocation;
-                        end   = exp.node->token.endLocation;
-                    }
-                    else
-                    {
-                        exp.node->computeLocation(start, end);
-                    }
-
-                    if (start.line == end.line && start.line == diag.startLocation.line)
-                        diag.addRange(start, end, msg);
-                }
-
-                break;
-
             case ErrCxtStepKind::Generic:
                 if (exp.node && exp.node->kind == AstNodeKind::VarDecl) // Can happen with automatic call of opIndexSuffix
                 {
@@ -89,6 +58,7 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
                 exp.hide   = doneInline;
                 doneInline = true;
                 break;
+
             case ErrCxtStepKind::CompileTime:
                 exp.hide     = doneCompTime;
                 doneCompTime = true;

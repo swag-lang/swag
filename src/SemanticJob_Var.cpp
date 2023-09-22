@@ -886,8 +886,6 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
             if (node->type->flags & AST_FROM_GENERIC_REPLACE || (node->type->childs.count && node->type->childs.back()->flags & AST_FROM_GENERIC_REPLACE))
             {
-                PushErrCxtStep ec{context, node->type, ErrCxtStepKind::Hint2, [node]()
-                                  { return Diagnostic::isType(node->type->typeInfo); }};
                 SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, nullptr, node->assignment, castFlags));
             }
             else
