@@ -8,6 +8,7 @@
 #include "Version.h"
 #include "LanguageSpec.h"
 #include "Ast.h"
+#include "Naming.h"
 
 bool SemanticJob::getDigitHexa(SemanticContext* context, const SourceLocation& startLoc, const char* pzs, const char** _pz, int& result, const char* errMsg)
 {
@@ -400,6 +401,7 @@ bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
     return Report::internalError(context->node, "resolveLiteralSuffix, invalid token");
 }
 
+#pragma optimize("", off)
 bool SemanticJob::resolveLiteral(SemanticContext* context)
 {
     auto node       = CastAst<AstLiteral>(context->node, AstNodeKind::Literal);
@@ -490,8 +492,18 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
     }
 
     // Check suffix type is correct (should be native)
-    SWAG_VERIFY(suffix->typeInfo->isNative(), context->report({suffix, Fmt(Err(Err0439), suffix->typeInfo->getDisplayNameC())}));
-    switch (suffix->typeInfo->nativeType)
+    if (suffix->tokenId != TokenId::NativeType)
+    {
+        if (suffix->resolvedSymbolName && suffix->resolvedSymbolName->kind != SymbolKind::TypeAlias)
+        {
+            return context->report({suffix, Fmt(Err(Err0175), suffix->resolvedSymbolName->name.c_str(), Naming::aKindName(suffix->resolvedSymbolName->kind).c_str())});
+        }
+    }
+
+    auto suffixType = TypeManager::concreteType(suffix->typeInfo, CONCRETE_ALIAS);
+    SWAG_VERIFY(suffixType->isNative(), context->report({suffix, Fmt(Err(Err0439), suffixType->getDisplayNameC())}));
+
+    switch (suffixType->nativeType)
     {
     case NativeTypeKind::S8:
     case NativeTypeKind::S16:
@@ -528,10 +540,10 @@ bool SemanticJob::resolveLiteral(SemanticContext* context)
         }
     }
 
-    auto errMsg = checkLiteralValue(*node->computedValue, node->literalType, node->literalValue, suffix->typeInfo, negApplied);
+    auto errMsg = checkLiteralValue(*node->computedValue, node->literalType, node->literalValue, suffixType, negApplied);
     if (!errMsg.empty())
         return context->report({node, errMsg});
-    node->typeInfo    = suffix->typeInfo;
+    node->typeInfo    = suffixType;
     node->byteCodeFct = ByteCodeGenJob::emitLiteral;
     return true;
 }

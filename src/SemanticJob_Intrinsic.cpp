@@ -49,8 +49,7 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
 
         if (!done)
         {
-            auto note = Diagnostic::note(Nte(Nte0111));
-            return context->report({front, front->token, Fmt(Err(Err0593), w.c_str())}, note);
+            return context->report({front, front->token, Fmt(Err(Err0593), w.c_str())});
         }
 
         return true;

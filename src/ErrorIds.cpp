@@ -715,8 +715,13 @@ void initErrors()
     SWAG_ERROR(Err0646, "invalid interface                                 $ expected an interface name after 'impl' but '%s' is %s");
     SWAG_ERROR(Err0599, "invalid argument                                  $ invalid argument '%s' for the attribute '#[Swag.ExportType]' $ the acceptable values for '#[Swag.ExportType]' are 'methods' and 'nozero'");
     SWAG_ERROR(Err0693, "invalid argument                                  $ invalid argument '%s' for the attribute '#[Swag.Match]' $ the acceptable values for '#[Swag.Match]' are 'validif' and 'self'");
-    SWAG_ERROR(Err0594, "invalid argument                                  $ invalid argument '%s' for the attribute '#[Swag.Optim]' $ the acceptable values for '#[Swag.Optim]' are 'bytecode' and 'backend'");
-    
+    SWAG_ERROR(Err0594, "invalid argument                                  $ invalid argument '%s' for the attribute '#[Swag.Optim]' $ the acceptable values for '#[Swag.Optim]' are 'bytecode' and 'backend'");   
+    SWAG_ERROR(Err0593, "invalid argument                                  $ invalid safety value '%s' $ the acceptable safety values are 'boundcheck|overflow|math|switch|unreachable|any|bool|nan|sanity|null'");
+    SWAG_ERROR(Err0439, "invalid literal suffix                            $ the type '%s' can't be used as a literal type suffix");
+    SWAG_ERROR(Err0175, "invalid literal suffix                            $ the symbol '%s' is %s and can't be used as a literal type suffix");
+
+    SWAG_ERROR(Err0731, "invalid attribute parameter type '%s'");
+    SWAG_ERROR(Err0317, "invalid floating point suffix, found type '%s'");
     SWAG_ERROR(Err0881, "can't find an 'enum' or a 'with' for '%s' prefixed with '.'");
     SWAG_ERROR(Err0185, "closure can't be assigned to a lambda type");
     SWAG_ERROR(Err0119, "complex generic type deduction (embedded tuples)");
@@ -769,12 +774,8 @@ void initErrors()
     SWAG_ERROR(Err0199, "invalid 'opDrop' for struct with 'Swag.ConstExpr' marked '%s'");
     SWAG_ERROR(Err0530, "invalid 'ref' after 'moveref'");
     SWAG_ERROR(Err0694, "invalid 'using' type");
-    SWAG_ERROR(Err0731, "invalid attribute parameter type '%s'");
-    SWAG_ERROR(Err0317, "invalid floating point suffix, found type '%s'");
     SWAG_ERROR(Err0070, "invalid generic %s for %s ('%s' expected, '%s' given)");
     SWAG_ERROR(Err0135, "invalid generic parameters for %s '%s'");
-    SWAG_ERROR(Err0439, "invalid literal suffix type '%s'");
-    SWAG_ERROR(Err0593, "invalid safety value '%s'");
     SWAG_ERROR(Err0576, "invalid scope move of '%d'");
     SWAG_ERROR(Err0077, "invalid second parameter for '%s' (not type '%s')");
     SWAG_ERROR(Err0697, "invalid type '%s' for 'Swag.EnumFlags' (unsigned integer required)");
@@ -894,7 +895,6 @@ void initErrors()
     SWAG_ERROR(Err0657, "unimplemented interface functions for '%s' in '%s'");
     SWAG_ERROR(Err0631, "unknown label '%s'");
     SWAG_ERROR(Err0499, "unknown module dependency '%s'");
-    SWAG_ERROR(Err0175, nullptr);
     SWAG_ERROR(Err0776, nullptr);
     SWAG_ERROR(Err0676, nullptr);
     SWAG_ERROR(Err0680, nullptr);
@@ -1401,7 +1401,6 @@ void initErrors()
     SWAG_ERROR(Nte0074, "the UFCS argument is derived from 'this'");
     SWAG_ERROR(Nte0084, "the UFCS argument is derived from an implicit 'using const self' parameter");
     SWAG_ERROR(Nte0073, "the UFCS argument originates from an implicit 'using self' parameter");
-    SWAG_ERROR(Nte0111, "the allowed safety values are 'boundcheck|overflow|math|switch|unreachable|any|bool|nan|sanity|null'");
     SWAG_ERROR(Nte1123, "the array has %d elements of type '%s', which doesn't match a slice of type '%s'");
     SWAG_ERROR(Nte0018, "the concealed call to '%s' returns type '%s', lacking a subscope");
     SWAG_ERROR(Nte0056, "the counterpart is an implicit 'using self' as an initial parameter");
@@ -1496,6 +1495,7 @@ void initErrors()
     SWAG_ERROR(Nte1126, "this string appears to be null or empty");
     SWAG_ERROR(Nte1006, "the number of values to initialize ('%d') is greater than one");
     SWAG_ERROR(Nte1037, "the slicing lower bound type is invalid, expected an integer, got '%s' instead");
+    SWAG_ERROR(Nte0111, nullptr);
     SWAG_ERROR(Nte0148, nullptr);
     SWAG_ERROR(Nte0112, nullptr);
     SWAG_ERROR(Nte0113, nullptr);

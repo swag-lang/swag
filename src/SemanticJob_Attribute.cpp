@@ -465,8 +465,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
 
                         if (!done)
                         {
-                            auto note = Diagnostic::note(Nte(Nte0111));
-                            return context->report({child, attrParam->token, Fmt(Err(Err0593), w.c_str())}, note);
+                            return context->report({child, attrParam->token, Fmt(Err(Err0593), w.c_str())});
                         }
                     }
                 }
