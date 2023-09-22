@@ -712,7 +712,11 @@ void initErrors()
     SWAG_ERROR(Err0008, "unknown identifier                                $ the named parameter '%s' can't be found");
     SWAG_ERROR(Err0115, "ambiguous symbol                                  $ ambiguous resolution of the generic %s '%s'");
     SWAG_ERROR(Err0034, "ambiguous symbol                                  $ ambiguous conversion of struct '%s' to interface '%s'");
-
+    SWAG_ERROR(Err0646, "invalid interface                                 $ expected an interface name after 'impl' but '%s' is %s");
+    SWAG_ERROR(Err0599, "invalid argument                                  $ invalid argument '%s' for the attribute '#[Swag.ExportType]' $ the acceptable values for '#[Swag.ExportType]' are 'methods' and 'nozero'");
+    SWAG_ERROR(Err0693, "invalid argument                                  $ invalid argument '%s' for the attribute '#[Swag.Match]' $ the acceptable values for '#[Swag.Match]' are 'validif' and 'self'");
+    SWAG_ERROR(Err0594, "invalid argument                                  $ invalid argument '%s' for the attribute '#[Swag.Optim]' $ the acceptable values for '#[Swag.Optim]' are 'bytecode' and 'backend'");
+    
     SWAG_ERROR(Err0881, "can't find an 'enum' or a 'with' for '%s' prefixed with '.'");
     SWAG_ERROR(Err0185, "closure can't be assigned to a lambda type");
     SWAG_ERROR(Err0119, "complex generic type deduction (embedded tuples)");
@@ -742,7 +746,6 @@ void initErrors()
     SWAG_ERROR(Err0659, "implementation block for '%s' is internal; identifier isn't");
     SWAG_ERROR(Err0660, "implementation block for '%s' isn't internal; identifier is");
     SWAG_ERROR(Err0661, "implementation block not in same scope as '%s'");
-    SWAG_ERROR(Err0175, "implicit casting from '%s' to '%s' not allowed");
     SWAG_ERROR(Err0124, "improper lambda call; '%s' isn't a variable (it's %s)");
     SWAG_ERROR(Err0674, "improper struct member name '%s'");
     SWAG_ERROR(Err0470, "incorrect address expression");
@@ -757,11 +760,7 @@ void initErrors()
     SWAG_ERROR(Err0035, "insufficient generic arguments for %s");
     SWAG_ERROR(Err0544, "insufficient generic parameters for function '%s'");
     SWAG_ERROR(Err0203, "insufficient initializers (%d expected, %d given)");
-    SWAG_ERROR(Err0646, "expected interface; '%s' is %s");
     SWAG_ERROR(Err0443, "invalid '@cvaarg' type '%s'");
-    SWAG_ERROR(Err0599, "invalid 'Swag.ExportType' parameter '%s'");
-    SWAG_ERROR(Err0693, "invalid 'Swag.Match' parameter '%s'");
-    SWAG_ERROR(Err0594, "invalid 'Swag.Optim' parameter '%s'");
     SWAG_ERROR(Err0250, "invalid 'const' for type '%s'");
     SWAG_ERROR(Err0515, "invalid 'location' mode; choose 'swag' or 'disk' instead of '%s'");
     SWAG_ERROR(Err0621, "invalid 'moveref' for type '%s' (expected pointer/reference)");
@@ -895,6 +894,7 @@ void initErrors()
     SWAG_ERROR(Err0657, "unimplemented interface functions for '%s' in '%s'");
     SWAG_ERROR(Err0631, "unknown label '%s'");
     SWAG_ERROR(Err0499, "unknown module dependency '%s'");
+    SWAG_ERROR(Err0175, nullptr);
     SWAG_ERROR(Err0776, nullptr);
     SWAG_ERROR(Err0676, nullptr);
     SWAG_ERROR(Err0680, nullptr);
@@ -1274,7 +1274,6 @@ void initErrors()
     SWAG_ERROR(Nte0108, "'==' is the comparison operator; did you intend to affect something with '='?");
     SWAG_ERROR(Nte0110, "'@alias' is only valid within a 'Swag.Macro' or 'Swag.Mixin' function");
     SWAG_ERROR(Nte0120, "'@mixin' is permitted exclusively inside a 'Swag.Mixin' function");
-    SWAG_ERROR(Nte0112, "'Swag.Optim' should have either 'bytecode' or 'backend' as its value");
     SWAG_ERROR(Nte0145, "'closure' should be accompanied by capture parameters enclosed in '|...|'");
     SWAG_ERROR(Nte1019, "'discard' can't be accociated with an intrinsic, as an intrinsic result should always be used");
     SWAG_ERROR(Nte1111, "'moveref' and 'ref' can't be used together");
@@ -1402,11 +1401,9 @@ void initErrors()
     SWAG_ERROR(Nte0074, "the UFCS argument is derived from 'this'");
     SWAG_ERROR(Nte0084, "the UFCS argument is derived from an implicit 'using const self' parameter");
     SWAG_ERROR(Nte0073, "the UFCS argument originates from an implicit 'using self' parameter");
-    SWAG_ERROR(Nte0113, "the acceptable values for 'Swag.ExportType' are 'methods' and 'nozero'");
     SWAG_ERROR(Nte0111, "the allowed safety values are 'boundcheck|overflow|math|switch|unreachable|any|bool|nan|sanity|null'");
     SWAG_ERROR(Nte1123, "the array has %d elements of type '%s', which doesn't match a slice of type '%s'");
     SWAG_ERROR(Nte0018, "the concealed call to '%s' returns type '%s', lacking a subscope");
-    SWAG_ERROR(Nte0148, "the correct values for 'Swag.Match' are 'validif|self'");
     SWAG_ERROR(Nte0056, "the counterpart is an implicit 'using self' as an initial parameter");
     SWAG_ERROR(Nte1000, "the divisor expression evaluates to zero");
     SWAG_ERROR(Nte0011, "the entity %s is tagged with 'Swag.CalleeReturn', implying the return is utilized within %s");
@@ -1499,6 +1496,9 @@ void initErrors()
     SWAG_ERROR(Nte1126, "this string appears to be null or empty");
     SWAG_ERROR(Nte1006, "the number of values to initialize ('%d') is greater than one");
     SWAG_ERROR(Nte1037, "the slicing lower bound type is invalid, expected an integer, got '%s' instead");
+    SWAG_ERROR(Nte0148, nullptr);
+    SWAG_ERROR(Nte0112, nullptr);
+    SWAG_ERROR(Nte0113, nullptr);
     SWAG_ERROR(Nte1036, nullptr);
     SWAG_ERROR(Nte1119, nullptr);
     SWAG_ERROR(Nte1021, nullptr);
