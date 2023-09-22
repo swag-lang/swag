@@ -125,15 +125,13 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     if (!parent)
     {
         Diagnostic diag{node, node->tokenName, Fmt(Err(Err0067), node->token.ctext())};
-        auto       note = Diagnostic::note(Nte(Nte0115));
-        return context->report(diag, note);
+        return context->report(diag);
     }
 
     if (node->ownerScope->kind == ScopeKind::Impl)
     {
         Diagnostic diag{node, node->tokenName, Fmt(Err(Err0494), node->token.ctext())};
-        auto       note = Diagnostic::note(Nte(Nte0115));
-        return context->report(diag, note);
+        return context->report(diag);
     }
 
     if ((node->ownerScope->owner->attributeFlags & ATTRIBUTE_PUBLIC) && !(node->attributeFlags & ATTRIBUTE_PUBLIC))

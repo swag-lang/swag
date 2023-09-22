@@ -1029,8 +1029,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     default:
     {
-        Diagnostic diag{arrayNode->array, Fmt(Err(Err0488), arrayNode->array->typeInfo->getDisplayNameC())};
-        diag.hint = Nte(Nte1021);
+        Diagnostic diag{arrayNode->array, Fmt(Err(Err0481), arrayNode->array->typeInfo->getDisplayNameC())};
         if (arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DREF)
             diag.addRange(arrayNode->token.startLocation, arrayNode->token.endLocation, Nte(Nte1060));
         return context->report(diag);

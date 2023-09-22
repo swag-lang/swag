@@ -1061,8 +1061,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             idRef->previousResolvedNode &&
             idRef->previousResolvedNode->resolvedSymbolName->kind == SymbolKind::Variable)
         {
-            Diagnostic diag{idRef->previousResolvedNode, Fmt(Err(Err0488), idRef->previousResolvedNode->typeInfo->getDisplayNameC())};
-            diag.hint = Nte(Nte1119);
+            Diagnostic diag{idRef->previousResolvedNode, Fmt(Err(Err0481), idRef->previousResolvedNode->typeInfo->getDisplayNameC())};
             return context->report(diag);
         }
 

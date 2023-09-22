@@ -1,4 +1,4 @@
-#global testerror "Err0280"
+//#global testerror "Err0280"
 #global testerror "Err0494"
 
 struct A {}
@@ -10,7 +10,7 @@ interface I
 impl I for A
 {
     mtd opDrop(){}
-    mtd x(){}
+    mtd impl x(){}
 }
 
 #test
