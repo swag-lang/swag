@@ -1062,7 +1062,7 @@ bool SemanticJob::resolveInit(SemanticContext* context)
 
         if (pointedType->isNative() || pointedType->isPointer())
         {
-            SWAG_VERIFY(node->parameters->childs.size() == 1, context->report({node->count, Fmt(Err(Err0491), pointedType->getDisplayNameC())}));
+            SWAG_VERIFY(node->parameters->childs.size() == 1, context->report({node->parameters, Fmt(Err(Err0491), pointedType->getDisplayNameC())}));
             auto child = node->parameters->childs.front();
             SWAG_CHECK(TypeManager::makeCompatibles(context, pointedType, child->typeInfo, nullptr, child));
         }

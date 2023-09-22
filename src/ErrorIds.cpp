@@ -691,7 +691,7 @@ void initErrors()
     SWAG_ERROR(Err0051, "system error                                      $ failed to add '%s' to the 'PATH' variable");
     SWAG_ERROR(Err0204, "too many initializers                             $ expected '%d' value(s) to initialize the array, got '%d' instead");
     SWAG_ERROR(Err0197, "too many initializers                             $ expected '%d' value(s) to initialize '%s', got '%d' instead");
-    SWAG_ERROR(Err0491, "too many initializers                             $ excessive initializers for '%s'");
+    SWAG_ERROR(Err0491, "too many initializers                             $ too many initializers for type '%s'");
 
     SWAG_ERROR(Err0200, "ambiguous cast: multiple fields of type '%s' with 'using' in '%s'");
     SWAG_ERROR(Err0115, "ambiguous generic %s '%s' resolution");
