@@ -702,6 +702,7 @@ void initErrors()
     SWAG_ERROR(Err0418, "mismatch types                                    $ casting from an immutable type '%s' to a mutable one '%s' is not allowed");
     SWAG_ERROR(Err0041, "mismatch types                                    $ casting from a value pointer '%s' to a block pointer '%s' is not allowed");
     SWAG_ERROR(Err0468, "index out of bounds                               $ the given index '%I64u' exceeds the maximum value '%I64u'");
+    SWAG_ERROR(Err0313, "misplaced access modifier                         $ a global variable can't be 'public'");
 
     SWAG_ERROR(Err0115, "ambiguous generic %s '%s' resolution");
     SWAG_ERROR(Err0034, "ambiguous struct '%s' to interface '%s' conversion");
@@ -733,7 +734,6 @@ void initErrors()
     SWAG_ERROR(Err0039, "generic struct '%s' instantiation failed: missing type replacements");
     SWAG_ERROR(Err0618, "generic type '%s' deduction from type '%s' failed");
     SWAG_ERROR(Err0123, "generic value '%s' deduced as '%s', not '%s'");
-    SWAG_ERROR(Err0313, "global variable can't be 'public'");
     SWAG_ERROR(Err0130, "identifier '%s' is %s, not function/struct");
     SWAG_ERROR(Err0776, "identifier not allowed at global scope");
     SWAG_ERROR(Err0659, "implementation block for '%s' is internal; identifier isn't");
