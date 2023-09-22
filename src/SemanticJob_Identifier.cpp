@@ -1259,8 +1259,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
                     if (!(overload->node->attributeFlags & ATTRIBUTE_DISCARDABLE) && !(identifier->flags & AST_DISCARD))
                     {
                         Diagnostic diag(identifier, identifier->token, Fmt(Err(Err0092), overload->node->token.ctext()));
-                        auto       note = Diagnostic::note(overload->node, overload->node->token, Nte(Nte0039));
-                        return context->report(diag, note);
+                        return context->report(diag, Diagnostic::hereIs(overload));
                     }
                     else
                     {
@@ -1271,9 +1270,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             else if (typeInfoRet->isVoid() && (identifier->flags & AST_DISCARD))
             {
                 Diagnostic diag{identifier, identifier->token, Err(Err0094)};
-                diag.hint = Diagnostic::isType(typeInfo);
-                auto note = Diagnostic::note(overload->node, overload->node->token, Nte(Nte0039));
-                return context->report(diag, note);
+                return context->report(diag, Diagnostic::hereIs(overload));
             }
 
             // From now this is considered as a function, not a lambda
@@ -1461,7 +1458,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         else if (returnType->isVoid() && (identifier->flags & AST_DISCARD))
         {
             Diagnostic diag{identifier, identifier->token, Err(Err0094)};
-            diag.hint = Diagnostic::isType(identifier->typeInfo);
             return context->report(diag, Diagnostic::hereIs(overload));
         }
 

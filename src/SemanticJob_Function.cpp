@@ -818,7 +818,7 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
         }
         // The function returns nothing but has the 'Swag.Discardable' attribute
         if (funcNode->returnType->typeInfo->isVoid() && funcNode->attributeFlags & ATTRIBUTE_DISCARDABLE)
-            return context->report({funcNode, Fmt(Err(Err0767), funcNode->token.ctext())});
+            return context->report({funcNode, funcNode->tokenName, Fmt(Err(Err0767), funcNode->token.ctext())});
     }
 
     if (funcNode->flags & AST_IS_GENERIC)

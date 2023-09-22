@@ -199,7 +199,6 @@ void initErrors()
     SWAG_ERROR(Err1093, "empty namespace name                              $ expected the namespace name before '%s'");
     SWAG_ERROR(Err0435, "exception!                                        $ compile-time execution exception");
     SWAG_ERROR(Err1048, "expected '%s'                                     $ expected '%s' %s, found '%s' instead");
-    SWAG_ERROR(Err0617, "failed '#validif'                                 $ the '#validif' validation has failed for '%s'");
     SWAG_ERROR(Err0027, "failed semantic                                   $ cannot resolve this");
     SWAG_ERROR(Err0603, "file error                                        $ failed to delete file '%s'");
     SWAG_ERROR(Err0509, "file error                                        $ failed to access file '%s'");
@@ -632,21 +631,23 @@ void initErrors()
     SWAG_ERROR(Err0092, "unused return value                               $ the return value of the lambda '%s' should be used $ if you don't need the return value, consider prefixing the call with 'discard'");
     SWAG_ERROR(Err0163, "invalid return value assignment                   $ the function does not return a value");
     SWAG_ERROR(Err0766, "unexpected return value                           $ a function with the '#[Swag.CalleeReturn]' attribute must not declare a return value");
+    SWAG_ERROR(Err0024, "unknown interface function                        $ the function '%s' is not part of the interface '%s'");
+    SWAG_ERROR(Err0258, "unknown foreign function                          $ the foreign function '%s' was not found");
+    SWAG_ERROR(Err0017, "invalid type declaration                          $ '%s' is not a type, it's %s");
+    SWAG_ERROR(Err0764, "invalid return type                               $ a function can't return type '%s'");
+    SWAG_ERROR(Err0094, "invalid 'discard' call                            $ a function returning nothing can't be discarded");
+    SWAG_ERROR(Err0767, "missing return type                               $ the function '%s' has the '#[Swag.Discardable]' attribute and should return something");
+    SWAG_ERROR(Err0617, "failed '#validif'                                 $ the '#validif' validation has failed for '%s'");
+    SWAG_ERROR(Err0004, "failed '%s'                                       $ the function '%s' can't be used because of a failed '%s'");
+    SWAG_ERROR(Err0160, "invalid assignement                               $ a function pointer can't be assigned to a constant");
+    SWAG_ERROR(Err0652, "mismatch function signature                       $ function '%s' has an incorrect signature for interface '%s'");
 
-    SWAG_ERROR(Err0258, "foreign function '%s' unresolved");
     SWAG_ERROR(Err0754, "function '%s' attribute mismatch with 'Swag.Implicit'");
     SWAG_ERROR(Err0478, "function '%s' can't have generic parameters");
     SWAG_ERROR(Err0752, "function '%s' can't be generic with 'Swag.NotGeneric' attribute");
     SWAG_ERROR(Err0280, "function '%s' in interface '%s' lacks 'impl' marker");
     SWAG_ERROR(Err0751, "function '%s' is generic despite 'Swag.NotGeneric' attribute");
-    SWAG_ERROR(Err0024, "function '%s' not found in interface '%s'");
     SWAG_ERROR(Err0067, "function '%s' outside 'impl' block");
-    SWAG_ERROR(Err0652, "function '%s' signature mismatch for interface '%s'");
-    SWAG_ERROR(Err0004, "function '%s' unusable; '%s' failed");
-    SWAG_ERROR(Err0767, "function '%s' with 'Swag.Discardable' must not return value");
-    SWAG_ERROR(Err0094, "function call returning nothing can't be discarded");
-    SWAG_ERROR(Err0764, "function can't return type '%s'");
-    SWAG_ERROR(Err0160, "function pointer can't be assigned to a constant");
 
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
     SWAG_ERROR(Err0858, "'%s' should not have line break %s");
@@ -878,7 +879,6 @@ void initErrors()
     SWAG_ERROR(Err0291, "type '%s' unpacking failed; expected struct or tuple");
     SWAG_ERROR(Err0118, "type constraint failed on '%s'");
     SWAG_ERROR(Err0678, "type constraint should yield 'bool' ('%s' given)");
-    SWAG_ERROR(Err0017, "type declaration error; '%s' isn't a type (it's %s)");
     SWAG_ERROR(Err0810, "type is unevaluable in this context; it's generic");
     SWAG_ERROR(Err0048, "type mismatch ('*Swag.CVaList' expected, '%s' given)");
     SWAG_ERROR(Err0908, "type mismatch: unable to initialize type '%s' from type '%s'");
@@ -1324,7 +1324,7 @@ void initErrors()
     SWAG_ERROR(Nte0070, "evaluation failed during compile-time");
     SWAG_ERROR(Nte0087, "you can execute swag with '--callstack' to obtain more contextual details");
     SWAG_ERROR(Nte0009, "you can execute swag with '--dbg-catch' to initiate the bytecode debugger when an exception is raised");
-    SWAG_ERROR(Nte0002, "expected match");
+    SWAG_ERROR(Nte0002, "this is the expected signature");
     SWAG_ERROR(Nte0136, "force the evaluation using '#run'");
     SWAG_ERROR(Nte0114, "function names that start with 'op' followed by an uppercase letter are reserved for struct special functions");
     SWAG_ERROR(Nte0116, "function parameters are immutable and can't be modified");
@@ -1340,7 +1340,6 @@ void initErrors()
     SWAG_ERROR(Nte0028, "here is the declaration");
     SWAG_ERROR(Nte0031, "here is the deprecated definition");
     SWAG_ERROR(Nte0023, "here is the immutable value reference");
-    SWAG_ERROR(Nte0007, "here is the item '%s'");
     SWAG_ERROR(Nte0035, "here is the other '#import'");
     SWAG_ERROR(Nte0036, "here is the other definition");
     SWAG_ERROR(Nte0063, "here is the other return statement");
@@ -1350,7 +1349,6 @@ void initErrors()
     SWAG_ERROR(Nte0032, "here is the problematic attribute");
     SWAG_ERROR(Nte0015, "here is the reference");
     SWAG_ERROR(Nte0030, "here is the tuple's definition");
-    SWAG_ERROR(Nte0039, "here is the variable's declaration");
     SWAG_ERROR(Nte0064, "here is the field causing the recursion");
     SWAG_ERROR(Nte1047, "there's an hidden call to '%s'");
     SWAG_ERROR(Nte1119, "identified an enum value");
@@ -1507,6 +1505,8 @@ void initErrors()
     SWAG_ERROR(Nte1082, "if you want to retrieve the type of an expression, consider using '@decltype' instead")
     SWAG_ERROR(Nte1013, "it seems like you're trying to access a nested property of '%s', but '%s' itself isn't a value");
     SWAG_ERROR(Nte1001, "the % s '%s' has only been used as a scope to find function '%s'");
+    SWAG_ERROR(Nte0007, nullptr);
+    SWAG_ERROR(Nte0039, nullptr);
     SWAG_ERROR(Nte1034, nullptr);
     SWAG_ERROR(Nte1063, nullptr);
     SWAG_ERROR(Nte0131, nullptr);

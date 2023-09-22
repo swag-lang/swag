@@ -233,8 +233,8 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         if (!itfSymbol)
         {
             Diagnostic diag{childFct, childFct->tokenName, Fmt(Err(Err0024), childFct->token.text.c_str(), typeInterface->name.c_str())};
-            diag.hint = findClosestMatchesMsg(context, childFct, {{typeInterface->scope}});
-            return context->report(diag);
+            auto       note = Diagnostic::note(findClosestMatchesMsg(context, childFct, {{typeInterface->scope}}));
+            return context->report(diag, note);
         }
 
         // We need to be sure function semantic is done

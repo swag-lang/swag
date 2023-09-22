@@ -145,10 +145,9 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     case MatchResult::ValidIfFailed:
     {
         SWAG_ASSERT(destFuncDecl);
-        diag = new Diagnostic{node, node->token, Fmt(Err(Err0004), destFuncDecl->token.ctext(), destFuncDecl->validif->token.ctext())};
+        diag = new Diagnostic{node, node->token, Fmt(Err(Err0004), destFuncDecl->validif->token.ctext(), destFuncDecl->token.ctext(), destFuncDecl->validif->token.ctext())};
         result0.push_back(diag);
-        auto note       = Diagnostic::note(destFuncDecl->validif, destFuncDecl->validif->token, Fmt(Nte(Nte0007), destFuncDecl->validif->token.ctext()));
-        note->showRange = false;
+        auto note = Diagnostic::hereIs(destFuncDecl->validif);
         result1.push_back(note);
         return;
     }
