@@ -596,7 +596,6 @@ void initErrors()
     SWAG_ERROR(Err0474, "invalid slicing                                   $ slicing is invalid on a multi-dimensional array");
     SWAG_ERROR(Err0476, "invalid slicing                                   $ the slicing lower bound '%I64u' is greater than the upper bound '%I64u'");
     SWAG_ERROR(Err0320, "invalid slicing                                   $ can't slice '%s' because 'opSlice' was not found in type '%s'");
-    SWAG_ERROR(Err0164, "null dereference                                  $ attempt to dereference a null pointer");
     SWAG_ERROR(Err0701, "invalid enum type                                 $ the enum slice type '%s' should be declared as 'const' $ consider declaring the type with 'const %s' instead");
     SWAG_ERROR(Err0833, "invalid operation                                 $ the bit inversion operation '~' is not allowed on type '%s'");
     SWAG_ERROR(Err0559, "invalid move                                      $ 'move' is not applicable on an immutable expression (type is '%s')");
@@ -662,7 +661,6 @@ void initErrors()
     SWAG_ERROR(Err0852, "invalid attribute usage                           $ the 'AttributeUsage.Gen' can only be associated with 'AttributeUsage.Struct' or 'AttributeUsage.Enum'");
     SWAG_ERROR(Err0645, "double variable initialization                    $ you cannot initialize a variable with both the type syntax and an assignment");
     SWAG_ERROR(Err0312, "failed generic instantiation                      $ the variable creation failed due to the generic type '%s'");
-    SWAG_ERROR(Err0436, "missing initialization                            $ a variable declared with 'let' requires an explicit initialization");
     SWAG_ERROR(Err0859, "forbidden call to 'compileString'                 $ the 'compileString' function is not accessible in this context $ this compiler stage does not allow meta-programmation");
     SWAG_ERROR(Err0289, "unexpected 'impl'                                 $ 'impl' associated with a function should only be used within an 'impl for' block");
     SWAG_ERROR(Err0445, "invalid '@cvaarg' type                            $ a variadic argument of type '%s' has been promoted to type '%s' at the call site");
@@ -677,6 +675,18 @@ void initErrors()
     SWAG_ERROR(Err0627, "invalid visit                                     $ can't visit a variadic type by pointer");
     SWAG_ERROR(Err0628, "invalid visit                                     $ can't visit a pointer of type '%s'");
     SWAG_ERROR(Err0629, "invalid visit                                     $ can't visit type '%s'");
+    SWAG_ERROR(Err0293, "unpacking number mismatch                         $ trying to unpack '%u' variable(s) but the tuple has '%u' field(s)");
+    SWAG_ERROR(Err0713, "unpacking number mismatch                         $ trying to unpack '%u' variable(s) but the tuple has only '%u' field(s)");
+    SWAG_ERROR(Err0436, "missing initialization                            $ a variable declared with 'let' requires an explicit initialization");
+    SWAG_ERROR(Err0299, "missing initialization                            $ an immutable variable requires an explicit initialization");
+    SWAG_ERROR(Err0164, "null dereference                                  $ attempt to dereference a null pointer");
+    SWAG_ERROR(Err0827, "invalid negation                                  $ cannot negate an unsigned type '%s'");
+    SWAG_ERROR(Err0828, "invalid negation                                  $ cannot negate type '%s'");
+    SWAG_ERROR(Err0604, "i/o error                                         $ failed to create directory '%s'");
+    SWAG_ERROR(Err0471, "invalid address                                   $ can't take the address of a macro");
+    SWAG_ERROR(Err0472, "invalid address                                   $ can't take the address of a mixin");
+    SWAG_ERROR(Err0473, "invalid address                                   $ can't take the address of an inlined function");
+    SWAG_ERROR(Err0733, "unsupported variadic parameters                   $ an inline function can't have variadic parameters");
 
     SWAG_ERROR(Err0200, "ambiguous cast: multiple fields of type '%s' with 'using' in '%s'");
     SWAG_ERROR(Err0115, "ambiguous generic %s '%s' resolution");
@@ -692,11 +702,9 @@ void initErrors()
     SWAG_ERROR(Err0185, "closure can't be assigned to a lambda type");
     SWAG_ERROR(Err0119, "complex generic type deduction (embedded tuples)");
     SWAG_ERROR(Err0231, "copying '%s' forbidden by 'Swag.NoCopy' on struct");
-    SWAG_ERROR(Err0604, "directory creation '%s' failed");
     SWAG_ERROR(Err0018, "documentation page '%s' not found");
     SWAG_ERROR(Err0591, "duplicate attribute '%s'; missing 'Swag.AttrMulti' in declaration");
     SWAG_ERROR(Err0169, "duplicate module named '%s' found (path: '%s')");
-    SWAG_ERROR(Err0142, "empty string dereference");
     SWAG_ERROR(Err0534, "error in '%s'; use 'try', 'assume', or 'catch'");
     SWAG_ERROR(Err0626, "excessive 'visit' aliases (max: '2', given: '%u')");
     SWAG_ERROR(Err0026, "excessive arguments ('%d' expected, '%d' given)");
@@ -725,7 +733,6 @@ void initErrors()
     SWAG_ERROR(Err0313, "global variable can't be 'public'");
     SWAG_ERROR(Err0130, "identifier '%s' is %s, not function/struct");
     SWAG_ERROR(Err0776, "identifier not allowed at global scope");
-    SWAG_ERROR(Err0299, "immutable variable needs explicit initialization");
     SWAG_ERROR(Err0659, "implementation block for '%s' is internal; identifier isn't");
     SWAG_ERROR(Err0660, "implementation block for '%s' isn't internal; identifier is");
     SWAG_ERROR(Err0661, "implementation block not in same scope as '%s'");
@@ -738,8 +745,6 @@ void initErrors()
     SWAG_ERROR(Err0226, "index access denied: 'opIndex' not found in type '%s'");
     SWAG_ERROR(Err0468, "index out of bounds (given: '%I64u', max: '%I64u')");
     SWAG_ERROR(Err0848, "expected initialization of '%s'; enum '%s' lacks zero value");
-    SWAG_ERROR(Err0473, "inline function address not accessible");
-    SWAG_ERROR(Err0733, "inline function with variadic parameters unsupported");
     SWAG_ERROR(Err0737, "instruction '%s' invalid as default parameter");
     SWAG_ERROR(Err0016, "insufficient arguments for %s call");
     SWAG_ERROR(Err0157, "insufficient arguments for %s");
@@ -783,9 +788,7 @@ void initErrors()
     SWAG_ERROR(Err0565, "left expression isn't a value; assignment forbidden");
     SWAG_ERROR(Err0558, "llvm backend failed to create target '%s'");
     SWAG_ERROR(Err0873, "local variable with 'let' requires initialization");
-    SWAG_ERROR(Err0471, "macro function address not accessible");
     SWAG_ERROR(Err0076, "max call level reached; limit '--max-recurse:%d'");
-    SWAG_ERROR(Err0828, "minus operation invalid for type '%s'");
     SWAG_ERROR(Err0106, "mismatched 'self' parameter ('%s' expected, '%s' given)");
     SWAG_ERROR(Err0568, "mismatched types in '%s' assignment ('%s' vs '%s')");
     SWAG_ERROR(Err0095, "mismatched UFCS argument ('%s' expected, '%s' given)");
@@ -793,7 +796,6 @@ void initErrors()
     SWAG_ERROR(Err0227, "missing 'opIndex' for type '%s' to access '%s' by index");
     SWAG_ERROR(Err0186, "missing special function '%s' in '%s' for operator '%s'");
     SWAG_ERROR(Err0079, "missing special function '%s' in '%s'");
-    SWAG_ERROR(Err0472, "mixin function address not accessible");
     SWAG_ERROR(Err0592, "module '%s' load error during foreign function '%s' resolution: %s");
     SWAG_ERROR(Err0556, "module '%s' not found in workspace");
     SWAG_ERROR(Err0557, "module dependency '%s' missing in workspace");
@@ -868,7 +870,6 @@ void initErrors()
     SWAG_ERROR(Err0007, "tuple comparison operations unsupported");
     SWAG_ERROR(Err0195, "tuple has too many initializers ('%d' expected, '%d' given)");
     SWAG_ERROR(Err0205, "tuple initialization requires '%d' argument(s) but got '%d'");
-    SWAG_ERROR(Err0713, "tuple on the right has only '%u' field(s) for '%u' variable(s)");
     SWAG_ERROR(Err0028, "tuple type mismatch");
     SWAG_ERROR(Err0624, "tuple type visitation not allowed");
     SWAG_ERROR(Err0292, "tuple unpacking failed; no fields found");
@@ -895,11 +896,10 @@ void initErrors()
     SWAG_ERROR(Err0631, "unknown label '%s'");
     SWAG_ERROR(Err0499, "unknown module dependency '%s'");
     SWAG_ERROR(Err0008, "unknown named parameter '%s'");
-    SWAG_ERROR(Err0282, "unpacking mismatch: '%d' variable(s) versus '%d' element(s)");
-    SWAG_ERROR(Err0293, "unpacking mismatch: '%u' variable(s) versus '%u' field(s) in tuple");
     SWAG_ERROR(Err0681, "unresolved interface due to generic type '%s'");
     SWAG_ERROR(Err0672, "unresolved struct '%s' due to generic type '%s'");
-    SWAG_ERROR(Err0827, "unsigned type '%s' negation invalid");
+    SWAG_ERROR(Err0142, nullptr);
+    SWAG_ERROR(Err0282, nullptr);
     SWAG_ERROR(Err0236, nullptr);
     SWAG_ERROR(Err0858, nullptr);
     SWAG_ERROR(Err0306, nullptr);
@@ -1448,9 +1448,9 @@ void initErrors()
     SWAG_ERROR(Nte1073, "this function does not support UFCS of type '%s'");
     SWAG_ERROR(Nte1078, "this function does not support aliased names");
     SWAG_ERROR(Nte1064, "this function has the '#[Swag.Compiler]' attribute, which makes it compile-time only");
-    SWAG_ERROR(Nte1017, "this function is tagged with the 'Swag.Inline' attribute");
-    SWAG_ERROR(Nte1015, "this function is tagged with the 'Swag.Macro' attribute");
-    SWAG_ERROR(Nte1016, "this function is tagged with the 'Swag.Mixin' attribute");
+    SWAG_ERROR(Nte1017, "the function is tagged with the '#[Swag.Inline]' attribute");
+    SWAG_ERROR(Nte1015, "the function is tagged with the '#[Swag.Macro]' attribute");
+    SWAG_ERROR(Nte1016, "the function is tagged with the '#[Swag.Mixin]' attribute");
     SWAG_ERROR(Nte1018, "this is a constant");
     SWAG_ERROR(Nte1079, "this is a lambda expression");
     SWAG_ERROR(Nte1028, "this is a literal, but a type was expected");
@@ -1471,7 +1471,6 @@ void initErrors()
     SWAG_ERROR(Nte1004, "this should be designated as 'const %s'");
     SWAG_ERROR(Nte1077, "this should be lower than this");
     SWAG_ERROR(Nte1125, "this slice appears to be null or empty");
-    SWAG_ERROR(Nte1126, "this string seems to be null or empty");
     SWAG_ERROR(Nte1068, "this tuple has '%d' field(s)");
     SWAG_ERROR(Nte1069, "this tuple seems to be empty");
     SWAG_ERROR(Nte1011, "this type is '%s'");
@@ -1488,15 +1487,16 @@ void initErrors()
     SWAG_ERROR(Nte0058, "unable to resolve type '%s'");
     SWAG_ERROR(Nte1097, "unnamed parameters ('?') should not have an explicitly specified type");
     SWAG_ERROR(Nte1101, "use '#type' before '%s' if it's a type, or specify a type with ':' if this is a parameter name");
-    SWAG_ERROR(Nte0140, "use '++' to append strings at compile-time");
-    SWAG_ERROR(Nte0133, "use '?' to unpack and ignore a variable");
-    SWAG_ERROR(Nte0129, "use 'mtd' instead of 'func' to implicitly declare 'using self' as the first parameter");
+    SWAG_ERROR(Nte0140, "consider using '++' to append strings at compile-time");
+    SWAG_ERROR(Nte0133, "consider using '?' to unpack and ignore a variable");
+    SWAG_ERROR(Nte0129, "consider using 'mtd' instead of 'func' to implicitly declare 'using self' as the first parameter");
     SWAG_ERROR(Nte0103, "you can assign a lambda to a closure type, but not vice versa");
     SWAG_ERROR(Nte0087, "you can execute swag with '--callstack' to obtain more contextual details");
     SWAG_ERROR(Nte0009, "you can execute swag with '--dbg-catch' to initiate the bytecode debugger when an exception is raised");
     SWAG_ERROR(Nte1046, "you can prefix with '#run' to force a compile-time call");
     SWAG_ERROR(Nte1095, "you can't reference this runtime %s from the %s");
     SWAG_ERROR(Nte0149, "you might want to get the address of '%s' using '&'");
+    SWAG_ERROR(Nte1126, "this string appears to be null or empty");
     SWAG_ERROR(Nte1006, nullptr);
     SWAG_ERROR(Nte1037, nullptr);
     SWAG_ERROR(Nte1036, nullptr);

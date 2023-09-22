@@ -26,7 +26,6 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, Ast
     case NativeTypeKind::U64:
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0827), typeInfo->getDisplayNameC())};
-        diag.hint = Nte(Nte1061);
         diag.addRange(child, Diagnostic::isType(typeInfo));
         return context->report(diag);
     }
@@ -34,7 +33,6 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, Ast
     case NativeTypeKind::Any:
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0828), typeInfo->getDisplayNameC())};
-        diag.hint = Nte(Nte1061);
         diag.addRange(child, Nte(Nte1116));
         return context->report(diag);
     }
@@ -42,7 +40,6 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, Ast
     default:
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0828), typeInfo->getDisplayNameC())};
-        diag.hint = Nte(Nte1061);
         diag.addRange(child, Diagnostic::isType(typeInfo));
         return context->report(diag);
     }

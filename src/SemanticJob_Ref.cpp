@@ -25,7 +25,7 @@ bool SemanticJob::boundCheck(SemanticContext* context, TypeInfo* forType, AstNod
 
         if (forType->isString())
         {
-            Diagnostic diag{arrayAccess, Err(Err0142)};
+            Diagnostic diag{arrayAccess, Err(Err0164)};
             diag.addRange(arrayNode, Nte(Nte1126));
             return context->report(diag);
         }
@@ -61,8 +61,9 @@ bool SemanticJob::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl*
     if (!msg.empty())
     {
         Diagnostic diag{node, msg};
-        diag.hint = msg1;
-        return context->report(diag, Diagnostic::hereIs(funcNode->resolvedSymbolOverload));
+        auto       note  = Diagnostic::hereIs(funcNode->resolvedSymbolOverload);
+        auto       note1 = Diagnostic::note(msg1);
+        return context->report(diag, note, note1);
     }
 
     return true;

@@ -73,7 +73,6 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
     if (numUnpack < typeStruct->fields.size())
     {
         Diagnostic diag{varDecl, varDecl->token, Fmt(Err(Err0293), numUnpack, typeStruct->fields.size())};
-        diag.hint = Fmt(Nte(Nte1067), numUnpack);
         diag.addRange(varDecl->assignment, Fmt(Nte(Nte1068), typeStruct->fields.size()));
         PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, []()
                           { return Nte(Nte0133); });
@@ -82,8 +81,7 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
 
     if (numUnpack > typeStruct->fields.size())
     {
-        Diagnostic diag{varDecl, varDecl->token, Fmt(Err(Err0713), numUnpack, typeStruct->fields.size())};
-        diag.hint = Fmt(Nte(Nte1067), numUnpack);
+        Diagnostic diag{varDecl, varDecl->token, Fmt(Err(Err0713), typeStruct->fields.size(), numUnpack)};
         diag.addRange(varDecl->assignment, Fmt(Nte(Nte1068), typeStruct->fields.size()));
         return context->report(diag);
     }
