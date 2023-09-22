@@ -1368,7 +1368,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
                                         ATTRIBUTE_TEST_FUNC))
         {
             if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC)
-                return context->report({child, Fmt(Err(Err0052), funcNode->getDisplayNameC()), Nte(Nte1026)});
+                return context->report({child, Fmt(Err(Err0052), funcNode->getDisplayNameC())});
         }
     }
 

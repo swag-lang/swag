@@ -654,6 +654,10 @@ void initErrors()
     SWAG_ERROR(Err0569, "invalid type                                      $ the affect expression has type 'void'");
     SWAG_ERROR(Err0240, "invalid argument                                  $ '#mixin' requires an argument of type 'code', got '%s' instead");
     SWAG_ERROR(Err0607, "misplaced attribute                               $ a 'switch' without an expression can't be '#[Swag.Complete]'");
+    SWAG_ERROR(Err0002, "invalid range type                                $ unexpected type '%s' in a range expression");
+    SWAG_ERROR(Err0616, "unexpected 'default'                              $ a 'switch' marked with the '#[Swag.Complete]' attribute can't have a 'default' statement");
+    SWAG_ERROR(Err0233, "invalid argument                                  $ '#%s' requires an argument of type 'bool', got '%s' instead");
+    SWAG_ERROR(Err0052, "unexpected return value                           $ a %s can't return something");
 
     SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
     SWAG_ERROR(Err0858, "'%s' should not have line break %s");
@@ -887,11 +891,6 @@ void initErrors()
     SWAG_ERROR(Err0537, "typeinfo '%s' conversion to runtime typeinfo not possible");
     SWAG_ERROR(Err0781, "unable to expand '%s' in global scope: sub declarations not supported");
     SWAG_ERROR(Err0502, "unable to open file '%s'");
-    SWAG_ERROR(Err0002, "unexpected '%s' in range expression");
-    SWAG_ERROR(Err0616, "unexpected 'default' in 'Swag.Complete' switch");
-    SWAG_ERROR(Err0233, "unexpected expression type in '%s' (expected 'bool', found '%s')");
-    SWAG_ERROR(Err0167, "unexpected lambda type parameter name");
-    SWAG_ERROR(Err0052, "unexpected return in %s");
     SWAG_ERROR(Err0657, "unimplemented interface functions for '%s' in '%s'");
     SWAG_ERROR(Err0631, "unknown label '%s'");
     SWAG_ERROR(Err0499, "unknown module dependency '%s'");
@@ -904,6 +903,7 @@ void initErrors()
     SWAG_ERROR(Err0312, "variable creation failed due to generic type '%s'");
     SWAG_ERROR(Err0436, "variable declared with 'let' requires explicit initialization");
     SWAG_ERROR(Err0645, "variable double initialized with type and assignment");
+    SWAG_ERROR(Err0167, nullptr);
     SWAG_ERROR(Err0488, nullptr);
     SWAG_ERROR(Err0777, nullptr);
     SWAG_ERROR(Err0654, nullptr);

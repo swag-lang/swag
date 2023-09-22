@@ -389,7 +389,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     {
         // No default for a complete switch
         auto back = node->cases.back();
-        SWAG_VERIFY(!back->expressions.empty(), context->report({back, back->token, Err(Err0616), Nte(Nte1026)}));
+        SWAG_VERIFY(!back->expressions.empty(), context->report({back, back->token, Err(Err0616)}));
 
         if (node->typeInfo->isEnum())
         {

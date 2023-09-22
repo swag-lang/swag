@@ -344,7 +344,6 @@ bool SemanticJob::resolveCompilerValidIfExpression(SemanticContext* context)
     if (!typeInfo->isBool())
     {
         Diagnostic diag{expression, Fmt(Err(Err0233), node->token.ctext(), typeInfo->getDisplayNameC())};
-        diag.hint = Diagnostic::isType(expression);
         return context->report(diag);
     }
 
