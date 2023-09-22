@@ -177,8 +177,9 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     SWAG_CHECK(checkCanTakeAddress(context, child));
     SWAG_CHECK(checkIsConcrete(context, child));
     node->flags |= AST_R_VALUE;
-    node->resolvedSymbolName = child->resolvedSymbolName;
-    node->byteCodeFct        = ByteCodeGenJob::emitMakePointer;
+    node->resolvedSymbolName     = child->resolvedSymbolName;
+    node->resolvedSymbolOverload = child->resolvedSymbolOverload;
+    node->byteCodeFct            = ByteCodeGenJob::emitMakePointer;
     node->inheritComputedValue(child);
 
     // A new pointer
@@ -1040,6 +1041,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     return true;
 }
 
+#pragma optimize("", off)
 bool SemanticJob::resolveInit(SemanticContext* context)
 {
     auto job                = context->job;
@@ -1053,6 +1055,17 @@ bool SemanticJob::resolveInit(SemanticContext* context)
         auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
         SWAG_VERIFY(countTypeInfo->isNativeInteger(), context->report({node->count, Fmt(Err(Err0490), countTypeInfo->getDisplayNameC())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, node->count, CASTFLAG_TRY_COERCE));
+
+        if (node->count->hasComputedValue() &&
+            node->count->computedValue->reg.u64 > 1)
+        {
+            if (!node->expression->typeInfo->isPointerArithmetic())
+            {
+                Diagnostic diag{node->expression, Fmt(Err(Err0142), node->expression->typeInfo->getDisplayNameC())};
+                diag.addRange(node->count, Fmt(Nte(Nte1006), node->count->computedValue->reg.u64));
+                return context->report(diag);
+            }
+        }
     }
 
     if (node->parameters)

@@ -6,7 +6,7 @@ func(T, N: u32) new()->*T
 	req.size = @sizeof(T) * N
 	@getcontext().allocator.req(&req)
 
-	@init(cast(*T) req.address, N)
+	@init(cast(^T) req.address, N)
 
 	return acast req.address
 }

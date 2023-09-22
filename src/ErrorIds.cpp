@@ -258,7 +258,7 @@ void initErrors()
     SWAG_ERROR(Err1218, "invalid alias name                                $ expected an identifier for name aliasing, found '%s' instead");
     SWAG_ERROR(Err0596, "invalid align value                               $ the '#[Swag.Align]' argument must be a power of two, got '%d'");
     SWAG_ERROR(Err0283, "invalid argument                                  $ the intrinsic '@gettag' expects a default value of type '%s' as the last argument");
-    SWAG_ERROR(Err0790, "invalid argument                                  $ the intrinsic '@mkany' can' have 'null' as a first argument");
+    SWAG_ERROR(Err0790, "invalid argument                                  $ the intrinsic '@mkany' can't have 'null' as a first argument");
     SWAG_ERROR(Err0792, "invalid argument                                  $ the intrinsic '@mkany' expects a type as the second argument, got '%s' instead");
     SWAG_ERROR(Err0784, "invalid argument                                  $ the intrinsic '@mkcallback' requires a pointer to function argument, got '%s' instead");
     SWAG_ERROR(Err0498, "invalid argument                                  $ the '%s' count must be an integer, got '%s' instead");
@@ -462,8 +462,8 @@ void initErrors()
     SWAG_ERROR(Err0772, "missing return value                              $ expected an expression of type '%s' after 'return'");
     SWAG_ERROR(Err1185, "missing slicing upper bound                       $ expected an upper bound expression after '..<' $ if you want to slice to the end, consider using '..' instead");
     SWAG_ERROR(Err1025, "missing struct name                               $ expected the struct name before the start of the body '{'");
-    SWAG_ERROR(Err0707, "missing test error                                $ expected at leat one error, but none was raised");
-    SWAG_ERROR(Err0580, "missing test warning                              $ expected at leat one warning, but none was raised");
+    SWAG_ERROR(Err0707, "missing test error                                $ expected at least one error, but none was raised");
+    SWAG_ERROR(Err0580, "missing test warning                              $ expected at least one warning, but none was raised");
     SWAG_ERROR(Err1172, "missing variable type                             $ expected ':' followed by the type or an assignment with '=', found '%s' instead");
     SWAG_ERROR(Err0097, "misused UFCS                                      $ the %s '%s' is not used as the first argument when calling '%s'");
     SWAG_ERROR(Err0310, "misused UFCS                                      $ the hidden 'with' variable '%s' is not used as the first argument when calling '%s'");
@@ -692,6 +692,8 @@ void initErrors()
     SWAG_ERROR(Err0204, "too many initializers                             $ expected '%d' value(s) to initialize the array, got '%d' instead");
     SWAG_ERROR(Err0197, "too many initializers                             $ expected '%d' value(s) to initialize '%s', got '%d' instead");
     SWAG_ERROR(Err0491, "too many initializers                             $ too many initializers for type '%s'");
+    SWAG_ERROR(Err0490, "invalid argument                                  $ the intrinsic '@init' expects an integer as a second argument, got '%s' instead");
+    SWAG_ERROR(Err0142, "invalid type                                      $ the intrinsic '@init' requires a 'pointer to memory' as a first argument if the count is greater than one");
 
     SWAG_ERROR(Err0200, "ambiguous cast: multiple fields of type '%s' with 'using' in '%s'");
     SWAG_ERROR(Err0115, "ambiguous generic %s '%s' resolution");
@@ -842,7 +844,6 @@ void initErrors()
     SWAG_ERROR(Err0114, "return value address (type '%s') not accessible");
     SWAG_ERROR(Err0779, "return value needed; return type inferred as '%s'");
     SWAG_ERROR(Err0047, "right expression address not accessible");
-    SWAG_ERROR(Err0490, "second '@init' parameter must be integer; '%s' provided");
     SWAG_ERROR(Err0173, "shift operand should be 'u32', not '%s'");
     SWAG_ERROR(Err0450, "expected single generic parameter for function '%s'; '%d' provided");
     SWAG_ERROR(Err0882, "size exceeded: '%u' bytes vs max '%u'");
@@ -898,7 +899,6 @@ void initErrors()
     SWAG_ERROR(Err0008, "unknown named parameter '%s'");
     SWAG_ERROR(Err0681, "unresolved interface due to generic type '%s'");
     SWAG_ERROR(Err0672, "unresolved struct '%s' due to generic type '%s'");
-    SWAG_ERROR(Err0142, nullptr);
     SWAG_ERROR(Err0282, nullptr);
     SWAG_ERROR(Err0236, nullptr);
     SWAG_ERROR(Err0858, nullptr);
@@ -1497,7 +1497,7 @@ void initErrors()
     SWAG_ERROR(Nte1095, "you can't reference this runtime %s from the %s");
     SWAG_ERROR(Nte0149, "you might want to get the address of '%s' using '&'");
     SWAG_ERROR(Nte1126, "this string appears to be null or empty");
-    SWAG_ERROR(Nte1006, nullptr);
+    SWAG_ERROR(Nte1006, "the number of values to initialize ('%d') is greater than one");
     SWAG_ERROR(Nte1037, nullptr);
     SWAG_ERROR(Nte1036, nullptr);
     SWAG_ERROR(Nte1119, nullptr);
