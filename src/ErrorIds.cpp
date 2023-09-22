@@ -665,11 +665,10 @@ void initErrors()
     SWAG_ERROR(Err0436, "missing initialization                            $ a variable declared with 'let' requires an explicit initialization");
     SWAG_ERROR(Err0859, "forbidden call to 'compileString'                 $ the 'compileString' function is not accessible in this context $ this compiler stage does not allow meta-programmation");
     SWAG_ERROR(Err0289, "unexpected 'impl'                                 $ 'impl' associated with a function should only be used within an 'impl for' block");
+    SWAG_ERROR(Err0445, "invalid '@cvaarg' type                            $ a variadic argument of type '%s' has been promoted to type '%s' at the call site");
+    SWAG_ERROR(Err0812, "invalid '@sizeof'                                 $ can't compute the size of a generic expression");
+    SWAG_ERROR(Err0814, "invalid '@alignof'                                $ can't compute the alignment of a generic expression");
 
-    SWAG_ERROR(Err0306, "'slice' type must be 'const' given const right expression");
-    SWAG_ERROR(Err0236, "expected 'string' type for '%s' message, found '%s'");
-    SWAG_ERROR(Err0445, "@cvaarg of type '%s' promoted to '%s' at call");
-    SWAG_ERROR(Err0814, "alignment inexpressible due to generic expression");
     SWAG_ERROR(Err0200, "ambiguous cast: multiple fields of type '%s' with 'using' in '%s'");
     SWAG_ERROR(Err0115, "ambiguous generic %s '%s' resolution");
     SWAG_ERROR(Err0034, "ambiguous struct '%s' to interface '%s' conversion");
@@ -844,7 +843,6 @@ void initErrors()
     SWAG_ERROR(Err0173, "shift operand should be 'u32', not '%s'");
     SWAG_ERROR(Err0450, "expected single generic parameter for function '%s'; '%d' provided");
     SWAG_ERROR(Err0882, "size exceeded: '%u' bytes vs max '%u'");
-    SWAG_ERROR(Err0812, "size indeterminate; expression is generic");
     SWAG_ERROR(Err0153, "source file '%s' read error");
     SWAG_ERROR(Err0074, "special function '%s' expects 'bool', found '%s'");
     SWAG_ERROR(Err0072, "special function '%s' expects 'string', found '%s'");
@@ -902,7 +900,9 @@ void initErrors()
     SWAG_ERROR(Err0681, "unresolved interface due to generic type '%s'");
     SWAG_ERROR(Err0672, "unresolved struct '%s' due to generic type '%s'");
     SWAG_ERROR(Err0827, "unsigned type '%s' negation invalid");
+    SWAG_ERROR(Err0236, nullptr);
     SWAG_ERROR(Err0858, nullptr);
+    SWAG_ERROR(Err0306, nullptr);
     SWAG_ERROR(Err0167, nullptr);
     SWAG_ERROR(Err0488, nullptr);
     SWAG_ERROR(Err0777, nullptr);

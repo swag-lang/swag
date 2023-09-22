@@ -407,9 +407,7 @@ bool SemanticJob::resolveCompilerError(SemanticContext* context)
     if (node->flags & AST_IS_GENERIC)
         return true;
 
-    auto msg     = node->childs.front();
-    auto typeMsg = TypeManager::concreteType(msg->typeInfo, CONCRETE_FUNC);
-    SWAG_VERIFY(typeMsg->isString(), context->report({msg, Fmt(Err(Err0236), node->token.ctext(), msg->typeInfo->getDisplayNameC()), Diagnostic::isType(msg->typeInfo).c_str()}));
+    auto msg = node->childs.front();
     SWAG_CHECK(evaluateConstExpression(context, msg));
     if (context->result != ContextResult::Done)
         return true;
@@ -426,9 +424,7 @@ bool SemanticJob::resolveCompilerWarning(SemanticContext* context)
     if (node->flags & AST_IS_GENERIC)
         return true;
 
-    auto msg     = node->childs.front();
-    auto typeMsg = TypeManager::concreteType(msg->typeInfo, CONCRETE_FUNC);
-    SWAG_VERIFY(typeMsg->isString(), context->report({msg, Fmt(Err(Err0236), node->token.ctext(), msg->typeInfo->getDisplayNameC()), Diagnostic::isType(msg->typeInfo).c_str()}));
+    auto msg = node->childs.front();
     SWAG_CHECK(evaluateConstExpression(context, msg));
     if (context->result != ContextResult::Done)
         return true;

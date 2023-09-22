@@ -889,7 +889,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     case TokenId::IntrinsicSizeOf:
     {
         auto expr = node->childs.front();
-        SWAG_VERIFY(!expr->typeInfo->isKindGeneric(), context->report({expr, Err(Err0812)}));
+        SWAG_VERIFY(!expr->typeInfo->isGeneric(), context->report({expr, Err(Err0812)}));
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = expr->typeInfo->sizeOf;
         if (node->computedValue->reg.u64 > UINT32_MAX)
@@ -902,7 +902,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     case TokenId::IntrinsicAlignOf:
     {
         auto expr = node->childs.front();
-        SWAG_VERIFY(!expr->typeInfo->isKindGeneric(), context->report({expr, Err(Err0814)}));
+        SWAG_VERIFY(!expr->typeInfo->isGeneric(), context->report({expr, Err(Err0814)}));
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = TypeManager::alignOf(expr->typeInfo);
         if (node->computedValue->reg.u64 > UINT32_MAX)
