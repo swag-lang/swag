@@ -1023,9 +1023,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
     auto idRef = identifier->identifierRef();
     if (idRef && idRef->specFlags & AstIdentifierRef::SPECFLAG_GLOBAL)
     {
-        if (identifier->callParameters)
-            return context->report({identifier, identifier->token, Fmt(Err(Err0087), identifier->token.ctext(), Naming::aKindName(symbolKind).c_str())});
-        return context->report({identifier, Fmt(Err(Err0776), identifier->token.ctext(), Naming::aKindName(symbolKind).c_str())});
+        SWAG_ASSERT(identifier->callParameters);
+        return context->report({identifier, identifier->token, Fmt(Err(Err0087), identifier->token.ctext(), Naming::aKindName(symbolKind).c_str())});
     }
 
     SWAG_CHECK(warnDeprecated(context, identifier));

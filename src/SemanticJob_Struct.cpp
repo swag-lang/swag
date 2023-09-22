@@ -510,8 +510,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
 
             // Verify signature
             typeParam->typeInfo = TypeManager::concreteType(child->typeInfo, CONCRETE_FORCEALIAS);
-            SWAG_VERIFY(typeParam->typeInfo->isLambdaClosure(), context->report({varDecl->type, Fmt(Err(Err0676), child->typeInfo->getDisplayNameC())}));
-            auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeParam->typeInfo, TypeInfoKind::LambdaClosure);
+            auto typeLambda     = CastTypeInfo<TypeInfoFuncAttr>(typeParam->typeInfo, TypeInfoKind::LambdaClosure);
 
             if (typeLambda->parameters.size() == 0)
             {
@@ -530,11 +529,9 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
         typeParam->declNode = child;
         typeParam->index    = storageIndex;
 
-        SWAG_VERIFY(!varDecl->assignment, context->report({varDecl->assignment, Err(Err0680)}));
-
         if (!(node->flags & AST_IS_GENERIC))
         {
-            SWAG_VERIFY(!child->typeInfo->isGeneric(), context->report({child, Fmt(Err(Err0681), child->typeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(!child->typeInfo->isGeneric(), context->report({child, Fmt(Err(Err0681), node->token.ctext(), child->typeInfo->getDisplayNameC())}));
         }
 
         if (typeParam->attributes.hasAttribute(g_LangSpec->name_Swag_Offset))

@@ -703,18 +703,23 @@ void initErrors()
     SWAG_ERROR(Err0041, "mismatch types                                    $ casting from a value pointer '%s' to a block pointer '%s' is not allowed");
     SWAG_ERROR(Err0468, "index out of bounds                               $ the given index '%I64u' exceeds the maximum value '%I64u'");
     SWAG_ERROR(Err0313, "misplaced access modifier                         $ a global variable can't be 'public'");
+    SWAG_ERROR(Err0682, "misplaced attribute                               $ an interface member relocation with '#[Swag.Offset]' is not allowed");
+    SWAG_ERROR(Err0534, "missing catch error                               $ expected 'try', 'assume' or 'catch' to deal with the errors of '%s'");
+    SWAG_ERROR(Err0130, "unexpected generic arguments                      $ the identifier '%s' is %s and not a function or a struct");
+    SWAG_ERROR(Err0681, "unresolved interface                              $ the interface can't be solved due to the generic type '%s'");
+    SWAG_ERROR(Err0672, "unresolved struct                                 $ the struct '%s' can't be solved due to the generic type '%s'");
+    SWAG_ERROR(Err0686, "invalid 'code' append                             $ the %s '%s' wants to interpret the next statement as a 'code' parameter but this is not possible inside a '%s' expression");
+    SWAG_ERROR(Err0008, "unknown identifier                                $ the named parameter '%s' can't be found");
+    SWAG_ERROR(Err0115, "ambiguous symbol                                  $ ambiguous resolution of the generic %s '%s'");
+    SWAG_ERROR(Err0034, "ambiguous symbol                                  $ ambiguous conversion of struct '%s' to interface '%s'");
 
-    SWAG_ERROR(Err0115, "ambiguous generic %s '%s' resolution");
-    SWAG_ERROR(Err0034, "ambiguous struct '%s' to interface '%s' conversion");
     SWAG_ERROR(Err0881, "can't find an 'enum' or a 'with' for '%s' prefixed with '.'");
-    SWAG_ERROR(Err0686, "can't use 'code' parameter in '%s' expression following %s '%s'");
     SWAG_ERROR(Err0185, "closure can't be assigned to a lambda type");
     SWAG_ERROR(Err0119, "complex generic type deduction (embedded tuples)");
     SWAG_ERROR(Err0231, "copying '%s' forbidden by 'Swag.NoCopy' on struct");
     SWAG_ERROR(Err0018, "documentation page '%s' not found");
     SWAG_ERROR(Err0591, "duplicate attribute '%s'; missing 'Swag.AttrMulti' in declaration");
     SWAG_ERROR(Err0169, "duplicate module named '%s' found (path: '%s')");
-    SWAG_ERROR(Err0534, "error in '%s'; use 'try', 'assume', or 'catch'");
     SWAG_ERROR(Err0626, "excessive 'visit' aliases (max: '2', given: '%u')");
     SWAG_ERROR(Err0026, "excessive arguments ('%d' expected, '%d' given)");
     SWAG_ERROR(Err0044, "excessive generic parameters for %s '%s' ('%d' expected, '%d' given)");
@@ -734,8 +739,6 @@ void initErrors()
     SWAG_ERROR(Err0039, "generic struct '%s' instantiation failed: missing type replacements");
     SWAG_ERROR(Err0618, "generic type '%s' deduction from type '%s' failed");
     SWAG_ERROR(Err0123, "generic value '%s' deduced as '%s', not '%s'");
-    SWAG_ERROR(Err0130, "identifier '%s' is %s, not function/struct");
-    SWAG_ERROR(Err0776, "identifier not allowed at global scope");
     SWAG_ERROR(Err0659, "implementation block for '%s' is internal; identifier isn't");
     SWAG_ERROR(Err0660, "implementation block for '%s' isn't internal; identifier is");
     SWAG_ERROR(Err0661, "implementation block not in same scope as '%s'");
@@ -755,9 +758,6 @@ void initErrors()
     SWAG_ERROR(Err0544, "insufficient generic parameters for function '%s'");
     SWAG_ERROR(Err0203, "insufficient initializers (%d expected, %d given)");
     SWAG_ERROR(Err0646, "expected interface; '%s' is %s");
-    SWAG_ERROR(Err0680, "interface member initialization failed");
-    SWAG_ERROR(Err0682, "interface member relocation with 'Swag.Offset' not allowed");
-    SWAG_ERROR(Err0676, "interface should only contain 'lambda' members ('%s' given)");
     SWAG_ERROR(Err0443, "invalid '@cvaarg' type '%s'");
     SWAG_ERROR(Err0599, "invalid 'Swag.ExportType' parameter '%s'");
     SWAG_ERROR(Err0693, "invalid 'Swag.Match' parameter '%s'");
@@ -895,9 +895,9 @@ void initErrors()
     SWAG_ERROR(Err0657, "unimplemented interface functions for '%s' in '%s'");
     SWAG_ERROR(Err0631, "unknown label '%s'");
     SWAG_ERROR(Err0499, "unknown module dependency '%s'");
-    SWAG_ERROR(Err0008, "unknown named parameter '%s'");
-    SWAG_ERROR(Err0681, "unresolved interface due to generic type '%s'");
-    SWAG_ERROR(Err0672, "unresolved struct '%s' due to generic type '%s'");
+    SWAG_ERROR(Err0776, nullptr);
+    SWAG_ERROR(Err0676, nullptr);
+    SWAG_ERROR(Err0680, nullptr);
     SWAG_ERROR(Err0367, nullptr);
     SWAG_ERROR(Err0282, nullptr);
     SWAG_ERROR(Err0236, nullptr);
@@ -1288,7 +1288,7 @@ void initErrors()
     SWAG_ERROR(Nte1103, "add '#type' before '%s' or specify a type if this is a field name");
     SWAG_ERROR(Nte0138, "add a 'break' if you want to exit without any action");
     SWAG_ERROR(Nte0137, "add a 'break' to exit, or use 'fallthrough' to continue to the next 'case'");
-    SWAG_ERROR(Nte0062, "additionally, this can be converted");
+    SWAG_ERROR(Nte0062, "this can be converted too");
     SWAG_ERROR(Nte0100, "an attribute is not a function; please consider removing it");
     SWAG_ERROR(Nte1121, "an implicit '@countof' is present here");
     SWAG_ERROR(Nte0045, "an instance of the generic function '%s'");
