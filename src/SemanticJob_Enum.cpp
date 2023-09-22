@@ -112,11 +112,22 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
 
     case TypeInfoKind::Array:
     {
-        auto front     = typeNode->childs.front();
-        auto hint      = Fmt(Nte(Nte1004), rawTypeInfo->getDisplayNameC());
         auto typeArray = CastTypeInfo<TypeInfoArray>(rawTypeInfo, TypeInfoKind::Array);
-        SWAG_VERIFY(typeArray->count != UINT32_MAX, context->report({front, Fmt(Err(Err0699), rawTypeInfo->getDisplayNameC())}));
-        SWAG_VERIFY(rawTypeInfo->isConst(), context->report({front, Fmt(Err(Err0700), rawTypeInfo->getDisplayNameC()), hint}));
+        if (typeArray->count == UINT32_MAX)
+        {
+            auto       front = typeNode->childs.front();
+            Diagnostic diag{front, Fmt(Err(Err0699), rawTypeInfo->getDisplayNameC())};
+            return context->report(diag);
+        }
+
+        if (!rawTypeInfo->isConst())
+        {
+            auto       front = typeNode->childs.front();
+            Diagnostic diag{front, Fmt(Err(Err0700), rawTypeInfo->getDisplayNameC())};
+            auto       note = Diagnostic::note(Fmt(Nte(Nte1004), rawTypeInfo->getDisplayNameC()));
+            return context->report(diag, note);
+        }
+
         return true;
     }
 

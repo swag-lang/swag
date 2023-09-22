@@ -668,12 +668,20 @@ void initErrors()
     SWAG_ERROR(Err0445, "invalid '@cvaarg' type                            $ a variadic argument of type '%s' has been promoted to type '%s' at the call site");
     SWAG_ERROR(Err0812, "invalid '@sizeof'                                 $ can't compute the size of a generic expression");
     SWAG_ERROR(Err0814, "invalid '@alignof'                                $ can't compute the alignment of a generic expression");
+    SWAG_ERROR(Err0298, "missing initialization                            $ a constant requires an explicit initialization");
+    SWAG_ERROR(Err0311, "invalid constant                                  $ the constant creation failed due to the generic type '%s'");
+    SWAG_ERROR(Err0820, "enum already defined                              $ the enum '%s' has already been defined");
+    SWAG_ERROR(Err0700, "invalid enum type                                 $ the enum array type '%s' should be 'const'");
+    SWAG_ERROR(Err0699, "invalid enum type                                 $ the enum array type '%s' should have specified dimensions");
+    SWAG_ERROR(Err0636, "invalid visit                                     $ can't visit an enum content by pointer is not allowed");
+    SWAG_ERROR(Err0627, "invalid visit                                     $ can't visit a variadic type by pointer");
+    SWAG_ERROR(Err0628, "invalid visit                                     $ can't visit a pointer of type '%s'");
+    SWAG_ERROR(Err0629, "invalid visit                                     $ can't visit type '%s'");
 
     SWAG_ERROR(Err0200, "ambiguous cast: multiple fields of type '%s' with 'using' in '%s'");
     SWAG_ERROR(Err0115, "ambiguous generic %s '%s' resolution");
     SWAG_ERROR(Err0034, "ambiguous struct '%s' to interface '%s' conversion");
     SWAG_ERROR(Err0881, "can't find an 'enum' or a 'with' for '%s' prefixed with '.'");
-    SWAG_ERROR(Err0627, "can't visit variadic type by pointer");
     SWAG_ERROR(Err0500, "can't initialize constant array with a single value: type '%s'");
     SWAG_ERROR(Err0686, "can't use 'code' parameter in '%s' expression following %s '%s'");
     SWAG_ERROR(Err0177, "casting from '%s' to '%s' not allowed");
@@ -683,18 +691,12 @@ void initErrors()
     SWAG_ERROR(Err0041, "casting from value pointer ('%s') to block pointer ('%s') not allowed");
     SWAG_ERROR(Err0185, "closure can't be assigned to a lambda type");
     SWAG_ERROR(Err0119, "complex generic type deduction (embedded tuples)");
-    SWAG_ERROR(Err0311, "constant creation failed due to generic type '%s'");
-    SWAG_ERROR(Err0298, "constants need explicit initialization");
     SWAG_ERROR(Err0231, "copying '%s' forbidden by 'Swag.NoCopy' on struct");
     SWAG_ERROR(Err0604, "directory creation '%s' failed");
     SWAG_ERROR(Err0018, "documentation page '%s' not found");
     SWAG_ERROR(Err0591, "duplicate attribute '%s'; missing 'Swag.AttrMulti' in declaration");
     SWAG_ERROR(Err0169, "duplicate module named '%s' found (path: '%s')");
     SWAG_ERROR(Err0142, "empty string dereference");
-    SWAG_ERROR(Err0820, "enum '%s' already defined");
-    SWAG_ERROR(Err0700, "enum array type '%s' must be 'const'");
-    SWAG_ERROR(Err0699, "enum array type dimension unspecified ('%s' given)");
-    SWAG_ERROR(Err0636, "enum visitation by pointer not allowed");
     SWAG_ERROR(Err0534, "error in '%s'; use 'try', 'assume', or 'catch'");
     SWAG_ERROR(Err0626, "excessive 'visit' aliases (max: '2', given: '%u')");
     SWAG_ERROR(Err0026, "excessive arguments ('%d' expected, '%d' given)");
@@ -819,7 +821,6 @@ void initErrors()
     SWAG_ERROR(Err0040, "partial type alias ('%s') for generic struct not supported");
     SWAG_ERROR(Err0192, "pointer arithmetic disallowed");
     SWAG_ERROR(Err0193, "pointer slicing not allowed (no pointer arithmetic)");
-    SWAG_ERROR(Err0628, "pointer type ('%s') is unvisitable with 'visit'");
     SWAG_ERROR(Err0046, "process creation '%s' failed");
     SWAG_ERROR(Err0684, "public embedded interface ('%s') disallowed");
     SWAG_ERROR(Err0675, "public embedded struct ('%s') disallowed");
@@ -876,7 +877,6 @@ void initErrors()
     SWAG_ERROR(Err0058, "type '%s' can't be converted to constant expression");
     SWAG_ERROR(Err0889, "type '%s' can't be initialized with '%s': missing 'opAffectSuffix' in '%s'");
     SWAG_ERROR(Err0807, "type '%s' expression unspreadable");
-    SWAG_ERROR(Err0629, "type '%s' expression unvisitable with 'visit'");
     SWAG_ERROR(Err0887, "type '%s' not capturable for '%s'");
     SWAG_ERROR(Err0161, "type '%s' not convertible to constant array; 'opCount' is '0'");
     SWAG_ERROR(Err0162, "type '%s' not convertible; 'opSlice' returns empty slice");
@@ -1379,7 +1379,6 @@ void initErrors()
     SWAG_ERROR(Nte0066, "parameter '%s' of %s can be found here");
     SWAG_ERROR(Nte1113, "parameter mismatch detected");
     SWAG_ERROR(Nte0146, "pointer arithmetic is only valid for pointers declared with '^', not '*'");
-    SWAG_ERROR(Nte1037, "pointer can be dereferenced using 'dref'");
     SWAG_ERROR(Nte0086, "possibly comes from enum '%s'");
     SWAG_ERROR(Nte0022, "potential issue detected in your program's compile-time component");
     SWAG_ERROR(Nte1081, "primary instance noted here");
@@ -1442,7 +1441,6 @@ void initErrors()
     SWAG_ERROR(Nte0144, "this appears to be a potentially invalid UFCS call");
     SWAG_ERROR(Nte1030, "this argument has been named");
     SWAG_ERROR(Nte1031, "this argument lacks a name");
-    SWAG_ERROR(Nte1006, "this element can't be accessed");
     SWAG_ERROR(Nte1090, "this expression evaluates to '%f'");
     SWAG_ERROR(Nte1091, "this expression evaluates to '%lld'");
     SWAG_ERROR(Nte0071, "this function call can't be evaluated at compile-time");
@@ -1457,7 +1455,6 @@ void initErrors()
     SWAG_ERROR(Nte1079, "this is a lambda expression");
     SWAG_ERROR(Nte1028, "this is a literal, but a type was expected");
     SWAG_ERROR(Nte1029, "this is a parameter");
-    SWAG_ERROR(Nte1036, "this is a pointer and can't be accessed");
     SWAG_ERROR(Nte1024, "this is a pointer type declaration due to '*'");
     SWAG_ERROR(Nte1010, "this is a tuple type");
     SWAG_ERROR(Nte1027, "this is a type but a literal was expected");
@@ -1500,6 +1497,9 @@ void initErrors()
     SWAG_ERROR(Nte1046, "you can prefix with '#run' to force a compile-time call");
     SWAG_ERROR(Nte1095, "you can't reference this runtime %s from the %s");
     SWAG_ERROR(Nte0149, "you might want to get the address of '%s' using '&'");
+    SWAG_ERROR(Nte1006, nullptr);
+    SWAG_ERROR(Nte1037, nullptr);
+    SWAG_ERROR(Nte1036, nullptr);
     SWAG_ERROR(Nte1119, nullptr);
     SWAG_ERROR(Nte1021, nullptr);
     SWAG_ERROR(Nte0115, nullptr);

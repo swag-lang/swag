@@ -843,7 +843,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     // Variadic
     else if (typeInfo->isVariadic() || typeInfo->isTypedVariadic())
     {
-        SWAG_VERIFY(!(node->specFlags & AstVisit::SPECFLAG_WANT_POINTER), context->report({node, Err(Err0627)}));
+        SWAG_VERIFY(!(node->specFlags & AstVisit::SPECFLAG_WANT_POINTER), context->report({node, node->token, Err(Err0627)}));
         content += Fmt("{ loop%s %s { ", visitBack.c_str(), (const char*) concat.firstBucket->datas);
         firstAliasVar = 0;
         content += "var ";
@@ -858,7 +858,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     else if (typeInfo->isEnum())
     {
         auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        SWAG_VERIFY(!(node->specFlags & AstVisit::SPECFLAG_WANT_POINTER), context->report({node, Err(Err0636)}));
+        SWAG_VERIFY(!(node->specFlags & AstVisit::SPECFLAG_WANT_POINTER), context->report({node, node->token, Err(Err0636)}));
         content += Fmt("{ var __addr%u = @typeof(%s); ", id, (const char*) concat.firstBucket->datas);
         content += Fmt("loop%s %d { ", visitBack.c_str(), typeEnum->values.size());
         firstAliasVar = 1;
@@ -886,15 +886,15 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
                 typePtr->pointedType->isStruct() ||
                 typePtr->pointedType->isString())
             {
-                return context->report({node->expression, Fmt(Err(Err0628), typeInfo->getDisplayNameC()), Nte(Nte1037)});
+                return context->report({node->expression, Fmt(Err(Err0628), typeInfo->getDisplayNameC())});
             }
             else
             {
-                return context->report({node->expression, Fmt(Err(Err0628), typeInfo->getDisplayNameC()), Nte(Nte1036)});
+                return context->report({node->expression, Fmt(Err(Err0628), typeInfo->getDisplayNameC())});
             }
         }
 
-        return context->report({node->expression, Fmt(Err(Err0629), typeInfo->getDisplayNameC()), Nte(Nte1006)});
+        return context->report({node->expression, Fmt(Err(Err0629), typeInfo->getDisplayNameC())});
     }
 
     node->expression->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
