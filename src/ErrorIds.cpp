@@ -687,6 +687,11 @@ void initErrors()
     SWAG_ERROR(Err0472, "invalid address                                   $ can't take the address of a mixin");
     SWAG_ERROR(Err0473, "invalid address                                   $ can't take the address of an inlined function");
     SWAG_ERROR(Err0733, "unsupported variadic parameters                   $ an inline function can't have variadic parameters");
+    SWAG_ERROR(Err0045, "system error                                      $ failed to create '%s' process (::CreatePipe)");
+    SWAG_ERROR(Err0051, "system error                                      $ failed to add '%s' to the 'PATH' variable");
+    SWAG_ERROR(Err0204, "too many initializers                             $ expected '%d' value(s) to initialize the array, got '%d' instead");
+    SWAG_ERROR(Err0197, "too many initializers                             $ expected '%d' value(s) to initialize '%s', got '%d' instead");
+    SWAG_ERROR(Err0491, "too many initializers                             $ excessive initializers for '%s'");
 
     SWAG_ERROR(Err0200, "ambiguous cast: multiple fields of type '%s' with 'using' in '%s'");
     SWAG_ERROR(Err0115, "ambiguous generic %s '%s' resolution");
@@ -710,15 +715,10 @@ void initErrors()
     SWAG_ERROR(Err0026, "excessive arguments ('%d' expected, '%d' given)");
     SWAG_ERROR(Err0044, "excessive generic parameters for %s '%s' ('%d' expected, '%d' given)");
     SWAG_ERROR(Err0071, "excessive generic parameters for '%s'");
-    SWAG_ERROR(Err0204, "excessive initializers (%d expected, %d given)");
-    SWAG_ERROR(Err0197, "excessive initializers for '%s' ('%d' expected, '%d' given)");
-    SWAG_ERROR(Err0491, "excessive initializers for '%s'");
     SWAG_ERROR(Err0043, "excessive parameters for '%s' ('%d' expected, '%d' given)");
     SWAG_ERROR(Err0141, "expected '\"' or intrinsic name, found '%c'");
     SWAG_ERROR(Err0054, "expected type but got value for generic %s in %s");
     SWAG_ERROR(Err0057, "expected value but got type for generic %s in %s");
-    SWAG_ERROR(Err0051, "failed to add '%s' to 'PATH' variable");
-    SWAG_ERROR(Err0045, "failed to create '%s' process (::CreatePipe)");
     SWAG_ERROR(Err0510, "failed to retrieve file '%s' for module dependency '%s'");
     SWAG_ERROR(Err0808, "generic %s '%s' can't use unsized value");
     SWAG_ERROR(Err0756, "generic %s can't have 'Swag.Implicit' attribute");

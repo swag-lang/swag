@@ -2385,8 +2385,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             // Too many fields
             else if (toTypeStruct->fields.size() < child->childs.size())
             {
-                Diagnostic diag{child->childs[toTypeStruct->fields.count], Fmt(Err(Err0197), toTypeStruct->getDisplayNameC(), toTypeStruct->fields.size(), child->childs.size())};
-                diag.hint = Nte(Nte1026);
+                Diagnostic diag{child->childs[toTypeStruct->fields.count], Fmt(Err(Err0197), toTypeStruct->fields.size(), toTypeStruct->getDisplayNameC(), child->childs.size())};
                 return context->report(diag);
             }
 
