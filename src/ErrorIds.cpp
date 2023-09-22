@@ -582,7 +582,7 @@ void initErrors()
     SWAG_ERROR(Err0032, "invalid bitcast                                   $ bitcasting from type '%s' is not allowed $ expected an integer, a rune, a float or a pointer");
     SWAG_ERROR(Err0033, "invalid bitcast                                   $ bitcasting to a larger type is not allowed ('%s' to '%s')");
     SWAG_ERROR(Err0031, "invalid bitcast                                   $ bitcasting to type '%s' is not allowed $ expected integer, rune, or float");
-    SWAG_ERROR(Err0536, "bytecode stack overflow                           $ the required size has exceeded the limit '--stack-size:%s'");
+    SWAG_ERROR(Err0536, "bytecode stack overflow                           $ the required size exceeds the limit given by '--stack-size:%s'");
     SWAG_ERROR(Err0187, "missing dereference index                         $ an index is missing to dereference the array '%s' of type '%s' $ consider adding the index between brackets '[index]'");
     SWAG_ERROR(Err0180, "missing dereference index                         $ an index is missing to dereference the slice '%s' of type '%s' $ consider adding the index between brackets '[index]'");
     SWAG_ERROR(Err0009, "invalid comparison                                $ slice comparison is only allowed with 'null', got '%s'");
@@ -701,6 +701,7 @@ void initErrors()
     SWAG_ERROR(Err0178, "mismatch types                                    $ casting from closure to lambda is not allowed");
     SWAG_ERROR(Err0418, "mismatch types                                    $ casting from an immutable type '%s' to a mutable one '%s' is not allowed");
     SWAG_ERROR(Err0041, "mismatch types                                    $ casting from a value pointer '%s' to a block pointer '%s' is not allowed");
+    SWAG_ERROR(Err0468, "index out of bounds                               $ the given index '%I64u' exceeds the maximum value '%I64u'");
 
     SWAG_ERROR(Err0115, "ambiguous generic %s '%s' resolution");
     SWAG_ERROR(Err0034, "ambiguous struct '%s' to interface '%s' conversion");
@@ -745,7 +746,6 @@ void initErrors()
     SWAG_ERROR(Err0597, "incorrect attribute usage");
     SWAG_ERROR(Err0132, "incorrect file scope reference");
     SWAG_ERROR(Err0226, "index access denied: 'opIndex' not found in type '%s'");
-    SWAG_ERROR(Err0468, "index out of bounds (given: '%I64u', max: '%I64u')");
     SWAG_ERROR(Err0848, "expected initialization of '%s'; enum '%s' lacks zero value");
     SWAG_ERROR(Err0016, "insufficient arguments for %s call");
     SWAG_ERROR(Err0157, "insufficient arguments for %s");
