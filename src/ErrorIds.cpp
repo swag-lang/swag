@@ -694,12 +694,13 @@ void initErrors()
     SWAG_ERROR(Err0491, "too many initializers                             $ too many initializers for type '%s'");
     SWAG_ERROR(Err0490, "invalid argument                                  $ the intrinsic '@init' expects an integer as a second argument, got '%s' instead");
     SWAG_ERROR(Err0142, "invalid type                                      $ the intrinsic '@init' requires a 'pointer to memory' as a first argument if the count is greater than one");
+    SWAG_ERROR(Err0500, "invalid initialization                            $ can't initialize a constant array (type is '%s') with one single value");
+    SWAG_ERROR(Err0737, "invalid default parameter                         $ '%s' can't be used as a default parameter");
+    SWAG_ERROR(Err0200, "ambiguous cast                                    $ there are multiple 'using' fields of type '%s' in '%s'");
 
-    SWAG_ERROR(Err0200, "ambiguous cast: multiple fields of type '%s' with 'using' in '%s'");
     SWAG_ERROR(Err0115, "ambiguous generic %s '%s' resolution");
     SWAG_ERROR(Err0034, "ambiguous struct '%s' to interface '%s' conversion");
     SWAG_ERROR(Err0881, "can't find an 'enum' or a 'with' for '%s' prefixed with '.'");
-    SWAG_ERROR(Err0500, "can't initialize constant array with a single value: type '%s'");
     SWAG_ERROR(Err0686, "can't use 'code' parameter in '%s' expression following %s '%s'");
     SWAG_ERROR(Err0177, "casting from '%s' to '%s' not allowed");
     SWAG_ERROR(Err0907, "casting from '%s' to pointer type denied (only 'u64' accepted)");
@@ -747,7 +748,6 @@ void initErrors()
     SWAG_ERROR(Err0226, "index access denied: 'opIndex' not found in type '%s'");
     SWAG_ERROR(Err0468, "index out of bounds (given: '%I64u', max: '%I64u')");
     SWAG_ERROR(Err0848, "expected initialization of '%s'; enum '%s' lacks zero value");
-    SWAG_ERROR(Err0737, "instruction '%s' invalid as default parameter");
     SWAG_ERROR(Err0016, "insufficient arguments for %s call");
     SWAG_ERROR(Err0157, "insufficient arguments for %s");
     SWAG_ERROR(Err0062, "insufficient arguments for '%s' (min: '%d', provided: '%d')");
@@ -1325,7 +1325,7 @@ void initErrors()
     SWAG_ERROR(Nte0008, "here is %s '%s'");
     SWAG_ERROR(Nte0090, "here is %s '%s'");
     SWAG_ERROR(Nte0040, "here is '%s'");
-    SWAG_ERROR(Nte0016, "here is an alternative reference");
+    SWAG_ERROR(Nte0016, "here is another one");
     SWAG_ERROR(Nte0021, "here is another reference");
     SWAG_ERROR(Nte0000, "here is its declaration");
     SWAG_ERROR(Nte0026, "here is the %s");
@@ -1340,7 +1340,7 @@ void initErrors()
     SWAG_ERROR(Nte0037, "here is the previous definition");
     SWAG_ERROR(Nte0024, "here is the prior declaration");
     SWAG_ERROR(Nte0032, "here is the problematic attribute");
-    SWAG_ERROR(Nte0015, "here is the reference");
+    SWAG_ERROR(Nte0015, "here is one");
     SWAG_ERROR(Nte0069, "here is the runtime argument corresponding to '%s'");
     SWAG_ERROR(Nte1066, "here is the tuple unpacking");
     SWAG_ERROR(Nte0030, "here is the tuple's definition");
@@ -1371,7 +1371,7 @@ void initErrors()
     SWAG_ERROR(Nte1102, "occured while parsing the default value of the generic type '%s'");
     SWAG_ERROR(Nte1115, "one function declares 'throw' while the other doesn't");
     SWAG_ERROR(Nte1112, "only the address of a returned reference can be taken, and this is %s");
-    SWAG_ERROR(Nte0150, "only variables can be initialized in this manner");
+    SWAG_ERROR(Nte0150, "only variables can be initialized that way");
     SWAG_ERROR(Nte1110, "operation not allowed because 'void' doesn't have a size");
     SWAG_ERROR(Nte1109, "operation not allowed on non-pointer types");
     SWAG_ERROR(Nte1061, "operation not allowed");

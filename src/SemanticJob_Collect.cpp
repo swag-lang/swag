@@ -442,7 +442,7 @@ bool SemanticJob::collectConstantAssignment(SemanticContext* context, DataSegmen
         auto typeAssign = TypeManager::concreteType(node->assignment->typeInfo);
         if (!typeAssign->isArray() && !typeAssign->isListArray())
         {
-            Diagnostic diag{node->assignment, Fmt(Err(Err0500), typeAssign->getDisplayNameC())};
+            Diagnostic diag{node->assignment, Fmt(Err(Err0500), typeInfo->getDisplayNameC())};
             auto       note = Diagnostic::note(Nte(Nte0150));
             return context->report(diag, note);
         }
