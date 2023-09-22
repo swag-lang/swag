@@ -658,12 +658,14 @@ void initErrors()
     SWAG_ERROR(Err0616, "unexpected 'default'                              $ a 'switch' marked with the '#[Swag.Complete]' attribute can't have a 'default' statement");
     SWAG_ERROR(Err0233, "invalid argument                                  $ '#%s' requires an argument of type 'bool', got '%s' instead");
     SWAG_ERROR(Err0052, "unexpected return value                           $ a %s can't return something");
+    SWAG_ERROR(Err0176, "invalid interface conversion                      $ '%s' (or a 'using' field) doesn't implement '%s', so struct-to-interface cast is not allowed");
+    SWAG_ERROR(Err0852, "invalid attribute usage                           $ the 'AttributeUsage.Gen' can only be associated with 'AttributeUsage.Struct' or 'AttributeUsage.Enum'");
+    SWAG_ERROR(Err0645, "double variable initialization                    $ you cannot initialize a variable with both the type syntax and an assignment");
+    SWAG_ERROR(Err0312, "failed generic instantiation                      $ the variable creation failed due to the generic type '%s'");
+    SWAG_ERROR(Err0436, "missing initialization                            $ a variable declared with 'let' requires an explicit initialization");
+    SWAG_ERROR(Err0859, "forbidden call to 'compileString'                 $ the 'compileString' function is not accessible in this context $ this compiler stage does not allow meta-programmation");
+    SWAG_ERROR(Err0289, "unexpected 'impl'                                 $ 'impl' associated with a function should only be used within an 'impl for' block");
 
-    SWAG_ERROR(Err0176, "'%s' (or 'using' field) doesn't implement '%s', so struct-to-interface cast not allowed");
-    SWAG_ERROR(Err0858, "'%s' should not have line break %s");
-    SWAG_ERROR(Err0852, "'AttributeUsage.KindMsgGen' valid only with 'AttributeUsage.Struct' or 'AttributeUsage.Enum'");
-    SWAG_ERROR(Err0859, "'compileString' not executable in this context (too late)");
-    SWAG_ERROR(Err0289, "'impl' not within 'impl for' block");
     SWAG_ERROR(Err0306, "'slice' type must be 'const' given const right expression");
     SWAG_ERROR(Err0236, "expected 'string' type for '%s' message, found '%s'");
     SWAG_ERROR(Err0445, "@cvaarg of type '%s' promoted to '%s' at call");
@@ -900,9 +902,7 @@ void initErrors()
     SWAG_ERROR(Err0681, "unresolved interface due to generic type '%s'");
     SWAG_ERROR(Err0672, "unresolved struct '%s' due to generic type '%s'");
     SWAG_ERROR(Err0827, "unsigned type '%s' negation invalid");
-    SWAG_ERROR(Err0312, "variable creation failed due to generic type '%s'");
-    SWAG_ERROR(Err0436, "variable declared with 'let' requires explicit initialization");
-    SWAG_ERROR(Err0645, "variable double initialized with type and assignment");
+    SWAG_ERROR(Err0858, nullptr);
     SWAG_ERROR(Err0167, nullptr);
     SWAG_ERROR(Err0488, nullptr);
     SWAG_ERROR(Err0777, nullptr);
@@ -1352,7 +1352,7 @@ void initErrors()
     SWAG_ERROR(Nte0104, "if you want to declare a lambda type, use 'func(' or 'closure('");
     SWAG_ERROR(Nte1082, "if you want to retrieve the type of an expression, consider using '@decltype' instead")
     SWAG_ERROR(Nte0135, "if you were trying to compare values, you should use '==' instead");
-    SWAG_ERROR(Nte1007, "initial initialization noted here");
+    SWAG_ERROR(Nte1007, "this is the first initialization");
     SWAG_ERROR(Nte0127, "internal structs should not export their special functions");
     SWAG_ERROR(Nte1013, "it seems like you're trying to access a nested property of '%s', but '%s' itself isn't a value");
     SWAG_ERROR(Nte0057, "literal suffix reference: '%s'");

@@ -1,4 +1,3 @@
-
 #global testerror "Err0645"
 
 struct AA

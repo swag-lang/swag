@@ -1,6 +1,6 @@
-#global testerror "Err0112"
+#global testerror "Err0852"
 
 using Swag
 
-#[AttrUsage(AttributeUsage.File|AttributeUsage.KindMsgGen)]
+#[AttrUsage(AttributeUsage.File|AttributeUsage.Gen)]
 attr GenStuff(v: string);

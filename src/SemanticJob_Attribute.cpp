@@ -315,13 +315,13 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                 {
                     auto what = typeAttr->attributeUsage;
                     if (!(what & (AttributeUsage::Struct | AttributeUsage::Enum)))
-                        return context->report({curAttr, Err(Err0852)});
+                        return context->report({child, Err(Err0852)});
 
                     what &= ~AttributeUsage::Struct;
                     what &= ~AttributeUsage::Enum;
                     what &= ~AttributeUsage::Gen;
                     if (typeAttr->attributeUsage & what)
-                        return context->report({curAttr, Err(Err0852)});
+                        return context->report({child, Err(Err0852)});
                 }
             }
 
