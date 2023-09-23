@@ -546,7 +546,6 @@ bool SemanticJob::resolveType(SemanticContext* context)
         !typeC->isStruct())
     {
         Diagnostic diag{typeNode->sourceFile, typeNode->locConst, Fmt(Err(Err0250), typeNode->typeInfo->getDisplayNameC())};
-        diag.hint = Nte(Nte1026);
         return context->report(diag);
     }
 

@@ -433,6 +433,12 @@ bool SemanticJob::resolveMoveRef(SemanticContext* context)
 
     auto typeInfo = TypeManager::concreteType(front->typeInfo);
 
+    if (front->hasComputedValue())
+    {
+        Diagnostic diag(node, node->token, Err(Err0563));
+        return context->report(diag);
+    }
+
     if (!typeInfo->isPointer() && !typeInfo->isPointerRef())
     {
         Diagnostic diag(node, node->token, Fmt(Err(Err0621), front->typeInfo->getDisplayNameC()));
@@ -444,12 +450,6 @@ bool SemanticJob::resolveMoveRef(SemanticContext* context)
     {
         Diagnostic diag(node, node->token, Err(Err0531));
         diag.addRange(front, Diagnostic::isType(front->typeInfo));
-        return context->report(diag);
-    }
-
-    if (front->hasComputedValue())
-    {
-        Diagnostic diag(node, node->token, Err(Err0563));
         return context->report(diag);
     }
 

@@ -769,16 +769,16 @@ void initErrors()
     SWAG_ERROR(Err0065, "type mismatch                                     $ unexpected return type for special function '%s' ('%s' expected, '%s' provided)");
     SWAG_ERROR(Err0063, "missing return type                               $ the special function '%s' requires a return type");
     SWAG_ERROR(Err0064, "missing return type                               $ the special function '%s' should return a type '%s'");
+    SWAG_ERROR(Err0203, "not enough initializers                           $ expected '%d' value(s) to initialize the array, got '%d' instead");
+    SWAG_ERROR(Err0443, "invalid type                                      $ the type '%s' can't be used as an argument to '@cvaarg'");
+    SWAG_ERROR(Err0250, "invalid type                                      $ the type '%s' does not accept a 'const' version");
+    SWAG_ERROR(Err0515, "invalid argument                                  $ invalid 'location' mode '%s' $ the acceptable values are 'swag' and 'disk'");
+    SWAG_ERROR(Err0621, "misplaced 'moveref'                               $ unexpected 'moveref' on type '%s' $ 'moveref' should be used on a pointer or a reference");
+    SWAG_ERROR(Err0563, "misplaced 'moveref'                               $ unexpected 'moveref' on a computed value $ 'moveref' should be used on a pointer or a reference");
+    SWAG_ERROR(Err0531, "misplaced 'moveref'                               $ unexpected 'moveref' on an immutable expression");
+    SWAG_ERROR(Err0199, "forbidden 'opDrop'                                $ unexpected 'opDrop' special function for '%s' because the struct is marked with '#[Swag.ConstExpr]'");
+    SWAG_ERROR(Err0765, "forbidden 'opPostCopy'                            $ unexpected 'opPostCopy' special function for struct '%s' because the struct is marked with '#[Swag.NoCopy]'");
 
-    SWAG_ERROR(Err0203, "insufficient initializers (%d expected, %d given)");
-    SWAG_ERROR(Err0443, "invalid '@cvaarg' type '%s'");
-    SWAG_ERROR(Err0250, "invalid 'const' for type '%s'");
-    SWAG_ERROR(Err0515, "invalid 'location' mode; choose 'swag' or 'disk' instead of '%s'");
-    SWAG_ERROR(Err0621, "invalid 'moveref' for type '%s' (expected pointer/reference)");
-    SWAG_ERROR(Err0563, "invalid 'moveref' on computed value");
-    SWAG_ERROR(Err0531, "invalid 'moveref' on immutable expression");
-    SWAG_ERROR(Err0199, "invalid 'opDrop' for struct with 'Swag.ConstExpr' marked '%s'");
-    SWAG_ERROR(Err0530, "invalid 'ref' after 'moveref'");
     SWAG_ERROR(Err0694, "invalid 'using' type");
     SWAG_ERROR(Err0070, "invalid generic %s for %s ('%s' expected, '%s' given)");
     SWAG_ERROR(Err0135, "invalid generic parameters for %s '%s'");
@@ -851,7 +851,6 @@ void initErrors()
     SWAG_ERROR(Err0882, "size exceeded: '%u' bytes vs max '%u'");
     SWAG_ERROR(Err0153, "source file '%s' read error");
     SWAG_ERROR(Err0096, "standalone expression found");
-    SWAG_ERROR(Err0765, "struct '%s' has 'Swag.NoCopy'; 'opPostCopy' redundant");
     SWAG_ERROR(Err0648, "expected struct, found '%s' as %s");
     SWAG_ERROR(Err0290, "expected struct; symbol '%s' is %s");
     SWAG_ERROR(Err0667, "struct incompatible with 'Swag.Opaque'; file globally exported");
@@ -893,6 +892,7 @@ void initErrors()
     SWAG_ERROR(Err0657, "unimplemented interface functions for '%s' in '%s'");
     SWAG_ERROR(Err0631, "unknown label '%s'");
     SWAG_ERROR(Err0499, "unknown module dependency '%s'");
+    SWAG_ERROR(Err0530, nullptr);
     SWAG_ERROR(Err0660, nullptr);
     SWAG_ERROR(Err0141, nullptr);
     SWAG_ERROR(Err0169, nullptr);
