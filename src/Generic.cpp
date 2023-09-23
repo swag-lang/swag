@@ -7,7 +7,6 @@
 #include "Naming.h"
 #include "DataSegment.h"
 
-#pragma optimize("", off)
 bool Generic::updateGenericParameters(SemanticContext*              context,
                                       bool                          doType,
                                       bool                          doNode,
@@ -88,8 +87,6 @@ bool Generic::updateGenericParameters(SemanticContext*              context,
                     {
                         errType = v.second->typeInfo;
                         errNode = v.second;
-                        if (context->sourceFile->name == "compiler4344.swg")
-                            int a = 0;
                         break;
                     }
 

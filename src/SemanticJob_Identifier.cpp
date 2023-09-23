@@ -2364,6 +2364,11 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
                     callParam->allocateComputedValue();
                     *callParam->computedValue = *firstMatch.genericParametersCallValues[i];
                 }
+
+                if (firstMatch.genericParametersCallFrom[i])
+                {
+                    callParam->token = firstMatch.genericParametersCallFrom[i]->token;
+                }
             }
         }
 
