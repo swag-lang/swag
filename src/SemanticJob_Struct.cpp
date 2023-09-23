@@ -653,22 +653,9 @@ bool SemanticJob::checkImplScopes(SemanticContext* context, AstImpl* node, Scope
     // impl scope and corresponding identifier scope must be the same !
     if (scopeImpl != scope)
     {
-        Diagnostic* note = Diagnostic::hereIs(node->identifier->resolvedSymbolOverload);
-        if ((scopeImpl->flags & SCOPE_FILE) && !(scope->flags & SCOPE_FILE))
-        {
-            Diagnostic diag{node->identifier, Fmt(Err(Err0659), node->identifier->token.ctext())};
-            return context->report(diag, note);
-        }
-
-        if ((scope->flags & SCOPE_FILE) && !(scopeImpl->flags & SCOPE_FILE))
-        {
-            Diagnostic diag{node->identifier, Fmt(Err(Err0660), node->identifier->token.ctext())};
-            return context->report(diag, note);
-        }
-
         Diagnostic diag{node, node->token, Fmt(Err(Err0661), node->token.ctext())};
-        diag.hint = Fmt(Nte(Nte1086), scopeImpl->parentScope->getFullName().c_str(), node->token.ctext(), scope->parentScope->getFullName().c_str());
-        return context->report(diag, note);
+        auto       note = Diagnostic::note(Fmt(Nte(Nte1086), scopeImpl->parentScope->getFullName().c_str(), node->token.ctext(), scope->parentScope->getFullName().c_str()));
+        return context->report(diag, Diagnostic::hereIs(node->identifier->resolvedSymbolOverload), note);
     }
 
     return true;
@@ -1216,8 +1203,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 // User cannot name its variables itemX
                 if (!(node->flags & AST_GENERATED) && hasItemName)
                 {
-                    auto note = Diagnostic::note(Nte(Nte0109));
-                    return context->report({child, child->token, Fmt(Err(Err0674), child->token.ctext())}, note);
+                    return context->report({child, child->token, Fmt(Err(Err0674), child->token.ctext())});
                 }
 
                 if (!hasItemName)

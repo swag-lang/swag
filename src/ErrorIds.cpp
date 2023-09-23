@@ -740,22 +740,19 @@ void initErrors()
     SWAG_ERROR(Err0808, "invalid generic             $ cannot instantiate the generic %s '%s' with an unsized value");
     SWAG_ERROR(Err0756, "misplaced attribute         $ the %s can't have the '#[Swag.Implicit]' attribute because it is generic");
     SWAG_ERROR(Err0715, "invalid generic             $ can't instantiate the generic function '%s' because of missing generic arguments");
+    SWAG_ERROR(Err0042, "invalid generic             $ cannot instantiate the generic function '%s' because of missing contextual types replacements");
+    SWAG_ERROR(Err0352, "invalid generic             $ cannot deduce the generic arguments when calling %s '%s'");
+    SWAG_ERROR(Err0721, "invalid generic             $ cannot instantiate the generic struct '%s' because of missing generic arguments");
+    SWAG_ERROR(Err0049, "invalid generic             $ expected the generic arguments for %s");
+    SWAG_ERROR(Err0039, "invalid generic             $ cannot instantiate the generic struct '%s' because of missing contextual types replacements");
+    SWAG_ERROR(Err0618, "invalid generic             $ cannot deduce the generic type '%s' from type '%s'");
+    SWAG_ERROR(Err0123, "invalid generic             $ the generic value '%s' has already been deduced from arguments to be '%s', and '%s' is provided here");
+    SWAG_ERROR(Err0661, "mismatch scopes             $ the 'impl' block is not defined in the same scope as '%s'");
+    SWAG_ERROR(Err0124, "invalid lambda call         $ invalid lambda call because '%s' is not a variable, it is %s");
+    SWAG_ERROR(Err0674, "invalid struct member name  $ the struct member name '%s' is invalid $ struct member names beginning with 'item' are reserved by the language");
+    SWAG_ERROR(Err0597, "misplaced attribute         $ incorrect attribute usage");
+    SWAG_ERROR(Err0132, "invalid reference           $ invalid reference to the current file scope name");
 
-    SWAG_ERROR(Err0042, "generic function '%s' instantiation failed: missing type replacements");
-    SWAG_ERROR(Err0352, "generic parameters deduction failed for %s '%s'");
-    SWAG_ERROR(Err0049, "expected generic parameters for %s");
-    SWAG_ERROR(Err0721, "generic struct '%s' instantiation failed: missing arguments");
-    SWAG_ERROR(Err0039, "generic struct '%s' instantiation failed: missing type replacements");
-    SWAG_ERROR(Err0618, "generic type '%s' deduction from type '%s' failed");
-    SWAG_ERROR(Err0123, "generic value '%s' deduced as '%s', not '%s'");
-    SWAG_ERROR(Err0659, "implementation block for '%s' is internal; identifier isn't");
-    SWAG_ERROR(Err0660, "implementation block for '%s' isn't internal; identifier is");
-    SWAG_ERROR(Err0661, "implementation block not in same scope as '%s'");
-    SWAG_ERROR(Err0124, "improper lambda call; '%s' isn't a variable (it's %s)");
-    SWAG_ERROR(Err0674, "improper struct member name '%s'");
-    SWAG_ERROR(Err0470, "incorrect address expression");
-    SWAG_ERROR(Err0597, "incorrect attribute usage");
-    SWAG_ERROR(Err0132, "incorrect file scope reference");
     SWAG_ERROR(Err0226, "index access denied: 'opIndex' not found in type '%s'");
     SWAG_ERROR(Err0848, "expected initialization of '%s'; enum '%s' lacks zero value");
     SWAG_ERROR(Err0016, "insufficient arguments for %s call");
@@ -894,6 +891,9 @@ void initErrors()
     SWAG_ERROR(Err0657, "unimplemented interface functions for '%s' in '%s'");
     SWAG_ERROR(Err0631, "unknown label '%s'");
     SWAG_ERROR(Err0499, "unknown module dependency '%s'");
+    SWAG_ERROR(Err0470, nullptr);
+    SWAG_ERROR(Err0659, nullptr);
+    SWAG_ERROR(Err0660, nullptr);
     SWAG_ERROR(Err0141, nullptr);
     SWAG_ERROR(Err0169, nullptr);
     SWAG_ERROR(Err0776, nullptr);
@@ -1394,7 +1394,6 @@ void initErrors()
     SWAG_ERROR(Nte0081, "should conform to type '%s'");
     SWAG_ERROR(Nte1108, "should point to '%s'");
     SWAG_ERROR(Nte1094, "should this be removed?")
-    SWAG_ERROR(Nte0109, "struct member names that begin with 'item' are reserved by the language");
     SWAG_ERROR(Nte1001, "the % s '%s' has only been used as a scope to find function '%s'");
     SWAG_ERROR(Nte0046, "the %s '%s' is waiting for %s '%s' to be solved");
     SWAG_ERROR(Nte0043, "the %s '%s' wasn't found in '%s'. The alternative from '%s' was selected");
@@ -1415,7 +1414,7 @@ void initErrors()
     SWAG_ERROR(Nte0082, "the interface declaration yields no return");
     SWAG_ERROR(Nte0154, "the keyword '%s' can't be used as an identifier");
     SWAG_ERROR(Nte0034, "the missing value can be found here");
-    SWAG_ERROR(Nte1086, "the parent scope for 'impl' is '%s', however the parent scope for '%s' is '%s'");
+    SWAG_ERROR(Nte1086, "the parent scope for 'impl' is '%s', but the parent scope for '%s' is '%s'");
     SWAG_ERROR(Nte0047, "the resulting type is '%s'");
     SWAG_ERROR(Nte0049, "the struct '%s'");
     SWAG_ERROR(Nte0044, "the symbol '%s' is already present in the interface scope '%s'");
@@ -1494,6 +1493,7 @@ void initErrors()
     SWAG_ERROR(Nte1126, "this string appears to be null or empty");
     SWAG_ERROR(Nte1006, "the number of values to initialize ('%d') is greater than one");
     SWAG_ERROR(Nte1037, "the slicing lower bound type is invalid, expected an integer, got '%s' instead");
+    SWAG_ERROR(Nte0109, nullptr);
     SWAG_ERROR(Nte1028, nullptr);
     SWAG_ERROR(Nte0111, nullptr);
     SWAG_ERROR(Nte1027, nullptr);
