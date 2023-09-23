@@ -561,7 +561,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         if (funcNode->token.text == g_LangSpec->name_opAffect && !funcNode->genericParameters)
             ok = true;
         if (!ok)
-            return context->report({funcNode, funcNode->token, Fmt(Err(Err0756), funcNode->getDisplayNameC())});
+            return context->report({funcNode, funcNode->tokenName, Fmt(Err(Err0756), funcNode->getDisplayNameC())});
     }
 
     if (!(funcNode->flags & AST_FROM_GENERIC))

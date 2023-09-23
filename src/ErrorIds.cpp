@@ -738,9 +738,9 @@ void initErrors()
     SWAG_ERROR(Err0057, "invalid generic argument    $ unexpected generic %s for %s (a value is expected but a type is provided) $ this is a type but a literal was expected");
     SWAG_ERROR(Err0510, "i/o error                   $ cannot fetch file '%s' for module dependency '%s'");
     SWAG_ERROR(Err0808, "invalid generic             $ cannot instantiate the generic %s '%s' with an unsized value");
+    SWAG_ERROR(Err0756, "misplaced attribute         $ the %s can't have the '#[Swag.Implicit]' attribute because it is generic");
+    SWAG_ERROR(Err0715, "invalid generic             $ can't instantiate the generic function '%s' because of missing generic arguments");
 
-    SWAG_ERROR(Err0756, "generic %s can't have 'Swag.Implicit' attribute");
-    SWAG_ERROR(Err0715, "generic function '%s' instantiation failed: missing arguments");
     SWAG_ERROR(Err0042, "generic function '%s' instantiation failed: missing type replacements");
     SWAG_ERROR(Err0352, "generic parameters deduction failed for %s '%s'");
     SWAG_ERROR(Err0049, "expected generic parameters for %s");
@@ -1388,7 +1388,7 @@ void initErrors()
     SWAG_ERROR(Nte1012, "return (%s) should be of type '%s'");
     SWAG_ERROR(Nte1045, "second initialization observed");
     SWAG_ERROR(Nte1009, "secondary instance observed");
-    SWAG_ERROR(Nte1056, "should be succeeded by generic arguments");
+    SWAG_ERROR(Nte1056, "this should be followed by generic arguments");
     SWAG_ERROR(Nte1052, "should be casted to a sized integer like 's32', 's64', etc.");
     SWAG_ERROR(Nte1051, "should be casted to either 'f32' or 'f64'");
     SWAG_ERROR(Nte0081, "should conform to type '%s'");
