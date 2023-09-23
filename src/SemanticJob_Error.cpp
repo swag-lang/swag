@@ -200,7 +200,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
     case MatchResult::NotEnoughParameters:
     {
-        if (!callParameters)
+        if (!callParameters || callParameters->childs.empty())
             diag = new Diagnostic{node, node->token, Fmt(Err(Err0020), refNiceName.c_str())};
         else if (destAttrDecl)
             diag = new Diagnostic{node, node->token, Fmt(Err(Err0157), refNiceName.c_str())};
