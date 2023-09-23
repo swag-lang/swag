@@ -764,9 +764,11 @@ void initErrors()
     SWAG_ERROR(Err0470, "missing generic parameters                        $ the special function '%s' expects some generic parameters");
     SWAG_ERROR(Err0072, "invalid type                                      $ the special function '%s' expects a 'string' as a generic parameter, got '%s' instead");
     SWAG_ERROR(Err0074, "invalid type                                      $ the special function '%s' expects a 'bool' as a generic parameter, got '%s' instead");
-
-    SWAG_ERROR(Err0069, "special function '%s' expects type '%s', found '%s'");
-    SWAG_ERROR(Err0065, "special function '%s' return type mismatch (expected '%s', found '%s')");
+    SWAG_ERROR(Err0659, "invalid generic parameter                         $ the special function '%s' expects a literal as a generic parameter, got type '%s' instead");
+    SWAG_ERROR(Err0069, "invalid type                                      $ unexpected first parameter type for special function '%s' ('%s' expected, '%s' provided)");
+    SWAG_ERROR(Err0065, "type mismatch                                     $ unexpected return type for special function '%s' ('%s' expected, '%s' provided)");
+    SWAG_ERROR(Err0063, "missing return type                               $ the special function '%s' requires a return type");
+    SWAG_ERROR(Err0064, "missing return type                               $ the special function '%s' should return a type '%s'");
 
     SWAG_ERROR(Err0203, "insufficient initializers (%d expected, %d given)");
     SWAG_ERROR(Err0443, "invalid '@cvaarg' type '%s'");
@@ -840,8 +842,6 @@ void initErrors()
     SWAG_ERROR(Err0732, "return type 'void' unnecessary");
     SWAG_ERROR(Err0770, "return type deduced as '%s'; provided '%s'");
     SWAG_ERROR(Err0773, "return type deduced as none; provided '%s'");
-    SWAG_ERROR(Err0063, "expected return type for special function '%s'");
-    SWAG_ERROR(Err0064, "expected return type for special function '%s', found '%s'");
     SWAG_ERROR(Err0774, "return type mismatch (expected void, found '%s') for %s");
     SWAG_ERROR(Err0114, "return value address (type '%s') not accessible");
     SWAG_ERROR(Err0779, "return value needed; return type inferred as '%s'");
@@ -893,7 +893,6 @@ void initErrors()
     SWAG_ERROR(Err0657, "unimplemented interface functions for '%s' in '%s'");
     SWAG_ERROR(Err0631, "unknown label '%s'");
     SWAG_ERROR(Err0499, "unknown module dependency '%s'");
-    SWAG_ERROR(Err0659, nullptr);
     SWAG_ERROR(Err0660, nullptr);
     SWAG_ERROR(Err0141, nullptr);
     SWAG_ERROR(Err0169, nullptr);

@@ -3,7 +3,7 @@
 struct A {}
 impl A
 {
-    mtd(x, t: s32) opVisit()
+    mtd(x: s32, t: s32) opVisit()
     {
     }
 }
