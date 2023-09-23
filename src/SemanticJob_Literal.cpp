@@ -401,7 +401,6 @@ bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
     return Report::internalError(context->node, "resolveLiteralSuffix, invalid token");
 }
 
-#pragma optimize("", off)
 bool SemanticJob::resolveLiteral(SemanticContext* context)
 {
     auto node       = CastAst<AstLiteral>(context->node, AstNodeKind::Literal);

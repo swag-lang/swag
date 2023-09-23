@@ -649,7 +649,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     if (!node->extraNameToken.text.empty())
     {
         Diagnostic diag{node, node->extraNameToken, Fmt(Err(Err0625), typeInfo->getDisplayNameC())};
-        diag.hint = Nte(Nte1026);
+        diag.addRange(node->expression, Diagnostic::isType(typeInfo));
         return context->report(diag);
     }
 

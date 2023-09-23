@@ -349,13 +349,6 @@ bool Tokenizer::nextToken(TokenParse& token)
         {
             SWAG_CHECK(doIdentifier(token));
             token.endLocation = location;
-
-            if (!token.text.count)
-            {
-                token.startLocation = location;
-                return error(token, Fmt(Err(Err0141), curBuffer[0]));
-            }
-
             return true;
         }
 

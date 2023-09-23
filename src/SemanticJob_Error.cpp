@@ -491,19 +491,17 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         SWAG_ASSERT(genericParameters);
         if (match.flags & SymbolMatchContext::MATCH_ERROR_VALUE_TYPE)
         {
-            diag       = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
+            diag = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
                                   Fmt(Err(Err0054),
                                       Naming::niceArgumentRank(badParamIdx).c_str(),
                                       refNiceName.c_str())};
-            diag->hint = Nte(Nte1028);
         }
         else if (match.flags & SymbolMatchContext::MATCH_ERROR_TYPE_VALUE)
         {
-            diag       = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
+            diag = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
                                   Fmt(Err(Err0057),
                                       Naming::niceArgumentRank(badParamIdx).c_str(),
                                       refNiceName.c_str())};
-            diag->hint = Nte(Nte1027);
         }
         else
         {
