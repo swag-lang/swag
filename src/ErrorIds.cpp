@@ -752,8 +752,9 @@ void initErrors()
     SWAG_ERROR(Err0674, "invalid struct member name  $ the struct member name '%s' is invalid $ struct member names beginning with 'item' are reserved by the language");
     SWAG_ERROR(Err0597, "misplaced attribute         $ incorrect attribute usage");
     SWAG_ERROR(Err0132, "invalid reference           $ invalid reference to the current file scope name");
+    SWAG_ERROR(Err0226, "invalid dereference         $ can't dereference by index because the special function 'opIndex' can't be found in type '%s'");
+    SWAG_ERROR(Err0227, "invalid dereference         $ can't dereference '%s' by index because the special function 'opIndex' can't be found in type '%s'");
 
-    SWAG_ERROR(Err0226, "index access denied: 'opIndex' not found in type '%s'");
     SWAG_ERROR(Err0848, "expected initialization of '%s'; enum '%s' lacks zero value");
     SWAG_ERROR(Err0016, "insufficient arguments for %s call");
     SWAG_ERROR(Err0157, "insufficient arguments for %s");
@@ -791,7 +792,6 @@ void initErrors()
     SWAG_ERROR(Err0568, "mismatched types in '%s' assignment ('%s' vs '%s')");
     SWAG_ERROR(Err0095, "mismatched UFCS argument ('%s' expected, '%s' given)");
     SWAG_ERROR(Err0304, "missing #include file '%s'");
-    SWAG_ERROR(Err0227, "missing 'opIndex' for type '%s' to access '%s' by index");
     SWAG_ERROR(Err0186, "missing special function '%s' in '%s' for operator '%s'");
     SWAG_ERROR(Err0079, "missing special function '%s' in '%s'");
     SWAG_ERROR(Err0592, "module '%s' load error during foreign function '%s' resolution: %s");
