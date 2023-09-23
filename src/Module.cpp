@@ -669,17 +669,17 @@ void Module::addForeignLib(const Utf8& text)
     buildParameters.foreignLibs.insert(text);
 }
 
-bool Module::addInclude(AstNode* includeNode)
+bool Module::addFileToLoad(AstNode* includeNode)
 {
     ScopedLock lk(mutexDependency);
-    includes.push_back(includeNode);
+    compilerLoads.push_back(includeNode);
     return true;
 }
 
-bool Module::removeInclude(AstNode* includeNode)
+bool Module::removeFileToLoad(AstNode* includeNode)
 {
     ScopedLock lk(mutexDependency);
-    includes.erase_unordered_byval(includeNode);
+    compilerLoads.erase_unordered_byval(includeNode);
     return true;
 }
 

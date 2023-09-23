@@ -68,20 +68,19 @@ bool SemanticJob::resolveWith(SemanticContext* context)
     if (front->kind == AstNodeKind::IdentifierRef)
     {
         front->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
-        SWAG_ASSERT(front->resolvedSymbolName);
-        SWAG_VERIFY(front->resolvedSymbolOverload, context->report({node, Err(Err0694)}));
+        SWAG_ASSERT(front->resolvedSymbolName && front->resolvedSymbolOverload);
         typeResolved = front->resolvedSymbolOverload->typeInfo;
         fromVar      = front->resolvedSymbolName->kind == SymbolKind::Variable;
     }
     else if (front->kind == AstNodeKind::VarDecl)
     {
-        SWAG_VERIFY(front->resolvedSymbolOverload, context->report({node, Err(Err0694)}));
+        SWAG_ASSERT(front->resolvedSymbolOverload);
         typeResolved = front->resolvedSymbolOverload->typeInfo;
         fromVar      = true;
     }
     else if (front->kind == AstNodeKind::AffectOp)
     {
-        SWAG_VERIFY(front->childs.front()->resolvedSymbolOverload, context->report({node, Err(Err0694)}));
+        SWAG_ASSERT(front->childs.front()->resolvedSymbolOverload);
         typeResolved = front->childs.front()->resolvedSymbolOverload->typeInfo;
         fromVar      = true;
     }
@@ -119,7 +118,6 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
     SWAG_ASSERT(idref->resolvedSymbolName);
     if (idref->resolvedSymbolName->kind == SymbolKind::Variable)
     {
-        SWAG_VERIFY(idref->resolvedSymbolOverload, context->report({node, Err(Err0694)}));
         SWAG_CHECK(resolveUsingVar(context, idref, idref->resolvedSymbolOverload->typeInfo));
         return true;
     }

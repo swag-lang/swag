@@ -74,12 +74,12 @@ SourceFile* EnumerateModuleJob::addFileToModule(Module*              theModule,
     return file;
 }
 
-bool EnumerateModuleJob::dealWithIncludes(Module* theModule)
+bool EnumerateModuleJob::dealWithFileToLoads(Module* theModule)
 {
     Vector<SourceFile*> allFiles;
 
-    // Treat includes
-    for (auto n : theModule->includes)
+    // Treat #load
+    for (auto n : theModule->compilerLoads)
     {
         Path orgFilePath = n->token.ctext();
 
@@ -127,7 +127,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
     path      = g_ModuleCfgMgr->getAliasPath(path);
     path.append(SWAG_SRC_FOLDER);
 
-    if (!dealWithIncludes(theModule))
+    if (!dealWithFileToLoads(theModule))
         return;
 
     // Is the list of files already computed ?
@@ -369,7 +369,7 @@ JobResult EnumerateModuleJob::execute()
         scriptModule->addFile(file);
         g_Workspace->runModule = scriptModule;
 
-        if (!dealWithIncludes(scriptModule))
+        if (!dealWithFileToLoads(scriptModule))
             return JobResult::ReleaseJob;
     }
 

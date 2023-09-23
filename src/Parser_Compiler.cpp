@@ -681,7 +681,7 @@ bool Parser::doCompilerLoad(AstNode* parent)
     {
         if (node->hasExtOwner() && node->extOwner()->ownerCompilerIfBlock)
             node->extOwner()->ownerCompilerIfBlock->includes.push_back(node);
-        SWAG_CHECK(sourceFile->module->addInclude(node));
+        SWAG_CHECK(sourceFile->module->addFileToLoad(node));
     }
 
     return true;

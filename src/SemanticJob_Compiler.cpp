@@ -687,7 +687,7 @@ void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIf
 
     // Eliminate includes
     for (auto imp : block->includes)
-        sourceFile->module->removeInclude(imp);
+        sourceFile->module->removeFileToLoad(imp);
 
     // Do the same for all embedded blocks
     for (auto p : block->blocks)

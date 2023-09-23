@@ -778,8 +778,11 @@ void initErrors()
     SWAG_ERROR(Err0531, "misplaced 'moveref'                               $ unexpected 'moveref' on an immutable expression");
     SWAG_ERROR(Err0199, "forbidden 'opDrop'                                $ unexpected 'opDrop' special function for '%s' because the struct is marked with '#[Swag.ConstExpr]'");
     SWAG_ERROR(Err0765, "forbidden 'opPostCopy'                            $ unexpected 'opPostCopy' special function for struct '%s' because the struct is marked with '#[Swag.NoCopy]'");
+    SWAG_ERROR(Err0499, "unknown dependency                                $ use of unknown module dependency '%s'");
+    SWAG_ERROR(Err0631, "unknown identifier                                $ the scope label '%s' has not been found");
+    SWAG_ERROR(Err0304, "unknown file                                      $ the '#load' file '%s' can't be located or accessed");
+    SWAG_ERROR(Err0502, "i/o error                                         $ failed to open file '%s'");
 
-    SWAG_ERROR(Err0694, "invalid 'using' type");
     SWAG_ERROR(Err0070, "invalid generic %s for %s ('%s' expected, '%s' given)");
     SWAG_ERROR(Err0135, "invalid generic parameters for %s '%s'");
     SWAG_ERROR(Err0576, "invalid scope move of '%d'");
@@ -799,7 +802,6 @@ void initErrors()
     SWAG_ERROR(Err0106, "mismatched 'self' parameter ('%s' expected, '%s' given)");
     SWAG_ERROR(Err0568, "mismatched types in '%s' assignment ('%s' vs '%s')");
     SWAG_ERROR(Err0095, "mismatched UFCS argument ('%s' expected, '%s' given)");
-    SWAG_ERROR(Err0304, "missing #include file '%s'");
     SWAG_ERROR(Err0186, "missing special function '%s' in '%s' for operator '%s'");
     SWAG_ERROR(Err0079, "missing special function '%s' in '%s'");
     SWAG_ERROR(Err0592, "module '%s' load error during foreign function '%s' resolution: %s");
@@ -888,10 +890,8 @@ void initErrors()
     SWAG_ERROR(Err0053, "type mismatch; expected '%s', found '%s'");
     SWAG_ERROR(Err0537, "typeinfo '%s' conversion to runtime typeinfo not possible");
     SWAG_ERROR(Err0781, "unable to expand '%s' in global scope: sub declarations not supported");
-    SWAG_ERROR(Err0502, "unable to open file '%s'");
     SWAG_ERROR(Err0657, "unimplemented interface functions for '%s' in '%s'");
-    SWAG_ERROR(Err0631, "unknown label '%s'");
-    SWAG_ERROR(Err0499, "unknown module dependency '%s'");
+    SWAG_ERROR(Err0694, nullptr);
     SWAG_ERROR(Err0530, nullptr);
     SWAG_ERROR(Err0660, nullptr);
     SWAG_ERROR(Err0141, nullptr);

@@ -122,7 +122,7 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName, const Path& moduleP
         module->buildParameters.foreignLibs  = cfgModule->buildParameters.foreignLibs;
         module->buildParameters.globalUsings = cfgModule->buildParameters.globalUsings;
         module->moduleDependencies           = cfgModule->moduleDependencies;
-        module->includes                     = cfgModule->includes;
+        module->compilerLoads                = cfgModule->compilerLoads;
         module->docComment                   = std::move(cfgModule->docComment);
     }
 
