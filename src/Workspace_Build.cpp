@@ -702,7 +702,7 @@ bool Workspace::buildTarget()
     {
         if (!filteredModule)
         {
-            Report::error(Fmt(Err(Err0556), g_CommandLine.moduleName.c_str()));
+            Report::error(Fmt(Err(Fat0028), g_CommandLine.moduleName.c_str()));
             return false;
         }
 
@@ -717,7 +717,7 @@ bool Workspace::buildTarget()
                 auto       it = g_Workspace->mapModulesNames.find(dep->name);
                 if (it == g_Workspace->mapModulesNames.end())
                 {
-                    Report::error(Fmt(Err(Err0557), dep->name.c_str()));
+                    Report::error(Fmt(Err(Fat0029), dep->name.c_str()));
                     return false;
                 }
 

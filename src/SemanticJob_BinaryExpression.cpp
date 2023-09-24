@@ -32,8 +32,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         node->typeInfo = leftTypeInfo;
         if (!leftTypeInfo->isPointerArithmetic() && !context->forDebugger)
         {
-            Diagnostic diag{node, node->token, Err(Err0192), Diagnostic::isType(leftTypeInfo)};
-            diag.hint = Nte(Nte1061);
+            Diagnostic diag{node, node->token, Err(Err0192)};
             diag.addRange(left, Diagnostic::isType(leftTypeInfo));
             auto note = Diagnostic::note(Nte(Nte0146));
             return context->report(diag, note);
@@ -42,7 +41,6 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         if (leftTypeInfo->isPointerTo(NativeTypeKind::Void))
         {
             Diagnostic diag{node, node->token, Err(Err0111)};
-            diag.hint = Nte(Nte1061);
             diag.addRange(left, Diagnostic::isType(leftTypeInfo));
             return context->report(diag);
         }
@@ -57,8 +55,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     {
         if (!rightTypeInfo->isPointerArithmetic() && !context->forDebugger)
         {
-            Diagnostic diag{node, node->token, Err(Err0192), Diagnostic::isType(rightTypeInfo)};
-            diag.hint = Nte(Nte1061);
+            Diagnostic diag{node, node->token, Err(Err0192)};
             diag.addRange(right, Diagnostic::isType(rightTypeInfo));
             auto note = Diagnostic::note(Nte(Nte0146));
             return context->report(diag, note);
@@ -67,7 +64,6 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         if (rightTypeInfo->isPointerTo(NativeTypeKind::Void))
         {
             Diagnostic diag{node, node->token, Err(Err0111)};
-            diag.hint = Nte(Nte1061);
             diag.addRange(right, Diagnostic::isType(rightTypeInfo));
             return context->report(diag);
         }
@@ -246,8 +242,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
 
         if (!leftTypeInfo->isPointerArithmetic() && !context->forDebugger)
         {
-            Diagnostic diag{node, node->token, Err(Err0192), Diagnostic::isType(leftTypeInfo)};
-            diag.hint = Nte(Nte1061);
+            Diagnostic diag{node, node->token, Err(Err0192)};
             diag.addRange(left, Diagnostic::isType(leftTypeInfo));
             auto note = Diagnostic::note(Nte(Nte0146));
             return context->report(diag, note);

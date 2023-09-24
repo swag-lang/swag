@@ -376,7 +376,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                         if (context->result != ContextResult::Done)
                             return true;
 
-                        Diagnostic diag{right, Fmt(Err(Err0225), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
+                        Diagnostic diag{right, Fmt(Err(Err0225), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
                         diag.hint = Diagnostic::isType(rightTypeInfo);
                         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
 
@@ -510,7 +510,6 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             if (!leftTypeInfo->isPointerArithmetic())
             {
                 Diagnostic diag{node, node->token, Err(Err0192)};
-                diag.hint = Nte(Nte1061);
                 diag.addRange(left, Diagnostic::isType(leftTypeInfo));
                 auto note = Diagnostic::note(Nte(Nte0146));
                 return context->report(diag, note);
@@ -519,7 +518,6 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             if (leftTypeInfo->isPointerTo(NativeTypeKind::Void))
             {
                 Diagnostic diag{node, node->token, Err(Err0111)};
-                diag.hint = Nte(Nte1061);
                 diag.addRange(left, Diagnostic::isType(leftTypeInfo));
                 return context->report(diag);
             }

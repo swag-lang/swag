@@ -56,8 +56,8 @@ void initErrors()
     SWAG_ERROR(Fat0037, "[cmdline] unsupported '--arch' '%s' for x64 backend");
     SWAG_ERROR(Fat0038, "[cmdline] unsupported '--os' '%s' for x64 backend");
     SWAG_ERROR(Fat0027, "[fatal] duplicated module name; more than one module with the name '%s' is present in the workspace (path is '%s')");
-    SWAG_ERROR(Fat0028, nullptr);
-    SWAG_ERROR(Fat0029, nullptr);
+    SWAG_ERROR(Fat0028, "[fatal] module '%s' can't be found in that workspace");
+    SWAG_ERROR(Fat0029, "[fatal] dependency module '%s' can't be found in that workspace");
     SWAG_ERROR(Fat0039, nullptr);
     SWAG_ERROR(Fat0040, nullptr);
 
@@ -803,18 +803,16 @@ void initErrors()
     SWAG_ERROR(Err0095, "type mismatch                                     $ expected '%s' for the UFCS argument, got '%s' instead");
     SWAG_ERROR(Err0186, "invalid operation                                 $ missing special function '%s' in '%s' when solving operator '%s'");
     SWAG_ERROR(Err0079, "invalid operation                                 $ missing special function '%s' in '%s'");
+    SWAG_ERROR(Err0592, "cannot resolve foreign call                       $ failed to load the module '%s' while resolving the foreign function '%s': %s");
+    SWAG_ERROR(Err0513, "invalid dependency                                $ cannot resolve the module dependency '%s' because the 'location' is empty");
+    SWAG_ERROR(Err0511, "invalid dependency                                $ the dependency module folder '%s' does not exist");
+    SWAG_ERROR(Err0006, "missing name                                      $ the %s should be named because some arguments before are named");
+    SWAG_ERROR(Err0030, "invalid name alias                                $ a name alias should not be used on %s");
+    SWAG_ERROR(Err0225, "invalid operation                                 $ cannot affect by index a type '%s' to '%s' because no corresponding function 'opIndexAffect' has been found");
+    SWAG_ERROR(Err0111, "invalid pointer arithmetic                        $ pointer arithmetic is not allowed on a pointer to 'void'");
+    SWAG_ERROR(Err0192, "invalid pointer arithmetic                        $ pointer arithmetic is not allowed");
+    SWAG_ERROR(Err0579, "invalid pointer arithmetic                        $ pointer arithmetic requires an integer, got '%s' instead");
 
-    SWAG_ERROR(Err0592, "module '%s' load error during foreign function '%s' resolution: %s");
-    SWAG_ERROR(Err0556, "module '%s' not found in workspace");
-    SWAG_ERROR(Err0557, "module dependency '%s' missing in workspace");
-    SWAG_ERROR(Err0513, "module dependency '%s' unresolved (empty 'location')");
-    SWAG_ERROR(Err0511, "module folder dependency '%s' missing");
-    SWAG_ERROR(Err0006, "name %s due to prior named arguments");
-    SWAG_ERROR(Err0030, "name alias not allowed on %s");
-    SWAG_ERROR(Err0393, "namespace name can't match module ('%s')");
-    SWAG_ERROR(Err0225, "no 'opIndexAffect' found for indexing type '%s' to '%s'");
-    SWAG_ERROR(Err0111, "no pointer arithmetic on 'void' type");
-    SWAG_ERROR(Err0579, "no pointer arithmetic with operand type '%s'");
     SWAG_ERROR(Err0741, "non-contiguous '@alias' in function '%s' (missing '@alias%u')");
     SWAG_ERROR(Err0809, "operation '%s' doesn't support left type '%s'");
     SWAG_ERROR(Err0778, "operation '%s' doesn't support right type '%s'");
@@ -829,7 +827,6 @@ void initErrors()
     SWAG_ERROR(Err0183, "operator '%s' rejects right expression type '%s'");
     SWAG_ERROR(Err0068, "expected parameters for special function '%s'");
     SWAG_ERROR(Err0040, "partial type alias ('%s') for generic struct not supported");
-    SWAG_ERROR(Err0192, "pointer arithmetic disallowed");
     SWAG_ERROR(Err0193, "pointer slicing not allowed (no pointer arithmetic)");
     SWAG_ERROR(Err0046, "process creation '%s' failed");
     SWAG_ERROR(Err0684, "public embedded interface ('%s') disallowed");
@@ -891,6 +888,9 @@ void initErrors()
     SWAG_ERROR(Err0537, "typeinfo '%s' conversion to runtime typeinfo not possible");
     SWAG_ERROR(Err0781, "unable to expand '%s' in global scope: sub declarations not supported");
     SWAG_ERROR(Err0657, "unimplemented interface functions for '%s' in '%s'");
+    SWAG_ERROR(Err0393, nullptr);
+    SWAG_ERROR(Err0556, nullptr);
+    SWAG_ERROR(Err0557, nullptr);
     SWAG_ERROR(Err0639, nullptr);
     SWAG_ERROR(Err0694, nullptr);
     SWAG_ERROR(Err0530, nullptr);
@@ -1434,7 +1434,7 @@ void initErrors()
     SWAG_ERROR(Nte0006, "this 'using' field is convertible");
     SWAG_ERROR(Nte0144, "this appears to be a potentially invalid UFCS call");
     SWAG_ERROR(Nte1030, "this argument has been named");
-    SWAG_ERROR(Nte1031, "this argument lacks a name");
+    SWAG_ERROR(Nte1031, "this argument should be named also");
     SWAG_ERROR(Nte1090, "this expression evaluates to '%f'");
     SWAG_ERROR(Nte1091, "this expression evaluates to '%lld'");
     SWAG_ERROR(Nte0071, "this function call can't be evaluated at compile-time");
@@ -1459,7 +1459,7 @@ void initErrors()
     SWAG_ERROR(Nte1076, "this needs to be in lowercase");
     SWAG_ERROR(Nte1088, "this previous parameter has a default value");
     SWAG_ERROR(Nte1053, "this should be 'const' but isn't");
-    SWAG_ERROR(Nte1075, "this should be a namespace, function, or variable instead of a type");
+    SWAG_ERROR(Nte1075, "'namealias' should be associated with a namespace, a function or a variable instead of a type");
     SWAG_ERROR(Nte1004, "this should be designated as 'const %s'");
     SWAG_ERROR(Nte1077, "this should be lower than this");
     SWAG_ERROR(Nte1125, "this slice appears to be null or empty");

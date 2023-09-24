@@ -44,19 +44,20 @@ bool SemanticJob::resolveNameAlias(SemanticContext* context)
         back->resolvedSymbolName->kind != SymbolKind::Function &&
         back->resolvedSymbolName->kind != SymbolKind::Variable)
     {
-        Diagnostic diag{back, Fmt(Err(Err0030), Naming::aKindName(back->resolvedSymbolName->kind).c_str())};
-        diag.hint = Nte(Nte1075);
+        Diagnostic                diag{back, Fmt(Err(Err0030), Naming::aKindName(back->resolvedSymbolName->kind).c_str())};
+        Vector<const Diagnostic*> notes;
 
-        Diagnostic* note = nullptr;
+        notes.push_back(Diagnostic::note(Nte(Nte1075)));
+
         if (back->resolvedSymbolName->kind == SymbolKind::Enum ||
             back->resolvedSymbolName->kind == SymbolKind::Interface ||
             back->resolvedSymbolName->kind == SymbolKind::TypeAlias ||
             back->resolvedSymbolName->kind == SymbolKind::Struct)
         {
-            note = Diagnostic::note(node, node->kwdLoc, Fmt(Nte(Nte0125), Naming::aKindName(back->resolvedSymbolName->kind).c_str()));
+            notes.push_back(Diagnostic::note(node, node->kwdLoc, Fmt(Nte(Nte0125), Naming::aKindName(back->resolvedSymbolName->kind).c_str())));
         }
 
-        return context->report(diag, note);
+        return context->report(diag, notes);
     }
 
     SWAG_CHECK(node->ownerScope->symTable.registerNameAlias(context, node, node->resolvedSymbolName, back->resolvedSymbolName, back->resolvedSymbolOverload));
