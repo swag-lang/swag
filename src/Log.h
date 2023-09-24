@@ -20,6 +20,8 @@ enum class LogColor
     DarkYellow,
     DarkMagenta,
     Default,
+    Bold,
+    UnBold,
 };
 
 enum class LogSymbol
@@ -49,6 +51,11 @@ struct Log
     {
         switch (color)
         {
+        case LogColor::Bold:
+            return "\x1b[1m";
+        case LogColor::UnBold:
+            return "\x1b[0m";
+
         case LogColor::Black:
             return "\x1b[30m";
 

@@ -167,14 +167,17 @@ void Diagnostic::printErrorLevel()
         g_Log.setColor(errorColor);
         g_Log.print("error: ");
         break;
+
     case DiagnosticLevel::Panic:
         g_Log.setColor(errorColor);
         g_Log.print("panic: ");
         break;
+
     case DiagnosticLevel::Warning:
         g_Log.setColor(warningColor);
         g_Log.print("warning: ");
         break;
+
     case DiagnosticLevel::Note:
         if (emptyMarginBefore)
             printMargin(true);
@@ -189,6 +192,7 @@ void Diagnostic::printErrorLevel()
             g_Log.print(": ");
         }
         break;
+
     default:
         break;
     }
@@ -567,7 +571,7 @@ void Diagnostic::printRanges()
                 g_Log.print(LogSymbol::HorizontalLine);
                 g_Log.print(LogSymbol::HorizontalLine);
                 g_Log.print(" ");
-                g_Log.setColor(hintColor);
+                // g_Log.setColor(hintColor);
                 g_Log.print(r.hint);
                 startIndex += r.hint.length() + 4;
                 ranges.erase(ranges.begin() + i);
@@ -618,7 +622,11 @@ void Diagnostic::report(bool verboseMode)
     if (showErrorLevel)
     {
         printErrorLevel();
+        if (errorLevel == DiagnosticLevel::Error || errorLevel == DiagnosticLevel::Panic || errorLevel == DiagnosticLevel::Warning)
+            g_Log.setColor(LogColor::Bold);
         g_Log.print(textMsg);
+        if (errorLevel == DiagnosticLevel::Error || errorLevel == DiagnosticLevel::Panic || errorLevel == DiagnosticLevel::Warning)
+            g_Log.setColor(LogColor::UnBold);
         g_Log.eol();
     }
     else if (!showFileName)
