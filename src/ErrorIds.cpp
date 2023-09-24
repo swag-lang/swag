@@ -1317,7 +1317,6 @@ void initErrors()
     SWAG_ERROR(Nte0136, "force the evaluation using '#run'");
     SWAG_ERROR(Nte0114, "function names that start with 'op' followed by an uppercase letter are reserved for struct special functions");
     SWAG_ERROR(Nte0116, "function parameters are immutable and can't be modified");
-    SWAG_ERROR(Nte0068, "generic parameter '%s' of %s can be found here");
     SWAG_ERROR(Nte0008, "here is %s '%s'");
     SWAG_ERROR(Nte0090, "here is %s '%s'");
     SWAG_ERROR(Nte0040, "here is '%s'");
@@ -1327,11 +1326,13 @@ void initErrors()
     SWAG_ERROR(Nte0026, "here is the %s");
     SWAG_ERROR(Nte0031, "here is the deprecated definition");
     SWAG_ERROR(Nte0064, "here is the field causing the recursion");
+    SWAG_ERROR(Nte0068, "here is the generic parameter '%s' of %s");
     SWAG_ERROR(Nte0023, "here is the immutable value reference");
     SWAG_ERROR(Nte0035, "here is the other '#import'");
     SWAG_ERROR(Nte0036, "here is the other definition");
     SWAG_ERROR(Nte0014, "here is the other definition");
     SWAG_ERROR(Nte0063, "here is the other return statement");
+    SWAG_ERROR(Nte0066, "here is the parameter '%s' of %s");
     SWAG_ERROR(Nte0037, "here is the previous definition");
     SWAG_ERROR(Nte0024, "here is the prior declaration");
     SWAG_ERROR(Nte0032, "here is the problematic attribute");
@@ -1361,7 +1362,6 @@ void initErrors()
     SWAG_ERROR(Nte1109, "operation not allowed on non-pointer types");
     SWAG_ERROR(Nte1061, "operation not allowed");
     SWAG_ERROR(Nte0075, "origin of instantiation type '%s' is here");
-    SWAG_ERROR(Nte0066, "parameter '%s' of %s can be found here");
     SWAG_ERROR(Nte1113, "parameter mismatch detected");
     SWAG_ERROR(Nte0146, "pointer arithmetic is only valid for pointers declared with '^', not '*'");
     SWAG_ERROR(Nte0086, "possibly comes from enum '%s'");
