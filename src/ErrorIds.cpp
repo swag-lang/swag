@@ -512,7 +512,7 @@ void initErrors()
     SWAG_ERROR(Err0476, "invalid slicing                                   $ the slicing lower bound '%I64u' is greater than the upper bound '%I64u'");
     SWAG_ERROR(Err0476, "invalid slicing                                   $ the slicing lower bound '%I64u' is greater than the upper bound '%I64u'");
     SWAG_ERROR(Err0688, "invalid slicing                                   $ the slicing upper bound exclusion with '..<' is not possible because it is zero");
-    SWAG_ERROR(Err0206, "invalid stack frame reference                     $ you can't reference %s '%s' because it's in a different stack frame");
+    SWAG_ERROR(Err0206, "invalid stack frame reference                     $ you can't reference the %s '%s' because it's in a different stack frame");
     SWAG_ERROR(Err1128, "invalid struct initialization                     $ expected '{}' to initialize a struct, and not '()' which is reserved for function calls");
     SWAG_ERROR(Err0674, "invalid struct member name                        $ the struct member name '%s' is invalid $ struct member names beginning with 'item' are reserved by the language");
     SWAG_ERROR(Err1063, "invalid struct name                               $ expected the struct name, found '%s' instead");
@@ -679,7 +679,7 @@ void initErrors()
     SWAG_ERROR(Err0534, "missing catch error                               $ expected 'try', 'assume' or 'catch' to deal with the errors of '%s'");
     SWAG_ERROR(Err2026, "missing character literal closing backtick        $ expected a closing backtick '`' before the end of the line");
     SWAG_ERROR(Err1068, "missing closing '%s'                              $ expected '%s' %s, found '%s' instead");
-    SWAG_ERROR(Err1070, "missing constant type                             $ expected ':' followed by the type or an assignment with '=', found '%s' instead");
+    SWAG_ERROR(Err1070, "missing constant type                             $ expected a type with ':' or an assignment with '=', found '%s' instead");
     SWAG_ERROR(Err0738, "missing default value                             $ the %s needs a default value as a preceding parameter has one");
     SWAG_ERROR(Err0187, "missing dereference index                         $ an index is missing to dereference the array '%s' of type '%s' $ consider adding the index between brackets '[index]'");
     SWAG_ERROR(Err0180, "missing dereference index                         $ an index is missing to dereference the slice '%s' of type '%s' $ consider adding the index between brackets '[index]'");
@@ -703,7 +703,7 @@ void initErrors()
     SWAG_ERROR(Err0848, "missing initialization                            $ expected an initialization of '%s' because the enum '%s' does not contain a value for zero");
     SWAG_ERROR(Err0706, "missing initialization                            $ the enumeration value '%s' has type '%s' which requires an explicit initialization");
     SWAG_ERROR(Err1044, "missing intrinsic arguments                       $ expected the intrinsic arguments between '()'");
-    SWAG_ERROR(Err1090, "missing lambda parameter type                     $ expected ':' followed by the type or an assignment with '=' $ when declaring lambda parameters, you should not combined inferred and explicit types");
+    SWAG_ERROR(Err1090, "missing lambda parameter type                     $ expected the type with ':' or an assignment with '=' $ when declaring lambda parameters, you should not combined inferred and explicit types");
     SWAG_ERROR(Err0006, "missing name                                      $ the %s should be named because some arguments before are named");
     SWAG_ERROR(Err0068, "missing parameters                                $ the special function '%s' requires some parameters");
     SWAG_ERROR(Err0767, "missing return type                               $ the function '%s' has the '#[Swag.Discardable]' attribute and should return something");
@@ -717,7 +717,7 @@ void initErrors()
     SWAG_ERROR(Err1025, "missing struct name                               $ expected the struct name before the start of the body '{'");
     SWAG_ERROR(Err0707, "missing test error                                $ expected at least one error, but none was raised");
     SWAG_ERROR(Err0580, "missing test warning                              $ expected at least one warning, but none was raised");
-    SWAG_ERROR(Err1172, "missing variable type                             $ expected ':' followed by the type or an assignment with '=', found '%s' instead");
+    SWAG_ERROR(Err1172, "missing variable type                             $ expected the type with ':' or an assignment with '=', found '%s' instead");
     SWAG_ERROR(Err0097, "misused UFCS                                      $ the %s '%s' is not used as the first argument when calling '%s'");
     SWAG_ERROR(Err0310, "misused UFCS                                      $ the hidden 'with' variable '%s' is not used as the first argument when calling '%s'");
     SWAG_ERROR(Err0070, "msimatch generic type                             $ unexpected type of the generic %s for %s ('%s' expected, '%s' provided)");
@@ -878,7 +878,7 @@ void initErrors()
     SWAG_ERROR(Err0109, "unused return value                               $ the return value of the function '%s' should be used $ if you don't need the return value, consider prefixing the call with 'discard'");
     SWAG_ERROR(Err1179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
     SWAG_ERROR(Err0092, "unused return value                               $ the return value of the lambda '%s' should be used $ if you don't need the return value, consider prefixing the call with 'discard'");
-    SWAG_ERROR(Err0295, nullptr);
+    SWAG_ERROR(Err0295, "unexpected parameters                             $ expected '{' here because a compiler %s should not have parameters");
     SWAG_ERROR(Err0648, nullptr);
     SWAG_ERROR(Err0173, nullptr);
     SWAG_ERROR(Err0549, nullptr);
@@ -1455,9 +1455,9 @@ void initErrors()
     SWAG_ERROR(Nte0087, "you can execute swag with '--callstack' to obtain more contextual details");
     SWAG_ERROR(Nte0009, "you can execute swag with '--dbg-catch' to initiate the bytecode debugger when an exception is raised");
     SWAG_ERROR(Nte1046, "you can prefix with '#run' to force a compile-time call");
-    SWAG_ERROR(Nte1095, "you can't reference this runtime %s from the %s");
+    SWAG_ERROR(Nte1095, "you can't reference this runtime %s from the compile-time %s");
     SWAG_ERROR(Nte0149, "you might want to get the address of '%s' using '&'");
-    SWAG_ERROR(Nte0008, nullptr);
+    SWAG_ERROR(Nte0008, "to retrieve the program arguments, consider using the '@args()' intrinsic");
     SWAG_ERROR(Nte1026, nullptr);
     SWAG_ERROR(Nte0077, nullptr);
     SWAG_ERROR(Nte1111, nullptr);
