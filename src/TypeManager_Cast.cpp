@@ -429,8 +429,7 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
         auto fromTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(fromType, TypeInfoKind::LambdaClosure);
         if (fromTypeFunc->firstDefaultValueIdx != UINT32_MAX)
         {
-            msg  = Fmt(ErrNte(Err0690, forNote));
-            hint = Nte(Nte1100);
+            msg = Fmt(ErrNte(Err0690, forNote));
         }
     }
     else if (!fromType->isPointer() && toType->isPointerRef())

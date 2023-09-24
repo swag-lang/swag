@@ -505,14 +505,13 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         }
         else
         {
-            diag = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
+            diag       = new Diagnostic{match.genericParameters[bi.badSignatureParameterIdx],
                                   Fmt(Err(Err0070),
                                       Naming::niceArgumentRank(badParamIdx).c_str(),
                                       refNiceName.c_str(),
                                       bi.badSignatureRequestedType->getDisplayNameC(),
                                       bi.badSignatureGivenType->getDisplayNameC())};
-
-            diag->hint = hintMsg.empty() ? Diagnostic::isType(bi.badSignatureGivenType) : hintMsg;
+            diag->hint = hintMsg;
         }
 
         result0.push_back(diag);

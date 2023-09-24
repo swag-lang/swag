@@ -180,7 +180,7 @@ bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, As
 
     if (left->resolvedSymbolOverload && left->resolvedSymbolOverload->flags & OVERLOAD_IS_LET)
     {
-        Diagnostic diag{node, node->token, Err(Err0564), Nte(Nte1061)};
+        Diagnostic diag{node, node->token, Err(Err0564)};
         diag.addRange(left, Nte(Nte1050));
         note = Diagnostic::hereIs(left->resolvedSymbolOverload->node);
         return context->report(diag, note);
@@ -188,7 +188,7 @@ bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, As
 
     if (left->flags & AST_L_VALUE)
     {
-        Diagnostic diag{node, node->token, Err(Err0564), Nte(Nte1061)};
+        Diagnostic diag{node, node->token, Err(Err0564)};
         if (hint.empty())
             hint = Diagnostic::isType(left);
         diag.addRange(left, hint);
@@ -197,14 +197,14 @@ bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, As
 
     if (left->resolvedSymbolOverload && left->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE)
     {
-        Diagnostic diag{node, node->token, Err(Err0564), Nte(Nte1061)};
+        Diagnostic diag{node, node->token, Err(Err0564)};
         if (hint.empty())
             hint = Nte(Nte1018);
         diag.addRange(left, hint);
         return context->report(diag);
     }
 
-    Diagnostic diag{node, node->token, Err(Err0565), Nte(Nte1061)};
+    Diagnostic diag{node, node->token, Err(Err0565)};
     if (hint.empty())
         hint = Diagnostic::isType(left);
     diag.addRange(left, hint);
@@ -259,6 +259,9 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     // Be sure modifiers are relevant
     if (right->kind == AstNodeKind::NoDrop || right->kind == AstNodeKind::Move)
     {
+        PushErrCxtStep ec(context, right, ErrCxtStepKind::Note, [rightTypeInfo]()
+                          { return Diagnostic::isType(rightTypeInfo); });
+
         auto leftConcrete = TypeManager::concreteType(leftTypeInfo);
         if (right->flags & AST_NO_LEFT_DROP)
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST), context->report({node, node->token, Fmt(Err(Err0568), g_LangSpec->name_nodrop.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
