@@ -126,7 +126,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         SWAG_CHECK(executeNode(sourceFile, params->specReturnOpCount->node, callerContext, &opParams));
         auto count = runContext->registersRR[0].u64;
         if (!count)
-            return callerContext->report({node, Fmt(Err(Err0161), realType->getDisplayNameC()), Diagnostic::isType(realType)});
+            return callerContext->report({node, Fmt(Err(Err0161), realType->getDisplayNameC())});
 
         // Get the slice by calling 'opSlice'
         SWAG_ASSERT(params->specReturnOpSlice);
@@ -136,7 +136,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         opParams.callParams.push_back((uint64_t) self);
         SWAG_CHECK(executeNode(sourceFile, params->specReturnOpSlice->node, callerContext, &opParams));
         if (!runContext->registersRR[0].u64 || !runContext->registersRR[1].u64)
-            return callerContext->report({node, Fmt(Err(Err0162), realType->getDisplayNameC()), Diagnostic::isType(realType)});
+            return callerContext->report({node, Fmt(Err(Err0162), realType->getDisplayNameC())});
 
         auto      concreteType = TypeManager::concreteType(params->specReturnOpSlice->typeInfo);
         uint32_t  sizeSlice    = 0;

@@ -51,7 +51,6 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
     if (!typeVar->isStruct())
     {
         Diagnostic diag{varDecl, varDecl->token, Fmt(Err(Err0291), typeVar->getDisplayNameC())};
-        diag.hint = Nte(Nte1066);
         if (varDecl->assignment)
             diag.addRange(varDecl->assignment, Diagnostic::isType(TypeManager::concreteType(varDecl->assignment->typeInfo)));
         else if (varDecl->type)
@@ -742,11 +741,10 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         SWAG_ASSERT(node->specFlags & AstVarDecl::SPECFLAG_GENERIC_TYPE);
 
-        auto typeRet = TypeManager::concreteType(node->typeConstraint->typeInfo, CONCRETE_ALL);
+        auto typeRet = TypeManager::concreteType(node->typeConstraint->typeInfo, CONCRETE_ALL | CONCRETE_FUNC);
         if (!typeRet->isBool())
         {
             Diagnostic diag{node->typeConstraint, Fmt(Err(Err0678), typeRet->getDisplayNameC())};
-            diag.hint = Diagnostic::isType(node->typeConstraint);
             return context->report(diag);
         }
 

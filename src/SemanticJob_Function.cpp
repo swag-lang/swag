@@ -979,7 +979,7 @@ bool SemanticJob::resolveCaptureFuncCallParams(SemanticContext* context)
 
         if (typeField->isClosure())
             return context->report({c, Fmt(Err(Err0875), c->token.ctext())});
-        return context->report({c, Fmt(Err(Err0887), c->token.ctext(), typeField->getDisplayNameC()), Diagnostic::isType(c->typeInfo)});
+        return context->report({c, Fmt(Err(Err0887), typeField->getDisplayNameC())});
     }
 
     // As this is the capture block resolved in the right context, we can now evaluate the corresponding slosure

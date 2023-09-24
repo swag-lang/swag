@@ -275,8 +275,6 @@ void initErrors()
     SWAG_ERROR(Err1104, "invalid auto-generated 'impl' block               $ 'impl' block generation is permissible only within a '#message' with 'Swag.CompilerMsgMask.AttributeGen'");
     SWAG_ERROR(Err2003, "invalid binary number format                      $ binary literals should only contain '0' or '1', found '%s' instead");
     SWAG_ERROR(Err1207, "invalid block start                               $ a block start '{' is not allowed after 'discard try/assume/catch'");
-    SWAG_ERROR(Err0875, "invalid capture                                   $ can't capture '%s' because it's a closure $ capturing a closure type is not supported");
-    SWAG_ERROR(Err0884, "invalid capture                                   $ can't capture '%s' because it's not a plain old data struct $ a struct is not plain old data if it contains 'opDrop', 'opPostCopy' or 'opPostMove'");
     SWAG_ERROR(Err2028, "invalid character                                 $ the character '%s' is not recognized in this context");
     SWAG_ERROR(Err0302, "invalid character literal                         $ can't convert a character literal to type '%s'");
     SWAG_ERROR(Err0287, "invalid character literal                         $ can't convert the character literal '0x%x' to 'u16', this is out of range");
@@ -714,7 +712,6 @@ void initErrors()
     SWAG_ERROR(Err0593, "invalid argument                                  $ invalid safety value '%s' $ the acceptable safety values are 'boundcheck|overflow|math|switch|unreachable|any|bool|nan|sanity|null'");
     SWAG_ERROR(Err0439, "invalid literal suffix                            $ the type '%s' can't be used as a literal type suffix");
     SWAG_ERROR(Err0175, "invalid literal suffix                            $ the symbol '%s' is %s and can't be used as a literal type suffix");
-
     SWAG_ERROR(Err0317, "invalid literal suffix                            $ the type '%s' can't be used as suffix for a float literal $ only 'f32' and 'f64' are accepted");
     SWAG_ERROR(Err0731, "invalid type                                      $ the type '%s' can't be used as a type for an attribute parameter");
     SWAG_ERROR(Err0881, "unknown identifier                                $ the identifier '%s' is preceeded with '.' but no corresponding 'enum' or 'with' can be deduced");
@@ -778,7 +775,6 @@ void initErrors()
     SWAG_ERROR(Err0631, "unknown identifier                                $ the scope label '%s' has not been found");
     SWAG_ERROR(Err0304, "unknown file                                      $ the '#load' file '%s' can't be located or accessed");
     SWAG_ERROR(Err0502, "i/o error                                         $ failed to open file '%s'");
-
     SWAG_ERROR(Err0070, "msimatch generic type                             $ unexpected type of the generic %s for %s ('%s' expected, '%s' provided)");
     SWAG_ERROR(Err0135, "misplaced generic arguments                       $ unexpected generic arguments for %s '%s'");
     SWAG_ERROR(Err0576, "invalid '#up' move                                $ '#up' cannot move '%d' scopes up");
@@ -862,26 +858,26 @@ void initErrors()
     SWAG_ERROR(Err0624, "invalid 'visit' type                              $ a tuple can't be visited");
     SWAG_ERROR(Err0292, "invalid tuple unpacking                           $ can't unpack an empty tuple");
     SWAG_ERROR(Err0482, "invalid dereference                               $ tuples can't be dereferenced like pointers");
-
-    SWAG_ERROR(Err0252, "type '%s' and '%s' from command line for '%s' mismatch");
-    SWAG_ERROR(Err0058, "type '%s' can't be converted to constant expression");
-    SWAG_ERROR(Err0889, "type '%s' can't be initialized with '%s': missing 'opAffectSuffix' in '%s'");
-    SWAG_ERROR(Err0807, "type '%s' expression unspreadable");
-    SWAG_ERROR(Err0887, "type '%s' not capturable for '%s'");
-    SWAG_ERROR(Err0161, "type '%s' not convertible to constant array; 'opCount' is '0'");
-    SWAG_ERROR(Err0162, "type '%s' not convertible; 'opSlice' returns empty slice");
-    SWAG_ERROR(Err0291, "type '%s' unpacking failed; expected struct or tuple");
-    SWAG_ERROR(Err0118, "type constraint failed on '%s'");
-    SWAG_ERROR(Err0678, "type constraint should yield 'bool' ('%s' given)");
-    SWAG_ERROR(Err0810, "type is unevaluable in this context; it's generic");
-    SWAG_ERROR(Err0048, "type mismatch ('*Swag.CVaList' expected, '%s' given)");
-    SWAG_ERROR(Err0908, "type mismatch: unable to initialize type '%s' from type '%s'");
-    SWAG_ERROR(Err0196, "type mismatch; can't %s '%s' %s '%s'");
-    SWAG_ERROR(Err0053, "type mismatch; expected '%s', found '%s'");
-    SWAG_ERROR(Err0537, "typeinfo '%s' conversion to runtime typeinfo not possible");
-    SWAG_ERROR(Err0781, "unable to expand '%s' in global scope: sub declarations not supported");
-    SWAG_ERROR(Err0657, "unimplemented interface functions for '%s' in '%s'");
-
+    SWAG_ERROR(Err0657, "incomplete interface                              $ some functions of the interface '%s' are not implemented for '%s'");
+    SWAG_ERROR(Err0781, "invalid expand                                    $ can't expand '%s' in global scope");
+    SWAG_ERROR(Err0537, "invalid runtime typeinfo                          $ failed to convert '%s' to a runtime typeinfo");
+    SWAG_ERROR(Err0118, "failed type constraint                            $ the type constraint has failed for type '%s'");
+    SWAG_ERROR(Err0678, "invalid type constraint                           $ a type constraint should be a boolean expression, got type '%s' instead");
+    SWAG_ERROR(Err0810, "invalid type                                      $ the type is generic and can't be evaluated in this context");
+    SWAG_ERROR(Err0252, "type mismatch                                     $ type '%s' and type '%s' defined in the command line for '%s' are incompatible");
+    SWAG_ERROR(Err0807, "invalid type                                      $ the intrinsic '@spread' can't be used with type '%s' $ this kind of type can't be spreaded");
+    SWAG_ERROR(Err0048, "type mismatch                                     $ expected type '*Swag.CVaList', got '%s' instead");
+    SWAG_ERROR(Err0908, "type mismatch                                     $ can't initialize type '%s' from type '%s'");
+    SWAG_ERROR(Err0196, "type mismatch                                     $ can't %s '%s' %s '%s'");
+    SWAG_ERROR(Err0053, "type mismatch                                     $ expected type '%s', got '%s' instead");
+    SWAG_ERROR(Err0291, "invalid tuple unpacking                           $ can't unpack type '%s' $ expected a struct or a tuple tuple");
+    SWAG_ERROR(Err0161, "compile-time evaluation failed                    $ can't transform the type '%s' to a constant array because 'opCount' returns '0'");
+    SWAG_ERROR(Err0162, "compile-time evaluation failed                    $ can't transform the type '%s' to a constant array because 'opSlice' returns an empty slice");
+    SWAG_ERROR(Err0058, "compile-time evaluation failed                    $ the type '%s' can't be converted to constant expression");
+    SWAG_ERROR(Err0889, "invalid operation                                 $ can't initialize a type '%s' with '%s' because no corresponding 'opAffectSuffix' function can be found in '%s'");
+    SWAG_ERROR(Err0875, "invalid capture                                   $ can't capture '%s' because it's a closure $ capturing a closure type is not supported");
+    SWAG_ERROR(Err0884, "invalid capture                                   $ can't capture '%s' because it's not a plain old data struct $ a struct is not plain old data if it contains 'opDrop', 'opPostCopy' or 'opPostMove'");
+    SWAG_ERROR(Err0887, "invalid capture                                   $ can't capture type '%s'");
     SWAG_ERROR(Err0295, nullptr);
     SWAG_ERROR(Err0648, nullptr);
     SWAG_ERROR(Err0173, nullptr);
@@ -1342,7 +1338,6 @@ void initErrors()
     SWAG_ERROR(Nte0032, "here is the problematic attribute");
     SWAG_ERROR(Nte0015, "here is one");
     SWAG_ERROR(Nte0069, "here is the runtime argument corresponding to '%s'");
-    SWAG_ERROR(Nte1066, "here is the tuple unpacking");
     SWAG_ERROR(Nte0030, "here is the tuple's definition");
     SWAG_ERROR(Nte1124, "if this is intended, consider adding 'impl' before this");
     SWAG_ERROR(Nte1005, "if this is intended, consider initializing the global variable with 'undefined' instead of zero");
@@ -1355,7 +1350,7 @@ void initErrors()
     SWAG_ERROR(Nte1007, "this is the first initialization");
     SWAG_ERROR(Nte0127, "internal structs should not export their special functions");
     SWAG_ERROR(Nte1013, "it seems like you're trying to access a nested property of '%s', but '%s' itself isn't a value");
-    SWAG_ERROR(Nte0057, "literal suffix reference: '%s'");
+    SWAG_ERROR(Nte0057, "this is the literal suffix '%s'");
     SWAG_ERROR(Nte1050, "a local variable declared with 'let' is immutable and can't be changed");
     SWAG_ERROR(Nte0089, "missing %s of type '%s'");
     SWAG_ERROR(Nte0088, "missing parameter '%s' of type '%s'");
@@ -1489,6 +1484,7 @@ void initErrors()
     SWAG_ERROR(Nte1126, "this string appears to be null or empty");
     SWAG_ERROR(Nte1006, "the number of values to initialize ('%d') is greater than one");
     SWAG_ERROR(Nte1037, "the slicing lower bound type is invalid, expected an integer, got '%s' instead");
+    SWAG_ERROR(Nte1066, nullptr);
     SWAG_ERROR(Nte1045, nullptr);
     SWAG_ERROR(Nte1081, nullptr);
     SWAG_ERROR(Nte0021, nullptr);
