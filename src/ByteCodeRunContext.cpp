@@ -72,7 +72,9 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodebc)
     registersRC.count = 0;
     g_ByteCodeStackTrace->steps.reserve(4096);
 
-    maxRecurse = g_CommandLine.maxRecurse;
+    maxRecurse          = g_CommandLine.maxRecurse;
+    internalPanicSymbol = nullptr;
+    internalPanicHint.clear();
 
     curRC   = -1;
     firstRC = -1;

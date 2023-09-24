@@ -270,8 +270,6 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             site = callParameters;
         SWAG_ASSERT(site);
         diag = new Diagnostic{site, Fmt(Err(Err0026), match.badSignatureInfos.badSignatureNum2, match.badSignatureInfos.badSignatureNum1)};
-        if (failedParam)
-            diag->hint = Nte(Nte1026);
         result0.push_back(diag);
 
         auto note = Diagnostic::hereIs(overload);
@@ -301,8 +299,6 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                                       symbol->name.c_str(),
                                       match.badSignatureInfos.badSignatureNum2,
                                       match.badSignatureInfos.badSignatureNum1)};
-            if (genericParameters)
-                diag->hint = Nte(Nte1026);
         }
 
         result0.push_back(diag);

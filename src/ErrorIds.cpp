@@ -65,41 +65,41 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Saf0002, "failed safety 'any' $ invalid cast from 'any' to '%s'");
-    SWAG_ERROR(Saf0028, "failed safety 'any' $ invalid cast of a null value to '%s'");
-    SWAG_ERROR(Saf0020, "failed safety 'bool' $ invalid boolean value");
-    SWAG_ERROR(Saf0008, "failed safety 'boundcheck' $ index out of bounds");
-    SWAG_ERROR(Saf0034, "failed safety 'boundcheck' $ range error, lower > upper");
-    SWAG_ERROR(Saf0004, "failed safety 'boundcheck' $ slice error, lower > upper");
-    SWAG_ERROR(Saf0005, "failed safety 'boundcheck' $ slice error, upper out of bounds");
-    SWAG_ERROR(Saf0003, "failed safety 'math' $ '@abs' overflow (type is '%s')");
-    SWAG_ERROR(Saf0027, "failed safety 'math' $ '@acos' invalid argument (type is '%s')");
-    SWAG_ERROR(Saf0026, "failed safety 'math' $ '@asin' invalid argument (type is '%s')");
-    SWAG_ERROR(Saf0023, "failed safety 'math' $ '@log' invalid argument (type is '%s')");
-    SWAG_ERROR(Saf0025, "failed safety 'math' $ '@log10' invalid argument (type is '%s')");
-    SWAG_ERROR(Saf0024, "failed safety 'math' $ '@log2' invalid argument (type is '%s')");
-    SWAG_ERROR(Saf0022, "failed safety 'math' $ '@sqrt' invalid argument (type is '%s')");
-    SWAG_ERROR(Saf0007, "failed safety 'math' $ division by zero");
-    SWAG_ERROR(Saf0021, "failed safety 'nan' $ invalid float (NaN)");
-    SWAG_ERROR(Saf0001, "failed safety 'null' $ dereferencing a null pointer");
-    SWAG_ERROR(Saf0032, "failed safety 'overflow' $ negative value '%I64d' on unsigned type '%s'");
-    SWAG_ERROR(Saf0006, "failed safety 'overflow' $ negative value '%s' on unsigned type '%s'");
-    SWAG_ERROR(Saf0030, "failed safety 'overflow' $ negative value '%g' on unsigned type '%s'");
-    SWAG_ERROR(Saf0029, "failed safety 'overflow' $ value '%s' ('%I64u' in decimal) does not fit in type '%s'");
-    SWAG_ERROR(Saf0033, "failed safety 'overflow' $ value '%I64u' does not fit in type '%s'");
-    SWAG_ERROR(Saf0035, "failed safety 'overflow' $ value '%I64d' does not fit in type '%s'");
-    SWAG_ERROR(Saf0031, "failed safety 'overflow' $ value '%g' does not fit in type '%s'");
-    SWAG_ERROR(Saf0010, "failed safety 'overflow' $ overflow in '*' (type is '%s')");
-    SWAG_ERROR(Saf0009, "failed safety 'overflow' $ overflow in '*=' (type is '%s')");
-    SWAG_ERROR(Saf0012, "failed safety 'overflow' $ overflow in '+' (type is '%s')");
-    SWAG_ERROR(Saf0011, "failed safety 'overflow' $ overflow in '+=' (type is '%s')");
-    SWAG_ERROR(Saf0014, "failed safety 'overflow' $ overflow in '-' (type is '%s')");
-    SWAG_ERROR(Saf0013, "failed safety 'overflow' $ overflow in '-=' (type is '%s')");
-    SWAG_ERROR(Saf0015, "failed safety 'overflow' $ overflow in '<<' (type is '%s')");
-    SWAG_ERROR(Saf0016, "failed safety 'overflow' $ overflow in '>>' (type is '%s')");
-    SWAG_ERROR(Saf0017, "failed safety 'overflow' $ overflow in '-' (type is '%s')");
-    SWAG_ERROR(Saf0018, "failed safety 'overflow' $ truncation from '%s' to '%s'");
-    SWAG_ERROR(Saf0019, "failed safety 'switch' $ unexpected switch value ('Swag.Complete')");
+    SWAG_ERROR(Saf0002, "safety failed 'any' $ invalid cast from 'any' to '%s'");
+    SWAG_ERROR(Saf0028, "safety failed 'any' $ invalid cast of a null value to '%s'");
+    SWAG_ERROR(Saf0020, "safety failed 'bool' $ invalid boolean value");
+    SWAG_ERROR(Saf0008, "safety failed 'boundcheck' $ index out of bounds");
+    SWAG_ERROR(Saf0034, "safety failed 'boundcheck' $ range error, lower > upper");
+    SWAG_ERROR(Saf0004, "safety failed 'boundcheck' $ slice error, lower > upper");
+    SWAG_ERROR(Saf0005, "safety failed 'boundcheck' $ slice error, upper out of bounds");
+    SWAG_ERROR(Saf0003, "safety failed 'math' $ '@abs' overflow (type is '%s')");
+    SWAG_ERROR(Saf0027, "safety failed 'math' $ '@acos' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0026, "safety failed 'math' $ '@asin' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0023, "safety failed 'math' $ '@log' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0025, "safety failed 'math' $ '@log10' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0024, "safety failed 'math' $ '@log2' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0022, "safety failed 'math' $ '@sqrt' invalid argument (type is '%s')");
+    SWAG_ERROR(Saf0007, "safety failed 'math' $ division by zero");
+    SWAG_ERROR(Saf0021, "safety failed 'nan' $ invalid float (NaN)");
+    SWAG_ERROR(Saf0001, "safety failed 'null' $ dereferencing a null pointer");
+    SWAG_ERROR(Saf0032, "safety failed 'overflow' $ negative value '%I64d' on unsigned type '%s'");
+    SWAG_ERROR(Saf0006, "safety failed 'overflow' $ negative value '%s' on unsigned type '%s'");
+    SWAG_ERROR(Saf0030, "safety failed 'overflow' $ negative value '%g' on unsigned type '%s'");
+    SWAG_ERROR(Saf0029, "safety failed 'overflow' $ value '%s' ('%I64u' in decimal) does not fit in type '%s'");
+    SWAG_ERROR(Saf0033, "safety failed 'overflow' $ value '%I64u' does not fit in type '%s'");
+    SWAG_ERROR(Saf0035, "safety failed 'overflow' $ value '%I64d' does not fit in type '%s'");
+    SWAG_ERROR(Saf0031, "safety failed 'overflow' $ value '%g' does not fit in type '%s'");
+    SWAG_ERROR(Saf0010, "safety failed 'overflow' $ overflow in '*' (type is '%s')");
+    SWAG_ERROR(Saf0009, "safety failed 'overflow' $ overflow in '*=' (type is '%s')");
+    SWAG_ERROR(Saf0012, "safety failed 'overflow' $ overflow in '+' (type is '%s')");
+    SWAG_ERROR(Saf0011, "safety failed 'overflow' $ overflow in '+=' (type is '%s')");
+    SWAG_ERROR(Saf0014, "safety failed 'overflow' $ overflow in '-' (type is '%s')");
+    SWAG_ERROR(Saf0013, "safety failed 'overflow' $ overflow in '-=' (type is '%s')");
+    SWAG_ERROR(Saf0015, "safety failed 'overflow' $ overflow in '<<' (type is '%s')");
+    SWAG_ERROR(Saf0016, "safety failed 'overflow' $ overflow in '>>' (type is '%s')");
+    SWAG_ERROR(Saf0017, "safety failed 'overflow' $ overflow in '-' (type is '%s')");
+    SWAG_ERROR(Saf0018, "safety failed 'overflow' $ truncation from '%s' to '%s'");
+    SWAG_ERROR(Saf0019, "safety failed 'switch' $ unexpected switch value ('Swag.Complete')");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -537,7 +537,7 @@ void initErrors()
     SWAG_ERROR(Err0810, "invalid type                                      $ the type is generic and can't be evaluated in this context");
     SWAG_ERROR(Err0069, "invalid type                                      $ unexpected first parameter type for special function '%s' ('%s' expected, '%s' provided)");
     SWAG_ERROR(Err0678, "invalid type constraint                           $ a type constraint should be a boolean expression, got type '%s' instead");
-    SWAG_ERROR(Err0017, "invalid type declaration                          $ '%s' is not a type, it's %s");
+    SWAG_ERROR(Err0017, "invalid type declaration                          $ expected a type but '%s' is %s");
     SWAG_ERROR(Err1066, "invalid type declaration                          $ expected a type declaration, found '%s' instead");
     SWAG_ERROR(Err1067, "invalid type declaration                          $ expected a type in the tuple definition, found '%s' instead");
     SWAG_ERROR(Err1096, "invalid type declaration                          $ expected the array type after its dimensions, found '%s' instead");
@@ -1300,7 +1300,6 @@ void initErrors()
     SWAG_ERROR(Nte1025, "consider casting with 'cast(%s)'");
     SWAG_ERROR(Nte0143, "consider removing one 'using'");
     SWAG_ERROR(Nte1080, "consider removing the %s or replace it with the scope '%s'");
-    SWAG_ERROR(Nte1026, "consider removing this");
     SWAG_ERROR(Nte0140, "consider using '++' to append strings at compile-time");
     SWAG_ERROR(Nte0133, "consider using '?' to unpack and ignore a variable");
     SWAG_ERROR(Nte0142, "consider using 'func' instead of 'mtd'");
@@ -1317,8 +1316,7 @@ void initErrors()
     SWAG_ERROR(Nte0136, "force the evaluation using '#run'");
     SWAG_ERROR(Nte0114, "function names that start with 'op' followed by an uppercase letter are reserved for struct special functions");
     SWAG_ERROR(Nte0116, "function parameters are immutable and can't be modified");
-    SWAG_ERROR(Nte0008, "here is %s '%s'");
-    SWAG_ERROR(Nte0090, "here is %s '%s'");
+    SWAG_ERROR(Nte0090, "here is the %s '%s'");
     SWAG_ERROR(Nte0040, "here is '%s'");
     SWAG_ERROR(Nte0016, "here is another one");
     SWAG_ERROR(Nte0000, "here is its declaration");
@@ -1337,7 +1335,7 @@ void initErrors()
     SWAG_ERROR(Nte0024, "here is the prior declaration");
     SWAG_ERROR(Nte0032, "here is the problematic attribute");
     SWAG_ERROR(Nte0069, "here is the runtime argument corresponding to '%s'");
-    SWAG_ERROR(Nte0030, "here is the tuple's definition");
+    SWAG_ERROR(Nte0030, "here is the tuple definition");
     SWAG_ERROR(Nte1124, "if this is intended, consider adding 'impl' before this");
     SWAG_ERROR(Nte1005, "if this is intended, consider initializing the global variable with 'undefined' instead of zero");
     SWAG_ERROR(Nte1092, "if this is intentional, consider renaming it to '_%s' to indicate it's unused");
@@ -1459,6 +1457,8 @@ void initErrors()
     SWAG_ERROR(Nte1046, "you can prefix with '#run' to force a compile-time call");
     SWAG_ERROR(Nte1095, "you can't reference this runtime %s from the %s");
     SWAG_ERROR(Nte0149, "you might want to get the address of '%s' using '&'");
+    SWAG_ERROR(Nte0008, nullptr);
+    SWAG_ERROR(Nte1026, nullptr);
     SWAG_ERROR(Nte0077, nullptr);
     SWAG_ERROR(Nte1111, nullptr);
     SWAG_ERROR(Nte1120, nullptr);

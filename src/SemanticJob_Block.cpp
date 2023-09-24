@@ -656,7 +656,6 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     if (node->aliasNames.size() > 2)
     {
         Diagnostic diag{node, node->aliasNames[2], Fmt(Err(Err0626), node->aliasNames.size())};
-        diag.hint = Nte(Nte1026);
         return context->report(diag);
     }
 

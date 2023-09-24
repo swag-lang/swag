@@ -1412,7 +1412,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                 {
                     SymbolOverload* over         = (SymbolOverload*) ip->c.pointer;
                     context->internalPanicSymbol = over;
-                    context->internalPanicHint   = Fmt(Nte(Nte1005));
+                    context->internalPanicHint   = Nte(Nte1005);
                     callInternalPanic(context, ip, Fmt(Err(Err0431), over->node->token.ctext()));
                 }
             }
@@ -1435,7 +1435,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                     {
                         SymbolOverload* over         = (SymbolOverload*) ip->c.pointer;
                         context->internalPanicSymbol = over;
-                        context->internalPanicHint   = Fmt(Nte(Nte1005));
+                        context->internalPanicHint   = Nte(Nte1005);
                         callInternalPanic(context, ip, Fmt(Err(Err0431), over->node->token.ctext()));
                     }
                 }

@@ -716,19 +716,19 @@ Diagnostic* Diagnostic::hereIs(AstNode* node, bool forceShowRange, bool forceNod
     {
     case AstNodeKind::EnumDecl:
     {
-        auto note       = Diagnostic::note(node, node->token, Fmt(Nte(Nte0090), "the declaration of enum", node->token.ctext()));
+        auto note       = Diagnostic::note(node, node->token, Fmt(Nte(Nte0090), "declaration of enum", node->token.ctext()));
         note->showRange = forceShowRange;
         return note;
     }
     case AstNodeKind::StructDecl:
     {
-        auto note       = Diagnostic::note(node, node->token, Fmt(Nte(Nte0090), "the declaration of struct", node->token.ctext()));
+        auto note       = Diagnostic::note(node, node->token, Fmt(Nte(Nte0090), "declaration of struct", node->token.ctext()));
         note->showRange = forceShowRange;
         return note;
     }
     case AstNodeKind::FuncDecl:
     {
-        auto note       = Diagnostic::note(node, node->token, Fmt(Nte(Nte0090), "the declaration of function", node->token.ctext()));
+        auto note       = Diagnostic::note(node, node->token, Fmt(Nte(Nte0090), "declaration of function", node->token.ctext()));
         note->showRange = forceShowRange;
         return note;
     }
@@ -746,14 +746,16 @@ Diagnostic* Diagnostic::hereIs(SymbolOverload* overload, bool forceShowRange)
     if (overload->node && overload->node->flags & AST_GENERATED)
         return nullptr;
 
-    auto showRange = false;
-    auto site      = overload->node;
+    auto site = overload->node;
 
     if (site->typeInfo->isTuple())
-        showRange = true;
+    {
+        auto note       = Diagnostic::note(site, site->token, Nte(Nte0030));
+        note->showRange = false;
+        return note;
+    }
 
-    auto note = Diagnostic::note(site, site->token, Fmt(Nte(Nte0008), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()));
-    if (!forceShowRange)
-        note->showRange = showRange;
+    auto note       = Diagnostic::note(site, site->token, Fmt(Nte(Nte0090), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()));
+    note->showRange = forceShowRange;
     return note;
 }

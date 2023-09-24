@@ -205,9 +205,8 @@ bool SemanticJob::warnUnusedVariables(SemanticContext* context, Scope* scope)
         else if (overload->flags & OVERLOAD_VAR_CAPTURE)
         {
             Diagnostic diag{front, front->token, Fmt(Err(Wrn0002), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
-            diag.hint = Nte(Nte1026);
-            auto note = Diagnostic::note(Fmt(Nte(Nte1092), sym->name.c_str()));
-            isOk      = isOk && context->report(diag, note);
+            auto       note = Diagnostic::note(Fmt(Nte(Nte1092), sym->name.c_str()));
+            isOk            = isOk && context->report(diag, note);
         }
         else if (overload->flags & OVERLOAD_CONSTANT)
         {

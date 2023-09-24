@@ -290,7 +290,6 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             case MatchResult::NoReturnType:
             {
                 Diagnostic diag{childFct->returnType, Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
-                diag.hint = Nte(Nte1026);
                 auto note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0082));
                 return context->report(diag, note);
             }

@@ -530,7 +530,6 @@ bool SemanticJob::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl
     if (paramIdx >= (uint32_t) typeLambda->parameters.count)
     {
         Diagnostic diag{nodeParam, Fmt(Err(Err0026), (uint32_t) typeLambda->parameters.count, (uint32_t) nodeParam->parent->childs.count)};
-        diag.hint = Nte(Nte1026);
         return context->report(diag);
     }
 

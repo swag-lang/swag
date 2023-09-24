@@ -1,4 +1,3 @@
-
 #global testerror "Saf0008"
 
 //#[Swag.PrintBc]
