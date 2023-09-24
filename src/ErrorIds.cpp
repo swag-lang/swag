@@ -438,8 +438,8 @@ void initErrors()
     SWAG_ERROR(Err0808, "invalid generic                                   $ can't instantiate the generic %s '%s' with an unsized value");
     SWAG_ERROR(Err0042, "invalid generic                                   $ can't instantiate the generic function '%s' because of missing contextual types replacements");
     SWAG_ERROR(Err0039, "invalid generic                                   $ can't instantiate the generic struct '%s' because of missing contextual types replacements");
-    SWAG_ERROR(Err0721, "invalid generic                                   $ can't instantiate the generic struct '%s' because of missing generic arguments");
-    SWAG_ERROR(Err0049, "invalid generic                                   $ expected the generic arguments for %s");
+    SWAG_ERROR(Err0721, "missing generic arguments                         $ can't instantiate the generic struct '%s' because of missing generic arguments");
+    SWAG_ERROR(Err0049, "missing generic arguments                         $ expected the generic arguments for %s");
     SWAG_ERROR(Err0123, "invalid generic                                   $ the generic value '%s' has already been deduced from arguments to be '%s', and '%s' is provided here");
     SWAG_ERROR(Err0815, "invalid generic argument                          $ invalid usage of %s ('%s') as a generic argument $ a generic argument must be a literal or a type");
     SWAG_ERROR(Err0054, "invalid generic argument                          $ unexpected generic %s for %s (a type is expected but a value is provided) $ this is a literal but a type was expected");
