@@ -432,14 +432,11 @@ void initErrors()
     SWAG_ERROR(Err1106, "invalid function name                             $ a function name ('%s') can't start with '@', this is reserved for intrinsics");
     SWAG_ERROR(Err1089, "invalid function name                             $ expected a function name, found '%s'");
     SWAG_ERROR(Err0040, "invalid generic                                   $ a partial type alias ('%s') for a generic struct instantiation is not supported");
-    SWAG_ERROR(Err0715, "invalid generic                                   $ can't instantiate the generic function '%s' because of missing generic arguments");
     SWAG_ERROR(Err0352, "invalid generic                                   $ can't deduce the generic arguments when calling %s '%s'");
     SWAG_ERROR(Err0618, "invalid generic                                   $ can't deduce the generic type '%s' from type '%s'");
     SWAG_ERROR(Err0808, "invalid generic                                   $ can't instantiate the generic %s '%s' with an unsized value");
     SWAG_ERROR(Err0042, "invalid generic                                   $ can't instantiate the generic function '%s' because of missing contextual types replacements");
     SWAG_ERROR(Err0039, "invalid generic                                   $ can't instantiate the generic struct '%s' because of missing contextual types replacements");
-    SWAG_ERROR(Err0721, "missing generic arguments                         $ can't instantiate the generic struct '%s' because of missing generic arguments");
-    SWAG_ERROR(Err0049, "missing generic arguments                         $ expected the generic arguments for %s");
     SWAG_ERROR(Err0123, "invalid generic                                   $ the generic value '%s' has already been deduced from arguments to be '%s', and '%s' is provided here");
     SWAG_ERROR(Err0815, "invalid generic argument                          $ invalid usage of %s ('%s') as a generic argument $ a generic argument must be a literal or a type");
     SWAG_ERROR(Err0054, "invalid generic argument                          $ unexpected generic %s for %s (a type is expected but a value is provided) $ this is a literal but a type was expected");
@@ -691,6 +688,9 @@ void initErrors()
     SWAG_ERROR(Err1140, "missing enum name                                 $ expected the enum name before the start of the body '{'");
     SWAG_ERROR(Err1146, "missing enum name                                 $ expected the enum name before the start of the type definition ':'");
     SWAG_ERROR(Err1091, "missing function parameters                       $ expected the function parameters between '()' before the start of the body '{' $ if you want to declare a function without parameters, consider adding '()' after the name");
+    SWAG_ERROR(Err0715, "missing generic arguments                         $ can't instantiate the generic function '%s' because of missing generic arguments");
+    SWAG_ERROR(Err0721, "missing generic arguments                         $ can't instantiate the generic struct '%s' because of missing generic arguments");
+    SWAG_ERROR(Err0049, "missing generic arguments                         $ can't instantiate '%s' because of missing generic arguments");
     SWAG_ERROR(Err0671, "missing generic parameters                        $ the struct '%s' should declare generic parameters because '%s' is generic");
     SWAG_ERROR(Err0672, "missing generic parameters                        $ the struct '%s' can't be solved due to the generic field '%s'");
     SWAG_ERROR(Err1092, "missing generic parameters                        $ expected at least one generic parameter between '()' $ consider removing '()' if this is not generic");
