@@ -166,9 +166,8 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
         if (!typeInfo->isPointerRef())
         {
             Diagnostic diag{node, node->token, Fmt(Err(Err0114), typeInfo->getDisplayNameC())};
-            diag.hint = Nte(Nte1061);
-            diag.addRange(child, Fmt(Nte(Nte1112), Naming::aKindName(typeInfo).c_str()));
-            return context->report(diag);
+            auto       note = Diagnostic::note(Fmt(Nte(Nte1112), Naming::aKindName(typeInfo).c_str()));
+            return context->report(diag, note);
         }
     }
 

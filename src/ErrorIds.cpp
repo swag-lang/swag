@@ -577,7 +577,7 @@ void initErrors()
     SWAG_ERROR(Err0107, "invalid access from runtime                       $ the compile-time function '%s' can't be accessed from runtime function '%s'");
     SWAG_ERROR(Err0060, "invalid access from runtime                       $ this compile-time constant can't be accessed from runtime");
     SWAG_ERROR(Err0144, "unknown enum value                                $ the enumeration value '%s' was not found in the enum '%s'");
-    SWAG_ERROR(Err0706, "missing initialization                            $ the enumeration value '%s' has type '%s' which requires an initialization");
+    SWAG_ERROR(Err0706, "missing initialization                            $ the enumeration value '%s' has type '%s' which requires an explicit initialization");
     SWAG_ERROR(Err0032, "invalid bitcast                                   $ bitcasting from type '%s' is not allowed $ expected an integer, a rune, a float or a pointer");
     SWAG_ERROR(Err0033, "invalid bitcast                                   $ bitcasting to a larger type is not allowed ('%s' to '%s')");
     SWAG_ERROR(Err0031, "invalid bitcast                                   $ bitcasting to type '%s' is not allowed $ expected integer, rune, or float");
@@ -830,17 +830,16 @@ void initErrors()
     SWAG_ERROR(Err0529, "invalid range                                     $ the range lower bound '%I64u' is greater than the upper bound '%I64u'");
     SWAG_ERROR(Err0528, "invalid range                                     $ the range lower bound '%lld' is greater than the upper bound '%lld'");
     SWAG_ERROR(Err0337, "misplaced range                                   $ can't use a range in a switch without an expression");
+    SWAG_ERROR(Err0775, "infinite recursion                                $ can't expand '%s' because it is recursive and will lead to an infinite recursion");
+    SWAG_ERROR(Err0117, "ambiguous 'using'                                 $ unexpected 'using' on two variables with the same type ('%s')");
+    SWAG_ERROR(Err0300, "missing initialization                            $ a reference requires an explicit initialization");
+    SWAG_ERROR(Err0732, "invalid return type                               $ a function return of type 'void' is invalid $ just omit the return type if you want the function to return nothing");
+    SWAG_ERROR(Err0770, "return type mismatch                              $ the return type has already been deduced to be '%s', and here it's '%s'");
+    SWAG_ERROR(Err0773, "return type mismatch                              $ the return type has already been deduced to be nothing, and here it's '%s'");
+    SWAG_ERROR(Err0774, "return type mismatch                              $ unexpected return type '%s' for %s");
+    SWAG_ERROR(Err0114, "invalid address                                   $ cannot take the address of a function return value of type '%s'");
+    SWAG_ERROR(Err0779, "missing return value                              $ expected a return value because the return type has already been deduced to be '%s'");
 
-    SWAG_ERROR(Err0775, "recursion detected; can't expand '%s'");
-    SWAG_ERROR(Err0117, "redundant 'using' with type '%s'");
-    SWAG_ERROR(Err0300, "references must be initialized");
-    SWAG_ERROR(Err0549, "resolution failed for %s '%s'");
-    SWAG_ERROR(Err0732, "return type 'void' unnecessary");
-    SWAG_ERROR(Err0770, "return type deduced as '%s'; provided '%s'");
-    SWAG_ERROR(Err0773, "return type deduced as none; provided '%s'");
-    SWAG_ERROR(Err0774, "return type mismatch (expected void, found '%s') for %s");
-    SWAG_ERROR(Err0114, "return value address (type '%s') not accessible");
-    SWAG_ERROR(Err0779, "return value needed; return type inferred as '%s'");
     SWAG_ERROR(Err0047, "right expression address not accessible");
     SWAG_ERROR(Err0173, "shift operand should be 'u32', not '%s'");
     SWAG_ERROR(Err0450, "expected single generic parameter for function '%s'; '%d' provided");
@@ -886,6 +885,7 @@ void initErrors()
     SWAG_ERROR(Err0781, "unable to expand '%s' in global scope: sub declarations not supported");
     SWAG_ERROR(Err0657, "unimplemented interface functions for '%s' in '%s'");
 
+    SWAG_ERROR(Err0549, nullptr);
     SWAG_ERROR(Err0684, nullptr);
     SWAG_ERROR(Err0675, nullptr);
     SWAG_ERROR(Err0573, nullptr);
@@ -1327,7 +1327,6 @@ void initErrors()
     SWAG_ERROR(Nte0090, "here is %s '%s'");
     SWAG_ERROR(Nte0040, "here is '%s'");
     SWAG_ERROR(Nte0016, "here is another one");
-    SWAG_ERROR(Nte0021, "here is another reference");
     SWAG_ERROR(Nte0000, "here is its declaration");
     SWAG_ERROR(Nte0026, "here is the %s");
     SWAG_ERROR(Nte0028, "here is the declaration");
@@ -1382,7 +1381,6 @@ void initErrors()
     SWAG_ERROR(Nte0146, "pointer arithmetic is only valid for pointers declared with '^', not '*'");
     SWAG_ERROR(Nte0086, "possibly comes from enum '%s'");
     SWAG_ERROR(Nte0022, "potential issue detected in your program's compile-time component");
-    SWAG_ERROR(Nte1081, "primary instance noted here");
     SWAG_ERROR(Nte0055, "trying to match the type of the other part of the conditional expression");
     SWAG_ERROR(Nte0126, "public structs should export all their special functions");
     SWAG_ERROR(Nte1012, "return (%s) should be of type '%s'");
@@ -1452,7 +1450,7 @@ void initErrors()
     SWAG_ERROR(Nte1029, "this is a parameter");
     SWAG_ERROR(Nte1024, "this is a pointer type declaration due to '*'");
     SWAG_ERROR(Nte1010, "this is a tuple type");
-    SWAG_ERROR(Nte0143, "this is ambiguous; consider removing one 'using'");
+    SWAG_ERROR(Nte0143, "consider removing one 'using'");
     SWAG_ERROR(Nte1099, "this is an unnamed '?' parameter");
     SWAG_ERROR(Nte0002, "this is the expected signature");
     SWAG_ERROR(Nte1059, "this is the first usage");
@@ -1492,6 +1490,8 @@ void initErrors()
     SWAG_ERROR(Nte1126, "this string appears to be null or empty");
     SWAG_ERROR(Nte1006, "the number of values to initialize ('%d') is greater than one");
     SWAG_ERROR(Nte1037, "the slicing lower bound type is invalid, expected an integer, got '%s' instead");
+    SWAG_ERROR(Nte1081, nullptr);
+    SWAG_ERROR(Nte0021, nullptr);
     SWAG_ERROR(Nte1076, nullptr);
     SWAG_ERROR(Nte1100, nullptr);
     SWAG_ERROR(Nte0121, nullptr);

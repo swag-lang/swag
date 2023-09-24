@@ -657,6 +657,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         // A constant must be initialized
         if (isCompilerConstant && !node->hasComputedValue())
             return context->report({node, Err(Err0298)});
+
         // A constant variable must be initialized
         if ((symbolFlags & OVERLOAD_CONST_ASSIGN) && node->kind != AstNodeKind::FuncDeclParam)
         {

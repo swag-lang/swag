@@ -1,4 +1,3 @@
-//#global skip
 #global testerror "Err0779"
 #test
 {

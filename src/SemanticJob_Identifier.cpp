@@ -3219,7 +3219,6 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
             if (dep.node->isGeneratedSelf())
             {
                 Diagnostic diag{dependentVar, Fmt(Err(Err0117), dependentVar->typeInfo->getDisplayNameC())};
-                diag.hint  = Nte(Nte1081);
                 auto note  = Diagnostic::note(dep.node->ownerFct, dep.node->ownerFct->token, Nte(Nte0056));
                 auto note1 = Diagnostic::note(Nte(Nte0143));
                 return context->report(diag, note, note1);
@@ -3227,8 +3226,7 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
             else
             {
                 Diagnostic diag{dep.node, Fmt(Err(Err0117), dependentVar->typeInfo->getDisplayNameC())};
-                diag.hint  = Nte(Nte1081);
-                auto note  = Diagnostic::note(dependentVar, Nte(Nte0021));
+                auto note  = Diagnostic::note(dependentVar, Nte(Nte0016));
                 auto note1 = Diagnostic::note(Nte(Nte0143));
                 return context->report(diag, note, note1);
             }

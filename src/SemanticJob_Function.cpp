@@ -482,7 +482,6 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         if (typeNode->typeInfo->getCA()->isVoid())
         {
             Diagnostic diag{typeNode->sourceFile, typeNode->token.startLocation, front->token.endLocation, Err(Err0732)};
-            diag.hint = Nte(Nte1026);
             return context->report(diag);
         }
     }
@@ -1376,7 +1375,6 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     if (returnType->isVoid() && !concreteType->isVoid())
     {
         Diagnostic diag{child, Fmt(Err(Err0774), concreteType->getDisplayNameC(), funcNode->getDisplayNameC())};
-        diag.hint = Nte(Nte1026);
 
         if (node->ownerInline && !(node->semFlags & SEMFLAG_EMBEDDED_RETURN))
         {
