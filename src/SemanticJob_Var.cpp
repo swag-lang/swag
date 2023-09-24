@@ -65,7 +65,6 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
     if (typeStruct->fields.size() == 0)
     {
         Diagnostic diag{varDecl, varDecl->token, Err(Err0292)};
-        diag.hint = Nte(Nte1066);
         diag.addRange(varDecl->assignment, Nte(Nte1069));
         return context->report(diag);
     }
@@ -329,8 +328,7 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
     auto identifier = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
     if (identifier->callParameters)
     {
-        Diagnostic diag{assign, Err(Err0295)};
-        diag.hint = Nte(Nte1045);
+        Diagnostic diag{assign, Err(Err0645)};
         diag.addRange(identifier->callParameters, Nte(Nte1007));
         return context->report(diag);
     }

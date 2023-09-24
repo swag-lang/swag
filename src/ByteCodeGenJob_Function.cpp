@@ -1932,7 +1932,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     // Pass a variadic parameter to another function
     auto numVariadic = (uint32_t) (numCallParams - numTypeParams) + 1;
     if (typeInfoFunc->flags & TYPEINFO_VARIADIC)
-        SWAG_VERIFY(numVariadic <= SWAG_LIMIT_MAX_VARIADIC_PARAMS, context->report({allParams, Fmt(Err(Err0578), numVariadic, SWAG_LIMIT_MAX_VARIADIC_PARAMS)}));
+        SWAG_VERIFY(numVariadic <= SWAG_LIMIT_MAX_VARIADIC_PARAMS, context->report({allParams, Fmt(Err(Err0578), SWAG_LIMIT_MAX_VARIADIC_PARAMS, numVariadic)}));
 
     auto lastParam = allParams && !allParams->childs.empty() ? allParams->childs.back() : nullptr;
 

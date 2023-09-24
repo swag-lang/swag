@@ -662,7 +662,7 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
     auto typeInfo = node->identifier->typeInfo;
     if (!typeInfo->isStruct() && !typeInfo->isEnum())
     {
-        Diagnostic diag{node->identifier, Fmt(Err(Err0662), node->identifier->token.ctext(), Naming::aKindName(typeInfo).c_str())};
+        Diagnostic diag{node->identifier, Fmt(Err(Err0662), node->identifier->token.ctext(), typeInfo->getDisplayNameC())};
         return context->report(diag, Diagnostic::hereIs(node->identifier->resolvedSymbolOverload));
     }
 

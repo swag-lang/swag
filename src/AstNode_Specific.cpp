@@ -347,12 +347,23 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
         auto subDecl      = subF->kind == AstNodeKind::AttrUse ? ((AstAttrUse*) subF)->content : subF;
         subDecl->typeInfo = subDecl->typeInfo->clone();
 
+        // Be sure symbol is not already there. This can happen when using mixins
+        SymbolName* sym = nullptr;
+        if (context)
+            sym = subFuncScope->symTable.find(subDecl->token.text);
+
         SymbolKind symKind = SymbolKind::Invalid;
         switch (subDecl->kind)
         {
         case AstNodeKind::FuncDecl:
         {
             auto nodeFunc = CastAst<AstFuncDecl>(subDecl, AstNodeKind::FuncDecl);
+            if (sym)
+            {
+                Diagnostic diag{nodeFunc, nodeFunc->tokenName, Fmt(Err(Err0346), "function", subDecl->token.ctext())};
+                return context->report(diag);
+            }
+
             nodeFunc->content->flags &= ~AST_NO_SEMANTIC;
             if (cloneContext.alternativeScope)
                 nodeFunc->addAlternativeScope(cloneContext.alternativeScope);
@@ -380,13 +391,25 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
         }
         case AstNodeKind::StructDecl:
         {
+            auto nodeStruct = CastAst<AstStruct>(subDecl, AstNodeKind::StructDecl);
+            if (sym)
+            {
+                Diagnostic diag{subDecl, subDecl->token, Fmt(Err(Err0346), "struct", subDecl->token.ctext())};
+                return context->report(diag);
+            }
+
             symKind           = SymbolKind::Struct;
-            auto nodeStruct   = CastAst<AstStruct>(subDecl, AstNodeKind::StructDecl);
             auto typeStruct   = CastTypeInfo<TypeInfoStruct>(subDecl->typeInfo, TypeInfoKind::Struct);
             typeStruct->scope = nodeStruct->scope;
             break;
         }
         case AstNodeKind::InterfaceDecl:
+            if (sym)
+            {
+                Diagnostic diag{subDecl, subDecl->token, Fmt(Err(Err0346), "interface", subDecl->token.ctext())};
+                return context->report(diag);
+            }
+
             symKind = SymbolKind::Interface;
             break;
 
@@ -400,17 +423,6 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
 
         subDecl->semFlags |= SEMFLAG_FILE_JOB_PASS;
         newFctNode->subDecls.push_back(subDecl);
-
-        // Be sure symbol is not already there. This can happen when using mixins
-        if (context)
-        {
-            auto sym = subFuncScope->symTable.find(subDecl->token.text);
-            if (sym)
-            {
-                Diagnostic diag{subDecl, Fmt(Err(Err0346), subDecl->token.ctext())};
-                return context->report(diag);
-            }
-        }
 
         // We need to add the parent scope of the inline function (the global one), in order for
         // the inline content to be resolved in the same context as the original function

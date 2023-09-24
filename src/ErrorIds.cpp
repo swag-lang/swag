@@ -348,7 +348,7 @@ void initErrors()
     SWAG_ERROR(Err1066, "invalid type declaration                          $ expected a type declaration, found '%s' instead");
     SWAG_ERROR(Err1096, "invalid type declaration                          $ expected the array type after its dimensions, found '%s' instead");
     SWAG_ERROR(Err1067, "invalid type declaration                          $ expected a type in the tuple definition, found '%s' instead");
-    SWAG_ERROR(Err1060, "invalid type suffix                               $ expected an identifier or a type after the start of a type suffix ''', found '%s' instead");
+    SWAG_ERROR(Err1060, "invalid type suffix                               $ expected an identifier or a type after the start of a type suffix, found '%s' instead");
     SWAG_ERROR(Err0909, "invalid unicode value                             $ value '0x%x is not a valid unicode code point, and can't be converted to UTF8");
     SWAG_ERROR(Err1065, "invalid variable list                             $ 'if' does not support multiples variable declarations");
     SWAG_ERROR(Err1111, "invalid variable name                             $ a variable name ('%s') can't start with '@', this is reserved for intrinsics $ only '@mixin' and '@alias' are possible in that case");
@@ -654,7 +654,6 @@ void initErrors()
     SWAG_ERROR(Err0052, "unexpected return value                           $ a %s can't return something");
     SWAG_ERROR(Err0176, "invalid interface conversion                      $ '%s' (or a 'using' field) doesn't implement '%s', so struct-to-interface cast is not allowed");
     SWAG_ERROR(Err0852, "invalid attribute usage                           $ the 'AttributeUsage.Gen' can only be associated with 'AttributeUsage.Struct' or 'AttributeUsage.Enum'");
-    SWAG_ERROR(Err0645, "double variable initialization                    $ you cannot initialize a variable with both the type syntax and an assignment");
     SWAG_ERROR(Err0312, "failed generic instantiation                      $ the variable creation failed due to the generic type '%s'");
     SWAG_ERROR(Err0859, "forbidden call to 'compileString'                 $ the 'compileString' function is not accessible in this context $ this compiler stage does not allow meta-programmation");
     SWAG_ERROR(Err0289, "unexpected 'impl'                                 $ 'impl' associated with a function should only be used within an 'impl for' block");
@@ -844,26 +843,26 @@ void initErrors()
     SWAG_ERROR(Err0882, "capture size overflow                             $ the total requested size is '%u' bytes but the maximum authorized size is '%u'");
     SWAG_ERROR(Err0153, "file error                                        $ failed to read source file '%s'");
     SWAG_ERROR(Err0096, "standalone expression                             $ an expression value should be used $ consider removing it");
-    SWAG_ERROR(Err0290, "invalid 'impl'                                    $ expected a struct name after 'for' but the symbol '%s' is %s");
+    SWAG_ERROR(Err0290, "invalid 'impl'                                    $ expected a struct name after 'for' but '%s' is %s");
     SWAG_ERROR(Err0666, "invalid opaque struct                             $ a struct marked with '#[Swag.Opaque]' requires a 'public' access");
     SWAG_ERROR(Err0667, "invalid opaque struct                             $ the struct cannot be marked with '#[Swag.Opaque]' because the whole file is exported with '#global export'");
     SWAG_ERROR(Err0673, "unknown relocation offset                         $ can't find the struct member '%s' to compute the relocation");
     SWAG_ERROR(Err0029, "invalid 'namealias'                               $ can't alias a struct member");
+    SWAG_ERROR(Err0645, "double initialization                             $ you should not initialize a struct with both the type syntax and an assignment");
+    SWAG_ERROR(Err0662, "invalid 'impl'                                    $ expected a struct name or an enum name after 'impl' but '%s' is '%s'");
+    SWAG_ERROR(Err0532, "invalid type suffix                               $ a literal with a suffix (in that case '%s') should only be used for a struct conversion");
+    SWAG_ERROR(Err0346, "symbol already defined                            $ the %s '%s' has already been defined in a parent scope");
+    SWAG_ERROR(Err0578, "too many variadic parameters                      $ the maximum number of variadic parameters is '%s', got '%d' instead");
+    SWAG_ERROR(Err0893, "symbol already defined                            $ the generic symbol '%s' has already been defined in a parent scope");
+    SWAG_ERROR(Err0574, "invalid assign                                    $ the affectation to the tuple is not possible because the right expression is not compatible");
+    SWAG_ERROR(Err0007, "invalid comparison                                $ comparison operations on tuples are not (yet?) supported");
+    SWAG_ERROR(Err0195, "too many initializers                             $ expected '%d' value(s) to initialize the tuple, got '%d' instead");
+    SWAG_ERROR(Err0205, "not enough initializers                           $ expected '%d' value(s) to initialize the tuple, got '%d' instead");
+    SWAG_ERROR(Err0028, "tuple type mismatch                               $ the source and the requested tuples are not compatible");
+    SWAG_ERROR(Err0624, "invalid 'visit' type                              $ a tuple can't be visited");
+    SWAG_ERROR(Err0292, "invalid tuple unpacking                           $ can't unpack an empty tuple");
+    SWAG_ERROR(Err0482, "invalid dereference                               $ tuples can't be dereferenced like pointers");
 
-    SWAG_ERROR(Err0295, "duplicate initialization of struct");
-    SWAG_ERROR(Err0662, "expected struct or enum, found '%s' as %s");
-    SWAG_ERROR(Err0532, "suffix literals like '%s' are for struct conversions only");
-    SWAG_ERROR(Err0346, "symbol '%s' defined in parent scope");
-    SWAG_ERROR(Err0578, "too many variadic parameters ('%d' given, max: '%d')");
-    SWAG_ERROR(Err0893, "top-level declaration conflict for generic symbol '%s'");
-    SWAG_ERROR(Err0574, "tuple assignment incompatible with right expression");
-    SWAG_ERROR(Err0007, "tuple comparison operations unsupported");
-    SWAG_ERROR(Err0195, "tuple has too many initializers ('%d' expected, '%d' given)");
-    SWAG_ERROR(Err0205, "tuple initialization requires '%d' argument(s) but got '%d'");
-    SWAG_ERROR(Err0028, "tuple type mismatch");
-    SWAG_ERROR(Err0624, "tuple type visitation not allowed");
-    SWAG_ERROR(Err0292, "tuple unpacking failed; no fields found");
-    SWAG_ERROR(Err0482, "tuples can't be dereferenced as pointers or arrays");
     SWAG_ERROR(Err0252, "type '%s' and '%s' from command line for '%s' mismatch");
     SWAG_ERROR(Err0058, "type '%s' can't be converted to constant expression");
     SWAG_ERROR(Err0889, "type '%s' can't be initialized with '%s': missing 'opAffectSuffix' in '%s'");
@@ -883,6 +882,7 @@ void initErrors()
     SWAG_ERROR(Err0781, "unable to expand '%s' in global scope: sub declarations not supported");
     SWAG_ERROR(Err0657, "unimplemented interface functions for '%s' in '%s'");
 
+    SWAG_ERROR(Err0295, nullptr);
     SWAG_ERROR(Err0648, nullptr);
     SWAG_ERROR(Err0173, nullptr);
     SWAG_ERROR(Err0549, nullptr);
@@ -1384,7 +1384,6 @@ void initErrors()
     SWAG_ERROR(Nte0055, "trying to match the type of the other part of the conditional expression");
     SWAG_ERROR(Nte0126, "public structs should export all their special functions");
     SWAG_ERROR(Nte1012, "return (%s) should be of type '%s'");
-    SWAG_ERROR(Nte1045, "second initialization observed");
     SWAG_ERROR(Nte1009, "secondary instance observed");
     SWAG_ERROR(Nte1056, "this should be followed by generic arguments");
     SWAG_ERROR(Nte1052, "should be casted to a sized integer like 's32', 's64', etc.");
@@ -1490,6 +1489,7 @@ void initErrors()
     SWAG_ERROR(Nte1126, "this string appears to be null or empty");
     SWAG_ERROR(Nte1006, "the number of values to initialize ('%d') is greater than one");
     SWAG_ERROR(Nte1037, "the slicing lower bound type is invalid, expected an integer, got '%s' instead");
+    SWAG_ERROR(Nte1045, nullptr);
     SWAG_ERROR(Nte1081, nullptr);
     SWAG_ERROR(Nte0021, nullptr);
     SWAG_ERROR(Nte1076, nullptr);

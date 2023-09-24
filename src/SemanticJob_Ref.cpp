@@ -677,13 +677,13 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         {
             if (arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DREF)
             {
-                Diagnostic diag{arrayNode->access, Err(Err0482), Diagnostic::isType(arrayType)};
+                Diagnostic diag{arrayNode->access, Err(Err0482)};
                 diag.addRange(arrayNode->token.startLocation, arrayNode->token.endLocation, Nte(Nte1060));
                 return context->report(diag);
             }
             else
             {
-                Diagnostic diag{arrayNode->access, Err(Err0482), Nte(Nte1061)};
+                Diagnostic diag{arrayNode->access, Err(Err0482)};
                 diag.addRange(arrayNode->array, Diagnostic::isType(arrayType));
                 return context->report(diag);
             }
@@ -803,13 +803,13 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     {
         if (arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DREF)
         {
-            Diagnostic diag{arrayNode->access, Err(Err0482), Diagnostic::isType(arrayType)};
+            Diagnostic diag{arrayNode->access, Err(Err0482)};
             diag.addRange(arrayNode->token.startLocation, arrayNode->token.endLocation, Nte(Nte1060));
             return context->report(diag);
         }
         else
         {
-            Diagnostic diag{arrayNode->access, Err(Err0482), Nte(Nte1061)};
+            Diagnostic diag{arrayNode->access, Err(Err0482)};
             diag.addRange(arrayNode->array, Diagnostic::isType(arrayType));
             return context->report(diag);
         }

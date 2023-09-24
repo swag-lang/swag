@@ -391,19 +391,24 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 if (leftTypeInfo->kind == rightTypeInfo->kind && rightTypeInfo->isSame(leftTypeInfo, CASTFLAG_CAST | CASTFLAG_FOR_AFFECT))
                 {
                     SWAG_CHECK(waitForStructUserOps(context, left));
-                    if (context->result == ContextResult::Pending)
+                    if (context->result != ContextResult::Done)
                         return true;
                 }
                 else if (rightTypeInfo->isInitializerList())
                 {
                     SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UNCONST | CASTFLAG_ACCEPT_PENDING));
-                    if (context->result == ContextResult::Pending)
+                    if (context->result != ContextResult::Done)
                         return true;
                 }
                 else
                 {
                     if (leftTypeInfo->isTuple())
-                        return context->report({node, Err(Err0574)});
+                    {
+                        Diagnostic diag{node, node->token, Err(Err0574)};
+                        diag.addRange(right, Diagnostic::isType(rightTypeInfo));
+                        return context->report(diag);
+                    }
+
                     SWAG_CHECK(resolveUserOpAffect(context, leftTypeInfo, rightTypeInfo, left, right));
                     if (context->result != ContextResult::Done)
                         return true;
