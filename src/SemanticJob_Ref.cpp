@@ -574,7 +574,11 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     if (arrayNode->parent->parent->kind != AstNodeKind::MakePointer)
     {
         if (baseType->isConst())
-            return context->report({arrayNode->array, Fmt(Err(Err0564), baseType->getDisplayNameC()), Diagnostic::isType(baseType)});
+        {
+            Diagnostic diag{arrayNode->parent->parent, arrayNode->parent->parent->token, Fmt(Err(Err0564), baseType->getDisplayNameC())};
+            diag.addRange(arrayNode->array->token, Diagnostic::isType(baseType));
+            return context->report(diag);
+        }
     }
     else
     {
@@ -853,8 +857,9 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     {
         if (!arrayType->isPointerArithmetic() && !(arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DREF))
         {
-            Diagnostic diag{arrayNode->array, Fmt(Err(Err0194), arrayNode->resolvedSymbolName->name.c_str(), arrayType->getDisplayNameC())};
-            return context->report(diag);
+            Diagnostic diag{arrayNode->access, Fmt(Err(Err0194), arrayNode->resolvedSymbolName->name.c_str(), arrayType->getDisplayNameC())};
+            diag.addRange(arrayNode->array, Diagnostic::isType(arrayType));
+            return context->report(diag, Diagnostic::note(Nte(Nte0146)));
         }
 
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
@@ -863,9 +868,8 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         if (typePtr->pointedType->isVoid())
         {
             Diagnostic diag{arrayNode->access, Err(Err0486)};
-            diag.hint = Nte(Nte1110);
             diag.addRange(arrayNode->array, Diagnostic::isType(typePtr));
-            return context->report(diag);
+            return context->report(diag, Diagnostic::note(Nte(Nte1110)));
         }
 
         arrayNode->typeInfo = typePtr->pointedType;

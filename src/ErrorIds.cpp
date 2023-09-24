@@ -128,7 +128,7 @@ void initErrors()
     SWAG_ERROR(Wrn0003, "deprecated usage          $ %s '%s' is deprecated (attribute 'Swag.Deprecated')");
     SWAG_ERROR(Wrn0009, "unchanged local variable  $ the variable '%s' remains unchanged after its declaration $ if you don't intend to modify it, consider declaring it with 'let' instead of 'var' for immutability");
     SWAG_ERROR(Wrn0010, "unchanged local variable  $ the variable 'a' is declared but its value is never set or modified");
-    SWAG_ERROR(Wrn0001, "unreachable code          $ this code is not reachable and will never execute");
+    SWAG_ERROR(Wrn0001, "unreachable code          $ this code is not reachable and will never be executed");
     SWAG_ERROR(Wrn0002, "unused %s                 $ %s '%s' is not used");
     SWAG_ERROR(Wrn0004, nullptr);
     SWAG_ERROR(Wrn0005, nullptr);
@@ -166,7 +166,7 @@ void initErrors()
     SWAG_ERROR(Err1200, "ambiguous syntax                                  $ ambiguity arises between initializing '%s' and starting a new block");
     SWAG_ERROR(Err1195, "ambiguous syntax                                  $ ambiguous declaration within lambda type parameters");
     SWAG_ERROR(Err0011, "argument already defined                          $ the named argument '%s' has already been defined");
-    SWAG_ERROR(Err0536, "bytecode stack overflow                           $ the required size exceeds the limit given by '--stack-size:%s'");
+    SWAG_ERROR(Err0536, "bytecode stack overflow                           $ the required size exceeds the limit '%s' given by '--stack-size'");
     SWAG_ERROR(Err0592, "can't resolve foreign call                        $ failed to load the module '%s' while resolving the foreign function '%s': %s");
     SWAG_ERROR(Err0882, "capture size overflow                             $ the total requested size is '%u' bytes but the maximum authorized size is '%u'");
     SWAG_ERROR(Err0161, "compile-time evaluation failed                    $ can't transform the type '%s' to a constant array because 'opCount' returns '0'");
@@ -418,7 +418,7 @@ void initErrors()
     SWAG_ERROR(Err0184, "invalid escape format                             $ the '\\x' escape code requires 2 hexadecimal digits");
     SWAG_ERROR(Err0781, "invalid expand                                    $ can't expand '%s' in global scope");
     SWAG_ERROR(Err1076, "invalid expression                                $ expected an expression after %s, found '%s' instead");
-    SWAG_ERROR(Err0012, "invalid expression                                $ expected an expression, but found a type instead");
+    SWAG_ERROR(Err0012, "invalid expression                                $ expected an expression, found a type instead");
     SWAG_ERROR(Err1059, "invalid expression                                $ expected an expression, found '%s' instead");
     SWAG_ERROR(Err1020, "invalid expression                                $ the directive '%s' can't be used as an expression $ this directive can only be used as a statement");
     SWAG_ERROR(Err2002, "invalid float number format                       $ exponent in the scientific notation must contain at least one digit");
@@ -528,7 +528,7 @@ void initErrors()
     SWAG_ERROR(Err0807, "invalid type                                      $ the intrinsic '@spread' can't be used with type '%s' $ this kind of type can't be spreaded");
     SWAG_ERROR(Err0170, "invalid type                                      $ the operator '<<' requires an integer, got '%s' instead");
     SWAG_ERROR(Err0172, "invalid type                                      $ the operator '>>' requires an integer, got '%s' instead");
-    SWAG_ERROR(Err0077, "invalid type                                      $ the second parameter of '%s' can't be of type '%s' $ consider using 'opAssign' for that");
+    SWAG_ERROR(Err0077, "invalid type                                      $ the second parameter of '%s' can't be of type '%s' $ consider using 'opAssign' if you want to make a copy");
     SWAG_ERROR(Err0074, "invalid type                                      $ the special function '%s' expects a 'bool' as a generic parameter, got '%s' instead");
     SWAG_ERROR(Err0072, "invalid type                                      $ the special function '%s' expects a 'string' as a generic parameter, got '%s' instead");
     SWAG_ERROR(Err0731, "invalid type                                      $ the type '%s' can't be used as a type for an attribute parameter");
@@ -1356,11 +1356,11 @@ void initErrors()
     SWAG_ERROR(Nte1115, "one function declares 'throw' while the other doesn't");
     SWAG_ERROR(Nte1112, "only the address of a returned reference can be taken, and this is %s");
     SWAG_ERROR(Nte0150, "only variables can be initialized that way");
-    SWAG_ERROR(Nte1110, "operation not allowed because 'void' doesn't have a size");
     SWAG_ERROR(Nte1109, "operation not allowed on non-pointer types");
     SWAG_ERROR(Nte1061, "operation not allowed");
     SWAG_ERROR(Nte0075, "origin of instantiation type '%s' is here");
     SWAG_ERROR(Nte1113, "parameter mismatch detected");
+    SWAG_ERROR(Nte1110, "pointer arithmetic is not valid because 'void' doesn't have a size");
     SWAG_ERROR(Nte0146, "pointer arithmetic is only valid for pointers declared with '^', not '*'");
     SWAG_ERROR(Nte0086, "possibly comes from enum '%s'");
     SWAG_ERROR(Nte0022, "potential issue detected in your program's compile-time component");

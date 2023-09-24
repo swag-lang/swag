@@ -63,9 +63,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
         if (parts.size() == 1)
             continue;
 
-        note->textMsg = parts[0];
-        note->textMsg += ": ";
-        note->textMsg += parts[1];
+        note->textMsg = parts[1];
     }
 
     for (auto note : notes)

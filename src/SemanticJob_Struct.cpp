@@ -290,7 +290,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
             case MatchResult::NoReturnType:
             {
                 Diagnostic diag{childFct->returnType, Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
-                auto note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0082));
+                auto       note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0082));
                 return context->report(diag, note);
             }
 
@@ -1115,8 +1115,13 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                     if (varDecl->type)
                         child = varDecl->type;
                     if (!node->genericParameters)
-                        return context->report({child, Fmt(Err(Err0671), child->typeInfo->getDisplayNameC(), node->token.ctext())});
-                    return context->report({child, Fmt(Err(Err0672), node->token.ctext(), child->typeInfo->getDisplayNameC())});
+                    {
+                        Diagnostic diag{child, Fmt(Err(Err0671), child->typeInfo->getDisplayNameC(), node->token.ctext())};
+                        return context->report(diag);
+                    }
+
+                    Diagnostic diag{child, Fmt(Err(Err0672), node->token.ctext(), child->typeInfo->getDisplayNameC())};
+                    return context->report(diag);
                 }
             }
 
