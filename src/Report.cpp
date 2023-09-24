@@ -66,6 +66,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
         note->textMsg = parts[1];
     }
 
+    Set<void*> doneGenParamsRemarks;
     for (auto note : notes)
     {
         if (!note->display)
@@ -76,8 +77,10 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
         // This is a generic instance. Display type replacements.
         if (genCheckNode &&
             genCheckNode->ownerFct &&
-            genCheckNode->ownerFct->typeInfo)
+            genCheckNode->ownerFct->typeInfo &&
+            !doneGenParamsRemarks.contains(genCheckNode->ownerFct->typeInfo))
         {
+            doneGenParamsRemarks.insert(genCheckNode->ownerFct->typeInfo);
             auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(genCheckNode->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
             auto remarks  = Ast::computeGenericParametersReplacement(typeFunc->replaceTypes);
             if (!remarks.empty())
@@ -87,8 +90,10 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
         if (genCheckNode &&
             genCheckNode->ownerStructScope &&
             genCheckNode->ownerStructScope->owner->typeInfo &&
-            genCheckNode->ownerStructScope->owner->typeInfo->kind == TypeInfoKind::Struct)
+            genCheckNode->ownerStructScope->owner->typeInfo->kind == TypeInfoKind::Struct &&
+            !doneGenParamsRemarks.contains(genCheckNode->ownerStructScope->owner->typeInfo))
         {
+            doneGenParamsRemarks.insert(genCheckNode->ownerStructScope->owner->typeInfo);
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(genCheckNode->ownerStructScope->owner->typeInfo, TypeInfoKind::Struct);
             auto remarks    = Ast::computeGenericParametersReplacement(typeStruct->replaceTypes);
             if (!remarks.empty())
@@ -97,8 +102,10 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
 
         if (genCheckNode &&
             genCheckNode->typeInfo &&
-            genCheckNode->typeInfo->kind == TypeInfoKind::Struct)
+            genCheckNode->typeInfo->kind == TypeInfoKind::Struct &&
+            !doneGenParamsRemarks.contains(genCheckNode->typeInfo))
         {
+            doneGenParamsRemarks.insert(genCheckNode->typeInfo);
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(genCheckNode->typeInfo, TypeInfoKind::Struct);
             auto remarks    = Ast::computeGenericParametersReplacement(typeStruct->replaceTypes);
             if (!remarks.empty())

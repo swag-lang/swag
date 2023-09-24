@@ -1114,14 +1114,17 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
                 {
                     if (varDecl->type)
                         child = varDecl->type;
+
                     if (!node->genericParameters)
                     {
-                        Diagnostic diag{child, Fmt(Err(Err0671), child->typeInfo->getDisplayNameC(), node->token.ctext())};
-                        return context->report(diag);
+                        Diagnostic diag{node, node->tokenName, Fmt(Err(Err0671), node->token.ctext(), varDecl->token.ctext())};
+                        auto       note = Diagnostic::note(child, child->token, Diagnostic::isType(child->typeInfo));
+                        return context->report(diag, note);
                     }
 
-                    Diagnostic diag{child, Fmt(Err(Err0672), node->token.ctext(), child->typeInfo->getDisplayNameC())};
-                    return context->report(diag);
+                    Diagnostic diag{node, node->tokenName, Fmt(Err(Err0672), node->token.ctext(), varDecl->token.ctext())};
+                    auto       note = Diagnostic::note(child, child->token, Diagnostic::isType(child->typeInfo));
+                    return context->report(diag, note);
                 }
             }
 

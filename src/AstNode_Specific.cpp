@@ -862,6 +862,7 @@ AstNode* AstStruct::clone(CloneContext& context)
     newNode->addAlternativeScope(scope);
 
     newNode->genericParameters = genericParameters ? genericParameters->clone(cloneContext) : nullptr;
+    newNode->tokenName         = tokenName;
     newNode->content           = content ? content->clone(cloneContext) : nullptr;
     newNode->validif           = validif ? validif->clone(cloneContext) : nullptr;
     newNode->flags |= AST_FROM_GENERIC;

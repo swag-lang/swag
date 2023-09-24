@@ -238,6 +238,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
     SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Err(Err1025)));
     SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err1063), token.ctext())));
     structNode->inheritTokenName(token);
+    structNode->tokenName = token;
     SWAG_CHECK(checkIsValidUserName(structNode, &token));
 
     // If name starts with "__", then this is generated, as a user identifier cannot start with those

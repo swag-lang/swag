@@ -874,6 +874,7 @@ struct AstStruct : public AstNode
     AstNode* clone(CloneContext& context);
 
     DependentJobs dependentJobs;
+    Token         tokenName;
 
     AstNode* genericParameters;
     AstNode* content;

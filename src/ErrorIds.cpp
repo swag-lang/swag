@@ -691,7 +691,8 @@ void initErrors()
     SWAG_ERROR(Err1140, "missing enum name                                 $ expected the enum name before the start of the body '{'");
     SWAG_ERROR(Err1146, "missing enum name                                 $ expected the enum name before the start of the type definition ':'");
     SWAG_ERROR(Err1091, "missing function parameters                       $ expected the function parameters between '()' before the start of the body '{' $ if you want to declare a function without parameters, consider adding '()' after the name");
-    SWAG_ERROR(Err0671, "missing generic parameters                        $ '%s' is generic, so '%s' should declare generic parameters");
+    SWAG_ERROR(Err0671, "missing generic parameters                        $ the struct '%s' should declare generic parameters because '%s' is generic");
+    SWAG_ERROR(Err0672, "missing generic parameters                        $ the struct '%s' can't be solved due to the generic field '%s'");
     SWAG_ERROR(Err1092, "missing generic parameters                        $ expected at least one generic parameter between '()' $ consider removing '()' if this is not generic");
     SWAG_ERROR(Err0470, "missing generic parameters                        $ the special function '%s' expects some generic parameters");
     SWAG_ERROR(Err0298, "missing initialization                            $ a constant requires an explicit initialization");
@@ -859,7 +860,6 @@ void initErrors()
     SWAG_ERROR(Err0713, "unpacking number mismatch                         $ trying to unpack '%u' variable(s) but the tuple has only '%u' field(s)");
     SWAG_ERROR(Err0133, "unresolved identifier                             $ the identifier '%s' can't be solved");
     SWAG_ERROR(Err0681, "unresolved interface                              $ the interface can't be solved due to the generic type '%s'");
-    SWAG_ERROR(Err0672, "unresolved struct                                 $ the struct '%s' can't be solved due to the generic type '%s'");
     SWAG_ERROR(Err0911, "unsuitable struct for union                       $ the struct '%s' is not suitable for union because it contains an '%s' function");
     SWAG_ERROR(Err0803, "unsupported '@nameof' argument                    $ can't evaluate the '@nameof' argument");
     SWAG_ERROR(Err0799, "unsupported '@stringof' argument                  $ can't evaluate the '@stringof' argument");
