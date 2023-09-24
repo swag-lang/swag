@@ -1007,7 +1007,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
             return notAllowedError(context, node, leftTypeInfo);
 
         if (leftTypeInfo->isEnum() && !(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS) && rightTypeInfo == leftTypeInfo)
-            return notAllowedError(context, node, leftTypeInfo, "because the enum is not marked with 'Swag.EnumFlags'");
+            return notAllowedError(context, node, leftTypeInfo, "because the enum is not marked with '#[Swag.EnumFlags]'");
 
         if (leftTypeInfo->isEnum() && !(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS))
             return context->report({node, Fmt(Err(Err0037), node->token.ctext(), leftTypeInfo->getDisplayNameC())});
@@ -1033,11 +1033,20 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         return true;
     }
 
-    // Cannot compare tuples
-    if (leftTypeInfo->isTuple())
-        return context->report({left, Fmt(Err(Err0168), node->token.ctext())});
-    if (rightTypeInfo->isTuple())
-        return context->report({right, Fmt(Err(Err0168), node->token.ctext())});
+    // Cannot factor tuples
+    if (leftTypeInfo->isTuple() || leftTypeInfo->isListTuple())
+    {
+        Diagnostic diag{node, node->token, Fmt(Err(Err0168), node->token.ctext())};
+        diag.addRange(left, Diagnostic::isType(leftTypeInfo));
+        return context->report(diag);
+    }
+
+    if (rightTypeInfo->isTuple() || rightTypeInfo->isListTuple())
+    {
+        Diagnostic diag{node, node->token, Fmt(Err(Err0168), node->token.ctext())};
+        diag.addRange(right, Diagnostic::isType(rightTypeInfo));
+        return context->report(diag);
+    }
 
     node->byteCodeFct = ByteCodeGenJob::emitBinaryOp;
     node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);

@@ -247,7 +247,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 node->tokenId != TokenId::SymCircumflexEqual)
                 return notAllowedError(context, node, leftTypeInfo, nullptr, left);
             if (!(leftTypeInfo->getCA()->flags & TYPEINFO_ENUM_FLAGS) || !(rightTypeInfo->getCA()->flags & TYPEINFO_ENUM_FLAGS))
-                return notAllowedError(context, node, leftTypeInfo, "because the enum is not marked with 'Swag.EnumFlags'", left);
+                return notAllowedError(context, node, leftTypeInfo, "because the enum is not marked with '#[Swag.EnumFlags]'", left);
             forEnumFlags = true;
         }
     }
@@ -274,8 +274,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     // No direct operations on any, except affect any to any
     if (leftTypeInfo->isAny() && node->tokenId != TokenId::SymEqual)
     {
-        Diagnostic diag{node, node->token, Fmt(Err(Err0570), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-        diag.hint = Nte(Nte1061);
+        Diagnostic diag{node, node->token, Fmt(Err(Err0005), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }

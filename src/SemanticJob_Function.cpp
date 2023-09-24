@@ -281,7 +281,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
         for (uint32_t n = 0; n < 32 - maxN; n++)
         {
             if ((mask & 1) == 0)
-                return context->report({funcNode, Fmt(Err(Err0741), funcNode->token.ctext(), n)});
+                return context->report({funcNode, funcNode->tokenName, Fmt(Err(Err0741), funcNode->token.ctext(), n)});
             mask >>= 1;
         }
     }

@@ -17,14 +17,12 @@ bool SemanticJob::checkTypeIsNative(SemanticContext* context, TypeInfo* leftType
     if (!leftTypeInfo->isNative())
     {
         Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0005), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-        diag.hint = Nte(Nte1061);
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
     else
     {
         Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0005), node->token.ctext(), rightTypeInfo->getDisplayNameC())};
-        diag.hint = Nte(Nte1061);
         diag.addRange(right, Diagnostic::isType(rightTypeInfo));
         return context->report(diag);
     }

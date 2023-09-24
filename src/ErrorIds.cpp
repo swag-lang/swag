@@ -812,16 +812,15 @@ void initErrors()
     SWAG_ERROR(Err0111, "invalid pointer arithmetic                        $ pointer arithmetic is not allowed on a pointer to 'void'");
     SWAG_ERROR(Err0192, "invalid pointer arithmetic                        $ pointer arithmetic is not allowed");
     SWAG_ERROR(Err0579, "invalid pointer arithmetic                        $ pointer arithmetic requires an integer, got '%s' instead");
+    SWAG_ERROR(Err0741, "non-contiguous '@alias'                           $ non-contiguous '@alias' in function '%s', missing '@alias%u'");
+    SWAG_ERROR(Err0809, "invalid comparison                                $ the comparison operation '%s' does not accept type '%s' as the left argument");
+    SWAG_ERROR(Err0778, "invalid comparison                                $ the comparison operation '%s' does not accept type '%s' as the right argument");
+    SWAG_ERROR(Err0001, "invalid comparison                                $ the comparison operation '%s' does not accept type '%s'");
+    SWAG_ERROR(Err0005, "invalid operation                                 $ the operation '%s' is not allowed on type '%s'");
+    SWAG_ERROR(Err0037, "invalid operation                                 $ the operation '%s' is not allowed because the left expression is an enum type ('%s') not marked with '#[Swag.EnumFlags]'");
+    SWAG_ERROR(Err0038, "invalid operation                                 $ the operation '%s' is not allowed because the right expression is an enum type ('%s') not marked with '#[Swag.EnumFlags]'");
+    SWAG_ERROR(Err0168, "invalid operation                                 $ the operation '%s' does not accept tuple types");
 
-    SWAG_ERROR(Err0741, "non-contiguous '@alias' in function '%s' (missing '@alias%u')");
-    SWAG_ERROR(Err0809, "operation '%s' doesn't support left type '%s'");
-    SWAG_ERROR(Err0778, "operation '%s' doesn't support right type '%s'");
-    SWAG_ERROR(Err0001, "operation '%s' incompatible with type '%s'");
-    SWAG_ERROR(Err0005, "operation '%s' invalid for type '%s'");
-    SWAG_ERROR(Err0570, "operation '%s' invalid for type '%s'");
-    SWAG_ERROR(Err0037, "operation '%s' invalid; left expression is unflagged enum type ('%s')");
-    SWAG_ERROR(Err0038, "operation '%s' invalid; right expression is unflagged enum type ('%s')");
-    SWAG_ERROR(Err0168, "operation '%s' not supported on tuple");
     SWAG_ERROR(Err0573, "operations on tuple types unsupported");
     SWAG_ERROR(Err0143, "operator '%s' rejects operand type '%s'");
     SWAG_ERROR(Err0183, "operator '%s' rejects right expression type '%s'");
@@ -888,6 +887,7 @@ void initErrors()
     SWAG_ERROR(Err0537, "typeinfo '%s' conversion to runtime typeinfo not possible");
     SWAG_ERROR(Err0781, "unable to expand '%s' in global scope: sub declarations not supported");
     SWAG_ERROR(Err0657, "unimplemented interface functions for '%s' in '%s'");
+    SWAG_ERROR(Err0570, nullptr);
     SWAG_ERROR(Err0393, nullptr);
     SWAG_ERROR(Err0556, nullptr);
     SWAG_ERROR(Err0557, nullptr);

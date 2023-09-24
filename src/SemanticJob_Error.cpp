@@ -1232,7 +1232,6 @@ bool SemanticJob::notAllowedError(ErrorContext* context, AstNode* node, TypeInfo
     }
 
     Diagnostic diag{node, node->token, text};
-    diag.hint = Nte(Nte1061);
     if (hintType)
         diag.addRange(hintType, Diagnostic::isType(typeInfo));
     return context->report(diag);
