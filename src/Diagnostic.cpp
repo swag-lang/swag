@@ -509,28 +509,19 @@ void Diagnostic::printRanges()
         while (startIndex < mid && startIndex < (uint32_t) backLine.length())
         {
             startIndex++;
-            if (r.errorLevel == DiagnosticLevel::Error || r.errorLevel == DiagnosticLevel::Panic || r.errorLevel == DiagnosticLevel::Warning)
-                g_Log.print(LogSymbol::HorizontalLine2);
-            else
-                g_Log.print(LogSymbol::HorizontalLine);
+            g_Log.print(LogSymbol::HorizontalLine);
         }
 
         if (!r.hint.empty())
         {
             startIndex++;
-            if (r.errorLevel == DiagnosticLevel::Error || r.errorLevel == DiagnosticLevel::Panic || r.errorLevel == DiagnosticLevel::Warning)
-                g_Log.print(LogSymbol::HorizontalLine2MidVert);
-            else
-                g_Log.print(LogSymbol::HorizontalLineMidVert);
+            g_Log.print(LogSymbol::HorizontalLineMidVert);
         }
 
         while (startIndex < r.startLocation.column + r.width && startIndex < (uint32_t) backLine.length())
         {
             startIndex++;
-            if (r.errorLevel == DiagnosticLevel::Error || r.errorLevel == DiagnosticLevel::Panic || r.errorLevel == DiagnosticLevel::Warning)
-                g_Log.print(LogSymbol::HorizontalLine2);
-            else
-                g_Log.print(LogSymbol::HorizontalLine);
+            g_Log.print(LogSymbol::HorizontalLine);
         }
     }
 

@@ -759,7 +759,13 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext*            context
             Vector<const Diagnostic*> errs0, errs1;
             getDiagnosticForMatch(context, *tryResult[i], errs0, errs1);
             fn += "  ----  ";
-            fn += errs0[0]->textMsg;
+
+            Vector<Utf8> parts;
+            Utf8::tokenize(errs0[0]->textMsg, '$', parts, true, true);
+            if (parts.size() > 1)
+                fn += parts[1];
+            else
+                fn += parts[0];
         }
 
         note->remarks.push_back(fn);
