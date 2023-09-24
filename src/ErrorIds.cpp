@@ -708,7 +708,7 @@ void initErrors()
     SWAG_ERROR(Err0008, "unknown identifier                                $ the named parameter '%s' can't be found");
     SWAG_ERROR(Err0115, "ambiguous symbol                                  $ ambiguous resolution of the generic %s '%s'");
     SWAG_ERROR(Err0034, "ambiguous symbol                                  $ ambiguous conversion of struct '%s' to interface '%s'");
-    SWAG_ERROR(Err0646, "invalid interface                                 $ expected an interface name after 'impl' but '%s' is %s");
+    SWAG_ERROR(Err0646, "invalid 'impl'                                    $ expected an interface name after 'impl' but '%s' is %s");
     SWAG_ERROR(Err0599, "invalid argument                                  $ invalid argument '%s' for the attribute '#[Swag.ExportType]' $ the acceptable values for '#[Swag.ExportType]' are 'methods' and 'nozero'");
     SWAG_ERROR(Err0693, "invalid argument                                  $ invalid argument '%s' for the attribute '#[Swag.Match]' $ the acceptable values for '#[Swag.Match]' are 'validif' and 'self'");
     SWAG_ERROR(Err0594, "invalid argument                                  $ invalid argument '%s' for the attribute '#[Swag.Optim]' $ the acceptable values for '#[Swag.Optim]' are 'bytecode' and 'backend'");
@@ -839,21 +839,19 @@ void initErrors()
     SWAG_ERROR(Err0774, "return type mismatch                              $ unexpected return type '%s' for %s");
     SWAG_ERROR(Err0114, "invalid address                                   $ cannot take the address of a function return value of type '%s'");
     SWAG_ERROR(Err0779, "missing return value                              $ expected a return value because the return type has already been deduced to be '%s'");
+    SWAG_ERROR(Err0047, "invalid address                                   $ cannot take the address of the right expression");
+    SWAG_ERROR(Err0450, "too many generic parameters                       $ expected one single generic parameter for function '%s', but '%d' are provided");
+    SWAG_ERROR(Err0882, "capture size overflow                             $ the total requested size is '%u' bytes but the maximum authorized size is '%u'");
+    SWAG_ERROR(Err0153, "file error                                        $ failed to read source file '%s'");
+    SWAG_ERROR(Err0096, "standalone expression                             $ an expression value should be used $ consider removing it");
+    SWAG_ERROR(Err0290, "invalid 'impl'                                    $ expected a struct name after 'for' but the symbol '%s' is %s");
+    SWAG_ERROR(Err0666, "invalid opaque struct                             $ a struct marked with '#[Swag.Opaque]' requires a 'public' access");
+    SWAG_ERROR(Err0667, "invalid opaque struct                             $ the struct cannot be marked with '#[Swag.Opaque]' because the whole file is exported with '#global export'");
+    SWAG_ERROR(Err0673, "unknown relocation offset                         $ can't find the struct member '%s' to compute the relocation");
+    SWAG_ERROR(Err0029, "invalid 'namealias'                               $ can't alias a struct member");
 
-    SWAG_ERROR(Err0047, "right expression address not accessible");
-    SWAG_ERROR(Err0173, "shift operand should be 'u32', not '%s'");
-    SWAG_ERROR(Err0450, "expected single generic parameter for function '%s'; '%d' provided");
-    SWAG_ERROR(Err0882, "size exceeded: '%u' bytes vs max '%u'");
-    SWAG_ERROR(Err0153, "source file '%s' read error");
-    SWAG_ERROR(Err0096, "standalone expression found");
-    SWAG_ERROR(Err0648, "expected struct, found '%s' as %s");
-    SWAG_ERROR(Err0290, "expected struct; symbol '%s' is %s");
-    SWAG_ERROR(Err0667, "struct incompatible with 'Swag.Opaque'; file globally exported");
-    SWAG_ERROR(Err0673, "struct member '%s' missing for 'Swag.Offset' attribute relocation");
-    SWAG_ERROR(Err0029, "struct member aliasing not allowed");
     SWAG_ERROR(Err0295, "duplicate initialization of struct");
     SWAG_ERROR(Err0662, "expected struct or enum, found '%s' as %s");
-    SWAG_ERROR(Err0666, "struct requires public access for 'Swag.Opaque'");
     SWAG_ERROR(Err0532, "suffix literals like '%s' are for struct conversions only");
     SWAG_ERROR(Err0346, "symbol '%s' defined in parent scope");
     SWAG_ERROR(Err0578, "too many variadic parameters ('%d' given, max: '%d')");
@@ -885,6 +883,8 @@ void initErrors()
     SWAG_ERROR(Err0781, "unable to expand '%s' in global scope: sub declarations not supported");
     SWAG_ERROR(Err0657, "unimplemented interface functions for '%s' in '%s'");
 
+    SWAG_ERROR(Err0648, nullptr);
+    SWAG_ERROR(Err0173, nullptr);
     SWAG_ERROR(Err0549, nullptr);
     SWAG_ERROR(Err0684, nullptr);
     SWAG_ERROR(Err0675, nullptr);

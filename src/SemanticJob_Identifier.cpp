@@ -33,7 +33,7 @@ bool SemanticJob::resolveNameAlias(SemanticContext* context)
             {
                 if (c->resolvedSymbolName && c->resolvedSymbolName->kind == SymbolKind::Variable)
                 {
-                    SWAG_VERIFY(cptVar == 0, context->report({back, Err(Err0029), Nte(Nte1061)}));
+                    SWAG_VERIFY(cptVar == 0, context->report({back, Err(Err0029)}));
                     cptVar++;
                 }
             }
@@ -1034,7 +1034,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
     {
         if (isStatementIdentifier(identifier))
         {
-            Diagnostic diag{identifier, Fmt(Err(Err0096), Naming::kindName(identifier->resolvedSymbolName->kind).c_str(), identifier->token.ctext()), Nte(Nte1026)};
+            Diagnostic diag{identifier, Err(Err0096)};
             return context->report(diag);
         }
     }
@@ -1293,7 +1293,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             if (isStatementIdentifier(identifier))
             {
                 Diagnostic diag{idRef, Err(Err0096)};
-                diag.hint = Nte(Nte1026);
                 return context->report(diag);
             }
         }
@@ -3219,15 +3218,15 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
             if (dep.node->isGeneratedSelf())
             {
                 Diagnostic diag{dependentVar, Fmt(Err(Err0117), dependentVar->typeInfo->getDisplayNameC())};
-                auto note  = Diagnostic::note(dep.node->ownerFct, dep.node->ownerFct->token, Nte(Nte0056));
-                auto note1 = Diagnostic::note(Nte(Nte0143));
+                auto       note  = Diagnostic::note(dep.node->ownerFct, dep.node->ownerFct->token, Nte(Nte0056));
+                auto       note1 = Diagnostic::note(Nte(Nte0143));
                 return context->report(diag, note, note1);
             }
             else
             {
                 Diagnostic diag{dep.node, Fmt(Err(Err0117), dependentVar->typeInfo->getDisplayNameC())};
-                auto note  = Diagnostic::note(dependentVar, Nte(Nte0016));
-                auto note1 = Diagnostic::note(Nte(Nte0143));
+                auto       note  = Diagnostic::note(dependentVar, Nte(Nte0016));
+                auto       note1 = Diagnostic::note(Nte(Nte0143));
                 return context->report(diag, note, note1);
             }
         }

@@ -121,7 +121,7 @@ bool SemanticJob::resolveMakePointerLambda(SemanticContext* context)
     {
         auto       typeBlock = CastTypeInfo<TypeInfoStruct>(node->childs.back()->typeInfo, TypeInfoKind::Struct);
         const auto MaxSize   = SWAG_LIMIT_CLOSURE_SIZEOF - 2 * sizeof(void*);
-        SWAG_VERIFY(typeBlock->sizeOf <= MaxSize, context->report({node->childs.back(), Fmt(Err(Err0882), typeBlock->sizeOf, MaxSize)}));
+        SWAG_VERIFY(typeBlock->sizeOf <= MaxSize, context->report({node->lambda->captureParameters, Fmt(Err(Err0882), typeBlock->sizeOf, MaxSize)}));
     }
 
     return true;
@@ -136,7 +136,6 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     if (!child->resolvedSymbolName)
     {
         Diagnostic diag{node, node->token, Err(Err0047)};
-        diag.hint = Nte(Nte1061);
         diag.addRange(child, Diagnostic::isType(typeInfo));
         return context->report(diag);
     }

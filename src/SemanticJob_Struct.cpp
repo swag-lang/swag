@@ -147,11 +147,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
 
     // Be sure the second identifier is a struct
     typeInfo = node->identifierFor->typeInfo;
-    if (!typeInfo->isStruct())
-    {
-        Diagnostic diag{node->identifierFor, Fmt(Err(Err0648), node->identifierFor->token.ctext(), Naming::aKindName(typeInfo).c_str())};
-        return context->report(diag, Diagnostic::hereIs(node->identifierFor->resolvedSymbolOverload));
-    }
+    SWAG_ASSERT(typeInfo->isStruct());
 
     VectorNative<AstNode*>& childs = job->tmpNodes;
     job->tmpNodes.clear();
@@ -918,8 +914,8 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     {
         if (node->attributeFlags & ATTRIBUTE_OPAQUE)
         {
-            SWAG_VERIFY(node->isPublic(), context->report({node, Err(Err0666)}));
-            SWAG_VERIFY(!sourceFile->forceExport, context->report({node, Err(Err0667)}));
+            SWAG_VERIFY(!sourceFile->forceExport, context->report({node, node->token, Err(Err0667)}));
+            SWAG_VERIFY(node->isPublic(), context->report({node, node->token, Err(Err0666)}));
         }
     }
 
