@@ -586,9 +586,6 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     // Check public
     if (node->attributeFlags & ATTRIBUTE_PUBLIC)
     {
-        if (!node->ownerScope->isGlobal())
-            return context->report({node, Fmt(Err(Err0684), node->token.ctext())});
-
         if (!(node->flags & AST_FROM_GENERIC))
             node->ownerScope->addPublicNode(node);
     }
@@ -1270,8 +1267,6 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     // Check public
     if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !(typeInfo->isTuple()))
     {
-        if (!node->ownerScope->isGlobalOrImpl())
-            return context->report({node, Fmt(Err(Err0675), node->token.ctext())});
         if (!(node->flags & AST_FROM_GENERIC))
             node->ownerScope->addPublicNode(node);
     }

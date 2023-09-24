@@ -682,7 +682,7 @@ void initErrors()
     SWAG_ERROR(Err0472, "invalid address                                   $ can't take the address of a mixin");
     SWAG_ERROR(Err0473, "invalid address                                   $ can't take the address of an inlined function");
     SWAG_ERROR(Err0733, "unsupported variadic parameters                   $ an inline function can't have variadic parameters");
-    SWAG_ERROR(Err0045, "system error                                      $ failed to create '%s' process (::CreatePipe)");
+    SWAG_ERROR(Err0045, "system error                                      $ failed to create process '%s' (::CreatePipe)");
     SWAG_ERROR(Err0051, "system error                                      $ failed to add '%s' to the 'PATH' variable");
     SWAG_ERROR(Err0204, "too many initializers                             $ expected '%d' value(s) to initialize the array, got '%d' instead");
     SWAG_ERROR(Err0197, "too many initializers                             $ expected '%d' value(s) to initialize '%s', got '%d' instead");
@@ -819,20 +819,18 @@ void initErrors()
     SWAG_ERROR(Err0005, "invalid operation                                 $ the operation '%s' is not allowed on type '%s'");
     SWAG_ERROR(Err0037, "invalid operation                                 $ the operation '%s' is not allowed because the left expression is an enum type ('%s') not marked with '#[Swag.EnumFlags]'");
     SWAG_ERROR(Err0038, "invalid operation                                 $ the operation '%s' is not allowed because the right expression is an enum type ('%s') not marked with '#[Swag.EnumFlags]'");
-    SWAG_ERROR(Err0168, "invalid operation                                 $ the operation '%s' does not accept tuple types");
+    SWAG_ERROR(Err0168, "invalid operation                                 $ the operation '%s' is not allowed on tuple types");
+    SWAG_ERROR(Err0143, "invalid operation                                 $ the operation '%s' does not accept type '%s' as the left argument");
+    SWAG_ERROR(Err0183, "invalid operation                                 $ the operation '%s' does not accept type '%s' as the right argument");
+    SWAG_ERROR(Err0068, "missing parameters                                $ the special function '%s' requires some parameters");
+    SWAG_ERROR(Err0040, "invalid generic                                   $ a partial type alias ('%s') for a generic struct instantiation is not supported");
+    SWAG_ERROR(Err0193, "invalid pointer arithmetic                        $ pointer slicing is not allowed");
+    SWAG_ERROR(Err0046, "system error                                      $ failed to create process '%s'");
+    SWAG_ERROR(Err0476, "invalid slicing                                   $ the slicing lower bound '%I64u' is greater than the upper bound '%I64u'");
+    SWAG_ERROR(Err0529, "invalid range                                     $ the range lower bound '%I64u' is greater than the upper bound '%I64u'");
+    SWAG_ERROR(Err0528, "invalid range                                     $ the range lower bound '%lld' is greater than the upper bound '%lld'");
+    SWAG_ERROR(Err0337, "misplaced range                                   $ can't use a range in a switch without an expression");
 
-    SWAG_ERROR(Err0573, "operations on tuple types unsupported");
-    SWAG_ERROR(Err0143, "operator '%s' rejects operand type '%s'");
-    SWAG_ERROR(Err0183, "operator '%s' rejects right expression type '%s'");
-    SWAG_ERROR(Err0068, "expected parameters for special function '%s'");
-    SWAG_ERROR(Err0040, "partial type alias ('%s') for generic struct not supported");
-    SWAG_ERROR(Err0193, "pointer slicing not allowed (no pointer arithmetic)");
-    SWAG_ERROR(Err0046, "process creation '%s' failed");
-    SWAG_ERROR(Err0684, "public embedded interface ('%s') disallowed");
-    SWAG_ERROR(Err0675, "public embedded struct ('%s') disallowed");
-    SWAG_ERROR(Err0529, "range argument lower bound '%I64u' greater than upper bound '%I64u'");
-    SWAG_ERROR(Err0337, "range in switch expression not allowed");
-    SWAG_ERROR(Err0528, "range lower bound '%lld' exceeds upper bound '%lld'");
     SWAG_ERROR(Err0775, "recursion detected; can't expand '%s'");
     SWAG_ERROR(Err0117, "redundant 'using' with type '%s'");
     SWAG_ERROR(Err0300, "references must be initialized");
@@ -887,6 +885,10 @@ void initErrors()
     SWAG_ERROR(Err0537, "typeinfo '%s' conversion to runtime typeinfo not possible");
     SWAG_ERROR(Err0781, "unable to expand '%s' in global scope: sub declarations not supported");
     SWAG_ERROR(Err0657, "unimplemented interface functions for '%s' in '%s'");
+
+    SWAG_ERROR(Err0684, nullptr);
+    SWAG_ERROR(Err0675, nullptr);
+    SWAG_ERROR(Err0573, nullptr);
     SWAG_ERROR(Err0570, nullptr);
     SWAG_ERROR(Err0393, nullptr);
     SWAG_ERROR(Err0556, nullptr);
@@ -1456,7 +1458,6 @@ void initErrors()
     SWAG_ERROR(Nte1059, "this is the first usage");
     SWAG_ERROR(Nte0106, "this is unexpected in global scope");
     SWAG_ERROR(Nte1038, "this isn't a constant");
-    SWAG_ERROR(Nte1076, "this needs to be in lowercase");
     SWAG_ERROR(Nte1088, "this previous parameter has a default value");
     SWAG_ERROR(Nte1053, "this should be 'const' but isn't");
     SWAG_ERROR(Nte1075, "'namealias' should be associated with a namespace, a function or a variable instead of a type");
@@ -1491,6 +1492,7 @@ void initErrors()
     SWAG_ERROR(Nte1126, "this string appears to be null or empty");
     SWAG_ERROR(Nte1006, "the number of values to initialize ('%d') is greater than one");
     SWAG_ERROR(Nte1037, "the slicing lower bound type is invalid, expected an integer, got '%s' instead");
+    SWAG_ERROR(Nte1076, nullptr);
     SWAG_ERROR(Nte1100, nullptr);
     SWAG_ERROR(Nte0121, nullptr);
     SWAG_ERROR(Nte1055, nullptr);

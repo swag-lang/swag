@@ -104,7 +104,6 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         else
         {
             Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-            diag.hint = Nte(Nte1061);
             diag.addRange(left, Diagnostic::isType(leftTypeInfo));
             return context->report(diag);
         }
@@ -112,7 +111,6 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     default:
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-        diag.hint = Nte(Nte1061);
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
@@ -273,7 +271,6 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
     default:
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-        diag.hint = Nte(Nte1061);
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
@@ -391,7 +388,6 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
     default:
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-        diag.hint = Nte(Nte1061);
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
@@ -521,7 +517,6 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
     default:
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-        diag.hint = Nte(Nte1061);
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
@@ -624,13 +619,11 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
         if (rightTypeInfo->isNativeFloat())
         {
             Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), rightTypeInfo->getDisplayNameC())};
-            diag.hint = Nte(Nte1061);
             diag.addRange(right, Diagnostic::isType(rightTypeInfo));
             return context->report(diag);
         }
 
         Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-        diag.hint = Nte(Nte1061);
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
@@ -708,7 +701,6 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
     default:
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-        diag.hint = Nte(Nte1061);
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
@@ -819,7 +811,6 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
     default:
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-        diag.hint = Nte(Nte1061);
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
@@ -943,7 +934,6 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
     default:
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-        diag.hint = Nte(Nte1061);
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
@@ -1088,7 +1078,6 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     if (leftTypeInfo->isAny())
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-        diag.hint = Nte(Nte1061);
         diag.addRange(left, Nte(Nte1116));
         return context->report(diag);
     }
@@ -1096,7 +1085,6 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     if (rightTypeInfo->isAny())
     {
         Diagnostic diag{node, node->token, Fmt(Err(Err0183), node->token.ctext(), rightTypeInfo->getDisplayNameC())};
-        diag.hint = Nte(Nte1061);
         diag.addRange(right, Nte(Nte1116));
         return context->report(diag);
     }

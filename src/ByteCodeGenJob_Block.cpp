@@ -502,7 +502,6 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
         if (rangeNode->expressionLow->typeInfo->isNativeIntegerSigned() && rangeNode->expressionLow->computedValue->reg.s64 > rangeNode->expressionUp->computedValue->reg.s64)
         {
             Diagnostic diag{rangeNode->expressionLow, Fmt(Err(Err0528), rangeNode->expressionLow->computedValue->reg.s64, rangeNode->expressionUp->computedValue->reg.s64)};
-            diag.hint = Nte(Nte1076);
             diag.addRange(rangeNode->expressionUp, Nte(Nte1077));
             return context->report(diag);
         }
@@ -510,7 +509,6 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
         if (rangeNode->expressionLow->typeInfo->isNativeIntegerUnsigned() && rangeNode->expressionLow->computedValue->reg.u64 > rangeNode->expressionUp->computedValue->reg.u64)
         {
             Diagnostic diag{rangeNode->expressionLow, Fmt(Err(Err0529), rangeNode->expressionLow->computedValue->reg.u64, rangeNode->expressionUp->computedValue->reg.u64)};
-            diag.hint = Nte(Nte1076);
             diag.addRange(rangeNode->expressionUp, Nte(Nte1077));
             return context->report(diag);
         }

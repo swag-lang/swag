@@ -364,7 +364,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 }
                 else if (forTuple)
                 {
-                    return context->report({node, Err(Err0573)});
+                    return context->report({node, node->token, Fmt(Err(Err0168), node->token.ctext())});
                 }
                 else
                 {
@@ -429,7 +429,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymGreaterGreaterEqual:
     {
         if (forTuple)
-            return context->report({node, Err(Err0573)});
+            return context->report({node, node->token, Fmt(Err(Err0168), node->token.ctext())});
         else if (forStruct)
         {
             const char* op = tokenId == TokenId::SymLowerLowerEqual ? "<<=" : ">>=";
@@ -460,7 +460,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymCircumflexEqual:
     {
         if (forTuple)
-            return context->report({node, Err(Err0573)});
+            return context->report({node, node->token, Fmt(Err(Err0168), node->token.ctext())});
         else if (forStruct)
         {
             const char* op = "&=";
@@ -492,7 +492,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymMinusEqual:
     {
         if (forTuple)
-            return context->report({node, Err(Err0573)});
+            return context->report({node, node->token, Fmt(Err(Err0168), node->token.ctext())});
         else if (forStruct)
         {
             const char* op = tokenId == TokenId::SymPlusEqual ? "+=" : "-=";
@@ -542,7 +542,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymSlashEqual:
     {
         if (forTuple)
-            return context->report({node, Err(Err0573)});
+            return context->report({node, node->token, Fmt(Err(Err0168), node->token.ctext())});
         else if (forStruct)
         {
             if (arrayNode)
@@ -568,7 +568,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     case TokenId::SymAsteriskEqual:
     {
         if (forTuple)
-            return context->report({node, Err(Err0573)});
+            return context->report({node, node->token, Fmt(Err(Err0168), node->token.ctext())});
         else if (forStruct)
         {
             const char* op = tokenId == TokenId::SymPercentEqual ? "%=" : "*=";

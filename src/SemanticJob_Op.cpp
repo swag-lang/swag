@@ -163,7 +163,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
             return true;
 
         // First parameter must be be struct
-        SWAG_VERIFY(node->parameters, context->report({node, node->token, Fmt(Err(Err0068), name.c_str())}));
+        SWAG_VERIFY(node->parameters, context->report({node, node->tokenName, Fmt(Err(Err0068), name.c_str())}));
         auto firstGen  = node->parameters->childs.front();
         auto firstType = firstGen->typeInfo;
         SWAG_VERIFY(firstType->isPointer(), context->report({firstGen, Fmt(Err(Err0069), name.c_str(), typeStruct->getDisplayNameC(), firstType->getDisplayNameC())}));

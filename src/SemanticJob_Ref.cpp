@@ -348,7 +348,6 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
         if (!typeVar->isPointerArithmetic())
         {
             Diagnostic diag{node, node->token, Err(Err0193)};
-            diag.hint = Nte(Nte1061);
             diag.addRange(node->array, Diagnostic::isType(typeVar));
             return context->report(diag);
         }
