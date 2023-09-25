@@ -435,7 +435,7 @@ void initErrors()
     SWAG_ERROR(Err0040, "invalid generic                                   $ a partial type alias ('%s') for a generic struct instantiation is not supported");
     SWAG_ERROR(Err0352, "invalid generic                                   $ can't deduce the generic arguments when calling %s '%s'");
     SWAG_ERROR(Err0618, "invalid generic                                   $ can't deduce the generic type '%s' from type '%s'");
-    SWAG_ERROR(Err0808, "invalid generic                                   $ can't instantiate the generic %s '%s' with an unsized value");
+    SWAG_ERROR(Err0808, "ambiguous generic instantiation                   $ can't instantiate the generic %s '%s' with an unsized value");
     SWAG_ERROR(Err0042, "invalid generic                                   $ can't instantiate the generic function '%s' because of missing contextual types replacements");
     SWAG_ERROR(Err0039, "invalid generic                                   $ can't instantiate the generic struct '%s' because of missing contextual types replacements");
     SWAG_ERROR(Err0123, "invalid generic                                   $ the generic value '%s' has already been deduced from arguments to be '%s', and '%s' is provided here");
@@ -556,8 +556,7 @@ void initErrors()
     SWAG_ERROR(Err0558, "linker error                                      $ the LLVM backend failed to create the target '%s'");
     SWAG_ERROR(Err0832, "literal overflow                                  $ can't negate number '%I64d' because '%I64u' is too large for type 's64'");
     SWAG_ERROR(Err0829, "literal overflow                                  $ can't negate number '%d' because '%u' is too large for type 's8'");
-    SWAG_ERROR(Err0359, "literal overflow                                  $ the number '%I64d' is too large for type '%s'");
-    SWAG_ERROR(Err0415, "literal overflow                                  $ the number '%I64u' is too large for type 's8'");
+    SWAG_ERROR(Err0415, "literal overflow                                  $ the number '%I64u' is too large for type '%s'");
     SWAG_ERROR(Err0076, "max call level reached                            $ the limit defined with '--max-recurse:%d' has been reached");
     SWAG_ERROR(Err0520, "mismatch access                                   $ %s '%s' can't be public due to %s '%s' with '%s' access");
     SWAG_ERROR(Err0503, "mismatch access                                   $ special function '%s' can't be internal because the struct has 'public' access");
@@ -877,6 +876,7 @@ void initErrors()
     SWAG_ERROR(Err0092, "unused return value                               $ the return value of the lambda '%s' should be used $ if you don't need the return value, consider prefixing the call with 'discard'");
     SWAG_ERROR(Err0295, "unexpected parameters                             $ expected '{' here because a compiler %s should not have parameters");
     SWAG_ERROR(Err0087, "unexpected identifier                             $ a global identifier like '%s' can't be used at the file level");
+    SWAG_ERROR(Err0359, nullptr);
     SWAG_ERROR(Err1046, nullptr);
     SWAG_ERROR(Err1107, nullptr);
     SWAG_ERROR(Err0173, nullptr);

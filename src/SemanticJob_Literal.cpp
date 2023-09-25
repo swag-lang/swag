@@ -281,15 +281,15 @@ Utf8 SemanticJob::checkLiteralValue(ComputedValue& computedValue, LiteralType& l
 
         case NativeTypeKind::S8:
             if (computedValue.reg.s64 < INT8_MIN || computedValue.reg.s64 > INT8_MAX)
-                return Fmt(Err(Err0359), computedValue.reg.s64, "s8");
+                return Fmt(Err(Err0415), computedValue.reg.s64, "s8");
             break;
         case NativeTypeKind::S16:
             if (computedValue.reg.s64 < INT16_MIN || computedValue.reg.s64 > INT16_MAX)
-                return Fmt(Err(Err0359), computedValue.reg.s64, "s16");
+                return Fmt(Err(Err0415), computedValue.reg.s64, "s16");
             break;
         case NativeTypeKind::S32:
             if (computedValue.reg.s64 < INT32_MIN || computedValue.reg.s64 > INT32_MAX)
-                return Fmt(Err(Err0359), computedValue.reg.s64, "s32");
+                return Fmt(Err(Err0415), computedValue.reg.s64, "s32");
             break;
         case NativeTypeKind::S64:
             break;
