@@ -40,7 +40,7 @@ bool Tokenizer::doIdentifier(TokenParse& token)
         Vector<Utf8> result;
         SemanticJob::findClosestMatches(token.text, searchList, result);
         if (result.size())
-            return errorContext->report(diag, Diagnostic::note(SemanticJob::findClosestMatchesMsg(result)));
+            return errorContext->report(diag, Diagnostic::note(SemanticJob::findClosestMatchesMsg(token.text, result)));
 
         return errorContext->report(diag);
     }
@@ -62,7 +62,7 @@ bool Tokenizer::doIdentifier(TokenParse& token)
             Vector<Utf8> result;
             SemanticJob::findClosestMatches(token.text, searchList, result);
             if (result.size())
-                return errorContext->report(diag, Diagnostic::note(SemanticJob::findClosestMatchesMsg(result)));
+                return errorContext->report(diag, Diagnostic::note(SemanticJob::findClosestMatchesMsg(token.text, result)));
 
             return errorContext->report(diag);
         }

@@ -459,7 +459,7 @@ bool Parser::doTopLevelIdentifier(AstNode* parent, AstNode** result)
         notes.push_back(Diagnostic::note(Nte(Nte1120)));
     }
 
-    Utf8 appendMsg = SemanticJob::findClosestMatchesMsg(tokenIdentifier.text, {});
+    Utf8 appendMsg = SemanticJob::findClosestMatchesMsg(tokenIdentifier.text, {}, IdentifierSearchFor::Whatever);
     if (!appendMsg.empty())
         notes.push_back(Diagnostic::note(appendMsg));
     return context->report(diag, notes);

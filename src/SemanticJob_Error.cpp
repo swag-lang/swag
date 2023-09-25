@@ -940,14 +940,23 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
     return context->report(diag, notes);
 }
 
-Utf8 SemanticJob::findClosestMatchesMsg(Vector<Utf8>& best)
+Utf8 SemanticJob::findClosestMatchesMsg(const Utf8& searchName, const Vector<Utf8>& best)
 {
     Utf8 appendMsg;
     switch (best.size())
     {
     case 1:
-        appendMsg = Fmt("do you mean '%s'?", best[0].c_str());
+    {
+        Utf8 a0 = searchName;
+        Utf8 a1 = best[0];
+        a0.makeLower();
+        a1.makeLower();
+        if (a0 == a1)
+            appendMsg = Fmt("do you mean '%s'? (notice the capitalization)", best[0].c_str());
+        else
+            appendMsg = Fmt("do you mean '%s'?", best[0].c_str());
         break;
+    }
     case 2:
         appendMsg = Fmt("do you mean '%s' or '%s'?", best[0].c_str(), best[1].c_str());
         break;
@@ -968,7 +977,7 @@ void SemanticJob::findClosestMatches(const Utf8& searchName, const Vector<Utf8>&
     for (uint32_t i = 0; i < (uint32_t) searchList.size(); i++)
     {
         auto searchName2 = searchList[i];
-        auto score = Utf8::fuzzyCompare(searchName1, searchName2);
+        auto score       = Utf8::fuzzyCompare(searchName1, searchName2);
 
         // If number of changes is too big considering the size of the text, cancel
         if (searchName.count > 1 && score > (uint32_t) searchName.count / 2)
@@ -1077,7 +1086,7 @@ Utf8 SemanticJob::findClosestMatchesMsg(const Utf8& searchName, const VectorNati
 {
     Vector<Utf8> best;
     findClosestMatches(searchName, scopeHierarchy, best, searchFor);
-    return findClosestMatchesMsg(best);
+    return findClosestMatchesMsg(searchName, best);
 }
 
 void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node)

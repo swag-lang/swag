@@ -2960,7 +2960,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
                         {
                             Diagnostic                diag{identifierRef, Fmt(Err(Err0144), node->token.ctext(), hasEnum[0].second->getDisplayNameC())};
                             Vector<const Diagnostic*> notes;
-                            notes.push_back(Diagnostic::note(findClosestMatchesMsg(node->token.text, {{hasEnum[0].second->scope}})));
+                            notes.push_back(Diagnostic::note(findClosestMatchesMsg(node->token.text, {{hasEnum[0].second->scope}}, IdentifierSearchFor::Whatever)));
                             if (hasEnum[0].first)
                                 notes.push_back(Diagnostic::note(hasEnum[0].first, Diagnostic::isType(hasEnum[0].first)));
                             notes.push_back(Diagnostic::hereIs(hasEnum[0].second->declNode));
