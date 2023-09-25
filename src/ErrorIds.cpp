@@ -877,7 +877,7 @@ void initErrors()
     SWAG_ERROR(Err0109, "unused return value                               $ the return value of the function '%s' should be used $ if you don't need the return value, consider prefixing the call with 'discard'");
     SWAG_ERROR(Err1179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
     SWAG_ERROR(Err0092, "unused return value                               $ the return value of the lambda '%s' should be used $ if you don't need the return value, consider prefixing the call with 'discard'");
-    SWAG_ERROR(Err1046, nullptr);
+    SWAG_ERROR(Err1046, "unexpected generic parameters                     $ a function interface can't have generic parameters starting with '('");
     SWAG_ERROR(Err1107, nullptr);
     SWAG_ERROR(Err0173, nullptr);
     SWAG_ERROR(Err0549, nullptr);

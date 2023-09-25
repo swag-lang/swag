@@ -468,6 +468,8 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         auto kind = token.id;
         SWAG_CHECK(eatToken());
 
+        SWAG_VERIFY(token.id != TokenId::SymLeftParen, error(token, Err(Err1046)));
+
         bool isMethod      = kind == TokenId::KwdMethod;
         bool isConstMethod = false;
 
