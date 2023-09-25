@@ -856,6 +856,9 @@ Utf8 Utf8::toNiceSize(size_t size)
 
 uint32_t Utf8::fuzzyCompare(const Utf8& str1, const Utf8& str2)
 {
+    if (str1 == str2)
+        return 0;
+
 #define MIN3(a, b, c) ((a) < (b) ? ((a) < (c) ? (a) : (c)) : ((b) < (c) ? (b) : (c)))
 
     unsigned int s1len, s2len, x, y, lastdiag, olddiag;

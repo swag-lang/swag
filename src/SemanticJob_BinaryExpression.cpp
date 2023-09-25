@@ -94,19 +94,11 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
         break;
     case NativeTypeKind::String:
     {
-        if (left->hasComputedValue() && right->hasComputedValue())
-        {
-            Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-            diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-            auto note = Diagnostic::note(Nte(Nte0140));
-            return context->report(diag, note);
-        }
-        else
-        {
-            Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-            diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-            return context->report(diag);
-        }
+        Diagnostic diag{node, node->token, Fmt(Err(Err0143), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+        diag.addRange(left, Diagnostic::isType(leftTypeInfo));
+        if (left->hasComputedValue() || right->hasComputedValue())
+            return context->report(diag, Diagnostic::note(Nte(Nte0140)));
+        return context->report(diag);
     }
     default:
     {
@@ -893,6 +885,7 @@ bool SemanticJob::resolveAppend(SemanticContext* context, AstNode* left, AstNode
 {
     auto node = context->node;
     SWAG_CHECK(checkIsConstExpr(context, left->hasComputedValue(), left));
+    SWAG_CHECK(checkIsConstExpr(context, right->hasComputedValue(), right));
 
     if (!left->typeInfo->isString())
         left->computedValue->text = Ast::literalToString(left->typeInfo, *left->computedValue);

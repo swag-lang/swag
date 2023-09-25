@@ -965,15 +965,9 @@ void SemanticJob::findClosestMatches(const Utf8& searchName, const Vector<Utf8>&
     result.clear();
 
     auto searchName1 = searchName;
-    searchName1.makeLower();
-
     for (uint32_t i = 0; i < (uint32_t) searchList.size(); i++)
     {
         auto searchName2 = searchList[i];
-        searchName2.makeLower();
-        if (searchName1 == searchName2)
-            continue;
-
         auto score = Utf8::fuzzyCompare(searchName1, searchName2);
 
         // If number of changes is too big considering the size of the text, cancel
@@ -1047,49 +1041,30 @@ void SemanticJob::findClosestMatches(const Utf8& searchName, const VectorNative<
         }
     }
 
-    if (searchFor == IdentifierSearchFor::Keyword || searchFor == IdentifierSearchFor::Whatever)
+    for (int i = 0; i < (int) g_LangSpec->keywords.allocated; i++)
     {
-        for (int i = 0; i < (int) g_LangSpec->keywords.allocated; i++)
+        if (searchFor == IdentifierSearchFor::Keyword || searchFor == IdentifierSearchFor::Whatever)
         {
             if (Tokenizer::isKeyword(g_LangSpec->keywords.buffer[i].value))
             {
                 searchList.push_back(g_LangSpec->keywords.buffer[i].key);
             }
         }
-    }
 
-    if (searchFor == IdentifierSearchFor::Type || searchFor == IdentifierSearchFor::Whatever)
-    {
-        for (int i = 0; i < (int) g_LangSpec->keywords.allocated; i++)
+        if (searchFor == IdentifierSearchFor::Type || searchFor == IdentifierSearchFor::Whatever)
         {
             if (g_LangSpec->keywords.buffer[i].value == TokenId::NativeType)
             {
                 searchList.push_back(g_LangSpec->keywords.buffer[i].key);
             }
         }
-    }
 
-    if (searchFor == IdentifierSearchFor::Function || searchFor == IdentifierSearchFor::Whatever)
-    {
-        if (searchName[0] == '@')
+        if (searchFor == IdentifierSearchFor::Function || searchFor == IdentifierSearchFor::Whatever)
         {
-            for (int i = 0; i < (int) g_LangSpec->keywords.allocated; i++)
+            if (searchName[0] == '@' || searchName[0] == '#')
             {
                 auto& k = g_LangSpec->keywords.buffer[i].key;
-                if (k && k[0] == '@')
-                    searchList.push_back(k);
-            }
-        }
-    }
-
-    if (searchFor == IdentifierSearchFor::Function || searchFor == IdentifierSearchFor::Whatever)
-    {
-        if (searchName[0] == '#')
-        {
-            for (int i = 0; i < (int) g_LangSpec->keywords.allocated; i++)
-            {
-                auto& k = g_LangSpec->keywords.buffer[i].key;
-                if (k && k[0] == '#')
+                if (k && k[0] == searchName[0])
                     searchList.push_back(k);
             }
         }

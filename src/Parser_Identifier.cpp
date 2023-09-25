@@ -450,7 +450,7 @@ bool Parser::doTopLevelIdentifier(AstNode* parent, AstNode** result)
 
     if (token.id == TokenId::Identifier)
     {
-        if (tokenIdentifier.text == "function" || tokenIdentifier.text == "fn")
+        if (tokenIdentifier.text == "function" || tokenIdentifier.text == "fn" || tokenIdentifier.text == "def")
             notes.push_back(Diagnostic::note(Nte(Nte1026)));
     }
 
