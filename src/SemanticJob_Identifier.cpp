@@ -1020,14 +1020,6 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             symbolKind = SymbolKind::Enum;
     }
 
-    // Global identifier call. Must be a call to a mixin function, that's it...
-    auto idRef = identifier->identifierRef();
-    if (idRef && idRef->specFlags & AstIdentifierRef::SPECFLAG_GLOBAL)
-    {
-        SWAG_ASSERT(identifier->callParameters);
-        return context->report({identifier, identifier->token, Fmt(Err(Err0087), identifier->token.ctext(), Naming::aKindName(symbolKind).c_str())});
-    }
-
     SWAG_CHECK(warnDeprecated(context, identifier));
 
     if (symbolKind != SymbolKind::Variable && symbolKind != SymbolKind::Function)
@@ -1039,6 +1031,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         }
     }
 
+    auto idRef = identifier->identifierRef();
     switch (symbolKind)
     {
     case SymbolKind::GenericType:
@@ -2961,7 +2954,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
                         {
                             Diagnostic                diag{identifierRef, Fmt(Err(Err0144), node->token.ctext(), hasEnum[0].second->getDisplayNameC())};
                             Vector<const Diagnostic*> notes;
-                            notes.push_back(Diagnostic::note(findClosestMatchesMsg(context, node, {{hasEnum[0].second->scope}})));
+                            notes.push_back(Diagnostic::note(findClosestMatchesMsg(node->token.text, {{hasEnum[0].second->scope}})));
                             if (hasEnum[0].first)
                                 notes.push_back(Diagnostic::note(hasEnum[0].first, Diagnostic::isType(hasEnum[0].first)));
                             notes.push_back(Diagnostic::hereIs(hasEnum[0].second->declNode));

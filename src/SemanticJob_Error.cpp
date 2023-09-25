@@ -1008,12 +1008,8 @@ void SemanticJob::findClosestMatches(const Utf8& searchName, const Vector<Utf8>&
     }
 }
 
-void SemanticJob::findClosestMatches(SemanticContext* context, AstNode* node, const VectorNative<AlternativeScope>& scopeHierarchy, Vector<Utf8>& best, IdentifierSearchFor searchFor)
+void SemanticJob::findClosestMatches(const Utf8& searchName, const VectorNative<AlternativeScope>& scopeHierarchy, Vector<Utf8>& best, IdentifierSearchFor searchFor)
 {
-    // Do not take some time if file is supposed to fail, in test mode
-    if (context->sourceFile->shouldHaveError && !g_CommandLine.verboseTestErrors)
-        return;
-
     Vector<Utf8> searchList;
     for (auto& as : scopeHierarchy)
     {
@@ -1051,7 +1047,18 @@ void SemanticJob::findClosestMatches(SemanticContext* context, AstNode* node, co
         }
     }
 
-    if (searchFor == IdentifierSearchFor::Type)
+    if (searchFor == IdentifierSearchFor::Keyword || searchFor == IdentifierSearchFor::Whatever)
+    {
+        for (int i = 0; i < (int) g_LangSpec->keywords.allocated; i++)
+        {
+            if (Tokenizer::isKeyword(g_LangSpec->keywords.buffer[i].value))
+            {
+                searchList.push_back(g_LangSpec->keywords.buffer[i].key);
+            }
+        }
+    }
+
+    if (searchFor == IdentifierSearchFor::Type || searchFor == IdentifierSearchFor::Whatever)
     {
         for (int i = 0; i < (int) g_LangSpec->keywords.allocated; i++)
         {
@@ -1061,32 +1068,40 @@ void SemanticJob::findClosestMatches(SemanticContext* context, AstNode* node, co
             }
         }
     }
-    else if (searchFor == IdentifierSearchFor::Function && node->token.text[0] == '@')
+
+    if (searchFor == IdentifierSearchFor::Function || searchFor == IdentifierSearchFor::Whatever)
     {
-        for (int i = 0; i < (int) g_LangSpec->keywords.allocated; i++)
+        if (searchName[0] == '@')
         {
-            auto& k = g_LangSpec->keywords.buffer[i].key;
-            if (k && k[0] == '@')
-                searchList.push_back(k);
-        }
-    }
-    else if (searchFor == IdentifierSearchFor::Function && node->token.text[0] == '#')
-    {
-        for (int i = 0; i < (int) g_LangSpec->keywords.allocated; i++)
-        {
-            auto& k = g_LangSpec->keywords.buffer[i].key;
-            if (k && k[0] == '#')
-                searchList.push_back(k);
+            for (int i = 0; i < (int) g_LangSpec->keywords.allocated; i++)
+            {
+                auto& k = g_LangSpec->keywords.buffer[i].key;
+                if (k && k[0] == '@')
+                    searchList.push_back(k);
+            }
         }
     }
 
-    findClosestMatches(node->token.text, searchList, best);
+    if (searchFor == IdentifierSearchFor::Function || searchFor == IdentifierSearchFor::Whatever)
+    {
+        if (searchName[0] == '#')
+        {
+            for (int i = 0; i < (int) g_LangSpec->keywords.allocated; i++)
+            {
+                auto& k = g_LangSpec->keywords.buffer[i].key;
+                if (k && k[0] == '#')
+                    searchList.push_back(k);
+            }
+        }
+    }
+
+    findClosestMatches(searchName, searchList, best);
 }
 
-Utf8 SemanticJob::findClosestMatchesMsg(SemanticContext* context, AstNode* node, const VectorNative<AlternativeScope>& scopeHierarchy, IdentifierSearchFor searchFor)
+Utf8 SemanticJob::findClosestMatchesMsg(const Utf8& searchName, const VectorNative<AlternativeScope>& scopeHierarchy, IdentifierSearchFor searchFor)
 {
     Vector<Utf8> best;
-    findClosestMatches(context, node, scopeHierarchy, best, searchFor);
+    findClosestMatches(searchName, scopeHierarchy, best, searchFor);
     return findClosestMatchesMsg(best);
 }
 
@@ -1217,7 +1232,7 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
     symbolErrorRemarks(context, v, node, diag);
     symbolErrorNotes(context, v, node, diag, notes);
 
-    Utf8 appendMsg = findClosestMatchesMsg(context, node, scopeHierarchy, searchFor);
+    Utf8 appendMsg = findClosestMatchesMsg(node->token.text, scopeHierarchy, searchFor);
     if (!appendMsg.empty())
         notes.push_back(Diagnostic::note(appendMsg));
 

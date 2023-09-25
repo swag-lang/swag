@@ -442,33 +442,25 @@ bool Parser::doNameAlias(AstNode* parent, AstNode** result)
 
 bool Parser::doTopLevelIdentifier(AstNode* parent, AstNode** result)
 {
-    SWAG_CHECK(doIdentifierRef(parent, result, IDENTIFIER_GLOBAL));
-    auto node = *result;
+    auto tokenIdentifier = token;
+    eatToken();
+
+    Diagnostic                diag{sourceFile, tokenIdentifier, Fmt(Err(Err0087), tokenIdentifier.ctext())};
+    Vector<const Diagnostic*> notes;
 
     if (token.id == TokenId::Identifier)
     {
-        Diagnostic diag{sourceFile, token, Fmt(Err(Err1046), token.ctext(), (*result)->token.ctext())};
-        if (node->token.text == "function" || node->token.text == "fn")
-            diag.addRange(node, Nte(Nte1026));
-        return context->report(diag);
+        if (tokenIdentifier.text == "function" || tokenIdentifier.text == "fn")
+            notes.push_back(Diagnostic::note(Nte(Nte1026)));
     }
 
     if (token.id == TokenId::SymEqual || token.id == TokenId::SymColon)
     {
-        Diagnostic diag{sourceFile, token, Fmt(Err(Err1198), token.ctext(), (*result)->token.ctext())};
-        return context->report(diag);
+        notes.push_back(Diagnostic::note(Nte(Nte1120)));
     }
 
-    auto last = node->childs.back();
-    if (last->kind == AstNodeKind::Identifier)
-    {
-        auto id = CastAst<AstIdentifier>(last, AstNodeKind::Identifier);
-        if (!id->callParameters)
-        {
-            Diagnostic diag{sourceFile, last->token, Fmt(Err(Err1107), (*result)->token.ctext())};
-            return context->report(diag);
-        }
-    }
-
-    return true;
+    Utf8 appendMsg = SemanticJob::findClosestMatchesMsg(tokenIdentifier.text, {});
+    if (!appendMsg.empty())
+        notes.push_back(Diagnostic::note(appendMsg));
+    return context->report(diag, notes);
 }

@@ -634,7 +634,6 @@ void initErrors()
     SWAG_ERROR(Err1147, "misplaced error catching                          $ '%s' can't be nested in a '%s' expression $ you should use only one 'try', 'catch' or 'assume'");
     SWAG_ERROR(Err1021, "misplaced error catching                          $ treating a return error with '%s' can only be done inside a function, macro or mixin");
     SWAG_ERROR(Err0535, "misplaced error catching                          $ unexpected '%s' because function '%s' can't raise an error");
-    SWAG_ERROR(Err0087, "misplaced function call                           $ a function call can't be done at global scope");
     SWAG_ERROR(Err1163, "misplaced function declaration                    $ functions can't be directly declared inside structs $ functions associated with structs should be declared inside 'impl' blocks");
     SWAG_ERROR(Err0135, "misplaced generic arguments                       $ unexpected generic arguments for %s '%s'");
     SWAG_ERROR(Err1040, "misplaced namespace                               $ a namespace should be defined in the top-level scope or within another namespace");
@@ -674,7 +673,6 @@ void initErrors()
     SWAG_ERROR(Err0601, "missing arguments                                 $ the '#[Swag.Using]' attribute should have at least one argument");
     SWAG_ERROR(Err0075, "missing attribute                                 $ 'opVisit' functions must have the '#[Swag.Macro]' attribute");
     SWAG_ERROR(Err1026, "missing attribute name                            $ expected an attribute name before '('");
-    SWAG_ERROR(Err1107, "missing call arguments                            $ missing the call arguments after '%s' $ only mixin calls with arguments are valid at global scope");
     SWAG_ERROR(Err0534, "missing catch error                               $ expected 'try', 'assume' or 'catch' to deal with the errors of '%s'");
     SWAG_ERROR(Err2026, "missing character literal closing backtick        $ expected a closing backtick '`' before the end of the line");
     SWAG_ERROR(Err1068, "missing closing '%s'                              $ expected '%s' %s, found '%s' instead");
@@ -819,7 +817,6 @@ void initErrors()
     SWAG_ERROR(Err1162, "unexpected generic parameters                     $ expected an non-generic name without generic parameters starting with '''");
     SWAG_ERROR(Err0752, "unexpected generic parameters                     $ the function '%s' can't have generic parameters because of the '#[Swag.NotGeneric]' attribute");
     SWAG_ERROR(Err0478, "unexpected generic parameters                     $ the special function '%s' can't have generic parameters");
-    SWAG_ERROR(Err1046, "unexpected identifier                             $ unexpected identifier '%s' after '%s' at global scope");
     SWAG_ERROR(Err1191, "unexpected lambda parameter name                  $ unexpected name when declaring a lambda type $ consider removing the name");
     SWAG_ERROR(Err1170, "unexpected lambda parameter type                  $ unexpected type $ when declaring lambda parameters, you should not combined inferred and explicit types");
     SWAG_ERROR(Err1165, "unexpected lambda return type                     $ unexpected return type when parameters type are inferred $ when inferring lambda parameter types, the return type should also be inferred");
@@ -828,7 +825,6 @@ void initErrors()
     SWAG_ERROR(Err1126, "unexpected operator modifier                      $ the operator modifier '%s' can't be applied to '%s'");
     SWAG_ERROR(Err0052, "unexpected return value                           $ a %s can't return something");
     SWAG_ERROR(Err0766, "unexpected return value                           $ a function with the '#[Swag.CalleeReturn]' attribute must not declare a return value");
-    SWAG_ERROR(Err1198, "unexpected symbol                                 $ unexpected symbol '%s' after the identifier '%s' $ did you forget 'var' or 'const' to declare a global variable or constant?");
     SWAG_ERROR(Err1042, "unexpected tuple unpacking name                   $ expected a variable name or '?' when unpacking a tuple, found '%s' instead");
     SWAG_ERROR(Err0664, "unexpected type alias                             $ expected a direct type as an 'impl' block name, got a type alias instead");
     SWAG_ERROR(Err1197, "unexpected type declaration                       $ unexpected type declaration after 'self' $ 'self' is implicitly typed; consider removing the redundant type");
@@ -879,6 +875,10 @@ void initErrors()
     SWAG_ERROR(Err1179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
     SWAG_ERROR(Err0092, "unused return value                               $ the return value of the lambda '%s' should be used $ if you don't need the return value, consider prefixing the call with 'discard'");
     SWAG_ERROR(Err0295, "unexpected parameters                             $ expected '{' here because a compiler %s should not have parameters");
+    SWAG_ERROR(Err0087, "unexpected identifier                             $ a global identifier like '%s' can't be used at the file level");
+    SWAG_ERROR(Err1198, nullptr);
+    SWAG_ERROR(Err1046, nullptr);
+    SWAG_ERROR(Err1107, nullptr);
     SWAG_ERROR(Err0173, nullptr);
     SWAG_ERROR(Err0549, nullptr);
     SWAG_ERROR(Err0684, nullptr);
@@ -1460,7 +1460,7 @@ void initErrors()
     SWAG_ERROR(Nte1026, "consider using 'func' to declare a function");
     SWAG_ERROR(Nte0077, "this parameter is missing its type");
     SWAG_ERROR(Nte1111, "this list of parameters are missing their type");
-    SWAG_ERROR(Nte1120, nullptr);
+    SWAG_ERROR(Nte1120, "did you forget 'var' or 'const' to declare a global variable or constant?");
     SWAG_ERROR(Nte1103, nullptr);
     SWAG_ERROR(Nte0025, nullptr);
     SWAG_ERROR(Nte1122, nullptr);

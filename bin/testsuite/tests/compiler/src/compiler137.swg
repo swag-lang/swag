@@ -1,3 +1,3 @@
-#global testerror "Err1198";
+#global testerror "Err0087";
 b: bool;
 //var a: b{};
