@@ -869,7 +869,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         {
             Diagnostic diag{arrayNode->access, Err(Err0486)};
             diag.addRange(arrayNode->array, Diagnostic::isType(typePtr));
-            return context->report(diag, Diagnostic::note(Nte(Nte1110)));
+            return context->report(diag);
         }
 
         arrayNode->typeInfo = typePtr->pointedType;

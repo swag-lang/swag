@@ -2385,7 +2385,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             {
                 auto       badParamIdx = symContext.badSignatureInfos.badSignatureParameterIdx;
                 auto       failedParam = child->childs[badParamIdx];
-                Diagnostic diag{failedParam, Fmt(Err(Err0006), Naming::niceArgumentRank(badParamIdx + 1).c_str()), Nte(Nte1031)};
+                Diagnostic diag{failedParam, Fmt(Err(Err0006), Naming::niceArgumentRank(badParamIdx + 1).c_str())};
                 auto       otherParam = child->childs[badParamIdx - 1];
                 if (otherParam->hasExtMisc() && otherParam->extMisc()->isNamed)
                     otherParam = otherParam->extMisc()->isNamed;
@@ -2396,8 +2396,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             {
                 auto       failedParam = child->childs[symContext.badSignatureInfos.badSignatureParameterIdx];
                 Diagnostic diag{failedParam->extMisc()->isNamed, Fmt(Err(Err0011), failedParam->extMisc()->isNamed->token.ctext())};
-                diag.hint       = Nte(Nte1009);
-                auto otherParam = child->childs[symContext.badSignatureInfos.badSignatureNum1];
+                auto       otherParam = child->childs[symContext.badSignatureInfos.badSignatureNum1];
                 if (otherParam->hasExtMisc() && otherParam->extMisc()->isNamed)
                     otherParam = otherParam->extMisc()->isNamed;
                 diag.addRange(otherParam, Nte(Nte1059));

@@ -156,7 +156,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     {
         SWAG_ASSERT(failedParam);
         SWAG_ASSERT(badParamIdx >= 2);
-        diag = new Diagnostic{failedParam, Fmt(Err(Err0006), Naming::niceArgumentRank(badParamIdx).c_str()), Nte(Nte1031)};
+        diag = new Diagnostic{failedParam, Fmt(Err(Err0006), Naming::niceArgumentRank(badParamIdx).c_str())};
         diag->addRange(callParameters->childs[badParamIdx - 2], Nte(Nte1030));
         result0.push_back(diag);
         return;

@@ -397,7 +397,7 @@ void initErrors()
     SWAG_ERROR(Err0227, "invalid dereference                               $ can't dereference '%s' by index because the special function 'opIndex' can't be found in type '%s'");
     SWAG_ERROR(Err0226, "invalid dereference                               $ can't dereference by index because the special function 'opIndex' can't be found in type '%s'");
     SWAG_ERROR(Err0481, "invalid dereference                               $ derefencing type '%s' is not valid");
-    SWAG_ERROR(Err0486, "invalid dereference                               $ dereferencing a pointer to 'void' is not valid");
+    SWAG_ERROR(Err0486, "invalid dereference                               $ dereferencing a pointer to 'void' is not valid $ 'void' does not have a valid size");
     SWAG_ERROR(Err0482, "invalid dereference                               $ tuples can't be dereferenced like pointers");
     SWAG_ERROR(Err1073, "invalid embedded instruction                      $ expected an embedded instruction or a curly block, found '%s' instead");
     SWAG_ERROR(Err1159, "invalid empty attribute                           $ an attribute should contain at least one value $ you should specify the attribute name between '[]'");
@@ -490,7 +490,7 @@ void initErrors()
     SWAG_ERROR(Err0804, "invalid parameter                                 $ the '#message' block needs a parameter of type 'Swag.CompilerMsgMask', got '%s'");
     SWAG_ERROR(Err1112, "invalid parameter name                            $ expected a parameter name, found '%s' instead");
     SWAG_ERROR(Err1167, "invalid pass name                                 $ '%s' is not recognized as a valid compiler pass name");
-    SWAG_ERROR(Err0111, "invalid pointer arithmetic                        $ pointer arithmetic is not allowed on a pointer to 'void'");
+    SWAG_ERROR(Err0111, "invalid pointer arithmetic                        $ pointer arithmetic is not allowed on a pointer to 'void' $ 'void' does not have a valid size");
     SWAG_ERROR(Err0192, "invalid pointer arithmetic                        $ pointer arithmetic is not allowed");
     SWAG_ERROR(Err0579, "invalid pointer arithmetic                        $ pointer arithmetic requires an integer, got '%s' instead");
     SWAG_ERROR(Err0193, "invalid pointer arithmetic                        $ pointer slicing is not allowed");
@@ -517,7 +517,7 @@ void initErrors()
     SWAG_ERROR(Err1063, "invalid struct name                               $ expected the struct name, found '%s' instead");
     SWAG_ERROR(Err1064, "invalid top-level instruction                     $ expected a top-level instruction, found '%s' instead");
     SWAG_ERROR(Err0292, "invalid tuple unpacking                           $ can't unpack an empty tuple");
-    SWAG_ERROR(Err0291, "invalid tuple unpacking                           $ can't unpack type '%s' $ expected a struct or a tuple tuple");
+    SWAG_ERROR(Err0291, "invalid tuple unpacking                           $ can't unpack type '%s' $ expected a struct or a tuple");
     SWAG_ERROR(Err0569, "invalid type                                      $ the affect expression has type 'void'");
     SWAG_ERROR(Err0307, "invalid type                                      $ the initialization expression has type 'void'");
     SWAG_ERROR(Err0142, "invalid type                                      $ the intrinsic '@init' requires a 'pointer to memory' as a first argument if the count is greater than one");
@@ -1324,7 +1324,7 @@ void initErrors()
     SWAG_ERROR(Nte0031, "here is the deprecated definition");
     SWAG_ERROR(Nte0064, "here is the field causing the recursion");
     SWAG_ERROR(Nte0068, "here is the generic parameter '%s' of %s");
-    SWAG_ERROR(Nte0023, "here is the immutable value reference");
+    SWAG_ERROR(Nte0023, "here is the reference to the immutable value");
     SWAG_ERROR(Nte0035, "here is the other '#import'");
     SWAG_ERROR(Nte0036, "here is the other definition");
     SWAG_ERROR(Nte0014, "here is the other definition");
@@ -1359,12 +1359,10 @@ void initErrors()
     SWAG_ERROR(Nte1061, "the operation is not allowed");
     SWAG_ERROR(Nte0075, "here is the origin of the instantiation type '%s'");
     SWAG_ERROR(Nte1113, "parameter mismatch detected");
-    SWAG_ERROR(Nte1110, "pointer arithmetic is not valid because 'void' doesn't have a size");
     SWAG_ERROR(Nte0146, "pointer arithmetic is only valid for pointers declared with '^', not '*'");
     SWAG_ERROR(Nte0086, "possibly comes from enum '%s'");
     SWAG_ERROR(Nte0022, "potential issue detected in your program's compile-time component");
     SWAG_ERROR(Nte0126, "public structs should export all their special functions");
-    SWAG_ERROR(Nte1009, "secondary instance observed");
     SWAG_ERROR(Nte1052, "should be casted to a sized integer like 's32', 's64', etc.");
     SWAG_ERROR(Nte0081, "should conform to type '%s'");
     SWAG_ERROR(Nte1108, "should point to '%s'");
@@ -1411,7 +1409,6 @@ void initErrors()
     SWAG_ERROR(Nte0006, "this 'using' field is convertible");
     SWAG_ERROR(Nte0144, "this appears to be a potentially invalid UFCS call");
     SWAG_ERROR(Nte1030, "this argument has been named");
-    SWAG_ERROR(Nte1031, "this argument should be named also");
     SWAG_ERROR(Nte0062, "this can be converted too");
     SWAG_ERROR(Nte0071, "this function call can't be evaluated at compile-time");
     SWAG_ERROR(Nte1057, "this function can't be instantiated");
@@ -1463,6 +1460,9 @@ void initErrors()
     SWAG_ERROR(Nte1120, "did you forget 'var' or 'const' to declare a global variable or constant?");
     SWAG_ERROR(Nte1103, "the operator '++' requires compile-time strings as arguments");
     SWAG_ERROR(Nte0025, "consider replacing 'undefined' with an explicit initialization");
+    SWAG_ERROR(Nte1110, nullptr);
+    SWAG_ERROR(Nte1031, nullptr);
+    SWAG_ERROR(Nte1009, nullptr);
     SWAG_ERROR(Nte1122, nullptr);
     SWAG_ERROR(Nte1131, nullptr);
     SWAG_ERROR(Nte0028, nullptr);
