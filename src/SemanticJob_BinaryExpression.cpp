@@ -884,8 +884,15 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
 bool SemanticJob::resolveAppend(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node = context->node;
-    SWAG_CHECK(checkIsConstExpr(context, left->hasComputedValue(), left));
-    SWAG_CHECK(checkIsConstExpr(context, right->hasComputedValue(), right));
+
+    {
+        PushErrCxtStep ec(
+            context, node, ErrCxtStepKind::Note, []()
+            { return Nte(Nte1103); },
+            true);
+        SWAG_CHECK(checkIsConstExpr(context, left->hasComputedValue(), left));
+        SWAG_CHECK(checkIsConstExpr(context, right->hasComputedValue(), right));
+    }
 
     if (!left->typeInfo->isString())
         left->computedValue->text = Ast::literalToString(left->typeInfo, *left->computedValue);

@@ -1461,7 +1461,7 @@ void initErrors()
     SWAG_ERROR(Nte0077, "this parameter is missing its type");
     SWAG_ERROR(Nte1111, "this list of parameters are missing their type");
     SWAG_ERROR(Nte1120, "did you forget 'var' or 'const' to declare a global variable or constant?");
-    SWAG_ERROR(Nte1103, nullptr);
+    SWAG_ERROR(Nte1103, "the operator '++' requires compile-time strings as arguments");
     SWAG_ERROR(Nte0025, nullptr);
     SWAG_ERROR(Nte1122, nullptr);
     SWAG_ERROR(Nte1131, nullptr);

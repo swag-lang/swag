@@ -11,21 +11,38 @@ bool SemanticJob::checkIsConstExpr(JobContext* context, bool test, AstNode* expr
     if (test)
         return true;
 
+    auto note = computeNonConstExprNote(expression);
+
     if (expression->hasSpecialFuncCall())
     {
         Diagnostic diag{expression, expression->token, Fmt(Err(Err0281), expression->typeInfo->getDisplayNameC())};
         diag.hint = Fmt(Nte(Nte1047), expression->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str());
-        return context->report(diag, computeNonConstExprNote(expression));
+        return context->report(diag, note);
     }
 
+    Utf8 message;
     if (errMsg.length() && errParam.length())
+        message = Fmt(errMsg.c_str(), errParam.c_str());
+    else if (errMsg.length())
+        message = errMsg;
+    else
+        message = Err(Err0798);
+
+    Diagnostic diag{expression, message};
+
+    // Just keep the culprit if the culprit is the same as the full expression, and there's no
+    // specific requested error message
+    if (errMsg.empty() && note->startLocation == diag.startLocation && note->endLocation == diag.endLocation)
     {
-        Diagnostic diag{expression, Fmt(errMsg.c_str(), errParam.c_str())};
-        return context->report(diag, computeNonConstExprNote(expression));
+        Vector<Utf8> parts;
+        Utf8::tokenize(diag.textMsg, '$', parts, true, true);
+        diag.textMsg = parts[0];
+        diag.textMsg += "$";
+        diag.textMsg += note->textMsg;
+        note = nullptr;
     }
 
-    Diagnostic diag{expression, errMsg.length() ? errMsg : Err(Err0798)};
-    return context->report(diag, computeNonConstExprNote(expression));
+    return context->report(diag, note);
 }
 
 bool SemanticJob::checkIsConstExpr(JobContext* context, AstNode* expression, const Utf8& errMsg, const Utf8& errParam)
