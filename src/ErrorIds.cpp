@@ -317,7 +317,8 @@ void initErrors()
     SWAG_ERROR(Err0472, "invalid address                                   $ can't take the address of a mixin");
     SWAG_ERROR(Err0501, "invalid address                                   $ can't take the address of a variable declared with 'let'");
     SWAG_ERROR(Err0473, "invalid address                                   $ can't take the address of an inlined function");
-    SWAG_ERROR(Err0114, "invalid address                                   $ can't take the address of a function return value of type '%s'");
+    SWAG_ERROR(Err0114, "invalid address                                   $ can't take the address of a function returned value of type '%s'");
+    SWAG_ERROR(Err1198, "invalid address                                   $ can't take the address because the function returns nothing");
     SWAG_ERROR(Err0047, "invalid address                                   $ can't take the address of the right expression");
     SWAG_ERROR(Err1218, "invalid alias name                                $ expected an identifier for name aliasing, found '%s' instead");
     SWAG_ERROR(Err1071, "invalid alias name                                $ expected the alias name after '%s', found '%s' instead");
@@ -876,7 +877,6 @@ void initErrors()
     SWAG_ERROR(Err0092, "unused return value                               $ the return value of the lambda '%s' should be used $ if you don't need the return value, consider prefixing the call with 'discard'");
     SWAG_ERROR(Err0295, "unexpected parameters                             $ expected '{' here because a compiler %s should not have parameters");
     SWAG_ERROR(Err0087, "unexpected identifier                             $ a global identifier like '%s' can't be used at the file level");
-    SWAG_ERROR(Err1198, nullptr);
     SWAG_ERROR(Err1046, nullptr);
     SWAG_ERROR(Err1107, nullptr);
     SWAG_ERROR(Err0173, nullptr);

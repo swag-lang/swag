@@ -164,9 +164,17 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
         typeInfo = TypeManager::concreteType(typeInfo);
         if (!typeInfo->isPointerRef())
         {
-            Diagnostic diag{node, node->token, Fmt(Err(Err0114), typeInfo->getDisplayNameC())};
-            auto       note = Diagnostic::note(Fmt(Nte(Nte1112), Naming::aKindName(typeInfo).c_str()));
-            return context->report(diag, note);
+            if (typeInfo->isVoid())
+            {
+                Diagnostic diag{node, node->token, Fmt(Err(Err1198), typeInfo->getDisplayNameC())};
+                return context->report(diag, Diagnostic::hereIs(child->resolvedSymbolOverload));
+            }
+            else
+            {
+                Diagnostic diag{node, node->token, Fmt(Err(Err0114), typeInfo->getDisplayNameC())};
+                auto       note = Diagnostic::note(Fmt(Nte(Nte1112), Naming::aKindName(typeInfo).c_str()));
+                return context->report(diag, Diagnostic::hereIs(child->resolvedSymbolOverload), note);
+            }
         }
     }
 
