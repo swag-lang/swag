@@ -1,7 +1,4 @@
-
-
-//#[Swag.PrintBc]
-#global testerror "Err0177"
+#global testerror "Err0436"
 #test
 {
 	var a = 0

@@ -772,6 +772,7 @@ void initErrors()
     SWAG_ERROR(Err0196, "type mismatch                                     $ can't %s '%s' %s '%s'");
     SWAG_ERROR(Err0908, "type mismatch                                     $ can't initialize type '%s' from type '%s'");
     SWAG_ERROR(Err0177, "type mismatch                                     $ casting from '%s' to '%s' is not allowed");
+    SWAG_ERROR(Err0436, "type mismatch                                     $ casting from a type value ('typeinfo') to a compile type ('%s') is not allowed");
     SWAG_ERROR(Err0907, "type mismatch                                     $ casting from '%s' to pointer type is not allowed $ only conversion from type 'u64' is accepted");
     SWAG_ERROR(Err0041, "type mismatch                                     $ casting from a value pointer '%s' to a block pointer '%s' is not allowed");
     SWAG_ERROR(Err0418, "type mismatch                                     $ casting from an immutable type '%s' to a mutable one '%s' is not allowed");
@@ -875,7 +876,6 @@ void initErrors()
     SWAG_ERROR(Err0092, "unused return value                               $ the return value of the lambda '%s' should be used $ if you don't need the return value, consider prefixing the call with 'discard'");
     SWAG_ERROR(Err0295, "unexpected parameters                             $ expected '{' here because a compiler %s should not have parameters");
     SWAG_ERROR(Err0087, "unexpected identifier                             $ a global identifier like '%s' can't be used at the file level");
-    SWAG_ERROR(Err0436, nullptr);
     SWAG_ERROR(Err1198, nullptr);
     SWAG_ERROR(Err1046, nullptr);
     SWAG_ERROR(Err1107, nullptr);
@@ -1436,7 +1436,7 @@ void initErrors()
     SWAG_ERROR(Nte1011, "this type is '%s'");
     SWAG_ERROR(Nte1022, "this type is immutable");
     SWAG_ERROR(Nte1002, "this value can only be converted to type '%s' with a dynamic call to 'opAffect'");
-    SWAG_ERROR(Nte1040, "this value is a 'typeinfo'");
+    SWAG_ERROR(Nte1040, "this is a type value, aka 'typeinfo', aka '%s'");
     SWAG_ERROR(Nte0152, "to begin a new block, consider moving '{' to a new line");
     SWAG_ERROR(Nte0020, "to close this you need '%s'");
     SWAG_ERROR(Nte0105, "to dereference variable '%s' as in C, employ 'dref %s'");

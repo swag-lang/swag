@@ -417,8 +417,8 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
     }
     else if (fromType->isPointerToTypeInfo() && !toType->isPointerToTypeInfo())
     {
-        hint = Nte(Nte1040);
-        msg  = Fmt(ErrNte(Err0177, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
+        hint = Fmt(Nte(Nte1040), fromType->getDisplayNameC());
+        msg  = Fmt(ErrNte(Err0436, forNote), toType->getDisplayNameC());
     }
     else if (fromType->isClosure() && toType->isLambda())
     {
