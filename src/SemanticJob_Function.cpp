@@ -1374,15 +1374,13 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     // (better error message than just letting the makeCompatibles do its job)
     if (returnType->isVoid() && !concreteType->isVoid())
     {
-        Diagnostic diag{child, Fmt(Err(Err0774), concreteType->getDisplayNameC(), funcNode->getDisplayNameC())};
+        Diagnostic  diag{child, Fmt(Err(Err0774), concreteType->getDisplayNameC(), funcNode->token.ctext(), concreteType->name.c_str())};
+        Diagnostic* note = nullptr;
 
         if (node->ownerInline && !(node->semFlags & SEMFLAG_EMBEDDED_RETURN))
-        {
-            auto note = Diagnostic::note(funcNode, Fmt(Nte(Nte0011), node->ownerInline->func->getDisplayNameC(), funcNode->getDisplayNameC()));
-            return context->report(diag, note);
-        }
+            note = Diagnostic::note(funcNode, Fmt(Nte(Nte0011), node->ownerInline->func->token.ctext(), funcNode->token.ctext()));
 
-        return context->report(diag);
+        return context->report(diag, note);
     }
 
     // :WaitForPOD

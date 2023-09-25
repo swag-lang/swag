@@ -746,7 +746,7 @@ void initErrors()
     SWAG_ERROR(Err0234, "return type mismatch                              $ an '#ast' block must return a string, got '%s'");
     SWAG_ERROR(Err0770, "return type mismatch                              $ the return type has already been deduced to be '%s', and here it's '%s'");
     SWAG_ERROR(Err0773, "return type mismatch                              $ the return type has already been deduced to be nothing, and here it's '%s'");
-    SWAG_ERROR(Err0774, "return type mismatch                              $ unexpected return type '%s' for %s");
+    SWAG_ERROR(Err0774, "return type mismatch                              $ unexpected return type '%s' for function '%s' $ consider adding a return type '->%s'");
     SWAG_ERROR(Err0419, "semantic cycle                                    $ a cycle has been detected during the resolution of %s '%s'");
     SWAG_ERROR(Err0096, "standalone expression                             $ an expression value should be used $ consider removing it");
     SWAG_ERROR(Err2018, "string literal is missing its closing '\"'        $ expected a closing quotation mark '\"' before the end of the line $ if you want a multi-line string, use the syntax \"\"\"string\"\"\"");
@@ -1377,7 +1377,7 @@ void initErrors()
     SWAG_ERROR(Nte1123, "the array has %d elements of type '%s', which doesn't match a slice of type '%s'");
     SWAG_ERROR(Nte0018, "the concealed call to '%s' returns type '%s', lacking a subscope");
     SWAG_ERROR(Nte0056, "the counterpart is an implicit 'using self' as an initial parameter");
-    SWAG_ERROR(Nte0011, "the entity %s is tagged with 'Swag.CalleeReturn', implying the return is utilized within %s");
+    SWAG_ERROR(Nte0011, "the function '%s' is tagged with '#[Swag.CalleeReturn]', implying the return value is utilized within '%s'");
     SWAG_ERROR(Nte0042, "the function '%s' is not marked with the '#[Swag.ConstExpr]' attribute");
     SWAG_ERROR(Nte1039, "the function call returns an immutable '%s'");
     SWAG_ERROR(Nte1093, "the function doesn't accept type '%s' as its first argument");
