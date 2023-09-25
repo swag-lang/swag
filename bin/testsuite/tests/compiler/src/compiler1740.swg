@@ -2,7 +2,5 @@
 
 #test
 {
-    {
-        const array: s32 = undefined
-    }
+    const array: s32
 }

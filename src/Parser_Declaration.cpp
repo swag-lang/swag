@@ -746,7 +746,6 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 
     case TokenId::CompilerUp:
     case TokenId::SymLeftParen:
-    case TokenId::Identifier:
     case TokenId::CompilerSelf:
 
     case TokenId::IntrinsicAtomicAdd:
@@ -779,6 +778,10 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
     case TokenId::IntrinsicGetProcessInfos:
     case TokenId::IntrinsicDbgAlloc:
     case TokenId::IntrinsicSysAlloc:
+        SWAG_CHECK(doLeftInstruction(parent, result));
+        break;
+
+    case TokenId::Identifier:
         SWAG_CHECK(doLeftInstruction(parent, result));
         break;
 
@@ -905,6 +908,16 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err1022), token.ctext())));
         return doLeftInstruction(parent, result, CastAst<AstWith>(withNode, AstNodeKind::With));
         return true;
+    }
+
+    case TokenId::NativeType:
+    {
+        Diagnostic diag{sourceFile, token, Err(Err0359)};
+        eatToken();
+        Diagnostic* note = nullptr;
+        if (token.id == TokenId::Identifier)
+            note = Diagnostic::note(Nte(Nte1110));
+        return context->report(diag, note);
     }
 
     default:
