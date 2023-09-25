@@ -2614,7 +2614,11 @@ TypeInfoEnum* SemanticJob::findEnumTypeInContext(SemanticContext* context, TypeI
     return nullptr;
 }
 
-bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node, VectorNative<TypeInfoEnum*>& result, VectorNative<std::pair<AstNode*, TypeInfoEnum*>>& has)
+bool SemanticJob::findEnumTypeInContext(SemanticContext*                                  context,
+                                        AstNode*                                          node,
+                                        VectorNative<TypeInfoEnum*>&                      result,
+                                        VectorNative<std::pair<AstNode*, TypeInfoEnum*>>& has,
+                                        VectorNative<SymbolOverload*>&                    testedOver)
 {
     result.clear();
     has.clear();
@@ -2668,6 +2672,7 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext* context, AstNode* node,
                 if (concrete->isGeneric() || concrete->isFromGeneric())
                     continue;
 
+                testedOver.push_back(overload);
                 auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(concrete, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
 
                 // If there's only one corresponding type in the function, then take it
@@ -2923,7 +2928,8 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
             {
                 VectorNative<TypeInfoEnum*>                      typeEnum;
                 VectorNative<std::pair<AstNode*, TypeInfoEnum*>> hasEnum;
-                SWAG_CHECK(findEnumTypeInContext(context, identifierRef, typeEnum, hasEnum));
+                VectorNative<SymbolOverload*>                    testedOver;
+                SWAG_CHECK(findEnumTypeInContext(context, identifierRef, typeEnum, hasEnum, testedOver));
                 if (context->result == ContextResult::Pending)
                     return true;
 
@@ -2962,7 +2968,12 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
                         }
 
                         Diagnostic diag{identifierRef, Fmt(Err(Err0881), node->token.ctext())};
-                        return context->report(diag);
+
+                        // Call to a function ?
+                        Diagnostic* note = nullptr;
+                        if (testedOver.size() == 1)
+                            note = Diagnostic::hereIs(testedOver[0]);
+                        return context->report(diag, note);
                     }
 
                     auto withNode = CastAst<AstWith>(withNodeP, AstNodeKind::With);
@@ -4043,7 +4054,8 @@ bool SemanticJob::filterMatchesInContext(SemanticContext* context, VectorNative<
         auto                                             over     = oneMatch->symbolOverload;
         VectorNative<TypeInfoEnum*>                      typeEnum;
         VectorNative<std::pair<AstNode*, TypeInfoEnum*>> hasEnum;
-        SWAG_CHECK(findEnumTypeInContext(context, over->node, typeEnum, hasEnum));
+        VectorNative<SymbolOverload*>                    testedOver;
+        SWAG_CHECK(findEnumTypeInContext(context, over->node, typeEnum, hasEnum, testedOver));
         if (context->result != ContextResult::Done)
             return true;
 
