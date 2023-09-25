@@ -143,6 +143,7 @@ struct Parser
     bool doDefer(AstNode* parent, AstNode** result);
     bool doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet = false);
     bool doAffectExpression(AstNode* parent, AstNode** result, AstWith* withNode = nullptr);
+    bool doTopLevelIdentifier(AstNode* parent, AstNode** result);
     bool doIdentifier(AstNode* parent, uint32_t identifierFlags = 0);
     bool doIdentifierRef(AstNode* parent, AstNode** result, uint32_t identifierFlags = 0);
     bool doDiscard(AstNode* parent, AstNode** result);

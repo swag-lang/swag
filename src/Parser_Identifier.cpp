@@ -439,3 +439,36 @@ bool Parser::doNameAlias(AstNode* parent, AstNode** result)
     node->resolvedSymbolName = currentScope->symTable.registerSymbolName(context, node, SymbolKind::NameAlias);
     return true;
 }
+
+bool Parser::doTopLevelIdentifier(AstNode* parent, AstNode** result)
+{
+    SWAG_CHECK(doIdentifierRef(parent, result, IDENTIFIER_GLOBAL));
+    auto node = *result;
+
+    if (token.id == TokenId::Identifier)
+    {
+        Diagnostic diag{sourceFile, token, Fmt(Err(Err1046), token.ctext(), (*result)->token.ctext())};
+        if (node->token.text == "function" || node->token.text == "fn")
+            diag.addRange(node, Nte(Nte1026));
+        return context->report(diag);
+    }
+
+    if (token.id == TokenId::SymEqual || token.id == TokenId::SymColon)
+    {
+        Diagnostic diag{sourceFile, token, Fmt(Err(Err1198), token.ctext(), (*result)->token.ctext())};
+        return context->report(diag);
+    }
+
+    auto last = node->childs.back();
+    if (last->kind == AstNodeKind::Identifier)
+    {
+        auto id = CastAst<AstIdentifier>(last, AstNodeKind::Identifier);
+        if (!id->callParameters)
+        {
+            Diagnostic diag{sourceFile, last->token, Fmt(Err(Err1107), (*result)->token.ctext())};
+            return context->report(diag);
+        }
+    }
+
+    return true;
+}

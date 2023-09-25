@@ -510,7 +510,6 @@ void initErrors()
     SWAG_ERROR(Err0474, "invalid slicing                                   $ slicing is invalid on a multi-dimensional array");
     SWAG_ERROR(Err0477, "invalid slicing                                   $ the slicing bound '%I64u' is out of range (max is '%I64u')");
     SWAG_ERROR(Err0476, "invalid slicing                                   $ the slicing lower bound '%I64u' is greater than the upper bound '%I64u'");
-    SWAG_ERROR(Err0476, "invalid slicing                                   $ the slicing lower bound '%I64u' is greater than the upper bound '%I64u'");
     SWAG_ERROR(Err0688, "invalid slicing                                   $ the slicing upper bound exclusion with '..<' is not possible because it is zero");
     SWAG_ERROR(Err0206, "invalid stack frame reference                     $ you can't reference the %s '%s' because it's in a different stack frame");
     SWAG_ERROR(Err1128, "invalid struct initialization                     $ expected '{}' to initialize a struct, and not '()' which is reserved for function calls");
@@ -704,6 +703,7 @@ void initErrors()
     SWAG_ERROR(Err0706, "missing initialization                            $ the enumeration value '%s' has type '%s' which requires an explicit initialization");
     SWAG_ERROR(Err1044, "missing intrinsic arguments                       $ expected the intrinsic arguments between '()'");
     SWAG_ERROR(Err1090, "missing lambda parameter type                     $ expected the type with ':' or an assignment with '=' $ when declaring lambda parameters, you should not combined inferred and explicit types");
+    SWAG_ERROR(Err0648, "missing parameter type                            $ expected the type with ':' or an assignment with '=', found '%s' instead");
     SWAG_ERROR(Err0006, "missing name                                      $ the %s should be named because some arguments before are named");
     SWAG_ERROR(Err0068, "missing parameters                                $ the special function '%s' requires some parameters");
     SWAG_ERROR(Err0767, "missing return type                               $ the function '%s' has the '#[Swag.Discardable]' attribute and should return something");
@@ -879,7 +879,6 @@ void initErrors()
     SWAG_ERROR(Err1179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
     SWAG_ERROR(Err0092, "unused return value                               $ the return value of the lambda '%s' should be used $ if you don't need the return value, consider prefixing the call with 'discard'");
     SWAG_ERROR(Err0295, "unexpected parameters                             $ expected '{' here because a compiler %s should not have parameters");
-    SWAG_ERROR(Err0648, nullptr);
     SWAG_ERROR(Err0173, nullptr);
     SWAG_ERROR(Err0549, nullptr);
     SWAG_ERROR(Err0684, nullptr);
@@ -1458,9 +1457,9 @@ void initErrors()
     SWAG_ERROR(Nte1095, "you can't reference this runtime %s from the compile-time %s");
     SWAG_ERROR(Nte0149, "you might want to get the address of '%s' using '&'");
     SWAG_ERROR(Nte0008, "to retrieve the program arguments, consider using the '@args()' intrinsic");
-    SWAG_ERROR(Nte1026, nullptr);
-    SWAG_ERROR(Nte0077, nullptr);
-    SWAG_ERROR(Nte1111, nullptr);
+    SWAG_ERROR(Nte1026, "consider using 'func' to declare a function");
+    SWAG_ERROR(Nte0077, "this parameter is missing its type");
+    SWAG_ERROR(Nte1111, "this list of parameters are missing their type");
     SWAG_ERROR(Nte1120, nullptr);
     SWAG_ERROR(Nte1103, nullptr);
     SWAG_ERROR(Nte0025, nullptr);

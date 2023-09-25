@@ -370,9 +370,18 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
         if (!hasType && !hasAssignment)
         {
             if (!acceptMissingType)
-                return error(token, Err(Err1090));
+            {
+                Diagnostic diag{sourceFile, token, Fmt(Err(Err0648), token.ctext())};
+                if (otherVariables.empty())
+                    diag.addRange(paramNode, Nte(Nte0077));
+                else
+                    diag.addRange(paramNode->token.startLocation, otherVariables.back()->token.endLocation, Nte(Nte1111));
+                return context->report(diag);
+            }
             else if (hasMissingType)
+            {
                 *hasMissingType = true;
+            }
         }
 
         // Add attribute as the last child, to avoid messing around with the first FuncDeclParam node.
