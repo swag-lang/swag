@@ -658,7 +658,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if ((symbolFlags & OVERLOAD_CONST_ASSIGN) && node->kind != AstNodeKind::FuncDeclParam)
         {
             if (symbolFlags & OVERLOAD_IS_LET)
-                return context->report({node, Err(Err0436)});
+                return context->report({node, Err(Err0873)});
             return context->report({node, Err(Err0299)});
         }
 
@@ -720,7 +720,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             if (!ok)
             {
                 Diagnostic diag{node, Fmt(Err(Err0848), node->token.ctext(), typeEnum->getDisplayNameC())};
-                auto note = Diagnostic::hereIs(concreteNodeType->declNode, false, true);
+                auto       note = Diagnostic::hereIs(concreteNodeType->declNode, false, true);
                 return context->report(diag, note);
             }
         }
@@ -845,15 +845,13 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (isCompilerConstant)
         {
             Diagnostic diag{node->assignment, Err(Err0298)};
-            diag.hint = Nte(Nte1061);
-            return context->report(diag);
+            return context->report(diag, Diagnostic::note(Nte(Nte0025)));
         }
 
         if (node->specFlags & AstVarDecl::SPECFLAG_IS_LET)
         {
             Diagnostic diag{node->assignment, Err(Err0873)};
-            diag.hint = Nte(Nte1061);
-            return context->report(diag);
+            return context->report(diag, Diagnostic::note(Nte(Nte0025)));
         }
     }
 

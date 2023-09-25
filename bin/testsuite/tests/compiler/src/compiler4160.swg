@@ -1,8 +1,8 @@
-#global testerror "Err0873"
+#global testerror "San0004"
 
 #[Swag.Safety("sanity", true)]
 func toto()
 {
-    let x: s32 = undefined
+    var x: s32 = undefined
     @assert(x == 0)
 }

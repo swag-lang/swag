@@ -693,9 +693,8 @@ void initErrors()
     SWAG_ERROR(Err1092, "missing generic parameters                        $ expected at least one generic parameter between '()' $ consider removing '()' if this is not generic");
     SWAG_ERROR(Err0470, "missing generic parameters                        $ the special function '%s' expects some generic parameters");
     SWAG_ERROR(Err0298, "missing initialization                            $ a constant requires an explicit initialization");
-    SWAG_ERROR(Err0873, "missing initialization                            $ a local variable declared with 'let' requires an explicit initialization");
+    SWAG_ERROR(Err0873, "missing initialization                            $ a variable declared with 'let' requires an explicit initialization");
     SWAG_ERROR(Err0300, "missing initialization                            $ a reference requires an explicit initialization");
-    SWAG_ERROR(Err0436, "missing initialization                            $ a variable declared with 'let' requires an explicit initialization");
     SWAG_ERROR(Err0299, "missing initialization                            $ an immutable variable requires an explicit initialization");
     SWAG_ERROR(Err0848, "missing initialization                            $ expected an initialization of '%s' because the enum '%s' does not contain a value for zero");
     SWAG_ERROR(Err0706, "missing initialization                            $ the enumeration value '%s' has type '%s' which requires an explicit initialization");
@@ -876,6 +875,7 @@ void initErrors()
     SWAG_ERROR(Err0092, "unused return value                               $ the return value of the lambda '%s' should be used $ if you don't need the return value, consider prefixing the call with 'discard'");
     SWAG_ERROR(Err0295, "unexpected parameters                             $ expected '{' here because a compiler %s should not have parameters");
     SWAG_ERROR(Err0087, "unexpected identifier                             $ a global identifier like '%s' can't be used at the file level");
+    SWAG_ERROR(Err0436, nullptr);
     SWAG_ERROR(Err1198, nullptr);
     SWAG_ERROR(Err1046, nullptr);
     SWAG_ERROR(Err1107, nullptr);
@@ -1462,7 +1462,7 @@ void initErrors()
     SWAG_ERROR(Nte1111, "this list of parameters are missing their type");
     SWAG_ERROR(Nte1120, "did you forget 'var' or 'const' to declare a global variable or constant?");
     SWAG_ERROR(Nte1103, "the operator '++' requires compile-time strings as arguments");
-    SWAG_ERROR(Nte0025, nullptr);
+    SWAG_ERROR(Nte0025, "consider replacing 'undefined' with an explicit initialization");
     SWAG_ERROR(Nte1122, nullptr);
     SWAG_ERROR(Nte1131, nullptr);
     SWAG_ERROR(Nte0028, nullptr);
