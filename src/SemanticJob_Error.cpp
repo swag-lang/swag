@@ -1185,7 +1185,10 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
                 }
                 else if (typeWhere)
                 {
-                    diag = new Diagnostic{node, node->token, Fmt(Err(Err0112), node->token.ctext(), typeWhere->getDisplayNameC())};
+                    if (typeWhere->kind == TypeInfoKind::Struct && node->callParameters)
+                        diag = new Diagnostic{node, node->token, Fmt(Err(Err1107), node->token.ctext(), typeWhere->getDisplayNameC())};
+                    else
+                        diag = new Diagnostic{node, node->token, Fmt(Err(Err0112), node->token.ctext(), typeWhere->getDisplayNameC())};
                     if (prevIdentifier)
                         diag->addRange(prevIdentifier, Diagnostic::isType(prevIdentifier));
                 }

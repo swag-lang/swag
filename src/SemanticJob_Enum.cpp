@@ -153,7 +153,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
 
     if (!typeNode->childs.empty())
         typeNode = typeNode->childs.front();
-    return context->report({typeNode, Fmt(Err(Err0702), rawTypeInfo->getDisplayNameC())});
+    return context->report({typeNode, Fmt(Err(Err0705), rawTypeInfo->getDisplayNameC())});
 }
 
 bool SemanticJob::resolveEnumValue(SemanticContext* context)

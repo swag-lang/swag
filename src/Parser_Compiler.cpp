@@ -654,20 +654,16 @@ bool Parser::doIntrinsicInclude(AstNode* parent, AstNode** result)
 bool Parser::doCompilerLoad(AstNode* parent)
 {
     SWAG_VERIFY(sourceFile->isCfgFile || sourceFile->isScriptFile, context->report({sourceFile, token, Err(Err1013)}));
-    SWAG_VERIFY(currentScope->isTopLevel(), context->report({sourceFile, token, Err(Err1012)}));
 
     // Be sure this is in a '#dependencies' block
-    if (sourceFile->module->kind == ModuleKind::Config)
+    auto scan = parent;
+    while (scan)
     {
-        auto scan = parent;
-        while (scan)
-        {
-            if (scan->kind == AstNodeKind::CompilerDependencies)
-                break;
-            scan = scan->parent;
-        }
-        SWAG_VERIFY(scan, context->report({sourceFile, token, Err(Err1014)}));
+        if (scan->kind == AstNodeKind::CompilerDependencies)
+            break;
+        scan = scan->parent;
     }
+    SWAG_VERIFY(scan, context->report({sourceFile, token, Err(Err1014)}));
 
     auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerLoad, sourceFile, parent);
     SWAG_CHECK(eatToken());
@@ -690,10 +686,9 @@ bool Parser::doCompilerLoad(AstNode* parent)
 bool Parser::doCompilerImport(AstNode* parent)
 {
     SWAG_VERIFY(sourceFile->isGenerated || sourceFile->isCfgFile || sourceFile->isScriptFile, context->report({sourceFile, token, Err(Err1009)}));
-    SWAG_VERIFY(currentScope->isTopLevel(), context->report({sourceFile, token, Err(Err1008)}));
 
     // Be sure this is in a '#dependencies' block
-    if (sourceFile->module->kind == ModuleKind::Config)
+    if (!sourceFile->isGenerated)
     {
         auto scan = parent;
         while (scan)
