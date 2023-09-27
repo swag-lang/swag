@@ -369,6 +369,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("is", TokenId::KwdReserved);
     keywords.add("in", TokenId::KwdReserved);
     keywords.add("not", TokenId::KwdReserved);
+    keywords.add("do", TokenId::KwdReserved);
 
     keywords.add("@include", TokenId::IntrinsicInclude);
     keywords.add("@defined", TokenId::IntrinsicDefined);

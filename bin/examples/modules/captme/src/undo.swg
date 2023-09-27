@@ -229,7 +229,7 @@ impl Undo
         }
     }
 
-    mtd do()
+    mtd doIt()
     {
         mtd removeSelection()
         {
@@ -508,7 +508,7 @@ impl Undo
         capture.hasChanged()
     }
 
-    mtd undo()
+    mtd undoIt()
     {
         #[Swag.Complete]
         switch kind

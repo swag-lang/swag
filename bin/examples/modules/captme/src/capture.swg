@@ -1356,7 +1356,7 @@ impl Capture
         while nextUndo and undos[nextUndo-1].serial == serial
         {
             nextUndo -= 1
-            undos[nextUndo].undo()
+            undos[nextUndo].undoIt()
         }
 
         editView.invalidate()
@@ -1370,7 +1370,7 @@ impl Capture
         let serial = undos[nextUndo].serial
         while nextUndo != undos.count and undos[nextUndo].serial == serial
         {
-            undos[nextUndo].do()
+            undos[nextUndo].doIt()
             nextUndo += 1
         }
 
@@ -1396,6 +1396,6 @@ impl Capture
 
         // Do it
         u.init()
-        u.do()
+        u.doIt()
     }
 }

@@ -1,6 +1,6 @@
 func decode(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64)->{write, read: u64} throw
 {
-    func(TD, TS) do(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64)->{write, read: u64}
+    func(TD, TS) doIt(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64)->{write, read: u64}
     {
         var dst = cast(^TD) destBuffer
         var src = cast(^TS) srcBuffer
@@ -19,5 +19,5 @@ func decode(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64
         return {write, write/2}
     }
 
-    return do'(s16, s8)(destBuffer, destLength, srcBuffer, srcLength)
+    return doIt'(s16, s8)(destBuffer, destLength, srcBuffer, srcLength)
 }

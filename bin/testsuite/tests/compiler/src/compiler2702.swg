@@ -1,6 +1,6 @@
 #global testerror "Err0632"
 
-func do(fn: func())
+func doIt(fn: func())
 {
 }
 
@@ -8,6 +8,6 @@ func do(fn: func())
 {
     loop 2
     {
-        do(func() { break; })
+        doIt(func() { break; })
     }
 }

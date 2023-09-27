@@ -2,9 +2,9 @@ enum SoundFileEncoding { Pcm8, B }
 
 #test
 {
-    func(TS, EN: SoundFileEncoding) do()
+    func(TS, EN: SoundFileEncoding) doIt()
     {
     }
 
-    do'(s8, SoundFileEncoding.Pcm8)()
+    doIt'(s8, SoundFileEncoding.Pcm8)()
 }

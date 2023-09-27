@@ -42,7 +42,7 @@ impl ICodec for CodecPcmToPcm16
             return {srcLength, srcLength}
         }
 
-        func(TS: s32, EN: SoundFileEncoding) do(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64)->{write, read: u64}
+        func(TS: s32, EN: SoundFileEncoding) doIt(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64)->{write, read: u64}
         {
             var dst = cast(^s16) destBuffer
             var src = cast(^s8) srcBuffer
@@ -93,13 +93,13 @@ impl ICodec for CodecPcmToPcm16
         switch srcEncoding
         {
         case Pcm8:
-            return do'(1, Pcm8)(destBuffer, destLength, srcBuffer, srcLength)
+            return doIt'(1, Pcm8)(destBuffer, destLength, srcBuffer, srcLength)
         case Pcm24:
-            return do'(3, Pcm24)(destBuffer, destLength, srcBuffer, srcLength)
+            return doIt'(3, Pcm24)(destBuffer, destLength, srcBuffer, srcLength)
         case Pcm32:
-            return do'(4, Pcm32)(destBuffer, destLength, srcBuffer, srcLength)
+            return doIt'(4, Pcm32)(destBuffer, destLength, srcBuffer, srcLength)
         case Float32:
-            return do'(4, Float32)(destBuffer, destLength, srcBuffer, srcLength)
+            return doIt'(4, Float32)(destBuffer, destLength, srcBuffer, srcLength)
         }
 
         throw "error"
