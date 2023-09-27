@@ -278,7 +278,7 @@ internal impl PropertyList
                 if item.checkBox.checked == .Checked
                     dref p |= dref p1
                 else
-                    dref p &= ~dref p1
+                    dref p &= ~(dref p1)
             }
 
             switch item.typeValue.pointedType.sizeof

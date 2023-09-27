@@ -876,8 +876,8 @@ void initErrors()
     SWAG_ERROR(Err0109, "unused return value                               $ the return value of the function '%s' should be used $ if you don't need the return value, consider prefixing the call with 'discard'");
     SWAG_ERROR(Err1179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
     SWAG_ERROR(Err0092, "unused return value                               $ the return value of the lambda '%s' should be used $ if you don't need the return value, consider prefixing the call with 'discard'");
-    SWAG_ERROR(Err1008, nullptr);
-    SWAG_ERROR(Err1012, nullptr);
+    SWAG_ERROR(Err1008, "duplicated operator                               $ expected an expression, found another operator '%s' instead");
+    SWAG_ERROR(Err1012, "invalid expression                                $ expected an expression after operator '%s', found '%s' instead $ consider adding '(' after '%s' to start an expression");
     SWAG_ERROR(Err0702, nullptr);
     SWAG_ERROR(Err0173, nullptr);
     SWAG_ERROR(Err0549, nullptr);

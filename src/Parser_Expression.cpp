@@ -576,7 +576,9 @@ bool Parser::doUnaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** re
         node->semanticFct = SemanticJob::resolveUnaryOp;
         node->token       = token;
         SWAG_CHECK(eatToken());
-        return doPrimaryExpression(node, exprFlags, &dummyResult);
+        SWAG_VERIFY(token.id != prevToken.id, error(token, Fmt(Err(Err1008), token.ctext())));
+        SWAG_VERIFY(token.id != TokenId::KwdDeRef, error(token, Fmt(Err(Err1012), prevToken.ctext(), token.ctext(), prevToken.ctext())));
+        return doSinglePrimaryExpression(node, exprFlags, &dummyResult);
     }
     default:
         break;
