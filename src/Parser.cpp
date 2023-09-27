@@ -164,6 +164,7 @@ bool Parser::invalidIdentifierError(TokenParse& tokenParse, const char* msg)
 
 bool Parser::eatToken()
 {
+    prevToken = token;
     SWAG_CHECK(tokenizer.nextToken(token));
     return true;
 }
@@ -185,10 +186,22 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
     return true;
 }
 
-bool Parser::eatTokenErr(TokenId id, const Utf8& err)
+void Parser::prepareExpectTokenError()
+{
+    // If we expect a token, and the bad token is the first of the line, then
+    // it's better to display the requested token at the end of the previous line
+    if (token.flags & TOKENPARSE_LAST_EOL)
+    {
+        token.startLocation = prevToken.endLocation;
+        token.endLocation   = token.startLocation;
+    }
+}
+
+bool Parser::eatTokenError(TokenId id, const Utf8& err)
 {
     if (token.id != id)
     {
+        prepareExpectTokenError();
         Diagnostic diag{sourceFile, token, Fmt(err.c_str(), token.ctext())};
         return context->report(diag);
     }
@@ -202,6 +215,7 @@ bool Parser::eatToken(TokenId id, const char* msg)
     SWAG_ASSERT(msg);
     if (token.id != id)
     {
+        prepareExpectTokenError();
         Diagnostic diag{sourceFile, token, Fmt(Err(Err1048), Tokenizer::tokenToName(id).c_str(), Tokenizer::tokenToName(id).c_str(), msg, token.ctext())};
         return context->report(diag);
     }

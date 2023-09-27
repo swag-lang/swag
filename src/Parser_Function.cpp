@@ -87,7 +87,7 @@ bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** re
             break;
         if (token.id == TokenId::SymRightParen)
             break;
-        SWAG_CHECK(eatToken(TokenId::SymComma, "to define another argument, or ')' to end"));
+        SWAG_CHECK(eatToken(TokenId::SymComma, "to define another argument or ')' to end the list"));
     }
 
     if (multi)
@@ -371,12 +371,14 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
         {
             if (!acceptMissingType)
             {
-                Diagnostic diag{sourceFile, token, Fmt(Err(Err0648), token.ctext())};
+                prepareExpectTokenError();
+                Diagnostic  diag{sourceFile, token, Fmt(Err(Err0648), token.ctext())};
+                Diagnostic* note;
                 if (otherVariables.empty())
-                    diag.addRange(paramNode, Nte(Nte0077));
+                    note = Diagnostic::note(paramNode, Nte(Nte0077));
                 else
-                    diag.addRange(paramNode->token.startLocation, otherVariables.back()->token.endLocation, Nte(Nte1111));
-                return context->report(diag);
+                    note = Diagnostic::note(sourceFile, paramNode->token.startLocation, otherVariables.back()->token.endLocation, Nte(Nte1111));
+                return context->report(diag, note);
             }
             else if (hasMissingType)
             {
@@ -478,7 +480,7 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
 
             oneParamDone    = true;
             auto tokenComma = token;
-            SWAG_CHECK(eatToken(TokenId::SymComma, "to define another parameter, or ')' to end"));
+            SWAG_CHECK(eatToken(TokenId::SymComma, "to define another parameter or ')' to end the list"));
             if (token.id == TokenId::SymRightParen)
                 return context->report({allParams, tokenComma, Err(Err1202)});
 
@@ -791,7 +793,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
         auto      startLoc = token.startLocation;
-        SWAG_CHECK(eatTokenErr(TokenId::SymLeftParen, Err(Err1175)));
+        SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, Err(Err1175)));
         SWAG_VERIFY(token.id != TokenId::SymRightParen, error(funcNode, Err(Err1033)));
         SWAG_CHECK(doExpression(funcNode, EXPR_FLAG_NONE, &funcNode->parameters));
         SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));

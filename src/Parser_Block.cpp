@@ -271,8 +271,7 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
         node->expression->release();
         while (token.id != TokenId::SymColon)
         {
-            auto prevToken = token;
-            SWAG_CHECK(eatToken(TokenId::SymComma, "to define another alias name, or ':' to specify the visit variable"));
+            SWAG_CHECK(eatToken(TokenId::SymComma, "to define another alias name or ':' to specify the visit variable"));
             SWAG_VERIFY(token.id != TokenId::SymColon, error(prevToken, Err(Err1212)));
             SWAG_CHECK(doIdentifierRef(nullptr, &node->expression));
             SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a 'visit' variable name"));

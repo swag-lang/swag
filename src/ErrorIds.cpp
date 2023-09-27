@@ -356,7 +356,7 @@ void initErrors()
     SWAG_ERROR(Err0598, "invalid attribute                                 $ '%s' is not an attribute but is %s");
     SWAG_ERROR(Err0582, "invalid attribute                                 $ expected an attribute, but '%s' is %s");
     SWAG_ERROR(Err1072, "invalid attribute name                            $ expected an attribute name, found '%s' instead");
-    SWAG_ERROR(Err1050, "invalid attribute usage                           $ expected ',' for a new attribute name, or ']' to end the list, found '%s' instead");
+    SWAG_ERROR(Err1050, "invalid attribute usage                           $ expected ',' for a new attribute name or ']' to end the list, found '%s' instead");
     SWAG_ERROR(Err0852, "invalid attribute usage                           $ the 'AttributeUsage.Gen' can only be associated with 'AttributeUsage.Struct' or 'AttributeUsage.Enum'");
     SWAG_ERROR(Err0512, "invalid attribute use                             $ a %s can't have the '#[Swag.CalleeReturn]' attribute");
     SWAG_ERROR(Err0763, "invalid attribute use                             $ a %s can't have the '#[Swag.Inline]' attribute");

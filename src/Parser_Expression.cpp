@@ -153,7 +153,7 @@ bool Parser::doIntrinsicProp(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     auto startLoc = token.startLocation;
-    SWAG_CHECK(eatTokenErr(TokenId::SymLeftParen, Err(Err1175)));
+    SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, Err(Err1175)));
     SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Err1044)));
 
     // Three parameters
@@ -1637,7 +1637,7 @@ bool Parser::doInit(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     auto startLoc = token.startLocation;
-    SWAG_CHECK(eatTokenErr(TokenId::SymLeftParen, Err(Err1175)));
+    SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, Err(Err1175)));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->expression));
 
     if (token.id == TokenId::SymComma)
@@ -1681,7 +1681,7 @@ bool Parser::doDropCopyMove(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     auto startLoc = token.startLocation;
-    SWAG_CHECK(eatTokenErr(TokenId::SymLeftParen, Err(Err1175)));
+    SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, Err(Err1175)));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->expression));
 
     if (token.id == TokenId::SymComma)

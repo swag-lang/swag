@@ -90,7 +90,8 @@ struct Parser
     bool eatToken();
     bool eatCloseToken(TokenId id, const SourceLocation& start, const char* msg = "");
     bool eatToken(TokenId id, const char* msg);
-    bool eatTokenErr(TokenId id, const Utf8& err);
+    void prepareExpectTokenError();
+    bool eatTokenError(TokenId id, const Utf8& err);
     bool eatSemiCol(const char* msg);
 
     bool        testIsSingleIdentifier(AstNode* node);
@@ -226,6 +227,7 @@ struct Parser
     Module*       module     = nullptr;
 
     Tokenizer  tokenizer;
+    TokenParse prevToken;
     TokenParse token;
 
     AstNode*            dummyResult            = nullptr;
