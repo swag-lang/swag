@@ -2037,3 +2037,79 @@ void X64Gen::emit_ShiftN(CPURegister reg, uint32_t value, X64Bits numBits, X64Op
         concat.addU8((uint8_t) value);
     }
 }
+
+uint16_t X64Gen::computeUnwindPush(CPURegister reg, uint32_t offsetSubRSP)
+{
+    uint16_t unwind0 = 0;
+    unwind0          = (reg << 12);
+    unwind0 |= (UWOP_PUSH_NONVOL << 8);
+    unwind0 |= (uint8_t) offsetSubRSP;
+    return unwind0;
+}
+
+void X64Gen::computeUnwind(const VectorNative<CPURegister>& unwindRegs,
+                           const VectorNative<uint32_t>&    unwindOffsetRegs,
+                           uint32_t                         sizeStack,
+                           uint32_t                         offsetSubRSP,
+                           VectorNative<uint16_t>&          unwind)
+{
+    // UNWIND_CODE
+    // UBYTE:8: offset of the instruction after the "sub rsp"
+    // UBYTE:4: code (UWOP_ALLOC_LARGE or UWOP_ALLOC_SMALL)
+    // UBYTE:4: info (will code the size of the decrement of rsp)
+
+    SWAG_ASSERT(offsetSubRSP <= 0xFF);
+    SWAG_ASSERT((sizeStack & 7) == 0); // Must be aligned
+
+    if (sizeStack <= 128)
+    {
+        SWAG_ASSERT(sizeStack >= 8);
+        sizeStack -= 8;
+        sizeStack /= 8;
+        auto unwind0 = (uint16_t) (UWOP_ALLOC_SMALL | (sizeStack << 4));
+        unwind0 <<= 8;
+        unwind0 |= (uint16_t) offsetSubRSP;
+        unwind.push_back(unwind0);
+    }
+    else
+    {
+        SWAG_ASSERT(sizeStack <= (512 * 1024) - 8);
+        auto unwind0 = (uint16_t) (UWOP_ALLOC_LARGE);
+        unwind0 <<= 8;
+        unwind0 |= (uint16_t) offsetSubRSP;
+        unwind.push_back(unwind0);
+        unwind0 = (uint16_t) (sizeStack / 8);
+        unwind.push_back(unwind0);
+    }
+
+    // Now we put the registers.
+    // At the end because array must be sorted in 'offset in prolog' descending order.
+    // So RDI, which is the first 'push', must be the last
+    for (int32_t i = (int32_t) unwindRegs.size() - 1; i >= 0; i--)
+        unwind.push_back(computeUnwindPush(unwindRegs[i], unwindOffsetRegs[i]));
+}
+
+void X64Gen::emitUnwind(uint32_t& offset, uint32_t sizeProlog, const VectorNative<uint16_t>& unwind)
+{
+    SWAG_ASSERT(sizeProlog <= 255);
+
+    concat.addU8(1);                       // Version
+    concat.addU8((uint8_t) sizeProlog);    // Size of prolog
+    concat.addU8((uint8_t) unwind.size()); // Count of unwind codes
+    concat.addU8(0);                       // Frame register | offset
+    offset += 4;
+
+    // Unwind array
+    for (auto un : unwind)
+    {
+        concat.addU16(un);
+        offset += 2;
+    }
+
+    // Align
+    if (unwind.size() & 1)
+    {
+        concat.addU16(0);
+        offset += 2;
+    }
+}

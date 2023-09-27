@@ -35,8 +35,6 @@ struct BackendX64 : public Backend
     BackendFunctionBodyJobBase* newFunctionJob() override;
 
     uint32_t getOrCreateLabel(X64Gen& pp, uint32_t ip);
-    uint16_t computeUnwindPush(CPURegister reg, uint32_t offsetSubRSP);
-    void     computeUnwind(const VectorNative<CPURegister>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind);
     void     emitOverflowSigned(X64Gen& pp, AstNode* node, const char* msg);
     void     emitOverflowUnsigned(X64Gen& pp, AstNode* node, const char* msg);
     void     emitShiftRightArithmetic(X64Gen& pp, ByteCodeInstruction* ip, X64Bits numBits);

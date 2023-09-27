@@ -19,6 +19,10 @@ struct ByteCodeInstruction;
     if (__s % 16)       \
         __s += 16 - (__s % 16);
 
+#define UWOP_PUSH_NONVOL 0
+#define UWOP_ALLOC_LARGE 1
+#define UWOP_ALLOC_SMALL 2
+
 enum class X64Bits : uint32_t
 {
     B8  = 8,
@@ -407,6 +411,10 @@ struct X64Gen
     CPURegister storageMemReg   = RAX;
 
     void clearInstructionCache();
+
+    uint16_t computeUnwindPush(CPURegister reg, uint32_t offsetSubRSP);
+    void     computeUnwind(const VectorNative<CPURegister>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind);
+    void     emitUnwind(uint32_t& offset, uint32_t sizeProlog, const VectorNative<uint16_t>& unwind);
 
     uint8_t getREX(bool w = true, bool r = false, bool x = false, bool b = false);
     uint8_t getModRM(uint8_t mod, uint8_t r, uint8_t m);

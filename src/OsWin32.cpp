@@ -806,42 +806,61 @@ namespace OS
         return _byteswap_uint64(value);
     }
 
-    thread_local X64Gen g_FfiX64Gen;
-    void                ffi(ByteCodeRunContext* context, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, const VectorNative<uint32_t>& pushRAParam, void* retCopyAddr)
+    thread_local X64Gen g_X64GenFFI;
+
+    void ffi(ByteCodeRunContext* context, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, const VectorNative<uint32_t>& pushRAParam, void* retCopyAddr)
     {
         const auto& cc         = typeInfoFunc->getCallConv();
         auto        returnType = TypeManager::concreteType(typeInfoFunc->returnType);
-
-        // Special case when rising an exception (__raiseException666 in windows runtime)
-        // Do it by hand, because i don't know how to deal with the JIT below and exceptions.
-        // It's weird, but it seems to work in release/devmode, but not in debug.
-        //
-        // As there's no real function, i don't know how to specify the "unwind" informations necessary to catch and pass exceptions to the caller.
-        // Do that hack for now... Instead of calling the windows function in the ffi, i call it there...
-        if (typeInfoFunc->declNode && typeInfoFunc->declNode->sourceFile->isRuntimeFile && typeInfoFunc->declNode->token.text == "RaiseException")
-        {
-            SWAG_ASSERT(pushRAParam.size() == 4);
-            RaiseException((DWORD) ((uint64_t*) context->sp)[0],
-                           (DWORD) ((uint64_t*) context->sp)[1],
-                           (DWORD) ((uint64_t*) context->sp)[2],
-                           (ULONG_PTR*) ((uint64_t*) context->sp)[3]);
-        }
-
-        auto& gen = g_FfiX64Gen;
-        if (!gen.concat.firstBucket)
-        {
-            auto& concat = gen.concat;
-            concat.init(0);
-            concat.firstBucket->capacity = 16 * 1024;
-            concat.firstBucket->datas    = (uint8_t*) VirtualAlloc(nullptr, gen.concat.firstBucket->capacity, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
-            concat.currentSP             = gen.concat.firstBucket->datas;
-        }
 
         uint32_t stackSize = (uint32_t) max(cc.paramByRegisterCount, pushRAParam.size()) * sizeof(void*);
         stackSize += sizeof(void*);
         MK_ALIGN16(stackSize);
 
+        static const int JIT_SIZE_BUFFER = 16 * 1024;
+        auto&            gen             = g_X64GenFFI;
+        if (!gen.concat.firstBucket)
+        {
+            // Generate a buffer big enough to store the call, and be aware that this could be recursive, that's
+            // why the buffer is kind of big
+            auto& concat = gen.concat;
+            concat.init(0);
+            concat.firstBucket->capacity = JIT_SIZE_BUFFER + 128;
+            concat.firstBucket->datas    = (uint8_t*) VirtualAlloc(nullptr, gen.concat.firstBucket->capacity, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
+            concat.currentSP             = gen.concat.firstBucket->datas;
+
+            // We need to generate unwind stuff to get a correct callstack, and in case the runtime caises an exception
+            // with 'RaiseException' (panic, error, etc.)
+            // The function information is always the same, that's why we generate only one table per X64Gen.
+            VectorNative<CPURegister> unwindRegs;
+            VectorNative<uint32_t>    unwindOffsetRegs;
+            VectorNative<uint16_t>    unwind;
+
+            // Fake emit in order to compute the unwind infos
+            gen.emit_Push(RDI);
+            unwindRegs.push_back(RDI);
+            unwindOffsetRegs.push_back(gen.concat.totalCount());
+            gen.emit_Sub32_RSP(stackSize);
+            auto sizeProlog = gen.concat.totalCount();
+            gen.computeUnwind(unwindRegs, unwindOffsetRegs, stackSize, sizeProlog, unwind);
+
+            // Add function table
+            auto* rtFunc              = new RUNTIME_FUNCTION(); // leak, but it's fine
+            rtFunc->BeginAddress      = 0;
+            rtFunc->EndAddress        = JIT_SIZE_BUFFER;
+            rtFunc->UnwindInfoAddress = JIT_SIZE_BUFFER;
+            uint32_t offset           = 0;
+            concat.currentSP          = gen.concat.firstBucket->datas + JIT_SIZE_BUFFER;
+            gen.emitUnwind(offset, sizeProlog, unwind);
+            RtlAddFunctionTable(rtFunc, 1, (DWORD64) gen.concat.firstBucket->datas);
+
+            // Restore back the start of the buffer
+            concat.currentSP = gen.concat.firstBucket->datas;
+        }
+
         auto startOffset = gen.concat.currentSP - gen.concat.firstBucket->datas;
+        SWAG_ASSERT(startOffset < JIT_SIZE_BUFFER);
+
         gen.emit_Push(RDI);
         gen.emit_Sub32_RSP(stackSize);
         gen.emit_Load64_Immediate(RDI, (uint64_t) context->sp, true);
@@ -859,6 +878,7 @@ namespace OS
         gen.emit_Pop(RDI);
         gen.emit_Ret();
 
+        // The real deal : make the call
         typedef void (*funcPtr)();
         auto ptr = (funcPtr) (gen.concat.firstBucket->datas + startOffset);
         ptr();

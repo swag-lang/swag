@@ -8,10 +8,6 @@
 #include "ByteCode.h"
 #include "Module.h"
 
-#define UWOP_PUSH_NONVOL 0
-#define UWOP_ALLOC_LARGE 1
-#define UWOP_ALLOC_SMALL 2
-
 bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
     // Do not emit a text function if we are not compiling a test executable
@@ -134,7 +130,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     // Unwind information (with the pushed registers)
     VectorNative<uint16_t> unwind;
     auto                   sizeProlog = concat.totalCount() - beforeProlog;
-    computeUnwind(unwindRegs, unwindOffsetRegs, sizeStack + sizeParamsStack, sizeProlog, unwind);
+    pp.computeUnwind(unwindRegs, unwindOffsetRegs, sizeStack + sizeParamsStack, sizeProlog, unwind);
 
     // Registers are stored after the sizeParamsStack area, which is used to store parameters for function calls
     pp.concat.addString4("\x48\x8D\xBC\x24");
@@ -4676,55 +4672,4 @@ uint32_t BackendX64::getOrCreateLabel(X64Gen& pp, uint32_t ip)
     }
 
     return it->second;
-}
-
-uint16_t BackendX64::computeUnwindPush(CPURegister reg, uint32_t offsetSubRSP)
-{
-    uint16_t unwind0 = 0;
-    unwind0          = (reg << 12);
-    unwind0 |= (UWOP_PUSH_NONVOL << 8);
-    unwind0 |= (uint8_t) offsetSubRSP;
-    return unwind0;
-}
-
-void BackendX64::computeUnwind(const VectorNative<CPURegister>& unwindRegs,
-                               const VectorNative<uint32_t>&    unwindOffsetRegs,
-                               uint32_t                         sizeStack,
-                               uint32_t                         offsetSubRSP,
-                               VectorNative<uint16_t>&          unwind)
-{
-    // UNWIND_CODE
-    // UBYTE:8: offset of the instruction after the "sub rsp"
-    // UBYTE:4: code (UWOP_ALLOC_LARGE or UWOP_ALLOC_SMALL)
-    // UBYTE:4: info (will code the size of the decrement of rsp)
-
-    SWAG_ASSERT(offsetSubRSP <= 0xFF);
-    SWAG_ASSERT((sizeStack & 7) == 0); // Must be aligned
-
-    if (sizeStack <= 128)
-    {
-        SWAG_ASSERT(sizeStack >= 8);
-        sizeStack -= 8;
-        sizeStack /= 8;
-        auto unwind0 = (uint16_t) (UWOP_ALLOC_SMALL | (sizeStack << 4));
-        unwind0 <<= 8;
-        unwind0 |= (uint16_t) offsetSubRSP;
-        unwind.push_back(unwind0);
-    }
-    else
-    {
-        SWAG_ASSERT(sizeStack <= (512 * 1024) - 8);
-        auto unwind0 = (uint16_t) (UWOP_ALLOC_LARGE);
-        unwind0 <<= 8;
-        unwind0 |= (uint16_t) offsetSubRSP;
-        unwind.push_back(unwind0);
-        unwind0 = (uint16_t) (sizeStack / 8);
-        unwind.push_back(unwind0);
-    }
-
-    // Now we put the registers.
-    // At the end because array must be sorted in 'offset in prolog' descending order.
-    // So RDI, which is the first 'push', must be the last
-    for (int32_t i = (int32_t) unwindRegs.size() - 1; i >= 0; i--)
-        unwind.push_back(computeUnwindPush(unwindRegs[i], unwindOffsetRegs[i]));
 }

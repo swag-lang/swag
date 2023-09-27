@@ -530,28 +530,8 @@ bool BackendX64::emitXData(const BuildParameters& buildParameters)
     uint32_t offset = 0;
     for (auto& f : pp.functions)
     {
-        SWAG_ASSERT(f.sizeProlog <= 255);
-
         f.xdataOffset = offset;
-        concat.addU8(1);                         // Version
-        concat.addU8((uint8_t) f.sizeProlog);    // Size of prolog
-        concat.addU8((uint8_t) f.unwind.size()); // Count of unwind codes
-        concat.addU8(0);                         // Frame register | offset
-        offset += 4;
-
-        // Unwind array
-        for (auto unwind : f.unwind)
-        {
-            concat.addU16(unwind);
-            offset += 2;
-        }
-
-        // Align
-        if (f.unwind.size() & 1)
-        {
-            concat.addU16(0);
-            offset += 2;
-        }
+        pp.emitUnwind(offset, f.sizeProlog, f.unwind);
     }
 
     *pp.patchXDCount = concat.totalCount() - *pp.patchXDOffset;
