@@ -1,2 +1,2 @@
 ﻿#global testerror "Err0087"
-type str: 1
+type str = 1

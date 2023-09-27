@@ -1052,30 +1052,35 @@ void SemanticJob::findClosestMatches(const Utf8& searchName, const VectorNative<
 
     for (int i = 0; i < (int) g_LangSpec->keywords.allocated; i++)
     {
-        if (searchFor == IdentifierSearchFor::Keyword || searchFor == IdentifierSearchFor::Whatever)
+        switch (searchFor)
         {
+        case IdentifierSearchFor::TopLevelInstruction:
+            if (Tokenizer::isTopLevelInst(g_LangSpec->keywords.buffer[i].value))
+                searchList.push_back(g_LangSpec->keywords.buffer[i].key);
+            break;
+
+        case IdentifierSearchFor::Keyword:
             if (Tokenizer::isKeyword(g_LangSpec->keywords.buffer[i].value))
-            {
                 searchList.push_back(g_LangSpec->keywords.buffer[i].key);
-            }
-        }
+            break;
 
-        if (searchFor == IdentifierSearchFor::Type || searchFor == IdentifierSearchFor::Whatever)
-        {
+        case IdentifierSearchFor::Type:
             if (g_LangSpec->keywords.buffer[i].value == TokenId::NativeType)
-            {
                 searchList.push_back(g_LangSpec->keywords.buffer[i].key);
-            }
-        }
+            break;
 
-        if (searchFor == IdentifierSearchFor::Function || searchFor == IdentifierSearchFor::Whatever)
-        {
+        case IdentifierSearchFor::Function:
             if (searchName[0] == '@' || searchName[0] == '#')
             {
                 auto& k = g_LangSpec->keywords.buffer[i].key;
                 if (k && k[0] == searchName[0])
                     searchList.push_back(k);
             }
+            break;
+
+        default:
+            searchList.push_back(g_LangSpec->keywords.buffer[i].key);
+            break;
         }
     }
 

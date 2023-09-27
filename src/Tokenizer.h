@@ -22,6 +22,7 @@ const uint32_t TOKEN_KWD                = 0x00000008;
 const uint32_t TOKEN_COMPILER           = 0x00000010;
 const uint32_t TOKEN_LITERAL            = 0x00000020;
 const uint32_t TOKEN_COMPILER_FUNC      = 0x00000040;
+const uint32_t TOKEN_TOP_LEVEL_INST     = 0x00000080;
 
 enum class LiteralType : uint8_t
 {
@@ -134,6 +135,7 @@ struct Tokenizer
     static bool isCompiler(TokenId id)          { return g_TokenFlags[(int) id] & TOKEN_COMPILER; }
     static bool isIntrinsicReturn(TokenId id)   { return g_TokenFlags[(int) id] & TOKEN_INTRINSIC_RETURN; }
     static bool isIntrinsicNoReturn(TokenId id) { return g_TokenFlags[(int) id] & TOKEN_INTRINSIC_NORETURN; }
+    static bool isTopLevelInst(TokenId id)      { return g_TokenFlags[(int)id]  & TOKEN_TOP_LEVEL_INST; }
     // clang-format on
 
     SourceLocation location;
