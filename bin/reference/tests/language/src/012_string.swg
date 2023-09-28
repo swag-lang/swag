@@ -47,15 +47,6 @@ So in that case you will retrieve a byte.
 }
 
 /**
-Multiple adjacent strings are compiled as one.
-*/
-#test
-{
-    const a = "this is "   "a"   " string"
-    #assert a == "this is a string"
-}
-
-/**
 You can concatenate some values if the values are known at compile time. Use the `++` operator for that.
 */
 #test

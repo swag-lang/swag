@@ -1,6 +1,6 @@
-const A = $"\titi"$
-          $"\tata"$
-          "toto"
+const A = $"\titi"$ ++
+          $"\tata"$ ++
+          "toto" ++
           """tonton"""
 
 #test

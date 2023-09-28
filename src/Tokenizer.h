@@ -117,7 +117,7 @@ struct Tokenizer
     bool doFloatLiteral(TokenParse& token, uint32_t c);
     bool doSymbol(TokenParse& token, uint32_t c);
     bool doCharacterLiteral(TokenParse& token);
-    bool doStringLiteral(TokenParse& token, char rawChar, bool multiline);
+    bool doStringLiteral(TokenParse& token);
 
     void saveState(const TokenParse& token);
     void restoreState(TokenParse& token);

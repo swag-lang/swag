@@ -1,4 +1,1 @@
-﻿;
-;
-
-var a: string = "toto" "titi";
+﻿var a: string = "toto" ++ "titi";

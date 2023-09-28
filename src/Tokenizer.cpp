@@ -382,7 +382,8 @@ bool Tokenizer::nextToken(TokenParse& token)
         if (c == '$' && curBuffer[0] == '"')
         {
             readChar();
-            SWAG_CHECK(doStringLiteral(token, '$', true));
+            token.literalType = LiteralType::TT_STRING_RAW;
+            SWAG_CHECK(doStringLiteral(token));
             return true;
         }
 
@@ -392,11 +393,13 @@ bool Tokenizer::nextToken(TokenParse& token)
             {
                 readChar();
                 readChar();
-                SWAG_CHECK(doStringLiteral(token, false, true));
+                token.literalType = LiteralType::TT_STRING_MULTILINE;
+                SWAG_CHECK(doStringLiteral(token));
             }
             else
             {
-                SWAG_CHECK(doStringLiteral(token, false, false));
+                token.literalType = LiteralType::TT_STRING;
+                SWAG_CHECK(doStringLiteral(token));
             }
 
             return true;
