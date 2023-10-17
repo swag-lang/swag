@@ -143,14 +143,18 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
         }
     }
 
-    // Generated code
+    // From generated code
     auto sourceNode = diag.sourceNode ? diag.sourceNode : diag.contextNode;
     if (sourceNode && sourceNode->hasExtMisc() && sourceNode->extMisc()->exportNode)
         sourceNode = sourceNode->extMisc()->exportNode;
-    if (sourceNode && sourceNode->sourceFile && sourceNode->sourceFile->sourceNode && !sourceNode->sourceFile->fileForSourceLocation)
+    if (sourceNode && sourceNode->sourceFile && sourceNode->sourceFile->fromNode && !sourceNode->sourceFile->fileForSourceLocation)
     {
-        auto fileSourceNode = sourceNode->sourceFile->sourceNode;
-        auto note           = Diagnostic::note(fileSourceNode, Nte(Nte0004));
+        auto note = Diagnostic::note(sourceNode->sourceFile->fromNode, Nte(Nte0004));
+        notes.push_back(note);
+    }
+    else if (diag.sourceFile && diag.sourceFile->isExternal && diag.sourceFile->isFromAst)
+    {
+        auto note = Diagnostic::note(sourceNode, Nte(Nte0004));
         notes.push_back(note);
     }
 }

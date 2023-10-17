@@ -297,13 +297,14 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
 
     sourceFile = Allocator::alloc<SourceFile>();
     sourceFile->setExternalBuffer(content);
-    sourceFile->module = parent->sourceFile->module;
-    sourceFile->name   = tmpFileName;
-    sourceFile->path   = tmpFilePath;
+    sourceFile->isFromAst = true;
+    sourceFile->module    = parent->sourceFile->module;
+    sourceFile->name      = tmpFileName;
+    sourceFile->path      = tmpFilePath;
     sourceFile->path.append(tmpFileName.c_str());
     if (fromNode)
     {
-        sourceFile->sourceNode        = fromNode;
+        sourceFile->fromNode          = fromNode;
         sourceFile->shouldHaveError   = fromNode->sourceFile->shouldHaveError;
         sourceFile->shouldHaveWarning = fromNode->sourceFile->shouldHaveWarning;
     }

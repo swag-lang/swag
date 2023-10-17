@@ -5,7 +5,7 @@ using Core
 #test
 {
     var res: String = "A假C"
-    var arr = res.toCharArray()
+    var arr = res.toRuneArray()
     @assert(arr.count == 3)
     @assert(arr[0] == `A`)
     @assert(arr[1] == `假`)

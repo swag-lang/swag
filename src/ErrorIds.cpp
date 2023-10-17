@@ -363,7 +363,7 @@ void initErrors()
     SWAG_ERROR(Err0761, "invalid attribute use                             $ a %s can't have the '#[Swag.Macro]' attribute");
     SWAG_ERROR(Err0762, "invalid attribute use                             $ a %s can't have the '#[Swag.Mixin]' attribute");
     SWAG_ERROR(Err0860, "invalid attribute use                             $ a %s can't have the '#[Swag.NotGeneric]' attribute");
-    SWAG_ERROR(Err1104, "invalid auto-generated 'impl' block               $ 'impl' block generation is permissible only within a '#message' with 'Swag.CompilerMsgMask.AttributeGen'");
+    SWAG_ERROR(Err1104, "invalid generated 'impl' block                    $ 'impl' block generation is permissible only within a '#message' with 'Swag.CompilerMsgMask.AttributeGen'");
     SWAG_ERROR(Err2003, "invalid binary number format                      $ binary literals should only contain '0' or '1', found '%s' instead");
     SWAG_ERROR(Err0032, "invalid bitcast                                   $ bitcasting from type '%s' is not allowed $ expected an integer, a rune, a float or a pointer");
     SWAG_ERROR(Err0033, "invalid bitcast                                   $ bitcasting to a larger type is not allowed ('%s' to '%s')");
@@ -1355,7 +1355,7 @@ void initErrors()
     SWAG_ERROR(Nte0059, "occured during the inline expansion of '%s'");
     SWAG_ERROR(Nte0060, "occured during the public export of '%s'");
     SWAG_ERROR(Nte0033, "occured during the '#validifx' validation of the call to '%s'");
-    SWAG_ERROR(Nte0004, "occured in auto-generated code");
+    SWAG_ERROR(Nte0004, "occured in generated code");
     SWAG_ERROR(Nte1115, "one function declares 'throw' while the other doesn't");
     SWAG_ERROR(Nte1112, "only the address of a returned reference can be taken, and this is %s");
     SWAG_ERROR(Nte0150, "only variables can be initialized that way");

@@ -37,7 +37,7 @@ struct SourceFile
     AstAttrUse* astAttrUse            = nullptr;
     SourceFile* fileForSourceLocation = nullptr;
     Scope*      scopeFile             = nullptr;
-    AstNode*    sourceNode            = nullptr;
+    AstNode*    fromNode              = nullptr;
     Module*     imported              = nullptr;
     char*       buffer                = nullptr;
 
@@ -54,6 +54,7 @@ struct SourceFile
     BuildPass buildPass         = BuildPass::Full;
 
     bool isExternal        = false;
+    bool isFromAst         = false;
     bool isCfgFile         = false;
     bool isGenerated       = false;
     bool isBootstrapFile   = false;

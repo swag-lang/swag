@@ -474,7 +474,7 @@ impl String
     }
 
     // Convert string to a 32 bits character array
-    mtd const toCharArray()->Array'rune
+    mtd const toRuneArray()->Array'rune
     {
         return Unicode.fromUtf8(@mkslice(buffer, length))
     }
