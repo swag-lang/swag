@@ -210,8 +210,8 @@ void initErrors()
     SWAG_ERROR(Err0286, "duplicated import                                 $ the '#import' version of the module '%s' is already defined as '%s'");
     SWAG_ERROR(Err1125, "duplicated instruction modifier                   $ the instruction modifier '%s' has already been defined");
     SWAG_ERROR(Err1015, "empty '#mixin' replacement block                  $ an empty 'mixin' block is useless $ add some content to the '#mixin' block or consider removing it");
-    SWAG_ERROR(Err1158, "empty 'case' statement                            $ a 'case' statement should never be empty");
-    SWAG_ERROR(Err1052, "empty 'default' statement                         $ a 'default' statement should never be empty");
+    SWAG_ERROR(Err1158, "empty 'case' statement                            $ a 'case' statement should not be empty");
+    SWAG_ERROR(Err1052, "empty 'default' statement                         $ a 'default' statement should not be empty");
     SWAG_ERROR(Err0683, "empty 'interface'                                 $ the interface '%s' should contain at least one function declaration");
     SWAG_ERROR(Err0610, "empty 'switch'                                    $ the body of the 'switch' is empty $ consider adding some cases, or removing it");
     SWAG_ERROR(Err1124, "empty array literal                               $ an array literal should contain at least one value");
@@ -387,7 +387,6 @@ void initErrors()
     SWAG_ERROR(Err2017, "invalid compiler directive                        $ '%s' is not a valid compiler directive starting with '#'");
     SWAG_ERROR(Err1062, "invalid compound name                             $ expected a single identifier %s $ consider using a single name without the '.' character");
     SWAG_ERROR(Err0311, "invalid constant                                  $ the constant creation failed due to the generic type '%s'");
-    SWAG_ERROR(Err1184, "invalid constant name                             $ expected a constant name, found '%s' instead");
     SWAG_ERROR(Err0737, "invalid default parameter                         $ '%s' can't be used as a default parameter");
     SWAG_ERROR(Err0690, "invalid default parameters                        $ the default parameters of a lambda or a closure can't be redefined");
     SWAG_ERROR(Err1193, "invalid default value                             $ 'self' can't have a default value");
@@ -539,8 +538,10 @@ void initErrors()
     SWAG_ERROR(Err1060, "invalid type suffix                               $ expected an identifier or a type after the start of a type suffix, found '%s' instead");
     SWAG_ERROR(Err0909, "invalid unicode value                             $ value '0x%x is not a valid unicode code point, and can't be converted to UTF8");
     SWAG_ERROR(Err1065, "invalid variable list                             $ 'if' does not support multiples variable declarations");
-    SWAG_ERROR(Err1111, "invalid variable name                             $ a variable name ('%s') can't start with '@', this is reserved for intrinsics $ only '@mixin' and '@alias' are possible in that case");
+    SWAG_ERROR(Err1184, "invalid constant name                             $ expected the constant name after 'const', found '%s' instead");
+    SWAG_ERROR(Err0702, "invalid variable name                             $ expected the variable name after '%s', found '%s' instead");
     SWAG_ERROR(Err1069, "invalid variable name                             $ expected a variable name, found '%s' instead");
+    SWAG_ERROR(Err1111, "invalid variable name                             $ a variable name ('%s') can't start with '@', this is reserved for intrinsics $ only '@mixin' and '@alias' are possible in that case");
     SWAG_ERROR(Err1161, "invalid variable name                             $ unexpected generic parameters after variable name '%s'");
     SWAG_ERROR(Err1216, "invalid variable name                             $ unexpected parameters after variable name '%s'");
     SWAG_ERROR(Err0149, "invalid variable type                             $ a variable can't be declared with a 'void' type");
@@ -878,7 +879,6 @@ void initErrors()
     SWAG_ERROR(Err0092, "unused return value                               $ the return value of the lambda '%s' should be used $ if you don't need the return value, consider prefixing the call with 'discard'");
     SWAG_ERROR(Err1008, "duplicated operator                               $ expected an expression, found another operator '%s' instead");
     SWAG_ERROR(Err1012, "invalid expression                                $ expected an expression after operator '%s', found '%s' instead $ consider adding '(' after '%s' to start an expression");
-    SWAG_ERROR(Err0702, nullptr);
     SWAG_ERROR(Err0173, nullptr);
     SWAG_ERROR(Err0549, nullptr);
     SWAG_ERROR(Err0684, nullptr);
@@ -1263,36 +1263,35 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
 
     SWAG_ERROR(Nte0050, "%s of type '%s'");
-    SWAG_ERROR(Nte0010, "'%s' is %s does not have a subscope");
+    SWAG_ERROR(Nte0010, "'%s' is %s and does not have a subscope");
     SWAG_ERROR(Nte0001, "'%s' is %s of type '%s' and does not have a subscope");
     SWAG_ERROR(Nte0041, "'%s' is a variable and variables within expressions can't be evaluated at compile-time");
     SWAG_ERROR(Nte0067, "'%s' is needed because of the function return type");
     SWAG_ERROR(Nte0076, "'%s' might represent either a type or a parameter name");
     SWAG_ERROR(Nte0017, "'%s' was located within '%s' due to a 'using' field");
     SWAG_ERROR(Nte0108, "'==' is the comparison operator; did you intend to affect something with '='?");
-    SWAG_ERROR(Nte0110, "'@alias' is only valid within a 'Swag.Macro' or 'Swag.Mixin' function");
-    SWAG_ERROR(Nte0120, "'@mixin' is permitted exclusively inside a 'Swag.Mixin' function");
+    SWAG_ERROR(Nte0110, "'@alias' is only valid within a '#[Swag.Macro]' or '#[Swag.Mixin]' function");
+    SWAG_ERROR(Nte0120, "'@mixin' is only valid within a '#[Swag.Mixin]' function");
     SWAG_ERROR(Nte0145, "'closure' should be accompanied by capture parameters enclosed in '|...|'");
     SWAG_ERROR(Nte1019, "'discard' can't be accociated with an intrinsic, as an intrinsic result should always be used");
     SWAG_ERROR(Nte1075, "'namealias' should be associated with a namespace, a function or a variable instead of a type");
     SWAG_ERROR(Nte0139, "'with' should be followed by a single identifier");
-    SWAG_ERROR(Nte0005, "a 'string' is expected as the return type of an #ast block is 'string'");
+    SWAG_ERROR(Nte0005, "the return type of an '#ast' block should be of type 'string'");
     SWAG_ERROR(Nte0048, "a function of type '%s'");
     SWAG_ERROR(Nte1050, "a local variable declared with 'let' is immutable and can't be changed");
     SWAG_ERROR(Nte1114, "a return type is missing");
     SWAG_ERROR(Nte0124, "a standard function in an 'impl' block should not shadow a function from the matching interface");
-    SWAG_ERROR(Nte0138, "add a 'break' if you want to exit without any action");
-    SWAG_ERROR(Nte0137, "add a 'break' to exit, or use 'fallthrough' to continue to the next 'case'");
     SWAG_ERROR(Nte0100, "an attribute is not a function; please consider removing it");
     SWAG_ERROR(Nte1121, "an implicit '@countof' is present here");
     SWAG_ERROR(Nte0045, "an instance of the generic function '%s'");
     SWAG_ERROR(Nte0038, "associated command line option: '%s'");
     SWAG_ERROR(Nte0132, "both parts of an 'orelse' should be of identical type");
     SWAG_ERROR(Nte0019, "but it is applied on this %s");
-    SWAG_ERROR(Nte0060, "complication during the public export of '%s'");
     SWAG_ERROR(Nte0125, "consider 'typealias' to create an alias for %s");
     SWAG_ERROR(Nte1104, "consider adding '&' to get the address of this expression");
     SWAG_ERROR(Nte0128, "consider adding 'using' before 'self' if you intend to access members of the instance directly");
+    SWAG_ERROR(Nte0138, "consider adding a 'break' if you want to exit without any action");
+    SWAG_ERROR(Nte0137, "consider adding a 'break' to exit, or use 'fallthrough' to continue to the next 'case'");
     SWAG_ERROR(Nte1032, "consider adding an explicit 'cast(%s)' if necessary");
     SWAG_ERROR(Nte1130, "consider adding scope '%s' before '.'");
     SWAG_ERROR(Nte1116, "consider casting to the underlying 'any' type");
@@ -1313,7 +1312,6 @@ void initErrors()
     SWAG_ERROR(Nte1120, "did you forget 'var' or 'const' to declare a global variable or a constant?");
     SWAG_ERROR(Nte0153, "employ '{}' for an intentional empty statement");
     SWAG_ERROR(Nte0053, "entity %s '%s' awaits the generation of type '%s'");
-    SWAG_ERROR(Nte0033, "error during the '#validifx' validation of the call to '%s'");
     SWAG_ERROR(Nte0070, "evaluation failed during compile-time");
     SWAG_ERROR(Nte0136, "force the evaluation using '#run'");
     SWAG_ERROR(Nte0114, "function names that start with 'op' followed by an uppercase letter are reserved for struct special functions");
@@ -1341,7 +1339,7 @@ void initErrors()
     SWAG_ERROR(Nte0030, "here is the tuple definition");
     SWAG_ERROR(Nte1124, "if this is intended, consider adding 'impl' before this");
     SWAG_ERROR(Nte1005, "if this is intended, consider initializing the global variable with 'undefined' instead of zero");
-    SWAG_ERROR(Nte1092, "if this is intentional, consider renaming it to '_%s' to indicate it's unused");
+    SWAG_ERROR(Nte1092, "if this is intended, consider renaming it to '_%s' to indicate it's unused");
     SWAG_ERROR(Nte1043, "if you want to declare a generic constant, consider adding 'const' before '%s'");
     SWAG_ERROR(Nte0104, "if you want to declare a lambda type, use 'func(' or 'closure('");
     SWAG_ERROR(Nte1082, "if you want to retrieve the type of an expression, consider using '@decltype' instead")
@@ -1355,6 +1353,8 @@ void initErrors()
     SWAG_ERROR(Nte0054, "occured during the '#validif' validation of the call to '%s'");
     SWAG_ERROR(Nte0061, "occured during the generic instantiation of '%s'");
     SWAG_ERROR(Nte0059, "occured during the inline expansion of '%s'");
+    SWAG_ERROR(Nte0060, "occured during the public export of '%s'");
+    SWAG_ERROR(Nte0033, "occured during the '#validifx' validation of the call to '%s'");
     SWAG_ERROR(Nte0004, "occured in auto-generated code");
     SWAG_ERROR(Nte1115, "one function declares 'throw' while the other doesn't");
     SWAG_ERROR(Nte1112, "only the address of a returned reference can be taken, and this is %s");

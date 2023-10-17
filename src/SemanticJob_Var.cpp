@@ -64,7 +64,6 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
     if (typeStruct->fields.size() == 0)
     {
         Diagnostic diag{varDecl, varDecl->token, Err(Err0292)};
-        diag.addRange(varDecl->assignment, Nte(Nte1069));
         return context->report(diag);
     }
 

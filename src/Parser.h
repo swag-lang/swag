@@ -33,7 +33,6 @@ enum class InvalidTokenError
     TopLevelInstruction,
     PrimaryExpression,
     LeftExpression,
-    LeftExpressionVar,
 };
 
 enum class SyntaxStructType

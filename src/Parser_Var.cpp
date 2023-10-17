@@ -277,7 +277,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result)
         kind  = AstNodeKind::VarDecl;
         SWAG_CHECK(eatToken());
         if (token.id != TokenId::SymLeftParen)
-            SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err1069), token.ctext())));
+            SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err0702), isLet ? "let" : "var", token.ctext())));
     }
 
     SWAG_CHECK(doVarDecl(parent, result, kind, false, isLet));

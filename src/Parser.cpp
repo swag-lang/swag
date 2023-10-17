@@ -100,11 +100,6 @@ bool Parser::invalidTokenError(InvalidTokenError kind, AstNode* parent)
     case InvalidTokenError::LeftExpression:
         msg = Fmt(Err(Err1059), token.ctext());
         break;
-    case InvalidTokenError::LeftExpressionVar:
-        msg = Fmt(Err(Err1069), token.ctext());
-        if (Tokenizer::isKeyword(token.id))
-            note = Fmt(Nte(Nte0154), token.ctext());
-        break;
     case InvalidTokenError::PrimaryExpression:
 
         // Bad character syntax as an expression

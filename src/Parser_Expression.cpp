@@ -1390,7 +1390,13 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t ide
     }
 
     default:
-        return invalidTokenError(InvalidTokenError::LeftExpressionVar);
+    {
+        Diagnostic  diag{sourceFile, token, Fmt(Err(Err1069), token.ctext())};
+        Diagnostic* note = nullptr;
+        if (Tokenizer::isKeyword(token.id))
+            note = Diagnostic::note(Fmt(Nte(Nte0154), token.ctext()));
+        return context->report(diag, note);
+    }
     }
 
     return true;
