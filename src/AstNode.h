@@ -456,6 +456,7 @@ struct AstVarDecl : public AstNode
     static const uint16_t SPECFLAG_GENERIC_CONSTANT = 0x0040;
     static const uint16_t SPECFLAG_AUTO_NAME        = 0x0080;
     static const uint16_t SPECFLAG_IS_LET           = 0x0100;
+    static const uint16_t SPECFLAG_TUPLE_AFFECT     = 0x0200;
 
     AstNode* clone(CloneContext& context);
     bool     isConstDecl();

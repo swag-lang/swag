@@ -16,7 +16,7 @@ impl Argb
 #test
 {
     var color: Argb;
-    var (a,b) = color.extract()
+    let (a,b) = color.extract()
     @assert(a == 666)
     @assert(b == 555)
 }

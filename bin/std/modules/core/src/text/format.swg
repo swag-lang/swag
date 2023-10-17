@@ -52,7 +52,7 @@ func replaceString(dest: *String, fmt: string, values: ...)
     append(&buf, fmt, values)
 
     buf.makeLinear()
-    var (data, count, capacity) = buf.eatBuffer()
+    let (data, count, capacity) = buf.eatBuffer()
 
     dest.buffer   = data
     dest.length   = count

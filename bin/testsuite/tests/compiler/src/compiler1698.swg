@@ -9,7 +9,7 @@ var turnipsAreDelicious = false
 var http404Error = {404, "Not Found"}
 #test
 {
-    var (statusCode, statusMessage) = http404Error
+    let (statusCode, statusMessage) = http404Error
     @assert(statusCode == 404)
     @assert(statusMessage == "Not Found")
 }

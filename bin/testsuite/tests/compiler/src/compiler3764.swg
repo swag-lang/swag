@@ -8,6 +8,6 @@ func toto()->{x: s32, y: s32}
 
 #test
 {
-    var (x, y) = toto()
+    let (x, y) = toto()
     @assert(x == 1 and y == 2)
 }

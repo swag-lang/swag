@@ -161,7 +161,7 @@ impl IWnd for Header
         {
             if clicked and sigClicked
             {
-                var (hit, sep) = hitTest(evt.surfacePos)
+                let (hit, ?) = hitTest(evt.surfacePos)
                 if hit == hotIdx
                     sigClicked(self, items[hotIdx].column)
             }
@@ -176,7 +176,8 @@ impl IWnd for Header
 
         if !moving and !clicked
         {
-            var (hit, sep) = hitTest(evt.surfacePos)
+            let (hitr, sep) = hitTest(evt.surfacePos)
+            var hit = hitr
 
             // Hot, if not a separator, is disabled if item is not clickable
             if hit != Swag.U32.Max

@@ -64,7 +64,7 @@ impl ConvertFormatFloat
         // Precision
         if cpt < countof
         {
-            var (userWidth, eatCount, ?) = assume parseU64(@mkstring(buffer + cpt, cast(u64) (countof - cpt)))
+            let (userWidth, eatCount, ?) = assume parseU64(@mkstring(buffer + cpt, cast(u64) (countof - cpt)))
             Debug.assert(userWidth <= 255, "precision overflow")
             if eatCount
                 precision = cast(s8) userWidth
@@ -142,7 +142,7 @@ impl ConvertFormatInt
         // Next comes the padding width
         if cpt >= countof
             return
-        var (userWidth, eatCount, ?) = assume parseU64(@mkstring(buffer + cpt, cast(u64) countof - cpt))
+        let (userWidth, eatCount, ?) = assume parseU64(@mkstring(buffer + cpt, cast(u64) countof - cpt))
         Debug.assert(userWidth <= 255, "padding width overflow")
         if eatCount width = cast(u8) userWidth
     }

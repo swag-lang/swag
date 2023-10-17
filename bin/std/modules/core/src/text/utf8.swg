@@ -312,7 +312,7 @@ func fromUtf16(dest: [..] u8, src: const [..] u16)->u64
 
     while srcLength
     {
-        var (c, eat) = Utf16.decodeRune(@mkslice(srcPtr, srcLength))
+        let (c, eat) = Utf16.decodeRune(@mkslice(srcPtr, srcLength))
 
         Debug.assert(destLength >= 4, "destination buffer is too small")
         let eatDest = encodeRune(@mkslice(destPtr, destLength), c)
@@ -614,7 +614,7 @@ func firstRune(src: const [..] u8)->rune
     let dataof = @dataof(src)
     if Latin1.isAscii(dataof[0])
         return cast(rune) dataof[0]
-    var (c, ?) = Utf8.decodeRune(src)
+    let (c, ?) = Utf8.decodeRune(src)
     return c
 }
 
@@ -627,7 +627,7 @@ func lastRune(src: const [..] u8)->rune
     let dataof = @dataof(src)
     if Latin1.isAscii(dataof[countof - 1])
         return cast(rune) dataof[countof - 1]
-    var (c, ?) = Utf8.decodeLastRune(src)
+    let (c, ?) = Utf8.decodeLastRune(src)
     return c
 }
 

@@ -150,9 +150,8 @@ impl RegExp
 
         while cpt < srcLength and !pstack1.isEmpty()
         {
-            var (c, eat) = Utf8.decodeRune(@mkslice(srcPtr, srcLength - cpt))
-            if ignoreCase
-                c = Unicode.toUpper(c)
+            let (cr, eat) = Utf8.decodeRune(@mkslice(srcPtr, srcLength - cpt))
+            let c = ignoreCase ? Unicode.toUpper(cr) : cr
 
             var ok = false
             while !pstack1.isEmpty()
@@ -240,9 +239,8 @@ impl RegExp
         var endState = false
         while cpt < srcLength and !pstack1.isEmpty()
         {
-            var (c, eat) = Utf8.decodeRune(@mkslice(srcPtr, srcLength - cpt))
-            if ignoreCase
-                c = Unicode.toUpper(c)
+            let (cr, eat) = Utf8.decodeRune(@mkslice(srcPtr, srcLength - cpt))
+            let c = ignoreCase ? Unicode.toUpper(cr) : cr
 
             var ok = false
             endState = false

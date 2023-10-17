@@ -11,7 +11,7 @@ using Core
 	loop
 	{
         let sl = @mkslice(ptr, cast(u64) count)
-		var (c, eat) = Core.Utf8.decodeRune(sl)
+		let (c, eat) = Core.Utf8.decodeRune(sl)
 		if !eat
 			break
         ptr += eat

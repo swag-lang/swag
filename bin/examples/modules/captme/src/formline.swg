@@ -122,14 +122,16 @@ impl IForm for FormLine
             return result
         }
 
-        var (w0, l0) = Painter.capStyleExtent(beginCap, borderSize, startSize)
-        var (w1, l1) = Painter.capStyleExtent(endCap, borderSize, endSize)
+        let (w0, l0r) = Painter.capStyleExtent(beginCap, borderSize, startSize)
+        let (w1, l1r) = Painter.capStyleExtent(endCap, borderSize, endSize)
 
         var d = vb - va
         d.normalizeSafe()
         var d1 = d.cross(1)
         d1.normalizeSafe()
 
+        var l0 = l0r
+        var l1 = l1r
         if beginCap == .ArrowAnchor
             l0 = 2*2*borderSize
         if endCap == .ArrowAnchor

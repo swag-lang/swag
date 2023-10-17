@@ -448,7 +448,7 @@ impl TagBin
             if structType.fromGeneric == @typeof(Array)
             {
                 let valueType = structType.generics[0].pointedType
-                var (raw, sizeof) = isPodFinal(valueType)
+                let (raw, sizeof) = isPodFinal(valueType)
 
                 if raw
                 {
@@ -467,7 +467,7 @@ impl TagBin
         {
             dref countElem = Math.min(orgCount, dref countElem)
 
-            var (raw, sizeof) = isPodFinal(typeElem)
+            let (raw, sizeof) = isPodFinal(typeElem)
             if raw
             {
                 stream.readBytes(data, dref countElem * sizeof)

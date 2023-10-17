@@ -245,7 +245,7 @@ impl FloatExt
     // frexp10Many applies a common shift by a power of ten to a, b, c.
     func frexp10Many(a, b, c: *FloatExt)->s64
     {
-        var (exp10, i) = c.frexp10()
+        let (exp10, i) = c.frexp10()
         a.multiply(powersOfTen[i])
         b.multiply(powersOfTen[i])
         return exp10
@@ -267,7 +267,7 @@ impl FloatExt
         // Multiply by an appropriate power of ten to have a reasonable
         // number to process.
         normalize()
-        var (exp10, ?) = frexp10()
+        let (exp10, ?) = frexp10()
 
         let shift = cast(u32) -exp
         var integer = cast(u32) (mant >> shift)

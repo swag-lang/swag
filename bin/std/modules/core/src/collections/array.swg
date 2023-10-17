@@ -507,7 +507,8 @@ impl Array
     // Remove 'num' elements starting at 'index'
     mtd remove(index, num: u64)
     {
-        if !num return
+        if !num
+            return
         Debug.safetyBoundCheck(index + num <= count, "index out of range")
 
         #if !Reflection.hasPostMove(T) and !Reflection.hasDrop(T)
@@ -574,8 +575,9 @@ impl Array
     // If not found, does nothing
     mtd(V) remove(value: V)
     {
-        var (idx, found) = Slice.findLinear(toSlice(), value)
-        if !found return
+        let (idx, found) = Slice.findLinear(toSlice(), value)
+        if !found
+            return
         removeAt(idx)
     }
 
@@ -583,8 +585,9 @@ impl Array
     // If not found, does nothing
     mtd(V) removeOrdered(value: V)
     {
-        var (idx, found) = Slice.findLinear(toSlice(), value)
-        if !found return
+        let (idx, found) = Slice.findLinear(toSlice(), value)
+        if !found
+            return
         removeAtOrdered(idx)
     }
 

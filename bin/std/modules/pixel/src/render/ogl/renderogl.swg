@@ -251,7 +251,7 @@ impl RenderOgl
     mtd setScissorRect(rect: Math.Rectangle)
     {
         glEnable(GL_SCISSOR_TEST)
-        var (?, h) = getTargetSize()
+        let (?, h) = getTargetSize()
         glScissor(cast(GLint) rect.x, cast(GLint) (h - rect.y - rect.height), cast(GLint) rect.width, cast(GLint) rect.height)
     }
 
@@ -814,7 +814,7 @@ impl RenderOgl
     // Draw the given painter
     mtd draw(dc: *Painter)
     {
-        var (width, height) = getTargetSize()
+        let (width, height) = getTargetSize()
         if width <= 0 or height <= 0
             return
 

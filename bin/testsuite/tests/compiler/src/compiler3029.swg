@@ -9,7 +9,7 @@ func toto(x, y: s32)->{x: s32, y: s32}
 //#[Swag.PrintBc]
 #test
 {
-    var (x1, y1) = #run toto(2, 2)
+    let (x1, y1) = #run toto(2, 2)
     @assert(x1 == 4)
     @assert(y1 == 8)
 }

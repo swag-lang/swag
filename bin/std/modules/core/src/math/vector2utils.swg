@@ -253,7 +253,7 @@ impl Vector2
     {
         var result: retval
 
-        var (yes, d0, d1) = getLineLineIntersectCoefs(start0, end0, start1, end1, epsilon)
+        let (yes, d0, ?) = getLineLineIntersectCoefs(start0, end0, start1, end1, epsilon)
         if !yes
             return result
 
@@ -268,7 +268,7 @@ impl Vector2
     {
         var result: retval
 
-        var (yes, d0, d1) = getLineLineIntersectCoefs(start0, end0, start1, end1, epsilon)
+        let (yes, d0, d1) = getLineLineIntersectCoefs(start0, end0, start1, end1, epsilon)
         if !yes
             return result
 

@@ -203,7 +203,7 @@ func atoF64(s: string)-> { value: f64, eat: u32 } throw
 
     if !read.trunc
     {
-        var (f, ok) = atoF64Exact(read.neg, read.mantissa, read.exp)
+        let (f, ok) = atoF64Exact(read.neg, read.mantissa, read.exp)
         if ok
         {
             result.value = f
@@ -211,7 +211,7 @@ func atoF64(s: string)-> { value: f64, eat: u32 } throw
         }
     }
 
-    var (f, ok) = eiselLemire64(read.neg, read.mantissa, read.exp)
+    let (f, ok) = eiselLemire64(read.neg, read.mantissa, read.exp)
     if !ok throw "invalid"
     result.value = f
 
@@ -978,7 +978,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{f: f64, ok: bool}
 	if xHi & 0x1FF == 0x1FF and xLo + man < man
     {
         v = PowersOfTen[exp10-PowersOfTenMinExp10, 0]
-		var (yHi, yLo) = mulU64(man, v)
+		let (yHi, yLo) = mulU64(man, v)
 
 		var mergedHi = xHi
         let mergedLo = xLo + yHi

@@ -109,11 +109,11 @@ An **anonymous struct** can be used to return multiple values in a function.
     @assert(result.item0 == 1.0)
     @assert(result.item1 == 2.0)
 
-    var (x, y) = myFunction()
+    let (x, y) = myFunction()
     @assert(x == 1.0)
     @assert(y == 2.0)
 
-    var (z, w) = myFunction()
+    let (z, w) = myFunction()
     @assert(z == 1.0)
     @assert(w == 2.0)
 }
@@ -142,7 +142,7 @@ An **anonymous struct** can be used to return multiple values in a function.
     @assert(result.item1 == 2)
 
     // You can deconstruct the returned struct
-    var (x, y) = returns2()
+    let (x, y) = returns2()
     @assert(x == 1)
     @assert(y == 2)
 }

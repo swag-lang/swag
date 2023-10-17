@@ -159,7 +159,7 @@ impl DateTime
             result.eat += 1
 
             // Day
-            var (day, eat2, ovf2) = StrConv.parseU8(buf)
+            let (day, eat2, ovf2) = StrConv.parseU8(buf)
             if ovf2
                 throw StrConv.ParseErrorInvalid
             result.eat += eat2
@@ -173,7 +173,7 @@ impl DateTime
             result.eat += 1
 
             // Year
-            var (year, eat3, ovf3) = StrConv.parseU16(buf)
+            let (year, eat3, ovf3) = StrConv.parseU16(buf)
             if ovf3
                 throw StrConv.ParseErrorInvalid
             result.value.year = year
@@ -187,7 +187,7 @@ impl DateTime
         elif fmt == .Iso or fmt == .IsoMs
         {
             // Year
-            var (year, eat0, ovf0) = StrConv.parseU16(buf)
+            let (year, eat0, ovf0) = StrConv.parseU16(buf)
             if ovf0
                 throw StrConv.ParseErrorInvalid
             result.value.year = year
@@ -199,7 +199,7 @@ impl DateTime
             result.eat += 1
 
             // Month
-            var (month, eat1, ovf1) = StrConv.parseU8(buf)
+            let (month, eat1, ovf1) = StrConv.parseU8(buf)
             if ovf1
                 throw StrConv.ParseErrorInvalid
             result.eat += eat1
@@ -211,7 +211,7 @@ impl DateTime
             result.eat += 1
 
             // Day
-            var (day, eat2, ovf2) = StrConv.parseU8(buf)
+            let (day, eat2, ovf2) = StrConv.parseU8(buf)
             if ovf2
                 throw StrConv.ParseErrorInvalid
             result.eat += eat2
@@ -226,7 +226,7 @@ impl DateTime
         result.eat += 1
 
         // Hour
-        var (hour, eat3, ovf3) = StrConv.parseU8(buf)
+        let (hour, eat3, ovf3) = StrConv.parseU8(buf)
         if ovf3
             throw StrConv.ParseErrorInvalid
         result.eat += eat3
@@ -238,7 +238,7 @@ impl DateTime
         result.eat += 1
 
         // Minute
-        var (minute, eat4, ovf4) = StrConv.parseU8(buf)
+        let (minute, eat4, ovf4) = StrConv.parseU8(buf)
         if ovf4
             throw StrConv.ParseErrorInvalid
         result.eat += eat4
@@ -250,7 +250,7 @@ impl DateTime
         result.eat += 1
 
         // Seconds
-        var (second, eat5, ovf5) = StrConv.parseU8(buf)
+        let (second, eat5, ovf5) = StrConv.parseU8(buf)
         if ovf5
             throw StrConv.ParseErrorInvalid
         result.eat += eat5
@@ -265,7 +265,7 @@ impl DateTime
             buf = Tokenize.eatCount(buf, 1)
             result.eat += 1
 
-            var (millisecond, eat6, ovf6) = StrConv.parseU16(buf)
+            let (millisecond, eat6, ovf6) = StrConv.parseU16(buf)
             if ovf6
                 throw StrConv.ParseErrorInvalid
             result.eat += eat6

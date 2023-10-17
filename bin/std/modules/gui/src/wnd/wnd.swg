@@ -694,7 +694,7 @@ impl Wnd
         if parent.childs.front() == self
             return
 
-        var (idx, found) = Slice.findLinear(parent.childs.toSlice(), self)
+        let (idx, found) = Slice.findLinear(parent.childs.toSlice(), self)
         Debug.assert(found)
 
         parent.childs.removeAtOrdered(idx)
@@ -708,7 +708,7 @@ impl Wnd
         if parent.childs.back() == self
             return
 
-        var (idx, found) = Slice.findLinear(parent.childs.toSlice(), self)
+        let (idx, found) = Slice.findLinear(parent.childs.toSlice(), self)
         Debug.assert(found)
 
         // Put the window at the back, or before the first topmost window

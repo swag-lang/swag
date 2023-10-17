@@ -93,37 +93,25 @@ func parseB64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
 // 'ovf' will be true in case of overflow
 func parseU8(str: string) -> {value: u8, eat: u32, ovf: bool} throw
 {
-    var (res, eat, ovf) = try parseU64(str)
+    let (res, eat, ovf) = try parseU64(str)
     if res > Swag.U8.Max
-    {
-        res = Swag.U8.Max
-        ovf = true
-    }
-
+        return {Swag.U8.Max, eat, true}
     return {cast(u8) res, eat, ovf}
 }
 
 func parseU16(str: string) -> {value: u16, eat: u32, ovf: bool} throw
 {
-    var (res, eat, ovf) = try parseU64(str)
+    let (res, eat, ovf) = try parseU64(str)
     if res > Swag.U16.Max
-    {
-        res = Swag.U16.Max
-        ovf = true
-    }
-
+        return {Swag.U16.Max, eat, true}
     return {cast(u16) res, eat, ovf}
 }
 
 func parseU32(str: string) -> {value: u32, eat: u32, ovf: bool} throw
 {
-    var (res, eat, ovf) = try parseU64(str)
+    let (res, eat, ovf) = try parseU64(str)
     if res > Swag.U32.Max
-    {
-        res = Swag.U32.Max
-        ovf = true
-    }
-
+        return {Swag.U32.Max, eat, true}
     return {cast(u32) res, eat, ovf}
 }
 
@@ -198,52 +186,31 @@ func parseU64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
 // 'ovf' will be true in case of overflow
 func parseS8(str: string) -> {value: s8, eat: u32, ovf: bool} throw
 {
-    var (res, eat, ovf) = try parseS64(str)
+    let (res, eat, ovf) = try parseS64(str)
     if res < Swag.S8.Min
-    {
-        res = Swag.S8.Min
-        ovf = true
-    }
-    elif res > Swag.S8.Max
-    {
-        res = Swag.S8.Max
-        ovf = true
-    }
-
+        return {Swag.S8.Min, eat, true}
+    if res > Swag.S8.Max
+        return {Swag.S8.Max, eat, true}
     return {cast(s8) res, eat, ovf}
 }
 
 func parseS16(str: string) -> {value: s16, eat: u32, ovf: bool} throw
 {
-    var (res, eat, ovf) = try parseS64(str)
+    let (res, eat, ovf) = try parseS64(str)
     if res < Swag.S16.Min
-    {
-        res = Swag.S16.Min
-        ovf = true
-    }
-    elif res > Swag.S16.Max
-    {
-        res = Swag.S16.Max
-        ovf = true
-    }
-
+        return {Swag.S16.Min, eat, true}
+    if res > Swag.S16.Max
+        return {Swag.S16.Max, eat, true}
     return {cast(s16) res, eat, ovf}
 }
 
 func parseS32(str: string) -> {value: s32, eat: u32, ovf: bool} throw
 {
-    var (res, eat, ovf) = try parseS64(str)
+    let (res, eat, ovf) = try parseS64(str)
     if res < Swag.S32.Min
-    {
-        res = Swag.S32.Min
-        ovf = true
-    }
-    elif res > Swag.S32.Max
-    {
-        res = Swag.S32.Max
-        ovf = true
-    }
-
+        return {Swag.S32.Min, eat, true}
+    if res > Swag.S32.Max
+        return {Swag.S32.Max, eat, true}
     return {cast(s32) res, eat, ovf}
 }
 
@@ -329,18 +296,11 @@ func parseS64(str: string) -> {value: s64, eat: u32, ovf: bool} throw
 // 'ovf' will be true in case of overflow
 func parseF32(str: string) -> {value: f32, eat: u32, ovf: bool} throw
 {
-    var (res, eat, ovf) = try parseF64(str)
+    let (res, eat, ovf) = try parseF64(str)
     if res != 0 and res < Swag.F32.Min
-    {
-        res = Swag.F32.Min
-        ovf = true
-    }
-    elif res > Swag.F32.Max
-    {
-        res = Swag.F32.Max
-        ovf = true
-    }
-
+        return {Swag.F32.Min, eat, true}
+    if res > Swag.F32.Max
+        return {Swag.F32.Max, eat, true}
     return {cast(f32) res, eat, ovf}
 }
 
@@ -452,7 +412,7 @@ func parseString(str: string) -> {value: String, eat: u32} throw
 // Transform a string to an 's8'
 func toS8(str: string)->s8 throw
 {
-    var (v, eat, ovf) = parseS8(str)
+    let (v, eat, ovf) = parseS8(str)
     if ovf throw ParseErrorOverflow
     if eat != @countof(str) throw ParseErrorInvalid
     return v
@@ -461,7 +421,7 @@ func toS8(str: string)->s8 throw
 // Transform a string to an 's16'
 func toS16(str: string)->s16 throw
 {
-    var (v, eat, ovf) = parseS16(str)
+    let (v, eat, ovf) = parseS16(str)
     if ovf throw ParseErrorOverflow
     if eat != @countof(str) throw ParseErrorInvalid
     return v
@@ -470,7 +430,7 @@ func toS16(str: string)->s16 throw
 // Transform a string to an 's32'
 func toS32(str: string)->s32 throw
 {
-    var (v, eat, ovf) = parseS32(str)
+    let (v, eat, ovf) = parseS32(str)
     if ovf throw ParseErrorOverflow
     if eat != @countof(str) throw ParseErrorInvalid
     return v
@@ -479,7 +439,7 @@ func toS32(str: string)->s32 throw
 // Transform a string to an 's64'
 func toS64(str: string)->s64 throw
 {
-    var (v, eat, ovf) = parseS64(str)
+    let (v, eat, ovf) = parseS64(str)
     if ovf throw ParseErrorOverflow
     if eat != @countof(str) throw ParseErrorInvalid
     return v
@@ -488,7 +448,7 @@ func toS64(str: string)->s64 throw
 // Transform a string to an 'u8'
 func toU8(str: string)->u8 throw
 {
-    var (v, eat, ovf) = parseU8(str)
+    let (v, eat, ovf) = parseU8(str)
     if ovf throw ParseErrorOverflow
     if eat != @countof(str) throw ParseErrorInvalid
     return v
@@ -497,7 +457,7 @@ func toU8(str: string)->u8 throw
 // Transform a string to an 'u16'
 func toU16(str: string)->u16 throw
 {
-    var (v, eat, ovf) = parseU16(str)
+    let (v, eat, ovf) = parseU16(str)
     if ovf throw ParseErrorOverflow
     if eat != @countof(str) throw ParseErrorInvalid
     return v
@@ -506,7 +466,7 @@ func toU16(str: string)->u16 throw
 // Transform a string to an 'u32'
 func toU32(str: string)->u32 throw
 {
-    var (v, eat, ovf) = parseU32(str)
+    let (v, eat, ovf) = parseU32(str)
     if ovf throw ParseErrorOverflow
     if eat != @countof(str) throw ParseErrorInvalid
     return v
@@ -515,7 +475,7 @@ func toU32(str: string)->u32 throw
 // Transform a string to an 'u64'
 func toU64(str: string)->u64 throw
 {
-    var (v, eat, ovf) = parseU64(str)
+    let (v, eat, ovf) = parseU64(str)
     if ovf throw ParseErrorOverflow
     if eat != @countof(str) throw ParseErrorInvalid
     return v
@@ -524,7 +484,7 @@ func toU64(str: string)->u64 throw
 // Transform a string to an 'f32'
 func toF32(str: string)->f32 throw
 {
-    var (v, eat, ovf) = parseF32(str)
+    let (v, eat, ovf) = parseF32(str)
     if ovf throw ParseErrorOverflow
     if eat != @countof(str) throw ParseErrorInvalid
     return v
@@ -533,7 +493,7 @@ func toF32(str: string)->f32 throw
 // Transform a string to an 'f64'
 func toF64(str: string)->f64 throw
 {
-    var (v, eat, ovf) = parseF64(str)
+    let (v, eat, ovf) = parseF64(str)
     if ovf throw ParseErrorOverflow
     if eat != @countof(str) throw ParseErrorInvalid
     return v

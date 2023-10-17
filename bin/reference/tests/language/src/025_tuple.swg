@@ -74,12 +74,12 @@ You can unpack a tuple field by field.
     var tuple1 = {x: 1.0, y: 2.0}
 
     // 'value0' will be assigned with 'x', and 'value1' will be assigned with 'y'.
-    var (value0, value1) = tuple1
+    let (value0, value1) = tuple1
     @assert(value0 == 1.0)
     @assert(value1 == 2.0)
 
     var tuple2 = {"name", true}
-    var (name, value) = tuple2
+    let (name, value) = tuple2
     @assert(name == "name")
     @assert(value == true)
 }
@@ -90,8 +90,8 @@ You can ignore a tuple field by naming the variable `?`.
 #test
 {
     var tuple1 = {x: 1.0, y: 2.0}
-    var (x, ?) = tuple1
+    let (x, ?) = tuple1
     @assert(x == 1.0)
-    var (?, y) = tuple1
+    let (?, y) = tuple1
     @assert(y == 2.0)
 }

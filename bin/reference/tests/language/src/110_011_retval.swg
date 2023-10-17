@@ -32,7 +32,7 @@ But `retval` will also make a direct reference to the caller storage, to avoid a
 
     // Here the 'getWhite' function can directly modify r, g and b without storing
     // a temporary value on the stack.
-    var (r, g, b) = getWhite()
+    let (r, g, b) = getWhite()
     @assert(r == 0.5)
     @assert(g == 0.1)
     @assert(b == 1.0)

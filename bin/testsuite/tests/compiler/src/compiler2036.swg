@@ -19,7 +19,7 @@ impl Argb2036
 #test
 {
     var color = Argb2036{255, 255, 128, 0}
-    var (a, r, g, b) = color.extract()
+    let (a, r, g, b) = color.extract()
     @assert(a == 1)
     @assert(r == 1)
     @assert(0 < g and g < 1)

@@ -300,7 +300,7 @@ impl RichEditCtrl
         var str = text
         loop
         {
-            var (c, eat) = Utf8.decodeRune(str)
+            let (c, eat) = Utf8.decodeRune(str)
             if !eat
                 break
             str = Tokenize.eatCount(str, cast(u64) eat)

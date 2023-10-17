@@ -12,7 +12,7 @@ func toto()->{a,b: s32}
 
 #test
 {
-    var (res1, res2) = toto()
+    let (res1, res2) = toto()
     @assert(res1 == 0)
     @assert(res2 == 1)
 }

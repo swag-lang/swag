@@ -136,8 +136,13 @@ bool SemanticJob::warnUnusedVariables(SemanticContext* context, Scope* scope)
             continue;
 
         auto front = sym->nodes.front();
-        if (front->flags & AST_GENERATED)
-            continue;
+
+        // Remove generated symbol, except when unpacking a tuple.
+        if (front->kind != AstNodeKind::VarDecl || !(front->specFlags & AstVarDecl::SPECFLAG_TUPLE_AFFECT))
+        {
+            if (front->flags & AST_GENERATED)
+                continue;
+        }
 
         auto overload = sym->overloads.front();
         if (overload->flags & OVERLOAD_RETVAL)

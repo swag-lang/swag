@@ -14,7 +14,7 @@ func toto()->{idx: s32, sep: bool}
 
 #test
 {
-    var (idx, sep) = toto()
+    let (idx, sep) = toto()
     @assert(idx == 10)
     @assert(sep == false)
 }
