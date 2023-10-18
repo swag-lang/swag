@@ -1,4 +1,4 @@
-#global testerror "Err0144"
+//#global testerror "Err0144"
 
 enum XY: string
 {
@@ -17,4 +17,9 @@ enum XYZ: string
     using Z
 }
 
-const C = XYZ.X1
+const C = XYZ.XY.X
+const D = XYZ.XY.Y
+const E = XYZ.Z.Z
+#assert XYZ.XY.X == "1"
+#assert XYZ.XY.Y == "2"
+#assert XYZ.Z.Z  == "Z"

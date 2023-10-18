@@ -187,6 +187,23 @@ bool SemanticJob::resolveSubEnumValue(SemanticContext* context)
         return context->report(diag, Diagnostic::hereIs(node));
     }
 
+    // Add a symbol in the enum scope
+    AddSymbolTypeInfo toAdd;
+    toAdd.node                   = node;
+    toAdd.typeInfo               = node->typeInfo;
+    toAdd.kind                   = SymbolKind::Enum;
+    node->resolvedSymbolOverload = typeEnum->scope->symTable.addSymbolTypeInfo(context, toAdd);
+    SWAG_CHECK(node->resolvedSymbolOverload);
+
+    // Store the value in the enum type
+    auto typeParam      = g_TypeMgr->makeParam();
+    typeParam->name     = node->token.text;
+    typeParam->typeInfo = typeSubEnum;
+    typeParam->index    = (uint32_t) typeEnum->values.size();
+    typeParam->declNode = node;
+    SWAG_CHECK(collectAttributes(context, node, &typeParam->attributes));
+    typeEnum->values.push_back(typeParam);
+
     return true;
 }
 
@@ -367,6 +384,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
 
     valNode->typeInfo = typeEnum;
 
+    // Add a symbol in the enum scope
     AddSymbolTypeInfo toAdd;
     toAdd.node                      = valNode;
     toAdd.typeInfo                  = valNode->typeInfo;
@@ -377,7 +395,7 @@ bool SemanticJob::resolveEnumValue(SemanticContext* context)
     valNode->resolvedSymbolOverload = typeEnum->scope->symTable.addSymbolTypeInfo(context, toAdd);
     SWAG_CHECK(valNode->resolvedSymbolOverload);
 
-    // Store each value in the enum type
+    // Store the value in the enum type
     auto typeParam = g_TypeMgr->makeParam();
     typeParam->flags |= TYPEINFOPARAM_DEFINED_VALUE;
     typeParam->name     = valNode->token.text;

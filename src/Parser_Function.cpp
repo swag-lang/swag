@@ -148,6 +148,7 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
                 Ast::addChildBack(param, paramExpression);
             }
 
+            param->token.endLocation = token.startLocation;
             if (token.id == closeToken)
                 break;
 
