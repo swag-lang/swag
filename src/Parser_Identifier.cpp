@@ -202,9 +202,6 @@ bool Parser::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t identif
     auto identifierRef = Ast::newIdentifierRef(sourceFile, parent, this);
     *result            = identifierRef;
 
-    if (identifierFlags & IDENTIFIER_GLOBAL)
-        identifierRef->specFlags |= AstIdentifierRef::SPECFLAG_GLOBAL;
-
     switch (token.id)
     {
     case TokenId::CompilerLocation:

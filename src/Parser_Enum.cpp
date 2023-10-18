@@ -132,27 +132,7 @@ bool Parser::doEnumContent(AstNode* parent, AstNode** result)
         break;
 
     default:
-        // If this a function call ?
-        // (a mixin)
-        bool isFunc = false;
-        if (token.id == TokenId::Identifier)
-        {
-            tokenizer.saveState(token);
-            eatToken();
-            if (token.id == TokenId::SymDot || token.id == TokenId::SymLeftParen)
-                isFunc = true;
-            tokenizer.restoreState(token);
-        }
-
-        if (isFunc)
-        {
-            SWAG_CHECK(doIdentifierRef(parent, result, IDENTIFIER_GLOBAL));
-        }
-        else
-        {
-            SWAG_CHECK(doEnumValue(parent, result));
-        }
-
+        SWAG_CHECK(doEnumValue(parent, result));
         break;
     }
 
