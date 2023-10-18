@@ -1079,7 +1079,8 @@ void SemanticJob::findClosestMatches(const Utf8& searchName, const VectorNative<
             break;
 
         default:
-            searchList.push_back(g_LangSpec->keywords.buffer[i].key);
+            if (g_LangSpec->keywords.buffer[i].key)
+                searchList.push_back(g_LangSpec->keywords.buffer[i].key);
             break;
         }
     }
@@ -1192,9 +1193,11 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
                 {
                     if (typeWhere->kind == TypeInfoKind::Struct && node->callParameters)
                         diag = new Diagnostic{node, node->token, Fmt(Err(Err1107), node->token.ctext(), typeWhere->getDisplayNameC())};
+                    else if (typeWhere->kind == TypeInfoKind::Enum)
+                        diag = new Diagnostic{node, node->token, Fmt(Err(Err0144), node->token.ctext(), typeWhere->getDisplayNameC())};
                     else
                         diag = new Diagnostic{node, node->token, Fmt(Err(Err0112), node->token.ctext(), typeWhere->getDisplayNameC())};
-                    if (prevIdentifier)
+                    if (prevIdentifier && prevIdentifier->resolvedSymbolName && prevIdentifier->resolvedSymbolName->kind == SymbolKind::Variable)
                         diag->addRange(prevIdentifier, Diagnostic::isType(prevIdentifier));
                 }
                 else

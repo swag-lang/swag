@@ -156,12 +156,45 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
     return context->report({typeNode, Fmt(Err(Err0705), rawTypeInfo->getDisplayNameC())});
 }
 
+bool SemanticJob::resolveSubEnumValue(SemanticContext* context)
+{
+    SWAG_CHECK(resolveIdentifierRef(context));
+    if (context->result != ContextResult::Done)
+        return true;
+
+    auto node = context->node;
+
+    // Be sure the identifier is an enum
+    if (!node->typeInfo->isEnum())
+    {
+        Diagnostic diag{node, Fmt(Err(Err0173), node->typeInfo->getDisplayNameC())};
+        return context->report(diag, Diagnostic::hereIs(node));
+    }
+
+    auto enumNode = node->findParent(AstNodeKind::EnumDecl);
+    SWAG_ASSERT(enumNode);
+    auto typeEnum = CastTypeInfo<TypeInfoEnum>(enumNode->typeInfo, TypeInfoKind::Enum);
+    if (typeEnum->rawType->isGeneric())
+        return true;
+
+    // Be sure enum types are the same
+    auto typeSubEnum         = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
+    auto concreteTypeSubEnum = TypeManager::concreteType(typeSubEnum->rawType, CONCRETE_ALIAS);
+    auto concreteTypeEnum    = TypeManager::concreteType(typeEnum->rawType, CONCRETE_ALIAS);
+    if (concreteTypeSubEnum != concreteTypeEnum)
+    {
+        Diagnostic diag{node, Fmt(Err(Err0549), concreteTypeEnum->getDisplayNameC(), concreteTypeSubEnum->getDisplayNameC())};
+        return context->report(diag, Diagnostic::hereIs(node));
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveEnumValue(SemanticContext* context)
 {
     auto valNode  = CastAst<AstEnumValue>(context->node, AstNodeKind::EnumValue);
     auto enumNode = valNode->findParent(AstNodeKind::EnumDecl);
     SWAG_ASSERT(enumNode);
-
     auto typeEnum = CastTypeInfo<TypeInfoEnum>(enumNode->typeInfo, TypeInfoKind::Enum);
     if (typeEnum->rawType->isGeneric())
         return true;

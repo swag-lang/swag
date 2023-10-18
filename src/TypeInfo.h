@@ -419,6 +419,7 @@ struct TypeInfoEnum : public TypeInfo
     }
 
     bool      isSame(TypeInfo* to, uint64_t castFlags) override;
+    Utf8      getDisplayName() override;
     TypeInfo* clone() override;
     bool      contains(const Utf8& valueName);
 

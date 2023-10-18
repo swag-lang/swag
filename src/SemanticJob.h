@@ -484,6 +484,7 @@ struct SemanticJob : public Job
     static bool resolveInterface(SemanticContext* context);
     static bool resolveEnum(SemanticContext* context);
     static bool resolveEnumType(SemanticContext* context);
+    static bool resolveSubEnumValue(SemanticContext* context);
     static bool resolveEnumValue(SemanticContext* context);
     static bool resolveFuncDeclParams(SemanticContext* context);
     static bool resolveFuncDeclAfterSI(SemanticContext* context);

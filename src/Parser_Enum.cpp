@@ -131,6 +131,12 @@ bool Parser::doEnumContent(AstNode* parent, AstNode** result)
         SWAG_CHECK(doEnumContent(parent, &dummyResult));
         break;
 
+    case TokenId::KwdUsing:
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doIdentifierRef(parent, &dummyResult, IDENTIFIER_NO_PARAMS));
+        dummyResult->semanticFct = SemanticJob::resolveSubEnumValue;
+        break;
+
     default:
         SWAG_CHECK(doEnumValue(parent, result));
         break;

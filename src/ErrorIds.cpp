@@ -691,7 +691,7 @@ void initErrors()
     SWAG_ERROR(Err0300, "missing initialization                            $ a reference requires an explicit initialization");
     SWAG_ERROR(Err0873, "missing initialization                            $ a variable declared with 'let' requires an explicit initialization");
     SWAG_ERROR(Err0299, "missing initialization                            $ an immutable variable requires an explicit initialization");
-    SWAG_ERROR(Err0848, "missing initialization                            $ expected an initialization of '%s' because the enum '%s' does not contain a value for zero");
+    SWAG_ERROR(Err0848, "missing initialization                            $ expected an initialization of '%s' because '%s' does not contain a value for zero");
     SWAG_ERROR(Err0706, "missing initialization                            $ the enumeration value '%s' has type '%s' which requires an explicit initialization");
     SWAG_ERROR(Err1044, "missing intrinsic arguments                       $ expected the intrinsic arguments between '()'");
     SWAG_ERROR(Err1090, "missing lambda parameter type                     $ expected the type with ':' or an assignment with '=' $ when declaring lambda parameters, you should not combined inferred and explicit types");
@@ -836,14 +836,14 @@ void initErrors()
     SWAG_ERROR(Err0251, "unknown attribute                                 $ the attribute '%s' can't be found");
     SWAG_ERROR(Err0140, "unknown compiler instruction                      $ the compiler instruction '%s' can't be found");
     SWAG_ERROR(Err0499, "unknown dependency                                $ use of an unknown module dependency '%s'");
-    SWAG_ERROR(Err0144, "unknown enum value                                $ the enumeration value '%s' was not found in the enum '%s'");
+    SWAG_ERROR(Err0144, "unknown enum value                                $ the enumeration value '%s' can't be found in '%s'");
     SWAG_ERROR(Err0304, "unknown file                                      $ the '#load' file '%s' can't be located or accessed");
     SWAG_ERROR(Err0244, "unknown file                                      $ the file named '%s' can't be located or accessed");
     SWAG_ERROR(Err0258, "unknown foreign function                          $ the foreign function '%s' was not found");
     SWAG_ERROR(Err0228, "unknown function                                  $ the function '%s' can't be found");
     SWAG_ERROR(Err0110, "unknown identifier                                $ the identifier '%s' can't be found in %s '%s'");
     SWAG_ERROR(Err0112, "unknown identifier                                $ the identifier '%s' can't be found in '%s'");
-    SWAG_ERROR(Err0492, "unknown identifier                                $ the identifier '%s' can't be found in the enum '%s' or in %s '%s'");
+    SWAG_ERROR(Err0492, "unknown identifier                                $ the identifier '%s' can't be found in '%s' or in %s '%s'");
     SWAG_ERROR(Err0093, "unknown identifier                                $ the identifier '%s' can't be found in the tuple");
     SWAG_ERROR(Err0122, "unknown identifier                                $ the identifier '%s' can't be found");
     SWAG_ERROR(Err0881, "unknown identifier                                $ the identifier '%s' is preceeded with '.' but no corresponding 'enum' or 'with' can be deduced");
@@ -879,8 +879,8 @@ void initErrors()
     SWAG_ERROR(Err0092, "unused return value                               $ the return value of the lambda '%s' should be used $ if you don't need the return value, consider prefixing the call with 'discard'");
     SWAG_ERROR(Err1008, "duplicated operator                               $ expected an expression, found another operator '%s' instead");
     SWAG_ERROR(Err1012, "invalid expression                                $ expected an expression after operator '%s', found '%s' instead $ consider adding '(' after '%s' to start an expression");
-    SWAG_ERROR(Err0173, nullptr);
-    SWAG_ERROR(Err0549, nullptr);
+    SWAG_ERROR(Err0173, "invalid embedded enum                             $ expected an enum type, got '%s' instead");
+    SWAG_ERROR(Err0549, "mismatch enum types                               $ expected an enum of type '%s', got '%s' instead");
     SWAG_ERROR(Err0684, nullptr);
     SWAG_ERROR(Err0675, nullptr);
     SWAG_ERROR(Err0573, nullptr);
@@ -1361,7 +1361,7 @@ void initErrors()
     SWAG_ERROR(Nte0150, "only variables can be initialized that way");
     SWAG_ERROR(Nte1113, "parameter mismatch detected");
     SWAG_ERROR(Nte0146, "pointer arithmetic is only valid for pointers declared with '^', not '*'");
-    SWAG_ERROR(Nte0086, "possibly comes from enum '%s'");
+    SWAG_ERROR(Nte0086, "possibly comes from '%s'");
     SWAG_ERROR(Nte0022, "potential issue detected in your program's compile-time component");
     SWAG_ERROR(Nte0126, "public structs should export all their special functions");
     SWAG_ERROR(Nte1052, "should be casted to a sized integer like 's32', 's64', etc.");

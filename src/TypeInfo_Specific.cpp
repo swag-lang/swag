@@ -430,6 +430,13 @@ bool TypeInfoGeneric::isSame(TypeInfo* to, uint64_t castFlags)
     return true;
 }
 
+Utf8 TypeInfoEnum::getDisplayName()
+{
+    Utf8 str;
+    computeWhateverName(str, COMPUTE_DISPLAY_NAME);
+    return Fmt("enum %s", str.c_str());
+}
+
 bool TypeInfoEnum::contains(const Utf8& valueName)
 {
     for (auto p : values)

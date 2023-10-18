@@ -1,4 +1,5 @@
-#global skip
+#global testerror "Err0122"
+
 enum XY: string
 {
     x = "X"
@@ -12,6 +13,6 @@ enum Z: string
 
 enum XYZ: string
 {
-    enum XY
-    enum Z
+    using XY1
+    using Z
 }
