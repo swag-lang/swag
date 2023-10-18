@@ -336,18 +336,26 @@ bool AstOutput::outputEnum(OutputContext& context, Concat& concat, AstEnum* node
 
     for (auto c : node->childs)
     {
-        if (c->kind != AstNodeKind::EnumValue)
-            continue;
-        concat.addIndent(context.indent + 1);
-
-        concat.addString(c->token.text);
-        if (!c->childs.empty())
+        if (c->kind == AstNodeKind::EnumValue)
         {
-            CONCAT_FIXED_STR(concat, " = ");
-            SWAG_CHECK(outputNode(context, concat, c->childs.front()));
-        }
+            concat.addIndent(context.indent + 1);
 
-        concat.addEol();
+            concat.addString(c->token.text);
+            if (!c->childs.empty())
+            {
+                CONCAT_FIXED_STR(concat, " = ");
+                SWAG_CHECK(outputNode(context, concat, c->childs.front()));
+            }
+
+            concat.addEol();
+        }
+        else if (c->kind == AstNodeKind::IdentifierRef)
+        {
+            concat.addIndent(context.indent + 1);
+            CONCAT_FIXED_STR(concat, "using ");
+            SWAG_CHECK(outputNode(context, concat, c));
+            concat.addEol();
+        }
     }
 
     concat.addIndent(context.indent);

@@ -153,9 +153,9 @@ struct Parser
     bool doNamespace(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing);
     bool doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal, bool forUsing, Token* privName = nullptr);
     bool doEnumContent(AstNode* parent, AstNode** result);
+    bool doSubEnumValue(AstNode* parent, AstNode** result);
     bool doEnumValue(AstNode* parent, AstNode** result);
     bool doEnum(AstNode* parent, AstNode** result);
-    bool doTupleBody(AstNode* parent, bool acceptEmpty);
     bool doStructBody(AstNode* parent, SyntaxStructType structType, AstNode** result);
     bool doStruct(AstNode* parent, AstNode** result);
     bool doStructContent(AstStruct* structNode, SyntaxStructType structType);

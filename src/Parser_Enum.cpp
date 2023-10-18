@@ -132,15 +132,33 @@ bool Parser::doEnumContent(AstNode* parent, AstNode** result)
         break;
 
     case TokenId::KwdUsing:
-        SWAG_CHECK(eatToken());
-        SWAG_CHECK(doIdentifierRef(parent, &dummyResult, IDENTIFIER_NO_PARAMS));
-        dummyResult->semanticFct = SemanticJob::resolveSubEnumValue;
+        SWAG_CHECK(doSubEnumValue(parent, result));
         break;
 
     default:
         SWAG_CHECK(doEnumValue(parent, result));
         break;
     }
+
+    return true;
+}
+
+bool Parser::doSubEnumValue(AstNode* parent, AstNode** result)
+{
+    SWAG_CHECK(eatToken());
+    SWAG_CHECK(doIdentifierRef(parent, &dummyResult, IDENTIFIER_NO_PARAMS));
+    dummyResult->semanticFct = SemanticJob::resolveSubEnumValue;
+
+    if (tokenizer.comment.length())
+    {
+        dummyResult->allocateExtension(ExtensionKind::Misc);
+        dummyResult->extMisc()->docComment = std::move(tokenizer.comment);
+    }
+
+    if (token.id == TokenId::SymComma)
+        SWAG_CHECK(eatToken());
+    else if (token.id != TokenId::SymRightCurly)
+        SWAG_CHECK(eatSemiCol("enum value"));
 
     return true;
 }
@@ -169,13 +187,9 @@ bool Parser::doEnumValue(AstNode* parent, AstNode** result)
     }
 
     if (token.id == TokenId::SymComma)
-    {
         SWAG_CHECK(eatToken());
-    }
     else if (token.id != TokenId::SymRightCurly)
-    {
         SWAG_CHECK(eatSemiCol("enum value"));
-    }
 
     return true;
 }
