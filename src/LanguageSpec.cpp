@@ -15,12 +15,12 @@ void LanguageSpec::setupNames()
     name__setupRuntime        = "__setupRuntime";
     name__closeRuntime        = "__closeRuntime";
     name__dropGlobalVariables = "__dropGlobalVariables";
-    name__compilererror       = "__compilererror";
+    name__compilererror       = "__compilerError";
     name__panic               = "__panic";
-    name__pusherr             = "__pusherr";
-    name__poperr              = "__poperr";
-    name__seterr              = "__seterr";
-    name__geterrmsg           = "__geterrmsg";
+    name__pusherr             = "__pushErr";
+    name__poperr              = "__popErr";
+    name__seterr              = "__setErr";
+    name__geterrmsg           = "__getErrMsg";
     name__tlsAlloc            = "__tlsAlloc";
     name__tlsGetValue         = "__tlsGetValue";
     name__tlsSetValue         = "__tlsSetValue";

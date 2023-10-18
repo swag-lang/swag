@@ -2,7 +2,7 @@ using Swag
 
 ////////////////////////////////////////////////////////////
 
-func __seterr(value: string)
+func __setErr(value: string)
 {
     let cxt = @getcontext()
     let len = @min(@countof(value), cast(u64) MaxLenErrorMsg)
@@ -12,12 +12,31 @@ func __seterr(value: string)
     cxt.hasError = 1
 }
 
-func __geterrmsg()->string
+func __getErrMsg()->string
 {
     let cxt = @getcontext()
     if !cxt.hasError
         return null
     return cxt.errors[cxt.errorIndex].msg
+}
+
+func __pushErr()
+{
+    let cxt = @getcontext()
+    @assert(cxt.errorIndex < MaxErrors)
+    cxt.errors[cxt.errorIndex].pushHasError = cxt.hasError
+    cxt.errors[cxt.errorIndex].pushTraceIndex = cxt.traceIndex
+    cxt.errorIndex += 1
+}
+
+func __popErr()
+{
+    let cxt = @getcontext()
+    @assert(cxt.errorIndex != 0)
+    cxt.errorIndex -= 1
+    @assert(cxt.errorIndex < MaxErrors)
+    cxt.hasError = cxt.errors[cxt.errorIndex].pushHasError
+    cxt.traceIndex = cxt.errors[cxt.errorIndex].pushTraceIndex
 }
 
 // Returns the current raised [Error] or null if none
@@ -27,25 +46,6 @@ func @err()->const *Error
     if !cxt.hasError
         return null
     return &cxt.errors[cxt.errorIndex]
-}
-
-func __pusherr()
-{
-    let cxt = @getcontext()
-    @assert(cxt.errorIndex < MaxErrors)
-    cxt.errors[cxt.errorIndex].pushHasError = cxt.hasError
-    cxt.errors[cxt.errorIndex].pushTraceIndex = cxt.traceIndex
-    cxt.errorIndex += 1
-}
-
-func __poperr()
-{
-    let cxt = @getcontext()
-    @assert(cxt.errorIndex != 0)
-    cxt.errorIndex -= 1
-    @assert(cxt.errorIndex < MaxErrors)
-    cxt.hasError = cxt.errors[cxt.errorIndex].pushHasError
-    cxt.traceIndex = cxt.errors[cxt.errorIndex].pushTraceIndex
 }
 
 ////////////////////////////////////////////////////////////
@@ -207,7 +207,7 @@ func __panic(file: const ^u8, line: u32, col: u32, message: const ^u8)
     @panic(msg, loc)
 }
 
-func __compilererror(file: const ^u8, line: u32, col: u32, message: const ^u8)
+func __compilerError(file: const ^u8, line: u32, col: u32, message: const ^u8)
 {
     var loc: SourceCodeLocation
     loc.fileName = @mkstring(file, @strlen(file))

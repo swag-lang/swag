@@ -291,7 +291,7 @@ namespace Swag
     }
 
     // #########################################################
-    // Context & allocators
+    // Allocators
     // #########################################################
 
     // The 'mode' of an [AllocatorRequest].
@@ -350,6 +350,10 @@ namespace Swag
         totalLeak:    u64
         maxLeak:      u64
     }
+
+    // #########################################################
+    // Context
+    // #########################################################
 
     #[Swag.EnumFlags]
     enum ContextFlags: u64
