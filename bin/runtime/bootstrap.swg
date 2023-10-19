@@ -117,6 +117,10 @@ namespace Swag
     #[AttrUsage(AttributeUsage.Enum)]
     attr EnumIndex()
 
+    // The following enum can't have duplicated values
+    #[AttrUsage(AttributeUsage.Enum)]
+    attr NoDuplicate()
+
     // The following switch is incomplete
     #[AttrUsage(AttributeUsage.Enum)]
     attr Incomplete()

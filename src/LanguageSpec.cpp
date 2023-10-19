@@ -522,6 +522,7 @@ void LanguageSpec::setupAttributesFlags()
     attributesFlags.add("Compiler", ATTRIBUTE_COMPILER);
     attributesFlags.add("EnumFlags", ATTRIBUTE_ENUM_FLAGS);
     attributesFlags.add("EnumIndex", ATTRIBUTE_ENUM_INDEX);
+    attributesFlags.add("NoDuplicate", ATTRIBUTE_NO_DUPLICATE);
     attributesFlags.add("Foreign", ATTRIBUTE_FOREIGN);
     attributesFlags.add("Inline", ATTRIBUTE_INLINE);
     attributesFlags.add("NoInline", ATTRIBUTE_NO_INLINE);

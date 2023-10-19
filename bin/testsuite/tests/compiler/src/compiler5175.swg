@@ -12,6 +12,7 @@ enum BasicErrors1
     FailedToSave
 }
 
+#[Swag.NoDuplicate]
 enum MyErrors1
 {
     using BasicErrors0

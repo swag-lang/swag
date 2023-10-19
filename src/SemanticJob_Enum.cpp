@@ -42,8 +42,8 @@ bool SemanticJob::resolveEnum(SemanticContext* context)
     node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
     SWAG_CHECK(node->resolvedSymbolOverload);
 
-    // If the enum has nested enums, be sure we don't have ambiguous symbols
-    if (typeInfo->flags & TYPEINFO_ENUM_HAS_USING)
+    // Be sure we don't have duplicated values
+    if (node->attributeFlags & ATTRIBUTE_NO_DUPLICATE)
     {
         auto rawType = TypeManager::concreteType(typeInfo->rawType);
 

@@ -72,6 +72,9 @@ attr EnumFlags()
 #[AttrUsage(AttributeUsage.Enum)]
 attr EnumIndex()
 
+#[AttrUsage(AttributeUsage.Enum)]
+attr NoDuplicate()
+
 #[AttrUsage(AttributeUsage.All|AttributeUsage.File)]
 attr Safety(what: string, value: bool)
 
