@@ -46,6 +46,11 @@ bool SemanticJob::resolveEnum(SemanticContext* context)
     if (node->attributeFlags & ATTRIBUTE_NO_DUPLICATE)
     {
         auto rawType = TypeManager::concreteType(typeInfo->rawType);
+        if (!rawType->isNative() && !rawType->isString())
+        {
+            Diagnostic diag{node->childs.front(), Fmt(Err(Err0675), rawType->getDisplayNameC())};
+            return context->report(diag);
+        }
 
         VectorNative<TypeInfoEnum*> collect;
         typeInfo->collectEnums(collect);

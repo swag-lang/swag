@@ -882,7 +882,7 @@ void initErrors()
     SWAG_ERROR(Err0173, "invalid embedded enum                             $ expected an enum type, got '%s' instead");
     SWAG_ERROR(Err0549, "mismatch enum types                               $ expected an enum of type '%s', got '%s' instead");
     SWAG_ERROR(Err0684, "duplicated enum value                             $ the enum value '%s' is already defined with the same underlying value");
-    SWAG_ERROR(Err0675, nullptr);
+    SWAG_ERROR(Err0675, "invalid enum type                                 $ an enum marked with '#[Swag.NoDuplicate]' does not accept type '%s'");
     SWAG_ERROR(Err0573, nullptr);
     SWAG_ERROR(Err0570, nullptr);
     SWAG_ERROR(Err0393, nullptr);
