@@ -256,6 +256,7 @@ void initErrors()
     SWAG_ERROR(Err1019, "identifier expected                               $ expected a function call after '%s', found '%s' instead");
     SWAG_ERROR(Err0431, "immutable global variable                         $ the global variable '%s' is immutable at compile-time because it's initialized to 0");
     SWAG_ERROR(Err1056, "incomplete 'case' expression list                 $ expected another expression after ',' and before ':' $ ',' indicates a list of 'case' expressions; provide the next expression or consider removing the ','");
+    SWAG_ERROR(Err0620, "incomplete 'switch'                               $ the value '%s.%s' is missing");
     SWAG_ERROR(Err1199, "incomplete alias list                             $ expected another alias name after ',' $ either provide an additional alias name or remove the trailing ','");
     SWAG_ERROR(Err1201, "incomplete arguments list                         $ expected another call argument after ',' $ either provide an additional argument or remove the trailing ','");
     SWAG_ERROR(Err1213, "incomplete array dimensions                       $ expected another dimension after ',' $ either provide an additional dimension or remove the trailing ','");
@@ -269,7 +270,6 @@ void initErrors()
     SWAG_ERROR(Err0677, "incomplete interface function                     $ the interface member '%s' should have at least 'self' as the first parameter $ consider declaring the interface function with 'mtd' instead of 'func'");
     SWAG_ERROR(Err1202, "incomplete parameters list                        $ expected another parameter after ',' $ either provide an additional parameter or remove the trailing ','");
     SWAG_ERROR(Err2018, "incomplete string literal                         $ expected a closing quotation mark '\"' before the end of the line $ if you want a multi-line string, use the syntax \"\"\"string\"\"\"");
-    SWAG_ERROR(Err0620, "incomplete switch                                 $ the value '%s.%s' is missing");
     SWAG_ERROR(Err1176, "incomplete tuple unpacking                        $ expected another variable name after ',' $ either provide an additional variable name or remove the trailing ','");
     SWAG_ERROR(Err1171, "incomplete variables list                         $ expected another variable name after ',' $ either provide an additional variable name or remove the trailing ','");
     SWAG_ERROR(Err0514, "incorrect import location                         $ the '#import' location has an incorrect format $ expecting 'location=\"mode@accesspath\"' where mode is 'swag' or 'disk'");
@@ -881,7 +881,7 @@ void initErrors()
     SWAG_ERROR(Err1012, "invalid expression                                $ expected an expression after operator '%s', found '%s' instead $ consider adding '(' after '%s' to start an expression");
     SWAG_ERROR(Err0173, "invalid embedded enum                             $ expected an enum type, got '%s' instead");
     SWAG_ERROR(Err0549, "mismatch enum types                               $ expected an enum of type '%s', got '%s' instead");
-    SWAG_ERROR(Err0684, "ambiguous enum value                              $ the enum value '%s' is already defined with the same underlying value");
+    SWAG_ERROR(Err0684, "duplicated enum value                             $ the enum value '%s' is already defined with the same underlying value");
     SWAG_ERROR(Err0675, nullptr);
     SWAG_ERROR(Err0573, nullptr);
     SWAG_ERROR(Err0570, nullptr);
@@ -1460,7 +1460,7 @@ void initErrors()
     SWAG_ERROR(Nte1046, "you can prefix with '#run' to force a compile-time call");
     SWAG_ERROR(Nte1095, "you can't reference this runtime %s from the compile-time %s");
     SWAG_ERROR(Nte0149, "you might want to get the address of '%s' using '&'");
-    SWAG_ERROR(Nte0014, nullptr);
+    SWAG_ERROR(Nte0014, "the duplicated underlying enum value is '%s'");
     SWAG_ERROR(Nte1031, nullptr);
     SWAG_ERROR(Nte1009, nullptr);
     SWAG_ERROR(Nte1122, nullptr);

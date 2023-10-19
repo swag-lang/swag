@@ -1,0 +1,19 @@
+#global testerror "Err0684"
+
+#[Swag.EnumFlags]
+enum BasicErrors0: u32
+{
+    FailedToLoad
+}
+
+#[Swag.EnumFlags]
+enum BasicErrors1: u32
+{
+    FailedToLoad
+}
+
+enum BasicErrors2: @decltype(@kindof(BasicErrors1))
+{
+    using BasicErrors0
+    using BasicErrors1
+}

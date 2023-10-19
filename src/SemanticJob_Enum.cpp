@@ -63,8 +63,10 @@ bool SemanticJob::resolveEnum(SemanticContext* context)
                     if (it != valText.end())
                     {
                         Diagnostic diag{one->declNode, one->declNode->token, Fmt(Err(Err0684), one->name.c_str())};
-                        auto       note = Diagnostic::note(it->second, it->second->token, Nte(Nte0036));
-                        return context->report(diag, note);
+                        auto       note  = Diagnostic::note(it->second, it->second->token, Nte(Nte0036));
+                        auto       val   = Ast::literalToString(rawType, *one->value);
+                        auto       note1 = Diagnostic::note(Fmt(Nte(Nte0014), val.c_str()));
+                        return context->report(diag, note, note1);
                     }
 
                     valText[one->value->text] = one->declNode;
@@ -80,8 +82,10 @@ bool SemanticJob::resolveEnum(SemanticContext* context)
                     if (it != val64.end())
                     {
                         Diagnostic diag{one->declNode, one->declNode->token, Fmt(Err(Err0684), one->name.c_str())};
-                        auto       note = Diagnostic::note(it->second, it->second->token, Nte(Nte0036));
-                        return context->report(diag, note);
+                        auto       note  = Diagnostic::note(it->second, it->second->token, Nte(Nte0036));
+                        auto       val   = Ast::literalToString(rawType, *one->value);
+                        auto       note1 = Diagnostic::note(Fmt(Nte(Nte0014), val.c_str()));
+                        return context->report(diag, note, note1);
                     }
 
                     val64[one->value->reg.u64] = one->declNode;
