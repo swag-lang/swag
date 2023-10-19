@@ -2331,6 +2331,56 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
     return true;
 }
 
+bool TypeManager::castToEnum(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint64_t castFlags)
+{
+    auto toEnum = CastTypeInfo<TypeInfoEnum>(toType, TypeInfoKind::Enum);
+
+    // Cast from enum to enum, take care of 'using'
+    if (fromType->isEnum())
+    {
+        auto fromEnum = CastTypeInfo<TypeInfoEnum>(fromType, TypeInfoKind::Enum);
+
+        context->castCollectEnum.clear();
+        context->castCollectEnumDone.clear();
+        context->castCollectEnum.push_back(toEnum);
+        context->castCollectEnumDone.insert(toEnum);
+
+        while (!context->castCollectEnum.empty())
+        {
+            auto toTest = context->castCollectEnum.back();
+            context->castCollectEnum.pop_back();
+            if (fromEnum->isSame(toTest, CASTFLAG_CAST))
+            {
+                if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
+                {
+                    fromNode->castedTypeInfo = fromType;
+                    fromNode->typeInfo       = toType;
+                }
+
+                return true;
+            }
+
+            if (!(toEnum->flags & TYPEINFO_ENUM_HAS_USING))
+                continue;
+
+            for (auto value : toEnum->values)
+            {
+                if (value->typeInfo->isEnum())
+                {
+                    auto toSubEnum = CastTypeInfo<TypeInfoEnum>(value->typeInfo, TypeInfoKind::Enum);
+                    if (!context->castCollectEnumDone.contains(toSubEnum))
+                    {
+                        context->castCollectEnum.push_back(toSubEnum);
+                        context->castCollectEnumDone.insert(toSubEnum);
+                    }
+                }
+            }
+        }
+    }
+
+    return castError(context, toType, fromType, fromNode, castFlags);
+}
+
 bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fromTypeList, TypeInfo* toType, AstNode* fromNode, uint64_t castFlags)
 {
     auto fromSize = fromTypeList->subTypes.size();
@@ -3888,6 +3938,11 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
             // Cast to native type
         case TypeInfoKind::Native:
             SWAG_CHECK(castToNative(context, toType, fromType, toNode, fromNode, castFlags));
+            break;
+
+            // Cast to enum
+        case TypeInfoKind::Enum:
+            SWAG_CHECK(castToEnum(context, toType, fromType, toNode, fromNode, castFlags));
             break;
 
             // Cast to array

@@ -113,6 +113,8 @@ struct SemanticContext : public JobContext
 {
     Vector<CastStructStructField>     castStructStructFields;
     Vector<CastCollectInterfaceField> castCollectInterfaceField;
+    Vector<TypeInfoEnum*>             castCollectEnum;
+    Set<TypeInfoEnum*>                castCollectEnumDone;
     SemanticJob*                      job               = nullptr;
     uint32_t                          castFlagsResult   = 0;
     TypeInfo*                         castErrorToType   = nullptr;

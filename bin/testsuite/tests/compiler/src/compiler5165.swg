@@ -1,4 +1,4 @@
-#global skip
+//#global skip
 
 enum XY: string
 {
@@ -19,6 +19,7 @@ enum XYZ: string
 
 func toto(x: XYZ)
 {
+    @assert(x == XYZ.XY.X)
 }
 
 #test

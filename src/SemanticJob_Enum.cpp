@@ -204,6 +204,7 @@ bool SemanticJob::resolveSubEnumValue(SemanticContext* context)
     typeParam->declNode = node;
     SWAG_CHECK(collectAttributes(context, node, &typeParam->attributes));
     typeEnum->values.push_back(typeParam);
+    typeEnum->flags |= TYPEINFO_ENUM_HAS_USING;
 
     return true;
 }
