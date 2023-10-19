@@ -2347,9 +2347,9 @@ bool TypeManager::castToEnum(SemanticContext* context, TypeInfo* toType, TypeInf
 
         while (!context->castCollectEnum.empty())
         {
-            auto toTest = context->castCollectEnum.back();
+            toEnum = context->castCollectEnum.back();
             context->castCollectEnum.pop_back();
-            if (fromEnum->isSame(toTest, CASTFLAG_CAST))
+            if (fromEnum->isSame(toEnum, CASTFLAG_CAST))
             {
                 if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
                 {
