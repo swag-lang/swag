@@ -881,7 +881,7 @@ void initErrors()
     SWAG_ERROR(Err1012, "invalid expression                                $ expected an expression after operator '%s', found '%s' instead $ consider adding '(' after '%s' to start an expression");
     SWAG_ERROR(Err0173, "invalid embedded enum                             $ expected an enum type, got '%s' instead");
     SWAG_ERROR(Err0549, "mismatch enum types                               $ expected an enum of type '%s', got '%s' instead");
-    SWAG_ERROR(Err0684, nullptr);
+    SWAG_ERROR(Err0684, "ambiguous enum value                              $ the enum value '%s' is already defined with the same underlying value");
     SWAG_ERROR(Err0675, nullptr);
     SWAG_ERROR(Err0573, nullptr);
     SWAG_ERROR(Err0570, nullptr);
@@ -1328,7 +1328,6 @@ void initErrors()
     SWAG_ERROR(Nte0075, "here is the origin of the instantiation type '%s'");
     SWAG_ERROR(Nte0035, "here is the other '#import'");
     SWAG_ERROR(Nte0036, "here is the other definition");
-    SWAG_ERROR(Nte0014, "here is the other definition");
     SWAG_ERROR(Nte0063, "here is the other return statement");
     SWAG_ERROR(Nte0066, "here is the parameter '%s' of %s");
     SWAG_ERROR(Nte0037, "here is the previous definition");
@@ -1461,6 +1460,7 @@ void initErrors()
     SWAG_ERROR(Nte1046, "you can prefix with '#run' to force a compile-time call");
     SWAG_ERROR(Nte1095, "you can't reference this runtime %s from the compile-time %s");
     SWAG_ERROR(Nte0149, "you might want to get the address of '%s' using '&'");
+    SWAG_ERROR(Nte0014, nullptr);
     SWAG_ERROR(Nte1031, nullptr);
     SWAG_ERROR(Nte1009, nullptr);
     SWAG_ERROR(Nte1122, nullptr);

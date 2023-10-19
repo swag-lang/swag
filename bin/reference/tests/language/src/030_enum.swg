@@ -275,7 +275,7 @@ enum BasicErrors
 enum MyErrors
 {
     using BasicErrors
-    NotFound
+    NotFound = 100
 }
 
 /**

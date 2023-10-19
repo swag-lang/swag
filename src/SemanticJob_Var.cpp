@@ -681,6 +681,9 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             bool ok = false;
             for (auto typeEnum : collect)
             {
+                if (ok)
+                    break;
+
                 auto rawType = TypeManager::concreteType(typeEnum->rawType, CONCRETE_ALIAS);
                 if (rawType->isNativeFloat() || rawType->isNativeIntegerOrRune() || rawType->isBool())
                 {

@@ -7,9 +7,9 @@ enum BasicErrors
 enum MyErrors
 {
     using BasicErrors    // The enum 'BasicErrors' is nested inside
-    NotFound
+    NotFound = 100
     NotFound1
 }
 
-#assert MyErrors.NotFound == 0
-#assert MyErrors.NotFound1 == 1
+#assert MyErrors.NotFound == 100
+#assert MyErrors.NotFound1 == 101

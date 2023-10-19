@@ -1,14 +1,7 @@
 #include "pch.h"
 #include "SemanticJob.h"
 #include "TypeManager.h"
-#include "SymTable.h"
-#include "Scope.h"
-#include "Allocator.h"
 #include "Ast.h"
-#include "AstNode.h"
-#include "SourceFile.h"
-#include "Module.h"
-#include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "Workspace.h"
 
@@ -49,11 +42,55 @@ bool SemanticJob::resolveEnum(SemanticContext* context)
     node->resolvedSymbolOverload = node->ownerScope->symTable.addSymbolTypeInfo(context, toAdd);
     SWAG_CHECK(node->resolvedSymbolOverload);
 
+    // If the enum has nested enums, be sure we don't have ambiguous symbols
+    if (typeInfo->flags & TYPEINFO_ENUM_HAS_USING)
+    {
+        VectorNative<TypeInfoEnum*> collect;
+        typeInfo->collectEnums(collect);
+        MapUtf8<AstNode*>       valText;
+        Map<uint64_t, AstNode*> val64;
+        for (auto typeEnum : collect)
+        {
+            if (typeInfo->rawType->isString())
+            {
+                for (auto one : typeEnum->values)
+                {
+                    if (!one->value)
+                        continue;
+                    auto it = valText.find(one->value->text);
+                    if (it != valText.end())
+                    {
+                        Diagnostic diag{one->declNode, one->declNode->token, Fmt(Err(Err0684), one->name.c_str())};
+                        auto       note = Diagnostic::note(it->second, it->second->token, Nte(Nte0036));
+                        return context->report(diag, note);
+                    }
+
+                    valText[one->value->text] = one->declNode;
+                }
+            }
+            else
+            {
+                for (auto one : typeEnum->values)
+                {
+                    if (!one->value)
+                        continue;
+                    auto it = val64.find(one->value->reg.u64);
+                    if (it != val64.end())
+                    {
+                        Diagnostic diag{one->declNode, one->declNode->token, Fmt(Err(Err0684), one->name.c_str())};
+                        auto       note = Diagnostic::note(it->second, it->second->token, Nte(Nte0036));
+                        return context->report(diag, note);
+                    }
+
+                    val64[one->value->reg.u64] = one->declNode;
+                }
+            }
+        }
+    }
+
     // Check public
     if ((node->attributeFlags & ATTRIBUTE_PUBLIC) && !(node->flags & AST_FROM_GENERIC))
-    {
         node->ownerScope->addPublicNode(node);
-    }
 
     // We are parsing the swag module
     if (node->sourceFile->isBootstrapFile)

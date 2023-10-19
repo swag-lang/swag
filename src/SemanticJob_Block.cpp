@@ -333,7 +333,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                     int idx = valText.find(expr->computedValue->text);
                     if (idx != -1)
                     {
-                        auto note = Diagnostic::note(valDef[idx], Nte(Nte0014));
+                        auto note = Diagnostic::note(valDef[idx], Nte(Nte0036));
                         return context->report({expr, Fmt(Err(Err0611), expr->computedValue->text.c_str())}, note);
                     }
 
@@ -349,7 +349,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                     int idx = val64.find(value);
                     if (idx != -1)
                     {
-                        auto note = Diagnostic::note(valDef[idx], Nte(Nte0014));
+                        auto note = Diagnostic::note(valDef[idx], Nte(Nte0036));
                         if (expr->isConstantGenTypeInfo())
                             return context->report({expr, Fmt(Err(Err0611), expr->token.ctext())}, note);
                         if (expr->typeInfo->isEnum())
@@ -370,22 +370,26 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
         }
     }
 
-    // When a switch is marked as complete, be sure every definitions have been covered
     if (node->attributeFlags & ATTRIBUTE_COMPLETE)
     {
         // No default for a complete switch
         auto back = node->cases.back();
         SWAG_VERIFY(!back->expressions.empty(), context->report({back, back->token, Err(Err0616)}));
 
+        // When a switch is marked as complete, be sure every definitions have been covered
         if (node->typeInfo->isEnum())
         {
-            auto typeEnum = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
-            if (typeSwitch->isString())
+            auto                        typeEnum0 = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
+            VectorNative<TypeInfoEnum*> collect;
+            typeEnum0->collectEnums(collect);
+            for (auto typeEnum : collect)
             {
-                if (valText.size() != typeEnum->values.size())
+                if (typeSwitch->isString())
                 {
                     for (auto one : typeEnum->values)
                     {
+                        if (!one->value)
+                            continue;
                         if (!valText.contains(one->value->text))
                         {
                             Diagnostic diag{node, node->token, Fmt(Err(Err0620), typeEnum->name.c_str(), one->name.c_str())};
@@ -394,13 +398,12 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
                         }
                     }
                 }
-            }
-            else
-            {
-                if (val64.size() != typeEnum->values.size())
+                else
                 {
                     for (auto one : typeEnum->values)
                     {
+                        if (!one->value)
+                            continue;
                         if (!val64.contains(one->value->reg.u64))
                         {
                             Diagnostic diag{node, node->token, Fmt(Err(Err0620), typeEnum->name.c_str(), one->name.c_str())};

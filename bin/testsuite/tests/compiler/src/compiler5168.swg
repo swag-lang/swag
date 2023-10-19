@@ -9,7 +9,7 @@
     enum MyErrors
     {
         using BasicErrors    // The enum 'BasicErrors' is nested inside
-        NotFound
+        NotFound = 100
     }
 
     const E0: MyErrors    = MyErrors.BasicErrors.FailedToLoad
