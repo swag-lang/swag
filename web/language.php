@@ -209,6 +209,7 @@
 <li><a href="#Enum_as_flags">Enum as flags</a></li>
 <li><a href="#Enum_of_arrays">Enum of arrays</a></li>
 <li><a href="#Enum_of_slices">Enum of slices</a></li>
+<li><a href="#Nested_enums">Nested enums</a></li>
 <li><a href="#Enum_type_inference">Enum type inference</a></li>
 </ul>
 <li><a href="#031_impl">Impl</a></li>
@@ -1202,13 +1203,6 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SCmt">// chinese character before is encoded in UTF8 with more than 1 byte.</span>
     <span class="SKwd">const</span> c = <span class="SStr">"是X是"</span>
     <span class="SCmp">#assert</span> c[<span class="SNum">1</span>] != <span class="SStr">`X`</span> <span class="SCmt">// False because the byte number 1 is not the character 'X'</span>
-}</span></code>
-</div>
-<p>Multiple adjacent strings are compiled as one. </p>
-<div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SKwd">const</span> a = <span class="SStr">"this is "</span>   <span class="SStr">"a"</span>   <span class="SStr">" string"</span>
-    <span class="SCmp">#assert</span> a == <span class="SStr">"this is a string"</span>
 }</span></code>
 </div>
 <p>You can concatenate some values if the values are known at compile time. Use the <span class="code-inline">++</span> operator for that. </p>
@@ -2461,12 +2455,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SKwd">var</span> tuple1 = {x: <span class="SNum">1.0</span>, y: <span class="SNum">2.0</span>}
 
     <span class="SCmt">// 'value0' will be assigned with 'x', and 'value1' will be assigned with 'y'.</span>
-    <span class="SKwd">var</span> (value0, value1) = tuple1
+    <span class="SKwd">let</span> (value0, value1) = tuple1
     <span class="SItr">@assert</span>(value0 == <span class="SNum">1.0</span>)
     <span class="SItr">@assert</span>(value1 == <span class="SNum">2.0</span>)
 
     <span class="SKwd">var</span> tuple2 = {<span class="SStr">"name"</span>, <span class="SKwd">true</span>}
-    <span class="SKwd">var</span> (name, value) = tuple2
+    <span class="SKwd">let</span> (name, value) = tuple2
     <span class="SItr">@assert</span>(name == <span class="SStr">"name"</span>)
     <span class="SItr">@assert</span>(value == <span class="SKwd">true</span>)
 }</span></code>
@@ -2475,9 +2469,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> tuple1 = {x: <span class="SNum">1.0</span>, y: <span class="SNum">2.0</span>}
-    <span class="SKwd">var</span> (x, ?) = tuple1
+    <span class="SKwd">let</span> (x, ?) = tuple1
     <span class="SItr">@assert</span>(x == <span class="SNum">1.0</span>)
-    <span class="SKwd">var</span> (?, y) = tuple1
+    <span class="SKwd">let</span> (?, y) = tuple1
     <span class="SItr">@assert</span>(y == <span class="SNum">2.0</span>)
 }</span></code>
 </div>
@@ -2712,6 +2706,40 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SKwd">let</span> y = <span class="SCst">Value</span>.<span class="SCst">B</span>
     <span class="SItr">@assert</span>(y[<span class="SNum">0</span>] == <span class="SNum">10</span>)
     <span class="SItr">@assert</span>(y[<span class="SNum">1</span>] == <span class="SNum">20</span>)
+}</span></code>
+</div>
+<h3 id="Nested_enums">Nested enums </h3>
+<p>An enum can be nested inside another enum with <span class="code-inline">using</span>. Both enums must of course have the same underlying type. </p>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">enum</span> <span class="SCst">BasicErrors</span>
+{
+    <span class="SCst">FailedToLoad</span>
+    <span class="SCst">FailedToSave</span>
+}
+
+<span class="SCmt">// The enum 'BasicErrors' is nested inside 'MyErrors'</span>
+<span class="SKwd">enum</span> <span class="SCst">MyErrors</span>
+{
+    <span class="SKwd">using</span> <span class="SCst">BasicErrors</span>
+    <span class="SCst">NotFound</span>
+}</span></code>
+</div>
+<p>To access a value inside the nested enum, use the enum name (a scope has been created). </p>
+<div class="code-block"><code><span class="SCde"><span class="SKwd">const</span> <span class="SCst">MyError0</span> = <span class="SCst">MyErrors</span>.<span class="SCst">BasicErrors</span>.<span class="SCst">FailedToSave</span></span></code>
+</div>
+<p>An <b>automatic cast</b> will be done if you try to convert a nested enum to an owner enum. For example, a value of type <span class="code-inline">BasicErrors</span> can be converted to a parameter of type <span class="code-inline">MyErrors</span> because <span class="code-inline">MyErrors</span> contains <span class="code-inline">BasicErrors</span>. </p>
+<div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">const</span> <span class="SCst">E0</span>: <span class="SCst">MyErrors</span>    = <span class="SCst">MyErrors</span>.<span class="SCst">BasicErrors</span>.<span class="SCst">FailedToLoad</span>
+    <span class="SKwd">const</span> <span class="SCst">E1</span>: <span class="SCst">BasicErrors</span> = <span class="SCst">BasicErrors</span>.<span class="SCst">FailedToLoad</span>
+
+    <span class="SKwd">func</span> <span class="SFct">toto</span>(err: <span class="SCst">MyErrors</span>)
+    {
+        <span class="SItr">@assert</span>(err == <span class="SCst">BasicErrors</span>.<span class="SCst">FailedToLoad</span>)
+        <span class="SItr">@assert</span>(err == <span class="SCst">MyErrors</span>.<span class="SCst">BasicErrors</span>.<span class="SCst">FailedToLoad</span>)
+    }
+
+    <span class="SFct">toto</span>(<span class="SCst">E0</span>)
+    <span class="SFct">toto</span>(<span class="SCst">E1</span>) <span class="SCmt">// Automatic cast from 'BasicErrors' to 'MyErrors'</span>
 }</span></code>
 </div>
 <h3 id="Enum_type_inference">Enum type inference </h3>
@@ -4651,11 +4679,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(result.item0 == <span class="SNum">1.0</span>)
     <span class="SItr">@assert</span>(result.item1 == <span class="SNum">2.0</span>)
 
-    <span class="SKwd">var</span> (x, y) = <span class="SFct">myFunction</span>()
+    <span class="SKwd">let</span> (x, y) = <span class="SFct">myFunction</span>()
     <span class="SItr">@assert</span>(x == <span class="SNum">1.0</span>)
     <span class="SItr">@assert</span>(y == <span class="SNum">2.0</span>)
 
-    <span class="SKwd">var</span> (z, w) = <span class="SFct">myFunction</span>()
+    <span class="SKwd">let</span> (z, w) = <span class="SFct">myFunction</span>()
     <span class="SItr">@assert</span>(z == <span class="SNum">1.0</span>)
     <span class="SItr">@assert</span>(w == <span class="SNum">2.0</span>)
 }
@@ -4684,7 +4712,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
     <span class="SItr">@assert</span>(result.item1 == <span class="SNum">2</span>)
 
     <span class="SCmt">// You can deconstruct the returned struct</span>
-    <span class="SKwd">var</span> (x, y) = <span class="SFct">returns2</span>()
+    <span class="SKwd">let</span> (x, y) = <span class="SFct">returns2</span>()
     <span class="SItr">@assert</span>(x == <span class="SNum">1</span>)
     <span class="SItr">@assert</span>(y == <span class="SNum">2</span>)
 }</span></code>
@@ -5417,7 +5445,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 
     <span class="SCmt">// Here the 'getWhite' function can directly modify r, g and b without storing</span>
     <span class="SCmt">// a temporary value on the stack.</span>
-    <span class="SKwd">var</span> (r, g, b) = <span class="SFct">getWhite</span>()
+    <span class="SKwd">let</span> (r, g, b) = <span class="SFct">getWhite</span>()
     <span class="SItr">@assert</span>(r == <span class="SNum">0.5</span>)
     <span class="SItr">@assert</span>(g == <span class="SNum">0.1</span>)
     <span class="SItr">@assert</span>(b == <span class="SNum">1.0</span>)
@@ -7829,7 +7857,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="231_003_Pages">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 18-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.25.0</div>
+Generated on 19-10-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
 </div>
 </div>

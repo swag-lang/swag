@@ -5689,7 +5689,7 @@
 <span id="Gui_Header_addItem"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Header.</span><span class="api-item-title-strong">addItem</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\header.swg#L297" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\header.swg#L298" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5703,7 +5703,7 @@
 <span id="Gui_Header_create"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Header.</span><span class="api-item-title-strong">create</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\header.swg#L281" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\header.swg#L282" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5716,7 +5716,7 @@
 <span id="Gui_Header_getItem"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Header.</span><span class="api-item-title-strong">getItem</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\header.swg#L309" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\header.swg#L310" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5730,7 +5730,7 @@
 <span id="Gui_Header_getItemByCol"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Header.</span><span class="api-item-title-strong">getItemByCol</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\header.swg#L316" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\header.swg#L317" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5744,7 +5744,7 @@
 <span id="Gui_Header_getItemPosition"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Header.</span><span class="api-item-title-strong">getItemPosition</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\header.swg#L351" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\header.swg#L352" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5758,7 +5758,7 @@
 <span id="Gui_Header_getItemPositionByCol"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Header.</span><span class="api-item-title-strong">getItemPositionByCol</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\header.swg#L358" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\header.swg#L359" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5772,7 +5772,7 @@
 <span id="Gui_Header_getItemWidth"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Header.</span><span class="api-item-title-strong">getItemWidth</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\header.swg#L330" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\header.swg#L331" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5786,7 +5786,7 @@
 <span id="Gui_Header_getItemWidthByCol"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Header.</span><span class="api-item-title-strong">getItemWidthByCol</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\header.swg#L337" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\header.swg#L338" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5800,7 +5800,7 @@
 <span id="Gui_Header_getTotalItemsWidth"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Header.</span><span class="api-item-title-strong">getTotalItemsWidth</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\header.swg#L375" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\header.swg#L376" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5814,7 +5814,7 @@
 <span id="Gui_Header_setItemWidth"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Header.</span><span class="api-item-title-strong">setItemWidth</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\header.swg#L384" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\header.swg#L385" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5828,7 +5828,7 @@
 <span id="Gui_Header_setItemWidthByCol"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Header.</span><span class="api-item-title-strong">setItemWidthByCol</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\header.swg#L391" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\header.swg#L392" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20499,7 +20499,7 @@
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WrapLayoutCtrl">WrapLayoutCtrl</a></span></span></code>
 </div>
 <div class="swag-watermark">
-Generated on 18-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.25.0</div>
+Generated on 19-10-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
 </div>
 </div>

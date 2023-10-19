@@ -861,7 +861,8 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
                 field.type      = dbgGetOrCreateType(pp, p->typeInfo);
                 field.name      = p->name;
                 field.valueType = typeEnum->rawType;
-                field.value     = *p->value;
+                if (p->value)
+                    field.value = *p->value;
                 tr0->LF_FieldList.fields.emplace_back(std::move(field));
             }
 

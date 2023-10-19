@@ -181,7 +181,7 @@
     <span class="SCmt">// Creates and run one surface (i.e. window) at the given position and with the given size and title.</span>
     <span class="SCmt">// 'hook' defines a lambda that will receive and treat all gui events</span>
     <span class="SCmt">// 'init' defines a lambda that will be called for surface initialization</span>
-    <span class="SCst">Application</span>.<span class="SFct">runSurface</span>(<span class="SNum">4100</span>, <span class="SNum">100</span>, <span class="SNum">300</span>, <span class="SNum">512</span>, title: <span class="SStr">"Flappy Bird"</span>, hook: &onEvent, init: &test)
+    <span class="SCst">Application</span>.<span class="SFct">runSurface</span>(<span class="SNum">100</span>, <span class="SNum">100</span>, <span class="SNum">300</span>, <span class="SNum">512</span>, title: <span class="SStr">"Flappy Bird"</span>, hook: &onEvent, init: &test)
 }</span></code>
 </div>
 <h1 id="Global_definitions">Global definitions </h1>
@@ -566,7 +566,7 @@
 }</span></code>
 </div>
 <div class="swag-watermark">
-Generated on 18-09-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.25.0</div>
+Generated on 19-10-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
 </div>
 </div>

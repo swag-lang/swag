@@ -259,6 +259,50 @@ You can have an enum of const slices.
 }
 
 /**
+# Nested enums
+*/
+
+/**
+An enum can be nested inside another enum with 'using'. Both enums must of course have the same underlying type.
+*/
+enum BasicErrors
+{
+    FailedToLoad
+    FailedToSave
+}
+
+// The enum 'BasicErrors' is nested inside 'MyErrors'
+enum MyErrors
+{
+    using BasicErrors
+    NotFound
+}
+
+/**
+To access a value inside the nested enum, use the enum name (a scope has been created).
+*/
+const MyError0 = MyErrors.BasicErrors.FailedToSave
+
+/**
+An **automatic cast** will be done if you try to convert a nested enum to an owner enum.
+For example, a value of type 'BasicErrors' can be converted to a parameter of type 'MyErrors' because 'MyErrors' contains 'BasicErrors'.
+*/
+#test
+{
+    const E0: MyErrors    = MyErrors.BasicErrors.FailedToLoad
+    const E1: BasicErrors = BasicErrors.FailedToLoad
+
+    func toto(err: MyErrors)
+    {
+        @assert(err == BasicErrors.FailedToLoad)
+        @assert(err == MyErrors.BasicErrors.FailedToLoad)
+    }
+
+    toto(E0)
+    toto(E1) // Automatic cast from 'BasicErrors' to 'MyErrors'
+}
+
+/**
 # Enum type inference
 */
 
