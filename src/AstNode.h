@@ -896,6 +896,8 @@ struct AstEnum : public AstNode
 
 struct AstEnumValue : public AstNode
 {
+    static const uint16_t SPECFLAG_HAS_USING = 0x0001;
+
     AstNode* clone(CloneContext& context);
 
     AttributeList attributes;

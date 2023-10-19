@@ -158,11 +158,12 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
 
 bool SemanticJob::resolveSubEnumValue(SemanticContext* context)
 {
-    SWAG_CHECK(resolveIdentifierRef(context));
-    if (context->result != ContextResult::Done)
-        return true;
+    auto node  = context->node;
+    auto child = node->childs.front();
 
-    auto node = context->node;
+    node->typeInfo               = child->typeInfo;
+    node->resolvedSymbolName     = child->resolvedSymbolName;
+    node->resolvedSymbolOverload = child->resolvedSymbolOverload;
 
     // Be sure the identifier is an enum
     if (!node->typeInfo->isEnum())

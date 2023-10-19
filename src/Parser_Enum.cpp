@@ -146,13 +146,18 @@ bool Parser::doEnumContent(AstNode* parent, AstNode** result)
 bool Parser::doSubEnumValue(AstNode* parent, AstNode** result)
 {
     SWAG_CHECK(eatToken());
-    SWAG_CHECK(doIdentifierRef(parent, &dummyResult, IDENTIFIER_NO_PARAMS));
-    dummyResult->semanticFct = SemanticJob::resolveSubEnumValue;
+
+    auto enumValue = Ast::newNode<AstEnumValue>(this, AstNodeKind::EnumValue, sourceFile, parent);
+    enumValue->specFlags |= AstEnumValue::SPECFLAG_HAS_USING;
+    enumValue->semanticFct = SemanticJob::resolveSubEnumValue;
+    *result                = enumValue;
+
+    SWAG_CHECK(doIdentifierRef(enumValue, &dummyResult, IDENTIFIER_NO_PARAMS));
 
     if (tokenizer.comment.length())
     {
-        dummyResult->allocateExtension(ExtensionKind::Misc);
-        dummyResult->extMisc()->docComment = std::move(tokenizer.comment);
+        enumValue->allocateExtension(ExtensionKind::Misc);
+        enumValue->extMisc()->docComment = std::move(tokenizer.comment);
     }
 
     if (token.id == TokenId::SymComma)

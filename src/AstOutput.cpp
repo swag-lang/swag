@@ -340,20 +340,21 @@ bool AstOutput::outputEnum(OutputContext& context, Concat& concat, AstEnum* node
         {
             concat.addIndent(context.indent + 1);
 
-            concat.addString(c->token.text);
-            if (!c->childs.empty())
+            if (c->specFlags & AstEnumValue::SPECFLAG_HAS_USING)
             {
-                CONCAT_FIXED_STR(concat, " = ");
+                CONCAT_FIXED_STR(concat, "using ");
                 SWAG_CHECK(outputNode(context, concat, c->childs.front()));
             }
+            else
+            {
+                concat.addString(c->token.text);
+                if (!c->childs.empty())
+                {
+                    CONCAT_FIXED_STR(concat, " = ");
+                    SWAG_CHECK(outputNode(context, concat, c->childs.front()));
+                }
+            }
 
-            concat.addEol();
-        }
-        else if (c->kind == AstNodeKind::IdentifierRef)
-        {
-            concat.addIndent(context.indent + 1);
-            CONCAT_FIXED_STR(concat, "using ");
-            SWAG_CHECK(outputNode(context, concat, c));
             concat.addEol();
         }
     }
