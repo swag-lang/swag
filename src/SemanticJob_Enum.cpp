@@ -219,7 +219,7 @@ bool SemanticJob::resolveSubEnumValue(SemanticContext* context)
     auto typeSubEnum         = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
     auto concreteTypeSubEnum = TypeManager::concreteType(typeSubEnum->rawType, CONCRETE_ALIAS);
     auto concreteTypeEnum    = TypeManager::concreteType(typeEnum->rawType, CONCRETE_ALIAS);
-    if (concreteTypeSubEnum != concreteTypeEnum)
+    if (!concreteTypeSubEnum->isSame(concreteTypeEnum, CASTFLAG_EXACT))
     {
         Diagnostic diag{node, Fmt(Err(Err0549), concreteTypeEnum->getDisplayNameC(), concreteTypeSubEnum->getDisplayNameC())};
         return context->report(diag, Diagnostic::hereIs(node));
