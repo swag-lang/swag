@@ -674,51 +674,64 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             node->kind != AstNodeKind::FuncDeclParam &&
             !(node->flags & AST_EXPLICITLY_NOT_INITIALIZED))
         {
-            auto typeEnum = CastTypeInfo<TypeInfoEnum>(concreteNodeType, TypeInfoKind::Enum);
+            auto                        concreteTypeEnum = CastTypeInfo<TypeInfoEnum>(concreteNodeType, TypeInfoKind::Enum);
+            VectorNative<TypeInfoEnum*> collect;
+            concreteTypeEnum->collectEnums(collect);
 
-            bool ok = true;
-            if (typeEnum->rawType->isNativeFloat() || typeEnum->rawType->isNativeIntegerOrRune() || typeEnum->rawType->isBool())
+            bool ok = false;
+            for (auto typeEnum : collect)
             {
-                ok = false;
-                for (auto p : typeEnum->values)
+                auto rawType = TypeManager::concreteType(typeEnum->rawType, CONCRETE_ALIAS);
+                if (rawType->isNativeFloat() || rawType->isNativeIntegerOrRune() || rawType->isBool())
                 {
-                    if (!p->value->reg.u64)
+                    for (auto p : typeEnum->values)
                     {
-                        ok = true;
-                        break;
+                        if (!p->value)
+                            continue;
+                        if (!p->value->reg.u64)
+                        {
+                            ok = true;
+                            break;
+                        }
                     }
                 }
-            }
-            else if (typeEnum->rawType->isString())
-            {
-                ok = false;
-                for (auto p : typeEnum->values)
+                else if (rawType->isString())
                 {
-                    if (!p->value->text.buffer)
+                    for (auto p : typeEnum->values)
                     {
-                        ok = true;
-                        break;
+                        if (!p->value)
+                            continue;
+                        if (!p->value->text.buffer)
+                        {
+                            ok = true;
+                            break;
+                        }
                     }
                 }
-            }
-            else if (typeEnum->rawType->isSlice())
-            {
-                ok = false;
-                for (auto p : typeEnum->values)
+                else if (rawType->isSlice())
                 {
-                    SWAG_ASSERT(p->value);
-                    auto slice = (SwagSlice*) p->value->getStorageAddr();
-                    if (!slice->buffer && !slice->count)
+                    for (auto p : typeEnum->values)
                     {
-                        ok = true;
-                        break;
+                        if (!p->value)
+                            continue;
+                        auto slice = (SwagSlice*) p->value->getStorageAddr();
+                        if (!slice->buffer && !slice->count)
+                        {
+                            ok = true;
+                            break;
+                        }
                     }
+                }
+                else
+                {
+                    ok = true;
+                    break;
                 }
             }
 
             if (!ok)
             {
-                Diagnostic diag{node, Fmt(Err(Err0848), node->token.ctext(), typeEnum->getDisplayNameC())};
+                Diagnostic diag{node, Fmt(Err(Err0848), node->token.ctext(), concreteTypeEnum->getDisplayNameC())};
                 auto       note = Diagnostic::hereIs(concreteNodeType->declNode, false, true);
                 return context->report(diag, note);
             }

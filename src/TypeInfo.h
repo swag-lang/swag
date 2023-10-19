@@ -423,6 +423,7 @@ struct TypeInfoEnum : public TypeInfo
     Utf8      getDisplayName() override;
     TypeInfo* clone() override;
     bool      contains(const Utf8& valueName);
+    void      collectEnums(VectorNative<TypeInfoEnum*>& collect);
 
     VectorNative<TypeInfoParam*> values;
     AttributeList                attributes;

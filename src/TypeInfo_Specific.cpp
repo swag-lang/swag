@@ -448,6 +448,23 @@ bool TypeInfoEnum::contains(const Utf8& valueName)
     return false;
 }
 
+void TypeInfoEnum::collectEnums(VectorNative<TypeInfoEnum*>& collect)
+{
+    collect.clear();
+    collect.push_back(this);
+    if (!(flags & TYPEINFO_ENUM_HAS_USING))
+        return;
+
+    for (auto value : values)
+    {
+        if (value->typeInfo->isEnum())
+        {
+            auto subType = CastTypeInfo<TypeInfoEnum>(value->typeInfo, TypeInfoKind::Enum);
+            collect.push_back_once(subType);
+        }
+    }
+}
+
 TypeInfo* TypeInfoEnum::clone()
 {
     auto newType        = makeType<TypeInfoEnum>();
