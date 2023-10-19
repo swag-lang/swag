@@ -45,13 +45,15 @@ bool SemanticJob::resolveEnum(SemanticContext* context)
     // If the enum has nested enums, be sure we don't have ambiguous symbols
     if (typeInfo->flags & TYPEINFO_ENUM_HAS_USING)
     {
+        auto rawType = TypeManager::concreteType(typeInfo->rawType);
+
         VectorNative<TypeInfoEnum*> collect;
         typeInfo->collectEnums(collect);
         MapUtf8<AstNode*>       valText;
         Map<uint64_t, AstNode*> val64;
         for (auto typeEnum : collect)
         {
-            if (typeInfo->rawType->isString())
+            if (rawType->isString())
             {
                 for (auto one : typeEnum->values)
                 {
@@ -68,7 +70,7 @@ bool SemanticJob::resolveEnum(SemanticContext* context)
                     valText[one->value->text] = one->declNode;
                 }
             }
-            else
+            else if (rawType->isNative())
             {
                 for (auto one : typeEnum->values)
                 {
