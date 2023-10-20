@@ -27,6 +27,7 @@
             .right-page { margin:  10px; }
         }
 
+        html { font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; }
         body { margin: 0px; line-height: 1.3em; }
         
         .container a        { color: DoggerBlue; }
@@ -81,6 +82,7 @@
         
         .code-inline  { background-color: #eeeeee; border-radius: 5px; border: 1px dotted #cccccc; padding: 0px 8px; font-size: 110%; font-family: monospace; display: inline-block; }
         .code-block   { background-color: #eeeeee; border-radius: 5px; border: 1px solid LightGrey; padding: 10px; margin: 20px; white-space: pre; overflow-x: auto; }
+        .code-block   { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
         .code-block a { color: inherit; }
         
     .SCde { color: #222222; }
@@ -106,12 +108,10 @@
 <p>You can help by writing small tests to debug the compiler (and the compiler alone). </p>
 <h3 id="">Create a workspace and a test module </h3>
 <p>First create a workspace with the <span class="code-inline">--test</span> option. </p>
-<div class="code-block"><code><span class="SCde">$ swag new -w:myWorkspace --test</span></code>
-</div>
+<div class="code-block"><span class="SCde">$ swag new -w:myWorkspace --test</span></div>
 <p>This will also create a test module <span class="code-inline">myWorkspace</span> located in <span class="code-inline">myWorkspacetests</span>. </p>
 <p>You can then compile and run the tests with the <span class="code-inline">test</span> command. </p>
-<div class="code-block"><code><span class="SCde">$ swag test -w:myWorkspace</span></code>
-</div>
+<div class="code-block"><span class="SCde">$ swag test -w:myWorkspace</span></div>
 <p>To force the build, add <span class="code-inline">--rebuild</span>. </p>
 <h3 id="">Write tests </h3>
 <ul>

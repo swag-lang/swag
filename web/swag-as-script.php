@@ -27,6 +27,7 @@
             .right-page { margin:  10px; }
         }
 
+        html { font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; }
         body { margin: 0px; line-height: 1.3em; }
         
         .container a        { color: DoggerBlue; }
@@ -81,6 +82,7 @@
         
         .code-inline  { background-color: #eeeeee; border-radius: 5px; border: 1px dotted #cccccc; padding: 0px 8px; font-size: 110%; font-family: monospace; display: inline-block; }
         .code-block   { background-color: #eeeeee; border-radius: 5px; border: 1px solid LightGrey; padding: 10px; margin: 20px; white-space: pre; overflow-x: auto; }
+        .code-block   { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
         .code-block a { color: inherit; }
         
     .SCde { color: #222222; }
@@ -104,12 +106,11 @@
 <div class="right-page">
 <h1 id="">Script file </h1>
 <p>Swag can be used to build and run a simple script file, thanks to the fact that the compiler can run anything at compile time. No executable will be generated, the compiler will do all the job. To create a new script file with the special extension <span class="code-inline">swgs</span>: </p>
-<div class="code-block"><code><span class="SCde">$ swag new -f:myScript
+<div class="code-block"><span class="SCde">$ swag new -f:myScript
 =&gt; script file 'myScript.swgs' has been created
-=&gt; type 'swag script -f:myScript.swgs' to run that script</span></code>
-</div>
+=&gt; type 'swag script -f:myScript.swgs' to run that script</span></div>
 <p>This will generate a simple file with a <span class="code-inline">#dependency</span> block and one <span class="code-inline">#run</span> compiler function. </p>
-<div class="code-block"><code><span class="SCde"><span class="SCmt">// Swag script file</span>
+<div class="code-block"><span class="SCde"><span class="SCmt">// Swag script file</span>
 <span class="SFct">#dependencies</span>
 {
     <span class="SCmt">// Here you can add your external dependencies</span>
@@ -119,16 +120,13 @@
 <span class="SFct">#run</span>
 {
     <span class="SItr">@print</span>(<span class="SStr">"Hello world !\n"</span>)
-}</span></code>
-</div>
+}</span></div>
 <p>You can then run your script with the <span class="code-inline">script</span> command. </p>
-<div class="code-block"><code><span class="SCde">$ swag script -f:myScript
-Hello world !</span></code>
-</div>
+<div class="code-block"><span class="SCde">$ swag script -f:myScript
+Hello world !</span></div>
 <p>You can also just specify the script file <b>with the extension</b> as a command. </p>
-<div class="code-block"><code><span class="SCde">$ swag myScript.swgs
-Hello world !</span></code>
-</div>
+<div class="code-block"><span class="SCde">$ swag myScript.swgs
+Hello world !</span></div>
 <p>You will find a bunch of small scripts in <span class="code-inline">swag/bin/examples/scripts</span>. To run one of them from the console, go to the folder and type for example <span class="code-inline">swag flappy.swgs</span>. </p>
 <p style="white-space: break-spaces"><div align="center">
     <div class="round-button">
@@ -137,12 +135,11 @@ Hello world !</span></code>
 </div></p>
 <h2 id="">Dependencies </h2>
 <p>You can add external dependencies, and they will be compiled and used as native code. </p>
-<div class="code-block"><code><span class="SCde"><span class="SFct">#dependencies</span>
+<div class="code-block"><span class="SCde"><span class="SFct">#dependencies</span>
 {
     <span class="SCmt">// Import the standard module `core` from the swag standard workspace (which comes with the compiler)</span>
     <span class="SCmp">#import</span> <span class="SStr">"core"</span> location=<span class="SStr">"swag@std"</span>
-}</span></code>
-</div>
+}</span></div>
 <p>A special hidden workspace (in the Swag cache folder) will be created to contain all the corresponding native code. </p>
 <ul>
 <li>To locate the Swag cache folder, add <span class="code-inline">--verbose-path</span> to the command line.</li>
@@ -150,12 +147,11 @@ Hello world !</span></code>
 </ul>
 <h2 id="">More than one script file </h2>
 <p>If your script is divided in more than one single file, you can add <span class="code-inline">#load &lt;filename&gt;</span> in the <span class="code-inline">#dependencies</span> block. </p>
-<div class="code-block"><code><span class="SCde"><span class="SFct">#dependencies</span>
+<div class="code-block"><span class="SCde"><span class="SFct">#dependencies</span>
 {
     <span class="SCmp">#load</span> <span class="SStr">"myOtherFile.swgs"</span>
     <span class="SCmp">#load</span> <span class="SStr">"folder/myOtherOtherFile.swgs"</span>
-}</span></code>
-</div>
+}</span></div>
 <h2 id="">Debug </h2>
 <p>The compiler comes with a <b>bytecode debugger</b> that can be used to trace and debug compile time execution. Add <span class="code-inline">@breakpoint()</span> in your code when you want the debugger to trigger. </p>
 <p>The debugger command set is inspired by <a href="https://docs.python.org/3/library/pdb.html">Pdb</a>, the python debugger. </p>

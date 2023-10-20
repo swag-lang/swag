@@ -27,6 +27,7 @@
             .right-page { margin:  10px; }
         }
 
+        html { font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; }
         body { margin: 0px; line-height: 1.3em; }
         
         .container a        { color: DoggerBlue; }
@@ -81,6 +82,7 @@
         
         .code-inline  { background-color: #eeeeee; border-radius: 5px; border: 1px dotted #cccccc; padding: 0px 8px; font-size: 110%; font-family: monospace; display: inline-block; }
         .code-block   { background-color: #eeeeee; border-radius: 5px; border: 1px solid LightGrey; padding: 10px; margin: 20px; white-space: pre; overflow-x: auto; }
+        .code-block   { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
         .code-block a { color: inherit; }
         
     .SCde { color: #222222; }
@@ -104,8 +106,7 @@
 <div class="right-page">
 <p><img src="imgs/flappy.png" alt=""> </p>
 <p>Here is a very simple script that implements the <a href="https://en.wikipedia.org/wiki/Flappy_Bird">Flappy Bird</a> game. To have some fun and play with it, go to the <span class="code-inline">bin/examples/scripts</span> folder, and type : </p>
-<div class="code-block"><code><span class="SCde">$ swag flappy.swgs</span></code>
-</div>
+<div class="code-block"><span class="SCde">$ swag flappy.swgs</span></div>
 <p>The goal here is to comment a real life example of swag usage. But it's better to read the basic language <a href="language.php">documentation</a> first, as we will not going too deep into the details. </p>
 <div class="blockquote blockquote-note">
 <div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> This page has been generated with Swag directly from the <a href="https://github.com/swag-lang/swag/blob/master/bin/examples/scripts/flappy.swgs">source code</a>. </p>
@@ -127,7 +128,7 @@
 <p>If present, a special <span class="code-inline">#run</span> block will be executed by the compiler at the very beginning of the compilation stage. It gives the opportunity to change some build configurations. </p>
 </div>
 <p>So in our case, we need to import the module <span class="code-inline">gui</span>. This module is used to create windows and widgets, and will bring other modules like <span class="code-inline">core</span> and <span class="code-inline">pixel</span> (2D painting). </p>
-<div class="code-block"><code><span class="SCde"><span class="SFct">#dependencies</span>
+<div class="code-block"><span class="SCde"><span class="SFct">#dependencies</span>
 {
     <span class="SCmt">// The location "swag@std" tells swag that 'gui' is a standard module that is located</span>
     <span class="SCmt">// with the compiler.</span>
@@ -154,18 +155,16 @@
         <span class="SCmp">#else</span>
             cfg.safetyGuards = <span class="SCst">Swag</span>.<span class="SCst">SafetyNone</span>
     }
-}</span></code>
-</div>
+}</span></div>
 <p>Every module has its individual namespace. To avoid the necessity of mentioning it each time we wish to reference something, we include a global <span class="code-inline">using</span> statement immediately after the <span class="code-inline">#dependency</span> block. </p>
 <p>The <span class="code-inline">gui</span> module depends on <span class="code-inline">pixel</span> which depends on <span class="code-inline">core</span>. So we bring all the three namespaces into the file scope. Note that we keep <span class="code-inline">Audio</span> as it is. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">using</span> <span class="SCst">Core</span>, <span class="SCst">Pixel</span>, <span class="SCst">Gui</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">using</span> <span class="SCst">Core</span>, <span class="SCst">Pixel</span>, <span class="SCst">Gui</span></span></div>
 <h1 id="">Entry point </h1>
 <p>The compiler's <span class="code-inline">#run</span> function serves as the initial execution point for the script. This category of block is executed by the compiler while it's compiling. While it's possible to include multiple <span class="code-inline">#run</span> blocks, a single one is sufficient for the Flappy application. </p>
 <div class="blockquote blockquote-note">
 <div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> You might observe that the arrangement of global declarations doesn't make a difference, as we're using the <span class="code-inline">onEvent</span> function before even defining it. Swag does not bother about the global declaration order. </p>
 </div>
-<div class="code-block"><code><span class="SCde"><span class="SFct">#run</span>
+<div class="code-block"><span class="SCde"><span class="SFct">#run</span>
 {
     <span class="SCmt">// Creates audio engine. 'assume' tells Swag that if the creation fails, we should panic.</span>
     <span class="SKwd">assume</span> <span class="SCst">Audio</span>.<span class="SFct">createEngine</span>()
@@ -182,34 +181,29 @@
     <span class="SCmt">// 'hook' defines a lambda that will receive and treat all gui events</span>
     <span class="SCmt">// 'init' defines a lambda that will be called for surface initialization</span>
     <span class="SCst">Application</span>.<span class="SFct">runSurface</span>(<span class="SNum">100</span>, <span class="SNum">100</span>, <span class="SNum">300</span>, <span class="SNum">512</span>, title: <span class="SStr">"Flappy Bird"</span>, hook: &onEvent, init: &test)
-}</span></code>
-</div>
+}</span></div>
 <h1 id="">Global definitions </h1>
 <h2 id="">Constants </h2>
 <p>We declare global constants with <span class="code-inline">const</span>. Note that we do not specify types for thoses constants. They will be deduced thanks to the affection. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">const</span> <span class="SCst">Gravity</span>      = <span class="SNum">2.5</span>        <span class="SCmt">// 2.5 is a 32 bits float, so the type of Gravity is 'f32'</span>
+<div class="code-block"><span class="SCde"><span class="SKwd">const</span> <span class="SCst">Gravity</span>      = <span class="SNum">2.5</span>        <span class="SCmt">// 2.5 is a 32 bits float, so the type of Gravity is 'f32'</span>
 <span class="SKwd">const</span> <span class="SCst">GroundHeight</span> = <span class="SNum">40.0</span>
 <span class="SKwd">const</span> <span class="SCst">SpeedHorz</span>    = <span class="SNum">100.0</span>
-<span class="SKwd">const</span> <span class="SCst">BirdImpulseY</span> = <span class="SNum">350</span>        <span class="SCmt">// 350 is an integer, so the type of BirdImpulseY is 's32'</span></span></code>
-</div>
+<span class="SKwd">const</span> <span class="SCst">BirdImpulseY</span> = <span class="SNum">350</span>        <span class="SCmt">// 350 is an integer, so the type of BirdImpulseY is 's32'</span></span></div>
 <h2 id="">Variables </h2>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">var</span> g_Bird:      <span class="SCst">Bird</span>
-<span class="SKwd">var</span> g_Pipes:     <span class="SCst">Array</span>'<span class="SCst">Pipe</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Bird:      <span class="SCst">Bird</span>
+<span class="SKwd">var</span> g_Pipes:     <span class="SCst">Array</span>'<span class="SCst">Pipe</span></span></div>
 <p><span class="code-inline">g_Pipes</span> is a <b>dynamic</b> and <b>generic array</b> where all the elements are of type <span class="code-inline">Pipe</span>. In other languages, you would write <span class="code-inline">Array&lt;Pipe&gt;</span>. <span class="code-inline">Array</span> comes from the <span class="code-inline">Core</span> module. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">var</span> g_Rect:      <span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Rect:      <span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></div>
 <p><span class="code-inline">Math</span> is a namespace part of the <span class="code-inline">Core</span> module. We could have specified a global <span class="code-inline">using Core.Math</span> at the top of the script file, but here, we prefer the explicit reference. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">var</span> g_Dt:        <span class="STpe">f32</span>
+<div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Dt:        <span class="STpe">f32</span>
 <span class="SKwd">var</span> g_Time:      <span class="STpe">f32</span>
 <span class="SKwd">var</span> g_BasePos:   <span class="STpe">f32</span>
 <span class="SKwd">var</span> g_Score:     <span class="STpe">s32</span>
 <span class="SKwd">var</span> g_GameOver:  <span class="STpe">bool</span>
 <span class="SKwd">var</span> g_Start:     <span class="STpe">bool</span>
-<span class="SKwd">var</span> g_FirstStart = <span class="SKwd">true</span></span></code>
-</div>
+<span class="SKwd">var</span> g_FirstStart = <span class="SKwd">true</span></span></div>
 <p>Again, no need to specify the type of <span class="code-inline">g_FirstStart</span>. It is deduced from the affectation to be <span class="code-inline">bool</span>. </p>
-<div class="code-block"><code><span class="SCde"><span class="SCmt">// Texture assets</span>
+<div class="code-block"><span class="SCde"><span class="SCmt">// Texture assets</span>
 <span class="SKwd">var</span> g_DigitTexture: [<span class="SNum">10</span>] <span class="SCst">Texture</span>    <span class="SCmt">// A static array of 10 textures</span>
 <span class="SKwd">var</span> g_BirdTexture:  [<span class="SNum">3</span>] <span class="SCst">Texture</span>     <span class="SCmt">// A static array of 3 textures</span>
 <span class="SKwd">var</span> g_BackTexture:  <span class="SCst">Texture</span>
@@ -223,10 +217,8 @@
 <span class="SKwd">var</span> g_SoundDie:     <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>
 <span class="SKwd">var</span> g_SoundScore:   <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>
 <span class="SKwd">var</span> g_SoundHit:     <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>
-<span class="SKwd">var</span> g_SoundFlap:    <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span></span></code>
-</div>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">var</span> g_Font: *<span class="SCst">Font</span></span></code>
-</div>
+<span class="SKwd">var</span> g_SoundFlap:    <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Font: *<span class="SCst">Font</span></span></div>
 <p><span class="code-inline">g_Font</span> is a <b>value</b> pointer to the score font. </p>
 <p>In Swag, their are two types of pointers. </p>
 <ul>
@@ -235,7 +227,7 @@
 </ul>
 <p>Pointer arithmetic is not enabled on value pointers, but it is on block pointers. </p>
 <h2 id="">Types </h2>
-<div class="code-block"><code><span class="SCde"><span class="SCmt">// Defines the Bird</span>
+<div class="code-block"><span class="SCde"><span class="SCmt">// Defines the Bird</span>
 <span class="SKwd">struct</span> <span class="SCst">Bird</span>
 {
     <span class="SCmt">// Position of the bird. Full qualified name.</span>
@@ -255,12 +247,11 @@
     rectDown:   <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>  <span class="SCmt">// Position of the down part of the Pipe</span>
     distToNext: <span class="STpe">f32</span>             <span class="SCmt">// Distance to the next Pipe</span>
     scored:     <span class="STpe">bool</span>            <span class="SCmt">// 'true' if the Bird has passed that Pipe</span>
-}</span></code>
-</div>
+}</span></div>
 <h1 id="">The actual code </h1>
 <p>This is the callback that will deal with all gui events. This feels like <i>Windows</i> API, but there are other ways of dealing with gui, in a more 'object like' way. You can look at the <span class="code-inline">captme</span> tool for example, which does not use a callback but <b>interfaces</b> instead. </p>
 <p>For a simple script, this is more easy to process events in that way. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onEvent</span>(wnd: *<span class="SCst">Wnd</span>, evt: *<span class="SCst">Event</span>)-&gt;<span class="STpe">bool</span>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onEvent</span>(wnd: *<span class="SCst">Wnd</span>, evt: *<span class="SCst">Event</span>)-&gt;<span class="STpe">bool</span>
 {
     <span class="SLgc">switch</span> evt.kind
     {
@@ -297,10 +288,9 @@
     }
 
     <span class="SLgc">return</span> <span class="SKwd">false</span>
-}</span></code>
-</div>
+}</span></div>
 <p>Paint function. Here we are mostly using functions from the <span class="code-inline">Pixel</span> module. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">paint</span>(painter: *<span class="SCst">Painter</span>)
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">paint</span>(painter: *<span class="SCst">Painter</span>)
 {
     <span class="SCmt">// Draw the background texture at position (0, 0). The size of the texture is preserved.</span>
     painter.<span class="SFct">drawTexture</span>(<span class="SNum">0</span>, <span class="SNum">0</span>, g_BackTexture)
@@ -382,10 +372,9 @@
         pt.y = g_Rect.<span class="SFct">vertCenter</span>() - g_MsgTexture.height/<span class="SNum">2</span>
         painter.<span class="SFct">drawTexture</span>(pt.x, pt.y, g_MsgTexture)
     }
-}</span></code>
-</div>
+}</span></div>
 <p>Test IO. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">input</span>(wnd: *<span class="SCst">Wnd</span>)
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">input</span>(wnd: *<span class="SCst">Wnd</span>)
 {
     <span class="SKwd">let</span> kb = wnd.<span class="SFct">getApp</span>().<span class="SFct">getKeyboard</span>()
 
@@ -406,10 +395,9 @@
         g_Bird.speed.y = -<span class="SCst">BirdImpulseY</span>
         <span class="SKwd">assume</span> <span class="SCst">Audio</span>.<span class="SCst">Voice</span>.<span class="SFct">play</span>(&g_SoundFlap)
     }
-}</span></code>
-</div>
+}</span></div>
 <p>Collision detection (kind of) between the bird and a given rectangle. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">birdInRect</span>(rect: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)-&gt;<span class="STpe">bool</span>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">birdInRect</span>(rect: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)-&gt;<span class="STpe">bool</span>
 {
     <span class="SKwd">var</span> rectBird: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = <span class="SKwd">undefined</span>
     rectBird.x = g_Bird.pos.x - g_BirdTexture[<span class="SNum">0</span>].width/<span class="SNum">2</span>
@@ -417,10 +405,9 @@
     rectBird.width = g_BirdTexture[<span class="SNum">0</span>].width
     rectBird.height = g_BirdTexture[<span class="SNum">0</span>].height
     <span class="SLgc">return</span> rect.<span class="SFct">intersectWith</span>(rectBird)
-}</span></code>
-</div>
+}</span></div>
 <p>The <span class="code-inline">update</span> part of the game. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">move</span>()
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">move</span>()
 {
     <span class="SLgc">if</span> g_GameOver
         <span class="SLgc">return</span>
@@ -480,10 +467,9 @@
     <span class="SCmt">// Play dying sound</span>
     <span class="SLgc">if</span> g_GameOver
         <span class="SKwd">assume</span> <span class="SCst">Audio</span>.<span class="SCst">Voice</span>.<span class="SFct">play</span>(&g_SoundDie)
-}</span></code>
-</div>
+}</span></div>
 <p>Creates a random up and down part of a new Pipe. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createPipe</span>()
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createPipe</span>()
 {
     <span class="SKwd">let</span> pos = g_Rect.width
     <span class="SKwd">let</span> sizePassage = <span class="SCst">Random</span>.<span class="SFct">shared</span>().<span class="SFct">nextF32</span>(<span class="SNum">100</span>, <span class="SNum">175</span>)
@@ -504,10 +490,9 @@
     pipe.distToNext = <span class="SCst">Random</span>.<span class="SFct">shared</span>().<span class="SFct">nextF32</span>(<span class="SNum">100</span>, <span class="SNum">200</span>)
 
     g_Pipes.<span class="SFct">add</span>(pipe)
-}</span></code>
-</div>
+}</span></div>
 <p>Reinitialize the game. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>()
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>()
 {
     <span class="SCmt">// '@init' can be called to reinitialize a variable to its default value</span>
     <span class="SItr">@init</span>(&g_Bird)
@@ -519,11 +504,10 @@
 
     <span class="SCmt">// Assign two variables with the same value</span>
     g_GameOver, g_Start = <span class="SKwd">false</span>
-}</span></code>
-</div>
+}</span></div>
 <p>Load all assets. </p>
 <p>You can notice that the function has <span class="code-inline">throw</span> after its declaration. This indicated that it can return some errors, and that the caller will have to deal with it. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">loadAssets</span>(wnd: *<span class="SCst">Wnd</span>) <span class="SKwd">throw</span>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">loadAssets</span>(wnd: *<span class="SCst">Wnd</span>) <span class="SKwd">throw</span>
 {
     <span class="SKwd">let</span> render = &wnd.<span class="SFct">getApp</span>().renderer
 
@@ -563,8 +547,7 @@
     g_PipeTextureU = render.<span class="SFct">addImage</span>(img)
 
     g_Font = <span class="SCst">Font</span>.<span class="SFct">create</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"FlappyBirdy.ttf"</span>), <span class="SNum">50</span>)
-}</span></code>
-</div>
+}</span></div>
 <div class="swag-watermark">
 Generated on 20-10-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>

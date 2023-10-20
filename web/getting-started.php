@@ -27,6 +27,7 @@
             .right-page { margin:  10px; }
         }
 
+        html { font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; }
         body { margin: 0px; line-height: 1.3em; }
         
         .container a        { color: DoggerBlue; }
@@ -81,6 +82,7 @@
         
         .code-inline  { background-color: #eeeeee; border-radius: 5px; border: 1px dotted #cccccc; padding: 0px 8px; font-size: 110%; font-family: monospace; display: inline-block; }
         .code-block   { background-color: #eeeeee; border-radius: 5px; border: 1px solid LightGrey; padding: 10px; margin: 20px; white-space: pre; overflow-x: auto; }
+        .code-block   { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
         .code-block a { color: inherit; }
         
     .SCde { color: #222222; }
@@ -107,28 +109,25 @@
 <h3 id="">Under windows 10/11 </h3>
 <p>You should register the location of the swag compiler (<span class="code-inline">swag.exe</span>) in the PATH environment variable to be able to call it from everywhere. </p>
 <p>You can open a Powershell window, and run the following code : </p>
-<div class="code-block"><code><span class="SCde"># You must replace `f:\swag-lang\swag\bin` with your location of `swag.exe`
+<div class="code-block"><span class="SCde"># You must replace `f:\swag-lang\swag\bin` with your location of `swag.exe`
 [Environment]::SetEnvironmentVariable(
     "Path",
     [Environment]::GetEnvironmentVariable("Path", "User") + ";f:\swag-lang\swag\bin",
     "User"
-)</span></code>
-</div>
+)</span></div>
 <h1 id="">Your first project </h1>
 <p>The compile unit of swag is a <b>workspace</b> which contains a variable number of <b>modules</b>. A module will compile to a dynamic library or an executable. </p>
 <p>To create a fresh new workspace named <i>first</i> : </p>
-<div class="code-block"><code><span class="SCde">$ swag new -w:first
+<div class="code-block"><span class="SCde">$ swag new -w:first
 =&gt; workspace 'F:/first' has been created
 =&gt; module 'first' has been created
-=&gt; type 'swag run -w:F:\first' to build and run that module</span></code>
-</div>
+=&gt; type 'swag run -w:F:\first' to build and run that module</span></div>
 <p>This will also create a simple executable module <i>first</i> to print "Hello world !". </p>
 <p><i>F:/first/modules/first/src/main.swg</i> </p>
-<div class="code-block"><code><span class="SCde"><span class="SFct">#main</span>
+<div class="code-block"><span class="SCde"><span class="SFct">#main</span>
 {
     <span class="SItr">@print</span>(<span class="SStr">"Hello world!\n"</span>)
-}</span></code>
-</div>
+}</span></div>
 <p>A workspace contains a predefined number of sub folders: </p>
 <ul>
 <li><span class="code-inline">modules/</span> contains all the modules (sub folders) of that workspace.</li>
@@ -145,20 +144,18 @@
 </ul>
 <p>A module always contains a special file named <span class="code-inline">module.swg</span>. This file is used to configure the module, and is <b>mandatory</b>. </p>
 <h3 id="">To compile your workspace </h3>
-<div class="code-block"><code><span class="SCde">$ swag build -w:first
+<div class="code-block"><span class="SCde">$ swag build -w:first
             Workspace first [fast-debug-windows-x86_64]
             Building first
-                Done 0.067s</span></code>
-</div>
+                Done 0.067s</span></div>
 <p>You can omit the workspace name (<span class="code-inline">-w:first</span> or <span class="code-inline">--workspace:first</span>) if you call the compiler directly from the workspace folder. This command will compile all modules in <span class="code-inline">modules/</span>. </p>
 <p>You can also build and run your workspace. </p>
-<div class="code-block"><code><span class="SCde">$ swag run -w:first
+<div class="code-block"><span class="SCde">$ swag run -w:first
             Workspace first [fast-debug-windows-x86_64]
             Building first
     Running backend first
 Hello world!
-            Done 0.093s</span></code>
-</div>
+            Done 0.093s</span></div>
 <h3 id="">Note on Windows Defender realtime protection </h3>
 <p>It's activated by default under Windows 10, and runs each time you launch an executable or a process. This can increase the compile time of your project, so consider excluding your Swag folder from it ! </p>
 <p><a href="https://support.microsoft.com/en-us/windows/add-an-exclusion-to-windows-security-811816c0-4dfd-af4a-47e4-c301afe13b26#:~:text=Go%20to%20Start%20%3E%20Settings%20%3E%20Update,%2C%20file%20types%2C%20or%20process">Reference</a> </p>

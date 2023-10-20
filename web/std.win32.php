@@ -29,6 +29,7 @@
             .container { height: 100vh; }
             .right     { overflow-y: scroll; }
 
+        html { font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; }
         body { margin: 0px; line-height: 1.3em; }
         
         .container a        { color: DoggerBlue; }
@@ -83,6 +84,7 @@
         
         .code-inline  { background-color: #eeeeee; border-radius: 5px; border: 1px dotted #cccccc; padding: 0px 8px; font-size: 110%; font-family: monospace; display: inline-block; }
         .code-block   { background-color: #eeeeee; border-radius: 5px; border: 1px solid LightGrey; padding: 10px; margin: 20px; white-space: pre; overflow-x: auto; }
+        .code-block   { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
         .code-block a { color: inherit; }
         
     .SCde { color: #222222; }
@@ -6709,8 +6711,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">AcquireSRWLockExclusive</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">AcquireSRWLockExclusive</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6722,8 +6723,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">AcquireSRWLockShared</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">AcquireSRWLockShared</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6735,8 +6735,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">BeginPaint</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpPaint: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_PAINTSTRUCT">PAINTSTRUCT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HDC">HDC</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">BeginPaint</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpPaint: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_PAINTSTRUCT">PAINTSTRUCT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HDC">HDC</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6748,8 +6747,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">BringWindowToTop</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">BringWindowToTop</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6968,8 +6966,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CancelWaitableTimer</span>(hTimer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CancelWaitableTimer</span>(hTimer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6981,8 +6978,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ChildWindowFromPoint</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, pt: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ChildWindowFromPoint</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, pt: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6994,8 +6990,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ChildWindowFromPointEx</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, pt: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>, flags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ChildWindowFromPointEx</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, pt: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>, flags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7007,8 +7002,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ClientToScreen</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpPoint: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ClientToScreen</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpPoint: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7020,8 +7014,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CloseClipboard</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CloseClipboard</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7033,8 +7026,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CloseHandle</span>(handle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CloseHandle</span>(handle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7046,8 +7038,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CoInitializeEx</span>(pvReserved: *<span class="STpe">void</span>, dwCoInit: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HRESULT">HRESULT</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CoInitializeEx</span>(pvReserved: *<span class="STpe">void</span>, dwCoInit: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HRESULT">HRESULT</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7059,8 +7050,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CoUninitialize</span>()</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CoUninitialize</span>()</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7072,8 +7062,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateConsoleScreenBuffer</span>(dwDesiredAccess: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwShareMode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpSecurityAttributes: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, dwFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpScreenBufferData: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateConsoleScreenBuffer</span>(dwDesiredAccess: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwShareMode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpSecurityAttributes: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, dwFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpScreenBufferData: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7085,8 +7074,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateDirectoryA</span>(lpPathName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpSecurityAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateDirectoryA</span>(lpPathName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpSecurityAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7098,8 +7086,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateDirectoryW</span>(lpPathName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpSecurityAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateDirectoryW</span>(lpPathName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpSecurityAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7111,8 +7098,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateEventA</span>(lpEventAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bManualReset: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, bInitialState: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateEventA</span>(lpEventAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bManualReset: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, bInitialState: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7124,8 +7110,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateEventW</span>(lpEventAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bManualReset: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, bInitialState: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateEventW</span>(lpEventAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bManualReset: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, bInitialState: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7137,8 +7122,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateFileA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, dwDesiredAccess: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwShareMode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpSecurityAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, dwCreationDisposition: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwFlagsAndAttributes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, hTemplateFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateFileA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, dwDesiredAccess: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwShareMode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpSecurityAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, dwCreationDisposition: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwFlagsAndAttributes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, hTemplateFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7150,8 +7134,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateFileW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, dwDesiredAccess: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwShareMode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpSecurityAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, dwCreationDisposition: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwFlagsAndAttributes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, hTemplateFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateFileW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, dwDesiredAccess: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwShareMode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpSecurityAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, dwCreationDisposition: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwFlagsAndAttributes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, hTemplateFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7163,8 +7146,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateIconIndirect</span>(piconinfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ICONINFO">ICONINFO</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateIconIndirect</span>(piconinfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ICONINFO">ICONINFO</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7176,8 +7158,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateMutexA</span>(lpMutexAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bInitialOwner: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateMutexA</span>(lpMutexAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bInitialOwner: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7189,8 +7170,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateMutexW</span>(lpMutexAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bInitialOwner: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateMutexW</span>(lpMutexAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bInitialOwner: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7202,8 +7182,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateProcessA</span>(lpApplicationName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpCommandLine: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpProcessAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, lpThreadAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bInheritHandles: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, dwCreationFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpEnvironment: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>, lpCurrentDirectory: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpStartupInfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_STARTUPINFOA">STARTUPINFOA</a></span>, lpProcessInformation: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_PROCESS_INFORMATION">PROCESS_INFORMATION</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateProcessA</span>(lpApplicationName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpCommandLine: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpProcessAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, lpThreadAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bInheritHandles: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, dwCreationFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpEnvironment: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>, lpCurrentDirectory: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpStartupInfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_STARTUPINFOA">STARTUPINFOA</a></span>, lpProcessInformation: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_PROCESS_INFORMATION">PROCESS_INFORMATION</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7215,8 +7194,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateProcessW</span>(lpApplicationName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpCommandLine: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpProcessAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, lpThreadAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bInheritHandles: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, dwCreationFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpEnvironment: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>, lpCurrentDirectory: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpStartupInfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_STARTUPINFOW">STARTUPINFOW</a></span>, lpProcessInformation: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_PROCESS_INFORMATION">PROCESS_INFORMATION</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateProcessW</span>(lpApplicationName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpCommandLine: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpProcessAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, lpThreadAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bInheritHandles: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, dwCreationFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpEnvironment: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>, lpCurrentDirectory: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpStartupInfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_STARTUPINFOW">STARTUPINFOW</a></span>, lpProcessInformation: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_PROCESS_INFORMATION">PROCESS_INFORMATION</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7228,8 +7206,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateThread</span>(lpThreadAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, dwStackSize: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SIZE_T">SIZE_T</a></span>, lpStartAddress: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPTHREAD_START_ROUTINE">LPTHREAD_START_ROUTINE</a></span>, lpParameter: *<span class="STpe">void</span>, dwCreationFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpThreadId: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateThread</span>(lpThreadAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, dwStackSize: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SIZE_T">SIZE_T</a></span>, lpStartAddress: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPTHREAD_START_ROUTINE">LPTHREAD_START_ROUTINE</a></span>, lpParameter: *<span class="STpe">void</span>, dwCreationFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpThreadId: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7241,8 +7218,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateTimerQueueTimer</span>(phNewTimer: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, timerQueue: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, callback: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WAITORTIMERCALLBACK">WAITORTIMERCALLBACK</a></span>, parameter: *<span class="STpe">void</span>, dueTime: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, period: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, flags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ULONG">ULONG</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateTimerQueueTimer</span>(phNewTimer: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, timerQueue: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, callback: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WAITORTIMERCALLBACK">WAITORTIMERCALLBACK</a></span>, parameter: *<span class="STpe">void</span>, dueTime: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, period: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, flags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ULONG">ULONG</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7254,8 +7230,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateWaitableTimerA</span>(lpTimerAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bManualReset: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpTimerName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateWaitableTimerA</span>(lpTimerAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bManualReset: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpTimerName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7267,8 +7242,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateWaitableTimerW</span>(lpTimerAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bManualReset: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpTimerName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateWaitableTimerW</span>(lpTimerAttributes: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SECURITY_ATTRIBUTES">SECURITY_ATTRIBUTES</a></span>, bManualReset: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, lpTimerName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7280,8 +7254,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateWindowExA</span>(dwExStyle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpClassName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpWindowName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, dwStyle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, <span class="SCst">X</span>: <span class="STpe">s32</span>, <span class="SCst">Y</span>: <span class="STpe">s32</span>, nWidth: <span class="STpe">s32</span>, nHeight: <span class="STpe">s32</span>, hWndParent: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, hMenu: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMENU">HMENU</a></span>, hInstance: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HINSTANCE">HINSTANCE</a></span>, lpParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateWindowExA</span>(dwExStyle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpClassName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpWindowName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, dwStyle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, <span class="SCst">X</span>: <span class="STpe">s32</span>, <span class="SCst">Y</span>: <span class="STpe">s32</span>, nWidth: <span class="STpe">s32</span>, nHeight: <span class="STpe">s32</span>, hWndParent: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, hMenu: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMENU">HMENU</a></span>, hInstance: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HINSTANCE">HINSTANCE</a></span>, lpParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7293,8 +7266,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateWindowExW</span>(dwExStyle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpClassName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpWindowName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, dwStyle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, <span class="SCst">X</span>: <span class="STpe">s32</span>, <span class="SCst">Y</span>: <span class="STpe">s32</span>, nWidth: <span class="STpe">s32</span>, nHeight: <span class="STpe">s32</span>, hWndParent: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, hMenu: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMENU">HMENU</a></span>, hInstance: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HINSTANCE">HINSTANCE</a></span>, lpParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">CreateWindowExW</span>(dwExStyle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpClassName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpWindowName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, dwStyle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, <span class="SCst">X</span>: <span class="STpe">s32</span>, <span class="SCst">Y</span>: <span class="STpe">s32</span>, nWidth: <span class="STpe">s32</span>, nHeight: <span class="STpe">s32</span>, hWndParent: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, hMenu: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMENU">HMENU</a></span>, hInstance: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HINSTANCE">HINSTANCE</a></span>, lpParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7306,8 +7278,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DebugActiveProcess</span>(procId: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DebugActiveProcess</span>(procId: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7319,8 +7290,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DebugBreak</span>()</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DebugBreak</span>()</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7332,8 +7302,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DefWindowProcA</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, uMsg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WPARAM">WPARAM</a></span>, lParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LRESULT">LRESULT</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DefWindowProcA</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, uMsg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WPARAM">WPARAM</a></span>, lParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LRESULT">LRESULT</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7345,8 +7314,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DefWindowProcW</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, uMsg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WPARAM">WPARAM</a></span>, lParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LRESULT">LRESULT</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DefWindowProcW</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, uMsg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WPARAM">WPARAM</a></span>, lParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LRESULT">LRESULT</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7358,8 +7326,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DeleteFileA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DeleteFileA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7371,8 +7338,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DeleteFileW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DeleteFileW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7384,8 +7350,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DeleteTimerQueueTimer</span>(timerQueue: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, timer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, completionEvent: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DeleteTimerQueueTimer</span>(timerQueue: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, timer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, completionEvent: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7397,8 +7362,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DestroyIcon</span>(hIcon: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DestroyIcon</span>(hIcon: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7410,8 +7374,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DestroyWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DestroyWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7423,8 +7386,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DispatchMessageA</span>(lpMsg: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LRESULT">LRESULT</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DispatchMessageA</span>(lpMsg: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LRESULT">LRESULT</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7436,8 +7398,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DispatchMessageW</span>(lpMsg: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LRESULT">LRESULT</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DispatchMessageW</span>(lpMsg: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LRESULT">LRESULT</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7449,8 +7410,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EmptyClipboard</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EmptyClipboard</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7462,8 +7422,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EnableWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, bEnable: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EnableWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, bEnable: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7475,8 +7434,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EndPaint</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpPaint: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_PAINTSTRUCT">PAINTSTRUCT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EndPaint</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpPaint: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_PAINTSTRUCT">PAINTSTRUCT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7488,8 +7446,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EnumDisplayMonitors</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HDC">HDC</a></span>, lprcClip: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span>, lpfnEnum: <span class="SKwd">const</span> *<span class="STpe">void</span>, dwData: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EnumDisplayMonitors</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HDC">HDC</a></span>, lprcClip: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span>, lpfnEnum: <span class="SKwd">const</span> *<span class="STpe">void</span>, dwData: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7501,8 +7458,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EnumWindows</span>(lpEnumFunc: <span class="SKwd">const</span> *<span class="STpe">void</span>, lParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">EnumWindows</span>(lpEnumFunc: <span class="SKwd">const</span> *<span class="STpe">void</span>, lParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7514,8 +7470,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ExitProcess</span>(uExitCode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ExitProcess</span>(uExitCode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7527,8 +7482,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ExtractIconExA</span>(lpszFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, nIconIndex: <span class="STpe">s32</span>, phiconLarge: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>, phiconSmall: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>, nIcons: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ExtractIconExA</span>(lpszFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, nIconIndex: <span class="STpe">s32</span>, phiconLarge: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>, phiconSmall: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>, nIcons: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7540,8 +7494,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ExtractIconExW</span>(lpszFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, nIconIndex: <span class="STpe">s32</span>, phiconLarge: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>, phiconSmall: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>, nIcons: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ExtractIconExW</span>(lpszFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, nIconIndex: <span class="STpe">s32</span>, phiconLarge: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>, phiconSmall: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>, nIcons: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7576,8 +7529,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FileTimeToLocalFileTime</span>(lpFileTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>, lpLocalFileTime: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FileTimeToLocalFileTime</span>(lpFileTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>, lpLocalFileTime: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7589,8 +7541,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FileTimeToSystemTime</span>(lpFileTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>, lpSystemTime: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SYSTEMTIME">SYSTEMTIME</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FileTimeToSystemTime</span>(lpFileTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>, lpSystemTime: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SYSTEMTIME">SYSTEMTIME</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7602,8 +7553,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FillRect</span>(hDC: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HDC">HDC</a></span>, lprc: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span>, hbr: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HBRUSH">HBRUSH</a></span>)-&gt;<span class="STpe">s32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FillRect</span>(hDC: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HDC">HDC</a></span>, lprc: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span>, hbr: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HBRUSH">HBRUSH</a></span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7615,8 +7565,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindClose</span>(hFindFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindClose</span>(hFindFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7628,8 +7577,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindFirstFileA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpFindFileData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WIN32_FIND_DATAA">WIN32_FIND_DATAA</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindFirstFileA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpFindFileData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WIN32_FIND_DATAA">WIN32_FIND_DATAA</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7641,8 +7589,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindFirstFileW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpFindFileData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WIN32_FIND_DATAW">WIN32_FIND_DATAW</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindFirstFileW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpFindFileData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WIN32_FIND_DATAW">WIN32_FIND_DATAW</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7654,8 +7601,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindFirstVolumeA</span>(lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindFirstVolumeA</span>(lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7667,8 +7613,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindFirstVolumeW</span>(lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindFirstVolumeW</span>(lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7680,8 +7625,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindNextFileA</span>(hFindFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpFindFileData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WIN32_FIND_DATAA">WIN32_FIND_DATAA</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindNextFileA</span>(hFindFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpFindFileData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WIN32_FIND_DATAA">WIN32_FIND_DATAA</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7693,8 +7637,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindNextFileW</span>(hFindFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpFindFileData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WIN32_FIND_DATAW">WIN32_FIND_DATAW</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindNextFileW</span>(hFindFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpFindFileData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WIN32_FIND_DATAW">WIN32_FIND_DATAW</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7706,8 +7649,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindNextVolumeA</span>(hFindVolume: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindNextVolumeA</span>(hFindVolume: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7719,8 +7661,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindNextVolumeW</span>(hFindVolume: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindNextVolumeW</span>(hFindVolume: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7732,8 +7673,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindVolumeClose</span>(hFindVolume: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindVolumeClose</span>(hFindVolume: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7745,8 +7685,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindWindowA</span>(lpClassName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpWindowName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindWindowA</span>(lpClassName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpWindowName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7758,8 +7697,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindWindowW</span>(lpClassName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpWindowName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FindWindowW</span>(lpClassName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpWindowName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7771,8 +7709,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FormatMessageA</span>(dwFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpSource: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCVOID">LPCVOID</a></span>, dwMessageId: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwLanguageId: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, nSize: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, <span class="SCst">Arguments</span>: *<span class="SCst">Win32</span>.<a href="#Win32_va_list">va_list</a>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">FormatMessageA</span>(dwFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpSource: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCVOID">LPCVOID</a></span>, dwMessageId: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwLanguageId: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, nSize: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, <span class="SCst">Arguments</span>: *<span class="SCst">Win32</span>.<a href="#Win32_va_list">va_list</a>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7805,8 +7742,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GET_WHEEL_DELTA_WPARAM</span>(wParam: <span class="STpe">u64</span>)-&gt;<span class="STpe">s32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GET_WHEEL_DELTA_WPARAM</span>(wParam: <span class="STpe">u64</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7818,8 +7754,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GET_X_LPARAM</span>(lp: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="STpe">s32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GET_X_LPARAM</span>(lp: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7831,8 +7766,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GET_Y_LPARAM</span>(lp: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="STpe">s32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GET_Y_LPARAM</span>(lp: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7877,8 +7811,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetActiveWindow</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetActiveWindow</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7890,8 +7823,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetAdaptersInfo</span>(adapterInfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADAPTER_INFO">IP_ADAPTER_INFO</a></span>, sizePointer: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ULONG">ULONG</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ULONG">ULONG</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetAdaptersInfo</span>(adapterInfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_IP_ADAPTER_INFO">IP_ADAPTER_INFO</a></span>, sizePointer: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ULONG">ULONG</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ULONG">ULONG</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7903,8 +7835,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetAsyncKeyState</span>(vKey: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SHORT">SHORT</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetAsyncKeyState</span>(vKey: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SHORT">SHORT</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7916,8 +7847,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetClientRect</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpRect: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetClientRect</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpRect: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7929,8 +7859,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetClipboardData</span>(uFormat: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetClipboardData</span>(uFormat: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7942,8 +7871,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetConsoleScreenBufferInfo</span>(hConsoleOutput: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpConsoleScreenBufferInfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CONSOLE_SCREEN_BUFFER_INFO">CONSOLE_SCREEN_BUFFER_INFO</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetConsoleScreenBufferInfo</span>(hConsoleOutput: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpConsoleScreenBufferInfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_CONSOLE_SCREEN_BUFFER_INFO">CONSOLE_SCREEN_BUFFER_INFO</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7955,8 +7883,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentDirectoryA</span>(nBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentDirectoryA</span>(nBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7968,8 +7895,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentDirectoryW</span>(nBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentDirectoryW</span>(nBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7981,8 +7907,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentProcess</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentProcess</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7994,8 +7919,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentProcessId</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentProcessId</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8007,8 +7931,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentThread</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentThread</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8020,8 +7943,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentThreadId</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCurrentThreadId</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8033,8 +7955,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCursorPos</span>(lpPoint: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetCursorPos</span>(lpPoint: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8046,8 +7967,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetDC</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HDC">HDC</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetDC</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HDC">HDC</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8059,8 +7979,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetDesktopWindow</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetDesktopWindow</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8072,8 +7991,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFileAttributesA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFileAttributesA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8085,8 +8003,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFileAttributesExA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, fInfoLevelId: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_GET_FILEEX_INFO_LEVELS">GET_FILEEX_INFO_LEVELS</a></span>, lpFileInformation: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFileAttributesExA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, fInfoLevelId: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_GET_FILEEX_INFO_LEVELS">GET_FILEEX_INFO_LEVELS</a></span>, lpFileInformation: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8098,8 +8015,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFileAttributesExW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, fInfoLevelId: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_GET_FILEEX_INFO_LEVELS">GET_FILEEX_INFO_LEVELS</a></span>, lpFileInformation: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFileAttributesExW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, fInfoLevelId: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_GET_FILEEX_INFO_LEVELS">GET_FILEEX_INFO_LEVELS</a></span>, lpFileInformation: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8111,8 +8027,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFileAttributesW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFileAttributesW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8124,8 +8039,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFileSize</span>(hFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpFileSizeHigh: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPDWORD">LPDWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFileSize</span>(hFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpFileSizeHigh: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPDWORD">LPDWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8137,8 +8051,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetForegroundWindow</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetForegroundWindow</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8150,8 +8063,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFullPathNameA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, nBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>, lpFilePart: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFullPathNameA</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, nBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>, lpFilePart: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8163,8 +8075,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFullPathNameW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCTSTR">LPCTSTR</a></span>, nBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, lpFilePart: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetFullPathNameW</span>(lpFileName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCTSTR">LPCTSTR</a></span>, nBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, lpFilePart: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8176,8 +8087,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetIconInfo</span>(hIcon: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>, piconinfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ICONINFO">ICONINFO</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetIconInfo</span>(hIcon: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HICON">HICON</a></span>, piconinfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ICONINFO">ICONINFO</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8189,8 +8099,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetKeyboardState</span>(lpKeystate: *<span class="STpe">u8</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetKeyboardState</span>(lpKeystate: *<span class="STpe">u8</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8202,8 +8111,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetLastError</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetLastError</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8215,8 +8123,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetLocalTime</span>(lpSystemTime: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SYSTEMTIME">SYSTEMTIME</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetLocalTime</span>(lpSystemTime: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SYSTEMTIME">SYSTEMTIME</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8228,8 +8135,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetMessageA</span>(lpMsg: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>, hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, wMsgFilterMin: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wMsgFilterMax: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetMessageA</span>(lpMsg: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>, hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, wMsgFilterMin: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wMsgFilterMax: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8241,8 +8147,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetMessageW</span>(lpMsg: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>, hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, wMsgFilterMin: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wMsgFilterMax: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetMessageW</span>(lpMsg: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>, hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, wMsgFilterMin: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wMsgFilterMax: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8254,8 +8159,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetModuleHandleA</span>(lpModuleName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMODULE">HMODULE</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetModuleHandleA</span>(lpModuleName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMODULE">HMODULE</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8267,8 +8171,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetModuleHandleW</span>(lpModuleName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMODULE">HMODULE</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetModuleHandleW</span>(lpModuleName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMODULE">HMODULE</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8280,8 +8183,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetMonitorInfoA</span>(hMonitor: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMONITOR">HMONITOR</a></span>, lpmi: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MONITORINFO">MONITORINFO</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetMonitorInfoA</span>(hMonitor: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMONITOR">HMONITOR</a></span>, lpmi: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MONITORINFO">MONITORINFO</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8293,8 +8195,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetMonitorInfoW</span>(hMonitor: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMONITOR">HMONITOR</a></span>, lpmi: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MONITORINFO">MONITORINFO</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetMonitorInfoW</span>(hMonitor: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMONITOR">HMONITOR</a></span>, lpmi: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MONITORINFO">MONITORINFO</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8306,8 +8207,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetNextWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, wCmd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetNextWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, wCmd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8319,8 +8219,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetProcAddress</span>(hModule: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMODULE">HMODULE</a></span>, lpProcName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SKwd">const</span> *<span class="STpe">void</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetProcAddress</span>(hModule: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMODULE">HMODULE</a></span>, lpProcName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SKwd">const</span> *<span class="STpe">void</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8332,8 +8231,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetStdHandle</span>(nStdHandle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetStdHandle</span>(nStdHandle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8345,8 +8243,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetSystemInfo</span>(lpSystemInfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SYSTEM_INFO">SYSTEM_INFO</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetSystemInfo</span>(lpSystemInfo: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SYSTEM_INFO">SYSTEM_INFO</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8358,8 +8255,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetSystemMetrics</span>(nIndex: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetSystemMetrics</span>(nIndex: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8371,8 +8267,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetSystemTime</span>(lpSystemTime: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SYSTEMTIME">SYSTEMTIME</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetSystemTime</span>(lpSystemTime: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SYSTEMTIME">SYSTEMTIME</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8384,8 +8279,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetTopWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetTopWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8397,8 +8291,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetVolumePathNamesForVolumeNameA</span>(lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpszVolumePathNames: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCH">LPCH</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpcchReturnLength: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetVolumePathNamesForVolumeNameA</span>(lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpszVolumePathNames: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCH">LPCH</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpcchReturnLength: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8410,8 +8303,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetVolumePathNamesForVolumeNameW</span>(lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpszVolumePathNames: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWCH">LPWCH</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpcchReturnLength: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetVolumePathNamesForVolumeNameW</span>(lpszVolumeName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpszVolumePathNames: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWCH">LPWCH</a></span>, cchBufferLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpcchReturnLength: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8423,8 +8315,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, uCmd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, uCmd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8436,8 +8327,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindowLongPtrA</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, nIndex: <span class="STpe">s32</span>)-&gt;*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindowLongPtrA</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, nIndex: <span class="STpe">s32</span>)-&gt;*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8449,8 +8339,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindowLongPtrW</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, nIndex: <span class="STpe">s32</span>)-&gt;*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindowLongPtrW</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, nIndex: <span class="STpe">s32</span>)-&gt;*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8462,8 +8351,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindowRect</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpRect: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindowRect</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpRect: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8475,8 +8363,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindowTextA</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpString: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>, nMaxCount: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindowTextA</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpString: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>, nMaxCount: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8488,8 +8375,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindowTextW</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpString: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, nMaxCount: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GetWindowTextW</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpString: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, nMaxCount: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8501,8 +8387,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GlobalAlloc</span>(uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, dwBytes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SIZE_T">SIZE_T</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HGLOBAL">HGLOBAL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GlobalAlloc</span>(uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, dwBytes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SIZE_T">SIZE_T</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HGLOBAL">HGLOBAL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8514,8 +8399,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GlobalLock</span>(hMem: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HGLOBAL">HGLOBAL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GlobalLock</span>(hMem: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HGLOBAL">HGLOBAL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8527,8 +8411,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GlobalSize</span>(hMem: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HGLOBAL">HGLOBAL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SIZE_T">SIZE_T</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GlobalSize</span>(hMem: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HGLOBAL">HGLOBAL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SIZE_T">SIZE_T</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8540,8 +8423,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GlobalUnlock</span>(hMem: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HGLOBAL">HGLOBAL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">GlobalUnlock</span>(hMem: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HGLOBAL">HGLOBAL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8553,8 +8435,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">HIWORD</span>(l: <span class="STpe">u64</span>)-&gt;<span class="STpe">s32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">HIWORD</span>(l: <span class="STpe">u64</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8758,8 +8639,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">InitializeSRWLock</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">InitializeSRWLock</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8771,8 +8651,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">InvalidateRect</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpRect: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span>, bErase: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">InvalidateRect</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpRect: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_RECT">RECT</a></span>, bErase: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8784,8 +8663,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">IsClipboardFormatAvailable</span>(format: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">IsClipboardFormatAvailable</span>(format: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8797,8 +8675,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">IsDebuggerPresent</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">IsDebuggerPresent</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8810,8 +8687,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">IsWindowVisible</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">IsWindowVisible</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8823,8 +8699,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">LOWORD</span>(l: <span class="STpe">u64</span>)-&gt;<span class="STpe">s32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">LOWORD</span>(l: <span class="STpe">u64</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8836,8 +8711,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">LoadCursorA</span>(hInstance: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HINSTANCE">HINSTANCE</a></span>, lpCursorName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HCURSOR">HCURSOR</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">LoadCursorA</span>(hInstance: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HINSTANCE">HINSTANCE</a></span>, lpCursorName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HCURSOR">HCURSOR</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8849,8 +8723,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">LoadCursorW</span>(hInstance: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HINSTANCE">HINSTANCE</a></span>, lpCursorName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HCURSOR">HCURSOR</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">LoadCursorW</span>(hInstance: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HINSTANCE">HINSTANCE</a></span>, lpCursorName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HCURSOR">HCURSOR</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8862,8 +8735,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">LocalFree</span>(hLocal: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HLOCAL">HLOCAL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HLOCAL">HLOCAL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">LocalFree</span>(hLocal: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HLOCAL">HLOCAL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HLOCAL">HLOCAL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8875,8 +8747,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MAKEINTRESOURCEA</span>(val: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MAKEINTRESOURCEA</span>(val: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8888,8 +8759,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MAKEINTRESOURCEW</span>(val: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MAKEINTRESOURCEW</span>(val: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8901,8 +8771,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MAKELANGID</span>(p: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WORD">WORD</a></span>, s: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WORD">WORD</a></span>)-&gt;<span class="STpe">u16</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MAKELANGID</span>(p: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WORD">WORD</a></span>, s: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WORD">WORD</a></span>)-&gt;<span class="STpe">u16</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9033,8 +8902,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MapVirtualKeyA</span>(uCode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uMapType: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MapVirtualKeyA</span>(uCode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uMapType: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9046,8 +8914,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MapVirtualKeyW</span>(uCode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uMapType: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MapVirtualKeyW</span>(uCode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uMapType: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9059,8 +8926,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MessageBoxA</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpText: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpCaption: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, uType: <span class="STpe">u32</span>)-&gt;<span class="STpe">s32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MessageBoxA</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpText: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, lpCaption: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, uType: <span class="STpe">u32</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9072,8 +8938,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MessageBoxW</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpText: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpCaption: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, uType: <span class="STpe">u32</span>)-&gt;<span class="STpe">s32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MessageBoxW</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpText: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, lpCaption: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, uType: <span class="STpe">u32</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9085,8 +8950,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MonitorFromPoint</span>(pt: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>, dwFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMONITOR">HMONITOR</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MonitorFromPoint</span>(pt: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>, dwFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMONITOR">HMONITOR</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9098,8 +8962,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MonitorFromWindow</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, dwFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMONITOR">HMONITOR</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MonitorFromWindow</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, dwFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HMONITOR">HMONITOR</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9111,8 +8974,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MoveWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, nWidth: <span class="STpe">s32</span>, nHeight: <span class="STpe">s32</span>, bRepaint: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">MoveWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, nWidth: <span class="STpe">s32</span>, nHeight: <span class="STpe">s32</span>, bRepaint: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9300,8 +9162,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">OpenClipboard</span>(hWndNewOwner: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">OpenClipboard</span>(hWndNewOwner: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9313,8 +9174,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">OutputDebugStringA</span>(lpOutputString: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">OutputDebugStringA</span>(lpOutputString: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9326,8 +9186,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">OutputDebugStringW</span>(lpOutputString: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">OutputDebugStringW</span>(lpOutputString: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9438,8 +9297,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">PeekMessageA</span>(lpMsg: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>, hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, wMsgFilterMin: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wMsgFilterMax: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wRemoveMsg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">PeekMessageA</span>(lpMsg: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>, hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, wMsgFilterMin: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wMsgFilterMax: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wRemoveMsg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9451,8 +9309,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">PeekMessageW</span>(lpMsg: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>, hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, wMsgFilterMin: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wMsgFilterMax: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wRemoveMsg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">PeekMessageW</span>(lpMsg: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>, hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, wMsgFilterMin: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wMsgFilterMax: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wRemoveMsg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9464,8 +9321,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">PostMessageA</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, msg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WPARAM">WPARAM</a></span>, lParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">PostMessageA</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, msg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WPARAM">WPARAM</a></span>, lParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9477,8 +9333,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">PostMessageW</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, msg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WPARAM">WPARAM</a></span>, lParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">PostMessageW</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, msg: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WPARAM">WPARAM</a></span>, lParam: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPARAM">LPARAM</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9490,8 +9345,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">PostQuitMessage</span>(nExitCode: <span class="STpe">s32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">PostQuitMessage</span>(nExitCode: <span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9503,8 +9357,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">QueryPerformanceCounter</span>(lpPerformanceCount: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LARGE_INTEGER">LARGE_INTEGER</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">QueryPerformanceCounter</span>(lpPerformanceCount: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LARGE_INTEGER">LARGE_INTEGER</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9516,8 +9369,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">QueryPerformanceFrequency</span>(lpFrequency: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LARGE_INTEGER">LARGE_INTEGER</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">QueryPerformanceFrequency</span>(lpFrequency: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LARGE_INTEGER">LARGE_INTEGER</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9562,8 +9414,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReadFile</span>(hFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>, nNumberOfBytesToRead: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpNumberOfBytesRead: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPDWORD">LPDWORD</a></span>, lpOverlapped: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPOVERLAPPED">LPOVERLAPPED</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReadFile</span>(hFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>, nNumberOfBytesToRead: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpNumberOfBytesRead: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPDWORD">LPDWORD</a></span>, lpOverlapped: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPOVERLAPPED">LPOVERLAPPED</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9575,8 +9426,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RegisterClassA</span>(lpWndClass: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WNDCLASSA">WNDCLASSA</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ATOM">ATOM</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RegisterClassA</span>(lpWndClass: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WNDCLASSA">WNDCLASSA</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ATOM">ATOM</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9588,8 +9438,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RegisterClassW</span>(lpWndClass: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WNDCLASSW">WNDCLASSW</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ATOM">ATOM</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RegisterClassW</span>(lpWndClass: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WNDCLASSW">WNDCLASSW</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_ATOM">ATOM</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9601,8 +9450,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RegisterClipboardFormatA</span>(name: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RegisterClipboardFormatA</span>(name: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9614,8 +9462,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RegisterClipboardFormatW</span>(name: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RegisterClipboardFormatW</span>(name: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9627,8 +9474,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RegisterHotKey</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, id: <span class="STpe">s32</span>, fsModifiers: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, vk: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">RegisterHotKey</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, id: <span class="STpe">s32</span>, fsModifiers: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, vk: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9640,8 +9486,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReleaseCapture</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReleaseCapture</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9653,8 +9498,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReleaseDC</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, hDC: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HDC">HDC</a></span>)-&gt;<span class="STpe">s32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReleaseDC</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, hDC: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HDC">HDC</a></span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9666,8 +9510,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReleaseMutex</span>(hMutex: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReleaseMutex</span>(hMutex: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9679,8 +9522,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReleaseSRWLockExclusive</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReleaseSRWLockExclusive</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9692,8 +9534,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReleaseSRWLockShared</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ReleaseSRWLockShared</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9705,8 +9546,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ResetEvent</span>(hEvent: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ResetEvent</span>(hEvent: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9718,8 +9558,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ResumeThread</span>(hThread: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ResumeThread</span>(hThread: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9835,8 +9674,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SHGetFileInfoA</span>(pszPath: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, dwFileAttributes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, psfi: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SHFILEINFOA">SHFILEINFOA</a></span>, cbFileInfo: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD_PTR">DWORD_PTR</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SHGetFileInfoA</span>(pszPath: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, dwFileAttributes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, psfi: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SHFILEINFOA">SHFILEINFOA</a></span>, cbFileInfo: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD_PTR">DWORD_PTR</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9848,8 +9686,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SHGetFileInfoW</span>(pszPath: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, dwFileAttributes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, psfi: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SHFILEINFOW">SHFILEINFOW</a></span>, cbFileInfo: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD_PTR">DWORD_PTR</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SHGetFileInfoW</span>(pszPath: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>, dwFileAttributes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, psfi: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SHFILEINFOW">SHFILEINFOW</a></span>, cbFileInfo: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD_PTR">DWORD_PTR</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9861,8 +9698,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SHGetSpecialFolderPathA</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, pszPath: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>, csidl: <span class="STpe">s32</span>, fCreate: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SHGetSpecialFolderPathA</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, pszPath: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPSTR">LPSTR</a></span>, csidl: <span class="STpe">s32</span>, fCreate: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9874,8 +9710,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SHGetSpecialFolderPathW</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, pszPath: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, csidl: <span class="STpe">s32</span>, fCreate: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SHGetSpecialFolderPathW</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, pszPath: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, csidl: <span class="STpe">s32</span>, fCreate: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9887,8 +9722,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SHGetStockIconInfo</span>(siid: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SHSTOCKICONID">SHSTOCKICONID</a></span>, uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, psii: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SHSTOCKICONINFO">SHSTOCKICONINFO</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SHGetStockIconInfo</span>(siid: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SHSTOCKICONID">SHSTOCKICONID</a></span>, uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, psii: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SHSTOCKICONINFO">SHSTOCKICONINFO</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10682,8 +10516,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ScreenToClient</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpPoint: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ScreenToClient</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, lpPoint: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10695,8 +10528,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetActiveWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetActiveWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10708,8 +10540,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCapture</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCapture</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10721,8 +10552,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetClipboardData</span>(uFormat: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, hMem: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetClipboardData</span>(uFormat: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, hMem: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10734,8 +10564,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetConsoleActiveScreenBuffer</span>(hConsoleOutput: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetConsoleActiveScreenBuffer</span>(hConsoleOutput: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10747,8 +10576,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetConsoleOutputCP</span>(codePage: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetConsoleOutputCP</span>(codePage: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10760,8 +10588,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetConsoleTextAttribute</span>(hConsoleOutput: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, wAttributes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WORD">WORD</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetConsoleTextAttribute</span>(hConsoleOutput: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, wAttributes: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_WORD">WORD</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10773,8 +10600,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCurrentDirectoryA</span>(lpPathName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCurrentDirectoryA</span>(lpPathName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10786,8 +10612,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCurrentDirectoryW</span>(lpPathName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCurrentDirectoryW</span>(lpPathName: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCWSTR">LPCWSTR</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10799,8 +10624,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCursor</span>(hCursor: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HCURSOR">HCURSOR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HCURSOR">HCURSOR</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCursor</span>(hCursor: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HCURSOR">HCURSOR</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HCURSOR">HCURSOR</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10812,8 +10636,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCursorPos</span>(x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetCursorPos</span>(x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10825,8 +10648,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetEvent</span>(hEvent: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetEvent</span>(hEvent: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10838,8 +10660,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetFilePointer</span>(hFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lDistanceToMove: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span>, lpDistanceToMoveHigh: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_PLONG">PLONG</a></span>, dwMoveMethod: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetFilePointer</span>(hFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lDistanceToMove: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span>, lpDistanceToMoveHigh: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_PLONG">PLONG</a></span>, dwMoveMethod: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10851,8 +10672,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetFileTime</span>(hFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpCreationTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>, lpLastAccessTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>, lpLastWriteTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetFileTime</span>(hFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpCreationTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>, lpLastAccessTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>, lpLastWriteTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10864,8 +10684,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetFocus</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetFocus</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10877,8 +10696,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetLayeredWindowAttributes</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, crKey: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_COLORREF">COLORREF</a></span>, bAlpha: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span>, dwFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetLayeredWindowAttributes</span>(hwnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, crKey: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_COLORREF">COLORREF</a></span>, bAlpha: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span>, dwFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10890,8 +10708,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetThreadPriority</span>(hThread: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, nPriority: <span class="STpe">s32</span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetThreadPriority</span>(hThread: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, nPriority: <span class="STpe">s32</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10903,8 +10720,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetWaitableTimer</span>(hTimer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpDueTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LARGE_INTEGER">LARGE_INTEGER</a></span>, lPeriod: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span>, pfnCompletionRoutine: *<span class="STpe">void</span>, lpArgToCompletionRoutine: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>, fResume: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetWaitableTimer</span>(hTimer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpDueTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LARGE_INTEGER">LARGE_INTEGER</a></span>, lPeriod: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span>, pfnCompletionRoutine: *<span class="STpe">void</span>, lpArgToCompletionRoutine: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPVOID">LPVOID</a></span>, fResume: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10916,8 +10732,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetWindowLongPtrA</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, nIndex: <span class="STpe">s32</span>, dwNewLong: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span>)-&gt;*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetWindowLongPtrA</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, nIndex: <span class="STpe">s32</span>, dwNewLong: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span>)-&gt;*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10929,8 +10744,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetWindowLongPtrW</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, nIndex: <span class="STpe">s32</span>, dwNewLong: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span>)-&gt;*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetWindowLongPtrW</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, nIndex: <span class="STpe">s32</span>, dwNewLong: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span>)-&gt;*<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LONG">LONG</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10942,8 +10756,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetWindowPos</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, hWndInsertAfter: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, cx: <span class="STpe">s32</span>, cy: <span class="STpe">s32</span>, uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SetWindowPos</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, hWndInsertAfter: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, cx: <span class="STpe">s32</span>, cy: <span class="STpe">s32</span>, uFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10955,8 +10768,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">Shell_NotifyIconA</span>(dwMessage: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_NOTIFYICONDATAA">NOTIFYICONDATAA</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">Shell_NotifyIconA</span>(dwMessage: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_NOTIFYICONDATAA">NOTIFYICONDATAA</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10968,8 +10780,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">Shell_NotifyIconW</span>(dwMessage: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_NOTIFYICONDATAW">NOTIFYICONDATAW</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">Shell_NotifyIconW</span>(dwMessage: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpData: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_NOTIFYICONDATAW">NOTIFYICONDATAW</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10981,8 +10792,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ShowCursor</span>(show: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ShowCursor</span>(show: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10994,8 +10804,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ShowWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, nCmdShow: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ShowWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, nCmdShow: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11007,8 +10816,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">Sleep</span>(dwMilliseconds: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">Sleep</span>(dwMilliseconds: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11020,8 +10828,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SleepEx</span>(dwMilliseconds: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, bAltertable: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SleepEx</span>(dwMilliseconds: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, bAltertable: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11033,8 +10840,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SwitchToThread</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SwitchToThread</span>()-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11046,8 +10852,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SystemTimeToFileTime</span>(lpSystemTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SYSTEMTIME">SYSTEMTIME</a></span>, lpFileTime: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">SystemTimeToFileTime</span>(lpSystemTime: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SYSTEMTIME">SYSTEMTIME</a></span>, lpFileTime: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_FILETIME">FILETIME</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11059,8 +10864,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ToUnicode</span>(wVirtKey: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wScanCode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, lpKeyState: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span>, pwszBuff: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, cchBuff: <span class="STpe">s32</span>, wFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="STpe">s32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">ToUnicode</span>(wVirtKey: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, wScanCode: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>, lpKeyState: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BYTE">BYTE</a></span>, pwszBuff: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPWSTR">LPWSTR</a></span>, cchBuff: <span class="STpe">s32</span>, wFlags: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_UINT">UINT</a></span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11072,8 +10876,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">TranslateMessage</span>(lpMsg: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">TranslateMessage</span>(lpMsg: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_MSG">MSG</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11085,8 +10888,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">TryAcquireSRWLockExclusive</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">TryAcquireSRWLockExclusive</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11098,8 +10900,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">TryAcquireSRWLockShared</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">TryAcquireSRWLockShared</span>(<span class="SCst">SRWLock</span>: *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_SRWLOCK">SRWLOCK</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11111,8 +10912,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">UnregisterHotKey</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, id: <span class="STpe">s32</span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">UnregisterHotKey</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>, id: <span class="STpe">s32</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11124,8 +10924,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">UpdateWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">UpdateWindow</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11510,8 +11309,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WaitForMultipleObjects</span>(nCount: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpHandles: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, bWaitAll: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, dwMilliseconds: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WaitForMultipleObjects</span>(nCount: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpHandles: <span class="SKwd">const</span> *<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, bWaitAll: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span>, dwMilliseconds: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11523,8 +11321,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WaitForSingleObject</span>(hHandle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, dwMilliseconds: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WaitForSingleObject</span>(hHandle: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, dwMilliseconds: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11536,8 +11333,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WindowFromPoint</span>(pt: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WindowFromPoint</span>(pt: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_POINT">POINT</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HWND">HWND</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11549,8 +11345,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WriteConsoleOutputCharacterA</span>(hConsoleOutput: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpCharacter: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, nLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwWriteCoord: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpNumberOfCharsWritten: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPDWORD">LPDWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WriteConsoleOutputCharacterA</span>(hConsoleOutput: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpCharacter: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCSTR">LPCSTR</a></span>, nLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwWriteCoord: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpNumberOfCharsWritten: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPDWORD">LPDWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11562,8 +11357,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WriteConsoleOutputCharacterW</span>(hConsoleOutput: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpCharacter: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCTSTR">LPCTSTR</a></span>, nLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwWriteCoord: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpNumberOfCharsWritten: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPDWORD">LPDWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WriteConsoleOutputCharacterW</span>(hConsoleOutput: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpCharacter: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCTSTR">LPCTSTR</a></span>, nLength: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, dwWriteCoord: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpNumberOfCharsWritten: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPDWORD">LPDWORD</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11575,8 +11369,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WriteFile</span>(hFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCVOID">LPCVOID</a></span>, nNumberOfBytesToWrite: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpNumberOfBytesWritten: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPDWORD">LPDWORD</a></span>, lpOverlapped: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPOVERLAPPED">LPOVERLAPPED</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">WriteFile</span>(hFile: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_HANDLE">HANDLE</a></span>, lpBuffer: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPCVOID">LPCVOID</a></span>, nNumberOfBytesToWrite: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_DWORD">DWORD</a></span>, lpNumberOfBytesWritten: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPDWORD">LPDWORD</a></span>, lpOverlapped: <span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_LPOVERLAPPED">LPOVERLAPPED</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst"><a href="#Win32_BOOL">BOOL</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11589,8 +11382,7 @@
 </table>
 </p>
 <p>Fill the context error message. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setError</span>(errorMessageID: <span class="STpe">u32</span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setError</span>(errorMessageID: <span class="STpe">u32</span>) <span class="SKwd">throw</span></span></div>
 <div class="swag-watermark">
 Generated on 20-10-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>

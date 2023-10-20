@@ -45,6 +45,7 @@ void GenDoc::outputStyles()
     }
 
     helpOutput += "\n\
+        html { font-family: ui-sans-serif, system-ui, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, \"Noto Sans\", sans-serif; }\n\
         body { margin: 0px; line-height: 1.3em; }\n\
         \n\
         .container a        { color: DoggerBlue; }\n\
@@ -99,6 +100,7 @@ void GenDoc::outputStyles()
         \n\
         .code-inline  { background-color: #eeeeee; border-radius: 5px; border: 1px dotted #cccccc; padding: 0px 8px; font-size: 110%; font-family: monospace; display: inline-block; }\n\
         .code-block   { background-color: #eeeeee; border-radius: 5px; border: 1px solid LightGrey; padding: 10px; margin: 20px; white-space: pre; overflow-x: auto; }\n\
+        .code-block   { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace; }\n\
         .code-block a { color: inherit; }\n\
         \n";
 
@@ -200,7 +202,6 @@ void GenDoc::outputCode(const Utf8& code, uint32_t flags)
     if (flags & GENDOC_CODE_BLOCK)
     {
         helpContent += "<div class=\"code-block\">";
-        helpContent += "<code>";
     }
 
     // Kind of a hack for now... Try to keep references, but try to keep <> also...
@@ -257,7 +258,6 @@ void GenDoc::outputCode(const Utf8& code, uint32_t flags)
 
     if (flags & GENDOC_CODE_BLOCK)
     {
-        helpContent += "</code>\n";
         helpContent += "</div>\n";
     }
 }

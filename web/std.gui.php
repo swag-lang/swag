@@ -29,6 +29,7 @@
             .container { height: 100vh; }
             .right     { overflow-y: scroll; }
 
+        html { font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; }
         body { margin: 0px; line-height: 1.3em; }
         
         .container a        { color: DoggerBlue; }
@@ -83,6 +84,7 @@
         
         .code-inline  { background-color: #eeeeee; border-radius: 5px; border: 1px dotted #cccccc; padding: 0px 8px; font-size: 110%; font-family: monospace; display: inline-block; }
         .code-block   { background-color: #eeeeee; border-radius: 5px; border: 1px solid LightGrey; padding: 10px; margin: 20px; white-space: pre; overflow-x: auto; }
+        .code-block   { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
         .code-block a { color: inherit; }
         
     .SCde { color: #222222; }
@@ -1373,8 +1375,7 @@
 </table>
 </p>
 <p>Register a new timer for the given <span class="code-inline">target</span>. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addTimer</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, time: <span class="SCst">Core</span>.<span class="SCst">Time</span>.<span class="SCst">Duration</span>, target: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Timer">Timer</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addTimer</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, time: <span class="SCst">Core</span>.<span class="SCst">Time</span>.<span class="SCst">Duration</span>, target: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Timer">Timer</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1387,8 +1388,7 @@
 </table>
 </p>
 <p>Creates a new surface. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createSurface</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, width: <span class="STpe">s32</span>, height: <span class="STpe">s32</span>, flags = <span class="SCst"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span>.<span class="SCst">OverlappedWindow</span>, view: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span> = <span class="SKwd">null</span>, hook: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HookEvent">HookEvent</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createSurface</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, width: <span class="STpe">s32</span>, height: <span class="STpe">s32</span>, flags = <span class="SCst"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span>.<span class="SCst">OverlappedWindow</span>, view: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span> = <span class="SKwd">null</span>, hook: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HookEvent">HookEvent</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1401,8 +1401,7 @@
 </table>
 </p>
 <p>Delete and unregister timer. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">deleteTimer</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, timer: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Timer">Timer</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">deleteTimer</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, timer: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Timer">Timer</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1415,8 +1414,7 @@
 </table>
 </p>
 <p>Destroy a window  To cleanly close a window, you should call wnd.destroy(). </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">destroyWnd</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, wnd: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">destroyWnd</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, wnd: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1428,8 +1426,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">doModalLoop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, surface: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, cb: <span class="SKwd">closure</span>(<span class="SKwd">self</span>) = <span class="SKwd">null</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">doModalLoop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, surface: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, cb: <span class="SKwd">closure</span>(<span class="SKwd">self</span>) = <span class="SKwd">null</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1442,8 +1439,7 @@
 </table>
 </p>
 <p>End current modal loop. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">exitModal</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, exitId: <span class="STpe">string</span> = <span class="SStr">""</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">exitModal</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, exitId: <span class="STpe">string</span> = <span class="SStr">""</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1455,8 +1451,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getDirectoryIcon</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>, small = <span class="SKwd">true</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getDirectoryIcon</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>, small = <span class="SKwd">true</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1468,8 +1463,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getDt</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getDt</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1481,8 +1475,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFileIcon</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>, small = <span class="SKwd">true</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFileIcon</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>, small = <span class="SKwd">true</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1495,8 +1488,7 @@
 </table>
 </p>
 <p>Get the id associated with a shortcut. null if none. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getHotKeyShortcut</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, mdf: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span>, key: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">Key</span>)-&gt;{id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>, wnd: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>}</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getHotKeyShortcut</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, mdf: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span>, key: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">Key</span>)-&gt;{id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>, wnd: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>}</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1509,8 +1501,7 @@
 </table>
 </p>
 <p>Get the name associated with a given id shortcut. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getHotKeyShortcutNameFor</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, wndId: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">String</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getHotKeyShortcutNameFor</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, wndId: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">String</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1522,8 +1513,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getKeyboard</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">Keyboard</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getKeyboard</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">Keyboard</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1535,8 +1525,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMouse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">Mouse</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMouse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">Mouse</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1549,8 +1538,7 @@
 </table>
 </p>
 <p>Return the captured wnd for mouse. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMouseCapture</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMouseCapture</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1562,8 +1550,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getRenderer</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Pixel</span>.<span class="SCst">RenderOgl</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getRenderer</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Pixel</span>.<span class="SCst">RenderOgl</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1576,8 +1563,7 @@
 </table>
 </p>
 <p>Returns the window under the given point. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getWndAtMouse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getWndAtMouse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1590,8 +1576,7 @@
 </table>
 </p>
 <p>Force all surfaces to be painted. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">invalidate</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">invalidate</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1604,8 +1589,7 @@
 </table>
 </p>
 <p>Load the application state. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">loadState</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">loadState</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1618,8 +1602,7 @@
 </table>
 </p>
 <p>Pop a new mouse cursor. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">popCursor</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">popCursor</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1632,8 +1615,7 @@
 </table>
 </p>
 <p>Post a new event (thread safe). </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">postEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, event: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">postEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, event: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1646,8 +1628,7 @@
 </table>
 </p>
 <p>Ask to exit the application. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">postQuitEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, quitCode: <span class="STpe">s32</span> = <span class="SNum">0</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">postQuitEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, quitCode: <span class="STpe">s32</span> = <span class="SNum">0</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1660,8 +1641,7 @@
 </table>
 </p>
 <p>Push a new mouse cursor. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pushCursor</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cursor: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Cursor">Cursor</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pushCursor</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cursor: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Cursor">Cursor</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1674,8 +1654,7 @@
 </table>
 </p>
 <p>Register a window to receive a FrameEvent each running loop. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">registerFrameEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, target: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">registerFrameEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, target: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1688,8 +1667,7 @@
 </table>
 </p>
 <p>Register a window to receive hook events. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">registerHookEvents</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, target: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">registerHookEvents</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, target: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1702,8 +1680,7 @@
 </table>
 </p>
 <p>Register a global os key action. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">registerHotKey</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, mdf: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span>, key: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">Key</span>, wndId: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>, target: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">registerHotKey</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, mdf: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span>, key: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">Key</span>, wndId: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>, target: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1716,8 +1693,7 @@
 </table>
 </p>
 <p>Run until exit. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">run</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">s32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">run</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1729,8 +1705,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">runFrame</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">runFrame</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1743,8 +1718,7 @@
 </table>
 </p>
 <p>Create a main surface, and run. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">runSurface</span>(x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, width: <span class="STpe">s32</span>, height: <span class="STpe">s32</span>, title: <span class="STpe">string</span> = <span class="SKwd">null</span>, view: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span> = <span class="SKwd">null</span>, borders = <span class="SKwd">true</span>, canSize = <span class="SKwd">true</span>, hook: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HookEvent">HookEvent</a></span> = <span class="SKwd">null</span>, init: <span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Application">Application</a></span>) = <span class="SKwd">null</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">runSurface</span>(x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, width: <span class="STpe">s32</span>, height: <span class="STpe">s32</span>, title: <span class="STpe">string</span> = <span class="SKwd">null</span>, view: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span> = <span class="SKwd">null</span>, borders = <span class="SKwd">true</span>, canSize = <span class="SKwd">true</span>, hook: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HookEvent">HookEvent</a></span> = <span class="SKwd">null</span>, init: <span class="SKwd">func</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Application">Application</a></span>) = <span class="SKwd">null</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1757,8 +1731,7 @@
 </table>
 </p>
 <p>Save the application state. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">saveState</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">saveState</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1770,8 +1743,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sendEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, event: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sendEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, event: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1784,8 +1756,7 @@
 </table>
 </p>
 <p>Set activated state. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setActivated</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, activated: <span class="STpe">bool</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setActivated</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, activated: <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1798,8 +1769,7 @@
 </table>
 </p>
 <p>Associate a configuration file. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setAppIcon</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, img: <span class="SCst">Pixel</span>.<span class="SCst">Image</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setAppIcon</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, img: <span class="SCst">Pixel</span>.<span class="SCst">Image</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1812,8 +1782,7 @@
 </table>
 </p>
 <p>Associate a configuration file. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setConfigPath</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, path: <span class="STpe">string</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setConfigPath</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, path: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1826,8 +1795,7 @@
 </table>
 </p>
 <p>Unregister a window that receives a FrameEvent each running loop. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unregisterFrameEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, target: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unregisterFrameEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, target: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1840,8 +1808,7 @@
 </table>
 </p>
 <p>Unregister a window to receive hook events. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unregisterHookEvents</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, target: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unregisterHookEvents</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, target: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1984,8 +1951,7 @@
 </table>
 </p>
 <p>Apply the color lerp to reach <span class="code-inline">target</span>. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">apply</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, wnd: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, target: <span class="SCst">Pixel</span>.<span class="SCst">Color</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">apply</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, wnd: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, target: <span class="SCst">Pixel</span>.<span class="SCst">Color</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1997,8 +1963,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cur</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cur</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2128,8 +2093,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2141,8 +2105,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2154,8 +2117,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CheckButton">CheckButton</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CheckButton">CheckButton</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2193,8 +2155,7 @@
 </table>
 </p>
 <p>Add data of a given format to the clipboard. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addData</span>(fmt: <span class="SCst">Gui</span>.<span class="SCst">Clipboard</span>.<span class="SCst"><a href="#Gui_Clipboard_Format">Format</a></span>, data: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addData</span>(fmt: <span class="SCst">Gui</span>.<span class="SCst">Clipboard</span>.<span class="SCst"><a href="#Gui_Clipboard_Format">Format</a></span>, data: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2207,8 +2168,7 @@
 </table>
 </p>
 <p>Add an image. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addImage</span>(image: <span class="SCst">Pixel</span>.<span class="SCst">Image</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addImage</span>(image: <span class="SCst">Pixel</span>.<span class="SCst">Image</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2221,8 +2181,7 @@
 </table>
 </p>
 <p>Add string to clipboard. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addString</span>(str: <span class="STpe">string</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addString</span>(str: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2235,8 +2194,7 @@
 </table>
 </p>
 <p>Get data of the given format. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getData</span>(fmt: <span class="SCst">Gui</span>.<span class="SCst">Clipboard</span>.<span class="SCst"><a href="#Gui_Clipboard_Format">Format</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">u8</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getData</span>(fmt: <span class="SCst">Gui</span>.<span class="SCst">Clipboard</span>.<span class="SCst"><a href="#Gui_Clipboard_Format">Format</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2249,8 +2207,7 @@
 </table>
 </p>
 <p>Get image from clipboard. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getImage</span>()-&gt;<span class="SCst">Pixel</span>.<span class="SCst">Image</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getImage</span>()-&gt;<span class="SCst">Pixel</span>.<span class="SCst">Image</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2263,8 +2220,7 @@
 </table>
 </p>
 <p>Get utf8 string from clipboard. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getString</span>()-&gt;<span class="SCst">Core</span>.<span class="SCst">String</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getString</span>()-&gt;<span class="SCst">Core</span>.<span class="SCst">String</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2277,8 +2233,7 @@
 </table>
 </p>
 <p>Returns true if the clipboard contains the given format. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hasFormat</span>(fmt: <span class="SCst">Gui</span>.<span class="SCst">Clipboard</span>.<span class="SCst"><a href="#Gui_Clipboard_Format">Format</a></span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hasFormat</span>(fmt: <span class="SCst">Gui</span>.<span class="SCst">Clipboard</span>.<span class="SCst"><a href="#Gui_Clipboard_Format">Format</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2291,8 +2246,7 @@
 </table>
 </p>
 <p>Returns true if the clipbboard contains an image. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hasImage</span>()-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hasImage</span>()-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2305,8 +2259,7 @@
 </table>
 </p>
 <p>Returns true if the clipboard contains a string. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hasString</span>()-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hasString</span>()-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2319,8 +2272,7 @@
 </table>
 </p>
 <p>Register a new format. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">registerFormat</span>(name: <span class="STpe">string</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst">Clipboard</span>.<span class="SCst"><a href="#Gui_Clipboard_Format">Format</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">registerFormat</span>(name: <span class="STpe">string</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst">Clipboard</span>.<span class="SCst"><a href="#Gui_Clipboard_Format">Format</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2448,8 +2400,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">computeXY</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">computeXY</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2461,8 +2412,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2474,8 +2424,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2487,8 +2436,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPostPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPostPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2501,8 +2449,7 @@
 </table>
 </p>
 <p>Change one component, HSL or alpha. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">change</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, h: <span class="STpe">f32</span> = -<span class="SNum">1</span>, s: <span class="STpe">f32</span> = -<span class="SNum">1</span>, l: <span class="STpe">f32</span> = -<span class="SNum">1</span>, a: <span class="STpe">f32</span> = -<span class="SNum">1</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">change</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, h: <span class="STpe">f32</span> = -<span class="SNum">1</span>, s: <span class="STpe">f32</span> = -<span class="SNum">1</span>, l: <span class="STpe">f32</span> = -<span class="SNum">1</span>, a: <span class="STpe">f32</span> = -<span class="SNum">1</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2514,8 +2461,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ColorPicker">ColorPicker</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ColorPicker">ColorPicker</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2528,8 +2474,7 @@
 </table>
 </p>
 <p>Returns the selected color. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getColor</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getColor</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2542,8 +2487,7 @@
 </table>
 </p>
 <p>Set the base color, and repaint. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setColor</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, col: <span class="SCst">Pixel</span>.<span class="SCst">Color</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setColor</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, col: <span class="SCst">Pixel</span>.<span class="SCst">Color</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2556,8 +2500,7 @@
 </table>
 </p>
 <p>Set the color picker box mode. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, mode: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ColorPickerMode">ColorPickerMode</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, mode: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ColorPickerMode">ColorPickerMode</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2706,8 +2649,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2719,8 +2661,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ColorPickerCtrl">ColorPickerCtrl</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ColorPickerCtrl">ColorPickerCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2733,8 +2674,7 @@
 </table>
 </p>
 <p>Returns the selected color. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getColor</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getColor</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst">Color</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2747,8 +2687,7 @@
 </table>
 </p>
 <p>Set the selected color. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setColor</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, color: <span class="SCst">Pixel</span>.<span class="SCst">Color</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setColor</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, color: <span class="SCst">Pixel</span>.<span class="SCst">Color</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2761,8 +2700,7 @@
 </table>
 </p>
 <p>Change the display mode. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, mode: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ColorPickerViewMode">ColorPickerViewMode</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMode</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, mode: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ColorPickerViewMode">ColorPickerViewMode</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3009,8 +2947,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3022,8 +2959,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3035,8 +2971,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3049,8 +2984,7 @@
 </table>
 </p>
 <p>Add a new item. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {}, userData0: *<span class="STpe">void</span> = <span class="SKwd">null</span>, userData1: *<span class="STpe">void</span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ComboBoxItem">ComboBoxItem</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {}, userData0: *<span class="STpe">void</span> = <span class="SKwd">null</span>, userData1: *<span class="STpe">void</span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ComboBoxItem">ComboBoxItem</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3063,8 +2997,7 @@
 </table>
 </p>
 <p>Add a separator. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addSeparator</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addSeparator</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3077,8 +3010,7 @@
 </table>
 </p>
 <p>Remove all items. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3090,8 +3022,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, kind = <span class="SCst"><a href="#Gui_ComboBoxKind">ComboBoxKind</a></span>.<span class="SCst">Select</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ComboBox">ComboBox</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, kind = <span class="SCst"><a href="#Gui_ComboBoxKind">ComboBoxKind</a></span>.<span class="SCst">Select</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ComboBox">ComboBox</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3104,8 +3035,7 @@
 </table>
 </p>
 <p>Returns the selected item. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSelectedItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ComboBoxItem">ComboBoxItem</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSelectedItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ComboBoxItem">ComboBoxItem</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3118,8 +3048,7 @@
 </table>
 </p>
 <p>Set the selected item index. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">selectItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">selectItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3224,8 +3153,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3237,8 +3165,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ComboCtrl">ComboCtrl</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ComboCtrl">ComboCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3406,8 +3333,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">apply</span>(cursor: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Cursor">Cursor</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">apply</span>(cursor: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Cursor">Cursor</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3419,8 +3345,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3432,8 +3357,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">from</span>(shape: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CursorShape">CursorShape</a></span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Cursor">Cursor</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">from</span>(shape: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CursorShape">CursorShape</a></span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Cursor">Cursor</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3446,8 +3370,7 @@
 </table>
 </p>
 <p>Force the wait cursor. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wait</span>()</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wait</span>()</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3594,8 +3517,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onKeyEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_KeyEvent">KeyEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onKeyEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_KeyEvent">KeyEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3607,8 +3529,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onSysCommandEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SysCommandEvent">SysCommandEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onSysCommandEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SysCommandEvent">SysCommandEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3621,8 +3542,7 @@
 </table>
 </p>
 <p>Add a button. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addButton</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, str: <span class="STpe">string</span>, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>, isDefault: <span class="STpe">bool</span> = <span class="SKwd">false</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PushButton">PushButton</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addButton</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, str: <span class="STpe">string</span>, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>, isDefault: <span class="STpe">bool</span> = <span class="SKwd">false</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PushButton">PushButton</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3635,8 +3555,7 @@
 </table>
 </p>
 <p>Creates a simple dialog box. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createDialog</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, width = <span class="SNum">512</span>, height = <span class="SNum">300</span>, title: <span class="STpe">string</span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Dialog">Dialog</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createDialog</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, width = <span class="SNum">512</span>, height = <span class="SNum">300</span>, title: <span class="STpe">string</span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Dialog">Dialog</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3649,8 +3568,7 @@
 </table>
 </p>
 <p>Creates an associated surface. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createSurface</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, width = <span class="SNum">512</span>, height = <span class="SNum">300</span>, flags = <span class="SCst"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span>.<span class="SCst">Zero</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createSurface</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, width = <span class="SNum">512</span>, height = <span class="SNum">300</span>, flags = <span class="SCst"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span>.<span class="SCst">Zero</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3663,8 +3581,7 @@
 </table>
 </p>
 <p>Display dialog as modal, and returns the user selected window id. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">doModal</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">string</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">doModal</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3676,8 +3593,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">validateId</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, btnId: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">validateId</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, btnId: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3726,8 +3642,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DwmExtendFrameIntoClientArea</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst">HWND</span>, pMarInset: *<span class="SCst">Gui</span>.<span class="SCst">MARGINS</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">DwmExtendFrameIntoClientArea</span>(hWnd: <span class="SCst">Win32</span>.<span class="SCst">HWND</span>, pMarInset: *<span class="SCst">Gui</span>.<span class="SCst">MARGINS</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3938,8 +3853,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onFocusEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FocusEvent">FocusEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onFocusEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FocusEvent">FocusEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3951,8 +3865,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onKeyEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_KeyEvent">KeyEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onKeyEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_KeyEvent">KeyEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3964,8 +3877,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3977,8 +3889,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3990,8 +3901,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onTimerEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_TimerEvent">TimerEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onTimerEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_TimerEvent">TimerEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4003,8 +3913,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, content: <span class="STpe">string</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, content: <span class="STpe">string</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBox">EditBox</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4017,8 +3926,7 @@
 </table>
 </p>
 <p>Delete selected text. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">deleteSelection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">deleteSelection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4031,8 +3939,7 @@
 </table>
 </p>
 <p>Get the associated text. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getText</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">string</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getText</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4045,8 +3952,7 @@
 </table>
 </p>
 <p>Select all text. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">selectAll</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">selectAll</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4059,8 +3965,7 @@
 </table>
 </p>
 <p>Set the editbox form. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setForm</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, form: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBoxForm">EditBoxForm</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setForm</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, form: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBoxForm">EditBoxForm</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4073,8 +3978,7 @@
 </table>
 </p>
 <p>Editbox will edit floating points. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setInputF64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min = -<span class="SCst">Swag</span>.<span class="SCst">F64</span>.<span class="SCst">Max</span>, max = <span class="SCst">Swag</span>.<span class="SCst">F64</span>.<span class="SCst">Max</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setInputF64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min = -<span class="SCst">Swag</span>.<span class="SCst">F64</span>.<span class="SCst">Max</span>, max = <span class="SCst">Swag</span>.<span class="SCst">F64</span>.<span class="SCst">Max</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4087,8 +3991,7 @@
 </table>
 </p>
 <p>Editbox will edit signed integers. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setInputS64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min = <span class="SCst">Swag</span>.<span class="SCst">S64</span>.<span class="SCst">Min</span>, max = <span class="SCst">Swag</span>.<span class="SCst">S64</span>.<span class="SCst">Max</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setInputS64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min = <span class="SCst">Swag</span>.<span class="SCst">S64</span>.<span class="SCst">Min</span>, max = <span class="SCst">Swag</span>.<span class="SCst">S64</span>.<span class="SCst">Max</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4101,8 +4004,7 @@
 </table>
 </p>
 <p>Editbox will edit unsigned integers. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setInputU64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min = <span class="SNum">0</span>'<span class="STpe">u64</span>, max = <span class="SCst">Swag</span>.<span class="SCst">U64</span>.<span class="SCst">Max</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setInputU64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min = <span class="SNum">0</span>'<span class="STpe">u64</span>, max = <span class="SCst">Swag</span>.<span class="SCst">U64</span>.<span class="SCst">Max</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4115,8 +4017,7 @@
 </table>
 </p>
 <p>Set the editbox note. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setNote</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, note: <span class="STpe">string</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setNote</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, note: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4129,8 +4030,7 @@
 </table>
 </p>
 <p>Set current selection. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setSelection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, start: <span class="STpe">u64</span>, end: <span class="STpe">u64</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setSelection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, start: <span class="STpe">u64</span>, end: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4143,8 +4043,7 @@
 </table>
 </p>
 <p>Set the editbox content. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setText</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, str: <span class="STpe">string</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setText</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, str: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4157,8 +4056,7 @@
 </table>
 </p>
 <p>Set the editbox content, but do not notify change. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setTextSilent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, str: <span class="STpe">string</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setTextSilent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, str: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4331,8 +4229,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4345,8 +4242,7 @@
 </table>
 </p>
 <p>Create the popup list, but do not display it. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, text: <span class="STpe">string</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, flags: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBoxFlags">EditBoxFlags</a></span> = <span class="SCst">Zero</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditCtrl">EditCtrl</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, text: <span class="STpe">string</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, flags: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditBoxFlags">EditBoxFlags</a></span> = <span class="SCst">Zero</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditCtrl">EditCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4415,8 +4311,7 @@
 </table>
 </p>
 <p>Creates the message box. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createMultiLine</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, heightEdit = <span class="SNum">150</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditDlg">EditDlg</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createMultiLine</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, heightEdit = <span class="SNum">150</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditDlg">EditDlg</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4429,8 +4324,7 @@
 </table>
 </p>
 <p>Creates the message box. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createSingleLine</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditDlg">EditDlg</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createSingleLine</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EditDlg">EditDlg</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4443,8 +4337,7 @@
 </table>
 </p>
 <p>Get the text. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getText</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">String</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getText</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">String</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4457,8 +4350,7 @@
 </table>
 </p>
 <p>Associate a message above the editbox. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMessage</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, message: <span class="STpe">string</span>, height: <span class="STpe">s32</span> = <span class="SNum">40</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMessage</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, message: <span class="STpe">string</span>, height: <span class="STpe">s32</span> = <span class="SNum">40</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4471,8 +4363,7 @@
 </table>
 </p>
 <p>Set the text. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setText</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, text: <span class="STpe">string</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setText</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, text: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4515,8 +4406,7 @@
 </table>
 </p>
 <p>Create the popup list, but do not display it. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, kind: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EmbInfoCtrlKind">EmbInfoCtrlKind</a></span>, height = <span class="SNum">40</span>, top = <span class="SKwd">true</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EmbInfoCtrl">EmbInfoCtrl</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, kind: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EmbInfoCtrlKind">EmbInfoCtrlKind</a></span>, height = <span class="SNum">40</span>, top = <span class="SKwd">true</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EmbInfoCtrl">EmbInfoCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4593,9 +4483,8 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">create</span>()-&gt;*<span class="SCst">T</span>
-<span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">create</span>(kind: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EventKind">EventKind</a></span>)-&gt;*<span class="SCst">T</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">create</span>()-&gt;*<span class="SCst">T</span>
+<span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">create</span>(kind: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EventKind">EventKind</a></span>)-&gt;*<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4843,8 +4732,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onDestroyEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_DestroyEvent">DestroyEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onDestroyEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_DestroyEvent">DestroyEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4857,8 +4745,7 @@
 </table>
 </p>
 <p>Creates the message box. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, opt: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FileDlgOptions">FileDlgOptions</a></span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FileDlg">FileDlg</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, opt: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FileDlgOptions">FileDlgOptions</a></span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FileDlg">FileDlg</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4871,8 +4758,7 @@
 </table>
 </p>
 <p>Get the first selection. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSelectedName</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">String</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSelectedName</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">String</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4885,8 +4771,7 @@
 </table>
 </p>
 <p>Get all selections. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSelectedNames</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Core</span>.<span class="SCst">String</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSelectedNames</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="SCst">Core</span>.<span class="SCst">String</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5142,8 +5027,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5155,8 +5039,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPostPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPostPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5168,8 +5051,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPrePaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPrePaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5181,8 +5063,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5194,8 +5075,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">createView</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, hook: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HookEvent">HookEvent</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">T</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">createView</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, hook: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HookEvent">HookEvent</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5208,8 +5088,7 @@
 </table>
 </p>
 <p>Set the frame wnd flags. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFrameFlags</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, add = <span class="SCst"><a href="#Gui_FrameWndFlags">FrameWndFlags</a></span>.<span class="SCst">Zero</span>, remove = <span class="SCst"><a href="#Gui_FrameWndFlags">FrameWndFlags</a></span>.<span class="SCst">Zero</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFrameFlags</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, add = <span class="SCst"><a href="#Gui_FrameWndFlags">FrameWndFlags</a></span>.<span class="SCst">Zero</span>, remove = <span class="SCst"><a href="#Gui_FrameWndFlags">FrameWndFlags</a></span>.<span class="SCst">Zero</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5222,8 +5101,7 @@
 </table>
 </p>
 <p>Set the frame wnd form. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFrameForm</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, form: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWndForm">FrameWndForm</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFrameForm</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, form: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameWndForm">FrameWndForm</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5235,8 +5113,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setView</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, what: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setView</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, what: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5416,8 +5293,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5430,8 +5306,7 @@
 </table>
 </p>
 <p>Recompute layout of all childs. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">computeLayout</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">computeLayout</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5444,8 +5319,7 @@
 </table>
 </p>
 <p>Create a layout control. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, numColumns: <span class="STpe">s32</span>, numRows: <span class="STpe">s32</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_GridLayoutCtrl">GridLayoutCtrl</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, numColumns: <span class="STpe">s32</span>, numRows: <span class="STpe">s32</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_GridLayoutCtrl">GridLayoutCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5458,8 +5332,7 @@
 </table>
 </p>
 <p>Set the wnd associated with the given <span class="code-inline">col</span> and <span class="code-inline">row</span>. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setColRowChild</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, child: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, col: <span class="STpe">s32</span>, row: <span class="STpe">s32</span>, spanH: <span class="STpe">s32</span> = <span class="SNum">1</span>, spanV: <span class="STpe">s32</span> = <span class="SNum">1</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setColRowChild</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, child: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, col: <span class="STpe">s32</span>, row: <span class="STpe">s32</span>, spanH: <span class="STpe">s32</span> = <span class="SNum">1</span>, spanV: <span class="STpe">s32</span> = <span class="SNum">1</span>)</span></div>
 <p> Window can cover multiple columns and rows. </p>
 <p>
 <table class="api-item">
@@ -5473,8 +5346,7 @@
 </table>
 </p>
 <p>Set size, in pixel, of a given column. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setColSize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, col: <span class="STpe">s32</span>, size: <span class="STpe">f32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setColSize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, col: <span class="STpe">s32</span>, size: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5487,8 +5359,7 @@
 </table>
 </p>
 <p>Set size, in pixel, of a given row. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRowSize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, row: <span class="STpe">s32</span>, size: <span class="STpe">f32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRowSize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, row: <span class="STpe">s32</span>, size: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5654,8 +5525,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5667,8 +5537,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5680,8 +5549,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">paintItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, bc: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintContext">PaintContext</a></span>, item: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HeaderItem">HeaderItem</a></span>, idx: <span class="STpe">u32</span>, x: <span class="STpe">f32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">paintItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, bc: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintContext">PaintContext</a></span>, item: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HeaderItem">HeaderItem</a></span>, idx: <span class="STpe">u32</span>, x: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5694,8 +5562,7 @@
 </table>
 </p>
 <p>Add a new view. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, tabName: <span class="STpe">string</span>, width = <span class="SNum">100</span>'<span class="STpe">f32</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HeaderItem">HeaderItem</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, tabName: <span class="STpe">string</span>, width = <span class="SNum">100</span>'<span class="STpe">f32</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HeaderItem">HeaderItem</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5707,8 +5574,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Header">Header</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Header">Header</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5721,8 +5587,7 @@
 </table>
 </p>
 <p>Returns the given item, by index. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HeaderItem">HeaderItem</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HeaderItem">HeaderItem</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5735,8 +5600,7 @@
 </table>
 </p>
 <p>Returns the given item, by column. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getItemByCol</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, column: <span class="STpe">u32</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HeaderItem">HeaderItem</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getItemByCol</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, column: <span class="STpe">u32</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HeaderItem">HeaderItem</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5749,8 +5613,7 @@
 </table>
 </p>
 <p>Get an item position by index. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getItemPosition</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>)-&gt;<span class="STpe">f32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getItemPosition</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5763,8 +5626,7 @@
 </table>
 </p>
 <p>Get an item position by column. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getItemPositionByCol</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, column: <span class="STpe">u32</span>)-&gt;<span class="STpe">f32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getItemPositionByCol</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, column: <span class="STpe">u32</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5777,8 +5639,7 @@
 </table>
 </p>
 <p>Get an item width by index. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getItemWidth</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>)-&gt;<span class="STpe">f32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getItemWidth</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5791,8 +5652,7 @@
 </table>
 </p>
 <p>Get an item width by column. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getItemWidthByCol</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, column: <span class="STpe">u32</span>)-&gt;<span class="STpe">f32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getItemWidthByCol</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, column: <span class="STpe">u32</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5805,8 +5665,7 @@
 </table>
 </p>
 <p>Get the header total width. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTotalItemsWidth</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTotalItemsWidth</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5819,8 +5678,7 @@
 </table>
 </p>
 <p>Set an item width by index. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setItemWidth</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>, width: <span class="STpe">f32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setItemWidth</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>, width: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5833,8 +5691,7 @@
 </table>
 </p>
 <p>Set an item width by column. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setItemWidthByCol</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, column: <span class="STpe">u32</span>, width: <span class="STpe">f32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setItemWidthByCol</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, column: <span class="STpe">u32</span>, width: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6193,8 +6050,7 @@
 </table>
 </p>
 <p>Set icon to invalid. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6207,8 +6063,7 @@
 </table>
 </p>
 <p>Initialize the icon from an image list. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">from</span>(imageList: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span>, index: <span class="STpe">s32</span>, sizeX: <span class="STpe">f32</span> = <span class="SNum">0</span>, sizeY: <span class="STpe">f32</span> = <span class="SNum">0</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">from</span>(imageList: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span>, index: <span class="STpe">s32</span>, sizeX: <span class="STpe">f32</span> = <span class="SNum">0</span>, sizeY: <span class="STpe">f32</span> = <span class="SNum">0</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6220,8 +6075,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isValid</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isValid</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6233,8 +6087,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6247,8 +6100,7 @@
 </table>
 </p>
 <p>Paint icon at the given position. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">paint</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, painter: *<span class="SCst">Pixel</span>.<span class="SCst">Painter</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, color: <span class="SCst">Pixel</span>.<span class="SCst">Color</span> = <span class="SCst">Argb</span>.<span class="SCst">White</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">paint</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, painter: *<span class="SCst">Pixel</span>.<span class="SCst">Painter</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, color: <span class="SCst">Pixel</span>.<span class="SCst">Color</span> = <span class="SCst">Argb</span>.<span class="SCst">White</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6261,8 +6113,7 @@
 </table>
 </p>
 <p>Initialize the icon from an image list. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, imageList: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span>, index: <span class="STpe">s32</span>, sizeX: <span class="STpe">f32</span> = <span class="SNum">0</span>, sizeY: <span class="STpe">f32</span> = <span class="SNum">0</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, imageList: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span>, index: <span class="STpe">s32</span>, sizeX: <span class="STpe">f32</span> = <span class="SNum">0</span>, sizeY: <span class="STpe">f32</span> = <span class="SNum">0</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6340,8 +6191,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onComputeStateEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onComputeStateEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6354,8 +6204,7 @@
 </table>
 </p>
 <p>Add a new checkable button. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addCheckableItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span>, btnId: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addCheckableItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span>, btnId: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6368,8 +6217,7 @@
 </table>
 </p>
 <p>Add a new checkable button. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addCheckableToggleItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span>, btnId: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addCheckableToggleItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span>, btnId: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6382,8 +6230,7 @@
 </table>
 </p>
 <p>Add a new button. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span>, btnId: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, iconBtnFlags = <span class="SCst"><a href="#Gui_IconButtonFlags">IconButtonFlags</a></span>.<span class="SCst">Zero</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span>, btnId: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, iconBtnFlags = <span class="SCst"><a href="#Gui_IconButtonFlags">IconButtonFlags</a></span>.<span class="SCst">Zero</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6395,8 +6242,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, iconSize: <span class="STpe">f32</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconBar">IconBar</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, iconSize: <span class="STpe">f32</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconBar">IconBar</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6409,8 +6255,7 @@
 </table>
 </p>
 <p>Change bar flags. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setIconBarFlags</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, add = <span class="SCst"><a href="#Gui_IconBarFlags">IconBarFlags</a></span>.<span class="SCst">Zero</span>, remove = <span class="SCst"><a href="#Gui_IconBarFlags">IconBarFlags</a></span>.<span class="SCst">Zero</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setIconBarFlags</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, add = <span class="SCst"><a href="#Gui_IconBarFlags">IconBarFlags</a></span>.<span class="SCst">Zero</span>, remove = <span class="SCst"><a href="#Gui_IconBarFlags">IconBarFlags</a></span>.<span class="SCst">Zero</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6536,8 +6381,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hidePopup</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hidePopup</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6549,8 +6393,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onApplyStateEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onApplyStateEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6562,8 +6405,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onDestroyEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_DestroyEvent">DestroyEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onDestroyEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_DestroyEvent">DestroyEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6575,8 +6417,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onHookEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onHookEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6588,8 +6429,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6601,8 +6441,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6614,8 +6453,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButton">IconButton</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6628,8 +6466,7 @@
 </table>
 </p>
 <p>Set the check state of the button (if the button is checkable). </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setCheck</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, checked: <span class="STpe">bool</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setCheck</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, checked: <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6642,8 +6479,7 @@
 </table>
 </p>
 <p>Set the button form. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setForm</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, form: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButtonForm">IconButtonForm</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setForm</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, form: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IconButtonForm">IconButtonForm</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6868,8 +6704,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">countX</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">s32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">countX</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6881,8 +6716,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">countY</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">s32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">countY</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6895,8 +6729,7 @@
 </table>
 </p>
 <p>Initialize image list. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, texture: <span class="SCst">Pixel</span>.<span class="SCst">Texture</span>, fsx: <span class="STpe">s32</span> = <span class="SNum">0</span>, fsy: <span class="STpe">s32</span> = <span class="SNum">0</span>, cpt: <span class="STpe">s32</span> = <span class="SNum">0</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, texture: <span class="SCst">Pixel</span>.<span class="SCst">Texture</span>, fsx: <span class="STpe">s32</span> = <span class="SNum">0</span>, fsy: <span class="STpe">s32</span> = <span class="SNum">0</span>, cpt: <span class="STpe">s32</span> = <span class="SNum">0</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6967,8 +6800,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6980,8 +6812,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6993,8 +6824,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageRect">ImageRect</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageRect">ImageRect</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7007,8 +6837,7 @@
 </table>
 </p>
 <p>Load and set movie. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFile</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fileName: <span class="STpe">string</span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFile</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fileName: <span class="STpe">string</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7021,14 +6850,11 @@
 </table>
 </p>
 <p>Associate image. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setImage</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, image: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setImage</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, image: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span>)</span></div>
 <p>Associate image. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setImage</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, image: <span class="SCst">Pixel</span>.<span class="SCst">Image</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setImage</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, image: <span class="SCst">Pixel</span>.<span class="SCst">Image</span>)</span></div>
 <p>Associate image. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setImage</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, image: <span class="SCst">Pixel</span>.<span class="SCst">Texture</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setImage</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, image: <span class="SCst">Pixel</span>.<span class="SCst">Texture</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7041,8 +6867,7 @@
 </table>
 </p>
 <p>Set movie as an image list. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMovie</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, image: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMovie</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, image: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7236,8 +7061,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7249,8 +7073,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Label">Label</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Label">Label</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7263,8 +7086,7 @@
 </table>
 </p>
 <p>Get the text. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getText</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">string</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getText</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7277,8 +7099,7 @@
 </table>
 </p>
 <p>Change the text. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setText</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, text: <span class="STpe">string</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setText</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, text: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7610,8 +7431,7 @@
 </table>
 </p>
 <p>Add one column in a multi columns list. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addColumn</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>, width: <span class="STpe">f32</span> = <span class="SNum">100</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addColumn</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>, width: <span class="STpe">f32</span> = <span class="SNum">100</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7624,8 +7444,7 @@
 </table>
 </p>
 <p>Clear all lines. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7638,8 +7457,7 @@
 </table>
 </p>
 <p>Collapse the given line. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">collapse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, line: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">collapse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, line: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7652,8 +7470,7 @@
 </table>
 </p>
 <p>Collapse all lines. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">collapseAll</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">collapseAll</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7666,8 +7483,7 @@
 </table>
 </p>
 <p>Compute global layout, once all lines have been added. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">computeLayout</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">computeLayout</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7680,11 +7496,9 @@
 </table>
 </p>
 <p>Add one new line. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, parentLine: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, parentLine: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span></span></div>
 <p>Add one line, and set first column. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {}, parentLine: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {}, parentLine: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7696,8 +7510,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createMultiColumns</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createMultiColumns</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7709,8 +7522,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createSimple</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createSimple</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListCtrl">ListCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7723,8 +7535,7 @@
 </table>
 </p>
 <p>Set the corresponding line visible. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ensureVisibleLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ensureVisibleLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7737,8 +7548,7 @@
 </table>
 </p>
 <p>Expand the given line. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">expand</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, line: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">expand</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, line: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7751,8 +7561,7 @@
 </table>
 </p>
 <p>Get all the checked lines. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getCheckedLines</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getCheckedLines</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7765,8 +7574,7 @@
 </table>
 </p>
 <p>Returns the first visible line index. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFirstVisibleLineIndex</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFirstVisibleLineIndex</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7779,8 +7587,7 @@
 </table>
 </p>
 <p>Get the line with the keyboard focus. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFocusLine</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFocusLine</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7793,8 +7600,7 @@
 </table>
 </p>
 <p>Returns the last visible line index. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getLastVisibleLineIndex</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getLastVisibleLineIndex</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7807,8 +7613,7 @@
 </table>
 </p>
 <p>Get a line by index. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7821,8 +7626,7 @@
 </table>
 </p>
 <p>Returns the number of lines in the list. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getLineCount</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getLineCount</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7835,8 +7639,7 @@
 </table>
 </p>
 <p>Get the height of one line. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getLineHeight</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getLineHeight</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7849,8 +7652,7 @@
 </table>
 </p>
 <p>Returns a selected line  Mostly for singlesel mode. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSelectedLine</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSelectedLine</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7863,8 +7665,7 @@
 </table>
 </p>
 <p>Get all the selected lines. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSelectedLines</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSelectedLines</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7877,8 +7678,7 @@
 </table>
 </p>
 <p>Returns. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isLineSelected</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isLineSelected</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7891,8 +7691,7 @@
 </table>
 </p>
 <p>Returns true if the line at the given index is selected. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isSelectedLine</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isSelectedLine</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7905,8 +7704,7 @@
 </table>
 </p>
 <p>Select of unselect the given line. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">selectLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>, select: <span class="STpe">bool</span> = <span class="SKwd">true</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">selectLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>, select: <span class="STpe">bool</span> = <span class="SKwd">true</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7919,8 +7717,7 @@
 </table>
 </p>
 <p>Select a range of lines. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">selectLines</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, start: <span class="STpe">u32</span>, end: <span class="STpe">u32</span>, select: <span class="STpe">bool</span> = <span class="SKwd">true</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">selectLines</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, start: <span class="STpe">u32</span>, end: <span class="STpe">u32</span>, select: <span class="STpe">bool</span> = <span class="SKwd">true</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7933,8 +7730,7 @@
 </table>
 </p>
 <p>Set the column width. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setColumnWidth</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>, width: <span class="STpe">f32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setColumnWidth</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>, width: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7947,8 +7743,7 @@
 </table>
 </p>
 <p>Set focus to the list. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFocus</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFocus</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7961,8 +7756,7 @@
 </table>
 </p>
 <p>Set the number of lines in a virtual list. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVirtualCount</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, count: <span class="STpe">u32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVirtualCount</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, count: <span class="STpe">u32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7975,11 +7769,9 @@
 </table>
 </p>
 <p>Sort list as before. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>Sort the list by a given column  If <span class="code-inline">persistent</span> is true, then the sorted column will be displayed in the  header (if it exists). </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, column: <span class="STpe">u32</span>, descentOrder = <span class="SKwd">false</span>, persistent = <span class="SKwd">false</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, column: <span class="STpe">u32</span>, descentOrder = <span class="SKwd">false</span>, persistent = <span class="SKwd">false</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7992,8 +7784,7 @@
 </table>
 </p>
 <p>Collapse the given line. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toggleExpand</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, line: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toggleExpand</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, line: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8006,8 +7797,7 @@
 </table>
 </p>
 <p>Unselect all lines. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unselectAll</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unselectAll</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8214,8 +8004,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">canExpand</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">canExpand</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8228,8 +8017,7 @@
 </table>
 </p>
 <p>Get an item by index. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, column: <span class="STpe">u32</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListItem">ListItem</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, column: <span class="STpe">u32</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListItem">ListItem</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8241,8 +8029,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isParentOf</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isParentOf</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListLine">ListLine</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8255,8 +8042,7 @@
 </table>
 </p>
 <p>Initialize a given column item. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, column: <span class="STpe">u32</span>, name: <span class="STpe">string</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListItem">ListItem</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, column: <span class="STpe">u32</span>, name: <span class="STpe">string</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ListItem">ListItem</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8321,8 +8107,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onKeyEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_KeyEvent">KeyEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onKeyEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_KeyEvent">KeyEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8334,8 +8119,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8347,8 +8131,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8360,8 +8143,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8504,8 +8286,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8517,8 +8298,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8530,8 +8310,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onTimerEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_TimerEvent">TimerEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onTimerEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_TimerEvent">TimerEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8544,11 +8323,9 @@
 </table>
 </p>
 <p>Add a new item. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>)</span></div>
 <p>Add a new item. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {}, rightName: <span class="STpe">string</span> = <span class="SKwd">null</span>, disabled = <span class="SKwd">false</span>, checked = <span class="SKwd">false</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {}, rightName: <span class="STpe">string</span> = <span class="SKwd">null</span>, disabled = <span class="SKwd">false</span>, checked = <span class="SKwd">false</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8561,11 +8338,9 @@
 </table>
 </p>
 <p>Add a new popup item. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addPopup</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, popup: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span>, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addPopup</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, popup: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span>, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>)</span></div>
 <p>Add a new popup item. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addPopup</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>, popup: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addPopup</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>, popup: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8578,8 +8353,7 @@
 </table>
 </p>
 <p>Add a separator. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addSeparator</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addSeparator</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8591,8 +8365,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">computeLayoutPopup</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">computeLayoutPopup</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8604,8 +8377,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createBar</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, pos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, owner: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createBar</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, pos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, owner: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8617,8 +8389,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createPopup</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, owner: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createPopup</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, owner: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MenuCtrl">MenuCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8631,8 +8402,7 @@
 </table>
 </p>
 <p>Make the popup menu modal  Will return the selected id. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">doModal</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, surfacePos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>, pos = <span class="SCst"><a href="#Gui_PopupPos">PopupPos</a></span>.<span class="SCst">TopLeft</span>, autoDestroy: <span class="STpe">bool</span> = <span class="SKwd">false</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">doModal</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, surfacePos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>, pos = <span class="SCst"><a href="#Gui_PopupPos">PopupPos</a></span>.<span class="SCst">TopLeft</span>, autoDestroy: <span class="STpe">bool</span> = <span class="SKwd">false</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8644,8 +8414,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">updateState</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">updateState</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8750,8 +8519,7 @@
 </table>
 </p>
 <p>Message box to <span class="code-inline">confirm</span> something. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">confirm</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, question: <span class="STpe">string</span> = <span class="SKwd">null</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">confirm</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, question: <span class="STpe">string</span> = <span class="SKwd">null</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8764,8 +8532,7 @@
 </table>
 </p>
 <p>Creates the message box. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MessageDlg">MessageDlg</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MessageDlg">MessageDlg</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8778,8 +8545,7 @@
 </table>
 </p>
 <p>Display the box, centered, and returns the id of the pressed button. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">doModal</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>)-&gt;<span class="STpe">string</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">doModal</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8792,8 +8558,7 @@
 </table>
 </p>
 <p>Message box to show an error. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">error</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, error: <span class="STpe">string</span>, message: <span class="STpe">string</span> = <span class="SKwd">null</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">error</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, error: <span class="STpe">string</span>, message: <span class="STpe">string</span> = <span class="SKwd">null</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8806,8 +8571,7 @@
 </table>
 </p>
 <p>Message box with a <span class="code-inline">ok</span>. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ok</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ok</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8820,8 +8584,7 @@
 </table>
 </p>
 <p>Message box with a <span class="code-inline">ok</span> and <span class="code-inline">cancel</span> button. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">okCancel</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, defaultId = <span class="SCst"><a href="#Gui_Dialog">Dialog</a></span>.<span class="SCst">BtnCancel</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">okCancel</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, defaultId = <span class="SCst"><a href="#Gui_Dialog">Dialog</a></span>.<span class="SCst">BtnCancel</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8834,8 +8597,7 @@
 </table>
 </p>
 <p>Set big icon. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setIcon</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span>, color: <span class="SCst">Pixel</span>.<span class="SCst">Color</span> = <span class="SCst">Argb</span>.<span class="SCst">Zero</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setIcon</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span>, color: <span class="SCst">Pixel</span>.<span class="SCst">Color</span> = <span class="SCst">Argb</span>.<span class="SCst">Zero</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8848,8 +8610,7 @@
 </table>
 </p>
 <p>Set big icon color (icon must has been set before). </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setIconColor</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, color: <span class="SCst">Pixel</span>.<span class="SCst">Color</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setIconColor</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, color: <span class="SCst">Pixel</span>.<span class="SCst">Color</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8862,8 +8623,7 @@
 </table>
 </p>
 <p>Message box with a <span class="code-inline">yes</span> and <span class="code-inline">no</span> button. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">yesNo</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, title: <span class="STpe">string</span> = <span class="SKwd">null</span>, defaultId = <span class="SCst"><a href="#Gui_Dialog">Dialog</a></span>.<span class="SCst">BtnNo</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">yesNo</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, title: <span class="STpe">string</span> = <span class="SKwd">null</span>, defaultId = <span class="SCst"><a href="#Gui_Dialog">Dialog</a></span>.<span class="SCst">BtnNo</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8876,8 +8636,7 @@
 </table>
 </p>
 <p>Message box with a <span class="code-inline">yes</span> and <span class="code-inline">no</span> button. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">yesNoCancel</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, defaultId = <span class="SCst"><a href="#Gui_Dialog">Dialog</a></span>.<span class="SCst">BtnCancel</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">yesNoCancel</span>(from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, message: <span class="STpe">string</span>, defaultId = <span class="SCst"><a href="#Gui_Dialog">Dialog</a></span>.<span class="SCst">BtnCancel</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {})-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9069,8 +8828,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9083,8 +8841,7 @@
 </table>
 </p>
 <p>Returns true if the movie has valid content. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isValid</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isValid</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9097,8 +8854,7 @@
 </table>
 </p>
 <p>Set/Reset pause state. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pause</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, state: <span class="STpe">bool</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pause</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, state: <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9111,11 +8867,9 @@
 </table>
 </p>
 <p>Associate an image list. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, imageList: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, imageList: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ImageList">ImageList</a></span>)</span></div>
 <p>Associate a filename. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fileName: <span class="STpe">string</span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fileName: <span class="STpe">string</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9128,8 +8882,7 @@
 </table>
 </p>
 <p>Set the current video frame. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFrameIndex</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">s32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFrameIndex</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9142,8 +8895,7 @@
 </table>
 </p>
 <p>Update timing and change frames. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, dt: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, dt: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9327,11 +9079,9 @@
 </table>
 </p>
 <p>Draw to an image by calling the closure. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">draw</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, call: <span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Application">Application</a></span>, *<span class="SCst">Pixel</span>.<span class="SCst">Painter</span>))-&gt;<span class="SCst">Pixel</span>.<span class="SCst">Image</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">draw</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, call: <span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Application">Application</a></span>, *<span class="SCst">Pixel</span>.<span class="SCst">Painter</span>))-&gt;<span class="SCst">Pixel</span>.<span class="SCst">Image</span></span></div>
 <p>One shot paint to image. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">draw</span>(w: <span class="STpe">s32</span>, h: <span class="STpe">s32</span>, call: <span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Application">Application</a></span>, *<span class="SCst">Pixel</span>.<span class="SCst">Painter</span>))-&gt;<span class="SCst">Pixel</span>.<span class="SCst">Image</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">draw</span>(w: <span class="STpe">s32</span>, h: <span class="STpe">s32</span>, call: <span class="SKwd">closure</span>(*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Application">Application</a></span>, *<span class="SCst">Pixel</span>.<span class="SCst">Painter</span>))-&gt;<span class="SCst">Pixel</span>.<span class="SCst">Image</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9344,8 +9094,7 @@
 </table>
 </p>
 <p>First init the PaintImage instance. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, w: <span class="STpe">s32</span>, h: <span class="STpe">s32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, w: <span class="STpe">s32</span>, h: <span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9433,8 +9182,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9446,8 +9194,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9460,8 +9207,7 @@
 </table>
 </p>
 <p>Add a color. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addColor</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, c: <span class="SCst">Pixel</span>.<span class="SCst">Color</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addColor</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, c: <span class="SCst">Pixel</span>.<span class="SCst">Color</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9474,8 +9220,7 @@
 </table>
 </p>
 <p>Add a range of changing <span class="code-inline">hue</span>. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addHueColors</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, numColors: <span class="STpe">s32</span>, sat: <span class="STpe">f32</span>, lum: <span class="STpe">f32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addHueColors</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, numColors: <span class="STpe">s32</span>, sat: <span class="STpe">f32</span>, lum: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9488,8 +9233,7 @@
 </table>
 </p>
 <p>Add a range of changing <span class="code-inline">luminance</span>. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addLumColors</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, numColors: <span class="STpe">s32</span>, base: <span class="SCst">Pixel</span>.<span class="SCst">Color</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addLumColors</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, numColors: <span class="STpe">s32</span>, base: <span class="SCst">Pixel</span>.<span class="SCst">Color</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9502,8 +9246,7 @@
 </table>
 </p>
 <p>Add a range of changing <span class="code-inline">saturation</span>. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addSatColors</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, numColors: <span class="STpe">s32</span>, base: <span class="SCst">Pixel</span>.<span class="SCst">Color</span>, lum: <span class="STpe">f32</span> = <span class="SNum">0.5</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addSatColors</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, numColors: <span class="STpe">s32</span>, base: <span class="SCst">Pixel</span>.<span class="SCst">Color</span>, lum: <span class="STpe">f32</span> = <span class="SNum">0.5</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9515,8 +9258,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PalettePicker">PalettePicker</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PalettePicker">PalettePicker</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9616,8 +9358,7 @@
 </table>
 </p>
 <p>Add a new item in the list. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {}, userData0: *<span class="STpe">void</span> = <span class="SKwd">null</span>, userData1: *<span class="STpe">void</span> = <span class="SKwd">null</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span> = {}, userData0: *<span class="STpe">void</span> = <span class="SKwd">null</span>, userData1: *<span class="STpe">void</span> = <span class="SKwd">null</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9630,8 +9371,7 @@
 </table>
 </p>
 <p>Add a separator. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addSeparator</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addSeparator</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9644,8 +9384,7 @@
 </table>
 </p>
 <p>Create the popup list, but do not display it. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(owner: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PopupListCtrl">PopupListCtrl</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(owner: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PopupListCtrl">PopupListCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9658,8 +9397,7 @@
 </table>
 </p>
 <p>Show popup. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">show</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, width: <span class="STpe">f32</span> = <span class="SNum">10</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">show</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, width: <span class="STpe">f32</span> = <span class="SNum">10</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9737,8 +9475,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onFocusEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FocusEvent">FocusEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onFocusEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FocusEvent">FocusEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9750,8 +9487,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9763,8 +9499,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9908,8 +9643,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9921,8 +9655,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ProgressBar">ProgressBar</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ProgressBar">ProgressBar</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9935,8 +9668,7 @@
 </table>
 </p>
 <p>Set the progression in [0..1] range. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setProgression</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, prg: <span class="STpe">f32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setProgression</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, prg: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10078,8 +9810,7 @@
 </p>
 <div class="api-additional-infos"><b>Usage</b>: all 
 </div>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Gui_PropertyList_Category">Category</a></span>(name: <span class="STpe">string</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Gui_PropertyList_Category">Category</a></span>(name: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10093,8 +9824,7 @@
 </p>
 <div class="api-additional-infos"><b>Usage</b>: all 
 </div>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Gui_PropertyList_Description">Description</a></span>(desc: <span class="STpe">string</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Gui_PropertyList_Description">Description</a></span>(desc: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10108,8 +9838,7 @@
 </p>
 <div class="api-additional-infos"><b>Usage</b>: all 
 </div>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Gui_PropertyList_EditSlider">EditSlider</a></span>(min: <span class="STpe">f32</span>, max: <span class="STpe">f32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Gui_PropertyList_EditSlider">EditSlider</a></span>(min: <span class="STpe">f32</span>, max: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10123,8 +9852,7 @@
 </p>
 <div class="api-additional-infos"><b>Usage</b>: all 
 </div>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Gui_PropertyList_Name">Name</a></span>(name: <span class="STpe">string</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Gui_PropertyList_Name">Name</a></span>(name: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10138,8 +9866,7 @@
 </p>
 <div class="api-additional-infos"><b>Usage</b>: all 
 </div>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Gui_PropertyList_SubCategory">SubCategory</a></span>(name: <span class="STpe">string</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Gui_PropertyList_SubCategory">SubCategory</a></span>(name: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10152,8 +9879,7 @@
 </table>
 </p>
 <p>Add a new struct to display. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, val: <span class="STpe">any</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, val: <span class="STpe">any</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10166,8 +9892,7 @@
 </table>
 </p>
 <p>Creates a new PropertyList instance. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PropertyList">PropertyList</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PropertyList">PropertyList</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10180,8 +9905,7 @@
 </table>
 </p>
 <p>Refresh displayed values. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">refresh</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">refresh</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10194,8 +9918,7 @@
 </table>
 </p>
 <p>Show hidden content depending on the input filter. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setStringFilter</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, filter: <span class="STpe">string</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setStringFilter</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, filter: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10252,8 +9975,7 @@
 </table>
 </p>
 <p>Add a new struct to display. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, val: <span class="STpe">any</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, val: <span class="STpe">any</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10266,8 +9988,7 @@
 </table>
 </p>
 <p>Creates a new PropertyList instance. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PropertyListCtrl">PropertyListCtrl</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PropertyListCtrl">PropertyListCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10428,8 +10149,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10441,8 +10161,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10454,8 +10173,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PushButton">PushButton</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PushButton">PushButton</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10563,8 +10281,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10576,8 +10293,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10589,8 +10305,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RadioButton">RadioButton</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RadioButton">RadioButton</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10603,8 +10318,7 @@
 </table>
 </p>
 <p>Set the checked state. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setChecked</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, checked: <span class="STpe">bool</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setChecked</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, checked: <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11370,8 +11084,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addMapping</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">Key</span>, mdf: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span>, cmd: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCommand">RichEditCommand</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addMapping</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">Key</span>, mdf: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span>, cmd: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCommand">RichEditCommand</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11384,8 +11097,7 @@
 </table>
 </p>
 <p>Append a text with a given style. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addText</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, text: <span class="STpe">string</span>, txtStyle: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditStyleRef">RichEditStyleRef</a></span> = <span class="SNum">0</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addText</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, text: <span class="STpe">string</span>, txtStyle: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditStyleRef">RichEditStyleRef</a></span> = <span class="SNum">0</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11397,8 +11109,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">canRedo</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">canRedo</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11410,8 +11121,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">canUndo</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">canUndo</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11424,8 +11134,7 @@
 </table>
 </p>
 <p>Simulate a keyboard character pressed. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">charPressed</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">Key</span>, ch: <span class="STpe">rune</span>, mdf: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">charPressed</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">Key</span>, ch: <span class="STpe">rune</span>, mdf: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11437,8 +11146,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">checkSelection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">checkSelection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11451,8 +11159,7 @@
 </table>
 </p>
 <p>Clear content. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11464,8 +11171,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clearMapping</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clearMapping</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11477,8 +11183,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clearSelection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clearSelection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11490,8 +11195,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clearUndo</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clearUndo</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11503,8 +11207,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">copyToClipboard</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">copyToClipboard</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11516,8 +11219,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11530,8 +11232,7 @@
 </table>
 </p>
 <p>Delete a given text at the start of each selected line. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">deleteBegLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, txt: <span class="STpe">string</span>, lastLine: <span class="STpe">bool</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">deleteBegLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, txt: <span class="STpe">string</span>, lastLine: <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11543,8 +11244,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">deleteLeft</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">deleteLeft</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11556,8 +11256,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">deleteLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">deleteLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11569,8 +11268,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">deleteRight</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">deleteRight</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11582,8 +11280,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">deleteSelection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">deleteSelection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11595,8 +11292,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">deleteWordLeft</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">deleteWordLeft</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11608,8 +11304,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">deleteWordRight</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">deleteWordRight</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11621,8 +11316,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ensureCaretIsVisible</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, center = <span class="SKwd">false</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ensureCaretIsVisible</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, center = <span class="SKwd">false</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11634,8 +11328,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ensureCursorIsVisible</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>, center: <span class="STpe">bool</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ensureCursorIsVisible</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>, center: <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11648,8 +11341,7 @@
 </table>
 </p>
 <p>Evaluate the rendering size. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">evaluateSize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;{w: <span class="STpe">f32</span>, h: <span class="STpe">f32</span>}</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">evaluateSize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;{w: <span class="STpe">f32</span>, h: <span class="STpe">f32</span>}</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11662,8 +11354,7 @@
 </table>
 </p>
 <p>Execute a command. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">executeCommand</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cmd: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCommand">RichEditCommand</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">executeCommand</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cmd: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCommand">RichEditCommand</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11675,8 +11366,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getBegSelection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getBegSelection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11688,8 +11378,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getCaretPos</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getCaretPos</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11701,8 +11390,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getCursorDisplayPos</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getCursorDisplayPos</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11714,8 +11402,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getCursorPosFromPoint</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pt: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getCursorPosFromPoint</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pt: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11727,8 +11414,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getEndSelection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getEndSelection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11740,8 +11426,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMappingCommand</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">Key</span>, mdf: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCommand">RichEditCommand</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMappingCommand</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">Key</span>, mdf: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCommand">RichEditCommand</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11754,8 +11439,7 @@
 </table>
 </p>
 <p>Get the rune at the given cursor pos. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getRune</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)-&gt;{char: <span class="STpe">rune</span>, style: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditStyleRef">RichEditStyleRef</a></span>}</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getRune</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)-&gt;{char: <span class="STpe">rune</span>, style: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditStyleRef">RichEditStyleRef</a></span>}</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11767,8 +11451,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getRuneSize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, line: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>, i: <span class="STpe">u64</span>, x: <span class="STpe">f32</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getRuneSize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, line: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>, i: <span class="STpe">u64</span>, x: <span class="STpe">f32</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11781,8 +11464,7 @@
 </table>
 </p>
 <p>Get the selected text. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSelectedText</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">String</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSelectedText</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">String</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11794,8 +11476,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTabOffset</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">s32</span>, numBlanks: *<span class="STpe">s32</span> = <span class="SKwd">null</span>)-&gt;<span class="STpe">s32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTabOffset</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">s32</span>, numBlanks: *<span class="STpe">s32</span> = <span class="SKwd">null</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11808,8 +11489,7 @@
 </table>
 </p>
 <p>Get the full text. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getText</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">String</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getText</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">String</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11822,8 +11502,7 @@
 </table>
 </p>
 <p>Get the full text with the associated styles per character. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTextAndStyles</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;{text: <span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">rune</span>), styles: <span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">u8</span>)}</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTextAndStyles</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;{text: <span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">rune</span>), styles: <span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">u8</span>)}</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11835,8 +11514,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getXExtent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getXExtent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11849,8 +11527,7 @@
 </table>
 </p>
 <p>Insert text at the start of each selected line. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertBegLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, txt: <span class="STpe">string</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertBegLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, txt: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11863,8 +11540,7 @@
 </table>
 </p>
 <p>Insert a rune. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertRune</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, ch: <span class="STpe">rune</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertRune</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, ch: <span class="STpe">rune</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11877,11 +11553,9 @@
 </table>
 </p>
 <p>Insert a text with a given style. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertText</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, text: <span class="STpe">string</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertText</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, text: <span class="STpe">string</span>)</span></div>
 <p>Insert a text with a style per character. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertText</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, text: <span class="STpe">string</span>, txtStyles: <span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">u8</span>))</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertText</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, text: <span class="STpe">string</span>, txtStyles: <span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">u8</span>))</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11894,8 +11568,7 @@
 </table>
 </p>
 <p>Returns true if the rich edit is read only. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isReadOnly</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isReadOnly</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11907,8 +11580,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isSelectionEmpty</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isSelectionEmpty</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11921,8 +11593,7 @@
 </table>
 </p>
 <p>Simulate a keyboard pressed. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">keyPressed</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">Key</span>, mdf: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">keyPressed</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, key: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">Key</span>, mdf: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11935,8 +11606,7 @@
 </table>
 </p>
 <p>Lex the full text. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lexAll</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lexAll</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11948,8 +11618,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveCursorDown</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveCursorDown</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11961,8 +11630,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveCursorEndFile</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveCursorEndFile</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11974,8 +11642,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveCursorEndLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveCursorEndLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11987,8 +11654,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveCursorLeft</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveCursorLeft</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12000,8 +11666,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveCursorPageDown</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveCursorPageDown</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12013,8 +11678,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveCursorPageUp</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveCursorPageUp</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12026,8 +11690,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveCursorRight</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveCursorRight</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12039,8 +11702,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveCursorStartFile</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveCursorStartFile</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12052,8 +11714,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveCursorStartLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveCursorStartLine</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12065,8 +11726,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveCursorUp</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveCursorUp</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12078,8 +11738,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveCursorWordLeft</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveCursorWordLeft</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12091,8 +11750,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveCursorWordRight</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>, withSpace: <span class="STpe">bool</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveCursorWordRight</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>, withSpace: <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12104,8 +11762,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pasteFromClipboard</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pasteFromClipboard</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12117,8 +11774,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">popUndo</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">popUndo</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12130,8 +11786,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pushUndo</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pushUndo</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12143,8 +11798,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">redo</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">redo</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12156,8 +11810,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scrollLineDown</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scrollLineDown</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12169,8 +11822,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scrollLineUp</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scrollLineUp</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12182,8 +11834,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">selectAll</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">selectAll</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12195,8 +11846,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">selectWord</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">selectWord</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12208,8 +11858,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setCursorPos</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setCursorPos</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cp: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12221,8 +11870,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setDefaultMapping</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setDefaultMapping</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12234,8 +11882,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFocus</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFocus</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12248,8 +11895,7 @@
 </table>
 </p>
 <p>Set form. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setForm</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, form: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditForm">RichEditForm</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setForm</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, form: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditForm">RichEditForm</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12262,8 +11908,7 @@
 </table>
 </p>
 <p>Associate a lexer. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLexer</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, lex: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IRichEditLexer">IRichEditLexer</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLexer</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, lex: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_IRichEditLexer">IRichEditLexer</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12275,8 +11920,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRectangularSelection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, selRect: <span class="STpe">bool</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRectangularSelection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, selRect: <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12289,8 +11933,7 @@
 </table>
 </p>
 <p>Set richedit flags. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRichEdFlags</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, flags: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditFlags">RichEditFlags</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRichEdFlags</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, flags: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditFlags">RichEditFlags</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12302,8 +11945,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setSelection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, start: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>, end: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setSelection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, start: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>, end: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCursor">RichEditCursor</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12316,8 +11958,7 @@
 </table>
 </p>
 <p>Set the text content. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setText</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, text: <span class="STpe">string</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setText</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, text: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12329,8 +11970,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">undo</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">undo</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12454,8 +12094,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, linePrev: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>, line: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>, lineNext: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, linePrev: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>, line: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>, lineNext: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditLine">RichEditLine</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12467,8 +12106,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertRune</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, ed: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span>, ch: <span class="STpe">rune</span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertRune</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, ed: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span>, ch: <span class="STpe">rune</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12480,8 +12118,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setup</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, ed: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setup</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, ed: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditCtrl">RichEditCtrl</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12572,8 +12209,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditRuneStyle">RichEditRuneStyle</a></span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_RichEditRuneStyle">RichEditRuneStyle</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12923,8 +12559,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12936,8 +12571,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12949,8 +12583,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12962,8 +12595,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getClientScrollRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getClientScrollRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12976,8 +12608,7 @@
 </table>
 </p>
 <p>Get the current scroll position. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getScrollPos</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getScrollPos</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12990,10 +12621,8 @@
 </table>
 </p>
 <p>Set the current scroll position. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setScrollPos</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pt: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>)</span></code>
-</div>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setScrollPos</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setScrollPos</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pt: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setScrollPos</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13006,8 +12635,7 @@
 </table>
 </p>
 <p>Set the scroll size (window virtual size). </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setScrollSize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setScrollSize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13100,8 +12728,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSelectedRangeIndex</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSelectedRangeIndex</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13113,8 +12740,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmpty</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmpty</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13126,8 +12752,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isSelected</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isSelected</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13139,9 +12764,8 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13154,8 +12778,7 @@
 </table>
 </p>
 <p>Select the given index. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">select</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>, select: <span class="STpe">bool</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">select</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>, select: <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13168,8 +12791,7 @@
 </table>
 </p>
 <p>Unselect all. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unselectAll</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unselectAll</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13232,8 +12854,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>(<span class="SCst">T</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Gui_SigArray">SigArray</a></span>(<span class="SCst">T</span>)</span></div>
 <table class="table-enumeration">
 <tr>
 <td>arr</td>
@@ -13279,8 +12900,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">call</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, params: ...)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">call</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, params: ...)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13292,8 +12912,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">disable</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">disable</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13305,8 +12924,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">enable</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">enable</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13318,8 +12936,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fn: <span class="SCst">T</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fn: <span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13526,8 +13143,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13539,8 +13155,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13552,8 +13167,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, range = <span class="SKwd">false</span>, vertical = <span class="SKwd">false</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Slider">Slider</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, range = <span class="SKwd">false</span>, vertical = <span class="SKwd">false</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Slider">Slider</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13565,8 +13179,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getValue</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getValue</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13578,8 +13191,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getValueLeft</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getValueLeft</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13591,8 +13203,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getValueRight</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getValueRight</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13605,8 +13216,7 @@
 </table>
 </p>
 <p>Set the <span class="code-inline">min</span>, <span class="code-inline">max</span> and <span class="code-inline">steps</span> values. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMinMax</span>(<span class="SKwd">self</span>, min: <span class="STpe">f32</span>, max: <span class="STpe">f32</span>, steps: <span class="STpe">f32</span> = <span class="SNum">0</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMinMax</span>(<span class="SKwd">self</span>, min: <span class="STpe">f32</span>, max: <span class="STpe">f32</span>, steps: <span class="STpe">f32</span> = <span class="SNum">0</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13619,8 +13229,7 @@
 </table>
 </p>
 <p>Set left and right values, for a range. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRangeValues</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left: <span class="STpe">f32</span>, right: <span class="STpe">f32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRangeValues</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left: <span class="STpe">f32</span>, right: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13632,8 +13241,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setValue</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, f: <span class="STpe">f32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setValue</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, f: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13646,8 +13254,7 @@
 </table>
 </p>
 <p>Set the left value (in case of a range). </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setValueLeft</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, f: <span class="STpe">f32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setValueLeft</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, f: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13660,8 +13267,7 @@
 </table>
 </p>
 <p>Set the right value (in case of a range). </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setValueRight</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, f: <span class="STpe">f32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setValueRight</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, f: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13744,8 +13350,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13758,8 +13363,7 @@
 </table>
 </p>
 <p>Create the popup list, but do not display it. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SliderCtrl">SliderCtrl</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SliderCtrl">SliderCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13772,8 +13376,7 @@
 </table>
 </p>
 <p>Set a f32 range. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMinMaxF32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min: <span class="STpe">f32</span>, max: <span class="STpe">f32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMinMaxF32</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min: <span class="STpe">f32</span>, max: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13786,8 +13389,7 @@
 </table>
 </p>
 <p>Set a f64 range. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMinMaxS64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min: <span class="STpe">s64</span>, max: <span class="STpe">s64</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMinMaxS64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min: <span class="STpe">s64</span>, max: <span class="STpe">s64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13800,8 +13402,7 @@
 </table>
 </p>
 <p>Set a u64 range. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMinMaxU64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min: <span class="STpe">u64</span>, max: <span class="STpe">u64</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMinMaxU64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, min: <span class="STpe">u64</span>, max: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13814,8 +13415,7 @@
 </table>
 </p>
 <p>Set the slider current value. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setValue</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setValue</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13922,8 +13522,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13935,8 +13534,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPostPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPostPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13948,8 +13546,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13962,8 +13559,7 @@
 </table>
 </p>
 <p>Add a new pane. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addPane</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pane: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, paneSize: <span class="STpe">f32</span> = <span class="SNum">100</span>, title = <span class="SKwd">false</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SplitterItem">SplitterItem</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addPane</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pane: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, paneSize: <span class="STpe">f32</span> = <span class="SNum">100</span>, title = <span class="SKwd">false</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SplitterItem">SplitterItem</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13976,8 +13572,7 @@
 </table>
 </p>
 <p>Creates a new SplitterCtrl instance. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, vertical = <span class="SKwd">false</span>, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SplitterCtrl">SplitterCtrl</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, vertical = <span class="SKwd">false</span>, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SplitterCtrl">SplitterCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13989,8 +13584,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isVertical</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isVertical</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14003,8 +13597,7 @@
 </table>
 </p>
 <p>Set the pane size (size of the first view). </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPaneSize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>, newSize: <span class="STpe">f32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPaneSize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>, newSize: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14128,8 +13721,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14142,8 +13734,7 @@
 </table>
 </p>
 <p>Recompute layout of all childs. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">computeLayout</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">computeLayout</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14156,8 +13747,7 @@
 </table>
 </p>
 <p>Create a layout control. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, kind: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_StackLayoutKind">StackLayoutKind</a></span> = .<span class="SCst">Top</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_StackLayoutCtrl">StackLayoutCtrl</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, kind: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_StackLayoutKind">StackLayoutKind</a></span> = .<span class="SCst">Top</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_StackLayoutCtrl">StackLayoutCtrl</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14430,8 +14020,7 @@
 </table>
 </p>
 <p>Bring the surface at the top of the Z order. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bringToTop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bringToTop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14444,8 +14033,7 @@
 </table>
 </p>
 <p>Center this surface relative to <span class="code-inline">from</span>. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">center</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">center</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, from: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14458,8 +14046,7 @@
 </table>
 </p>
 <p>Constraint a window to be inside the closest monitor. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">constaintToScreen</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">constaintToScreen</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14472,8 +14059,7 @@
 </table>
 </p>
 <p>Creates the surface. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(surface: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, width: <span class="STpe">s32</span>, height: <span class="STpe">s32</span>, flags: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span>, mainSurface: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(surface: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, width: <span class="STpe">s32</span>, height: <span class="STpe">s32</span>, flags: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span>, mainSurface: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Surface">Surface</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14486,8 +14072,7 @@
 </table>
 </p>
 <p>Destroy the surface. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">destroy</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">destroy</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14500,8 +14085,7 @@
 </table>
 </p>
 <p>Enable the surface. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">disable</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">disable</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14514,8 +14098,7 @@
 </table>
 </p>
 <p>Enable the surface. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">enable</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">enable</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14528,8 +14111,7 @@
 </table>
 </p>
 <p>Returns inside view. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getView</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getView</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14542,8 +14124,7 @@
 </table>
 </p>
 <p>Hide the surface. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hide</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hide</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14556,8 +14137,7 @@
 </table>
 </p>
 <p>Invalidate the full surface to be painted. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">invalidate</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">invalidate</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14570,8 +14150,7 @@
 </table>
 </p>
 <p>Invalidate one part of the surface to be painted. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">invalidateRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">invalidateRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14584,8 +14163,7 @@
 </table>
 </p>
 <p>Main surface paint function. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">paint</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">paint</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14598,8 +14176,7 @@
 </table>
 </p>
 <p>Transform a point in screen space relative to the surface. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">screenToSurface</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pt: *<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">screenToSurface</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pt: *<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14612,8 +14189,7 @@
 </table>
 </p>
 <p>Set the surface icon. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setIcon</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setIcon</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14626,8 +14202,7 @@
 </table>
 </p>
 <p>Set the surface position. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPosition</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPosition</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14640,8 +14215,7 @@
 </table>
 </p>
 <p>Change flag surfaces. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setSurfaceFlags</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, add = <span class="SCst"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span>.<span class="SCst">Zero</span>, remove = <span class="SCst"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span>.<span class="SCst">Zero</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setSurfaceFlags</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, add = <span class="SCst"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span>.<span class="SCst">Zero</span>, remove = <span class="SCst"><a href="#Gui_SurfaceFlags">SurfaceFlags</a></span>.<span class="SCst">Zero</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14654,8 +14228,7 @@
 </table>
 </p>
 <p>Set the surface title. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setTitle</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setTitle</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, name: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14667,8 +14240,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setView</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, view: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setView</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, view: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14681,8 +14253,7 @@
 </table>
 </p>
 <p>Show the surface. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">show</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">show</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14695,8 +14266,7 @@
 </table>
 </p>
 <p>Show the surface as maximized. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">showMaximized</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">showMaximized</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14709,8 +14279,7 @@
 </table>
 </p>
 <p>Show the surface as minimized. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">showMinimized</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">showMinimized</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14723,8 +14292,7 @@
 </table>
 </p>
 <p>Show the surface in its default state. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">showNormal</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">showNormal</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14737,8 +14305,7 @@
 </table>
 </p>
 <p>Transform a point relative to the surface in screen space. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">surfaceToScreen</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pt: *<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">surfaceToScreen</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pt: *<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15041,8 +14608,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15054,8 +14620,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15067,8 +14632,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15080,8 +14644,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">paintItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, painter: *<span class="SCst">Pixel</span>.<span class="SCst">Painter</span>, v: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_TabItem">TabItem</a></span>, idx: <span class="STpe">u32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">paintItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, painter: *<span class="SCst">Pixel</span>.<span class="SCst">Painter</span>, v: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_TabItem">TabItem</a></span>, idx: <span class="STpe">u32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15094,8 +14657,7 @@
 </table>
 </p>
 <p>Add a new view. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, tabName: <span class="STpe">string</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span>, view: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span> = <span class="SKwd">null</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addItem</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, tabName: <span class="STpe">string</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span>, view: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span> = <span class="SKwd">null</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15107,8 +14669,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Tab">Tab</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Tab">Tab</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15121,8 +14682,7 @@
 </table>
 </p>
 <p>Select one tab at the given index. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">select</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">select</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="STpe">u32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15135,8 +14695,7 @@
 </table>
 </p>
 <p>Set the tab form. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setForm</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, tabForm: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_TabForm">TabForm</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setForm</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, tabForm: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_TabForm">TabForm</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15393,8 +14952,7 @@
 </table>
 </p>
 <p>Create a default font with the given size. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createDefaultFont</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, size: <span class="STpe">u32</span>, style = <span class="SCst">FontFamilyStyle</span>.<span class="SCst">Regular</span>)-&gt;*<span class="SCst">Pixel</span>.<span class="SCst">Font</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createDefaultFont</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, size: <span class="STpe">u32</span>, style = <span class="SCst">FontFamilyStyle</span>.<span class="SCst">Regular</span>)-&gt;*<span class="SCst">Pixel</span>.<span class="SCst">Font</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15407,8 +14965,7 @@
 </table>
 </p>
 <p>Create a default font (fixed size) with the given size. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createDefaultFontFS</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, size: <span class="STpe">u32</span>, style = <span class="SCst">FontFamilyStyle</span>.<span class="SCst">Regular</span>)-&gt;*<span class="SCst">Pixel</span>.<span class="SCst">Font</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createDefaultFontFS</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, size: <span class="STpe">u32</span>, style = <span class="SCst">FontFamilyStyle</span>.<span class="SCst">Regular</span>)-&gt;*<span class="SCst">Pixel</span>.<span class="SCst">Font</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15420,8 +14977,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawIconText</span>(painter: *<span class="SCst">Pixel</span>.<span class="SCst">Painter</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span>, name: *<span class="SCst">Pixel</span>.<span class="SCst">RichString</span>, stringFormat: <span class="SCst">Pixel</span>.<span class="SCst">RichStringFormat</span>, iconMargin = <span class="SNum">4</span>'<span class="STpe">f32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawIconText</span>(painter: *<span class="SCst">Pixel</span>.<span class="SCst">Painter</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, icon: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span>, name: *<span class="SCst">Pixel</span>.<span class="SCst">RichString</span>, stringFormat: <span class="SCst">Pixel</span>.<span class="SCst">RichStringFormat</span>, iconMargin = <span class="SNum">4</span>'<span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15433,9 +14989,8 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawSubRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, painter: *<span class="SCst">Pixel</span>.<span class="SCst">Painter</span>, dstRect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, subRect: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span>, color: <span class="SCst">Pixel</span>.<span class="SCst">Color</span>, center = <span class="SKwd">true</span>, interpol = <span class="SCst">InterpolationMode</span>.<span class="SCst">Linear</span>)
-<span class="SKwd">func</span> <span class="SFct">drawSubRect</span>(painter: *<span class="SCst">Pixel</span>.<span class="SCst">Painter</span>, texture: <span class="SCst">Pixel</span>.<span class="SCst">Texture</span>, dstRect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, subRect: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span>, color: <span class="SCst">Pixel</span>.<span class="SCst">Color</span>, center = <span class="SKwd">true</span>, interpol = <span class="SCst">InterpolationMode</span>.<span class="SCst">Linear</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drawSubRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, painter: *<span class="SCst">Pixel</span>.<span class="SCst">Painter</span>, dstRect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, subRect: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span>, color: <span class="SCst">Pixel</span>.<span class="SCst">Color</span>, center = <span class="SKwd">true</span>, interpol = <span class="SCst">InterpolationMode</span>.<span class="SCst">Linear</span>)
+<span class="SKwd">func</span> <span class="SFct">drawSubRect</span>(painter: *<span class="SCst">Pixel</span>.<span class="SCst">Painter</span>, texture: <span class="SCst">Pixel</span>.<span class="SCst">Texture</span>, dstRect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, subRect: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRect">ThemeImageRect</a></span>, color: <span class="SCst">Pixel</span>.<span class="SCst">Color</span>, center = <span class="SKwd">true</span>, interpol = <span class="SCst">InterpolationMode</span>.<span class="SCst">Linear</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15447,8 +15002,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getIcon24</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeIcons24">ThemeIcons24</a></span>, size = <span class="SNum">24</span>'<span class="STpe">f32</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getIcon24</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeIcons24">ThemeIcons24</a></span>, size = <span class="SNum">24</span>'<span class="STpe">f32</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15460,8 +15014,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getIcon64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeIcons64">ThemeIcons64</a></span>, size = <span class="SNum">64</span>'<span class="STpe">f32</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getIcon64</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, idx: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeIcons64">ThemeIcons64</a></span>, size = <span class="SNum">64</span>'<span class="STpe">f32</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Icon">Icon</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15473,8 +15026,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setTextColors</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fmt: *<span class="SCst">Pixel</span>.<span class="SCst">RichStringFormat</span>, mainColor: <span class="SCst">Pixel</span>.<span class="SCst">Color</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setTextColors</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fmt: *<span class="SCst">Pixel</span>.<span class="SCst">RichStringFormat</span>, mainColor: <span class="SCst">Pixel</span>.<span class="SCst">Color</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18259,8 +17811,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addStyleSheetColors</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, str: <span class="STpe">string</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addStyleSheetColors</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, str: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18272,8 +17823,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addStyleSheetMetrics</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, str: <span class="STpe">string</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addStyleSheetMetrics</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, str: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18285,8 +17835,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clearFont</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clearFont</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18298,8 +17847,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clearStyleSheetColors</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clearStyleSheetColors</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18312,8 +17860,7 @@
 </table>
 </p>
 <p>Create a specific style based on the parent. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeStyle">ThemeStyle</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeStyle">ThemeStyle</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18325,8 +17872,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFont</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst">FontFamily</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFont</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst">FontFamily</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18338,9 +17884,8 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFont</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fnt: *<span class="SCst">Pixel</span>.<span class="SCst">Font</span>, style: <span class="SCst">Pixel</span>.<span class="SCst">FontFamilyStyle</span>)
-<span class="SKwd">func</span> <span class="SFct">setFont</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fnt: <span class="SCst">Pixel</span>.<span class="SCst">FontFamily</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFont</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fnt: *<span class="SCst">Pixel</span>.<span class="SCst">Font</span>, style: <span class="SCst">Pixel</span>.<span class="SCst">FontFamilyStyle</span>)
+<span class="SKwd">func</span> <span class="SFct">setFont</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, fnt: <span class="SCst">Pixel</span>.<span class="SCst">FontFamily</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18352,8 +17897,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setStyleSheetColors</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, str: <span class="STpe">string</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setStyleSheetColors</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, str: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18365,8 +17909,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setStyleSheetMetrics</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, str: <span class="STpe">string</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setStyleSheetMetrics</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, str: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18441,8 +17984,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">restart</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">restart</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18527,8 +18069,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18540,8 +18081,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18553,8 +18093,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ToggleButton">ToggleButton</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {}, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ToggleButton">ToggleButton</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18567,8 +18106,7 @@
 </table>
 </p>
 <p>Hide the current tooltip, if visible. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hide</span>()</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hide</span>()</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18581,8 +18119,7 @@
 </table>
 </p>
 <p>Show a tooltip. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">show</span>(owner: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, surfacePos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>, str: <span class="STpe">string</span>, delay: <span class="SCst">Core</span>.<span class="SCst">Time</span>.<span class="SCst">Duration</span> = <span class="SNum">500</span>'ms)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">show</span>(owner: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, surfacePos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>, str: <span class="STpe">string</span>, delay: <span class="SCst">Core</span>.<span class="SCst">Time</span>.<span class="SCst">Duration</span> = <span class="SNum">500</span>'ms)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19080,8 +18617,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onApplyStateEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onApplyStateEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19093,8 +18629,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onCommandEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CommandEvent">CommandEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onCommandEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CommandEvent">CommandEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19106,8 +18641,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onComputeStateEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onComputeStateEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19119,8 +18653,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onCreateEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CreateEvent">CreateEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onCreateEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CreateEvent">CreateEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19132,8 +18665,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onDestroyEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_DestroyEvent">DestroyEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onDestroyEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_DestroyEvent">DestroyEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19145,8 +18677,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19158,8 +18689,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onFocusEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FocusEvent">FocusEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onFocusEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FocusEvent">FocusEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19171,8 +18701,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onFrameEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameEvent">FrameEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onFrameEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_FrameEvent">FrameEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19184,8 +18713,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onHookEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onHookEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19197,8 +18725,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onKeyEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_KeyEvent">KeyEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onKeyEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_KeyEvent">KeyEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19210,8 +18737,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onMouseEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_MouseEvent">MouseEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19223,8 +18749,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onNotifyEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_NotifyEvent">NotifyEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onNotifyEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_NotifyEvent">NotifyEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19236,8 +18761,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19249,8 +18773,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPostPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPostPaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19262,8 +18785,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPrePaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onPrePaintEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintEvent">PaintEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19275,8 +18797,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19288,8 +18809,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onSerializeStateEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SerializeStateEvent">SerializeStateEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onSerializeStateEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SerializeStateEvent">SerializeStateEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19301,8 +18821,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onSetThemeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SetThemeEvent">SetThemeEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onSetThemeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SetThemeEvent">SetThemeEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19314,8 +18833,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onStateEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_StateEvent">StateEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onStateEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_StateEvent">StateEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19327,8 +18845,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onSysCommandEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SysCommandEvent">SysCommandEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onSysCommandEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SysCommandEvent">SysCommandEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19340,8 +18857,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onSysUserEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SysUserEvent">SysUserEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onSysUserEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SysUserEvent">SysUserEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19353,8 +18869,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onTimerEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_TimerEvent">TimerEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onTimerEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_TimerEvent">TimerEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19367,10 +18882,8 @@
 </table>
 </p>
 <p>Apply the current layout (childs constraints). </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">applyLayout</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">applyLayout</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, oldSize: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">applyLayout</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">applyLayout</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, oldSize: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19383,8 +18896,7 @@
 </table>
 </p>
 <p>Force the window to be the first painted (before all siblings). </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bringToFront</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bringToFront</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19397,8 +18909,7 @@
 </table>
 </p>
 <p>Force the window to be the last painted (on top of siblings). </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bringToTop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bringToTop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19410,8 +18921,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">captureMouse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">captureMouse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19423,8 +18933,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">computeStyle</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">computeStyle</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19436,10 +18945,9 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span> = <span class="SKwd">null</span>, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, hook: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HookEvent">HookEvent</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">T</span>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span> = <span class="SKwd">null</span>, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, hook: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HookEvent">HookEvent</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">T</span>
 <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, hook: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HookEvent">HookEvent</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">T</span>
-<span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, hook: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HookEvent">HookEvent</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">T</span></span></code>
-</div>
+<span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, name: <span class="STpe">string</span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, id: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span> = <span class="SKwd">null</span>, hook: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_HookEvent">HookEvent</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19452,8 +18960,7 @@
 </table>
 </p>
 <p>Destroy the window. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">destroy</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">destroy</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19466,8 +18973,7 @@
 </table>
 </p>
 <p>Destroy the window. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">destroyNow</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">destroyNow</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19480,8 +18986,7 @@
 </table>
 </p>
 <p>Disable the window. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">disable</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">disable</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19494,8 +18999,7 @@
 </table>
 </p>
 <p>Enable/Disable the window. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">enable</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, state = <span class="SKwd">true</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">enable</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, state = <span class="SKwd">true</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19508,8 +19012,7 @@
 </table>
 </p>
 <p>Be sure rect is fully inside the parent rectangle (if possible). </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fitPosInParent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, marginW: <span class="STpe">f32</span> = <span class="SNum">0</span>, marginH: <span class="STpe">f32</span> = <span class="SNum">0</span>, simX = <span class="SKwd">false</span>, simY = <span class="SKwd">false</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fitPosInParent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, marginW: <span class="STpe">f32</span> = <span class="SNum">0</span>, marginH: <span class="STpe">f32</span> = <span class="SNum">0</span>, simX = <span class="SKwd">false</span>, simY = <span class="SKwd">false</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19521,8 +19024,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getApp</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Application">Application</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getApp</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Application">Application</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19535,8 +19037,7 @@
 </table>
 </p>
 <p>Retrieve the child with the given id. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getChildById</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, childId: <span class="STpe">string</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getChildById</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, childId: <span class="STpe">string</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19549,8 +19050,7 @@
 </table>
 </p>
 <p>Returns the client area. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getClientRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getClientRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19563,8 +19063,7 @@
 </table>
 </p>
 <p>Returns the client area, with <span class="code-inline">padding</span> applied. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getClientRectPadding</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getClientRectPadding</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19577,8 +19076,7 @@
 </table>
 </p>
 <p>Get the window with the keyboard focus. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFocus</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFocus</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19590,8 +19088,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFont</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst">FontFamily</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFont</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Pixel</span>.<span class="SCst">FontFamily</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19604,8 +19101,7 @@
 </table>
 </p>
 <p>Get the id associated with a shortcut. null if none. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getKeyShortcut</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, mdf: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span>, key: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">Key</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getKeyShortcut</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, mdf: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span>, key: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">Key</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19618,8 +19114,7 @@
 </table>
 </p>
 <p>Get the name associated with a given id shortcut. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getKeyShortcutNameFor</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, wndId: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">String</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getKeyShortcutNameFor</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, wndId: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">String</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19631,8 +19126,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMouseCapture</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMouseCapture</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19645,8 +19139,7 @@
 </table>
 </p>
 <p>Get the owner of the window. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getOwner</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getOwner</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19659,8 +19152,7 @@
 </table>
 </p>
 <p>Retrieve the parent with the given id. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getParentById</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, parentId: <span class="STpe">string</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getParentById</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, parentId: <span class="STpe">string</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19673,8 +19165,7 @@
 </table>
 </p>
 <p>Get the wnd position relative to a given parent. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getRectIn</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, wnd: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getRectIn</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, wnd: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19687,8 +19178,7 @@
 </table>
 </p>
 <p>Get the wnd position in the surface. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSurfaceRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSurfaceRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19700,8 +19190,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTheme</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Theme">Theme</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTheme</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Theme">Theme</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19713,8 +19202,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getThemeColors</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeColors">ThemeColors</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getThemeColors</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeColors">ThemeColors</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19726,8 +19214,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getThemeMetrics</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeMetrics">ThemeMetrics</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getThemeMetrics</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeMetrics">ThemeMetrics</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19739,8 +19226,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getThemeRects</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRects">ThemeImageRects</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getThemeRects</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ThemeImageRects">ThemeImageRects</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19752,8 +19238,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTiming</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Core</span>.<span class="SCst">Time</span>.<span class="SCst">FrameTiming</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTiming</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Core</span>.<span class="SCst">Time</span>.<span class="SCst">FrameTiming</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19765,8 +19250,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTopView</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTopView</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19778,8 +19262,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTopWnd</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SurfaceWnd">SurfaceWnd</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTopWnd</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_SurfaceWnd">SurfaceWnd</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19792,8 +19275,7 @@
 </table>
 </p>
 <p>Get the child window at the given coordinate  Coordinate is expressed in the parent system. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getWndAt</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, getDisabled = <span class="SKwd">false</span>, getHidden = <span class="SKwd">false</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getWndAt</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, getDisabled = <span class="SKwd">false</span>, getHidden = <span class="SKwd">false</span>)-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19806,8 +19288,7 @@
 </table>
 </p>
 <p>Returns true if the window has the keyboard focus. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hasFocus</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hasFocus</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19820,8 +19301,7 @@
 </table>
 </p>
 <p>Hide the window. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hide</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hide</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19834,8 +19314,7 @@
 </table>
 </p>
 <p>Force the window to be repainted. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">invalidate</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">invalidate</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19848,8 +19327,7 @@
 </table>
 </p>
 <p>Force o local position to be repainted. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">invalidateRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">invalidateRect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19862,8 +19340,7 @@
 </table>
 </p>
 <p>Returns true if window, and all its parents, are enabled. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEnabled</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEnabled</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19876,8 +19353,7 @@
 </table>
 </p>
 <p>Returns true if <span class="code-inline">child</span> is in the child hieararchy of <span class="code-inline">self</span>. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isParentOf</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, child: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isParentOf</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, child: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19890,8 +19366,7 @@
 </table>
 </p>
 <p>Returns true if window, and all its parents, are visible. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isVisible</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, onlyMe = <span class="SKwd">false</span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isVisible</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, onlyMe = <span class="SKwd">false</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19903,8 +19378,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isVisibleState</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isVisibleState</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19917,11 +19391,9 @@
 </table>
 </p>
 <p>Convert a local coordinate to a surface coordinate. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">localToSurface</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">localToSurface</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></div>
 <p>Convert a local coordinate to a surface coordinate. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">localToSurface</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">localToSurface</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19934,8 +19406,7 @@
 </table>
 </p>
 <p>Move the wnd. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">move</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">move</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19948,8 +19419,7 @@
 </table>
 </p>
 <p>Send a notification event. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">notifyEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, kind: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_NotifyEvent">NotifyEvent</a></span>.<span class="SCst">Kind</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">notifyEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, kind: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_NotifyEvent">NotifyEvent</a></span>.<span class="SCst">Kind</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19962,8 +19432,7 @@
 </table>
 </p>
 <p>Send a notification event. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ownerNotifyEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, kind: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_NotifyEvent">NotifyEvent</a></span>.<span class="SCst">Kind</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ownerNotifyEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, kind: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_NotifyEvent">NotifyEvent</a></span>.<span class="SCst">Kind</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19975,8 +19444,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">paint</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, bc: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintContext">PaintContext</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">paint</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, bc: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_PaintContext">PaintContext</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19988,8 +19456,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">postCommandEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cmdId: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">postCommandEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cmdId: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20001,8 +19468,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">postEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">postEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20014,8 +19480,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">postInvalidateEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">postInvalidateEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20027,8 +19492,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">postQuitEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">postQuitEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20040,8 +19504,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">postResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">postResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20053,8 +19516,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">processEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">processEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20067,8 +19529,7 @@
 </table>
 </p>
 <p>Register one new action. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">registerAction</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">registerAction</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20081,8 +19542,7 @@
 </table>
 </p>
 <p>Register a keyboard shortcut. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">registerKeyShortcut</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, mdf: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span>, key: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">Key</span>, wndId: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">registerKeyShortcut</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, mdf: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">KeyModifiers</span>, key: <span class="SCst">Core</span>.<span class="SCst">Input</span>.<span class="SCst">Key</span>, wndId: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20094,8 +19554,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">releaseMouse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">releaseMouse</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20108,8 +19567,7 @@
 </table>
 </p>
 <p>Resize the wnd. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">resize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, width: <span class="STpe">f32</span>, height: <span class="STpe">f32</span>, computeLayout = <span class="SKwd">true</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">resize</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, width: <span class="STpe">f32</span>, height: <span class="STpe">f32</span>, computeLayout = <span class="SKwd">true</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20122,8 +19580,7 @@
 </table>
 </p>
 <p>Convert a screen coordinate to a surface coordinate (relative to my surface). </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">screenToSurface</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">screenToSurface</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20136,8 +19593,7 @@
 </table>
 </p>
 <p>Send the command event with the given id to the window. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sendCommandEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cmdId: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sendCommandEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cmdId: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>)</span></div>
 <p> The command will be updated first, and if it is not disabled, it will be sent. </p>
 <p>
 <table class="api-item">
@@ -20151,8 +19607,7 @@
 </table>
 </p>
 <p>Send the command state event with the given id to the window. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sendComputeCommandStateEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cmdId: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sendComputeCommandStateEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, cmdId: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WndId">WndId</a></span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_CommandStateEvent">CommandStateEvent</a></span></span></div>
 <p> Returns the updated command state. </p>
 <p>
 <table class="api-item">
@@ -20165,8 +19620,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sendCreateEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sendCreateEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20178,8 +19632,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sendEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sendEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Event">Event</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20191,8 +19644,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sendResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sendResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20204,8 +19656,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sendStateEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, kind: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EventKind">EventKind</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sendStateEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, kind: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_EventKind">EventKind</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20217,8 +19668,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">serializeState</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, ser: *<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst">Serializer</span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">serializeState</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, ser: *<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst">Serializer</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20230,9 +19680,8 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setAllMargins</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span>)
-<span class="SKwd">func</span> <span class="SFct">setAllMargins</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setAllMargins</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span>)
+<span class="SKwd">func</span> <span class="SFct">setAllMargins</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20244,9 +19693,8 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setAllPaddings</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span>)
-<span class="SKwd">func</span> <span class="SFct">setAllPaddings</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setAllPaddings</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span>)
+<span class="SKwd">func</span> <span class="SFct">setAllPaddings</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20259,8 +19707,7 @@
 </table>
 </p>
 <p>Set the keyboard focus. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFocus</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFocus</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20273,8 +19720,7 @@
 </table>
 </p>
 <p>Set margin for childs  If a value is Swag.F32.Inf, then it won't be changed. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMargin</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>, top: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>, right: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>, bottom: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setMargin</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>, top: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>, right: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>, bottom: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20287,8 +19733,7 @@
 </table>
 </p>
 <p>Set padding for childs  If a value is Swag.F32.Inf, then it won't be changed. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPadding</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>, top: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>, right: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>, bottom: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPadding</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, left: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>, top: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>, right: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>, bottom: <span class="STpe">f32</span> = <span class="SCst">Swag</span>.<span class="SCst">F32</span>.<span class="SCst">Inf</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20301,8 +19746,7 @@
 </table>
 </p>
 <p>Set window parent. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setParent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, who: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setParent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, who: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20315,11 +19759,9 @@
 </table>
 </p>
 <p>Move and size the wnd. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPosition</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, computeLayout = <span class="SKwd">true</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPosition</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, rect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, computeLayout = <span class="SKwd">true</span>)</span></div>
 <p>Move and size the wnd. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPosition</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, w: <span class="STpe">f32</span>, h: <span class="STpe">f32</span>, computeLayout = <span class="SKwd">true</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPosition</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, w: <span class="STpe">f32</span>, h: <span class="STpe">f32</span>, computeLayout = <span class="SKwd">true</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20332,8 +19774,7 @@
 </table>
 </p>
 <p>Show the window. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">show</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, b = <span class="SKwd">true</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">show</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, b = <span class="SKwd">true</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20346,8 +19787,7 @@
 </table>
 </p>
 <p>Convert a surface coordinate to a local coordinate (relative to me). </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">surfaceToLocal</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">surfaceToLocal</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, pos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Point</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20360,8 +19800,7 @@
 </table>
 </p>
 <p>Main function to update command state of various windows/widgets. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">updateCommandState</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">updateCommandState</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p> This will update the state of this window, and all of its childs </p>
 <p>
 <table class="api-item">
@@ -20468,8 +19907,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onResizeEvent</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, evt: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_ResizeEvent">ResizeEvent</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20482,8 +19920,7 @@
 </table>
 </p>
 <p>Recompute layout of all childs. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">computeLayout</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">computeLayout</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20496,8 +19933,7 @@
 </table>
 </p>
 <p>Create a layout control. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WrapLayoutCtrl">WrapLayoutCtrl</a></span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WrapLayoutCtrl">WrapLayoutCtrl</a></span></span></div>
 <div class="swag-watermark">
 Generated on 20-10-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>

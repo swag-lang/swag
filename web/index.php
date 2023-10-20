@@ -27,6 +27,7 @@
             .right-page { margin:  10px; }
         }
 
+        html { font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; }
         body { margin: 0px; line-height: 1.3em; }
         
         .container a        { color: DoggerBlue; }
@@ -81,6 +82,7 @@
         
         .code-inline  { background-color: #eeeeee; border-radius: 5px; border: 1px dotted #cccccc; padding: 0px 8px; font-size: 110%; font-family: monospace; display: inline-block; }
         .code-block   { background-color: #eeeeee; border-radius: 5px; border: 1px solid LightGrey; padding: 10px; margin: 20px; white-space: pre; overflow-x: auto; }
+        .code-block   { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
         .code-block a { color: inherit; }
         
     .SCde { color: #222222; }
@@ -150,7 +152,7 @@
 <div class="blockquote blockquote-warning">
 <div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> We haven't officially launched anything yet! Everything, even this website, is still a <b>work in progress</b>. So, the rules of the game can change anytime until we hit version 1.0.0. Let's keep the fun going! </p>
 </div>
-<div class="code-block"><code><span class="SCde"><span class="SCmt">// The 'IsSet' generic struct is generated as a mirror of the user input struct.</span>
+<div class="code-block"><span class="SCde"><span class="SCmt">// The 'IsSet' generic struct is generated as a mirror of the user input struct.</span>
 <span class="SCmt">// Each field has the same name as the original one, but with a 'bool' type.</span>
 <span class="SCmt">// It will indicate, after the command line parsing, that the corresponding argument has been</span>
 <span class="SCmt">// specified or not by the user.</span>
@@ -164,9 +166,8 @@
             str.<span class="SFct">appendFormat</span>(<span class="SStr">"%: bool\n"</span>, f.name)
         <span class="SLgc">return</span> str.<span class="SFct">toString</span>()
     }
-}</span></code>
-</div>
-<div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
+}</span></div>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">const</span> <span class="SCst">N</span> = <span class="SNum">4</span>
     <span class="SKwd">const</span> <span class="SCst">PowerOfTwo</span>: [<span class="SCst">N</span>] <span class="STpe">s32</span> = <span class="SFct">#run</span>
@@ -181,8 +182,7 @@
     <span class="SCmp">#assert</span> <span class="SCst">PowerOfTwo</span>[<span class="SNum">1</span>] == <span class="SNum">2</span>
     <span class="SCmp">#assert</span> <span class="SCst">PowerOfTwo</span>[<span class="SNum">2</span>] == <span class="SNum">4</span>
     <span class="SCmp">#assert</span> <span class="SCst">PowerOfTwo</span>[<span class="SNum">3</span>] == <span class="SNum">8</span>
-}</span></code>
-</div>
+}</span></div>
 <p>Swag is <b>open source</b> and released under the <a href="https://github.com/swag-lang/swag/blob/master/LICENCE">MIT license</a>. You will find the compiler source code on <a href="https://github.com/swag-lang/swag">GitHub</a>. You can also visit the <a href="https://www.youtube.com/channel/UC9dkBu1nNfJDxUML7r7QH1Q">YouTube</a> channel to see some little coding sessions. </p>
 <div class="blockquote blockquote-warning">
 <div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> The language evolves, and those videos can show out of date syntax. But the corresponding scripts on GitHub are always up to date and running. </p>

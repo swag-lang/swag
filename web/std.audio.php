@@ -29,6 +29,7 @@
             .container { height: 100vh; }
             .right     { overflow-y: scroll; }
 
+        html { font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; }
         body { margin: 0px; line-height: 1.3em; }
         
         .container a        { color: DoggerBlue; }
@@ -83,6 +84,7 @@
         
         .code-inline  { background-color: #eeeeee; border-radius: 5px; border: 1px dotted #cccccc; padding: 0px 8px; font-size: 110%; font-family: monospace; display: inline-block; }
         .code-block   { background-color: #eeeeee; border-radius: 5px; border: 1px solid LightGrey; padding: 10px; margin: 20px; white-space: pre; overflow-x: auto; }
+        .code-block   { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
         .code-block a { color: inherit; }
         
     .SCde { color: #222222; }
@@ -190,23 +192,18 @@
 <p><span class="code-inline">Std.Audio</span> is a module to decode and play sound files. Under windows, it is based on the <span class="code-inline">xaudio2</span> library. </p>
 <h2 id="">How to play a sound </h2>
 <p>First, you have to initialize the audio engine by calling <a href="#Audio_createEngine">Audio.createEngine</a>. </p>
-<div class="code-block"><code><span class="SCde"><span class="SCst">Audio</span>.<span class="SFct">createEngine</span>()
-<span class="SLgc">defer</span> <span class="SCst">Audio</span>.<span class="SFct">destroyEngine</span>() <span class="SCmt">// Don't forget to destroy the engine when you are done</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SCst">Audio</span>.<span class="SFct">createEngine</span>()
+<span class="SLgc">defer</span> <span class="SCst">Audio</span>.<span class="SFct">destroyEngine</span>() <span class="SCmt">// Don't forget to destroy the engine when you are done</span></span></div>
 <p>You then have to load a sound file. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">let</span> soundFile = <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>.<span class="SCst">Load</span>(<span class="SStr">"mySound.wav"</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">let</span> soundFile = <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>.<span class="SCst">Load</span>(<span class="SStr">"mySound.wav"</span>)</span></div>
 <p>Note that by default, the sound file will load all of its datas in memory. If you want the sound to be loaded only when played, set <span class="code-inline">loadDatas</span> to false. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">let</span> soundFile = <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>.<span class="SCst">Load</span>(<span class="SStr">"mySound.wav"</span>, loadDatas = <span class="SKwd">false</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">let</span> soundFile = <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>.<span class="SCst">Load</span>(<span class="SStr">"mySound.wav"</span>, loadDatas = <span class="SKwd">false</span>)</span></div>
 <p>Once you have a sound file, the simplest way to play it is by calling <a href="#Audio_Voice_play">Voice.play</a>. The sound will be played once, until the end, and will be destroyed. </p>
-<div class="code-block"><code><span class="SCde"><span class="SCst">Voice</span>.<span class="SFct">play</span>(soundFile)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SCst">Voice</span>.<span class="SFct">play</span>(soundFile)</span></div>
 <p>To have more control, you could also use <a href="#Audio_Voice_create">Voice.create</a> then [[Voice.Play]] on the created sound. That way you will recieve a <a href="#Audio_Voice">Voice</a> object you can play with. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">let</span> voice = <span class="SCst">Voice</span>.<span class="SFct">create</span>(&soundFile)
+<div class="code-block"><span class="SCde"><span class="SKwd">let</span> voice = <span class="SCst">Voice</span>.<span class="SFct">create</span>(&soundFile)
 voice.<span class="SFct">setVolume</span>(<span class="SNum">0.5</span>)
-voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></code>
-</div>
+voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></div>
 <h1>Content</h1>
 <p>
 <table class="api-item">
@@ -290,8 +287,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Creates an audio bus. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(numChannels: <span class="STpe">u32</span>, parent: *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Bus">Bus</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Bus">Bus</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(numChannels: <span class="STpe">u32</span>, parent: *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Bus">Bus</a></span> = <span class="SKwd">null</span>)-&gt;*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Bus">Bus</a></span> <span class="SKwd">throw</span></span></div>
 <p> You can then associate a <a href="#Audio_Voice">Voice</a> to that bus with <a href="#Audio_Voice_setRooting">Voice.setRooting</a>  Note that you can have a graph of buses, because a bus can have another bus as <span class="code-inline">parent</span>. </p>
 <p>
 <table class="api-item">
@@ -305,8 +301,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Destroy the bus (immediatly). </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">destroy</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">destroy</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -319,8 +314,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Returns the actual volume. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVolume</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVolume</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -333,8 +327,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Returns the actual volume, in DB. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVolumeDB</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVolumeDB</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -347,8 +340,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Set the playing bus volume between [0..1]. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVolume</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, volume: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVolume</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, volume: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -361,8 +353,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Set the playing bus volume in DB. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVolumeDB</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, volumeDB: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVolumeDB</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, volumeDB: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -525,8 +516,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Load a <span class="code-inline">SoundFile</span> from disk. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">load</span>(fullname: <span class="STpe">string</span>, loadDatas = <span class="SKwd">true</span>, loadMetaDatas = <span class="SKwd">false</span>)-&gt;<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">load</span>(fullname: <span class="STpe">string</span>, loadDatas = <span class="SKwd">true</span>, loadMetaDatas = <span class="SKwd">false</span>)-&gt;<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span> <span class="SKwd">throw</span></span></div>
 <p> Will load the sound datas if <span class="code-inline">loadDatas</span> is true.  Will load the sound metadatas if <span class="code-inline">loadMetaData</span> is true. </p>
 <p>
 <table class="api-item">
@@ -703,8 +693,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Creates a new voice for a given sound file. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(file: *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span>, createFlags = <span class="SCst"><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></span>.<span class="SCst">Default</span>)-&gt;*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Voice">Voice</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(file: *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span>, createFlags = <span class="SCst"><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></span>.<span class="SCst">Default</span>)-&gt;*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Voice">Voice</a></span> <span class="SKwd">throw</span></span></div>
 <p> A voice is what will be actually played. You can have as many voices as you want for one unique <a href="#Audio_SoundFile">SoundFile</a>. </p>
 <p>
 <table class="api-item">
@@ -718,8 +707,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Destroy the voice. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">destroy</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">destroy</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -732,8 +720,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Returns the actual volume. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVolume</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVolume</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -746,8 +733,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Returns the actual volume, in DB. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVolumeDB</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVolumeDB</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -760,8 +746,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Returns true if the voice is currently playing. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isPlaying</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isPlaying</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -774,8 +759,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Pause the playing voice. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pause</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pause</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -788,11 +772,9 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Creates a voice and plays it. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">play</span>(file: *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span>, createFlags = <span class="SCst"><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></span>.<span class="SCst">Default</span>, playFlags = <span class="SCst"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span>.<span class="SCst">Default</span>)-&gt;*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Voice">Voice</a></span> <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">play</span>(file: *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span>, createFlags = <span class="SCst"><a href="#Audio_VoiceCreateFlags">VoiceCreateFlags</a></span>.<span class="SCst">Default</span>, playFlags = <span class="SCst"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span>.<span class="SCst">Default</span>)-&gt;*<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Voice">Voice</a></span> <span class="SKwd">throw</span></span></div>
 <p>Plays a voice. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">play</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, playFlags = <span class="SCst"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span>.<span class="SCst">Zero</span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">play</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, playFlags = <span class="SCst"><a href="#Audio_VoicePlayFlags">VoicePlayFlags</a></span>.<span class="SCst">Zero</span>) <span class="SKwd">throw</span></span></div>
 <p> By default, the voice will be destroyed when stopped or finished. </p>
 <p> By default, you will have to destroy the voice yourself when no more needed, for example if <a href="#Audio_Voice_isPlaying">Voice.isPlaying</a> returns false. But if you want the voice to be destroyed automatically when done, set the <span class="code-inline">DestroyOnStop</span> flag in <span class="code-inline">playFlags</span>.  See <a href="#Audio_Voice_create">Voice.create</a> </p>
 <p>
@@ -807,8 +789,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Set the playing pitch. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFrequencyRatio</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, ratio: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFrequencyRatio</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, ratio: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></div>
 <p> The voice should have been created with <span class="code-inline">VoiceCreateFlags.AcceptPitch</span>.  See <a href="#Audio_Voice_create">Voice.create</a> </p>
 <p>
 <table class="api-item">
@@ -822,8 +803,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Root a voice to a given list of buses. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRooting</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buses: <span class="SKwd">const</span> [..] <span class="SKwd">const</span> *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Bus">Bus</a></span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRooting</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, buses: <span class="SKwd">const</span> [..] <span class="SKwd">const</span> *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_Bus">Bus</a></span>) <span class="SKwd">throw</span></span></div>
 <p> You can also set <span class="code-inline">buses</span> to null if you want to root the voice only to the  main bus (which is the default). </p>
 <p>
 <table class="api-item">
@@ -837,8 +817,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Set the playing voice volume between [0..1]. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVolume</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, volume: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVolume</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, volume: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -851,8 +830,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Set the playing voice volume. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVolumeDB</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, volumeDB: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVolumeDB</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, volumeDB: <span class="STpe">f32</span>, batchID: <span class="STpe">u32</span> = <span class="SNum">0</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -865,8 +843,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Stop the playing voice. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stop</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -966,8 +943,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Load a wav file. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">loadFile</span>(<span class="SKwd">using</span> file: *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span>, stream: *<span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst">FileStream</span>, loadDatas = <span class="SKwd">true</span>, loadMetaDatas = <span class="SKwd">false</span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">loadFile</span>(<span class="SKwd">using</span> file: *<span class="SCst">Audio</span>.<span class="SCst"><a href="#Audio_SoundFile">SoundFile</a></span>, stream: *<span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst">FileStream</span>, loadDatas = <span class="SKwd">true</span>, loadMetaDatas = <span class="SKwd">false</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -980,8 +956,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Register a codec. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">addCodec</span>()</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">addCodec</span>()</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -994,8 +969,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Convert a DB value to a percent. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convertDBToPercent</span>(dbVolume: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convertDBToPercent</span>(dbVolume: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1008,8 +982,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Convert a percent value to DB. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convertPercentToDB</span>(percentVolume: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convertPercentToDB</span>(percentVolume: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1022,8 +995,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Creates the audio engine. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createEngine</span>() <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createEngine</span>() <span class="SKwd">throw</span></span></div>
 <p> Must be called once, before anything else. </p>
 <p>
 <table class="api-item">
@@ -1037,8 +1009,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Destroy the audio engine. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">destroyEngine</span>()</span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">destroyEngine</span>()</span></div>
 <p> Must be called at the end, when engine is no more used. </p>
 <p>
 <table class="api-item">
@@ -1052,8 +1023,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Get the general output volume. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getOutputVolume</span>()-&gt;<span class="STpe">f32</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getOutputVolume</span>()-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -1066,8 +1036,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></cod
 </table>
 </p>
 <p>Set the general output volume. </p>
-<div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setOutputVolume</span>(volume: <span class="STpe">f32</span>) <span class="SKwd">throw</span></span></code>
-</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setOutputVolume</span>(volume: <span class="STpe">f32</span>) <span class="SKwd">throw</span></span></div>
 <div class="swag-watermark">
 Generated on 20-10-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
