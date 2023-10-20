@@ -104,7 +104,7 @@
 <div class="right-page">
 <p>This is the list of all modules that come with the compiler. As they are always in sync, they are considered as <b>standard</b>. They are all part of the same workspace <b>std</b>. </p>
 <p>You can find that workspace locally in <span class="code-inline">bin/std</span>, or <a href="https://github.com/swag-lang/swag/tree/master/bin/std">here</a> on GitHub. </p>
-<h1 id="Modules">Modules </h1>
+<h1 id="">Modules </h1>
 <table class="table-markdown">
 <tr><td> <a href="std.core.php">std.core</a>         </td><td> Main core module, the base of everything else</td></tr>
 <tr><td> <a href="std.pixel.php">std.pixel</a>       </td><td> An image and a 2D painting module</td></tr>
@@ -112,7 +112,7 @@
 <tr><td> <a href="std.audio.php">std.audio</a>       </td><td> An audio module to decode and play sounds</td></tr>
 <tr><td> <a href="std.libc.php">std.libc</a>         </td><td> Libc wrapper</td></tr>
 </table>
-<h1 id="Wrappers">Wrappers </h1>
+<h1 id="">Wrappers </h1>
 <p>Those other modules are just wrappers to external libraries. </p>
 <table class="table-markdown">
 <tr><td> <a href="std.ogl.php">std.ogl</a>           </td><td> Opengl wrapper</td></tr>

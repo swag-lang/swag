@@ -786,7 +786,7 @@ void GenDoc::generateContent()
 
                 if (funcNode->typeInfo)
                 {
-                    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
+                    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
                     if (typeFunc->returnType && !typeFunc->returnType->isVoid())
                     {
                         typeFunc->returnType->computeScopedNameExport();

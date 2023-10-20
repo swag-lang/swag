@@ -102,12 +102,12 @@
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="right">
 <div class="right-page">
-<h1 id="How_to_build_Swag">How to build Swag </h1>
-<h2 id="LLVM">LLVM </h2>
+<h1 id="">How to build Swag </h1>
+<h2 id="">LLVM </h2>
 <p>Swag has two backends, a <span class="code-inline">x86_64</span> custom backend written for fast compile, but with far from optimal generated code, and <span class="code-inline">llvm</span> for optimized builds. </p>
 <p>The <a href="https://releases.llvm.org/download.html">LLVM</a> source tree is included in the Swag source tree for convenience. Version is <span class="code-inline">15.0.7</span>. </p>
 <p>In order to build LLVM, you will have to install <a href="https://cmake.org/download/">cmake 3.23.2</a> (or later) and <a href="https://www.python.org/downloads/">python 3</a>. </p>
-<h2 id="Build">Build </h2>
+<h2 id="">Build </h2>
 <p>You will need <span class="code-inline">Visual Studio 2022 17.1</span> or later. </p>
 <ul>
 <li>As there's no automatic detection, edit <span class="code-inline">vs_build_cfg.bat</span> to match your version of Visual Studio and of the Windows SDK.</li>
@@ -116,7 +116,7 @@
 <li>You can also launch <span class="code-inline">swag/build/vs_build_extern.bat</span>. This will build and update some external libraries in the standard workspace, and copy some libraries from the windows SDK.</li>
 </ul>
 <p>If LLVM has been compiled once, you can also use the <span class="code-inline">Swag.sln</span> workspace in the <span class="code-inline">build</span> subfolder. </p>
-<h2 id="Windows_SDK">Windows SDK </h2>
+<h2 id="">Windows SDK </h2>
 <p>The path to the SDK version is defined in <span class="code-inline">vs_build_cfg.bat</span>. </p>
 <p>The Swag <b>runtime</b> contains a copy of some libraries from the SDK (<span class="code-inline">kernel32.lib</span>, <span class="code-inline">ucrt.lib</span>, <span class="code-inline">dbghelp.lib</span> and <span class="code-inline">user32.lib</span>). You will find them in <span class="code-inline">bin/runtime/windows-x86-64</span>. </p>
 <p>They are shipped with the compiler to avoid the necessity to install the SDK before building with Swag. That way the compiler can be used "as is". </p>

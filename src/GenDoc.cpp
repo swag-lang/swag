@@ -1074,8 +1074,16 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
     case UserBlockKind::Title5:
     case UserBlockKind::Title6:
     {
-        int level = ((int) user.kind - (int) UserBlockKind::Title1);
-        helpContent += Fmt("<h%d id=\"%s\">", titleLevel + level + 1, toRef(user.lines[0]).c_str());
+        // Update toc
+        if (docKind == BuildCfgDocKind::Examples)
+        {
+            int myTitleLevel = (int) user.kind - (int) UserBlockKind::Title1;
+            addTocTitle(user.lines[0], user.lines[0], titleLevel + myTitleLevel);
+        }
+
+        int  level = ((int) user.kind - (int) UserBlockKind::Title1);
+        auto ref   = getTocTitleRef();
+        helpContent += Fmt("<h%d id=\"%s\">", titleLevel + level + 1, ref.c_str());
         break;
     }
     }
@@ -1164,13 +1172,6 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
         {
             helpContent += getFormattedText(user.lines[i]);
             helpContent += " ";
-
-            // Update toc
-            if (docKind == BuildCfgDocKind::Examples)
-            {
-                int myTitleLevel = (int) user.kind - (int) UserBlockKind::Title1;
-                addTocTitle(toRef(user.lines[i]), user.lines[i], titleLevel + myTitleLevel - 1);
-            }
         }
         else
         {
@@ -1321,21 +1322,51 @@ void GenDoc::constructPage()
     helpOutput += "</html>\n";
 }
 
+Utf8 GenDoc::getTocTitleRef()
+{
+    Utf8 ref;
+    for (const auto& o : titleRefStack)
+    {
+        ref += o;
+        ref += "_";
+    }
+
+    return ref;
+}
+
 void GenDoc::addTocTitle(const Utf8& name, const Utf8& title, int titleLevel)
 {
-    while (tocLastTitleLevel < titleLevel)
+    if (tocLastTitleLevel < titleLevel)
     {
-        helpToc += "<ul>\n";
-        tocLastTitleLevel++;
+        while (tocLastTitleLevel < titleLevel)
+        {
+            helpToc += "<ul>\n";
+            tocLastTitleLevel++;
+            if (tocLastTitleLevel != titleLevel)
+                titleRefStack.push_back("");
+        }
+    }
+    else if (tocLastTitleLevel > titleLevel)
+    {
+        while (tocLastTitleLevel > titleLevel)
+        {
+            helpToc += "</ul>\n";
+            tocLastTitleLevel--;
+            titleRefStack.pop_back();
+        }
+
+        if (!titleRefStack.empty())
+            titleRefStack.pop_back();
+    }
+    else if (tocLastTitleLevel == titleLevel)
+    {
+        if (!titleRefStack.empty())
+            titleRefStack.pop_back();
     }
 
-    while (tocLastTitleLevel > titleLevel)
-    {
-        helpToc += "</ul>\n";
-        tocLastTitleLevel--;
-    }
-
-    helpToc += Fmt("<li><a href=\"#%s\">%s</a></li>\n", name.c_str(), title.c_str());
+    titleRefStack.push_back(toRef(name));
+    auto ref = getTocTitleRef();
+    helpToc += Fmt("<li><a href=\"#%s\">%s</a></li>\n", ref.c_str(), title.c_str());
 }
 
 bool GenDoc::generate(Module* mdl, BuildCfgDocKind kind)

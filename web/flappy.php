@@ -111,7 +111,7 @@
 <div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> This page has been generated with Swag directly from the <a href="https://github.com/swag-lang/swag/blob/master/bin/examples/scripts/flappy.swgs">source code</a>. </p>
 </div>
 <p>So, let's begin. </p>
-<h1 id="Dependencies">Dependencies </h1>
+<h1 id="">Dependencies </h1>
 <p>Normally, you'd put the <span class="code-inline">#dependency</span> block in the <span class="code-inline">module.swg</span> file of a module. But if it's a script and there's no <span class="code-inline">module.swg</span>, you just put it at the top of the script file. </p>
 <p>This special <span class="code-inline">#dependencies</span> compiler block is used to specify : </p>
 <div class="description-list-title"><p>External dependencies</p></div>
@@ -160,7 +160,7 @@
 <p>The <span class="code-inline">gui</span> module depends on <span class="code-inline">pixel</span> which depends on <span class="code-inline">core</span>. So we bring all the three namespaces into the file scope. Note that we keep <span class="code-inline">Audio</span> as it is. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">using</span> <span class="SCst">Core</span>, <span class="SCst">Pixel</span>, <span class="SCst">Gui</span></span></code>
 </div>
-<h1 id="Entry_point">Entry point </h1>
+<h1 id="">Entry point </h1>
 <p>The compiler's <span class="code-inline">#run</span> function serves as the initial execution point for the script. This category of block is executed by the compiler while it's compiling. While it's possible to include multiple <span class="code-inline">#run</span> blocks, a single one is sufficient for the Flappy application. </p>
 <div class="blockquote blockquote-note">
 <div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> You might observe that the arrangement of global declarations doesn't make a difference, as we're using the <span class="code-inline">onEvent</span> function before even defining it. Swag does not bother about the global declaration order. </p>
@@ -184,15 +184,15 @@
     <span class="SCst">Application</span>.<span class="SFct">runSurface</span>(<span class="SNum">100</span>, <span class="SNum">100</span>, <span class="SNum">300</span>, <span class="SNum">512</span>, title: <span class="SStr">"Flappy Bird"</span>, hook: &onEvent, init: &test)
 }</span></code>
 </div>
-<h1 id="Global_definitions">Global definitions </h1>
-<h2 id="Constants">Constants </h2>
+<h1 id="">Global definitions </h1>
+<h2 id="">Constants </h2>
 <p>We declare global constants with <span class="code-inline">const</span>. Note that we do not specify types for thoses constants. They will be deduced thanks to the affection. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">const</span> <span class="SCst">Gravity</span>      = <span class="SNum">2.5</span>        <span class="SCmt">// 2.5 is a 32 bits float, so the type of Gravity is 'f32'</span>
 <span class="SKwd">const</span> <span class="SCst">GroundHeight</span> = <span class="SNum">40.0</span>
 <span class="SKwd">const</span> <span class="SCst">SpeedHorz</span>    = <span class="SNum">100.0</span>
 <span class="SKwd">const</span> <span class="SCst">BirdImpulseY</span> = <span class="SNum">350</span>        <span class="SCmt">// 350 is an integer, so the type of BirdImpulseY is 's32'</span></span></code>
 </div>
-<h2 id="Variables">Variables </h2>
+<h2 id="">Variables </h2>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">var</span> g_Bird:      <span class="SCst">Bird</span>
 <span class="SKwd">var</span> g_Pipes:     <span class="SCst">Array</span>'<span class="SCst">Pipe</span></span></code>
 </div>
@@ -234,7 +234,7 @@
 <li><span class="code-inline">block</span> pointers, which points to multiple values. Declared with <span class="code-inline">^</span>.</li>
 </ul>
 <p>Pointer arithmetic is not enabled on value pointers, but it is on block pointers. </p>
-<h2 id="Types">Types </h2>
+<h2 id="">Types </h2>
 <div class="code-block"><code><span class="SCde"><span class="SCmt">// Defines the Bird</span>
 <span class="SKwd">struct</span> <span class="SCst">Bird</span>
 {
@@ -257,7 +257,7 @@
     scored:     <span class="STpe">bool</span>            <span class="SCmt">// 'true' if the Bird has passed that Pipe</span>
 }</span></code>
 </div>
-<h1 id="The_actual_code">The actual code </h1>
+<h1 id="">The actual code </h1>
 <p>This is the callback that will deal with all gui events. This feels like <i>Windows</i> API, but there are other ways of dealing with gui, in a more 'object like' way. You can look at the <span class="code-inline">captme</span> tool for example, which does not use a callback but <b>interfaces</b> instead. </p>
 <p>For a simple script, this is more easy to process events in that way. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">onEvent</span>(wnd: *<span class="SCst">Wnd</span>, evt: *<span class="SCst">Event</span>)-&gt;<span class="STpe">bool</span>

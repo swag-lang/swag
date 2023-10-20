@@ -52,6 +52,7 @@ struct GenDoc
 
     void        constructPage();
     Utf8        toRef(Utf8 str);
+    Utf8        getTocTitleRef();
     void        addTocTitle(const Utf8& name, const Utf8& title, int titleLevel);
     bool        generate(Module* mdl, BuildCfgDocKind kind);
     void        outputStyles();
@@ -120,4 +121,5 @@ struct GenDoc
     AstOutput::OutputContext        outputCxt;
     MapUtf8<VectorNative<AstNode*>> collect;
     Vector<OneRef>                  allNodes;
+    Vector<Utf8>                    titleRefStack;
 };

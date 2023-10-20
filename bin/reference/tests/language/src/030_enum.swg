@@ -191,7 +191,7 @@ You can use the keyword `using` for an enum.
 
 /**
 # Enum as flags
-An enum can be a set of flags if you declare it with the `#[Swag.EnumFlags]` **attribute**. Its type should be `u8`, `u16`, `u32` or `u64`.
+An enum can be a set of flags if you declare it with the `#[Swag.EnumFlags]` attribute. Its type should be `u8`, `u16`, `u32` or `u64`.
 
 That kind of enum starts by default at 1, and not 0, and each value should be a power of 2.
 */
@@ -304,7 +304,7 @@ For example, a value of type 'BasicErrors' can be converted to a parameter of ty
 
 /**
 # Specific attributes
-You can use #[Swag.EnumIndex] if an integer enum value can be used as an array index. This will avoid the necessity of an explicit cast.
+You can use `#[Swag.EnumIndex]` if an enum value can be used as a dereference index. This will avoid the necessity of an explicit cast. The underlying enum type must be integer.
 */
 
 #test
@@ -317,7 +317,7 @@ You can use #[Swag.EnumIndex] if an integer enum value can be used as an array i
 }
 
 /**
-You can use #[Swag.NoDuplicate] if you want to force an enum to not have duplicated values. If the compiler finds a value defines more than once, it will raise an error.
+You can use `#[Swag.NoDuplicate]` to avoid duplicated values inside an enum. If the compiler finds a value defined more than once, it will raise an error.
 */
 
 #test

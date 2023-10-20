@@ -121,8 +121,6 @@ bool GenDoc::generateExamples()
         helpContent += title;
         helpContent += Fmt("</h%d>", titleLevel + 1);
 
-        helpToc += "<ul>\n";
-
         if (file->markDown)
         {
             if (!processMarkDownFile(file->path, titleLevel + 1))
@@ -133,8 +131,6 @@ bool GenDoc::generateExamples()
             if (!processSourceFile(file->path, titleLevel + 1))
                 return false;
         }
-
-        helpToc += "</ul>\n";
     }
 
     helpToc += "</ul>\n";

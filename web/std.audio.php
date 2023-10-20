@@ -188,7 +188,7 @@
 <div class="right-page">
 <h1>Module audio</h1>
 <p><span class="code-inline">Std.Audio</span> is a module to decode and play sound files. Under windows, it is based on the <span class="code-inline">xaudio2</span> library. </p>
-<h2 id="How_to_play_a_sound">How to play a sound </h2>
+<h2 id="">How to play a sound </h2>
 <p>First, you have to initialize the audio engine by calling <a href="#Audio_createEngine">Audio.createEngine</a>. </p>
 <div class="code-block"><code><span class="SCde"><span class="SCst">Audio</span>.<span class="SFct">createEngine</span>()
 <span class="SLgc">defer</span> <span class="SCst">Audio</span>.<span class="SFct">destroyEngine</span>() <span class="SCmt">// Don't forget to destroy the engine when you are done</span></span></code>

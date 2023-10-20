@@ -102,7 +102,7 @@
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="right">
 <div class="right-page">
-<h1 id="Script_file">Script file </h1>
+<h1 id="">Script file </h1>
 <p>Swag can be used to build and run a simple script file, thanks to the fact that the compiler can run anything at compile time. No executable will be generated, the compiler will do all the job. To create a new script file with the special extension <span class="code-inline">swgs</span>: </p>
 <div class="code-block"><code><span class="SCde">$ swag new -f:myScript
 =&gt; script file 'myScript.swgs' has been created
@@ -135,7 +135,7 @@ Hello world !</span></code>
         <a href="flappy.php" class="no-decoration">Flappy Bird</a>
     </div>
 </div></p>
-<h2 id="Dependencies">Dependencies </h2>
+<h2 id="">Dependencies </h2>
 <p>You can add external dependencies, and they will be compiled and used as native code. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#dependencies</span>
 {
@@ -148,7 +148,7 @@ Hello world !</span></code>
 <li>To locate the Swag cache folder, add <span class="code-inline">--verbose-path</span> to the command line.</li>
 <li>To force the build of dependencies, add <span class="code-inline">--rebuildall</span> to the command line.</li>
 </ul>
-<h2 id="More_than_one_script_file">More than one script file </h2>
+<h2 id="">More than one script file </h2>
 <p>If your script is divided in more than one single file, you can add <span class="code-inline">#load &lt;filename&gt;</span> in the <span class="code-inline">#dependencies</span> block. </p>
 <div class="code-block"><code><span class="SCde"><span class="SFct">#dependencies</span>
 {
@@ -156,7 +156,7 @@ Hello world !</span></code>
     <span class="SCmp">#load</span> <span class="SStr">"folder/myOtherOtherFile.swgs"</span>
 }</span></code>
 </div>
-<h2 id="Debug">Debug </h2>
+<h2 id="">Debug </h2>
 <p>The compiler comes with a <b>bytecode debugger</b> that can be used to trace and debug compile time execution. Add <span class="code-inline">@breakpoint()</span> in your code when you want the debugger to trigger. </p>
 <p>The debugger command set is inspired by <a href="https://docs.python.org/3/library/pdb.html">Pdb</a>, the python debugger. </p>
 <div class="swag-watermark">

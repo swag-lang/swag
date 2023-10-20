@@ -102,9 +102,9 @@
 <?php include('common/start-body.php'); ?><div class="container">
 <div class="right">
 <div class="right-page">
-<h1 id="Contribute_to_the_test_suite">Contribute to the test suite </h1>
+<h1 id="">Contribute to the test suite </h1>
 <p>You can help by writing small tests to debug the compiler (and the compiler alone). </p>
-<h3 id="Create_a_workspace_and_a_test_module">Create a workspace and a test module </h3>
+<h3 id="">Create a workspace and a test module </h3>
 <p>First create a workspace with the <span class="code-inline">--test</span> option. </p>
 <div class="code-block"><code><span class="SCde">$ swag new -w:myWorkspace --test</span></code>
 </div>
@@ -113,7 +113,7 @@
 <div class="code-block"><code><span class="SCde">$ swag test -w:myWorkspace</span></code>
 </div>
 <p>To force the build, add <span class="code-inline">--rebuild</span>. </p>
-<h3 id="Write_tests">Write tests </h3>
+<h3 id="">Write tests </h3>
 <ul>
 <li>Tests should be small, located in different <b>small files</b>.</li>
 <li>Just write files like <span class="code-inline">test1.swg</span>, <span class="code-inline">test2.swg</span> and so on, in the <span class="code-inline">src</span> sub folder of your module.</li>
