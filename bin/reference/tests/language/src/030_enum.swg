@@ -303,6 +303,34 @@ For example, a value of type 'BasicErrors' can be converted to a parameter of ty
 }
 
 /**
+# Specific attributes
+You can use #[Swag.EnumIndex] if an integer enum value can be used as an array index. This will avoid the necessity of an explicit cast.
+*/
+
+#test
+{
+    #[Swag.EnumIndex]
+    enum MyIndex { First, Second, Third }
+
+    const Array = [0, 1, 2]
+    const Valu = Array[MyIndex.First]   // No need to cast 'MyIndex.First'
+}
+
+/**
+You can use #[Swag.NoDuplicate] if you want to force an enum to not have duplicated values. If the compiler finds a value defines more than once, it will raise an error.
+*/
+
+#test
+{
+    #[Swag.NoDuplicate]
+    enum MyEnum
+    {
+        Val0 = 0
+        //Val1 = 0      // Will raise an error because '0' is already defined
+    }
+}
+
+/**
 # Enum type inference
 */
 

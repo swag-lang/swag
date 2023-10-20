@@ -176,7 +176,7 @@ Hello world!
 <p>And as this is a normal Swag workspace, you could also build and test it with <span class="code-inline">swag test -w:swag/reference</span>. </p>
 <p>You will also find some small examples (mostly written for tests) in <span class="code-inline">swag/bin/examples/modules</span>. To build and run one of them from the console, go to the workspace folder (<span class="code-inline">/examples</span>) and type for example <span class="code-inline">swag run -m:wnd</span>. </p>
 <div class="swag-watermark">
-Generated on 19-10-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
+Generated on 20-10-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
 </div>
 </div>

@@ -210,6 +210,7 @@
 <li><a href="#Enum_of_arrays">Enum of arrays</a></li>
 <li><a href="#Enum_of_slices">Enum of slices</a></li>
 <li><a href="#Nested_enums">Nested enums</a></li>
+<li><a href="#Specific_attributes">Specific attributes</a></li>
 <li><a href="#Enum_type_inference">Enum type inference</a></li>
 </ul>
 <li><a href="#031_impl">Impl</a></li>
@@ -2720,7 +2721,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SKwd">enum</span> <span class="SCst">MyErrors</span>
 {
     <span class="SKwd">using</span> <span class="SCst">BasicErrors</span>
-    <span class="SCst">NotFound</span>
+    <span class="SCst">NotFound</span> = <span class="SNum">100</span>
 }</span></code>
 </div>
 <p>To access a value inside the nested enum, use the enum name (a scope has been created). </p>
@@ -2740,6 +2741,28 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 
     <span class="SFct">toto</span>(<span class="SCst">E0</span>)
     <span class="SFct">toto</span>(<span class="SCst">E1</span>) <span class="SCmt">// Automatic cast from 'BasicErrors' to 'MyErrors'</span>
+}</span></code>
+</div>
+<h3 id="Specific_attributes">Specific attributes </h3>
+<p>You can use #<a href="swag.runtime.php#Swag_EnumIndex">Swag.EnumIndex</a> if an integer enum value can be used as an array index. This will avoid the necessity of an explicit cast. </p>
+<div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SAtr">#[Swag.EnumIndex]</span>
+    <span class="SKwd">enum</span> <span class="SCst">MyIndex</span> { <span class="SCst">First</span>, <span class="SCst">Second</span>, <span class="SCst">Third</span> }
+
+    <span class="SKwd">const</span> <span class="SCst">Array</span> = [<span class="SNum">0</span>, <span class="SNum">1</span>, <span class="SNum">2</span>]
+    <span class="SKwd">const</span> <span class="SCst">Valu</span> = <span class="SCst">Array</span>[<span class="SCst">MyIndex</span>.<span class="SCst">First</span>]   <span class="SCmt">// No need to cast 'MyIndex.First'</span>
+}</span></code>
+</div>
+<p>You can use #<a href="swag.runtime.php#Swag_NoDuplicate">Swag.NoDuplicate</a> if you want to force an enum to not have duplicated values. If the compiler finds a value defines more than once, it will raise an error. </p>
+<div class="code-block"><code><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SAtr">#[Swag.NoDuplicate]</span>
+    <span class="SKwd">enum</span> <span class="SCst">MyEnum</span>
+    {
+        <span class="SCst">Val0</span> = <span class="SNum">0</span>
+        <span class="SCmt">//Val1 = 0      // Will raise an error because '0' is already defined</span>
+    }
 }</span></code>
 </div>
 <h3 id="Enum_type_inference">Enum type inference </h3>
@@ -6250,6 +6273,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></code>
 <span class="SAtr">#[AttrUsage(AttributeUsage.Enum)]</span>
 <span class="SKwd">attr</span> <span class="SCst">EnumIndex</span>()
 
+<span class="SAtr">#[AttrUsage(AttributeUsage.Enum)]</span>
+<span class="SKwd">attr</span> <span class="SCst">NoDuplicate</span>()
+
 <span class="SAtr">#[AttrUsage(AttributeUsage.All|AttributeUsage.File)]</span>
 <span class="SKwd">attr</span> <span class="SCst">Safety</span>(what: <span class="STpe">string</span>, value: <span class="STpe">bool</span>)
 
@@ -7857,7 +7883,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="231_003_Pages">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 19-10-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
+Generated on 20-10-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
 </div>
 </div>
