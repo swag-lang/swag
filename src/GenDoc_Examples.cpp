@@ -117,7 +117,7 @@ bool GenDoc::generateExamples()
         addTocTitle(name, title, titleLevel);
 
         helpContent += "\n";
-        helpContent += Fmt("<h%d id=\"%s\">", titleLevel + 1, name.c_str());
+        helpContent += Fmt("<h%d id=\"%s\">", titleLevel + 1, getTocTitleRef().c_str());
         helpContent += title;
         helpContent += Fmt("</h%d>", titleLevel + 1);
 

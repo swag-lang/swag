@@ -715,6 +715,7 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
                     auto ref = findReference(name);
                     if (!ref.empty())
                     {
+                        //printf("XXXXXXXXXXXXXXXX [%s] %s\n", name.c_str(), ref.c_str());
                         result += ref;
                         pz = ppz;
                         continue;
