@@ -2,7 +2,7 @@ The Swag compiler can generate documentation for all the modules of a given work
 
     swag doc -w:myWorkspaceFolder
 
-Swag can generate documentations in various modes. That mode should be specified in the 'module.swg' file, in the [Swag.BuildCfg] struct.
+Swag can generate documentations in various modes. That mode should be specified in the 'module.swg' file, in the [[Swag.BuildCfg]] struct.
 
 ```swag
 #dependencies

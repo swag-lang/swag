@@ -15949,7 +15949,7 @@
 </tr>
 </table>
 </p>
-<p>Returns the enum value name corresponding to the value pointed by <span class="code-inline">valueAddr</span>  Can have multiple names if the enum is tagged with #<a href="swag.runtime.php#Swag_EnumFlags">Swag.EnumFlags</a>. </p>
+<p>Returns the enum value name corresponding to the value pointed by <span class="code-inline">valueAddr</span>  Can have multiple names if the enum is tagged with #[Swag.EnumFlags]. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getEnumName</span>(type: <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>, valueAddr: <span class="SKwd">const</span> *<span class="STpe">void</span>, fullname = <span class="SKwd">true</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span></span></code>
 </div>
 <p>

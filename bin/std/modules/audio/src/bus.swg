@@ -1,7 +1,7 @@
 using Core, Win32
 
 // Represents a bus.
-// A [Voice] can be assigned to one or more buses. If you then change some parameters of the bus (like the volume), then all the voices assigned to it will be impacted.
+// A [[Voice]] can be assigned to one or more buses. If you then change some parameters of the bus (like the volume), then all the voices assigned to it will be impacted.
 public struct Bus
 {
     handle: BusHandle
@@ -10,7 +10,7 @@ public struct Bus
 public impl Bus
 {
     // Creates an audio bus.
-    // You can then associate a [Voice] to that bus with [Voice.setRooting]
+    // You can then associate a [[Voice]] to that bus with [[Voice.setRooting]]
     // Note that you can have a graph of buses, because a bus can have another bus as 'parent'.
     func create(numChannels: u32, parent: *Bus = null)->*Bus throw
     {

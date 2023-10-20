@@ -2393,7 +2393,7 @@
 <tr>
 <td>byteCodeInline</td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td>Enable bytecode inlining with #<a href="#Swag_Inline">Swag.Inline</a>. </td>
+<td>Enable bytecode inlining with #[Swag.Inline]. </td>
 </tr>
 <tr>
 <td>byteCodeAutoInline</td>
@@ -4836,7 +4836,7 @@
 </tr>
 <tr>
 <td>Strict</td>
-<td>This is a typealias with the Swag.Strict attribute]. </td>
+<td>This is a typealias with the Swag.Strict attribute. </td>
 </tr>
 <tr>
 <td>CanCopy</td>

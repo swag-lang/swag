@@ -26,7 +26,7 @@ struct RichChunk
 // <p1> this will have special color 1<p1>
 // ...
 // ```swag
-// See [RichString.set] for a list of available markers.
+// See [[RichString.set]] for a list of available markers.
 struct RichString
 {
     raw:        String              // The string as passed by the user

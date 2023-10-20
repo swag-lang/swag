@@ -39,7 +39,7 @@ func __popErr()
     cxt.traceIndex = cxt.errors[cxt.errorIndex].pushTraceIndex
 }
 
-// Returns the current raised [Error] or null if none
+// Returns the current raised [[Error]] or null if none
 func @err()->const *Error
 {
     let cxt = @getcontext()

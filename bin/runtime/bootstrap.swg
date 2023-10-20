@@ -166,7 +166,7 @@ namespace Swag
     #[AttrUsage(AttributeUsage.All|AttributeUsage.File)]
     attr Overflow(value: bool)
 
-    // Warning behavior for [Warn] attribute
+    // Warning behavior for [[Warn]] attribute
     enum WarnLevel: u8
     {
         Enable      // Enable the given warning
@@ -181,7 +181,7 @@ namespace Swag
     // #[Swag.Warn("wrn0003|wrn0002", Swag.WarnLevel.Disable)
     // #global #[Swag.Warn("wrn0001", Swag.WarnLevel.Enable)]
     // ```
-    // You can also change the warning behaviors for the whole module in your [BuildCfg]
+    // You can also change the warning behaviors for the whole module in your [[BuildCfg]]
     #[AttrUsage(AttributeUsage.All|AttributeUsage.File)]
     #[AttrMulti]
     attr Warn(what: string, level: WarnLevel)
@@ -284,7 +284,7 @@ namespace Swag
     struct ProcessInfos
     {
         modules: const [..] Module          // The list of all modules
-        args:    string                     // The application arguments, as returned by [@args]
+        args:    string                     // The application arguments, as returned by [[@args]]
     }
 
     // Defined a global variable
@@ -298,7 +298,7 @@ namespace Swag
     // Allocators
     // #########################################################
 
-    // The 'mode' of an [AllocatorRequest].
+    // The 'mode' of an [[AllocatorRequest]].
     enum AllocatorMode
     {
         Alloc               // Allocate a block of memory
@@ -326,7 +326,7 @@ namespace Swag
     // * 'size' must be the original allocated size in bytes of 'address'
     // * 'address' must be the memory address to reallocate
     //
-    // See [IAllocator]
+    // See [[IAllocator]]
     struct AllocatorRequest
     {
         callerLoc:  SourceCodeLocation      // The caller code, to help tracking leaks. Optional.
@@ -424,25 +424,25 @@ namespace Swag
     enum TypeInfoKind: u8
     {
         Invalid
-        Native          // The typeinfo is a [TypeInfoNative]. See [TypeInfoNativeKind] for the underlying type.
-        Namespace       // The typeinfo is a [TypeInfoNamespace]
-        Enum            // The typeinfo is a [TypeInfoEnum]
-        Func            // The typeinfo is a [TypeInfoFunc]
-        Lambda          // The typeinfo is a [TypeInfoFunc], but this is a lambda or a closure
-        Pointer         // The typeinfo is a [TypeInfoPointer]
-        Array           // The typeinfo is a [TypeInfoArray]
-        Slice           // The typeinfo is a [TypeInfoSlice]
-        TypeListTuple   // The typeinfo is a [TypeInfoStruct]
-        TypeListArray   // The typeinfo is a [TypeInfoArray]
-        Variadic        // The typeinfo is a [TypeInfoVariadic]
-        TypedVariadic   // The typeinfo is a [TypeInfoVariadic]
-        CVariadic       // The typeinfo is a [TypeInfoVariadic]
-        Struct          // The typeinfo is a [TypeInfoStruct]
-        Generic         // The typeinfo is a [TypeInfoGeneric]
-        Alias           // The typeinfo is a [TypeInfoAlias]
-        Code            // The typeinfo is a [TypeInfo]
-        Interface       // The typeinfo is a [TypeInfoStruct], but this is an interface
-        Attribute       // The typeinfo is a [TypeInfoFunc], but this is an attribute
+        Native          // The typeinfo is a [[TypeInfoNative]]. See [[TypeInfoNativeKind]] for the underlying type.
+        Namespace       // The typeinfo is a [[TypeInfoNamespace]]
+        Enum            // The typeinfo is a [[TypeInfoEnum]]
+        Func            // The typeinfo is a [[TypeInfoFunc]]
+        Lambda          // The typeinfo is a [[TypeInfoFunc]], but this is a lambda or a closure
+        Pointer         // The typeinfo is a [[TypeInfoPointer]]
+        Array           // The typeinfo is a [[TypeInfoArray]]
+        Slice           // The typeinfo is a [[TypeInfoSlice]]
+        TypeListTuple   // The typeinfo is a [[TypeInfoStruct]]
+        TypeListArray   // The typeinfo is a [[TypeInfoArray]]
+        Variadic        // The typeinfo is a [[TypeInfoVariadic]]
+        TypedVariadic   // The typeinfo is a [[TypeInfoVariadic]]
+        CVariadic       // The typeinfo is a [[TypeInfoVariadic]]
+        Struct          // The typeinfo is a [[TypeInfoStruct]]
+        Generic         // The typeinfo is a [[TypeInfoGeneric]]
+        Alias           // The typeinfo is a [[TypeInfoAlias]]
+        Code            // The typeinfo is a [[TypeInfo]]
+        Interface       // The typeinfo is a [[TypeInfoStruct]], but this is an interface
+        Attribute       // The typeinfo is a [[TypeInfoFunc]], but this is an attribute
     }
 
     // The native type if the type is... native.
@@ -468,19 +468,19 @@ namespace Swag
         Undefined
     }
 
-    // Flags in each [TypeInfo]
+    // Flags in each [[TypeInfo]]
     #[Swag.EnumFlags]
     enum TypeInfoFlags: u32
     {
         Zero              = 0x00000000
-        PointerTypeInfo   = 0x00000001      // This is a pointer to a [TypeInfo] struct
+        PointerTypeInfo   = 0x00000001      // This is a pointer to a [[TypeInfo]] struct
         Integer           = 0x00000002      // This is a native integer
         Float             = 0x00000004      // This is a native float
         Unsigned          = 0x00000008      // This is a native unsigned integer
         HasPostCopy       = 0x00000010      // This is a struct with a 'opPostCopy'
         HasPostMove       = 0x00000020      // This is a struct with a 'opPostMove'
         HasDrop           = 0x00000040      // This is a struct with a 'opDrop'
-        Strict            = 0x00000080      // This is a typealias with the Swag.Strict attribute]
+        Strict            = 0x00000080      // This is a typealias with the Swag.Strict attribute
         CanCopy           = 0x00000100      // This is a struct that can be copied
         Tuple             = 0x00000200      // This is a tuple
         CString           = 0x00000400      // This is a 'cstring'
@@ -750,7 +750,7 @@ namespace Swag
     }
 
     // The current module build configuration.
-    // See [ICompiler]
+    // See [[ICompiler]]
     struct BuildCfg
     {
         moduleVersion:      u32 = 0     // The module version
@@ -798,7 +798,7 @@ namespace Swag
     // Compiler
     // #########################################################
 
-    // The kind of message in [CompilerMessage]
+    // The kind of message in [[CompilerMessage]]
     enum CompilerMsgKind : u32
     {
         PassAfterSemantic       // Called once the program semantic has been done
@@ -831,7 +831,7 @@ namespace Swag
     // A message received in a '#message' function.
     //
     // In a '#message' function, you can retreive the associated message by calling 'getMessage' of the
-    // interface returned by [@compiler]
+    // interface returned by [[@compiler]]
     struct CompilerMessage
     {
         moduleName:     string                          // Name of the module for which the message is sent.
@@ -884,18 +884,18 @@ func @isbytecode()->bool;
 func @modules()->const [..] Swag.Module;
 // Returns the list of all global variables.
 func @gvtd()->const [..] Swag.Gvtd;
-// Returns an [ICompiler] interface to communicate with the compiler.
+// Returns an [[ICompiler]] interface to communicate with the compiler.
 func @compiler()->Swag.ICompiler;
 
 // Returns a system allocated memory block of 'size' bytes.
 //
-// Use [@free] to release the allocated memory.
+// Use [[@free]] to release the allocated memory.
 func @alloc(size: u64)->^void;
 
-// Realloc a system memory block allocated with [@alloc]
+// Realloc a system memory block allocated with [[@alloc]]
 func @realloc(ptr: ^void, size: u64)->^void;
 
-// Free a system memory block allocated with [@alloc]
+// Free a system memory block allocated with [[@alloc]]
 func @free(ptr: ^void);
 
 // Set all bytes of a given memory block to 'value'

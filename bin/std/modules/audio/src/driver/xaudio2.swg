@@ -275,7 +275,7 @@ public impl Voice
 
     // Set the playing pitch.
     // The voice should have been created with 'VoiceCreateFlags.AcceptPitch'.
-    // See [Voice.create]
+    // See [[Voice.create]]
     mtd setFrequencyRatio(ratio: f32, batchID: u32 = 0) throw
     {
         if !handle

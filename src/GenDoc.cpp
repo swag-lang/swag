@@ -128,7 +128,7 @@ Utf8 GenDoc::toRef(Utf8 str)
     return str;
 }
 
-const char* GenDoc::tokenizeReference(const char* pz, Utf8& name, Utf8& link)
+const char* GenDoc::tokenizeReference(const char* pz, Utf8& name, Utf8& link, bool acceptLink)
 {
     name.clear();
     link.clear();
@@ -141,6 +141,9 @@ const char* GenDoc::tokenizeReference(const char* pz, Utf8& name, Utf8& link)
         name += *pz++;
     if (*pz != ']')
         return nullptr;
+
+    if (!acceptLink)
+        return pz + 1;
 
     pz++;
     if (*pz != '(')
@@ -696,31 +699,37 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
             continue;
         }
 
-        // [reference] to create an html link to the current document
-        if (*pz == '[' && !inCodeMode)
+        // [[reference]] to create an html link to the current document
+        if (*pz == '[' && pz[1] == '[' && !inCodeMode)
         {
-            Utf8 name;
-            Utf8 link;
-            auto ppz = tokenizeReference(pz, name, link);
-            if (ppz)
+            Utf8 name, link;
+            auto ppz = tokenizeReference(pz + 1, name, link, false);
+            if (ppz && ppz[0] == ']')
             {
-                if (!link.empty())
+                auto ref = findReference(name);
+                if (!ref.empty())
                 {
-                    result += Fmt("<a href=\"%s\">%s</a>", link.c_str(), name.c_str());
-                    pz = ppz;
+                    result += ref;
+                    pz = ppz + 1;
                     continue;
                 }
-                else if (!name.empty())
-                {
-                    auto ref = findReference(name);
-                    if (!ref.empty())
-                    {
-                        //printf("XXXXXXXXXXXXXXXX [%s] %s\n", name.c_str(), ref.c_str());
-                        result += ref;
-                        pz = ppz;
-                        continue;
-                    }
-                }
+            }
+
+            result += *pz++;
+            result += *pz++;
+            continue;
+        }
+
+        // [reference] to create an html link to the current document
+        if (*pz == '[' && pz[1] != '[' && !inCodeMode)
+        {
+            Utf8 name, link;
+            auto ppz = tokenizeReference(pz, name, link);
+            if (ppz && !link.empty())
+            {
+                result += Fmt("<a href=\"%s\">%s</a>", link.c_str(), name.c_str());
+                pz = ppz;
+                continue;
             }
 
             result += *pz++;
@@ -1331,6 +1340,9 @@ Utf8 GenDoc::getTocTitleRef()
         ref += o;
         ref += "_";
     }
+
+    if (!ref.empty())
+        ref.removeBack();
 
     return ref;
 }

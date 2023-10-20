@@ -49,7 +49,7 @@ enum Color
 
 /**
 # References
-You can create a **reference** to something in the current module with `[name]` or `[name1.name2 etc.]`
+You can create a **reference** to something in the current module with `[[name]]` or `[[name1.name2 etc.]]`
 */
 
 // This is a function with a 'value' parameter.
@@ -57,7 +57,7 @@ func one(value: s32)
 {
 }
 
-// This is a reference to [one]
+// This is a reference to [[one]]
 func two()
 {
 }

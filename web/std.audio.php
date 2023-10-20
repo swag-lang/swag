@@ -202,7 +202,7 @@
 <p>Once you have a sound file, the simplest way to play it is by calling <a href="#Audio_Voice_play">Voice.play</a>. The sound will be played once, until the end, and will be destroyed. </p>
 <div class="code-block"><code><span class="SCde"><span class="SCst">Voice</span>.<span class="SFct">play</span>(soundFile)</span></code>
 </div>
-<p>To have more control, you could also use <a href="#Audio_Voice_create">Voice.create</a> then [Voice.Play] on the created sound. That way you will recieve a <a href="#Audio_Voice">Voice</a> object you can play with. </p>
+<p>To have more control, you could also use <a href="#Audio_Voice_create">Voice.create</a> then [[Voice.Play]] on the created sound. That way you will recieve a <a href="#Audio_Voice">Voice</a> object you can play with. </p>
 <div class="code-block"><code><span class="SCde"><span class="SKwd">let</span> voice = <span class="SCst">Voice</span>.<span class="SFct">create</span>(&soundFile)
 voice.<span class="SFct">setVolume</span>(<span class="SNum">0.5</span>)
 voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></code>

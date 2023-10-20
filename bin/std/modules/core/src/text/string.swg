@@ -165,7 +165,7 @@ impl String
     }
 
     // Visit the String runes
-    // See [Utf8.visitRunes] for aliases
+    // See [[Utf8.visitRunes]] for aliases
     #[Macro]
     mtd(ptr: bool, back: bool) opVisitRunes(stmt: code)
     {
