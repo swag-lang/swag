@@ -845,33 +845,40 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
     /////////////////////////////////
     if (typeInfo->isEnum())
     {
-        TypeInfoEnum* typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        auto          sname    = dbgGetScopedName(typeEnum->declNode);
+        TypeInfoEnum* typeInfoEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+        auto          sname        = dbgGetScopedName(typeInfoEnum->declNode);
 
         // List of values
-        if (typeEnum->rawType->isNativeInteger())
+        if (typeInfoEnum->rawType->isNativeInteger())
         {
             auto tr0  = dbgAddTypeRecord(pp);
             tr0->kind = LF_FIELDLIST;
-            tr0->LF_FieldList.fields.reserve(typeEnum->values.count);
-            for (auto& p : typeEnum->values)
+            tr0->LF_FieldList.fields.reserve(typeInfoEnum->values.count);
+
+            VectorNative<TypeInfoEnum*> collect;
+            typeInfoEnum->collectEnums(collect);
+            for (auto typeEnum : collect)
             {
-                DbgTypeField field;
-                field.kind      = LF_ENUMERATE;
-                field.type      = dbgGetOrCreateType(pp, p->typeInfo);
-                field.name      = p->name;
-                field.valueType = typeEnum->rawType;
-                if (p->value)
-                    field.value = *p->value;
-                tr0->LF_FieldList.fields.emplace_back(std::move(field));
+                for (auto& value : typeEnum->values)
+                {
+                    if (!value->value)
+                        continue;
+                    DbgTypeField field;
+                    field.kind      = LF_ENUMERATE;
+                    field.type      = dbgGetOrCreateType(pp, value->typeInfo);
+                    field.name      = value->name;
+                    field.valueType = typeInfoEnum->rawType;
+                    field.value     = *value->value;
+                    tr0->LF_FieldList.fields.emplace_back(std::move(field));
+                }
             }
 
             // Enum itself, pointing to the field list
             auto tr1                    = dbgAddTypeRecord(pp);
             tr1->kind                   = LF_ENUM;
-            tr1->LF_Enum.count          = (uint16_t) typeEnum->values.size();
+            tr1->LF_Enum.count          = (uint16_t) typeInfoEnum->values.size();
             tr1->LF_Enum.fieldList      = tr0->index;
-            tr1->LF_Enum.underlyingType = dbgGetOrCreateType(pp, typeEnum->rawType);
+            tr1->LF_Enum.underlyingType = dbgGetOrCreateType(pp, typeInfoEnum->rawType);
             tr1->name                   = sname;
 
             iter.first->second = tr1->index;
@@ -880,7 +887,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
 
         else
         {
-            return dbgGetOrCreateType(pp, typeEnum->rawType);
+            return dbgGetOrCreateType(pp, typeInfoEnum->rawType);
         }
     }
 

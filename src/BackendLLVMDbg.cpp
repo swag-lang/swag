@@ -103,11 +103,18 @@ llvm::DIType* BackendLLVMDbg::getEnumType(TypeInfo* typeInfo, llvm::DIFile* file
     {
         auto                          scope = file->getScope();
         VectorNative<llvm::Metadata*> subscripts;
-        bool                          isUnsigned = typeInfoEnum->rawType->flags & TYPEINFO_UNSIGNED;
-        for (auto& value : typeInfoEnum->values)
+        VectorNative<TypeInfoEnum*>   collect;
+        typeInfoEnum->collectEnums(collect);
+        bool isUnsigned = typeInfoEnum->rawType->flags & TYPEINFO_UNSIGNED;
+        for (auto typeEnum : collect)
         {
-            auto typeField = dbgBuilder->createEnumerator(value->name.c_str(), value->value->reg.u64, isUnsigned);
-            subscripts.push_back(typeField);
+            for (auto& value : typeEnum->values)
+            {
+                if (!value->value)
+                    continue;
+                auto typeField = dbgBuilder->createEnumerator(value->name.c_str(), value->value->reg.u64, isUnsigned);
+                subscripts.push_back(typeField);
+            }
         }
 
         auto lineNo  = typeInfo->declNode->token.startLocation.line + 1;
