@@ -415,7 +415,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         flags |= ATTRIBUTE_EXPORT_TYPE_NOZERO;
                     else
                     {
-                        return context->report({ child, attrParam->token, Fmt(Err(Err0599), w.c_str()) });
+                        return context->report({child, attrParam->token, Fmt(Err(Err0599), w.c_str())});
                     }
                 }
             }
@@ -563,7 +563,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
                         }
                         else
                         {
-                            return context->report({ child, attrParam->token, Fmt(Err(Err0693), w.c_str()) });
+                            return context->report({child, attrParam->token, Fmt(Err(Err0693), w.c_str())});
                         }
                     }
                 }

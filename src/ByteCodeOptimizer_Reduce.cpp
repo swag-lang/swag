@@ -1635,7 +1635,8 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         {
             SET_OP(ip + 1, ByteCodeOp::GetIncParam64DeRef8);
             ip[1].b.u64 = ip[0].b.u64;
-            ip[1].d.u64 = ip[1].c.u32;
+            ip[1].d.u64 = ip[1].c.u64;
+            ip[1].c.u64 = 0;
             break;
         }
 
@@ -1646,7 +1647,8 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         {
             SET_OP(ip + 1, ByteCodeOp::GetIncParam64DeRef16);
             ip[1].b.u64 = ip[0].b.u64;
-            ip[1].d.u64 = ip[1].c.u32;
+            ip[1].d.u64 = ip[1].c.u64;
+            ip[1].c.u64 = 0;
             break;
         }
 
@@ -1657,7 +1659,8 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         {
             SET_OP(ip + 1, ByteCodeOp::GetIncParam64DeRef32);
             ip[1].b.u64 = ip[0].b.u64;
-            ip[1].d.u64 = ip[1].c.u32;
+            ip[1].d.u64 = ip[1].c.u64;
+            ip[1].c.u64 = 0;
             break;
         }
 
@@ -1668,7 +1671,8 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         {
             SET_OP(ip + 1, ByteCodeOp::GetIncParam64DeRef64);
             ip[1].b.u64 = ip[0].b.u64;
-            ip[1].d.u64 = ip[1].c.u32;
+            ip[1].d.u64 = ip[1].c.u64;
+            ip[1].c.u64 = 0;
             break;
         }
 

@@ -351,7 +351,12 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
             return true;
         }
 
-        auto ra = GEP8(arg, toAdd);
+        llvm::Value* ra;
+        if (arg->getType()->isPointerTy())
+            ra = GEP8(arg, toAdd);
+        else
+            ra = GEP8(builder.CreateIntToPtr(arg, PTR_I8_TY()), toAdd);
+
         if (deRefSize)
         {
             llvm::Value* v1;
@@ -417,11 +422,19 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
         {
             auto r0 = GEP64(allocR, rdest);
             if (sizeOf == sizeof(void*))
+            {
                 builder.CreateStore(arg, r0);
-            else
+            }
+            else if (!arg->getType()->isFloatTy())
             {
                 auto ra = builder.CreateIntCast(arg, I64_TY(), false);
                 builder.CreateStore(ra, r0);
+            }
+            else
+            {
+                auto ty = swagTypeToLLVMType(buildParameters, module, param);
+                r0      = builder.CreatePointerCast(r0, ty->getPointerTo());
+                builder.CreateStore(arg, r0);
             }
         }
 

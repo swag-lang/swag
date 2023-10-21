@@ -70,7 +70,7 @@ struct Utf8
     bool        startsWith(const char* pz) const;
     int         countOf(char c) const;
 
-                operator const char*();
+    operator const char*();
     void        operator=(const char* txt);
     friend bool operator<(const Utf8& txt1, const Utf8& txt2);
     void        operator+=(const Utf8& txt);
