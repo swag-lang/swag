@@ -309,14 +309,13 @@ void ByteCodeOptimizer::optimizePassDupCopyOp(ByteCodeOptContext* context, ByteC
         }
         else if (mapRA.count)
         {
-            auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
-            if ((flags & OPFLAG_WRITE_A) && !(ip->flags & BCI_IMM_A))
+            if (ByteCode::hasWriteRegInA(ip))
                 mapRA.remove(ip->a.u32);
-            if ((flags & OPFLAG_WRITE_B) && !(ip->flags & BCI_IMM_B))
+            if (ByteCode::hasWriteRegInB(ip))
                 mapRA.remove(ip->b.u32);
-            if ((flags & OPFLAG_WRITE_C) && !(ip->flags & BCI_IMM_C))
+            if (ByteCode::hasWriteRegInC(ip))
                 mapRA.remove(ip->c.u32);
-            if ((flags & OPFLAG_WRITE_D) && !(ip->flags & BCI_IMM_D))
+            if (ByteCode::hasWriteRegInD(ip))
                 mapRA.remove(ip->d.u32);
         }
     }

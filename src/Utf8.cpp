@@ -441,7 +441,7 @@ void Utf8::removeBack()
 
 int Utf8::find(const Utf8& str, uint32_t startPos) const
 {
-    if (!count)
+    if (!count || startPos == count)
         return -1;
 
     SWAG_ASSERT(startPos < count);
