@@ -267,6 +267,18 @@ void ByteCodeOptimizer::reduceFactor(ByteCodeOptContext* context, ByteCodeInstru
             ip[1].flags |= BCI_IMM_B;
             break;
         }
+
+        if (ip[1].op == ByteCodeOp::CopyRBtoRA64 &&
+            ip[2].op == ByteCodeOp::CopyRBtoRA64)
+        {
+            if (ip[0].a.u32 == ip[2].b.u32 && ip[1].a.u32 != ip[0].a.u32)
+            {
+                ip[2].b.u32                   = ip[0].b.u32;
+                context->passHasDoneSomething = true;
+                break;
+            }
+        }
+
         break;
 
     default:
