@@ -1628,6 +1628,50 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             break;
         }
 
+        if ((ip[1].op == ByteCodeOp::DeRef8) &&
+            ip[0].a.u32 == ip[1].b.u32 &&
+            ip[1].c.s64 > 0 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::GetIncParam64DeRef8);
+            ip[1].b.u64 = ip[0].b.u64;
+            ip[1].d.u64 = ip[1].c.u32;
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::DeRef16) &&
+            ip[0].a.u32 == ip[1].b.u32 &&
+            ip[1].c.s64 > 0 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::GetIncParam64DeRef16);
+            ip[1].b.u64 = ip[0].b.u64;
+            ip[1].d.u64 = ip[1].c.u32;
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::DeRef32) &&
+            ip[0].a.u32 == ip[1].b.u32 &&
+            ip[1].c.s64 > 0 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::GetIncParam64DeRef32);
+            ip[1].b.u64 = ip[0].b.u64;
+            ip[1].d.u64 = ip[1].c.u32;
+            break;
+        }
+
+        if ((ip[1].op == ByteCodeOp::DeRef64) &&
+            ip[0].a.u32 == ip[1].b.u32 &&
+            ip[1].c.s64 > 0 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::GetIncParam64DeRef64);
+            ip[1].b.u64 = ip[0].b.u64;
+            ip[1].d.u64 = ip[1].c.u32;
+            break;
+        }
+
         if ((ip[1].op == ByteCodeOp::MakeStackPointer) &&
             (ip[2].op == ByteCodeOp::IncPointer64) &&
             ip[0].a.u32 == ip[2].a.u32 &&
