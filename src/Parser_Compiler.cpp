@@ -486,8 +486,6 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
             module = newModule;
         }
 
-        SWAG_ASSERT(g_CommandLine.test);
-
         if (token.text == g_LangSpec->name_testerror)
         {
             SWAG_VERIFY(sourceFile->module->kind == ModuleKind::Test, context->report({sourceFile, token, Err(Err1003)}));
