@@ -296,13 +296,19 @@ bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
 
     PushICFlags ic(context, BCI_TRYCATCH);
 
-    auto assumeNode = CastAst<AstTryCatchAssume>(context->node->extOwner()->ownerTryCatchAssume, AstNodeKind::Try, AstNodeKind::Assume);
+    auto node       = context->node;
+    auto assumeNode = CastAst<AstTryCatchAssume>(node->extOwner()->ownerTryCatchAssume, AstNodeKind::Try, AstNodeKind::Assume);
+
+    SWAG_ASSERT(node->ownerFct->registerGetContext != UINT32_MAX);
+    auto rt = reserveRegisterRC(context);
+    EMIT_INST2(context, ByteCodeOp::InternalHasErr, rt, node->ownerFct->registerGetContext);
+    assumeNode->seekInsideJump = context->bc->numInstructions;
+    EMIT_INST1(context, ByteCodeOp::JumpIfZero32, rt);
+    freeRegisterRC(context, rt);
 
     RegisterList r0;
     reserveRegisterRC(context, r0, 2);
     EMIT_INST2(context, ByteCodeOp::IntrinsicGetErrMsg, r0[0], r0[1]);
-    assumeNode->seekInsideJump = context->bc->numInstructions;
-    EMIT_INST1(context, ByteCodeOp::JumpIfZero64, r0[1]);
 
     uint32_t     storageOffset;
     DataSegment* storageSegment;

@@ -2474,6 +2474,14 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         registersRC[ip->a.u32].u64 = cxt->hasError != 0;
         break;
     }
+    case ByteCodeOp::JumpIfNoError:
+    {
+        SWAG_ASSERT(context->bc->registerGetContext != UINT32_MAX);
+        auto cxt = (SwagContext*) registersRC[ip->a.u32].pointer;
+        if (!cxt->hasError)
+            context->ip += ip->b.s32;
+        break;
+    }
     case ByteCodeOp::InternalClearErr:
     {
         SWAG_ASSERT(context->bc->registerGetContext != UINT32_MAX);

@@ -4626,6 +4626,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load32_Indirect(offsetof(SwagContext, hasError), RCX, RAX);
             pp.emit_Store32_Indirect(regOffset(ip->a.u32), RCX);
             break;
+        case ByteCodeOp::JumpIfNoError:
+            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
+            pp.emit_Load32_Indirect(offsetof(SwagContext, hasError), RCX, RAX);
+            pp.emit_TestN(RCX, RCX, X64Bits::B32);
+            pp.emit_Jump(JZ, i, ip->b.s32);
+            break;
         case ByteCodeOp::InternalClearErr:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
             pp.emit_Store32_Immediate(offsetof(SwagContext, hasError), 0, RAX);

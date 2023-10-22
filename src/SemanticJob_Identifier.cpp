@@ -5204,6 +5204,8 @@ bool SemanticJob::resolveAssume(SemanticContext* context)
     auto lastChild     = identifierRef->childs.back();
 
     SWAG_CHECK(checkCanCatch(context));
+    SWAG_ASSERT(node->ownerFct);
+    node->ownerFct->specFlags |= AstFuncDecl::SPECFLAG_REG_GET_CONTEXT;
 
     node->allocateExtension(ExtensionKind::ByteCode);
     node->setBcNotifBefore(ByteCodeGenJob::emitInitStackTrace);

@@ -400,6 +400,15 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
             break;
         }
 
+        // Compact error test
+        if (ip[1].op == ByteCodeOp::JumpIfZero32 &&
+            ip[0].a.u32 == ip[1].a.u32)
+        {
+            SET_OP(ip + 1, ByteCodeOp::JumpIfNoError);
+            ip[1].a.u32 = ip[0].b.u32;
+            setNop(context, ip);
+            break;
+        }
         break;
 
     case ByteCodeOp::InternalPushErr:

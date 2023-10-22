@@ -644,6 +644,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
         case ByteCodeOp::IntrinsicRtFlags:
         case ByteCodeOp::IntrinsicIsByteCode:
         case ByteCodeOp::IntrinsicGetErr:
+        case ByteCodeOp::JumpIfNoError:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
             ra->kind = ValueKind::Unknown;
             break;
