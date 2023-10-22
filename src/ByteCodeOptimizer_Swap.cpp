@@ -12,13 +12,6 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
         {
             switch (ip->op)
             {
-                /*case ByteCodeOp::GetFromStack8:
-                case ByteCodeOp::GetFromStack16:
-                case ByteCodeOp::GetFromStack32:
-                case ByteCodeOp::GetFromStack64:
-                case ByteCodeOp::GetIncFromStack64:
-                    break;*/
-
             case ByteCodeOp::MakeStackPointer:
             case ByteCodeOp::GetParam8:
             case ByteCodeOp::GetParam16:
@@ -46,16 +39,6 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
                 if (ipn->flags & BCI_START_STMT)
                     break;
                 if (ipn->op == ByteCodeOp::Nop)
-                    break;
-
-                // Do NOT move after a parameter, because we do not want the same register to be stored in
-                // different parameters
-                if (ipn->op == ByteCodeOp::PushRAParam ||
-                    ipn->op == ByteCodeOp::PushRAParam2 ||
-                    ipn->op == ByteCodeOp::PushRAParam3 ||
-                    ipn->op == ByteCodeOp::PushRAParam4 ||
-                    ipn->op == ByteCodeOp::PushRAParamCond ||
-                    ipn->op == ByteCodeOp::PushRVParam)
                     break;
 
                 if ((ByteCode::hasWriteRegInA(ip) && ByteCode::hasRefToReg(ipn, ip->a.u32)) ||

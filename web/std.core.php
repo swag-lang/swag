@@ -20256,7 +20256,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_parseBool"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">parseBool</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L314" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L315" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20269,7 +20269,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_parseF32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">parseF32</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L297" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L298" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20282,7 +20282,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_parseF64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">parseF64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L307" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L308" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20294,7 +20294,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_parseIdentifier"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">parseIdentifier</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L343" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L344" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20307,7 +20307,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_parseRune"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">parseRune</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L334" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L335" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20320,7 +20320,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_parseS16"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">parseS16</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L197" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L198" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20332,7 +20332,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_parseS32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">parseS32</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L207" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L208" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20344,7 +20344,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_parseS64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">parseS64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L217" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L218" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20356,7 +20356,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_parseS8"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">parseS8</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L187" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L188" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20369,7 +20369,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_parseString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">parseString</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L360" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L361" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20394,7 +20394,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_parseU32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">parseU32</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L110" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L111" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20406,7 +20406,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_parseU64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">parseU64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L118" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L119" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20472,7 +20472,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_toF32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">toF32</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L485" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L486" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20485,7 +20485,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_toF64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">toF64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L494" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L495" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20498,7 +20498,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_toNum"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">toNum</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L503" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L504" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20511,7 +20511,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_toS16"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">toS16</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L422" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L423" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20524,7 +20524,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_toS32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">toS32</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L431" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L432" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20537,7 +20537,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_toS64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">toS64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L440" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L441" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20550,7 +20550,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_toS8"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">toS8</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L413" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L414" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20563,7 +20563,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_toU16"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">toU16</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L458" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L459" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20576,7 +20576,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_toU32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">toU32</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L467" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L468" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20589,7 +20589,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_toU64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">toU64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L476" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L477" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20602,7 +20602,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_toU8"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">toU8</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L449" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L450" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -24159,7 +24159,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <p>Swap two values. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">swap</span>(x: *<span class="SCst">T</span>, y: *<span class="SCst">T</span>)</span></div>
 <div class="swag-watermark">
-Generated on 21-10-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
+Generated on 22-10-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
 </div>
 </div>
