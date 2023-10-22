@@ -599,6 +599,11 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
         case ByteCodeOp::Unreachable:
         case ByteCodeOp::InternalUnreachable:
         case ByteCodeOp::IntrinsicBcBreakpoint:
+        case ByteCodeOp::ClearRR8:
+        case ByteCodeOp::ClearRR16:
+        case ByteCodeOp::ClearRR32:
+        case ByteCodeOp::ClearRR64:
+        case ByteCodeOp::ClearRRX:
             break;
 
             // Fake 1 value

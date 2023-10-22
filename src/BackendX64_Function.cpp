@@ -2875,6 +2875,57 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             /////////////////////////////////////
 
+        case ByteCodeOp::ClearRR8:
+        {
+            int stackOffset = getParamStackOffset(coffFct, typeFunc->numParamsRegisters());
+            pp.emit_Load64_Indirect(stackOffset, RAX, RDI);
+            pp.emit_Store8_Immediate(ip->c.u32, 0, RAX);
+            break;
+        }
+        case ByteCodeOp::ClearRR16:
+        {
+            int stackOffset = getParamStackOffset(coffFct, typeFunc->numParamsRegisters());
+            pp.emit_Load64_Indirect(stackOffset, RAX, RDI);
+            pp.emit_Store16_Immediate(ip->c.u32, 0, RAX);
+            break;
+        }
+        case ByteCodeOp::ClearRR32:
+        {
+            int stackOffset = getParamStackOffset(coffFct, typeFunc->numParamsRegisters());
+            pp.emit_Load64_Indirect(stackOffset, RAX, RDI);
+            pp.emit_Store32_Immediate(ip->c.u32, 0, RAX);
+            break;
+        }
+        case ByteCodeOp::ClearRR64:
+        {
+            int stackOffset = getParamStackOffset(coffFct, typeFunc->numParamsRegisters());
+            pp.emit_Load64_Indirect(stackOffset, RAX, RDI);
+            pp.emit_Store64_Immediate(ip->c.u32, 0, RAX);
+            break;
+        }
+        case ByteCodeOp::ClearRRX:
+        {
+            int stackOffset = getParamStackOffset(coffFct, typeFunc->numParamsRegisters());
+            pp.emit_Load64_Indirect(stackOffset, RAX, RDI);
+
+            SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
+            if (ip->b.u32 <= 128 && !buildParameters.isDebug())
+            {
+                pp.emit_ClearX(ip->b.u32, ip->c.u32, RAX);
+            }
+            else
+            {
+                pp.pushParams.clear();
+                pp.pushParams.push_back({X64PushParamType::RAX});
+                pp.pushParams.push_back({X64PushParamType::Imm, 0});
+                pp.pushParams.push_back({X64PushParamType::Imm, ip->b.u64});
+                emitInternalCallExt(pp, moduleToGen, g_LangSpec->name_memset, pp.pushParams);
+            }
+            break;
+        }
+
+            /////////////////////////////////////
+
         case ByteCodeOp::SetZeroStack8:
             pp.emit_Store8_Immediate(offsetStack + ip->a.u32, 0, RDI);
             break;

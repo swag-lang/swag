@@ -36,6 +36,7 @@ enum class X64PushParamType
     Reg,
     RegAdd,
     RegMul,
+    RAX,
     Imm,
     Imm64,
     RelocV,

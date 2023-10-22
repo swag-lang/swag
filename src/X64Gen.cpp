@@ -1601,6 +1601,9 @@ void X64Gen::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<X64
                     emit_OpN_Immediate(RAX, paramsRegisters[i].val, X64Op::IMUL, X64Bits::B64);
                     emit_CopyN(cc.paramByRegisterInteger[i], RAX, X64Bits::B64);
                     break;
+                case X64PushParamType::RAX:
+                    emit_CopyN(cc.paramByRegisterInteger[i], RAX, X64Bits::B64);
+                    break;
                 case X64PushParamType::GlobalString:
                     emit_GlobalString((const char*) paramsRegisters[i].reg, cc.paramByRegisterInteger[i]);
                     break;

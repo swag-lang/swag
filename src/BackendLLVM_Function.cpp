@@ -528,10 +528,12 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
+            /////////////////////////////////////
+
         case ByteCodeOp::SetZeroAtPointer8:
         {
             auto r0 = builder.CreateLoad(PTR_I8_TY(), GEP64(allocR, ip->a.u32));
-            auto v0 = builder.CreateInBoundsGEP(I8_TY(), r0, builder.getInt32(ip->b.u32));
+            auto v0 = GEP8(r0, ip->b.u32);
             builder.CreateStore(pp.cst0_i8, v0);
             break;
         }
@@ -572,6 +574,51 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateMemSet(r0, pp.cst0_i8, v2, {});
             break;
         }
+
+            /////////////////////////////////////
+
+        case ByteCodeOp::ClearRR8:
+        {
+            SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
+            auto r0 = TO_PTR_I8(func->getArg((int) func->arg_size() - 1));
+            auto v0 = GEP8(r0, ip->c.u32);
+            builder.CreateStore(pp.cst0_i8, v0);
+            break;
+        }
+        case ByteCodeOp::ClearRR16:
+        {
+            SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
+            auto r0 = TO_PTR_I8(func->getArg((int) func->arg_size() - 1));
+            auto v0 = GEP8_PTR_I16(r0, ip->c.u32);
+            builder.CreateStore(pp.cst0_i16, v0);
+            break;
+        }
+        case ByteCodeOp::ClearRR32:
+        {
+            SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
+            auto r0 = TO_PTR_I8(func->getArg((int) func->arg_size() - 1));
+            auto v0 = GEP8_PTR_I32(r0, ip->c.u32);
+            builder.CreateStore(pp.cst0_i32, v0);
+            break;
+        }
+        case ByteCodeOp::ClearRR64:
+        {
+            SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
+            auto r0 = TO_PTR_I8(func->getArg((int) func->arg_size() - 1));
+            auto v0 = GEP8_PTR_I64(r0, ip->c.u32);
+            builder.CreateStore(pp.cst0_i64, v0);
+            break;
+        }
+        case ByteCodeOp::ClearRRX:
+        {
+            SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
+            auto r0 = TO_PTR_I8(func->getArg((int) func->arg_size() - 1));
+            auto v0 = builder.CreateInBoundsGEP(I8_TY(), r0, CST_RC32);
+            builder.CreateMemSet(v0, pp.cst0_i8, ip->b.u64, llvm::Align{});
+            break;
+        }
+
+            /////////////////////////////////////
 
         case ByteCodeOp::MakeMutableSegPointer:
         {

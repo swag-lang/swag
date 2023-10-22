@@ -2805,6 +2805,61 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
             setNop(context, ip + 1);
             break;
         }
+
+        if (ip[1].op == ByteCodeOp::SetZeroAtPointer8 &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::ClearRR8);
+            ip[1].c.u64 = ip[1].b.u64 + ip[0].b.u64;
+            ip[1].a.u64 = 0;
+            ip[1].b.u64 = 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::SetZeroAtPointer16 &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::ClearRR16);
+            ip[1].c.u64 = ip[1].b.u64 + ip[0].b.u64;
+            ip[1].a.u64 = 0;
+            ip[1].b.u64 = 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::SetZeroAtPointer32 &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::ClearRR32);
+            ip[1].c.u64 = ip[1].b.u64 + ip[0].b.u64;
+            ip[1].a.u64 = 0;
+            ip[1].b.u64 = 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::SetZeroAtPointer64 &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::ClearRR64);
+            ip[1].c.u64 = ip[1].b.u64 + ip[0].b.u64;
+            ip[1].a.u64 = 0;
+            ip[1].b.u64 = 0;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::SetZeroAtPointerX &&
+            ip[0].a.u32 == ip[1].a.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::ClearRRX);
+            ip[1].c.u64 += ip[0].b.u64;
+            ip[1].a.u64 = 0;
+            break;
+        }
+
         break;
 
     default:

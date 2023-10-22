@@ -1153,6 +1153,37 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         memset((void*) registersRC[ip->a.u32].pointer, 0, registersRC[ip->b.u32].u64 * ip->c.u64);
         break;
 
+    case ByteCodeOp::ClearRR8:
+    {
+        auto ptr                      = context->registersRR[0].pointer;
+        *(uint8_t*) (ptr + ip->c.u32) = 0;
+        break;
+    }
+    case ByteCodeOp::ClearRR16:
+    {
+        auto ptr                       = context->registersRR[0].pointer;
+        *(uint16_t*) (ptr + ip->c.u32) = 0;
+        break;
+    }
+    case ByteCodeOp::ClearRR32:
+    {
+        auto ptr                       = context->registersRR[0].pointer;
+        *(uint32_t*) (ptr + ip->c.u32) = 0;
+        break;
+    }
+    case ByteCodeOp::ClearRR64:
+    {
+        auto ptr                       = context->registersRR[0].pointer;
+        *(uint64_t*) (ptr + ip->c.u32) = 0;
+        break;
+    }
+    case ByteCodeOp::ClearRRX:
+    {
+        auto ptr = context->registersRR[0].pointer;
+        memset(ptr, 0, ip->b.u64);
+        break;
+    }
+
     case ByteCodeOp::GetFromMutableSeg8:
     {
         auto module = context->jc.sourceFile->module;
