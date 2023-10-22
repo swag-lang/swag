@@ -200,7 +200,6 @@ impl RegExp
     }
 
     // Find the first occurence in the string
-    #[Swag.PrintBc]
     public mtd grep(str: string)->string
     {
         var beg = @dataof(str)
