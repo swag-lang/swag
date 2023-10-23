@@ -72,9 +72,9 @@ void ByteCodeOptimizer::setContextFlags(ByteCodeOptContext* context, ByteCodeIns
     case ByteCodeOp::MakeBssSegPointer:
     case ByteCodeOp::MakeConstantSegPointer:
     case ByteCodeOp::MakeMutableSegPointer:
-    case ByteCodeOp::GetParam64:
+    case ByteCodeOp::SetImmediate32:
+    case ByteCodeOp::SetImmediate64:
     case ByteCodeOp::GetParam64x2:
-    case ByteCodeOp::GetIncParam64:
     case ByteCodeOp::GetParam64DeRef8:
     case ByteCodeOp::GetParam64DeRef16:
     case ByteCodeOp::GetParam64DeRef32:
@@ -83,10 +83,15 @@ void ByteCodeOptimizer::setContextFlags(ByteCodeOptContext* context, ByteCodeIns
     case ByteCodeOp::GetIncParam64DeRef16:
     case ByteCodeOp::GetIncParam64DeRef32:
     case ByteCodeOp::GetIncParam64DeRef64:
-    case ByteCodeOp::SetImmediate32:
-    case ByteCodeOp::SetImmediate64:
         context->contextBcFlags |= OCF_HAS_DUP_COPY;
         break;
+
+    case ByteCodeOp::GetParam64:
+    case ByteCodeOp::GetIncParam64:
+        context->contextBcFlags |= OCF_HAS_DUP_COPY;
+        context->contextBcFlags |= OCF_HAS_PARAM;
+        break;
+
     default:
         break;
     }
@@ -509,6 +514,7 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
             OPT_PASS(optimizePassDeadStore);
             OPT_PASS(optimizePassDeadStoreDup);
             OPT_PASS(optimizePassSwap);
+            OPT_PASS(optimizePassParam);
 
             removeNops(&optContext);
             if (!optContext.allPassesHaveDoneSomething)

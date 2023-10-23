@@ -2721,7 +2721,7 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
             }
 
             // IncPointer with src != dst, followed by one SetAtPointer
-            // No need to to a nop, the optimizer will remove instruction if unused
+            // No need to do a nop, the optimizer will remove instruction if unused
             // (safer that the version below)
             if ((ip[1].op == ByteCodeOp::SetAtPointer8 ||
                  ip[1].op == ByteCodeOp::SetAtPointer16 ||

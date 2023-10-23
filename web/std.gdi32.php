@@ -2429,7 +2429,7 @@
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">TextOutW</span>(hdc: <span class="SCst">Win32</span>.<span class="SCst">HDC</span>, x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>, lpString: <span class="SCst">Win32</span>.<span class="SCst">LPCWSTR</span>, c: <span class="STpe">s32</span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">BOOL</span></span></div>
 <div class="swag-watermark">
-Generated on 22-10-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
+Generated on 23-10-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
 </div>
 </div>

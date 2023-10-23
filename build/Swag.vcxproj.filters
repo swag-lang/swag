@@ -629,6 +629,9 @@
     <ClCompile Include="..\src\SemanticJob_Error.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ByteCodeOptimizer_Param.cpp">
+      <Filter>Backend\ByteCode\Optimize</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
