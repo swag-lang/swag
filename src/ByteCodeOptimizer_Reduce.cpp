@@ -2738,6 +2738,11 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
                 break;
             }
 
+            // Inc Pointer follower by SetAtPointer.
+            // Encode the offset in SetAtPointer, but do not remove the IncPointer, as the
+            // register can be used later. So we just swap the 2 instructions, and the
+            // optimizer will remove the inc pointer if no more necessary
+
             if ((ip[1].op == ByteCodeOp::SetZeroAtPointer8 ||
                  ip[1].op == ByteCodeOp::SetZeroAtPointer16 ||
                  ip[1].op == ByteCodeOp::SetZeroAtPointer32 ||
@@ -2745,18 +2750,15 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
                 ip[0].a.u32 == ip[0].c.u32 &&
                 ip[0].a.u32 == ip[1].a.u32 &&
                 (ip[0].b.s64 + ip[1].b.s64 >= 0) &&
-                (ip[0].b.s64 + ip[1].b.s64 <= 0x7FFFFFFF))
-
+                (ip[0].b.s64 + ip[1].b.s64 <= 0x7FFFFFFF) &&
+                !(ip[0].flags & BCI_START_STMT))
             {
                 ip[1].b.s64 += ip[0].b.s64;
-                setNop(context, ip);
+                swap(ip[0], ip[1]);
+                context->passHasDoneSomething = true;
                 break;
             }
 
-            // Inc Pointer follower by SetAtPointer.
-            // Encode the offset in SetAtPointer, but do not remove the IncPointer, as the
-            // register can be used later. So we just swap the 2 instructions, and the
-            // optimizer will remove the inc pointer if no more necessary
             if ((ip[1].op == ByteCodeOp::SetAtPointer8 ||
                  ip[1].op == ByteCodeOp::SetAtPointer16 ||
                  ip[1].op == ByteCodeOp::SetAtPointer32 ||
