@@ -3410,6 +3410,13 @@ void ByteCodeOptimizer::reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruc
             break;
         }
 
+        if ((ip->flags & BCI_IMM_B) && ip->b.u8 == 0)
+        {
+            SET_OP(ip, ByteCodeOp::SetZeroAtPointer8);
+            ip->b.u64 = ip->c.u32;
+            break;
+        }
+
         break;
 
     case ByteCodeOp::SetAtPointer16:
@@ -3426,6 +3433,13 @@ void ByteCodeOptimizer::reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruc
             break;
         }
 
+        if ((ip->flags & BCI_IMM_B) && ip->b.u16 == 0)
+        {
+            SET_OP(ip, ByteCodeOp::SetZeroAtPointer16);
+            ip->b.u64 = ip->c.u32;
+            break;
+        }
+
         break;
 
     case ByteCodeOp::SetAtPointer32:
@@ -3439,6 +3453,13 @@ void ByteCodeOptimizer::reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruc
             SET_OP(ip, ByteCodeOp::SetAtPointer64);
             ip->b.u64 |= (uint64_t) ip[1].b.u32 << 32;
             setNop(context, ip + 1);
+            break;
+        }
+
+        if ((ip->flags & BCI_IMM_B) && ip->b.u32 == 0)
+        {
+            SET_OP(ip, ByteCodeOp::SetZeroAtPointer32);
+            ip->b.u64 = ip->c.u32;
             break;
         }
 
