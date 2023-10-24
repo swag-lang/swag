@@ -2,6 +2,44 @@
 #include "Diagnostic.h"
 #include "TypeManager.h"
 
+void SymbolOverload::from(SymbolOverload* other)
+{
+    computedValue   = other->computedValue;
+    symRegisters    = other->symRegisters;
+    typeInfo        = other->typeInfo;
+    node            = other->node;
+    symbol          = other->symbol;
+    fromInlineParam = other->fromInlineParam;
+    storageIndex    = other->storageIndex;
+    flags           = other->flags;
+}
+
+void SymbolOverload::setRegisters(const RegisterList& reg, uint32_t fl)
+{
+    if (fl == OVERLOAD_HINT_REG)
+    {
+        if (flags & OVERLOAD_INLINE_REG)
+            return;
+        if (flags & OVERLOAD_PERSISTENT_REG)
+            return;
+    }
+    else if (fl & OVERLOAD_INLINE_REG)
+    {
+        SWAG_ASSERT(!(flags & OVERLOAD_INLINE_REG) || symRegisters == reg);
+        SWAG_ASSERT(!(flags & OVERLOAD_PERSISTENT_REG));
+        flags &= ~OVERLOAD_HINT_REG;
+    }
+    else
+    {
+        SWAG_ASSERT(!(flags & OVERLOAD_PERSISTENT_REG) || symRegisters == reg);
+        SWAG_ASSERT(!(flags & OVERLOAD_INLINE_REG));
+        flags &= ~OVERLOAD_HINT_REG;
+    }
+
+    flags |= fl;
+    symRegisters = reg;
+}
+
 void SymbolName::decreaseOverloadNoLock()
 {
     SWAG_ASSERT(cptOverloads);

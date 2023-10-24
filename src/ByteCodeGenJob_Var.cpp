@@ -145,13 +145,11 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
             }
 
             // Keep the value in a persistent register, as it cannot be changed
-            if (isLet && !(resolved->flags & OVERLOAD_HINT_AS_REG))
+            if (isLet && !(resolved->flags & OVERLOAD_PERSISTENT_REG))
             {
-                SWAG_ASSERT(resolved->registers.size() == 0);
                 context->bc->staticRegs += node->resultRegisterRC.size();
-                resolved->flags |= OVERLOAD_HINT_AS_REG;
                 node->resultRegisterRC.cannotFree = true;
-                resolved->registers               = node->resultRegisterRC;
+                resolved->setRegisters(node->resultRegisterRC, OVERLOAD_PERSISTENT_REG);
 
                 switch (resolved->typeInfo->sizeOf)
                 {

@@ -31,17 +31,19 @@ const uint32_t OVERLOAD_RETVAL           = 0x00010000;
 const uint32_t OVERLOAD_STRUCT_AFFECT    = 0x00020000;
 const uint32_t OVERLOAD_TUPLE_UNPACK     = 0x00040000;
 const uint32_t OVERLOAD_USED             = 0x00080000;
-const uint32_t OVERLOAD_HINT_AS_REG      = 0x00100000;
+const uint32_t OVERLOAD_NOT_INITIALIZED  = 0x00100000;
 const uint32_t OVERLOAD_HAS_AFFECT       = 0x00200000;
 const uint32_t OVERLOAD_IS_LET           = 0x00400000;
 const uint32_t OVERLOAD_HAS_MAKE_POINTER = 0x00800000;
 const uint32_t OVERLOAD_VAR_HAS_ASSIGN   = 0x01000000;
-const uint32_t OVERLOAD_NOT_INITIALIZED  = 0x02000000;
+const uint32_t OVERLOAD_PERSISTENT_REG   = 0x02000000;
+const uint32_t OVERLOAD_HINT_REG         = 0x04000000;
+const uint32_t OVERLOAD_INLINE_REG       = 0x08000000;
 
 struct SymbolOverload
 {
     ComputedValue computedValue;
-    RegisterList  registers;
+    RegisterList  symRegisters;
 
     TypeInfo*   typeInfo        = nullptr;
     AstNode*    node            = nullptr;
@@ -51,17 +53,8 @@ struct SymbolOverload
     uint32_t storageIndex = 0;
     uint32_t flags        = 0;
 
-    void from(SymbolOverload* other)
-    {
-        computedValue   = other->computedValue;
-        registers       = other->registers;
-        typeInfo        = other->typeInfo;
-        node            = other->node;
-        symbol          = other->symbol;
-        fromInlineParam = other->fromInlineParam;
-        storageIndex    = other->storageIndex;
-        flags           = other->flags;
-    }
+    void from(SymbolOverload* other);
+    void setRegisters(const RegisterList& reg, uint32_t flags);
 };
 
 enum class SymbolKind : uint8_t

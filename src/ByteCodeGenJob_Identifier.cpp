@@ -211,7 +211,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     // Function parameter : it's a register on the stack
     if (resolved->flags & OVERLOAD_VAR_FUNC_PARAM)
     {
-        node->resultRegisterRC = reserveRegisterRC(context);
+        node->resultRegisterRC = reserveRegisterRC(context, resolved);
+        resolved->setRegisters(node->resultRegisterRC, OVERLOAD_HINT_REG);
 
         // Get a parameter from a #validif block... this is special
         if (node->isValidIfParam(resolved))
@@ -426,7 +427,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 
         if (node->isSilentCall())
         {
-            SWAG_ASSERT(!(resolved->flags & OVERLOAD_HINT_AS_REG));
+            SWAG_ASSERT(!(resolved->flags & OVERLOAD_PERSISTENT_REG));
             node->resultRegisterRC = reserveRegisterRC(context);
             EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->parent->resultRegisterRC);
             freeRegisterRC(context, node->parent);
@@ -434,9 +435,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         else if (node->semFlags & SEMFLAG_FROM_REF)
         {
             node->resultRegisterRC = reserveRegisterRC(context);
-            if (resolved->flags & OVERLOAD_HINT_AS_REG)
+            if (resolved->flags & OVERLOAD_PERSISTENT_REG)
             {
-                EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC, resolved->registers[0]);
+                EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC, resolved->symRegisters[0]);
             }
             else
             {
@@ -452,7 +453,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
                  typeInfo->isListArray() ||
                  typeInfo->isStruct())
         {
-            SWAG_ASSERT(!(resolved->flags & OVERLOAD_HINT_AS_REG));
+            SWAG_ASSERT(!(resolved->flags & OVERLOAD_PERSISTENT_REG));
             node->resultRegisterRC = reserveRegisterRC(context);
             auto inst              = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
             inst->b.u64            = resolved->computedValue.storageOffset;
@@ -460,9 +461,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (node->forceTakeAddress() && (!typeInfo->isString() || node->parent->kind != AstNodeKind::ArrayPointerIndex))
         {
-            if (resolved->flags & OVERLOAD_HINT_AS_REG)
+            if (resolved->flags & OVERLOAD_PERSISTENT_REG)
             {
-                node->resultRegisterRC            = resolved->registers[0];
+                node->resultRegisterRC            = resolved->symRegisters[0];
                 node->resultRegisterRC.cannotFree = true;
                 SWAG_ASSERT(node->parent->flags & AST_ARRAY_POINTER_REF);
             }
@@ -480,8 +481,8 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             node->resultRegisterRC = reserveRegisterRC(context);
 
-            if (resolved->flags & OVERLOAD_HINT_AS_REG)
-                EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC, resolved->registers[0]);
+            if (resolved->flags & OVERLOAD_PERSISTENT_REG)
+                EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC, resolved->symRegisters[0]);
             else
                 EMIT_INST1(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC)->b.u64 = resolved->computedValue.storageOffset;
 
@@ -492,13 +493,13 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (typeInfo->isInterface() && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !(node->flags & AST_UFCS_FCT))
         {
-            if (resolved->flags & OVERLOAD_HINT_AS_REG)
+            if (resolved->flags & OVERLOAD_PERSISTENT_REG)
             {
                 node->resultRegisterRC = reserveRegisterRC(context);
                 if (node->flags & AST_FROM_UFCS)
-                    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC, resolved->registers[1]);
+                    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC, resolved->symRegisters[1]);
                 else if (node->flags & AST_TO_UFCS)
-                    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC, resolved->registers[0]);
+                    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC, resolved->symRegisters[0]);
             }
             else
             {
@@ -514,15 +515,15 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (typeInfo->isClosure())
         {
-            SWAG_ASSERT(!(resolved->flags & OVERLOAD_HINT_AS_REG));
+            SWAG_ASSERT(!(resolved->flags & OVERLOAD_PERSISTENT_REG));
             node->resultRegisterRC = reserveRegisterRC(context);
             auto inst              = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
             inst->b.u64            = resolved->computedValue.storageOffset;
             inst->c.pointer        = (uint8_t*) resolved;
         }
-        else if (resolved->flags & OVERLOAD_HINT_AS_REG)
+        else if (resolved->flags & OVERLOAD_PERSISTENT_REG)
         {
-            node->resultRegisterRC            = resolved->registers;
+            node->resultRegisterRC            = resolved->symRegisters;
             node->resultRegisterRC.cannotFree = true;
         }
         else if (typeInfo->numRegisters() == 2)
@@ -570,11 +571,12 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
 
         // We need to copy register, and not use it directly, because the register can be changed by
         // some code after (like when dereferencing something)
-        SWAG_VERIFY(resolved->registers.size() > 0, Report::internalError(context->node, Fmt("emitIdentifier, identifier not generated '%s'", identifier->token.ctext()).c_str()));
-        reserveRegisterRC(context, node->resultRegisterRC, resolved->registers.size());
+        SWAG_VERIFY(resolved->symRegisters.size() > 0, Report::internalError(context->node, Fmt("emitIdentifier, identifier not generated '%s'", identifier->token.ctext()).c_str()));
+        SWAG_ASSERT(resolved->flags & OVERLOAD_INLINE_REG);
+        reserveRegisterRC(context, node->resultRegisterRC, resolved->symRegisters.size());
 
         for (int i = 0; i < node->resultRegisterRC.size(); i++)
-            EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[i], resolved->registers[i]);
+            EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[i], resolved->symRegisters[i]);
 
         // :UfcsItfInlined
         // if we have something of the form vitf.call() where call is inlined.

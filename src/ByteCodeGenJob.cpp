@@ -64,11 +64,21 @@ void ByteCodeGenJob::freeRegisterRC(ByteCodeGenContext* context, uint32_t rc)
     context->bc->isDirtyRegistersRC = true;
 }
 
-uint32_t ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context)
+uint32_t ByteCodeGenJob::reserveRegisterRC(ByteCodeGenContext* context, const SymbolOverload* overload)
 {
     if (!context->bc->availableRegistersRC.empty())
     {
         sortRegistersRC(context);
+        if (overload && overload->flags & OVERLOAD_HINT_REG)
+        {
+            auto it = context->bc->availableRegistersRC.find(overload->symRegisters[0]);
+            if (it != -1)
+            {
+                context->bc->availableRegistersRC.erase_unordered(it);
+                return overload->symRegisters[0];
+            }
+        }
+
         auto result = context->bc->availableRegistersRC.back();
         context->bc->availableRegistersRC.pop_back();
         return result;

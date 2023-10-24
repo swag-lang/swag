@@ -154,14 +154,14 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                 {
                     if (overload->flags & OVERLOAD_VAR_INLINE)
                     {
-                        overload->registers = callParam->resultRegisterRC;
-                        SWAG_ASSERT(overload->registers.countResults > 0);
-                        if (!overload->registers.cannotFree && canFreeRegParams)
+                        overload->setRegisters(callParam->resultRegisterRC, OVERLOAD_INLINE_REG);
+                        SWAG_ASSERT(overload->symRegisters.countResults > 0);
+                        if (!overload->symRegisters.cannotFree && canFreeRegParams)
                         {
-                            overload->registers.cannotFree = true;
+                            overload->symRegisters.cannotFree = true;
                             node->allocateExtension(ExtensionKind::Misc);
-                            for (int r = 0; r < overload->registers.size(); r++)
-                                node->extMisc()->registersToRelease.push_back(overload->registers[r]);
+                            for (int r = 0; r < overload->symRegisters.size(); r++)
+                                node->extMisc()->registersToRelease.push_back(overload->symRegisters[r]);
                         }
                         break;
                     }
@@ -192,14 +192,14 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                         {
                             if (overload->flags & OVERLOAD_VAR_INLINE)
                             {
-                                overload->registers = callParam->resultRegisterRC;
-                                if (!overload->registers.cannotFree)
+                                overload->setRegisters(callParam->resultRegisterRC, OVERLOAD_INLINE_REG);
+                                if (!overload->symRegisters.cannotFree)
                                 {
                                     SWAG_ASSERT(canFreeRegParams);
-                                    overload->registers.cannotFree = true;
+                                    overload->symRegisters.cannotFree = true;
                                     node->allocateExtension(ExtensionKind::Misc);
-                                    for (int r = 0; r < overload->registers.size(); r++)
-                                        node->extMisc()->registersToRelease.push_back(overload->registers[r]);
+                                    for (int r = 0; r < overload->symRegisters.size(); r++)
+                                        node->extMisc()->registersToRelease.push_back(overload->symRegisters[r]);
                                 }
                                 covered = true;
                                 break;
@@ -222,13 +222,15 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
                     {
                         if (overload->flags & OVERLOAD_VAR_INLINE)
                         {
-                            SWAG_CHECK(emitDefaultParamValue(context, defaultParam, overload->registers));
+                            RegisterList rl;
+                            SWAG_CHECK(emitDefaultParamValue(context, defaultParam, rl));
+                            overload->setRegisters(rl, OVERLOAD_INLINE_REG);
 
                             SWAG_ASSERT(canFreeRegParams);
-                            overload->registers.cannotFree = true;
+                            overload->symRegisters.cannotFree = true;
                             node->allocateExtension(ExtensionKind::Misc);
-                            for (int r = 0; r < overload->registers.size(); r++)
-                                node->extMisc()->registersToRelease.push_back(overload->registers[r]);
+                            for (int r = 0; r < overload->symRegisters.size(); r++)
+                                node->extMisc()->registersToRelease.push_back(overload->symRegisters[r]);
                             break;
                         }
                     }
