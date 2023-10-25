@@ -243,28 +243,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         else
         {
             SWAG_ASSERT(resolved->computedValue.storageOffset != UINT32_MAX);
-            switch (typeInfo->sizeOf)
-            {
-            case 1:
-                EMIT_INST0(context, ByteCodeOp::SetZeroStack8)->a.u32 = resolved->computedValue.storageOffset;
-                break;
-            case 2:
-                EMIT_INST0(context, ByteCodeOp::SetZeroStack16)->a.u32 = resolved->computedValue.storageOffset;
-                break;
-            case 4:
-                EMIT_INST0(context, ByteCodeOp::SetZeroStack32)->a.u32 = resolved->computedValue.storageOffset;
-                break;
-            case 8:
-                EMIT_INST0(context, ByteCodeOp::SetZeroStack64)->a.u32 = resolved->computedValue.storageOffset;
-                break;
-            default:
-            {
-                auto inst   = EMIT_INST0(context, ByteCodeOp::SetZeroStackX);
-                inst->a.u32 = resolved->computedValue.storageOffset;
-                inst->b.u64 = typeInfo->sizeOf;
-                break;
-            }
-            }
+            emitSetZeroStack(context, resolved->computedValue.storageOffset, typeInfo->sizeOf);
         }
     }
 

@@ -409,6 +409,7 @@ struct ByteCodeGenJob : public Job
     static bool emitDropCopyMove(ByteCodeGenContext* context);
     static bool emitStruct(ByteCodeGenContext* context);
     static void emitSetZeroAtPointer(ByteCodeGenContext* context, uint64_t sizeOf, uint32_t registerIndex);
+    static void emitSetZeroStack(ByteCodeGenContext* context, uint32_t offset, uint32_t sizeOf);
     static void emitMemCpy(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint64_t sizeOf);
     static bool emitDefer(ByteCodeGenContext* context);
 

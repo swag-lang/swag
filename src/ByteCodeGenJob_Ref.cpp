@@ -645,6 +645,28 @@ void ByteCodeGenJob::emitSetZeroAtPointer(ByteCodeGenContext* context, uint64_t 
     }
 }
 
+void ByteCodeGenJob::emitSetZeroStack(ByteCodeGenContext* context, uint32_t offset, uint32_t sizeOf)
+{
+    switch (sizeOf)
+    {
+    case 1:
+        EMIT_INST1(context, ByteCodeOp::SetZeroStack8, offset);
+        break;
+    case 2:
+        EMIT_INST1(context, ByteCodeOp::SetZeroStack16, offset);
+        break;
+    case 4:
+        EMIT_INST1(context, ByteCodeOp::SetZeroStack32, offset);
+        break;
+    case 8:
+        EMIT_INST1(context, ByteCodeOp::SetZeroStack64, offset);
+        break;
+    default:
+        EMIT_INST1(context, ByteCodeOp::SetZeroStackX, offset)->b.u64 = sizeOf;
+        break;
+    }
+}
+
 void ByteCodeGenJob::emitMemCpy(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint64_t sizeOf)
 {
     switch (sizeOf)

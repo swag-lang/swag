@@ -1278,10 +1278,7 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
         }
         else
         {
-            auto inst = EMIT_INST0(context, ByteCodeOp::SetZeroStackX);
-            SWAG_ASSERT(resolved->computedValue.storageOffset != UINT32_MAX);
-            inst->a.u32 = resolved->computedValue.storageOffset;
-            inst->b.u64 = typeInfoStruct->sizeOf;
+            emitSetZeroStack(context, resolved->computedValue.storageOffset, typeInfoStruct->sizeOf);
         }
     }
     else
