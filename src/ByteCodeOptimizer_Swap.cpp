@@ -46,7 +46,7 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
                 // PushRAParam R0
                 // R0 = ?
                 // PushRAParam R0
-                // 
+                //
                 // This could happen because of optimization passes.
                 //
                 // When generating backend, R0 will have the same value in both push, which
@@ -54,16 +54,8 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
                 //
                 // So we never move an instruction INSIDE a PushParam block
 
-                if (ipn->op == ByteCodeOp::PushRAParam ||
-                    ipn->op == ByteCodeOp::PushRAParam2 ||
-                    ipn->op == ByteCodeOp::PushRAParam3 ||
-                    ipn->op == ByteCodeOp::PushRAParam4 ||
-                    ipn->op == ByteCodeOp::PushRAParamCond ||
-                    ipn->op == ByteCodeOp::PushRVParam)
-                {
-                    if (!startParamBlock)
-                        startParamBlock = ipn;
-                }
+                if (ByteCode::isPushParam(ipn) && !startParamBlock)
+                    startParamBlock = ipn;
 
                 if ((ByteCode::hasWriteRegInA(ip) && ByteCode::hasRefToReg(ipn, ip->a.u32)) ||
                     (ByteCode::hasWriteRegInB(ip) && ByteCode::hasRefToReg(ipn, ip->b.u32)) ||
@@ -85,17 +77,11 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
                 if (ByteCode::isJump(ipn))
                     break;
 
-                if (ipn->op == ByteCodeOp::LocalCall ||
-                    ipn->op == ByteCodeOp::LocalCallPop ||
-                    ipn->op == ByteCodeOp::LocalCallPopParam ||
-                    ipn->op == ByteCodeOp::LocalCallPopRC ||
-                    ipn->op == ByteCodeOp::ForeignCall ||
-                    ipn->op == ByteCodeOp::ForeignCallPop ||
-                    ipn->op == ByteCodeOp::LambdaCall ||
-                    ipn->op == ByteCodeOp::LambdaCallPop)
-                {
+                // After the call, this is the end of the param block, so we can move an instruction
+                // here again, as long as nothing in the param block and the call references the
+                // register
+                if (ByteCode::isCall(ipn))
                     startParamBlock = nullptr;
-                }
 
                 ipn++;
             }

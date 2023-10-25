@@ -137,6 +137,8 @@ struct ByteCode
 
     // clang-format off
     static bool     isMemCpy(ByteCodeInstruction* inst)     { return g_ByteCodeOpDesc[(int) inst->op].flags & OPFLAG_IS_MEMCPY; }
+    static bool     isPushParam(ByteCodeInstruction* inst)  { return g_ByteCodeOpDesc[(int) inst->op].flags & OPFLAG_IS_PUSH_PARAM; }
+    static bool     isCall(ByteCodeInstruction* inst)       { return g_ByteCodeOpDesc[(int) inst->op].flags & OPFLAG_IS_CALL; }
     static bool     isJump(ByteCodeInstruction* inst)       { return g_ByteCodeOpDesc[(int) inst->op].flags & OPFLAG_IS_JUMP; }
     static bool     isJumpDyn(ByteCodeInstruction* inst)    { return g_ByteCodeOpDesc[(int)inst->op].flags & OPFLAG_IS_JUMPDYN; }
     static bool     isJumpOrDyn(ByteCodeInstruction* inst)  { return (g_ByteCodeOpDesc[(int)inst->op].flags & (OPFLAG_IS_JUMP| OPFLAG_IS_JUMPDYN)); }
