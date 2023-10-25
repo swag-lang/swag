@@ -191,11 +191,33 @@ void ByteCodeOptimizer::reduceX2(ByteCodeOptContext* context, ByteCodeInstructio
     }
 }
 
+void ByteCodeOptimizer::reduceInvCopy(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+{
+    if (!(ip->flags & BCI_UNPURE) &&
+        !ByteCode::hasWriteRegInA(ip) &&
+        !ByteCode::hasWriteRegInB(ip) &&
+        ByteCode::hasWriteRegInC(ip) &&
+        !ByteCode::hasWriteRegInD(ip) &&
+        ip[0].c.u32 == ip[1].b.u32 &&
+        !(ip[1].flags & BCI_START_STMT))
+    {
+        if (ip[1].op == ByteCodeOp::CopyRBtoRA32 ||
+            ip[1].op == ByteCodeOp::CopyRBtoRA64)
+        {
+            ip->flags |= BCI_UNPURE;
+            ip->c.u32 = ip[1].a.u32;
+            swap(ip[1].a, ip[1].b);
+            context->passHasDoneSomething = true;
+        }
+    }
+}
+
 bool ByteCodeOptimizer::optimizePassReduceX2(ByteCodeOptContext* context)
 {
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         reduceX2(context, ip);
+        reduceInvCopy(context, ip);
     }
 
     return true;
