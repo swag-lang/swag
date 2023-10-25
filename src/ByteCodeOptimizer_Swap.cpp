@@ -31,7 +31,8 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
                 continue;
             }
 
-            auto ipn = ip + 1;
+            auto                 ipn             = ip + 1;
+            ByteCodeInstruction* startParamBlock = nullptr;
             while (true)
             {
                 if (ipn->op == ByteCodeOp::Ret || ipn->op == ByteCodeOp::CopyRCtoRRRet)
@@ -41,22 +42,35 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
                 if (ipn->op == ByteCodeOp::Nop)
                     break;
 
-                // Do NOT move after a parameter, because we do not want the same register to be stored in
-                // different parameters
+                // We do not want something like:
+                // PushRAParam R0
+                // R0 = ?
+                // PushRAParam R0
+                // 
+                // This could happen because of optimization passes.
+                //
+                // When generating backend, R0 will have the same value in both push, which
+                // should not be the case.
+                //
+                // So we never move an instruction INSIDE a PushParam block
+
                 if (ipn->op == ByteCodeOp::PushRAParam ||
                     ipn->op == ByteCodeOp::PushRAParam2 ||
                     ipn->op == ByteCodeOp::PushRAParam3 ||
                     ipn->op == ByteCodeOp::PushRAParam4 ||
                     ipn->op == ByteCodeOp::PushRAParamCond ||
                     ipn->op == ByteCodeOp::PushRVParam)
-                    break;
+                {
+                    if (!startParamBlock)
+                        startParamBlock = ipn;
+                }
 
                 if ((ByteCode::hasWriteRegInA(ip) && ByteCode::hasRefToReg(ipn, ip->a.u32)) ||
                     (ByteCode::hasWriteRegInB(ip) && ByteCode::hasRefToReg(ipn, ip->b.u32)) ||
                     (ByteCode::hasWriteRegInC(ip) && ByteCode::hasRefToReg(ipn, ip->c.u32)) ||
                     (ByteCode::hasWriteRegInD(ip) && ByteCode::hasRefToReg(ipn, ip->d.u32)))
                 {
-                    context->mapInstInst[ip] = ipn;
+                    context->mapInstInst[ip] = startParamBlock ? startParamBlock : ipn;
                     break;
                 }
 
@@ -70,6 +84,19 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
 
                 if (ByteCode::isJump(ipn))
                     break;
+
+                if (ipn->op == ByteCodeOp::LocalCall ||
+                    ipn->op == ByteCodeOp::LocalCallPop ||
+                    ipn->op == ByteCodeOp::LocalCallPopParam ||
+                    ipn->op == ByteCodeOp::LocalCallPopRC ||
+                    ipn->op == ByteCodeOp::ForeignCall ||
+                    ipn->op == ByteCodeOp::ForeignCallPop ||
+                    ipn->op == ByteCodeOp::LambdaCall ||
+                    ipn->op == ByteCodeOp::LambdaCallPop)
+                {
+                    startParamBlock = nullptr;
+                }
+
                 ipn++;
             }
         }
