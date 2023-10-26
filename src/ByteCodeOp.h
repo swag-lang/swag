@@ -29,6 +29,10 @@ const uint32_t OPFLAG_IS_JUMPDYN    = 0x01000000;
 const uint32_t OPFLAG_IS_REGONLY    = 0x02000000;
 const uint32_t OPFLAG_IS_PUSH_PARAM = 0x04000000;
 const uint32_t OPFLAG_IS_CALL       = 0x08000000;
+const uint32_t OPFLAG_IS_8B         = 0x10000000;
+const uint32_t OPFLAG_IS_16B        = 0x20000000;
+const uint32_t OPFLAG_IS_32B        = 0x40000000;
+const uint32_t OPFLAG_IS_64B        = 0x80000000;
 
 enum class ByteCodeOp : uint16_t
 {

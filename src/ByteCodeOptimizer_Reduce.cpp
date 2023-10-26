@@ -6354,6 +6354,66 @@ void ByteCodeOptimizer::reduceDupInstr(ByteCodeOptContext* context, ByteCodeInst
 
     setNop(context, ipn);
 }
+void ByteCodeOptimizer::reduceCopy(ByteCodeOptContext* context, ByteCodeInstruction* ip)
+{
+    if (!(context->contextBcFlags & OCF_HAS_COPY_RBRA))
+        return;
+
+    if (ip->op != ByteCodeOp::CopyRBtoRA8 &&
+        ip->op != ByteCodeOp::CopyRBtoRA16 &&
+        ip->op != ByteCodeOp::CopyRBtoRA32 &&
+        ip->op != ByteCodeOp::CopyRBtoRA64)
+        return;
+
+    auto ipn = ip + 1;
+
+    if (ipn->flags & BCI_START_STMT)
+        return;
+
+    if (ByteCode::isPushParam(ipn) ||
+        ByteCode::isCall(ipn))
+        return;
+
+    auto fl0 = g_ByteCodeOpDesc[(int) ip->op].flags;
+    auto fl1 = g_ByteCodeOpDesc[(int) ipn->op].flags;
+
+    if (fl0 & OPFLAG_IS_8B && !(fl1 & (OPFLAG_IS_8B)))
+        return;
+    if (fl0 & OPFLAG_IS_16B && !(fl1 & (OPFLAG_IS_8B | OPFLAG_IS_16B)))
+        return;
+    if (fl0 & OPFLAG_IS_32B && !(fl1 & (OPFLAG_IS_8B | OPFLAG_IS_16B | OPFLAG_IS_32B)))
+        return;
+    if (fl0 & OPFLAG_IS_64B && !(fl1 & (OPFLAG_IS_8B | OPFLAG_IS_16B | OPFLAG_IS_32B | OPFLAG_IS_64B)))
+        return;
+
+    if (ByteCode::hasReadRefToRegA(ipn, ip->a.u32) &&
+        !ByteCode::hasWriteRefToRegA(ipn, ip->a.u32))
+    {
+        ipn->a.u32                    = ip->b.u32;
+        context->passHasDoneSomething = true;
+    }
+
+    if (ByteCode::hasReadRefToRegB(ipn, ip->a.u32) &&
+        !ByteCode::hasWriteRefToRegB(ipn, ip->a.u32))
+    {
+        ipn->b.u32                    = ip->b.u32;
+        context->passHasDoneSomething = true;
+    }
+
+    if (ByteCode::hasReadRefToRegC(ipn, ip->a.u32) &&
+        !ByteCode::hasWriteRefToRegC(ipn, ip->a.u32))
+    {
+        ipn->c.u32                    = ip->b.u32;
+        context->passHasDoneSomething = true;
+    }
+
+    if (ByteCode::hasReadRefToRegD(ipn, ip->a.u32) &&
+        !ByteCode::hasWriteRefToRegD(ipn, ip->a.u32))
+    {
+        ipn->d.u32                    = ip->b.u32;
+        context->passHasDoneSomething = true;
+    }
+}
 
 bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
 {
@@ -6376,6 +6436,7 @@ bool ByteCodeOptimizer::optimizePassReduce(ByteCodeOptContext* context)
         reduceFactor(context, ip);
         reduceMath(context, ip);
         reduceDupInstr(context, ip);
+        reduceCopy(context, ip);
     }
 
     return true;
