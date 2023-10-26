@@ -15,14 +15,14 @@ const SurrogateMax  = 0xDFFF'rune
 
 internal
 {
-	const MaskX = 0b00111111
-	const Mask2 = 0b00011111
-	const Mask3 = 0b00001111
-	const Mask4 = 0b00000111
+	const MaskX = 0b00111111'u8
+	const Mask2 = 0b00011111'u8
+	const Mask3 = 0b00001111'u8
+	const Mask4 = 0b00000111'u8
 
 	// The default lowest and highest continuation byte.
-	const LoCB = 0b10000000
-	const HiCB = 0b10111111
+	const LoCB = 0b10000000'u8
+	const HiCB = 0b10111111'u8
 
 	// These names of these constants are chosen to give nice alignment in the
 	// table below. The first nibble is an index into AcceptRanges or F for
