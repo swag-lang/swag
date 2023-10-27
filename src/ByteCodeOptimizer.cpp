@@ -64,11 +64,11 @@ void ByteCodeOptimizer::setContextFlags(ByteCodeOptContext* context, ByteCodeIns
     case ByteCodeOp::CopyRTtoRC:
         context->contextBcFlags |= OCF_HAS_COPY_RTRC;
         break;
+
     case ByteCodeOp::CopyRCtoRT:
         context->contextBcFlags |= OCF_HAS_COPY_RCRT;
         break;
 
-    case ByteCodeOp::CopyRRtoRC:
     case ByteCodeOp::MakeBssSegPointer:
     case ByteCodeOp::MakeConstantSegPointer:
     case ByteCodeOp::MakeMutableSegPointer:
@@ -86,6 +86,7 @@ void ByteCodeOptimizer::setContextFlags(ByteCodeOptContext* context, ByteCodeIns
         context->contextBcFlags |= OCF_HAS_DUP_COPY;
         break;
 
+    case ByteCodeOp::CopyRRtoRC:
     case ByteCodeOp::GetParam64:
     case ByteCodeOp::GetIncParam64:
         context->contextBcFlags |= OCF_HAS_DUP_COPY;

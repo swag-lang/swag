@@ -14,7 +14,38 @@ bool ByteCodeOptimizer::optimizePassParam(ByteCodeOptContext* context)
 
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
-        if (ip->op == ByteCodeOp::GetParam64)
+        if (ip->op == ByteCodeOp::CopyRRtoRC)
+        {
+            auto ipScan = ip + 1;
+            while (ipScan->op != ByteCodeOp::Ret && !(ipScan->flags & BCI_START_STMT) && !ByteCode::isJump(ipScan))
+            {
+                if (ipScan->op == ByteCodeOp::CopyRRtoRC && ipScan->a.u32 == ip->a.u32)
+                {
+                    if (ipScan->b.u64 > ip->b.u64)
+                    {
+                        SET_OP(ipScan, ByteCodeOp::IncPointer64);
+                        ipScan->flags |= BCI_IMM_B;
+                        ipScan->b.u64 -= ip->b.u64;
+                        ipScan->c.u32 = ipScan->a.u32;
+                        return true;
+                    }
+                    else if (ipScan->b.u64 < ip->b.u64)
+                    {
+                        SET_OP(ipScan, ByteCodeOp::DecPointer64);
+                        ipScan->flags |= BCI_IMM_B;
+                        ipScan->b.u64 = ip->b.u64 - ipScan->b.u64;
+                        ipScan->c.u32 = ipScan->a.u32;
+                        return true;
+                    }
+                }
+
+                if (ByteCode::hasWriteRefToReg(ipScan, ip->a.u32))
+                    break;
+
+                ipScan++;
+            }
+        }
+        else if (ip->op == ByteCodeOp::GetParam64)
         {
             auto ipScan = ip + 1;
             while (ipScan->op != ByteCodeOp::Ret && !(ipScan->flags & BCI_START_STMT) && !ByteCode::isJump(ipScan))
