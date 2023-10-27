@@ -24,6 +24,7 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
                 break;
 
             case ByteCodeOp::IncPointer64:
+            case ByteCodeOp::DecPointer64:
                 if (!(ip->flags & BCI_IMM_B))
                     continue;
                 break;

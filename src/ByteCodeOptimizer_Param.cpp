@@ -21,19 +21,11 @@ bool ByteCodeOptimizer::optimizePassParam(ByteCodeOptContext* context)
             {
                 if (ipScan->op == ByteCodeOp::CopyRRtoRC && ipScan->a.u32 == ip->a.u32)
                 {
-                    if (ipScan->b.u64 > ip->b.u64)
+                    if (ipScan->b.u64 >= ip->b.u64)
                     {
                         SET_OP(ipScan, ByteCodeOp::IncPointer64);
                         ipScan->flags |= BCI_IMM_B;
                         ipScan->b.u64 -= ip->b.u64;
-                        ipScan->c.u32 = ipScan->a.u32;
-                        return true;
-                    }
-                    else if (ipScan->b.u64 < ip->b.u64)
-                    {
-                        SET_OP(ipScan, ByteCodeOp::DecPointer64);
-                        ipScan->flags |= BCI_IMM_B;
-                        ipScan->b.u64 = ip->b.u64 - ipScan->b.u64;
                         ipScan->c.u32 = ipScan->a.u32;
                         return true;
                     }
@@ -74,14 +66,16 @@ bool ByteCodeOptimizer::optimizePassParam(ByteCodeOptContext* context)
             {
                 if (ipScan->op == ByteCodeOp::GetIncParam64 &&
                     ipScan->a.u32 == ip->a.u32 &&
-                    ipScan->b.u64 == ip->b.u64 &&
-                    ipScan->d.u64 >= ip->d.u64)
+                    ipScan->b.u64 == ip->b.u64)
                 {
-                    SET_OP(ipScan, ByteCodeOp::IncPointer64);
-                    ipScan->flags |= BCI_IMM_B;
-                    ipScan->b.u64 = ipScan->d.u64 - ip->d.u64;
-                    ipScan->c.u32 = ipScan->a.u32;
-                    return true;
+                    if (ipScan->d.u64 >= ip->d.u64)
+                    {
+                        SET_OP(ipScan, ByteCodeOp::IncPointer64);
+                        ipScan->flags |= BCI_IMM_B;
+                        ipScan->b.u64 = ipScan->d.u64 - ip->d.u64;
+                        ipScan->c.u32 = ipScan->a.u32;
+                        return true;
+                    }
                 }
 
                 if (ByteCode::hasWriteRefToReg(ipScan, ip->a.u32))
