@@ -535,6 +535,8 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
                         for (uint32_t i = 0; i < optContext.bc->numInstructions - 1; i++)
                         {
                             auto ip = optContext.bc->out + i;
+                            g_Stats.countOpFreq[(int) ip[0].op][(int) ByteCodeOp::End]++;
+
                             if (ip[1].flags & BCI_START_STMT)
                                 continue;
                             g_Stats.countOpFreq[(int) ip[0].op][(int) ip[1].op]++;

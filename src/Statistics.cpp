@@ -21,6 +21,41 @@ void Stats::printFreq()
 
     for (uint32_t cpt = 0; cpt < g_CommandLine.statsFreqCount; cpt++)
     {
+        int best = -1;
+        int bestI = 0;
+
+        for (int i = 0; i < (int) ByteCodeOp::End; i++)
+        {
+            // Filter by name
+            if (!str0.empty())
+            {
+                Utf8 str2 = g_ByteCodeOpDesc[i].name;
+                str2.makeLower();
+                if (str2.find(str0) == -1)
+                    continue;
+            }
+
+            if (countOpFreq[i][(int) ByteCodeOp::End] > best)
+            {
+                best  = countOpFreq[i][(int) ByteCodeOp::End];
+                bestI = i;
+            }
+        }
+
+        if (countOpFreq[bestI][(int) ByteCodeOp::End].load())
+        {
+            g_Log.setColor(LogColor::DarkCyan);
+            g_Log.print(Fmt("%5d ", countOpFreq[bestI][(int) ByteCodeOp::End].load()));
+            g_Log.setColor(LogColor::DarkYellow);
+            g_Log.print(Fmt("%s\n", g_ByteCodeOpDesc[bestI].name));
+            countOpFreq[bestI][(int) ByteCodeOp::End] = 0;
+        }
+    }
+
+    g_Log.print("\n");
+
+    for (uint32_t cpt = 0; cpt < g_CommandLine.statsFreqCount; cpt++)
+    {
         int best  = -1;
         int bestI = 0;
         int bestJ = 0;
