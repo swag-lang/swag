@@ -1859,10 +1859,10 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                     switch (param->typeInfo->nativeType)
                     {
                     case NativeTypeKind::S8:
-                        EMIT_INST1(context, ByteCodeOp::CastS8S32, param->resultRegisterRC);
+                        EMIT_INST2(context, ByteCodeOp::CastS8S32, param->resultRegisterRC, param->resultRegisterRC);
                         break;
                     case NativeTypeKind::S16:
-                        EMIT_INST1(context, ByteCodeOp::CastS16S32, param->resultRegisterRC);
+                        EMIT_INST2(context, ByteCodeOp::CastS16S32, param->resultRegisterRC, param->resultRegisterRC);
                         break;
                     case NativeTypeKind::U8:
                     case NativeTypeKind::Bool:
@@ -1872,7 +1872,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
                         EMIT_INST1(context, ByteCodeOp::ClearMaskU32, param->resultRegisterRC)->b.u64 = 0x0000FFFF;
                         break;
                     case NativeTypeKind::F32:
-                        EMIT_INST1(context, ByteCodeOp::CastF32F64, param->resultRegisterRC);
+                        EMIT_INST2(context, ByteCodeOp::CastF32F64, param->resultRegisterRC, param->resultRegisterRC);
                         break;
                     default:
                         break;

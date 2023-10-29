@@ -4576,28 +4576,32 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CastS8S16:
         {
             auto r0 = GEP64_PTR_I16(allocR, ip->a.u32);
-            auto v0 = builder.CreateIntCast(builder.CreateLoad(I8_TY(), r0), I16_TY(), true);
+            auto r1 = GEP64(allocR, ip->b.u32);
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(I8_TY(), r1), I16_TY(), true);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::CastS8S32:
         {
             auto r0 = GEP64_PTR_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateIntCast(builder.CreateLoad(I8_TY(), r0), I32_TY(), true);
+            auto r1 = GEP64(allocR, ip->b.u32);
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(I8_TY(), r1), I32_TY(), true);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::CastS16S32:
         {
             auto r0 = GEP64_PTR_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateIntCast(builder.CreateLoad(I16_TY(), r0), I32_TY(), true);
+            auto r1 = GEP64(allocR, ip->b.u32);
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(I16_TY(), r1), I32_TY(), true);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::CastF32S32:
         {
             auto r0 = GEP64_PTR_I32(allocR, ip->a.u32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::FPToSI, builder.CreateLoad(F32_TY(), r0), I32_TY());
+            auto r1 = GEP64(allocR, ip->b.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::FPToSI, builder.CreateLoad(F32_TY(), r1), I32_TY());
             builder.CreateStore(v0, r0);
             break;
         }
@@ -4605,28 +4609,32 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CastS8S64:
         {
             auto r0 = GEP64(allocR, ip->a.u32);
-            auto v0 = builder.CreateIntCast(builder.CreateLoad(I8_TY(), r0), I64_TY(), true);
+            auto r1 = GEP64(allocR, ip->b.u32);
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(I8_TY(), r1), I64_TY(), true);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::CastS16S64:
         {
             auto r0 = GEP64(allocR, ip->a.u32);
-            auto v0 = builder.CreateIntCast(builder.CreateLoad(I16_TY(), r0), I64_TY(), true);
+            auto r1 = GEP64(allocR, ip->b.u32);
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(I16_TY(), r1), I64_TY(), true);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::CastS32S64:
         {
             auto r0 = GEP64(allocR, ip->a.u32);
-            auto v0 = builder.CreateIntCast(builder.CreateLoad(I32_TY(), r0), I64_TY(), true);
+            auto r1 = GEP64(allocR, ip->b.u32);
+            auto v0 = builder.CreateIntCast(builder.CreateLoad(I32_TY(), r1), I64_TY(), true);
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::CastF64S64:
         {
             auto r0 = GEP64(allocR, ip->a.u32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::FPToSI, builder.CreateLoad(F64_TY(), r0), I64_TY());
+            auto r1 = GEP64(allocR, ip->b.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::FPToSI, builder.CreateLoad(F64_TY(), r1), I64_TY());
             builder.CreateStore(v0, r0);
             break;
         }
@@ -4634,63 +4642,72 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CastS8F32:
         {
             auto r0 = GEP64_PTR_F32(allocR, ip->a.u32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(I8_TY(), r0), F32_TY());
+            auto r1 = GEP64(allocR, ip->b.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(I8_TY(), r1), F32_TY());
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::CastS16F32:
         {
             auto r0 = GEP64_PTR_F32(allocR, ip->a.u32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(I16_TY(), r0), F32_TY());
+            auto r1 = GEP64(allocR, ip->b.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(I16_TY(), r1), F32_TY());
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::CastS32F32:
         {
             auto r0 = GEP64_PTR_F32(allocR, ip->a.u32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(I32_TY(), r0), F32_TY());
+            auto r1 = GEP64(allocR, ip->b.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(I32_TY(), r1), F32_TY());
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::CastS64F32:
         {
             auto r0 = GEP64_PTR_F32(allocR, ip->a.u32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(I64_TY(), r0), F32_TY());
+            auto r1 = GEP64(allocR, ip->b.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(I64_TY(), r1), F32_TY());
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::CastU8F32:
         {
             auto r0 = GEP64_PTR_F32(allocR, ip->a.u32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(I8_TY(), r0), F32_TY());
+            auto r1 = GEP64(allocR, ip->b.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(I8_TY(), r1), F32_TY());
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::CastU16F32:
         {
             auto r0 = GEP64_PTR_F32(allocR, ip->a.u32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(I16_TY(), r0), F32_TY());
+            auto r1 = GEP64(allocR, ip->b.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(I16_TY(), r1), F32_TY());
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::CastU32F32:
         {
             auto r0 = GEP64_PTR_F32(allocR, ip->a.u32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(I32_TY(), r0), F32_TY());
+            auto r1 = GEP64(allocR, ip->b.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(I32_TY(), r1), F32_TY());
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::CastU64F32:
         {
             auto r0 = GEP64_PTR_F32(allocR, ip->a.u32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(I64_TY(), r0), F32_TY());
+            auto r1 = GEP64(allocR, ip->b.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(I64_TY(), r1), F32_TY());
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::CastF64F32:
         {
             auto r0 = GEP64_PTR_F32(allocR, ip->a.u32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::FPTrunc, builder.CreateLoad(F64_TY(), r0), F32_TY());
+            auto r1 = GEP64(allocR, ip->b.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::FPTrunc, builder.CreateLoad(F64_TY(), r1), F32_TY());
             builder.CreateStore(v0, r0);
             break;
         }
@@ -4698,63 +4715,72 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::CastS8F64:
         {
             auto r0 = GEP64_PTR_F64(allocR, ip->a.u32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(I8_TY(), r0), F64_TY());
+            auto r1 = GEP64(allocR, ip->b.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(I8_TY(), r1), F64_TY());
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::CastS16F64:
         {
             auto r0 = GEP64_PTR_F64(allocR, ip->a.u32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(I16_TY(), r0), F64_TY());
+            auto r1 = GEP64(allocR, ip->b.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(I16_TY(), r1), F64_TY());
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::CastS32F64:
         {
             auto r0 = GEP64_PTR_F64(allocR, ip->a.u32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(I32_TY(), r0), F64_TY());
+            auto r1 = GEP64(allocR, ip->b.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(I32_TY(), r1), F64_TY());
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::CastS64F64:
         {
             auto r0 = GEP64_PTR_F64(allocR, ip->a.u32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(I64_TY(), r0), F64_TY());
+            auto r1 = GEP64(allocR, ip->b.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::SIToFP, builder.CreateLoad(I64_TY(), r1), F64_TY());
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::CastU8F64:
         {
             auto r0 = GEP64_PTR_F64(allocR, ip->a.u32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(I8_TY(), r0), F64_TY());
+            auto r1 = GEP64(allocR, ip->b.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(I8_TY(), r1), F64_TY());
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::CastU16F64:
         {
             auto r0 = GEP64_PTR_F64(allocR, ip->a.u32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(I16_TY(), r0), F64_TY());
+            auto r1 = GEP64(allocR, ip->b.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(I16_TY(), r1), F64_TY());
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::CastU32F64:
         {
             auto r0 = GEP64_PTR_F64(allocR, ip->a.u32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(I32_TY(), r0), F64_TY());
+            auto r1 = GEP64(allocR, ip->b.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(I32_TY(), r1), F64_TY());
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::CastU64F64:
         {
             auto r0 = GEP64_PTR_F64(allocR, ip->a.u32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(I64_TY(), r0), F64_TY());
+            auto r1 = GEP64(allocR, ip->b.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::UIToFP, builder.CreateLoad(I64_TY(), r1), F64_TY());
             builder.CreateStore(v0, r0);
             break;
         }
         case ByteCodeOp::CastF32F64:
         {
             auto r0 = GEP64_PTR_F64(allocR, ip->a.u32);
-            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::FPExt, builder.CreateLoad(F32_TY(), r0), F64_TY());
+            auto r1 = GEP64(allocR, ip->b.u32);
+            auto v0 = builder.CreateCast(llvm::Instruction::CastOps::FPExt, builder.CreateLoad(F32_TY(), r1), F64_TY());
             builder.CreateStore(v0, r0);
             break;
         }

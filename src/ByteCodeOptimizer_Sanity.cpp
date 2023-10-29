@@ -1560,112 +1560,164 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
 
         case ByteCodeOp::CastS8S16:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.s16 = (int16_t) ra->reg.s8;
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind    = vb.kind;
+            ra->reg.s16 = (int16_t) vb.reg.s8;
             break;
 
         case ByteCodeOp::CastS8S32:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.s32 = (int32_t) ra->reg.s8;
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind    = vb.kind;
+            ra->reg.s32 = (int32_t) vb.reg.s8;
             break;
         case ByteCodeOp::CastS16S32:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.s32 = (int32_t) ra->reg.s16;
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind    = vb.kind;
+            ra->reg.s32 = (int32_t) vb.reg.s16;
             break;
         case ByteCodeOp::CastF32S32:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.s32 = (int32_t) ra->reg.f32;
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind    = vb.kind;
+            ra->reg.s32 = (int32_t) vb.reg.f32;
             break;
 
         case ByteCodeOp::CastS8S64:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.s64 = (int64_t) ra->reg.s8;
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind    = vb.kind;
+            ra->reg.s64 = (int64_t) vb.reg.s8;
             break;
         case ByteCodeOp::CastS16S64:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.s64 = (int64_t) ra->reg.s16;
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind    = vb.kind;
+            ra->reg.s64 = (int64_t) vb.reg.s16;
             break;
         case ByteCodeOp::CastS32S64:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.s64 = (int64_t) ra->reg.s32;
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind    = vb.kind;
+            ra->reg.s64 = (int64_t) vb.reg.s32;
             break;
         case ByteCodeOp::CastF64S64:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.s64 = (int64_t) ra->reg.f64;
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind    = vb.kind;
+            ra->reg.s64 = (int64_t) vb.reg.f64;
             break;
 
         case ByteCodeOp::CastS8F32:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.f32 = (float) ra->reg.s8;
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind    = vb.kind;
+            ra->reg.f32 = (float) vb.reg.s8;
             break;
         case ByteCodeOp::CastS16F32:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.f32 = (float) ra->reg.s16;
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind    = vb.kind;
+            ra->reg.f32 = (float) vb.reg.s16;
             break;
         case ByteCodeOp::CastS32F32:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.f32 = (float) ra->reg.s32;
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind    = vb.kind;
+            ra->reg.f32 = (float) vb.reg.s32;
             break;
         case ByteCodeOp::CastS64F32:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.f32 = (float) ra->reg.s64;
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind    = vb.kind;
+            ra->reg.f32 = (float) vb.reg.s64;
             break;
         case ByteCodeOp::CastU8F32:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.f32 = (float) ra->reg.u8;
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind    = vb.kind;
+            ra->reg.f32 = (float) vb.reg.u8;
             break;
         case ByteCodeOp::CastU16F32:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.f32 = (float) ra->reg.u16;
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind    = vb.kind;
+            ra->reg.f32 = (float) vb.reg.u16;
             break;
         case ByteCodeOp::CastU32F32:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.f32 = (float) ra->reg.u32;
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind    = vb.kind;
+            ra->reg.f32 = (float) vb.reg.u32;
             break;
         case ByteCodeOp::CastU64F32:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.f32 = (float) ra->reg.u64;
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind    = vb.kind;
+            ra->reg.f32 = (float) vb.reg.u64;
             break;
 
         case ByteCodeOp::CastS8F64:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.f64 = (double) ra->reg.s8;
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind    = vb.kind;
+            ra->reg.f64 = (double) vb.reg.s8;
             break;
         case ByteCodeOp::CastS16F64:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.f64 = (double) ra->reg.s16;
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind    = vb.kind;
+            ra->reg.f64 = (double) vb.reg.s16;
             break;
         case ByteCodeOp::CastS32F64:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.f64 = (double) ra->reg.s32;
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind    = vb.kind;
+            ra->reg.f64 = (double) vb.reg.s32;
             break;
         case ByteCodeOp::CastS64F64:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.f64 = (double) ra->reg.s64;
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind    = vb.kind;
+            ra->reg.f64 = (double) vb.reg.s64;
             break;
         case ByteCodeOp::CastU8F64:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.f64 = (double) ra->reg.u8;
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind    = vb.kind;
+            ra->reg.f64 = (double) vb.reg.u8;
             break;
         case ByteCodeOp::CastU16F64:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.f64 = (double) ra->reg.u16;
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind    = vb.kind;
+            ra->reg.f64 = (double) vb.reg.u16;
             break;
         case ByteCodeOp::CastU32F64:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.f64 = (double) ra->reg.u32;
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind    = vb.kind;
+            ra->reg.f64 = (double) vb.reg.u32;
             break;
         case ByteCodeOp::CastU64F64:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.f64 = (double) ra->reg.u64;
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind    = vb.kind;
+            ra->reg.f64 = (double) vb.reg.u64;
             break;
         case ByteCodeOp::CastF32F64:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.f64 = (double) ra->reg.f32;
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind    = vb.kind;
+            ra->reg.f64 = (double) vb.reg.f32;
             break;
 
         case ByteCodeOp::CastF64F32:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.f32 = (float) ra->reg.f64;
+            SWAG_CHECK(getImmediateB(vb, cxt, ip));
+            ra->kind    = vb.kind;
+            ra->reg.f32 = (float) vb.reg.f64;
             break;
 
         case ByteCodeOp::CompareOpEqual8:
