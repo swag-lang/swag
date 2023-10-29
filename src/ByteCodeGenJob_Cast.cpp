@@ -170,8 +170,7 @@ bool ByteCodeGenJob::emitCastToNativeBool(ByteCodeGenContext* context, AstNode* 
             EMIT_INST2(context, ByteCodeOp::CastBool64, r0, exprNode->resultRegisterRC);
             break;
         default:
-            context->node = exprNode;
-            Report::internalError(context->node, "emitCastToNativeBool, invalid source type");
+            Report::internalError(exprNode, "emitCastToNativeBool, invalid source type");
             break;
         }
     }
@@ -206,8 +205,7 @@ bool ByteCodeGenJob::emitCastToNativeU8(ByteCodeGenContext* context, AstNode* ex
         EMIT_INST2(context, ByteCodeOp::CastF64S64, exprNode->resultRegisterRC, exprNode->resultRegisterRC);
         break;
     default:
-        context->node = exprNode;
-        Report::internalError(context->node, "emitCastToNativeU8, invalid source type");
+        Report::internalError(exprNode, "emitCastToNativeU8, invalid source type");
         break;
     }
 
@@ -244,8 +242,7 @@ bool ByteCodeGenJob::emitCastToNativeU16(ByteCodeGenContext* context, AstNode* e
         EMIT_INST2(context, ByteCodeOp::CastF64S64, exprNode->resultRegisterRC, exprNode->resultRegisterRC);
         break;
     default:
-        context->node = exprNode;
-        Report::internalError(context->node, "emitCastToNativeS16, invalid source type");
+        Report::internalError(exprNode, "emitCastToNativeS16, invalid source type");
         break;
     }
 
@@ -286,8 +283,7 @@ bool ByteCodeGenJob::emitCastToNativeU32(ByteCodeGenContext* context, AstNode* e
         EMIT_INST2(context, ByteCodeOp::CastF64S64, exprNode->resultRegisterRC, exprNode->resultRegisterRC);
         break;
     default:
-        context->node = exprNode;
-        Report::internalError(context->node, "emitCastToNativeS32, invalid source type");
+        Report::internalError(exprNode, "emitCastToNativeS32, invalid source type");
         break;
     }
 
@@ -335,8 +331,7 @@ bool ByteCodeGenJob::emitCastToNativeU64(ByteCodeGenContext* context, AstNode* e
         EMIT_INST2(context, ByteCodeOp::CastF64S64, exprNode->resultRegisterRC, exprNode->resultRegisterRC);
         break;
     default:
-        context->node = exprNode;
-        Report::internalError(context->node, "emitCastToNativeU64, invalid source type");
+        Report::internalError(exprNode, "emitCastToNativeU64, invalid source type");
         break;
     }
 
@@ -367,8 +362,7 @@ bool ByteCodeGenJob::emitCastToNativeS8(ByteCodeGenContext* context, AstNode* ex
         EMIT_INST2(context, ByteCodeOp::CastF64S64, exprNode->resultRegisterRC, exprNode->resultRegisterRC);
         break;
     default:
-        context->node = exprNode;
-        Report::internalError(context->node, "emitCastToNativeS8, invalid source type");
+        Report::internalError(exprNode, "emitCastToNativeS8, invalid source type");
         break;
     }
 
@@ -405,8 +399,7 @@ bool ByteCodeGenJob::emitCastToNativeS16(ByteCodeGenContext* context, AstNode* e
         EMIT_INST2(context, ByteCodeOp::CastF64S64, exprNode->resultRegisterRC, exprNode->resultRegisterRC);
         break;
     default:
-        context->node = exprNode;
-        Report::internalError(context->node, "emitCastToNativeS16, invalid source type");
+        Report::internalError(exprNode, "emitCastToNativeS16, invalid source type");
         break;
     }
 
@@ -447,8 +440,7 @@ bool ByteCodeGenJob::emitCastToNativeS32(ByteCodeGenContext* context, AstNode* e
         EMIT_INST2(context, ByteCodeOp::CastF64S64, exprNode->resultRegisterRC, exprNode->resultRegisterRC);
         break;
     default:
-        context->node = exprNode;
-        Report::internalError(context->node, "emitCastToNativeS32, invalid source type");
+        Report::internalError(exprNode, "emitCastToNativeS32, invalid source type");
         break;
     }
 
@@ -494,8 +486,7 @@ bool ByteCodeGenJob::emitCastToNativeS64(ByteCodeGenContext* context, AstNode* e
         EMIT_INST2(context, ByteCodeOp::CastF64S64, exprNode->resultRegisterRC, exprNode->resultRegisterRC);
         break;
     default:
-        context->node = exprNode;
-        Report::internalError(context->node, "emitCastToNativeS64, invalid source type");
+        Report::internalError(exprNode, "emitCastToNativeS64, invalid source type");
         break;
     }
 
@@ -541,8 +532,7 @@ bool ByteCodeGenJob::emitCastToNativeF32(ByteCodeGenContext* context, AstNode* e
         EMIT_INST2(context, ByteCodeOp::CastF64F32, exprNode->resultRegisterRC, exprNode->resultRegisterRC);
         break;
     default:
-        context->node = exprNode;
-        Report::internalError(context->node, "emitCastToNativeF32, invalid source type");
+        Report::internalError(exprNode, "emitCastToNativeF32, invalid source type");
         break;
     }
 
@@ -588,8 +578,7 @@ bool ByteCodeGenJob::emitCastToNativeF64(ByteCodeGenContext* context, AstNode* e
     case NativeTypeKind::F64:
         break;
     default:
-        context->node = exprNode;
-        Report::internalError(context->node, "emitCastToNativeF64, invalid source type");
+        Report::internalError(exprNode, "emitCastToNativeF64, invalid source type");
         break;
     }
 
@@ -624,8 +613,9 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
         transformResultToLinear2(context, exprNode);
-        node->resultRegisterRC                                                                = exprNode->resultRegisterRC;
-        EMIT_INST1(context, ByteCodeOp::SetImmediate64, exprNode->resultRegisterRC[1])->b.u64 = typeArray->count;
+        node->resultRegisterRC = exprNode->resultRegisterRC;
+        auto inst              = EMIT_INST1(context, ByteCodeOp::SetImmediate64, exprNode->resultRegisterRC[1]);
+        inst->b.u64            = typeArray->count;
         return true;
     }
 
