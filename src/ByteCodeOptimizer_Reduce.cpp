@@ -2109,6 +2109,33 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         break;
 
     case ByteCodeOp::SetImmediate32:
+        if (ip[1].op == ByteCodeOp::CopyRBtoRA8 &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            ip->a.u32 == ip[1].b.u32)
+        {
+            SET_OP(ip + 1, ByteCodeOp::SetImmediate32);
+            ip[1].b.u32 = ip->b.u8;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::CopyRBtoRA16 &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            ip->a.u32 == ip[1].b.u32)
+        {
+            SET_OP(ip + 1, ByteCodeOp::SetImmediate32);
+            ip[1].b.u32 = ip->b.u16;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::CopyRBtoRA32 &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            ip->a.u32 == ip[1].b.u32)
+        {
+            SET_OP(ip + 1, ByteCodeOp::SetImmediate32);
+            ip[1].b.u32 = ip->b.u32;
+            break;
+        }
+
         if (ip[0].b.u32 == 0)
         {
             SET_OP(ip, ByteCodeOp::ClearRA);
@@ -2118,6 +2145,42 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
         break;
 
     case ByteCodeOp::SetImmediate64:
+        if (ip[1].op == ByteCodeOp::CopyRBtoRA8 &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            ip->a.u32 == ip[1].b.u32)
+        {
+            SET_OP(ip + 1, ByteCodeOp::SetImmediate64);
+            ip[1].b.u64 = ip->b.u8;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::CopyRBtoRA16 &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            ip->a.u32 == ip[1].b.u32)
+        {
+            SET_OP(ip + 1, ByteCodeOp::SetImmediate64);
+            ip[1].b.u64 = ip->b.u16;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::CopyRBtoRA32 &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            ip->a.u32 == ip[1].b.u32)
+        {
+            SET_OP(ip + 1, ByteCodeOp::SetImmediate64);
+            ip[1].b.u64 = ip->b.u32;
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::CopyRBtoRA64 &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            ip->a.u32 == ip[1].b.u32)
+        {
+            SET_OP(ip + 1, ByteCodeOp::SetImmediate64);
+            ip[1].b.u64 = ip->b.u64;
+            break;
+        }
+        
         if (ip[0].b.u64 == 0)
         {
             SET_OP(ip, ByteCodeOp::ClearRA);
