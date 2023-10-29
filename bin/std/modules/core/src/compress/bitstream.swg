@@ -18,8 +18,13 @@ impl BitStream
         stream = buf
     }
 
+    #[Swag.Inline]
     mtd startPtr() => @dataof(stream)
+
+    #[Swag.Inline]
     mtd curPtr()   => @dataof(stream) + curByte
+
+    #[Swag.Inline]
     mtd size()     => @countof(stream)
 
     mtd refill(width = 24'u8)
