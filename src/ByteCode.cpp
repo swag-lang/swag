@@ -132,45 +132,41 @@ bool ByteCode::isDoingNothing()
     if (!getCallType()->returnType->isVoid())
         return false;
 
-    if (numInstructions == 2)
+    switch (numInstructions)
     {
+    case 2:
         if (out[0].op == ByteCodeOp::Ret)
             return true;
-    }
+        break;
 
-    if (numInstructions == 3)
-    {
+    case 3:
         if (out[0].op == ByteCodeOp::GetParam64 &&
             out[1].op == ByteCodeOp::Ret)
             return true;
-    }
 
-    if (numInstructions == 3)
-    {
         if (out[0].op == ByteCodeOp::DecSPBP &&
             out[1].op == ByteCodeOp::Ret)
         {
             return true;
         }
-    }
 
-    if (numInstructions == 3)
-    {
         if (out[0].op == ByteCodeOp::SetBP &&
             out[1].op == ByteCodeOp::Ret)
         {
             return true;
         }
-    }
 
-    if (numInstructions == 4)
-    {
+        break;
+
+    case 4:
         if (out[0].op == ByteCodeOp::ClearRA &&
             out[1].op == ByteCodeOp::InternalSetErr &&
             out[2].op == ByteCodeOp::Ret)
         {
             return true;
         }
+
+        break;
     }
 
     return false;
