@@ -282,7 +282,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
 
         case ByteCodeOp::CopyRBAddrToRA:
-        case ByteCodeOp::CopyRBAddrToRA2:
             pp.emit_LoadAddress_Indirect(regOffset(ip->b.u32), RAX, RDI);
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             break;

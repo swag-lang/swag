@@ -38,7 +38,6 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
     {
         // If inside a function, we copy the value to the stack, and address the stack as the any value.
         // That way, even if registers are changed, the memory layout remains correct.
-        // In other words, CopyRBAddrToRA2 is satanic, but don't know how to do that in another way for now.
         if (exprNode->ownerFct)
         {
             EMIT_INST2(context, ByteCodeOp::SetAtStackPointer64, exprNode->extMisc()->stackOffset, exprNode->resultRegisterRC[0]);
@@ -47,9 +46,7 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
         }
         else
         {
-            // Be sure registers are contiguous, as we address the first of them
-            SWAG_ASSERT(exprNode->resultRegisterRC[0] == exprNode->resultRegisterRC[1] - 1);
-            EMIT_INST3(context, ByteCodeOp::CopyRBAddrToRA2, r0[0], exprNode->resultRegisterRC[0], exprNode->resultRegisterRC[1]);
+            return Report::internalError(exprNode, "cannot convert type to 'any'");
         }
     }
     else
