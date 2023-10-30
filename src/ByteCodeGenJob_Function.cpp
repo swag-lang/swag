@@ -627,13 +627,6 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
         freeRegisterRC(context, child1);
         break;
     }
-    case TokenId::InternalSetErr:
-    {
-        auto child0 = callParams->childs[0];
-        EMIT_INST2(context, ByteCodeOp::InternalSetErr, child0->resultRegisterRC[0], child0->resultRegisterRC[1]);
-        freeRegisterRC(context, child0);
-        break;
-    }
     case TokenId::IntrinsicDbgAlloc:
     {
         node->resultRegisterRC                  = reserveRegisterRC(context);
