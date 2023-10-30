@@ -3818,7 +3818,7 @@
 <span id="Core_Compress_BitStream_consumeBits"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">consumeBits</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L81" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L86" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3830,7 +3830,7 @@
 <span id="Core_Compress_BitStream_curPtr"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">curPtr</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L22" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L25" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3842,7 +3842,7 @@
 <span id="Core_Compress_BitStream_discardToNextByte"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">discardToNextByte</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L88" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L93" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3866,7 +3866,7 @@
 <span id="Core_Compress_BitStream_peek32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">peek32</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L111" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L116" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3878,7 +3878,7 @@
 <span id="Core_Compress_BitStream_peek32Be"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">peek32Be</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L123" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L128" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3890,7 +3890,7 @@
 <span id="Core_Compress_BitStream_peekBits"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">peekBits</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L53" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L58" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3902,7 +3902,7 @@
 <span id="Core_Compress_BitStream_peekBitsNoRefill"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">peekBitsNoRefill</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L59" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L64" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3914,7 +3914,7 @@
 <span id="Core_Compress_BitStream_peekBytes"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">peekBytes</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L101" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L106" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3926,7 +3926,7 @@
 <span id="Core_Compress_BitStream_readBits"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">readBits</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L66" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L71" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3938,7 +3938,7 @@
 <span id="Core_Compress_BitStream_readBitsNoRefill"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">readBitsNoRefill</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L73" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L78" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3950,7 +3950,7 @@
 <span id="Core_Compress_BitStream_refill"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">refill</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L25" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L30" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3962,7 +3962,7 @@
 <span id="Core_Compress_BitStream_revert"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">revert</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L93" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L98" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3974,7 +3974,7 @@
 <span id="Core_Compress_BitStream_size"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">size</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L23" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L28" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3986,7 +3986,7 @@
 <span id="Core_Compress_BitStream_startPtr"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">BitStream.</span><span class="api-item-title-strong">startPtr</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L21" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\bitstream.swg#L22" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
