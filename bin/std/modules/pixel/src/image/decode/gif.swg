@@ -186,7 +186,7 @@ impl Decoder
         case 0xFF:
             readApplicationExt()
         default:
-            throw Format.toString("unknown extension: %", label)
+            throw cast(string) Format.toString("unknown extension: %", label)
         }
     }
 

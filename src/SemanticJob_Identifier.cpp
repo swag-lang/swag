@@ -5224,7 +5224,11 @@ bool SemanticJob::resolveThrow(SemanticContext* context)
     node->typeInfo = back->typeInfo;
 
     SWAG_CHECK(checkCanThrow(context));
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoString, node, back, CASTFLAG_AUTO_OPCAST | CASTFLAG_CONCRETE_ENUM));
+
+    auto type = TypeManager::concretePtrRefType(back->typeInfo);
+    SWAG_VERIFY(type->isString(), Report::internalError(back, Fmt("only type string is supported in throw! (got '%s' instead)", type->getDisplayNameC())));
+
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoAny, node, back, CASTFLAG_AUTO_OPCAST | CASTFLAG_CONCRETE_ENUM));
     node->byteCodeFct = ByteCodeGenJob::emitThrow;
     return true;
 }

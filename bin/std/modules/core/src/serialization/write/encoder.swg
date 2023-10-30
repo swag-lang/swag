@@ -231,7 +231,7 @@ impl Encoder
         }
 
         if errorIfUnknown
-            throw Format.toString("cannot serialize type '%'", type.name)
+            throw cast(string) Format.toString("cannot serialize type '%'", type.name)
     }
 
     // Write a full struct

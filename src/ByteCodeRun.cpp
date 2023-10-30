@@ -2464,6 +2464,13 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
+    case ByteCodeOp::InternalFailedAssume:
+    {
+        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__failedAssume);
+        context->push(registersRC[ip->a.u32].pointer);
+        localCall(context, bc, 1);
+        break;
+    }
     case ByteCodeOp::InternalSetErr:
     {
         auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__seterr);

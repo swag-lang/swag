@@ -201,19 +201,20 @@ bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
         node->semFlags |= SEMFLAG_TRY_1;
     }
 
-    // In a top level function, this should panic
+    // In a top level function, 'throw' is like a failed 'assume'
     auto parentFct = (node->semFlags & SEMFLAG_EMBEDDED_RETURN) ? node->ownerInline->func : node->ownerFct;
     if (parentFct->attributeFlags & ATTRIBUTE_SHARP_FUNC)
     {
+        if (context->sourceFile->module->buildCfg.errorStackTrace)
+            EMIT_INST0(context, ByteCodeOp::InternalInitStackTrace);
+
         uint32_t     storageOffset;
         DataSegment* storageSegment;
         computeSourceLocation(context, node, &storageOffset, &storageSegment);
 
         auto r1 = reserveRegisterRC(context);
-        if (context->sourceFile->module->buildCfg.errorStackTrace)
-            EMIT_INST0(context, ByteCodeOp::InternalInitStackTrace);
         emitMakeSegPointer(context, storageSegment, storageOffset, r1);
-        EMIT_INST3(context, ByteCodeOp::IntrinsicPanic, expr->resultRegisterRC[0], expr->resultRegisterRC[1], r1);
+        EMIT_INST1(context, ByteCodeOp::InternalFailedAssume, r1);
         freeRegisterRC(context, expr->resultRegisterRC);
         freeRegisterRC(context, r1);
     }
@@ -306,18 +307,13 @@ bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
     EMIT_INST1(context, ByteCodeOp::JumpIfZero32, rt);
     freeRegisterRC(context, rt);
 
-    RegisterList r0;
-    reserveRegisterRC(context, r0, 2);
-    EMIT_INST2(context, ByteCodeOp::IntrinsicGetErrMsg, r0[0], r0[1]);
-
     uint32_t     storageOffset;
     DataSegment* storageSegment;
     computeSourceLocation(context, context->node, &storageOffset, &storageSegment);
 
     auto r1 = reserveRegisterRC(context);
     emitMakeSegPointer(context, storageSegment, storageOffset, r1);
-    EMIT_INST3(context, ByteCodeOp::IntrinsicPanic, r0[0], r0[1], r1);
-    freeRegisterRC(context, r0);
+    EMIT_INST1(context, ByteCodeOp::InternalFailedAssume, r1);
     freeRegisterRC(context, r1);
 
     context->bc->out[assumeNode->seekInsideJump].b.s32 = context->bc->numInstructions - assumeNode->seekInsideJump - 1;

@@ -4391,11 +4391,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
             /////////////////////////////////////
 
+        case ByteCodeOp::InternalFailedAssume:
+            emitCall(buildParameters, moduleToGen, g_LangSpec->name__failedAssume, allocR, allocT, { ip->a.u32 }, {});
+            break;
         case ByteCodeOp::IntrinsicGetErrMsg:
             emitCall(buildParameters, moduleToGen, g_LangSpec->name__geterrmsg, allocR, allocT, {}, {});
             storeRT2ToRegisters(context, buildParameters, ip->a.u32, ip->b.u32, allocR, allocT);
             break;
-
         case ByteCodeOp::InternalSetErr:
             emitCall(buildParameters, moduleToGen, g_LangSpec->name__seterr, allocR, allocT, {ip->a.u32, ip->b.u32}, {});
             break;

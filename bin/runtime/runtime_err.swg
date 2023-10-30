@@ -2,9 +2,10 @@ using Swag
 
 ////////////////////////////////////////////////////////////
 
-func __setErr(value: string)
+func __setErr(err: any)
 {
     let cxt = @getcontext()
+    let value = cast(string) err
     let len = @min(@countof(value), cast(u64) MaxLenErrorMsg)
     @assert(cxt.errorIndex < MaxErrors)
     @memcpy(&cxt.errors[cxt.errorIndex].msgBuf, @dataof(value), len)
@@ -37,6 +38,11 @@ func __popErr()
     @assert(cxt.errorIndex < MaxErrors)
     cxt.hasError = cxt.errors[cxt.errorIndex].pushHasError
     cxt.traceIndex = cxt.errors[cxt.errorIndex].pushTraceIndex
+}
+
+func __failedAssume(loc: SourceCodeLocation)
+{
+    @panic(__getErrMsg(), loc)
 }
 
 // Returns the current raised [[Error]] or null if none

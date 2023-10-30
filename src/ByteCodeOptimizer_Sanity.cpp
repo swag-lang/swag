@@ -589,6 +589,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
         case ByteCodeOp::InternalSetErr:
         case ByteCodeOp::InternalPushErr:
         case ByteCodeOp::InternalPopErr:
+        case ByteCodeOp::InternalFailedAssume:
         case ByteCodeOp::CopyRCtoRT:
         case ByteCodeOp::IntrinsicCompilerError:
         case ByteCodeOp::IntrinsicCompilerWarning:

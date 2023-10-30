@@ -4,7 +4,7 @@ using Core
 //#[Swag.PrintBc]
 func toto() throw
 {
-    throw Format.toString("toto%", 10)
+    throw cast(string) Format.toString("toto%", 10)
 }
 
 #test

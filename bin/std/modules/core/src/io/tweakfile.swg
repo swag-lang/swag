@@ -63,7 +63,7 @@ impl TweakFile
                 one = Tokenize.eatCount(one, 1)
                 let folderName = catch StrConv.parseIdentifier(one)
                 if @errmsg
-                    throw Format.toString("line %: invalid folder name", idx + 1)
+                    throw cast(string) Format.toString("line %: invalid folder name", idx + 1)
 
                 visit &folder: folders
                 {
@@ -75,7 +75,7 @@ impl TweakFile
                 }
 
                 if !currentFolder
-                    throw Format.toString("line %: unknown folder '%'", idx + 1, folderName)
+                    throw cast(string) Format.toString("line %: unknown folder '%'", idx + 1, folderName)
                 continue
             }
 
@@ -86,25 +86,25 @@ impl TweakFile
             one = Tokenize.eatSpaces(one)
             let id = catch StrConv.parseIdentifier(one)
             if @errmsg
-                throw Format.toString("line %: invalid value name", idx + 1)
+                throw cast(string) Format.toString("line %: invalid value name", idx + 1)
 
             // Search value into folder
             let field = Reflection.getField(currentFolder.type, id)
             if !field
-                throw Format.toString("line %: value '%' not found in folder '%'", idx + 1, id, currentFolder.type.name)
+                throw cast(string) Format.toString("line %: value '%' not found in folder '%'", idx + 1, id, currentFolder.type.name)
             one = Tokenize.eatCount(one, @countof(id))
             one = Tokenize.eatSpaces(one)
             if !@countof(one)
-                throw Format.toString("line %: missing value", idx + 1)
+                throw cast(string) Format.toString("line %: missing value", idx + 1)
 
             if one[0] == `$`
             {
                 one = Tokenize.eatCount(one, 1)
                 let otherField = Reflection.getField(currentFolder.type, one)
                 if !otherField
-                    throw Format.toString("line %: reference '%' not found in folder '%'", idx + 1, one, currentFolder.type.name)
+                    throw cast(string) Format.toString("line %: reference '%' not found in folder '%'", idx + 1, one, currentFolder.type.name)
                 if field.pointedType != otherField.pointedType
-                    throw Format.toString("line %: reference '%' type mismatch", idx + 1, one)
+                    throw cast(string) Format.toString("line %: reference '%' type mismatch", idx + 1, one)
                 var refr: Ref{currentFolder, otherField, field}
                 refs.add(refr)
                 continue
@@ -113,14 +113,14 @@ impl TweakFile
             // Get value and poke it
             one = catch StrConv.pokeValue(cast(^u8) currentFolder.data + field.offset, field.pointedType, one)
             if @errmsg
-                throw Format.toString("line %: %", idx + 1, @errmsg)
+                throw cast(string) Format.toString("line %: %", idx + 1, @errmsg)
 
             // Be sure there's nothing left
             if @countof(one) and !Latin1.isSpace(one[0]) and one[0] != `#`
-                throw Format.toString("line %: syntax error in value", idx + 1)
+                throw cast(string) Format.toString("line %: syntax error in value", idx + 1)
             one = Tokenize.eatSpaces(one)
             if @countof(one) and one[0] != `#`
-                throw Format.toString("line %: invalid characters after value", idx + 1)
+                throw cast(string) Format.toString("line %: invalid characters after value", idx + 1)
         }
 
         // Do references in a second pass

@@ -15,7 +15,7 @@ impl A
 func toto() throw
 {
     var x: A
-    throw x
+    throw cast(string) x
 }
 
 #test

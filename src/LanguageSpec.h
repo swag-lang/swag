@@ -33,6 +33,7 @@ struct LanguageSpec
     Utf8 name__poperr;
     Utf8 name__geterrmsg;
     Utf8 name__seterr;
+    Utf8 name__failedAssume;
     Utf8 name__tlsAlloc;
     Utf8 name__tlsGetValue;
     Utf8 name__tlsSetValue;

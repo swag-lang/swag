@@ -2,7 +2,7 @@ using Core
 
 func toto() throw
 {
-    defer(err) throw Format.toString("titi")
+    defer(err) throw cast(string) Format.toString("titi")
     throw "toto"
 }
 
