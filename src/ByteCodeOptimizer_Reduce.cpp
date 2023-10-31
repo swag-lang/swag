@@ -296,7 +296,6 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
         while (!ByteCode::isRet(ipScan))
         {
             if (ipScan->op == ByteCodeOp::InternalHasErr ||
-                ipScan->op == ByteCodeOp::IntrinsicGetErrMsg ||
                 ByteCode::isJump(ipScan) ||
                 (ipScan->flags & BCI_START_STMT))
                 break;

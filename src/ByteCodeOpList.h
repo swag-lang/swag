@@ -60,7 +60,6 @@ BYTECODE_OP(IntrinsicIsByteCode, OPFLAG_WRITE_A, "_ra_ = @isbytecode()")
 BYTECODE_OP(IntrinsicMakeCallback, OPFLAG_WRITE_A | OPFLAG_READ_A, "_ra_ = @mkcallback(_ra_)")
 BYTECODE_OP(IntrinsicBcBreakpoint, 0, "@breakpoint()")
 
-BYTECODE_OP(IntrinsicGetErrMsg, OPFLAG_WRITE_A | OPFLAG_WRITE_B, "_ra_, _rb_ = @errmsg")
 BYTECODE_OP(IntrinsicGetErr, OPFLAG_WRITE_A | OPFLAG_WRITE_B, "_ra_, _rb_ = @err()")
 BYTECODE_OP(InternalInitStackTrace, 0, "Internal InitStackTrace()")
 BYTECODE_OP(InternalStackTrace, OPFLAG_READ_A, "Internal StackTrace(_ra_)")

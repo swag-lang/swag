@@ -166,7 +166,6 @@ struct Parser
     bool doInitializationExpression(TokenParse& forToken, AstNode* parent, uint32_t exprFlags, AstNode** result);
     bool doLiteral(AstNode* parent, AstNode** result);
     bool doIntrinsicProp(AstNode* parent, AstNode** result);
-    bool doGetErr(AstNode* parent, AstNode** result);
     bool doIndex(AstNode* parent, AstNode** result);
     bool doKeepRef(AstNode* parent, AstNode** result);
     bool doMoveRef(AstNode* parent, AstNode** result);

@@ -2495,22 +2495,6 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
         break;
     }
-    case ByteCodeOp::IntrinsicGetErrMsg:
-    {
-        auto cxt = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
-        if (!cxt->hasError)
-        {
-            registersRC[ip->a.u32].pointer = nullptr;
-            registersRC[ip->b.u32].u64     = 0;
-        }
-        else
-        {
-            registersRC[ip->a.u32].pointer = (uint8_t*) cxt->errors[cxt->errorIndex].msg.buffer;
-            registersRC[ip->b.u32].u64     = cxt->errors[cxt->errorIndex].msg.count;
-        }
-
-        break;
-    }
     case ByteCodeOp::InternalHasErr:
     {
         SWAG_ASSERT(context->bc->registerGetContext != UINT32_MAX);

@@ -17,14 +17,6 @@ func __setErr(err: any)
     cxt.hasError = 1
 }
 
-func __getErrMsg()->string
-{
-    let cxt = @getcontext()
-    if !cxt.hasError
-        return null
-    return cxt.errors[cxt.errorIndex].msg
-}
-
 func __pushErr()
 {
     let cxt = @getcontext()
@@ -45,7 +37,8 @@ func __popErr()
 
 func __failedAssume(loc: SourceCodeLocation)
 {
-    @panic(__getErrMsg(), loc)
+    let cxt = @getcontext()
+    @panic(cxt.errors[cxt.errorIndex].msg, loc)
 }
 
 // Returns the current raised error, or null if none

@@ -337,7 +337,6 @@ struct ByteCodeGenJob : public Job
     static bool emitSafetySwitchDefault(ByteCodeGenContext* context);
     static bool emitSafetyValue(ByteCodeGenContext* context, int r0, TypeInfo* typeInfo);
     static bool emitSwitchCaseAfterBlock(ByteCodeGenContext* context);
-    static bool emitGetErr(ByteCodeGenContext* context);
     static bool emitIndex(ByteCodeGenContext* context);
     static bool emitLoop(ByteCodeGenContext* context);
     static bool emitLoopBeforeBlock(ByteCodeGenContext* context);

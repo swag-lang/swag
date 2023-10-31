@@ -391,15 +391,6 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
     return true;
 }
 
-bool Parser::doGetErr(AstNode* parent, AstNode** result)
-{
-    auto node         = Ast::newNode<AstNode>(this, AstNodeKind::GetErr, sourceFile, parent);
-    node->semanticFct = SemanticJob::resolveGetErr;
-    *result           = node;
-    SWAG_CHECK(eatToken());
-    return true;
-}
-
 bool Parser::doIndex(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Index, sourceFile, parent);

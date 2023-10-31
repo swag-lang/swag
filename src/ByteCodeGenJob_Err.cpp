@@ -6,14 +6,6 @@
 #include "Module.h"
 #include "Report.h"
 
-bool ByteCodeGenJob::emitGetErr(ByteCodeGenContext* context)
-{
-    auto node = context->node;
-    reserveRegisterRC(context, node->resultRegisterRC, 2);
-    EMIT_INST2(context, ByteCodeOp::IntrinsicGetErrMsg, node->resultRegisterRC[0], node->resultRegisterRC[1]);
-    return true;
-}
-
 bool ByteCodeGenJob::emitInitStackTrace(ByteCodeGenContext* context)
 {
     if (context->sourceFile->module->buildCfg.errorStackTrace)

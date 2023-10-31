@@ -149,7 +149,7 @@
       "patterns": [
         {
           "name": "constant.character.escape",
-          "match": "(@)\\b(index|errmsg)\\b"
+          "match": "(@)\\b(index)\\b"
         }
       ]
     },
