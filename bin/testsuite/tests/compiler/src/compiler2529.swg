@@ -9,5 +9,5 @@ func toto()->s64 throw
 {
     var g = 0
     var x = catch toto()
-    @assert(@errmsg != null)
+    @assert(@err() != null)
 }

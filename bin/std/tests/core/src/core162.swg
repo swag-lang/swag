@@ -10,7 +10,7 @@
 
     {
         catch reader.open(loc.fileName)
-        @assert(@errmsg == null)
+        @assert(@err() == null)
         defer reader.close()
 
         var res = reader.readToEnd()
@@ -21,7 +21,7 @@
 
     {
         catch reader.open(loc.fileName)
-        @assert(@errmsg == null)
+        @assert(@err() == null)
         defer reader.close()
 
         var res: String

@@ -29,7 +29,7 @@ func myFunc()
     let cpt = catch count("fileName")
 
     // And test it with @errmsg, which returns the 'throw' corresponding string
-    if @errmsg
+    if @err()
     {
         @assert(cpt == 0)
         @print(@errmsg)

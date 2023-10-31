@@ -12,7 +12,7 @@ func entry(t: Timer)
 {
     var timer: Timer
     catch timer.init(10, &entry, true)
-    @assert(!@errmsg)
+    @assert(!@err())
     Threading.Thread.sleep(30'ms)
     timer.release()
 }

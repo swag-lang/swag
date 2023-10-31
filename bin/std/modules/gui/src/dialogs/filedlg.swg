@@ -564,7 +564,7 @@ impl FileDlg
 
         var path = Path.combine(curFolder, dlg.edit.text.toString())
         catch Directory.create(path)
-        if @errmsg
+        if @err()
         {
             MessageDlg.error(surface, @errmsg, "Cannot create folder")
             return

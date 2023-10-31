@@ -14,5 +14,5 @@ func titi() throw
 #test
 {
     catch titi()
-    @assert(@errmsg != null)
+    @assert(@err() != null)
 }

@@ -128,7 +128,7 @@ func swapParams(what: string)->String
     let curPath = Path.getDirectoryName(#location.fileName)
     var glewPath = Path.combine(curPath, "glew.h")
     lines = catch File.readAllLines(glewPath)
-    if @errmsg Console.fatal("error: cannot read '%' (%)\n", glewPath, @errmsg)
+    if @err() Console.fatal("error: cannot read '%' (%)\n", glewPath, @errmsg)
 
     findFirstLine(fctExtension)
     visit line11: toProcess
