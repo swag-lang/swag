@@ -3,7 +3,7 @@
 #test
 {
     var mem = ScratchAllocator.create(16*1024'u64)
-    @assert(!@err())
+    @assert(@err() == null)
     defer mem.release()
 
     system.pushAllocator(cast(IAllocator) mem)
