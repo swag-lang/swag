@@ -383,6 +383,7 @@ namespace Swag
     {
         msgBuf:         [MaxLenErrorMsg] u8     // Buffer to store the error message
         msg:            string                  // Error message
+        value:          any                     // Error value (or null)
         pushHasError:   u32
         pushTraceIndex: u32
     }

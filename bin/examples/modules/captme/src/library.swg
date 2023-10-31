@@ -48,7 +48,7 @@ impl Library
     mtd addFile(name: string)
     {
         var file = catch File.getFileInfo(name)
-        if @err()
+        if @err() != null
             return
         files.add(file)
     }

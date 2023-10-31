@@ -2483,9 +2483,16 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     {
         auto cxt = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
         if (!cxt->hasError)
+        {
             registersRC[ip->a.u32].pointer = nullptr;
+            registersRC[ip->b.u32].pointer = nullptr;
+        }
         else
-            registersRC[ip->a.u32].pointer = (uint8_t*) &cxt->errors[cxt->errorIndex];
+        {
+            registersRC[ip->a.u32].pointer = (uint8_t*) cxt->errors[cxt->errorIndex].value.value;
+            registersRC[ip->b.u32].pointer = (uint8_t*) cxt->errors[cxt->errorIndex].value.type;
+        }
+
         break;
     }
     case ByteCodeOp::IntrinsicGetErrMsg:

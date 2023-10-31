@@ -12,6 +12,7 @@ func __setErr(err: any)
     @memcpy(&cxt.errors[cxt.errorIndex].msgBuf, @dataof(value), len)
     cxt.errors[cxt.errorIndex].msg = @mkstring(&cxt.errors[cxt.errorIndex].msgBuf, len)
 
+    cxt.errors[cxt.errorIndex].value = err
     cxt.hasError = 1
 }
 
@@ -46,13 +47,13 @@ func __failedAssume(loc: SourceCodeLocation)
     @panic(__getErrMsg(), loc)
 }
 
-// Returns the current raised [[Error]] or null if none
-func @err()->const *Error
+// Returns the current raised error, or null if none
+func @err()->any
 {
     let cxt = @getcontext()
     if !cxt.hasError
         return null
-    return &cxt.errors[cxt.errorIndex]
+    return cxt.errors[cxt.errorIndex].value
 }
 
 ////////////////////////////////////////////////////////////

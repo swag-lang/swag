@@ -16,7 +16,7 @@ func exists(dirName: string)->bool
         return false
     var winPath = Utf16.toZeroTerminated(dirName)
     let attributes = catch GetFileAttributesW(@dataof(winPath))
-    if @err()
+    if @err() != null
         return false
     if attributes == 0xFFFFFFFF
         return false
@@ -152,7 +152,7 @@ func getDrives()->Array'String throw
     {
         var ret: DWORD
         catch GetVolumePathNamesForVolumeNameA(volName, driveName, acast MAX_PATH, &ret)
-        if !@err()
+        if @err() == null
         {
             let len = @strlen(driveName)
             if len

@@ -116,7 +116,7 @@ impl IActionUI for ActionFile
             Cursor.wait()
             var img = capture.toImage()
             catch img.save(capture.linkedImage)
-            if @err()
+            if @err() != null
                 MessageDlg.error(main.surface, @errmsg, "Failed to update file !")
 
         case CmdIdDeleteCapture:
@@ -165,7 +165,7 @@ impl MainWnd
             return
 
         let img = catch Image.load(dlg.getSelectedName())
-        if @err()
+        if @err() != null
             MessageDlg.error(surface, @errmsg, "Failed to load image !")
         else
             newCapture(img, dlg.getSelectedName())
@@ -198,7 +198,7 @@ impl MainWnd
         let capture = getCapture()
         var img = capture.toImage()
         catch img.save(dlg.getSelectedName())
-        if @err()
+        if @err() != null
         {
             MessageDlg.error(surface, @errmsg, "Failed to save file !")
             return

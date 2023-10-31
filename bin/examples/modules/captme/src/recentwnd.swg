@@ -219,7 +219,8 @@ impl RecentWnd
         {
             let capture = catch recent.addRecent(r.fullname, front: false)
             defer(err) Memory.delete(capture)
-            if @err() continue
+            if @err() != null
+                continue
 
             if idx == 0
             {
@@ -255,7 +256,7 @@ impl RecentWnd
         let item = recentView.items[recentView.selected]
 
         catch File.delete(item.file)
-        if @err()
+        if @err() != null
         {
             MessageDlg.error(surface, @errmsg, "Failed to delete capture file !")
             return

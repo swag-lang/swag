@@ -707,10 +707,10 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     }
     case TokenId::IntrinsicGetErr:
     {
-        node->resultRegisterRC                  = reserveRegisterRC(context);
+        reserveRegisterRC(context, node->resultRegisterRC, 2);
         node->identifierRef()->resultRegisterRC = node->resultRegisterRC;
         node->parent->resultRegisterRC          = node->resultRegisterRC;
-        EMIT_INST1(context, ByteCodeOp::IntrinsicGetErr, node->resultRegisterRC);
+        EMIT_INST2(context, ByteCodeOp::IntrinsicGetErr, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         break;
     }
     case TokenId::IntrinsicAtomicAdd:

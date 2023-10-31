@@ -62,7 +62,7 @@ impl TweakFile
             {
                 one = Tokenize.eatCount(one, 1)
                 let folderName = catch StrConv.parseIdentifier(one)
-                if @err()
+                if @err() != null
                     throw cast(string) Format.toString("line %: invalid folder name", idx + 1)
 
                 visit &folder: folders
@@ -85,7 +85,7 @@ impl TweakFile
             // Value
             one = Tokenize.eatSpaces(one)
             let id = catch StrConv.parseIdentifier(one)
-            if @err()
+            if @err() != null
                 throw cast(string) Format.toString("line %: invalid value name", idx + 1)
 
             // Search value into folder
@@ -112,7 +112,7 @@ impl TweakFile
 
             // Get value and poke it
             one = catch StrConv.pokeValue(cast(^u8) currentFolder.data + field.offset, field.pointedType, one)
-            if @err()
+            if @err() != null
                 throw cast(string) Format.toString("line %: %", idx + 1, @errmsg)
 
             // Be sure there's nothing left

@@ -325,7 +325,7 @@ impl MainWnd
         func registerHotKey(mdf: Input.KeyModifiers, key: Input.Key, wndId: WndId)
         {
             catch getApp().registerHotKey(mdf, key, wndId, self)
-            if @err()
+            if @err() != null
             {
                 if !errorReg
                 {

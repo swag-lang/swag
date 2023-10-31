@@ -77,6 +77,12 @@ typedef struct SwagSlice
     uint64_t count  = 0;
 } SwagSlice;
 
+struct SwagAny
+{
+    void*                    value;
+    struct ExportedTypeInfo* type;
+};
+
 struct SwagSourceCodeLocation
 {
     SwagSlice fileName;
@@ -116,6 +122,7 @@ typedef struct SwagError
 {
     uint8_t   msgBuf[SWAG_MAX_LEN_ERROR_MSG];
     SwagSlice msg;
+    SwagAny   value;
     uint32_t  pushHasError;
     uint32_t  pushTraceIndex;
 } SwagError;
@@ -386,12 +393,6 @@ struct ExportedTypeInfo
     uint32_t     flags;
     TypeInfoKind kind;
     uint8_t      padding[3];
-};
-
-struct SwagAny
-{
-    void*             value;
-    ExportedTypeInfo* type;
 };
 
 struct ExportedAttributeParameter

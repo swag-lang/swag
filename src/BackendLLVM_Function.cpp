@@ -4332,10 +4332,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             storeRT2ToRegisters(context, buildParameters, ip->a.u32, ip->b.u32, allocR, allocT);
             break;
 
-        case ByteCodeOp::IntrinsicGetErr:
-            emitCall(buildParameters, moduleToGen, g_LangSpec->name_aterr, allocR, allocT, {ip->a.u32}, {});
-            break;
-
         case ByteCodeOp::IntrinsicIsByteCode:
         {
             auto r0 = GEP64_PTR_I8(allocR, ip->a.u32);
@@ -4396,6 +4392,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         case ByteCodeOp::IntrinsicGetErrMsg:
             emitCall(buildParameters, moduleToGen, g_LangSpec->name__geterrmsg, allocR, allocT, {}, {});
+            storeRT2ToRegisters(context, buildParameters, ip->a.u32, ip->b.u32, allocR, allocT);
+            break;
+        case ByteCodeOp::IntrinsicGetErr:
+            emitCall(buildParameters, moduleToGen, g_LangSpec->name_aterr, allocR, allocT, {}, {});
             storeRT2ToRegisters(context, buildParameters, ip->a.u32, ip->b.u32, allocR, allocT);
             break;
         case ByteCodeOp::InternalSetErr:
