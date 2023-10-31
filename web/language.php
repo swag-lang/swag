@@ -6139,8 +6139,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Dismiss the eventual error with 'catch' and continue execution</span>
     <span class="SKwd">let</span> cpt = <span class="SKwd">catch</span> <span class="SFct">count</span>(<span class="SStr">"fileName"</span>)
 
-    <span class="SCmt">// And test it with @errmsg, which returns the 'throw' corresponding string</span>
-    <span class="SLgc">if</span> <span class="SItr">@errmsg</span>
+    <span class="SCmt">// And test it with @err(), which returns the 'throw' corresponding value</span>
+    <span class="SLgc">if</span> <span class="SItr">@err</span>() != <span class="SKwd">null</span>
     {
         <span class="SItr">@assert</span>(cpt == <span class="SNum">0</span>)
         <span class="SItr">@print</span>(<span class="SItr">@errmsg</span>)
@@ -7287,7 +7287,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="230_documentation_231_003_Pages">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 30-10-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
+Generated on 31-10-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
 </div>
 </div>
