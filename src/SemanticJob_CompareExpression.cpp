@@ -46,7 +46,7 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
             // Can only be compared to null
             // :ComparedToNull
             SWAG_ASSERT(right->castedTypeInfo && right->castedTypeInfo->isPointerNull());
-            auto any                   = (ExportedAny*) left->computedValue->getStorageAddr();
+            auto any                   = (SwagAny*) left->computedValue->getStorageAddr();
             node->computedValue->reg.b = !any->type;
         }
         else if (leftTypeInfo->isPointerNull())

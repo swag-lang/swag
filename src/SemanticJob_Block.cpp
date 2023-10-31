@@ -260,7 +260,7 @@ bool SemanticJob::resolveSwitchAfterExpr(SemanticContext* context)
     {
         if (node->hasComputedValue())
         {
-            auto any                           = (ExportedAny*) node->computedValue->getStorageAddr();
+            auto any                           = (SwagAny*) node->computedValue->getStorageAddr();
             node->computedValue->storageOffset = node->computedValue->storageSegment->offset((uint8_t*) any->type);
             node->flags |= AST_VALUE_IS_GENTYPEINFO;
             node->typeInfo = g_TypeMgr->typeInfoTypeType;

@@ -388,7 +388,7 @@ struct ExportedTypeInfo
     uint8_t      padding[3];
 };
 
-struct ExportedAny
+struct SwagAny
 {
     void*             value;
     ExportedTypeInfo* type;
@@ -396,8 +396,8 @@ struct ExportedAny
 
 struct ExportedAttributeParameter
 {
-    SwagSlice   name;
-    ExportedAny value;
+    SwagSlice name;
+    SwagAny   value;
 };
 
 struct ExportedAttribute

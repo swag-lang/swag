@@ -33,10 +33,10 @@ bool SemanticJob::storeToSegment(JobContext* context, DataSegment* storageSegmen
 
     if (typeInfo->isAny())
     {
-        ExportedAny* ptrAny = (ExportedAny*) ptrDest;
+        SwagAny* ptrAny = (SwagAny*) ptrDest;
         if (assignment && !assignment->castedTypeInfo)
         {
-            auto valueAny           = (ExportedAny*) value->getStorageAddr();
+            auto valueAny           = (SwagAny*) value->getStorageAddr();
             *ptrAny                 = *valueAny;
             auto storageOffsetValue = value->storageSegment->offset((uint8_t*) valueAny->value);
             auto storageOffsetType  = value->storageSegment->offset((uint8_t*) valueAny->type);

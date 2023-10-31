@@ -2685,8 +2685,8 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
         // From a constant, need to check the type
         if (fromNode && fromNode->hasComputedValue())
         {
-            ExportedAny* any         = (ExportedAny*) fromNode->computedValue->getStorageAddr();
-            auto         newTypeInfo = context->sourceFile->module->typeGen.getRealType(fromNode->computedValue->storageSegment, (ExportedTypeInfo*) any->type);
+            SwagAny* any         = (SwagAny*) fromNode->computedValue->getStorageAddr();
+            auto     newTypeInfo = context->sourceFile->module->typeGen.getRealType(fromNode->computedValue->storageSegment, (ExportedTypeInfo*) any->type);
 
             if (newTypeInfo && context->sourceFile->module->mustEmitSafety(fromNode, SAFETY_ANY, true))
             {

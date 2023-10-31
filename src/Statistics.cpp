@@ -21,7 +21,7 @@ void Stats::printFreq()
 
     for (uint32_t cpt = 0; cpt < g_CommandLine.statsFreqCount; cpt++)
     {
-        int best = -1;
+        int best  = -1;
         int bestI = 0;
 
         for (int i = 0; i < (int) ByteCodeOp::End; i++)

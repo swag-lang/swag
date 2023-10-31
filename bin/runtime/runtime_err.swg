@@ -5,11 +5,13 @@ using Swag
 func __setErr(err: any)
 {
     let cxt = @getcontext()
+    @assert(cxt.errorIndex < MaxErrors)
+
     let value = cast(string) err
     let len = @min(@countof(value), cast(u64) MaxLenErrorMsg)
-    @assert(cxt.errorIndex < MaxErrors)
     @memcpy(&cxt.errors[cxt.errorIndex].msgBuf, @dataof(value), len)
     cxt.errors[cxt.errorIndex].msg = @mkstring(&cxt.errors[cxt.errorIndex].msgBuf, len)
+
     cxt.hasError = 1
 }
 
@@ -35,7 +37,6 @@ func __popErr()
     let cxt = @getcontext()
     @assert(cxt.errorIndex != 0)
     cxt.errorIndex -= 1
-    @assert(cxt.errorIndex < MaxErrors)
     cxt.hasError = cxt.errors[cxt.errorIndex].pushHasError
     cxt.traceIndex = cxt.errors[cxt.errorIndex].pushTraceIndex
 }

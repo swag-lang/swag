@@ -399,7 +399,7 @@ void* TypeGen::genExportedSlice(JobContext* context, uint32_t sizeOf, DataSegmen
     return addrDst;
 }
 
-bool TypeGen::genExportedAny(JobContext* context, ExportedAny* ptrAny, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue& computedValue, TypeInfo* typeInfo, uint32_t cflags)
+bool TypeGen::genExportedAny(JobContext* context, SwagAny* ptrAny, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue& computedValue, TypeInfo* typeInfo, uint32_t cflags)
 {
     auto sourceFile = context->sourceFile;
     ptrAny->value   = nullptr;
@@ -518,10 +518,10 @@ bool TypeGen::genExportedAttributes(JobContext* context, AttributeList& attribut
                 }
 
                 // Value of the parameter
-                genExportedAny(context, (ExportedAny*) ptrStorageAllParams, storageSegment, curOffsetParams, oneParam.value, typeValue, cflags);
+                genExportedAny(context, (SwagAny*) ptrStorageAllParams, storageSegment, curOffsetParams, oneParam.value, typeValue, cflags);
 
-                curOffsetParams += sizeof(ExportedAny);
-                ptrStorageAllParams += sizeof(ExportedAny);
+                curOffsetParams += sizeof(SwagAny);
+                ptrStorageAllParams += sizeof(SwagAny);
                 cptParam++;
             }
         }

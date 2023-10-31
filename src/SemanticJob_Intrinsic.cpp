@@ -342,7 +342,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
             }
             else
             {
-                auto any = (ExportedAny*) expression->computedValue->getStorageAddr();
+                auto any = (SwagAny*) expression->computedValue->getStorageAddr();
                 if (!any->value)
                 {
                     node->typeInfo                      = g_TypeMgr->typeInfoNull;
@@ -722,7 +722,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
 
         if (expr->hasComputedValue())
         {
-            auto any                           = (ExportedAny*) expr->computedValue->getStorageAddr();
+            auto any                           = (SwagAny*) expr->computedValue->getStorageAddr();
             expr->computedValue->storageOffset = expr->computedValue->storageSegment->offset((uint8_t*) any->type);
             node->inheritComputedValue(expr);
             node->flags |= AST_VALUE_IS_GENTYPEINFO;

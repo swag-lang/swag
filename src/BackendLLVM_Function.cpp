@@ -4392,7 +4392,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             /////////////////////////////////////
 
         case ByteCodeOp::InternalFailedAssume:
-            emitCall(buildParameters, moduleToGen, g_LangSpec->name__failedAssume, allocR, allocT, { ip->a.u32 }, {});
+            emitCall(buildParameters, moduleToGen, g_LangSpec->name__failedAssume, allocR, allocT, {ip->a.u32}, {});
             break;
         case ByteCodeOp::IntrinsicGetErrMsg:
             emitCall(buildParameters, moduleToGen, g_LangSpec->name__geterrmsg, allocR, allocT, {}, {});
