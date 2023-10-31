@@ -23,5 +23,5 @@ func titi() throw
 #test
 {
     catch titi()
-    @assert(@errmsg == "tata")
+    @assert(cast(string) @err() == "tata")
 }

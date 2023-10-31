@@ -113,7 +113,7 @@ impl TweakFile
             // Get value and poke it
             one = catch StrConv.pokeValue(cast(^u8) currentFolder.data + field.offset, field.pointedType, one)
             if @err() != null
-                throw cast(string) Format.toString("line %: %", idx + 1, @errmsg)
+                throw cast(string) Format.toString("line %: %", idx + 1, cast(string) @err())
 
             // Be sure there's nothing left
             if @countof(one) and !Latin1.isSpace(one[0]) and one[0] != `#`

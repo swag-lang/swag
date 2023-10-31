@@ -6,5 +6,5 @@ func toto() throw
 #test
 {
     catch toto()
-    @assert(@errmsg == "toto")
+    @assert(cast(string) @err() == "toto")
 }

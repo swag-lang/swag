@@ -8,7 +8,7 @@ func toto() throw
 func titi() throw
 {
     catch toto()
-    if @errmsg throw "super titi"
+    if cast(string) @err() throw "super titi"
 }
 
 #test

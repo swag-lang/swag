@@ -640,7 +640,6 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <p>Intrisic keywords always start with <span class="code-inline">@</span>. As user identifiers cannot start the same way, intrinsics keywords will never collide with user identifiers. </p>
 <div class="code-block"><span class="SCde"><span class="SItr">@index</span>
 <span class="SItr">@err</span>
-<span class="SItr">@errmsg</span>
 <span class="SItr">@alias0</span>
 <span class="SItr">@alias1</span>
 <span class="SItr">@alias2</span> <span class="SCmt">// and more generally @aliasN</span>
@@ -5122,8 +5121,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SItr">@isconstexpr</span>()
 <span class="SItr">@itftableof</span>()
 
-<span class="SItr">@index</span>
-<span class="SItr">@errmsg</span></span></div>
+<span class="SItr">@index</span></span></div>
 <h3 id="120_intrinsics_Memory_related">Memory related </h3>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@alloc</span>(size: <span class="STpe">u64</span>)-&gt;*<span class="STpe">void</span>;
 <span class="SKwd">func</span> <span class="SItr">@realloc</span>(ptr: *<span class="STpe">void</span>, size: <span class="STpe">u64</span>)-&gt;*<span class="STpe">void</span>;
@@ -6133,7 +6131,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SLgc">return</span> <span class="SItr">@countof</span>(name)
 }</span></div>
-<p>The caller will then have to deal with the error in some way. It can <span class="code-inline">catch</span> it, and test (or not) its value with the <span class="code-inline">@errmsg</span> intrinsic. The execution will continue at the call site. </p>
+<p>The caller will then have to deal with the error in some way. It can <span class="code-inline">catch</span> it, and test (or not) its value with the <span class="code-inline">@err()</span> intrinsic. The execution will continue at the call site. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc</span>()
 {
     <span class="SCmt">// Dismiss the eventual error with 'catch' and continue execution</span>
@@ -6143,7 +6141,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SLgc">if</span> <span class="SItr">@err</span>() != <span class="SKwd">null</span>
     {
         <span class="SItr">@assert</span>(cpt == <span class="SNum">0</span>)
-        <span class="SItr">@print</span>(<span class="SItr">@errmsg</span>)
+        <span class="SItr">@print</span>(<span class="SKwd">cast</span>(<span class="STpe">string</span>) <span class="SItr">@err</span>())
         <span class="SLgc">return</span>
     }
 
@@ -6185,7 +6183,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 
     <span class="SCmt">// Works also for 'catch' if you do not want to deal with the error message.</span>
-    <span class="SCmt">// '@errmsg' in that case is not really relevant.</span>
+    <span class="SCmt">// 'cast(string) @err()' in that case is not really relevant.</span>
     <span class="SKwd">catch</span>
     {
         <span class="SKwd">var</span> cpt4 = <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
@@ -6218,7 +6216,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 
     <span class="SKwd">catch</span> <span class="SFct">mySubFunc1</span>()
-    <span class="SItr">@assert</span>(<span class="SItr">@errmsg</span> == <span class="SStr">"error"</span>)
+    <span class="SItr">@assert</span>(<span class="SKwd">cast</span>(<span class="STpe">string</span>) <span class="SItr">@err</span>() == <span class="SStr">"error"</span>)
 }</span></div>
 <h3 id="170_error_management_defer">defer </h3>
 <p><span class="code-inline">defer</span> can have parameters like <span class="code-inline">defer(err)</span> or <span class="code-inline">defer(noerr)</span> to control if it should be executed depending on the error status. </p>

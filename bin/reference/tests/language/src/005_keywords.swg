@@ -145,7 +145,6 @@ Intrisic keywords always start with '@'. As user identifiers cannot start the sa
 ```swag
 @index
 @err
-@errmsg
 @alias0
 @alias1
 @alias2 // and more generally @aliasN

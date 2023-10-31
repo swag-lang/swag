@@ -258,7 +258,7 @@ impl RecentWnd
         catch File.delete(item.file)
         if @err() != null
         {
-            MessageDlg.error(surface, @errmsg, "Failed to delete capture file !")
+            MessageDlg.error(surface, cast(string) @err(), "Failed to delete capture file !")
             return
         }
 

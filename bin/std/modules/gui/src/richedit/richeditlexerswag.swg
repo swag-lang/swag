@@ -215,7 +215,6 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("@index", State.Intrinsic)
         mapWords.add("@isconstexpr", State.Intrinsic)
         mapWords.add("@err", State.Intrinsic)
-        mapWords.add("@errmsg", State.Intrinsic)
         mapWords.add("@itftableof", State.Intrinsic)
         mapWords.add("@dbgalloc", State.Intrinsic)
         mapWords.add("@sysalloc", State.Intrinsic)

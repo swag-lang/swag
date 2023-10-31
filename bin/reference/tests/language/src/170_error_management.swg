@@ -21,7 +21,7 @@ func count(name: string)->u64 throw
 }
 
 /**
-The caller will then have to deal with the error in some way. It can `catch` it, and test (or not) its value with the `@errmsg` intrinsic. The execution will continue at the call site.
+The caller will then have to deal with the error in some way. It can `catch` it, and test (or not) its value with the `@err()` intrinsic. The execution will continue at the call site.
 */
 func myFunc()
 {
@@ -32,7 +32,7 @@ func myFunc()
     if @err() != null
     {
         @assert(cpt == 0)
-        @print(@errmsg)
+        @print(cast(string) @err())
         return
     }
 
@@ -84,7 +84,7 @@ func myFunc3() throw
     }
 
     // Works also for 'catch' if you do not want to deal with the error message.
-    // '@errmsg' in that case is not really relevant.
+    // 'cast(string) @err()' in that case is not really relevant.
     catch
     {
         var cpt4 = count("filename")
@@ -120,7 +120,7 @@ When a function is marked with `throw`, the `try` for a function call is automat
     }
 
     catch mySubFunc1()
-    @assert(@errmsg == "error")
+    @assert(cast(string) @err() == "error")
 }
 
 /**

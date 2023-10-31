@@ -9,10 +9,11 @@ func __setErr(err: any)
 
     let value = cast(string) err
     let len = @min(@countof(value), cast(u64) MaxLenErrorMsg)
-    @memcpy(&cxt.errors[cxt.errorIndex].msgBuf, @dataof(value), len)
-    cxt.errors[cxt.errorIndex].msg = @mkstring(&cxt.errors[cxt.errorIndex].msgBuf, len)
+    let ptr = &cxt.errors[cxt.errorIndex].msgBuf
+    @memcpy(ptr, @dataof(value), len)
+    cxt.errors[cxt.errorIndex].msg = @mkstring(ptr, len)
 
-    cxt.errors[cxt.errorIndex].value = err
+    cxt.errors[cxt.errorIndex].value = @mkany(&cxt.errors[cxt.errorIndex].msg, string)
     cxt.hasError = 1
 }
 

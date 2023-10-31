@@ -566,7 +566,7 @@ impl FileDlg
         catch Directory.create(path)
         if @err() != null
         {
-            MessageDlg.error(surface, @errmsg, "Cannot create folder")
+            MessageDlg.error(surface, cast(string) @err(), "Cannot create folder")
             return
         }
 

@@ -4,5 +4,5 @@ func toto() throw => titi()
 #test
 {
     discard catch toto()
-    @assert(@errmsg == "0")
+    @assert(cast(string) @err() == "0")
 }
