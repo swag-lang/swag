@@ -109,12 +109,15 @@
 <h3 id="">Under windows 10/11 </h3>
 <p>You should register the location of the swag compiler (<span class="code-inline">swag.exe</span>) in the PATH environment variable to be able to call it from everywhere. </p>
 <p>You can open a Powershell window, and run the following code : </p>
-<div class="code-block"><span class="SCde"># You must replace `f:\swag-lang\swag\bin` with your location of `swag.exe`
+<div class="code-block"><span class="SCde"># You must replace `c:\swag-lang\swag\bin` with your location of `swag.exe`
 [Environment]::SetEnvironmentVariable(
     "Path",
-    [Environment]::GetEnvironmentVariable("Path", "User") + ";f:\swag-lang\swag\bin",
+    [Environment]::GetEnvironmentVariable("Path", "User") + ";c:\swag-lang\swag\bin",
     "User"
 )</span></div>
+<div class="blockquote blockquote-warning">
+<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> You must install the latest version of the <b>windows 10 sdk</b> in order to be able to build an executable for windows.  Otherwhise the compiler will complain, and exit.  You can try <a href="https://developer.microsoft.com/en-us/windows/downloads/windows-sdk/">here</a> </p>
+</div>
 <h1 id="">Your first project </h1>
 <p>The compile unit of swag is a <b>workspace</b> which contains a variable number of <b>modules</b>. A module will compile to a dynamic library or an executable. </p>
 <p>To create a fresh new workspace named <i>first</i> : </p>
@@ -173,7 +176,7 @@ Hello world!
 <p>And as this is a normal Swag workspace, you could also build and test it with <span class="code-inline">swag test -w:swag/reference</span>. </p>
 <p>You will also find some small examples (mostly written for tests) in <span class="code-inline">swag/bin/examples/modules</span>. To build and run one of them from the console, go to the workspace folder (<span class="code-inline">/examples</span>) and type for example <span class="code-inline">swag run -m:wnd</span>. </p>
 <div class="swag-watermark">
-Generated on 31-10-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
+Generated on 01-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
 </div>
 </div>

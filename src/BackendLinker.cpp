@@ -98,7 +98,7 @@ namespace BackendLinker
     {
         Vector<Path> libPaths;
 
-        // System library paths
+        // User defined library paths
         for (auto p : g_CommandLine.libPaths)
             libPaths.push_back(p);
 
@@ -117,7 +117,7 @@ namespace BackendLinker
                 arguments.push_back("/LIBPATH:" + normalizedLibPath.string());
         }
 
-        // Registered #global foreignlib
+        // Register #foreignlib
         // As this is defined by the user, we consider the library must exists
         Utf8 one;
         for (auto fl : buildParameters.foreignLibs)
@@ -137,7 +137,7 @@ namespace BackendLinker
             auto fullName = g_Workspace->targetPath;
             fullName.append(libName.c_str());
 
-            // Be sure that the library exits. Some modules rely on external libraries, and do not have their
+            // Be sure that the library exists. Some modules rely on external libraries, and do not have their
             // own one
             error_code err;
             if (filesystem::exists(fullName, err))

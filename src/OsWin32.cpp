@@ -10,12 +10,124 @@
 #include "Context.h"
 #include "Report.h"
 
+#pragma optimize("", off)
+
 namespace OS
 {
     static BackendTarget      nativeTarget;
     static HANDLE             consoleHandle     = NULL;
     static WORD               defaultAttributes = 0;
     static thread_local void* exceptionParams[4];
+    static Path               winSdkFolder;
+
+    bool getWinSdk()
+    {
+        static Mutex mt;
+        ScopedLock   lk(mt);
+
+        if (winSdkFolder == "<error>")
+            return false;
+        if (!winSdkFolder.empty())
+            return true;
+
+        winSdkFolder = "<error";
+
+        HKEY hKey;
+        auto rc = RegOpenKeyExA(HKEY_LOCAL_MACHINE, "SOFTWARE\\Microsoft\\Windows Kits\\Installed Roots", 0, KEY_QUERY_VALUE | KEY_WOW64_32KEY | KEY_ENUMERATE_SUB_KEYS, &hKey);
+        if (rc != S_OK)
+            return false;
+
+        DWORD length;
+        rc = RegQueryValueExW(hKey, L"KitsRoot10", NULL, NULL, NULL, &length);
+        if (rc != S_OK)
+            return false;
+
+        auto value = new wchar_t[length + 1];
+        rc         = RegQueryValueExW(hKey, L"KitsRoot10", NULL, NULL, (LPBYTE) value, &length);
+        RegCloseKey(hKey);
+        if (rc != S_OK)
+            return false;
+        value[length] = 0;
+
+        // Convert to UTF8
+        std::wstring wstr{value};
+        int          sizeNeeded = WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int) wstr.size(), NULL, 0, NULL, NULL);
+        std::string  str(sizeNeeded, 0);
+        WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int) wstr.size(), &str[0], sizeNeeded, NULL, NULL);
+
+        winSdkFolder = str.c_str();
+        winSdkFolder.append("Lib");
+
+        int  bestVersion[4] = {0};
+        Utf8 bestName;
+        visitFolders(winSdkFolder.string().c_str(), [&](const char* cFileName)
+                     {
+                         int  i0, i1, i2, i3;
+                         auto success = sscanf_s(cFileName, "%d.%d.%d.%d", &i0, &i1, &i2, &i3);
+                         if (success < 4)
+                             return;
+
+                         if (i0 < bestVersion[0])
+                             return;
+                         if (i0 == bestVersion[0])
+                         {
+                             if (i1 < bestVersion[1])
+                                 return;
+                             if (i1 == bestVersion[1])
+                             {
+                                 if (i2 < bestVersion[2])
+                                     return;
+                                 if (i2 == bestVersion[2])
+                                 {
+                                     if (i3 < bestVersion[3])
+                                         return;
+                                 }
+                             }
+                         }
+
+                         bestName = cFileName;
+                         bestVersion[0] = i0;
+                         bestVersion[1] = i1;
+                         bestVersion[2] = i2;
+                         bestVersion[3] = i3; });
+
+        if (bestVersion[0] == 0)
+            return false;
+
+        winSdkFolder.append(bestName.c_str());
+        if (g_CommandLine.verbosePath)
+            g_Log.messageVerbose(Fmt("winsdk path is '%s'", winSdkFolder.string().c_str()));
+
+        return true;
+    }
+
+    bool setupBuild()
+    {
+        if (g_CommandLine.target.os != SwagTargetOs::Windows)
+            return true;
+
+        if (!getWinSdk())
+        {
+            Report::error(Err(Fat0039));
+            g_Log.lock();
+            g_Log.setColor(LogColor::Cyan);
+            g_Log.print("=> in order to build a windows executable or dll, you must install the latest version of the windows 10 sdk!\n");
+            g_Log.print("=> you can try https://developer.microsoft.com/en-us/windows/downloads/windows-sdk/\n");
+            g_Log.setDefaultColor();
+            g_Log.unlock();
+            return false;
+        }
+
+        SWAG_ASSERT(g_CommandLine.target.arch == SwagTargetArch::X86_64);
+
+        Path p0 = winSdkFolder;
+        p0.append("um\\x64");
+        g_CommandLine.libPaths.push_back(winSdkFolder);
+        Path p1 = winSdkFolder;
+        p1.append("uctr\\x64");
+        g_CommandLine.libPaths.push_back(winSdkFolder);
+        return true;
+    }
 
     void setup()
     {

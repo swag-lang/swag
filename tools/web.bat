@@ -3,4 +3,4 @@
 
 xcopy ..\bin\std\output\fast-compile-windows-x86_64\*.php       ..\web /Y
 xcopy ..\bin\reference\output\fast-compile-windows-x86_64\*.php ..\web /Y
-xcopy ..\web\*.* "d:\program files\xampp\htdocs\web\" /E /Y
+xcopy ..\web\*.* "c:\perso\xampp\htdocs\web\" /E /Y

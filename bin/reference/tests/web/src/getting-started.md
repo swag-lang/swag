@@ -6,12 +6,17 @@ You should register the location of the swag compiler (`swag.exe`) in the PATH e
 
 You can open a Powershell window, and run the following code :
 
-    # You must replace `f:\swag-lang\swag\bin` with your location of `swag.exe`
+    # You must replace `c:\swag-lang\swag\bin` with your location of `swag.exe`
     [Environment]::SetEnvironmentVariable(
         "Path",
-        [Environment]::GetEnvironmentVariable("Path", "User") + ";f:\swag-lang\swag\bin",
+        [Environment]::GetEnvironmentVariable("Path", "User") + ";c:\swag-lang\swag\bin",
         "User"
     )
+
+> WARNING:
+> You must install the latest version of the **windows 10 sdk** in order to be able to build an executable for windows. 
+> Otherwhise the compiler will complain, and exit.
+> You can try [here](https://developer.microsoft.com/en-us/windows/downloads/windows-sdk/)
 
 # Your first project
 

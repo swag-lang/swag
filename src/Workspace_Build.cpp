@@ -784,6 +784,9 @@ bool Workspace::buildTarget()
 
 bool Workspace::build()
 {
+    if (!OS::setupBuild())
+        return false;
+
     g_ModuleMgr = Allocator::alloc<ModuleManager>();
     g_LangSpec  = Allocator::alloc<LanguageSpec>();
     g_LangSpec->setup();

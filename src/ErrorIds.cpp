@@ -58,7 +58,7 @@ void initErrors()
     SWAG_ERROR(Fat0024, "[fatal] unknown compile tag type '%s' (use '--tag:%s')");
     SWAG_ERROR(Fat0025, "[fatal] workspace folder '%s' already exists");
     SWAG_ERROR(Fat0026, "[fatal] workspace folder '%s' not found");
-    SWAG_ERROR(Fat0039, nullptr);
+    SWAG_ERROR(Fat0039, "[fatal] unable to locate the windows sdk folder");
     SWAG_ERROR(Fat0040, nullptr);
 
     /////////////////////////////////////////////////////////////////////

@@ -112,10 +112,10 @@
 <h2 id="">Build </h2>
 <p>You will need <span class="code-inline">Visual Studio 2022 17.1</span> or later. </p>
 <ul>
-<li>As there's no automatic detection, edit <span class="code-inline">vs_build_cfg.bat</span> to match your version of Visual Studio and of the Windows SDK.</li>
+<li>As there's no automatic detection, edit <span class="code-inline">vs_build_cfg.bat</span> to match your version of Visual Studio.</li>
 <li>Launch <span class="code-inline">swag/build/vs_build_llvm_release.bat</span>. Note that building LLVM takes a crazy amount of time and memory, and can require multiple tries.</li>
 <li>Launch <span class="code-inline">swag/build/vs_build_swag_release.bat</span>.</li>
-<li>You can also launch <span class="code-inline">swag/build/vs_build_extern.bat</span>. This will build and update some external libraries in the standard workspace, and copy some libraries from the windows SDK.</li>
+<li>You can also launch <span class="code-inline">swag/build/vs_build_extern.bat</span>. This will build and update some external libraries in the standard workspace.</li>
 </ul>
 <p>If LLVM has been compiled once, you can also use the <span class="code-inline">Swag.sln</span> workspace in the <span class="code-inline">build</span> subfolder. </p>
 <h2 id="">Windows SDK </h2>
@@ -124,7 +124,7 @@
 <p>They are shipped with the compiler to avoid the necessity to install the SDK before building with Swag. That way the compiler can be used "as is". </p>
 <p>The standard modules (in <span class="code-inline">bin/std/modules</span>) can also have dependencies to some other libraries from the SDK. You will find those dependencies in the <span class="code-inline">publish</span> folder of the corresponding modules. </p>
 <div class="swag-watermark">
-Generated on 31-10-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
+Generated on 01-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
 </div>
 </div>
