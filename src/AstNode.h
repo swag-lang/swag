@@ -610,6 +610,8 @@ struct AstFuncCallParam : public AstNode
 
 struct AstBinaryOpNode : public AstNode
 {
+    static const uint16_t SPECFLAG_IMPLICIT_KINDOF = 0x0001;
+
     AstNode* clone(CloneContext& context);
 
     int seekJumpExpression;

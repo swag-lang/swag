@@ -2606,7 +2606,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
             {
                 fromNode->typeInfo       = toType;
-                fromNode->castedTypeInfo = g_TypeMgr->typeInfoNull;
+                fromNode->castedTypeInfo = fromType;
             }
 
             return true;

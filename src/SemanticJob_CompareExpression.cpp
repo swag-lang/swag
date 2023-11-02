@@ -6,7 +6,9 @@
 #include "ErrorIds.h"
 #include "Report.h"
 #include "LanguageSpec.h"
+#include "Ast.h"
 
+#pragma optimize("", off)
 bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node          = context->node;
@@ -44,10 +46,19 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
         else if (leftTypeInfo->isAny())
         {
             // Can only be compared to null
-            // :ComparedToNull
-            SWAG_ASSERT(right->castedTypeInfo && right->castedTypeInfo->isPointerNull());
-            auto any                   = (SwagAny*) left->computedValue->getStorageAddr();
-            node->computedValue->reg.b = !any->type;
+            auto any = (SwagAny*) left->computedValue->getStorageAddr();
+            if (right->castedTypeInfo)
+            {
+                // :ComparedToNull
+                SWAG_ASSERT(right->castedTypeInfo->isPointerNull());
+                node->computedValue->reg.b = !any->type;
+            }
+            else
+            {
+                auto ptr1                  = any->type;
+                auto ptr2                  = right->getConstantGenTypeInfo();
+                node->computedValue->reg.b = TypeManager::compareConcreteType(ptr1, ptr2);
+            }
         }
         else if (leftTypeInfo->isPointerNull())
         {
@@ -100,6 +111,10 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
             }
             }
         }
+    }
+    else if (leftTypeInfo->isAny() && rightTypeInfo->isPointerToTypeInfo())
+    {
+        // Ok, specific case
     }
     else if (leftTypeInfo->isStruct() || rightTypeInfo->isStruct())
     {
@@ -333,7 +348,7 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
 
 bool SemanticJob::resolveCompareExpression(SemanticContext* context)
 {
-    auto node  = context->node;
+    auto node  = CastAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
     auto left  = node->childs[0];
     auto right = node->childs[1];
 
@@ -421,8 +436,8 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
             return context->report(diag);
         }
 
-        // Any can only be compared to null
-        if (leftTypeInfo->isAny())
+        // Any can only be compared to null or to a type
+        if (leftTypeInfo->isAny() && !rightTypeInfo->isPointerToTypeInfo())
         {
             Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0181), rightTypeInfo->getDisplayNameC())};
             diag.addRange(left, leftTypeInfo->isAny() ? Nte(Nte1116) : Diagnostic::isType(leftTypeInfo));
@@ -461,9 +476,13 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
 
     SWAG_CHECK(TypeManager::promote(context, left, right));
 
-    // Must not make types compatible for a struct, as we can compare a struct with whatever other type in
-    // a opEquals function
-    if (!leftTypeInfo->isStruct() && !rightTypeInfo->isStruct())
+    // Keep as it is when comparing an any to a type, as we will generate an implicit @kindof
+    if (leftTypeInfo->isAny() && rightTypeInfo->isPointerToTypeInfo())
+    {
+        node->specFlags |= AstBinaryOpNode::SPECFLAG_IMPLICIT_KINDOF;
+    }
+    // Must not make types compatible for a struct, as we can compare a struct with whatever other type in a opEquals function.
+    else if (!leftTypeInfo->isStruct() && !rightTypeInfo->isStruct())
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COMMUTATIVE | CASTFLAG_FORCE_UNCONST | CASTFLAG_COMPARE | CASTFLAG_TRY_COERCE));
     }

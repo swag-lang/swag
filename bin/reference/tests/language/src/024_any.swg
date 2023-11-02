@@ -62,18 +62,44 @@ You can declare an array with multiple types, with `any`.
 }
 
 /**
-An `any` can be set to null, and tested against null.
+An 'any' value can be set to null, and tested against null.
 */
 #test
 {
     var x: any
     @assert(x == null)
+
     x = 6
     @assert(x != null)
     @assert(cast(s32) x == 6)
+
     x = "string"
     @assert(x != null)
     @assert(cast(string) x == "string")
+
     x = null
     @assert(x == null)
+}
+
+/**
+An 'any' value can be tested against a type with '==' and '!='. This will call '@kindof' to get the underlying type.
+*/
+#test
+{
+    var x: any
+    @assert(x == null)
+    @assert(x != s32)
+
+    x = 6
+    @assert(x == s32)
+    @assert(x != bool)
+
+
+    x = "string"
+    @assert(x != s32)
+    @assert(x == string)
+
+    struct A{}
+    x = A{}
+    @assert(x == A)
 }

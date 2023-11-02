@@ -2137,19 +2137,42 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(<span class="SKwd">cast</span>(<span class="STpe">f32</span>) array[<span class="SNum">2</span>] == <span class="SNum">3.0</span>)
     <span class="SItr">@assert</span>(<span class="SKwd">cast</span>(<span class="STpe">string</span>) array[<span class="SNum">3</span>] == <span class="SStr">"4"</span>)
 }</span></div>
-<p>An <span class="code-inline">any</span> can be set to null, and tested against null. </p>
+<p>An <span class="code-inline">any</span> value can be set to null, and tested against null. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x: <span class="STpe">any</span>
     <span class="SItr">@assert</span>(x == <span class="SKwd">null</span>)
+
     x = <span class="SNum">6</span>
     <span class="SItr">@assert</span>(x != <span class="SKwd">null</span>)
     <span class="SItr">@assert</span>(<span class="SKwd">cast</span>(<span class="STpe">s32</span>) x == <span class="SNum">6</span>)
+
     x = <span class="SStr">"string"</span>
     <span class="SItr">@assert</span>(x != <span class="SKwd">null</span>)
     <span class="SItr">@assert</span>(<span class="SKwd">cast</span>(<span class="STpe">string</span>) x == <span class="SStr">"string"</span>)
+
     x = <span class="SKwd">null</span>
     <span class="SItr">@assert</span>(x == <span class="SKwd">null</span>)
+}</span></div>
+<p>An <span class="code-inline">any</span> value can be tested against a type with <span class="code-inline">==</span> and <span class="code-inline">!=</span>. This will call <span class="code-inline">@kindof</span> to get the underlying type. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">var</span> x: <span class="STpe">any</span>
+    <span class="SItr">@assert</span>(x == <span class="SKwd">null</span>)
+    <span class="SItr">@assert</span>(x != <span class="STpe">s32</span>)
+
+    x = <span class="SNum">6</span>
+    <span class="SItr">@assert</span>(x == <span class="STpe">s32</span>)
+    <span class="SItr">@assert</span>(x != <span class="STpe">bool</span>)
+
+
+    x = <span class="SStr">"string"</span>
+    <span class="SItr">@assert</span>(x != <span class="STpe">s32</span>)
+    <span class="SItr">@assert</span>(x == <span class="STpe">string</span>)
+
+    <span class="SKwd">struct</span> <span class="SCst">A</span>{}
+    x = <span class="SCst">A</span>{}
+    <span class="SItr">@assert</span>(x == <span class="SCst">A</span>)
 }</span></div>
 
 <h2 id="025_tuple">Tuple</h2><p>A tuple is an anonymous structure, aka a struct literal. Syntax is <span class="code-inline">{}</span>. </p>
@@ -3151,12 +3174,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 }</span></div>
 <h3 id="055_switch_On_specific_types">On specific types </h3>
-<p>When used on an <span class="code-inline">any</span> variable, the switch is done on the underlying variable type. </p>
+<p>When used on a variable of type <span class="code-inline">any</span> or <span class="code-inline">interface</span>, the switch is done on the underlying variable type. This is in fact equivalent of calling the <span class="code-inline">@kindof</span> intrinsic. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> x: <span class="STpe">any</span> = <span class="SStr">"value"</span>
 
-    <span class="SLgc">switch</span> x
+    <span class="SLgc">switch</span> x    <span class="SCmt">// implicit call of @kindof(x)</span>
     {
     <span class="SLgc">case</span> <span class="STpe">string</span>: <span class="SLgc">break</span>
     <span class="SLgc">default</span>:     <span class="SItr">@assert</span>(<span class="SKwd">false</span>)

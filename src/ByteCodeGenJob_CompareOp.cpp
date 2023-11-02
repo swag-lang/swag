@@ -237,6 +237,18 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
                 EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r0[0], r1[0], r2);
                 return true;
             }
+            if (context->node->specFlags & AstBinaryOpNode::SPECFLAG_IMPLICIT_KINDOF)
+            {
+                SWAG_CHECK(emitKindOf(context, left, leftTypeInfo->kind));
+                auto rflags = reserveRegisterRC(context);
+                auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate32, rflags);
+                inst->b.u64 = SWAG_COMPARE_STRICT;
+                inst        = EMIT_INST4(context, ByteCodeOp::IntrinsicTypeCmp, r0, r1, rflags, r2);
+                freeRegisterRC(context, rflags);
+                return true;
+            }
+            return Report::internalError(context->node, "emitCompareOpEqual, any type not supported");
+
         default:
             return Report::internalError(context->node, "emitCompareOpEqual, type not supported");
         }
@@ -355,6 +367,21 @@ bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode*
                 EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0[0], r1[0], r2);
                 return true;
             }
+            if (context->node->specFlags & AstBinaryOpNode::SPECFLAG_IMPLICIT_KINDOF)
+            {
+                SWAG_CHECK(emitKindOf(context, left, leftTypeInfo->kind));
+                auto rflags = reserveRegisterRC(context);
+                auto rt     = reserveRegisterRC(context);
+                auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate32, rflags);
+                inst->b.u64 = SWAG_COMPARE_STRICT;
+                inst        = EMIT_INST4(context, ByteCodeOp::IntrinsicTypeCmp, r0, r1, rflags, rt);
+                EMIT_INST2(context, ByteCodeOp::NegBool, r2, rt);
+                freeRegisterRC(context, rflags);
+                freeRegisterRC(context, rt);
+                return true;
+            }
+            return Report::internalError(context->node, "emitCompareOpNotEqual, any type not supported");
+
         default:
             return Report::internalError(context->node, "emitCompareOpNotEqual, type not supported");
         }

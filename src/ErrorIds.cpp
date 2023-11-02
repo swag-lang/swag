@@ -377,10 +377,10 @@ void initErrors()
     SWAG_ERROR(Err0262, "invalid character literal                         $ the character literal '%s' seems to be a string and not a character");
     SWAG_ERROR(Err1094, "invalid character syntax                          $ characters should be delimited with backticks '`' and not quotes $ consider using the syntax `%s` instead");
     SWAG_ERROR(Err1049, "invalid closure parameters                        $ expected '(' to start the list of parameters of the closure, found '%s' instead");
-    SWAG_ERROR(Err0181, "invalid comparison                                $ 'any' comparison is only allowed with 'null', got '%s'");
+    SWAG_ERROR(Err0181, "invalid comparison                                $ an 'any' comparison is only allowed with 'null' or with a type, got '%s' instead");
     SWAG_ERROR(Err0007, "invalid comparison                                $ comparison operations on tuples are not supported");
-    SWAG_ERROR(Err0010, "invalid comparison                                $ interface comparison is only allowed with 'null' or another interface, got '%s'");
-    SWAG_ERROR(Err0009, "invalid comparison                                $ slice comparison is only allowed with 'null', got '%s'");
+    SWAG_ERROR(Err0010, "invalid comparison                                $ an interface comparison is only allowed with 'null' or another interface, got '%s' instead");
+    SWAG_ERROR(Err0009, "invalid comparison                                $ a slice comparison is only allowed with 'null', got '%s'");
     SWAG_ERROR(Err0809, "invalid comparison                                $ the comparison operation '%s' does not accept the type '%s' as the left argument");
     SWAG_ERROR(Err0778, "invalid comparison                                $ the comparison operation '%s' does not accept the type '%s' as the right argument");
     SWAG_ERROR(Err0001, "invalid comparison                                $ the comparison operation '%s' does not accept the type '%s'");
