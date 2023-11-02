@@ -681,7 +681,7 @@ impl Capture
             let autoSel = selection.contains(i) or @dataof(f) == @dataof(editForm)
             let form = cast(*BaseForm) @dataof(f)
 
-            switch @kindof(f)
+            switch f
             {
             case FormLine, FormArrow:
                 let form2 = cast(*FormLine) form

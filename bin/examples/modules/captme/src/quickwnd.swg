@@ -476,7 +476,7 @@ impl QuickWnd
             let btn = cast(*IconButton) layout.childs[i + firstVisible]
 
             #[Swag.Complete]
-            switch @kindof(it)
+            switch it
             {
             case FormArrow:
                 btn.isChecked = mode == .Arrow and it.isSame(&main.mdlFormArrow)
@@ -553,7 +553,7 @@ impl QuickWnd
 
             var title = ""
 
-            switch @kindof(btnp.formItf)
+            switch btnp.formItf
             {
             case FormPolygon:
                 let poly = cast(*FormPolygon) @dataof(btnp.formItf)

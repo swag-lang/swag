@@ -35,8 +35,8 @@ You can put multiple values on the same `case`.
     switch value
     {
     case 2,
-            4,
-            6:
+         4,
+         6:
         @assert(true)
     default:
         @assert(false)
@@ -44,7 +44,7 @@ You can put multiple values on the same `case`.
 }
 
 /**
-`switch` works with every types that accept the `==` operator. So you can switch on strings for example.
+`switch` works with every types that accept the `==` operator. So you can use it on strings for example.
 */
 #test
 {
@@ -106,6 +106,27 @@ A `case` statement cannot be empty. Use `break` if you want to do nothing.
 }
 
 /**
+A `case` expression doesn't need to be constant.
+*/
+#test
+{
+    let test = 2
+    let a = 0
+    let b = 1
+
+    switch test
+    {
+    case a:     // Test with a variable
+        @assert(false)
+    case b:     // Test with a variable
+        @assert(false)
+    case b + 1: // Test with an expression
+        @assert(true)
+    }
+}
+
+/**
+# The complete attribute
 `switch` can be marked with `Swag.Complete` to force all the cases to be covered. If one or more values are missing, an error will be raised by the compiler.
 */
 #test
@@ -123,33 +144,14 @@ A `case` statement cannot be empty. Use `break` if you want to do nothing.
 }
 
 /**
-If the switch expression is omitted, then it will behave like a serie of if/else, resolved in order.
-*/
-#test
-{
-    let value = 6
-    let value1 = "true"
-
-    switch
-    {
-    case value == 6 or value == 7:
-        @assert(true)
-        fallthrough
-    case value1 == "true":
-        @assert(true)
-    default:
-        @assert(false)
-    }
-}
-
-/**
-When used on an `any` variable, switch is done on the underlying variable type.
+# On specific types
+When used on a variable of type 'any' or 'interface', the switch is done on the underlying variable type. This is in fact equivalent of calling the '@kindof' intrinsic.
 */
 #test
 {
     let x: any = "value"
 
-    switch x
+    switch x    // implicit call of @kindof(x)
     {
     case string: break
     default:     @assert(false)
@@ -157,7 +159,8 @@ When used on an `any` variable, switch is done on the underlying variable type.
 }
 
 /**
-A `switch` can also be used with a (constant) range of values.
+# On ranges
+A `switch` can also be used with a (constant) **range of values**.
 */
 #test
 {
@@ -189,21 +192,22 @@ If they overlap, the first valid range will be used.
 }
 
 /**
-A `case` expression doesn't need to be constant.
+# Without an expression
+If the switch expression is omitted, then it will behave like a serie of `if/else`, resolved in order.
 */
 #test
 {
-    let test = 2
-    let a = 0
-    let b = 1
+    let value = 6
+    let value1 = "true"
 
-    switch test
+    switch
     {
-    case a:     // Test with a variable
-        @assert(false)
-    case b:     // Test with a variable
-        @assert(false)
-    case b + 1: // Test with an expression
+    case value == 6 or value == 7:
         @assert(true)
+        fallthrough
+    case value1 == "true":
+        @assert(true)
+    default:
+        @assert(false)
     }
 }

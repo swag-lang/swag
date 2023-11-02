@@ -130,39 +130,46 @@ bool ByteCodeGenJob::emitIntrinsicIsConstExprSI(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitImplicitKindOf(ByteCodeGenContext* context)
+bool ByteCodeGenJob::emitKindOf(ByteCodeGenContext* context, AstNode* node, TypeInfoKind from)
 {
-    auto node = context->node;
     SWAG_ASSERT(node->resultRegisterRC.size() == 2);
-
     ensureCanBeChangedRC(context, node->resultRegisterRC);
     auto rc = node->resultRegisterRC[1];
     freeRegisterRC(context, node->resultRegisterRC[0]);
     node->resultRegisterRC = rc;
-    return true;
-}
-
-bool ByteCodeGenJob::emitIntrinsicKindOf(ByteCodeGenContext* context)
-{
-    auto node  = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-    auto front = node->childs.front();
-    SWAG_ASSERT(front->resultRegisterRC.size() == 2);
-
-    ensureCanBeChangedRC(context, front->resultRegisterRC);
-    node->resultRegisterRC         = front->resultRegisterRC[1];
-    node->parent->resultRegisterRC = node->resultRegisterRC;
-    freeRegisterRC(context, front->resultRegisterRC[0]);
 
     // Deref the type from the itable
-    if (front->typeInfo->isInterface())
+    if (from == TypeInfoKind::Interface)
     {
         auto inst   = EMIT_INST3(context, ByteCodeOp::DecPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
         inst->b.u64 = sizeof(void*);
         inst->flags |= BCI_IMM_B;
         EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
-        return true;
     }
 
+    return true;
+}
+
+bool ByteCodeGenJob::emitImplicitKindOfAny(ByteCodeGenContext* context)
+{
+    SWAG_CHECK(emitKindOf(context, context->node, TypeInfoKind::Native));
+    return true;
+}
+
+bool ByteCodeGenJob::emitImplicitKindOfInterface(ByteCodeGenContext* context)
+{
+    SWAG_CHECK(emitKindOf(context, context->node, TypeInfoKind::Interface));
+    return true;
+}
+
+bool ByteCodeGenJob::emitIntrinsicKindOf(ByteCodeGenContext* context)
+{
+    auto node     = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
+    auto front    = node->childs.front();
+    auto typeInfo = TypeManager::concretePtrRefType(front->typeInfo);
+    SWAG_CHECK(emitKindOf(context, front, typeInfo->kind));
+    node->resultRegisterRC         = front->resultRegisterRC;
+    node->parent->resultRegisterRC = node->resultRegisterRC;
     return true;
 }
 

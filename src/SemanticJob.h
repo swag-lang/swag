@@ -230,6 +230,7 @@ struct SemanticJob : public Job
 
     static bool valueEqualsTo(const ComputedValue* value, AstNode* node);
     static bool valueEqualsTo(const ComputedValue* value1, const ComputedValue* value2, TypeInfo* typeInfo, uint64_t flags);
+    static bool makeIntrinsicKindof(SemanticContext* context, AstNode* node);
     static bool checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right);
     static bool checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
     static bool checkFuncPrototype(SemanticContext* context, AstFuncDecl* node);

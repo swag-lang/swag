@@ -8,6 +8,42 @@
 #include "Report.h"
 #include "Naming.h"
 
+bool SemanticJob::makeIntrinsicKindof(SemanticContext* context, AstNode* node)
+{
+    // Automatic convert to 'kindOf'
+    // This has no sens to do a switch on an 'any'. So instead of raising an error,
+    // we implies the usage of '@kindof'. That way we have a switch on the underlying type.
+    auto typeInfo = TypeManager::concretePtrRefType(node->typeInfo);
+    if (typeInfo->isAny() && node->hasComputedValue())
+    {
+        auto any                           = (SwagAny*) node->computedValue->getStorageAddr();
+        node->computedValue->storageOffset = node->computedValue->storageSegment->offset((uint8_t*) any->type);
+        node->flags |= AST_VALUE_IS_GENTYPEINFO;
+        node->typeInfo = g_TypeMgr->typeInfoTypeType;
+    }
+    else if (typeInfo->isAny() || typeInfo->isInterface())
+    {
+        SWAG_CHECK(checkIsConcrete(context, node));
+
+        node->allocateComputedValue();
+        node->computedValue->storageSegment = getConstantSegFromContext(node);
+        auto& typeGen                       = node->sourceFile->module->typeGen;
+
+        TypeInfo* resultTypeInfo = nullptr;
+        SWAG_CHECK(typeGen.genExportedTypeInfo(context, node->typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT, &resultTypeInfo));
+        if (context->result != ContextResult::Done)
+            return true;
+
+        node->typeInfo = resultTypeInfo;
+        if (typeInfo->isAny())
+            node->byteCodeFct = ByteCodeGenJob::emitImplicitKindOfAny;
+        else
+            node->byteCodeFct = ByteCodeGenJob::emitImplicitKindOfInterface;
+    }
+
+    return true;
+}
+
 bool SemanticJob::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right)
 {
     if (leftTypeInfo->isNative() && rightTypeInfo->isNative())

@@ -253,31 +253,12 @@ bool SemanticJob::resolveSwitchAfterExpr(SemanticContext* context)
         }
     }
 
-    // Automatic convert to 'kindOf'
-    // This has no sens to do a switch on an 'any'. So instead of raising an error,
-    // we implies the usage of '@kindof'. That way we have a switch on the underlying type.
-    if (node->typeInfo->isAny())
+    // Auto convert to the underlying type if necessary
+    else
     {
-        if (node->hasComputedValue())
-        {
-            auto any                           = (SwagAny*) node->computedValue->getStorageAddr();
-            node->computedValue->storageOffset = node->computedValue->storageSegment->offset((uint8_t*) any->type);
-            node->flags |= AST_VALUE_IS_GENTYPEINFO;
-            node->typeInfo = g_TypeMgr->typeInfoTypeType;
-        }
-        else
-        {
-            SWAG_CHECK(checkIsConcrete(context, node));
-
-            node->allocateComputedValue();
-            node->computedValue->storageSegment = getConstantSegFromContext(context->node);
-
-            auto& typeGen = node->sourceFile->module->typeGen;
-            SWAG_CHECK(typeGen.genExportedTypeInfo(context, node->typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT, &node->typeInfo));
-            if (context->result != ContextResult::Done)
-                return true;
-            node->byteCodeFct = ByteCodeGenJob::emitImplicitKindOf;
-        }
+        SWAG_CHECK(makeIntrinsicKindof(context, node));
+        if (context->result != ContextResult::Done)
+            return true;
     }
 
     return true;

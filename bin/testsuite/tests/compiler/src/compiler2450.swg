@@ -26,8 +26,8 @@ var err: MyError
 #test
 {
     let v = toto()
-    @assert(@kindof(v) == MyError)
     //@print(@typeof(v).name)
     //@print(@kindof(v).name)
+    @assert(@kindof(v) == MyError)
     //@assert(v.toString() == "XX")
 }

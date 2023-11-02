@@ -278,6 +278,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         node->resultRegisterRC         = node->array->resultRegisterRC;
         node->parent->resultRegisterRC = node->resultRegisterRC;
         freeRegisterRC(context, node->access);
+        ensureCanBeChangedRC(context, node->resultRegisterRC);
         truncRegisterRC(context, node->resultRegisterRC, 1);
     }
 

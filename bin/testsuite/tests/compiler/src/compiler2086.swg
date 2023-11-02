@@ -9,7 +9,7 @@ struct BB
     var v: any
     v = BB.x{5}
 
-    switch @kindof(v)
+    switch v
     {
     case BB.x:
         var vv = cast(BB.x) v
@@ -20,7 +20,7 @@ struct BB
 
     v = BB.y{5, 10}
 
-    switch @kindof(v)
+    switch v
     {
     case BB.y:
         var vv = cast(BB.y) v

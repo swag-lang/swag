@@ -1,16 +1,13 @@
 #include "pch.h"
 #ifdef _WIN32
 #include <DbgHelp.h>
-#pragma comment(lib, "dbghelp.lib")
-
 #include "Workspace.h"
 #include "Diagnostic.h"
 #include "TypeManager.h"
 #include "BackendX64.h"
 #include "Context.h"
 #include "Report.h"
-
-#pragma optimize("", off)
+#pragma comment(lib, "dbghelp.lib")
 
 namespace OS
 {

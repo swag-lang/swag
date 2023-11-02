@@ -380,7 +380,9 @@ struct ByteCodeGenJob : public Job
     static bool emitIntrinsicCountOf(ByteCodeGenContext* context, AstNode* node, AstNode* expr);
     static bool emitIntrinsicCountOf(ByteCodeGenContext* context);
     static bool emitIntrinsicDataOf(ByteCodeGenContext* context);
-    static bool emitImplicitKindOf(ByteCodeGenContext* context);
+    static bool emitKindOf(ByteCodeGenContext* context, AstNode* node, TypeInfoKind from);
+    static bool emitImplicitKindOfAny(ByteCodeGenContext* context);
+    static bool emitImplicitKindOfInterface(ByteCodeGenContext* context);
     static bool emitIntrinsicKindOf(ByteCodeGenContext* context);
     static bool emitIntrinsicLocationSI(ByteCodeGenContext* context);
     static bool emitIntrinsicIsConstExprSI(ByteCodeGenContext* context);

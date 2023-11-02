@@ -206,6 +206,12 @@
 <li><a href="#053_for">For</a></li>
 <li><a href="#054_while">While</a></li>
 <li><a href="#055_switch">Switch</a></li>
+<ul>
+<li><a href="#055_switch_The_complete_attribute">The complete attribute</a></li>
+<li><a href="#055_switch_On_specific_types">On specific types</a></li>
+<li><a href="#055_switch_On_ranges">On ranges</a></li>
+<li><a href="#055_switch_Without_an_expression">Without an expression</a></li>
+</ul>
 <li><a href="#056_break">Break</a></li>
 <li><a href="#060_struct">Struct</a></li>
 <ul>
@@ -3055,14 +3061,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SLgc">switch</span> value
     {
     <span class="SLgc">case</span> <span class="SNum">2</span>,
-            <span class="SNum">4</span>,
-            <span class="SNum">6</span>:
+         <span class="SNum">4</span>,
+         <span class="SNum">6</span>:
         <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
     <span class="SLgc">default</span>:
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
     }
 }</span></div>
-<p><span class="code-inline">switch</span> works with every types that accept the <span class="code-inline">==</span> operator. So you can switch on strings for example. </p>
+<p><span class="code-inline">switch</span> works with every types that accept the <span class="code-inline">==</span> operator. So you can use it on strings for example. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> value = <span class="SStr">"myString"</span>
@@ -3112,6 +3118,24 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SLgc">default</span>:    <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
     }
 }</span></div>
+<p>A <span class="code-inline">case</span> expression doesn't need to be constant. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">let</span> test = <span class="SNum">2</span>
+    <span class="SKwd">let</span> a = <span class="SNum">0</span>
+    <span class="SKwd">let</span> b = <span class="SNum">1</span>
+
+    <span class="SLgc">switch</span> test
+    {
+    <span class="SLgc">case</span> a:     <span class="SCmt">// Test with a variable</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
+    <span class="SLgc">case</span> b:     <span class="SCmt">// Test with a variable</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
+    <span class="SLgc">case</span> b + <span class="SNum">1</span>: <span class="SCmt">// Test with an expression</span>
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
+    }
+}</span></div>
+<h3 id="055_switch_The_complete_attribute">The complete attribute </h3>
 <p><span class="code-inline">switch</span> can be marked with <span class="code-inline">Swag.Complete</span> to force all the cases to be covered. If one or more values are missing, an error will be raised by the compiler. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
@@ -3126,24 +3150,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SLgc">case</span> <span class="SCst">Color</span>.<span class="SCst">Blue</span>:    <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
     }
 }</span></div>
-<p>If the switch expression is omitted, then it will behave like a serie of if/else, resolved in order. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SKwd">let</span> value = <span class="SNum">6</span>
-    <span class="SKwd">let</span> value1 = <span class="SStr">"true"</span>
-
-    <span class="SLgc">switch</span>
-    {
-    <span class="SLgc">case</span> value == <span class="SNum">6</span> <span class="SLgc">or</span> value == <span class="SNum">7</span>:
-        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
-        <span class="SLgc">fallthrough</span>
-    <span class="SLgc">case</span> value1 == <span class="SStr">"true"</span>:
-        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
-    <span class="SLgc">default</span>:
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
-    }
-}</span></div>
-<p>When used on an <span class="code-inline">any</span> variable, switch is done on the underlying variable type. </p>
+<h3 id="055_switch_On_specific_types">On specific types </h3>
+<p>When used on an <span class="code-inline">any</span> variable, the switch is done on the underlying variable type. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> x: <span class="STpe">any</span> = <span class="SStr">"value"</span>
@@ -3154,7 +3162,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SLgc">default</span>:     <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
     }
 }</span></div>
-<p>A <span class="code-inline">switch</span> can also be used with a (constant) range of values. </p>
+<h3 id="055_switch_On_ranges">On ranges </h3>
+<p>A <span class="code-inline">switch</span> can also be used with a (constant) <b>range of values</b>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> success = <span class="SKwd">false</span>
@@ -3180,21 +3189,22 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SItr">@assert</span>(success)
 }</span></div>
-<p>A <span class="code-inline">case</span> expression doesn't need to be constant. </p>
+<h3 id="055_switch_Without_an_expression">Without an expression </h3>
+<p>If the switch expression is omitted, then it will behave like a serie of <span class="code-inline">if/else</span>, resolved in order. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">let</span> test = <span class="SNum">2</span>
-    <span class="SKwd">let</span> a = <span class="SNum">0</span>
-    <span class="SKwd">let</span> b = <span class="SNum">1</span>
+    <span class="SKwd">let</span> value = <span class="SNum">6</span>
+    <span class="SKwd">let</span> value1 = <span class="SStr">"true"</span>
 
-    <span class="SLgc">switch</span> test
+    <span class="SLgc">switch</span>
     {
-    <span class="SLgc">case</span> a:     <span class="SCmt">// Test with a variable</span>
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
-    <span class="SLgc">case</span> b:     <span class="SCmt">// Test with a variable</span>
-        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
-    <span class="SLgc">case</span> b + <span class="SNum">1</span>: <span class="SCmt">// Test with an expression</span>
+    <span class="SLgc">case</span> value == <span class="SNum">6</span> <span class="SLgc">or</span> value == <span class="SNum">7</span>:
         <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
+        <span class="SLgc">fallthrough</span>
+    <span class="SLgc">case</span> value1 == <span class="SStr">"true"</span>:
+        <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
+    <span class="SLgc">default</span>:
+        <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
     }
 }</span></div>
 
