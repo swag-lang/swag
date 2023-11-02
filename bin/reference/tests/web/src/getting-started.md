@@ -1,10 +1,20 @@
 # Your first install
 [Download](https://github.com/swag-lang/swag/releases) the latest release from github, and unzip it in a folder. Of course a *SSD* is better.
 
-### Under windows 10/11
-You should register the location of the swag compiler (`swag.exe`) in the PATH environment variable to be able to call it from everywhere.
+### Note for Windows 10/11
 
-You can open a Powershell window, and run the following code :
+#### Windows SDK
+
+
+You must install the latest version of the **Windows 10 SFK** in order to be able to build an executable for Windows. 
+Otherwhise the compiler will complain, and exit.
+You can try [here](https://developer.microsoft.com/en-us/windows/downloads/windows-sdk/)
+
+#### PATH
+
+You should register the location of the swag compiler (`swag.exe`) in the 'PATH' environment variable to be able to call it from everywhere.
+
+You can open a *Powershell* window, and run the following code :
 
     # You must replace `c:\swag-lang\swag\bin` with your location of `swag.exe`
     [Environment]::SetEnvironmentVariable(
@@ -13,10 +23,14 @@ You can open a Powershell window, and run the following code :
         "User"
     )
 
-> WARNING:
-> You must install the latest version of the **windows 10 sdk** in order to be able to build an executable for windows. 
-> Otherwhise the compiler will complain, and exit.
-> You can try [here](https://developer.microsoft.com/en-us/windows/downloads/windows-sdk/)
+#### Windows Defender
+
+The Windows Defender realtime protection is activated by default, and runs each time you launch an executable.
+This can increase the compile time of your project, so consider excluding your Swag folder from it !
+
+[Reference](https://support.microsoft.com/en-us/windows/add-an-exclusion-to-windows-security-811816c0-4dfd-af4a-47e4-c301afe13b26#:~:text=Go%20to%20Start%20%3E%20Settings%20%3E%20Update,%2C%20file%20types%2C%20or%20process)
+
+Under Windows 11, there's also something called the *Smart App Control*, which can also have a great impact on compile time.
 
 # Your first project
 
@@ -75,14 +89,6 @@ You can also build and run your workspace.
         Running backend first
     Hello world!
                 Done 0.093s
-
-### Note on Windows Defender realtime protection
-It's activated by default under Windows 10, and runs each time you launch an executable.
-This can increase the compile time of your project, so consider excluding your Swag folder from it !
-
-[Reference](https://support.microsoft.com/en-us/windows/add-an-exclusion-to-windows-security-811816c0-4dfd-af4a-47e4-c301afe13b26#:~:text=Go%20to%20Start%20%3E%20Settings%20%3E%20Update,%2C%20file%20types%2C%20or%20process)
-
-Under Windows 11, there's also something called the *Smart App Control*, which can also have a great impact on compile time.
 
 # Content of the Swag folder
 The Swag folder contains the compiler `swag.exe`, but also a bunch of sub folders.

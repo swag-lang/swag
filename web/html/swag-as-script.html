@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<?php include('common/start-head.php'); ?><title>Module win32</title>
+<?php include('common/start-head.php'); ?><title>Swag</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" type="text/css" href="css/style.css">
 <script src="https://kit.fontawesome.com/f76be2b3ee.js" crossorigin="anonymous"></script>
 <style>
@@ -25,9 +26,6 @@
             .left       { display: none; }
             .right-page { margin:  10px; }
         }
-
-            .container { height: 100vh; }
-            .right     { overflow-y: scroll; }
 
         html { font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; }
         body { margin: 0px; line-height: 1.3em; }
@@ -101,19 +99,62 @@
     .SAtr { color: #7f7f7f; }
     .SInv { color: #ff0000; }
 </style>
-<?php include('common/end-head.php'); ?></head>
+</head>
 <body>
 <?php include('common/start-body.php'); ?><div class="container">
-<div class="left">
-<div class="left-page">
-<h2>Table of Contents</h2>
-</div>
-</div>
 <div class="right">
 <div class="right-page">
-<h1>Module win32</h1>
-<p> Wrappers for Microsoft Windows Sdk Libraries.  10.0.19041.0 </p>
-<h1>Content</h1>
+<h1 id="">Script file </h1>
+<p>Swag can be used to build and run a simple script file, thanks to the fact that the compiler can run anything at compile time. No executable will be generated, the compiler will do all the job. To create a new script file with the special extension <span class="code-inline">swgs</span>: </p>
+<div class="code-block"><span class="SCde">$ swag new -f:myScript
+=&gt; script file 'myScript.swgs' has been created
+=&gt; type 'swag script -f:myScript.swgs' to run that script</span></div>
+<p>This will generate a simple file with a <span class="code-inline">#dependency</span> block and one <span class="code-inline">#run</span> compiler function. </p>
+<div class="code-block"><span class="SCde"><span class="SCmt">// Swag script file</span>
+<span class="SFct">#dependencies</span>
+{
+    <span class="SCmt">// Here you can add your external dependencies</span>
+    <span class="SCmt">// #import "core" location="swag@std"</span>
+}
+
+<span class="SFct">#run</span>
+{
+    <span class="SItr">@print</span>(<span class="SStr">"Hello world !\n"</span>)
+}</span></div>
+<p>You can then run your script with the <span class="code-inline">script</span> command. </p>
+<div class="code-block"><span class="SCde">$ swag script -f:myScript
+Hello world !</span></div>
+<p>You can also just specify the script file <b>with the extension</b> as a command. </p>
+<div class="code-block"><span class="SCde">$ swag myScript.swgs
+Hello world !</span></div>
+<p>You will find a bunch of small scripts in <span class="code-inline">swag/bin/examples/scripts</span>. To run one of them from the console, go to the folder and type for example <span class="code-inline">swag flappy.swgs</span>. </p>
+<p style="white-space: break-spaces"><div align="center">
+    <div class="round-button">
+        <a href="flappy.php" class="no-decoration">Flappy Bird</a>
+    </div>
+</div></p>
+<h2 id="">Dependencies </h2>
+<p>You can add external dependencies, and they will be compiled and used as native code. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#dependencies</span>
+{
+    <span class="SCmt">// Import the standard module `core` from the swag standard workspace (which comes with the compiler)</span>
+    <span class="SCmp">#import</span> <span class="SStr">"core"</span> location=<span class="SStr">"swag@std"</span>
+}</span></div>
+<p>A special hidden workspace (in the Swag cache folder) will be created to contain all the corresponding native code. </p>
+<ul>
+<li>To locate the Swag cache folder, add <span class="code-inline">--verbose-path</span> to the command line.</li>
+<li>To force the build of dependencies, add <span class="code-inline">--rebuildall</span> to the command line.</li>
+</ul>
+<h2 id="">More than one script file </h2>
+<p>If your script is divided in more than one single file, you can add <span class="code-inline">#load &lt;filename&gt;</span> in the <span class="code-inline">#dependencies</span> block. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#dependencies</span>
+{
+    <span class="SCmp">#load</span> <span class="SStr">"myOtherFile.swgs"</span>
+    <span class="SCmp">#load</span> <span class="SStr">"folder/myOtherOtherFile.swgs"</span>
+}</span></div>
+<h2 id="">Debug </h2>
+<p>The compiler comes with a <b>bytecode debugger</b> that can be used to trace and debug compile time execution. Add <span class="code-inline">@breakpoint()</span> in your code when you want the debugger to trigger. </p>
+<p>The debugger command set is inspired by <a href="https://docs.python.org/3/library/pdb.html">Pdb</a>, the python debugger. </p>
 <div class="swag-watermark">
 Generated on 02-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>

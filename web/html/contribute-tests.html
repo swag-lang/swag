@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<?php include('common/start-head.php'); ?><title>Module win32</title>
+<?php include('common/start-head.php'); ?><title>Swag</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" type="text/css" href="css/style.css">
 <script src="https://kit.fontawesome.com/f76be2b3ee.js" crossorigin="anonymous"></script>
 <style>
@@ -25,9 +26,6 @@
             .left       { display: none; }
             .right-page { margin:  10px; }
         }
-
-            .container { height: 100vh; }
-            .right     { overflow-y: scroll; }
 
         html { font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; }
         body { margin: 0px; line-height: 1.3em; }
@@ -101,19 +99,29 @@
     .SAtr { color: #7f7f7f; }
     .SInv { color: #ff0000; }
 </style>
-<?php include('common/end-head.php'); ?></head>
+</head>
 <body>
 <?php include('common/start-body.php'); ?><div class="container">
-<div class="left">
-<div class="left-page">
-<h2>Table of Contents</h2>
-</div>
-</div>
 <div class="right">
 <div class="right-page">
-<h1>Module win32</h1>
-<p> Wrappers for Microsoft Windows Sdk Libraries.  10.0.19041.0 </p>
-<h1>Content</h1>
+<h1 id="">Contribute to the test suite </h1>
+<p>You can help by writing small tests to debug the compiler (and the compiler alone). </p>
+<h3 id="">Create a workspace and a test module </h3>
+<p>First create a workspace with the <span class="code-inline">--test</span> option. </p>
+<div class="code-block"><span class="SCde">$ swag new -w:myWorkspace --test</span></div>
+<p>This will also create a test module <span class="code-inline">myWorkspace</span> located in <span class="code-inline">myWorkspacetests</span>. </p>
+<p>You can then compile and run the tests with the <span class="code-inline">test</span> command. </p>
+<div class="code-block"><span class="SCde">$ swag test -w:myWorkspace</span></div>
+<p>To force the build, add <span class="code-inline">--rebuild</span>. </p>
+<h3 id="">Write tests </h3>
+<ul>
+<li>Tests should be small, located in different <b>small files</b>.</li>
+<li>Just write files like <span class="code-inline">test1.swg</span>, <span class="code-inline">test2.swg</span> and so on, in the <span class="code-inline">src</span> sub folder of your module.</li>
+<li>Here you are only testing the compiler, and not the standard libraries. So do not add dependencies to external modules.</li>
+<li>You can use <span class="code-inline">@print</span> temporary to see a result, but in the end tests should be silent. <span class="code-inline">@assert</span> is the way to go.</li>
+<li><span class="code-inline">swagbintestsuite</span> is the official test suite for Swag. If your test module is cool, then it could ultimately find a place there.</li>
+<li>Note that if a test works as expected, <b>keep it</b>, and <b>write another one</b> ! This is useful for testing regression.</li>
+</ul>
 <div class="swag-watermark">
 Generated on 02-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>

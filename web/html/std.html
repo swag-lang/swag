@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<?php include('common/start-head.php'); ?><title>Module win32</title>
+<?php include('common/start-head.php'); ?><title>Swag</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
 <link rel="stylesheet" type="text/css" href="css/style.css">
 <script src="https://kit.fontawesome.com/f76be2b3ee.js" crossorigin="anonymous"></script>
 <style>
@@ -25,9 +26,6 @@
             .left       { display: none; }
             .right-page { margin:  10px; }
         }
-
-            .container { height: 100vh; }
-            .right     { overflow-y: scroll; }
 
         html { font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif; }
         body { margin: 0px; line-height: 1.3em; }
@@ -101,19 +99,30 @@
     .SAtr { color: #7f7f7f; }
     .SInv { color: #ff0000; }
 </style>
-<?php include('common/end-head.php'); ?></head>
+</head>
 <body>
 <?php include('common/start-body.php'); ?><div class="container">
-<div class="left">
-<div class="left-page">
-<h2>Table of Contents</h2>
-</div>
-</div>
 <div class="right">
 <div class="right-page">
-<h1>Module win32</h1>
-<p> Wrappers for Microsoft Windows Sdk Libraries.  10.0.19041.0 </p>
-<h1>Content</h1>
+<p>This is the list of all modules that come with the compiler. As they are always in sync, they are considered as <b>standard</b>. They are all part of the same workspace <b>std</b>. </p>
+<p>You can find that workspace locally in <span class="code-inline">bin/std</span>, or <a href="https://github.com/swag-lang/swag/tree/master/bin/std">here</a> on GitHub. </p>
+<h1 id="">Modules </h1>
+<table class="table-markdown">
+<tr><td> <a href="std.core.php">std.core</a>         </td><td> Main core module, the base of everything else</td></tr>
+<tr><td> <a href="std.pixel.php">std.pixel</a>       </td><td> An image and a 2D painting module</td></tr>
+<tr><td> <a href="std.gui.php">std.gui</a>           </td><td> A user interface module (windows, widgets...)</td></tr>
+<tr><td> <a href="std.audio.php">std.audio</a>       </td><td> An audio module to decode and play sounds</td></tr>
+<tr><td> <a href="std.libc.php">std.libc</a>         </td><td> Libc wrapper</td></tr>
+</table>
+<h1 id="">Wrappers </h1>
+<p>Those other modules are just wrappers to external libraries. </p>
+<table class="table-markdown">
+<tr><td> <a href="std.ogl.php">std.ogl</a>           </td><td> Opengl wrapper</td></tr>
+<tr><td> <a href="std.freetype.php">std.freetype</a> </td><td> Freetype wrapper</td></tr>
+<tr><td> <a href="std.win32.php">std.win32</a>       </td><td> Windows <span class="code-inline">win32</span> wrapper (kernel32, user32...)</td></tr>
+<tr><td> <a href="std.gdi32.php">std.gdi32</a>       </td><td> Windows <span class="code-inline">gdi32</span> wrapper</td></tr>
+<tr><td> <a href="std.xinput.php">std.xinput</a>     </td><td> Windows 'direct X input' wrapper</td></tr>
+</table>
 <div class="swag-watermark">
 Generated on 02-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>

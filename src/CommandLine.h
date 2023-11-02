@@ -130,6 +130,7 @@ struct CommandLine
 
     // Doc
     Utf8 docCss;
+    Utf8 docExtension;
 
     bool check();
 };

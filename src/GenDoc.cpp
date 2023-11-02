@@ -1382,6 +1382,16 @@ void GenDoc::addTocTitle(const Utf8& name, const Utf8& title, int titleLevel)
     helpToc += Fmt("<li><a href=\"#%s\">%s</a></li>\n", ref.c_str(), title.c_str());
 }
 
+Utf8 GenDoc::getFileExtension(Module* mdl)
+{
+    Utf8 extName{mdl->buildCfg.genDoc.outputExtension};
+    if (!g_CommandLine.docExtension.empty())
+        extName = g_CommandLine.docExtension;
+    if (extName.empty())
+        extName = ".html";
+    return extName;
+}
+
 bool GenDoc::generate(Module* mdl, BuildCfgDocKind kind)
 {
     module  = mdl;
@@ -1430,9 +1440,7 @@ bool GenDoc::generate(Module* mdl, BuildCfgDocKind kind)
         filePath.append(fileName.c_str());
     }
 
-    Utf8 extName{module->buildCfg.genDoc.outputExtension};
-    if (extName.empty())
-        extName = ".html";
+    auto extName = getFileExtension(module);
     filePath += extName.c_str();
 
     fullFileName = filePath.string();

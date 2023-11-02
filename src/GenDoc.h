@@ -54,6 +54,7 @@ struct GenDoc
     Utf8        toRef(Utf8 str);
     Utf8        getTocTitleRef();
     void        addTocTitle(const Utf8& name, const Utf8& title, int titleLevel);
+    Utf8        getFileExtension(Module* module);
     bool        generate(Module* mdl, BuildCfgDocKind kind);
     void        outputStyles();
     Utf8        findReference(const Utf8& name);
