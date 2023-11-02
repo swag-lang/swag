@@ -30,14 +30,14 @@ Note that a simple `visual studio code` [extension](https://marketplace.visualst
 
 ### Swag has...
 * A **nice** and **clean syntax** (i know this is subjective). The goal is to reduce friction as much as possible. Programming should be fun.
-* **Type reflection** at compile time and runtime.
+* **Type reflection** at compile-time and runtime.
 * **Full compile-time execution** (your whole program can be executed by the compiler without any constraint). So Swag can also act like a scripting language.
 * **Meta programming** (you can write code that writes code).
 * **Interfaces** for dynamic dispatch, inspired by `Go`.
 * **Modules**, compiled as separate dynamic libraries.
-* **Very fast compile time** (at least in debug with the `x64` backend) thanks to heavy multithreading.
+* **Very fast compile time** with the custom `x64` backend. When all files are in the Windows cache (hot run), and in the `fast-compile` configuration, it takes around **220ms** on my Lenovo Yoga Pro 7 14IRH8 laptop to build and test the full test suite. It takes around **370ms** to build the full standard workspace (core, ogl, audio, pixel and gui libraries).
 * **Fast interpretation** in script mode. Seems faster than Python or Lua for example (without JIT).
-* **Simple error system**, inspired by `Zig`.
+* **Simple error system**, inspired by `Zig`, and in fact also by `Swift`.
 * **Generics**, for a simple usage. No template nightmare here...
 * **Powerful macro/mixin** system, without the need of a specific syntax, inspired by `Jai`.
 * **Unordered global declarations**, which means that the order of global declarations does not matter (they can be in any files and in whatever order).
