@@ -13,7 +13,7 @@ func test() throw
     voice.stop()
     Core.Threading.Thread.sleep(20'ms)
     voice.play(.Loop)
-    Core.Threading.Thread.sleep(1's)
+    Core.Threading.Thread.sleep(20'ms)
 }
 
 #test

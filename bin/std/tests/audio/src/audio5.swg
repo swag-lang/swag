@@ -14,6 +14,6 @@ using Audio
         voice.play()
     }
 
-    while voice.isPlaying() {}
+    Core.Threading.Thread.sleep(50'ms)
     voice.destroy()
 }

@@ -15,7 +15,7 @@ func test() throw
     voice.setRooting([bus])
 
     voice.play()
-    Core.Threading.Thread.sleep(500'ms)
+    Core.Threading.Thread.sleep(50'ms)
     voice.destroy()
 }
 
