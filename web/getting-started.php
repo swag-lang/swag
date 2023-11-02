@@ -160,8 +160,9 @@
 Hello world!
             Done 0.093s</span></div>
 <h3 id="">Note on Windows Defender realtime protection </h3>
-<p>It's activated by default under Windows 10, and runs each time you launch an executable or a process. This can increase the compile time of your project, so consider excluding your Swag folder from it ! </p>
+<p>It's activated by default under Windows 10, and runs each time you launch an executable. This can increase the compile time of your project, so consider excluding your Swag folder from it ! </p>
 <p><a href="https://support.microsoft.com/en-us/windows/add-an-exclusion-to-windows-security-811816c0-4dfd-af4a-47e4-c301afe13b26#:~:text=Go%20to%20Start%20%3E%20Settings%20%3E%20Update,%2C%20file%20types%2C%20or%20process">Reference</a> </p>
+<p>Under Windows 11, there's also something called the <i>Smart App Control</i>, which can also have a great impact on compile time. </p>
 <h1 id="">Content of the Swag folder </h1>
 <p>The Swag folder contains the compiler <span class="code-inline">swag.exe</span>, but also a bunch of sub folders. </p>
 <ul>
@@ -176,7 +177,7 @@ Hello world!
 <p>And as this is a normal Swag workspace, you could also build and test it with <span class="code-inline">swag test -w:swag/reference</span>. </p>
 <p>You will also find some small examples (mostly written for tests) in <span class="code-inline">swag/bin/examples/modules</span>. To build and run one of them from the console, go to the workspace folder (<span class="code-inline">/examples</span>) and type for example <span class="code-inline">swag run -m:wnd</span>. </p>
 <div class="swag-watermark">
-Generated on 01-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
+Generated on 02-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
 </div>
 </div>

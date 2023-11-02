@@ -549,7 +549,7 @@
     g_Font = <span class="SCst">Font</span>.<span class="SFct">create</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"FlappyBirdy.ttf"</span>), <span class="SNum">50</span>)
 }</span></div>
 <div class="swag-watermark">
-Generated on 01-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
+Generated on 02-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
 </div>
 </div>
