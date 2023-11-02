@@ -428,7 +428,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
         }
 
         // Interface can only be compared to null ar to another interface
-        if (leftTypeInfo->isInterface() && !rightTypeInfo->isInterface())
+        if (leftTypeInfo->isInterface() && !rightTypeInfo->isInterface() && !rightTypeInfo->isPointerToTypeInfo())
         {
             Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0010), rightTypeInfo->getDisplayNameC())};
             diag.addRange(left, Diagnostic::isType(leftTypeInfo));
@@ -476,8 +476,9 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
 
     SWAG_CHECK(TypeManager::promote(context, left, right));
 
-    // Keep as it is when comparing an any to a type, as we will generate an implicit @kindof
-    if (leftTypeInfo->isAny() && rightTypeInfo->isPointerToTypeInfo())
+    // Keep as it is when comparing an 'any' or an interface to a type, as we will generate an implicit @kindof
+    if (rightTypeInfo->isPointerToTypeInfo() &&
+        (leftTypeInfo->isAny() || leftTypeInfo->isInterface()))
     {
         node->specFlags |= AstBinaryOpNode::SPECFLAG_IMPLICIT_KINDOF;
     }

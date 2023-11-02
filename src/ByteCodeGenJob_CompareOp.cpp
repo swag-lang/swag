@@ -4,6 +4,7 @@
 #include "ByteCode.h"
 #include "Ast.h"
 #include "Report.h"
+#pragma optimize("", off)
 
 bool ByteCodeGenJob::emitInRange(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r2)
 {
@@ -220,23 +221,25 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
         case NativeTypeKind::F64:
             EMIT_INST3(context, ByteCodeOp::CompareOpEqualF64, r0, r1, r2);
             return true;
+
         case NativeTypeKind::String:
             if (right->semFlags & SEMFLAG_TYPE_IS_NULL)
             {
                 EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r0[0], r1[0], r2);
+                return true;
             }
-            else
-            {
-                EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r2, r1[1]);
-                EMIT_INST4(context, ByteCodeOp::IntrinsicStringCmp, r0[0], r0[1], r1[0], r2);
-            }
+
+            EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r2, r1[1]);
+            EMIT_INST4(context, ByteCodeOp::IntrinsicStringCmp, r0[0], r0[1], r1[0], r2);
             return true;
+
         case NativeTypeKind::Any:
             if (right->semFlags & SEMFLAG_TYPE_IS_NULL)
             {
                 EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r0[0], r1[0], r2);
                 return true;
             }
+
             if (context->node->specFlags & AstBinaryOpNode::SPECFLAG_IMPLICIT_KINDOF)
             {
                 SWAG_CHECK(emitKindOf(context, left, leftTypeInfo->kind));
@@ -247,13 +250,12 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
                 freeRegisterRC(context, rflags);
                 return true;
             }
-            return Report::internalError(context->node, "emitCompareOpEqual, any type not supported");
 
-        default:
-            return Report::internalError(context->node, "emitCompareOpEqual, type not supported");
+            break;
         }
     }
-    else if (leftTypeInfo->isPointer())
+
+    if (leftTypeInfo->isPointer())
     {
         // Special case for typeinfos, as this is not safe to just compare pointers.
         // The same typeinfo can be different if defined in two different modules, so we need
@@ -265,53 +267,71 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
             inst->b.u64 = SWAG_COMPARE_STRICT;
             inst        = EMIT_INST4(context, ByteCodeOp::IntrinsicTypeCmp, r0, r1, rflags, r2);
             freeRegisterRC(context, rflags);
+            return true;
         }
 
         // CString compare
-        else if (leftTypeInfo->flags & TYPEINFO_C_STRING)
+        if (leftTypeInfo->flags & TYPEINFO_C_STRING)
         {
             EMIT_INST3(context, ByteCodeOp::IntrinsicStrCmp, r2, r0, r1);
             EMIT_INST1(context, ByteCodeOp::ZeroToTrue, r2);
+            return true;
         }
 
         // Simple pointer compare
-        else
-        {
-            EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
-        }
+        EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
+        return true;
     }
-    else if (leftTypeInfo->isClosure())
+
+    if (leftTypeInfo->isClosure())
     {
         EMIT_INST2(context, ByteCodeOp::DeRef64, r0, r0);
         EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
+        return true;
     }
-    else if (leftTypeInfo->isLambda())
+
+    if (leftTypeInfo->isLambda())
     {
         EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r0, r1, r2);
+        return true;
     }
-    else if (leftTypeInfo->isInterface())
+
+    if (leftTypeInfo->isInterface())
     {
         if (rightTypeInfo->isPointerNull() || right->semFlags & SEMFLAG_FROM_NULL)
-            EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r0[1], r1[1], r2);
-        else
         {
-            SWAG_ASSERT(rightTypeInfo->isInterface());
+            EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r0[1], r1[1], r2);
+            return true;
+        }
+
+        if (rightTypeInfo->isInterface())
+        {
             EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r0[0], r1[0], r2);
             EMIT_INST1(context, ByteCodeOp::JumpIfFalse, r2)->b.u64 = 1;
             EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r0[1], r1[1], r2);
+            return true;
+        }
+
+        if (context->node->specFlags & AstBinaryOpNode::SPECFLAG_IMPLICIT_KINDOF)
+        {
+            SWAG_CHECK(emitKindOf(context, left, TypeInfoKind::Interface));
+            auto rflags = reserveRegisterRC(context);
+            auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate32, rflags);
+            inst->b.u64 = SWAG_COMPARE_STRICT;
+            inst        = EMIT_INST4(context, ByteCodeOp::IntrinsicTypeCmp, r0, r1, rflags, r2);
+            freeRegisterRC(context, rflags);
+            return true;
         }
     }
-    else if (leftTypeInfo->isSlice())
+
+    // Just compare pointers. This is enough for now, as we can only compare a slice to 'null'
+    if (leftTypeInfo->isSlice())
     {
-        // Just compare pointers. This is enough for now, as we can only compare a slice to 'null'
         EMIT_INST3(context, ByteCodeOp::CompareOpEqual64, r0[1], r1[1], r2);
-    }
-    else
-    {
-        return Report::internalError(context->node, "emitCompareOpEqual, invalid type");
+        return true;
     }
 
-    return true;
+    return Report::internalError(context->node, "emitCompareOpEqual, type not supported");
 }
 
 bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1, RegisterList& r2)
@@ -347,10 +367,12 @@ bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode*
         case NativeTypeKind::F64:
             EMIT_INST3(context, ByteCodeOp::CompareOpNotEqualF64, r0, r1, r2);
             return true;
+
         case NativeTypeKind::String:
             if (right->semFlags & SEMFLAG_TYPE_IS_NULL)
             {
                 EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0[0], r1[0], r2);
+                return true;
             }
             else
             {
@@ -359,14 +381,16 @@ bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode*
                 EMIT_INST4(context, ByteCodeOp::IntrinsicStringCmp, r0[0], r0[1], r1[0], rt);
                 EMIT_INST2(context, ByteCodeOp::NegBool, r2, rt);
                 freeRegisterRC(context, rt);
+                return true;
             }
-            return true;
+
         case NativeTypeKind::Any:
             if (right->semFlags & SEMFLAG_TYPE_IS_NULL)
             {
                 EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0[0], r1[0], r2);
                 return true;
             }
+
             if (context->node->specFlags & AstBinaryOpNode::SPECFLAG_IMPLICIT_KINDOF)
             {
                 SWAG_CHECK(emitKindOf(context, left, leftTypeInfo->kind));
@@ -380,13 +404,12 @@ bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode*
                 freeRegisterRC(context, rt);
                 return true;
             }
-            return Report::internalError(context->node, "emitCompareOpNotEqual, any type not supported");
 
-        default:
-            return Report::internalError(context->node, "emitCompareOpNotEqual, type not supported");
+            break;
         }
     }
-    else if (leftTypeInfo->isPointer())
+
+    if (leftTypeInfo->isPointer())
     {
         // Special case for typeinfos, as this is not safe to just compare pointers.
         // The same typeinfo can be different if defined in two different modules, so we need
@@ -401,44 +424,67 @@ bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode*
             EMIT_INST2(context, ByteCodeOp::NegBool, r2, rt);
             freeRegisterRC(context, rflags);
             freeRegisterRC(context, rt);
+            return true;
         }
 
         // Simple pointer compare
-        else
-            EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0, r1, r2);
+        EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0, r1, r2);
+        return true;
     }
-    else if (leftTypeInfo->isClosure())
+
+    if (leftTypeInfo->isClosure())
     {
         EMIT_INST2(context, ByteCodeOp::DeRef64, r0, r0);
         EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0, r1, r2);
+        return true;
     }
-    else if (leftTypeInfo->isLambda())
+
+    if (leftTypeInfo->isLambda())
     {
         EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0, r1, r2);
+        return true;
     }
-    else if (leftTypeInfo->isInterface())
+
+    if (leftTypeInfo->isInterface())
     {
         if (rightTypeInfo->isPointerNull() || right->semFlags & SEMFLAG_FROM_NULL)
-            EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0[1], r1[1], r2);
-        else
         {
-            SWAG_ASSERT(rightTypeInfo->isInterface());
+            EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0[1], r1[1], r2);
+            return true;
+        }
+
+        if (rightTypeInfo->isInterface())
+        {
             EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0[0], r1[0], r2);
             EMIT_INST1(context, ByteCodeOp::JumpIfTrue, r2)->b.u64 = 1;
             EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0[1], r1[1], r2);
+            return true;
+        }
+
+        if (context->node->specFlags & AstBinaryOpNode::SPECFLAG_IMPLICIT_KINDOF)
+        {
+            SWAG_ASSERT(rightTypeInfo->isPointerToTypeInfo());
+            SWAG_CHECK(emitKindOf(context, left, TypeInfoKind::Interface));
+            auto rflags = reserveRegisterRC(context);
+            auto rt     = reserveRegisterRC(context);
+            auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate32, rflags);
+            inst->b.u64 = SWAG_COMPARE_STRICT;
+            inst        = EMIT_INST4(context, ByteCodeOp::IntrinsicTypeCmp, r0, r1, rflags, rt);
+            EMIT_INST2(context, ByteCodeOp::NegBool, r2, rt);
+            freeRegisterRC(context, rflags);
+            freeRegisterRC(context, rt);
+            return true;
         }
     }
-    else if (leftTypeInfo->isSlice())
+
+    if (leftTypeInfo->isSlice())
     {
         // Just compare pointers. This is enough for now, as we can only compare a slice to 'null'
         EMIT_INST3(context, ByteCodeOp::CompareOpNotEqual64, r0[1], r1[1], r2);
-    }
-    else
-    {
-        return Report::internalError(context->node, "emitCompareOpNotEqual, invalid type");
+        return true;
     }
 
-    return true;
+    return Report::internalError(context->node, "emitCompareOpNotEqual, invalid type");
 }
 
 bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, RegisterList& r2)
