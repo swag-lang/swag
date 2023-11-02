@@ -35,7 +35,7 @@ Note that a simple `visual studio code` [extension](https://marketplace.visualst
 * **Meta programming** (you can write code that writes code).
 * **Interfaces** for dynamic dispatch, inspired by `Go`.
 * **Modules**, compiled as separate dynamic libraries.
-* **Very fast compile time** with the custom `x64` backend. When all files are in the Windows cache (hot run), and in the `fast-compile` configuration, it takes around **220ms** on my Lenovo Yoga Pro 7 14IRH8 laptop to build and test the full test suite. It takes around **370ms** to build the full standard workspace (core, ogl, audio, pixel and gui libraries).
+* **Very fast compile time** with the custom `x64` backend. When all files are in the Windows cache (hot run), and in the `fast-compile` configuration, it takes around **220ms** on my Lenovo Yoga Pro 7 14IRH8 laptop to build and run the full test suite. It takes around **370ms** to build the full standard workspace (core, ogl, audio, pixel and gui libraries).
 * **Fast interpretation** in script mode. Seems faster than Python or Lua for example (without JIT).
 * **Simple error system**, inspired by `Zig`, and in fact also by `Swift`.
 * **Generics**, for a simple usage. No template nightmare here...
