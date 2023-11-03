@@ -1,11 +1,13 @@
 var G = 0
 var G1 = 0
 
+struct ErrTata{}
+
 #[Swag.Discardable]
 func tata()->s32 throw
 {
     G += 1
-    if G == 3 throw "tata"
+    if G == 3 throw ErrTata{}
     return 0
 }
 

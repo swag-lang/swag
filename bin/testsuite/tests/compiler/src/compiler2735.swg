@@ -1,8 +1,10 @@
 var G = 0
 
+struct ErrTiti{}
+
 func titi() throw
 {
-    throw "titi"
+    throw ErrTiti{}
 }
 
 func toto() throw

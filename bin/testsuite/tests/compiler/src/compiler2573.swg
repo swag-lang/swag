@@ -1,14 +1,15 @@
 //#global testerror
+struct ErrTiti{}
 
 func toto() throw
 {
-    throw "titi"
+    throw ErrTiti{}
 }
 
 func titi() throw
 {
     catch toto()
-    if cast(string) @err() throw "super titi"
+    if @err() != null throw ErrTiti{}
 }
 
 #test

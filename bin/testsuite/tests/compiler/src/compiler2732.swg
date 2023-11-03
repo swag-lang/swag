@@ -1,8 +1,10 @@
+struct ErrToto{}
+
 var G = 0
 func toto() throw
 {
     defer(err) G = 1
-    throw "toto"
+    throw ErrToto{}
 }
 
 #test

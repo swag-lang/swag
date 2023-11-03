@@ -7,6 +7,8 @@
 
 #global #[Swag.Overflow(true)]
 
+struct ErrInvalid{}
+
 struct FloatInfo
 {
 	mantbits: u32
@@ -94,7 +96,7 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
     {
 		cpt, buffer += 1
 		if cpt >= countof
-			throw "invalid"
+			throw ErrInvalid{}
 
 		var esign = 1
 		c = dref buffer
@@ -111,7 +113,7 @@ func readF64(str: string)->{neg: bool, mantissa: u64, exp: s32, trunc: bool, eat
         }
 
 		if cpt >= countof or c < `0`'u8 or c > `9`'u8
-			throw "invalid"
+			throw ErrInvalid{}
 
 		var e = 0
         while cpt < countof
@@ -212,7 +214,7 @@ func atoF64(s: string)-> { value: f64, eat: u32 } throw
     }
 
     let (f, ok) = eiselLemire64(read.neg, read.mantissa, read.exp)
-    if !ok throw "invalid"
+    if !ok throw ErrInvalid{}
     result.value = f
 
     /*if ok {

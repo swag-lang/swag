@@ -1,4 +1,5 @@
 using Swag
+struct ErrToto{}
 
 struct AA
 {
@@ -8,7 +9,7 @@ struct AA
 #[Inline]
 func toto()->AA throw
 {
-    throw "coucou"
+    throw ErrToto{}
     return {1, 2}
 }
 

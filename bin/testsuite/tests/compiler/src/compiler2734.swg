@@ -2,7 +2,7 @@
 
 func toto() throw
 {
-    throw "toto"
+    throw ErrToto{}
 }
 
 #test

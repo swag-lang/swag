@@ -1,10 +1,13 @@
+struct ErrToto{}
+struct ErrTiti{}
+
 //#[Swag.PrintBc]//, Swag.Optim("", false)]
 func toto() throw
 {
     try
     {
-        defer(err) throw "toto"
-        throw "titi"
+        defer(err) throw ErrToto{}
+        throw ErrTiti{}
     }
 }
 
@@ -12,5 +15,5 @@ func toto() throw
 #test
 {
     catch toto()
-    @assert(cast(string) @err() == "toto")
+    @assert(@err() == ErrToto)
 }

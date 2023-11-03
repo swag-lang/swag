@@ -1,5 +1,7 @@
 #global testerror "Err0137"
 
+struct ErrTiti{}
+
 struct AA
 {
 
@@ -9,7 +11,7 @@ impl AA
 {
     func opEquals(self, other: AA)->bool
     {
-        throw "toto"
+        throw ErrTiti{}
         return true
     }
 }

@@ -1,6 +1,7 @@
+struct ErrToto{}
 func toto()->s64 throw
 {
-    throw "toto"
+    throw ErrToto{}
     return 555
 }
 

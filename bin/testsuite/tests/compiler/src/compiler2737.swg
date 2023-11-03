@@ -1,5 +1,7 @@
 var G = 0
 
+struct ErrToto{}
+
 struct AA
 {
 
@@ -15,7 +17,7 @@ impl AA
 
 func tata()->s32 throw
 {
-    throw "toto"
+    throw ErrToto{}
     return 0
 }
 

@@ -1,10 +1,12 @@
 var G = 0
 
+struct ErrTiti{}
+
 #[Swag.Inline]
 func titi() throw
 {
     defer G += 1
-    throw "titi"
+    throw ErrTiti{}
 }
 
 #[Swag.Inline]

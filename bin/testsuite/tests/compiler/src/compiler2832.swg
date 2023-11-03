@@ -1,8 +1,10 @@
-#global testerror "err"
+#global testerror "ErrInvalid"
+
+struct ErrInvalid{}
 
 func toto() -> {x: s32} throw
 {
-    throw "err"
+    throw ErrInvalid{}
     return {1}
 }
 

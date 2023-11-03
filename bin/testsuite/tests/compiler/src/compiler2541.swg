@@ -1,9 +1,10 @@
 using Swag
+struct ErrToto{}
 
 #[Inline]
 func toto()->s32 throw
 {
-    throw "coucou"
+    throw ErrToto{}
     return 10
 }
 

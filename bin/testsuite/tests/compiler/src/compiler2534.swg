@@ -1,6 +1,7 @@
+struct ErrToto{}
 func toto() throw
 {
-    throw "toto"
+    throw ErrToto{}
 }
 
 struct AA

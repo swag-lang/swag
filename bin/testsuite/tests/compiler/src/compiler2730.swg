@@ -1,22 +1,25 @@
+struct ErrTata{}
+struct ErrTiti{}
+
 func tata() throw
 {
-    throw "error tata"
+    throw ErrTata{}
 }
 
 func toto()
 {
     catch tata()
-    @assert(cast(string) @err() == "error tata")
+    @assert(@err() == ErrTata)
 }
 
 func titi() throw
 {
     defer toto()
-    throw "error titi"
+    throw ErrTiti{}
 }
 
 #test
 {
     catch titi()
-    @assert(cast(string) @err() == "error titi")
+    @assert(@err() == ErrTiti)
 }

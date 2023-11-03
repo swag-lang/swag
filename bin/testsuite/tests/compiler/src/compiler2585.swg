@@ -1,6 +1,8 @@
+struct ErrToto{}
+
 func toto() throw
 {
-    throw "toto"
+    throw ErrToto{}
 }
 
 //#[Swag.PrintBc]
@@ -9,5 +11,5 @@ func toto() throw
     var x: func() throw
     x = &toto
     catch x()
-    @assert(cast(string) @err() == "toto")
+    @assert(@err() == ErrToto)
 }
