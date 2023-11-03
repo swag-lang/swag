@@ -387,6 +387,7 @@ struct AstNode
     void allocateExtensionNoLock(ExtensionKind extensionKind);
     void setBcNotifBefore(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf = nullptr);
     void setBcNotifAfter(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf = nullptr);
+    void addSpecFlags(uint16_t fl);
 
     // clang-format off
     bool               hasExtByteCode() { return extension && extension->bytecode; }
@@ -404,7 +405,7 @@ struct AstNode
     AstNodeResolveState bytecodeState;
     uint8_t             padding0;
     TokenId             tokenId;
-    uint16_t            specFlags;
+    atomic<uint16_t>    specFlags;
 
     SharedMutex            mutex;
     Token                  token;

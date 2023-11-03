@@ -15,7 +15,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     flags |= context.forceFlags;
     flags &= ~context.removeFlags;
 
-    specFlags = from->specFlags;
+    specFlags.store(from->specFlags);
 
     ownerStructScope = context.ownerStructScope ? context.ownerStructScope : from->ownerStructScope;
     ownerScope       = context.parentScope ? context.parentScope : from->ownerScope;
@@ -874,6 +874,11 @@ void AstNode::setBcNotifAfter(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf)
 #endif
 
     extension->bytecode->byteCodeAfterFct = fct;
+}
+
+void AstNode::addSpecFlags(uint16_t fl)
+{
+    specFlags |= fl;
 }
 
 void AstNode::allocateExtension(ExtensionKind extensionKind)

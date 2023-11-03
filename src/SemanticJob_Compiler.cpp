@@ -368,7 +368,7 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
     SWAG_CHECK(executeCompilerNode(context, expression, false));
     if (context->result != ContextResult::Done)
         return true;
-    node->specFlags |= AstCompilerSpecFunc::SPECFLAG_AST_BLOCK;
+    node->addSpecFlags(AstCompilerSpecFunc::SPECFLAG_AST_BLOCK);
 
     SWAG_CHECK(checkIsConstExpr(context, expression->hasComputedValue(), expression));
 

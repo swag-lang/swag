@@ -194,8 +194,8 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     {
         if (left->kind == AstNodeKind::FactorOp && left->tokenId == TokenId::SymAsterisk)
         {
-            left->specFlags |= AstOp::SPECFLAG_FMA;
-            node->specFlags |= AstOp::SPECFLAG_FMA;
+            left->addSpecFlags(AstOp::SPECFLAG_FMA);
+            node->addSpecFlags(AstOp::SPECFLAG_FMA);
         }
     }
 

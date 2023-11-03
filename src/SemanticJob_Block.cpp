@@ -111,7 +111,7 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
 
     // If we inline a throwable function, be sure the top level function is informed
     if (typeInfoFunc->flags & TYPEINFO_CAN_THROW)
-        node->ownerFct->specFlags |= AstFuncDecl::SPECFLAG_REG_GET_CONTEXT;
+        node->ownerFct->addSpecFlags(AstFuncDecl::SPECFLAG_REG_GET_CONTEXT);
 
     // Register all function parameters as inline symbols
     if (func->parameters)
@@ -474,9 +474,9 @@ bool SemanticJob::resolveCase(SemanticContext* context)
                 {
                     SWAG_CHECK(resolveCompOpEqual(context, node->ownerSwitch->expression, oneExpression));
                     if (node->computedValue->reg.b)
-                        node->specFlags |= AstSwitchCase::SPECFLAG_IS_TRUE;
+                        node->addSpecFlags(AstSwitchCase::SPECFLAG_IS_TRUE);
                     else
-                        node->specFlags |= AstSwitchCase::SPECFLAG_IS_FALSE;
+                        node->addSpecFlags(AstSwitchCase::SPECFLAG_IS_FALSE);
                     Allocator::free<ComputedValue>(node->computedValue);
                     node->flags &= ~AST_VALUE_COMPUTED;
                     node->computedValue = nullptr;

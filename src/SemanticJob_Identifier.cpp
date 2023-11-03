@@ -360,7 +360,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         fcp->computedValue->reg.pointer = nullptr;
         fcp->typeInfo                   = g_TypeMgr->typeInfoNull;
         fcp->flags |= AST_GENERATED;
-        identifier->specFlags |= AstIdentifier::SPECFLAG_CLOSURE_FIRST_PARAM;
+        identifier->addSpecFlags(AstIdentifier::SPECFLAG_CLOSURE_FIRST_PARAM);
 
         auto node = Ast::newNode<AstLiteral>(nullptr, AstNodeKind::Literal, context->sourceFile, fcp);
         node->setFlagsValueIsComputed();
@@ -965,7 +965,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
                         idNode->identifierExtension->scopeUpValue = identifier->identifierExtension->scopeUpValue;
                     }
 
-                    idNode->specFlags |= AstIdentifier::SPECFLAG_FROM_USING;
+                    idNode->addSpecFlags(AstIdentifier::SPECFLAG_FROM_USING);
                 }
             }
             else
@@ -982,7 +982,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
                 while (newParent->parent != idRef)
                     newParent = newParent->parent;
 
-                idNode->specFlags |= AstIdentifier::SPECFLAG_FROM_USING;
+                idNode->addSpecFlags(AstIdentifier::SPECFLAG_FROM_USING);
 
                 if (identifier->identifierExtension || dependentVar)
                     idNode->allocateIdentifierExtension();
@@ -1133,8 +1133,8 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             auto typeNode       = Ast::newTypeExpression(sourceFile, varNode);
             varNode->type       = typeNode;
             varNode->assignment = nullptr;
-            typeNode->specFlags |= AstType::SPECFLAG_HAS_STRUCT_PARAMETERS;
-            typeNode->specFlags |= AstTypeExpression::SPECFLAG_DONE_GEN;
+            typeNode->addSpecFlags(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS);
+            typeNode->addSpecFlags(AstTypeExpression::SPECFLAG_DONE_GEN);
             identifier->semFlags |= SEMFLAG_ONCE;
             Ast::removeFromParent(identifier->parent);
             Ast::addChildBack(typeNode, identifier->parent);
@@ -2985,14 +2985,14 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
                     {
                         auto id = Ast::newIdentifier(context->sourceFile, withNode->id[wi], identifierRef, identifierRef);
                         id->flags |= AST_GENERATED;
-                        id->specFlags |= AstIdentifier::SPECFLAG_FROM_WITH;
+                        id->addSpecFlags(AstIdentifier::SPECFLAG_FROM_WITH);
                         id->allocateIdentifierExtension();
                         id->identifierExtension->alternateEnum    = hasEnum.empty() ? nullptr : hasEnum[0].second;
                         id->identifierExtension->fromAlternateVar = withNode->childs.front();
                         id->inheritTokenLocation(identifierRef);
                         identifierRef->childs.pop_back();
                         Ast::addChildFront(identifierRef, id);
-                        identifierRef->specFlags |= AstIdentifierRef::SPECFLAG_WITH_SCOPE;
+                        identifierRef->addSpecFlags(AstIdentifierRef::SPECFLAG_WITH_SCOPE);
                         context->job->nodes.push_back(id);
                     }
 
@@ -5163,7 +5163,7 @@ bool SemanticJob::resolveTryCatch(SemanticContext* context)
 
     SWAG_CHECK(checkCanCatch(context));
     SWAG_ASSERT(node->ownerFct);
-    node->ownerFct->specFlags |= AstFuncDecl::SPECFLAG_REG_GET_CONTEXT;
+    node->ownerFct->addSpecFlags(AstFuncDecl::SPECFLAG_REG_GET_CONTEXT);
 
     node->setBcNotifBefore(ByteCodeGenJob::emitInitStackTrace);
     node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
@@ -5183,7 +5183,7 @@ bool SemanticJob::resolveCatch(SemanticContext* context)
 
     SWAG_CHECK(checkCanCatch(context));
     SWAG_ASSERT(node->ownerFct);
-    node->ownerFct->specFlags |= AstFuncDecl::SPECFLAG_REG_GET_CONTEXT;
+    node->ownerFct->addSpecFlags(AstFuncDecl::SPECFLAG_REG_GET_CONTEXT);
 
     node->allocateExtension(ExtensionKind::ByteCode);
     node->setBcNotifBefore(ByteCodeGenJob::emitInitStackTrace);
@@ -5205,7 +5205,7 @@ bool SemanticJob::resolveAssume(SemanticContext* context)
 
     SWAG_CHECK(checkCanCatch(context));
     SWAG_ASSERT(node->ownerFct);
-    node->ownerFct->specFlags |= AstFuncDecl::SPECFLAG_REG_GET_CONTEXT;
+    node->ownerFct->addSpecFlags(AstFuncDecl::SPECFLAG_REG_GET_CONTEXT);
 
     node->allocateExtension(ExtensionKind::ByteCode);
     node->setBcNotifBefore(ByteCodeGenJob::emitInitStackTrace);

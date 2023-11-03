@@ -336,7 +336,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     if (funcNode->content && (funcNode->content->flags & AST_NO_SEMANTIC))
     {
         ScopedLock lk(funcNode->funcMutex);
-        funcNode->specFlags |= AstFuncDecl::SPECFLAG_PARTIAL_RESOLVE;
+        funcNode->addSpecFlags(AstFuncDecl::SPECFLAG_PARTIAL_RESOLVE);
         funcNode->dependentJobs.setRunning();
         return true;
     }
@@ -412,7 +412,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
 bool SemanticJob::setFullResolve(SemanticContext* context, AstFuncDecl* funcNode)
 {
     ScopedLock lk(funcNode->funcMutex);
-    funcNode->specFlags |= AstFuncDecl::SPECFLAG_FULL_RESOLVE | AstFuncDecl::SPECFLAG_PARTIAL_RESOLVE;
+    funcNode->addSpecFlags(AstFuncDecl::SPECFLAG_FULL_RESOLVE | AstFuncDecl::SPECFLAG_PARTIAL_RESOLVE);
     funcNode->dependentJobs.setRunning();
     return true;
 }
@@ -519,7 +519,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     if (!(funcNode->flags & AST_FROM_GENERIC) && !(funcNode->specFlags & AstFuncDecl::SPECFLAG_CHECK_ATTR))
     {
         // Can be called multiple times in case of a mixin/macro inside another inlined function
-        funcNode->specFlags |= AstFuncDecl::SPECFLAG_CHECK_ATTR;
+        funcNode->addSpecFlags(AstFuncDecl::SPECFLAG_CHECK_ATTR);
 
         if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
         {
@@ -601,7 +601,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         if ((funcNode->semFlags & SEMFLAG_PENDING_LAMBDA_TYPING) && typeNode->typeInfo->isVoid())
         {
             typeNode->typeInfo = g_TypeMgr->typeInfoUndefined;
-            funcNode->specFlags &= ~AstFuncDecl::SPECFLAG_SHORT_LAMBDA;
+            funcNode->specFlags &= (uint16_t)  ~AstFuncDecl::SPECFLAG_SHORT_LAMBDA;
         }
     }
 
@@ -1316,7 +1316,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
             tryDeduce = true;
         if (tryDeduce)
         {
-            funcNode->specFlags |= AstFuncDecl::SPECFLAG_FORCE_LATE_REGISTER;
+            funcNode->addSpecFlags(AstFuncDecl::SPECFLAG_FORCE_LATE_REGISTER);
             typeInfoFunc->returnType = TypeManager::concreteType(node->childs.front()->typeInfo, CONCRETE_FUNC);
             typeInfoFunc->returnType = TypeManager::promoteUntyped(typeInfoFunc->returnType);
             auto concreteReturn      = TypeManager::concreteType(typeInfoFunc->returnType);
@@ -1332,7 +1332,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
             typeInfoFunc->forceComputeName();
             funcNode->returnType->typeInfo  = typeInfoFunc->returnType;
             funcNode->returnTypeDeducedNode = node;
-            funcNode->specFlags |= AstFuncDecl::SPECFLAG_LATE_REGISTER_DONE;
+            funcNode->addSpecFlags(AstFuncDecl::SPECFLAG_LATE_REGISTER_DONE);
             lateRegister = true;
         }
     }
@@ -1507,7 +1507,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     // Register symbol now that we have inferred the return type
     if (lateRegister)
     {
-        funcNode->specFlags &= ~AstFuncDecl::SPECFLAG_FORCE_LATE_REGISTER;
+        funcNode->specFlags &= (uint16_t)  ~AstFuncDecl::SPECFLAG_FORCE_LATE_REGISTER;
         typeInfoFunc->returnType = funcNode->returnType->typeInfo;
         typeInfoFunc->forceComputeName();
         SWAG_CHECK(registerFuncSymbol(context, funcNode));

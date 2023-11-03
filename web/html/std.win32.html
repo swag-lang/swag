@@ -115,7 +115,7 @@
 <p> Wrappers for Microsoft Windows Sdk Libraries.  10.0.19041.0 </p>
 <h1>Content</h1>
 <div class="swag-watermark">
-Generated on 02-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
+Generated on 03-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
 </div>
 </div>

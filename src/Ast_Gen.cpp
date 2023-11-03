@@ -45,7 +45,7 @@ bool Ast::convertLiteralTupleToStructVar(SemanticContext* context, TypeInfo* toT
 
     auto typeNode = Ast::newTypeExpression(sourceFile, varNode);
     typeNode->inheritTokenLocation(fromNode);
-    typeNode->specFlags |= AstType::SPECFLAG_HAS_STRUCT_PARAMETERS;
+    typeNode->addSpecFlags(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS);
     varNode->type = typeNode;
 
     SWAG_ASSERT(typeStruct->declNode);
@@ -71,7 +71,7 @@ bool Ast::convertLiteralTupleToStructVar(SemanticContext* context, TypeInfo* toT
     auto identifier = CastAst<AstIdentifier>(typeNode->identifier->childs.back(), AstNodeKind::Identifier);
     identifier->inheritTokenLocation(fromNode);
     identifier->callParameters = Ast::newFuncCallParams(sourceFile, identifier);
-    identifier->callParameters->specFlags |= AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT;
+    identifier->callParameters->addSpecFlags(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT);
 
     int countParams = (int) fromNode->childs.size();
     if (parentForRef == fromNode)
@@ -86,7 +86,7 @@ bool Ast::convertLiteralTupleToStructVar(SemanticContext* context, TypeInfo* toT
         oneChild->clone(cloneContext);
         oneChild->flags |= AST_NO_BYTECODE | AST_NO_SEMANTIC;
         if (oneChild->kind == AstNodeKind::Identifier)
-            oneChild->specFlags |= AstIdentifier::SPECFLAG_NO_INLINE;
+            oneChild->addSpecFlags(AstIdentifier::SPECFLAG_NO_INLINE);
 
         if (oneChild->hasExtMisc() && oneChild->extMisc()->isNamed)
         {
@@ -264,7 +264,7 @@ AstNode* Ast::convertTypeToTypeExpression(SemanticContext* context, AstNode* par
         auto typeExprLambda         = Ast::newNode<AstTypeLambda>(nullptr, AstNodeKind::TypeLambda, sourceFile, parent);
         typeExprLambda->semanticFct = SemanticJob::resolveTypeLambdaClosure;
         if (childType->flags & TYPEINFO_CAN_THROW)
-            typeExprLambda->specFlags |= AstTypeLambda::SPECFLAG_CAN_THROW;
+            typeExprLambda->addSpecFlags(AstTypeLambda::SPECFLAG_CAN_THROW);
 
         // Parameters
         auto params                = Ast::newNode<AstNode>(nullptr, AstNodeKind::FuncDeclParams, sourceFile, typeExprLambda);
@@ -463,7 +463,7 @@ bool Ast::convertStructParamsToTmpVar(SemanticContext* context, AstIdentifier* i
         varNode->kind = AstNodeKind::ConstDecl;
 
     auto typeNode = Ast::newTypeExpression(sourceFile, varNode);
-    typeNode->specFlags |= AstType::SPECFLAG_HAS_STRUCT_PARAMETERS;
+    typeNode->addSpecFlags(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS);
     varNode->flags |= AST_GENERATED;
     varNode->type = typeNode;
     CloneContext cloneContext;

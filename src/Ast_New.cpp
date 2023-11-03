@@ -20,8 +20,8 @@ AstNode* Ast::newAffectOp(SourceFile* sourceFile, AstNode* parent, uint8_t opFla
 {
     auto node         = Ast::newNode<AstOp>(parser, AstNodeKind::AffectOp, sourceFile, parent);
     node->semanticFct = SemanticJob::resolveAffect;
-    node->specFlags |= opFlags;
     node->attributeFlags |= attributeFlags;
+    node->addSpecFlags(opFlags);
     return node;
 }
 

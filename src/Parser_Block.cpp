@@ -17,7 +17,7 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
     // If with an assignment
     if (token.id == TokenId::KwdVar || token.id == TokenId::KwdConst || token.id == TokenId::KwdLet)
     {
-        node->specFlags |= AstIf::SPECFLAG_ASSIGN;
+        node->addSpecFlags(AstIf::SPECFLAG_ASSIGN);
 
         auto   newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
         Scoped scoped(this, newScope);
@@ -237,7 +237,7 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
     SWAG_CHECK(doModifiers(node->token, node->tokenId, mdfFlags));
     if (mdfFlags & MODIFIER_BACK)
     {
-        node->specFlags |= AstVisit::SPECFLAG_BACK;
+        node->addSpecFlags(AstVisit::SPECFLAG_BACK);
     }
 
     // Extra name on the special function
@@ -327,7 +327,7 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
     SWAG_CHECK(doModifiers(node->token, node->tokenId, mdfFlags));
     if (mdfFlags & MODIFIER_BACK)
     {
-        node->specFlags |= AstLoop::SPECFLAG_BACK;
+        node->addSpecFlags(AstLoop::SPECFLAG_BACK);
     }
 
     Utf8  name;
@@ -377,7 +377,7 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
     {
         auto var   = Ast::newVarDecl(sourceFile, name, node, this, AstNodeKind::VarDecl);
         var->token = tokenName;
-        var->specFlags |= AstVarDecl::SPECFLAG_CONST_ASSIGN;
+        var->addSpecFlags(AstVarDecl::SPECFLAG_CONST_ASSIGN);
         node->specificName = var;
 
         auto identifer         = Ast::newNode<AstNode>(this, AstNodeKind::Index, sourceFile, var);

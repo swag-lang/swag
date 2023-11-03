@@ -479,7 +479,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     if (rightTypeInfo->isPointerToTypeInfo() &&
         (leftTypeInfo->isAny() || leftTypeInfo->isInterface()))
     {
-        node->specFlags |= AstBinaryOpNode::SPECFLAG_IMPLICIT_KINDOF;
+        node->addSpecFlags(AstBinaryOpNode::SPECFLAG_IMPLICIT_KINDOF);
     }
     // Must not make types compatible for a struct, as we can compare a struct with whatever other type in a opEquals function.
     else if (!leftTypeInfo->isStruct() && !rightTypeInfo->isStruct())

@@ -121,7 +121,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
     }
 
     if (identifier->flags & AST_IN_FUNC_DECL_PARAMS)
-        identifier->specFlags |= AstIdentifier::SPECFLAG_NO_INLINE;
+        identifier->addSpecFlags(AstIdentifier::SPECFLAG_NO_INLINE);
 
     SWAG_CHECK(eatToken());
     SWAG_CHECK(checkIsValidUserName(identifier));
@@ -165,7 +165,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         {
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightCurly));
-            identifier->callParameters->specFlags |= AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT;
+            identifier->callParameters->addSpecFlags(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT);
         }
     }
 
@@ -187,7 +187,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
                 identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, parent);
                 identifier->inheritTokenLocation(token);
                 identifier->token.text = "";
-                identifier->specFlags |= AstIdentifier::SPECFLAG_SILENT_CALL;
+                identifier->addSpecFlags(AstIdentifier::SPECFLAG_SILENT_CALL);
                 identifier->semanticFct = SemanticJob::resolveIdentifier;
                 SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightParen));
             }
@@ -336,7 +336,7 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
 
     if (token.id == TokenId::SymLeftCurly)
     {
-        node->specFlags |= AstTryCatchAssume::SPECFLAG_BLOCK;
+        node->addSpecFlags(AstTryCatchAssume::SPECFLAG_BLOCK);
         SWAG_VERIFY(!afterDiscard, error(token, Err(Err1207)));
         SWAG_CHECK(doCurlyStatement(node, &dummyResult));
 
@@ -346,7 +346,7 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
         }
         else if (node->semanticFct == SemanticJob::resolveTryCatch)
         {
-            node->ownerFct->specFlags |= AstFuncDecl::SPECFLAG_REG_GET_CONTEXT;
+            node->ownerFct->addSpecFlags(AstFuncDecl::SPECFLAG_REG_GET_CONTEXT);
             node->semanticFct = nullptr;
         }
         else

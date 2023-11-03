@@ -46,7 +46,7 @@ bool Parser::checkIsValidVarName(AstNode* node)
             if (num >= 10)
                 return error(node->token, Fmt(Err(Err1032), num));
             if (node->ownerFct)
-                node->ownerFct->specFlags |= AstFuncDecl::SPECFLAG_SPEC_MIXIN;
+                node->ownerFct->addSpecFlags(AstFuncDecl::SPECFLAG_SPEC_MIXIN);
 
             return true;
         }
@@ -115,7 +115,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
             varNode->tokenId     = identifier->tokenId;
             varNode->assignToken = assignToken;
             varNode->flags |= AST_R_VALUE;
-            varNode->specFlags |= forLet ? (AstVarDecl::SPECFLAG_IS_LET | AstVarDecl::SPECFLAG_CONST_ASSIGN) : 0;
+            varNode->addSpecFlags(forLet ? (AstVarDecl::SPECFLAG_IS_LET | AstVarDecl::SPECFLAG_CONST_ASSIGN) : 0);
 
             if (!firstDone)
             {
@@ -163,7 +163,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
         AstVarDecl* orgVarNode  = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
         orgVarNode->kind        = kind;
         orgVarNode->assignToken = assignToken;
-        orgVarNode->specFlags |= forLet ? (AstVarDecl::SPECFLAG_IS_LET | AstVarDecl::SPECFLAG_CONST_ASSIGN) : 0;
+        orgVarNode->addSpecFlags(forLet ? (AstVarDecl::SPECFLAG_IS_LET | AstVarDecl::SPECFLAG_CONST_ASSIGN) : 0);
 
         // This will avoid to initialize the tuple before the affectation
         orgVarNode->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
@@ -220,8 +220,8 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
             varNode->token       = identifier->token;
             varNode->assignToken = assignToken;
             varNode->flags |= AST_R_VALUE | AST_GENERATED | AST_HAS_FULL_STRUCT_PARAMETERS;
-            varNode->specFlags |= forLet ? (AstVarDecl::SPECFLAG_IS_LET | AstVarDecl::SPECFLAG_CONST_ASSIGN) : 0;
-            varNode->specFlags |= AstVarDecl::SPECFLAG_TUPLE_AFFECT;
+            varNode->addSpecFlags(forLet ? (AstVarDecl::SPECFLAG_IS_LET | AstVarDecl::SPECFLAG_CONST_ASSIGN) : 0);
+            varNode->addSpecFlags(AstVarDecl::SPECFLAG_TUPLE_AFFECT);
             if (currentScope->isGlobalOrImpl())
                 SWAG_CHECK(currentScope->symTable.registerSymbolName(context, varNode, SymbolKind::Variable));
             identifier          = Ast::newMultiIdentifierRef(sourceFile, Fmt("%s.item%u", tmpVarName.c_str(), idx++), varNode, this);
@@ -244,7 +244,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
         varNode->kind       = kind;
         varNode->inheritTokenLocation(leftNode);
         varNode->assignToken = assignToken;
-        varNode->specFlags |= forLet ? (AstVarDecl::SPECFLAG_IS_LET | AstVarDecl::SPECFLAG_CONST_ASSIGN) : 0;
+        varNode->addSpecFlags(forLet ? (AstVarDecl::SPECFLAG_IS_LET | AstVarDecl::SPECFLAG_CONST_ASSIGN) : 0);
 
         Ast::addChildBack(varNode, type);
         varNode->type = type;
@@ -363,8 +363,8 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
                     {
                         typeExpression->flags &= ~AST_NO_BYTECODE_CHILDS;
                         type->flags &= ~AST_NO_BYTECODE_CHILDS;
-                        typeExpression->specFlags |= AstType::SPECFLAG_HAS_STRUCT_PARAMETERS;
-                        type->specFlags |= AstType::SPECFLAG_HAS_STRUCT_PARAMETERS;
+                        typeExpression->addSpecFlags(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS);
+                        type->addSpecFlags(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS);
                     }
                 }
             }

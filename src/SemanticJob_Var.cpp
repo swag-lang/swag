@@ -347,12 +347,12 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
 
     identifier->callParameters->inheritTokenLocation(varDecl->assignment);
     identifier->callParameters->inheritOrFlag(varDecl->assignment, AST_CONST_EXPR | AST_SIDE_EFFECTS);
-    identifier->callParameters->specFlags |= AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT;
+    identifier->callParameters->addSpecFlags(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT);
     identifier->flags |= AST_IN_TYPE_VAR_DECLARATION;
     typeExpression->flags &= ~AST_NO_BYTECODE;
     typeExpression->flags &= ~AST_NO_BYTECODE_CHILDS;
     typeExpression->flags &= ~AST_VALUE_COMPUTED;
-    typeExpression->specFlags |= AstType::SPECFLAG_HAS_STRUCT_PARAMETERS;
+    typeExpression->addSpecFlags(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS);
 
     Ast::removeFromParent(varDecl->assignment);
     // varDecl->assignment->release(); This is reference in 'originalParent' in case of errors, so keep it
@@ -602,7 +602,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             (!node->type || !node->type->typeInfo->isStruct()) &&
             (!node->assignment->typeInfo->isPointer() || node->assignment->typeInfo->isPointerToTypeInfo()))
         {
-            node->specFlags |= AstVarDecl::SPECFLAG_IS_LET_TO_CONST;
+            node->addSpecFlags(AstVarDecl::SPECFLAG_IS_LET_TO_CONST);
             symbolFlags |= OVERLOAD_IS_LET;
             isCompilerConstant = true;
         }
@@ -1260,7 +1260,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             {
                 SWAG_ASSERT(assignment->childs.back()->childs.back()->computedValue);
                 storageOffset = assignment->childs.back()->childs.back()->computedValue->storageOffset;
-                node->specFlags |= AstVarDecl::SPECFLAG_INLINE_STORAGE;
+                node->addSpecFlags(AstVarDecl::SPECFLAG_INLINE_STORAGE);
             }
             else
             {

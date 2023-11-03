@@ -73,7 +73,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
 
         auto param = Ast::newVarDecl(sourceFile, nameVar, params, this, AstNodeKind::FuncDeclParam);
         if (firstAddedType->typeFlags & TYPEFLAG_IS_SELF)
-            param->specFlags |= AstVarDecl::SPECFLAG_GENERATED_SELF;
+            param->addSpecFlags(AstVarDecl::SPECFLAG_GENERATED_SELF);
 
         param->allocateExtension(ExtensionKind::Misc);
         param->extMisc()->exportNode = firstAddedType;
@@ -233,7 +233,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
                 auto nameVar = namedParam ? namedParam->token.text : Fmt("__%d", g_UniqueID.fetch_add(1));
                 auto param   = Ast::newVarDecl(sourceFile, nameVar, params, this, AstNodeKind::FuncDeclParam);
                 if (!namedParam)
-                    param->specFlags |= AstVarDecl::SPECFLAG_UNNAMED;
+                    param->addSpecFlags(AstVarDecl::SPECFLAG_UNNAMED);
 
                 param->allocateExtension(ExtensionKind::Misc);
                 param->extMisc()->exportNode = typeExpr;
@@ -308,7 +308,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
     if (token.id == TokenId::KwdThrow)
     {
         SWAG_CHECK(eatToken());
-        node->specFlags |= AstTypeLambda::SPECFLAG_CAN_THROW;
+        node->addSpecFlags(AstTypeLambda::SPECFLAG_CAN_THROW);
     }
 
     return true;
@@ -321,9 +321,9 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
     structNode->originalParent = parent;
     structNode->allocateExtension(ExtensionKind::Semantic);
     structNode->extSemantic()->semanticBeforeFct = SemanticJob::preResolveGeneratedStruct;
-    structNode->specFlags |= AstStruct::SPECFLAG_ANONYMOUS;
+    structNode->addSpecFlags(AstStruct::SPECFLAG_ANONYMOUS);
     if (isUnion)
-        structNode->specFlags |= AstStruct::SPECFLAG_UNION;
+        structNode->addSpecFlags(AstStruct::SPECFLAG_UNION);
 
     auto contentNode    = Ast::newNode<AstNode>(this, AstNodeKind::TupleContent, sourceFile, structNode);
     structNode->content = contentNode;
@@ -619,7 +619,7 @@ bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doFuncCallParameters(id, &id->callParameters, TokenId::SymRightCurly));
             id->flags |= AST_IN_TYPE_VAR_DECLARATION;
-            id->callParameters->specFlags |= AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT;
+            id->callParameters->addSpecFlags(AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT);
         }
 
         return true;
@@ -665,13 +665,13 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
     SWAG_CHECK(doModifiers(node->token, node->tokenId, mdfFlags));
     if (mdfFlags & MODIFIER_OVERFLOW)
     {
-        node->specFlags |= AstCast::SPECFLAG_OVERFLOW;
+        node->addSpecFlags(AstCast::SPECFLAG_OVERFLOW);
         node->attributeFlags |= ATTRIBUTE_CAN_OVERFLOW_ON;
     }
 
     if (mdfFlags & MODIFIER_BIT)
     {
-        node->specFlags |= AstCast::SPECFLAG_BIT;
+        node->addSpecFlags(AstCast::SPECFLAG_BIT);
         node->semanticFct = SemanticJob::resolveExplicitBitCast;
     }
 
@@ -682,7 +682,7 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
 
     if (mdfFlags & MODIFIER_UNCONST)
     {
-        node->specFlags |= AstCast::SPECFLAG_UNCONST;
+        node->addSpecFlags(AstCast::SPECFLAG_UNCONST);
     }
 
     auto startLoc = token.startLocation;
