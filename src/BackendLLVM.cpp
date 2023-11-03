@@ -38,13 +38,13 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     // swag_error_t
     {
         llvm::Type* members[] = {
-            llvm::ArrayType::get(I8_TY(), SWAG_MAX_LEN_ERROR_MSG), // msgBuf
-            PTR_I8_TY(),                                           // msg
-            I64_TY(),                                              // msg
-            PTR_I8_TY(),                                           // value
-            PTR_I8_TY(),                                           // value
-            I32_TY(),                                              // pushHasError
-            I32_TY()};                                             // pushTraceIndex
+            llvm::ArrayType::get(I8_TY(), SWAG_MAX_LEN_ERROR_VALUE), // buf
+            PTR_I8_TY(),                                             // msg
+            I64_TY(),                                                // msg
+            PTR_I8_TY(),                                             // value
+            PTR_I8_TY(),                                             // value
+            I32_TY(),                                                // pushHasError
+            I32_TY()};                                               // pushTraceIndex
         pp.errorTy = llvm::StructType::create(context, members, "swag_error_t");
     }
 

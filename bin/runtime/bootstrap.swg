@@ -374,14 +374,14 @@ namespace Swag
         Warning
     }
 
-    const MaxLenErrorMsg = 128   // Maximum length of an error message
+    const MaxLenErrorValue = 128 // Maximum length of an error stored value
     const MaxErrors = 32         // Maximum nested errors
     const MaxTraces = 32         // Maximum error traces
 
     // Store a 'throw' error informations
     struct Error
     {
-        msgBuf:         [MaxLenErrorMsg] u8     // Buffer to store the error message
+        buf:            [MaxLenErrorValue] u8   // Buffer to store the error value
         msg:            string                  // Error message
         value:          any                     // Error value (or null)
         pushHasError:   u32

@@ -10,8 +10,8 @@ func __setErr(err: any)
     if err == string
     {
         let value = cast(string) err
-        let len = @min(@countof(value), cast(u64) MaxLenErrorMsg)
-        let ptr = &cxt.errors[cxt.errorIndex].msgBuf
+        let len = @min(@countof(value), cast(u64) MaxLenErrorValue)
+        let ptr = &cxt.errors[cxt.errorIndex].buf
         @memcpy(ptr, @dataof(value), len)
         cxt.errors[cxt.errorIndex].msg = @mkstring(ptr, len)
         cxt.errors[cxt.errorIndex].value = @mkany(&cxt.errors[cxt.errorIndex].msg, string)
@@ -20,9 +20,9 @@ func __setErr(err: any)
     {
         let data = @dataof(err)        
         let type = @kindof(err)
-        let ptr = &cxt.errors[cxt.errorIndex].msgBuf
+        let ptr = &cxt.errors[cxt.errorIndex].buf
         @memcpy(ptr, data, cast(u64) type.sizeof)
-        cxt.errors[cxt.errorIndex].value = @mkany(&cxt.errors[cxt.errorIndex].msgBuf, type)
+        cxt.errors[cxt.errorIndex].value = @mkany(&cxt.errors[cxt.errorIndex].buf, type)
     }
 
     cxt.hasError = 1

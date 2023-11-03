@@ -884,7 +884,7 @@ void initErrors()
     SWAG_ERROR(Err0684, "duplicated enum value                             $ the enum value '%s' is already defined with the same underlying value");
     SWAG_ERROR(Err0675, "invalid enum type                                 $ an enum marked with '#[Swag.NoDuplicate]' does not accept type '%s'");
     SWAG_ERROR(Err0573, "invalid throw type                                $ can't throw a value of type '%s' because it's not a plain old data struct $ a struct is not plain old data if it contains 'opDrop', 'opPostCopy' or 'opPostMove'");
-    SWAG_ERROR(Err0570, nullptr);
+    SWAG_ERROR(Err0570, "invalid throw type                                $ can't throw a value of type '%s' because the struct is too big $ the maximum allowed size is '%u' bytes, got '%u'");
     SWAG_ERROR(Err0393, nullptr);
     SWAG_ERROR(Err0556, nullptr);
     SWAG_ERROR(Err0557, nullptr);

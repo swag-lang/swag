@@ -5234,6 +5234,12 @@ bool SemanticJob::resolveThrow(SemanticContext* context)
             Diagnostic diag{expr, Fmt(Err(Err0573), typeStruct->getDisplayNameC())};
             return context->report(diag);
         }
+
+        if (typeStruct->sizeOf > SWAG_MAX_LEN_ERROR_VALUE)
+        {
+            Diagnostic diag{expr, Fmt(Err(Err0570), typeStruct->getDisplayNameC(), SWAG_MAX_LEN_ERROR_VALUE, typeStruct->sizeOf)};
+            return context->report(diag);
+        }
     }
     else
     {
