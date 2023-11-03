@@ -65,8 +65,8 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Saf0002, "safety failed 'any' $ invalid cast from 'any' to '%s'");
-    SWAG_ERROR(Saf0028, "safety failed 'any' $ invalid cast of a null value to '%s'");
+    SWAG_ERROR(Saf0002, "safety failed 'any' $ invalid dynamic cast from 'any' to '%s'");
+    SWAG_ERROR(Saf0028, "safety failed 'any' $ invalid dynamic cast of a null value to '%s'");
     SWAG_ERROR(Saf0020, "safety failed 'bool' $ invalid boolean value");
     SWAG_ERROR(Saf0008, "safety failed 'boundcheck' $ index out of bounds");
     SWAG_ERROR(Saf0034, "safety failed 'boundcheck' $ range error, lower > upper");
@@ -883,7 +883,7 @@ void initErrors()
     SWAG_ERROR(Err0549, "mismatch enum types                               $ expected an enum of type '%s', got '%s' instead");
     SWAG_ERROR(Err0684, "duplicated enum value                             $ the enum value '%s' is already defined with the same underlying value");
     SWAG_ERROR(Err0675, "invalid enum type                                 $ an enum marked with '#[Swag.NoDuplicate]' does not accept type '%s'");
-    SWAG_ERROR(Err0573, nullptr);
+    SWAG_ERROR(Err0573, "invalid throw type                                $ can't throw a value of type '%s' because it's not a plain old data struct $ a struct is not plain old data if it contains 'opDrop', 'opPostCopy' or 'opPostMove'");
     SWAG_ERROR(Err0570, nullptr);
     SWAG_ERROR(Err0393, nullptr);
     SWAG_ERROR(Err0556, nullptr);

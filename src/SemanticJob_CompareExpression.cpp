@@ -8,7 +8,6 @@
 #include "LanguageSpec.h"
 #include "Ast.h"
 
-#pragma optimize("", off)
 bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node          = context->node;

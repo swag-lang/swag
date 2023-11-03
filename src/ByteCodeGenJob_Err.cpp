@@ -177,7 +177,7 @@ bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
     PushICFlags ic(context, BCI_TRYCATCH);
 
     auto node = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Throw);
-    auto expr = node->childs.back();
+    auto expr = node->childs.front();
 
     if (!(node->semFlags & SEMFLAG_CAST1))
     {

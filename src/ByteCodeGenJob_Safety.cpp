@@ -353,7 +353,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint
     freeRegisterRC(context, r1);
 }
 
-void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exprNode, bool isExplicit)
+void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* toType, bool isExplicit)
 {
     if (!mustEmitSafety(context, SAFETY_ANY))
         return;
@@ -363,7 +363,7 @@ void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exp
     auto r0 = reserveRegisterRC(context);
     auto r1 = reserveRegisterRC(context);
 
-    emitSafetyNotZero(context, exprNode->resultRegisterRC[1], 64, safetyMsg(SafetyMsg::CastAnyNull, exprNode->typeInfo));
+    emitSafetyNotZero(context, exprNode->resultRegisterRC[1], 64, safetyMsg(SafetyMsg::CastAnyNull, toType));
 
     // :AnyTypeSegment
     SWAG_ASSERT(exprNode->hasExtMisc());
@@ -375,7 +375,7 @@ void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exp
     inst->b.u64 = SWAG_COMPARE_CAST_ANY;
     inst        = EMIT_INST4(context, ByteCodeOp::IntrinsicTypeCmp, r0, exprNode->resultRegisterRC[1], rflags, r1);
     freeRegisterRC(context, rflags);
-    emitSafetyNotZero(context, r1, 8, safetyMsg(SafetyMsg::CastAny, exprNode->typeInfo));
+    emitSafetyNotZero(context, r1, 8, safetyMsg(SafetyMsg::CastAny, toType));
 
     freeRegisterRC(context, r0);
     freeRegisterRC(context, r1);

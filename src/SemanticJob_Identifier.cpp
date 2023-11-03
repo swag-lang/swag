@@ -5220,15 +5220,27 @@ bool SemanticJob::resolveAssume(SemanticContext* context)
 bool SemanticJob::resolveThrow(SemanticContext* context)
 {
     auto node      = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Throw);
-    auto back      = node->childs.back();
-    node->typeInfo = back->typeInfo;
+    auto expr      = node->childs.front();
+    node->typeInfo = expr->typeInfo;
 
     SWAG_CHECK(checkCanThrow(context));
 
-    auto type = TypeManager::concretePtrRefType(back->typeInfo);
-    SWAG_VERIFY(type->isString(), Report::internalError(back, Fmt("only type string is supported in throw! (got '%s' instead)", type->getDisplayNameC())));
+    auto type = TypeManager::concretePtrRefType(expr->typeInfo);
+    if (type->isStruct())
+    {
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(type, TypeInfoKind::Struct);
+        if (!typeStruct->isPlainOldData())
+        {
+            Diagnostic diag{expr, Fmt(Err(Err0573), typeStruct->getDisplayNameC())};
+            return context->report(diag);
+        }
+    }
+    else
+    {
+        SWAG_VERIFY(type->isString(), Report::internalError(expr, Fmt("only type string is supported in throw! (got '%s' instead)", type->getDisplayNameC())));
+    }
 
-    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoAny, node, back, CASTFLAG_AUTO_OPCAST | CASTFLAG_CONCRETE_ENUM));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoAny, node, expr, CASTFLAG_AUTO_OPCAST | CASTFLAG_CONCRETE_ENUM));
     node->byteCodeFct = ByteCodeGenJob::emitThrow;
     return true;
 }

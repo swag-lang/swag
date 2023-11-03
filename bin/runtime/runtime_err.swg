@@ -7,13 +7,24 @@ func __setErr(err: any)
     let cxt = @getcontext()
     @assert(cxt.errorIndex < MaxErrors)
 
-    let value = cast(string) err
-    let len = @min(@countof(value), cast(u64) MaxLenErrorMsg)
-    let ptr = &cxt.errors[cxt.errorIndex].msgBuf
-    @memcpy(ptr, @dataof(value), len)
-    cxt.errors[cxt.errorIndex].msg = @mkstring(ptr, len)
+    if err == string
+    {
+        let value = cast(string) err
+        let len = @min(@countof(value), cast(u64) MaxLenErrorMsg)
+        let ptr = &cxt.errors[cxt.errorIndex].msgBuf
+        @memcpy(ptr, @dataof(value), len)
+        cxt.errors[cxt.errorIndex].msg = @mkstring(ptr, len)
+        cxt.errors[cxt.errorIndex].value = @mkany(&cxt.errors[cxt.errorIndex].msg, string)
+    }
+    else
+    {
+        let data = @dataof(err)        
+        let type = @kindof(err)
+        let ptr = &cxt.errors[cxt.errorIndex].msgBuf
+        @memcpy(ptr, data, cast(u64) type.sizeof)
+        cxt.errors[cxt.errorIndex].value = @mkany(&cxt.errors[cxt.errorIndex].msgBuf, type)
+    }
 
-    cxt.errors[cxt.errorIndex].value = @mkany(&cxt.errors[cxt.errorIndex].msg, string)
     cxt.hasError = 1
 }
 

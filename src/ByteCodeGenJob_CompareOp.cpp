@@ -4,7 +4,6 @@
 #include "ByteCode.h"
 #include "Ast.h"
 #include "Report.h"
-#pragma optimize("", off)
 
 bool ByteCodeGenJob::emitInRange(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r2)
 {
