@@ -1,6 +1,7 @@
-#global testerror "toto"
+#global testerror "Err"
 
+struct Err{}
 #test
 {
-    throw "toto"
+    throw Err{}
 }

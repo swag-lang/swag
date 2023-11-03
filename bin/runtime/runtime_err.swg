@@ -49,7 +49,20 @@ func __popErr()
 func __failedAssume(loc: SourceCodeLocation)
 {
     let cxt = @getcontext()
-    @panic(cxt.errors[cxt.errorIndex].msg, loc)
+    let type = @kindof(cxt.errors[cxt.errorIndex].value)
+
+    var str: [256] u8
+    var len: u64
+
+    const U = "uncatched runtime error: "
+    @memcpy(&str[len], @dataof(U), @countof(U))
+    len += @countof(U)
+    let maxLen = @min(@countof(type.fullname), 200)
+    @memcpy(&str[len], @dataof(type.fullname), maxLen)
+    len += maxLen
+    str[len] = 0
+
+    @panic(@mkstring(&str[0], len), loc)
 }
 
 // Returns the current raised error, or null if none

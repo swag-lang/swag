@@ -1,10 +1,12 @@
+struct Err{}
+
 func toto() throw
 {
-    throw "toto"
+    throw Err{}
 }
 
 #test
 {
     catch toto()
-    @assert(cast(string) @err() == "toto")
+    @assert(@err() == Err)
 }

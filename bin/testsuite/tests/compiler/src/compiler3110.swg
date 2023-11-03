@@ -1,5 +1,7 @@
 #global testerror "Err0138"
 
+struct ErrTiti{}
+
 #[Swag.Macro]
 func toto(stmt: code)
 {
@@ -11,7 +13,7 @@ func toto(stmt: code)
 
 func titi() throw
 {
-    throw "titi"
+    throw ErrTiti{}
 }
 
 //#[Swag.PrintBc, Swag.Optim("", false)]

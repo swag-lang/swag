@@ -1,13 +1,17 @@
+struct ErrToto{}
+struct ErrRead{}
+
+
 var READ, TOTO: s32
 
 func toto() throw
 {
-    throw "toto"
+    throw ErrToto{}
 }
 
 func read() throw
 {
-    throw "read"
+    throw ErrRead{}
 }
 
 //#[Swag.PrintBc]
@@ -20,5 +24,5 @@ func titi() throw
 #test
 {
     catch titi()
-    @assert(cast(string) @err() == "toto")
+    @assert(@err() == ErrToto)
 }

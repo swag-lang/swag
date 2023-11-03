@@ -1,6 +1,8 @@
+struct Err{}
+
 func toto()->s32 throw
 {
-    throw "err"
+    throw Err{}
     return 666
 }
 

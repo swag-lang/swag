@@ -7,6 +7,9 @@ impl A
     }
 }
 
+struct Err{}
+
+
 func tata()->A
 {
     return {}
@@ -16,7 +19,7 @@ func toto(b: bool) throw
 {
     defer(err) discard tata()
     if b
-        throw "toto"
+        throw Err{}
 }
 
 #test

@@ -1,16 +1,20 @@
+struct ErrToto{}
+struct ErrTata{}
+struct ErrRead{}
+
 func toto() throw
 {
-    throw "toto"
+    throw ErrToto{}
 }
 
 func tata() throw
 {
-    throw "tata"
+    throw ErrTata{}
 }
 
 func read() throw
 {
-    throw "read"
+    throw ErrRead{}
 }
 
 func titi() throw
@@ -23,5 +27,5 @@ func titi() throw
 #test
 {
     catch titi()
-    @assert(cast(string) @err() == "tata")
+    @assert(@err() == ErrTata)
 }

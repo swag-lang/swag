@@ -1,12 +1,15 @@
+struct ErrTiti{}
+struct ErrTata{}
+
 func titi() throw
 {
-    throw "titi"
+    throw ErrTiti{}
 }
 
 func tata() throw
 {
     defer catch titi()
-    throw "tata"
+    throw ErrTata{}
 }
 
 #test

@@ -1,5 +1,7 @@
 var READ, TOTO: s32
 
+struct Err{}
+
 func toto() throw
 {
     TOTO += 1
@@ -7,7 +9,7 @@ func toto() throw
 
 func read() throw
 {
-    throw "read"
+    throw Err{}
 }
 
 func titi() throw
@@ -19,5 +21,5 @@ func titi() throw
 #test
 {
     catch titi()
-    @assert(cast(string) @err() == "read")
+    @assert(@err() == Err)
 }

@@ -1,3 +1,5 @@
+struct ErrToto{}
+
 struct Array
 {
     buf: s32 = 666
@@ -13,7 +15,7 @@ impl Array
 
 func GetFontData()->s32 throw
 {
-    throw "toto"
+    throw ErrToto{}
     return 0
 }
 
@@ -35,5 +37,5 @@ func createFromHFONT() throw
 #test
 {
     catch createFromHFONT()
-    @assert(cast(string) @err() == "toto")
+    @assert(@err() == ErrToto)
 }

@@ -1,11 +1,14 @@
+struct ErrToto{}
+struct ErrTiti{}
+
 func toto() throw
 {
-    throw "toto"
+    throw ErrToto{}
 }
 
 func titi() throw
 {
-    throw "titi"
+    throw ErrTiti{}
 }
 
 //#[Swag.PrintBc]
@@ -18,5 +21,5 @@ func titi() throw
         titi()
     }
 
-    @assert(cast(string) @err() == "titi")
+    @assert(@err() == ErrTiti)
 }

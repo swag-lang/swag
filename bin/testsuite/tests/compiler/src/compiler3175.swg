@@ -1,7 +1,9 @@
+struct ErrToto{}
+
 #[Swag.Inline]
 public func toto3175()->s32 throw
 {
-    throw "X"
+    throw ErrToto{}
     return 0
 }
 

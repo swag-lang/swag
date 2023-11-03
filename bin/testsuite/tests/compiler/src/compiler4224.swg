@@ -1,4 +1,6 @@
-func titi() throw { throw "0"; }
+struct Err{}
+
+func titi() throw { throw Err{}; }
 
 #[Swag.Inline]
 func toto() throw = titi()
@@ -7,5 +9,5 @@ func toto() throw = titi()
 #test
 {
     catch toto()
-    @assert(cast(string) @err() == "0")
+    @assert(@err() == Err)
 }

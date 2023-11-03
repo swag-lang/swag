@@ -1,9 +1,11 @@
-#global skip
+#global testerror "Err"
 using Swag
+
+struct Err{}
 
 func toto() throw
 {
-    throw "error in toto"
+    throw Err{}
 }
 
 func titi() throw
