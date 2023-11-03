@@ -12,6 +12,22 @@
 #include "Parser.h"
 #include "Ast.h"
 
+static void cleanErrMsg()
+{
+    if (g_SilentErrorMsg.empty())
+        return;
+
+    Vector<Utf8> tokens;
+    Utf8::tokenize(g_SilentErrorMsg, '$', tokens, false, true);
+
+    g_SilentErrorMsg = tokens[0];
+    if (tokens.size() > 1)
+    {
+        g_SilentErrorMsg += ": ";
+        g_SilentErrorMsg += tokens[1];
+    }
+}
+
 bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res, CompilerAstKind kind, bool silent)
 {
     PushSilentError se;
@@ -36,7 +52,10 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         if (g_SilentErrorMsg.empty())
             g_Log.print("expression syntax error\n", LogColor::Red);
         else
+        {
+            cleanErrMsg();
             g_Log.print(Fmt("%s\n", g_SilentErrorMsg.c_str()), LogColor::Red);
+        }
         return false;
     }
 
@@ -57,10 +76,8 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     {
         if (silent)
             return false;
-        if (g_SilentErrorMsg.empty())
-            g_Log.print("cannot solve expression\n", LogColor::Red);
-        else
-            g_Log.print(Fmt("%s\n", g_SilentErrorMsg.c_str()), LogColor::Red);
+        cleanErrMsg();
+        g_Log.print(Fmt("%s\n", g_SilentErrorMsg.c_str()), LogColor::Red);
         return false;
     }
 
@@ -91,10 +108,8 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     {
         if (silent)
             return false;
-        if (g_SilentErrorMsg.empty())
-            g_Log.print("cannot generate expression\n", LogColor::Red);
-        else
-            g_Log.print(Fmt("%s\n", g_SilentErrorMsg.c_str()), LogColor::Red);
+        cleanErrMsg();
+        g_Log.print(Fmt("%s\n", g_SilentErrorMsg.c_str()), LogColor::Red);
         return false;
     }
 
@@ -127,7 +142,10 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         if (g_SilentErrorMsg.empty())
             g_Log.print("cannot run expression\n", LogColor::Red);
         else
+        {
+            cleanErrMsg();
             g_Log.print(Fmt("%s\n", g_SilentErrorMsg.c_str()), LogColor::Red);
+        }
         return false;
     }
 
