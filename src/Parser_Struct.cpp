@@ -219,7 +219,7 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
     }
 
     // If a struct is declared inside a generic struct, force the sub struct to have generic parameters
-    else if (currentScope && currentScope->kind == ScopeKind::Struct)
+    else if (currentScope && currentScope->kind == ScopeKind::Struct && currentScope->owner->kind == AstNodeKind::StructDecl)
     {
         auto parentStruct = CastAst<AstStruct>(currentScope->owner, AstNodeKind::StructDecl);
         if (parentStruct->genericParameters)
