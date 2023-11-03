@@ -8,6 +8,7 @@ func toto() throw
 #test
 {
     catch toto()
+    @assert(@err() == A)
     let err = cast(A) @err()
     @assert(err.x == 42)
 }
