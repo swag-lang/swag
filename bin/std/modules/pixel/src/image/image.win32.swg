@@ -1,6 +1,6 @@
 #global #if #os == Swag.TargetOs.Windows
 #global public
-using Swag, Core, Win32, Gdi32
+using Swag, Core, Core.Errors, Win32, Gdi32
 
 impl Image
 {
@@ -60,7 +60,7 @@ impl Image
         case 32:
             result = create(bitmap.bmWidth, bitmap.bmHeight, PixelFormat.BGRA8)
         default:
-            throw "invalid bitmap pixelformat"
+            throw UnsupportedFormatError{message: "unsupported bit depth"}
         }
 
         let dc = GetDC(null)

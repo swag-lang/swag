@@ -1,5 +1,5 @@
 #global namespace Tga
-using Core
+using Core, Core.Errors
 
 const TYPE_MAP      = 1
 const TYPE_RGB      = 2
@@ -86,7 +86,7 @@ impl Decoder
         }
 
         if invalid
-            throw "invalid source buffer"
+            throw InvalidFormatError{message: "invalid source buffer"}
     }
 }
 
@@ -103,7 +103,8 @@ public impl IImageDecoder for Decoder
         let countof = @countof(buffer)
         let last = dataof + countof
 
-        if countof <= @sizeof(Header) throw "invalid source buffer"
+        if countof <= @sizeof(Header) 
+            throw InvalidFormatError{message: "invalid source buffer"}
         let header = cast(const *Header) dataof
         dataof += @sizeof(Header)
 
@@ -116,7 +117,7 @@ public impl IImageDecoder for Decoder
         case 32:
             result.init(cast(s32) header.width, cast(s32) header.height, PixelFormat.BGRA8)
         default:
-            throw "unsupported bit count"
+            throw UnsupportedFormatError{message: "unsupported bit depth"}
         }
 
         if !options.decodePixels
@@ -127,12 +128,15 @@ public impl IImageDecoder for Decoder
         switch (header.imageTypeCode)
         {
         case TYPE_MAP, TYPE_RGB, TYPE_MONO:
-            if dataof + result.size > last throw "invalid source buffer"
+            if dataof + result.size > last 
+                throw InvalidFormatError{message: "invalid source buffer"}
             Memory.copy(result.pixels.buffer, dataof, result.size)
+            
         case TYPE_RLE_MAP, TYPE_RLE_RGB, TYPE_RLE_MONO:
             uncompress(header.bpp, result.pixels.buffer, dataof, last, result.size)
+
         default:
-            throw "unsupported type"
+            throw UnsupportedFormatError{message: "unsupported type"}
         }
 
         return result

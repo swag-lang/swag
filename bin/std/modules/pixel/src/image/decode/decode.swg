@@ -1,4 +1,4 @@
-using Swag, Core
+using Swag, Core, Core.Errors
 
 struct ImageDecoder
 {
@@ -90,7 +90,7 @@ public impl Image
     {
         let found = getDecoder(fileName)
         if !found
-            throw "no matching image decoder"
+            throw UnsupportedFormatError{message: "no matching image decoder"}
         return decode(found, bytes, options)
     }
 
@@ -99,7 +99,7 @@ public impl Image
     {
         let found = getDecoder(fileName)
         if !found
-            throw "no matching image decoder"
+            throw UnsupportedFormatError{message: "no matching image decoder"}
         var bytes = File.readAllBytes(fileName)
         return decode(found, bytes.toSlice(), options)
     }

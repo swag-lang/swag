@@ -1,5 +1,5 @@
 #global public
-using Core
+using Core, Core.Errors
 
 // Determins which informations in the [[SoundFile]] struct are valid.
 #[Swag.EnumFlags]
@@ -66,7 +66,7 @@ impl SoundFile
         case ".wav":
             break
         default:
-            throw "unsupported file extension"
+            throw UnsupportedFormatError{message: "unsupported file extension"}
         }
 
         var result: retval

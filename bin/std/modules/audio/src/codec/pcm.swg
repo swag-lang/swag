@@ -1,4 +1,4 @@
-using Core
+using Core, Core.Errors
 
 struct CodecPcmToPcm16
 {
@@ -102,7 +102,7 @@ impl ICodec for CodecPcmToPcm16
             return doIt'(4, Float32)(destBuffer, destLength, srcBuffer, srcLength)
         }
 
-        throw "error"
+        throw UnsupportedFormatError{message: "invalid encoding"}
         return {0,0}
     }
 }

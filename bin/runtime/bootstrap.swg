@@ -377,6 +377,12 @@ namespace Swag
     const MaxErrors = 32    // Maximum nested errors
     const MaxTraces = 32    // Maximum error traces
 
+    // This is the base of all errors
+    struct BaseError
+    {
+        message: string
+    }
+
     // Store a 'throw' error informations
     struct ErrorValue
     {

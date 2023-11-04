@@ -6,7 +6,7 @@
 */
 
 #global namespace Png
-using Core
+using Core, Core.Errors
 
 private {
 
@@ -220,19 +220,19 @@ impl Encoder
     mtd calculateScanlineWidth(width: u32)->u32 throw
     {
         if !width
-            throw "SPNG_EINTERNAL"
+            throw UnsupportedFormatError{message: "SPNG_EINTERNAL"}
 
         var res = cast(u64) numChannels() * ihdr.bitDepth
         if res > Swag.U64.Max / width
-            throw "SPNG_EOVERFLOW"
+            throw UnsupportedFormatError{message: "SPNG_EOVERFLOW"}
         res = res * width
 
         res += 15
         if res < 15
-            throw "SPNG_EOVERFLOW"
+            throw UnsupportedFormatError{message: "SPNG_EOVERFLOW"}
         res /= 8
         if res > Swag.U32.Max
-            throw "SPNG_EOVERFLOW"
+            throw UnsupportedFormatError{message: "SPNG_EOVERFLOW"}
 
         return cast(u32) res
     }
@@ -602,9 +602,9 @@ public impl IImageEncoder for Encoder
 
         // unsupported pixel format
         if image.pf.channels() < 3 or image.pf.bitDepth() != 8
-            throw "unsupported image pixel format"
+            throw UnsupportedFormatError{message: "unsupported pixel format"}
         if image.width == 0 or image.height == 0
-            throw "unsupported image size"
+            throw UnsupportedFormatError{message: "unsupported size"}
 
         swapRB = image.pf == .BGR8 or image.pf == .BGRA8
 

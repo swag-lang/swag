@@ -1,4 +1,4 @@
-using Core
+using Core, Core.Errors
 
 impl Voice
 {
@@ -43,7 +43,7 @@ impl Voice
     {
         let desc = getCodec(requestedEncoding, file.encoding)
         if !desc
-            throw "cannot decode sound"
+            throw UnsupportedFormatError{message: "unsupported encoding"}
         let decoder = cast(*Codec) Memory.new(desc.type)
         decoder.srcEncoding = file.encoding
         decoder.dstEncoding = requestedEncoding

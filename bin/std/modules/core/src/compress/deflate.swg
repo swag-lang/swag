@@ -7,6 +7,7 @@
 
 #global namespace Compress
 #global #[Swag.Overflow(true)]
+using Core.Errors
 
 private {
 
@@ -1149,7 +1150,7 @@ public impl Deflate
     mtd compress(result: *Array'u8, src: const [..] u8) throw
     {
         if @countof(src) > Swag.U32.Max
-            throw "source buffer too big"
+            throw UnsupportedFormatError{message: "source buffer too big"}
 
         Debug.assert(state  != null, "'init' not called")
 

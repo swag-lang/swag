@@ -1,5 +1,5 @@
 #global public
-using Core, Pixel
+using Core, Core.Errors, Pixel
 
 enum MovieSource
 {
@@ -114,7 +114,7 @@ impl Movie
         }
         else
         {
-            throw "unsupported format"
+            throw UnsupportedFormatError{message: "unsupported format"}
         }
     }
 

@@ -1,4 +1,4 @@
-using Swag, Core
+using Swag, Core, Core.Errors
 
 struct ImageEncoder
 {
@@ -57,7 +57,7 @@ public impl Image
         }
 
         if !found
-            throw "no matching image encoder"
+            throw UnsupportedFormatError{message: "no matching image encoder"}
 
         // Create an encoder instance
         let ptrEncoder = Memory.new(found.type)

@@ -1,5 +1,5 @@
 #global namespace Bmp
-using Core
+using Core, Core.Errors
 
 const FILL_RLE_COMMAND     = 0
 const FILL_RLE_ENDOFLINE   = 0
@@ -82,7 +82,7 @@ public impl IImageDecoder for Decoder
         if size == @sizeof(CoreHeader)
         {
             if dataof + @sizeof(CoreHeader) > last
-                throw "invalid source buffer"
+                throw InvalidFormatError{message: "invalid source buffer"}
             let ch = cast(const *CoreHeader) dataof
             dataof += @sizeof(Header)
             bh.biSize        = ch.bcSize
@@ -95,7 +95,8 @@ public impl IImageDecoder for Decoder
         else
         {
             if dataof + @sizeof(Header) > last
-                throw "invalid source buffer"
+                throw InvalidFormatError{message: "invalid source buffer"}
+
             Memory.copy(&bh, dataof, @sizeof(Header))
             dataof += @sizeof(Header)
         }
@@ -110,12 +111,12 @@ public impl IImageDecoder for Decoder
         case 24:
             result.init(bh.biWidth, bh.biHeight, PixelFormat.BGR8)
         default:
-            throw "unsupported bit count"
+            throw UnsupportedFormatError{message: "unsupported bit count"}
         }
 
         // Palette
         if bh.biCompression != BI_RGB and bh.biCompression != BI_BITFIELDS
-            throw "unsupported compression"
+            throw UnsupportedFormatError{message: "unsupported compression"}
 
         if !options.decodePixels
             return result
@@ -128,7 +129,7 @@ public impl IImageDecoder for Decoder
         let bc8 = bh.biBitCount / 8
         let byteSize = cast(u64) (bh.biWidth * bh.biHeight * bc8)
         if dataof + byteSize > last
-            throw "invalid source buffer"
+            throw InvalidFormatError{message: "invalid source buffer"}
 
         switch bh.biBitCount
         {
