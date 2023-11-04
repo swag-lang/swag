@@ -46,6 +46,7 @@ func replaceString(dest: *String, fmt: string, values: ...)
 {
     var buf: ConcatBuffer
 
+    buf.allocator = dest.allocator
     buf.setFirstBucket(@mkslice(dest.buffer, dest.capacity))
 
     #[Match("validif", false)]
