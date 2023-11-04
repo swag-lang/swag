@@ -16603,17 +16603,6 @@ Generated on 04-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 
 </div>
 
     <script> 
-// Save the scroll position before the page is refreshed
-window.addEventListener('beforeunload', function() {
-  localStorage.setItem('scrollPosition', window.scrollY);
-});
-
-// Scroll to the saved position after the page is loaded
-window.addEventListener('load', function() {
-  if (localStorage.getItem('scrollPosition') !== null) {
-    window.scrollTo(0, parseInt(localStorage.getItem('scrollPosition')));
-  }
-});
 		function getOffsetTop(element) {
 			let offsetTop = 0;
 			while (element) {

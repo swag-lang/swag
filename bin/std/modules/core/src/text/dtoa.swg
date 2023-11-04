@@ -342,13 +342,14 @@ func roundShortest(d: *Decimal, mant: u64, exp: s64)
 	}
 }
 
-// The format 'fmt' is one of
-// 'e' (-d.dddde±dd, a decimal exponent)
-// 'E' (-d.ddddE±dd, a decimal exponent)
-// 'f' (-ddd.dddd, no exponent)
-// 'g' ('e' for large exponents, 'f' otherwise)
-// 'G' ('E' for large exponents, 'f' otherwise)
-// Negative precision means "only as much as needed to be exact."
+// Convert of floating value to a string.
+// The format 'fmt' is one of:
+// | e | -d.dddde±dd, a decimal exponent
+// | E | -d.ddddE±dd, a decimal exponent
+// | f | -ddd.dddd, no exponent
+// | g | 'e' for large exponents, 'f' otherwise
+// | G | 'E' for large exponents, 'f' otherwise
+// A negative precision means *only as much as needed to be exact*
 public func parse(buf: *ConcatBuffer, val: f64, fmt: u8, precision: s64, forceSign: bool)
 {
 	let bits: u64 = cast,bit(u64) val

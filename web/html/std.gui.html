@@ -109,6 +109,12 @@
 <div class="left">
 <div class="left-page">
 <h2>Table of Contents</h2>
+<h3>Namespaces</h3>
+<h4></h4>
+<ul>
+<li><a href="#Gui_Clipboard">Clipboard</a></li>
+<li><a href="#Gui_ToolTip">ToolTip</a></li>
+</ul>
 <h3>Structs</h3>
 <h4></h4>
 <ul>
@@ -2149,6 +2155,58 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Gui_Clipboard"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Gui.</span><span class="api-item-title-strong">Clipboard</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_Clipboard_addData">addData</a></span></td>
+<td>Add data of a given format to the clipboard. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_Clipboard_addImage">addImage</a></span></td>
+<td>Add an image. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_Clipboard_addString">addString</a></span></td>
+<td>Add string to clipboard. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_Clipboard_getData">getData</a></span></td>
+<td>Get data of the given format. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_Clipboard_getImage">getImage</a></span></td>
+<td>Get image from clipboard. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_Clipboard_getString">getString</a></span></td>
+<td>Get utf8 string from clipboard. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_Clipboard_hasFormat">hasFormat</a></span></td>
+<td>Returns true if the clipboard contains the given format. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_Clipboard_hasImage">hasImage</a></span></td>
+<td>Returns true if the clipbboard contains an image. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_Clipboard_hasString">hasString</a></span></td>
+<td>Returns true if the clipboard contains a string. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_Clipboard_registerFormat">registerFormat</a></span></td>
+<td>Register a new format. </td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Gui_Clipboard_addData"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Clipboard.</span><span class="api-item-title-strong">addData</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -2157,7 +2215,7 @@
 </table>
 </p>
 <p>Add data of a given format to the clipboard. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addData</span>(fmt: <span class="SCst">Gui</span>.<span class="SCst">Clipboard</span>.<span class="SCst"><a href="#Gui_Clipboard_Format">Format</a></span>, data: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addData</span>(fmt: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Clipboard">Clipboard</a></span>.<span class="SCst"><a href="#Gui_Clipboard_Format">Format</a></span>, data: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2196,7 +2254,7 @@
 </table>
 </p>
 <p>Get data of the given format. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getData</span>(fmt: <span class="SCst">Gui</span>.<span class="SCst">Clipboard</span>.<span class="SCst"><a href="#Gui_Clipboard_Format">Format</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getData</span>(fmt: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Clipboard">Clipboard</a></span>.<span class="SCst"><a href="#Gui_Clipboard_Format">Format</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Array</span>'(<span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2235,7 +2293,7 @@
 </table>
 </p>
 <p>Returns true if the clipboard contains the given format. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hasFormat</span>(fmt: <span class="SCst">Gui</span>.<span class="SCst">Clipboard</span>.<span class="SCst"><a href="#Gui_Clipboard_Format">Format</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hasFormat</span>(fmt: <span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Clipboard">Clipboard</a></span>.<span class="SCst"><a href="#Gui_Clipboard_Format">Format</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2274,7 +2332,7 @@
 </table>
 </p>
 <p>Register a new format. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">registerFormat</span>(name: <span class="STpe">string</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst">Clipboard</span>.<span class="SCst"><a href="#Gui_Clipboard_Format">Format</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">registerFormat</span>(name: <span class="STpe">string</span>)-&gt;<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Clipboard">Clipboard</a></span>.<span class="SCst"><a href="#Gui_Clipboard_Format">Format</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18100,6 +18158,26 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Gui_ToolTip"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Gui.</span><span class="api-item-title-strong">ToolTip</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_ToolTip_hide">hide</a></span></td>
+<td>Hide the current tooltip, if visible. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Gui_ToolTip_show">show</a></span></td>
+<td>Show a tooltip. </td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Gui_ToolTip_hide"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ToolTip.</span><span class="api-item-title-strong">hide</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -19943,17 +20021,6 @@ Generated on 04-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 
 </div>
 
     <script> 
-// Save the scroll position before the page is refreshed
-window.addEventListener('beforeunload', function() {
-  localStorage.setItem('scrollPosition', window.scrollY);
-});
-
-// Scroll to the saved position after the page is loaded
-window.addEventListener('load', function() {
-  if (localStorage.getItem('scrollPosition') !== null) {
-    window.scrollTo(0, parseInt(localStorage.getItem('scrollPosition')));
-  }
-});
 		function getOffsetTop(element) {
 			let offsetTop = 0;
 			while (element) {

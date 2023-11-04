@@ -59,7 +59,9 @@ func replaceString(dest: *String, fmt: string, values: ...)
     dest.capacity = capacity
 }
 
-// Format a string and returns the result as a String
+// Format a string and returns the result as a String.
+// * See [[ConvertFormatInt.setFormat]]
+// * See [[ConvertFormatFloat.setFormat]]
 func toString(fmt: string, values: ...)->String
     #validifx
     {

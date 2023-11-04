@@ -355,8 +355,7 @@ void GenDoc::collectScopes(Scope* root)
     if (!root->owner)
         return;
 
-    if (!(root->flags & SCOPE_AUTO_GENERATED))
-        collectNode(root->owner);
+    auto count = collect.size();
 
     for (auto c : root->childScopes)
         collectScopes(c);
@@ -371,6 +370,13 @@ void GenDoc::collectScopes(Scope* root)
                 collectNode(s->nodes[0]);
         }
     }
+
+    // If something is exported inside a namespace, then force the namespace to be exported too
+    if (collect.size() != count && root->kind == ScopeKind::Namespace && !(root->owner->attributeFlags & ATTRIBUTE_PUBLIC))
+        root->owner->attributeFlags |= ATTRIBUTE_PUBLIC;
+
+    if (!(root->flags & SCOPE_AUTO_GENERATED))
+        collectNode(root->owner);
 }
 
 void GenDoc::generateTocCateg(bool& first, AstNodeKind kind, const char* sectionName, const char* categName, Vector<OneRef*>& pendingNodes)

@@ -113,6 +113,7 @@
 <h3>Namespaces</h3>
 <h4></h4>
 <ul>
+<li><a href="#Core_StrConv_Atod">Atod</a></li>
 <li><a href="#Core_Atomic">Atomic</a></li>
 <li><a href="#Core_CommandLine">CommandLine</a></li>
 <li><a href="#Core_Compress">Compress</a></li>
@@ -120,21 +121,36 @@
 <li><a href="#Core_Debug">Debug</a></li>
 <li><a href="#Core_Debugger">Debugger</a></li>
 <li><a href="#Core_Directory">Directory</a></li>
+<li><a href="#Core_StrConv_Dtoa">Dtoa</a></li>
 <li><a href="#Core_Env">Env</a></li>
+<li><a href="#Core_File">File</a></li>
 <li><a href="#Core_Format">Format</a></li>
+<li><a href="#Core_Globalization">Globalization</a></li>
+<li><a href="#Core_Hardware">Hardware</a></li>
+<li><a href="#Core_Hash">Hash</a></li>
 <li><a href="#Core_Input">Input</a></li>
+<li><a href="#Core_Jobs">Jobs</a></li>
 <li><a href="#Core_Latin1">Latin1</a></li>
+<li><a href="#Core_Math">Math</a></li>
 <li><a href="#Core_Memory">Memory</a></li>
+<li><a href="#Core_Noise">Noise</a></li>
+<li><a href="#Core_Parser">Parser</a></li>
 <li><a href="#Core_Path">Path</a></li>
+<li><a href="#Core_Random">Random</a></li>
+<li><a href="#Core_Serialization_Read">Read</a></li>
 <li><a href="#Core_Reflection">Reflection</a></li>
+<li><a href="#Core_Serialization">Serialization</a></li>
 <li><a href="#Core_Slice">Slice</a></li>
 <li><a href="#Core_StrConv">StrConv</a></li>
+<li><a href="#Core_Sync">Sync</a></li>
 <li><a href="#Core_System">System</a></li>
 <li><a href="#Core_Threading">Threading</a></li>
 <li><a href="#Core_Time">Time</a></li>
 <li><a href="#Core_Tokenize">Tokenize</a></li>
+<li><a href="#Core_Unicode">Unicode</a></li>
 <li><a href="#Core_Utf16">Utf16</a></li>
 <li><a href="#Core_Utf8">Utf8</a></li>
+<li><a href="#Core_Serialization_Write">Write</a></li>
 </ul>
 <h3>Structs</h3>
 <h4>collections</h4>
@@ -1892,12 +1908,12 @@
 </tr>
 <tr>
 <td id="Core_Math_ConstF32">ConstF32</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Const">Const</a></span>'(<span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Const">Const</a></span>'(<span class="STpe">f32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td id="Core_Math_ConstF64">ConstF64</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Const">Const</a></span>'(<span class="STpe">f64</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Const">Const</a></span>'(<span class="STpe">f64</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -5495,7 +5511,7 @@
 </tr>
 <tr>
 <td>skipAttributes</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_FileAttributes">FileAttributes</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileAttributes">FileAttributes</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -5520,7 +5536,7 @@
 </tr>
 <tr>
 <td>filterLambda</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_FileInfo">FileInfo</a></span>)-&gt;<span class="STpe">bool</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileInfo">FileInfo</a></span>)-&gt;<span class="STpe">bool</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -5548,7 +5564,7 @@
 </table>
 </p>
 <p>Enumerate a directory. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">enumerate</span>(dirName: <span class="STpe">string</span>, options: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Directory">Directory</a></span>.<span class="SCst"><a href="#Core_Directory_EnumerationOptions">EnumerationOptions</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_FileInfo">FileInfo</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">enumerate</span>(dirName: <span class="STpe">string</span>, options: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Directory">Directory</a></span>.<span class="SCst"><a href="#Core_Directory_EnumerationOptions">EnumerationOptions</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileInfo">FileInfo</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5561,7 +5577,7 @@
 </table>
 </p>
 <p>Get all the directories in the given directory. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">enumerateDirectories</span>(dirName: <span class="STpe">string</span>, matchExtension: <span class="STpe">string</span> = <span class="SKwd">null</span>, recurse = <span class="SKwd">false</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_FileInfo">FileInfo</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">enumerateDirectories</span>(dirName: <span class="STpe">string</span>, matchExtension: <span class="STpe">string</span> = <span class="SKwd">null</span>, recurse = <span class="SKwd">false</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileInfo">FileInfo</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5574,7 +5590,7 @@
 </table>
 </p>
 <p>Get all the files of the given directory. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">enumerateFiles</span>(dirName: <span class="STpe">string</span>, matchExtension: <span class="STpe">string</span> = <span class="SKwd">null</span>, recurse = <span class="SKwd">false</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_FileInfo">FileInfo</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">enumerateFiles</span>(dirName: <span class="STpe">string</span>, matchExtension: <span class="STpe">string</span> = <span class="SKwd">null</span>, recurse = <span class="SKwd">false</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileInfo">FileInfo</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5711,12 +5727,12 @@
 <table class="table-enumeration">
 <tr>
 <td>rect</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>work</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -5948,6 +5964,140 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_File"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">File</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Structs</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Core_File_FileInfo"><span class="SCst">FileInfo</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_File_FileStream"><span class="SCst">FileStream</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_File_Folder"><span class="SCst">Folder</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_File_TextReader"><span class="SCst">TextReader</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_File_TweakFile"><span class="SCst">TweakFile</span></a></td>
+<td></td>
+</tr>
+</table>
+<h3>Enums</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Core_File_FileAccess"><span class="SCst">FileAccess</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_File_FileAttributes"><span class="SCst">FileAttributes</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_File_FileMode"><span class="SCst">FileMode</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_File_FileShare"><span class="SCst">FileShare</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_File_SeekOrigin"><span class="SCst">SeekOrigin</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_File_TextEncoding"><span class="SCst">TextEncoding</span></a></td>
+<td></td>
+</tr>
+</table>
+<h3>Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_File_delete">delete</a></span></td>
+<td>Delete the specified file. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_File_duplicate">duplicate</a></span></td>
+<td>Duplicate a file. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_File_exists">exists</a></span></td>
+<td>Returns true if the given file exists. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_File_getAttributes">getAttributes</a></span></td>
+<td>Returns attributes associated to the given filename. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_File_getFileInfo">getFileInfo</a></span></td>
+<td>Get informations about a file. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_File_getInfo">getInfo</a></span></td>
+<td>Returns various file informations. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_File_locateInExplorer">locateInExplorer</a></span></td>
+<td>Locate file in the file explorer. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_File_open">open</a></span></td>
+<td>Open a new file stream. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_File_openRead">openRead</a></span></td>
+<td>Creates a new file stream for reading. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_File_openWrite">openWrite</a></span></td>
+<td>Creates a new file stream for writing. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_File_readAllBytes">readAllBytes</a></span></td>
+<td>Read a file, and store the result in an array of bytes. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_File_readAllLines">readAllLines</a></span></td>
+<td>Read all the lines of a file. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_File_readAllText">readAllText</a></span></td>
+<td>Read a file, and store the result in an utf8 string. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_File_readEachLines">readEachLines</a></span></td>
+<td>Call user code for each line. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_File_touch">touch</a></span></td>
+<td>Change the file write date/time. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_File_writeAllBytes">writeAllBytes</a></span><span class="SCde">(<span class="STpe">string</span>, <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></td>
+<td>Write a file with the content of a slice of bytes. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_File_writeAllBytes">writeAllBytes</a></span><span class="SCde">(<span class="STpe">string</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">ConcatBuffer</span>)</span></td>
+<td>Write a file with the content of a <span class="code-inline">ConcatBuffer</span>. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_File_writeAllLines">writeAllLines</a></span></td>
+<td>Write a file with the content of an array of string, one per line. </td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_File_FileAccess"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">FileAccess</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -6061,7 +6211,7 @@
 </tr>
 <tr>
 <td>attributes</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_FileAttributes">FileAttributes</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileAttributes">FileAttributes</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -6345,7 +6495,7 @@
 </table>
 </p>
 <p>Set the current seek position of the given file stream. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPosition</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, origin: <span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_SeekOrigin">SeekOrigin</a></span>, seek: <span class="STpe">u64</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPosition</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, origin: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_SeekOrigin">SeekOrigin</a></span>, seek: <span class="STpe">u64</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6455,7 +6605,7 @@
 <table class="table-enumeration">
 <tr>
 <td>stream</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_FileStream">FileStream</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileStream">FileStream</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -6465,7 +6615,7 @@
 </tr>
 <tr>
 <td>encodingType</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_TextEncoding">TextEncoding</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_TextEncoding">TextEncoding</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -6570,7 +6720,7 @@
 <table class="table-enumeration">
 <tr>
 <td>folders</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_Folder">Folder</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_Folder">Folder</a></span>)</span></td>
 <td></td>
 </tr>
 </table>
@@ -6685,7 +6835,7 @@
 </table>
 </p>
 <p>Returns attributes associated to the given filename. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getAttributes</span>(fullname: <span class="STpe">string</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_FileAttributes">FileAttributes</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getAttributes</span>(fullname: <span class="STpe">string</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileAttributes">FileAttributes</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6698,7 +6848,7 @@
 </table>
 </p>
 <p>Get informations about a file. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFileInfo</span>(fullName: <span class="STpe">string</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_FileInfo">FileInfo</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFileInfo</span>(fullName: <span class="STpe">string</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileInfo">FileInfo</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6711,7 +6861,7 @@
 </table>
 </p>
 <p>Returns various file informations. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getInfo</span>(fullname: <span class="STpe">string</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_FileInfo">FileInfo</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getInfo</span>(fullname: <span class="STpe">string</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileInfo">FileInfo</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6737,7 +6887,7 @@
 </table>
 </p>
 <p>Open a new file stream. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">open</span>(fullname: <span class="STpe">string</span>, mode: <span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_FileMode">FileMode</a></span>, access: <span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_FileAccess">FileAccess</a></span>, share: <span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_FileShare">FileShare</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_FileStream">FileStream</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">open</span>(fullname: <span class="STpe">string</span>, mode: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileMode">FileMode</a></span>, access: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileAccess">FileAccess</a></span>, share: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileShare">FileShare</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileStream">FileStream</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6750,7 +6900,7 @@
 </table>
 </p>
 <p>Creates a new file stream for reading. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">openRead</span>(fullname: <span class="STpe">string</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_FileStream">FileStream</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">openRead</span>(fullname: <span class="STpe">string</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileStream">FileStream</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6763,7 +6913,7 @@
 </table>
 </p>
 <p>Creates a new file stream for writing. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">openWrite</span>(fullname: <span class="STpe">string</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">File</span>.<span class="SCst"><a href="#Core_File_FileStream">FileStream</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">openWrite</span>(fullname: <span class="STpe">string</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileStream">FileStream</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6905,7 +7055,7 @@
 <span id="Core_Format_append"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Format.</span><span class="api-item-title-strong">append</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\format.swg#L80" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\format.swg#L82" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6959,7 +7109,7 @@
 <span id="Core_Format_toInterp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Format.</span><span class="api-item-title-strong">toInterp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\format.swg#L152" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\format.swg#L154" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6977,12 +7127,43 @@
 <span id="Core_Format_toString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Format.</span><span class="api-item-title-strong">toString</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\format.swg#L63" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\format.swg#L65" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Format a string and returns the result as a String. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(fmt: <span class="STpe">string</span>, values: ...)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<ul>
+<li>See <a href="#Core_StrConv_ConvertFormatInt_setFormat">ConvertFormatInt.setFormat</a></li>
+<li>See <a href="#Core_StrConv_ConvertFormatFloat_setFormat">ConvertFormatFloat.setFormat</a></li>
+</ul>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Globalization"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">Globalization</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Structs</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Core_Globalization_CultureInfo"><span class="SCst">CultureInfo</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Globalization_NumberFormatInfo"><span class="SCst">NumberFormatInfo</span></a></td>
+<td>Provides culture-specific information for formatting and parsing numeric values. </td>
+</tr>
+</table>
+<h3>Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Globalization_getCultureInfo">getCultureInfo</a></span></td>
+<td>Returns the global culture info structure. </td>
+</tr>
+</table>
 <p>
 <table class="api-item">
 <tr>
@@ -6997,7 +7178,7 @@
 <table class="table-enumeration">
 <tr>
 <td>numberFormat</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Globalization</span>.<span class="SCst"><a href="#Core_Globalization_NumberFormatInfo">NumberFormatInfo</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Globalization">Globalization</a></span>.<span class="SCst"><a href="#Core_Globalization_NumberFormatInfo">NumberFormatInfo</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -7042,7 +7223,27 @@
 </table>
 </p>
 <p>Returns the global culture info structure. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getCultureInfo</span>()-&gt;*<span class="SCst">Core</span>.<span class="SCst">Globalization</span>.<span class="SCst"><a href="#Core_Globalization_CultureInfo">CultureInfo</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getCultureInfo</span>()-&gt;*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Globalization">Globalization</a></span>.<span class="SCst"><a href="#Core_Globalization_CultureInfo">CultureInfo</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Hardware"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">Hardware</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Hardware_getMacAddress">getMacAddress</a></span></td>
+<td>Max address. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Hardware_getProcessorCount">getProcessorCount</a></span></td>
+<td>Number of processors. </td>
+</tr>
+</table>
 <p>
 <table class="api-item">
 <tr>
@@ -7069,6 +7270,41 @@
 </p>
 <p>Number of processors. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getProcessorCount</span>()-&gt;<span class="STpe">u32</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Hash"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">Hash</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Structs</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Core_Hash_Adler32"><span class="SCst">Adler32</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Hash_Crc32"><span class="SCst">Crc32</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Hash_Md5"><span class="SCst">Md5</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Hash_Sha256"><span class="SCst">Sha256</span></a></td>
+<td></td>
+</tr>
+</table>
+<h3>Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Hash_hash32">hash32</a></span></td>
+<td>Hash the given value and returns the corresponding u32. </td>
+</tr>
+</table>
 <p>
 <table class="api-item">
 <tr>
@@ -7227,7 +7463,7 @@
 <table class="table-enumeration">
 <tr>
 <td>compute</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(<span class="SKwd">const</span> *<span class="SCst">Core</span>.<span class="SCst">Hash</span>.<span class="SCst"><a href="#Core_Hash_IHash32">IHash32</a></span>)-&gt;<span class="STpe">u32</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(<span class="SKwd">const</span> *<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Hash">Hash</a></span>.<span class="SCst"><a href="#Core_Hash_IHash32">IHash32</a></span>)-&gt;<span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -7295,7 +7531,7 @@
 </table>
 </p>
 <p>Returns the md5 value for the given buffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Hash</span>.<span class="SCst"><a href="#Core_Hash_Md5">Md5</a></span>.<span class="SCst">Digest</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Hash">Hash</a></span>.<span class="SCst"><a href="#Core_Hash_Md5">Md5</a></span>.<span class="SCst">Digest</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7308,7 +7544,7 @@
 </table>
 </p>
 <p>Finalize the computation. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">final</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, digest: <span class="SCst">Core</span>.<span class="SCst">Hash</span>.<span class="SCst"><a href="#Core_Hash_Md5">Md5</a></span>.<span class="SCst">Digest</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">final</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, digest: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Hash">Hash</a></span>.<span class="SCst"><a href="#Core_Hash_Md5">Md5</a></span>.<span class="SCst">Digest</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7399,7 +7635,7 @@
 </table>
 </p>
 <p>Returns the sha256 value for the given buffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Hash</span>.<span class="SCst"><a href="#Core_Hash_Sha256">Sha256</a></span>.<span class="SCst">Digest</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Hash">Hash</a></span>.<span class="SCst"><a href="#Core_Hash_Sha256">Sha256</a></span>.<span class="SCst">Digest</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7412,7 +7648,7 @@
 </table>
 </p>
 <p>Finalize the computation. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">final</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, result: <span class="SCst">Core</span>.<span class="SCst">Hash</span>.<span class="SCst"><a href="#Core_Hash_Sha256">Sha256</a></span>.<span class="SCst">Digest</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">final</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, result: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Hash">Hash</a></span>.<span class="SCst"><a href="#Core_Hash_Sha256">Sha256</a></span>.<span class="SCst">Digest</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8299,7 +8535,7 @@
 </table>
 </p>
 <p>Get the analog position of the given button. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPosition</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, button: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Input">Input</a></span>.<span class="SCst"><a href="#Core_Input_GamePadButton">GamePadButton</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPosition</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, button: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Input">Input</a></span>.<span class="SCst"><a href="#Core_Input_GamePadButton">GamePadButton</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8544,7 +8780,7 @@
 </tr>
 <tr>
 <td>position</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">25</span>] <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">25</span>] <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -9795,7 +10031,7 @@
 </table>
 </p>
 <p>Returns the move between the current position and the previous one. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMove</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMove</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9808,7 +10044,7 @@
 </table>
 </p>
 <p>Returns the mouse position. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPosition</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPosition</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9821,7 +10057,7 @@
 </table>
 </p>
 <p>Returns the previous mouse position, before the last update. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPreviousPos</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPreviousPos</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9959,12 +10195,12 @@
 </tr>
 <tr>
 <td>pressedPos</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">5</span>] <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">5</span>] <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>position</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -10030,7 +10266,7 @@
 </table>
 </p>
 <p>Returns the current mouse position. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMousePos</span>()-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMousePos</span>()-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10061,6 +10297,72 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Jobs"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">Jobs</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Structs</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Core_Jobs_ForJob"><span class="SCst">ForJob</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Jobs_Job"><span class="SCst">Job</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Jobs_SliceJob"><span class="SCst">SliceJob</span></a></td>
+<td></td>
+</tr>
+</table>
+<h3>Enums</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Core_Jobs_JobState"><span class="SCst">JobState</span></a></td>
+<td></td>
+</tr>
+</table>
+<h3>Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Jobs_getNumWorkers">getNumWorkers</a></span></td>
+<td>Returns number of threads in the job system. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Jobs_isSynchrone">isSynchrone</a></span></td>
+<td>Returns true is the job system has been initialized. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Jobs_parallelFor">parallelFor</a></span></td>
+<td>Do a for loop in parallel chunks  Exposed variables:  - @alias0: current loop index  - @alias1: userData as passed to the macro. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Jobs_parallelVisit">parallelVisit</a></span></td>
+<td>Operate on a range in parallel chunks  Exposed variables:  - buffer: address of the element of the range to process  - data:   userData as passed to the macro. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Jobs_scheduleJob">scheduleJob</a></span></td>
+<td>Schedule a job to execute. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Jobs_setNumWorkers">setNumWorkers</a></span></td>
+<td>Set the number of worker threads. Must be done once. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Jobs_waitDone">waitDone</a></span></td>
+<td>Wait for all registered jobs to be finished. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Jobs_waitJob">waitJob</a></span></td>
+<td>Wait for a given job to be finished. </td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Jobs_ForJob"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Jobs.</span><span class="api-item-title-strong">ForJob</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -10071,7 +10373,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Jobs</span>.<span class="SCst"><a href="#Core_Jobs_Job">Job</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Jobs">Jobs</a></span>.<span class="SCst"><a href="#Core_Jobs_Job">Job</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -10114,7 +10416,7 @@
 </tr>
 <tr>
 <td>state</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Jobs</span>.<span class="SCst"><a href="#Core_Jobs_JobState">JobState</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Jobs">Jobs</a></span>.<span class="SCst"><a href="#Core_Jobs_JobState">JobState</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -10163,7 +10465,7 @@
 <table class="table-enumeration">
 <tr>
 <td>using base</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Jobs</span>.<span class="SCst"><a href="#Core_Jobs_Job">Job</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Jobs">Jobs</a></span>.<span class="SCst"><a href="#Core_Jobs_Job">Job</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -10248,7 +10550,7 @@
 </table>
 </p>
 <p>Schedule a job to execute. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scheduleJob</span>(job: *<span class="SCst">Core</span>.<span class="SCst">Jobs</span>.<span class="SCst"><a href="#Core_Jobs_Job">Job</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scheduleJob</span>(job: *<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Jobs">Jobs</a></span>.<span class="SCst"><a href="#Core_Jobs_Job">Job</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10287,7 +10589,7 @@
 </table>
 </p>
 <p>Wait for a given job to be finished. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">waitJob</span>(job: *<span class="SCst">Core</span>.<span class="SCst">Jobs</span>.<span class="SCst"><a href="#Core_Jobs_Job">Job</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">waitJob</span>(job: *<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Jobs">Jobs</a></span>.<span class="SCst"><a href="#Core_Jobs_Job">Job</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10914,7 +11216,7 @@
 <table class="table-enumeration">
 <tr>
 <td>lock</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Sync</span>.<span class="SCst"><a href="#Core_Sync_Mutex">Mutex</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Sync">Sync</a></span>.<span class="SCst"><a href="#Core_Sync_Mutex">Mutex</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -11128,6 +11430,621 @@
 </tr>
 <tr>
 <td>Default</td>
+<td></td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">Math</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Structs</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Core_Math_Angle"><span class="SCst">Angle</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Math_Const"><span class="SCst">Const</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Math_Int128"><span class="SCst">Int128</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Math_Matrix3x3"><span class="SCst">Matrix3x3</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Math_Matrix4x4"><span class="SCst">Matrix4x4</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Math_NumericArray"><span class="SCst">NumericArray</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Math_Point"><span class="SCst">Point</span></a></td>
+<td>A simple Point with 2 coordinates X and Y. </td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Math_Rectangle"><span class="SCst">Rectangle</span></a></td>
+<td>A simple rectangle with 4 coordinates. </td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Math_Transform2"><span class="SCst">Transform2</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Math_Variant"><span class="SCst">Variant</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Math_Vector2"><span class="SCst">Vector2</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Math_Vector3"><span class="SCst">Vector3</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Math_Vector4"><span class="SCst">Vector4</span></a></td>
+<td></td>
+</tr>
+</table>
+<h3>Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_abs">abs</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_abs">abs</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_abs">abs</a></span><span class="SCde">(<span class="STpe">s16</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_abs">abs</a></span><span class="SCde">(<span class="STpe">s32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_abs">abs</a></span><span class="SCde">(<span class="STpe">s64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_abs">abs</a></span><span class="SCde">(<span class="STpe">s8</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_acos">acos</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_acos">acos</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_asin">asin</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_asin">asin</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_atan">atan</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_atan">atan</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_atan2">atan2</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_atan2">atan2</a></span><span class="SCde">(<span class="STpe">f64</span>, <span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_bigEndianToNative">bigEndianToNative</a></span></td>
+<td>Convert a big endian integer to current arch native format. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_ceil">ceil</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_ceil">ceil</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_clamp">clamp</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_cos">cos</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_cos">cos</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_cosh">cosh</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_cosh">cosh</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_countOnes">countOnes</a></span><span class="SCde">(<span class="STpe">u16</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_countOnes">countOnes</a></span><span class="SCde">(<span class="STpe">u32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_countOnes">countOnes</a></span><span class="SCde">(<span class="STpe">u64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_countOnes">countOnes</a></span><span class="SCde">(<span class="STpe">u8</span>)</span></td>
+<td>Returns the number of bits set to 1. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_exp">exp</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_exp">exp</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_exp2">exp2</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_exp2">exp2</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_floor">floor</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_floor">floor</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_hasByte">hasByte</a></span><span class="SCde">(<span class="STpe">u16</span>, <span class="STpe">u8</span>)</span></td>
+<td>Determin if an integer has a given byte. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_hasByte">hasByte</a></span><span class="SCde">(<span class="STpe">u32</span>, <span class="STpe">u8</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_hasByte">hasByte</a></span><span class="SCde">(<span class="STpe">u64</span>, <span class="STpe">u8</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_hasZeroByte">hasZeroByte</a></span><span class="SCde">(<span class="STpe">u16</span>)</span></td>
+<td>Determin if any of the bytes is zero. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_hasZeroByte">hasZeroByte</a></span><span class="SCde">(<span class="STpe">u32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_hasZeroByte">hasZeroByte</a></span><span class="SCde">(<span class="STpe">u64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_isEqualEpsilon">isEqualEpsilon</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_isEqualEpsilon">isEqualEpsilon</a></span><span class="SCde">(<span class="STpe">f64</span>, <span class="STpe">f64</span>, <span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_isNan">isNan</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_isNan">isNan</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_isPowerOf2">isPowerOf2</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_isZeroEpsilon">isZeroEpsilon</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_isZeroEpsilon">isZeroEpsilon</a></span><span class="SCde">(<span class="STpe">f64</span>, <span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_leadingZeros">leadingZeros</a></span><span class="SCde">(<span class="STpe">u16</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_leadingZeros">leadingZeros</a></span><span class="SCde">(<span class="STpe">u32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_leadingZeros">leadingZeros</a></span><span class="SCde">(<span class="STpe">u64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_leadingZeros">leadingZeros</a></span><span class="SCde">(<span class="STpe">u8</span>)</span></td>
+<td>Returns the number of bits set to 0 from the left. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_lerp">lerp</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_lerp">lerp</a></span><span class="SCde">(<span class="STpe">f64</span>, <span class="STpe">f64</span>, <span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_littleEndianToNative">littleEndianToNative</a></span></td>
+<td>Convert a little endian integer to current arch native format. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_log">log</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_log">log</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_log10">log10</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_log10">log10</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_log2">log2</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_log2">log2</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_makeRepeat16">makeRepeat16</a></span></td>
+<td>Make a 16 bits by repeating a given byte  0x20 =&gt; 0x2020. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_makeRepeat32">makeRepeat32</a></span></td>
+<td>Make a 32 bits by repeating a given byte  0x20 =&gt; 0x20202020. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_makeRepeat64">makeRepeat64</a></span></td>
+<td>Make a 64 bits by repeating a given byte  0x20 =&gt; 0x20202020_20202020. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_map">map</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_map">map</a></span><span class="SCde">(<span class="STpe">f64</span>, <span class="STpe">f64</span>, <span class="STpe">f64</span>, <span class="STpe">f64</span>, <span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_max">max</a></span><span class="SCde">(<span class="SCst">T</span>, <span class="SCst">T</span>, <span class="SCst">T</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_max">max</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_max">max</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_max">max</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_max">max</a></span><span class="SCde">(<span class="STpe">f64</span>, <span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_max">max</a></span><span class="SCde">(<span class="STpe">f64</span>, <span class="STpe">f64</span>, <span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_max">max</a></span><span class="SCde">(<span class="STpe">f64</span>, <span class="STpe">f64</span>, <span class="STpe">f64</span>, <span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_max">max</a></span><span class="SCde">(<span class="STpe">s16</span>, <span class="STpe">s16</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_max">max</a></span><span class="SCde">(<span class="STpe">s32</span>, <span class="STpe">s32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_max">max</a></span><span class="SCde">(<span class="STpe">s64</span>, <span class="STpe">s64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_max">max</a></span><span class="SCde">(<span class="STpe">s8</span>, <span class="STpe">s8</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_max">max</a></span><span class="SCde">(<span class="STpe">u16</span>, <span class="STpe">u16</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_max">max</a></span><span class="SCde">(<span class="STpe">u32</span>, <span class="STpe">u32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_max">max</a></span><span class="SCde">(<span class="STpe">u64</span>, <span class="STpe">u64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_max">max</a></span><span class="SCde">(<span class="STpe">u8</span>, <span class="STpe">u8</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_min">min</a></span><span class="SCde">(<span class="SCst">T</span>, <span class="SCst">T</span>, <span class="SCst">T</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_min">min</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_min">min</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_min">min</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_min">min</a></span><span class="SCde">(<span class="STpe">f64</span>, <span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_min">min</a></span><span class="SCde">(<span class="STpe">f64</span>, <span class="STpe">f64</span>, <span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_min">min</a></span><span class="SCde">(<span class="STpe">f64</span>, <span class="STpe">f64</span>, <span class="STpe">f64</span>, <span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_min">min</a></span><span class="SCde">(<span class="STpe">s16</span>, <span class="STpe">s16</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_min">min</a></span><span class="SCde">(<span class="STpe">s32</span>, <span class="STpe">s32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_min">min</a></span><span class="SCde">(<span class="STpe">s64</span>, <span class="STpe">s64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_min">min</a></span><span class="SCde">(<span class="STpe">s8</span>, <span class="STpe">s8</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_min">min</a></span><span class="SCde">(<span class="STpe">u16</span>, <span class="STpe">u16</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_min">min</a></span><span class="SCde">(<span class="STpe">u32</span>, <span class="STpe">u32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_min">min</a></span><span class="SCde">(<span class="STpe">u64</span>, <span class="STpe">u64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_min">min</a></span><span class="SCde">(<span class="STpe">u8</span>, <span class="STpe">u8</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_mulAdd">mulAdd</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_mulAdd">mulAdd</a></span><span class="SCde">(<span class="STpe">f64</span>, <span class="STpe">f64</span>, <span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_mulU64">mulU64</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_nativeToBigEndian">nativeToBigEndian</a></span></td>
+<td>Convert a native arch integer to a big endian. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_pow">pow</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_pow">pow</a></span><span class="SCde">(<span class="STpe">f64</span>, <span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_reverse">reverse</a></span><span class="SCde">(<span class="STpe">u16</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_reverse">reverse</a></span><span class="SCde">(<span class="STpe">u32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_reverse">reverse</a></span><span class="SCde">(<span class="STpe">u64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_reverse">reverse</a></span><span class="SCde">(<span class="STpe">u8</span>)</span></td>
+<td>Reverse all bits. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_round">round</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_round">round</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_roundDownToPowerOf2">roundDownToPowerOf2</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_roundUpToPowerOf2">roundUpToPowerOf2</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_saturate">saturate</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_saturate">saturate</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_sign">sign</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_sign">sign</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_sign">sign</a></span><span class="SCde">(<span class="STpe">s16</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_sign">sign</a></span><span class="SCde">(<span class="STpe">s32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_sign">sign</a></span><span class="SCde">(<span class="STpe">s64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_sign">sign</a></span><span class="SCde">(<span class="STpe">s8</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_sin">sin</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_sin">sin</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_sinh">sinh</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_sinh">sinh</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_smoothstep">smoothstep</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_smoothstep">smoothstep</a></span><span class="SCde">(<span class="STpe">f64</span>, <span class="STpe">f64</span>, <span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_sqrt">sqrt</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_sqrt">sqrt</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_tan">tan</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_tan">tan</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_tanh">tanh</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_tanh">tanh</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_toDegrees">toDegrees</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_toDegrees">toDegrees</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_toRadians">toRadians</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_toRadians">toRadians</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_trailingZeros">trailingZeros</a></span><span class="SCde">(<span class="STpe">u16</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_trailingZeros">trailingZeros</a></span><span class="SCde">(<span class="STpe">u32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_trailingZeros">trailingZeros</a></span><span class="SCde">(<span class="STpe">u64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_trailingZeros">trailingZeros</a></span><span class="SCde">(<span class="STpe">u8</span>)</span></td>
+<td>Returns the number of bits set to 0 from the right. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_trunc">trunc</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_trunc">trunc</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
 <td></td>
 </tr>
 </table>
@@ -11363,7 +12280,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mul</span>(x: <span class="STpe">s64</span>, y: <span class="STpe">s64</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Int128">Int128</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mul</span>(x: <span class="STpe">s64</span>, y: <span class="STpe">s64</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Int128">Int128</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11387,7 +12304,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Int128">Int128</a></span>)-&gt;<span class="STpe">s32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Int128">Int128</a></span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11399,7 +12316,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Int128">Int128</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Int128">Int128</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11554,7 +12471,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">from</span>(values: <span class="SCst">T</span>...)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>'(<span class="SCst">T</span>, <span class="SCst">N</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">from</span>(values: <span class="SCst">T</span>...)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>'(<span class="SCst">T</span>, <span class="SCst">N</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11567,7 +12484,7 @@
 </table>
 </p>
 <p>Multiply & Add. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mulAdd</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value1: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>'(<span class="SCst">T</span>, <span class="SCst">N</span>), value2: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>'(<span class="SCst">T</span>, <span class="SCst">N</span>))</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mulAdd</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value1: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>'(<span class="SCst">T</span>, <span class="SCst">N</span>), value2: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>'(<span class="SCst">T</span>, <span class="SCst">N</span>))</span></div>
 <p>Multiply & add. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mulAdd</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value1: <span class="SCst">T</span>, value2: <span class="SCst">T</span>)</span></div>
 <p>
@@ -11594,7 +12511,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>'(<span class="SCst">T</span>, <span class="SCst">N</span>))
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>'(<span class="SCst">T</span>, <span class="SCst">N</span>))
 <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
@@ -11607,7 +12524,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>'(<span class="SCst">T</span>, <span class="SCst">N</span>))-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>'(<span class="SCst">T</span>, <span class="SCst">N</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>'(<span class="SCst">T</span>, <span class="SCst">N</span>))-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>'(<span class="SCst">T</span>, <span class="SCst">N</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11619,7 +12536,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>'(<span class="SCst">T</span>, <span class="SCst">N</span>))-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>'(<span class="SCst">T</span>, <span class="SCst">N</span>))-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11777,7 +12694,7 @@
 </table>
 </p>
 <p>Check if two points are equal with an epsilon. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>, eps = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>, eps = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11842,7 +12759,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>)
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>)
 <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
@@ -11855,8 +12772,8 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>
+<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11868,7 +12785,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11880,7 +12797,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12115,7 +13032,7 @@
 </table>
 </p>
 <p>Add a padding (offset to each side). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">applyPadding</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, padding: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">applyPadding</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, padding: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12154,7 +13071,7 @@
 </table>
 </p>
 <p>Central point. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">center</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">center</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12180,7 +13097,7 @@
 </table>
 </p>
 <p>Constrain the rectangle to be inside another one, without changing its size  (so the other rectangle must be bigger). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">constrainIn</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">constrainIn</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12193,9 +13110,9 @@
 </table>
 </p>
 <p>Determines if the specfied point is contained within the rectangular region. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, pt: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, pt: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Determines if the specfied rectangle is contained within the rectangular region. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, rect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, rect: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Determines if the specfied point is contained within the rectangular region. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">const</span> <span class="SKwd">self</span>, x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
@@ -12210,7 +13127,7 @@
 </table>
 </p>
 <p>Creates a rectangle that represents the union between <span class="code-inline">a</span> and <span class="code-inline">b</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getUnion</span>(a: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>, b: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getUnion</span>(a: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>, b: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12251,9 +13168,9 @@
 </table>
 </p>
 <p>Intersect this rectangle with another one. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">intersect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">intersect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)</span></div>
 <p>Creates a rectangle that represents the intersetion between <span class="code-inline">a</span> and <span class="code-inline">b</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">intersect</span>(a: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>, b: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">intersect</span>(a: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>, b: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></div>
 <p> If there is no intersection, Zero is returned. </p>
 <p>
 <table class="api-item">
@@ -12267,7 +13184,7 @@
 </table>
 </p>
 <p>Determines if this rectangle intersets with <span class="code-inline">rect</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">intersectWith</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, rect: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">intersectWith</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, rect: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12397,7 +13314,7 @@
 </table>
 </p>
 <p>Offset the rectangle position by a given value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, offset: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, offset: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>)</span></div>
 <p>Offset the rectangle position by a given value. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, offsetXY: <span class="STpe">f32</span>)</span></div>
 <p>Offset the rectangle position by a x and y values. </p>
@@ -12413,7 +13330,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12467,7 +13384,7 @@
 </table>
 </p>
 <p>Initialize the rectangle with two position. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, topLeft: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>, bottomRight: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, topLeft: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>, bottomRight: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12506,7 +13423,7 @@
 </table>
 </p>
 <p>Creates a rectangle that represents the union. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setUnion</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setUnion</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12626,7 +13543,7 @@
 </table>
 </p>
 <p>Creates a rotation matix, with a given center of rotation. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createRotation</span>(angle: <span class="STpe">f32</span>, centerX: <span class="STpe">f32</span>, centerY: <span class="STpe">f32</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Transform2">Transform2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createRotation</span>(angle: <span class="STpe">f32</span>, centerX: <span class="STpe">f32</span>, centerY: <span class="STpe">f32</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Transform2">Transform2</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12639,7 +13556,7 @@
 </table>
 </p>
 <p>Creates a scale matix, with a given center. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createScale</span>(scaleX: <span class="STpe">f32</span>, scaleY: <span class="STpe">f32</span>, centerX: <span class="STpe">f32</span>, centerY: <span class="STpe">f32</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Transform2">Transform2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createScale</span>(scaleX: <span class="STpe">f32</span>, scaleY: <span class="STpe">f32</span>, centerX: <span class="STpe">f32</span>, centerY: <span class="STpe">f32</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Transform2">Transform2</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12652,7 +13569,7 @@
 </table>
 </p>
 <p>Creates a translation matix. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createTranslation</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Transform2">Transform2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createTranslation</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Transform2">Transform2</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12665,7 +13582,7 @@
 </table>
 </p>
 <p>Multiply two matricies. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">multiply</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, matrix2: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Transform2">Transform2</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">multiply</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, matrix2: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Transform2">Transform2</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13090,7 +14007,7 @@
 </table>
 </p>
 <p>Returns the angle with another vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">angle</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">angle</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13129,7 +14046,7 @@
 </table>
 </p>
 <p>Returns the cosine angle with another vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cosAngle</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cosAngle</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13142,9 +14059,9 @@
 </table>
 </p>
 <p>Returns the Z signed length of the perpendicular vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cross</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cross</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Returns the perpendicular vector in the 2D plane. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cross</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, axis: <span class="STpe">f32</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cross</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, axis: <span class="STpe">f32</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p> <span class="code-inline">axis</span> will give the sign of the result </p>
 <p>
 <table class="api-item">
@@ -13158,7 +14075,7 @@
 </table>
 </p>
 <p>Returns the distance between two vectors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distance</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, dest: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distance</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, dest: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13171,7 +14088,7 @@
 </table>
 </p>
 <p>Returns the square distance between two vectors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, dest: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, dest: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13184,7 +14101,7 @@
 </table>
 </p>
 <p>Returns the distance of the point to the given line. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToLine</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, a: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, b: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToLine</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, a: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, b: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13197,7 +14114,7 @@
 </table>
 </p>
 <p>Returns the distance of the point to the given segment. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToSegment</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, a: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, b: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToSegment</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, a: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, b: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13210,7 +14127,7 @@
 </table>
 </p>
 <p>Returns the dot product between two vectors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dot</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dot</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13236,7 +14153,7 @@
 </table>
 </p>
 <p>Returns true if this vector is equals to another with an epsilon. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13249,7 +14166,7 @@
 </table>
 </p>
 <p>Returns true if the point <span class="code-inline">pt</span> is inside an ellipse. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isInEllipse</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, center: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, radiusX: <span class="STpe">f32</span>, radiusY: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isInEllipse</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, center: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, radiusX: <span class="STpe">f32</span>, radiusY: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13262,7 +14179,7 @@
 </table>
 </p>
 <p>Returns true if the point <span class="code-inline">pt</span> is inside the triangle defined with 'a, b, c'. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isInTriangle</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, a: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, b: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, c: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isInTriangle</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, a: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, b: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, c: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13327,7 +14244,7 @@
 </table>
 </p>
 <p>Lerp one vector with another. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lerp</span>(src: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, dst: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lerp</span>(src: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, dst: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13340,7 +14257,7 @@
 </table>
 </p>
 <p>Compute the intersection point of two lines. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lineLineIntersect</span>(start0: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, end0: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, start1: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, end1: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, epsilon: <span class="STpe">f32</span> = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;{yes: <span class="STpe">bool</span>, pos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>}</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lineLineIntersect</span>(start0: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, end0: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, start1: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, end1: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, epsilon: <span class="STpe">f32</span> = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;{yes: <span class="STpe">bool</span>, pos: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>}</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13353,7 +14270,7 @@
 </table>
 </p>
 <p>Returns a vector which is the <span class="code-inline">min</span> of two vectors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">max</span>(a: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, b: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">max</span>(a: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, b: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13366,7 +14283,7 @@
 </table>
 </p>
 <p>Returns a vector which is the <span class="code-inline">min</span> of two vectors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">min</span>(a: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, b: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">min</span>(a: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, b: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13379,7 +14296,7 @@
 </table>
 </p>
 <p>Returns the minimal segment between two segments (and the minimal distance). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nearestPointsSegSeg</span>(p0: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, p1: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, q0: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, q1: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;{a: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, b: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, dist: <span class="STpe">f32</span>}</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nearestPointsSegSeg</span>(p0: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, p1: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, q0: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, q1: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;{a: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, b: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, dist: <span class="STpe">f32</span>}</span></div>
 <p style="white-space: break-spaces"> David Eberly, Geometric Tools, Redmond WA 98052
  Copyright (c) 1998-2022
  Distributed under the Boost Software License, Version 1.0.
@@ -13448,7 +14365,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)
 <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
@@ -13461,8 +14378,8 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>
+<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13474,7 +14391,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13486,7 +14403,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13499,7 +14416,7 @@
 </table>
 </p>
 <p>Returns true if the given point is inside the polygon  PNPoly by W. Randolph Franklin. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">polyContains</span>(poly: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>), pt: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">polyContains</span>(poly: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Array">Array</a></span>'(<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>), pt: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13512,7 +14429,7 @@
 </table>
 </p>
 <p>Rotate the vector by a given angle. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rotate</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, angle: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Angle">Angle</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rotate</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, angle: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Angle">Angle</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13538,7 +14455,7 @@
 </table>
 </p>
 <p>Compute the intersection point of two segments. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">segSegIntersect</span>(start0: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, end0: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, start1: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, end1: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, epsilon: <span class="STpe">f32</span> = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;{yes: <span class="STpe">bool</span>, pos: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>}</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">segSegIntersect</span>(start0: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, end0: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, start1: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, end1: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, epsilon: <span class="STpe">f32</span> = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;{yes: <span class="STpe">bool</span>, pos: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>}</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13590,7 +14507,7 @@
 </table>
 </p>
 <p>Returns this vector normalized. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalize</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalize</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13603,7 +14520,7 @@
 </table>
 </p>
 <p>Returns this vector normalized even if its length is almost null. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalizeSafe</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalizeSafe</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13771,7 +14688,7 @@
 </table>
 </p>
 <p>Returns the distance between two vectors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distance</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, dest: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distance</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, dest: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13784,7 +14701,7 @@
 </table>
 </p>
 <p>Returns the square distance between two vectors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, dest: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, dest: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13797,7 +14714,7 @@
 </table>
 </p>
 <p>Returns the dot product between two vectors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dot</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dot</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13810,7 +14727,7 @@
 </table>
 </p>
 <p>Returns true if this vector is equals to another with an epsilon. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13875,7 +14792,7 @@
 </table>
 </p>
 <p>Lerp one vector with another. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lerp</span>(src: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>, dst: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lerp</span>(src: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>, dst: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13888,7 +14805,7 @@
 </table>
 </p>
 <p>Returns a vector which is the <span class="code-inline">min</span> of two vectors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">max</span>(a: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>, b: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">max</span>(a: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>, b: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13901,7 +14818,7 @@
 </table>
 </p>
 <p>Returns a vector which is the <span class="code-inline">min</span> of two vectors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">min</span>(a: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>, b: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">min</span>(a: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>, b: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13964,7 +14881,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)
 <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
@@ -13977,8 +14894,8 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>
+<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13990,7 +14907,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14002,7 +14919,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14054,7 +14971,7 @@
 </table>
 </p>
 <p>Returns this vector normalized. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalize</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalize</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14067,7 +14984,7 @@
 </table>
 </p>
 <p>Returns this vector normalized even if its length is almost null. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalizeSafe</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalizeSafe</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14152,7 +15069,7 @@
 </table>
 </p>
 <p>Lerp one vector with another. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lerp</span>(src: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>, dst: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lerp</span>(src: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>, dst: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14176,7 +15093,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14188,7 +15105,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -15264,6 +16181,26 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Noise"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">Noise</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Noise_perlin">perlin</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">s32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Noise_perlin">perlin</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">s32</span>)</span></td>
+<td>Perlin. </td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Noise_perlin"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Noise.</span><span class="api-item-title-strong">perlin</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -15274,6 +16211,22 @@
 <p>Perlin. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">perlin</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, z: <span class="STpe">f32</span>, seed: <span class="STpe">s32</span> = <span class="SNum">1337</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SFct">perlin</span>(x: <span class="STpe">f32</span>, y: <span class="STpe">f32</span>, seed: <span class="STpe">s32</span> = <span class="SNum">1337</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Parser"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">Parser</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Structs</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Core_Parser_RegExp"><span class="SCst">RegExp</span></a></td>
+<td></td>
+</tr>
+</table>
 <p>
 <table class="api-item">
 <tr>
@@ -15678,6 +16631,41 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Random"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">Random</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Structs</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Core_Random_CMWC4096"><span class="SCst">CMWC4096</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Random_MWC"><span class="SCst">MWC</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Random_Mt64"><span class="SCst">Mt64</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Random_Rng"><span class="SCst">Rng</span></a></td>
+<td></td>
+</tr>
+</table>
+<h3>Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_shared">shared</a></span></td>
+<td>Get the default per thread random generator. </td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Random_CMWC4096"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Random.</span><span class="api-item-title-strong">CMWC4096</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -15874,7 +16862,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_Random_Rng">Rng</a></span>(<span class="SCst">T</span> = <span class="SCst">Core</span>.<span class="SCst">Random</span>.<span class="SCst"><a href="#Core_Random_MWC">MWC</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst"><a href="#Core_Random_Rng">Rng</a></span>(<span class="SCst">T</span> = <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Random">Random</a></span>.<span class="SCst"><a href="#Core_Random_MWC">MWC</a></span>)</span></div>
 <table class="table-enumeration">
 <tr>
 <td>rng</td>
@@ -16125,7 +17113,7 @@
 </table>
 </p>
 <p>Get the default per thread random generator. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">shared</span>()-&gt;*<span class="SCst">Core</span>.<span class="SCst">Random</span>.<span class="SCst"><a href="#Core_Random_Rng">Rng</a></span>'(<span class="SCst">Core</span>.<span class="SCst">Random</span>.<span class="SCst"><a href="#Core_Random_MWC">MWC</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">shared</span>()-&gt;*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Random">Random</a></span>.<span class="SCst"><a href="#Core_Random_Rng">Rng</a></span>'(<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Random">Random</a></span>.<span class="SCst"><a href="#Core_Random_MWC">MWC</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -16928,6 +17916,71 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Serialization"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">Serialization</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Structs</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Core_Serialization_Decoder"><span class="SCst">Decoder</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Serialization_Encoder"><span class="SCst">Encoder</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Serialization_Serializer"><span class="SCst">Serializer</span></a></td>
+<td></td>
+</tr>
+</table>
+<h3>Enums</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Core_Serialization_DecoderFlags"><span class="SCst">DecoderFlags</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Serialization_SectionKind"><span class="SCst">SectionKind</span></a></td>
+<td></td>
+</tr>
+</table>
+<h3>Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_isPodFinal">isPodFinal</a></span></td>
+<td>Determin if a type can be serialized by a simple copy. </td>
+</tr>
+</table>
+<h3>Attributes</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Core_Serialization_Alias"><span class="SCst">Alias</span></a></td>
+<td>Accept this other name for the field. </td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Serialization_Final"><span class="SCst">Final</span></a></td>
+<td>The struct does not need versionning. </td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Serialization_NoSerialize"><span class="SCst">NoSerialize</span></a></td>
+<td>Do not serialize a struct or a field. </td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Serialization_PodFinal"><span class="SCst">PodFinal</span></a></td>
+<td>The struct does not need versionning an can be serialized in place. </td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Serialization_Version"><span class="SCst">Version</span></a></td>
+<td>Set the struct version number. </td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Serialization_Alias"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Serialization.</span><span class="api-item-title-strong">Alias</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -16959,7 +18012,7 @@
 </tr>
 <tr>
 <td>flags</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_DecoderFlags">DecoderFlags</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_DecoderFlags">DecoderFlags</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -17009,7 +18062,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, kind: <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, kind: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -17380,7 +18433,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, kind: <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, kind: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -17679,102 +18732,102 @@
 <table class="table-enumeration">
 <tr>
 <td>start</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>end</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>beginField</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>endField</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>beginSection</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>endSection</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>getVersion</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">u32</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">u32</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>read</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, *<span class="STpe">void</span>, <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, *<span class="STpe">void</span>, <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>readBufferU8</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, <span class="STpe">u64</span>)-&gt;*<span class="STpe">u8</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, <span class="STpe">u64</span>)-&gt;*<span class="STpe">u8</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>readBool</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>readS8</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">s8</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">s8</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>readS16</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">s16</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">s16</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>readS32</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">s32</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">s32</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>readS64</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">s64</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">s64</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>readU8</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">u8</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">u8</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>readU16</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">u16</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">u16</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>readU32</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">u32</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">u32</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>readU64</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>readF32</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>readF64</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">f64</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">f64</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -17801,7 +18854,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">self</span>, kind: <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">self</span>, kind: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18032,97 +19085,97 @@
 <table class="table-enumeration">
 <tr>
 <td>start</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, *<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, *<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>end</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>beginField</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>endField</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>beginSection</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>endSection</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>write</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="SKwd">const</span> ^<span class="STpe">void</span>, <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="SKwd">const</span> ^<span class="STpe">void</span>, <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeBufferU8</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="SKwd">const</span> ^<span class="STpe">u8</span>, <span class="STpe">u64</span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="SKwd">const</span> ^<span class="STpe">u8</span>, <span class="STpe">u64</span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeBool</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">bool</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">bool</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeS8</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">s8</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">s8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeS16</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">s16</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">s16</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeS32</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">s32</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">s32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeS64</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">s64</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">s64</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeU8</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">u8</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">u8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeU16</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">u16</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">u16</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeU32</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">u32</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">u32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeU64</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">u64</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeF32</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">f32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeF64</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">f64</span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="STpe">f64</span>)</span></td>
 <td></td>
 </tr>
 </table>
@@ -18149,7 +19202,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">self</span>, kind: <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">self</span>, kind: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18368,27 +19421,27 @@
 <table class="table-enumeration">
 <tr>
 <td>read</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>, <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>, <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>write</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>, <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>, <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>readElement</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>, <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>, *<span class="STpe">void</span>, <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>, <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>, *<span class="STpe">void</span>, <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeElement</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>, <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>, <span class="SKwd">const</span> *<span class="STpe">void</span>, <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>, <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>, <span class="SKwd">const</span> *<span class="STpe">void</span>, <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>postSerialize</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>, *<span class="STpe">void</span>, <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_ISerialize">ISerialize</a></span>, *<span class="STpe">void</span>, <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -18403,7 +19456,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">postSerialize</span>(<span class="SKwd">self</span>, data: *<span class="STpe">void</span>, decoder: <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">postSerialize</span>(<span class="SKwd">self</span>, data: *<span class="STpe">void</span>, decoder: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18415,7 +19468,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">read</span>(<span class="SKwd">self</span>, decoder: <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">read</span>(<span class="SKwd">self</span>, decoder: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18427,7 +19480,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readElement</span>(<span class="SKwd">self</span>, type: <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>, data: *<span class="STpe">void</span>, decoder: <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readElement</span>(<span class="SKwd">self</span>, type: <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>, data: *<span class="STpe">void</span>, decoder: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18439,7 +19492,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">write</span>(<span class="SKwd">self</span>, decoder: <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">write</span>(<span class="SKwd">self</span>, decoder: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18451,7 +19504,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeElement</span>(<span class="SKwd">self</span>, type: <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>, data: <span class="SKwd">const</span> *<span class="STpe">void</span>, decoder: <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeElement</span>(<span class="SKwd">self</span>, type: <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>, data: <span class="SKwd">const</span> *<span class="STpe">void</span>, decoder: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18482,6 +19535,34 @@
 <div class="api-additional-infos"><b>Usage</b>: struct 
 </div>
 <div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Core_Serialization_PodFinal">PodFinal</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Serialization_Read"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Core.Serialization.</span><span class="api-item-title-strong">Read</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Structs</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Core_Serialization_Read_JSon"><span class="SCst">JSon</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Serialization_Read_TagBin"><span class="SCst">TagBin</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Serialization_Read_TagBinOptions"><span class="SCst">TagBinOptions</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Serialization_Read_TagBinSection"><span class="SCst">TagBinSection</span></a></td>
+<td></td>
+</tr>
+</table>
 <p>
 <table class="api-item">
 <tr>
@@ -18621,7 +19702,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, _kind: <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, _kind: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -18809,17 +19890,17 @@
 </tr>
 <tr>
 <td>options</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst">Read</span>.<span class="SCst"><a href="#Core_Serialization_Read_TagBinOptions">TagBinOptions</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_Read">Read</a></span>.<span class="SCst"><a href="#Core_Serialization_Read_TagBinOptions">TagBinOptions</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>freeSections</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ArrayPtr">ArrayPtr</a></span>'(<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst">Read</span>.<span class="SCst"><a href="#Core_Serialization_Write_TagBinSection">TagBinSection</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ArrayPtr">ArrayPtr</a></span>'(<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_Read">Read</a></span>.<span class="SCst"><a href="#Core_Serialization_Write_TagBinSection">TagBinSection</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sections</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ArrayPtr">ArrayPtr</a></span>'(<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst">Read</span>.<span class="SCst"><a href="#Core_Serialization_Write_TagBinSection">TagBinSection</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ArrayPtr">ArrayPtr</a></span>'(<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_Read">Read</a></span>.<span class="SCst"><a href="#Core_Serialization_Write_TagBinSection">TagBinSection</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -18956,7 +20037,7 @@ Changes that are supported from V to V+1 are :</span></div>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, kind: <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>, skipFat = <span class="SKwd">false</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, kind: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>, skipFat = <span class="SKwd">false</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19160,7 +20241,7 @@ Changes that are supported from V to V+1 are :</span></div>
 </tr>
 <tr>
 <td>kind</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -19208,12 +20289,12 @@ Changes that are supported from V to V+1 are :</span></div>
 <table class="table-enumeration">
 <tr>
 <td>encode</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>decode</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -19352,7 +20433,7 @@ Changes that are supported from V to V+1 are :</span></div>
 </table>
 </p>
 <p>Start decoding. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startRead</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, decoder: <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startRead</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, decoder: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19365,7 +20446,7 @@ Changes that are supported from V to V+1 are :</span></div>
 </table>
 </p>
 <p>Start encoding. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startWrite</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, encoder: <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, output: *<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startWrite</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, encoder: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, output: *<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19385,6 +20466,41 @@ Changes that are supported from V to V+1 are :</span></div>
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Serialization_Write"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Core.Serialization.</span><span class="api-item-title-strong">Write</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Structs</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Core_Serialization_Write_JSon"><span class="SCst">JSon</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Serialization_Write_JSonOptions"><span class="SCst">JSonOptions</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Serialization_Write_TagBin"><span class="SCst">TagBin</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Serialization_Write_TagBinSection"><span class="SCst">TagBinSection</span></a></td>
+<td></td>
+</tr>
+</table>
+<h3>Enums</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Core_Serialization_Write_TagBinSignatures"><span class="SCst">TagBinSignatures</span></a></td>
+<td></td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Serialization_Write_JSon"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Write.</span><span class="api-item-title-strong">JSon</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -19395,7 +20511,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <table class="table-enumeration">
 <tr>
 <td>options</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst">Write</span>.<span class="SCst"><a href="#Core_Serialization_Write_JSonOptions">JSonOptions</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_Write">Write</a></span>.<span class="SCst"><a href="#Core_Serialization_Write_JSonOptions">JSonOptions</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -19522,7 +20638,7 @@ Changes that are supported from V to V+1 are :</span></div>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, _kind: <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, _kind: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19709,12 +20825,12 @@ Changes that are supported from V to V+1 are :</span></div>
 </tr>
 <tr>
 <td>freeSections</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ArrayPtr">ArrayPtr</a></span>'(<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst">Write</span>.<span class="SCst"><a href="#Core_Serialization_Write_TagBinSection">TagBinSection</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ArrayPtr">ArrayPtr</a></span>'(<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_Write">Write</a></span>.<span class="SCst"><a href="#Core_Serialization_Write_TagBinSection">TagBinSection</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sections</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ArrayPtr">ArrayPtr</a></span>'(<span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst">Write</span>.<span class="SCst"><a href="#Core_Serialization_Write_TagBinSection">TagBinSection</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ArrayPtr">ArrayPtr</a></span>'(<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_Write">Write</a></span>.<span class="SCst"><a href="#Core_Serialization_Write_TagBinSection">TagBinSection</a></span>)</span></td>
 <td></td>
 </tr>
 </table>
@@ -19812,7 +20928,7 @@ Changes that are supported from V to V+1 are :</span></div>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, kind: <span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, kind: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19969,7 +21085,7 @@ Changes that are supported from V to V+1 are :</span></div>
 </tr>
 <tr>
 <td>kind</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Serialization</span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -21049,6 +22165,22 @@ Changes that are supported from V to V+1 are :</span></div>
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_StrConv_Atod"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Core.StrConv.</span><span class="api-item-title-strong">Atod</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_StrConv_Atod_parse">parse</a></span></td>
+<td></td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_StrConv_Atod_parse"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Atod.</span><span class="api-item-title-strong">parse</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -21123,25 +22255,32 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_ConvertFormatFloat_setFormat"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConvertFormatFloat.</span><span class="api-item-title-strong">setFormat</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\convert.swg#L37" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\convert.swg#L35" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Set some format options with a given user string. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFormat</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, strFormat: <span class="STpe">string</span>)</span></div>
-<p> Format is: </p>
-<p style="white-space: break-spaces"> `[+][fmt][precision]`
-
- `[+]`
-      force the positive sign if number is positive
- `[fmt]` output format:
-      `e (-d.dddde±dd, a decimal exponent)`
-      `E (-d.ddddE±dd, a decimal exponent)`
-      `f (-ddd.dddd, no exponent)`
-      `g ('e' for large exponents, 'f' otherwise)`
-      `G ('E' for large exponents, 'f' otherwise)`
- `[precision]`
-      integer, precision of the fractional part</p>
+<p> Format is <span class="code-inline">[+][fmt][precision]</span> </p>
+<div class="description-list-title"><p><span class="code-inline">+</span></p></div>
+<div class="description-list-block">
+<p> To force the positive sign if the number is positive </p>
+</div>
+<div class="description-list-title"><p><span class="code-inline">fmt</span></p></div>
+<div class="description-list-block">
+<p> This is the output format: </p>
+<table class="table-markdown">
+<tr><td> e </td><td> -d.dddde±dd, a decimal exponent</td></tr>
+<tr><td> E </td><td> -d.ddddE±dd, a decimal exponent</td></tr>
+<tr><td> f </td><td> -ddd.dddd, no exponent</td></tr>
+<tr><td> g </td><td> <span class="code-inline">e</span> for large exponents, <span class="code-inline">f</span> otherwise</td></tr>
+<tr><td> G </td><td> <span class="code-inline">E</span> for large exponents, <span class="code-inline">f</span> otherwise</td></tr>
+</table>
+</div>
+<div class="description-list-title"><p><span class="code-inline">precision</span></p></div>
+<div class="description-list-block">
+<p> A number which is the precision of the fractional part </p>
+</div>
 <p>
 <table class="api-item">
 <tr>
@@ -21149,7 +22288,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_ConvertFormatInt"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">ConvertFormatInt</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\convert.swg#L79" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\convert.swg#L77" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21196,23 +22335,50 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_ConvertFormatInt_setFormat"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConvertFormatInt.</span><span class="api-item-title-strong">setFormat</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\convert.swg#L104" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\convert.swg#L102" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Set some format options with a given user string. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFormat</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, strFormat: <span class="STpe">string</span>)</span></div>
-<p> Format is: </p>
-<p style="white-space: break-spaces"> `[+][B|D|X][padding][width]`
-
- `[+]`
-      force sign for positive numbers
- `[B|D|X]`
-      binary, decimal, hexadecimal
- `[padding]`
-      padding character, in ascii, mandatory before the next field
- `[width]`
-      width of the output, in characters</p>
+<p> The format is <span class="code-inline">[+][fmt][padding][width]</span> </p>
+<div class="description-list-title"><p><span class="code-inline">+</span></p></div>
+<div class="description-list-block">
+<p> To force the positive sign if the number is positive </p>
+</div>
+<div class="description-list-title"><p><span class="code-inline">fmt</span></p></div>
+<div class="description-list-block">
+<p> This is the output format: </p>
+<table class="table-markdown">
+<tr><td> B </td><td> Binary</td></tr>
+<tr><td> D </td><td> Decimal</td></tr>
+<tr><td> X </td><td> Hexadecimal</td></tr>
+</table>
+</div>
+<div class="description-list-title"><p><span class="code-inline">padding</span></p></div>
+<div class="description-list-block">
+<p> The padding character, in ascii. It's mandatory before the next field </p>
+</div>
+<div class="description-list-title"><p><span class="code-inline">width</span></p></div>
+<div class="description-list-block">
+<p> The width of the output, in number of characters </p>
+</div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_StrConv_Dtoa"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Core.StrConv.</span><span class="api-item-title-strong">Dtoa</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_StrConv_Dtoa_parse">parse</a></span></td>
+<td>Convert of floating value to a string. </td>
+</tr>
+</table>
 <p>
 <table class="api-item">
 <tr>
@@ -21220,12 +22386,21 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_Dtoa_parse"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Dtoa.</span><span class="api-item-title-strong">parse</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\dtoa.swg#L352" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\dtoa.swg#L353" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>The format <span class="code-inline">fmt</span> is one of  <span class="code-inline">e</span> (-d.dddde±dd, a decimal exponent)  <span class="code-inline">E</span> (-d.ddddE±dd, a decimal exponent)  <span class="code-inline">f</span> (-ddd.dddd, no exponent)  <span class="code-inline">g</span> (<span class="code-inline">e</span> for large exponents, <span class="code-inline">f</span> otherwise)  <span class="code-inline">G</span> (<span class="code-inline">E</span> for large exponents, <span class="code-inline">f</span> otherwise)  Negative precision means "only as much as needed to be exact.". </p>
+<p>Convert of floating value to a string. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parse</span>(buf: *<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, val: <span class="STpe">f64</span>, fmt: <span class="STpe">u8</span>, precision: <span class="STpe">s64</span>, forceSign: <span class="STpe">bool</span>)</span></div>
+<p> The format <span class="code-inline">fmt</span> is one of: </p>
+<table class="table-markdown">
+<tr><td> e </td><td> -d.dddde±dd, a decimal exponent</td></tr>
+<tr><td> E </td><td> -d.ddddE±dd, a decimal exponent</td></tr>
+<tr><td> f </td><td> -ddd.dddd, no exponent</td></tr>
+<tr><td> g </td><td> <span class="code-inline">e</span> for large exponents, <span class="code-inline">f</span> otherwise</td></tr>
+<tr><td> G </td><td> <span class="code-inline">E</span> for large exponents, <span class="code-inline">f</span> otherwise</td></tr>
+</table>
+<p> A negative precision means <i>only as much as needed to be exact</i> </p>
 <p>
 <table class="api-item">
 <tr>
@@ -21477,7 +22652,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_convert"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">convert</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\convert.swg#L519" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\convert.swg#L517" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21490,7 +22665,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_convertAny"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">convertAny</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\convert.swg#L152" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\convert.swg#L150" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21503,7 +22678,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_convertBool"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">convertBool</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\convert.swg#L505" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\convert.swg#L503" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21516,7 +22691,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_convertFloat"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">convertFloat</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\convert.swg#L483" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\convert.swg#L481" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21531,7 +22706,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_convertInt"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">convertInt</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\convert.swg#L494" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\convert.swg#L492" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21546,7 +22721,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_convertRune"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">convertRune</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\convert.swg#L511" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\convert.swg#L509" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -21559,7 +22734,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_StrConv_convertStruct"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">convertStruct</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\convert.swg#L301" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\convert.swg#L299" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22724,6 +23899,41 @@ Changes that are supported from V to V+1 are :</span></div>
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Sync"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">Sync</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Structs</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Core_Sync_Event"><span class="SCst">Event</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Sync_Mutex"><span class="SCst">Mutex</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Sync_RWLock"><span class="SCst">RWLock</span></a></td>
+<td></td>
+</tr>
+</table>
+<h3>Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Sync_scopedLock">scopedLock</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Sync_sharedLock">sharedLock</a></span></td>
+<td></td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Sync_Event"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Sync.</span><span class="api-item-title-strong">Event</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -22781,7 +23991,7 @@ Changes that are supported from V to V+1 are :</span></div>
 </table>
 </p>
 <p>Creates a new event. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>()-&gt;<span class="SCst">Core</span>.<span class="SCst">Sync</span>.<span class="SCst"><a href="#Core_Sync_Event">Event</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>()-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_Sync">Sync</a></span>.<span class="SCst"><a href="#Core_Sync_Event">Event</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24991,6 +26201,98 @@ Changes that are supported from V to V+1 are :</span></div>
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Unicode"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">Unicode</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Unicode_fromUtf8">fromUtf8</a></span><span class="SCde">([..] <span class="STpe">rune</span>, <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></td>
+<td>Convert an utf8 buffer to a character sequence, and returns the  number of valid elements in the destination buffer. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Unicode_fromUtf8">fromUtf8</a></span><span class="SCde">(<span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></td>
+<td>Convert an utf8 buffer to a character sequence. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Unicode_isAscii">isAscii</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Unicode_isControl">isControl</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Unicode_isDigit">isDigit</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Unicode_isLatin1">isLatin1</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Unicode_isLetter">isLetter</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Unicode_isLetterOrDigit">isLetterOrDigit</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Unicode_isLower">isLower</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Unicode_isNumber">isNumber</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Unicode_isSpace">isSpace</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Unicode_isSymbol">isSymbol</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Unicode_isSymbolMath">isSymbolMath</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Unicode_isTitle">isTitle</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Unicode_isUpper">isUpper</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Unicode_makeLower">makeLower</a></span></td>
+<td>Make a rune buffer lower case. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Unicode_makeUpper">makeUpper</a></span></td>
+<td>Make a rune buffer upper case. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Unicode_toLower">toLower</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Unicode_toTitle">toTitle</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Unicode_toUpper">toUpper</a></span></td>
+<td></td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Unicode_fromUtf8"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Unicode.</span><span class="api-item-title-strong">fromUtf8</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -25848,17 +27150,6 @@ Generated on 04-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 
 </div>
 
     <script> 
-// Save the scroll position before the page is refreshed
-window.addEventListener('beforeunload', function() {
-  localStorage.setItem('scrollPosition', window.scrollY);
-});
-
-// Scroll to the saved position after the page is loaded
-window.addEventListener('load', function() {
-  if (localStorage.getItem('scrollPosition') !== null) {
-    window.scrollTo(0, parseInt(localStorage.getItem('scrollPosition')));
-  }
-});
 		function getOffsetTop(element) {
 			let offsetTop = 0;
 			while (element) {

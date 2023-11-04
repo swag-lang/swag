@@ -109,6 +109,17 @@
 <div class="left">
 <div class="left-page">
 <h2>Table of Contents</h2>
+<h3>Namespaces</h3>
+<h4></h4>
+<ul>
+<li><a href="#Pixel_Bmp">Bmp</a></li>
+<li><a href="#Pixel_Clipper">Clipper</a></li>
+<li><a href="#Pixel_Gif">Gif</a></li>
+<li><a href="#Pixel_Jpg">Jpg</a></li>
+<li><a href="#Pixel_Png">Png</a></li>
+<li><a href="#Pixel_Poly2Tri">Poly2Tri</a></li>
+<li><a href="#Pixel_Tga">Tga</a></li>
+</ul>
 <h3>Structs</h3>
 <h4>image</h4>
 <ul>
@@ -1356,6 +1367,30 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Pixel_Bmp"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Pixel.</span><span class="api-item-title-strong">Bmp</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Structs</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Pixel_Bmp_Decoder"><span class="SCst">Decoder</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Pixel_Bmp_Encoder"><span class="SCst">Encoder</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Pixel_Bmp_Header"><span class="SCst">Header</span></a></td>
+<td></td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Pixel_Bmp_Decoder"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Bmp.</span><span class="api-item-title-strong">Decoder</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -1654,6 +1689,49 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Pixel_Clipper"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Pixel.</span><span class="api-item-title-strong">Clipper</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Structs</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Pixel_Clipper_IntPoint"><span class="SCst">IntPoint</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Pixel_Clipper_Transform"><span class="SCst">Transform</span></a></td>
+<td></td>
+</tr>
+</table>
+<h3>Enums</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Pixel_Clipper_ClipType"><span class="SCst">ClipType</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Pixel_Clipper_InitOptions"><span class="SCst">InitOptions</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Pixel_Clipper_JoinType"><span class="SCst">JoinType</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Pixel_Clipper_PolyFillType"><span class="SCst">PolyFillType</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Pixel_Clipper_PolyType"><span class="SCst">PolyType</span></a></td>
+<td></td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Pixel_Clipper_ClipType"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Clipper.</span><span class="api-item-title-strong">ClipType</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -1745,7 +1823,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Pixel</span>.<span class="SCst">Clipper</span>.<span class="SCst"><a href="#Pixel_Clipper_IntPoint">IntPoint</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Clipper">Clipper</a></span>.<span class="SCst"><a href="#Pixel_Clipper_IntPoint">IntPoint</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3054,6 +3132,22 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Pixel_Gif"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Pixel.</span><span class="api-item-title-strong">Gif</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Structs</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Pixel_Gif_Decoder"><span class="SCst">Decoder</span></a></td>
+<td></td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Pixel_Gif_Decoder"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Gif.</span><span class="api-item-title-strong">Decoder</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -4231,7 +4325,7 @@
 <span id="Pixel_Image_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Image.</span><span class="api-item-title-strong">clear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L173" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L170" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4270,7 +4364,7 @@
 <span id="Pixel_Image_copyPixel"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Image.</span><span class="api-item-title-strong">copyPixel</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L181" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L178" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4441,7 +4535,7 @@
 <span id="Pixel_Image_getPixelColor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Image.</span><span class="api-item-title-strong">getPixelColor</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L208" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L205" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4584,7 +4678,7 @@
 <span id="Pixel_Image_release"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Image.</span><span class="api-item-title-strong">release</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L166" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L163" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4662,7 +4756,7 @@
 <span id="Pixel_Image_setPixelRGBA8"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Image.</span><span class="api-item-title-strong">setPixelRGBA8</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L199" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L196" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4819,20 +4913,22 @@
 <span id="Pixel_Image_visitPixels"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Image.</span><span class="api-item-title-strong">visitPixels</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L142" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L139" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Macro to visit all pixels of the image in parallel chunks. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span> <span class="SFct">visitPixels</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="SKwd">self</span>, userData: *<span class="STpe">void</span> = <span class="SKwd">null</span>, stride: <span class="STpe">s32</span> = <span class="SNum">1</span>, stmt: <span class="STpe">code</span>)</span></div>
-<p style="white-space: break-spaces"> Exported variables:
- 'pix'        address of the pixel
- 'image'      the processed image
- 'index'      the pixel index
- 'x'          the pixel x coordinates
- 'y'          the pixel y coordinates
- 'userData'</p>
+<p> Exported variables: </p>
+<table class="table-markdown">
+<tr><td> pix       </td><td> address of the pixel</td></tr>
+<tr><td> image     </td><td> the processed image</td></tr>
+<tr><td> index     </td><td> the pixel index</td></tr>
+<tr><td> x         </td><td> the pixel x coordinates</td></tr>
+<tr><td> y         </td><td> the pixel y coordinates</td></tr>
+<tr><td>  userData </td><td> as passed to the macro</td></tr>
+</table>
 <p>
 <table class="api-item">
 <tr>
@@ -4884,6 +4980,30 @@
 </tr>
 <tr>
 <td>MiterBevel</td>
+<td></td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_Jpg"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Pixel.</span><span class="api-item-title-strong">Jpg</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Structs</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Pixel_Jpg_Decoder"><span class="SCst">Decoder</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Pixel_Jpg_EncodeOptions"><span class="SCst">EncodeOptions</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Pixel_Jpg_Encoder"><span class="SCst">Encoder</span></a></td>
 <td></td>
 </tr>
 </table>
@@ -5095,17 +5215,17 @@
 </tr>
 <tr>
 <td>points</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>triangles</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>edgeList</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span>)</span></td>
 <td></td>
 </tr>
 </table>
@@ -7357,6 +7477,30 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Pixel_Png"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Pixel.</span><span class="api-item-title-strong">Png</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Structs</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Pixel_Png_Decoder"><span class="SCst">Decoder</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Pixel_Png_EncodeOptions"><span class="SCst">EncodeOptions</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Pixel_Png_Encoder"><span class="SCst">Encoder</span></a></td>
+<td></td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Pixel_Png_Decoder"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Png.</span><span class="api-item-title-strong">Decoder</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -7450,6 +7594,34 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Pixel_Poly2Tri"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Pixel.</span><span class="api-item-title-strong">Poly2Tri</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Structs</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Pixel_Poly2Tri_Edge"><span class="SCst">Edge</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Pixel_Poly2Tri_Point"><span class="SCst">Point</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Pixel_Poly2Tri_Tesselate"><span class="SCst">Tesselate</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Pixel_Poly2Tri_Triangle"><span class="SCst">Triangle</span></a></td>
+<td></td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Pixel_Poly2Tri_Edge"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Poly2Tri.</span><span class="api-item-title-strong">Edge</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -7460,12 +7632,12 @@
 <table class="table-enumeration">
 <tr>
 <td>p</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>q</td>
-<td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
+<td class="code-type"><span class="SCde">*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -7488,12 +7660,12 @@
 </tr>
 <tr>
 <td>edgeList</td>
-<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span>)</span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">Core</span>.<span class="SCst">Array</span>'(*<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td>border</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">2</span>] *<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">2</span>] *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Edge">Edge</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -7586,7 +7758,7 @@
 </table>
 </p>
 <p>Returns the list of triangles. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTriangles</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;[..] *<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTriangles</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;[..] *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7637,12 +7809,12 @@
 </tr>
 <tr>
 <td>points</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">3</span>] *<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">3</span>] *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Point">Point</a></span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>neighbors</td>
-<td class="code-type"><span class="SCde">[<span class="SNum">3</span>] *<span class="SCst">Pixel</span>.<span class="SCst">Poly2Tri</span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span></span></td>
+<td class="code-type"><span class="SCde">[<span class="SNum">3</span>] *<span class="SCst">Pixel</span>.<span class="SCst"><a href="#Pixel_Poly2Tri">Poly2Tri</a></span>.<span class="SCst"><a href="#Pixel_Poly2Tri_Triangle">Triangle</a></span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -9279,6 +9451,26 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Pixel_Tga"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Pixel.</span><span class="api-item-title-strong">Tga</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Structs</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Pixel_Tga_Decoder"><span class="SCst">Decoder</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Pixel_Tga_Encoder"><span class="SCst">Encoder</span></a></td>
+<td></td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Pixel_Tga_Decoder"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Tga.</span><span class="api-item-title-strong">Decoder</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -9656,17 +9848,6 @@ Generated on 04-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 
 </div>
 
     <script> 
-// Save the scroll position before the page is refreshed
-window.addEventListener('beforeunload', function() {
-  localStorage.setItem('scrollPosition', window.scrollY);
-});
-
-// Scroll to the saved position after the page is loaded
-window.addEventListener('load', function() {
-  if (localStorage.getItem('scrollPosition') !== null) {
-    window.scrollTo(0, parseInt(localStorage.getItem('scrollPosition')));
-  }
-});
 		function getOffsetTop(element) {
 			let offsetTop = 0;
 			while (element) {

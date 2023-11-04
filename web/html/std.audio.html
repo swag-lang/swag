@@ -109,6 +109,11 @@
 <div class="left">
 <div class="left-page">
 <h2>Table of Contents</h2>
+<h3>Namespaces</h3>
+<h4></h4>
+<ul>
+<li><a href="#Audio_Wav">Wav</a></li>
+</ul>
 <h3>Structs</h3>
 <h4></h4>
 <ul>
@@ -937,6 +942,22 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></div
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Audio_Wav"><span class="api-item-title-kind">namespace</span> <span class="api-item-title-light">Audio.</span><span class="api-item-title-strong">Wav</span></span>
+</td>
+</tr>
+</table>
+</p>
+<h3>Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Audio_Wav_loadFile">loadFile</a></span></td>
+<td>Load a wav file. </td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Audio_Wav_loadFile"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Wav.</span><span class="api-item-title-strong">loadFile</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -1046,17 +1067,6 @@ Generated on 04-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 
 </div>
 
     <script> 
-// Save the scroll position before the page is refreshed
-window.addEventListener('beforeunload', function() {
-  localStorage.setItem('scrollPosition', window.scrollY);
-});
-
-// Scroll to the saved position after the page is loaded
-window.addEventListener('load', function() {
-  if (localStorage.getItem('scrollPosition') !== null) {
-    window.scrollTo(0, parseInt(localStorage.getItem('scrollPosition')));
-  }
-});
 		function getOffsetTop(element) {
 			let offsetTop = 0;
 			while (element) {

@@ -19,21 +19,19 @@ struct ConvertFormatFloat
 impl ConvertFormatFloat
 {
     // Set some format options with a given user string.
-    // Format is:
-    // ---
-    // `[+][fmt][precision]`
+    // Format is `[+][fmt][precision]`
     //
-    // `[+]`
-    //      force the positive sign if number is positive
-    // `[fmt]` output format:
-    //      `e (-d.dddde±dd, a decimal exponent)`
-    //      `E (-d.ddddE±dd, a decimal exponent)`
-    //      `f (-ddd.dddd, no exponent)`
-    //      `g ('e' for large exponents, 'f' otherwise)`
-    //      `G ('E' for large exponents, 'f' otherwise)`
-    // `[precision]`
-    //      integer, precision of the fractional part
-    // ---
+    // + '+' 
+    //     To force the positive sign if the number is positive
+    // + 'fmt' 
+    //     This is the output format:
+    //     | e | -d.dddde±dd, a decimal exponent
+    //     | E | -d.ddddE±dd, a decimal exponent
+    //     | f | -ddd.dddd, no exponent
+    //     | g | 'e' for large exponents, 'f' otherwise
+    //     | G | 'E' for large exponents, 'f' otherwise
+    // + 'precision' 
+    //     A number which is the precision of the fractional part
     mtd setFormat(strFormat: string)
     {
         let buffer = @dataof(strFormat)
@@ -88,19 +86,19 @@ struct ConvertFormatInt
 impl ConvertFormatInt
 {
     // Set some format options with a given user string.
-    // Format is:
-    // ---
-    // `[+][B|D|X][padding][width]`
+    // The format is `[+][fmt][padding][width]`
     //
-    // `[+]`
-    //      force sign for positive numbers
-    // `[B|D|X]`
-    //      binary, decimal, hexadecimal
-    // `[padding]`
-    //      padding character, in ascii, mandatory before the next field
-    // `[width]`
-    //      width of the output, in characters
-    // ---
+    // + `+`
+    //     To force the positive sign if the number is positive
+    // + `fmt`
+    //     This is the output format:
+    //     | B | Binary
+    //     | D | Decimal
+    //     | X | Hexadecimal
+    // + `padding`
+    //     The padding character, in ascii. It's mandatory before the next field
+    // + `width`
+    //     The width of the output, in number of characters
     mtd setFormat(strFormat: string)
     {
         let buffer = @dataof(strFormat)
