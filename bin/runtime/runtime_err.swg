@@ -18,9 +18,11 @@ func __setErr(err: any)
     else
     {
         let data = @dataof(err)        
-        let type = @kindof(err)
+        let type = cast(const *Swag.TypeInfoStruct) @kindof(err)
         let ptr = cxt.errorAllocator.alloc(cast(u64) type.sizeof)
         @memcpy(ptr, data, cast(u64) type.sizeof)
+        if type.opPostCopy
+            type.opPostCopy(ptr)
         cxt.errors[cxt.errorIndex].value = @mkany(ptr, type)
     }
 

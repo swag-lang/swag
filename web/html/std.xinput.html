@@ -159,72 +159,72 @@
 <table class="table-enumeration">
 <tr>
 <td id="XInput_XINPUT_GAMEPAD_A">XINPUT_GAMEPAD_A</td>
-<td class="code-type"></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td id="XInput_XINPUT_GAMEPAD_B">XINPUT_GAMEPAD_B</td>
-<td class="code-type"></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td id="XInput_XINPUT_GAMEPAD_BACK">XINPUT_GAMEPAD_BACK</td>
-<td class="code-type"></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td id="XInput_XINPUT_GAMEPAD_DPAD_DOWN">XINPUT_GAMEPAD_DPAD_DOWN</td>
-<td class="code-type"></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td id="XInput_XINPUT_GAMEPAD_DPAD_LEFT">XINPUT_GAMEPAD_DPAD_LEFT</td>
-<td class="code-type"></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td id="XInput_XINPUT_GAMEPAD_DPAD_RIGHT">XINPUT_GAMEPAD_DPAD_RIGHT</td>
-<td class="code-type"></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td id="XInput_XINPUT_GAMEPAD_DPAD_UP">XINPUT_GAMEPAD_DPAD_UP</td>
-<td class="code-type"></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td id="XInput_XINPUT_GAMEPAD_LEFT_SHOULDER">XINPUT_GAMEPAD_LEFT_SHOULDER</td>
-<td class="code-type"></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td id="XInput_XINPUT_GAMEPAD_LEFT_THUMB">XINPUT_GAMEPAD_LEFT_THUMB</td>
-<td class="code-type"></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td id="XInput_XINPUT_GAMEPAD_RIGHT_SHOULDER">XINPUT_GAMEPAD_RIGHT_SHOULDER</td>
-<td class="code-type"></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td id="XInput_XINPUT_GAMEPAD_RIGHT_THUMB">XINPUT_GAMEPAD_RIGHT_THUMB</td>
-<td class="code-type"></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td id="XInput_XINPUT_GAMEPAD_START">XINPUT_GAMEPAD_START</td>
-<td class="code-type"></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td id="XInput_XINPUT_GAMEPAD_X">XINPUT_GAMEPAD_X</td>
-<td class="code-type"></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td id="XInput_XINPUT_GAMEPAD_Y">XINPUT_GAMEPAD_Y</td>
-<td class="code-type"></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 </table>
@@ -242,37 +242,37 @@
 <table class="table-enumeration">
 <tr>
 <td>wButtons</td>
-<td class="code-type"><span class="SCst">WORD</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td>bLeftTrigger</td>
-<td class="code-type"><span class="SCst">BYTE</span></td>
+<td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
 <td>bRightTrigger</td>
-<td class="code-type"><span class="SCst">BYTE</span></td>
+<td class="code-type"><span class="STpe">u8</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sThumbLX</td>
-<td class="code-type"><span class="SCst">SHORT</span></td>
+<td class="code-type"><span class="STpe">s16</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sThumbLY</td>
-<td class="code-type"><span class="SCst">SHORT</span></td>
+<td class="code-type"><span class="STpe">s16</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sThumbRX</td>
-<td class="code-type"><span class="SCst">SHORT</span></td>
+<td class="code-type"><span class="STpe">s16</span></td>
 <td></td>
 </tr>
 <tr>
 <td>sThumbRY</td>
-<td class="code-type"><span class="SCst">SHORT</span></td>
+<td class="code-type"><span class="STpe">s16</span></td>
 <td></td>
 </tr>
 </table>
@@ -290,12 +290,12 @@
 <table class="table-enumeration">
 <tr>
 <td>dwPacketNumber</td>
-<td class="code-type"><span class="SCst">DWORD</span></td>
+<td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
 <tr>
 <td>Gamepad</td>
-<td class="code-type"><span class="SCst"><a href="#XInput_XINPUT_GAMEPAD">XINPUT_GAMEPAD</a></span></td>
+<td class="code-type"><span class="SCde"><span class="SCst">XInput</span>.<span class="SCst"><a href="#XInput_XINPUT_GAMEPAD">XINPUT_GAMEPAD</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -313,12 +313,12 @@
 <table class="table-enumeration">
 <tr>
 <td>wLeftMotorSpeed</td>
-<td class="code-type"><span class="SCst">WORD</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 <tr>
 <td>wRightMotorSpeed</td>
-<td class="code-type"><span class="SCst">WORD</span></td>
+<td class="code-type"><span class="STpe">u16</span></td>
 <td></td>
 </tr>
 </table>
@@ -333,7 +333,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">XInputGetState</span>(dwUserIndex: <span class="SCst">DWORD</span>, pState: *<span class="SCst"><a href="#XInput_XINPUT_STATE">XINPUT_STATE</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">XInputGetState</span>(dwUserIndex: <span class="SCst">Win32</span>.<span class="SCst">DWORD</span>, pState: *<span class="SCst">XInput</span>.<span class="SCst"><a href="#XInput_XINPUT_STATE">XINPUT_STATE</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">DWORD</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -345,7 +345,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">XInputSetState</span>(dwUserIndex: <span class="SCst">DWORD</span>, pVibration: *<span class="SCst"><a href="#XInput_XINPUT_VIBRATION">XINPUT_VIBRATION</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">XInputSetState</span>(dwUserIndex: <span class="SCst">Win32</span>.<span class="SCst">DWORD</span>, pVibration: *<span class="SCst">XInput</span>.<span class="SCst"><a href="#XInput_XINPUT_VIBRATION">XINPUT_VIBRATION</a></span>)-&gt;<span class="SCst">Win32</span>.<span class="SCst">DWORD</span></span></div>
 <div class="swag-watermark">
 Generated on 04-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>

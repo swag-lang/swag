@@ -2,7 +2,7 @@
 #global namespace Format
 using Swag
 
-// Check if this is a valid 'fmt' 'values' pair, coherent with 'format' specification
+// Check if this is a valid 'fmt/values' pair, coherent with 'format' specification
 func checkFormat(fct: string, fmt: string, values: ...)
 {
     let cptPercent = countPercent(fmt)
@@ -14,8 +14,8 @@ func checkFormat(fct: string, fmt: string, values: ...)
     }
 }
 
-// Count the number of valid '%' placeholders in the string format
-// Note that %% will not be counted, as this represents the '%' character
+// Count the number of valid '%' placeholders in the string format.
+// Note that '%%' will not be counted, as this represents the '%' character
 #[ConstExpr]
 func countPercent(fmt: string)->u32
 {
@@ -34,8 +34,8 @@ func countPercent(fmt: string)->u32
     return cptPercent
 }
 
-// Format a string in 'dest'
-// Can be lot faster than the convenient version which returns a string
+// Format a string in 'dest'.
+// Can be a lot faster than the convenient version which returns a String.
 func replaceString(dest: *String, fmt: string, values: ...)
     #validifx
     {
@@ -146,8 +146,8 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
         buf.addBytes(cast(const [..] u8) @mkslice(ptr + idx, cast(u64) nextIdx - idx))
 }
 
-// String interolation
-// Format is "my {<value to interpolate>:format}
+// String interpolation.
+// Format is `{<value to interpolate>:format}`
 #[Macro]
 func toInterp(buf: *ConcatBuffer, exp: string)
     #validifx
@@ -206,8 +206,7 @@ func toInterp(buf: *ConcatBuffer, exp: string)
     }
 }
 
-// String interolation
-// Format is "my {<value to interpolate>:format}
+// String interpolation.
 #[Mixin]
 func toInterp(exp: string)->String
     #validifx

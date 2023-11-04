@@ -9,8 +9,8 @@ public
     const ParseErrorIncomplete = "incomplete format"
 }
 
-// Convert an utf8 buffer in hexadecimal to an unsigned integer value
-// Returns the value and the number of bytes used to make the conversion
+// Convert an utf8 buffer in hexadecimal to an unsigned integer value.
+// Returns the value and the number of bytes used to make the conversion.
 // 'ovf' will be true in case of overflow
 func parseX64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
 {
@@ -51,8 +51,8 @@ func parseX64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
     return result
 }
 
-// Convert an utf8 buffer in binary to an unsigned integer value
-// Returns the value and the number of bytes used to make the conversion
+// Convert an utf8 buffer in binary to an unsigned integer value.
+// Returns the value and the number of bytes used to make the conversion.
 // 'ovf' will be true in case of overflow
 func parseB64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
 {
@@ -88,8 +88,8 @@ func parseB64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
     return result
 }
 
-// Convert an utf8 buffer in decimal to an unsigned integer value
-// Returns the value and the number of bytes used to make the conversion
+// Convert an utf8 buffer in decimal to an unsigned integer value.
+// Returns the value and the number of bytes used to make the conversion.
 // 'ovf' will be true in case of overflow
 func parseU8(str: string) -> {value: u8, eat: u32, ovf: bool} throw
 {
@@ -181,8 +181,8 @@ func parseU64(str: string) -> {value: u64, eat: u32, ovf: bool} throw
     return result
 }
 
-// Convert an utf8 buffer to an signed integer value
-// Returns the value and the number of bytes used to make the conversion
+// Convert an utf8 buffer to an signed integer value.
+// Returns the value and the number of bytes used to make the conversion.
 // 'ovf' will be true in case of overflow
 func parseS8(str: string) -> {value: s8, eat: u32, ovf: bool} throw
 {
@@ -291,8 +291,8 @@ func parseS64(str: string) -> {value: s64, eat: u32, ovf: bool} throw
     return result
 }
 
-// Convert an utf8 buffer to a floating point value
-// Returns the value and the number of bytes used to make the conversion
+// Convert an utf8 buffer to a floating point value.
+// Returns the value and the number of bytes used to make the conversion.
 // 'ovf' will be true in case of overflow
 func parseF32(str: string) -> {value: f32, eat: u32, ovf: bool} throw
 {
@@ -309,7 +309,7 @@ func parseF64(str: string) -> {value: f64, eat: u32, ovf: bool} throw
     return try StrConv.Atod.parse(str)
 }
 
-// Convert an utf8 buffer to a boolean
+// Convert an utf8 buffer to a boolean.
 // Returns the value and the number of bytes used to make the conversion
 func parseBool(str: string) -> {value: bool, eat: u32} throw
 {
@@ -355,7 +355,7 @@ func parseIdentifier(str: string)->string throw
     return @mkstring(@dataof(str), cpt)
 }
 
-// Convert an utf8 buffer to a Core.String
+// Convert an utf8 buffer to a String.
 // String in the buffer can be quoted (but the result will not be in that case)
 func parseString(str: string) -> {value: String, eat: u32} throw
 {
