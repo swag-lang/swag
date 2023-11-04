@@ -5399,7 +5399,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 
 <h2 id="130_generic">Generic</h2>
-<h3 id="130_generic_131_001_declaration">Declaration</h3><p>A function can be generic by specifying some parameters after <span class="code-inline">func</span>. At the call site, you specify the generic parameters with <span class="code-inline">funcCall</span>(type1, type2, ...)(parameters)<span class="code-inline">.</code> Note that parenthesis can be omitted if there's only one generic parameter. </p>
+<h3 id="130_generic_131_001_declaration">Declaration</h3><p>A function can be generic by specifying some parameters after <span class="code-inline">func</span>. At the call site, you specify the generic parameters with <span class="code-inline">funcCall'(type1, type2, ...)(parameters)</span>. Note that parenthesis can be omitted if there's only one generic parameter. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     {
@@ -5438,7 +5438,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>'(<span class="STpe">s32</span>, <span class="STpe">bool</span>)(<span class="SNum">2</span>, <span class="SKwd">true</span>) == <span class="SKwd">true</span>)
     }
 }</span></div>
-<p>Generic types can be deduced from parameters, so <span class="code-inline">func</span>type()<span class="code-inline"> is not always necessary.</code> </p>
+<p>Generic types can be deduced from parameters, so <span class="code-inline">func'type()</span> is not always necessary. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">myFunc</span>(val: <span class="SCst">T</span>) =&gt; <span class="SNum">2</span> * val
@@ -7318,7 +7318,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="230_documentation_231_003_Pages">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 03-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
+Generated on 04-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
 </div>
 </div>

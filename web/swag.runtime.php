@@ -211,7 +211,7 @@
 <li><a href="#Swag_F64_Nan">F64.Nan</a></li>
 <li><a href="#Swag_F64_NegInf">F64.NegInf</a></li>
 <li><a href="#Swag_MaxErrors">MaxErrors</a></li>
-<li><a href="#Swag_MaxLenErrorMsg">MaxLenErrorMsg</a></li>
+<li><a href="#Swag_MaxLenErrorValue">MaxLenErrorValue</a></li>
 <li><a href="#Swag_MaxTraces">MaxTraces</a></li>
 <li><a href="#Swag_S16_Max">S16.Max</a></li>
 <li><a href="#Swag_S16_Min">S16.Min</a></li>
@@ -484,9 +484,9 @@
 <td>Maximum nested errors. </td>
 </tr>
 <tr>
-<td id="Swag_MaxLenErrorMsg">MaxLenErrorMsg</td>
+<td id="Swag_MaxLenErrorValue">MaxLenErrorValue</td>
 <td class="code-type"><span class="STpe">s32</span></td>
-<td>Maximum length of an error message. </td>
+<td>Maximum length of an error stored value. </td>
 </tr>
 <tr>
 <td id="Swag_MaxTraces">MaxTraces</td>
@@ -971,7 +971,7 @@
 <span id="@compilererror"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@compilererror</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L84" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L97" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -984,7 +984,7 @@
 <span id="@compilerwarning"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@compilerwarning</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L96" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L109" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1035,7 +1035,7 @@
 <span id="@err"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@err</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L56" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L69" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1324,7 +1324,7 @@
 <span id="@panic"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@panic</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L109" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L122" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3460,9 +3460,9 @@
 <p>Store a <span class="code-inline">throw</span> error informations. </p>
 <table class="table-enumeration">
 <tr>
-<td>msgBuf</td>
+<td>buf</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">128</span>] <span class="STpe">u8</span></span></td>
-<td>Buffer to store the error message. </td>
+<td>Buffer to store the error value. </td>
 </tr>
 <tr>
 <td>msg</td>
@@ -5303,7 +5303,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 03-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
+Generated on 04-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
 </div>
 </div>

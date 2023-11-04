@@ -347,7 +347,7 @@
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SCst">XInputSetState</span>(dwUserIndex: <span class="SCst">DWORD</span>, pVibration: *<span class="SCst"><a href="#XInput_XINPUT_VIBRATION">XINPUT_VIBRATION</a></span>)</span></div>
 <div class="swag-watermark">
-Generated on 03-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
+Generated on 04-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
 </div>
 </div>

@@ -5,7 +5,7 @@ Here is a very simple script that implements the [Flappy Bird](https://en.wikipe
 
     $ swag flappy.swgs
 
-The goal here is to comment a real life example of swag usage. But it's better to read the basic language [documentation](language.php) first, as we will not going too deep into the details.
+The goal here is to comment a real-life example of Swag usage. However, it's better to read the basic language [documentation](language.php) first, as we will not go too deep into the details.
 
 > NOTE:
 > This page has been generated with Swag directly from the [source code](https://github.com/swag-lang/swag/blob/master/bin/examples/scripts/flappy.swgs).
@@ -14,7 +14,7 @@ So, let's begin.
 
 # Dependencies
 
-Normally, you'd put the '#dependency' block in the 'module.swg' file of a module. But if it's a script and there's no 'module.swg', you just put it at the top of the script file.
+Typically, you'd place the '#dependency' block inside the 'module.swg' file of a module. However, if you're working with a script and there isn't a 'module.swg' file, simply put it at the beginning of the script file.
 
 This special '#dependencies' compiler block is used to specify :
 
@@ -57,6 +57,11 @@ So in our case, we need to import the module 'gui'. This module is used to creat
             cfg.safetyGuards = Swag.SafetyNone
     }
 }
+
+/**
+> NOTE:
+> You might observe that there's no need to end the lines with a ';' like in C or C++. While it's still possible, this is not mandatory.
+*/
 
 /**
 Every module has its individual namespace. To avoid the necessity of mentioning it each time we wish to reference something, we include a global 'using' statement immediately after the '#dependency' block.
@@ -107,28 +112,38 @@ const BirdImpulseY = 350        // 350 is an integer, so the type of BirdImpulse
 ## Variables
 */
 
-var g_Bird:      Bird
-var g_Pipes:     Array'Pipe
+var g_Bird:      Bird           // 'Bird' is a structure, and will be defined later
 
 /**
-'g_Pipes' is a **dynamic** and **generic array** where all the elements are of type 'Pipe'. In other languages, you would write 'Array<Pipe>'. 'Array' comes from the 'Core' module.
+'g_Pipes' is a **dynamic** and **generic array** where all the elements are of type 'Pipe'. In other languages, you would write 'Array<Pipe>'. 'Array' comes from the 'Core' module, but thanks to the global `using Core`, we do not need to write `Core.Array'Pipe`.
 */
-var g_Rect:      Math.Rectangle
+
+var g_Pipes:     Array'Pipe
 
 /**
 'Math' is a namespace part of the 'Core' module. We could have specified a global `using Core.Math` at the top of the script file, but here, we prefer the explicit reference.
 */
 
+var g_Rect:      Math.Rectangle
+
+/**
+Here is a bunch of global variables. All of them are initialized to 0 by default.
+*/
 var g_Dt:        f32
 var g_Time:      f32
 var g_BasePos:   f32
 var g_Score:     s32
 var g_GameOver:  bool
 var g_Start:     bool
-var g_FirstStart = true
 
 /**
 Again, no need to specify the type of 'g_FirstStart'. It is deduced from the affectation to be 'bool'.
+*/
+
+var g_FirstStart = true
+
+
+/**
 */
 
 // Texture assets
@@ -148,12 +163,12 @@ var g_SoundHit:     Audio.SoundFile
 var g_SoundFlap:    Audio.SoundFile
 
 /**
+'g_Font' is a **value** pointer to a Font structure.
 */
+
 var g_Font: *Font
 
 /**
-'g_Font' is a **value** pointer to the score font.
-
 In Swag, their are two types of pointers.
 * 'value' pointers, which points to one single value. Declared with '*'
 * 'block' pointers, which points to multiple values. Declared with '^'.
@@ -202,7 +217,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         g_Rect = wnd.getClientRect()
 
         // 'loadAssets' can raise some errors (we'll see later). So here we 'assume' that
-        // everyting will be fine. If an error is raised, a 'panic' will occur.
+        // everything will be fine. If an error is raised, a 'panic' will occur.
         assume loadAssets(wnd)
 
         start()
@@ -233,7 +248,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 }
 
 /**
-Paint function. Here we are mostly using functions from the 'Pixel' module.
+This is the function to paint the game. Here we are mostly using functions from the 'Pixel' module.
 */
 func paint(painter: *Painter)
 {
@@ -276,7 +291,9 @@ func paint(painter: *Painter)
         painter.drawTexture(pt.x, pt.y, g_BirdTexture[frame])
     }
 
-    // Draw pipes
+    // Draw pipes.
+    // 'visit' loop on all the pipes stored in the dynamic array, and returns each value 
+    // as a pointer/reference.
     visit pipe: g_Pipes
     {
         painter.drawTexture(pipe.rectUp, g_PipeTextureU)

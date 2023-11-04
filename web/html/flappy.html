@@ -107,13 +107,13 @@
 <p><img src="imgs/flappy.png" alt=""> </p>
 <p>Here is a very simple script that implements the <a href="https://en.wikipedia.org/wiki/Flappy_Bird">Flappy Bird</a> game. To have some fun and play with it, go to the <span class="code-inline">bin/examples/scripts</span> folder, and type : </p>
 <div class="code-block"><span class="SCde">$ swag flappy.swgs</span></div>
-<p>The goal here is to comment a real life example of swag usage. But it's better to read the basic language <a href="language.php">documentation</a> first, as we will not going too deep into the details. </p>
+<p>The goal here is to comment a real-life example of Swag usage. However, it's better to read the basic language <a href="language.php">documentation</a> first, as we will not go too deep into the details. </p>
 <div class="blockquote blockquote-note">
 <div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> This page has been generated with Swag directly from the <a href="https://github.com/swag-lang/swag/blob/master/bin/examples/scripts/flappy.swgs">source code</a>. </p>
 </div>
 <p>So, let's begin. </p>
 <h1 id="">Dependencies </h1>
-<p>Normally, you'd put the <span class="code-inline">#dependency</span> block in the <span class="code-inline">module.swg</span> file of a module. But if it's a script and there's no <span class="code-inline">module.swg</span>, you just put it at the top of the script file. </p>
+<p>Typically, you'd place the <span class="code-inline">#dependency</span> block inside the <span class="code-inline">module.swg</span> file of a module. However, if you're working with a script and there isn't a <span class="code-inline">module.swg</span> file, simply put it at the beginning of the script file. </p>
 <p>This special <span class="code-inline">#dependencies</span> compiler block is used to specify : </p>
 <div class="description-list-title"><p>External dependencies</p></div>
 <div class="description-list-block">
@@ -156,6 +156,9 @@
             cfg.safetyGuards = <span class="SCst">Swag</span>.<span class="SCst">SafetyNone</span>
     }
 }</span></div>
+<div class="blockquote blockquote-note">
+<div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> You might observe that there's no need to end the lines with a <span class="code-inline">;</span> like in C or C++. While it's still possible, this is not mandatory. </p>
+</div>
 <p>Every module has its individual namespace. To avoid the necessity of mentioning it each time we wish to reference something, we include a global <span class="code-inline">using</span> statement immediately after the <span class="code-inline">#dependency</span> block. </p>
 <p>The <span class="code-inline">gui</span> module depends on <span class="code-inline">pixel</span> which depends on <span class="code-inline">core</span>. So we bring all the three namespaces into the file scope. Note that we keep <span class="code-inline">Audio</span> as it is. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">using</span> <span class="SCst">Core</span>, <span class="SCst">Pixel</span>, <span class="SCst">Gui</span></span></div>
@@ -190,19 +193,20 @@
 <span class="SKwd">const</span> <span class="SCst">SpeedHorz</span>    = <span class="SNum">100.0</span>
 <span class="SKwd">const</span> <span class="SCst">BirdImpulseY</span> = <span class="SNum">350</span>        <span class="SCmt">// 350 is an integer, so the type of BirdImpulseY is 's32'</span></span></div>
 <h2 id="">Variables </h2>
-<div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Bird:      <span class="SCst">Bird</span>
-<span class="SKwd">var</span> g_Pipes:     <span class="SCst">Array</span>'<span class="SCst">Pipe</span></span></div>
-<p><span class="code-inline">g_Pipes</span> is a <b>dynamic</b> and <b>generic array</b> where all the elements are of type <span class="code-inline">Pipe</span>. In other languages, you would write <span class="code-inline">Array&lt;Pipe&gt;</span>. <span class="code-inline">Array</span> comes from the <span class="code-inline">Core</span> module. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Rect:      <span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Bird:      <span class="SCst">Bird</span>           <span class="SCmt">// 'Bird' is a structure, and will be defined later</span></span></div>
+<p><span class="code-inline">g_Pipes</span> is a <b>dynamic</b> and <b>generic array</b> where all the elements are of type <span class="code-inline">Pipe</span>. In other languages, you would write <span class="code-inline">Array&lt;Pipe&gt;</span>. <span class="code-inline">Array</span> comes from the <span class="code-inline">Core</span> module, but thanks to the global <span class="code-inline">using Core</span>, we do not need to write <span class="code-inline">Core.Array'Pipe</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Pipes:     <span class="SCst">Array</span>'<span class="SCst">Pipe</span></span></div>
 <p><span class="code-inline">Math</span> is a namespace part of the <span class="code-inline">Core</span> module. We could have specified a global <span class="code-inline">using Core.Math</span> at the top of the script file, but here, we prefer the explicit reference. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Rect:      <span class="SCst">Math</span>.<span class="SCst">Rectangle</span></span></div>
+<p>Here is a bunch of global variables. All of them are initialized to 0 by default. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Dt:        <span class="STpe">f32</span>
 <span class="SKwd">var</span> g_Time:      <span class="STpe">f32</span>
 <span class="SKwd">var</span> g_BasePos:   <span class="STpe">f32</span>
 <span class="SKwd">var</span> g_Score:     <span class="STpe">s32</span>
 <span class="SKwd">var</span> g_GameOver:  <span class="STpe">bool</span>
-<span class="SKwd">var</span> g_Start:     <span class="STpe">bool</span>
-<span class="SKwd">var</span> g_FirstStart = <span class="SKwd">true</span></span></div>
+<span class="SKwd">var</span> g_Start:     <span class="STpe">bool</span></span></div>
 <p>Again, no need to specify the type of <span class="code-inline">g_FirstStart</span>. It is deduced from the affectation to be <span class="code-inline">bool</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_FirstStart = <span class="SKwd">true</span></span></div>
 <div class="code-block"><span class="SCde"><span class="SCmt">// Texture assets</span>
 <span class="SKwd">var</span> g_DigitTexture: [<span class="SNum">10</span>] <span class="SCst">Texture</span>    <span class="SCmt">// A static array of 10 textures</span>
 <span class="SKwd">var</span> g_BirdTexture:  [<span class="SNum">3</span>] <span class="SCst">Texture</span>     <span class="SCmt">// A static array of 3 textures</span>
@@ -218,8 +222,8 @@
 <span class="SKwd">var</span> g_SoundScore:   <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>
 <span class="SKwd">var</span> g_SoundHit:     <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span>
 <span class="SKwd">var</span> g_SoundFlap:    <span class="SCst">Audio</span>.<span class="SCst">SoundFile</span></span></div>
+<p><span class="code-inline">g_Font</span> is a <b>value</b> pointer to a Font structure. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Font: *<span class="SCst">Font</span></span></div>
-<p><span class="code-inline">g_Font</span> is a <b>value</b> pointer to the score font. </p>
 <p>In Swag, their are two types of pointers. </p>
 <ul>
 <li><span class="code-inline">value</span> pointers, which points to one single value. Declared with <span class="code-inline">*</span></li>
@@ -260,7 +264,7 @@
         g_Rect = wnd.<span class="SFct">getClientRect</span>()
 
         <span class="SCmt">// 'loadAssets' can raise some errors (we'll see later). So here we 'assume' that</span>
-        <span class="SCmt">// everyting will be fine. If an error is raised, a 'panic' will occur.</span>
+        <span class="SCmt">// everything will be fine. If an error is raised, a 'panic' will occur.</span>
         <span class="SKwd">assume</span> <span class="SFct">loadAssets</span>(wnd)
 
         <span class="SFct">start</span>()
@@ -289,7 +293,7 @@
 
     <span class="SLgc">return</span> <span class="SKwd">false</span>
 }</span></div>
-<p>Paint function. Here we are mostly using functions from the <span class="code-inline">Pixel</span> module. </p>
+<p>This is the function to paint the game. Here we are mostly using functions from the <span class="code-inline">Pixel</span> module. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">paint</span>(painter: *<span class="SCst">Painter</span>)
 {
     <span class="SCmt">// Draw the background texture at position (0, 0). The size of the texture is preserved.</span>
@@ -331,7 +335,9 @@
         painter.<span class="SFct">drawTexture</span>(pt.x, pt.y, g_BirdTexture[frame])
     }
 
-    <span class="SCmt">// Draw pipes</span>
+    <span class="SCmt">// Draw pipes.</span>
+    <span class="SCmt">// 'visit' loop on all the pipes stored in the dynamic array, and returns each value </span>
+    <span class="SCmt">// as a pointer/reference.</span>
     <span class="SLgc">visit</span> pipe: g_Pipes
     {
         painter.<span class="SFct">drawTexture</span>(pipe.rectUp, g_PipeTextureU)
@@ -549,7 +555,7 @@
     g_Font = <span class="SCst">Font</span>.<span class="SFct">create</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"FlappyBirdy.ttf"</span>), <span class="SNum">50</span>)
 }</span></div>
 <div class="swag-watermark">
-Generated on 03-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
+Generated on 04-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
 </div>
 </div>

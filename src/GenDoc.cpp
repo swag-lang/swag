@@ -637,7 +637,7 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
     if (user.empty())
         return "";
 
-    bool inCodeMode       = false;
+    int  inCodeMode       = 0;
     bool inBoldMode       = false;
     bool inItalicMode     = false;
     bool inBoldItalicMode = false;
@@ -797,11 +797,11 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
         }
 
         // 'word'
-        if (*pz == '\'')
+        if (*pz == '\'' && inCodeMode != 2)
         {
             if (inCodeMode)
             {
-                inCodeMode = false;
+                inCodeMode = 0;
                 result += "</span>";
                 pz++;
                 continue;
@@ -812,7 +812,7 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
                 pz1++;
             if (*pz1 == '\'')
             {
-                inCodeMode = true;
+                inCodeMode = 1;
                 result += "<span class=\"code-inline\">";
                 pz++;
                 continue;
@@ -823,9 +823,12 @@ Utf8 GenDoc::getFormattedText(const Utf8& user)
         }
 
         // embedded code line
-        if (*pz == '`')
+        if (*pz == '`' && inCodeMode != 1)
         {
-            inCodeMode = !inCodeMode;
+            if (inCodeMode)
+                inCodeMode = 0;
+            else
+                inCodeMode = 2;
             if (inCodeMode)
                 result += "<span class=\"code-inline\">";
             else

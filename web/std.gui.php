@@ -114,7 +114,7 @@
 <h1>Module gui</h1>
 <h1>Content</h1>
 <div class="swag-watermark">
-Generated on 03-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
+Generated on 04-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
 </div>
 </div>

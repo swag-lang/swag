@@ -129,7 +129,7 @@ voice.<span class="SFct">setVolume</span>(<span class="SNum">0.5</span>)
 voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></div>
 <h1>Content</h1>
 <div class="swag-watermark">
-Generated on 03-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
+Generated on 04-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
 </div>
 </div>
