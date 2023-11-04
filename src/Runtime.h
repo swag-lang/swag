@@ -114,13 +114,11 @@ enum class SwagExceptionKind
     Warning,
 };
 
-const auto SWAG_MAX_LEN_ERROR_VALUE = 128;
-const auto SWAG_MAX_ERRORS          = 32;
-const auto SWAG_MAX_TRACES          = 32;
+const auto SWAG_MAX_ERRORS = 32;
+const auto SWAG_MAX_TRACES = 32;
 
 typedef struct SwagError
 {
-    uint8_t   buf[SWAG_MAX_LEN_ERROR_VALUE];
     SwagSlice msg;
     SwagAny   value;
     uint32_t  pushUsedAlloc;

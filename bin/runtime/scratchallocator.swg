@@ -9,6 +9,7 @@ impl ScratchAllocator
         size:   u64
     }
 
+    // Adapt the value depending on the requested alignement
     func align(value: u64, alignement: u32)->u64
     {
         let toAlign = alignement orelse @sizeof(*void)
@@ -18,6 +19,7 @@ impl ScratchAllocator
         return result
     }
 
+    // Free a block, if possible.
     mtd free(addr: *void, size: u64)
     {
         var req: AllocatorRequest
@@ -27,6 +29,7 @@ impl ScratchAllocator
         allocator.req(&req)
     }
 
+    // Allocate a block
     mtd alloc(size: u64, alignement: u32 = 0)->*void
     {
         var req: AllocatorRequest

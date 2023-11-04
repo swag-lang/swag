@@ -1,4 +1,4 @@
-#global testerror "Err0570"
+/*#global testerror "Err0570"
 
 struct A 
 {
@@ -9,3 +9,4 @@ func toto() throw
 {
     throw A{}
 }
+*/

@@ -5,11 +5,11 @@ func setError(errorMessageID: u32) throw
 {
     if errorMessageID == 0 return
 
-    var errorMsg: [Swag.MaxLenErrorValue] u8
+    var errorMsg: [128] u8
     var len: u32
 
     let lang = cast(DWORD) MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT)
-    len = FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, null, errorMessageID, lang, cast(LPCSTR) &errorMsg[0], cast(DWORD) Swag.MaxLenErrorValue, null);
+    len = FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, null, errorMessageID, lang, cast(LPCSTR) &errorMsg[0], cast(DWORD) 128, null);
     if !len return
 
     // Trim right, remove trailing dots, remove trailing non printable characters

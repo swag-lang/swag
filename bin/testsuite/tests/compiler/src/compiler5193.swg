@@ -1,4 +1,4 @@
-#global testerror "Err0573"
+/*#global testerror "Err0573"
 
 struct A {x: s32}
 impl A {
@@ -12,4 +12,4 @@ func toto() throw
 #test
 {
     catch toto()
-}
+}*/

@@ -38,14 +38,13 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     // swag_error_t
     {
         llvm::Type* members[] = {
-            llvm::ArrayType::get(I8_TY(), SWAG_MAX_LEN_ERROR_VALUE), // buf
-            PTR_I8_TY(),                                             // msg
-            I64_TY(),                                                // msg
-            PTR_I8_TY(),                                             // value
-            PTR_I8_TY(),                                             // value
-            I32_TY(),                                                // pushUsedAlloc
-            I16_TY(),                                                // pushHasError
-            I16_TY()};                                               // pushTraceIndex
+            PTR_I8_TY(), // msg
+            I64_TY(),    // msg
+            PTR_I8_TY(), // value
+            PTR_I8_TY(), // value
+            I32_TY(),    // pushUsedAlloc
+            I16_TY(),    // pushHasError
+            I16_TY()};   // pushTraceIndex
         pp.errorTy = llvm::StructType::create(context, members, "swag_error_t");
     }
 
@@ -80,7 +79,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             I32_TY(),                                                       // hasError
         };
 
-        static_assert(sizeof(SwagContext) == 5888);
+        static_assert(sizeof(SwagContext) == 1792);
         pp.contextTy = llvm::StructType::create(context, members, "swag_context_t");
         SWAG_ASSERT(pp.contextTy->isSized());
     }

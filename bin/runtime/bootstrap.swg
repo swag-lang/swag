@@ -374,16 +374,14 @@ namespace Swag
         Warning
     }
 
-    const MaxLenErrorValue = 128 // Maximum length of an error stored value
-    const MaxErrors = 32         // Maximum nested errors
-    const MaxTraces = 32         // Maximum error traces
+    const MaxErrors = 32    // Maximum nested errors
+    const MaxTraces = 32    // Maximum error traces
 
     // Store a 'throw' error informations
-    struct Error
+    struct ErrorValue
     {
-        buf:            [MaxLenErrorValue] u8   // Buffer to store the error value
-        msg:            string                  // Error message
-        value:          any                     // Error value (or null)
+        msg:            string  // Error message
+        value:          any     // Error value (or null)
         pushUsedAlloc:  u32
         pushHasError:   u16
         pushTraceIndex: u16
@@ -402,7 +400,7 @@ namespace Swag
         tempAllocator:      ScratchAllocator                        // A temporary allocator for the user
         errorAllocator:     ScratchAllocator                        // A temporary allocator to store the error values
         traces:             [MaxTraces] const *SourceCodeLocation   // Stack trace, in case of errors
-        errors:             [MaxErrors] Error                       // All errors
+        errors:             [MaxErrors] ErrorValue                  // All errors
         exceptionLoc:       SourceCodeLocation                      // When an exception is raised, this is the code location
         exceptionParams:    [4] const *void                         // When an exception is raised, this are the parameters
         panic:              func(string, SourceCodeLocation)        // A function to call if there's a panic

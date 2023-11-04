@@ -5226,25 +5226,7 @@ bool SemanticJob::resolveThrow(SemanticContext* context)
     SWAG_CHECK(checkCanThrow(context));
 
     auto type = TypeManager::concretePtrRefType(expr->typeInfo);
-    if (type->isStruct())
-    {
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(type, TypeInfoKind::Struct);
-        if (!typeStruct->isPlainOldData())
-        {
-            Diagnostic diag{expr, Fmt(Err(Err0573), typeStruct->getDisplayNameC())};
-            return context->report(diag);
-        }
-
-        if (typeStruct->sizeOf > SWAG_MAX_LEN_ERROR_VALUE)
-        {
-            Diagnostic diag{expr, Fmt(Err(Err0570), typeStruct->getDisplayNameC(), SWAG_MAX_LEN_ERROR_VALUE, typeStruct->sizeOf)};
-            return context->report(diag);
-        }
-    }
-    else
-    {
-        SWAG_VERIFY(type->isString(), Report::internalError(expr, Fmt("only type string is supported in throw! (got '%s' instead)", type->getDisplayNameC())));
-    }
+    SWAG_VERIFY(type->isStruct() || type->isString(), Report::internalError(expr, Fmt("only type 'string' or 'struct' are supported in throw! (got '%s' instead)", type->getDisplayNameC())));
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoAny, node, expr, CASTFLAG_AUTO_OPCAST | CASTFLAG_CONCRETE_ENUM));
     node->byteCodeFct = ByteCodeGenJob::emitThrow;
