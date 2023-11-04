@@ -384,8 +384,9 @@ namespace Swag
         buf:            [MaxLenErrorValue] u8   // Buffer to store the error value
         msg:            string                  // Error message
         value:          any                     // Error value (or null)
-        pushHasError:   u32
-        pushTraceIndex: u32
+        pushUsedAlloc:  u32
+        pushHasError:   u16
+        pushTraceIndex: u16
     }
 
     // Thread context as returned by [@context].
@@ -398,16 +399,16 @@ namespace Swag
 
         // Other fields, can be in any order
 
-        tempAllocator:      ScratchAllocator        // A temporary allocator
-
+        tempAllocator:      ScratchAllocator                        // A temporary allocator for the user
+        errorAllocator:     ScratchAllocator                        // A temporary allocator to store the error values
         traces:             [MaxTraces] const *SourceCodeLocation   // Stack trace, in case of errors
         errors:             [MaxErrors] Error                       // All errors
         exceptionLoc:       SourceCodeLocation                      // When an exception is raised, this is the code location
         exceptionParams:    [4] const *void                         // When an exception is raised, this are the parameters
         panic:              func(string, SourceCodeLocation)        // A function to call if there's a panic
         errorIndex:         u32                                     // Number of errors in the array
-        traceIndex:         u32                                     // The current trace index
-        hasError:           u32                                     // != 0 if an error is raised
+        traceIndex:         u32                                     // Number of traces in the array
+        hasError:           u32                                     // <> 0 if an error is raised
     }
 
     // #########################################################
@@ -760,7 +761,8 @@ namespace Swag
         moduleNamespace:    string      // The namespace name of the module
         embbedImports       = false     // Module should embbed all its dependencies
 
-        scratchAllocatorCapacity    = 4'u32 * 1024 * 1024 // Default capacity of the 'temp' allocator (in bytes)
+        tempAllocatorCapacity       = 4'u32 * 1024 * 1024 // Default capacity of the 'temp' allocator (in bytes)
+        errorAllocatorCapacity      = 16'u32 * 1024       // Default capacity of the 'error' allocator (in bytes)
         safetyGuards: u16           = SafetyAll           // Activate specific safety checks
         debugAllocator              = true                // Use Swag.DebugAllocator by default
         debugAllocatorCaptureStack  = true                // Capture the call stack for each allocation

@@ -135,7 +135,8 @@ func __setupRuntime(flags: RuntimeFlags)
     __runtimeFlags = flags
 
     let cxt = @getcontext()
-    cxt.tempAllocator.setCapacity(acast __buildCfg.scratchAllocatorCapacity, cxt.allocator)
+    cxt.tempAllocator.setCapacity(acast __buildCfg.tempAllocatorCapacity, cxt.allocator)
+    cxt.errorAllocator.setCapacity(acast __buildCfg.errorAllocatorCapacity, cxt.allocator)
 
     if __buildCfg.debugAllocator
     {

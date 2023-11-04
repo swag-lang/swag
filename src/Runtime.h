@@ -123,8 +123,9 @@ typedef struct SwagError
     uint8_t   buf[SWAG_MAX_LEN_ERROR_VALUE];
     SwagSlice msg;
     SwagAny   value;
-    uint32_t  pushHasError;
-    uint32_t  pushTraceIndex;
+    uint32_t  pushUsedAlloc;
+    uint16_t  pushHasError;
+    uint16_t  pushTraceIndex;
 } SwagError;
 
 typedef struct SwagContext
@@ -132,6 +133,7 @@ typedef struct SwagContext
     SwagInterface           allocator;
     uint64_t                flags;
     SwagScratchAllocator    tempAllocator;
+    SwagScratchAllocator    errorAllocator;
     SwagSourceCodeLocation* traces[SWAG_MAX_TRACES];
     SwagError               errors[SWAG_MAX_ERRORS];
     SwagSourceCodeLocation  exceptionLoc;
@@ -274,7 +276,8 @@ struct BuildCfg
     bool      embeddedImports = false;
 
     // Debug
-    uint32_t scratchAllocatorCapacity   = 4 * 1024 * 1024;
+    uint32_t tempAllocatorCapacity      = 4 * 1024 * 1024;
+    uint32_t errorAllocatorCapacity     = 16 * 1024;
     uint16_t safetyGuards               = SAFETY_ALL;
     bool     debugAllocator             = true;
     bool     debugAllocatorCaptureStack = true;

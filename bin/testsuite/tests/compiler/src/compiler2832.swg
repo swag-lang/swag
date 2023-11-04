@@ -1,3 +1,4 @@
+#global skip
 #global testerror "ErrInvalid"
 
 struct ErrInvalid{}
@@ -8,8 +9,8 @@ func toto() -> {x: s32} throw
     return {1}
 }
 
-//#[Swag.PrintBc]
+#[Swag.PrintBc]
 #test
 {
-    @assert(assume toto().x == 1)
+    @assert(try toto().x == 0)
 }

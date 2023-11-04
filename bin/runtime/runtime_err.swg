@@ -32,8 +32,11 @@ func __pushErr()
 {
     let cxt = @getcontext()
     @assert(cxt.errorIndex < MaxErrors)
-    cxt.errors[cxt.errorIndex].pushHasError = cxt.hasError
-    cxt.errors[cxt.errorIndex].pushTraceIndex = cxt.traceIndex
+
+    cxt.errors[cxt.errorIndex].pushHasError   = cast(u16) cxt.hasError
+    cxt.errors[cxt.errorIndex].pushTraceIndex = cast(u16) cxt.traceIndex
+    cxt.errors[cxt.errorIndex].pushUsedAlloc  = cast(u32) cxt.errorAllocator.used
+
     cxt.errorIndex += 1
 }
 
@@ -42,8 +45,10 @@ func __popErr()
     let cxt = @getcontext()
     @assert(cxt.errorIndex != 0)
     cxt.errorIndex -= 1
-    cxt.hasError = cxt.errors[cxt.errorIndex].pushHasError
-    cxt.traceIndex = cxt.errors[cxt.errorIndex].pushTraceIndex
+
+    cxt.hasError            = cast(u16) cxt.errors[cxt.errorIndex].pushHasError
+    cxt.traceIndex          = cast(u16) cxt.errors[cxt.errorIndex].pushTraceIndex
+    cxt.errorAllocator.used = cast(u32) cxt.errors[cxt.errorIndex].pushUsedAlloc
 }
 
 func __failedAssume(loc: SourceCodeLocation)

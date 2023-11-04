@@ -43,9 +43,24 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             I64_TY(),                                                // msg
             PTR_I8_TY(),                                             // value
             PTR_I8_TY(),                                             // value
-            I32_TY(),                                                // pushHasError
-            I32_TY()};                                               // pushTraceIndex
+            I32_TY(),                                                // pushUsedAlloc
+            I16_TY(),                                                // pushHasError
+            I16_TY()};                                               // pushTraceIndex
         pp.errorTy = llvm::StructType::create(context, members, "swag_error_t");
+    }
+
+    // SwagScratchAllocator
+    {
+        llvm::Type* members[] = {
+            pp.interfaceTy, // ScratchAllocator allocator
+            PTR_I8_TY(),    // ScratchAllocator block
+            I64_TY(),       // ScratchAllocator capacity
+            I64_TY(),       // ScratchAllocator used
+            I64_TY(),       // ScratchAllocator maxUsed
+            PTR_I8_TY(),    // ScratchAllocator firstLeak
+            I64_TY(),       // ScratchAllocator totalLeak
+            I64_TY()};      // ScratchAllocator maxLeak
+        pp.scratchTy = llvm::StructType::create(context, members, "SwagScratchAllocator");
     }
 
     // swag_context_t
@@ -53,14 +68,8 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
         llvm::Type* members[] = {
             pp.interfaceTy,                                                 // allocator
             I64_TY(),                                                       // flags
-            pp.interfaceTy,                                                 // ScratchAllocator allocator
-            PTR_I8_TY(),                                                    // ScratchAllocator block
-            I64_TY(),                                                       // ScratchAllocator capacity
-            I64_TY(),                                                       // ScratchAllocator used
-            I64_TY(),                                                       // ScratchAllocator maxUsed
-            PTR_I8_TY(),                                                    // ScratchAllocator firstLeak
-            I64_TY(),                                                       // ScratchAllocator totalLeak
-            I64_TY(),                                                       // ScratchAllocator maxLeak
+            pp.scratchTy,                                                   // tempAllocator
+            pp.scratchTy,                                                   // errorAllocator
             llvm::ArrayType::get(I8_TY(), SWAG_MAX_TRACES * sizeof(void*)), // traces
             llvm::ArrayType::get(pp.errorTy, SWAG_MAX_ERRORS),              // errors
             llvm::ArrayType::get(I8_TY(), sizeof(SwagSourceCodeLocation)),  // exceptionLoc
@@ -71,7 +80,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             I32_TY(),                                                       // hasError
         };
 
-        static_assert(sizeof(SwagContext) == 5816);
+        static_assert(sizeof(SwagContext) == 5888);
         pp.contextTy = llvm::StructType::create(context, members, "swag_context_t");
         SWAG_ASSERT(pp.contextTy->isSized());
     }

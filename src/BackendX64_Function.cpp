@@ -4685,6 +4685,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::InternalClearErr:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
             pp.emit_Store32_Immediate(offsetof(SwagContext, hasError), 0, RAX);
+            pp.emit_Store64_Immediate(offsetof(SwagContext, errorAllocator) + offsetof(SwagScratchAllocator, used), 0, RAX);
             break;
         case ByteCodeOp::InternalPushErr:
             emitCall(pp, g_LangSpec->name__pusherr);
