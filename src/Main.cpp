@@ -94,6 +94,7 @@ int main(int argc, const char* argv[])
     {
         g_CommandLine.genDoc   = true;
         g_CommandLine.buildCfg = "fast-compile";
+        g_CommandLine.rebuild  = true;
         g_Workspace->build();
     }
     else if (command == "test")
