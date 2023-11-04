@@ -60,8 +60,16 @@ func replaceString(dest: *String, fmt: string, values: ...)
 }
 
 // Format a string and returns the result as a String.
-// * See [[ConvertFormatInt.setFormat]]
-// * See [[ConvertFormatFloat.setFormat]]
+// Use '%' as a place holder for a value.
+// ```swag
+// let x = Format.toString("my life is %", myLife)
+// ```
+// '%' can be followed by a format option between '{}'.
+// ```swag
+// let x = Format.toString("my life in hexadecimal is %{X}", myLife)
+// ```
+// * See [[ConvertFormatInt.setFormat]] for some valid format options
+// * See [[ConvertFormatFloat.setFormat]] for some valid format options
 func toString(fmt: string, values: ...)->String
     #validifx
     {
@@ -78,7 +86,7 @@ func toString(fmt: string, values: ...)->String
     return buf.toString()
 }
 
-// Format a string and put the result in a ConcatBuffer
+// Format a string and put the result in a ConcatBuffer.
 func append(buf: *ConcatBuffer, fmt: string, values: ...)
     #validifx
     {

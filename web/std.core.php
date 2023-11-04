@@ -7055,7 +7055,7 @@
 <span id="Core_Format_append"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Format.</span><span class="api-item-title-strong">append</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\format.swg#L82" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\format.swg#L90" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7109,7 +7109,7 @@
 <span id="Core_Format_toInterp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Format.</span><span class="api-item-title-strong">toInterp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\format.swg#L154" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\format.swg#L162" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7127,15 +7127,19 @@
 <span id="Core_Format_toString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Format.</span><span class="api-item-title-strong">toString</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\format.swg#L65" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\format.swg#L73" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Format a string and returns the result as a String. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(fmt: <span class="STpe">string</span>, values: ...)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<p> Use <span class="code-inline">%</span> as a place holder for a value. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">let</span> x = <span class="SCst">Format</span>.<span class="SFct">toString</span>(<span class="SStr">"my life is %"</span>, myLife)</span></div>
+<p> <span class="code-inline">%</span> can be followed by a format option between <span class="code-inline">{}</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">let</span> x = <span class="SCst">Format</span>.<span class="SFct">toString</span>(<span class="SStr">"my life in hexadecimal is %{X}"</span>, myLife)</span></div>
 <ul>
-<li>See <a href="#Core_StrConv_ConvertFormatInt_setFormat">ConvertFormatInt.setFormat</a></li>
-<li>See <a href="#Core_StrConv_ConvertFormatFloat_setFormat">ConvertFormatFloat.setFormat</a></li>
+<li>See <a href="#Core_StrConv_ConvertFormatInt_setFormat">ConvertFormatInt.setFormat</a> for some valid format options</li>
+<li>See <a href="#Core_StrConv_ConvertFormatFloat_setFormat">ConvertFormatFloat.setFormat</a> for some valid format options</li>
 </ul>
 <p>
 <table class="api-item">
