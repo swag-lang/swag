@@ -374,7 +374,8 @@ impl ConcatBuffer
         }
     }
 
-    // Convert to a slice *only* if the buffer is linear (see 'makeLinear')
+    // Convert to a slice *only* if the buffer is linear, or return null.
+    // See [[ConcatBuffer.makeLinear]]
     mtd toSlice()->[..] u8
     {
         if lastBucket == firstBucket
@@ -393,13 +394,16 @@ impl ConcatBuffer
         currentSP = firstBucket.datas
     }
 
-    // Convert buffer to a String
-    mtd toString()->String
+    // Convert the buffer to a String.
+    // A copy will be made, so the buffer is still valid after the call.
+    // See [[ConcatBuffer.moveToString]]
+    mtd toString(alloc: Swag.IAllocator = null)->String
     {
         var result: retval
         if !firstBucket
             return result
 
+        result.allocator = alloc
         result.reserve(count() + 1)
 
         var ptr = firstBucket
@@ -412,7 +416,7 @@ impl ConcatBuffer
         return result
     }
 
-    mtd eatBuffer()->{data: ^u8, size: u64, capacity: u64}
+    internal mtd eatBuffer()->{data: ^u8, size: u64, capacity: u64}
     {
         // Must be linear ?
         Debug.assert(lastBucket == firstBucket)
@@ -428,12 +432,13 @@ impl ConcatBuffer
         return {rdata, rcount, rcapacity}
     }
 
-    // Move the content
+    // Move the content of the buffer to the String if possible.
+    // If a direct move is not possible because the buffer contains more than on bucket, then a copy will be made instead.
     mtd moveToString()->String
     {
         // Make a copy, as we have more than one bucket
         if lastBucket != firstBucket
-            return toString()
+            return toString(allocator)
 
         // Otherwise we can just eat the buffer
         var eat = eatBuffer()

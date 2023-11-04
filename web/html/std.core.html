@@ -554,7 +554,6 @@
 <li><a href="#Core_ConcatBuffer_addStruct">ConcatBuffer.addStruct</a></li>
 <li><a href="#Core_ConcatBuffer_clear">ConcatBuffer.clear</a></li>
 <li><a href="#Core_ConcatBuffer_count">ConcatBuffer.count</a></li>
-<li><a href="#Core_ConcatBuffer_eatBuffer">ConcatBuffer.eatBuffer</a></li>
 <li><a href="#Core_ConcatBuffer_getOffset">ConcatBuffer.getOffset</a></li>
 <li><a href="#Core_ConcatBuffer_getSeek">ConcatBuffer.getSeek</a></li>
 <li><a href="#Core_ConcatBuffer_grow">ConcatBuffer.grow</a></li>
@@ -4588,10 +4587,6 @@
 <td>Returns the number of bytes. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_eatBuffer">eatBuffer</a></span></td>
-<td></td>
-</tr>
-<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_getOffset">getOffset</a></span></td>
 <td>Get the linearized seek offset. </td>
 </tr>
@@ -4613,7 +4608,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_moveToString">moveToString</a></span></td>
-<td>Move the content. </td>
+<td>Move the content of the buffer to the String if possible. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_release">release</a></span></td>
@@ -4641,11 +4636,11 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_toSlice">toSlice</a></span></td>
-<td>Convert to a slice <i>only</i> if the buffer is linear (see <span class="code-inline">makeLinear</span>). </td>
+<td>Convert to a slice <i>only</i> if the buffer is linear, or return null. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_ConcatBuffer_toString">toString</a></span></td>
-<td>Convert buffer to a String. </td>
+<td>Convert the buffer to a String. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
@@ -4728,18 +4723,6 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_ConcatBuffer_eatBuffer"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">eatBuffer</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L415" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">eatBuffer</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;{data: ^<span class="STpe">u8</span>, size: <span class="STpe">u64</span>, capacity: <span class="STpe">u64</span>}</span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
 <span id="Core_ConcatBuffer_getOffset"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">getOffset</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -4782,7 +4765,7 @@
 <span id="Core_ConcatBuffer_makeLinear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">makeLinear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L452" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L457" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4808,12 +4791,13 @@
 <span id="Core_ConcatBuffer_moveToString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">moveToString</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L432" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L437" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Move the content. </p>
+<p>Move the content of the buffer to the String if possible. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveToString</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<p> If a direct move is not possible because the buffer contains more than on bucket, then a copy will be made instead. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -4900,7 +4884,7 @@
 <span id="Core_ConcatBuffer_setFirstBucket"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">setFirstBucket</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L386" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L387" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4926,12 +4910,13 @@
 <span id="Core_ConcatBuffer_toSlice"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">toSlice</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L378" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L379" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Convert to a slice <i>only</i> if the buffer is linear (see <span class="code-inline">makeLinear</span>). </p>
+<p>Convert to a slice <i>only</i> if the buffer is linear, or return null. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;[..] <span class="STpe">u8</span></span></div>
+<p> See <a href="#Core_ConcatBuffer_makeLinear">ConcatBuffer.makeLinear</a> </p>
 <p>
 <table class="api-item">
 <tr>
@@ -4939,12 +4924,13 @@
 <span id="Core_ConcatBuffer_toString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ConcatBuffer.</span><span class="api-item-title-strong">toString</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L397" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\collections\concatbuffer.swg#L400" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Convert buffer to a String. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<p>Convert the buffer to a String. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, alloc: <span class="SCst">Swag</span>.<span class="SCst">IAllocator</span> = <span class="SKwd">null</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<p> A copy will be made, so the buffer is still valid after the call.  See <a href="#Core_ConcatBuffer_moveToString">ConcatBuffer.moveToString</a> </p>
 <p>
 <table class="api-item">
 <tr>
