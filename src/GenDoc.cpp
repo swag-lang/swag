@@ -1282,7 +1282,7 @@ void GenDoc::constructPage()
     Utf8 endHead = Utf8{module->buildCfg.genDoc.endHead};
     helpOutput += endHead;
 
-    helpOutput += "</head>\n";
+    helpOutput += "\n</head>\n";
 
     // Body
     /////////////////////////////////////
@@ -1293,7 +1293,7 @@ void GenDoc::constructPage()
     Utf8 startBody = Utf8{module->buildCfg.genDoc.startBody};
     helpOutput += startBody;
 
-    helpOutput += "<div class=\"container\">\n";
+    helpOutput += "\n<div class=\"container\">\n";
 
     if (docKind != BuildCfgDocKind::Pages)
     {
@@ -1326,6 +1326,34 @@ void GenDoc::constructPage()
     helpOutput += "</div>\n";
 
     helpOutput += "</div>\n";
+
+    // A script to restore the scroll on load/refresh
+    helpOutput += R"(
+    <script> 
+		function getOffsetTop(element) {
+			let offsetTop = 0;
+			while (element) {
+				offsetTop += element.offsetTop;
+				element = element.offsetParent;
+			}
+			return offsetTop;
+		}	
+		document.addEventListener("DOMContentLoaded", function() {
+			let hash = window.location.hash;
+			if (hash)
+			{
+				let parentScrollable = document.querySelector('.right');
+				if (parentScrollable)
+				{
+					let targetElement = parentScrollable.querySelector(hash);
+					if (targetElement)
+					{
+						parentScrollable.scrollTop = getOffsetTop(targetElement);
+					}
+				}
+			}
+        });
+    </script>)";
 
     // User end of the <body> section
     Utf8 endBody = Utf8{module->buildCfg.genDoc.endBody};

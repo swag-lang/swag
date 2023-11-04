@@ -99,9 +99,11 @@
     .SAtr { color: #7f7f7f; }
     .SInv { color: #ff0000; }
 </style>
+
 </head>
 <body>
-<?php include('common/start-body.php'); ?><div class="container">
+<?php include('common/start-body.php'); ?>
+<div class="container">
 <div class="right">
 <div class="right-page">
 <h1 id="">Contribute to the test suite </h1>
@@ -127,5 +129,41 @@ Generated on 04-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 
 </div>
 </div>
 </div>
-</body>
+
+    <script> 
+// Save the scroll position before the page is refreshed
+window.addEventListener('beforeunload', function() {
+  localStorage.setItem('scrollPosition', window.scrollY);
+});
+
+// Scroll to the saved position after the page is loaded
+window.addEventListener('load', function() {
+  if (localStorage.getItem('scrollPosition') !== null) {
+    window.scrollTo(0, parseInt(localStorage.getItem('scrollPosition')));
+  }
+});
+		function getOffsetTop(element) {
+			let offsetTop = 0;
+			while (element) {
+				offsetTop += element.offsetTop;
+				element = element.offsetParent;
+			}
+			return offsetTop;
+		}	
+		document.addEventListener("DOMContentLoaded", function() {
+			let hash = window.location.hash;
+			if (hash)
+			{
+				let parentScrollable = document.querySelector('.right');
+				if (parentScrollable)
+				{
+					let targetElement = parentScrollable.querySelector(hash);
+					if (targetElement)
+					{
+						parentScrollable.scrollTop = getOffsetTop(targetElement);
+					}
+				}
+			}
+        });
+    </script></body>
 </html>
