@@ -35,7 +35,7 @@ impl GamePadState
         {
         case ERROR_SUCCESS:                 break
         case ERROR_DEVICE_NOT_CONNECTED:    throw GamePadError.DeviceNotConnected
-        default:                            try Win32.setError(res)
+        default:                            try Win32.throwWinError(res)
         }
 
         // GamePadButton pressed state

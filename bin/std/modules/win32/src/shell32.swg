@@ -321,13 +321,13 @@ private namespace Shell32Priv
     func SHGetSpecialFolderPathA(hwnd: HWND, pszPath: LPSTR, csidl: s32, fCreate: BOOL) throw
     {
         if !Shell32Priv.SHGetSpecialFolderPathA(hwnd, pszPath, csidl, fCreate)
-            try setError(GetLastError())
+            throwWinError(GetLastError())
     }
 
     func SHGetSpecialFolderPathW(hwnd: HWND, pszPath: LPWSTR, csidl: s32, fCreate: BOOL) throw
     {
         if !Shell32Priv.SHGetSpecialFolderPathW(hwnd, pszPath, csidl, fCreate)
-            try setError(GetLastError())
+            throwWinError(GetLastError())
     }
 
     #[Swag.Discardable]
@@ -335,7 +335,7 @@ private namespace Shell32Priv
     {
         let res = Shell32Priv.ExtractIconExA(lpszFile, nIconIndex, phiconLarge, phiconSmall, nIcons)
         if res == Swag.U32.Max
-            try setError(GetLastError())
+            throwWinError(GetLastError())
         return res
     }
 
@@ -344,25 +344,25 @@ private namespace Shell32Priv
     {
         let res = Shell32Priv.ExtractIconExW(lpszFile, nIconIndex, phiconLarge, phiconSmall, nIcons)
         if res == Swag.U32.Max
-            try setError(GetLastError())
+            throwWinError(GetLastError())
         return res
     }
 
     func SHGetStockIconInfo(siid: SHSTOCKICONID, uFlags: UINT, psii: SHSTOCKICONINFO) throw
     {
         if Shell32Priv.SHGetStockIconInfo(siid, uFlags, psii) != S_OK
-            try setError(GetLastError())
+            throwWinError(GetLastError())
     }
 
     func Shell_NotifyIconA(dwMessage: DWORD, lpData: *NOTIFYICONDATAA) throw
     {
         if !Shell32Priv.Shell_NotifyIconA(dwMessage, lpData)
-            try setError(GetLastError())
+            throwWinError(GetLastError())
     }
 
     func Shell_NotifyIconW(dwMessage: DWORD, lpData: *NOTIFYICONDATAW) throw
     {
         if !Shell32Priv.Shell_NotifyIconW(dwMessage, lpData)
-            try setError(GetLastError())
+            throwWinError(GetLastError())
     }
 }

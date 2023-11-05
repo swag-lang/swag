@@ -1,24 +1,36 @@
 #global export
 
-// Fill the context error message
-func setError(errorMessageID: u32) throw
+struct WindowsError 
+{ 
+    using base: Swag.BaseError
+    errorID:    u32
+}
+
+// Throw a [[WindowsError]]
+func throwWinError(errorMessageID: u32) throw
 {
-    if errorMessageID == 0 return
+    if errorMessageID == 0 
+        return
 
-    var errorMsg: [128] u8
-    var len: u32
+    var err: WindowsError
+    err.errorID = errorMessageID
 
+    const MaxLen = 128
+    let errorMsg = cast(^u8) @getcontext().errorAllocator.alloc(acast MaxLen)
     let lang = cast(DWORD) MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT)
-    len = FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, null, errorMessageID, lang, cast(LPCSTR) &errorMsg[0], cast(DWORD) 128, null);
-    if !len return
-
-    // Trim right, remove trailing dots, remove trailing non printable characters
-    for var idx = len - 1; idx >= 0; idx -= 1
+    var len = FormatMessageA(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, null, errorMessageID, lang, cast(LPCSTR) errorMsg, cast(DWORD) MaxLen, null);
+    if len 
     {
-        if errorMsg[idx] > 32 and errorMsg[idx] != `.`
-            break
-        len -= 1
+        // Trim right, remove trailing dots, remove trailing non printable characters
+        for var idx = len - 1; idx >= 0; idx -= 1
+        {
+            if errorMsg[idx] > 32 and errorMsg[idx] != `.`
+                break
+            len -= 1
+        }
+
+        err.message = @mkstring(errorMsg, len)
     }
 
-    throw @mkstring(&errorMsg[0], len)
+    throw err
 }
