@@ -189,8 +189,10 @@ bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
 
     if (!(node->semFlags & SEMFLAG_TRY_1))
     {
+        EMIT_INST0(context, ByteCodeOp::PushRR);
         EMIT_INST2(context, ByteCodeOp::InternalSetErr, expr->resultRegisterRC[0], expr->resultRegisterRC[1]);
         node->semFlags |= SEMFLAG_TRY_1;
+        EMIT_INST0(context, ByteCodeOp::PopRR);
     }
 
     // In a top level function, 'throw' is like a failed 'assume'
