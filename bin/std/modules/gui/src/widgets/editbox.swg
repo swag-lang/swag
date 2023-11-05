@@ -479,9 +479,9 @@ internal impl EditBox
 
             if res == .Valid
             {
-                if @err() != null and cast(string) @err() == StrConv.ParseErrorIncomplete
+                if @err() == Errors.ParseIncompleteError
                     res = .Incomplete
-                elif @err() != null and cast(string) @err() == StrConv.ParseErrorOverflow
+                elif @err() == Errors.OverflowError
                     res = .InvalidShow
                 elif @err() != null or eat != @countof(text)
                     res = .InvalidDismiss

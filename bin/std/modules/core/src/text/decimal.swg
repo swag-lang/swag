@@ -7,7 +7,7 @@
 
 #global namespace StrConv
 #global #[Swag.Overflow(true)]
-using Globalization
+using Globalization, Errors
 
 struct Decimal
 {
@@ -374,13 +374,13 @@ impl Decimal
             buffer, cpt += 1
             neg = true
             if !Latin1.isDigit(dref buffer) and cpt == countof
-                throw StrConv.ParseErrorIncomplete
+                throw ParseIncompleteError{}
         }
         elif c == plusSign
         {
             buffer, cpt += 1
             if !Latin1.isDigit(dref buffer) and cpt == countof
-                throw StrConv.ParseErrorIncomplete
+                throw ParseIncompleteError{}
         }
 
         // digits
@@ -433,7 +433,7 @@ impl Decimal
         }
 
         if !sawDigits
-            throw StrConv.ParseErrorInvalid
+            throw SyntaxError{}
         if !sawdot
             dp = nd
 
@@ -443,7 +443,7 @@ impl Decimal
         {
             cpt, buffer += 1
             if cpt >= countof
-                throw StrConv.ParseErrorIncomplete
+                throw ParseIncompleteError{}
 
             var esign = 1
             c = dref buffer
@@ -453,18 +453,18 @@ impl Decimal
                 esign = -1
                 c = dref buffer
                 if !Latin1.isDigit(c) and cpt >= countof
-                    throw StrConv.ParseErrorIncomplete
+                    throw ParseIncompleteError{}
             }
             elif c == plusSign
             {
                 buffer, cpt += 1
                 c = dref buffer
                 if !Latin1.isDigit(c) and cpt >= countof
-                    throw StrConv.ParseErrorIncomplete
+                    throw ParseIncompleteError{}
             }
 
             if cpt >= countof or c < `0` or c > `9`
-                throw StrConv.ParseErrorInvalid
+                throw SyntaxError{}
 
             var e = 0
             while cpt < countof

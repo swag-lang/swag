@@ -147,7 +147,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
             itp += 1
 
             if @err() != null
-                throw cast(string) Format.toString("invalid value for option '%' (%)", oneArg, cast(string) @err())
+                throw cast(string) Format.toString("invalid value for option '%'", oneArg)
             if @countof(rest)
                 throw cast(string) Format.toString("invalid value for option '%'", oneArg)
         }

@@ -22,3 +22,13 @@ struct SyntaxError
     line, col:  u64
     seek:       u64
 }
+
+struct OverflowError
+{
+    using base: Swag.BaseError
+}
+
+struct ParseIncompleteError
+{
+    using base: Swag.BaseError
+}

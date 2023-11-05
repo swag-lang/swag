@@ -1,5 +1,5 @@
 #global namespace StrConv
-using Swag
+using Swag, Core.Errors
 
 // This function will parse 'buf' and poke the corresponding value to 'addr'
 // 'addr' must point to an initialized memory location that can hold type 'type'
@@ -126,61 +126,61 @@ public func pokeValue(addr: *void, type: typeinfo, buf: string)->string throw
     case s8:
         var val: s8 = undefined
         (val, eat, ovf) = try parseS8(one)
-        if ovf throw ParseErrorOverflow
+        if ovf throw OverflowError{}
         dref cast(*s8) patch = val
 
     case s16:
         var val: s16 = undefined
         (val, eat, ovf) = try parseS16(one)
-        if ovf throw ParseErrorOverflow
+        if ovf throw OverflowError{}
         dref cast(*s16) patch = val
 
     case s32:
         var val: s32 = undefined
         (val, eat, ovf) = try parseS32(one)
-        if ovf throw ParseErrorOverflow
+        if ovf throw OverflowError{}
         dref cast(*s32) patch = val
 
     case s64, s64:
         var val: s64 = undefined
         (val, eat, ovf) = try parseS64(one)
-        if ovf throw ParseErrorOverflow
+        if ovf throw OverflowError{}
         dref cast(*s64) patch = val
 
     case u8:
         var val: u8 = undefined
         (val, eat, ovf) = try parseU8(one)
-        if ovf throw ParseErrorOverflow
+        if ovf throw OverflowError{}
         dref cast(*u8) patch = val
 
     case u16:
         var val: u16 = undefined
         (val, eat, ovf) = try parseU16(one)
-        if ovf throw ParseErrorOverflow
+        if ovf throw OverflowError{}
         dref cast(*u16) patch = val
 
     case u32:
         var val: u32 = undefined
         (val, eat, ovf) = try parseU32(one)
-        if ovf throw ParseErrorOverflow
+        if ovf throw OverflowError{}
         dref cast(*u32) patch = val
 
     case u64, u64:
         var val: u64 = undefined
         (val, eat, ovf) = try parseU64(one)
-        if ovf throw ParseErrorOverflow
+        if ovf throw OverflowError{}
         dref cast(*u64) patch = val
 
     case f32:
         var val: f32 = undefined
         (val, eat, ovf) = try parseF32(one)
-        if ovf throw ParseErrorOverflow
+        if ovf throw OverflowError{}
         dref cast(*f32) patch = val
 
     case f64:
         var val: f64 = undefined
         (val, eat, ovf) = try parseF64(one)
-        if ovf throw ParseErrorOverflow
+        if ovf throw OverflowError{}
         dref cast(*f64) patch = val
 
     case bool:

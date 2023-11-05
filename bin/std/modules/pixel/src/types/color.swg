@@ -1,5 +1,5 @@
 #global public
-using Swag, Core, StrConv
+using Swag, Core, Core.Errors, StrConv
 
 #[ConstExpr]
 struct Color
@@ -362,28 +362,28 @@ impl Core.StrConv.IPokeValue for Color
         if buf[0] == `0` and buf[1]|32 == `x`
         {
             (argb, eat, ovf) = try parseU32(one)
-            if ovf throw "value overflow"
+            if ovf throw OverflowError{}
             one = Tokenize.eatCount(one, eat)
         }
         elif Latin1.isDigit(buf[0])
         {
             (a, eat, ovf) = try parseU8(one)
-            if ovf throw "value overflow"
+            if ovf throw OverflowError{}
             one = Tokenize.eatCount(one, eat)
 
             one = Tokenize.eatSpaces(one)
             (r, eat, ovf) = try parseU8(one)
-            if ovf throw "value overflow"
+            if ovf throw OverflowError{}
             one = Tokenize.eatCount(one, eat)
 
             one = Tokenize.eatSpaces(one)
             (g, eat, ovf) = try parseU8(one)
-            if ovf throw "value overflow"
+            if ovf throw OverflowError{}
             one = Tokenize.eatCount(one, eat)
 
             one = Tokenize.eatSpaces(one)
             (b, eat, ovf) = try parseU8(one)
-            if ovf throw "value overflow"
+            if ovf throw OverflowError{}
             one = Tokenize.eatCount(one, eat)
         }
         else
