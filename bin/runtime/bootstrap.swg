@@ -383,6 +383,13 @@ namespace Swag
         message: string
     }
 
+    // An error raised by the system
+    struct SystemError 
+    { 
+        using base: Swag.BaseError
+        errorID:    u32
+    }
+
     // Store a 'throw' error informations
     struct ErrorValue
     {

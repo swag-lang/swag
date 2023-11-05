@@ -1,18 +1,12 @@
 #global export
 
-struct WindowsError 
-{ 
-    using base: Swag.BaseError
-    errorID:    u32
-}
-
-// Throw a [[WindowsError]]
+// Throw a [[Swag.SystemError]]
 func throwWinError(errorMessageID: u32) throw
 {
     if errorMessageID == 0 
         return
 
-    var err: WindowsError
+    var err: Swag.SystemError
     err.errorID = errorMessageID
 
     const MaxLen = 128
