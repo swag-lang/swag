@@ -1043,6 +1043,9 @@ void SemanticJob::findClosestMatches(const Utf8& searchName, const VectorNative<
                 one.symbolName->kind != SymbolKind::Struct &&
                 one.symbolName->kind != SymbolKind::Interface)
                 continue;
+            if (searchFor == IdentifierSearchFor::Struct &&
+                one.symbolName->kind != SymbolKind::Struct)
+                continue;
             if (one.symbolName->cptOverloadsInit == 0)
                 continue;
 
@@ -1107,6 +1110,8 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
         searchFor = IdentifierSearchFor::Type;
     else if (node->parent->parent && node->parent->parent->kind == AstNodeKind::AttrUse && node->parent->childs.back() == node)
         searchFor = IdentifierSearchFor::Attribute;
+    else if (node->callParameters && (node->callParameters->specFlags & AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT))
+        searchFor = IdentifierSearchFor::Struct;
     else if (node->callParameters)
         searchFor = IdentifierSearchFor::Function;
 
@@ -1140,6 +1145,9 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
         break;
     case IdentifierSearchFor::Type:
         diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0165), node->token.ctext())};
+        break;
+    case IdentifierSearchFor::Struct:
+        diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0393), node->token.ctext())};
         break;
     default:
         diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0122), node->token.ctext())};

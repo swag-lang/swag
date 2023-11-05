@@ -1,4 +1,5 @@
 #global namespace Parser
+using Errors
 
 const RuneAsciiDigit    = cast(rune) 0x8000_0000
 const RuneAsciiLetter   = cast(rune) 0x8000_0001
@@ -315,7 +316,7 @@ impl RegExp
     mtd nfaPop()->*NfaTable throw
     {
         if nfaStack.isEmpty()
-            throw "nfaPop"
+            throw SyntaxError{message: "nfaPop"}
         return nfaStack.popBack()
     }
 
@@ -342,8 +343,8 @@ impl RegExp
 
     mtd operatorUnion() throw
     {
-        let table2 = try nfaPop()
-        let table1 = try nfaPop()
+        let table2 = nfaPop()
+        let table1 = nfaPop()
 
         let ns1 = Memory.new'NfaNode()
         let ns2 = Memory.new'NfaNode()
@@ -374,8 +375,8 @@ impl RegExp
             return
 
         // Check if the two tables have the same nested level
-        let table2 = try nfaPop()
-        let table1 = try nfaPop()
+        let table2 = nfaPop()
+        let table1 = nfaPop()
         nfaStack.add(table1)
         nfaStack.add(table2)
         if table1.level != table2.level
@@ -388,12 +389,12 @@ impl RegExp
         // Else validate union
         orOpStack.removeBack()
         orOpLevel.removeBack()
-        try operatorUnion()
+        operatorUnion()
     }
 
     mtd operatorStar() throw
     {
-        let table = try nfaPop()
+        let table = nfaPop()
         let s1 = table.nodes.front()
         let s2 = table.nodes.back()
         s1.addTransition(0'rune, s2)
@@ -403,7 +404,7 @@ impl RegExp
 
     mtd operatorPlus() throw
     {
-        let table = try nfaPop()
+        let table = nfaPop()
         let s1 = table.nodes.front()
         let s2 = table.nodes.back()
         s2.addTransition(0'rune, s1)
@@ -412,7 +413,7 @@ impl RegExp
 
     mtd operatorQuestion() throw
     {
-        let table = try nfaPop()
+        let table = nfaPop()
         let s1 = table.nodes.front()
         let s2 = table.nodes.back()
         s1.addTransition(0'rune, s2)
@@ -446,28 +447,28 @@ impl RegExp
                 openParen.add(cast(u32) nfaStack.count)
 
             case `)`:
-                try unionValidate()
+                unionValidate()
                 if openParen.isEmpty()
-                    throw "syntax, unexpected right parenthesis"
+                    throw SyntaxError{message: "unexpected right parenthesis"}
                 let op = openParen.popBack()
-                try operatorConcat(nfaStack.count - op)
+                operatorConcat(nfaStack.count - op)
 
             case `*`:
-                try operatorStar()
+                operatorStar()
 
             case `+`:
-                try operatorPlus()
+                operatorPlus()
 
             case `?`:
-                try operatorQuestion()
+                operatorQuestion()
 
             case `|`:
-                try unionValidate()
+                unionValidate()
                 orOpStack.add(c)
                 orOpLevel.add(cast(u32) openParen.count)
 
             case `.`:
-                try unionValidate()
+                unionValidate()
                 nfaPush(0'rune)
 
             case `\\`:
@@ -477,12 +478,12 @@ impl RegExp
                     cpt, pz += 1
                 }
 
-                try unionValidate()
+                unionValidate()
                 nfaPush(c)
                 break
 
             default:
-                try unionValidate()
+                unionValidate()
                 nfaPush(c)
                 break
             }
@@ -491,12 +492,12 @@ impl RegExp
         }
 
         // Remaining operators
-        try unionValidate()
+        unionValidate()
         if !orOpStack.isEmpty()
-            throw "syntax"
+            throw SyntaxError{}
 
         // Concat the remaining nodes
-        try operatorConcat(nfaStack.count)
+        operatorConcat(nfaStack.count)
     }
 
     mtd operatorConcat(cpt: u64) throw
@@ -504,8 +505,8 @@ impl RegExp
         var count = cpt
         while count >= 2
         {
-            let table2 = try nfaPop()
-            let table1 = try nfaPop()
+            let table2 = nfaPop()
+            let table1 = nfaPop()
 
             // Update nested level
             table1.level = cast(u32) openParen.count
@@ -524,7 +525,7 @@ impl RegExp
         // Update nested level
         if count == 1
         {
-            let table1 = try nfaPop()
+            let table1 = nfaPop()
             table1.level = cast(u32) openParen.count
             nfaStack.add(table1)
         }
@@ -602,7 +603,7 @@ impl RegExp
     mtd dfaBuild() throw
     {
         // One table must remain
-        let table = try nfaPop()
+        let table = nfaPop()
 
         // Last state of NFA table is a terminal
         table.nodes.back().terminal = true
@@ -687,7 +688,7 @@ impl RegExp
                 if Unicode.compare(subSlice, @runes("[:hexa:]"), false, 8) == 0
                 {
                     preprocessed.add(`(`)
-                    try preprocessInter(@runes("[a-fA-F]"))
+                    preprocessInter(@runes("[a-fA-F]"))
                     preprocessed.add(`|`)
                     preprocessed.add(RuneAsciiDigit)
                     preprocessed.add(`)`)
@@ -790,7 +791,7 @@ impl RegExp
             }
             else
             {
-                pz = try preprocessEscape(@mkslice(pz, pz - pzStart))
+                pz = preprocessEscape(@mkslice(pz, pz - pzStart))
             }
         }
 
@@ -804,7 +805,7 @@ impl RegExp
     func toI32(pz, pzEnd: const ^rune, val: *s32)->const ^rune throw
     {
         if !Unicode.isLatin1(pz[0]) or !Latin1.isDigit(cast(u8) pz[0])
-            throw "syntax"
+            throw SyntaxError{}
 
         var pzStart = pz
         var n = 0
@@ -825,14 +826,14 @@ impl RegExp
         let pzEnd = pz + @countof(sl)
 
         if preprocessed.count == 0
-            throw "syntax, { without a previous expression"
+            throw SyntaxError{message: "'{' without a previous expression"}
 
         var m = -1
         pz += 1
 
         // n value
         var n: s32 = 0
-        pz = try toI32(pz, pzEnd, &n)
+        pz = toI32(pz, pzEnd, &n)
 
         // m value
         if pz[0] == `,`
@@ -840,7 +841,7 @@ impl RegExp
             m = -1
             pz += 1
             if pz[0] != `}`
-                pz = try toI32(pz, pzEnd, &m)
+                pz = toI32(pz, pzEnd, &m)
         }
         else
         {
@@ -848,11 +849,11 @@ impl RegExp
         }
 
         if pz[0] != `}`
-            throw "syntax, missing '}'"
+            throw SyntaxError{message: "enum, missing '}'"}
         if m != -1 and m < n
-            throw "syntax, m < n in {n,m}"
+            throw SyntaxError{message: "enum m < n in {n,m}"}
         if m == 0 and n == 0
-            throw "syntax, m and n are zero in {n,m}"
+            throw SyntaxError{message: "enum m and n are zero in {n,m}"}
 
         pz += 1
 
@@ -880,7 +881,7 @@ impl RegExp
             }
 
             if cptParen
-                throw "syntax, missing '('"
+                throw SyntaxError{message: "missing '('"}
 
             var expr: Array'rune
             while pz1 <= pze
@@ -975,19 +976,19 @@ impl RegExp
             switch pz[1]
             {
             case `d`:
-                try preprocessInter(@runes("[[:digit:]]"))
+                preprocessInter(@runes("[[:digit:]]"))
                 return pz + 2
             case `w`:
-                try preprocessInter(@runes("[[:word:]]"))
+                preprocessInter(@runes("[[:word:]]"))
                 return pz + 2
             case `s`:
-                try preprocessInter(@runes("[[:space:]]"))
+                preprocessInter(@runes("[[:space:]]"))
                 return pz + 2
             case `l`:
-                try preprocessInter(@runes("[[:lower:]]"))
+                preprocessInter(@runes("[[:lower:]]"))
                 return pz + 2
             case `u`:
-                try preprocessInter(@runes("[[:upper:]]"))
+                preprocessInter(@runes("[[:upper:]]"))
                 return pz + 2
             case `a`:
                 preprocessed.add(`\a`)
@@ -1008,7 +1009,7 @@ impl RegExp
                 preprocessed.add(`\v`)
                 return pz + 2
             case `p`:
-                pz = try preprocessUnicode(sl)
+                pz = preprocessUnicode(sl)
                 return pz
             }
         }
@@ -1034,15 +1035,15 @@ impl RegExp
             switch c
             {
             case `[`:
-                pz = try preprocessInter(@mkslice(pz, pzEnd - pz))
+                pz = preprocessInter(@mkslice(pz, pzEnd - pz))
                 break
 
             case `{`:
-                pz = try preprocessEnum(@mkslice(pz, pzEnd - pz))
+                pz = preprocessEnum(@mkslice(pz, pzEnd - pz))
                 break
 
             default:
-                pz = try preprocessEscape(@mkslice(pz, pzEnd - pz))
+                pz = preprocessEscape(@mkslice(pz, pzEnd - pz))
                 break
             }
 

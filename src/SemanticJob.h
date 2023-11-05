@@ -195,6 +195,7 @@ enum class IdentifierSearchFor
     Attribute,
     Keyword,
     TopLevelInstruction,
+    Struct,
 };
 
 struct FindUserOp
