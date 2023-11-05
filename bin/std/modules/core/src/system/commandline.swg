@@ -1,5 +1,6 @@
 #global export
 #global namespace CommandLine
+using Core.Errors
 
 attr ArgParams(nameAlias: string = null)
 
@@ -99,7 +100,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
     func checkNext() throw
     {
         if itp + 1 == maxItp or isOption(allArgs[itp + 1], options)
-            throw cast(string) Format.toString("missing value for option '%'", oneArg)
+            throw SyntaxError{Format.toStringError("missing value for option '%'", oneArg)}
     }
 
     var result:  retval
@@ -114,13 +115,13 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
     {
         var oneArg = allArgs[itp]
         if !isOption(oneArg, options)
-            throw cast(string) Format.toString("invalid option '%'", oneArg)
+            throw SyntaxError{Format.toStringError("invalid option '%'", oneArg)}
 
         oneArg = Tokenize.eatCount(oneArg, 1)
 
         let typeParam = getField(typeof, oneArg)
         if !typeParam
-            throw cast(string) Format.toString("unknown option '%'", oneArg)
+            throw SyntaxError{Format.toStringError("unknown option '%'", oneArg)}
 
         let typeField = typeParam.pointedType
 
@@ -147,9 +148,9 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
             itp += 1
 
             if @err() != null
-                throw cast(string) Format.toString("invalid value for option '%'", oneArg)
+                throw SyntaxError{Format.toStringError("invalid value for option '%'", oneArg)}
             if @countof(rest)
-                throw cast(string) Format.toString("invalid value for option '%'", oneArg)
+                throw SyntaxError{Format.toStringError("invalid value for option '%'", oneArg)}
         }
 
         // Dynamic array of values
@@ -188,16 +189,16 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
 
                 discard catch StrConv.parseValue(addr, typeField, collect.toString())
                 if @err() != null
-                    throw cast(string) Format.toString("invalid value for option '%' (%)", oneArg, cast(string) @err())
+                    throw SyntaxError{Format.toStringError("invalid value for option '%'", oneArg)}
             }
             else
             {
-                throw cast(string) Format.toString("unsupported type '%' for option '%'", typeField.name, oneArg)
+                throw UnsupportedFormatError{Format.toStringError("unsupported type '%' for option '%'", typeField.name, oneArg)}
             }
         }
         else
         {
-            throw cast(string) Format.toString("unsupported type '%' for option '%'", typeField.name, oneArg)
+            throw UnsupportedFormatError{Format.toStringError("unsupported type '%' for option '%'", typeField.name, oneArg)}
         }
 
         // Set the associated 'isSet' boolean to true

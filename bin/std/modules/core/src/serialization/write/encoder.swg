@@ -1,6 +1,6 @@
 #global export
 #global namespace Serialization
-using Swag
+using Swag, Core.Errors
 
 enum SectionKind
 {
@@ -231,7 +231,7 @@ impl Encoder
         }
 
         if errorIfUnknown
-            throw cast(string) Format.toString("cannot serialize type '%'", type.name)
+            throw UnsupportedFormatError{Format.toStringError("cannot serialize type '%'", type.name)}
     }
 
     // Write a full struct
