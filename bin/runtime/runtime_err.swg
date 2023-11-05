@@ -57,17 +57,33 @@ func __failedAssume(loc: SourceCodeLocation)
     let cxt = @getcontext()
     let type = @kindof(cxt.errors[cxt.errorIndex].value)
 
-    var str: [256] u8
+    var str: [512] u8
     var len: u64
 
-    const U = "uncatched runtime error: "
+    const U = "uncatched runtime error "
     @memcpy(&str[len], @dataof(U), @countof(U))
     len += @countof(U)
-    let maxLen = @min(@countof(type.fullname), 200)
+    var maxLen = @min(@countof(type.fullname), 128)
+    str[len] = `'`; len += 1    
     @memcpy(&str[len], @dataof(type.fullname), maxLen)
     len += maxLen
-    str[len] = 0
+    str[len] = `'`; len += 1    
 
+    if type.kind == TypeInfoKind.Struct
+    {
+        let typeStruct = cast(const *Swag.TypeInfoStruct) type
+        if @countof(typeStruct.fields) > 0 and typeStruct.fields[0].pointedType == Swag.BaseError
+        {
+            str[len] = `$`; len += 1
+            let data = @dataof(cxt.errors[cxt.errorIndex].value)
+            let val = cast(const *Swag.BaseError) data
+            maxLen = @min(@countof(val.message), 128)
+            @memcpy(&str[len], @dataof(val.message), maxLen)
+            len += maxLen
+        }
+    }
+
+    str[len] = 0
     @panic(@mkstring(&str[0], len), loc)
 }
 

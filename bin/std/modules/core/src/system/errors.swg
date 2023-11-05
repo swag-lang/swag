@@ -16,3 +16,9 @@ struct BadParameterError
     using base: Swag.BaseError
 }
 
+struct SyntaxError
+{
+    using base: Swag.BaseError
+    line, col:  u64
+    seek:       u64
+}
