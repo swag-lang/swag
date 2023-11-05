@@ -267,8 +267,11 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
     // Remove trailing '\r'
     for (auto& l : lines)
     {
-        if (l.length() && l.back() == '\r')
+        if (!l.length())
+            continue;
+        if (l.back() == '\r')
             l.removeBack();
+        l.replace("\\|", "&vert;");
     }
 
     int start = 0;

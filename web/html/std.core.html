@@ -16383,15 +16383,15 @@
 <tr><td> ?                </td><td> zero or one</td></tr>
 <tr><td> +                </td><td> one or more</td></tr>
 <tr><td> .                </td><td> any rune</td></tr>
-<tr><td> a<br/></td><td>b             </td></tr>
+<tr><td> a&vert;b             </td><td> a or b</td></tr>
 <tr><td> [abc]            </td><td> match any in list</td></tr>
 <tr><td> [a-zA-Z]         </td><td> match any in range</td></tr>
-<tr><td> /pL              </td><td> letter</td></tr>
-<tr><td> /p{Ll}           </td><td> lower letter</td></tr>
-<tr><td> /p{Lu}           </td><td> upper letter</td></tr>
-<tr><td> /pN              </td><td> number</td></tr>
-<tr><td> /pS              </td><td> symbol</td></tr>
-<tr><td> /p{Sm}           </td><td> symbol math</td></tr>
+<tr><td> /pL              </td><td> unicode letter</td></tr>
+<tr><td> /p{Ll}           </td><td> unicode lower letter</td></tr>
+<tr><td> /p{Lu}           </td><td> unicode upper letter</td></tr>
+<tr><td> /pN              </td><td> unicode number</td></tr>
+<tr><td> /pS              </td><td> unicode symbol</td></tr>
+<tr><td> /p{Sm}           </td><td> unicode symbol math</td></tr>
 <tr><td> [[:digit:]]      </td><td></td></tr>
 <tr><td> [[:hexa:]]       </td><td></td></tr>
 <tr><td> [[:alpha:]]      </td><td></td></tr>
