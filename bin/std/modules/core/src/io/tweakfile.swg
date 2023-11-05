@@ -111,7 +111,7 @@ impl TweakFile
             }
 
             // Get value and poke it
-            one = catch StrConv.pokeValue(cast(^u8) currentFolder.data + field.offset, field.pointedType, one)
+            one = catch StrConv.parseValue(cast(^u8) currentFolder.data + field.offset, field.pointedType, one)
             if @err() != null
                 throw cast(string) Format.toString("line %: %", idx + 1, cast(string) @err())
 

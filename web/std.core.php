@@ -16373,7 +16373,7 @@
 <span id="Core_Parser_RegExp"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Parser.</span><span class="api-item-title-strong">RegExp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\regexp.swg#L68" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\regexp.swg#L69" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16439,7 +16439,7 @@
 <span id="Core_Parser_RegExp_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RegExp.</span><span class="api-item-title-strong">clear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\regexp.swg#L90" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\regexp.swg#L91" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16452,7 +16452,7 @@
 <span id="Core_Parser_RegExp_compile"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RegExp.</span><span class="api-item-title-strong">compile</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\regexp.swg#L112" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\regexp.swg#L113" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16465,7 +16465,7 @@
 <span id="Core_Parser_RegExp_grep"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RegExp.</span><span class="api-item-title-strong">grep</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\regexp.swg#L189" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\regexp.swg#L190" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16478,7 +16478,7 @@
 <span id="Core_Parser_RegExp_grepAll"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RegExp.</span><span class="api-item-title-strong">grepAll</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\regexp.swg#L170" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\regexp.swg#L171" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16491,7 +16491,7 @@
 <span id="Core_Parser_RegExp_match"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RegExp.</span><span class="api-item-title-strong">match</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\regexp.swg#L122" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\regexp.swg#L123" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22297,7 +22297,7 @@ Changes that are supported from V to V+1 are :</span></div>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StrConv_pokeValue">pokeValue</a></span></td>
-<td>This function will parse <span class="code-inline">buf</span> and poke the corresponding value to <span class="code-inline">addr</span>  <span class="code-inline">addr</span> must point to an initialized memory location that can hold type <span class="code-inline">type</span>. </td>
+<td>This function will parse <span class="code-inline">buf</span> and poke the corresponding value to <span class="code-inline">addr</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StrConv_toDisplaySize">toDisplaySize</a></span></td>
@@ -23146,10 +23146,20 @@ Changes that are supported from V to V+1 are :</span></div>
 </tr>
 </table>
 </p>
-<p>This function will parse <span class="code-inline">buf</span> and poke the corresponding value to <span class="code-inline">addr</span>  <span class="code-inline">addr</span> must point to an initialized memory location that can hold type <span class="code-inline">type</span>. </p>
+<p>This function will parse <span class="code-inline">buf</span> and poke the corresponding value to <span class="code-inline">addr</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pokeValue</span>(addr: *<span class="STpe">void</span>, type: <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>, buf: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span> <span class="SKwd">throw</span></span></div>
-<p> Accepted types are :  - s8,s16,s32,s64,s64,u8,u16,u32,u64,u64,rune,bool,f32,f64  - <span class="code-inline">Core.String</span>  literal strings are not supported as <span class="code-inline">buf</span> is supposed to be transient  - enum           with or without <span class="code-inline">Swag.EnumFlags</span> attribute </p>
-<p> <span class="code-inline">buf</span> can contain multiple values separated with blanks if <span class="code-inline">type</span> is:  - a static array of the types above  - a dynamic <span class="code-inline">Core.Array</span> of the types above </p>
+<p> <span class="code-inline">addr</span> must point to an initialized memory location that can hold type <span class="code-inline">type</span> </p>
+<p> Accepted types are : </p>
+<ul>
+<li><span class="code-inline">s8, s16, s32, s64, u8, u16, u32, u64, rune, bool, f32, f64</span></li>
+<li><span class="code-inline">Core.String</span>  literal strings are not supported as <span class="code-inline">buf</span> is supposed to be transient</li>
+<li>enum           with or without <span class="code-inline">Swag.EnumFlags</span> attribute</li>
+</ul>
+<p> <span class="code-inline">buf</span> can contain multiple values separated with blanks if <span class="code-inline">type</span> is: </p>
+<ul>
+<li>a static array of the types above</li>
+<li>a dynamic <span class="code-inline">Core.Array</span> of the types above</li>
+</ul>
 <p>
 <table class="api-item">
 <tr>

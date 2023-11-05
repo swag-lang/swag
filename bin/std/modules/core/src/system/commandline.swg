@@ -143,7 +143,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
                 Reflection.isEnum(typeField)
         {
             try checkNext()
-            let rest = catch StrConv.pokeValue(addr, typeField, allArgs[itp + 1])
+            let rest = catch StrConv.parseValue(addr, typeField, allArgs[itp + 1])
             itp += 1
 
             if @err() != null
@@ -186,7 +186,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
                     itp += 1
                 }
 
-                discard catch StrConv.pokeValue(addr, typeField, collect.toString())
+                discard catch StrConv.parseValue(addr, typeField, collect.toString())
                 if @err() != null
                     throw cast(string) Format.toString("invalid value for option '%' (%)", oneArg, cast(string) @err())
             }
