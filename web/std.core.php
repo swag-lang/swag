@@ -1359,6 +1359,7 @@
 <li><a href="#Core_Format_replaceString">Format.replaceString</a></li>
 <li><a href="#Core_Format_toInterp">Format.toInterp</a></li>
 <li><a href="#Core_Format_toString">Format.toString</a></li>
+<li><a href="#Core_Format_toStringError">Format.toStringError</a></li>
 <li><a href="#Core_String_IHash32_compute">IHash32.compute</a></li>
 <li><a href="#Core_Latin1_compare">Latin1.compare</a></li>
 <li><a href="#Core_Latin1_compareNatural">Latin1.compareNatural</a></li>
@@ -7182,6 +7183,10 @@
 <td class="code-type"><span class="SFct"><a href="#Core_Format_toString">toString</a></span></td>
 <td>Format a string and returns the result as a String. </td>
 </tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Format_toStringError">toStringError</a></span></td>
+<td>Returns a formatted string that can be stored in a struct error. </td>
+</tr>
 </table>
 <p>
 <table class="api-item">
@@ -7190,7 +7195,7 @@
 <span id="Core_Format_append"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Format.</span><span class="api-item-title-strong">append</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\format.swg#L91" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\format.swg#L110" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7244,7 +7249,7 @@
 <span id="Core_Format_toInterp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Format.</span><span class="api-item-title-strong">toInterp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\format.swg#L163" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\format.swg#L182" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7276,6 +7281,20 @@
 <li>See <a href="#Core_StrConv_ConvertFormatInt_setFormat">ConvertFormatInt.setFormat</a> for some valid format options</li>
 <li>See <a href="#Core_StrConv_ConvertFormatFloat_setFormat">ConvertFormatFloat.setFormat</a> for some valid format options</li>
 </ul>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Format_toStringError"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Format.</span><span class="api-item-title-strong">toStringError</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\format.swg#L92" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns a formatted string that can be stored in a struct error. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toStringError</span>(fmt: <span class="STpe">string</span>, values: ...)-&gt;<span class="STpe">string</span></span></div>
+<p> This kind of string can be stored in a struct used in a <span class="code-inline">throw</span>. It uses the <span class="code-inline">errorAllocator</span> of <a href="swag.runtime.php#Swag_Context">Swag.Context</a>. </p>
 <p>
 <table class="api-item">
 <tr>
