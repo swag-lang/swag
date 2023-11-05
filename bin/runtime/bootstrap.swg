@@ -387,7 +387,7 @@ namespace Swag
     struct SystemError 
     { 
         using base: Swag.BaseError
-        errorID:    u32
+        errorID:    u64
     }
 
     // Store a 'throw' error informations

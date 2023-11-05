@@ -11,3 +11,8 @@ struct UnsupportedFormatError
     using base: Swag.BaseError
 }
 
+struct BadParameterError
+{ 
+    using base: Swag.BaseError
+}
+
