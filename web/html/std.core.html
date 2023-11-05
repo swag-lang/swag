@@ -259,6 +259,7 @@
 <h4>system</h4>
 <ul>
 <li><a href="#Core_Errors_BadParameterError">BadParameterError</a></li>
+<li><a href="#Core_Errors_FileNotFoundError">FileNotFoundError</a></li>
 <li><a href="#Core_Errors_InvalidFormatError">InvalidFormatError</a></li>
 <li><a href="#Core_CommandLine_IsSet">IsSet</a></li>
 <li><a href="#Core_Env_Monitor">Monitor</a></li>
@@ -267,6 +268,7 @@
 <li><a href="#Core_CommandLine_ParseOptions">ParseOptions</a></li>
 <li><a href="#Core_Env_Process">Process</a></li>
 <li><a href="#Core_CommandLine_Result">Result</a></li>
+<li><a href="#Core_Errors_SerializationError">SerializationError</a></li>
 <li><a href="#Core_Env_StartInfo">StartInfo</a></li>
 <li><a href="#Core_Errors_SyntaxError">SyntaxError</a></li>
 <li><a href="#Core_UUID">UUID</a></li>
@@ -341,7 +343,6 @@
 <h4>input</h4>
 <ul>
 <li><a href="#Core_Input_GamePadButton">GamePadButton</a></li>
-<li><a href="#Core_Input_GamePadError">GamePadError</a></li>
 <li><a href="#Core_Input_Key">Key</a></li>
 <li><a href="#Core_Input_KeyModifiers">KeyModifiers</a></li>
 <li><a href="#Core_Input_MouseButton">MouseButton</a></li>
@@ -3480,7 +3481,7 @@
 <span id="Core_ByteStream"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">ByteStream</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L1" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L3" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3580,7 +3581,7 @@
 <span id="Core_ByteStream_getSeek"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">getSeek</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L145" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L147" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3593,7 +3594,7 @@
 <span id="Core_ByteStream_isEof"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">isEof</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L52" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L54" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3606,7 +3607,7 @@
 <span id="Core_ByteStream_length"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">length</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L40" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L42" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3619,7 +3620,7 @@
 <span id="Core_ByteStream_moveSeek"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">moveSeek</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L123" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L125" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3632,7 +3633,7 @@
 <span id="Core_ByteStream_openRead"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">openRead</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L12" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L14" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3645,7 +3646,7 @@
 <span id="Core_ByteStream_openWrite"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">openWrite</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L20" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L22" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3658,7 +3659,7 @@
 <span id="Core_ByteStream_peekU8"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">peekU8</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L115" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L117" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3671,7 +3672,7 @@
 <span id="Core_ByteStream_readBytes"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">readBytes</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L98" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L100" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3684,7 +3685,7 @@
 <span id="Core_ByteStream_readData"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">readData</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L46" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L48" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3697,7 +3698,7 @@
 <span id="Core_ByteStream_readNative"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">readNative</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L88" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L90" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3710,7 +3711,7 @@
 <span id="Core_ByteStream_readU8"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">readU8</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L107" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L109" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3723,7 +3724,7 @@
 <span id="Core_ByteStream_remainReadToSlice"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">remainReadToSlice</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L28" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L30" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3736,7 +3737,7 @@
 <span id="Core_ByteStream_remainReadToString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">remainReadToString</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L34" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L36" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3749,7 +3750,7 @@
 <span id="Core_ByteStream_setSeek"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">setSeek</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L136" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L138" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3762,7 +3763,7 @@
 <span id="Core_ByteStream_writeBytes"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">writeBytes</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L71" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L73" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3775,7 +3776,7 @@
 <span id="Core_ByteStream_writeNative"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ByteStream.</span><span class="api-item-title-strong">writeNative</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L58" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\bytestream.swg#L60" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3859,7 +3860,7 @@
 <span id="Core_CommandLine_ArgParams"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">CommandLine.</span><span class="api-item-title-strong">ArgParams</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L4" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L5" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3873,7 +3874,7 @@
 <span id="Core_CommandLine_IsSet"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">CommandLine.</span><span class="api-item-title-strong">IsSet</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L16" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L17" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3888,7 +3889,7 @@
 <span id="Core_CommandLine_ParseOptions"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">CommandLine.</span><span class="api-item-title-strong">ParseOptions</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L6" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3899,7 +3900,7 @@
 <span id="Core_CommandLine_Result"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">CommandLine.</span><span class="api-item-title-strong">Result</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L29" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L30" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3919,7 +3920,7 @@
 <span id="Core_CommandLine_getField"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">CommandLine.</span><span class="api-item-title-strong">getField</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L78" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L79" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3931,7 +3932,7 @@
 <span id="Core_CommandLine_isOption"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">CommandLine.</span><span class="api-item-title-strong">isOption</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L35" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L36" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3944,7 +3945,7 @@
 <span id="Core_CommandLine_parse"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">CommandLine.</span><span class="api-item-title-strong">parse</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L96" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L97" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3957,7 +3958,7 @@
 <span id="Core_CommandLine_parse_parse_checkNext"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">parse.</span><span class="api-item-title-strong">checkNext</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L99" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L100" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3969,7 +3970,7 @@
 <span id="Core_CommandLine_splitArguments"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">CommandLine.</span><span class="api-item-title-strong">splitArguments</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L44" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L45" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5954,6 +5955,10 @@
 <td></td>
 </tr>
 <tr>
+<td class="code-type"><a href="#Core_Errors_FileNotFoundError"><span class="SCst">FileNotFoundError</span></a></td>
+<td></td>
+</tr>
+<tr>
 <td class="code-type"><a href="#Core_Errors_InvalidFormatError"><span class="SCst">InvalidFormatError</span></a></td>
 <td></td>
 </tr>
@@ -5963,6 +5968,10 @@
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Errors_ParseIncompleteError"><span class="SCst">ParseIncompleteError</span></a></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Errors_SerializationError"><span class="SCst">SerializationError</span></a></td>
 <td></td>
 </tr>
 <tr>
@@ -5982,6 +5991,24 @@
 </td>
 <td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\errors.swg#L14" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="table-enumeration">
+<tr>
+<td>using base</td>
+<td class="code-type"><span class="SCde"><span class="SCst">Swag</span>.<span class="SCst">BaseError</span></span></td>
+<td></td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Errors_FileNotFoundError"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Errors.</span><span class="api-item-title-strong">FileNotFoundError</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\errors.swg#L41" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6036,6 +6063,24 @@
 </td>
 <td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\errors.swg#L31" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="table-enumeration">
+<tr>
+<td>using base</td>
+<td class="code-type"><span class="SCde"><span class="SCst">Swag</span>.<span class="SCst">BaseError</span></span></td>
+<td></td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Errors_SerializationError"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Errors.</span><span class="api-item-title-strong">SerializationError</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\errors.swg#L36" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6238,7 +6283,7 @@
 <span id="Core_File_FileAccess"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">FileAccess</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L12" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L13" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6398,7 +6443,7 @@
 <span id="Core_File_FileMode"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">FileMode</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L19" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L20" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6435,7 +6480,7 @@
 <span id="Core_File_FileShare"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">FileShare</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L30" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L31" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6689,7 +6734,7 @@
 <span id="Core_File_SeekOrigin"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">SeekOrigin</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L4" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L5" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6941,7 +6986,7 @@
 <span id="Core_File_duplicate"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">duplicate</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L129" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L130" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6980,7 +7025,7 @@
 <span id="Core_File_getFileInfo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">getFileInfo</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L136" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L137" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7058,7 +7103,7 @@
 <span id="Core_File_readAllBytes"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">readAllBytes</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L80" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L81" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7071,7 +7116,7 @@
 <span id="Core_File_readAllLines"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">readAllLines</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L49" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L50" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7084,7 +7129,7 @@
 <span id="Core_File_readAllText"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">readAllText</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L41" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L42" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7097,7 +7142,7 @@
 <span id="Core_File_readEachLines"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">readEachLines</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L63" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L64" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7124,7 +7169,7 @@
 <span id="Core_File_writeAllBytes"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">writeAllBytes</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L93" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L94" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7139,7 +7184,7 @@
 <span id="Core_File_writeAllLines"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">writeAllLines</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L114" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.swg#L115" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8574,10 +8619,6 @@
 <td>Enumerates gamepad buttons. </td>
 </tr>
 <tr>
-<td class="code-type"><a href="#Core_Input_GamePadError"><span class="SCst">GamePadError</span></a></td>
-<td></td>
-</tr>
-<tr>
 <td class="code-type"><a href="#Core_Input_Key"><span class="SCst">Key</span></a></td>
 <td>Defines the keys on a keyboard. </td>
 </tr>
@@ -8616,7 +8657,7 @@
 <span id="Core_Input_GamePad"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Input.</span><span class="api-item-title-strong">GamePad</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\gamepad.swg#L11" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\gamepad.swg#L6" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8693,7 +8734,7 @@
 <span id="Core_Input_GamePad_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GamePad.</span><span class="api-item-title-strong">clear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\gamepad.swg#L43" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\gamepad.swg#L38" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8706,7 +8747,7 @@
 <span id="Core_Input_GamePad_getPosition"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GamePad.</span><span class="api-item-title-strong">getPosition</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\gamepad.swg#L74" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\gamepad.swg#L69" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8719,7 +8760,7 @@
 <span id="Core_Input_GamePad_isButtonJustPressed"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GamePad.</span><span class="api-item-title-strong">isButtonJustPressed</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\gamepad.swg#L56" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\gamepad.swg#L51" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8732,7 +8773,7 @@
 <span id="Core_Input_GamePad_isButtonJustReleased"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GamePad.</span><span class="api-item-title-strong">isButtonJustReleased</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\gamepad.swg#L68" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\gamepad.swg#L63" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8745,7 +8786,7 @@
 <span id="Core_Input_GamePad_isButtonPressed"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GamePad.</span><span class="api-item-title-strong">isButtonPressed</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\gamepad.swg#L50" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\gamepad.swg#L45" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8758,7 +8799,7 @@
 <span id="Core_Input_GamePad_isButtonReleased"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GamePad.</span><span class="api-item-title-strong">isButtonReleased</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\gamepad.swg#L62" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\gamepad.swg#L57" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8784,7 +8825,7 @@
 <span id="Core_Input_GamePad_setVibration"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GamePad.</span><span class="api-item-title-strong">setVibration</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\gamepad.swg#L80" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\gamepad.swg#L75" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8799,7 +8840,7 @@
 <span id="Core_Input_GamePad_update"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GamePad.</span><span class="api-item-title-strong">update</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\gamepad.swg#L26" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\gamepad.swg#L21" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8916,23 +8957,6 @@
 </tr>
 <tr>
 <td>Y</td>
-<td></td>
-</tr>
-</table>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_Input_GamePadError"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Input.</span><span class="api-item-title-strong">GamePadError</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\input\gamepad.swg#L5" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<table class="table-enumeration">
-<tr>
-<td>DeviceNotConnected</td>
 <td></td>
 </tr>
 </table>
@@ -20233,7 +20257,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_beginElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L328" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L318" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20245,7 +20269,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_beginRoot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginRoot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L217" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L207" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20257,7 +20281,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_beginSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L229" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L219" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20269,7 +20293,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_beginSequence"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginSequence</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L418" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L408" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20281,7 +20305,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_beginStruct"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginStruct</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L285" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L275" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20293,7 +20317,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_beginValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L409" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L399" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20305,7 +20329,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_endElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L403" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L393" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20317,7 +20341,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_endRoot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endRoot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L225" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L215" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20329,7 +20353,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_endSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L272" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L262" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20341,7 +20365,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_endSequence"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endSequence</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L482" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L472" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20353,7 +20377,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_endStruct"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endStruct</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L323" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L313" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20365,7 +20389,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_endValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L414" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L404" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20377,7 +20401,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_getVersion"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">getVersion</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L495" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L485" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20389,7 +20413,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_readNative"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">readNative</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L506" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L496" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20401,7 +20425,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_startRead"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">startRead</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L212" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L202" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20413,7 +20437,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_toNextSequenceElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">toNextSequenceElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L487" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L477" class="src">[src]</a></td>
 </tr>
 </table>
 </p>

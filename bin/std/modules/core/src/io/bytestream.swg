@@ -1,3 +1,5 @@
+using Core.Errors
+
 public struct ByteStream
 {
     readBuffer:     const [..] u8
@@ -88,7 +90,7 @@ public impl ByteStream
     mtd(T) readNative()->T throw
     {
         if seek + @sizeof(T) > length()
-            throw "byte stream overflow"
+            throw OverflowError{"byte stream overflow"}
         let val = dref cast(const *T) (readData() + seek)
         seek += @sizeof(T)
         return val
@@ -98,7 +100,7 @@ public impl ByteStream
     mtd readBytes(dest: *u8, count: u64) throw
     {
         if seek + count > length()
-            throw "byte stream overflow"
+            throw OverflowError{"byte stream overflow"}
         Memory.copy(dest, readData() + seek, count)
         seek += count
     }

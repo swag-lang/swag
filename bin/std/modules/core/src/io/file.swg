@@ -1,5 +1,6 @@
 #global public
 #global namespace File
+using Core.Errors
 
 enum SeekOrigin
 {
@@ -137,6 +138,6 @@ func getFileInfo(fullName: string)->FileInfo throw
 {
     var file = Directory.enumerateFiles(Path.getDirectoryName(fullName), Path.getFileName(fullName))
     if file.count == 0
-        throw "cannot find file"
+        throw FileNotFoundError{Format.toStringError("cannot find file '%'", fullName)}
     return file[0]
 }

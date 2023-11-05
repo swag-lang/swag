@@ -2,11 +2,6 @@
 #global namespace Input
 using Math
 
-enum GamePadError: string
-{
-    DeviceNotConnected = "not connected"
-}
-
 // Represents a gamepad
 struct GamePad
 {

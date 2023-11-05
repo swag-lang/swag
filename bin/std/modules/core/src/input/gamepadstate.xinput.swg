@@ -1,7 +1,7 @@
 #global #if WINDOWS
 #global public
 #global namespace Input
-using XInput, Win32
+using XInput, Win32, Core.Errors
 
 #run
 {
@@ -34,8 +34,8 @@ impl GamePadState
         switch res
         {
         case ERROR_SUCCESS:                 break
-        case ERROR_DEVICE_NOT_CONNECTED:    throw GamePadError.DeviceNotConnected
-        default:                            try Win32.throwWinError(res)
+        case ERROR_DEVICE_NOT_CONNECTED:    throw Swag.SystemError{"not connected"}
+        default:                            Win32.throwWinError(res)
         }
 
         // GamePadButton pressed state

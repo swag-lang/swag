@@ -782,8 +782,9 @@ struct AstSwitchCaseBlock : public AstNode
 
 struct AstType : public AstNode
 {
-    static const uint16_t SPECFLAG_FORCE_TYPE            = 0x1000;
-    static const uint16_t SPECFLAG_HAS_STRUCT_PARAMETERS = 0x2000;
+    static const uint16_t SPECFLAG_FORCE_TYPE                = 0x1000;
+    static const uint16_t SPECFLAG_HAS_STRUCT_PARAMETERS     = 0x2000;
+    static const uint16_t SPECFLAG_CREATED_STRUCT_PARAMETERS = 0x4000;
 };
 
 const uint16_t TYPEFLAG_IS_ARRAY          = 0x0001;
@@ -804,7 +805,6 @@ const uint16_t TYPEFLAG_HAS_LOC_CONST     = 0x2000;
 struct AstTypeExpression : public AstType
 {
     static const uint16_t SPECFLAG_DONE_GEN = 0x0001;
-    static const uint8_t  PTR_ARITHMETIC    = 0x01;
 
     AstNode* clone(CloneContext& context);
 

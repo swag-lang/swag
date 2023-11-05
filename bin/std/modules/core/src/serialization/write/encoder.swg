@@ -144,7 +144,7 @@ impl Encoder
             if Reflection.isTuple(type)
             {
                 if errorIfUnknown
-                    throw "cannot serialize an anonymous struct"
+                    throw UnsupportedFormatError{"cannot serialize an anonymous struct"}
                 return
             }
 

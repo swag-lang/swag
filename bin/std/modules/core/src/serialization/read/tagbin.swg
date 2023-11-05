@@ -1,6 +1,6 @@
 #global namespace Serialization.Read
 #global public
-using Swag
+using Swag, Core.Errors
 
 /*
     Binary serializer with forward/backward compatibility.
@@ -47,16 +47,6 @@ struct TagBinSection
 struct TagBinOptions
 {
     tryForward: bool    // Accept to try to read a newest version, otherwise error
-}
-
-impl TagBin
-{
-    const ErrorInvalidFile      = "invalid file"
-    const ErrorCorrupted        = "stream is corrupted"
-    const ErrorFat              = "invalid fat signature"
-    const ErrorNewestVersion    = "version is too recent"
-    const ErrorBadName          = "bad field name"
-    const ErrorBadType          = "bad field type"
 }
 
 internal impl TagBin
@@ -218,7 +208,7 @@ impl TagBin
     {
         let sig = stream.readNative'u32()
         if sig != Write.TagBinSignatures.Root
-            throw ErrorInvalidFile
+            throw SerializationError{"invalid file"}
     }
 
     #[Warn("wrn0002", WarnLevel.Disable)]
@@ -237,7 +227,7 @@ impl TagBin
         // Read fat position and count
         var sig = stream.readNative'u32()
         if sig != Write.TagBinSignatures.Fat
-            throw ErrorFat
+            throw SerializationError{"invalid fat signature"}
         let fatSeek = stream.readNative'u64()
         var fatCount = stream.readNative'u64()
 
@@ -255,7 +245,7 @@ impl TagBin
             stream.setSeek(fatSeek)
             sig = stream.readNative'u32()
             if sig != Write.TagBinSignatures.Fat
-                throw ErrorFat
+                throw SerializationError{"invalid fat signature"}
 
             while fatCount
             {
@@ -294,7 +284,7 @@ impl TagBin
             // Read version
             let sig = stream.readNative'u32()
             if sig != Write.TagBinSignatures.Version
-                throw ErrorCorrupted
+                throw SerializationError{"stream is corrupted"}
             let streamVersion = stream.readNative'u32()
 
             // Deal with version
@@ -307,7 +297,7 @@ impl TagBin
                 // Stream version is more recent than current code.
                 // Error, except if we want to try forward compatibility
                 if !options.tryForward and curVersion < streamVersion
-                    throw ErrorNewestVersion
+                    throw SerializationError{"version is too recent"}
 
                 // If this is the exact same version, then no need to read the fat
                 if curVersion == streamVersion
@@ -369,7 +359,7 @@ impl TagBin
         // Read name signature
         let crcName = stream.readNative'u32()
         if crcName != reqCrcName
-            throw ErrorBadName
+            throw SerializationError{"bad field name"}
 
         // Read type signature. If they match, we are done
         let crcType = stream.readNative'u32()
@@ -380,11 +370,11 @@ impl TagBin
 
         // Type from the stream does not exists anymore
         if !streamType
-            throw ErrorBadType
+            throw SerializationError{"bad field type"}
 
         // Type cannot be converted
         if !canConvertType(val.pointedType, streamType)
-            throw ErrorBadType
+            throw SerializationError{"bad field type"}
 
         // It's an array in the stream, and we do not want one
         // Skip header
@@ -393,7 +383,7 @@ impl TagBin
             convertArrayToVal = false
             let sig = stream.readNative'u32()
             if sig != Write.TagBinSignatures.Sequence
-                throw ErrorCorrupted
+                throw SerializationError{"stream is corrupted"}
             discard stream.readNative'u64()
         }
 
@@ -430,7 +420,7 @@ impl TagBin
             let sig = stream.readNative'u32()
 
             if sig != Write.TagBinSignatures.Sequence
-                throw ErrorCorrupted
+                throw SerializationError{"stream is corrupted"}
 
             // 0 for a dynamic array, > 0 for a static array
             dref countElem = stream.readNative'u64()

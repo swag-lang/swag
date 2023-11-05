@@ -464,6 +464,7 @@ bool Ast::convertStructParamsToTmpVar(SemanticContext* context, AstIdentifier* i
 
     auto typeNode = Ast::newTypeExpression(sourceFile, varNode);
     typeNode->addSpecFlags(AstType::SPECFLAG_HAS_STRUCT_PARAMETERS);
+    typeNode->addSpecFlags(AstType::SPECFLAG_CREATED_STRUCT_PARAMETERS);
     varNode->flags |= AST_GENERATED;
     varNode->type = typeNode;
     CloneContext cloneContext;
@@ -474,12 +475,17 @@ bool Ast::convertStructParamsToTmpVar(SemanticContext* context, AstIdentifier* i
     back->flags &= ~AST_NO_BYTECODE;
     back->flags |= AST_IN_TYPE_VAR_DECLARATION;
 
+    // :StructParamsNoSem
     // Call parameters have already been evaluated, so do not reevaluate them again
     back->callParameters->flags |= AST_NO_SEMANTIC;
+    back->callParameters->semFlags |= node->semFlags & SEMFLAG_ACCESS_MASK;
+    SemanticJob::inheritAccess(back->callParameters);
 
-    // :DupGen
+    // :DupGen :StructParamsNoSem
     // Type has already been evaluated
     typeNode->identifier->flags |= AST_NO_SEMANTIC;
+    typeNode->identifier->semFlags |= node->semFlags & SEMFLAG_ACCESS_MASK;
+    SemanticJob::inheritAccess(typeNode->identifier);
 
     // If this is in a return expression, then force the identifier type to be retval
     if (node->parent && node->parent->inSimpleReturn())

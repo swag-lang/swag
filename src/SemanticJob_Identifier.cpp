@@ -5229,6 +5229,9 @@ bool SemanticJob::resolveThrow(SemanticContext* context)
     SWAG_VERIFY(!type->isVoid(), context->report({expr, Err(Err0573)}));
     SWAG_VERIFY(type->isStruct() || type->isString(), context->report({expr, Fmt(Err(Err0570), type->getDisplayNameC())}));
 
+    if (type->isString())
+        context->node->printLoc();
+
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoAny, node, expr, CASTFLAG_AUTO_OPCAST | CASTFLAG_CONCRETE_ENUM));
     node->byteCodeFct = ByteCodeGenJob::emitThrow;
     return true;

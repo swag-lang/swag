@@ -65,7 +65,7 @@ internal impl RenderOgl
         {
             infoLog.length = infoLogLength
             Console.print(infoLog)
-            throw "shader error"
+            throw Swag.SystemError{"shader error"}
         }
     }
 

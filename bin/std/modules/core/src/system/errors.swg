@@ -32,3 +32,13 @@ struct ParseIncompleteError
 {
     using base: Swag.BaseError
 }
+
+struct SerializationError
+{
+    using base: Swag.BaseError
+}
+
+struct FileNotFoundError
+{
+    using base: Swag.BaseError
+}
