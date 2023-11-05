@@ -438,20 +438,20 @@ private namespace Gdi32Priv
     {
         let res = Gdi32Priv.ChoosePixelFormat(hdc, ppfd)
         if !res
-            throw "GDI_ERROR"
+            throwWinError(GetLastError())
         return res
     }
 
     func SetPixelFormat(hdc: HDC, fmt: s32, ppfd: const *PIXELFORMATDESCRIPTOR) throw
     {
         if !Gdi32Priv.SetPixelFormat(hdc, fmt, ppfd)
-            throw "GDI_ERROR"
+            throwWinError(GetLastError())
     }
 
     func SwapBuffers(arg1: HDC) throw
     {
         if !Gdi32Priv.SwapBuffers(arg1)
-            throw "GDI_ERROR"
+            throwWinError(GetLastError())
     }
 
     #[Discardable]
@@ -459,7 +459,7 @@ private namespace Gdi32Priv
     {
         let res = Gdi32Priv.DescribePixelFormat(hdc, iPixelFormat, nBytes, ppfd)
         if !res
-            throw "GDI_ERROR"
+            throwWinError(GetLastError())
         return res
     }
 
@@ -467,7 +467,7 @@ private namespace Gdi32Priv
     {
         let res = Gdi32Priv.CreateCompatibleDC(hdc)
         if res == null
-            throw "GDI_ERROR"
+            throwWinError(GetLastError())
         return res
     }
 
@@ -475,7 +475,7 @@ private namespace Gdi32Priv
     {
         let res = Gdi32Priv.CreateCompatibleBitmap(hdc, cx, cy)
         if res == null
-            throw "GDI_ERROR"
+            throwWinError(GetLastError())
         return res
     }
 
@@ -483,56 +483,56 @@ private namespace Gdi32Priv
     {
         let res = Gdi32Priv.DeleteDC(hdc)
         if !res
-            throw "GDI_ERROR"
+            throwWinError(GetLastError())
     }
 
     func DeleteObject(ho: HGDIOBJ) throw
     {
         let res = Gdi32Priv.DeleteObject(ho)
         if !res
-            throw "GDI_ERROR"
+            throwWinError(GetLastError())
     }
 
     func BitBlt(hdc: HDC, x, y, cx, cy: s32, hdcSrc: HDC, x1, y1: s32, rop: DWORD) throw
     {
         let res = Gdi32Priv.BitBlt(hdc, x, y, cx, cy, hdcSrc, x1, y1, rop)
         if !res
-            throw "GDI_ERROR"
+            throwWinError(GetLastError())
     }
 
     func GetObjectA(h: HANDLE, c: s32, pv: LPVOID) throw
     {
         let res = Gdi32Priv.GetObjectA(h, c, pv)
         if !res
-            throw "GDI_ERROR"
+            throwWinError(GetLastError())
     }
 
     func GetObjectW(h: HANDLE, c: s32, pv: LPVOID) throw
     {
         let res = Gdi32Priv.GetObjectW(h, c, pv)
         if !res
-            throw "GDI_ERROR"
+            throwWinError(GetLastError())
     }
 
     func GetBitmapBits(hbit: HBITMAP, cb: LONG, lpvBits: LPVOID) throw
     {
         let res = Gdi32Priv.GetBitmapBits(hbit, cb, lpvBits)
         if !res
-            throw "GDI_ERROR"
+            throwWinError(GetLastError())
     }
 
     func SetBitmapBits(hbit: HBITMAP, cb: DWORD, lpvBits: LPVOID) throw
     {
         let res = Gdi32Priv.SetBitmapBits(hbit, cb, lpvBits)
         if !res
-            throw "GDI_ERROR"
+            throwWinError(GetLastError())
     }
 
     func GetFontData(hdc: HDC, dwTable: DWORD, dwOffset: DWORD, pvBuffer: LPVOID, cjBuffer: DWORD)->DWORD throw
     {
         let res = Gdi32Priv.GetFontData(hdc, dwTable, dwOffset, pvBuffer, cjBuffer)
         if res == GDI_ERROR
-            throw "GDI_ERROR"
+            throwWinError(GetLastError())
         return res
     }
 
@@ -540,7 +540,7 @@ private namespace Gdi32Priv
     {
         let res = Gdi32Priv.CreateFontIndirectA(lplf)
         if res == null
-            throw "GDI_ERROR"
+            throwWinError(GetLastError())
         return res
     }
 
@@ -548,7 +548,7 @@ private namespace Gdi32Priv
     {
         let res = Gdi32Priv.CreateFontIndirectW(lplf)
         if res == null
-            throw "GDI_ERROR"
+            throwWinError(GetLastError())
         return res
     }
 
@@ -556,7 +556,7 @@ private namespace Gdi32Priv
     {
         let res = Gdi32Priv.CreateSolidBrush(color)
         if res == null
-            throw "GDI_ERROR"
+            throwWinError(GetLastError())
         return res
     }
 
@@ -564,7 +564,7 @@ private namespace Gdi32Priv
     {
         let res = Gdi32Priv.CreatePen(iStyle, cWidth, color)
         if res == null
-            throw "GDI_ERROR"
+            throwWinError(GetLastError())
         return res
     }
 
@@ -573,7 +573,7 @@ private namespace Gdi32Priv
     {
         let res = Gdi32Priv.GetDIBits(hdc, hbm, start, cLines, lpvBits, lpbmi, usage)
         if res == 0
-            throw "GDI_ERROR"
+            throwWinError(GetLastError())
         return res
     }
 
@@ -581,7 +581,7 @@ private namespace Gdi32Priv
     {
         let res = Gdi32Priv.CreateDIBSection(hdc, pbmi, usage, ppvBits, hSection, offset)
         if res == null
-            throw "GDI_ERROR"
+            throwWinError(GetLastError())
         return res
     }
 }
