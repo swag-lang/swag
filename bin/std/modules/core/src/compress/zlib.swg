@@ -1,5 +1,6 @@
 #global public
 #global namespace Compress
+using Core.Errors
 
 #[Swag.Opaque]
 struct ZLib
@@ -34,17 +35,17 @@ impl ZLib
     {
         var bs = ByteStream.openRead(buffer)
         if bs.length() < 6
-            throw "invalid format"
+            throw InvalidFormatError{message: "invalid format"}
 
         // Compression mtd (8 is "deflate")
         let cmf = bs.readU8()
         if cmf & 0xF != 8
-            throw "invalid compression mtd"
+            throw InvalidFormatError{message: "invalid compression mtd"}
 
         // Window size
         let cinfo = (cmf >> 4) & 0xF
         if cinfo > 7
-            throw "unsupported window size"
+            throw UnsupportedFormatError{message: "unsupported window size"}
         let winSize = 1'u32 << (cinfo + 8)
 
         // Check
@@ -53,7 +54,7 @@ impl ZLib
         // Dict
         let fdict = (flg >> 5) & 1
         if fdict
-            throw "unsupported dictionnary"
+            throw UnsupportedFormatError{message: "unsupported dictionnary"}
 
         // Compression level
         //var flevel = (flg >> 6) & 3
@@ -68,7 +69,7 @@ impl ZLib
                    decoder.stream.readBits(8) << 8  |
                    decoder.stream.readBits(8)
         if adler32 != decoder.adler.adler
-            throw "invalid checksum"
+            throw InvalidFormatError{message: "invalid checksum"}
 
         return result
     }
