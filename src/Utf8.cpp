@@ -213,15 +213,18 @@ void Utf8::operator=(const char* txt)
     append(txt);
 }
 
-void Utf8::operator=(Utf8&& from)
+void Utf8::operator=(Utf8&& other)
 {
+    if (&other == this)
+        return;
+
     release();
-    count          = from.count;
-    allocated      = from.allocated;
-    buffer         = from.buffer;
-    from.count     = 0;
-    from.allocated = 0;
-    from.buffer    = nullptr;
+    count           = other.count;
+    allocated       = other.allocated;
+    buffer          = other.buffer;
+    other.count     = 0;
+    other.allocated = 0;
+    other.buffer    = nullptr;
 }
 
 void Utf8::operator=(const Utf8& other)

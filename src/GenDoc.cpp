@@ -1112,11 +1112,11 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
             Utf8::tokenize(line, '|', tkn);
 
             if (tkn.back().empty())
-                tkn.erase(tkn.end());
+                tkn.pop_back();
             while (tkn.size() < tableColCount)
                 tkn.push_back("");
             while (tkn.size() > tableColCount)
-                tkn.erase(tkn.end());
+                tkn.pop_back();
 
             helpContent += "<tr>";
             for (int it = 0; it < tkn.size(); it++)
