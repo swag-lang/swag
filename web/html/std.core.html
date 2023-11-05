@@ -1406,8 +1406,8 @@
 <li><a href="#Core_StrConv_parseU32">StrConv.parseU32</a></li>
 <li><a href="#Core_StrConv_parseU64">StrConv.parseU64</a></li>
 <li><a href="#Core_StrConv_parseU8">StrConv.parseU8</a></li>
+<li><a href="#Core_StrConv_parseValue">StrConv.parseValue</a></li>
 <li><a href="#Core_StrConv_parseX64">StrConv.parseX64</a></li>
-<li><a href="#Core_StrConv_pokeValue">StrConv.pokeValue</a></li>
 <li><a href="#Core_StrConv_toDisplaySize">StrConv.toDisplaySize</a></li>
 <li><a href="#Core_StrConv_toF32">StrConv.toF32</a></li>
 <li><a href="#Core_StrConv_toF64">StrConv.toF64</a></li>
@@ -22292,12 +22292,12 @@ Changes that are supported from V to V+1 are :</span></div>
 <td>Convert an utf8 buffer in decimal to an unsigned integer value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StrConv_parseX64">parseX64</a></span></td>
-<td>Convert an utf8 buffer in hexadecimal to an unsigned integer value. </td>
+<td class="code-type"><span class="SFct"><a href="#Core_StrConv_parseValue">parseValue</a></span></td>
+<td>This function will parse the string <span class="code-inline">buf</span> and decode the corresponding value in <span class="code-inline">addr</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StrConv_pokeValue">pokeValue</a></span></td>
-<td>This function will parse <span class="code-inline">buf</span> and poke the corresponding value to <span class="code-inline">addr</span>. </td>
+<td class="code-type"><span class="SFct"><a href="#Core_StrConv_parseX64">parseX64</a></span></td>
+<td>Convert an utf8 buffer in hexadecimal to an unsigned integer value. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StrConv_toDisplaySize">toDisplaySize</a></span></td>
@@ -23125,30 +23125,16 @@ Changes that are supported from V to V+1 are :</span></div>
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_StrConv_parseX64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">parseX64</span></span>
+<span id="Core_StrConv_parseValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">parseValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L8" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parsevalue.swg#L15" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Convert an utf8 buffer in hexadecimal to an unsigned integer value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parseX64</span>(str: <span class="STpe">string</span>)-&gt;{value: <span class="STpe">u64</span>, eat: <span class="STpe">u32</span>, ovf: <span class="STpe">bool</span>} <span class="SKwd">throw</span></span></div>
-<p> Returns the value and the number of bytes used to make the conversion.  <span class="code-inline">ovf</span> will be true in case of overflow </p>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_StrConv_pokeValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">pokeValue</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\pokevalue.swg#L15" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>This function will parse <span class="code-inline">buf</span> and poke the corresponding value to <span class="code-inline">addr</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pokeValue</span>(addr: *<span class="STpe">void</span>, type: <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>, buf: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span> <span class="SKwd">throw</span></span></div>
-<p> <span class="code-inline">addr</span> must point to an initialized memory location that can hold type <span class="code-inline">type</span> </p>
+<p>This function will parse the string <span class="code-inline">buf</span> and decode the corresponding value in <span class="code-inline">addr</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parseValue</span>(addr: *<span class="STpe">void</span>, type: <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>, buf: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span> <span class="SKwd">throw</span></span></div>
+<p> <span class="code-inline">addr</span> must point to an initialized memory location that can hold <span class="code-inline">type</span> </p>
 <p> Accepted types are : </p>
 <ul>
 <li><span class="code-inline">s8, s16, s32, s64, u8, u16, u32, u64, rune, bool, f32, f64</span></li>
@@ -23160,6 +23146,20 @@ Changes that are supported from V to V+1 are :</span></div>
 <li>a static array of the types above</li>
 <li>a dynamic <span class="code-inline">Core.Array</span> of the types above</li>
 </ul>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_StrConv_parseX64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">parseX64</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\parse.swg#L8" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Convert an utf8 buffer in hexadecimal to an unsigned integer value. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parseX64</span>(str: <span class="STpe">string</span>)-&gt;{value: <span class="STpe">u64</span>, eat: <span class="STpe">u32</span>, ovf: <span class="STpe">bool</span>} <span class="SKwd">throw</span></span></div>
+<p> Returns the value and the number of bytes used to make the conversion.  <span class="code-inline">ovf</span> will be true in case of overflow </p>
 <p>
 <table class="api-item">
 <tr>
