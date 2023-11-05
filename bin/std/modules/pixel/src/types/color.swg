@@ -357,7 +357,7 @@ impl Core.StrConv.IPokeValue for Color
 
         var one = Tokenize.eatSpaces(buf)
         if @countof(one) == 0
-            throw "missing color value"
+            throw SyntaxError{}
 
         if buf[0] == `0` and buf[1]|32 == `x`
         {

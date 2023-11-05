@@ -1,49 +1,5 @@
 #global namespace Parser
 
-// Simple regular expression matcher
-// Supported:
-//
-// *    zero or more
-// ?    zero or one
-// +    one or more
-// .    any rune
-//
-// a|b  a or b
-//
-// [abc]     match any in list
-// [a-zA-Z]  match any in range
-//
-// Unicode:
-//
-// /pL      letter
-// /p{Ll}   lower letter
-// /p{Lu}   upper letter
-// /pN      number
-// /pS      symbol
-// /p{Sm}   symbol math
-//
-// Ascii only:
-//
-// [[:digit:]]
-// [[:hexa:]]
-// [[:alpha:]]
-// [[:alnum:]]
-// [[:lower:]]
-// [[:upper:]]
-// [[:blank:]]
-// [[:space:]]
-// [[:word:]]
-// [[:ascii:]]
-//
-// Special escape characters:
-//
-// \d => [[:digit:]]
-// \l => [[:lower:]]
-// \u => [[:upper:]]
-// \b => [[:blank:]]
-// \s => [[:space:]]
-// \w => [[:word:]]
-
 const RuneAsciiDigit    = cast(rune) 0x8000_0000
 const RuneAsciiLetter   = cast(rune) 0x8000_0001
 const RuneAsciiLower    = cast(rune) 0x8000_0002
@@ -78,6 +34,36 @@ struct DfaNode
     terminal:       bool
 }
 
+// Simple regular expression matcher.
+// | *                | zero or more
+// | ?                | zero or one
+// | +                | one or more
+// | .                | any rune
+// | a\|b             | a or b
+// | [abc]            | match any in list
+// | [a-zA-Z]         | match any in range
+// | /pL              | unicode letter
+// | /p{Ll}           | unicode lower letter
+// | /p{Lu}           | unicode upper letter
+// | /pN              | unicode number
+// | /pS              | unicode symbol
+// | /p{Sm}           | unicode symbol math
+// | [[:digit:]]      |
+// | [[:hexa:]]       |
+// | [[:alpha:]]      |
+// | [[:alnum:]]      |
+// | [[:lower:]]      |
+// | [[:upper:]]      |
+// | [[:blank:]]      |
+// | [[:space:]]      |
+// | [[:word:]]       |
+// | [[:ascii:]]      |
+// | \d               | [[:digit:]]
+// | \l               | [[:lower:]]
+// | \u               | [[:upper:]]
+// | \b               | [[:blank:]]
+// | \s               | [[:space:]]
+// | \w               | [[:word:]]
 #[Swag.Opaque]
 public struct RegExp
 {
