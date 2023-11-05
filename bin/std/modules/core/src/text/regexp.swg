@@ -316,7 +316,7 @@ impl RegExp
     mtd nfaPop()->*NfaTable throw
     {
         if nfaStack.isEmpty()
-            throw SyntaxError{message: "nfaPop"}
+            throw SyntaxError{"nfaPop"}
         return nfaStack.popBack()
     }
 
@@ -449,7 +449,7 @@ impl RegExp
             case `)`:
                 unionValidate()
                 if openParen.isEmpty()
-                    throw SyntaxError{message: "unexpected right parenthesis"}
+                    throw SyntaxError{"unexpected right parenthesis"}
                 let op = openParen.popBack()
                 operatorConcat(nfaStack.count - op)
 
@@ -826,7 +826,7 @@ impl RegExp
         let pzEnd = pz + @countof(sl)
 
         if preprocessed.count == 0
-            throw SyntaxError{message: "'{' without a previous expression"}
+            throw SyntaxError{"'{' without a previous expression"}
 
         var m = -1
         pz += 1
@@ -849,11 +849,11 @@ impl RegExp
         }
 
         if pz[0] != `}`
-            throw SyntaxError{message: "enum, missing '}'"}
+            throw SyntaxError{"enum, missing '}'"}
         if m != -1 and m < n
-            throw SyntaxError{message: "enum m < n in {n,m}"}
+            throw SyntaxError{"enum m < n in {n,m}"}
         if m == 0 and n == 0
-            throw SyntaxError{message: "enum m and n are zero in {n,m}"}
+            throw SyntaxError{"enum m and n are zero in {n,m}"}
 
         pz += 1
 
@@ -881,7 +881,7 @@ impl RegExp
             }
 
             if cptParen
-                throw SyntaxError{message: "missing '('"}
+                throw SyntaxError{"missing '('"}
 
             var expr: Array'rune
             while pz1 <= pze

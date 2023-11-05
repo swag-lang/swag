@@ -938,6 +938,29 @@ const CallConv& TypeInfoFuncAttr::getCallConv()
     return g_CallConv[callConv];
 }
 
+static void flatten(VectorNative<TypeInfoParam*>& result, TypeInfoParam* param)
+{
+    if (!(param->flags & TYPEINFOPARAM_HAS_USING) || param->typeInfo->kind != TypeInfoKind::Struct)
+    {
+        result.push_back(param);
+        return;
+    }
+
+    auto typeStruct = CastTypeInfo<TypeInfoStruct>(param->typeInfo, TypeInfoKind::Struct);
+    for (auto p : typeStruct->fields)
+        flatten(result, p);
+}
+
+void TypeInfoStruct::flattenUsingFields()
+{
+    ScopedLock lk(mutexCache);
+    if (flattenFields.size())
+        return;
+    flattenFields.reserve((uint32_t) fields.size());
+    for (auto p : fields)
+        flatten(flattenFields, p);
+}
+
 TypeInfo* TypeInfoStruct::clone()
 {
     ScopedLock lk(mutex);

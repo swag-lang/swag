@@ -121,7 +121,7 @@ impl Decoder
 
         result.header = ch
         if stream.curPtr() + ch.length > stream.startPtr() + stream.size()
-            throw InvalidFormatError{message: "invalid chunk"}
+            throw InvalidFormatError{"invalid chunk"}
         result.datas = @mkslice(stream.curPtr(), ch.length)
         stream.curByte += ch.length
 
@@ -132,7 +132,7 @@ impl Decoder
         var vcrc: u32
         stream.peek32Be(cast(^u8) &vcrc)
         if vcrc != crc.crc
-            throw InvalidFormatError{message: "invalid checksum"}
+            throw InvalidFormatError{"invalid checksum"}
 
         return result
     }
@@ -147,18 +147,18 @@ impl Decoder
         with header
         {
             if .width == 0 or .height == 0
-                throw InvalidFormatError{message: "invalid dimensions"}
+                throw InvalidFormatError{"invalid dimensions"}
             if .compressionMethod != 0
-                throw InvalidFormatError{message: "invalid compression mtd"}
+                throw InvalidFormatError{"invalid compression mtd"}
             if .filterMethod != 0
-                throw InvalidFormatError{message: "invalid filter mtd"}
+                throw InvalidFormatError{"invalid filter mtd"}
             if .interlaceMethod != .None and .interlaceMethod != .Adam7
-                throw InvalidFormatError{message: "invalid interlace mtd"}
+                throw InvalidFormatError{"invalid interlace mtd"}
 
             if .colorType > 7
-                throw InvalidFormatError{message: "invalid color type"}
+                throw InvalidFormatError{"invalid color type"}
             if .bitDepth > 8
-                throw UnsupportedFormatError{message: "unsupported bit depth"}
+                throw UnsupportedFormatError{"unsupported bit depth"}
 
             outChannels = 3
             if header.colorType & .Paletted
@@ -175,7 +175,7 @@ impl Decoder
             }
 
             if .bitDepth != 1 and .bitDepth != 2 and .bitDepth != 4 and .bitDepth != 8
-                throw UnsupportedFormatError{message: "invalid bit depth"}
+                throw UnsupportedFormatError{"invalid bit depth"}
         }
     }
 
@@ -453,7 +453,7 @@ impl Decoder
         var signature: u64 = undefined
         stream.peekBytes(@sizeof(signature), cast(^u8) &signature)
         if signature != 0x0a1a0a0d474e5089 
-            throw InvalidFormatError{message: "not a png"}
+            throw InvalidFormatError{"not a png"}
 
         var result:     retval
         var iDataBuf:   Array'u8
@@ -475,13 +475,13 @@ impl Decoder
 
             chIsHere = false
             if stream.eof
-                throw InvalidFormatError{message: "invalid chunk"}
+                throw InvalidFormatError{"invalid chunk"}
 
             switch ch.type
             {
             case IHDR:
                 if !firstChunk
-                    throw InvalidFormatError{message: "invalid first chunk"}
+                    throw InvalidFormatError{"invalid first chunk"}
                 readHeader(ch)
                 if decOptions.decodePixels
                 {
@@ -504,7 +504,7 @@ impl Decoder
 
             case IDAT:
                 if seenIDAT
-                    throw InvalidFormatError{message: "invalid IDAT chunk"}
+                    throw InvalidFormatError{"invalid IDAT chunk"}
                 while ch.type == IDAT
                 {
                     var chunk = readChunk(ch)
@@ -512,7 +512,7 @@ impl Decoder
                     stream.peek32Be(cast(^u8) &ch.length)
                     stream.peek32(cast(^u8) &ch.type)
                     if stream.eof
-                        throw InvalidFormatError{message: "invalid chunk"}
+                        throw InvalidFormatError{"invalid chunk"}
                 }
 
                 chIsHere = true
@@ -520,11 +520,11 @@ impl Decoder
 
             case PLTE:
                 if seenIDAT
-                    throw InvalidFormatError{message: "invalid PLTE chunk"}
+                    throw InvalidFormatError{"invalid PLTE chunk"}
                 var chunk = readChunk(ch)
                 let len = @countof(chunk.datas)
                 if len % 3 != 0 or len > 768
-                    throw InvalidFormatError{message: "invalid PLTE chunk"}
+                    throw InvalidFormatError{"invalid PLTE chunk"}
                 seenPLTE = true
                 for var i = 0; i < len; i += 3
                 {
@@ -542,9 +542,9 @@ impl Decoder
         }
 
         if !seenIDAT
-            throw InvalidFormatError{message: "missing IDAT chunk"}
+            throw InvalidFormatError{"missing IDAT chunk"}
         if header.colorType & .Paletted and !seenPLTE
-            throw InvalidFormatError{message: "missing PLTE chunk"}
+            throw InvalidFormatError{"missing PLTE chunk"}
 
         // Initialize image depending on number of wanted channels
         if outChannels == 4

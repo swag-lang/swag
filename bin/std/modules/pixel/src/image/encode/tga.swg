@@ -15,9 +15,9 @@ public impl IImageEncoder for Encoder
     mtd impl encode(result: *ConcatBuffer, image: Image, options: any) throw
     {
         if image.width > Swag.U16.Max  
-            throw UnsupportedFormatError{message: "width is too big"}
+            throw UnsupportedFormatError{"width is too big"}
         if image.height > Swag.U16.Max 
-            throw UnsupportedFormatError{message: "height is too big"}
+            throw UnsupportedFormatError{"height is too big"}
 
         var header: Header
         header.bpp           = image.bpp

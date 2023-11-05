@@ -220,19 +220,19 @@ impl Encoder
     mtd calculateScanlineWidth(width: u32)->u32 throw
     {
         if !width
-            throw UnsupportedFormatError{message: "SPNG_EINTERNAL"}
+            throw UnsupportedFormatError{"SPNG_EINTERNAL"}
 
         var res = cast(u64) numChannels() * ihdr.bitDepth
         if res > Swag.U64.Max / width
-            throw UnsupportedFormatError{message: "SPNG_EOVERFLOW"}
+            throw UnsupportedFormatError{"SPNG_EOVERFLOW"}
         res = res * width
 
         res += 15
         if res < 15
-            throw UnsupportedFormatError{message: "SPNG_EOVERFLOW"}
+            throw UnsupportedFormatError{"SPNG_EOVERFLOW"}
         res /= 8
         if res > Swag.U32.Max
-            throw UnsupportedFormatError{message: "SPNG_EOVERFLOW"}
+            throw UnsupportedFormatError{"SPNG_EOVERFLOW"}
 
         return cast(u32) res
     }
@@ -602,9 +602,9 @@ public impl IImageEncoder for Encoder
 
         // unsupported pixel format
         if image.pf.channels() < 3 or image.pf.bitDepth() != 8
-            throw UnsupportedFormatError{message: "unsupported pixel format"}
+            throw UnsupportedFormatError{"unsupported pixel format"}
         if image.width == 0 or image.height == 0
-            throw UnsupportedFormatError{message: "unsupported size"}
+            throw UnsupportedFormatError{"unsupported size"}
 
         swapRB = image.pf == .BGR8 or image.pf == .BGRA8
 

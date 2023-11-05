@@ -102,7 +102,7 @@ impl ICodec for CodecPcmToPcm16
             return doIt'(4, Float32)(destBuffer, destLength, srcBuffer, srcLength)
         }
 
-        throw UnsupportedFormatError{message: "invalid encoding"}
+        throw UnsupportedFormatError{"invalid encoding"}
         return {0,0}
     }
 }

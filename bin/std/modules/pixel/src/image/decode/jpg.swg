@@ -378,7 +378,7 @@ impl Decoder
         }
 
         if i == 0
-            throw InvalidFormatError{message: "bad restart marker"}
+            throw InvalidFormatError{"bad restart marker"}
 
         var c = 0
         while i > 0
@@ -390,9 +390,9 @@ impl Decoder
         }
 
         if i == 0 
-            throw InvalidFormatError{message: "bad restart marker"}
+            throw InvalidFormatError{"bad restart marker"}
         if c != (nextRestartNum + cast(u32) Marker.M_RST0) 
-            throw InvalidFormatError{message: "bad restart marker"}
+            throw InvalidFormatError{"bad restart marker"}
 
         Memory.clear(&lastDcVal, cast(u64) compsInFrame * @sizeof(u32))
 
@@ -466,7 +466,7 @@ impl Decoder
                         if r
                         {
                             if (k + r) > 63 
-                                throw InvalidFormatError{message: "decode error"}
+                                throw InvalidFormatError{"decode error"}
                             if k < prevNumSet
                             {
                                 var n = Math.min(r, prevNumSet - k)
@@ -484,7 +484,7 @@ impl Decoder
 
                         r = cast(s32) getBits2(s)
                         if s > 15
-                            throw InvalidFormatError{message: "decode error"}
+                            throw InvalidFormatError{"decode error"}
 
                         s = (r < ExtendTest[s] ? r + ExtendOff[s] : r)
                         p[Zag[k]] = cast(s16) (s * q[k])
@@ -494,7 +494,7 @@ impl Decoder
                         if r == 15
                         {
                             if (k + 15) > 63
-                                throw InvalidFormatError{message: "decode error"}
+                                throw InvalidFormatError{"decode error"}
 
                             if k < prevNumSet
                             {
@@ -1001,7 +1001,7 @@ impl Decoder
         elif compsInFrame == 3
         {
             if (compSampH[1] != 1) or (compSampV[1] != 1) or (compSampH[2] != 1) or (compSampV[2] != 1)
-                throw InvalidFormatError{message: "invalid samp factors"}
+                throw InvalidFormatError{"invalid samp factors"}
 
             if (compSampH[0] == 1) and (compSampV[0] == 1)
             {
@@ -1032,10 +1032,10 @@ impl Decoder
                 maxMcuSizeY     = 16
             }
             else
-                throw InvalidFormatError{message: "invalid samp factors"}
+                throw InvalidFormatError{"invalid samp factors"}
         }
         else
-            throw UnsupportedFormatError{message: "unsupported color space"}
+            throw UnsupportedFormatError{"unsupported color space"}
 
         maxMcusPerRow = (imageSizeX + (maxMcuSizeX - 1)) / maxMcuSizeX
         maxMcusPerCol = (imageSizeY + (maxMcuSizeY - 1)) / maxMcuSizeY
@@ -1056,7 +1056,7 @@ impl Decoder
 
         maxBlocksPerRow = maxMcusPerRow * maxBlocksPerMcu
         if maxBlocksPerRow > MaxBlocksPerRow
-            throw InvalidFormatError{message: "assertion error"}
+            throw InvalidFormatError{"assertion error"}
 
         quantBuf.resize(cast(u64) maxBlocksPerRow * 64 * @sizeof(s16) + 8)
         loop i: maxBlocksPerRow
@@ -1140,7 +1140,7 @@ impl Decoder
         loop i: compsInScan
         {
             if quant[compQuant[compList[i]]].count == 0
-                throw InvalidFormatError{message: "undefined quant table"}
+                throw InvalidFormatError{"undefined quant table"}
         }
     }
 
@@ -1241,10 +1241,10 @@ impl Decoder
         loop i: compsInScan
         {
             if (spectralStart == 0) and (huffNum[compDcTab[compList[i]]].count == 0)
-                throw InvalidFormatError{message: "undefined huff table"}
+                throw InvalidFormatError{"undefined huff table"}
 
             if (spectralEnd > 0) and (huffNum[compAcTab[compList[i]]].count == 0)
-                throw InvalidFormatError{message: "undefined huff table"}
+                throw InvalidFormatError{"undefined huff table"}
         }
 
         loop i: MaxHuffTables
@@ -1373,10 +1373,10 @@ impl Decoder
             {
                 k += r
                 if k > 63 
-                    throw InvalidFormatError{message: "decode error"}
+                    throw InvalidFormatError{"decode error"}
                 r = getBits2(s)
                 if s > 15 
-                    throw InvalidFormatError{message: "decode error"}
+                    throw InvalidFormatError{"decode error"}
 
                 s = (r < ExtendTest[s] ? r + ExtendOff[s] : r)
                 p[Zag[k]] = cast(s16) (s << successiveLow)
@@ -1387,7 +1387,7 @@ impl Decoder
                 {
                     k += 15
                     if k > 63
-                        throw InvalidFormatError{message: "decode error"}
+                        throw InvalidFormatError{"decode error"}
                 }
                 else
                 {
@@ -1411,7 +1411,7 @@ impl Decoder
         if eobRun == 0
         {
             if spectralEnd >= 64 
-                throw InvalidFormatError{message: "decode error"}
+                throw InvalidFormatError{"decode error"}
 
             while k <= spectralEnd
             {
@@ -1422,7 +1422,7 @@ impl Decoder
                 if s
                 {
                     if s != 1 
-                        throw InvalidFormatError{message: "decode error"}
+                        throw InvalidFormatError{"decode error"}
                     if getBits2(1)
                         s = p1
                     else
@@ -1479,7 +1479,7 @@ impl Decoder
         if eobRun > 0
         {
             if spectralEnd >= 64 
-                throw InvalidFormatError{message: "decode error"}
+                throw InvalidFormatError{"decode error"}
             while k <= spectralEnd
             {
                 var thisCoef = p + Zag[k]
@@ -1562,7 +1562,7 @@ impl Decoder
     mtd initProgressive() throw
     {
         if compsInFrame == 4 
-            throw UnsupportedFormatError{message: "unsupported color space"}
+            throw UnsupportedFormatError{"unsupported color space"}
 
         loop i: compsInFrame
         {
@@ -1579,20 +1579,20 @@ impl Decoder
             let refinementScan = (successiveHigh != 0)
 
             if (spectralStart > spectralEnd) or (spectralEnd > 63)
-                throw InvalidFormatError{message: "bad sos spectral"}
+                throw InvalidFormatError{"bad sos spectral"}
 
             if dcOnlyScan
             {
                 if spectralEnd
-                    throw InvalidFormatError{message: "bad sos spectral"}
+                    throw InvalidFormatError{"bad sos spectral"}
             }
             elif compsInScan != 1
             {
-                throw InvalidFormatError{message: "bad sos spectral"}
+                throw InvalidFormatError{"bad sos spectral"}
             }
 
             if refinementScan and (successiveLow != successiveHigh - 1)
-                throw InvalidFormatError{message: "bad sos successive"}
+                throw InvalidFormatError{"bad sos successive"}
 
             var decodeBlockFunc: func(*Decoder, u32, s32, s32) throw
             if dcOnlyScan
@@ -1628,7 +1628,7 @@ impl Decoder
     {
         let res = initScan()
         if !res 
-            throw InvalidFormatError{message: "unexpected marker"}
+            throw InvalidFormatError{"unexpected marker"}
     }
 
     #[Safety("overflow", false), Discardable]
@@ -1778,9 +1778,9 @@ impl Decoder
                 return c
             case M_JPG, M_RST0, M_RST1, M_RST2, M_RST3, M_RST4,
                  M_RST5, M_RST6, M_RST7, M_TEM:
-                throw InvalidFormatError{message: "unexpected marker"}
+                throw InvalidFormatError{"unexpected marker"}
             case M_DAC:
-                throw UnsupportedFormatError{message: "no arithmetic support"}
+                throw UnsupportedFormatError{"no arithmetic support"}
             case M_DHT:
                 readDhtMarker()
             case M_DQT:
@@ -1799,7 +1799,7 @@ impl Decoder
     {
         var left = getBits1(16)
         if left < 2 
-            throw InvalidFormatError{message: "bad variable marker"}
+            throw InvalidFormatError{"bad variable marker"}
         left -= 2
 
         @assert(!acceptMetaDatas)
@@ -1817,7 +1817,7 @@ impl Decoder
 
         var left = getBits1(16)
         if left < 2 
-            throw InvalidFormatError{message: "bad dht marker"}
+            throw InvalidFormatError{"bad dht marker"}
         left -= 2
 
         while left
@@ -1832,7 +1832,7 @@ impl Decoder
             }
 
             if count > 255 
-                throw InvalidFormatError{message: "bad dht counts"}
+                throw InvalidFormatError{"bad dht counts"}
             loop i: count
             {
                 huffValt[i] = cast(u8) getBits1(8)
@@ -1840,15 +1840,15 @@ impl Decoder
 
             let i = 1 + 16 + count
             if left < i 
-                throw InvalidFormatError{message: "bad dht marker"}
+                throw InvalidFormatError{"bad dht marker"}
 
             left -= i
             if (index & 0x10) > 0x10 
-                throw InvalidFormatError{message: "bad dht index"}
+                throw InvalidFormatError{"bad dht index"}
 
             index = (index & 0x0F) + ((index & 0x10) >> 4) * (MaxHuffTables >> 1)
             if index >= MaxHuffTables 
-                throw InvalidFormatError{message: "bad dht index"}
+                throw InvalidFormatError{"bad dht index"}
 
             huffNum[index].resize(17)
             huffVal[index].resize(256)
@@ -1861,7 +1861,7 @@ impl Decoder
     {
         var left = getBits1(16)
         if left < 2 
-            throw InvalidFormatError{message: "bad dqt marker"}
+            throw InvalidFormatError{"bad dqt marker"}
         left -= 2
 
         while left
@@ -1870,7 +1870,7 @@ impl Decoder
             let prec = n >> 4
             n &= 0x0F
             if n >= MaxQuantTables 
-                throw InvalidFormatError{message: "bad dqt table"}
+                throw InvalidFormatError{"bad dqt table"}
 
             quant[n].resize(64)
             loop i: 64
@@ -1884,7 +1884,7 @@ impl Decoder
             var i = 64 + 1
             if prec i += 64
             if left < i 
-                throw InvalidFormatError{message: "bad dqt length"}
+                throw InvalidFormatError{"bad dqt length"}
             left -= i
         }
     }
@@ -1892,7 +1892,7 @@ impl Decoder
     mtd readDriMarker() throw
     {
         if getBits1(16) != 4 
-            throw InvalidFormatError{message: "bad dri length"}
+            throw InvalidFormatError{"bad dri length"}
         restartInterval = getBits1(16)
     }
 
@@ -1900,21 +1900,21 @@ impl Decoder
     {
         let left = getBits1(16)
         if getBits1(8) != 8 
-            throw InvalidFormatError{message: "bad precision"}   
+            throw InvalidFormatError{"bad precision"}   
 
         imageSizeY = getBits1(16)
         imageSizeX = getBits1(16)
 
         if (imageSizeY < 1) or (imageSizeY > MaxHeight) 
-            throw InvalidFormatError{message: "bad height"}
+            throw InvalidFormatError{"bad height"}
         if (imageSizeX < 1) or (imageSizeX > MaxWidth) 
-            throw InvalidFormatError{message: "bad width"}
+            throw InvalidFormatError{"bad width"}
 
         compsInFrame = getBits1(8)
         if compsInFrame > MaxComponents 
-            throw InvalidFormatError{message: "too many components"}
+            throw InvalidFormatError{"too many components"}
         if left != (compsInFrame * 3 + 8) 
-            throw InvalidFormatError{message: "bad sof length"}
+            throw InvalidFormatError{"bad sof length"}
 
         loop i: compsInFrame
         {
@@ -1933,7 +1933,7 @@ impl Decoder
         left -= 3
 
         if (left != (n * 2 + 3)) or (n < 1) or (n > MaxCompsInScan)
-            throw InvalidFormatError{message: "bad sos length"}
+            throw InvalidFormatError{"bad sos length"}
 
         loop i: n
         {
@@ -1950,7 +1950,7 @@ impl Decoder
             }
 
             if ci >= compsInFrame
-                throw InvalidFormatError{message: "bad sos comp id"}
+                throw InvalidFormatError{"bad sos comp id"}
 
             compList[i]   = ci
             compDcTab[ci] = (c >> 4) & 15
@@ -1982,7 +1982,7 @@ impl Decoder
         if c == .M_EOI
             return false
         elif c != .M_SOS
-            throw InvalidFormatError{message: "unexpected marker"}
+            throw InvalidFormatError{"unexpected marker"}
         readSosMarker()
         return true
     }
@@ -1998,7 +1998,7 @@ impl Decoder
         {
             bytesLeft -= 1
             if bytesLeft == 0 
-                throw InvalidFormatError{message: "not a jpeg"}
+                throw InvalidFormatError{"not a jpeg"}
             lastRune = thisChar
             thisChar = getBits1(8)
             if (lastRune == 0xFF) and (thisChar == Marker.M_SOI)
@@ -2007,7 +2007,7 @@ impl Decoder
 
         thisChar = (bitBuf >> 8) & 0xFF
         if thisChar != 0xFF 
-            throw InvalidFormatError{message: "not a jpeg"}
+            throw InvalidFormatError{"not a jpeg"}
     }
 
     mtd locateSofMarker() throw
@@ -2022,9 +2022,9 @@ impl Decoder
         case M_SOF0, M_SOF1:
             readSofMarker()
         case M_SOF9:
-            throw UnsupportedFormatError{message: "no arithmetic support"}
+            throw UnsupportedFormatError{"no arithmetic support"}
         default:
-            throw UnsupportedFormatError{message: "unsupported marker"}
+            throw UnsupportedFormatError{"unsupported marker"}
         }
     }
 

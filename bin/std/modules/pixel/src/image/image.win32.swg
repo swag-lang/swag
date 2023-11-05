@@ -60,7 +60,7 @@ impl Image
         case 32:
             result = create(bitmap.bmWidth, bitmap.bmHeight, PixelFormat.BGRA8)
         default:
-            throw UnsupportedFormatError{message: "unsupported bit depth"}
+            throw UnsupportedFormatError{"unsupported bit depth"}
         }
 
         let dc = GetDC(null)

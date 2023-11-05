@@ -604,6 +604,7 @@ struct TypeInfoStruct : public TypeInfo
     Utf8           getDisplayName() override;
     bool           canRawCopy();
     bool           isPlainOldData();
+    void           flattenUsingFields();
 
     VectorNative<TypeInfoParam*>          genericParameters;
     VectorNative<TypeInfo*>               deducedGenericParameters;
@@ -611,6 +612,7 @@ struct TypeInfoStruct : public TypeInfo
     VectorNative<TypeInfoParam*>          consts;
     VectorNative<TypeInfoParam*>          methods;
     VectorNative<TypeInfoParam*>          interfaces;
+    VectorNative<TypeInfoParam*>          flattenFields;
     VectorMap<Utf8, TypeInfo*>            replaceTypes;
     VectorMap<Utf8, ComputedValue*>       replaceValues;
     VectorMap<Utf8, AstNode*>             replaceFrom;

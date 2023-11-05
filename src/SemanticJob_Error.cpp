@@ -350,9 +350,10 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
         if (overload->typeInfo->isStruct())
         {
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
-            diag            = new Diagnostic{diagNode,
+            typeStruct->flattenUsingFields();
+            diag = new Diagnostic{diagNode,
                                   Fmt(Err(Err0723),
-                                      typeStruct->fields[badParamIdx - 1]->name.c_str(),
+                                      typeStruct->flattenFields[badParamIdx - 1]->name.c_str(),
                                       bi.badSignatureRequestedType->getDisplayNameC(),
                                       bi.badSignatureGivenType->getDisplayNameC())};
         }

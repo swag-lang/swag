@@ -44,7 +44,7 @@ public func parseValue(addr: *void, type: typeinfo, buf: string)->string throw
         while @countof(one) and one[0] != `#`
         {
             if cpt == arrayType.totalCount 
-                throw InvalidFormatError{message: "too many static array values"}
+                throw InvalidFormatError{"too many static array values"}
             one = parseValue(addrVal, arrayType.finalType, one)
             one = Tokenize.eatSpaces(one)
             addrVal += arrayType.finalType.sizeof
@@ -59,7 +59,7 @@ public func parseValue(addr: *void, type: typeinfo, buf: string)->string throw
     {
         let enumType = cast(const *TypeInfoEnum) type
         if enumType.rawType != string and enumType.sizeof > 8
-            throw UnsupportedFormatError{message: Format.toStringError("unsupported enum type '%'", enumType.rawType.name)}           
+            throw UnsupportedFormatError{Format.toStringError("unsupported enum type '%'", enumType.rawType.name)}           
         let enumFlags = Reflection.hasAttribute(enumType, EnumFlags)
 
         loop
@@ -68,7 +68,7 @@ public func parseValue(addr: *void, type: typeinfo, buf: string)->string throw
             let id = parseIdentifier(one)
             let v = Reflection.getEnumValue(type, id)
             if !v 
-                throw InvalidFormatError{message: Format.toStringError("unknown enum value '%'", id)}           
+                throw InvalidFormatError{Format.toStringError("unknown enum value '%'", id)}           
 
             if enumType.rawType == string
             {
@@ -103,7 +103,7 @@ public func parseValue(addr: *void, type: typeinfo, buf: string)->string throw
             if one[0] == `#` break
 
             if one[0] != `|`
-                throw InvalidFormatError{message: "invalid enum flags format"}
+                throw InvalidFormatError{"invalid enum flags format"}
             one = Tokenize.eatCount(one, 1)
         }
 
@@ -200,7 +200,7 @@ public func parseValue(addr: *void, type: typeinfo, buf: string)->string throw
         dref cast(*String) patch = val
 
     default:
-        throw UnsupportedFormatError{message: Format.toStringError("unsupported type '%'", type.name)}
+        throw UnsupportedFormatError{Format.toStringError("unsupported type '%'", type.name)}
     }
 
     return Tokenize.eatCount(one, cast(u64) eat)

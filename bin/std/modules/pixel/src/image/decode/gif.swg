@@ -73,7 +73,7 @@ impl Decoder
     mtd seek(len: u64) throw
     {
         if len > streamLen
-            throw InvalidFormatError{message: "read error"}
+            throw InvalidFormatError{"read error"}
         stream    += len
         streamLen -= len
     }
@@ -81,7 +81,7 @@ impl Decoder
     mtd read(dest: *u8, len: u64) throw
     {
         if len > streamLen
-            throw InvalidFormatError{message: "read error"}
+            throw InvalidFormatError{"read error"}
         Memory.copy(dest, stream, len)
         stream    += len
         streamLen -= len
@@ -91,7 +91,7 @@ impl Decoder
     mtd readU8()->u8 throw
     {
         if streamLen < 1
-            throw InvalidFormatError{message: "read error"}
+            throw InvalidFormatError{"read error"}
         let res = stream[0]
         stream    += 1
         streamLen -= 1
@@ -101,7 +101,7 @@ impl Decoder
     mtd readU16()->u16 throw
     {
         if streamLen < 2
-            throw InvalidFormatError{message: "read error"}
+            throw InvalidFormatError{"read error"}
         let res = cast(u16) (stream[0] + (cast(u16) stream[1] << 8))
         stream += 2
         streamLen -= 2
@@ -270,7 +270,7 @@ impl Decoder
         var byte = readU8()
         var keySize = cast(s32) byte
         if keySize < 2 or keySize > 8
-            throw InvalidFormatError{message: "invalid frame"}
+            throw InvalidFormatError{"invalid frame"}
 
         let start = cast(u64) (stream - streamStart)
         let remainStart = streamLen
@@ -348,7 +348,7 @@ impl Decoder
         fx = readU16()
         fy = readU16()
         if fx >= width or fy >= height
-            throw InvalidFormatError{message: "invalid frame size"}
+            throw InvalidFormatError{"invalid frame size"}
 
         fw = readU16()
         fh = readU16()
@@ -422,7 +422,7 @@ impl Decoder
             if sep == `;`
                 return 0
             if sep != `!`
-                throw InvalidFormatError{message: "invalid format"}
+                throw InvalidFormatError{"invalid format"}
             readExt()
             sep = readU8()
         }
@@ -446,12 +446,12 @@ public impl Decoder
         var sigver: [3] u8
         read(sigver, 3)
         if Memory.compare(sigver, @dataof("GIF"), 3) != 0
-            throw InvalidFormatError{message: "invalid signature"}
+            throw InvalidFormatError{"invalid signature"}
 
         /* Version */
         read(sigver, 3)
         if Memory.compare(sigver, @dataof("89a"), 3) != 0
-            throw InvalidFormatError{message: "invalid version"}
+            throw InvalidFormatError{"invalid version"}
 
         /* Width x Height */
         width  = readU16()
@@ -461,7 +461,7 @@ public impl Decoder
         var fdsz: u8
         read(&fdsz, 1)
         if !(fdsz & 0x80) // Presence of GCT
-            throw UnsupportedFormatError{message: "no global color table"}
+            throw UnsupportedFormatError{"no global color table"}
 
         /* Color space's depth */
         depth = acast (((fdsz >> 4) & 7) + 1)

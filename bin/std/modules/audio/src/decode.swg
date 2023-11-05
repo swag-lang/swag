@@ -43,7 +43,7 @@ impl Voice
     {
         let desc = getCodec(requestedEncoding, file.encoding)
         if !desc
-            throw UnsupportedFormatError{message: "unsupported encoding"}
+            throw UnsupportedFormatError{"unsupported encoding"}
         let decoder = cast(*Codec) Memory.new(desc.type)
         decoder.srcEncoding = file.encoding
         decoder.dstEncoding = requestedEncoding

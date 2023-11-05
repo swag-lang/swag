@@ -57,7 +57,7 @@ public impl Image
         }
 
         if !found
-            throw UnsupportedFormatError{message: "no matching image encoder"}
+            throw UnsupportedFormatError{"no matching image encoder"}
 
         // Create an encoder instance
         let ptrEncoder = Memory.new(found.type)

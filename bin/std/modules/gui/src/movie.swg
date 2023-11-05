@@ -114,7 +114,7 @@ impl Movie
         }
         else
         {
-            throw UnsupportedFormatError{message: "unsupported format"}
+            throw UnsupportedFormatError{"unsupported format"}
         }
     }
 

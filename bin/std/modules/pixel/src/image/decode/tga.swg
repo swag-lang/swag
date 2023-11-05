@@ -86,7 +86,7 @@ impl Decoder
         }
 
         if invalid
-            throw InvalidFormatError{message: "invalid source buffer"}
+            throw InvalidFormatError{"invalid source buffer"}
     }
 }
 
@@ -104,7 +104,7 @@ public impl IImageDecoder for Decoder
         let last = dataof + countof
 
         if countof <= @sizeof(Header) 
-            throw InvalidFormatError{message: "invalid source buffer"}
+            throw InvalidFormatError{"invalid source buffer"}
         let header = cast(const *Header) dataof
         dataof += @sizeof(Header)
 
@@ -117,7 +117,7 @@ public impl IImageDecoder for Decoder
         case 32:
             result.init(cast(s32) header.width, cast(s32) header.height, PixelFormat.BGRA8)
         default:
-            throw UnsupportedFormatError{message: "unsupported bit depth"}
+            throw UnsupportedFormatError{"unsupported bit depth"}
         }
 
         if !options.decodePixels
@@ -129,14 +129,14 @@ public impl IImageDecoder for Decoder
         {
         case TYPE_MAP, TYPE_RGB, TYPE_MONO:
             if dataof + result.size > last 
-                throw InvalidFormatError{message: "invalid source buffer"}
+                throw InvalidFormatError{"invalid source buffer"}
             Memory.copy(result.pixels.buffer, dataof, result.size)
             
         case TYPE_RLE_MAP, TYPE_RLE_RGB, TYPE_RLE_MONO:
             uncompress(header.bpp, result.pixels.buffer, dataof, last, result.size)
 
         default:
-            throw UnsupportedFormatError{message: "unsupported type"}
+            throw UnsupportedFormatError{"unsupported type"}
         }
 
         return result

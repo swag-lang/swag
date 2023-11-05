@@ -66,7 +66,7 @@ impl SoundFile
         case ".wav":
             break
         default:
-            throw UnsupportedFormatError{message: "unsupported file extension"}
+            throw UnsupportedFormatError{"unsupported file extension"}
         }
 
         var result: retval

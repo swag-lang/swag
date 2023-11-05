@@ -1069,8 +1069,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             typeStruct = CastTypeInfo<TypeInfoStruct>(typeArray->pointedType, TypeInfoKind::Struct);
         }
 
-        if (typeStruct && identifier->callParameters && identifier->callParameters->childs.size() == typeStruct->fields.size())
-            node->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
+        if (typeStruct && identifier->callParameters)
+        {
+            typeStruct->flattenUsingFields();
+            if (identifier->callParameters->childs.size() == typeStruct->flattenFields.size())
+                node->flags |= AST_HAS_FULL_STRUCT_PARAMETERS;
+        }
     }
 
     // Force a constant to have a constant type, to avoid modifying a type that is in fact stored in the data segment,

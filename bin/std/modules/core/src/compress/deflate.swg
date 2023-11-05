@@ -1150,7 +1150,7 @@ public impl Deflate
     mtd compress(result: *Array'u8, src: const [..] u8) throw
     {
         if @countof(src) > Swag.U32.Max
-            throw UnsupportedFormatError{message: "source buffer too big"}
+            throw UnsupportedFormatError{"source buffer too big"}
 
         Debug.assert(state  != null, "'init' not called")
 
