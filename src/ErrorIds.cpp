@@ -781,7 +781,7 @@ void initErrors()
     SWAG_ERROR(Err0568, "type mismatch                                     $ the '%s' assignment requires an expression of type '%s', got '%s' instead");
     SWAG_ERROR(Err0106, "type mismatch                                     $ the type of the 'self' parameter should be '%s', got '%s' instead");
     SWAG_ERROR(Err0252, "type mismatch                                     $ type '%s' and type '%s' defined in the command line for '%s' are incompatible");
-    SWAG_ERROR(Err0723, "type mismatch                                     $ type mismatch for field '%s'; expected '%s', found '%s'");
+    SWAG_ERROR(Err0723, "type mismatch                                     $ type mismatch for field '%s' ('%s' expected, '%s' provided)");
     SWAG_ERROR(Err0065, "type mismatch                                     $ unexpected return type for special function '%s' ('%s' expected, '%s' provided)");
     SWAG_ERROR(Err1097, "unexpected '#elif'                                $ '#elif' found without a preceding '#if' directive");
     SWAG_ERROR(Err1098, "unexpected '#else'                                $ '#else' found without a preceding '#if' or '#elif' directive");
