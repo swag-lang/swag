@@ -1422,7 +1422,7 @@
 <li><a href="#Win32_WriteConsoleOutputCharacterA">Win32.WriteConsoleOutputCharacterA</a></li>
 <li><a href="#Win32_WriteConsoleOutputCharacterW">Win32.WriteConsoleOutputCharacterW</a></li>
 <li><a href="#Win32_WriteFile">Win32.WriteFile</a></li>
-<li><a href="#Win32_setError">Win32.setError</a></li>
+<li><a href="#Win32_throwWinError">Win32.throwWinError</a></li>
 </ul>
 </div>
 </div>
@@ -11376,17 +11376,17 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Win32_setError"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">setError</span></span>
+<span id="Win32_throwWinError"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Win32.</span><span class="api-item-title-strong">throwWinError</span></span>
 </td>
 <td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/win32\src\win32.swg#L4" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Fill the context error message. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setError</span>(errorMessageID: <span class="STpe">u32</span>) <span class="SKwd">throw</span></span></div>
+<p>Throw a <a href="swag.runtime.php#Swag_SystemError">Swag.SystemError</a>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">throwWinError</span>(errorMessageID: <span class="STpe">u32</span>) <span class="SKwd">throw</span></span></div>
 <div class="swag-watermark">
-Generated on 04-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
+Generated on 05-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
 </div>
 </div>
