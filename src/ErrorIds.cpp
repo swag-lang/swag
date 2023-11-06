@@ -82,6 +82,7 @@ void initErrors()
     SWAG_ERROR(Saf0007, "safety failed 'math' $ division by zero");
     SWAG_ERROR(Saf0021, "safety failed 'nan' $ invalid float (NaN)");
     SWAG_ERROR(Saf0001, "safety failed 'null' $ dereferencing a null pointer");
+    SWAG_ERROR(Saf0036, "safety failed 'null' $ trying to throw a non existing error");    
     SWAG_ERROR(Saf0032, "safety failed 'overflow' $ negative value '%I64d' on unsigned type '%s'");
     SWAG_ERROR(Saf0006, "safety failed 'overflow' $ negative value '%s' on unsigned type '%s'");
     SWAG_ERROR(Saf0030, "safety failed 'overflow' $ negative value '%g' on unsigned type '%s'");
