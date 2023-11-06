@@ -20015,15 +20015,15 @@
 <p>Create a layout control. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WrapLayoutCtrl">WrapLayoutCtrl</a></span></span></div>
 <div class="swag-watermark">
-Generated on 05-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
+Generated on 06-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
 </div>
 </div>
 
     <script> 
-		function getOffsetTop(element) {
+		function getOffsetTop(element, parent) {
 			let offsetTop = 0;
-			while (element) {
+			while (element && element != parent) {
 				offsetTop += element.offsetTop;
 				element = element.offsetParent;
 			}
@@ -20039,10 +20039,10 @@ Generated on 05-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 
 					let targetElement = parentScrollable.querySelector(hash);
 					if (targetElement)
 					{
-						parentScrollable.scrollTop = getOffsetTop(targetElement);
+						parentScrollable.scrollTop = getOffsetTop(targetElement, parentScrollable);
 					}
 				}
 			}
         });
-    </script></body>
+    </script>\n</body>
 </html>

@@ -127,6 +127,8 @@ Utf8 GenDoc::toRef(Utf8 str)
 {
     str.replace(".", "_");
     str.replace(" ", "_");
+    if (SWAG_IS_DIGIT(str[0]))
+        return "_" + str;
     return str;
 }
 
@@ -1333,9 +1335,9 @@ void GenDoc::constructPage()
     // A script to restore the scroll on load/refresh
     helpOutput += R"(
     <script> 
-		function getOffsetTop(element) {
+		function getOffsetTop(element, parent) {
 			let offsetTop = 0;
-			while (element) {
+			while (element && element != parent) {
 				offsetTop += element.offsetTop;
 				element = element.offsetParent;
 			}
@@ -1351,12 +1353,12 @@ void GenDoc::constructPage()
 					let targetElement = parentScrollable.querySelector(hash);
 					if (targetElement)
 					{
-						parentScrollable.scrollTop = getOffsetTop(targetElement);
+						parentScrollable.scrollTop = getOffsetTop(targetElement, parentScrollable);
 					}
 				}
 			}
         });
-    </script>)";
+    </script>\n)";
 
     // User end of the <body> section
     Utf8 endBody = Utf8{module->buildCfg.genDoc.endBody};

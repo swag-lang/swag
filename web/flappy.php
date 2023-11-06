@@ -563,9 +563,9 @@ Generated on 06-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 
 </div>
 
     <script> 
-		function getOffsetTop(element) {
+		function getOffsetTop(element, parent) {
 			let offsetTop = 0;
-			while (element) {
+			while (element && element != parent) {
 				offsetTop += element.offsetTop;
 				element = element.offsetParent;
 			}
@@ -581,10 +581,10 @@ Generated on 06-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 
 					let targetElement = parentScrollable.querySelector(hash);
 					if (targetElement)
 					{
-						parentScrollable.scrollTop = getOffsetTop(targetElement);
+						parentScrollable.scrollTop = getOffsetTop(targetElement, parentScrollable);
 					}
 				}
 			}
         });
-    </script></body>
+    </script>\n</body>
 </html>
