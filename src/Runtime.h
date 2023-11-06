@@ -121,8 +121,7 @@ typedef struct SwagErrorValue
 {
     SwagAny  value;
     uint32_t pushUsedAlloc;
-    uint16_t pushHasError;
-    uint16_t pushTraceIndex;
+    uint32_t pushTraceIndex;
 } SwagError;
 
 typedef struct SwagContext
