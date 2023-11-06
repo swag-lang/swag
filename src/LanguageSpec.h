@@ -37,7 +37,6 @@ struct LanguageSpec
     Utf8 name__tlsGetValue;
     Utf8 name__tlsSetValue;
     Utf8 name__tlsGetPtr;
-    Utf8 name__initStackTrace;
     Utf8 name__stackTrace;
     Utf8 name__loaddll;
 

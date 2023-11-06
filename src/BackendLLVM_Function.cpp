@@ -4240,12 +4240,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             emitCall(buildParameters, moduleToGen, g_LangSpec->name_atpanic, allocR, allocT, {ip->a.u32, ip->b.u32, ip->c.u32}, {});
             break;
 
-        case ByteCodeOp::InternalInitStackTrace:
-            emitCall(buildParameters, moduleToGen, g_LangSpec->name__initStackTrace, allocR, allocT, {}, {});
-            break;
-        case ByteCodeOp::InternalStackTrace:
-            emitCall(buildParameters, moduleToGen, g_LangSpec->name__stackTrace, allocR, allocT, {ip->a.u32}, {});
-            break;
         case ByteCodeOp::Unreachable:
             emitInternalPanic(buildParameters, moduleToGen, allocR, allocT, ip->node, (const char*) "executing unreachable code");
             break;
@@ -4439,6 +4433,17 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             emitCall(buildParameters, moduleToGen, g_LangSpec->name__poperr, allocR, allocT, {}, {});
             break;
         }
+        case ByteCodeOp::InternalInitStackTrace:
+        {
+            auto r0 = GEP64(allocR, ip->a.u32);
+            auto ra = builder.CreateLoad(PTR_I8_TY(), r0);
+            auto v0 = GEP8_PTR_I32(ra, offsetof(SwagContext, traceIndex));
+            builder.CreateStore(pp.cst0_i32, v0);
+            break;
+        }
+        case ByteCodeOp::InternalStackTrace:
+            emitCall(buildParameters, moduleToGen, g_LangSpec->name__stackTrace, allocR, allocT, {ip->a.u32}, {});
+            break;
 
             /////////////////////////////////////
 

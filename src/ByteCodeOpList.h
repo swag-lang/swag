@@ -61,9 +61,9 @@ BYTECODE_OP(IntrinsicMakeCallback, OPFLAG_WRITE_A | OPFLAG_READ_A, "_ra_ = @mkca
 BYTECODE_OP(IntrinsicBcBreakpoint, 0, "@breakpoint()")
 
 BYTECODE_OP(IntrinsicGetErr, OPFLAG_WRITE_A | OPFLAG_WRITE_B, "_ra_, _rb_ = @err()")
-BYTECODE_OP(InternalInitStackTrace, 0, "Internal InitStackTrace()")
 BYTECODE_OP(InternalStackTrace, OPFLAG_READ_A, "Internal StackTrace(_ra_)")
 BYTECODE_OP(InternalPanic, OPFLAG_READ_VAL64_D, "Internal Panic()")
+BYTECODE_OP(InternalInitStackTrace, OPFLAG_READ_A, "Internal InitStackTrace(_ra_)")
 BYTECODE_OP(InternalClearErr, OPFLAG_READ_A, "Internal ClearErr(_ra_)")
 BYTECODE_OP(InternalPushErr, 0, "Internal PushErr()")
 BYTECODE_OP(InternalPopErr, 0, "Internal PopErr()")

@@ -86,6 +86,8 @@ llvm debug, pas à jour
 - variables local en #[Swag.global]
 - mettre les constants
 -------------------------------------
+type const any ? @dataof() sur ça donne un pointeur const
+-------------------------------------
 
 
 
@@ -97,7 +99,6 @@ DOC
 - ** text _italic_ **
 - __bold__
 - _italic_
-- [[reference]]
 - doc help, explain the genDoc struct field by field
 - doc help, embbed html with ---
 

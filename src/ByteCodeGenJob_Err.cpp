@@ -11,7 +11,9 @@ bool ByteCodeGenJob::emitInitStackTrace(ByteCodeGenContext* context)
     if (context->sourceFile->module->buildCfg.errorStackTrace)
     {
         PushICFlags ic(context, BCI_TRYCATCH);
-        EMIT_INST0(context, ByteCodeOp::InternalInitStackTrace);
+        auto        node = context->node;
+        SWAG_ASSERT(node->ownerFct && node->ownerFct->registerGetContext != UINT32_MAX);
+        EMIT_INST1(context, ByteCodeOp::InternalInitStackTrace, node->ownerFct->registerGetContext);
     }
 
     return true;
@@ -201,7 +203,10 @@ bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
     if (parentFct->attributeFlags & ATTRIBUTE_SHARP_FUNC)
     {
         if (context->sourceFile->module->buildCfg.errorStackTrace)
-            EMIT_INST0(context, ByteCodeOp::InternalInitStackTrace);
+        {
+            SWAG_ASSERT(node->ownerFct && node->ownerFct->registerGetContext != UINT32_MAX);
+            EMIT_INST1(context, ByteCodeOp::InternalInitStackTrace, node->ownerFct->registerGetContext);
+        }
 
         uint32_t     storageOffset;
         DataSegment* storageSegment;

@@ -2206,26 +2206,30 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     SWAG_ASSERT(funcNode);
     PushNode pn(context, funcNode->content);
 
-    // Clear stack trace when entering a #<function>
-    if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC)
+    // Store the context in a persistent register
+    if (funcNode->specFlags & AstFuncDecl::SPECFLAG_REG_GET_CONTEXT ||
+        funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC ||
+        funcNode->typeInfo->flags & TYPEINFO_CAN_THROW)
     {
-        if (context->sourceFile->module->buildCfg.errorStackTrace)
-            EMIT_INST0(context, ByteCodeOp::InternalInitStackTrace);
+        SWAG_ASSERT(funcNode->registerGetContext == UINT32_MAX);
+        funcNode->registerGetContext = reserveRegisterRC(context);
+        EMIT_INST1(context, ByteCodeOp::IntrinsicGetContext, funcNode->registerGetContext);
+    }
+
+    // Clear stack trace when entering a #<function>
+    if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC &&
+        context->sourceFile->module->buildCfg.errorStackTrace)
+    {
+        SWAG_ASSERT(funcNode->registerGetContext != UINT32_MAX);
+        EMIT_INST1(context, ByteCodeOp::InternalInitStackTrace, node->ownerFct->registerGetContext);
     }
 
     // Clear error when entering a #<function> or a function than can raise en error
-    if ((funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC) || (funcNode->typeInfo->flags & TYPEINFO_CAN_THROW))
+    if ((funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC) ||
+        (funcNode->typeInfo->flags & TYPEINFO_CAN_THROW))
     {
-        SWAG_ASSERT(funcNode->registerGetContext == UINT32_MAX);
-        funcNode->registerGetContext = reserveRegisterRC(context);
-        EMIT_INST1(context, ByteCodeOp::IntrinsicGetContext, funcNode->registerGetContext);
+        SWAG_ASSERT(funcNode->registerGetContext != UINT32_MAX);
         EMIT_INST1(context, ByteCodeOp::InternalClearErr, funcNode->registerGetContext);
-    }
-    else if (funcNode->specFlags & AstFuncDecl::SPECFLAG_REG_GET_CONTEXT)
-    {
-        SWAG_ASSERT(funcNode->registerGetContext == UINT32_MAX);
-        funcNode->registerGetContext = reserveRegisterRC(context);
-        EMIT_INST1(context, ByteCodeOp::IntrinsicGetContext, funcNode->registerGetContext);
     }
 
     // Should be aligned !

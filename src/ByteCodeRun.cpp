@@ -2374,22 +2374,6 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         break;
     }
 
-    case ByteCodeOp::InternalInitStackTrace:
-    {
-        auto cxt        = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
-        cxt->traceIndex = 0;
-        break;
-    }
-    case ByteCodeOp::InternalStackTrace:
-    {
-        auto cxt = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
-        if (cxt->traceIndex == SWAG_MAX_TRACES)
-            break;
-        cxt->traces[cxt->traceIndex] = (SwagSourceCodeLocation*) registersRC[ip->a.u32].pointer;
-        cxt->traceIndex++;
-        break;
-    }
-
     case ByteCodeOp::IntrinsicAlloc:
     {
         registersRC[ip->a.u32].pointer = (uint8_t*) malloc(registersRC[ip->b.u32].u64);
@@ -2528,6 +2512,23 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     {
         auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__poperr);
         localCall(context, bc, 0);
+        break;
+    }
+    case ByteCodeOp::InternalInitStackTrace:
+    {
+        SWAG_ASSERT(context->bc->registerGetContext != UINT32_MAX);
+        auto cxt = (SwagContext*) registersRC[ip->a.u32].pointer;
+        SWAG_ASSERT(cxt != nullptr);
+        cxt->traceIndex = 0;
+        break;
+    }
+    case ByteCodeOp::InternalStackTrace:
+    {
+        auto cxt = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
+        if (cxt->traceIndex == SWAG_MAX_TRACES)
+            break;
+        cxt->traces[cxt->traceIndex] = (SwagSourceCodeLocation*) registersRC[ip->a.u32].pointer;
+        cxt->traceIndex++;
         break;
     }
 

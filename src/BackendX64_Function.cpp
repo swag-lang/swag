@@ -3307,12 +3307,6 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             emitInternalCall(pp, moduleToGen, g_LangSpec->name_free, {ip->a.u32});
             break;
 
-        case ByteCodeOp::InternalInitStackTrace:
-            emitCall(pp, g_LangSpec->name__initStackTrace);
-            break;
-        case ByteCodeOp::InternalStackTrace:
-            emitInternalCall(pp, moduleToGen, g_LangSpec->name__stackTrace, {ip->a.u32});
-            break;
         case ByteCodeOp::InternalPanic:
             emitInternalPanic(pp, ip->node, (const char*) ip->d.pointer);
             break;
@@ -4691,6 +4685,13 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         case ByteCodeOp::InternalPopErr:
             emitCall(pp, g_LangSpec->name__poperr);
+            break;
+        case ByteCodeOp::InternalInitStackTrace:
+            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
+            pp.emit_Store32_Immediate(offsetof(SwagContext, traceIndex), 0, RAX);
+            break;
+        case ByteCodeOp::InternalStackTrace:
+            emitInternalCall(pp, moduleToGen, g_LangSpec->name__stackTrace, {ip->a.u32});
             break;
 
         default:

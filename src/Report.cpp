@@ -584,17 +584,6 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
     // Print error/warning
     reportInternal(diag, notes, false);
 
-#if SWAG_DEV_MODE
-    if (diag.errorLevel == DiagnosticLevel::Error || diag.errorLevel == DiagnosticLevel::Panic)
-    {
-        if (!OS::isDebuggerAttached())
-        {
-            OS::errorBox("[Developer Mode]", "Error raised !");
-            return false;
-        }
-    }
-#endif
-
     if (runContext)
     {
         if (diag.errorLevel == DiagnosticLevel::Error || diag.errorLevel == DiagnosticLevel::Panic)
@@ -660,6 +649,17 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
             }
         }
     }
+
+#if SWAG_DEV_MODE
+    if (diag.errorLevel == DiagnosticLevel::Error || diag.errorLevel == DiagnosticLevel::Panic)
+    {
+        if (!OS::isDebuggerAttached())
+        {
+            OS::errorBox("[Developer Mode]", "Error raised !");
+            return false;
+        }
+    }
+#endif
 
     return diag.errorLevel == DiagnosticLevel::Error || diag.errorLevel == DiagnosticLevel::Panic ? false : true;
 }

@@ -82,12 +82,6 @@ func __failedAssume(loc: SourceCodeLocation)
 
 ////////////////////////////////////////////////////////////
 
-func __initStackTrace()
-{
-    let cxt = @getcontext()
-    cxt.traceIndex = 0
-}
-
 func __stackTrace(loc: SourceCodeLocation)
 {
     let cxt = @getcontext()

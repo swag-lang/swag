@@ -25,7 +25,6 @@ void LanguageSpec::setupNames()
     name__tlsGetValue         = "__tlsGetValue";
     name__tlsSetValue         = "__tlsSetValue";
     name__tlsGetPtr           = "__tlsGetPtr";
-    name__initStackTrace      = "__initStackTrace";
     name__stackTrace          = "__stackTrace";
     name__loaddll             = "__loaddll";
 
