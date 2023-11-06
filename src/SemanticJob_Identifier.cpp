@@ -5226,8 +5226,10 @@ bool SemanticJob::resolveThrow(SemanticContext* context)
     SWAG_CHECK(checkCanThrow(context));
 
     auto type = TypeManager::concretePtrRefType(expr->typeInfo);
+
     SWAG_VERIFY(!type->isVoid(), context->report({expr, Err(Err0573)}));
-    SWAG_VERIFY(type->isStruct() || type->isString(), context->report({expr, Fmt(Err(Err0570), type->getDisplayNameC())}));
+    if (!type->isAny() || !(node->specFlags & AstTryCatchAssume::SPECFLAG_THROW_GETERR))
+        SWAG_VERIFY(type->isStruct(), context->report({expr, Fmt(Err(Err0570), type->getDisplayNameC())}));
 
     if (type->isString())
         context->node->printLoc();

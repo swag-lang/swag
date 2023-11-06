@@ -1,20 +1,25 @@
 /**
-Swag contains a **very** simple error system used to deal with function returning errors.
-It will probably be changed/improved at some point.
+Each function can have an additional special return value, hidden, which is an error. An error is a struct.
 
 > These are **not** exceptions !
 
-A function that can return an error must be marked with `throw`. It can then raise an error with the `throw` keyword, passing an error message.
+A function that can return an error must be marked with `throw`. It can then raise an error with the `throw` keyword, passing an error value in the form of a struct.
 
 > When an error is raised by a function, the return value is always equal to the **default value**, depending on the return type.
 */
+
+struct MyError
+{
+    using base: Swag.BaseError
+}
+
 func count(name: string)->u64 throw
 {
     if name == null
     {
         // This function will return 0 in case of an error, because this is the default
         // value for 'u64'.
-        throw "null pointer"
+        throw MyError{"null pointer"}
     }
 
     return @countof(name)
@@ -32,7 +37,8 @@ func myFunc()
     if @err() != null
     {
         @assert(cpt == 0)
-        @print(cast(string) @err())
+        @assert(@err() == MyError)
+        @print("an error was raised")
         return
     }
 
@@ -107,7 +113,7 @@ When a function is marked with `throw`, the `try` for a function call is automat
 {
     func mySubFunc2() throw
     {
-        throw "error"
+        throw MyError{"error"}
     }
 
     func mySubFunc1() throw
@@ -120,7 +126,7 @@ When a function is marked with `throw`, the `try` for a function call is automat
     }
 
     catch mySubFunc1()
-    @assert(cast(string) @err() == "error")
+    @assert(@err() == MyError)
 }
 
 /**
@@ -131,7 +137,7 @@ var g_Defer = 0
 
 func raiseError() throw
 {
-    throw "error"
+    throw MyError{"error"}
 }
 
 func testDefer(err: bool) throw

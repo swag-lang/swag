@@ -377,7 +377,14 @@ bool Parser::doThrow(AstNode* parent, AstNode** result)
     SWAG_VERIFY(token.id != TokenId::KwdCatch, error(token, Fmt(Err(Err1147), token.ctext(), node->token.ctext())));
     SWAG_VERIFY(token.id != TokenId::KwdAssume, error(token, Fmt(Err(Err1147), token.ctext(), node->token.ctext())));
     SWAG_VERIFY(token.id != TokenId::KwdThrow, error(token, Fmt(Err(Err1147), token.ctext(), node->token.ctext())));
-    SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
+
+    if (token.id == TokenId::IntrinsicGetErr)
+    {
+        SWAG_CHECK(doIdentifierRef(node, &dummyResult));
+        node->specFlags |= AstTryCatchAssume::SPECFLAG_THROW_GETERR;
+    }
+    else
+        SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
     return true;
 }
 

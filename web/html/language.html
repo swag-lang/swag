@@ -6147,21 +6147,26 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(myLongVariableName == <span class="SNum">2</span>)
 }</span></div>
 
-<h2 id="170_error_management">Error management</h2><p>Swag contains a <b>very</b> simple error system used to deal with function returning errors. It will probably be changed/improved at some point. </p>
+<h2 id="170_error_management">Error management</h2><p>Each function can have an additional special return value, hidden, which is an error. An error is a struct. </p>
 <div class="blockquote blockquote-default">
 <p> These are <b>not</b> exceptions ! </p>
 </div>
-<p>A function that can return an error must be marked with <span class="code-inline">throw</span>. It can then raise an error with the <span class="code-inline">throw</span> keyword, passing an error message. </p>
+<p>A function that can return an error must be marked with <span class="code-inline">throw</span>. It can then raise an error with the <span class="code-inline">throw</span> keyword, passing an error value in the form of a struct. </p>
 <div class="blockquote blockquote-default">
 <p> When an error is raised by a function, the return value is always equal to the <b>default value</b>, depending on the return type. </p>
 </div>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">count</span>(name: <span class="STpe">string</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span>
+<div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">MyError</span>
+{
+    <span class="SKwd">using</span> base: <span class="SCst">Swag</span>.<span class="SCst">BaseError</span>
+}
+
+<span class="SKwd">func</span> <span class="SFct">count</span>(name: <span class="STpe">string</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span>
 {
     <span class="SLgc">if</span> name == <span class="SKwd">null</span>
     {
         <span class="SCmt">// This function will return 0 in case of an error, because this is the default</span>
         <span class="SCmt">// value for 'u64'.</span>
-        <span class="SKwd">throw</span> <span class="SStr">"null pointer"</span>
+        <span class="SKwd">throw</span> <span class="SCst">MyError</span>{<span class="SStr">"null pointer"</span>}
     }
 
     <span class="SLgc">return</span> <span class="SItr">@countof</span>(name)
@@ -6176,7 +6181,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SLgc">if</span> <span class="SItr">@err</span>() != <span class="SKwd">null</span>
     {
         <span class="SItr">@assert</span>(cpt == <span class="SNum">0</span>)
-        <span class="SItr">@print</span>(<span class="SKwd">cast</span>(<span class="STpe">string</span>) <span class="SItr">@err</span>())
+        <span class="SItr">@assert</span>(<span class="SItr">@err</span>() == <span class="SCst">MyError</span>)
+        <span class="SItr">@print</span>(<span class="SStr">"an error was raised"</span>)
         <span class="SLgc">return</span>
     }
 
@@ -6238,7 +6244,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
     <span class="SKwd">func</span> <span class="SFct">mySubFunc2</span>() <span class="SKwd">throw</span>
     {
-        <span class="SKwd">throw</span> <span class="SStr">"error"</span>
+        <span class="SKwd">throw</span> <span class="SCst">MyError</span>{<span class="SStr">"error"</span>}
     }
 
     <span class="SKwd">func</span> <span class="SFct">mySubFunc1</span>() <span class="SKwd">throw</span>
@@ -6251,7 +6257,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 
     <span class="SKwd">catch</span> <span class="SFct">mySubFunc1</span>()
-    <span class="SItr">@assert</span>(<span class="SKwd">cast</span>(<span class="STpe">string</span>) <span class="SItr">@err</span>() == <span class="SStr">"error"</span>)
+    <span class="SItr">@assert</span>(<span class="SItr">@err</span>() == <span class="SCst">MyError</span>)
 }</span></div>
 <h3 id="170_error_management_defer">defer </h3>
 <p><span class="code-inline">defer</span> can have parameters like <span class="code-inline">defer(err)</span> or <span class="code-inline">defer(noerr)</span> to control if it should be executed depending on the error status. </p>
@@ -6259,7 +6265,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
 <span class="SKwd">func</span> <span class="SFct">raiseError</span>() <span class="SKwd">throw</span>
 {
-    <span class="SKwd">throw</span> <span class="SStr">"error"</span>
+    <span class="SKwd">throw</span> <span class="SCst">MyError</span>{<span class="SStr">"error"</span>}
 }
 
 <span class="SKwd">func</span> <span class="SFct">testDefer</span>(err: <span class="STpe">bool</span>) <span class="SKwd">throw</span>
@@ -7320,7 +7326,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="230_documentation_231_003_Pages">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 05-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
+Generated on 06-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
 </div>
 </div>

@@ -1013,8 +1013,9 @@ struct AstNameSpace : public AstNode
 
 struct AstTryCatchAssume : public AstReturn
 {
-    static const uint16_t SPECFLAG_BLOCK     = 0x0001;
-    static const uint16_t SPECFLAG_GENERATED = 0x0002;
+    static const uint16_t SPECFLAG_BLOCK        = 0x0001;
+    static const uint16_t SPECFLAG_GENERATED    = 0x0002;
+    static const uint16_t SPECFLAG_THROW_GETERR = 0x0004;
 
     AstNode* clone(CloneContext& context);
 

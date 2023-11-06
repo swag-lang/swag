@@ -883,8 +883,8 @@ void initErrors()
     SWAG_ERROR(Err0549, "mismatch enum types                               $ expected an enum of type '%s', got '%s' instead");
     SWAG_ERROR(Err0684, "duplicated enum value                             $ the enum value '%s' is already defined with the same underlying value");
     SWAG_ERROR(Err0675, "invalid enum type                                 $ an enum marked with '#[Swag.NoDuplicate]' does not accept type '%s'");
-    SWAG_ERROR(Err0573, "invalid throw type                                $ throw needs a struct as an expression, but there's nothing here");
-    SWAG_ERROR(Err0570, "invalid throw type                                $ throw needs a struct as an expression, got '%s' instead");
+    SWAG_ERROR(Err0573, "invalid throw type                                $ throw needs a struct or @err() as an expression, but there's nothing here");
+    SWAG_ERROR(Err0570, "invalid throw type                                $ throw needs a struct or @err() as an expression, got '%s' instead");
     SWAG_ERROR(Err0393, "unknown struct                                    $ the struct '%s' can't be found");
     SWAG_ERROR(Err0556, nullptr);
     SWAG_ERROR(Err0557, nullptr);
