@@ -2515,8 +2515,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         SWAG_ASSERT(context->bc->registerGetContext != UINT32_MAX);
         auto cxt = (SwagContext*) registersRC[ip->a.u32].pointer;
         SWAG_ASSERT(cxt != nullptr);
-        cxt->hasError            = 0;
-        cxt->errorAllocator.used = 0;
+        cxt->hasError = 0;
         break;
     }
     case ByteCodeOp::InternalPushErr:

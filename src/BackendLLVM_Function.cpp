@@ -4427,8 +4427,6 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto ra = builder.CreateLoad(PTR_I8_TY(), r0);
             auto v0 = GEP8_PTR_I32(ra, offsetof(SwagContext, hasError));
             builder.CreateStore(pp.cst0_i32, v0);
-            auto v1 = GEP8_PTR_I32(ra, offsetof(SwagContext, errorAllocator) + offsetof(SwagScratchAllocator, used));
-            builder.CreateStore(pp.cst0_i64, v1);
             break;
         }
         case ByteCodeOp::InternalPushErr:

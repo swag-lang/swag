@@ -5,7 +5,8 @@ using Swag
 func __setErr(err: any)
 {
     let cxt = @getcontext()
-    @assert(cxt.errorIndex < MaxErrors)
+    if cxt.errorIndex >= MaxErrors
+        @panic("too many nested error levels!", #location)
 
     let data = @dataof(err)        
     let type = cast(const *Swag.TypeInfoStruct) @kindof(err)
@@ -20,23 +21,28 @@ func __setErr(err: any)
 func __pushErr()
 {
     let cxt = @getcontext()
-    @assert(cxt.errorIndex < MaxErrors)
-
     cxt.errors[cxt.errorIndex].pushTraceIndex = cast(u32) cxt.traceIndex
     cxt.errors[cxt.errorIndex].pushUsedAlloc  = cast(u32) cxt.errorAllocator.used
-
     cxt.errorIndex += 1
 }
 
 func __popErr()
 {
     let cxt = @getcontext()
-    @assert(cxt.errorIndex != 0)
     cxt.errorIndex -= 1
-
     cxt.hasError            = 1
     cxt.traceIndex          = cast(u32) cxt.errors[cxt.errorIndex].pushTraceIndex
     cxt.errorAllocator.used = cast(u32) cxt.errors[cxt.errorIndex].pushUsedAlloc
+}
+
+// Returns the current raised error, or null if none
+func @err()->any
+{
+    let cxt = @getcontext()
+    if !cxt.hasError
+        return null
+    cxt.errorAllocator.used = cxt.errorIndex ? cxt.errors[cxt.errorIndex-1].pushUsedAlloc : 0
+    return cxt.errors[cxt.errorIndex].value
 }
 
 func __failedAssume(loc: SourceCodeLocation)
@@ -72,15 +78,6 @@ func __failedAssume(loc: SourceCodeLocation)
 
     str[len] = 0
     @panic(@mkstring(&str[0], len), loc)
-}
-
-// Returns the current raised error, or null if none
-func @err()->any
-{
-    let cxt = @getcontext()
-    if !cxt.hasError
-        return null
-    return cxt.errors[cxt.errorIndex].value
 }
 
 ////////////////////////////////////////////////////////////
