@@ -27,25 +27,23 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     auto& context = *pp.context;
     auto& modu    = *pp.module;
 
-    // swag_interface_t
+    // SwagInterface
     {
         llvm::Type* members[] = {
             PTR_I8_TY(),
             PTR_I8_TY()};
-        pp.interfaceTy = llvm::StructType::create(context, members, "swag_interface_t");
+        pp.interfaceTy = llvm::StructType::create(context, members, "SwagInterface");
     }
 
-    // swag_error_t
+    // SwagErrorValue
     {
         llvm::Type* members[] = {
-            PTR_I8_TY(), // msg
-            I64_TY(),    // msg
             PTR_I8_TY(), // value
             PTR_I8_TY(), // value
             I32_TY(),    // pushUsedAlloc
             I16_TY(),    // pushHasError
             I16_TY()};   // pushTraceIndex
-        pp.errorTy = llvm::StructType::create(context, members, "swag_error_t");
+        pp.errorTy = llvm::StructType::create(context, members, "SwagErrorValue");
     }
 
     // SwagScratchAllocator
@@ -62,7 +60,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
         pp.scratchTy = llvm::StructType::create(context, members, "SwagScratchAllocator");
     }
 
-    // swag_context_t
+    // SwagContext
     {
         llvm::Type* members[] = {
             pp.interfaceTy,                                                 // allocator
@@ -79,18 +77,18 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             I32_TY(),                                                       // hasError
         };
 
-        static_assert(sizeof(SwagContext) == 1792);
-        pp.contextTy = llvm::StructType::create(context, members, "swag_context_t");
+        static_assert(sizeof(SwagContext) == 1280);
+        pp.contextTy = llvm::StructType::create(context, members, "SwagContext");
         SWAG_ASSERT(pp.contextTy->isSized());
     }
 
-    // swag_slice_t
+    // SwagSlice
     {
         llvm::Type* members[] = {
             PTR_I8_TY(),
             I64_TY(),
         };
-        pp.sliceTy = llvm::StructType::create(context, members, "swag_slice_t");
+        pp.sliceTy = llvm::StructType::create(context, members, "SwagSlice");
         SWAG_ASSERT(pp.sliceTy->isSized());
     }
 

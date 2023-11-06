@@ -393,11 +393,10 @@ namespace Swag
     // Store a 'throw' error informations
     struct ErrorValue
     {
-        msg:            string  // Error message
-        value:          any     // Error value (or null)
-        pushUsedAlloc:  u32
-        pushHasError:   u16
-        pushTraceIndex: u16
+        value:          any // Error value (or null)
+        pushUsedAlloc:  u32 // Internal
+        pushHasError:   u16 // Internal
+        pushTraceIndex: u16 // Internal
     }
 
     // Thread context as returned by [@context].

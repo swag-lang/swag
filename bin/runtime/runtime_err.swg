@@ -7,25 +7,13 @@ func __setErr(err: any)
     let cxt = @getcontext()
     @assert(cxt.errorIndex < MaxErrors)
 
-    if err == string
-    {
-        let value = cast(string) err
-        let ptr = cxt.errorAllocator.alloc(@countof(value))
-        @memcpy(ptr, @dataof(value), @countof(value))
-        cxt.errors[cxt.errorIndex].msg = @mkstring(cast(^u8) ptr, @countof(value))
-        cxt.errors[cxt.errorIndex].value = @mkany(&cxt.errors[cxt.errorIndex].msg, string)
-    }
-    else
-    {
-        let data = @dataof(err)        
-        let type = cast(const *Swag.TypeInfoStruct) @kindof(err)
-        let ptr = cxt.errorAllocator.alloc(cast(u64) type.sizeof)
-        @memcpy(ptr, data, cast(u64) type.sizeof)
-        if type.opPostCopy
-            type.opPostCopy(ptr)
-        cxt.errors[cxt.errorIndex].value = @mkany(ptr, type)
-    }
-
+    let data = @dataof(err)        
+    let type = cast(const *Swag.TypeInfoStruct) @kindof(err)
+    let ptr = cxt.errorAllocator.alloc(cast(u64) type.sizeof)
+    @memcpy(ptr, data, cast(u64) type.sizeof)
+    if type.opPostCopy
+        type.opPostCopy(ptr)
+    cxt.errors[cxt.errorIndex].value = @mkany(ptr, type)
     cxt.hasError = 1
 }
 

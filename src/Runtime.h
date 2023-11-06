@@ -117,13 +117,12 @@ enum class SwagExceptionKind
 const auto SWAG_MAX_ERRORS = 32;
 const auto SWAG_MAX_TRACES = 32;
 
-typedef struct SwagError
+typedef struct SwagErrorValue
 {
-    SwagSlice msg;
-    SwagAny   value;
-    uint32_t  pushUsedAlloc;
-    uint16_t  pushHasError;
-    uint16_t  pushTraceIndex;
+    SwagAny  value;
+    uint32_t pushUsedAlloc;
+    uint16_t pushHasError;
+    uint16_t pushTraceIndex;
 } SwagError;
 
 typedef struct SwagContext
@@ -133,7 +132,7 @@ typedef struct SwagContext
     SwagScratchAllocator    tempAllocator;
     SwagScratchAllocator    errorAllocator;
     SwagSourceCodeLocation* traces[SWAG_MAX_TRACES];
-    SwagError               errors[SWAG_MAX_ERRORS];
+    SwagErrorValue          errors[SWAG_MAX_ERRORS];
     SwagSourceCodeLocation  exceptionLoc;
     void*                   exceptionParams[4];
     void*                   panic;
