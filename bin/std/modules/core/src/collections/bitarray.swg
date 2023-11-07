@@ -41,6 +41,9 @@ public impl BitArray
 
     mtd opPostCopy()
     {
+        if(@getcontext().flags & .PostCopyResetAllocator)
+            allocator = null
+                    
         if buffer
         {
             let otherBuffer = buffer
