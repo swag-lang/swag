@@ -40,6 +40,11 @@ impl HashTable
         if !table
             return
 
+        if(@getcontext().flags & .PostCopyResetAllocator)
+            allocator = null
+        if allocator == null
+            allocator = @getcontext().allocator
+
         let newTable = cast(^HashTableEntry) Memory.alloc(capacity * @sizeof(HashTableEntry), allocator)
         #if Reflection.hasPostCopy(K) or Reflection.hasPostCopy(V)
         {
