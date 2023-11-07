@@ -48,7 +48,7 @@ BYTECODE_OP(IntrinsicRealloc, OPFLAG_WRITE_A | OPFLAG_READ_B | OPFLAG_READ_C, "_
 BYTECODE_OP(IntrinsicFree, OPFLAG_READ_A, "@free(_ra_)")
 BYTECODE_OP(IntrinsicGetContext, OPFLAG_WRITE_A, "_ra_ = @getcontext()")
 BYTECODE_OP(IntrinsicSetContext, OPFLAG_READ_A, "@setcontext(_ra_)")
-BYTECODE_OP(IntrinsicGetProcessInfos, OPFLAG_WRITE_A, "_ra_ = @getpinfos()")
+BYTECODE_OP(IntrinsicGetProcessInfos, OPFLAG_WRITE_A, "_ra_ = @pinfos()")
 BYTECODE_OP(IntrinsicCVaStart, OPFLAG_READ_A, "@cvastart(_ra_)")
 BYTECODE_OP(IntrinsicCVaEnd, OPFLAG_READ_A, "@cvaend(_ra_)")
 BYTECODE_OP(IntrinsicCVaArg, OPFLAG_READ_A | OPFLAG_WRITE_B | OPFLAG_READ_VAL64_C, "_rb_ = @cvaarg(_ra_)")

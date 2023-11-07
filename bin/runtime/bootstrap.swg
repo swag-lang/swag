@@ -891,7 +891,7 @@ func @getcontext()->*Swag.Context;
 // Replace the current thread context.
 func @setcontext(context: const *Swag.Context);
 // Get informations about the current process.
-func @getpinfos()->*Swag.ProcessInfos;
+func @pinfos()->*Swag.ProcessInfos;
 // Returns 'true' is the current execution is bytecode.
 func @isbytecode()->bool;
 // Returns the list of all loaded modules.

@@ -522,7 +522,7 @@ internal var g_HashLock: Sync.RWLock
 #premain
 {
     Sync.scopedLock(&g_HashLock)
-    visit m: @getpinfos().modules
+    visit m: @pinfos().modules
     {
         visit t: m.types
         {

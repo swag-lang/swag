@@ -120,7 +120,7 @@ func @args()->const [..] string
 {
     if __argc == 0
     {
-        let ptr = @dataof(@getpinfos().args) orelse __getCommandLine()
+        let ptr = @dataof(@pinfos().args) orelse __getCommandLine()
         __convertArgcArgv(ptr)
     }
 

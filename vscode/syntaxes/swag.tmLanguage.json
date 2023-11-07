@@ -133,7 +133,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "(@)\\b(err|itftableof|modules|gvtd|args|defined|include|location|stringcmp|dbgalloc|sysalloc|rtflags|typecmp|interfaceof|getpinfos|getcontext|setcontext|compiler|isbytecode|print|compilererror|compilerwarning|breakpoint|assert|panic|hastag|gettag|safety|init|drop|mkany|mkslice|mkstring|mkcallback|mkinterface|sizeof|alignof|offsetof|typeof|kindof|decltype|countof|dataof|stringof|nameof|runes|postcopy|postmove|spread|isconstexpr)\\b"
+          "match": "(@)\\b(err|itftableof|modules|gvtd|args|defined|include|location|stringcmp|dbgalloc|sysalloc|rtflags|typecmp|interfaceof|pinfos|getcontext|setcontext|compiler|isbytecode|print|compilererror|compilerwarning|breakpoint|assert|panic|hastag|gettag|safety|init|drop|mkany|mkslice|mkstring|mkcallback|mkinterface|sizeof|alignof|offsetof|typeof|kindof|decltype|countof|dataof|stringof|nameof|runes|postcopy|postmove|spread|isconstexpr)\\b"
         }
       ]
     },

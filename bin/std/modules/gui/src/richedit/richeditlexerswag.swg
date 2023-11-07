@@ -219,7 +219,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("@dbgalloc", State.Intrinsic)
         mapWords.add("@sysalloc", State.Intrinsic)
         mapWords.add("@rtflags", State.Intrinsic)
-        mapWords.add("@getpinfos", State.Intrinsic)
+        mapWords.add("@pinfos", State.Intrinsic)
         mapWords.add("@modules", State.Intrinsic)
         mapWords.add("@gvtd", State.Intrinsic)
         mapWords.add("@mixin0", State.Intrinsic)

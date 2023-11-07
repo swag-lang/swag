@@ -417,7 +417,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@dbgalloc", TokenId::IntrinsicDbgAlloc);
     keywords.add("@sysalloc", TokenId::IntrinsicSysAlloc);
     keywords.add("@rtflags", TokenId::IntrinsicRtFlags);
-    keywords.add("@getpinfos", TokenId::IntrinsicGetProcessInfos);
+    keywords.add("@pinfos", TokenId::IntrinsicGetProcessInfos);
     keywords.add("@modules", TokenId::IntrinsicModules);
     keywords.add("@gvtd", TokenId::IntrinsicGvtd);
 

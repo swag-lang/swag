@@ -162,7 +162,7 @@ Intrisic keywords always start with '@'. As user identifiers cannot start the sa
 @compilererror
 @compilerwarning
 @getcontext
-@getpinfos
+@pinfos
 @gettag
 @hastag
 @init
