@@ -1,5 +1,9 @@
+
 /**
-`any` is a specific type that can store every other types. `any` is **not a variant**. It's a dynamic typed reference to an existing value.
+`any` is a specific type that can store every other types. 
+
+> WARNING:
+> `any` is **not a variant**. It's a dynamic typed **reference** to an existing value.
 */
 
 #test
@@ -42,6 +46,21 @@
 
     a = true
     @assert(@kindof(a) == bool)
+}
+
+/**
+You can either get the value or a const reference to the value.
+*/
+#test
+{
+    let a: any = 42
+    #assert @typeof(a) == any
+    @assert(@kindof(a) == s32)
+
+    let b = cast(s32) a             // Get the value itself
+    @assert(b == 42)
+    let c = cast(const ref s32) a   // This is fine too
+    @assert(c == 42)
 }
 
 /**

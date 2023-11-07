@@ -11,7 +11,7 @@ func toto() throw
     throw Err{String.from(C)}
 }
 
-#[Swag.PrintBc]
+//#[Swag.PrintBc]
 #test
 {
     catch toto()

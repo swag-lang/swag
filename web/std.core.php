@@ -23620,7 +23620,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_IHash32_compute"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IHash32.</span><span class="api-item-title-strong">compute</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L576" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L579" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23632,7 +23632,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_append"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">append</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L334" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L337" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23649,7 +23649,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_appendFormat"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">appendFormat</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L318" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L321" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23662,7 +23662,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_back"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">back</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L269" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L272" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23675,7 +23675,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">clear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L212" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L215" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23688,7 +23688,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_ensureNotNull"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">ensureNotNull</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L236" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L239" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23701,7 +23701,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_from"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">from</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L483" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L486" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23714,7 +23714,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_grow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">grow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L386" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L389" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23727,7 +23727,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_insert"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">insert</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L298" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L301" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23740,7 +23740,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_isEmpty"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">isEmpty</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L218" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L221" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23753,7 +23753,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_isNull"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">isNull</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L224" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L227" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23766,7 +23766,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_isNullOrEmpty"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">isNullOrEmpty</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L230" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L233" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23779,7 +23779,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_join"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">join</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L361" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L364" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23792,7 +23792,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_joinWith"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">joinWith</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L371" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L374" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23805,7 +23805,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_makeLower"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">makeLower</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L523" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L526" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23818,7 +23818,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_makeUpper"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">makeUpper</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L504" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L507" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23919,7 +23919,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_opIndex"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">opIndex</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L161" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L164" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23968,7 +23968,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_opVisitBytes"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">opVisitBytes</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L181" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L184" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23986,7 +23986,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_opVisitRunes"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">opVisitRunes</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L170" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L173" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -24000,7 +24000,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_remove"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">remove</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L277" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L280" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -24013,7 +24013,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_removeBack"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">removeBack</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L288" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L291" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -24026,7 +24026,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_replace"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">replace</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L244" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L247" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -24039,7 +24039,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_reserve"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">reserve</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L395" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L398" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -24052,7 +24052,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_toLower"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">toLower</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L558" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L561" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -24067,7 +24067,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_toRuneArray"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">toRuneArray</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L477" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L480" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -24080,7 +24080,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_toSlice"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">toSlice</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L498" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L501" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -24093,7 +24093,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_toString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">toString</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L491" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L494" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -24106,7 +24106,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_toUpper"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">toUpper</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L542" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L545" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -24121,7 +24121,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_trim"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">trim</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L470" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L473" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -24134,7 +24134,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_trimEnd"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">trimEnd</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L452" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L455" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -24147,7 +24147,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_String_trimStart"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">String.</span><span class="api-item-title-strong">trimStart</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L431" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\string.swg#L434" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27402,7 +27402,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <p>Swap two values. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">swap</span>(x: *<span class="SCst">T</span>, y: *<span class="SCst">T</span>)</span></div>
 <div class="swag-watermark">
-Generated on 06-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
+Generated on 07-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
 </div>
 </div>

@@ -2096,7 +2096,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(param.y == <span class="SNum">6</span>)
 }</span></div>
 
-<h2 id="_024_any">Any</h2><p><span class="code-inline">any</span> is a specific type that can store every other types. <span class="code-inline">any</span> is <b>not a variant</b>. It's a dynamic typed reference to an existing value. </p>
+<h2 id="_024_any">Any</h2><p><span class="code-inline">any</span> is a specific type that can store every other types.  </p>
+<div class="blockquote blockquote-warning">
+<div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> <span class="code-inline">any</span> is <b>not a variant</b>. It's a dynamic typed <b>reference</b> to an existing value. </p>
+</div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> a: <span class="STpe">any</span>
@@ -2131,6 +2134,18 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     a = <span class="SKwd">true</span>
     <span class="SItr">@assert</span>(<span class="SItr">@kindof</span>(a) == <span class="STpe">bool</span>)
+}</span></div>
+<p>You can either get the value or a const reference to the value. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
+{
+    <span class="SKwd">let</span> a: <span class="STpe">any</span> = <span class="SNum">42</span>
+    <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(a) == <span class="STpe">any</span>
+    <span class="SItr">@assert</span>(<span class="SItr">@kindof</span>(a) == <span class="STpe">s32</span>)
+
+    <span class="SKwd">let</span> b = <span class="SKwd">cast</span>(<span class="STpe">s32</span>) a             <span class="SCmt">// Get the value itself</span>
+    <span class="SItr">@assert</span>(b == <span class="SNum">42</span>)
+    <span class="SKwd">let</span> c = <span class="SKwd">cast</span>(<span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="STpe">s32</span>) a   <span class="SCmt">// This is fine too</span>
+    <span class="SItr">@assert</span>(c == <span class="SNum">42</span>)
 }</span></div>
 <p>You can declare an array with multiple types, with <span class="code-inline">any</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
@@ -7398,7 +7413,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="_230_documentation__231_003_Pages">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 06-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
+Generated on 07-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
 </div>
 </div>

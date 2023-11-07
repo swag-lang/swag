@@ -2668,45 +2668,59 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
     }
     else if (fromType->isAny())
     {
-        toType = TypeManager::concretePtrRef(toType);
+        auto toRealType = TypeManager::concretePtrRef(toType);
 
         if (!(castFlags & CASTFLAG_EXPLICIT))
         {
             // Ambigous. Do we check for a bool, or do we check for null
-            if (toType->isBool())
-                return castError(context, toType, fromType, fromNode, castFlags);
+            if (toRealType->isBool())
+                return castError(context, toRealType, fromType, fromNode, castFlags);
 
             // To convert a simple any to something more complexe, need an explicit cast
-            if (toType->isSlice() ||
-                toType->isArray() ||
-                toType->isPointer())
-                return castError(context, toType, fromType, fromNode, castFlags);
+            if (toRealType->isSlice() ||
+                toRealType->isArray() ||
+                toRealType->isPointer())
+                return castError(context, toRealType, fromType, fromNode, castFlags);
         }
 
-        // From a constant, need to check the type
+        // From a constant
         if (fromNode && fromNode->hasComputedValue())
         {
-            SwagAny* any         = (SwagAny*) fromNode->computedValue->getStorageAddr();
-            auto     newTypeInfo = context->sourceFile->module->typeGen.getRealType(fromNode->computedValue->storageSegment, (ExportedTypeInfo*) any->type);
-
-            if (newTypeInfo && context->sourceFile->module->mustEmitSafety(fromNode, SAFETY_ANY, true))
+            if (toType->isPointerRef())
             {
-                if (!toType->isSame(newTypeInfo, CASTFLAG_EXACT))
+                if (!(castFlags & CASTFLAG_JUST_CHECK))
                 {
-                    if (!(castFlags & CASTFLAG_JUST_CHECK))
-                        return castError(context, toType, newTypeInfo, fromNode, castFlags, CastErrorType::SafetyCastAny);
-                    return false;
+                    fromNode->flags &= ~AST_VALUE_COMPUTED;
+                    fromNode->flags &= ~AST_CONST_EXPR;
+                    fromNode->flags &= ~AST_NO_BYTECODE_CHILDS;
+                    fromNode->computedValue = nullptr;
                 }
             }
-
-            if (!(castFlags & CASTFLAG_JUST_CHECK))
+            else
             {
-                fromNode->typeInfo       = newTypeInfo;
-                fromNode->castedTypeInfo = nullptr;
-                SWAG_CHECK(SemanticJob::derefConstantValue(context, fromNode, fromNode->typeInfo, fromNode->computedValue->storageSegment, (uint8_t*) any->value));
-            }
+                SwagAny* any         = (SwagAny*) fromNode->computedValue->getStorageAddr();
+                auto     newTypeInfo = context->sourceFile->module->typeGen.getRealType(fromNode->computedValue->storageSegment, (ExportedTypeInfo*) any->type);
 
-            return true;
+                // need to check the type
+                if (newTypeInfo && context->sourceFile->module->mustEmitSafety(fromNode, SAFETY_ANY, true))
+                {
+                    if (!toRealType->isSame(newTypeInfo, CASTFLAG_EXACT))
+                    {
+                        if (!(castFlags & CASTFLAG_JUST_CHECK))
+                            return castError(context, toRealType, newTypeInfo, fromNode, castFlags, CastErrorType::SafetyCastAny);
+                        return false;
+                    }
+                }
+
+                if (!(castFlags & CASTFLAG_JUST_CHECK))
+                {
+                    fromNode->typeInfo       = newTypeInfo;
+                    fromNode->castedTypeInfo = nullptr;
+                    SWAG_CHECK(SemanticJob::derefConstantValue(context, fromNode, fromNode->typeInfo, fromNode->computedValue->storageSegment, (uint8_t*) any->value));
+                }
+
+                return true;
+            }
         }
 
         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
@@ -2723,14 +2737,14 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             }
 
             fromNode->castedTypeInfo = fromType;
-            fromNode->typeInfo       = toType;
+            fromNode->typeInfo       = toRealType;
             auto  module             = context->sourceFile->module;
             auto& typeGen            = module->typeGen;
 
             // :AnyTypeSegment
             fromNode->allocateExtension(ExtensionKind::Misc);
             fromNode->extMisc()->anyTypeSegment = SemanticJob::getConstantSegFromContext(fromNode);
-            SWAG_CHECK(typeGen.genExportedTypeInfo(context, toType, fromNode->extMisc()->anyTypeSegment, &fromNode->extMisc()->anyTypeOffset));
+            SWAG_CHECK(typeGen.genExportedTypeInfo(context, toRealType, fromNode->extMisc()->anyTypeSegment, &fromNode->extMisc()->anyTypeOffset));
         }
     }
 
