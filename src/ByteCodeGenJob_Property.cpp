@@ -141,6 +141,7 @@ bool ByteCodeGenJob::emitKindOf(ByteCodeGenContext* context, AstNode* node, Type
     // Deref the type from the itable
     if (from == TypeInfoKind::Interface)
     {
+        EMIT_INST2(context, ByteCodeOp::JumpIfZero64, node->resultRegisterRC, 2);
         auto inst   = EMIT_INST3(context, ByteCodeOp::DecPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
         inst->b.u64 = sizeof(void*);
         inst->flags |= BCI_IMM_B;
