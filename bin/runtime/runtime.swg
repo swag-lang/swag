@@ -152,6 +152,7 @@ func __setupRuntime(flags: RuntimeFlags)
 func __closeRuntime()
 {
     @getcontext().tempAllocator.release()
+    @getcontext().errorAllocator.release()
 
     if !(__runtimeFlags & .FromCompiler) and __buildCfg.debugAllocator
         __debugAlloc.printLeaks()

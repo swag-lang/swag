@@ -49,8 +49,9 @@ enum AttributeUsage
 
 enum class ContextFlags : uint64_t
 {
-    Test     = 0x00000000'00000001,
-    ByteCode = 0x00000000'00000002,
+    Test                   = 0x00000000'00000001,
+    ByteCode               = 0x00000000'00000002,
+    PostCopyResetAllocator = 0x00000000'00000004,
 };
 
 typedef struct SwagInterface

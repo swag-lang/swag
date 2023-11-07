@@ -362,9 +362,10 @@ namespace Swag
     #[Swag.EnumFlags]
     enum ContextFlags: u64
     {
-        None     = 0x00000000_00000000
-        Test     = 0x00000000_00000001
-        ByteCode = 0x00000000_00000002
+        None                    = 0x00000000_00000000
+        Test                    = 0x00000000_00000001
+        ByteCode                = 0x00000000_00000002
+        PostCopyResetAllocator  = 0x00000000_00000004
     }
 
     enum ExceptionKind

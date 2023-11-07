@@ -12,8 +12,19 @@ func __setErr(err: any)
     let type = cast(const *Swag.TypeInfoStruct) @kindof(err)
     let ptr = cxt.errorAllocator.alloc(cast(u64) type.sizeof)
     @memcpy(ptr, data, cast(u64) type.sizeof)
+
+    // Copy the error struct in a errorAllocator buffer. Set ContextFlags.PostCopyResetAllocator so
+    // that the copy have the opportunity to not take the allocator from the source, but from the
+    // context.
+    let salloc = cxt.allocator; let sflags = cxt.flags
+
+    cxt.allocator = cast(IAllocator) cxt.errorAllocator
+    cxt.flags |= ContextFlags.PostCopyResetAllocator
     if type.opPostCopy
         type.opPostCopy(ptr)
+
+    cxt.allocator = salloc; cxt.flags = sflags
+
     cxt.errors[cxt.errorIndex].value = @mkany(ptr, type)
     cxt.hasError = 1
 }

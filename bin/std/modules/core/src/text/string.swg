@@ -139,6 +139,9 @@ impl String
         if !buffer
             return
 
+        if(@getcontext().flags & .PostCopyResetAllocator)
+            allocator = null
+
         if capacity <= StringSmallSize
             buffer = acast &padding[0]
         else
