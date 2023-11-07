@@ -20,11 +20,11 @@ bool TypeGenStructJob::computeStruct()
         if (realType->flags & TYPEINFO_STRUCT_NO_COPY)
             exportedTypeInfoValue->flags &= ~(uint16_t) ExportedTypeInfoFlags::CanCopy;
         if (realType->opPostCopy || realType->opUserPostCopyFct)
-            exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::HasPostCopy;
+            exportedTypeInfoValue->flags |= (uint32_t) ExportedTypeInfoFlags::HasPostCopy;
         if (realType->opPostMove || realType->opUserPostMoveFct)
-            exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::HasPostMove;
+            exportedTypeInfoValue->flags |= (uint32_t) ExportedTypeInfoFlags::HasPostMove;
         if (realType->opDrop || realType->opUserDropFct)
-            exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::HasDrop;
+            exportedTypeInfoValue->flags |= (uint32_t) ExportedTypeInfoFlags::HasDrop;
     }
 
     // Special functions lambdas

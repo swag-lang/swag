@@ -33,13 +33,11 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
     // Cast from any. Fine to cast from a struct or array to a reference
     if cmpFlags & .CastAny and
        type1.kind == TypeInfoKind.Pointer and 
-       type1.flags & .PointerRef
+       type1.flags & .PointerRef and
+       type1.flags & .Const
     {  
-        if type2.kind == TypeInfoKind.Struct or type2.kind == TypeInfoKind.Array
-        {
-            let typePointer = cast(const *Swag.TypeInfoPointer) type1
-            return @typecmp(typePointer.pointedType, type2, cmpFlags)
-        }
+        let typePointer = cast(const *Swag.TypeInfoPointer) type1
+        return @typecmp(typePointer.pointedType, type2, cmpFlags)
     }
 
     if (type1.kind != type2.kind) or (type1.sizeof != type2.sizeof) or (type1.flags != type2.flags)

@@ -93,16 +93,23 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     auto genJob        = Allocator::alloc<ByteCodeGenJob>();
     genJob->sourceFile = sourceFile;
     genJob->module     = sourceFile->module;
+    genJob->context.contextFlags |= BCC_FLAG_FOR_DEBUGGER;
     genJob->nodes.push_back(child);
     child->allocateExtension(ExtensionKind::ByteCode);
-    child->extByteCode()->bc             = Allocator::alloc<ByteCode>();
-    child->extByteCode()->bc->node       = child;
-    child->extByteCode()->bc->sourceFile = sourceFile;
+    auto ext            = child->extByteCode();
+    ext->bc             = Allocator::alloc<ByteCode>();
+    ext->bc->node       = child;
+    ext->bc->sourceFile = sourceFile;
+    ext->bc->stackSize  = context->bc->stackSize;
 
     g_ThreadMgr.debuggerMode = true;
     g_ThreadMgr.addJob(genJob);
     g_ThreadMgr.waitEndJobsSync();
     g_ThreadMgr.debuggerMode = false;
+
+#ifdef SWAG_DEV_MODE
+    // ext->bc->print();
+#endif
 
     if (!g_SilentErrorMsg.empty())
     {
@@ -131,7 +138,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
 
     auto resExec = sourceFile->module->executeNode(sourceFile, child, &callerContext, &execParams);
 
-    child->extByteCode()->bc->release();
+    ext->bc->release();
     g_RunContext         = &g_RunContextVal;
     g_ByteCodeStackTrace = &g_ByteCodeStackTraceVal;
 

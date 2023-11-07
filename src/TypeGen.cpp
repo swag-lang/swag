@@ -147,32 +147,34 @@ bool TypeGen::genExportedTypeInfoNoLock(JobContext* context, ExportedTypeInfo** 
     // Setup useful flags
     exportedTypeInfoValue->flags = (uint16_t) ExportedTypeInfoFlags::None;
     if (typeInfo->isPointerToTypeInfo())
-        exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::PointerTypeInfo;
+        exportedTypeInfoValue->flags |= (uint32_t) ExportedTypeInfoFlags::PointerTypeInfo;
     if (typeInfo->isPointerRef())
-        exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::PointerRef;
+        exportedTypeInfoValue->flags |= (uint32_t) ExportedTypeInfoFlags::PointerRef;
     if (typeInfo->isPointerMoveRef())
-        exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::PointerMoveRef;
+        exportedTypeInfoValue->flags |= (uint32_t) ExportedTypeInfoFlags::PointerMoveRef;
     if (typeInfo->isPointerArithmetic())
-        exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::PointerArithmetic;
+        exportedTypeInfoValue->flags |= (uint32_t) ExportedTypeInfoFlags::PointerArithmetic;
     if (typeInfo->isCString())
-        exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::CString;
+        exportedTypeInfoValue->flags |= (uint32_t) ExportedTypeInfoFlags::CString;
     if (typeInfo->isNativeInteger())
-        exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::Integer;
+        exportedTypeInfoValue->flags |= (uint32_t) ExportedTypeInfoFlags::Integer;
     if (typeInfo->isNativeFloat())
-        exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::Float;
+        exportedTypeInfoValue->flags |= (uint32_t) ExportedTypeInfoFlags::Float;
     if (typeInfo->isNativeIntegerUnsigned())
-        exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::Unsigned;
+        exportedTypeInfoValue->flags |= (uint32_t) ExportedTypeInfoFlags::Unsigned;
     if (typeInfo->isStrict())
-        exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::Strict;
+        exportedTypeInfoValue->flags |= (uint32_t) ExportedTypeInfoFlags::Strict;
     if (typeInfo->isGeneric())
-        exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::Generic;
+        exportedTypeInfoValue->flags |= (uint32_t) ExportedTypeInfoFlags::Generic;
     if (typeInfo->isTuple())
-        exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::Tuple;
+        exportedTypeInfoValue->flags |= (uint32_t) ExportedTypeInfoFlags::Tuple;
     if (typeInfo->isCharacter())
-        exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::Character;
+        exportedTypeInfoValue->flags |= (uint32_t) ExportedTypeInfoFlags::Character;
+    if (typeInfo->isConst())
+        exportedTypeInfoValue->flags |= (uint32_t) ExportedTypeInfoFlags::Const;
 
     // True by default, will be removed by struct if necessary
-    exportedTypeInfoValue->flags |= (uint16_t) ExportedTypeInfoFlags::CanCopy;
+    exportedTypeInfoValue->flags |= (uint32_t) ExportedTypeInfoFlags::CanCopy;
 
     // Register type and value
     // Do it now to break recursive references

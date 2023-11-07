@@ -2745,7 +2745,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::IntrinsicTypeCmp:
     {
         auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name_attypecmp);
-        context->push<uint64_t>(ip->c.u32);
+        context->push(registersRC[ip->c.u32].u64);
         context->push(registersRC[ip->b.u32].pointer);
         context->push(registersRC[ip->a.u32].pointer);
         localCall(context, bc, 3, ip->d.u32);

@@ -2737,14 +2737,14 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             }
 
             fromNode->castedTypeInfo = fromType;
-            fromNode->typeInfo       = toRealType;
+            fromNode->typeInfo       = toType;
             auto  module             = context->sourceFile->module;
             auto& typeGen            = module->typeGen;
 
             // :AnyTypeSegment
             fromNode->allocateExtension(ExtensionKind::Misc);
             fromNode->extMisc()->anyTypeSegment = SemanticJob::getConstantSegFromContext(fromNode);
-            SWAG_CHECK(typeGen.genExportedTypeInfo(context, toRealType, fromNode->extMisc()->anyTypeSegment, &fromNode->extMisc()->anyTypeOffset));
+            SWAG_CHECK(typeGen.genExportedTypeInfo(context, toType, fromNode->extMisc()->anyTypeSegment, &fromNode->extMisc()->anyTypeOffset));
         }
     }
 

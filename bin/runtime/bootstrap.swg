@@ -501,6 +501,7 @@ namespace Swag
         PointerMoveRef    = 0x00002000      // This is a move reference
         PointerArithmetic = 0x00004000      // This is a pointer to multiple values
         Character         = 0x00008000      // This is a 32 bits character
+        Const             = 0x00010000      // This is const
     }
 
     struct Interface

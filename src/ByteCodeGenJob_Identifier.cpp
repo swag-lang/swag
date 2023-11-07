@@ -521,7 +521,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u64            = resolved->computedValue.storageOffset;
             inst->c.pointer        = (uint8_t*) resolved;
         }
-        else if (resolved->flags & OVERLOAD_PERSISTENT_REG)
+        else if (resolved->flags & OVERLOAD_PERSISTENT_REG && !(context->contextFlags & BCC_FLAG_FOR_DEBUGGER))
         {
             node->resultRegisterRC            = resolved->symRegisters;
             node->resultRegisterRC.cannotFree = true;
