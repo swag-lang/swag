@@ -424,6 +424,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
     if (resolved->flags & OVERLOAD_VAR_LOCAL)
     {
         SWAG_CHECK(sameStackFrame(context, resolved));
+        auto persistentReg = (resolved->flags & OVERLOAD_PERSISTENT_REG) && !(context->contextFlags & BCC_FLAG_FOR_DEBUGGER);
 
         if (node->isSilentCall())
         {
@@ -435,7 +436,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         else if (node->semFlags & SEMFLAG_FROM_REF)
         {
             node->resultRegisterRC = reserveRegisterRC(context);
-            if (resolved->flags & OVERLOAD_PERSISTENT_REG)
+            if (persistentReg)
             {
                 EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC, resolved->symRegisters[0]);
             }
@@ -461,7 +462,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (node->forceTakeAddress() && (!typeInfo->isString() || node->parent->kind != AstNodeKind::ArrayPointerIndex))
         {
-            if (resolved->flags & OVERLOAD_PERSISTENT_REG)
+            if (persistentReg)
             {
                 node->resultRegisterRC            = resolved->symRegisters[0];
                 node->resultRegisterRC.cannotFree = true;
@@ -481,7 +482,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         {
             node->resultRegisterRC = reserveRegisterRC(context);
 
-            if (resolved->flags & OVERLOAD_PERSISTENT_REG)
+            if (persistentReg)
                 EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC, resolved->symRegisters[0]);
             else
                 EMIT_INST1(context, ByteCodeOp::GetFromStack64, node->resultRegisterRC)->b.u64 = resolved->computedValue.storageOffset;
@@ -493,7 +494,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else if (typeInfo->isInterface() && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !(node->flags & AST_UFCS_FCT))
         {
-            if (resolved->flags & OVERLOAD_PERSISTENT_REG)
+            if (persistentReg)
             {
                 node->resultRegisterRC = reserveRegisterRC(context);
                 if (node->flags & AST_FROM_UFCS)
@@ -521,7 +522,7 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u64            = resolved->computedValue.storageOffset;
             inst->c.pointer        = (uint8_t*) resolved;
         }
-        else if (resolved->flags & OVERLOAD_PERSISTENT_REG && !(context->contextFlags & BCC_FLAG_FOR_DEBUGGER))
+        else if (persistentReg)
         {
             node->resultRegisterRC            = resolved->symRegisters;
             node->resultRegisterRC.cannotFree = true;
