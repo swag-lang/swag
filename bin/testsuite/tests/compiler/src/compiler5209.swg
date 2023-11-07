@@ -1,7 +1,25 @@
+struct A 
+{
+    x: s64 = 66
+    y: s64 = 66
+}
+
+impl A
+{
+    mtd opPostCopy()
+    {
+        @assert(false)
+    }
+}
+
+//#[Swag.PrintBc]
+func toto(val: any)
+{
+    let err = cast(const ref A) val
+    @assert(err.x == 42)
+}
+
 #test
 {
-    var x: Swag.IAllocator
-    let y = @kindof(x)
-    if y
-        @print(y.name)
+    toto(A{42})
 }
