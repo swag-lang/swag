@@ -4676,15 +4676,14 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_TestN(RCX, RCX, X64Bits::B32);
             pp.emit_Jump(JZ, i, ip->b.s32);
             break;
-        case ByteCodeOp::InternalClearErr:
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
-            pp.emit_Store32_Immediate(offsetof(SwagContext, hasError), 0, RAX);
-            break;
         case ByteCodeOp::InternalPushErr:
             emitCall(pp, g_LangSpec->name__pusherr);
             break;
         case ByteCodeOp::InternalPopErr:
             emitCall(pp, g_LangSpec->name__poperr);
+            break;
+        case ByteCodeOp::InternalCatchErr:
+            emitCall(pp, g_LangSpec->name__catcherr);
             break;
         case ByteCodeOp::InternalInitStackTrace:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);

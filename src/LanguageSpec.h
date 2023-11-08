@@ -31,6 +31,7 @@ struct LanguageSpec
     Utf8 name__panic;
     Utf8 name__pusherr;
     Utf8 name__poperr;
+    Utf8 name__catcherr;
     Utf8 name__seterr;
     Utf8 name__failedAssume;
     Utf8 name__tlsAlloc;

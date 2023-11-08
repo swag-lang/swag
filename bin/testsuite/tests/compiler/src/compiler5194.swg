@@ -8,9 +8,11 @@ func toto() throw
 }
 
 #[Swag.Safety("", true)]
+//#[Swag.PrintBc]
 #test
 {
     catch toto()
+    //@breakpoint()
     let err = cast(s32) @err()
     //@print(err.x)
 }

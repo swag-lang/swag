@@ -2465,18 +2465,9 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     }
     case ByteCodeOp::IntrinsicGetErr:
     {
-        auto cxt = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
-        if (!cxt->hasError)
-        {
-            registersRC[ip->a.u32].pointer = nullptr;
-            registersRC[ip->b.u32].pointer = nullptr;
-        }
-        else
-        {
-            registersRC[ip->a.u32].pointer = (uint8_t*) cxt->errors[cxt->errorIndex].value.value;
-            registersRC[ip->b.u32].pointer = (uint8_t*) cxt->errors[cxt->errorIndex].value.type;
-        }
-
+        auto cxt                       = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
+        registersRC[ip->a.u32].pointer = (uint8_t*) cxt->curError.value;
+        registersRC[ip->b.u32].pointer = (uint8_t*) cxt->curError.type;
         break;
     }
     case ByteCodeOp::InternalHasErr:
@@ -2494,14 +2485,6 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             context->ip += ip->b.s32;
         break;
     }
-    case ByteCodeOp::InternalClearErr:
-    {
-        SWAG_ASSERT(context->bc->registerGetContext != UINT32_MAX);
-        auto cxt = (SwagContext*) registersRC[ip->a.u32].pointer;
-        SWAG_ASSERT(cxt != nullptr);
-        cxt->hasError = 0;
-        break;
-    }
     case ByteCodeOp::InternalPushErr:
     {
         auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__pusherr);
@@ -2511,6 +2494,12 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::InternalPopErr:
     {
         auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__poperr);
+        localCall(context, bc, 0);
+        break;
+    }
+    case ByteCodeOp::InternalCatchErr:
+    {
+        auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__catcherr);
         localCall(context, bc, 0);
         break;
     }

@@ -4415,24 +4415,15 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             blockIsClosed = true;
             break;
         }
-        case ByteCodeOp::InternalClearErr:
-        {
-            auto r0 = GEP64(allocR, ip->a.u32);
-            auto ra = builder.CreateLoad(PTR_I8_TY(), r0);
-            auto v0 = GEP8_PTR_I32(ra, offsetof(SwagContext, hasError));
-            builder.CreateStore(pp.cst0_i32, v0);
-            break;
-        }
         case ByteCodeOp::InternalPushErr:
-        {
             emitCall(buildParameters, moduleToGen, g_LangSpec->name__pusherr, allocR, allocT, {}, {});
             break;
-        }
         case ByteCodeOp::InternalPopErr:
-        {
             emitCall(buildParameters, moduleToGen, g_LangSpec->name__poperr, allocR, allocT, {}, {});
             break;
-        }
+        case ByteCodeOp::InternalCatchErr:
+            emitCall(buildParameters, moduleToGen, g_LangSpec->name__catcherr, allocR, allocT, {}, {});
+            break;
         case ByteCodeOp::InternalInitStackTrace:
         {
             auto r0 = GEP64(allocR, ip->a.u32);

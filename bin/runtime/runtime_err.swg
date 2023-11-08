@@ -34,6 +34,7 @@ func __pushErr()
     let cxt = @getcontext()
     cxt.errors[cxt.errorIndex].pushTraceIndex = cast(u32) cxt.traceIndex
     cxt.errors[cxt.errorIndex].pushUsedAlloc  = cast(u32) cxt.errorAllocator.used
+    cxt.hasError = 0
     cxt.errorIndex += 1
 }
 
@@ -42,18 +43,27 @@ func __popErr()
     let cxt = @getcontext()
     cxt.errorIndex -= 1
     cxt.hasError            = 1
+    cxt.curError            = cxt.errors[cxt.errorIndex].value
     cxt.traceIndex          = cast(u32) cxt.errors[cxt.errorIndex].pushTraceIndex
     cxt.errorAllocator.used = cast(u32) cxt.errors[cxt.errorIndex].pushUsedAlloc
+}
+
+func __catchErr()
+{    
+    let cxt = @getcontext()
+    if !cxt.hasError
+        cxt.curError = null
+    else
+        cxt.curError = cxt.errors[cxt.errorIndex].value
+    cxt.errorAllocator.used = cxt.errorIndex ? cxt.errors[cxt.errorIndex-1].pushUsedAlloc : 0
+    cxt.hasError = 0
 }
 
 // Returns the current raised error, or null if none
 func @err()->any
 {
     let cxt = @getcontext()
-    if !cxt.hasError
-        return null
-    cxt.errorAllocator.used = cxt.errorIndex ? cxt.errors[cxt.errorIndex-1].pushUsedAlloc : 0
-    return cxt.errors[cxt.errorIndex].value
+    return cxt.curError
 }
 
 func __failedAssume(loc: SourceCodeLocation)
@@ -61,6 +71,8 @@ func __failedAssume(loc: SourceCodeLocation)
     let cxt = @getcontext()
     let type = @kindof(cxt.errors[cxt.errorIndex].value)
 
+    cxt.hasError = 0
+    
     var str: [512] u8
     var len: u64
 

@@ -19,13 +19,6 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
         parent = parent->parent;
     SWAG_CHECK(checkCatchError(context, node->func->typeInfo->declNode, node, node->func, parent, node->func->typeInfo));
 
-    // Clear current error
-    if (node->func->typeInfo->flags & TYPEINFO_CAN_THROW)
-    {
-        SWAG_ASSERT(node->ownerFct->registerGetContext != UINT32_MAX);
-        EMIT_INST1(context, ByteCodeOp::InternalClearErr, node->ownerFct->registerGetContext);
-    }
-
     // Reserve registers for return value
     reserveRegisterRC(context, node->resultRegisterRC, node->func->returnType->typeInfo->numRegisters());
     node->parent->resultRegisterRC = node->resultRegisterRC;

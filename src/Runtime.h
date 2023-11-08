@@ -136,6 +136,7 @@ typedef struct SwagContext
     SwagSourceCodeLocation  exceptionLoc;
     void*                   exceptionParams[4];
     void*                   panic;
+    SwagAny                 curError;
     uint32_t                errorIndex;
     uint32_t                traceIndex;
     uint32_t                hasError;

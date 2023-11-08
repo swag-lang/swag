@@ -233,10 +233,10 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
 {
     PushICFlags ic(context, BCI_TRYCATCH);
 
-    // try in a top level function is equivalent to assume
     auto node    = context->node;
     auto tryNode = CastAst<AstTryCatchAssume>(node->extOwner()->ownerTryCatchAssume, AstNodeKind::Try);
 
+    // try in a top level function is equivalent to assume
     AstFuncDecl* parentFct = nullptr;
     if (node->ownerInline && (tryNode->semFlags & SEMFLAG_EMBEDDED_RETURN))
         parentFct = node->ownerInline->func;
@@ -279,6 +279,7 @@ bool ByteCodeGenJob::emitTryCatch(ByteCodeGenContext* context)
         EMIT_INST1(context, ByteCodeOp::JumpIfZero32, r0);
         freeRegisterRC(context, r0);
         node->semFlags |= SEMFLAG_TRY_1;
+        EMIT_INST0(context, ByteCodeOp::InternalCatchErr);
     }
 
     SWAG_CHECK(emitTryThrowExit(context, tryNode));
@@ -287,6 +288,12 @@ bool ByteCodeGenJob::emitTryCatch(ByteCodeGenContext* context)
 
     context->bc->out[tryNode->seekInsideJump].b.s32 = context->bc->numInstructions - tryNode->seekInsideJump - 1;
     SWAG_ASSERT(context->bc->out[tryNode->seekInsideJump].b.s32);
+    return true;
+}
+
+bool ByteCodeGenJob::emitCatch(ByteCodeGenContext* context)
+{
+    EMIT_INST0(context, ByteCodeOp::InternalCatchErr);
     return true;
 }
 

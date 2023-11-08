@@ -41,6 +41,8 @@ if a == 1 do toto() else do titi()
 a = if b then c else d
 a = if b then c elif d then f else h
 -------------------------------------
+type const any ? @dataof() sur ça donne un pointeur const
+-------------------------------------
 
 
 
@@ -86,8 +88,6 @@ llvm debug, pas à jour
 - variables local en #[Swag.global]
 - mettre les constants
 -------------------------------------
-type const any ? @dataof() sur ça donne un pointeur const
--------------------------------------
 
 
 
@@ -124,6 +124,8 @@ OPTIMS
 ****************************************
 
 
+-------------------------------------
+error, hot path should be JumpIfError and not JumpIfNoError, with all error code at the end for exemple
 -------------------------------------
 inline auto ?
 -------------------------------------

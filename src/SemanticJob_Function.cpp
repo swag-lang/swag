@@ -1609,6 +1609,9 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         case AstNodeKind::TryCatch:
             inlineNode->setBcNotifAfter(ByteCodeGenJob::emitTryCatch);
             break;
+        case AstNodeKind::Catch:
+            inlineNode->setBcNotifAfter(ByteCodeGenJob::emitCatch);
+            break;
         case AstNodeKind::Assume:
             inlineNode->setBcNotifAfter(ByteCodeGenJob::emitAssume);
             break;
@@ -1623,6 +1626,8 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
             if (extension->byteCodeAfterFct == ByteCodeGenJob::emitTry)
                 extension->byteCodeAfterFct = nullptr;
             else if (extension->byteCodeAfterFct == ByteCodeGenJob::emitTryCatch)
+                extension->byteCodeAfterFct = nullptr;
+            else if (extension->byteCodeAfterFct == ByteCodeGenJob::emitCatch)
                 extension->byteCodeAfterFct = nullptr;
             else if (extension->byteCodeAfterFct == ByteCodeGenJob::emitAssume)
                 extension->byteCodeAfterFct = nullptr;

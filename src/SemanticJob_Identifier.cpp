@@ -1520,6 +1520,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             case AstNodeKind::TryCatch:
                 identifier->setBcNotifAfter(ByteCodeGenJob::emitTryCatch);
                 break;
+            case AstNodeKind::Catch:
+                identifier->setBcNotifAfter(ByteCodeGenJob::emitCatch);
+                break;
             case AstNodeKind::Assume:
                 identifier->setBcNotifAfter(ByteCodeGenJob::emitAssume);
                 break;

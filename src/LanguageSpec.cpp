@@ -19,6 +19,7 @@ void LanguageSpec::setupNames()
     name__panic               = "__panic";
     name__pusherr             = "__pushErr";
     name__poperr              = "__popErr";
+    name__catcherr            = "__catchErr";
     name__seterr              = "__setErr";
     name__failedAssume        = "__failedAssume";
     name__tlsAlloc            = "__tlsAlloc";

@@ -2224,14 +2224,6 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
         EMIT_INST1(context, ByteCodeOp::InternalInitStackTrace, node->ownerFct->registerGetContext);
     }
 
-    // Clear error when entering a #<function> or a function than can raise en error
-    if ((funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC) ||
-        (funcNode->typeInfo->flags & TYPEINFO_CAN_THROW))
-    {
-        SWAG_ASSERT(funcNode->registerGetContext != UINT32_MAX);
-        EMIT_INST1(context, ByteCodeOp::InternalClearErr, funcNode->registerGetContext);
-    }
-
     // Should be aligned !
     SWAG_ASSERT(!(funcNode->stackSize & 7));
 
