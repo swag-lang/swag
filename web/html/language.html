@@ -672,7 +672,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SItr">@compilererror</span>
 <span class="SItr">@compilerwarning</span>
 <span class="SItr">@getcontext</span>
-<span class="SItr">@getpinfos</span>
+<span class="SItr">@pinfos</span>
 <span class="SItr">@gettag</span>
 <span class="SItr">@hastag</span>
 <span class="SItr">@init</span>
@@ -5174,7 +5174,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SItr">@mkany</span>()
 <span class="SItr">@mkinterface</span>()
 <span class="SItr">@mkcallback</span>()
-<span class="SItr">@getpinfos</span>()
+<span class="SItr">@pinfos</span>()
 <span class="SItr">@isconstexpr</span>()
 <span class="SItr">@itftableof</span>()
 
@@ -7413,7 +7413,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="_230_documentation__231_003_Pages">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 07-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
+Generated on 08-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
 </div>
 </div>
