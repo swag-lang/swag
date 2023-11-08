@@ -1,4 +1,5 @@
-//#global skip
+#global testerror "Err0401"
+
 struct ErrToto{}
 
 func toto() throw
@@ -11,6 +12,6 @@ func toto() throw
 {
     var x: func() throw
     x = &toto
-    catch x()
+    try x()
     @assert(@err() == ErrToto)
 }

@@ -1271,6 +1271,30 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             identifier->typeInfo    = funcType;
             identifier->byteCodeFct = ByteCodeGenJob::emitLambdaCall;
 
+            // Try/Assume
+            if (identifier->hasExtOwner() &&
+                identifier->extOwner()->ownerTryCatchAssume &&
+                (identifier->typeInfo->flags & TYPEINFO_CAN_THROW))
+            {
+                switch (identifier->extOwner()->ownerTryCatchAssume->kind)
+                {
+                case AstNodeKind::Try:
+                    identifier->setBcNotifAfter(ByteCodeGenJob::emitTry);
+                    break;
+                case AstNodeKind::TryCatch:
+                    identifier->setBcNotifAfter(ByteCodeGenJob::emitTryCatch);
+                    break;
+                case AstNodeKind::Catch:
+                    identifier->setBcNotifAfter(ByteCodeGenJob::emitCatch);
+                    break;
+                case AstNodeKind::Assume:
+                    identifier->setBcNotifAfter(ByteCodeGenJob::emitAssume);
+                    break;
+                default:
+                    break;
+                }
+            }
+
             // Need to make all types compatible, in case a cast is necessary
             SWAG_CHECK(setSymbolMatchCallParams(context, identifier, oneMatch));
 
