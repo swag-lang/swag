@@ -1122,7 +1122,7 @@ bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* 
 
             // If we emit a defer block during a try block, we need to be sure that the defer has its
             // one try block in case a throw is raised
-            if (forError)
+            if (false)//forError)
             {
                 SWAG_ASSERT(context->node->extOwner()->ownerTryCatchAssume);
                 auto oldTry                      = context->node->extOwner()->ownerTryCatchAssume;

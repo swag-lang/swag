@@ -1,3 +1,5 @@
+#global testerror "Err0556"
+
 struct ErrToto{}
 struct ErrTata{}
 struct ErrRead{}

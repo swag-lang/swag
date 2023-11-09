@@ -4,5 +4,5 @@ func DeleteObject() throw { @print(""); }
 func getDataFromHFONT() throw
 {
     DeleteObject()
-    defer DeleteObject()
+    defer(noerr) DeleteObject()
 }

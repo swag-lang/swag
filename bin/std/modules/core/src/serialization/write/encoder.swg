@@ -116,7 +116,7 @@ impl Encoder
             let itf = cast(const *Swag.Interface) data
 
             serializer.beginSection(.Raw)
-            defer serializer.endSection()
+            defer(noerr) serializer.endSection()
 
             var objType, itfType: typeinfo
             if itf.itable

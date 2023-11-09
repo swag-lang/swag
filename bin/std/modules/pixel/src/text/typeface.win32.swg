@@ -11,7 +11,7 @@ impl TypeFace
         defer ReleaseDC(null, hdc)
 
         SelectObject(hdc, acast hf)
-        defer DeleteObject(acast hf)
+        defer catch DeleteObject(acast hf)
 
         let outFontBufferLen = GetFontData(hdc, 0, 0, null, 0)
         result.resize(acast outFontBufferLen)

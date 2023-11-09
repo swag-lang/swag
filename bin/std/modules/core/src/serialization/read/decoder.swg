@@ -105,7 +105,7 @@ impl Decoder
             let itf = cast(*Swag.Interface) data
 
             serializer.beginSection(.Raw)
-            defer serializer.endSection()
+            defer(noerr) serializer.endSection()
 
             var objType, itfType: typeinfo
             var typeVal: TypeValue
@@ -170,7 +170,7 @@ impl Decoder
 
             // Generic struct load
             let treated = serializer.beginStruct(structType, data)
-            defer serializer.endStruct()
+            defer(noerr) serializer.endStruct()
             if treated
                 return
 
@@ -184,7 +184,7 @@ impl Decoder
                 if !itf or !itf.readElement(field, cast(^u8) data + field.offset, idecoder)
                 {
                     let doIt = catch serializer.beginElement(field)
-                    defer serializer.endElement()
+                    defer(noerr) serializer.endElement()
 
                     if @err() != null and !(flags & .IgnoreStructFieldError)
                         throw @err()

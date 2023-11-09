@@ -22,7 +22,7 @@ func titi() throw
 {
     defer
     {
-        tata()
+        catch tata()
     }
 
     read()
@@ -31,5 +31,5 @@ func titi() throw
 #test
 {
     catch titi()
-    @assert(@err() == ErrTata)
+    @assert(@err() == ErrRead)
 }

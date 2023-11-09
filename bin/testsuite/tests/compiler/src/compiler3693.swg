@@ -1,3 +1,4 @@
+#global testerror "Err0556"
 func ReleaseDC() throw { }
 func GetFontData() throw { }
 

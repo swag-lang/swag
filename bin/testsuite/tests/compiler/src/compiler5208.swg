@@ -17,7 +17,7 @@ func titi() throw
 //#[Swag.PrintBc]
 func toto() throw
 {
-    defer titi()
+    defer catch titi()
     throw Err{str("toto")}
 }
 
@@ -26,5 +26,5 @@ func toto() throw
     catch toto()
     @assert(@err() == Err)
     let err = cast(Err) @err()
-    @assert(err.str == "titi")
+    @assert(err.str == "toto")
 }

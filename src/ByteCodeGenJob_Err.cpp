@@ -174,12 +174,43 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
     return true;
 }
 
+bool ByteCodeGenJob::checkEscapedThrow(ByteCodeGenContext* context)
+{
+    auto node = context->node;
+    if (!(node->flags & AST_IN_DEFER))
+        return true;
+
+    auto parent = node->findParent(AstNodeKind::Defer);
+    SWAG_ASSERT(defer);
+    auto defer = CastAst<AstDefer>(parent, AstNodeKind::Defer);
+    if (defer->deferKind == DeferKind::NoError)
+        return true;
+
+    if (node->ownerInline)
+    {
+        while (node->ownerInline)
+            node = node->ownerInline;
+
+        auto hasCatch = node;
+        while (hasCatch != defer)
+        {
+            if (hasCatch->kind == AstNodeKind::Catch)
+                return true;
+            hasCatch = hasCatch->parent;
+        }
+    }
+
+    Diagnostic diag{node, Err(Err0556)};
+    return context->report(diag, Diagnostic::hereIs(defer));
+}
+
 bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
 {
-    PushICFlags ic(context, BCI_TRYCATCH);
+    SWAG_CHECK(checkEscapedThrow(context));
 
-    auto node = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Throw);
-    auto expr = node->childs.front();
+    PushICFlags ic(context, BCI_TRYCATCH);
+    auto        node = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Throw);
+    auto        expr = node->childs.front();
 
     if (!(node->semFlags & SEMFLAG_CAST1))
     {
@@ -231,10 +262,11 @@ bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
 {
-    PushICFlags ic(context, BCI_TRYCATCH);
+    SWAG_CHECK(checkEscapedThrow(context));
 
-    auto node    = context->node;
-    auto tryNode = CastAst<AstTryCatchAssume>(node->extOwner()->ownerTryCatchAssume, AstNodeKind::Try);
+    PushICFlags ic(context, BCI_TRYCATCH);
+    auto        node    = context->node;
+    auto        tryNode = CastAst<AstTryCatchAssume>(node->extOwner()->ownerTryCatchAssume, AstNodeKind::Try);
 
     // try in a top level function is equivalent to assume
     AstFuncDecl* parentFct = nullptr;

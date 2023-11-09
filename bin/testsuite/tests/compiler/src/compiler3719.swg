@@ -17,12 +17,12 @@ func read() throw
 //#[Swag.PrintBc]
 func titi() throw
 {
-    defer toto()
+    defer catch toto()
     read()
 }
 
 #test
 {
     catch titi()
-    @assert(@err() == ErrToto)
+    @assert(@err() == ErrRead)
 }

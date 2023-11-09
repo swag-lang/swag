@@ -6,7 +6,7 @@ func toto() throw
 {
     try
     {
-        defer(err) throw ErrToto{}
+        defer(noerr) throw ErrToto{}
         throw ErrTiti{}
     }
 }
@@ -15,5 +15,5 @@ func toto() throw
 #test
 {
     catch toto()
-    @assert(@err() == ErrToto)
+    @assert(@err() == ErrTiti)
 }

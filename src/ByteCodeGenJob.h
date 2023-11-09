@@ -232,6 +232,7 @@ struct ByteCodeGenJob : public Job
     static bool sameStackFrame(ByteCodeGenContext* context, SymbolOverload* overload);
     static void freeStructParametersRegisters(ByteCodeGenContext* context);
     static bool skipNodes(ByteCodeGenContext* context, AstNode* node);
+    static bool checkEscapedThrow(ByteCodeGenContext* context);
 
     static ByteCodeInstruction* emitMakeSegPointer(ByteCodeGenContext* context, DataSegment* storageSegment, uint32_t storageOffset, uint32_t r0);
     static ByteCodeInstruction* emitGetFromSeg(ByteCodeGenContext* context, DataSegment* storageSegment, uint32_t storageOffset, uint32_t r0, uint32_t numBits);

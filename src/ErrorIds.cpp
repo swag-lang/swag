@@ -887,7 +887,7 @@ void initErrors()
     SWAG_ERROR(Err0573, "invalid throw type                                $ throw needs a struct or @err() as an expression, but there's nothing here");
     SWAG_ERROR(Err0570, "invalid throw type                                $ throw needs a struct or @err() as an expression, got '%s' instead");
     SWAG_ERROR(Err0393, "unknown struct                                    $ the struct '%s' can't be found");
-    SWAG_ERROR(Err0556, nullptr);
+    SWAG_ERROR(Err0556, "defer escape throw                                $ an error cannot escape a 'defer' or 'defer(err)' block");
     SWAG_ERROR(Err0557, nullptr);
     SWAG_ERROR(Err0639, nullptr);
     SWAG_ERROR(Err0694, nullptr);

@@ -1,3 +1,4 @@
+#global testerror "Err0556"
 var READ, TOTO: s32
 
 func toto() throw
