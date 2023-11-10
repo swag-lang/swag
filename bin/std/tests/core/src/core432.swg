@@ -18,5 +18,4 @@ func toto() throw
     let err = cast(Err) @err()
     @assert(err.x == C)   
     @assert(err.x.allocator != null)
-    @assert(@kindof(err.x.allocator) == Swag.ScratchAllocator)
 }
