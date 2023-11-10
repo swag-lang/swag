@@ -429,6 +429,9 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     }
     else if (typeInfo->isSlice())
     {
+        // :ConcreteRef
+        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
+
         auto ptrSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         auto ptrFlags = TYPEINFO_POINTER_ARITHMETIC;
         if (ptrSlice->isConst())
@@ -457,6 +460,9 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     }
     else if (typeInfo->isArray())
     {
+        // :ConcreteRef
+        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
+
         auto ptrArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto ptrFlags = TYPEINFO_POINTER_ARITHMETIC;
         if (ptrArray->isConst())
