@@ -181,7 +181,7 @@ bool ByteCodeGenJob::checkEscapedThrow(ByteCodeGenContext* context)
         return true;
 
     auto parent = node->findParent(AstNodeKind::Defer);
-    SWAG_ASSERT(defer);
+    SWAG_ASSERT(parent);
     auto defer = CastAst<AstDefer>(parent, AstNodeKind::Defer);
     if (defer->deferKind == DeferKind::NoError)
         return true;
