@@ -248,12 +248,164 @@ bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, AstNode* expression)
+{
+    auto typeInfo = TypeManager::concretePtrRef(expression->typeInfo);
+    typeInfo      = TypeManager::concreteType(typeInfo, CONCRETE_FORCEALIAS);
+
+    if (expression->resolvedSymbolName && expression->resolvedSymbolName->kind == SymbolKind::EnumValue)
+        typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ENUM);
+    else if (expression->resolvedSymbolName && expression->resolvedSymbolName->kind == SymbolKind::Variable)
+        typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ENUM);
+
+    if (typeInfo->isEnum())
+    {
+        auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+        node->setFlagsValueIsComputed();
+        node->computedValue->reg.u64 = typeEnum->values.size();
+        if (node->computedValue->reg.u64 > UINT32_MAX)
+            node->typeInfo = g_TypeMgr->typeInfoU64;
+        else
+            node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
+        return true;
+    }
+
+    typeInfo = TypeManager::concretePtrRefType(typeInfo);
+    if (typeInfo->isString())
+    {
+        // :ConcreteRef
+        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
+
+        node->typeInfo = g_TypeMgr->typeInfoU64;
+        if (expression->hasComputedValue())
+        {
+            node->setFlagsValueIsComputed();
+            node->computedValue->reg.u64 = expression->computedValue->text.length();
+            if (node->computedValue->reg.u64 > UINT32_MAX)
+                node->typeInfo = g_TypeMgr->typeInfoU64;
+            else
+                node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
+        }
+        else
+        {
+            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
+        }
+    }
+    else if (typeInfo->isArray())
+    {
+        // :ConcreteRef
+        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
+
+        node->setFlagsValueIsComputed();
+        auto typeArray               = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        node->computedValue->reg.u64 = typeArray->count;
+        if (node->computedValue->reg.u64 > UINT32_MAX)
+            node->typeInfo = g_TypeMgr->typeInfoU64;
+        else
+            node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
+    }
+    else if (typeInfo->isSlice())
+    {
+        // :ConcreteRef
+        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
+
+        // :SliceLiteral
+        // Slice literal. This can happen for enum values
+        if (expression->hasComputedValue())
+        {
+            auto slice = (SwagSlice*) node->computedValue->getStorageAddr();
+            if (slice->count > UINT32_MAX)
+                node->typeInfo = g_TypeMgr->typeInfoU64;
+            else
+                node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
+            node->computedValue->reg.u64 = slice->count;
+        }
+        else
+        {
+            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
+            node->typeInfo    = g_TypeMgr->typeInfoU64;
+        }
+    }
+    else if (typeInfo->isListTuple() || typeInfo->isListArray())
+    {
+        // :ConcreteRef
+        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
+
+        auto typeList = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
+        node->setFlagsValueIsComputed();
+        node->computedValue->reg.u64 = typeList->subTypes.size();
+        if (node->computedValue->reg.u64 > UINT32_MAX)
+            node->typeInfo = g_TypeMgr->typeInfoU64;
+        else
+            node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
+    }
+    else if (typeInfo->isVariadic() || typeInfo->isTypedVariadic())
+    {
+        node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
+        node->typeInfo    = g_TypeMgr->typeInfoU64;
+    }
+    else if (typeInfo->isStruct())
+    {
+        SWAG_VERIFY(!(typeInfo->isTuple()), context->report({expression, Err(Err0800)}));
+        node->typeInfo = typeInfo;
+        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opCount, nullptr, nullptr, node, nullptr));
+        if (context->result != ContextResult::Done)
+            return true;
+        node->typeInfo = g_TypeMgr->typeInfoU64;
+        if (!node->byteCodeFct)
+            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
+    }
+    else
+    {
+        // :ConcreteRef
+        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
+        node->inheritComputedValue(expression);
+        node->typeInfo = expression->typeInfo;
+
+        SWAG_VERIFY(typeInfo->isNativeInteger(), context->report({expression, Fmt(Err(Err0801), typeInfo->getDisplayNameC())}));
+        if (expression->hasComputedValue())
+        {
+            if (!(typeInfo->flags & TYPEINFO_UNSIGNED))
+            {
+                switch (typeInfo->nativeType)
+                {
+                case NativeTypeKind::S8:
+                    if (expression->computedValue->reg.s8 < 0)
+                        return context->report({expression, Fmt(Err(Err0802), node->computedValue->reg.s8)});
+                    break;
+                case NativeTypeKind::S16:
+                    if (expression->computedValue->reg.s16 < 0)
+                        return context->report({expression, Fmt(Err(Err0802), node->computedValue->reg.s16)});
+                    break;
+                case NativeTypeKind::S32:
+                    if (expression->computedValue->reg.s32 < 0)
+                        return context->report({expression, Fmt(Err(Err0802), node->computedValue->reg.s32)});
+                    break;
+                case NativeTypeKind::S64:
+                    if (expression->computedValue->reg.s64 < 0)
+                        return context->report({expression, Fmt(Err(Err0805), node->computedValue->reg.s64)});
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+
+        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, typeInfo, nullptr, node, CASTFLAG_TRY_COERCE));
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, AstNode* expression)
 {
-    auto typeInfo = TypeManager::concreteType(expression->typeInfo);
+    auto typeInfo = TypeManager::concretePtrRefType(expression->typeInfo);
 
     if (typeInfo->isString())
     {
+        // :ConcreteRef
+        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
+
         node->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoU8, TYPEINFO_CONST | TYPEINFO_POINTER_ARITHMETIC);
         if (expression->hasComputedValue())
         {
@@ -328,6 +480,9 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     }
     else if (typeInfo->isAny())
     {
+        // :ConcreteRef
+        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
+
         node->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
         if (expression->hasComputedValue())
         {
@@ -504,155 +659,6 @@ bool SemanticJob::resolveIntrinsicRunes(SemanticContext* context)
     memcpy(addrDst, &runes[0], runes.size() * sizeof(uint32_t));
 
     node->typeInfo = g_TypeMgr->typeInfoSliceRunes;
-    return true;
-}
-
-bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, AstNode* expression)
-{
-    auto typeInfo = TypeManager::concretePtrRef(expression->typeInfo);
-    typeInfo      = TypeManager::concreteType(typeInfo, CONCRETE_FORCEALIAS);
-
-    if (expression->resolvedSymbolName && expression->resolvedSymbolName->kind == SymbolKind::EnumValue)
-        typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ENUM);
-    else if (expression->resolvedSymbolName && expression->resolvedSymbolName->kind == SymbolKind::Variable)
-        typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ENUM);
-
-    if (typeInfo->isEnum())
-    {
-        auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        node->setFlagsValueIsComputed();
-        node->computedValue->reg.u64 = typeEnum->values.size();
-        if (node->computedValue->reg.u64 > UINT32_MAX)
-            node->typeInfo = g_TypeMgr->typeInfoU64;
-        else
-            node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
-        return true;
-    }
-
-    typeInfo = TypeManager::concretePtrRefType(typeInfo);
-    if (typeInfo->isString())
-    {
-        // :ConcreteRef
-        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
-
-        node->typeInfo = g_TypeMgr->typeInfoU64;
-        if (expression->hasComputedValue())
-        {
-            node->setFlagsValueIsComputed();
-            node->computedValue->reg.u64 = expression->computedValue->text.length();
-            if (node->computedValue->reg.u64 > UINT32_MAX)
-                node->typeInfo = g_TypeMgr->typeInfoU64;
-            else
-                node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
-        }
-        else
-        {
-            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
-        }
-    }
-    else if (typeInfo->isArray())
-    {
-        // :ConcreteRef
-        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
-
-        node->setFlagsValueIsComputed();
-        auto typeArray               = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        node->computedValue->reg.u64 = typeArray->count;
-        if (node->computedValue->reg.u64 > UINT32_MAX)
-            node->typeInfo = g_TypeMgr->typeInfoU64;
-        else
-            node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
-    }
-    else if (typeInfo->isSlice())
-    {
-        // :ConcreteRef
-        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
-
-        // :SliceLiteral
-        // Slice literal. This can happen for enum values
-        if (expression->hasComputedValue())
-        {
-            auto slice = (SwagSlice*) node->computedValue->getStorageAddr();
-            if (slice->count > UINT32_MAX)
-                node->typeInfo = g_TypeMgr->typeInfoU64;
-            else
-                node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
-            node->computedValue->reg.u64 = slice->count;
-        }
-        else
-        {
-            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
-            node->typeInfo    = g_TypeMgr->typeInfoU64;
-        }
-    }
-    else if (typeInfo->isListTuple() || typeInfo->isListArray())
-    {
-        // :ConcreteRef
-        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
-
-        auto typeList = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
-        node->setFlagsValueIsComputed();
-        node->computedValue->reg.u64 = typeList->subTypes.size();
-        if (node->computedValue->reg.u64 > UINT32_MAX)
-            node->typeInfo = g_TypeMgr->typeInfoU64;
-        else
-            node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
-    }
-    else if (typeInfo->isVariadic() || typeInfo->isTypedVariadic())
-    {
-        node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
-        node->typeInfo    = g_TypeMgr->typeInfoU64;
-    }
-    else if (typeInfo->isStruct())
-    {
-        SWAG_VERIFY(!(typeInfo->isTuple()), context->report({expression, Err(Err0800)}));
-        node->typeInfo = typeInfo;
-        SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opCount, nullptr, nullptr, node, nullptr));
-        if (context->result != ContextResult::Done)
-            return true;
-        node->typeInfo = g_TypeMgr->typeInfoU64;
-        if (!node->byteCodeFct)
-            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
-    }
-    else
-    {
-        // :ConcreteRef
-        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
-        node->inheritComputedValue(expression);
-        node->typeInfo = expression->typeInfo;
-
-        SWAG_VERIFY(typeInfo->isNativeInteger(), context->report({expression, Fmt(Err(Err0801), typeInfo->getDisplayNameC())}));
-        if (expression->hasComputedValue())
-        {
-            if (!(typeInfo->flags & TYPEINFO_UNSIGNED))
-            {
-                switch (typeInfo->nativeType)
-                {
-                case NativeTypeKind::S8:
-                    if (expression->computedValue->reg.s8 < 0)
-                        return context->report({expression, Fmt(Err(Err0802), node->computedValue->reg.s8)});
-                    break;
-                case NativeTypeKind::S16:
-                    if (expression->computedValue->reg.s16 < 0)
-                        return context->report({expression, Fmt(Err(Err0802), node->computedValue->reg.s16)});
-                    break;
-                case NativeTypeKind::S32:
-                    if (expression->computedValue->reg.s32 < 0)
-                        return context->report({expression, Fmt(Err(Err0802), node->computedValue->reg.s32)});
-                    break;
-                case NativeTypeKind::S64:
-                    if (expression->computedValue->reg.s64 < 0)
-                        return context->report({expression, Fmt(Err(Err0805), node->computedValue->reg.s64)});
-                    break;
-                default:
-                    break;
-                }
-            }
-        }
-
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, typeInfo, nullptr, node, CASTFLAG_TRY_COERCE));
-    }
-
     return true;
 }
 

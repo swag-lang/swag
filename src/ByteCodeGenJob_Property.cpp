@@ -213,7 +213,7 @@ bool ByteCodeGenJob::emitIntrinsicDataOf(ByteCodeGenContext* context)
 {
     auto node     = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto front    = node->childs.front();
-    auto typeInfo = TypeManager::concreteType(front->typeInfo);
+    auto typeInfo = TypeManager::concretePtrRefType(front->typeInfo);
 
     if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
     {
