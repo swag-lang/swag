@@ -435,10 +435,29 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context,
 
 BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
-    if (cmds.size() != 1)
+    if (cmds.size() > 2)
         return BcDbgCommandResult::BadArguments;
 
-    context->debugCxtBc->print(context->debugCxtIp);
+    auto toLogBc = context->debugCxtBc;
+    auto toLogIp = context->debugCxtIp;
+
+    if (cmds.size() > 1)
+    {
+        auto name = cmds[1];
+        auto bc   = g_Workspace->findBc(name);
+        if (bc)
+        {
+            toLogBc = bc;
+            toLogIp = bc->out;
+        }
+        else
+        {
+            g_Log.print(Fmt("cannot find function '%s'\n", name.c_str()), LogColor::Red);
+            return BcDbgCommandResult::Continue;
+        }
+    }
+
+    toLogBc->print(toLogIp);
     return BcDbgCommandResult::Continue;
 }
 

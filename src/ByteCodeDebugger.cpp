@@ -69,7 +69,7 @@ void ByteCodeDebugger::setup()
     commands.push_back({});
 
     commands.push_back({"i",           "",     "[num]",               "print the current bytecode instruction and [num] instructions around", cmdInstruction});
-    commands.push_back({"ii",          "",     "",                    "print the current function bytecode", cmdInstructionDump});
+    commands.push_back({"ii",          "",     "[name]",              "print the current function (or function [name]) bytecode", cmdInstructionDump});
     commands.push_back({});                                           
                                                                       
     commands.push_back({"help",        "?",    "",                    "print this list of commands", cmdHelp});

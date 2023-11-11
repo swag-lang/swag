@@ -438,7 +438,8 @@ ByteCode* Module::findBc(const Utf8& bcName)
     Utf8 n1;
     for (auto bc : byteCodeFunc)
     {
-        if (bc->name == bcName)
+        Utf8 nameToTest = bc->node && bc->out ? bc->node->getScopedName() : bc->name;
+        if (nameToTest == bcName)
             return bc;
 
         if (buildCfg.moduleNamespace.buffer)
