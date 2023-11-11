@@ -43,7 +43,7 @@ enum class SyntaxColorMode
 
 struct SyntaxColorContext
 {
-    SyntaxColorMode mode;
+    SyntaxColorMode mode                  = SyntaxColorMode::ForLog;
     int             multiLineCommentLevel = 0;
 };
 

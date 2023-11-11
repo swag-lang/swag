@@ -4,6 +4,7 @@
 #include "ByteCodeDebugger.h"
 #include "Workspace.h"
 #include "Ast.h"
+#include "SyntaxColor.h"
 
 void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force)
 {
@@ -185,6 +186,7 @@ void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* b
     for (int l = startLine; l <= endLine && !eof; l++)
         lines.push_back(file->getLine(l, &eof));
 
+    SyntaxColorContext cxt;
     uint32_t lineIdx = 0;
     for (const auto& l : lines)
     {
@@ -244,7 +246,7 @@ void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* b
             g_Log.setColor(LogColor::Green);
         else
             g_Log.setColor(LogColor::Gray);
-        g_Log.print(l.c_str());
+        g_Log.print(syntaxColor(l, cxt).c_str());
         g_Log.eol();
 
         lineIdx++;
