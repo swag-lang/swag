@@ -187,7 +187,7 @@ void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* b
         lines.push_back(file->getLine(l, &eof));
 
     SyntaxColorContext cxt;
-    uint32_t lineIdx = 0;
+    uint32_t           lineIdx = 0;
     for (const auto& l : lines)
     {
         // Current line
@@ -246,7 +246,12 @@ void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* b
             g_Log.setColor(LogColor::Green);
         else
             g_Log.setColor(LogColor::Gray);
-        g_Log.print(syntaxColor(l, cxt).c_str());
+
+        if (g_CommandLine.logColors)
+            g_Log.print(syntaxColor(l, cxt).c_str());
+        else
+            g_Log.print(l.c_str());
+
         g_Log.eol();
 
         lineIdx++;
