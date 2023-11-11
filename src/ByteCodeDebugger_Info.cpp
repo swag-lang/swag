@@ -33,6 +33,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
     {
         for (auto bc : m->byteCodeFunc)
         {
+            if (!bc->out)
+                continue;
             total++;
             if (filter.empty() || getByteCodeName(bc).find(filter) != -1 || getByteCodeFileName(bc).find(filter) != -1)
             {

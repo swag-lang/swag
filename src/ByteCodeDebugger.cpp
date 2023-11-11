@@ -679,10 +679,10 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
 
         // Bar
         /////////////////////////////////////////
-        g_Log.setColor(LogColor::Green);
-        for (int i = 0; i < LINE_W; i++)
-            g_Log.print(LogSymbol::HorizontalLine);
-        g_Log.eol();
+        // g_Log.setColor(LogColor::Green);
+        // for (int i = 0; i < LINE_W; i++)
+        //     g_Log.print(LogSymbol::HorizontalLine);
+        // g_Log.eol();
         g_Log.setColor(LogColor::Gray);
 
         // Command
