@@ -1366,7 +1366,6 @@ void initErrors()
     SWAG_ERROR(Nte0126, "public structs should export all their special functions");
     SWAG_ERROR(Nte1052, "should be casted to a sized integer like 's32', 's64', etc.");
     SWAG_ERROR(Nte0081, "should conform to type '%s'");
-    SWAG_ERROR(Nte1108, "should point to '%s'");
     SWAG_ERROR(Nte1094, "should this be removed?")
     SWAG_ERROR(Nte1001, "the % s '%s' has only been used as a scope to find function '%s'");
     SWAG_ERROR(Nte0046, "the %s '%s' is waiting for %s '%s' to be solved");
@@ -1462,6 +1461,7 @@ void initErrors()
     SWAG_ERROR(Nte1095, "you can't reference this runtime %s from the compile-time %s");
     SWAG_ERROR(Nte0149, "you might want to get the address of '%s' using '&'");
     SWAG_ERROR(Nte0014, "the duplicated underlying enum value is '%s'");
+    SWAG_ERROR(Nte1108, "you need to take the address of a value to make a reference");
     SWAG_ERROR(Nte1031, nullptr);
     SWAG_ERROR(Nte1009, nullptr);
     SWAG_ERROR(Nte1122, nullptr);

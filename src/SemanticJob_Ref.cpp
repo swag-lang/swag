@@ -486,7 +486,6 @@ bool SemanticJob::resolveKeepRef(SemanticContext* context)
         else if (front->kind == AstNodeKind::IdentifierRef)
         {
             diag.hint = Nte(Nte1109);
-            diag.addRange(front, Fmt(Nte(Nte1108), typeInfo->getDisplayNameC()));
             auto note = Diagnostic::note(front, Fmt(Nte(Nte0149), front->token.ctext()));
             return context->report(diag, note);
         }

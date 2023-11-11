@@ -435,7 +435,9 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
     }
     else if (!fromType->isPointer() && toType->isPointerRef())
     {
-        hint = Fmt(Nte(Nte1108), fromType->getDisplayNameC());
+        auto toPtrRef = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
+        if (fromType->isSame(toPtrRef->pointedType, CASTFLAG_CAST))
+            hint = Nte(Nte1108);
     }
     else if (toType->isTuple() && fromType->isTuple())
     {
