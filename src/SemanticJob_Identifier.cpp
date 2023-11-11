@@ -411,7 +411,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
 
                 // We have a compile time value (like a literal), and we want a const ref, i.e. a pointer
                 // We need to create a temporary variable to store the value, in order to have an address.
-                if (front->hasComputedValue())
+                if (front->hasComputedValue() || nodeCall->typeInfo->isListArray())
                 {
                     auto varNode = Ast::newVarDecl(sourceFile, Fmt("__7tmp_%d", g_UniqueID.fetch_add(1)), nodeCall);
                     varNode->inheritTokenLocation(nodeCall);
@@ -419,6 +419,12 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                     Ast::removeFromParent(front);
                     Ast::addChildBack(varNode, front);
                     varNode->assignment = front;
+
+                    auto toPtr              = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
+                    varNode->type           = Ast::newIdentifierRef(sourceFile, "dummy", varNode);
+                    varNode->type->typeInfo = toPtr->pointedType;
+                    varNode->type->flags |= AST_NO_SEMANTIC;
+                    nodeCall->typeInfo = toPtr->pointedType;
 
                     auto idNode = Ast::newIdentifierRef(sourceFile, varNode->token.text, nodeCall);
                     idNode->inheritTokenLocation(nodeCall);

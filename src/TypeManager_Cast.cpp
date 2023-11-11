@@ -3019,11 +3019,15 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
         if (toTypePointer->pointedType->isSame(fromTypePointer->pointedType, castFlags | CASTFLAG_CAST))
             return true;
     }
-    else if (toType->isConst())
+
+    // Value (with address) to const ref is possible for function parameters
+    else if (toType->isConst() && (castFlags & CASTFLAG_PARAMS))
     {
-        // Compare pointed types
-        if ((castFlags & CASTFLAG_PARAMS) && toTypePointer->pointedType->isSame(fromType, castFlags | CASTFLAG_CAST))
+        if (toTypePointer->pointedType->isSame(fromType, castFlags | CASTFLAG_CAST))
             return true;
+
+        if (toTypePointer->pointedType->isSlice() && fromType->isListArray())
+            return makeCompatibles(context, toTypePointer->pointedType, fromType, nullptr, fromNode, castFlags);
     }
 
     // Structure to interface reference
