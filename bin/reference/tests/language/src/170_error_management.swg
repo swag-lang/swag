@@ -1,6 +1,10 @@
 /**
+In a few words, a function marked with 'throw' can return an error by calling 'throw' followed by the error value. An error value is a struct. A caller can either stop its execution and return the same error with 'try', or it can 'catch' the error and test it with '@err()'.
+
+`throw Error{}` is equivalent to a return, so every rules when leaving a function are the same (call of 'defer', variable drop and so on).
+
 # throw
-A function capable of returning an error must be annotated with 'throw'. This allows the function to raise an error with the `throw` keyword, passing an error value in the form of a struct.
+A function capable of returning an error must be annotated with 'throw'. This allows the function to raise an error with the same `throw` keyword, passing an error value in the form of a struct.
 
 > These are **not** exceptions ! Consider 'throw' as a special 'return', with a specific value.
 */
@@ -8,20 +12,20 @@ A function capable of returning an error must be annotated with 'throw'. This al
 // Defines one error.
 struct MyError
 {
-    using base: Swag.BaseError // The default runtime base error contains default fields, like a 'message'
+    // The default runtime base error contains some default fields, like a 'message'
+    using base: Swag.BaseError 
 }
 
 /**
-Note that when a function returns because of an error, the real return value will always be equal to the **default value** depending on the  type.
+Note that when a function returns because of an error, the real return value will always be equal to the **default value** depending on the type.
 */
 
-// The function 'count()' can raise an error, so we annotate it with 'throw', at the end of 
-// its signature.
+// The function 'count()' can raise an error, so we annotate it with 'throw', at the end of its signature.
 func count(name: string)->u64 throw
 {
     if name == null
     {
-        // Throw an error, and initialize 'message' with a compile-time string.
+        // Throw a 'MyError' error, and initialize it with a compile-time string.
         // 'count()' will also return 0, because this is the default value for 'u64'.
         throw MyError{"null pointer"}
     }
@@ -30,8 +34,10 @@ func count(name: string)->u64 throw
 }
 
 /**
-# catch and trycatch
-The caller will then have to deal with the error in some way. It can `catch` it, and test (or not) its value with the `@err()` intrinsic. So the error is dismissed, and the execution will continue at the call site.
+# catch
+The caller will then have to deal with the error in some way. 
+
+It can `catch` it, and test (or not) its value with the `@err()` intrinsic. In that case, the error is dismissed, and the execution will continue at the call site.
 */
 func myFunc()
 {
@@ -39,7 +45,7 @@ func myFunc()
     let cpt = catch count("fileName")
 
     // We can test it with '@err()', which returns the 'throw' corresponding value as long as 
-    // another error can't be raised. So consider this is a good idea to test it right 
+    // another error is not raised. Consider this is a good idea to test it right 
     // after the 'catch'.
     if @err() != null
     {
@@ -52,10 +58,20 @@ func myFunc()
         @print("an error was raised")
         return
     }
+}
 
-    // You can also use 'trycatch', which will dismiss the error and exit the current function,
-    // returning the default value if necessary.
+/**
+# trycatch
+Instead of 'catch', you can use 'trycatch', which will dismiss the error and exit the current function, returning the default value if necessary. For the caller, no error has been raised.
+*/
+func myOtherFunc()
+{
+    // If count() throws an error, we just exit the function without further notice.
     var cpt1 = trycatch count("fileName")
+
+    // This is equivalent to:
+    var cpt2 = catch count("filename")
+    if @err() != null return 
 }
 
 /**
@@ -95,7 +111,7 @@ func myFunc2()
 }
 
 /**
-> If an error is never catched, then Swag will panic, as the top level caller always have an 'assume'.
+> If an error is never catched, then Swag will panic at runtime, as the top level caller always have an 'assume'.
 */
 
 /**
@@ -176,37 +192,8 @@ struct SyntaxError
 }
 
 /**
-But we aware that :
-* an error value will **never be dropped**, which means that you **cannot** use complex types that allocate on the heap (or you uwill have memory leaks).
-* a reference to an external value (like a 'string', an 'any' etc.) must remain valid all the time.
+But be aware that a reference to an external value (like a 'string', an 'any' etc.) must remain valid all the time. The runtime will drop complexe types when needed, so you could store complex things in the heap, or in a dedicated allocator in the current context.
 
-So if you really need to store a complexe type (like a 'String' from the 'Core' module), then you can use a dedicated allocator 'errorAllocator' stored in the current context.
-
-This allocator can also be used to make a copy of a non-persistent variable. For example if you want to store a string which is not compile-time.
-*/
-
-struct MyOtherError
-{
-    message: string
-}
-
-func raiseError(str: string) throw
-{   
-    // Make a copy of my 'str' parameter with the allocator dedicated to error values
-    let count = cast(u64) @countof(str)
-    let ptr = @getcontext().errorAllocator.alloc(count)
-    @memcpy(ptr, @dataof(str), count)
-
-    // Then throw the error, with that new string which is now persistent
-    let myCopy = @mkstring(cast(const ^u8) ptr, count)
-    throw MyOtherError{message: myCopy}
-}
-
-/**
-Of course, you will find some helpers in the 'Core' module,for example to do something like this:
-```swag
-    throw MyOtherError{Format.toStringError("this is my value: %", myValue)}
-```
 */
 
 /**

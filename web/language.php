@@ -299,7 +299,8 @@
 <li><a href="#_170_error_management">Error management</a></li>
 <ul>
 <li><a href="#_170_error_management_throw">throw</a></li>
-<li><a href="#_170_error_management_catch_and_trycatch">catch and trycatch</a></li>
+<li><a href="#_170_error_management_catch">catch</a></li>
+<li><a href="#_170_error_management_trycatch">trycatch</a></li>
 <li><a href="#_170_error_management_try">try</a></li>
 <li><a href="#_170_error_management_assume">assume</a></li>
 <li><a href="#_170_error_management_Blocks">Blocks</a></li>
@@ -6169,39 +6170,42 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(myLongVariableName == <span class="SNum">2</span>)
 }</span></div>
 
-<h2 id="_170_error_management">Error management</h2><h3 id="_170_error_management_throw">throw </h3>
-<p>A function capable of returning an error must be annotated with <span class="code-inline">throw</span>. This allows the function to raise an error with the <span class="code-inline">throw</span> keyword, passing an error value in the form of a struct. </p>
+<h2 id="_170_error_management">Error management</h2><p>In a few words, a function marked with <span class="code-inline">throw</span> can return an error by calling <span class="code-inline">throw</span> followed by the error value. An error value is a struct. A caller can either stop its execution and return the same error with <span class="code-inline">try</span>, or it can <span class="code-inline">catch</span> the error and test it with <span class="code-inline">@err()</span>. </p>
+<p><span class="code-inline">throw Error{}</span> is equivalent to a return, so every rules when leaving a function are the same (call of <span class="code-inline">defer</span>, variable drop and so on). </p>
+<h3 id="_170_error_management_throw">throw </h3>
+<p>A function capable of returning an error must be annotated with <span class="code-inline">throw</span>. This allows the function to raise an error with the same <span class="code-inline">throw</span> keyword, passing an error value in the form of a struct. </p>
 <div class="blockquote blockquote-default">
 <p> These are <b>not</b> exceptions ! Consider <span class="code-inline">throw</span> as a special <span class="code-inline">return</span>, with a specific value. </p>
 </div>
 <div class="code-block"><span class="SCde"><span class="SCmt">// Defines one error.</span>
 <span class="SKwd">struct</span> <span class="SCst">MyError</span>
 {
-    <span class="SKwd">using</span> base: <span class="SCst">Swag</span>.<span class="SCst">BaseError</span> <span class="SCmt">// The default runtime base error contains default fields, like a 'message'</span>
+    <span class="SCmt">// The default runtime base error contains some default fields, like a 'message'</span>
+    <span class="SKwd">using</span> base: <span class="SCst">Swag</span>.<span class="SCst">BaseError</span> 
 }</span></div>
-<p>Note that when a function returns because of an error, the real return value will always be equal to the <b>default value</b> depending on the  type. </p>
-<div class="code-block"><span class="SCde"><span class="SCmt">// The function 'count()' can raise an error, so we annotate it with 'throw', at the end of </span>
-<span class="SCmt">// its signature.</span>
+<p>Note that when a function returns because of an error, the real return value will always be equal to the <b>default value</b> depending on the type. </p>
+<div class="code-block"><span class="SCde"><span class="SCmt">// The function 'count()' can raise an error, so we annotate it with 'throw', at the end of its signature.</span>
 <span class="SKwd">func</span> <span class="SFct">count</span>(name: <span class="STpe">string</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span>
 {
     <span class="SLgc">if</span> name == <span class="SKwd">null</span>
     {
-        <span class="SCmt">// Throw an error, and initialize 'message' with a compile-time string.</span>
+        <span class="SCmt">// Throw a 'MyError' error, and initialize it with a compile-time string.</span>
         <span class="SCmt">// 'count()' will also return 0, because this is the default value for 'u64'.</span>
         <span class="SKwd">throw</span> <span class="SCst">MyError</span>{<span class="SStr">"null pointer"</span>}
     }
 
     <span class="SLgc">return</span> <span class="SItr">@countof</span>(name)
 }</span></div>
-<h3 id="_170_error_management_catch_and_trycatch">catch and trycatch </h3>
-<p>The caller will then have to deal with the error in some way. It can <span class="code-inline">catch</span> it, and test (or not) its value with the <span class="code-inline">@err()</span> intrinsic. So the error is dismissed, and the execution will continue at the call site. </p>
+<h3 id="_170_error_management_catch">catch </h3>
+<p>The caller will then have to deal with the error in some way.  </p>
+<p>It can <span class="code-inline">catch</span> it, and test (or not) its value with the <span class="code-inline">@err()</span> intrinsic. In that case, the error is dismissed, and the execution will continue at the call site. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc</span>()
 {
     <span class="SCmt">// Dismiss the eventual error with 'catch' and continue execution</span>
     <span class="SKwd">let</span> cpt = <span class="SKwd">catch</span> <span class="SFct">count</span>(<span class="SStr">"fileName"</span>)
 
     <span class="SCmt">// We can test it with '@err()', which returns the 'throw' corresponding value as long as </span>
-    <span class="SCmt">// another error can't be raised. So consider this is a good idea to test it right </span>
+    <span class="SCmt">// another error is not raised. Consider this is a good idea to test it right </span>
     <span class="SCmt">// after the 'catch'.</span>
     <span class="SLgc">if</span> <span class="SItr">@err</span>() != <span class="SKwd">null</span>
     {
@@ -6214,10 +6218,17 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SItr">@print</span>(<span class="SStr">"an error was raised"</span>)
         <span class="SLgc">return</span>
     }
-
-    <span class="SCmt">// You can also use 'trycatch', which will dismiss the error and exit the current function,</span>
-    <span class="SCmt">// returning the default value if necessary.</span>
+}</span></div>
+<h3 id="_170_error_management_trycatch">trycatch </h3>
+<p>Instead of <span class="code-inline">catch</span>, you can use <span class="code-inline">trycatch</span>, which will dismiss the error and exit the current function, returning the default value if necessary. For the caller, no error has been raised. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myOtherFunc</span>()
+{
+    <span class="SCmt">// If count() throws an error, we just exit the function without further notice.</span>
     <span class="SKwd">var</span> cpt1 = <span class="SKwd">trycatch</span> <span class="SFct">count</span>(<span class="SStr">"fileName"</span>)
+
+    <span class="SCmt">// This is equivalent to:</span>
+    <span class="SKwd">var</span> cpt2 = <span class="SKwd">catch</span> <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
+    <span class="SLgc">if</span> <span class="SItr">@err</span>() != <span class="SKwd">null</span> <span class="SLgc">return</span> 
 }</span></div>
 <h3 id="_170_error_management_try">try </h3>
 <p>The caller can also <b>stop the execution</b> with <span class="code-inline">try</span>, and return to its own caller with the same error raised. The function must then also be marked with <span class="code-inline">throw</span>. </p>
@@ -6246,7 +6257,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">var</span> cpt = <span class="SKwd">assume</span> <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
 }</span></div>
 <div class="blockquote blockquote-default">
-<p> If an error is never catched, then Swag will panic, as the top level caller always have an <span class="code-inline">assume</span>. </p>
+<p> If an error is never catched, then Swag will panic at runtime, as the top level caller always have an <span class="code-inline">assume</span>. </p>
 </div>
 <h3 id="_170_error_management_Blocks">Blocks </h3>
 <p>You can use a block instead of one single statement (this does not create a scope). </p>
@@ -6315,31 +6326,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">using</span> base: <span class="SCst">Swag</span>.<span class="SCst">BaseError</span>
     line, col: <span class="STpe">u32</span>
 }</span></div>
-<p>But we aware that : </p>
-<ul>
-<li>an error value will <b>never be dropped</b>, which means that you <b>cannot</b> use complex types that allocate on the heap (or you uwill have memory leaks).</li>
-<li>a reference to an external value (like a <span class="code-inline">string</span>, an <span class="code-inline">any</span> etc.) must remain valid all the time.</li>
-</ul>
-<p>So if you really need to store a complexe type (like a <span class="code-inline">String</span> from the <span class="code-inline">Core</span> module), then you can use a dedicated allocator <span class="code-inline">errorAllocator</span> stored in the current context. </p>
-<p>This allocator can also be used to make a copy of a non-persistent variable. For example if you want to store a string which is not compile-time. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">MyOtherError</span>
-{
-    message: <span class="STpe">string</span>
-}
-
-<span class="SKwd">func</span> <span class="SFct">raiseError</span>(str: <span class="STpe">string</span>) <span class="SKwd">throw</span>
-{   
-    <span class="SCmt">// Make a copy of my 'str' parameter with the allocator dedicated to error values</span>
-    <span class="SKwd">let</span> count = <span class="SKwd">cast</span>(<span class="STpe">u64</span>) <span class="SItr">@countof</span>(str)
-    <span class="SKwd">let</span> ptr = <span class="SItr">@getcontext</span>().errorAllocator.<span class="SFct">alloc</span>(count)
-    <span class="SItr">@memcpy</span>(ptr, <span class="SItr">@dataof</span>(str), count)
-
-    <span class="SCmt">// Then throw the error, with that new string which is now persistent</span>
-    <span class="SKwd">let</span> myCopy = <span class="SItr">@mkstring</span>(<span class="SKwd">cast</span>(<span class="SKwd">const</span> ^<span class="STpe">u8</span>) ptr, count)
-    <span class="SKwd">throw</span> <span class="SCst">MyOtherError</span>{message: myCopy}
-}</span></div>
-<p>Of course, you will find some helpers in the <span class="code-inline">Core</span> module,for example to do something like this: </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">throw</span> <span class="SCst">MyOtherError</span>{<span class="SCst">Format</span>.<span class="SFct">toStringError</span>(<span class="SStr">"this is my value: %"</span>, myValue)}</span></div>
+<p>But be aware that a reference to an external value (like a <span class="code-inline">string</span>, an <span class="code-inline">any</span> etc.) must remain valid all the time. The runtime will drop complexe types when needed, so you could store complex things in the heap, or in a dedicated allocator in the current context. </p>
 <h3 id="_170_error_management_defer">defer </h3>
 <p>Throwing an error is equivalent to returning from the function. So a <span class="code-inline">defer</span> expression works also in that case. </p>
 <p>But <span class="code-inline">defer</span> can have specific parameters like <span class="code-inline">defer(err)</span> or <span class="code-inline">defer(noerr)</span> to control if it should be executed depending on the error status. </p>
@@ -7413,7 +7400,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="_230_documentation__231_003_Pages">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 11-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
+Generated on 12-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.26.0</div>
 </div>
 </div>
 </div>
