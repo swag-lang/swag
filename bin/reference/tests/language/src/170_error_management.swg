@@ -1,12 +1,12 @@
 /**
-In a few words, a function marked with 'throw' can return an error by calling 'throw' followed by the error value. An error value is a struct. A caller can either stop its execution and return the same error with 'try', or it can 'catch' the error and test it with '@err()'.
+In a few words, a function marked with 'throw' can return an error by calling 'throw' followed by the error value. An error value is a struct. If an error has been raised, a caller can either stop its execution and return that same error with 'try', or it can 'catch' the error and deal with it with a dedicated intrinsic '@err()'.
 
-`throw Error{}` is equivalent to a return, so every rules when leaving a function are the same (call of 'defer', variable drop and so on).
+So `throw Error{}` is equivalent to a return, and every rules when leaving a function are the same (call of 'defer', variables drop and so on).
+
+> These are **not** exceptions ! You should consider 'throw' as a special 'return', with a specific value.
 
 # throw
 A function capable of returning an error must be annotated with 'throw'. This allows the function to raise an error with the same `throw` keyword, passing an error value in the form of a struct.
-
-> These are **not** exceptions ! Consider 'throw' as a special 'return', with a specific value.
 */
 
 // Defines one error.

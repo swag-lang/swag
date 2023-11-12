@@ -6170,13 +6170,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(myLongVariableName == <span class="SNum">2</span>)
 }</span></div>
 
-<h2 id="_170_error_management">Error management</h2><p>In a few words, a function marked with <span class="code-inline">throw</span> can return an error by calling <span class="code-inline">throw</span> followed by the error value. An error value is a struct. A caller can either stop its execution and return the same error with <span class="code-inline">try</span>, or it can <span class="code-inline">catch</span> the error and test it with <span class="code-inline">@err()</span>. </p>
-<p><span class="code-inline">throw Error{}</span> is equivalent to a return, so every rules when leaving a function are the same (call of <span class="code-inline">defer</span>, variable drop and so on). </p>
+<h2 id="_170_error_management">Error management</h2><p>In a few words, a function marked with <span class="code-inline">throw</span> can return an error by calling <span class="code-inline">throw</span> followed by the error value. An error value is a struct. If an error has been raised, a caller can either stop its execution and return that same error with <span class="code-inline">try</span>, or it can <span class="code-inline">catch</span> the error and deal with it with a dedicated intrinsic <span class="code-inline">@err()</span>. </p>
+<p>So <span class="code-inline">throw Error{}</span> is equivalent to a return, and every rules when leaving a function are the same (call of <span class="code-inline">defer</span>, variables drop and so on). </p>
+<div class="blockquote blockquote-default">
+<p> These are <b>not</b> exceptions ! You should consider <span class="code-inline">throw</span> as a special <span class="code-inline">return</span>, with a specific value. </p>
+</div>
 <h3 id="_170_error_management_throw">throw </h3>
 <p>A function capable of returning an error must be annotated with <span class="code-inline">throw</span>. This allows the function to raise an error with the same <span class="code-inline">throw</span> keyword, passing an error value in the form of a struct. </p>
-<div class="blockquote blockquote-default">
-<p> These are <b>not</b> exceptions ! Consider <span class="code-inline">throw</span> as a special <span class="code-inline">return</span>, with a specific value. </p>
-</div>
 <div class="code-block"><span class="SCde"><span class="SCmt">// Defines one error.</span>
 <span class="SKwd">struct</span> <span class="SCst">MyError</span>
 {
