@@ -78,7 +78,8 @@ func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare
         wShare |= FILE_SHARE_DELETE
 
     var winPath = Utf16.toZeroTerminated(fullname)
-    let hFile = CreateFileW(@dataof(winPath), wAccess, wShare, null, wMode, FILE_ATTRIBUTE_NORMAL, null);
+    let hFile = catch CreateFileW(@dataof(winPath), wAccess, wShare, null, wMode, FILE_ATTRIBUTE_NORMAL, null);
+    Errors.transformWinErrors(fullname)
 
     result.name    = fullname
     result.handle  = cast(FileHandle) hFile

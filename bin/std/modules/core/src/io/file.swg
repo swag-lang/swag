@@ -138,6 +138,6 @@ func getFileInfo(fullName: string)->FileInfo throw
 {
     var file = Directory.enumerateFiles(Path.getDirectoryName(fullName), Path.getFileName(fullName))
     if file.count == 0
-        throw FileNotFoundError{Format.toStringError("cannot find file '%'", fullName)}
+        throw FileNotFoundError{fileName: Errors.mkString(fullName)}
     return file[0]
 }

@@ -48,12 +48,6 @@ typealias WAITORTIMERCALLBACK    = func(*void, BOOL)
 const STD_INPUT_HANDLE 	= cast,bit(DWORD) -10
 const STD_OUTPUT_HANDLE = cast,bit(DWORD) -11
 
-const ERROR_FILE_NOT_FOUND          = 2
-const ERROR_NO_MORE_FILES           = 18
-const ERROR_IO_PENDING              = 997
-const ERROR_DEVICE_NOT_CONNECTED    = 1167
-
-const ERROR_SUCCESS = 0
 const FALSE = 0
 const TRUE  = 1
 

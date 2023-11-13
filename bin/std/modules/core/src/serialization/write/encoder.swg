@@ -231,7 +231,7 @@ impl Encoder
         }
 
         if errorIfUnknown
-            throw UnsupportedFormatError{Format.toStringError("cannot serialize type '%'", type.name)}
+            throw UnsupportedFormatError{Errors.mkString(Format.toString("cannot serialize type '%'", type.name))}
     }
 
     // Write a full struct

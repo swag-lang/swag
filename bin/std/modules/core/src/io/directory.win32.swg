@@ -130,10 +130,11 @@ func getCurrent()->String throw
 }
 
 // Set the current directory
-func setCurrent(dirname: string) throw
+func setCurrent(dirName: string) throw
 {
-    var winPath = Utf16.toZeroTerminated(dirname)
-    try SetCurrentDirectoryW(@dataof(winPath))
+    var winPath = Utf16.toZeroTerminated(dirName)
+    catch SetCurrentDirectoryW(@dataof(winPath))
+    Errors.transformWinErrors(dirName)
 }
 
 // Get the list of logical drives

@@ -186,7 +186,7 @@ impl Decoder
         case 0xFF:
             readApplicationExt()
         default:
-            throw UnsupportedFormatError{Format.toStringError("unknown extension: %", label)}
+            throw UnsupportedFormatError{Errors.mkString(Format.toString("unknown extension: %", label))}
         }
     }
 

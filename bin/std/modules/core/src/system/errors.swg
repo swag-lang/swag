@@ -41,4 +41,24 @@ struct SerializationError
 struct FileNotFoundError
 {
     using base: Swag.BaseError
+    fileName: string
+}
+
+struct InvalidFileNameError
+{
+    using base: Swag.BaseError
+    fileName: string
+}
+
+// Make a string persistent for errors.
+// That kind of string can be stored in an error struct.
+func mkString(str: string)->string
+{    
+    if str == null 
+        return null
+
+    let count = @countof(str)
+    let ptr = @getcontext().errorAllocator.alloc(count)
+    @memcpy(ptr, @dataof(str), count)
+    return @mkstring(cast(const ^u8) ptr, count)
 }

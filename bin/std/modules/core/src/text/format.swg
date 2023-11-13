@@ -87,25 +87,6 @@ func toString(fmt: string, values: ...)->String
     return buf.toString()
 }
 
-// Returns a formatted string that can be stored in a struct error.
-// This kind of string can be stored in a struct used in a 'throw'. It uses the 'errorAllocator' of [[Swag.Context]].
-func toStringError(fmt: string, values: ...)->string
-    #validifx
-    {
-        if !@isconstexpr(fmt) or !@isconstexpr(values) return true
-        checkFormat(@nameof(#self), fmt, values)
-        return true
-    }
-{    
-    var buf: ConcatBuffer
-
-    #[Match("validif", false)]
-    append(&buf, fmt, values)
-
-    let str = buf.toString(@getcontext().errorAllocator)    
-    return str.toString()
-}
-
 // Returns a formatted string stored in the temporary allocator.
 func toStringTemp(fmt: string, values: ...)->string
     #validifx

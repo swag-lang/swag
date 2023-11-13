@@ -59,7 +59,7 @@ public func parseValue(addr: *void, type: typeinfo, buf: string)->string throw
     {
         let enumType = cast(const *TypeInfoEnum) type
         if enumType.rawType != string and enumType.sizeof > 8
-            throw UnsupportedFormatError{Format.toStringError("unsupported enum type '%'", enumType.rawType.name)}           
+            throw UnsupportedFormatError{Errors.mkString(Format.toString("unsupported enum type '%'", enumType.rawType.name))}           
         let enumFlags = Reflection.hasAttribute(enumType, EnumFlags)
 
         loop
@@ -68,7 +68,7 @@ public func parseValue(addr: *void, type: typeinfo, buf: string)->string throw
             let id = parseIdentifier(one)
             let v = Reflection.getEnumValue(type, id)
             if !v 
-                throw InvalidFormatError{Format.toStringError("unknown enum value '%'", id)}           
+                throw InvalidFormatError{Errors.mkString(Format.toString("unknown enum value '%'", id))}           
 
             if enumType.rawType == string
             {
@@ -200,7 +200,7 @@ public func parseValue(addr: *void, type: typeinfo, buf: string)->string throw
         dref cast(*String) patch = val
 
     default:
-        throw UnsupportedFormatError{Format.toStringError("unsupported type '%'", type.name)}
+        throw UnsupportedFormatError{Errors.mkString(Format.toString("unsupported type '%'", type.name))}
     }
 
     return Tokenize.eatCount(one, cast(u64) eat)
