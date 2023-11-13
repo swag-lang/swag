@@ -123,7 +123,12 @@ https://github.com/crashoz/uuid_v4/blob/master/uuid_v4.h
 OPTIMS
 ****************************************
 
-
+-------------------------------------
+00000001  InternalInitStackTrace  A(0)                 ... .......  Internal InitStackTrace(r0)
+00000002                   SetBP                       ... .......  stacksize 0
+         discard catch toto()
+         compiler3743.swg:9
+00000003  InternalInitStackTrace  A(0)                 .E. .......  Internal InitStackTrace(r0)
 -------------------------------------
 error, hot path should be JumpIfError and not JumpIfNoError, with all error code at the end for exemple
 -------------------------------------
