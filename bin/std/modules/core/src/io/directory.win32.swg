@@ -116,13 +116,13 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
 func getCurrent()->String throw
 {
     var result: retval
-    let length = try GetCurrentDirectoryW(0, null)
+    let length = GetCurrentDirectoryW(0, null)
 
     var arr16: Array'u16
     arr16.allocator = @getcontext().tempAllocator
 
     arr16.reserve(cast(u64) length + 1)
-    arr16.count = try GetCurrentDirectoryW(length + 1, @dataof(arr16))
+    arr16.count = GetCurrentDirectoryW(length + 1, @dataof(arr16))
 
     result = Utf8.fromUtf16(arr16.toSlice())
     Path.normalize(&result)

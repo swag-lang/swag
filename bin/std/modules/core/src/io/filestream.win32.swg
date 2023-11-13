@@ -29,7 +29,8 @@ impl FileStream
         Debug.assert(canWrite)
 
         var dwWrite: DWORD = 0
-        try WriteFile(handle, buffer, cast(u32) length, &dwWrite, null)
+        WriteFile(handle, buffer, cast(u32) length, &dwWrite, null)
+        Errors.transformWinErrors()
         return cast(u64) dwWrite
     }
 
@@ -51,7 +52,8 @@ impl FileStream
 
         let hFile = cast(HANDLE) handle
         var high = 0'u32
-        let low = try GetFileSize(hFile, &high)
+        let low = GetFileSize(hFile, &high)
+        Errors.transformWinErrors()
         return low + (cast(u64) high << 32)
     }
 
@@ -63,7 +65,8 @@ impl FileStream
 
         let hFile = cast(HANDLE) handle
         var high = 0
-        let low = try SetFilePointer(hFile, 0, &high, FILE_CURRENT)
+        let low = SetFilePointer(hFile, 0, &high, FILE_CURRENT)
+        Errors.transformWinErrors()
         return low + (cast(u64) high << 32)
     }
 
@@ -85,7 +88,8 @@ impl FileStream
         case End:        seekMode = FILE_END
         }
 
-        try SetFilePointer(hFile, low, &high, seekMode)
+        SetFilePointer(hFile, low, &high, seekMode)
+        Errors.transformWinErrors()
     }
 
     // Skip 'bytes' from current position

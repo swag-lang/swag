@@ -4,18 +4,20 @@
 using Win32
 
 // Delete the specified file
-func delete(fullname: string) throw
+func delete(fullName: string) throw
 {
-    var winPath = Utf16.toZeroTerminated(fullname)
-    try DeleteFileW(@dataof(winPath))
+    var winPath = Utf16.toZeroTerminated(fullName)
+    catch DeleteFileW(@dataof(winPath))
+    Errors.transformWinErrors(fullName)
 }
 
 // Change the file write date/time
-func touch(fullname: string) throw
+func touch(fullName: string) throw
 {
-    var winPath = Utf16.toZeroTerminated(fullname)
+    var winPath = Utf16.toZeroTerminated(fullName)
 
-    let hFile = CreateFileW(@dataof(winPath), FILE_WRITE_ATTRIBUTES, 0, null, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, null)
+    let hFile = catch CreateFileW(@dataof(winPath), FILE_WRITE_ATTRIBUTES, 0, null, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, null)
+    Errors.transformWinErrors(fullName)
     defer CloseHandle(hFile)
 
     var ft: FILETIME = undefined
@@ -26,10 +28,10 @@ func touch(fullname: string) throw
 }
 
 // Returns true if the given file exists
-func exists(fullname: string)->bool
+func exists(fullName: string)->bool
 {
-    if fullname == null return false
-    var winPath = Utf16.toZeroTerminated(fullname)
+    if fullName == null return false
+    var winPath = Utf16.toZeroTerminated(fullName)
     let attributes = catch GetFileAttributesW(@dataof(winPath))
     if @err() != null return false
     if attributes == 0xFFFFFFFF return false
@@ -38,7 +40,7 @@ func exists(fullname: string)->bool
 }
 
 // Open a new file stream
-func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare)->FileStream throw
+func open(fullName: string, mode: FileMode, access: FileAccess, share: FileShare)->FileStream throw
 {
     var result: retval
 
@@ -77,11 +79,11 @@ func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare
     if share & FileShare.Delete
         wShare |= FILE_SHARE_DELETE
 
-    var winPath = Utf16.toZeroTerminated(fullname)
+    var winPath = Utf16.toZeroTerminated(fullName)
     let hFile = catch CreateFileW(@dataof(winPath), wAccess, wShare, null, wMode, FILE_ATTRIBUTE_NORMAL, null);
-    Errors.transformWinErrors(fullname)
+    Errors.transformWinErrors(fullName)
 
-    result.name    = fullname
+    result.name    = fullName
     result.handle  = cast(FileHandle) hFile
     result.canSeek = true
 
@@ -89,15 +91,15 @@ func open(fullname: string, mode: FileMode, access: FileAccess, share: FileShare
 }
 
 // Creates a new file stream for reading
-func openRead(fullname: string)->FileStream throw
+func openRead(fullName: string)->FileStream throw
 {
-    return open(fullname, FileMode.Open, FileAccess.Read, FileShare.Read)
+    return open(fullName, FileMode.Open, FileAccess.Read, FileShare.Read)
 }
 
 // Creates a new file stream for writing
-func openWrite(fullname: string)->FileStream throw
+func openWrite(fullName: string)->FileStream throw
 {
-    return open(fullname, FileMode.Create, FileAccess.Write, FileShare.Zero)
+    return open(fullName, FileMode.Create, FileAccess.Write, FileShare.Zero)
 }
 
 // Locate file in the file explorer
