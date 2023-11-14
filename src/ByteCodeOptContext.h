@@ -44,6 +44,7 @@ const uint32_t OCF_HAS_COPY_RTRC = 0x00000004;
 const uint32_t OCF_HAS_COPY_RCRT = 0x00000008;
 const uint32_t OCF_HAS_INLINE    = 0x00000010;
 const uint32_t OCF_HAS_PARAM     = 0x00000020;
+const uint32_t OCF_HAS_ERR       = 0x00000040;
 
 struct ByteCodeOptContext : public JobContext
 {

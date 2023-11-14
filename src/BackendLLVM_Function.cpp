@@ -4401,6 +4401,20 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(builder.CreateLoad(I32_TY(), v0), r1);
             break;
         }
+        case ByteCodeOp::JumpIfError:
+        {
+            auto r0     = GEP64(allocR, ip->a.u32);
+            auto ra     = builder.CreateLoad(PTR_I8_TY(), r0);
+            auto v0     = GEP8(ra, offsetof(SwagContext, hasError));
+            auto hasErr = builder.CreateLoad(I32_TY(), v0);
+
+            auto labelTrue  = getOrCreateLabel(pp, func, i + ip->b.s32 + 1);
+            auto labelFalse = getOrCreateLabel(pp, func, i + 1);
+            auto b0         = builder.CreateIsNull(hasErr);
+            builder.CreateCondBr(b0, labelFalse, labelTrue);
+            blockIsClosed = true;
+            break;
+        }
         case ByteCodeOp::JumpIfNoError:
         {
             auto r0     = GEP64(allocR, ip->a.u32);

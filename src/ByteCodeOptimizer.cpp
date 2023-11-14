@@ -93,6 +93,10 @@ void ByteCodeOptimizer::setContextFlags(ByteCodeOptContext* context, ByteCodeIns
         context->contextBcFlags |= OCF_HAS_PARAM;
         break;
 
+    case ByteCodeOp::JumpIfNoError:
+        context->contextBcFlags |= OCF_HAS_ERR;
+        break;
+
     default:
         break;
     }
@@ -114,6 +118,7 @@ void ByteCodeOptimizer::genTree(ByteCodeOptContext* context, uint32_t nodeIdx, b
         node->end++;
     }
 
+    setContextFlags(context, node->end);
     if (computeCrc)
         node->crc = context->bc->computeCrc(node->end, node->crc, true, false);
 
@@ -523,6 +528,7 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
                 setJumps(&optContext);
                 genTree(&optContext, true);
 
+                OPT_PASS(optimizePassErr);
                 OPT_PASS(optimizePassSwitch);
                 OPT_PASS(optimizePassDupBlocks);
                 OPT_PASS(optimizePassReduceX2);

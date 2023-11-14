@@ -260,6 +260,7 @@
 <ul>
 <li><a href="#Core_Errors_BadParameterError">BadParameterError</a></li>
 <li><a href="#Core_Errors_FileNotFoundError">FileNotFoundError</a></li>
+<li><a href="#Core_Errors_InvalidFileNameError">InvalidFileNameError</a></li>
 <li><a href="#Core_Errors_InvalidFormatError">InvalidFormatError</a></li>
 <li><a href="#Core_CommandLine_IsSet">IsSet</a></li>
 <li><a href="#Core_Env_Monitor">Monitor</a></li>
@@ -1290,6 +1291,7 @@
 <li><a href="#Core_Env_getSpecialDirectory">Env.getSpecialDirectory</a></li>
 <li><a href="#Core_Env_hasArg">Env.hasArg</a></li>
 <li><a href="#Core_Env_startProcess">Env.startProcess</a></li>
+<li><a href="#Core_Errors_mkString">Errors.mkString</a></li>
 <li><a href="#Core_Hardware_getMacAddress">Hardware.getMacAddress</a></li>
 <li><a href="#Core_Hardware_getProcessorCount">Hardware.getProcessorCount</a></li>
 <li><a href="#Core_UUID_IConvert_convert">IConvert.convert</a></li>
@@ -1360,7 +1362,6 @@
 <li><a href="#Core_Format_replaceString">Format.replaceString</a></li>
 <li><a href="#Core_Format_toInterp">Format.toInterp</a></li>
 <li><a href="#Core_Format_toString">Format.toString</a></li>
-<li><a href="#Core_Format_toStringError">Format.toStringError</a></li>
 <li><a href="#Core_Format_toStringTemp">Format.toStringTemp</a></li>
 <li><a href="#Core_String_IHash32_compute">IHash32.compute</a></li>
 <li><a href="#Core_Latin1_compare">Latin1.compare</a></li>
@@ -5603,7 +5604,7 @@
 <span id="Core_Directory_getDrives"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Directory.</span><span class="api-item-title-strong">getDrives</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\directory.win32.swg#L140" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\directory.win32.swg#L141" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5621,7 +5622,7 @@
 </table>
 </p>
 <p>Set the current directory. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setCurrent</span>(dirname: <span class="STpe">string</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setCurrent</span>(dirName: <span class="STpe">string</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5959,6 +5960,10 @@
 <td></td>
 </tr>
 <tr>
+<td class="code-type"><a href="#Core_Errors_InvalidFileNameError"><span class="SCst">InvalidFileNameError</span></a></td>
+<td></td>
+</tr>
+<tr>
 <td class="code-type"><a href="#Core_Errors_InvalidFormatError"><span class="SCst">InvalidFormatError</span></a></td>
 <td></td>
 </tr>
@@ -5981,6 +5986,13 @@
 <tr>
 <td class="code-type"><a href="#Core_Errors_UnsupportedFormatError"><span class="SCst">UnsupportedFormatError</span></a></td>
 <td></td>
+</tr>
+</table>
+<h3>Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Errors_mkString">mkString</a></span></td>
+<td>Make a string persistent for errors. </td>
 </tr>
 </table>
 <p>
@@ -6016,6 +6028,34 @@
 <tr>
 <td>using base</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Swag</span>.<span class="SCst">BaseError</span></span></td>
+<td></td>
+</tr>
+<tr>
+<td>fileName</td>
+<td class="code-type"><span class="STpe">string</span></td>
+<td></td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Errors_InvalidFileNameError"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Errors.</span><span class="api-item-title-strong">InvalidFileNameError</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\errors.swg#L47" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="table-enumeration">
+<tr>
+<td>using base</td>
+<td class="code-type"><span class="SCde"><span class="SCst">Swag</span>.<span class="SCst">BaseError</span></span></td>
+<td></td>
+</tr>
+<tr>
+<td>fileName</td>
+<td class="code-type"><span class="STpe">string</span></td>
 <td></td>
 </tr>
 </table>
@@ -6142,6 +6182,20 @@
 <td></td>
 </tr>
 </table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Errors_mkString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Errors.</span><span class="api-item-title-strong">mkString</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\errors.swg#L55" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Make a string persistent for errors. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mkString</span>(str: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span></span></div>
+<p> That kind of string can be stored in an error struct. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -6594,7 +6648,7 @@
 <span id="Core_File_FileStream_close"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FileStream.</span><span class="api-item-title-strong">close</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L37" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L38" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6607,7 +6661,7 @@
 <span id="Core_File_FileStream_getPosition"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FileStream.</span><span class="api-item-title-strong">getPosition</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L59" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L61" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6620,7 +6674,7 @@
 <span id="Core_File_FileStream_getSize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FileStream.</span><span class="api-item-title-strong">getSize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L47" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L48" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6672,7 +6726,7 @@
 <span id="Core_File_FileStream_setPosition"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FileStream.</span><span class="api-item-title-strong">setPosition</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L71" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L74" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6685,7 +6739,7 @@
 <span id="Core_File_FileStream_skipPosition"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FileStream.</span><span class="api-item-title-strong">skipPosition</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L92" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\filestream.win32.swg#L96" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6978,7 +7032,7 @@
 </table>
 </p>
 <p>Delete the specified file. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">delete</span>(fullname: <span class="STpe">string</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">delete</span>(fullName: <span class="STpe">string</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6999,12 +7053,12 @@
 <span id="Core_File_exists"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">exists</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.win32.swg#L29" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.win32.swg#L31" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Returns true if the given file exists. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">exists</span>(fullname: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">exists</span>(fullName: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7017,7 +7071,7 @@
 </table>
 </p>
 <p>Returns attributes associated to the given filename. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getAttributes</span>(fullname: <span class="STpe">string</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileAttributes">FileAttributes</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getAttributes</span>(fullName: <span class="STpe">string</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileAttributes">FileAttributes</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7051,7 +7105,7 @@
 <span id="Core_File_locateInExplorer"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">locateInExplorer</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.win32.swg#L103" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.win32.swg#L106" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7064,12 +7118,12 @@
 <span id="Core_File_open"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">open</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.win32.swg#L41" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.win32.swg#L43" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Open a new file stream. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">open</span>(fullname: <span class="STpe">string</span>, mode: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileMode">FileMode</a></span>, access: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileAccess">FileAccess</a></span>, share: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileShare">FileShare</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileStream">FileStream</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">open</span>(fullName: <span class="STpe">string</span>, mode: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileMode">FileMode</a></span>, access: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileAccess">FileAccess</a></span>, share: <span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileShare">FileShare</a></span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileStream">FileStream</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7077,12 +7131,12 @@
 <span id="Core_File_openRead"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">openRead</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.win32.swg#L91" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.win32.swg#L94" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Creates a new file stream for reading. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">openRead</span>(fullname: <span class="STpe">string</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileStream">FileStream</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">openRead</span>(fullName: <span class="STpe">string</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileStream">FileStream</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7090,12 +7144,12 @@
 <span id="Core_File_openWrite"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">openWrite</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.win32.swg#L97" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.win32.swg#L100" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Creates a new file stream for writing. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">openWrite</span>(fullname: <span class="STpe">string</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileStream">FileStream</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">openWrite</span>(fullName: <span class="STpe">string</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst"><a href="#Core_File">File</a></span>.<span class="SCst"><a href="#Core_File_FileStream">FileStream</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7156,12 +7210,12 @@
 <span id="Core_File_touch"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">File.</span><span class="api-item-title-strong">touch</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.win32.swg#L14" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\file.win32.swg#L15" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Change the file write date/time. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">touch</span>(fullname: <span class="STpe">string</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">touch</span>(fullName: <span class="STpe">string</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7230,10 +7284,6 @@
 <td>Format a string and returns the result as a String. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Format_toStringError">toStringError</a></span></td>
-<td>Returns a formatted string that can be stored in a struct error. </td>
-</tr>
-<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Format_toStringTemp">toStringTemp</a></span></td>
 <td>Returns a formatted string stored in the temporary allocator. </td>
 </tr>
@@ -7245,7 +7295,7 @@
 <span id="Core_Format_append"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Format.</span><span class="api-item-title-strong">append</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\format.swg#L128" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\format.swg#L109" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7299,7 +7349,7 @@
 <span id="Core_Format_toInterp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Format.</span><span class="api-item-title-strong">toInterp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\format.swg#L200" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\format.swg#L181" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7335,24 +7385,10 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Format_toStringError"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Format.</span><span class="api-item-title-strong">toStringError</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\format.swg#L92" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>Returns a formatted string that can be stored in a struct error. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toStringError</span>(fmt: <span class="STpe">string</span>, values: ...)-&gt;<span class="STpe">string</span></span></div>
-<p> This kind of string can be stored in a struct used in a <span class="code-inline">throw</span>. It uses the <span class="code-inline">errorAllocator</span> of <a href="swag.runtime.php#Swag_Context">Swag.Context</a>. </p>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
 <span id="Core_Format_toStringTemp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Format.</span><span class="api-item-title-strong">toStringTemp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\format.swg#L110" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\format.swg#L91" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27402,7 +27438,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <p>Swap two values. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">swap</span>(x: *<span class="SCst">T</span>, y: *<span class="SCst">T</span>)</span></div>
 <div class="swag-watermark">
-Generated on 13-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
+Generated on 14-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
 </div>
 </div>
 </div>

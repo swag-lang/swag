@@ -3564,7 +3564,51 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
         ip[0].c.u64 == ip[2].c.u64 &&
         ip[0].d.u64 == ip[2].d.u64)
     {
-        setNop(context, ip + 2);
+        switch (ip[2].op)
+        {
+        case ByteCodeOp::GetParam64:
+        case ByteCodeOp::GetParam64DeRef16:
+        case ByteCodeOp::GetParam64DeRef32:
+        case ByteCodeOp::GetParam64DeRef64:
+        case ByteCodeOp::GetIncParam64:
+        case ByteCodeOp::GetIncParam64DeRef8:
+        case ByteCodeOp::GetIncParam64DeRef16:
+        case ByteCodeOp::GetIncParam64DeRef32:
+        case ByteCodeOp::GetIncParam64DeRef64:
+        case ByteCodeOp::GetIncFromStack64:
+        case ByteCodeOp::GetIncFromStack64DeRef8:
+        case ByteCodeOp::GetIncFromStack64DeRef16:
+        case ByteCodeOp::GetIncFromStack64DeRef32:
+        case ByteCodeOp::GetIncFromStack64DeRef64:
+        case ByteCodeOp::DeRef8:
+        case ByteCodeOp::DeRef16:
+        case ByteCodeOp::DeRef32:
+        case ByteCodeOp::DeRef64:
+        case ByteCodeOp::GetFromStack8x2:
+        case ByteCodeOp::GetFromStack16x2:
+        case ByteCodeOp::GetFromStack32x2:
+        case ByteCodeOp::GetFromStack64x2:
+        case ByteCodeOp::GetFromStack8:
+        case ByteCodeOp::GetFromStack16:
+        case ByteCodeOp::GetFromStack32:
+        case ByteCodeOp::GetFromStack64:
+        case ByteCodeOp::SetImmediate32:
+        case ByteCodeOp::SetImmediate64:
+        case ByteCodeOp::GetFromBssSeg8:
+        case ByteCodeOp::GetFromBssSeg16:
+        case ByteCodeOp::GetFromBssSeg32:
+        case ByteCodeOp::GetFromBssSeg64:
+        case ByteCodeOp::GetFromCompilerSeg8:
+        case ByteCodeOp::GetFromCompilerSeg16:
+        case ByteCodeOp::GetFromCompilerSeg32:
+        case ByteCodeOp::GetFromCompilerSeg64:
+        case ByteCodeOp::GetFromMutableSeg8:
+        case ByteCodeOp::GetFromMutableSeg16:
+        case ByteCodeOp::GetFromMutableSeg32:
+        case ByteCodeOp::GetFromMutableSeg64:
+            setNop(context, ip + 2);
+            break;
+        }
     }
 
     switch (ip->op)

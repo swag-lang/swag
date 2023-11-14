@@ -35,6 +35,7 @@ struct ByteCodeOptimizer
     static bool optimizePassRetCopyGlobal(ByteCodeOptContext* context);
     static bool optimizePassRetCopyInline(ByteCodeOptContext* context);
     static bool optimizePassRetCopyStructVal(ByteCodeOptContext* context);
+    static bool optimizePassErr(ByteCodeOptContext* context);
 
     static void optimizePassSwitch(ByteCodeOptContext* context, ByteCodeOp op0, ByteCodeOp op1);
     static bool optimizePassSwitch(ByteCodeOptContext* context);
