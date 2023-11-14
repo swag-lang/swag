@@ -124,6 +124,10 @@ OPTIMS
 ****************************************
 
 -------------------------------------
+00000008                  PushRR                      .EI ....S..  push my_result
+00000009          InternalSetErr  A(3) B(4)           .EI .......  Internal SetErr(r3, r4)
+00000010                   PopRR                      .EI .......  pop my_result
+-------------------------------------
 00000001  InternalInitStackTrace  A(0)                 ... .......  Internal InitStackTrace(r0)
 00000002                   SetBP                       ... .......  stacksize 0
          discard catch toto()
