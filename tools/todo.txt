@@ -124,10 +124,16 @@ OPTIMS
 ****************************************
 
 -------------------------------------
+merge, car c'est tjs constantsegpointer non ?
+00000006  MakeConstantSegPointer  A[3] B{0x7018}       .EI .......  r3 = .rdata + 28696
+00000007      InternalStackTrace  A(3)                 .EI .......  Internal StackTrace(r3)
+-------------------------------------
+intégrer push/pop dans seterr
 00000008                  PushRR                      .EI ....S..  push my_result
 00000009          InternalSetErr  A(3) B(4)           .EI .......  Internal SetErr(r3, r4)
 00000010                   PopRR                      .EI .......  pop my_result
 -------------------------------------
+plusieurs sans call, redondant
 00000001  InternalInitStackTrace  A(0)                 ... .......  Internal InitStackTrace(r0)
 00000002                   SetBP                       ... .......  stacksize 0
          discard catch toto()
