@@ -432,6 +432,16 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
         {
             setNop(context, ip + 2);
             setNop(context, ip + 3);
+            break;
+        }
+
+        break;
+
+    case ByteCodeOp::InternalStackTrace:
+        if (ip[1].op == ByteCodeOp::InternalCatchErr)
+        {
+            setNop(context, ip);
+            break;
         }
         break;
 
@@ -440,7 +450,18 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
             !(ip[1].flags & BCI_START_STMT))
         {
             setNop(context, ip + 1);
+            break;
         }
+
+        if (ip[1].op == ByteCodeOp::SetBP &&
+            ip[2].op == ByteCodeOp::InternalInitStackTrace &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            !(ip[2].flags & BCI_START_STMT))
+        {
+            setNop(context, ip + 2);
+            break;
+        }
+
         break;
 
     default:

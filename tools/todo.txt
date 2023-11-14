@@ -141,15 +141,6 @@ intégrer push/pop dans seterr
 00000009          InternalSetErr  A(3) B(4)           .EI .......  Internal SetErr(r3, r4)
 00000010                   PopRR                      .EI .......  pop my_result
 -------------------------------------
-plusieurs sans call, redondant
-00000001  InternalInitStackTrace  A(0)                 ... .......  Internal InitStackTrace(r0)
-00000002                   SetBP                       ... .......  stacksize 0
-         discard catch toto()
-         compiler3743.swg:9
-00000003  InternalInitStackTrace  A(0)                 .E. .......  Internal InitStackTrace(r0)
--------------------------------------
-error, hot path should be JumpIfError and not JumpIfNoError, with all error code at the end for exemple
--------------------------------------
 inline auto ?
 -------------------------------------
 pass orEq/andEq/xOrEq/shiftEq en mode Stack StackStack. Dans les faits, plein d'autres instructions pourraient avoir ce mode.
