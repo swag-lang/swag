@@ -11,7 +11,7 @@ func tata()->s32 throw
     return 0
 }
 
-//#[Swag.PrintBc]
+//#[Swag.PrintGenBc]
 func toto() throw
 {
     try
