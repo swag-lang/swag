@@ -2457,6 +2457,10 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     }
     case ByteCodeOp::InternalSetErr:
     {
+        // PushRR
+        context->push(context->registersRR[0].u64);
+        context->push(context->registersRR[1].u64);
+
         auto bc = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__seterr);
         context->push(registersRC[ip->b.u32].pointer);
         context->push(registersRC[ip->a.u32].pointer);

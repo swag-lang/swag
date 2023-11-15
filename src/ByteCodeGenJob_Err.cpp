@@ -230,7 +230,6 @@ bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
     if (!(node->semFlags & SEMFLAG_TRY_1))
     {
         emitSafetyErrCheck(context, expr->resultRegisterRC[1]);
-        EMIT_INST0(context, ByteCodeOp::PushRR);
         EMIT_INST2(context, ByteCodeOp::InternalSetErr, expr->resultRegisterRC[0], expr->resultRegisterRC[1]);
         node->semFlags |= SEMFLAG_TRY_1;
         EMIT_INST0(context, ByteCodeOp::PopRR);

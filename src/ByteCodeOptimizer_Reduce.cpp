@@ -322,7 +322,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
             setNop(context, ip + 5);
             break;
         }
-        
+
         if (ip[1].op == ByteCodeOp::JumpIfZero32 &&
             ip[2].op == ByteCodeOp::InternalStackTraceConst &&
             ip[3].op == ByteCodeOp::InternalHasErr &&
@@ -845,10 +845,21 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
     switch (ip->op)
     {
     case ByteCodeOp::DecSPBP:
-        if (ip[1].op == ByteCodeOp::CopyRCtoRRRet && ip[2].op == ByteCodeOp::End)
+        if (ip[1].op == ByteCodeOp::CopyRCtoRRRet &&
+            ip[2].op == ByteCodeOp::End)
         {
             setNop(context, ip);
             ip[1].a.u64 = 0;
+            break;
+        }
+        break;
+
+    case ByteCodeOp::CopyRCtoRRRet:
+        if (ip[1].op == ByteCodeOp::CopyRCtoRRRet &&
+            ip[0].b.u64 == ip[1].b.u64 &&
+            (ip[0].flags & BCI_IMM_B) == (ip[1].flags & BCI_IMM_B))
+        {
+            setNop(context, ip);
             break;
         }
         break;
@@ -886,6 +897,16 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
             SET_OP(ip, ByteCodeOp::LocalCallPopRC);
             ip->d.u32 = ip[1].a.u32;
             setNop(context, ip + 1);
+            break;
+        }
+        break;
+
+    case ByteCodeOp::LocalCallPopRC:
+        if (ip[1].op == ByteCodeOp::CopyRTtoRC &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            SET_OP(ip + 1, ByteCodeOp::CopyRBtoRA64);
+            ip[1].b.u32 = ip->d.u32;
             break;
         }
         break;

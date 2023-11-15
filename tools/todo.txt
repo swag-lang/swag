@@ -132,15 +132,6 @@ OPTIMS
          compiler2738.swg:19
 00000019  AffectOpPlusEqS32_Safe  A(1) B{0x1}       .E. .B.....  [r1] += 1
 -------------------------------------
-merge, car c'est tjs constantsegpointer non ?
-00000006  MakeConstantSegPointer  A[3] B{0x7018}       .EI .......  r3 = .rdata + 28696
-00000007      InternalStackTrace  A(3)                 .EI .......  Internal StackTrace(r3)
--------------------------------------
-intégrer push/pop dans seterr
-00000008                  PushRR                      .EI ....S..  push my_result
-00000009          InternalSetErr  A(3) B(4)           .EI .......  Internal SetErr(r3, r4)
-00000010                   PopRR                      .EI .......  pop my_result
--------------------------------------
 inline auto ?
 -------------------------------------
 pass orEq/andEq/xOrEq/shiftEq en mode Stack StackStack. Dans les faits, plein d'autres instructions pourraient avoir ce mode.
