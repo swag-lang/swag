@@ -4446,6 +4446,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(pp.cst0_i32, v0);
             break;
         }
+        case ByteCodeOp::InternalStackTraceConst:
+        {
+            auto r1 = GEP8(pp.constantSeg, ip->b.u32);
+            builder.CreateStore(r1, GEP64_PTR_PTR_I8(allocR, ip->a.u32));
+            emitCall(buildParameters, moduleToGen, g_LangSpec->name__stackTrace, allocR, allocT, {ip->a.u32}, {});
+            break;
+        }
         case ByteCodeOp::InternalStackTrace:
             emitCall(buildParameters, moduleToGen, g_LangSpec->name__stackTrace, allocR, allocT, {ip->a.u32}, {});
             break;
@@ -5119,6 +5126,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::LocalCallPopParam:
             pushRAParams.push_back(ip->d.u32);
+
         case ByteCodeOp::LocalCall:
         case ByteCodeOp::LocalCallPop:
         case ByteCodeOp::LocalCallPopRC:
@@ -5126,11 +5134,9 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             auto              callBc       = (ByteCode*) ip->a.pointer;
             TypeInfoFuncAttr* typeFuncCall = (TypeInfoFuncAttr*) ip->b.pointer;
             resultFuncCall                 = emitCall(buildParameters, moduleToGen, callBc->getCallNameFromDecl(), typeFuncCall, allocR, allocRR, pushRAParams, {}, true);
+
             if (ip->op == ByteCodeOp::LocalCallPopRC)
-            {
                 storeTypedValueToRegister(context, buildParameters, resultFuncCall, ip->d.u32, allocR);
-                resultFuncCall = nullptr;
-            }
 
             pushRAParams.clear();
             pushRVParams.clear();

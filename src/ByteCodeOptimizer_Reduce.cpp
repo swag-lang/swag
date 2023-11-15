@@ -322,6 +322,17 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
             setNop(context, ip + 5);
             break;
         }
+        
+        if (ip[1].op == ByteCodeOp::JumpIfZero32 &&
+            ip[2].op == ByteCodeOp::InternalStackTraceConst &&
+            ip[3].op == ByteCodeOp::InternalHasErr &&
+            ip[4].op == ByteCodeOp::JumpIfZero32 &&
+            !(ip[3].flags & BCI_START_STMT))
+        {
+            setNop(context, ip + 3);
+            setNop(context, ip + 4);
+            break;
+        }
 
         // Useless InternalHasErr
         if (ip[1].op == ByteCodeOp::JumpIfZero32 &&
@@ -438,7 +449,24 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
         break;
 
     case ByteCodeOp::InternalStackTrace:
-        if (ip[1].op == ByteCodeOp::InternalCatchErr)
+        if (ip[1].op == ByteCodeOp::InternalCatchErr &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            setNop(context, ip);
+            break;
+        }
+        break;
+
+    case ByteCodeOp::InternalStackTraceConst:
+        if (ip[1].op == ByteCodeOp::InternalCatchErr &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            setNop(context, ip);
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::InternalStackTraceConst &&
+            !(ip[1].flags & BCI_START_STMT))
         {
             setNop(context, ip);
             break;
@@ -454,6 +482,15 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
         }
 
         if (ip[1].op == ByteCodeOp::SetBP &&
+            ip[2].op == ByteCodeOp::InternalInitStackTrace &&
+            !(ip[1].flags & BCI_START_STMT) &&
+            !(ip[2].flags & BCI_START_STMT))
+        {
+            setNop(context, ip + 2);
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::DecSPBP &&
             ip[2].op == ByteCodeOp::InternalInitStackTrace &&
             !(ip[1].flags & BCI_START_STMT) &&
             !(ip[2].flags & BCI_START_STMT))

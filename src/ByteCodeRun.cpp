@@ -2519,11 +2519,35 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         cxt->traceIndex = 0;
         break;
     }
+    case ByteCodeOp::InternalStackTraceConst:
+    {
+        auto cxt = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
+        if (cxt->traceIndex == SWAG_MAX_TRACES)
+            break;
+        cxt->traces[cxt->traceIndex] = (SwagSourceCodeLocation*) registersRC[ip->a.u32].pointer;
+        cxt->traceIndex++;
+        break;
+    }
     case ByteCodeOp::InternalStackTrace:
     {
         auto cxt = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
         if (cxt->traceIndex == SWAG_MAX_TRACES)
             break;
+
+        auto module = context->jc.sourceFile->module;
+        auto offset = ip->b.u32;
+
+        // :SharedRuntimeBC
+        if (ip->node && ip->node->sourceFile && ip->node->sourceFile->isRuntimeFile)
+            registersRC[ip->a.u32].pointer = module->constantSegment.address(offset);
+        else
+        {
+            SWAG_ASSERT(!ip->node || !ip->node->sourceFile || !ip->node->sourceFile->isBootstrapFile);
+            if (OS::atomicTestNull((void**) &ip->d.pointer))
+                OS::atomicSetIfNotNull((void**) &ip->d.pointer, module->constantSegment.address(offset));
+            registersRC[ip->a.u32].pointer = ip->d.pointer;
+        }
+
         cxt->traces[cxt->traceIndex] = (SwagSourceCodeLocation*) registersRC[ip->a.u32].pointer;
         cxt->traceIndex++;
         break;

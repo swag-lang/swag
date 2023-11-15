@@ -4695,6 +4695,11 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
             pp.emit_Store32_Immediate(offsetof(SwagContext, traceIndex), 0, RAX);
             break;
+        case ByteCodeOp::InternalStackTraceConst:
+            pp.emit_Symbol_RelocationAddr(RAX, pp.symCSIndex, ip->b.u32);
+            pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
+            emitInternalCall(pp, moduleToGen, g_LangSpec->name__stackTrace, {ip->a.u32});
+            break;
         case ByteCodeOp::InternalStackTrace:
             emitInternalCall(pp, moduleToGen, g_LangSpec->name__stackTrace, {ip->a.u32});
             break;

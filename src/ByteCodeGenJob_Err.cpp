@@ -49,8 +49,15 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
             uint32_t     storageOffset;
             DataSegment* storageSegment;
             computeSourceLocation(context, context->node, &storageOffset, &storageSegment);
-            emitMakeSegPointer(context, storageSegment, storageOffset, r0);
-            EMIT_INST1(context, ByteCodeOp::InternalStackTrace, r0);
+            if (storageSegment->kind == SegmentKind::Constant)
+            {
+                EMIT_INST2(context, ByteCodeOp::InternalStackTraceConst, r0, storageOffset);
+            }
+            else
+            {
+                emitMakeSegPointer(context, storageSegment, storageOffset, r0);
+                EMIT_INST1(context, ByteCodeOp::InternalStackTrace, r0);
+            }
             freeRegisterRC(context, r0);
         }
 
