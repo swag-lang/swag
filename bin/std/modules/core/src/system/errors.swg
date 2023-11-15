@@ -36,6 +36,7 @@ struct ParseIncompleteError
 struct SerializationError
 {
     using base: Swag.BaseError
+    field: TypeValue    // Can contain the bad field
 }
 
 struct FileNotFoundError

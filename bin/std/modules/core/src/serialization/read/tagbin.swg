@@ -362,7 +362,7 @@ impl TagBin
         // Read te name signature. We should have the crc
         let crcName = stream.readNative'u32()
         if crcName != reqCrcName
-            throw SerializationError{"bad field name"}
+            throw SerializationError{"bad field name", field: val}
 
         // Read type signature. 
         // If they match, we are done. The value will be right after this.
@@ -375,12 +375,12 @@ impl TagBin
 
         // The type from the stream does not exists anymore...
         if !streamType
-            throw SerializationError{"unknown field type"}
+            throw SerializationError{"unknown field type", field: val}
 
         // The type exists, but we do not have a way to convert it to the requested
         // type.
         if !canConvertType(val.pointedType, streamType)
-            throw SerializationError{"cannot convert field type"}
+            throw SerializationError{"cannot convert field type", field: val}
 
         // It's an array in the stream, but now we want a single value.
         // Skip the sequence header
@@ -389,7 +389,7 @@ impl TagBin
             convertArrayToVal = false
             let sig = stream.readNative'u32()
             if sig != Write.TagBinSignatures.Sequence
-                throw SerializationError{"stream is corrupted"}
+                throw SerializationError{"stream is corrupted", field: val}
             discard stream.readNative'u64()
         }
 

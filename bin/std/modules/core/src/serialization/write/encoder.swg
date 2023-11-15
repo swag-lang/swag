@@ -35,10 +35,35 @@ interface IEncoder
     mtd writeF64(value: f64)
 }
 
+/*
+Serialization encoder.
+This is a high level encoder that needs a specific implementation like [[Core.Serialization.Write.TagBin]] or [[Core.Serialization.Write.JSon]].
+
+```swag
+var buf:     ConcatBuffer
+var encoder: Encoder'Write.TagBin
+encoder.writeAll(&buf, myStruct)
+File.writeAllBytes(file, buf)
+```
+
+Can be serialized:
+* All simple types: `bool/u8/u16/u32/u64/s8/s16/s32/s64/rune/f32/f64`
+* A type value `typeinfo`, which will be saved as a crc32.
+* An interface. Will be stored as a type and a typed value.
+* A struct.
+* A `Core.String`.
+* A `Core.Array` of valid values.
+* A static array of valid values.
+
+> NOTE:
+> Type 'string' is not supported. Consider using [[Core.String]] instead.
+
+A struct can implement the 'ISerialize' interface in order to have a specific serialization. If not defined, then the struct will be saved field by field.
+*/
 struct(T) Encoder
 {
     serializer: T
-    errorIfUnknown: bool // If true, raise an error if a type cannot be saved, and just ignore if false
+    errorIfUnknown: bool // If true, an error will be raised if a type cannot be saved. The field will be ignored if set to false
 }
 
 impl Encoder
@@ -56,6 +81,7 @@ impl Encoder
         serializer.endRoot()
     }
 
+    // Write a given Swag.TypeValue.
     mtd writeTypeValue(typeVal: TypeValue, data: const ^void) throw
     {
         serializer.beginElement(typeVal)
@@ -63,6 +89,7 @@ impl Encoder
         serializer.endElement()
     }
 
+    // Write a given value with a given type.
     mtd writeValue(data: const ^void, dataType: typeinfo) throw
     {
         var type = Reflection.makeConcreteAlias(dataType)
@@ -156,10 +183,9 @@ impl Encoder
                 return
             }
 
-            let structType = cast(const *TypeInfoStruct) type
-
             // Core.Array
-            if structType.fromGeneric == @typeof(Array)
+            let structType = cast(const *TypeInfoStruct) type
+            if structType.fromGeneric == Core.Array
             {
                 let valueType = structType.generics[0].pointedType
                 let ptrArr = cast(const *Array) data
@@ -234,7 +260,8 @@ impl Encoder
             throw UnsupportedFormatError{Errors.mkString(Format.toString("cannot serialize type '%'", type.name))}
     }
 
-    // Write a full struct
+    // Write a full struct.
+    // Will call [[Encoder.start]], [[Encoder.writeValue]] and [[Encoder.end]]
     mtd writeAll(result: *ConcatBuffer, value: any) throw
     {
         Debug.assert(Reflection.isStruct(@kindof(value)))
@@ -304,15 +331,15 @@ impl IEncoder for Encoder
         }
     }
 
-    mtd impl writeBool(value: bool)        = serializer.writeNative(value)
-    mtd impl writeS8(value: s8)            = serializer.writeNative(value)
-    mtd impl writeS16(value: s16)          = serializer.writeNative(value)
-    mtd impl writeS32(value: s32)          = serializer.writeNative(value)
-    mtd impl writeS64(value: s64)          = serializer.writeNative(value)
-    mtd impl writeU8(value: u8)            = serializer.writeNative(value)
-    mtd impl writeU16(value: u16)          = serializer.writeNative(value)
-    mtd impl writeU32(value: u32)          = serializer.writeNative(value)
-    mtd impl writeU64(value: u64)          = serializer.writeNative(value)
-    mtd impl writeF32(value: f32)          = serializer.writeNative(value)
-    mtd impl writeF64(value: f64)          = serializer.writeNative(value)
+    mtd impl writeBool(value: bool) = serializer.writeNative(value)
+    mtd impl writeS8(value: s8)     = serializer.writeNative(value)
+    mtd impl writeS16(value: s16)   = serializer.writeNative(value)
+    mtd impl writeS32(value: s32)   = serializer.writeNative(value)
+    mtd impl writeS64(value: s64)   = serializer.writeNative(value)
+    mtd impl writeU8(value: u8)     = serializer.writeNative(value)
+    mtd impl writeU16(value: u16)   = serializer.writeNative(value)
+    mtd impl writeU32(value: u32)   = serializer.writeNative(value)
+    mtd impl writeU64(value: u64)   = serializer.writeNative(value)
+    mtd impl writeF32(value: f32)   = serializer.writeNative(value)
+    mtd impl writeF64(value: f64)   = serializer.writeNative(value)
 }

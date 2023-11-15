@@ -109,8 +109,6 @@ CORE
 ****************************************
 
 -------------------------------------
-TagBin, en cas d'erreur plein de trucs à faire (donner plus d'infos...)
--------------------------------------
 UUID à continuer (parse etc...)
 https://github.com/crashoz/uuid_v4/blob/master/uuid_v4.h
 -------------------------------------

@@ -36,6 +36,16 @@ enum DecoderFlags
     IgnoreStructFieldError
 }
 
+/*
+Serialization decoder.
+This is a high level decoder that needs a specific implementation like [[Core.Serialization.Read.TagBin]] or [[Core.Serialization.Read.JSon]].
+
+```swag
+var res = File.readAllBytes(file)
+var decoder: Decoder'Read.TagBin
+let myStruct = catch decoder.readAll'MyStruct(res.toSlice())
+```
+*/
 struct(T) Decoder
 {
     serializer: T
@@ -325,15 +335,15 @@ impl IDecoder for Decoder
         return data
     }
 
-    mtd impl readBool()->bool throw      => serializer.readNative'bool()
-    mtd impl readS8()->s8 throw          => serializer.readNative's8()
-    mtd impl readS16()->s16 throw        => serializer.readNative's16()
-    mtd impl readS32()->s32 throw        => serializer.readNative's32()
-    mtd impl readS64()->s64 throw        => serializer.readNative's64()
-    mtd impl readU8()->u8 throw          => serializer.readNative'u8()
-    mtd impl readU16()->u16 throw        => serializer.readNative'u16()
-    mtd impl readU32()->u32 throw        => serializer.readNative'u32()
-    mtd impl readU64()->u64 throw        => serializer.readNative'u64()
-    mtd impl readF32()->f32 throw        => serializer.readNative'f32()
-    mtd impl readF64()->f64 throw        => serializer.readNative'f64()
+    mtd impl readBool()->bool throw => serializer.readNative'bool()
+    mtd impl readS8()->s8 throw     => serializer.readNative's8()
+    mtd impl readS16()->s16 throw   => serializer.readNative's16()
+    mtd impl readS32()->s32 throw   => serializer.readNative's32()
+    mtd impl readS64()->s64 throw   => serializer.readNative's64()
+    mtd impl readU8()->u8 throw     => serializer.readNative'u8()
+    mtd impl readU16()->u16 throw   => serializer.readNative'u16()
+    mtd impl readU32()->u32 throw   => serializer.readNative'u32()
+    mtd impl readU64()->u64 throw   => serializer.readNative'u64()
+    mtd impl readF32()->f32 throw   => serializer.readNative'f32()
+    mtd impl readF64()->f64 throw   => serializer.readNative'f64()
 }
