@@ -13,8 +13,17 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
         if (!ByteCode::isJump(ip))
             continue;
 
-        // Jump to an unconditional jump
         auto destIp = ip + ip->b.s32 + 1;
+
+        // Direct jump to a function return, just return now without the jump
+        if (ip[0].op == ByteCodeOp::Jump && ByteCode::isRet(destIp))
+        {
+            ip[0]                         = *destIp;
+            context->passHasDoneSomething = true;
+            continue;
+        }
+
+        // Jump to an unconditional jump
         while (destIp->op == ByteCodeOp::Jump)
         {
             if (destIp->b.s32 + 1 == 0) // infinite jump
