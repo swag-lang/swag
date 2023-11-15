@@ -25,5 +25,5 @@ struct Toto2
 
     var dec: Decoder'Read.TagBin
     var x1 = catch dec.readAll'Toto1(buf.toSlice())
-    @assert(@err() == Core.Errors.SerializationError)
+    @assert(@err() == Core.Errors.InvalidVersion)
 }

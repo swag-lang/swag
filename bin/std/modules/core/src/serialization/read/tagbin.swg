@@ -3,26 +3,27 @@
 using Swag, Core.Errors
 
 /*
-    Binary serializer with forward/backward compatibility.
-    Changes that are supported from V to V+1 are :
+Binary serializer with forward/backward compatibility.
+Changes that are supported from V to V+1 are :
 
-    * Add a new field. The new field will stay at the default value.
-    * Remove a field. It will just be ignored.
-    * Reorder of fields, as long as their name/type are the same.
-    * Rename a field with 'Serialization.Alias'.
+* Add a new field. The new field will stay at the default value.
+* Remove a field. It will just be ignored.
+* Reorder of fields, as long as their name/type are the same.
+* Rename a field with 'Serialization.Alias'.
 
-    Supported type changes are :
-    * Change the size of a static array.
-    * Convert a static array to a dynamic array, and vice versa.
-    * Conversion from integer/float/rune/bool to integer/float/rune/bool.
-    * Conversion from single value to array/Core.Array, and vice versa.
+Supported type changes are :
 
-    Supported attributes are :
+* Conversion from integer/float/rune/bool to integer/float/rune/bool.
+* Change the size of a static array.
+* Conversion from a static array to a dynamic `Core.Array`, and vice versa.
+* Conversion from a single value to a static array or `Core.Array`, and vice versa.
 
-    * 'Serialisation.Version'. If version is specified, then loading will not have versioning if versions are the same
-    * 'Serialization.Alias'. To rename a field. Multiple aliases are supported.
-    * 'Serialization.Final'. The struct will be loaded/saved without versioning (faster and lower serialization size)
-    * 'Serialization.PodFinal'. The struct will be loaded/saved in place without versioning
+Supported attributes are :
+
+* 'Serialisation.Version'. If version is specified, then loading will not have versioning if versions are the same
+* 'Serialization.Alias'. To rename a field. Multiple aliases are supported.
+* 'Serialization.Final'. The struct will be loaded/saved without versioning (faster and lower serialization size)
+* 'Serialization.PodFinal'. The struct will be loaded/saved in place without versioning
 */
 struct TagBin
 {
@@ -106,7 +107,7 @@ internal impl TagBin
             elif toStruct
             {
                 // Static array to dynamic array
-                if toStruct.fromGeneric == @typeof(Array)
+                if toStruct.fromGeneric == Core.Array
                 {
                     if canConvertType(toStruct.generics[0].pointedType, fromArr.pointedType)
                         return true
@@ -130,7 +131,7 @@ internal impl TagBin
         elif fromStruct
         {
             // Dynamic array to something...
-            if fromStruct.fromGeneric == @typeof(Array)
+            if fromStruct.fromGeneric == Core.Array
             {
                 // Dynamic array to Static array
                 if Reflection.isArray(toType)
@@ -141,7 +142,7 @@ internal impl TagBin
                 }
 
                 // Dynamic array to dynamic array
-                elif toStruct and toStruct.fromGeneric == @typeof(Array)
+                elif toStruct and toStruct.fromGeneric == Core.Array
                 {
                     if canConvertType(toStruct.generics[0].pointedType, fromStruct.generics[0].pointedType)
                         return true
@@ -170,10 +171,10 @@ internal impl TagBin
         elif toStruct
         {
             // To dynamic array...
-            if toStruct.fromGeneric == @typeof(Array)
+            if toStruct.fromGeneric == Core.Array
             {
                 // Conversion from simple value to Core.Array
-                if (!fromStruct or fromStruct.fromGeneric != @typeof(Array)) and canConvertType(fromType, toStruct.generics[0].pointedType)
+                if (!fromStruct or fromStruct.fromGeneric != Core.Array) and canConvertType(fromType, toStruct.generics[0].pointedType)
                 {
                     convertValToArray = true
                     return true
@@ -181,7 +182,7 @@ internal impl TagBin
             }
 
             // Struct to struct...
-            elif fromStruct and fromStruct.fromGeneric != @typeof(Array)
+            elif fromStruct and fromStruct.fromGeneric != Core.Array
             {
                 // 2 pod structs with the same size
                 if Reflection.hasAttribute(toType, Serialization.PodFinal) and
@@ -208,7 +209,7 @@ impl TagBin
     {
         let sig = stream.readNative'u32()
         if sig != Write.TagBinSignatures.Root
-            throw SerializationError{"invalid file"}
+            throw SerializationError{"invalid root signature"}
     }
 
     #[Warn("wrn0002", WarnLevel.Disable)]
@@ -284,7 +285,7 @@ impl TagBin
             // Read version
             let sig = stream.readNative'u32()
             if sig != Write.TagBinSignatures.Version
-                throw SerializationError{"stream is corrupted"}
+                throw SerializationError{"invalid version signature"}
             let streamVersion = stream.readNative'u32()
 
             // Deal with version
@@ -294,12 +295,13 @@ impl TagBin
             {
                 let curVersion = cast(u32) version
 
-                // Stream version is more recent than current code.
-                // Error, except if we want to try forward compatibility
+                // The stream version is more recent than the code that tries to read it.
+                // Specific error, except if we want to try forward compatibility
                 if !options.tryForward and curVersion < streamVersion
-                    throw SerializationError{"version is too recent"}
+                    throw InvalidVersion{wantedVersion: curVersion, foundVersion: streamVersion}
 
-                // If this is the exact same version, then no need to read the fat
+                // If this is the exact same version, then no need to read the fat, because everything
+                // is supposed to be in the correct order
                 if curVersion == streamVersion
                     skipFat = true
             }
@@ -332,7 +334,7 @@ impl TagBin
         {
             var ent = sec.mapSeek.find(val.crc32)
 
-            // If ent is null, then we are requesting a field that do not exist
+            // If ent is null, then we are requesting a field that does not exist
             // in the stream
             if !ent
             {
@@ -349,35 +351,39 @@ impl TagBin
                 }
             }
 
-            // No typealias, the field is not there, just ignore it
+            // The requested field is not there, just ignore it
             if !ent
                 return false
 
+            // Otherwise we seek to the field in the stream
             stream.setSeek(ent.value)
         }
 
-        // Read name signature
+        // Read te name signature. We should have the crc
         let crcName = stream.readNative'u32()
         if crcName != reqCrcName
             throw SerializationError{"bad field name"}
 
-        // Read type signature. If they match, we are done
+        // Read type signature. 
+        // If they match, we are done. The value will be right after this.
         let crcType = stream.readNative'u32()
         if crcType == val.pointedType.crc32
             return true
 
+        // We try to find a registered type with the crc from the stream.
         let streamType = Reflection.crcToType(crcType)
 
-        // Type from the stream does not exists anymore
+        // The type from the stream does not exists anymore...
         if !streamType
-            throw SerializationError{"bad field type"}
+            throw SerializationError{"unknown field type"}
 
-        // Type cannot be converted
+        // The type exists, but we do not have a way to convert it to the requested
+        // type.
         if !canConvertType(val.pointedType, streamType)
-            throw SerializationError{"bad field type"}
+            throw SerializationError{"cannot convert field type"}
 
-        // It's an array in the stream, and we do not want one
-        // Skip header
+        // It's an array in the stream, but now we want a single value.
+        // Skip the sequence header
         if convertArrayToVal
         {
             convertArrayToVal = false

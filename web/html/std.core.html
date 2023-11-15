@@ -19820,7 +19820,7 @@
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Serialization_Read_TagBin"><span class="SCst">TagBin</span></a></td>
-<td></td>
+<td>Binary serializer with forward/backward compatibility. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Serialization_Read_TagBinOptions"><span class="SCst">TagBinOptions</span></a></td>
@@ -20162,10 +20162,11 @@
 <span id="Core_Serialization_Read_TagBin"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Read.</span><span class="api-item-title-strong">TagBin</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L27" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L28" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Binary serializer with forward/backward compatibility. </p>
 <table class="table-enumeration">
 <tr>
 <td>stream</td>
@@ -20203,22 +20204,27 @@
 <td></td>
 </tr>
 </table>
-<div class="code-block"><span class="SCde">Binary serializer with forward/backward compatibility.
-Changes that are supported from V to V+1 are :</span></div>
-<div class="code-block"><span class="SCde">* Add a new field. The new field will stay at the default value.
-* Remove a field. It will just be ignored.
-* Reorder of fields, as long as their name/type are the same.
-* Rename a field with 'Serialization.Alias'.</span></div>
-<div class="code-block"><span class="SCde">Supported type changes are :
-* Change the size of a static array.
-* Convert a static array to a dynamic array, and vice versa.
-* Conversion from integer/float/rune/bool to integer/float/rune/bool.
-* Conversion from single value to array/Core.Array, and vice versa.</span></div>
-<div class="code-block"><span class="SCde">Supported attributes are :</span></div>
-<div class="code-block"><span class="SCde">* 'Serialisation.Version'. If version is specified, then loading will not have versioning if versions are the same
-* 'Serialization.Alias'. To rename a field. Multiple aliases are supported.
-* 'Serialization.Final'. The struct will be loaded/saved without versioning (faster and lower serialization size)
-* 'Serialization.PodFinal'. The struct will be loaded/saved in place without versioning</span></div>
+<p>Changes that are supported from V to V+1 are : </p>
+<ul>
+<li>Add a new field. The new field will stay at the default value.</li>
+<li>Remove a field. It will just be ignored.</li>
+<li>Reorder of fields, as long as their name/type are the same.</li>
+<li>Rename a field with <span class="code-inline">Serialization.Alias</span>.</li>
+</ul>
+<p>Supported type changes are : </p>
+<ul>
+<li>Conversion from integer/float/rune/bool to integer/float/rune/bool.</li>
+<li>Change the size of a static array.</li>
+<li>Conversion from a static array to a dynamic <span class="code-inline">Core.Array</span>, and vice versa.</li>
+<li>Conversion from a single value to a static array or <span class="code-inline">Core.Array</span>, and vice versa.</li>
+</ul>
+<p>Supported attributes are : </p>
+<ul>
+<li><span class="code-inline">Serialisation.Version</span>. If version is specified, then loading will not have versioning if versions are the same</li>
+<li><span class="code-inline">Serialization.Alias</span>. To rename a field. Multiple aliases are supported.</li>
+<li><span class="code-inline">Serialization.Final</span>. The struct will be loaded/saved without versioning (faster and lower serialization size)</li>
+<li><span class="code-inline">Serialization.PodFinal</span>. The struct will be loaded/saved in place without versioning</li>
+</ul>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
@@ -20293,7 +20299,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_beginElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L318" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L319" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20305,7 +20311,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_beginRoot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginRoot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L207" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L208" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20317,7 +20323,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_beginSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L219" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L220" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20329,7 +20335,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_beginSequence"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginSequence</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L408" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L409" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20341,7 +20347,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_beginStruct"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginStruct</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L275" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L276" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20353,7 +20359,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_beginValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L399" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L400" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20365,7 +20371,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_endElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L393" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L394" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20377,7 +20383,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_endRoot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endRoot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L215" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L216" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20389,7 +20395,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_endSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L262" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L263" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20401,7 +20407,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_endSequence"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endSequence</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L472" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L473" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20413,7 +20419,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_endStruct"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endStruct</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L313" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L314" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20425,7 +20431,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_endValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L404" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L405" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20437,7 +20443,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_getVersion"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">getVersion</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L485" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L486" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20449,7 +20455,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_readNative"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">readNative</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L496" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L497" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20461,7 +20467,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_startRead"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">startRead</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L202" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L203" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20473,7 +20479,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBin_toNextSequenceElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">toNextSequenceElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L477" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L478" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20485,7 +20491,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBinOptions"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Read.</span><span class="api-item-title-strong">TagBinOptions</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L47" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L48" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20503,7 +20509,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <span id="Core_Serialization_Read_TagBinSection"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Read.</span><span class="api-item-title-strong">TagBinSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L38" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L39" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27438,7 +27444,7 @@ Changes that are supported from V to V+1 are :</span></div>
 <p>Swap two values. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">swap</span>(x: *<span class="SCst">T</span>, y: *<span class="SCst">T</span>)</span></div>
 <div class="swag-watermark">
-Generated on 14-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
+Generated on 15-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
 </div>
 </div>
 </div>

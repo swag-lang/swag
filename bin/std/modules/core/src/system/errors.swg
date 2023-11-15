@@ -50,6 +50,12 @@ struct InvalidFileNameError
     fileName: string
 }
 
+struct InvalidVersion
+{
+    wantedVersion:   u32
+    foundVersion:    u32   
+}
+
 // Make a string persistent for errors.
 // That kind of string can be stored in an error struct.
 func mkString(str: string)->string
