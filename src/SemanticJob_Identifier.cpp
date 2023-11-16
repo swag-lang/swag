@@ -1860,16 +1860,6 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         if (oneOverload.ufcs)
             oneOverload.symMatchContext.flags |= SymbolMatchContext::MATCH_UFCS;
 
-        // When in a @typeof or @kindof, if we specify a type without generic parameters, then
-        // we want to match the generic version, and not an instantiated one
-        if (context->node->parent && context->node->parent->parent)
-        {
-            if (context->node->parent->parent->kind == AstNodeKind::IntrinsicProp && context->node->parent->parent->tokenId == TokenId::IntrinsicTypeOf)
-                oneOverload.symMatchContext.flags |= SymbolMatchContext::MATCH_DO_NOT_ACCEPT_NO_GENERIC;
-            if (context->node->parent->parent->kind == AstNodeKind::IntrinsicProp && context->node->parent->parent->tokenId == TokenId::IntrinsicKindOf)
-                oneOverload.symMatchContext.flags |= SymbolMatchContext::MATCH_DO_NOT_ACCEPT_NO_GENERIC;
-        }
-
         // We collect type replacements depending on where the identifier is
         setupContextualGenericTypeReplacement(context, oneOverload, overload, flags);
 
@@ -1965,18 +1955,32 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         {
             if (overload->flags & OVERLOAD_GENERIC)
             {
-                // Be sure that we would like to instantiate
+                // Be sure that we would like to instantiate in case we do not have user generic parameters.
                 bool asMatch = false;
-                if (node && node->kind == AstNodeKind::Identifier)
+                if (!oneOverload.genericParameters && context->node->parent && context->node->parent->parent)
                 {
-                    auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
-                    if (!identifier->genericParameters && node->parent && node->parent->parent)
+                    auto grandParent = context->node->parent->parent;
+
+                    bool isLast = false;
+                    if (node && node->kind == AstNodeKind::Identifier)
                     {
-                        auto grandParent = node->parent->parent;
-                        if (grandParent->kind == AstNodeKind::IntrinsicDefined ||
-                            (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicNameOf))
-                            asMatch = true;
+                        auto id = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+                        if (id == id->identifierRef()->childs.back())
+                            isLast = true;
                     }
+
+                    if (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicTypeOf)
+                        asMatch = true;
+                    else if (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicKindOf)
+                        asMatch = true;
+                    else if (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicNameOf)
+                        asMatch = true;
+                    else if (isLast && grandParent->kind == AstNodeKind::BinaryOp && grandParent->tokenId == TokenId::SymEqualEqual && overload->symbol->kind == SymbolKind::Struct)
+                        asMatch = true;
+                    else if (isLast && grandParent->kind == AstNodeKind::BinaryOp && grandParent->tokenId == TokenId::SymExclamEqual && overload->symbol->kind == SymbolKind::Struct)
+                        asMatch = true;
+                    else if (grandParent->kind == AstNodeKind::IntrinsicDefined)
+                        asMatch = true;
                 }
 
                 if (asMatch)
@@ -1990,31 +1994,30 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                     match->oneOverload      = &oneOverload;
                     match->flags            = oneOverload.symMatchContext.flags;
                     matches.push_back(match);
+                    break;
                 }
+
+                auto* match                        = job->getOneGenericMatch();
+                match->flags                       = oneOverload.symMatchContext.flags;
+                match->symbolName                  = symbol;
+                match->symbolOverload              = overload;
+                match->genericParametersCallTypes  = std::move(oneOverload.symMatchContext.genericParametersCallTypes);
+                match->genericParametersCallValues = std::move(oneOverload.symMatchContext.genericParametersCallValues);
+                match->genericParametersCallFrom   = std::move(oneOverload.symMatchContext.genericParametersCallFrom);
+                match->genericReplaceTypes         = std::move(oneOverload.symMatchContext.genericReplaceTypes);
+                match->genericReplaceValues        = std::move(oneOverload.symMatchContext.genericReplaceValues);
+                match->genericReplaceFrom          = std::move(oneOverload.symMatchContext.genericReplaceFrom);
+                match->genericParametersGenTypes   = std::move(oneOverload.symMatchContext.genericParametersGenTypes);
+                match->parameters                  = std::move(oneOverload.symMatchContext.parameters);
+                match->solvedParameters            = std::move(oneOverload.symMatchContext.solvedParameters);
+                match->genericParameters           = genericParameters;
+                match->numOverloadsWhenChecked     = oneOverload.cptOverloads;
+                match->numOverloadsInitWhenChecked = oneOverload.cptOverloadsInit;
+                match->secondTry                   = oneOverload.secondTry;
+                if (overload->node->flags & AST_HAS_SELECT_IF && overload->node->kind == AstNodeKind::FuncDecl)
+                    genericMatchesSI.push_back(match);
                 else
-                {
-                    auto* match                        = job->getOneGenericMatch();
-                    match->flags                       = oneOverload.symMatchContext.flags;
-                    match->symbolName                  = symbol;
-                    match->symbolOverload              = overload;
-                    match->genericParametersCallTypes  = std::move(oneOverload.symMatchContext.genericParametersCallTypes);
-                    match->genericParametersCallValues = std::move(oneOverload.symMatchContext.genericParametersCallValues);
-                    match->genericParametersCallFrom   = std::move(oneOverload.symMatchContext.genericParametersCallFrom);
-                    match->genericReplaceTypes         = std::move(oneOverload.symMatchContext.genericReplaceTypes);
-                    match->genericReplaceValues        = std::move(oneOverload.symMatchContext.genericReplaceValues);
-                    match->genericReplaceFrom          = std::move(oneOverload.symMatchContext.genericReplaceFrom);
-                    match->genericParametersGenTypes   = std::move(oneOverload.symMatchContext.genericParametersGenTypes);
-                    match->parameters                  = std::move(oneOverload.symMatchContext.parameters);
-                    match->solvedParameters            = std::move(oneOverload.symMatchContext.solvedParameters);
-                    match->genericParameters           = genericParameters;
-                    match->numOverloadsWhenChecked     = oneOverload.cptOverloads;
-                    match->numOverloadsInitWhenChecked = oneOverload.cptOverloadsInit;
-                    match->secondTry                   = oneOverload.secondTry;
-                    if (overload->node->flags & AST_HAS_SELECT_IF && overload->node->kind == AstNodeKind::FuncDecl)
-                        genericMatchesSI.push_back(match);
-                    else
-                        genericMatches.push_back(match);
-                }
+                    genericMatches.push_back(match);
             }
             else
             {

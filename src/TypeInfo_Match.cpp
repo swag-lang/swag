@@ -676,10 +676,10 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
     int wantedNumGenericParams = (int) genericParameters.size();
     int userGenericParams      = (int) context.genericParameters.size();
 
-    // It's valid to not specify generic parameters. They will be deduced
+    // It's valid to not specify generic parameters. They will be deduced.
     // A reference to a generic without specifying the generic parameters is a match
     // (we deduce the type)
-    if (!userGenericParams && wantedNumGenericParams && !(context.flags & SymbolMatchContext::MATCH_DO_NOT_ACCEPT_NO_GENERIC))
+    if (!userGenericParams && wantedNumGenericParams)
     {
         if (myTypeInfo->isGeneric() ||
             (context.flags & SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC) ||
@@ -765,17 +765,6 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
 
     if (myTypeInfo->isStruct() && userGenericParams < wantedNumGenericParams)
     {
-        // If we have SymbolMatchContext::MATCH_DO_NOT_ACCEPT_NO_GENERIC, and if we do not have generic parameters (but
-        // this is a generic struct), then we want to match the generic version of the type.
-        // For example in @typeof(A) where A is generic.
-        if (myTypeInfo->isGeneric() &&
-            !userGenericParams &&
-            wantedNumGenericParams &&
-            (context.flags & SymbolMatchContext::MATCH_DO_NOT_ACCEPT_NO_GENERIC))
-        {
-            return;
-        }
-
         if (userGenericParams || !myTypeInfo->isGeneric())
         {
             context.result = MatchResult::NotEnoughGenericParameters;
@@ -785,28 +774,25 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
 
     if (!userGenericParams && wantedNumGenericParams)
     {
-        if (!(context.flags & SymbolMatchContext::MATCH_DO_NOT_ACCEPT_NO_GENERIC))
+        for (int i = 0; i < wantedNumGenericParams; i++)
         {
-            for (int i = 0; i < wantedNumGenericParams; i++)
+            auto symbolParameter = genericParameters[i];
+            if (!symbolParameter->typeInfo->isNative(NativeTypeKind::Undefined))
             {
-                auto symbolParameter = genericParameters[i];
-                if (!symbolParameter->typeInfo->isNative(NativeTypeKind::Undefined))
+                auto it = context.genericReplaceTypes.find(symbolParameter->typeInfo->name);
+                if (it == context.genericReplaceTypes.end())
                 {
-                    auto it = context.genericReplaceTypes.find(symbolParameter->typeInfo->name);
-                    if (it == context.genericReplaceTypes.end())
+                    // When we try to match an untyped generic lambda with a typed instance, we must fail.
+                    // This will force a new instance with deduced types if necessary
+                    if (context.genericReplaceTypes.empty() && context.flags & SymbolMatchContext::MATCH_FOR_LAMBDA)
                     {
-                        // When we try to match an untyped generic lambda with a typed instance, we must fail.
-                        // This will force a new instance with deduced types if necessary
-                        if (context.genericReplaceTypes.empty() && context.flags & SymbolMatchContext::MATCH_FOR_LAMBDA)
-                        {
-                            context.result = MatchResult::NotEnoughGenericParameters;
-                            return;
-                        }
-                        else if (myTypeInfo->isGeneric())
-                        {
-                            context.result = MatchResult::NotEnoughGenericParameters;
-                            return;
-                        }
+                        context.result = MatchResult::NotEnoughGenericParameters;
+                        return;
+                    }
+                    else if (myTypeInfo->isGeneric())
+                    {
+                        context.result = MatchResult::NotEnoughGenericParameters;
+                        return;
                     }
                 }
             }

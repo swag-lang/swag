@@ -149,7 +149,7 @@ impl Decoder
 
             // Core.Array
             let structType = cast(const *TypeInfoStruct) type
-            if structType.fromGeneric == @typeof(Array)
+            if structType.fromGeneric == Core.Array
             {
                 let valueType = structType.generics[0].pointedType
 
