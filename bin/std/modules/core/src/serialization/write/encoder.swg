@@ -185,7 +185,7 @@ impl Encoder
 
             // Core.Array
             let structType = cast(const *TypeInfoStruct) type
-            if structType.fromGeneric == Core.Array
+            if structType.fromGeneric == @typeof(Core.Array)
             {
                 let valueType = structType.generics[0].pointedType
                 let ptrArr = cast(const *Array) data
