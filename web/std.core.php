@@ -18712,7 +18712,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <div class="blockquote blockquote-note">
 <div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> Type <span class="code-inline">string</span> is not supported. Consider using <a href="#Core_String">Core.String</a> instead. </p>
 </div>
-<p>A struct can implement the ISerialize interface in order to have a specific serialization. If not defined, then the struct will be saved field by field. </p>
+<p>A struct can implement the <span class="code-inline">ISerialize</span> interface in order to have a specific serialization. If not defined, then the struct will be saved field by field. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
@@ -27505,7 +27505,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <p>Swap two values. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">swap</span>(x: *<span class="SCst">T</span>, y: *<span class="SCst">T</span>)</span></div>
 <div class="swag-watermark">
-Generated on 15-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
+Generated on 17-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
 </div>
 </div>
 </div>

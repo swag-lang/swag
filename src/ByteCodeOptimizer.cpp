@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "ThreadManager.h"
 #include "Statistics.h"
+#include "ByteCodeGenJob.h"
 
 uint32_t ByteCodeOptimizer::newTreeNode(ByteCodeOptContext* context, ByteCodeInstruction* ip, bool& here)
 {
@@ -349,6 +350,50 @@ void ByteCodeOptimizer::removeNops(ByteCodeOptContext* context)
     context->nops.clear();
 }
 
+bool ByteCodeOptimizer::insertNopBefore(ByteCodeOptContext* context, ByteCodeInstruction* insert)
+{
+    if (insert != context->bc->out && insert[-1].op == ByteCodeOp::Nop)
+        return true;
+
+    // We do not want to invalid all pointer to instructions by reallocating the instruction buffer.
+    // So if we do not have at least one free instruction, then we fail.
+    if (context->bc->numInstructions == context->bc->maxInstructions)
+        return false;
+
+    for (int it = 0; it < context->nops.size(); it++)
+    {
+        if (context->nops[it] > insert)
+            context->nops[it]++;
+    }
+
+    for (int it = 0; it < context->jumps.size(); it++)
+    {
+        auto jump   = context->jumps[it];
+        auto ipDest = jump + jump->b.s32 + 1;
+        if (jump < insert && ipDest > insert)
+        {
+            jump->b.s32 += 1;
+            jump[jump->b.s32].flags |= BCI_START_STMT;
+        }
+        else if (jump >= insert && ipDest < insert)
+        {
+            jump->b.s32 -= 1;
+            jump[jump->b.s32].flags |= BCI_START_STMT;
+        }
+
+        if (jump > insert)
+            context->jumps[it]++;
+    }
+
+    auto   insIndex = insert - context->bc->out;
+    size_t size     = context->bc->numInstructions - insIndex;
+    size *= sizeof(ByteCodeInstruction);
+    memmove(insert + 1, insert, size);
+    insert->op = ByteCodeOp::Nop;
+    context->bc->numInstructions++;
+    return true;
+}
+
 void ByteCodeOptimizer::setJumps(ByteCodeOptContext* context)
 {
     context->jumps.clear();
@@ -529,6 +574,7 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
                 genTree(&optContext, true);
 
                 OPT_PASS(optimizePassErr);
+                OPT_PASS(optimizePassLoop);
                 OPT_PASS(optimizePassSwitch);
                 OPT_PASS(optimizePassDupBlocks);
                 OPT_PASS(optimizePassReduceX2);

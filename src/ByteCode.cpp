@@ -338,3 +338,36 @@ uint32_t ByteCode::computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool spe
 
     return oldCrc;
 }
+
+void ByteCode::makeRoomForInstructions(uint32_t room)
+{
+    SWAG_RACE_CONDITION_WRITE(raceCond);
+
+    if (numInstructions + room < maxInstructions)
+        return;
+
+    auto oldSize    = (int) (maxInstructions * sizeof(ByteCodeInstruction));
+    maxInstructions = max(numInstructions + room * 2, maxInstructions * 2);
+
+    // Evaluate the first number of instructions for a given function.
+    // We take the number of ast nodes in the function as a metric.
+    // This is to mitigate the number of reallocations, without wasting too much memory.
+    if (!maxInstructions && node && node->kind == AstNodeKind::FuncDecl)
+    {
+        auto funcDecl = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        // 0.8f is kind of magical, based on various measures.
+        maxInstructions = (int) (funcDecl->nodeCounts * 0.8f);
+    }
+
+    maxInstructions     = max(maxInstructions, 8);
+    auto newInstuctions = (ByteCodeInstruction*) Allocator::alloc(maxInstructions * sizeof(ByteCodeInstruction));
+    memcpy(newInstuctions, out, numInstructions * sizeof(ByteCodeInstruction));
+    Allocator::free(out, oldSize);
+
+#ifdef SWAG_STATS
+    g_Stats.memInstructions -= oldSize;
+    g_Stats.memInstructions += maxInstructions * sizeof(ByteCodeInstruction);
+#endif
+
+    out = newInstuctions;
+}

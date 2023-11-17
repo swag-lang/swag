@@ -209,6 +209,7 @@ struct ByteCode
     bool              canEmit();
     void              markLabels();
     bool              isDoingNothing();
+    void              makeRoomForInstructions(uint32_t room = 1);
 
     bool     areSame(ByteCodeInstruction* start0, ByteCodeInstruction* end0, ByteCodeInstruction* start1, ByteCodeInstruction* end1, bool specialJump, bool specialCall);
     uint32_t computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool specialJump, bool specialCall);

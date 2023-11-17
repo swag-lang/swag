@@ -19,6 +19,7 @@ struct ByteCodeOptimizer
     static void setNop(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void setContextFlags(ByteCodeOptContext* context, ByteCodeInstruction* ip);
     static void setJumps(ByteCodeOptContext* context);
+    static bool insertNopBefore(ByteCodeOptContext* context, ByteCodeInstruction* insert);
     static void removeNops(ByteCodeOptContext* context);
 
     static void registerParamsReg(ByteCodeOptContext* context, ByteCodeInstruction* ip);
@@ -40,6 +41,7 @@ struct ByteCodeOptimizer
     static void optimizePassSwitch(ByteCodeOptContext* context, ByteCodeOp op0, ByteCodeOp op1);
     static bool optimizePassSwitch(ByteCodeOptContext* context);
     static bool optimizePassSwap(ByteCodeOptContext* context);
+    static bool optimizePassLoop(ByteCodeOptContext* context);
 
     static void optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, ByteCodeOp op);
     static void optimizePassDupCopyOp(ByteCodeOptContext* context, ByteCodeOp op);

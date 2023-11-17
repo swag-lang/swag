@@ -35,6 +35,7 @@ func __pushErr()
     let cxt = @getcontext()
     cxt.errors[cxt.errorIndex].pushTraceIndex = cast(u32) cxt.traceIndex
     cxt.errors[cxt.errorIndex].pushUsedAlloc  = cast(u32) cxt.errorAllocator.used
+
     cxt.hasError = 0
     cxt.errorIndex += 1
 }
@@ -42,12 +43,12 @@ func __pushErr()
 func __popErr()
 {
     let cxt = @getcontext()
-
     __dropErr(cxt.errors[cxt.errorIndex].value)
     cxt.errors[cxt.errorIndex].value = null
     
-    cxt.errorIndex -= 1
-    cxt.hasError            = 1
+    cxt.errorIndex -= 1   
+    cxt.hasError = 1
+
     cxt.curError            = cxt.errors[cxt.errorIndex].value
     cxt.traceIndex          = cast(u32) cxt.errors[cxt.errorIndex].pushTraceIndex
     cxt.errorAllocator.used = cast(u32) cxt.errors[cxt.errorIndex].pushUsedAlloc
@@ -75,8 +76,6 @@ func __failedAssume(loc: SourceCodeLocation)
 {
     let cxt = @getcontext()
     let type = @kindof(cxt.errors[cxt.errorIndex].value)
-
-    cxt.hasError = 0
     
     var str: [512] u8
     var len: u64
@@ -103,6 +102,9 @@ func __failedAssume(loc: SourceCodeLocation)
             len += maxLen
         }
     }
+
+    cxt.hasError = 0
+    @assert(cxt.errorIndex == 0)
 
     str[len] = 0
     @panic(@mkstring(&str[0], len), loc)

@@ -15,24 +15,15 @@ bool ByteCodeOptimizer::optimizePassErr(ByteCodeOptContext* context)
     if (context->nops.size())
         return true;
 
-    for (uint32_t cpt = 0; cpt < context->bc->numInstructions; cpt++)
+    for (uint32_t cpt = 0; cpt < bc->numInstructions; cpt++)
     {
         auto ip = bc->out + cpt;
         if (ip->op != ByteCodeOp::JumpIfNoError)
             continue;
 
         auto countErrInst = ip->b.s32;
-
-        if (bc->numInstructions + countErrInst > bc->maxInstructions)
-        {
-            auto oldSize        = (int) (bc->maxInstructions * sizeof(ByteCodeInstruction));
-            bc->maxInstructions = max(bc->numInstructions + countErrInst + 100, bc->maxInstructions * 2);
-            auto newInstuctions = (ByteCodeInstruction*) Allocator::alloc(bc->maxInstructions * sizeof(ByteCodeInstruction));
-            memcpy(newInstuctions, bc->out, bc->numInstructions * sizeof(ByteCodeInstruction));
-            Allocator::free(bc->out, oldSize);
-            bc->out = newInstuctions;
-            ip      = bc->out + cpt;
-        }
+        bc->makeRoomForInstructions(countErrInst);
+        ip = bc->out + cpt;
 
         auto ipJump = ip;
         ip += 1;

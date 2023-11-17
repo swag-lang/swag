@@ -392,6 +392,7 @@
     <ClCompile Include="..\src\ByteCodeGenJob_Safety.cpp" />
     <ClCompile Include="../src/ByteCodeOptimizerJob.cpp" />
     <ClCompile Include="..\src\ByteCodeOptimizer_Err.cpp" />
+    <ClCompile Include="..\src\ByteCodeOptimizer_Loop.cpp" />
     <ClCompile Include="..\src\ByteCodeOptimizer_Param.cpp" />
     <ClCompile Include="..\src\ByteCodeOptimizer_ReduceX2.cpp" />
     <ClCompile Include="..\src\ByteCodeOptimizer_Sanity.cpp" />

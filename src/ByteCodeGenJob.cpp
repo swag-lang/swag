@@ -351,41 +351,15 @@ ByteCodeInstruction* ByteCodeGenJob::emitGetFromSeg(ByteCodeGenContext* context,
     return nullptr;
 }
 
+
 ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2, uint32_t r3, const char* file, uint32_t line)
 {
     AstNode* node = context->node;
     auto     bc   = context->bc;
 
+    context->bc->makeRoomForInstructions();
+
     SWAG_RACE_CONDITION_WRITE(bc->raceCond);
-
-    if (bc->numInstructions == bc->maxInstructions)
-    {
-        auto oldSize        = (int) (bc->maxInstructions * sizeof(ByteCodeInstruction));
-        bc->maxInstructions = bc->maxInstructions * 2;
-
-        // Evaluate the first number of instructions for a given function.
-        // We take the number of ast nodes in the function as a metric.
-        // This is to mitigate the number of reallocations, without wasting too much memory.
-        if (!bc->maxInstructions && bc->node && bc->node->kind == AstNodeKind::FuncDecl)
-        {
-            auto funcDecl = CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
-            // 0.8f is kind of magical, based on various measures.
-            bc->maxInstructions = (int) (funcDecl->nodeCounts * 0.8f);
-        }
-
-        bc->maxInstructions = max(bc->maxInstructions, 8);
-        auto newInstuctions = (ByteCodeInstruction*) Allocator::alloc(bc->maxInstructions * sizeof(ByteCodeInstruction));
-        memcpy(newInstuctions, bc->out, bc->numInstructions * sizeof(ByteCodeInstruction));
-        Allocator::free(bc->out, oldSize);
-
-#ifdef SWAG_STATS
-        g_Stats.memInstructions -= oldSize;
-        g_Stats.memInstructions += bc->maxInstructions * sizeof(ByteCodeInstruction);
-#endif
-
-        bc->out = newInstuctions;
-    }
-
     SWAG_ASSERT(bc->out);
     ByteCodeInstruction& ins = bc->out[bc->numInstructions++];
 
