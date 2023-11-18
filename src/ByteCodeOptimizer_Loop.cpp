@@ -5,6 +5,9 @@
 // For example a GetParam64 does not need to be done at each iteration, it could be done once before the loop.
 bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
 {
+    // if (context->bc->sourceFile->name.find("gameoflife") == -1)
+    //     return true;
+
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         if (!ByteCode::isJump(ip) || ip->b.s32 > 0)
@@ -39,6 +42,8 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
             case ByteCodeOp::MakeCompilerSegPointer:
             case ByteCodeOp::MakeConstantSegPointer:
             case ByteCodeOp::MakeBssSegPointer:
+            case ByteCodeOp::MakeMutableSegPointer:
+            case ByteCodeOp::MakeLambda:
                 context->vecInst.push_back(ipScan);
                 break;
             }
@@ -86,8 +91,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
         for (auto it : context->vecInst)
         {
             auto cstOp = it + shift;
-            if (ByteCode::hasWriteRegInA(cstOp) && countReg[cstOp->a.u32] > 1)
-                break;
+
             if (ByteCode::hasWriteRegInB(cstOp) && countReg[cstOp->b.u32] > 1)
                 break;
             if (ByteCode::hasWriteRegInC(cstOp) && countReg[cstOp->c.u32] > 1)
@@ -95,16 +99,46 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
             if (ByteCode::hasWriteRegInD(cstOp) && countReg[cstOp->d.u32] > 1)
                 break;
 
-            //context->bc->print();
-            if (!insertNopBefore(context, ipStart))
-                break;
+            // If the register is used more than once, then we allocate a new one and make a copy at the previous place.
+            // The copy will have a change to be removed, and if not, the loop will just have one copy instead of the original instruction.
+            if (ByteCode::hasWriteRegInA(cstOp) && countReg[cstOp->a.u32] > 1)
+            {
+                if (context->bc->maxReservedRegisterRC == RegisterList::MAX_REGISTERS)
+                    break;
 
-            //printf("%s %s\n", context->bc->sourceFile->name.c_str(), context->bc->getCallName().c_str());
-            shift += 1;
-            cstOp    = it + shift;
-            *ipStart = *cstOp;
-            setNop(context, cstOp);
-            //context->bc->print();
+                // context->bc->print();
+                if (!insertNopBefore(context, ipStart))
+                    break;
+
+                shift += 1;
+                cstOp    = it + shift;
+                *ipStart = *cstOp;
+
+                SET_OP(cstOp, ByteCodeOp::CopyRBtoRA64);
+                cstOp->b.u32 = context->bc->maxReservedRegisterRC;
+
+                ipStart->a.u32 = context->bc->maxReservedRegisterRC;
+                context->bc->maxReservedRegisterRC++;
+
+                // printf("%s %s\n", context->bc->sourceFile->name.c_str(), context->bc->getCallName().c_str());
+                // context->bc->print();
+            }
+
+            // If the register is written only once in the loop, then we can just move the instruction outside of the loop.
+            else
+            {
+                // context->bc->print();
+                if (!insertNopBefore(context, ipStart))
+                    break;
+
+                shift += 1;
+                cstOp    = it + shift;
+                *ipStart = *cstOp;
+                setNop(context, cstOp);
+
+                // printf("%s %s\n", context->bc->sourceFile->name.c_str(), context->bc->getCallName().c_str());
+                // context->bc->print();
+            }
         }
 
         if (shift)

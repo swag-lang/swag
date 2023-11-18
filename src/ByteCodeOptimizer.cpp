@@ -368,20 +368,43 @@ bool ByteCodeOptimizer::insertNopBefore(ByteCodeOptContext* context, ByteCodeIns
 
     for (int it = 0; it < context->jumps.size(); it++)
     {
-        auto jump   = context->jumps[it];
-        auto ipDest = jump + jump->b.s32 + 1;
-        if (jump < insert && ipDest > insert)
+        auto jump = context->jumps[it];
+        SWAG_ASSERT(ByteCode::isJumpOrDyn(jump));
+
+        if (ByteCode::isJumpDyn(jump))
         {
-            jump->b.s32 += 1;
-            jump[jump->b.s32].flags |= BCI_START_STMT;
+            int32_t* table = (int32_t*) context->module->compilerSegment.address(jump->d.u32);
+            for (uint32_t i = 0; i < jump->c.u32; i++)
+            {
+                auto ipDest = jump + table[i] + 1;
+                if (jump < insert && ipDest > insert)
+                {
+                    table[i] += 1;
+                    jump[table[i] + 1].flags |= BCI_START_STMT;
+                }
+                else if (jump >= insert && ipDest < insert)
+                {
+                    table[i] -= 1;
+                    jump[table[i] + 1].flags |= BCI_START_STMT;
+                }
+            }
         }
-        else if (jump >= insert && ipDest < insert)
+        else
         {
-            jump->b.s32 -= 1;
-            jump[jump->b.s32].flags |= BCI_START_STMT;
+            auto ipDest = jump + jump->b.s32 + 1;
+            if (jump < insert && ipDest > insert)
+            {
+                jump->b.s32 += 1;
+                jump[jump->b.s32].flags |= BCI_START_STMT;
+            }
+            else if (jump >= insert && ipDest < insert)
+            {
+                jump->b.s32 -= 1;
+                jump[jump->b.s32].flags |= BCI_START_STMT;
+            }
         }
 
-        if (jump > insert)
+        if (jump >= insert)
             context->jumps[it]++;
     }
 
