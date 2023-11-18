@@ -5,9 +5,6 @@
 // For example a GetParam64 does not need to be done at each iteration, it could be done once before the loop.
 bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
 {
-    // if (context->bc->sourceFile->name.find("gameoflife") == -1)
-    //     return true;
-
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
         if (!ByteCode::isJump(ip) || ip->b.s32 > 0)
@@ -106,7 +103,6 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                 if (context->bc->maxReservedRegisterRC == RegisterList::MAX_REGISTERS)
                     break;
 
-                // context->bc->print();
                 if (!insertNopBefore(context, ipStart))
                     break;
 
@@ -119,15 +115,11 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
 
                 ipStart->a.u32 = context->bc->maxReservedRegisterRC;
                 context->bc->maxReservedRegisterRC++;
-
-                // printf("%s %s\n", context->bc->sourceFile->name.c_str(), context->bc->getCallName().c_str());
-                // context->bc->print();
             }
 
             // If the register is written only once in the loop, then we can just move the instruction outside of the loop.
             else
             {
-                // context->bc->print();
                 if (!insertNopBefore(context, ipStart))
                     break;
 
@@ -135,9 +127,6 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                 cstOp    = it + shift;
                 *ipStart = *cstOp;
                 setNop(context, cstOp);
-
-                // printf("%s %s\n", context->bc->sourceFile->name.c_str(), context->bc->getCallName().c_str());
-                // context->bc->print();
             }
         }
 
