@@ -551,9 +551,6 @@ bool ByteCodeOptimizer::optimize(ByteCodeOptContext& optContext, ByteCode* bc, b
         SWAG_CHECK(optimizePassSanity(&optContext));
     }
 
-    if (!bc->canEmit())
-        return true;
-
     if (optContext.module->mustOptimizeBytecode(bc->node))
     {
         while (true)
