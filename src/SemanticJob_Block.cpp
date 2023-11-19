@@ -672,7 +672,8 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         auto typeArray   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto pointedType = typeArray->finalType;
 
-        auto varDecl        = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
+        auto varDecl = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
+        varDecl->addSpecFlags(AstVarDecl::SPECFLAG_CONST_ASSIGN | AstVarDecl::SPECFLAG_IS_LET);
         varDecl->assignment = Ast::newIntrinsicProp(sourceFile, TokenId::IntrinsicDataOf, varDecl);
         Ast::clone(node->expression, varDecl->assignment);
         newVar = varDecl;
@@ -711,7 +712,8 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         auto typeArray   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto pointedType = typeArray->pointedType;
 
-        auto varDecl        = Ast::newVarDecl(sourceFile, Utf8::format("__addr%u", id), node);
+        auto varDecl = Ast::newVarDecl(sourceFile, Utf8::format("__addr%u", id), node);
+        varDecl->addSpecFlags(AstVarDecl::SPECFLAG_CONST_ASSIGN | AstVarDecl::SPECFLAG_IS_LET);
         varDecl->assignment = Ast::newIntrinsicProp(sourceFile, TokenId::IntrinsicDataOf, varDecl);
         Ast::clone(node->expression, varDecl->assignment);
         newVar = varDecl;
@@ -749,7 +751,8 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         auto typeSlice   = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         auto pointedType = typeSlice->pointedType;
 
-        auto varDecl        = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
+        auto varDecl = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
+        varDecl->addSpecFlags(AstVarDecl::SPECFLAG_CONST_ASSIGN | AstVarDecl::SPECFLAG_IS_LET);
         varDecl->assignment = Ast::clone(node->expression, varDecl);
         newVar              = varDecl;
 
@@ -784,7 +787,8 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     // String
     else if (typeInfo->isString())
     {
-        auto varDecl        = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
+        auto varDecl = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
+        varDecl->addSpecFlags(AstVarDecl::SPECFLAG_CONST_ASSIGN | AstVarDecl::SPECFLAG_IS_LET);
         varDecl->assignment = Ast::clone(node->expression, varDecl);
         newVar              = varDecl;
 
