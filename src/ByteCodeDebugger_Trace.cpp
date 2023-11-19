@@ -43,7 +43,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdContinue(ByteCodeRunContext* context, co
     if (cmds.size() > 1)
         return BcDbgCommandResult::BadArguments;
 
-    g_Log.print("continue...\n", LogColor::Gray);
+    g_ByteCodeDebugger.printCmdResult("continue...");
     context->debugOn                 = false;
     context->debugStackFrameOffset   = 0;
     g_ByteCodeDebugger.debugStepMode = DebugStepMode::ToNextBreakpoint;

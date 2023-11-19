@@ -54,7 +54,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
             {
                 if (!bkp.autoDisabled)
                 {
-                    g_Log.print(Fmt("## breakpoint hit #%d function with a match on '%s'\n", idxBkp, bkp.name.c_str()), LogColor::Magenta);
+                    printMsgBkp(Fmt("breakpoint hit #%d function with a match on '%s'", idxBkp, bkp.name.c_str()));
                     debugStepMode          = DebugStepMode::None;
                     context->debugOn       = true;
                     debugForcePrintContext = true;
@@ -80,7 +80,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
             {
                 if (!bkp.autoDisabled)
                 {
-                    g_Log.print(Fmt("## breakpoint hit #%d at line '%d'\n", idxBkp, bkp.line), LogColor::Magenta);
+                    printMsgBkp(Fmt("breakpoint hit #%d at line '%d'", idxBkp, bkp.line));
                     debugStepMode          = DebugStepMode::None;
                     context->debugOn       = true;
                     debugForcePrintContext = true;
@@ -105,7 +105,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
             {
                 if (!bkp.autoDisabled)
                 {
-                    g_Log.print(Fmt("## breakpoint hit #%d at instruction '%d'\n", idxBkp, bkp.line), LogColor::Magenta);
+                    printMsgBkp(Fmt("breakpoint hit #%d at instruction '%d'", idxBkp, bkp.line));
                     debugStepMode          = DebugStepMode::None;
                     context->debugOn       = true;
                     debugForcePrintContext = true;

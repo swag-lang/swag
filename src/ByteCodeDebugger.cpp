@@ -625,7 +625,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             g_Log.setColor(LogColor::Gray);
         }
 
-        g_Log.print("## @breakpoint() hit\n", LogColor::Green);
+        printMsgBkp("@breakpoint() hit");
 
         context->debugEntry            = false;
         context->debugStackFrameOffset = 0;

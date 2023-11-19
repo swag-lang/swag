@@ -32,6 +32,14 @@ void ByteCodeDebugger::printCmdResult(const Utf8& msg)
     g_Log.eol();
 }
 
+void ByteCodeDebugger::printMsgBkp(const Utf8& msg)
+{
+    g_Log.print("## ", LogColor::Green);
+    g_Log.print(msg.c_str(), LogColor::Green);
+    g_Log.print(" ##", LogColor::Green);
+    g_Log.eol();
+}
+
 void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force)
 {
     SWAG_ASSERT(debugCxtBc);
