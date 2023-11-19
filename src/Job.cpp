@@ -205,7 +205,7 @@ void Job::waitTypeCompleted(TypeInfo* typeInfo)
     if (!typeInfo->declNode)
         return;
 
-    // :BecauseOfThat
+    //  :BecauseOfThat
     auto       structNode = CastAst<AstStruct>(typeInfo->declNode, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
     ScopedLock lk(structNode->mutex);
     if (!structNode->resolvedSymbolOverload)

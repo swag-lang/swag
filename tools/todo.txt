@@ -52,9 +52,9 @@ BUG
 ****************************************
 
 -------------------------------------
-RACE CONDITION :BecauseOfThat (pb du IAllocator dans le bootstrap qui se resoud pas)
--------------------------------------
 throw dans un #init (lancer une script .swgs avec une redirection de console "> a.txt"), crash #init core
+-------------------------------------
+4717 can fail (no error)
 -------------------------------------
 
 
