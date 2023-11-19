@@ -672,30 +672,31 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         auto typeArray   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto pointedType = typeArray->finalType;
 
-        auto varDecl        = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
+        auto varDecl = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
+        varDecl->addSpecFlags(AstVarDecl::SPECFLAG_CONST_ASSIGN | AstVarDecl::SPECFLAG_IS_LET);
         varDecl->assignment = Ast::newIntrinsicProp(sourceFile, TokenId::IntrinsicDataOf, varDecl);
         Ast::clone(node->expression, varDecl->assignment);
         newVar = varDecl;
 
         firstAliasVar = 2;
         content += "{ ";
-        content += Fmt("var __addr%u = cast(%s ^%s) __tmp%u; ", id, typeArray->isConst() ? "const" : "", typeArray->finalType->name.c_str(), id);
+        content += Fmt("let __addr%u = cast(%s ^%s) __tmp%u; ", id, typeArray->isConst() ? "const" : "", typeArray->finalType->name.c_str(), id);
         content += Fmt("loop%s %u { ", visitBack.c_str(), typeArray->totalCount);
         if (node->specFlags & AstVisit::SPECFLAG_WANT_POINTER)
         {
-            content += "var ";
+            content += "let ";
             content += alias0Name;
             content += Fmt(" = __addr%u + @index; ", id);
         }
         else if (pointedType->isStruct())
         {
-            content += "var ";
+            content += "let ";
             content += alias0Name;
             content += Fmt(" = ref &__addr%u[@index]; ", id);
         }
         else
         {
-            content += "var ";
+            content += "let ";
             content += alias0Name;
             content += Fmt(" = __addr%u[@index]; ", id);
         }
@@ -713,6 +714,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
 
         auto varDecl        = Ast::newVarDecl(sourceFile, Utf8::format("__addr%u", id), node);
         varDecl->assignment = Ast::newIntrinsicProp(sourceFile, TokenId::IntrinsicDataOf, varDecl);
+        varDecl->addSpecFlags(AstVarDecl::SPECFLAG_CONST_ASSIGN | AstVarDecl::SPECFLAG_IS_LET);
         Ast::clone(node->expression, varDecl->assignment);
         newVar = varDecl;
 
@@ -721,19 +723,19 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         content += Fmt("loop%s %u { ", visitBack.c_str(), typeArray->totalCount);
         if (node->specFlags & AstVisit::SPECFLAG_WANT_POINTER)
         {
-            content += "var ";
+            content += "let ";
             content += alias0Name;
             content += Fmt(" = __addr%u + @index; ", id);
         }
         else if (pointedType->isStruct())
         {
-            content += "var ";
+            content += "let ";
             content += alias0Name;
             content += Fmt(" = ref &__addr%u[@index]; ", id);
         }
         else
         {
-            content += "var ";
+            content += "let ";
             content += alias0Name;
             content += Fmt(" = __addr%u[@index]; ", id);
         }
@@ -749,29 +751,30 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         auto typeSlice   = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         auto pointedType = typeSlice->pointedType;
 
-        auto varDecl        = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
+        auto varDecl = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
+        varDecl->addSpecFlags(AstVarDecl::SPECFLAG_CONST_ASSIGN | AstVarDecl::SPECFLAG_IS_LET);
         varDecl->assignment = Ast::clone(node->expression, varDecl);
         newVar              = varDecl;
 
         firstAliasVar = 1;
         content += "{ ";
-        content += Fmt("var __addr%u = @dataof(__tmp%u); ", id, id);
+        content += Fmt("let __addr%u = @dataof(__tmp%u); ", id, id);
         content += Fmt("loop%s __tmp%u { ", visitBack.c_str(), id);
         if (node->specFlags & AstVisit::SPECFLAG_WANT_POINTER)
         {
-            content += "var ";
+            content += "let ";
             content += alias0Name;
             content += Fmt(" = __addr%u + @index; ", id);
         }
         else if (pointedType->isStruct())
         {
-            content += "var ";
+            content += "let ";
             content += alias0Name;
             content += Fmt(" = ref &__addr%u[@index]; ", id);
         }
         else
         {
-            content += "var ";
+            content += "let ";
             content += alias0Name;
             content += Fmt(" = __addr%u[@index]; ", id);
         }

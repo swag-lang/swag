@@ -148,8 +148,11 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
 
     if (child->resolvedSymbolOverload && child->resolvedSymbolOverload->flags & OVERLOAD_IS_LET)
     {
-        Diagnostic diag{node, node->token, Err(Err0501)};
-        return context->report(diag, Diagnostic::hereIs(child->resolvedSymbolOverload->node));
+        if (child->kind != AstNodeKind::IdentifierRef || child->childs.back()->kind != AstNodeKind::ArrayPointerIndex)
+        {
+            Diagnostic diag{node, node->token, Err(Err0501)};
+            return context->report(diag, Diagnostic::hereIs(child->resolvedSymbolOverload->node));
+        }
     }
 
     if (child->resolvedSymbolName->kind == SymbolKind::Function)

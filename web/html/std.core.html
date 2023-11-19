@@ -3922,7 +3922,7 @@
 <span id="Core_CommandLine_getField"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">CommandLine.</span><span class="api-item-title-strong">getField</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L79" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L80" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3947,7 +3947,7 @@
 <span id="Core_CommandLine_parse"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">CommandLine.</span><span class="api-item-title-strong">parse</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L97" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L98" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3960,7 +3960,7 @@
 <span id="Core_CommandLine_parse_parse_checkNext"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">parse.</span><span class="api-item-title-strong">checkNext</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L100" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\commandline.swg#L101" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27505,7 +27505,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <p>Swap two values. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">swap</span>(x: *<span class="SCst">T</span>, y: *<span class="SCst">T</span>)</span></div>
 <div class="swag-watermark">
-Generated on 18-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
+Generated on 19-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
 </div>
 </div>
 </div>

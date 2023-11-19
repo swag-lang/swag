@@ -47,8 +47,9 @@ func splitArguments(args: const [..] string, options: ParseOptions)->Array'strin
     var allArgs: retval
 
     // Clean all arguments
-    visit oneArg: args
+    visit it: args
     {
+        var oneArg = it
         oneArg = Tokenize.eatSpaces(oneArg)
         if !@countof(oneArg)
             continue
