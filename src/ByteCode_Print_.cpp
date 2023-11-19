@@ -41,13 +41,15 @@ void ByteCode::printSourceCode(const ByteCodePrintOptions& options, ByteCodeInst
 
         g_Log.eol();
 
-        /*
-        g_Log.print("         ");
-        if (forDbg)
-            g_Log.print("   ");
-        g_Log.setColor(LogColor::DarkMagenta);
-        g_Log.print(Fmt("%s:%d", loc.file->name.c_str(), loc.location->line + 1));
-        g_Log.eol();*/
+        if (loc.file != sourceFile)
+        {
+            g_Log.print("         ");
+            if (forDbg)
+                g_Log.print("   ");
+            g_Log.setColor(LogColor::DarkMagenta);
+            g_Log.print(Fmt("%s:%d", loc.file->name.c_str(), loc.location->line + 1));
+            g_Log.eol();
+        }
     }
 }
 
