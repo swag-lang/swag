@@ -700,7 +700,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
             content += Fmt(" = __addr%u[@index]; ", id);
         }
 
-        content += "var ";
+        content += "let ";
         content += alias1Name;
         content += " = @index;}}";
     }
@@ -738,7 +738,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
             content += Fmt(" = __addr%u[@index]; ", id);
         }
 
-        content += "var ";
+        content += "let ";
         content += alias1Name;
         content += " = @index;}}";
     }
@@ -776,7 +776,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
             content += Fmt(" = __addr%u[@index]; ", id);
         }
 
-        content += "var ";
+        content += "let ";
         content += alias1Name;
         content += " = @index;}}";
     }
@@ -804,7 +804,8 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
             content += alias0Name;
             content += Fmt(" = __addr%u[@index]; ", id);
         }
-        content += "var ";
+
+        content += "let ";
         content += alias1Name;
         content += " = @index;}}";
     }
@@ -818,7 +819,8 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         content += "var ";
         content += alias0Name;
         content += Fmt(" = %s[@index]; ", (const char*) concat.firstBucket->datas);
-        content += "var ";
+
+        content += "let ";
         content += alias1Name;
         content += " = @index;}}";
     }
@@ -836,7 +838,8 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         content += " = dref cast(const* ";
         content += typeInfo->name;
         content += Fmt(") __addr%u.values[@index].value; ", id);
-        content += "var ";
+
+        content += "let ";
         content += alias1Name;
         content += " = @index;}}";
     }

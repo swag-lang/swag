@@ -1,4 +1,4 @@
-//#[Swag.PrintBc]
+#[Swag.Inline]
 func isPrime(n: s32)->s32
 {
     loop i: 2 to n/2
@@ -7,7 +7,8 @@ func isPrime(n: s32)->s32
     return 1
 }
 
-#run
+//#[Swag.PrintBc]
+#test
 {
     //Time.Stopwatch.scopeMeasure()
     var numPrimes = 0
