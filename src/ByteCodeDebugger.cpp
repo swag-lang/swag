@@ -91,13 +91,13 @@ bool ByteCodeDebugger::getRegIdx(ByteCodeRunContext* context, const Utf8& arg, i
     regN = atoi(arg.c_str() + 1);
     if (!context->getRegCount(debugCxtRc))
     {
-        g_Log.print("no available register", LogColor::Red);
+        g_ByteCodeDebugger.printCmdError("no available register");
         return false;
     }
 
     if (regN >= context->getRegCount(debugCxtRc))
     {
-        g_Log.print(Fmt("invalid register number, maximum value is '%u'\n", (uint32_t) context->getRegCount(debugCxtRc) - 1), LogColor::Red);
+        g_ByteCodeDebugger.printCmdError(Fmt("invalid register number, maximum value is '%u'", (uint32_t) context->getRegCount(debugCxtRc) - 1));
         return false;
     }
 
@@ -714,9 +714,9 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         else if (result == BcDbgCommandResult::Return)
             return false;
         else if (result == BcDbgCommandResult::BadArguments)
-            g_Log.print(Fmt("bad '%s' arguments\n", cmd.c_str()), LogColor::Red);
+            g_ByteCodeDebugger.printCmdError(Fmt("bad '%s' arguments", cmd.c_str()));
         else if (result == BcDbgCommandResult::Invalid)
-            g_Log.print(Fmt("unknown debugger command '%s'\n", cmd.c_str()), LogColor::Red);
+            g_ByteCodeDebugger.printCmdError(Fmt("unknown debugger command '%s'", cmd.c_str()));
         continue;
     }
 

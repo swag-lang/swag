@@ -64,7 +64,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
     {
         if (to >= context->bc->numInstructions - 1)
         {
-            g_Log.print("cannot reach this 'jump' destination\n", LogColor::Red);
+            g_ByteCodeDebugger.printCmdError("cannot reach this 'jump' destination");
             return BcDbgCommandResult::Continue;
         }
 
@@ -78,7 +78,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
         {
             if (curIp >= context->bc->out + context->bc->numInstructions - 1)
             {
-                g_Log.print("cannot reach this 'jump' destination\n", LogColor::Red);
+                g_ByteCodeDebugger.printCmdError("cannot reach this 'jump' destination");
                 return BcDbgCommandResult::Continue;
             }
 
@@ -129,27 +129,27 @@ BcDbgCommandResult ByteCodeDebugger::cmdMode(ByteCodeRunContext* context, const 
     {
         g_ByteCodeDebugger.debugBcMode = !g_ByteCodeDebugger.debugBcMode;
         if (g_ByteCodeDebugger.debugBcMode)
-            g_Log.print("## bytecode mode\n", LogColor::Gray);
+            g_ByteCodeDebugger.printCmdResult("bytecode mode");
         else
-            g_Log.print("## source code mode\n", LogColor::Gray);
+            g_ByteCodeDebugger.printCmdResult("source code mode");
         g_ByteCodeDebugger.printDebugContext(context, true);
     }
     else if (cmds[1] == "inline")
     {
         context->bc->sourceFile->module->buildCfg.byteCodeDebugInline = !context->bc->sourceFile->module->buildCfg.byteCodeDebugInline;
         if (context->bc->sourceFile->module->buildCfg.byteCodeDebugInline)
-            g_Log.print("## inline mode\n", LogColor::Gray);
+            g_ByteCodeDebugger.printCmdResult("inline mode");
         else
-            g_Log.print("## no inline mode\n", LogColor::Gray);
+            g_ByteCodeDebugger.printCmdResult("no inline mode");
         g_ByteCodeDebugger.printDebugContext(context, true);
     }
     else if (cmds[1] == "bkp")
     {
         g_CommandLine.dbgOff = !g_CommandLine.dbgOff;
         if (g_CommandLine.dbgOff)
-            g_Log.print("## @breakpoint() are disabled\n", LogColor::Gray);
+            g_ByteCodeDebugger.printCmdResult("@breakpoint() are disabled");
         else
-            g_Log.print("## @breakpoint() are enabled\n", LogColor::Gray);
+            g_ByteCodeDebugger.printCmdResult("@breakpoint() are enabled");
     }
     else
         return BcDbgCommandResult::BadArguments;

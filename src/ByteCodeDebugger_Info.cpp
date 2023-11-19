@@ -52,7 +52,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
 
     if (all.empty())
     {
-        g_Log.print(Fmt("...no match (%d parsed functions)\n", total), LogColor::Red);
+        g_ByteCodeDebugger.printCmdError(Fmt("...no match (%d parsed functions)", total));
         return BcDbgCommandResult::Continue;
     }
 
@@ -62,7 +62,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
     {
         if (OS::longOpStopKeyPressed())
         {
-            g_Log.print("...stopped\n", LogColor::Red);
+            g_ByteCodeDebugger.printCmdError("...stopped");
             break;
         }
 
@@ -94,7 +94,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, 
 
     if (g_ByteCodeDebugger.debugCxtBc->localVars.empty())
     {
-        g_Log.print("no locals\n", LogColor::Red);
+        g_ByteCodeDebugger.printCmdError("no locals");
         return BcDbgCommandResult::Continue;
     }
 
@@ -159,7 +159,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, co
     auto funcDecl = CastAst<AstFuncDecl>(g_ByteCodeDebugger.debugCxtBc->node, AstNodeKind::FuncDecl);
     if (!funcDecl->parameters || funcDecl->parameters->childs.empty())
     {
-        g_Log.print("no arguments\n", LogColor::Red);
+        g_ByteCodeDebugger.printCmdError("no arguments");
         return BcDbgCommandResult::Continue;
     }
 

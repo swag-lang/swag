@@ -6,7 +6,7 @@
 #include "Ast.h"
 #include "SyntaxColor.h"
 
-static void printTitleNameType(const Utf8& title, const Utf8& name, const Utf8& type)
+void ByteCodeDebugger::printTitleNameType(const Utf8& title, const Utf8& name, const Utf8& type)
 {
     g_Log.print(title.c_str(), LogColor::Gray);
     g_Log.print(" ");
@@ -17,6 +17,18 @@ static void printTitleNameType(const Utf8& title, const Utf8& name, const Utf8& 
     g_Log.print(name.c_str(), ByteCodeDebugger::COLOR_SRC_NAME);
     g_Log.print(" ");
     g_Log.print(type.c_str(), ByteCodeDebugger::COLOR_TYPE);
+    g_Log.eol();
+}
+
+void ByteCodeDebugger::printCmdError(const Utf8& msg)
+{
+    g_Log.print(msg.c_str(), LogColor::Red);
+    g_Log.eol();
+}
+
+void ByteCodeDebugger::printCmdResult(const Utf8& msg)
+{
+    g_Log.print(msg.c_str(), LogColor::Gray);
     g_Log.eol();
 }
 
@@ -116,18 +128,18 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
         auto inlined = ipNode->ownerInline;
         while (inlined)
         {
-            printTitleNameType("inlined", inlined->func->getScopedName(), inlined->func->typeInfo->getDisplayNameC());
+            g_ByteCodeDebugger.printTitleNameType("inlined", inlined->func->getScopedName(), inlined->func->typeInfo->getDisplayNameC());
             inlined = inlined->ownerInline;
         }
 
-        printTitleNameType("function", ipNode->ownerFct->getScopedName(), ipNode->ownerFct->typeInfo->getDisplayNameC());
+        g_ByteCodeDebugger.printTitleNameType("function", ipNode->ownerFct->getScopedName(), ipNode->ownerFct->typeInfo->getDisplayNameC());
     }
 
-    printTitleNameType("bytecode", bc->name, bc->typeInfoFunc->getDisplayNameC());
+    g_ByteCodeDebugger.printTitleNameType("bytecode", bc->name, bc->typeInfoFunc->getDisplayNameC());
     if (bc->sourceFile && bc->node)
     {
         auto loc = Fmt("%s:%u:%u", bc->sourceFile->path.string().c_str(), bc->node->token.startLocation.line + 1, bc->node->token.startLocation.column + 1);
-        printTitleNameType("bytecode location", loc, "");
+        g_ByteCodeDebugger.printTitleNameType("bytecode location", loc, "");
     }
     else if (bc->sourceFile)
     {
@@ -139,10 +151,10 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
     if (ipNode && ipNode->sourceFile)
     {
         auto loc = Fmt("%s:%u:%u", ipNode->sourceFile->path.string().c_str(), ipNode->token.startLocation.line + 1, ipNode->token.startLocation.column + 1);
-        printTitleNameType("instruction location", loc, "");
+        g_ByteCodeDebugger.printTitleNameType("instruction location", loc, "");
     }
 
-    printTitleNameType("stack level", Fmt("%u", context->debugStackFrameOffset), "");
+    g_ByteCodeDebugger.printTitleNameType("stack level", Fmt("%u", context->debugStackFrameOffset), "");
     return BcDbgCommandResult::Continue;
 }
 
@@ -302,7 +314,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
     expr.trim();
     if (expr.empty())
     {
-        g_Log.print("invalid 'x' expression\n", LogColor::Red);
+        g_ByteCodeDebugger.printCmdError("invalid 'x' expression");
         return BcDbgCommandResult::Continue;
     }
 
@@ -427,7 +439,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext* cont
         }
         else
         {
-            g_Log.print(Fmt("cannot find function '%s'\n", name.c_str()), LogColor::Red);
+            g_ByteCodeDebugger.printCmdError(Fmt("cannot find function '%s'", name.c_str()));
             return BcDbgCommandResult::Continue;
         }
     }
@@ -467,7 +479,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
         }
     }
     else
-        g_Log.print("no source code\n", LogColor::Red);
+        g_ByteCodeDebugger.printCmdError("no source code");
 
     return BcDbgCommandResult::Continue;
 }
@@ -491,7 +503,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
         }
         else
         {
-            g_Log.print(Fmt("cannot find function '%s'\n", name.c_str()), LogColor::Red);
+            g_ByteCodeDebugger.printCmdError(Fmt("cannot find function '%s'", name.c_str()));
             return BcDbgCommandResult::Continue;
         }
     }
@@ -518,10 +530,10 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
             }
         }
         else
-            g_Log.print("no source code\n", LogColor::Red);
+            g_ByteCodeDebugger.printCmdError("no source code");
     }
     else
-        g_Log.print("no source code\n", LogColor::Red);
+        g_ByteCodeDebugger.printCmdError("no source code");
 
     return BcDbgCommandResult::Continue;
 }

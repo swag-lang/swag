@@ -50,11 +50,11 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         if (silent)
             return false;
         if (g_SilentErrorMsg.empty())
-            g_Log.print("expression syntax error\n", LogColor::Red);
+            g_ByteCodeDebugger.printCmdError("expression syntax error");
         else
         {
             cleanErrMsg();
-            g_Log.print(Fmt("%s\n", g_SilentErrorMsg.c_str()), LogColor::Red);
+            g_ByteCodeDebugger.printCmdError(Fmt("%s", g_SilentErrorMsg.c_str()));
         }
         return false;
     }
@@ -77,7 +77,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         if (silent)
             return false;
         cleanErrMsg();
-        g_Log.print(Fmt("%s\n", g_SilentErrorMsg.c_str()), LogColor::Red);
+        g_ByteCodeDebugger.printCmdError(Fmt("%s", g_SilentErrorMsg.c_str()));
         return false;
     }
 
@@ -116,7 +116,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         if (silent)
             return false;
         cleanErrMsg();
-        g_Log.print(Fmt("%s\n", g_SilentErrorMsg.c_str()), LogColor::Red);
+        g_ByteCodeDebugger.printCmdError(Fmt("%s", g_SilentErrorMsg.c_str()));
         return false;
     }
 
@@ -147,11 +147,11 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         if (silent)
             return false;
         if (g_SilentErrorMsg.empty())
-            g_Log.print("cannot run expression\n", LogColor::Red);
+            g_ByteCodeDebugger.printCmdError("cannot run expression");
         else
         {
             cleanErrMsg();
-            g_Log.print(Fmt("%s\n", g_SilentErrorMsg.c_str()), LogColor::Red);
+            g_ByteCodeDebugger.printCmdError(Fmt("%s", g_SilentErrorMsg.c_str()));
         }
         return false;
     }
@@ -244,7 +244,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     {
         if (!concrete->isNativeIntegerOrRune() && !concrete->isNativeFloat())
         {
-            g_Log.print(Fmt("cannot apply print format to type '%s'\n", concrete->getDisplayNameC()), LogColor::Red);
+            g_ByteCodeDebugger.printCmdError(Fmt("cannot apply print format to type '%s'", concrete->getDisplayNameC()));
             return BcDbgCommandResult::Continue;
         }
 

@@ -163,6 +163,9 @@ struct ByteCodeDebugger
     bool mustBreak(ByteCodeRunContext* context);
     bool step(ByteCodeRunContext* context);
 
+    void printTitleNameType(const Utf8& title, const Utf8& name, const Utf8& type);
+    void printCmdError(const Utf8& msg);
+    void printCmdResult(const Utf8& msg);
     void printHelp();
     void printHelp(const BcDbgCommand& cmd);
 
