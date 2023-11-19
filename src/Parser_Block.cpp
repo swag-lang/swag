@@ -377,7 +377,7 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
     {
         auto var   = Ast::newVarDecl(sourceFile, name, node, this, AstNodeKind::VarDecl);
         var->token = tokenName;
-        var->addSpecFlags(AstVarDecl::SPECFLAG_CONST_ASSIGN);
+        var->addSpecFlags(AstVarDecl::SPECFLAG_CONST_ASSIGN | AstVarDecl::SPECFLAG_IS_LET);
         node->specificName = var;
 
         auto identifer         = Ast::newNode<AstNode>(this, AstNodeKind::Index, sourceFile, var);
