@@ -905,8 +905,9 @@ void Module::startBuilding(const BuildParameters& bp)
 
 void Module::printBC()
 {
+    ByteCodePrintOptions opt;
     for (auto bc : byteCodePrintBC)
-        bc->print();
+        bc->print(opt);
 }
 
 bool Module::mustEmitSafetyOverflow(AstNode* node, bool compileTime)

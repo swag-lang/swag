@@ -296,7 +296,10 @@ bool SemanticJob::doExecuteCompilerNode(SemanticContext* context, AstNode* node,
 
     SWAG_CHECK(collectAttributes(context, node, nullptr));
     if (node->attributeFlags & ATTRIBUTE_PRINT_GEN_BC)
-        node->extByteCode()->bc->print();
+    {
+        ByteCodePrintOptions opt;
+        node->extByteCode()->bc->print(opt);
+    }
 
     SWAG_CHECK(module->executeNode(sourceFile, node, context, &execParams));
     return true;

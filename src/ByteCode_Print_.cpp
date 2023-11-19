@@ -4,14 +4,15 @@
 #include "Ast.h"
 #include "Module.h"
 
-void ByteCode::printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine, SourceFile** lastFile)
+void ByteCode::printSourceCode(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, uint32_t* lastLine, SourceFile** lastFile)
 {
     if (ip->op == ByteCodeOp::End)
         return;
 
     // Print source code
-    auto loc  = ByteCode::getLocation(this, ip, true);
-    auto loc1 = ByteCode::getLocation(this, ip);
+    bool forDbg = options.curIp != nullptr;
+    auto loc    = ByteCode::getLocation(this, ip, true);
+    auto loc1   = ByteCode::getLocation(this, ip);
 
     if (!loc.location)
         return;
@@ -30,6 +31,9 @@ void ByteCode::printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine, Sour
         else
             g_Log.setColor(LogColor::Yellow);
         g_Log.print("         ");
+        if (forDbg)
+            g_Log.print("   ");
+
         if (s.empty())
             g_Log.print("<blank>");
         else
@@ -37,10 +41,13 @@ void ByteCode::printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine, Sour
 
         g_Log.eol();
 
+        /*
         g_Log.print("         ");
+        if (forDbg)
+            g_Log.print("   ");
         g_Log.setColor(LogColor::DarkMagenta);
         g_Log.print(Fmt("%s:%d", loc.file->name.c_str(), loc.location->line + 1));
-        g_Log.eol();
+        g_Log.eol();*/
     }
 }
 
@@ -225,15 +232,15 @@ Utf8 ByteCode::getInstructionReg(const char* header, const Register& reg, bool r
     return str;
 }
 
-void ByteCode::getPrintInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* curIp, PrintInstructionLine& line)
+void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, PrintInstructionLine& line)
 {
     int  i      = (int) (ip - out);
-    bool forDbg = curIp != nullptr;
+    bool forDbg = options.curIp != nullptr;
 
     // Instruction rank
     if (forDbg)
     {
-        if (ip == curIp)
+        if (ip == options.curIp)
             line.rank += "-> ";
         else
             line.rank += "   ";
@@ -335,11 +342,11 @@ void ByteCode::getPrintInstruction(ByteCodeInstruction* ip, ByteCodeInstruction*
 #endif
 }
 
-void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* curIp, const PrintInstructionLine& line)
+void ByteCode::printInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, const PrintInstructionLine& line)
 {
-    bool forDbg = curIp != nullptr;
+    bool forDbg = options.curIp != nullptr;
 
-    if (forDbg && ip == curIp)
+    if (forDbg && ip == options.curIp)
         g_Log.setColor(LogColor::Green);
     else if (forDbg)
         g_Log.setColor(LogColor::Gray);
@@ -349,7 +356,7 @@ void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* cu
     // Instruction rank
     g_Log.print(line.rank);
 
-    if (forDbg && ip == curIp)
+    if (forDbg && ip == options.curIp)
         g_Log.setColor(LogColor::Green);
     else if (forDbg)
         g_Log.setColor(LogColor::Gray);
@@ -468,7 +475,7 @@ static void align(Vector<ByteCode::PrintInstructionLine>& lines, RankStr what, b
     }
 }
 
-void ByteCode::alignPrintInstructions(Vector<PrintInstructionLine>& lines, bool defaultLen)
+void ByteCode::alignPrintInstructions(const ByteCodePrintOptions& options, Vector<PrintInstructionLine>& lines, bool defaultLen)
 {
     align(lines, RankStr::Rank, false, defaultLen ? 10 : 0);
     align(lines, RankStr::Name, true, defaultLen ? 25 : 0);
@@ -479,23 +486,52 @@ void ByteCode::alignPrintInstructions(Vector<PrintInstructionLine>& lines, bool 
 #endif
 }
 
-void ByteCode::printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* curIp)
+void ByteCode::printInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip)
 {
     PrintInstructionLine line;
 
-    getPrintInstruction(ip, curIp, line);
+    getPrintInstruction(options, ip, line);
 
     Vector<PrintInstructionLine> lines;
     lines.push_back(line);
-    alignPrintInstructions(lines, true);
+    alignPrintInstructions(options, lines, true);
 
-    printInstruction(ip, curIp, lines[0]);
+    printInstruction(options, ip, lines[0]);
 }
 
-void ByteCode::print(ByteCodeInstruction* curIp)
+void ByteCode::print(const ByteCodePrintOptions& options, uint32_t start, uint32_t count)
+{
+    uint32_t                     lastLine = UINT32_MAX;
+    SourceFile*                  lastFile = nullptr;
+    Vector<PrintInstructionLine> lines;
+
+    auto ip = out + start;
+    for (uint32_t i = 0; i < count; i++)
+    {
+        if (ip->op == ByteCodeOp::End)
+            break;
+        PrintInstructionLine line;
+        getPrintInstruction(options, ip++, line);
+        lines.push_back(line);
+    }
+
+    alignPrintInstructions(options, lines);
+
+    ip = out + start;
+    for (uint32_t i = 0; i < count; i++)
+    {
+        if (ip->op == ByteCodeOp::End)
+            break;
+        printSourceCode(options, ip, &lastLine, &lastFile);
+        printInstruction(options, ip++, lines[i]);
+    }
+}
+
+void ByteCode::print(const ByteCodePrintOptions& options)
 {
     g_Log.lock();
 
+    // Header
     g_Log.setColor(LogColor::Magenta);
     g_Log.print(sourceFile->path.string().c_str());
     g_Log.print(", ");
@@ -510,26 +546,8 @@ void ByteCode::print(ByteCodeInstruction* curIp)
 
     g_Log.eol();
 
-    uint32_t                     lastLine = UINT32_MAX;
-    SourceFile*                  lastFile = nullptr;
-    Vector<PrintInstructionLine> lines;
-
-    auto ip = out;
-    for (int i = 0; i < (int) numInstructions; i++)
-    {
-        PrintInstructionLine line;
-        getPrintInstruction(ip++, curIp, line);
-        lines.push_back(line);
-    }
-
-    alignPrintInstructions(lines);
-
-    ip = out;
-    for (int i = 0; i < (int) numInstructions; i++)
-    {
-        printSourceCode(ip, &lastLine, &lastFile);
-        printInstruction(ip++, curIp, lines[i]);
-    }
+    // Instructions
+    print(options, 0, numInstructions);
 
     g_Log.eol();
     g_Log.setDefaultColor();

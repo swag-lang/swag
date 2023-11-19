@@ -122,6 +122,7 @@ struct ByteCodeDebugger
     static Utf8 getByteCodeName(ByteCode* bc);
     static Utf8 getByteCodeFileName(ByteCode* bc);
     static void setup();
+    static void printSeparator();
     static bool getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN);
     static void printDebugContext(ByteCodeRunContext* context, bool force = false);
     static void computeDebugContext(ByteCodeRunContext* context);

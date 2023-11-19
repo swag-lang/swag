@@ -22,6 +22,11 @@ struct TypeInfoFuncAttr;
 struct ByteCode;
 struct SourceLocation;
 
+struct ByteCodePrintOptions
+{
+    ByteCodeInstruction* curIp = nullptr;
+};
+
 struct ByteCode
 {
     struct Location
@@ -195,14 +200,15 @@ struct ByteCode
 #endif
     };
 
-    void              printSourceCode(ByteCodeInstruction* ip, uint32_t* lastLine = nullptr, SourceFile** lastFile = nullptr);
+    void              printSourceCode(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, uint32_t* lastLine = nullptr, SourceFile** lastFile = nullptr);
     Utf8              getPrettyInstruction(ByteCodeInstruction* ip);
     Utf8              getInstructionReg(const char* name, const Register& reg, bool regW, bool regR, bool regImm);
-    void              getPrintInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* curIp, PrintInstructionLine& line);
-    void              printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* curIp, const PrintInstructionLine& line);
-    void              printInstruction(ByteCodeInstruction* ip, ByteCodeInstruction* curIp = nullptr);
-    void              alignPrintInstructions(Vector<PrintInstructionLine>& lines, bool defaultLen = false);
-    void              print(ByteCodeInstruction* curIp = nullptr);
+    void              getPrintInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, PrintInstructionLine& line);
+    void              printInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, const PrintInstructionLine& line);
+    void              printInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip);
+    void              alignPrintInstructions(const ByteCodePrintOptions& options, Vector<PrintInstructionLine>& lines, bool defaultLen = false);
+    void              print(const ByteCodePrintOptions& options, uint32_t start, uint32_t count);
+    void              print(const ByteCodePrintOptions& options);
     Utf8              getCallNameFromDecl();
     Utf8              getCallName();
     TypeInfoFuncAttr* getCallType();

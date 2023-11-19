@@ -351,7 +351,6 @@ ByteCodeInstruction* ByteCodeGenJob::emitGetFromSeg(ByteCodeGenContext* context,
     return nullptr;
 }
 
-
 ByteCodeInstruction* ByteCodeGenJob::emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2, uint32_t r3, const char* file, uint32_t line)
 {
     AstNode* node = context->node;
@@ -762,7 +761,8 @@ JobResult ByteCodeGenJob::execute()
 
                 if (originalNode->attributeFlags & ATTRIBUTE_PRINT_GEN_BC && !(originalNode->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
                 {
-                    context.bc->print();
+                    ByteCodePrintOptions opt;
+                    context.bc->print(opt);
                 }
             }
         }
@@ -819,7 +819,10 @@ JobResult ByteCodeGenJob::execute()
         if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC || (originalNode->ownerFct && originalNode->ownerFct->attributeFlags & ATTRIBUTE_PRINT_BC))
         {
             if (originalNode->attributeFlags & ATTRIBUTE_GENERATED_FUNC || originalNode->kind != AstNodeKind::FuncDecl)
-                context.bc->print();
+            {
+                ByteCodePrintOptions opt;
+                context.bc->print(opt);
+            }
         }
     }
 
@@ -842,13 +845,19 @@ JobResult ByteCodeGenJob::execute()
             {
                 Report::internalError(funcNode, Fmt("function '%s' does not release all registers !", funcNode->token.ctext()));
                 if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC)
-                    context.bc->print();
+                {
+                    ByteCodePrintOptions opt;
+                    context.bc->print(opt);
+                }
             }
             else if (context.bc->maxReservedRegisterRC < context.bc->availableRegistersRC.size())
             {
                 Report::internalError(funcNode, Fmt("function '%s' releases too many registers !", funcNode->token.ctext()));
                 if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC)
-                    context.bc->print();
+                {
+                    ByteCodePrintOptions opt;
+                    context.bc->print(opt);
+                }
             }
         }
     }

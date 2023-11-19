@@ -77,6 +77,15 @@ void ByteCodeDebugger::setup()
     // clang-format on
 }
 
+void ByteCodeDebugger::printSeparator()
+{
+    g_Log.setColor(LogColor::Green);
+    for (int i = 0; i < LINE_W; i++)
+        g_Log.print(LogSymbol::HorizontalLine);
+    g_Log.eol();
+    g_Log.setColor(LogColor::Gray);
+}
+
 bool ByteCodeDebugger::getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN)
 {
     regN = atoi(arg.c_str() + 1);
@@ -679,11 +688,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
 
         // Bar
         /////////////////////////////////////////
-        // g_Log.setColor(LogColor::Green);
-        // for (int i = 0; i < LINE_W; i++)
-        //     g_Log.print(LogSymbol::HorizontalLine);
-        // g_Log.eol();
-        g_Log.setColor(LogColor::Gray);
+        printSeparator();
 
         // Command
         /////////////////////////////////////////

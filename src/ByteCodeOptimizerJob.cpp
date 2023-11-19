@@ -20,7 +20,11 @@ JobResult ByteCodeOptimizerJob::execute()
         if (!ByteCodeOptimizer::optimize(optContext, bc, restart))
         {
             if (bc->node && bc->node->attributeFlags & ATTRIBUTE_PRINT_BC)
-                bc->print();
+            {
+                ByteCodePrintOptions opt;
+                bc->print(opt);
+            }
+
             return JobResult::ReleaseJob;
         }
     }

@@ -86,12 +86,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
 
     // Separation
     if (printSomething)
-    {
-        g_Log.setColor(LogColor::Green);
-        for (int i = 0; i < LINE_W; i++)
-            g_Log.print(LogSymbol::HorizontalLine);
-        g_Log.eol();
-    }
+        printSeparator();
 
     // Print instruction
     if (context->debugBcMode)
@@ -281,16 +276,9 @@ void ByteCodeDebugger::printInstructions(ByteCodeRunContext* context, ByteCode* 
         ip--;
     }
 
-    SourceFile* lastFile = nullptr;
-    uint32_t    lastLine = UINT32_MAX;
-    for (int i = 0; i < (cpt + count - 1); i++)
-    {
-        bc->printSourceCode(ip, &lastLine, &lastFile);
-        bc->printInstruction(ip, context->debugCxtIp);
-        if (ip->op == ByteCodeOp::End)
-            break;
-        ip++;
-    }
+    ByteCodePrintOptions opt;
+    opt.curIp = context->debugCxtIp;
+    bc->print(opt, (uint32_t) (ip - bc->out), cpt + count - 1);
 }
 
 BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
@@ -464,7 +452,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext* cont
         }
     }
 
-    toLogBc->print(toLogIp);
+    ByteCodePrintOptions opt;
+    opt.curIp = toLogIp;
+    toLogBc->print(opt);
     return BcDbgCommandResult::Continue;
 }
 

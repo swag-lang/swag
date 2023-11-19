@@ -602,7 +602,8 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
 
         if (structNode->attributeFlags & ATTRIBUTE_PRINT_GEN_BC)
         {
-            cxt.bc->print();
+            ByteCodePrintOptions opt;
+            cxt.bc->print(opt);
         }
         return true;
     }
@@ -623,7 +624,8 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
 
         if (structNode->attributeFlags & ATTRIBUTE_PRINT_GEN_BC)
         {
-            cxt.bc->print();
+            ByteCodePrintOptions opt;
+            cxt.bc->print(opt);
         }
         return true;
     }
@@ -778,7 +780,8 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_GEN_BC)
     {
-        cxt.bc->print();
+        ByteCodePrintOptions opt;
+        cxt.bc->print(opt);
     }
 
     return true;
@@ -890,7 +893,8 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_GEN_BC)
     {
-        cxt.bc->print();
+        ByteCodePrintOptions opt;
+        cxt.bc->print(opt);
     }
 
     sourceFile->module->addByteCodeFunc(opDrop);
@@ -1004,7 +1008,8 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_GEN_BC)
     {
-        cxt.bc->print();
+        ByteCodePrintOptions opt;
+        cxt.bc->print(opt);
     }
 
     sourceFile->module->addByteCodeFunc(opPostCopy);
@@ -1116,7 +1121,8 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_GEN_BC)
     {
-        cxt.bc->print();
+        ByteCodePrintOptions opt;
+        cxt.bc->print(opt);
     }
 
     sourceFile->module->addByteCodeFunc(opPostMove);
