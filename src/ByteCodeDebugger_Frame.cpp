@@ -29,16 +29,16 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrame(ByteCodeRunContext* context, const
 
     auto oldIndex                  = context->debugStackFrameOffset;
     context->debugStackFrameOffset = maxLevel - off;
-    computeDebugContext(context);
-    if (!context->debugCxtIp)
+    g_ByteCodeDebugger.computeDebugContext(context);
+    if (!g_ByteCodeDebugger.debugCxtIp)
     {
         context->debugStackFrameOffset = oldIndex;
-        computeDebugContext(context);
+        g_ByteCodeDebugger.computeDebugContext(context);
         g_Log.print("this frame is external; you cannot go there\n", LogColor::Red);
         return BcDbgCommandResult::Continue;
     }
 
-    printDebugContext(context);
+    g_ByteCodeDebugger.printDebugContext(context);
     return BcDbgCommandResult::Continue;
 }
 
@@ -61,16 +61,16 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameUp(ByteCodeRunContext* context, con
 
     auto oldIndex = context->debugStackFrameOffset;
     context->debugStackFrameOffset += off;
-    computeDebugContext(context);
-    if (!context->debugCxtIp)
+    g_ByteCodeDebugger.computeDebugContext(context);
+    if (!g_ByteCodeDebugger.debugCxtIp)
     {
         context->debugStackFrameOffset = oldIndex;
-        computeDebugContext(context);
+        g_ByteCodeDebugger.computeDebugContext(context);
         g_Log.print("the up frame is external; you cannot go there\n", LogColor::Red);
         return BcDbgCommandResult::Continue;
     }
 
-    printDebugContext(context);
+    g_ByteCodeDebugger.printDebugContext(context);
     return BcDbgCommandResult::Continue;
 }
 
@@ -92,15 +92,15 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameDown(ByteCodeRunContext* context, c
 
     auto oldIndex = context->debugStackFrameOffset;
     context->debugStackFrameOffset -= min(context->debugStackFrameOffset, off);
-    computeDebugContext(context);
-    if (!context->debugCxtIp)
+    g_ByteCodeDebugger.computeDebugContext(context);
+    if (!g_ByteCodeDebugger.debugCxtIp)
     {
         context->debugStackFrameOffset = oldIndex;
-        computeDebugContext(context);
+        g_ByteCodeDebugger.computeDebugContext(context);
         g_Log.print("the down frame is external; you cannot go there\n", LogColor::Red);
         return BcDbgCommandResult::Continue;
     }
 
-    printDebugContext(context);
+    g_ByteCodeDebugger.printDebugContext(context);
     return BcDbgCommandResult::Continue;
 }

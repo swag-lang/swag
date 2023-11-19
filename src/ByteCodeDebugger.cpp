@@ -4,7 +4,7 @@
 #include "SemanticJob.h"
 #include "ByteCodeDebugger.h"
 
-Vector<BcDbgCommand> ByteCodeDebugger::commands;
+ByteCodeDebugger g_ByteCodeDebugger;
 
 void ByteCodeDebugger::setup()
 {
@@ -89,15 +89,15 @@ void ByteCodeDebugger::printSeparator()
 bool ByteCodeDebugger::getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN)
 {
     regN = atoi(arg.c_str() + 1);
-    if (!context->getRegCount(context->debugCxtRc))
+    if (!context->getRegCount(debugCxtRc))
     {
         g_Log.print("no available register", LogColor::Red);
         return false;
     }
 
-    if (regN >= context->getRegCount(context->debugCxtRc))
+    if (regN >= context->getRegCount(debugCxtRc))
     {
-        g_Log.print(Fmt("invalid register number, maximum value is '%u'\n", (uint32_t) context->getRegCount(context->debugCxtRc) - 1), LogColor::Red);
+        g_Log.print(Fmt("invalid register number, maximum value is '%u'\n", (uint32_t) context->getRegCount(debugCxtRc) - 1), LogColor::Red);
         return false;
     }
 
@@ -106,13 +106,13 @@ bool ByteCodeDebugger::getRegIdx(ByteCodeRunContext* context, const Utf8& arg, i
 
 void ByteCodeDebugger::computeDebugContext(ByteCodeRunContext* context)
 {
-    context->debugCxtBc    = context->bc;
-    context->debugCxtIp    = context->ip;
-    context->debugCxtRc    = context->curRC;
-    context->debugCxtBp    = context->bp;
-    context->debugCxtSp    = context->sp;
-    context->debugCxtSpAlt = context->spAlt;
-    context->debugCxtStack = context->stack;
+    debugCxtBc    = context->bc;
+    debugCxtIp    = context->ip;
+    debugCxtRc    = context->curRC;
+    debugCxtBp    = context->bp;
+    debugCxtSp    = context->sp;
+    debugCxtSpAlt = context->spAlt;
+    debugCxtStack = context->stack;
     if (context->debugStackFrameOffset == 0)
         return;
 
@@ -133,20 +133,20 @@ void ByteCodeDebugger::computeDebugContext(ByteCodeRunContext* context)
         auto& step = steps[i];
         if (ns == context->debugStackFrameOffset)
         {
-            context->debugCxtBc    = step.bc;
-            context->debugCxtIp    = step.ip;
-            context->debugCxtBp    = step.bp;
-            context->debugCxtSp    = step.sp;
-            context->debugCxtSpAlt = step.spAlt;
-            context->debugCxtStack = step.stack;
+            debugCxtBc    = step.bc;
+            debugCxtIp    = step.ip;
+            debugCxtBp    = step.bp;
+            debugCxtSp    = step.sp;
+            debugCxtSpAlt = step.spAlt;
+            debugCxtStack = step.stack;
             break;
         }
 
         ns++;
         if (!step.ip)
             continue;
-        if (context->debugCxtRc)
-            context->debugCxtRc--;
+        if (debugCxtRc)
+            debugCxtRc--;
     }
 }
 
@@ -163,11 +163,11 @@ Utf8 ByteCodeDebugger::completion(ByteCodeRunContext* context, const Utf8& line,
     SemanticJob                       semJob;
     VectorNative<AlternativeScope>    scopeHierarchy;
     VectorNative<AlternativeScopeVar> scopeHierarchyVars;
-    semContext.sourceFile = context->debugCxtIp->node->sourceFile;
-    semContext.node       = context->debugCxtIp->node;
+    semContext.sourceFile = debugCxtIp->node->sourceFile;
+    semContext.node       = debugCxtIp->node;
     semContext.job        = &semJob;
 
-    if (SemanticJob::collectScopeHierarchy(&semContext, scopeHierarchy, scopeHierarchyVars, context->debugCxtIp->node, COLLECT_ALL))
+    if (SemanticJob::collectScopeHierarchy(&semContext, scopeHierarchy, scopeHierarchyVars, debugCxtIp->node, COLLECT_ALL))
     {
         for (const auto& p : scopeHierarchy)
         {
@@ -361,7 +361,7 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
         //////////////////////////////////
         case OS::Key::Tab:
         {
-            if (!context->debugCxtIp || !context->debugCxtIp->node || !context->debugCxtIp->node->sourceFile)
+            if (!debugCxtIp || !debugCxtIp->node || !debugCxtIp->node->sourceFile)
                 continue;
             if (cursorX != line.count)
                 continue;
@@ -403,47 +403,47 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
     auto ip           = context->ip;
     bool zapCurrentIp = false;
 
-    switch (context->debugStepMode)
+    switch (debugStepMode)
     {
-    case ByteCodeRunContext::DebugStepMode::ToNextBreakpoint:
+    case DebugStepMode::ToNextBreakpoint:
         zapCurrentIp = true;
         break;
 
-    case ByteCodeRunContext::DebugStepMode::NextLine:
+    case DebugStepMode::NextLine:
     {
-        if (context->debugBcMode)
+        if (debugBcMode)
         {
-            context->debugOn       = true;
-            context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+            context->debugOn = true;
+            debugStepMode    = DebugStepMode::None;
             break;
         }
 
-        auto loc = ByteCode::getLocation(context->bc, ip, context->debugLastBreakIp->node->ownerInline ? true : false);
+        auto loc = ByteCode::getLocation(context->bc, ip, debugLastBreakIp->node->ownerInline ? true : false);
         SWAG_ASSERT(loc.file && loc.location);
-        if (context->debugStepLastFile == loc.file && context->debugStepLastLocation && context->debugStepLastLocation->line == loc.location->line)
+        if (debugStepLastFile == loc.file && debugStepLastLocation && debugStepLastLocation->line == loc.location->line)
         {
             zapCurrentIp = true;
         }
         else
         {
-            context->debugOn       = true;
-            context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+            context->debugOn = true;
+            debugStepMode    = DebugStepMode::None;
         }
         break;
     }
-    case ByteCodeRunContext::DebugStepMode::NextLineStepOut:
+    case DebugStepMode::NextLineStepOut:
     {
         // If inside a sub function
-        if (context->curRC > context->debugStepRC)
+        if (context->curRC > debugStepRC)
         {
             zapCurrentIp = true;
             break;
         }
 
-        if (context->debugBcMode)
+        if (debugBcMode)
         {
-            context->debugOn       = true;
-            context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+            context->debugOn = true;
+            debugStepMode    = DebugStepMode::None;
             break;
         }
 
@@ -454,64 +454,64 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
         }
 
         // If last break was in a real function, and now we are in an inline block
-        if (!context->debugLastBreakIp->node->ownerInline && ip->node->ownerInline)
+        if (!debugLastBreakIp->node->ownerInline && ip->node->ownerInline)
         {
             zapCurrentIp = true;
             break;
         }
 
         // If last break was in an inline block, and we are in a sub inline block
-        if (context->debugLastBreakIp->node->ownerInline && context->debugLastBreakIp->node->ownerInline->isParentOf(ip->node->ownerInline))
+        if (debugLastBreakIp->node->ownerInline && debugLastBreakIp->node->ownerInline->isParentOf(ip->node->ownerInline))
         {
             zapCurrentIp = true;
             break;
         }
 
-        auto loc = ByteCode::getLocation(context->bc, ip, context->debugLastBreakIp->node->ownerInline ? true : false);
+        auto loc = ByteCode::getLocation(context->bc, ip, debugLastBreakIp->node->ownerInline ? true : false);
         SWAG_ASSERT(loc.file && loc.location);
-        if (context->debugStepLastFile == loc.file && context->debugStepLastLocation && context->debugStepLastLocation->line == loc.location->line)
+        if (debugStepLastFile == loc.file && debugStepLastLocation && debugStepLastLocation->line == loc.location->line)
         {
             zapCurrentIp = true;
         }
         else
         {
-            context->debugOn       = true;
-            context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+            context->debugOn = true;
+            debugStepMode    = DebugStepMode::None;
         }
         break;
     }
-    case ByteCodeRunContext::DebugStepMode::FinishedFunction:
+    case DebugStepMode::FinishedFunction:
     {
         // Top level function, break on ret
-        if (context->curRC == 0 && context->debugStepRC == -1 && ByteCode::isRet(ip))
+        if (context->curRC == 0 && debugStepRC == -1 && ByteCode::isRet(ip))
         {
-            context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+            debugStepMode = DebugStepMode::None;
             break;
         }
 
         // We are in a sub function
-        if (context->curRC > context->debugStepRC)
+        if (context->curRC > debugStepRC)
         {
             zapCurrentIp = true;
             break;
         }
 
         // If last break was in an inline block, and we are in a sub inline block
-        if (context->debugLastBreakIp->node->ownerInline && context->debugLastBreakIp->node->ownerInline->isParentOf(ip->node->ownerInline))
+        if (debugLastBreakIp->node->ownerInline && debugLastBreakIp->node->ownerInline->isParentOf(ip->node->ownerInline))
         {
             zapCurrentIp = true;
             break;
         }
 
         // We are in the same inline block
-        if (ip->node->ownerInline && context->debugLastBreakIp->node->ownerInline == ip->node->ownerInline)
+        if (ip->node->ownerInline && debugLastBreakIp->node->ownerInline == ip->node->ownerInline)
         {
             zapCurrentIp = true;
             break;
         }
 
-        context->debugOn       = true;
-        context->debugStepMode = ByteCodeRunContext::DebugStepMode::None;
+        context->debugOn = true;
+        debugStepMode    = DebugStepMode::None;
         break;
     }
     default:
@@ -544,7 +544,7 @@ bool ByteCodeDebugger::processCommandLine(ByteCodeRunContext* context, Vector<Ut
                 err = true;
                 continue;
             }
-            auto& regP = context->getRegBuffer(context->debugCxtRc)[regN];
+            auto& regP = context->getRegBuffer(debugCxtRc)[regN];
             cmds[i]    = Fmt("0x%llx", regP.u64);
         }
 
@@ -627,20 +627,20 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
 
         g_Log.print("#### @breakpoint() hit ####\n", LogColor::Magenta);
 
-        context->debugEntry             = false;
-        context->debugStepMode          = ByteCodeRunContext::DebugStepMode::None;
-        context->debugStepLastLocation  = nullptr;
-        context->debugStepLastFile      = nullptr;
-        context->debugStackFrameOffset  = 0;
-        context->debugForcePrintContext = true;
+        context->debugEntry            = false;
+        context->debugStackFrameOffset = 0;
+        debugStepMode                  = DebugStepMode::None;
+        debugStepLastLocation          = nullptr;
+        debugStepLastFile              = nullptr;
+        debugForcePrintContext         = true;
     }
 
     // Check breakpoints/step mode
     checkBreakpoints(context);
     if (!mustBreak(context))
     {
-        context->debugLastCurRC = context->curRC;
-        context->debugLastIp    = ip;
+        debugLastCurRC = context->curRC;
+        debugLastIp    = ip;
         return true;
     }
 
@@ -662,13 +662,13 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
 
         if (line.empty())
         {
-            line = context->debugLastLine;
+            line = debugLastLine;
             if (line.empty())
                 continue;
         }
 
-        context->debugLastLine    = line;
-        context->debugLastBreakIp = ip;
+        debugLastLine    = line;
+        debugLastBreakIp = ip;
 
         // Split in command + parameters
         Utf8         cmd;
@@ -720,7 +720,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         continue;
     }
 
-    context->debugLastCurRC = context->curRC;
-    context->debugLastIp    = ip;
+    debugLastCurRC = context->curRC;
+    debugLastIp    = ip;
     return true;
 }

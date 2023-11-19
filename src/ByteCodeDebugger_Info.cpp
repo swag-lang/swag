@@ -36,9 +36,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
             if (!bc->out)
                 continue;
             total++;
-            if (filter.empty() || getByteCodeName(bc).find(filter) != -1 || getByteCodeFileName(bc).find(filter) != -1)
+            if (filter.empty() || g_ByteCodeDebugger.getByteCodeName(bc).find(filter) != -1 || g_ByteCodeDebugger.getByteCodeFileName(bc).find(filter) != -1)
             {
-                Utf8 str = Fmt("%s%s%s ", COLOR_NAME, getByteCodeName(bc).c_str(), COLOR_DEFAULT).c_str();
+                Utf8 str = Fmt("%s%s%s ", COLOR_NAME, g_ByteCodeDebugger.getByteCodeName(bc).c_str(), COLOR_DEFAULT).c_str();
                 auto loc = ByteCode::getLocation(bc, bc->out);
                 str += Fmt(" %s%s%s ", COLOR_TYPE, bc->getCallType()->getDisplayNameC(), COLOR_DEFAULT);
                 if (loc.file)
@@ -92,13 +92,13 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, 
     if (cmds.size() > 2)
         return BcDbgCommandResult::BadArguments;
 
-    if (context->debugCxtBc->localVars.empty())
+    if (g_ByteCodeDebugger.debugCxtBc->localVars.empty())
     {
         g_Log.print("no locals\n", LogColor::Red);
         return BcDbgCommandResult::Continue;
     }
 
-    for (auto l : context->debugCxtBc->localVars)
+    for (auto l : g_ByteCodeDebugger.debugCxtBc->localVars)
     {
         auto over = l->resolvedSymbolOverload;
         if (!over)
@@ -109,8 +109,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, 
         Utf8           str = Fmt("(%s%s%s) %s%s%s = ", COLOR_TYPE, over->typeInfo->getDisplayNameC(), COLOR_DEFAULT, COLOR_NAME, over->symbol->name.c_str(), COLOR_DEFAULT);
         EvaluateResult res;
         res.type = over->typeInfo;
-        res.addr = context->debugCxtBp + over->computedValue.storageOffset;
-        appendTypedValue(context, str, res, 0);
+        res.addr = g_ByteCodeDebugger.debugCxtBp + over->computedValue.storageOffset;
+        g_ByteCodeDebugger.appendTypedValue(context, str, res, 0);
         g_Log.print(str);
         if (str.back() != '\n')
             g_Log.eol();
@@ -129,16 +129,16 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoRegs(ByteCodeRunContext* context, co
     fmt.bitCount = 64;
     if (cmds.size() > 2)
     {
-        if (!getValueFormat(cmds[2], fmt))
+        if (!g_ByteCodeDebugger.getValueFormat(cmds[2], fmt))
             return BcDbgCommandResult::BadArguments;
     }
 
     g_Log.setColor(LogColor::Gray);
-    for (int i = 0; i < context->getRegCount(context->debugCxtRc); i++)
+    for (int i = 0; i < context->getRegCount(g_ByteCodeDebugger.debugCxtRc); i++)
     {
-        auto& regP = context->getRegBuffer(context->debugCxtRc)[i];
+        auto& regP = context->getRegBuffer(g_ByteCodeDebugger.debugCxtRc)[i];
         Utf8  str;
-        appendLiteralValue(context, str, fmt, &regP);
+        g_ByteCodeDebugger.appendLiteralValue(context, str, fmt, &regP);
         str.trim();
         g_Log.print(Fmt("%s$r%d%s = ", COLOR_NAME, i, COLOR_DEFAULT));
         g_Log.print(str);
@@ -156,7 +156,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, co
     if (cmds.size() > 2)
         return BcDbgCommandResult::BadArguments;
 
-    auto funcDecl = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
+    auto funcDecl = CastAst<AstFuncDecl>(g_ByteCodeDebugger.debugCxtBc->node, AstNodeKind::FuncDecl);
     if (!funcDecl->parameters || funcDecl->parameters->childs.empty())
     {
         g_Log.print("no arguments\n", LogColor::Red);
@@ -171,8 +171,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, co
         Utf8           str = Fmt("(%s%s%s) %s%s%s = ", COLOR_TYPE, over->typeInfo->getDisplayNameC(), COLOR_DEFAULT, COLOR_NAME, over->symbol->name.c_str(), COLOR_DEFAULT);
         EvaluateResult res;
         res.type = over->typeInfo;
-        res.addr = context->debugCxtBp + over->computedValue.storageOffset;
-        appendTypedValue(context, str, res, 0);
+        res.addr = g_ByteCodeDebugger.debugCxtBp + over->computedValue.storageOffset;
+        g_ByteCodeDebugger.appendTypedValue(context, str, res, 0);
         g_Log.print(str);
         if (str.back() != '\n')
             g_Log.eol();

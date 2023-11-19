@@ -39,6 +39,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext* context, const 
     if (cmds.size() > 1)
         return BcDbgCommandResult::BadArguments;
 
-    printHelp();
+    g_ByteCodeDebugger.printHelp();
     return BcDbgCommandResult::Continue;
 }

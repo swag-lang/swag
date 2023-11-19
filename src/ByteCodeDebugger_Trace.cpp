@@ -8,8 +8,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdStep(ByteCodeRunContext* context, const 
     if (cmds.size() > 1)
         return BcDbgCommandResult::BadArguments;
 
-    context->debugStackFrameOffset = 0;
-    context->debugStepMode         = ByteCodeRunContext::DebugStepMode::NextLine;
+    context->debugStackFrameOffset   = 0;
+    g_ByteCodeDebugger.debugStepMode = DebugStepMode::NextLine;
     return BcDbgCommandResult::Break;
 }
 
@@ -18,9 +18,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdNext(ByteCodeRunContext* context, const 
     if (cmds.size() > 1)
         return BcDbgCommandResult::BadArguments;
 
-    context->debugStackFrameOffset = 0;
-    context->debugStepMode         = ByteCodeRunContext::DebugStepMode::NextLineStepOut;
-    context->debugStepRC           = context->curRC;
+    context->debugStackFrameOffset   = 0;
+    g_ByteCodeDebugger.debugStepMode = DebugStepMode::NextLineStepOut;
+    g_ByteCodeDebugger.debugStepRC   = context->curRC;
     return BcDbgCommandResult::Break;
 }
 
@@ -29,12 +29,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdFinish(ByteCodeRunContext* context, cons
     if (cmds.size() > 1)
         return BcDbgCommandResult::BadArguments;
 
-    context->debugStackFrameOffset = 0;
-    context->debugStepMode         = ByteCodeRunContext::DebugStepMode::FinishedFunction;
-    if (context->debugLastBreakIp->node->ownerInline)
-        context->debugStepRC = context->curRC;
+    context->debugStackFrameOffset   = 0;
+    g_ByteCodeDebugger.debugStepMode = DebugStepMode::FinishedFunction;
+    if (g_ByteCodeDebugger.debugLastBreakIp->node->ownerInline)
+        g_ByteCodeDebugger.debugStepRC = context->curRC;
     else
-        context->debugStepRC = context->curRC - 1;
+        g_ByteCodeDebugger.debugStepRC = context->curRC - 1;
     return BcDbgCommandResult::Break;
 }
 
@@ -44,9 +44,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdContinue(ByteCodeRunContext* context, co
         return BcDbgCommandResult::BadArguments;
 
     g_Log.print("continue...\n", LogColor::Gray);
-    context->debugStackFrameOffset = 0;
-    context->debugStepMode         = ByteCodeRunContext::DebugStepMode::ToNextBreakpoint;
-    context->debugOn               = false;
+    context->debugOn                 = false;
+    context->debugStackFrameOffset   = 0;
+    g_ByteCodeDebugger.debugStepMode = DebugStepMode::ToNextBreakpoint;
     return BcDbgCommandResult::Break;
 }
 
@@ -60,7 +60,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
     context->debugStackFrameOffset = 0;
 
     uint32_t to = (uint32_t) atoi(cmds[1].c_str());
-    if (context->debugBcMode)
+    if (g_ByteCodeDebugger.debugBcMode)
     {
         if (to >= context->bc->numInstructions - 1)
         {
@@ -68,8 +68,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
             return BcDbgCommandResult::Continue;
         }
 
-        context->ip         = context->bc->out + to;
-        context->debugCxtIp = context->ip;
+        context->ip                   = context->bc->out + to;
+        g_ByteCodeDebugger.debugCxtIp = context->ip;
     }
     else
     {
@@ -85,8 +85,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
             auto loc = ByteCode::getLocation(context->bc, curIp);
             if (loc.location && loc.location->line + 1 == to)
             {
-                context->ip         = curIp;
-                context->debugCxtIp = context->ip;
+                context->ip                   = curIp;
+                g_ByteCodeDebugger.debugCxtIp = context->ip;
                 break;
             }
 
@@ -94,7 +94,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
         }
     }
 
-    printDebugContext(context);
+    g_ByteCodeDebugger.printDebugContext(context);
     return BcDbgCommandResult::Continue;
 }
 
@@ -105,18 +105,18 @@ BcDbgCommandResult ByteCodeDebugger::cmdUntil(ByteCodeRunContext* context, const
     if (!Utf8::isNumber(cmds[1].c_str()))
         return BcDbgCommandResult::BadArguments;
 
-    ByteCodeRunContext::DebugBreakpoint bkp;
-    if (context->debugBcMode)
-        bkp.type = ByteCodeRunContext::DebugBkpType::InstructionIndex;
+    DebugBreakpoint bkp;
+    if (g_ByteCodeDebugger.debugBcMode)
+        bkp.type = DebugBkpType::InstructionIndex;
     else
-        bkp.type = ByteCodeRunContext::DebugBkpType::FileLine;
-    bkp.bc         = context->debugCxtBc;
-    bkp.name       = context->debugStepLastFile->name;
+        bkp.type = DebugBkpType::FileLine;
+    bkp.bc         = g_ByteCodeDebugger.debugCxtBc;
+    bkp.name       = g_ByteCodeDebugger.debugStepLastFile->name;
     bkp.line       = atoi(cmds[1].c_str());
     bkp.autoRemove = true;
-    addBreakpoint(context, bkp);
-    context->debugStackFrameOffset = 0;
-    context->debugStepMode         = ByteCodeRunContext::DebugStepMode::ToNextBreakpoint;
+    g_ByteCodeDebugger.addBreakpoint(context, bkp);
+    context->debugStackFrameOffset   = 0;
+    g_ByteCodeDebugger.debugStepMode = DebugStepMode::ToNextBreakpoint;
     return BcDbgCommandResult::Break;
 }
 
@@ -127,12 +127,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdMode(ByteCodeRunContext* context, const 
 
     if (cmds[1] == "bc")
     {
-        context->debugBcMode = !context->debugBcMode;
-        if (context->debugBcMode)
+        g_ByteCodeDebugger.debugBcMode = !g_ByteCodeDebugger.debugBcMode;
+        if (g_ByteCodeDebugger.debugBcMode)
             g_Log.print("=> bytecode mode\n", LogColor::Gray);
         else
             g_Log.print("=> source code mode\n", LogColor::Gray);
-        printDebugContext(context, true);
+        g_ByteCodeDebugger.printDebugContext(context, true);
     }
     else if (cmds[1] == "inline")
     {
@@ -141,7 +141,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMode(ByteCodeRunContext* context, const 
             g_Log.print("=> inline mode\n", LogColor::Gray);
         else
             g_Log.print("=> no inline mode\n", LogColor::Gray);
-        printDebugContext(context, true);
+        g_ByteCodeDebugger.printDebugContext(context, true);
     }
     else if (cmds[1] == "bkp")
     {

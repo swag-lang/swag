@@ -127,59 +127,11 @@ struct ByteCodeRunContext
     SymbolOverload*                internalPanicSymbol    = nullptr;
     Utf8                           internalPanicHint;
 
-    // Debugger
-    enum class DebugStepMode
-    {
-        None,
-        NextLine,
-        NextLineStepOut,
-        FinishedFunction,
-        ToNextBreakpoint,
-    };
-
-    enum class DebugBkpType
-    {
-        FuncName,
-        FileLine,
-        InstructionIndex,
-    };
-
-    struct DebugBreakpoint
-    {
-        DebugBkpType type;
-        Utf8         name;
-        ByteCode*    bc           = nullptr;
-        uint32_t     line         = 0;
-        bool         disabled     = false;
-        bool         autoDisabled = false;
-        bool         autoRemove   = false;
-    };
-
-    ByteCodeInstruction*    debugLastIp           = nullptr;
-    ByteCodeInstruction*    debugLastBreakIp      = nullptr;
-    SourceFile*             debugStepLastFile     = nullptr;
-    SourceLocation*         debugStepLastLocation = nullptr;
-    AstNode*                debugStepLastFunc     = nullptr;
-    ByteCode*               debugCxtBc            = nullptr;
-    ByteCode*               debugLastBc           = nullptr;
-    ByteCodeInstruction*    debugCxtIp            = nullptr;
-    uint8_t*                debugCxtBp            = nullptr;
-    uint8_t*                debugCxtSp            = nullptr;
-    uint8_t*                debugCxtSpAlt         = nullptr;
-    uint8_t*                debugCxtStack         = nullptr;
-    uint32_t                debugLastCurRC        = 0;
-    int32_t                 debugStepRC           = 0;
-    DebugStepMode           debugStepMode         = DebugStepMode::None;
-    uint32_t                debugStackFrameOffset = 0;
-    uint32_t                debugCxtRc            = 0;
-    bool                    debugOn;
-    uint32_t                debugBcMode            = false;
-    bool                    debugRaiseStart        = false;
-    bool                    debugEntry             = false;
-    bool                    debugAccept            = true;
-    bool                    debugForcePrintContext = false;
-    Vector<DebugBreakpoint> debugBreakpoints;
-    Utf8                    debugLastLine;
+    uint32_t debugStackFrameOffset = 0;
+    bool     debugRaiseStart       = false;
+    bool     debugOn               = false;
+    bool     debugAccept           = true;
+    bool     debugEntry            = false;
 };
 
 extern bool g_Exiting;

@@ -32,15 +32,15 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
 {
     PushSilentError se;
 
-    auto sourceFile = context->debugCxtBc->sourceFile;
+    auto sourceFile = debugCxtBc->sourceFile;
 
     // Syntax
     AstNode parent;
     Ast::constructNode(&parent);
-    parent.ownerScope = context->debugCxtIp->node ? context->debugCxtIp->node->ownerScope : nullptr;
-    parent.ownerFct   = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
+    parent.ownerScope = debugCxtIp->node ? debugCxtIp->node->ownerScope : nullptr;
+    parent.ownerFct   = CastAst<AstFuncDecl>(debugCxtBc->node, AstNodeKind::FuncDecl);
     parent.sourceFile = sourceFile;
-    parent.parent     = context->debugCxtIp->node;
+    parent.parent     = debugCxtIp->node;
 
     JobContext jobContext;
     Parser     parser;
@@ -125,10 +125,10 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     ByteCodeRunContext runContext;
     ByteCodeStack      stackTrace;
     ExecuteNodeParams  execParams;
-    execParams.inheritSp    = context->debugCxtSp;
-    execParams.inheritSpAlt = context->debugCxtSpAlt;
-    execParams.inheritStack = context->debugCxtStack;
-    execParams.inheritBp    = context->debugCxtBp;
+    execParams.inheritSp    = debugCxtSp;
+    execParams.inheritSpAlt = debugCxtSpAlt;
+    execParams.inheritStack = debugCxtStack;
+    execParams.inheritBp    = debugCxtBp;
     execParams.forDebugger  = true;
     runContext.debugAccept  = false;
     runContext.sharedStack  = true;
@@ -168,14 +168,14 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
 
 bool ByteCodeDebugger::evalExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res, bool silent)
 {
-    auto funcDecl = CastAst<AstFuncDecl>(context->debugCxtBc->node, AstNodeKind::FuncDecl);
-    for (auto l : context->debugCxtBc->localVars)
+    auto funcDecl = CastAst<AstFuncDecl>(debugCxtBc->node, AstNodeKind::FuncDecl);
+    for (auto l : debugCxtBc->localVars)
     {
         auto over = l->resolvedSymbolOverload;
         if (over && over->symbol->name == expr)
         {
             res.type = over->typeInfo;
-            res.addr = context->debugCxtBp + over->computedValue.storageOffset;
+            res.addr = debugCxtBp + over->computedValue.storageOffset;
             return true;
         }
     }
@@ -188,7 +188,7 @@ bool ByteCodeDebugger::evalExpression(ByteCodeRunContext* context, const Utf8& e
             if (over && over->symbol->name == expr)
             {
                 res.type = over->typeInfo;
-                res.addr = context->debugCxtBp + over->computedValue.storageOffset;
+                res.addr = debugCxtBp + over->computedValue.storageOffset;
                 return true;
             }
         }
@@ -203,7 +203,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdExecute(ByteCodeRunContext* context, con
         return BcDbgCommandResult::BadArguments;
 
     EvaluateResult res;
-    evalDynExpression(context, cmdExpr, res, CompilerAstKind::EmbeddedInstruction);
+    g_ByteCodeDebugger.evalDynExpression(context, cmdExpr, res, CompilerAstKind::EmbeddedInstruction);
     return BcDbgCommandResult::Continue;
 }
 
@@ -220,7 +220,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     bool hasFormat = false;
     if (cmds.size() > 1)
     {
-        if (getValueFormat(cmds[1], fmt))
+        if (g_ByteCodeDebugger.getValueFormat(cmds[1], fmt))
         {
             hasFormat = true;
             expr.clear();
@@ -233,7 +233,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     }
 
     EvaluateResult res;
-    if (!evalExpression(context, expr, res))
+    if (!g_ByteCodeDebugger.evalExpression(context, expr, res))
         return BcDbgCommandResult::Continue;
     if (res.type->isVoid())
         return BcDbgCommandResult::Continue;
@@ -250,12 +250,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
 
         if (!res.addr && res.value)
             res.addr = &res.value->reg;
-        appendLiteralValue(context, str, fmt, res.addr);
+        g_ByteCodeDebugger.appendLiteralValue(context, str, fmt, res.addr);
     }
     else
     {
         str = Fmt("(%s%s%s) ", COLOR_TYPE, res.type->getDisplayNameC(), COLOR_DEFAULT);
-        appendTypedValue(context, str, res, 0);
+        g_ByteCodeDebugger.appendTypedValue(context, str, res, 0);
     }
 
     g_Log.print(str);
