@@ -22,6 +22,7 @@ impl ScratchAllocator
     // Free a block, if possible.
     mtd free(addr: *void, size: u64)
     {
+        @assert(allocator != null)
         var req: AllocatorRequest
         req.mode = .Free
         req.address = addr
@@ -32,6 +33,7 @@ impl ScratchAllocator
     // Allocate a block
     mtd alloc(size: u64, alignement: u32 = 0)->*void
     {
+        @assert(allocator != null)
         var req: AllocatorRequest
         req.mode = .Alloc
         req.size = size
