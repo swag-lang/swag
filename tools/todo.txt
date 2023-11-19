@@ -48,11 +48,22 @@ type const any ? @dataof() sur ça donne un pointeur const
 
 
 ****************************************
-PENIBLE
+BUG
 ****************************************
 
 -------------------------------------
 RACE CONDITION :BecauseOfThat (pb du IAllocator dans le bootstrap qui se resoud pas)
+-------------------------------------
+throw dans un #init (lancer une script .swgs avec une redirection de console "> a.txt"), crash #init core
+-------------------------------------
+
+
+
+
+****************************************
+PENIBLE
+****************************************
+
 -------------------------------------
 PB du cross compile avec le full compile time exec. BIG BIG BIG !!!
 -------------------------------------
@@ -132,7 +143,8 @@ OPTIMS
          compiler2738.swg:19
 00000019  AffectOpPlusEqS32_Safe  A(1) B{0x1}       .E. .B.....  [r1] += 1
 -------------------------------------
-inline auto ?
+inline auto ? 
+si une fonction est appelée une seule fois ?
 -------------------------------------
 pass orEq/andEq/xOrEq/shiftEq en mode Stack StackStack. Dans les faits, plein d'autres instructions pourraient avoir ce mode.
 -------------------------------------
