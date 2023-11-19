@@ -784,23 +784,24 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     // String
     else if (typeInfo->isString())
     {
-        auto varDecl        = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
+        auto varDecl = Ast::newVarDecl(sourceFile, Utf8::format("__tmp%u", id), node);
+        varDecl->addSpecFlags(AstVarDecl::SPECFLAG_CONST_ASSIGN | AstVarDecl::SPECFLAG_IS_LET);
         varDecl->assignment = Ast::clone(node->expression, varDecl);
         newVar              = varDecl;
 
         firstAliasVar = 1;
         content += "{ ";
-        content += Fmt("var __addr%u = @dataof(__tmp%u); ", id, id);
+        content += Fmt("let __addr%u = @dataof(__tmp%u); ", id, id);
         content += Fmt("loop%s __tmp%u { ", visitBack.c_str(), id);
         if (node->specFlags & AstVisit::SPECFLAG_WANT_POINTER)
         {
-            content += "var ";
+            content += "let ";
             content += alias0Name;
             content += Fmt(" = __addr%u + @index; ", id);
         }
         else
         {
-            content += "var ";
+            content += "let ";
             content += alias0Name;
             content += Fmt(" = __addr%u[@index]; ", id);
         }
@@ -816,7 +817,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         SWAG_VERIFY(!(node->specFlags & AstVisit::SPECFLAG_WANT_POINTER), context->report({node, node->token, Err(Err0627)}));
         content += Fmt("{ loop%s %s { ", visitBack.c_str(), (const char*) concat.firstBucket->datas);
         firstAliasVar = 0;
-        content += "var ";
+        content += "let ";
         content += alias0Name;
         content += Fmt(" = %s[@index]; ", (const char*) concat.firstBucket->datas);
 
@@ -830,10 +831,10 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     {
         auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
         SWAG_VERIFY(!(node->specFlags & AstVisit::SPECFLAG_WANT_POINTER), context->report({node, node->token, Err(Err0636)}));
-        content += Fmt("{ var __addr%u = @typeof(%s); ", id, (const char*) concat.firstBucket->datas);
+        content += Fmt("{ let __addr%u = @typeof(%s); ", id, (const char*) concat.firstBucket->datas);
         content += Fmt("loop%s %d { ", visitBack.c_str(), typeEnum->values.size());
         firstAliasVar = 1;
-        content += "var ";
+        content += "let ";
         content += alias0Name;
         content += " = dref cast(const* ";
         content += typeInfo->name;
