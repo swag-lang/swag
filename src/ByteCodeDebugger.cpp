@@ -583,7 +583,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         if (firstOne)
         {
             firstOne = false;
-            g_Log.setColor(LogColor::Magenta);
+            g_Log.setColor(LogColor::Gray);
 
             g_Log.eol();
             for (int i = 0; i < LINE_W; i++)
@@ -625,7 +625,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             g_Log.setColor(LogColor::Gray);
         }
 
-        g_Log.print("#### @breakpoint() hit ####\n", LogColor::Magenta);
+        g_Log.print("## @breakpoint() hit\n", LogColor::Green);
 
         context->debugEntry            = false;
         context->debugStackFrameOffset = 0;
@@ -649,6 +649,10 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
 
     while (true)
     {
+        // Bar
+        /////////////////////////////////////////
+        printSeparator();
+
         // Prompt
         /////////////////////////////////////////
 
@@ -685,10 +689,6 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         // Replace some stuff
         if (!processCommandLine(context, cmds, line, cmdExpr))
             continue;
-
-        // Bar
-        /////////////////////////////////////////
-        printSeparator();
 
         // Command
         /////////////////////////////////////////

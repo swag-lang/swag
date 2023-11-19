@@ -38,9 +38,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
             total++;
             if (filter.empty() || g_ByteCodeDebugger.getByteCodeName(bc).find(filter) != -1 || g_ByteCodeDebugger.getByteCodeFileName(bc).find(filter) != -1)
             {
-                Utf8 str = Fmt("%s%s%s ", COLOR_NAME, g_ByteCodeDebugger.getByteCodeName(bc).c_str(), COLOR_DEFAULT).c_str();
+                Utf8 str = Fmt("%s%s%s ", COLOR_VTS_NAME, g_ByteCodeDebugger.getByteCodeName(bc).c_str(), COLOR_VTS_DEFAULT).c_str();
                 auto loc = ByteCode::getLocation(bc, bc->out);
-                str += Fmt(" %s%s%s ", COLOR_TYPE, bc->getCallType()->getDisplayNameC(), COLOR_DEFAULT);
+                str += Fmt(" %s%s%s ", COLOR_VTS_TYPE, bc->getCallType()->getDisplayNameC(), COLOR_VTS_DEFAULT);
                 if (loc.file)
                     str += Fmt("%s", loc.file->name.c_str());
                 if (loc.location)
@@ -106,7 +106,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, 
         // Generated
         if (over->symbol->name.length() > 2 && over->symbol->name[0] == '_' && over->symbol->name[1] == '_')
             continue;
-        Utf8           str = Fmt("(%s%s%s) %s%s%s = ", COLOR_TYPE, over->typeInfo->getDisplayNameC(), COLOR_DEFAULT, COLOR_NAME, over->symbol->name.c_str(), COLOR_DEFAULT);
+        Utf8           str = Fmt("(%s%s%s) %s%s%s = ", COLOR_VTS_TYPE, over->typeInfo->getDisplayNameC(), COLOR_VTS_DEFAULT, COLOR_VTS_NAME, over->symbol->name.c_str(), COLOR_VTS_DEFAULT);
         EvaluateResult res;
         res.type = over->typeInfo;
         res.addr = g_ByteCodeDebugger.debugCxtBp + over->computedValue.storageOffset;
@@ -140,13 +140,13 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoRegs(ByteCodeRunContext* context, co
         Utf8  str;
         g_ByteCodeDebugger.appendLiteralValue(context, str, fmt, &regP);
         str.trim();
-        g_Log.print(Fmt("%s$r%d%s = ", COLOR_NAME, i, COLOR_DEFAULT));
+        g_Log.print(Fmt("%s$r%d%s = ", COLOR_VTS_NAME, i, COLOR_VTS_DEFAULT));
         g_Log.print(str);
         g_Log.eol();
     }
 
-    g_Log.print(Fmt("%s$sp%s = 0x%016llx\n", COLOR_NAME, COLOR_DEFAULT, context->sp));
-    g_Log.print(Fmt("%s$bp%s = 0x%016llx\n", COLOR_NAME, COLOR_DEFAULT, context->bp));
+    g_Log.print(Fmt("%s$sp%s = 0x%016llx\n", COLOR_VTS_NAME, COLOR_VTS_DEFAULT, context->sp));
+    g_Log.print(Fmt("%s$bp%s = 0x%016llx\n", COLOR_VTS_NAME, COLOR_VTS_DEFAULT, context->bp));
 
     return BcDbgCommandResult::Continue;
 }
@@ -168,7 +168,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, co
         auto over = l->resolvedSymbolOverload;
         if (!over)
             continue;
-        Utf8           str = Fmt("(%s%s%s) %s%s%s = ", COLOR_TYPE, over->typeInfo->getDisplayNameC(), COLOR_DEFAULT, COLOR_NAME, over->symbol->name.c_str(), COLOR_DEFAULT);
+        Utf8           str = Fmt("(%s%s%s) %s%s%s = ", COLOR_VTS_TYPE, over->typeInfo->getDisplayNameC(), COLOR_VTS_DEFAULT, COLOR_VTS_NAME, over->symbol->name.c_str(), COLOR_VTS_DEFAULT);
         EvaluateResult res;
         res.type = over->typeInfo;
         res.addr = g_ByteCodeDebugger.debugCxtBp + over->computedValue.storageOffset;

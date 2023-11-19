@@ -6,6 +6,20 @@
 #include "Ast.h"
 #include "SyntaxColor.h"
 
+static void printTitleNameType(const Utf8& title, const Utf8& name, const Utf8& type)
+{
+    g_Log.print(title.c_str(), LogColor::Gray);
+    g_Log.print(" ");
+    int len = title.length();
+    while (len++ < 25)
+        g_Log.print(".");
+    g_Log.print(" ");
+    g_Log.print(name.c_str(), ByteCodeDebugger::COLOR_SRC_NAME);
+    g_Log.print(" ");
+    g_Log.print(type.c_str(), ByteCodeDebugger::COLOR_TYPE);
+    g_Log.eol();
+}
+
 void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force)
 {
     SWAG_ASSERT(debugCxtBc);
@@ -23,10 +37,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     {
         if (force || loc.file != debugStepLastFile)
         {
-            g_Log.print("=> ", LogColor::DarkYellow);
-            g_Log.print("file: ", LogColor::DarkYellow);
-            g_Log.print(loc.file->name.c_str(), LogColor::Cyan);
-            g_Log.eol();
+            printTitleNameType("=> file", loc.file->name, "");
             printSomething = true;
         }
     }
@@ -54,39 +65,20 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
         if (force || newFunc != debugStepLastFunc)
         {
             if (isInlined)
-            {
-                g_Log.print("=> ", LogColor::DarkYellow);
-                g_Log.print("inlined: ", LogColor::DarkYellow);
-                g_Log.print(newFunc->getScopedName().c_str(), LogColor::Cyan);
-                g_Log.print(" ");
-                g_Log.print(newFunc->typeInfo->getDisplayNameC(), LogColor::DarkCyan);
-                g_Log.eol();
-            }
-
-            g_Log.print("=> ", LogColor::DarkYellow);
-            g_Log.print("function: ", LogColor::DarkYellow);
-            g_Log.print(node->ownerFct->getScopedName().c_str(), LogColor::Cyan);
-            g_Log.print(" ");
-            g_Log.print(node->ownerFct->typeInfo->getDisplayNameC(), LogColor::DarkCyan);
-            g_Log.eol();
+                printTitleNameType("=> inlined", newFunc->getScopedName(), newFunc->typeInfo->getDisplayNameC());
+            printTitleNameType("=> function", node->ownerFct->getScopedName(), node->ownerFct->typeInfo->getDisplayNameC());
             printSomething = true;
         }
     }
     else if (force || (debugLastBc != debugCxtBc))
     {
-        g_Log.print("=> ", LogColor::DarkYellow);
-        g_Log.print("generated: ", LogColor::DarkYellow);
-        g_Log.print(debugCxtBc->name.c_str(), LogColor::Cyan);
-        g_Log.print(" ");
-        if (debugCxtBc->typeInfoFunc)
-            g_Log.print(debugCxtBc->typeInfoFunc->getDisplayNameC(), LogColor::DarkCyan);
-        g_Log.eol();
+        printTitleNameType("=> generated", debugCxtBc->name, debugCxtBc->typeInfoFunc ? debugCxtBc->typeInfoFunc->getDisplayNameC() : "");
         printSomething = true;
     }
 
     // Separation
     if (printSomething)
-        printSeparator();
+        g_Log.eol();
 
     // Print instruction
     if (debugBcMode)
@@ -124,33 +116,18 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
         auto inlined = ipNode->ownerInline;
         while (inlined)
         {
-            g_Log.print("inlined: ", LogColor::Gray);
-            g_Log.print(inlined->func->getScopedName(), LogColor::DarkYellow);
-            g_Log.print(" ");
-            g_Log.print(inlined->func->typeInfo->getDisplayNameC(), LogColor::DarkCyan);
-            g_Log.eol();
+            printTitleNameType("inlined", inlined->func->getScopedName(), inlined->func->typeInfo->getDisplayNameC());
             inlined = inlined->ownerInline;
         }
 
-        g_Log.print("function: ", LogColor::Gray);
-        g_Log.print(ipNode->ownerFct->getScopedName(), LogColor::DarkYellow);
-        g_Log.print(" ");
-        g_Log.print(ipNode->ownerFct->typeInfo->getDisplayNameC(), LogColor::DarkCyan);
-        g_Log.eol();
+        printTitleNameType("function", ipNode->ownerFct->getScopedName(), ipNode->ownerFct->typeInfo->getDisplayNameC());
     }
 
-    g_Log.eol();
-    g_Log.print("bytecode: ", LogColor::Gray);
-    g_Log.print(bc->name, LogColor::DarkYellow);
-    g_Log.print(" ");
-    g_Log.print(bc->typeInfoFunc->getDisplayNameC(), LogColor::DarkCyan);
-    g_Log.eol();
-
+    printTitleNameType("bytecode", bc->name, bc->typeInfoFunc->getDisplayNameC());
     if (bc->sourceFile && bc->node)
     {
-        g_Log.print("bytecode location: ", LogColor::Gray);
-        g_Log.print(Fmt("%s:%u:%u", bc->sourceFile->path.string().c_str(), bc->node->token.startLocation.line + 1, bc->node->token.startLocation.column + 1), LogColor::DarkYellow);
-        g_Log.eol();
+        auto loc = Fmt("%s:%u:%u", bc->sourceFile->path.string().c_str(), bc->node->token.startLocation.line + 1, bc->node->token.startLocation.column + 1);
+        printTitleNameType("bytecode location", loc, "");
     }
     else if (bc->sourceFile)
     {
@@ -159,18 +136,13 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
         g_Log.eol();
     }
 
-    g_Log.eol();
     if (ipNode && ipNode->sourceFile)
     {
-        g_Log.print("instruction location: ", LogColor::Gray);
-        g_Log.print(Fmt("%s:%u:%u", ipNode->sourceFile->path.string().c_str(), ipNode->token.startLocation.line + 1, ipNode->token.startLocation.column + 1), LogColor::DarkYellow);
-        g_Log.eol();
+        auto loc = Fmt("%s:%u:%u", ipNode->sourceFile->path.string().c_str(), ipNode->token.startLocation.line + 1, ipNode->token.startLocation.column + 1);
+        printTitleNameType("instruction location", loc, "");
     }
 
-    g_Log.print("stack level: ", LogColor::Gray);
-    g_Log.print(Fmt("%u", context->debugStackFrameOffset), LogColor::DarkYellow);
-    g_Log.eol();
-
+    printTitleNameType("stack level", Fmt("%u", context->debugStackFrameOffset), "");
     return BcDbgCommandResult::Continue;
 }
 
@@ -185,16 +157,19 @@ void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* b
     uint32_t           lineIdx = 0;
     for (const auto& l : lines)
     {
-        // Current line
-        if (curLocation->line == startLine + lineIdx)
-            g_Log.setColor(LogColor::Green);
-        else
-            g_Log.setColor(LogColor::Gray);
+        bool currentLine = curLocation->line == startLine + lineIdx;
 
-        if (curLocation->line == startLine + lineIdx)
+        // Current line
+        if (currentLine)
+        {
+            g_Log.setColor(COLOR_CUR_INSTRUCTION);
             g_Log.print("-> ");
+        }
         else
+        {
+            g_Log.setColor(LogColor::Gray);
             g_Log.print("   ");
+        }
 
         // Line
         g_Log.print(Fmt("%-5u ", startLine + lineIdx + 1));
@@ -237,15 +212,20 @@ void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* b
         g_Log.print(" ");
 
         // Code
-        if (curLocation->line == startLine + lineIdx)
-            g_Log.setColor(LogColor::Green);
-        else
-            g_Log.setColor(LogColor::Gray);
-
-        if (g_CommandLine.logColors)
-            g_Log.print(syntaxColor(l, cxt).c_str());
-        else
+        if (currentLine)
+        {
+            g_Log.setColor(COLOR_CUR_INSTRUCTION);
             g_Log.print(l.c_str());
+        }
+        else if (g_CommandLine.logColors)
+        {
+            g_Log.print(syntaxColor(l, cxt).c_str());
+        }
+        else
+        {
+            g_Log.setColor(LogColor::Gray);
+            g_Log.print(l.c_str());
+        }
 
         g_Log.eol();
 

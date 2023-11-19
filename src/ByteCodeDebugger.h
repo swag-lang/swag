@@ -29,10 +29,14 @@ struct BcDbgCommand
 
 struct ByteCodeDebugger
 {
-    static constexpr const char* COLOR_TYPE    = Log::colorToVTS(LogColor::DarkCyan);
-    static constexpr const char* COLOR_NAME    = Log::colorToVTS(LogColor::DarkYellow);
-    static constexpr const char* COLOR_DEFAULT = Log::colorToVTS(LogColor::Gray);
-    static const int             LINE_W        = 71;
+    static const LogColor COLOR_CUR_INSTRUCTION = LogColor::Red;
+    static const LogColor COLOR_SRC_NAME        = LogColor::DarkMagenta;
+    static const LogColor COLOR_TYPE            = LogColor::DarkCyan;
+
+    static constexpr const char* COLOR_VTS_TYPE    = Log::colorToVTS(LogColor::DarkCyan);
+    static constexpr const char* COLOR_VTS_NAME    = Log::colorToVTS(LogColor::DarkYellow);
+    static constexpr const char* COLOR_VTS_DEFAULT = Log::colorToVTS(LogColor::Gray);
+    static const int             LINE_W            = 71;
 
     struct EvaluateResult
     {

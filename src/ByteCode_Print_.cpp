@@ -3,6 +3,7 @@
 #include "ByteCode.h"
 #include "Ast.h"
 #include "Module.h"
+#include "ByteCodeDebugger.h"
 
 void ByteCode::printSourceCode(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, uint32_t* lastLine, SourceFile** lastFile)
 {
@@ -27,7 +28,7 @@ void ByteCode::printSourceCode(const ByteCodePrintOptions& options, ByteCodeInst
         s.trim();
 
         if (loc1.file != loc.file || loc1.location->line != loc.location->line)
-            g_Log.setColor(LogColor::DarkCyan);
+            g_Log.setColor(LogColor::DarkYellow);
         else
             g_Log.setColor(LogColor::Yellow);
         g_Log.print("         ");
@@ -46,7 +47,7 @@ void ByteCode::printSourceCode(const ByteCodePrintOptions& options, ByteCodeInst
             g_Log.print("         ");
             if (forDbg)
                 g_Log.print("   ");
-            g_Log.setColor(LogColor::DarkMagenta);
+            g_Log.setColor(ByteCodeDebugger::COLOR_SRC_NAME);
             g_Log.print(Fmt("%s:%d", loc.file->name.c_str(), loc.location->line + 1));
             g_Log.eol();
         }
@@ -349,7 +350,7 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, ByteCodeIns
     bool forDbg = options.curIp != nullptr;
 
     if (forDbg && ip == options.curIp)
-        g_Log.setColor(LogColor::Green);
+        g_Log.setColor(ByteCodeDebugger::COLOR_CUR_INSTRUCTION);
     else if (forDbg)
         g_Log.setColor(LogColor::Gray);
     else
@@ -359,7 +360,7 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, ByteCodeIns
     g_Log.print(line.rank);
 
     if (forDbg && ip == options.curIp)
-        g_Log.setColor(LogColor::Green);
+        g_Log.setColor(ByteCodeDebugger::COLOR_CUR_INSTRUCTION);
     else if (forDbg)
         g_Log.setColor(LogColor::Gray);
     else
@@ -534,15 +535,16 @@ void ByteCode::print(const ByteCodePrintOptions& options)
     g_Log.lock();
 
     // Header
-    g_Log.setColor(LogColor::Magenta);
+    g_Log.setColor(ByteCodeDebugger::COLOR_SRC_NAME);
     g_Log.print(sourceFile->path.string().c_str());
-    g_Log.print(", ");
+    g_Log.print(" ");
     g_Log.print(name);
 
     auto callt = getCallType();
     if (callt)
     {
-        g_Log.print(", ");
+        g_Log.print(" ");
+        g_Log.setColor(ByteCodeDebugger::COLOR_TYPE);
         g_Log.print(callt->name.c_str());
     }
 

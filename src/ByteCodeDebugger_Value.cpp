@@ -229,9 +229,9 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             str += " ";
             Utf8 str1;
             str1.setView((const char*) ptr->name.buffer, (int) ptr->name.count);
-            str += COLOR_TYPE;
+            str += COLOR_VTS_TYPE;
             str += str1;
-            str += COLOR_DEFAULT;
+            str += COLOR_VTS_DEFAULT;
         }
 
         return;
@@ -259,12 +259,12 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             {
                 str += "(bytecode) ";
                 auto bc = (ByteCode*) ByteCode::undoByteCodeLambda(ptr);
-                str += COLOR_NAME;
+                str += COLOR_VTS_NAME;
                 str += bc->name.c_str();
                 str += " ";
-                str += COLOR_TYPE;
+                str += COLOR_VTS_TYPE;
                 str += bc->getCallType()->getDisplayNameC();
-                str += COLOR_DEFAULT;
+                str += COLOR_VTS_DEFAULT;
             }
             else
             {
@@ -285,7 +285,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
         {
             for (int i = 0; i < indent + 1; i++)
                 str += "   ";
-            str += Fmt("(%s%s%s) %s%s%s = ", COLOR_TYPE, p->typeInfo->getDisplayNameC(), COLOR_DEFAULT, COLOR_NAME, p->name.c_str(), COLOR_DEFAULT);
+            str += Fmt("(%s%s%s) %s%s%s = ", COLOR_VTS_TYPE, p->typeInfo->getDisplayNameC(), COLOR_VTS_DEFAULT, COLOR_VTS_NAME, p->name.c_str(), COLOR_VTS_DEFAULT);
             EvaluateResult res1;
             res1.type = p->typeInfo;
             res1.addr = ((uint8_t*) addr) + p->offset;
