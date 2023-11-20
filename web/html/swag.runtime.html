@@ -969,7 +969,7 @@
 <span id="@compilererror"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@compilererror</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L127" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L132" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -982,7 +982,7 @@
 <span id="@compilerwarning"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@compilerwarning</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L139" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L144" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1033,7 +1033,7 @@
 <span id="@err"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@err</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L69" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L74" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1309,7 +1309,7 @@
 <span id="@panic"><span class="api-item-title-kind">func</span> <span class="api-item-title-light"></span><span class="api-item-title-strong">@panic</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L152" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\runtime_err.swg#L157" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4248,7 +4248,7 @@
 <span id="Swag_ScratchAllocator_IAllocator_alloc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IAllocator.</span><span class="api-item-title-strong">alloc</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\scratchallocator.swg#L124" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\scratchallocator.swg#L126" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4260,7 +4260,7 @@
 <span id="Swag_ScratchAllocator_IAllocator_free"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IAllocator.</span><span class="api-item-title-strong">free</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\scratchallocator.swg#L87" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\scratchallocator.swg#L89" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4272,7 +4272,7 @@
 <span id="Swag_ScratchAllocator_IAllocator_req"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IAllocator.</span><span class="api-item-title-strong">req</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\scratchallocator.swg#L164" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\scratchallocator.swg#L166" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4325,7 +4325,7 @@
 <span id="Swag_ScratchAllocator_alloc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ScratchAllocator.</span><span class="api-item-title-strong">alloc</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\scratchallocator.swg#L33" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\scratchallocator.swg#L34" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4351,7 +4351,7 @@
 <span id="Swag_ScratchAllocator_freeAll"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ScratchAllocator.</span><span class="api-item-title-strong">freeAll</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\scratchallocator.swg#L56" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\scratchallocator.swg#L58" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4364,7 +4364,7 @@
 <span id="Swag_ScratchAllocator_release"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ScratchAllocator.</span><span class="api-item-title-strong">release</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\scratchallocator.swg#L44" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\scratchallocator.swg#L46" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4377,7 +4377,7 @@
 <span id="Swag_ScratchAllocator_setCapacity"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">ScratchAllocator.</span><span class="api-item-title-strong">setCapacity</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\scratchallocator.swg#L70" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/runtime\scratchallocator.swg#L72" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -5368,7 +5368,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 19-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
+Generated on 20-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
 </div>
 </div>
 </div>

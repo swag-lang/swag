@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ByteCodeOptimizer.h"
+#include "Module.h"
 
 // We detect loops, and then we try to move constant instructions outside of the loop.
 // For example a GetParam64 does not need to be done at each iteration, it could be done once before the loop.
@@ -18,12 +19,18 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
         context->vecInst.clear();
         uint32_t countReg[RegisterList::MAX_REGISTERS] = {0};
 
-        // Should be a simple loop, without additional jump source or destination.
         while (ipScan != ip)
         {
-            if (ByteCode::isJump(ipScan) && !(ipScan->flags & BCI_SAFETY))
-                break;
-            if (ipScan->flags & BCI_START_STMT_N)
+            // Test an inside jump that will escape the loop
+            if (ByteCode::isJump(ipScan))
+            {
+                auto test = ipScan + ipScan->b.s32 + 1;
+                if (test < ipStart || test > ip)
+                    break;
+            }
+
+            // A jump dyn inside, just dismiss
+            if (ByteCode::isJumpDyn(ipScan))
                 break;
 
             // Constant expression
@@ -70,13 +77,34 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
         {
             if (it == ipStart || it == ipScan)
                 continue;
-            auto ipJump = it + it->b.s32 + 1;
-            if (ipJump >= ipStart && ipJump <= ipScan)
+            if (!ipScan)
+                break;
+            if (ByteCode::isJumpDyn(it))
             {
-                if (it < ipStart || it > ipScan)
+                int32_t* table = (int32_t*) context->module->compilerSegment.address(it->d.u32);
+                for (uint32_t i = 0; i < it->c.u32; i++)
                 {
-                    ipScan = nullptr;
-                    break;
+                    auto ipJump = it + table[i] + 1;
+                    if (ipJump >= ipStart && ipJump <= ipScan)
+                    {
+                        if (it < ipStart || it > ipScan)
+                        {
+                            ipScan = nullptr;
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                auto ipJump = it + it->b.s32 + 1;
+                if (ipJump >= ipStart && ipJump <= ipScan)
+                {
+                    if (it < ipStart || it > ipScan)
+                    {
+                        ipScan = nullptr;
+                        break;
+                    }
                 }
             }
         }
