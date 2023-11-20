@@ -730,6 +730,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         // Replace some stuff
         if (!processCommandLine(context, cmds, line, cmdExpr))
             continue;
+        g_Log.eol();
 
         // Command
         /////////////////////////////////////////
