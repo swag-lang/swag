@@ -6,7 +6,7 @@ func isPrime(n: s32)->s32
     {
         if !(n % i)
         {
-        @breakpoint()
+        //@breakpoint()
             return 0
         }
     }
@@ -14,7 +14,7 @@ func isPrime(n: s32)->s32
     return 1
 }
 
-#[Swag.PrintBc]
+//#[Swag.PrintBc]
 #test
 {
     //Time.Stopwatch.scopeMeasure()
