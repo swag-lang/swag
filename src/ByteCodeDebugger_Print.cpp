@@ -200,12 +200,13 @@ void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* b
         }
         else
         {
-            g_Log.setColor(LogColor::Gray);
+            g_Log.setColor(COLOR_INDEX);
             g_Log.print("   ");
         }
 
         // Line
         g_Log.print(Fmt("%-5u ", startLine + lineIdx + 1));
+        g_Log.setColor(COLOR_DEFAULT);
 
         // Line breakpoint
         DebugBreakpoint* hasBkp = nullptr;

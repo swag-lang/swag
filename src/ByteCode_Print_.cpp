@@ -351,10 +351,8 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, ByteCodeIns
 
     if (forDbg && ip == options.curIp)
         g_Log.setColor(ByteCodeDebugger::COLOR_CUR_INSTRUCTION);
-    else if (forDbg)
-        g_Log.setColor(LogColor::Gray);
     else
-        g_Log.setColor(LogColor::Cyan);
+        g_Log.setColor(ByteCodeDebugger::COLOR_INDEX);
 
     // Instruction rank
     g_Log.print(line.rank);
@@ -362,7 +360,7 @@ void ByteCode::printInstruction(const ByteCodePrintOptions& options, ByteCodeIns
     if (forDbg && ip == options.curIp)
         g_Log.setColor(ByteCodeDebugger::COLOR_CUR_INSTRUCTION);
     else if (forDbg)
-        g_Log.setColor(LogColor::Gray);
+        g_Log.setColor(ByteCodeDebugger::COLOR_DEFAULT);
     else
         g_Log.setColor(LogColor::White);
 

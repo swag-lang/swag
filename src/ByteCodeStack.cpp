@@ -31,21 +31,23 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
     auto ip = step.ip;
 
     Utf8 header;
-    header += Log::colorToVTS(LogColor::DarkYellow);
+    header += ByteCodeDebugger::COLOR_VTS_INDEX;
     if (current)
         header += Fmt("[%03u] ", level);
     else
         header += Fmt("-%03u- ", level);
 
     Utf8 inl;
-    inl += Log::colorToVTS(LogColor::DarkYellow);
-    inl += "----- inline ";
+    inl += ByteCodeDebugger::COLOR_VTS_INDEX;
+    inl += "-----";
+    inl += ByteCodeDebugger::COLOR_VTS_NAME;
+    inl += " inline ";
 
     if (!ip)
     {
         auto str = header;
-        str += Log::colorToVTS(LogColor::Gray);
-        str += "--> <foreign code>";
+        str += ByteCodeDebugger::COLOR_VTS_LOCATION;
+        str += "<foreign code>";
         str += "\n";
         return str;
     }
@@ -76,10 +78,16 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
         {
             fct = owner->ownerInline && owner->ownerInline->ownerFct == ip->node->ownerFct ? owner->ownerInline->func : owner->ownerFct;
             str = owner->ownerInline ? inl.c_str() : header.c_str();
+
+            str += ByteCodeDebugger::COLOR_VTS_NAME;
             str += fct->getDisplayNameC();
-            str += ByteCodeDebugger::COLOR_VTS_LOCATION;
+
             if (owner->sourceFile)
+            {
+                str += ByteCodeDebugger::COLOR_VTS_LOCATION;
                 str += Fmt(" %s:%d", owner->sourceFile->path.string().c_str(), owner->token.startLocation.line + 1);
+            }
+
             str += "\n";
         }
     }
@@ -90,10 +98,16 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
     {
         fct = parent->ownerInline && parent->ownerInline->ownerFct == ip->node->ownerFct ? parent->ownerInline->func : parent->ownerFct;
         str += parent->ownerInline ? inl.c_str() : header.c_str();
+
+        str += ByteCodeDebugger::COLOR_VTS_NAME;
         str += fct->getDisplayNameC();
-        str += ByteCodeDebugger::COLOR_VTS_LOCATION;
+
         if (parent->sourceFile)
+        {
+            str += ByteCodeDebugger::COLOR_VTS_LOCATION;
             str += Fmt(" %s:%d", parent->sourceFile->path.string().c_str(), parent->token.startLocation.line + 1);
+        }
+
         str += "\n";
         parent = parent->ownerInline;
     }
