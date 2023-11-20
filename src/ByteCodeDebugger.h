@@ -30,13 +30,15 @@ struct BcDbgCommand
 struct ByteCodeDebugger
 {
     static const LogColor COLOR_CUR_INSTRUCTION = LogColor::Red;
-    static const LogColor COLOR_SRC_NAME        = LogColor::DarkMagenta;
+    static const LogColor COLOR_NAME            = LogColor::DarkYellow;
     static const LogColor COLOR_TYPE            = LogColor::DarkCyan;
+    static const LogColor COLOR_LOCATION        = LogColor::DarkMagenta;
 
-    static constexpr const char* COLOR_VTS_TYPE    = Log::colorToVTS(LogColor::DarkCyan);
-    static constexpr const char* COLOR_VTS_NAME    = Log::colorToVTS(LogColor::DarkYellow);
-    static constexpr const char* COLOR_VTS_DEFAULT = Log::colorToVTS(LogColor::Gray);
-    static const int             LINE_W            = 71;
+    static constexpr const char* COLOR_VTS_NAME     = Log::colorToVTS(COLOR_NAME);
+    static constexpr const char* COLOR_VTS_TYPE     = Log::colorToVTS(COLOR_TYPE);
+    static constexpr const char* COLOR_VTS_LOCATION = Log::colorToVTS(COLOR_LOCATION);
+    static constexpr const char* COLOR_VTS_DEFAULT  = Log::colorToVTS(LogColor::Gray);
+    static const int             LINE_W             = 71;
 
     struct EvaluateResult
     {
@@ -156,18 +158,17 @@ struct ByteCodeDebugger
     static BcDbgCommandResult cmdBreakLine(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr);
     static BcDbgCommandResult cmdBreakFileLine(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr);
 
-    Utf8 getByteCodeName(ByteCode* bc);
-    Utf8 getByteCodeFileName(ByteCode* bc);
-    void setup();
-    void printSeparator();
-    bool getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN);
-    void printDebugContext(ByteCodeRunContext* context, bool force = false);
-    void computeDebugContext(ByteCodeRunContext* context);
-    Utf8 completion(ByteCodeRunContext* context, const Utf8& line, Utf8& toComplete);
-    Utf8 getCommandLine(ByteCodeRunContext* context, bool& ctrl, bool& shift);
-    bool processCommandLine(ByteCodeRunContext* context, Vector<Utf8>& cmds, Utf8& line, Utf8& cmdExpr);
-    bool mustBreak(ByteCodeRunContext* context);
-    bool step(ByteCodeRunContext* context);
+    void      setup();
+    void      printSeparator();
+    bool      getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN);
+    void      printDebugContext(ByteCodeRunContext* context, bool force = false);
+    void      computeDebugContext(ByteCodeRunContext* context);
+    Utf8      completion(ByteCodeRunContext* context, const Utf8& line, Utf8& toComplete);
+    Utf8      getCommandLine(ByteCodeRunContext* context, bool& ctrl, bool& shift);
+    bool      processCommandLine(ByteCodeRunContext* context, Vector<Utf8>& cmds, Utf8& line, Utf8& cmdExpr);
+    bool      mustBreak(ByteCodeRunContext* context);
+    bool      step(ByteCodeRunContext* context);
+    ByteCode* findBc(const char* name);
 
     void printTitleNameType(const Utf8& title, const Utf8& name, const Utf8& type);
     void printCmdError(const Utf8& msg);

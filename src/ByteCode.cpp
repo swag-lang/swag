@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "TypeManager.h"
 #include "Crc32.h"
+#include "ByteCodeDebugger.h"
 
 #undef BYTECODE_OP
 #define BYTECODE_OP(__op, __flags, __dis) {__flags, (uint32_t) strlen(#__op), #__op, __dis},
@@ -45,6 +46,48 @@ ByteCode::Location ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, 
     }
 
     return loc;
+}
+
+Utf8 ByteCode::getPrintRefName()
+{
+    Utf8 str;
+    str = ByteCodeDebugger::COLOR_VTS_NAME;
+    str += getPrintName();
+    str += " ";
+    str += ByteCodeDebugger::COLOR_VTS_TYPE;
+    str += getCallType()->getDisplayName();
+
+    auto loc = ByteCode::getLocation(this, out);
+    if (loc.file || loc.location)
+        str += " ";
+
+    if (loc.file)
+    {
+        str += ByteCodeDebugger::COLOR_VTS_LOCATION;
+        str += loc.file->path.string().c_str();
+    }
+
+    if (loc.location)
+    {
+        str += ByteCodeDebugger::COLOR_VTS_LOCATION;
+        str += Fmt(":%d", loc.location->line - 1);
+    }
+
+    return str;
+}
+
+Utf8 ByteCode::getPrintName()
+{
+    if (out && node)
+        return node->getScopedName();
+    return name;
+}
+
+Utf8 ByteCode::getPrintFileName()
+{
+    if (sourceFile)
+        return sourceFile->name;
+    return "";
 }
 
 Utf8 ByteCode::getCallNameFromDecl()

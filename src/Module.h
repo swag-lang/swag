@@ -153,7 +153,6 @@ struct Module
     void        addErrorModule(Module* module);
     void        removeFile(SourceFile* file);
     SourceFile* findFile(const Utf8& fileName);
-    ByteCode*   findBc(const Utf8& bcName);
 
     void startBuilding(const BuildParameters& bp);
     void printBC();

@@ -1,11 +1,12 @@
-//#[Swag.Inline]
-#[Swag.PrintBc]
+#[Swag.Inline]
+//#[Swag.PrintBc]
 func isPrime(n: s32)->s32
 {
     loop i: 2 to n/2
     {
         if !(n % i)
         {
+        @breakpoint()
             return 0
         }
     }
@@ -20,7 +21,6 @@ func isPrime(n: s32)->s32
     var numPrimes = 0
     loop i: 4 to 25//0000
     {
-        @breakpoint()
         numPrimes += isPrime(i)
     }
     @assert(numPrimes == 7)

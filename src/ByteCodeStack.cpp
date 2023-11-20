@@ -5,6 +5,7 @@
 #include "ByteCodeRunContext.h"
 #include "Ast.h"
 #include "ErrorIds.h"
+#include "ByteCodeDebugger.h"
 
 thread_local ByteCodeStack  g_ByteCodeStackTraceVal;
 thread_local ByteCodeStack* g_ByteCodeStackTrace = &g_ByteCodeStackTraceVal;
@@ -24,7 +25,7 @@ uint32_t ByteCodeStack::maxLevel(ByteCodeRunContext* runContext)
     return (uint32_t) steps.size();
 }
 
-Utf8 ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
+Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
 {
     auto bc = step.bc;
     auto ip = step.ip;
@@ -60,11 +61,10 @@ Utf8 ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
 
     Utf8 str = ip->node->ownerInline ? inl.c_str() : header.c_str();
     str += name;
-    str += Log::colorToVTS(LogColor::Gray);
+    str += ByteCodeDebugger::COLOR_VTS_LOCATION;
     if (sourceFile)
-        str += Fmt(" --> %s:%d\n", sourceFile->path.string().c_str(), location->line + 1);
-    else
-        str += "\n";
+        str += Fmt(" %s:%d", sourceFile->path.string().c_str(), location->line + 1);
+    str += "\n";
 
     // #mixin
     if (ip->node->flags & AST_IN_MIXIN)
@@ -77,11 +77,10 @@ Utf8 ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
             fct = owner->ownerInline && owner->ownerInline->ownerFct == ip->node->ownerFct ? owner->ownerInline->func : owner->ownerFct;
             str = owner->ownerInline ? inl.c_str() : header.c_str();
             str += fct->getDisplayNameC();
-            str += Log::colorToVTS(LogColor::Gray);
+            str += ByteCodeDebugger::COLOR_VTS_LOCATION;
             if (owner->sourceFile)
-                str += Fmt(" --> %s:%d\n", owner->sourceFile->path.string().c_str(), owner->token.startLocation.line + 1);
-            else
-                str += "\n";
+                str += Fmt(" %s:%d", owner->sourceFile->path.string().c_str(), owner->token.startLocation.line + 1);
+            str += "\n";
         }
     }
 
@@ -92,11 +91,10 @@ Utf8 ByteCodeStack::logStep(int level, bool current, ByteCodeStackStep& step)
         fct = parent->ownerInline && parent->ownerInline->ownerFct == ip->node->ownerFct ? parent->ownerInline->func : parent->ownerFct;
         str += parent->ownerInline ? inl.c_str() : header.c_str();
         str += fct->getDisplayNameC();
-        str += Log::colorToVTS(LogColor::Gray);
+        str += ByteCodeDebugger::COLOR_VTS_LOCATION;
         if (parent->sourceFile)
-            str += Fmt(" --> %s:%d\n", parent->sourceFile->path.string().c_str(), parent->token.startLocation.line + 1);
-        else
-            str += "\n";
+            str += Fmt(" %s:%d", parent->sourceFile->path.string().c_str(), parent->token.startLocation.line + 1);
+        str += "\n";
         parent = parent->ownerInline;
     }
 
@@ -139,7 +137,7 @@ Utf8 ByteCodeStack::log(ByteCodeRunContext* runContext)
         bool current = false;
         if (runContext && runContext->debugOn)
             current = (size_t) i == (copySteps.size() - 1) - runContext->debugStackFrameOffset;
-        str += logStep(i, current, copySteps[(size_t) i]);
+        str += getLogStep(i, current, copySteps[(size_t) i]);
 
         maxSteps--;
         if (maxSteps == 0)

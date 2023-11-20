@@ -5,20 +5,6 @@
 #include "Ast.h"
 #include "ByteCodeDebugger.h"
 
-Utf8 ByteCodeDebugger::getByteCodeName(ByteCode* bc)
-{
-    if (bc->node)
-        return bc->node->getScopedName();
-    return bc->name;
-}
-
-Utf8 ByteCodeDebugger::getByteCodeFileName(ByteCode* bc)
-{
-    if (bc->sourceFile)
-        return bc->sourceFile->name;
-    return "";
-}
-
 BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
 {
     if (cmds.size() > 3)
@@ -36,16 +22,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
             if (!bc->out)
                 continue;
             total++;
-            if (filter.empty() || g_ByteCodeDebugger.getByteCodeName(bc).find(filter) != -1 || g_ByteCodeDebugger.getByteCodeFileName(bc).find(filter) != -1)
+            if (filter.empty() || bc->getPrintName().find(filter) != -1 || bc->getPrintFileName().find(filter) != -1)
             {
-                Utf8 str = Fmt("%s%s%s ", COLOR_VTS_NAME, g_ByteCodeDebugger.getByteCodeName(bc).c_str(), COLOR_VTS_DEFAULT).c_str();
-                auto loc = ByteCode::getLocation(bc, bc->out);
-                str += Fmt(" %s%s%s ", COLOR_VTS_TYPE, bc->getCallType()->getDisplayNameC(), COLOR_VTS_DEFAULT);
-                if (loc.file)
-                    str += Fmt("%s", loc.file->name.c_str());
-                if (loc.location)
-                    str += Fmt(":%d", loc.location->line);
-                all.push_back(str);
+                all.push_back(bc->getPrintRefName());
             }
         }
     }

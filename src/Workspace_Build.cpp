@@ -67,23 +67,6 @@ SourceFile* Workspace::findFile(const char* fileName)
     return sourceFile;
 }
 
-ByteCode* Workspace::findBc(const char* name)
-{
-    ByteCode* bc = nullptr;
-    for (auto m : mapModulesNames)
-    {
-        bc = m.second->findBc(name);
-        if (bc)
-            return bc;
-    }
-
-    if (!bc)
-        bc = g_Workspace->bootstrapModule->findBc(name);
-    if (!bc)
-        bc = g_Workspace->runtimeModule->findBc(name);
-    return bc;
-}
-
 Module* Workspace::getModuleByName(const Utf8& moduleName)
 {
     SharedLock lk(mutexModules);

@@ -209,6 +209,10 @@ struct ByteCode
     void              alignPrintInstructions(const ByteCodePrintOptions& options, Vector<PrintInstructionLine>& lines, bool defaultLen = false);
     void              print(const ByteCodePrintOptions& options, uint32_t start, uint32_t count);
     void              print(const ByteCodePrintOptions& options);
+    void              printName();
+    Utf8              getPrintRefName();
+    Utf8              getPrintName();
+    Utf8              getPrintFileName();
     Utf8              getCallNameFromDecl();
     Utf8              getCallName();
     TypeInfoFuncAttr* getCallType();

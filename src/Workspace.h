@@ -64,7 +64,6 @@ struct Workspace
     void        setup();
     void        computeModuleName(const Path& path, Utf8& moduleName, Path& moduleFolder, ModuleKind& kind);
     SourceFile* findFile(const char* fileName);
-    ByteCode*   findBc(const char* name);
     Module*     getModuleByName(const Utf8& moduleName);
     void        cleanFolderContent(const Path& path);
     OneTag*     hasTag(const Utf8& name);

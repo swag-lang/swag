@@ -433,28 +433,6 @@ SourceFile* Module::findFile(const Utf8& fileName)
     return nullptr;
 }
 
-ByteCode* Module::findBc(const Utf8& bcName)
-{
-    Utf8 n1;
-    for (auto bc : byteCodeFunc)
-    {
-        Utf8 nameToTest = bc->node && bc->out ? bc->node->getScopedName() : bc->name;
-        if (nameToTest == bcName)
-            return bc;
-
-        if (buildCfg.moduleNamespace.buffer)
-        {
-            n1 = Utf8{(const char*) buildCfg.moduleNamespace.buffer, (uint32_t) buildCfg.moduleNamespace.count};
-            n1 += ".";
-            n1 += bcName;
-            if (bc->name == n1)
-                return bc;
-        }
-    }
-
-    return nullptr;
-}
-
 void Module::allocateBackend()
 {
     ScopedLock lk(mutexFile);

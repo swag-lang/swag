@@ -25,7 +25,7 @@ void ByteCodeDebugger::printTitleNameType(const Utf8& title, const Utf8& name, c
     while (len++ < 25)
         g_Log.print(".");
     g_Log.print(" ");
-    g_Log.print(name.c_str(), ByteCodeDebugger::COLOR_SRC_NAME);
+    g_Log.print(name.c_str(), ByteCodeDebugger::COLOR_NAME);
     g_Log.print(" ");
     g_Log.print(type.c_str(), ByteCodeDebugger::COLOR_TYPE);
     g_Log.eol();
@@ -217,7 +217,7 @@ void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* b
             case DebugBkpType::FuncName:
             {
                 auto loc = ByteCode::getLocation(bc, bc->out);
-                if (getByteCodeName(context->bc).find(bkp.name) != -1 && loc.location && startLine + lineIdx + 1 == loc.location->line)
+                if (context->bc->getPrintName().find(bkp.name) != -1 && loc.location && startLine + lineIdx + 1 == loc.location->line)
                     hasBkp = &bkp;
                 break;
             }
@@ -454,7 +454,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext* cont
     if (cmds.size() > 1)
     {
         auto name = cmds[1];
-        auto bc   = g_Workspace->findBc(name);
+        auto bc   = g_ByteCodeDebugger.findBc(name);
         if (bc)
         {
             toLogBc = bc;
@@ -520,7 +520,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
     if (cmds.size() > 1)
     {
         auto name = cmds[1];
-        auto bc   = g_Workspace->findBc(name);
+        auto bc   = g_ByteCodeDebugger.findBc(name);
         if (bc)
         {
             toLogBc = bc;
@@ -538,6 +538,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
         auto funcNode = CastAst<AstFuncDecl>(toLogBc->node, AstNodeKind::FuncDecl);
         if (funcNode->content)
         {
+            toLogBc->printName();
+
             auto inl = g_ByteCodeDebugger.debugLastBreakIp->node->ownerInline;
             if (inl)
             {

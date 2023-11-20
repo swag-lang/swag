@@ -3,6 +3,7 @@
 #include "Module.h"
 #include "SemanticJob.h"
 #include "ByteCodeDebugger.h"
+#include "Workspace.h"
 
 ByteCodeDebugger g_ByteCodeDebugger;
 
@@ -80,6 +81,33 @@ void ByteCodeDebugger::setup()
     commands.push_back({"help",        "?",    "<command>",           "print help about a specific command", cmdHelp});
     commands.push_back({"quit",        "q",    "",                    "quit the compiler", cmdQuit});
     // clang-format on
+}
+
+ByteCode* ByteCodeDebugger::findBc(const char* bcName)
+{
+    VectorNative<Module*> modules;
+    for (auto m : g_Workspace->mapModulesNames)
+        modules.push_back(m.second);
+    modules.push_back(g_Workspace->bootstrapModule);
+    modules.push_back(g_Workspace->runtimeModule);
+
+    Vector<ByteCode*> tryMatch;
+    for (auto m : modules)
+    {
+        for (auto bc : m->byteCodeFunc)
+        {
+            if (bc->getPrintName() == bcName)
+                return bc;
+
+            if (bc->getPrintName().find(bcName) != -1)
+                tryMatch.push_back(bc);
+        }
+    }
+
+    if (tryMatch.size() == 1)
+        return tryMatch[0];
+
+    return nullptr;
 }
 
 bool ByteCodeDebugger::getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN)

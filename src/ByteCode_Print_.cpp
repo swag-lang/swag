@@ -47,7 +47,7 @@ void ByteCode::printSourceCode(const ByteCodePrintOptions& options, ByteCodeInst
             g_Log.print("         ");
             if (forDbg)
                 g_Log.print("   ");
-            g_Log.setColor(ByteCodeDebugger::COLOR_SRC_NAME);
+            g_Log.setColor(ByteCodeDebugger::COLOR_LOCATION);
             g_Log.print(Fmt("%s:%d", loc.file->name.c_str(), loc.location->line + 1));
             g_Log.eol();
         }
@@ -530,25 +530,19 @@ void ByteCode::print(const ByteCodePrintOptions& options, uint32_t start, uint32
     }
 }
 
+void ByteCode::printName()
+{
+    auto str = getPrintRefName();
+    g_Log.print(str);
+    g_Log.eol();
+}
+
 void ByteCode::print(const ByteCodePrintOptions& options)
 {
     g_Log.lock();
 
     // Header
-    g_Log.setColor(ByteCodeDebugger::COLOR_SRC_NAME);
-    g_Log.print(sourceFile->path.string().c_str());
-    g_Log.print(" ");
-    g_Log.print(name);
-
-    auto callt = getCallType();
-    if (callt)
-    {
-        g_Log.print(" ");
-        g_Log.setColor(ByteCodeDebugger::COLOR_TYPE);
-        g_Log.print(callt->name.c_str());
-    }
-
-    g_Log.eol();
+    printName();
 
     // Instructions
     print(options, 0, numInstructions);
