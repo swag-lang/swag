@@ -81,39 +81,50 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
     context->debugStackFrameOffset = 0;
 
     uint32_t to = (uint32_t) atoi(cmds[1].c_str());
-    if (g_ByteCodeDebugger.debugBcMode)
+
+    auto curIp = context->bc->out;
+    while (true)
     {
-        if (to >= context->bc->numInstructions - 1)
+        if (curIp >= context->bc->out + context->bc->numInstructions - 1)
         {
             g_ByteCodeDebugger.printCmdError("cannot reach this 'jump' destination");
             return BcDbgCommandResult::Continue;
         }
 
-        context->ip                   = context->bc->out + to;
-        g_ByteCodeDebugger.debugCxtIp = context->ip;
-    }
-    else
-    {
-        auto curIp = context->bc->out;
-        while (true)
+        auto loc = ByteCode::getLocation(context->bc, curIp);
+        if (loc.location && loc.location->line + 1 == to)
         {
-            if (curIp >= context->bc->out + context->bc->numInstructions - 1)
-            {
-                g_ByteCodeDebugger.printCmdError("cannot reach this 'jump' destination");
-                return BcDbgCommandResult::Continue;
-            }
-
-            auto loc = ByteCode::getLocation(context->bc, curIp);
-            if (loc.location && loc.location->line + 1 == to)
-            {
-                context->ip                   = curIp;
-                g_ByteCodeDebugger.debugCxtIp = context->ip;
-                break;
-            }
-
-            curIp++;
+            context->ip                   = curIp;
+            g_ByteCodeDebugger.debugCxtIp = context->ip;
+            break;
         }
+
+        curIp++;
     }
+
+    g_ByteCodeDebugger.printDebugContext(context);
+    return BcDbgCommandResult::Continue;
+}
+
+BcDbgCommandResult ByteCodeDebugger::cmdJumpi(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+{
+    if (cmds.size() != 2)
+        return BcDbgCommandResult::BadArguments;
+    if (!Utf8::isNumber(cmds[1].c_str()))
+        return BcDbgCommandResult::BadArguments;
+
+    context->debugStackFrameOffset = 0;
+
+    uint32_t to = (uint32_t) atoi(cmds[1].c_str());
+
+    if (to >= context->bc->numInstructions - 1)
+    {
+        g_ByteCodeDebugger.printCmdError("cannot reach this 'jump' destination");
+        return BcDbgCommandResult::Continue;
+    }
+
+    context->ip                   = context->bc->out + to;
+    g_ByteCodeDebugger.debugCxtIp = context->ip;
 
     g_ByteCodeDebugger.printDebugContext(context);
     return BcDbgCommandResult::Continue;
@@ -127,10 +138,26 @@ BcDbgCommandResult ByteCodeDebugger::cmdUntil(ByteCodeRunContext* context, const
         return BcDbgCommandResult::BadArguments;
 
     DebugBreakpoint bkp;
-    if (g_ByteCodeDebugger.debugBcMode)
-        bkp.type = DebugBkpType::InstructionIndex;
-    else
-        bkp.type = DebugBkpType::FileLine;
+    bkp.type       = DebugBkpType::FileLine;
+    bkp.bc         = g_ByteCodeDebugger.debugCxtBc;
+    bkp.name       = g_ByteCodeDebugger.debugStepLastFile->name;
+    bkp.line       = atoi(cmds[1].c_str());
+    bkp.autoRemove = true;
+    g_ByteCodeDebugger.addBreakpoint(context, bkp);
+    context->debugStackFrameOffset   = 0;
+    g_ByteCodeDebugger.debugStepMode = DebugStepMode::ToNextBreakpoint;
+    return BcDbgCommandResult::Break;
+}
+
+BcDbgCommandResult ByteCodeDebugger::cmdUntili(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+{
+    if (cmds.size() != 2)
+        return BcDbgCommandResult::BadArguments;
+    if (!Utf8::isNumber(cmds[1].c_str()))
+        return BcDbgCommandResult::BadArguments;
+
+    DebugBreakpoint bkp;
+    bkp.type       = DebugBkpType::InstructionIndex;
     bkp.bc         = g_ByteCodeDebugger.debugCxtBc;
     bkp.name       = g_ByteCodeDebugger.debugStepLastFile->name;
     bkp.line       = atoi(cmds[1].c_str());
@@ -146,16 +173,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMode(ByteCodeRunContext* context, const 
     if (cmds.size() != 2)
         return BcDbgCommandResult::BadArguments;
 
-    if (cmds[1] == "bc")
-    {
-        g_ByteCodeDebugger.debugBcMode = !g_ByteCodeDebugger.debugBcMode;
-        if (g_ByteCodeDebugger.debugBcMode)
-            g_ByteCodeDebugger.printCmdResult("bytecode mode");
-        else
-            g_ByteCodeDebugger.printCmdResult("source code mode");
-        g_ByteCodeDebugger.printDebugContext(context, true);
-    }
-    else if (cmds[1] == "inline")
+    if (cmds[1] == "inline")
     {
         context->bc->sourceFile->module->buildCfg.byteCodeDebugInline = !context->bc->sourceFile->module->buildCfg.byteCodeDebugInline;
         if (context->bc->sourceFile->module->buildCfg.byteCodeDebugInline)
@@ -168,9 +186,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdMode(ByteCodeRunContext* context, const 
     {
         g_CommandLine.dbgOff = !g_CommandLine.dbgOff;
         if (g_CommandLine.dbgOff)
-            g_ByteCodeDebugger.printCmdResult("@breakpoint() are disabled");
+            g_ByteCodeDebugger.printCmdResult("@breakpoint() is disabled");
         else
-            g_ByteCodeDebugger.printCmdResult("@breakpoint() are enabled");
+            g_ByteCodeDebugger.printCmdResult("@breakpoint() is enabled");
     }
     else
         return BcDbgCommandResult::BadArguments;

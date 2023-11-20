@@ -17,13 +17,15 @@ void ByteCodeDebugger::setup()
     commands.push_back({});
 
     commands.push_back({"step",        "s",    "",                    "continue to the next source line", cmdStep});
-    commands.push_back({"stepi",       "si",   "",                    "execute one bytecode instruction", cmdStepi});
     commands.push_back({"next",        "n",    "",                    "like 'step', but does not enter functions or inlined code", cmdNext});
+    commands.push_back({"until",       "u",    "<line>",              "runs to the given line in the current function", cmdUntil});
+    commands.push_back({"jump",        "j",    "<line>",              "jump to the given line or instruction in the current function", cmdJump});
+    commands.push_back({"stepi",       "si",   "",                    "execute one bytecode instruction", cmdStepi});
     commands.push_back({"nexti",       "ni",   "",                    "like 'stepi', but does not enter functions or inlined code", cmdNexti});
+    commands.push_back({"untili",      "ui",   "<inst>",              "runs to the given bytecode instruction in the current function", cmdUntili});
+    commands.push_back({"jumpi",       "ji",   "<inst>",              "jump to the given bytecode instruction in the current function", cmdJumpi});
     commands.push_back({"finish",      "f",    "",                    "continue running until the current function is done", cmdFinish});
     commands.push_back({"continue",    "c",    "",                    "continue running until another breakpoint is reached", cmdContinue});
-    commands.push_back({"until",       "u",     "",                   "runs to the given line or instruction in the current function (depends on 'mode bc')", cmdUntil});
-    commands.push_back({"jump",        "j",    "",                    "jump to the given line or instruction in the current function (depends on 'mode bc')", cmdJump});
     commands.push_back({});                    
                                                
     commands.push_back({"execute",     "e",    "<stmt>",              "execute the code statement <stmt> in the current context", cmdExecute});
@@ -65,7 +67,6 @@ void ByteCodeDebugger::setup()
     commands.push_back({"frame",       "",     "<num>",               "set stack frame to level <num>", cmdFrame});
     commands.push_back({});                                           
                                                                       
-    commands.push_back({"mode",        "m",    "bc",                  "swap between bytecode mode and source code mode", cmdMode});
     commands.push_back({"mode",        "m",    "inline",              "swap between inline mode and non inline mode", cmdMode});
     commands.push_back({"mode",        "m",    "bkp",                 "enable/disable call to @breakpoint()", cmdMode});
     commands.push_back({});

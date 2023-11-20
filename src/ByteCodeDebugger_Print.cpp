@@ -423,6 +423,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context,
     int regN = 4;
     if (cmds.size() == 2)
         regN = atoi(cmds[1].c_str());
+    g_ByteCodeDebugger.debugBcMode = true;
 
     g_ByteCodeDebugger.printInstructions(context, g_ByteCodeDebugger.debugCxtBc, g_ByteCodeDebugger.debugCxtIp, regN);
     return BcDbgCommandResult::Continue;
@@ -435,6 +436,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext* cont
 
     auto toLogBc = g_ByteCodeDebugger.debugCxtBc;
     auto toLogIp = g_ByteCodeDebugger.debugCxtIp;
+    g_ByteCodeDebugger.debugBcMode = true;
 
     if (cmds.size() > 1)
     {
@@ -467,6 +469,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
 
     auto toLogBc = g_ByteCodeDebugger.debugCxtBc;
     auto toLogIp = g_ByteCodeDebugger.debugCxtIp;
+    g_ByteCodeDebugger.debugBcMode = false;
 
     if (toLogBc->node && toLogBc->node->kind == AstNodeKind::FuncDecl && toLogBc->node->sourceFile)
     {
@@ -499,6 +502,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
 
     auto toLogBc = g_ByteCodeDebugger.debugCxtBc;
     auto toLogIp = g_ByteCodeDebugger.debugCxtIp;
+    g_ByteCodeDebugger.debugBcMode = false;
 
     if (cmds.size() > 1)
     {

@@ -1,4 +1,5 @@
 //#[Swag.Inline]
+#[Swag.PrintBc]
 func isPrime(n: s32)->s32
 {
     loop i: 2 to n/2

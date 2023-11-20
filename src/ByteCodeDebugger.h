@@ -128,7 +128,9 @@ struct ByteCodeDebugger
     static BcDbgCommandResult cmdFinish(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr);
     static BcDbgCommandResult cmdContinue(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr);
     static BcDbgCommandResult cmdJump(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr);
+    static BcDbgCommandResult cmdJumpi(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr);
     static BcDbgCommandResult cmdUntil(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr);
+    static BcDbgCommandResult cmdUntili(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr);
     static BcDbgCommandResult cmdMemory(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr);
     static BcDbgCommandResult cmdWhere(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr);
     static BcDbgCommandResult cmdInstruction(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr);
