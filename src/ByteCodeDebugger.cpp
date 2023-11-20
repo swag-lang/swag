@@ -16,10 +16,12 @@ void ByteCodeDebugger::setup()
     commands.push_back({"<tab>",       "",  "",                       "contextual completion of the current word", nullptr});
     commands.push_back({});
 
-    commands.push_back({"step",        "s",    "",                    "runs to the next line", cmdStep});
+    commands.push_back({"step",        "s",    "",                    "continue to the next source line", cmdStep});
+    commands.push_back({"stepi",       "si",   "",                    "execute one bytecode instruction", cmdStepi});
     commands.push_back({"next",        "n",    "",                    "like 'step', but does not enter functions or inlined code", cmdNext});
-    commands.push_back({"finish",      "f",    "",                    "runs until the current function is done", cmdFinish});
-    commands.push_back({"continue",    "c",    "",                    "runs until another breakpoint is reached", cmdContinue});
+    commands.push_back({"nexti",       "ni",   "",                    "like 'stepi', but does not enter functions or inlined code", cmdNexti});
+    commands.push_back({"finish",      "f",    "",                    "continue running until the current function is done", cmdFinish});
+    commands.push_back({"continue",    "c",    "",                    "continue running until another breakpoint is reached", cmdContinue});
     commands.push_back({"until",       "u",     "",                   "runs to the given line or instruction in the current function (depends on 'mode bc')", cmdUntil});
     commands.push_back({"jump",        "j",    "",                    "jump to the given line or instruction in the current function (depends on 'mode bc')", cmdJump});
     commands.push_back({});                    
@@ -409,16 +411,29 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
         zapCurrentIp = true;
         break;
 
-    case DebugStepMode::NextLine:
-    {
-        if (debugBcMode)
+    case DebugStepMode::NextInstructionStepIn:
+        context->debugOn = true;
+        debugStepMode    = DebugStepMode::None;
+        debugBcMode      = true;
+        break;
+
+    case DebugStepMode::NextInstructionStepOut:
+        // If inside a sub function
+        if (context->curRC > debugStepRC)
         {
-            context->debugOn = true;
-            debugStepMode    = DebugStepMode::None;
+            zapCurrentIp = true;
             break;
         }
 
-        auto loc = ByteCode::getLocation(context->bc, ip, debugLastBreakIp->node->ownerInline ? true : false);
+        context->debugOn = true;
+        debugStepMode    = DebugStepMode::None;
+        debugBcMode      = true;
+        break;
+
+    case DebugStepMode::NextLineStepIn:
+    {
+        debugBcMode = false;
+        auto loc    = ByteCode::getLocation(context->bc, ip, debugLastBreakIp->node->ownerInline ? true : false);
         SWAG_ASSERT(loc.file && loc.location);
         if (debugStepLastFile == loc.file && debugStepLastLocation && debugStepLastLocation->line == loc.location->line)
         {
@@ -433,17 +448,12 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
     }
     case DebugStepMode::NextLineStepOut:
     {
+        debugBcMode = false;
+
         // If inside a sub function
         if (context->curRC > debugStepRC)
         {
             zapCurrentIp = true;
-            break;
-        }
-
-        if (debugBcMode)
-        {
-            context->debugOn = true;
-            debugStepMode    = DebugStepMode::None;
             break;
         }
 

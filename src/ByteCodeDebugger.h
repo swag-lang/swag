@@ -58,8 +58,10 @@ struct ByteCodeDebugger
     enum class DebugStepMode
     {
         None,
-        NextLine,
+        NextLineStepIn,
         NextLineStepOut,
+        NextInstructionStepIn,
+        NextInstructionStepOut,
         FinishedFunction,
         ToNextBreakpoint,
     };
@@ -120,7 +122,9 @@ struct ByteCodeDebugger
     static BcDbgCommandResult cmdExecute(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr);
     static BcDbgCommandResult cmdPrint(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr);
     static BcDbgCommandResult cmdStep(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr);
+    static BcDbgCommandResult cmdStepi(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr);
     static BcDbgCommandResult cmdNext(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr);
+    static BcDbgCommandResult cmdNexti(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr);
     static BcDbgCommandResult cmdFinish(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr);
     static BcDbgCommandResult cmdContinue(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr);
     static BcDbgCommandResult cmdJump(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr);

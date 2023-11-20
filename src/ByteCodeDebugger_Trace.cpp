@@ -9,7 +9,17 @@ BcDbgCommandResult ByteCodeDebugger::cmdStep(ByteCodeRunContext* context, const 
         return BcDbgCommandResult::BadArguments;
 
     context->debugStackFrameOffset   = 0;
-    g_ByteCodeDebugger.debugStepMode = DebugStepMode::NextLine;
+    g_ByteCodeDebugger.debugStepMode = DebugStepMode::NextLineStepIn;
+    return BcDbgCommandResult::Break;
+}
+
+BcDbgCommandResult ByteCodeDebugger::cmdStepi(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+{
+    if (cmds.size() > 1)
+        return BcDbgCommandResult::BadArguments;
+
+    context->debugStackFrameOffset   = 0;
+    g_ByteCodeDebugger.debugStepMode = DebugStepMode::NextInstructionStepIn;
     return BcDbgCommandResult::Break;
 }
 
@@ -20,6 +30,17 @@ BcDbgCommandResult ByteCodeDebugger::cmdNext(ByteCodeRunContext* context, const 
 
     context->debugStackFrameOffset   = 0;
     g_ByteCodeDebugger.debugStepMode = DebugStepMode::NextLineStepOut;
+    g_ByteCodeDebugger.debugStepRC   = context->curRC;
+    return BcDbgCommandResult::Break;
+}
+
+BcDbgCommandResult ByteCodeDebugger::cmdNexti(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+{
+    if (cmds.size() > 1)
+        return BcDbgCommandResult::BadArguments;
+
+    context->debugStackFrameOffset   = 0;
+    g_ByteCodeDebugger.debugStepMode = DebugStepMode::NextInstructionStepOut;
     g_ByteCodeDebugger.debugStepRC   = context->curRC;
     return BcDbgCommandResult::Break;
 }

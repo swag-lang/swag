@@ -1,10 +1,14 @@
-#[Swag.Inline]
+//#[Swag.Inline]
 func isPrime(n: s32)->s32
 {
     loop i: 2 to n/2
+    {
         if !(n % i)
+        {
             return 0
-    //@breakpoint()
+        }
+    }
+    
     return 1
 }
 
@@ -14,7 +18,10 @@ func isPrime(n: s32)->s32
     //Time.Stopwatch.scopeMeasure()
     var numPrimes = 0
     loop i: 4 to 25//0000
+    {
+        @breakpoint()
         numPrimes += isPrime(i)
+    }
     @assert(numPrimes == 7)
 }
 
