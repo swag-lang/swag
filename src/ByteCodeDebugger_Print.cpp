@@ -156,7 +156,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
         g_ByteCodeDebugger.printTitleNameType("function", ipNode->ownerFct->getScopedName(), ipNode->ownerFct->typeInfo->getDisplayNameC());
     }
 
-    g_ByteCodeDebugger.printTitleNameType("bytecode", bc->name, bc->typeInfoFunc->getDisplayNameC());
+    g_ByteCodeDebugger.printTitleNameType("bytecode", bc->getPrintName(), bc->typeInfoFunc->getDisplayNameC());
     if (bc->sourceFile && bc->node)
     {
         auto loc = Fmt("%s:%u:%u", bc->sourceFile->path.string().c_str(), bc->node->token.startLocation.line + 1, bc->node->token.startLocation.column + 1);
@@ -455,17 +455,10 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext* cont
     if (cmds.size() > 1)
     {
         auto name = cmds[1];
-        auto bc   = g_ByteCodeDebugger.findBc(name);
-        if (bc)
-        {
-            toLogBc = bc;
-            toLogIp = bc->out;
-        }
-        else
-        {
-            g_ByteCodeDebugger.printCmdError(Fmt("cannot find function '%s'", name.c_str()));
+        toLogBc   = g_ByteCodeDebugger.findCmdBc(name);
+        if (!toLogBc)
             return BcDbgCommandResult::Continue;
-        }
+        toLogIp = toLogBc->out;
     }
 
     ByteCodePrintOptions opt;
@@ -521,17 +514,10 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
     if (cmds.size() > 1)
     {
         auto name = cmds[1];
-        auto bc   = g_ByteCodeDebugger.findBc(name);
-        if (bc)
-        {
-            toLogBc = bc;
-            toLogIp = bc->out;
-        }
-        else
-        {
-            g_ByteCodeDebugger.printCmdError(Fmt("cannot find function '%s'", name.c_str()));
+        toLogBc   = g_ByteCodeDebugger.findCmdBc(name);
+        if (!toLogBc)
             return BcDbgCommandResult::Continue;
-        }
+        toLogIp = toLogBc->out;
     }
 
     if (toLogBc->node && toLogBc->node->kind == AstNodeKind::FuncDecl && toLogBc->node->sourceFile)

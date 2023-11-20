@@ -83,7 +83,25 @@ void ByteCodeDebugger::setup()
     // clang-format on
 }
 
-ByteCode* ByteCodeDebugger::findBc(const char* bcName)
+ByteCode* ByteCodeDebugger::findCmdBc(const Utf8& name)
+{
+    auto bc = g_ByteCodeDebugger.findBc(name.c_str());
+    if (bc.size() == 1)
+        return bc[0];
+
+    if (bc.size() > 1)
+    {
+        g_ByteCodeDebugger.printCmdError("multiple functions");
+        for (auto one : bc)
+            one->printName();
+        return nullptr;
+    }
+
+    g_ByteCodeDebugger.printCmdError(Fmt("cannot find function '%s'", name.c_str()));
+    return nullptr;
+}
+
+VectorNative<ByteCode*> ByteCodeDebugger::findBc(const char* bcName)
 {
     VectorNative<Module*> modules;
     for (auto m : g_Workspace->mapModulesNames)
@@ -91,13 +109,13 @@ ByteCode* ByteCodeDebugger::findBc(const char* bcName)
     modules.push_back(g_Workspace->bootstrapModule);
     modules.push_back(g_Workspace->runtimeModule);
 
-    Vector<ByteCode*> tryMatch;
+    VectorNative<ByteCode*> tryMatch;
     for (auto m : modules)
     {
         for (auto bc : m->byteCodeFunc)
         {
             if (bc->getPrintName() == bcName)
-                return bc;
+                return {bc};
 
             if (bc->getPrintName().find(bcName) != -1)
                 tryMatch.push_back(bc);
@@ -105,9 +123,9 @@ ByteCode* ByteCodeDebugger::findBc(const char* bcName)
     }
 
     if (tryMatch.size() == 1)
-        return tryMatch[0];
+        return {tryMatch[0]};
 
-    return nullptr;
+    return tryMatch;
 }
 
 bool ByteCodeDebugger::getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN)

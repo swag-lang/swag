@@ -25,6 +25,16 @@ uint32_t ByteCodeStack::maxLevel(ByteCodeRunContext* runContext)
     return (uint32_t) steps.size();
 }
 
+Utf8 ByteCodeStack::getStepName(AstNode* node, ByteCodeInstruction* ip)
+{
+    auto fct = node->ownerInline && node->ownerInline->ownerFct == ip->node->ownerFct ? node->ownerInline->func : node->ownerFct;
+    if (fct && fct->hasExtByteCode() && fct->extByteCode()->bc)
+        return fct->extByteCode()->bc->getPrintName();
+    if (fct)
+        return fct->getDisplayName();
+    return "";
+}
+
 Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
 {
     auto bc = step.bc;
@@ -58,8 +68,9 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
     // Current ip
     auto sourceFile = ip->node->sourceFile;
     auto location   = ip->location;
-    auto fct        = ip->node->ownerInline && ip->node->ownerInline->ownerFct == ip->node->ownerFct ? ip->node->ownerInline->func : ip->node->ownerFct;
-    auto name       = fct ? fct->getDisplayNameC() : bc->name.c_str();
+    auto name       = getStepName(ip->node, ip);
+    if (name.empty())
+        name = bc->getPrintName();
 
     Utf8 str = ip->node->ownerInline ? inl.c_str() : header.c_str();
     str += name;
@@ -76,11 +87,9 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
             owner = owner->parent;
         if (owner)
         {
-            fct = owner->ownerInline && owner->ownerInline->ownerFct == ip->node->ownerFct ? owner->ownerInline->func : owner->ownerFct;
             str = owner->ownerInline ? inl.c_str() : header.c_str();
-
             str += ByteCodeDebugger::COLOR_VTS_NAME;
-            str += fct->getDisplayNameC();
+            str += getStepName(owner, ip);
 
             if (owner->sourceFile)
             {
@@ -96,11 +105,9 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
     auto parent = ip->node->ownerInline;
     while (parent && parent->ownerFct == ip->node->ownerFct)
     {
-        fct = parent->ownerInline && parent->ownerInline->ownerFct == ip->node->ownerFct ? parent->ownerInline->func : parent->ownerFct;
         str += parent->ownerInline ? inl.c_str() : header.c_str();
-
         str += ByteCodeDebugger::COLOR_VTS_NAME;
-        str += fct->getDisplayNameC();
+        str += getStepName(parent, ip);
 
         if (parent->sourceFile)
         {

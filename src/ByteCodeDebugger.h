@@ -161,17 +161,18 @@ struct ByteCodeDebugger
     static BcDbgCommandResult cmdBreakLine(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr);
     static BcDbgCommandResult cmdBreakFileLine(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr);
 
-    void      setup();
-    void      printSeparator();
-    bool      getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN);
-    void      printDebugContext(ByteCodeRunContext* context, bool force = false);
-    void      computeDebugContext(ByteCodeRunContext* context);
-    Utf8      completion(ByteCodeRunContext* context, const Utf8& line, Utf8& toComplete);
-    Utf8      getCommandLine(ByteCodeRunContext* context, bool& ctrl, bool& shift);
-    bool      processCommandLine(ByteCodeRunContext* context, Vector<Utf8>& cmds, Utf8& line, Utf8& cmdExpr);
-    bool      mustBreak(ByteCodeRunContext* context);
-    bool      step(ByteCodeRunContext* context);
-    ByteCode* findBc(const char* name);
+    void                    setup();
+    void                    printSeparator();
+    bool                    getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN);
+    void                    printDebugContext(ByteCodeRunContext* context, bool force = false);
+    void                    computeDebugContext(ByteCodeRunContext* context);
+    Utf8                    completion(ByteCodeRunContext* context, const Utf8& line, Utf8& toComplete);
+    Utf8                    getCommandLine(ByteCodeRunContext* context, bool& ctrl, bool& shift);
+    bool                    processCommandLine(ByteCodeRunContext* context, Vector<Utf8>& cmds, Utf8& line, Utf8& cmdExpr);
+    bool                    mustBreak(ByteCodeRunContext* context);
+    bool                    step(ByteCodeRunContext* context);
+    ByteCode*               findCmdBc(const Utf8& name);
+    VectorNative<ByteCode*> findBc(const char* name);
 
     void printTitleNameType(const Utf8& title, const Utf8& name, const Utf8& type);
     void printCmdError(const Utf8& msg);

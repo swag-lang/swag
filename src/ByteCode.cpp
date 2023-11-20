@@ -51,11 +51,20 @@ ByteCode::Location ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, 
 Utf8 ByteCode::getPrintRefName()
 {
     Utf8 str;
+
     str = ByteCodeDebugger::COLOR_VTS_NAME;
     str += getPrintName();
-    str += " ";
-    str += ByteCodeDebugger::COLOR_VTS_TYPE;
-    str += getCallType()->getDisplayName();
+
+    auto type = getCallType();
+    if (type)
+    {
+        str += " ";
+        str += ByteCodeDebugger::COLOR_VTS_TYPE;
+        str += type->getDisplayName();
+    }
+
+    if (!out)
+        return str;
 
     auto loc = ByteCode::getLocation(this, out);
     if (loc.file || loc.location)
@@ -140,7 +149,7 @@ TypeInfoFuncAttr* ByteCode::getCallType()
         return g_TypeMgr->typeInfoOpCall;
     if (alias)
         return alias->getCallType();
-    if (node && node->typeInfo->isFuncAttr())
+    if (out && node && node->typeInfo->isFuncAttr())
         return CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
     return typeInfoFunc;
 }
