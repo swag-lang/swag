@@ -6,6 +6,17 @@
 #include "Ast.h"
 #include "SyntaxColor.h"
 
+void ByteCodeDebugger::printSeparator()
+{
+    g_Log.eol();
+
+    // g_Log.setColor(LogColor::Gray);
+    // for (int i = 0; i < LINE_W; i++)
+    //     g_Log.print(LogSymbol::HorizontalLine);
+    // g_Log.eol();
+    // g_Log.setColor(LogColor::Gray);
+}
+
 void ByteCodeDebugger::printTitleNameType(const Utf8& title, const Utf8& name, const Utf8& type)
 {
     g_Log.print(title.c_str(), LogColor::Gray);
@@ -34,9 +45,11 @@ void ByteCodeDebugger::printCmdResult(const Utf8& msg)
 
 void ByteCodeDebugger::printMsgBkp(const Utf8& msg)
 {
-    g_Log.print("## ", LogColor::Green);
+    g_Log.eol();
+    g_Log.print("#### ", LogColor::Green);
     g_Log.print(msg.c_str(), LogColor::Green);
-    g_Log.print(" ##", LogColor::Green);
+    g_Log.print(" ####", LogColor::Green);
+    g_Log.eol();
     g_Log.eol();
 }
 
@@ -434,8 +447,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext* cont
     if (cmds.size() > 2)
         return BcDbgCommandResult::BadArguments;
 
-    auto toLogBc = g_ByteCodeDebugger.debugCxtBc;
-    auto toLogIp = g_ByteCodeDebugger.debugCxtIp;
+    auto toLogBc                   = g_ByteCodeDebugger.debugCxtBc;
+    auto toLogIp                   = g_ByteCodeDebugger.debugCxtIp;
     g_ByteCodeDebugger.debugBcMode = true;
 
     if (cmds.size() > 1)
@@ -467,8 +480,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
     if (cmds.size() > 1 && !Utf8::isNumber(cmds[1].c_str()))
         return BcDbgCommandResult::BadArguments;
 
-    auto toLogBc = g_ByteCodeDebugger.debugCxtBc;
-    auto toLogIp = g_ByteCodeDebugger.debugCxtIp;
+    auto toLogBc                   = g_ByteCodeDebugger.debugCxtBc;
+    auto toLogIp                   = g_ByteCodeDebugger.debugCxtIp;
     g_ByteCodeDebugger.debugBcMode = false;
 
     if (toLogBc->node && toLogBc->node->kind == AstNodeKind::FuncDecl && toLogBc->node->sourceFile)
@@ -500,8 +513,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
     if (cmds.size() > 2)
         return BcDbgCommandResult::BadArguments;
 
-    auto toLogBc = g_ByteCodeDebugger.debugCxtBc;
-    auto toLogIp = g_ByteCodeDebugger.debugCxtIp;
+    auto toLogBc                   = g_ByteCodeDebugger.debugCxtBc;
+    auto toLogIp                   = g_ByteCodeDebugger.debugCxtIp;
     g_ByteCodeDebugger.debugBcMode = false;
 
     if (cmds.size() > 1)

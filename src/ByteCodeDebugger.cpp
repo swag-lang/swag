@@ -18,12 +18,12 @@ void ByteCodeDebugger::setup()
 
     commands.push_back({"step",        "s",    "",                    "continue to the next source line", cmdStep});
     commands.push_back({"next",        "n",    "",                    "like 'step', but does not enter functions or inlined code", cmdNext});
-    commands.push_back({"until",       "u",    "<line>",              "runs to the given line in the current function", cmdUntil});
-    commands.push_back({"jump",        "j",    "<line>",              "jump to the given line or instruction in the current function", cmdJump});
+    commands.push_back({"until",       "u",    "<line>",              "runs until the given <line> in the current function has been reached", cmdUntil});
+    commands.push_back({"jump",        "j",    "<line>",              "jump to the given <line> in the current function", cmdJump});
     commands.push_back({"stepi",       "si",   "",                    "execute one bytecode instruction", cmdStepi});
     commands.push_back({"nexti",       "ni",   "",                    "like 'stepi', but does not enter functions or inlined code", cmdNexti});
-    commands.push_back({"untili",      "ui",   "<inst>",              "runs to the given bytecode instruction in the current function", cmdUntili});
-    commands.push_back({"jumpi",       "ji",   "<inst>",              "jump to the given bytecode instruction in the current function", cmdJumpi});
+    commands.push_back({"untili",      "ui",   "<instruction>",       "runs until the given bytecode <instruction> has been reached", cmdUntili});
+    commands.push_back({"jumpi",       "ji",   "<instruction>",       "jump to the given bytecode instruction", cmdJumpi});
     commands.push_back({"finish",      "f",    "",                    "continue running until the current function is done", cmdFinish});
     commands.push_back({"continue",    "c",    "",                    "continue running until another breakpoint is reached", cmdContinue});
     commands.push_back({});                    
@@ -76,17 +76,9 @@ void ByteCodeDebugger::setup()
     commands.push_back({});                                           
                                                                       
     commands.push_back({"help",        "?",    "",                    "print this list of commands", cmdHelp});
+    commands.push_back({"help",        "?",    "<command>",           "print help about a specific command", cmdHelp});
     commands.push_back({"quit",        "q",    "",                    "quit the compiler", cmdQuit});
     // clang-format on
-}
-
-void ByteCodeDebugger::printSeparator()
-{
-    g_Log.setColor(LogColor::Green);
-    for (int i = 0; i < LINE_W; i++)
-        g_Log.print(LogSymbol::HorizontalLine);
-    g_Log.eol();
-    g_Log.setColor(LogColor::Gray);
 }
 
 bool ByteCodeDebugger::getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN)
@@ -624,15 +616,6 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
             for (int i = 0; i < LINE_W; i++)
                 g_Log.print(LogSymbol::HorizontalLine2);
             g_Log.eol();
-
-            g_Log.eol();
-
-            // Bar
-            /////////////////////////////////////////
-            g_Log.setColor(LogColor::Green);
-            for (int i = 0; i < LINE_W; i++)
-                g_Log.print(LogSymbol::HorizontalLine);
-            g_Log.eol();
             g_Log.setColor(LogColor::Gray);
         }
 
@@ -668,7 +651,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         /////////////////////////////////////////
 
         g_Log.setColor(LogColor::Green);
-        g_Log.print("> ");
+        g_Log.print("(bcdbg) > ");
 
         // Get command from user
         bool ctrl  = false;
