@@ -20,10 +20,12 @@ void ByteCodeDebugger::setup()
     commands.push_back({"next",        "n",    "",                    "like 'step', but does not enter functions or inlined code", cmdNext});
     commands.push_back({"until",       "u",    "<line>",              "runs until the given <line> in the current function has been reached", cmdUntil});
     commands.push_back({"jump",        "j",    "<line>",              "jump to the given <line> in the current function", cmdJump});
+    commands.push_back({});  
     commands.push_back({"stepi",       "si",   "",                    "execute one bytecode instruction", cmdStepi});
     commands.push_back({"nexti",       "ni",   "",                    "like 'stepi', but does not enter functions or inlined code", cmdNexti});
     commands.push_back({"untili",      "ui",   "<instruction>",       "runs until the given bytecode <instruction> has been reached", cmdUntili});
     commands.push_back({"jumpi",       "ji",   "<instruction>",       "jump to the given bytecode instruction", cmdJumpi});
+    commands.push_back({});  
     commands.push_back({"finish",      "f",    "",                    "continue running until the current function is done", cmdFinish});
     commands.push_back({"continue",    "c",    "",                    "continue running until another breakpoint is reached", cmdContinue});
     commands.push_back({});                    
@@ -37,7 +39,10 @@ void ByteCodeDebugger::setup()
                                                
     commands.push_back({"list",        "l",    "[num]",               "print the current source code line and [num] lines around", cmdList});
     commands.push_back({"ll",          "",     "[name]",              "print the current function (or function [name]) source code", cmdLongList});
-    commands.push_back({});                    
+    commands.push_back({});  
+    commands.push_back({"i",           "",     "[num]",               "print the current bytecode instruction and [num] instructions around", cmdInstruction});
+    commands.push_back({"ii",          "",     "[name]",              "print the current function (or function [name]) bytecode", cmdInstructionDump});
+    commands.push_back({});                                           
                                                
     commands.push_back({"info",        "o",    "(l)ocals",            "print all current local variables", cmdInfo});
     commands.push_back({"info",        "o",    "(a)rgs",              "print all current function arguments", cmdInfo});
@@ -70,11 +75,7 @@ void ByteCodeDebugger::setup()
     commands.push_back({"mode",        "m",    "inline",              "swap between inline mode and non inline mode", cmdMode});
     commands.push_back({"mode",        "m",    "bkp",                 "enable/disable call to @breakpoint()", cmdMode});
     commands.push_back({});
-
-    commands.push_back({"i",           "",     "[num]",               "print the current bytecode instruction and [num] instructions around", cmdInstruction});
-    commands.push_back({"ii",          "",     "[name]",              "print the current function (or function [name]) bytecode", cmdInstructionDump});
-    commands.push_back({});                                           
-                                                                      
+                                                                     
     commands.push_back({"help",        "?",    "",                    "print this list of commands", cmdHelp});
     commands.push_back({"help",        "?",    "<command>",           "print help about a specific command", cmdHelp});
     commands.push_back({"quit",        "q",    "",                    "quit the compiler", cmdQuit});
