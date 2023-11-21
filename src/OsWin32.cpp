@@ -995,11 +995,6 @@ namespace OS
         gen.concat.currentSP = (uint8_t*) ptr;
     }
 
-    bool longOpStopKeyPressed()
-    {
-        return GetAsyncKeyState(VK_ESCAPE) < 0;
-    }
-
     Utf8 getClipboardString()
     {
         if (!OpenClipboard(GetDesktopWindow()))

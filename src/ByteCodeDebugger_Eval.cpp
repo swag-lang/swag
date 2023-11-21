@@ -12,22 +12,6 @@
 #include "Parser.h"
 #include "Ast.h"
 
-static void cleanErrMsg()
-{
-    if (g_SilentErrorMsg.empty())
-        return;
-
-    Vector<Utf8> tokens;
-    Utf8::tokenize(g_SilentErrorMsg, '$', tokens, false, true);
-
-    g_SilentErrorMsg = tokens[0];
-    if (tokens.size() > 1)
-    {
-        g_SilentErrorMsg += ": ";
-        g_SilentErrorMsg += tokens[1];
-    }
-}
-
 bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8& inExpr, EvaluateResult& res, CompilerAstKind kind, bool silent)
 {
     PushSilentError se;
@@ -56,7 +40,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
             g_ByteCodeDebugger.printCmdError("expression syntax error");
         else
         {
-            cleanErrMsg();
+            g_SilentErrorMsg = Diagnostic::oneLiner(g_SilentErrorMsg);
             g_ByteCodeDebugger.printCmdError(Fmt("%s", g_SilentErrorMsg.c_str()));
         }
         return false;
@@ -79,7 +63,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     {
         if (silent)
             return false;
-        cleanErrMsg();
+        g_SilentErrorMsg = Diagnostic::oneLiner(g_SilentErrorMsg);
         g_ByteCodeDebugger.printCmdError(Fmt("%s", g_SilentErrorMsg.c_str()));
         return false;
     }
@@ -118,7 +102,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     {
         if (silent)
             return false;
-        cleanErrMsg();
+        g_SilentErrorMsg = Diagnostic::oneLiner(g_SilentErrorMsg);
         g_ByteCodeDebugger.printCmdError(Fmt("%s", g_SilentErrorMsg.c_str()));
         return false;
     }
@@ -153,7 +137,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
             g_ByteCodeDebugger.printCmdError("cannot run expression");
         else
         {
-            cleanErrMsg();
+            g_SilentErrorMsg = Diagnostic::oneLiner(g_SilentErrorMsg);
             g_ByteCodeDebugger.printCmdError(Fmt("%s", g_SilentErrorMsg.c_str()));
         }
         return false;

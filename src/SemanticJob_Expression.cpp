@@ -35,9 +35,9 @@ bool SemanticJob::checkIsConstExpr(JobContext* context, bool test, AstNode* expr
     if (errMsg.empty() && note->startLocation == diag.startLocation && note->endLocation == diag.endLocation)
     {
         Vector<Utf8> parts;
-        Utf8::tokenize(diag.textMsg, '$', parts, true, true);
+        Diagnostic::tokenizeError(diag.textMsg, parts);
         diag.textMsg = parts[0];
-        diag.textMsg += "$";
+        diag.textMsg += Diagnostic::ERROR_MESSAGE_SEPARATOR;
         diag.textMsg += note->textMsg;
         note = nullptr;
     }

@@ -42,7 +42,6 @@ namespace OS
 
     Utf8 getClipboardString();
     Key  promptChar(int& c, bool& ctrl, bool& shift);
-    bool longOpStopKeyPressed();
 
     Path getExePath();
     Utf8 getLastErrorAsString();

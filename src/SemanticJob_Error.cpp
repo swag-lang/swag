@@ -758,7 +758,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext*            context
             fn += "  ----  ";
 
             Vector<Utf8> parts;
-            Utf8::tokenize(errs0[0]->textMsg, '$', parts, true, true);
+            Diagnostic::tokenizeError(errs0[0]->textMsg, parts);
             if (parts.size() > 1)
                 fn += parts[1];
             else

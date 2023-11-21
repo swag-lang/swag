@@ -153,13 +153,16 @@ struct Diagnostic
     void reportCompact(bool verboseMode);
     void report(bool verboseMode = false);
 
+    static void        tokenizeError(const Utf8& err, Vector<Utf8>& tokens);
+    static Utf8        oneLiner(const Utf8& err);
     static bool        hastErrorId(const Utf8& textMsg);
     static Utf8        isType(TypeInfo* typeInfo);
     static Utf8        isType(AstNode* node);
     static Diagnostic* hereIs(SymbolOverload* overload, bool forceShowRange = false);
     static Diagnostic* hereIs(AstNode* node, bool forceShowRange = false, bool forceNode = false);
 
-    static const int MAX_LINE_DIGITS = 5;
+    static const int             MAX_LINE_DIGITS         = 5;
+    static constexpr const char* ERROR_MESSAGE_SEPARATOR = "$";
 
     struct RangeHint
     {

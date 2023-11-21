@@ -80,6 +80,7 @@ func @err()->any
 func __failedAssume(loc: SourceCodeLocation)
 {
     let cxt = @getcontext()
+    @breakpoint()
     let type = @kindof(cxt.errors[cxt.errorIndex].value)
     
     var str: [512] u8

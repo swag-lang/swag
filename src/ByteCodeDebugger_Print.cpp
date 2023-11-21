@@ -17,16 +17,35 @@ void ByteCodeDebugger::printLong(const Vector<Utf8>& all)
 {
     g_Log.setColor(LogColor::Gray);
 
+    int  cpt     = 0;
+    bool canStop = true;
     for (int i = 0; i < all.size(); i++)
     {
-        const auto& o = all[i];
-        if (OS::longOpStopKeyPressed())
+        if (cpt == 50 && canStop)
         {
-            g_ByteCodeDebugger.printCmdError("...stopped");
-            break;
+            cpt = 0;
+            g_Log.setColor(LogColor::Gray);
+            g_Log.print("-- Type <RET> for more, 'q' to quit, 'c' to continue without paging --");
+            bool ctrl, shift;
+            int  c = 0;
+            while (true)
+            {
+                auto key = OS::promptChar(c, ctrl, shift);
+                if (key == OS::Key::Return)
+                    break;
+                if (key == OS::Key::Ascii && c == 'q')
+                    return;
+                if (key == OS::Key::Ascii && c == 'c')
+                {
+                    canStop = false;
+                    break;
+                }
+            };
         }
 
-        g_Log.print(o);
+        cpt++;
+
+        g_Log.print(all[i]);
         g_Log.eol();
     }
 }

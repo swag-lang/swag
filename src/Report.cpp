@@ -34,7 +34,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
     // We generate hint and notes...
     auto         err = notes[0];
     Vector<Utf8> parts;
-    Utf8::tokenize(err->textMsg, '$', parts, true, true);
+    Diagnostic::tokenizeError(err->textMsg, parts);
     if (parts.size() > 1)
     {
         err->textMsg = parts[0];
@@ -60,7 +60,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
     // Sometime an error is put inside a note, so be sure we deal also with '$' in that case
     for (auto note : notes)
     {
-        Utf8::tokenize(note->textMsg, '$', parts, true, true);
+        Diagnostic::tokenizeError(note->textMsg, parts);
         if (parts.size() == 1)
             continue;
 
@@ -700,7 +700,7 @@ bool Report::error(Module* module, const Utf8& msg)
     g_Log.setColor(LogColor::Red);
     g_Log.print("error: ");
     g_Log.print(Fmt("module %s: ", module->name.c_str()));
-    g_Log.print(msg);
+    g_Log.print(Diagnostic::oneLiner(msg));
     g_Log.eol();
     g_Log.setDefaultColor();
     g_Workspace->numErrors++;
@@ -714,7 +714,7 @@ void Report::error(const Utf8& msg)
     g_Log.lock();
     g_Log.setColor(LogColor::Red);
     g_Log.print("error: ");
-    g_Log.print(msg);
+    g_Log.print(Diagnostic::oneLiner(msg));
     if (msg.back() != '\n')
         g_Log.eol();
     g_Log.setDefaultColor();
@@ -726,11 +726,10 @@ void Report::errorOS(const Utf8& msg)
     g_Log.lock();
     auto str = OS::getLastErrorAsString();
     g_Log.setColor(LogColor::Red);
-    SWAG_ASSERT(msg.back() != '\n');
-    g_Log.print(msg);
+    g_Log.print(Diagnostic::oneLiner(msg));
     if (!str.empty())
     {
-        g_Log.print(" : ");
+        g_Log.print(" => ");
         g_Log.print(str);
     }
 

@@ -13,8 +13,8 @@ void ByteCodeDebugger::setup()
         return;
 
     // clang-format off
-    commands.push_back({"<return>",    "",  "",                       "repeat the last command", nullptr});
-    commands.push_back({"<tab>",       "",  "",                       "contextual completion of the current word", nullptr});
+    commands.push_back({"<RET>",       "",  "",                       "repeat the last command", nullptr});
+    commands.push_back({"<TAB>",       "",  "",                       "contextual completion of the current word", nullptr});
     commands.push_back({});
 
     commands.push_back({"step",        "s",    "",                    "continue to the next source line", cmdStep});

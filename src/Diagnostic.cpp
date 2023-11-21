@@ -358,17 +358,7 @@ void Diagnostic::reportCompact(bool verboseMode)
     setupColors(verboseMode);
     printErrorLevel();
     printSourceLine();
-
-    Vector<Utf8> tokens;
-    textMsg.tokenize(textMsg, '$', tokens, true, true);
-
-    g_Log.print(tokens[0]);
-    if (tokens.size() > 1)
-    {
-        g_Log.print(": ");
-        g_Log.print(tokens[1]);
-    }
-
+    g_Log.print(oneLiner(textMsg));
     g_Log.eol();
 }
 
@@ -758,4 +748,24 @@ Diagnostic* Diagnostic::hereIs(SymbolOverload* overload, bool forceShowRange)
     auto note       = Diagnostic::note(site, site->token, Fmt(Nte(Nte0090), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()));
     note->showRange = forceShowRange;
     return note;
+}
+
+void Diagnostic::tokenizeError(const Utf8& err, Vector<Utf8>& tokens)
+{
+    Utf8::tokenize(err, '$', tokens, false, true);
+}
+
+Utf8 Diagnostic::oneLiner(const Utf8& err)
+{
+    Vector<Utf8> tokens;
+    tokenizeError(err, tokens);
+
+    auto result = tokens[0];
+    if (tokens.size() > 1)
+    {
+        result += ": ";
+        result += tokens[1];
+    }
+
+    return result;
 }
