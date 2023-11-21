@@ -6,6 +6,24 @@
 #include "Ast.h"
 #include "SyntaxColor.h"
 
+void ByteCodeDebugger::printLong(const Vector<Utf8>& all)
+{
+    g_Log.setColor(LogColor::Gray);
+
+    for (int i = 0; i < all.size(); i++)
+    {
+        const auto& o = all[i];
+        if (OS::longOpStopKeyPressed())
+        {
+            g_ByteCodeDebugger.printCmdError("...stopped");
+            break;
+        }
+
+        g_Log.print(o);
+        g_Log.eol();
+    }
+}
+
 void ByteCodeDebugger::printSeparator()
 {
     g_Log.eol();

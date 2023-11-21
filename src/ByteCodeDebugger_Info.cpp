@@ -37,18 +37,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
 
     sort(all.begin(), all.end(), [](const Utf8& a, const Utf8& b)
          { return strcmp(a.c_str(), b.c_str()) < 0; });
-    for (auto& o : all)
-    {
-        if (OS::longOpStopKeyPressed())
-        {
-            g_ByteCodeDebugger.printCmdError("...stopped");
-            break;
-        }
-
-        g_Log.print(o);
-        g_Log.eol();
-    }
-
+    g_ByteCodeDebugger.printLong(all);
     return BcDbgCommandResult::Continue;
 }
 
@@ -57,12 +46,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoModules(ByteCodeRunContext* context,
     if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
 
-    g_Log.setColor(LogColor::Gray);
+    Vector<Utf8> all;
     for (auto m : g_Workspace->modules)
-    {
-        g_Log.print(Fmt("%s\n", m->name.c_str()));
-    }
-
+        all.push_back(m->name);
+    sort(all.begin(), all.end(), [](const Utf8& a, const Utf8& b)
+         { return strcmp(a.c_str(), b.c_str()) < 0; });
+    g_ByteCodeDebugger.printLong(all);
     return BcDbgCommandResult::Continue;
 }
 
