@@ -638,6 +638,9 @@
     <ClCompile Include="..\src\ByteCodeOptimizer_Loop.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ByteCodeDebugger_Display.cpp">
+      <Filter>Backend\ByteCode\Debugger</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">

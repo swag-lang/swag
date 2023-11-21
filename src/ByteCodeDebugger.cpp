@@ -33,7 +33,11 @@ void ByteCodeDebugger::setup()
                                                
     commands.push_back({"execute",     "e",    "<stmt>",              "execute the code statement <stmt> in the current context", cmdExecute});
     commands.push_back({"print",       "p",    "[/format] <expr>",    "print the result of the expression <expr> in the current context (format is the same as 'x' command)", cmdPrint});
+    commands.push_back({});  
     commands.push_back({"display",     "d",    "[/format] <expr>",    "same as 'print', but will be done at each step", cmdDisplay});
+    commands.push_back({"display",     "",     "",                    "print all expressions to display", cmdDisplay});
+    commands.push_back({"display",     "d",    "(cl)ear",             "remove all expressions to display", cmdDisplay});
+    commands.push_back({"display",     "d",    "(cl)ear <num>",       "remove expression <num>", cmdDisplay});
     commands.push_back({});                    
                                                
     commands.push_back({"x",           "",     "[/format] [/num] <address>",     "print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|x8|x16|x32|x64|f32|f64)", cmdMemory});

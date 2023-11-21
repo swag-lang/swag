@@ -133,6 +133,9 @@ struct ByteCodeDebugger
     static BcDbgCommandResult cmdFrameDown(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdExecute(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdPrint(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
+    static BcDbgCommandResult cmdDisplayPrint(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
+    static BcDbgCommandResult cmdDisplayAdd(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
+    static BcDbgCommandResult cmdDisplayClear(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdDisplay(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdStep(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdStepi(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
@@ -189,6 +192,7 @@ struct ByteCodeDebugger
     void printMsgBkp(const Utf8& msg);
     void printHelp();
     void printHelp(const BcDbgCommand& cmd);
+    void printDisplayList();
     void printDisplay(ByteCodeRunContext* context);
 
     Vector<BcDbgCommand> commands;

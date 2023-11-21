@@ -275,28 +275,3 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
 
     return BcDbgCommandResult::Continue;
 }
-
-BcDbgCommandResult ByteCodeDebugger::cmdDisplay(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
-{
-    if (arg.split.size() < 2)
-        return BcDbgCommandResult::BadArguments;
-
-    auto line = arg.cmd + " " + arg.cmdExpr;
-    g_ByteCodeDebugger.debugDisplay.push_back(line);
-    g_ByteCodeDebugger.printDisplay(context);
-
-    return BcDbgCommandResult::Continue;
-}
-
-void ByteCodeDebugger::printDisplay(ByteCodeRunContext* context)
-{
-    if (debugDisplay.empty())
-        return;
-
-    for (const auto& line : debugDisplay)
-    {
-        BcDbgCommandArg arg;
-        tokenizeCommand(context, line, arg);
-        cmdPrint(context, arg);
-    }
-}
