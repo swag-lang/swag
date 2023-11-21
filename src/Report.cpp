@@ -30,7 +30,7 @@ static bool fuzzySameLine(uint32_t line1, uint32_t line2)
 
 static void cleanNotes(Vector<Diagnostic*>& notes)
 {
-    // Error message can have differents parts separated by '$'
+    // Error message can have differents parts
     // We generate hint and notes...
     auto         err = notes[0];
     Vector<Utf8> parts;
@@ -57,7 +57,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
         }
     }
 
-    // Sometime an error is put inside a note, so be sure we deal also with '$' in that case
+    // Sometime an error is put inside a note, so be sure we deal also with the separator in that case
     for (auto note : notes)
     {
         Diagnostic::tokenizeError(note->textMsg, parts);

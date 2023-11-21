@@ -26,6 +26,7 @@ void ByteCodeDebugger::printLong(const Vector<Utf8>& all)
             cpt = 0;
             g_Log.setColor(LogColor::Gray);
             g_Log.print("-- Type <RET> for more, 'q' to quit, 'c' to continue without paging --");
+            g_Log.eol();
             bool ctrl, shift;
             int  c = 0;
             while (true)
@@ -236,25 +237,27 @@ void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* b
 
     SyntaxColorContext cxt;
     uint32_t           lineIdx = 0;
+    Vector<Utf8>       toPrint;
     for (const auto& l : lines)
     {
+        Utf8 oneLine;
         bool currentLine = curLocation->line == startLine + lineIdx;
 
         // Current line
         if (currentLine)
         {
-            g_Log.setColor(COLOR_CUR_INSTRUCTION);
-            g_Log.print("-> ");
+            oneLine += ByteCodeDebugger::COLOR_VTS_CUR_INSTRUCTION;
+            oneLine += "-> ";
         }
         else
         {
-            g_Log.setColor(COLOR_INDEX);
-            g_Log.print("   ");
+            oneLine += ByteCodeDebugger::COLOR_VTS_INDEX;
+            oneLine += "   ";
         }
 
         // Line
-        g_Log.print(Fmt("%-5u ", startLine + lineIdx + 1));
-        g_Log.setColor(COLOR_DEFAULT);
+        oneLine += Fmt("%-5u ", startLine + lineIdx + 1);
+        oneLine += ByteCodeDebugger::COLOR_VTS_DEFAULT;
 
         // Line breakpoint
         DebugBreakpoint* hasBkp = nullptr;
@@ -284,35 +287,36 @@ void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* b
         if (hasBkp)
         {
             if (hasBkp->disabled)
-                g_Log.setColor(LogColor::Gray);
+                oneLine += ByteCodeDebugger::COLOR_VTS_DEFAULT;
             else
-                g_Log.setColor(LogColor::Red);
-            g_Log.print(Utf8("\xe2\x96\xa0"));
+                oneLine += ByteCodeDebugger::COLOR_VTS_BREAKPOINT;
+            oneLine += Utf8("\xe2\x96\xa0");
         }
         else
-            g_Log.print(" ");
-        g_Log.print(" ");
+            oneLine += " ";
+        oneLine += " ";
 
         // Code
         if (currentLine)
         {
-            g_Log.setColor(COLOR_CUR_INSTRUCTION);
-            g_Log.print(l.c_str());
+            oneLine += ByteCodeDebugger::COLOR_VTS_CUR_INSTRUCTION;
+            oneLine += l;
         }
         else if (g_CommandLine.logColors)
         {
-            g_Log.print(syntaxColor(l, cxt).c_str());
+            oneLine += syntaxColor(l, cxt).c_str();
         }
         else
         {
-            g_Log.setColor(LogColor::Gray);
-            g_Log.print(l.c_str());
+            oneLine += ByteCodeDebugger::COLOR_VTS_DEFAULT;
+            oneLine += l;
         }
 
-        g_Log.eol();
-
+        toPrint.push_back(oneLine);
         lineIdx++;
     }
+
+    printLong(toPrint);
 }
 
 void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* bc, SourceFile* file, SourceLocation* curLocation, uint32_t offset)
