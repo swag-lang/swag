@@ -28,9 +28,12 @@ static void cleanErrMsg()
     }
 }
 
-bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res, CompilerAstKind kind, bool silent)
+bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8& inExpr, EvaluateResult& res, CompilerAstKind kind, bool silent)
 {
     PushSilentError se;
+
+    auto expr = inExpr;
+    g_ByteCodeDebugger.commandSubstitution(context, expr);
 
     auto sourceFile = debugCxtBc->sourceFile;
 
@@ -203,9 +206,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdExecute(ByteCodeRunContext* context, con
         return BcDbgCommandResult::BadArguments;
 
     EvaluateResult res;
-    auto           expr = arg.cmdExpr;
-    g_ByteCodeDebugger.commandSubstitution(context, expr);
-    g_ByteCodeDebugger.evalDynExpression(context, expr, res, CompilerAstKind::EmbeddedInstruction);
+    g_ByteCodeDebugger.evalDynExpression(context, arg.cmdExpr, res, CompilerAstKind::EmbeddedInstruction);
     return BcDbgCommandResult::Continue;
 }
 
@@ -236,8 +237,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
 
     EvaluateResult res;
 
-    auto orgExpr = expr;
-    g_ByteCodeDebugger.commandSubstitution(context, expr);
     if (!g_ByteCodeDebugger.evalExpression(context, expr, res))
         return BcDbgCommandResult::Continue;
     if (res.type->isVoid())
@@ -264,7 +263,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     }
 
     g_Log.setColor(COLOR_NAME);
-    g_Log.print(orgExpr);
+    g_Log.print(expr);
     g_Log.setColor(COLOR_DEFAULT);
     g_Log.print(" = ");
 

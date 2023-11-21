@@ -171,8 +171,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfo(ByteCodeRunContext* context, const 
         return cmdInfoRegs(context, arg);
     if (arg.split[1] == "args" || arg.split[1] == "a")
         return cmdInfoArgs(context, arg);
-    if (arg.split[1] == "breakpoints" || arg.split[1] == "br")
-        return cmdBreakPrint(context, arg);
     if (arg.split[1] == "func")
         return cmdInfoFuncs(context, arg);
     if (arg.split[1] == "module")

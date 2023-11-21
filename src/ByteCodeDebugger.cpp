@@ -32,7 +32,7 @@ void ByteCodeDebugger::setup()
     commands.push_back({});                    
                                                
     commands.push_back({"execute",     "e",    "<stmt>",              "execute the code statement <stmt> in the current context", cmdExecute});
-    commands.push_back({"print",       "p",    "[/format] <expr>",    "print the result of the expression <expr> in the current context (format is the same as 'x' command)", cmdPrint});
+    commands.push_back({"print",       "p",    "[/format] <expr>",    "print the result of the expression <expr> in the current context (/format is the same as 'x' command)", cmdPrint});
     commands.push_back({});  
     commands.push_back({"display",     "d",    "[/format] <expr>",    "same as 'print', but will be done at each step", cmdDisplay});
     commands.push_back({"display",     "",     "",                    "print all expressions to display", cmdDisplay});
@@ -52,8 +52,7 @@ void ByteCodeDebugger::setup()
                                                
     commands.push_back({"info",        "o",    "(l)ocals",            "print all current local variables", cmdInfo});
     commands.push_back({"info",        "o",    "(a)rgs",              "print all current function arguments", cmdInfo});
-    commands.push_back({"info",        "o",    "(br)eakpoints",       "print all breakpoints", cmdInfo});
-    commands.push_back({"info",        "o",    "(r)egs [/format]",    "print all registers (format is the same as 'x' command)", cmdInfo});
+    commands.push_back({"info",        "o",    "(r)egs [/format]",    "print all registers (/format is the same as 'x' command)", cmdInfo});
     commands.push_back({"info",        "o",    "module",              "print all modules", cmdInfo});
     commands.push_back({"info",        "o",    "func [filter]",       "print all functions which contains [filter] in their names", cmdInfo});
     commands.push_back({});

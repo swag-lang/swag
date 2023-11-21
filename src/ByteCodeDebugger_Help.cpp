@@ -44,16 +44,18 @@ BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext* context, const 
 
     if (arg.split.size() == 2)
     {
+        bool ok = false;
         for (auto& c : g_ByteCodeDebugger.commands)
         {
             if (c.name == arg.split[1] || c.shortname == arg.split[1])
             {
                 g_ByteCodeDebugger.printHelp(c);
-                return BcDbgCommandResult::Continue;
+                ok = true;
             }
         }
 
-        g_ByteCodeDebugger.printCmdError(Fmt("unknown debugger command '%s'", arg.split[1].c_str()));
+        if (!ok)
+            g_ByteCodeDebugger.printCmdError(Fmt("unknown debugger command '%s'", arg.split[1].c_str()));
         return BcDbgCommandResult::Continue;
     }
 
