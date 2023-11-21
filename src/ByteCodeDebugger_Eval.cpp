@@ -267,7 +267,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     g_Log.setColor(COLOR_DEFAULT);
     g_Log.print(" = ");
 
-    g_Log.print(str);
+    g_ByteCodeDebugger.printLong(str);
     str.trim();
     if (str.back() != '\n')
         g_Log.eol();

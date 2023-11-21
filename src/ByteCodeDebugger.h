@@ -175,6 +175,7 @@ struct ByteCodeDebugger
     void                    commandSubstitution(ByteCodeRunContext* context, Utf8& cmdExpr);
     void                    tokenizeCommand(ByteCodeRunContext* context, const Utf8& line, BcDbgCommandArg& arg);
     void                    setup();
+    void                    printLong(const Utf8& all);
     void                    printLong(const Vector<Utf8>& all);
     void                    printSeparator();
     bool                    getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN);

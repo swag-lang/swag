@@ -6,6 +6,13 @@
 #include "Ast.h"
 #include "SyntaxColor.h"
 
+void ByteCodeDebugger::printLong(const Utf8& all)
+{
+    Vector<Utf8> lines;
+    Utf8::tokenize(all, '\n', lines, true);
+    printLong(lines);
+}
+
 void ByteCodeDebugger::printLong(const Vector<Utf8>& all)
 {
     g_Log.setColor(LogColor::Gray);
