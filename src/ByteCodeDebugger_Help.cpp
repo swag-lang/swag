@@ -37,23 +37,23 @@ void ByteCodeDebugger::printHelp()
         printHelp(c);
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() > 2)
+    if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
 
-    if (cmds.size() == 2)
+    if (arg.split.size() == 2)
     {
         for (auto& c : g_ByteCodeDebugger.commands)
         {
-            if (c.name == cmds[1] || c.shortname == cmds[1])
+            if (c.name == arg.split[1] || c.shortname == arg.split[1])
             {
                 g_ByteCodeDebugger.printHelp(c);
                 return BcDbgCommandResult::Continue;
             }
         }
 
-        g_ByteCodeDebugger.printCmdError(Fmt("unknown debugger command '%s'", cmds[1].c_str()));
+        g_ByteCodeDebugger.printCmdError(Fmt("unknown debugger command '%s'", arg.split[1].c_str()));
         return BcDbgCommandResult::Continue;
     }
 

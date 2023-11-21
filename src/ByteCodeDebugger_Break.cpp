@@ -141,14 +141,14 @@ bool ByteCodeDebugger::addBreakpoint(ByteCodeRunContext* context, const DebugBre
     return true;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdBreakEnable(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdBreakEnable(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() != 3)
+    if (arg.split.size() != 3)
         return BcDbgCommandResult::BadArguments;
-    if (!Utf8::isNumber(cmds[2].c_str()))
+    if (!Utf8::isNumber(arg.split[2].c_str()))
         return BcDbgCommandResult::BadArguments;
 
-    int numB = atoi(cmds[2].c_str());
+    int numB = atoi(arg.split[2].c_str());
     if (!numB || numB - 1 >= (int) g_ByteCodeDebugger.debugBreakpoints.size())
         g_ByteCodeDebugger.printCmdError("invalid breakpoint number");
     else
@@ -160,14 +160,14 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakEnable(ByteCodeRunContext* context,
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdBreakDisable(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdBreakDisable(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() != 3)
+    if (arg.split.size() != 3)
         return BcDbgCommandResult::BadArguments;
-    if (!Utf8::isNumber(cmds[2].c_str()))
+    if (!Utf8::isNumber(arg.split[2].c_str()))
         return BcDbgCommandResult::BadArguments;
 
-    int numB = atoi(cmds[2].c_str());
+    int numB = atoi(arg.split[2].c_str());
     if (!numB || numB - 1 >= (int) g_ByteCodeDebugger.debugBreakpoints.size())
         g_ByteCodeDebugger.printCmdError("invalid breakpoint number");
     else
@@ -179,9 +179,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakDisable(ByteCodeRunContext* context
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdBreakClear(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdBreakClear(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() == 2)
+    if (arg.split.size() == 2)
     {
         if (g_ByteCodeDebugger.debugBreakpoints.empty())
             g_ByteCodeDebugger.printCmdError("no breakpoint to remove");
@@ -191,12 +191,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakClear(ByteCodeRunContext* context, 
         return BcDbgCommandResult::Continue;
     }
 
-    if (cmds.size() != 3)
+    if (arg.split.size() != 3)
         return BcDbgCommandResult::BadArguments;
-    if (!Utf8::isNumber(cmds[2].c_str()))
+    if (!Utf8::isNumber(arg.split[2].c_str()))
         return BcDbgCommandResult::BadArguments;
 
-    int numB = atoi(cmds[2].c_str());
+    int numB = atoi(arg.split[2].c_str());
     if (!numB || numB - 1 >= (int) g_ByteCodeDebugger.debugBreakpoints.size())
         g_ByteCodeDebugger.printCmdError("invalid breakpoint number");
     else
@@ -208,24 +208,24 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakClear(ByteCodeRunContext* context, 
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdBreakPrint(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdBreakPrint(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
     g_ByteCodeDebugger.printBreakpoints(context);
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdBreakFunc(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdBreakFunc(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() != 3)
+    if (arg.split.size() != 3)
         return BcDbgCommandResult::BadArguments;
 
-    auto cmd     = cmds[0];
+    auto cmd     = arg.split[0];
     bool oneShot = false;
     if (cmd == "tb" || cmd == "tbreak")
         oneShot = true;
 
     DebugBreakpoint bkp;
-    bkp.name = cmds[2];
+    bkp.name = arg.split[2];
 
     bkp.type       = DebugBkpType::FuncName;
     bkp.autoRemove = oneShot;
@@ -238,14 +238,14 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFunc(ByteCodeRunContext* context, c
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdBreakLine(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdBreakLine(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() != 3)
+    if (arg.split.size() != 3)
         return BcDbgCommandResult::BadArguments;
-    if (!Utf8::isNumber(cmds[2].c_str()))
+    if (!Utf8::isNumber(arg.split[2].c_str()))
         return BcDbgCommandResult::BadArguments;
 
-    auto cmd     = cmds[0];
+    auto cmd     = arg.split[0];
     bool oneShot = false;
     if (cmd == "tb" || cmd == "tbreak")
         oneShot = true;
@@ -255,7 +255,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakLine(ByteCodeRunContext* context, c
     DebugBreakpoint bkp;
     bkp.type       = DebugBkpType::FileLine;
     bkp.name       = loc.file->name;
-    bkp.line       = atoi(cmds[2].c_str());
+    bkp.line       = atoi(arg.split[2].c_str());
     bkp.autoRemove = oneShot;
     if (g_ByteCodeDebugger.addBreakpoint(context, bkp))
     {
@@ -265,33 +265,33 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakLine(ByteCodeRunContext* context, c
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdBreakFileLine(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdBreakFileLine(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() != 4)
+    if (arg.split.size() != 4)
         return BcDbgCommandResult::BadArguments;
-    if (!Utf8::isNumber(cmds[3].c_str()))
+    if (!Utf8::isNumber(arg.split[3].c_str()))
         return BcDbgCommandResult::BadArguments;
 
-    auto cmd     = cmds[0];
+    auto cmd     = arg.split[0];
     bool oneShot = false;
     if (cmd == "tb" || cmd == "tbreak")
         oneShot = true;
 
-    auto curFile = g_Workspace->findFile(cmds[2].c_str());
+    auto curFile = g_Workspace->findFile(arg.split[2].c_str());
     if (!curFile)
-        curFile = g_Workspace->findFile(cmds[2] + ".swg");
+        curFile = g_Workspace->findFile(arg.split[2] + ".swg");
     if (!curFile)
-        curFile = g_Workspace->findFile(cmds[2] + ".swgs");
+        curFile = g_Workspace->findFile(arg.split[2] + ".swgs");
     if (!curFile)
     {
-        g_ByteCodeDebugger.printCmdError(Fmt("cannot find file '%s'", cmds[2].c_str()));
+        g_ByteCodeDebugger.printCmdError(Fmt("cannot find file '%s'", arg.split[2].c_str()));
         return BcDbgCommandResult::Continue;
     }
 
     DebugBreakpoint bkp;
     bkp.type       = DebugBkpType::FileLine;
     bkp.name       = curFile->name;
-    bkp.line       = atoi(cmds[3].c_str());
+    bkp.line       = atoi(arg.split[3].c_str());
     bkp.autoRemove = oneShot;
     if (g_ByteCodeDebugger.addBreakpoint(context, bkp))
     {
@@ -301,22 +301,22 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFileLine(ByteCodeRunContext* contex
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdBreak(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdBreak(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() == 1)
-        return cmdBreakPrint(context, cmds, cmdExpr);
-    if (cmds[1] == "enable" || cmds[1] == "en")
-        return cmdBreakEnable(context, cmds, cmdExpr);
-    if (cmds[1] == "disable" || cmds[1] == "di")
-        return cmdBreakDisable(context, cmds, cmdExpr);
-    if (cmds[1] == "clear" || cmds[1] == "cl")
-        return cmdBreakClear(context, cmds, cmdExpr);
-    if (cmds[1] == "func" || cmds[1] == "f")
-        return cmdBreakFunc(context, cmds, cmdExpr);
-    if (cmds[1] == "line")
-        return cmdBreakLine(context, cmds, cmdExpr);
-    if (cmds[1] == "file")
-        return cmdBreakFileLine(context, cmds, cmdExpr);
+    if (arg.split.size() == 1)
+        return cmdBreakPrint(context, arg);
+    if (arg.split[1] == "enable" || arg.split[1] == "en")
+        return cmdBreakEnable(context, arg);
+    if (arg.split[1] == "disable" || arg.split[1] == "di")
+        return cmdBreakDisable(context, arg);
+    if (arg.split[1] == "clear" || arg.split[1] == "cl")
+        return cmdBreakClear(context, arg);
+    if (arg.split[1] == "func" || arg.split[1] == "f")
+        return cmdBreakFunc(context, arg);
+    if (arg.split[1] == "line")
+        return cmdBreakLine(context, arg);
+    if (arg.split[1] == "file")
+        return cmdBreakFileLine(context, arg);
 
     return BcDbgCommandResult::BadArguments;
 }

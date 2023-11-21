@@ -5,12 +5,12 @@
 #include "Ast.h"
 #include "ByteCodeDebugger.h"
 
-BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() > 3)
+    if (arg.split.size() > 3)
         return BcDbgCommandResult::BadArguments;
 
-    auto         filter = cmds.size() == 3 ? cmds[2] : Utf8("");
+    auto         filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
     Vector<Utf8> all;
     g_Log.setColor(LogColor::Gray);
 
@@ -52,9 +52,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdInfoModules(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdInfoModules(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() > 2)
+    if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
 
     g_Log.setColor(LogColor::Gray);
@@ -66,9 +66,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoModules(ByteCodeRunContext* context,
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() > 2)
+    if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
 
     if (g_ByteCodeDebugger.debugCxtBc->localVars.empty())
@@ -98,17 +98,17 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, 
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdInfoRegs(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdInfoRegs(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() > 3)
+    if (arg.split.size() > 3)
         return BcDbgCommandResult::BadArguments;
 
     ValueFormat fmt;
     fmt.isHexa   = true;
     fmt.bitCount = 64;
-    if (cmds.size() > 2)
+    if (arg.split.size() > 2)
     {
-        if (!g_ByteCodeDebugger.getValueFormat(cmds[2], fmt))
+        if (!g_ByteCodeDebugger.getValueFormat(arg.split[2], fmt))
             return BcDbgCommandResult::BadArguments;
     }
 
@@ -130,9 +130,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoRegs(ByteCodeRunContext* context, co
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() > 2)
+    if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
 
     auto funcDecl = CastAst<AstFuncDecl>(g_ByteCodeDebugger.debugCxtBc->node, AstNodeKind::FuncDecl);
@@ -160,23 +160,23 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, co
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdInfo(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdInfo(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() < 2)
+    if (arg.split.size() < 2)
         return BcDbgCommandResult::BadArguments;
 
-    if (cmds[1] == "locals" || cmds[1] == "l")
-        return cmdInfoLocals(context, cmds, cmdExpr);
-    if (cmds[1] == "regs" || cmds[1] == "r")
-        return cmdInfoRegs(context, cmds, cmdExpr);
-    if (cmds[1] == "args" || cmds[1] == "a")
-        return cmdInfoArgs(context, cmds, cmdExpr);
-    if (cmds[1] == "breakpoints" || cmds[1] == "br")
-        return cmdBreakPrint(context, cmds, cmdExpr);
-    if (cmds[1] == "func")
-        return cmdInfoFuncs(context, cmds, cmdExpr);
-    if (cmds[1] == "module")
-        return cmdInfoModules(context, cmds, cmdExpr);
+    if (arg.split[1] == "locals" || arg.split[1] == "l")
+        return cmdInfoLocals(context, arg);
+    if (arg.split[1] == "regs" || arg.split[1] == "r")
+        return cmdInfoRegs(context, arg);
+    if (arg.split[1] == "args" || arg.split[1] == "a")
+        return cmdInfoArgs(context, arg);
+    if (arg.split[1] == "breakpoints" || arg.split[1] == "br")
+        return cmdBreakPrint(context, arg);
+    if (arg.split[1] == "func")
+        return cmdInfoFuncs(context, arg);
+    if (arg.split[1] == "module")
+        return cmdInfoModules(context, arg);
 
     return BcDbgCommandResult::BadArguments;
 }

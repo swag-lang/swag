@@ -3,9 +3,9 @@
 #include "ByteCodeDebugger.h"
 #include "Module.h"
 
-BcDbgCommandResult ByteCodeDebugger::cmdStep(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdStep(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() > 1)
+    if (arg.split.size() > 1)
         return BcDbgCommandResult::BadArguments;
 
     context->debugStackFrameOffset   = 0;
@@ -13,9 +13,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdStep(ByteCodeRunContext* context, const 
     return BcDbgCommandResult::Break;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdStepi(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdStepi(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() > 1)
+    if (arg.split.size() > 1)
         return BcDbgCommandResult::BadArguments;
 
     context->debugStackFrameOffset   = 0;
@@ -23,9 +23,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdStepi(ByteCodeRunContext* context, const
     return BcDbgCommandResult::Break;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdNext(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdNext(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() > 1)
+    if (arg.split.size() > 1)
         return BcDbgCommandResult::BadArguments;
 
     context->debugStackFrameOffset   = 0;
@@ -34,9 +34,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdNext(ByteCodeRunContext* context, const 
     return BcDbgCommandResult::Break;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdNexti(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdNexti(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() > 1)
+    if (arg.split.size() > 1)
         return BcDbgCommandResult::BadArguments;
 
     context->debugStackFrameOffset   = 0;
@@ -45,9 +45,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdNexti(ByteCodeRunContext* context, const
     return BcDbgCommandResult::Break;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdFinish(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdFinish(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() > 1)
+    if (arg.split.size() > 1)
         return BcDbgCommandResult::BadArguments;
 
     context->debugStackFrameOffset   = 0;
@@ -59,9 +59,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdFinish(ByteCodeRunContext* context, cons
     return BcDbgCommandResult::Break;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdContinue(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdContinue(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() > 1)
+    if (arg.split.size() > 1)
         return BcDbgCommandResult::BadArguments;
 
     g_ByteCodeDebugger.printCmdResult("continue...");
@@ -71,16 +71,16 @@ BcDbgCommandResult ByteCodeDebugger::cmdContinue(ByteCodeRunContext* context, co
     return BcDbgCommandResult::Break;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() != 2)
+    if (arg.split.size() != 2)
         return BcDbgCommandResult::BadArguments;
-    if (!Utf8::isNumber(cmds[1].c_str()))
+    if (!Utf8::isNumber(arg.split[1].c_str()))
         return BcDbgCommandResult::BadArguments;
 
     context->debugStackFrameOffset = 0;
 
-    uint32_t to = (uint32_t) atoi(cmds[1].c_str());
+    uint32_t to = (uint32_t) atoi(arg.split[1].c_str());
 
     auto curIp = context->bc->out;
     while (true)
@@ -106,16 +106,16 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdJumpi(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdJumpi(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() != 2)
+    if (arg.split.size() != 2)
         return BcDbgCommandResult::BadArguments;
-    if (!Utf8::isNumber(cmds[1].c_str()))
+    if (!Utf8::isNumber(arg.split[1].c_str()))
         return BcDbgCommandResult::BadArguments;
 
     context->debugStackFrameOffset = 0;
 
-    uint32_t to = (uint32_t) atoi(cmds[1].c_str());
+    uint32_t to = (uint32_t) atoi(arg.split[1].c_str());
 
     if (to >= context->bc->numInstructions - 1)
     {
@@ -130,18 +130,18 @@ BcDbgCommandResult ByteCodeDebugger::cmdJumpi(ByteCodeRunContext* context, const
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdUntil(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdUntil(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() != 2)
+    if (arg.split.size() != 2)
         return BcDbgCommandResult::BadArguments;
-    if (!Utf8::isNumber(cmds[1].c_str()))
+    if (!Utf8::isNumber(arg.split[1].c_str()))
         return BcDbgCommandResult::BadArguments;
 
     DebugBreakpoint bkp;
     bkp.type       = DebugBkpType::FileLine;
     bkp.bc         = g_ByteCodeDebugger.debugCxtBc;
     bkp.name       = g_ByteCodeDebugger.debugStepLastFile->name;
-    bkp.line       = atoi(cmds[1].c_str());
+    bkp.line       = atoi(arg.split[1].c_str());
     bkp.autoRemove = true;
     g_ByteCodeDebugger.addBreakpoint(context, bkp);
     context->debugStackFrameOffset   = 0;
@@ -149,18 +149,18 @@ BcDbgCommandResult ByteCodeDebugger::cmdUntil(ByteCodeRunContext* context, const
     return BcDbgCommandResult::Break;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdUntili(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdUntili(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() != 2)
+    if (arg.split.size() != 2)
         return BcDbgCommandResult::BadArguments;
-    if (!Utf8::isNumber(cmds[1].c_str()))
+    if (!Utf8::isNumber(arg.split[1].c_str()))
         return BcDbgCommandResult::BadArguments;
 
     DebugBreakpoint bkp;
     bkp.type       = DebugBkpType::InstructionIndex;
     bkp.bc         = g_ByteCodeDebugger.debugCxtBc;
     bkp.name       = g_ByteCodeDebugger.debugStepLastFile->name;
-    bkp.line       = atoi(cmds[1].c_str());
+    bkp.line       = atoi(arg.split[1].c_str());
     bkp.autoRemove = true;
     g_ByteCodeDebugger.addBreakpoint(context, bkp);
     context->debugStackFrameOffset   = 0;
@@ -168,12 +168,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdUntili(ByteCodeRunContext* context, cons
     return BcDbgCommandResult::Break;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdMode(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdMode(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() != 2)
+    if (arg.split.size() != 2)
         return BcDbgCommandResult::BadArguments;
 
-    if (cmds[1] == "inline")
+    if (arg.split[1] == "inline")
     {
         context->bc->sourceFile->module->buildCfg.byteCodeDebugInline = !context->bc->sourceFile->module->buildCfg.byteCodeDebugInline;
         if (context->bc->sourceFile->module->buildCfg.byteCodeDebugInline)
@@ -182,7 +182,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMode(ByteCodeRunContext* context, const 
             g_ByteCodeDebugger.printCmdResult("no inline mode");
         g_ByteCodeDebugger.printDebugContext(context, true);
     }
-    else if (cmds[1] == "bkp")
+    else if (arg.split[1] == "bkp")
     {
         g_CommandLine.dbgOff = !g_CommandLine.dbgOff;
         if (g_CommandLine.dbgOff)
@@ -196,9 +196,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdMode(ByteCodeRunContext* context, const 
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdQuit(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdQuit(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() != 1)
+    if (arg.split.size() != 1)
         return BcDbgCommandResult::BadArguments;
 
     g_Log.setDefaultColor();

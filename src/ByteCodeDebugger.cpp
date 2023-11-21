@@ -33,6 +33,7 @@ void ByteCodeDebugger::setup()
                                                
     commands.push_back({"execute",     "e",    "<stmt>",              "execute the code statement <stmt> in the current context", cmdExecute});
     commands.push_back({"print",       "p",    "[/format] <expr>",    "print the result of the expression <expr> in the current context (format is the same as 'x' command)", cmdPrint});
+    commands.push_back({"display",     "d",    "[/format] <expr>",    "same as 'print', but will be done at each step", cmdDisplay});
     commands.push_back({});                    
                                                
     commands.push_back({"x",           "",     "[/format] [/num] <address>",     "print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|x8|x16|x32|x64|f32|f64)", cmdMemory});
@@ -571,51 +572,6 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
     return !zapCurrentIp;
 }
 
-bool ByteCodeDebugger::processCommandLine(ByteCodeRunContext* context, Vector<Utf8>& cmds, Utf8& line, Utf8& cmdExpr)
-{
-    line.clear();
-    bool err = false;
-    for (size_t i = 0; i < cmds.size() && !err; i++)
-    {
-        // Make some replacements
-        if (cmds[i] == "$sp")
-        {
-            cmds[i] = Fmt("0x%llx", (uint64_t) context->sp);
-        }
-        else if (cmds[i] == "$bp")
-        {
-            cmds[i] = Fmt("0x%llx", (uint64_t) context->bp);
-        }
-        else if (cmds[i].length() > 2 && cmds[i][0] == '$' && cmds[i][1] == 'r' && Utf8::isNumber(cmds[i] + 2))
-        {
-            int regN;
-            if (!getRegIdx(context, cmds[i] + 1, regN))
-            {
-                err = true;
-                continue;
-            }
-            auto& regP = context->getRegBuffer(debugCxtRc)[regN];
-            cmds[i]    = Fmt("0x%llx", regP.u64);
-        }
-
-        line += cmds[i];
-        line += " ";
-
-        if (i > 0)
-        {
-            cmdExpr += cmds[i];
-            cmdExpr += " ";
-        }
-    }
-
-    if (err)
-        return false;
-
-    line.trim();
-    cmdExpr.trim();
-    return true;
-}
-
 bool ByteCodeDebugger::step(ByteCodeRunContext* context)
 {
     static mutex dbgMutex;
@@ -716,36 +672,24 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         debugLastBreakIp = ip;
 
         // Split in command + parameters
-        Utf8         cmd;
-        Utf8         cmdExpr;
-        Vector<Utf8> cmds;
-        if (!line.empty())
-        {
-            Utf8::tokenize(line, ' ', cmds);
-            for (auto& c : cmds)
-                c.trim();
-            cmd = cmds[0];
-        }
-
-        // Replace some stuff
-        if (!processCommandLine(context, cmds, line, cmdExpr))
-            continue;
+        BcDbgCommandArg arg;
+        tokenizeCommand(context, line, arg);
         g_Log.eol();
 
         // Command
         /////////////////////////////////////////
         BcDbgCommandResult result = BcDbgCommandResult::Invalid;
 
-        if (!cmd.empty())
+        if (!arg.cmd.empty())
         {
             for (auto& c : commands)
             {
                 if (c.cb == nullptr)
                     continue;
 
-                if (cmd == c.name || cmd == c.shortname)
+                if (arg.cmd == c.name || arg.cmd == c.shortname)
                 {
-                    result = c.cb(context, cmds, cmdExpr);
+                    result = c.cb(context, arg);
                     break;
                 }
             }
@@ -756,13 +700,84 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         else if (result == BcDbgCommandResult::Return)
             return false;
         else if (result == BcDbgCommandResult::BadArguments)
-            g_ByteCodeDebugger.printCmdError(Fmt("bad '%s' arguments", cmd.c_str()));
+            g_ByteCodeDebugger.printCmdError(Fmt("bad '%s' arguments", arg.cmd.c_str()));
         else if (result == BcDbgCommandResult::Invalid)
-            g_ByteCodeDebugger.printCmdError(Fmt("unknown debugger command '%s'", cmd.c_str()));
+            g_ByteCodeDebugger.printCmdError(Fmt("unknown debugger command '%s'", arg.cmd.c_str()));
         continue;
     }
 
     debugLastCurRC = context->curRC;
     debugLastIp    = ip;
     return true;
+}
+
+void ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cmdExpr)
+{
+    Utf8 result;
+    result.reserve(cmdExpr.length());
+
+    const char* pz = cmdExpr.c_str();
+    while (*pz)
+    {
+        if (*pz != '$')
+        {
+            result += *pz++;
+            continue;
+        }
+
+        if (pz[1] == 's' && pz[2] == 'p' && (SWAG_IS_BLANK(pz[3]) || !pz[3]))
+        {
+            result += Fmt("0x%llx", (uint64_t) context->sp);
+            pz += 3;
+            continue;
+        }
+
+        if (pz[1] == 'b' && pz[2] == 'p' && (SWAG_IS_BLANK(pz[3]) || !pz[3]))
+        {
+            result += Fmt("0x%llx", (uint64_t) context->bp);
+            pz += 3;
+            continue;
+        }
+
+        if (pz[1] == 'r' && SWAG_IS_DIGIT(pz[2]))
+        {
+            int regN;
+            if (!getRegIdx(context, pz + 1, regN))
+                return;
+
+            auto& regP = context->getRegBuffer(debugCxtRc)[regN];
+            result += Fmt("0x%llx", regP.u64);
+            pz += 2;
+            while (SWAG_IS_DIGIT(*pz))
+                pz++;
+            continue;
+        }
+
+        result += *pz++;
+    }
+
+    cmdExpr = result;
+}
+
+void ByteCodeDebugger::tokenizeCommand(ByteCodeRunContext* context, const Utf8& line, BcDbgCommandArg& arg)
+{
+    arg.cmd.clear();
+    arg.cmdExpr.clear();
+    arg.split.clear();
+
+    if (!line.empty())
+    {
+        Utf8::tokenize(line, ' ', arg.split);
+        for (auto& c : arg.split)
+            c.trim();
+        arg.cmd = arg.split[0];
+
+        for (int i = 1; i < arg.split.size(); i++)
+        {
+            arg.cmdExpr += arg.split[i];
+            arg.cmdExpr += " ";
+        }
+
+        arg.cmdExpr.trim();
+    }
 }

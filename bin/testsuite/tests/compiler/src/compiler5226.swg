@@ -6,7 +6,7 @@ func isPrime(n: s32)->s32
     {
         if !(n % i)
         {
-        //@breakpoint()
+            @breakpoint()
             return 0
         }
     }

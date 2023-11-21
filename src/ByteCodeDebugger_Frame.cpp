@@ -2,28 +2,28 @@
 #include "ByteCodeStack.h"
 #include "ByteCodeDebugger.h"
 
-BcDbgCommandResult ByteCodeDebugger::cmdBackTrace(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdBackTrace(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() != 1)
+    if (arg.split.size() != 1)
         return BcDbgCommandResult::BadArguments;
     g_Log.print(g_ByteCodeStackTrace->log(context));
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdFrame(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdFrame(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() == 1)
+    if (arg.split.size() == 1)
         return BcDbgCommandResult::BadArguments;
-    if (cmds.size() > 2)
+    if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
 
-    if (!Utf8::isNumber(cmds[1].c_str()))
+    if (!Utf8::isNumber(arg.split[1].c_str()))
     {
         g_ByteCodeDebugger.printCmdError("invalid 'frame' number");
         return BcDbgCommandResult::Continue;
     }
 
-    uint32_t off      = atoi(cmds[1].c_str());
+    uint32_t off      = atoi(arg.split[1].c_str());
     uint32_t maxLevel = g_ByteCodeStackTrace->maxLevel(context);
     off               = min(off, maxLevel);
 
@@ -42,16 +42,16 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrame(ByteCodeRunContext* context, const
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdFrameUp(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdFrameUp(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() > 2)
+    if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
-    if (cmds.size() != 1 && !Utf8::isNumber(cmds[1].c_str()))
+    if (arg.split.size() != 1 && !Utf8::isNumber(arg.split[1].c_str()))
         return BcDbgCommandResult::BadArguments;
 
     uint32_t off = 1;
-    if (cmds.size() == 2)
-        off = atoi(cmds[1].c_str());
+    if (arg.split.size() == 2)
+        off = atoi(arg.split[1].c_str());
     uint32_t maxLevel = g_ByteCodeStackTrace->maxLevel(context);
     if (context->debugStackFrameOffset == maxLevel)
     {
@@ -74,16 +74,16 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameUp(ByteCodeRunContext* context, con
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdFrameDown(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdFrameDown(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() > 2)
+    if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
-    if (cmds.size() != 1 && !Utf8::isNumber(cmds[1].c_str()))
+    if (arg.split.size() != 1 && !Utf8::isNumber(arg.split[1].c_str()))
         return BcDbgCommandResult::BadArguments;
 
     uint32_t off = 1;
-    if (cmds.size() == 2)
-        off = atoi(cmds[1].c_str());
+    if (arg.split.size() == 2)
+        off = atoi(arg.split[1].c_str());
     if (context->debugStackFrameOffset == 0)
     {
         g_ByteCodeDebugger.printCmdError("bottom(innermost) frame selected; you cannot go down");

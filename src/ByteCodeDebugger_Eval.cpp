@@ -197,35 +197,37 @@ bool ByteCodeDebugger::evalExpression(ByteCodeRunContext* context, const Utf8& e
     return evalDynExpression(context, expr, res, CompilerAstKind::Expression, silent);
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdExecute(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdExecute(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() < 2)
+    if (arg.split.size() < 2)
         return BcDbgCommandResult::BadArguments;
 
     EvaluateResult res;
-    g_ByteCodeDebugger.evalDynExpression(context, cmdExpr, res, CompilerAstKind::EmbeddedInstruction);
+    auto           expr = arg.cmdExpr;
+    g_ByteCodeDebugger.commandSubstitution(context, expr);
+    g_ByteCodeDebugger.evalDynExpression(context, expr, res, CompilerAstKind::EmbeddedInstruction);
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() < 2)
+    if (arg.split.size() < 2)
         return BcDbgCommandResult::BadArguments;
 
-    auto expr = cmdExpr;
+    auto expr = arg.cmdExpr;
 
     ValueFormat fmt;
     fmt.isHexa     = true;
     fmt.bitCount   = 64;
     bool hasFormat = false;
-    if (cmds.size() > 1)
+    if (arg.split.size() > 1)
     {
-        if (g_ByteCodeDebugger.getValueFormat(cmds[1], fmt))
+        if (g_ByteCodeDebugger.getValueFormat(arg.split[1], fmt))
         {
             hasFormat = true;
             expr.clear();
-            for (size_t i = 2; i < cmds.size(); i++)
-                expr += cmds[i] + " ";
+            for (size_t i = 2; i < arg.split.size(); i++)
+                expr += arg.split[i] + " ";
             expr.trim();
             if (expr.empty())
                 return BcDbgCommandResult::BadArguments;
@@ -233,6 +235,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     }
 
     EvaluateResult res;
+
+    auto orgExpr = expr;
+    g_ByteCodeDebugger.commandSubstitution(context, expr);
     if (!g_ByteCodeDebugger.evalExpression(context, expr, res))
         return BcDbgCommandResult::Continue;
     if (res.type->isVoid())
@@ -258,10 +263,40 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
         g_ByteCodeDebugger.appendTypedValue(context, str, res, 0);
     }
 
+    g_Log.setColor(COLOR_NAME);
+    g_Log.print(orgExpr);
+    g_Log.setColor(COLOR_DEFAULT);
+    g_Log.print(" = ");
+
     g_Log.print(str);
     str.trim();
     if (str.back() != '\n')
         g_Log.eol();
 
     return BcDbgCommandResult::Continue;
+}
+
+BcDbgCommandResult ByteCodeDebugger::cmdDisplay(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+{
+    if (arg.split.size() < 2)
+        return BcDbgCommandResult::BadArguments;
+
+    auto line = arg.cmd + " " + arg.cmdExpr;
+    g_ByteCodeDebugger.debugDisplay.push_back(line);
+    g_ByteCodeDebugger.printDisplay(context);
+
+    return BcDbgCommandResult::Continue;
+}
+
+void ByteCodeDebugger::printDisplay(ByteCodeRunContext* context)
+{
+    if (debugDisplay.empty())
+        return;
+
+    for (const auto& line : debugDisplay)
+    {
+        BcDbgCommandArg arg;
+        tokenizeCommand(context, line, arg);
+        cmdPrint(context, arg);
+    }
 }

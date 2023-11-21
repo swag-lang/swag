@@ -134,11 +134,15 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     debugStepLastFile     = loc.file;
     debugStepLastLocation = loc.location;
     debugStepLastFunc     = newFunc;
+
+    if (debugDisplay.size())
+        g_Log.eol();
+    printDisplay(context);
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() != 1)
+    if (arg.split.size() != 1)
         return BcDbgCommandResult::BadArguments;
 
     auto ipNode = g_ByteCodeDebugger.debugCxtIp->node;
@@ -295,13 +299,13 @@ void ByteCodeDebugger::printInstructions(ByteCodeRunContext* context, ByteCode* 
     bc->print(opt, (uint32_t) (ip - bc->out), cpt + count - 1);
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() < 2)
+    if (arg.split.size() < 2)
         return BcDbgCommandResult::BadArguments;
 
     Vector<Utf8> exprCmds;
-    Utf8::tokenize(cmdExpr, ' ', exprCmds);
+    Utf8::tokenize(arg.cmdExpr, ' ', exprCmds);
 
     // Print format
     ValueFormat fmt;
@@ -427,34 +431,34 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() > 2)
+    if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
-    if (cmds.size() != 1 && !Utf8::isNumber(cmds[1].c_str()))
+    if (arg.split.size() != 1 && !Utf8::isNumber(arg.split[1].c_str()))
         return BcDbgCommandResult::BadArguments;
 
     int regN = 4;
-    if (cmds.size() == 2)
-        regN = atoi(cmds[1].c_str());
+    if (arg.split.size() == 2)
+        regN = atoi(arg.split[1].c_str());
     g_ByteCodeDebugger.debugBcMode = true;
 
     g_ByteCodeDebugger.printInstructions(context, g_ByteCodeDebugger.debugCxtBc, g_ByteCodeDebugger.debugCxtIp, regN);
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() > 2)
+    if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
 
     auto toLogBc                   = g_ByteCodeDebugger.debugCxtBc;
     auto toLogIp                   = g_ByteCodeDebugger.debugCxtIp;
     g_ByteCodeDebugger.debugBcMode = true;
 
-    if (cmds.size() > 1)
+    if (arg.split.size() > 1)
     {
-        auto name = cmds[1];
+        auto name = arg.split[1];
         toLogBc   = g_ByteCodeDebugger.findCmdBc(name);
         if (!toLogBc)
             return BcDbgCommandResult::Continue;
@@ -467,11 +471,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext* cont
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() > 2)
+    if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
-    if (cmds.size() > 1 && !Utf8::isNumber(cmds[1].c_str()))
+    if (arg.split.size() > 1 && !Utf8::isNumber(arg.split[1].c_str()))
         return BcDbgCommandResult::BadArguments;
 
     auto toLogBc                   = g_ByteCodeDebugger.debugCxtBc;
@@ -481,8 +485,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
     if (toLogBc->node && toLogBc->node->kind == AstNodeKind::FuncDecl && toLogBc->node->sourceFile)
     {
         uint32_t offset = 3;
-        if (cmds.size() == 2)
-            offset = atoi(cmds[1].c_str());
+        if (arg.split.size() == 2)
+            offset = atoi(arg.split[1].c_str());
 
         auto inl = g_ByteCodeDebugger.debugLastBreakIp->node->ownerInline;
         if (inl)
@@ -502,18 +506,18 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, const Vector<Utf8>& cmds, const Utf8& cmdExpr)
+BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (cmds.size() > 2)
+    if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
 
     auto toLogBc                   = g_ByteCodeDebugger.debugCxtBc;
     auto toLogIp                   = g_ByteCodeDebugger.debugCxtIp;
     g_ByteCodeDebugger.debugBcMode = false;
 
-    if (cmds.size() > 1)
+    if (arg.split.size() > 1)
     {
-        auto name = cmds[1];
+        auto name = arg.split[1];
         toLogBc   = g_ByteCodeDebugger.findCmdBc(name);
         if (!toLogBc)
             return BcDbgCommandResult::Continue;
