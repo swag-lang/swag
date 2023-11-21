@@ -46,6 +46,7 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
         header += Fmt("[%03u] ", level);
     else
         header += Fmt("-%03u- ", level);
+    header += ByteCodeDebugger::COLOR_VTS_NAME;
 
     Utf8 inl;
     inl += ByteCodeDebugger::COLOR_VTS_INDEX;
