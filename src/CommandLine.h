@@ -51,6 +51,7 @@ struct CommandLine
 
     bool dbgCatch      = false;
     bool dbgMain       = false;
+    bool dbgStart      = false;
     bool dbgOff        = false;
     bool dbgCallStack  = false;
     bool dbgPrintBcExt = false;

@@ -27,6 +27,7 @@ struct ByteCodeRun
     void  executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeInstruction* ip);
 
     void         localCall(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet = 0, uint32_t returnRegOnRet = UINT32_MAX, uint32_t incSPPosCall = 0);
+    void         localCallNoTrace(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet = 0, uint32_t returnRegOnRet = UINT32_MAX, uint32_t incSPPosCall = 0);
     void         callInternalCompilerError(ByteCodeRunContext* context, ByteCodeInstruction* ip, const char* msg);
     void         callInternalPanic(ByteCodeRunContext* context, ByteCodeInstruction* ip, const char* msg);
     static void* makeLambda(JobContext* context, AstFuncDecl* funcNode, ByteCode* bc);

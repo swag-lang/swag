@@ -57,11 +57,10 @@
 #define IMMD_U32(ip) ((ip->flags & BCI_IMM_D) ? ip->d.u32 : registersRC[ip->d.u32].u32)
 #define IMMD_U64(ip) ((ip->flags & BCI_IMM_D) ? ip->d.u64 : registersRC[ip->d.u32].u64)
 
-SWAG_FORCE_INLINE void ByteCodeRun::localCall(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet, uint32_t returnRegOnRet, uint32_t incSPPostCall)
+SWAG_FORCE_INLINE void ByteCodeRun::localCallNoTrace(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet, uint32_t returnRegOnRet, uint32_t incSPPostCall)
 {
     SWAG_ASSERT(!bc->node || bc->node->semFlags & SEMFLAG_BYTECODE_GENERATED);
 
-    g_ByteCodeStackTrace->push(context);
     context->push(context->bp);
     context->push(context->bc);
     context->push(context->ip);
@@ -72,6 +71,12 @@ SWAG_FORCE_INLINE void ByteCodeRun::localCall(ByteCodeRunContext* context, ByteC
     context->ip = context->bc->out;
     context->bp = context->sp;
     context->bc->enterByteCode(context, popParamsOnRet, returnRegOnRet, incSPPostCall);
+}
+
+SWAG_FORCE_INLINE void ByteCodeRun::localCall(ByteCodeRunContext* context, ByteCode* bc, uint32_t popParamsOnRet, uint32_t returnRegOnRet, uint32_t incSPPostCall)
+{
+    g_ByteCodeStackTrace->push(context);
+    localCallNoTrace(context, bc, popParamsOnRet, returnRegOnRet, incSPPostCall);
 }
 
 void ByteCodeRun::callInternalCompilerError(ByteCodeRunContext* context, ByteCodeInstruction* ip, const char* msg)

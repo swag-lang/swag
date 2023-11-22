@@ -50,7 +50,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
         {
         case DebugBkpType::FuncName:
         {
-            if ((context->ip == context->bc->out) && (context->bc->getPrintName().find(bkp.name) != -1 || context->bc->getPrintFileName().find(bkp.name) != -1))
+            if ((context->ip == context->bc->out) && testNameFilter(context->bc->getPrintName(), bkp.name))
             {
                 if (!bkp.autoDisabled)
                 {

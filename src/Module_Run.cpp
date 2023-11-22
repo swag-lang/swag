@@ -315,7 +315,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
             g_RunContext->push(r);
 
         if (!foreignCall)
-            module->runner.localCall(g_RunContext, bc, (uint32_t) params->callParams.size());
+            module->runner.localCallNoTrace(g_RunContext, bc, (uint32_t) params->callParams.size());
     }
     else if (!foreignCall)
     {

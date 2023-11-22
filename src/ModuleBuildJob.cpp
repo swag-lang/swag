@@ -595,6 +595,11 @@ JobResult ModuleBuildJob::execute()
         auto              runtimeFlags = Backend::getRuntimeFlags(module);
         runtimeFlags |= (uint64_t) SwagRuntimeFlags::FromCompiler;
         execParams.callParams.push_back(runtimeFlags);
+        if (module->kind != ModuleKind::Config)
+        {
+            execParams.breakOnStart = g_CommandLine.dbgStart;
+            g_CommandLine.dbgStart  = false;
+        }
         module->executeNode(setupFct->node->sourceFile, setupFct->node, baseContext, &execParams);
 
         if (module->criticalErrors)
@@ -640,16 +645,13 @@ JobResult ModuleBuildJob::execute()
             if (!g_CommandLine.scriptMode)
                 module->bssCannotChange = true;
 
-            ExecuteNodeParams params;
-            if (module->kind != ModuleKind::Config)
-                params.breakOnStart = g_CommandLine.dbgMain;
             for (auto func : module->byteCodeRunFunc)
             {
 #ifdef SWAG_STATS
                 g_Stats.runFunctions++;
 #endif
                 module->logStage(Fmt("#run %s\n", func->node->sourceFile->name.c_str()));
-                module->executeNode(func->node->sourceFile, func->node, baseContext, &params);
+                module->executeNode(func->node->sourceFile, func->node, baseContext);
                 if (module->criticalErrors)
                     return JobResult::ReleaseJob;
             }
