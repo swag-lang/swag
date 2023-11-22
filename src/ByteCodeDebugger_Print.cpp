@@ -25,8 +25,8 @@ void ByteCodeDebugger::printLong(const Vector<Utf8>& all)
         {
             cpt = 0;
             g_Log.setColor(LogColor::Gray);
-            g_Log.print("-- Type <RET> for more, 'q' to quit, 'c' to continue without paging --");
-            g_Log.eol();
+            static const char* MSG = "-- Type <RET> for more, 'q' to quit, 'c' to continue without paging --";
+            g_Log.print(MSG);
             bool ctrl, shift;
             int  c = 0;
             while (true)
@@ -42,6 +42,10 @@ void ByteCodeDebugger::printLong(const Vector<Utf8>& all)
                     break;
                 }
             };
+
+            // Erase the message
+            fputs(Fmt("\x1B[%dD", strlen(MSG)), stdout);
+            fputs(Fmt("\x1B[%dX", strlen(MSG)), stdout);
         }
 
         cpt++;
@@ -54,12 +58,6 @@ void ByteCodeDebugger::printLong(const Vector<Utf8>& all)
 void ByteCodeDebugger::printSeparator()
 {
     g_Log.eol();
-
-    // g_Log.setColor(LogColor::Gray);
-    // for (int i = 0; i < LINE_W; i++)
-    //     g_Log.print(LogSymbol::HorizontalLine);
-    // g_Log.eol();
-    // g_Log.setColor(LogColor::Gray);
 }
 
 void ByteCodeDebugger::printTitleNameType(const Utf8& title, const Utf8& name, const Utf8& type)
@@ -491,7 +489,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstruction(ByteCodeRunContext* context,
         regN = atoi(arg.split[1].c_str());
     g_ByteCodeDebugger.debugBcMode = true;
 
+    g_Log.setStoreMode(true);
     g_ByteCodeDebugger.printInstructions(context, g_ByteCodeDebugger.debugCxtBc, g_ByteCodeDebugger.debugCxtIp, regN);
+    g_Log.setStoreMode(false);
+    g_ByteCodeDebugger.printLong(g_Log.store);
+
     return BcDbgCommandResult::Continue;
 }
 
@@ -515,7 +517,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext* cont
 
     ByteCodePrintOptions opt;
     opt.curIp = toLogIp;
+
+    g_Log.setStoreMode(true);
     toLogBc->print(opt);
+    g_Log.setStoreMode(false);
+    g_ByteCodeDebugger.printLong(g_Log.store);
+
     return BcDbgCommandResult::Continue;
 }
 

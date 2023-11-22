@@ -32,77 +32,90 @@ void Log::print(LogSymbol symbol)
     {
     case LogSymbol::VerticalLine:
         if (g_CommandLine.logAscii)
-            g_Log.print("|");
+            print("|");
         else
-            g_Log.print("\xe2\x94\x82");
+            print("\xe2\x94\x82");
         break;
 
     case LogSymbol::DotCenter:
         if (g_CommandLine.logAscii)
-            g_Log.print(".");
+            print(".");
         else
-            g_Log.print("\xc2\xb7");
+            print("\xc2\xb7");
         break;
 
     case LogSymbol::DotList:
         if (g_CommandLine.logAscii)
-            g_Log.print("*");
+            print("*");
         else
-            g_Log.print("\xE2\x80\xa2");
+            print("\xE2\x80\xa2");
         break;
 
     case LogSymbol::HorizontalLine:
         if (g_CommandLine.logAscii)
-            g_Log.print("-");
+            print("-");
         else
-            g_Log.print("\xe2\x94\x80");
+            print("\xe2\x94\x80");
         break;
 
     case LogSymbol::HorizontalLine2:
         if (g_CommandLine.logAscii)
-            g_Log.print("=");
+            print("=");
         else
-            g_Log.print("\xe2\x95\x90");
+            print("\xe2\x95\x90");
         break;
 
     case LogSymbol::HorizontalLineMidVert:
         if (g_CommandLine.logAscii)
-            g_Log.print("-");
+            print("-");
         else
-            g_Log.print("\xe2\x94\xac");
+            print("\xe2\x94\xac");
         break;
 
     case LogSymbol::HorizontalLine2MidVert:
         if (g_CommandLine.logAscii)
-            g_Log.print("=");
+            print("=");
         else
-            g_Log.print("\xe2\x95\xa4");
+            print("\xe2\x95\xa4");
         break;
 
     case LogSymbol::DownRight:
         if (g_CommandLine.logAscii)
-            g_Log.print("*");
+            print("*");
         else
-            g_Log.print("\xe2\x94\x94");
+            print("\xe2\x94\x94");
         break;
 
     case LogSymbol::UpRight:
         if (g_CommandLine.logAscii)
-            g_Log.print("*");
+            print("*");
         else
-            g_Log.print("\xe2\x94\x8c");
+            print("\xe2\x94\x8c");
         break;
     }
 }
 
 void Log::print(const char* message)
 {
-    cout << message;
+    if (storeMode)
+    {
+        storeLine += message;
+        if (storeLine.back() == '\n')
+            eol();
+    }
+    else
+        cout << message;
 }
 
 void Log::eol()
 {
-    cout << "\n";
+    if (storeMode)
+    {
+        store.push_back(storeLine);
+        storeLine.clear();
+    }
+    else
+        cout << "\n";
 }
 
 void Log::print(const Utf8& message)
@@ -207,4 +220,14 @@ void Log::messageVerbose(const Utf8& message)
         eol();
     setDefaultColor();
     unlock();
+}
+
+void Log::setStoreMode(bool mode)
+{
+    storeMode = mode;
+    if (mode)
+    {
+        storeLine.clear();
+        store.clear();
+    }
 }

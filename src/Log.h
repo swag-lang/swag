@@ -115,7 +115,12 @@ struct Log
     void messageInfo(const Utf8& message);
     void messageVerbose(const Utf8& message);
 
-    Mutex mutexAccess;
+    void setStoreMode(bool mode);
+
+    Mutex        mutexAccess;
+    Vector<Utf8> store;
+    Utf8         storeLine;
+    bool         storeMode = false;
 };
 
 extern Log g_Log;
