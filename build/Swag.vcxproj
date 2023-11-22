@@ -371,6 +371,7 @@
     <ClCompile Include="..\src\ByteCodeDebugger_Help.cpp" />
     <ClCompile Include="..\src\ByteCodeDebugger_Info.cpp" />
     <ClCompile Include="..\src\ByteCodeDebugger_Print.cpp" />
+    <ClCompile Include="..\src\ByteCodeDebugger_Set.cpp" />
     <ClCompile Include="..\src\ByteCodeDebugger_Trace.cpp" />
     <ClCompile Include="..\src\ByteCodeDebugger_Value.cpp" />
     <ClCompile Include="..\src\ByteCodeDebugger_Eval.cpp" />

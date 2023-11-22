@@ -1,4 +1,3 @@
-
 #include "pch.h"
 #include "ByteCode.h"
 #include "ByteCodeDebugger.h"
@@ -167,34 +166,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdUntili(ByteCodeRunContext* context, cons
     context->debugStackFrameOffset   = 0;
     g_ByteCodeDebugger.debugStepMode = DebugStepMode::ToNextBreakpoint;
     return BcDbgCommandResult::Break;
-}
-
-BcDbgCommandResult ByteCodeDebugger::cmdMode(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
-{
-    if (arg.split.size() != 2)
-        return BcDbgCommandResult::BadArguments;
-
-    if (arg.split[1] == "inline")
-    {
-        context->bc->sourceFile->module->buildCfg.byteCodeDebugInline = !context->bc->sourceFile->module->buildCfg.byteCodeDebugInline;
-        if (context->bc->sourceFile->module->buildCfg.byteCodeDebugInline)
-            g_ByteCodeDebugger.printCmdResult("inline mode");
-        else
-            g_ByteCodeDebugger.printCmdResult("no inline mode");
-        g_ByteCodeDebugger.printDebugContext(context, true);
-    }
-    else if (arg.split[1] == "bkp")
-    {
-        g_CommandLine.dbgOff = !g_CommandLine.dbgOff;
-        if (g_CommandLine.dbgOff)
-            g_ByteCodeDebugger.printCmdResult("@breakpoint() is disabled");
-        else
-            g_ByteCodeDebugger.printCmdResult("@breakpoint() is enabled");
-    }
-    else
-        return BcDbgCommandResult::BadArguments;
-
-    return BcDbgCommandResult::Continue;
 }
 
 BcDbgCommandResult ByteCodeDebugger::cmdQuit(ByteCodeRunContext* context, const BcDbgCommandArg& arg)

@@ -73,13 +73,13 @@ void ByteCodeDebugger::setup()
     commands.push_back({});                                           
                                                                       
     commands.push_back({"bt",          "",     "",                    "backtrace, print callstack", cmdBackTrace});
-    commands.push_back({"up",          "",     "[num]",               "move stack frame <num> level up", cmdFrameUp});
-    commands.push_back({"down",        "",     "[num]",               "move stack frame <num> level down", cmdFrameDown});
+    commands.push_back({"up",          "",     "[num]",               "move stack frame [num] level up", cmdFrameUp});
+    commands.push_back({"down",        "",     "[num]",               "move stack frame [num] level down", cmdFrameDown});
     commands.push_back({"frame",       "",     "<num>",               "set stack frame to level <num>", cmdFrame});
     commands.push_back({});                                           
                                                                       
-    commands.push_back({"mode",        "m",    "inline",              "swap between inline mode and non inline mode", cmdMode});
-    commands.push_back({"mode",        "m",    "bkp",                 "enable/disable call to @breakpoint()", cmdMode});
+    commands.push_back({"set",         "",     "inline <on|off>",     "swap between inline mode and non inline mode", cmdSet});
+    commands.push_back({"set",         "",     "bkp <on|off>",        "enable/disable call to @breakpoint()", cmdSet});
     commands.push_back({});
                                                                      
     commands.push_back({"help",        "?",    "",                    "print this list of commands", cmdHelp});
