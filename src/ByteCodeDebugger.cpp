@@ -65,8 +65,8 @@ void ByteCodeDebugger::setup()
     commands.push_back({"break",       "b",    "line <line>",         "add breakpoint in the current source file at <line>", cmdBreak});
     commands.push_back({"break",       "b",    "file <file> <line>",  "add breakpoint in <file> at <line>", cmdBreak});
     commands.push_back({"break",       "b",    "(cl)ear",             "remove all breakpoints", cmdBreak});
-    commands.push_back({"break",       "b",    "(cl)ear   <num>",     "remove breakpoint <num>", cmdBreak});
-    commands.push_back({"break",       "b",    "(en)able  <num>",     "enable breakpoint <num>", cmdBreak});
+    commands.push_back({"break",       "b",    "(cl)ear <num>",       "remove breakpoint <num>", cmdBreak});
+    commands.push_back({"break",       "b",    "(en)able <num>",      "enable breakpoint <num>", cmdBreak});
     commands.push_back({"break",       "b",    "(di)sable <num>",     "disable breakpoint <num>", cmdBreak});
     commands.push_back({"tbreak",      "tb",   "",                    "same as 'break' except that the breakpoint will be automatically removed on hit", cmdBreak});
     commands.push_back({});                                           
