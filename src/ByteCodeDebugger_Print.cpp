@@ -15,6 +15,12 @@ void ByteCodeDebugger::printLong(const Utf8& all)
 
 void ByteCodeDebugger::printLong(const Vector<Utf8>& all)
 {
+    if (all.empty())
+    {
+        printCmdError("nothing to display");
+        return;
+    }
+
     g_Log.setColor(LogColor::Gray);
 
     int  cpt     = 0;

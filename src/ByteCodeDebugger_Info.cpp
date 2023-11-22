@@ -10,7 +10,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
     if (arg.split.size() > 3)
         return BcDbgCommandResult::BadArguments;
 
-    auto         filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
+    auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
+
     Vector<Utf8> all;
     g_Log.setColor(LogColor::Gray);
 
@@ -22,7 +23,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
             if (!bc->out)
                 continue;
             total++;
-            if (filter.empty() || bc->getPrintName().find(filter) != -1 || bc->getPrintFileName().find(filter) != -1)
+            if (g_ByteCodeDebugger.testNameFilter(bc->getPrintName(), filter) ||
+                g_ByteCodeDebugger.testNameFilter(bc->getPrintFileName(), filter))
             {
                 all.push_back(bc->getPrintRefName());
             }
@@ -55,10 +57,48 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoModules(ByteCodeRunContext* context,
     return BcDbgCommandResult::Continue;
 }
 
+BcDbgCommandResult ByteCodeDebugger::cmdInfoVariables(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+{
+    if (arg.split.size() > 3)
+        return BcDbgCommandResult::BadArguments;
+    auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
+
+    Utf8 result;
+    auto m = context->jc.sourceFile->module;
+
+    for (auto n : m->globalVarsBss)
+    {
+        if (!n->resolvedSymbolOverload)
+            continue;
+        uint8_t* addr = m->bssSegment.address(n->resolvedSymbolOverload->computedValue.storageOffset);
+        g_ByteCodeDebugger.appendTypedValue(context, filter, n, nullptr, addr, result);
+    }
+
+    for (auto n : m->globalVarsMutable)
+    {
+        if (!n->resolvedSymbolOverload)
+            continue;
+        uint8_t* addr = m->mutableSegment.address(n->resolvedSymbolOverload->computedValue.storageOffset);
+        g_ByteCodeDebugger.appendTypedValue(context, filter, n, nullptr, addr, result);
+    }
+
+    for (auto n : m->globalVarsConstant)
+    {
+        if (!n->resolvedSymbolOverload)
+            continue;
+        uint8_t* addr = m->constantSegment.address(n->resolvedSymbolOverload->computedValue.storageOffset);
+        g_ByteCodeDebugger.appendTypedValue(context, filter, n, nullptr, addr, result);
+    }
+
+    g_ByteCodeDebugger.printLong(result);
+    return BcDbgCommandResult::Continue;
+}
+
 BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (arg.split.size() > 2)
+    if (arg.split.size() > 3)
         return BcDbgCommandResult::BadArguments;
+    auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
 
     if (g_ByteCodeDebugger.debugCxtBc->localVars.empty())
     {
@@ -66,23 +106,31 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, 
         return BcDbgCommandResult::Continue;
     }
 
+    Utf8 result;
     for (auto l : g_ByteCodeDebugger.debugCxtBc->localVars)
+        g_ByteCodeDebugger.appendTypedValue(context, filter, l, g_ByteCodeDebugger.debugCxtBp, nullptr, result);
+    g_ByteCodeDebugger.printLong(result);
+
+    return BcDbgCommandResult::Continue;
+}
+
+BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
+{
+    if (arg.split.size() > 3)
+        return BcDbgCommandResult::BadArguments;
+    auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
+
+    auto funcDecl = CastAst<AstFuncDecl>(g_ByteCodeDebugger.debugCxtBc->node, AstNodeKind::FuncDecl);
+    if (!funcDecl->parameters || funcDecl->parameters->childs.empty())
     {
-        auto over = l->resolvedSymbolOverload;
-        if (!over)
-            continue;
-        // Generated
-        if (over->symbol->name.length() > 2 && over->symbol->name[0] == '_' && over->symbol->name[1] == '_')
-            continue;
-        Utf8           str = Fmt("(%s%s%s) %s%s%s = ", COLOR_VTS_TYPE, over->typeInfo->getDisplayNameC(), COLOR_VTS_DEFAULT, COLOR_VTS_NAME, over->symbol->name.c_str(), COLOR_VTS_DEFAULT);
-        EvaluateResult res;
-        res.type = over->typeInfo;
-        res.addr = g_ByteCodeDebugger.debugCxtBp + over->computedValue.storageOffset;
-        g_ByteCodeDebugger.appendTypedValue(context, str, res, 0);
-        g_Log.print(str);
-        if (str.back() != '\n')
-            g_Log.eol();
+        g_ByteCodeDebugger.printCmdError("no arguments");
+        return BcDbgCommandResult::Continue;
     }
+
+    Utf8 result;
+    for (auto l : funcDecl->parameters->childs)
+        g_ByteCodeDebugger.appendTypedValue(context, filter, l, g_ByteCodeDebugger.debugCxtBp, nullptr, result);
+    g_ByteCodeDebugger.printLong(result);
 
     return BcDbgCommandResult::Continue;
 }
@@ -119,50 +167,22 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoRegs(ByteCodeRunContext* context, co
     return BcDbgCommandResult::Continue;
 }
 
-BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
-{
-    if (arg.split.size() > 2)
-        return BcDbgCommandResult::BadArguments;
-
-    auto funcDecl = CastAst<AstFuncDecl>(g_ByteCodeDebugger.debugCxtBc->node, AstNodeKind::FuncDecl);
-    if (!funcDecl->parameters || funcDecl->parameters->childs.empty())
-    {
-        g_ByteCodeDebugger.printCmdError("no arguments");
-        return BcDbgCommandResult::Continue;
-    }
-
-    for (auto l : funcDecl->parameters->childs)
-    {
-        auto over = l->resolvedSymbolOverload;
-        if (!over)
-            continue;
-        Utf8           str = Fmt("(%s%s%s) %s%s%s = ", COLOR_VTS_TYPE, over->typeInfo->getDisplayNameC(), COLOR_VTS_DEFAULT, COLOR_VTS_NAME, over->symbol->name.c_str(), COLOR_VTS_DEFAULT);
-        EvaluateResult res;
-        res.type = over->typeInfo;
-        res.addr = g_ByteCodeDebugger.debugCxtBp + over->computedValue.storageOffset;
-        g_ByteCodeDebugger.appendTypedValue(context, str, res, 0);
-        g_Log.print(str);
-        if (str.back() != '\n')
-            g_Log.eol();
-    }
-
-    return BcDbgCommandResult::Continue;
-}
-
 BcDbgCommandResult ByteCodeDebugger::cmdInfo(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
     if (arg.split.size() < 2)
         return BcDbgCommandResult::BadArguments;
 
-    if (arg.split[1] == "locals" || arg.split[1] == "l")
+    if (arg.split[1] == "locals" || arg.split[1] == "loc")
         return cmdInfoLocals(context, arg);
-    if (arg.split[1] == "regs" || arg.split[1] == "r")
-        return cmdInfoRegs(context, arg);
-    if (arg.split[1] == "args" || arg.split[1] == "a")
+    if (arg.split[1] == "arguments" || arg.split[1] == "arg")
         return cmdInfoArgs(context, arg);
-    if (arg.split[1] == "func")
+    if (arg.split[1] == "registers" || arg.split[1] == "reg")
+        return cmdInfoRegs(context, arg);
+    if (arg.split[1] == "functions" || arg.split[1] == "func")
         return cmdInfoFuncs(context, arg);
-    if (arg.split[1] == "module")
+    if (arg.split[1] == "variables" || arg.split[1] == "var")
+        return cmdInfoVariables(context, arg);
+    if (arg.split[1] == "modules")
         return cmdInfoModules(context, arg);
 
     return BcDbgCommandResult::BadArguments;

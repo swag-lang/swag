@@ -50,11 +50,12 @@ void ByteCodeDebugger::setup()
     commands.push_back({"ii",          "",     "[name]",              "print the current function (or function [name]) bytecode", cmdInstructionDump});
     commands.push_back({});                                           
                                                
-    commands.push_back({"info",        "o",    "(l)ocals",            "print all current local variables", cmdInfo});
-    commands.push_back({"info",        "o",    "(a)rgs",              "print all current function arguments", cmdInfo});
-    commands.push_back({"info",        "o",    "(r)egs [/format]",    "print all registers (/format is the same as 'x' command)", cmdInfo});
-    commands.push_back({"info",        "o",    "module",              "print all modules", cmdInfo});
-    commands.push_back({"info",        "o",    "func [filter]",       "print all functions which contains [filter] in their names", cmdInfo});
+    commands.push_back({"info",        "o",    "(reg)isters [/format]",      "print all registers (/format is the same as 'x' command)", cmdInfo});
+    commands.push_back({"info",        "o",    "(loc)als [filter]",          "print all current local variables", cmdInfo});
+    commands.push_back({"info",        "o",    "(arg)uments [filter]",       "print all current function arguments", cmdInfo});
+    commands.push_back({"info",        "o",    "(func)tions [filter]",       "print all functions", cmdInfo});
+    commands.push_back({"info",        "o",    "(var)iables [filter]",       "print all global variables", cmdInfo});
+    commands.push_back({"info",        "o",    "modules",                    "print all modules", cmdInfo});
     commands.push_back({});
     commands.push_back({"where",       "w",    "",                    "print contextual informations", cmdWhere});
     commands.push_back({});            
@@ -130,6 +131,17 @@ VectorNative<ByteCode*> ByteCodeDebugger::findBc(const char* bcName)
         return {tryMatch[0]};
 
     return tryMatch;
+}
+
+bool ByteCodeDebugger::testNameFilter(const Utf8& name, const Utf8& filter)
+{
+    if (filter.empty())
+        return true;
+    if (name == filter)
+        return true;
+    if (name.find(filter) != -1)
+        return true;
+    return false;
 }
 
 bool ByteCodeDebugger::getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN)

@@ -468,3 +468,26 @@ void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, Utf8& str, 
         str += "<error>";
     }
 }
+
+void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, const Utf8& filter, AstNode* node, uint8_t* baseAddr, uint8_t* realAddr, Utf8& result)
+{
+    auto over = node->resolvedSymbolOverload;
+    if (!over)
+        return;
+    if (over->symbol->name.length() > 2 && over->symbol->name[0] == '_' && over->symbol->name[1] == '_') // Generated
+        return;
+    if (!testNameFilter(over->symbol->name, filter))
+        return;
+
+    Utf8 str = Fmt("(%s%s%s) %s%s%s = ", COLOR_VTS_TYPE, over->typeInfo->getDisplayNameC(), COLOR_VTS_DEFAULT, COLOR_VTS_NAME, over->symbol->name.c_str(), COLOR_VTS_DEFAULT);
+
+    EvaluateResult res;
+    res.type = over->typeInfo;
+    res.addr = realAddr ? realAddr : baseAddr + over->computedValue.storageOffset;
+    g_ByteCodeDebugger.appendTypedValue(context, str, res, 0);
+    str.trim();
+    while (str.back() == '\n')
+        str.removeBack();
+    result += str;
+    result += "\n";
+}
