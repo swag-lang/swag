@@ -595,11 +595,6 @@ JobResult ModuleBuildJob::execute()
         auto              runtimeFlags = Backend::getRuntimeFlags(module);
         runtimeFlags |= (uint64_t) SwagRuntimeFlags::FromCompiler;
         execParams.callParams.push_back(runtimeFlags);
-        if (module->kind != ModuleKind::Config)
-        {
-            execParams.breakOnStart = g_CommandLine.dbgStart;
-            g_CommandLine.dbgStart  = false;
-        }
         module->executeNode(setupFct->node->sourceFile, setupFct->node, baseContext, &execParams);
 
         if (module->criticalErrors)
