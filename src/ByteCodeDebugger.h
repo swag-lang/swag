@@ -203,6 +203,7 @@ struct ByteCodeDebugger
     void printHelp(const BcDbgCommand& cmd);
     void printDisplayList();
     void printDisplay(ByteCodeRunContext* context);
+    void printSet(ByteCodeRunContext* context);
 
     Vector<BcDbgCommand> commands;
 
@@ -227,6 +228,8 @@ struct ByteCodeDebugger
     uint32_t                debugCxtRc             = 0;
     uint32_t                debugBcMode            = false;
     bool                    debugForcePrintContext = false;
+    bool                    debugPrintStruct       = true;
+    bool                    debugPrintArray        = true;
 };
 
 extern ByteCodeDebugger g_ByteCodeDebugger;

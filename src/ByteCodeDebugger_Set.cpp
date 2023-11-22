@@ -3,8 +3,22 @@
 #include "ByteCodeDebugger.h"
 #include "Module.h"
 
+void ByteCodeDebugger::printSet(ByteCodeRunContext* context)
+{
+    g_Log.messageHeaderDot("debug inline code", context->bc->sourceFile->module->buildCfg.byteCodeDebugInline ? "on" : "off", COLOR_NAME, LogColor::White, " ");
+    g_Log.messageHeaderDot("stop on @breakpoint()", !g_CommandLine.dbgOff ? "on" : "off", COLOR_NAME, LogColor::White, " ");
+    g_Log.messageHeaderDot("print struct content", g_ByteCodeDebugger.debugPrintStruct ? "on" : "off", COLOR_NAME, LogColor::White, " ");
+    g_Log.messageHeaderDot("print array content", g_ByteCodeDebugger.debugPrintArray ? "on" : "off", COLOR_NAME, LogColor::White, " ");
+}
+
 BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
+    if (arg.split.size() == 1)
+    {
+        g_ByteCodeDebugger.printSet(context);
+        return BcDbgCommandResult::Continue;
+    }
+
     if (arg.split[1] == "inline")
     {
         if (arg.split.size() != 3)
@@ -15,9 +29,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
         context->bc->sourceFile->module->buildCfg.byteCodeDebugInline = arg.split[2] == "on" ? true : false;
 
         if (context->bc->sourceFile->module->buildCfg.byteCodeDebugInline)
-            g_ByteCodeDebugger.printCmdResult("inline mode: on");
+            g_ByteCodeDebugger.printCmdResult("debug inline code: on");
         else
-            g_ByteCodeDebugger.printCmdResult("inline mode: off");
+            g_ByteCodeDebugger.printCmdResult("debug inline code: off");
         g_ByteCodeDebugger.printDebugContext(context, true);
         return BcDbgCommandResult::Continue;
     }
@@ -29,13 +43,47 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
         if (arg.split[2] != "on" && arg.split[2] != "off")
             return BcDbgCommandResult::BadArguments;
 
-        g_CommandLine.dbgOff = arg.split[2] == "on" ? true : false;
+        g_CommandLine.dbgOff = arg.split[2] == "off" ? true : false;
 
         if (g_CommandLine.dbgOff)
-            g_ByteCodeDebugger.printCmdResult("@breakpoint(): on");
+            g_ByteCodeDebugger.printCmdResult("stop on @breakpoint(): on");
         else
-            g_ByteCodeDebugger.printCmdResult("@breakpoint(): off");
+            g_ByteCodeDebugger.printCmdResult("stop on @breakpoint(): off");
         return BcDbgCommandResult::Continue;
+    }
+
+    if (arg.split[1] == "print")
+    {
+        if (arg.split.size() != 4)
+            return BcDbgCommandResult::BadArguments;
+
+        if (arg.split[2] == "struct")
+        {
+            if (arg.split[3] != "on" && arg.split[3] != "off")
+                return BcDbgCommandResult::BadArguments;
+
+            g_ByteCodeDebugger.debugPrintStruct = arg.split[2] == "on" ? true : false;
+
+            if (g_CommandLine.dbgOff)
+                g_ByteCodeDebugger.printCmdResult("print struct content: on");
+            else
+                g_ByteCodeDebugger.printCmdResult("print struct content: off");
+            return BcDbgCommandResult::Continue;
+        }
+
+        if (arg.split[2] == "array")
+        {
+            if (arg.split[3] != "on" && arg.split[3] != "off")
+                return BcDbgCommandResult::BadArguments;
+
+            g_ByteCodeDebugger.debugPrintArray = arg.split[2] == "on" ? true : false;
+
+            if (g_CommandLine.dbgOff)
+                g_ByteCodeDebugger.printCmdResult("print array content: on");
+            else
+                g_ByteCodeDebugger.printCmdResult("print array content: off");
+            return BcDbgCommandResult::Continue;
+        }
     }
 
     return BcDbgCommandResult::BadArguments;

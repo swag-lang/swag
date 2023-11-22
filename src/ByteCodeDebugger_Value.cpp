@@ -280,18 +280,25 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
         if (res.value)
             addr = res.value->reg.pointer;
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-        str += "\n";
-        for (auto p : typeStruct->fields)
+        if (!debugPrintStruct)
         {
-            for (int i = 0; i < indent + 1; i++)
-                str += "   ";
-            str += Fmt("(%s%s%s) %s%s%s = ", COLOR_VTS_TYPE, p->typeInfo->getDisplayNameC(), COLOR_VTS_DEFAULT, COLOR_VTS_NAME, p->name.c_str(), COLOR_VTS_DEFAULT);
-            EvaluateResult res1;
-            res1.type = p->typeInfo;
-            res1.addr = ((uint8_t*) addr) + p->offset;
-            appendTypedValue(context, str, res1, indent + 1);
-            if (str.back() != '\n')
-                str += "\n";
+            str += "<hidden>";
+        }
+        else
+        {
+            str += "\n";
+            for (auto p : typeStruct->fields)
+            {
+                for (int i = 0; i < indent + 1; i++)
+                    str += "   ";
+                str += Fmt("(%s%s%s) %s%s%s = ", COLOR_VTS_TYPE, p->typeInfo->getDisplayNameC(), COLOR_VTS_DEFAULT, COLOR_VTS_NAME, p->name.c_str(), COLOR_VTS_DEFAULT);
+                EvaluateResult res1;
+                res1.type = p->typeInfo;
+                res1.addr = ((uint8_t*) addr) + p->offset;
+                appendTypedValue(context, str, res1, indent + 1);
+                if (str.back() != '\n')
+                    str += "\n";
+            }
         }
 
         return;
@@ -300,18 +307,26 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
     if (typeInfo->isArray())
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        str += Fmt("0x%016llx\n", addr);
-        for (uint32_t idx = 0; idx < typeArray->count; idx++)
+        str += Fmt("0x%016llx ", addr);
+        if (!debugPrintArray)
         {
-            for (int i = 0; i < indent; i++)
-                str += "   ";
-            str += Fmt(" [%d] ", idx);
-            EvaluateResult res1;
-            res1.type = typeArray->pointedType;
-            res1.addr = ((uint8_t*) addr) + (idx * typeArray->pointedType->sizeOf);
-            appendTypedValue(context, str, res1, indent + 1);
-            if (str.back() != '\n')
-                str += "\n";
+            str += "<hidden>";
+        }
+        else
+        {
+            str += "\n";
+            for (uint32_t idx = 0; idx < typeArray->count; idx++)
+            {
+                for (int i = 0; i < indent; i++)
+                    str += "   ";
+                str += Fmt(" [%d] ", idx);
+                EvaluateResult res1;
+                res1.type = typeArray->pointedType;
+                res1.addr = ((uint8_t*) addr) + (idx * typeArray->pointedType->sizeOf);
+                appendTypedValue(context, str, res1, indent + 1);
+                if (str.back() != '\n')
+                    str += "\n";
+            }
         }
 
         return;
@@ -327,18 +342,26 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
         else
         {
             str += Fmt("(0x%016llx ", ptr);
-            str += Fmt("%llu)\n", count);
-            for (uint64_t idx = 0; idx < count; idx++)
+            str += Fmt("%llu) ", count);
+            if (!debugPrintArray)
             {
-                for (int i = 0; i < indent; i++)
-                    str += "   ";
-                str += Fmt(" [%d] ", idx);
-                EvaluateResult res1;
-                res1.type = typeSlice->pointedType;
-                res1.addr = ptr + (idx * typeSlice->pointedType->sizeOf);
-                appendTypedValue(context, str, res1, indent + 1);
-                if (str.back() != '\n')
-                    str += "\n";
+                str += "<hidden>";
+            }
+            else
+            {
+                str += "\n";
+                for (uint64_t idx = 0; idx < count; idx++)
+                {
+                    for (int i = 0; i < indent; i++)
+                        str += "   ";
+                    str += Fmt(" [%d] ", idx);
+                    EvaluateResult res1;
+                    res1.type = typeSlice->pointedType;
+                    res1.addr = ptr + (idx * typeSlice->pointedType->sizeOf);
+                    appendTypedValue(context, str, res1, indent + 1);
+                    if (str.back() != '\n')
+                        str += "\n";
+                }
             }
         }
 

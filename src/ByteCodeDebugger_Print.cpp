@@ -27,7 +27,7 @@ void ByteCodeDebugger::printLong(const Vector<Utf8>& all)
     bool canStop = true;
     for (int i = 0; i < all.size(); i++)
     {
-        if (cpt == 50 && canStop)
+        if (cpt == 60 && canStop)
         {
             cpt = 0;
             g_Log.setColor(LogColor::Gray);

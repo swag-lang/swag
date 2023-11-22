@@ -82,14 +82,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoVariables(ByteCodeRunContext* contex
         g_ByteCodeDebugger.appendTypedValue(context, filter, n, nullptr, addr, result);
     }
 
-    for (auto n : m->globalVarsConstant)
-    {
-        if (!n->resolvedSymbolOverload)
-            continue;
-        uint8_t* addr = m->constantSegment.address(n->resolvedSymbolOverload->computedValue.storageOffset);
-        g_ByteCodeDebugger.appendTypedValue(context, filter, n, nullptr, addr, result);
-    }
-
     g_ByteCodeDebugger.printLong(result);
     return BcDbgCommandResult::Continue;
 }
