@@ -493,7 +493,12 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
     {
         debugBcMode = false;
         auto loc    = ByteCode::getLocation(context->bc, ip, debugLastBreakIp->node->ownerInline ? true : false);
-        SWAG_ASSERT(loc.file && loc.location);
+        if (!loc.file || !loc.location)
+        {
+            zapCurrentIp = true;
+            break;
+        }
+
         if (debugStepLastFile == loc.file && debugStepLastLocation && debugStepLastLocation->line == loc.location->line)
         {
             zapCurrentIp = true;
@@ -537,7 +542,12 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
         }
 
         auto loc = ByteCode::getLocation(context->bc, ip, debugLastBreakIp->node->ownerInline ? true : false);
-        SWAG_ASSERT(loc.file && loc.location);
+        if (!loc.file || !loc.location)
+        {
+            zapCurrentIp = true;
+            break;
+        }
+
         if (debugStepLastFile == loc.file && debugStepLastLocation && debugStepLastLocation->line == loc.location->line)
         {
             zapCurrentIp = true;
