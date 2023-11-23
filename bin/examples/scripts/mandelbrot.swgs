@@ -86,7 +86,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     return false
 }
 
-#run
+#main
 {
     try Jobs.setNumWorkers()
     func test(app: *Application) = if Env.hasArg("swag.test") app.maxRunFrame = 100

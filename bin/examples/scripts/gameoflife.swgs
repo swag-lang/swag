@@ -111,7 +111,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     return false
 }
 
-#run
+#main
 {
     func test(app: *Application) = if Env.hasArg("swag.test") app.maxRunFrame = 100
     Application.runSurface(100, 100, 1024, 1024, title: "Game of Life", hook: &onEvent, init: &test)

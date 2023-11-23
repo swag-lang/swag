@@ -2076,7 +2076,7 @@ func loadBindTextures()
     g_SoundScared   = loadSound("audio/pacman_scared.wav")
 }
 
-#run
+#main
 {
     assume Audio.createEngine()
     defer Audio.destroyEngine()

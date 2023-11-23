@@ -345,7 +345,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
     }
 }
 
-#run
+#main
 {
     var dataPath: String = Path.getDirectoryName(#location.fileName)
     dataPath = Path.combine(dataPath, "datas", "cards")

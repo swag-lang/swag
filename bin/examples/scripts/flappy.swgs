@@ -74,12 +74,12 @@ using Core, Pixel, Gui
 /**
 # Entry point
 
-The compiler's '#run' function serves as the initial execution point for the script. This category of block is executed by the compiler while it's compiling. While it's possible to include multiple '#run' blocks, a single one is sufficient for the Flappy application.
+The '#main' special function is usually the entry point of an executable. It's equivalent to the well known `main()` function, but without arguments. In the case if a script, this special function will be executed by the compiler as the program entry point.
 
 > NOTE:
 > You might observe that the arrangement of global declarations doesn't make a difference, as we're using the 'onEvent' function before even defining it. Swag does not bother about the global declaration order.
 */
-#run
+#main
 {
     // Creates audio engine. 'assume' tells Swag that if the creation fails, we should panic.
     assume Audio.createEngine()

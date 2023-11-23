@@ -571,7 +571,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
     return false
 }
 
-#run
+#main
 {
     var app: Gui.Application
     if Env.hasArg("swag.test")
