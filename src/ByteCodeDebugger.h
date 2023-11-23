@@ -226,6 +226,7 @@ struct ByteCodeDebugger
     int32_t                 debugStepRC            = 0;
     DebugStepMode           debugStepMode          = DebugStepMode::None;
     uint32_t                debugCxtRc             = 0;
+    int                     debugStepCount         = 0;
     uint32_t                debugBcMode            = false;
     bool                    debugForcePrintContext = false;
     bool                    debugPrintStruct       = true;

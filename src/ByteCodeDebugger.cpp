@@ -22,8 +22,8 @@ void ByteCodeDebugger::setup()
     commands.push_back({"until",       "u",    "<line>",              "runs until the given <line> in the current function has been reached", cmdUntil});
     commands.push_back({"jump",        "j",    "<line>",              "jump to the given <line> in the current function", cmdJump});
     commands.push_back({});  
-    commands.push_back({"stepi",       "si",   "",                    "execute one bytecode instruction", cmdStepi});
-    commands.push_back({"nexti",       "ni",   "",                    "like 'stepi', but does not enter functions or inlined code", cmdNexti});
+    commands.push_back({"stepi",       "si",   "[count]",             "execute [count] bytecode instruction(s)", cmdStepi});
+    commands.push_back({"nexti",       "ni",   "[count]",             "like 'stepi', but does not enter functions or inlined code", cmdNexti});
     commands.push_back({"untili",      "ui",   "<instruction>",       "runs until the given bytecode <instruction> has been reached", cmdUntili});
     commands.push_back({"jumpi",       "ji",   "<instruction>",       "jump to the given bytecode instruction", cmdJumpi});
     commands.push_back({});  
@@ -471,9 +471,16 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
         break;
 
     case DebugStepMode::NextInstructionStepIn:
-        context->debugOn = true;
-        debugStepMode    = DebugStepMode::None;
-        debugBcMode      = true;
+        debugStepCount--;
+        if (debugStepCount <= 0)
+        {
+            debugStepCount   = 0;
+            context->debugOn = true;
+            debugStepMode    = DebugStepMode::None;
+            debugBcMode      = true;
+        }
+        else
+            zapCurrentIp = true;
         break;
 
     case DebugStepMode::NextInstructionStepOut:
@@ -484,9 +491,16 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
             break;
         }
 
-        context->debugOn = true;
-        debugStepMode    = DebugStepMode::None;
-        debugBcMode      = true;
+        debugStepCount--;
+        if (debugStepCount <= 0)
+        {
+            debugStepCount   = 0;
+            context->debugOn = true;
+            debugStepMode    = DebugStepMode::None;
+            debugBcMode      = true;
+        }
+        else
+            zapCurrentIp = true;
         break;
 
     case DebugStepMode::NextLineStepIn:

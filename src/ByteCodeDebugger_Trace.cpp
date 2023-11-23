@@ -15,8 +15,20 @@ BcDbgCommandResult ByteCodeDebugger::cmdStep(ByteCodeRunContext* context, const 
 
 BcDbgCommandResult ByteCodeDebugger::cmdStepi(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (arg.split.size() > 1)
+    if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
+
+    g_ByteCodeDebugger.debugStepCount = 0;
+    if (arg.split.size() > 1)
+    {
+        if (!Utf8::isNumber(arg.split[1].c_str()))
+        {
+            g_ByteCodeDebugger.printCmdError("invalid 'stepi' number");
+            return BcDbgCommandResult::Continue;
+        }
+
+        g_ByteCodeDebugger.debugStepCount = atoi(arg.split[1].c_str());
+    }
 
     context->debugStackFrameOffset   = 0;
     g_ByteCodeDebugger.debugStepMode = DebugStepMode::NextInstructionStepIn;
@@ -36,8 +48,20 @@ BcDbgCommandResult ByteCodeDebugger::cmdNext(ByteCodeRunContext* context, const 
 
 BcDbgCommandResult ByteCodeDebugger::cmdNexti(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {
-    if (arg.split.size() > 1)
+    if (arg.split.size() > 2)
         return BcDbgCommandResult::BadArguments;
+
+    g_ByteCodeDebugger.debugStepCount = 0;
+    if (arg.split.size() > 1)
+    {
+        if (!Utf8::isNumber(arg.split[1].c_str()))
+        {
+            g_ByteCodeDebugger.printCmdError("invalid 'nexti' number");
+            return BcDbgCommandResult::Continue;
+        }
+
+        g_ByteCodeDebugger.debugStepCount = atoi(arg.split[1].c_str());
+    }
 
     context->debugStackFrameOffset   = 0;
     g_ByteCodeDebugger.debugStepMode = DebugStepMode::NextInstructionStepOut;
