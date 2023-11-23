@@ -4269,6 +4269,12 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     // Message
     /////////////////////
 
+    if (runContext->forDebugger)
+    {
+        g_SilentErrorMsg = userMsg;
+        return SWAG_EXCEPTION_EXECUTE_HANDLER;
+    }
+
     SourceFile dummyFile;
     dummyFile.path = Utf8{location->fileName};
 
@@ -4324,6 +4330,9 @@ bool ByteCodeRun::run(ByteCodeRunContext* runContext)
         }
         SWAG_EXCEPT(exceptionHandler(runContext, SWAG_GET_EXCEPTION_INFOS()))
         {
+            if (runContext->forDebugger)
+                continue;
+
             if (runContext->debugRaiseStart)
             {
                 runContext->debugRaiseStart = false;

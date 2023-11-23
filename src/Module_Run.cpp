@@ -291,6 +291,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     g_RunContext->setup(sourceFile, node, bc);
     g_RunContext->oldBc        = nullptr;
     g_RunContext->forConstExpr = params ? params->forConstExpr : false;
+    g_RunContext->forDebugger  = params ? params->forDebugger : false;
 
     // Setup run context
     if (params)
