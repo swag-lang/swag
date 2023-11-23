@@ -603,8 +603,8 @@ JobResult ModuleBuildJob::execute()
         // This is too late for meta programming...
         module->acceptsCompileString = false;
 
-        // #init functions are only executed in script mode, if the module has a #main
-        bool callInitDrop = !module->byteCodeInitFunc.empty() && g_CommandLine.scriptMode && module->byteCodeMainFunc;
+        // #init functions are only executed in script mode
+        bool callInitDrop = !module->byteCodeInitFunc.empty() && g_CommandLine.scriptMode;
 
         // OR in a test module, during testing
         callInitDrop |= g_CommandLine.test && g_CommandLine.runByteCodeTests && module->kind == ModuleKind::Test;
@@ -688,8 +688,15 @@ JobResult ModuleBuildJob::execute()
             return JobResult::ReleaseJob;
 
         // #main function, in script mode
-        if (module->byteCodeMainFunc && g_CommandLine.scriptMode)
+        if (g_CommandLine.scriptMode && module->kind == ModuleKind::Script)
         {
+            // In script mode, we should have a #main
+            if (!module->byteCodeMainFunc)
+            {
+                Report::error(module, Err(Err0269));
+                return JobResult::ReleaseJob;
+            }
+
             module->logStage(Fmt("#main %s\n", module->byteCodeMainFunc->node->sourceFile->name.c_str()));
             ExecuteNodeParams params;
             params.breakOnStart = g_CommandLine.dbgMain;

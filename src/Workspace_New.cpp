@@ -22,7 +22,7 @@ void newScriptFile()
     // #import "core" location="swag@std"
 }
 
-#run
+#main
 {
     @print("Hello world !\n")
 }
