@@ -16,6 +16,8 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
 {
     PushSilentError se;
 
+    g_Log.setColor(COLOR_DEFAULT);
+
     auto expr = inExpr;
     g_ByteCodeDebugger.commandSubstitution(context, expr);
 
