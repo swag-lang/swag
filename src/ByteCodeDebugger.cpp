@@ -17,8 +17,8 @@ void ByteCodeDebugger::setup()
     commands.push_back({"<TAB>",       "",  "",                       "contextual completion of the current word", nullptr});
     commands.push_back({});
 
-    commands.push_back({"step",        "s",    "",                    "continue to the next source line", cmdStep});
-    commands.push_back({"next",        "n",    "",                    "like 'step', but does not enter functions or inlined code", cmdNext});
+    commands.push_back({"step",        "s",    "[count]",             "execute [count] source line(s)", cmdStep});
+    commands.push_back({"next",        "n",    "[count]",             "like 'step', but does not enter functions or inlined code", cmdNext});
     commands.push_back({"until",       "u",    "<line>",              "runs until the given <line> in the current function has been reached", cmdUntil});
     commands.push_back({"jump",        "j",    "<line>",              "jump to the given <line> in the current function", cmdJump});
     commands.push_back({});  
@@ -519,8 +519,17 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
         }
         else
         {
-            context->debugOn = true;
-            debugStepMode    = DebugStepMode::None;
+            debugStepCount--;
+            if (debugStepCount <= 0)
+            {
+                context->debugOn = true;
+                debugStepMode    = DebugStepMode::None;
+            }
+            else
+            {
+                zapCurrentIp                = true;
+                debugStepLastLocation->line = loc.location->line;
+            }
         }
         break;
     }
@@ -568,8 +577,17 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
         }
         else
         {
-            context->debugOn = true;
-            debugStepMode    = DebugStepMode::None;
+            debugStepCount--;
+            if (debugStepCount <= 0)
+            {
+                context->debugOn = true;
+                debugStepMode    = DebugStepMode::None;
+            }
+            else
+            {
+                debugStepLastLocation->line = loc.location->line;
+                zapCurrentIp                = true;
+            }
         }
         break;
     }
