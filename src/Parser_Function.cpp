@@ -952,6 +952,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
                 node->addSpecFlags(AstTryCatchAssume::SPECFLAG_GENERATED | AstTryCatchAssume::SPECFLAG_BLOCK);
                 ScopedTryCatchAssume sc(this, (AstTryCatchAssume*) node);
                 SWAG_CHECK(doCurlyStatement(node, &resStmt));
+                node->token.endLocation = resStmt->token.endLocation;
             }
             else
             {
