@@ -40,6 +40,14 @@ bool Parser::checkIsValidUserName(AstNode* node, Token* loc)
     if (!testIsValidUserName(node))
         return error(loc ? *loc : node->token, Fmt(Err(Err1122), node->token.ctext()));
 
+    // Pour toi frangouille, ajouté le jour de ton départ
+    if (node->token.text.compareNoCase("jyb411"))
+    {
+        Diagnostic diag{node, "I'm sorry, but 'JYB' is my little brother's nickname, and '411' is the room where he passed away at 1:29 AM on 11-26-2023, at the age of 37. Please, please use another identifier. I love you, bro."};
+        context->report(diag);
+        return false;
+    }
+
     return true;
 }
 
