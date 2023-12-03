@@ -88,7 +88,7 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
             owner = owner->parent;
         if (owner)
         {
-            str = owner->ownerInline ? inl.c_str() : header.c_str();
+            str += owner->ownerInline ? inl.c_str() : header.c_str();
             str += ByteCodeDebugger::COLOR_VTS_NAME;
             str += getStepName(owner, ip);
 

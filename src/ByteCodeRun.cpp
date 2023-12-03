@@ -4306,12 +4306,16 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     // Get error context
     runContext->callerContext->extract(*diag, notes);
 
+    if (runContext->ip != runContext->bc->out)
+        runContext->ip--;
+
+    if (dummyFile.path != diag->contextFile->path)
+        notes.push_back(Diagnostic::note(runContext->ip->node, Fmt(Nte(Nte0026), "caller")));
     if (!g_CommandLine.dbgCallStack)
         notes.push_back(Diagnostic::note(Nte(Nte0087)));
 
-    if (runContext->ip != runContext->bc->out)
-        runContext->ip--;
     Report::report(*diag, notes, runContext);
+
     if (runContext->ip != runContext->bc->out)
         runContext->ip++;
 
