@@ -475,7 +475,7 @@ func indexOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'u64)-
     var idx = startByteIndex
     var scan = @dataof(src) + startByteIndex
     var remain = length - startByteIndex
-    while countof <= remain
+    while remain
     {
         var res = Utf8.decodeRune(@mkslice(scan, remain))
         if !res.eat
