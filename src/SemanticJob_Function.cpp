@@ -601,7 +601,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         if ((funcNode->semFlags & SEMFLAG_PENDING_LAMBDA_TYPING) && typeNode->typeInfo->isVoid())
         {
             typeNode->typeInfo = g_TypeMgr->typeInfoUndefined;
-            funcNode->specFlags &= (uint16_t)  ~AstFuncDecl::SPECFLAG_SHORT_LAMBDA;
+            funcNode->specFlags &= (uint16_t) ~AstFuncDecl::SPECFLAG_SHORT_LAMBDA;
         }
     }
 
@@ -1507,7 +1507,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     // Register symbol now that we have inferred the return type
     if (lateRegister)
     {
-        funcNode->specFlags &= (uint16_t)  ~AstFuncDecl::SPECFLAG_FORCE_LATE_REGISTER;
+        funcNode->specFlags &= (uint16_t) ~AstFuncDecl::SPECFLAG_FORCE_LATE_REGISTER;
         typeInfoFunc->returnType = funcNode->returnType->typeInfo;
         typeInfoFunc->forceComputeName();
         SWAG_CHECK(registerFuncSymbol(context, funcNode));
@@ -1563,12 +1563,15 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     CloneContext cloneContext;
 
     // Be sure this is not recursive
-    auto ownerInline = identifier->ownerInline;
-    while (ownerInline)
+    if (!(identifier->flags & AST_IN_MIXIN))
     {
-        if (ownerInline->func == funcDecl)
-            return context->report({identifier, identifier->token, Fmt(Err(Err0775), identifier->token.ctext())});
-        ownerInline = ownerInline->ownerInline;
+        auto ownerInline = identifier->ownerInline;
+        while (ownerInline)
+        {
+            if (ownerInline->func == funcDecl)
+                return context->report({identifier, identifier->token, Fmt(Err(Err0775), identifier->token.ctext())});
+            ownerInline = ownerInline->ownerInline;
+        }
     }
 
     // The content will be inline in its separated syntax block
