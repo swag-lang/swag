@@ -452,41 +452,11 @@ func countRunes(buffer: const [..] u8)->u64
     return cpt
 }
 
-// Find the first occurence of rune 'what', and returns the byte index of it
-//
+// Find the first occurence of rune 'what', and returns the byte index of it.
 // Returns 'Swag.U64.Max' if not found
 func indexOf(src: const [..] u8, what: rune, startByteIndex = 0'u64)->u64
 {
-    return indexOf(src, [what], startByteIndex)
-}
-
-// Find one of the runes in 'what', and returns the byte index of it
-func indexOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'u64)->u64
-{
-    let length = @countof(src)
-    if !length
-        return Swag.U64.Max
-    Debug.safetyBoundCheck(startByteIndex < length, "index out of range")
-
-    let countof = @countof(what)
-    if !countof
-        return Swag.U64.Max
-
-    var idx = startByteIndex
-    var scan = @dataof(src) + startByteIndex
-    var remain = length - startByteIndex
-    while remain
-    {
-        var res = Utf8.decodeRune(@mkslice(scan, remain))
-        if !res.eat
-            break
-        if Slice.contains(what, res.c)
-            return idx
-        scan, idx += res.eat
-        remain -= res.eat
-    }
-
-    return Swag.U64.Max
+    return indexAnyOf(src, [what], startByteIndex)
 }
 
 // Find the given string, and returns the byte index of it
@@ -516,24 +486,78 @@ func indexOf(src: const [..] u8, what: string, startByteIndex = 0'u64, compariso
     return Swag.U64.Max
 }
 
+// Find one of the runes in 'what', and returns the byte index of it.
+// Returns 'Swag.U64.Max' if not found
+func indexAnyOf(src: const [..] u8, what: const [..] u8, startByteIndex = 0'u64)->u64
+{
+    let length = @countof(src)
+    if !length
+        return Swag.U64.Max
+    Debug.safetyBoundCheck(startByteIndex < length, "index out of range")
+
+    let countof = @countof(what)
+    if !countof
+        return Swag.U64.Max
+
+    var idx = startByteIndex
+    var scan = @dataof(src) + startByteIndex
+    var remain = length - startByteIndex
+    while remain
+    {
+        if Slice.contains(what, dref scan)
+            return idx
+        scan, idx += 1
+        remain -= 1
+    }
+
+    return Swag.U64.Max
+}
+
+// Find one of the runes in 'what', and returns the byte index of it
+func indexAnyOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'u64)->u64
+{
+    let length = @countof(src)
+    if !length
+        return Swag.U64.Max
+    Debug.safetyBoundCheck(startByteIndex < length, "index out of range")
+
+    let countof = @countof(what)
+    if !countof
+        return Swag.U64.Max
+
+    var idx = startByteIndex
+    var scan = @dataof(src) + startByteIndex
+    var remain = length - startByteIndex
+    while remain
+    {
+        var res = Utf8.decodeRune(@mkslice(scan, remain))
+        if !res.eat
+            break
+        if Slice.contains(what, res.c)
+            return idx
+        scan, idx += res.eat
+        remain -= res.eat
+    }
+
+    return Swag.U64.Max
+}
+
 // Returns true if 'src' contains the string 'what'
 func contains(src: const [..] u8, what: string)->bool
 {
     return indexOf(src, what) != Swag.U64.Max
 }
 
-// Find the last rune occurence of 'what', and returns the byte index of it
-//
+// Find the last rune occurence of 'what', and returns the byte index of it.
 // Returns 'Swag.U64.Max' if not found
 func lastIndexOf(src: const [..] u8, what: rune)->u64
 {
-    return lastIndexOf(src, [what])
+    return lastIndexAnyOf(src, [what])
 }
 
-// Returns the last index (in bytes) of a rune
-//
+// Returns the last index (in bytes) of a any of the runes in 'what'.
 // Returns 'Swag.U64.Max' if not found
-func lastIndexOf(src: const [..] u8, what: const [..] rune)->u64
+func lastIndexAnyOf(src: const [..] u8, what: const [..] rune)->u64
 {
     let length = @countof(src)
     if !length
@@ -556,8 +580,27 @@ func lastIndexOf(src: const [..] u8, what: const [..] rune)->u64
     return Swag.U64.Max
 }
 
-// Returns the last index (in bytes) of a string
-//
+// Returns the last index (in bytes) of a any of the bytes in 'what'.
+// Returns 'Swag.U64.Max' if not found
+func lastIndexAnyOf(src: const [..] u8, what: const [..] u8)->u64
+{
+    let length = @countof(src)
+    if !length
+        return Swag.U64.Max
+
+    var scan = @dataof(src) + length
+    var byteIdx = length
+    loop
+    {
+        scan, byteIdx -= 1
+        if Slice.contains(what, dref scan)
+            return byteIdx
+    }
+
+    return Swag.U64.Max
+}
+
+// Returns the last index (in bytes) of a string.
 // Returns 'Swag.U64.Max' if not found
 func lastIndexOf(src: const [..] u8, what: string, comparisonType = ComparisonType.Latin1)->u64
 {
