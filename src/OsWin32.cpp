@@ -597,11 +597,13 @@ namespace OS
 
                 if (hasSymbol)
                 {
-                    str += ByteCodeDebugger::COLOR_VTS_NAME;
+                    if (g_CommandLine.logColors)
+                        str += ByteCodeDebugger::COLOR_VTS_NAME;
                     str += psym->Name;
                     if (hasLine)
                     {
-                        str += ByteCodeDebugger::COLOR_VTS_LOCATION;
+                        if (g_CommandLine.logColors)
+                            str += ByteCodeDebugger::COLOR_VTS_LOCATION;
                         str += Fmt(" %s:%d", line.FileName, line.LineNumber);
                     }
 
