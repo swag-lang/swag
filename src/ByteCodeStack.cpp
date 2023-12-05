@@ -32,7 +32,7 @@ Utf8 ByteCodeStack::getStepName(AstNode* node, ByteCodeInstruction* ip)
     if (fct && fct->hasExtByteCode() && fct->extByteCode()->bc)
         return fct->extByteCode()->bc->getPrintName();
     if (fct)
-        return fct->getDisplayName();
+        return fct->token.text;
     return "";
 }
 
@@ -65,10 +65,9 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
     Utf8 inl;
     if (g_CommandLine.logColors)
         inl += ByteCodeDebugger::COLOR_VTS_INDEX;
-    inl += "-----";
+    inl += "----- ";
     if (g_CommandLine.logColors)
         inl += ByteCodeDebugger::COLOR_VTS_NAME;
-    inl += " inline ";
 
     if (!ip)
     {
