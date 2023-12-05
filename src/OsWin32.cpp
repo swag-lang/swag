@@ -6,7 +6,9 @@
 #include "TypeManager.h"
 #include "BackendX64.h"
 #include "Context.h"
+#include "ByteCodeDebugger.h"
 #include "Report.h"
+
 #pragma comment(lib, "dbghelp.lib")
 
 namespace OS
@@ -595,12 +597,12 @@ namespace OS
 
                 if (hasSymbol)
                 {
-                    str += Log::colorToVTS(LogColor::DarkYellow);
+                    str += ByteCodeDebugger::COLOR_VTS_NAME;
                     str += psym->Name;
                     if (hasLine)
                     {
-                        str += Log::colorToVTS(LogColor::Gray);
-                        str += Fmt(" --> %s:%d", line.FileName, line.LineNumber);
+                        str += ByteCodeDebugger::COLOR_VTS_LOCATION;
+                        str += Fmt(" %s:%d", line.FileName, line.LineNumber);
                     }
 
                     str += "\n";

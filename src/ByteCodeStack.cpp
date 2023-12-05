@@ -77,7 +77,7 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
     str += name;
     str += ByteCodeDebugger::COLOR_VTS_LOCATION;
     if (sourceFile)
-        str += Fmt(" %s:%d", sourceFile->path.string().c_str(), location->line + 1);
+        str += Fmt(" %s:%d:%d", sourceFile->path.string().c_str(), location->line + 1, location->column + 1);
     str += "\n";
 
     // #mixin
@@ -95,7 +95,12 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
             if (owner->sourceFile)
             {
                 str += ByteCodeDebugger::COLOR_VTS_LOCATION;
-                str += Fmt(" %s:%d", owner->sourceFile->path.string().c_str(), owner->token.startLocation.line + 1);
+                str += Fmt(" %s:%d:%d:%d:%d",
+                           owner->sourceFile->path.string().c_str(),
+                           owner->token.startLocation.line + 1,
+                           owner->token.startLocation.column + 1,
+                           owner->token.endLocation.line + 1,
+                           owner->token.endLocation.column + 1);
             }
 
             str += "\n";
@@ -113,7 +118,12 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
         if (parent->sourceFile)
         {
             str += ByteCodeDebugger::COLOR_VTS_LOCATION;
-            str += Fmt(" %s:%d", parent->sourceFile->path.string().c_str(), parent->token.startLocation.line + 1);
+            str += Fmt(" %s:%d:%d:%d:%d",
+                       parent->sourceFile->path.string().c_str(),
+                       parent->token.startLocation.line + 1,
+                       parent->token.startLocation.column + 1,
+                       parent->token.endLocation.line + 1,
+                       parent->token.endLocation.column + 1);
         }
 
         str += "\n";
