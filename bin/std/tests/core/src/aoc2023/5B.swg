@@ -58,8 +58,8 @@ var convert: [7] Array'Range
         let values = Tokenize.split(l, ` `)
         var range: Range
         let rangeV = assume StrConv.toU64(values[2])
-        range.dst = assume StrConv.toU64(values[0])
-        range.src = assume StrConv.toU64(values[1])
+        range.dst  = assume StrConv.toU64(values[0])
+        range.src  = assume StrConv.toU64(values[1])
         range.srcE = range.src + rangeV - 1
         convert[cast(s32) mode].add(range)
     }
@@ -74,26 +74,26 @@ var convert: [7] Array'Range
         for var idx = 0; idx < ranges.count; idx += 1
         {
             let range = ranges[idx]
-            var done = false
-            visit conv: convert[i]
+            #scope Done
             {
-                if range.start > conv.srcE or range.end < conv.src
-                    continue
+                visit conv: convert[i]
+                {
+                    if range.start > conv.srcE or range.end < conv.src
+                        continue
 
-                if range.start < conv.src
-                    ranges.add({range.start, conv.src - 1})
-                if range.end > conv.srcE
-                    ranges.add({conv.srcE + 1, range.end})    
+                    if range.start < conv.src
+                        ranges.add({range.start, conv.src - 1})
+                    if range.end > conv.srcE
+                        ranges.add({conv.srcE + 1, range.end})    
 
-                let v0 = Math.max(range.start, conv.src)                   
-                let v1 = Math.min(range.end, conv.srcE)
-                newRanges.add({v0 - conv.src + conv.dst, v1 - conv.src + conv.dst})              
-                done = true
-                break
-            }       
+                    let v0 = Math.max(range.start, conv.src)                   
+                    let v1 = Math.min(range.end, conv.srcE)
+                    newRanges.add({v0 - conv.src + conv.dst, v1 - conv.src + conv.dst})              
+                    break Done
+                }       
 
-            if !done
                 newRanges.add(range)
+            }
         }
 
         ranges = newRanges
@@ -103,7 +103,7 @@ var convert: [7] Array'Range
     visit r: ranges
         total = Math.min(total, r.start)
 
-    Console.print("total: ", total)
+    //Console.print("total: ", total)
     @assert(total == 69323688)
 }
 
