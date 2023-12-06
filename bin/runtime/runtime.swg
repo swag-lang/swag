@@ -174,6 +174,11 @@ func __dropGlobalVariables()
 {
     visit g: @gvtd()
     {
-        g.opDrop(g.ptr)
+        var ptr = cast(^u8) g.ptr
+        loop x: g.count
+        {
+            g.opDrop(ptr)
+            ptr += g.sizeOf
+        }
     }
 }

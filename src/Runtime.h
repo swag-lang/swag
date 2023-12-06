@@ -104,8 +104,10 @@ struct SwagModule
 
 struct SwagGlobalVarToDrop
 {
-    void* ptr;
-    void* opDrop;
+    void*    ptr;
+    void*    opDrop;
+    uint32_t sizeOf;
+    uint32_t count;
 };
 
 enum class SwagExceptionKind

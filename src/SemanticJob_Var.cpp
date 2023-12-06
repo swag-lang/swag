@@ -1139,14 +1139,20 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         // Register global variable in the list of global variables to drop if the variable is
         // a struct with a 'opDrop' function
         auto isGlobalToDrop = false;
-        if (node->typeInfo && node->typeInfo->isStruct())
+        if (node->typeInfo)
         {
-            context->job->waitStructGeneratedAlloc(node->typeInfo);
-            if (context->result != ContextResult::Done)
-                return true;
-            TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-            if (typeStruct->opDrop || typeStruct->opUserDropFct)
-                isGlobalToDrop = true;
+            auto typeNode = node->typeInfo;
+            if (typeNode->isStruct() || typeNode->isArrayOfStruct())
+            {
+                context->job->waitStructGeneratedAlloc(typeNode);
+                if (context->result != ContextResult::Done)
+                    return true;
+                if (typeNode->isArrayOfStruct())
+                    typeNode = ((TypeInfoArray*) typeNode)->finalType;
+                TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(typeNode, TypeInfoKind::Struct);
+                if (typeStruct->opDrop || typeStruct->opUserDropFct)
+                    isGlobalToDrop = true;
+            }
         }
 
         SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PUBLIC), context->report({node, Err(Err0313)}));

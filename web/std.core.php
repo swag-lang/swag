@@ -1521,9 +1521,11 @@
 <li><a href="#Core_Utf8_firstRune">Utf8.firstRune</a></li>
 <li><a href="#Core_Utf8_fromUnicode">Utf8.fromUnicode</a></li>
 <li><a href="#Core_Utf8_fromUtf16">Utf8.fromUtf16</a></li>
+<li><a href="#Core_Utf8_indexAnyOf">Utf8.indexAnyOf</a></li>
 <li><a href="#Core_Utf8_indexOf">Utf8.indexOf</a></li>
 <li><a href="#Core_Utf8_isValid">Utf8.isValid</a></li>
 <li><a href="#Core_Utf8_isValidRune">Utf8.isValidRune</a></li>
+<li><a href="#Core_Utf8_lastIndexAnyOf">Utf8.lastIndexAnyOf</a></li>
 <li><a href="#Core_Utf8_lastIndexOf">Utf8.lastIndexOf</a></li>
 <li><a href="#Core_Utf8_lastRune">Utf8.lastRune</a></li>
 <li><a href="#Core_Utf8_startsWith">Utf8.startsWith</a></li>
@@ -27084,7 +27086,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>Convert an utf16 buffer to a String. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Utf8_indexOf">indexOf</a></span><span class="SCde">(<span class="SKwd">const</span> [..] <span class="STpe">u8</span>, <span class="SKwd">const</span> [..] <span class="STpe">rune</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Utf8_indexAnyOf">indexAnyOf</a></span><span class="SCde">(<span class="SKwd">const</span> [..] <span class="STpe">u8</span>, <span class="SKwd">const</span> [..] <span class="STpe">rune</span>, <span class="STpe">u64</span>)</span></td>
+<td>Find one of the runes in <span class="code-inline">what</span>, and returns the byte index of it. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Utf8_indexAnyOf">indexAnyOf</a></span><span class="SCde">(<span class="SKwd">const</span> [..] <span class="STpe">u8</span>, <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, <span class="STpe">u64</span>)</span></td>
 <td>Find one of the runes in <span class="code-inline">what</span>, and returns the byte index of it. </td>
 </tr>
 <tr>
@@ -27104,8 +27110,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>Returns true if the given unicode rune can be encoded in utf8. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Utf8_lastIndexOf">lastIndexOf</a></span><span class="SCde">(<span class="SKwd">const</span> [..] <span class="STpe">u8</span>, <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)</span></td>
-<td>Returns the last index (in bytes) of a rune. </td>
+<td class="code-type"><span class="SFct"><a href="#Core_Utf8_lastIndexAnyOf">lastIndexAnyOf</a></span><span class="SCde">(<span class="SKwd">const</span> [..] <span class="STpe">u8</span>, <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)</span></td>
+<td>Returns the last index (in bytes) of a any of the runes in <span class="code-inline">what</span>. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Utf8_lastIndexAnyOf">lastIndexAnyOf</a></span><span class="SCde">(<span class="SKwd">const</span> [..] <span class="STpe">u8</span>, <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></td>
+<td>Returns the last index (in bytes) of a any of the bytes in <span class="code-inline">what</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Utf8_lastIndexOf">lastIndexOf</a></span><span class="SCde">(<span class="SKwd">const</span> [..] <span class="STpe">u8</span>, <span class="STpe">rune</span>)</span></td>
@@ -27135,7 +27145,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Utf8_ComparisonType"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Utf8.</span><span class="api-item-title-strong">ComparisonType</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L634" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L677" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27177,7 +27187,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Utf8_compare"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Utf8.</span><span class="api-item-title-strong">compare</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L643" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L686" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27190,7 +27200,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Utf8_contains"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Utf8.</span><span class="api-item-title-strong">contains</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L520" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L546" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27271,7 +27281,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Utf8_endsWith"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Utf8.</span><span class="api-item-title-strong">endsWith</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L598" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L641" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27284,7 +27294,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Utf8_firstRune"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Utf8.</span><span class="api-item-title-strong">firstRune</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L609" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L652" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27326,15 +27336,29 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Utf8_indexOf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Utf8.</span><span class="api-item-title-strong">indexOf</span></span>
+<span id="Core_Utf8_indexAnyOf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Utf8.</span><span class="api-item-title-strong">indexAnyOf</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L464" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L517" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Find one of the runes in <span class="code-inline">what</span>, and returns the byte index of it. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">indexOf</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, what: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>, startByteIndex = <span class="SNum">0</span>'<span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">indexAnyOf</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, what: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>, startByteIndex = <span class="SNum">0</span>'<span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<p>Find one of the runes in <span class="code-inline">what</span>, and returns the byte index of it. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">indexAnyOf</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, what: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, startByteIndex = <span class="SNum">0</span>'<span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<p> Returns <span class="code-inline">Swag.U64.Max</span> if not found </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Utf8_indexOf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Utf8.</span><span class="api-item-title-strong">indexOf</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L457" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
 <p>Find the first occurence of rune <span class="code-inline">what</span>, and returns the byte index of it. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">indexOf</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, what: <span class="STpe">rune</span>, startByteIndex = <span class="SNum">0</span>'<span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>Find the given string, and returns the byte index of it. </p>
@@ -27347,7 +27371,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Utf8_isValid"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Utf8.</span><span class="api-item-title-strong">isValid</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L739" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L782" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27370,20 +27394,34 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Utf8_lastIndexOf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Utf8.</span><span class="api-item-title-strong">lastIndexOf</span></span>
+<span id="Core_Utf8_lastIndexAnyOf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Utf8.</span><span class="api-item-title-strong">lastIndexAnyOf</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L536" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L560" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the last index (in bytes) of a rune. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lastIndexOf</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, what: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)-&gt;<span class="STpe">u64</span></span></div>
+<p>Returns the last index (in bytes) of a any of the runes in <span class="code-inline">what</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lastIndexAnyOf</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, what: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)-&gt;<span class="STpe">u64</span></span></div>
+<p>Returns the last index (in bytes) of a any of the bytes in <span class="code-inline">what</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lastIndexAnyOf</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, what: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="STpe">u64</span></span></div>
+<p> Returns <span class="code-inline">Swag.U64.Max</span> if not found </p>
+<p> Returns <span class="code-inline">Swag.U64.Max</span> if not found </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Utf8_lastIndexOf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Utf8.</span><span class="api-item-title-strong">lastIndexOf</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L553" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
 <p>Find the last rune occurence of <span class="code-inline">what</span>, and returns the byte index of it. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lastIndexOf</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, what: <span class="STpe">rune</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>Returns the last index (in bytes) of a string. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lastIndexOf</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, what: <span class="STpe">string</span>, comparisonType = <span class="SCst"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="STpe">u64</span></span></div>
-<p> Returns <span class="code-inline">Swag.U64.Max</span> if not found </p>
 <p> Returns <span class="code-inline">Swag.U64.Max</span> if not found </p>
 <p> Returns <span class="code-inline">Swag.U64.Max</span> if not found </p>
 <p>
@@ -27393,7 +27431,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Utf8_lastRune"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Utf8.</span><span class="api-item-title-strong">lastRune</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L622" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L665" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27406,7 +27444,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Utf8_startsWith"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Utf8.</span><span class="api-item-title-strong">startsWith</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L587" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L630" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27419,7 +27457,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Utf8_visitRunes"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Utf8.</span><span class="api-item-title-strong">visitRunes</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L705" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\utf8.swg#L748" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27505,7 +27543,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <p>Swap two values. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">swap</span>(x: *<span class="SCst">T</span>, y: *<span class="SCst">T</span>)</span></div>
 <div class="swag-watermark">
-Generated on 20-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
+Generated on 06-12-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
 </div>
 </div>
 </div>

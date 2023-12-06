@@ -278,6 +278,7 @@ struct Module
         TypeInfoStruct* type;
         uint32_t        storageOffset;
         DataSegment*    storageSegment;
+        uint32_t        count;
     };
     VectorNative<GlobalVarToDrop> globalVarsToDrop;
 

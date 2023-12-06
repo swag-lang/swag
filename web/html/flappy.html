@@ -165,11 +165,11 @@
 <p>The <span class="code-inline">gui</span> module depends on <span class="code-inline">pixel</span> which depends on <span class="code-inline">core</span>. So we bring all the three namespaces into the file scope. Note that we keep <span class="code-inline">Audio</span> as it is. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">using</span> <span class="SCst">Core</span>, <span class="SCst">Pixel</span>, <span class="SCst">Gui</span></span></div>
 <h1 id="">Entry point </h1>
-<p>The compiler's <span class="code-inline">#run</span> function serves as the initial execution point for the script. This category of block is executed by the compiler while it's compiling. While it's possible to include multiple <span class="code-inline">#run</span> blocks, a single one is sufficient for the Flappy application. </p>
+<p>The <span class="code-inline">#main</span> special function is usually the entry point of an executable. It's equivalent to the well known <span class="code-inline">main()</span> function, but without arguments. In the case if a script, this special function will be executed by the compiler as the program entry point. </p>
 <div class="blockquote blockquote-note">
 <div class="blockquote-title-block"><i class="fa fa-info-circle"></i>  <span class="blockquote-title">Note</span></div><p> You might observe that the arrangement of global declarations doesn't make a difference, as we're using the <span class="code-inline">onEvent</span> function before even defining it. Swag does not bother about the global declaration order. </p>
 </div>
-<div class="code-block"><span class="SCde"><span class="SFct">#run</span>
+<div class="code-block"><span class="SCde"><span class="SFct">#main</span>
 {
     <span class="SCmt">// Creates audio engine. 'assume' tells Swag that if the creation fails, we should panic.</span>
     <span class="SKwd">assume</span> <span class="SCst">Audio</span>.<span class="SFct">createEngine</span>()
@@ -557,7 +557,7 @@
     g_Font = <span class="SCst">Font</span>.<span class="SFct">create</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"FlappyBirdy.ttf"</span>), <span class="SNum">50</span>)
 }</span></div>
 <div class="swag-watermark">
-Generated on 20-11-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
+Generated on 06-12-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
 </div>
 </div>
 </div>

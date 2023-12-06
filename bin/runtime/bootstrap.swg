@@ -287,11 +287,13 @@ namespace Swag
         args:    string                     // The application arguments, as returned by [[@args]]
     }
 
-    // Defined a global variable
+    // Defined a global variable that needs to be dropped when exiting
     struct Gvtd
     {
         ptr:    *void           // Pointer to the global variable memory
         opDrop: func(*void)     // The 'opDrop' function to call when the process must exit
+        sizeOf: u32             // Size of one element
+        count:  u32             // Number of elements to drop
     }
 
     // #########################################################
