@@ -814,7 +814,7 @@ JobResult ByteCodeGenJob::execute()
 
     // #ast/#run etc... can have a #[Swag.PrintBc]. We need to print it now, because it's compile time, and the legit
     // pipeline for printing (after bc optimize) will not be called in that case
-    if (context.bc)
+    if (context.bc && !g_ThreadMgr.debuggerMode)
     {
         if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC || (originalNode->ownerFct && originalNode->ownerFct->attributeFlags & ATTRIBUTE_PRINT_BC))
         {
