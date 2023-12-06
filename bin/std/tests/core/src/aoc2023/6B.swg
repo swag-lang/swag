@@ -29,10 +29,11 @@ using Core
     visit t, idx: times
     {
         var cpt = 0
+        let dx = dists[idx]
         loop i: t
         {
             let travel = (t - i) * i
-            if travel > dists[idx]
+            if travel > dx
                 cpt += 1
         }
 
