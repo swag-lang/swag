@@ -157,32 +157,6 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
 
 bool ByteCodeDebugger::evalExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res, bool silent)
 {
-    auto funcDecl = CastAst<AstFuncDecl>(debugCxtBc->node, AstNodeKind::FuncDecl);
-    for (auto l : debugCxtBc->localVars)
-    {
-        auto over = l->resolvedSymbolOverload;
-        if (over && over->symbol->name == expr)
-        {
-            res.type = over->typeInfo;
-            res.addr = debugCxtBp + over->computedValue.storageOffset;
-            return true;
-        }
-    }
-
-    if (funcDecl->parameters)
-    {
-        for (auto l : funcDecl->parameters->childs)
-        {
-            auto over = l->resolvedSymbolOverload;
-            if (over && over->symbol->name == expr)
-            {
-                res.type = over->typeInfo;
-                res.addr = debugCxtBp + over->computedValue.storageOffset;
-                return true;
-            }
-        }
-    }
-
     return evalDynExpression(context, expr, res, CompilerAstKind::Expression, silent);
 }
 

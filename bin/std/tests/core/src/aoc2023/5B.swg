@@ -17,8 +17,8 @@ enum Mode
 
 struct Range
 {
-    src, dst: u64
-    range:    u64
+    src, srcE: u64
+    dst: u64
 }
 
 var seeds:   Array'u64
@@ -57,34 +57,53 @@ var convert: [7] Array'Range
 
         let values = Tokenize.split(l, ` `)
         var range: Range
-        range.dst   = assume StrConv.toU64(values[0])
-        range.src   = assume StrConv.toU64(values[1])
-        range.range = assume StrConv.toU64(values[2])
+        let rangeV = assume StrConv.toU64(values[2])
+        range.dst = assume StrConv.toU64(values[0])
+        range.src = assume StrConv.toU64(values[1])
+        range.srcE = range.src + rangeV - 1
         convert[cast(s32) mode].add(range)
     }
 
-    var total = Swag.U64.Max
-    visit s: seeds
+    var ranges: Array'{start, end: u64}
+    for var x = 0; x < seeds.count; x += 2
+        ranges.add({seeds[x], seeds[x]+seeds[x+1]-1})
+
+    loop i: 7
     {
-        var seed = s
-
-        loop i: 7
-
+        var newRanges: Array'{start, end: u64}
+        for var idx = 0; idx < ranges.count; idx += 1
         {
-            visit r: convert[i]
+            let range = ranges[idx]
+            var done = false
+            visit conv: convert[i]
             {
-                if seed >= r.src and seed <= r.src + r.range
-                {
-                    seed = r.dst + (seed - r.src)
-                    break
-                }
-            }
+                if range.start > conv.srcE or range.end < conv.src
+                    continue
+
+                if range.start < conv.src
+                    ranges.add({range.start, conv.src - 1})
+                if range.end > conv.srcE
+                    ranges.add({conv.srcE + 1, range.end})    
+
+                let v0 = Math.max(range.start, conv.src)                   
+                let v1 = Math.min(range.end, conv.srcE)
+                newRanges.add({v0 - conv.src + conv.dst, v1 - conv.src + conv.dst})              
+                done = true
+                break
+            }       
+
+            if !done
+                newRanges.add(range)
         }
 
-        total = Math.min(total, seed)
+        ranges = newRanges
     }
 
-    //Console.print("total: ", total)
-    //@assert(total == 111627841)
+    var total = Swag.U64.Max
+    visit r: ranges
+        total = Math.min(total, r.start)
+
+    Console.print("total: ", total)
+    @assert(total == 69323688)
 }
 
