@@ -136,7 +136,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
     {
         for (auto f : it->second->files)
         {
-            if (theModule->kind != ModuleKind::Test || g_CommandLine.testFilter.empty() || strstr(f->name, g_CommandLine.testFilter.c_str()))
+            if (theModule->kind != ModuleKind::Test || g_CommandLine.testFilter.empty() || f->name.containsNoCase(g_CommandLine.testFilter))
             {
                 auto pz = strrchr(f->name, '.');
                 if (pz && !_strcmpi(pz, ".swg"))
@@ -179,7 +179,8 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
                                   }
                                   else
                                   {
-                                      if (theModule->kind != ModuleKind::Test || g_CommandLine.testFilter.empty() || strstr(cFileName, g_CommandLine.testFilter.c_str()))
+                                      Utf8 fileN = cFileName;
+                                      if (theModule->kind != ModuleKind::Test || g_CommandLine.testFilter.empty() || fileN.containsNoCase(g_CommandLine.testFilter))
                                       {
                                           auto pz = strrchr(cFileName, '.');
                                           if (pz && !_strcmpi(pz, ".swg"))

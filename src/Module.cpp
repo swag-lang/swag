@@ -629,7 +629,7 @@ void Module::addByteCodeFunc(ByteCode* bc)
 
         if (attributeFlags & ATTRIBUTE_TEST_FUNC)
         {
-            if (g_CommandLine.testFilter.empty() || strstr(bc->node->sourceFile->name, g_CommandLine.testFilter.c_str()))
+            if (g_CommandLine.testFilter.empty() || bc->node->sourceFile->name.containsNoCase(g_CommandLine.testFilter))
                 byteCodeTestFunc.push_back(bc);
         }
         else if (attributeFlags & ATTRIBUTE_INIT_FUNC)

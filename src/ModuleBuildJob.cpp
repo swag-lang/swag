@@ -201,7 +201,7 @@ void ModuleBuildJob::checkMissingErrors()
         {
             if (file->shouldHaveError && !file->numErrors)
             {
-                if (g_CommandLine.testFilter.empty() || strstr(file->name, g_CommandLine.testFilter.c_str()))
+                if (g_CommandLine.testFilter.empty() || file->name.containsNoCase(g_CommandLine.testFilter))
                 {
                     file->shouldHaveError = false;
                     Report::report({file, file->tokenHasError, Err(Err0707)});
@@ -210,7 +210,7 @@ void ModuleBuildJob::checkMissingErrors()
 
             if (file->shouldHaveWarning && !file->numWarnings)
             {
-                if (g_CommandLine.testFilter.empty() || strstr(file->name, g_CommandLine.testFilter.c_str()))
+                if (g_CommandLine.testFilter.empty() || file->name.containsNoCase(g_CommandLine.testFilter))
                 {
                     file->shouldHaveWarning = false;
                     Report::report({file, file->tokenHasWarning, Err(Err0580)});

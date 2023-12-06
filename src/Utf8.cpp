@@ -442,6 +442,15 @@ void Utf8::removeBack()
     buffer[count] = 0;
 }
 
+bool Utf8::containsNoCase(const Utf8& str) const
+{
+    auto me = *this;
+    me.makeLower();
+    auto other = str;
+    other.makeLower();
+    return me.find(other) != -1;
+}
+
 int Utf8::find(const Utf8& str, uint32_t startPos) const
 {
     if (!count || startPos == count)

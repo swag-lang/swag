@@ -62,6 +62,7 @@ struct Utf8
     void        trimRight();
     void        trim();
     void        removeBack();
+    bool        containsNoCase(const Utf8& str) const;
     int         find(const Utf8& str, uint32_t startpos = 0) const;
     void        remove(uint32_t index, uint32_t len);
     void        insert(uint32_t index, const char* str);
