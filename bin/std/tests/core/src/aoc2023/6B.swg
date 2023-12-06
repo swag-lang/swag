@@ -25,7 +25,7 @@ using Core
     times.add(assume StrConv.toU64(str0))
     dists.add(assume StrConv.toU64(str1))
 
-    var total, max: u64 = 1
+    var total: u64 = 1
     visit t, idx: times
     {
         var cpt = 0
