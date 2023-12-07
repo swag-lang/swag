@@ -51,9 +51,9 @@ impl TweakFile
 
         var refs: Array'Ref
         var currentFolder: *Folder
-        visit one, idx: lines
+        visit oneit, idx: lines
         {
-            one = Tokenize.eatSpaces(one)
+            var one = Tokenize.eatSpaces(oneit)
             if @countof(one) == 0 continue
             if one[0] == `#` continue // comment
 

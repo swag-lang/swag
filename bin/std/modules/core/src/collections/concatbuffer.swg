@@ -53,7 +53,7 @@ impl ConcatBuffer
         {
             #macro
             {
-                var @alias0 = #up b
+                let @alias0 = #up b
                 #mixin #up stmt
             }
 

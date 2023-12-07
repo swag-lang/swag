@@ -81,19 +81,19 @@ impl HashTable
             {
                 #if #up ptr
                 {
-                    var @alias0 = &#up table[@index].key
-                    var @alias1 = &#up table[@index].value
+                    let @alias0 = &#up table[@index].key
+                    let @alias1 = &#up table[@index].value
                 }
                 #else
                 {
                     #if Reflection.isStruct(K)
-                        var @alias0 = cast(const ref K) &#up table[@index].key
+                        let @alias0 = cast(const ref K) &#up table[@index].key
                     #else
-                        var @alias0 = #up table[@index].key
+                        let @alias0 = #up table[@index].key
                     #if Reflection.isStruct(V)
-                        var @alias1 = cast(const ref V) &#up table[@index].value
+                        let @alias1 = cast(const ref V) &#up table[@index].value
                     #else
-                        var @alias1 = #up table[@index].value
+                        let @alias1 = #up table[@index].value
                 }
 
                 #mixin #up stmt { break = break Up; continue = break Down; }

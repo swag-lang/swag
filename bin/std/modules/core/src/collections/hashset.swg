@@ -74,15 +74,15 @@ impl HashSet
             {
                 #if #up ptr
                 {
-                    var @alias0 = &#up table[@index].key
+                    let @alias0 = &#up table[@index].key
                 }
                 #elif Reflection.isStruct(K)
                 {
-                    var @alias0 = cast(const ref K) &#up table[@index].key
+                    let @alias0 = cast(const ref K) &#up table[@index].key
                 }
                 #else
                 {
-                    var @alias0 = #up table[@index].key
+                    let @alias0 = #up table[@index].key
                 }
 
                 #mixin #up stmt { break = break Up; continue = break Down; }

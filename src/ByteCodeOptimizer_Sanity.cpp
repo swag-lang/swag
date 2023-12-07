@@ -187,6 +187,7 @@
     setConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::SetImmediateC);
 
 #define JUMPT(__expr0, __expr1)                      \
+    jmpAddState = nullptr;                           \
     if (__expr0)                                     \
     {                                                \
         ip->dynFlags |= BCID_SAN_PASS;               \
@@ -200,6 +201,7 @@
         return true;                                 \
     cxt.statesHere.insert(ip + ip->b.s32 + 1);       \
     cxt.states.push_back(STATE());                   \
+    jmpAddState                = &cxt.states.back(); \
     cxt.states.back().branchIp = ip;                 \
     cxt.states.back().ip       = ip + ip->b.s32 + 1; \
     cxt.states.back().parent   = cxt.state;
@@ -546,6 +548,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
     uint8_t* addr  = nullptr;
     uint8_t* addr2 = nullptr;
     Value    va, vb, vc, vd;
+    State*   jmpAddState = nullptr;
 
     auto ip = STATE().ip;
     while (ip->op != ByteCodeOp::End)
@@ -781,31 +784,66 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
 
         case ByteCodeOp::JumpIfFalse:
             JUMP1(!va.reg.b);
+            if (jmpAddState)
+            {
+                jmpAddState->regs[ip->a.u32].kind    = ValueKind::Constant;
+                jmpAddState->regs[ip->a.u32].reg.u64 = 0;
+            }
             break;
         case ByteCodeOp::JumpIfTrue:
             JUMP1(va.reg.b);
+            if (jmpAddState)
+            {
+                jmpAddState->regs[ip->a.u32].kind    = ValueKind::Constant;
+                jmpAddState->regs[ip->a.u32].reg.u64 = 1;
+            }
             break;
 
         case ByteCodeOp::JumpIfEqual64:
             JUMP2(va.reg.u64 == vc.reg.u64);
-            break;
-        case ByteCodeOp::JumpIfLowerEqS64:
-            JUMP2(va.reg.s64 <= vc.reg.s64);
+            if (jmpAddState && vc.kind == ValueKind::Constant)
+            {
+                jmpAddState->regs[ip->a.u32].kind    = ValueKind::Constant;
+                jmpAddState->regs[ip->a.u32].reg.u64 = vc.reg.u64;
+            }
             break;
 
         case ByteCodeOp::JumpIfZero8:
             JUMP1(va.reg.u8 == 0);
+            if (jmpAddState)
+            {
+                jmpAddState->regs[ip->a.u32].kind    = ValueKind::Constant;
+                jmpAddState->regs[ip->a.u32].reg.u64 = 0;
+            }
             break;
         case ByteCodeOp::JumpIfZero16:
             JUMP1(va.reg.u16 == 0);
+            if (jmpAddState)
+            {
+                jmpAddState->regs[ip->a.u32].kind    = ValueKind::Constant;
+                jmpAddState->regs[ip->a.u32].reg.u64 = 0;
+            }
             break;
         case ByteCodeOp::JumpIfZero32:
             JUMP1(va.reg.u32 == 0);
+            if (jmpAddState)
+            {
+                jmpAddState->regs[ip->a.u32].kind    = ValueKind::Constant;
+                jmpAddState->regs[ip->a.u32].reg.u64 = 0;
+            }
             break;
         case ByteCodeOp::JumpIfZero64:
             JUMP1(va.reg.u64 == 0);
+            if (jmpAddState)
+            {
+                jmpAddState->regs[ip->a.u32].kind    = ValueKind::Constant;
+                jmpAddState->regs[ip->a.u32].reg.u64 = 0;
+            }
             break;
 
+        case ByteCodeOp::JumpIfLowerEqS64:
+            JUMP2(va.reg.s64 <= vc.reg.s64);
+            break;
         case ByteCodeOp::JumpIfNotZero8:
             JUMP1(va.reg.u8 != 0);
             break;

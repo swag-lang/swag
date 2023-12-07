@@ -111,8 +111,8 @@ public impl BitArray
                 #scope Down
                 #macro
                 {
-                    var @alias0 = cast(bool) (#up buffer[#up idx] & #up shift)
-                    var @alias1 = #up countBits
+                    let @alias0 = cast(bool) (#up buffer[#up idx] & #up shift)
+                    let @alias1 = #up countBits
                     #mixin #up stmt { break = break Up; continue = break Down; }
                 }
 

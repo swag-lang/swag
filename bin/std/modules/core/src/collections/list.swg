@@ -41,13 +41,13 @@ impl List
             #macro
             {
                 #if #up ptr
-                    var @alias0 = cast(*T) & #up n.value
+                    let @alias0 = cast(*T) & #up n.value
                 #elif Reflection.isStruct(T)
-                    var @alias0 = cast(ref T) & #up n.value
+                    let @alias0 = cast(ref T) & #up n.value
                 #else
-                    var @alias0 = #up n.value
-                var @alias1 = #up n
-                var @alias2 = @index
+                    let @alias0 = #up n.value
+                let @alias1 = #up n
+                let @alias2 = @index
 
                 #mixin #up stmt { break = break Up; continue = break Down; }
             }

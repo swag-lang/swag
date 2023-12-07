@@ -151,12 +151,12 @@ impl Array
             #macro
             {
                 #if #up ptr
-                    var @alias0 = cast(*T) #up scan
+                    let @alias0 = cast(*T) #up scan
                 #elif Reflection.isStruct(T)
-                    var @alias0 = cast(ref T) #up scan
+                    let @alias0 = cast(ref T) #up scan
                 #else
-                    var @alias0 = #up scan[0]
-                var @alias1 = @index
+                    let @alias0 = #up scan[0]
+                let @alias1 = @index
                 #mixin #up stmt
             }
         }
