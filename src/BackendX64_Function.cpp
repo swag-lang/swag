@@ -2028,42 +2028,36 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             /////////////////////////////////////
 
         case ByteCodeOp::CompareOp3Way8:
-            emitBinOpIntN(pp, ip, X64Op::SUB, X64Bits::B8);
-            pp.emit_ClearN(RCX, X64Bits::B8);
-            pp.emit_TestN(RAX, RAX, X64Bits::B8);
-            pp.concat.addString3("\x0F\x9F\xC1"); // setg cl
-            pp.emit_ShiftN(RAX, 7, X64Bits::B8, X64Op::SHR);
-            pp.emit_Extend_U8U64(RAX, RAX);
-            pp.emit_OpN(RAX, RCX, X64Op::SUB, X64Bits::B32);
-            pp.emit_Store32_Indirect(regOffset(ip->c.u32), RCX);
+            pp.emit_ClearN(R8, X64Bits::B32);
+            MK_BINOP8_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
+            pp.concat.addString4("\x41\x0F\x9F\xC0"); // setg r8b
+            pp.emit_Load32_Immediate(RAX, 0xFFFFFFFF);
+            pp.emit_CMovN(RAX, R8, X64Bits::B32, X64Op::CMOVGE);
+            pp.emit_Store32_Indirect(regOffset(ip->c.u32), RAX);
             break;
         case ByteCodeOp::CompareOp3Way16:
-            emitBinOpIntN(pp, ip, X64Op::SUB, X64Bits::B16);
-            pp.emit_ClearN(RCX, X64Bits::B16);
-            pp.emit_TestN(RAX, RAX, X64Bits::B16);
-            pp.concat.addString3("\x0F\x9F\xC1"); // setg cl
-            pp.emit_ShiftN(RAX, 15, X64Bits::B16, X64Op::SHR);
-            pp.emit_Extend_U8U64(RAX, RAX);
-            pp.emit_OpN(RAX, RCX, X64Op::SUB, X64Bits::B32);
-            pp.emit_Store32_Indirect(regOffset(ip->c.u32), RCX);
+            pp.emit_ClearN(R8, X64Bits::B32);
+            MK_BINOP16_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
+            pp.concat.addString4("\x41\x0F\x9F\xC0"); // setg r8b
+            pp.emit_Load32_Immediate(RAX, 0xFFFFFFFF);
+            pp.emit_CMovN(RAX, R8, X64Bits::B32, X64Op::CMOVGE);
+            pp.emit_Store32_Indirect(regOffset(ip->c.u32), RAX);
             break;
         case ByteCodeOp::CompareOp3Way32:
-            emitBinOpIntN(pp, ip, X64Op::SUB, X64Bits::B32);
-            pp.emit_ClearN(RCX, X64Bits::B32);
-            pp.emit_TestN(RAX, RAX, X64Bits::B32);
-            pp.concat.addString3("\x0F\x9F\xC1"); // setg cl
-            pp.emit_ShiftN(RAX, 31, X64Bits::B32, X64Op::SHR);
-            pp.emit_OpN(RAX, RCX, X64Op::SUB, X64Bits::B32);
-            pp.emit_Store32_Indirect(regOffset(ip->c.u32), RCX);
+            pp.emit_ClearN(R8, X64Bits::B32);
+            MK_BINOP32_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
+            pp.concat.addString4("\x41\x0F\x9F\xC0"); // setg r8b
+            pp.emit_Load32_Immediate(RAX, 0xFFFFFFFF);
+            pp.emit_CMovN(RAX, R8, X64Bits::B32, X64Op::CMOVGE);
+            pp.emit_Store32_Indirect(regOffset(ip->c.u32), RAX);
             break;
         case ByteCodeOp::CompareOp3Way64:
-            emitBinOpIntN(pp, ip, X64Op::SUB, X64Bits::B64);
-            pp.emit_ClearN(RCX, X64Bits::B64);
-            pp.emit_TestN(RAX, RAX, X64Bits::B64);
-            pp.concat.addString3("\x0F\x9F\xC1"); // setg cl
-            pp.emit_ShiftN(RAX, 63, X64Bits::B64, X64Op::SHR);
-            pp.emit_OpN(RAX, RCX, X64Op::SUB, X64Bits::B32);
-            pp.emit_Store32_Indirect(regOffset(ip->c.u32), RCX);
+            pp.emit_ClearN(R8, X64Bits::B32);
+            MK_BINOP64_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
+            pp.concat.addString4("\x41\x0F\x9F\xC0"); // setg r8b
+            pp.emit_Load32_Immediate(RAX, 0xFFFFFFFF);
+            pp.emit_CMovN(RAX, R8, X64Bits::B32, X64Op::CMOVGE);
+            pp.emit_Store32_Indirect(regOffset(ip->c.u32), RAX);
             break;
         case ByteCodeOp::CompareOp3WayF32:
             emitBinOpFloat32(pp, ip, X64Op::FSUB);
