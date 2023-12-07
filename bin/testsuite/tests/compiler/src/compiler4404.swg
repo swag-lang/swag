@@ -10,7 +10,7 @@ func toto(x: {a:s32})
 //#[Swag.PrintBc]
 #test
 {
-    var y: A
-    toto(y)
+    //var y: A
+    //toto(y)
     //toto({2'f32})
 }

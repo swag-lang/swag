@@ -1049,6 +1049,10 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint64_t castFlags)
     if (!TypeInfo::isSame(to, castFlags))
         return false;
 
+    // A tuple can only match a tuple, and a struct a struct
+    if (isTuple() != to->isTuple())
+        return false;
+
     bool hasTuple = isTuple() || to->isTuple();
     auto other    = CastTypeInfo<TypeInfoStruct>(to, to->kind);
 
