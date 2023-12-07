@@ -76,6 +76,7 @@ enum class X64Op : uint8_t
     SHREQ  = 0x28,
     CMOVB  = 0x42,
     CMOVE  = 0x44,
+    CMOVBE = 0x46,
     CMOVL  = 0x4C,
     CMOVGE = 0x4D,
     CMOVG  = 0x4F,

@@ -2060,27 +2060,25 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RAX);
             break;
         case ByteCodeOp::CompareOp3WayF32:
-            emitBinOpFloat32(pp, ip, X64Op::FSUB);
-            pp.emit_ClearN(RAX, X64Bits::B32);
-            pp.emit_ClearN(RCX, X64Bits::B32);
-            pp.concat.addString3("\x0F\x57\xC9"); // xorps xmm1, xmm1
-            pp.concat.addString3("\x0F\x2F\xC1"); // comiss xmm0, xmm1
-            pp.emit_SetA();
-            pp.concat.addString3("\x0F\x2F\xC8"); // comiss xmm1, xmm0
-            pp.emit_SetA(RCX);
-            pp.emit_OpN(RCX, RAX, X64Op::SUB, X64Bits::B32);
+            pp.emit_ClearN(R8, X64Bits::B32);
+            MK_IMMA_F32(XMM0);
+            MK_IMMB_F32(XMM1);
+            pp.concat.addString3("\x0F\x2E\xC1");     // ucomiss xmm0, xmm1
+            pp.concat.addString4("\x41\x0F\x97\xC0"); // seta r8b
+            pp.concat.addString3("\x0F\x2E\xC8");     // ucomiss xmm1, xmm0
+            pp.emit_Load32_Immediate(RAX, 0xFFFFFFFF);
+            pp.emit_CMovN(RAX, R8, X64Bits::B32, X64Op::CMOVBE);
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RAX);
             break;
         case ByteCodeOp::CompareOp3WayF64:
-            emitBinOpFloat64(pp, ip, X64Op::FSUB);
-            pp.emit_ClearN(RAX, X64Bits::B32);
-            pp.emit_ClearN(RCX, X64Bits::B32);
-            pp.concat.addString3("\x0F\x57\xC9");     // xorps xmm1, xmm1
-            pp.concat.addString4("\x66\x0F\x2F\xC1"); // comisd xmm0, xmm1
-            pp.emit_SetA();
-            pp.concat.addString4("\x66\x0F\x2F\xC8"); // comisd xmm1, xmm0
-            pp.emit_SetA(RCX);
-            pp.emit_OpN(RCX, RAX, X64Op::SUB, X64Bits::B32);
+            pp.emit_ClearN(R8, X64Bits::B32);
+            MK_IMMA_F64(XMM0);
+            MK_IMMB_F64(XMM1);
+            pp.concat.addString4("\x66\x0F\x2E\xC1"); // ucomisd xmm0, xmm1
+            pp.concat.addString4("\x41\x0F\x97\xC0"); // seta r8b
+            pp.concat.addString4("\x66\x0F\x2E\xC8"); // ucomisd xmm1, xmm0
+            pp.emit_Load32_Immediate(RAX, 0xFFFFFFFF);
+            pp.emit_CMovN(RAX, R8, X64Bits::B32, X64Op::CMOVBE);
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RAX);
             break;
 
