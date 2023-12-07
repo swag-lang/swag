@@ -16,12 +16,7 @@ using Core
         let first = Tokenize.split(l, `:`)
         let sets  = Tokenize.split(first[1], `;`)
 
-        struct RGB
-        {
-            r, g, b: s32
-        }
-
-        var game: RGB
+        var game: {r, g, b: s32}
         visit s: sets
         {
             let values = Tokenize.split(s, `,`)

@@ -456,7 +456,7 @@ func countRunes(buffer: const [..] u8)->u64
 // Returns 'Swag.U64.Max' if not found
 func indexOf(src: const [..] u8, what: rune, startByteIndex = 0'u64)->u64
 {
-    return indexAnyOf(src, [what], startByteIndex)
+    return indexOfAny(src, [what], startByteIndex)
 }
 
 // Find the given string, and returns the byte index of it
@@ -488,7 +488,7 @@ func indexOf(src: const [..] u8, what: string, startByteIndex = 0'u64, compariso
 
 // Find one of the runes in 'what', and returns the byte index of it.
 // Returns 'Swag.U64.Max' if not found
-func indexAnyOf(src: const [..] u8, what: const [..] u8, startByteIndex = 0'u64)->u64
+func indexOfAny(src: const [..] u8, what: const [..] u8, startByteIndex = 0'u64)->u64
 {
     let length = @countof(src)
     if !length
@@ -514,7 +514,7 @@ func indexAnyOf(src: const [..] u8, what: const [..] u8, startByteIndex = 0'u64)
 }
 
 // Find one of the runes in 'what', and returns the byte index of it
-func indexAnyOf(src: const [..] u8, what: const [..] rune, startByteIndex = 0'u64)->u64
+func indexOfAny(src: const [..] u8, what: const [..] rune, startByteIndex = 0'u64)->u64
 {
     let length = @countof(src)
     if !length
@@ -552,12 +552,12 @@ func contains(src: const [..] u8, what: string)->bool
 // Returns 'Swag.U64.Max' if not found
 func lastIndexOf(src: const [..] u8, what: rune)->u64
 {
-    return lastIndexAnyOf(src, [what])
+    return lastIndexOfAny(src, [what])
 }
 
 // Returns the last index (in bytes) of a any of the runes in 'what'.
 // Returns 'Swag.U64.Max' if not found
-func lastIndexAnyOf(src: const [..] u8, what: const [..] rune)->u64
+func lastIndexOfAny(src: const [..] u8, what: const [..] rune)->u64
 {
     let length = @countof(src)
     if !length
@@ -582,7 +582,7 @@ func lastIndexAnyOf(src: const [..] u8, what: const [..] rune)->u64
 
 // Returns the last index (in bytes) of a any of the bytes in 'what'.
 // Returns 'Swag.U64.Max' if not found
-func lastIndexAnyOf(src: const [..] u8, what: const [..] u8)->u64
+func lastIndexOfAny(src: const [..] u8, what: const [..] u8)->u64
 {
     let length = @countof(src)
     if !length
