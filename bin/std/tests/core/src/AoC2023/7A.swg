@@ -89,9 +89,7 @@ func sort()
 
     var total: u64
     visit c, idx: cards
-    {
         total += (idx+1) * c.bid
-    }
 
     //Console.print("total: ", total)
     @assert(total == 249748283)

@@ -43,6 +43,8 @@ a = if b then c elif d then f else h
 -------------------------------------
 type const any ? @dataof() sur ça donne un pointeur const
 -------------------------------------
+const A: [4] s32 = [1: 10, 3: 45]
+-------------------------------------
 
 
 

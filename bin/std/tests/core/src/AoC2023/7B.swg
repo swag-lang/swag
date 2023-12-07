@@ -12,7 +12,7 @@ struct Card
     value:  s32
 }
 
-var map: HashTable'(u8, u8)
+var map:   [256] u8
 var cards: Array'Card
 
 func sort()
@@ -23,10 +23,10 @@ func sort()
 
         loop i: a.val
         {
-            let it0 = map.find(a.val[i])
-            let it1 = map.find(b.val[i])
-            if it0.value != it1.value
-                return it0.value <=> it1.value
+            let it0 = map[a.val[i]]
+            let it1 = map[b.val[i]]
+            if it0 != it1
+                return it0 <=> it1
         }
 
         return 0
@@ -40,19 +40,19 @@ func sort()
 
     let lines = assume File.readAllLines(dataPath)
 
-    map.add(`A`, 12)
-    map.add(`K`, 11)
-    map.add(`Q`, 10)
-    map.add(`T`, 9)
-    map.add(`9`, 8)
-    map.add(`8`, 7)
-    map.add(`7`, 6)
-    map.add(`6`, 5)
-    map.add(`5`, 4)
-    map.add(`4`, 3)
-    map.add(`3`, 2)
-    map.add(`2`, 1)
-    map.add(`J`, 0)
+    map[`A`] = 12
+    map[`K`] = 11
+    map[`Q`] = 10
+    map[`T`] = 9
+    map[`9`] = 8
+    map[`8`] = 7
+    map[`7`] = 6
+    map[`6`] = 5
+    map[`5`] = 4
+    map[`4`] = 3
+    map[`3`] = 2
+    map[`2`] = 1
+    map[`J`] = 0
 
     visit l: lines
     {
@@ -62,10 +62,10 @@ func sort()
         var maxCount = 0
         visit c: first[0]
         {
-            let it = map.find(c)
-            card.count[it.value] += 1
-            if it.value
-                maxCount = Math.max(maxCount, card.count[it.value])
+            let it = map[c]
+            card.count[it] += 1
+            if it
+                maxCount = Math.max(maxCount, card.count[it])
         }
 
         visit c, i: card.count
@@ -96,9 +96,7 @@ func sort()
 
     var total: u64
     visit c, idx: cards
-    {
         total += (idx+1) * c.bid
-    }
 
     //Console.print("total: ", total)
     @assert(total == 248029057)
