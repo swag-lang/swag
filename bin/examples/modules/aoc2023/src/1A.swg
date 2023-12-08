@@ -1,9 +1,6 @@
-// https://adventofcode.com/ 
-// Year 2023
-
 using Core
 
-#test
+func day1A()
 {
     var dataPath: String = Path.getDirectoryName(#location.fileName)
     dataPath = Path.combine(dataPath, "1.txt")

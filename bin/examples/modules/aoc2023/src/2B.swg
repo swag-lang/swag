@@ -3,7 +3,7 @@
 
 using Core
 
-#test
+func day2B()
 {
     var dataPath: String = Path.getDirectoryName(#location.fileName)
     dataPath = Path.combine(dataPath, "2.txt")
@@ -32,11 +32,10 @@ using Core
             }
         }
 
-        if game.r <= 12 and game.g <= 13 and game.b <= 14
-            total += gameIdx + 1
+        total += game.r * game.g * game.b
     }
 
     //Console.print("total: ", total)
-    @assert(total == 2369)
+    @assert(total == 66363)
 }
 

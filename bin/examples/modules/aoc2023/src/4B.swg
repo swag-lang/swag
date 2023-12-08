@@ -3,15 +3,15 @@
 
 using Core
 
-struct Card
+private struct Card
 {
     win: s32
     num: s32
 }
 
-var cards: Array'Card
+private var cards: Array'Card
 
-#test
+func day4B()
 {
     var dataPath: String = Path.getDirectoryName(#location.fileName)
     dataPath = Path.combine(dataPath, "4.txt")

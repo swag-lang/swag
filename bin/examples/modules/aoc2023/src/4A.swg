@@ -3,7 +3,7 @@
 
 using Core
 
-#test
+func day4A()
 {
     var dataPath: String = Path.getDirectoryName(#location.fileName)
     dataPath = Path.combine(dataPath, "4.txt")

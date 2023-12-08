@@ -3,7 +3,7 @@
 
 using Core
 
-func process(line: String)->u64
+private func process(line: String)->u64
 {
     const N = ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
     const V = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -32,7 +32,7 @@ func process(line: String)->u64
     return V[bestStartValue]*10 + V[bestEndValue]
 }
 
-#test
+func day1B()
 {
     var dataPath: String = Path.getDirectoryName(#location.fileName)
     dataPath = Path.combine(dataPath, "1.txt")

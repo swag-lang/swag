@@ -3,11 +3,10 @@
 
 using Core
 
-var symbols: Array'{s, x, y: s32}
-var nums:    Array'{num, x, lx, y: s32}
-var parts:   Array'{num, x, lx, y: s32}
+private var symbols: Array'{x, y: s32}
+private var nums:    Array'{num, x, lx, y: s32}
 
-func hasSymbol(x, y: s32)->bool
+private func hasSymbol(x, y: s32)->bool
 {
     visit s: symbols
     {
@@ -18,7 +17,7 @@ func hasSymbol(x, y: s32)->bool
     return false
 }
 
-#test
+func day3A()
 {
     var dataPath: String = Path.getDirectoryName(#location.fileName)
     dataPath = Path.combine(dataPath, "3.txt")
@@ -49,7 +48,7 @@ func hasSymbol(x, y: s32)->bool
 
             if c != `.` and x < l.length
             {
-                symbols.add({c, x, cast(s32) y})
+                symbols.add({x, cast(s32) y})
             }
         }
     }
@@ -68,37 +67,13 @@ func hasSymbol(x, y: s32)->bool
                hasSymbol(x+1, n.y)   or
                hasSymbol(x+1, n.y+1)
             {
-                parts.add(n)
+                total += n.num
                 break
             }
         }
     }
 
-    visit s: symbols
-    {
-        if s.s != `*`
-            continue
-
-        var gear = 1
-        var cpt = 0
-        visit n: nums
-        {
-            if n.y < s.y-1 or n.y > s.y+1
-                continue
-            if (s.x >= n.x-1 and s.x <= n.lx+1)
-            {
-                gear *= n.num
-                cpt += 1
-            }
-        }
-
-        if cpt == 2
-        {
-            total += gear
-        }
-    }
-
     //Console.print("total: ", total)
-    @assert(total == 93994191)
+    @assert(total == 553825)
 }
 

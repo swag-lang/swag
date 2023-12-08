@@ -3,7 +3,7 @@
 
 using Core
 
-#test
+func day6B()
 {
     var dataPath: String = Path.getDirectoryName(#location.fileName)
     dataPath = Path.combine(dataPath, "6.txt")
@@ -15,20 +15,25 @@ using Core
     let val0   = Tokenize.split(first[1], ` `)
     let val1   = Tokenize.split(second[1], ` `)
 
-    var times: Array's32
-    var dists: Array's32
+    var times: Array'u64
+    var dists: Array'u64
 
-    visit v: val0 times.add(assume StrConv.toS32(v))
-    visit v: val1 dists.add(assume StrConv.toS32(v))
+    var str0, str1: String
+    visit v: val0 str0 += v
+    visit v: val1 str1 += v
+
+    times.add(assume StrConv.toU64(str0))
+    dists.add(assume StrConv.toU64(str1))
 
     var total: u64 = 1
     visit t, idx: times
     {
         var cpt = 0
+        let dx = dists[idx]
         loop i: t
         {
             let travel = (t - i) * i
-            if travel > dists[idx]
+            if travel > dx
                 cpt += 1
         }
 
@@ -36,6 +41,6 @@ using Core
     }
 
     //Console.print("total: ", total)
-    @assert(total == 281600)
+    @assert(total == 33875953)
 }
 

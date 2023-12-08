@@ -3,7 +3,7 @@
 
 using Core
 
-enum Mode
+private enum Mode
 {
     ToSoil
     ToFertilizer
@@ -15,16 +15,16 @@ enum Mode
     Invalid
 }
 
-struct Range
+private struct Range
 {
     src, srcE: u64
     dst: u64
 }
 
-var seeds:   Array'u64
-var convert: [7] Array'Range
+private var seeds:   Array'u64
+private var convert: [7] Array'Range
 
-#test
+func day5B()
 {
     var dataPath: String = Path.getDirectoryName(#location.fileName)
     dataPath = Path.combine(dataPath, "5.txt")
