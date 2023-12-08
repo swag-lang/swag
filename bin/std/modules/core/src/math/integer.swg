@@ -134,10 +134,18 @@ func hasByte(value: u64, byte: u8)->bool
 
 // Find the gcd between 'a' and 'b'
 #[ConstExpr]
-func gcd(a, b: s64)->s64
-{        
-    if b == 0 return a
-    return gcd(b, a % b)
+func gcd(a0, b0: s64)->s64
+{      
+    var a = a0
+    var b = b0
+    while (b != 0) 
+    {
+        let temp = b
+        b = a % b
+        a = temp
+    }
+    
+    return a
 }
 
 // Find the Least Common Multiple between 'a' and 'b'
