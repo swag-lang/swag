@@ -41,36 +41,36 @@ func day8A()
     let lines = assume File.readAllLines(dataPath)
 
     var instructions: string
-    var nodes:      Array'{left, right: u64}
-    var nameToNode: HashTable'(string, u64)
+    var nodes:        Array'{left, right: u64}
+    var nameToNode:   HashTable'(string, u64)
 
     var startNode, endNode: u64
 
-    visit l: lines
+    visit l, i: lines
     {
-        if @index == 0
+        if i == 0
             instructions = l.toString()
-        elif @index > 1
+        elif i > 1
         {
-            let name = @mkstring(l.buffer, 3)
-            nameToNode.add(name, @index - 2)
+            let name = l[0..2]
+            nameToNode.add(name, i - 2)
             if name == "AAA"
-                startNode = @index - 2
+                startNode = i - 2
             elif name == "ZZZ"
-                endNode = @index - 2
+                endNode = i - 2
         }
     }
 
     nodes.resize(lines.count - 2)
-    visit l: lines
+    visit l, i: lines
     {
-        if @index <= 1
+        if i <= 1
             continue
-        let left   = @mkstring(l.buffer + 7, 3)
-        let right  = @mkstring(l.buffer + 12, 3)
+        let left   = l[7..9]
+        let right  = l[12..14]
         let leftV  = nameToNode.find(left).value
         let rightV = nameToNode.find(right).value
-        nodes[@index-2] = {leftV, rightV}
+        nodes[i-2] = {leftV, rightV}
     }    
 
     var total: u64

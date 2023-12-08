@@ -47,30 +47,30 @@ func day8B()
 
     var startNode: Array'u64
 
-    visit l: lines
+    visit l, i: lines
     {
-        if @index == 0
+        if i == 0
             instructions = l.toString()
-        elif @index > 1
+        elif i > 1
         {
-            let name = @mkstring(l.buffer, 3)
-            nameToNode.add(name, @index - 2)
+            let name   = l[0..2]
+            nameToNode.add(name, i - 2)
             if name[2] == `A`
-                startNode.add(@index - 2)
+                startNode.add(i - 2)
         }
     }
 
     nodes.resize(lines.count - 2)
-    visit l: lines
+    visit l, i: lines
     {
-        if @index <= 1
+        if i <= 1
             continue
-        let name   = @mkstring(l.buffer, 3)
-        let left   = @mkstring(l.buffer + 7, 3)
-        let right  = @mkstring(l.buffer + 12, 3)
+        let name   = l[0..2]
+        let left   = l[7..9]
+        let right  = l[12..14]
         let leftV  = nameToNode.find(left).value
         let rightV = nameToNode.find(right).value
-        nodes[@index-2] = {name, leftV, rightV}
+        nodes[i-2] = {name, leftV, rightV}
     }    
 
     var curNode = startNode
@@ -79,7 +79,7 @@ func day8B()
     onEnd.resize(startNode.count)
 
     // For each starting node, cound the length of the path to the first ending node
-    // Count is stored in 'onoEnd'
+    // Count is stored in 'onEnd'
     loop i: curNode
     {
         var instIndex: u64
