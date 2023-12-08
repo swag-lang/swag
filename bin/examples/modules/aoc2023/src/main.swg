@@ -3,6 +3,8 @@
 
 #main
 {
+    Core.Time.Stopwatch.scopeMeasure()
+
     day1A()
     day1B()
     day2A()
@@ -17,4 +19,6 @@
     day6B()
     day7A()
     day7B()
+    day8A()
+    day8B()
 }

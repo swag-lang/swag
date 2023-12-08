@@ -131,3 +131,21 @@ func hasByte(value: u64, byte: u8)->bool
     func abs(x: s32) => @abs(x)
     func abs(x: s64) => @abs(x)
 }
+
+// Find the gcd between 'a' and 'b'
+#[ConstExpr]
+func gcd(a, b: s64)->s64
+{        
+    if b == 0 return a
+    return gcd(b, a % b)
+}
+
+// Find the Least Common Multiple between 'a' and 'b'
+#[ConstExpr]
+func lcm(a, b: s64)->s64
+{     
+    if a > b
+        return a / gcd(a,b)*b
+    else
+        return b / gcd(a,b)*a
+} 

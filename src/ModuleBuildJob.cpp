@@ -688,21 +688,26 @@ JobResult ModuleBuildJob::execute()
             return JobResult::ReleaseJob;
 
         // #main function, in script mode
-        if (g_CommandLine.scriptMode && module->kind == ModuleKind::Script)
+        if (g_CommandLine.scriptMode)
         {
-            // In script mode, we should have a #main
+            // We should have a #main to execute
             if (!module->byteCodeMainFunc)
             {
-                Report::error(module, Err(Err0269));
-                return JobResult::ReleaseJob;
+                if (module->kind == ModuleKind::Script)
+                {
+                    Report::error(module, Err(Err0269));
+                    return JobResult::ReleaseJob;
+                }
             }
-
-            module->logStage(Fmt("#main %s\n", module->byteCodeMainFunc->node->sourceFile->name.c_str()));
-            ExecuteNodeParams params;
-            params.breakOnStart = g_CommandLine.dbgMain;
-            module->executeNode(module->byteCodeMainFunc->node->sourceFile, module->byteCodeMainFunc->node, baseContext, &params);
-            if (module->criticalErrors)
-                return JobResult::ReleaseJob;
+            else
+            {
+                module->logStage(Fmt("#main %s\n", module->byteCodeMainFunc->node->sourceFile->name.c_str()));
+                ExecuteNodeParams params;
+                params.breakOnStart = g_CommandLine.dbgMain;
+                module->executeNode(module->byteCodeMainFunc->node->sourceFile, module->byteCodeMainFunc->node, baseContext, &params);
+                if (module->criticalErrors)
+                    return JobResult::ReleaseJob;
+            }
         }
 
         if (module->numErrors)
