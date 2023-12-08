@@ -22,17 +22,16 @@ func day1B()
     var one: u64
     visit l: lines
     {
-        if !l.isEmpty()
-            one += assume StrConv.toU64(l)
-
+        one += catch StrConv.toU64(l)
         if l.isEmpty() or @index == lines.count-1
         {
-            if one > count[0]
-                count[0] = one
-            elif one > count[1]
-                count[1] = one
-            elif one > count[2]
-                count[2] = one
+            switch
+            {
+            case one > count[0]: count[0] = one
+            case one > count[1]: count[1] = one
+            case one > count[2]: count[2] = one
+            }
+
             Slice.sort(count[..])
             one = 0
         }

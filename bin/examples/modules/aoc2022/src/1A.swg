@@ -50,14 +50,12 @@ func day1A()
     var total, one: u64
     visit l: lines
     {
+        one += catch StrConv.toU64(l)
         if l.isEmpty()
         {
             total = Math.max(total, one)
             one = 0
-            continue
         }
-
-        one += assume StrConv.toU64(l)
     }
 
     //Console.print("total: ", total)
