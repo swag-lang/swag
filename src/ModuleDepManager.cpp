@@ -150,14 +150,14 @@ bool ModuleDepManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
     // No cfg file, we are done, we need one !
     error_code err;
     if (!filesystem::exists(remotePath, err))
-        return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0508), SWAG_CFG_FILE, remotePath.c_str())});
+        return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0508), SWAG_CFG_FILE, remotePath.string().c_str())});
 
     // Otherwise we copy the config file to the cache path, with a unique name.
     // Then later we will parse that file to get informations from the module
     FILE* fsrc = nullptr;
     if (fopen_s(&fsrc, remotePath.string().c_str(), "rbN"))
     {
-        return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0509), remotePath.c_str())});
+        return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0509), remotePath.string().c_str())});
     }
 
     // Remove source configuration file
@@ -206,7 +206,7 @@ bool ModuleDepManager::fetchModuleCfgSwag(ModuleDependency* dep, Utf8& cfgFilePa
     if (!err)
         remotePath = remotePath1;
     if (!filesystem::exists(remotePath, err))
-        return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0511), remotePath.c_str())});
+        return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0511), remotePath.string().c_str())});
     if (!fetch)
         return true;
     dep->resolvedLocation = remotePath;
@@ -225,7 +225,7 @@ bool ModuleDepManager::fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePa
     if (!err)
         remotePath = remotePath1;
     if (!filesystem::exists(remotePath, err))
-        return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0511), remotePath.c_str())});
+        return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0511), remotePath.string().c_str())});
     if (!fetch)
         return true;
 
