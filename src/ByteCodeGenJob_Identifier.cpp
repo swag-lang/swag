@@ -537,7 +537,9 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
         }
         else
         {
-            node->resultRegisterRC = reserveRegisterRC(context);
+            node->resultRegisterRC = reserveRegisterRC(context, resolved);
+            resolved->setRegisters(node->resultRegisterRC, OVERLOAD_HINT_REG);
+
             SWAG_ASSERT(typeInfo->sizeOf <= sizeof(uint64_t));
             ByteCodeInstruction* inst = nullptr;
             switch (typeInfo->sizeOf)
