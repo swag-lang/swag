@@ -916,7 +916,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     SWAG_ASSERT(node->block);
     Ast::visit(context, node->block, [&](ErrorContext* context, AstNode* x)
                {
-                    if (!x->ownerBreakable)
+                    if (!x->ownerBreakable || x->ownerBreakable->isParentOf(loopNode))
                         x->ownerBreakable = loopNode;
                     if (x->kind == AstNodeKind::Visit)
                         return Ast::VisitResult::Stop;
