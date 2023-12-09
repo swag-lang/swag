@@ -45,7 +45,7 @@ func day9B()
             loop i: 0 until values.count-1
             {
                 let v = values[i+1] - values[i]
-                if v recom = true
+                recom = v or recom
                 newValues.add(v)
 
                 if i == 0
@@ -55,15 +55,14 @@ func day9B()
             values = newValues
         }
      
-        var accum, prev: s64
+        var prev: s64
         visit,back c: column
         {
             let c1 = c - prev
-            accum = c1
             prev = c1
         }
 
-        total += accum
+        total += prev
     }
     
     //Console.print("total: ", total)

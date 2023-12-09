@@ -80,38 +80,27 @@ func day9A()
 
         var values: Array's64
         visit v: vals values.add(assume StrConv.toS64(v))
+        total += values.back()
 
-        var column: Array's64
-        column.add(values.back())
-
-        var recom = true
-        while recom
+        var hasNoZero = true
+        while hasNoZero
         {
-            recom = false
-            var newValues: Array's64
+            hasNoZero = false
+
+            var diff: s64
             loop i: 0 until values.count-1
             {
-                let v = values[i+1] - values[i]
-                if v recom = true
-                newValues.add(v)
-
-                if i == values.count-2 
-                    column.add(v)
+                diff = values[i+1] - values[i]
+                hasNoZero = diff or hasNoZero
+                values[i] = diff
             }
 
-            values = newValues
+            total += diff
+            values.count -= 1
         }
-
-
-        var accum: s64
-        visit,back c: column
-            accum += c
-
-        total += accum
-        //Console.print(column)
     }
     
-    //Console.print("total: ", total)
+    //Console.print("total: ", total, " ")
     @assert(total == 2105961943)
 }
 
