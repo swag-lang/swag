@@ -58,9 +58,9 @@ func day3A()
         loop i: div
         {
             let f = Slice.findLinear(stack[div..], stack[i])            
-            if f.success
+            if f != Swag.U64.Max
             {
-                total += stack[f.index+div]+1
+                total += stack[f+div]+1
                 break
             }
         }

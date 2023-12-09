@@ -578,8 +578,8 @@ impl Array
     // If not found, does nothing
     mtd(V) remove(value: V)
     {
-        let (idx, found) = Slice.findLinear(toSlice(), value)
-        if !found
+        let idx = Slice.findLinear(toSlice(), value)
+        if idx == Swag.U64.Max
             return
         removeAt(idx)
     }
@@ -588,8 +588,8 @@ impl Array
     // If not found, does nothing
     mtd(V) removeOrdered(value: V)
     {
-        let (idx, found) = Slice.findLinear(toSlice(), value)
-        if !found
+        let idx = Slice.findLinear(toSlice(), value)
+        if idx == Swag.U64.Max
             return
         removeAtOrdered(idx)
     }
@@ -597,8 +597,7 @@ impl Array
     // Returns true if the given 'value' is in the array
     mtd(V) contains(value: V)->bool
     {
-        var res = Slice.findLinear(toSlice(), value)
-        return res.success
+        return Slice.findLinear(toSlice(), value) != Swag.U64.Max
     }
 
     // Sort array

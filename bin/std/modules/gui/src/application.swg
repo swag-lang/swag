@@ -645,8 +645,8 @@ impl Application
         // Remove from parent
         if wnd.parent and !wnd.parent.isPendingDestroy
         {
-            let (idx, ok) = Slice.findLinear(wnd.parent.childs.toSlice(), wnd)
-            Debug.assert(ok)
+            let idx = Slice.findLinear(wnd.parent.childs.toSlice(), wnd)
+            Debug.assert(idx != Swag.U64.Max)
             wnd.parent.childs.removeAtOrdered(idx)
             wnd.parent.invalidate()
         }

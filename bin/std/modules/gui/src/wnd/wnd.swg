@@ -694,8 +694,8 @@ impl Wnd
         if parent.childs.front() == self
             return
 
-        let (idx, found) = Slice.findLinear(parent.childs.toSlice(), self)
-        Debug.assert(found)
+        let idx = Slice.findLinear(parent.childs.toSlice(), self)
+        Debug.assert(idx != Swag.U64.Max)
 
         parent.childs.removeAtOrdered(idx)
         parent.childs.insertAt(0, self)
@@ -708,8 +708,8 @@ impl Wnd
         if parent.childs.back() == self
             return
 
-        let (idx, found) = Slice.findLinear(parent.childs.toSlice(), self)
-        Debug.assert(found)
+        let idx = Slice.findLinear(parent.childs.toSlice(), self)
+        Debug.assert(idx != Swag.U64.Max)
 
         // Put the window at the back, or before the first topmost window
         var idxToReplace = parent.childs.count - 1

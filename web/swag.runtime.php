@@ -5378,7 +5378,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 07-12-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
+Generated on 08-12-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
 </div>
 </div>
 </div>

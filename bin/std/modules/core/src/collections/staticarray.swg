@@ -459,8 +459,9 @@ impl StaticArray
     // If not found, does nothing
     mtd(V) remove(value: V)
     {
-        var (idx, found) = Slice.findLinear(toSlice(), value)
-        if !found return
+        let idx = Slice.findLinear(toSlice(), value)
+        if idx == Swag.U64.Max  
+            return
         removeAt(idx)
     }
 
@@ -468,16 +469,16 @@ impl StaticArray
     // If not found, does nothing
     mtd(V) removeOrdered(value: V)
     {
-        var (idx, found) = Slice.findLinear(toSlice(), value)
-        if !found return
+        let idx = Slice.findLinear(toSlice(), value)
+        if idx == Swag.U64.Max  
+            return
         removeAtOrdered(idx)
     }
 
     // Returns true if the given 'value' is in the array
     mtd(V) contains(value: V)->bool
     {
-        var res = Slice.findLinear(toSlice(), value)
-        return res.success
+        return Slice.findLinear(toSlice(), value) != Swag.U64.Max
     }
 
     // Sort array

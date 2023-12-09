@@ -7,12 +7,11 @@ using Core
     loop i: 10'u32
         arr.add(i)
 
-    var result = Slice.findLinear(arr.toSlice(), 5'u32)
-    @assert(result.success)
-    @assert(result.index == 5)
+    let result = Slice.findLinear(arr.toSlice(), 5'u32)
+    @assert(result == 5)
 
-    var result1 = Slice.findLinear(arr.toSlice(), 15'u32)
-    @assert(!result1.success)
+    let result1 = Slice.findLinear(arr.toSlice(), 15'u32)
+    @assert(result1 == Swag.U64.Max)
 
     //Console.write("result is %\n", res)
 }

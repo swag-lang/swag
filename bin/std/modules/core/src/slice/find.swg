@@ -3,7 +3,8 @@
 
 // Find 'value' in a slice by performing a binary search.
 // The slice must be sorted in ascending order
-func(T, V) findSorted(values: const [..] T, value: V) -> {index: u64, success: bool}
+// Returns Swag.U64.Max if not found.
+func(T, V) findSorted(values: const [..] T, value: V)->u64
 {
     var result: retval
 
@@ -18,11 +19,7 @@ func(T, V) findSorted(values: const [..] T, value: V) -> {index: u64, success: b
             break
         let res = values[mid] <=> value
         if res == 0
-        {
-            result.index = mid
-            result.success = true
-            return result
-        }
+            return mid
 
         if res < 0
             min = mid + 1
@@ -30,25 +27,21 @@ func(T, V) findSorted(values: const [..] T, value: V) -> {index: u64, success: b
             max = mid - 1
     }
 
-    return result
+    return Swag.U64.Max
 }
 
 // Find 'value' in a slice by performing a linear search.
-// O^n, but slice does not have to be sorted
-func(T, V) findLinear(values: const [..] T, value: V) -> {index: u64, success: bool}
+// O^n, but slice does not have to be sorted.
+// Returns Swag.U64.Max if not found.
+func(T, V) findLinear(values: const [..] T, value: V)->u64
 {
-    var result: retval
     visit v, i: values
     {
         if v == value
-        {
-            result.index = i
-            result.success = true
-            return result
-        }
+            return i
     }
 
-    return result
+    return Swag.U64.Max
 }
 
 // Returns true if the given slice contains the 'value'
