@@ -35,32 +35,20 @@ using Core
 
 func day3A()
 {
-    var dataPath: String = Path.getDirectoryName(#location.fileName)
-    dataPath = Path.combine(dataPath, "3.txt")
-
+    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "3.txt")
     let lines = assume File.readAllLines(dataPath)
 
     var total: u64
     visit l: lines
     {
-        var stack: Array's32
-        loop i: l
-        {
-            var s: s32
-            if l[i] >= `a` and l[i] <= `z`
-                s = l[i] - `a`
-            else
-                s = 26 + (l[i] - `A`)
-            stack.add(s)            
-        }
-
-        let div = stack.count / 2
+        let div = l.length / 2
         loop i: div
         {
-            let f = Slice.findLinear(stack[div..], stack[i])            
+            let c = l[i]
+            let f = Slice.findLinear(cast(const [..] u8) l[div..], c)  
             if f != Swag.U64.Max
-            {
-                total += stack[f+div]+1
+            {      
+                total += 1 + (Latin1.isLower(c) ? c - `a` : 26 + (c - `A`))
                 break
             }
         }
