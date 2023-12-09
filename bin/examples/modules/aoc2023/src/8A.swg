@@ -35,9 +35,7 @@ using Core
 
 func day8A()
 {
-    var dataPath: String = Path.getDirectoryName(#location.fileName)
-    dataPath = Path.combine(dataPath, "8.txt")
-
+    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "8.txt")
     let lines = assume File.readAllLines(dataPath)
 
     var instructions: string

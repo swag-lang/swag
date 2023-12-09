@@ -46,9 +46,7 @@ using Core
 
 func day6A()
 {
-    var dataPath: String = Path.getDirectoryName(#location.fileName)
-    dataPath = Path.combine(dataPath, "6.txt")
-
+    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "6.txt")
     let lines = assume File.readAllLines(dataPath)
 
     let first  = Tokenize.split(lines[0], `:`)

@@ -69,11 +69,11 @@ using Core
 
 func day9A()
 {
-    var dataPath: String = Path.getDirectoryName(#location.fileName)
-    dataPath = Path.combine(dataPath, "9.txt")
+    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "9.txt")
+    let lines = assume File.readAllLines(dataPath)
 
     var total: u64
-    let lines = assume File.readAllLines(dataPath)
+
     visit l: lines
     {
         let vals = Tokenize.split(l, ` `)

@@ -40,9 +40,7 @@ private var cards: Array'Card
 
 func day4B()
 {
-    var dataPath: String = Path.getDirectoryName(#location.fileName)
-    dataPath = Path.combine(dataPath, "4.txt")
-
+    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "4.txt")
     let lines = assume File.readAllLines(dataPath)
 
     visit l: lines

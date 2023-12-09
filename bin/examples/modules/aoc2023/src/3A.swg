@@ -47,9 +47,7 @@ private func hasSymbol(x, y: s32)->bool
 
 func day3A()
 {
-    var dataPath: String = Path.getDirectoryName(#location.fileName)
-    dataPath = Path.combine(dataPath, "3.txt")
-
+    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "3.txt")
     let lines = assume File.readAllLines(dataPath)
 
     visit l, y: lines

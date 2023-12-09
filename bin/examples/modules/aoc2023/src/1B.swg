@@ -49,10 +49,9 @@ private func process(line: String)->u64
 
 func day1B()
 {
-    var dataPath: String = Path.getDirectoryName(#location.fileName)
-    dataPath = Path.combine(dataPath, "1.txt")
-
+    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "1.txt")
     let lines = assume File.readAllLines(dataPath)
+
     var total = 0'u64
     visit l: lines
     {

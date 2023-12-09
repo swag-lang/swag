@@ -55,9 +55,7 @@ private func sort()
 
 func day7B()
 {
-    var dataPath: String = Path.getDirectoryName(#location.fileName)
-    dataPath = Path.combine(dataPath, "7.txt")
-
+    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "7.txt")
     let lines = assume File.readAllLines(dataPath)
 
     map[`A`] = 12
