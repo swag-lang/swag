@@ -14,4 +14,6 @@
     day2B()
     day3A()
     day3B()
+    day4A()
+    day4B()
 }
