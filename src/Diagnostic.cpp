@@ -603,11 +603,7 @@ void Diagnostic::report(bool verboseMode)
     if (showErrorLevel)
     {
         printErrorLevel();
-        if (errorLevel == DiagnosticLevel::Error || errorLevel == DiagnosticLevel::Panic || errorLevel == DiagnosticLevel::Warning)
-            g_Log.setColor(LogColor::Bold);
         g_Log.print(textMsg);
-        if (errorLevel == DiagnosticLevel::Error || errorLevel == DiagnosticLevel::Panic || errorLevel == DiagnosticLevel::Warning)
-            g_Log.setColor(LogColor::UnBold);
         g_Log.eol();
     }
     else if (!showFileName)

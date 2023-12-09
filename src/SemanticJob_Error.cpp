@@ -56,7 +56,7 @@ bool SemanticJob::preprocessMatchError(SemanticContext* context, OneTryMatch& on
     return false;
 }
 
-void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1)
+void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1, uint32_t getFlags)
 {
     // Smart changes for smarter errors (very specific cases)
     if (preprocessMatchError(context, oneTry, result0, result1))
@@ -441,9 +441,14 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
                     result1.push_back(note);
                 }
             }
+            else if (castHint.empty())
+            {
+                auto note = Diagnostic::note(castMsg);
+                result1.push_back(note);
+            }
             else
             {
-                auto note  = Diagnostic::note(diag->sourceNode, diag->sourceNode->token, castMsg);
+                auto note = Diagnostic::note(diag->sourceNode, diag->sourceNode->token, castMsg);
                 note->hint = castHint;
                 result1.push_back(note);
             }
@@ -452,21 +457,23 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             diag->hint = castHint;
 
         // Here is
-        Diagnostic* note = nullptr;
-        if (destFuncDecl && paramNode && paramNode->isGeneratedSelf())
+        if (getFlags & GDFM_HERE_IS)
         {
-            result1.push_back(Diagnostic::hereIs(destFuncDecl));
-        }
-        else if (paramNode)
-        {
-            note = Diagnostic::note(paramNode, paramNode->token, Fmt(Nte(Nte0066), paramNode->token.ctext(), refNiceName.c_str()));
-            result1.push_back(note);
-        }
-        else
-        {
-            note = Diagnostic::hereIs(overload);
-            if (note)
+            if (destFuncDecl && paramNode && paramNode->isGeneratedSelf())
+            {
+                result1.push_back(Diagnostic::hereIs(destFuncDecl));
+            }
+            else if (paramNode)
+            {
+                Diagnostic* note = Diagnostic::note(paramNode, paramNode->token, Fmt(Nte(Nte0066), paramNode->token.ctext(), refNiceName.c_str()));
                 result1.push_back(note);
+            }
+            else
+            {
+                Diagnostic* note = Diagnostic::hereIs(overload);
+                if (note)
+                    result1.push_back(note);
+            }
         }
 
         return;
@@ -513,17 +520,21 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
 
         result0.push_back(diag);
 
-        if (destFuncDecl && bi.badSignatureParameterIdx < (int) destFuncDecl->genericParameters->childs.size())
+        // Here is
+        if (getFlags & GDFM_HERE_IS)
         {
-            auto reqParam = destFuncDecl->genericParameters->childs[bi.badSignatureParameterIdx];
-            auto note     = Diagnostic::note(reqParam, Fmt(Nte(Nte0068), reqParam->token.ctext(), refNiceName.c_str()));
-            result1.push_back(note);
-        }
-        else
-        {
-            auto note = Diagnostic::hereIs(overload);
-            if (note)
+            if (destFuncDecl && bi.badSignatureParameterIdx < (int) destFuncDecl->genericParameters->childs.size())
+            {
+                auto reqParam = destFuncDecl->genericParameters->childs[bi.badSignatureParameterIdx];
+                auto note     = Diagnostic::note(reqParam, Fmt(Nte(Nte0068), reqParam->token.ctext(), refNiceName.c_str()));
                 result1.push_back(note);
+            }
+            else
+            {
+                auto note = Diagnostic::hereIs(overload);
+                if (note)
+                    result1.push_back(note);
+            }
         }
 
         return;
@@ -615,7 +626,7 @@ void SemanticJob::symbolErrorRemarks(SemanticContext* context, VectorNative<OneT
     if (tryMatches.empty())
         return;
 
-    // If we have an ufcs call, and the match does not come from its symtable, then that means that we have not found the
+    // If we have an UFCS call, and the match does not come from its symtable, then that means that we have not found the
     // symbol in the original struct also.
     auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
     if (identifier->identifierRef()->startScope && !tryMatches.empty())
@@ -711,7 +722,10 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext*            context
         note = Diagnostic::note(node, node->token, "not enough generic arguments");
         break;
     case MatchResult::BadSignature:
-        note = Diagnostic::note(node, node->token, Fmt("the %s does not match", Naming::niceArgumentRank(paramIdx + 1).c_str()));
+        if (tryResult[0]->ufcs && paramIdx == 0)
+            note = Diagnostic::note(node, node->token, "the UFCS argument does not match");
+        else
+            note = Diagnostic::note(node, node->token, Fmt("the %s does not match", Naming::niceArgumentRank(paramIdx + 1).c_str()));
         break;
     case MatchResult::BadGenericSignature:
         note = Diagnostic::note(node, node->token, Fmt("the generic %s does not match", Naming::niceArgumentRank(paramIdx + 1).c_str()));
@@ -913,6 +927,25 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             tryMatches = n;
     }
 
+    uint32_t getFlags = GDFM_ALL;
+
+    // All errors are because of a constness problem on the UFCS argument
+    // Then just raise one error
+    int badConstUfcs = 0;
+    for (auto& tm : tryMatches)
+    {
+        if (tm->ufcs &&
+            tm->symMatchContext.badSignatureInfos.badSignatureParameterIdx == 0 &&
+            tm->symMatchContext.badSignatureInfos.castErrorType == CastErrorType::Const)
+            badConstUfcs += 1;
+    }
+    if (badConstUfcs == tryMatches.size())
+    {
+        while (tryMatches.size() > 1)
+            tryMatches.pop_back();
+        getFlags &= ~GDFM_HERE_IS;
+    }
+
     // One single overload
     if (tryMatches.size() == 1)
     {
@@ -921,7 +954,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
             SWAG_CHECK(checkFuncPrototype(context, CastAst<AstFuncDecl>(tryMatches[0]->overload->node, AstNodeKind::FuncDecl)));
 
         Vector<const Diagnostic*> errs0, errs1;
-        getDiagnosticForMatch(context, *tryMatches[0], errs0, errs1);
+        getDiagnosticForMatch(context, *tryMatches[0], errs0, errs1, getFlags);
         SWAG_ASSERT(!errs0.empty());
         symbolErrorRemarks(context, tryMatches, node, const_cast<Diagnostic*>(errs0[0]));
         symbolErrorNotes(context, tryMatches, node, const_cast<Diagnostic*>(errs0[0]), errs1);

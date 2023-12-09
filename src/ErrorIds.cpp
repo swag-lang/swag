@@ -1440,7 +1440,6 @@ void initErrors()
     SWAG_ERROR(Nte1068, "this tuple has '%d' field(s)");
     SWAG_ERROR(Nte1069, "this tuple seems to be empty");
     SWAG_ERROR(Nte1011, "this type is '%s'");
-    SWAG_ERROR(Nte1022, "this type is immutable");
     SWAG_ERROR(Nte1002, "this value can only be converted to type '%s' with a dynamic call to 'opAffect'");
     SWAG_ERROR(Nte0152, "to begin a new block, consider moving '{' to a new line");
     SWAG_ERROR(Nte0020, "to close this you need '%s'");
@@ -1462,6 +1461,7 @@ void initErrors()
     SWAG_ERROR(Nte0149, "you might want to get the address of '%s' using '&'");
     SWAG_ERROR(Nte0014, "the duplicated underlying enum value is '%s'");
     SWAG_ERROR(Nte1108, "you need to take the address of a value to make a reference");
+    SWAG_ERROR(Nte1022, nullptr);
     SWAG_ERROR(Nte1031, nullptr);
     SWAG_ERROR(Nte1009, nullptr);
     SWAG_ERROR(Nte1122, nullptr);

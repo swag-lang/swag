@@ -221,6 +221,9 @@ const uint32_t RI_ZERO              = 0x00000000;
 const uint32_t RI_FOR_GHOSTING      = 0x00000001;
 const uint32_t RI_FOR_ZERO_GHOSTING = 0x00000002;
 
+const uint32_t GDFM_HERE_IS = 0x00000001;
+const uint32_t GDFM_ALL     = 0xFFFFFFFF;
+
 struct SemanticJob : public Job
 {
     JobResult execute() override;
@@ -263,7 +266,7 @@ struct SemanticJob : public Job
     static bool notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg = nullptr, AstNode* hintType = nullptr);
     static bool duplicatedSymbolError(ErrorContext* context, SourceFile* sourceFile, Token& token, SymbolKind thisKind, const Utf8& thisName, SymbolKind otherKind, AstNode* otherSymbolDecl);
     static bool preprocessMatchError(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1);
-    static void getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1);
+    static void getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1, uint32_t getFlags = GDFM_ALL);
     static void symbolErrorRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag);
     static void symbolErrorNotes(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag, Vector<const Diagnostic*>& notes);
 

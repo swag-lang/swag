@@ -388,7 +388,6 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
     }
     else if (castError == CastErrorType::Const)
     {
-        hint = Nte(Nte1022);
         msg  = Fmt(ErrNte(Err0418, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
     else if (castError == CastErrorType::SliceArray)
