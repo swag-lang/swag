@@ -86,17 +86,14 @@ func day9A()
         while hasNoZero
         {
             hasNoZero = false
-
-            var diff: s64
             loop i: 0 until values.count-1
             {
-                diff = values[i+1] - values[i]
-                hasNoZero = diff or hasNoZero
-                values[i] = diff
+                values[i] = values[i+1] - values[i]
+                hasNoZero = values[i] or hasNoZero
             }
 
-            total += diff
             values.count -= 1
+            total += values.back()
         }
     }
     
