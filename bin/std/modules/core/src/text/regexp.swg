@@ -342,37 +342,37 @@ impl RegExp
         {
             let c8 = cast(u8) c
 
-            if Latin1.isDigit(c8)           
+            if Latin1.isDigit(c8)
                 checkTr(RuneAsciiDigit)
             else
                 checkTr(RuneAsciiDigit | RuneInvert)
 
-            if Latin1.isHexDigit(c8) 
+            if Latin1.isHexDigit(c8)
                 checkTr(RuneAsciiHexa)
             else
                 checkTr(RuneAsciiHexa | RuneInvert)
 
-            if Latin1.isLetter(c8)          
+            if Latin1.isLetter(c8)
                 checkTr(RuneAsciiLetter)
             else
                 checkTr(RuneAsciiLetter | RuneInvert)
 
-            if Latin1.isLower(c8)           
+            if Latin1.isLower(c8)
                 checkTr(RuneAsciiLower)
             else
                 checkTr(RuneAsciiLower | RuneInvert)
 
-            if Latin1.isUpper(c8)           
+            if Latin1.isUpper(c8)
                 checkTr(RuneAsciiUpper)
             else
                 checkTr(RuneAsciiUpper | RuneInvert)
 
-            if Latin1.isSpace(c8)           
+            if Latin1.isSpace(c8)
                 checkTr(RuneAsciiSpace)
             else
                 checkTr(RuneAsciiSpace | RuneInvert)
 
-            if Latin1.isLetterOrDigit(c8)   
+            if Latin1.isLetterOrDigit(c8)
                 checkTr(RuneAsciiAlNum)
             else
                 checkTr(RuneAsciiAlNum | RuneInvert)
@@ -385,26 +385,26 @@ impl RegExp
             if c8 == ` ` or c8 == `\t`
                 checkTr(RuneAsciiBlank)
             else
-                checkTr(RuneAsciiBlank | RuneInvert)                
+                checkTr(RuneAsciiBlank | RuneInvert)
 
             checkTr(RuneAscii)
         }
         else
         {
-            checkTr(RuneAscii | RuneInvert)                
+            checkTr(RuneAscii | RuneInvert)
         }
 
-        if Unicode.isLetter(c)      
+        if Unicode.isLetter(c)
             checkTr(RuneUnicodeLetter)
-        if Unicode.isLower(c)       
+        if Unicode.isLower(c)
             checkTr(RuneUnicodeLetterLower)
-        if Unicode.isUpper(c)       
+        if Unicode.isUpper(c)
             checkTr(RuneUnicodeLetterUpper)
-        if Unicode.isNumber(c)      
+        if Unicode.isNumber(c)
             checkTr(RuneUnicodeNumber)
-        if Unicode.isSymbol(c)      
+        if Unicode.isSymbol(c)
             checkTr(RuneUnicodeSymbol)
-        if Unicode.isSymbolMath(c)  
+        if Unicode.isSymbolMath(c)
             checkTr(RuneUnicodeSymbolMath)
 
         checkTr(c)
@@ -545,7 +545,7 @@ impl RegExp
 
             nfaStack.add(table1)
         }
-    }          
+    }
 
     mtd operatorStar() throw
     {
@@ -1114,31 +1114,31 @@ impl RegExp
                 return pz + 2
             case `D`:
                 preprocessInter(@runes("[^[:digit:]]"))
-                return pz + 2                
+                return pz + 2
             case `w`:
                 preprocessInter(@runes("[[:word:]]"))
                 return pz + 2
             case `W`:
                 preprocessInter(@runes("[^[:word:]]"))
-                return pz + 2                
+                return pz + 2
             case `s`:
                 preprocessInter(@runes("[[:space:]]"))
                 return pz + 2
             case `S`:
                 preprocessInter(@runes("[^[:space:]]"))
-                return pz + 2                
+                return pz + 2
             case `l`:
                 preprocessInter(@runes("[[:lower:]]"))
                 return pz + 2
             case `L`:
                 preprocessInter(@runes("[^[:lower:]]"))
-                return pz + 2                
+                return pz + 2
             case `u`:
                 preprocessInter(@runes("[[:upper:]]"))
                 return pz + 2
             case `U`:
                 preprocessInter(@runes("[^[:upper:]]"))
-                return pz + 2                
+                return pz + 2
             case `b`:
                 preprocessed.add(RuneAsciiWordBoundary)
                 return pz + 2
@@ -1185,23 +1185,23 @@ impl RegExp
             switch c
             {
             case `[`:
-                if open { preprocessed.add(RuneCloseParen); open = false; } 
+                if open { preprocessed.add(RuneCloseParen); open = false; }
                 pz = preprocessInter(@mkslice(pz, pzEnd - pz))
                 break
 
             case `{`:
-                if open { preprocessed.add(RuneCloseParen); open = false; } 
+                if open { preprocessed.add(RuneCloseParen); open = false; }
                 pz = preprocessEnum(@mkslice(pz, pzEnd - pz))
 
             default:
                 if open and (pz[1] == `*` or pz[1] == `+` or pz[1] == `?`)
                 {
-                    if open { preprocessed.add(RuneCloseParen); open = false; } 
+                    if open { preprocessed.add(RuneCloseParen); open = false; }
                     pz = preprocessEscape(@mkslice(pz, pzEnd - pz))
                 }
                 elif isReservedChar(c)
                 {
-                    if open { preprocessed.add(RuneCloseParen); open = false; } 
+                    if open { preprocessed.add(RuneCloseParen); open = false; }
                     pz = preprocessEscape(@mkslice(pz, pzEnd - pz))
                 }
                 else
