@@ -944,7 +944,7 @@ impl RegExp
             let pze = preprocessed.buffer + preprocessed.count - 1
             var pz1 = pze
             var cptParen = 0
-            if pz[1] == `)`
+            if pz1[0] == `)`
                 cptParen += 1
             while cptParen and pz1 != preprocessed.buffer
             {
