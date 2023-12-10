@@ -7,6 +7,8 @@ struct Test
 }
 
 const TestCases: [] Test = [
+    {"ab|c", "c", true}, 
+
     {"abc", "abc", true},
     {"123", "123", true},
     {"abc123", "abc123", true},    
@@ -22,8 +24,8 @@ const TestCases: [] Test = [
     {"a{2,4}", "aaa", true},     
     {"a{2,4}", "aaaaa", false},   
 
-    //{"(abc)+", "abcabc", true},
-    //{"(abc|123)", "abc", true}, 
+    {"(abc)+", "abcabc", true},
+    {"(abc|123)", "123", true}, 
 
     {#"[a-z]+\d{2,4}"#, "word123", true},
     //{#"\bword\b"#, "word", true},  

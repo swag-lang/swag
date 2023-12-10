@@ -1,12 +1,14 @@
 #global namespace Parser
 using Errors
 
-const RuneAsciiDigit    = cast(rune) 0x8000_0000
-const RuneAsciiLetter   = cast(rune) 0x8000_0001
-const RuneAsciiLower    = cast(rune) 0x8000_0002
-const RuneAsciiUpper    = cast(rune) 0x8000_0003
-const RuneAsciiSpace    = cast(rune) 0x8000_0004
-const RuneAscii         = cast(rune) 0x8000_0005
+const RuneAsciiDigit     = cast(rune) 0x8000_0000
+const RuneAsciiLetter    = cast(rune) 0x8000_0001
+const RuneAsciiLower     = cast(rune) 0x8000_0002
+const RuneAsciiUpper     = cast(rune) 0x8000_0003
+const RuneAsciiSpace     = cast(rune) 0x8000_0004
+const RuneAscii          = cast(rune) 0x8000_0005
+const RuneFakeOpenParen  = cast(rune) 0x8000_0006
+const RuneFakeCloseParen = cast(rune) 0x8000_0007
 
 const RuneUnicodeLetter         = cast(rune) 0x8001_0006
 const RuneUnicodeLetterLower    = cast(rune) 0x8001_0007
@@ -69,7 +71,6 @@ struct RegExpGroup
 // | \d               | [[:digit:]]
 // | \l               | [[:lower:]]
 // | \u               | [[:upper:]]
-// | \b               | [[:blank:]]
 // | \s               | [[:space:]]
 // | \w               | [[:word:]]
 #[Swag.Opaque]
@@ -364,24 +365,25 @@ impl RegExp
         return nfaStack.popBack()
     }
 
+    // Creates 2 new states, and one transition (by c) between them
     mtd nfaPush(c: rune)
     {
-        // Creates 2 new states, and one transition (by c) between them
         let table = Memory.new'NfaTable()
+        nfaTables.add(table)
+
         let s1 = Memory.new'NfaNode()
         let s2 = Memory.new'NfaNode()
-
-        table.level = cast(u32) openParen.count
-        nfaTables.add(table)
         nfaNodes.add(s1)
         nfaNodes.add(s2)
+
+        table.level = cast(u32) openParen.count
         s1.addTransition(c, s2)
 
         table.nodes.add(s1)
         table.nodes.add(s2)
         nfaStack.add(table)
 
-        // Add the character to the list of terminal characters.
+        // Add the character to the list of used characters
         charSet.add(c)
     }
 
@@ -395,15 +397,15 @@ impl RegExp
         nfaNodes.add(ns1)
         nfaNodes.add(ns2)
 
-        let s1 = table1.nodes.front()
-        let s2 = table1.nodes.back()
-        let s3 = table2.nodes.front()
-        let s4 = table2.nodes.back()
+        let sa1 = table1.nodes.front()
+        let sa2 = table1.nodes.back()
+        let sb1 = table2.nodes.front()
+        let sb2 = table2.nodes.back()
 
-        ns1.addTransition(0'rune, s1)
-        s2.addTransition(0'rune, ns2)
-        ns1.addTransition(0'rune, s3)
-        s4.addTransition(0'rune, ns2)
+        ns1.addTransition(0'rune, sa1)
+        ns1.addTransition(0'rune, sb1)
+        sa2.addTransition(0'rune, ns2)
+        sb2.addTransition(0'rune, ns2)
 
         table1.nodes.add(table2.nodes.toSlice())
         table1.nodes.insertAt(0, ns1)
@@ -487,8 +489,13 @@ impl RegExp
             var c = dref pz
             switch c
             {
-            case `(`:
+            case `(`, RuneFakeOpenParen:
                 openParen.add(cast(u32) nfaStack.count)
+
+            case RuneFakeCloseParen:
+                unionValidate()
+                let op = openParen.popBack()
+                operatorConcat(nfaStack.count - op, false)
 
             case `)`:
                 unionValidate()
@@ -544,7 +551,7 @@ impl RegExp
         operatorConcat(nfaStack.count)
     }
 
-    mtd operatorConcat(cpt: u64) throw
+    mtd operatorConcat(cpt: u64, canGroup = true) throw
     {
         var count = cpt
         while count >= 2
@@ -572,11 +579,14 @@ impl RegExp
             let table1 = nfaPop()
             table1.level = cast(u32) openParen.count
 
-            group += 1
-            visit n: table1.nodes
+            if canGroup
             {
-                if n.group == 0
-                    n.group = group
+                group += 1
+                visit n: table1.nodes
+                {
+                    if n.group == 0
+                        n.group = group
+                }
             }
 
             nfaStack.add(table1)
@@ -612,21 +622,15 @@ impl RegExp
     {
         node.table =,move dref tbl
 
-        visit n: node.table
-        {
-            if node.group == 0
-                node.group = groupTransform[n.group]
-        }
-
         // A DFA node is terminal if one of the NFA nodes used to construct it is a
         // terminal too
         visit n: node.table
         {
+            if node.group == 0
+                node.group = groupTransform[n.group]
+
             if n.terminal
-            {
                 node.terminal = true
-                break
-            }
         }
     }
 
@@ -708,13 +712,10 @@ impl RegExp
                 var found: *DfaNode
                 visit tstate: dfaNodes
                 {
-                    if tstate.table.count == epsilonRes.count
+                    if equals(&tstate.table, &epsilonRes)
                     {
-                        if equals(&tstate.table, &epsilonRes)
-                        {
-                            found = tstate
-                            break
-                        }
+                        found = tstate
+                        break
                     }
                 }
 
@@ -738,7 +739,7 @@ impl RegExp
         let pzStart = pz
         let pzEnd = pz + @countof(sl)
 
-        preprocessed.add(`(`)
+        preprocessed.add(RuneFakeOpenParen)
         pz += 1
 
         var firstExp = true
@@ -762,11 +763,11 @@ impl RegExp
 
                 if Unicode.compare(subSlice, @runes("[:hexa:]"), false, 8) == 0
                 {
-                    preprocessed.add(`(`)
+                    preprocessed.add(RuneFakeOpenParen)
                     preprocessInter(@runes("[a-fA-F]"))
                     preprocessed.add(`|`)
                     preprocessed.add(RuneAsciiDigit)
-                    preprocessed.add(`)`)
+                    preprocessed.add(RuneFakeCloseParen)
                     pz += 8
                     continue
                 }
@@ -780,11 +781,11 @@ impl RegExp
 
                 if Unicode.compare(subSlice, @runes("[:alnum:]"), false, 9) == 0
                 {
-                    preprocessed.add(`(`)
+                    preprocessed.add(RuneFakeOpenParen)
                     preprocessed.add(RuneAsciiLetter)
                     preprocessed.add(`|`)
                     preprocessed.add(RuneAsciiDigit)
-                    preprocessed.add(`)`)
+                    preprocessed.add(RuneFakeCloseParen)
                     pz += 9
                     continue
                 }
@@ -826,13 +827,13 @@ impl RegExp
 
                 if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:word:]"), false, 8) == 0
                 {
-                    preprocessed.add(`(`)
+                    preprocessed.add(RuneFakeOpenParen)
                     preprocessed.add(RuneAsciiLetter)
                     preprocessed.add(`|`)
                     preprocessed.add(RuneAsciiDigit)
                     preprocessed.add(`|`)
                     preprocessed.add(`_`)
-                    preprocessed.add(`)`)
+                    preprocessed.add(RuneFakeCloseParen)
                     pz += 8
                     continue
                 }
@@ -872,7 +873,7 @@ impl RegExp
 
         if pz != pzEnd
             pz += 1
-        preprocessed.add(`)`)
+        preprocessed.add(RuneFakeCloseParen)
 
         return pz
     }
@@ -944,14 +945,14 @@ impl RegExp
             let pze = preprocessed.buffer + preprocessed.count - 1
             var pz1 = pze
             var cptParen = 0
-            if pz1[0] == `)`
+            if pz1[0] == `)` or pz1[0] == RuneFakeCloseParen
                 cptParen += 1
             while cptParen and pz1 != preprocessed.buffer
             {
                 pz1 -= 1
-                if pz1[0] == `)`
+                if pz1[0] == `)` or pz1[0] == RuneFakeCloseParen
                     cptParen += 1
-                if pz1[0] == `(`
+                if pz1[0] == `(` or pz1[0] == RuneFakeOpenParen
                     cptParen -= 1
             }
 
@@ -1101,30 +1102,43 @@ impl RegExp
         var pz = cast(const ^rune) in32.buffer
         let pzEnd = pz + in32.count
 
-        var c = pz[0]
-        if ignoreCase
-            c = Unicode.toUpper(c)
-
+        var c = ignoreCase ? Unicode.toUpper(pz[0]) : pz[0]
+        var open = false
         while c
         {
             switch c
             {
             case `[`:
+                if open { preprocessed.add(RuneFakeCloseParen); open = false; } 
                 pz = preprocessInter(@mkslice(pz, pzEnd - pz))
                 break
 
             case `{`:
+                if open { preprocessed.add(RuneFakeCloseParen); open = false; } 
                 pz = preprocessEnum(@mkslice(pz, pzEnd - pz))
-                break
 
             default:
-                pz = preprocessEscape(@mkslice(pz, pzEnd - pz))
-                break
+                if open and (pz[1] == `*` or pz[1] == `+` or pz[1] == `?`)
+                {
+                    if open { preprocessed.add(RuneFakeCloseParen); open = false; } 
+                    pz = preprocessEscape(@mkslice(pz, pzEnd - pz))
+                }
+                elif isReservedChar(c)
+                {
+                    if open { preprocessed.add(RuneFakeCloseParen); open = false; } 
+                    pz = preprocessEscape(@mkslice(pz, pzEnd - pz))
+                }
+                else
+                {
+                    if !open { preprocessed.add(RuneFakeOpenParen); open = true; }
+                    pz = preprocessEscape(@mkslice(pz, pzEnd - pz))
+                }
             }
 
-            c = pz[0]
-            if ignoreCase
-                c = Unicode.toUpper(c)
+            c = ignoreCase ? Unicode.toUpper(pz[0]) : pz[0]
         }
+
+        if open
+            preprocessed.add(RuneFakeCloseParen)
     }
 }

@@ -9,5 +9,5 @@ using Core
     @assert(r.getCapture(1) == "99") 
     @assert(r.getCapture(2) == "5") 
     @assert(r.getCapture(3) == "6") 
-    @assert(r.getCapture(4) == "777") 
+    @assert(r.getCapture(4) == "777")
 }
