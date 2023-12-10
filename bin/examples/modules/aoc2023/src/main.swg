@@ -1,4 +1,4 @@
-// https://adventofcode.com/ 
+// https://adventofcode.com/
 // Year 2023
 //
 // This will not be the more optimal or elegant code.
@@ -26,4 +26,5 @@
     day8B()
     day9A()
     day9B()
+    day10A()
 }
