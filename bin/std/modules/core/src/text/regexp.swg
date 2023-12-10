@@ -1,14 +1,14 @@
 #global namespace Parser
 using Errors
 
-const RuneAsciiDigit     = cast(rune) 0x8000_0000
-const RuneAsciiLetter    = cast(rune) 0x8000_0001
-const RuneAsciiLower     = cast(rune) 0x8000_0002
-const RuneAsciiUpper     = cast(rune) 0x8000_0003
-const RuneAsciiSpace     = cast(rune) 0x8000_0004
-const RuneAscii          = cast(rune) 0x8000_0005
-const RuneFakeOpenParen  = cast(rune) 0x8000_0006
-const RuneFakeCloseParen = cast(rune) 0x8000_0007
+const RuneAsciiDigit    = cast(rune) 0x8000_0000
+const RuneAsciiLetter   = cast(rune) 0x8000_0001
+const RuneAsciiLower    = cast(rune) 0x8000_0002
+const RuneAsciiUpper    = cast(rune) 0x8000_0003
+const RuneAsciiSpace    = cast(rune) 0x8000_0004
+const RuneAscii         = cast(rune) 0x8000_0005
+const RuneOpenParen     = cast(rune) 0x8000_0006
+const RuneCloseParen    = cast(rune) 0x8000_0007
 
 const RuneUnicodeLetter         = cast(rune) 0x8001_0006
 const RuneUnicodeLetterLower    = cast(rune) 0x8001_0007
@@ -53,7 +53,7 @@ struct RegExpGroup
 // | [abc]            | match any in list
 // | [a-zA-Z]         | match any in range
 // | [[:digit:]]      |
-// | [[:hexa:]]       |
+// | [[:xdigit:]]     |
 // | [[:alpha:]]      |
 // | [[:alnum:]]      |
 // | [[:lower:]]      |
@@ -540,10 +540,10 @@ impl RegExp
             var c = dref pz
             switch c
             {
-            case `(`, RuneFakeOpenParen:
+            case `(`, RuneOpenParen:
                 openParen.add(cast(u32) nfaStack.count)
 
-            case RuneFakeCloseParen:
+            case RuneCloseParen:
                 unionValidate()
                 let op = openParen.popBack()
                 operatorConcat(nfaStack.count - op, false)
@@ -748,7 +748,7 @@ impl RegExp
         let pzStart = pz
         let pzEnd = pz + @countof(sl)
 
-        preprocessed.add(RuneFakeOpenParen)
+        preprocessed.add(RuneOpenParen)
         pz += 1
 
         var firstExp = true
@@ -770,14 +770,14 @@ impl RegExp
                     continue
                 }
 
-                if Unicode.compare(subSlice, @runes("[:hexa:]"), false, 8) == 0
+                if Unicode.compare(subSlice, @runes("[:xdigit:]"), false, 10) == 0
                 {
-                    preprocessed.add(RuneFakeOpenParen)
+                    preprocessed.add(RuneOpenParen)
                     preprocessInter(@runes("[a-fA-F]"))
                     preprocessed.add(`|`)
                     preprocessed.add(RuneAsciiDigit)
-                    preprocessed.add(RuneFakeCloseParen)
-                    pz += 8
+                    preprocessed.add(RuneCloseParen)
+                    pz += 10
                     continue
                 }
 
@@ -790,11 +790,11 @@ impl RegExp
 
                 if Unicode.compare(subSlice, @runes("[:alnum:]"), false, 9) == 0
                 {
-                    preprocessed.add(RuneFakeOpenParen)
+                    preprocessed.add(RuneOpenParen)
                     preprocessed.add(RuneAsciiLetter)
                     preprocessed.add(`|`)
                     preprocessed.add(RuneAsciiDigit)
-                    preprocessed.add(RuneFakeCloseParen)
+                    preprocessed.add(RuneCloseParen)
                     pz += 9
                     continue
                 }
@@ -836,13 +836,13 @@ impl RegExp
 
                 if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:word:]"), false, 8) == 0
                 {
-                    preprocessed.add(RuneFakeOpenParen)
+                    preprocessed.add(RuneOpenParen)
                     preprocessed.add(RuneAsciiLetter)
                     preprocessed.add(`|`)
                     preprocessed.add(RuneAsciiDigit)
                     preprocessed.add(`|`)
                     preprocessed.add(`_`)
-                    preprocessed.add(RuneFakeCloseParen)
+                    preprocessed.add(RuneCloseParen)
                     pz += 8
                     continue
                 }
@@ -882,7 +882,7 @@ impl RegExp
 
         if pz != pzEnd
             pz += 1
-        preprocessed.add(RuneFakeCloseParen)
+        preprocessed.add(RuneCloseParen)
 
         return pz
     }
@@ -954,14 +954,14 @@ impl RegExp
             let pze = preprocessed.buffer + preprocessed.count - 1
             var pz1 = pze
             var cptParen = 0
-            if pz1[0] == `)` or pz1[0] == RuneFakeCloseParen
+            if pz1[0] == `)` or pz1[0] == RuneCloseParen
                 cptParen += 1
             while cptParen and pz1 != preprocessed.buffer
             {
                 pz1 -= 1
-                if pz1[0] == `)` or pz1[0] == RuneFakeCloseParen
+                if pz1[0] == `)` or pz1[0] == RuneCloseParen
                     cptParen += 1
-                if pz1[0] == `(` or pz1[0] == RuneFakeOpenParen
+                if pz1[0] == `(` or pz1[0] == RuneOpenParen
                     cptParen -= 1
             }
 
@@ -1118,28 +1118,28 @@ impl RegExp
             switch c
             {
             case `[`:
-                if open { preprocessed.add(RuneFakeCloseParen); open = false; } 
+                if open { preprocessed.add(RuneCloseParen); open = false; } 
                 pz = preprocessInter(@mkslice(pz, pzEnd - pz))
                 break
 
             case `{`:
-                if open { preprocessed.add(RuneFakeCloseParen); open = false; } 
+                if open { preprocessed.add(RuneCloseParen); open = false; } 
                 pz = preprocessEnum(@mkslice(pz, pzEnd - pz))
 
             default:
                 if open and (pz[1] == `*` or pz[1] == `+` or pz[1] == `?`)
                 {
-                    if open { preprocessed.add(RuneFakeCloseParen); open = false; } 
+                    if open { preprocessed.add(RuneCloseParen); open = false; } 
                     pz = preprocessEscape(@mkslice(pz, pzEnd - pz))
                 }
                 elif isReservedChar(c)
                 {
-                    if open { preprocessed.add(RuneFakeCloseParen); open = false; } 
+                    if open { preprocessed.add(RuneCloseParen); open = false; } 
                     pz = preprocessEscape(@mkslice(pz, pzEnd - pz))
                 }
                 else
                 {
-                    if !open { preprocessed.add(RuneFakeOpenParen); open = true; }
+                    if !open { preprocessed.add(RuneOpenParen); open = true; }
                     pz = preprocessEscape(@mkslice(pz, pzEnd - pz))
                 }
             }
@@ -1148,6 +1148,6 @@ impl RegExp
         }
 
         if open
-            preprocessed.add(RuneFakeCloseParen)
+            preprocessed.add(RuneCloseParen)
     }
 }

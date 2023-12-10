@@ -44,7 +44,7 @@
 
     {
         var r: Parser.RegExp
-        assume r.compile("[[:hexa:]]")
+        assume r.compile("[[:xdigit:]]")
         @assert(r.match("a"))
         @assert(r.match("A"))
         @assert(r.match("F"))
