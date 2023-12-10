@@ -15,10 +15,10 @@ const RuneUnicodeNumber         = cast(rune) 0x8001_0009
 const RuneUnicodeSymbol         = cast(rune) 0x8001_000a
 const RuneUnicodeSymbolMath     = cast(rune) 0x8001_000b
 
-
 struct NfaNode
 {
     transitions:    HashTable'(rune, Array'(*NfaNode))
+    group:          u32
     terminal:       bool
 }
 
@@ -30,9 +30,16 @@ struct NfaTable
 
 struct DfaNode
 {
-    table:          HashSet'(*NfaNode)
+    table:          Array'(*NfaNode)
     transitions:    HashTable'(rune, *DfaNode)
+    group:          u32
     terminal:       bool
+}
+
+struct RegExpGroup
+{
+    rank:   u32
+    value:  string
 }
 
 // Simple regular expression matcher.
@@ -73,10 +80,13 @@ public struct RegExp
     nfaStack:       Array'(*NfaTable)
     nfaTables:      Array'(*NfaTable)
     charSet:        HashSet'rune
+    groups:         Array'RegExpGroup
+    groupTransform: Array'u32
     openParen:      Array'u32
     orOpStack:      Array'rune
     orOpLevel:      Array'u32
     preprocessed:   Array'rune
+    group:          u32
     ignoreCase:     bool
 }
 
@@ -135,6 +145,9 @@ impl RegExp
         var srcPtr = @dataof(str)
         let srcLength = @countof(str)
 
+        var lastGroup  = 0
+        var startGroup = srcPtr
+
         while cpt < srcLength and !pstack1.isEmpty()
         {
             let (cr, eat) = Utf8.decodeRune(@mkslice(srcPtr, srcLength - cpt))
@@ -149,7 +162,22 @@ impl RegExp
             }
 
             if ok
+            {
+                // Register group if changed
+                if pstack2.count and pstack2.back().group != lastGroup
+                {
+                    if lastGroup
+                    {
+                        let strGroup = @mkstring(startGroup, srcPtr-startGroup)
+                        groups.add({lastGroup, strGroup})
+                    }
+
+                    lastGroup = pstack2.back().group
+                    startGroup = srcPtr
+                }
+
                 cpt, srcPtr += eat
+            }
 
             swap(&pstack1, &pstack2)
         }
@@ -160,6 +188,10 @@ impl RegExp
         while !pstack1.isEmpty()
         {
             let curState = pstack1.popBack()
+
+            let strGroup = @mkstring(startGroup, srcPtr-startGroup)
+            groups.add({lastGroup, strGroup})
+
             if curState.terminal
                 return true
         }
@@ -207,6 +239,18 @@ impl RegExp
         if !end
             return null
         return @mkstring(beg, end - beg)
+    }
+
+    // Returns the parsed string associated with a given captured group
+    public mtd getCapture(rank: u32)->string
+    {
+        visit g: groups
+        {
+            if g.rank == rank
+                return g.value
+        }
+
+        return ""
     }
 
     mtd matchGrep(str: string)->const *u8
@@ -527,11 +571,19 @@ impl RegExp
         {
             let table1 = nfaPop()
             table1.level = cast(u32) openParen.count
+
+            group += 1
+            visit n: table1.nodes
+            {
+                if n.group == 0
+                    n.group = group
+            }
+
             nfaStack.add(table1)
         }
     }
 
-    func dfaEClosure(inH, outH: *HashSet'(*NfaNode))
+    func dfaEClosure(inH, outH: *Array'(*NfaNode))
     {
         outH.clear()
 
@@ -542,7 +594,7 @@ impl RegExp
         while stack.count
         {
             let state = stack.popBack()
-            outH.add(state)
+            outH.addOnce(state)
 
             let find = state.transitions.find(0'rune)
             if !find
@@ -556,9 +608,15 @@ impl RegExp
         }
     }
 
-    func setTable(node: *DfaNode, tbl: *HashSet'(*NfaNode))
+    mtd setTable(node: *DfaNode, tbl: *Array'(*NfaNode))
     {
         node.table =,move dref tbl
+
+        visit n: node.table
+        {
+            if node.group == 0
+                node.group = groupTransform[n.group]
+        }
 
         // A DFA node is terminal if one of the NFA nodes used to construct it is a
         // terminal too
@@ -572,7 +630,7 @@ impl RegExp
         }
     }
 
-    func dfaMoveNode(out: *HashSet'(*NfaNode), c: rune, inH: HashSet'(*NfaNode))
+    func dfaMoveNode(out: *Array'(*NfaNode), c: rune, inH: Array'(*NfaNode))
     {
         out.clear()
         visit state: inH
@@ -587,7 +645,7 @@ impl RegExp
         }
     }
 
-    func equals(s1, s2: *HashSet'(*NfaNode))->bool
+    func equals(s1, s2: *Array'(*NfaNode))->bool
     {
         if s1.count != s2.count
             return false
@@ -608,16 +666,33 @@ impl RegExp
         // Last state of NFA table is a terminal
         table.nodes.back().terminal = true
 
+        // Group transformation
+        var grp: Array'u32
+        visit n: table.nodes
+            grp.add(n.group)
+        grp.sort()
+
+        var curGroup, curGroupSwap: u32
+
+        groupTransform.resize(cast(u64) group+1)
+        visit n: grp
+        {
+            if n != curGroup
+                curGroupSwap += 1
+            curGroup = n
+            groupTransform[n] = curGroupSwap
+        }
+
         // Build the first state of the DFA table
-        var nfaStart, dfaStart: HashSet'(*NfaNode)
-        nfaStart.add(table.nodes.front())
+        var nfaStart, dfaStart: Array'(*NfaNode)
+        nfaStart.addOnce(table.nodes.front())
         dfaEClosure(&nfaStart, &dfaStart)
 
         var state = Memory.new'DfaNode()
-        state.setTable(&dfaStart)
+        setTable(state, &dfaStart)
         dfaNodes.add(state)
 
-        var moveRes, epsilonRes: HashSet'(*NfaNode)
+        var moveRes, epsilonRes: Array'(*NfaNode)
         var stack: Array'(*DfaNode)
         stack.add(state)
         while stack.count
@@ -646,7 +721,7 @@ impl RegExp
                 if !found
                 {
                     found = Memory.new'DfaNode()
-                    found.setTable(&epsilonRes)
+                    setTable(found, &epsilonRes)
                     stack.add(found)
                     dfaNodes.add(found)
                 }
