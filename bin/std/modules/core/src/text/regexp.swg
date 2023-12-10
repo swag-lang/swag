@@ -1,17 +1,19 @@
 #global namespace Parser
 using Errors
 
-const RuneAsciiDigit    = cast(rune) 0x8000_0000
-const RuneAsciiLetter   = cast(rune) 0x8000_0001
-const RuneAsciiLower    = cast(rune) 0x8000_0002
-const RuneAsciiUpper    = cast(rune) 0x8000_0003
-const RuneAsciiSpace    = cast(rune) 0x8000_0004
-const RuneAscii         = cast(rune) 0x8000_0005
-const RuneOpenParen     = cast(rune) 0x8000_0006
-const RuneCloseParen    = cast(rune) 0x8000_0007
-const RuneAsciiAlNum    = cast(rune) 0x8000_0008
-const RuneAsciiWord     = cast(rune) 0x8000_0009
-const RuneAsciiBlank    = cast(rune) 0x8000_000A
+const RuneAsciiDigit        = cast(rune) 0x8000_0000
+const RuneAsciiLetter       = cast(rune) 0x8000_0001
+const RuneAsciiLower        = cast(rune) 0x8000_0002
+const RuneAsciiUpper        = cast(rune) 0x8000_0003
+const RuneAsciiSpace        = cast(rune) 0x8000_0004
+const RuneAscii             = cast(rune) 0x8000_0005
+const RuneOpenParen         = cast(rune) 0x8000_0006
+const RuneCloseParen        = cast(rune) 0x8000_0007
+const RuneAsciiAlNum        = cast(rune) 0x8000_0008
+const RuneAsciiWord         = cast(rune) 0x8000_0009
+const RuneAsciiBlank        = cast(rune) 0x8000_000A
+const RuneAsciiHexa         = cast(rune) 0x8000_000B
+const RuneAsciiWordBoundary = cast(rune) 0x8000_000C
 
 const RuneUnicodeLetter         = cast(rune) 0x8001_0006
 const RuneUnicodeLetterLower    = cast(rune) 0x8001_0007
@@ -19,6 +21,8 @@ const RuneUnicodeLetterUpper    = cast(rune) 0x8001_0008
 const RuneUnicodeNumber         = cast(rune) 0x8001_0009
 const RuneUnicodeSymbol         = cast(rune) 0x8001_000a
 const RuneUnicodeSymbolMath     = cast(rune) 0x8001_000b
+
+const RuneInvert = cast(rune) 0x0400_0000
 
 struct NfaTable
 {
@@ -55,21 +59,26 @@ struct RegExpGroup
 // | a\|b             | a or b
 // | [abc]            | match any in list
 // | [a-zA-Z]         | match any in range
-// | [[:digit:]]      |
-// | [[:xdigit:]]     |
-// | [[:alpha:]]      |
-// | [[:alnum:]]      |
-// | [[:lower:]]      |
-// | [[:upper:]]      |
-// | [[:blank:]]      |
-// | [[:space:]]      |
-// | [[:word:]]       |
-// | [[:ascii:]]      |
+// | [[:digit:]]      | [0-9]
+// | [[:xdigit:]]     | [a-fA-F0-9]
+// | [[:alpha:]]      | [a-zA-Z]
+// | [[:alnum:]]      | [a-zA-Z0-9]
+// | [[:lower:]]      | [a-z]
+// | [[:upper:]]      | [A-Z]
+// | [[:blank:]]      | whitespace or tab
+// | [[:space:]]      | and whitespace character
+// | [[:word:]]       | [a-zA-Z0-9_]
+// | [[:ascii:]]      | Any ascii character
 // | \d               | [[:digit:]]
+// | \D               | [^[:digit:]]
 // | \l               | [[:lower:]]
+// | \L               | [^[:lower:]]
 // | \u               | [[:upper:]]
+// | \U               | [^[:upper:]]
 // | \s               | [[:space:]]
+// | \S               | [^[:space:]]
 // | \w               | [[:word:]]
+// | \W               | [^[:word:]]
 // | \pL              | unicode letter
 // | \pN              | unicode number
 // | \pS              | unicode symbol
@@ -329,26 +338,60 @@ impl RegExp
 
         // Should be optimized, because some are exclusive
 
-        if Unicode.isLatin1(c)
+        if Unicode.isAscii(c)
         {
             let c8 = cast(u8) c
+
             if Latin1.isDigit(c8)           
                 checkTr(RuneAsciiDigit)
+            else
+                checkTr(RuneAsciiDigit | RuneInvert)
+
+            if Latin1.isHexDigit(c8) 
+                checkTr(RuneAsciiHexa)
+            else
+                checkTr(RuneAsciiHexa | RuneInvert)
+
             if Latin1.isLetter(c8)          
                 checkTr(RuneAsciiLetter)
+            else
+                checkTr(RuneAsciiLetter | RuneInvert)
+
             if Latin1.isLower(c8)           
                 checkTr(RuneAsciiLower)
+            else
+                checkTr(RuneAsciiLower | RuneInvert)
+
             if Latin1.isUpper(c8)           
                 checkTr(RuneAsciiUpper)
+            else
+                checkTr(RuneAsciiUpper | RuneInvert)
+
             if Latin1.isSpace(c8)           
                 checkTr(RuneAsciiSpace)
+            else
+                checkTr(RuneAsciiSpace | RuneInvert)
+
             if Latin1.isLetterOrDigit(c8)   
                 checkTr(RuneAsciiAlNum)
-            if Latin1.isLetterOrDigit(c8) or c8 == `_`   
+            else
+                checkTr(RuneAsciiAlNum | RuneInvert)
+
+            if Latin1.isLetterOrDigit(c8) or c8 == `_`
                 checkTr(RuneAsciiWord)
+            else
+                checkTr(RuneAsciiWord | RuneInvert)
+
             if c8 == ` ` or c8 == `\t`
                 checkTr(RuneAsciiBlank)
+            else
+                checkTr(RuneAsciiBlank | RuneInvert)                
+
             checkTr(RuneAscii)
+        }
+        else
+        {
+            checkTr(RuneAscii | RuneInvert)                
         }
 
         if Unicode.isLetter(c)      
@@ -766,6 +809,11 @@ impl RegExp
         preprocessed.add(RuneOpenParen)
         pz += 1
 
+        // Negation
+        var invert: rune
+        if dref pz == `^`
+            invert = RuneInvert
+
         var firstExp = true
         while pz != pzEnd and pz[0] != `]`
         {
@@ -780,39 +828,35 @@ impl RegExp
             {
                 if Unicode.compare(subSlice, @runes("[:digit:]"), false, 9) == 0
                 {
-                    preprocessed.add(RuneAsciiDigit)
+                    preprocessed.add(RuneAsciiDigit | invert)
                     pz += 9
                     continue
                 }
 
                 if Unicode.compare(subSlice, @runes("[:xdigit:]"), false, 10) == 0
                 {
-                    preprocessed.add(RuneOpenParen)
-                    preprocessInter(@runes("[a-fA-F]"))
-                    preprocessed.add(`|`)
-                    preprocessed.add(RuneAsciiDigit)
-                    preprocessed.add(RuneCloseParen)
+                    preprocessed.add(RuneAsciiHexa | invert)
                     pz += 10
                     continue
                 }
 
                 if Unicode.compare(subSlice, @runes("[:alpha:]"), false, 9) == 0
                 {
-                    preprocessed.add(RuneAsciiLetter)
+                    preprocessed.add(RuneAsciiLetter | invert)
                     pz += 9
                     continue
                 }
 
                 if Unicode.compare(subSlice, @runes("[:alnum:]"), false, 9) == 0
                 {
-                    preprocessed.add(RuneAsciiAlNum)
+                    preprocessed.add(RuneAsciiAlNum | invert)
                     pz += 9
                     continue
                 }
 
                 if Unicode.compare(subSlice, @runes("[:lower:]"), false, 9) == 0
                 {
-                    preprocessed.add(RuneAsciiLower)
+                    preprocessed.add(RuneAsciiLower | invert)
                     pz += 9
                     continue
                 }
@@ -826,28 +870,28 @@ impl RegExp
 
                 if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:blank:]"), false, 9) == 0
                 {
-                    preprocessed.add(RuneAsciiBlank)
+                    preprocessed.add(RuneAsciiBlank | invert)
                     pz += 9
                     continue
                 }
 
                 if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:space:]"), false, 9) == 0
                 {
-                    preprocessed.add(RuneAsciiSpace)
+                    preprocessed.add(RuneAsciiSpace | invert)
                     pz += 9
                     continue
                 }
 
                 if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:ascii:]"), false, 9) == 0
                 {
-                    preprocessed.add(RuneAscii)
+                    preprocessed.add(RuneAscii | invert)
                     pz += 9
                     continue
                 }
 
                 if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:word:]"), false, 8) == 0
                 {
-                    preprocessed.add(RuneAsciiWord)
+                    preprocessed.add(RuneAsciiWord | invert)
                     pz += 8
                     continue
                 }
@@ -1068,17 +1112,35 @@ impl RegExp
             case `d`:
                 preprocessInter(@runes("[[:digit:]]"))
                 return pz + 2
+            case `D`:
+                preprocessInter(@runes("[^[:digit:]]"))
+                return pz + 2                
             case `w`:
                 preprocessInter(@runes("[[:word:]]"))
                 return pz + 2
+            case `W`:
+                preprocessInter(@runes("[^[:word:]]"))
+                return pz + 2                
             case `s`:
                 preprocessInter(@runes("[[:space:]]"))
                 return pz + 2
+            case `S`:
+                preprocessInter(@runes("[^[:space:]]"))
+                return pz + 2                
             case `l`:
                 preprocessInter(@runes("[[:lower:]]"))
                 return pz + 2
+            case `L`:
+                preprocessInter(@runes("[^[:lower:]]"))
+                return pz + 2                
             case `u`:
                 preprocessInter(@runes("[[:upper:]]"))
+                return pz + 2
+            case `U`:
+                preprocessInter(@runes("[^[:upper:]]"))
+                return pz + 2                
+            case `b`:
+                preprocessed.add(RuneAsciiWordBoundary)
                 return pz + 2
             case `a`:
                 preprocessed.add(`\a`)
