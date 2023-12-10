@@ -52,12 +52,6 @@ struct RegExpGroup
 // | a\|b             | a or b
 // | [abc]            | match any in list
 // | [a-zA-Z]         | match any in range
-// | /pL              | unicode letter
-// | /p{Ll}           | unicode lower letter
-// | /p{Lu}           | unicode upper letter
-// | /pN              | unicode number
-// | /pS              | unicode symbol
-// | /p{Sm}           | unicode symbol math
 // | [[:digit:]]      |
 // | [[:hexa:]]       |
 // | [[:alpha:]]      |
@@ -73,6 +67,12 @@ struct RegExpGroup
 // | \u               | [[:upper:]]
 // | \s               | [[:space:]]
 // | \w               | [[:word:]]
+// | \pL              | unicode letter
+// | \pN              | unicode number
+// | \pS              | unicode symbol
+// | \p{Ll}           | unicode lower letter
+// | \p{Lu}           | unicode upper letter
+// | \p{Sm}           | unicode symbol math
 #[Swag.Opaque]
 public struct RegExp
 {
@@ -396,6 +396,31 @@ impl RegExp
         charSet.add(c)
     }
 
+    mtd unionValidate() throw
+    {
+        if orOpStack.isEmpty()
+            return
+        if nfaStack.count < 2
+            return
+
+        // Check if the two tables have the same nested level
+        let table2 = nfaPop()
+        let table1 = nfaPop()
+        nfaStack.add(table1)
+        nfaStack.add(table2)
+        if table1.level != table2.level
+            return
+
+        // Operator must be at the same level
+        if orOpLevel[orOpLevel.count - 1] != table1.level
+            return
+
+        // Else validate union
+        orOpStack.removeBack()
+        orOpLevel.removeBack()
+        operatorUnion()
+    }
+
     mtd operatorUnion() throw
     {
         let table2 = nfaPop()
@@ -422,30 +447,47 @@ impl RegExp
         nfaStack.add(table1)
     }
 
-    mtd unionValidate() throw
+    mtd operatorConcat(cpt: u64, canGroup = true) throw
     {
-        if orOpStack.isEmpty()
-            return
-        if nfaStack.count < 2
-            return
+        var count = cpt
+        while count >= 2
+        {
+            let table2 = nfaPop()
+            let table1 = nfaPop()
 
-        // Check if the two tables have the same nested level
-        let table2 = nfaPop()
-        let table1 = nfaPop()
-        nfaStack.add(table1)
-        nfaStack.add(table2)
-        if table1.level != table2.level
-            return
+            // Update nested level
+            table1.level = cast(u32) openParen.count
+            table2.level = cast(u32) openParen.count
 
-        // Operator must be at the same level
-        if orOpLevel[orOpLevel.count - 1] != table1.level
-            return
+            let s1 = table1.nodes.back()
+            let s2 = table2.nodes.front()
+            s1.addTransition(0'rune, s2)
 
-        // Else validate union
-        orOpStack.removeBack()
-        orOpLevel.removeBack()
-        operatorUnion()
-    }
+            table1.nodes.add(table2.nodes.toSlice())
+            nfaStack.add(table1)
+
+            count -= 1
+        }
+
+        // Update nested level
+        if count == 1
+        {
+            let table1 = nfaPop()
+            table1.level = cast(u32) openParen.count
+
+            if canGroup
+            {
+                group += 1
+                visit n: table1.nodes
+                {
+                    if n.group == 0
+                        n.group = group
+                }
+            }
+
+            nfaStack.add(table1)
+        }
+    }          
 
     mtd operatorStar() throw
     {
@@ -558,48 +600,6 @@ impl RegExp
 
         // Concat the remaining nodes
         operatorConcat(nfaStack.count)
-    }
-
-    mtd operatorConcat(cpt: u64, canGroup = true) throw
-    {
-        var count = cpt
-        while count >= 2
-        {
-            let table2 = nfaPop()
-            let table1 = nfaPop()
-
-            // Update nested level
-            table1.level = cast(u32) openParen.count
-            table2.level = cast(u32) openParen.count
-
-            let s1 = table1.nodes.back()
-            let s2 = table2.nodes.front()
-            s1.addTransition(0'rune, s2)
-
-            table1.nodes.add(table2.nodes.toSlice())
-            nfaStack.add(table1)
-
-            count -= 1
-        }
-
-        // Update nested level
-        if count == 1
-        {
-            let table1 = nfaPop()
-            table1.level = cast(u32) openParen.count
-
-            if canGroup
-            {
-                group += 1
-                visit n: table1.nodes
-                {
-                    if n.group == 0
-                        n.group = group
-                }
-            }
-
-            nfaStack.add(table1)
-        }
     }
 
     func dfaEClosure(inH, outH: *Array'(*NfaNode))
