@@ -6,14 +6,14 @@ using Core
         var r: Parser.RegExp
         assume r.compile("abc")
         let res = r.grep("ggggabc")
-        @assert(res == "abc")
+        @assert(res.value == "abc")
     }
 
     {
         var r: Parser.RegExp
         assume r.compile("a*")
         let res = r.grep("XXXaaaaXXX")
-        @assert(res == "aaaa")
+        @assert(res.value == "aaaa")
     }
 
     {
@@ -25,11 +25,10 @@ using Core
         let end = @dataof(res) + @countof(res)
         loop
         {
-            res = r.grep(res)
-            if !res
+            let val = r.grep(res)
+            if !val.value
                 break
-            //@print(res)
-            let newStart = @dataof(res) + @countof(res)
+            let newStart = @dataof(val.value) + @countof(val.value)
             res = @mkstring(newStart, end - newStart)
             cpt += 1
         }

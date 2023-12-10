@@ -51,6 +51,12 @@ struct RegExpGroup
     value:  string
 }
 
+public struct RegExpGrep
+{
+    value:  string
+    index:  u64
+}
+
 // Simple regular expression matcher.
 // | *                | zero or more
 // | ?                | zero or one
@@ -162,8 +168,9 @@ impl RegExp
         var srcPtr = @dataof(str)
         let srcLength = @countof(str)
 
-        var lastGroup  = 0
-        var startGroup = srcPtr
+        var lastGroup   = 0
+        var startGroup  = srcPtr
+        var hasTerminal = false
 
         while cpt < srcLength and !pstack1.isEmpty()
         {
@@ -176,6 +183,7 @@ impl RegExp
                 let curState = pstack1.popBack()
                 if dfaMatch(pstack2, c, curState)
                     ok = true
+                hasTerminal = curState.terminal
             }
 
             if ok
@@ -205,30 +213,31 @@ impl RegExp
         while !pstack1.isEmpty()
         {
             let curState = pstack1.popBack()
-
-            let strGroup = @mkstring(startGroup, srcPtr-startGroup)
-            groups.add({lastGroup, strGroup})
-
-            if curState.terminal
-                return true
+            hasTerminal = curState.terminal
         }
 
-        return false
+        if hasTerminal and srcPtr != startGroup
+        {
+            let strGroup = @mkstring(startGroup, srcPtr-startGroup)
+            groups.add({lastGroup, strGroup})
+        }
+
+        return hasTerminal
     }
 
     // Find all the occurences in the string
-    public mtd grepAll(str: string)->Array'string
+    public mtd grepAll(str: string)->Array'RegExpGrep
     {
         var result: retval
         var res = str
         let end = @dataof(str) + @countof(str)
         loop
         {
-            res = grep(res)
-            if !res
+            let val = grep(res)
+            if !val.value
                 break
-            result.add(res)
-            let newStart = @dataof(res) + @countof(res)
+            result.add(val)
+            let newStart = @dataof(val.value) + @countof(val.value)
             res = @mkstring(newStart, end - newStart)
         }
 
@@ -236,8 +245,9 @@ impl RegExp
     }
 
     // Find the first occurence in the string
-    public mtd grep(str: string)->string
+    public mtd grep(str: string)->RegExpGrep
     {
+        var result: retval
         var beg = @dataof(str)
         var copy = @dataof(str)
         let pzEnd = beg + @countof(str)
@@ -254,8 +264,11 @@ impl RegExp
         }
 
         if !end
-            return null
-        return @mkstring(beg, end - beg)
+            return result
+
+        result.value = @mkstring(beg, end - beg)
+        result.index = beg - @dataof(str)
+        return result
     }
 
     // Returns the parsed string associated with a given captured group
@@ -336,8 +349,6 @@ impl RegExp
             }
         }
 
-        // Should be optimized, because some are exclusive
-
         if Unicode.isAscii(c)
         {
             let c8 = cast(u8) c
@@ -367,11 +378,6 @@ impl RegExp
             else
                 checkTr(RuneAsciiUpper | RuneInvert)
 
-            if Latin1.isSpace(c8)
-                checkTr(RuneAsciiSpace)
-            else
-                checkTr(RuneAsciiSpace | RuneInvert)
-
             if Latin1.isLetterOrDigit(c8)
                 checkTr(RuneAsciiAlNum)
             else
@@ -381,6 +387,11 @@ impl RegExp
                 checkTr(RuneAsciiWord)
             else
                 checkTr(RuneAsciiWord | RuneInvert)
+
+            if Latin1.isSpace(c8)
+                checkTr(RuneAsciiSpace)
+            else
+                checkTr(RuneAsciiSpace | RuneInvert)
 
             if c8 == ` ` or c8 == `\t`
                 checkTr(RuneAsciiBlank)
