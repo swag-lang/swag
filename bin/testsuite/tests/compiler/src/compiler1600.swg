@@ -4,7 +4,7 @@ var G: s32
 {
     #ast
     {
-        return $"G = 666"$
+        return #"G = 666"#
     }
 
     @assert(G == 666)

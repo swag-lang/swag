@@ -9,7 +9,7 @@ using Core
     }
 
     var x: TT
-    discard try CommandLine.parse(&x, ["-val0", $""a""$, $""b and c""$, "cc and dd"])
+    discard try CommandLine.parse(&x, ["-val0", #""a""#, #""b and c""#, "cc and dd"])
     @assert(x.val0.count == 3)
     @assert(x.val0[0] == "a")
     @assert(x.val0[1] == "b and c")

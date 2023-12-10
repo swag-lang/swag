@@ -25,8 +25,8 @@ const TestCases: [] Test = [
     //{"(abc)+", "abcabc", true},
     //{"(abc|123)", "abc", true}, 
 
-    //{$"[a-z]+\d{2,4}"$, "word123", true},
-    //{$"\bword\b"$, "word", true},         
+    //{#"[a-z]+\d{2,4}"#, "word123", true},
+    //{#"\bword\b"#, "word", true},         
 ]
 
 #test

@@ -151,7 +151,7 @@ bool Tokenizer::doStringLiteral(TokenParse& token)
                 break;
             }
 
-            if (verbatim && curBuffer[1] == '$')
+            if (verbatim && curBuffer[1] == '#')
             {
                 appendTokenName(token);
                 curBuffer += 2;

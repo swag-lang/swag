@@ -1968,7 +1968,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     {
         auto literalNode = CastAst<AstLiteral>(node, AstNodeKind::Literal);
         if (literalNode->literalType == LiteralType::TT_STRING_RAW)
-            CONCAT_FIXED_STR(concat, "$\"");
+            CONCAT_FIXED_STR(concat, "#\"");
         else if (literalNode->literalType == LiteralType::TT_STRING || literalNode->literalType == LiteralType::TT_STRING_ESCAPE)
             CONCAT_FIXED_STR(concat, "\"");
         else if (literalNode->literalType == LiteralType::TT_STRING_MULTILINE || literalNode->literalType == LiteralType::TT_STRING_MULTILINE_ESCAPE)
@@ -1979,7 +1979,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         concat.addString(node->token.text);
 
         if (literalNode->literalType == LiteralType::TT_STRING_RAW)
-            CONCAT_FIXED_STR(concat, "\"$");
+            CONCAT_FIXED_STR(concat, "\"#");
         else if (literalNode->literalType == LiteralType::TT_STRING || literalNode->literalType == LiteralType::TT_STRING_ESCAPE)
             CONCAT_FIXED_STR(concat, "\"");
         else if (literalNode->literalType == LiteralType::TT_STRING_MULTILINE || literalNode->literalType == LiteralType::TT_STRING_MULTILINE_ESCAPE)

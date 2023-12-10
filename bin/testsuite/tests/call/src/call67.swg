@@ -1,2 +1,2 @@
 using test_foreign
-#assert A67 == $"titito\nto"$
+#assert A67 == #"titito\nto"#

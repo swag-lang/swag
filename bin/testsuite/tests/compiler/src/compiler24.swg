@@ -2,7 +2,7 @@
 #global testpass lexer;
 
 "totototoθθθθ"
-$"tototot
-oθθθθ"$
+#"tototot
+oθθθθ"#
 
 print("toto")

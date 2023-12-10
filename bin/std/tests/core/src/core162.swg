@@ -26,7 +26,7 @@
 
         var res: String
         @assert(reader.readLine(&res))
-        @assert(res == $"using Core.File"$)
+        @assert(res == "using Core.File")
         @assert(reader.readLine(&res))
         @assert(res == "// DO NOT CHANGE THE COMMENT")
         @assert(reader.readLine(&res))
