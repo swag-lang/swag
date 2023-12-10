@@ -113,6 +113,7 @@ impl RegExp
             Memory.delete(p)
         nfaTables.clear()
 
+        groups.clear()
         charSet.clear()
         openParen.clear()
         orOpStack.clear()
@@ -121,16 +122,24 @@ impl RegExp
     }
 
     // Compile the expression
-    public mtd compile(str: string, ignoreCase: bool = false) throw
+    public mtd compile(expr: string, ignoreCase = false) throw
     {
         clear()
         self.ignoreCase = #self.ignoreCase
-        preprocess(str)
+        preprocess(expr)
         nfaBuild()
         dfaBuild()
     }
 
-    // Returns true if 'str' matches the regexp
+    // Compile and match the expression.
+    public mtd match(expr, str: string, ignoreCase = false)->bool throw
+    {
+        compile(expr, #self.ignoreCase)
+        return match(str)
+    }
+
+    // Returns true if 'str' matches the regexp.
+    // Should have been compiled before.
     public mtd match(str: string)->bool
     {
         if dfaNodes.isEmpty()

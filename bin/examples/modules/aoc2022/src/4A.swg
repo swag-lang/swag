@@ -49,15 +49,22 @@ func day4A()
     let lines = assume File.readAllLines(dataPath)
 
     var total: u64
+    var r: Parser.RegExp
     visit l: lines
     {
-        let pair  = Tokenize.split(l, `,`)
+        discard catch r.match(#"(\d+)-(\d+),(\d+)-(\d+)"#, l)
+        let v0a = assume StrConv.toS32(r.getCapture(1))
+        let v0b = assume StrConv.toS32(r.getCapture(2))
+        let v1a = assume StrConv.toS32(r.getCapture(3))
+        let v1b = assume StrConv.toS32(r.getCapture(4))
+
+        /*let pair  = Tokenize.split(l, `,`)
         let pair0 = Tokenize.split(pair[0], `-`)
         let pair1 = Tokenize.split(pair[1], `-`)
         let v0a   = assume StrConv.toS32(pair0[0])
         let v0b   = assume StrConv.toS32(pair0[1])
         let v1a   = assume StrConv.toS32(pair1[0])
-        let v1b   = assume StrConv.toS32(pair1[1])
+        let v1b   = assume StrConv.toS32(pair1[1])*/
 
         if v0a >= v1a and v0b <= v1b
             total += 1
