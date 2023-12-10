@@ -9,6 +9,9 @@ const RuneAsciiSpace    = cast(rune) 0x8000_0004
 const RuneAscii         = cast(rune) 0x8000_0005
 const RuneOpenParen     = cast(rune) 0x8000_0006
 const RuneCloseParen    = cast(rune) 0x8000_0007
+const RuneAsciiAlNum    = cast(rune) 0x8000_0008
+const RuneAsciiWord     = cast(rune) 0x8000_0009
+const RuneAsciiBlank    = cast(rune) 0x8000_000A
 
 const RuneUnicodeLetter         = cast(rune) 0x8001_0006
 const RuneUnicodeLetterLower    = cast(rune) 0x8001_0007
@@ -329,11 +332,22 @@ impl RegExp
         if Unicode.isLatin1(c)
         {
             let c8 = cast(u8) c
-            if Latin1.isDigit(c8)   checkTr(RuneAsciiDigit)
-            if Latin1.isLetter(c8)  checkTr(RuneAsciiLetter)
-            if Latin1.isLower(c8)   checkTr(RuneAsciiLower)
-            if Latin1.isUpper(c8)   checkTr(RuneAsciiUpper)
-            if Latin1.isSpace(c8)   checkTr(RuneAsciiSpace)
+            if Latin1.isDigit(c8)           
+                checkTr(RuneAsciiDigit)
+            if Latin1.isLetter(c8)          
+                checkTr(RuneAsciiLetter)
+            if Latin1.isLower(c8)           
+                checkTr(RuneAsciiLower)
+            if Latin1.isUpper(c8)           
+                checkTr(RuneAsciiUpper)
+            if Latin1.isSpace(c8)           
+                checkTr(RuneAsciiSpace)
+            if Latin1.isLetterOrDigit(c8)   
+                checkTr(RuneAsciiAlNum)
+            if Latin1.isLetterOrDigit(c8) or c8 == `_`   
+                checkTr(RuneAsciiWord)
+            if c8 == ` ` or c8 == `\t`
+                checkTr(RuneAsciiBlank)
             checkTr(RuneAscii)
         }
 
@@ -785,11 +799,7 @@ impl RegExp
 
                 if Unicode.compare(subSlice, @runes("[:alnum:]"), false, 9) == 0
                 {
-                    preprocessed.add(RuneOpenParen)
-                    preprocessed.add(RuneAsciiLetter)
-                    preprocessed.add(`|`)
-                    preprocessed.add(RuneAsciiDigit)
-                    preprocessed.add(RuneCloseParen)
+                    preprocessed.add(RuneAsciiAlNum)
                     pz += 9
                     continue
                 }
@@ -810,7 +820,7 @@ impl RegExp
 
                 if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:blank:]"), false, 9) == 0
                 {
-                    preprocessed.add(@runes(" |\t"))
+                    preprocessed.add(RuneAsciiBlank)
                     pz += 9
                     continue
                 }
@@ -831,13 +841,7 @@ impl RegExp
 
                 if Unicode.compare(@mkslice(pz, pzEnd - pz), @runes("[:word:]"), false, 8) == 0
                 {
-                    preprocessed.add(RuneOpenParen)
-                    preprocessed.add(RuneAsciiLetter)
-                    preprocessed.add(`|`)
-                    preprocessed.add(RuneAsciiDigit)
-                    preprocessed.add(`|`)
-                    preprocessed.add(`_`)
-                    preprocessed.add(RuneCloseParen)
+                    preprocessed.add(RuneAsciiWord)
                     pz += 8
                     continue
                 }
