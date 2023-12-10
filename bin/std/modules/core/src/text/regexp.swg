@@ -17,17 +17,17 @@ const RuneUnicodeNumber         = cast(rune) 0x8001_0009
 const RuneUnicodeSymbol         = cast(rune) 0x8001_000a
 const RuneUnicodeSymbolMath     = cast(rune) 0x8001_000b
 
+struct NfaTable
+{
+    level:  u32
+    nodes:  Array'(*NfaNode)
+}
+
 struct NfaNode
 {
     transitions:    HashTable'(rune, Array'(*NfaNode))
     group:          u32
     terminal:       bool
-}
-
-struct NfaTable
-{
-    level:  u32
-    nodes:  Array'(*NfaNode)
 }
 
 struct DfaNode
@@ -101,18 +101,13 @@ impl RegExp
     // Clear content
     public mtd clear()
     {
-        visit p: nfaNodes
-            Memory.delete(p)
+        visit p: nfaNodes Memory.delete(p)
+        visit p: dfaNodes Memory.delete(p)
+        visit p: nfaTables Memory.delete(p)
+
         nfaNodes.clear()
-
-        visit p: dfaNodes
-            Memory.delete(p)
         dfaNodes.clear()
-
-        visit p: nfaTables
-            Memory.delete(p)
         nfaTables.clear()
-
         groups.clear()
         charSet.clear()
         openParen.clear()
