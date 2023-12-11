@@ -108,6 +108,9 @@ func day10A()
     let width = lines[0].length
     maze.resize(width*width)
 
+    #[Swag.Mixin]
+    func mp(x0, y0: u64)->ref Dir => maze.buffer + (x0 + y0*width)
+
     var startX, startY: u64
     visit l, line: lines
     {
@@ -115,19 +118,20 @@ func day10A()
         {
             switch l[col]
             {
-            case `-`: maze[col + line*width] = Dir.West|Dir.East
-            case `|`: maze[col + line*width] = Dir.North|Dir.South
-            case `L`: maze[col + line*width] = Dir.North|Dir.East
-            case `J`: maze[col + line*width] = Dir.North|Dir.West
-            case `7`: maze[col + line*width] = Dir.South|Dir.West
-            case `F`: maze[col + line*width] = Dir.South|Dir.East
+            case `-`: mp(col, line) = Dir.West|Dir.East
+            case `|`: mp(col, line) = Dir.North|Dir.South
+            case `L`: mp(col, line) = Dir.North|Dir.East
+            case `J`: mp(col, line)= Dir.North|Dir.West
+            case `7`: mp(col, line) = Dir.South|Dir.West
+            case `F`: mp(col, line) = Dir.South|Dir.East
             case `S`: startX = col; startY = line
             }
         }
     }
 
-    var visitX = startX
-    var visitY = startY
+    var visitX = startX; var visitY = startY
+
+    // Determin the shape of the start 'S'
     loop x: -1 to 1
     {
         if visitX+x < 0 or visitX+x >= width continue
@@ -149,29 +153,17 @@ func day10A()
         }
     }
 
+    // Visit the maze
     var total = 0
     loop
     {
         let one = maze[visitX + visitY*width]
-        if one & .East
+        switch
         {
-            visitX += 1
-            maze[visitX + visitY*width] &= ~Dir.West
-        }
-        elif one & .West
-        {
-            visitX -= 1
-            maze[visitX + visitY*width] &= ~Dir.East
-        }
-        elif one & .North
-        {
-            visitY -= 1
-            maze[visitX + visitY*width] &= ~Dir.South
-        }
-        elif one & .South
-        {
-            visitY += 1
-            maze[visitX + visitY*width] &= ~Dir.North
+        case one & .East:   visitX += 1; mp(visitX, visitY) &= ~Dir.West
+        case one & .West:   visitX -= 1; mp(visitX, visitY) &= ~Dir.East
+        case one & .North:  visitY -= 1; mp(visitX, visitY) &= ~Dir.South
+        case one & .South:  visitY += 1; mp(visitX, visitY) &= ~Dir.North
         }
 
         total += 1
