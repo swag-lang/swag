@@ -105,11 +105,11 @@ func day10A()
     let lines = assume File.readAllLines(dataPath)
 
     var maze: Array'Dir
-    let width = lines[0].length
+    let width = lines[0].length+2
     maze.resize(width*width)
 
     #[Swag.Mixin]
-    func mp(x0, y0: u64)->ref Dir => maze.buffer + (x0 + y0*width)
+    func mp(x0, y0: u64)->ref Dir => maze.buffer + ((x0+1) + (y0+1)*width)
 
     var startX, startY: u64
     visit l, line: lines
@@ -118,52 +118,36 @@ func day10A()
         {
             switch l[col]
             {
-            case `-`: mp(col, line) = Dir.West|Dir.East
-            case `|`: mp(col, line) = Dir.North|Dir.South
-            case `L`: mp(col, line) = Dir.North|Dir.East
-            case `J`: mp(col, line) = Dir.North|Dir.West
-            case `7`: mp(col, line) = Dir.South|Dir.West
-            case `F`: mp(col, line) = Dir.South|Dir.East
+            case `-`: mp(col, line) = .West|.East
+            case `|`: mp(col, line) = .North|.South
+            case `L`: mp(col, line) = .North|.East
+            case `J`: mp(col, line) = .North|.West
+            case `7`: mp(col, line) = .South|.West
+            case `F`: mp(col, line) = .South|.East
             case `S`: startX = col; startY = line
             }
         }
     }
 
     // Determin the shape of the start 'S'
-    loop x: -1 to 1
-    {
-        let x1 = cast(s64) startX + x
-        if x1 < 0 or x1 >= width continue
-
-        loop y: -1 to 1
-        {
-            let y1 = cast(s64) startY + y
-            if y1 < 0 or y1 >= width continue
-
-            let one = mp(cast(u64) x1, cast(u64) y1)
-            if one & .East and x == -1 and y == 0
-                mp(startX, startY) |= Dir.West
-            if one & .West and x == 1 and y == 0
-                mp(startX, startY) |= Dir.East
-            if one & .South and x == 0 and y == -1
-                mp(startX, startY) |= Dir.North
-            if one & .North and x == 0 and y == 1
-                mp(startX, startY) |= Dir.South
-        }
-    }
+    let start = ref mp(startX, startY)
+    if mp(startX-1, startY) & .East  start |= .West
+    if mp(startX+1, startY) & .West  start |= .East
+    if mp(startX, startY-1) & .South start |= .North
+    if mp(startX, startY+1) & .North start |= .South
 
     // Visit the maze
-    var visitX = startX; var visitY = startY
+    var visitX = startX, visitY = startY
     var total = 0
     loop
     {
         let one = mp(visitX, visitY)
         switch
         {
-        case one & .East:  visitX += 1; mp(visitX, visitY) &= ~Dir.West
-        case one & .West:  visitX -= 1; mp(visitX, visitY) &= ~Dir.East
-        case one & .North: visitY -= 1; mp(visitX, visitY) &= ~Dir.South
-        case one & .South: visitY += 1; mp(visitX, visitY) &= ~Dir.North
+        case one & .East:  visitX += 1; mp(visitX, visitY) &= ~.West
+        case one & .West:  visitX -= 1; mp(visitX, visitY) &= ~.East
+        case one & .North: visitY -= 1; mp(visitX, visitY) &= ~.South
+        case one & .South: visitY += 1; mp(visitX, visitY) &= ~.North
         }
 
         total += 1
