@@ -109,21 +109,22 @@ func day10A()
     maze.resize(width*width)
 
     #[Swag.Mixin]
-    func mp(x0, y0: u64)->ref Dir => maze.buffer + ((x0+1) + (y0+1)*width)
+    func mp(x0, y0: s64)->ref Dir => maze.buffer + ((x0+1) + (y0+1)*width)
 
-    var startX, startY: u64
+    var startX, startY: s64
     visit l, line: lines
     {
         visit(Bytes) c, col: l
         {
+            let one = ref mp(cast(s64) col, cast(s64) line)
             switch c
             {
-            case `-`: mp(col, line) = .West|.East
-            case `|`: mp(col, line) = .North|.South
-            case `L`: mp(col, line) = .North|.East
-            case `J`: mp(col, line) = .North|.West
-            case `7`: mp(col, line) = .South|.West
-            case `F`: mp(col, line) = .South|.East
+            case `-`: one = .West|.East
+            case `|`: one = .North|.South
+            case `L`: one = .North|.East
+            case `J`: one = .North|.West
+            case `7`: one = .South|.West
+            case `F`: one = .South|.East
             case `S`: startX = col; startY = line
             }
         }
