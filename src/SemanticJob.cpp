@@ -54,8 +54,13 @@ TypeInfo* SemanticJob::getConcreteTypeUnRef(AstNode* node, uint32_t concreteFlag
     auto typeInfo = TypeManager::concreteType(node->typeInfo, concreteFlags);
     if (!typeInfo->isPointerRef())
         return typeInfo;
+
     if (setUnRef(node))
-        return TypeManager::concretePtrRef(typeInfo);
+    {
+        typeInfo = TypeManager::concretePtrRef(typeInfo);
+        typeInfo = TypeManager::concreteType(typeInfo, concreteFlags);
+    }
+
     return typeInfo;
 }
 

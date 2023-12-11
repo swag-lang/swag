@@ -388,7 +388,7 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
     }
     else if (castError == CastErrorType::Const)
     {
-        msg  = Fmt(ErrNte(Err0418, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
+        msg = Fmt(ErrNte(Err0418, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
     else if (castError == CastErrorType::SliceArray)
     {
@@ -3356,10 +3356,11 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
     {
         if (toTypeArray->finalType->isSame(fromType, CASTFLAG_CAST))
         {
-            if (toTypeArray->finalType->isString() ||
-                toTypeArray->finalType->isNativeFloat() ||
-                toTypeArray->finalType->isNativeIntegerOrRune() ||
-                toTypeArray->finalType->isBool())
+            auto finalType = TypeManager::concreteType(toTypeArray->finalType, CONCRETE_ENUM | CONCRETE_ALIAS);
+            if (finalType->isString() ||
+                finalType->isNativeFloat() ||
+                finalType->isNativeIntegerOrRune() ||
+                finalType->isBool())
             {
                 return true;
             }

@@ -985,8 +985,15 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         return true;
 
     // Special case for enum : nothing is possible, except for flags
-    auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo, CONCRETE_FORCEALIAS | CONCRETE_FUNC);
-    auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo, CONCRETE_FORCEALIAS | CONCRETE_FUNC);
+    TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo, CONCRETE_ALIAS);
+    TypeInfo* rightTypeInfo = getConcreteTypeUnRef(right, CONCRETE_ALIAS);
+    if (right->semFlags & SEMFLAG_FROM_REF)
+        leftTypeInfo = getConcreteTypeUnRef(left, CONCRETE_ALIAS);
+    else if (leftTypeInfo->isPointerRef() && !rightTypeInfo->isPointerRef())
+        leftTypeInfo = getConcreteTypeUnRef(left, CONCRETE_ALIAS);
+    SWAG_ASSERT(leftTypeInfo);
+    SWAG_ASSERT(rightTypeInfo);
+
     if (leftTypeInfo->isEnum() || rightTypeInfo->isEnum())
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
