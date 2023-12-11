@@ -57,7 +57,7 @@ bool SemanticJob::resolveAfterKnownType(SemanticContext* context)
         return true;
 
     // Cannot cast from closure to lambda
-    if (node->typeInfo->getCA()->isLambda() && mpl->lambda->typeInfo->getCA()->isClosure())
+    if (node->typeInfo->getConcreteAlias()->isLambda() && mpl->lambda->typeInfo->getConcreteAlias()->isClosure())
     {
         Diagnostic diag{mpl, Err(Err0185)};
         diag.addRange(node, Diagnostic::isType(node->typeInfo));
@@ -239,16 +239,20 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     bool forEnumFlags = false;
     if (node->tokenId != TokenId::SymEqual)
     {
-        if (leftTypeInfo->getCA()->isEnum() || rightTypeInfo->getCA()->isEnum())
+        auto leftReal = TypeManager::concreteType(leftTypeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
+        if (leftReal->kind != TypeInfoKind::Struct)
         {
-            SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
-            if (node->tokenId != TokenId::SymVerticalEqual &&
-                node->tokenId != TokenId::SymAmpersandEqual &&
-                node->tokenId != TokenId::SymCircumflexEqual)
-                return notAllowedError(context, node, leftTypeInfo, nullptr, left);
-            if (!(leftTypeInfo->getCA()->flags & TYPEINFO_ENUM_FLAGS) || !(rightTypeInfo->getCA()->flags & TYPEINFO_ENUM_FLAGS))
-                return notAllowedError(context, node, leftTypeInfo, "because the enum is not marked with '#[Swag.EnumFlags]'", left);
-            forEnumFlags = true;
+            if (leftTypeInfo->getConcreteAlias()->isEnum() || rightTypeInfo->getConcreteAlias()->isEnum())
+            {
+                SWAG_CHECK(TypeManager::makeCompatibles(context, left, right));
+                if (node->tokenId != TokenId::SymVerticalEqual &&
+                    node->tokenId != TokenId::SymAmpersandEqual &&
+                    node->tokenId != TokenId::SymCircumflexEqual)
+                    return notAllowedError(context, node, leftTypeInfo, nullptr, left);
+                if (!(leftTypeInfo->getConcreteAlias()->flags & TYPEINFO_ENUM_FLAGS) || !(rightTypeInfo->getConcreteAlias()->flags & TYPEINFO_ENUM_FLAGS))
+                    return notAllowedError(context, node, leftTypeInfo, "because the enum is not marked with '#[Swag.EnumFlags]'", left);
+                forEnumFlags = true;
+            }
         }
     }
 

@@ -81,7 +81,7 @@ bool SemanticJob::checkFuncPrototypeOpNumParams(SemanticContext* context, AstFun
 
 bool SemanticJob::checkFuncPrototypeOpReturnType(SemanticContext* context, AstFuncDecl* node, TypeInfo* wanted)
 {
-    auto returnType = TypeManager::concreteType(node->returnType->typeInfo, CONCRETE_FORCEALIAS);
+    auto returnType = node->returnType->typeInfo->getConcreteAlias();
 
     // Whatever except nothing
     if (wanted == nullptr)
@@ -106,7 +106,7 @@ bool SemanticJob::checkFuncPrototypeOpReturnType(SemanticContext* context, AstFu
 
 bool SemanticJob::checkFuncPrototypeOpParam(SemanticContext* context, AstFuncDecl* node, AstNode* parameters, uint32_t index, TypeInfo* wanted)
 {
-    auto typeParam = TypeManager::concreteType(parameters->childs[index]->typeInfo, CONCRETE_FORCEALIAS);
+    auto typeParam = parameters->childs[index]->typeInfo->getConcreteAlias();
     if (!typeParam->isSame(wanted, CASTFLAG_CAST))
         return context->report({parameters->childs[index], Fmt(Err(Err0053), wanted->getDisplayNameC(), typeParam->getDisplayNameC())});
     return true;
@@ -276,7 +276,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 3));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, nullptr));
-        auto returnType = TypeManager::concreteType(node->returnType->typeInfo, CONCRETE_FORCEALIAS);
+        auto returnType = node->returnType->typeInfo->getConcreteAlias();
         if (!returnType->isString() && !returnType->isSlice())
             return context->report({node->returnType, Fmt(Err(Err0126), node->returnType->typeInfo->getDisplayNameC())});
         SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, 1, g_TypeMgr->typeInfoU64));
@@ -448,7 +448,7 @@ bool SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, AstNode*
         leftType = CastTypeInfo<TypeInfoArray>(leftType, TypeInfoKind::Array)->finalType;
     else if (leftType->isPointer())
         leftType = CastTypeInfo<TypeInfoPointer>(leftType, TypeInfoKind::Pointer)->pointedType;
-    leftType        = leftType->getCA();
+    leftType        = leftType->getConcreteAlias();
     auto leftStruct = CastTypeInfo<TypeInfoStruct>(leftType, TypeInfoKind::Struct);
     return hasUserOp(context, name, leftStruct, result);
 }
@@ -695,7 +695,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
             // :FctCallParamClosure
             if (!(ropFlags & ROP_SIMPLE_CAST))
             {
-                auto toTypeRef = TypeManager::concreteType(toType, CONCRETE_FORCEALIAS);
+                auto toTypeRef = toType->getConcreteAlias();
                 if (makePtrL && toTypeRef && toTypeRef->isClosure())
                 {
                     bool convert = false;

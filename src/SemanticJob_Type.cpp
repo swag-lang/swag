@@ -283,7 +283,7 @@ bool SemanticJob::resolveTypeLambdaClosure(SemanticContext* context)
 
 void SemanticJob::forceConstType(SemanticContext* context, AstTypeExpression* node)
 {
-    auto concrete = TypeManager::concreteType(node->typeInfo, CONCRETE_FORCEALIAS);
+    auto concrete = node->typeInfo->getConcreteAlias();
     if (concrete->isStruct() ||
         concrete->isArray() ||
         concrete->isClosure() ||

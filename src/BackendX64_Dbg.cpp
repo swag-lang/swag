@@ -640,7 +640,7 @@ void BackendX64::dbgRecordFields(X64Gen& pp, DbgTypeRecord* tr, TypeInfoStruct* 
 
 DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool forceUnRef)
 {
-    typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_FORCEALIAS);
+    typeInfo = typeInfo->getConcreteAlias();
 
     // Simple type
     auto simpleType = dbgGetSimpleType(typeInfo);

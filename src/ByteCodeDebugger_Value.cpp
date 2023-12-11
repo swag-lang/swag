@@ -186,7 +186,7 @@ void ByteCodeDebugger::appendLiteralValue(ByteCodeRunContext* context, Utf8& res
 
 void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent)
 {
-    auto typeInfo = TypeManager::concreteType(res.type, CONCRETE_FORCEALIAS);
+    auto typeInfo = res.type->getConcreteAlias();
     auto addr     = res.addr;
 
     if (!addr && res.value)

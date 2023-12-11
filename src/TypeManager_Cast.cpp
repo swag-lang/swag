@@ -3865,13 +3865,13 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
     if (fromType->isListTuple() || fromType->isListArray())
     {
-        toType = TypeManager::concreteType(toType, CONCRETE_FORCEALIAS);
+        toType = toType->getConcreteAlias();
     }
 
     if (toNode && toNode->resolvedSymbolName && toNode->resolvedSymbolName->kind == SymbolKind::EnumValue)
     {
-        toType   = TypeManager::concreteType(toType, CONCRETE_FORCEALIAS);
-        fromType = TypeManager::concreteType(fromType, CONCRETE_FORCEALIAS);
+        toType   = toType->getConcreteAlias();
+        fromType = fromType->getConcreteAlias();
     }
 
     if (fromNode && fromNode->resolvedSymbolName)
@@ -3879,8 +3879,8 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         if (fromNode->resolvedSymbolName->kind == SymbolKind::EnumValue ||
             fromNode->resolvedSymbolName->kind == SymbolKind::Function)
         {
-            toType   = TypeManager::concreteType(toType, CONCRETE_FORCEALIAS);
-            fromType = TypeManager::concreteType(fromType, CONCRETE_FORCEALIAS);
+            toType   = toType->getConcreteAlias();
+            fromType = fromType->getConcreteAlias();
         }
     }
 

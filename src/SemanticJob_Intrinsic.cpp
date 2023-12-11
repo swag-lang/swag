@@ -235,10 +235,10 @@ bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
     if (context->result != ContextResult::Done)
         return true;
 
-    auto firstTypeInfo = TypeManager::concreteType(first->typeInfo, CONCRETE_FORCEALIAS);
+    auto firstTypeInfo = first->typeInfo->getConcreteAlias();
     SWAG_VERIFY(firstTypeInfo->isPointer() || firstTypeInfo->isStruct(), context->report({first, Fmt(Err(Err0793), firstTypeInfo->getDisplayNameC())}));
     SWAG_VERIFY(second->typeInfo->isPointerToTypeInfo(), context->report({second, Fmt(Err(Err0794), second->typeInfo->getDisplayNameC())}));
-    auto thirdTypeInfo = TypeManager::concreteType(third->typeInfo, CONCRETE_FORCEALIAS);
+    auto thirdTypeInfo = third->typeInfo->getConcreteAlias();
     SWAG_VERIFY(thirdTypeInfo->isInterface(), context->report({third, Fmt(Err(Err0795), thirdTypeInfo->getDisplayNameC())}));
 
     node->typeInfo = third->typeInfo;
@@ -251,7 +251,7 @@ bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
 bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, AstNode* expression)
 {
     auto typeInfo = TypeManager::concretePtrRef(expression->typeInfo);
-    typeInfo      = TypeManager::concreteType(typeInfo, CONCRETE_FORCEALIAS);
+    typeInfo      = typeInfo->getConcreteAlias();
 
     if (expression->resolvedSymbolName && expression->resolvedSymbolName->kind == SymbolKind::EnumValue)
         typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_ENUM);
@@ -962,7 +962,7 @@ bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
     case TokenId::IntrinsicCountOf:
     {
         auto expr     = node->childs.front();
-        auto typeInfo = TypeManager::concreteType(expr->typeInfo, CONCRETE_FORCEALIAS);
+        auto typeInfo = expr->typeInfo->getConcreteAlias();
         if (!typeInfo->isEnum() && !typeInfo->isArray())
             SWAG_CHECK(checkIsConcrete(context, expr));
         node->inheritComputedValue(expr);

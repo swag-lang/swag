@@ -209,7 +209,7 @@ bool ByteCodeGenJob::emitSafetyValue(ByteCodeGenContext* context, int r, TypeInf
             return true;
 
         PushICFlags ic(context, BCI_SAFETY);
-        typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_FORCEALIAS);
+        typeInfo = typeInfo->getConcreteAlias();
 
         auto r0     = reserveRegisterRC(context);
         auto inst   = EMIT_INST3(context, ByteCodeOp::BinOpBitmaskAnd8, r, 0, r0);
@@ -227,7 +227,7 @@ bool ByteCodeGenJob::emitSafetyValue(ByteCodeGenContext* context, int r, TypeInf
             return true;
 
         PushICFlags ic(context, BCI_SAFETY);
-        typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_FORCEALIAS);
+        typeInfo = typeInfo->getConcreteAlias();
 
         auto r0 = reserveRegisterRC(context);
         EMIT_INST3(context, ByteCodeOp::CompareOpEqualF32, r, r, r0);
@@ -243,7 +243,7 @@ bool ByteCodeGenJob::emitSafetyValue(ByteCodeGenContext* context, int r, TypeInf
             return true;
 
         PushICFlags ic(context, BCI_SAFETY);
-        typeInfo = TypeManager::concreteType(typeInfo, CONCRETE_FORCEALIAS);
+        typeInfo = typeInfo->getConcreteAlias();
 
         auto r0 = reserveRegisterRC(context);
         EMIT_INST3(context, ByteCodeOp::CompareOpEqualF64, r, r, r0);

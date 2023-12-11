@@ -138,7 +138,7 @@ void Job::waitStructGenerated(TypeInfo* typeInfo)
         typeInfo = ((TypeInfoArray*) typeInfo)->finalType;
     if (typeInfo->isPointerTo(TypeInfoKind::Struct))
         typeInfo = ((TypeInfoPointer*) typeInfo)->pointedType;
-    typeInfo = typeInfo->getCA();
+    typeInfo = typeInfo->getConcreteAlias();
 
     if (!typeInfo->isStruct())
         return;

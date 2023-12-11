@@ -479,7 +479,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     {
         auto front         = typeNode->childs.front();
         typeNode->typeInfo = front->typeInfo;
-        if (typeNode->typeInfo->getCA()->isVoid())
+        if (typeNode->typeInfo->getConcreteAlias()->isVoid())
         {
             Diagnostic diag{typeNode->sourceFile, typeNode->token.startLocation, front->token.endLocation, Err(Err0732)};
             return context->report(diag);

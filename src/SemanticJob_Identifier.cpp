@@ -170,7 +170,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node)
     identifierRef->startScope           = nullptr;
 
     auto typeInfo  = TypeManager::concreteType(node->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
-    auto scopeType = TypeManager::concreteType(typeInfo, CONCRETE_FORCEALIAS);
+    auto scopeType = typeInfo->getConcreteAlias();
     if (scopeType->isLambdaClosure())
     {
         auto funcType = CastTypeInfo<TypeInfoFuncAttr>(scopeType, TypeInfoKind::LambdaClosure);
@@ -2739,7 +2739,7 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext*                        
                         auto child = fctCallParam->parent->childs[i];
                         if (child == fctCallParam)
                             break;
-                        if (child->typeInfo && child->typeInfo->getCA()->isEnum())
+                        if (child->typeInfo && child->typeInfo->getConcreteAlias()->isEnum())
                             enumIdx++;
                         else if (child->kind == AstNodeKind::IdentifierRef && child->specFlags & AstIdentifierRef::SPECFLAG_AUTO_SCOPE)
                             enumIdx++;

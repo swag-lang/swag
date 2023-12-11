@@ -234,7 +234,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     // Type is constant if we take address of a readonly variable
     else if (child->resolvedSymbolOverload && !child->typeInfo->isPointerRef())
     {
-        auto typeResolved = TypeManager::concreteType(child->resolvedSymbolOverload->typeInfo, CONCRETE_FORCEALIAS);
+        auto typeResolved = child->resolvedSymbolOverload->typeInfo->getConcreteAlias();
 
         if ((child->resolvedSymbolOverload->flags & OVERLOAD_CONST_ASSIGN) &&
             !typeResolved->isPointerArithmetic() &&

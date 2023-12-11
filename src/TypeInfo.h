@@ -256,7 +256,7 @@ struct TypeInfo
 
     TypeInfoStruct* getStructOrPointedStruct();
     TypeInfo*       getFakeAlias();
-    TypeInfo*       getCA();
+    TypeInfo*       getConcreteAlias();
 
     // clang-format off
     bool isSlice()                          { return kind == TypeInfoKind::Slice; }

@@ -160,22 +160,22 @@ func day10A()
         if one & .East
         {
             visitX += 1
-            maze.buffer[visitX + visitY*width] &= ~Dir.West
+            maze[visitX + visitY*width] &= ~Dir.West
         }
         elif one & .West
         {
             visitX -= 1
-            maze.buffer[visitX + visitY*width] &= ~Dir.East
+            maze[visitX + visitY*width] &= ~Dir.East
         }
         elif one & .North
         {
             visitY -= 1
-            maze.buffer[visitX + visitY*width] &= ~Dir.South
+            maze[visitX + visitY*width] &= ~Dir.South
         }
         elif one & .South
         {
             visitY += 1
-            maze.buffer[visitX + visitY*width] &= ~Dir.North
+            maze[visitX + visitY*width] &= ~Dir.North
         }
 
         total += 1
@@ -186,7 +186,7 @@ func day10A()
 
     total /= 2
 
-    //Console.print("total: ", total, " ")
+    Console.print("total: ", total, " ")
     @assert(total == 6870)
 }
 
