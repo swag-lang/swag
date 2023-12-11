@@ -185,6 +185,7 @@ bool Parser::doPrivate(AstNode* parent, AstNode** result)
     privName.text = Fmt("__privns_%d", g_UniqueID.fetch_add(1));
     AstNode* namespc;
     SWAG_CHECK(doNamespaceOnName(attrUse, &namespc, false, true, &privName));
+    namespc->flags |= AST_GENERATED;
 
     attrUse->content = namespc;
     attrUse->content->setOwnerAttrUse(attrUse);

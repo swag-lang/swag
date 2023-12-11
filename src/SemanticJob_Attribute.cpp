@@ -47,7 +47,10 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     if (checkNode->kind == AstNodeKind::AttrUse)
     {
         auto attrUse = CastAst<AstAttrUse>(checkNode, AstNodeKind::AttrUse);
-        SWAG_CHECK(checkAttribute(context, oneAttribute, attrUse->content));
+        if (checkNode->flags & AST_GENERATED && attrUse->content->kind == AstNodeKind::Namespace && attrUse->content->flags & AST_GENERATED)
+            SWAG_CHECK(checkAttribute(context, oneAttribute, attrUse->content->childs.front()));
+        else
+            SWAG_CHECK(checkAttribute(context, oneAttribute, attrUse->content));
         return true;
     }
 
