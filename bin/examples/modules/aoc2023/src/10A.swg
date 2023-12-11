@@ -128,30 +128,26 @@ func day10A()
 
     var visitX = startX
     var visitY = startY
-    var startValue: Dir
-
     loop x: -1 to 1
     {
-        if visitX+x < 0 continue
-        if visitX+x >= width continue
+        if visitX+x < 0 or visitX+x >= width continue
+
         loop y: -1 to 1
         {
             if x == 0 and y == 0 continue
-            if visitY+y < 0 continue
-            if visitY+y >= width continue
+            if visitY+y < 0 or visitY+y >= width continue
+
             let one = maze[visitX+x + (visitY+y)*width]
             if one & .East and x == -1 and y == 0
-                startValue |= Dir.West
+                maze[visitX + visitY*width] |= Dir.West
             if one & .West and x == 1 and y == 0
-                startValue |= Dir.East
+                maze[visitX + visitY*width] |= Dir.East
             if one & .South and x == 0 and y == -1
-                startValue |= Dir.North
+                maze[visitX + visitY*width] |= Dir.North
             if one & .North and x == 0 and y == 1
-                startValue |= Dir.South
+                maze[visitX + visitY*width] |= Dir.South
         }
     }
-
-    maze[visitX + visitY*width] = startValue
 
     var total = 0
     loop
@@ -179,7 +175,6 @@ func day10A()
         }
 
         total += 1
-
         if visitX == startX and visitY == startY
             break
     }
