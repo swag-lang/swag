@@ -332,14 +332,44 @@ bool SemanticJob::collectAssignment(SemanticContext* context, DataSegment* stora
 
     if (typeInfo->isArray())
     {
+        auto typeArr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+
         // Already computed in the constant storageSegment for an array
         if (node->assignment && node->assignment->hasComputedValue())
         {
-            SWAG_ASSERT(value->storageOffset != UINT32_MAX);
-            SWAG_ASSERT(value->storageSegment != nullptr);
+            if (!value->storageSegment)
+            {
+                uint8_t* addrDst;
+                storageOffset = storageSegment->reserve(typeInfo->sizeOf, &addrDst, SemanticJob::alignOf(node));
 
-            if (storageSegment->kind == SegmentKind::Constant)
+                for (uint32_t i = 0; i < typeArr->totalCount; i++)
+                {
+                    switch (typeArr->finalType->sizeOf)
+                    {
+                    case 1:
+                        *(uint8_t*) addrDst = node->assignment->computedValue->reg.u8;
+                        break;
+                    case 2:
+                        *(uint16_t*) addrDst = node->assignment->computedValue->reg.u16;
+                        break;
+                    case 4:
+                        *(uint32_t*) addrDst = node->assignment->computedValue->reg.u32;
+                        break;
+                    case 8:
+                        *(uint64_t*) addrDst = node->assignment->computedValue->reg.u64;
+                        break;
+                    default:
+                        return Report::internalError(node->assignment, "invalid size constant collectAssignment");
+                    }
+                    addrDst += typeArr->finalType->sizeOf;
+                }
+            }
+            else if (storageSegment->kind == SegmentKind::Constant)
+            {
+                SWAG_ASSERT(value->storageOffset != UINT32_MAX);
+                SWAG_ASSERT(value->storageSegment != nullptr);
                 storageOffset = value->storageOffset;
+            }
             else
             {
                 uint8_t* addrDst;
@@ -354,7 +384,6 @@ bool SemanticJob::collectAssignment(SemanticContext* context, DataSegment* stora
         // Array of struct
         if (!node->assignment)
         {
-            auto typeArr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
             if (typeArr->finalType->isStruct() && typeArr->finalType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
             {
                 storageOffset = storageSegment->reserve(typeInfo->sizeOf, nullptr);
