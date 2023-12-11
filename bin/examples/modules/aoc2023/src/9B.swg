@@ -25,7 +25,7 @@ func day9B()
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "9.txt")
     let lines = assume File.readAllLines(dataPath)
 
-    var total: u64
+    var total: s64
 
     visit l: lines
     {
@@ -54,7 +54,7 @@ func day9B()
 
             values = newValues
         }
-     
+
         var prev: s64
         visit,back c: column
         {
@@ -64,7 +64,7 @@ func day9B()
 
         total += prev
     }
-    
+
     //Console.print("total: ", total)
     @assert(total == 1019)
 }

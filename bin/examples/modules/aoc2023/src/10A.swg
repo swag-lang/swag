@@ -121,7 +121,7 @@ func day10A()
             case `-`: mp(col, line) = Dir.West|Dir.East
             case `|`: mp(col, line) = Dir.North|Dir.South
             case `L`: mp(col, line) = Dir.North|Dir.East
-            case `J`: mp(col, line)= Dir.North|Dir.West
+            case `J`: mp(col, line) = Dir.North|Dir.West
             case `7`: mp(col, line) = Dir.South|Dir.West
             case `F`: mp(col, line) = Dir.South|Dir.East
             case `S`: startX = col; startY = line
@@ -129,41 +129,41 @@ func day10A()
         }
     }
 
-    var visitX = startX; var visitY = startY
-
     // Determin the shape of the start 'S'
     loop x: -1 to 1
     {
-        if visitX+x < 0 or visitX+x >= width continue
+        let x1 = cast(s64) startX + x
+        if x1 < 0 or x1 >= width continue
 
         loop y: -1 to 1
         {
-            if x == 0 and y == 0 continue
-            if visitY+y < 0 or visitY+y >= width continue
+            let y1 = cast(s64) startY + y
+            if y1 < 0 or y1 >= width continue
 
-            let one = maze[visitX+x + (visitY+y)*width]
+            let one = mp(cast(u64) x1, cast(u64) y1)
             if one & .East and x == -1 and y == 0
-                maze[visitX + visitY*width] |= Dir.West
+                mp(startX, startY) |= Dir.West
             if one & .West and x == 1 and y == 0
-                maze[visitX + visitY*width] |= Dir.East
+                mp(startX, startY) |= Dir.East
             if one & .South and x == 0 and y == -1
-                maze[visitX + visitY*width] |= Dir.North
+                mp(startX, startY) |= Dir.North
             if one & .North and x == 0 and y == 1
-                maze[visitX + visitY*width] |= Dir.South
+                mp(startX, startY) |= Dir.South
         }
     }
 
     // Visit the maze
+    var visitX = startX; var visitY = startY
     var total = 0
     loop
     {
-        let one = maze[visitX + visitY*width]
+        let one = mp(visitX, visitY)
         switch
         {
-        case one & .East:   visitX += 1; mp(visitX, visitY) &= ~Dir.West
-        case one & .West:   visitX -= 1; mp(visitX, visitY) &= ~Dir.East
-        case one & .North:  visitY -= 1; mp(visitX, visitY) &= ~Dir.South
-        case one & .South:  visitY += 1; mp(visitX, visitY) &= ~Dir.North
+        case one & .East:  visitX += 1; mp(visitX, visitY) &= ~Dir.West
+        case one & .West:  visitX -= 1; mp(visitX, visitY) &= ~Dir.East
+        case one & .North: visitY -= 1; mp(visitX, visitY) &= ~Dir.South
+        case one & .South: visitY += 1; mp(visitX, visitY) &= ~Dir.North
         }
 
         total += 1
@@ -173,7 +173,7 @@ func day10A()
 
     total /= 2
 
-    Console.print("total: ", total, " ")
+    //Console.print("total: ", total, " ")
     @assert(total == 6870)
 }
 

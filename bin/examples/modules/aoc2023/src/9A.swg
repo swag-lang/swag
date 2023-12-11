@@ -72,7 +72,7 @@ func day9A()
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "9.txt")
     let lines = assume File.readAllLines(dataPath)
 
-    var total: u64
+    var total: s64
 
     visit l: lines
     {
@@ -96,7 +96,7 @@ func day9A()
             total += values.back()
         }
     }
-    
+
     //Console.print("total: ", total, " ")
     @assert(total == 2105961943)
 }
