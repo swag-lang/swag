@@ -1124,7 +1124,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
         {
             SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
             SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
-            node->typeInfo = left->typeInfo;
+            node->typeInfo = TypeManager::concretePtrRef(left->typeInfo);
         }
 
         if (node->tokenId == TokenId::SymVertical)
