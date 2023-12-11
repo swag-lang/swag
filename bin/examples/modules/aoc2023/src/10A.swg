@@ -114,9 +114,9 @@ func day10A()
     var startX, startY: u64
     visit l, line: lines
     {
-        loop col: l
+        visit(Bytes) c, col: l
         {
-            switch l[col]
+            switch c
             {
             case `-`: mp(col, line) = .West|.East
             case `|`: mp(col, line) = .North|.South
