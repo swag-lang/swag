@@ -319,8 +319,7 @@ bool ByteCodeGenJob::emitBinaryOpModulo(ByteCodeGenContext* context, TypeInfo* t
 
 bool ByteCodeGenJob::emitBitmaskAnd(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
+    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
     if (!typeInfo->isNative())
         return Report::internalError(context->node, "emitBitmaskAnd, type not native");
