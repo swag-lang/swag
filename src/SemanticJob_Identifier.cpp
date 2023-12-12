@@ -5037,7 +5037,7 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext*                   conte
     auto startScope = startNode->ownerScope;
     if (startScope)
     {
-        // For a backtick, do not collect scope until we find an inline block
+        // For a #up, do not collect scope until we find an inline block
         if (scopeUpMode == IdentifierScopeUpMode::Count)
         {
             for (uint64_t i = 0; i < scopeUpValue->literalValue.u8; i++)
@@ -5094,20 +5094,34 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext*                   conte
         // For an inline scope, jump right to the function
         if (scope->kind == ScopeKind::Inline)
         {
-            while (scope && scope->kind != ScopeKind::Function)
-                scope = scope->parentScope;
-            if (!scope)
-                continue;
+            auto orgScope = scope;
+            if (scope->hieScope)
+                scope = scope->hieScope;
+            else
+            {
+                while (scope && scope->kind != ScopeKind::Function)
+                    scope = scope->parentScope;
+                if (!scope)
+                    continue;
+                orgScope->hieScope = scope;
+            }
         }
 
         // For a macro scope, jump right to the inline
         else if (scope->kind == ScopeKind::Macro)
         {
-            while (scope && scope->kind != ScopeKind::Inline)
+            auto orgScope = scope;
+            if (scope->hieScope)
+                scope = scope->hieScope;
+            else
+            {
+                while (scope && scope->kind != ScopeKind::Inline)
+                    scope = scope->parentScope;
+                if (!scope)
+                    continue;
                 scope = scope->parentScope;
-            if (!scope)
-                continue;
-            scope = scope->parentScope;
+                orgScope->hieScope = scope;
+            }
         }
 
         // Add parent scope

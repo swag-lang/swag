@@ -78,6 +78,7 @@ struct Scope
     ScopePublicSet* publicSet            = nullptr;
     AstNode*        owner                = nullptr;
     Scope*          parentScope          = nullptr;
+    Scope*          hieScope             = nullptr;
     SymbolName*     symbolOpAffect       = nullptr;
     SymbolName*     symbolOpAffectSuffix = nullptr;
     SymbolName*     symbolOpCast         = nullptr;
