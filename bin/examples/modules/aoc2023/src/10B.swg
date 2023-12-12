@@ -142,8 +142,8 @@ func day10B()
     var visitX = startX, visitY = startY
     loop
     {
-        let one = mp(visitX, visitY)
-        mp(visitX, visitY) |= .Edge
+        let one = ref mp(visitX, visitY)
+        one |= .Edge
 
         switch
         {
@@ -161,20 +161,19 @@ func day10B()
     {
         visit(Bytes) c, col: l
         {
-            var inside = false
             let one = mp(cast(s64) col, cast(s64) line)
-            if !(one & .Edge)
+            if one & .Edge
+                continue
+
+            var inside = false
+            loop x: col
             {
-                loop x: col
-                {
-                    let one1 = mp(cast(s64) x, cast(s64) line)
-                    if (one1 & .Edge and one1 & .North)
-                        inside = !inside
-                }
+                let one1 = mp(cast(s64) x, cast(s64) line)
+                if (one1 & .Edge and one1 & .North)
+                    inside = !inside
             }
 
-            if inside
-                total += 1
+            total += inside ? 1 : 0
         }
     }
 
