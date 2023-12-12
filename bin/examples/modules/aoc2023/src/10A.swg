@@ -97,7 +97,7 @@ Find the single giant loop starting at S. How many steps along the loop does it 
 using Core
 
 #[Swag.EnumFlags]
-enum Dir{Zero=0,West, East, North, South}
+private enum Dir{Zero=0,West, East, North, South}
 
 func day10A()
 {
