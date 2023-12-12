@@ -254,7 +254,8 @@ struct DbgLine
 struct DbgLines
 {
     SourceFile*     sourceFile;
-    Vector<DbgLine> dbgLines;
+    Vector<DbgLine> lines;
+    bool            inlined = false;
 };
 
 struct CoffFunction

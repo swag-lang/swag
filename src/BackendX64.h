@@ -78,6 +78,7 @@ struct BackendX64 : public Backend
     void           dbgEmitConstant(X64Gen& pp, Concat& concat, AstNode* node, const Utf8& name);
     void           dbgEmitGlobalDebugS(X64Gen& pp, Concat& concat, VectorNative<AstNode*>& gVars, uint32_t segSymIndex);
     bool           dbgEmitDataDebugT(const BuildParameters& buildParameters);
+    bool           dbgEmitLines(X64Gen& pp, MapPath<uint32_t>&, Vector<uint32_t>&, Utf8&, Concat& concat, CoffFunction& f, size_t idxDbgLines);
     bool           dbgEmitFctDebugS(const BuildParameters& buildParameters);
     bool           dbgEmitScope(X64Gen& pp, Concat& concat, CoffFunction& f, Scope* scope);
     bool           emitDebug(const BuildParameters& buildParameters);

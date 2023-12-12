@@ -11,10 +11,11 @@
 
 const uint32_t DEBUG_SECTION_MAGIC = 4;
 
-const uint32_t SUBSECTION_SYMBOL        = 0xF1;
-const uint32_t SUBSECTION_LINES         = 0xF2;
-const uint32_t SUBSECTION_STRING_TABLE  = 0xF3;
-const uint32_t SUBSECTION_FILE_CHECKSUM = 0xF4;
+const uint32_t DEBUG_S_SYMBOLS      = 0xF1; // DebugSubsectionKind::Symbols in llvm
+const uint32_t DEBUG_S_LINES        = 0xF2;
+const uint32_t DEBUG_S_STRINGTABLE  = 0xF3;
+const uint32_t DEBUG_S_FILECHKSMS   = 0xF4;
+const uint32_t DEBUG_S_INLINEELINES = 0xF6;
 
 const uint16_t S_END                   = 0x0006;
 const uint16_t S_FRAMEPROC             = 0x1012;
@@ -26,6 +27,8 @@ const uint16_t S_LOCAL                 = 0x113E;
 const uint16_t S_DEFRANGE_REGISTER_REL = 0x1145;
 const uint16_t S_CONSTANT              = 0x1107;
 const uint16_t S_LDATA32               = 0x110C;
+const uint16_t S_INLINESITE            = 0x114d;
+const uint16_t S_INLINESITE_END        = 0x114e;
 // const uint16_t S_GPROC32_ID                = 0x1147;
 // const uint16_t S_DEFRANGE                  = 0x113F;
 // const uint16_t S_DEFRANGE_REGISTER         = 0x1141;
@@ -184,7 +187,7 @@ void BackendX64::dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeIns
         dbgLine.byteOffset = byteOffset;
         DbgLines dbgLines;
         dbgLines.sourceFile = coffFct->node->sourceFile;
-        dbgLines.dbgLines.push_back(dbgLine);
+        dbgLines.lines.push_back(dbgLine);
         coffFct->dbgLines.push_back(dbgLines);
         return;
     }
@@ -211,29 +214,34 @@ void BackendX64::dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeIns
     }
 
     SWAG_ASSERT(!coffFct->dbgLines.empty());
-    if (coffFct->dbgLines.back().sourceFile != loc.file)
+    bool inlined = ip->node && ip->node->ownerInline;
+
+    if (coffFct->dbgLines.back().sourceFile != loc.file || inlined != coffFct->dbgLines.back().inlined)
     {
         DbgLines dbgLines;
         dbgLines.sourceFile = loc.file;
+        dbgLines.inlined    = inlined;
         coffFct->dbgLines.push_back(dbgLines);
     }
 
-    auto& dbgLines = coffFct->dbgLines.back().dbgLines;
-
-    if (dbgLines.empty())
-        dbgLines.push_back({loc.location->line + 1, byteOffset});
-    else if (dbgLines.back().line != loc.location->line + 1)
+    // Add a new line if it is different from the previous one
+    auto& lines = coffFct->dbgLines.back().lines;
+    if (lines.empty())
     {
-        if (dbgLines.back().byteOffset == byteOffset)
-            dbgLines.back().line = loc.location->line + 1;
+        lines.push_back({loc.location->line + 1, byteOffset});
+    }
+    else if (lines.back().line != loc.location->line + 1)
+    {
+        if (lines.back().byteOffset == byteOffset)
+            lines.back().line = loc.location->line + 1;
         else
-            dbgLines.push_back({loc.location->line + 1, byteOffset});
+            lines.push_back({loc.location->line + 1, byteOffset});
     }
 }
 
 void BackendX64::dbgEmitCompilerFlagsDebugS(Concat& concat)
 {
-    concat.addU32(SUBSECTION_SYMBOL);
+    concat.addU32(DEBUG_S_SYMBOLS);
     auto patchSCount  = concat.addU32Addr(0); // Size of sub section
     auto patchSOffset = concat.totalCount();
 
@@ -1007,7 +1015,7 @@ void BackendX64::dbgEmitConstant(X64Gen& pp, Concat& concat, AstNode* node, cons
 
 void BackendX64::dbgEmitGlobalDebugS(X64Gen& pp, Concat& concat, VectorNative<AstNode*>& gVars, uint32_t segSymIndex)
 {
-    concat.addU32(SUBSECTION_SYMBOL);
+    concat.addU32(DEBUG_S_SYMBOLS);
     auto patchSCount  = concat.addU32Addr(0);
     auto patchSOffset = concat.totalCount();
 
@@ -1058,6 +1066,66 @@ void BackendX64::dbgEmitGlobalDebugS(X64Gen& pp, Concat& concat, VectorNative<As
     *patchSCount = concat.totalCount() - patchSOffset;
 }
 
+bool BackendX64::dbgEmitLines(X64Gen&            pp,
+                              MapPath<uint32_t>& mapFileNames,
+                              Vector<uint32_t>&  arrFileNames,
+                              Utf8&              stringTable,
+                              Concat&            concat,
+                              CoffFunction&      f,
+                              size_t             idxDbgLines)
+{
+    auto& dbgLines   = f.dbgLines[idxDbgLines];
+    auto  sourceFile = dbgLines.sourceFile;
+    auto& lines      = dbgLines.lines;
+    concat.addU32(DEBUG_S_LINES);              // dbgLines.inlined ? DEBUG_S_INLINEELINES : DEBUG_S_LINES);
+    auto patchLTCount  = concat.addU32Addr(0); // Size of sub section
+    auto patchLTOffset = concat.totalCount();
+
+    // Function symbol index relocation
+    // Relocate to the first (relative) byte offset of the first line
+    // Size is the address of the next subsection start, or the end of the function for the last one
+    auto startByteIndex = lines[0].byteOffset;
+    dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex, lines[0].byteOffset);
+    concat.addU16(0); // Flags
+    uint32_t endAddress;
+    if (idxDbgLines != f.dbgLines.size() - 1)
+        endAddress = f.dbgLines[idxDbgLines + 1].lines[0].byteOffset;
+    else
+        endAddress = f.endAddress - f.startAddress;
+    concat.addU32(endAddress - lines[0].byteOffset); // Code size
+
+    // Compute file name index in the checksum table
+    auto checkSymIndex = 0;
+
+    using P                      = MapPath<uint32_t>;
+    pair<P::iterator, bool> iter = mapFileNames.insert(P::value_type(sourceFile->path, 0));
+    if (iter.second)
+    {
+        checkSymIndex = (uint32_t) arrFileNames.size();
+        arrFileNames.push_back((uint32_t) stringTable.length());
+        iter.first->second = checkSymIndex;
+        stringTable += sourceFile->path.string();
+        stringTable.append((char) 0);
+    }
+    else
+    {
+        checkSymIndex = iter.first->second;
+    }
+
+    auto numLines = (uint32_t) lines.size();
+    concat.addU32(checkSymIndex * 8); // File index in checksum buffer (in bytes!)
+    concat.addU32(numLines);          // NumLines
+    concat.addU32(12 + numLines * 8); // Code size block in bytes (12 + number of lines * 8)
+    for (auto& line : lines)
+    {
+        concat.addU32(line.byteOffset - startByteIndex); // Offset in bytes from the start of the section
+        concat.addU32(line.line);                        // Line number
+    }
+
+    *patchLTCount = concat.totalCount() - patchLTOffset;
+    return true;
+}
+
 bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
@@ -1097,7 +1165,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
         // Symbol
         /////////////////////////////////
         {
-            concat.addU32(SUBSECTION_SYMBOL);
+            concat.addU32(DEBUG_S_SYMBOLS);
             auto patchSCount  = concat.addU32Addr(0);
             auto patchSOffset = concat.totalCount();
 
@@ -1316,63 +1384,15 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 
         // Lines table
         /////////////////////////////////
-        for (size_t idxDbgFile = 0; idxDbgFile < f.dbgLines.size(); idxDbgFile++)
+        for (size_t idxDbgLines = 0; idxDbgLines < f.dbgLines.size(); idxDbgLines++)
         {
-            auto& itFile     = f.dbgLines[idxDbgFile];
-            auto  sourceFile = itFile.sourceFile;
-            auto& dbgLines   = itFile.dbgLines;
-            concat.addU32(SUBSECTION_LINES);
-            auto patchLTCount  = concat.addU32Addr(0); // Size of sub section
-            auto patchLTOffset = concat.totalCount();
-
-            // Function symbol index relocation
-            // Relocate to the first (relative) byte offset of the first line
-            // Size is the address of the next subsection start, or the end of the function for the last one
-            auto startByteIndex = dbgLines[0].byteOffset;
-            dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex, dbgLines[0].byteOffset);
-            concat.addU16(0); // Flags
-            uint32_t endAddress;
-            if (idxDbgFile != f.dbgLines.size() - 1)
-                endAddress = f.dbgLines[idxDbgFile + 1].dbgLines[0].byteOffset;
-            else
-                endAddress = f.endAddress - f.startAddress;
-            concat.addU32(endAddress - dbgLines[0].byteOffset); // Code size
-
-            // Compute file name index in the checksum table
-            auto checkSymIndex = 0;
-
-            using P                      = MapPath<uint32_t>;
-            pair<P::iterator, bool> iter = mapFileNames.insert(P::value_type(sourceFile->path, 0));
-            if (iter.second)
-            {
-                checkSymIndex = (uint32_t) arrFileNames.size();
-                arrFileNames.push_back((uint32_t) stringTable.length());
-                iter.first->second = checkSymIndex;
-                stringTable += sourceFile->path.string();
-                stringTable.append((char) 0);
-            }
-            else
-            {
-                checkSymIndex = iter.first->second;
-            }
-
-            auto numDbgLines = (uint32_t) dbgLines.size();
-            concat.addU32(checkSymIndex * 8);    // File index in checksum buffer (in bytes!)
-            concat.addU32(numDbgLines);          // NumLines
-            concat.addU32(12 + numDbgLines * 8); // Code size block in bytes (12 + number of lines * 8)
-            for (auto& line : dbgLines)
-            {
-                concat.addU32(line.byteOffset - startByteIndex); // Offset in bytes from the start of the section
-                concat.addU32(line.line);                        // Line number
-            }
-
-            *patchLTCount = concat.totalCount() - patchLTOffset;
+            dbgEmitLines(pp, mapFileNames, arrFileNames, stringTable, concat, f, idxDbgLines);
         }
     }
 
     // File checksum table
     /////////////////////////////////
-    concat.addU32(SUBSECTION_FILE_CHECKSUM);
+    concat.addU32(DEBUG_S_FILECHKSMS);
     concat.addU32((int) arrFileNames.size() * 8); // Size of sub section
     for (auto& p : arrFileNames)
     {
@@ -1382,7 +1402,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
 
     // String table
     /////////////////////////////////
-    concat.addU32(SUBSECTION_STRING_TABLE);
+    concat.addU32(DEBUG_S_STRINGTABLE);
     while (stringTable.length() & 3) // Align to 4 bytes
         stringTable.append((char) 0);
     concat.addU32(stringTable.length());
