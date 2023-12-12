@@ -51,6 +51,7 @@ struct SourceFile
     uint32_t  numErrors         = 0;
     uint32_t  numWarnings       = 0;
     uint32_t  indexInModule     = UINT32_MAX;
+    uint32_t  privateId         = 0;
     BuildPass buildPass         = BuildPass::Full;
 
     bool isExternal        = false;

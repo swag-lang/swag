@@ -181,8 +181,10 @@ bool Parser::doPrivate(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     SWAG_CHECK(doCheckPublicInternalPrivate(privName));
-    privName.id   = TokenId::Identifier;
-    privName.text = Fmt("__privns_%d", g_UniqueID.fetch_add(1));
+    privName.id = TokenId::Identifier;
+    if (!sourceFile->privateId)
+        sourceFile->privateId = g_UniqueID.fetch_add(1);
+    privName.text = Fmt("__private%d", sourceFile->privateId);
     AstNode* namespc;
     SWAG_CHECK(doNamespaceOnName(attrUse, &namespc, false, true, &privName));
     namespc->flags |= AST_GENERATED;

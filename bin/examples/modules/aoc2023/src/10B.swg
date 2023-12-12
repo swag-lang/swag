@@ -96,14 +96,14 @@ using Core
 
 #[Swag.EnumFlags]
 private enum Dir{Zero=0,West, East, North, South, Edge, Fill, Mask=1|2|4|8}
-private var width: u64
-private var height: u64
-private var maze: Array'Dir
 
 func day10B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "10.txt")
     let lines = assume File.readAllLines(dataPath)
+
+    var width, height: u64
+    var maze: Array'Dir
 
     width  = lines[0].length+2
     height = lines.count+2
@@ -161,26 +161,24 @@ func day10B()
     {
         visit(Bytes) c, col: l
         {
-            var outside = true
-
+            var inside = false
             let one = mp(cast(s64) col, cast(s64) line)
             if !(one & .Edge)
             {
                 loop x: col
                 {
                     let one1 = mp(cast(s64) x, cast(s64) line)
-                    if !(one1 & .Edge) continue
-                    if one1 & .North
-                        outside = !outside
+                    if (one1 & .Edge and one1 & .North)
+                        inside = !inside
                 }
             }
 
-            if !outside
+            if inside
                 total += 1
         }
     }
 
-    Console.print("total: ", total, " ")
+    //Console.print("total: ", total, " ")
     @assert(total == 287)
 }
 
