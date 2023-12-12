@@ -214,7 +214,10 @@ void BackendX64::dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeIns
     }
 
     SWAG_ASSERT(!coffFct->dbgLines.empty());
-    bool inlined = ip->node && ip->node->ownerInline;
+
+    AstFuncDecl* inlined = nullptr;
+    if (ip->node && ip->node->ownerInline)
+        inlined = ip->node->ownerInline->func;
 
     if (coffFct->dbgLines.back().sourceFile != loc.file || inlined != coffFct->dbgLines.back().inlined)
     {
@@ -1066,35 +1069,11 @@ void BackendX64::dbgEmitGlobalDebugS(X64Gen& pp, Concat& concat, VectorNative<As
     *patchSCount = concat.totalCount() - patchSOffset;
 }
 
-bool BackendX64::dbgEmitLines(X64Gen&            pp,
-                              MapPath<uint32_t>& mapFileNames,
-                              Vector<uint32_t>&  arrFileNames,
-                              Utf8&              stringTable,
-                              Concat&            concat,
-                              CoffFunction&      f,
-                              size_t             idxDbgLines)
+static uint32_t getFileChecksum(MapPath<uint32_t>& mapFileNames,
+                                Vector<uint32_t>&  arrFileNames,
+                                Utf8&              stringTable,
+                                SourceFile*        sourceFile)
 {
-    auto& dbgLines   = f.dbgLines[idxDbgLines];
-    auto  sourceFile = dbgLines.sourceFile;
-    auto& lines      = dbgLines.lines;
-    concat.addU32(DEBUG_S_LINES);              // dbgLines.inlined ? DEBUG_S_INLINEELINES : DEBUG_S_LINES);
-    auto patchLTCount  = concat.addU32Addr(0); // Size of sub section
-    auto patchLTOffset = concat.totalCount();
-
-    // Function symbol index relocation
-    // Relocate to the first (relative) byte offset of the first line
-    // Size is the address of the next subsection start, or the end of the function for the last one
-    auto startByteIndex = lines[0].byteOffset;
-    dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex, lines[0].byteOffset);
-    concat.addU16(0); // Flags
-    uint32_t endAddress;
-    if (idxDbgLines != f.dbgLines.size() - 1)
-        endAddress = f.dbgLines[idxDbgLines + 1].lines[0].byteOffset;
-    else
-        endAddress = f.endAddress - f.startAddress;
-    concat.addU32(endAddress - lines[0].byteOffset); // Code size
-
-    // Compute file name index in the checksum table
     auto checkSymIndex = 0;
 
     using P                      = MapPath<uint32_t>;
@@ -1112,8 +1091,42 @@ bool BackendX64::dbgEmitLines(X64Gen&            pp,
         checkSymIndex = iter.first->second;
     }
 
+    return checkSymIndex * 8;
+}
+
+bool BackendX64::dbgEmitLines(X64Gen&            pp,
+                              MapPath<uint32_t>& mapFileNames,
+                              Vector<uint32_t>&  arrFileNames,
+                              Utf8&              stringTable,
+                              Concat&            concat,
+                              CoffFunction&      f,
+                              size_t             idxDbgLines)
+{
+    auto& dbgLines   = f.dbgLines[idxDbgLines];
+    auto  sourceFile = dbgLines.sourceFile;
+    auto& lines      = dbgLines.lines;
+    concat.addU32(DEBUG_S_LINES);
+    auto patchLTCount  = concat.addU32Addr(0); // Size of sub section
+    auto patchLTOffset = concat.totalCount();
+
+    // Function symbol index relocation
+    // Relocate to the first (relative) byte offset of the first line
+    // Size is the address of the next subsection start, or the end of the function for the last one
+    auto startByteIndex = lines[0].byteOffset;
+    dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex, lines[0].byteOffset);
+    concat.addU16(0); // Flags
+    uint32_t endAddress;
+    if (idxDbgLines != f.dbgLines.size() - 1)
+        endAddress = f.dbgLines[idxDbgLines + 1].lines[0].byteOffset;
+    else
+        endAddress = f.endAddress - f.startAddress;
+    concat.addU32(endAddress - lines[0].byteOffset); // Code size
+
+    // Compute file name index in the checksum table
+    auto checkSymIndex = getFileChecksum(mapFileNames, arrFileNames, stringTable, sourceFile);
+
     auto numLines = (uint32_t) lines.size();
-    concat.addU32(checkSymIndex * 8); // File index in checksum buffer (in bytes!)
+    concat.addU32(checkSymIndex);     // File index in checksum buffer (in bytes!)
     concat.addU32(numLines);          // NumLines
     concat.addU32(12 + numLines * 8); // Code size block in bytes (12 + number of lines * 8)
     for (auto& line : lines)
@@ -1380,6 +1393,36 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
             dbgEndRecord(pp, concat);
 
             *patchSCount = concat.totalCount() - patchSOffset;
+        }
+
+        // Inlineed lines table
+        /////////////////////////////////
+        {
+            for (size_t idxDbgLines = 0; idxDbgLines < f.dbgLines.size(); idxDbgLines++)
+            {
+                auto& dbgLines = f.dbgLines[idxDbgLines];
+                if (!dbgLines.inlined)
+                    continue;
+
+                concat.addU32(DEBUG_S_INLINEELINES);
+                auto patchLTCount  = concat.addU32Addr(0); // Size of sub section
+                auto patchLTOffset = concat.totalCount();
+
+                const uint32_t CV_INLINEE_SOURCE_LINE_SIGNATURE = 0;
+                concat.addU32(CV_INLINEE_SOURCE_LINE_SIGNATURE);
+
+                auto checkSymIndex = getFileChecksum(mapFileNames, arrFileNames, stringTable, dbgLines.sourceFile);
+                auto typeIdx       = dbgGetOrCreateType(pp, dbgLines.inlined->typeInfo);
+
+                for (auto l : dbgLines.lines)
+                {
+                    concat.addU32(typeIdx);
+                    concat.addU32(checkSymIndex);
+                    concat.addU32(l.line);
+                }
+
+                *patchLTCount = concat.totalCount() - patchLTOffset;
+            }
         }
 
         // Lines table

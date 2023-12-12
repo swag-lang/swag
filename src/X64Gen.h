@@ -255,7 +255,7 @@ struct DbgLines
 {
     SourceFile*     sourceFile;
     Vector<DbgLine> lines;
-    bool            inlined = false;
+    AstFuncDecl*    inlined = nullptr;
 };
 
 struct CoffFunction

@@ -66,9 +66,9 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
     else if (g_CommandLine.buildCfg == "debug")
     {
         buildCfg.byteCodeOptimizeLevel    = 0;
-        buildCfg.byteCodeDebugInline      = true;
-        buildCfg.byteCodeInline           = true;
-        buildCfg.byteCodeAutoInline       = true;
+        buildCfg.byteCodeDebugInline      = false;
+        buildCfg.byteCodeInline           = false;
+        buildCfg.byteCodeAutoInline       = false;
         buildCfg.byteCodeEmitAssume       = true;
         buildCfg.safetyGuards             = SAFETY_ALL;
         buildCfg.errorStackTrace          = true;
