@@ -199,7 +199,7 @@ void ByteCodeDebugger::appendTypedValueProtected(ByteCodeRunContext* context, Ut
             str += "null";
         else
         {
-            str += Fmt("0x%016llx", ptr);
+            str += Fmt("0x%016llx ", ptr);
             auto res1 = res;
             res1.type = TypeManager::concretePtrRef(typeInfo);
             res1.addr = *(void**) res1.addr;

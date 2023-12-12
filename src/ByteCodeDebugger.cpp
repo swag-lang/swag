@@ -505,7 +505,7 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
     case DebugStepMode::NextLineStepIn:
     {
         debugBcMode = false;
-        auto loc    = ByteCode::getLocation(context->bc, ip, debugLastBreakIp->node->ownerInline ? true : false);
+        auto loc    = ByteCode::getLocation(context->bc, ip, true);
         if (!loc.file || !loc.location)
         {
             zapCurrentIp = true;
@@ -549,21 +549,43 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
             break;
         }
 
-        // If last break was in a real function, and now we are in an inline block
         if (!debugLastBreakIp->node->ownerInline && ip->node->ownerInline)
         {
-            zapCurrentIp = true;
-            break;
+            // Can only step into a mixin if we come from a non inline block
+            if (!(ip->node->flags & AST_IN_MIXIN))
+            {
+                zapCurrentIp = true;
+                break;
+            }
+
+            auto loc = ByteCode::getLocation(context->bc, ip, true);
+            if (loc.file != debugStepLastFile)
+            {
+                zapCurrentIp = true;
+                break;
+            }
         }
 
-        // If last break was in an inline block, and we are in a sub inline block
-        if (debugLastBreakIp->node->ownerInline && debugLastBreakIp->node->ownerInline->isParentOf(ip->node->ownerInline))
+        if (debugLastBreakIp->node->ownerInline)
         {
-            zapCurrentIp = true;
-            break;
+            // If i am still in an inline, but not in a mixin block, and was in a mixin block, zap
+            if (ip->node->ownerInline &&
+                debugLastBreakIp->node->flags & AST_IN_MIXIN &&
+                !(ip->node->flags & AST_IN_MIXIN))
+            {
+                zapCurrentIp = true;
+                break;
+            }
+
+            auto loc = ByteCode::getLocation(context->bc, ip, true);
+            if (loc.file != debugStepLastFile)
+            {
+                zapCurrentIp = true;
+                break;
+            }
         }
 
-        auto loc = ByteCode::getLocation(context->bc, ip, debugLastBreakIp->node->ownerInline ? true : false);
+        auto loc = ByteCode::getLocation(context->bc, ip, true);
         if (!loc.file || !loc.location)
         {
             zapCurrentIp = true;
