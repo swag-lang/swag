@@ -28,7 +28,7 @@ void ByteCode::printSourceCode(const ByteCodePrintOptions& options, ByteCodeInst
         s.trim();
 
         if (loc1.file != loc.file || loc1.location->line != loc.location->line)
-            g_Log.setColor(LogColor::DarkYellow);
+            g_Log.setColor(LogColor::DarkBlue);
         else
             g_Log.setColor(LogColor::Yellow);
         g_Log.print("         ");

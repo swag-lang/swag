@@ -387,8 +387,8 @@ namespace Swag
     }
 
     // An error raised by the system
-    struct SystemError 
-    { 
+    struct SystemError
+    {
         using base: Swag.BaseError
         errorID:    u64
     }
@@ -790,7 +790,6 @@ namespace Swag
         warnDefaultErrors:      bool    // All warnings are treated as errors, except those specified above
 
         byteCodeOptimizeLevel   = 1     // Optimization level of bytecode [0, 1 or 2]
-        byteCodeDebugInline     = true  // Trace into inlined code when generating debug infos
         byteCodeEmitAssume      = true  // 'assume' will panic if an error is raised
         byteCodeInline          = true  // Enable bytecode inlining with #[Swag.Inline]
         byteCodeAutoInline      = true  // Automatic inlining of some other functions
@@ -798,6 +797,7 @@ namespace Swag
         backendKind               = BuildCfgBackendKind.Executable  // Backend type (executable, dynamic lib...)
         backendSubKind            = BuildCfgBackendSubKind.Console  // Backend sub kind
         backendDebugInformations  = false                           // Output debug informations if 'true'
+        backendDebugInline        = false                           // Generate specific line informations for inline code
         backendOptimize           = BuildCfgBackendOptim.O0         // Backend optimization level
         backendNumCU              = 0'u32
 

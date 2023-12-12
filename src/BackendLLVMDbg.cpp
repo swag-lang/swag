@@ -645,7 +645,7 @@ void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteC
         return;
     }
 
-    auto loc = ByteCode::getLocation(bc, ip);
+    auto loc = ByteCode::getLocation(bc, ip, bc->sourceFile && bc->sourceFile->module->buildCfg.backendDebugInline);
     if (!loc.location)
     {
         builder->SetCurrentDebugLocation(llvm::DebugLoc());

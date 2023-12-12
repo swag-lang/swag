@@ -5,7 +5,6 @@
 
 void ByteCodeDebugger::printSet(ByteCodeRunContext* context)
 {
-    g_Log.messageHeaderDot("debug inline code", context->bc->sourceFile->module->buildCfg.byteCodeDebugInline ? "on" : "off", COLOR_NAME, LogColor::White, " ");
     g_Log.messageHeaderDot("stop on @breakpoint()", !g_CommandLine.dbgOff ? "on" : "off", COLOR_NAME, LogColor::White, " ");
     g_Log.messageHeaderDot("print struct content", g_ByteCodeDebugger.debugPrintStruct ? "on" : "off", COLOR_NAME, LogColor::White, " ");
     g_Log.messageHeaderDot("print array content", g_ByteCodeDebugger.debugPrintArray ? "on" : "off", COLOR_NAME, LogColor::White, " ");
@@ -16,23 +15,6 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
     if (arg.split.size() == 1)
     {
         g_ByteCodeDebugger.printSet(context);
-        return BcDbgCommandResult::Continue;
-    }
-
-    if (arg.split[1] == "inline")
-    {
-        if (arg.split.size() != 3)
-            return BcDbgCommandResult::BadArguments;
-        if (arg.split[2] != "on" && arg.split[2] != "off")
-            return BcDbgCommandResult::BadArguments;
-
-        context->bc->sourceFile->module->buildCfg.byteCodeDebugInline = arg.split[2] == "on" ? true : false;
-
-        if (context->bc->sourceFile->module->buildCfg.byteCodeDebugInline)
-            g_ByteCodeDebugger.printCmdResult("debug inline code: on");
-        else
-            g_ByteCodeDebugger.printCmdResult("debug inline code: off");
-        g_ByteCodeDebugger.printDebugContext(context, true);
         return BcDbgCommandResult::Continue;
     }
 

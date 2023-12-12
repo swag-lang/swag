@@ -79,7 +79,6 @@ void ByteCodeDebugger::setup()
     commands.push_back({});                                           
                           
     commands.push_back({"set",         "",     "",                          "print all actual debug parameters", cmdSet});
-    commands.push_back({"set",         "",     "inline <on|off>",           "swap between inline mode and non inline mode", cmdSet});
     commands.push_back({"set",         "",     "bkp <on|off>",              "enable/disable @breakpoint()", cmdSet});
     commands.push_back({"set",         "",     "print struct <on|off>",     "print the content of structs when printing values", cmdSet});
     commands.push_back({"set",         "",     "print array <on|off>",      "print the content of arrays when printing values", cmdSet});
@@ -671,7 +670,6 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
                 module = context->bc->node->sourceFile->module;
             if (module)
             {
-                g_Log.print(Fmt("BuildCfg.byteCodeDebugInline   = %s\n", module->buildCfg.byteCodeDebugInline ? "true" : "false"));
                 g_Log.print(Fmt("BuildCfg.byteCodeInline        = %s\n", module->buildCfg.byteCodeInline ? "true" : "false"));
                 g_Log.print(Fmt("BuildCfg.byteCodeOptimizeLevel = %d\n", module->buildCfg.byteCodeOptimizeLevel));
             }

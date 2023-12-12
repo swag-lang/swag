@@ -293,7 +293,6 @@ struct BuildCfg
 
     // Bytecode
     uint32_t byteCodeOptimizeLevel = 1;
-    bool     byteCodeDebugInline   = true;
     bool     byteCodeEmitAssume    = true;
     bool     byteCodeInline        = true;
     bool     byteCodeAutoInline    = true;
@@ -302,6 +301,7 @@ struct BuildCfg
     BuildCfgBackendKind    backendKind              = BuildCfgBackendKind::Executable;
     BuildCfgBackendSubKind backendSubKind           = BuildCfgBackendSubKind::Console;
     bool                   backendDebugInformations = false;
+    bool                   backendDebugInline       = false;
     BuildCfgBackendOptim   backendOptimize          = BuildCfgBackendOptim::O0;
     uint32_t               backendNumCU             = 0;
 

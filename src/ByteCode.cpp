@@ -32,8 +32,7 @@ ByteCode::Location ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, 
         loc.file = loc.file->fileForSourceLocation;
     loc.location = ip->location;
 
-    bool zapInline = !bc->sourceFile->module->buildCfg.byteCodeDebugInline && !getInline;
-    if (zapInline)
+    if (!getInline)
     {
         if (ip->node->ownerInline && !(ip->node->flags & AST_IN_MIXIN) && ip->node->ownerInline->ownerFct == ip->node->ownerFct)
         {
