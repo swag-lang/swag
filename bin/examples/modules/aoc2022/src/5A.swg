@@ -73,9 +73,9 @@ func day5A()
 
             while count
             {
-                var str = stacks[colFrom]
+                let str = ref stacks[colFrom]
                 stacks[colTo].insert(0, str[0])
-                stacks[colFrom].remove(0, 1)
+                str.remove(0, 1)
                 count -= 1
             }
         }
@@ -90,13 +90,8 @@ func day5A()
             {
                 if stack >= stacks.count
                     stacks.add("")
-
                 if l[i] == `[`
-                {
-                    let str: ref String = stacks[stack]
-                    str.append(l[i+1])
-                }
-
+                    stacks[stack].append(l[i+1])
                 stack += 1
             }
         }
