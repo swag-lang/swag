@@ -1,13 +1,11 @@
 // https://adventofcode.com/
 // Year 2023
 //
-// This will not be the more optimal or elegant code.
+// This won't be the more optimal or elegant code.
 // Just want to test Swag here...
 
 #main
 {
-    //Core.Time.Stopwatch.scopeMeasure()
-
     day1A()
     day1B()
     day2A()

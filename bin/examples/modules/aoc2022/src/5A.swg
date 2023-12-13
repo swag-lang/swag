@@ -59,17 +59,20 @@ func day5A()
     let lines = assume File.readAllLines(dataPath)
 
     var stacks: Array'String
+
     var r: Parser.RegExp
+    catch r.compile(#"\d+"#)
+
     var moveMode = false
     visit l: lines
     {
         if moveMode
         {
-            if !catch r.match(#"move (\d+) from (\d+) to (\d+)"#, l)
-                continue
-            var count   = assume StrConv.toU64(r.getCapture(1))
-            let colFrom = assume StrConv.toS32(r.getCapture(2))-1
-            let colTo   = assume StrConv.toS32(r.getCapture(3))-1
+            let res = r.grepAll(l)
+            if res.count == 0 continue
+            var count   = assume StrConv.toU64(res[0].value)
+            let colFrom = assume StrConv.toS32(res[1].value)-1
+            let colTo   = assume StrConv.toS32(res[2].value)-1
 
             while count
             {
@@ -79,6 +82,7 @@ func day5A()
                 count -= 1
             }
         }
+
         elif l[1] == `1`
         {
             moveMode = true
