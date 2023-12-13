@@ -108,11 +108,7 @@ func day7A()
             var tmp = folder
             loop
             {
-                let it = folders.find(tmp)
-                if it
-                    it.value += size
-                else
-                    folders.add(tmp, size)
+                folders.findOrAdd(tmp).value += size
                 if !tmp.length break
                 tmp = Path.getDirectoryName(tmp)
             }
@@ -121,7 +117,7 @@ func day7A()
 
     var total: u64
     visit name, val: folders
-        if val <= 100000
+        if val <= 100_000
             total += val
 
     //Console.print("total: ", total)

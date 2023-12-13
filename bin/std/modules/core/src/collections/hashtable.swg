@@ -362,6 +362,15 @@ impl HashTable
         return null
     }
 
+    // Get the entry if it exists, or creates a new one with a default value
+    mtd findOrAdd(key: K)->*HashTableEntry
+    {
+        let it = find(key)
+        if it return it
+        var val: V
+        return add(key, val)
+    }
+
     // Remove all elements
     mtd clear()
     {
