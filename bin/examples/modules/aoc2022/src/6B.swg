@@ -29,12 +29,12 @@ func day6B()
     loop i: str
     {
         arr[str[i]] += 1
-        if arr[str[i]] == 1 len += 1
+        len += cast(s32) (arr[str[i]] == 1)
 
         if i >= LEN
         {
             arr[str[i-LEN]] -= 1
-            if arr[str[i-LEN]] == 0 len -= 1
+            len -= cast(s32) (arr[str[i-LEN]] == 0)
         }
 
         if len == LEN
