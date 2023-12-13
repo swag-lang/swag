@@ -57,9 +57,8 @@ func day7B()
         }
     }
 
-    let freeSpace = 70_000_000 - folders.find("").value
-    let needSpace = 30_000_000 - freeSpace
-    var total     = Swag.U64.Max
+    var total     = folders.find("").value
+    let needSpace = 30_000_000 - (70_000_000 - total)
     visit name, val: folders
     {
         if val >= needSpace and val < total
