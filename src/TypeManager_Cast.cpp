@@ -491,6 +491,18 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
 
         Diagnostic diag{fromNode, msg};
         diag.remarks = remarks;
+
+        // Add a note in case we affect to an identifier.
+        if (context->node->kind == AstNodeKind::AffectOp)
+        {
+            auto left = context->node->childs.front();
+            if (left->kind == AstNodeKind::IdentifierRef)
+            {
+                auto* note = Diagnostic::note(left->childs.back(), Diagnostic::isType(left->childs.back()));
+                notes.push_back(note);
+            }
+        }
+
         return context->report(diag, notes);
     }
 
@@ -3012,6 +3024,16 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
         // Convert from pointer to ref : only if authorized
         if (!(fromType->flags & TYPEINFO_POINTER_REF) && !(castFlags & CASTFLAG_EXPLICIT) && !(castFlags & CASTFLAG_PTR_REF))
             return castError(context, toType, fromType, fromNode, castFlags);
+
+        // When affecting a ref, constness must be the same
+        if (fromNode && 
+            fromType->isPointerRef() && 
+            (castFlags & CASTFLAG_FOR_AFFECT) && 
+            fromNode->kind == AstNodeKind::KeepRef &&
+            toType->isConst() != fromType->isConst())
+        {
+            return castError(context, toType, fromType, fromNode, castFlags);
+        }
 
         // Compare pointed types
         auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);

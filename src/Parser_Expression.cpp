@@ -533,12 +533,14 @@ bool Parser::doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
     // Force ref pointer
     else if (token.id == TokenId::KwdConst)
     {
+        auto startLoc = token.startLocation;
         tokenizer.saveState(token);
         eatToken();
         if (token.id == TokenId::KwdRef)
         {
             SWAG_CHECK(doKeepRef(parent, &exprNode));
             exprNode->flags |= AST_IS_CONST;
+            exprNode->token.startLocation = startLoc;
         }
         else
         {

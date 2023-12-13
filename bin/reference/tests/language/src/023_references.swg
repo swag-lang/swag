@@ -49,7 +49,7 @@ You must then use `ref` in the affectation.
 
     // Here we force 'myRef' to point to 'y' and not to 'x' anymore.
     // We do *NOT* change the value of 'x'.
-    myRef = ref &y
+    myRef = const ref &y
     @assert(myRef == 1000)
 }
 
