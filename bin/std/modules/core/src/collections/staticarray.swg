@@ -220,8 +220,8 @@ impl StaticArray
         count += 1
     }
 
-    // Reserve room at the end of the array for 'num' elements, but does not
-    // initialize them. Returns the address of the first element
+    // Reserve room at the end of the array for 'num' elements.
+    // Does not initialize them. Returns the address of the first element
     mtd emplaceAddress(num: u32 = 1)->^T
     {
         Debug.assert(count + num <= N, "the array is full")
@@ -240,8 +240,8 @@ impl StaticArray
         return res
     }
 
-    // Insert a value at the given index. If 'index' is equal to 'count', then
-    // the value is added at the end of the array.
+    // Insert a value at the given index.
+    // If 'index' is equal to 'count', then the value is added at the end of the array.
     // Order is preserved.
     mtd insertAt(index: u64, value: T)
         #validif Reflection.canCopy(T)
@@ -265,8 +265,8 @@ impl StaticArray
         buffer[index] =,nodrop value
     }
 
-    // Move a value at the given index. If 'index' is equal to 'count', then
-    // the value is added at the end of the array.
+    // Move a value at the given index.
+    // If 'index' is equal to 'count', then the value is added at the end of the array.
     // Order is preserved.
     mtd insertAt(index: u64, value: moveref T)
     {
@@ -289,8 +289,8 @@ impl StaticArray
         buffer[index] =,nodrop,move value
     }
 
-    // Insert some values at the given index. If 'index' is equal to 'count', then
-    // the values are added at the end of the array.
+    // Insert some values at the given index.
+    // If 'index' is equal to 'count', then the values are added at the end of the array.
     // Order is preserved.
     mtd insertAt(index: u64, values: const [..] T)
         #validif Reflection.canCopy(T)
@@ -326,8 +326,8 @@ impl StaticArray
         }
     }
 
-    // Move some values at the given index. If 'index' is equal to 'count', then
-    // the values are moved at the end of the array.
+    // Move some values at the given index.
+    // If 'index' is equal to 'count', then the values are moved at the end of the array.
     // Order is preserved.
     mtd emplaceAt(index: u64, values: [..] T)
         #validif Reflection.canCopy(T)
@@ -460,7 +460,7 @@ impl StaticArray
     mtd(V) remove(value: V)
     {
         let idx = Slice.findLinear(toSlice(), value)
-        if idx == Swag.U64.Max  
+        if idx == Swag.U64.Max
             return
         removeAt(idx)
     }
@@ -470,7 +470,7 @@ impl StaticArray
     mtd(V) removeOrdered(value: V)
     {
         let idx = Slice.findLinear(toSlice(), value)
-        if idx == Swag.U64.Max  
+        if idx == Swag.U64.Max
             return
         removeAtOrdered(idx)
     }

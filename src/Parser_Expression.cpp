@@ -378,18 +378,16 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
         if (exprFlags & EXPR_FLAG_SIMPLE)
             return invalidTokenError(InvalidTokenError::PrimaryExpression, parent);
         eatToken();
-        AstNode* resNode;
-        SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, &resNode));
-        *result = resNode;
-        resNode->addSpecFlags(AstType::SPECFLAG_FORCE_TYPE);
+        SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));
+        (*result)->addSpecFlags(AstType::SPECFLAG_FORCE_TYPE);
         break;
     }
 
     case TokenId::KwdConst:
+    case TokenId::KwdRef:
     case TokenId::KwdCode:
     case TokenId::KwdStruct:
     case TokenId::KwdUnion:
-    case TokenId::KwdRef:
     case TokenId::NativeType:
     case TokenId::SymAsterisk:
     case TokenId::SymCircumflex:

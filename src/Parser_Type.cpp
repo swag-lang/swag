@@ -645,7 +645,6 @@ bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
 
     if (isMoveRef)
     {
-        // TODO: moveref on ref
         auto typeNode = CastAst<AstTypeExpression>(*result, AstNodeKind::TypeExpression);
         typeNode->typeFlags |= TYPEFLAG_IS_REF | TYPEFLAG_IS_MOVE_REF;
     }
