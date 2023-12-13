@@ -9,7 +9,7 @@ enum Flags
     C
 }
 
-func add(flags: ref Flags, value: Flags)
+func add(flags: &Flags, value: Flags)
 {
     flags |= value
 }

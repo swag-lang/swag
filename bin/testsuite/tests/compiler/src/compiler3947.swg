@@ -6,7 +6,7 @@ struct V
 
 var G: V{1, 10}
 
-func toto()->ref V
+func toto()->&V
 {
     return &G
 }

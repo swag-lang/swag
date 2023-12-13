@@ -14,7 +14,7 @@ impl VV
     }
 }
 
-func toto()->const ref VV
+func toto()->const &VV
 {
     return &G
 }

@@ -139,7 +139,7 @@ void TypeInfoPointer::computeWhateverName(Utf8& resName, uint32_t nameType)
         else if (flags & TYPEINFO_POINTER_ACCEPT_MOVE_REF)
             resName += "moveref ";
         else if (flags & TYPEINFO_POINTER_REF)
-            resName += "ref ";
+            resName += "&";
         else if (flags & TYPEINFO_POINTER_ARITHMETIC)
             resName += "^";
         else

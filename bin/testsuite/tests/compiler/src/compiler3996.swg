@@ -6,7 +6,7 @@ func toto(x: ...)
     @assert(k.kind == .Pointer)
 }
 
-func titi(a: const ref V)
+func titi(a: const &V)
 {
     toto(a)
 }

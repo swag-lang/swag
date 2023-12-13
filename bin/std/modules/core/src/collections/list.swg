@@ -43,7 +43,7 @@ impl List
                 #if #up ptr
                     let @alias0 = cast(*T) & #up n.value
                 #elif Reflection.isStruct(T)
-                    let @alias0 = cast(ref T) & #up n.value
+                    let @alias0 = cast(&T) & #up n.value
                 #else
                     let @alias0 = #up n.value
                 let @alias1 = #up n

@@ -8,7 +8,7 @@ var g: [4*4] Dir = Dir.A
 #test
 {
     #[Swag.Inline]
-    func mp(x0, y0: u64)->ref Dir { return &g[0] + (x0 + y0*4); }
+    func mp(x0, y0: u64)->&Dir { return &g[0] + (x0 + y0*4); }
 
     let a = ref mp(1, 1)
     switch

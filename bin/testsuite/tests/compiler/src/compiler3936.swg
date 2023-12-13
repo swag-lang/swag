@@ -2,7 +2,7 @@
 #test
 {
     var a = 2
-    var b: ref s32 = &a
+    var b: &s32 = &a
     b = 3
     @assert(a == 3)
     @assert(b == 3)

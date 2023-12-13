@@ -5,7 +5,7 @@ struct TT
     value2: s64 = 456
 }
 
-func D(x: const ref TT)
+func D(x: const &TT)
 {
     //@print(cast(s64) x.value)
     @assert(x.value == 456)

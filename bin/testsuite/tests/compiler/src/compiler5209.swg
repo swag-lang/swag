@@ -1,4 +1,4 @@
-struct A 
+struct A
 {
     x: s64 = 66
     y: s64 = 66
@@ -15,7 +15,7 @@ impl A
 //#[Swag.PrintBc]
 func toto(val: any)
 {
-    let err = cast(const ref A) val
+    let err = cast(const &A) val
     @assert(err.x == 42)
 }
 

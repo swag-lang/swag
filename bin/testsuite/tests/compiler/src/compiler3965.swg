@@ -14,7 +14,7 @@ impl VV
     }
 }
 
-func toto()->const ref VV
+func toto()->const &VV
 {
     return &G
 }
@@ -23,6 +23,6 @@ func toto()->const ref VV
 #test
 {
     let x = ref toto()
-    @assert(@typeof(x) == #type const ref VV)
+    @assert(@typeof(x) == const &VV)
     @assert(PC == false)
 }

@@ -21,7 +21,7 @@ struct A
 
 impl A
 {
-    mtd opIndex(i: u64)->const ref B
+    mtd opIndex(i: u64)->const &B
     {
         return &b
     }

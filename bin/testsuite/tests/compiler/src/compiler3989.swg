@@ -17,7 +17,7 @@ impl IHash for AA
 }
 
 //#[Swag.PrintBc]
-func hash(value: const ref AA)
+func hash(value: const &AA)
 {
     var itf = cast(IHash) value
 }

@@ -46,7 +46,9 @@ typealias ConstF64 = Const'f64
     func isEqualEpsilon(x, y: f32, eps = ConstF32.Epsilon) => abs(x - y) < eps
     func isEqualEpsilon(x, y: f64, eps = ConstF64.Epsilon) => abs(x - y) < eps
 
+    #[Swag.Safety("nan", false)]
     func isNan(x: f32) => x != x
+    #[Swag.Safety("nan", false)]
     func isNan(x: f64) => x != x
 
     func smoothstep(edge0, edge1, x: f32)->f32

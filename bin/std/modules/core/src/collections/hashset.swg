@@ -78,7 +78,7 @@ impl HashSet
                 }
                 #elif Reflection.isStruct(K)
                 {
-                    let @alias0 = cast(const ref K) &#up table[@index].key
+                    let @alias0 = cast(const &K) &#up table[@index].key
                 }
                 #else
                 {
@@ -233,7 +233,7 @@ impl HashSet
 
     // Add a new key.
     #[Discardable]
-    mtd emplaceInternal(hashVal: u32, key: ref K)->*HashSetEntry
+    mtd emplaceInternal(hashVal: u32, key: &K)->*HashSetEntry
         #validif Reflection.canCopy(@typeof(K))
     {
         grow()

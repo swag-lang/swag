@@ -26,7 +26,7 @@ struct B
 
 impl I for B
 {
-    mtd toto(y: const ref Pt)
+    mtd toto(y: const &Pt)
     {
         a.I.toto(y)
     }

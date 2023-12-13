@@ -87,11 +87,11 @@ impl HashTable
                 #else
                 {
                     #if Reflection.isStruct(K)
-                        let @alias0 = cast(const ref K) &#up table[@index].key
+                        let @alias0 = cast(const &K) &#up table[@index].key
                     #else
                         let @alias0 = #up table[@index].key
                     #if Reflection.isStruct(V)
-                        let @alias1 = cast(const ref V) &#up table[@index].value
+                        let @alias1 = cast(const &V) &#up table[@index].value
                     #else
                         let @alias1 = #up table[@index].value
                 }
@@ -264,7 +264,7 @@ impl HashTable
 
     // Use with care !
     #[Discardable]
-    mtd emplaceInternal(hashVal: u32, key: ref K, value: ref V)->*HashTableEntry
+    mtd emplaceInternal(hashVal: u32, key: &K, value: &V)->*HashTableEntry
         #validif Reflection.canCopy(@typeof(K)) and Reflection.canCopy(@typeof(V))
     {
         grow()

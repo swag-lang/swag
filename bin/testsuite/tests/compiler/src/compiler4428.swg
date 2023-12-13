@@ -3,7 +3,7 @@ using Swag
 
 var G = 5
 
-func toto(x: ref *s32)
+func toto(x: &*s32)
 {
 	x = &G
 }

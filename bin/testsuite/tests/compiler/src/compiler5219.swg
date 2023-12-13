@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-func toto(x: ref const [..] s32)
+func toto(x: &const [..] s32)
 {
     x = [3, 4]
 }

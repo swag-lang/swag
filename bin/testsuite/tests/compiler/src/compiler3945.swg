@@ -4,7 +4,7 @@ struct V
 }
 
 var G: V{1, 10}
-func toto()->const ref V
+func toto()->const &V
 {
     return &G
 }
@@ -12,7 +12,7 @@ func toto()->const ref V
 //#[Swag.PrintBc]
 #test
 {
-    let x: const ref V = toto()
+    let x: const &V = toto()
     @assert(x.x == 1)
     @assert(x.y == 10)
     G.x = 4

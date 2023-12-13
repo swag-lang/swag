@@ -6,7 +6,7 @@ struct(T) Point
 
 impl Point
 {
-    mtd gx() -> ref T
+    mtd gx()->&T
     {
         return ref &x
     }

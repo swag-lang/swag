@@ -1,4 +1,4 @@
-func toto(x: ref any)
+func toto(x: &any)
 {
     let ptr = cast(*s32) @dataof(x)
     @assert(dref ptr == 42)

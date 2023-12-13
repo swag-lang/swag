@@ -1,6 +1,6 @@
 struct A
 {
-    x: ref s32 = undefined
+    x: &s32 = undefined
 }
 
 #test

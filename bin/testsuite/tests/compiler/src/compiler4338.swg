@@ -1,4 +1,4 @@
-func(T) largest(list: [..] T)->ref T
+func(T) largest(list: [..] T)->&T
 {
     var largest = ref &list[0]
     visit item: list

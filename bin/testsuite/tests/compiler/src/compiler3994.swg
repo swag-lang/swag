@@ -11,7 +11,7 @@ func toto(x: any)
 }
 
 //#[Swag.PrintBc]
-func titi(a: const ref A)
+func titi(a: const &A)
 {
     toto(a)
 }

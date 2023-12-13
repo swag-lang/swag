@@ -7,7 +7,7 @@ func toto(x: string)
 }
 
 //#[Swag.PrintBc]
-func toto1(yyy: ref string)
+func toto1(yyy: &string)
 {
 	toto(yyy)
 }

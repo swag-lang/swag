@@ -1,4 +1,4 @@
-func toto(x: const ref string)
+func toto(x: const &string)
 {
     let ptr = cast(const ^u8) @dataof(x)
     @assert(ptr[0] == `4`)

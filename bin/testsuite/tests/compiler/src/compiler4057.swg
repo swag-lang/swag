@@ -1,4 +1,4 @@
-func titi(x, y: ref s32, z: s32)
+func titi(x, y: &s32, z: s32)
 {
     x = y + z
 }

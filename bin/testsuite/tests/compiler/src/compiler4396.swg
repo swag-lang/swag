@@ -2,7 +2,7 @@
 
 struct A { x, y: s32; }
 
-func toto(x: ref A)
+func toto(x: &A)
 {
     x.x = 1
     x.y = 2

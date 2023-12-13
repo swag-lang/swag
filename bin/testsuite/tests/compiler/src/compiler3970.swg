@@ -1,12 +1,12 @@
 var G: s32
 var G1: s32
 
-func toto()->ref s32
+func toto()->&s32
 {
     return &G
 }
 
-func toto1()->ref s32
+func toto1()->&s32
 {
     return &G1
 }

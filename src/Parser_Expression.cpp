@@ -384,13 +384,13 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
     }
 
     case TokenId::KwdConst:
-    case TokenId::KwdRef:
     case TokenId::KwdCode:
     case TokenId::KwdStruct:
     case TokenId::KwdUnion:
     case TokenId::NativeType:
     case TokenId::SymAsterisk:
     case TokenId::SymCircumflex:
+    case TokenId::SymAmpersand:
         if (exprFlags & EXPR_FLAG_SIMPLE)
             return invalidTokenError(InvalidTokenError::PrimaryExpression, parent);
         SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_TYPE_EXPR, result));

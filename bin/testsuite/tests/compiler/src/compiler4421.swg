@@ -5,7 +5,7 @@ func toto(x: moveref s32)
     @assert(false)
 }
 
-func toto(x: ref s32)
+func toto(x: &s32)
 {
     G = 1
 }

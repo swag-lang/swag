@@ -1,6 +1,6 @@
 
 /**
-`any` is a specific type that can store every other types. 
+`any` is a specific type that can store every other types.
 
 > WARNING:
 > `any` is **not a variant**. It's a dynamic typed **reference** to an existing value.
@@ -59,7 +59,7 @@ You can either get the value or a const reference to the value.
 
     let b = cast(s32) a             // Get the value itself
     @assert(b == 42)
-    let c = cast(const ref s32) a   // This is fine too
+    let c = cast(const &s32) a   // This is fine too
     @assert(c == 42)
 }
 

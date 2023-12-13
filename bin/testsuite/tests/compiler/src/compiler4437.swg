@@ -1,7 +1,7 @@
 //#global skip
 using Swag
 
-func toto(x, y: ref string)
+func toto(x, y: &string)
 {
 	x =,moveraw y
 	@assert(x == "1")

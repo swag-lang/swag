@@ -77,13 +77,13 @@ impl Vector3
 #test
 {
     // This is the 'move' version of 'assign'. With 'moveref', we tell the compiler that this version will take the owership on 'from'.
-    func assign(assignTo: ref Vector3, from: moveref Vector3)
+    func assign(assignTo: &Vector3, from: moveref Vector3)
     {
         assignTo =,move from
     }
 
     // This is the normal 'copy' version. In this version, 'from' will not be changed, that's why it's constant (not a ref).
-    func assign(assignTo: ref Vector3, from: Vector3)
+    func assign(assignTo: &Vector3, from: Vector3)
     {
         assignTo = from
     }

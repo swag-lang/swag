@@ -496,7 +496,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
     }
 
     // Reference
-    if (token.id == TokenId::KwdRef)
+    if (token.id == TokenId::SymAmpersand)
     {
         node->typeFlags |= TYPEFLAG_IS_SUB_TYPE;
         node->typeFlags |= TYPEFLAG_IS_REF;

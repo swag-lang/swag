@@ -8,7 +8,7 @@ enum Flags
 }
 
 #[Swag.Inline]
-func add(flags: ref Flags, value: Flags)
+func add(flags: &Flags, value: Flags)
 {
     flags |= value
 }

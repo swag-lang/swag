@@ -14,7 +14,7 @@ impl VV
     }
 }
 
-func toto()->const ref VV
+func toto()->const &VV
 {
     return &G
 }
@@ -22,7 +22,7 @@ func toto()->const ref VV
 //#[Swag.PrintBc]
 #test
 {
-    let x: const ref VV = toto()
-    @assert(@typeof(x) == #type const ref VV)
+    let x: const &VV = toto()
+    @assert(@typeof(x) == const &VV)
     @assert(PC == false)
 }

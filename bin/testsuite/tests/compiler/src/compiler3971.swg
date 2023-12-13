@@ -1,6 +1,6 @@
 var G: s32
 
-func toto()->ref s32
+func toto()->&s32
 {
     return &G
 }

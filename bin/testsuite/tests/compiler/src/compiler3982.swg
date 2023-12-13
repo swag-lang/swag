@@ -1,11 +1,11 @@
 var G: string = "G"
 
-func toto(x: const ref string)
+func toto(x: const &string)
 {
     @assert(x == "G")
 }
 
-func titi()->const ref string => &G
+func titi()->const &string => &G
 
 //#[Swag.PrintBc]
 #test

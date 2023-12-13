@@ -11,7 +11,7 @@ impl AA
     }
 }
 
-func toto(x: const ref AA)
+func toto(x: const &AA)
 {
     visit x
     {

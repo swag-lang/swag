@@ -1,4 +1,4 @@
-func toto(a: ref string, b: moveref string)
+func toto(a: &string, b: moveref string)
 {
     a = b
     if a != b

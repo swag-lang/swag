@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-func toto(x: const ref const [..] s32)
+func toto(x: const &const [..] s32)
 {
     let ptr = cast(const ^s32) @dataof(x)
     @assert(ptr[0] == 4)

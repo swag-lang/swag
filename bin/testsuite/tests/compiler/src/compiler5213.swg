@@ -8,9 +8,9 @@
     //let b = cast(s32) a
     //@assert(b == 42)
     //@breakpoint()
-    let c = cast(const ref s32) a
+    let c = cast(const &s32) a
     @assert(c == 42)
-    @assert(@typeof(c) == #type const ref s32)
+    @assert(@typeof(c) == #type const &s32)
 
     a = true
 }

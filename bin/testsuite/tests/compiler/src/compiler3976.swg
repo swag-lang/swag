@@ -1,12 +1,12 @@
 var G: s32
 var G1: s32
 
-func toto()->const ref s32
+func toto()->const &s32
 {
     return &G
 }
 
-func toto1()->const ref s32
+func toto1()->const &s32
 {
     return &G1
 }

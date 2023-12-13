@@ -17,7 +17,7 @@ struct C
     using b: BB
 }
 
-func toto(x: const ref AA)
+func toto(x: const &AA)
 {
     @assert(x.x == 555)
 }

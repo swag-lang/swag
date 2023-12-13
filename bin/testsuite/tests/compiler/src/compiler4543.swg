@@ -10,7 +10,7 @@ enum Flags
 #[Swag.Strict]
 typealias A = Flags
 
-func add(flags: ref A, value: A)
+func add(flags: &A, value: A)
 {
     flags |= value
     flags &= value

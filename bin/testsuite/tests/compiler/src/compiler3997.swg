@@ -16,7 +16,7 @@ func tata(x: ...)
 }
 
 //#[Swag.PrintBc]
-func titi(a: const ref A)
+func titi(a: const &A)
 {
     tata(a)
 }

@@ -1,6 +1,6 @@
 struct V { x, y, z: f32; }
 
-func toto(v: const ref V)
+func toto(v: const &V)
 {
     @assert(v.x == 2)
     @assert(v.y == 3)

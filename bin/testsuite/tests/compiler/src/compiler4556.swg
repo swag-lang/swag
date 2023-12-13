@@ -7,7 +7,7 @@ typealias A = string
 #test
 {
     var a = "toto"
-    let x: ref A = &a
+    let x: &A = &a
     let y = x[1..2]
     @assert(y == "ot")
 }

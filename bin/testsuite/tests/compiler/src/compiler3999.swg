@@ -5,7 +5,7 @@ struct A
 
 impl A
 {
-    mtd opIndex(i: u64)->const ref s32
+    mtd opIndex(i: u64)->const &s32
     {
         return &x
     }

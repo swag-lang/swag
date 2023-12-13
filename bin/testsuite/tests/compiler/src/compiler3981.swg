@@ -1,6 +1,6 @@
 var G: string
 
-func toto(x: const ref string)
+func toto(x: const &string)
 {
     @assert(x == "G")
 }

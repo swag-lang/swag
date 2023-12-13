@@ -10,6 +10,6 @@ impl A
 #test
 {
     var a: A
-    let b: ref A = &a
+    let b: &A = &a
     let c = !b
 }

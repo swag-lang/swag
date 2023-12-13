@@ -48,7 +48,7 @@ impl StaticArray
     }
 
     #[Inline]
-    mtd const opIndex(index: u64)->ref T
+    mtd const opIndex(index: u64)->&T
         #validif Reflection.isStruct(T)
     {
         Debug.safetyBoundCheck(index < count, "index out of range")
@@ -127,7 +127,7 @@ impl StaticArray
                 #if #up ptr
                     let @alias0 = cast(*T) #up scan
                 #elif Reflection.isStruct(T)
-                    let @alias0 = cast(ref T) #up scan
+                    let @alias0 = cast(&T) #up scan
                 #else
                     let @alias0 = #up scan[0]
                 let @alias1 = @index

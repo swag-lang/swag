@@ -3,7 +3,7 @@ struct V
     x, y: f32
 }
 
-func toto(x: ref V)
+func toto(x: &V)
 {
     x.x = 1
     x.y = 10

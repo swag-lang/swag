@@ -3,5 +3,5 @@
 //#[Swag.PrintBc]
 #test
 {
-    var x: ref s32
+    var x: &s32
 }

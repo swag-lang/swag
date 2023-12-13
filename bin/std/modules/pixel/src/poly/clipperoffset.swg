@@ -156,7 +156,7 @@ impl Offset
         }
     }
 
-    func getUnitNormal(pt1, pt2: const ref IntPoint)->DoublePoint
+    func getUnitNormal(pt1, pt2: const &IntPoint)->DoublePoint
     {
         var result: retval
         if pt2.x == pt1.x and pt2.y == pt1.y

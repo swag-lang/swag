@@ -1,6 +1,6 @@
 var G: s32
 
-func toto(v: ref s32)
+func toto(v: &s32)
 {
     let ptr = &v
     @assert(@typeof(ptr) == *s32)

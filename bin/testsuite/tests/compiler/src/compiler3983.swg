@@ -12,7 +12,7 @@ impl Vec2
 }
 
 //#[Swag.PrintBc]
-func dot(x: const ref Vec2)
+func dot(x: const &Vec2)
 {
     var y: f32
     y = x[0]
