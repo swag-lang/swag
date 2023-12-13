@@ -45,6 +45,10 @@ type const any ? @dataof() sur ça donne un pointeur const
 -------------------------------------
 const A: [4] s32 = [1: 10, 3: 45]
 -------------------------------------
+tuple unpacking array (should work with Core.Array)
+let (a, b) = [4, 5]
+let (a, b) = Tokenize.split(str, ' ')
+-------------------------------------
 
 
 
