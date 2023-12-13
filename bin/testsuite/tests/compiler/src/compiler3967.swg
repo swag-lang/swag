@@ -24,7 +24,7 @@ func toto()->const ref VV
 {
     let x: const ref VV = toto()
     let y = x
-    @assert(@typeof(x) == const ref VV)
+    @assert(@typeof(x) == #type const ref VV)
     @assert(@typeof(y) == VV)
     @assert(PC == true)
 }

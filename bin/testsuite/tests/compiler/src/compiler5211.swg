@@ -8,7 +8,7 @@
     let b = cast(s32) a
     @assert(b == 42)
     let c = cast(const ref s32) a
-    @assert(@typeof(c) == const ref s32)
+    @assert(@typeof(c) == #type const ref s32)
     @assert(c == 42)
 
     a = true

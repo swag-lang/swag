@@ -9,5 +9,5 @@
     @assert(b == 42)
     let c = cast(const ref s32) a
     @assert(c == 42)
-    @assert(@typeof(c) == const ref s32)
+    @assert(@typeof(c) == #type const ref s32)
 }

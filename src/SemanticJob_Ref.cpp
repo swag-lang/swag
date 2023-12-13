@@ -507,6 +507,9 @@ bool SemanticJob::resolveKeepRef(SemanticContext* context)
         typeInfo->forceComputeName();
     }
 
+    if (node->flags & AST_IS_CONST)
+        typeInfo->setConst();
+
     node->typeInfo    = typeInfo;
     node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
     return true;

@@ -531,6 +531,23 @@ bool Parser::doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
     }
 
     // Force ref pointer
+    else if (token.id == TokenId::KwdConst)
+    {
+        tokenizer.saveState(token);
+        eatToken();
+        if (token.id == TokenId::KwdRef)
+        {
+            SWAG_CHECK(doKeepRef(parent, &exprNode));
+            exprNode->flags |= AST_IS_CONST;
+        }
+        else
+        {
+            tokenizer.restoreState(token);
+            SWAG_CHECK(doSinglePrimaryExpression(parent, exprFlags, &exprNode));
+        }
+    }
+
+    // Force ref pointer
     else if (token.id == TokenId::KwdRef)
     {
         SWAG_CHECK(doKeepRef(parent, &exprNode));
