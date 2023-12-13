@@ -504,11 +504,14 @@ bool SemanticJob::resolveKeepRef(SemanticContext* context)
     {
         typeInfo = typeInfo->clone();
         typeInfo->flags |= TYPEINFO_POINTER_REF;
+        if (node->flags & AST_IS_CONST)
+            typeInfo->setConst();
         typeInfo->forceComputeName();
     }
-
-    if (node->flags & AST_IS_CONST)
-        typeInfo->setConst();
+    else if (node->flags & AST_IS_CONST)
+    {
+        typeInfo = g_TypeMgr->makeConst(typeInfo);
+    }
 
     node->typeInfo    = typeInfo;
     node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
