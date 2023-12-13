@@ -297,6 +297,24 @@ impl String
         buffer[length] = 0
     }
 
+    // Insert an ascii byte at the given position
+    mtd insert(byteIndex: u64, value: u8)
+    {
+        if byteIndex == length
+        {
+            append(value)
+            return
+        }
+
+        Debug.safetyBoundCheck(byteIndex < length, "index out of range")
+        Debug.assert(value != 0)
+
+        grow(length + 2)
+        Memory.copyOver(buffer + byteIndex + 1, buffer + byteIndex, length - byteIndex + 1)
+        buffer[byteIndex] = value
+        length += 1
+    }
+
     // Insert a substring at the given position
     mtd insert(byteIndex: u64, value: string)
     {

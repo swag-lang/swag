@@ -34,10 +34,10 @@ ByteCode::Location ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, 
 
     if (!getInline)
     {
-        if (ip->node->ownerInline && ip->node->ownerInline->ownerFct == ip->node->ownerFct)
+        if (ip->node->ownerInline && !(ip->node->flags & AST_IN_MIXIN) && ip->node->ownerInline->ownerFct == ip->node->ownerFct)
         {
             auto n = ip->node;
-            while (n->ownerInline && (n->ownerInline->ownerFct == n->ownerFct))
+            while (n->ownerInline && !(n->flags & AST_IN_MIXIN) && (n->ownerInline->ownerFct == n->ownerFct))
                 n = n->ownerInline;
             loc.file     = n->sourceFile;
             loc.location = &n->token.startLocation;
