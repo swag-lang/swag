@@ -116,14 +116,6 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
         node->inheritComputedValue(childBack);
     node->inheritOrFlag(childBack, AST_L_VALUE | AST_R_VALUE | AST_TRANSIENT | AST_VALUE_IS_GENTYPEINFO | AST_SIDE_EFFECTS);
 
-    if (childBack->semFlags & SEMFLAG_IS_CONST_ASSIGN)
-    {
-        if (!childBack->typeInfo || !childBack->typeInfo->isPointerRef())
-        {
-            node->flags |= AST_IS_CONST;
-        }
-    }
-
     // Symbol is in fact a constant value : no need for bytecode
     if (node->resolvedSymbolOverload &&
         (node->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))

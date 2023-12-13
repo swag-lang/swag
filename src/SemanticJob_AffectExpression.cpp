@@ -73,6 +73,14 @@ bool SemanticJob::resolveAfterKnownType(SemanticContext* context)
 
 bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, AstNode* right)
 {
+    if (left->childs.back()->semFlags & SEMFLAG_IS_CONST_ASSIGN)
+    {
+        if (!left->typeInfo->isPointerRef() || right->kind == AstNodeKind::KeepRef)
+        {
+            left->flags |= AST_IS_CONST;
+        }
+    }
+
     // Check that left type is mutable
     bool isConst = false;
     if ((left->flags & AST_CONST_EXPR) ||
@@ -178,7 +186,9 @@ bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, As
         }
     }
 
-    if (left->resolvedSymbolOverload && left->resolvedSymbolOverload->flags & OVERLOAD_IS_LET)
+    if (left->resolvedSymbolOverload &&
+        left->resolvedSymbolOverload->flags & OVERLOAD_IS_LET &&
+        (!left->resolvedSymbolOverload->typeInfo->isPointerRef() || right->kind == AstNodeKind::KeepRef))
     {
         Diagnostic diag{node, node->token, Err(Err0564)};
         diag.addRange(left, Nte(Nte1050));

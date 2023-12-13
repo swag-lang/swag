@@ -466,7 +466,6 @@ bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
             {
                 node->resultRegisterRC            = resolved->symRegisters[0];
                 node->resultRegisterRC.cannotFree = true;
-                SWAG_ASSERT(node->parent->flags & AST_ARRAY_POINTER_REF);
             }
             else
             {
