@@ -21,4 +21,5 @@
     day7A()
     day7B()
     day8A()
+    day8B()
 }
