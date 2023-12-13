@@ -6833,15 +6833,15 @@
 <td>Load and set movie. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Gui_ImageRect_setImage">setImage</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">ImageList</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ImageRect_setImage">setImage</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">ImageList</span>)</span></td>
 <td>Associate image. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Gui_ImageRect_setImage">setImage</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Image</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ImageRect_setImage">setImage</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Image</span>)</span></td>
 <td>Associate image. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Gui_ImageRect_setImage">setImage</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Texture</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ImageRect_setImage">setImage</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Texture</span>)</span></td>
 <td>Associate image. </td>
 </tr>
 <tr>
@@ -7379,7 +7379,7 @@
 <td>Add one new line. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_createLine">createLine</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Icon</span>, *<span class="SCst">ListLine</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ListCtrl_createLine">createLine</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>, <span class="SKwd">const</span> &<span class="SCst">Icon</span>, *<span class="SCst">ListLine</span>)</span></td>
 <td>Add one line, and set first column. </td>
 </tr>
 <tr>
@@ -8299,7 +8299,7 @@
 <td>Add a new item. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Gui_MenuCtrl_addItem">addItem</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>, <span class="SCst">WndId</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Icon</span>, <span class="STpe">string</span>, <span class="STpe">bool</span>, <span class="STpe">bool</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_MenuCtrl_addItem">addItem</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>, <span class="SCst">WndId</span>, <span class="SKwd">const</span> &<span class="SCst">Icon</span>, <span class="STpe">string</span>, <span class="STpe">bool</span>, <span class="STpe">bool</span>)</span></td>
 <td>Add a new item. </td>
 </tr>
 <tr>
@@ -8307,7 +8307,7 @@
 <td>Add a new popup item. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Gui_MenuCtrl_addPopup">addPopup</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>, *<span class="SCst">MenuCtrl</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Icon</span>, <span class="SCst">WndId</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_MenuCtrl_addPopup">addPopup</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>, *<span class="SCst">MenuCtrl</span>, <span class="SKwd">const</span> &<span class="SCst">Icon</span>, <span class="SCst">WndId</span>)</span></td>
 <td>Add a new popup item. </td>
 </tr>
 <tr>
@@ -8861,7 +8861,7 @@
 <td>Set/Reset pause state. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Gui_Movie_set">set</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">ImageList</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Movie_set">set</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">ImageList</span>)</span></td>
 <td>Associate an image list. </td>
 </tr>
 <tr>
@@ -10993,7 +10993,7 @@
 <td>Insert a text with a given style. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_insertText">insertText</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Array</span>'(<span class="STpe">u8</span>))</span></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_RichEditCtrl_insertText">insertText</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="STpe">string</span>, <span class="SKwd">const</span> &<span class="SCst">Array</span>'(<span class="STpe">u8</span>))</span></td>
 <td>Insert a text with a style per character. </td>
 </tr>
 <tr>
@@ -12596,7 +12596,7 @@
 <td>Get the current scroll position. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Gui_ScrollWnd_setScrollPos">setScrollPos</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Point</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ScrollWnd_setScrollPos">setScrollPos</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
 <td>Set the current scroll position. </td>
 </tr>
 <tr>
@@ -14980,11 +14980,11 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Gui_Theme_drawSubRect">drawSubRect</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">Painter</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, *<span class="SCst">ThemeImageRect</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">bool</span>, <span class="SCst">InterpolationMode</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Theme_drawSubRect">drawSubRect</a></span><span class="SCde">(<span class="SKwd">self</span>, *<span class="SCst">Painter</span>, <span class="SKwd">const</span> &<span class="SCst">Rectangle</span>, *<span class="SCst">ThemeImageRect</span>, <span class="SKwd">const</span> &<span class="SCst">Color</span>, <span class="STpe">bool</span>, <span class="SCst">InterpolationMode</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Gui_Theme_drawSubRect">drawSubRect</a></span><span class="SCde">(*<span class="SCst">Painter</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Texture</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, *<span class="SCst">ThemeImageRect</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Color</span>, <span class="STpe">bool</span>, <span class="SCst">InterpolationMode</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Theme_drawSubRect">drawSubRect</a></span><span class="SCde">(*<span class="SCst">Painter</span>, <span class="SKwd">const</span> &<span class="SCst">Texture</span>, <span class="SKwd">const</span> &<span class="SCst">Rectangle</span>, *<span class="SCst">ThemeImageRect</span>, <span class="SKwd">const</span> &<span class="SCst">Color</span>, <span class="STpe">bool</span>, <span class="SCst">InterpolationMode</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -17848,7 +17848,7 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Gui_ThemeStyle_setFont">setFont</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">FontFamily</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_ThemeStyle_setFont">setFont</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">FontFamily</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -18370,7 +18370,7 @@
 <td>Apply the current layout (childs constraints). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_applyLayout">applyLayout</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Point</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_applyLayout">applyLayout</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -18394,11 +18394,11 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_create">create</a></span><span class="SCde">(*<span class="SCst">Wnd</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SCst">WndId</span>, <span class="SCst">HookEvent</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_create">create</a></span><span class="SCde">(*<span class="SCst">Wnd</span>, <span class="SKwd">const</span> &<span class="SCst">Rectangle</span>, <span class="SCst">WndId</span>, <span class="SCst">HookEvent</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_create">create</a></span><span class="SCde">(*<span class="SCst">Wnd</span>, <span class="STpe">string</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="SCst">WndId</span>, <span class="SCst">HookEvent</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_create">create</a></span><span class="SCde">(*<span class="SCst">Wnd</span>, <span class="STpe">string</span>, <span class="SKwd">const</span> &<span class="SCst">Rectangle</span>, <span class="SCst">WndId</span>, <span class="SCst">HookEvent</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -18538,11 +18538,11 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_localToSurface">localToSurface</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Point</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_localToSurface">localToSurface</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
 <td>Convert a local coordinate to a surface coordinate. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_localToSurface">localToSurface</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_localToSurface">localToSurface</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Rectangle</span>)</span></td>
 <td>Convert a local coordinate to a surface coordinate. </td>
 </tr>
 <tr>
@@ -18634,7 +18634,7 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_setAllMargins">setAllMargins</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Vector4</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_setAllMargins">setAllMargins</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Vector4</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -18642,7 +18642,7 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_setAllPaddings">setAllPaddings</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Vector4</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_setAllPaddings">setAllPaddings</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Vector4</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -18666,7 +18666,7 @@
 <td>Set window parent. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_setPosition">setPosition</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="SCst">Rectangle</span>, <span class="STpe">bool</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Gui_Wnd_setPosition">setPosition</a></span><span class="SCde">(<span class="SKwd">self</span>, <span class="SKwd">const</span> &<span class="SCst">Rectangle</span>, <span class="STpe">bool</span>)</span></td>
 <td>Move and size the wnd. </td>
 </tr>
 <tr>
@@ -20015,7 +20015,7 @@
 <p>Create a layout control. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WrapLayoutCtrl">WrapLayoutCtrl</a></span></span></div>
 <div class="swag-watermark">
-Generated on 08-12-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
+Generated on 13-12-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
 </div>
 </div>
 </div>

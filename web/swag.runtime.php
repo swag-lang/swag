@@ -2337,11 +2337,6 @@
 <td>Optimization level of bytecode [0, 1 or 2]. </td>
 </tr>
 <tr>
-<td>byteCodeDebugInline</td>
-<td class="code-type"><span class="STpe">bool</span></td>
-<td>Trace into inlined code when generating debug infos. </td>
-</tr>
-<tr>
 <td>byteCodeEmitAssume</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td><span class="code-inline">assume</span> will panic if an error is raised. </td>
@@ -2370,6 +2365,11 @@
 <td>backendDebugInformations</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td>Output debug informations if <span class="code-inline">true</span>. </td>
+</tr>
+<tr>
+<td>backendDebugInline</td>
+<td class="code-type"><span class="STpe">bool</span></td>
+<td>Generate specific line informations for inline code. </td>
 </tr>
 <tr>
 <td>backendOptimize</td>
@@ -5378,7 +5378,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 08-12-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
+Generated on 13-12-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
 </div>
 </div>
 </div>

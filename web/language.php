@@ -1172,27 +1172,27 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 <h3 id="_012_string_Raw_string">Raw string </h3>
 <p>A <i>raw string</i> does not transform the escape sequences inside it. </p>
-<p>A raw string starts and ends with the character <span class="code-inline">$</span>. </p>
+<p>A raw string starts and ends with the character <span class="code-inline">#</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">const</span> a = <span class="SStr">$"\u2F46"$</span>
+    <span class="SKwd">const</span> a = #<span class="SStr">"\u2F46"</span>#
     <span class="SCmp">#assert</span> a != <span class="SStr">"⽆"</span>
-    <span class="SCmp">#assert</span> a == <span class="SStr">$"\u2F46"$</span>
+    <span class="SCmp">#assert</span> a == #<span class="SStr">"\u2F46"</span>#
 }</span></div>
 <p>This are equivalent: </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">const</span> a = <span class="SStr">"\\hello \\world"</span>     <span class="SCmt">// By using an escape character</span>
-    <span class="SKwd">const</span> b = <span class="SStr">$"\hello \world"$</span>     <span class="SCmt">// Without, because they are not transformed</span>
+    <span class="SKwd">const</span> b = #<span class="SStr">"\hello \world"</span>#     <span class="SCmt">// Without, because they are not transformed</span>
     <span class="SCmp">#assert</span> a == b
 }</span></div>
 <p>A raw string can spawn on multiple lines because the line feed is now part of the string. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">const</span> a = <span class="SStr">$"this is
+    <span class="SKwd">const</span> a = #<span class="SStr">"this is
                 a
                 string
-                "$</span>
+                "</span>#
 }</span></div>
 <p>Every blanks <b>before</b> the ending mark <span class="code-inline">"@</span> will be removed from every other lines, so the string before is equivalent to : </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
@@ -2016,10 +2016,10 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
     <span class="SKwd">var</span> x = <span class="SNum">42</span>
 
-    <span class="SCmt">// Use 'ref' to declare a reference.</span>
+    <span class="SCmt">// Use '&' to declare a reference.</span>
     <span class="SCmt">// Here we declare a reference to the variable 'x'.</span>
     <span class="SCmt">// Note that unlike C++, you have to take the address of 'x' to convert it to a reference.</span>
-    <span class="SKwd">let</span> myRef: <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="STpe">s32</span> = &x
+    <span class="SKwd">let</span> myRef: <span class="SKwd">const</span> &<span class="STpe">s32</span> = &x
 
     <span class="SCmt">// This is a pointer that behaves like a value, so no explicit dereferencing is necessary.</span>
     <span class="SCmt">// You can see this as a kind of an alias.</span>
@@ -2029,7 +2029,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x = <span class="SNum">42</span>
-    <span class="SKwd">var</span> myRef: <span class="SKwd">ref</span> <span class="STpe">s32</span> = &x <span class="SCmt">// Note here that the reference is no more 'const'</span>
+    <span class="SKwd">var</span> myRef: &<span class="STpe">s32</span> = &x <span class="SCmt">// Note here that the reference is no more 'const'</span>
     <span class="SItr">@assert</span>(myRef == <span class="SNum">42</span>)
 
     <span class="SCmt">// Here we will change the pointed value 'x'</span>
@@ -2045,12 +2045,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">var</span> x = <span class="SNum">1</span>
     <span class="SKwd">var</span> y = <span class="SNum">1000</span>
 
-    <span class="SKwd">var</span> myRef: <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="STpe">s32</span> = &x
+    <span class="SKwd">var</span> myRef: <span class="SKwd">const</span> &<span class="STpe">s32</span> = &x
     <span class="SItr">@assert</span>(myRef == <span class="SNum">1</span>)
 
     <span class="SCmt">// Here we force 'myRef' to point to 'y' and not to 'x' anymore.</span>
     <span class="SCmt">// We do *NOT* change the value of 'x'.</span>
-    myRef = <span class="SKwd">ref</span> &y
+    myRef = <span class="SKwd">const</span> <span class="SKwd">ref</span> &y
     <span class="SItr">@assert</span>(myRef == <span class="SNum">1000</span>)
 }</span></div>
 <p>Most of the time, you have to take the address of a variable to make a reference to it. The only exception are function parameters, if the reference is <span class="code-inline">const</span>. In that case, taking the address is not necessary </p>
@@ -2060,7 +2060,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SFct">toto</span>(<span class="SNum">4</span>)
 }
 
-<span class="SKwd">func</span> <span class="SFct">toto</span>(x: <span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="STpe">s32</span>)
+<span class="SKwd">func</span> <span class="SFct">toto</span>(x: <span class="SKwd">const</span> &<span class="STpe">s32</span>)
 {
     <span class="SItr">@assert</span>(x == <span class="SNum">4</span>)
 
@@ -2078,7 +2078,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SFct">titi2</span>({<span class="SNum">5</span>, <span class="SNum">6</span>})
 }
 
-<span class="SKwd">func</span> <span class="SFct">titi0</span>(param: <span class="SKwd">const</span> <span class="SKwd">ref</span> {x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>})
+<span class="SKwd">func</span> <span class="SFct">titi0</span>(param: <span class="SKwd">const</span> &{x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>})
 {
     <span class="SCmt">// We'll see later about tuples and naming of fields.</span>
     <span class="SItr">@assert</span>(param.item0 == <span class="SNum">1</span>)
@@ -2097,7 +2097,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SItr">@assert</span>(param.y == <span class="SNum">6</span>)
 }</span></div>
 
-<h2 id="_024_any">Any</h2><p><span class="code-inline">any</span> is a specific type that can store every other types.  </p>
+<h2 id="_024_any">Any</h2><p><span class="code-inline">any</span> is a specific type that can store every other types. </p>
 <div class="blockquote blockquote-warning">
 <div class="blockquote-title-block"><i class="fa fa-exclamation-triangle"></i>  <span class="blockquote-title">Warning</span></div><p> <span class="code-inline">any</span> is <b>not a variant</b>. It's a dynamic typed <b>reference</b> to an existing value. </p>
 </div>
@@ -2145,7 +2145,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SKwd">let</span> b = <span class="SKwd">cast</span>(<span class="STpe">s32</span>) a             <span class="SCmt">// Get the value itself</span>
     <span class="SItr">@assert</span>(b == <span class="SNum">42</span>)
-    <span class="SKwd">let</span> c = <span class="SKwd">cast</span>(<span class="SKwd">const</span> <span class="SKwd">ref</span> <span class="STpe">s32</span>) a   <span class="SCmt">// This is fine too</span>
+    <span class="SKwd">let</span> c = <span class="SKwd">cast</span>(<span class="SKwd">const</span> &<span class="STpe">s32</span>) a   <span class="SCmt">// This is fine too</span>
     <span class="SItr">@assert</span>(c == <span class="SNum">42</span>)
 }</span></div>
 <p>You can declare an array with multiple types, with <span class="code-inline">any</span>. </p>
@@ -3871,13 +3871,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// This is the 'move' version of 'assign'. With 'moveref', we tell the compiler that this version will take the owership on 'from'.</span>
-    <span class="SKwd">func</span> <span class="SFct">assign</span>(assignTo: <span class="SKwd">ref</span> <span class="SCst">Vector3</span>, from: <span class="SKwd">moveref</span> <span class="SCst">Vector3</span>)
+    <span class="SKwd">func</span> <span class="SFct">assign</span>(assignTo: &<span class="SCst">Vector3</span>, from: <span class="SKwd">moveref</span> <span class="SCst">Vector3</span>)
     {
         assignTo =<span class="SItr">,move</span> from
     }
 
     <span class="SCmt">// This is the normal 'copy' version. In this version, 'from' will not be changed, that's why it's constant (not a ref).</span>
-    <span class="SKwd">func</span> <span class="SFct">assign</span>(assignTo: <span class="SKwd">ref</span> <span class="SCst">Vector3</span>, from: <span class="SCst">Vector3</span>)
+    <span class="SKwd">func</span> <span class="SFct">assign</span>(assignTo: &<span class="SCst">Vector3</span>, from: <span class="SCst">Vector3</span>)
     {
         assignTo = from
     }
@@ -7400,7 +7400,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="_230_documentation__231_003_Pages">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 08-12-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
+Generated on 13-12-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
 </div>
 </div>
 </div>
