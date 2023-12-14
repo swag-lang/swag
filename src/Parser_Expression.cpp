@@ -600,10 +600,12 @@ bool Parser::doUnaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** re
 bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags, AstNode* node)
 {
     auto opId = tokenId;
+    int  cpt  = 0;
 
     mdfFlags = 0;
     while (token.id == TokenId::SymComma && !(token.flags & TOKENPARSE_LAST_BLANK) && !(token.flags & TOKENPARSE_LAST_EOL))
     {
+        cpt += 1;
         SWAG_CHECK(eatToken());
 
         if (token.text == g_LangSpec->name_up)
@@ -746,7 +748,7 @@ bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags, As
             continue;
         }
 
-        if (opId == TokenId::KwdVisit)
+        if (opId == TokenId::KwdVisit && cpt == 1)
         {
             auto visit = CastAst<AstVisit>(node, AstNodeKind::Visit);
             SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err1115), token.ctext())));

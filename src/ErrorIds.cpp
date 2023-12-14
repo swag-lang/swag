@@ -486,7 +486,7 @@ void initErrors()
     SWAG_ERROR(Err0038, "invalid operation                                 $ the operation '%s' is not allowed because the right expression is an enum type ('%s') not marked with '#[Swag.EnumFlags]'");
     SWAG_ERROR(Err0168, "invalid operation                                 $ the operation '%s' is not allowed on tuple types");
     SWAG_ERROR(Err0005, "invalid operation                                 $ the operation '%s' is not allowed on type '%s'");
-    SWAG_ERROR(Err1178, "invalid operator modifier                         $ '%s' is not recognized as a valid operator modifier");
+    SWAG_ERROR(Err1178, "invalid operator modifier                         $ '%s' is not recognized as a valid intruction modifier");
     SWAG_ERROR(Err0594, "invalid optim argument                            $ invalid argument '%s' for the attribute '#[Swag.Optim]' $ the acceptable values for '#[Swag.Optim]' are 'bytecode' and 'backend'");
     SWAG_ERROR(Err0595, "invalid packing value                             $ the '#[Swag.Pack]' argument must be 0 or a power of two, got '%d'");
     SWAG_ERROR(Err0804, "invalid parameter                                 $ the '#message' block needs a parameter of type 'Swag.CompilerMsgMask', got '%s'");
