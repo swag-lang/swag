@@ -732,6 +732,20 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 
         funcNode->inheritTokenName(token);
         SWAG_CHECK(checkIsValidUserName(funcNode, &token));
+
+        SWAG_CHECK(eatToken());
+        if (token.id == TokenId::SymComma)
+        {
+            // 'opVisit' variant after ','
+            if (funcNode->token.text == g_LangSpec->name_opVisit)
+            {
+                SWAG_CHECK(eatToken());
+                SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Err1115), token.ctext())));
+                funcNode->token.text += token.text;
+                funcNode->addSpecFlags(AstFuncDecl::SPECFLAG_VISIT_VARIANT);
+                SWAG_CHECK(eatToken());
+            }
+        }
     }
 
     // Register function name
@@ -784,7 +798,6 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     {
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
-        SWAG_CHECK(eatToken());
         SWAG_CHECK(doFuncDeclParameters(funcNode, &funcNode->parameters, false, nullptr, isMethod, isConstMethod));
     }
 
