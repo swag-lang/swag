@@ -1038,6 +1038,7 @@ bool SemanticJob::resolveContinue(SemanticContext* context)
         checkBreakable = checkBreakable->ownerBreakable;
     SWAG_VERIFY(checkBreakable, context->report({node, Err(Err0637)}));
     checkBreakable->continueList.push_back(node);
+    node->ownerBreakable = checkBreakable;
 
     SWAG_CHECK(warnUnreachableCode(context));
     node->byteCodeFct = ByteCodeGenJob::emitContinue;
