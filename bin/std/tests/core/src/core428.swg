@@ -4,7 +4,7 @@
 {
     var str: String = "ABC"
     var cpt = 0
-    visit,back(Bytes) v: str
+    visit,Bytes,back v: str
     {
         if cpt == 0 @assert(v == `C`)
         if cpt == 1 @assert(v == `B`)

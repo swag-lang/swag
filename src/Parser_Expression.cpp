@@ -597,7 +597,7 @@ bool Parser::doUnaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** re
     return doPrimaryExpression(parent, exprFlags, result);
 }
 
-bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags)
+bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags, AstNode* node)
 {
     auto opId = tokenId;
 
@@ -742,6 +742,15 @@ bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags)
             SWAG_VERIFY(!(mdfFlags & MODIFIER_NO_RIGHT_DROP), error(token, Fmt(Err(Err1125), token.ctext())));
             SWAG_VERIFY(!(mdfFlags & MODIFIER_MOVE), error(token, Fmt(Err(Err1125), g_LangSpec->name_move.c_str())));
             mdfFlags |= MODIFIER_MOVE | MODIFIER_NO_RIGHT_DROP;
+            SWAG_CHECK(eatToken());
+            continue;
+        }
+
+        if (opId == TokenId::KwdVisit)
+        {
+            auto visit = CastAst<AstVisit>(node, AstNodeKind::Visit);
+            SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err1115), token.ctext())));
+            visit->extraNameToken = token;
             SWAG_CHECK(eatToken());
             continue;
         }

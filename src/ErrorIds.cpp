@@ -663,7 +663,6 @@ void initErrors()
     SWAG_ERROR(Err0280, "missing 'impl'                                    $ the function '%s' is part of the interface '%s' but lacks an 'impl' marker");
     SWAG_ERROR(Err1085, "missing 'loop' count                              $ expected the 'loop' count expression before '%s'");
     SWAG_ERROR(Err1086, "missing 'visit' expression                        $ expected the element to visit before '%s'");
-    SWAG_ERROR(Err1214, "missing 'visit' name                              $ expected the 'visit' specialized name between '()' $ if you are using the default 'visit', consider removing the parenthesis");
     SWAG_ERROR(Err1212, "missing 'visit' variable                          $ expected another 'visit' variable between ',' and ':' $ the first 'visit' variable is the value, the second one is the index");
     SWAG_ERROR(Err1087, "missing 'while' boolean expression                $ expected a boolean expression before '%s'");
     SWAG_ERROR(Err0020, "missing arguments                                 $ %s should have arguments but none were provided");
@@ -887,6 +886,7 @@ void initErrors()
     SWAG_ERROR(Err0570, "invalid throw type                                $ throw needs a struct or @err() as an expression, got '%s' instead");
     SWAG_ERROR(Err0393, "unknown struct                                    $ the struct '%s' can't be found");
     SWAG_ERROR(Err0556, "defer escape throw                                $ an error cannot escape a 'defer' or 'defer(err)' block");
+    SWAG_ERROR(Err1214, nullptr);
     SWAG_ERROR(Err1139, nullptr);
     SWAG_ERROR(Err0557, nullptr);
     SWAG_ERROR(Err0639, nullptr);

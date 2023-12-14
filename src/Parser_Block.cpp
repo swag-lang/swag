@@ -234,22 +234,10 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
 
     // Reverse loop
     uint32_t mdfFlags = 0;
-    SWAG_CHECK(doModifiers(node->token, node->tokenId, mdfFlags));
+    SWAG_CHECK(doModifiers(node->token, node->tokenId, mdfFlags, node));
     if (mdfFlags & MODIFIER_BACK)
     {
         node->addSpecFlags(AstVisit::SPECFLAG_BACK);
-    }
-
-    // Extra name on the special function
-    if (token.id == TokenId::SymLeftParen)
-    {
-        auto startLoc = token.startLocation;
-        SWAG_CHECK(eatToken());
-        SWAG_VERIFY(token.id != TokenId::SymRightParen, error(token, Err(Err1214)));
-        SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err1115), token.ctext())));
-        node->extraNameToken = token;
-        SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the 'visit' argument"));
     }
 
     if (token.id == TokenId::SymAmpersand)

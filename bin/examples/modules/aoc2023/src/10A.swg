@@ -114,7 +114,7 @@ func day10A()
     var startX, startY: s64
     visit l, line: lines
     {
-        visit(Bytes) c, col: l
+        visit,Bytes c, col: l
         {
             let one = ref mp(cast(s64) col, cast(s64) line)
             switch c

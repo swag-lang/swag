@@ -1,7 +1,7 @@
-#global testerror "Err1214"
+#global testerror "Err0122"
 #test
 {
-    visit() x: toto
+    visit x: toto
     {
     }
 }

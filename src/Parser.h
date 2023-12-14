@@ -171,7 +171,7 @@ struct Parser
     bool doMoveRef(AstNode* parent, AstNode** result);
     bool doDeRef(AstNode* parent, AstNode** result);
     bool doOperatorPrecedence(AstNode** result);
-    bool doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags);
+    bool doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags, AstNode* node = nullptr);
     bool doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
     bool doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
     bool doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** result);
