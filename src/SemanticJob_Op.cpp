@@ -121,6 +121,13 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     bool  isOpVisit = name.find(g_LangSpec->name_opVisit) == 0;
     auto  parent    = node->findParent(AstNodeKind::Impl);
 
+    // opVisit variant should have been declared with the ',' syntax
+    if (isOpVisit && name != g_LangSpec->name_opVisit && !(node->specFlags & AstFuncDecl::SPECFLAG_NAME_VARIANT))
+    {
+        Diagnostic diag{node, node->tokenName, Fmt(Err(Err1214), node->token.ctext())};
+        return context->report(diag);
+    }
+
     // Special function outside an impl block
     if (!parent)
     {

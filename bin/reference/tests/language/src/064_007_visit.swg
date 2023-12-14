@@ -84,12 +84,12 @@ So now that the `opVisit` has been defined, we can `visit` it.
 }
 
 /**
-You can have variants of `opVisit` by specifying an **additional name**.
+You can have variants of `opVisit` by specifying an **additional name** after a comma.
 */
 impl MyStruct
 {
     #[Swag.Macro]
-    mtd(ptr: bool, back: bool) opVisitReverse(stmt: code)   // We add 'Reverse' in the name
+    mtd(ptr: bool, back: bool) opVisit,reverse(stmt: code)   // We add a variant called 'reverse'
     {
         // Visit fields in reverse order (z, y then x).
         // Note that visiting in reverse order should be implemented in the normal 'opVisit'
@@ -120,7 +120,7 @@ impl MyStruct
     var cpt = 0
 
     // To call a variant, add the extra name after a comma.
-    visit,Reverse v, i: myStruct
+    visit,reverse v, i: myStruct
     {
         switch i
         {

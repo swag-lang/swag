@@ -742,7 +742,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
                 SWAG_CHECK(eatToken());
                 SWAG_VERIFY(token.id == TokenId::Identifier, error(token, Fmt(Err(Err1115), token.ctext())));
                 funcNode->token.text += token.text;
-                funcNode->addSpecFlags(AstFuncDecl::SPECFLAG_VISIT_VARIANT);
+                funcNode->addSpecFlags(AstFuncDecl::SPECFLAG_NAME_VARIANT);
                 SWAG_CHECK(eatToken());
             }
         }

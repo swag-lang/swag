@@ -109,6 +109,22 @@ bool AstOutput::outputAttrUse(OutputContext& context, Concat& concat, AstNode* n
     return true;
 }
 
+bool AstOutput::outputFuncName(OutputContext& context, Concat& concat, AstFuncDecl* node)
+{
+    if (!(node->specFlags & AstFuncDecl::SPECFLAG_NAME_VARIANT))
+    {
+        concat.addString(node->token.text);
+        return true;
+    }
+
+    concat.addString(node->tokenName.text);
+    concat.addChar(',');
+    Utf8 variantName{node->token.text.buffer + node->tokenName.text.length()};
+    concat.addString(variantName);
+
+    return true;
+}
+
 bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstNode* node, AstNode* genericParameters, AstNode* parameters, AstNode* validif)
 {
     ScopeExportNode sen(context, node);
@@ -129,7 +145,13 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstN
     if (node->kind == AstNodeKind::FuncDecl && node->specFlags & AstFuncDecl::SPECFLAG_IMPL)
         CONCAT_FIXED_STR(concat, "impl ");
 
-    concat.addString(node->token.text);
+    if (node->kind == AstNodeKind::FuncDecl)
+    {
+        auto funcNode = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        outputFuncName(context, concat, funcNode);
+    }
+    else
+        concat.addString(node->token.text);
 
     // Parameters
     if (parameters)
@@ -220,7 +242,7 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
 
     // Name
     CONCAT_FIXED_STR(concat, " ");
-    concat.addString(funcDecl->token.text);
+    outputFuncName(context, concat, funcDecl);
 
     // Parameters
     if (funcDecl->parameters)

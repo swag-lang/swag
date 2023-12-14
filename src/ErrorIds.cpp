@@ -886,7 +886,7 @@ void initErrors()
     SWAG_ERROR(Err0570, "invalid throw type                                $ throw needs a struct or @err() as an expression, got '%s' instead");
     SWAG_ERROR(Err0393, "unknown struct                                    $ the struct '%s' can't be found");
     SWAG_ERROR(Err0556, "defer escape throw                                $ an error cannot escape a 'defer' or 'defer(err)' block");
-    SWAG_ERROR(Err1214, nullptr);
+    SWAG_ERROR(Err1214, "invalid 'opVisit' name                            $ function should be named 'opVisit' $ if you want to declare a visit variant, declare the alternate name after a comma");
     SWAG_ERROR(Err1139, nullptr);
     SWAG_ERROR(Err0557, nullptr);
     SWAG_ERROR(Err0639, nullptr);

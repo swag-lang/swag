@@ -3,7 +3,7 @@ using Core
 #test
 {
     var s: String = "あえ"
-    visit,Runes c, i: s
+    visit,runes c, i: s
     {
         switch i
         {
