@@ -1,5 +1,5 @@
 struct A {}
-func toto(x: moveref A) {}
+func toto(x: &&A) {}
 
 #test
 {

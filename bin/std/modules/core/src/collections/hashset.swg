@@ -201,7 +201,7 @@ impl HashSet
 
     // Add a new key.
     #[Discardable]
-    mtd add(key: moveref K)->*HashSetEntry
+    mtd add(key: &&K)->*HashSetEntry
     {
         grow()
 

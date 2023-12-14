@@ -1,4 +1,4 @@
-func toto(a: &s32, b: moveref s32)
+func toto(a: &s32, b: &&s32)
 {
     a = b
     if a != b

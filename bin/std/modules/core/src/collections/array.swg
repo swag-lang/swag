@@ -316,7 +316,7 @@ impl Array
     }
 
     // Move one element at the end of the array
-    mtd add(value: moveref T)
+    mtd add(value: &&T)
     {
         grow(count + 1)
         buffer[count] =,nodrop,move value
@@ -371,7 +371,7 @@ impl Array
     // Move a value at the given index. If 'index' is equal to 'count', then
     // the value is added at the end of the array.
     // Order is preserved.
-    mtd insertAt(index: u64, value: moveref T)
+    mtd insertAt(index: u64, value: &&T)
     {
         Debug.safetyBoundCheck(index <= count, "index out of range")
         if index == count

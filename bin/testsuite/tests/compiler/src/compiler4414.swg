@@ -1,7 +1,7 @@
 #global testerror "Err1217"
 using Swag
 
-func toto(x: const moveref s32)
+func toto(x: const &&s32)
 {
 }
 

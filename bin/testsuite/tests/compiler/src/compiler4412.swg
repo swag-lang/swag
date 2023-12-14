@@ -1,7 +1,7 @@
 //#global testerror
 using Swag
 
-func toto(x: moveref s32)
+func toto(x: &&s32)
 {
 }
 

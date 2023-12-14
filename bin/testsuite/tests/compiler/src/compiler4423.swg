@@ -1,6 +1,6 @@
 var G = 0
 
-func toto(x: moveref s32)
+func toto(x: &&s32)
     #validif true
 {
     G = 1

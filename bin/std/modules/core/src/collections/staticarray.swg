@@ -213,7 +213,7 @@ impl StaticArray
     }
 
     // Move one element at the end of the array
-    mtd add(value: moveref T)
+    mtd add(value: &&T)
     {
         Debug.assert(count != N, "the array is full")
         buffer[count] =,nodrop,move value
@@ -268,7 +268,7 @@ impl StaticArray
     // Move a value at the given index.
     // If 'index' is equal to 'count', then the value is added at the end of the array.
     // Order is preserved.
-    mtd insertAt(index: u64, value: moveref T)
+    mtd insertAt(index: u64, value: &&T)
     {
         Debug.assert(index <= count, "index out of range")
         if index == count

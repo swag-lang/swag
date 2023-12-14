@@ -8,7 +8,7 @@ impl A
 }
 
 var G = 0
-func toto(x: moveref A)
+func toto(x: &&A)
 {
     G = 1
 }

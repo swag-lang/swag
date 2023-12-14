@@ -70,14 +70,14 @@ impl Vector3
 }
 
 /**
-# moveref
-`moveref` can be used instead of `ref` in a function parameter to declare a **move semantic** intention.
+# Move semantic
+`&&` can be used instead of `&` in a function parameter to declare a **move semantic** intention.
 */
 
 #test
 {
     // This is the 'move' version of 'assign'. With 'moveref', we tell the compiler that this version will take the owership on 'from'.
-    func assign(assignTo: &Vector3, from: moveref Vector3)
+    func assign(assignTo: &Vector3, from: &&Vector3)
     {
         assignTo =,move from
     }

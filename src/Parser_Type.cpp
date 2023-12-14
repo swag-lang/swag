@@ -488,11 +488,22 @@ bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
         node->typeFlags |= TYPEFLAG_IS_CONST | TYPEFLAG_HAS_LOC_CONST;
         SWAG_CHECK(eatToken());
 
-        if (token.id == TokenId::KwdMoveRef)
+        if (token.id == TokenId::SymAmpersandAmpersand)
         {
             Diagnostic diag{sourceFile, token, Err(Err1217)};
             return context->report(diag);
         }
+    }
+
+    // MoveRef
+    if (token.id == TokenId::SymAmpersandAmpersand)
+    {
+        node->typeFlags |= TYPEFLAG_IS_SUB_TYPE;
+        node->typeFlags |= TYPEFLAG_IS_REF;
+        node->typeFlags |= TYPEFLAG_IS_MOVE_REF;
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(doSubTypeExpression(node, exprFlags, &dummyResult));
+        return true;
     }
 
     // Reference
@@ -633,22 +644,7 @@ bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
         return true;
     }
 
-    // Move reference
-    bool isMoveRef = false;
-    if (token.id == TokenId::KwdMoveRef)
-    {
-        SWAG_CHECK(eatToken());
-        isMoveRef = true;
-    }
-
     SWAG_CHECK(doSubTypeExpression(parent, exprFlags, result));
-
-    if (isMoveRef)
-    {
-        auto typeNode = CastAst<AstTypeExpression>(*result, AstNodeKind::TypeExpression);
-        typeNode->typeFlags |= TYPEFLAG_IS_REF | TYPEFLAG_IS_MOVE_REF;
-    }
-
     return true;
 }
 

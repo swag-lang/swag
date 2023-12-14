@@ -192,7 +192,7 @@ void initErrors()
     SWAG_ERROR(Err0238, "compiler assertion failed                         $ the '#assert' expression was evaluated to false");
     SWAG_ERROR(Err0505, "compiler limit reached                            $ the size of the %s is too big (maximum size is '0x%I64x' bytes)");
     SWAG_ERROR(Err0834, "compiler limit reached                            $ the size of the data segment '%s' is too big (maximum size is '0x%I64x' bytes)");
-    SWAG_ERROR(Err1217, "conflicting 'moveref' qualifier                   $ the 'moveref' qualifier can't be combined with an immutable ('const') expression");
+    SWAG_ERROR(Err1217, "invalid const '&&'                                $ the '&&' move reference type can't be combined with an immutable ('const') expression");
     SWAG_ERROR(Err0147, "conflicting attributes                            $ the '#[Swag.Compiler]' and '#[Swag.Tls]' attributes are mutually exclusive");
     SWAG_ERROR(Err0083, "conflicting attributes                            $ the '#[Swag.Inline]' and '#[Swag.NoInline]' attributes are mutually exclusive");
     SWAG_ERROR(Err0757, "conflicting attributes                            $ the '#[Swag.Macro]' and '#[Swag.Inline]' attributes are mutually exclusive, the %s can't have both");

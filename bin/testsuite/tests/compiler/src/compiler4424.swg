@@ -4,7 +4,7 @@ var G = 0
 
 impl A
 {
-    mtd toto(x: moveref T)
+    mtd toto(x: &&T)
     {
         G = 1
     }

@@ -481,7 +481,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
         if (typeNode->typeFlags & TYPEFLAG_IS_MOVE_REF)
         {
             auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
-            SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, Fmt(Err(Err0696), "moveref")}));
+            SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, Fmt(Err(Err0696), "&&")}));
             ptrFlags |= TYPEINFO_POINTER_MOVE_REF;
         }
 

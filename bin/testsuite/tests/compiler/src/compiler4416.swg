@@ -4,5 +4,5 @@ using Swag
 //#[Swag.PrintBc]
 #test
 {
-    var x: moveref s32
+    var x: &&s32
 }

@@ -225,7 +225,7 @@ impl HashTable
 
     // Add a new key value pair. If the key already exists, then the value will be replaced
     #[Discardable]
-    mtd add(key: K, value: moveref V)->*HashTableEntry
+    mtd add(key: K, value: &&V)->*HashTableEntry
         #validif Reflection.canCopy(@typeof(K))
     {
         grow()

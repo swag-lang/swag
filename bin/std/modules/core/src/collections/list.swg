@@ -97,7 +97,7 @@ impl List
 
     // Add a new element on front
     #[Swag.Discardable]
-    mtd addFront(value: moveref T)->*ListNode
+    mtd addFront(value: &&T)->*ListNode
     {
         let n = Memory.new'ListNode()
         n.value =,move value
@@ -139,7 +139,7 @@ impl List
 
     // Add a new element on front
     #[Swag.Discardable]
-    mtd addBack(value: moveref T)->*ListNode
+    mtd addBack(value: &&T)->*ListNode
     {
         let n = Memory.new'ListNode()
         n.value =,move value
@@ -179,7 +179,7 @@ impl List
     }
 
     #[Swag.Discardable]
-    mtd insertBefore(node: *ListNode, value: moveref T)->*ListNode
+    mtd insertBefore(node: *ListNode, value: &&T)->*ListNode
     {
         Debug.assert(node != null)
 
@@ -218,7 +218,7 @@ impl List
     }
 
     #[Swag.Discardable]
-    mtd insertAfter(node: *ListNode, value: moveref T)->*ListNode
+    mtd insertAfter(node: *ListNode, value: &&T)->*ListNode
     {
         Debug.assert(node != null)
 
