@@ -448,7 +448,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
             }
             else
             {
-                auto note = Diagnostic::note(diag->sourceNode, diag->sourceNode->token, castMsg);
+                auto note  = Diagnostic::note(diag->sourceNode, diag->sourceNode->token, castMsg);
                 note->hint = castHint;
                 result1.push_back(note);
             }
@@ -1242,11 +1242,28 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
                 else if (typeWhere)
                 {
                     if (typeWhere->kind == TypeInfoKind::Struct && node->callParameters)
-                        diag = new Diagnostic{node, node->token, Fmt(Err(Err1107), node->token.ctext(), typeWhere->getDisplayNameC())};
+                    {
+                        if (node->token.text.startsWith(g_LangSpec->name_opVisit) && node->token.text != g_LangSpec->name_opVisit)
+                        {
+                            Utf8 variant{node->token.text.buffer + g_LangSpec->name_opVisit.length()};
+                            diag = new Diagnostic{node, node->token, Fmt(Err(Err1139), variant.c_str(), typeWhere->getDisplayNameC())};
+                        }
+                        else if (node->token.text == g_LangSpec->name_opVisit)
+                        {
+                            diag = new Diagnostic{node, node->token, Fmt(Err(Err0557), typeWhere->getDisplayNameC())};
+                        }
+                        else
+                            diag = new Diagnostic{node, node->token, Fmt(Err(Err1107), node->token.ctext(), typeWhere->getDisplayNameC())};
+                    }
                     else if (typeWhere->kind == TypeInfoKind::Enum)
+                    {
                         diag = new Diagnostic{node, node->token, Fmt(Err(Err0144), node->token.ctext(), typeWhere->getDisplayNameC())};
+                    }
                     else
+                    {
                         diag = new Diagnostic{node, node->token, Fmt(Err(Err0112), node->token.ctext(), typeWhere->getDisplayNameC())};
+                    }
+
                     if (prevIdentifier && prevIdentifier->resolvedSymbolName && prevIdentifier->resolvedSymbolName->kind == SymbolKind::Variable)
                         diag->addRange(prevIdentifier, Diagnostic::isType(prevIdentifier));
                 }

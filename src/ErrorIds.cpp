@@ -887,8 +887,8 @@ void initErrors()
     SWAG_ERROR(Err0393, "unknown struct                                    $ the struct '%s' can't be found");
     SWAG_ERROR(Err0556, "defer escape throw                                $ an error cannot escape a 'defer' or 'defer(err)' block");
     SWAG_ERROR(Err1214, "invalid 'opVisit' name                            $ function should be named 'opVisit' $ if you want to declare a visit variant, declare the alternate name after a comma");
-    SWAG_ERROR(Err1139, nullptr);
-    SWAG_ERROR(Err0557, nullptr);
+    SWAG_ERROR(Err1139, "invalid visit                                     $ cannot find the '%s' visit variant in '%s'");
+    SWAG_ERROR(Err0557, "invalid visit                                     $ the type '%s' cannot be visited with 'visit'");
     SWAG_ERROR(Err0639, nullptr);
     SWAG_ERROR(Err0694, nullptr);
     SWAG_ERROR(Err0530, nullptr);
