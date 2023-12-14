@@ -1,27 +1,28 @@
-#global skip
+//#global skip
 struct X {}
-struct Y {}
+struct Y { idx: u64 }
 
 impl X
 {
-    mtd opIndex()->Y
+    mtd opIndex(x: u64)->Y
     {
-        return {}
+        return {x}
     }
 }
 
 impl Y
 {
-    mtd opIndex()->s32
+    mtd opIndex(x: u64)->u64
     {
-        return 555
+        return idx+x*10
     }
 }
 
-#[Swag.PrintBc]
+//#[Swag.PrintBc]
 #test
 {
     var x: X
-    let a = x[0][1]
-    @print(a)
+    @assert(x[0][1] == 10)
+    @assert(x[1][1] == 11)
+    @assert(x[2][2] == 22)
 }

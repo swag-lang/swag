@@ -789,7 +789,6 @@ void initErrors()
     SWAG_ERROR(Err1137, "unexpected '#validif/#validifx'                   $ the '#validif/#validifx' directive is not allowed on special function '%s' $ '#validif' and '#validifx' are not valid for 'opDrop', 'opPostCopy', and 'opPostMove'");
     SWAG_ERROR(Err1215, "unexpected '#validifx' in struct                  $ '#validifx' is not allowed for a struct, this is only valid for functions $ consider using '#validif' instead");
     SWAG_ERROR(Err1099, "unexpected ')'                                    $ symbol ')' found without a preceding '('");
-    SWAG_ERROR(Err1139, "unexpected '['                                    $ nested square brackets '[..][..]' are not allowed for multi-dimensional array access $ to access elements in a multi-dimensional array, use the format [x, y] and not [x][y]");
     SWAG_ERROR(Err1100, "unexpected ']'                                    $ symbol ']' found without a preceding '['");
     SWAG_ERROR(Err1192, "unexpected 'const'                                $ unexpected 'const' before a lambda parameter name");
     SWAG_ERROR(Err0616, "unexpected 'default'                              $ a 'switch' marked with the '#[Swag.Complete]' attribute can't have a 'default' statement");
@@ -888,6 +887,7 @@ void initErrors()
     SWAG_ERROR(Err0570, "invalid throw type                                $ throw needs a struct or @err() as an expression, got '%s' instead");
     SWAG_ERROR(Err0393, "unknown struct                                    $ the struct '%s' can't be found");
     SWAG_ERROR(Err0556, "defer escape throw                                $ an error cannot escape a 'defer' or 'defer(err)' block");
+    SWAG_ERROR(Err1139, nullptr);
     SWAG_ERROR(Err0557, nullptr);
     SWAG_ERROR(Err0639, nullptr);
     SWAG_ERROR(Err0694, nullptr);

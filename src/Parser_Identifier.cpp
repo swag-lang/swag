@@ -184,9 +184,19 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
         {
             if (identifierFlags & IDENTIFIER_TYPE_DECL)
                 return context->report({identifier, token, Err(Err1120)});
-            Ast::removeFromParent(identifier);
-            SWAG_CHECK(doArrayPointerIndex((AstNode**) &identifier));
-            Ast::addChildBack(parent, identifier);
+
+            uint16_t serial = 0;
+            while (true)
+            {
+                Ast::removeFromParent(identifier);
+                SWAG_CHECK(doArrayPointerIndex((AstNode**) &identifier));
+                Ast::addChildBack(parent, identifier);
+                identifier->addSpecFlags(serial);
+
+                if (token.id != TokenId::SymLeftSquare)
+                    break;
+                serial ^= AstArrayPointerIndex::SPECFLAG_SERIAL;
+            }
 
             if (!(token.flags & TOKENPARSE_LAST_EOL) && !(identifierFlags & IDENTIFIER_NO_FCT_PARAMS) && token.id == TokenId::SymLeftParen)
             {

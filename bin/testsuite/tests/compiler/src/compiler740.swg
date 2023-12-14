@@ -1,4 +1,4 @@
-#global testerror "Err1139"
+#global testerror "Err0122"
 func toto()
 {
 	@assert(x[0][0] == 10)

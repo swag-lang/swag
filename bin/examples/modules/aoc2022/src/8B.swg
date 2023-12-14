@@ -74,8 +74,7 @@ func day8B()
             loop,back y: 0 until line
             {
                 score2 += 1
-                let tl = const ref lines[y]
-                if tl[col] >= l[col]
+                if lines[y][col] >= l[col]
                     break
             }
 
@@ -83,8 +82,7 @@ func day8B()
             loop y: line+1 to lines.count-1
             {
                 score3 += 1
-                let tl = const ref lines[y]
-                if tl[col] >= l[col]
+                if lines[y][col] >= l[col]
                     break
             }
 

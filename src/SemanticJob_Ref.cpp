@@ -993,8 +993,9 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
 
-        // Only the top level ArrayPointerIndex node will deal with the call
-        if (arrayNode->parent->kind == AstNodeKind::ArrayPointerIndex)
+        // Only the top level ArrayPointerIndex node (for a given serial) will deal with the call
+        if (arrayNode->parent->kind == AstNodeKind::ArrayPointerIndex &&
+            (arrayNode->parent->specFlags & AstArrayPointerIndex::SPECFLAG_SERIAL) == (arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_SERIAL))
         {
             arrayNode->typeInfo = arrayType;
             break;
@@ -1005,8 +1006,10 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         arrayNode->structFlatParams.clear();
         arrayNode->structFlatParams.push_back(arrayNode->access);
 
-        AstNode* child = arrayNode->array;
-        while (child->kind == AstNodeKind::ArrayPointerIndex)
+        uint16_t serial = arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_SERIAL;
+        AstNode* child  = arrayNode->array;
+        while (child->kind == AstNodeKind::ArrayPointerIndex &&
+               (child->specFlags & AstArrayPointerIndex::SPECFLAG_SERIAL) == serial)
         {
             auto arrayChild = CastAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
             arrayNode->structFlatParams.push_front(arrayChild->access);

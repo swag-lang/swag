@@ -137,7 +137,6 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
         }
 
         SWAG_CHECK(eatCloseToken(TokenId::SymRightSquare, startToken));
-        SWAG_VERIFY(token.id != TokenId::SymLeftSquare, error(token, Err(Err1139)));
     }
 
     return true;
@@ -511,9 +510,7 @@ bool Parser::doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
         forceTakeAddress(identifierRef);
 
         if (hasDot)
-        {
-            CastAst<AstIdentifierRef>(identifierRef, AstNodeKind::IdentifierRef)->addSpecFlags(AstIdentifierRef::SPECFLAG_AUTO_SCOPE);
-        }
+            identifierRef->addSpecFlags(AstIdentifierRef::SPECFLAG_AUTO_SCOPE);
 
         if (token.id == TokenId::SymLeftSquare)
             SWAG_CHECK(doArrayPointerIndex(&identifierRef));
