@@ -84,43 +84,38 @@ func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, remov
     var startbyteIdx, eat: u64
 
     var ptr = dataof
-    var count = countof
     var cpt = 0
     loop
     {
         // Remove separator at the start
-        while count
+        while startbyteIdx != countof
         {
             (c, eat) = Utf8.decodeRune(src[startbyteIdx ..< countof])
             if eat == 0 or !Slice.contains(separators, c)
                 break
-            startbyteIdx += eat
-            ptr += eat
-            count -= eat
+            startbyteIdx, ptr += eat
             if !removeEmpty
                 break
         }
 
-        if count == 0
+        if startbyteIdx == countof
             break // done
 
         // Add all real characters until we found a separator
         var endbyteIdx = startbyteIdx
-        while count
+        while endbyteIdx != countof
         {
             (c, eat) = Utf8.decodeRune(src[endbyteIdx ..< countof])
             if eat == 0 or Slice.contains(separators, c)
                 break
-            endbyteIdx += eat
-            ptr += eat
-            count -= eat
+            endbyteIdx, ptr += eat
         }
 
         result.add(src[startbyteIdx ..< endbyteIdx])
-
-        if count == 0
-            break // done
         startbyteIdx = endbyteIdx
+
+        if startbyteIdx == countof
+            break // done
 
         // Have we reached the maximum number of split ?
         cpt += 1
