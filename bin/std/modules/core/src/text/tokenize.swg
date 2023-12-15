@@ -71,6 +71,56 @@ func split(src: string, separator: rune, maxSplit: u32 = 0, removeEmpty = true) 
     return splitAny(src, [separator], maxSplit, removeEmpty)
 }
 
+// Split string into sub strings, given a string separator
+// Note that this returns an array of native strings, not copies.
+// All strings will be invalid if 'src' String is destroyed
+func split(src: string, separator: string, maxSplit: u32 = 0, removeEmpty = true)->Array'string
+{
+    let countof = @countof(src)
+
+    var result: retval
+    var startbyteIdx: u64
+
+    while !maxSplit or result.count != maxSplit
+    {
+        // Remove separator at the start
+        while startbyteIdx != countof
+        {
+            if !Utf8.startsWith(src[startbyteIdx ..< countof], separator)
+                break
+            startbyteIdx += @countof(separator)
+            if !removeEmpty
+                break
+        }
+
+        if startbyteIdx == countof
+            break
+
+        // Add all real characters until we found a separator
+        var endbyteIdx = startbyteIdx
+        while endbyteIdx != countof
+        {
+            if Utf8.startsWith(src[endbyteIdx ..< countof], separator)
+                break
+            endbyteIdx += 1
+        }
+
+        result.add(src[startbyteIdx ..< endbyteIdx])
+        startbyteIdx = endbyteIdx
+
+        if startbyteIdx == countof
+            break
+
+        startbyteIdx += @countof(separator)
+    }
+
+    // Last split
+    if startbyteIdx != countof
+        result.add(src[startbyteIdx ..< countof])
+
+    return result
+}
+
 // Split string into sub strings, given an array of rune separators
 // Note that this returns an array of native strings, not copies.
 // All strings will be invalid if 'src' String is destroyed
@@ -82,8 +132,7 @@ func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, remov
     var c: rune
     var startbyteIdx, eat: u64
 
-    var cpt = 0
-    while !maxSplit or cpt != maxSplit
+    while !maxSplit or result.count != maxSplit
     {
         // Remove separator at the start
         while startbyteIdx != countof
@@ -97,7 +146,7 @@ func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, remov
         }
 
         if startbyteIdx == countof
-            break // done
+            break
 
         // Add all real characters until we found a separator
         var endbyteIdx = startbyteIdx
@@ -113,10 +162,9 @@ func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, remov
         startbyteIdx = endbyteIdx
 
         if startbyteIdx == countof
-            break // done
+            break
 
         startbyteIdx += eat
-        cpt += 1
     }
 
     // Last split
