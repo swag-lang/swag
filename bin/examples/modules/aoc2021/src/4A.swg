@@ -86,15 +86,13 @@ func day4A()
             }
         }
 
-        loop i: 5 if maxCol[i] < bestScore
-        {
-            bestScore = maxCol[i]
-            bestCard = card
-        }
+        var score = Swag.U64.Max
+        loop i: 5
+            score = Math.min(score, maxCol[i], maxLine[i])
 
-        loop i: 5 if maxLine[i] < bestScore
+        if score < bestScore
         {
-            bestScore = maxLine[i]
+            bestScore = score
             bestCard = card
         }
     }
