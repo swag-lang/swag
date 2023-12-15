@@ -42,41 +42,19 @@ func day5B()
         assume
         {
             discard r.match(#"(\d+),(\d+) -> (\d+),(\d+)"#, l)
-            var x0 = StrConv.toS32(r.getCapture(1))
-            var y0 = StrConv.toS32(r.getCapture(2))
-            var x1 = StrConv.toS32(r.getCapture(3))
-            var y1 = StrConv.toS32(r.getCapture(4))
+            let x0 = StrConv.toS32(r.getCapture(1))
+            let y0 = StrConv.toS32(r.getCapture(2))
+            let x1 = StrConv.toS32(r.getCapture(3))
+            let y1 = StrConv.toS32(r.getCapture(4))
         }
 
-        if x0 != x1 and y0 != y1
+        loop i: Math.max(Math.abs(x1-x0),Math.abs(y1-y0))+1
         {
-            loop i: Math.abs(x1-x0)+1
-            {
-                let x = x0 + i*Math.sign(x1-x0)
-                let y = y0 + i*Math.sign(y1-y0)
-                let c = ref (m.buffer + (x + y*W))
-                total += (c == 1 ? 1 : 0)
-                c += 1
-            }
-        }
-        else
-        {
-            Core.orderMinMax(&x0, &x1)
-            Core.orderMinMax(&y0, &y1)
-            if x0 != x1
-                loop x: x0 to x1
-                {
-                    let c = ref (m.buffer + (x + y0*W))
-                    total += (c == 1 ? 1 : 0)
-                    c += 1
-                }
-            else
-                loop y: y0 to y1
-                {
-                    let c = ref (m.buffer + (x0 + y*W))
-                    total += (c == 1 ? 1 : 0)
-                    c += 1
-                }
+            let x = x0 + i*Math.sign(x1-x0)
+            let y = y0 + i*Math.sign(y1-y0)
+            let c = ref (m.buffer + (x + y*W))
+            total += (c == 1 ? 1 : 0)
+            c += 1
         }
     }
 
