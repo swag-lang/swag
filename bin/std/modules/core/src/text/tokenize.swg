@@ -89,7 +89,7 @@ func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, remov
         while startbyteIdx != countof
         {
             (c, eat) = Utf8.decodeRune(src[startbyteIdx ..< countof])
-            if eat == 0 or !Slice.contains(separators, c)
+            if !Slice.contains(separators, c)
                 break
             startbyteIdx += eat
             if !removeEmpty
@@ -104,7 +104,7 @@ func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, remov
         while endbyteIdx != countof
         {
             (c, eat) = Utf8.decodeRune(src[endbyteIdx ..< countof])
-            if eat == 0 or Slice.contains(separators, c)
+            if Slice.contains(separators, c)
                 break
             endbyteIdx += eat
         }
