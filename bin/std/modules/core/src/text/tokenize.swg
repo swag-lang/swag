@@ -76,16 +76,14 @@ func split(src: string, separator: rune, maxSplit: u32 = 0, removeEmpty = true) 
 // All strings will be invalid if 'src' String is destroyed
 func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, removeEmpty = true)->Array'string
 {
-    let dataof = @dataof(src)
     let countof = @countof(src)
 
     var result: retval
     var c: rune
     var startbyteIdx, eat: u64
 
-    var ptr = dataof
     var cpt = 0
-    loop
+    while !maxSplit or cpt != maxSplit
     {
         // Remove separator at the start
         while startbyteIdx != countof
@@ -93,7 +91,7 @@ func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, remov
             (c, eat) = Utf8.decodeRune(src[startbyteIdx ..< countof])
             if eat == 0 or !Slice.contains(separators, c)
                 break
-            startbyteIdx, ptr += eat
+            startbyteIdx += eat
             if !removeEmpty
                 break
         }
@@ -108,7 +106,7 @@ func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, remov
             (c, eat) = Utf8.decodeRune(src[endbyteIdx ..< countof])
             if eat == 0 or Slice.contains(separators, c)
                 break
-            endbyteIdx, ptr += eat
+            endbyteIdx += eat
         }
 
         result.add(src[startbyteIdx ..< endbyteIdx])
@@ -117,16 +115,13 @@ func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, remov
         if startbyteIdx == countof
             break // done
 
-        // Have we reached the maximum number of split ?
+        startbyteIdx += eat
         cpt += 1
-        if cpt == maxSplit
-        {
-            startbyteIdx += eat
-            result.add(src[startbyteIdx ..< countof])
-            break
-        }
-
     }
+
+    // Last split
+    if startbyteIdx != countof
+        result.add(src[startbyteIdx ..< countof])
 
     return result
 }
