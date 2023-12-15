@@ -68,32 +68,30 @@ func splitLines(src: string) -> Array'string
 // All strings will be invalid if 'src' is destroyed
 func split(src: string, separator: rune, maxSplit: u32 = 0, removeEmpty = true) -> Array'string
 {
-    return split(src, [separator], maxSplit, removeEmpty)
+    return splitAny(src, [separator], maxSplit, removeEmpty)
 }
 
 // Split string into sub strings, given an array of rune separators
 // Note that this returns an array of native strings, not copies.
 // All strings will be invalid if 'src' String is destroyed
-func split(src: string, separators: const [..] rune, maxSplit: u32 = 0, removeEmpty = true)->Array'string
+func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, removeEmpty = true)->Array'string
 {
     let dataof = @dataof(src)
     let countof = @countof(src)
 
     var result: retval
-    var ptr = dataof
     var c: rune
-    var eat: u64
+    var startbyteIdx, eat: u64
 
-    var startbyteIdx = 0'u64
+    var ptr = dataof
     var count = countof
     var cpt = 0
     loop
     {
         // Remove separator at the start
-        loop
+        while count
         {
-            let sl = @mkslice(ptr, count)
-            (c, eat) = Utf8.decodeRune(sl)
+            (c, eat) = Utf8.decodeRune(@mkslice(ptr, count))
             if eat == 0 or !Slice.contains(separators, c)
                 break
             startbyteIdx += eat
@@ -103,15 +101,14 @@ func split(src: string, separators: const [..] rune, maxSplit: u32 = 0, removeEm
                 break
         }
 
-        if eat == 0
+        if count == 0
             break // done
 
         // Add all real characters until we found a separator
         var endbyteIdx = startbyteIdx
-        loop
+        while count
         {
-            let sl = @mkslice(ptr, count)
-            (c, eat) = Utf8.decodeRune(sl)
+            (c, eat) = Utf8.decodeRune(@mkslice(ptr, count))
             if eat == 0 or Slice.contains(separators, c)
                 break
             endbyteIdx += eat
@@ -122,7 +119,7 @@ func split(src: string, separators: const [..] rune, maxSplit: u32 = 0, removeEm
         var oneString = @mkstring(dataof + startbyteIdx, endbyteIdx - startbyteIdx)
         result.add(oneString)
 
-        if eat == 0
+        if count == 0
             break // done
         startbyteIdx = endbyteIdx
 

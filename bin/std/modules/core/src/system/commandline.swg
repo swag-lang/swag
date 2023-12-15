@@ -60,7 +60,7 @@ func splitArguments(args: const [..] string, options: ParseOptions)->Array'strin
             continue
         }
 
-        var split = Tokenize.split(oneArg, [`:`'rune, `=`'rune], 1)
+        var split = Tokenize.splitAny(oneArg, [`:`'rune, `=`'rune], 1)
         if split.count == 2
         {
             allArgs.add(split[0])

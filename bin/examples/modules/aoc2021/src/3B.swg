@@ -46,7 +46,7 @@ func calc(a, b: u8)->u64
         var next: Array'String
         visit l: scan
         {
-            let v = (count >= scan.count-count ? a : b)
+            let v = count >= scan.count-count ? a : b
             if l[c] == v
                 next.add(l)
         }
