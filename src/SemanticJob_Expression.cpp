@@ -237,6 +237,7 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
     if (context->result == ContextResult::Pending)
         return true;
 
+    expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_ALL);
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, expression, CASTFLAG_AUTO_BOOL));
 
     auto rightT = ifFalse;
@@ -305,8 +306,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
     if (context->result != ContextResult::Done)
         return true;
 
-    auto typeInfo = TypeManager::concreteType(expression->typeInfo);
-
+    auto typeInfo = getConcreteTypeUnRef(expression, CONCRETE_ALL);
     if (typeInfo->isStruct())
     {
         Diagnostic diag{node->sourceFile, node->token, Err(Err0342)};
@@ -317,6 +317,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
              !typeInfo->isPointer() &&
              !typeInfo->isInterface() &&
              !typeInfo->isNativeIntegerOrRune() &&
+             !typeInfo->isBool() &&
              !typeInfo->isNativeFloat() &&
              !typeInfo->isLambdaClosure())
     {
