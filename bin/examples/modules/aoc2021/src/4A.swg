@@ -62,11 +62,55 @@ func day4A()
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "4.txt")
     let lines = assume File.readAllLines(dataPath)
 
-    visit l: lines
+    var numbers: Array's32
+    visit v: Tokenize.split(lines[0], `,`'u8)
+        numbers.add(assume StrConv.toS32(v))
+
+    var bestScore = Swag.U64.Max
+    var bestCard: Array'u64
+    for var line = 2; line < lines.count; line += 6
     {
+        var card: Array'u64
+        var maxCol, maxLine: [5] u64
+
+        loop y: line to line + 4
+        {
+            visit v, x: Tokenize.split(lines[y], ` `'u8)
+            {
+                let n =  assume StrConv.toS32(v)
+                let i = Slice.findLinear(numbers.toSlice(), n)
+                card.add(i)
+
+                maxCol[x]       = Math.max(maxCol[x], i)
+                maxLine[y-line] = Math.max(maxLine[y-line], i)
+            }
+        }
+
+        loop i: 5
+        {
+            if maxCol[i] < bestScore
+            {
+                bestScore = maxCol[i]
+                bestCard = card
+            }
+
+            if maxLine[i] < bestScore
+            {
+                bestScore = maxLine[i]
+                bestCard = card
+            }
+        }
     }
 
-    //Console.print("total: ", gamma*epsilon)
-    //@assert(gamma*epsilon == 2967914)
+    var total = 0'u64
+    visit v, i: bestCard
+    {
+        if v > bestScore
+            total += numbers[v]
+    }
+    total *= numbers[bestScore]
+
+    //Console.print("total: ", total)
+    @assert(total == 41503)
 }
 
