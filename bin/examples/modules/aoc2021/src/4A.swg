@@ -86,28 +86,22 @@ func day4A()
             }
         }
 
-        loop i: 5
+        loop i: 5 if maxCol[i] < bestScore
         {
-            if maxCol[i] < bestScore
-            {
-                bestScore = maxCol[i]
-                bestCard = card
-            }
+            bestScore = maxCol[i]
+            bestCard = card
+        }
 
-            if maxLine[i] < bestScore
-            {
-                bestScore = maxLine[i]
-                bestCard = card
-            }
+        loop i: 5 if maxLine[i] < bestScore
+        {
+            bestScore = maxLine[i]
+            bestCard = card
         }
     }
 
     var total = 0'u64
-    visit v, i: bestCard
-    {
-        if v > bestScore
-            total += numbers[v]
-    }
+    visit v: bestCard if v > bestScore
+        total += numbers[v]
     total *= numbers[bestScore]
 
     //Console.print("total: ", total)
