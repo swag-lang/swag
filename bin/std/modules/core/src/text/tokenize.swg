@@ -91,7 +91,7 @@ func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, remov
         // Remove separator at the start
         while count
         {
-            (c, eat) = Utf8.decodeRune(@mkslice(ptr, count))
+            (c, eat) = Utf8.decodeRune(src[startbyteIdx ..< countof])
             if eat == 0 or !Slice.contains(separators, c)
                 break
             startbyteIdx += eat
@@ -108,7 +108,7 @@ func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, remov
         var endbyteIdx = startbyteIdx
         while count
         {
-            (c, eat) = Utf8.decodeRune(@mkslice(ptr, count))
+            (c, eat) = Utf8.decodeRune(src[endbyteIdx ..< countof])
             if eat == 0 or Slice.contains(separators, c)
                 break
             endbyteIdx += eat
@@ -116,8 +116,7 @@ func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, remov
             count -= eat
         }
 
-        var oneString = @mkstring(dataof + startbyteIdx, endbyteIdx - startbyteIdx)
-        result.add(oneString)
+        result.add(src[startbyteIdx ..< endbyteIdx])
 
         if count == 0
             break // done
@@ -128,8 +127,7 @@ func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, remov
         if cpt == maxSplit
         {
             startbyteIdx += eat
-            oneString = @mkstring(dataof + startbyteIdx, countof - startbyteIdx)
-            result.add(oneString)
+            result.add(src[startbyteIdx ..< countof])
             break
         }
 
