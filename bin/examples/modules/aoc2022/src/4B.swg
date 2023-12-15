@@ -23,9 +23,9 @@ func day4B()
     var total: u64
     visit l: lines
     {
-        let pair  = Tokenize.split(l, `,`)
-        let pair0 = Tokenize.split(pair[0], `-`)
-        let pair1 = Tokenize.split(pair[1], `-`)
+        let pair  = Tokenize.split(l, `,`'u8)
+        let pair0 = Tokenize.split(pair[0], `-`'u8)
+        let pair1 = Tokenize.split(pair[1], `-`'u8)
         let v0a   = assume StrConv.toS32(pair0[0])
         let v0b   = assume StrConv.toS32(pair0[1])
         let v1a   = assume StrConv.toS32(pair1[0])

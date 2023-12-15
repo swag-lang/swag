@@ -63,12 +63,54 @@ func splitLines(src: string) -> Array'string
     return result
 }
 
-// Split string into sub strings, given a rune separator
+// Split string into sub strings, given a byte separator
 // Note that this returns an array of native strings, not copies.
-// All strings will be invalid if 'src' is destroyed
-func split(src: string, separator: rune, maxSplit: u32 = 0, removeEmpty = true) -> Array'string
+// All strings will be invalid if 'src' String is destroyed
+func split(src: string, separator: u8, maxSplit: u32 = 0, removeEmpty = true)->Array'string
 {
-    return splitAny(src, [separator], maxSplit, removeEmpty)
+    let countof = @countof(src)
+
+    var result: retval
+    var startbyteIdx: u64
+
+    while !maxSplit or result.count != maxSplit
+    {
+        // Remove separator at the start
+        while startbyteIdx != countof
+        {
+            if src[startbyteIdx] != separator
+                break
+            startbyteIdx += 1
+            if !removeEmpty
+                break
+        }
+
+        if startbyteIdx == countof
+            break
+
+        // Add all real characters until we found a separator
+        var endbyteIdx = startbyteIdx
+        while endbyteIdx != countof
+        {
+            if src[endbyteIdx] == separator
+                break
+            endbyteIdx += 1
+        }
+
+        result.add(src[startbyteIdx ..< endbyteIdx])
+        startbyteIdx = endbyteIdx
+
+        if startbyteIdx == countof
+            break
+
+        startbyteIdx += 1
+    }
+
+    // Last split
+    if startbyteIdx != countof
+        result.add(src[startbyteIdx ..< countof])
+
+    return result
 }
 
 // Split string into sub strings, given a string separator
@@ -119,6 +161,14 @@ func split(src: string, separator: string, maxSplit: u32 = 0, removeEmpty = true
         result.add(src[startbyteIdx ..< countof])
 
     return result
+}
+
+// Split string into sub strings, given a rune separator
+// Note that this returns an array of native strings, not copies.
+// All strings will be invalid if 'src' is destroyed
+func split(src: string, separator: rune, maxSplit: u32 = 0, removeEmpty = true) -> Array'string
+{
+    return splitAny(src, [separator], maxSplit, removeEmpty)
 }
 
 // Split string into sub strings, given an array of rune separators

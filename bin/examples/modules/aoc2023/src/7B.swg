@@ -74,7 +74,7 @@ func day7B()
 
     visit l: lines
     {
-        let first = Tokenize.split(l, ` `)
+        let first = Tokenize.split(l, ` `'u8)
 
         var card: Card
         var maxCount = 0
@@ -90,7 +90,7 @@ func day7B()
         {
             if c and i
                 card.countV[c] += 1
-        }  
+        }
 
         card.countV[maxCount + card.count[0]] += 1
         card.countV[maxCount] -= 1
@@ -100,9 +100,9 @@ func day7B()
         case card.countV[5]:                        card.value = 6
         case card.countV[4]:                        card.value = 5
         case card.countV[3] and card.countV[2]:     card.value = 4
-        case card.countV[3]:                        card.value = 3            
-        case card.countV[2] == 2:                   card.value = 2             
-        case card.countV[2]:                        card.value = 1            
+        case card.countV[3]:                        card.value = 3
+        case card.countV[2] == 2:                   card.value = 2
+        case card.countV[2]:                        card.value = 1
         }
 
         card.val = first[0]

@@ -29,7 +29,7 @@ func day9B()
 
     visit l: lines
     {
-        let vals = Tokenize.split(l, ` `)
+        let vals = Tokenize.split(l, ` `'u8)
 
         var values: Array's64
         visit v: vals values.add(assume StrConv.toS64(v))

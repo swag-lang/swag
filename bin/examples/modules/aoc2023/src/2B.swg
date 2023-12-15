@@ -31,17 +31,17 @@ func day2B()
     var total = 0'u64
 
     visit l, gameIdx: lines
-    {    
-        let first = Tokenize.split(l, `:`)
-        let sets  = Tokenize.split(first[1], `;`)
+    {
+        let first = Tokenize.split(l, `:`'u8)
+        let sets  = Tokenize.split(first[1], `;`'u8)
 
         var game: {r, g, b: s32}
         visit s: sets
         {
-            let values = Tokenize.split(s, `,`)
+            let values = Tokenize.split(s, `,`'u8)
             visit v: values
             {
-                let one = Tokenize.split(v, ` `)
+                let one = Tokenize.split(v, ` `'u8)
                 switch one[1]
                 {
                 case "red":   game.r = Math.max(game.r, assume StrConv.toS32(one[0]))

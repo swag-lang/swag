@@ -136,18 +136,18 @@ func day5A()
         case "water-to-light map:":           mode = .ToLight; continue
         case "light-to-temperature map:":     mode = .ToTemperature; continue
         case "temperature-to-humidity map:":  mode = .ToHumidity; continue
-        case "humidity-to-location map:":     mode = .ToLocation; continue    
+        case "humidity-to-location map:":     mode = .ToLocation; continue
         }
 
         if mode == .Invalid
         {
-            let tokens = Tokenize.split(l, `:`)
-            let values = Tokenize.split(tokens[1], ` `)
+            let tokens = Tokenize.split(l, `:`'u8)
+            let values = Tokenize.split(tokens[1], ` `'u8)
             visit v: values seeds.add(assume StrConv.toU64(v))
             continue
         }
 
-        let values = Tokenize.split(l, ` `)
+        let values = Tokenize.split(l, ` `'u8)
         var range: Range
         range.dst   = assume StrConv.toU64(values[0])
         range.src   = assume StrConv.toU64(values[1])

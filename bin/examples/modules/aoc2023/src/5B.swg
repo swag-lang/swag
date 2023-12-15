@@ -55,18 +55,18 @@ func day5B()
         case "water-to-light map:":           mode = .ToLight; continue
         case "light-to-temperature map:":     mode = .ToTemperature; continue
         case "temperature-to-humidity map:":  mode = .ToHumidity; continue
-        case "humidity-to-location map:":     mode = .ToLocation; continue    
+        case "humidity-to-location map:":     mode = .ToLocation; continue
         }
 
         if mode == .Invalid
         {
-            let tokens = Tokenize.split(l, `:`)
-            let values = Tokenize.split(tokens[1], ` `)
+            let tokens = Tokenize.split(l, `:`'u8)
+            let values = Tokenize.split(tokens[1], ` `'u8)
             visit v: values seeds.add(assume StrConv.toU64(v))
             continue
         }
 
-        let values = Tokenize.split(l, ` `)
+        let values = Tokenize.split(l, ` `'u8)
         var range: Range
         let rangeV = assume StrConv.toU64(values[2])
         range.dst  = assume StrConv.toU64(values[0])
@@ -95,13 +95,13 @@ func day5B()
                     if range.start < conv.src
                         ranges.add({range.start, conv.src - 1})
                     if range.end > conv.srcE
-                        ranges.add({conv.srcE + 1, range.end})    
+                        ranges.add({conv.srcE + 1, range.end})
 
-                    let v0 = Math.max(range.start, conv.src)                   
+                    let v0 = Math.max(range.start, conv.src)
                     let v1 = Math.min(range.end, conv.srcE)
-                    newRanges.add({v0 - conv.src + conv.dst, v1 - conv.src + conv.dst})              
+                    newRanges.add({v0 - conv.src + conv.dst, v1 - conv.src + conv.dst})
                     break Done
-                }       
+                }
 
                 newRanges.add(range)
             }
