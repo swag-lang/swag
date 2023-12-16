@@ -13,14 +13,11 @@ func day6B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "6.txt")
     let lines = assume File.readAllLines(dataPath)
-
-    var values: Array's32
     let str = Tokenize.split(lines[0], `,`'u8)
-    visit v: str values.add(assume StrConv.toS32(v))
 
     var state: [9] u64
-    visit f: values
-        state[f] += 1
+    visit v: str
+        state[assume StrConv.toS32(v)] += 1
 
     var total: u64
     loop 256
@@ -28,8 +25,8 @@ func day6B()
         var oldState = state
         Memory.clear(&state[0], @sizeof(state))
 
-        state[6], state[8] += oldState[0]
-        total = state[6] + state[8]
+        state[6], state[8] = oldState[0]
+        total = oldState[0]*2
 
         visit f,i: oldState[1..]
         {
