@@ -162,6 +162,24 @@ impl Array
         }
     }
 
+    // Returns a reference to a value given coordinate.
+    // This is to use the array as an array with 2 dimensions.
+    #[Swag.Inline]
+    mtd ref1(x: u64)->&T
+    {
+        Debug.safetyBoundCheck(x < count, "index out of range")
+        return buffer + x
+    }
+
+    // Returns a reference to a value given 2 coordinates and a width.
+    // This is to use the array as an array with 2 dimensions.
+    #[Swag.Inline]
+    mtd ref2(x, y, w: u64)->&T
+    {
+        Debug.safetyBoundCheck(x + y*w < count, "index out of range")
+        return buffer + x + y*w
+    }
+
     mtd realloc(newCapacity: u64)
     {
         if allocator == null
