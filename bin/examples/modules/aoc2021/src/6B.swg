@@ -22,23 +22,22 @@ func day6B()
     visit f: values
         state[f] += 1
 
+    var total: u64
     loop 256
     {
         var oldState = state
         Memory.clear(&state[0], @sizeof(state))
 
-        visit f,i: oldState
+        state[6], state[8] += oldState[0]
+        total = state[6] + state[8]
+
+        visit f,i: oldState[1..]
         {
-            if i == 0
-                state[6], state[8] += f
-            else
-                state[i-1] += oldState[i]
+            state[i] += oldState[i+1]
+            total += oldState[i+1]
         }
     }
 
-    var total: u64
-    visit f: state
-        total += f
     //Console.print("total: ", total)
     @assert(total == 1741362314973)
 }
