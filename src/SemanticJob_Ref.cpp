@@ -160,7 +160,14 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
         // For a function, if no parameters, then this is for a lambda
         auto back = child->childs.back();
         if (back->kind != AstNodeKind::FuncCall)
-            return resolveMakePointerLambda(context);
+        {
+            if (back->kind != AstNodeKind::Identifier)
+                return resolveMakePointerLambda(context);
+
+            auto idBack = CastAst<AstIdentifier>(back, AstNodeKind::Identifier);
+            if (!idBack->callParameters)
+                return resolveMakePointerLambda(context);
+        }
 
         // Otherwise we want to take the address of the return value
         // Only for a reference
