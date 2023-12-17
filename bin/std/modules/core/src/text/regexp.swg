@@ -343,13 +343,11 @@ impl RegExp
                 let curState = pstack1.popBack()
                 ok = dfaMatch(pstack2, RuneEnd, curState)
                 hasTerminal = curState.terminal
-                if hasTerminal
-                    return srcPtr
                 swap(&pstack1, &pstack2)
             }
         }
 
-        while !hasTerminal and !pstack1.isEmpty()
+        while !pstack1.isEmpty()
         {
             let curState = pstack1.popBack()
             hasTerminal = curState.terminal
