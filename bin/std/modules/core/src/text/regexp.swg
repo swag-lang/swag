@@ -929,7 +929,7 @@ impl RegExp
             }
             else
             {
-                pz = preprocessEscape(@mkslice(pz, pz - pzStart))
+                pz = preprocessEscape(@mkslice(pz, pz - pzStart), true)
             }
         }
 
@@ -1105,7 +1105,7 @@ impl RegExp
         return pz
     }
 
-    mtd preprocessEscape(sl: const [..] rune)->const ^rune throw
+    mtd preprocessEscape(sl: const [..] rune, inInter = false)->const ^rune throw
     {
         var pz = @dataof(sl)
         let c = dref pz
@@ -1167,7 +1167,13 @@ impl RegExp
             }
         }
 
-        preprocessed.add(c)
+        if c == `^` and !inInter
+            preprocessed.add(RuneStart)
+        elif c == `$` and !inInter
+            preprocessed.add(RuneEnd)
+        else
+            preprocessed.add(c)
+
         return pz + 1
     }
 
@@ -1181,14 +1187,6 @@ impl RegExp
 
         var c = ignoreCase ? Unicode.toUpper(pz[0]) : pz[0]
         var open = false
-
-        // Start of buffer
-        if c == `^`
-        {
-            preprocessed.add(RuneStart)
-            pz += 1
-            c = ignoreCase ? Unicode.toUpper(pz[0]) : pz[0]
-        }
 
         while c
         {
@@ -1204,13 +1202,7 @@ impl RegExp
                 pz = preprocessEnum(@mkslice(pz, pzEnd - pz))
 
             default:
-                if c == `$` and pz[1] == 0
-                {
-                    if open { preprocessed.add(RuneCloseParen); open = false; }
-                    preprocessed.add(RuneEnd)
-                    pz += 1
-                }
-                elif open and (pz[1] == `*` or pz[1] == `+` or pz[1] == `?`)
+                if open and (pz[1] == `*` or pz[1] == `+` or pz[1] == `?`)
                 {
                     if open { preprocessed.add(RuneCloseParen); open = false; }
                     pz = preprocessEscape(@mkslice(pz, pzEnd - pz))
