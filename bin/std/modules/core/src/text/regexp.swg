@@ -216,10 +216,11 @@ impl RegExp
         {
             let res = matchInternal(@mkstring(beg, pzEnd - beg), true)
             end = res.buf
-            if !end
+            if !end or end == beg
             {
                 copy += 1
                 beg = copy
+                end = null
             }
         }
 
@@ -311,8 +312,6 @@ impl RegExp
         }
 
         if !hasTerminal
-            return result
-        if forGrep and srcPtr == @dataof(str)
             return result
 
         return {true, srcPtr}
