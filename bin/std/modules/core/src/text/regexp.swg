@@ -171,7 +171,7 @@ impl RegExp
     public mtd match(str: string)->bool
     {
         started = false
-        let (ok, ?) = matchInternal(str)
+        let (ok, ?) = matchInternal(str, false)
         return ok
     }
 
@@ -214,7 +214,8 @@ impl RegExp
 
         while !end and (copy != pzEnd)
         {
-            end = matchGrep(@mkstring(beg, pzEnd - beg))
+            let res = matchInternal(@mkstring(beg, pzEnd - beg), true)
+            end = res.buf
             if !end
             {
                 copy += 1
@@ -230,7 +231,7 @@ impl RegExp
         return result
     }
 
-    mtd matchInternal(str: string)->{ok: bool, buf: const *u8}
+    mtd matchInternal(str: string, forGrep: bool)->{ok: bool, buf: const *u8}
     {
         var result: retval
 
@@ -293,7 +294,7 @@ impl RegExp
             }
         }
 
-        if cpt != srcLength
+        if !forGrep and (cpt != srcLength)
             return result
 
         while !pstack1.isEmpty()
@@ -302,69 +303,19 @@ impl RegExp
             hasTerminal = curState.terminal
         }
 
-        if hasTerminal and srcPtr != startGroup
+        // Last group
+        if !forGrep and hasTerminal and srcPtr != startGroup
         {
             let strGroup = @mkstring(startGroup, srcPtr-startGroup)
             groups.add({lastGroup, strGroup})
         }
 
-        return {hasTerminal, srcPtr}
-    }
+        if !hasTerminal
+            return result
+        if forGrep and srcPtr == @dataof(str)
+            return result
 
-    mtd matchGrep(str: string)->const *u8
-    {
-        if dfaNodes.isEmpty()
-            return null
-
-        var stack1, stack2: Array'(*DfaNode)
-        stack1.add(dfaNodes[0])
-
-        var pstack1 = &stack1
-        var pstack2 = &stack2
-
-        var cpt = 0
-        var srcPtr = @dataof(str)
-        let srcLength = @countof(str)
-
-        var hasTerminal = false
-
-        while cpt < srcLength and !pstack1.isEmpty()
-        {
-            let (cr, eat) = Utf8.decodeRune(@mkslice(srcPtr, srcLength - cpt))
-            let c = ignoreCase ? Unicode.toUpper(cr) : cr
-
-            var ok = false
-            while !pstack1.isEmpty()
-            {
-                let curState = pstack1.popBack()
-                ok = dfaMatch(pstack2, c, curState)
-                hasTerminal = curState.terminal
-            }
-
-            if ok
-                cpt, srcPtr += eat
-
-            swap(&pstack1, &pstack2)
-
-            if cpt == srcLength and !pstack1.isEmpty() and !hasTerminal
-            {
-                let curState = pstack1.popBack()
-                ok = dfaMatch(pstack2, RuneEnd, curState)
-                hasTerminal = curState.terminal
-                swap(&pstack1, &pstack2)
-            }
-        }
-
-        while !pstack1.isEmpty()
-        {
-            let curState = pstack1.popBack()
-            hasTerminal = curState.terminal
-        }
-
-        if !hasTerminal or srcPtr == @dataof(str)
-            return null
-
-        return srcPtr
+        return {true, srcPtr}
     }
 
     mtd dfaMatch(out: *Array'(*DfaNode), c: rune, curState: *DfaNode)->bool
