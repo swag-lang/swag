@@ -53,6 +53,11 @@ let (a, b) = Tokenize.split(str, ' ')
 si pas le cas, error is overload. Permettrait d'avoir des cast implicits sur les fonctions en un
 seul exemplaire
 -------------------------------------
+@mixin1 => @mixin(num) ?
+@alias1 => @alias(num) ?
+-------------------------------------
+@index => #index
+-------------------------------------
 
 
 

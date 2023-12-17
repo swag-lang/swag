@@ -15,6 +15,7 @@ const RuneAsciiBlank        = cast(rune) 0x8000_000A
 const RuneAsciiHexa         = cast(rune) 0x8000_000B
 const RuneStart             = cast(rune) 0x8000_000C
 const RuneEnd               = cast(rune) 0x8000_000D
+const RuneWordSwap          = cast(rune) 0x8000_000E
 
 const RuneUnicodeLetter         = cast(rune) 0x8001_0006
 const RuneUnicodeLetterLower    = cast(rune) 0x8001_0007
@@ -89,6 +90,7 @@ public struct RegExpGrep
 // | \S               | [^[:space:]]
 // | \w               | [[:word:]]
 // | \W               | [^[:word:]]
+// | \b               | start or end of word
 // | \pL              | unicode letter
 // | \pN              | unicode number
 // | \pS              | unicode symbol
@@ -110,7 +112,8 @@ public struct RegExp
     orOpLevel:      Array'u32
     preprocessed:   Array'rune
     group:          u32
-    started:        bool
+    hasStarted:     bool
+    wasWord:        bool
     ignoreCase:     bool
 }
 
@@ -128,7 +131,7 @@ impl RegExp
         visit p: dfaNodes Memory.delete(p)
         visit p: nfaTables Memory.delete(p)
 
-        started = false
+        hasStarted, wasWord = false
         nfaNodes.clear()
         dfaNodes.clear()
         nfaTables.clear()
@@ -173,7 +176,7 @@ impl RegExp
     // Should have been compiled before.
     public mtd match(str: string)->bool
     {
-        started = false
+        hasStarted, wasWord = false
         let (ok, ?) = matchInternal(str, false)
         return ok
     }
@@ -184,7 +187,7 @@ impl RegExp
         var result: retval
         var res = str
         let end = @dataof(str) + @countof(str)
-        started = false
+        hasStarted, wasWord = false
 
         loop
         {
@@ -203,7 +206,7 @@ impl RegExp
     // Find the first occurence in the string
     public mtd grep(str: string)->RegExpGrep
     {
-        started = false
+        hasStarted, wasWord = false
         return internalGrep(str)
     }
 
@@ -328,20 +331,33 @@ impl RegExp
         #[Swag.Mixin]
         func checkTr(c: rune)
         {
+            let @mixin1 = curState.transitions.find(c)
+            if @mixin1
             {
-                let find = curState.transitions.find(c)
-                if find
-                {
-                    out.add(find.value)
-                    ok = true
-                }
+                out.add(@mixin1.value)
+                ok = true
             }
         }
 
-        if !started
+        if !hasStarted
         {
             checkTr(RuneStart)
-            started = true
+            checkTr(RuneWordSwap)
+            hasStarted = true
+            if ok
+                return false
+        }
+        elif !wasWord and Unicode.isWord(c)
+        {
+            wasWord = true
+            checkTr(RuneWordSwap)
+            if ok
+                return false
+        }
+        elif wasWord and !Unicode.isWord(c)
+        {
+            wasWord = false
+            checkTr(RuneWordSwap)
             if ok
                 return false
         }
@@ -1149,6 +1165,9 @@ impl RegExp
                 return pz + 2
             case `a`:
                 preprocessed.add(`\a`)
+                return pz + 2
+            case `b`:
+                preprocessed.add(RuneWordSwap)
                 return pz + 2
             case `f`:
                 preprocessed.add(`\f`)
