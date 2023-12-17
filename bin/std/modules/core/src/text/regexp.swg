@@ -175,6 +175,61 @@ impl RegExp
         return ok
     }
 
+    // Find all the occurences in the string
+    public mtd grepAll(str: string)->Array'RegExpGrep
+    {
+        var result: retval
+        var res = str
+        let end = @dataof(str) + @countof(str)
+        started = false
+
+        loop
+        {
+            let val = internalGrep(res)
+            if !val.value
+                break
+            result.add(val)
+            let newStart = @dataof(val.value) + @countof(val.value)
+            res = @mkstring(newStart, end - newStart)
+        }
+
+        return result
+    }
+
+    // Find the first occurence in the string
+    public mtd grep(str: string)->RegExpGrep
+    {
+        started = false
+        return internalGrep(str)
+    }
+
+    mtd internalGrep(str: string)->RegExpGrep
+    {
+        var result: retval
+        var beg = @dataof(str)
+        var copy = @dataof(str)
+        let pzEnd = beg + @countof(str)
+
+        var end: const *u8
+
+        while !end and (copy != pzEnd)
+        {
+            end = matchGrep(@mkstring(beg, pzEnd - beg))
+            if !end
+            {
+                copy += 1
+                beg = copy
+            }
+        }
+
+        if !end
+            return result
+
+        result.value = @mkstring(beg, end - beg)
+        result.index = beg - @dataof(str)
+        return result
+    }
+
     mtd matchInternal(str: string)->{ok: bool, buf: const *u8}
     {
         var result: retval
@@ -254,61 +309,6 @@ impl RegExp
         }
 
         return {hasTerminal, srcPtr}
-    }
-
-    // Find all the occurences in the string
-    public mtd grepAll(str: string)->Array'RegExpGrep
-    {
-        var result: retval
-        var res = str
-        let end = @dataof(str) + @countof(str)
-        started = false
-
-        loop
-        {
-            let val = internalGrep(res)
-            if !val.value
-                break
-            result.add(val)
-            let newStart = @dataof(val.value) + @countof(val.value)
-            res = @mkstring(newStart, end - newStart)
-        }
-
-        return result
-    }
-
-    // Find the first occurence in the string
-    public mtd grep(str: string)->RegExpGrep
-    {
-        started = false
-        return internalGrep(str)
-    }
-
-    mtd internalGrep(str: string)->RegExpGrep
-    {
-        var result: retval
-        var beg = @dataof(str)
-        var copy = @dataof(str)
-        let pzEnd = beg + @countof(str)
-
-        var end: const *u8
-
-        while !end and (copy != pzEnd)
-        {
-            end = matchGrep(@mkstring(beg, pzEnd - beg))
-            if !end
-            {
-                copy += 1
-                beg = copy
-            }
-        }
-
-        if !end
-            return result
-
-        result.value = @mkstring(beg, end - beg)
-        result.index = beg - @dataof(str)
-        return result
     }
 
     mtd matchGrep(str: string)->const *u8
