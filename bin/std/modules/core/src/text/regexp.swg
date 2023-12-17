@@ -63,6 +63,8 @@ public struct RegExpGrep
 // | ?                | zero or one
 // | +                | one or more
 // | .                | any rune
+// | ^<expr>          | start of buffer
+// | <expr>$          | end of buffer
 // | a\|b             | a or b
 // | [abc]            | match any in list
 // | [a-zA-Z]         | match any in range
@@ -76,6 +78,7 @@ public struct RegExpGrep
 // | [[:space:]]      | and whitespace character
 // | [[:word:]]       | [a-zA-Z0-9_]
 // | [[:ascii:]]      | Any ascii character
+// | [^<interval>]    | Inverse of <interval>
 // | \d               | [[:digit:]]
 // | \D               | [^[:digit:]]
 // | \l               | [[:lower:]]
