@@ -185,9 +185,10 @@ impl RegExp
 
         loop
         {
-            let val = internalGrep(res)
+            var val = internalGrep(res)
             if !val.value
                 break
+            val.index += @dataof(res) - @dataof(str)
             result.add(val)
             let newStart = @dataof(val.value) + @countof(val.value)
             res = @mkstring(newStart, end - newStart)
