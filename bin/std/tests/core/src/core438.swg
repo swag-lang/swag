@@ -8,5 +8,7 @@ using Core
     @assert(r.grep("toto").value == "toto")
     @assert(r.grep("atoto").value == null)
     @assert(r.grep("totoa").value == null)
-    //@print(assume r.match(#"^toto"#, "toto"))
+
+    assume r.compile(#"toto$"#)
+    @assert(r.grep("aaaatoto").value == "toto")
 }
