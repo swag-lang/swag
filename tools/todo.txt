@@ -49,6 +49,10 @@ tuple unpacking array (should work with Core.Array)
 let (a, b) = [4, 5]
 let (a, b) = Tokenize.split(str, ' ')
 -------------------------------------
+[Swag.CanOverload] ?
+si pas le cas, error is overload. Permettrait d'avoir des cast implicits sur les fonctions en un
+seul exemplaire
+-------------------------------------
 
 
 
