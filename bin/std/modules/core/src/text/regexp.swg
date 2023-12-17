@@ -171,13 +171,16 @@ impl RegExp
     public mtd match(str: string)->bool
     {
         started = false
-        return matchInternal(str)
+        let (ok, ?) = matchInternal(str)
+        return ok
     }
 
-    mtd matchInternal(str: string)->bool
+    mtd matchInternal(str: string)->{ok: bool, buf: const *u8}
     {
+        var result: retval
+
         if dfaNodes.isEmpty()
-            return false
+            return result
 
         var stack1, stack2: Array'(*DfaNode)
         stack1.add(dfaNodes[0])
@@ -236,7 +239,7 @@ impl RegExp
         }
 
         if cpt != srcLength
-            return false
+            return result
 
         while !pstack1.isEmpty()
         {
@@ -250,7 +253,7 @@ impl RegExp
             groups.add({lastGroup, strGroup})
         }
 
-        return hasTerminal
+        return {hasTerminal, srcPtr}
     }
 
     // Find all the occurences in the string
