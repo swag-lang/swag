@@ -170,6 +170,12 @@ impl RegExp
     // Should have been compiled before.
     public mtd match(str: string)->bool
     {
+        started = false
+        return matchInternal(str)
+    }
+
+    mtd matchInternal(str: string)->bool
+    {
         if dfaNodes.isEmpty()
             return false
 
@@ -186,7 +192,6 @@ impl RegExp
         var lastGroup   = 0
         var startGroup  = srcPtr
         var hasTerminal = false
-        started = false
 
         while cpt < srcLength and !pstack1.isEmpty()
         {
