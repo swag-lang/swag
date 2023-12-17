@@ -318,20 +318,19 @@ impl RegExp
         var srcPtr = @dataof(str)
         let srcLength = @countof(str)
 
-        var endState = false
+        var hasTerminal = false
+
         while cpt < srcLength and !pstack1.isEmpty()
         {
             let (cr, eat) = Utf8.decodeRune(@mkslice(srcPtr, srcLength - cpt))
             let c = ignoreCase ? Unicode.toUpper(cr) : cr
 
             var ok = false
-            endState = false
             while !pstack1.isEmpty()
             {
                 let curState = pstack1.popBack()
                 ok = dfaMatch(pstack2, c, curState)
-                if curState.terminal
-                    endState = true
+                hasTerminal = curState.terminal
             }
 
             if ok
@@ -339,25 +338,26 @@ impl RegExp
 
             swap(&pstack1, &pstack2)
 
-            if cpt == srcLength and !pstack1.isEmpty() and !endState
+            if cpt == srcLength and !pstack1.isEmpty() and !hasTerminal
             {
                 let curState = pstack1.popBack()
                 ok = dfaMatch(pstack2, RuneEnd, curState)
-                if curState.terminal
+                hasTerminal = curState.terminal
+                if hasTerminal
                     return srcPtr
                 swap(&pstack1, &pstack2)
             }
         }
 
-        while !endState and !pstack1.isEmpty()
+        while !hasTerminal and !pstack1.isEmpty()
         {
             let curState = pstack1.popBack()
-            if curState.terminal
-                return srcPtr
+            hasTerminal = curState.terminal
         }
 
-        if !endState or srcPtr == @dataof(str)
+        if !hasTerminal or srcPtr == @dataof(str)
             return null
+
         return srcPtr
     }
 
