@@ -92,6 +92,11 @@ public
         return isInTable(TableUpper, c)
     }
 
+    func isWord(c: rune)->bool
+    {
+        return isLetter(c) or isDigit(c) or c == `_`
+    }
+
     func toLower(c: rune)->rune
     {
         if isLatin1(c)

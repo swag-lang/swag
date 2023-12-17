@@ -13,7 +13,8 @@ const RuneAsciiAlNum        = cast(rune) 0x8000_0008
 const RuneAsciiWord         = cast(rune) 0x8000_0009
 const RuneAsciiBlank        = cast(rune) 0x8000_000A
 const RuneAsciiHexa         = cast(rune) 0x8000_000B
-const RuneAsciiWordBoundary = cast(rune) 0x8000_000C
+const RuneStart             = cast(rune) 0x8000_000C
+const RuneEnd               = cast(rune) 0x8000_000D
 
 const RuneUnicodeLetter         = cast(rune) 0x8001_0006
 const RuneUnicodeLetterLower    = cast(rune) 0x8001_0007
@@ -106,6 +107,7 @@ public struct RegExp
     orOpLevel:      Array'u32
     preprocessed:   Array'rune
     group:          u32
+    started:        bool
     ignoreCase:     bool
 }
 
@@ -123,6 +125,7 @@ impl RegExp
         visit p: dfaNodes Memory.delete(p)
         visit p: nfaTables Memory.delete(p)
 
+        started = false
         nfaNodes.clear()
         dfaNodes.clear()
         nfaTables.clear()
@@ -142,6 +145,18 @@ impl RegExp
         preprocess(expr)
         nfaBuild()
         dfaBuild()
+    }
+
+    // Returns the parsed string associated with a given captured group
+    public mtd getCapture(rank: u32)->string
+    {
+        visit g: groups
+        {
+            if g.rank == rank
+                return g.value
+        }
+
+        return ""
     }
 
     // Compile and match the expression.
@@ -171,6 +186,7 @@ impl RegExp
         var lastGroup   = 0
         var startGroup  = srcPtr
         var hasTerminal = false
+        started = false
 
         while cpt < srcLength and !pstack1.isEmpty()
         {
@@ -181,8 +197,7 @@ impl RegExp
             while !pstack1.isEmpty()
             {
                 let curState = pstack1.popBack()
-                if dfaMatch(pstack2, c, curState)
-                    ok = true
+                ok = dfaMatch(pstack2, c, curState)
                 hasTerminal = curState.terminal
             }
 
@@ -205,6 +220,14 @@ impl RegExp
             }
 
             swap(&pstack1, &pstack2)
+
+            if cpt == srcLength and !pstack1.isEmpty() and !hasTerminal
+            {
+                let curState = pstack1.popBack()
+                ok = dfaMatch(pstack2, RuneEnd, curState)
+                hasTerminal = curState.terminal
+                swap(&pstack1, &pstack2)
+            }
         }
 
         if cpt != srcLength
@@ -231,9 +254,11 @@ impl RegExp
         var result: retval
         var res = str
         let end = @dataof(str) + @countof(str)
+        started = false
+
         loop
         {
-            let val = grep(res)
+            let val = internalGrep(res)
             if !val.value
                 break
             result.add(val)
@@ -247,12 +272,19 @@ impl RegExp
     // Find the first occurence in the string
     public mtd grep(str: string)->RegExpGrep
     {
+        started = false
+        return internalGrep(str)
+    }
+
+    mtd internalGrep(str: string)->RegExpGrep
+    {
         var result: retval
         var beg = @dataof(str)
         var copy = @dataof(str)
         let pzEnd = beg + @countof(str)
 
         var end: const *u8
+
         while !end and (copy != pzEnd)
         {
             end = matchGrep(@mkstring(beg, pzEnd - beg))
@@ -271,18 +303,6 @@ impl RegExp
         return result
     }
 
-    // Returns the parsed string associated with a given captured group
-    public mtd getCapture(rank: u32)->string
-    {
-        visit g: groups
-        {
-            if g.rank == rank
-                return g.value
-        }
-
-        return ""
-    }
-
     mtd matchGrep(str: string)->const *u8
     {
         if dfaNodes.isEmpty()
@@ -290,6 +310,7 @@ impl RegExp
 
         var stack1, stack2: Array'(*DfaNode)
         stack1.add(dfaNodes[0])
+
         var pstack1 = &stack1
         var pstack2 = &stack2
 
@@ -308,8 +329,7 @@ impl RegExp
             while !pstack1.isEmpty()
             {
                 let curState = pstack1.popBack()
-                if dfaMatch(pstack2, c, curState)
-                    ok = true
+                ok = dfaMatch(pstack2, c, curState)
                 if curState.terminal
                     endState = true
             }
@@ -318,6 +338,15 @@ impl RegExp
                 cpt, srcPtr += eat
 
             swap(&pstack1, &pstack2)
+
+            if cpt == srcLength and !pstack1.isEmpty() and !endState
+            {
+                let curState = pstack1.popBack()
+                ok = dfaMatch(pstack2, RuneEnd, curState)
+                if curState.terminal
+                    return srcPtr
+                swap(&pstack1, &pstack2)
+            }
         }
 
         while !endState and !pstack1.isEmpty()
@@ -332,7 +361,7 @@ impl RegExp
         return srcPtr
     }
 
-    func dfaMatch(out: *Array'(*DfaNode), c: rune, curState: *DfaNode)->bool
+    mtd dfaMatch(out: *Array'(*DfaNode), c: rune, curState: *DfaNode)->bool
     {
         var ok = false
 
@@ -347,6 +376,14 @@ impl RegExp
                     ok = true
                 }
             }
+        }
+
+        if !started
+        {
+            checkTr(RuneStart)
+            started = true
+            if ok
+                return false
         }
 
         if Unicode.isAscii(c)
@@ -1150,9 +1187,6 @@ impl RegExp
             case `U`:
                 preprocessInter(@runes("[^[:upper:]]"))
                 return pz + 2
-            case `b`:
-                preprocessed.add(RuneAsciiWordBoundary)
-                return pz + 2
             case `a`:
                 preprocessed.add(`\a`)
                 return pz + 2
@@ -1191,6 +1225,15 @@ impl RegExp
 
         var c = ignoreCase ? Unicode.toUpper(pz[0]) : pz[0]
         var open = false
+
+        // Start of buffer
+        if c == `^`
+        {
+            preprocessed.add(RuneStart)
+            pz += 1
+            c = ignoreCase ? Unicode.toUpper(pz[0]) : pz[0]
+        }
+
         while c
         {
             switch c
@@ -1205,7 +1248,13 @@ impl RegExp
                 pz = preprocessEnum(@mkslice(pz, pzEnd - pz))
 
             default:
-                if open and (pz[1] == `*` or pz[1] == `+` or pz[1] == `?`)
+                if c == `$` and pz[1] == 0
+                {
+                    if open { preprocessed.add(RuneCloseParen); open = false; }
+                    preprocessed.add(RuneEnd)
+                    pz += 1
+                }
+                elif open and (pz[1] == `*` or pz[1] == `+` or pz[1] == `?`)
                 {
                     if open { preprocessed.add(RuneCloseParen); open = false; }
                     pz = preprocessEscape(@mkslice(pz, pzEnd - pz))

@@ -17,6 +17,7 @@ using Swag
     func isSpace(c: u8)         => cast(bool) (CharProperties[c] & .Spacing)
     func isControl(c: u8)       => cast(bool) (CharProperties[c] & .Control)
     func isSymbol(c: u8)        => cast(bool) (CharProperties[c] & .Symbol)
+    func isWord(c: u8)          => isLetter(c) or isDigit(c) or c == `_`
     func toLower(c: u8)         => isUpper(c) ? (c | 0x20'u8) : c
     func toUpper(c: u8)         => isLower(c) ? (c & ~0x20'u8) : c
 }
