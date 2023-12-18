@@ -103,15 +103,16 @@
         }                                                                                                       \
     }
 
-#define BINOPEQ_DIV(__cast, __op, __reg)                               \
-    SWAG_CHECK(getImmediateB(vb, cxt, ip));                            \
-    SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.__reg == 0, vb.overload)); \
-    if (vb.kind == ValueKind::Constant && vb.reg.__reg == 0)           \
-    {                                                                  \
-        SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                   \
-        rc->kind = ValueKind::Unknown;                                 \
-        break;                                                         \
-    }                                                                  \
+#define BINOPEQ_DIV(__cast, __op, __reg)                                \
+    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                        \
+    SWAG_CHECK(getImmediateB(vb, cxt, ip));                             \
+    SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.__reg == 0, ra->overload)); \
+    if (vb.kind == ValueKind::Constant && vb.reg.__reg == 0)            \
+    {                                                                   \
+        SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                    \
+        rc->kind = ValueKind::Unknown;                                  \
+        break;                                                          \
+    }                                                                   \
     BINOPEQ(__cast, __op, __reg);
 
 #define BINOPEQ_SHIFT(__cast, __reg, __func, __isSigned)                                  \
@@ -166,15 +167,16 @@
     }                                                                                                                       \
     setConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::SetImmediateC);
 
-#define BINOP_DIV(__op, __reg)                                         \
-    SWAG_CHECK(getImmediateB(vb, cxt, ip));                            \
-    SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.__reg == 0, vb.overload)); \
-    if (vb.kind == ValueKind::Constant && vb.reg.__reg == 0)           \
-    {                                                                  \
-        SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                   \
-        rc->kind = ValueKind::Unknown;                                 \
-        break;                                                         \
-    }                                                                  \
+#define BINOP_DIV(__op, __reg)                                          \
+    SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));                        \
+    SWAG_CHECK(getImmediateB(vb, cxt, ip));                             \
+    SWAG_CHECK(checkDivZero(cxt, vb, vb.reg.__reg == 0, ra->overload)); \
+    if (vb.kind == ValueKind::Constant && vb.reg.__reg == 0)            \
+    {                                                                   \
+        SWAG_CHECK(getRegister(rc, cxt, ip->c.u32));                    \
+        rc->kind = ValueKind::Unknown;                                  \
+        break;                                                          \
+    }                                                                   \
     BINOP(__op, __reg)
 
 #define CMPOP(__op, __reg)                                                                                                  \
@@ -186,25 +188,26 @@
         rc->reg.b = va.reg.__reg __op vb.reg.__reg;                                                                         \
     setConstant(cxt, rc->kind, ip, rc->reg.u64, ConstantKind::SetImmediateC);
 
-#define JUMPT(__expr0, __expr1)                      \
-    jmpAddState = nullptr;                           \
-    if (__expr0)                                     \
-    {                                                \
-        ip->dynFlags |= BCID_SAN_PASS;               \
-        if (__expr1)                                 \
-            ip += ip->b.s32 + 1;                     \
-        else                                         \
-            ip = ip + 1;                             \
-        continue;                                    \
-    }                                                \
-    if (cxt.statesHere.contains(ip + ip->b.s32 + 1)) \
-        return true;                                 \
-    cxt.statesHere.insert(ip + ip->b.s32 + 1);       \
-    cxt.states.push_back(STATE());                   \
-    jmpAddState                = &cxt.states.back(); \
-    cxt.states.back().branchIp = ip;                 \
-    cxt.states.back().ip       = ip + ip->b.s32 + 1; \
-    cxt.states.back().parent   = cxt.state;
+#define JUMPT(__expr0, __expr1)                       \
+    jmpAddState = nullptr;                            \
+    if (__expr0)                                      \
+    {                                                 \
+        ip->dynFlags |= BCID_SAN_PASS;                \
+        if (__expr1)                                  \
+            ip += ip->b.s32 + 1;                      \
+        else                                          \
+            ip = ip + 1;                              \
+        continue;                                     \
+    }                                                 \
+    if (cxt.statesHere.contains(ip + ip->b.s32 + 1))  \
+        return true;                                  \
+    cxt.statesHere.insert(ip + ip->b.s32 + 1);        \
+    cxt.states.push_back(new State);                  \
+    jmpAddState                 = cxt.states.back();  \
+    *cxt.states.back()          = *STATE();           \
+    cxt.states.back()->branchIp = ip;                 \
+    cxt.states.back()->ip       = ip + ip->b.s32 + 1; \
+    cxt.states.back()->parent   = cxt.state;
 
 #define JUMP1(__expr)                       \
     SWAG_CHECK(getImmediateA(va, cxt, ip)); \
@@ -260,7 +263,7 @@ struct Context
     ByteCode*                 bc      = nullptr;
     int                       state   = 0;
     Set<ByteCodeInstruction*> statesHere;
-    Vector<State>             states;
+    Vector<State*>            states;
     bool                      cansetConstants = true;
 };
 
@@ -331,9 +334,9 @@ static void setConstant(Context& cxt, ValueKind kind, ByteCodeInstruction* ip, u
 
 static bool getStackValue(Value& result, Context& cxt, void* addr, uint32_t sizeOf)
 {
-    auto offset = (uint8_t*) addr - STATE().stack.buffer;
-    SWAG_ASSERT(offset + sizeOf <= STATE().stackValue.count);
-    auto addrValue = STATE().stackValue.buffer + offset;
+    auto offset = (uint8_t*) addr - STATE()->stack.buffer;
+    SWAG_ASSERT(offset + sizeOf <= STATE()->stackValue.count);
+    auto addrValue = STATE()->stackValue.buffer + offset;
 
     result.kind     = addrValue->kind;
     result.overload = addrValue->overload;
@@ -363,11 +366,11 @@ static bool getStackValue(Value& result, Context& cxt, void* addr, uint32_t size
 
 static bool raiseError(Context& cxt, Utf8 msg, SymbolOverload* overload = nullptr)
 {
-    if (!cxt.bc->sourceFile->module->mustEmitSafety(STATE().ip->node, SAFETY_SANITY))
+    if (!cxt.bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_SANITY))
         return true;
 
     AstNode* nodeLoc = nullptr;
-    auto     ip      = cxt.states[cxt.state].ip;
+    auto     ip      = cxt.states[cxt.state]->ip;
     if (overload && ip->node)
     {
         Ast::visit(ip->node, [&](AstNode* n)
@@ -384,7 +387,7 @@ static bool raiseError(Context& cxt, Utf8 msg, SymbolOverload* overload = nullpt
         return cxt.context->report(diag);
     }
 
-    auto loc = ByteCode::getLocation(cxt.bc, cxt.states[cxt.state].ip);
+    auto loc = ByteCode::getLocation(cxt.bc, cxt.states[cxt.state]->ip);
 
     Diagnostic diag({loc.file, *loc.location, msg});
     return cxt.context->report(diag);
@@ -418,8 +421,8 @@ static bool checkEscapeFrame(Context& cxt, uint64_t stackOffset, SymbolOverload*
 
 static bool checkStackOffset(Context& cxt, uint64_t stackOffset, uint32_t sizeOf = 0)
 {
-    if (stackOffset + sizeOf > (size_t) STATE().stack.count)
-        return raiseError(cxt, Fmt(Err(San0010), stackOffset + sizeOf, STATE().stack.count));
+    if (stackOffset + sizeOf > (size_t) STATE()->stack.count)
+        return raiseError(cxt, Fmt(Err(San0010), stackOffset + sizeOf, STATE()->stack.count));
     return true;
 }
 
@@ -454,8 +457,8 @@ static bool checkStackInitialized(Context& cxt, void* addr, uint32_t sizeOf, Sym
 
 static bool getRegister(Value*& result, Context& cxt, uint32_t reg)
 {
-    SWAG_ASSERT(reg < (uint32_t) STATE().regs.count);
-    result = &STATE().regs[reg];
+    SWAG_ASSERT(reg < (uint32_t) STATE()->regs.count);
+    result = &STATE()->regs[reg];
     return true;
 }
 
@@ -522,21 +525,21 @@ static bool getImmediateD(Value& result, Context& cxt, ByteCodeInstruction* ip)
 static bool getStackAddress(uint8_t*& result, Context& cxt, uint64_t stackOffset, uint32_t sizeOf = 0)
 {
     SWAG_CHECK(checkStackOffset(cxt, stackOffset, sizeOf));
-    result = STATE().stack.buffer + stackOffset;
+    result = STATE()->stack.buffer + stackOffset;
     return true;
 }
 
 static void setStackValue(Context& cxt, void* addr, uint32_t sizeOf, ValueKind kind)
 {
-    auto offset = (uint32_t) ((uint8_t*) addr - STATE().stack.buffer);
-    SWAG_ASSERT(offset + sizeOf <= (uint32_t) STATE().stackValue.count);
+    auto offset = (uint32_t) ((uint8_t*) addr - STATE()->stack.buffer);
+    SWAG_ASSERT(offset + sizeOf <= (uint32_t) STATE()->stackValue.count);
     for (uint32_t i = offset; i < offset + sizeOf; i++)
-        STATE().stackValue[i].kind = kind;
+        STATE()->stackValue[i].kind = kind;
 }
 
 static void invalidateCurStateStack(Context& cxt)
 {
-    setStackValue(cxt, STATE().stack.buffer, STATE().stack.count, ValueKind::Unknown);
+    setStackValue(cxt, STATE()->stack.buffer, STATE()->stack.count, ValueKind::Unknown);
 }
 
 static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
@@ -550,7 +553,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
     Value    va, vb, vc, vd;
     State*   jmpAddState = nullptr;
 
-    auto ip = STATE().ip;
+    auto ip = STATE()->ip;
     while (ip->op != ByteCodeOp::End)
     {
         if (ip->dynFlags & BCID_SAN_PASS)
@@ -566,7 +569,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
         if (ip->flags & BCI_START_STMT_N)
             cxt.cansetConstants = false;
 
-        STATE().ip = ip;
+        STATE()->ip = ip;
         switch (ip->op)
         {
         case ByteCodeOp::Ret:
@@ -594,7 +597,6 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
         case ByteCodeOp::InternalPopErr:
         case ByteCodeOp::InternalCatchErr:
         case ByteCodeOp::InternalFailedAssume:
-        case ByteCodeOp::CopyRCtoRT:
         case ByteCodeOp::IntrinsicCompilerError:
         case ByteCodeOp::IntrinsicCompilerWarning:
         case ByteCodeOp::IntrinsicSetContext:
@@ -657,6 +659,12 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
         case ByteCodeOp::JumpIfNoError:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
             ra->kind = ValueKind::Unknown;
+            break;
+
+        case ByteCodeOp::CopyRCtoRT:
+            SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
+            if (ra->kind == ValueKind::StackAddr)
+                invalidateCurStateStack(cxt);
             break;
 
         case ByteCodeOp::IntrinsicCVaStart:
@@ -2344,27 +2352,27 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
         return true;
 
     Context cxt;
-    State   state;
+    State*  state = new State;
 
     cxt.bc      = context->bc;
-    state.ip    = nullptr;
+    state->ip   = nullptr;
     cxt.context = context;
 
     auto funcDecl = CastAst<AstFuncDecl>(cxt.bc->node, AstNodeKind::FuncDecl);
 
-    state.stack.reserve(funcDecl->stackSize);
-    state.stack.count = funcDecl->stackSize;
-    memset(state.stack.buffer, 0, state.stack.count * sizeof(uint8_t));
+    state->stack.reserve(funcDecl->stackSize);
+    state->stack.count = funcDecl->stackSize;
+    memset(state->stack.buffer, 0, state->stack.count * sizeof(uint8_t));
 
-    state.stackValue.reserve(funcDecl->stackSize);
-    state.stackValue.count = funcDecl->stackSize;
-    memset(state.stackValue.buffer, (uint8_t) ValueKind::Invalid, state.stackValue.count * sizeof(Value));
+    state->stackValue.reserve(funcDecl->stackSize);
+    state->stackValue.count = funcDecl->stackSize;
+    memset(state->stackValue.buffer, (uint8_t) ValueKind::Invalid, state->stackValue.count * sizeof(Value));
 
-    state.regs.reserve(context->bc->maxReservedRegisterRC);
-    state.regs.count = context->bc->maxReservedRegisterRC;
-    memset(state.regs.buffer, 0, state.regs.count * sizeof(Value));
+    state->regs.reserve(context->bc->maxReservedRegisterRC);
+    state->regs.count = context->bc->maxReservedRegisterRC;
+    memset(state->regs.buffer, 0, state->regs.count * sizeof(Value));
 
-    state.ip = cxt.bc->out;
+    state->ip = cxt.bc->out;
 
     // Initialize information of stack
     for (auto l : cxt.bc->localVars)
@@ -2373,14 +2381,14 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
         SWAG_ASSERT(over);
         if (over->computedValue.storageOffset == UINT32_MAX)
             continue;
-        if (over->computedValue.storageOffset + over->typeInfo->sizeOf > (uint32_t) state.stackValue.count)
+        if (over->computedValue.storageOffset + over->typeInfo->sizeOf > (uint32_t) state->stackValue.count)
             continue;
 
         for (uint32_t i = 0; i < over->typeInfo->sizeOf; i++)
-            state.stackValue[i + over->computedValue.storageOffset].overload = over;
+            state->stackValue[i + over->computedValue.storageOffset].overload = over;
     }
 
-    cxt.states.emplace_back(std::move(state));
+    cxt.states.emplace_back(state);
 
     for (size_t i = 0; i < cxt.states.size(); i++)
     {
@@ -2391,6 +2399,9 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
         for (uint32_t j = 0; j < cxt.bc->numInstructions; j++)
             cxt.bc->out[j].dynFlags &= ~BCID_SAN_PASS;
     }
+
+    for (auto s : cxt.states)
+        delete s;
 
     return true;
 }

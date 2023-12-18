@@ -106,8 +106,8 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(San0008, "[sanity] division by zero    $ division by zero of %s '%s'");
-    SWAG_ERROR(San0007, "[sanity] division by zero    $ division by zero");
+    SWAG_ERROR(San0007, "[sanity] division by zero    $ possible division by zero");
+    SWAG_ERROR(San0008, "[sanity] division by zero    $ possible division by zero of %s '%s'");
     SWAG_ERROR(San0001, "[sanity] frame escape        $ attempt to return a local or a temporary variable");
     SWAG_ERROR(San0002, "[sanity] frame escape        $ attempt to return of %s '%s'");
     SWAG_ERROR(San0005, "[sanity] null dereference    $ attempt to dereference a null pointer");
