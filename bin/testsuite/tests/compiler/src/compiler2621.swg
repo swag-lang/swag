@@ -10,6 +10,7 @@ struct(T) AA
 impl AA
 {
     //#[compileif(@typeof(T) == s32)]
+    #[Swag.Overload]
     func isNull(using self)->bool #validif @typeof(T) == s32
     {
         G += 1
@@ -17,6 +18,7 @@ impl AA
     }
 
     //#[compileif(@typeof(T) == f32)]
+    #[Swag.Overload]
     func isNull(using self)->bool #validif @typeof(T) == f32
     {
         G += 2

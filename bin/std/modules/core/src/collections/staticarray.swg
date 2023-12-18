@@ -26,13 +26,13 @@ impl StaticArray
         free()
     }
 
-    #[Inline]
+    #[Inline, Overload]
     mtd opCast()->[..] T
     {
         return toSlice()
     }
 
-    #[Inline]
+    #[Inline, Overload]
     mtd opCast()->const [..] T
     {
         return toSlice()
@@ -47,7 +47,7 @@ impl StaticArray
         return @mkslice(&buffer[0] + lower, (upper + 1) - lower)
     }
 
-    #[Inline]
+    #[Inline, Overload]
     mtd const opIndex(index: u64)->&T
         #validif Reflection.isStruct(T)
     {
@@ -55,7 +55,7 @@ impl StaticArray
         return buffer + index
     }
 
-    #[Inline]
+    #[Inline, Overload]
     mtd const opIndex(index: u64)->T
         #validif !Reflection.isStruct(T)
     {
@@ -163,7 +163,7 @@ impl StaticArray
     }
 
     // Change the number of valid elements in the array
-    mtd resize(newCount : u64)
+    mtd resize(newCount: u64)
     {
         if newCount == count
             return
@@ -204,6 +204,7 @@ impl StaticArray
     }
 
     // Add a copy of one element at the end of the array
+    #[Overload]
     mtd add(value: T)
         #validif Reflection.canCopy(T)
     {
@@ -213,6 +214,7 @@ impl StaticArray
     }
 
     // Move one element at the end of the array
+    #[Overload]
     mtd add(value: &&T)
     {
         Debug.assert(count != N, "the array is full")
@@ -243,6 +245,7 @@ impl StaticArray
     // Insert a value at the given index.
     // If 'index' is equal to 'count', then the value is added at the end of the array.
     // Order is preserved.
+    #[Overload]
     mtd insertAt(index: u64, value: T)
         #validif Reflection.canCopy(T)
     {
@@ -268,6 +271,7 @@ impl StaticArray
     // Move a value at the given index.
     // If 'index' is equal to 'count', then the value is added at the end of the array.
     // Order is preserved.
+    #[Overload]
     mtd insertAt(index: u64, value: &&T)
     {
         Debug.assert(index <= count, "index out of range")
@@ -292,6 +296,7 @@ impl StaticArray
     // Insert some values at the given index.
     // If 'index' is equal to 'count', then the values are added at the end of the array.
     // Order is preserved.
+    #[Overload]
     mtd insertAt(index: u64, values: const [..] T)
         #validif Reflection.canCopy(T)
     {
@@ -364,6 +369,7 @@ impl StaticArray
     }
 
     // Append a slice to the end of this instance
+    #[Overload]
     mtd add(values: const [..] T)
         #validif Reflection.canCopy(T)
     {
@@ -390,6 +396,7 @@ impl StaticArray
     }
 
     // Remove 'num' elements starting at 'index'
+    #[Overload]
     mtd remove(index, num: u64)
     {
         if !num return
@@ -482,6 +489,7 @@ impl StaticArray
     }
 
     // Sort array
+    #[Swag.Overload]
     mtd sort()
     {
         Slice.sort(toSlice(), func(x, y: T)->s32 => x <=> y)
@@ -494,6 +502,7 @@ impl StaticArray
     }
 
     // Sort array
+    #[Swag.Overload]
     mtd sort(cb: closure(T, T)->s32)
     {
         Debug.assert(cb != null)

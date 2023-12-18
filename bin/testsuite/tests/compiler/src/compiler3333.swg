@@ -5,6 +5,7 @@ struct(T) VV
 }
 
 //#[Swag.PrintBc]
+#[Swag.Overload]
 func toto(t: *VV)
 {
     @assert(@typeof(t) == *VV'f32 or @typeof(t) == *VV'bool)

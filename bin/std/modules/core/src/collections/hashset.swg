@@ -167,7 +167,7 @@ impl HashSet
     }
 
     // Add a new key.
-    #[Discardable]
+    #[Discardable, Overload]
     mtd add(key: K)->*HashSetEntry
         #validif Reflection.canCopy(@typeof(K))
     {
@@ -200,7 +200,7 @@ impl HashSet
     }
 
     // Add a new key.
-    #[Discardable]
+    #[Discardable, Overload]
     mtd add(key: &&K)->*HashSetEntry
     {
         grow()

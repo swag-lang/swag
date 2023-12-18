@@ -9,7 +9,9 @@ impl Str
 
 impl A
 {
+    #[Swag.Overload]
     mtd add(x: const [..] T) {}
+    #[Swag.Overload]
     mtd add(x: T) {}
 }
 

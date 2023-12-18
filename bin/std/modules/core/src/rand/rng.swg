@@ -32,7 +32,7 @@ impl Rng
     }
 
     // Returns an unsigned 32 bits random value
-    #[Swag.Inline]
+    #[Swag.Inline, Swag.Overload]
     mtd nextU32()->u32
     {
         if !seedDone
@@ -45,7 +45,7 @@ impl Rng
     }
 
     // Returns an unsigned 64 bits random value
-    #[Swag.Inline]
+    #[Swag.Inline, Swag.Overload]
     mtd nextU64()->u64
     {
         if !seedDone
@@ -64,21 +64,21 @@ impl Rng
     }
 
     // Returns a signed 32 bits random value
-    #[Swag.Inline]
+    #[Swag.Inline, Swag.Overload]
     mtd nextS32()->s32
     {
         return cast,bit(s32) nextU32()
     }
 
     // Returns a signed 64 bits random value
-    #[Swag.Inline]
+    #[Swag.Inline, Swag.Overload]
     mtd nextS64()->s64
     {
         return cast,bit(s64) nextU64()
     }
 
     // Range is [0..1[, so 1.0 will never be returned
-    #[Swag.Inline]
+    #[Swag.Inline, Swag.Overload]
     mtd nextF32()->f32
     {
         var v = nextU32()
@@ -87,7 +87,7 @@ impl Rng
     }
 
     // Range is [0..1[, so 1.0 will never be returned
-    #[Swag.Inline]
+    #[Swag.Inline, Swag.Overload]
     mtd nextF64()->f64
     {
         var v = nextU64()
@@ -97,6 +97,7 @@ impl Rng
 
     // Returns an unsigned random value in a given range
     // 'max' is excluded
+    #[Swag.Overload]
     mtd nextU32(min, max: u32)->u32
     {
         Debug.assert(max > min, "'max' must be greater than 'min'")
@@ -107,6 +108,7 @@ impl Rng
 
     // Returns an unsigned random value in a given range
     // 'max' is excluded
+    #[Swag.Overload]
     mtd nextU64(min, max: u64)->u64
     {
         Debug.assert(max > min, "'max' must be greater than 'min'")
@@ -117,6 +119,7 @@ impl Rng
 
     // Returns a signed random value in a given range
     // 'max' is excluded
+    #[Swag.Overload]
     mtd nextS32(min, max: s32)->s32
     {
         Debug.assert(max > min, "'max' must be greater than 'min'")
@@ -127,6 +130,7 @@ impl Rng
 
     // Returns a signed random value in a given range
     // 'max' is excluded
+    #[Swag.Overload]
     mtd nextS64(min, max: s64)->s64
     {
         Debug.assert(max > min, "'max' must be greater than 'min'")
@@ -137,6 +141,7 @@ impl Rng
 
     // Returns a float value in a given range
     // 'max' is excluded
+    #[Swag.Overload]
     mtd nextF32(min, max: f32)->f32
     {
         Debug.assert(max > min, "'max' must be greater than 'min'")
@@ -147,6 +152,7 @@ impl Rng
 
     // Returns a float value in a given range
     // 'max' is excluded
+    #[Swag.Overload]
     mtd nextF64(min, max: f64)->f64
     {
         Debug.assert(max > min, "'max' must be greater than 'min'")

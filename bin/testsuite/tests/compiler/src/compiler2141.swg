@@ -23,12 +23,14 @@ impl PointBase
     }
 
     // Offset this Point by a given value
+    #[Swag.Overload]
     func offset(using self, value: T)
     {
         x, y += value
     }
 
     // Offset this Point by a given value
+    #[Swag.Overload]
     func offset(using self, valueX, valueY: T)
     {
         x += valueX

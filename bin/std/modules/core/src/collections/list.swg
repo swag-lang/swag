@@ -27,7 +27,7 @@ impl List
     // * `@alias1` is the node
     // * `@alias2` is the index
     // Visiting by pointer and in reverse order is supported
-    #[Swag.Macro]
+    #[Macro]
     mtd(ptr: bool, back: bool) opVisit(stmt: code)
     {
         #if back
@@ -75,7 +75,7 @@ impl List
     }
 
     // Add a new element on front
-    #[Swag.Discardable]
+    #[Discardable, Overload]
     mtd addFront(value: T)->*ListNode
     {
         let n = Memory.new'ListNode()
@@ -96,7 +96,7 @@ impl List
     }
 
     // Add a new element on front
-    #[Swag.Discardable]
+    #[Discardable, Overload]
     mtd addFront(value: &&T)->*ListNode
     {
         let n = Memory.new'ListNode()
@@ -117,7 +117,7 @@ impl List
     }
 
     // Add a new element on front
-    #[Swag.Discardable]
+    #[Discardable, Overload]
     mtd addBack(value: T)->*ListNode
     {
         let n = Memory.new'ListNode()
@@ -138,7 +138,7 @@ impl List
     }
 
     // Add a new element on front
-    #[Swag.Discardable]
+    #[Discardable, Overload]
     mtd addBack(value: &&T)->*ListNode
     {
         let n = Memory.new'ListNode()
@@ -159,7 +159,7 @@ impl List
     }
 
     // Insert a node before the reference
-    #[Swag.Discardable]
+    #[Discardable, Overload]
     mtd insertBefore(node: *ListNode, value: T)->*ListNode
     {
         Debug.assert(node != null)
@@ -178,7 +178,7 @@ impl List
         return n
     }
 
-    #[Swag.Discardable]
+    #[Discardable, Overload]
     mtd insertBefore(node: *ListNode, value: &&T)->*ListNode
     {
         Debug.assert(node != null)
@@ -198,7 +198,7 @@ impl List
     }
 
     // Insert a node before the reference
-    #[Swag.Discardable]
+    #[Discardable, Overload]
     mtd insertAfter(node: *ListNode, value: T)->*ListNode
     {
         Debug.assert(node != null)
@@ -217,7 +217,7 @@ impl List
         return n
     }
 
-    #[Swag.Discardable]
+    #[Discardable, Overload]
     mtd insertAfter(node: *ListNode, value: &&T)->*ListNode
     {
         Debug.assert(node != null)

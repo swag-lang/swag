@@ -52,13 +52,13 @@ impl Array
         }
     }
 
-    #[Inline]
+    #[Inline, Overload]
     mtd opCast()->[..] T
     {
         return toSlice()
     }
 
-    #[Inline]
+    #[Inline, Overload]
     mtd opCast()->const [..] T
     {
         return toSlice()
@@ -73,7 +73,7 @@ impl Array
         return @mkslice(buffer + lower, (upper + 1) - lower)
     }
 
-    #[Inline]
+    #[Inline, Overload]
     mtd const opIndex(index: u64)->&T
         #validif Reflection.isStruct(T)
     {
@@ -81,7 +81,7 @@ impl Array
         return buffer + index
     }
 
-    #[Inline]
+    #[Inline, Overload]
     mtd const opIndex(index: u64)->T
         #validif !Reflection.isStruct(T)
     {
@@ -164,7 +164,7 @@ impl Array
 
     // Returns a reference to a value given coordinate.
     // This is to use the array as an array with 2 dimensions.
-    #[Swag.Inline]
+    #[Inline]
     mtd ref1(x: u64)->&T
     {
         Debug.safetyBoundCheck(x < count, "index out of range")
@@ -173,7 +173,7 @@ impl Array
 
     // Returns a reference to a value given 2 coordinates and a width.
     // This is to use the array as an array with 2 dimensions.
-    #[Swag.Inline]
+    #[Inline]
     mtd ref2(x, y, w: u64)->&T
     {
         Debug.safetyBoundCheck(x + y*w < count, "index out of range")
@@ -227,7 +227,7 @@ impl Array
     }
 
     // Create a temporary array
-    #[Swag.Inline]
+    #[Inline]
     func(TA) createTemp()->Array'TA
     {
         var result: retval
@@ -236,7 +236,7 @@ impl Array
     }
 
     // Create a working buffer
-    #[Swag.NotGeneric]
+    #[NotGeneric]
     func createBuffer(size: u64)->Array'u8
     {
         var result: retval
@@ -257,7 +257,7 @@ impl Array
 
     // Ensure the Array is big enough to store at least 'newCount' elements
     // Number of valid elements does not change
-    mtd grow(newCount : u64)
+    mtd grow(newCount: u64)
     {
         if newCount <= capacity
             return
@@ -284,7 +284,7 @@ impl Array
     }
 
     // Change the number of valid elements in the array
-    mtd resize(newCount : u64)
+    mtd resize(newCount: u64)
     {
         if newCount == count
             return
@@ -325,6 +325,7 @@ impl Array
     }
 
     // Add a copy of one element at the end of the array
+    #[Overload]
     mtd add(value: T)
         #validif Reflection.canCopy(T)
     {
@@ -334,6 +335,7 @@ impl Array
     }
 
     // Move one element at the end of the array
+    #[Overload]
     mtd add(value: &&T)
     {
         grow(count + 1)
@@ -364,6 +366,7 @@ impl Array
     // Insert a value at the given index. If 'index' is equal to 'count', then
     // the value is added at the end of the array.
     // Order is preserved.
+    #[Overload]
     mtd insertAt(index: u64, value: T)
         #validif Reflection.canCopy(T)
     {
@@ -389,6 +392,7 @@ impl Array
     // Move a value at the given index. If 'index' is equal to 'count', then
     // the value is added at the end of the array.
     // Order is preserved.
+    #[Overload]
     mtd insertAt(index: u64, value: &&T)
     {
         Debug.safetyBoundCheck(index <= count, "index out of range")
@@ -413,6 +417,7 @@ impl Array
     // Insert some values at the given index. If 'index' is equal to 'count', then
     // the values are added at the end of the array.
     // Order is preserved.
+    #[Overload]
     mtd insertAt(index: u64, values: const [..] T)
         #validif Reflection.canCopy(T)
     {
@@ -485,6 +490,7 @@ impl Array
     }
 
     // Append a slice to the end of this instance
+    #[Overload]
     mtd add(values: const [..] T)
         #validif Reflection.canCopy(T)
     {
@@ -526,6 +532,7 @@ impl Array
     }
 
     // Remove 'num' elements starting at 'index'
+    #[Overload]
     mtd remove(index, num: u64)
     {
         if !num
@@ -619,6 +626,7 @@ impl Array
     }
 
     // Sort array
+    #[Overload]
     mtd sort()
     {
         Slice.sort(toSlice(), func(x, y: T)->s32 => x <=> y)
@@ -631,6 +639,7 @@ impl Array
     }
 
     // Sort array
+    #[Overload]
     mtd sort(cb: closure(T, T)->s32)
     {
         Debug.assert(cb != null)

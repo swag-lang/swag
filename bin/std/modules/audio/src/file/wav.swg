@@ -268,7 +268,7 @@ public func loadFile(using file: *SoundFile, stream: *File.FileStream, loadDatas
                 readChunkData(file, stream, header.chunkSize)
                 if loadDatas
                 {
-                    datas.resize(cast(u64) header.chunkSize)
+                    datas.resize(header.chunkSize)
                     if stream.read(datas.buffer, header.chunkSize) != header.chunkSize
                         throw InvalidFormatError{"cannot read datas"}
                 }

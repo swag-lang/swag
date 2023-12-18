@@ -181,7 +181,7 @@ bool AstFuncDecl::canOverload()
 {
     if (attributeFlags & ATTRIBUTE_OVERLOAD)
         return true;
-    if (flags & (AST_IS_GENERIC | AST_FROM_GENERIC))
+    if (genericParameters)
         return true;
     if (token.text[0] == '@')
         return true;

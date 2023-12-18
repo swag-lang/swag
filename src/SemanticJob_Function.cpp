@@ -834,14 +834,23 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
     SWAG_CHECK(funcNode->resolvedSymbolOverload);
 
     // Be sure an overloaded function has the attribute
+    if (!(funcNode->flags & AST_FROM_GENERIC))
     {
         SharedLock lk(funcNode->ownerScope->symTable.mutex);
         if (funcNode->resolvedSymbolName->overloads.size() > 1 && !funcNode->canOverload())
         {
             AstFuncDecl* other = nullptr;
             for (auto n : funcNode->resolvedSymbolName->nodes)
+            {
                 if (n != funcNode && n->kind == AstNodeKind::FuncDecl)
-                    other = CastAst<AstFuncDecl>(n, AstNodeKind::FuncDecl);
+                {
+                    if (!(n->flags & AST_FROM_GENERIC))
+                    {
+                        other = CastAst<AstFuncDecl>(n, AstNodeKind::FuncDecl);
+                    }
+                }
+            }
+
             if (other)
             {
                 Diagnostic diag{funcNode, funcNode->tokenName, Fmt(Err(Err0639), funcNode->token.ctext())};

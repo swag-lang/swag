@@ -185,7 +185,7 @@ impl HashTable
     }
 
     // Add a new key value pair. If the key already exists, then the value will be replaced
-    #[Discardable]
+    #[Discardable, Overload]
     mtd add(key: K, value: V)->*HashTableEntry
         #validif Reflection.canCopy(@typeof(K)) and Reflection.canCopy(@typeof(V))
     {
@@ -224,7 +224,7 @@ impl HashTable
     }
 
     // Add a new key value pair. If the key already exists, then the value will be replaced
-    #[Discardable]
+    #[Discardable, Overload]
     mtd add(key: K, value: &&V)->*HashTableEntry
         #validif Reflection.canCopy(@typeof(K))
     {

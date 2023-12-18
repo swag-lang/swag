@@ -79,14 +79,14 @@ impl NumericArray
         }
     }
 
-    #[Safety("boundcheck", false), Complete]
+    #[Safety("boundcheck", false), Complete, Overload]
     mtd opAffect(what: T)
     {
         loop i: N
             buf[i] = what
     }
 
-    #[Safety("boundcheck", false), Complete]
+    #[Safety("boundcheck", false), Complete, Overload]
     mtd opAffect(what: const [..] T)
     {
         Debug.assert(@countof(what) == N)
@@ -114,7 +114,7 @@ impl NumericArray
     }
 
     // Multiply & add
-    #[Safety("boundcheck", false)]
+    #[Safety("boundcheck", false), Overload]
     mtd mulAdd(value1, value2: T)
     {
         loop i: N
@@ -122,7 +122,7 @@ impl NumericArray
     }
 
     // Multiply & Add
-    #[Safety("boundcheck", false)]
+    #[Safety("boundcheck", false), Overload]
     mtd mulAdd(value1, value2: Self)
     {
         loop i: N

@@ -5,10 +5,12 @@ struct(T) A
 
 impl A
 {
+    #[Swag.Overload]
     mtd toto()
     {
     }
 
+    #[Swag.Overload]
     mtd toto(x: T)
     {
         @assert(a == 666)

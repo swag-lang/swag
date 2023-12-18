@@ -1,4 +1,6 @@
 #global testerror "Err0116"
+
+#[Swag.Overload]
 func(T) toto(x: T) {}
 
 #test

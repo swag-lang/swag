@@ -16,10 +16,12 @@ struct(T) BB
 
 impl BB
 {
+    #[Swag.Overload]
     func toto(x: T)
     {
     }
 
+    #[Swag.Overload]
     func toto(x: s32)
     {
     }
