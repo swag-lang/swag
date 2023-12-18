@@ -584,7 +584,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             typeInfo->flags |= TYPEINFO_GENERIC;
 
         if ((funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC) && funcNode->flags & AST_IS_GENERIC)
-            return context->report({funcNode, funcNode->token, Fmt(Err(Err0751), funcNode->token.ctext())});
+            return context->report({funcNode, funcNode->tokenName, Fmt(Err(Err0751), funcNode->token.ctext())});
 
         SWAG_CHECK(setupFuncDeclParams(context, typeInfo, funcNode, funcNode->genericParameters, true));
         if (context->result != ContextResult::Done)
