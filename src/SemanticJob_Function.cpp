@@ -836,7 +836,7 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
     // Be sure an overloaded function has the attribute
     {
         SharedLock lk(funcNode->ownerScope->symTable.mutex);
-        if (funcNode->resolvedSymbolName->cptOverloadsInit > 1 && !funcNode->canOverload())
+        if (funcNode->resolvedSymbolName->overloads.size() > 1 && !funcNode->canOverload())
         {
             AstFuncDecl* other = nullptr;
             for (auto n : funcNode->resolvedSymbolName->nodes)
