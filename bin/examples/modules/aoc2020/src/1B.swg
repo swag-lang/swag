@@ -21,12 +21,12 @@ func day1B()
 
     visit v0, i0: arr
     {
-        visit v1: arr[i0+1..]
+        visit v1, i1: arr[i0+1..]
         {
             let v2 = 2020 - (v0+v1)
             if v2 < 0 continue
 
-            if Slice.containsSorted(arr[i0+1..], v2)
+            if Slice.containsSorted(arr[i1+1..], v2)
             {
                 //Console.print("total: ", v0*v1*v2)
                 @assert(v0 * v1 * v2 == 165795564)
