@@ -1056,8 +1056,8 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         auto funcNode = CastAst<AstFuncDecl>(declNode, AstNodeKind::FuncDecl);
 
         uint32_t castFlags = CASTFLAG_DEFAULT;
-        //if (!funcNode->canOverload())
-        //    castFlags |= CASTFLAG_TRY_COERCE;
+        if (!funcNode->canOverload())
+            castFlags |= CASTFLAG_TRY_COERCE;
 
         if (funcNode->parameters && (funcNode->parameters->flags & AST_IS_GENERIC))
         {

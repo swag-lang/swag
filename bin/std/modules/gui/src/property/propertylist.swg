@@ -183,7 +183,7 @@ internal impl PropertyList
             func(T) setEd()
             {
                 let p = cast(*T) ptrData
-                item.sliderBox.slider.setValue(acast (dref p))
+                item.sliderBox.slider.setValue(cast(f32) dref p)
             }
 
             item.sliderBox.invalidate()

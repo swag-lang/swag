@@ -4966,6 +4966,9 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext*             
         auto inlineBlock = CastAst<AstInline>(startNode, AstNodeKind::Inline);
         if (!(inlineBlock->func->attributeFlags & ATTRIBUTE_MIXIN))
         {
+            if (!(inlineBlock->func->attributeFlags & ATTRIBUTE_MACRO))
+                return;
+
             if (scopeUpMode == IdentifierScopeUpMode::None)
             {
                 while (startNode && startNode->kind != AstNodeKind::FuncDecl)

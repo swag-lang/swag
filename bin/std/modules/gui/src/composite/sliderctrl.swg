@@ -95,14 +95,14 @@ impl SliderCtrl
     // Set a f32 range
     mtd setMinMaxF32(min, max: f32)
     {
-        slider.setMinMax(min, max)
-        edit.setInputF64(acast min, acast max)
+        slider.setMinMax(cast(f32) min, cast(f32) max)
+        edit.setInputF64(cast(f64) min, cast(f64) max)
     }
 
     // Set a u64 range
     mtd setMinMaxU64(min, max: u64)
     {
-        slider.setMinMax(acast min, acast max)
+        slider.setMinMax(cast(f32) min, cast(f32) max)
         slider.sliderFlags |= .Integer
         edit.setInputU64(min, max)
     }
@@ -110,7 +110,7 @@ impl SliderCtrl
     // Set a f64 range
     mtd setMinMaxS64(min, max: s64)
     {
-        slider.setMinMax(acast min, acast max)
+        slider.setMinMax(cast(f32) min, cast(f32) max)
         slider.sliderFlags |= .Integer
         edit.setInputS64(min, max)
     }
