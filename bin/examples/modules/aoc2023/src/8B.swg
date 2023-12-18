@@ -34,6 +34,10 @@ Simultaneously start on every node that ends with A. How many steps does it take
 
 using Core
 
+// ********************************************
+// For the record, i've cheated for this one !!
+// ********************************************
+
 func day8B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "8.txt")
@@ -69,7 +73,7 @@ func day8B()
         let leftV  = nameToNode.find(left).value
         let rightV = nameToNode.find(right).value
         nodes[i-2] = {name, leftV, rightV}
-    }    
+    }
 
     var curNode = startNode
 
@@ -96,9 +100,9 @@ func day8B()
                 break
         }
     }
-   
+
     var total = onEnd[0]
-    loop i: 1 until onEnd.count 
+    loop i: 1 until onEnd.count
         total = Math.lcm(cast(s64) total, cast(s64) onEnd[i])
 
     //Console.print("total: ", total)
