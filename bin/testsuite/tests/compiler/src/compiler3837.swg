@@ -9,5 +9,5 @@ func toto(a: f32)
 //    var a: A
     var x = 0'u64
     x += 1
-    toto(acast x)
+    toto(cast(f32) x)
 }
