@@ -70,6 +70,7 @@ impl ImageRect
     }
 
     // Associate image
+    #[Swag.Overload]
     mtd setImage(image: ImageList)
     {
         clear()
@@ -81,6 +82,7 @@ impl ImageRect
     }
 
     // Associate image
+    #[Swag.Overload]
     mtd setImage(image: Texture)
     {
         clear()
@@ -93,6 +95,7 @@ impl ImageRect
     }
 
     // Associate image
+    #[Swag.Overload]
     mtd setImage(image: Image)
     {
         clear()

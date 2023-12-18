@@ -1,4 +1,6 @@
+#[Swag.Overload]
 public func toto2775(x: s64)->s64 => 0
+#[Swag.Overload]
 public func toto2775(x: bool)->bool => true
 
 public func(T) titi2775(x: T) => toto2775(x)

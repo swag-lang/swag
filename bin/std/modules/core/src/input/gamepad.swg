@@ -72,6 +72,7 @@ impl GamePad
     }
 
     // Set the vibration motor speeds
+    #[Swag.Overload]
     mtd setVibration(left, right: f32) throw
     {
         try setVibration(padIndex, left, right)

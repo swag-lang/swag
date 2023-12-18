@@ -7,6 +7,7 @@ using Win32, StrConv
 func exit(exitCode: u32) => ExitProcess(exitCode)
 
 // Starts a new process with arguments
+#[Swag.Overload]
 func startProcess(info: StartInfo)->Process throw
 {
     Debug.assert(info.fileName != null, "missing process filename")

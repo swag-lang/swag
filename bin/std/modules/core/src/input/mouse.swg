@@ -47,6 +47,7 @@ impl Mouse
     }
 
     // Determins if one given mouse button is pressed or not
+    #[Swag.Overload]
     func isButtonPressed(button: MouseButton)->bool
     {
         using MouseButton
@@ -63,6 +64,7 @@ impl Mouse
     }
 
     // Determines whether the specified mouse button is pressed
+    #[Swag.Overload]
     mtd isButtonPressed(button: MouseButton)->bool
     {
         return currentState.pressed[button]

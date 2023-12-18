@@ -2,7 +2,9 @@
 struct A {}
 impl A
 {
+    #[Swag.Overload]
     mtd toto() {}
+    #[Swag.Overload]
     mtd toto(x: s32) {}
 }
 

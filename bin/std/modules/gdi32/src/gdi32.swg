@@ -383,7 +383,7 @@ func RGB(r,g,b: s32)->COLORREF
     func GetStockObject(i: s32)->HGDIOBJ;
 }
 
-#[Foreign("Gdi32"), Swag.Discardable]
+#[Foreign("Gdi32"), Discardable, Overload]
 {
     func GetObjectA(h: HANDLE, c: s32, pv: LPVOID)->s32;
     func GetObjectW(h: HANDLE, c: s32, pv: LPVOID)->s32;
@@ -432,7 +432,7 @@ private namespace Gdi32Priv
     }
 }
 
-#[Inline]
+#[Inline, Overload]
 {
     func ChoosePixelFormat(hdc: HDC, ppfd: const *PIXELFORMATDESCRIPTOR)->s32 throw
     {

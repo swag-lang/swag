@@ -833,6 +833,23 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
     funcNode->resolvedSymbolName     = toAdd.symbolName;
     SWAG_CHECK(funcNode->resolvedSymbolOverload);
 
+    // Be sure an overloaded function has the attribute
+    {
+        SharedLock lk(funcNode->ownerScope->symTable.mutex);
+        if (funcNode->resolvedSymbolName->cptOverloadsInit > 1 && !funcNode->canOverload())
+        {
+            AstFuncDecl* other = nullptr;
+            for (auto n : funcNode->resolvedSymbolName->nodes)
+                if (n != funcNode && n->kind == AstNodeKind::FuncDecl)
+                    other = CastAst<AstFuncDecl>(n, AstNodeKind::FuncDecl);
+            if (other)
+            {
+                Diagnostic diag{funcNode, funcNode->tokenName, Fmt(Err(Err0639), funcNode->token.ctext())};
+                return context->report(diag, Diagnostic::hereIs(other));
+            }
+        }
+    }
+
     // If the function returns a struct, register a type alias "retval". This way we can resolve an identifier
     // named retval for "var result: retval{xx, xxx}" syntax
     auto returnType = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_FORCEALIAS);

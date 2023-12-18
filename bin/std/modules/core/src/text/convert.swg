@@ -21,16 +21,16 @@ impl ConvertFormatFloat
     // Set some format options with a given user string.
     // Format is `[+][fmt][precision]`
     //
-    // + '+' 
+    // + '+'
     //     To force the positive sign if the number is positive
-    // + 'fmt' 
+    // + 'fmt'
     //     This is the output format:
     //     | e | -d.dddde±dd, a decimal exponent
     //     | E | -d.ddddE±dd, a decimal exponent
     //     | f | -ddd.dddd, no exponent
     //     | g | 'e' for large exponents, 'f' otherwise
     //     | G | 'E' for large exponents, 'f' otherwise
-    // + 'precision' 
+    // + 'precision'
     //     A number which is the precision of the fractional part
     mtd setFormat(strFormat: string)
     {
@@ -359,6 +359,7 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
 }
 
 // Convert a float to an utf8 string, and put the result in a ConcatBuffer
+#[Swag.Overload]
 func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
 {
     let kindof = cast(const *Swag.TypeInfoNative) @kindof(fmt.value)
@@ -379,6 +380,7 @@ func convertFloat(buf: *ConcatBuffer, fmt: ConvertFormatFloat)
 }
 
 // Convert an integer to an utf8 string, and put the result in a ConcatBuffer
+#[Swag.Overload]
 func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
 {
     let kindof = cast(const *Swag.TypeInfoNative) @kindof(fmt.value)
@@ -478,6 +480,7 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
 }
 
 // Convert a float to an utf8 string, and put the result in a ConcatBuffer
+#[Swag.Overload]
 func convertFloat(buf: *ConcatBuffer, value: any, strFormat: string)
 {
     Debug.assert(@kindof(value).flags & TypeInfoFlags.Float != 0, "value to convert is not a float")
@@ -489,6 +492,7 @@ func convertFloat(buf: *ConcatBuffer, value: any, strFormat: string)
 }
 
 // Convert an integer to an utf8 string, and put the result in a ConcatBuffer
+#[Swag.Overload]
 func convertInt(buf: *ConcatBuffer, value: any, strFormat: string)
 {
     Debug.assert(@kindof(value).flags & TypeInfoFlags.Integer != 0, "value to convert is not an integer")

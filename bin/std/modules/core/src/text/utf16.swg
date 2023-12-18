@@ -58,6 +58,7 @@ func encodeRune(dest: [..] u16, src: rune)->u32
 
 // Convert an utf8 buffer to a utf16 buffer, and returns the
 // number of valid elements in the destination buffer
+#[Swag.Overload]
 func fromUtf8(dest: [..] u16, src: const [..] u8)->u64
 {
     var count = 0'u64
@@ -83,6 +84,7 @@ func fromUtf8(dest: [..] u16, src: const [..] u8)->u64
 }
 
 // Convert an utf8 buffer to an utf16 sequence
+#[Swag.Overload]
 func fromUtf8(src: const [..] u8)->Array'u16
 {
     var result: retval
@@ -94,6 +96,7 @@ func fromUtf8(src: const [..] u8)->Array'u16
 // Convert a character array (32 bits unicode) to an utf16 buffer
 // Returns the number of bytes written in the destination buffer
 // 'dest' must be at least 2 bytes long
+#[Swag.Overload]
 func fromUnicode(dest: [..] u16, src: const [..] rune)->u64
 {
     var dataof = @dataof(dest)
@@ -111,6 +114,7 @@ func fromUnicode(dest: [..] u16, src: const [..] rune)->u64
 }
 
 // Convert a character array (32 bits unicode) to an utf16 sequence
+#[Swag.Overload]
 func fromUnicode(src: const [..] rune)->Array'u16
 {
     var result: retval

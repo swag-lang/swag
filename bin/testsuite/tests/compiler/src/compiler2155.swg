@@ -5,11 +5,13 @@ struct A
 
 impl A
 {
+    #[Swag.Overload]
     func toto(using self, x: A)->s32
     {
         return 1
     }
 
+    #[Swag.Overload]
     func toto(x, y: A)->s32
     {
         return 2

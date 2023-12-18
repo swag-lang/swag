@@ -1,8 +1,10 @@
+#[Swag.Overload]
 func toto(x: s32)->s32
 {
     return x
 }
 
+#[Swag.Overload]
 func toto(x: s64)->s64
 {
     return x * 2

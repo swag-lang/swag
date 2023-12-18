@@ -69,6 +69,7 @@ impl Keyboard
     }
 
     // Determines whether given key is currently being pressed
+    #[Swag.Overload]
     mtd isKeyPressed(key: Key)->bool
     {
         return currentState.pressed[key]

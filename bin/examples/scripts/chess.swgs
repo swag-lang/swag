@@ -315,6 +315,7 @@ func getRookMoves( board:^Cell, fromP: s8, moves: *Array's8)
     }
 }
 
+#[Swag.Overload]
 func doMove(fromP, toP: s8)
 {
     let content = g_Board[fromP].content
@@ -355,6 +356,7 @@ func doMove(fromP, toP: s8)
         g_Board[toP].piece = .Queen
 }
 
+#[Swag.Overload]
 func doMove(board:^Cell, fromP, toP: s8)->[96] Cell
 {
     var result: [96] Cell

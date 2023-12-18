@@ -55,7 +55,7 @@ impl UUID
     }
 
     // Convert uuid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx
-    #[Swag.Safety("boundcheck", false)]
+    #[Swag.Safety("boundcheck", false), Swag.Overload]
     mtd toString(result: [..] u8)
     {
         Debug.assert(@countof(result) == 36)
@@ -105,6 +105,7 @@ impl UUID
     }
 
     // Convert uuid to a string
+    #[Swag.Overload]
     mtd toString()->String
     {
         var result: retval

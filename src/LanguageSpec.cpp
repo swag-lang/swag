@@ -532,6 +532,7 @@ void LanguageSpec::setupAttributesFlags()
     attributesFlags.add("Implicit", ATTRIBUTE_IMPLICIT);
     attributesFlags.add("CalleeReturn", ATTRIBUTE_CALLEE_RETURN);
     attributesFlags.add("Discardable", ATTRIBUTE_DISCARDABLE);
+    attributesFlags.add("Overload", ATTRIBUTE_OVERLOAD);
     attributesFlags.add("Deprecated", ATTRIBUTE_DEPRECATED);
     attributesFlags.add("Global", ATTRIBUTE_GLOBAL);
     attributesFlags.add("Tls", ATTRIBUTE_TLS);

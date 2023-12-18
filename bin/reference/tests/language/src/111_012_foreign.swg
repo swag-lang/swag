@@ -15,7 +15,6 @@ func ExitProcess(uExitCode: u32);
 // Like for other attributes, you can use a block.
 #[Swag.Foreign("kernel32")]
 {
-    func ExitProcess(uExitCode: u32);
     func Sleep(dwMilliseconds: u32);
 }
 

@@ -5,8 +5,11 @@ struct B {}
 struct C {}
 impl C
 {
+    #[Swag.Overload]
     mtd toto(x: A){}
+    #[Swag.Overload]
     mtd toto(x: B){}
+    #[Swag.Overload]
     mtd toto(x, y: s32){}
 }
 

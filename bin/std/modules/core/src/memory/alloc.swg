@@ -94,6 +94,7 @@ func tempAlloc(size: u64, alignement: u32 = 0, hint: string = null, loc = #calle
 }
 
 // Allocate and initialize the given type
+#[Swag.Overload]
 func new(type: typeinfo, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*u8
 {
     let userHint = hint orelse type.fullname
@@ -129,6 +130,7 @@ func(T) delete(ptr: *T, allocator: IAllocator = null, hint: string = null, loc =
 }
 
 // Drop and release memory of the given type
+#[Swag.Overload]
 func delete(ptr: *void, type: typeinfo, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
 {
     if !ptr

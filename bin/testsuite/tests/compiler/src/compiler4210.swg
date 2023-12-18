@@ -1,4 +1,5 @@
 //#[Swag.PrintBc]
+#[Swag.Overload]
 func toto(y: s8)->s8
 {
     var x = y
@@ -13,6 +14,7 @@ func toto(y: s8)->s8
 }
 
 //#[Swag.PrintBc]
+#[Swag.Overload]
 func toto(y, z: s8)->s8
 {
     var x1 = y

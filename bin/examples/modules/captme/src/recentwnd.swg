@@ -279,6 +279,7 @@ impl RecentWnd
         recentView.select(sel)
     }
 
+    #[Swag.Overload]
     mtd addRecent(file: string, front = true, sel = false)->*Capture throw
     {
         let capture = Capture.load(file)
@@ -297,6 +298,7 @@ impl RecentWnd
         return capture
     }
 
+    #[Swag.Overload]
     mtd addRecent(file: string, preview: Image, front = true, sel = false)
     {
         // Already there ?

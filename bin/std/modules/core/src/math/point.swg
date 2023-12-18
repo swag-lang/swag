@@ -103,12 +103,14 @@ impl Point
     }
 
     // Offset this Point by a given value
+    #[Swag.Overload]
     mtd offset(value: f32)
     {
         x, y += value
     }
 
     // Offset this Point by a given value
+    #[Swag.Overload]
     func offset(self, x, y: f32)
     {
         self.x += x

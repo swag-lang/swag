@@ -389,9 +389,9 @@ impl Decoder
             i -= 1
         }
 
-        if i == 0 
+        if i == 0
             throw InvalidFormatError{"bad restart marker"}
-        if c != (nextRestartNum + cast(u32) Marker.M_RST0) 
+        if c != (nextRestartNum + cast(u32) Marker.M_RST0)
             throw InvalidFormatError{"bad restart marker"}
 
         Memory.clear(&lastDcVal, cast(u64) compsInFrame * @sizeof(u32))
@@ -465,7 +465,7 @@ impl Decoder
                     {
                         if r
                         {
-                            if (k + r) > 63 
+                            if (k + r) > 63
                                 throw InvalidFormatError{"decode error"}
                             if k < prevNumSet
                             {
@@ -1372,10 +1372,10 @@ impl Decoder
             if s
             {
                 k += r
-                if k > 63 
+                if k > 63
                     throw InvalidFormatError{"decode error"}
                 r = getBits2(s)
-                if s > 15 
+                if s > 15
                     throw InvalidFormatError{"decode error"}
 
                 s = (r < ExtendTest[s] ? r + ExtendOff[s] : r)
@@ -1410,7 +1410,7 @@ impl Decoder
         var k = spectralStart
         if eobRun == 0
         {
-            if spectralEnd >= 64 
+            if spectralEnd >= 64
                 throw InvalidFormatError{"decode error"}
 
             while k <= spectralEnd
@@ -1421,7 +1421,7 @@ impl Decoder
 
                 if s
                 {
-                    if s != 1 
+                    if s != 1
                         throw InvalidFormatError{"decode error"}
                     if getBits2(1)
                         s = p1
@@ -1478,7 +1478,7 @@ impl Decoder
 
         if eobRun > 0
         {
-            if spectralEnd >= 64 
+            if spectralEnd >= 64
                 throw InvalidFormatError{"decode error"}
             while k <= spectralEnd
             {
@@ -1561,7 +1561,7 @@ impl Decoder
 
     mtd initProgressive() throw
     {
-        if compsInFrame == 4 
+        if compsInFrame == 4
             throw UnsupportedFormatError{"unsupported color space"}
 
         loop i: compsInFrame
@@ -1627,7 +1627,7 @@ impl Decoder
     mtd initSequential() throw
     {
         let res = initScan()
-        if !res 
+        if !res
             throw InvalidFormatError{"unexpected marker"}
     }
 
@@ -1700,6 +1700,7 @@ impl Decoder
         return cast(u8) c
     }
 
+    #[Swag.Overload]
     mtd getChar(paddingFlag: *bool)->u32
     {
         if !inBufLeft
@@ -1722,6 +1723,7 @@ impl Decoder
         return c
     }
 
+    #[Swag.Overload]
     mtd getChar()->u32
     {
         if !inBufLeft
@@ -1798,7 +1800,7 @@ impl Decoder
     mtd readVariableMarker(_marker: Marker) throw
     {
         var left = getBits1(16)
-        if left < 2 
+        if left < 2
             throw InvalidFormatError{"bad variable marker"}
         left -= 2
 
@@ -1816,7 +1818,7 @@ impl Decoder
         var huffValt: [256] u8
 
         var left = getBits1(16)
-        if left < 2 
+        if left < 2
             throw InvalidFormatError{"bad dht marker"}
         left -= 2
 
@@ -1831,7 +1833,7 @@ impl Decoder
                 count += huffNumt[i]
             }
 
-            if count > 255 
+            if count > 255
                 throw InvalidFormatError{"bad dht counts"}
             loop i: count
             {
@@ -1839,15 +1841,15 @@ impl Decoder
             }
 
             let i = 1 + 16 + count
-            if left < i 
+            if left < i
                 throw InvalidFormatError{"bad dht marker"}
 
             left -= i
-            if (index & 0x10) > 0x10 
+            if (index & 0x10) > 0x10
                 throw InvalidFormatError{"bad dht index"}
 
             index = (index & 0x0F) + ((index & 0x10) >> 4) * (MaxHuffTables >> 1)
-            if index >= MaxHuffTables 
+            if index >= MaxHuffTables
                 throw InvalidFormatError{"bad dht index"}
 
             huffNum[index].resize(17)
@@ -1860,7 +1862,7 @@ impl Decoder
     mtd readDqtMarker() throw
     {
         var left = getBits1(16)
-        if left < 2 
+        if left < 2
             throw InvalidFormatError{"bad dqt marker"}
         left -= 2
 
@@ -1869,7 +1871,7 @@ impl Decoder
             var n = getBits1(8)
             let prec = n >> 4
             n &= 0x0F
-            if n >= MaxQuantTables 
+            if n >= MaxQuantTables
                 throw InvalidFormatError{"bad dqt table"}
 
             quant[n].resize(64)
@@ -1883,7 +1885,7 @@ impl Decoder
 
             var i = 64 + 1
             if prec i += 64
-            if left < i 
+            if left < i
                 throw InvalidFormatError{"bad dqt length"}
             left -= i
         }
@@ -1891,7 +1893,7 @@ impl Decoder
 
     mtd readDriMarker() throw
     {
-        if getBits1(16) != 4 
+        if getBits1(16) != 4
             throw InvalidFormatError{"bad dri length"}
         restartInterval = getBits1(16)
     }
@@ -1899,21 +1901,21 @@ impl Decoder
     mtd readSofMarker() throw
     {
         let left = getBits1(16)
-        if getBits1(8) != 8 
-            throw InvalidFormatError{"bad precision"}   
+        if getBits1(8) != 8
+            throw InvalidFormatError{"bad precision"}
 
         imageSizeY = getBits1(16)
         imageSizeX = getBits1(16)
 
-        if (imageSizeY < 1) or (imageSizeY > MaxHeight) 
+        if (imageSizeY < 1) or (imageSizeY > MaxHeight)
             throw InvalidFormatError{"bad height"}
-        if (imageSizeX < 1) or (imageSizeX > MaxWidth) 
+        if (imageSizeX < 1) or (imageSizeX > MaxWidth)
             throw InvalidFormatError{"bad width"}
 
         compsInFrame = getBits1(8)
-        if compsInFrame > MaxComponents 
+        if compsInFrame > MaxComponents
             throw InvalidFormatError{"too many components"}
-        if left != (compsInFrame * 3 + 8) 
+        if left != (compsInFrame * 3 + 8)
             throw InvalidFormatError{"bad sof length"}
 
         loop i: compsInFrame
@@ -1997,7 +1999,7 @@ impl Decoder
         loop
         {
             bytesLeft -= 1
-            if bytesLeft == 0 
+            if bytesLeft == 0
                 throw InvalidFormatError{"not a jpeg"}
             lastRune = thisChar
             thisChar = getBits1(8)
@@ -2006,7 +2008,7 @@ impl Decoder
         }
 
         thisChar = (bitBuf >> 8) & 0xFF
-        if thisChar != 0xFF 
+        if thisChar != 0xFF
             throw InvalidFormatError{"not a jpeg"}
     }
 

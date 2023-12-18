@@ -7,12 +7,14 @@ struct Duration
 impl Duration
 {
     #[Swag.Implicit]
+    #[Swag.Overload]
     mtd opAffect(v: s32)
     {
         @assert(v == 6)
     }
 
     #[Swag.Implicit]
+    #[Swag.Overload]
     mtd opAffect(v: f32)
     {
         @assert(v == 6)

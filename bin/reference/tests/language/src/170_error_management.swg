@@ -13,7 +13,7 @@ A function capable of returning an error must be annotated with 'throw'. This al
 struct MyError
 {
     // The default runtime base error contains some default fields, like a 'message'
-    using base: Swag.BaseError 
+    using base: Swag.BaseError
 }
 
 /**
@@ -35,7 +35,7 @@ func count(name: string)->u64 throw
 
 /**
 # catch
-The caller will then have to deal with the error in some way. 
+The caller will then have to deal with the error in some way.
 
 It can `catch` it, and test (or not) its value with the `@err()` intrinsic. In that case, the error is dismissed, and the execution will continue at the call site.
 */
@@ -44,8 +44,8 @@ func myFunc()
     // Dismiss the eventual error with 'catch' and continue execution
     let cpt = catch count("fileName")
 
-    // We can test it with '@err()', which returns the 'throw' corresponding value as long as 
-    // another error is not raised. Consider this is a good idea to test it right 
+    // We can test it with '@err()', which returns the 'throw' corresponding value as long as
+    // another error is not raised. Consider this is a good idea to test it right
     // after the 'catch'.
     if @err() != null
     {
@@ -71,7 +71,7 @@ func myOtherFunc()
 
     // This is equivalent to:
     var cpt2 = catch count("filename")
-    if @err() != null return 
+    if @err() != null return
 }
 
 /**
@@ -104,7 +104,7 @@ The caller can also panic if an error is raised, with `assume`.
 > This can be disabled in release builds (in that case the behaviour is undefined).
 
 */
-func myFunc2()
+func myFunc3()
 {
     // Here the program will stop with a panic message if 'count()' throws an error
     var cpt = assume count("filename")
@@ -118,7 +118,7 @@ func myFunc2()
 # Blocks
 You can use a block instead of one single statement (this does not create a scope).
 */
-func myFunc3() throw
+func myFunc4() throw
 {
     // This is not really necessary, see below, but this is just to show 'try' with a block
     // instead of one single call
@@ -165,7 +165,7 @@ When a function is marked with `throw`, the `try` for a function call is implici
     func mySubFunc3() throw
     {
         throw MyError{"error from mySubFunc3"}
-    }    
+    }
 
     func mySubFunc1() throw
     {

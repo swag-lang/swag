@@ -26,7 +26,7 @@ struct(T) Const
 typealias ConstF32 = Const'f32
 typealias ConstF64 = Const'f64
 
-#[Swag.ConstExpr, Swag.Inline]
+#[Swag.ConstExpr, Swag.Inline, Swag.Overload]
 {
     func sign(x: f32) => x < 0 ? -1 : 1
     func sign(x: f64) => x < 0 ? -1 : 1
@@ -76,7 +76,7 @@ typealias ConstF64 = Const'f64
     }
 }
 
-#[Swag.ConstExpr, Swag.Inline]
+#[Swag.ConstExpr, Swag.Inline, Swag.Overload]
 {
     func min(x, y: f32) => @min(x, y)
     func min(x, y: f64) => @min(x, y)

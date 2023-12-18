@@ -224,7 +224,7 @@
 <li><a href="#_060_struct__064_005_count">Count</a></li>
 <li><a href="#_060_struct__064_006_post_copy_and_post_move">Post copy and post move</a></li>
 <ul>
-<li><a href="#_060_struct__064_006_post_copy_and_post_move_moveref">moveref</a></li>
+<li><a href="#_060_struct__064_006_post_copy_and_post_move_Move_semantic">Move semantic</a></li>
 </ul>
 <li><a href="#_060_struct__064_007_visit">Visit</a></li>
 <li><a href="#_060_struct__067_008_offset">Offset</a></li>
@@ -3614,45 +3614,59 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Called for explicit/implicit casting between struct value and return type</span>
     <span class="SCmt">// Can be overloaded by a different return type</span>
     <span class="SCmt">// Example: var x = cast(OneType) v</span>
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">OneType</span>      { <span class="SLgc">return</span> <span class="SKwd">true</span>; }
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>)-&gt;<span class="SCst">AnotherType</span>  { <span class="SLgc">return</span> <span class="SNum">0</span>; }
 
     <span class="SCmt">// Called to compare the struct value with something else</span>
     <span class="SCmt">// Can be overloaded</span>
     <span class="SCmt">// Returns true if they are equal, otherwise returns false</span>
     <span class="SCmt">// Called by '==', '!='</span>
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">OneType</span>)-&gt;<span class="STpe">bool</span>      { <span class="SLgc">return</span> <span class="SKwd">false</span>; }
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">AnotherType</span>)-&gt;<span class="STpe">bool</span>  { <span class="SLgc">return</span> <span class="SKwd">false</span>; }
 
     <span class="SCmt">// Called to compare the struct value with something else</span>
     <span class="SCmt">// Can be overloaded</span>
     <span class="SCmt">// Returns -1, 0 or 1</span>
     <span class="SCmt">// Called by '&lt;', '&gt;', '&lt;=', '&gt;=', '&lt;=&gt;'</span>
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">OneType</span>)-&gt;<span class="STpe">s32</span>      { <span class="SLgc">return</span> <span class="SNum">0</span>; }
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">AnotherType</span>)-&gt;<span class="STpe">s32</span>  { <span class="SLgc">return</span> <span class="SNum">0</span>; }
 
     <span class="SCmt">// Affect struct with another value</span>
     <span class="SCmt">// Can be overloaded</span>
     <span class="SCmt">// Called by '='</span>
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">OneType</span>) {}
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">AnotherType</span>) {}
 
     <span class="SCmt">// Affect struct with a literal value with a specified suffix</span>
     <span class="SCmt">// Generic function, can be overloaded</span>
     <span class="SCmt">// Called by '='</span>
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span>(suffix: <span class="STpe">string</span>) <span class="SFct">opAffectSuffix</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">OneType</span>) {}
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span>(suffix: <span class="STpe">string</span>) <span class="SFct">opAffectSuffix</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, value: <span class="SCst">AnotherType</span>) {}
 
     <span class="SCmt">// Affect struct with another value at a given index</span>
     <span class="SCmt">// Can be overloaded</span>
     <span class="SCmt">// Called by '[] ='</span>
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, value: <span class="SCst">OneType</span>) {}
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, value: <span class="SCst">AnotherType</span>) {}
 
     <span class="SCmt">// Binary operator. 'op' generic argument contains the operator string</span>
     <span class="SCmt">// Generic function, can be overloaded</span>
     <span class="SCmt">// Called by '+', '-', '*', '/', '%', '|', '&', '^', '&lt;&lt;', '&gt;&gt;'</span>
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">OneType</span>)-&gt;<span class="SKwd">Self</span>     { <span class="SLgc">return</span> {<span class="SNum">1</span>, <span class="SNum">2</span>}; }
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">AnotherType</span>)-&gt;<span class="SKwd">Self</span> { <span class="SLgc">return</span> {<span class="SNum">1</span>, <span class="SNum">2</span>}; }
 
     <span class="SCmt">// Unary operator. 'op' generic argument contains the operator string (see below)</span>
@@ -3663,13 +3677,17 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Affect operator. 'op' generic argument contains the operator string (see below)</span>
     <span class="SCmt">// Generic function, can be overloaded</span>
     <span class="SCmt">// Called by '+=', '-=', '*=', '/=', '%=', '|=', '&=', '^=', '&lt;&lt;=', '&gt;&gt;='</span>
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">OneType</span>) {}
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, other: <span class="SCst">AnotherType</span>)  {}
 
     <span class="SCmt">// Affect operator. 'op' generic argument contains the operator string (see below)</span>
     <span class="SCmt">// Generic function, can be overloaded</span>
     <span class="SCmt">// Called by '+=', '-=', '*=', '/=', '%=', '|=', '&=', '^=', '&lt;&lt;=', '&gt;&gt;='</span>
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, value: <span class="SCst">OneType</span>) {}
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, index: <span class="STpe">u64</span>, value: <span class="SCst">AnotherType</span>) {}
 
     <span class="SCmt">// Called by a 'visit' block</span>
@@ -3678,8 +3696,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SAtr">#[Swag.Macro]</span>
     {
         <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>) {}
-        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitWhatever</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>) {}
-        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitAnother</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>) {}
+        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) opVisit,<span class="SFct">whatever</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>) {}
+        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) opVisit,<span class="SFct">another</span>(<span class="SKwd">using</span> <span class="SKwd">self</span>, stmt: <span class="STpe">code</span>) {}
     }
 }</span></div>
 
@@ -3691,7 +3709,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
 <span class="SKwd">impl</span> <span class="SCst">Struct</span>
 {
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">mtd</span> <span class="SFct">opAffect</span>(value: <span class="STpe">s32</span>)  { x, y = value; }
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">mtd</span> <span class="SFct">opAffect</span>(value: <span class="STpe">bool</span>) { x, y = value ? <span class="SNum">1</span> : <span class="SNum">0</span>; }
 }
 
@@ -3719,10 +3739,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">Struct</span>
 {
     <span class="SAtr">#[Swag.Complete]</span>
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">mtd</span> <span class="SFct">opAffect</span>(value: <span class="STpe">u64</span>)  { x, y, z = <span class="SKwd">cast</span>(<span class="STpe">s32</span>) value; }
 
     <span class="SCmt">// For later</span>
     <span class="SAtr">#[Swag.Implicit]</span>
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">mtd</span> <span class="SFct">opAffect</span>(value: <span class="STpe">u16</span>)  { x, y = <span class="SKwd">cast</span>(<span class="STpe">s32</span>) value; }
 }</span></div>
 <p>Here the variable <span class="code-inline">v</span> will not be initialized prior to the affectation. This is more optimal, as there's only one initialization. </p>
@@ -3866,17 +3888,19 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     a =<span class="SItr">,moveraw</span> b
     a =<span class="SItr">,nodrop</span><span class="SItr">,moveraw</span> b
 }</span></div>
-<h4 id="_060_struct__064_006_post_copy_and_post_move_moveref">moveref </h4>
-<p><span class="code-inline">moveref</span> can be used instead of <span class="code-inline">ref</span> in a function parameter to declare a <b>move semantic</b> intention. </p>
+<h4 id="_060_struct__064_006_post_copy_and_post_move_Move_semantic">Move semantic </h4>
+<p><span class="code-inline">&&</span> can be used instead of <span class="code-inline">&</span> in a function parameter to declare a <b>move semantic</b> intention. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// This is the 'move' version of 'assign'. With 'moveref', we tell the compiler that this version will take the owership on 'from'.</span>
-    <span class="SKwd">func</span> <span class="SFct">assign</span>(assignTo: &<span class="SCst">Vector3</span>, from: <span class="SKwd">moveref</span> <span class="SCst">Vector3</span>)
+    <span class="SAtr">#[Swag.Overload]</span>
+    <span class="SKwd">func</span> <span class="SFct">assign</span>(assignTo: &<span class="SCst">Vector3</span>, from: &&<span class="SCst">Vector3</span>)
     {
         assignTo =<span class="SItr">,move</span> from
     }
 
     <span class="SCmt">// This is the normal 'copy' version. In this version, 'from' will not be changed, that's why it's constant (not a ref).</span>
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span> <span class="SFct">assign</span>(assignTo: &<span class="SCst">Vector3</span>, from: <span class="SCst">Vector3</span>)
     {
         assignTo = from
@@ -3976,11 +4000,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SItr">@assert</span>(cpt == <span class="SNum">3</span>)
 }</span></div>
-<p>You can have variants of <span class="code-inline">opVisit</span> by specifying an <b>additional name</b>. </p>
+<p>You can have variants of <span class="code-inline">opVisit</span> by specifying an <b>additional name</b> after a comma. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">MyStruct</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">mtd</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitReverse</span>(stmt: <span class="STpe">code</span>)   <span class="SCmt">// We add 'Reverse' in the name</span>
+    <span class="SKwd">mtd</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) opVisit,<span class="SFct">reverse</span>(stmt: <span class="STpe">code</span>)   <span class="SCmt">// We add a variant called 'reverse'</span>
     {
         <span class="SCmt">// Visit fields in reverse order (z, y then x).</span>
         <span class="SCmt">// Note that visiting in reverse order should be implemented in the normal 'opVisit'</span>
@@ -4010,8 +4034,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">var</span> myStruct = <span class="SCst">MyStruct</span>{}
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
 
-    <span class="SCmt">// To call a variant, add the extra name between parenthesis.</span>
-    <span class="SLgc">visit</span>(<span class="SCst">Reverse</span>) v, i: myStruct
+    <span class="SCmt">// To call a variant, add the extra name after a comma.</span>
+    <span class="SLgc">visit</span>,reverse v, i: myStruct
     {
         <span class="SLgc">switch</span> i
         {
@@ -4306,7 +4330,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
 <h2 id="_100_function">Function</h2>
 <h3 id="_100_function__101_001_declaration">Declaration</h3><p>A function declaration usually starts with the <span class="code-inline">func</span> keyword followed by the function name. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toto</span>()
+<div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.Overload]</span>
+<span class="SKwd">func</span> <span class="SFct">toto</span>()
 {
 }</span></div>
 <p>If the function needs to return a value, you must add <span class="code-inline">-&gt;</span> followed by the type. </p>
@@ -4336,6 +4361,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }
 
 <span class="SKwd">enum</span> <span class="SCst">Values</span> { <span class="SCst">A</span>; <span class="SCst">B</span>; }
+<span class="SAtr">#[Swag.Overload]</span>
 <span class="SKwd">func</span> <span class="SFct">toto</span>(x: <span class="STpe">s32</span>, y = <span class="SCst">Values</span>.<span class="SCst">A</span>)
 {
     <span class="SCmp">#assert</span> <span class="SItr">@typeof</span>(y) == <span class="SCst">Values</span>
@@ -5027,8 +5053,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">const</span> <span class="SCst">G1</span> = <span class="SFct">#run</span> <span class="SFct">mul</span>(<span class="SNum">3</span>, <span class="SNum">6</span>)
 <span class="SCmp">#assert</span> <span class="SCst">G1</span> == <span class="SNum">18</span></span></div>
 
-<h3 id="_100_function__108_009_function_overloading">Function overloading</h3><p>Functions can have the same names as long as their parameters are different. </p>
-<div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.ConstExpr]</span>
+<h3 id="_100_function__108_009_function_overloading">Function overloading</h3><p>Functions can have the same names as long as their parameters are different. Such function must be marked with <span class="code-inline">#[Swag.Overload]</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.ConstExpr, Swag.Overload]</span>
 {
     <span class="SKwd">func</span> <span class="SFct">sum</span>(x, y: <span class="STpe">s32</span>) =&gt; x + y
     <span class="SKwd">func</span> <span class="SFct">sum</span>(x, y, z: <span class="STpe">s32</span>) =&gt; x + y + z
@@ -5036,10 +5062,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
 <span class="SCmp">#assert</span> <span class="SFct">sum</span>(<span class="SNum">1</span>, <span class="SNum">2</span>) == <span class="SNum">3</span>
 <span class="SCmp">#assert</span> <span class="SFct">sum</span>(<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>) == <span class="SNum">6</span></span></div>
-<p>Note that in Swag, there is no implicit cast for function parameters. So you must always specify the right type. </p>
+<p>Note that in Swag, there is no implicit cast for function parameters in case of overloads. So you must always specify the right type, in order to be sure to call the right version. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span> <span class="SFct">over</span>(x, y: <span class="STpe">s32</span>) =&gt; x + y
+    <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span> <span class="SFct">over</span>(x, y: <span class="STpe">s64</span>) =&gt; x * y
 
     <span class="SCmt">// This would generate an error because it's ambiguous, as 1 and 2 are not strong types</span>
@@ -5135,7 +5163,6 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SCmt">// Like for other attributes, you can use a block.</span>
 <span class="SAtr">#[Swag.Foreign("kernel32")]</span>
 {
-    <span class="SKwd">func</span> <span class="SCst">ExitProcess</span>(uExitCode: <span class="STpe">u32</span>);
     <span class="SKwd">func</span> <span class="SCst">Sleep</span>(dwMilliseconds: <span class="STpe">u32</span>);
 }</span></div>
 <p>Note that in the case of an external module, you will have to declare somewhere the imported library too. </p>
@@ -5678,6 +5705,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     {
         <span class="SCmt">// A version of 'first' where 'x' is known at compile time.</span>
+        <span class="SAtr">#[Swag.Overload]</span>
         <span class="SKwd">func</span> <span class="SFct">first</span>(x: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
             <span class="SCmp">#validifx</span> <span class="SItr">@isconstexpr</span>(x)
         {
@@ -5685,6 +5713,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         }
 
         <span class="SCmt">// A version of 'first' where 'x' is **not** known at compile time.</span>
+        <span class="SAtr">#[Swag.Overload]</span>
         <span class="SKwd">func</span> <span class="SFct">first</span>(x: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
             <span class="SCmp">#validifx</span> !<span class="SItr">@isconstexpr</span>(x)
         {
@@ -6181,7 +6210,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">struct</span> <span class="SCst">MyError</span>
 {
     <span class="SCmt">// The default runtime base error contains some default fields, like a 'message'</span>
-    <span class="SKwd">using</span> base: <span class="SCst">Swag</span>.<span class="SCst">BaseError</span> 
+    <span class="SKwd">using</span> base: <span class="SCst">Swag</span>.<span class="SCst">BaseError</span>
 }</span></div>
 <p>Note that when a function returns because of an error, the real return value will always be equal to the <b>default value</b> depending on the type. </p>
 <div class="code-block"><span class="SCde"><span class="SCmt">// The function 'count()' can raise an error, so we annotate it with 'throw', at the end of its signature.</span>
@@ -6197,15 +6226,15 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SLgc">return</span> <span class="SItr">@countof</span>(name)
 }</span></div>
 <h3 id="_170_error_management_catch">catch </h3>
-<p>The caller will then have to deal with the error in some way.  </p>
+<p>The caller will then have to deal with the error in some way. </p>
 <p>It can <span class="code-inline">catch</span> it, and test (or not) its value with the <span class="code-inline">@err()</span> intrinsic. In that case, the error is dismissed, and the execution will continue at the call site. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc</span>()
 {
     <span class="SCmt">// Dismiss the eventual error with 'catch' and continue execution</span>
     <span class="SKwd">let</span> cpt = <span class="SKwd">catch</span> <span class="SFct">count</span>(<span class="SStr">"fileName"</span>)
 
-    <span class="SCmt">// We can test it with '@err()', which returns the 'throw' corresponding value as long as </span>
-    <span class="SCmt">// another error is not raised. Consider this is a good idea to test it right </span>
+    <span class="SCmt">// We can test it with '@err()', which returns the 'throw' corresponding value as long as</span>
+    <span class="SCmt">// another error is not raised. Consider this is a good idea to test it right</span>
     <span class="SCmt">// after the 'catch'.</span>
     <span class="SLgc">if</span> <span class="SItr">@err</span>() != <span class="SKwd">null</span>
     {
@@ -6228,7 +6257,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SCmt">// This is equivalent to:</span>
     <span class="SKwd">var</span> cpt2 = <span class="SKwd">catch</span> <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
-    <span class="SLgc">if</span> <span class="SItr">@err</span>() != <span class="SKwd">null</span> <span class="SLgc">return</span> 
+    <span class="SLgc">if</span> <span class="SItr">@err</span>() != <span class="SKwd">null</span> <span class="SLgc">return</span>
 }</span></div>
 <h3 id="_170_error_management_try">try </h3>
 <p>The caller can also <b>stop the execution</b> with <span class="code-inline">try</span>, and return to its own caller with the same error raised. The function must then also be marked with <span class="code-inline">throw</span>. </p>
@@ -6251,7 +6280,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="blockquote blockquote-default">
 <p> This can be disabled in release builds (in that case the behaviour is undefined). </p>
 </div>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc2</span>()
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc3</span>()
 {
     <span class="SCmt">// Here the program will stop with a panic message if 'count()' throws an error</span>
     <span class="SKwd">var</span> cpt = <span class="SKwd">assume</span> <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
@@ -6261,7 +6290,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 </div>
 <h3 id="_170_error_management_Blocks">Blocks </h3>
 <p>You can use a block instead of one single statement (this does not create a scope). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc3</span>() <span class="SKwd">throw</span>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc4</span>() <span class="SKwd">throw</span>
 {
     <span class="SCmt">// This is not really necessary, see below, but this is just to show 'try' with a block</span>
     <span class="SCmt">// instead of one single call</span>
@@ -6305,7 +6334,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">func</span> <span class="SFct">mySubFunc3</span>() <span class="SKwd">throw</span>
     {
         <span class="SKwd">throw</span> <span class="SCst">MyError</span>{<span class="SStr">"error from mySubFunc3"</span>}
-    }    
+    }
 
     <span class="SKwd">func</span> <span class="SFct">mySubFunc1</span>() <span class="SKwd">throw</span>
     {
@@ -7377,9 +7406,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 }</span></div>
 <h4 id="_230_documentation__231_001_Api_NoDoc">NoDoc </h4>
 <p>You can use the <span class="code-inline">#[Swag.NoDoc]</span> attribute to prevent a certain element from showing up in the documentation. </p>
-<div class="code-block"><span class="SCde"><span class="SCmt">// The function 'one' will be ignored when generating the documentation.</span>
+<div class="code-block"><span class="SCde"><span class="SCmt">// The function 'three' will be ignored when generating the documentation.</span>
 <span class="SAtr">#[Swag.NoDoc]</span>
-<span class="SKwd">func</span> <span class="SFct">one</span>()
+<span class="SKwd">func</span> <span class="SFct">three</span>()
 {
 }</span></div>
 
@@ -7400,7 +7429,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="_230_documentation__231_003_Pages">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 13-12-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
+Generated on 18-12-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
 </div>
 </div>
 </div>

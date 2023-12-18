@@ -450,13 +450,14 @@ impl RenderOgl
     }
 
     // Load and register an image for rendering
+    #[Swag.Overload]
     mtd addImage(fullName: string)->Texture throw
     {
         return addImage(Image.load(fullName))
     }
 
     // Register an image for rendering
-    #[Warn("wrn0002", WarnLevel.Disable)]
+    #[Warn("wrn0002", WarnLevel.Disable), Swag.Overload]
     mtd addImage(image: Image)->Texture
     {
         if !image.isValid() return {}
@@ -541,6 +542,7 @@ impl RenderOgl
     }
 
     // Rotate the world transform
+    #[Swag.Overload]
     mtd rotateTransform(angle: Math.Angle)
     {
         let tr = Transform2.createRotation(angle.rad, 0, 0)
@@ -548,6 +550,7 @@ impl RenderOgl
     }
 
     // Rotate the world transform
+    #[Swag.Overload]
     mtd rotateTransform(angle: Math.Angle, centerX, centerY: f32)
     {
         let tr = Transform2.createRotation(angle.rad, centerX, centerY)

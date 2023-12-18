@@ -1,11 +1,13 @@
 var G = 0
 
+#[Swag.Overload]
 func toto(x: &&s32)
     #validif true
 {
     G = 1
 }
 
+#[Swag.Overload]
 func toto(x: &s32)
     #validif true
 {

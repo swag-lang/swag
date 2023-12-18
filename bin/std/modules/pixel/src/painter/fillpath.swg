@@ -2,6 +2,7 @@ using Core, Math
 
 public impl Painter
 {
+    #[Swag.Overload]
     internal mtd fillPath(t: *Poly2Tri.Tesselate, p: *LinePath, bvMin, bvMax: Vector2, brush: Brush)
     {
         setTexture0(bvMin, bvMax, brush)
@@ -56,6 +57,7 @@ public impl Painter
     }
 
     // Fill the line path
+    #[Swag.Overload]
     mtd fillPath(pathList: *LinePathList, color: Color)
     {
         if !pathList.paths.count
@@ -66,6 +68,7 @@ public impl Painter
     }
 
     // Fill the line path with the given 'brush'
+    #[Swag.Overload]
     mtd fillPath(path: *LinePath, brush: Brush)
     {
         path.flatten(curState.paintQuality)
@@ -152,6 +155,7 @@ public impl Painter
     }
 
     // Fill the line path
+    #[Swag.Overload]
     mtd fillPath(path: *LinePath, color: Color)
     {
         sharedSolidBrush.type = .SolidColor
@@ -161,6 +165,7 @@ public impl Painter
 
     // Fill the list of paths
     // clockwise = fill, anti-clockwise = hole
+    #[Swag.Overload]
     mtd fillPath(pathList: *LinePathList, brush: Brush)
     {
         // Flatten all paths
@@ -252,6 +257,7 @@ public impl Painter
     }
 
     // Fill the polygon with the given color
+    #[Swag.Overload]
     mtd fillPolygon(path: *LinePath, color: Color)
     {
         sharedSolidBrush.type = .SolidColor
@@ -260,6 +266,7 @@ public impl Painter
     }
 
     // Fill the polygon with the given 'brush'
+    #[Swag.Overload]
     mtd fillPolygon(path: *LinePath, brush: Brush)
     {
         path.flatten(curState.paintQuality)

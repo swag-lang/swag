@@ -231,6 +231,7 @@ impl RichEditCtrl
         recomputeScroll = true
     }
 
+    #[Swag.Overload]
     mtd insertTextPrivate(cp: *RichEditCursor, runes: Array'rune, styles: Array'u8, selRect: bool)
     {
         if runes.isEmpty()
@@ -290,6 +291,7 @@ impl RichEditCtrl
         recomputeScroll = true
     }
 
+    #[Swag.Overload]
     mtd insertTextPrivate(cp: *RichEditCursor, text: string, txtStyle: RichEditStyleRef)
     {
         if lines.isEmpty()
@@ -458,6 +460,7 @@ public impl RichEditCtrl
     }
 
     // Insert a text with a given style
+    #[Swag.Overload]
     mtd insertText(text: string)
     {
         let undo = Memory.new'RichEditUndo()
@@ -476,6 +479,7 @@ public impl RichEditCtrl
     }
 
     // Insert a text with a style per character
+    #[Swag.Overload]
     mtd insertText(text: string, txtStyles: Array'u8)
     {
         let undo = Memory.new'RichEditUndo()

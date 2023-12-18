@@ -355,7 +355,6 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
     visit l: lines
     {
         var tokens = Tokenize.split(l, `;`'rune, removeEmpty: false)
-
         var fi: ImageInfo
         var folders = Tokenize.split(tokens[0], `/`'rune)
 

@@ -954,6 +954,7 @@ impl ListCtrl
     }
 
     // Add one new line
+    #[Swag.Overload]
     mtd createLine(parentLine: *ListLine)->*ListLine
     {
         Debug.assert(!isVirtual, "createLine cannot be called on a virtual list")
@@ -976,7 +977,7 @@ impl ListCtrl
     }
 
     // Add one line, and set first column
-    #[Swag.Discardable]
+    #[Swag.Discardable, Swag.Overload]
     mtd createLine(name: string, icon: Icon = {}, parentLine: *ListLine = null)->*ListLine
     {
         let line = createLine(parentLine)
@@ -1122,6 +1123,7 @@ impl ListCtrl
             idxLineToIdxList.add(l.index, cast(u32) idx)
     }
 
+    #[Swag.Overload]
     internal mtd sort(column: u32, descentOrder: bool, toSort: *Array'*ListLine)
     {
         func sortFunc(column: u32, descentOrder: bool, a, b: *ListLine)->s32
@@ -1167,6 +1169,7 @@ impl ListCtrl
     // Sort the list by a given column
     // If 'persistent' is true, then the sorted column will be displayed in the
     // header (if it exists)
+    #[Swag.Overload]
     mtd sort(column: u32, descentOrder, persistent = false)
     {
         if isVirtual
@@ -1186,6 +1189,7 @@ impl ListCtrl
     }
 
     // Sort list as before
+    #[Swag.Overload]
     mtd sort()
     {
         if header and header.sortMark != 0

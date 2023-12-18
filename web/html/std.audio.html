@@ -709,7 +709,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></div
 <span id="Audio_Voice_destroy"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Voice.</span><span class="api-item-title-strong">destroy</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L154" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L155" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -735,7 +735,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></div
 <span id="Audio_Voice_getVolumeDB"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Voice.</span><span class="api-item-title-strong">getVolumeDB</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L177" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L178" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -748,7 +748,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></div
 <span id="Audio_Voice_isPlaying"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Voice.</span><span class="api-item-title-strong">isPlaying</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L163" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L164" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -761,7 +761,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></div
 <span id="Audio_Voice_pause"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Voice.</span><span class="api-item-title-strong">pause</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L134" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L135" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -832,7 +832,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></div
 <span id="Audio_Voice_setVolumeDB"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Voice.</span><span class="api-item-title-strong">setVolumeDB</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L171" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L172" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -845,7 +845,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></div
 <span id="Audio_Voice_stop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Voice.</span><span class="api-item-title-strong">stop</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L143" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/audio\src\voice.swg#L144" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1061,7 +1061,7 @@ voice.<span class="SFct">play</span>(<span class="SCst">Loop</span>)</span></div
 <p>Set the general output volume. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setOutputVolume</span>(volume: <span class="STpe">f32</span>) <span class="SKwd">throw</span></span></div>
 <div class="swag-watermark">
-Generated on 13-12-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
+Generated on 18-12-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
 </div>
 </div>
 </div>

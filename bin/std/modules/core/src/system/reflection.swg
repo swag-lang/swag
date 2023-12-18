@@ -219,6 +219,7 @@ using Swag
     }
 
     // Returns the given attribute value, or null
+    #[Swag.Overload]
     func getAttributeValue(type: const *Swag.TypeValue, attribute: typeinfo, value: string)->any
     {
         let attrib = getAttribute(type, attribute)
@@ -228,6 +229,7 @@ using Swag
     }
 
     // Returns the given attribute value, or null
+    #[Swag.Overload]
     func getAttributeValue(type: typeinfo, attribute: typeinfo, value: string)->any
     {
         let attrib = getAttribute(type, attribute)
@@ -237,6 +239,7 @@ using Swag
     }
 
     // Returns the given attribute value, or null
+    #[Swag.Overload]
     func getAttributeValue(attribute: const *Swag.Attribute, value: string)->any
     {
         visit p: attribute.params
@@ -249,6 +252,7 @@ using Swag
     }
 
     // Returns the given associated attributes to 'value'
+    #[Swag.Overload]
     func getAttributes(value: const *Swag.TypeValue, attribute: typeinfo)->Array'(const *Swag.Attribute)
     {
         var result: retval
@@ -262,6 +266,7 @@ using Swag
     }
 
     // Returns the given associated 'attribute' to 'value' or null
+    #[Swag.Overload]
     func getAttribute(value: const *Swag.TypeValue, attribute: typeinfo)->const *Swag.Attribute
     {
         visit it: value.attributes
@@ -274,12 +279,14 @@ using Swag
     }
 
     // Returns true if the given 'value' has the associated 'attribute'
+    #[Swag.Overload]
     func hasAttribute(value: const *Swag.TypeValue, attribute: typeinfo)->bool
     {
         return getAttribute(value, attribute) != null
     }
 
     // Returns the given associated attributes to 'type'
+    #[Swag.Overload]
     func getAttributes(type: typeinfo, attribute: typeinfo)->Array'(const *Swag.Attribute)
     {
         var result: retval
@@ -314,6 +321,7 @@ using Swag
     }
 
     // Returns the given associated 'attribute' to 'type' or null
+    #[Swag.Overload]
     func getAttribute(type: typeinfo, attribute: typeinfo)->const *Swag.Attribute
     {
         switch type.kind
@@ -347,6 +355,7 @@ using Swag
     }
 
     // Returns true if the given 'type' has the associated 'attribute'
+    #[Swag.Overload]
     func hasAttribute(type: typeinfo, attribute: typeinfo)->bool
     {
         return getAttribute(type, attribute) != null

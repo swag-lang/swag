@@ -508,6 +508,7 @@ impl Painter
             remainingPatternLen *= 0.5
     }
 
+    #[Swag.Overload]
     mtd drawLine(using cxt: *Context, pos: Math.Vector2)
     {
         // solid
@@ -606,6 +607,7 @@ impl Painter
         return drawLineCap(pen.endCapStyle, v1, c, -1.0, dref pen, false)
     }
 
+    #[Swag.Overload]
     mtd drawPath(using cxt: *Context)
     {
         if pen.size < 1 or path.polygon.points.count == 0
@@ -666,6 +668,7 @@ impl Painter
 public impl Painter
 {
     // Draw the line path
+    #[Swag.Overload]
     mtd drawPath(path: *LinePath, color: Color, penSize: f32)
     {
         sharedSolidPen.brush.type = .SolidColor
@@ -675,6 +678,7 @@ public impl Painter
     }
 
     // Draw the line path with the given 'pen'
+    #[Swag.Overload]
     mtd drawPath(path: *LinePath, pen: Pen)
     {
         path.flatten(curState.paintQuality)
@@ -700,6 +704,7 @@ public impl Painter
     }
 
     // Draw the line path
+    #[Swag.Overload]
     mtd drawPath(pathList: *LinePathList, pen: Pen, mode: DrawPathListMode = .Separate)
     {
         if !pathList.paths.count
@@ -736,6 +741,7 @@ public impl Painter
     }
 
     // Draw the line path
+    #[Swag.Overload]
     mtd drawPath(pathList: *LinePathList, color: Color, penSize: f32, mode: DrawPathListMode = .Separate)
     {
         if !pathList.paths.count

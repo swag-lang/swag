@@ -15,13 +15,13 @@ public struct RenderingContext
 
 public impl NativeRenderOgl
 {
-    #[Warn("wrn0002", WarnLevel.Disable)]
+    #[Warn("wrn0002", WarnLevel.Disable), Overload]
     mtd createContext(hWnd: HWND, width, height: s32, mainRC: HGLRC = null)->RenderingContext throw
     {
         return try createContext(GetDC(hWnd), width, height, mainRC)
     }
 
-    #[Warn("wrn0002", WarnLevel.Disable)]
+    #[Warn("wrn0002", WarnLevel.Disable), Overload]
     mtd createContext(hdc: HDC, width, height: s32, mainRC: HGLRC = null)->RenderingContext throw
     {
         var result: retval

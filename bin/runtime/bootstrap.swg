@@ -67,6 +67,10 @@ namespace Swag
     #[AttrUsage(AttributeUsage.Function)]
     attr Complete()
 
+    // The following function can be overloaded
+    #[AttrUsage(AttributeUsage.Function)]
+    attr Overload()
+
     // A 'return' in the following inlined function must be done in the callee context
     #[AttrUsage(AttributeUsage.Function)]
     attr CalleeReturn()

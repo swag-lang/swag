@@ -9,10 +9,12 @@ struct B {}
 
 impl A
 {
+    #[Swag.Overload]
     func toto(ptr1: *A)
     {
     }
 
+    #[Swag.Overload]
     func toto(ptr1: *B)
     {
     }

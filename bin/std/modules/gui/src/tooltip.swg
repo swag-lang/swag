@@ -37,6 +37,7 @@ func update(dt: f32)
 }
 
 // Hide the current tooltip, if visible
+#[Swag.Overload]
 public func hide()
 {
     if g_Current
@@ -50,6 +51,7 @@ public func hide()
 }
 
 // Hide the current tooltip, if visible
+#[Swag.Overload]
 func hide(owner: *Wnd)
 {
     if g_Pending and g_Pending.owner == owner

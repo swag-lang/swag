@@ -33,19 +33,19 @@ impl String
         return buffer
     }
 
-    #[Implicit, Inline]
+    #[Implicit, Inline, Overload]
     mtd const opCast()->cstring
     {
         return buffer
     }
 
-    #[Implicit, Inline]
+    #[Implicit, Inline, Overload]
     mtd const opCast()->string
     {
         return @mkstring(buffer, length)
     }
 
-    #[Implicit, Inline]
+    #[Implicit, Inline, Overload]
     mtd const opCast()->const [..] u8
     {
         return @mkslice(buffer, length)
@@ -298,6 +298,7 @@ impl String
     }
 
     // Insert an ascii byte at the given position
+    #[Swag.Overload]
     mtd insert(byteIndex: u64, value: u8)
     {
         if byteIndex == length
@@ -316,6 +317,7 @@ impl String
     }
 
     // Insert a substring at the given position
+    #[Swag.Overload]
     mtd insert(byteIndex: u64, value: string)
     {
         if byteIndex == length
@@ -342,7 +344,7 @@ impl String
     }
 
     // Append a byte to the String
-    #[Swag.Inline]
+    #[Swag.Inline, Swag.Overload]
     mtd append(value: u8)
     {
         grow(length + 2)
@@ -352,6 +354,7 @@ impl String
     }
 
     // Append a rune to the String
+    #[Swag.Overload]
     mtd append(value: rune)
     {
         Debug.assert(Utf8.isValidRune(value), "invalid rune")
@@ -365,6 +368,7 @@ impl String
     }
 
     // Append a string to the String
+    #[Swag.Overload]
     mtd append(value: string)
     {
         let concatLength = @countof(value)
@@ -560,6 +564,7 @@ impl String
     }
 
     // Returns a new String in upper case
+    #[Swag.Overload]
     mtd toUpper(set = CharacterSet.Latin1)->String
     {
         var result: retval = dref self
@@ -568,6 +573,7 @@ impl String
     }
 
     // Returns a new String in lower case
+    #[Swag.Overload]
     func toUpper(str: string, set = CharacterSet.Latin1)->String
     {
         var result: retval = str
@@ -576,6 +582,7 @@ impl String
     }
 
     // Returns a new String in lower case
+    #[Swag.Overload]
     mtd toLower(set = CharacterSet.Latin1)->String
     {
         var result: retval = dref self
@@ -584,6 +591,7 @@ impl String
     }
 
     // Returns a new String in lower case
+    #[Swag.Overload]
     func toLower(str: string, set = CharacterSet.Latin1)->String
     {
         var result: retval = str

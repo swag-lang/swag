@@ -20,18 +20,18 @@ struct Color
 
 impl Color
 {
-    #[Complete, Inline, ConstExpr]
+    #[Complete, Inline, ConstExpr, Overload]
     func opAffect(self, argb: u32)    = self.argb = argb
-    #[Complete, Inline, Implicit, ConstExpr]
+    #[Complete, Inline, Implicit, ConstExpr, Overload]
     func opAffect(self, argb: Argb)   = self.argb = cast(u32) argb
-    #[Complete, Inline, ConstExpr]
+    #[Complete, Inline, ConstExpr, Overload]
     func opAffect(self, name: string) = self.argb = cast(u32) Argb.fromName(name)
 
-    #[Inline]
+    #[Inline, Overload]
     func opEquals(self, argb: u32)   => self.argb == argb
-    #[Inline]
+    #[Inline, Overload]
     func opEquals(self, argb: Argb)  => self.argb == cast(u32) argb
-    #[Inline]
+    #[Inline, Overload]
     func opEquals(self, other: Self) => self.argb == other.argb
 
     #[Inline]
@@ -59,7 +59,7 @@ impl Color
 
     // Just set r, g and b components.
     // Alpha will be opaque.
-    #[Inline]
+    #[Inline, Overload]
     func setRgb(self, r, g, b: u8)
     {
         self.a = 255
@@ -70,7 +70,7 @@ impl Color
 
     // Just set r, g and b components.
     // Alpha will be opaque.
-    #[Inline]
+    #[Inline, Overload]
     mtd setRgb(rgb: Color)
     {
         self.r = rgb.r
@@ -143,7 +143,7 @@ impl Color
     }
 
     // Create a new Color with specified values
-    #[Inline]
+    #[Inline, Overload]
     func fromArgb(a, r, g, b: u8)->Color
     {
         var result: retval = undefined
@@ -152,7 +152,7 @@ impl Color
     }
 
     // Create a new Color with specified values
-    #[Inline]
+    #[Inline, Overload]
     func fromArgb(argb: Argb)->Color
     {
         var result: retval = argb
@@ -160,7 +160,7 @@ impl Color
     }
 
     // Create a new Color with specified values
-    #[Inline]
+    #[Inline, Overload]
     func fromArgb(alpha: u8, argb: Argb)->Color
     {
         var result: retval = argb
@@ -169,7 +169,7 @@ impl Color
     }
 
     // Create a new Color with specified values
-    #[Inline]
+    #[Inline, Overload]
     func fromArgb(argb: u32)->Color
     {
         var result: retval = argb

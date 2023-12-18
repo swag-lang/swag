@@ -177,6 +177,18 @@ bool AstFuncDecl::mustInline()
     return mustUserInline() || mustAutoInline();
 }
 
+bool AstFuncDecl::canOverload()
+{
+    if (attributeFlags & ATTRIBUTE_OVERLOAD)
+        return true;
+    if (flags & (AST_IS_GENERIC | AST_FROM_GENERIC))
+        return true;
+    if (token.text[0] == '@')
+        return true;
+
+    return false;
+}
+
 Utf8 AstFuncDecl::getCallName()
 {
     if (attributeFlags & (ATTRIBUTE_FOREIGN | ATTRIBUTE_PUBLIC))

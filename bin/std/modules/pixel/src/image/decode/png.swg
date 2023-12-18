@@ -380,6 +380,7 @@ impl Decoder
         }
     }
 
+    #[Swag.Overload]
     mtd defilter(width, height: u32, input, output: ^u8)
     {
         if header.bitDepth < 8
@@ -432,6 +433,7 @@ impl Decoder
         }
     }
 
+    #[Swag.Overload]
     mtd defilter()
     {
         if header.interlaceMethod != .Adam7
@@ -452,7 +454,7 @@ impl Decoder
 
         var signature: u64 = undefined
         stream.peekBytes(@sizeof(signature), cast(^u8) &signature)
-        if signature != 0x0a1a0a0d474e5089 
+        if signature != 0x0a1a0a0d474e5089
             throw InvalidFormatError{"not a png"}
 
         var result:     retval

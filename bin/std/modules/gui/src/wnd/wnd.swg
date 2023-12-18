@@ -582,6 +582,7 @@ impl Wnd
     }
 
     // Convert a local coordinate to a surface coordinate
+    #[Swag.Overload]
     mtd localToSurface(pos: Math.Point)->Math.Point
     {
         var r = getSurfaceRect()
@@ -589,6 +590,7 @@ impl Wnd
     }
 
     // Convert a local coordinate to a surface coordinate
+    #[Swag.Overload]
     mtd localToSurface(pos: Math.Rectangle)->Math.Rectangle
     {
         var r = getSurfaceRect()
@@ -662,7 +664,9 @@ impl Wnd
             parent.sendResizeEvent()
     }
 
+    #[Swag.Overload]
     mtd setAllMargins(value: f32)          = setMargin(value, value, value, value)
+    #[Swag.Overload]
     mtd setAllMargins(value: Math.Vector4) = setMargin(value.x, value.y, value.z, value.w)
 
     // Set padding for childs
@@ -684,7 +688,9 @@ impl Wnd
         sendResizeEvent()
     }
 
+    #[Swag.Overload]
     mtd setAllPaddings(value: f32)          = setPadding(value, value, value, value)
+    #[Swag.Overload]
     mtd setAllPaddings(value: Math.Vector4) = setPadding(value.x, value.y, value.z, value.w)
 
     // Force the window to be the first painted (before all siblings)
@@ -725,6 +731,7 @@ impl Wnd
     }
 
     // Move and size the wnd
+    #[Swag.Overload]
     mtd setPosition(rect: Math.Rectangle, computeLayout = true)
     {
         move(rect.x, rect.y)
@@ -732,6 +739,7 @@ impl Wnd
     }
 
     // Move and size the wnd
+    #[Swag.Overload]
     mtd setPosition(x, y, w, h: f32, computeLayout = true)
     {
         move(x, y)
@@ -781,11 +789,13 @@ impl Wnd
     }
 
     // Apply the current layout (childs constraints)
+    #[Swag.Overload]
     mtd applyLayout()
     {
         applyLayout({position.width, position.height})
     }
 
+    #[Swag.Overload]
     mtd applyLayout(oldSize: Math.Point)
     {
         var clientRect = getClientRectPadding()

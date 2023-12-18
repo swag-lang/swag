@@ -147,6 +147,7 @@ Instead of `#validif`, you can use `#validifx`. `#validifx` is evaluated for **e
 
     {
         // A version of 'first' where 'x' is known at compile time.
+        #[Swag.Overload]
         func first(x: s32)->s32
             #validifx @isconstexpr(x)
         {
@@ -154,6 +155,7 @@ Instead of `#validif`, you can use `#validifx`. `#validifx` is evaluated for **e
         }
 
         // A version of 'first' where 'x' is **not** known at compile time.
+        #[Swag.Overload]
         func first(x: s32)->s32
             #validifx !@isconstexpr(x)
         {

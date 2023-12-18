@@ -3,6 +3,7 @@ using Swag
 var G = 0
 
 #[Macro]
+#[Swag.Overload]
 func toto(x: string)
     #validifx @isconstexpr(x)
 {
@@ -12,6 +13,7 @@ func toto(x: string)
     toto(x)
 }
 
+#[Swag.Overload]
 func toto(x: string)
     #validifx !@isconstexpr(x)
 {

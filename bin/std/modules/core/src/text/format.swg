@@ -95,13 +95,13 @@ func toStringTemp(fmt: string, values: ...)->string
         checkFormat(@nameof(#self), fmt, values)
         return true
     }
-{    
+{
     var buf: ConcatBuffer
 
     #[Match("validif", false)]
     append(&buf, fmt, values)
 
-    let str = buf.toString(@getcontext().tempAllocator)    
+    let str = buf.toString(@getcontext().tempAllocator)
     return str.toString()
 }
 
@@ -177,7 +177,7 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
 
 // String interpolation.
 // Format is `{<value to interpolate>:format}`
-#[Macro]
+#[Macro, Overload]
 func toInterp(buf: *ConcatBuffer, exp: string)
     #validifx
     {
@@ -236,7 +236,7 @@ func toInterp(buf: *ConcatBuffer, exp: string)
 }
 
 // String interpolation.
-#[Mixin]
+#[Mixin, Overload]
 func toInterp(exp: string)->String
     #validifx
     {

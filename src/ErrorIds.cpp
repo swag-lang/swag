@@ -82,7 +82,7 @@ void initErrors()
     SWAG_ERROR(Saf0007, "safety failed 'math' $ division by zero");
     SWAG_ERROR(Saf0021, "safety failed 'nan' $ invalid float (NaN)");
     SWAG_ERROR(Saf0001, "safety failed 'null' $ dereferencing a null pointer");
-    SWAG_ERROR(Saf0036, "safety failed 'null' $ trying to throw a non existing error");    
+    SWAG_ERROR(Saf0036, "safety failed 'null' $ trying to throw a non existing error");
     SWAG_ERROR(Saf0032, "safety failed 'overflow' $ negative value '%I64d' on unsigned type '%s'");
     SWAG_ERROR(Saf0006, "safety failed 'overflow' $ negative value '%s' on unsigned type '%s'");
     SWAG_ERROR(Saf0030, "safety failed 'overflow' $ negative value '%g' on unsigned type '%s'");
@@ -889,7 +889,7 @@ void initErrors()
     SWAG_ERROR(Err1214, "invalid 'opVisit' name                            $ function should be named 'opVisit' $ if you want to declare a visit variant, declare the alternate name after a comma");
     SWAG_ERROR(Err1139, "invalid visit                                     $ cannot find the '%s' visit variant in '%s'");
     SWAG_ERROR(Err0557, "invalid visit                                     $ the type '%s' cannot be visited with 'visit'");
-    SWAG_ERROR(Err0639, nullptr);
+    SWAG_ERROR(Err0639, "function already declared                         $ a function with the same name '%s' has already been declared $ if you want to declare an overload, mark all functions with '#[Swag.Overload]'");
     SWAG_ERROR(Err0694, nullptr);
     SWAG_ERROR(Err0530, nullptr);
     SWAG_ERROR(Err0660, nullptr);

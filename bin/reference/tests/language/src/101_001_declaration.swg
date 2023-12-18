@@ -1,6 +1,7 @@
 /**
 A function declaration usually starts with the `func` keyword followed by the function name.
 */
+#[Swag.Overload]
 func toto()
 {
 }
@@ -52,6 +53,7 @@ func sum3(x, y = 0.0)
 }
 
 enum Values { A; B; }
+#[Swag.Overload]
 func toto(x: s32, y = Values.A)
 {
     #assert @typeof(y) == Values

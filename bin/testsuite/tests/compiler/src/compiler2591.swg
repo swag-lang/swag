@@ -2,11 +2,13 @@
 
 using Swag
 
+#[Swag.Overload]
 func alloc(size: u64, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*void
 {
     return null
 }
 
+#[Swag.Overload]
 func alloc(size: bool, allocator: IAllocator = null, alignement: u32 = 0, hint: string = null, loc = #callerlocation)->*void
 {
     return null

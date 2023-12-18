@@ -177,7 +177,7 @@ func fpclassifyf(x: f32)->s32
 	return FP_NORMAL
 }
 
-#[Inline]
+#[Inline, Overload]
 {
     func signbit(x: f32) => cast(s32) (cast,bit(u32) x >> 31)
     func signbit(x: f64)  => cast(s32) (cast,bit(u64) x >> 63)

@@ -129,12 +129,14 @@ impl Rectangle
     }
 
     // Offset the rectangle position by a given value
+    #[Swag.Overload]
     mtd offset(offsetXY: f32)
     {
         x, y += offsetXY
     }
 
     // Offset the rectangle position by a x and y values
+    #[Swag.Overload]
     mtd offset(offsetX, offsetY: f32)
     {
         x += offsetX
@@ -142,6 +144,7 @@ impl Rectangle
     }
 
     // Offset the rectangle position by a given value
+    #[Swag.Overload]
     mtd offset(offset: Math.Point)
     {
         x += offset.x
@@ -158,12 +161,14 @@ impl Rectangle
     }
 
     // Multiply the width and height of the rectangle by a given 'value'
+    #[Swag.Overload]
     mtd scale(value: f32)
     {
         width, height *= value
     }
 
     // Multiply the width by 'x' and the height by 'y'
+    #[Swag.Overload]
     func scale(self, x, y: f32)
     {
         self.width *= x
@@ -171,6 +176,7 @@ impl Rectangle
     }
 
     // Inflates the rectangle by the given 'value'
+    #[Swag.Overload]
     mtd inflate(value: f32)
     {
         x -= value
@@ -180,6 +186,7 @@ impl Rectangle
     }
 
     // Inflates the rectangle by the given amount in 'x' and 'y' directions
+    #[Swag.Overload]
     func inflate(self, x, y: f32)
     {
         self.x -= x
@@ -228,24 +235,28 @@ impl Rectangle
     }
 
     // Determines if the specfied point is contained within the rectangular region
+    #[Swag.Overload]
     func contains(const self, x, y: f32)->bool
     {
         return (x >= self.x and x < self.x + self.width) and (y >= self.y and y < self.y + self.height)
     }
 
     // Determines if the specfied point is contained within the rectangular region
+    #[Swag.Overload]
     mtd const contains(pt: Point)->bool
     {
         return contains(pt.x, pt.y)
     }
 
     // Determines if the specfied rectangle is contained within the rectangular region
+    #[Swag.Overload]
     mtd const contains(rect: Rectangle)->bool
     {
         return (rect.x >= x and rect.right() <= right()) and (rect.y >= y and rect.bottom() <= bottom())
     }
 
     // Intersect this rectangle with another one
+    #[Swag.Overload]
     mtd intersect(other: Rectangle)
     {
         dref self = intersect(dref self, other)
@@ -253,6 +264,7 @@ impl Rectangle
 
     // Creates a rectangle that represents the intersetion between 'a' and 'b'.
     // If there is no intersection, Zero is returned.
+    #[Swag.Overload]
     func intersect(a, b: Rectangle)->Rectangle
     {
         let x1 = max(a.x, b.x)

@@ -87,12 +87,14 @@ impl Image
     }
 
     // Allocate a computing buffer with current image size
+    #[Swag.Overload]
     mtd allocWorkingBuffer()
     {
         allocWorkingBuffer(width, height, pf)
     }
 
     // Allocate a computing buffer with new sizes
+    #[Swag.Overload]
     mtd allocWorkingBuffer(newWidth, newHeight: s32, newPf: PixelFormat)
     {
         if  workingBuffer and

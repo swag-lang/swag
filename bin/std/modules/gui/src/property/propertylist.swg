@@ -402,6 +402,7 @@ internal impl PropertyList
     // Add
     ////////////////////////////
 
+    #[Swag.Overload]
     mtd addItem(f: Swag.TypeValue, ptrData: *u8, canDesc = true)->*PropertyListItem
     {
         let line = StackLayoutCtrl.create(edView, .TopAutoSize)
@@ -739,6 +740,7 @@ impl PropertyList
     }
 
     // Add a new struct to display
+    #[Swag.Overload]
     mtd addItem(val: any)
     {
         let dataof = @dataof(val)

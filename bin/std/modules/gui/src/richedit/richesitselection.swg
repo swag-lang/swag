@@ -296,6 +296,7 @@ impl RichEditCtrl
         forceCaretVisible = true
     }
 
+    #[Swag.Overload]
     mtd deleteLine()
     {
         pushUndo()

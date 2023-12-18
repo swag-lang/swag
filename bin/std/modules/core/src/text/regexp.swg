@@ -166,6 +166,7 @@ impl RegExp
     }
 
     // Compile and match the expression.
+    #[Swag.Overload]
     public mtd match(expr, str: string, ignoreCase = false)->bool throw
     {
         compile(expr, #self.ignoreCase)
@@ -174,6 +175,7 @@ impl RegExp
 
     // Returns true if 'str' matches the regexp.
     // Should have been compiled before.
+    #[Swag.Overload]
     public mtd match(str: string)->bool
     {
         hasStarted, wasWord = false

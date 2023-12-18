@@ -5,7 +5,9 @@ struct AA
 
 impl AA
 {
+    #[Swag.Overload]
     func opEquals(using self, x: s32) => x == 6
+    #[Swag.Overload]
     func opEquals(using self, x: string) => x == "toto"
 }
 

@@ -414,6 +414,7 @@ impl Decoder
         }
     }
 
+    #[Swag.Overload]
     mtd getFrame(decodePixels: bool)->s32 throw
     {
         var sep = readU8()
@@ -498,6 +499,7 @@ public impl Decoder
     }
 
     // Create an image for the current frame
+    #[Swag.Overload]
     mtd getFrame(image: *Image, decodePixels = true)
     {
         Debug.assert(initDone)

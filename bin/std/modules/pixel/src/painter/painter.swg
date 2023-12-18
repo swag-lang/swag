@@ -280,6 +280,7 @@ impl Painter
         return cmd
     }
 
+    #[Swag.Overload]
     internal mtd pushTriangle(p1, p2, p3: Vector2, uv1, uv2, uv3: Vector2, color: Color)->u64
     {
         let cmd = pushTriangleCmd()
@@ -295,6 +296,7 @@ impl Painter
         return vertexBuffer.count - 3
     }
 
+    #[Swag.Overload]
     internal mtd pushTriangle(p1, p2, p3: Vector2, color: Color)->u64
     {
         let cmd = pushTriangleCmd()
@@ -310,7 +312,7 @@ impl Painter
         return vertexBuffer.count - 3
     }
 
-    #[Swag.Safety("", false)]
+    #[Swag.Safety("", false), Swag.Overload]
     internal mtd addEdgeAA(tri: u64, startx, starty, endx, endy: f32)
     {
         var ptr = vertexBuffer.buffer + tri
@@ -343,7 +345,7 @@ impl Painter
         ptr.aanum += 1
     }
 
-    #[Swag.Inline]
+    #[Swag.Inline, Swag.Overload]
     internal mtd addEdgeAA(tri: u64, start, end: Vector2)
     {
         addEdgeAA(tri, start.x, start.y, end.x, end.y)
@@ -518,11 +520,23 @@ impl Painter
     }
 
     // Set the paint rotation
+    #[Swag.Overload]
     mtd rotateTransform(angle: Math.Angle)
     {
         if isZeroEpsilon(angle.rad)
             return
         var tr = Transform2.createRotation(angle.rad, 0, 0)
+        curState.transform.multiply(tr)
+        setTransform(curState.transform)
+    }
+
+    // Set the paint rotation
+    #[Swag.Overload]
+    mtd rotateTransform(angle: Math.Angle, centerX, centerY: f32)
+    {
+        if isZeroEpsilon(angle.rad)
+            return
+        var tr = Transform2.createRotation(angle.rad, centerX, centerY)
         curState.transform.multiply(tr)
         setTransform(curState.transform)
     }
@@ -534,16 +548,6 @@ impl Painter
         if isZeroEpsilon(angle.rad)
             return
         var tr = Transform2.createRotation(angle.rad, curState.transform.tx, curState.transform.ty)
-        curState.transform.multiply(tr)
-        setTransform(curState.transform)
-    }
-
-    // Set the paint rotation
-    mtd rotateTransform(angle: Math.Angle, centerX, centerY: f32)
-    {
-        if isZeroEpsilon(angle.rad)
-            return
-        var tr = Transform2.createRotation(angle.rad, centerX, centerY)
         curState.transform.multiply(tr)
         setTransform(curState.transform)
     }
@@ -599,12 +603,14 @@ impl Painter
     }
 
     // Set the current clipping rectangle
+    #[Swag.Overload]
     mtd setClippingRect(x, y, width, height: f32)
     {
         setClippingRect({x, y, width, height})
     }
 
     // Set the current clipping rectangle
+    #[Swag.Overload]
     mtd setClippingRect(rect: Rectangle)
     {
         if curState.clippingRect == rect and curState.clippingRectOn
@@ -716,6 +722,7 @@ impl Painter
     }
 
     // Set color mask
+    #[Swag.Overload]
     mtd setColorMask(cm: ColorMask)
     {
         let cmd = newCommand(.ColorMask, true)
@@ -724,6 +731,7 @@ impl Painter
     }
 
     // Set color mask
+    #[Swag.Overload]
     mtd setColorMask(r, g, b, a: bool)
     {
         let cmd = newCommand(.ColorMask, true)
@@ -784,6 +792,7 @@ impl Painter
     }
 
     // Set a shader parameter
+    #[Swag.Overload]
     mtd setShaderParam(param: ShaderParamHandle, val: s32)
     {
         let cmd = newCommand(.SetShaderParam)
@@ -793,6 +802,7 @@ impl Painter
     }
 
     // Set a shader parameter
+    #[Swag.Overload]
     mtd setShaderParam(param: ShaderParamHandle, val: f32)
     {
         let cmd = newCommand(.SetShaderParam)

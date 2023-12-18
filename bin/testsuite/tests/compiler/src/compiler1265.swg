@@ -6,12 +6,14 @@ struct Toto
 impl Toto
 {
     #[Swag.Implicit]
+	#[Swag.Overload]
 	func opCast(using self)->s32
 	{
         return x + y
 	}
 
     #[Swag.Implicit]
+	#[Swag.Overload]
 	func opCast(using self)->string
 	{
         return "x + y"

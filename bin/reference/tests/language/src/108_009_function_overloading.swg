@@ -1,7 +1,7 @@
 /**
-Functions can have the same names as long as their parameters are different.
+Functions can have the same names as long as their parameters are different. Such function must be marked with '#[Swag.Overload]'.
 */
-#[Swag.ConstExpr]
+#[Swag.ConstExpr, Swag.Overload]
 {
     func sum(x, y: s32) => x + y
     func sum(x, y, z: s32) => x + y + z
@@ -11,11 +11,13 @@ Functions can have the same names as long as their parameters are different.
 #assert sum(1, 2, 3) == 6
 
 /**
-Note that in Swag, there is no implicit cast for function parameters. So you must always specify the right type.
+Note that in Swag, there is no implicit cast for function parameters in case of overloads. So you must always specify the right type, in order to be sure to call the right version.
 */
 #test
 {
+    #[Swag.Overload]
     func over(x, y: s32) => x + y
+    #[Swag.Overload]
     func over(x, y: s64) => x * y
 
     // This would generate an error because it's ambiguous, as 1 and 2 are not strong types

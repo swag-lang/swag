@@ -542,6 +542,7 @@ struct AstFuncDecl : public AstNode
     bool        mustUserInline(bool forExport = false);
     bool        mustInline();
     Utf8        getCallName();
+    bool        canOverload();
 
     DependentJobs          dependentJobs;
     Utf8                   fullnameForeign;

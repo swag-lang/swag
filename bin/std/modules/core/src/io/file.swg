@@ -90,7 +90,7 @@ func readAllBytes(fullname: string)->Array'u8 throw
 }
 
 // Write a file with the content of a slice of bytes
-#[Swag.Discardable]
+#[Swag.Discardable, Swag.Overload]
 func writeAllBytes(fullname: string, buffer: const [..] u8)->u64 throw
 {
     var stream = openWrite(fullname)
@@ -98,7 +98,7 @@ func writeAllBytes(fullname: string, buffer: const [..] u8)->u64 throw
 }
 
 // Write a file with the content of a 'ConcatBuffer'
-#[Swag.Discardable]
+#[Swag.Discardable, Swag.Overload]
 func writeAllBytes(fullname: string, buffer: ConcatBuffer)->u64 throw
 {
     var stream = openWrite(fullname)

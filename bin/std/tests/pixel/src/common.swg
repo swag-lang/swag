@@ -7,6 +7,7 @@ internal func dataPath()->String
     return Path.combine(dataPath, "datas")
 }
 
+#[Swag.Overload]
 internal func tmpPath()->String
 {
     var dataPath = Path.getDirectoryName(#location.fileName)
@@ -19,6 +20,7 @@ internal func imagePath(name: string)->String
     return Path.combine(dataPath(), name)
 }
 
+#[Swag.Overload]
 internal func tmpPath(name: string)->String
 {
     return Path.combine(tmpPath(), name)

@@ -43,7 +43,7 @@ public impl BitArray
     {
         if(@getcontext().flags & .PostCopyResetAllocator)
             allocator = null
-                    
+
         if buffer
         {
             let otherBuffer = buffer
@@ -123,6 +123,7 @@ public impl BitArray
     }
 
     // Reserve the given amount of bits
+    #[Swag.Overload]
     mtd reserve(maxBits: u64)
     {
         if !maxBits
@@ -143,6 +144,7 @@ public impl BitArray
     }
 
     // Reserve the given amount of bits and set an initial value to all bits
+    #[Swag.Overload]
     mtd reserve(maxBits: u64, initialValue: bool)
     {
         reserve(maxBits)
@@ -179,6 +181,7 @@ public impl BitArray
     }
 
     // Inverts the value of the bit at a specific position
+    #[Swag.Overload]
     mtd invert(index: u64)
     {
         Debug.assert(index < count)
@@ -192,6 +195,7 @@ public impl BitArray
     }
 
     // Inverts all the bit values, so that elements set to `true` are changed to `false`, and elements set to `false` are changed to `true`.
+    #[Swag.Overload]
     mtd invert()
     {
         if !count return

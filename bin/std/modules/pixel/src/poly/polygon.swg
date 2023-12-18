@@ -19,13 +19,14 @@ struct Polygon
 impl Polygon
 {
     // Get the given point
-    #[Swag.Inline]
+    #[Swag.Inline, Swag.Overload]
     mtd getPoint(i: u64)->Vector2
     {
         return points.buffer[i]
     }
 
     // Get the given point, with an optional offset
+    #[Swag.Overload]
     mtd getPoint(i: u64, offset: f32)->Vector2
     {
         if Math.isZeroEpsilon(offset)
@@ -103,6 +104,7 @@ impl Polygon
     }
 
     // Fast expand polygon by a given amount
+    #[Swag.Overload]
     mtd offset(value: f32)
     {
         if Math.isZeroEpsilon(value)
@@ -138,6 +140,7 @@ impl Polygon
         compute()
     }
 
+    #[Swag.Overload]
     internal mtd offset(res: *Clipper.ClipperPaths, value: f32, joinStyle: JoinStyle, toler: f32)
     {
         if Math.isZeroEpsilon(value)
@@ -167,6 +170,7 @@ impl Polygon
     }
 
     // Slow but quality offset with a joinStyle
+    #[Swag.Overload]
     mtd offset(value: f32, joinStyle: JoinStyle, toler: f32 = 0.5)
     {
         var res: Clipper.ClipperPaths
@@ -199,6 +203,7 @@ impl Polygon
         return result
     }
 
+    #[Swag.Overload]
     internal mtd clean(res: *Clipper.ClipperPaths)
     {
         if !points.count
@@ -219,6 +224,7 @@ impl Polygon
     }
 
     // Clean polygon by removing bad/unecessary points
+    #[Swag.Overload]
     mtd clean()
     {
         var res: Clipper.ClipperPaths

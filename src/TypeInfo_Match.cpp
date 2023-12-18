@@ -1053,14 +1053,16 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     context.autoOpCast = false;
     if (declNode && declNode->kind == AstNodeKind::FuncDecl)
     {
+        uint32_t castFlags = CASTFLAG_DEFAULT;
+
         auto funcNode = CastAst<AstFuncDecl>(declNode, AstNodeKind::FuncDecl);
         if (funcNode->parameters && (funcNode->parameters->flags & AST_IS_GENERIC))
         {
             SymbolMatchContext cpyContext = context;
-            matchParametersAndNamed(cpyContext, parameters, CASTFLAG_DEFAULT);
+            matchParametersAndNamed(cpyContext, parameters, castFlags);
             if (cpyContext.result == MatchResult::BadSignature)
             {
-                matchParametersAndNamed(context, parameters, CASTFLAG_AUTO_OPCAST);
+                matchParametersAndNamed(context, parameters, castFlags | CASTFLAG_AUTO_OPCAST);
                 if (context.semContext->result != ContextResult::Done)
                     return;
 
@@ -1075,12 +1077,12 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         }
         else
         {
-            matchParametersAndNamed(context, parameters, CASTFLAG_AUTO_OPCAST);
+            matchParametersAndNamed(context, parameters, castFlags | CASTFLAG_AUTO_OPCAST);
         }
     }
     else
     {
-        matchParametersAndNamed(context, parameters, CASTFLAG_AUTO_OPCAST);
+        matchParametersAndNamed(context, parameters, CASTFLAG_TRY_COERCE | CASTFLAG_AUTO_OPCAST);
     }
 
     int cptDone = 0;

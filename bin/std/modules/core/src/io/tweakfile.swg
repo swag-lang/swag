@@ -31,6 +31,7 @@ impl TweakFile
     }
 
     // Parse a list of lines
+    #[Swag.Overload]
     mtd parse(content: string) throw
     {
         var lines = Tokenize.splitLines(content)
@@ -38,6 +39,7 @@ impl TweakFile
     }
 
     // Parse a list of lines
+    #[Swag.Overload]
     mtd parse(lines: Array'string) throw
     {
         Debug.assert(!folders.isEmpty())

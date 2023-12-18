@@ -71,6 +71,7 @@ const PrimeX = 501125321
 const PrimeY = 1136930381
 const PrimeZ = 1720413743
 
+#[Swag.Overload]
 func hash(seed: s32, xPrimed, yPrimed: s32)->s32
 {
     var hash = seed ^ xPrimed ^ yPrimed
@@ -78,6 +79,7 @@ func hash(seed: s32, xPrimed, yPrimed: s32)->s32
     return hash
 }
 
+#[Swag.Overload]
 func hash(seed: s32, xPrimed, yPrimed, zPrimed: s32)->s32
 {
     var hash = seed ^ xPrimed ^ yPrimed ^ zPrimed
@@ -85,6 +87,7 @@ func hash(seed: s32, xPrimed, yPrimed, zPrimed: s32)->s32
     return hash
 }
 
+#[Swag.Overload]
 func gradCoord(seed: s32, xPrimed, yPrimed: s32, xd, yd: f32)->f32
 {
     var hash = hash(seed, xPrimed, yPrimed)
@@ -97,6 +100,7 @@ func gradCoord(seed: s32, xPrimed, yPrimed: s32, xd, yd: f32)->f32
     return xd * xg + yd * yg
 }
 
+#[Swag.Overload]
 func gradCoord(seed: s32, xPrimed, yPrimed, zPrimed: s32, xd, yd, zd: f32)->f32
 {
     var hash = hash(seed, xPrimed, yPrimed, zPrimed)
@@ -111,6 +115,7 @@ func gradCoord(seed: s32, xPrimed, yPrimed, zPrimed: s32, xd, yd, zd: f32)->f32
 }
 
 // Perlin
+#[Swag.Overload]
 public func perlin(x, y: f32, seed: s32 = 1337)->f32
 {
     var x0 = fastFloor(x)
@@ -135,6 +140,7 @@ public func perlin(x, y: f32, seed: s32 = 1337)->f32
     return Math.lerp(xf0, xf1, ys) * 1.4247691104677813
 }
 
+#[Swag.Overload]
 public func perlin(x, y, z: f32, seed: s32 = 1337)->f32
 {
     var x0 = fastFloor(x)

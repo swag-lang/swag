@@ -33,19 +33,19 @@ func isPowerOf2(x: u32)->bool
 }
 
 // Determin if any of the bytes is zero
-#[ConstExpr, Inline, Safety("overflow", false)]
+#[ConstExpr, Inline, Safety("overflow", false), Overload]
 func hasZeroByte(v: u16)->bool
 {
     return hasZeroByte(cast(u32) v)
 }
 
-#[ConstExpr, Inline, Safety("overflow", false)]
+#[ConstExpr, Inline, Safety("overflow", false), Overload]
 func hasZeroByte(v: u32)->bool
 {
     return cast(bool) (((v) - 0x01010101) & ~(v) & 0x80808080)
 }
 
-#[ConstExpr, Inline, Safety("overflow", false)]
+#[ConstExpr, Inline, Safety("overflow", false), Overload]
 func hasZeroByte(v: u64)->bool
 {
     return cast(bool) (((v) - 0x01010101_01010101) & ~(v) & 0x80808080_80808080)
@@ -76,19 +76,19 @@ func makeRepeat64(v: u8)->u64
 }
 
 // Determin if an integer has a given byte
-#[ConstExpr, Inline]
+#[ConstExpr, Inline, Overload]
 func hasByte(value: u16, byte: u8)->bool
 {
     return hasByte(cast(u32) value, byte)
 }
 
-#[ConstExpr, Inline]
+#[ConstExpr, Inline, Overload]
 func hasByte(value: u32, byte: u8)->bool
 {
     return hasZeroByte(value ^ makeRepeat32(byte))
 }
 
-#[ConstExpr, Inline]
+#[ConstExpr, Inline, Overload]
 func hasByte(value: u64, byte: u8)->bool
 {
     return hasZeroByte(value ^ makeRepeat64(byte))
@@ -96,7 +96,7 @@ func hasByte(value: u64, byte: u8)->bool
 
 // Get the sign of an integer.
 // Will return -1, 1 or 0 for a zero value.
-#[ConstExpr, Inline]
+#[ConstExpr, Inline, Overload]
 {
     func sign(x: s8)  => cast(s8)  (x > 0) - cast(s8)  (x < 0)
     func sign(x: s16) => cast(s16) (x > 0) - cast(s16) (x < 0)
@@ -105,7 +105,7 @@ func hasByte(value: u64, byte: u8)->bool
 }
 
 // Wrappers for intrinsics
-#[ConstExpr, Inline]
+#[ConstExpr, Inline, Overload]
 {
     func min(x, y: s8)  => @min(x, y)
     func min(x, y: s16) => @min(x, y)

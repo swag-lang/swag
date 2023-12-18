@@ -40,6 +40,7 @@ func set(dest: ^void, value: u8, size: u64)
 }
 
 // Align a value to the given amount
+#[Swag.Overload]
 func align(value: u64, alignement: u32)->u64
 {
     let toAlign = (alignement orelse @sizeof(*void)) - 1
@@ -47,6 +48,7 @@ func align(value: u64, alignement: u32)->u64
 }
 
 // Align a pointer to the given amount
+#[Swag.Overload]
 func align(value: const ^void, alignement: u32)->const ^void
 {
     return acast align(cast(u64) value, alignement)

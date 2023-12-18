@@ -66,6 +66,7 @@ func splitLines(src: string) -> Array'string
 // Split string into sub strings, given a byte separator
 // Note that this returns an array of native strings, not copies.
 // All strings will be invalid if 'src' String is destroyed
+#[Swag.Overload]
 func split(src: string, separator: u8, maxSplit: u32 = 0, removeEmpty = true)->Array'string
 {
     let countof = @countof(src)
@@ -116,6 +117,7 @@ func split(src: string, separator: u8, maxSplit: u32 = 0, removeEmpty = true)->A
 // Split string into sub strings, given a string separator
 // Note that this returns an array of native strings, not copies.
 // All strings will be invalid if 'src' String is destroyed
+#[Swag.Overload]
 func split(src: string, separator: string, maxSplit: u32 = 0, removeEmpty = true)->Array'string
 {
     let countof = @countof(src)
@@ -147,18 +149,22 @@ func split(src: string, separator: string, maxSplit: u32 = 0, removeEmpty = true
             endbyteIdx += 1
         }
 
-        result.add(src[startbyteIdx ..< endbyteIdx])
-        startbyteIdx = endbyteIdx
+        if startbyteIdx == endbyteIdx
+            result.add("")
+        else
+            result.add(src[startbyteIdx ..< endbyteIdx])
 
+        startbyteIdx = endbyteIdx
         if startbyteIdx == countof
             break
-
-        startbyteIdx += @countof(separator)
     }
 
     // Last split
     if startbyteIdx != countof
+    {
+        startbyteIdx += @countof(separator)
         result.add(src[startbyteIdx ..< countof])
+    }
 
     return result
 }
@@ -166,6 +172,7 @@ func split(src: string, separator: string, maxSplit: u32 = 0, removeEmpty = true
 // Split string into sub strings, given a rune separator
 // Note that this returns an array of native strings, not copies.
 // All strings will be invalid if 'src' is destroyed
+#[Swag.Overload]
 func split(src: string, separator: rune, maxSplit: u32 = 0, removeEmpty = true) -> Array'string
 {
     return splitAny(src, [separator], maxSplit, removeEmpty)
@@ -208,18 +215,22 @@ func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, remov
             endbyteIdx += eat
         }
 
-        result.add(src[startbyteIdx ..< endbyteIdx])
-        startbyteIdx = endbyteIdx
+        if startbyteIdx == endbyteIdx
+            result.add("")
+        else
+            result.add(src[startbyteIdx ..< endbyteIdx])
 
+        startbyteIdx = endbyteIdx
         if startbyteIdx == countof
             break
-
-        startbyteIdx += eat
     }
 
     // Last split
     if startbyteIdx != countof
+    {
+        startbyteIdx += eat
         result.add(src[startbyteIdx ..< countof])
+    }
 
     return result
 }

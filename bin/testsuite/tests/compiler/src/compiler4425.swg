@@ -8,11 +8,13 @@ impl A
 }
 
 var G = 0
+#[Swag.Overload]
 func toto(x: &&A)
 {
     G = 1
 }
 
+#[Swag.Overload]
 func toto(x: A)
 {
     @assert(false)

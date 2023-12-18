@@ -1,5 +1,7 @@
 #global testerror "Err0113"
+#[Swag.Overload]
 func min(x, y: s16) => 0
+#[Swag.Overload]
 func min(x, y: s32) => 0
 
 #test

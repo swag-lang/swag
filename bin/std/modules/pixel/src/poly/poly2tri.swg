@@ -71,16 +71,19 @@ public struct Triangle
 
 impl Triangle
 {
+    #[Swag.Overload]
     mtd markConstrainedEdge(index: s32)
     {
         constrainedEdge[index] = true
     }
 
+    #[Swag.Overload]
     mtd markConstrainedEdge(edge: *Edge)
     {
         markConstrainedEdge(edge.p, edge.q)
     }
 
+    #[Swag.Overload]
     mtd markConstrainedEdge(p, q: *Point)
     {
         if (q == points[0] and p == points[1]) or (q == points[1] and p == points[0])
@@ -280,16 +283,19 @@ impl Triangle
         delaunayEdge[2] = false
     }
 
+    #[Swag.Overload]
     mtd contains(p: *Point)->bool
     {
         return p == points[0] or p == points[1] or p == points[2]
     }
 
+    #[Swag.Overload]
     mtd contains(p1, p2: *Point)->bool
     {
         return contains(p1) and contains(p2)
     }
 
+    #[Swag.Overload]
     mtd markNeighbor(p1, p2: *Point, t: *Triangle)
     {
         if (p1 == points[2] and p2 == points[1]) or (p1 == points[1] and p2 == points[2])
@@ -302,6 +308,7 @@ impl Triangle
             Debug.assert(false)
     }
 
+    #[Swag.Overload]
     mtd markNeighbor(t: *Triangle)
     {
         if t.contains(points[1], points[2])

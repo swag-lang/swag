@@ -148,6 +148,7 @@ public struct Encoder
 
 impl Encoder
 {
+    #[Swag.Overload]
     func writeU32(dst: *u8, val: u32)
     {
         let v = Math.nativeToBigEndian(val)
@@ -159,6 +160,7 @@ impl Encoder
         stream.addBytes(@mkslice(buf, bytes))
     }
 
+    #[Swag.Overload]
     mtd writeU32(val: u32)
     {
         var v = Math.nativeToBigEndian(val)

@@ -4,6 +4,7 @@ using Core
 impl Painter
 {
     // Draw an empty rectangle
+    #[Swag.Overload]
     func drawRect(using self, left, top, width, height: f32, color: Color, penSize: f32 = 1)
     {
         if width == 0 or height == 0 or color.a == 0 or penSize == 0
@@ -14,11 +15,13 @@ impl Painter
         drawRect(left, top, width, height, sharedSolidPen)
     }
 
+    #[Swag.Overload]
     func drawRect(using self, rect: Math.Rectangle, color: Color, penSize: f32 = 1)
     {
         drawRect(rect.x, rect.y, rect.width, rect.height, color, penSize)
     }
 
+    #[Swag.Overload]
     func drawRect(using self, left, top, width, height: f32, pen: Pen)
     {
         if width == 0 or height == 0 or pen.brush.color.a == 0 or pen.size == 0
@@ -60,12 +63,14 @@ impl Painter
         drawPath(&sharedLinePath, pen)
     }
 
+    #[Swag.Overload]
     func drawRect(using self, rect: Math.Rectangle, pen: Pen)
     {
         drawRect(rect.x, rect.y, rect.width, rect.height, pen)
     }
 
     // Draw a filled rectangle
+    #[Swag.Overload]
     func fillRect(using self, left, top, width, height: f32, brush: Brush)
     {
         if width == 0 or height == 0 or brush.color.a == 0
@@ -89,11 +94,13 @@ impl Painter
         fillPath(&sharedLinePath, brush)
     }
 
+    #[Swag.Overload]
     func fillRect(using self, rect: Math.Rectangle, brush: Brush)
     {
         fillRect(rect.x, rect.y, rect.width, rect.height, brush)
     }
 
+    #[Swag.Overload]
     func fillRect(using self, left, top, width, height: f32, color: Color)
     {
         if width == 0 or height == 0 or color.a == 0
@@ -103,12 +110,14 @@ impl Painter
         fillRect(left, top, width, height, sharedSolidBrush)
     }
 
+    #[Swag.Overload]
     func fillRect(using self, rect: Math.Rectangle, color: Color)
     {
         fillRect(rect.x, rect.y, rect.width, rect.height, color)
     }
 
     // Draw an empty round rectangle
+    #[Swag.Overload]
     func drawRoundRect(using self, left, top, width, height: f32, radiusX, radiusY: f32, color: Color, penSize: f32 = 1)
     {
         if width == 0 or height == 0 or color.a == 0 or penSize == 0
@@ -119,6 +128,7 @@ impl Painter
         drawRoundRect(left, top, width, height, radiusX, radiusY, sharedSolidPen)
     }
 
+    #[Swag.Overload]
     func drawRoundRect(using self, left, top, width, height: f32, radiusX, radiusY: f32, pen: Pen)
     {
         if width == 0 or height == 0 or pen.brush.color.a == 0 or pen.size == 0
@@ -160,11 +170,13 @@ impl Painter
         drawPath(&sharedLinePath, pen)
     }
 
+    #[Swag.Overload]
     func drawRoundRect(using self, rect: Math.Rectangle, radiusX, radiusY: f32, pen: Pen)
     {
         drawRoundRect(rect.x, rect.y, rect.width, rect.height, radiusX, radiusY, pen)
     }
 
+    #[Swag.Overload]
     func drawRoundRect(using self, rect: Math.Rectangle, radiusX, radiusY: f32, color: Color, penSize: f32 = 1)
     {
         sharedSolidPen.brush.type = .SolidColor
@@ -174,6 +186,7 @@ impl Painter
     }
 
     // Draw a filled round rectangle
+    #[Swag.Overload]
     func fillRoundRect(using self, left, top, width, height: f32, radiusX, radiusY: f32, brush: Brush)
     {
         if width == 0 or height == 0 or brush.color.a == 0
@@ -182,6 +195,7 @@ impl Painter
         fillPath(&sharedLinePath, brush)
     }
 
+    #[Swag.Overload]
     func fillRoundRect(using self, rect: Math.Rectangle, radiusX, radiusY: f32, brush: Brush)
     {
         if rect.width == 0 or rect.height == 0 or brush.color.a == 0
@@ -190,6 +204,7 @@ impl Painter
         fillPath(&sharedLinePath, brush)
     }
 
+    #[Swag.Overload]
     func fillRoundRect(using self, left, top, width, height: f32, radiusX, radiusY: f32, color: Color)
     {
         if width == 0 or height == 0 or color.a == 0
@@ -199,6 +214,7 @@ impl Painter
         fillRoundRect(left, top, width, height, radiusX, radiusY, sharedSolidBrush)
     }
 
+    #[Swag.Overload]
     func fillRoundRect(using self, rect: Math.Rectangle, radiusX, radiusY: f32, color: Color)
     {
         fillRoundRect(rect.x, rect.y, rect.width, rect.height, radiusX, radiusY, color)

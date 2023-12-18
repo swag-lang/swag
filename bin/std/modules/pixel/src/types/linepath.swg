@@ -109,6 +109,7 @@ public impl LinePath
     }
 
     // Add a curve from the previous point to 'pt'
+    #[Swag.Overload]
     mtd bezierTo(x, y: f32, ctx, cty: f32)
     {
         var newEndPoint = Vector2{x, y}
@@ -125,6 +126,7 @@ public impl LinePath
     }
 
     // Add a curve from the previous point to 'pt'
+    #[Swag.Overload]
     mtd bezierTo(x, y: f32, ct1x, ct1y: f32, ct2x, ct2y: f32)
     {
         var newEndPoint = Vector2{x, y}
@@ -428,6 +430,7 @@ impl LinePath
         return minDist
     }
 
+    #[Swag.Overload]
     mtd flattenBezier(pos, p1: Vector2, quality: PaintQuality)
     {
         let minDist = getFlattenDistance(quality)
@@ -461,6 +464,7 @@ impl LinePath
             flattenLine(tmp[i].pos)
     }
 
+    #[Swag.Overload]
     mtd flattenBezier(pos, p1, p2: Vector2, quality: PaintQuality)
     {
         let minDist = getFlattenDistance(quality)

@@ -91,12 +91,14 @@ impl Vector2
 
     // Returns the perpendicular vector in the 2D plane.
     // 'axis' will give the sign of the result
+    #[Swag.Overload]
     mtd const cross(axis: f32)->Self
     {
         return {y * axis, -x * axis}
     }
 
     // Returns the Z signed length of the perpendicular vector
+    #[Swag.Overload]
     mtd const cross(other: Self)->f32
     {
         return x * other.y - y * other.x

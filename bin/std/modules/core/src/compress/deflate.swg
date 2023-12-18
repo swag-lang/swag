@@ -944,6 +944,7 @@ impl Deflate
         }
     }
 
+    #[Swag.Overload]
     mtd compress() throw
     {
         let d = state
@@ -1147,6 +1148,7 @@ public impl Deflate
     }
 
     // Compress the source buffer
+    #[Swag.Overload]
     mtd compress(result: *Array'u8, src: const [..] u8) throw
     {
         if @countof(src) > Swag.U32.Max

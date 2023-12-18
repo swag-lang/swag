@@ -67,8 +67,8 @@ func two()
 You can use the `#[Swag.NoDoc]` attribute to prevent a certain element from showing up in the documentation.
 */
 
-// The function 'one' will be ignored when generating the documentation.
+// The function 'three' will be ignored when generating the documentation.
 #[Swag.NoDoc]
-func one()
+func three()
 {
 }

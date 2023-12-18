@@ -3,11 +3,13 @@ using Core, Pixel
 
 impl Theme
 {
+    #[Swag.Overload]
     mtd drawSubRect(painter: *Painter, dstRect: Math.Rectangle, subRect: *ThemeImageRect, color: Color, center = true, interpol = InterpolationMode.Linear)
     {
         drawSubRect(painter, res.imgWidgets, dstRect, subRect, color, center, interpol)
     }
 
+    #[Swag.Overload]
     func drawSubRect(painter: *Painter, texture: Texture, dstRect: Math.Rectangle, subRect: *ThemeImageRect, color: Color, center = true, interpol = InterpolationMode.Linear)
     {
         if subRect == null or subRect.rect.isEmpty() or dstRect.isEmpty() or color.a == 0

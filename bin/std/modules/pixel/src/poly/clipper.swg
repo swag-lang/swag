@@ -366,6 +366,7 @@ impl Transform
         joinList.add(j)
     }
 
+    #[Swag.Overload]
     mtd slopesEqual(e1: *Edge, e2: *Edge)->bool
     {
         if useFullRange
@@ -378,6 +379,7 @@ impl Transform
         return (e1.top.y - e1.bot.y) * (e2.top.x - e2.bot.x) == (e1.top.x - e1.bot.x) * (e2.top.y - e2.bot.y)
     }
 
+    #[Swag.Overload]
     mtd slopesEqual(pt1, pt2, pt3: IntPoint)->bool
     {
         if useFullRange
@@ -390,6 +392,7 @@ impl Transform
         return (pt1.y - pt2.y) * (pt2.x - pt3.x) == (pt1.x - pt2.x) * (pt2.y - pt3.y)
     }
 
+    #[Swag.Overload]
     mtd slopesEqual(pt1, pt2, pt3, pt4: IntPoint)->bool
     {
         if useFullRange
