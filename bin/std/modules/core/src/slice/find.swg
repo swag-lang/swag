@@ -23,6 +23,8 @@ func(T, V) findSorted(values: const [..] T, value: V)->u64
 
         if res < 0
             min = mid + 1
+        elif mid == 0
+            break
         else
             max = mid - 1
     }
@@ -42,6 +44,14 @@ func(T, V) findLinear(values: const [..] T, value: V)->u64
     }
 
     return Swag.U64.Max
+}
+
+// Returns true if the given slice contains the 'value'.
+// The slice must be sorted in ascending order
+#[Swag.ConstExpr]
+func(T, V) containsSorted(values: const [..] T, value: V)->bool
+{
+    return findSorted(values, value) != Swag.U64.Max
 }
 
 // Returns true if the given slice contains the 'value'

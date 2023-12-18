@@ -4,4 +4,7 @@
 ..\bin\swag_devmode run -w:..\bin\examples -m:captme  --args:"swag.test" %1 %2 %3 %4
 ..\bin\swag_devmode run -w:..\bin\examples -m:draw    --args:"swag.test" %1 %2 %3 %4
 ..\bin\swag_devmode run -w:..\bin\examples -m:img     --args:"swag.test" %1 %2 %3 %4
+..\bin\swag_devmode run -w:..\bin\examples -m:aoc2020 --args:"swag.test" %1 %2 %3 %4
+..\bin\swag_devmode run -w:..\bin\examples -m:aoc2021 --args:"swag.test" %1 %2 %3 %4
+..\bin\swag_devmode run -w:..\bin\examples -m:aoc2022 --args:"swag.test" %1 %2 %3 %4
 ..\bin\swag_devmode run -w:..\bin\examples -m:aoc2023 --args:"swag.test" %1 %2 %3 %4
