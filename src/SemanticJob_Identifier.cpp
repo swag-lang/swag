@@ -377,6 +377,8 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         uint64_t castFlags = CASTFLAG_AUTO_OPCAST | CASTFLAG_ACCEPT_PENDING | CASTFLAG_PARAMS | CASTFLAG_PTR_REF | CASTFLAG_FOR_AFFECT | CASTFLAG_ACCEPT_MOVE_REF;
         if (i == 0 && oneMatch.ufcs)
             castFlags |= CASTFLAG_UFCS;
+        if (oneMatch.oneOverload && !(oneMatch.oneOverload->overload->node->attributeFlags & ATTRIBUTE_OVERLOAD))
+            castFlags |= CASTFLAG_TRY_COERCE;
 
         TypeInfo* toType = nullptr;
         if (i < oneMatch.solvedParameters.size() && oneMatch.solvedParameters[i])

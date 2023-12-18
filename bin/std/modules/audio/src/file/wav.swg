@@ -268,13 +268,13 @@ public func loadFile(using file: *SoundFile, stream: *File.FileStream, loadDatas
                 readChunkData(file, stream, header.chunkSize)
                 if loadDatas
                 {
-                    datas.resize(acast header.chunkSize)
-                    if stream.read(datas.buffer, acast header.chunkSize) != header.chunkSize
+                    datas.resize(cast(u64) header.chunkSize)
+                    if stream.read(datas.buffer, header.chunkSize) != header.chunkSize
                         throw InvalidFormatError{"cannot read datas"}
                 }
                 elif loadMetaDatas
                 {
-                    stream.skipPosition(acast header.chunkSize)
+                    stream.skipPosition(header.chunkSize)
                 }
 
                 if !loadMetaDatas
@@ -282,29 +282,29 @@ public func loadFile(using file: *SoundFile, stream: *File.FileStream, loadDatas
             }
 
         case SND_WAV_FOURCC_fact:
-            stream.skipPosition(acast header.chunkSize)
+            stream.skipPosition(header.chunkSize)
 
         case SND_WAV_FOURCC_cue:
-            stream.skipPosition(acast header.chunkSize)
+            stream.skipPosition(header.chunkSize)
 
         case SND_WAV_FOURCC_LIST:
-            stream.skipPosition(acast header.chunkSize)
+            stream.skipPosition(header.chunkSize)
 
         case SND_WAV_FOURCC_labl:
-            stream.skipPosition(acast header.chunkSize)
+            stream.skipPosition(header.chunkSize)
 
         case SND_WAV_FOURCC_note:
-            stream.skipPosition(acast header.chunkSize)
+            stream.skipPosition(header.chunkSize)
 
         case SND_WAV_FOURCC_ltxt:
-            stream.skipPosition(acast header.chunkSize)
+            stream.skipPosition(header.chunkSize)
 
         case SND_WAV_FOURCC_bext:
-            stream.skipPosition(acast header.chunkSize)
+            stream.skipPosition(header.chunkSize)
 
         default:
             if header.chunkSize
-                stream.skipPosition(acast header.chunkSize)
+                stream.skipPosition(header.chunkSize)
             else
                 throw InvalidFormatError{"invalid wav"}
         }

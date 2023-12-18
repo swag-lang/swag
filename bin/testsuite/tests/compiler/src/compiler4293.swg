@@ -1,7 +1,8 @@
-#global testerror "Err0177"
-#global testerror "Err0053"
+#global testerror "Saf0006"
 func toto(x: rune){}
 
+#[Swag.Safety("", true)]
+#[Swag.Optim("", false)]
 #test
 {
     toto(-1)
