@@ -4,15 +4,15 @@ using Swag, Core, Ogl, Math
 
 internal
 {
-    const BaseVertexShader   = @include("shaders/base.vert")
-    const BasePixelShader    = @include("shaders/base.frag")
+    const BaseVertexShader   = #include "shaders/base.vert"
+    const BasePixelShader    = #include "shaders/base.frag"
 
-    const VertexShaderSimple = @include("shaders/simple.vert")
-    const PixelShaderSimple  = @include("shaders/simple.frag")
+    const VertexShaderSimple = #include "shaders/simple.vert"
+    const PixelShaderSimple  = #include "shaders/simple.frag"
 
-    const VertexShaderAA     = @include("shaders/aa.vert")
-    const PixelShaderAA      = @include("shaders/aa.frag")
-    const PixelShaderBlur    = @include("shaders/blur.frag")
+    const VertexShaderAA     = #include "shaders/aa.vert"
+    const PixelShaderAA      = #include "shaders/aa.frag"
+    const PixelShaderBlur    = #include "shaders/blur.frag"
 }
 
 #[Swag.Strict]

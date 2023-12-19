@@ -1355,14 +1355,12 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     }
 
     case AstNodeKind::CompilerLoad:
-        CONCAT_FIXED_STR(concat, "#load(");
+        CONCAT_FIXED_STR(concat, "#load ");
         SWAG_CHECK(outputNode(context, concat, node->childs.front()));
-        CONCAT_FIXED_STR(concat, ")");
         break;
-    case AstNodeKind::IntrinsicInclude:
-        CONCAT_FIXED_STR(concat, "#include(");
+    case AstNodeKind::CompilerInclude:
+        CONCAT_FIXED_STR(concat, "#include ");
         SWAG_CHECK(outputNode(context, concat, node->childs.front()));
-        CONCAT_FIXED_STR(concat, ")");
         break;
 
     case AstNodeKind::CompilerRun:

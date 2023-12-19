@@ -1,4 +1,4 @@
-var g = @include(#file)
+var g = #include #file
 
 #test
 {

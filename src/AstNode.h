@@ -206,7 +206,7 @@ enum class AstNodeKind : uint8_t
     CompilerSpecialValue,
     CompilerForeignLib,
     IntrinsicDefined,
-    IntrinsicInclude,
+    CompilerInclude,
     IntrinsicLocation,
     ConditionalExpression,
     NullConditionalExpression,

@@ -125,7 +125,7 @@ struct Parser
     bool doIntrinsicDefined(AstNode* parent, AstNode** result);
     bool doIntrinsicLocation(AstNode* parent, AstNode** result);
     bool doCompilerDependencies(AstNode* parent);
-    bool doIntrinsicInclude(AstNode* parent, AstNode** result);
+    bool doCompilerInclude(AstNode* parent, AstNode** result);
     bool doCompilerLoad(AstNode* parent);
     bool doCompilerImport(AstNode* parent);
     bool doCompilerPlaceHolder(AstNode* parent);

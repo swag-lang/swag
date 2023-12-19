@@ -730,7 +730,7 @@ bool SemanticJob::resolveCompilerIf(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveIntrinsicInclude(SemanticContext* context)
+bool SemanticJob::resolveCompilerInclude(SemanticContext* context)
 {
     auto job    = context->job;
     auto node   = context->node;

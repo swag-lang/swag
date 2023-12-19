@@ -631,21 +631,17 @@ bool Parser::doCompilerDependencies(AstNode* parent)
     return true;
 }
 
-bool Parser::doIntrinsicInclude(AstNode* parent, AstNode** result)
+bool Parser::doCompilerInclude(AstNode* parent, AstNode** result)
 {
-    auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::IntrinsicInclude, sourceFile, parent);
+    auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::CompilerInclude, sourceFile, parent);
     *result       = exprNode;
     exprNode->flags |= AST_NO_BYTECODE;
     SWAG_CHECK(eatToken());
 
-    auto startLoc = token.startLocation;
-    SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, Err(Err1175)));
-
     ScopedFlags sc(this, AST_SILENT_CHECK);
     SWAG_CHECK(doExpression(exprNode, EXPR_FLAG_NONE, &dummyResult));
 
-    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
-    exprNode->semanticFct = SemanticJob::resolveIntrinsicInclude;
+    exprNode->semanticFct = SemanticJob::resolveCompilerInclude;
     return true;
 }
 
