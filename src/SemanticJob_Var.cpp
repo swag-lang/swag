@@ -550,7 +550,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     bool isLocalConstant    = false;
 
     // Check @mixin
-    if (!(node->flags & AST_GENERATED) && !(node->ownerInline) && node->token.text[0] == '@' && node->token.text.find(g_LangSpec->name_atmixin) == 0)
+    if (!(node->flags & AST_GENERATED) && !(node->ownerInline) && node->token.text.find(g_LangSpec->name_atmixin) == 0)
     {
         auto ownerFct = node->ownerFct;
         while (ownerFct)
@@ -567,8 +567,8 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         }
     }
 
-    // Check @alias
-    if (!(node->flags & AST_GENERATED) && !(node->ownerInline) && node->token.text[0] == '@' && node->token.text.find(g_LangSpec->name_atalias) == 0)
+    // Check #alias
+    if (!(node->flags & AST_GENERATED) && !(node->ownerInline) && node->token.text.find(g_LangSpec->name_atalias) == 0)
     {
         auto ownerFct = node->ownerFct;
         while (ownerFct)

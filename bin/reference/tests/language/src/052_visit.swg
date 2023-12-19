@@ -36,19 +36,19 @@ You can name both the **value** and the loop **index**, in that order.
 }
 
 /**
-Both names are optional. In that case, you can use `@alias0` and `@alias1`. `@alias0` for the value, and `@alias1` for the index.
+Both names are optional. In that case, you can use `#alias0` and `#alias1`. `#alias0` for the value, and `#alias1` for the index.
 */
 #test
 {
     visit "ABC"
     {
-        let a = @alias1    // This is the index
+        let a = #alias1    // This is the index
         @assert(a == @index)
         switch a
         {
-        case 0: @assert(@alias0 == `A`)
-        case 1: @assert(@alias0 == `B`)
-        case 2: @assert(@alias0 == `C`)
+        case 0: @assert(#alias0 == `A`)
+        case 1: @assert(#alias0 == `B`)
+        case 2: @assert(#alias0 == `C`)
         }
     }
 }

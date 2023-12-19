@@ -286,7 +286,7 @@ void initErrors()
     SWAG_ERROR(Err1082, "invalid '#up' count                               $ the '#up' count can't be zero");
     SWAG_ERROR(Err1210, "invalid '#up' count                               $ the '#up' count should be an untype integer in the range [1, 255], found '%s'");
     SWAG_ERROR(Err0576, "invalid '#up' move                                $ '#up' can't move '%d' scopes up");
-    SWAG_ERROR(Err1169, "invalid '@alias' number                           $ '@alias' variable names should end with a number, found '%s' instead");
+    SWAG_ERROR(Err1169, "invalid '#alias' number                           $ '#alias' variable names should end with a number, found '%s' instead");
     SWAG_ERROR(Err0814, "invalid '@alignof'                                $ can't compute the alignment of a generic expression");
     SWAG_ERROR(Err0805, "invalid '@countof' argument                       $ the intrinsic '@countof' requires a positive argument, got '%I64d'");
     SWAG_ERROR(Err0802, "invalid '@countof' argument                       $ the intrinsic '@countof' requires a positive argument, got '%d' instead");
@@ -542,7 +542,7 @@ void initErrors()
     SWAG_ERROR(Err1184, "invalid constant name                             $ expected the constant name after 'const', found '%s' instead");
     SWAG_ERROR(Err0702, "invalid variable name                             $ expected the variable name after '%s', found '%s' instead");
     SWAG_ERROR(Err1069, "invalid variable name                             $ expected a variable name, found '%s' instead");
-    SWAG_ERROR(Err1111, "invalid variable name                             $ a variable name ('%s') can't start with '@', this is reserved for intrinsics $ only '@mixin' and '@alias' are possible in that case");
+    SWAG_ERROR(Err1111, "invalid variable name                             $ a variable name ('%s') can't start with '@', this is reserved for intrinsics $ only '@mixin' and '#alias' are possible in that case");
     SWAG_ERROR(Err1161, "invalid variable name                             $ unexpected generic parameters after variable name '%s'");
     SWAG_ERROR(Err1216, "invalid variable name                             $ unexpected parameters after variable name '%s'");
     SWAG_ERROR(Err0149, "invalid variable type                             $ a variable can't be declared with a 'void' type");
@@ -654,7 +654,7 @@ void initErrors()
     SWAG_ERROR(Err1175, "missing '(' before arguments                      $ expected '(' to start the list of arguments, found '%s' instead");
     SWAG_ERROR(Err1203, "missing '(' before parameters                     $ expected '(' to start the list of parameters, found '%s' instead");
     SWAG_ERROR(Err1051, "missing ':'                                       $ a ':' is expected here after the 'loop' variable name '%s' $ syntax is 'loop [variable:] count'");
-    SWAG_ERROR(Err1023, "missing '@alias' number                           $ '@alias' variable names should end with a number such as '@alias0', '@alias1', etc.");
+    SWAG_ERROR(Err1023, "missing '#alias' number                           $ '#alias' variable names should end with a number such as '#alias0', '#alias1', etc.");
     SWAG_ERROR(Err1011, "missing '@include' string argument                $ expected the file name to include after '@include', found '%s' instead");
     SWAG_ERROR(Err1119, "missing '@mixin' number                           $ '@mixin' variable names should end with a number such as '@mixin0', '@mixin1', etc.");
     SWAG_ERROR(Err1055, "missing 'case' expression                         $ expected the 'case' expression before '%s'");
@@ -712,7 +712,7 @@ void initErrors()
     SWAG_ERROR(Err1172, "missing variable type                             $ expected the type with ':' or an assignment with '=', found '%s' instead");
     SWAG_ERROR(Err0097, "misused UFCS                                      $ the %s '%s' is not used as the first argument when calling '%s'");
     SWAG_ERROR(Err0310, "misused UFCS                                      $ the hidden 'with' variable '%s' is not used as the first argument when calling '%s'");
-    SWAG_ERROR(Err0741, "non-contiguous '@alias'                           $ non-contiguous '@alias' in function '%s', missing '@alias%u'");
+    SWAG_ERROR(Err0741, "non-contiguous '#alias'                           $ non-contiguous '#alias' in function '%s', missing '#alias%u'");
     SWAG_ERROR(Err0446, "non-transferable 'cvarargs' type                  $ a parameter with the type 'cvarargs' can't be passed to another function");
     SWAG_ERROR(Err0013, "not a value                                       $ %s '%s' is not a valid value in this context");
     SWAG_ERROR(Err0003, "not a value                                       $ this is an implicit reference to a static struct member of '%s'");
@@ -726,7 +726,7 @@ void initErrors()
     SWAG_ERROR(Err0062, "not enough parameters                             $ too few parameters for special function '%s' (at least '%d' expected, only '%d' provided)");
     SWAG_ERROR(Err0164, "null dereference                                  $ attempt to dereference a null pointer");
     SWAG_ERROR(Err1209, "out of range '#up' count                          $ the '#up' count should be in the range [1, 255], found '%u'");
-    SWAG_ERROR(Err1043, "out of range '@alias' number                      $ an '@alias' number should be in the range [0, 31], found '%u'");
+    SWAG_ERROR(Err1043, "out of range '#alias' number                      $ an '#alias' number should be in the range [0, 31], found '%u'");
     SWAG_ERROR(Err1032, "out of range '@mixin' number                      $ a '@mixin' number should be in the range [0, 31], found '%u'");
     SWAG_ERROR(Err1132, "out of range array dimensions                     $ array dimensions can't exceed '254'");
     SWAG_ERROR(Err0076, "out of range call level                           $ the limit defined with '--max-recurse:%d' has been reached");
@@ -1271,7 +1271,7 @@ void initErrors()
     SWAG_ERROR(Nte0076, "'%s' might represent either a type or a parameter name");
     SWAG_ERROR(Nte0017, "'%s' was located within '%s' due to a 'using' field");
     SWAG_ERROR(Nte0108, "'==' is the comparison operator; did you intend to affect something with '='?");
-    SWAG_ERROR(Nte0110, "'@alias' is only valid within a '#[Swag.Macro]' or '#[Swag.Mixin]' function");
+    SWAG_ERROR(Nte0110, "'#alias' is only valid within a '#[Swag.Macro]' or '#[Swag.Mixin]' function");
     SWAG_ERROR(Nte0120, "'@mixin' is only valid within a '#[Swag.Mixin]' function");
     SWAG_ERROR(Nte0145, "'closure' should be accompanied by capture parameters enclosed in '|...|'");
     SWAG_ERROR(Nte1019, "'discard' can't be accociated with an intrinsic, as an intrinsic result should always be used");

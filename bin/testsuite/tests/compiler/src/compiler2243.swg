@@ -3,7 +3,7 @@
 #[Swag.Mixin]
 func inc10()
 {
-    let @alias0 = 10
+    let #alias0 = 10
 }
 
 #test

@@ -1733,7 +1733,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     // Register all aliases
     if (identifier->kind == AstNodeKind::Identifier)
     {
-        // Replace user aliases of the form @alias?
+        // Replace user aliases of the form #alias?
         // Can come from the identifier itself (for visit) or from call parameters (for macros/mixins)
         auto id = CastAst<AstIdentifier>(identifier, AstNodeKind::Identifier);
 
@@ -1741,12 +1741,12 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         if (id->identifierExtension)
         {
             for (auto& alias : id->identifierExtension->aliasNames)
-                cloneContext.replaceNames[Fmt("@alias%d", idx++)] = alias.text;
+                cloneContext.replaceNames[Fmt("#alias%d", idx++)] = alias.text;
         }
 
         idx = 0;
         for (auto& alias : id->callParameters->aliasNames)
-            cloneContext.replaceNames[Fmt("@alias%d", idx++)] = alias.text;
+            cloneContext.replaceNames[Fmt("#alias%d", idx++)] = alias.text;
 
         // Replace user @mixin
         if (funcDecl->specFlags & AstFuncDecl::SPECFLAG_SPEC_MIXIN)

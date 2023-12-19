@@ -2,5 +2,5 @@
 
 func toto()
 {
-    var @alias0 = 0
+    var #alias0 = 0
 }

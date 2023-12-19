@@ -92,14 +92,14 @@ When the last parameter of a mixin is of type `code`, the caller can declare tha
 }
 
 /**
-You can use the special name `@alias` to create a named alias for an identifier.
+You can use the special name `#alias` to create a named alias for an identifier.
 */
 #test
 {
     #[Swag.Mixin]
     func inc10()
     {
-        @alias0 += 10
+        #alias0 += 10
     }
 
     var a, b = 0
@@ -113,15 +113,15 @@ You can use the special name `@alias` to create a named alias for an identifier.
     #[Swag.Mixin]
     func setVar(value: s32)
     {
-        let @alias0 = value
+        let #alias0 = value
     }
 
     setVar(|a| 10)  // Passing alias name 'a'
     setVar(|b| 20)  // Passing alias name 'b'
     @assert(a == 10)
     @assert(b == 20)
-    setVar(30)      // No typealias, so name is @alias0
-    @assert(@alias0 == 30)
+    setVar(30)      // No typealias, so name is #alias0
+    @assert(#alias0 == 30)
 }
 
 /**

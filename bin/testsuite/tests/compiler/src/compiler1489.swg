@@ -10,7 +10,7 @@ impl S
     #[Swag.Macro, Swag.CalleeReturn]
     func(ptr: bool, back: bool) opVisit(using self, stmt: code)
     {
-        var @alias0 = 0
+        var #alias0 = 0
         #if #up ptr
             G += 1
         #else

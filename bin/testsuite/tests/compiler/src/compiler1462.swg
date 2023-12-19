@@ -11,8 +11,8 @@ impl S
     {
         for var v = down; v <= up; v += 1
         {
-            let @alias0 = v
-            let @alias1 = @index
+            let #alias0 = v
+            let #alias1 = @index
             #mixin stmt
 
             /*#macro

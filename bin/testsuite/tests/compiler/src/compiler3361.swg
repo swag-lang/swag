@@ -11,7 +11,7 @@ func toto(x: s32, stmt: code)
     {
         #macro
         {
-            var @alias0 = @index
+            var #alias0 = @index
             #mixin #up stmt
         }
     }
@@ -28,7 +28,7 @@ impl A
     #[Swag.Macro]
     func(ptr: bool, back: bool) opVisit(using self, stmt: code)
     {
-        toto(|@alias0| titi())
+        toto(|#alias0| titi())
         {
             #mixin stmt
         }

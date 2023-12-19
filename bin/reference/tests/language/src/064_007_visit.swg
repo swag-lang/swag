@@ -34,21 +34,21 @@ impl MyStruct
             // The '#macro' keyword forces its body to be in the scope of the caller
             #macro
             {
-                // @alias0 will be the value
-                var @alias0: s32 = undefined
+                // #alias0 will be the value
+                var #alias0: s32 = undefined
 
                 // As this code is in the caller scope, with need to add a '#up' before 'idx' to
                 // reference the variable of this function (and not a potential variable in
                 // the caller scope)
                 switch #up idx
                 {
-                case 0: @alias0 = #up self.x   // Same for function parameter 'self'
-                case 1: @alias0 = #up self.y
-                case 2: @alias0 = #up self.z
+                case 0: #alias0 = #up self.x   // Same for function parameter 'self'
+                case 1: #alias0 = #up self.y
+                case 2: #alias0 = #up self.z
                 }
 
-                // @alias1 will be the index
-                var @alias1 = @index
+                // #alias1 will be the index
+                var #alias1 = @index
 
                 // include user code
                 #mixin #up stmt
@@ -66,8 +66,8 @@ So now that the `opVisit` has been defined, we can `visit` it.
     var cpt = 0
 
     // Visiting each field in declaration order
-    // 'v' is an alias for @alias0 (value)
-    // 'i' is an alias for @alias1 (index)
+    // 'v' is an alias for #alias0 (value)
+    // 'i' is an alias for #alias1 (index)
     visit v, i: myStruct
     {
         switch i
@@ -99,15 +99,15 @@ impl MyStruct
         {
             #macro
             {
-                var @alias0: s32 = undefined
+                var #alias0: s32 = undefined
                 switch #up idx
                 {
-                case 0: @alias0 = #up self.z
-                case 1: @alias0 = #up self.y
-                case 2: @alias0 = #up self.x
+                case 0: #alias0 = #up self.z
+                case 1: #alias0 = #up self.y
+                case 2: #alias0 = #up self.x
                 }
 
-                var @alias1 = @index
+                var #alias1 = @index
                 #mixin #up stmt
             }
         }

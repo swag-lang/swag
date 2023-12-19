@@ -11,8 +11,8 @@ impl S
     {
         for var v = down; v <= up; v += 1
         {
-            let @alias0 = v
-            let @alias1 = @index
+            let #alias0 = v
+            let #alias1 = @index
             #mixin stmt
 
             /*#macro
@@ -33,7 +33,7 @@ impl S
     visit i: x
     {
         cpt +=  i
-        cpt1 += cast(s32) @alias1
+        cpt1 += cast(s32) #alias1
     }
 
     @assert(cpt == 165)

@@ -7,7 +7,7 @@ func toto(stmt: code)
 {
     func titi(cpt: s32)
     {
-        var @alias0 = cpt
+        var #alias0 = cpt
         #mixin stmt
     }
 
@@ -20,7 +20,7 @@ func toto(stmt: code)
 {
     toto()
     {
-        G += @alias0
+        G += #alias0
     }
 
     @assert(G == 20)

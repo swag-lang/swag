@@ -4,10 +4,10 @@
     var cpt2 = 0'u64
     visit i: "toto"
     {
-        cpt1 += @alias1
+        cpt1 += #alias1
         visit j: "titi"
         {
-            cpt2 += @alias1
+            cpt2 += #alias1
         }
     }
 

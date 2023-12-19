@@ -20,7 +20,7 @@ impl A
             {
                 #macro
                 {
-                    var @alias0 = cast(bool) (#up self.buffer[#up idx] & #up shift)
+                    var #alias0 = cast(bool) (#up self.buffer[#up idx] & #up shift)
                     #up self.myTruc = #up idx + 1
                     #mixin #up stmt
                 }

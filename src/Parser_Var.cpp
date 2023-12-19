@@ -20,12 +20,12 @@ bool Parser::checkIsValidVarName(AstNode* node)
             return error(identifier->callParameters, Fmt(Err(Err1216), identifier->token.ctext()));
     }
 
-    if (node->token.text[0] != '@')
+    if (node->token.text[0] != '@' && node->token.text[0] != '#')
         return true;
 
     if (node->token.text.length() >= 6)
     {
-        // @alias must be of the form @aliasNUM
+        // #alias must be of the form #aliasNUM
         if (node->token.text.find(g_LangSpec->name_atmixin) == 0)
         {
             if (node->token.text == g_LangSpec->name_atmixin)
@@ -51,7 +51,7 @@ bool Parser::checkIsValidVarName(AstNode* node)
             return true;
         }
 
-        // @alias must be of the form @aliasNUM
+        // #alias must be of the form #aliasNUM
         if (node->token.text.find(g_LangSpec->name_atalias) == 0)
         {
             if (node->token.text == g_LangSpec->name_atalias)

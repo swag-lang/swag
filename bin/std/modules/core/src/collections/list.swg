@@ -23,9 +23,9 @@ impl List
     }
 
     // Visit every elements of the list
-    // * `@alias0` is the value
-    // * `@alias1` is the node
-    // * `@alias2` is the index
+    // * `#alias0` is the value
+    // * `#alias1` is the node
+    // * `#alias2` is the index
     // Visiting by pointer and in reverse order is supported
     #[Macro]
     mtd(ptr: bool, back: bool) opVisit(stmt: code)
@@ -41,13 +41,13 @@ impl List
             #macro
             {
                 #if #up ptr
-                    let @alias0 = cast(*T) & #up n.value
+                    let #alias0 = cast(*T) & #up n.value
                 #elif Reflection.isStruct(T)
-                    let @alias0 = cast(&T) & #up n.value
+                    let #alias0 = cast(&T) & #up n.value
                 #else
-                    let @alias0 = #up n.value
-                let @alias1 = #up n
-                let @alias2 = @index
+                    let #alias0 = #up n.value
+                let #alias1 = #up n
+                let #alias2 = @index
 
                 #mixin #up stmt { break = break Up; continue = break Down; }
             }

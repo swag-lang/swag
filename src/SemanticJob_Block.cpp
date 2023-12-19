@@ -643,8 +643,8 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         return context->report(diag);
     }
 
-    Utf8 alias0Name = node->aliasNames.empty() ? Utf8("@alias0") : node->aliasNames[0].text;
-    Utf8 alias1Name = node->aliasNames.size() <= 1 ? Utf8("@alias1") : node->aliasNames[1].text;
+    Utf8 alias0Name = node->aliasNames.empty() ? Utf8("#alias0") : node->aliasNames[0].text;
+    Utf8 alias1Name = node->aliasNames.size() <= 1 ? Utf8("#alias1") : node->aliasNames[1].text;
     Utf8 content;
 
     // Get back the expression string

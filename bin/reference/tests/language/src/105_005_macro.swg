@@ -155,35 +155,35 @@ When you need `break` in the user code to break outside of a multi loop.
 }
 
 /**
-In a macro, you can use special variables named `@alias<num>`. Note that this is also valid for mixins.
+In a macro, you can use special variables named `#alias<num>`. Note that this is also valid for mixins.
 */
 #test
 {
     #[Swag.Macro]
     func call(v: s32, stmt: code)
     {
-        var @alias0 = v
-        var @alias1 = v * 2
+        var #alias0 = v
+        var #alias1 = v * 2
         #mixin stmt
     }
 
     call(20)
     {
-        @assert(@alias0 == 20)
-        @assert(@alias1 == 40)
+        @assert(#alias0 == 20)
+        @assert(#alias1 == 40)
     }
 
     // The caller can then name those special variables
     // Use |name0, name1, ...| before the function call parameters
     call(|x| 20)
     {
-        @assert(x == 20)        // x is @alias0
-        @assert(@alias1 == 40)  // @alias1 is not renamed
+        @assert(x == 20)        // x is #alias0
+        @assert(#alias1 == 40)  // #alias1 is not renamed
     }
 
     call(|x, y| 20)
     {
-        @assert(x == 20)   // x is @alias0
-        @assert(y == 40)   // y is @alias1
+        @assert(x == 20)   // x is #alias0
+        @assert(y == 40)   // y is #alias1
     }
 }

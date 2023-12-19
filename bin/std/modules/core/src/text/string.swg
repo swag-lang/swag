@@ -174,12 +174,12 @@ impl String
     {
         #if ptr  #error "visiting runes by pointer is not supported"
         #if back #error "visiting runes in reverse order is not supported"
-        Utf8.visitRunes(|@alias0, @alias1, @alias2| toSlice(), stmt)
+        Utf8.visitRunes(|#alias0, #alias1, #alias2| toSlice(), stmt)
     }
 
     // Visit the String utf8 bytes
-    // * `@alias0` will contain the byte or the pointer to the byte
-    // * `@alias1` will contain the byte index
+    // * `#alias0` will contain the byte or the pointer to the byte
+    // * `#alias1` will contain the byte index
     #[Macro]
     mtd(ptr: bool, back: bool) opVisit,bytes(stmt: code)
     {
@@ -202,10 +202,10 @@ impl String
             #macro
             {
                 #if #up ptr
-                    var @alias0 = #up scan
+                    var #alias0 = #up scan
                 #else
-                    var @alias0 = dref #up scan
-                var @alias1 = @index
+                    var #alias0 = dref #up scan
+                var #alias1 = @index
                 #mixin #up stmt
             }
         }

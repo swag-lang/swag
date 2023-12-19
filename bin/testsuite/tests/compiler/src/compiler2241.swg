@@ -1,7 +1,7 @@
 #[Swag.Mixin]
 func mix()
 {
-    @alias0 += @alias1
+    #alias0 += #alias1
 }
 
 
