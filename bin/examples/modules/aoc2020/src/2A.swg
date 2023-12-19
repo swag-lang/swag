@@ -37,15 +37,14 @@ func day2A()
 
         let min    = assume StrConv.toS32(r.getCapture(1))
         let max    = assume StrConv.toS32(r.getCapture(2))
-        let letter = r.getCapture(3)
+        let letter = r.getCapture(3)[0]-`a`
         let pwd    = r.getCapture(4)
 
         var count: [26] s32
-        let what = letter[0]-`a`
 
         visit c: pwd
             count[c-`a`] += 1
-        if count[what] >= min and count[what] <= max
+        if count[letter] >= min and count[letter] <= max
             total += 1
     }
 

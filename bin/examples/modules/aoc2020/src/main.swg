@@ -9,4 +9,5 @@
     day1A()
     day1B()
     day2A()
+    day2B()
 }
