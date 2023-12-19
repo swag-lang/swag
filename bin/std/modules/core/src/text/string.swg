@@ -161,6 +161,7 @@ impl String
     }
 
     // Returns the byte at the given index
+    #[Inline]
     mtd const opIndex(index: u64)->u8
     {
         Debug.safetyBoundCheck(index < length, "index out of range")
@@ -212,24 +213,28 @@ impl String
     }
 
     // Set the length of the String to 0
+    #[Inline]
     mtd clear()
     {
         length = 0
     }
 
     // Returns true if the String has zero length
+    #[Inline]
     mtd const isEmpty()->bool
     {
         return length == 0
     }
 
     // Returns true if the String is null (undefined)
+    #[Inline]
     mtd const isNull()->bool
     {
         return buffer == null
     }
 
     // Returns true if the String is null or empty
+    #[Inline]
     mtd const isNullOrEmpty()->bool
     {
         return buffer == null or length == 0
@@ -298,7 +303,7 @@ impl String
     }
 
     // Insert an ascii byte at the given position
-    #[Swag.Overload]
+    #[Overload]
     mtd insert(byteIndex: u64, value: u8)
     {
         if byteIndex == length
@@ -317,7 +322,7 @@ impl String
     }
 
     // Insert a substring at the given position
-    #[Swag.Overload]
+    #[Overload]
     mtd insert(byteIndex: u64, value: string)
     {
         if byteIndex == length
@@ -344,7 +349,7 @@ impl String
     }
 
     // Append a byte to the String
-    #[Swag.Inline, Swag.Overload]
+    #[Inline, Overload]
     mtd append(value: u8)
     {
         grow(length + 2)
@@ -354,7 +359,7 @@ impl String
     }
 
     // Append a rune to the String
-    #[Swag.Overload]
+    #[Overload]
     mtd append(value: rune)
     {
         Debug.assert(Utf8.isValidRune(value), "invalid rune")
@@ -368,7 +373,7 @@ impl String
     }
 
     // Append a string to the String
-    #[Swag.Overload]
+    #[Overload]
     mtd append(value: string)
     {
         let concatLength = @countof(value)
@@ -407,7 +412,7 @@ impl String
     }
 
     // Ensure the String is big enough to store a given amount of bytes
-    #[Swag.Inline]
+    #[Inline]
     mtd grow(wantedCapacity: u64)
     {
         if wantedCapacity <= capacity
@@ -512,14 +517,14 @@ impl String
     }
 
     // Returns a string type
-    #[Swag.Inline]
+    #[Inline]
     mtd const toString()->string
     {
         return @mkstring(buffer, length)
     }
 
     // Returns a slice type
-    #[Swag.Inline]
+    #[Inline]
     mtd toSlice()->[..] u8
     {
         return @mkslice(buffer, length)
@@ -564,7 +569,7 @@ impl String
     }
 
     // Returns a new String in upper case
-    #[Swag.Overload]
+    #[Overload]
     mtd toUpper(set = CharacterSet.Latin1)->String
     {
         var result: retval = dref self
@@ -573,7 +578,7 @@ impl String
     }
 
     // Returns a new String in lower case
-    #[Swag.Overload]
+    #[Overload]
     func toUpper(str: string, set = CharacterSet.Latin1)->String
     {
         var result: retval = str
@@ -582,7 +587,7 @@ impl String
     }
 
     // Returns a new String in lower case
-    #[Swag.Overload]
+    #[Overload]
     mtd toLower(set = CharacterSet.Latin1)->String
     {
         var result: retval = dref self
@@ -591,7 +596,7 @@ impl String
     }
 
     // Returns a new String in lower case
-    #[Swag.Overload]
+    #[Overload]
     func toLower(str: string, set = CharacterSet.Latin1)->String
     {
         var result: retval = str
