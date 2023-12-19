@@ -31,7 +31,7 @@ func day3B()
             y += s.dy
             if y >= lines.count
                 break
-            x = cast(s32) ((x + s.dx) % lines[0].length)
+            x = cast(u32) ((x + s.dx) % lines[0].length)
             count += lines[y][x] == `#` ? 1 : 0
         }
 
