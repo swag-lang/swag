@@ -124,6 +124,13 @@ impl RegExp
         clear()
     }
 
+    mtd clearMatch()
+    {
+        hasStarted, wasWord = false
+        group = 0
+        groups.clear()
+    }
+
     // Clear content
     public mtd clear()
     {
@@ -131,16 +138,16 @@ impl RegExp
         visit p: dfaNodes Memory.delete(p)
         visit p: nfaTables Memory.delete(p)
 
-        hasStarted, wasWord = false
         nfaNodes.clear()
         dfaNodes.clear()
         nfaTables.clear()
-        groups.clear()
         charSet.clear()
         openParen.clear()
         orOpStack.clear()
         orOpLevel.clear()
         preprocessed.clear()
+
+        clearMatch()
     }
 
     // Compile the expression
@@ -178,7 +185,7 @@ impl RegExp
     #[Swag.Overload]
     public mtd match(str: string)->bool
     {
-        hasStarted, wasWord = false
+        clearMatch()
         let (ok, ?) = matchInternal(str, false)
         return ok
     }
@@ -189,7 +196,7 @@ impl RegExp
         var result: retval
         var res = str
         let end = @dataof(str) + @countof(str)
-        hasStarted, wasWord = false
+        clearMatch()
 
         loop
         {
@@ -208,7 +215,7 @@ impl RegExp
     // Find the first occurence in the string
     public mtd grep(str: string)->RegExpGrep
     {
-        hasStarted, wasWord = false
+        clearMatch()
         return internalGrep(str)
     }
 
