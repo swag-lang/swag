@@ -1414,6 +1414,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
         case NativeTypeKind::U8:
         case NativeTypeKind::U16:
         case NativeTypeKind::U32:
+        case NativeTypeKind::Rune:
             break;
         default:
             return castError(context, g_TypeMgr->typeInfoU64, fromType, fromNode, castFlags);

@@ -197,24 +197,23 @@ func @print(params: ...)
         if ko.kind == .Pointer
         {
             #[Safety("any", false)]
-            __printU64(cast(u64) cast(u64) v)
+            __printU64(cast(u64) v)
             continue
         }
 
         switch ko
         {
-        case s8:        __printS64(cast(s64) cast(s8) v)
-        case s16:       __printS64(cast(s64) cast(s16) v)
-        case s32:       __printS64(cast(s64) cast(s32) v)
+        case s8:        __printS64(cast(s8) v)
+        case s16:       __printS64(cast(s16) v)
+        case s32:       __printS64(cast(s32) v)
+        case s64:       __printS64(v)
         case s64:       __printS64(cast(s64) v)
-        case s64:       __printS64(cast(s64) cast(s64) v)
-        case u8:        __printU64(cast(u64) cast(u8) v)
-        case u16:       __printU64(cast(u64) cast(u16) v)
-        case u32:       __printU64(cast(u64) cast(u32) v)
-        case rune:      __printU64(cast(u64) cast(rune) v)
-        case u64:       __printU64(cast(u64) v)
-        case u64:       __printU64(cast(u64) cast(u64) v)
-        case f32:       __printF64(cast(f64) cast(f32) v)
+        case u8:        __printU64(cast(u8) v)
+        case u16:       __printU64(cast(u16) v)
+        case u32:       __printU64(cast(u32) v)
+        case rune:      __printU64(cast(rune) v)
+        case u64:       __printU64(v)
+        case f32:       __printF64(cast(f32) v)
         case f64:       __printF64(cast(f64) v)
         case string:    __printString(cast(string) v)
         case bool:      __printString(cast(bool) v ? "true" : "false")
