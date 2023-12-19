@@ -1,2 +1,2 @@
 #global testerror "Err1168"
-var @mixin45AA = 0
+var #mixin45AA = 0

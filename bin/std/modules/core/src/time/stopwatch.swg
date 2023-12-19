@@ -80,12 +80,12 @@ public impl Stopwatch
     #[Swag.Mixin]
     func scopeMeasure(name: string = "stopwatch")
     {
-        var @mixin0: Time.Stopwatch
-        @mixin0.start()
+        var #mixin0: Time.Stopwatch
+        #mixin0.start()
         defer
         {
-            @mixin0.stop()
-            Console.printf("%: %ms\n", name, @mixin0.elapsedMilliseconds())
+            #mixin0.stop()
+            Console.printf("%: %ms\n", name, #mixin0.elapsedMilliseconds())
         }
     }
 }

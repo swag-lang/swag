@@ -184,7 +184,7 @@ void LanguageSpec::setupNames()
     name_toplevel = "toplevel";
 
     name_atalias           = "#alias";
-    name_atmixin           = "@mixin";
+    name_atmixin           = "#mixin";
     name_atdrop            = "@drop";
     name_atpostCopy        = "@postCopy";
     name_atpostMove        = "@postMove";

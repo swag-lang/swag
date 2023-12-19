@@ -171,9 +171,9 @@ Intrisic keywords always start with '@'. As user identifiers cannot start the sa
 @itftableof
 @kindof
 @location
-@mixin0
-@mixin1
-@mixin2 // and more generally @mixinN
+#mixin0
+#mixin1
+#mixin2 // and more generally @mixinN
 @mkany
 @mkcallback
 @mkinterface

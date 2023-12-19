@@ -3,5 +3,5 @@
 #[Swag.Mixin]
 func toto(stmt: code)
 {
-    var @mixin33 = 0
+    var #mixin33 = 0
 }

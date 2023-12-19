@@ -1748,11 +1748,11 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
         for (auto& alias : id->callParameters->aliasNames)
             cloneContext.replaceNames[Fmt("#alias%d", idx++)] = alias.text;
 
-        // Replace user @mixin
+        // Replace user #mixin
         if (funcDecl->specFlags & AstFuncDecl::SPECFLAG_SPEC_MIXIN)
         {
             for (int i = 0; i < 10; i++)
-                cloneContext.replaceNames[Fmt("@mixin%d", i)] = Fmt("__mixin%d", g_UniqueID.fetch_add(1));
+                cloneContext.replaceNames[Fmt("#mixin%d", i)] = Fmt("__mixin%d", g_UniqueID.fetch_add(1));
         }
 
         for (auto child : id->callParameters->childs)

@@ -20,7 +20,7 @@ bool Parser::checkIsValidVarName(AstNode* node)
             return error(identifier->callParameters, Fmt(Err(Err1216), identifier->token.ctext()));
     }
 
-    if (node->token.text[0] != '@' && node->token.text[0] != '#')
+    if (node->token.text[0] != '#')
         return true;
 
     if (node->token.text.length() >= 6)

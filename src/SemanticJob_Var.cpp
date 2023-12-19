@@ -549,7 +549,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     bool isCompilerConstant = node->kind == AstNodeKind::ConstDecl ? true : false;
     bool isLocalConstant    = false;
 
-    // Check @mixin
+    // Check #mixin
     if (!(node->flags & AST_GENERATED) && !(node->ownerInline) && node->token.text.find(g_LangSpec->name_atmixin) == 0)
     {
         auto ownerFct = node->ownerFct;

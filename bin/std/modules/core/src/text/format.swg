@@ -245,7 +245,7 @@ func toInterp(exp: string)->String
         return true
     }
 {
-    var @mixin0: ConcatBuffer
-    toInterp(&@mixin0, exp)
-    return @mixin0.moveToString()
+    var #mixin0: ConcatBuffer
+    toInterp(&#mixin0, exp)
+    return #mixin0.moveToString()
 }

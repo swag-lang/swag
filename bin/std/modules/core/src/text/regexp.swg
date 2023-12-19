@@ -333,10 +333,10 @@ impl RegExp
         #[Swag.Mixin]
         func checkTr(c: rune)
         {
-            let @mixin1 = curState.transitions.find(c)
-            if @mixin1
+            let #mixin1 = curState.transitions.find(c)
+            if #mixin1
             {
-                out.add(@mixin1.value)
+                out.add(#mixin1.value)
                 ok = true
             }
         }

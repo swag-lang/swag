@@ -26,7 +26,15 @@ bool Tokenizer::doIdentifier(TokenParse& token)
     }
     else if (token.text[0] == '#')
     {
-        if (!token.text.startsWith(g_LangSpec->name_atalias))
+        if (token.text.startsWith(g_LangSpec->name_atalias))
+        {
+            token.id = TokenId::Identifier;
+        }
+        else if (token.text.startsWith(g_LangSpec->name_atmixin))
+        {
+            token.id = TokenId::Identifier;
+        }
+        else
         {
             token.endLocation = location;
             Diagnostic diag{sourceFile, token, Fmt(Err(Err2017), token.ctext())};
@@ -46,37 +54,26 @@ bool Tokenizer::doIdentifier(TokenParse& token)
 
             return errorContext->report(diag);
         }
-        else
-        {
-            token.id = TokenId::Identifier;
-        }
     }
     else if (token.text[0] == '@')
     {
-        if (!token.text.startsWith(g_LangSpec->name_atmixin))
+        token.endLocation = location;
+        Diagnostic diag{sourceFile, token, Fmt(Err(Err2027), token.ctext())};
+
+        Vector<Utf8> searchList{};
+        for (int i = 0; i < (int) g_LangSpec->keywords.allocated; i++)
         {
-            token.endLocation = location;
-            Diagnostic diag{sourceFile, token, Fmt(Err(Err2027), token.ctext())};
-
-            Vector<Utf8> searchList{};
-            for (int i = 0; i < (int) g_LangSpec->keywords.allocated; i++)
-            {
-                auto& k = g_LangSpec->keywords.buffer[i].key;
-                if (k && k[0] == '@')
-                    searchList.push_back(k);
-            }
-
-            Vector<Utf8> result;
-            SemanticJob::findClosestMatches(token.text, searchList, result);
-            if (result.size())
-                return errorContext->report(diag, Diagnostic::note(SemanticJob::findClosestMatchesMsg(token.text, result)));
-
-            return errorContext->report(diag);
+            auto& k = g_LangSpec->keywords.buffer[i].key;
+            if (k && k[0] == '@')
+                searchList.push_back(k);
         }
-        else
-        {
-            token.id = TokenId::Identifier;
-        }
+
+        Vector<Utf8> result;
+        SemanticJob::findClosestMatches(token.text, searchList, result);
+        if (result.size())
+            return errorContext->report(diag, Diagnostic::note(SemanticJob::findClosestMatchesMsg(token.text, result)));
+
+        return errorContext->report(diag);
     }
     else
     {

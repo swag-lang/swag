@@ -130,7 +130,7 @@ bool SemanticJob::warnUnusedVariables(SemanticContext* context, Scope* scope)
 
         if (sym->kind == SymbolKind::GenericType)
             continue;
-        if (sym->name[0] == '@' || sym->name[0] == '#')
+        if (sym->name[0] == '#')
             continue;
         if (sym->name[0] == '_')
             continue;
