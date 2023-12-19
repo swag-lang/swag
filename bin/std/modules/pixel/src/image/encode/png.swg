@@ -348,7 +348,7 @@ impl Encoder
         loop k: subimage[pass].width
         {
             let ioffset = (Adam7StartX[pass] + k * Adam7DeltaX[pass]) * pixelSize
-            Memory.copy(scanline + k * pixelSize, row + ioffset, acast pixelSize)
+            Memory.copy(scanline + k * pixelSize, row + ioffset, pixelSize)
         }
 
         return encodeScanLine(scanline)

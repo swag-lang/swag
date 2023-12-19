@@ -601,14 +601,14 @@ internal impl PropertyList
 
             switch nativeType.nativeKind
             {
-            case U8:        ed.setInputU64(acast Swag.U8.Min, acast Swag.U8.Max)
-            case U16:       ed.setInputU64(acast Swag.U16.Min, acast Swag.U16.Max)
-            case U32:       ed.setInputU64(acast Swag.U32.Min, acast Swag.U32.Max)
-            case U64:       ed.setInputU64(acast Swag.U64.Min, acast Swag.U64.Max)
-            case S8:        ed.setInputS64(acast Swag.S8.Min, acast Swag.S8.Max)
-            case S16:       ed.setInputS64(acast Swag.S16.Min, acast Swag.S16.Max)
-            case S32:       ed.setInputS64(acast Swag.S32.Min, acast Swag.S32.Max)
-            case S64:       ed.setInputS64(acast Swag.S64.Min, acast Swag.S64.Max)
+            case U8:        ed.setInputU64(Swag.U8.Min,  Swag.U8.Max)
+            case U16:       ed.setInputU64(Swag.U16.Min, Swag.U16.Max)
+            case U32:       ed.setInputU64(Swag.U32.Min, Swag.U32.Max)
+            case U64:       ed.setInputU64(Swag.U64.Min, Swag.U64.Max)
+            case S8:        ed.setInputS64(Swag.S8.Min,  Swag.S8.Max)
+            case S16:       ed.setInputS64(Swag.S16.Min, Swag.S16.Max)
+            case S32:       ed.setInputS64(Swag.S32.Min, Swag.S32.Max)
+            case S64:       ed.setInputS64(Swag.S64.Min, Swag.S64.Max)
             case F32, F64:  ed.setInputF64()
             }
         }

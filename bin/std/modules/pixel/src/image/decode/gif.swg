@@ -194,7 +194,7 @@ impl Decoder
     {
         table.bulk = Math.max(1 << (keySize + 1), 0x100)
         table.nentries = (1 << keySize) + 2
-        table.entries.resize(acast table.bulk)
+        table.entries.resize(table.bulk)
         loop key: 1 << keySize
             table.entries[key] = {1, 0xFFF, cast(u8) key}
     }
@@ -503,7 +503,7 @@ public impl Decoder
     mtd getFrame(image: *Image, decodePixels = true)
     {
         Debug.assert(initDone)
-        image.init(acast width, acast height, gce.transparency ? PixelFormat.RGBA8 : PixelFormat.RGB8)
+        image.init(width, height, gce.transparency ? PixelFormat.RGBA8 : PixelFormat.RGB8)
         if !decodePixels
             return
         image.allocPixels()
