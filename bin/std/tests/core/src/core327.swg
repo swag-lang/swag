@@ -29,7 +29,7 @@ struct A
 
     visit f: types.fields
     {
-        if @index
+        if #index
             sb.appendString(" and ")
         sb.appendFormat("% == other.%", f.name, f.name)
     }

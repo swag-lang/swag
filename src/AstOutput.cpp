@@ -1210,7 +1210,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         break;
 
     case AstNodeKind::Index:
-        CONCAT_FIXED_STR(concat, "@index");
+        CONCAT_FIXED_STR(concat, "#index");
         break;
     case AstNodeKind::GetErr:
         CONCAT_FIXED_STR(concat, "@err");

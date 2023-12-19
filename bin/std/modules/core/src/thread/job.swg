@@ -254,7 +254,7 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = n
     var ptr = @dataof(range)
     visit &j: sliceJobs
     {
-        let sizeSlice = @index == sliceJobs.count - 1 ? lastSplitSize : splitSize
+        let sizeSlice = #index == sliceJobs.count - 1 ? lastSplitSize : splitSize
 
         j.base.lambda = &jobEntry
         j.base.data = j
@@ -320,7 +320,7 @@ public func parallelFor(count: u32, userData: *void = null, stmt: code)
     var startIndex = 0'u32
     visit &j: sliceJobs
     {
-        let sizeSlice = @index == sliceJobs.count - 1 ? lastSplitSize : splitSize
+        let sizeSlice = #index == sliceJobs.count - 1 ? lastSplitSize : splitSize
 
         j.base.lambda = &jobEntry
         j.base.data = j

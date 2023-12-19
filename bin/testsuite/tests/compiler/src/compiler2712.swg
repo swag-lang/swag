@@ -5,6 +5,6 @@
 {
     visit s: tt
     {
-        @assert(s == @index)
+        @assert(s == #index)
     }
 }

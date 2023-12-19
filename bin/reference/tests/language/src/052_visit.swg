@@ -7,8 +7,8 @@
     // At each iteration, the byte will be stored in the variable 'value'
     visit value: "ABC"
     {
-        // '@index' is also available. It stores the loop index.
-        let a = @index
+        // '#index' is also available. It stores the loop index.
+        let a = #index
         switch a
         {
         case 0: @assert(value == `A`)
@@ -43,7 +43,7 @@ Both names are optional. In that case, you can use `#alias0` and `#alias1`. `#al
     visit "ABC"
     {
         let a = #alias1    // This is the index
-        @assert(a == @index)
+        @assert(a == #index)
         switch a
         {
         case 0: @assert(#alias0 == `A`)
@@ -63,12 +63,12 @@ You can visit in reverse order by adding the 'back' modifier.
     var cpt = 0
     visit,back value: "ABC"
     {
-        // '@index' is also available. It stores the loop index.
+        // '#index' is also available. It stores the loop index.
         switch cpt
         {
-        case 0: @assert(value == `C`); @assert(@index == 2)
-        case 1: @assert(value == `B`); @assert(@index == 1)
-        case 2: @assert(value == `A`); @assert(@index == 0)
+        case 0: @assert(value == `C`); @assert(#index == 2)
+        case 1: @assert(value == `B`); @assert(#index == 1)
+        case 2: @assert(value == `A`); @assert(#index == 0)
         }
 
         cpt += 1

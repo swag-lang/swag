@@ -47,7 +47,7 @@ func @args()->const [..] string;
 @isconstexpr()
 @itftableof()
 
-@index
+#index
 
 /**
 # Memory related

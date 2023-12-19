@@ -47,7 +47,7 @@ impl List
                 #else
                     let #alias0 = #up n.value
                 let #alias1 = #up n
-                let #alias2 = @index
+                let #alias2 = #index
 
                 #mixin #up stmt { break = break Up; continue = break Down; }
             }

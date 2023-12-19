@@ -10,7 +10,7 @@ func fromName(name: string)
     const t = @typeof(TOTO)
     loop t.values
     {
-        if t.values[@index].name == name
+        if t.values[#index].name == name
         {
         }
     }

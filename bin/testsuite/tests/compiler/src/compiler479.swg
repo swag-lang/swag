@@ -24,6 +24,6 @@ func F(param: [..] s32, b: func(*s32))
 	let data = @dataof(param)
 	loop(param)
 	{
-		b(data + @index)
+		b(data + #index)
 	}
 }

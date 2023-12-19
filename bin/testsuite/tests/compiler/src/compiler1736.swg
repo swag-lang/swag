@@ -4,7 +4,7 @@
     var a = 0'u64
     visit "ABC"
     {
-        a += @index
+        a += #index
     }
 
     @assert(a == 3)

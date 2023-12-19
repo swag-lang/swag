@@ -581,7 +581,7 @@ void initErrors()
     SWAG_ERROR(Err0138, "misplaced '%s'                                    $ '%s' can only be used inside a function marked with 'throw', but '%s' isn't");
     SWAG_ERROR(Err0137, "misplaced '%s'                                    $ '%s' can't be used in a struct special function ('%s')");
     SWAG_ERROR(Err0442, "misplaced '@cvastart'                             $ the intrinsic '@cvastart' can only be used in a function with a final parameter of type 'cvarargs'");
-    SWAG_ERROR(Err0630, "misplaced '@index'                                $ the intrinsic '@index' is only valid within a breakable block such as 'loop', 'visit', 'for', etc.");
+    SWAG_ERROR(Err0630, "misplaced '#index'                                $ the intrinsic '#index' is only valid within a breakable block such as 'loop', 'visit', 'for', etc.");
     SWAG_ERROR(Err0806, "misplaced '@spread'                               $ the intrinsic '@spread' can only be used as a function argument");
     SWAG_ERROR(Err1135, "misplaced 'Self' type                             $ the 'Self' type is only valid within an 'impl', 'struct', or 'interface' block");
     SWAG_ERROR(Err0632, "misplaced 'break'                                 $ 'break' is only valid within a breakable block such as 'loop', 'visit', 'for', etc.");

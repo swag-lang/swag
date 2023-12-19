@@ -71,7 +71,7 @@ It's typically used to unregister/destroy a resource, by putting the release cod
             releaseResource(&resource)
         }
 
-        if @index == 2
+        if #index == 2
             break
     }
 

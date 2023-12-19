@@ -285,7 +285,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
         var str: String
         visit c: fi.subTitles
         {
-            if @index
+            if #index
                 str += " \u2022 "
             str += c
         }

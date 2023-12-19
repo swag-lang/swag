@@ -205,7 +205,7 @@ impl String
                     var #alias0 = #up scan
                 #else
                     var #alias0 = dref #up scan
-                var #alias1 = @index
+                var #alias1 = #index
                 #mixin #up stmt
             }
         }
@@ -387,7 +387,7 @@ impl String
     {
         var result: String
         loop values
-            result += values[@index]
+            result += values[#index]
         return result
     }
 
@@ -398,9 +398,9 @@ impl String
         var result: String
         loop values
         {
-            if separator and @index
+            if separator and #index
                 result += separator
-            result += values[@index]
+            result += values[#index]
         }
 
         return result

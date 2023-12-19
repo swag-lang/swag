@@ -14,14 +14,14 @@ The loop expression value is evaluated **once**, and must be a **positive value*
 }
 
 /**
-The intrinsic `@index` returns the current index of the loop, starting at 0.
+The intrinsic `#index` returns the current index of the loop, starting at 0.
 */
 #test
 {
     var cpt = 0'u64
     loop 5
     {
-        cpt += @index
+        cpt += #index
     }
 
     @assert(cpt == 0+1+2+3+4)
@@ -38,7 +38,7 @@ But you can name that index if you want.
     loop i: 5   // index is named 'i'
     {
         cpt  += i
-        cpt1 += @index  // @index is always available, even when named
+        cpt1 += #index  // #index is always available, even when named
     }
 
     @assert(cpt  == 0+1+2+3+4)
@@ -56,7 +56,7 @@ But you can name that index if you want.
 
     var cpt = 0
     loop arr    // The array contains 4 elements, so the loop count is 4
-        cpt += arr[@index]
+        cpt += arr[#index]
     @assert(cpt == 10+20+30+40)
 }
 
@@ -84,9 +84,9 @@ You can loop in reverse order by adding the modifier `back` just after the `loop
     // Index will be 2, 1 and then 0.
     loop,back 3
     {
-        if   cpt == 0 @assert(@index == 2)
-        elif cpt == 1 @assert(@index == 1)
-        elif cpt == 2 @assert(@index == 0)
+        if   cpt == 0 @assert(#index == 2)
+        elif cpt == 1 @assert(#index == 1)
+        elif cpt == 2 @assert(#index == 0)
 
         cpt += 1
     }
@@ -195,7 +195,7 @@ A loop without an expression but with a block is infinite. This is equivalent to
 {
     loop
     {
-        if @index == 4 // @index is still valid in that case (but cannot be renamed)
+        if #index == 4 // #index is still valid in that case (but cannot be renamed)
             break
     }
 }

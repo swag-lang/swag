@@ -9,7 +9,7 @@ var x: [2] s32
     {
         visit c: x
         {
-            if @index == 0 
+            if #index == 0
                 continue
             cpt1 += 1
         }

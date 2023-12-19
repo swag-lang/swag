@@ -66,7 +66,7 @@ impl HashSet
         #scope Up
         loop capacity
         {
-            if table[@index].hash < HASH_FIRST
+            if table[#index].hash < HASH_FIRST
                 continue
 
             #scope Down
@@ -74,15 +74,15 @@ impl HashSet
             {
                 #if #up ptr
                 {
-                    let #alias0 = &#up table[@index].key
+                    let #alias0 = &#up table[#index].key
                 }
                 #elif Reflection.isStruct(K)
                 {
-                    let #alias0 = cast(const &K) &#up table[@index].key
+                    let #alias0 = cast(const &K) &#up table[#index].key
                 }
                 #else
                 {
-                    let #alias0 = #up table[@index].key
+                    let #alias0 = #up table[#index].key
                 }
 
                 #mixin #up stmt { break = break Up; continue = break Down; }

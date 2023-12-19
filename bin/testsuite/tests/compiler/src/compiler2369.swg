@@ -5,7 +5,7 @@
     {
         #scope up
         {
-            @assert(@index == 0)
+            @assert(#index == 0)
             return
         }
     }

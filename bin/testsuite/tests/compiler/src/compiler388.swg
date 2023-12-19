@@ -9,7 +9,7 @@
 	var l = [1,2,3,4];
 	loop(l)
 	{
-		cpt1 += l[@index];
+		cpt1 += l[#index];
 		cpt += 1;
 	}
 

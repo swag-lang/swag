@@ -5,6 +5,6 @@
 	switch(5)
 	{
 	case 5:
-		cpt = cast(s32) @index;
+		cpt = cast(s32) #index;
 	}
 }

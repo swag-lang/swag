@@ -143,7 +143,7 @@ Compiler keywords always start with '#'. As user identifiers cannot start the sa
 # Misc intrinsics
 Intrisic keywords always start with '@'. As user identifiers cannot start the same way, intrinsics keywords will never collide with user identifiers.
 ```swag
-@index
+#index
 @err
 #alias0
 #alias1

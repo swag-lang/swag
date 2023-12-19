@@ -48,7 +48,7 @@ impl MyStruct
                 }
 
                 // #alias1 will be the index
-                var #alias1 = @index
+                var #alias1 = #index
 
                 // include user code
                 #mixin #up stmt
@@ -107,7 +107,7 @@ impl MyStruct
                 case 2: #alias0 = #up self.x
                 }
 
-                var #alias1 = @index
+                var #alias1 = #index
                 #mixin #up stmt
             }
         }

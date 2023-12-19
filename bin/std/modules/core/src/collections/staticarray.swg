@@ -130,7 +130,7 @@ impl StaticArray
                     let #alias0 = cast(&T) #up scan
                 #else
                     let #alias0 = #up scan[0]
-                let #alias1 = @index
+                let #alias1 = #index
                 #mixin #up stmt
             }
         }
@@ -186,7 +186,7 @@ impl StaticArray
         #if Reflection.hasDrop(T)
         {
             loop count
-                @drop(&buffer[0] + @index)
+                @drop(&buffer[0] + #index)
         }
 
         count = 0
@@ -385,7 +385,7 @@ impl StaticArray
             var destPtr = &buffer[0] + oldCount
             loop sliceCount
             {
-                dref destPtr =,nodrop values[@index]
+                dref destPtr =,nodrop values[#index]
                 destPtr += 1
             }
         }

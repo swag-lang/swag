@@ -73,7 +73,7 @@ impl HashTable
         var remain = count
         #scope Up loop capacity
         {
-            if table[@index].hash < HASH_FIRST
+            if table[#index].hash < HASH_FIRST
                 continue
 
             #scope Down
@@ -81,19 +81,19 @@ impl HashTable
             {
                 #if #up ptr
                 {
-                    let #alias0 = &#up table[@index].key
-                    let #alias1 = &#up table[@index].value
+                    let #alias0 = &#up table[#index].key
+                    let #alias1 = &#up table[#index].value
                 }
                 #else
                 {
                     #if Reflection.isStruct(K)
-                        let #alias0 = cast(const &K) &#up table[@index].key
+                        let #alias0 = cast(const &K) &#up table[#index].key
                     #else
-                        let #alias0 = #up table[@index].key
+                        let #alias0 = #up table[#index].key
                     #if Reflection.isStruct(V)
-                        let #alias1 = cast(const &V) &#up table[@index].value
+                        let #alias1 = cast(const &V) &#up table[#index].value
                     #else
-                        let #alias1 = #up table[@index].value
+                        let #alias1 = #up table[#index].value
                 }
 
                 #mixin #up stmt { break = break Up; continue = break Down; }

@@ -227,7 +227,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
         var bufSlice = @dataof(sl)
         loop @countof(sl)
         {
-            if @index buf.addBytes(",")
+            if #index buf.addBytes(",")
             let v = @mkany(bufSlice, ptrSlice.pointedType)
             convertAny(buf, v, strFormat)
             bufSlice += ptrSlice.pointedType.sizeof
@@ -246,7 +246,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
         var bufArr = cast(const ^u8) valueData
         loop ptrArr.count
         {
-            if @index buf.addBytes(",")
+            if #index buf.addBytes(",")
             let v = @mkany(bufArr, ptrArr.pointedType)
             convertAny(buf, v, strFormat)
             bufArr += ptrArr.pointedType.sizeof
@@ -348,7 +348,7 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
     buf.addBytes("{")
     visit field: kindof.fields
     {
-        if @index != 0
+        if #index != 0
             buf.addBytes(", ")
         buf.addBytes(field.name)
         buf.addBytes(" = ")

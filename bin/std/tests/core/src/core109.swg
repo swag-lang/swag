@@ -5,7 +5,7 @@ using Core
 {
     var x: Array's32
     loop 5
-        x.add(cast(s32) @index)
+        x.add(cast(s32) #index)
 
     var total = 0
     visit v: x

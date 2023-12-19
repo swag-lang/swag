@@ -7,7 +7,7 @@
 	var cpt: u64 = 0;
 	loop(5)
 	{
-		cpt += @index;
+		cpt += #index;
 	}
 
 	@assert(cpt == 1 + 2 + 3 + 4);

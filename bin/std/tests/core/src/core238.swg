@@ -8,13 +8,13 @@ using Core
     arr.resize(10)
     loop 10
     {
-        @assert(arr[@index] == "")
-        arr[@index] = String.from("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+        @assert(arr[#index] == "")
+        arr[#index] = String.from("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
     }
 
     arr.resize(5)
     loop 5
     {
-        @assert(arr[@index] == "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+        @assert(arr[#index] == "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
     }
 }

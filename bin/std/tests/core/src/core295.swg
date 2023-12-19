@@ -4,7 +4,7 @@ using Core
 {
     var h: HashSet'u64
     loop 65
-        h.add(@index)
+        h.add(#index)
 
     visit v: h
     {

@@ -412,7 +412,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@mkany", TokenId::IntrinsicMakeAny);
     keywords.add("@mkinterface", TokenId::IntrinsicMakeInterface);
     keywords.add("@mkcallback", TokenId::IntrinsicMakeCallback);
-    keywords.add("@index", TokenId::IntrinsicIndex);
+    keywords.add("#index", TokenId::IntrinsicIndex);
     keywords.add("@isconstexpr", TokenId::IntrinsicIsConstExpr);
     keywords.add("@itftableof", TokenId::IntrinsicItfTableOf);
     keywords.add("@dbgalloc", TokenId::IntrinsicDbgAlloc);

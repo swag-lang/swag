@@ -15,7 +15,7 @@ func findFirstLine(what: string)
         if idx == Swag.U64.Max continue
         #if LOG Console.printf("line: %\n", line)
         toProcess.add(line)
-        idxFirst = @index + 1
+        idxFirst = #index + 1
         break
     }
 

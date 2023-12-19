@@ -49,9 +49,6 @@ tuple unpacking array (should work with Core.Array)
 let (a, b) = [4, 5]
 let (a, b) = Tokenize.split(str, ' ')
 -------------------------------------
-@mixin1 => @mixin(num) ?
-@alias1 => @alias(num) ?
--------------------------------------
 @index => #index
 -------------------------------------
 

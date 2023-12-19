@@ -71,7 +71,7 @@ impl IActionUI for ActionSelection
         case CmdIdSelectAll:
             capture.selection.clear()
             loop capture.forms
-                capture.selection.add(@index)
+                capture.selection.add(#index)
             capture.selectionHasChanged()
 
         case CmdIdDeSelectAll:

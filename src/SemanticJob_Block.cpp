@@ -686,24 +686,24 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         {
             content += "let ";
             content += alias0Name;
-            content += Fmt(" = __addr%u + @index; ", id);
+            content += Fmt(" = __addr%u + #index; ", id);
         }
         else if (pointedType->isStruct())
         {
             content += "let ";
             content += alias0Name;
-            content += Fmt(" = ref &__addr%u[@index]; ", id);
+            content += Fmt(" = ref &__addr%u[#index]; ", id);
         }
         else
         {
             content += "let ";
             content += alias0Name;
-            content += Fmt(" = __addr%u[@index]; ", id);
+            content += Fmt(" = __addr%u[#index]; ", id);
         }
 
         content += "let ";
         content += alias1Name;
-        content += " = @index;}}";
+        content += " = #index;}}";
     }
 
     // One dimensional array
@@ -725,24 +725,24 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         {
             content += "let ";
             content += alias0Name;
-            content += Fmt(" = __addr%u + @index; ", id);
+            content += Fmt(" = __addr%u + #index; ", id);
         }
         else if (pointedType->isStruct())
         {
             content += "let ";
             content += alias0Name;
-            content += Fmt(" = ref &__addr%u[@index]; ", id);
+            content += Fmt(" = ref &__addr%u[#index]; ", id);
         }
         else
         {
             content += "let ";
             content += alias0Name;
-            content += Fmt(" = __addr%u[@index]; ", id);
+            content += Fmt(" = __addr%u[#index]; ", id);
         }
 
         content += "let ";
         content += alias1Name;
-        content += " = @index;}}";
+        content += " = #index;}}";
     }
 
     // Slice
@@ -764,24 +764,24 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         {
             content += "let ";
             content += alias0Name;
-            content += Fmt(" = __addr%u + @index; ", id);
+            content += Fmt(" = __addr%u + #index; ", id);
         }
         else if (pointedType->isStruct())
         {
             content += "let ";
             content += alias0Name;
-            content += Fmt(" = ref &__addr%u[@index]; ", id);
+            content += Fmt(" = ref &__addr%u[#index]; ", id);
         }
         else
         {
             content += "let ";
             content += alias0Name;
-            content += Fmt(" = __addr%u[@index]; ", id);
+            content += Fmt(" = __addr%u[#index]; ", id);
         }
 
         content += "let ";
         content += alias1Name;
-        content += " = @index;}}";
+        content += " = #index;}}";
     }
 
     // String
@@ -800,18 +800,18 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         {
             content += "let ";
             content += alias0Name;
-            content += Fmt(" = __addr%u + @index; ", id);
+            content += Fmt(" = __addr%u + #index; ", id);
         }
         else
         {
             content += "let ";
             content += alias0Name;
-            content += Fmt(" = __addr%u[@index]; ", id);
+            content += Fmt(" = __addr%u[#index]; ", id);
         }
 
         content += "let ";
         content += alias1Name;
-        content += " = @index;}}";
+        content += " = #index;}}";
     }
 
     // Variadic
@@ -822,11 +822,11 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         firstAliasVar = 0;
         content += "let ";
         content += alias0Name;
-        content += Fmt(" = %s[@index]; ", (const char*) concat.firstBucket->datas);
+        content += Fmt(" = %s[#index]; ", (const char*) concat.firstBucket->datas);
 
         content += "let ";
         content += alias1Name;
-        content += " = @index;}}";
+        content += " = #index;}}";
     }
 
     // Enum
@@ -841,11 +841,11 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         content += alias0Name;
         content += " = dref cast(const* ";
         content += typeInfo->name;
-        content += Fmt(") __addr%u.values[@index].value; ", id);
+        content += Fmt(") __addr%u.values[#index].value; ", id);
 
         content += "let ";
         content += alias1Name;
-        content += " = @index;}}";
+        content += " = #index;}}";
     }
 
     else

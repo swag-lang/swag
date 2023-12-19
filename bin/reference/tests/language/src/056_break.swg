@@ -108,7 +108,7 @@ Note that a scope can be followed by a simple statement, not always a block.
     {
         loop 10
         {
-            if @index == 5
+            if #index == 5
                 break Up
         }
 

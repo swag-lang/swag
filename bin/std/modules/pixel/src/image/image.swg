@@ -55,7 +55,7 @@ impl Image
 			#macro
 			{
                 var #alias0 = #up scan
-				var #alias1 = @index
+				var #alias1 = #index
 				#mixin #up stmt
 			}
 

@@ -212,7 +212,7 @@ impl IRichEditLexer for RichEditLexerSwag
         mapWords.add("@mkany", State.Intrinsic)
         mapWords.add("@mkinterface", State.Intrinsic)
         mapWords.add("@mkcallback", State.Intrinsic)
-        mapWords.add("@index", State.Intrinsic)
+        mapWords.add("#index", State.Intrinsic)
         mapWords.add("@isconstexpr", State.Intrinsic)
         mapWords.add("@err", State.Intrinsic)
         mapWords.add("@itftableof", State.Intrinsic)
