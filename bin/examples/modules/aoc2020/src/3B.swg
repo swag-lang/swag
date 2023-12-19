@@ -32,7 +32,8 @@ func day3B()
 
         visit s, slope: S
         {
-            if done[slope] continue
+            if done[slope]
+                continue
 
             x[slope] = cast(s32) ((x[slope] + s.item0) % lines[0].length)
             y[slope] += s.item1
@@ -41,7 +42,7 @@ func day3B()
             {
                 if !done[slope] cptDone += 1
                 done[slope] = true
-                break
+                continue
             }
 
             count[slope] += lines[y[slope]][x[slope]] == `#` ? 1 : 0
