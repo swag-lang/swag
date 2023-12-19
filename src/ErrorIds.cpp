@@ -175,7 +175,7 @@ void initErrors()
     SWAG_ERROR(Err0162, "compile-time evaluation failed                    $ can't transform the type '%s' to a constant array because 'opSlice' returns an empty slice");
     SWAG_ERROR(Err0058, "compile-time evaluation failed                    $ the type '%s' can't be converted to constant expression");
     SWAG_ERROR(Err0089, "compile-time evaluation required                  $ '%s' can't be evaluated at compile-time");
-    SWAG_ERROR(Err0242, "compile-time evaluation required                  $ '@include' requited its filename argument to be evaluated at compile-time");
+    SWAG_ERROR(Err0242, "compile-time evaluation required                  $ '#include' requited its filename argument to be evaluated at compile-time");
     SWAG_ERROR(Err0059, "compile-time evaluation required                  $ a slice of type '%s' can't be converted to a compile-time value");
     SWAG_ERROR(Err0248, "compile-time evaluation required                  $ the '%s' argument can't be evaluated at compile-time");
     SWAG_ERROR(Err0237, "compile-time evaluation required                  $ the '%s' message can't be evaluated at compile-time");
@@ -234,7 +234,7 @@ void initErrors()
     SWAG_ERROR(Err0508, "file not found                                    $ the file '%s' can't be found in the module folder '%s'");
     SWAG_ERROR(Err0509, "file open error                                   $ failed to access file '%s'");
     SWAG_ERROR(Err0502, "file open error                                   $ failed to open file '%s'");
-    SWAG_ERROR(Err0223, "file open error                                   $ failed to open the '@include' file '%s'");
+    SWAG_ERROR(Err0223, "file open error                                   $ failed to open the '#include' file '%s'");
     SWAG_ERROR(Err0153, "file read error                                   $ failed to read source file '%s'");
     SWAG_ERROR(Err0524, "file write error                                  $ failed to open file '%s' for writing");
     SWAG_ERROR(Err0525, "file write error                                  $ failed to write to file '%s'");
@@ -331,7 +331,7 @@ void initErrors()
     SWAG_ERROR(Err0596, "invalid align value                               $ the '#[Swag.Align]' argument must be a power of two, got '%d'");
     SWAG_ERROR(Err0233, "invalid argument                                  $ '#%s' requires an argument of type 'bool', got '%s' instead");
     SWAG_ERROR(Err0240, "invalid argument                                  $ '#mixin' requires an argument of type 'code', got '%s' instead");
-    SWAG_ERROR(Err0243, "invalid argument                                  $ '@include' requires an argument of type 'string', got '%s' instead");
+    SWAG_ERROR(Err0243, "invalid argument                                  $ '#include' requires an argument of type 'string', got '%s' instead");
     SWAG_ERROR(Err0498, "invalid argument                                  $ the '%s' count must be an integer, got '%s' instead");
     SWAG_ERROR(Err0711, "invalid argument                                  $ the intrinsic '%s' requires a block pointer as a first argument, got '%s' instead");
     SWAG_ERROR(Err0787, "invalid argument                                  $ the intrinsic '%s' requires a pointer as a first argument, got '%s' instead");
@@ -655,7 +655,7 @@ void initErrors()
     SWAG_ERROR(Err1203, "missing '(' before parameters                     $ expected '(' to start the list of parameters, found '%s' instead");
     SWAG_ERROR(Err1051, "missing ':'                                       $ a ':' is expected here after the 'loop' variable name '%s' $ syntax is 'loop [variable:] count'");
     SWAG_ERROR(Err1023, "missing '#alias' number                           $ '#alias' variable names should end with a number such as '#alias0', '#alias1', etc.");
-    SWAG_ERROR(Err1011, "missing '@include' string argument                $ expected the file name to include after '@include', found '%s' instead");
+    SWAG_ERROR(Err1011, "missing '#include' string argument                $ expected the file name to include after '#include', found '%s' instead");
     SWAG_ERROR(Err1119, "missing '#mixin' number                           $ '#mixin' variable names should end with a number such as '#mixin0', '#mixin1', etc.");
     SWAG_ERROR(Err1055, "missing 'case' expression                         $ expected the 'case' expression before '%s'");
     SWAG_ERROR(Err1057, "missing 'closure' capture variable                $ expected another capture variable between ',' and '|' $ add another variable or consider removing the trailing comma");
