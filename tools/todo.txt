@@ -49,8 +49,6 @@ tuple unpacking array (should work with Core.Array)
 let (a, b) = [4, 5]
 let (a, b) = Tokenize.split(str, ' ')
 -------------------------------------
-@index => #index
--------------------------------------
 
 
 
