@@ -70,7 +70,7 @@ private func updateThreadProc(th: Threading.Thread)
                 voice.destroyNative()
 
                 let idx = voice.idxInList
-                driver.activeVoices.removeAt(acast idx)
+                driver.activeVoices.removeAt(idx)
                 if idx != driver.activeVoices.count
                     driver.activeVoices[idx].idxInList = idx
                 driver.pendingRecycleVoices.add(voice)

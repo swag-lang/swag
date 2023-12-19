@@ -32,10 +32,10 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
 
     // Cast from any. Fine to cast from a struct or array to a reference
     if cmpFlags & .CastAny and
-       type1.kind == TypeInfoKind.Pointer and 
+       type1.kind == TypeInfoKind.Pointer and
        type1.flags & .PointerRef and
        type1.flags & .Const
-    {  
+    {
         let typePointer = cast(const *Swag.TypeInfoPointer) type1
         return @typecmp(typePointer.pointedType, type2, cmpFlags)
     }
@@ -145,8 +145,8 @@ func __setupRuntime(flags: RuntimeFlags)
     __runtimeFlags = flags
 
     let cxt = @getcontext()
-    cxt.tempAllocator.setCapacity(acast __buildCfg.tempAllocatorCapacity, cxt.allocator)
-    cxt.errorAllocator.setCapacity(acast __buildCfg.errorAllocatorCapacity, cxt.allocator)
+    cxt.tempAllocator.setCapacity(__buildCfg.tempAllocatorCapacity, cxt.allocator)
+    cxt.errorAllocator.setCapacity(__buildCfg.errorAllocatorCapacity, cxt.allocator)
 
     if __buildCfg.debugAllocator
     {

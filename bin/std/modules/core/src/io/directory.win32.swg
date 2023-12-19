@@ -145,14 +145,14 @@ func getDrives()->Array'String throw
     var volName: [MAX_PATH] u8
     var driveName: [MAX_PATH] u8
 
-    let h = FindFirstVolumeA(volName, acast MAX_PATH)
+    let h = FindFirstVolumeA(volName, MAX_PATH)
     if h == INVALID_HANDLE_VALUE
         return result
 
     loop
     {
         var ret: DWORD
-        catch GetVolumePathNamesForVolumeNameA(volName, driveName, acast MAX_PATH, &ret)
+        catch GetVolumePathNamesForVolumeNameA(volName, driveName, MAX_PATH, &ret)
         if @err() == null
         {
             let len = @strlen(driveName)
@@ -164,7 +164,7 @@ func getDrives()->Array'String throw
             }
         }
 
-        if !FindNextVolumeA(h, volName, acast MAX_PATH)
+        if !FindNextVolumeA(h, volName, MAX_PATH)
             break
     }
 

@@ -56,8 +56,8 @@ impl Application
         crc32.update(@mkslice(cast(const ^u8) &winkey, 4))
         crc32.crc &= 0x7FFFFFFF
 
-        catch UnregisterHotKey(null, acast crc32.crc)
-        RegisterHotKey(null, acast crc32.crc, mod, winkey)
+        catch UnregisterHotKey(null, crc32.crc)
+        RegisterHotKey(null, crc32.crc, mod, winkey)
     }
 
     mtd sendHotKey(msg: MSG)
