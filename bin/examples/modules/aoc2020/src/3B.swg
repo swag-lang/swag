@@ -21,37 +21,22 @@ func day3B()
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "3.txt")
     let lines = assume File.readAllLines(dataPath)
 
-    var count:   [5] u32
-    var x, y:    [5] u32
-    var done:    [5] bool
-    var cptDone: u32
-
-    while cptDone != 5
-    {
-        const S: []{x, y: s32} = [{1,1},{3,1},{5,1},{7,1},{1,2}]
-
-        visit s, slope: S
-        {
-            if done[slope]
-                continue
-
-            x[slope] = cast(s32) ((x[slope] + s.item0) % lines[0].length)
-            y[slope] += s.item1
-
-            if y[slope] >= lines.count
-            {
-                if !done[slope] cptDone += 1
-                done[slope] = true
-                continue
-            }
-
-            count[slope] += lines[y[slope]][x[slope]] == `#` ? 1 : 0
-        }
-    }
-
     var total: u64 = 1
-    visit v: count
-        total *= v
+    const S: []{dx, dy: s32} = [{1,1},{3,1},{5,1},{7,1},{1,2}]
+    visit s, slope: S
+    {
+        var x, y, count: u32
+        loop
+        {
+            y += s.dy
+            if y >= lines.count
+                break
+            x = cast(s32) ((x + s.dx) % lines[0].length)
+            count += lines[y][x] == `#` ? 1 : 0
+        }
+
+        total *= count
+    }
 
     //Console.print("total: ", total)
     @assert(total == 3584591857)
