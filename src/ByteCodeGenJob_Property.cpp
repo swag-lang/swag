@@ -227,7 +227,8 @@ bool ByteCodeGenJob::emitIntrinsicDataOf(ByteCodeGenContext* context)
         typeInfo->isAny() ||
         typeInfo->isSlice() ||
         typeInfo->isInterface() ||
-        typeInfo->isArray())
+        typeInfo->isArray() ||
+        typeInfo->isListArray())
     {
         ensureCanBeChangedRC(context, front->resultRegisterRC);
         truncRegisterRC(context, front->resultRegisterRC, 1);

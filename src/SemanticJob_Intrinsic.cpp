@@ -401,6 +401,14 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
 {
     auto typeInfo = TypeManager::concretePtrRefType(expression->typeInfo);
 
+    if (typeInfo->isListArray())
+    {
+        auto typeList  = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListArray);
+        auto typeArray = TypeManager::convertTypeListToArray(context, typeList, expression->flags & AST_CONST_EXPR);
+        SWAG_CHECK(TypeManager::makeCompatibles(context, typeArray, nullptr, expression, CASTFLAG_DEFAULT));
+        typeInfo = typeArray;
+    }
+
     if (typeInfo->isString())
     {
         // :ConcreteRef

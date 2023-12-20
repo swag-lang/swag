@@ -396,17 +396,11 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
         break;
 
     case TokenId::SymLeftCurly:
-        if (exprFlags & EXPR_FLAG_SIMPLE)
-            return invalidTokenError(InvalidTokenError::PrimaryExpression, parent);
         SWAG_CHECK(doExpressionListTuple(parent, result));
         break;
 
     case TokenId::SymLeftSquare:
-        if (exprFlags & EXPR_FLAG_SIMPLE)
-            return invalidTokenError(InvalidTokenError::PrimaryExpression, parent);
-
-        // We can differentiate between a literal array and a type array by looking at what's next
-        else if (exprFlags & (EXPR_FLAG_TYPEOF | EXPR_FLAG_PARAMETER))
+        if (exprFlags & (EXPR_FLAG_TYPEOF | EXPR_FLAG_PARAMETER))
         {
             tokenizer.saveState(token);
             SWAG_CHECK(doExpressionListArray(parent, result));

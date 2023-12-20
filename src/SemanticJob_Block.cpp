@@ -573,8 +573,11 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     auto node       = CastAst<AstVisit>(context->node, AstNodeKind::Visit);
 
     auto typeInfo = TypeManager::concretePtrRefType(node->expression->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
+
     if (!typeInfo->isEnum())
         SWAG_CHECK(checkIsConcrete(context, node->expression));
+    if (typeInfo->isListArray())
+        typeInfo = g_TypeMgr->convertTypeListToArray(context, (TypeInfoList*) typeInfo, node->expression->flags & AST_CONST_EXPR);
 
     // Be sure that aliases are not defined elsewhere
     for (auto c : node->aliasNames)
