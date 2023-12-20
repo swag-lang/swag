@@ -2410,20 +2410,15 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
     if (fromNode)
         fromNode->flags |= AST_CONST_EXPR;
 
-    TypeInfoList* toTypeList = nullptr;
-    if (toType->isListTuple() || toType->isListArray())
-        toTypeList = CastTypeInfo<TypeInfoList>(toType, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
-
     for (size_t i = 0; i < fromSize; i++)
     {
-        auto child     = fromNode ? fromNode->childs[i] : nullptr;
-        auto convertTo = toTypeList ? toTypeList->subTypes[i]->typeInfo : toType;
+        auto child = fromNode ? fromNode->childs[i] : nullptr;
 
         // Expression list inside another expression list (like a struct inside an array)
-        if (child && child->kind == AstNodeKind::ExpressionList && convertTo->isStruct())
+        if (child && child->kind == AstNodeKind::ExpressionList && toType->isStruct())
         {
             auto exprNode          = CastAst<AstExpressionList>(child, AstNodeKind::ExpressionList);
-            auto toTypeStruct      = CastTypeInfo<TypeInfoStruct>(convertTo, TypeInfoKind::Struct);
+            auto toTypeStruct      = CastTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::Struct);
             exprNode->castToStruct = toTypeStruct;
 
             bool hasChanged = false;
@@ -2518,14 +2513,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             }
         }
 
-        if (fromNode)
-        {
-            SWAG_CHECK(TypeManager::makeCompatibles(context, convertTo, fromTypeList->subTypes[i]->typeInfo, nullptr, child, castFlags | CASTFLAG_TRY_COERCE));
-        }
-        else
-        {
-            SWAG_CHECK(TypeManager::makeCompatibles(context, convertTo, fromTypeList->subTypes[i]->typeInfo, nullptr, child, castFlags | CASTFLAG_TRY_COERCE));
-        }
+        SWAG_CHECK(TypeManager::makeCompatibles(context, toType, fromTypeList->subTypes[i]->typeInfo, nullptr, child, castFlags | CASTFLAG_TRY_COERCE));
 
         if (child)
         {
@@ -3027,9 +3015,9 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
             return castError(context, toType, fromType, fromNode, castFlags);
 
         // When affecting a ref, constness must be the same
-        if (fromNode && 
-            fromType->isPointerRef() && 
-            (castFlags & CASTFLAG_FOR_AFFECT) && 
+        if (fromNode &&
+            fromType->isPointerRef() &&
+            (castFlags & CASTFLAG_FOR_AFFECT) &&
             fromNode->kind == AstNodeKind::KeepRef &&
             toType->isConst() != fromType->isConst())
         {
