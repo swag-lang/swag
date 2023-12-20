@@ -38,11 +38,26 @@ enum FileShare
     ReadWrite = Read | Write
 }
 
-// Read a file, and store the result in an utf8 string
-func readAllText(fullname: string, encoding = TextEncoding.Utf8)->String throw
+// Read a file, and store the result in an utf8 string.
+func readAllText(fullname: string, encoding = TextEncoding.Utf8, normalizeEol = false)->String throw
 {
     var textReader: TextReader
     textReader.open(fullname, encoding)
+
+    // Normalized end of lines.
+    if normalizeEol
+    {
+        var result: retval
+        var res: String
+        while textReader.readLine(&res)
+        {
+            result += res
+            result += `\n`'u8
+        }
+
+        return result
+    }
+
     return textReader.readToEnd()
 }
 

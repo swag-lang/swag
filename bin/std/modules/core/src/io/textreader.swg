@@ -48,7 +48,7 @@ impl TextReader
 
 public impl TextReader
 {
-    // Open the reader
+    // Open the reader.
     func open(using self, fullname: string, encoding = TextEncoding.Utf8) throw
     {
         Debug.assert(!stream.isOpen())
@@ -63,14 +63,14 @@ public impl TextReader
         encodingType = encoding;
     }
 
-    // Close the reader
+    // Close the reader.
     func close(using self)
     {
         stream.close()
     }
 
     // Read one line of text.
-    // Returns false at the end
+    // Returns false if the end of the stream has been reached.
     #[Swag.Safety("boundcheck|overflow", false)]
     func readLine(using self, result: &String)->bool
     {
@@ -133,8 +133,7 @@ public impl TextReader
         return true
     }
 
-    // Read from the current position to the end, and returns the corresponding
-    // utf8 string
+    // Read from the current position to the end, and returns the corresponding utf8 string
     func readToEnd(using self)->String
     {
         var result: retval
