@@ -679,6 +679,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         varDecl->addSpecFlags(AstVarDecl::SPECFLAG_CONST_ASSIGN | AstVarDecl::SPECFLAG_IS_LET);
         varDecl->assignment = Ast::newIntrinsicProp(sourceFile, TokenId::IntrinsicDataOf, varDecl);
         Ast::clone(node->expression, varDecl->assignment);
+        varDecl->assignment->childs.front()->flags |= AST_NO_SEMANTIC;
         newVar = varDecl;
 
         firstAliasVar = 2;
