@@ -22,16 +22,15 @@ func day3B()
     let lines = assume File.readAllLines(dataPath)
 
     var total: u64 = 1
-    const S: []{dx, dy: s32} = [{1,1},{3,1},{5,1},{7,1},{1,2}]
-    visit s, slope: S
+    visit s, slope: [{1,1},{3,1},{5,1},{7,1},{1,2}]
     {
         var x, y, count: u32
         loop
         {
-            y += s.dy
+            y += s.item1
             if y >= lines.count
                 break
-            x = cast(u32) ((x + s.dx) % lines[0].length)
+            x = cast(u32) ((x + s.item0) % lines[0].length)
             count += lines[y][x] == `#` ? 1 : 0
         }
 

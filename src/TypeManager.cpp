@@ -5,6 +5,8 @@
 #include "TypeInfo.h"
 #include "Mutex.h"
 #include "AstNode.h"
+#include "Ast.h"
+#include "Job.h"
 
 TypeManager* g_TypeMgr = nullptr;
 
@@ -205,11 +207,24 @@ TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfo
         typeArray->totalCount  = typeArray->count;
         if (isCompilerConstant)
             typeArray->flags |= TYPEINFO_CONST;
-        if (!typeArray->pointedType->isListArray())
+
+        if (typeArray->pointedType->isListTuple())
+        {
+            typeList               = CastTypeInfo<TypeInfoList>(typeArray->pointedType, TypeInfoKind::TypeListTuple);
+            typeArray->pointedType = convertTypeListToStruct(context, typeList, isCompilerConstant);
+            finalType              = typeArray->pointedType;
             break;
-        typeList               = CastTypeInfo<TypeInfoList>(typeArray->pointedType, TypeInfoKind::TypeListArray);
-        typeArray->pointedType = makeType<TypeInfoArray>();
-        typeArray              = (TypeInfoArray*) typeArray->pointedType;
+        }
+
+        if (typeArray->pointedType->isListArray())
+        {
+            typeList               = CastTypeInfo<TypeInfoList>(typeArray->pointedType, TypeInfoKind::TypeListArray);
+            typeArray->pointedType = makeType<TypeInfoArray>();
+            typeArray              = (TypeInfoArray*) typeArray->pointedType;
+            continue;
+        }
+
+        break;
     }
 
     // Compute all the type names
@@ -243,6 +258,37 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
     }
 
     typeStruct->structName = typeStruct->name;
+
+    // Generate some fake nodes
+    // This peace of code is necessary to solve something like :
+    // let s = [{1, 2}, {3, 4}]
+    typeStruct->declNode = Ast::newStructDecl(context->sourceFile, nullptr);
+    typeStruct->declNode->flags |= AST_GENERATED;
+    typeStruct->declNode->typeInfo   = typeStruct;
+    typeStruct->declNode->ownerScope = context->sourceFile->scopeFile;
+    typeStruct->flags |= TYPEINFO_GHOST_TUPLE;
+    typeStruct->scope        = Ast::newScope(typeStruct->declNode, "", ScopeKind::Struct, context->sourceFile->scopeFile);
+    typeStruct->scope->owner = typeStruct->declNode;
+    typeStruct->alignOf      = 1;
+    for (auto f : typeStruct->fields)
+    {
+        f->declNode           = Ast::newVarDecl(context->sourceFile, f->name, typeStruct->declNode);
+        f->declNode->typeInfo = f->typeInfo;
+        f->declNode->flags |= AST_GENERATED;
+        f->offset = typeStruct->sizeOf;
+
+        AddSymbolTypeInfo toAdd;
+        toAdd.kind                          = SymbolKind::Variable;
+        toAdd.node                          = f->declNode;
+        toAdd.typeInfo                      = f->typeInfo;
+        toAdd.storageOffset                 = f->offset;
+        toAdd.flags                         = OVERLOAD_VAR_STRUCT;
+        f->declNode->resolvedSymbolOverload = typeStruct->scope->symTable.addSymbolTypeInfo((ErrorContext*) context, toAdd);
+        f->declNode->resolvedSymbolName     = f->declNode->resolvedSymbolOverload->symbol;
+
+        typeStruct->sizeOf += f->typeInfo->sizeOf;
+    }
+
     return typeStruct;
 }
 

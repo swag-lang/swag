@@ -1169,9 +1169,12 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         if (overload->flags & OVERLOAD_VAR_STRUCT && identifier->identifierRef()->startScope)
         {
             auto parentStructNode = identifier->identifierRef()->startScope->owner;
-            context->job->waitOverloadCompleted(parentStructNode->resolvedSymbolOverload);
-            if (context->result == ContextResult::Pending)
-                return true;
+            if (parentStructNode->resolvedSymbolOverload)
+            {
+                context->job->waitOverloadCompleted(parentStructNode->resolvedSymbolOverload);
+                if (context->result == ContextResult::Pending)
+                    return true;
+            }
         }
 
         overload->flags |= OVERLOAD_USED;

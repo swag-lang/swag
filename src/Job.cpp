@@ -119,6 +119,8 @@ void Job::waitStructGeneratedAlloc(TypeInfo* typeInfo)
     auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     if (!typeInfoStruct->declNode)
         return;
+    if (typeInfoStruct->flags & TYPEINFO_GHOST_TUPLE)
+        return;
     if (typeInfoStruct->declNode->kind == AstNodeKind::InterfaceDecl)
         return;
 
@@ -147,6 +149,8 @@ void Job::waitStructGenerated(TypeInfo* typeInfo)
 
     auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     if (!typeInfoStruct->declNode)
+        return;
+    if (typeInfoStruct->flags & TYPEINFO_GHOST_TUPLE)
         return;
     if (typeInfoStruct->declNode->kind == AstNodeKind::InterfaceDecl)
         return;
@@ -203,6 +207,8 @@ void Job::waitTypeCompleted(TypeInfo* typeInfo)
     if (!typeInfo->isStruct() && !typeInfo->isInterface())
         return;
     if (!typeInfo->declNode)
+        return;
+    if (typeInfo->flags & TYPEINFO_GHOST_TUPLE)
         return;
 
     //  :BecauseOfThat
