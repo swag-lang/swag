@@ -593,23 +593,24 @@ void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTry
                 if (prev->kind == AstNodeKind::ArrayPointerIndex)
                 {
                     auto api = CastAst<AstArrayPointerIndex>(prev, AstNodeKind::ArrayPointerIndex);
-                    prev     = api->array;
-                }
-
-                if (prev->typeInfo)
-                {
-                    auto note = Diagnostic::note(prev, Fmt(Nte(Nte0001), prev->token.ctext(), Naming::aKindName(prev->resolvedSymbolName->kind).c_str(), prev->typeInfo->getDisplayNameC()));
-                    notes.push_back(note);
+                    if (api->array->typeInfo)
+                    {
+                        prev           = api->array;
+                        auto typeArray = CastTypeInfo<TypeInfoArray>(api->array->typeInfo, TypeInfoKind::Array);
+                        auto note      = Diagnostic::note(prev, Fmt(Nte(Nte0000), prev->token.ctext(), typeArray->finalType->getDisplayNameC()));
+                        notes.push_back(note);
+                    }
                 }
                 else
                 {
-                    auto note = Diagnostic::note(prev, Fmt(Nte(Nte0010), prev->token.ctext(), Naming::aKindName(prev->resolvedSymbolName->kind).c_str()));
+                    Diagnostic* note = nullptr;
+                    if (prev->typeInfo)
+                        note = Diagnostic::note(prev, Fmt(Nte(Nte0001), prev->token.ctext(), Naming::aKindName(prev->resolvedSymbolName->kind).c_str(), prev->typeInfo->getDisplayNameC()));
+                    else
+                        note = Diagnostic::note(prev, Fmt(Nte(Nte0010), prev->token.ctext(), Naming::aKindName(prev->resolvedSymbolName->kind).c_str()));
                     notes.push_back(note);
-                }
-
-                if (prev->resolvedSymbolOverload)
-                {
-                    notes.push_back(Diagnostic::hereIs(prev));
+                    if (prev->resolvedSymbolOverload)
+                        notes.push_back(Diagnostic::hereIs(prev));
                 }
             }
         }

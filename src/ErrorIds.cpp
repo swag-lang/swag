@@ -1460,7 +1460,7 @@ void initErrors()
     SWAG_ERROR(Nte0149, "you might want to get the address of '%s' using '&'");
     SWAG_ERROR(Nte0014, "the duplicated underlying enum value is '%s'");
     SWAG_ERROR(Nte1108, "you need to take the address of a value to make a reference");
-    SWAG_ERROR(Nte0000, nullptr);
+    SWAG_ERROR(Nte0000, "'%s' is an array of type '%s' which does not have a subscope");
     SWAG_ERROR(Nte1022, nullptr);
     SWAG_ERROR(Nte1031, nullptr);
     SWAG_ERROR(Nte1009, nullptr);
