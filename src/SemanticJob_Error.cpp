@@ -609,8 +609,7 @@ void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTry
 
                 if (prev->resolvedSymbolOverload)
                 {
-                    auto note = Diagnostic::note(prev->resolvedSymbolOverload->node, Nte(Nte0000));
-                    notes.push_back(note);
+                    notes.push_back(Diagnostic::hereIs(prev));
                 }
             }
         }
