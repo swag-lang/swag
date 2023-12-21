@@ -4055,9 +4055,17 @@ bool SemanticJob::filterGenericMatches(SemanticContext* context, VectorNative<On
         }
     }
 
+    // If there's one match, but we match with a untyped int conversion, and there's more than one
+    // generic match. We must remove the match in order to raised on multiple overload error, otherwise
+    // we can match or not with an untyped integer depending on instantiation order.
+    if (matches.size() == 1 && genMatches.size() > 1 && matches[0]->flags & CASTFLAG_RESULT_TYPE_CONVERT)
+    {
+        matches.clear();
+    }
+
     // We eliminate all generic matches that will create an already existing match.
     // This way we can keep some matches with autoOpCast if we have no choice (we will not try to
-    // instantiate 'without' autoOpCast, because it would result in a autoOpCast too.
+    // instantiate 'without' autoOpCast, because it would result in a autoOpCast too).
     if (matches.size() && genMatches.size())
     {
         VectorNative<OneGenericMatch*> newGenericMatches;

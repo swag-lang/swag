@@ -2285,6 +2285,11 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
         }
     }
 
+    // If it matches, then it matches with a conversion
+    // Usefull to discriminate generics
+    if (fromType->isUntypedInteger() || fromType->isUntypedFloat())
+        context->castFlagsResult |= CASTFLAG_RESULT_TYPE_CONVERT;
+
     switch (toType->nativeType)
     {
     case NativeTypeKind::Bool:
