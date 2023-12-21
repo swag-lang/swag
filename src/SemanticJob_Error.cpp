@@ -6,6 +6,7 @@
 #include "LanguageSpec.h"
 #include "AstOutput.h"
 #include "Naming.h"
+#include "SyntaxColor.h"
 
 static int getBadParamIdx(OneTryMatch& oneTry, AstNode* callParameters)
 {
@@ -763,20 +764,34 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext*            context
             n.count--;
         if (n.back() == ';')
             n.count--;
+
+        if (g_CommandLine.logColors)
+        {
+            SyntaxColorContext cxt;
+            n = syntaxColor(n, cxt);
+        }
+
         Utf8 fn = Fmt("%d: %s", i + 1, n.c_str());
+
+        note->remarks.push_back(fn);
+        fn.clear();
 
         if (result == MatchResult::BadSignature || result == MatchResult::BadGenericSignature)
         {
             Vector<const Diagnostic*> errs0, errs1;
             getDiagnosticForMatch(context, *tryResult[i], errs0, errs1);
-            fn += "  ----  ";
+            fn += "        ";
 
+            if (g_CommandLine.logColors)
+                fn += Log::colorToVTS(LogColor::Red);
             Vector<Utf8> parts;
             Diagnostic::tokenizeError(errs0[0]->textMsg, parts);
             if (parts.size() > 1)
                 fn += parts[1];
             else
                 fn += parts[0];
+            if (g_CommandLine.logColors)
+                fn += Log::colorToVTS(LogColor::Default);
         }
 
         note->remarks.push_back(fn);
@@ -974,10 +989,22 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
     cannotMatchIdentifierError(context, MatchResult::NotEnoughGenericParameters, 0, tryMatches, node, notes);
     cannotMatchIdentifierError(context, MatchResult::TooManyGenericParameters, 0, tryMatches, node, notes);
 
-    int paramIdx = 0;
-    while (cannotMatchIdentifierError(context, MatchResult::BadSignature, paramIdx++, tryMatches, node, notes)) {}
-    paramIdx = 0;
-    while (cannotMatchIdentifierError(context, MatchResult::BadGenericSignature, paramIdx++, tryMatches, node, notes)) {}
+    // For a bad signature, only show the ones with the greatest match
+    int paramIdx;
+    for (int what = 0; what < 2; what++)
+    {
+        Vector<const Diagnostic*> notesSig;
+        paramIdx = 0;
+        while (true)
+        {
+            Vector<const Diagnostic*> notesTmp;
+            auto                      m = what == 0 ? MatchResult::BadSignature : MatchResult::BadGenericSignature;
+            if (!cannotMatchIdentifierError(context, m, paramIdx++, tryMatches, node, notesTmp))
+                break;
+            notesSig = notesTmp;
+        }
+        notes.insert(notes.end(), notesSig.begin(), notesSig.end());
+    }
 
     return context->report(diag, notes);
 }
