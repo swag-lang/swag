@@ -191,8 +191,10 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
                 Ast::removeFromParent(identifier);
                 SWAG_CHECK(doArrayPointerIndex((AstNode**) &identifier));
                 Ast::addChildBack(parent, identifier);
-                identifier->addSpecFlags(serial);
+                if (identifier->kind != AstNodeKind::ArrayPointerIndex)
+                    break;
 
+                identifier->addSpecFlags(serial);
                 if (token.id != TokenId::SymLeftSquare)
                     break;
                 serial ^= AstArrayPointerIndex::SPECFLAG_SERIAL;
