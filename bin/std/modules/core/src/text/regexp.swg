@@ -1209,16 +1209,14 @@ impl RegExp
         return pz + 1
     }
 
-    func addParenthesis(inStr: string)->String
+    func addParenthesis(uni32: &Array'rune)
     {
-        var str: retval = inStr
-
-        for var i = 1's32; i < str.length-1; i += 1
+        for var i = 1's32; i < uni32.count-1; i += 1
         {
-            if str[i] == `|`
+            if uni32[i] == `|`
             {
-                str.insert(acast i, `)`'u8)
-                str.insert(acast (i+2), `(`'u8)
+                uni32.insertAt(acast i, `)`'rune)
+                uni32.insertAt(acast (i+2), `(`'rune)
 
                 var cpt0, cpt1, cpt2: s32
 
@@ -1226,7 +1224,7 @@ impl RegExp
                 #scope Loop1
                 while iminus != -1
                 {
-                    switch str[iminus]
+                    switch uni32[iminus]
                     {
                     case `]`: cpt0 += 1
                     case `)`: cpt1 += 1
@@ -1239,13 +1237,15 @@ impl RegExp
                     iminus -= 1
                 }
 
-                str.insert(acast (iminus+1), `(`'u8)
+                uni32.insertAt(acast (iminus+1), `(`'rune)
 
+                cpt0, cpt1, cpt2 = 0
                 var iplus = i + 4
+
                 #scope Loop2
-                while iplus != str.length
+                while iplus != uni32.count
                 {
-                    switch str[iplus]
+                    switch uni32[iplus]
                     {
                     case `[`: cpt0 += 1
                     case `(`: cpt1 += 1
@@ -1258,18 +1258,16 @@ impl RegExp
                     iplus += 1
                 }
 
-                str.insert(acast iplus, `)`'u8)
+                uni32.insertAt(acast iplus, `)`'rune)
                 i += 4
             }
         }
-
-        return str
     }
 
     mtd preprocess(inStr: string) throw
     {
-        let str = addParenthesis(inStr)
-        var in32 = Unicode.fromUtf8(str)
+        var in32 = Unicode.fromUtf8(inStr)
+        addParenthesis(&in32)
         in32.add(0'rune)
 
         var pz = cast(const ^rune) in32.buffer
