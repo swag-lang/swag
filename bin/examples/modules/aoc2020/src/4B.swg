@@ -153,13 +153,7 @@ func day4B1()
         pid_r.compile("[0-9]{9}")
     }
 
-    struct Key
-    {
-        r: Parser.RegExp
-        b: u32
-    }
-
-    var map: HashTable'(string, Key)
+    var map: HashTable'(string, {r: Parser.RegExp, b: u32})
     map.add("byr", {byr_r, 1})
     map.add("iyr", {iyr_r, 2})
     map.add("eyr", {eyr_r, 4})
