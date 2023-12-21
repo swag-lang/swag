@@ -146,6 +146,14 @@ impl RegExp
         clearMatch()
     }
 
+    // Creates and return an expression
+    public func create(expr: string, ignoreCase = false)->RegExp throw
+    {
+        var result: retval
+        result.compile(expr, ignoreCase)
+        return result
+    }
+
     // Compile the expression
     public mtd compile(expr: string, ignoreCase = false) throw
     {

@@ -141,16 +141,16 @@ func day4B1()
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "4.txt")
     let lines = assume File.readAllLines(dataPath)
 
-    var byr_r, iyr_r, eyr_r, hgt_r, hcl_r, ecl_r, pid_r: Parser.RegExp
     assume
     {
-        byr_r.compile("19[2-9][0-9]|200[0-2]")
-        iyr_r.compile("201[0-9]|2020")
-        eyr_r.compile("202[0-9]|2030")
-        hgt_r.compile("((1[5678][0-9])|(19[0-3]))cm|(59|6[0-9]|7[0-6])in")
-        hcl_r.compile("#([a-f0-9]){6}")
-        ecl_r.compile("amb|blu|brn|gry|grn|hzl|oth")
-        pid_r.compile("[0-9]{9}")
+        using Parser
+        var byr_r = RegExp.create("19[2-9][0-9]|200[0-2]")
+        var iyr_r = RegExp.create("201[0-9]|2020")
+        var eyr_r = RegExp.create("202[0-9]|2030")
+        var hgt_r = RegExp.create("((1[5678][0-9])|(19[0-3]))cm|(59|6[0-9]|7[0-6])in")
+        var hcl_r = RegExp.create("#([a-f0-9]){6}")
+        var ecl_r = RegExp.create("amb|blu|brn|gry|grn|hzl|oth")
+        var pid_r = RegExp.create("[0-9]{9}")
     }
 
     var map: HashTable'(string, {r: Parser.RegExp, b: u32})
