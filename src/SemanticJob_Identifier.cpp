@@ -2190,7 +2190,17 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 params.push_back(p);
             }
 
-            auto note                   = Diagnostic::note(overload->node, overload->node->token, couldBe);
+            Diagnostic* note;
+            if (overload->node->kind == AstNodeKind::FuncDecl)
+            {
+                auto funcDecl = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
+                note          = Diagnostic::note(overload->node, funcDecl->tokenName, couldBe);
+            }
+            else
+            {
+                note = Diagnostic::note(overload->node, overload->node->token, couldBe);
+            }
+
             note->showRange             = false;
             note->showMultipleCodeLines = false;
             notes.push_back(note);
@@ -2279,7 +2289,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             return duplicatedSymbolError(context, node->sourceFile, node->token, symbol->kind, symbol->name, otherKind, otherNode);
         }
 
-        Diagnostic                diag{node, node->token, Fmt(Err(Err0116), symbol->name.c_str())};
+        Diagnostic                diag{node, node->token, Fmt(Err(Err0116), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
         Vector<const Diagnostic*> notes;
         for (auto match : matches)
         {
@@ -2288,19 +2298,20 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
 
             if (overload->typeInfo->isFuncAttr())
             {
+                auto funcDecl = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl, AstNodeKind::AttrDecl);
                 if (overload->typeInfo->flags & TYPEINFO_FROM_GENERIC)
                 {
                     auto         typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
                     AstFuncDecl* funcNode = CastAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
                     auto         orgNode  = funcNode->originalGeneric ? funcNode->originalGeneric : overload->typeInfo->declNode;
                     auto         couldBe  = Fmt(Nte(Nte0045), orgNode->typeInfo->getDisplayNameC());
-                    note                  = Diagnostic::note(overload->node, overload->node->token, couldBe);
+                    note                  = Diagnostic::note(overload->node, funcDecl->tokenName, couldBe);
                     note->remarks.push_back(Fmt(Nte(Nte0047), overload->typeInfo->getDisplayNameC()));
                 }
                 else
                 {
                     auto couldBe = Fmt(Nte(Nte0048), overload->typeInfo->getDisplayNameC());
-                    note         = Diagnostic::note(overload->node, overload->node->token, couldBe);
+                    note         = Diagnostic::note(overload->node, funcDecl->tokenName, couldBe);
                 }
 
                 if (!overload->typeInfo->isLambdaClosure())
@@ -4520,7 +4531,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
                 auto symbol = p.symbol;
                 if (!needToCompleteSymbol(context, identifier, symbol))
                 {
-                    Diagnostic diag{identifier, Fmt(Err(Err0116), identifier->token.ctext())};
+                    Diagnostic diag{identifier, Fmt(Err(Err0116), Naming::kindName(symbol->kind).c_str(), identifier->token.ctext())};
 
                     Vector<const Diagnostic*> notes;
                     for (auto& p1 : dependentSymbols)

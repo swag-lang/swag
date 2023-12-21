@@ -163,8 +163,8 @@ void initErrors()
     SWAG_ERROR(Err0034, "ambiguous symbol                                  $ ambiguous conversion of struct '%s' to interface '%s'");
     SWAG_ERROR(Err0080, "ambiguous symbol                                  $ ambiguous resolution of the enum value '%s'");
     SWAG_ERROR(Err0115, "ambiguous symbol                                  $ ambiguous resolution of the generic %s '%s'");
+    SWAG_ERROR(Err0116, "ambiguous symbol                                  $ ambiguous resolution of the %s '%s'");
     SWAG_ERROR(Err0182, "ambiguous symbol                                  $ ambiguous resolution of the special function '%s'");
-    SWAG_ERROR(Err0116, "ambiguous symbol                                  $ ambiguous resolution of the symbol '%s'");
     SWAG_ERROR(Err1200, "ambiguous syntax                                  $ ambiguity arises between initializing '%s' and starting a new block");
     SWAG_ERROR(Err1195, "ambiguous syntax                                  $ ambiguous declaration within lambda type parameters");
     SWAG_ERROR(Err0011, "argument already defined                          $ the named argument '%s' has already been defined");
