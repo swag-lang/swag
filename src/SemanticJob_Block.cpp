@@ -594,10 +594,28 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     if (typeInfo->isStruct())
     {
         SWAG_VERIFY(!(typeInfo->isTuple()), context->report({node->expression, Err(Err0624)}));
-        SWAG_VERIFY(node->expression->kind == AstNodeKind::IdentifierRef, Report::internalError(node->expression, "resolveVisit expression, should be an identifier"));
 
-        auto identifierRef = (AstIdentifierRef*) Ast::clone(node->expression, node);
-        auto callVisit     = Ast::newIdentifier(sourceFile, Fmt("opVisit%s", node->extraNameToken.ctext()), identifierRef, identifierRef);
+        AstIdentifierRef* identifierRef = nullptr;
+        AstIdentifier*    callVisit     = nullptr;
+        AstVarDecl*       varNode       = nullptr;
+        if (node->expression->kind != AstNodeKind::IdentifierRef)
+        {
+            varNode = Ast::newVarDecl(sourceFile, Fmt("__9tmp_%d", g_UniqueID.fetch_add(1)), node);
+            varNode->flags |= AST_GENERATED;
+            newExpression       = Ast::clone(node->expression, varNode);
+            varNode->assignment = newExpression;
+
+            Ast::removeFromParent(node->expression);
+            identifierRef = Ast::newIdentifierRef(sourceFile, varNode->token.text, node);
+            newExpression = identifierRef;
+        }
+        else
+        {
+            identifierRef = (AstIdentifierRef*) Ast::clone(node->expression, node);
+            newExpression = identifierRef;
+        }
+
+        callVisit = Ast::newIdentifier(sourceFile, Fmt("opVisit%s", node->extraNameToken.ctext()), identifierRef, identifierRef);
         callVisit->allocateIdentifierExtension();
         callVisit->identifierExtension->aliasNames = node->aliasNames;
         callVisit->inheritTokenLocation(node);
@@ -620,7 +638,6 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
 
         // Call with arguments
         callVisit->callParameters = Ast::newFuncCallParams(sourceFile, callVisit);
-        newExpression             = identifierRef;
 
         Ast::removeFromParent(node->block);
         Ast::addChildBack(node, node->block);
@@ -629,6 +646,8 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         job->nodes.pop_back();
         job->nodes.push_back(newExpression);
         job->nodes.push_back(node->block);
+        if (varNode)
+            job->nodes.push_back(varNode);
         job->nodes.push_back(node);
         return true;
     }

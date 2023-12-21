@@ -630,7 +630,7 @@ void initErrors()
     SWAG_ERROR(Err0139, "misplaced error catching                          $ '%s' can only be associated with function calls, but '%s' is %s");
     SWAG_ERROR(Err1147, "misplaced error catching                          $ '%s' can't be nested in a '%s' expression $ you should use only one 'try', 'catch' or 'assume'");
     SWAG_ERROR(Err1021, "misplaced error catching                          $ treating a return error with '%s' can only be done inside a function, macro or mixin");
-    SWAG_ERROR(Err0535, "misplaced error catching                          $ unexpected '%s' because function '%s' can't raise an error");
+    SWAG_ERROR(Err0535, "misplaced error catching                          $ unexpected '%s' because the function '%s' can't raise an error");
     SWAG_ERROR(Err1163, "misplaced function declaration                    $ functions can't be directly declared inside structs $ functions associated with structs should be declared inside 'impl' blocks");
     SWAG_ERROR(Err0135, "misplaced generic arguments                       $ unexpected generic arguments for %s '%s'");
     SWAG_ERROR(Err1040, "misplaced namespace                               $ a namespace should be defined in the top-level scope or within another namespace");
