@@ -100,10 +100,10 @@ public struct RegExpGrep
 #[Swag.Opaque]
 public struct RegExp
 {
-    nfaNodes:       Array'(*NfaNode)
-    dfaNodes:       Array'(*DfaNode)
+    nfaNodes:       ArrayPtr'(NfaNode)
+    dfaNodes:       ArrayPtr'(DfaNode)
+    nfaTables:      ArrayPtr'(NfaTable)
     nfaStack:       Array'(*NfaTable)
-    nfaTables:      Array'(*NfaTable)
     charSet:        HashSet'rune
     groups:         Array'RegExpGroup
     groupTransform: Array'u32
@@ -134,10 +134,6 @@ impl RegExp
     // Clear content
     public mtd clear()
     {
-        visit p: nfaNodes Memory.delete(p)
-        visit p: dfaNodes Memory.delete(p)
-        visit p: nfaTables Memory.delete(p)
-
         nfaNodes.clear()
         dfaNodes.clear()
         nfaTables.clear()
@@ -468,13 +464,9 @@ impl RegExp
     // Creates 2 new states, and one transition (by c) between them
     mtd nfaPush(c: rune)
     {
-        let table = Memory.new'NfaTable()
-        nfaTables.add(table)
-
-        let s1 = Memory.new'NfaNode()
-        let s2 = Memory.new'NfaNode()
-        nfaNodes.add(s1)
-        nfaNodes.add(s2)
+        let table = nfaTables.addNewPtr()
+        let s1    = nfaNodes.addNewPtr()
+        let s2    = nfaNodes.addNewPtr()
 
         table.level = cast(u32) openParen.count
         s1.addTransition(c, s2)
@@ -1219,19 +1211,18 @@ impl RegExp
                 uni32.insertAt(acast (i+2), `(`'rune)
 
                 var cpt0, cpt1, cpt2: s32
-
                 var iminus = i
-                #scope Loop1
-                while iminus != -1
+
+                #scope Loop while iminus != -1
                 {
                     switch uni32[iminus]
                     {
                     case `]`: cpt0 += 1
                     case `)`: cpt1 += 1
                     case `}`: cpt2 += 1
-                    case `[`: if cpt0 == 0 break Loop1; cpt0 -= 1
-                    case `(`: if cpt1 == 0 break Loop1; cpt1 -= 1
-                    case `{`: if cpt2 == 0 break Loop1; cpt2 -= 1
+                    case `[`: if cpt0 == 0 break Loop; cpt0 -= 1
+                    case `(`: if cpt1 == 0 break Loop; cpt1 -= 1
+                    case `{`: if cpt2 == 0 break Loop; cpt2 -= 1
                     }
 
                     iminus -= 1
@@ -1242,17 +1233,16 @@ impl RegExp
                 cpt0, cpt1, cpt2 = 0
                 var iplus = i + 4
 
-                #scope Loop2
-                while iplus != uni32.count
+                #scope Loop while iplus != uni32.count
                 {
                     switch uni32[iplus]
                     {
                     case `[`: cpt0 += 1
                     case `(`: cpt1 += 1
                     case `{`: cpt2 += 1
-                    case `]`: if cpt0 == 0 break Loop2; cpt0 -= 1
-                    case `)`: if cpt1 == 0 break Loop2; cpt1 -= 1
-                    case `}`: if cpt2 == 0 break Loop2; cpt2 -= 1
+                    case `]`: if cpt0 == 0 break Loop; cpt0 -= 1
+                    case `)`: if cpt1 == 0 break Loop; cpt1 -= 1
+                    case `}`: if cpt2 == 0 break Loop; cpt2 -= 1
                     }
 
                     iplus += 1

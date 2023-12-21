@@ -13,6 +13,16 @@ impl ArrayPtr
         ArrayPtr.clear(self)
     }
 
+    mtd opPostCopy()
+    {
+        loop i: count
+        {
+            let newPtr = Memory.new'T(allocator)
+            dref newPtr = dref buffer[i]
+            buffer[i] = newPtr
+        }
+    }
+
     // Release content
     mtd clear()
     {

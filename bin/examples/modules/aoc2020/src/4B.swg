@@ -153,22 +153,30 @@ func day4B1()
         pid_r.compile("[0-9]{9}")
     }
 
+    struct Key
+    {
+        r: Parser.RegExp
+        b: u32
+    }
+
+    var map: HashTable'(string, Key)
+    map.add("byr", {byr_r, 1})
+    map.add("iyr", {iyr_r, 2})
+    map.add("eyr", {eyr_r, 4})
+    map.add("hgt", {hgt_r, 8})
+    map.add("hcl", {hcl_r, 16})
+    map.add("ecl", {ecl_r, 32})
+    map.add("pid", {pid_r, 64})
+
     var total, pass: u32
     visit l: lines
     {
         visit r: Tokenize.split(l, ` `'u8)
         {
             let res1 = Tokenize.split(r, `:`'u8)
-            switch res1[0]
-            {
-            case "byr": if byr_r.match(res1[1]) pass |= 1
-            case "iyr": if iyr_r.match(res1[1]) pass |= 2
-            case "eyr": if eyr_r.match(res1[1]) pass |= 4
-            case "hgt": if hgt_r.match(res1[1]) pass |= 8
-            case "hcl": if hcl_r.match(res1[1]) pass |= 16
-            case "ecl": if ecl_r.match(res1[1]) pass |= 32
-            case "pid": if pid_r.match(res1[1]) pass |= 64
-            }
+            let it = map.find(res1[0])
+            if it and it.value.r.match(res1[1])
+                pass |= it.value.b
         }
 
         if #index == lines.count-1 or lines[#index+1].length == 0
