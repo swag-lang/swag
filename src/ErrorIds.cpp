@@ -737,7 +737,7 @@ void initErrors()
     SWAG_ERROR(Err0477, "out of range slicing                              $ the slicing bound '%I64u' is out of range (max is '%I64u')");
     SWAG_ERROR(Err0476, "out of range slicing                              $ the slicing lower bound '%I64u' is greater than the upper bound '%I64u'");
     SWAG_ERROR(Err0688, "out of range slicing                              $ the slicing upper bound exclusion with '..<' is not possible because it is zero");
-    SWAG_ERROR(Err0113, "overload mismatch                                 $ '%d' overloads found for '%s', but none matched the provided arguments");
+    SWAG_ERROR(Err0113, "overload mismatch                                 $ found '%d' overloads for '%s', but none matched the provided arguments");
     SWAG_ERROR(Err0201, "recursive evaluation                              $ the struct '%s' references itself, which is causing a recursion");
     SWAG_ERROR(Err1018, "redundant access modifier                         $ the '%s' access modifier is unnecessary because of '#global export' $ consider removing the 'public' modifier, as '#global export' ensures all declarations in this file are publicly accessible");
     SWAG_ERROR(Err0078, "reserved function name                            $ the function name '%s' is reserved by the compiler");
@@ -889,7 +889,7 @@ void initErrors()
     SWAG_ERROR(Err1214, "invalid 'opVisit' name                            $ function should be named 'opVisit' $ if you want to declare a visit variant, declare the alternate name after a comma");
     SWAG_ERROR(Err1139, "invalid visit                                     $ cannot find the '%s' visit variant in '%s'");
     SWAG_ERROR(Err0557, "invalid visit                                     $ the type '%s' cannot be visited with 'visit'");
-    SWAG_ERROR(Err0639, "function already declared                         $ a function with the same name '%s' has already been declared $ if you want to declare an overload, mark all functions with '#[Swag.Overload]'");
+    SWAG_ERROR(Err0639, "unauthorized function overload                    $ a function with the same name '%s' has already been declared $ if you want to declare an overload, mark all functions with '#[Swag.Overload]'");
     SWAG_ERROR(Err0694, nullptr);
     SWAG_ERROR(Err0530, nullptr);
     SWAG_ERROR(Err0660, nullptr);

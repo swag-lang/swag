@@ -8,6 +8,7 @@
 #include "LanguageSpec.h"
 #include "SyntaxColor.h"
 #include "Report.h"
+#include "Ast.h"
 
 void Diagnostic::setupColors(bool verboseMode)
 {
@@ -696,9 +697,20 @@ Diagnostic* Diagnostic::hereIs(AstNode* node, bool forceShowRange, bool forceNod
 
     if (node->resolvedSymbolOverload)
     {
-        auto note       = Diagnostic::note(node, node->token, Fmt(Nte(Nte0090), Naming::kindName(node->resolvedSymbolOverload).c_str(), node->token.ctext()));
-        note->showRange = forceShowRange;
-        return note;
+        if (node->kind == AstNodeKind::FuncDecl)
+        {
+            auto fctDecl    = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+            auto note       = Diagnostic::note(fctDecl, fctDecl->tokenName, Fmt(Nte(Nte0090), Naming::kindName(node->resolvedSymbolOverload).c_str(), node->token.ctext()));
+            note->showRange = forceShowRange;
+            return note;
+        }
+        else
+        {
+
+            auto note       = Diagnostic::note(node, node->token, Fmt(Nte(Nte0090), Naming::kindName(node->resolvedSymbolOverload).c_str(), node->token.ctext()));
+            note->showRange = forceShowRange;
+            return note;
+        }
     }
 
     switch (node->kind)
@@ -717,7 +729,8 @@ Diagnostic* Diagnostic::hereIs(AstNode* node, bool forceShowRange, bool forceNod
     }
     case AstNodeKind::FuncDecl:
     {
-        auto note       = Diagnostic::note(node, node->token, Fmt(Nte(Nte0090), "declaration of function", node->token.ctext()));
+        auto fctDecl    = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        auto note       = Diagnostic::note(fctDecl, fctDecl->tokenName, Fmt(Nte(Nte0090), "declaration of function", node->token.ctext()));
         note->showRange = forceShowRange;
         return note;
     }
@@ -736,11 +749,18 @@ Diagnostic* Diagnostic::hereIs(SymbolOverload* overload, bool forceShowRange)
         return nullptr;
 
     auto site = overload->node;
-
-    if (site->typeInfo->isTuple())
+    if (site->typeInfo && site->typeInfo->isTuple())
     {
         auto note       = Diagnostic::note(site, site->token, Nte(Nte0030));
         note->showRange = false;
+        return note;
+    }
+
+    if (overload->node && overload->node->kind == AstNodeKind::FuncDecl)
+    {
+        auto fctDecl    = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
+        auto note       = Diagnostic::note(fctDecl, fctDecl->tokenName, Fmt(Nte(Nte0090), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()));
+        note->showRange = forceShowRange;
         return note;
     }
 
