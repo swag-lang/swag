@@ -1209,52 +1209,83 @@ impl RegExp
         return pz + 1
     }
 
+    func addParenthesis(inStr: string)->String
+    {
+        var str: retval = inStr
+
+        for var i = 1's32; i < str.length-1; i += 1
+        {
+            if str[i] == `|`
+            {
+                str.insert(acast i, `)`'u8)
+                str.insert(acast (i+2), `(`'u8)
+
+                var cpt0, cpt1, cpt2: s32
+
+                var iminus = i
+                #scope Loop1
+                while iminus != -1
+                {
+                    switch str[iminus]
+                    {
+                    case `]`: cpt0 += 1
+                    case `)`: cpt1 += 1
+                    case `}`: cpt2 += 1
+                    case `[`: if cpt0 == 0 break Loop1; cpt0 -= 1
+                    case `(`: if cpt1 == 0 break Loop1; cpt1 -= 1
+                    case `{`: if cpt2 == 0 break Loop1; cpt2 -= 1
+                    }
+
+                    iminus -= 1
+                }
+
+                str.insert(acast (iminus+1), `(`'u8)
+
+                var iplus = i + 4
+                #scope Loop2
+                while iplus != str.length
+                {
+                    switch str[iplus]
+                    {
+                    case `[`: cpt0 += 1
+                    case `(`: cpt1 += 1
+                    case `{`: cpt2 += 1
+                    case `]`: if cpt0 == 0 break Loop2; cpt0 -= 1
+                    case `)`: if cpt1 == 0 break Loop2; cpt1 -= 1
+                    case `}`: if cpt2 == 0 break Loop2; cpt2 -= 1
+                    }
+
+                    iplus += 1
+                }
+
+                str.insert(acast iplus, `)`'u8)
+                i += 4
+            }
+        }
+
+        return str
+    }
+
     mtd preprocess(inStr: string) throw
     {
-        var in32 = Unicode.fromUtf8(inStr)
+        let str = addParenthesis(inStr)
+        var in32 = Unicode.fromUtf8(str)
         in32.add(0'rune)
 
         var pz = cast(const ^rune) in32.buffer
         let pzEnd = pz + in32.count
 
         var c = ignoreCase ? Unicode.toUpper(pz[0]) : pz[0]
-        var open = false
-
         while c
         {
             switch c
             {
-            case `[`:
-                if open { preprocessed.add(RuneCloseParen); open = false; }
-                pz = preprocessInter(@mkslice(pz, pzEnd - pz))
-                break
-
-            case `{`:
-                if open { preprocessed.add(RuneCloseParen); open = false; }
-                pz = preprocessEnum(@mkslice(pz, pzEnd - pz))
-
-            default:
-                if open and (pz[1] == `*` or pz[1] == `+` or pz[1] == `?`)
-                {
-                    if open { preprocessed.add(RuneCloseParen); open = false; }
-                    pz = preprocessEscape(@mkslice(pz, pzEnd - pz))
-                }
-                elif isReservedChar(c)
-                {
-                    if open { preprocessed.add(RuneCloseParen); open = false; }
-                    pz = preprocessEscape(@mkslice(pz, pzEnd - pz))
-                }
-                else
-                {
-                    if !open { preprocessed.add(RuneOpenParen); open = true; }
-                    pz = preprocessEscape(@mkslice(pz, pzEnd - pz))
-                }
+            case `[`:   pz = preprocessInter(@mkslice(pz, pzEnd - pz))
+            case `{`:   pz = preprocessEnum(@mkslice(pz, pzEnd - pz))
+            default:    pz = preprocessEscape(@mkslice(pz, pzEnd - pz))
             }
 
             c = ignoreCase ? Unicode.toUpper(pz[0]) : pz[0]
         }
-
-        if open
-            preprocessed.add(RuneCloseParen)
     }
 }

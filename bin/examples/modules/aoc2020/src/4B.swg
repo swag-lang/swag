@@ -69,16 +69,19 @@ using Core
 
 func day4B()
 {
+    day4B0()
+    day4B1()
+}
+
+func day4B0()
+{
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "4.txt")
     let lines = assume File.readAllLines(dataPath)
 
-    var total: u32
-
-    var pass: u32
+    var total, pass: u32
     visit l: lines
     {
-        let res = Tokenize.split(l, ` `'u8)
-        visit r: res
+        visit r: Tokenize.split(l, ` `'u8)
         {
             let res1 = Tokenize.split(r, `:`'u8)
             switch res1[0]
@@ -125,6 +128,52 @@ func day4B()
         {
             if pass & 0b1111111 == 0b1111111
                 total += 1
+            pass = 0
+        }
+    }
+
+    //Console.print("total: ", total)
+    @assert(total == 224)
+}
+
+func day4B1()
+{
+    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "4.txt")
+    let lines = assume File.readAllLines(dataPath)
+
+    var byr_r, iyr_r, eyr_r, hgt_r, hcl_r, ecl_r, pid_r: Parser.RegExp
+    assume
+    {
+        byr_r.compile("19[2-9][0-9]|200[0-2]")
+        iyr_r.compile("201[0-9]|2020")
+        eyr_r.compile("202[0-9]|2030")
+        hgt_r.compile("((1[5678][0-9])|(19[0-3]))cm|(59|6[0-9]|7[0-6])in")
+        hcl_r.compile("#([a-f0-9]){6}")
+        ecl_r.compile("amb|blu|brn|gry|grn|hzl|oth")
+        pid_r.compile("[0-9]{9}")
+    }
+
+    var total, pass: u32
+    visit l: lines
+    {
+        visit r: Tokenize.split(l, ` `'u8)
+        {
+            let res1 = Tokenize.split(r, `:`'u8)
+            switch res1[0]
+            {
+            case "byr": if byr_r.match(res1[1]) pass |= 1
+            case "iyr": if iyr_r.match(res1[1]) pass |= 2
+            case "eyr": if eyr_r.match(res1[1]) pass |= 4
+            case "hgt": if hgt_r.match(res1[1]) pass |= 8
+            case "hcl": if hcl_r.match(res1[1]) pass |= 16
+            case "ecl": if ecl_r.match(res1[1]) pass |= 32
+            case "pid": if pid_r.match(res1[1]) pass |= 64
+            }
+        }
+
+        if #index == lines.count-1 or lines[#index+1].length == 0
+        {
+            total += cast(s32) (pass == 0b1111111)
             pass = 0
         }
     }
