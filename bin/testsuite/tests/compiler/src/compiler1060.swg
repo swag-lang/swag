@@ -7,7 +7,7 @@ func toto()->s32
 
 func toto1()
 {
-	if true	
+	if true	 do
 		return
 }
 

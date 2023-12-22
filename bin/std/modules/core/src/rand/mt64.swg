@@ -57,7 +57,7 @@ public impl Mt64
                 mt[0] = mt[NN-1]
                 i = 1
             }
-            if j >= keyLength
+            if j >= keyLength do
                 j = 0
             k -= 1
         }

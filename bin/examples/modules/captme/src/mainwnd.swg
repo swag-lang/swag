@@ -113,10 +113,10 @@ impl IWnd for MainWnd
 
         sf.show()
         sf.bringToTop()
-        while !menu.endModal
+        while !menu.endModal do
             surface.app.runFrame()
         sf.hide()
-        if menu.endModalResult
+        if menu.endModalResult do
             postCommandEvent(menu.endModalResult)
         sf.destroy()
     }
@@ -199,11 +199,11 @@ impl MainWnd
         }
 
         var kindOf: typeinfo
-        if editMode == .Favorites
+        if editMode == .Favorites do
             kindOf = @kindof(mdlFavorite)
-        elif editMode == .Highlight
+        elif editMode == .Highlight do
             kindOf = @kindof(mdlHighlight)
-        elif editMode == .PixSel
+        elif editMode == .PixSel do
             kindOf = @kindof(mdlPixSel)
 
         if kindOf
@@ -244,7 +244,7 @@ impl MainWnd
 
     mtd getCapture()->*Capture
     {
-        if !editWnd return null
+        if !editWnd do return null
         return editWnd.editView.capture
     }
 
@@ -258,7 +258,7 @@ impl MainWnd
     mtd updateSizeDisplay()
     {
         let capture = getCapture()
-        if !capture or !sizeBtn
+        if !capture or !sizeBtn do
             return
         sizeBtn.name = Format.toString("% x %", capture.width, capture.height)
         sizeBtn.invalidate()
@@ -458,7 +458,7 @@ impl MainWnd
                 .id = #self.id
                 .style.addStyleSheetColors("btnIcon_CheckedBk    $btnIcon_HotBk")
                 .style.addStyleSheetColors("btnIcon_CheckedHotBk $btnIcon_HotBk")
-                if canCheck
+                if canCheck do
                     .iconBtnFlags.add(.Checkable)
                 .checkedForm = .Bottom
             }

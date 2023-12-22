@@ -4,7 +4,7 @@ using Core
 #test
 {
     var arr: Array'u32
-    loop i: 10'u32
+    loop i: 10'u32 do
         arr.add(i)
 
     let result = Slice.findLinear(arr.toSlice(), 5'u32)

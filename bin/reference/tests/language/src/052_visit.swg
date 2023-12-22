@@ -83,7 +83,7 @@ You can visit arrays or slices.
     var array = [10, 20, 30]
 
     var result = 0
-    visit it: array
+    visit it: array do
         result += it
 
     @assert(result == 10+20+30)
@@ -97,7 +97,7 @@ Works also for multi dimensional arrays.
     var array: [2, 2] s32 = [[10, 20], [30, 40]]
 
     var result = 0
-    visit it: array
+    visit it: array do
         result += it
 
     @assert(result == 10+20+30+40)

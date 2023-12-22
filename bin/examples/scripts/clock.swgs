@@ -41,6 +41,6 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #main
 {
-    func test(app: *Application) = if Env.hasArg("swag.test") app.maxRunFrame = 100
+    func test(app: *Application) = if Env.hasArg("swag.test") do app.maxRunFrame = 100
     Application.runSurface(100, 100, 512, 512, title: "Clock", hook: &onEvent, init: &test)
 }

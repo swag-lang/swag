@@ -81,7 +81,7 @@ It works with generics too, and can be mixed with static declarations.
     func append(buf: ^u8, val: string)
     {
         var len = 0
-        while buf[len] len += 1
+        while buf[len] do len += 1
         @memcpy(buf + len, @dataof(val), cast(u64) @countof(val) + 1)
     }
 

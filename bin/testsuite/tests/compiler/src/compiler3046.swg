@@ -2,7 +2,7 @@
 func maxSize(T: const [..] typeinfo)->u64
 {
     var ms: u32 = 0
-    visit p: T
+    visit p: T do
         ms = @max(p.sizeof, ms)
     return ms
 }
@@ -19,8 +19,8 @@ impl AA
     func isIn(V: typeinfo)->bool
     {
         var ms: u64 = 0
-        visit p: T
-            if p == V return true
+        visit p: T do
+            if p == V do return true
         return false
     }
 

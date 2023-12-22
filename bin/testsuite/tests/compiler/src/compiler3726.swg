@@ -3,6 +3,6 @@
 #test
 {
     var x: any
-    if x
+    if x do
         @print("X")
 }

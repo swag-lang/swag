@@ -36,7 +36,7 @@ impl ConvertFormatFloat
     {
         let buffer = @dataof(strFormat)
         let countof = @countof(strFormat)
-        if buffer == null or countof == 0
+        if buffer == null or countof == 0 do
             return
 
         var cpt = 0'u32
@@ -64,7 +64,7 @@ impl ConvertFormatFloat
         {
             let (userWidth, eatCount, ?) = assume parseU64(@mkstring(buffer + cpt, cast(u64) (countof - cpt)))
             Debug.assert(userWidth <= 255, "precision overflow")
-            if eatCount
+            if eatCount do
                 precision = cast(s8) userWidth
         }
     }
@@ -103,7 +103,7 @@ impl ConvertFormatInt
     {
         let buffer = @dataof(strFormat)
         let countof = @countof(strFormat)
-        if buffer == null or countof == 0
+        if buffer == null or countof == 0 do
             return
 
         var cpt = 0'u32
@@ -132,17 +132,17 @@ impl ConvertFormatInt
         }
 
         // Next comes the padding characters
-        if cpt >= countof
+        if cpt >= countof do
             return
         padding = buffer[cpt]
         cpt += 1
 
         // Next comes the padding width
-        if cpt >= countof
+        if cpt >= countof do
             return
         let (userWidth, eatCount, ?) = assume parseU64(@mkstring(buffer + cpt, cast(u64) countof - cpt))
         Debug.assert(userWidth <= 255, "padding width overflow")
-        if eatCount width = cast(u8) userWidth
+        if eatCount do width = cast(u8) userWidth
     }
 }
 
@@ -166,9 +166,9 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     if Reflection.isType(type)
     {
         let ptrType = dref cast(*typeinfo) valueData
-        if ptrType
+        if ptrType do
             buf.addBytes(ptrType.fullname)
-        else
+        else do
             buf.addBytes("null")
         return
     }
@@ -198,9 +198,9 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     if Reflection.isEnum(type)
     {
         var enumName = Reflection.getEnumName(type, valueData)
-        if !enumName.isEmpty()
+        if !enumName.isEmpty() do
             buf.addBytes(@mkslice(enumName.buffer, cast(u64) enumName.length))
-        else
+        else do
             buf.addBytes("?")
         return
     }
@@ -208,11 +208,11 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
     // A struct
     if Reflection.isStruct(type)
     {
-        if type == ConvertFormatInt
+        if type == ConvertFormatInt do
             convertInt(buf, cast(ConvertFormatInt) concreteValue)
-        elif type == ConvertFormatFloat
+        elif type == ConvertFormatFloat do
             convertFloat(buf, cast(ConvertFormatFloat) concreteValue)
-        else
+        else do
             convertStruct(buf, concreteValue, strFormat)
         return
     }
@@ -227,7 +227,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
         var bufSlice = @dataof(sl)
         loop @countof(sl)
         {
-            if #index buf.addBytes(",")
+            if #index do buf.addBytes(",")
             let v = @mkany(bufSlice, ptrSlice.pointedType)
             convertAny(buf, v, strFormat)
             bufSlice += ptrSlice.pointedType.sizeof
@@ -246,7 +246,7 @@ func convertAny(buf: *ConcatBuffer, value: any, strFormat: string)
         var bufArr = cast(const ^u8) valueData
         loop ptrArr.count
         {
-            if #index buf.addBytes(",")
+            if #index do buf.addBytes(",")
             let v = @mkany(bufArr, ptrArr.pointedType)
             convertAny(buf, v, strFormat)
             bufArr += ptrArr.pointedType.sizeof
@@ -325,7 +325,7 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
         var first = true
         loop addrArr.count
         {
-            if !first
+            if !first do
                 buf.addBytes(",")
             first = false
             let v = @mkany(bufArr, typeContent)
@@ -348,7 +348,7 @@ func convertStruct(buf: *ConcatBuffer, value: any, strFormat: string)
     buf.addBytes("{")
     visit field: kindof.fields
     {
-        if #index != 0
+        if #index != 0 do
             buf.addBytes(", ")
         buf.addBytes(field.name)
         buf.addBytes(" = ")
@@ -408,9 +408,9 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
     case S64:
         signedValue = dref cast(*s64) dataof
         // Cannot take the absolute value of Swag.S64.Min
-        if signedValue == Swag.S64.Min
+        if signedValue == Swag.S64.Min do
             overflowS64 = true
-        else
+        else do
             value = cast(u64) Math.abs(signedValue)
     case U8:
         value = cast(u64) dref cast(*u8) dataof
@@ -448,7 +448,7 @@ func convertInt(buf: *ConcatBuffer, fmt: ConvertFormatInt)
         tmp[cpt] = c
         cpt -= 1
         value /= cast(u64) fmt.base
-        if !value
+        if !value do
             break
     }
 

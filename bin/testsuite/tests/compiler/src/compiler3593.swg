@@ -4,7 +4,7 @@
     func toto(cb: closure() = null)
     {
         @assert(cb == null)
-        if cb
+        if cb do
             cb()
     }
 

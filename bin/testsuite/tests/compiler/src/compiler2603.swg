@@ -4,7 +4,7 @@
 #[Swag.Macro]
 func(ptr: bool) opVisit,toto(x: string, stmt: code)
 {
-    loop x #mixin stmt
+    loop x do #mixin stmt
 }
 /*
 #test

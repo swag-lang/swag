@@ -206,9 +206,9 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
     /////////////////////////////////
 
     {
-        if @countof(fi.badge) >= 1
+        if @countof(fi.badge) >= 1 do
             paintBadge(dc, rect.x + BADGE_OFFSET, rect.y + BADGE_OFFSET, fi.badge[0] == `h`)
-        if @countof(fi.badge) >= 2
+        if @countof(fi.badge) >= 2 do
             paintBadge(dc, rect.x + BADGE_OFFSET + BADGE_SIZE + BADGE_BORDER*2, rect.y + BADGE_OFFSET, fi.badge[1] == `h`)
     }
 
@@ -234,7 +234,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
         rsf.flags |= .WordWrap
         rsf.palette[0] = Argb.Black
         rs.set(fi.text)
-        if !fi.text2.isEmpty()
+        if !fi.text2.isEmpty() do
             rectText.height *= 0.5
         dc.drawRichString(rectText, &rs, rsf)
 
@@ -285,7 +285,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
         var str: String
         visit c: fi.subTitles
         {
-            if #index
+            if #index do
                 str += " \u2022 "
             str += c
         }
@@ -412,10 +412,10 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
 
         g_Id += 1
 
-        if Env.hasArg("swag.test") and g_Id >= 1
+        if Env.hasArg("swag.test") and g_Id >= 1 do
             break
     }
 
-    if x or y
+    if x or y do
         flushPage()
 }

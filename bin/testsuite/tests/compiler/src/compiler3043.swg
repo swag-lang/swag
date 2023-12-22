@@ -2,7 +2,7 @@
 func maxSize(T: const [..] typeinfo)->u64
 {
     var ms: u32 = 0
-    visit p: T
+    visit p: T do
         ms = @max(p.sizeof, ms)
     return ms
 }

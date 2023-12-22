@@ -57,8 +57,8 @@ func day6A()
     var times: Array's32
     var dists: Array's32
 
-    visit v: val0 times.add(assume StrConv.toS32(v))
-    visit v: val1 dists.add(assume StrConv.toS32(v))
+    visit v: val0 do times.add(assume StrConv.toS32(v))
+    visit v: val1 do dists.add(assume StrConv.toS32(v))
 
     var total: u64 = 1
     visit t, idx: times
@@ -67,7 +67,7 @@ func day6A()
         loop i: t
         {
             let travel = (t - i) * i
-            if travel > dists[idx]
+            if travel > dists[idx] do
                 cpt += 1
         }
 

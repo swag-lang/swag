@@ -67,15 +67,15 @@ impl IForm for FormShape
         {
             let ww = xb - xa
             let hh = yb - ya
-            if ww > hh
+            if ww > hh do
                 yb = ya + ww
-            else
+            else do
                 xb = xa + hh
         }
 
         setBaseForm(xa, ya, xb - xa, yb - ya)
 
-        if evt.kind == .MouseReleased and evt.button == .Left
+        if evt.kind == .MouseReleased and evt.button == .Left do
             return false
         return true
     }
@@ -164,15 +164,15 @@ impl IForm for FormShape
         case Ellipse:
             var pos = Math.Vector2{pt.x, pt.y}
             var cen = Math.Vector2{paintPos.horzCenter(), paintPos.vertCenter()}
-            if !pos.isInEllipse(cen, paintPos.width * 0.5, paintPos.height * 0.5)
+            if !pos.isInEllipse(cen, paintPos.width * 0.5, paintPos.height * 0.5) do
                 return false
-            if backColor.a == 0 and pos.isInEllipse(cen, (paintPos.width * 0.5) - (2*borderSize), (paintPos.height * 0.5) - (2*borderSize))
+            if backColor.a == 0 and pos.isInEllipse(cen, (paintPos.width * 0.5) - (2*borderSize), (paintPos.height * 0.5) - (2*borderSize)) do
                 return false
 
         case Rectangle, RoundRectangle:
             var rect = paintPos
             rect.inflate(-2*borderSize)
-            if backColor.a == 0 and rect.contains(pt)
+            if backColor.a == 0 and rect.contains(pt) do
                 return false
         }
 
@@ -198,7 +198,7 @@ impl IForm for FormShape
         var backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
 
         var bk = backColor
-        if quickMode and alpha != 100 and subKind == .Highlight
+        if quickMode and alpha != 100 and subKind == .Highlight do
             bk.a = cast(u8) Math.map(cast(f32) alpha, 0, 100, 0, 255)
 
         if subKind == .PixSel
@@ -226,17 +226,17 @@ impl IForm for FormShape
             case Ellipse:
                 let sizeX = pp.width * 0.5
                 let sizeY = pp.height * 0.5
-                if quickMode and alpha != 100 and subKind == .Highlight
+                if quickMode and alpha != 100 and subKind == .Highlight do
                     painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, backBrush)
                 painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, bk)
                 painter.drawEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, pen)
 
             case Rectangle:
-                if borderColor.a and (pp.width <= 2*bSize or pp.height < 2*bSize)
+                if borderColor.a and (pp.width <= 2*bSize or pp.height < 2*bSize) do
                     painter.fillRect(pp, borderColor)
                 else
                 {
-                    if quickMode and alpha != 100 and subKind == .Highlight
+                    if quickMode and alpha != 100 and subKind == .Highlight do
                         painter.fillRect(pp, backBrush)
                     painter.fillRect(pp, bk)
                     painter.drawRect(pp, pen)
@@ -245,7 +245,7 @@ impl IForm for FormShape
             case RoundRectangle:
                 var pp1 = pp
                 pp1.inflate(-bSize*0.5)
-                if quickMode and alpha != 100 and subKind == .Highlight
+                if quickMode and alpha != 100 and subKind == .Highlight do
                     painter.fillRoundRect(pp1, rSize, rSize, backBrush)
                 painter.fillRoundRect(pp1, rSize, rSize, bk)
                 painter.drawRoundRect(pp, rSize, rSize, pen)

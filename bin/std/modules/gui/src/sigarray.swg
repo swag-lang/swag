@@ -28,7 +28,7 @@ impl SigArray
 
     mtd call(params: ...)
     {
-        if disabled
+        if disabled do
             return
 
         // Be sure the call has the right number of arguments
@@ -44,7 +44,7 @@ impl SigArray
                 sb.appendString("fn(")
                 loop i: ts.parameters
                 {
-                    if i sb.appendString(",")
+                    if i do sb.appendString(",")
                     sb.appendFormat("cast(%) params[%]", ts.parameters[i].pointedType.fullname, i)
                 }
 

@@ -5,7 +5,7 @@ using Swag
 // Check if a given pointer is allocated
 func assertIsAllocated(buffer: ^void, size: u64, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
 {
-    if !buffer return
+    if !buffer do return
 
     var req: AllocatorRequest
     req.callerLoc   = loc
@@ -21,7 +21,7 @@ func assertIsAllocated(buffer: ^void, size: u64, allocator: IAllocator = null, h
 // Free the specified memory block
 func free(buffer: ^void, size: u64, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
 {
-    if !buffer return
+    if !buffer do return
 
     var req: AllocatorRequest
     req.callerLoc   = loc
@@ -104,7 +104,7 @@ func new(type: typeinfo, allocator: IAllocator = null, alignement: u32 = 0, hint
         let typeStruct = cast(const *Swag.TypeInfoStruct) type
         typeStruct.opInit(ptr)
     }
-    else
+    else do
         clear(ptr, cast(u64) type.sizeof)
     return ptr
 }
@@ -121,7 +121,7 @@ func(T) new(allocator: IAllocator = null, alignement: u32 = 0, hint: string = nu
 // Drop and release memory of the given type
 func(T) delete(ptr: *T, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
 {
-    if !ptr
+    if !ptr do
         return
     let userHint = hint orelse @stringof(T)
     assertIsAllocated(ptr, @sizeof(T), allocator, hint, loc)
@@ -133,7 +133,7 @@ func(T) delete(ptr: *T, allocator: IAllocator = null, hint: string = null, loc =
 #[Swag.Overload]
 func delete(ptr: *void, type: typeinfo, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
 {
-    if !ptr
+    if !ptr do
         return
 
     Debug.assert(type != null)
@@ -143,7 +143,7 @@ func delete(ptr: *void, type: typeinfo, allocator: IAllocator = null, hint: stri
     if type.kind == TypeInfoKind.Struct
     {
         let typest = cast(const *Swag.TypeInfoStruct) type
-        if typest.opDrop
+        if typest.opDrop do
             typest.opDrop(ptr)
     }
 
@@ -164,7 +164,7 @@ func(T) new(num: u64, allocator: IAllocator = null, alignement: u32 = 0, hint: s
 // Drop and release memory of an array of the given type
 func(T) delete(ptr: ^T, num: u64, allocator: IAllocator = null, hint: string = null, loc = #callerlocation)
 {
-    if !ptr
+    if !ptr do
         return
     Debug.assert(num > 0)
 

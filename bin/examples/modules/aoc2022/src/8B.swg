@@ -46,19 +46,19 @@ func day8B()
     var total: s32
     visit l, line: lines
     {
-        if line == 0 or line == lines.count-1
+        if line == 0 or line == lines.count-1 do
             continue
 
         visit,bytes c, col: l
         {
-            if col == 0 or col == l.length-1
+            if col == 0 or col == l.length-1 do
                 continue
 
             var score0 = 0
             loop,back x: 0 until col
             {
                 score0 += 1
-                if l[x] >= l[col]
+                if l[x] >= l[col] do
                     break
             }
 
@@ -66,7 +66,7 @@ func day8B()
             loop x: col+1 to l.length-1
             {
                 score1 += 1
-                if l[x] >= l[col]
+                if l[x] >= l[col] do
                     break
             }
 
@@ -74,7 +74,7 @@ func day8B()
             loop,back y: 0 until line
             {
                 score2 += 1
-                if lines[y][col] >= l[col]
+                if lines[y][col] >= l[col] do
                     break
             }
 
@@ -82,7 +82,7 @@ func day8B()
             loop y: line+1 to lines.count-1
             {
                 score3 += 1
-                if lines[y][col] >= l[col]
+                if lines[y][col] >= l[col] do
                     break
             }
 

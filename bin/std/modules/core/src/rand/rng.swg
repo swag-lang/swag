@@ -35,7 +35,7 @@ impl Rng
     #[Swag.Inline, Swag.Overload]
     mtd nextU32()->u32
     {
-        if !seedDone
+        if !seedDone do
             seedU32(Time.nowMilliseconds())
 
         #if @defined(T.nextU32) #do
@@ -48,7 +48,7 @@ impl Rng
     #[Swag.Inline, Swag.Overload]
     mtd nextU64()->u64
     {
-        if !seedDone
+        if !seedDone do
             seedU32(Time.nowMilliseconds())
 
         #if @defined(T.nextU64) #do
@@ -82,7 +82,7 @@ impl Rng
     mtd nextF32()->f32
     {
         var v = nextU32()
-        while v == Swag.U32.Max v = nextU32()
+        while v == Swag.U32.Max do v = nextU32()
         return v / cast(f32) Swag.U32.Max
     }
 
@@ -91,7 +91,7 @@ impl Rng
     mtd nextF64()->f64
     {
         var v = nextU64()
-        while v == Swag.U64.Max v = nextU64()
+        while v == Swag.U64.Max do v = nextU64()
         return v / cast(f64) Swag.U64.Max
     }
 

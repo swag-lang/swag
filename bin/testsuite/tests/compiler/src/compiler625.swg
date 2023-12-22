@@ -11,7 +11,7 @@ impl Point
 {
 	func opIndex(self, i, j: u64)->s32
 	{
-		if(i == 0)
+		if(i == 0) do
 			return acast j
 		return acast (j * 2)
 	}

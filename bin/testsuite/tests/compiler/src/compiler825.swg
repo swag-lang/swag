@@ -4,8 +4,8 @@
 #test
 {
 	let x : *s32 = null
-	if x
+	if x do
 		@assert(false)
-	else
+	else do
 		@assert(true)
 }

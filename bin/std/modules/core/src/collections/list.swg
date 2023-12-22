@@ -170,9 +170,9 @@ impl List
 
         n.next = node
         n.prev = node.prev
-        if !n.prev
+        if !n.prev do
             head = n
-        else
+        else do
             n.prev.next = n
         node.prev = n
         return n
@@ -189,9 +189,9 @@ impl List
 
         n.next = node
         n.prev = node.prev
-        if !n.prev
+        if !n.prev do
             head = n
-        else
+        else do
             n.prev.next = n
         node.prev = n
         return n
@@ -209,9 +209,9 @@ impl List
 
         n.prev = node
         n.next = node.next
-        if !n.next
+        if !n.next do
             tail = n
-        else
+        else do
             n.next.prev = n
         node.next = n
         return n
@@ -228,9 +228,9 @@ impl List
 
         n.prev = node
         n.next = node.next
-        if !n.next
+        if !n.next do
             tail = n
-        else
+        else do
             n.next.prev = n
         node.next = n
         return n

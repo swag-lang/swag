@@ -70,7 +70,7 @@ impl IActionUI for ActionSelection
         {
         case CmdIdSelectAll:
             capture.selection.clear()
-            loop capture.forms
+            loop capture.forms do
                 capture.selection.add(#index)
             capture.selectionHasChanged()
 
@@ -82,7 +82,7 @@ impl IActionUI for ActionSelection
             var newSel: Array'u64
             loop i: capture.forms
             {
-                if !capture.selection.contains(i)
+                if !capture.selection.contains(i) do
                     newSel.add(i)
             }
             capture.selection = newSel

@@ -44,9 +44,9 @@ impl IWnd for PopupListView
         case KillFocus:
             if evt.other != parent
             {
-                if list.sigSelected
+                if list.sigSelected do
                     list.sigSelected(list, Swag.U32.Max)
-                else
+                else do
                     list.destroy()
             }
         }
@@ -60,7 +60,7 @@ impl IWnd for PopupListView
         var mouseInRect = surfaceRect.contains(evt.surfacePos)
 
         var pos = surfaceToLocal(evt.surfacePos)
-        if evt.kind == .MouseLeave or !mouseInRect
+        if evt.kind == .MouseLeave or !mouseInRect do
             hit = Swag.U32.Max
         else
         {
@@ -87,7 +87,7 @@ impl IWnd for PopupListView
                 }
             }
 
-            if hit >= list.items.count or list.items[hit].isSeparator
+            if hit >= list.items.count or list.items[hit].isSeparator do
                 hit = Swag.U32.Max
         }
 
@@ -99,7 +99,7 @@ impl IWnd for PopupListView
 
         if evt.kind == .MousePressed and evt.button == .Left and mouseInRect
         {
-            if list.sigSelected
+            if list.sigSelected do
                 list.sigSelected(list, hotIdx)
             releaseMouse()
             list.destroy()
@@ -110,16 +110,16 @@ impl IWnd for PopupListView
         mouseInRect = surfaceRect.contains(evt.surfacePos)
         if evt.kind == .MousePressed and evt.button == .Left and !mouseInRect
         {
-            if list.sigSelected
+            if list.sigSelected do
                 list.sigSelected(list, Swag.U32.Max)
             releaseMouse()
             list.destroy()
             return
         }
 
-        if evt.kind == .MouseLeave
+        if evt.kind == .MouseLeave do
             evt.accepted = true
-        else
+        else do
             evt.accepted = false
     }
 
@@ -176,13 +176,13 @@ impl IWnd for PopupListView
             labelPos.moveLeft(metrics.popupList_Padding)
 
             // Icon
-            if i.icon.isValid()
+            if i.icon.isValid() do
                 i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.sizeY * 0.5, i.aniText.cur())
-            if list.maxIconSize
+            if list.maxIconSize do
                 labelPos.moveLeft(list.maxIconSize + metrics.popupList_IconTextMargin)
 
             let fntHeight = getFont().regular.height
-            if idx == list.selectedIdx
+            if idx == list.selectedIdx do
                 labelPos.setRight(labelPos.right() - fntHeight - metrics.popupList_IconTextMargin)
 
             // Text
@@ -259,7 +259,7 @@ impl PopupListCtrl
             .userData1 = #self.userData1
         }
 
-        if item.icon.isValid()
+        if item.icon.isValid() do
             maxIconSize = Math.max(maxIconSize, cast(s32) item.icon.sizeX)
         items.add(item)
     }

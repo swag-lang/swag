@@ -19,7 +19,7 @@ You can loop on a struct value if `opCount` has been defined.
 
     // You can then loop on a struct value if 'opCount' has been defined
     var cpt = 0
-    loop v
+    loop v do
         cpt += 1
 
     @assert(cpt == 4)

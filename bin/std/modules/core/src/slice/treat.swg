@@ -5,7 +5,7 @@
 #[Swag.Inline]
 func(T) modifyInPlace(values: [..] T, cb: func(*T))
 {
-    loop i: values
+    loop i: values do
         cb(&values[i])
 }
 

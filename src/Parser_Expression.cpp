@@ -1619,7 +1619,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
 
     SWAG_VERIFY(token.id != TokenId::SymEqualEqual, error(token, Err(Err1149)));
 
-    if (token.id != TokenId::SymLeftCurly)
+    if (token.id != TokenId::SymLeftCurly && token.id != TokenId::KwdDo)
         SWAG_CHECK(eatSemiCol("left expression"));
     return true;
 }

@@ -8,7 +8,7 @@
     {
         defer x += t[i]
 
-        if i < 3 and t[i] == 9
+        if i < 3 and t[i] == 9 do
             continue
 
         @assert(i != 0 or x == 0)

@@ -4,8 +4,8 @@ func print(x: any) {}
 {
     const x, y: *u8 = null
     const z = x orelse y
-    if z != null
+    if z != null do
         print("X")
-    else
+    else do
         print("Y")
 }

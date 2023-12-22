@@ -31,10 +31,10 @@ impl Array
 
     mtd opPostCopy()
     {
-        if buffer == null
+        if buffer == null do
             return
 
-        if(@getcontext().flags & .PostCopyResetAllocator)
+        if @getcontext().flags & .PostCopyResetAllocator do
             allocator = null
 
         let oldBuffer = buffer
@@ -43,7 +43,7 @@ impl Array
 
         #if Reflection.hasPostCopy(T)
         {
-            loop count
+            loop count do
                 buffer[#index] =,nodrop oldBuffer[#index]
         }
         #else
@@ -110,13 +110,13 @@ impl Array
     {
         clear()
         var countof = @countof(arr)
-        if !countof return
+        if !countof do return
         var dataof = @dataof(arr)
 
         grow(countof)
         #if Reflection.hasPostCopy(T)
         {
-            loop i: countof
+            loop i: countof do
                 buffer[i] =,nodrop dataof[i]
         }
         #else
@@ -132,7 +132,7 @@ impl Array
     #[Macro]
     func(ptr: bool, back: bool) opVisit(using const self, stmt: code)
     {
-        if !count
+        if !count do
             return
 
         // Little trick to avoid labels. That way a 'continue' in the user code will work correctly
@@ -182,7 +182,7 @@ impl Array
 
     mtd realloc(newCapacity: u64)
     {
-        if allocator == null
+        if allocator == null do
             allocator = @getcontext().allocator
 
         if newCapacity == 0
@@ -212,7 +212,7 @@ impl Array
     // Free the array content
     mtd free()
     {
-        if !buffer
+        if !buffer do
             return
 
         // Need to drop every structs
@@ -259,7 +259,7 @@ impl Array
     // Number of valid elements does not change
     mtd grow(newCount: u64)
     {
-        if newCount <= capacity
+        if newCount <= capacity do
             return
         let newCapacity = Math.max(capacity * 2, newCount)
         reserve(newCapacity)
@@ -277,7 +277,7 @@ impl Array
             return
         }
 
-        if newCapacity <= capacity
+        if newCapacity <= capacity do
             return
 
         realloc(newCapacity)
@@ -286,7 +286,7 @@ impl Array
     // Change the number of valid elements in the array
     mtd resize(newCount: u64)
     {
-        if newCount == count
+        if newCount == count do
             return
         if newCount > count
         {
@@ -306,7 +306,7 @@ impl Array
     {
         #if Reflection.hasDrop(T)
         {
-            loop count
+            loop count do
                 @drop(buffer + #index)
         }
 
@@ -317,7 +317,7 @@ impl Array
     mtd addOnce(value: T)
         #validif Reflection.canCopy(T)
     {
-        if contains(value)
+        if contains(value) do
             return
         grow(count + 1)
         buffer[count] =,nodrop value
@@ -371,14 +371,14 @@ impl Array
         #validif Reflection.canCopy(T)
     {
         Debug.safetyBoundCheck(index <= count, "index out of range")
-        if index == count
+        if index == count do
             return add(value)
         grow(count + 1)
         count += 1
 
         #if Reflection.hasPostMove(T)
         {
-            for var idx = count - 1; idx > index; idx -= 1
+            for var idx = count - 1; idx > index; idx -= 1 do
                 buffer[idx] =,nodrop,moveraw buffer[idx - 1]
         }
         #else
@@ -396,14 +396,14 @@ impl Array
     mtd insertAt(index: u64, value: &&T)
     {
         Debug.safetyBoundCheck(index <= count, "index out of range")
-        if index == count
+        if index == count do
             return add(moveref value)
         grow(count + 1)
         count += 1
 
         #if Reflection.hasPostMove(T)
         {
-            for var idx = count - 1; idx > index; idx -= 1
+            for var idx = count - 1; idx > index; idx -= 1 do
                 buffer[idx] =,nodrop,moveraw buffer[idx - 1]
         }
         #else
@@ -422,18 +422,18 @@ impl Array
         #validif Reflection.canCopy(T)
     {
         var sliceCount = @countof(values)
-        if !sliceCount
+        if !sliceCount do
             return
 
         Debug.safetyBoundCheck(index <= count, "index out of range")
-        if index == count
+        if index == count do
             return add(values)
         grow(count + sliceCount)
         count += sliceCount
 
         #if Reflection.hasPostMove(T)
         {
-            for var idx = count - 1; idx >= index + sliceCount; idx -= 1
+            for var idx = count - 1; idx >= index + sliceCount; idx -= 1 do
                 buffer[idx] =,nodrop,moveraw buffer[idx - sliceCount]
         }
         #else
@@ -443,7 +443,7 @@ impl Array
 
         #if Reflection.hasPostCopy(T)
         {
-            for var idx = 0; idx < sliceCount; idx += 1
+            for var idx = 0; idx < sliceCount; idx += 1 do
                 buffer[index + idx] =,nodrop values[idx]
         }
         #else
@@ -459,18 +459,18 @@ impl Array
         #validif Reflection.canCopy(T)
     {
         var sliceCount = @countof(values)
-        if !sliceCount
+        if !sliceCount do
             return
 
         Debug.safetyBoundCheck(index <= count, "index out of range")
-        if index == count
+        if index == count do
             return add(values)
         grow(count + sliceCount)
         count += sliceCount
 
         #if Reflection.hasPostMove(T)
         {
-            for var idx = count - 1; idx >= index + sliceCount; idx -= 1
+            for var idx = count - 1; idx >= index + sliceCount; idx -= 1 do
                 buffer[idx] =,nodrop,moveraw buffer[idx - sliceCount]
         }
         #else
@@ -480,7 +480,7 @@ impl Array
 
         #if Reflection.hasPostMove(T)
         {
-            for var idx = 0; idx < sliceCount; idx += 1
+            for var idx = 0; idx < sliceCount; idx += 1 do
                 buffer[index + idx] =,nodrop,move values[idx]
         }
         #else
@@ -495,11 +495,11 @@ impl Array
         #validif Reflection.canCopy(T)
     {
         var sliceCount = @countof(values)
-        if !sliceCount
+        if !sliceCount do
             return
 
         // Do not add myself if there's not enough room (because we will reallocate)
-        if count + sliceCount > capacity
+        if count + sliceCount > capacity do
             Debug.assert(@dataof(values) < buffer or @dataof(values) > buffer + capacity)
 
         grow(count + sliceCount)
@@ -524,7 +524,7 @@ impl Array
     // Swap two elements
     mtd swap(idx0, idx1: u64)
     {
-        if idx0 == idx1
+        if idx0 == idx1 do
             return
         Debug.safetyBoundCheck(idx0 < count, "index out of range")
         Debug.safetyBoundCheck(idx1 < count, "index out of range")
@@ -535,7 +535,7 @@ impl Array
     #[Overload]
     mtd remove(index, num: u64)
     {
-        if !num
+        if !num do
             return
         Debug.safetyBoundCheck(index + num <= count, "index out of range")
 
@@ -560,9 +560,9 @@ impl Array
     {
         Debug.safetyBoundCheck(index < count, "index out of range")
         count -= 1
-        if index == count
+        if index == count do
             @drop(buffer + count)
-        else
+        else do
             buffer[index] =,moveraw buffer[count]
     }
 
@@ -570,18 +570,18 @@ impl Array
     // Order is preserved
     mtd removeAtOrdered(index: u64, numValues: u64 = 1)
     {
-        if !numValues
+        if !numValues do
             return
         Debug.safetyBoundCheck(index + numValues <= count, "index out of range")
         count -= numValues
 
         #if Reflection.hasDrop(T)
         {
-            loop idx: numValues
+            loop idx: numValues do
                 @drop(buffer + index + idx)
         }
 
-        if index >= count
+        if index >= count do
             return
 
         #if Reflection.hasPostMove(T)
@@ -604,7 +604,7 @@ impl Array
     mtd(V) remove(value: V)
     {
         let idx = Slice.findLinear(toSlice(), value)
-        if idx == Swag.U64.Max
+        if idx == Swag.U64.Max do
             return
         removeAt(idx)
     }
@@ -614,7 +614,7 @@ impl Array
     mtd(V) removeOrdered(value: V)
     {
         let idx = Slice.findLinear(toSlice(), value)
-        if idx == Swag.U64.Max
+        if idx == Swag.U64.Max do
             return
         removeAtOrdered(idx)
     }

@@ -49,7 +49,7 @@ impl IForm for FormPolygon
     {
         if evt.kind == .MouseDoubleClick and evt.button == .Left
         {
-            if points.count > 3
+            if points.count > 3 do
                 points.removeBack()
             return false
         }
@@ -147,7 +147,7 @@ impl IForm for FormPolygon
         result.width = x1 - x0
         result.height = y1 - y0
 
-        if joinStyle == .Miter or joinStyle == .MiterBevel
+        if joinStyle == .Miter or joinStyle == .MiterBevel do
             result.inflate(borderSize * 3) // Magic number !
 
         return result
@@ -177,7 +177,7 @@ impl IForm for FormPolygon
         {
             computePaintCoords(z)
             gizmo.anchors.clear()
-            visit pt: paintPoints
+            visit pt: paintPoints do
                 gizmo.anchors.add({pt.x, pt.y})
             let col = subKind == .PixSel ? Argb.Yellow : Argb.White
             gizmo.paint(null, painter, flags & .Selected ? false : true, col)
@@ -203,7 +203,7 @@ impl IForm for FormPolygon
                 let ni = (i + 1) % paintPoints.count
                 let p0 = Math.Vector2{paintPoints[i].x, paintPoints[i].y}
                 let p1 = Math.Vector2{paintPoints[ni].x, paintPoints[ni].y}
-                if v.distanceToSegment(p0, p1) <= bSize
+                if v.distanceToSegment(p0, p1) <= bSize do
                     return true
             }
 
@@ -221,7 +221,7 @@ impl IForm for FormPolygon
 
         var backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
         var bk = backColor
-        if quickMode and alpha != 100 and subKind == .Highlight
+        if quickMode and alpha != 100 and subKind == .Highlight do
             bk.a = cast(u8) Math.map(cast(f32) alpha, 0, 100, 0, 255)
 
         if subKind == .PixSel
@@ -235,17 +235,17 @@ impl IForm for FormPolygon
         var pen = Pen.createDash(dashStyle, borderColor, bSize)
 
         linePath.start(paintPoints[0].x - paintPos.x, paintPoints[0].y - paintPos.y)
-        loop i: 1 until paintPoints.count
+        loop i: 1 until paintPoints.count do
             linePath.lineTo(paintPoints[i].x - paintPos.x, paintPoints[i].y - paintPos.y)
         linePath.close()
 
         if quickMode
         {
-            if alpha != 100 and subKind == .Highlight
+            if alpha != 100 and subKind == .Highlight do
                 painter.fillPath(&linePath, backBrush)
             painter.fillPath(&linePath, bk)
         }
-        else
+        else do
             painter.fillPolygon(&linePath, bk)
 
         pen.joinStyle = joinStyle

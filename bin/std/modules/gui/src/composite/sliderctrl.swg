@@ -18,7 +18,7 @@ impl IWnd for SliderCtrl
 {
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
-        if !label return
+        if !label do return
         var rect = getClientRect()
         let metrics = getThemeMetrics()
 
@@ -38,9 +38,9 @@ impl SliderCtrl
     {
         let metrics = parent.getThemeMetrics()
         var pos = position
-        if pos.width == 0
+        if pos.width == 0 do
             pos.width = metrics.slider_Width + metrics.editBox_Width * 2
-        if pos.height == 0
+        if pos.height == 0 do
             pos.height = Math.max(metrics.slider_Height, metrics.editBox_Height)
 
         with let ctrl = Wnd.create'SliderCtrl(parent, pos, id)

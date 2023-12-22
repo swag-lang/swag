@@ -13223,7 +13223,7 @@
 <span id="Gui_Slider_create"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Slider.</span><span class="api-item-title-strong">create</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L506" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L507" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13235,7 +13235,7 @@
 <span id="Gui_Slider_getValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Slider.</span><span class="api-item-title-strong">getValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L461" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L462" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13247,7 +13247,7 @@
 <span id="Gui_Slider_getValueLeft"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Slider.</span><span class="api-item-title-strong">getValueLeft</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L462" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L463" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13259,7 +13259,7 @@
 <span id="Gui_Slider_getValueRight"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Slider.</span><span class="api-item-title-strong">getValueRight</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L463" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L464" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13271,7 +13271,7 @@
 <span id="Gui_Slider_setMinMax"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Slider.</span><span class="api-item-title-strong">setMinMax</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L484" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L485" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13284,7 +13284,7 @@
 <span id="Gui_Slider_setRangeValues"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Slider.</span><span class="api-item-title-strong">setRangeValues</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L494" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L495" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13297,7 +13297,7 @@
 <span id="Gui_Slider_setValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Slider.</span><span class="api-item-title-strong">setValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L465" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L466" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13309,7 +13309,7 @@
 <span id="Gui_Slider_setValueLeft"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Slider.</span><span class="api-item-title-strong">setValueLeft</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L468" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L469" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -13322,7 +13322,7 @@
 <span id="Gui_Slider_setValueRight"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Slider.</span><span class="api-item-title-strong">setValueRight</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L476" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/gui\src\widgets\slider.swg#L477" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20015,7 +20015,7 @@
 <p>Create a layout control. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>(parent: *<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_Wnd">Wnd</a></span>, position: <span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Rectangle</span> = {})-&gt;*<span class="SCst">Gui</span>.<span class="SCst"><a href="#Gui_WrapLayoutCtrl">WrapLayoutCtrl</a></span></span></div>
 <div class="swag-watermark">
-Generated on 21-12-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
+Generated on 22-12-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
 </div>
 </div>
 </div>

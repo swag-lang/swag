@@ -14381,7 +14381,7 @@
 <span id="Core_Math_Vector2_angle"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">angle</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L273" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L275" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14394,7 +14394,7 @@
 <span id="Core_Math_Vector2_ceil"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">ceil</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L240" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L242" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14407,7 +14407,7 @@
 <span id="Core_Math_Vector2_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">clear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L108" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L110" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14420,7 +14420,7 @@
 <span id="Core_Math_Vector2_cosAngle"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">cosAngle</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L265" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L267" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14433,7 +14433,7 @@
 <span id="Core_Math_Vector2_cross"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">cross</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L102" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L104" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14449,7 +14449,7 @@
 <span id="Core_Math_Vector2_distance"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">distance</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L139" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L141" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14462,7 +14462,7 @@
 <span id="Core_Math_Vector2_distanceSquared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">distanceSquared</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L147" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L149" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14501,7 +14501,7 @@
 <span id="Core_Math_Vector2_dot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">dot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L90" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L92" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14514,7 +14514,7 @@
 <span id="Core_Math_Vector2_floor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">floor</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L233" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L235" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14527,7 +14527,7 @@
 <span id="Core_Math_Vector2_isEqualEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">isEqualEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L133" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L135" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14566,7 +14566,7 @@
 <span id="Core_Math_Vector2_isZero"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">isZero</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L121" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L123" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14579,7 +14579,7 @@
 <span id="Core_Math_Vector2_isZeroEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">isZeroEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L127" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L129" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14592,7 +14592,7 @@
 <span id="Core_Math_Vector2_length"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">length</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L84" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L86" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14605,7 +14605,7 @@
 <span id="Core_Math_Vector2_lengthSquared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">lengthSquared</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L87" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L89" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14618,7 +14618,7 @@
 <span id="Core_Math_Vector2_lerp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">lerp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L282" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L284" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14644,7 +14644,7 @@
 <span id="Core_Math_Vector2_max"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">max</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L224" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L226" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14657,7 +14657,7 @@
 <span id="Core_Math_Vector2_min"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">min</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L215" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L217" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14689,7 +14689,7 @@
 <span id="Core_Math_Vector2_negate"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">negate</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L114" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L116" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14702,7 +14702,7 @@
 <span id="Core_Math_Vector2_normalize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">normalize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L155" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L157" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14715,7 +14715,7 @@
 <span id="Core_Math_Vector2_normalizeSafe"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">normalizeSafe</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L190" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L192" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14803,7 +14803,7 @@
 <span id="Core_Math_Vector2_rotate"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">rotate</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L254" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L256" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14816,7 +14816,7 @@
 <span id="Core_Math_Vector2_round"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">round</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L247" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L249" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14842,7 +14842,7 @@
 <span id="Core_Math_Vector2_set"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">set</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L77" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L79" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14855,7 +14855,7 @@
 <span id="Core_Math_Vector2_setLength"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">setLength</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L182" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L184" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14868,7 +14868,7 @@
 <span id="Core_Math_Vector2_setLengthSafe"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">setLengthSafe</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L174" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L176" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14881,7 +14881,7 @@
 <span id="Core_Math_Vector2_toNormalize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">toNormalize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L165" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L167" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -14894,7 +14894,7 @@
 <span id="Core_Math_Vector2_toNormalizeSafe"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector2.</span><span class="api-item-title-strong">toNormalizeSafe</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L205" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector2.swg#L207" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15049,7 +15049,7 @@
 <span id="Core_Math_Vector3_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">clear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L96" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L98" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15062,7 +15062,7 @@
 <span id="Core_Math_Vector3_distance"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">distance</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L128" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L130" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15075,7 +15075,7 @@
 <span id="Core_Math_Vector3_distanceSquared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">distanceSquared</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L137" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L139" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15088,7 +15088,7 @@
 <span id="Core_Math_Vector3_dot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">dot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L93" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L95" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15101,7 +15101,7 @@
 <span id="Core_Math_Vector3_isEqualEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">isEqualEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L122" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L124" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15114,7 +15114,7 @@
 <span id="Core_Math_Vector3_isZero"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">isZero</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L110" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L112" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15127,7 +15127,7 @@
 <span id="Core_Math_Vector3_isZeroEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">isZeroEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L116" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L118" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15140,7 +15140,7 @@
 <span id="Core_Math_Vector3_length"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">length</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L87" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L89" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15153,7 +15153,7 @@
 <span id="Core_Math_Vector3_lengthSquared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">lengthSquared</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L90" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L92" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15166,7 +15166,7 @@
 <span id="Core_Math_Vector3_lerp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">lerp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L230" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L232" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15179,7 +15179,7 @@
 <span id="Core_Math_Vector3_max"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">max</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L220" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L222" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15192,7 +15192,7 @@
 <span id="Core_Math_Vector3_min"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">min</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L210" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L212" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15205,7 +15205,7 @@
 <span id="Core_Math_Vector3_negate"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">negate</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L102" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L104" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15218,7 +15218,7 @@
 <span id="Core_Math_Vector3_normalize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">normalize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L146" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L148" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15231,7 +15231,7 @@
 <span id="Core_Math_Vector3_normalizeSafe"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">normalizeSafe</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L184" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L186" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15306,7 +15306,7 @@
 <span id="Core_Math_Vector3_set"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">set</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L79" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L81" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15319,7 +15319,7 @@
 <span id="Core_Math_Vector3_setLength"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">setLength</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L175" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L177" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15332,7 +15332,7 @@
 <span id="Core_Math_Vector3_setLengthSafe"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">setLengthSafe</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L166" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L168" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15345,7 +15345,7 @@
 <span id="Core_Math_Vector3_toNormalize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">toNormalize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L157" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L159" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15358,7 +15358,7 @@
 <span id="Core_Math_Vector3_toNormalizeSafe"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector3.</span><span class="api-item-title-strong">toNormalizeSafe</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L200" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector3.swg#L202" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15430,7 +15430,7 @@
 <span id="Core_Math_Vector4_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">clear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L33" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L35" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -15443,7 +15443,7 @@
 <span id="Core_Math_Vector4_lerp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Vector4.</span><span class="api-item-title-strong">lerp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L39" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\vector4.swg#L41" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16926,7 +16926,7 @@
 <span id="Core_Path_combine"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Path.</span><span class="api-item-title-strong">combine</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L181" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L183" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16939,7 +16939,7 @@
 <span id="Core_Path_equals"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Path.</span><span class="api-item-title-strong">equals</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L203" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L205" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16978,7 +16978,7 @@
 <span id="Core_Path_getExtension"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Path.</span><span class="api-item-title-strong">getExtension</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L124" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L126" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16991,7 +16991,7 @@
 <span id="Core_Path_getExtensionLowerCase"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Path.</span><span class="api-item-title-strong">getExtensionLowerCase</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L146" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L148" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17017,7 +17017,7 @@
 <span id="Core_Path_getFileNameWithoutExtension"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Path.</span><span class="api-item-title-strong">getFileNameWithoutExtension</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L96" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L97" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17056,7 +17056,7 @@
 <span id="Core_Path_hasExtension"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Path.</span><span class="api-item-title-strong">hasExtension</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L159" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L161" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17082,7 +17082,7 @@
 <span id="Core_Path_isExtension"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Path.</span><span class="api-item-title-strong">isExtension</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L152" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L154" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -17134,7 +17134,7 @@
 <span id="Core_Path_normalize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Path.</span><span class="api-item-title-strong">normalize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L210" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\io\path.swg#L212" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -22972,7 +22972,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_StrConv_Dtoa_parse"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Dtoa.</span><span class="api-item-title-strong">parse</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\dtoa.swg#L353" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\dtoa.swg#L354" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -27847,7 +27847,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <p>Swap two values. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">swap</span>(x: *<span class="SCst">T</span>, y: *<span class="SCst">T</span>)</span></div>
 <div class="swag-watermark">
-Generated on 21-12-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
+Generated on 22-12-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
 </div>
 </div>
 </div>

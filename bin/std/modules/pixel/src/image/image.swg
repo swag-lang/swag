@@ -31,7 +31,7 @@ impl Image
         var result: retval
         result.init(width, height, pf)
         result.allocPixels()
-        if buffer
+        if buffer do
             Memory.copy(result.pixels.buffer, @dataof(buffer), @countof(buffer))
         return result
     }
@@ -101,7 +101,9 @@ impl Image
             newWidth == workingBuffer.width and
             newHeight == workingBuffer.height and
             newPf == workingBuffer.pf
+        {
             return
+        }
 
         freeWorkingBuffer()
         workingBuffer = Memory.new'Image()

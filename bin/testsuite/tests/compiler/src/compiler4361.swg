@@ -3,7 +3,7 @@
 struct(T) Point
     #validif
     {
-        if T != bool
+        if T != bool do
             @compilererror("toto", #location)
         return true
     }

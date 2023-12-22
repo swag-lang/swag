@@ -890,8 +890,8 @@ void initErrors()
     SWAG_ERROR(Err1139, "invalid visit                                     $ cannot find the '%s' visit variant in '%s'");
     SWAG_ERROR(Err0557, "invalid visit                                     $ the type '%s' cannot be visited with 'visit'");
     SWAG_ERROR(Err0639, "unauthorized function overload                    $ a function with the same name '%s' has already been declared $ if you want to declare an overload, mark all functions with '#[Swag.Overload]'");
-    SWAG_ERROR(Err0694, "invalid statement                                 $ missing either '#do' or an open curly to start a statement");
-    SWAG_ERROR(Err0530, nullptr);
+    SWAG_ERROR(Err0694, "invalid compiler statement                        $ missing either '#do' or an open curly to start a statement");
+    SWAG_ERROR(Err0530, "invalid statement                                 $ missing either 'do' or an open curly to start a statement");
     SWAG_ERROR(Err0660, nullptr);
     SWAG_ERROR(Err0141, nullptr);
     SWAG_ERROR(Err0169, nullptr);

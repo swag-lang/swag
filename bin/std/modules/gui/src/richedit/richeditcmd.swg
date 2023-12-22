@@ -83,7 +83,7 @@ impl RichEditCtrl
     {
         visit &p: mapping
         {
-            if p.key == key and p.modifiers == mdf
+            if p.key == key and p.modifiers == mdf do
                 return p.command
         }
 
@@ -147,16 +147,16 @@ impl RichEditCtrl
         switch cmd
         {
         case CursorLeft:
-            if isSelectionEmpty()
+            if isSelectionEmpty() do
                 moveCursorLeft(&cursorPos)
-            else
+            else do
                 setCursorPos(getBegSelection())
             clearSelection()
 
         case CursorRight:
-            if isSelectionEmpty()
+            if isSelectionEmpty() do
                 moveCursorRight(&cursorPos)
-            else
+            else do
                 setCursorPos(getEndSelection())
             clearSelection()
 
@@ -167,7 +167,7 @@ impl RichEditCtrl
                 setCursorPos(getBegSelection())
                 moveCursorUp(&cursorPos, pt)
             }
-            else
+            else do
                 moveCursorUp(&cursorPos)
             clearSelection()
 
@@ -178,7 +178,7 @@ impl RichEditCtrl
                 setCursorPos(getEndSelection())
                 moveCursorDown(&cursorPos, pt)
             }
-            else
+            else do
                 moveCursorDown(&cursorPos)
             clearSelection()
 
@@ -310,32 +310,32 @@ impl RichEditCtrl
             }
 
         case DeleteLeft:
-            if isReadOnly()
+            if isReadOnly() do
                 return
             deleteLeft()
 
         case DeleteRight:
-            if isReadOnly()
+            if isReadOnly() do
                 return
             deleteRight()
 
         case DeleteWordLeft:
-            if isReadOnly()
+            if isReadOnly() do
                 return
             deleteWordLeft()
 
         case DeleteWordRight:
-            if isReadOnly()
+            if isReadOnly() do
                 return
             deleteWordRight()
 
         case DeleteLine:
-            if isReadOnly()
+            if isReadOnly() do
                 return
             deleteLine()
 
         case EditTabulation:
-            if isReadOnly()
+            if isReadOnly() do
                 return
             if getBegSelection().lineIndex == getEndSelection().lineIndex
             {
@@ -344,21 +344,21 @@ impl RichEditCtrl
                 insertText("\t")
                 popUndo()
             }
-            else
+            else do
                 insertBegLine("\t")
 
         case EditBackTabulation:
-            if isReadOnly()
+            if isReadOnly() do
                 return
             deleteBegLine("\t", false)
 
         case Undo:
-            if isReadOnly()
+            if isReadOnly() do
                 return
             undo()
 
         case Redo:
-            if isReadOnly()
+            if isReadOnly() do
                 return
             redo()
 
@@ -370,12 +370,12 @@ impl RichEditCtrl
             copyToClipboard()
 
         case ClipboardPaste:
-            if isReadOnly()
+            if isReadOnly() do
                 return
             pasteFromClipboard()
 
         case ClipboardCut:
-            if isReadOnly()
+            if isReadOnly() do
                 return
             copyToClipboard()
             deleteSelection()

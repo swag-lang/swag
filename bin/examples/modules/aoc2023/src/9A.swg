@@ -79,7 +79,7 @@ func day9A()
         let vals = Tokenize.split(l, ` `'u8)
 
         var values: Array's64
-        visit v: vals values.add(assume StrConv.toS64(v))
+        visit v: vals do values.add(assume StrConv.toS64(v))
         total += values.back()
 
         var hasNoZero = true

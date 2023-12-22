@@ -38,7 +38,7 @@ private func hasSymbol(x, y: s32)->bool
 {
     visit s: symbols
     {
-        if s.x == x and s.y == y
+        if s.x == x and s.y == y do
             return true
     }
 
@@ -51,7 +51,7 @@ func day3A()
     let lines = assume File.readAllLines(dataPath)
 
     visit l, y: lines
-    {    
+    {
         for var x = 0; x < l.length; x += 1
         {
             var c = l[x]
@@ -62,7 +62,7 @@ func day3A()
                 while x < l.length
                 {
                     c = l[x]
-                    if c < `0` or c > `9`
+                    if c < `0` or c > `9` do
                         break
                     num *= 10
                     num += c - `0`

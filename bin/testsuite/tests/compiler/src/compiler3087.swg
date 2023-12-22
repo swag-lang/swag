@@ -4,7 +4,7 @@
     let x = 6
     let y = 8
     var g = 0
-    loop i: x until y
+    loop i: x until y do
         g += i
     @assert(g == 6 + 7)
 }

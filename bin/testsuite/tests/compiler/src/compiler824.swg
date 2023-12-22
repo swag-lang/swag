@@ -4,14 +4,14 @@
 #test
 {
 	var x = 256
-	if x
+	if x do
 		@assert(true)
-	else
+	else do
 		@assert(false)
 
 	x = 0
-	if !x
+	if !x do
 		@assert(true)
-	else
+	else do
 		@assert(false)
 }

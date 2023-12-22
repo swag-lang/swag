@@ -7,7 +7,7 @@ impl Image
     public mtd colorize(hue, saturation: f32, strength = 1.0)
     {
         // unsupported pixel format
-        if pf.channels() < 3 or pf.bitDepth() != 8
+        if pf.channels() < 3 or pf.bitDepth() != 8 do
             return
 
         let h = Math.clamp(hue, 0.0, 1.0)

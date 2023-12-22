@@ -35,9 +35,6 @@ v.add(#code @print(a))
 #mixin v[0]
 #mixin v[1]
 -------------------------------------
-if a == 1 do toto() else do titi()
-#if a == 1 do...
--------------------------------------
 a = if b then c else d
 a = if b then c elif d then f else h
 -------------------------------------
@@ -150,7 +147,7 @@ OPTIMS
    00000008      CopyRBtoRA64  A[1] B(0)           ... .......  r1 = r0
    00000009     DecrementRA64  A[1] A(1)           ... .......  r1--
    -------------------------------------
-inline auto ? 
+inline auto ?
 si une fonction est appelée une seule fois ?
 -------------------------------------
 pass orEq/andEq/xOrEq/shiftEq en mode Stack StackStack. Dans les faits, plein d'autres instructions pourraient avoir ce mode.

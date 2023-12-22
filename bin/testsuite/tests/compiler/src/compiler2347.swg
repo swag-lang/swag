@@ -4,7 +4,7 @@ func toto()
 {
     loop x: 10
     {
-        if x == 1
+        if x == 1 do
             return
         defer G += 1
     }

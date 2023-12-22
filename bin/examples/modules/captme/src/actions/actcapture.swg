@@ -151,7 +151,7 @@ impl MainWnd
 {
     mtd newCapture(img: Image, linked: string = null)
     {
-        if !img.isValid()
+        if !img.isValid() do
             return
 
         with let capture = Memory.new'Capture()
@@ -184,10 +184,10 @@ impl MainWnd
     mtd captureScreen(mode: CaptureMode)
     {
         let wasHidden = surface.isHidden
-        if captureHideEditor and !surface.isHidden and !surface.isMinimized
+        if captureHideEditor and !surface.isHidden and !surface.isMinimized do
             surface.hide()
 
-        if captureDelay
+        if captureDelay do
             Threading.Thread.sleep(captureDelay * 1000)
 
         var img = catch screenShot(mode)
@@ -195,18 +195,18 @@ impl MainWnd
 
         if (isValid and captureShowEditor) or !wasHidden
         {
-            if surface.isMinimized
+            if surface.isMinimized do
                 surface.showNormal()
-            else
+            else do
                 surface.show()
         }
 
-        if !isValid
+        if !isValid do
             return
 
-        if captureToEditor
+        if captureToEditor do
             newCapture(img)
-        if captureToClipboard
+        if captureToClipboard do
             Clipboard.addImage(img)
     }
 }

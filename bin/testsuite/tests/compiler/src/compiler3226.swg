@@ -9,7 +9,7 @@ enum A
 func toto(x: A)
 {
     var v = 0
-    if !(x & .A)
+    if !(x & .A) do
         v = 1
     @assert(v == 1)
 }

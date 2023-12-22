@@ -58,7 +58,7 @@ impl BaseForm
 {
     func adaptSize(size: f32, minSize, maxSize: f32, z: f32, quickMode: bool, dstMin: f32 = 2, dstMax: f32 = 6)->f32
     {
-        if !quickMode
+        if !quickMode do
             return size * z
         return Math.map(size * z, minSize, maxSize, dstMin, dstMax)
     }

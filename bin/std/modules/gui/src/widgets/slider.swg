@@ -67,27 +67,27 @@ impl IWnd for Slider
         else
         {
             colorBkRight  = colors.slider_BkRight
-            if !sliderFlags.has(.Range) and sliderFlags.has(.HilightBar)
+            if !sliderFlags.has(.Range) and sliderFlags.has(.HilightBar) do
                 colorBkLeft = colors.slider_HilightBk
-            else
+            else do
                 colorBkLeft = colors.slider_BkLeft
-            if sliderFlags.has(.Range) and sliderFlags.has(.HilightBar)
+            if sliderFlags.has(.Range) and sliderFlags.has(.HilightBar) do
                 colorBkMiddle = colors.slider_HilightBk
-            else
+            else do
                 colorBkMiddle = colors.slider_BkMiddle
 
-            if isPressed1
+            if isPressed1 do
                 colorMark1 = colors.slider_PressedMark
-            elif isHot1
+            elif isHot1 do
                 colorMark1 = colors.slider_HotMark
-            else
+            else do
                 colorMark1 = colors.slider_Mark
 
-            if isPressed2
+            if isPressed2 do
                 colorMark2 = colors.slider_PressedMark
-            elif isHot2
+            elif isHot2 do
                 colorMark2 = colors.slider_HotMark
-            else
+            else do
                 colorMark2 = colors.slider_Mark
 
         }
@@ -176,11 +176,11 @@ impl IWnd for Slider
                 var posStep = getPosBoxAt(x, metrics.slider_StepSize)
 
                 var colorStep: Color = undefined
-                if x <= value1 and sliderFlags.has(.HilightBar)
+                if x <= value1 and sliderFlags.has(.HilightBar) do
                     colorStep = aniStep2.cur()
-                elif x >= value1 and x <= value2 and sliderFlags.has(.HilightBar) and sliderFlags.has(.Range)
+                elif x >= value1 and x <= value2 and sliderFlags.has(.HilightBar) and sliderFlags.has(.Range) do
                     colorStep = aniStep2.cur()
-                else
+                else do
                     colorStep = aniStep1.cur()
                 theme.drawSubRect(bc.painter, posStep, &rects.slider_Step, colorStep)
             }
@@ -232,9 +232,10 @@ impl IWnd for Slider
                 let diff = (pos.x - correcMoving) - clientRect.x
                 f    = diff / clientRect.width
             }
-            if isPressed1
+
+            if isPressed1 do
                 setValue1(f)
-            elif isPressed2
+            elif isPressed2 do
                 setValue2(f)
             invalidate()
 
@@ -247,18 +248,18 @@ impl IWnd for Slider
                 {
                     isPressed1 = true
                     var posBox = getPosBox1()
-                    if isVertical
+                    if isVertical do
                         correcMoving = pos.y - posBox.vertCenter()
-                    else
+                    else do
                         correcMoving = pos.x - posBox.horzCenter()
                 }
                 elif isHot2
                 {
                     isPressed2 = true
                     var posBox = getPosBox2()
-                    if isVertical
+                    if isVertical do
                         correcMoving = pos.y - posBox.vertCenter()
-                    else
+                    else do
                         correcMoving = pos.x - posBox.horzCenter()
                 }
                 elif !sliderFlags.has(.Range)
@@ -345,9 +346,9 @@ internal impl Slider
     mtd setValue1(f: f32)
     {
         var fc = clamp(Math.clamp(f, 0, 1))
-        if sliderFlags.has(.Range)
+        if sliderFlags.has(.Range) do
             fc = Math.min(fc, value2)
-        if fc == value1 and hasValue1
+        if fc == value1 and hasValue1 do
             return
         hasValue1 = true
         value1 = fc
@@ -358,9 +359,9 @@ internal impl Slider
     mtd setValue2(f: f32)
     {
         var fc = clamp(Math.clamp(f, 0, 1))
-        if sliderFlags.has(.Range)
+        if sliderFlags.has(.Range) do
             fc = Math.max(fc, value1)
-        if fc == value2 and hasValue2
+        if fc == value2 and hasValue2 do
             return
         hasValue2 = true
         value2 = fc
@@ -510,24 +511,24 @@ impl Slider
 
         if pos.height == 0
         {
-            if vertical
+            if vertical do
                 pos.height = parent.getThemeMetrics().slider_Width
-            else
+            else do
                 pos.height = parent.getThemeMetrics().slider_Height
         }
 
         if pos.width == 0
         {
-            if vertical
+            if vertical do
                 pos.width = parent.getThemeMetrics().slider_Height
-            else
+            else do
                 pos.width = parent.getThemeMetrics().slider_Width
         }
 
         let res = Wnd.create'Slider(parent, null, pos, id)
-        if range
+        if range do
             res.sliderFlags.add(.Range)
-        if vertical
+        if vertical do
             res.sliderFlags.add(.Vertical)
         return res
     }

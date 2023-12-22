@@ -53,7 +53,7 @@ var g_totalJobs:            u32
         g_eventPendingJobs.signal()
         while Atomic.get(&g_numWorkers) {}
 
-        visit th: g_workers
+        visit th: g_workers do
             th.wait()
         g_workers.free()
         g_pendingJobs.free()
@@ -82,14 +82,14 @@ func runJob(job: *Job)
     setState(job, JobState.Done)
     Debug.assert(g_totalJobs != 0)
     g_totalJobs -= 1
-    if g_totalJobs == 0
+    if g_totalJobs == 0 do
         g_eventDone.signal()
 }
 
 func peekExecJob()->bool
 {
     let job = getJobToExec()
-    if !job return false
+    if !job do return false
     runJob(job)
     return true
 }
@@ -97,7 +97,7 @@ func peekExecJob()->bool
 func getJobToExec()->*Job
 {
     Sync.scopedLock(&g_mutexPendingJobs)
-    if g_pendingJobs.isEmpty()
+    if g_pendingJobs.isEmpty() do
         return null
     let job = g_pendingJobs.popBack()
     Debug.assert(job.testState(JobState.InPending))
@@ -108,7 +108,7 @@ func getJobToExec()->*Job
 func removeJobNoLock(job: *Job)
 {
     g_pendingJobs.removeAt(cast(u64) job.pendingIndex)
-    if job.pendingIndex < g_pendingJobs.count
+    if job.pendingIndex < g_pendingJobs.count do
         g_pendingJobs[job.pendingIndex].pendingIndex = job.pendingIndex
     job.pendingIndex = Swag.U32.Max
     job.clearState(JobState.InPending)
@@ -138,9 +138,9 @@ public func setNumWorkers(numWorkers: u32 = 0) throw
 
     g_numWorkers = numWorkers orelse Hardware.getProcessorCount()
     g_workers.resize(cast(u64) g_numWorkers)
-    visit &th: g_workers
+    visit &th: g_workers do
         try th.init(&workerEntry)
-    visit &th: g_workers
+    visit &th: g_workers do
         try th.start()
 }
 
@@ -167,7 +167,7 @@ public func waitDone()
 public func waitJob(job: *Job)
 {
     // Fast exit, without lock
-    if job.testState(JobState.Done)
+    if job.testState(JobState.Done) do
         return
 
     g_mutexPendingJobs.lock()
@@ -205,7 +205,7 @@ public func waitJob(job: *Job)
 #[Swag.Macro]
 public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = null, stmt: code)
 {
-    if !@countof(range)
+    if !@countof(range) do
         return
     Debug.assert(offset != 0)
 
@@ -267,7 +267,7 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = n
     }
 
     // Sync
-    visit &j: sliceJobs waitJob(j)
+    visit &j: sliceJobs do waitJob(j)
 }
 
 // Do a for loop in parallel chunks
@@ -277,7 +277,7 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = n
 #[Swag.Macro]
 public func parallelFor(count: u32, userData: *void = null, stmt: code)
 {
-    if !count return
+    if !count do return
 
     func jobEntry(jobData: *void)
     {
@@ -333,5 +333,5 @@ public func parallelFor(count: u32, userData: *void = null, stmt: code)
     }
 
     // Sync
-    visit &j: sliceJobs waitJob(j)
+    visit &j: sliceJobs do waitJob(j)
 }

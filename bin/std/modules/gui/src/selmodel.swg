@@ -12,7 +12,7 @@ impl SelModel
     {
         visit &r, i: selection
         {
-            if idx >= r.start and idx <= r.end
+            if idx >= r.start and idx <= r.end do
                 return cast(u32) i
         }
 
@@ -36,7 +36,7 @@ impl SelModel
     {
         let isSelectedRange = getSelectedRangeIndex(idx)
         let isSelected = isSelectedRange != Swag.U32.Max
-        if select == isSelected
+        if select == isSelected do
             return
 
         if select
@@ -63,13 +63,13 @@ impl SelModel
         else
         {
             var range = selection[isSelectedRange]
-            if range.start == range.end
+            if range.start == range.end do
                 selection.removeAt(cast(u64) isSelectedRange)
-            elif range.start == idx
+            elif range.start == idx do
                 range.start += 1
-            elif range.end == idx
+            elif range.end == idx do
                 range.end -= 1
-            else
+            else do
             {
                 let end = range.end
                 range.end = idx - 1

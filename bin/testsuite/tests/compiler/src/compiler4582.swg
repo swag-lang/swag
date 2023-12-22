@@ -5,7 +5,7 @@ func toto(x: H = null)
 {
     var y: closure()
     y = x
-    if y y()
+    if y do y()
 }
 
 //#[Swag.PrintBc]

@@ -46,7 +46,7 @@ public func getMonitors()->Array'Monitor
     {
         var mi: MONITORINFO
         catch GetMonitorInfoA(hMonitor, &mi)
-        if @err() != null return TRUE
+        if @err() != null do return TRUE
 
         var m: Monitor
         let ptr = cast(*Array'Monitor) cast(u64) lParam

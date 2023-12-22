@@ -37,7 +37,7 @@ impl Keyboard
             elif canRepeat
             {
                 // First pressed time
-                if !pressedTime[i]
+                if !pressedTime[i] do
                     pressedTime[i] = now
 
                 // First repetition
@@ -97,12 +97,12 @@ impl Keyboard
     mtd getPressedModifiers()->KeyModifiers
     {
         var modifiers: Input.KeyModifiers = .Zero
-        if self.isKeyPressed(Input.Key.LShift)   modifiers |= .Shift
-        if self.isKeyPressed(Input.Key.RShift)   modifiers |= .Shift
-        if self.isKeyPressed(Input.Key.LControl) modifiers |= .Control
-        if self.isKeyPressed(Input.Key.RControl) modifiers |= .Control
-        if self.isKeyPressed(Input.Key.LMenu)    modifiers |= .Alt
-        if self.isKeyPressed(Input.Key.RMenu)    modifiers |= .Alt
+        if self.isKeyPressed(Input.Key.LShift)   do modifiers |= .Shift
+        if self.isKeyPressed(Input.Key.RShift)   do modifiers |= .Shift
+        if self.isKeyPressed(Input.Key.LControl) do modifiers |= .Control
+        if self.isKeyPressed(Input.Key.RControl) do modifiers |= .Control
+        if self.isKeyPressed(Input.Key.LMenu)    do modifiers |= .Alt
+        if self.isKeyPressed(Input.Key.RMenu)    do modifiers |= .Alt
         return modifiers
     }
 }

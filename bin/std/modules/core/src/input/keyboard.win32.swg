@@ -21,7 +21,7 @@ impl Keyboard
 
     public func virtualKeyToKey(vkey: VirtualKey)->Key
     {
-        if vkey > 255
+        if vkey > 255 do
             return Key.None
         return cast(Key) mapVKeyToKey[vkey]
     }
@@ -226,7 +226,7 @@ public impl Keyboard
     func isKeyPressed(key: Key)->bool
     {
         let vkey = Keyboard.mapKeyToVKey[key]
-        if vkey == 0
+        if vkey == 0 do
             return false
         return GetAsyncKeyState(cast(s32) vkey) < 0
     }
@@ -237,7 +237,7 @@ public impl Keyboard
         let virt = keyToVirtualKey(key)
         var uc: [5] WCHAR
         let res = ToUnicode(virt, MapVirtualKeyW(virt, MAPVK_VK_TO_VSC), currentState.nativeState, uc, 4, 0)
-        if res == 1
+        if res == 1 do
             return cast(rune) uc[0]
         return 0'rune
     }

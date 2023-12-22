@@ -22,8 +22,8 @@ var g: Array'OneFunc
 {
     let itf = @compiler()
     let msg = itf.getMessage()
-    if msg.type.kind != TypeInfoKind.Func return
-    if !Reflection.hasAttribute(msg.type, Extension) return
+    if msg.type.kind != TypeInfoKind.Func do return
+    if !Reflection.hasAttribute(msg.type, Extension) do return
 
     g.add({msg.type, msg.name})
 }

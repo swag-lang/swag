@@ -9,7 +9,7 @@ struct Node
 
 func release(node: *Node)
 {
-    visit kid: node.kids
+    visit kid: node.kids do
         kid.release()
     Memory.delete(node)
 }
@@ -54,7 +54,7 @@ func process(intro: *Node)->*Node
     tree.print()
 
     var totalDepth = 0
-    loop i: 200_000
+    loop i: 200_000 do
         totalDepth += intro.calcTotalDepth()
 
     //Console.printf("Total depth: %", totalDepth)

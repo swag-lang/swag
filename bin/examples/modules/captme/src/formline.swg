@@ -61,7 +61,7 @@ impl IForm for FormLine
         xb += xbu
         yb += ybu
 
-        if evt.kind == .MouseReleased and evt.button == .Left
+        if evt.kind == .MouseReleased and evt.button == .Left do
             return false
         return true
     }
@@ -132,9 +132,9 @@ impl IForm for FormLine
 
         var l0 = l0r
         var l1 = l1r
-        if beginCap == .ArrowAnchor
+        if beginCap == .ArrowAnchor do
             l0 = 2*2*borderSize
-        if endCap == .ArrowAnchor
+        if endCap == .ArrowAnchor do
             l1 = 2*2*borderSize
 
         var v1 = bound(va, vb, d*l0 + d1*w0, d*l1 + d1*w1)
@@ -194,7 +194,7 @@ impl IForm for FormLine
         var pos = Math.Vector2{pt.x - paintPos.x, pt.y - paintPos.y}
         visit cmd: painter.commandBuffer
         {
-            if cmd.id != .DrawTriangles
+            if cmd.id != .DrawTriangles do
                 continue
             for var i = 0; i < cmd.drawTriangles.count; i += 3
             {
@@ -202,7 +202,7 @@ impl IForm for FormLine
                 let xx0 = painter.vertexBuffer[tri].pos
                 let xx1 = painter.vertexBuffer[tri+1].pos
                 let xx2 = painter.vertexBuffer[tri+2].pos
-                if pos.isInTriangle(xx0, xx1, xx2)
+                if pos.isInTriangle(xx0, xx1, xx2) do
                     return true
             }
         }

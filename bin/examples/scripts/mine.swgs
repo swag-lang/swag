@@ -52,7 +52,7 @@ func fillGrid()
                 {
                     let ti = i + ii
                     let tj = j + jj
-                    if ti < 0 or ti >= GridSize or tj < 0 or tj >= GridSize
+                    if ti < 0 or ti >= GridSize or tj < 0 or tj >= GridSize do
                         continue
                     g_Grid[i, j].score += g_Grid[ti, tj].mine ? 1 : 0
                 }
@@ -75,7 +75,7 @@ func floodFill(x, y: s32)
             g_Discovered += 1
         }
 
-        if g_Grid[pt.x, pt.y].score
+        if g_Grid[pt.x, pt.y].score do
             continue
 
         loop ii: -1 to 1
@@ -84,11 +84,11 @@ func floodFill(x, y: s32)
             {
                 let ti = pt.x + ii
                 let tj = pt.y + jj
-                if ti < 0 or ti >= GridSize or tj < 0 or tj >= GridSize
+                if ti < 0 or ti >= GridSize or tj < 0 or tj >= GridSize do
                     continue
-                if ii and jj
+                if ii and jj do
                     continue
-                if g_Grid[ti, tj].show
+                if g_Grid[ti, tj].show do
                     continue
                 arr.add({ti, tj})
             }
@@ -127,16 +127,16 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         var x = cast(s32) (pos.x / CellSize)
         var y = cast(s32) (pos.y / CellSize)
         x, y -= 1
-        if x < 0 or x >= GridSize or y < 0 or y >= GridSize
+        if x < 0 or x >= GridSize or y < 0 or y >= GridSize do
             break
-        if g_Win or g_Lost or g_Grid[x, y].show
+        if g_Win or g_Lost or g_Grid[x, y].show do
             break
 
         if mouseEvt.button == .Left
         {
-            if g_Grid[x, y].mine
+            if g_Grid[x, y].mine do
                 g_Lost = true
-            else
+            else do
                 floodFill(x, y)
         }
         elif mouseEvt.button == .Right
@@ -208,6 +208,6 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #main
 {
-    func test(app: *Application) = if Env.hasArg("swag.test") app.maxRunFrame = 100
+    func test(app: *Application) = if Env.hasArg("swag.test") do app.maxRunFrame = 100
     Application.runSurface(100, 100, 1024, 1024, title: "Minesweeper", canSize: false, hook: &onEvent, init: &test)
 }

@@ -55,11 +55,11 @@ public impl LinePath
     // Clear internal cache
     mtd clearCache()
     {
-        visit t: points
+        visit t: points do
             Memory.delete(t)
-        visit t: triangles
+        visit t: triangles do
             Memory.delete(t)
-        visit t: edgeList
+        visit t: edgeList do
             Memory.delete(t)
         points.clear()
         triangles.clear()
@@ -82,7 +82,7 @@ public impl LinePath
     mtd lineTo(x, y: f32)
     {
         var newEndPoint = Vector2{x, y}
-        if newEndPoint.isEqualEpsilon(endPoint)
+        if newEndPoint.isEqualEpsilon(endPoint) do
             return
 
         var elem: Element = undefined
@@ -97,7 +97,7 @@ public impl LinePath
     mtd curveTo(x, y: f32)
     {
         var newEndPoint = Vector2{x, y}
-        if newEndPoint.isEqualEpsilon(endPoint)
+        if newEndPoint.isEqualEpsilon(endPoint) do
             return
 
         var elem: Element = undefined
@@ -113,7 +113,7 @@ public impl LinePath
     mtd bezierTo(x, y: f32, ctx, cty: f32)
     {
         var newEndPoint = Vector2{x, y}
-        if newEndPoint.isEqualEpsilon(endPoint)
+        if newEndPoint.isEqualEpsilon(endPoint) do
             return
 
         var elem: Element = undefined
@@ -130,7 +130,7 @@ public impl LinePath
     mtd bezierTo(x, y: f32, ct1x, ct1y: f32, ct2x, ct2y: f32)
     {
         var newEndPoint = Vector2{x, y}
-        if newEndPoint.isEqualEpsilon(endPoint)
+        if newEndPoint.isEqualEpsilon(endPoint) do
             return
 
         var elem: Element = undefined
@@ -147,13 +147,13 @@ public impl LinePath
     mtd arcTo(centerX, centerY: f32, radiusX, radiusY: f32, initAngle, maxAngle: Math.Angle)
     {
         var ia = initAngle.rad
-        while ia < 0 ia += Math.ConstF32.TwoPi
+        while ia < 0 do ia += Math.ConstF32.TwoPi
         var ma = maxAngle.rad
-        while ma < 0 ma += Math.ConstF32.TwoPi
-        while ma < ia ma += Math.ConstF32.TwoPi
+        while ma < 0 do ma += Math.ConstF32.TwoPi
+        while ma < ia do ma += Math.ConstF32.TwoPi
 
         var newEndPoint = Vector2{centerX + (Math.sin(ma) * radiusX), centerY + (-Math.cos(ma) * radiusY)}
-        if newEndPoint.isEqualEpsilon(endPoint)
+        if newEndPoint.isEqualEpsilon(endPoint) do
             return
 
         var elem: Element = undefined
@@ -175,15 +175,15 @@ public impl LinePath
     // Will add a line or a curve to the first point if necessary
     mtd close()
     {
-        if isClosed or !elements.count
+        if isClosed or !elements.count do
             return
 
         var v = endPoint - startPoint
         if v.lengthSquared() >= 0.5 * 0.5
         {
-            if elements.backPtr().type == .Curve
+            if elements.backPtr().type == .Curve do
                 curveTo(startPoint.x, startPoint.y)
-            else
+            else do
                 lineTo(startPoint.x, startPoint.y)
         }
 
@@ -280,7 +280,7 @@ public impl LinePath
     // Initialize the path with an arc
     mtd setArc(centerX, centerY: f32, radius: f32, startAngle, endAngle: Math.Angle)
     {
-        if isZeroEpsilon(endAngle.rad - startAngle.rad)
+        if isZeroEpsilon(endAngle.rad - startAngle.rad) do
             return
 
         let cX = Math.round(centerX)
@@ -326,9 +326,9 @@ public impl LinePath
     mtd flatten(quality = PaintQuality.Normal)
     {
         // Already done ?
-        if isPolyOnly
+        if isPolyOnly do
             return
-        if !isDirty and flattenQuality == quality and isFlatten
+        if !isDirty and flattenQuality == quality and isFlatten do
             return
 
         isDirty        = false
@@ -338,7 +338,7 @@ public impl LinePath
         bvMin, bvMax = startPoint
         clearCache()
 
-        if !elements.count
+        if !elements.count do
             return
 
         endPosBuffer = startPoint
@@ -454,13 +454,13 @@ impl LinePath
             point.y = a1 * startPt.y + a2 * p1.y + a3 * pos.y
 
             let dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
-            if dist < minDist continue
+            if dist < minDist do continue
 
             tmp.insertAt(cast(u64) i + 1, {t, point})
             i -= 1
         }
 
-        loop i: 1 until tmp.count
+        loop i: 1 until tmp.count do
             flattenLine(tmp[i].pos)
     }
 
@@ -489,13 +489,13 @@ impl LinePath
             point.y = a1 * startPt.y + a2 * p1.y + a3 * p2.y + a4 * pos.y
 
             let dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
-            if dist < minDist continue
+            if dist < minDist do continue
 
             tmp.insertAt(cast(u64) i + 1, {t, point})
             i -= 1
         }
 
-        loop i: 1 until tmp.count
+        loop i: 1 until tmp.count do
             flattenLine(tmp[i].pos)
     }
 
@@ -519,13 +519,13 @@ impl LinePath
             point += p3
 
             let dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
-            if dist < minDist continue
+            if dist < minDist do continue
 
             tmp.insertAt(cast(u64) i + 1, {t, point})
             i -= 1
         }
 
-        loop i: 1 until tmp.count
+        loop i: 1 until tmp.count do
             flattenLine(tmp[i].pos)
     }
 
@@ -550,13 +550,13 @@ impl LinePath
             point.y += -(Math.cos(angle) * p2.y)
 
             let dist = point.distanceToLine(tmp[i].pos, tmp[i + 1].pos)
-            if dist < minDist continue
+            if dist < minDist do continue
 
             tmp.insertAt(cast(u64) i + 1, {angle, point})
             i -= 1
         }
 
-        loop i: 1 until tmp.count
+        loop i: 1 until tmp.count do
             flattenLine(tmp[i].pos)
     }
 

@@ -15,7 +15,7 @@ impl IWnd for Button
 {
     mtd impl onApplyStateEvent(evt: *CommandStateEvent)
     {
-        if evt.id != id
+        if evt.id != id do
             return
 
         if evt.setFlags & .Icon and icon != evt.icon
@@ -59,7 +59,7 @@ impl Button
             invalidate()
 
         case MouseMove:
-            if !isPressing
+            if !isPressing do
                 break
             var rect = getClientRect()
             if !rect.contains(pos)
@@ -86,7 +86,7 @@ impl Button
             }
             elif evt.button == .Right
             {
-                if isIn
+                if isIn do
                     sigRightPressed.call(self)
             }
 
@@ -102,7 +102,7 @@ impl Button
                 if isPressed
                 {
                     isPressed, isPressing = false
-                    if isIn
+                    if isIn do
                         sigPressed.call(self)
                     invalidate()
                 }

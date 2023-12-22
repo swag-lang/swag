@@ -64,27 +64,27 @@ impl Serializer
     // End encoding/decoding
     mtd end() throw
     {
-        if isWrite
+        if isWrite do
             encode.end()
-        else
+        else do
             decode.end()
     }
 
     // Start a new section
     mtd beginSection(kind = SectionKind.Unordered) throw
     {
-        if isWrite
+        if isWrite do
             encode.beginSection(kind)
-        else
+        else do
             decode.beginSection(kind)
     }
 
     // End the previous section
     mtd endSection() throw
     {
-        if isWrite
+        if isWrite do
             encode.endSection()
-        else
+        else do
             decode.endSection()
     }
 
@@ -129,7 +129,7 @@ impl Serializer
         }
         else
         {
-            if !decode.beginField(value)
+            if !decode.beginField(value) do
                 return
             defer(noerr) decode.endField()
 

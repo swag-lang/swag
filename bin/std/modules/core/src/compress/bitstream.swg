@@ -31,7 +31,7 @@ impl BitStream
     {
         while numBits <= width
         {
-            if codeBuffer == 0 and numBits == cast,bit(u8) -1
+            if codeBuffer == 0 and numBits == cast,bit(u8) -1 do
                 numBits = 0
 
             if codeBuffer >= 1'u32 << numBits
@@ -57,7 +57,7 @@ impl BitStream
     #[Swag.Inline]
     mtd peekBits(width: u8)->u32
     {
-	    if numBits < width refill()
+	    if numBits < width do refill()
     	return codeBuffer & ~(0xffffffff << width)
     }
 

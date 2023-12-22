@@ -26,16 +26,16 @@ public impl Adler32
         var s2 = (adler >> 16) & 0xffff
 
         let countof = @countof(buffer)
-        if !countof return
+        if !countof do return
 
         let input = @dataof(buffer)
         if countof == 1
         {
             s1 += input[0]
-            if s1 >= Base
+            if s1 >= Base do
                 s1 -= Base
             s2 += s1
-            if s2 >= Base
+            if s2 >= Base do
                 s2 -= Base
         }
         elif countof < 16
@@ -46,7 +46,7 @@ public impl Adler32
                 s2 += s1
             }
 
-            if s1 >= Base
+            if s1 >= Base do
                 s1 -= Base
             s2 %= Base
         }
@@ -74,7 +74,7 @@ public impl Adler32
                 s2 %= Base
             }
 
-            if (i < countof)
+            if i < countof
             {
                 for ; i + 16 <= countof; i += 16
                 {

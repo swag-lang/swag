@@ -12,7 +12,7 @@ impl IWnd for ImageRect
 {
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        if !movie.isValid()
+        if !movie.isValid() do
             return
 
         // Update movie, and update resulting texture frame if necessary
@@ -41,7 +41,7 @@ impl IWnd for ImageRect
             painter.drawTexture(rect, textureFrame, color)
         }
 
-        if !movie.numFrames or movie.numFrames > 1
+        if !movie.numFrames or movie.numFrames > 1 do
             invalidate()
     }
 }

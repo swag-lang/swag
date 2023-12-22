@@ -13,7 +13,7 @@ A type constraint can be added when declaring a generic type. If a function or a
     func(var T: isS32(T)) sum(x: T...)->T
     {
         var total = 0'T
-        visit it: x
+        visit it: x do
             total += it
         return total
     }

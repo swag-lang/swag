@@ -170,7 +170,7 @@ impl Encoder
         {
             if Reflection.isTuple(type)
             {
-                if errorIfUnknown
+                if errorIfUnknown do
                     throw UnsupportedFormatError{"cannot serialize an anonymous struct"}
                 return
             }
@@ -210,22 +210,22 @@ impl Encoder
             let itf = @mkinterface(data, type, ISerialize)
             if itf != null
             {
-                if itf.write(cast(IEncoder) self)
+                if itf.write(cast(IEncoder) self) do
                     return
             }
 
             // Start a fields section
             let treated = serializer.beginStruct(structType, data)
             defer(noerr) serializer.endStruct()
-            if treated
+            if treated do
                 return
 
             // Generic structure save
             visit field: structType.fields
             {
-                if Reflection.hasAttribute(field, NoSerialize)
+                if Reflection.hasAttribute(field, NoSerialize) do
                     continue
-                if Reflection.hasAttribute(field.pointedType, NoSerialize)
+                if Reflection.hasAttribute(field.pointedType, NoSerialize) do
                     continue
 
                 if !itf or !itf.writeElement(field, cast(const ^u8) data + field.offset, cast(IEncoder) self)
@@ -243,7 +243,7 @@ impl Encoder
             let typeArr = cast(const *TypeInfoArray) type
             let treated = serializer.beginSequence(typeArr.pointedType, data, typeArr.count)
             defer serializer.endSequence()
-            if treated
+            if treated do
                 return
 
             var bufArr = cast(const ^u8) data
@@ -256,7 +256,7 @@ impl Encoder
             return
         }
 
-        if errorIfUnknown
+        if errorIfUnknown do
             throw UnsupportedFormatError{Errors.mkString(Format.toString("cannot serialize type '%'", type.name))}
     }
 

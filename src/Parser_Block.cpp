@@ -476,7 +476,7 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
     }
 
     ScopedFlags scopedFlags(this, AST_IN_DEFER);
-    SWAG_CHECK(doScopedStatement(node, &dummyResult));
+    SWAG_CHECK(doScopedStatement(node, &dummyResult, false));
     return true;
 }
 

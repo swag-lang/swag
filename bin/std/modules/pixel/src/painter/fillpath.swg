@@ -24,7 +24,7 @@ public impl Painter
             // allocated triangles to avoid a leak
             visit tri: t.map
             {
-                if !tri.interior
+                if !tri.interior do
                     Memory.delete(tri)
             }
 
@@ -39,19 +39,19 @@ public impl Painter
             if curState.paintParams & .Antialiased
             {
                 var e = tri.points[0].border[0]
-                if e addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
+                if e do addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
                 e = tri.points[0].border[1]
-                if e addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
+                if e do addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
 
                 e = tri.points[1].border[0]
-                if e addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
+                if e do addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
                 e = tri.points[1].border[1]
-                if e addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
+                if e do addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
 
                 e = tri.points[2].border[0]
-                if e addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
+                if e do addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
                 e = tri.points[2].border[1]
-                if e addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
+                if e do addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
             }
         }
     }
@@ -60,7 +60,7 @@ public impl Painter
     #[Swag.Overload]
     mtd fillPath(pathList: *LinePathList, color: Color)
     {
-        if !pathList.paths.count
+        if !pathList.paths.count do
             return
         sharedSolidBrush.type = .SolidColor
         sharedSolidBrush.color = color
@@ -72,7 +72,7 @@ public impl Painter
     mtd fillPath(path: *LinePath, brush: Brush)
     {
         path.flatten(curState.paintQuality)
-        if Math.isZeroEpsilon(path.polygon.totalLen)
+        if Math.isZeroEpsilon(path.polygon.totalLen) do
             return
 
         let polygon = &path.polygon
@@ -101,7 +101,7 @@ public impl Painter
             }
 
             // Convex shape : 2 triangles
-            else if count == 4
+            elif count == 4
             {
                 let v0 = polygon.getPoint(0)
                 let v1 = polygon.getPoint(1)
@@ -196,7 +196,7 @@ public impl Painter
             }
         }
 
-        if flush and !flush.triangles.count
+        if flush and !flush.triangles.count do
             dirty = true
 
         serial = 0
@@ -220,7 +220,7 @@ public impl Painter
                 }
             }
 
-            if flush
+            if flush do
                 fillPath(null, flush, pathList.bvMin, pathList.bvMax, brush)
         }
 
@@ -251,7 +251,7 @@ public impl Painter
                 }
             }
 
-            if flush
+            if flush do
                 fillPath(&t, flush, pathList.bvMin, pathList.bvMax, brush)
         }
     }
@@ -278,7 +278,7 @@ public impl Painter
         {
             path.polygon.isClockwise = true
             var res = path.polygon.getClean()
-            visit p: res.paths
+            visit p: res.paths do
                 fillPath(p, brush)
         }
     }

@@ -63,10 +63,10 @@ var g_Hit:      HWND
 var g_Ignore:   HWND
 func enumProc(hWnd: HWND, _lParam: LPARAM)->BOOL
 {
-    if !IsWindowVisible(hWnd)
+    if !IsWindowVisible(hWnd) do
         return TRUE
 
-    if hWnd == g_Ignore
+    if hWnd == g_Ignore do
         return TRUE
 
     var r: RECT
@@ -89,7 +89,7 @@ func getWndAtPos(hWnd: HWND, pt: POINT)->HWND
     g_Hit     = null
     g_Ignore  = hWnd
     EnumWindows(acast &enumProc, 0)
-    if !g_Hit
+    if !g_Hit do
         return null
 
     loop
@@ -97,7 +97,7 @@ func getWndAtPos(hWnd: HWND, pt: POINT)->HWND
         var pt1 = pt
         ScreenToClient(g_Hit, &pt1)
         let child = ChildWindowFromPointEx(g_Hit, pt1, CWP_SKIPINVISIBLE | CWP_SKIPDISABLED | CWP_SKIPTRANSPARENT)
-        if !child or child == g_Hit
+        if !child or child == g_Hit do
             break
         g_Hit = child
     }
@@ -110,7 +110,7 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
     switch msg
     {
     case WM_KEYDOWN:
-        if wParam == VK_ESCAPE
+        if wParam == VK_ESCAPE do
             PostQuitMessage(0)
         return 0
 
@@ -200,7 +200,7 @@ func winProc(hWnd: HWND, msg: UINT, wParam: WPARAM, lParam: LPARAM)->LRESULT
             let yy1 = cast(s32) g_RStartGrabY
             let xx2 = cast(s32) g_REndGrabX
             let yy2 = cast(s32) g_REndGrabY
-            if x1 != xx1 or y1 != yy1 or x2 != xx2 or y2 != yy2
+            if x1 != xx1 or y1 != yy1 or x2 != xx2 or y2 != yy2 do
                 InvalidateRect(hWnd, null, FALSE)
             x1 = xx1; x2 = xx2; y1 = yy1; y2 = yy2
         }
@@ -314,7 +314,7 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
     elif captureMode == .ActiveWindow
     {
         g_Hit = GetForegroundWindow()
-        if !g_Hit
+        if !g_Hit do
             return result
         var r: RECT
         GetWindowRect(g_Hit, &r)
@@ -372,7 +372,7 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode)->Image throw
         DeleteObject(acast g_MemBitmap)
 
         catch DestroyWindow(hWnd)
-        if !g_GrabDone
+        if !g_GrabDone do
             return result
     }
 

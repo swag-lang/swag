@@ -40,19 +40,19 @@ func calc(a, b: u8)->u64
     loop c: scan[0]
     {
         var count = 0
-        visit l: scan
+        visit l: scan do
             count += cast(s32) (l[c] == `1`)
 
         var next: Array'String
         visit l: scan
         {
             let v = count >= scan.count-count ? a : b
-            if l[c] == v
+            if l[c] == v do
                 next.add(l)
         }
 
         scan =,move next
-        if scan.count == 1 break
+        if scan.count == 1 do break
     }
 
     let (val, ?, ?) = assume StrConv.parseB64(scan[0])

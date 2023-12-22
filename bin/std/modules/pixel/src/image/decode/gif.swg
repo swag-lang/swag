@@ -72,7 +72,7 @@ impl Decoder
 {
     mtd seek(len: u64) throw
     {
-        if len > streamLen
+        if len > streamLen do
             throw InvalidFormatError{"read error"}
         stream    += len
         streamLen -= len
@@ -80,7 +80,7 @@ impl Decoder
 
     mtd read(dest: *u8, len: u64) throw
     {
-        if len > streamLen
+        if len > streamLen do
             throw InvalidFormatError{"read error"}
         Memory.copy(dest, stream, len)
         stream    += len
@@ -90,7 +90,7 @@ impl Decoder
     #[Swag.Inline]
     mtd readU8()->u8 throw
     {
-        if streamLen < 1
+        if streamLen < 1 do
             throw InvalidFormatError{"read error"}
         let res = stream[0]
         stream    += 1
@@ -100,7 +100,7 @@ impl Decoder
 
     mtd readU16()->u16 throw
     {
-        if streamLen < 2
+        if streamLen < 2 do
             throw InvalidFormatError{"read error"}
         let res = cast(u16) (stream[0] + (cast(u16) stream[1] << 8))
         stream += 2
@@ -113,7 +113,7 @@ impl Decoder
         loop
         {
             let size = readU8()
-            if !size
+            if !size do
                 break
             seek(acast size)
         }
@@ -195,7 +195,7 @@ impl Decoder
         table.bulk = Math.max(1 << (keySize + 1), 0x100)
         table.nentries = (1 << keySize) + 2
         table.entries.resize(table.bulk)
-        loop key: 1 << keySize
+        loop key: 1 << keySize do
             table.entries[key] = {1, 0xFFF, cast(u8) key}
     }
 
@@ -212,7 +212,7 @@ impl Decoder
                 if dref subLen == 0
                 {
                     dref subLen = readU8() /* Must be nonzero! */
-                    if dref subLen == 0
+                    if dref subLen == 0 do
                         return 0x1000
                 }
 
@@ -240,7 +240,7 @@ impl Decoder
 
         table.entries[table.nentries] = {length, prefix, suffix}
         table.nentries += 1
-        if (table.nentries & (table.nentries - 1)) == 0
+        if (table.nentries & (table.nentries - 1)) == 0 do
             return 1
         return 0
     }
@@ -250,15 +250,15 @@ impl Decoder
         let h = h0
         var y = y0
         var p = (h - 1) / 8 + 1
-        if (y < p) /* pass 1 */
+        if (y < p) do /* pass 1 */
             return y * 8
         y -= p
         p = (h - 5) / 8 + 1
-        if (y < p) /* pass 2 */
+        if (y < p) do /* pass 2 */
             return y * 8 + 4
         y -= p
         p = (h - 3) / 4 + 1
-        if (y < p) /* pass 3 */
+        if (y < p) do /* pass 3 */
             return y * 4 + 2
         y -= p
         /* pass 4 */
@@ -269,7 +269,7 @@ impl Decoder
     {
         var byte = readU8()
         var keySize = cast(s32) byte
-        if keySize < 2 or keySize > 8
+        if keySize < 2 or keySize > 8 do
             throw InvalidFormatError{"invalid frame"}
 
         let start = cast(u64) (stream - streamStart)
@@ -313,9 +313,9 @@ impl Decoder
             }
 
             key = getKey(keySize, &subLen, &shift, &byte)
-            if key == clear continue
-            if key == stop or key == 0x1000 break
-            if ret == 1 keySize += 1
+            if key == clear do continue
+            if key == stop or key == 0x1000 do break
+            if ret == 1 do keySize += 1
             entry = table.entries.buffer[key]
             strLen = entry.length
             loop i: strLen
@@ -323,20 +323,20 @@ impl Decoder
                 let p = frmOff + entry.length - 1
                 let x = p % fw
                 var y = p / fw
-                if interlace
+                if interlace do
                     y = interlacedLineIndex(cast(s32) fh, y)
                 frame[(fy + y) * width + fx + x] = entry.suffix
-                if entry.prefix == 0xFFF
+                if entry.prefix == 0xFFF do
                     break
                 entry = table.entries.buffer[entry.prefix]
             }
 
             frmOff += strLen
-            if key < table.nentries - 1 and !tableIsFull
+            if key < table.nentries - 1 and !tableIsFull do
                 table.entries[table.nentries - 1].suffix = entry.suffix
         }
 
-        if key == stop
+        if key == stop do
             subLen = readU8() /* Must be zero! */
         stream = streamStart + end
         streamLen = remainEnd
@@ -347,7 +347,7 @@ impl Decoder
         /* Image descriptor */
         fx = readU16()
         fy = readU16()
-        if fx >= width or fy >= height
+        if fx >= width or fy >= height do
             throw InvalidFormatError{"invalid frame size"}
 
         fw = readU16()
@@ -367,7 +367,7 @@ impl Decoder
             read(lct.colors, 3'u64 * lct.size)
             palette = &lct
         }
-        else
+        else do
             palette = &gct
 
         readImageData(interlace)
@@ -420,15 +420,15 @@ impl Decoder
         var sep = readU8()
         while sep != `,`
         {
-            if sep == `;`
+            if sep == `;` do
                 return 0
-            if sep != `!`
+            if sep != `!` do
                 throw InvalidFormatError{"invalid format"}
             readExt()
             sep = readU8()
         }
 
-        if decodePixels
+        if decodePixels do
             readImage()
         return 1
     }
@@ -446,12 +446,12 @@ public impl Decoder
         /* Header */
         var sigver: [3] u8
         read(sigver, 3)
-        if Memory.compare(sigver, @dataof("GIF"), 3) != 0
+        if Memory.compare(sigver, @dataof("GIF"), 3) != 0 do
             throw InvalidFormatError{"invalid signature"}
 
         /* Version */
         read(sigver, 3)
-        if Memory.compare(sigver, @dataof("89a"), 3) != 0
+        if Memory.compare(sigver, @dataof("89a"), 3) != 0 do
             throw InvalidFormatError{"invalid version"}
 
         /* Width x Height */
@@ -461,7 +461,7 @@ public impl Decoder
         /* FDSZ */
         var fdsz: u8
         read(&fdsz, 1)
-        if !(fdsz & 0x80) // Presence of GCT
+        if !(fdsz & 0x80) do // Presence of GCT
             throw UnsupportedFormatError{"no global color table"}
 
         /* Color space's depth */
@@ -487,7 +487,7 @@ public impl Decoder
             let bgcolor = &palette.colors[bgIndex*3'u32]
             if bgcolor[0] or bgcolor[1] or bgcolor[2]
             {
-                loop i: size
+                loop i: size do
                     Memory.copy(&canvas[i*3], bgcolor, 3)
             }
         }
@@ -504,7 +504,7 @@ public impl Decoder
     {
         Debug.assert(initDone)
         image.init(width, height, gce.transparency ? PixelFormat.RGBA8 : PixelFormat.RGB8)
-        if !decodePixels
+        if !decodePixels do
             return
         image.allocPixels()
     }
@@ -513,7 +513,7 @@ public impl Decoder
     mtd nextFrame(img: *Image)->bool throw
     {
         Debug.assert(initDone)
-        if reachEnd
+        if reachEnd do
             return false
 
         if !getFrame(true)
@@ -531,11 +531,11 @@ public impl Decoder
     mtd getNumFrames()->s32 throw
     {
         Debug.assert(initDone)
-        if numFrames
+        if numFrames do
             return numFrames
 
         numFrames = 1
-        while getFrame(true)
+        while getFrame(true) do
             numFrames += 1
 
         rewind()
@@ -566,7 +566,7 @@ public impl IImageDecoder for Decoder
 
         var result: retval
         getFrame(&result, options.decodePixels)
-        if !options.decodePixels
+        if !options.decodePixels do
             return result
 
         renderFrame(result.pixels.buffer, result.pf)

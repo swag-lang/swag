@@ -35,17 +35,17 @@ impl IconBar
     {
         visit c: childs
         {
-            if iconBarFlags.has(.Vertical)
+            if iconBarFlags.has(.Vertical) do
                 c.dockStyle = .Top
-            else
+            else do
                 c.dockStyle = .Left
         }
 
         let pad = 2*iconPadding
         let size = cast(f32) (childs.count * (iconSize + pad))
-        if iconBarFlags.has(.Vertical)
+        if iconBarFlags.has(.Vertical) do
             resize(iconSize + pad, size)
-        else
+        else do
             resize(size, iconSize + pad)
     }
 

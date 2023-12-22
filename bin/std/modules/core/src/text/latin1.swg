@@ -25,7 +25,7 @@ using Swag
 #[Inline, ConstExpr]
 internal func isLowerUtf8(c: u8)->bool
 {
-    if isAscii(c) and isLower(c)
+    if isAscii(c) and isLower(c) do
         return true
     return cast(bool) (CharProperties[c] & .LowerUtf8)
 }
@@ -33,7 +33,7 @@ internal func isLowerUtf8(c: u8)->bool
 #[Inline, ConstExpr]
 internal func isUpperUtf8(c: u8)->bool
 {
-    if isAscii(c) and isUpper(c)
+    if isAscii(c) and isUpper(c) do
         return true
     return cast(bool) (CharProperties[c] & .UpperUtf8)
 }
@@ -43,7 +43,7 @@ func makeUpper(buffer: [..] u8)
 {
     visit &p: buffer
     {
-        if isLowerUtf8(dref p)
+        if isLowerUtf8(dref p) do
             dref p -= 0x20
     }
 }
@@ -53,7 +53,7 @@ func makeLower(buffer: [..] u8)
 {
     visit &p: buffer
     {
-        if isUpperUtf8(dref p)
+        if isUpperUtf8(dref p) do
             dref p += 0x20
     }
 }
@@ -74,12 +74,12 @@ func compare(src, dst: const [..] u8, ignoreCase = false)->s32
         {
             var c1 = src[i]
             var c2 = dst[i]
-            if c1 == c2 continue
+            if c1 == c2 do continue
 
             c1 += isUpperUtf8(c1) ? 0x20 : 0
             c2 += isUpperUtf8(c2) ? 0x20 : 0
             result = cast(s32) c1 - cast(s32) c2
-            if result != 0
+            if result != 0 do
                 return Math.sign(result)
         }
     }
@@ -88,7 +88,7 @@ func compare(src, dst: const [..] u8, ignoreCase = false)->s32
         result = Memory.compare(@dataof(src), @dataof(dst), minLen)
     }
 
-    if result != 0
+    if result != 0 do
         return Math.sign(result)
     return length <=> otherLength
 }
@@ -115,15 +115,15 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
             let dga = isDigit(ca)
             let dgb = isDigit(cb)
 
-            if !dga and !dgb
+            if !dga and !dgb do
                 return 0
-            if !dga
+            if !dga do
                 return -1
-            if !dgb
+            if !dgb do
                 return 1
-            if ca < cb
+            if ca < cb do
                 return -1
-            if ca > cb
+            if ca > cb do
                 return 1
 
             ai, bi += 1
@@ -147,24 +147,24 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
             let dga = isDigit(ca)
             let dgb = isDigit(cb)
 
-            if !dga and !dgb
+            if !dga and !dgb do
                 return bias
-            if !dga
+            if !dga do
                 return -1
-            if !dgb
+            if !dgb do
                 return 1
 
             if ca < cb
             {
-                if !bias
+                if !bias do
                     bias = -1
             }
             elif ca > cb
             {
-                if !bias
+                if !bias do
                     bias = 1
             }
-            elif !ca and !cb
+            elif !ca and !cb do
                 return bias
 
             ai, bi += 1
@@ -206,15 +206,15 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
             var result = 0
             let sl0 = @mkslice(dsrc + ai, csrc)
             let sl1 = @mkslice(ddst + bi, cdst)
-            if ca == `0`'u8 or cb == `0`'u8
+            if ca == `0`'u8 or cb == `0`'u8 do
                 result = compareLeft(sl0, sl1)
-            else
+            else do
                 result = compareRight(sl0, sl1)
-            if result
+            if result do
                 return result
         }
 
-        if !ca and !cb
+        if !ca and !cb do
             return 0
 
         if ignoreCase
@@ -223,9 +223,9 @@ func compareNatural(src, dst: const [..] u8, ignoreCase = false)->s32
             cb = toUpper(cb)
         }
 
-        if ca < cb
+        if ca < cb do
             return -1
-        if ca > cb
+        if ca > cb do
             return 1
 
         ai, bi += 1

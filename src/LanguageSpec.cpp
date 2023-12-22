@@ -367,11 +367,11 @@ void LanguageSpec::setupKeywords()
     keywords.add("unreachable", TokenId::KwdUnreachable);
     keywords.add("to", TokenId::KwdTo);
     keywords.add("until", TokenId::KwdUntil);
+    keywords.add("do", TokenId::KwdDo);
 
     keywords.add("is", TokenId::KwdReserved);
     keywords.add("in", TokenId::KwdReserved);
     keywords.add("not", TokenId::KwdReserved);
-    keywords.add("do", TokenId::KwdReserved);
 
     keywords.add("@defined", TokenId::IntrinsicDefined);
     keywords.add("@location", TokenId::IntrinsicLocation);

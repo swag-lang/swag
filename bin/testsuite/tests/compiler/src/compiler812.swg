@@ -9,11 +9,11 @@ impl Utf8
 {
 	func reserveSize(using self, newSize: u64)
 	{
-		if(size >= newSize)
+		if(size >= newSize) do
 			return;
 
 		let newPtr = @alloc(newSize)
-		if buffer != null
+		if buffer != null do
 			@memcpy(newPtr, buffer, size)
 		size = newSize
 		@free(buffer)

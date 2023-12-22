@@ -70,7 +70,7 @@ impl IWnd for ProgressBar
 
             // Automatic update of progresssion
             progression += getTiming().dt * metrics.progressBar_SpeedInf
-            if progression > 1 progression = 0
+            if progression > 1 do progression = 0
             invalidate()
         }
         else
@@ -93,7 +93,7 @@ impl ProgressBar
     {
         Debug.assert(parent != null)
         var pos = position
-        if pos.height == 0
+        if pos.height == 0 do
             pos.height = parent.getThemeMetrics().progressBar_Height
         return Wnd.create'ProgressBar(parent, null, pos, id)
     }
@@ -102,7 +102,7 @@ impl ProgressBar
     mtd setProgression(prg: f32)
     {
         let newPrg = Math.saturate(prg)
-        if newPrg == progression
+        if newPrg == progression do
             return
         progression = newPrg
         invalidate()

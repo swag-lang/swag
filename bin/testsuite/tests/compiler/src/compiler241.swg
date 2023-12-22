@@ -6,7 +6,7 @@ func main ()
 	while a > 0
 	{
 		a -= 1;
-		if(a == 5) break;
+		if(a == 5) do break;
 		continue;
 	}
 	@assert(a == 5);

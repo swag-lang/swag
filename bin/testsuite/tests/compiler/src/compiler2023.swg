@@ -2,7 +2,7 @@ func(T) inc(x: T) => x * x
 
 func(T) map(values: [..] T, cb: func(T)->T)
 {
-    loop values
+    loop values do
         values[#index] = cb(values[#index])
 }
 

@@ -9,7 +9,7 @@ using Core
     @assert(str == "⺗AA⺗")
 
     str.clear()
-    loop 50
+    loop 50 do
         str += "    "
     str.trimStart()
     @assert(str.length == 0)

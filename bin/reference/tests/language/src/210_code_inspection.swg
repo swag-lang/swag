@@ -23,7 +23,7 @@ With the `Swag.CompilerMsgMask.SemFunctions` flag, for example, `#message` will 
 
     // As an example, we count that name if it starts with "XX".
     // But we could use custom function attributes instead...
-    if @countof(nameFunc) > 2 and nameFunc[0] == `X` and nameFunc[1] == `X`
+    if @countof(nameFunc) > 2 and nameFunc[0] == `X` and nameFunc[1] == `X` do
         G += 1
 }
 

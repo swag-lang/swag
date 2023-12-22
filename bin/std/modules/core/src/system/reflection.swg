@@ -30,7 +30,7 @@ using Swag
 
         func isSimpleNative(t: typeinfo)->bool
         {
-            if !isNative(t)
+            if !isNative(t) do
                 return false
 
             let tt = cast(const *TypeInfoNative) t
@@ -39,7 +39,7 @@ using Swag
 
         func isRune(t: typeinfo)->bool
         {
-            if !isNative(t)
+            if !isNative(t) do
                 return false
 
             let tt = cast(const *TypeInfoNative) t
@@ -48,7 +48,7 @@ using Swag
 
         func isAny(t: typeinfo)->bool
         {
-            if !isNative(t)
+            if !isNative(t) do
                 return false
 
             let tt = cast(const *TypeInfoNative) t
@@ -57,7 +57,7 @@ using Swag
 
         func isBool(t: typeinfo)->bool
         {
-            if !isNative(t)
+            if !isNative(t) do
                 return false
 
             let tt = cast(const *TypeInfoNative) t
@@ -66,7 +66,7 @@ using Swag
 
         func isString(t: typeinfo)->bool
         {
-            if !isNative(t)
+            if !isNative(t) do
                 return false
 
             let tt = cast(const *TypeInfoNative) t
@@ -77,7 +77,7 @@ using Swag
     // Returns true if this is a struct of the given name
     func isStructOfName(type: typeinfo, name: string)->bool
     {
-        if !isStruct(type)
+        if !isStruct(type) do
             return false
 
         let typeStruct = cast(const* TypeInfoStruct) type
@@ -100,7 +100,7 @@ using Swag
     // Transform an enum type to its underling real native type
     func makeConcreteEnum(type: typeinfo)->typeinfo
     {
-        if !isEnum(type)
+        if !isEnum(type) do
             return type
 
         let enumType = cast(const *TypeInfoEnum) type
@@ -111,13 +111,13 @@ using Swag
     // Returns null if the mtd does not exist
     func getMethod(type: typeinfo, name: string)->const* TypeValue
     {
-        if !isStruct(type)
+        if !isStruct(type) do
             return null
 
         let typeStruct = cast(const* TypeInfoStruct) type
         visit it: typeStruct.methods
         {
-            if it.name == name
+            if it.name == name do
                 return it
         }
 
@@ -128,13 +128,13 @@ using Swag
     // Returns null if the field does not exist
     func getField(type: typeinfo, name: string)->const* TypeValue
     {
-        if !isStruct(type)
+        if !isStruct(type) do
             return null
 
         let typeStruct = cast(const* TypeInfoStruct) type
         visit it: typeStruct.fields
         {
-            if it.name == name
+            if it.name == name do
                 return it
         }
 
@@ -153,7 +153,7 @@ using Swag
         case s64, u64, f64:         dref cast(*u64) dest = dref cast(*u64) patch
         case string:                dref cast(*string) dest = dref cast(*string) patch
         default:
-            if !hardCast
+            if !hardCast do
                 Debug.assert(false, "unsupported getFieldValue type")
             switch type.pointedType.sizeof
             {
@@ -178,7 +178,7 @@ using Swag
         case s64, u64, f64:         dref cast(*u64) patch = dref cast(const *u64) src
         case string:                dref cast(*string) patch = dref cast(const *string) src
         default:
-            if !hardCast
+            if !hardCast do
                 Debug.assert(false, "unsupported setFieldValue type")
             switch type.pointedType.sizeof
             {
@@ -205,13 +205,13 @@ using Swag
     // Returns true if the interface 'itf' is implemented in the given structure type
     func hasInterface(type: typeinfo, itf: typeinfo)->bool
     {
-        if !isStruct(type)
+        if !isStruct(type) do
             return false
 
         let typeStruct = cast(const* TypeInfoStruct) type
         visit it: typeStruct.interfaces
         {
-            if it.name == itf.fullname
+            if it.name == itf.fullname do
                 return true
         }
 
@@ -223,7 +223,7 @@ using Swag
     func getAttributeValue(type: const *Swag.TypeValue, attribute: typeinfo, value: string)->any
     {
         let attrib = getAttribute(type, attribute)
-        if !attrib
+        if !attrib do
             return null
         return getAttributeValue(attrib, value)
     }
@@ -233,7 +233,7 @@ using Swag
     func getAttributeValue(type: typeinfo, attribute: typeinfo, value: string)->any
     {
         let attrib = getAttribute(type, attribute)
-        if !attrib
+        if !attrib do
             return null
         return getAttributeValue(attrib, value)
     }
@@ -244,7 +244,7 @@ using Swag
     {
         visit p: attribute.params
         {
-            if p.name == value
+            if p.name == value do
                 return p.value
         }
 
@@ -258,7 +258,7 @@ using Swag
         var result: retval
         visit it: value.attributes
         {
-            if attribute == it.type
+            if attribute == it.type do
                 result.add(it)
         }
 
@@ -271,7 +271,7 @@ using Swag
     {
         visit it: value.attributes
         {
-            if attribute == it.type
+            if attribute == it.type do
                 return it
         }
 
@@ -296,7 +296,7 @@ using Swag
             let typeFunc = cast(const *TypeInfoFunc) type
             visit it: typeFunc.attributes
             {
-                if attribute == it.type
+                if attribute == it.type do
                     result.add(it)
             }
 
@@ -304,7 +304,7 @@ using Swag
             let typeStruct = cast(const *TypeInfoStruct) type
             visit it: typeStruct.attributes
             {
-                if attribute == it.type
+                if attribute == it.type do
                     result.add(it)
             }
 
@@ -312,7 +312,7 @@ using Swag
             let typeEnum = cast(const *TypeInfoEnum) type
             visit it: typeEnum.attributes
             {
-                if attribute == it.type
+                if attribute == it.type do
                     result.add(it)
             }
         }
@@ -330,7 +330,7 @@ using Swag
             let typeFunc = cast(const *TypeInfoFunc) type
             visit it: typeFunc.attributes
             {
-                if attribute == it.type
+                if attribute == it.type do
                     return it
             }
 
@@ -338,7 +338,7 @@ using Swag
             let typeStruct = cast(const *TypeInfoStruct) type
             visit it: typeStruct.attributes
             {
-                if attribute == it.type
+                if attribute == it.type do
                     return it
             }
 
@@ -346,7 +346,7 @@ using Swag
             let typeEnum = cast(const *TypeInfoEnum) type
             visit it: typeEnum.attributes
             {
-                if attribute == it.type
+                if attribute == it.type do
                     return it
             }
         }
@@ -365,13 +365,13 @@ using Swag
     // Returns null if the value does not exist
     func getEnumValue(type: typeinfo, name: string)->const* TypeValue
     {
-        if !isEnum(type)
+        if !isEnum(type) do
             return null
 
         let typeEnum = cast(const* TypeInfoEnum) type
         visit it: typeEnum.values
         {
-            if it.name == name
+            if it.name == name do
                 return it
         }
 
@@ -383,7 +383,7 @@ using Swag
     func getEnumName(type: typeinfo, valueAddr: const* void, fullname = true)->String
     {
         var result: String
-        if !isEnum(type)
+        if !isEnum(type) do
             return result
         let typeEnum = cast(const *TypeInfoEnum) type
         let isFlags = hasAttribute(type, EnumFlags)
@@ -433,7 +433,7 @@ using Swag
             // For a flags enum, just append the name if the bit is set
             if isFlags and (val1 & val2)
             {
-                if !result.isEmpty() result += " | "
+                if !result.isEmpty() do result += " | "
 
                 if fullname
                 {
@@ -452,7 +452,7 @@ using Swag
     func maxSizeOf(v: const [..] typeinfo)->u64
     {
         var res = 0'u32
-        visit p: v
+        visit p: v do
             res = @max(res, p.sizeof)
         return res
     }
@@ -461,7 +461,7 @@ using Swag
     func orFlags(v: const [..] typeinfo)->Swag.TypeInfoFlags
     {
         var res: Swag.TypeInfoFlags = Zero
-        visit p: v
+        visit p: v do
             res |= p.flags
         return res
     }
@@ -486,7 +486,7 @@ func roomInArray(addr: *void, valueType: typeinfo)->*void
     let sizeValue = valueType.sizeof
 
     var valueTypeStruct: const *TypeInfoStruct
-    if isStruct(valueType)
+    if isStruct(valueType) do
         valueTypeStruct = acast valueType
 
     // If we need to reallocate the buffer, we will also have to deal with
@@ -516,7 +516,7 @@ func roomInArray(addr: *void, valueType: typeinfo)->*void
 
     let result = arr.buffer + (arr.count * valueType.sizeof)
     arr.count += 1
-    if valueTypeStruct
+    if valueTypeStruct do
         valueTypeStruct.opInit(result)
 
     return result
@@ -546,7 +546,7 @@ func crcToType(crc: u32)->typeinfo
 {
     Sync.sharedLock(&g_HashLock)
     let e = g_HashCrcToType.find(crc)
-    if !e
+    if !e do
         return null
     return e.value
 }
@@ -556,7 +556,7 @@ func nameToType(name: string)->typeinfo
 {
     Sync.sharedLock(&g_HashLock)
     let e = g_HashNameToType.find(name)
-    if !e
+    if !e do
         return null
     return e.value
 }

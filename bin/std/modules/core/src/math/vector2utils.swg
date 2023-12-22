@@ -52,11 +52,11 @@ impl Vector2
         let ae = dref self - a
 
         let abbe = ab.dot(be)
-        if abbe > 0
+        if abbe > 0 do
             return be.length()
 
         let abae = ab.dot(ae)
-        if abae < 0
+        if abae < 0 do
             return ae.length()
 
         let x1 = ab.x
@@ -101,9 +101,9 @@ impl Vector2
                 {
                     t = 0
                     let nd = -d
-                    if nd >= a
+                    if nd >= a do
                         s = 1
-                    elif nd > 0
+                    elif nd > 0 do
                         s = nd / a
                 }
                 elif e < c
@@ -114,9 +114,9 @@ impl Vector2
                 {
                     t = 1
                     let bmd = b - d
-                    if bmd >= a
+                    if bmd >= a do
                         s = 1
-                    elif bmd > 0
+                    elif bmd > 0 do
                         s = bmd / a
                 }
             }
@@ -131,9 +131,9 @@ impl Vector2
                     {
                         t = 0
                         let nd = -d
-                        if nd <= 0
+                        if nd <= 0 do
                             s = 0
-                        elif nd < a
+                        elif nd < a do
                             s = nd / a
                     }
                     elif bpe < c
@@ -144,9 +144,9 @@ impl Vector2
                     {
                         t = 1
                         let bmd = b - d
-                        if bmd <= 0
+                        if bmd <= 0 do
                             s = 0
-                        elif bmd < a
+                        elif bmd < a do
                             s = bmd / a
                     }
                 }
@@ -158,11 +158,11 @@ impl Vector2
                     {
                         t = 0
                         let nd = -d
-                        if nd <= 0
+                        if nd <= 0 do
                             s =0
-                        elif nd >= a
+                        elif nd >= a do
                             s = 1
-                        else
+                        else do
                             s = nd / a
                     }
                     else
@@ -172,11 +172,11 @@ impl Vector2
                         {
                             t = 1
                             let bmd = b - d
-                            if bmd <= 0
+                            if bmd <= 0 do
                                 s = 0
-                            elif bmd >= a
+                            elif bmd >= a do
                                 s = 1
-                            else
+                            else do
                                 s = bmd / a
                         }
                         else
@@ -194,22 +194,22 @@ impl Vector2
             {
                 t = 0
                 let nd = -d
-                if nd <= 0
+                if nd <= 0 do
                     s = 0
-                elif nd >= a
+                elif nd >= a do
                     s = 1
-                else
+                else do
                     s = nd / a
             }
             elif e >= c
             {
                 t = 1
                 let bmd = b - d
-                if bmd <= 0
+                if bmd <= 0 do
                     s = 0
-                elif bmd >= a
+                elif bmd >= a do
                     s = 1
-                else
+                else do
                     s = bmd / a
             }
             else
@@ -254,7 +254,7 @@ impl Vector2
         var result: retval
 
         let (yes, d0, ?) = getLineLineIntersectCoefs(start0, end0, start1, end1, epsilon)
-        if !yes
+        if !yes do
             return result
 
         result.yes = true
@@ -269,10 +269,10 @@ impl Vector2
         var result: retval
 
         let (yes, d0, d1) = getLineLineIntersectCoefs(start0, end0, start1, end1, epsilon)
-        if !yes
+        if !yes do
             return result
 
-        if d0 < -epsilon or d0 > 1 + epsilon or d1 < -epsilon or d1 > 1 + epsilon
+        if d0 < -epsilon or d0 > 1 + epsilon or d1 < -epsilon or d1 > 1 + epsilon do
             return result
 
         result.yes = true

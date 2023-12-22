@@ -207,7 +207,7 @@ impl Vector2
     mtd const toNormalizeSafe()->Self
     {
         var norm = sqrt((x * x) + (y * y))
-        if Math.isZeroEpsilon(norm)
+        if Math.isZeroEpsilon(norm) do
             return Zero
         norm = 1 / norm
         return Self{x * norm, y * norm}

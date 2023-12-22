@@ -6,7 +6,7 @@ impl Image
     public mtd fade(color: Color, factor: f32 = 0.5)
     {
         // unsupported pixel format
-        if pf.channels() < 3 or pf.bitDepth() != 8
+        if pf.channels() < 3 or pf.bitDepth() != 8 do
             return
 
         var convArrR: [256] u8 = undefined

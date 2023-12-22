@@ -53,10 +53,10 @@ impl IActionUI for ActionCopyPaste
                 visit it: capture.selection
                 {
                     let itfForm = capture.forms[it]
-                    if @kindof(itfForm) != FormImage
+                    if @kindof(itfForm) != FormImage do
                         continue
                     let b = cast(*FormImage) @dataof(itfForm)
-                    if b.kind != .Image
+                    if b.kind != .Image do
                         continue
                     evt.hidden = false
                     if hasImg

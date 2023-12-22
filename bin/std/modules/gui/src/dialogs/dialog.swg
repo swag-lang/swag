@@ -12,7 +12,7 @@ impl IWnd for Dialog
 {
     mtd impl onSysCommandEvent(evt: *SysCommandEvent)
     {
-        if evt.sysKind == .Close
+        if evt.sysKind == .Close do
             validateId(BtnCancel)
         evt.accepted = true
     }
@@ -137,14 +137,14 @@ impl Dialog
             .form = isDefault ? .Default : .Strong
 
             .sigPressed += closure|self|(btn) {
-                if !self.sigPressedButton or self.sigPressedButton(self, btn.id)
+                if !self.sigPressedButton or self.sigPressedButton(self, btn.id) do
                     btn.getApp().exitModal(btn.id)
             }
 
             buttons.add(btn)
         }
 
-        if #self.id == BtnCancel or #self.id == BtnNo
+        if #self.id == BtnCancel or #self.id == BtnNo do
             surface.setSurfaceFlags(add: .CloseBtn)
 
         return btn
@@ -152,7 +152,7 @@ impl Dialog
 
     mtd validateId(btnId: WndId)
     {
-        if !sigPressedButton or sigPressedButton(self, btnId)
+        if !sigPressedButton or sigPressedButton(self, btnId) do
             getApp().exitModal(btnId)
     }
 }

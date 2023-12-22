@@ -11,7 +11,7 @@ func sendWords(text: string)
     while start < @countof(text)
     {
         var stop = Utf8.indexOf(text, ` `'rune, start)
-        if stop == Swag.U64.Max
+        if stop == Swag.U64.Max do
             stop = @countof(text) - 1
         let word = text[start..stop]
         sendMessage(word)

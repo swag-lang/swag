@@ -614,6 +614,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SCmp">#callerlocation</span>
 <span class="SCmp">#cfg</span>
 <span class="SCmp">#code</span>
+<span class="SCmp">#do</span>
 <span class="SCmp">#file</span>
 <span class="SCmp">#line</span>
 <span class="SCmp">#location</span>
@@ -2613,7 +2614,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SKwd">enum</span> <span class="SCst">RGB</span> { <span class="SCst">R</span>, <span class="SCst">G</span>, <span class="SCst">B</span> }
 
         <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-        <span class="SLgc">loop</span> idx: <span class="SCst">RGB</span>
+        <span class="SLgc">loop</span> idx: <span class="SCst">RGB</span> do
             cpt += <span class="SNum">1</span>
         <span class="SItr">@assert</span>(cpt == <span class="SNum">3</span>)
 
@@ -2685,39 +2686,40 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">const</span> <span class="SCst">D</span> = <span class="SCst">OtherSymbol</span></span></div>
 <p>All symbols from a Swag source file are exported to other files of the same module. So using <span class="code-inline">private</span> can protect from name conflicts. </p>
 
-<h2 id="_050_if">If</h2><p>A basic test with <span class="code-inline">if</span>. Curlies are optional, and the expression doesn't need to be enclosed with <span class="code-inline">()</span> like in C/C++. </p>
+<h2 id="_050_if">If</h2><p>A basic test with <span class="code-inline">if</span>. Curlies are optional, but in that case you need to use <span class="code-inline">do</span>. This will be the same rule for <span class="code-inline">while</span>, <span class="code-inline">for</span>, <span class="code-inline">loop</span> and so on. Unlike C/C++, the expression doesn't need to be enclosed with <span class="code-inline">()</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> a = <span class="SNum">0</span>
-    <span class="SLgc">if</span> a == <span class="SNum">1</span>
+    <span class="SLgc">if</span> a == <span class="SNum">1</span> do
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
-    <span class="SLgc">if</span> (a == <span class="SNum">1</span>)
+    <span class="SLgc">if</span> (a == <span class="SNum">1</span>) do
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
     <span class="SLgc">if</span> a == <span class="SNum">0</span> {
         <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
     }
 
-    <span class="SCmt">// 'else' is of course also a thing</span>
-    <span class="SLgc">if</span> a == <span class="SNum">0</span>
+    <span class="SCmt">// 'else' is of course also a thing.</span>
+    <span class="SCmt">// 'do' is mandatory if the statement is not in a curly block.</span>
+    <span class="SLgc">if</span> a == <span class="SNum">0</span> do
         a += <span class="SNum">1</span>
-    <span class="SLgc">else</span>
+    <span class="SLgc">else</span> do
         a += <span class="SNum">2</span>
     <span class="SItr">@assert</span>(a == <span class="SNum">1</span>)
 
     <span class="SCmt">// 'elif' is equivalent to 'else if'</span>
-    <span class="SLgc">if</span> a == <span class="SNum">1</span>
+    <span class="SLgc">if</span> a == <span class="SNum">1</span> do
         a += <span class="SNum">1</span>
-    <span class="SLgc">else</span> <span class="SLgc">if</span> a == <span class="SNum">2</span>
+    <span class="SLgc">else</span> do <span class="SLgc">if</span> a == <span class="SNum">2</span> do
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
-    <span class="SLgc">elif</span> a == <span class="SNum">3</span>
+    <span class="SLgc">elif</span> a == <span class="SNum">3</span> do
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
-    <span class="SLgc">elif</span> a == <span class="SNum">4</span>
+    <span class="SLgc">elif</span> a == <span class="SNum">4</span> do
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
 
     <span class="SCmt">// Boolean expression with 'and' and 'or'</span>
-    <span class="SLgc">if</span> a == <span class="SNum">0</span> <span class="SLgc">and</span> a == <span class="SNum">1</span>
+    <span class="SLgc">if</span> a == <span class="SNum">0</span> <span class="SLgc">and</span> a == <span class="SNum">1</span> do
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
-    <span class="SLgc">if</span> a == <span class="SNum">0</span> <span class="SLgc">or</span> a == <span class="SNum">1</span>
+    <span class="SLgc">if</span> a == <span class="SNum">0</span> <span class="SLgc">or</span> a == <span class="SNum">1</span> do
         <span class="SItr">@assert</span>(<span class="SKwd">true</span>)
 }</span></div>
 <p>You can also at the same time declare and test one variable in an <span class="code-inline">if</span> expression. <span class="code-inline">var</span>, <span class="code-inline">let</span> or <span class="code-inline">const</span> is mandatory in that case. </p>
@@ -2731,14 +2733,14 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     }
 
     <span class="SCmt">// So you can redeclare 'a' (this time as a constant).</span>
-    <span class="SLgc">if</span> <span class="SKwd">const</span> a = <span class="SNum">1</span>
+    <span class="SLgc">if</span> <span class="SKwd">const</span> a = <span class="SNum">1</span> do
         <span class="SItr">@assert</span>(a == <span class="SNum">1</span>)
-    <span class="SLgc">else</span>
+    <span class="SLgc">else</span> do
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
 
-    <span class="SLgc">if</span> <span class="SKwd">let</span> a = <span class="SNum">1</span>
+    <span class="SLgc">if</span> <span class="SKwd">let</span> a = <span class="SNum">1</span> do
         <span class="SItr">@assert</span>(a == <span class="SNum">1</span>)
-    <span class="SLgc">else</span>
+    <span class="SLgc">else</span> do
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
 }</span></div>
 
@@ -2747,7 +2749,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> <span class="SNum">10</span> <span class="SCmt">// Loops 10 times</span>
+    <span class="SLgc">loop</span> <span class="SNum">10</span> do <span class="SCmt">// Loops 10 times</span>
         cpt += <span class="SNum">1</span>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">10</span>)
 }</span></div>
@@ -2784,7 +2786,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#assert</span> <span class="SItr">@countof</span>(arr) == <span class="SNum">4</span>
 
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> arr    <span class="SCmt">// The array contains 4 elements, so the loop count is 4</span>
+    <span class="SLgc">loop</span> arr do     <span class="SCmt">// The array contains 4 elements, so the loop count is 4</span>
         cpt += arr[<span class="SCmp">#index</span>]
     <span class="SItr">@assert</span>(cpt == <span class="SNum">10</span>+<span class="SNum">20</span>+<span class="SNum">30</span>+<span class="SNum">40</span>)
 }</span></div>
@@ -2794,7 +2796,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> <span class="SStr">"⻘"</span>
+    <span class="SLgc">loop</span> <span class="SStr">"⻘"</span> do
         cpt += <span class="SNum">1</span>
 
     <span class="SCmt">// cpt is equal to 3 because '⻘' is encoded with 3 bytes</span>
@@ -2808,9 +2810,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmt">// Index will be 2, 1 and then 0.</span>
     <span class="SLgc">loop</span><span class="SItr">,back</span> <span class="SNum">3</span>
     {
-        <span class="SLgc">if</span>   cpt == <span class="SNum">0</span> <span class="SItr">@assert</span>(<span class="SCmp">#index</span> == <span class="SNum">2</span>)
-        <span class="SLgc">elif</span> cpt == <span class="SNum">1</span> <span class="SItr">@assert</span>(<span class="SCmp">#index</span> == <span class="SNum">1</span>)
-        <span class="SLgc">elif</span> cpt == <span class="SNum">2</span> <span class="SItr">@assert</span>(<span class="SCmp">#index</span> == <span class="SNum">0</span>)
+        <span class="SLgc">if</span>   cpt == <span class="SNum">0</span> do <span class="SItr">@assert</span>(<span class="SCmp">#index</span> == <span class="SNum">2</span>)
+        <span class="SLgc">elif</span> cpt == <span class="SNum">1</span> do <span class="SItr">@assert</span>(<span class="SCmp">#index</span> == <span class="SNum">1</span>)
+        <span class="SLgc">elif</span> cpt == <span class="SNum">2</span> do <span class="SItr">@assert</span>(<span class="SCmp">#index</span> == <span class="SNum">0</span>)
 
         cpt += <span class="SNum">1</span>
     }
@@ -2823,7 +2825,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
     <span class="SLgc">loop</span> x: <span class="SNum">10</span>
     {
-        <span class="SLgc">if</span> x == <span class="SNum">5</span>
+        <span class="SLgc">if</span> x == <span class="SNum">5</span> do
             <span class="SLgc">break</span>
         cpt += <span class="SNum">1</span>
     }
@@ -2836,7 +2838,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
     <span class="SLgc">loop</span> x: <span class="SNum">10</span>
     {
-        <span class="SLgc">if</span> x == <span class="SNum">5</span>
+        <span class="SLgc">if</span> x == <span class="SNum">5</span> do
             <span class="SLgc">continue</span> <span class="SCmt">// Do not count 5</span>
         cpt += <span class="SNum">1</span>
     }
@@ -2895,7 +2897,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
     <span class="SLgc">loop</span>
     {
-        <span class="SLgc">if</span> <span class="SCmp">#index</span> == <span class="SNum">4</span> <span class="SCmt">// #index is still valid in that case (but cannot be renamed)</span>
+        <span class="SLgc">if</span> <span class="SCmp">#index</span> == <span class="SNum">4</span> do <span class="SCmt">// #index is still valid in that case (but cannot be renamed)</span>
             <span class="SLgc">break</span>
     }
 }</span></div>
@@ -2971,7 +2973,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">var</span> array = [<span class="SNum">10</span>, <span class="SNum">20</span>, <span class="SNum">30</span>]
 
     <span class="SKwd">var</span> result = <span class="SNum">0</span>
-    <span class="SLgc">visit</span> it: array
+    <span class="SLgc">visit</span> it: array do
         result += it
 
     <span class="SItr">@assert</span>(result == <span class="SNum">10</span>+<span class="SNum">20</span>+<span class="SNum">30</span>)
@@ -2982,7 +2984,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">var</span> array: [<span class="SNum">2</span>, <span class="SNum">2</span>] <span class="STpe">s32</span> = [[<span class="SNum">10</span>, <span class="SNum">20</span>], [<span class="SNum">30</span>, <span class="SNum">40</span>]]
 
     <span class="SKwd">var</span> result = <span class="SNum">0</span>
-    <span class="SLgc">visit</span> it: array
+    <span class="SLgc">visit</span> it: array do
         result += it
 
     <span class="SItr">@assert</span>(result == <span class="SNum">10</span>+<span class="SNum">20</span>+<span class="SNum">30</span>+<span class="SNum">40</span>)
@@ -3011,7 +3013,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">for</span> <span class="SKwd">var</span> i = <span class="SNum">0</span>; i &lt; <span class="SNum">10</span>; i += <span class="SNum">1</span>
+    <span class="SLgc">for</span> <span class="SKwd">var</span> i = <span class="SNum">0</span>; i &lt; <span class="SNum">10</span>; i += <span class="SNum">1</span>; do
         cpt += <span class="SNum">1</span>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">10</span>)
 
@@ -3045,12 +3047,12 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>'<span class="STpe">u64</span>
-    <span class="SLgc">for</span> <span class="SKwd">var</span> i: <span class="STpe">u32</span> = <span class="SNum">10</span>; i &lt; <span class="SNum">15</span>; i += <span class="SNum">1</span>
+    <span class="SLgc">for</span> <span class="SKwd">var</span> i: <span class="STpe">u32</span> = <span class="SNum">10</span>; i &lt; <span class="SNum">15</span>; i += <span class="SNum">1</span>; do
         cpt += <span class="SCmp">#index</span>
     <span class="SItr">@assert</span>(cpt == <span class="SNum">0</span>+<span class="SNum">1</span>+<span class="SNum">2</span>+<span class="SNum">3</span>+<span class="SNum">4</span>)
 
     <span class="SKwd">var</span> cpt1 = <span class="SNum">0</span>'<span class="STpe">u64</span>
-    <span class="SLgc">for</span> <span class="SKwd">var</span> i = <span class="SNum">10</span>; i &lt; <span class="SNum">15</span>; i += <span class="SNum">1</span>
+    <span class="SLgc">for</span> <span class="SKwd">var</span> i = <span class="SNum">10</span>; i &lt; <span class="SNum">15</span>; i += <span class="SNum">1</span>; do
         cpt1 += <span class="SCmp">#index</span>
     <span class="SItr">@assert</span>(cpt1 == <span class="SNum">0</span>+<span class="SNum">1</span>+<span class="SNum">2</span>+<span class="SNum">3</span>+<span class="SNum">4</span>)
 }</span></div>
@@ -3059,7 +3061,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> i = <span class="SNum">0</span>
-    <span class="SLgc">while</span> i &lt; <span class="SNum">10</span>
+    <span class="SLgc">while</span> i &lt; <span class="SNum">10</span> do
         i += <span class="SNum">1</span>
     <span class="SItr">@assert</span>(i == <span class="SNum">10</span>)
 }</span></div>
@@ -3069,7 +3071,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">var</span> i = <span class="SNum">0</span>
     <span class="SLgc">while</span> i &lt; <span class="SNum">10</span>
     {
-        <span class="SLgc">if</span> i == <span class="SNum">5</span>
+        <span class="SLgc">if</span> i == <span class="SNum">5</span> do
             <span class="SLgc">break</span>
         i += <span class="SNum">1</span>
     }
@@ -3148,7 +3150,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SLgc">switch</span> value
     {
     <span class="SLgc">case</span> <span class="SNum">6</span>:
-        <span class="SLgc">if</span> value == <span class="SNum">6</span>
+        <span class="SLgc">if</span> value == <span class="SNum">6</span> do
             <span class="SLgc">break</span>
         <span class="SItr">@assert</span>(<span class="SKwd">false</span>)
     <span class="SLgc">default</span>:
@@ -3259,11 +3261,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <h2 id="_056_break">Break</h2><p>We have already seen than <span class="code-inline">break</span> is used to exit a <span class="code-inline">loop</span>, <span class="code-inline">visit</span>, <span class="code-inline">while</span>, <span class="code-inline">for</span>, <span class="code-inline">switch</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SLgc">loop</span> <span class="SNum">10</span>
+    <span class="SLgc">loop</span> <span class="SNum">10</span> do
         <span class="SLgc">break</span>
-    <span class="SLgc">for</span> <span class="SKwd">var</span> i = <span class="SNum">0</span>; i &lt; <span class="SNum">10</span>; i += <span class="SNum">1</span>
+    <span class="SLgc">for</span> <span class="SKwd">var</span> i = <span class="SNum">0</span>; i &lt; <span class="SNum">10</span>; i += <span class="SNum">1</span>; do
         <span class="SLgc">break</span>
-    <span class="SLgc">while</span> <span class="SKwd">false</span>
+    <span class="SLgc">while</span> <span class="SKwd">false</span> do
         <span class="SLgc">break</span>
 }</span></div>
 <p>By default, <span class="code-inline">break</span> will exit the parent scope only. </p>
@@ -3310,7 +3312,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SCmp">#scope</span> <span class="SCst">Loop</span>
     {
         cpt += <span class="SNum">1</span>
-        <span class="SLgc">if</span> cpt == <span class="SNum">5</span>
+        <span class="SLgc">if</span> cpt == <span class="SNum">5</span> do
             <span class="SLgc">break</span>
         <span class="SLgc">continue</span>    <span class="SCmt">// Loop</span>
     }
@@ -3349,7 +3351,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     {
         <span class="SLgc">loop</span> <span class="SNum">10</span>
         {
-            <span class="SLgc">if</span> <span class="SCmp">#index</span> == <span class="SNum">5</span>
+            <span class="SLgc">if</span> <span class="SCmp">#index</span> == <span class="SNum">5</span> do
                 <span class="SLgc">break</span> <span class="SCst">Up</span>
         }
 
@@ -3815,7 +3817,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SCmt">// You can then loop on a struct value if 'opCount' has been defined</span>
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">loop</span> v
+    <span class="SLgc">loop</span> v do
         cpt += <span class="SNum">1</span>
 
     <span class="SItr">@assert</span>(cpt == <span class="SNum">4</span>)
@@ -3943,11 +3945,11 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     {
         <span class="SCmt">// 'ptr' is a generic parameter that tells if we want to visit by pointer or by value.</span>
         <span class="SCmt">// We do not use it in this example, so we check at compile time that it's not true.</span>
-        <span class="SCmp">#if</span> ptr <span class="SCmp">#error</span> <span class="SStr">"visiting myStruct by pointer is not supported"</span>
+        <span class="SCmp">#if</span> ptr <span class="SCmp">#do</span> <span class="SCmp">#error</span> <span class="SStr">"visiting myStruct by pointer is not supported"</span>
 
         <span class="SCmt">// 'back' is a generic parameter that tells if we want to visit in reverse order.</span>
         <span class="SCmt">// We do not use it in this example, so we check at compile time that it's not true.</span>
-        <span class="SCmp">#if</span> ptr <span class="SCmp">#error</span> <span class="SStr">"visiting myStruct in reverse order is not supported"</span>
+        <span class="SCmp">#if</span> ptr <span class="SCmp">#do</span> <span class="SCmp">#error</span> <span class="SStr">"visiting myStruct in reverse order is not supported"</span>
 
         <span class="SCmt">// Loop on the 3 fields</span>
         <span class="SLgc">loop</span> idx: <span class="SNum">3</span>
@@ -4421,7 +4423,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">func</span> <span class="SFct">returns2</span>() -&gt; {x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span>}
     {
         <span class="SCmt">// You can return a tuple literal as long as the types match</span>
-        <span class="SLgc">if</span> <span class="SKwd">false</span>
+        <span class="SLgc">if</span> <span class="SKwd">false</span> do
             <span class="SLgc">return</span> {<span class="SNum">1</span>, <span class="SNum">2</span>}
 
         <span class="SCmt">// Or use the specifal type 'retval' which is an typealias to the</span>
@@ -4608,7 +4610,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     fct = <span class="SKwd">closure</span>|x|(toAdd)
     {
         <span class="SKwd">var</span> res = <span class="SNum">0</span>
-        <span class="SLgc">visit</span> v: x
+        <span class="SLgc">visit</span> v: x do
             res += v
         res += toAdd
         <span class="SLgc">return</span> res
@@ -4892,7 +4894,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SFct">repeatSquare</span>(<span class="SNum">5</span>)
     {
         a += <span class="SNum">1</span>
-        <span class="SLgc">if</span> a == <span class="SNum">10</span>
+        <span class="SLgc">if</span> a == <span class="SNum">10</span> do
             <span class="SLgc">break</span>
     }
 
@@ -5004,7 +5006,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     {
         <span class="SCmt">// Note that variadic parameters can be visited, as this is a slice</span>
         <span class="SKwd">var</span> total = <span class="SNum">0</span>
-        <span class="SLgc">visit</span> v: params
+        <span class="SLgc">visit</span> v: params do
             total += v
         <span class="SLgc">return</span> total
     }
@@ -5142,7 +5144,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     {
         <span class="SCmt">// To avoid the clear of the array, we use = undefined</span>
         <span class="SKwd">var</span> result: <span class="SKwd">retval</span> = <span class="SKwd">undefined</span>
-        <span class="SLgc">loop</span> i: <span class="SNum">255</span>
+        <span class="SLgc">loop</span> i: <span class="SNum">255</span> do
             result[i] = i
         <span class="SLgc">return</span> result
     }
@@ -5588,7 +5590,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
         <span class="SCmp">#validif</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">s32</span> <span class="SLgc">or</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">s64</span>
     {
         <span class="SKwd">var</span> total = <span class="SNum">0</span>'<span class="SCst">T</span>
-        <span class="SLgc">visit</span> it: x
+        <span class="SLgc">visit</span> it: x do
             total += it
         <span class="SLgc">return</span> total
     }
@@ -5630,13 +5632,13 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">sum</span>(x: <span class="SCst">T</span>...)-&gt;<span class="SCst">T</span>
         <span class="SCmp">#validif</span>
         {
-            <span class="SLgc">if</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">s32</span> <span class="SLgc">or</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">s64</span>
+            <span class="SLgc">if</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">s32</span> <span class="SLgc">or</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">s64</span> do
                 <span class="SLgc">return</span> <span class="SKwd">true</span>
             <span class="SLgc">return</span> <span class="SKwd">false</span>
         }
     {
         <span class="SKwd">var</span> total = <span class="SNum">0</span>'<span class="SCst">T</span>
-        <span class="SLgc">visit</span> it: x
+        <span class="SLgc">visit</span> it: x do
             total += it
         <span class="SLgc">return</span> total
     }
@@ -5647,7 +5649,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">sum</span>(x, y: <span class="SCst">T</span>)-&gt;<span class="SCst">T</span>
         <span class="SCmp">#validif</span>
         {
-            <span class="SLgc">if</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">s32</span> <span class="SLgc">or</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">s64</span>
+            <span class="SLgc">if</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">s32</span> <span class="SLgc">or</span> <span class="SItr">@typeof</span>(<span class="SCst">T</span>) == <span class="STpe">s64</span> do
                 <span class="SLgc">return</span> <span class="SKwd">true</span>
             <span class="SItr">@compilererror</span>(<span class="SStr">"invalid type "</span> ++ <span class="SItr">@stringof</span>(<span class="SCst">T</span>), <span class="SItr">@location</span>(<span class="SCst">T</span>))
             <span class="SLgc">return</span> <span class="SKwd">false</span>
@@ -5685,9 +5687,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
             {
                 <span class="SCmt">// Here we use '@isconstexpr'.</span>
                 <span class="SCmt">// If 'y' cannot be evaluated at compile time, then we can do nothing about it.</span>
-                <span class="SLgc">if</span> !<span class="SItr">@isconstexpr</span>(y)
+                <span class="SLgc">if</span> !<span class="SItr">@isconstexpr</span>(y) do
                     <span class="SLgc">return</span> <span class="SKwd">true</span>
-                <span class="SLgc">if</span> y == <span class="SNum">0</span>
+                <span class="SLgc">if</span> y == <span class="SNum">0</span> do
                     <span class="SItr">@compilererror</span>(<span class="SStr">"division by zero"</span>, <span class="SItr">@location</span>(y))
                 <span class="SLgc">return</span> <span class="SKwd">true</span>
             }
@@ -5740,7 +5742,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">func</span>(<span class="SKwd">var</span> <span class="SCst">T</span>: <span class="SFct">isS32</span>(<span class="SCst">T</span>)) <span class="SFct">sum</span>(x: <span class="SCst">T</span>...)-&gt;<span class="SCst">T</span>
     {
         <span class="SKwd">var</span> total = <span class="SNum">0</span>'<span class="SCst">T</span>
-        <span class="SLgc">visit</span> it: x
+        <span class="SLgc">visit</span> it: x do
             total += it
         <span class="SLgc">return</span> total
     }
@@ -5934,7 +5936,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SLgc">loop</span> <span class="SNum">10</span>
     {
         <span class="SLgc">defer</span> <span class="SCst">G</span> += <span class="SNum">1</span>
-        <span class="SLgc">if</span> <span class="SCst">G</span> == <span class="SNum">2</span>
+        <span class="SLgc">if</span> <span class="SCst">G</span> == <span class="SNum">2</span> do
             <span class="SLgc">break</span>   <span class="SCmt">// will be called here, before breaking the loop</span>
         <span class="SCmt">// will be called here also</span>
     }
@@ -5965,7 +5967,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
             <span class="SFct">releaseResource</span>(&resource)
         }
 
-        <span class="SLgc">if</span> <span class="SCmp">#index</span> == <span class="SNum">2</span>
+        <span class="SLgc">if</span> <span class="SCmp">#index</span> == <span class="SNum">2</span> do
             <span class="SLgc">break</span>
     }
 
@@ -6257,7 +6259,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SCmt">// This is equivalent to:</span>
     <span class="SKwd">var</span> cpt2 = <span class="SKwd">catch</span> <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
-    <span class="SLgc">if</span> <span class="SItr">@err</span>() != <span class="SKwd">null</span> <span class="SLgc">return</span>
+    <span class="SLgc">if</span> <span class="SItr">@err</span>() != <span class="SKwd">null</span> do <span class="SLgc">return</span>
 }</span></div>
 <h3 id="_170_error_management_try">try </h3>
 <p>The caller can also <b>stop the execution</b> with <span class="code-inline">try</span>, and return to its own caller with the same error raised. The function must then also be marked with <span class="code-inline">throw</span>. </p>
@@ -6272,7 +6274,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 {
     <span class="SCmt">// If 'count()' raises an error, 'myFunc2' will return with the same error</span>
     <span class="SKwd">var</span> cpt = <span class="SKwd">catch</span> <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
-    <span class="SLgc">if</span> <span class="SItr">@err</span>() != <span class="SKwd">null</span>
+    <span class="SLgc">if</span> <span class="SItr">@err</span>() != <span class="SKwd">null</span> do
         <span class="SKwd">throw</span> <span class="SItr">@err</span>()
 }</span></div>
 <h3 id="_170_error_management_assume">assume </h3>
@@ -6376,7 +6378,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SLgc">defer</span>(err)      g_Defer += <span class="SNum">1</span>    <span class="SCmt">// This will be called in case an error is raised, before exiting</span>
     <span class="SLgc">defer</span>(noerr)    g_Defer += <span class="SNum">2</span>    <span class="SCmt">// This will only be called in case an error is not raised</span>
     <span class="SLgc">defer</span>           g_Defer += <span class="SNum">3</span>    <span class="SCmt">// This will be called in both cases</span>
-    <span class="SLgc">if</span> err
+    <span class="SLgc">if</span> err do
         <span class="SFct">raiseError</span>()
 }
 
@@ -6599,9 +6601,9 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SAtr">#[Swag.ConstExpr]</span>
     <span class="SKwd">func</span> <span class="SFct">getType</span>(needAString: <span class="STpe">bool</span>)-&gt;<span class="STpe">typeinfo</span>
     {
-        <span class="SLgc">if</span> needAString
+        <span class="SLgc">if</span> needAString do
             <span class="SLgc">return</span> <span class="STpe">string</span>
-        <span class="SLgc">else</span>
+        <span class="SLgc">else</span> do
             <span class="SLgc">return</span> <span class="STpe">s32</span>
     }
 
@@ -6632,7 +6634,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.ConstExpr]</span>
 <span class="SKwd">func</span> <span class="SFct">factorial</span>(x: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span>
 {
-    <span class="SLgc">if</span> x == <span class="SNum">1</span> <span class="SLgc">return</span> <span class="SNum">1</span>
+    <span class="SLgc">if</span> x == <span class="SNum">1</span> do <span class="SLgc">return</span> <span class="SNum">1</span>
     <span class="SLgc">return</span> x * <span class="SFct">factorial</span>(x - <span class="SNum">1</span>)
 }
 
@@ -6654,7 +6656,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">func</span> <span class="SFct">sum</span>(values: <span class="STpe">s32</span>...)-&gt;<span class="STpe">s32</span>
 {
     <span class="SKwd">var</span> result = <span class="SNum">0</span>'<span class="STpe">s32</span>
-    <span class="SLgc">visit</span> v: values
+    <span class="SLgc">visit</span> v: values do
         result += v
     <span class="SLgc">return</span> result
 }
@@ -6694,7 +6696,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">const</span> <span class="SCst">Value</span> = <span class="SFct">#run</span>
         {
             <span class="SKwd">var</span> result: <span class="STpe">f32</span>
-            <span class="SLgc">loop</span> <span class="SNum">10</span>
+            <span class="SLgc">loop</span> <span class="SNum">10</span> do
                 result += <span class="SNum">1</span>
             <span class="SLgc">return</span> result   <span class="SCmt">// 'Value' will be of type 'f32'</span>
         }
@@ -6707,7 +6709,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">const</span> <span class="SCst">PowerOfTwo</span>: [<span class="SCst">N</span>] <span class="STpe">s32</span> = <span class="SFct">#run</span>
         {
             <span class="SKwd">var</span> arr: [<span class="SCst">N</span>] <span class="STpe">s32</span>
-            <span class="SLgc">loop</span> i: arr
+            <span class="SLgc">loop</span> i: arr do
                 arr[i] = <span class="SNum">1</span> &lt;&lt; <span class="SKwd">cast</span>(<span class="STpe">u32</span>) i
             <span class="SLgc">return</span> arr
         }
@@ -6859,7 +6861,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 
     <span class="SCmt">// As an example, we count that name if it starts with "XX".</span>
     <span class="SCmt">// But we could use custom function attributes instead...</span>
-    <span class="SLgc">if</span> <span class="SItr">@countof</span>(nameFunc) &gt; <span class="SNum">2</span> <span class="SLgc">and</span> nameFunc[<span class="SNum">0</span>] == <span class="SStr">`X`</span> <span class="SLgc">and</span> nameFunc[<span class="SNum">1</span>] == <span class="SStr">`X`</span>
+    <span class="SLgc">if</span> <span class="SItr">@countof</span>(nameFunc) &gt; <span class="SNum">2</span> <span class="SLgc">and</span> nameFunc[<span class="SNum">0</span>] == <span class="SStr">`X`</span> <span class="SLgc">and</span> nameFunc[<span class="SNum">1</span>] == <span class="SStr">`X`</span> do
         <span class="SCst">G</span> += <span class="SNum">1</span>
 }
 
@@ -6954,7 +6956,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
     <span class="SKwd">func</span> <span class="SFct">append</span>(buf: ^<span class="STpe">u8</span>, val: <span class="STpe">string</span>)
     {
         <span class="SKwd">var</span> len = <span class="SNum">0</span>
-        <span class="SLgc">while</span> buf[len] len += <span class="SNum">1</span>
+        <span class="SLgc">while</span> buf[len] do len += <span class="SNum">1</span>
         <span class="SItr">@memcpy</span>(buf + len, <span class="SItr">@dataof</span>(val), <span class="SKwd">cast</span>(<span class="STpe">u64</span>) <span class="SItr">@countof</span>(val) + <span class="SNum">1</span>)
     }
 
@@ -7429,7 +7431,7 @@ The comment must start with /** and end with */, which should be alone on their 
 <h3 id="_230_documentation__231_003_Pages">Pages</h3><p>In <span class="code-inline">Swag.DocKind.Pages</span> mode, each file will generate its own page, with the same name. Other than that, it's the same behavior as the <span class="code-inline">Swag.DocKind.Examples</span> mode. </p>
 <p>Can be usefull to generate web pages for <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example</a>. </p>
 <div class="swag-watermark">
-Generated on 21-12-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
+Generated on 22-12-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
 </div>
 </div>
 </div>

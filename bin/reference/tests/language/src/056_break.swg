@@ -3,11 +3,11 @@ We have already seen than `break` is used to exit a `loop`, `visit`, `while`, `f
 */
 #test
 {
-    loop 10
+    loop 10 do
         break
-    for var i = 0; i < 10; i += 1
+    for var i = 0; i < 10; i += 1; do
         break
-    while false
+    while false do
         break
 }
 
@@ -63,7 +63,7 @@ When used with a scope, a continue is a way to go back to the start of the scope
     #scope Loop
     {
         cpt += 1
-        if cpt == 5
+        if cpt == 5 do
             break
         continue    // Loop
     }
@@ -108,7 +108,7 @@ Note that a scope can be followed by a simple statement, not always a block.
     {
         loop 10
         {
-            if #index == 5
+            if #index == 5 do
                 break Up
         }
 

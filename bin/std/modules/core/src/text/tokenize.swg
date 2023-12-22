@@ -5,8 +5,8 @@
 func eatQuotes(str: string)->string
 {
     let countof = @countof(str)
-    if countof < 2 return str
-    if str[0] == `"` and str[countof - 1] == `"`
+    if countof < 2 do return str
+    if str[0] == `"` and str[countof - 1] == `"` do
         return @mkstring(@dataof(str) + 1, countof - 2)
     return str
 }
@@ -23,10 +23,10 @@ func eatCount(str: string, count: u64)->string
 func eatSpaces(str: string)->string
 {
     let countof = @countof(str)
-    if !countof return str
+    if !countof do return str
 
     var cpt = 0'u64
-    while cpt < countof and Latin1.isSpace(str[cpt])
+    while cpt < countof and Latin1.isSpace(str[cpt]) do
         cpt += 1
     return @mkstring(@dataof(str) + cpt, countof - cpt)
 }
@@ -38,7 +38,7 @@ func splitLines(src: string) -> Array'string
 {
     var result: retval
     let countof = @countof(src)
-    if !countof
+    if !countof do
         return result
 
     var dataof = @dataof(src)
@@ -54,7 +54,7 @@ func splitLines(src: string) -> Array'string
 
         let onestr = @mkstring(dataof, cast(u64) (end - dataof))
         result.add(onestr)
-        if cpt < countof - 1 and dref end == `\r` and end[1] == `\n`
+        if cpt < countof - 1 and dref end == `\r` and end[1] == `\n` do
             end, cpt += 1
         end, cpt += 1
         dataof = end
@@ -79,21 +79,21 @@ func split(src: string, separator: u8, maxSplit: u32 = 0, removeEmpty = true)->A
         // Remove separator at the start
         while startbyteIdx != countof
         {
-            if src[startbyteIdx] != separator
+            if src[startbyteIdx] != separator do
                 break
             startbyteIdx += 1
-            if !removeEmpty
+            if !removeEmpty do
                 break
         }
 
-        if startbyteIdx == countof
+        if startbyteIdx == countof do
             break
 
         // Add all real characters until we found a separator
         var endbyteIdx = startbyteIdx
         while endbyteIdx != countof
         {
-            if src[endbyteIdx] == separator
+            if src[endbyteIdx] == separator do
                 break
             endbyteIdx += 1
         }
@@ -101,14 +101,14 @@ func split(src: string, separator: u8, maxSplit: u32 = 0, removeEmpty = true)->A
         result.add(src[startbyteIdx ..< endbyteIdx])
         startbyteIdx = endbyteIdx
 
-        if startbyteIdx == countof
+        if startbyteIdx == countof do
             break
 
         startbyteIdx += 1
     }
 
     // Last split
-    if startbyteIdx != countof
+    if startbyteIdx != countof do
         result.add(src[startbyteIdx ..< countof])
 
     return result
@@ -130,32 +130,32 @@ func split(src: string, separator: string, maxSplit: u32 = 0, removeEmpty = true
         // Remove separator at the start
         while startbyteIdx != countof
         {
-            if !Utf8.startsWith(src[startbyteIdx ..< countof], separator)
+            if !Utf8.startsWith(src[startbyteIdx ..< countof], separator) do
                 break
             startbyteIdx += @countof(separator)
-            if !removeEmpty
+            if !removeEmpty do
                 break
         }
 
-        if startbyteIdx == countof
+        if startbyteIdx == countof do
             break
 
         // Add all real characters until we found a separator
         var endbyteIdx = startbyteIdx
         while endbyteIdx != countof
         {
-            if Utf8.startsWith(src[endbyteIdx ..< countof], separator)
+            if Utf8.startsWith(src[endbyteIdx ..< countof], separator) do
                 break
             endbyteIdx += 1
         }
 
-        if startbyteIdx == endbyteIdx
+        if startbyteIdx == endbyteIdx do
             result.add("")
-        else
+        else do
             result.add(src[startbyteIdx ..< endbyteIdx])
 
         startbyteIdx = endbyteIdx
-        if startbyteIdx == countof
+        if startbyteIdx == countof do
             break
     }
 
@@ -195,14 +195,14 @@ func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, remov
         while startbyteIdx != countof
         {
             (c, eat) = Utf8.decodeRune(src[startbyteIdx ..< countof])
-            if !Slice.contains(separators, c)
+            if !Slice.contains(separators, c) do
                 break
             startbyteIdx += eat
-            if !removeEmpty
+            if !removeEmpty do
                 break
         }
 
-        if startbyteIdx == countof
+        if startbyteIdx == countof do
             break
 
         // Add all real characters until we found a separator
@@ -210,18 +210,18 @@ func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, remov
         while endbyteIdx != countof
         {
             (c, eat) = Utf8.decodeRune(src[endbyteIdx ..< countof])
-            if Slice.contains(separators, c)
+            if Slice.contains(separators, c) do
                 break
             endbyteIdx += eat
         }
 
-        if startbyteIdx == endbyteIdx
+        if startbyteIdx == endbyteIdx do
             result.add("")
-        else
+        else do
             result.add(src[startbyteIdx ..< endbyteIdx])
 
         startbyteIdx = endbyteIdx
-        if startbyteIdx == countof
+        if startbyteIdx == countof do
             break
     }
 
@@ -240,7 +240,7 @@ func getToSpace(str: string)->string
 {
     let countof = @countof(str)
     var cpt = 0'u64
-    while cpt < countof and !Latin1.isSpace(str[cpt])
+    while cpt < countof and !Latin1.isSpace(str[cpt]) do
         cpt += 1
     return @mkstring(@dataof(str), cpt)
 }
@@ -250,7 +250,7 @@ func getWhileAlnum(str: string)->string
 {
     let countof = @countof(str)
     var cpt = 0'u64
-    while cpt < countof and (Latin1.isDigit(str[cpt]) or Latin1.isLetter(str[cpt]))
+    while cpt < countof and (Latin1.isDigit(str[cpt]) or Latin1.isLetter(str[cpt])) do
         cpt += 1
     return @mkstring(@dataof(str), cpt)
 }
@@ -260,7 +260,7 @@ func getTo(src: string, delimiter: u8, startByteIndex = 0'u64, includeDelimiter 
 {
     var dataof = @dataof(src)
     var length = @countof(src)
-    if !length
+    if !length do
         return @mkstring(dataof, 0)
     Debug.assert(startByteIndex < length, "invalid 'startByteIndex'")
 
@@ -271,7 +271,7 @@ func getTo(src: string, delimiter: u8, startByteIndex = 0'u64, includeDelimiter 
     {
         if dref scan == delimiter
         {
-            if includeDelimiter
+            if includeDelimiter do
                 scan += 1
             return @mkstring(dataof, cast(u64) (scan - dataof))
         }

@@ -2,7 +2,7 @@
 #test
 {
     var a = #run {
-        loop 1
+        loop 1 do
             return
         return true
     }

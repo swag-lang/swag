@@ -67,7 +67,7 @@ impl TagBin
     {
         let sec = newSection()
         sec.kind = kind
-        if sec.kind != .Unordered
+        if sec.kind != .Unordered do
             return
 
         output.addNative(TagBinSignatures.Fat)
@@ -115,9 +115,9 @@ impl TagBin
             // Struct version
             output.addNative(TagBinSignatures.Version)
             let version = Reflection.getAttributeValue(structType, Serialization.Version, "v")
-            if version == null
+            if version == null do
                 output.addNative(0'u32)
-            else
+            else do
                 output.addNative(cast(u32) version)
 
             // Start unordered section
@@ -139,7 +139,7 @@ impl TagBin
         let sec = sections.back()
 
         // If section is raw, then we just have values without versionning
-        if sec.kind == .Raw
+        if sec.kind == .Raw do
             return
 
         // Register the current seek for the fat generation

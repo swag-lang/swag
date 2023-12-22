@@ -164,7 +164,7 @@ internal impl PropertyList
                 case 16: val2s = dref cast(const *string) v.value
                 }
 
-                if val1 == val2 and val1s == val2s
+                if val1 == val2 and val1s == val2s do
                     idxSel = idx
             }
 
@@ -239,25 +239,25 @@ internal impl PropertyList
     func refreshItem(item: *PropertyListItem)
     {
         let pointed = item.type orelse item.typeValue.pointedType
-        if pointed == null
+        if pointed == null do
             return
 
-        if Reflection.isEnum(pointed) and Reflection.hasAttribute(pointed, Swag.EnumFlags)
+        if Reflection.isEnum(pointed) and Reflection.hasAttribute(pointed, Swag.EnumFlags) do
             refreshEnumFlags(item)
-        elif Reflection.isEnum(pointed)
+        elif Reflection.isEnum(pointed) do
             refreshEnum(item)
-        elif Reflection.isBool(pointed)
+        elif Reflection.isBool(pointed) do
             refreshBool(item)
-        elif Reflection.isInteger(pointed) or Reflection.isFloat(pointed)
+        elif Reflection.isInteger(pointed) or Reflection.isFloat(pointed) do
             refreshNative(item)
         elif Reflection.isString(pointed)
         {
-            if item.editBox
+            if item.editBox do
                 item.editBox.setText(dref cast(*string) item.ptrData)
         }
         elif pointed == Core.String
         {
-            if item.editBox
+            if item.editBox do
                 item.editBox.setText(dref cast(*String) item.ptrData)
         }
     }
@@ -275,9 +275,9 @@ internal impl PropertyList
             {
                 let p = cast(*T) item.ptrData
                 let p1 = cast(*T) item.checkBox.userData
-                if item.checkBox.checked == .Checked
+                if item.checkBox.checked == .Checked do
                     dref p |= dref p1
-                else
+                else do
                     dref p &= ~(dref p1)
             }
 
@@ -418,9 +418,9 @@ internal impl PropertyList
         // Name
         var dispName: String
         let attrName = Reflection.getAttributeValue(f, PropertyList.Name, "name")
-        if attrName != null
+        if attrName != null do
             dispName = cast(string) attrName
-        else
+        else do
             dispName = Format.toString("<b>%<b>", f.name)
 
         with let label = Label.create(line, dispName, {0, 0, position.width, nameHeight})
@@ -766,15 +766,15 @@ impl PropertyList
     {
         visit it: items
         {
-            if filter == null or @countof(filter) == 0
+            if filter == null or @countof(filter) == 0 do
                 it.line.show()
             elif Utf8.indexOf(it.filter.toSlice(), filter, comparisonType: Utf8.ComparisonType.Latin1NoCase) != Swag.U64.Max
             {
                 it.line.show()
-                if it.forceShow
+                if it.forceShow do
                     it.forceShow.show()
             }
-            else
+            else do
                 it.line.hide()
         }
 

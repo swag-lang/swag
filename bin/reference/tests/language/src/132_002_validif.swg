@@ -14,7 +14,7 @@ The `#validif` expression is evaluated **only once**, whatever the call, so it i
         #validif @typeof(T) == s32 or @typeof(T) == s64
     {
         var total = 0'T
-        visit it: x
+        visit it: x do
             total += it
         return total
     }
@@ -62,13 +62,13 @@ Instead of a single expression, `#validif` can be followed by a block that retur
     func(T) sum(x: T...)->T
         #validif
         {
-            if @typeof(T) == s32 or @typeof(T) == s64
+            if @typeof(T) == s32 or @typeof(T) == s64 do
                 return true
             return false
         }
     {
         var total = 0'T
-        visit it: x
+        visit it: x do
             total += it
         return total
     }
@@ -82,7 +82,7 @@ By using `@compilererror`, you can then trigger your own errors at compile time 
     func(T) sum(x, y: T)->T
         #validif
         {
-            if @typeof(T) == s32 or @typeof(T) == s64
+            if @typeof(T) == s32 or @typeof(T) == s64 do
                 return true
             @compilererror("invalid type " ++ @stringof(T), @location(T))
             return false
@@ -127,9 +127,9 @@ Instead of `#validif`, you can use `#validifx`. `#validifx` is evaluated for **e
             {
                 // Here we use '@isconstexpr'.
                 // If 'y' cannot be evaluated at compile time, then we can do nothing about it.
-                if !@isconstexpr(y)
+                if !@isconstexpr(y) do
                     return true
-                if y == 0
+                if y == 0 do
                     @compilererror("division by zero", @location(y))
                 return true
             }

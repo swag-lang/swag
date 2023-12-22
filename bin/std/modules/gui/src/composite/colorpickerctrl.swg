@@ -47,12 +47,12 @@ impl IWnd for ColorPickerCtrl
 
         var brush = Brush.createHatch(.CheckBoardLarge, getThemeColors().colorPicker_BackAlpha)
 
-        if oldColor.a != 255
+        if oldColor.a != 255 do
             painter.fillRect(rect, brush)
         painter.fillRect(rect, oldColor)
 
         rect.x += rect.width
-        if color.a != 255
+        if color.a != 255 do
             painter.fillRect(rect, brush)
         painter.fillRect(rect, color)
     }
@@ -116,9 +116,9 @@ impl ColorPickerCtrl
     func create(parent: *Wnd, position: Math.Rectangle, id: WndId = null)->*ColorPickerCtrl
     {
         var pos = position
-        if pos.width == 0
+        if pos.width == 0 do
             pos.width = 340
-        if pos.height == 0
+        if pos.height == 0 do
             pos.height = 330
         let v = Wnd.create'ColorPickerCtrl(parent, "", pos, id)
 
@@ -173,7 +173,7 @@ impl ColorPickerCtrl
                     var col = Application.pickColorAtMouse()
                     v.setColor(col)
 
-                    if app.mouse.isButtonPressed(.Left)
+                    if app.mouse.isButtonPressed(.Left) do
                         app.exitModal()
                 })
 
@@ -359,7 +359,7 @@ impl ColorPickerCtrl
     // Set the selected color
     mtd setColor(color: Color)
     {
-        if self.color == #self.color
+        if self.color == #self.color do
             return
 
         if !oldColorDone

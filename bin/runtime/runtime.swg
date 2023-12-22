@@ -12,7 +12,7 @@ namespace Swag
 
 func __concreteAlias(type1: typeinfo)->typeinfo
 {
-    if type1.kind != TypeInfoKind.Alias or type1.flags & TypeInfoFlags.Strict
+    if type1.kind != TypeInfoKind.Alias or type1.flags & TypeInfoFlags.Strict do
         return type1
     let typeAlias = cast(const *TypeInfoAlias) type1
     return __concreteAlias(typeAlias.rawType)
@@ -20,11 +20,11 @@ func __concreteAlias(type1: typeinfo)->typeinfo
 
 func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
 {
-    if cast(const*u8) typeA == cast(const*u8) typeB
+    if cast(const*u8) typeA == cast(const*u8) typeB do
         return true
-    if !typeA and !typeB
+    if !typeA and !typeB do
         return true
-    if !typeA or !typeB
+    if !typeA or !typeB do
         return false
 
     let type1 = __concreteAlias(typeA)
@@ -40,7 +40,7 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
         return @typecmp(typePointer.pointedType, type2, cmpFlags)
     }
 
-    if (type1.kind != type2.kind) or (type1.sizeof != type2.sizeof) or (type1.flags != type2.flags)
+    if (type1.kind != type2.kind) or (type1.sizeof != type2.sizeof) or (type1.flags != type2.flags) do
         return false
 
     // For tuples, we compare field by field
@@ -52,9 +52,9 @@ func @typecmp(typeA, typeB: typeinfo, cmpFlags: TypeCmpFlags)->bool
         {
             let field1 = type1S.fields[i]
             let field2 = type2S.fields[i]
-            if field1.name != field2.name
+            if field1.name != field2.name do
                 return false
-            if !@typecmp(field1.pointedType, field2.pointedType, cmpFlags)
+            if !@typecmp(field1.pointedType, field2.pointedType, cmpFlags) do
                 return false
         }
 
@@ -71,7 +71,7 @@ func @itftableof(structType, itfType: const *TypeInfoStruct)->const *void
 {
     loop i: structType.interfaces
     {
-        if @stringcmp(structType.interfaces[i].name, itfType.fullname)
+        if @stringcmp(structType.interfaces[i].name, itfType.fullname) do
             return structType.interfaces[i].value
     }
 
@@ -91,28 +91,28 @@ func __convertArgcArgv(args: const ^u8)
     __argc = 0
     while dref cmdLine
     {
-        while dref cmdLine == ` ` cmdLine += 1
-        if dref cmdLine == 0 break
+        while dref cmdLine == ` ` do cmdLine += 1
+        if dref cmdLine == 0 do break
 
         if dref cmdLine == `"`
         {
             cmdLine += 1
             let start = cmdLine
-            while dref cmdLine and dref cmdLine != `"` cmdLine += 1
+            while dref cmdLine and dref cmdLine != `"` do cmdLine += 1
             __argv[__argc] = cast(string) @mkslice(start, cast(u64) (cmdLine - start))
-            if dref cmdLine cmdLine += 1
+            if dref cmdLine do cmdLine += 1
         }
         else
         {
             let start = cmdLine
-            while dref cmdLine and dref cmdLine != ` ` cmdLine += 1
+            while dref cmdLine and dref cmdLine != ` ` do cmdLine += 1
             __argv[__argc] = cast(string) @mkslice(start, cast(u64) (cmdLine - start))
         }
 
         __argc += 1
-        if __argc == __MAX_ARGUMENTS
+        if __argc == __MAX_ARGUMENTS do
             return
-        while dref cmdLine and dref cmdLine == ` ` cmdLine += 1
+        while dref cmdLine and dref cmdLine == ` ` do cmdLine += 1
     }
 }
 
@@ -164,7 +164,7 @@ func __closeRuntime()
     @getcontext().tempAllocator.release()
     @getcontext().errorAllocator.release()
 
-    if !(__runtimeFlags & .FromCompiler) and __buildCfg.debugAllocator
+    if !(__runtimeFlags & .FromCompiler) and __buildCfg.debugAllocator do
         __debugAlloc.printLeaks()
 
     __exit()

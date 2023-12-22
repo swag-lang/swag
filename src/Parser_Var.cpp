@@ -377,8 +377,11 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
 
     if (!forStruct || token.id != TokenId::SymRightCurly)
     {
-        SWAG_VERIFY(token.id != TokenId::SymEqualEqual, error(token, Err(Err1149)));
-        SWAG_CHECK(eatSemiCol("variable declaration"));
+        if (!parent || parent->kind != AstNodeKind::If)
+        {
+            SWAG_VERIFY(token.id != TokenId::SymEqualEqual, error(token, Err(Err1149)));
+            SWAG_CHECK(eatSemiCol("variable declaration"));
+        }
     }
 
     if (!tokenizer.comment.empty() && *result && !(token.flags & TOKENPARSE_EOL_BEFORE_COMMENT))

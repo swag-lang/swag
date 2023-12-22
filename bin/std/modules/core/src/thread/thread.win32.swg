@@ -62,9 +62,9 @@ impl Thread
         // Get a copy of current context, and initialize a temporary allocator for that thread
         context = dref @getcontext()
         @init(&context.tempAllocator)
-        if tempAllocSize < 0
+        if tempAllocSize < 0 do
             context.tempAllocator.setCapacity(context.tempAllocator.capacity, context.allocator)
-        elif tempAllocSize != 0
+        elif tempAllocSize != 0 do
             context.tempAllocator.setCapacity(cast(u64) tempAllocSize, context.allocator)
 
         handle = try CreateThread(null, 0, @mkcallback(&threadEntry), self, CREATE_SUSPENDED, &id)
@@ -88,7 +88,7 @@ impl Thread
         Debug.assert(isValid())
 
         let newPrio = #self.priority
-        if self.priority == newPrio
+        if self.priority == newPrio do
             return
         self.priority = newPrio
 

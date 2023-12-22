@@ -420,7 +420,7 @@ By type reflection, you can loop/visit all values of an enum.
         enum RGB { R, G, B }
 
         var cpt = 0
-        loop idx: RGB
+        loop idx: RGB do
             cpt += 1
         @assert(cpt == 3)
 

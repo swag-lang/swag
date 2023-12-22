@@ -43,11 +43,11 @@ func day3B()
             loop i: l
             {
                 var s: s32
-                if Latin1.isLower(l[i])
+                if Latin1.isLower(l[i]) do
                     s = l[i] - `a`
-                else
+                else do
                     s = 26 + (l[i] - `A`)
-                stack[ii].add(s+1)            
+                stack[ii].add(s+1)
             }
 
             idx += 1

@@ -81,9 +81,9 @@ public impl IWnd for MenuCtrl
 
         visit i, idx: items
         {
-            if i.hidden
+            if i.hidden do
                 continue
-            if i.separator
+            if i.separator do
                 continue
 
             labelPos.x = i.pos
@@ -162,9 +162,9 @@ public impl IWnd for MenuCtrl
         var lastIsSeparator = true
         visit i, idx: items
         {
-            if i.hidden
+            if i.hidden do
                 continue
-            if i.separator and lastIsSeparator
+            if i.separator and lastIsSeparator do
                 continue
 
             labelPos.x = clientRect.x
@@ -251,9 +251,9 @@ public impl IWnd for MenuCtrl
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
         frameWnd.IWnd.onPaintEvent(evt)
-        if bar
+        if bar do
             paintBar(evt.bc.painter)
-        else
+        else do
             paintPopup(evt.bc.painter)
     }
 
@@ -272,7 +272,7 @@ public impl IWnd for MenuCtrl
             // Timer to auto open/hide sub menus
             if !bar
             {
-                if !timer
+                if !timer do
                     timer = surface.app.addTimer(300'ms, self)
                 timer.restart()
             }
@@ -351,7 +351,7 @@ impl MenuCtrl
         p.endModal = true
         p.endModalResult = result
 
-        if onValidateResult and result != null
+        if onValidateResult and result != null do
             onValidateResult(self, result)
 
         if bar
@@ -379,15 +379,15 @@ impl MenuCtrl
         }
 
         selectedIdx = Swag.U32.Max
-        if !bar
+        if !bar do
             captureMouse()
-        else
+        else do
             releaseMouse()
     }
 
     mtd deleteTimer()
     {
-        if !timer return
+        if !timer do return
         surface.app.deleteTimer(timer)
         timer = null
     }
@@ -397,19 +397,19 @@ impl MenuCtrl
         visit i: items
         {
             var evt = sendComputeCommandStateEvent(i.id)
-            if evt.setFlags & .Disabled
+            if evt.setFlags & .Disabled do
                 i.disabled = evt.disabled
-            if evt.setFlags & .Hidden
+            if evt.setFlags & .Hidden do
                 i.hidden = evt.hidden
-            if evt.setFlags & .Icon
+            if evt.setFlags & .Icon do
                 i.icon = evt.icon
-            if evt.setFlags & .LongName
+            if evt.setFlags & .LongName do
                 i.name = evt.longName
-            elif evt.setFlags & .Name
+            elif evt.setFlags & .Name do
                 i.name = evt.name
-            if evt.setFlags & .Shortcut
+            if evt.setFlags & .Shortcut do
                 i.rightName.set(evt.shortcut)
-            if evt.setFlags & .Checked
+            if evt.setFlags & .Checked do
                 i.checked = evt.checked
         }
     }
@@ -450,9 +450,9 @@ impl MenuCtrl
         let topView = getTopView()
         var pt = topView.surfaceToLocal({pos.x, pos.y})
         var subPos = subVisible.position
-        if pt.x + subPos.width > topView.position.width
+        if pt.x + subPos.width > topView.position.width do
             pt.x = topView.position.width - subPos.width
-        if pt.y + subPos.height > topView.position.height
+        if pt.y + subPos.height > topView.position.height do
             pt.y = topView.position.height - subPos.height
 
         pt = topView.localToSurface(pt)
@@ -479,9 +479,9 @@ impl MenuCtrl
         var pt = topView.surfaceToLocal({pos.x, pos.y})
         pt -= sdw
         var subPos = subVisible.position
-        if pt.x + subPos.width > topView.position.width
+        if pt.x + subPos.width > topView.position.width do
             pt.x = surfaceRect.x - subPos.width
-        if pt.y + subPos.height > topView.position.height
+        if pt.y + subPos.height > topView.position.height do
             pt.y = surfaceRect.y - subPos.height
 
         pt = topView.localToSurface(pt)
@@ -496,9 +496,9 @@ impl MenuCtrl
             return
         }
 
-        if bar
+        if bar do
             showHotPopupBar()
-        else
+        else do
             showHotPopupPopup()
     }
 
@@ -511,7 +511,7 @@ impl MenuCtrl
         visit i, idx: items
         {
             var rect = Math.Rectangle{i.pos - sl * 0.5, clientRect.y, i.size + sl, clientRect.height}
-            if rect.contains(pos)
+            if rect.contains(pos) do
                 return cast(u32) idx
         }
 
@@ -527,7 +527,7 @@ impl MenuCtrl
         visit i, idx: items
         {
             var rect = Math.Rectangle{clientRect.x, i.pos - sl * 0.5, clientRect.width, i.size + sl}
-            if rect.contains(pos)
+            if rect.contains(pos) do
                 return cast(u32) idx
         }
 
@@ -552,9 +552,9 @@ impl MenuCtrl
 
         visit i, idx: items
         {
-            if i.hidden
+            if i.hidden do
                 continue
-            if onComputeItem
+            if onComputeItem do
                 onComputeItem(self, i)
             i.pos = x + metrics.menuBar_SpaceBetween * 0.5
             fake.drawRichString({0, 0, 512, 0}, &i.name, rsf)
@@ -568,7 +568,7 @@ impl MenuCtrl
         let metrics = getThemeMetrics()
 
         var clientRect = getClientRect()
-        if !paintByFrame
+        if !paintByFrame do
             clientRect.inflate(-metrics.menuPopup_ShadowSize)
         clientRect.applyPadding(padding)
 
@@ -582,14 +582,14 @@ impl MenuCtrl
         var lastIsSeparator = true
         visit i, idx: items
         {
-            if i.hidden
+            if i.hidden do
                 continue
-            if i.separator and lastIsSeparator
+            if i.separator and lastIsSeparator do
                 continue
 
-            if onComputeItem
+            if onComputeItem do
                 onComputeItem(self, i)
-            if idx
+            if idx do
                 position.height += metrics.menuPopup_SpaceLines
             i.pos = position.height
 
@@ -617,12 +617,12 @@ impl MenuCtrl
         }
 
         // Add shadow size
-        if !paintByFrame
+        if !paintByFrame do
             position.width += 2 * metrics.menuPopup_ShadowSize
 
         position.width += (2 * rsf.font.regular.height) + (1 * metrics.menuPopup_IconTextMargin)
 
-        if !paintByFrame
+        if !paintByFrame do
             position.height += metrics.menuPopup_ShadowSize
 
         // Add padding
@@ -653,7 +653,7 @@ public impl MenuCtrl
         {
             .owner = owner
             let metrics = .getThemeMetrics()
-            if .position.height == 0
+            if .position.height == 0 do
                 .position.height = metrics.menuBar_Height
             .setAllPaddings(metrics.menuPopup_Padding)
             .bar = true
@@ -779,16 +779,16 @@ public impl MenuCtrl
 
         endModal = false
         endModalResult = null
-        while !endModal
+        while !endModal do
             surface.app.runFrame()
 
         hideSubVisible()
         hide()
 
-        if endModalResult
+        if endModalResult do
             postCommandEvent(endModalResult)
 
-        if autoDestroy
+        if autoDestroy do
             destroy()
 
         return endModalResult

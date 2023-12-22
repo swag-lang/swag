@@ -129,7 +129,7 @@ var atoftests: [] atofTest = [
         var v = catch Atod.parse(t.inT)
         @assert(@err() == null or t.error)
         @assert(!t.error or @err() != null or v.ovf)
-        if v.ovf continue
+        if v.ovf do continue
 
         cb.clear()
         Dtoa.parse(&cb, v.value, `g`'u8, -1, false)

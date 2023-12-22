@@ -37,12 +37,12 @@ impl HashTable
 
     mtd opPostCopy()
     {
-        if !table
+        if !table do
             return
 
-        if(@getcontext().flags & .PostCopyResetAllocator)
+        if @getcontext().flags & .PostCopyResetAllocator do
             allocator = null
-        if allocator == null
+        if allocator == null do
             allocator = @getcontext().allocator
 
         let newTable = cast(^HashTableEntry) Memory.alloc(capacity * @sizeof(HashTableEntry), allocator)
@@ -67,13 +67,13 @@ impl HashTable
     #[Macro]
     mtd(ptr: bool, back: bool) const opVisit(stmt: code)
     {
-        if !count
+        if !count do
             return
 
         var remain = count
         #scope Up loop capacity
         {
-            if table[#index].hash < HASH_FIRST
+            if table[#index].hash < HASH_FIRST do
                 continue
 
             #scope Down
@@ -100,7 +100,7 @@ impl HashTable
             }
 
             remain -= 1
-            if !remain
+            if !remain do
                 break
         }
     }
@@ -114,7 +114,7 @@ impl HashTable
     mtd grow()
     {
         // We need to trigger the growing of the table is there's not enough room
-        if capacity != 0 and capacity - (count + deleted) > capacity / 4
+        if capacity != 0 and capacity - (count + deleted) > capacity / 4 do
             return
 
         let newCapacity = capacity * 2
@@ -124,7 +124,7 @@ impl HashTable
     // Free the hashtable content
     mtd free()
     {
-        if !table
+        if !table do
             return
 
         // Need to drop every structs
@@ -149,7 +149,7 @@ impl HashTable
     mtd reserve(newCapacity: u64)
     {
         let reqCapacity = Math.max(newCapacity, 32)
-        if reqCapacity <= capacity
+        if reqCapacity <= capacity do
             return
 
         let oldTable = table
@@ -157,7 +157,7 @@ impl HashTable
         deleted = 0
         let newCapacityBytes = reqCapacity * @sizeof(HashTableEntry)
 
-        if allocator == null
+        if allocator == null do
             allocator = @getcontext().allocator
         table = acast Memory.alloc(newCapacityBytes, allocator)
 
@@ -212,7 +212,7 @@ impl HashTable
         }
         else
         {
-            if table[index].hash == HASH_DELETED
+            if table[index].hash == HASH_DELETED do
                 deleted -= 1
             table[index].key = key
             table[index].value = value
@@ -251,7 +251,7 @@ impl HashTable
         }
         else
         {
-            if table[index].hash == HASH_DELETED
+            if table[index].hash == HASH_DELETED do
                 deleted -= 1
             table[index].key = key
             table[index].value =,move value
@@ -289,7 +289,7 @@ impl HashTable
         }
         else
         {
-            if table[index].hash == HASH_DELETED
+            if table[index].hash == HASH_DELETED do
                 deleted -= 1
             table[index].key =,moveraw key
             table[index].value =,moveraw value
@@ -303,7 +303,7 @@ impl HashTable
     // Remove the given key if it exists
     mtd remove(key: K)
     {
-        if !table
+        if !table do
             return
 
         let hashVal = hashKey(key)
@@ -326,7 +326,7 @@ impl HashTable
     // Returns true if the table contains the given key
     mtd contains(key: K)->bool
     {
-        if !table
+        if !table do
             return false
 
         let hashVal = hashKey(key)
@@ -334,7 +334,7 @@ impl HashTable
 
         while table[index].hash
         {
-            if table[index].hash == hashVal and table[index].key == key
+            if table[index].hash == hashVal and table[index].key == key do
                 return true
             index = (index + 1) % capacity
         }
@@ -346,7 +346,7 @@ impl HashTable
     // Returns null if the key is not there.
     mtd find(key: K)->*HashTableEntry
     {
-        if !table
+        if !table do
             return null
 
         let hashVal = hashKey(key)
@@ -354,7 +354,7 @@ impl HashTable
 
         while table[index].hash
         {
-            if table[index].hash == hashVal and table[index].key == key
+            if table[index].hash == hashVal and table[index].key == key do
                 return table + index
             index = (index + 1) % capacity
         }
@@ -366,7 +366,7 @@ impl HashTable
     mtd findOrAdd(key: K)->*HashTableEntry
     {
         let it = find(key)
-        if it return it
+        if it do return it
         var val: V
         return add(key, val)
     }
@@ -388,14 +388,14 @@ impl HashTable
                     @drop(&table[i].value)
                 }
 
-                if hashval == HASH_DELETED
+                if hashval == HASH_DELETED do
                     deleted -= 1
-                elif hashval >= HASH_FIRST
+                elif hashval >= HASH_FIRST do
                     count -= 1
                 table[i].hash = HASH_FREE
 
                 // We are done if there's no more valid value, and no more deleted value
-                if !count and !deleted
+                if !count and !deleted do
                     break
             }
         }

@@ -33,7 +33,7 @@ using Core
 {
     var b: ConcatBuffer
     b.setBucketSize(50)
-    loop 50
+    loop 50 do
         b.addNative(0xFE'u8)
 }
 

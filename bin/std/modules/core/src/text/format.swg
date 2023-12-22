@@ -22,12 +22,12 @@ func countPercent(fmt: string)->u32
     var cptPercent = 0'u32
     for var i = 0; i < @countof(fmt); i += 1
     {
-        if fmt[i] != `%`'u8
+        if fmt[i] != `%`'u8 do
             continue
 
-        if i == @countof(fmt) - 1 or fmt[i + 1] != `%`'u8
+        if i == @countof(fmt) - 1 or fmt[i + 1] != `%`'u8 do
             cptPercent += 1
-        else
+        else do
             i += 1
     }
 
@@ -39,7 +39,7 @@ func countPercent(fmt: string)->u32
 func replaceString(dest: *String, fmt: string, values: ...)
     #validifx
     {
-        if !@isconstexpr(fmt) or !@isconstexpr(values) return true
+        if !@isconstexpr(fmt) or !@isconstexpr(values) do return true
         checkFormat(@nameof(#self), fmt, values)
         return true
     }
@@ -74,7 +74,7 @@ func replaceString(dest: *String, fmt: string, values: ...)
 func toString(fmt: string, values: ...)->String
     #validifx
     {
-        if !@isconstexpr(fmt) or !@isconstexpr(values) return true
+        if !@isconstexpr(fmt) or !@isconstexpr(values) do return true
         checkFormat(@nameof(#self), fmt, values)
         return true
     }
@@ -91,7 +91,7 @@ func toString(fmt: string, values: ...)->String
 func toStringTemp(fmt: string, values: ...)->string
     #validifx
     {
-        if !@isconstexpr(fmt) or !@isconstexpr(values) return true
+        if !@isconstexpr(fmt) or !@isconstexpr(values) do return true
         checkFormat(@nameof(#self), fmt, values)
         return true
     }
@@ -109,7 +109,7 @@ func toStringTemp(fmt: string, values: ...)->string
 func append(buf: *ConcatBuffer, fmt: string, values: ...)
     #validifx
     {
-        if !@isconstexpr(fmt) or !@isconstexpr(values) return true
+        if !@isconstexpr(fmt) or !@isconstexpr(values) do return true
         checkFormat(@nameof(#self), fmt, values)
         return true
     }
@@ -153,7 +153,7 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
                     nextIdx += 1
                 }
 
-                if ptr[nextIdx]
+                if ptr[nextIdx] do
                     nextIdx += 1
                 idx = nextIdx
                 strFormat = @mkslice(ptrFormat, cast(u64) countFormat)
@@ -171,7 +171,7 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
     }
 
     // Add remaining text
-    if idx < nextIdx
+    if idx < nextIdx do
         buf.addBytes(cast(const [..] u8) @mkslice(ptr + idx, cast(u64) nextIdx - idx))
 }
 
@@ -181,7 +181,7 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
 func toInterp(buf: *ConcatBuffer, exp: string)
     #validifx
     {
-        if !@isconstexpr(exp)
+        if !@isconstexpr(exp) do
             @compilererror("expression should be constant", @location(exp))
         return true
     }
@@ -201,7 +201,7 @@ func toInterp(buf: *ConcatBuffer, exp: string)
                 break
             }
 
-            if idx != idxE
+            if idx != idxE do
                 sb.appendFormat("buf.addBytes(\"%\")\n", exp[idx..<idxE])
 
             // Find the end of the interpolated string, or the start of the format
@@ -240,7 +240,7 @@ func toInterp(buf: *ConcatBuffer, exp: string)
 func toInterp(exp: string)->String
     #validifx
     {
-        if !@isconstexpr(exp)
+        if !@isconstexpr(exp) do
             @compilererror("expression should be constant", @location(exp))
         return true
     }

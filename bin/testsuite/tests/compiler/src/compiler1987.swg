@@ -11,7 +11,7 @@ func(T) sort(values: [..] T, cb: func(T, T)->s32)
         {
             buffer[j] =,move buffer[j - 1]
             j -= 1
-            if j == 0 break
+            if j == 0 do break
         }
 
         buffer[j] =,move tmp

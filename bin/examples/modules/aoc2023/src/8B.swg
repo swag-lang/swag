@@ -51,13 +51,13 @@ func day8B()
 
     visit l, i: lines
     {
-        if i == 0
+        if i == 0 do
             instructions = l.toString()
         elif i > 1
         {
             let name   = l[0..2]
             nameToNode.add(name, i - 2)
-            if name[2] == `A`
+            if name[2] == `A` do
                 startNode.add(i - 2)
         }
     }
@@ -65,7 +65,7 @@ func day8B()
     nodes.resize(lines.count - 2)
     visit l, i: lines
     {
-        if i <= 1
+        if i <= 1 do
             continue
         let name   = l[0..2]
         let left   = l[7..9]
@@ -91,18 +91,18 @@ func day8B()
             instIndex = (instIndex + 1) % @countof(instructions)
 
             let c = curNode[i]
-            if inst == `L`
+            if inst == `L` do
                 curNode[i] = nodes[c].left
-            else
+            else do
                 curNode[i] = nodes[c].right
             onEnd[i] += 1
-            if nodes[curNode[i]].name[2] == `Z`
+            if nodes[curNode[i]].name[2] == `Z` do
                 break
         }
     }
 
     var total = onEnd[0]
-    loop i: 1 until onEnd.count
+    loop i: 1 until onEnd.count do
         total = Math.lcm(cast(s64) total, cast(s64) onEnd[i])
 
     //Console.print("total: ", total)

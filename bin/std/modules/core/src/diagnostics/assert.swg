@@ -3,7 +3,7 @@
 
 func breakPanic(message: string, loc = #callerlocation)
 {
-    if Debugger.isAttached()
+    if Debugger.isAttached() do
         Debugger.debugBreak()
     @panic(message, loc)
 }
@@ -14,7 +14,7 @@ func assert(expr: bool, message: string = null, loc = #callerlocation)
 {
     #if ASSERT
     {
-        if !expr
+        if !expr do
             breakPanic(message, loc)
     }
 }
@@ -25,7 +25,7 @@ func(what: string) safety(expr: bool, message: string = null, loc = #callerlocat
 {
     #if @safety(what)
     {
-        if !expr
+        if !expr do
             breakPanic(message, loc)
     }
 }

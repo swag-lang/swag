@@ -9,6 +9,6 @@ struct S
 {
     var allFiles: Array'S
     var allLines: Array'string
-    visit fff: allFiles
+    visit fff: allFiles do
         allLines.add(cast(string) fff.fullname)
 }

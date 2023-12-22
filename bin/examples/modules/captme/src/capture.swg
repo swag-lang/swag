@@ -123,7 +123,7 @@ impl Capture
             {
                 let f = forms[sel]
                 let b = cast(*BaseForm) @dataof(f)
-                if b.subKind == .PixSel
+                if b.subKind == .PixSel do
                     continue
                 paintForm(app, &painter, rect, f, zoom, snapMode: true)
             }
@@ -133,7 +133,7 @@ impl Capture
             visit f: forms
             {
                 let b = cast(*BaseForm) @dataof(f)
-                if b.subKind == .PixSel
+                if b.subKind == .PixSel do
                     continue
                 paintForm(app, &painter, rect, f, zoom, snapMode: true)
             }
@@ -172,7 +172,7 @@ impl Capture
 
     mtd save() throw
     {
-        if !changed
+        if !changed do
             return
         changed = false
 
@@ -192,7 +192,7 @@ impl Capture
         let capture = decoder.readAll'Capture(res.toSlice())
         capture.file = file
 
-        visit itf: capture.forms
+        visit itf: capture.forms do
             itf.setup(capture)
 
         return capture
@@ -248,7 +248,7 @@ impl Capture
     mtd pasteImageInside()
     {
         let img = Clipboard.getImage()
-        if !img.isValid()
+        if !img.isValid() do
             return
 
         let undo = newUndo(.SetImageInside)
@@ -276,7 +276,7 @@ impl Capture
             {
                 decode.start(arr.toSlice())
                 decode.readValue(&res, Array'IForm)
-                if !res.count return
+                if !res.count do return
                 decode.end()
             }
         }
@@ -291,7 +291,7 @@ impl Capture
                 formImg.image = img
                 res.add(cast(IForm) formImg)
             }
-            else
+            else do
                 return
         }
 
@@ -304,9 +304,9 @@ impl Capture
         {
             itf.setup(self)
             var bound = itf.boundRect()
-            if idx == 0
+            if idx == 0 do
                 boundRect = bound
-            else
+            else do
                 boundRect.setUnion(bound)
         }
 
@@ -335,7 +335,7 @@ impl Capture
 
         // Select added forms
         selection.clear()
-        loop i: undo.oldForms
+        loop i: undo.oldForms do
             selection.add(countBefore + i)
 
         selectionHasChanged()
@@ -350,7 +350,7 @@ impl Capture
         let render = &app.renderer
 
         var boundRect = f.boundRect()
-        if boundRect.width <= 0 or boundRect.height <= 0
+        if boundRect.width <= 0 or boundRect.height <= 0 do
             return
 
         let base = cast(*BaseForm) @dataof(f)
@@ -445,11 +445,11 @@ impl Capture
         painter.setAntialiased(false)
 
         var colForm: Color
-        if quickMode and base.subKind == .Highlight
+        if quickMode and base.subKind == .Highlight do
             colForm = Argb.White
-        elif quickMode and base.subKind == .PixSel
+        elif quickMode and base.subKind == .PixSel do
             colForm = Argb.White
-        else
+        else do
             colForm = Color.fromArgb(cast(u8) Math.map(cast(f32) base.alpha, 0, 100, 0, 255), Argb.White)
 
         var dstRect = Math.Rectangle{0, 0, wt, ht}
@@ -489,7 +489,7 @@ impl Capture
         painter.releaseRenderTarget(rt1)
         painter.releaseRenderTarget(rt2)
 
-        if snapMode
+        if snapMode do
             base.paintPos = savePaintPos
     }
 
@@ -541,16 +541,16 @@ impl Capture
 
         // Shapes
         let app = editView.getApp()
-        visit f: forms
+        visit f: forms do
             paintForm(app, painter, rect, f, zoom)
 
         // Gizmos
         visit f, i: forms
         {
             var flags = FormFlags.Zero
-            if i == hotForm
+            if i == hotForm do
                 flags |= .Hot
-            if selection.contains(i)
+            if selection.contains(i) do
                 flags |= .Selected
             f.paintGizmo(painter, zoom, flags)
         }
@@ -571,9 +571,9 @@ impl Capture
         }
 
         // Snap
-        if snapX != -1
+        if snapX != -1 do
             painter.drawLine(rect.x + snapX * zoom, rect.y, rect.x + snapX * zoom, rect.bottom(), Argb.Purple, 2)
-        if snapY != -1
+        if snapY != -1 do
             painter.drawLine(rect.x, rect.y + snapY * zoom, rect.right(), rect.y + snapY * zoom, Argb.Purple, 2)
     }
 
@@ -588,9 +588,9 @@ impl Capture
         var form: IForm
         var type: typeinfo
 
-        if editForm
+        if editForm do
             form = editForm
-        else
+        else do
             form = forms[selection[0]]
 
         type = @kindof(form)
@@ -631,7 +631,7 @@ impl Capture
 
     mtd getSelectionBoundRect(editForm: IForm = null)->Math.Rectangle
     {
-        if editForm
+        if editForm do
             return editForm.boundRect()
 
         var bound = Math.Rectangle{Swag.F32.Max, Swag.F32.Max, 0, 0}
@@ -652,13 +652,13 @@ impl Capture
     {
         const SnapToler = 10
 
-        if x
+        if x do
             snapX = -1
-        if y
+        if y do
             snapY = -1
 
         let ctrlPressed = Input.Keyboard.isKeyPressed(.Control) or Input.Keyboard.isKeyPressed(.RControl)
-        if !editView.main.snap and !ctrlPressed
+        if !editView.main.snap and !ctrlPressed do
             return
 
         var nx = x ? dref x : 0
@@ -685,9 +685,9 @@ impl Capture
             {
             case FormLine, FormArrow:
                 let form2 = cast(*FormLine) form
-                if !autoSel or (idxPt != 0 and Math.abs(form2.ya - form2.yb) > 25)
+                if !autoSel or (idxPt != 0 and Math.abs(form2.ya - form2.yb) > 25) do
                     arrX.add(cast(s32) form2.xa)
-                if !autoSel or (idxPt != 0 and Math.abs(form2.xa - form2.xb) > 25)
+                if !autoSel or (idxPt != 0 and Math.abs(form2.xa - form2.xb) > 25) do
                     arrY.add(cast(s32) form2.ya)
 
                 if !autoSel or idxPt != 1
@@ -708,7 +708,7 @@ impl Capture
                 }
 
             case FormDraw:
-                if autoSel
+                if autoSel do
                     continue
                 let boundR = f.boundRect()
                 arrX.add(cast(s32) boundR.x)
@@ -717,7 +717,7 @@ impl Capture
                 arrY.add(cast(s32) boundR.bottom())
 
             default:
-                if autoSel
+                if autoSel do
                     continue
                 arrX.add(cast(s32) form.x)
                 arrX.add(cast(s32) (form.x + form.w))
@@ -773,8 +773,8 @@ impl Capture
             ny = cast(s32) (bestCoordY - p.y)
         }
 
-        if x dref x = nx
-        if y dref y = ny
+        if x do dref x = nx
+        if y do dref y = ny
     }
 
     //////////////////////////////
@@ -860,7 +860,7 @@ impl Capture
             {
                 view.invalidate()
                 evt.accepted = true
-                if evt.kind != .MouseLeave
+                if evt.kind != .MouseLeave do
                     return true
             }
 
@@ -871,7 +871,7 @@ impl Capture
                 if selForm.mouse(view, localPos, evt)
                 {
                     evt.accepted = true
-                    if evt.kind != .MouseLeave
+                    if evt.kind != .MouseLeave do
                         return true
                 }
             }
@@ -963,7 +963,7 @@ impl Capture
                         view.captureMouse()
                         view.invalidate()
                     }
-                    else if !hadSelection or editView.main.editMode != .Step
+                    elif !hadSelection or editView.main.editMode != .Step
                     {
                         mouseMode = .Creating
                         firstMouseMove = true
@@ -1011,7 +1011,7 @@ impl Capture
         case Selecting:
             var r: Math.Rectangle
 
-            if !ctrlPressed
+            if !ctrlPressed do
                 selection.clear()
             movingEnd = localPos
 
@@ -1020,7 +1020,7 @@ impl Capture
             visit f, idx: forms
             {
                 let b = cast(*BaseForm) @dataof(f)
-                if b.paintPos.intersectWith(r) and !selection.contains(idx)
+                if b.paintPos.intersectWith(r) and !selection.contains(idx) do
                     selection.add(idx)
             }
 
@@ -1035,11 +1035,11 @@ impl Capture
 
             if firstMouseMove
             {
-                if Math.abs(newPosX) <= 3 and Math.abs(newPosY) <= 3
+                if Math.abs(newPosX) <= 3 and Math.abs(newPosY) <= 3 do
                     return true
                 firstMouseMove = false
             }
-            else
+            else do
                 undo()
 
             let u = newUndo(.OffsetSelection)
@@ -1061,14 +1061,14 @@ impl Capture
                 snapX = saveSnapX
                 u.newPosX = nx
             }
-            else
+            else do
                 u.newPosX = nx1
             if Math.abs(ny - newPosY) > Math.abs(ny1 - newPosY)
             {
                 snapY = saveSnapY
                 u.newPosY = ny
             }
-            else
+            else do
                 u.newPosY = ny1
 
             pushUndo(u)
@@ -1081,7 +1081,7 @@ impl Capture
 
             if firstMouseMove
             {
-                if Math.abs(newPosX) <= 3 and Math.abs(newPosY) <= 3 and editView.main.editMode != .Step
+                if Math.abs(newPosX) <= 3 and Math.abs(newPosY) <= 3 and editView.main.editMode != .Step do
                     return true
                 firstMouseMove = false
 
@@ -1155,15 +1155,15 @@ impl Capture
 
     mtd hitTest(localPos: Math.Point)->u64
     {
-        if !forms.count
+        if !forms.count do
             return Swag.U64.Max
         loop,back i: forms
         {
             let f = forms[i]
             let b = cast(*BaseForm) @dataof(f)
-            if !b.paintPos.contains(localPos)
+            if !b.paintPos.contains(localPos) do
                 continue
-            if !f.hitTest(localPos, editView.zoom)
+            if !f.hitTest(localPos, editView.zoom) do
                 continue
             return i
         }
@@ -1177,14 +1177,14 @@ impl Capture
 
     mtd getSelectedBaseForm()->*BaseForm
     {
-        if selection.count == 0
+        if selection.count == 0 do
             return null
         return cast(*BaseForm) @dataof(forms[selection.back()])
     }
 
     mtd getSelectedFormType()->typeinfo
     {
-        if selection.count == 0
+        if selection.count == 0 do
             return null
         let i = forms[selection.back()]
         return @kindof(i)
@@ -1192,11 +1192,11 @@ impl Capture
 
     mtd updateEditModeFromSelection()
     {
-        if !selection.count
+        if !selection.count do
             return
 
         let main = editView.main
-        if main.editMode == .Selection
+        if main.editMode == .Selection do
             return
 
         let f = forms[selection.back()]
@@ -1261,15 +1261,15 @@ impl Capture
 
     mtd updateModelFromSelection()
     {
-        if !selection.count
+        if !selection.count do
             return
 
         let f = forms[selection.back()]
         let t = @kindof(f)
         let form = cast(*BaseForm) @dataof(f)
-        if form.subKind == .Highlight
+        if form.subKind == .Highlight do
             editView.main.mdlHighlight = f
-        elif form.subKind == .PixSel
+        elif form.subKind == .PixSel do
             editView.main.mdlPixSel = f
 
         #[Swag.Complete]
@@ -1326,7 +1326,7 @@ impl Capture
     {
         let ptr = undos.newPtr()
         ptr.kind = kind
-        if serial
+        if serial do
             ptr.serial = serial
         else
         {
@@ -1349,7 +1349,7 @@ impl Capture
 
     mtd undo()
     {
-        if !canUndo()
+        if !canUndo() do
             return
 
         let serial = undos[nextUndo-1].serial
@@ -1364,7 +1364,7 @@ impl Capture
 
     mtd redo()
     {
-        if !canRedo()
+        if !canRedo() do
             return
 
         let serial = undos[nextUndo].serial

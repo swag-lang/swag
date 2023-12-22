@@ -32,13 +32,13 @@ impl IWnd for SurfaceWnd
         if surface.flags.has(.Sizeable)
         {
             const SizeBorder = 10
-            if surfacePos.x > sdw - SizeBorder and surfacePos.x < sdw + SizeBorder
+            if surfacePos.x > sdw - SizeBorder and surfacePos.x < sdw + SizeBorder do
                 newSizingBorder |= .Left
-            if surfacePos.y > sdw - SizeBorder and surfacePos.y < sdw + SizeBorder
+            if surfacePos.y > sdw - SizeBorder and surfacePos.y < sdw + SizeBorder do
                 newSizingBorder |= .Top
-            if surfacePos.x > surface.position.width - sdw - SizeBorder and surfacePos.x < surface.position.width - sdw + SizeBorder
+            if surfacePos.x > surface.position.width - sdw - SizeBorder and surfacePos.x < surface.position.width - sdw + SizeBorder do
                 newSizingBorder |= .Right
-            if surfacePos.y > surface.position.height - sdw - SizeBorder and surfacePos.y < surface.position.height - sdw + SizeBorder
+            if surfacePos.y > surface.position.height - sdw - SizeBorder and surfacePos.y < surface.position.height - sdw + SizeBorder do
                 newSizingBorder |= .Bottom
         }
 
@@ -50,10 +50,10 @@ impl IWnd for SurfaceWnd
         switch evt.kind
         {
         case MousePressed:
-            if evt.button != .Left
+            if evt.button != .Left do
                 break
             surface.bringToTop()
-            if surface.isMaximized
+            if surface.isMaximized do
                 break
             captureMouse()
             movingSurface = true
@@ -67,14 +67,14 @@ impl IWnd for SurfaceWnd
             }
 
         case MouseReleased:
-            if evt.button != .Left
+            if evt.button != .Left do
                 break
             releaseMouse()
             movingSurface = false
             fallthrough
 
         case MouseMove:
-            if surface.isMaximized
+            if surface.isMaximized do
                 break
 
             if !movingSurface and surface.flags.has(.Sizeable)
@@ -112,7 +112,7 @@ impl IWnd for SurfaceWnd
                 surface.app.popCursor()
             }
 
-            if !movingSurface
+            if !movingSurface do
                 break
 
             var hasChanged = false
@@ -211,7 +211,7 @@ impl IWnd for SurfaceWnd
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        if isPendingDestroy
+        if isPendingDestroy do
             return
         let bc = evt.bc
         let theme = getTheme()
@@ -248,11 +248,11 @@ impl IWnd for SurfaceWnd
             posCaption.x += theme.metrics.wnd_CaptionMarginTitle
 
             var posClip = posCaption
-            if surface.flags.has(.MinimizeBtn)
+            if surface.flags.has(.MinimizeBtn) do
                 posClip.setRight(minimizeBtn.position.x)
-            elif surface.flags.has(.MaximizeBtn)
+            elif surface.flags.has(.MaximizeBtn) do
                 posClip.setRight(maximizeBtn.position.x)
-            elif surface.flags.has(.CloseBtn)
+            elif surface.flags.has(.CloseBtn) do
                 posClip.setRight(closeBtn.position.x)
             bc.painter.pushClippingRect(posClip)
             defer bc.painter.popClippingRect()
@@ -298,7 +298,7 @@ impl SurfaceWnd
     internal mtd applySurfaceFlags()
     {
         let theme = surface.app.theme
-        if !theme.intialized
+        if !theme.intialized do
             return
 
         if surface.flags.has(.MinimizeBtn)

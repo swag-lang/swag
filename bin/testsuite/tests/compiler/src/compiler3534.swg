@@ -15,7 +15,7 @@ func sendWords(text: string)
         //@print("start:", start, "\n")
         let stop = indexOf(text, ` `'rune, start)
         //@print("stop:", stop, "\n")
-        if stop == Swag.U64.Max
+        if stop == Swag.U64.Max do
             break
         let word = text[start..stop]
         sendMessage(word)

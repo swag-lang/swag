@@ -132,10 +132,10 @@ func day10A()
 
     // Determin the shape of the start 'S'
     let start = ref mp(startX, startY)
-    if mp(startX-1, startY) & .East  start |= .West
-    if mp(startX+1, startY) & .West  start |= .East
-    if mp(startX, startY-1) & .South start |= .North
-    if mp(startX, startY+1) & .North start |= .South
+    if mp(startX-1, startY) & .East  do start |= .West
+    if mp(startX+1, startY) & .West  do start |= .East
+    if mp(startX, startY-1) & .South do start |= .North
+    if mp(startX, startY+1) & .North do start |= .South
 
     // Visit the maze
     var visitX = startX, visitY = startY
@@ -152,7 +152,7 @@ func day10A()
         }
 
         total += 1
-        if visitX == startX and visitY == startY
+        if visitX == startX and visitY == startY do
             break
     }
 

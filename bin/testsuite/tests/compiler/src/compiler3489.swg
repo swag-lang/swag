@@ -2,6 +2,6 @@
 #test
 {
     var v: closure()
-    if v
+    if v do
         v()
 }

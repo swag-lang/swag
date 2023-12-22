@@ -19,7 +19,7 @@ impl NumericArray
     {
         loop i: N
         {
-            if buf[i] != other.buf[i]
+            if buf[i] != other.buf[i] do
                 return false
         }
 
@@ -82,7 +82,7 @@ impl NumericArray
     #[Safety("boundcheck", false), Complete, Overload]
     mtd opAffect(what: T)
     {
-        loop i: N
+        loop i: N do
             buf[i] = what
     }
 
@@ -90,7 +90,7 @@ impl NumericArray
     mtd opAffect(what: const [..] T)
     {
         Debug.assert(@countof(what) == N)
-        loop i: N
+        loop i: N do
             buf[i] = what[i]
     }
 
@@ -99,7 +99,7 @@ impl NumericArray
     {
         Debug.assert(@countof(values) == N)
         var result: retval
-        loop N
+        loop N do
             result.buf[#index] = values[#index]
         return result
     }
@@ -109,7 +109,7 @@ impl NumericArray
     mtd set(values: T...)
     {
         Debug.assert(@countof(values) == N)
-        loop i: N
+        loop i: N do
             buf[i] = values[i]
     }
 
@@ -117,7 +117,7 @@ impl NumericArray
     #[Safety("boundcheck", false), Overload]
     mtd mulAdd(value1, value2: T)
     {
-        loop i: N
+        loop i: N do
             buf[i] = (buf[i] * value1) + value2
     }
 
@@ -125,7 +125,7 @@ impl NumericArray
     #[Safety("boundcheck", false), Overload]
     mtd mulAdd(value1, value2: Self)
     {
-        loop i: N
+        loop i: N do
             buf[i] = (buf[i] * value1[i]) + value2.buf[i]
     }
 }

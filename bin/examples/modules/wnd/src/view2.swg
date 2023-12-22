@@ -51,7 +51,7 @@ func createTreeMulti(view: *Wnd)->*ListCtrl
     {
         Format.replaceString(&str, "item %", i)
         var icon = app.theme.getIcon24(ThemeIcons24.Search, 16)
-        if i % 2 == 0 icon.clear()
+        if i % 2 == 0 do icon.clear()
         let line = tree.createLine(str, icon)
         Format.replaceString(&str, "sub item %", i)
         line.setItem(1, str)
@@ -104,7 +104,7 @@ func createView2(_tabView: *Tab, view: *Wnd)
 
         tree.sigSelChanged += func(tree) {
             var sel = tree.getSelectedLines()
-            visit l: sel
+            visit l: sel do
                 Console.printf("%\n", l.getItem(0).name.raw)
         }
     }

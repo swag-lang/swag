@@ -2,7 +2,7 @@
 //#global testerror
 #test
 {
-	if false
+	if false do
 		return;
 	var a = 0
 }

@@ -14,7 +14,7 @@ impl ScratchAllocator
     {
         let toAlign = alignement orelse @sizeof(*void)
         var result = value & ~(toAlign - 1)
-        if result < value
+        if result < value do
             result += toAlign
         return result
     }
@@ -88,7 +88,7 @@ impl IAllocator for ScratchAllocator
 {
     mtd free(request: *AllocatorRequest)
     {
-        if !request.address
+        if !request.address do
             return
 
         // If this is the last allocated block in the buffer, we can free it
@@ -112,11 +112,11 @@ impl IAllocator for ScratchAllocator
         // the allocator
         var leak = cast(^LeakHeader) request.address
         leak -= 1
-        if !leak.prev
+        if !leak.prev do
             firstLeak = leak.next
-        else
+        else do
             leak.prev.next = leak.next
-        if leak.next
+        if leak.next do
             leak.next.prev = leak.prev
         totalLeak -= leak.size - @sizeof(LeakHeader)
         free(leak, leak.size)
@@ -128,7 +128,7 @@ impl IAllocator for ScratchAllocator
         // Special case
         if request.size == 0
         {
-            if request.mode == .Realloc
+            if request.mode == .Realloc do
                 free(request)
             request.address = null
             return
@@ -142,7 +142,7 @@ impl IAllocator for ScratchAllocator
             request.address = block + usedAlign
             used = usedAlign + request.size
             maxUsed = @max(maxUsed, used)
-            if oldAddress
+            if oldAddress do
                 @memcpy(request.address, oldAddress, request.oldSize)
             return
         }
@@ -153,7 +153,7 @@ impl IAllocator for ScratchAllocator
         let totalSize = request.size + @sizeof(LeakHeader)
         let ptr = cast(^LeakHeader) alloc(totalSize, request.alignement)
         let leak = cast(^LeakHeader) firstLeak
-        if leak leak.prev = ptr
+        if leak do leak.prev = ptr
         ptr.prev = null
         ptr.next = firstLeak
         firstLeak = ptr

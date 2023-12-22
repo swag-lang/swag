@@ -18,7 +18,7 @@ impl Image
             pix[0] = cast(u8) ((pixSrc[0] +,up pixSrcb8[0] +,up pixSrcw8[0] +,up pixSrcw8b8[0]) >> 2)
             pix[1] = cast(u8) ((pixSrc[1] +,up pixSrcb8[1] +,up pixSrcw8[1] +,up pixSrcw8b8[1]) >> 2)
             pix[2] = cast(u8) ((pixSrc[2] +,up pixSrcb8[2] +,up pixSrcw8[2] +,up pixSrcw8b8[2]) >> 2)
-            if image.bpp == 32 pix[3] = cast(u8) ((pixSrc[3] +,up pixSrcb8[3] +,up pixSrcw8[3] +,up pixSrcw8b8[3]) >> 2)
+            if image.bpp == 32 do pix[3] = cast(u8) ((pixSrc[3] +,up pixSrcb8[3] +,up pixSrcw8[3] +,up pixSrcw8b8[3]) >> 2)
         }
     }
 

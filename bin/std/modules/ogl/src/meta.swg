@@ -16,7 +16,7 @@ var g_Functions: Array'OneFunc
 {
     let itf = @compiler()
     let msg = itf.getMessage()
-    if !Reflection.hasAttribute(msg.type, Extension)
+    if !Reflection.hasAttribute(msg.type, Extension) do
         return
     g_Functions.add({msg.type, msg.name})
 }
@@ -40,18 +40,18 @@ var g_Functions: Array'OneFunc
         builderVars.appendFormat("public func %(", e.name)
         visit p, i: typeFunc.parameters
         {
-            if i != 0 builderVars.appendString(", ")
+            if i != 0 do builderVars.appendString(", ")
             builderVars.appendFormat("p%: %", i, p.pointedType.name)
         }
 
-        if typeFunc.returnType == void
+        if typeFunc.returnType == void do
             builderVars.appendFormat(")\n{\n")
-        else
+        else do
             builderVars.appendFormat(")->%\n{\n", typeFunc.returnType.name)
         builderVars.appendFormat("\treturn ext_%(", e.name)
         visit p, i: typeFunc.parameters
         {
-            if i != 0 builderVars.appendString(", ")
+            if i != 0 do builderVars.appendString(", ")
             builderVars.appendFormat("p%", i)
         }
 

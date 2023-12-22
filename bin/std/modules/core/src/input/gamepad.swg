@@ -23,7 +23,7 @@ impl GamePad
         let newConnected = isConnected(padIndex)
         if !newConnected
         {
-            if connected clear(self)
+            if connected do clear(self)
             connected = false
         }
         else

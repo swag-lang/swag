@@ -3,7 +3,7 @@
 func append(buf: *void, fmt: string, values: ...)
     #validifx
     {
-        if !@isconstexpr(fmt) return true
+        if !@isconstexpr(fmt) do return true
         var cpt = @countof(values)
         return true
     }

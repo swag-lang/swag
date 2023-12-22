@@ -6,9 +6,9 @@ var c: s32 = 0
 //#[Swag.PrintBc]
 func(op: string) toto()
 {
-	if(op == "toto")
+	if(op == "toto") do
 		c = 1
-	if(op == "toto1")
+	if(op == "toto1") do
 		c = 2
 }
 

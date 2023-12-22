@@ -32,7 +32,7 @@ func day9B()
         let vals = Tokenize.split(l, ` `'u8)
 
         var values: Array's64
-        visit v: vals values.add(assume StrConv.toS64(v))
+        visit v: vals do values.add(assume StrConv.toS64(v))
 
         var column: Array's64
         column.add(values[0])
@@ -48,7 +48,7 @@ func day9B()
                 recom = v or recom
                 newValues.add(v)
 
-                if i == 0
+                if i == 0 do
                     column.add(v)
             }
 

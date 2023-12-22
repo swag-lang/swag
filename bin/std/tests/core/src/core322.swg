@@ -6,7 +6,7 @@ struct(T) SoaTest
     #ast
     {
         var sb: StringBuilder
-        visit p: @typeof(T).fields
+        visit p: @typeof(T).fields do
             sb.appendFormat("%: Array'%\n", p.name, p.pointedType.name)
         return sb.toString()
     }
@@ -19,7 +19,7 @@ impl SoaTest
         #ast
         {
             var sb: StringBuilder
-            visit p: @typeof(T).fields
+            visit p: @typeof(T).fields do
                 sb.appendFormat("%.reserve(size)\n", p.name)
             return sb.toString()
         }

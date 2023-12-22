@@ -39,7 +39,7 @@ impl Image
     mtd doKernel(dstImage: *Image, kernel: Kernel)
     {
         // unsupported pixel format
-        if pf.channels() < 3 or pf.bitDepth() != 8
+        if pf.channels() < 3 or pf.bitDepth() != 8 do
             return
 
         var f = {kernel, dstImage}
@@ -98,13 +98,13 @@ impl Image
             }
 
             let ksum = params.kernel[1]
-            if ksum > 1 bs, gs, rs /= ksum
+            if ksum > 1 do bs, gs, rs /= ksum
 
             var dpix = params.dstImage.pixels.buffer + (x * b8) + (y * w8)
             dpix[0] = cast(u8) Math.clamp(bs, 0, 255)
             dpix[1] = cast(u8) Math.clamp(gs, 0, 255)
             dpix[2] = cast(u8) Math.clamp(rs, 0, 255)
-            if image.bpp == 32 dpix[3] = pix[3]
+            if image.bpp == 32 do dpix[3] = pix[3]
         }
     }
 

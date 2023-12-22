@@ -56,7 +56,7 @@ func day2A()
             }
         }
 
-        if game.r <= 12 and game.g <= 13 and game.b <= 14
+        if game.r <= 12 and game.g <= 13 and game.b <= 14 do
             total += gameIdx + 1
     }
 

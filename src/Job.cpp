@@ -167,6 +167,8 @@ void Job::waitStructGenerated(TypeInfo* typeInfo)
 
 void Job::waitOverloadCompleted(SymbolOverload* overload)
 {
+    SWAG_ASSERT(overload);
+
     {
         SharedLock lk(overload->symbol->mutex);
         if (!(overload->flags & OVERLOAD_INCOMPLETE))

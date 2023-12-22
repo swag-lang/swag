@@ -50,7 +50,7 @@ impl ICodec for CodecPcmToPcm16
             var write, read = 0
             loop i: srcLength / TS
             {
-                if write + @sizeof(s16) > destLength
+                if write + @sizeof(s16) > destLength do
                     break
 
                 #if EN == .Pcm8

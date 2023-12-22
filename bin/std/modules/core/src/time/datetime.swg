@@ -46,33 +46,33 @@ impl DateTime
 
     mtd const opCmp(other: DateTime)->s32
     {
-        if year < other.year return -1
-        if year > other.year return 1
-        if month < other.month return -1
-        if month > other.month return 1
-        if day < other.day return -1
-        if day > other.day return 1
-        if hour < other.hour return -1
-        if hour > other.hour return 1
-        if minute < other.minute return -1
-        if minute > other.minute return 1
-        if second < other.second return -1
-        if second > other.second return 1
-        if millisecond < other.millisecond return -1
-        if millisecond > other.millisecond return 1
+        if year < other.year do return -1
+        if year > other.year do return 1
+        if month < other.month do return -1
+        if month > other.month do return 1
+        if day < other.day do return -1
+        if day > other.day do return 1
+        if hour < other.hour do return -1
+        if hour > other.hour do return 1
+        if minute < other.minute do return -1
+        if minute > other.minute do return 1
+        if second < other.second do return -1
+        if second > other.second do return 1
+        if millisecond < other.millisecond do return -1
+        if millisecond > other.millisecond do return 1
         return 0
     }
 
     // Returns true if this is a valid datatime
     mtd const isValid()->bool
     {
-        if year == 0 or year > 9999 return false
-        if month == 0 or month > 12 return false
-        if day == 0 or day > daysInMonth(year, month) return false
-        if hour >= 24 return false
-        if minute >= 60 return false
-        if second >= 60 return false
-        if millisecond >= 1000 return false
+        if year == 0 or year > 9999 do return false
+        if month == 0 or month > 12 do return false
+        if day == 0 or day > daysInMonth(year, month) do return false
+        if hour >= 24 do return false
+        if minute >= 60 do return false
+        if second >= 60 do return false
+        if millisecond >= 1000 do return false
         return true
     }
 
@@ -105,7 +105,7 @@ impl DateTime
         var result: retval
 
         var buf = str
-        if !@countof(buf)
+        if !@countof(buf) do
             throw SyntaxError{}
 
         if fmt == .DateTime or fmt == .DateTimeMs
@@ -126,12 +126,12 @@ impl DateTime
                 }
             }
 
-            if !done
+            if !done do
                 throw SyntaxError{}
             done = false
 
             // Blank
-            if !@countof(buf) or buf[0] != ` `
+            if !@countof(buf) or buf[0] != ` ` do
                 throw SyntaxError{}
             buf = Tokenize.eatCount(buf, 1)
             result.eat += 1
@@ -150,70 +150,70 @@ impl DateTime
                 }
             }
 
-            if !done
+            if !done do
                 throw SyntaxError{}
 
             // Blank
-            if !@countof(buf) or buf[0] != ` `
+            if !@countof(buf) or buf[0] != ` ` do
                 throw SyntaxError{}
             buf = Tokenize.eatCount(buf, 1)
             result.eat += 1
 
             // Day
             let (day, eat2, ovf2) = StrConv.parseU8(buf)
-            if ovf2
+            if ovf2 do
                 throw SyntaxError{}
             result.eat += eat2
             result.value.day = day
             buf = Tokenize.eatCount(buf, cast(u64) eat2)
 
             // Blank
-            if !@countof(buf) or buf[0] != ` `
+            if !@countof(buf) or buf[0] != ` ` do
                 throw SyntaxError{}
             buf = Tokenize.eatCount(buf, 1)
             result.eat += 1
 
             // Year
             let (year, eat3, ovf3) = StrConv.parseU16(buf)
-            if ovf3
+            if ovf3 do
                 throw SyntaxError{}
             result.value.year = year
             result.eat += eat3
             buf = Tokenize.eatCount(buf, cast(u64) eat3)
 
             // Check day of week
-            if checkDate and dayOfWeek != result.value.dayOfWeek()
+            if checkDate and dayOfWeek != result.value.dayOfWeek() do
                 throw SyntaxError{}
         }
         elif fmt == .Iso or fmt == .IsoMs
         {
             // Year
             let (year, eat0, ovf0) = StrConv.parseU16(buf)
-            if ovf0
+            if ovf0 do
                 throw SyntaxError{}
             result.value.year = year
             result.eat += eat0
             buf = Tokenize.eatCount(buf, cast(u64) eat0)
-            if !@countof(buf) or buf[0] != `-`
+            if !@countof(buf) or buf[0] != `-` do
                 throw SyntaxError{}
             buf = Tokenize.eatCount(buf, 1)
             result.eat += 1
 
             // Month
             let (month, eat1, ovf1) = StrConv.parseU8(buf)
-            if ovf1
+            if ovf1 do
                 throw SyntaxError{}
             result.eat += eat1
             result.value.month = month
             buf = Tokenize.eatCount(buf, cast(u64) eat1)
-            if !@countof(buf) or buf[0] != `-`
+            if !@countof(buf) or buf[0] != `-` do
                 throw SyntaxError{}
             buf = Tokenize.eatCount(buf, 1)
             result.eat += 1
 
             // Day
             let (day, eat2, ovf2) = StrConv.parseU8(buf)
-            if ovf2
+            if ovf2 do
                 throw SyntaxError{}
             result.eat += eat2
             result.value.day = day
@@ -221,38 +221,38 @@ impl DateTime
         }
 
         // Blank
-        if !@countof(buf) or buf[0] != ` `
+        if !@countof(buf) or buf[0] != ` ` do
             throw SyntaxError{}
         buf = Tokenize.eatCount(buf, 1)
         result.eat += 1
 
         // Hour
         let (hour, eat3, ovf3) = StrConv.parseU8(buf)
-        if ovf3
+        if ovf3 do
             throw SyntaxError{}
         result.eat += eat3
         result.value.hour = hour
         buf = Tokenize.eatCount(buf, cast(u64) eat3)
-        if !@countof(buf) or buf[0] != `:`
+        if !@countof(buf) or buf[0] != `:` do
             throw SyntaxError{}
         buf = Tokenize.eatCount(buf, 1)
         result.eat += 1
 
         // Minute
         let (minute, eat4, ovf4) = StrConv.parseU8(buf)
-        if ovf4
+        if ovf4 do
             throw SyntaxError{}
         result.eat += eat4
         result.value.minute = minute
         buf = Tokenize.eatCount(buf, cast(u64) eat4)
-        if !@countof(buf) or buf[0] != `:`
+        if !@countof(buf) or buf[0] != `:` do
             throw SyntaxError{}
         buf = Tokenize.eatCount(buf, 1)
         result.eat += 1
 
         // Seconds
         let (second, eat5, ovf5) = StrConv.parseU8(buf)
-        if ovf5
+        if ovf5 do
             throw SyntaxError{}
         result.eat += eat5
         result.value.second = second
@@ -261,20 +261,20 @@ impl DateTime
         // Milliseconds
         if fmt == .DateTimeMs or fmt == .IsoMs
         {
-            if !@countof(buf) or buf[0] != `.`
+            if !@countof(buf) or buf[0] != `.` do
                 throw SyntaxError{}
             buf = Tokenize.eatCount(buf, 1)
             result.eat += 1
 
             let (millisecond, eat6, ovf6) = StrConv.parseU16(buf)
-            if ovf6
+            if ovf6 do
                 throw SyntaxError{}
             result.eat += eat6
             result.value.millisecond = millisecond
             buf = Tokenize.eatCount(buf, cast(u64) eat6)
         }
 
-        if checkDate and !result.value.isValid()
+        if checkDate and !result.value.isValid() do
             throw SyntaxError{}
 
         return result
@@ -342,7 +342,7 @@ impl StrConv.IConvert for DateTime
     mtd impl convert(buf: *ConcatBuffer, fmt: const *StrConv.ConvertFormat, strFormat: string)
     {
         var str: String
-        if @countof(strFormat) == 0 or @countof(strFormat) > 1
+        if @countof(strFormat) == 0 or @countof(strFormat) > 1 do
             str = toString(.DateTime)
         else
         {

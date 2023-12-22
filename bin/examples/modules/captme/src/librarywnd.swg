@@ -46,7 +46,7 @@ impl IWnd for LibraryView
 {
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        if evt.kind == .MouseWheel
+        if evt.kind == .MouseWheel do
             evt.accepted = false
 
         var pos = surfaceToLocal(evt.surfacePos)
@@ -119,7 +119,7 @@ impl IWnd for LibraryView
             }
 
             // We have a capture but not yet a texture. Create it.
-            if it.capture and !it.texture.isValid()
+            if it.capture and !it.texture.isValid() do
                 it.texture = evt.bc.renderer.addImage(it.capture.preview)
 
             it.rect = Math.Rectangle{x, y, W, H}
@@ -150,7 +150,7 @@ impl LibraryView
 {
     mtd opDrop()
     {
-        visit c: loaded
+        visit c: loaded do
             Memory.delete(c)
     }
 
@@ -179,7 +179,7 @@ impl LibraryView
         })
 
         let renderer = getApp().getRenderer()
-        visit &it: items
+        visit &it: items do
             renderer.removeTexture(&it.texture)
 
         // Add items
@@ -211,7 +211,7 @@ impl LibraryView
                         self.postInvalidateEvent()
                     }
 
-                    if th.requestEnd
+                    if th.requestEnd do
                         break
                 }
             })
@@ -235,7 +235,7 @@ impl LibraryWnd
 
     mtd fill()
     {
-        if listCtrl.getLineCount()
+        if listCtrl.getLineCount() do
             return
 
         let line = listCtrl.createLine("All Captures", Icon.from(&main.icons24, 4))
@@ -374,7 +374,7 @@ impl LibraryWnd
             .dockStyle = .Center
             .sigSelChanged += closure|view|(list) {
                 var sel = list.getSelectedLine()
-                if !sel return
+                if !sel do return
                 view.filterYear = cast(u64) sel.userData0
                 view.filterMonth = cast(u64) sel.userData1
                 view.filterDay = cast(u64) sel.userData2

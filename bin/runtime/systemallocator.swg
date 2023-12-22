@@ -8,7 +8,7 @@ impl IAllocator for SystemAllocator
 {
     func free(request: *AllocatorRequest)
     {
-        if !request.address
+        if !request.address do
             return
         let ptr = cast(^^void) request.address
         @free(ptr[cast,bit(u64) -1's64])
@@ -35,7 +35,7 @@ impl IAllocator for SystemAllocator
             // Special case
             if request.size == 0
             {
-                if request.mode == .Realloc
+                if request.mode == .Realloc do
                     free(request)
                 request.address = null
                 return
@@ -51,7 +51,7 @@ impl IAllocator for SystemAllocator
 
             var userPtr = realPtr + @sizeof(*void)
             userPtr = cast(^u8) (cast(u64) userPtr & ~(cast(u64) alignement - 1))
-            if userPtr != realPtr + @sizeof(*void)
+            if userPtr != realPtr + @sizeof(*void) do
                 userPtr += alignement
 
             storePtr = cast(^^void) userPtr

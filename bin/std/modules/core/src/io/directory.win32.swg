@@ -12,15 +12,15 @@ func create(dirname: string) throw
 // Returns true if the given directory exists
 func exists(dirName: string)->bool
 {
-    if @countof(dirName) == 0
+    if @countof(dirName) == 0 do
         return false
     var winPath = Utf16.toZeroTerminated(dirName)
     let attributes = catch GetFileAttributesW(@dataof(winPath))
-    if @err() != null
+    if @err() != null do
         return false
-    if attributes == 0xFFFFFFFF
+    if attributes == 0xFFFFFFFF do
         return false
-    if !(attributes & FILE_ATTRIBUTE_DIRECTORY)
+    if !(attributes & FILE_ATTRIBUTE_DIRECTORY) do
         return false
     return true
 }
@@ -30,7 +30,7 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
 {
     using File
     var result: retval
-    if dirName == null
+    if dirName == null do
         return result
 
     var findfile:   WIN32_FIND_DATAW
@@ -44,13 +44,13 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
     while !stackPath.isEmpty()
     {
         var toScan = stackPath.popBack()
-        if toScan.back() == Path.VolumeSeparatorChar
+        if toScan.back() == Path.VolumeSeparatorChar do
             toScan += Path.DirectorySeparatorChar
         var searchPath = Path.combine(toScan.toString(), "*")
 
         var winPath = Utf16.toZeroTerminated(searchPath)
         let h = try FindFirstFileW(@dataof(winPath), &findfile)
-        if h == INVALID_HANDLE_VALUE
+        if h == INVALID_HANDLE_VALUE do
             continue
 
         loop
@@ -70,10 +70,10 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
                         stackPath.add(moveref &newPath)
                     }
                 }
-                else
+                else do
                     mustAdd = options.wantSpecialDirectories
             }
-            else
+            else do
                 mustAdd = options.wantFiles
 
             // Add file/folder to the result
@@ -103,7 +103,7 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
             }
 
             let next = catch FindNextFileW(h, &findfile)
-            if !next break
+            if !next do break
         }
 
         assume FindClose(h)
@@ -146,7 +146,7 @@ func getDrives()->Array'String throw
     var driveName: [MAX_PATH] u8
 
     let h = FindFirstVolumeA(volName, MAX_PATH)
-    if h == INVALID_HANDLE_VALUE
+    if h == INVALID_HANDLE_VALUE do
         return result
 
     loop
@@ -164,7 +164,7 @@ func getDrives()->Array'String throw
             }
         }
 
-        if !FindNextVolumeA(h, volName, MAX_PATH)
+        if !FindNextVolumeA(h, volName, MAX_PATH) do
             break
     }
 

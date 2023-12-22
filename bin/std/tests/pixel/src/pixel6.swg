@@ -24,7 +24,7 @@ func entry(th: Thread)
     var validImgs = 0
     visit f: files
     {
-        if !Image.canLoad(f.fullname)
+        if !Image.canLoad(f.fullname) do
             continue
         var th = &ths[validImgs]
         th.filename = f.fullname
@@ -33,6 +33,6 @@ func entry(th: Thread)
         validImgs += 1
     }
 
-    loop i: validImgs
+    loop i: validImgs do
         ths[i].wait()
 }

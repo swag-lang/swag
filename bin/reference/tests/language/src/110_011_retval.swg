@@ -47,7 +47,7 @@ This is the preferred way (because optimal) to return a struct or an array.
     {
         // To avoid the clear of the array, we use = undefined
         var result: retval = undefined
-        loop i: 255
+        loop i: 255 do
             result[i] = i
         return result
     }

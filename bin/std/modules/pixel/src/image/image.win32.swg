@@ -38,9 +38,9 @@ impl Image
         GetIconInfo(hicon, &ii)
         result = from(ii.hbmColor)
 
-        if ii.hbmMask != null
+        if ii.hbmMask != null do
             DeleteObject(acast ii.hbmMask)
-        if ii.hbmColor != null
+        if ii.hbmColor != null do
             DeleteObject(acast ii.hbmColor)
 
         return result

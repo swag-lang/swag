@@ -13,7 +13,7 @@ attr attrA();
 attr attrB();
 
 func readNative(fct: *void)->u32 throw
-{ 
+{
     return 0;
 }
 
@@ -34,7 +34,7 @@ func beginStruct(fct: *void, structType: typeinfo, _structData: const *u8)->bool
     {
         // Read version
         let sig = readNative(fct)
-        if sig != 0xFF
+        if sig != 0xFF do
             throw SerializationError{"stream is corrupted"}
     }
 

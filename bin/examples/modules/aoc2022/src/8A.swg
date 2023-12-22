@@ -45,21 +45,21 @@ func day8A()
 
     visit l, line: lines
     {
-        if line == 0 or line == lines.count-1
+        if line == 0 or line == lines.count-1 do
             continue
 
         var maxLeft: u8
 
         visit,bytes c, col: l
         {
-            if col == 0 or col == l.length-1
+            if col == 0 or col == l.length-1 do
                 continue
 
             var hidden = 0
 
-            if l[col] <= maxLeft
+            if l[col] <= maxLeft do
                 hidden += 1
-            else loop x: 0 until col
+            else do loop x: 0 until col
             {
                 if l[x] >= l[col]
                 {
@@ -96,7 +96,7 @@ func day8A()
                 }
             }
 
-            if hidden != 4
+            if hidden != 4 do
                 total += 1
         }
     }

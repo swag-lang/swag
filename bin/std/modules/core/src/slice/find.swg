@@ -15,17 +15,17 @@ func(T, V) findSorted(values: const [..] T, value: V)->u64
     while max >= min
     {
         let mid = (max + min) / 2
-        if mid >= countof
+        if mid >= countof do
             break
         let res = values[mid] <=> value
-        if res == 0
+        if res == 0 do
             return mid
 
-        if res < 0
+        if res < 0 do
             min = mid + 1
-        elif mid == 0
+        elif mid == 0 do
             break
-        else
+        else do
             max = mid - 1
     }
 
@@ -39,7 +39,7 @@ func(T, V) findLinear(values: const [..] T, value: V)->u64
 {
     visit v, i: values
     {
-        if v == value
+        if v == value do
             return i
     }
 
@@ -60,7 +60,7 @@ func(T, V) contains(values: const [..] T, value: V)->bool
 {
     visit v: values
     {
-        if v == value
+        if v == value do
             return true
     }
 
@@ -71,11 +71,11 @@ func(T, V) contains(values: const [..] T, value: V)->bool
 #[Swag.ConstExpr]
 func(T) equals(dst, src: const [..] T)->bool
 {
-    if @countof(dst) != @countof(src)
+    if @countof(dst) != @countof(src) do
         return false
     loop i: dst
     {
-        if dst[i] != src[i]
+        if dst[i] != src[i] do
             return false
     }
 

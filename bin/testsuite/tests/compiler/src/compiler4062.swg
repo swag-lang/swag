@@ -9,13 +9,13 @@
     }
 
     r = true
-    if r
+    if r do
         @assert(true)
-    else
+    else do
         @assert(false)
 
-    if !r
+    if !r do
         @assert(false)
-    else
+    else do
         @assert(true)
 }

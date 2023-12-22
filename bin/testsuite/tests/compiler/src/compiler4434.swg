@@ -1,7 +1,7 @@
 func toto(a: &s32, b: &&s32)
 {
     a = b
-    if a != b
+    if a != b do
         @assert(false)
 }
 

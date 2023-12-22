@@ -35,12 +35,12 @@ internal impl Movie
     {
         if frameIndex == numFrames - 1
         {
-            if mustLoop
+            if mustLoop do
                 frameIndex = 0
-            else
+            else do
                 return
         }
-        else
+        else do
             frameIndex += 1
 
         #[Swag.Complete]
@@ -111,7 +111,7 @@ impl Movie
             numFrames = gif.getNumFrames()
             gif.getFrame(&frame)
             discard gif.nextFrame(&frame)
-            if enableCache
+            if enableCache do
                 cacheFrames.add(frame)
         }
         else
@@ -140,7 +140,7 @@ impl Movie
     // Set the current video frame
     mtd setFrameIndex(idx: s32)
     {
-        if idx == frameIndex
+        if idx == frameIndex do
             return
         frameIndex = Math.min(idx, numFrames)
 
@@ -176,7 +176,7 @@ impl Movie
         let wasDirty = dirtyFrame
         dirtyFrame = false
 
-        if inPause
+        if inPause do
             return wasDirty
 
         var hasChanged = false

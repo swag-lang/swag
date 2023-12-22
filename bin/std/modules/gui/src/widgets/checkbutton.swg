@@ -94,7 +94,7 @@ impl IWnd for CheckButton
         posBox.height = metrics.btnCheck_Size
         posBox.y = clientRect.vertCenter() - (posBox.height * 0.5)
         posBox.width = posBox.height
-        if checkButtonFlags.has(.RightAlign)
+        if checkButtonFlags.has(.RightAlign) do
             posBox.x = clientRect.right() - posBox.width
         theme.drawSubRect(painter, posBox, subRectBk, colorBk)
         theme.drawSubRect(painter, posBox, subRectBorder, colorBorder)
@@ -103,15 +103,15 @@ impl IWnd for CheckButton
         // Content
         var format: RichStringFormat
         theme.setTextColors(&format, colorText)
-        if checkButtonFlags.has(.RightAlign)
+        if checkButtonFlags.has(.RightAlign) do
             format.horzAlignment = .Right
-        else
+        else do
             format.horzAlignment = .Left
         format.vertAlignment = .Center
         format.flags = .Clip
         format.font = getFont()
         var labelPos = clientRect
-        if !checkButtonFlags.has(.RightAlign)
+        if !checkButtonFlags.has(.RightAlign) do
             labelPos.x += posBox.width + metrics.btnCheck_Padding
         labelPos.width -= posBox.width + metrics.btnCheck_Padding
         Theme.drawIconText(painter, labelPos, icon, &name, format, metrics.iconText_Margin)
@@ -121,11 +121,11 @@ impl IWnd for CheckButton
     {
         if processMouseEvent(evt)
         {
-            if checked == .UnChecked and checkButtonFlags.has(.ThreeState)
+            if checked == .UnChecked and checkButtonFlags.has(.ThreeState) do
                 checked = .Undefined
-            elif checked == .Checked
+            elif checked == .Checked do
                 checked = .UnChecked
-            else
+            else do
                 checked = .Checked
             sigChanged.call(self)
             postCommandEvent(id)
@@ -140,9 +140,9 @@ impl CheckButton
     {
         Debug.assert(parent != null)
         var pos = position
-        if pos.height == 0
+        if pos.height == 0 do
             pos.height = parent.getThemeMetrics().btnPush_Height
-        if pos.width == 0
+        if pos.width == 0 do
             pos.width = parent.getThemeMetrics().btnPush_Width
         return Wnd.create'CheckButton(parent, name, pos, id)
     }

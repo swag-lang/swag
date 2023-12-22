@@ -6,7 +6,7 @@ func(T, V) contains(values: const [..] T, value: V)->bool
 {
     visit v: values
     {
-        if v == value
+        if v == value do
             return true
     }
 

@@ -66,7 +66,7 @@ func day4A()
 
         if #index == lines.count-1 or lines[#index+1].length == 0
         {
-            if pass & 0b1111111 == 0b1111111
+            if pass & 0b1111111 == 0b1111111 do
                 total += 1
             pass = 0
         }

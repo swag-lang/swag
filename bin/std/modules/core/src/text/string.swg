@@ -75,9 +75,9 @@ impl String
 
     mtd const opEquals(other: string)->bool
     {
-        if buffer == @dataof(other) // true if null
+        if buffer == @dataof(other) do // true if null
             return true
-        if length != @countof(other)
+        if length != @countof(other) do
             return false
         return Memory.compare(buffer, @dataof(other), length) == 0
     }
@@ -130,19 +130,19 @@ impl String
 
     mtd opPostMove()
     {
-        if buffer and capacity <= StringSmallSize
+        if buffer and capacity <= StringSmallSize do
             buffer = acast &padding[0]
     }
 
     mtd opPostCopy()
     {
-        if !buffer
+        if !buffer do
             return
 
-        if(@getcontext().flags & .PostCopyResetAllocator)
+        if(@getcontext().flags & .PostCopyResetAllocator) do
             allocator = null
 
-        if capacity <= StringSmallSize
+        if capacity <= StringSmallSize do
             buffer = acast &padding[0]
         else
         {
@@ -156,7 +156,7 @@ impl String
 
     mtd opDrop()
     {
-        if buffer != acast &padding[0]
+        if buffer != acast &padding[0] do
             Memory.free(buffer, capacity, allocator)
     }
 
@@ -184,7 +184,7 @@ impl String
     #[Macro]
     mtd(ptr: bool, back: bool) opVisit,bytes(stmt: code)
     {
-        if !length
+        if !length do
             return
 
         // Little trick to avoid labels. That way a 'continue' in the user code will work correctly
@@ -243,7 +243,7 @@ impl String
     // Transform a null string in an empty one
     mtd ensureNotNull()
     {
-        if buffer
+        if buffer do
             return
         buffer = acast &padding[0]
     }
@@ -252,7 +252,7 @@ impl String
     mtd replace(what, by: string, comparisonType = Utf8.ComparisonType.Latin1)
     {
         let whatLength = @countof(what)
-        if !whatLength or whatLength > length
+        if !whatLength or whatLength > length do
             return
         let byLength = @countof(by)
 
@@ -265,7 +265,7 @@ impl String
             length -= whatLength
             length += byLength
             idx += byLength
-            if idx == length
+            if idx == length do
                 break
             idx = Utf8.indexOf(toString(), what, idx, comparisonType)
         }
@@ -276,7 +276,7 @@ impl String
     // Get the last byte
     mtd back()->u8
     {
-        if !length
+        if !length do
             return 0
         return buffer[length - 1]
     }
@@ -284,7 +284,7 @@ impl String
     // Remove some bytes at the given index
     mtd remove(byteIndex: u64, byteCount: u64 = 1)
     {
-        if !byteCount
+        if !byteCount do
             return
         Debug.safetyBoundCheck(byteIndex + byteCount <= length, "index out of range")
         Memory.copyOver(buffer + byteIndex, buffer + byteIndex + byteCount, length - (byteIndex + byteCount))
@@ -295,7 +295,7 @@ impl String
     // Remove some bytes at the end
     mtd removeBack(byteCount: u64 = 1)
     {
-        if !byteCount
+        if !byteCount do
             return
         Debug.safetyBoundCheck(byteCount <= length, "index out of range")
         length -= byteCount
@@ -333,7 +333,7 @@ impl String
 
         Debug.safetyBoundCheck(byteIndex < length, "index out of range")
         let countof = @countof(value)
-        if !countof
+        if !countof do
             return
 
         grow(length + countof + 1)
@@ -366,7 +366,7 @@ impl String
         var tmp: [4] u8
         let eat = Utf8.encodeRune(tmp, value)
         grow(length + eat + 1)
-        loop i: eat
+        loop i: eat do
             buffer[length + i] = tmp[i]
         length += eat
         buffer[length] = 0
@@ -377,7 +377,7 @@ impl String
     mtd append(value: string)
     {
         let concatLength = @countof(value)
-        if concatLength == 0
+        if concatLength == 0 do
             return
 
         let newLength = length + concatLength + 1
@@ -391,7 +391,7 @@ impl String
     func join(values: string...)->String
     {
         var result: String
-        loop values
+        loop values do
             result += values[#index]
         return result
     }
@@ -403,7 +403,7 @@ impl String
         var result: String
         loop values
         {
-            if separator and #index
+            if separator and #index do
                 result += separator
             result += values[#index]
         }
@@ -415,7 +415,7 @@ impl String
     #[Inline]
     mtd grow(wantedCapacity: u64)
     {
-        if wantedCapacity <= capacity
+        if wantedCapacity <= capacity do
             return
         let newCapacity = Math.max(capacity * 2, wantedCapacity)
         reserve(newCapacity)
@@ -425,14 +425,14 @@ impl String
     mtd reserve(newCapacity: u64)
     {
         length = Math.min(length, newCapacity)
-        if allocator == null
+        if allocator == null do
             allocator = @getcontext().allocator
 
         // Small size, just be sure with have a valid buffer address
         if newCapacity <= StringSmallSize
         {
             // Free dynamic memory if this is not a small string
-            if buffer != acast &padding[0]
+            if buffer != acast &padding[0] do
                 Memory.free(buffer, capacity, allocator)
 
             // This is a small string again
@@ -460,7 +460,7 @@ impl String
     // Remove whitespaces at the start of the String
     mtd trimStart()
     {
-        if !length
+        if !length do
             return
 
         var ptr = buffer
@@ -468,7 +468,7 @@ impl String
         {
             let sl = @mkslice(ptr, length)
             let (c, eat) = Utf8.decodeRune(sl)
-            if !Unicode.isSpace(c)
+            if !Unicode.isSpace(c) do
                 break
             length -= eat
             ptr += eat
@@ -481,14 +481,14 @@ impl String
     // Remove whitespaces at the end of the String
     mtd trimEnd()
     {
-        if !length
+        if !length do
             return
 
         loop
         {
             let sl = @mkslice(buffer, length)
             let (c, eat) = Utf8.decodeLastRune(sl)
-            if !Unicode.isSpace(c)
+            if !Unicode.isSpace(c) do
                 break
             length -= eat
         }

@@ -2810,9 +2810,20 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
         if (!(structNode->specFlags & AstStruct::SPECFLAG_HAS_USING))
             continue;
 
-        context->job->waitOverloadCompleted(it.typeStruct->declNode->resolvedSymbolOverload);
-        if (context->result != ContextResult::Done)
-            return true;
+        {
+            // :BecauseOfThat
+            ScopedLock lk(structNode->mutex);
+            if (!structNode->resolvedSymbolOverload)
+            {
+                structNode->dependentJobs.add(context->job);
+                context->job->setPending(JobWaitKind::WaitStructSymbol, structNode->resolvedSymbolName, structNode, nullptr);
+                return true;
+            }
+
+            context->job->waitOverloadCompleted(structNode->resolvedSymbolOverload);
+            if (context->result != ContextResult::Done)
+                return true;
+        }
 
         TypeInfoParam*  foundField  = nullptr;
         TypeInfoStruct* foundStruct = nullptr;

@@ -3,7 +3,7 @@
 func print(s: string, f: ...)
     #validifx
     {
-        if @countof(f) != 3
+        if @countof(f) != 3 do
             @compilererror("invalid number of arguments", @location(f))
         return true
     }

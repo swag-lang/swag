@@ -83,7 +83,7 @@ If you want to pass from one case to another like in C/C++, use `fallthrough`.
     switch value
     {
     case 6:
-        if value == 6
+        if value == 6 do
             break
         @assert(false)
     default:

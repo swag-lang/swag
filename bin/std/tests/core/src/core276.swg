@@ -7,7 +7,7 @@ struct(N: s32) Vector
         loop i: N
         {
             sb.appendFormat("%", cast(rune) (`a`'u32 + i))
-            if i != N - 1 sb.appendString(",")
+            if i != N - 1 do sb.appendString(",")
         }
 
         sb.appendString(": f32")

@@ -4,32 +4,32 @@ using Swag
 
 func __dropErr(err: any)
 {
-    if err == null
+    if err == null do
         return
-    let data = @dataof(err)        
+    let data = @dataof(err)
     let type = cast(const *Swag.TypeInfoStruct) @kindof(err)
-    if type.opDrop
+    if type.opDrop do
         type.opDrop(data)
 }
 
 func __setErr(err: any)
 {
     let cxt = @getcontext()
-    if cxt.errorIndex >= MaxErrors
+    if cxt.errorIndex >= MaxErrors do
         @panic("too many nested error levels!", #location)
-    
+
     __dropErr(cxt.errors[cxt.errorIndex].value)
-    
+
     // We check that the contextual error allocator has been initialized.
     // In case an error is raised at a very very early stage (in #init)
-    if !cxt.errorAllocator.capacity
+    if !cxt.errorAllocator.capacity do
         cxt.errorAllocator.setCapacity(acast __buildCfg.errorAllocatorCapacity, cxt.allocator)
 
-    let data = @dataof(err)        
+    let data = @dataof(err)
     let type = cast(const *Swag.TypeInfoStruct) @kindof(err)
     let ptr = cxt.errorAllocator.alloc(cast(u64) type.sizeof)
     @memcpy(ptr, data, cast(u64) type.sizeof)
-    if type.opPostCopy
+    if type.opPostCopy do
         type.opPostCopy(ptr)
     cxt.errors[cxt.errorIndex].value = @mkany(ptr, type)
     cxt.hasError = 1
@@ -50,8 +50,8 @@ func __popErr()
     let cxt = @getcontext()
     __dropErr(cxt.errors[cxt.errorIndex].value)
     cxt.errors[cxt.errorIndex].value = null
-    
-    cxt.errorIndex -= 1   
+
+    cxt.errorIndex -= 1
     cxt.hasError = 1
 
     cxt.curError            = cxt.errors[cxt.errorIndex].value
@@ -60,11 +60,11 @@ func __popErr()
 }
 
 func __catchErr()
-{    
+{
     let cxt = @getcontext()
-    if !cxt.hasError
+    if !cxt.hasError do
         cxt.curError = null
-    else
+    else do
         cxt.curError = cxt.errors[cxt.errorIndex].value
     cxt.errorAllocator.used = cxt.errorIndex ? cxt.errors[cxt.errorIndex-1].pushUsedAlloc : 0
     cxt.hasError = 0
@@ -81,7 +81,7 @@ func __failedAssume(loc: SourceCodeLocation)
 {
     let cxt = @getcontext()
     let type = @kindof(cxt.errors[cxt.errorIndex].value)
-    
+
     var str: [512] u8
     var len: u64
 
@@ -89,10 +89,10 @@ func __failedAssume(loc: SourceCodeLocation)
     @memcpy(&str[len], @dataof(U), @countof(U))
     len += @countof(U)
     var maxLen = @min(@countof(type.fullname), 128)
-    str[len] = `'`; len += 1    
+    str[len] = `'`; len += 1
     @memcpy(&str[len], @dataof(type.fullname), maxLen)
     len += maxLen
-    str[len] = `'`; len += 1    
+    str[len] = `'`; len += 1
 
     if type.kind == TypeInfoKind.Struct
     {
@@ -123,7 +123,7 @@ func __failedAssume(loc: SourceCodeLocation)
 func __stackTrace(loc: SourceCodeLocation)
 {
     let cxt = @getcontext()
-    if cxt.traceIndex >= MaxTraces
+    if cxt.traceIndex >= MaxTraces do
         return
     cxt.traces[cxt.traceIndex] = loc
     cxt.traceIndex += 1
@@ -216,7 +216,7 @@ func @panic(message: string, loc: SourceCodeLocation)
     @print("\n")
 
     // During tests just raise an error without a dialog box
-    if contextFlags & .Test
+    if contextFlags & .Test do
         __exitError()
 
     // Build message
@@ -226,7 +226,7 @@ func @panic(message: string, loc: SourceCodeLocation)
     if message != null
     {
         len = @countof(message)
-        if len > 512 len = 512
+        if len > 512 do len = 512
         @memcpy(&str[0], @dataof(message), len)
         str[len]     = `\n`
         str[len + 1] = `\n`

@@ -27,7 +27,7 @@ impl PropertyListCtrl
             .list.listFlags.add(.ForceMarginExpandMark)
 			.list.sigSelChanged += closure|ed|(list) {
 				let sel = list.getFocusLine()
-                if !sel
+                if !sel do
                     return
                 list.toggleExpand(sel)
 				let item = cast(*PropertyListItem) sel.userData0
@@ -60,7 +60,7 @@ impl PropertyListCtrl
 		var parentLine: *ListLine
 		visit &it: prop.categs
 		{
-			if it.item1 == 0
+			if it.item1 == 0 do
 				parentLine = null
 
             let str = it.item0.label.getText()
@@ -68,7 +68,7 @@ impl PropertyListCtrl
 			let line = list.createLine(naked, parentLine: parentLine)
 			line.userData0 = it.item0
 
-			if it.item1 == 0
+			if it.item1 == 0 do
 				parentLine = line
 		}
 	}

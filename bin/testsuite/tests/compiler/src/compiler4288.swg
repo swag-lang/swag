@@ -6,7 +6,7 @@ func parse(stmt: code) throw
     loop
     {
         G += 1
-        if G == 5
+        if G == 5 do
             return
         #macro
         {

@@ -126,7 +126,7 @@ func day5A()
     var mode = Mode.Invalid
     visit l: lines
     {
-        if l.isEmpty() continue
+        if l.isEmpty() do continue
 
         switch l.toString()
         {
@@ -143,7 +143,7 @@ func day5A()
         {
             let tokens = Tokenize.split(l, `:`'u8)
             let values = Tokenize.split(tokens[1], ` `'u8)
-            visit v: values seeds.add(assume StrConv.toU64(v))
+            visit v: values do seeds.add(assume StrConv.toU64(v))
             continue
         }
 
@@ -161,7 +161,6 @@ func day5A()
         var seed = s
 
         loop i: 7
-
         {
             visit r: convert[i]
             {

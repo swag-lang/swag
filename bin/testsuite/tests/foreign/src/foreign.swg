@@ -305,7 +305,7 @@ func all(itf: IAllocator)
 public func tcf_alloc(size: u32)
 {
     var vv: TT
-    if vv.x == null
+    if vv.x == null do
         vv.x = @getcontext().allocator
     all(vv.x)
 }

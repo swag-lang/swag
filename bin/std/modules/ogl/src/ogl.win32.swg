@@ -27,26 +27,26 @@ private namespace PrivOgl
     func wglCreateContext(hDc: HDC)->HGLRC throw
     {
         let res = PrivOgl.wglCreateContext(hDc)
-        if !res
+        if !res do
             throwWinError(GetLastError())
         return res
     }
 
     func wglDeleteContext(hRc: HGLRC) throw
     {
-        if !PrivOgl.wglDeleteContext(hRc)
+        if !PrivOgl.wglDeleteContext(hRc) do
             throwWinError(GetLastError())
     }
 
     func wglMakeCurrent(hDc: HDC, hRc: HGLRC) throw
     {
-        if !PrivOgl.wglMakeCurrent(hDc, hRc)
+        if !PrivOgl.wglMakeCurrent(hDc, hRc) do
             throwWinError(GetLastError())
     }
 
     func wglShareLists(hRc0, hRc1: HGLRC) throw
     {
-        if !PrivOgl.wglShareLists(hRc0, hRc1)
+        if !PrivOgl.wglShareLists(hRc0, hRc1) do
             throwWinError(GetLastError())
     }
 }

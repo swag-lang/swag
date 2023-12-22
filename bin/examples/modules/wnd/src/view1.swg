@@ -12,7 +12,7 @@ func createListSimple(view: *Wnd, maxItems = 50)->*ListCtrl
     {
         Format.replaceString(&str, "item %", i)
         var icon = app.theme.getIcon24(ThemeIcons24.Search, 16)
-        if i % 2 == 0 icon.clear()
+        if i % 2 == 0 do icon.clear()
         discard list.createLine(str, icon)
     }
 
@@ -36,7 +36,7 @@ func createListMulti(view: *Wnd, checkable: bool = false)->*ListCtrl
     {
         Format.replaceString(&str, "item %", i)
         var icon = app.theme.getIcon24(ThemeIcons24.Search, 16)
-        if i % 2 == 0 icon.clear()
+        if i % 2 == 0 do icon.clear()
         let line = list.createLine(str, icon)
         line.canCheck = checkable
         line.setItem(1, str)
@@ -106,17 +106,17 @@ func createView1(_tabView: *Tab, view: *Wnd)
 
         list.sigSelChanged += func(list) {
             let sl = list.getSelectedLine()
-            if sl
+            if sl do
                 Console.printf("selected: %\n", sl.getItem(0).name.raw)
         }
         list.sigCheckChanged += func(list) {
             let sl = list.getCheckedLines()
-            visit l: sl
+            visit l: sl do
                 Console.printf("checked: %\n", l.getItem(0).name.raw)
         }
         list.sigRightClick += func(list, pt) {
             let sel = list.getSelectedLines()
-            visit l: sel
+            visit l: sel do
                 Console.printf("%\n", l.getItem(0).name.raw)
         }
     }
@@ -139,7 +139,7 @@ func createView1(_tabView: *Tab, view: *Wnd)
 
         list.sigSelChanged += func(list) {
             let sel = list.getSelectedLines()
-            visit l: sel
+            visit l: sel do
                 Console.printf("%\n", l.getItem(0).name.raw)
         }
     }

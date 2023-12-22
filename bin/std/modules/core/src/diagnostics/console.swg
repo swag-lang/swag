@@ -44,7 +44,7 @@ func silent(value: bool)
 func print(params: ...)
 {
     var buf: ConcatBuffer
-    visit v: params
+    visit v: params do
         StrConv.convertAny(&buf, v, null)
     printf(buf.toString())
 }

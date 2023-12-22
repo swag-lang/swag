@@ -44,7 +44,7 @@ impl Int128
 
     mtd const opCmp(other: Int128)->s32
     {
-        if hi != other.hi return hi <=> other.hi
+        if hi != other.hi do return hi <=> other.hi
         return lo <=> other.lo
     }
 
@@ -53,9 +53,9 @@ impl Int128
         const Shift64: f64 = cast,bit(f64) 0x43f0000000000000 // 18446744073709551616.0'f64 //2^64
         if hi < 0
         {
-            if lo == 0
+            if lo == 0 do
                 return cast(f64) (hi * Shift64)
-            else
+            else do
                 return -cast(f64) (~lo + ~hi * Shift64)
         }
 
@@ -71,11 +71,11 @@ impl Int128
 
         let negate = (lhs < 0) != (rhs < 0)
 
-        if lhs < 0 lhs = -lhs
+        if lhs < 0 do lhs = -lhs
         let int1Hi = cast(u64) lhs >> 32
         let int1Lo = cast(u64) (lhs & 0xFFFFFFFF)
 
-        if (rhs < 0) rhs = -rhs
+        if rhs < 0 do rhs = -rhs
         let int2Hi = cast(u64) rhs >> 32
         let int2Lo = cast(u64) (rhs & 0xFFFFFFFF)
 
@@ -86,11 +86,11 @@ impl Int128
         result.hi = cast(s64) (a + (c >> 32))
         result.lo = cast(s64) (c << 32)
         result.lo += cast(s64) (b)
-        if result.lo < b result.hi += 1
+        if result.lo < b do result.hi += 1
 
         if negate
         {
-            if result.lo == 0
+            if result.lo == 0 do
                 result.hi = -result.hi
             else
             {

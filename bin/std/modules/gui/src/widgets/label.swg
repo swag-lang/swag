@@ -61,7 +61,7 @@ impl IWnd for Label
 
             // Icon
             var color = iconColor
-            if !color.a
+            if !color.a do
                 color = (wndFlags & .Disabled) ? theme.colors.label_DisabledIcon : theme.colors.label_Icon
             icon.paint(painter, posIcon.x, posIcon.y, color)
         }
@@ -86,7 +86,7 @@ impl Label
 
         var sf: retval
         sf.flags |= .Clip
-        if labelFlags.has(.WordWrap)
+        if labelFlags.has(.WordWrap) do
             sf.flags.add(.WordWrap)
         sf.font = getFont()
         sf.horzAlignment = horzAlignmentText
@@ -101,9 +101,9 @@ impl Label
         }
         else
         {
-            if labelFlags.has(.LightText)
+            if labelFlags.has(.LightText) do
                 sf.palette[0] = theme.colors.label_TextLight
-            else
+            else do
                 sf.palette[0] = theme.colors.label_Text
             sf.palette[1] = theme.colors.label_Text1
             sf.palette[2] = theme.colors.label_Text2
@@ -118,7 +118,7 @@ impl Label
     {
         Debug.assert(parent != null)
         var pos = position
-        if pos.height == 0
+        if pos.height == 0 do
             pos.height = parent.getThemeMetrics().label_Height
         let lbl = Wnd.create'Label(parent, name, pos, id)
         return lbl

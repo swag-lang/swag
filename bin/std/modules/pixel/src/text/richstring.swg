@@ -53,7 +53,7 @@ impl RichString
     #[Swag.Mixin]
     internal func addChunk(idx: u64, space, eol: bool = false)
     {
-        if idx - startChunk == 0
+        if idx - startChunk == 0 do
             return
         chunk.isSpace       = space
         chunk.isEol         = eol
@@ -111,7 +111,7 @@ impl RichString
     // ```swag
     mtd set(text: string)
     {
-        if raw == text and chunks.count
+        if raw == text and chunks.count do
             return
         raw = text
         dirty = true
@@ -159,14 +159,14 @@ impl RichString
     // will only be recomputed if it's dirty (the text has changed) or if 'force' is true.
     mtd compute(force = false)
     {
-        if !dirty or force
+        if !dirty or force do
             return
         dirty = false
         chunks.clear()
         layoutRect.clear()
 
         var count = raw.length
-        if !count
+        if !count do
             return
 
         var startChunk = 0'u64
@@ -224,7 +224,7 @@ impl RichString
             }
 
             var (c, eat) = Utf8.decodeRune(sl)
-            if eat == 0
+            if eat == 0 do
                 break
 
             if c == "\n"
@@ -257,7 +257,7 @@ impl RichString
 
         // Remaining chunk
         Debug.assert(startChunk <= raw.length)
-        if startChunk < raw.length
+        if startChunk < raw.length do
             addChunk(raw.length)
     }
 }

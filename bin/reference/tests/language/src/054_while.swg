@@ -4,7 +4,7 @@
 #test
 {
     var i = 0
-    while i < 10
+    while i < 10 do
         i += 1
     @assert(i == 10)
 }
@@ -17,7 +17,7 @@ You can also `break` and `continue` inside a `while`.
     var i = 0
     while i < 10
     {
-        if i == 5
+        if i == 5 do
             break
         i += 1
     }

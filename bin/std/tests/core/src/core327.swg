@@ -15,9 +15,9 @@ struct A
     let itf = @compiler()
     let msg = itf.getMessage()
 
-    if msg.type.kind != .Struct
+    if msg.type.kind != .Struct do
         return
-    if !Reflection.hasAttribute(msg.type, GenOpEquals)
+    if !Reflection.hasAttribute(msg.type, GenOpEquals) do
         return
 
     let types = cast(const *TypeInfoStruct) msg.type
@@ -29,7 +29,7 @@ struct A
 
     visit f: types.fields
     {
-        if #index
+        if #index do
             sb.appendString(" and ")
         sb.appendFormat("% == other.%", f.name, f.name)
     }

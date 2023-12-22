@@ -74,18 +74,18 @@ impl Undo
         if kind == .SetFormFromModel
         {
             Memory.delete(mdlValue, mdlType)
-            visit f: oldForm
+            visit f: oldForm do
                 Memory.delete(f, mdlType)
         }
     }
 
     mtd acceptsType(type: typeinfo)->bool
     {
-        if mdlType == null
+        if mdlType == null do
             return true
-        if mdlType == type
+        if mdlType == type do
             return true
-        if mdlType == FormLine and type == FormArrow
+        if mdlType == FormLine and type == FormArrow do
             return true
         return false
     }
@@ -121,10 +121,10 @@ impl Undo
             visit s: selection
             {
                 let f = capture.forms[s]
-                if @kindof(f) != FormImage
+                if @kindof(f) != FormImage do
                     continue
                 let b = cast(*FormImage) @dataof(f)
-                if b.kind != .Image
+                if b.kind != .Image do
                     continue
                 oldImage.add(b.image)
             }
@@ -134,7 +134,7 @@ impl Undo
             visit s: selection
             {
                 let f = capture.forms[s]
-                if @kindof(f) != FormText
+                if @kindof(f) != FormText do
                     continue
                 let b = cast(*FormText) @dataof(f)
                 oldText.add(b.text)
@@ -145,7 +145,7 @@ impl Undo
             visit s: selection
             {
                 let f = capture.forms[s]
-                if @kindof(f) != FormText
+                if @kindof(f) != FormText do
                     continue
                 let b = cast(*FormText) @dataof(f)
                 oldText.add(b.fontName)
@@ -157,7 +157,7 @@ impl Undo
             visit s: selection
             {
                 let f = capture.forms[s]
-                if @kindof(f) != FormText
+                if @kindof(f) != FormText do
                     continue
                 let b = cast(*FormText) @dataof(f)
                 oldU32.add(cast(u32) b.fontStyle)
@@ -168,7 +168,7 @@ impl Undo
             visit s: selection
             {
                 let f = capture.forms[s]
-                if !acceptsType(@kindof(f))
+                if !acceptsType(@kindof(f)) do
                     continue
                 let save = cast(*BaseForm) Memory.new(mdlType)
                 f.copy(save, cast(*BaseForm) @dataof(f))
@@ -211,7 +211,7 @@ impl Undo
             visit s: selection
             {
                 let f = capture.forms[s]
-                if !acceptsType(@kindof(f))
+                if !acceptsType(@kindof(f)) do
                     continue
                 var val: u32
                 Reflection.getFieldValue(&val, valRef, @dataof(f), true)
@@ -293,10 +293,10 @@ impl Undo
             visit s, i: selection
             {
                 let f = capture.forms[s]
-                if @kindof(f) != FormImage
+                if @kindof(f) != FormImage do
                     continue
                 let b = cast(*FormImage) @dataof(f)
-                if b.kind != .Image
+                if b.kind != .Image do
                     continue
                 b.image = oldImg
                 b.dirty = true
@@ -306,7 +306,7 @@ impl Undo
             visit s, i: selection
             {
                 let f = capture.forms[s]
-                if @kindof(f) != FormText
+                if @kindof(f) != FormText do
                     continue
                 let b = cast(*FormText) @dataof(f)
                 b.text = text
@@ -317,7 +317,7 @@ impl Undo
             visit s, i: selection
             {
                 let f = capture.forms[s]
-                if @kindof(f) != FormText
+                if @kindof(f) != FormText do
                     continue
                 let b = cast(*FormText) @dataof(f)
                 b.fontName  = text
@@ -329,7 +329,7 @@ impl Undo
             visit s, i: selection
             {
                 let f = capture.forms[s]
-                if @kindof(f) != FormText
+                if @kindof(f) != FormText do
                     continue
                 let b = cast(*FormText) @dataof(f)
                 b.fontStyle = fontStyle
@@ -340,10 +340,10 @@ impl Undo
             visit s: selection
             {
                 let f = capture.forms[s]
-                if !acceptsType(@kindof(f))
+                if !acceptsType(@kindof(f)) do
                     continue
                 let bf = cast(*BaseForm) @dataof(f)
-                if bf.subKind != mdlValue.subKind
+                if bf.subKind != mdlValue.subKind do
                     continue
                 f.copy(cast(*BaseForm) @dataof(f), mdlValue)
             }
@@ -352,7 +352,7 @@ impl Undo
             visit s: selection
             {
                 let f = capture.forms[s]
-                if !acceptsType(@kindof(f))
+                if !acceptsType(@kindof(f)) do
                     continue
                 Reflection.setFieldValue(@dataof(f), valRef, &valU32, true)
             }
@@ -416,7 +416,7 @@ impl Undo
         case MoveCapture:
             capture.backImagePos.x += newPosX
             capture.backImagePos.y += newPosY
-            visit f: capture.forms
+            visit f: capture.forms do
                 f.moveForm(newPosX, newPosY)
             capture.width  += newSizeX
             capture.height += newSizeY
@@ -501,7 +501,7 @@ impl Undo
 
         case CreateForm:
             toFreeForms.clear()
-            visit f: oldForms
+            visit f: oldForms do
                 capture.forms.add(f)
         }
 
@@ -546,10 +546,10 @@ impl Undo
             visit s, i: selection
             {
                 let f = capture.forms[s]
-                if @kindof(f) != FormImage
+                if @kindof(f) != FormImage do
                     continue
                 let b = cast(*FormImage) @dataof(f)
-                if b.kind != .Image
+                if b.kind != .Image do
                     continue
                 b.image = oldImage[i]
                 b.dirty = true
@@ -559,7 +559,7 @@ impl Undo
             visit s, i: selection
             {
                 let f = capture.forms[s]
-                if @kindof(f) != FormText
+                if @kindof(f) != FormText do
                     continue
                 let b = cast(*FormText) @dataof(f)
                 b.text = oldText[i]
@@ -570,7 +570,7 @@ impl Undo
             visit s, i: selection
             {
                 let f = capture.forms[s]
-                if @kindof(f) != FormText
+                if @kindof(f) != FormText do
                     continue
                 let b = cast(*FormText) @dataof(f)
                 b.fontName = oldText[i]
@@ -582,7 +582,7 @@ impl Undo
             visit s, i: selection
             {
                 let f = capture.forms[s]
-                if @kindof(f) != FormText
+                if @kindof(f) != FormText do
                     continue
                 let b = cast(*FormText) @dataof(f)
                 b.fontStyle = acast oldU32[i]
@@ -593,10 +593,10 @@ impl Undo
             visit s, i: selection
             {
                 let f = capture.forms[s]
-                if !acceptsType(@kindof(f))
+                if !acceptsType(@kindof(f)) do
                     continue
                 let bf = cast(*BaseForm) @dataof(f)
-                if bf.subKind != mdlValue.subKind
+                if bf.subKind != mdlValue.subKind do
                     continue
                 f.copy(cast(*BaseForm) @dataof(f), oldForm[i])
             }
@@ -605,7 +605,7 @@ impl Undo
             visit s, i: selection
             {
                 let f = capture.forms[s]
-                if !acceptsType(@kindof(f))
+                if !acceptsType(@kindof(f)) do
                     continue
                 var val = oldU32[i]
                 Reflection.setFieldValue(@dataof(f), valRef, &val, true)
@@ -628,7 +628,7 @@ impl Undo
         case MoveCapture:
             capture.backImagePos.x += -newPosX
             capture.backImagePos.y += -newPosY
-            visit f: capture.forms
+            visit f: capture.forms do
                 f.moveForm(-newPosX, -newPosY)
             capture.width  -= newSizeX
             capture.height -= newSizeY

@@ -22,9 +22,9 @@ impl JSon
 {
     mtd writeIndent()
     {
-        if !options.saveBlanks
+        if !options.saveBlanks do
             return
-        loop indent * options.indentLevel
+        loop indent * options.indentLevel do
             output.addNative(` `'u8)
     }
 
@@ -114,7 +114,7 @@ impl JSon
         output.addNative(`"`'u8)
         output.addBytes(val.name)
         output.addBytes("\":")
-        if options.saveBlanks
+        if options.saveBlanks do
             output.addBytes(" ")
     }
 
@@ -132,7 +132,7 @@ impl JSon
     {
         lastSeekValue = output.getSeek()
         output.addBytes(",")
-        if options.saveBlanks
+        if options.saveBlanks do
             output.addBytes("\n")
         writeIndent()
     }

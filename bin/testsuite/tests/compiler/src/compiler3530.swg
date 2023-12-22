@@ -14,7 +14,7 @@ typealias Vec2 = StaticArray'(f32, 2)
 func(T) dot(x, y: T)->f32
 {
     var result: f32
-    loop i: x
+    loop i: x do
         result += x[i] * y[i]
     return result
 }

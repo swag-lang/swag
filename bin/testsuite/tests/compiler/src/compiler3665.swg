@@ -13,7 +13,7 @@ func getField(type: typeinfo, name: string)->const* TypeValue
         let typeStruct = cast(const* TypeInfoStruct) type
         visit it: typeStruct.fields
         {
-            if it.name == name
+            if it.name == name do
                 return it
         }
     }

@@ -81,7 +81,7 @@ public impl IImageDecoder for Decoder
         let size = dref cast(const *u32) dataof
         if size == @sizeof(CoreHeader)
         {
-            if dataof + @sizeof(CoreHeader) > last
+            if dataof + @sizeof(CoreHeader) > last do
                 throw InvalidFormatError{"invalid source buffer"}
             let ch = cast(const *CoreHeader) dataof
             dataof += @sizeof(Header)
@@ -94,7 +94,7 @@ public impl IImageDecoder for Decoder
         }
         else
         {
-            if dataof + @sizeof(Header) > last
+            if dataof + @sizeof(Header) > last do
                 throw InvalidFormatError{"invalid source buffer"}
 
             Memory.copy(&bh, dataof, @sizeof(Header))
@@ -115,20 +115,20 @@ public impl IImageDecoder for Decoder
         }
 
         // Palette
-        if bh.biCompression != BI_RGB and bh.biCompression != BI_BITFIELDS
+        if bh.biCompression != BI_RGB and bh.biCompression != BI_BITFIELDS do
             throw UnsupportedFormatError{"unsupported compression"}
 
-        if !options.decodePixels
+        if !options.decodePixels do
             return result
         result.allocPixels()
 
         // Decode
-        if bfOffBits
+        if bfOffBits do
             dataof = @dataof(buffer) + bfOffBits
 
         let bc8 = bh.biBitCount / 8
         let byteSize = cast(u64) (bh.biWidth * bh.biHeight * bc8)
-        if dataof + byteSize > last
+        if dataof + byteSize > last do
             throw InvalidFormatError{"invalid source buffer"}
 
         switch bh.biBitCount

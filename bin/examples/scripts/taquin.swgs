@@ -66,7 +66,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         {
             loop j: NumElems
             {
-                if toAdd.count == 1
+                if toAdd.count == 1 do
                     break
                 let idx = Random.shared().nextU64(0, toAdd.count)
                 g_Matrix[i, j] = toAdd[idx]
@@ -90,7 +90,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             loop j: NumElems
             {
                 let cur = &g_Matrix[i, j]
-                if cur.empty
+                if cur.empty do
                     continue
                 let rect = tilePos(i, j)
                 if rect.contains(pt)
@@ -103,21 +103,21 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
         }
 
     case MousePressed:
-        if g_Moving break
-        if g_HotX == -1 break
+        if g_Moving do break
+        if g_HotX == -1 do break
 
         let i = g_HotX
         let j = g_HotY
 
         let cur = &g_Matrix[i, j]
-        if i and g_Matrix[i-1, j].empty // Move to the left
+        if i and g_Matrix[i-1, j].empty do // Move to the left
             cur.moveX = -1
-        if j and g_Matrix[i, j-1].empty // Move to the top
+        if j and g_Matrix[i, j-1].empty do // Move to the top
             cur.moveY = -1
 
-        if i != NumElems-1 and g_Matrix[i+1, j].empty // Move to the right
+        if i != NumElems-1 and g_Matrix[i+1, j].empty do // Move to the right
             cur.moveX = 1
-        if j != NumElems-1 and g_Matrix[i, j+1].empty // Move to the bottom
+        if j != NumElems-1 and g_Matrix[i, j+1].empty do // Move to the bottom
             cur.moveY = 1
 
         if cur.moveX or cur.moveY
@@ -140,7 +140,7 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
             loop j: NumElems
             {
                 let cur = &g_Matrix[i, j]
-                if cur.empty
+                if cur.empty do
                     continue
 
                 // Dest position
@@ -208,6 +208,6 @@ func onEvent(wnd: *Wnd, evt: *Event)->bool
 
 #main
 {
-    func test(app: *Application) = if Env.hasArg("swag.test") app.maxRunFrame = 100
+    func test(app: *Application) = if Env.hasArg("swag.test") do app.maxRunFrame = 100
     Application.runSurface(100, 100, 600, 800, "Taquin", hook: &onEvent, init: &test)
 }

@@ -38,14 +38,14 @@ private var cards: Array'Card
 private func sort()
 {
     cards.sort(func(a, b) {
-        if a.value != b.value
+        if a.value != b.value do
             return a.value <=> b.value
 
         loop i: a.val
         {
             let it0 = map[a.val[i]]
             let it1 = map[b.val[i]]
-            if it0 != it1
+            if it0 != it1 do
                 return it0 <=> it1
         }
 
@@ -82,13 +82,13 @@ func day7B()
         {
             let it = map[c]
             card.count[it] += 1
-            if it
+            if it do
                 maxCount = Math.max(maxCount, card.count[it])
         }
 
         visit c, i: card.count
         {
-            if c and i
+            if c and i do
                 card.countV[c] += 1
         }
 
@@ -113,7 +113,7 @@ func day7B()
     sort()
 
     var total: u64
-    visit c, idx: cards
+    visit c, idx: cards do
         total += (idx+1) * c.bid
 
     //Console.print("total: ", total)

@@ -30,7 +30,7 @@ impl BlendColor
             destVec4 = vec4
             factor = 0
         }
-        else if factor >= 1.0
+        elif factor >= 1.0
         {
             curVec4, startVec4, destVec4 = target.toVector4()
             return

@@ -42,7 +42,7 @@ func displayPage0(painter: *Pixel.Painter)
 {
     var pen = Pen.createSolid(Argb.Black, 20)
 
-    if g_Pattern
+    if g_Pattern do
         pen.dashStyle = .Dot
 
     var trs = painter.getTransform()
@@ -649,7 +649,7 @@ impl IWnd for MyView
         {
             Threading.Thread.sleep(100'ms)
             g_Page = (g_Page + 1) % MaxPages
-            if g_Page == 0
+            if g_Page == 0 do
                 Env.exit(0)
             invalidate()
         }
@@ -657,7 +657,7 @@ impl IWnd for MyView
 
     mtd impl onKeyEvent(evt: *KeyEvent)
     {
-        if evt.kind != .KeyPressed
+        if evt.kind != .KeyPressed do
             return
         evt.accepted = true
 
@@ -676,7 +676,7 @@ impl IWnd for MyView
             invalidate()
 
         case F4:
-            if evt.modifiers & .Alt
+            if evt.modifiers & .Alt do
                 surface.destroy()
             else
             {
@@ -719,7 +719,7 @@ impl IWnd for MyView
 
     surface.show()
 
-    if Env.hasArg("swag.test")
+    if Env.hasArg("swag.test") do
         g_Page = 0
 
     app.run()

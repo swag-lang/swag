@@ -151,7 +151,7 @@ public impl enum Argb
         let t = @typeof(Argb)
         visit it: t.values
         {
-            if it.name == name
+            if it.name == name do
                 return dref cast(const *Argb) it.value
         }
 

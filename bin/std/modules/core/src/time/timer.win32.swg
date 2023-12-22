@@ -6,7 +6,7 @@ using Win32
 internal func timerEntry(param: *void, _timerOrWaitFired: BOOL)
 {
     let t = cast(*Timer) param
-    if !@getcontext()
+    if !@getcontext() do
         @setcontext(t.context)
     t.userLambda(dref t)
 }
@@ -35,7 +35,7 @@ impl Timer
     // Release the timer
     mtd release()
     {
-        if !handle
+        if !handle do
             return
 
         let evt = assume CreateEventA(null, FALSE, FALSE, null)

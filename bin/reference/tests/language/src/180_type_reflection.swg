@@ -83,9 +83,9 @@ The `TypeInfo` structure contains a different enum value for each type.
     #[Swag.ConstExpr]
     func getType(needAString: bool)->typeinfo
     {
-        if needAString
+        if needAString do
             return string
-        else
+        else do
             return s32
     }
 

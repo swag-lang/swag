@@ -42,9 +42,9 @@ func day2A()
 
         var count: [26] s32
 
-        visit c: pwd
+        visit c: pwd do
             count[c-`a`] += 1
-        if count[letter] >= min and count[letter] <= max
+        if count[letter] >= min and count[letter] <= max do
             total += 1
     }
 

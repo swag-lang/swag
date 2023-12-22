@@ -71,7 +71,7 @@ func myOtherFunc()
 
     // This is equivalent to:
     var cpt2 = catch count("filename")
-    if @err() != null return
+    if @err() != null do return
 }
 
 /**
@@ -93,7 +93,7 @@ func myFunc2() throw
 {
     // If 'count()' raises an error, 'myFunc2' will return with the same error
     var cpt = catch count("filename")
-    if @err() != null
+    if @err() != null do
         throw @err()
 }
 
@@ -218,7 +218,7 @@ func testDefer(err: bool) throw
     defer(err)      g_Defer += 1    // This will be called in case an error is raised, before exiting
     defer(noerr)    g_Defer += 2    // This will only be called in case an error is not raised
     defer           g_Defer += 3    // This will be called in both cases
-    if err
+    if err do
         raiseError()
 }
 

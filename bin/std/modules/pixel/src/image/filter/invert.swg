@@ -6,11 +6,11 @@ impl Image
     public mtd invert()
     {
         // unsupported pixel format
-        if pf.channels() < 3 or pf.bitDepth() != 8
+        if pf.channels() < 3 or pf.bitDepth() != 8 do
             return
 
         var convArr: [256] u8 = undefined
-        loop i: 256 convArr[i] = cast(u8) (255 - i)
+        loop i: 256 do convArr[i] = cast(u8) (255 - i)
 
         let f = &convArr[0]
         visitPixels(f)

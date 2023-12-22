@@ -5,8 +5,8 @@
     var cpt = 0
     loop,back i: 6 until 8
     {
-        if cpt == 0 @assert(i == 7)
-        if cpt == 1 @assert(i == 6)
+        if cpt == 0 do @assert(i == 7)
+        if cpt == 1 do @assert(i == 6)
         g += i
         cpt += 1
     }

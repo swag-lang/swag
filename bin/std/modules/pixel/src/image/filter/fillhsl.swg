@@ -21,7 +21,7 @@ impl Image
     public mtd fillHsl(fillType: FillHslType , color: Color = Argb.White)
     {
         // unsupported pixel format
-        if pf.channels() < 3 or pf.bitDepth() != 8
+        if pf.channels() < 3 or pf.bitDepth() != 8 do
             return
 
         var hsl = color.toHsl()
@@ -38,7 +38,7 @@ impl Image
                 let col = Color.fromHsl(factor0, 1, 0.5)
                 if swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else      { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
-                if image.pf.hasAlpha() pix[3] = 255
+                if image.pf.hasAlpha() do pix[3] = 255
             }
 
         case HueHorz:
@@ -49,7 +49,7 @@ impl Image
                 let col = Color.fromHsl(factor0, 1, 0.5)
                 if swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else      { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
-                if pf.hasAlpha() pix[3] = 255
+                if pf.hasAlpha() do pix[3] = 255
                 pix += bpp8
             }
 
@@ -68,7 +68,7 @@ impl Image
                 let col = Color.fromHsl(params.hsl.h, factor0, 0.5)
                 if swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else      { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
-                if image.pf.hasAlpha() pix[3] = 255
+                if image.pf.hasAlpha() do pix[3] = 255
             }
 
         case SaturationHorz:
@@ -79,7 +79,7 @@ impl Image
                 let col = Color.fromHsl(hsl.h, factor0, 0.5)
                 if swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else      { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
-                if pf.hasAlpha() pix[3] = 255
+                if pf.hasAlpha() do pix[3] = 255
                 pix += bpp8
             }
 
@@ -98,7 +98,7 @@ impl Image
                 let col = Color.fromHsl(params.hsl.h, 1, factor0)
                 if swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else      { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
-                if image.pf.hasAlpha() pix[3] = 255
+                if image.pf.hasAlpha() do pix[3] = 255
             }
 
         case LightnessHorz:
@@ -109,7 +109,7 @@ impl Image
                 let col = Color.fromHsl(hsl.h, hsl.s, factor0)
                 if swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else      { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
-                if pf.hasAlpha() pix[3] = 255
+                if pf.hasAlpha() do pix[3] = 255
                 pix += bpp8
             }
 
@@ -128,7 +128,7 @@ impl Image
                 let col = Color.fromHsl(factor0, factor1, 0.5)
                 if params.swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else             { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
-                if image.pf.hasAlpha() pix[3] = 255
+                if image.pf.hasAlpha() do pix[3] = 255
             }
 
         case HueLightness:
@@ -141,7 +141,7 @@ impl Image
                 let col = Color.fromHsl(factor0, 1, factor1)
                 if params.swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else             { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
-                if image.pf.hasAlpha() pix[3] = 255
+                if image.pf.hasAlpha() do pix[3] = 255
             }
 
         case SaturationLightness:
@@ -156,7 +156,7 @@ impl Image
                 let col = Color.fromHsl(params.hsl.h, factor0, l)
                 if params.swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else             { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
-                if image.pf.hasAlpha() pix[3] = 255
+                if image.pf.hasAlpha() do pix[3] = 255
             }
 
         case GreenBlue:
@@ -169,7 +169,7 @@ impl Image
                 let col = Color.fromRgbf(params.item0, factor0, factor1)
                 if params.swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else             { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
-                if image.pf.hasAlpha() pix[3] = 255
+                if image.pf.hasAlpha() do pix[3] = 255
             }
 
         case RedBlue:
@@ -182,7 +182,7 @@ impl Image
                 let col = Color.fromRgbf(factor0, params.item0, factor1)
                 if params.swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else             { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
-                if image.pf.hasAlpha() pix[3] = 255
+                if image.pf.hasAlpha() do pix[3] = 255
             }
 
         case RedGreen:
@@ -195,7 +195,7 @@ impl Image
                 let col = Color.fromRgbf(factor0, factor1, params.item0)
                 if params.swapRB { pix[0] = col.r; pix[1] = col.g; pix[2] = col.b; }
                 else             { pix[0] = col.b; pix[1] = col.g; pix[2] = col.r; }
-                if image.pf.hasAlpha() pix[3] = 255
+                if image.pf.hasAlpha() do pix[3] = 255
             }
         }
     }

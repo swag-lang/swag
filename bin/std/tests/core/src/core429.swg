@@ -13,7 +13,7 @@ const File = """
     visit l: lines
     {
         let parts = Tokenize.split(l, `:`'u8)
-        if parts.count != 2 continue
+        if parts.count != 2 do continue
         let name  = parts[0]
         let value = parts[1]
         sb.appendFormat("const % = %\n", name, value)

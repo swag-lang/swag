@@ -406,7 +406,7 @@ bool Parser::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind
     return true;
 }
 
-bool Parser::doScopedStatement(AstNode* parent, AstNode** result)
+bool Parser::doScopedStatement(AstNode* parent, AstNode** result, bool mustHaveDo)
 {
     SWAG_VERIFY(token.id != TokenId::SymSemiColon, error(token, Err(Err1187), Nte(Nte0153)));
 
@@ -416,6 +416,12 @@ bool Parser::doScopedStatement(AstNode* parent, AstNode** result)
     }
     else
     {
+        if (mustHaveDo)
+        {
+            SWAG_VERIFY(token.id == TokenId::KwdDo, error(token, Err(Err0530)));
+            SWAG_CHECK(eatToken());
+        }
+
         SWAG_ASSERT(!currentScope->isGlobalOrImpl());
 
         auto     newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);

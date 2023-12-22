@@ -10,7 +10,7 @@ impl Library
     func init() throw
     {
         var str = getFolder()
-        if !Directory.exists(str)
+        if !Directory.exists(str) do
             Directory.create(str)
     }
 
@@ -48,7 +48,7 @@ impl Library
     mtd addFile(name: string)
     {
         var file = catch File.getFileInfo(name)
-        if @err() != null
+        if @err() != null do
             return
         files.add(file)
     }

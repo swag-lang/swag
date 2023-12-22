@@ -3,7 +3,7 @@
     func toto(cb: closure())
     {
         @assert(cb == null)
-        if cb
+        if cb do
             cb()
     }
 

@@ -20,7 +20,7 @@ func roundUpToPowerOf2(x: u32)->u32
 func roundDownToPowerOf2(x: u32)->u32
 {
     var i = 1'u32
-    while (i << 1) <= x
+    while (i << 1) <= x do
         i <<= 1
     return i
 }
@@ -153,8 +153,8 @@ func gcd(a0, b0: s64)->s64
 #[ConstExpr]
 func lcm(a, b: s64)->s64
 {
-    if a > b
+    if a > b do
         return a / gcd(a,b)*b
-    else
+    else do
         return b / gcd(a,b)*a
 }

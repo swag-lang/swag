@@ -14,6 +14,6 @@ func toto(param: s32)
     case 1: color = 1
     }
 
-    if param == 0 pix[0] = color
-    if param == 1 pix[1] = color
+    if param == 0 do pix[0] = color
+    if param == 1 do pix[1] = color
 }

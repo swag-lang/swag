@@ -34,7 +34,7 @@
     loop 10
     {
         defer G += 1
-        if G == 2
+        if G == 2 do
             break   // will be called here, before breaking the loop
         // will be called here also
     }
@@ -71,7 +71,7 @@ It's typically used to unregister/destroy a resource, by putting the release cod
             releaseResource(&resource)
         }
 
-        if #index == 2
+        if #index == 2 do
             break
     }
 

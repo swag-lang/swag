@@ -74,15 +74,15 @@ internal impl TagBin
 
     mtd canConvertType(toType, fromType: typeinfo)->bool
     {
-        if toType == fromType
+        if toType == fromType do
             return true
 
         var fromStruct: const *Swag.TypeInfoStruct
         var toStruct:   const *Swag.TypeInfoStruct
 
-        if Reflection.isStruct(fromType)
+        if Reflection.isStruct(fromType) do
             fromStruct = cast(const *Swag.TypeInfoStruct) fromType
-        if Reflection.isStruct(toType)
+        if Reflection.isStruct(toType) do
             toStruct = cast(const *Swag.TypeInfoStruct) toType
 
         // s64/float/bool/rune to s64/float/bool/rune
@@ -100,7 +100,7 @@ internal impl TagBin
             if Reflection.isArray(toType)
             {
                 let toArr = cast(const *Swag.TypeInfoArray) toType
-                if canConvertType(toArr.pointedType, fromArr.pointedType)
+                if canConvertType(toArr.pointedType, fromArr.pointedType) do
                     return true
             }
 
@@ -109,7 +109,7 @@ internal impl TagBin
                 // Static array to dynamic array
                 if toStruct.fromGeneric == Core.Array
                 {
-                    if canConvertType(toStruct.generics[0].pointedType, fromArr.pointedType)
+                    if canConvertType(toStruct.generics[0].pointedType, fromArr.pointedType) do
                         return true
                 }
 
@@ -137,14 +137,14 @@ internal impl TagBin
                 if Reflection.isArray(toType)
                 {
                     let toArr = cast(const *Swag.TypeInfoArray) toType
-                    if canConvertType(toArr.pointedType, fromStruct.generics[0].pointedType)
+                    if canConvertType(toArr.pointedType, fromStruct.generics[0].pointedType) do
                         return true
                 }
 
                 // Dynamic array to dynamic array
                 elif toStruct and toStruct.fromGeneric == Core.Array
                 {
-                    if canConvertType(toStruct.generics[0].pointedType, fromStruct.generics[0].pointedType)
+                    if canConvertType(toStruct.generics[0].pointedType, fromStruct.generics[0].pointedType) do
                         return true
                 }
 
@@ -208,7 +208,7 @@ impl TagBin
     mtd beginRoot() throw
     {
         let sig = stream.readNative'u32()
-        if sig != Write.TagBinSignatures.Root
+        if sig != Write.TagBinSignatures.Root do
             throw SerializationError{"invalid root signature"}
     }
 
@@ -222,12 +222,12 @@ impl TagBin
         let sec = newSection()
         sec.kind    = kind
         sec.skipFat = skipFat
-        if kind != .Unordered
+        if kind != .Unordered do
             return
 
         // Read fat position and count
         var sig = stream.readNative'u32()
-        if sig != Write.TagBinSignatures.Fat
+        if sig != Write.TagBinSignatures.Fat do
             throw SerializationError{"invalid fat signature"}
         let fatSeek = stream.readNative'u64()
         var fatCount = stream.readNative'u64()
@@ -245,7 +245,7 @@ impl TagBin
             // Seek to fat and read it
             stream.setSeek(fatSeek)
             sig = stream.readNative'u32()
-            if sig != Write.TagBinSignatures.Fat
+            if sig != Write.TagBinSignatures.Fat do
                 throw SerializationError{"invalid fat signature"}
 
             while fatCount
@@ -267,7 +267,7 @@ impl TagBin
         // Fat is after the datas. We need to be sure to point
         // to what's next, except in raw mode where we are already at
         // the correct offset
-        if sec.kind != .Raw
+        if sec.kind != .Raw do
             stream.setSeek(sec.afterFatSeek)
 
         releaseSection()
@@ -284,7 +284,7 @@ impl TagBin
         {
             // Read version
             let sig = stream.readNative'u32()
-            if sig != Write.TagBinSignatures.Version
+            if sig != Write.TagBinSignatures.Version do
                 throw SerializationError{"invalid version signature"}
             let streamVersion = stream.readNative'u32()
 
@@ -297,12 +297,12 @@ impl TagBin
 
                 // The stream version is more recent than the code that tries to read it.
                 // Specific error, except if we want to try forward compatibility
-                if !options.tryForward and curVersion < streamVersion
+                if !options.tryForward and curVersion < streamVersion do
                     throw InvalidVersion{wantedVersion: curVersion, foundVersion: streamVersion}
 
                 // If this is the exact same version, then no need to read the fat, because everything
                 // is supposed to be in the correct order
-                if curVersion == streamVersion
+                if curVersion == streamVersion do
                     skipFat = true
             }
 
@@ -325,7 +325,7 @@ impl TagBin
         let sec = sections.back()
 
         // If section is raw, then we just have values without versionning
-        if sec.kind == .Raw
+        if sec.kind == .Raw do
             return true
 
         // If section is ordered, then we do not have a fat, but just elements
@@ -346,13 +346,13 @@ impl TagBin
                     Debug.assert(value != null)
                     reqCrcName = Hash.Crc32.compute(cast(string) value)
                     ent = sec.mapSeek.find(reqCrcName)
-                    if ent
+                    if ent do
                         break
                 }
             }
 
             // The requested field is not there, just ignore it
-            if !ent
+            if !ent do
                 return false
 
             // Otherwise we seek to the field in the stream
@@ -361,25 +361,25 @@ impl TagBin
 
         // Read te name signature. We should have the crc
         let crcName = stream.readNative'u32()
-        if crcName != reqCrcName
+        if crcName != reqCrcName do
             throw SerializationError{"bad field name", field: val}
 
-        // Read type signature. 
+        // Read type signature.
         // If they match, we are done. The value will be right after this.
         let crcType = stream.readNative'u32()
-        if crcType == val.pointedType.crc32
+        if crcType == val.pointedType.crc32 do
             return true
 
         // We try to find a registered type with the crc from the stream.
         let streamType = Reflection.crcToType(crcType)
 
         // The type from the stream does not exists anymore...
-        if !streamType
+        if !streamType do
             throw SerializationError{"unknown field type", field: val}
 
         // The type exists, but we do not have a way to convert it to the requested
         // type.
-        if !canConvertType(val.pointedType, streamType)
+        if !canConvertType(val.pointedType, streamType) do
             throw SerializationError{"cannot convert field type", field: val}
 
         // It's an array in the stream, but now we want a single value.
@@ -388,7 +388,7 @@ impl TagBin
         {
             convertArrayToVal = false
             let sig = stream.readNative'u32()
-            if sig != Write.TagBinSignatures.Sequence
+            if sig != Write.TagBinSignatures.Sequence do
                 throw SerializationError{"stream is corrupted", field: val}
             discard stream.readNative'u64()
         }
@@ -425,7 +425,7 @@ impl TagBin
         {
             let sig = stream.readNative'u32()
 
-            if sig != Write.TagBinSignatures.Sequence
+            if sig != Write.TagBinSignatures.Sequence do
                 throw SerializationError{"stream is corrupted"}
 
             // 0 for a dynamic array, > 0 for a static array
@@ -433,7 +433,7 @@ impl TagBin
         }
 
         // If we need to type conversion, we must read element by element
-        if convertNextNative
+        if convertNextNative do
             return false
 
         // Dynamic array of raw serializable types
@@ -482,7 +482,7 @@ impl TagBin
     #[Warn("wrn0002", WarnLevel.Disable)]
     mtd toNextSequenceElement(countElem: *u64)->bool
     {
-        if dref countElem == 0
+        if dref countElem == 0 do
             return false
         dref countElem -= 1
         return true
@@ -490,7 +490,7 @@ impl TagBin
 
     mtd getVersion()->u32
     {
-        if sections.isEmpty()
+        if sections.isEmpty() do
             return 0
         return sections.back().version
     }

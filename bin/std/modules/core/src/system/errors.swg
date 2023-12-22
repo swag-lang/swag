@@ -1,18 +1,18 @@
 #global public
 #global namespace Errors
 
-struct InvalidFormatError       
-{ 
+struct InvalidFormatError
+{
     using base: Swag.BaseError
 }
 
 struct UnsupportedFormatError
-{ 
+{
     using base: Swag.BaseError
 }
 
 struct BadParameterError
-{ 
+{
     using base: Swag.BaseError
 }
 
@@ -54,14 +54,14 @@ struct InvalidFileNameError
 struct InvalidVersion
 {
     wantedVersion:   u32
-    foundVersion:    u32   
+    foundVersion:    u32
 }
 
 // Make a string persistent for errors.
 // That kind of string can be stored in an error struct.
 func mkString(str: string)->string
-{    
-    if str == null 
+{
+    if str == null  do
         return null
 
     let count = @countof(str)

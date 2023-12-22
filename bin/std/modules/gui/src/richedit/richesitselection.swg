@@ -17,7 +17,7 @@ internal impl RichEditCtrl
         }
 
         // Line is not concerned
-        if x < selRectangle.x
+        if x < selRectangle.x do
             return false
 
         var re = rb
@@ -59,7 +59,7 @@ internal impl RichEditCtrl
 
     mtd computeRectangularSelection(beg, end: RichEditCursor)
     {
-        if !hasSelRect
+        if !hasSelRect do
             return
 
         var size = getXExtent()
@@ -67,7 +67,7 @@ internal impl RichEditCtrl
         var ptBeg = getCursorDisplayPos(beg)
         var ptEnd = getCursorDisplayPos(end)
 
-        if ptBeg.x > ptEnd.x
+        if ptBeg.x > ptEnd.x do
             swap(&ptBeg, &ptEnd)
 
         selRectangle.x = ptBeg.x
@@ -106,9 +106,9 @@ impl RichEditCtrl
 
     mtd isSelectionEmpty()->bool
     {
-        if selBeg.lineIndex != cursorPos.lineIndex
+        if selBeg.lineIndex != cursorPos.lineIndex do
             return false
-        if selBeg.charPosInLine != cursorPos.charPosInLine
+        if selBeg.charPosInLine != cursorPos.charPosInLine do
             return false
         return true
     }
@@ -123,11 +123,11 @@ impl RichEditCtrl
             return result
         }
 
-        if selBeg.lineIndex < cursorPos.lineIndex
+        if selBeg.lineIndex < cursorPos.lineIndex do
             return selBeg
-        if selBeg.lineIndex > cursorPos.lineIndex
+        if selBeg.lineIndex > cursorPos.lineIndex do
             return cursorPos
-        if selBeg.charPosInLine <= cursorPos.charPosInLine
+        if selBeg.charPosInLine <= cursorPos.charPosInLine do
             return selBeg
         return cursorPos
     }
@@ -142,20 +142,20 @@ impl RichEditCtrl
             return result
         }
 
-        if selBeg.lineIndex < cursorPos.lineIndex
+        if selBeg.lineIndex < cursorPos.lineIndex do
             return cursorPos
-        if selBeg.lineIndex > cursorPos.lineIndex
+        if selBeg.lineIndex > cursorPos.lineIndex do
             return selBeg
-        if selBeg.charPosInLine <= cursorPos.charPosInLine
+        if selBeg.charPosInLine <= cursorPos.charPosInLine do
             return cursorPos
         return selBeg
     }
 
     mtd checkSelection()
     {
-        if selBeg.lineIndex >= lines.count
+        if selBeg.lineIndex >= lines.count do
             selBeg.lineIndex = lines.count - 1
-        if cursorPos.lineIndex >= lines.count
+        if cursorPos.lineIndex >= lines.count do
             cursorPos.lineIndex = lines.count - 1
 
         if firstVisibleLineView >= lines.count or lastVisibleLineView >= lines.count
@@ -167,10 +167,10 @@ impl RichEditCtrl
         }
 
         let back = lines.back()
-        if selBeg.lineIndex == lines.count - 1 and selBeg.charPosInLine > back.length()
+        if selBeg.lineIndex == lines.count - 1 and selBeg.charPosInLine > back.length() do
             selBeg.charPosInLine = back.length()
 
-        if cursorPos.lineIndex == lines.count - 1 and cursorPos.charPosInLine > back.length()
+        if cursorPos.lineIndex == lines.count - 1 and cursorPos.charPosInLine > back.length() do
             cursorPos.charPosInLine = back.length()
 
         computeRectangularSelection(getBegSelection(), getEndSelection())
@@ -178,9 +178,9 @@ impl RichEditCtrl
 
     mtd deleteSelection()
     {
-        if isReadOnly()
+        if isReadOnly() do
             return
-        if isSelectionEmpty()
+        if isSelectionEmpty() do
             return
 
         pushUndo()
@@ -265,12 +265,12 @@ impl RichEditCtrl
 
     mtd copyToClipboard()
     {
-        if isSelectionEmpty()
+        if isSelectionEmpty() do
             return
         var res = getTextPrivate(getBegSelection(), getEndSelection())
 
         registerClipboardFormat()
-        if clipFormat Clipboard.addData(clipFormat, res.styles.toSlice())
+        if clipFormat do Clipboard.addData(clipFormat, res.styles.toSlice())
 
         var txt = Utf8.fromUnicode(res.text.toSlice())
         Clipboard.addString(txt)
@@ -289,7 +289,7 @@ impl RichEditCtrl
             var st = Clipboard.getData(clipFormat)
             insertText(txt, st)
         }
-        else
+        else do
             insertText(txt)
 
         popUndo()
@@ -302,7 +302,7 @@ impl RichEditCtrl
         pushUndo()
         var beg = getBegSelection()
         var end = getEndSelection()
-        if end.charPosInLine == 0 and beg.lineIndex != end.lineIndex
+        if end.charPosInLine == 0 and beg.lineIndex != end.lineIndex do
             moveCursorLeft(&end)
         beg.charPosInLine = 0
         end.charPosInLine = lines[end.lineIndex].length()
@@ -318,16 +318,16 @@ impl RichEditCtrl
     {
         let line = lines[cursorPos.lineIndex]
         let len = line.length()
-        if !len
+        if !len do
             return
 
-        if cursorPos.charPosInLine == len
+        if cursorPos.charPosInLine == len do
             cursorPos.charPosInLine -= 1
         let cp = cursorPos.charPosInLine ? line.chars[selBeg.charPosInLine - 1] : 0'rune
         let c = selBeg.charPosInLine == len ? 0'rune : line.chars[selBeg.charPosInLine]
         let cn = cursorPos.charPosInLine != len - 1 ? line.chars[selBeg.charPosInLine + 1] : 0'rune
 
-        if Unicode.isSpace(c) and !Unicode.isSpace(cp) and !Unicode.isSpace(cn) and cursorPos.charPosInLine
+        if Unicode.isSpace(c) and !Unicode.isSpace(cp) and !Unicode.isSpace(cn) and cursorPos.charPosInLine do
             cursorPos.charPosInLine -= 1
 
         selBeg = cursorPos
@@ -335,9 +335,9 @@ impl RichEditCtrl
         // Blanks
         if (Unicode.isSpace(line.chars[selBeg.charPosInLine]))
         {
-            while selBeg.charPosInLine and Unicode.isSpace(line.chars[selBeg.charPosInLine - 1])
+            while selBeg.charPosInLine and Unicode.isSpace(line.chars[selBeg.charPosInLine - 1]) do
                 selBeg.charPosInLine -= 1
-            while cursorPos.charPosInLine < len and Unicode.isSpace(line.chars[cursorPos.charPosInLine])
+            while cursorPos.charPosInLine < len and Unicode.isSpace(line.chars[cursorPos.charPosInLine]) do
                 cursorPos.charPosInLine += 1
             return
         }
@@ -345,9 +345,9 @@ impl RichEditCtrl
         // A word
         if isWord(line.chars[cursorPos.charPosInLine])
         {
-            while selBeg.charPosInLine and isWord(line.chars[selBeg.charPosInLine - 1])
+            while selBeg.charPosInLine and isWord(line.chars[selBeg.charPosInLine - 1]) do
                 selBeg.charPosInLine -= 1
-            while (cursorPos.charPosInLine < len and isWord(line.chars[cursorPos.charPosInLine]))
+            while (cursorPos.charPosInLine < len and isWord(line.chars[cursorPos.charPosInLine])) do
                 cursorPos.charPosInLine += 1
             return
         }
@@ -355,16 +355,16 @@ impl RichEditCtrl
         // Nothing
         if !zapWordChar(line.chars[selBeg.charPosInLine])
         {
-            if selBeg.charPosInLine == len
+            if selBeg.charPosInLine == len do
                 selBeg.charPosInLine -= 1
-            else
+            else do
                 cursorPos.charPosInLine += 1
             return
         }
 
-        while selBeg.charPosInLine and zapWordChar(line.chars[selBeg.charPosInLine - 1])
+        while selBeg.charPosInLine and zapWordChar(line.chars[selBeg.charPosInLine - 1]) do
             selBeg.charPosInLine -= 1
-        while cursorPos.charPosInLine < len and zapWordChar(line.chars[cursorPos.charPosInLine])
+        while cursorPos.charPosInLine < len and zapWordChar(line.chars[cursorPos.charPosInLine]) do
             cursorPos.charPosInLine += 1
     }
 
@@ -383,7 +383,7 @@ impl RichEditCtrl
         var pos = getCaretPos(cursorPos)
         while pos.bottom() > sy + clientRect.height
         {
-            if !moveCursorUp(&cursorPos)
+            if !moveCursorUp(&cursorPos) do
                 break
             clearSelection()
             pos = getCaretPos(cursorPos)
@@ -404,7 +404,7 @@ impl RichEditCtrl
         var pos = getCaretPos(cursorPos)
         while pos.y < sy
         {
-            if !moveCursorDown(&cursorPos)
+            if !moveCursorDown(&cursorPos) do
                 break
             clearSelection()
             pos = getCaretPos(cursorPos)

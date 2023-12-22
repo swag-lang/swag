@@ -80,7 +80,7 @@ impl MainWnd
 
         libWnd.show(libraryMode)
 
-        if libraryMode
+        if libraryMode do
             libWnd.fill()
 
         applyLayout()

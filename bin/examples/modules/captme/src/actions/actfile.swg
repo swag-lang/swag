@@ -111,17 +111,17 @@ impl IActionUI for ActionFile
         case CmdIdUpdateLinkedImage:
             var txt = Format.toString("This will overwrite the original image.\n")
             txt += Format.toString("File is '%'", capture.linkedImage)
-            if MessageDlg.confirm(main.surface, txt) != Dialog.BtnYes
+            if MessageDlg.confirm(main.surface, txt) != Dialog.BtnYes do
                 break
             Cursor.wait()
             var img = capture.toImage()
             catch img.save(capture.linkedImage)
-            if @err() != null
+            if @err() != null do
                 MessageDlg.error(main.surface, cast(string) @err(), "Failed to update file !")
 
         case CmdIdDeleteCapture:
             let res = MessageDlg.confirm(main.surface, "This will delete the capture file.")
-            if res == MessageDlg.BtnYes
+            if res == MessageDlg.BtnYes do
                 main.recentWnd.removeRecent()
 
         case CmdIdDupCapture:
@@ -161,13 +161,13 @@ impl MainWnd
         }
 
         let dlg = FileDlg.create(surface, opt)
-        if dlg.doModal() != Dialog.BtnOk
+        if dlg.doModal() != Dialog.BtnOk do
             return
 
         let img = catch Image.load(dlg.getSelectedName())
-        if @err() != null
+        if @err() != null do
             MessageDlg.error(surface, cast(string) @err(), "Failed to load image !")
-        else
+        else do
             newCapture(img, dlg.getSelectedName())
     }
 
@@ -191,7 +191,7 @@ impl MainWnd
         }
 
         let dlg = FileDlg.create(surface, opt)
-        if dlg.doModal() != Dialog.BtnOk
+        if dlg.doModal() != Dialog.BtnOk do
             return
 
         Cursor.wait()
@@ -221,7 +221,7 @@ impl MainWnd
         let edit1 = EditCtrl.create(dlg, "Height", "512", {90, 47}, flags: .RightAlign)
         edit0.edit.setInputU64(16, 4096)
         edit1.edit.setInputU64(16, 4096)
-        if dlg.doModal() != Dialog.BtnOk
+        if dlg.doModal() != Dialog.BtnOk do
             return
 
         let (w, ?, ?) = catch StrConv.parseS32(edit0.edit.text)

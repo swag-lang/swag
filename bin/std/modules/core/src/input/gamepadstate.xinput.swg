@@ -39,7 +39,7 @@ impl GamePadState
         }
 
         // GamePadButton pressed state
-        loop i: 16'u16
+        loop i: 16'u16 do
             pressed[mapButtons[i]] = state.Gamepad.wButtons & cast(u16)(1 << i)
 
         // Move

@@ -64,20 +64,20 @@ func day5A()
             var y1 = StrConv.toS32(r.getCapture(4))
         }
 
-        if x0 != x1 and y0 != y1
+        if x0 != x1 and y0 != y1 do
             continue
 
         Core.orderMinMax(&x0, &x1)
         Core.orderMinMax(&y0, &y1)
 
-        if x0 != x1
+        if x0 != x1 do
             loop x: x0 to x1
             {
                 let c = ref (m.buffer + (x + y0*W))
                 total += (c == 1 ? 1 : 0)
                 c += 1
             }
-        elif y0 != y1
+        elif y0 != y1 do
             loop y: y0 to y1
             {
                 let c = ref (m.buffer + (x0 + y*W))

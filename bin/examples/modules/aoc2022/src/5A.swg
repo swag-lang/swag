@@ -69,7 +69,7 @@ func day5A()
         if moveMode
         {
             let res = r.grepAll(l)
-            if res.count == 0 continue
+            if res.count == 0 do continue
             var count   = assume StrConv.toU64(res[0].value)
             let colFrom = assume StrConv.toS32(res[1].value)-1
             let colTo   = assume StrConv.toS32(res[2].value)-1
@@ -92,9 +92,9 @@ func day5A()
             var stack = 0
             for var i = 0; i < l.length; i += 4
             {
-                if stack >= stacks.count
+                if stack >= stacks.count do
                     stacks.add("")
-                if l[i] == `[`
+                if l[i] == `[` do
                     stacks[stack].append(l[i+1])
                 stack += 1
             }
@@ -102,7 +102,7 @@ func day5A()
     }
 
     var total: String
-    visit s: stacks
+    visit s: stacks do
         total += s[0]
 
     //Console.print("total: ", total)

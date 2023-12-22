@@ -2,7 +2,7 @@ using Swag;
 
 func fact (v: s32)->s32
 {
-	if(v == 1)
+	if(v == 1) do
 		return 1;
 	let res = v * fact(v - 1);
 	return res;

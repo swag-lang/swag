@@ -221,13 +221,13 @@ impl Encoder
         imageY = cast(u16) image.height
 
         var xDiv8, yDiv8: u32
-        if imageX % 8 != 0
+        if imageX % 8 != 0 do
             xDiv8 = (imageX / 8) * 8'u32 + 8
-        else
+        else do
             xDiv8 = imageX
-        if imageY % 8 != 0
+        if imageY % 8 != 0 do
             yDiv8 = (imageY / 8) * 8'u32 + 8
-        else
+        else do
             yDiv8 = imageY
 
         bufferRGB.resize(cast(u64) xDiv8 * yDiv8)
@@ -254,7 +254,7 @@ impl Encoder
 
             var lastcolor: ColorRGB = undefined
             Memory.copy(&lastcolor, pdst + nrline * xDiv8 + imageX - 1, 3)
-            for var column = imageX; column < xDiv8; column += 1
+            for var column = imageX; column < xDiv8; column += 1 do
                 Memory.copy(pdst + nrline * xDiv8 + column, &lastcolor, 3)
         }
 
@@ -276,7 +276,7 @@ impl Encoder
 
         // Y completion
         Memory.copy(tmpline.buffer, pdst + (imageY - 1) * cast(u32) imageX, dimline)
-        for var nrLine = imageY; nrLine < yDiv8; nrLine += 1
+        for var nrLine = imageY; nrLine < yDiv8; nrLine += 1 do
             Memory.copy(pdst + nrLine * cast(u32) imageX, tmpline.buffer, dimline)
 
         imageY = cast(u16) yDiv8
@@ -311,14 +311,14 @@ impl Encoder
         dhtInfo.infoHTCbDC = 1
         dhtInfo.infoHTCbAC = 0x11
 
-        loop i: 16  dhtInfo.nrcodesYDC[i] = StdDcLuminanceNrCodes[i + 1]
-        loop i: 12  dhtInfo.valuesYDC[i] = StdDcLuminanceValues[i]
-        loop i: 16  dhtInfo.nrcodesYAC[i] = StdAcLuminanceNrCodes[i + 1]
-        loop i: 162 dhtInfo.valuesYAC[i] = StdAcLuminanceValues[i]
-        loop i: 16  dhtInfo.nrcodesCbDC[i] = StdDcChrominanceNrCodes[i + 1]
-        loop i: 12  dhtInfo.valuesCbDC[i] = StdDcChrominanceValues[i]
-        loop i: 16  dhtInfo.nrcodesCbAC[i] = StdAcChrominanceNrCodes[i + 1]
-        loop i: 162 dhtInfo.valuesCbAC[i] = StdAcChrominanceValues[i]
+        loop i: 16  do dhtInfo.nrcodesYDC[i] = StdDcLuminanceNrCodes[i + 1]
+        loop i: 12  do dhtInfo.valuesYDC[i] = StdDcLuminanceValues[i]
+        loop i: 16  do dhtInfo.nrcodesYAC[i] = StdAcLuminanceNrCodes[i + 1]
+        loop i: 162 do dhtInfo.valuesYAC[i] = StdAcLuminanceValues[i]
+        loop i: 16  do dhtInfo.nrcodesCbDC[i] = StdDcChrominanceNrCodes[i + 1]
+        loop i: 12  do dhtInfo.valuesCbDC[i] = StdDcChrominanceValues[i]
+        loop i: 16  do dhtInfo.nrcodesCbAC[i] = StdAcChrominanceNrCodes[i + 1]
+        loop i: 162 do dhtInfo.valuesCbAC[i] = StdAcChrominanceValues[i]
     }
 
     func computeHuffmanTable(nrCodes: const ^u8, stdTable: const ^u8, hT: ^BitString)
@@ -418,7 +418,7 @@ impl Encoder
         var posval = cast(s32) bs.length - 1
         while posval >= 0
         {
-            if value & Mask[posval]
+            if value & Mask[posval] do
                 bytenew |= cast(u8) Mask[bytepos]
             posval -= 1
             bytepos -= 1
@@ -556,7 +556,7 @@ impl Encoder
     func quantization(data: ^s8, fdtbl: ^f32, outData: ^s16)
     {
         var dataFloat: [64] f32
-        loop i: 64
+        loop i: 64 do
             dataFloat[i] = data[i]
 
         var dataptr = &dataFloat
@@ -662,12 +662,12 @@ impl Encoder
 
         quantization(componentDU, fdtbl, duDct)
 
-        loop i: 64
+        loop i: 64 do
             du[ZigZag[i]] = duDct[i]
         let diff = du[0] - dref dC
         dref dC = du[0]
 
-        if diff == 0
+        if diff == 0 do
             writeBits(hTDC[0])
         else
         {
@@ -677,7 +677,7 @@ impl Encoder
         }
 
         var end0pos = 63
-        while (end0pos > 0) and (du[end0pos] == 0)
+        while (end0pos > 0) and (du[end0pos] == 0) do
             end0pos -= 1
 
         if end0pos == 0
@@ -690,12 +690,12 @@ impl Encoder
         while i <= end0pos
         {
             let startpos = i
-            while (i <= end0pos) and (du[i] == 0)
+            while (i <= end0pos) and (du[i] == 0) do
                 i += 1
             var nrzeroes = i - startpos
             if nrzeroes >= 16
             {
-                loop nrmarker: 1 to nrzeroes / 16
+                loop nrmarker: 1 to nrzeroes / 16 do
                     writeBits(m16Zeroes)
                 nrzeroes = nrzeroes % 16
             }
@@ -706,7 +706,7 @@ impl Encoder
             i += 1
         }
 
-        if end0pos != 63
+        if end0pos != 63 do
             writeBits(eob)
     }
 

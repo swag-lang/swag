@@ -520,7 +520,7 @@ public impl Crc32
     {
         var cur = ~crc
         var length = @countof(data)
-        if !length
+        if !length do
             return
         var current = cast(const ^u32) @dataof(data)
 

@@ -27,7 +27,7 @@ impl IWnd for WrapLayoutCtrl
         var y = padding.y
         visit c: childs
         {
-            if c.wndFlags & .Hidden
+            if c.wndFlags & .Hidden do
                 continue
             resultHeight = y + wrapHeight
             var rect = Math.Rectangle{x, y, wrapWidth, wrapHeight}
