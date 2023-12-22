@@ -189,7 +189,7 @@ struct Parser
     bool doAttrDecl(AstNode* parent, AstNode** result);
     bool doAttrUse(AstNode* parent, AstNode** result, bool single = false);
     bool doEmbeddedInstruction(AstNode* parent, AstNode** result);
-    bool doEmbeddedStatement(AstNode* parent, AstNode** result);
+    bool doScopedStatement(AstNode* parent, AstNode** result);
     bool doStatementFor(AstNode* parent, AstNode** result, AstNodeKind kind);
     bool doStatement(AstNode* parent, AstNode** result);
     bool doGlobalCurlyStatement(AstNode* parent, AstNode** result);

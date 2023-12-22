@@ -4,6 +4,7 @@
 #include "Scoped.h"
 #include "ErrorIds.h"
 #include "ByteCodeGenJob.h"
+#include "LanguageSpec.h"
 
 bool Parser::doIf(AstNode* parent, AstNode** result)
 {
@@ -31,12 +32,12 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
         node->boolExpression->flags |= AST_GENERATED;
         node->boolExpression->inheritTokenLocation(varDecl);
 
-        SWAG_CHECK(doEmbeddedStatement(node, (AstNode**) &node->ifBlock));
+        SWAG_CHECK(doScopedStatement(node, (AstNode**) &node->ifBlock));
 
         if (token.id == TokenId::KwdElse)
         {
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doEmbeddedStatement(node, (AstNode**) &node->elseBlock));
+            SWAG_CHECK(doScopedStatement(node, (AstNode**) &node->elseBlock));
         }
         else if (token.id == TokenId::KwdElif)
         {
@@ -48,12 +49,12 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
     else
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
-        SWAG_CHECK(doEmbeddedStatement(node, (AstNode**) &node->ifBlock));
+        SWAG_CHECK(doScopedStatement(node, (AstNode**) &node->ifBlock));
 
         if (token.id == TokenId::KwdElse)
         {
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doEmbeddedStatement(node, (AstNode**) &node->elseBlock));
+            SWAG_CHECK(doScopedStatement(node, (AstNode**) &node->elseBlock));
         }
         else if (token.id == TokenId::KwdElif)
         {
@@ -76,7 +77,7 @@ bool Parser::doWhile(AstNode* parent, AstNode** result)
         ScopedBreakable scoped(this, node);
         SWAG_VERIFY(token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, error(token, Fmt(Err(Err1087), token.ctext())));
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
-        SWAG_CHECK(doEmbeddedStatement(node, &node->block));
+        SWAG_CHECK(doScopedStatement(node, &node->block));
     }
 
     return true;
@@ -219,7 +220,7 @@ bool Parser::doFor(AstNode* parent, AstNode** result)
     Ast::removeFromParent(node->boolExpression);
     Ast::addChildBack(node, node->boolExpression);
 
-    SWAG_CHECK(doEmbeddedStatement(node, &node->block));
+    SWAG_CHECK(doScopedStatement(node, &node->block));
     return true;
 }
 
@@ -278,7 +279,7 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
     }
 
     // Visit statement code block
-    SWAG_CHECK(doEmbeddedStatement(node, &node->block));
+    SWAG_CHECK(doScopedStatement(node, &node->block));
 
     // We do not want semantic on the block part, as this has to be solved when the block
     // is inlined
@@ -306,7 +307,7 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
     // loop can be empty for an infinit loop
     if (token.id == TokenId::SymLeftCurly)
     {
-        SWAG_CHECK(doEmbeddedStatement(node, &node->block));
+        SWAG_CHECK(doScopedStatement(node, &node->block));
         return true;
     }
 
@@ -375,7 +376,107 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
         var->assignment = identifer;
     }
 
-    SWAG_CHECK(doEmbeddedStatement(node, &node->block));
+    SWAG_CHECK(doScopedStatement(node, &node->block));
+    return true;
+}
+
+bool Parser::doWith(AstNode* parent, AstNode** result)
+{
+    SWAG_CHECK(eatToken());
+    auto node = Ast::newNode<AstWith>(this, AstNodeKind::With, sourceFile, parent);
+    *result   = node;
+
+    AstNode* id = nullptr;
+    if (token.id == TokenId::KwdVar || token.id == TokenId::KwdLet)
+    {
+        SWAG_CHECK(doVarDecl(node, &id));
+        if (id->kind != AstNodeKind::VarDecl)
+        {
+            Diagnostic diag{id->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Err1157)};
+            auto       note = Diagnostic::note(Nte(Nte0139));
+            return context->report(diag, note);
+        }
+
+        SWAG_ASSERT(id->extSemantic()->semanticAfterFct == SemanticJob::resolveVarDeclAfter);
+        id->extSemantic()->semanticAfterFct = SemanticJob::resolveWithVarDeclAfter;
+        node->id.push_back(id->token.text);
+    }
+    else
+    {
+        SWAG_CHECK(doAffectExpression(node, &id));
+
+        if (id->kind == AstNodeKind::StatementNoScope)
+        {
+            Diagnostic diag{node->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Err1157)};
+            auto       note = Diagnostic::note(Nte(Nte0139));
+            return context->report(diag, note);
+        }
+
+        if (id->kind != AstNodeKind::IdentifierRef &&
+            id->kind != AstNodeKind::VarDecl &&
+            id->kind != AstNodeKind::AffectOp)
+            return error(node->token, Err(Err1148));
+
+        id->allocateExtension(ExtensionKind::Semantic);
+        if (id->kind == AstNodeKind::IdentifierRef)
+        {
+            SWAG_ASSERT(!id->extSemantic()->semanticAfterFct);
+            id->extSemantic()->semanticAfterFct = SemanticJob::resolveWith;
+            for (size_t i = 0; i < id->childs.size(); i++)
+                node->id.push_back(id->childs[i]->token.text);
+        }
+        else if (id->kind == AstNodeKind::VarDecl)
+        {
+            SWAG_ASSERT(id->extSemantic()->semanticAfterFct == SemanticJob::resolveVarDeclAfter);
+            id->extSemantic()->semanticAfterFct = SemanticJob::resolveWithVarDeclAfter;
+            node->id.push_back(id->token.text);
+        }
+        else if (id->kind == AstNodeKind::AffectOp)
+        {
+            id = id->childs.front();
+            if (id->extSemantic()->semanticAfterFct == SemanticJob::resolveAfterKnownType)
+                id->extSemantic()->semanticAfterFct = SemanticJob::resolveWithAfterKnownType;
+            else
+                id->extSemantic()->semanticAfterFct = SemanticJob::resolveWith;
+            for (size_t i = 0; i < id->childs.size(); i++)
+                node->id.push_back(id->childs[i]->token.text);
+        }
+        else
+        {
+            SWAG_ASSERT(false);
+        }
+    }
+
+    SWAG_CHECK(doScopedStatement(node, &dummyResult));
+    return true;
+}
+
+bool Parser::doDefer(AstNode* parent, AstNode** result)
+{
+    auto node         = Ast::newNode<AstDefer>(this, AstNodeKind::Defer, sourceFile, parent);
+    *result           = node;
+    node->semanticFct = SemanticJob::resolveDefer;
+
+    SWAG_CHECK(eatToken());
+
+    // Defer kind
+    if (token.id == TokenId::SymLeftParen)
+    {
+        auto startLoc = token.startLocation;
+        SWAG_CHECK(eatToken());
+        if (token.text == g_LangSpec->name_err)
+            node->deferKind = DeferKind::Error;
+        else if (token.text == g_LangSpec->name_noerr)
+            node->deferKind = DeferKind::NoError;
+        else
+            return error(token, Fmt(Err(Err1142), token.ctext()));
+
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the 'defer' argument"));
+    }
+
+    ScopedFlags scopedFlags(this, AST_IN_DEFER);
+    SWAG_CHECK(doScopedStatement(node, &dummyResult));
     return true;
 }
 

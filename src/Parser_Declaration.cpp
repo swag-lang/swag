@@ -8,77 +8,6 @@
 #include "LanguageSpec.h"
 #include "TypeManager.h"
 
-bool Parser::doWith(AstNode* parent, AstNode** result)
-{
-    SWAG_CHECK(eatToken());
-    auto node = Ast::newNode<AstWith>(this, AstNodeKind::With, sourceFile, parent);
-    *result   = node;
-
-    AstNode* id = nullptr;
-    if (token.id == TokenId::KwdVar || token.id == TokenId::KwdLet)
-    {
-        SWAG_CHECK(doVarDecl(node, &id));
-        if (id->kind != AstNodeKind::VarDecl)
-        {
-            Diagnostic diag{id->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Err1157)};
-            auto       note = Diagnostic::note(Nte(Nte0139));
-            return context->report(diag, note);
-        }
-
-        SWAG_ASSERT(id->extSemantic()->semanticAfterFct == SemanticJob::resolveVarDeclAfter);
-        id->extSemantic()->semanticAfterFct = SemanticJob::resolveWithVarDeclAfter;
-        node->id.push_back(id->token.text);
-    }
-    else
-    {
-        SWAG_CHECK(doAffectExpression(node, &id));
-
-        if (id->kind == AstNodeKind::StatementNoScope)
-        {
-            Diagnostic diag{node->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Err1157)};
-            auto       note = Diagnostic::note(Nte(Nte0139));
-            return context->report(diag, note);
-        }
-
-        if (id->kind != AstNodeKind::IdentifierRef &&
-            id->kind != AstNodeKind::VarDecl &&
-            id->kind != AstNodeKind::AffectOp)
-            return error(node->token, Err(Err1148));
-
-        id->allocateExtension(ExtensionKind::Semantic);
-        if (id->kind == AstNodeKind::IdentifierRef)
-        {
-            SWAG_ASSERT(!id->extSemantic()->semanticAfterFct);
-            id->extSemantic()->semanticAfterFct = SemanticJob::resolveWith;
-            for (size_t i = 0; i < id->childs.size(); i++)
-                node->id.push_back(id->childs[i]->token.text);
-        }
-        else if (id->kind == AstNodeKind::VarDecl)
-        {
-            SWAG_ASSERT(id->extSemantic()->semanticAfterFct == SemanticJob::resolveVarDeclAfter);
-            id->extSemantic()->semanticAfterFct = SemanticJob::resolveWithVarDeclAfter;
-            node->id.push_back(id->token.text);
-        }
-        else if (id->kind == AstNodeKind::AffectOp)
-        {
-            id = id->childs.front();
-            if (id->extSemantic()->semanticAfterFct == SemanticJob::resolveAfterKnownType)
-                id->extSemantic()->semanticAfterFct = SemanticJob::resolveWithAfterKnownType;
-            else
-                id->extSemantic()->semanticAfterFct = SemanticJob::resolveWith;
-            for (size_t i = 0; i < id->childs.size(); i++)
-                node->id.push_back(id->childs[i]->token.text);
-        }
-        else
-        {
-            SWAG_ASSERT(false);
-        }
-    }
-
-    SWAG_CHECK(doEmbeddedStatement(node, &dummyResult));
-    return true;
-}
-
 bool Parser::doCheckPublicInternalPrivate(Token& tokenAttr)
 {
     // Check following instruction
@@ -477,7 +406,7 @@ bool Parser::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind
     return true;
 }
 
-bool Parser::doEmbeddedStatement(AstNode* parent, AstNode** result)
+bool Parser::doScopedStatement(AstNode* parent, AstNode** result)
 {
     if (token.id == TokenId::SymLeftCurly)
         return doScopedCurlyStatement(parent, result);
@@ -500,6 +429,25 @@ bool Parser::doEmbeddedStatement(AstNode* parent, AstNode** result)
     return true;
 }
 
+bool Parser::doStatement(AstNode* parent, AstNode** result)
+{
+    if (token.id == TokenId::SymLeftCurly)
+        return doCurlyStatement(parent, result);
+
+    // Empty statement
+    if (token.id == TokenId::SymSemiColon)
+        return error(token, Err(Err1187), Nte(Nte0153));
+
+    if (currentScope->isGlobalOrImpl())
+    {
+        auto node = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+        *result   = node;
+        return doTopLevelInstruction(node, &dummyResult);
+    }
+
+    return doEmbeddedInstruction(parent, result);
+}
+
 bool Parser::doStatementFor(AstNode* parent, AstNode** result, AstNodeKind kind)
 {
     switch (kind)
@@ -519,22 +467,6 @@ bool Parser::doStatementFor(AstNode* parent, AstNode** result, AstNodeKind kind)
     }
 
     return true;
-}
-
-bool Parser::doStatement(AstNode* parent, AstNode** result)
-{
-    if (token.id == TokenId::SymLeftCurly)
-        return doCurlyStatement(parent, result);
-
-    bool isGlobal = currentScope->isGlobalOrImpl();
-    if (isGlobal)
-    {
-        auto node = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
-        *result   = node;
-        return doTopLevelInstruction(node, &dummyResult);
-    }
-
-    return doEmbeddedInstruction(parent, result);
 }
 
 void Parser::registerSubDecl(AstNode* subDecl)

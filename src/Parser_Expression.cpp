@@ -1113,7 +1113,7 @@ bool Parser::doExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
         auto node = Ast::newNode<AstNode>(this, AstNodeKind::CompilerCode, sourceFile, nullptr);
         SWAG_CHECK(eatToken());
         if (token.id == TokenId::SymLeftCurly)
-            SWAG_CHECK(doEmbeddedStatement(node, &dummyResult));
+            SWAG_CHECK(doScopedCurlyStatement(node, &dummyResult));
         else
             SWAG_CHECK(doBoolExpression(node, exprFlags, &dummyResult));
         auto typeCode     = makeType<TypeInfoCode>();
@@ -1294,35 +1294,6 @@ void Parser::forceTakeAddress(AstNode* node)
     default:
         break;
     }
-}
-
-bool Parser::doDefer(AstNode* parent, AstNode** result)
-{
-    auto node         = Ast::newNode<AstDefer>(this, AstNodeKind::Defer, sourceFile, parent);
-    *result           = node;
-    node->semanticFct = SemanticJob::resolveDefer;
-
-    SWAG_CHECK(eatToken());
-
-    // Defer kind
-    if (token.id == TokenId::SymLeftParen)
-    {
-        auto startLoc = token.startLocation;
-        SWAG_CHECK(eatToken());
-        if (token.text == g_LangSpec->name_err)
-            node->deferKind = DeferKind::Error;
-        else if (token.text == g_LangSpec->name_noerr)
-            node->deferKind = DeferKind::NoError;
-        else
-            return error(token, Fmt(Err(Err1142), token.ctext()));
-
-        SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the 'defer' argument"));
-    }
-
-    ScopedFlags scopedFlags(this, AST_IN_DEFER);
-    SWAG_CHECK(doEmbeddedStatement(node, &dummyResult));
-    return true;
 }
 
 bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, uint32_t identifierFlags, AstWith* withNode)
