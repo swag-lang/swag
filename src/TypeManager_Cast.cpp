@@ -2819,11 +2819,11 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
                 context->job->setPending(JobWaitKind::WaitStructSymbol, structNode->resolvedSymbolName, structNode, nullptr);
                 return true;
             }
-
-            context->job->waitOverloadCompleted(structNode->resolvedSymbolOverload);
-            if (context->result != ContextResult::Done)
-                return true;
         }
+
+        context->job->waitOverloadCompleted(structNode->resolvedSymbolOverload);
+        if (context->result != ContextResult::Done)
+            return true;
 
         TypeInfoParam*  foundField  = nullptr;
         TypeInfoStruct* foundStruct = nullptr;

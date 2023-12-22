@@ -1,0 +1,63 @@
+/*
+--- Part Two ---
+Ding! The "fasten seat belt" signs have turned on. Time to find your seat.
+
+It's a completely full flight, so your seat should be the only missing boarding pass in your list. However, there's a catch: some of the seats at the very front and back of the plane don't exist on this aircraft, so they'll be missing from your list as well.
+
+Your seat wasn't at the very front or back, though; the seats with IDs +1 and -1 from yours will be in your list.
+
+What is the ID of your seat?
+*/
+
+using Core
+
+func day5B()
+{
+    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "5.txt")
+    let lines = assume File.readAllLines(dataPath)
+
+    var here: [128, 8] bool
+
+    visit l: lines
+    {
+        var row0 = 0, row1 = 127
+        loop c: 7
+        {
+            if l[c] == `F` do
+                row1 = (row1 + row0) / 2
+            else do
+                row0 = 1+(row1 + row0) / 2
+        }
+
+        var col0 = 0, col1 = 7
+        loop c: 3
+        {
+            if l[7+c] == `L` do
+                col1 = (col1 + col0) / 2
+            else do
+                col0 = 1+(col1 + col0) / 2
+        }
+
+        here[row0, col0] = true
+    }
+
+    loop r: 128
+    {
+        var cpt = 0
+        loop c: 8 do
+            cpt += cast(s32) here[r, c]
+
+        if cpt == 7 // Search for one missing seat in the row
+        {
+            loop c: 1 to 6 do   // Can't be on the side
+            {
+                if !here[r, c]
+                {
+                    //Console.print("total: ", r, " ", c, " ", r*8+c,"\n")
+                    @assert(r*8+c == 714)
+                    return
+                }
+            }
+        }
+    }
+}

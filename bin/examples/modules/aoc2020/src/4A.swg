@@ -51,9 +51,7 @@ func day4A()
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "4.txt")
     let lines = assume File.readAllLines(dataPath)
 
-    var total: u32
-
-    var pass: u32
+    var total, pass: u32
     visit l: lines
     {
         let res = Tokenize.split(l, ` `'u8)
