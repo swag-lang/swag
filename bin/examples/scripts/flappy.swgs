@@ -51,9 +51,9 @@ So in our case, we need to import the module 'gui'. This module is used to creat
         // Change something...
         // Here, for example, we force all safety guards to be present in 'debug', and we remove all
         // of them in 'release'.
-        #if #cfg == "debug"
+        #if #cfg == "debug" #do
             cfg.safetyGuards = Swag.SafetyAll
-        #else
+        #else #do
             cfg.safetyGuards = Swag.SafetyNone
     }
 }
@@ -292,7 +292,7 @@ func paint(painter: *Painter)
     }
 
     // Draw pipes.
-    // 'visit' loop on all the pipes stored in the dynamic array, and returns each value 
+    // 'visit' loop on all the pipes stored in the dynamic array, and returns each value
     // as a pointer/reference.
     visit pipe: g_Pipes
     {

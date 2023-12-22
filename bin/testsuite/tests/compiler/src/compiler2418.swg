@@ -9,7 +9,7 @@ func check(T: typeinfo, N: u32)->bool
 func(T, N: u32) toto()
 #validif
 {
-    #if !check(T, N) #error "N is out of range"
+    #if !check(T, N) #do #error "N is out of range"
     return true
 }
 {

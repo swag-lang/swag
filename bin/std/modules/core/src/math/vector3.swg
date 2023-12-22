@@ -38,7 +38,7 @@ impl Vector3
         #elif op == "-="    { x -= other.x; y -= other.y; z -= other.z; }
         #elif op == "*="    { x *= other.x; y *= other.y; z *= other.z; }
         #elif op == "/="    { x /= other.x; y /= other.y; z /= other.z; }
-        #else               #error "unsupported assign operation '" ++ op ++ "'"
+        #else               #do #error "unsupported assign operation '" ++ op ++ "'"
     }
 
     mtd(op: string) opAssign(value: f32)
@@ -47,31 +47,33 @@ impl Vector3
         #elif op == "-="    { x -= value; y -= value; z -= value; }
         #elif op == "*="    { x *= value; y *= value; z *= value; }
         #elif op == "/="    { x /= value; y /= value; z /= value; }
-        #else               #error "unsupported assign operation '" ++ op ++ "'"
+        #else               #do #error "unsupported assign operation '" ++ op ++ "'"
     }
 
     mtd(op: string) opBinary(other: Self)->Self
     {
-        #if   op == "+" return Self{x + other.x, y + other.y, z + other.z}
-        #elif op == "-" return Self{x - other.x, y - other.y, z - other.z}
-        #elif op == "*" return Self{x * other.x, y * other.y, z * other.z}
-        #elif op == "/" return Self{x / other.x, y / other.y, z / other.z}
-        #else           #error "unsupported binary operation '" ++ op ++ "'"
+        #if   op == "+" #do return Self{x + other.x, y + other.y, z + other.z}
+        #elif op == "-" #do return Self{x - other.x, y - other.y, z - other.z}
+        #elif op == "*" #do return Self{x * other.x, y * other.y, z * other.z}
+        #elif op == "/" #do return Self{x / other.x, y / other.y, z / other.z}
+        #else           #do #error "unsupported binary operation '" ++ op ++ "'"
     }
 
     mtd(op: string) opBinary(value: f32)->Self
     {
-        #if   op == "+" return Self{x + value, y + value, z + value}
-        #elif op == "-" return Self{x - value, y - value, z - value}
-        #elif op == "*" return Self{x * value, y * value, z * value}
-        #elif op == "/" return Self{x / value, y / value, z / value}
-        #else           #error "unsupported binary operation '" ++ op ++ "'"
+        #if   op == "+" #do return Self{x + value, y + value, z + value}
+        #elif op == "-" #do return Self{x - value, y - value, z - value}
+        #elif op == "*" #do return Self{x * value, y * value, z * value}
+        #elif op == "/" #do return Self{x / value, y / value, z / value}
+        #else           #do #error "unsupported binary operation '" ++ op ++ "'"
     }
 
     mtd(op: string) opUnary()->Self
     {
-        #if   op == "-" return Self{-x, -y, -z}
-        #else #error "unsupported unary operation '" ++ op ++ "'"
+        #if op == "-" #do
+            return Self{-x, -y, -z}
+        #else #do
+            #error "unsupported unary operation '" ++ op ++ "'"
     }
 
     // Set content

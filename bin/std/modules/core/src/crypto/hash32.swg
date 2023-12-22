@@ -16,7 +16,7 @@ public func(T) hash32(value: T)->u32
     }
     #elif Reflection.isStruct(T)
     {
-        #if !Reflection.hasInterface(T, IHash32) #error "type '" ++ @typeof(T).fullname ++ "' does not implement the 'Hash.IHash32' interface"
+        #if !Reflection.hasInterface(T, IHash32) #do #error "type '" ++ @typeof(T).fullname ++ "' does not implement the 'Hash.IHash32' interface"
         #ast "return " ++ @typeof(T).fullname ++ ".IHash32.compute(value)"
     }
     #elif @sizeof(T) == 8
@@ -52,6 +52,6 @@ public func(T) hash32(value: T)->u32
         key = key ^ (key >> 16)
         return key
     }
-    #else
+    #else #do
         #error "cannot hash a value of type '" ++ @typeof(T).fullname ++ "'"
 }

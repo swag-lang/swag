@@ -1397,6 +1397,8 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     }
 
     case AstNodeKind::CompilerIfBlock:
+        if (node->childs.front()->kind != AstNodeKind::Statement)
+            CONCAT_FIXED_STR(concat, "#do ");
         SWAG_CHECK(outputNode(context, concat, node->childs.front()));
         break;
 
@@ -1472,6 +1474,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
         incIndentStatement(compilerIf->ifBlock, context.indent);
         concat.addEolIndent(context.indent);
+
         SWAG_CHECK(outputNode(context, concat, compilerIf->ifBlock));
         decIndentStatement(compilerIf->ifBlock, context.indent);
 
@@ -1479,11 +1482,13 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         {
             concat.addEolIndent(context.indent);
             CONCAT_FIXED_STR(concat, "#else ");
+
             if (compilerIf->elseBlock->childs.front()->kind != AstNodeKind::CompilerIf)
             {
                 incIndentStatement(compilerIf->elseBlock, context.indent);
                 concat.addEolIndent(context.indent);
             }
+
             SWAG_CHECK(outputNode(context, concat, compilerIf->elseBlock));
             if (compilerIf->elseBlock->childs.front()->kind != AstNodeKind::CompilerIf)
             {

@@ -12,9 +12,9 @@
 #[Swag.ConstExpr, Swag.Inline]
 func(T) bigEndianToNative(x: T)->T
 {
-#if BIG_ENDIAN
+#if BIG_ENDIAN #do
     return x
-#else
+#else #do
     return @byteswap(x)
 }
 
@@ -22,9 +22,9 @@ func(T) bigEndianToNative(x: T)->T
 #[Swag.ConstExpr, Swag.Inline]
 func(T) nativeToBigEndian(x: T)->T
 {
-#if BIG_ENDIAN
+#if BIG_ENDIAN #do
     return x
-#else
+#else #do
     return @byteswap(x)
 }
 
@@ -32,8 +32,8 @@ func(T) nativeToBigEndian(x: T)->T
 #[Swag.ConstExpr, Swag.Inline]
 func(T) littleEndianToNative(x: T)->T
 {
-#if BIG_ENDIAN
+#if BIG_ENDIAN #do
     return @byteswap(x)
-#else
+#else #do
     return x
 }

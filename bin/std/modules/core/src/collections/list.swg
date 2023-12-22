@@ -30,9 +30,9 @@ impl List
     #[Macro]
     mtd(ptr: bool, back: bool) opVisit(stmt: code)
     {
-        #if back
+        #if back #do
             var n = tail
-        #else
+        #else #do
             var n = head
         #scope Up
         while n
@@ -40,11 +40,11 @@ impl List
             #scope Down
             #macro
             {
-                #if #up ptr
+                #if #up ptr #do
                     let #alias0 = cast(*T) & #up n.value
-                #elif Reflection.isStruct(T)
+                #elif Reflection.isStruct(T) #do
                     let #alias0 = cast(&T) & #up n.value
-                #else
+                #else #do
                     let #alias0 = #up n.value
                 let #alias1 = #up n
                 let #alias2 = #index
@@ -52,9 +52,9 @@ impl List
                 #mixin #up stmt { break = break Up; continue = break Down; }
             }
 
-            #if back
+            #if back #do
                 n = n.prev
-            #else
+            #else #do
                 n = n.next
         }
     }

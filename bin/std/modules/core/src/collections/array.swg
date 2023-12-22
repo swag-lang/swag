@@ -136,25 +136,25 @@ impl Array
             return
 
         // Little trick to avoid labels. That way a 'continue' in the user code will work correctly
-        #if back
+        #if back #do
             var scan = buffer + count
-        #else
+        #else #do
             var scan = buffer - 1
 
         loop count
         {
-            #if back
+            #if back #do
                 scan -= 1
-            #else
+            #else #do
                 scan += 1
 
             #macro
             {
-                #if #up ptr
+                #if #up ptr #do
                     let #alias0 = cast(*T) #up scan
-                #elif Reflection.isStruct(T)
+                #elif Reflection.isStruct(T) #do
                     let #alias0 = cast(&T) #up scan
-                #else
+                #else #do
                     let #alias0 = #up scan[0]
                 let #alias1 = #index
                 #mixin #up stmt

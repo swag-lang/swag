@@ -110,7 +110,7 @@
       "patterns": [
         {
           "name": "keyword.control",
-          "match": "\\b(if|else|elif|for|while|switch|defer|loop|visit|break|fallthrough|unreachable|return|case|continue|default|and|or|orelse|to|until)\\b"
+          "match": "\\b(if|else|elif|for|while|switch|defer|loop|visit|break|fallthrough|unreachable|return|case|continue|default|and|or|orelse|to|until|do)\\b"
         }
       ]
     },
@@ -203,7 +203,7 @@
       "patterns": [
         {
           "name": "meta.preprocessor",
-          "match": "(#)(global|load|include|assert|error|warning|print|import|mixin|macro|placeholder|foreignlib|if|else|elif|validif|validifx|scope)\\b"
+          "match": "(#)(global|load|include|assert|error|warning|print|import|mixin|macro|placeholder|foreignlib|if|else|elif|do|validif|validifx|scope)\\b"
         }
       ]
     },

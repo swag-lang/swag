@@ -90,11 +90,11 @@ impl String
     mtd(op: string) opIndexAssign(index: u64, value: u8)
     {
         Debug.safetyBoundCheck(index < length, "index out of range")
-        #if op == "+="
+        #if op == "+=" #do
             buffer[index] +=,over value
-        #elif op == "-="
+        #elif op == "-=" #do
             buffer[index] -=,over value
-        #else
+        #else #do
             #error "invalid operator '" ++ op ++ "'"
     }
 
@@ -106,25 +106,25 @@ impl String
 
     mtd(op: string) opAssign(value: string)
     {
-        #if op == "+="
+        #if op == "+=" #do
             append(value)
-        #else
+        #else #do
             #error "invalid operator '" ++ op ++ "'"
     }
 
     mtd(op: string) opAssign(value: rune)
     {
-        #if op == "+="
+        #if op == "+=" #do
             append(value)
-        #else
+        #else #do
             #error "invalid operator '" ++ op ++ "'"
     }
 
     mtd(op: string) opAssign(value: u8)
     {
-        #if op == "+="
+        #if op == "+=" #do
             append(value)
-        #else
+        #else #do
             #error "invalid operator '" ++ op ++ "'"
     }
 
@@ -173,8 +173,8 @@ impl String
     #[Macro]
     mtd(ptr: bool, back: bool) opVisit,runes(stmt: code)
     {
-        #if ptr  #error "visiting runes by pointer is not supported"
-        #if back #error "visiting runes in reverse order is not supported"
+        #if ptr  #do #error "visiting runes by pointer is not supported"
+        #if back #do #error "visiting runes in reverse order is not supported"
         Utf8.visitRunes(|#alias0, #alias1, #alias2| toSlice(), stmt)
     }
 
@@ -188,23 +188,23 @@ impl String
             return
 
         // Little trick to avoid labels. That way a 'continue' in the user code will work correctly
-        #if back
+        #if back #do
             var scan = buffer + length
-        #else
+        #else #do
             var scan = buffer - 1
 
         loop length
         {
-            #if back
+            #if back #do
                 scan -= 1
-            #else
+            #else #do
                 scan += 1
 
             #macro
             {
-                #if #up ptr
+                #if #up ptr #do
                     var #alias0 = #up scan
-                #else
+                #else #do
                     var #alias0 = dref #up scan
                 var #alias1 = #index
                 #mixin #up stmt

@@ -25,8 +25,10 @@ impl Vector4
 
     mtd(op: string) opUnary()->Self
     {
-        #if   op == "-" return Vector4{-x, -y, -z, -w}
-        #else #error "unsupported unary operation '" ++ op ++ "'"
+        #if op == "-"#do
+            return Vector4{-x, -y, -z, -w}
+        #else #do
+            #error "unsupported unary operation '" ++ op ++ "'"
     }
 
     // Set the vector to zero

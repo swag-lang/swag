@@ -78,7 +78,7 @@ impl ICodec for CodecPcmToPcm16
                     let intS = Math.clamp(cast,over(s32) sample, -32768, 32767)
                     dst[0] = cast(s16) intS
                 }
-                #else
+                #else #do
                     #assert false
 
                 dst += 1

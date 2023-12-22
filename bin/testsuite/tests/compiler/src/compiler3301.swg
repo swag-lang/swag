@@ -7,11 +7,11 @@ impl Duration
 {
     mtd(op: string) opAffectSuffix(v: f32)
     {
-        #if op == "s"
+        #if op == "s" #do
             val = v * 1000
-        #elif op == "ms"
+        #elif op == "ms" #do
             val = v
-        #else
+        #else #do
             #assert false
     }
 }

@@ -232,7 +232,7 @@ namespace ResizeTools
                 let left = crow.left
                 let right = crow.right
 
-                #if BPP == 32 var da: f64
+                #if BPP == 32 #do var da: f64
                 var dr, dg, db: f64
                 var pw = crow.weights.buffer
                 var ptr = srcRow + left * bpp8
@@ -242,7 +242,7 @@ namespace ResizeTools
                     db += f * ptr[0]
                     dg += f * ptr[1]
                     dr += f * ptr[2]
-                    #if BPP == 32 da += f * ptr[3]
+                    #if BPP == 32 #do da += f * ptr[3]
                     pw += 1
                     ptr += bpp8
                 }
@@ -250,7 +250,7 @@ namespace ResizeTools
                 dstRow[0] = cast(u8) db
                 dstRow[1] = cast(u8) dg
                 dstRow[2] = cast(u8) dr
-                #if BPP == 32 dstRow[3] = cast(u8) da
+                #if BPP == 32 #do dstRow[3] = cast(u8) da
                 dstRow += bpp8
             }
         }
@@ -282,7 +282,7 @@ namespace ResizeTools
                 let left = crow.left
                 let right = crow.right
 
-                #if BPP == 32 var da: f64
+                #if BPP == 32 #do var da: f64
                 var dr, dg, db: f64
                 var pw = crow.weights.buffer
                 var ptr = srcCol + left * w8Src
@@ -292,7 +292,7 @@ namespace ResizeTools
                     db += f * ptr[0]
                     dg += f * ptr[1]
                     dr += f * ptr[2]
-                    #if BPP == 32 da += f * ptr[3]
+                    #if BPP == 32 #do da += f * ptr[3]
                     pw += 1
                     ptr += cast(u64) w8Src
                 }
@@ -300,7 +300,7 @@ namespace ResizeTools
                 dstCol[0] = cast(u8) db
                 dstCol[1] = cast(u8) dg
                 dstCol[2] = cast(u8) dr
-                #if BPP == 32 dstCol[3] = cast(u8) da
+                #if BPP == 32 #do dstCol[3] = cast(u8) da
                 dstCol += cast(u64) w8Dst
             }
         }

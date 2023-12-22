@@ -11,7 +11,7 @@ const TITI = true
 		}
 	}
 }
-#else #if TITI and !TOTO
+#elif TITI and !TOTO
 {
 	func toto()
 	{

@@ -26,14 +26,14 @@ impl AA
 
     mtd(TV) set(v: TV)
     {
-        #if !isIn(TV) #error "invalid type " ++ @stringof(@typeof(TV))
+        #if !isIn(TV) #do #error "invalid type " ++ @stringof(@typeof(TV))
         cur = TV
         dref cast(*TV) buf = v
     }
 
     mtd(TV) get()->TV
     {
-        #if !isIn(TV) #error "invalid type " ++ @stringof(@typeof(TV))
+        #if !isIn(TV) #do #error "invalid type " ++ @stringof(@typeof(TV))
         @assert(cur == TV)
         return dref cast(*TV) buf
     }

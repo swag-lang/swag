@@ -101,6 +101,7 @@ Compiler keywords always start with '#'. As user identifiers cannot start the sa
 #callerlocation
 #cfg
 #code
+#do
 #file
 #line
 #location

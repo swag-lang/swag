@@ -127,7 +127,7 @@ impl BitStream
 
     mtd peek32Be(dest: ^u8)
     {
-        #if BIG_ENDIAN
+        #if BIG_ENDIAN #do
             peek32(dest)
         #else
         {

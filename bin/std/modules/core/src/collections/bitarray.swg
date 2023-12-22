@@ -94,8 +94,8 @@ public impl BitArray
     #[Macro]
     mtd(ptr: bool, back: bool) opVisit(stmt: code)
     {
-        #if ptr  #error "visiting by pointer is not supported for BitArray"
-        #if back #error "visiting in reverse order is not supported for BitArray"
+        #if ptr  #do #error "visiting by pointer is not supported for BitArray"
+        #if back #do #error "visiting in reverse order is not supported for BitArray"
 
         if !count
             return

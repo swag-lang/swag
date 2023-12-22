@@ -19,7 +19,7 @@ impl IHash for AA
 //#[Swag.PrintBc]
 func(T) hash(value: T)->u32
 {
-    #if @typeof(T) == u32
+    #if @typeof(T) == u32 #do
         return value
     #elif @typeof(T).kind == Swag.TypeInfoKind.Struct
     {

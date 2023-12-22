@@ -495,16 +495,16 @@ func toF64(str: string)->f64 throw
 // Transform a string to an integer or float
 func(T) toNum(str: string)->T throw
 {
-    #if   T == u8  return toU8(str)
-    #elif T == u16 return toU16(str)
-    #elif T == u32 return toU32(str)
-    #elif T == u64 return toU64(str)
-    #elif T == s8  return toS8(str)
-    #elif T == s16 return toS16(str)
-    #elif T == s32 return toS32(str)
-    #elif T == s64 return toS64(str)
-    #elif T == f32 return toF32(str)
-    #elif T == f64 return toF64(str)
-    #else #error "invalid type"
+    #if   T == u8  #do return toU8(str)
+    #elif T == u16 #do return toU16(str)
+    #elif T == u32 #do return toU32(str)
+    #elif T == u64 #do return toU64(str)
+    #elif T == s8  #do return toS8(str)
+    #elif T == s16 #do return toS16(str)
+    #elif T == s32 #do return toS32(str)
+    #elif T == s64 #do return toS64(str)
+    #elif T == f32 #do return toF32(str)
+    #elif T == f64 #do return toF64(str)
+    #else #do #error "invalid type"
     return 0
 }

@@ -22,7 +22,7 @@ const File = """
     return sb.toString()
 }
 
-#if cfg_a != 10
+#if cfg_a != 10 #do
     #error "toto"
-#else
+#else #do
     #assert cfg_a == 10

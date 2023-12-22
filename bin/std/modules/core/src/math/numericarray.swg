@@ -31,15 +31,15 @@ impl NumericArray
         var result: retval
         loop i: N
         {
-            #if op == "+"
+            #if op == "+" #do
                 result.buf[i] = buf[i] + other.buf[i]
-            #elif op == "-"
+            #elif op == "-" #do
                 result.buf[i] = buf[i] - other.buf[i]
-            #elif op == "*"
+            #elif op == "*" #do
                 result.buf[i] = buf[i] * other.buf[i]
-            #elif op == "/"
+            #elif op == "/" #do
                 result.buf[i] = buf[i] / other.buf[i]
-            #else
+            #else #do
                 #error "unsupported binary operation '" ++ op ++ "'"
         }
         return result
@@ -49,15 +49,15 @@ impl NumericArray
     {
         loop i: N
         {
-            #if op == "+="
+            #if op == "+=" #do
                 buf[i] += value
-            #else #if (op == "-=")
+            #elif (op == "-=") #do
                 buf[i] -= value
-            #else #if (op == "*=")
+            #elif (op == "*=") #do
                 buf[i] *= value
-            #else #if (op == "/=")
+            #elif (op == "/=") #do
                 buf[i] /= value
-            #else
+            #else #do
                 #error "unsupported assign operation '" ++ op ++ "'"
         }
     }
@@ -66,15 +66,15 @@ impl NumericArray
     {
         loop i: N
         {
-            #if op == "+="
+            #if op == "+=" #do
                 buf[i] += value.buf[i]
-            #else #if (op == "-=")
+            #elif (op == "-=") #do
                 buf[i] -= value.buf[i]
-            #else #if (op == "*=")
+            #elif (op == "*=") #do
                 buf[i] *= value.buf[i]
-            #else #if (op == "/=")
+            #elif (op == "/=") #do
                 buf[i] /= value.buf[i]
-            #else
+            #else #do
                 #error "unsupported assign operation '" ++ op ++ "'"
         }
     }

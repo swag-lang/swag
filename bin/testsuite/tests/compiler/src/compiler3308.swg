@@ -1,11 +1,11 @@
 //#global testerror
 func(op: s32, T) toto(v: T)
 {
-    #if op == 5
+    #if op == 5 #do
         @assert(v == true)
-    #elif op == 10
+    #elif op == 10 #do
         @assert(v == "string")
-    #else
+    #else #do
         #assert false
     //@print(op, " ", v, "\n")
 }

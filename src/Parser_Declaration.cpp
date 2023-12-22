@@ -441,14 +441,20 @@ bool Parser::doStatement(AstNode* parent, AstNode** result)
     {
         SWAG_CHECK(doCurlyStatement(parent, result));
     }
-    else if (currentScope->isGlobalOrImpl())
-    {
-        *result = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
-        SWAG_CHECK(doTopLevelInstruction(*result, &dummyResult));
-    }
     else
     {
-        SWAG_CHECK(doEmbeddedInstruction(parent, result));
+        SWAG_VERIFY(token.id == TokenId::CompilerDo, error(token, Err(Err0694)));
+        SWAG_CHECK(eatToken());
+
+        if (currentScope->isGlobalOrImpl())
+        {
+            *result = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+            SWAG_CHECK(doTopLevelInstruction(*result, &dummyResult));
+        }
+        else
+        {
+            SWAG_CHECK(doEmbeddedInstruction(parent, result));
+        }
     }
 
     return true;
