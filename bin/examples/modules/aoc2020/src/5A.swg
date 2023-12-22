@@ -42,6 +42,12 @@ using Core
 
 func day5A()
 {
+    day5A0()
+    day5A1()
+}
+
+func day5A0()
+{
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "5.txt")
     let lines = assume File.readAllLines(dataPath)
 
@@ -73,3 +79,20 @@ func day5A()
     @assert(total == 838)
 }
 
+func day5A1()
+{
+    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "5.txt")
+
+    var seats: Array'u64
+    visit l: assume File.readAllLines(dataPath)
+    {
+        l.replace("F", "0")
+        l.replace("B", "1")
+        l.replace("L", "0")
+        l.replace("R", "1")
+        seats.add(assume StrConv.parseB64(l).value)
+    }
+
+    seats.sort()
+    @assert(seats.back() == 838)
+}
