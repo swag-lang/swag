@@ -408,44 +408,50 @@ bool Parser::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind
 
 bool Parser::doScopedStatement(AstNode* parent, AstNode** result)
 {
+    SWAG_VERIFY(token.id != TokenId::SymSemiColon, error(token, Err(Err1187), Nte(Nte0153)));
+
     if (token.id == TokenId::SymLeftCurly)
-        return doScopedCurlyStatement(parent, result);
+    {
+        SWAG_CHECK(doScopedCurlyStatement(parent, result));
+    }
+    else
+    {
+        SWAG_ASSERT(!currentScope->isGlobalOrImpl());
 
-    // Empty statement
-    if (token.id == TokenId::SymSemiColon)
-        return error(token, Err(Err1187), Nte(Nte0153));
+        auto     newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
+        Scoped   scoped(this, newScope);
+        AstNode* statement = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+        *result            = statement;
+        statement->allocateExtension(ExtensionKind::Semantic);
+        statement->extSemantic()->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
+        statement->extSemantic()->semanticAfterFct  = SemanticJob::resolveScopedStmtAfter;
+        statement->flags |= AST_NEED_SCOPE;
+        newScope->owner = statement;
+        SWAG_CHECK(doEmbeddedInstruction(statement, &dummyResult));
+    }
 
-    // One single line, but we need a scope too
-    auto     newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
-    Scoped   scoped(this, newScope);
-    AstNode* statement = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
-    *result            = statement;
-    statement->allocateExtension(ExtensionKind::Semantic);
-    statement->extSemantic()->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
-    statement->extSemantic()->semanticAfterFct  = SemanticJob::resolveScopedStmtAfter;
-    statement->flags |= AST_NEED_SCOPE;
-    newScope->owner = statement;
-    SWAG_CHECK(doEmbeddedInstruction(statement, &dummyResult));
     return true;
 }
 
 bool Parser::doStatement(AstNode* parent, AstNode** result)
 {
+    SWAG_VERIFY(token.id != TokenId::SymSemiColon, error(token, Err(Err1187), Nte(Nte0153)));
+
     if (token.id == TokenId::SymLeftCurly)
-        return doCurlyStatement(parent, result);
-
-    // Empty statement
-    if (token.id == TokenId::SymSemiColon)
-        return error(token, Err(Err1187), Nte(Nte0153));
-
-    if (currentScope->isGlobalOrImpl())
     {
-        auto node = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
-        *result   = node;
-        return doTopLevelInstruction(node, &dummyResult);
+        SWAG_CHECK(doCurlyStatement(parent, result));
+    }
+    else if (currentScope->isGlobalOrImpl())
+    {
+        *result = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+        SWAG_CHECK(doTopLevelInstruction(*result, &dummyResult));
+    }
+    else
+    {
+        SWAG_CHECK(doEmbeddedInstruction(parent, result));
     }
 
-    return doEmbeddedInstruction(parent, result);
+    return true;
 }
 
 bool Parser::doStatementFor(AstNode* parent, AstNode** result, AstNodeKind kind)
