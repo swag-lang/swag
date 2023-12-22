@@ -112,7 +112,8 @@ func createWindow()->HWND
 func messageLoop()
 {
     var msg: MSG
-    loop
+    var cpt = 0
+    while cpt < 100
     {
         while PeekMessageA(&msg, null, 0, 0, PM_REMOVE) != 0
         {
@@ -123,6 +124,9 @@ func messageLoop()
         }
 
         display()
+
+        if Env.hasArg("swag.test") 
+            cpt += 1
     }
 }
 

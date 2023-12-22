@@ -41,6 +41,7 @@ impl IWnd for MyView
 #main
 {
     var app: Gui.Application
+    if Env.hasArg("swag.test") app.maxRunFrame = 20
 
     assume
     {

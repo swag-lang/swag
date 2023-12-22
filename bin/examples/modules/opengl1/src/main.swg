@@ -88,7 +88,8 @@ func createWindow()->HWND
 func messageLoop()
 {
     var msg: MSG
-    loop
+    var cpt = 0
+    while cpt < 100
     {
         g_Frame.update()
 
@@ -103,6 +104,9 @@ func messageLoop()
         g_Frame.unpause()
 
         display()
+
+        if Env.hasArg("swag.test") 
+            cpt += 1
     }
 }
 
