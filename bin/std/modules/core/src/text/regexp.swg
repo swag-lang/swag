@@ -1219,7 +1219,7 @@ impl RegExp
                 uni32.insertAt(acast (i+2), `(`'rune)
 
                 var cpt0, cpt1, cpt2: s32
-                var iminus = i
+                var iminus = i-1
 
                 #scope Loop while iminus != -1
                 {
