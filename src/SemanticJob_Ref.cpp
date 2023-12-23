@@ -1077,7 +1077,7 @@ bool SemanticJob::resolveInit(SemanticContext* context)
     if (node->count)
     {
         auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
-        SWAG_VERIFY(countTypeInfo->isNativeInteger(), context->report({node->count, Fmt(Err(Err0490), countTypeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(countTypeInfo->isNativeInteger(), context->report({node->count, Fmt(Err(Err0498), node->token.ctext(), countTypeInfo->getDisplayNameC())}));
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, node->count, CASTFLAG_TRY_COERCE));
 
         if (node->count->hasComputedValue() &&

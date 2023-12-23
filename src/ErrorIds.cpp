@@ -337,7 +337,6 @@ void initErrors()
     SWAG_ERROR(Err0787, "invalid argument                                  $ the intrinsic '%s' requires a pointer as a first argument, got '%s' instead");
     SWAG_ERROR(Err0249, "invalid argument                                  $ the intrinsic '%s' requires an argument of type 'string', got '%s' instead");
     SWAG_ERROR(Err0283, "invalid argument                                  $ the intrinsic '@gettag' expects a default value of type '%s' as the last argument");
-    SWAG_ERROR(Err0490, "invalid argument                                  $ the intrinsic '@init' expects an integer as a second argument, got '%s' instead");
     SWAG_ERROR(Err0142, "invalid argument                                  $ the intrinsic '@init' requires a 'pointer to memory' as a first argument if the count is greater than one");
     SWAG_ERROR(Err0790, "invalid argument                                  $ the intrinsic '@mkany' can't have 'null' as a first argument");
     SWAG_ERROR(Err0792, "invalid argument                                  $ the intrinsic '@mkany' expects a type as the second argument, got '%s' instead");
@@ -892,6 +891,7 @@ void initErrors()
     SWAG_ERROR(Err0639, "unauthorized function overload                    $ a function with the same name '%s' has already been declared $ if you want to declare an overload, mark all functions with '#[Swag.Overload]'");
     SWAG_ERROR(Err0694, "invalid compiler statement                        $ missing either '#do' or '{' before '%s'");
     SWAG_ERROR(Err0530, "invalid statement                                 $ missing either 'do' or '{' before '%s'");
+    SWAG_ERROR(Err0490, nullptr);
     SWAG_ERROR(Err0660, nullptr);
     SWAG_ERROR(Err0141, nullptr);
     SWAG_ERROR(Err0169, nullptr);
