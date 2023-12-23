@@ -37,6 +37,12 @@ using Core
 
 func day6B()
 {
+    day6B0()
+    day6B1()
+}
+
+func day6B0()
+{
     let dataPath = Path.combine(Path.getDirectoryName(#file), "6.txt")
     let lines = assume File.readAllLines(dataPath)
 
@@ -58,6 +64,35 @@ func day6B()
                     total += 1
             @init(&count[0], @countof(count))
             num = 0
+        }
+    }
+
+    //Console.print("total: ", total)
+    @assert(total == 3103)
+}
+
+func day6B1()
+{
+    let dataPath = Path.combine(Path.getDirectoryName(#file), "6.txt")
+    let lines = assume File.readAllLines(dataPath)
+
+    var total:    u64
+    var lineVal:  u32
+    var interVal: u32 = 0xFFFFFFFF
+
+    visit l: lines
+    {
+        if #index == lines.count-1 or l.length == 0
+        {
+            total += Math.countOnes(interVal)
+            interVal = 0xFFFFFFFF
+        }
+        else
+        {
+            lineVal = 0
+            visit,bytes c: l do
+                lineVal |= 1 << cast(u32) (c-`a`)
+            interVal &= lineVal
         }
     }
 
