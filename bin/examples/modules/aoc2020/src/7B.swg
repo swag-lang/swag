@@ -30,6 +30,14 @@ using Core
 
 func day7B()
 {
+    day7B0()
+    day7B1()
+}
+
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+func day7B0()
+{
     let dataPath = Path.combine(Path.getDirectoryName(#file), "7.txt")
     let lines = assume File.readAllLines(dataPath)
 
@@ -44,6 +52,46 @@ func day7B()
             let splitVal = Tokenize.split(v.value, ` `'u8, 1)
             let count = assume StrConv.toU32(splitVal[0])
             id.findOrAdd(split[0]).value.add({count, splitVal[1]})
+        }
+    }
+
+    typealias T = @decltype(id)
+    func count(id: *T, what: string)->u32
+    {
+        let it = id.find(what)
+        if !it do
+            return 0
+
+        var total: u32
+        visit v: it.value do
+            total += v.count + (v.count*count(id, v.name))
+
+        return total
+    }
+
+    let total = count(&id, "shiny gold")
+    //Console.print("total: ", total)
+    @assert(total == 9339)
+}
+
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+func day7B1()
+{
+    let dataPath = Path.combine(Path.getDirectoryName(#file), "7.txt")
+    let lines = assume File.readAllLines(dataPath)
+
+    var id: HashTable'(string, Array'({count: u32, name: string}))
+
+    var r = assume Parser.RegExp.create(#"(\d+) (\w+ \w+)"#)
+    visit l: lines
+    {
+        let split = Tokenize.split(l, " bags contain ")
+        visit v: r.grepAll(split[1])
+        {
+            discard r.match(v.value)
+            let count = assume StrConv.toU32(r.getCapture(1))
+            id.findOrAdd(split[0]).value.add({count, r.getCapture(2)})
         }
     }
 
