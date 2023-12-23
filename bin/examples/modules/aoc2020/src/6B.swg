@@ -78,21 +78,22 @@ func day6B1()
 
     var total:    u64
     var lineVal:  u32
-    var interVal: u32 = 0xFFFFFFFF
+    var interVal: u32 = ~0
 
     visit l: lines
     {
-        if #index == lines.count-1 or l.length == 0
-        {
-            total += Math.countOnes(interVal)
-            interVal = 0xFFFFFFFF
-        }
-        else
+        if l.length
         {
             lineVal = 0
             visit,bytes c: l do
                 lineVal |= 1 << cast(u32) (c-`a`)
             interVal &= lineVal
+        }
+
+        if #index == lines.count-1 or lines[#index+1].length == 0
+        {
+            total += Math.countOnes(interVal)
+            interVal = ~0
         }
     }
 
