@@ -41,9 +41,7 @@ func day7A()
 
     visit l: lines
     {
-        l.replace("bags", "")
-        l.replace("bag", "")
-        l.replace(".", "")
+        visit r: ["bags", "bag", "."] do l.replace(r, "")
         l.replace(" , ", ",")
         l.replace("  ", " ")
         l.trim()
@@ -60,7 +58,7 @@ func day7A()
                 let it = id.find(split[0])
                 if it do
                     it.value.add(can)
-                else do
+                else
                 {
                     var tmp: Array'string
                     tmp.add(can)
