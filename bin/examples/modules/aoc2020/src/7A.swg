@@ -109,35 +109,23 @@ func day7A1()
     visit l: lines
     {
         let split = Tokenize.split(l, " bags contain ")
-        let all = r.grepAll(split[1])
-        visit v: all
+        visit v: r.grepAll(split[1])
         {
             let splitVal = Tokenize.split(v.value, ` `'u8, 1)
-            visit can: splitVal[1..]
-            {
-                let it = id.find(split[0])
-                if it do
-                    it.value.add(can)
-                else
-                {
-                    var tmp: Array'string
-                    tmp.add(can)
-                    id.add(split[0], tmp)
-                }
-            }
+            visit can: splitVal[1..] do
+                id.findOrAdd(split[0]).value.add(can)
         }
     }
 
     func contains(id: *HashTable'(string, Array'string), what: string)->bool
     {
         let it = id.find(what)
-        if !it do return false
+        if !it do
+            return false
 
         visit v: it.value
         {
-            if v == "shiny gold" do
-                return true
-            if contains(id, v) do
+            if v == "shiny gold" or contains(id, v) do
                 return true
         }
 
