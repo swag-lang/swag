@@ -81,7 +81,7 @@ func day5A0()
 
 func day5A1()
 {
-    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "5.txt")
+    let dataPath = Path.combine(Path.getDirectoryName(#file), "5.txt")
 
     var seats: Array'u64
     visit l: assume File.readAllLines(dataPath)
