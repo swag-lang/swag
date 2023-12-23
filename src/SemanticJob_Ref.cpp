@@ -1107,6 +1107,7 @@ bool SemanticJob::resolveInit(SemanticContext* context)
     {
         SWAG_VERIFY(node->expression->kind == AstNodeKind::IdentifierRef, context->report({node->expression, Fmt(Err(Err0660), node->token.ctext())}));
         SWAG_VERIFY(node->expression->resolvedSymbolOverload, context->report({node->expression, Fmt(Err(Err0660), node->token.ctext())}));
+        SWAG_VERIFY(!node->expression->typeInfo->isConst(), context->report({node->expression, Fmt(Err(Err0169), node->token.ctext(), expressionTypeInfo->getDisplayNameC())}));
         auto back = node->expression->childs.back();
         back->semFlags |= SEMFLAG_FORCE_TAKE_ADDRESS;
         back->resolvedSymbolOverload->flags |= OVERLOAD_HAS_MAKE_POINTER;

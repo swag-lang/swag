@@ -893,8 +893,8 @@ void initErrors()
     SWAG_ERROR(Err0142, "invalid argument                                  $ the intrinsic '%s' requires a pointer to memory as a first argument if the 'count' is greater than one");
     SWAG_ERROR(Err0490, "invalid argument                                  $ the intrinsic '%s' requires a pointer to memory as a first argument if the 'count' is variable");
     SWAG_ERROR(Err0660, "invalid argument                                  $ the intrinsic '%s' requires a variable name as a first argument if the second argument is not specified");
-    SWAG_ERROR(Err0141, "const mismatch                                    $ the intrinsic '%s' requires a mutable pointer as a first argument, got '%s' instead");
-    SWAG_ERROR(Err0169, nullptr);
+    SWAG_ERROR(Err0141, "const mismatch                                    $ the intrinsic '%s' requires a mutable pointer as a first argument, got type '%s' instead");
+    SWAG_ERROR(Err0169, "const mismatch                                    $ the intrinsic '%s' requires a mutable variable as a first argument, got type '%s' instead");
     SWAG_ERROR(Err0776, nullptr);
     SWAG_ERROR(Err0676, nullptr);
     SWAG_ERROR(Err0680, nullptr);
