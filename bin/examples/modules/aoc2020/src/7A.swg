@@ -112,8 +112,7 @@ func day7A1()
         visit v: r.grepAll(split[1])
         {
             let splitVal = Tokenize.split(v.value, ` `'u8, 1)
-            visit can: splitVal[1..] do
-                id.findOrAdd(split[0]).value.add(can)
+            id.findOrAdd(split[0]).value.add(splitVal[1])
         }
     }
 
