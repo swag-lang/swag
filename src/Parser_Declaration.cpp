@@ -418,6 +418,7 @@ bool Parser::doScopedStatement(AstNode* parent, AstNode** result, bool mustHaveD
     {
         if (mustHaveDo)
         {
+            auto tokenDo = token;
             if (token.id != TokenId::KwdDo)
             {
                 Diagnostic diag{sourceFile, token, Fmt(Err(Err0530), token.ctext())};
@@ -426,6 +427,12 @@ bool Parser::doScopedStatement(AstNode* parent, AstNode** result, bool mustHaveD
             }
 
             SWAG_CHECK(eatToken());
+
+            if (token.id == TokenId::SymLeftCurly)
+            {
+                Diagnostic diag{sourceFile, tokenDo, Err(Err0776)};
+                return context->report(diag);
+            }
         }
 
         SWAG_ASSERT(!currentScope->isGlobalOrImpl());
@@ -455,6 +462,7 @@ bool Parser::doStatement(AstNode* parent, AstNode** result)
     }
     else
     {
+        auto tokenDo = token;
         if (token.id != TokenId::CompilerDo)
         {
             Diagnostic diag{sourceFile, token, Fmt(Err(Err0694), token.ctext())};
@@ -463,6 +471,12 @@ bool Parser::doStatement(AstNode* parent, AstNode** result)
         }
 
         SWAG_CHECK(eatToken());
+
+        if (token.id == TokenId::SymLeftCurly)
+        {
+            Diagnostic diag{sourceFile, tokenDo, Err(Err0676)};
+            return context->report(diag);
+        }
 
         if (currentScope->isGlobalOrImpl())
         {

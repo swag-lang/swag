@@ -381,7 +381,7 @@ impl Painter
             alpha = true
         if curRT and curRT.paintAlpha and curState.paintParams & .Antialiased do
             alpha = true
-        if alpha and curState.blendingMode == .Alpha do
+        if alpha and curState.blendingMode == .Alpha
         {
             overlapMode = true
             discard newCommand(.StartNoOverlap, true)

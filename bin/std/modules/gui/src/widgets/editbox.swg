@@ -679,7 +679,7 @@ internal impl EditBox
                 let str = @mkstring(text.buffer, idx)
                 let met = Painter.measureString(str, fontR).width
                 diff = (met - lastWidth) * 0.5
-                if x <= met do
+                if x <= met
                 {
                     if x < lastWidth + diff do
                         return idx - 1

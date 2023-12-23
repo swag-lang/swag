@@ -296,7 +296,7 @@ func getKingMoves(board: ^Cell, fromP: s8, moves: *Array's8)
 const BishopMovesDeltas = [11's8,13,-11,-13]
 func getBishopMoves(board: ^Cell, fromP: s8, moves: *Array's8)
 {
-    visit delta: BishopMovesDeltas do
+    visit delta: BishopMovesDeltas
     {
         var offset = delta
         while getPieceMove(board, fromP, offset, moves) do

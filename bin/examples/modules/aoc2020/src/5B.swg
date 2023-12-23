@@ -55,7 +55,7 @@ func day5B0()
 
         if cpt == 7 // Search for one missing seat in the row
         {
-            loop c: 1 to 6 do   // Can't be on the side
+            loop c: 1 to 6   // Can't be on the side
             {
                 if !here[r, c]
                 {

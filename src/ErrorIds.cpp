@@ -895,8 +895,8 @@ void initErrors()
     SWAG_ERROR(Err0660, "invalid argument                                  $ the intrinsic '%s' requires a variable name as a first argument if the second argument is not specified");
     SWAG_ERROR(Err0141, "const mismatch                                    $ the intrinsic '%s' requires a mutable pointer as a first argument, got type '%s' instead");
     SWAG_ERROR(Err0169, "const mismatch                                    $ the intrinsic '%s' requires a mutable variable as a first argument, got type '%s' instead");
-    SWAG_ERROR(Err0776, nullptr);
-    SWAG_ERROR(Err0676, nullptr);
+    SWAG_ERROR(Err0776, "invalid statement                                 $ unnecessary usage of 'do' before a block start '{' $ consider removing it");
+    SWAG_ERROR(Err0676, "invalid compliler statement                       $ unnecessary usage of '#do' before a block start '{' $ consider removing it");
     SWAG_ERROR(Err0680, nullptr);
     SWAG_ERROR(Err0367, nullptr);
     SWAG_ERROR(Err0282, nullptr);
@@ -1282,7 +1282,7 @@ void initErrors()
     SWAG_ERROR(Nte1050, "a local variable declared with 'let' is immutable and can't be changed");
     SWAG_ERROR(Nte1114, "a return type is missing");
     SWAG_ERROR(Nte0124, "a standard function in an 'impl' block should not shadow a function from the matching interface");
-    SWAG_ERROR(Nte0100, "an attribute is not a function; please consider removing it");
+    SWAG_ERROR(Nte0100, "an attribute is not a function; consider removing it");
     SWAG_ERROR(Nte1121, "an implicit '@countof' is present here");
     SWAG_ERROR(Nte0045, "an instance of the generic function '%s'");
     SWAG_ERROR(Nte0038, "associated command line option: '%s'");

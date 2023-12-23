@@ -266,7 +266,7 @@ impl IWnd for RichEditView
             maxx = 0
         elif !ed.recomputeScroll do
             maxx = ed.scrollWnd.scrollSize.x
-        else do
+        else
         {
             var posCaret = ed.getCaretPos(ed.cursorPos)
             maxx += posCaret.width + 32

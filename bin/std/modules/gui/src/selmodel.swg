@@ -69,7 +69,7 @@ impl SelModel
                 range.start += 1
             elif range.end == idx do
                 range.end -= 1
-            else do
+            else
             {
                 let end = range.end
                 range.end = idx - 1
