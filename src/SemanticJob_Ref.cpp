@@ -1103,8 +1103,17 @@ bool SemanticJob::resolveInit(SemanticContext* context)
     auto node               = CastAst<AstInit>(context->node, AstNodeKind::Init);
     auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
-    SWAG_VERIFY(expressionTypeInfo->isPointer(), context->report({node->expression, Fmt(Err(Err0787), node->token.ctext(), expressionTypeInfo->getDisplayNameC())}));
-    SWAG_CHECK(checkInitDropCount(context, node, node->expression, node->count));
+    if (!node->count)
+    {
+        SWAG_VERIFY(node->expression->kind == AstNodeKind::IdentifierRef, context->report({node->expression, Fmt(Err(Err0660), node->token.ctext())}));
+        SWAG_VERIFY(node->expression->resolvedSymbolOverload, context->report({node->expression, Fmt(Err(Err0660), node->token.ctext())}));
+        node->expression->childs.back()->semFlags |= SEMFLAG_FORCE_TAKE_ADDRESS;
+    }
+    else
+    {
+        SWAG_VERIFY(expressionTypeInfo->isPointer(), context->report({node->expression, Fmt(Err(Err0787), node->token.ctext(), expressionTypeInfo->getDisplayNameC())}));
+        SWAG_CHECK(checkInitDropCount(context, node, node->expression, node->count));
+    }
 
     if (node->parameters)
     {

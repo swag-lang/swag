@@ -86,7 +86,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
 
             TypeInfoPointer pt;
             pt.pointedType = returnType;
-            SWAG_CHECK(emitInit(context, &pt, node->regInit, 1, nullptr, nullptr));
+            SWAG_CHECK(emitInit(context, returnType, node->regInit, 1, nullptr, nullptr));
             if (context->result != ContextResult::Done)
                 return true;
 
@@ -124,7 +124,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
 
                 TypeInfoPointer pt;
                 pt.pointedType = typeArr->finalType;
-                SWAG_CHECK(emitInit(context, &pt, node->regInit, typeArr->totalCount, nullptr, nullptr));
+                SWAG_CHECK(emitInit(context, typeArr->finalType, node->regInit, typeArr->totalCount, nullptr, nullptr));
                 if (context->result != ContextResult::Done)
                     return true;
 

@@ -61,7 +61,7 @@ impl Thread
 
         // Get a copy of current context, and initialize a temporary allocator for that thread
         context = dref @getcontext()
-        @init(&context.tempAllocator)
+        @init(&context.tempAllocator, 1)
         if tempAllocSize < 0 do
             context.tempAllocator.setCapacity(context.tempAllocator.capacity, context.allocator)
         elif tempAllocSize != 0 do

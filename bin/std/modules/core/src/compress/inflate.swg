@@ -89,7 +89,7 @@ impl HuffmanTable
         var sizes:    [HuffmanMaxBits + 1] u16
         var nextCode: [HuffmanMaxBits] u16
 
-        @init(self)
+        @init(self, 1)
         visit v: codeLengths do
             sizes[v] += 1
         sizes[0] = 0

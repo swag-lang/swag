@@ -1142,7 +1142,7 @@ public impl Deflate
         if !state do
             state = Memory.new'Compressor()
         else do
-            @init(state)
+            @init(state, 1)
         setup(createCompFlagsFromZipParams(level, strategy))
         initFlags = flags
     }

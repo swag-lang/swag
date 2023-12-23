@@ -3,8 +3,8 @@
 
 #test
 {
-	@init(ptr)
-	@init(ptr + 10)
+	@init(ptr, 1)
+	@init(ptr + 10, 1)
 	@init(ptr, 10)
 	@init(ptr, 10)(1, 2)
 

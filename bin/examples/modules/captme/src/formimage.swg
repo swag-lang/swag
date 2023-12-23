@@ -43,7 +43,7 @@ impl FormImage
 {
     mtd opPostCopy()
     {
-        @init(&texture)
+        @init(&texture, 1)
     }
 }
 

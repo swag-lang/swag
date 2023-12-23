@@ -30,7 +30,7 @@ public impl Md5
     // Initialize the hashing sequence
     mtd init()
     {
-        @init(self)
+        @init(self, 1)
         padding[0] = 0x80
         state[0] = 0x67452301
         state[1] = 0xefcdab89

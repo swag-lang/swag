@@ -114,7 +114,7 @@ func(T) new(allocator: IAllocator = null, alignement: u32 = 0, hint: string = nu
 {
     let userHint = hint orelse @stringof(T)
     let ptr = cast(*T) alloc(@sizeof(T), allocator, alignement, userHint, loc)
-    @init(ptr)
+    @init(ptr, 1)
     return ptr
 }
 

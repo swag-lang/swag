@@ -34,7 +34,7 @@ impl AA
         {
             let typeStruct = cast(const *Swag.TypeInfoStruct) cur
             typeStruct.opDrop(buf)
-            @init(cast(*TV) buf)
+            @init(cast(*TV) buf, 1)
         }
 
         cur = TV

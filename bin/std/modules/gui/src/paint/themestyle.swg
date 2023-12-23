@@ -172,7 +172,7 @@ impl ThemeStyle
 
     mtd clearFont()
     {
-        @init(&font)
+        @init(&font, 1)
         dirty = true
     }
 }

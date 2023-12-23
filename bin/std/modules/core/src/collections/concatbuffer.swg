@@ -387,7 +387,7 @@ impl ConcatBuffer
     mtd setFirstBucket(data: [..] u8)
     {
         Debug.assert(firstBucket == null)
-        @init(&viewFirstBucket)
+        @init(&viewFirstBucket, 1)
         viewFirstBucket.datas = @dataof(data)
         viewFirstBucket.size = @countof(data)
         firstBucket, lastBucket, curBucket = &viewFirstBucket

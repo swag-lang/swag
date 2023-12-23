@@ -1388,8 +1388,7 @@ void ByteCodeGenJob::freeStructParametersRegisters(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
 {
-    auto node           = CastAst<AstInit>(context->node, AstNodeKind::Init);
-    auto typeExpression = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->expression->typeInfo), TypeInfoKind::Pointer);
+    auto node = CastAst<AstInit>(context->node, AstNodeKind::Init);
 
     // Number of values to initialize. 0 is dynamic (comes from a register)
     uint64_t numToInit = 0;
@@ -1405,7 +1404,18 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
         node->count->semFlags |= SEMFLAG_CAST1;
     }
 
-    SWAG_CHECK(emitInit(context, typeExpression, node->expression->resultRegisterRC, numToInit, node->count, node->parameters));
+    TypeInfo* pointedType = nullptr;
+    if (node->count)
+    {
+        auto typeExpression = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->expression->typeInfo), TypeInfoKind::Pointer);
+        pointedType         = typeExpression->pointedType;
+    }
+    else
+    {
+        pointedType = node->expression->typeInfo;
+    }
+
+    SWAG_CHECK(emitInit(context, pointedType, node->expression->resultRegisterRC, numToInit, node->count, node->parameters));
     if (context->result != ContextResult::Done)
         return true;
 
@@ -1420,7 +1430,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* typeExpression, RegisterList& rExpr, uint64_t numToInit, AstNode* count, AstNode* parameters)
+bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, RegisterList& rExpr, uint64_t numToInit, AstNode* count, AstNode* parameters)
 {
     // Determine if we just need to clear the memory
     bool justClear = true;
@@ -1443,9 +1453,9 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
     }
 
     TypeInfoStruct* typeStruct = nullptr;
-    if (typeExpression->pointedType->isStruct())
+    if (pointedType->isStruct())
     {
-        typeStruct = CastTypeInfo<TypeInfoStruct>(typeExpression->pointedType, TypeInfoKind::Struct);
+        typeStruct = CastTypeInfo<TypeInfoStruct>(pointedType, TypeInfoKind::Struct);
         context->job->waitStructGenerated(typeStruct);
         if (context->result != ContextResult::Done)
             return true;
@@ -1455,7 +1465,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
 
     if (justClear)
     {
-        uint64_t sizeToClear = typeExpression->pointedType->sizeOf;
+        uint64_t sizeToClear = pointedType->sizeOf;
         if (sizeToClear)
         {
             if (numToInit)
@@ -1551,7 +1561,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
         {
             auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
             inst->flags |= BCI_IMM_B;
-            inst->b.u64 = typeExpression->pointedType->sizeOf;
+            inst->b.u64 = pointedType->sizeOf;
 
             auto instJump                     = EMIT_INST0(context, ByteCodeOp::Jump);
             instJump->b.s32                   = startLoop - context->bc->numInstructions;
@@ -1588,7 +1598,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfoPointer* type
         if (numToInit != 1)
         {
             auto inst   = EMIT_INST3(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
-            inst->b.u64 = typeExpression->pointedType->sizeOf;
+            inst->b.u64 = pointedType->sizeOf;
             inst->flags |= BCI_IMM_B;
 
             auto instJump                     = EMIT_INST0(context, ByteCodeOp::Jump);

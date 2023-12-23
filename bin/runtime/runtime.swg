@@ -151,7 +151,7 @@ func __setupRuntime(flags: RuntimeFlags)
     if __buildCfg.debugAllocator
     {
         __debugAlloc = @alloc(@sizeof(DebugAllocator))
-        @init(__debugAlloc)
+        @init(__debugAlloc, 1)
         __debugAlloc.captureAllocStack = __buildCfg.debugAllocatorCaptureStack
         __debugAlloc.detectLeaks       = __buildCfg.debugAllocatorLeaks
         __debugAlloc.setup(cxt.allocator)

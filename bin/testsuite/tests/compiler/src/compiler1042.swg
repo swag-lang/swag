@@ -6,7 +6,7 @@ func(T) new()->*T
 	let context = @getcontext()
 	context.allocator.req(&req)
 
-	@init(cast(*T) req.address)
+	@init(cast(*T) req.address, 1)
 	return acast req.address
 }
 

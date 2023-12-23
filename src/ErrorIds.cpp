@@ -890,9 +890,9 @@ void initErrors()
     SWAG_ERROR(Err0639, "unauthorized function overload                    $ a function with the same name '%s' has already been declared $ if you want to declare an overload, mark all functions with '#[Swag.Overload]'");
     SWAG_ERROR(Err0694, "invalid compiler statement                        $ missing either '#do' or '{' before '%s'");
     SWAG_ERROR(Err0530, "invalid statement                                 $ missing either 'do' or '{' before '%s'");
-    SWAG_ERROR(Err0142, "invalid argument                                  $ the intrinsic '%s' requires a pointer to memory as a first argument if the count is greater than one");
-    SWAG_ERROR(Err0490, "invalid argument                                  $ the intrinsic '%s' requires a pointer to memory as a first argument if the count is variable");
-    SWAG_ERROR(Err0660, nullptr);
+    SWAG_ERROR(Err0142, "invalid argument                                  $ the intrinsic '%s' requires a pointer to memory as a first argument if the 'count' is greater than one");
+    SWAG_ERROR(Err0490, "invalid argument                                  $ the intrinsic '%s' requires a pointer to memory as a first argument if the 'count' is variable");
+    SWAG_ERROR(Err0660, "invalid argument                                  $ the intrinsic '%s' requires a variable name as a first argument if the second argument is not specified");
     SWAG_ERROR(Err0141, nullptr);
     SWAG_ERROR(Err0169, nullptr);
     SWAG_ERROR(Err0776, nullptr);

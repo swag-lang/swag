@@ -14,7 +14,7 @@ impl BitStream
 {
     mtd init(buf: const [..] u8)
     {
-        @init(self)
+        @init(self, 1)
         stream = buf
     }
 

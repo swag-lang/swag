@@ -3,7 +3,7 @@
 {
     var v: AA
     v.x = 444
-    @init(&v)
+    @init(&v, 1)
     @assert(v.x == 666)
 }
 

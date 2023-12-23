@@ -472,7 +472,7 @@ Reinitialize the game.
 func start()
 {
     // '@init' can be called to reinitialize a variable to its default value
-    @init(&g_Bird)
+    @init(&g_Bird, 1)
 
     g_Bird.pos.x = g_Rect.horzCenter()
     g_Bird.pos.y = g_Rect.vertCenter()

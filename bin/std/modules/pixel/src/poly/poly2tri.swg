@@ -491,8 +491,8 @@ impl Tesselate
     // Clear content
     public mtd clear()
     {
-        @init(&basin)
-        @init(&edgeEvent)
+        @init(&basin, 1)
+        @init(&edgeEvent, 1)
         polyStart = 0
 
         Memory.delete(head)

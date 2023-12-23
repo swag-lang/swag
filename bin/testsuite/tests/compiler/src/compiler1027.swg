@@ -13,7 +13,7 @@ struct Point
 	pt.x = 0
 	pt.y = 0
 	let ptr = &pt
-	@init(ptr)
+	@init(ptr, 1)
 	@assert(pt.x == 10)
 	@assert(pt.y == 20)
 }

@@ -224,7 +224,7 @@ impl Decoder
 {
     mtd init(buffer: const [..] u8) throw
     {
-        @init(self)
+        @init(self, 1)
         stream = @dataof(buffer)
         streamLen = cast(s32) @countof(buffer)
 

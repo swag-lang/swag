@@ -166,8 +166,8 @@ impl Image
     // Release the content of the image
     mtd release()
     {
-        @drop(self)
-        @init(self)
+        @drop(self, 1)
+        @init(self, 1)
     }
 
     // Clear the content of the image

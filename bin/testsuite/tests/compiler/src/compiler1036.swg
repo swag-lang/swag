@@ -10,5 +10,5 @@ struct Point
 {
 	var pt : Point
 	var ptr = &pt
-	@init(ptr)(10, true)
+	@init(ptr, 1)(10, true)
 }

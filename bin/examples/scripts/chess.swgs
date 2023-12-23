@@ -86,7 +86,7 @@ func moveIsPossible(fromP, toP: s8)->bool
 
 func initGame()
 {
-    @init(&g_Game)
+    @init(&g_Game, 1)
     g_Game.gameStatus = "Game is not over"
 }
 
