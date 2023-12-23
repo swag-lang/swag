@@ -34,6 +34,12 @@ using Core
 
 func day7A()
 {
+    day7A0()
+    day7A1()
+}
+
+func day7A0()
+{
     let dataPath = Path.combine(Path.getDirectoryName(#file), "7.txt")
     let lines = assume File.readAllLines(dataPath)
 
@@ -53,6 +59,60 @@ func day7A()
         visit v: split1
         {
             let splitVal = Tokenize.split(v, ` `'u8, 1)
+            visit can: splitVal[1..]
+            {
+                let it = id.find(split[0])
+                if it do
+                    it.value.add(can)
+                else
+                {
+                    var tmp: Array'string
+                    tmp.add(can)
+                    id.add(split[0], tmp)
+                }
+            }
+        }
+    }
+
+    func contains(id: *HashTable'(string, Array'string), what: string)->bool
+    {
+        let it = id.find(what)
+        if !it do return false
+
+        visit v: it.value
+        {
+            if v == "shiny gold" do
+                return true
+            if contains(id, v) do
+                return true
+        }
+
+        return false
+    }
+
+    var total: u32
+    visit v: id do
+        total += cast(s32) contains(&id, v)
+
+    //Console.print("total: ", total)
+    @assert(total == 296)
+}
+
+func day7A1()
+{
+    let dataPath = Path.combine(Path.getDirectoryName(#file), "7.txt")
+    let lines = assume File.readAllLines(dataPath)
+
+    var id: HashTable'(string, Array'string)
+
+    var r = assume Parser.RegExp.create(#"(\d+) (\w+ \w+)"#)
+    visit l: lines
+    {
+        let split = Tokenize.split(l, " bags contain ")
+        let all = r.grepAll(split[1])
+        visit v: all
+        {
+            let splitVal = Tokenize.split(v.value, ` `'u8, 1)
             visit can: splitVal[1..]
             {
                 let it = id.find(split[0])
