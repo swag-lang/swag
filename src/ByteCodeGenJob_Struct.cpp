@@ -1413,6 +1413,12 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
     else
     {
         pointedType = node->expression->typeInfo;
+        if (pointedType->isArray())
+        {
+            auto typeArray = CastTypeInfo<TypeInfoArray>(pointedType, TypeInfoKind::Array);
+            pointedType    = typeArray->finalType;
+            numToInit      = typeArray->totalCount;
+        }
     }
 
     SWAG_CHECK(emitInit(context, pointedType, node->expression->resultRegisterRC, numToInit, node->count, node->parameters));
@@ -1544,14 +1550,25 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType
     {
         auto child = parameters->childs.front();
         ensureCanBeChangedRC(context, rExpr);
+
+        uint32_t regCount     = count ? count->resultRegisterRC[0] : 0;
+        bool     freeRegCount = false;
+        if (numToInit > 1 && !count)
+        {
+            regCount     = reserveRegisterRC(context);
+            auto inst    = EMIT_INST1(context, ByteCodeOp::SetImmediate64, regCount);
+            inst->b.u64  = numToInit;
+            freeRegCount = true;
+        }
+
         auto startLoop = context->bc->numInstructions;
 
         uint32_t jumpAfter = 0;
         if (numToInit != 1)
         {
             jumpAfter = context->bc->numInstructions;
-            EMIT_INST1(context, ByteCodeOp::JumpIfZero64, count->resultRegisterRC);
-            EMIT_INST1(context, ByteCodeOp::DecrementRA64, count->resultRegisterRC);
+            EMIT_INST1(context, ByteCodeOp::JumpIfZero64, regCount);
+            EMIT_INST1(context, ByteCodeOp::DecrementRA64, regCount);
         }
 
         SWAG_CHECK(emitAffectEqual(context, rExpr, child->resultRegisterRC, child->typeInfo, child));
@@ -1567,6 +1584,9 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType
             instJump->b.s32                   = startLoop - context->bc->numInstructions;
             context->bc->out[jumpAfter].b.s32 = context->bc->numInstructions - jumpAfter - 1;
         }
+
+        if (freeRegCount)
+            freeRegisterRC(context, regCount);
     }
     else
     {
@@ -1574,14 +1594,24 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType
         reserveRegisterRC(context, r1, 1);
         ensureCanBeChangedRC(context, rExpr);
 
+        uint32_t regCount     = count ? count->resultRegisterRC[0] : 0;
+        bool     freeRegCount = false;
+        if (numToInit > 1 && !count)
+        {
+            regCount     = reserveRegisterRC(context);
+            auto inst    = EMIT_INST1(context, ByteCodeOp::SetImmediate64, regCount);
+            inst->b.u64  = numToInit;
+            freeRegCount = true;
+        }
+
         auto startLoop = context->bc->numInstructions;
 
         uint32_t jumpAfter = 0;
         if (numToInit != 1)
         {
             jumpAfter = context->bc->numInstructions;
-            EMIT_INST1(context, ByteCodeOp::JumpIfZero64, count->resultRegisterRC);
-            EMIT_INST1(context, ByteCodeOp::DecrementRA64, count->resultRegisterRC);
+            EMIT_INST1(context, ByteCodeOp::JumpIfZero64, regCount);
+            EMIT_INST1(context, ByteCodeOp::DecrementRA64, regCount);
         }
 
         for (auto child : parameters->childs)
@@ -1609,6 +1639,8 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType
         for (auto child : parameters->childs)
             freeRegisterRC(context, child);
         freeRegisterRC(context, r1);
+        if (freeRegCount)
+            freeRegisterRC(context, regCount);
     }
 
     return true;

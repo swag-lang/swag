@@ -1107,7 +1107,9 @@ bool SemanticJob::resolveInit(SemanticContext* context)
     {
         SWAG_VERIFY(node->expression->kind == AstNodeKind::IdentifierRef, context->report({node->expression, Fmt(Err(Err0660), node->token.ctext())}));
         SWAG_VERIFY(node->expression->resolvedSymbolOverload, context->report({node->expression, Fmt(Err(Err0660), node->token.ctext())}));
-        node->expression->childs.back()->semFlags |= SEMFLAG_FORCE_TAKE_ADDRESS;
+        auto back = node->expression->childs.back();
+        back->semFlags |= SEMFLAG_FORCE_TAKE_ADDRESS;
+        back->resolvedSymbolOverload->flags |= OVERLOAD_HAS_MAKE_POINTER;
     }
     else
     {
@@ -1117,8 +1119,18 @@ bool SemanticJob::resolveInit(SemanticContext* context)
 
     if (node->parameters)
     {
-        auto typeinfoPointer = CastTypeInfo<TypeInfoPointer>(expressionTypeInfo, TypeInfoKind::Pointer);
-        auto pointedType     = typeinfoPointer->pointedType;
+        TypeInfo* pointedType = nullptr;
+        if (node->count)
+        {
+            auto typeinfoPointer = CastTypeInfo<TypeInfoPointer>(expressionTypeInfo, TypeInfoKind::Pointer);
+            pointedType          = typeinfoPointer->pointedType;
+        }
+        else
+        {
+            pointedType = expressionTypeInfo;
+            if (pointedType->isArray())
+                pointedType = ((TypeInfoArray*) pointedType)->finalType;
+        }
 
         if (pointedType->isNative() || pointedType->isPointer())
         {

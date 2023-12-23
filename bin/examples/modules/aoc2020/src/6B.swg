@@ -62,7 +62,7 @@ func day6B0()
             visit c: count do
                 if c == num do
                     total += 1
-            @init(&count[0], @countof(count))
+            @init(count)
             num = 0
         }
     }
