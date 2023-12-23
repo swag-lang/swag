@@ -60,11 +60,7 @@ func day7B()
         return total
     }
 
-    let it = id.find("shiny gold")
-    var total: u32
-    visit v: it.value do
-        total += v.count + (v.count*count(&id, v.name))
-
+    let total = count(&id, "shiny gold")
     //Console.print("total: ", total)
     @assert(total == 9339)
 }
