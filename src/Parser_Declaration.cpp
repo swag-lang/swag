@@ -418,7 +418,13 @@ bool Parser::doScopedStatement(AstNode* parent, AstNode** result, bool mustHaveD
     {
         if (mustHaveDo)
         {
-            SWAG_VERIFY(token.id == TokenId::KwdDo, error(token, Err(Err0530)));
+            if (token.id != TokenId::KwdDo)
+            {
+                Diagnostic diag{sourceFile, token, Fmt(Err(Err0530), token.ctext())};
+                auto       note = Diagnostic::note(parent, parent->token, Fmt(Nte(Nte1022), parent->token.ctext()));
+                return context->report(diag, note);
+            }
+
             SWAG_CHECK(eatToken());
         }
 
@@ -449,7 +455,13 @@ bool Parser::doStatement(AstNode* parent, AstNode** result)
     }
     else
     {
-        SWAG_VERIFY(token.id == TokenId::CompilerDo, error(token, Err(Err0694)));
+        if (token.id != TokenId::CompilerDo)
+        {
+            Diagnostic diag{sourceFile, token, Fmt(Err(Err0694), token.ctext())};
+            auto       note = Diagnostic::note(parent->parent, parent->parent->token, Fmt(Nte(Nte1031), parent->parent->token.ctext()));
+            return context->report(diag, note);
+        }
+
         SWAG_CHECK(eatToken());
 
         if (currentScope->isGlobalOrImpl())
