@@ -256,6 +256,7 @@ struct SemanticJob : public Job
     static bool checkAccess(JobContext* context, AstNode* node);
     static bool checkIsConstExpr(JobContext* context, bool test, AstNode* expression, const Utf8& errMsg = "", const Utf8& errParam = "");
     static bool checkIsConstExpr(JobContext* context, AstNode* expression, const Utf8& errMsg = "", const Utf8& errParam = "");
+    static bool checkInitDropCount(SemanticContext* context, AstNode* node, AstNode* expression, AstNode* count);
 
     static bool warnUnusedFunction(Module* moduleToGen, ByteCode* one);
     static bool warnUnusedVariables(SemanticContext* context, Scope* scope);

@@ -156,7 +156,7 @@ func(T) new(num: u64, allocator: IAllocator = null, alignement: u32 = 0, hint: s
     Debug.assert(num > 0)
 
     let userHint = hint orelse @stringof(T)
-    let ptr = cast(*T) alloc(@sizeof(T) * num, allocator, alignement, userHint, loc)
+    let ptr = cast(^T) alloc(@sizeof(T) * num, allocator, alignement, userHint, loc)
     @init(ptr, num)
     return ptr
 }

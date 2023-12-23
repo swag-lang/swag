@@ -337,7 +337,6 @@ void initErrors()
     SWAG_ERROR(Err0787, "invalid argument                                  $ the intrinsic '%s' requires a pointer as a first argument, got '%s' instead");
     SWAG_ERROR(Err0249, "invalid argument                                  $ the intrinsic '%s' requires an argument of type 'string', got '%s' instead");
     SWAG_ERROR(Err0283, "invalid argument                                  $ the intrinsic '@gettag' expects a default value of type '%s' as the last argument");
-    SWAG_ERROR(Err0142, "invalid argument                                  $ the intrinsic '@init' requires a 'pointer to memory' as a first argument if the count is greater than one");
     SWAG_ERROR(Err0790, "invalid argument                                  $ the intrinsic '@mkany' can't have 'null' as a first argument");
     SWAG_ERROR(Err0792, "invalid argument                                  $ the intrinsic '@mkany' expects a type as the second argument, got '%s' instead");
     SWAG_ERROR(Err0784, "invalid argument                                  $ the intrinsic '@mkcallback' requires a pointer to function argument, got '%s' instead");
@@ -891,7 +890,8 @@ void initErrors()
     SWAG_ERROR(Err0639, "unauthorized function overload                    $ a function with the same name '%s' has already been declared $ if you want to declare an overload, mark all functions with '#[Swag.Overload]'");
     SWAG_ERROR(Err0694, "invalid compiler statement                        $ missing either '#do' or '{' before '%s'");
     SWAG_ERROR(Err0530, "invalid statement                                 $ missing either 'do' or '{' before '%s'");
-    SWAG_ERROR(Err0490, nullptr);
+    SWAG_ERROR(Err0142, "invalid argument                                  $ the intrinsic '%s' requires a pointer to memory as a first argument if the count is greater than one");
+    SWAG_ERROR(Err0490, "invalid argument                                  $ the intrinsic '%s' requires a pointer to memory as a first argument if the count is variable");
     SWAG_ERROR(Err0660, nullptr);
     SWAG_ERROR(Err0141, nullptr);
     SWAG_ERROR(Err0169, nullptr);
@@ -1387,7 +1387,6 @@ void initErrors()
     SWAG_ERROR(Nte0082, "the interface declaration yields no return");
     SWAG_ERROR(Nte0154, "the keyword '%s' can't be used as an identifier");
     SWAG_ERROR(Nte0034, "the missing value can be found here");
-    SWAG_ERROR(Nte1006, "the number of values to initialize ('%d') is greater than one");
     SWAG_ERROR(Nte1109, "the operation is not allowed on a non-pointer types");
     SWAG_ERROR(Nte1061, "the operation is not allowed");
     SWAG_ERROR(Nte1103, "the operator '++' requires compile-time strings as arguments");
@@ -1463,7 +1462,8 @@ void initErrors()
     SWAG_ERROR(Nte0000, "'%s' is an array of type '%s' which does not have a subscope");
     SWAG_ERROR(Nte1022, "a '%s' block must start with 'do' or must be enclosed in '{}'");
     SWAG_ERROR(Nte1031, "a '%s' block must start with '#do' or must be enclosed in '{}'");
-    SWAG_ERROR(Nte1009, nullptr);
+    SWAG_ERROR(Nte1006, "the number of values ('%d') is greater than one");
+    SWAG_ERROR(Nte1009, "the number of values is variable and could be greater than one");
     SWAG_ERROR(Nte1122, nullptr);
     SWAG_ERROR(Nte1131, nullptr);
     SWAG_ERROR(Nte0028, nullptr);

@@ -1066,6 +1066,37 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     return true;
 }
 
+bool SemanticJob::checkInitDropCount(SemanticContext* context, AstNode* node, AstNode* expression, AstNode* count)
+{
+    if (!count)
+        return true;
+
+    auto countTypeInfo = TypeManager::concreteType(count->typeInfo);
+    SWAG_VERIFY(countTypeInfo->isNativeInteger(), context->report({count, Fmt(Err(Err0498), node->token.ctext(), countTypeInfo->getDisplayNameC())}));
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, count, CASTFLAG_TRY_COERCE));
+
+    if (!count->hasComputedValue() || count->computedValue->reg.u64 > 1)
+    {
+        if (!expression->typeInfo->isPointerArithmetic())
+        {
+            if (count->hasComputedValue())
+            {
+                Diagnostic diag{expression, Fmt(Err(Err0142), node->token.ctext(), expression->typeInfo->getDisplayNameC())};
+                diag.addRange(count, Fmt(Nte(Nte1006), count->computedValue->reg.u64));
+                return context->report(diag);
+            }
+            else
+            {
+                Diagnostic diag{expression, Fmt(Err(Err0490), node->token.ctext(), expression->typeInfo->getDisplayNameC())};
+                diag.addRange(count, Nte(Nte1009));
+                return context->report(diag);
+            }
+        }
+    }
+
+    return true;
+}
+
 bool SemanticJob::resolveInit(SemanticContext* context)
 {
     auto job                = context->job;
@@ -1073,24 +1104,7 @@ bool SemanticJob::resolveInit(SemanticContext* context)
     auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
     SWAG_VERIFY(expressionTypeInfo->isPointer(), context->report({node->expression, Fmt(Err(Err0787), node->token.ctext(), expressionTypeInfo->getDisplayNameC())}));
-
-    if (node->count)
-    {
-        auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
-        SWAG_VERIFY(countTypeInfo->isNativeInteger(), context->report({node->count, Fmt(Err(Err0498), node->token.ctext(), countTypeInfo->getDisplayNameC())}));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, node->count, CASTFLAG_TRY_COERCE));
-
-        if (node->count->hasComputedValue() &&
-            node->count->computedValue->reg.u64 > 1)
-        {
-            if (!node->expression->typeInfo->isPointerArithmetic())
-            {
-                Diagnostic diag{node->expression, Fmt(Err(Err0142), node->expression->typeInfo->getDisplayNameC())};
-                diag.addRange(node->count, Fmt(Nte(Nte1006), node->count->computedValue->reg.u64));
-                return context->report(diag);
-            }
-        }
-    }
+    SWAG_CHECK(checkInitDropCount(context, node, node->expression, node->count));
 
     if (node->parameters)
     {
@@ -1157,6 +1171,7 @@ bool SemanticJob::resolveDropCopyMove(SemanticContext* context)
     auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
     SWAG_VERIFY(expressionTypeInfo->isPointer(), context->report({node->expression, Fmt(Err(Err0787), node->token.ctext(), expressionTypeInfo->getDisplayNameC())}));
+    SWAG_CHECK(checkInitDropCount(context, node, node->expression, node->count));
 
     // Be sure struct if not marked as nocopy
     if (node->kind == AstNodeKind::PostCopy)
@@ -1167,13 +1182,6 @@ bool SemanticJob::resolveDropCopyMove(SemanticContext* context)
         {
             return context->report({node->expression, Fmt(Err(Err0493), pointedType->getDisplayNameC())});
         }
-    }
-
-    if (node->count)
-    {
-        auto countTypeInfo = TypeManager::concreteType(node->count->typeInfo);
-        SWAG_VERIFY(countTypeInfo->isNativeInteger(), context->report({node->count, Fmt(Err(Err0498), node->token.ctext(), countTypeInfo->getDisplayNameC())}));
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, node->count, CASTFLAG_TRY_COERCE));
     }
 
     node->byteCodeFct = ByteCodeGenJob::emitDropCopyMove;

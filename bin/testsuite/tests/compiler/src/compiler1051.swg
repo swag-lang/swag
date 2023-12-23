@@ -1,6 +1,6 @@
 
 
-func(T, N: u32) new()->*T
+func(T, N: u32) new()->^T
 {
 	var req : Swag.AllocatorRequest
 	req.size = @sizeof(T) * N
@@ -11,7 +11,7 @@ func(T, N: u32) new()->*T
 	return acast req.address
 }
 
-func(T, N: u32) delete(addr: *T)
+func(T, N: u32) delete(addr: ^T)
 {
 	@drop(addr, N)
 
