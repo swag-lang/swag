@@ -1114,6 +1114,7 @@ bool SemanticJob::resolveInit(SemanticContext* context)
     else
     {
         SWAG_VERIFY(expressionTypeInfo->isPointer(), context->report({node->expression, Fmt(Err(Err0787), node->token.ctext(), expressionTypeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(!node->expression->typeInfo->isConst(), context->report({node->expression, Fmt(Err(Err0141), node->token.ctext(), expressionTypeInfo->getDisplayNameC())}));
         SWAG_CHECK(checkInitDropCount(context, node, node->expression, node->count));
     }
 
@@ -1192,6 +1193,7 @@ bool SemanticJob::resolveDropCopyMove(SemanticContext* context)
     auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
     SWAG_VERIFY(expressionTypeInfo->isPointer(), context->report({node->expression, Fmt(Err(Err0787), node->token.ctext(), expressionTypeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(!node->expression->typeInfo->isConst(), context->report({node->expression, Fmt(Err(Err0141), node->token.ctext(), expressionTypeInfo->getDisplayNameC())}));
     SWAG_CHECK(checkInitDropCount(context, node, node->expression, node->count));
 
     // Be sure struct if not marked as nocopy
