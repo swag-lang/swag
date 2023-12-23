@@ -35,7 +35,7 @@ func day7B()
 
     var id: HashTable'(string, Array'({count: u32, name: string}))
 
-    var r = assume Parser.RegExp.create(#"(\d+) (\w+ \w+)"#)
+    var r = assume Parser.RegExp.create(#"\d+ \w+ \w+"#)
     visit l: lines
     {
         let split = Tokenize.split(l, " bags contain ")
@@ -47,7 +47,8 @@ func day7B()
         }
     }
 
-    func count(id: *HashTable'(string, Array'({count: u32, name: string})), what: string)->u32
+    typealias T = @decltype(id)
+    func count(id: *T, what: string)->u32
     {
         let it = id.find(what)
         if !it do
