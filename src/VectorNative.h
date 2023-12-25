@@ -226,8 +226,6 @@ struct VectorNative
                 return;
             }
         }
-
-        SWAG_ASSERT(false);
     }
 
     void erase_unordered_byval(const T& val)
@@ -240,8 +238,6 @@ struct VectorNative
                 return;
             }
         }
-
-        SWAG_ASSERT(false);
     }
 
     void append(const VectorNative& other)

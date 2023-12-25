@@ -55,9 +55,8 @@ func day9B()
         var sum = 0
         var min = Swag.S32.Max
         var max = 0
-        visit l1: lines//[i..]
+        visit l1: lines[i..]
         {
-            if #index < i do continue
             let v1 = assume StrConv.toS32(l1)
             min = Math.min(min, v1)
             max = Math.max(max, v1)

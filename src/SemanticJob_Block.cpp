@@ -940,8 +940,16 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     SWAG_ASSERT(node->block);
     Ast::visit(context, node->block, [&](ErrorContext* context, AstNode* x)
                {
-                    if (!x->ownerBreakable || x->ownerBreakable->isParentOf(loopNode))
+                    if (!x->ownerBreakable)
                         x->ownerBreakable = loopNode;
+                    else if (x->ownerBreakable->isParentOf(loopNode))
+                    {
+                        if (x->tokenId == TokenId::KwdBreak)
+                            x->ownerBreakable->breakList.erase_unordered_byval((AstBreakContinue*)x);
+                        else if (x->tokenId == TokenId::KwdContinue)
+                            x->ownerBreakable->continueList.erase_unordered_byval((AstBreakContinue*) x);
+                        x->ownerBreakable = loopNode;
+                    }
                     if (x->kind == AstNodeKind::Visit)
                         return Ast::VisitResult::Stop;
                     return Ast::VisitResult::Continue; });
