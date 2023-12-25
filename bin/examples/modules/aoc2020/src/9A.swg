@@ -49,23 +49,16 @@ func day9A()
     let dataPath = Path.combine(Path.getDirectoryName(#file), "9.txt")
     let lines = assume File.readAllLines(dataPath)
 
-    var sum: Array's32
-    var val: Array's32
+    var sum, val: Array's32
     const N = 25
     visit l: lines
     {
         let v1 = assume StrConv.toS32(l)
         if #index < N
         {
+            visit v0: val do sum.add(v0+v1)
             val.add(v1)
             continue
-        }
-
-        if sum.count == 0
-        {
-            loop i: val do
-                loop j: 1 until val.count do
-                    sum.add(val[i]+val[j])
         }
 
         if !sum.contains(v1)
@@ -75,7 +68,7 @@ func day9A()
             break
         }
 
-        visit v: val[1..] do sum.remove(val[0]+v)
+        visit v0: val[1..] do sum.remove(val[0]+v0)
         val.removeAtOrdered(0)
 
         visit v0: val do sum.add(v0+v1)
