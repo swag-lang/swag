@@ -68,10 +68,15 @@ func day9A()
             break
         }
 
-        visit v0: val[1..] do sum.remove(val[0]+v0)
+        let v = val[0]
         val.removeAtOrdered(0)
 
-        visit v0: val do sum.add(v0+v1)
+        visit v0: val
+        {
+            sum.remove(v+v0)
+            sum.add(v0+v1)
+        }
+
         val.add(v1)
     }
 }
