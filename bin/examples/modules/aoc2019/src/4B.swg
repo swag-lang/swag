@@ -17,9 +17,16 @@ func day4B()
     var total = 0
     loop x: 246515 to 739105
     {
-        let str = Format.toString("%", x)
+        var div = 100_000
+        var str: [6] u8 = undefined
+        loop i: 6
+        {
+            str[i] = cast(u8) ((x / div) % 10)
+            div /= 10
+        }
+
         var ok = false
-        loop i: str.length-1
+        loop i: 5
         {
             if str[i] > str[i+1]
             {
@@ -31,7 +38,7 @@ func day4B()
             {
                 if !i or str[i-1] != str[i]
                 {
-                    if i >= str.length-2 or str[i+1] != str[i+2]
+                    if i >= 4 or str[i+1] != str[i+2]
                     {
                         ok = true
                     }

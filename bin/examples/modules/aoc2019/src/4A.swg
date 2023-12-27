@@ -20,14 +20,62 @@ using Core
 
 func day4A()
 {
+    day4A0()
+    day4A1()
+}
+
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+func day4A0()
+{
     //Time.Stopwatch.scopeMeasure()
 
     var total = 0
     loop x: 246515 to 739105
     {
         let str = Format.toString("%", x)
+
         var ok = false
         loop i: str.length-1
+        {
+            if str[i] > str[i+1]
+            {
+                ok = false
+                break
+            }
+
+            if str[i] == str[i+1]
+            {
+                ok = true
+            }
+        }
+
+        if ok do total += 1
+    }
+
+    //Console.print("total: ", total)
+    @assert(total == 1048)
+}
+
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+func day4A1()
+{
+    Time.Stopwatch.scopeMeasure()
+
+    var total = 0
+    loop x: 246515 to 739105
+    {
+        var div = 100_000
+        var str: [6] u8 = undefined
+        loop i: 6
+        {
+            str[i] = cast(u8) ((x / div) % 10)
+            div /= 10
+        }
+
+        var ok = false
+        loop i: 5
         {
             if str[i] > str[i+1]
             {
