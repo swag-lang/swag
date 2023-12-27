@@ -84,20 +84,19 @@ func day3A1()
     func trace(line: string)->Array'Vector2
     {
         var result: retval
-        var pos, dpos: Vector2
+        var pos: Vector2
+        result.add(pos)
         visit v: Tokenize.split(line, `,`'u8)
         {
-            result.add(pos)
+            let val = assume StrConv.toF32(v[1..])
             switch v[0]
             {
-            case `U`: dpos = {0, -1}
-            case `D`: dpos = {0, 1}
-            case `R`: dpos = {-1, 0}
-            case `L`: dpos = {1, 0}
+            case `U`: pos += {0, -val}
+            case `D`: pos += {0, val}
+            case `R`: pos += {-val, 0}
+            case `L`: pos += {val, 0}
             }
-
-            let val = assume StrConv.toF32(v[1..])
-            pos += dpos*val
+            result.add(pos)
         }
         return result
     }
