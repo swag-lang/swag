@@ -19,17 +19,19 @@ Once the program has halted, its output is available at address 0, also just lik
 Find the input noun and verb that cause the program to produce the output 19690720. What is 100 * noun + verb? (For example, if noun=12 and verb=2, the answer would be 1202.)
 */
 
-using Core
-
-const S = 20000
-private var grid: [S,S] bool
-private var total = Swag.S32.Max
+using Core, Math
 
 func day3A()
 {
     day3A0()
+    day3A1()
 }
 
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+private const S = 20000
+private var grid: [S,S] bool
+private var total = Swag.S32.Max
 func day3A0()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "3.txt")
@@ -72,3 +74,51 @@ func day3A0()
     @assert(total == 303)
 }
 
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+func day3A1()
+{
+    let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "3.txt")
+    let lines = assume File.readAllLines(dataPath)
+
+    func trace(line: string)->Array'Vector2
+    {
+        var result: retval
+        var pos, dpos: Vector2
+        visit v: Tokenize.split(line, `,`'u8)
+        {
+            result.add(pos)
+            switch v[0]
+            {
+            case `U`: dpos = {0, -1}
+            case `D`: dpos = {0, 1}
+            case `R`: dpos = {-1, 0}
+            case `L`: dpos = {1, 0}
+            }
+
+            let val = assume StrConv.toF32(v[1..])
+            pos += dpos*val
+        }
+        return result
+    }
+
+    let t0 = trace(lines[0])
+    let t1 = trace(lines[1])
+
+    var best = Swag.S32.Max
+    loop i: t1.count-1
+    {
+        loop j: t0.count-1
+        {
+            let (yes,pos) = Vector2.segSegIntersect(t1[i], t1[i+1], t0[j], t0[j+1])
+            if yes and !pos.isZero()
+            {
+                let d = Math.abs(pos.x)+Math.abs(pos.y)
+                best = Math.min(best, cast(s32) d)
+            }
+        }
+    }
+
+    //Console.print("total: ", best)
+    @assert(best == 303)
+}
