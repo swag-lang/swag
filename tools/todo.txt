@@ -57,6 +57,8 @@ BUG
 -------------------------------------
 4717 can fail (no error)
 -------------------------------------
+using TRUC dans une fonction, avant une sous fonction censée utilisée le using
+-------------------------------------
 
 
 

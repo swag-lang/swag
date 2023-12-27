@@ -1,0 +1,47 @@
+/*
+--- Part Two ---
+An Elf just remembered one more important detail: the two adjacent matching digits are not part of a larger group of matching digits.
+
+Given this additional criterion, but still ignoring the range rule, the following are now true:
+
+112233 meets these criteria because the digits never decrease and all repeated digits are exactly two digits long.
+123444 no longer meets the criteria (the repeated 44 is part of a larger group of 444).
+111122 meets the criteria (even though 1 is repeated more than twice, it still contains a double 22).
+How many different passwords within the range given in your puzzle input meet all of the criteria?
+*/
+
+using Core
+
+func day4B()
+{
+    var total = 0
+    loop x: 246515 to 739105
+    {
+        let str = Format.toString("%", x)
+        var ok = false
+        loop i: str.length-1
+        {
+            if str[i] > str[i+1]
+            {
+                ok = false
+                break
+            }
+
+            if str[i] == str[i+1]
+            {
+                if !i or str[i-1] != str[i]
+                {
+                    if i >= str.length-2 or str[i+1] != str[i+2]
+                    {
+                        ok = true
+                    }
+                }
+            }
+        }
+
+        if ok do total += 1
+    }
+
+    //Console.print("total: ", total)
+    @assert(total == 677)
+}
