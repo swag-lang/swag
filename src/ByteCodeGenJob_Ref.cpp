@@ -126,6 +126,7 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
     ensureCanBeChangedRC(context, node->array->resultRegisterRC);
     EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
     node->resultRegisterRC = node->array->resultRegisterRC;
+    truncRegisterRC(context, node->resultRegisterRC, 1);
 
     freeRegisterRC(context, node->access);
     return true;
