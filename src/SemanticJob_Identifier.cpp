@@ -4317,11 +4317,11 @@ bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
         }
 
         // If a generic type does not come from a 'using', it has priority
-        if (!(p.asFlags & ALTSCOPE_USING) && p.symbol->kind == SymbolKind::GenericType)
+        if (!(p.asFlags & ALTSCOPE_STRUCT_USING) && p.symbol->kind == SymbolKind::GenericType)
         {
             for (auto& p1 : dependentSymbols)
             {
-                if (p1.asFlags & ALTSCOPE_USING && p1.symbol->kind == SymbolKind::GenericType)
+                if (p1.asFlags & ALTSCOPE_STRUCT_USING && p1.symbol->kind == SymbolKind::GenericType)
                     p1.remove = true;
             }
         }
@@ -4940,6 +4940,28 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext*             
                                                    IdentifierScopeUpMode              scopeUpMode,
                                                    TokenParse*                        scopeUpValue)
 {
+    // Add registered alternative scopes of the node of the owner scope
+    if (startNode->ownerScope && startNode->ownerScope->owner)
+    {
+        auto owner = startNode->ownerScope->owner;
+        if (owner->hasExtMisc() && !owner->extMisc()->alternativeScopes.empty())
+        {
+            //if (!owner->isParentOf(startNode))
+            {
+                auto  job       = context->job;
+                auto& toProcess = job->scopesToProcess;
+                for (auto& as : owner->extMisc()->alternativeScopes)
+                {
+                    if (!hasAlternativeScope(scopes, as.scope) && (as.flags & ALTSCOPE_USING))
+                    {
+                        addAlternativeScope(scopes, as.scope, as.flags);
+                        addAlternativeScopeOnce(toProcess, as.scope, as.flags);
+                    }
+                }
+            }
+        }
+    }
+
     // Add registered alternative scopes of the current node
     if (startNode->hasExtMisc() && !startNode->extMisc()->alternativeScopes.empty())
     {

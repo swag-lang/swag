@@ -15,7 +15,7 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     SWAG_ASSERT(regNode);
     SWAG_VERIFY(node->ownerFct || node->ownerScope->kind == ScopeKind::Struct, context->report({node, Fmt(Err(Err0689), Naming::kindName(node->ownerScope->kind).c_str())}));
 
-    uint32_t altFlags = node->flags & AST_STRUCT_MEMBER ? ALTSCOPE_USING : 0;
+    uint32_t altFlags = node->flags & AST_STRUCT_MEMBER ? ALTSCOPE_STRUCT_USING : 0;
 
     typeInfoVar = TypeManager::concretePtrRef(typeInfoVar);
     if (typeInfoVar->isStruct())
@@ -148,7 +148,7 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
         return context->report({node, Fmt(Err(Err0695), typeResolved->getDisplayNameC())});
     }
 
-    node->parent->addAlternativeScope(scope);
+    node->parent->addAlternativeScope(scope, ALTSCOPE_USING);
 
     if (!idref->ownerFct)
         node->parent->sourceFile->addGlobalUsing(scope);

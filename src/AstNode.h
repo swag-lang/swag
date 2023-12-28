@@ -45,9 +45,10 @@ typedef bool (*ByteCodeNotifyFct)(ByteCodeGenContext* context);
 const uint32_t CLONE_RAW             = 0x00000001;
 const uint32_t CLONE_FORCE_OWNER_FCT = 0x00000002;
 
-const uint32_t ALTSCOPE_USING     = 0x00000001;
-const uint32_t ALTSCOPE_FILE_PRIV = 0x00000002;
-const uint32_t ALTSCOPE_UFCS      = 0x00000004;
+const uint32_t ALTSCOPE_STRUCT_USING = 0x00000001;
+const uint32_t ALTSCOPE_FILE_PRIV    = 0x00000002;
+const uint32_t ALTSCOPE_UFCS         = 0x00000004;
+const uint32_t ALTSCOPE_USING        = 0x00000008;
 
 struct CloneUpdateRef
 {
