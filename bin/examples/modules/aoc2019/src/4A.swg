@@ -61,7 +61,7 @@ func day4A0()
 /////////////////////////////////////////////////////////////////
 func day4A1()
 {
-    Time.Stopwatch.scopeMeasure()
+    //Time.Stopwatch.scopeMeasure()
 
     var total = 0
     loop x: 246515 to 739105
