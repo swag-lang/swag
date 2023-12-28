@@ -60,8 +60,6 @@ func day6B()
         map.add(split[1], split[0])
     }
 
-    var total: u64
-
     var you, san: Array'string
     var ity = map.find("YOU")
     var its = map.find("SAN")
@@ -72,6 +70,7 @@ func day6B()
         ity = map.find(ity.value)
     }
 
+    var total: u64
     while its
     {
         let pos = Slice.findLinear(you.toSlice(), its.value)
