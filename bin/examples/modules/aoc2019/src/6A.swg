@@ -58,15 +58,14 @@ func day6A()
     let dataPath = Path.combine(Path.getDirectoryName(#location.fileName), "6.txt")
     let lines = assume File.readAllLines(dataPath)
 
-    typealias T = HashTable'(string, string)
-    var map: T
+    var map: HashTable'(string, string)
     visit l: lines
     {
         let split = Tokenize.split(l, `)`'u8)
         map.add(split[1], split[0])
     }
 
-    func count(m: *T, name: string)->u32
+    func count(m: *@decltype(map), name: string)->u32
     {
         let it = m.find(name)
         if !it do return 0

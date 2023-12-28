@@ -181,3 +181,23 @@ bool SemanticJob::resolveScopedStmtAfter(SemanticContext* context)
     SWAG_CHECK(warnUnusedVariables(context, context->node->ownerScope));
     return true;
 }
+
+bool SemanticJob::resolveSubDeclRef(SemanticContext* context)
+{
+    auto node = context->node;
+
+    auto front = node->childs.front();
+    SWAG_ASSERT(front->resolvedSymbolName);
+
+    for (auto decl : front->resolvedSymbolName->nodes)
+    {
+        ScopedLock lk(decl->mutex);
+        if (decl->flags & AST_SPEC_SEMANTIC3)
+        {
+            decl->flags &= ~AST_SPEC_SEMANTIC3;
+            launchResolveSubDecl(context, decl);
+        }
+    }
+
+    return true;
+}

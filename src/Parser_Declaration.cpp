@@ -516,6 +516,7 @@ bool Parser::doStatementFor(AstNode* parent, AstNode** result, AstNodeKind kind)
 void Parser::registerSubDecl(AstNode* subDecl)
 {
     SWAG_ASSERT(subDecl->ownerFct);
+    auto orgSubDecl = subDecl;
     subDecl->ownerFct->subDecls.push_back(subDecl);
     subDecl->flags |= AST_NO_SEMANTIC | AST_SUB_DECL | AST_INTERNAL;
 
@@ -566,6 +567,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
     }
 
     auto newParent = subDecl->parent;
+    auto orgParent = newParent;
     Ast::removeFromParent(subDecl);
 
     // :SubDeclParent
@@ -590,6 +592,17 @@ void Parser::registerSubDecl(AstNode* subDecl)
     }
 
     Ast::addChildBack(newParent, subDecl);
+
+    if (orgSubDecl->kind != AstNodeKind::FuncDecl || !(orgSubDecl->specFlags & AstFuncDecl::SPECFLAG_IS_LAMBDA_EXPRESSION))
+    {
+        auto solver = Ast::newNode<AstMakePointer>(this, AstNodeKind::MakePointerLambda, sourceFile, orgParent);
+        solver->allocateExtension(ExtensionKind::Semantic);
+        solver->semanticFct = SemanticJob::resolveSubDeclRef;
+        solver->flags |= AST_GENERATED | AST_NO_ATTRIBUTE | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+        auto identifierRef = Ast::newIdentifierRef(sourceFile, orgSubDecl->token.text, solver);
+        identifierRef->childs.back()->specFlags |= AstIdentifier::SPECFLAG_FORCE_RESOLVE;
+        orgSubDecl->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC3;
+    }
 }
 
 bool Parser::doCompilerScopeBreakable(AstNode* parent, AstNode** result)

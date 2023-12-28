@@ -914,7 +914,7 @@ bool SemanticJob::isMethod(AstFuncDecl* funcNode)
 
 void SemanticJob::launchResolveSubDecl(JobContext* context, AstNode* node)
 {
-    if (node->flags & (AST_SPEC_SEMANTIC1 | AST_SPEC_SEMANTIC2))
+    if (node->flags & (AST_SPEC_SEMANTIC1 | AST_SPEC_SEMANTIC2 | AST_SPEC_SEMANTIC3))
         return;
 
     // If SEMFLAG_FILE_JOB_PASS is set, then the file job has already seen the sub declaration, ignored it

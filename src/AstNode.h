@@ -492,6 +492,7 @@ struct AstIdentifier : public AstNode
     static const uint16_t SPECFLAG_FROM_USING          = 0x0004;
     static const uint16_t SPECFLAG_CLOSURE_FIRST_PARAM = 0x0008;
     static const uint16_t SPECFLAG_SILENT_CALL         = 0x0010;
+    static const uint16_t SPECFLAG_FORCE_RESOLVE       = 0x0020;
 
     struct IdentifierExtension
     {

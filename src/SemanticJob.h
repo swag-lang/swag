@@ -405,6 +405,7 @@ struct SemanticJob : public Job
     static bool preResolveSubstBreakContinue(SemanticContext* context);
     static bool preResolveIdentifierRef(SemanticContext* context);
 
+    static bool resolveSubDeclRef(SemanticContext* context);
     static bool resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right);
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);
     static bool resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right);

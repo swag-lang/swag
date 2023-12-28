@@ -180,7 +180,7 @@
 
     <span class="SCmt">// From the command line, if the script is run with '--arg:swag.test', then we force the application</span>
     <span class="SCmt">// to exit after 100 frames. This is usefull for batch testing.</span>
-    <span class="SKwd">func</span> <span class="SFct">test</span>(app: *<span class="SCst">Application</span>) = <span class="SLgc">if</span> <span class="SCst">Env</span>.<span class="SFct">hasArg</span>(<span class="SStr">"swag.test"</span>) do app.maxRunFrame = <span class="SNum">100</span>
+    <span class="SKwd">func</span> <span class="SFct">test</span>(app: *<span class="SCst">Application</span>) = <span class="SLgc">if</span> <span class="SCst">Env</span>.<span class="SFct">hasArg</span>(<span class="SStr">"swag.test"</span>) <span class="SLgc">do</span> app.maxRunFrame = <span class="SNum">100</span>
 
     <span class="SCmt">// Creates and run one surface (i.e. window) at the given position and with the given size and title.</span>
     <span class="SCmt">// 'hook' defines a lambda that will receive and treat all gui events</span>
@@ -349,9 +349,9 @@
     <span class="SCmt">// Base</span>
     painter.<span class="SFct">drawTexture</span>(-g_BasePos, g_Rect.<span class="SFct">bottom</span>() - <span class="SCst">GroundHeight</span>, <span class="SKwd">cast</span>(<span class="STpe">f32</span>) g_BaseTexture.width, <span class="SCst">GroundHeight</span>, g_BaseTexture)
     painter.<span class="SFct">drawTexture</span>(-g_BasePos + g_BaseTexture.width, g_Rect.<span class="SFct">bottom</span>() - <span class="SCst">GroundHeight</span>, <span class="SKwd">cast</span>(<span class="STpe">f32</span>) g_BaseTexture.width, <span class="SCst">GroundHeight</span>, g_BaseTexture)
-    <span class="SLgc">if</span> !g_GameOver do
+    <span class="SLgc">if</span> !g_GameOver <span class="SLgc">do</span>
         g_BasePos += <span class="SCst">SpeedHorz</span>*g_Dt
-    <span class="SLgc">if</span> g_BasePos &gt;= g_BaseTexture.width do
+    <span class="SLgc">if</span> g_BasePos &gt;= g_BaseTexture.width <span class="SLgc">do</span>
         g_BasePos = <span class="SNum">0</span>
 
     <span class="SCmt">// Gameover text, centered</span>
@@ -417,18 +417,18 @@
 <p>The <span class="code-inline">update</span> part of the game. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">move</span>()
 {
-    <span class="SLgc">if</span> g_GameOver do
+    <span class="SLgc">if</span> g_GameOver <span class="SLgc">do</span>
         <span class="SLgc">return</span>
 
     g_Bird.pos += g_Bird.speed * g_Dt
     g_Bird.pos.y = <span class="SCst">Math</span>.<span class="SFct">max</span>(g_Bird.pos.y, <span class="SNum">0</span>)
-    <span class="SLgc">if</span> g_Start do
+    <span class="SLgc">if</span> g_Start <span class="SLgc">do</span>
         g_Bird.speed += {<span class="SNum">0</span>, <span class="SCst">Gravity</span>}
 
     g_Bird.frame += <span class="SNum">10</span> * g_Dt
 
     <span class="SCmt">// Be sure to have at least one pipe</span>
-    <span class="SLgc">if</span> g_Pipes.count == <span class="SNum">0</span> do
+    <span class="SLgc">if</span> g_Pipes.count == <span class="SNum">0</span> <span class="SLgc">do</span>
         <span class="SFct">createPipe</span>()
 
     <span class="SCmt">// Move each pipe, and test collisions against the bird</span>
@@ -458,11 +458,11 @@
     }
 
     <span class="SCmt">// If the first pipe is out of screen, remove it</span>
-    <span class="SLgc">if</span> g_Pipes[<span class="SNum">0</span>].rectUp.<span class="SFct">right</span>() &lt; <span class="SNum">0</span> do
+    <span class="SLgc">if</span> g_Pipes[<span class="SNum">0</span>].rectUp.<span class="SFct">right</span>() &lt; <span class="SNum">0</span> <span class="SLgc">do</span>
         g_Pipes.<span class="SFct">removeAt</span>(<span class="SNum">0</span>)
 
     <span class="SCmt">// If the last pipe is enough inside, create a new one</span>
-    <span class="SLgc">if</span> g_Rect.width - g_Pipes.<span class="SFct">back</span>().rectUp.<span class="SFct">right</span>() &gt; g_Pipes.<span class="SFct">back</span>().distToNext do
+    <span class="SLgc">if</span> g_Rect.width - g_Pipes.<span class="SFct">back</span>().rectUp.<span class="SFct">right</span>() &gt; g_Pipes.<span class="SFct">back</span>().distToNext <span class="SLgc">do</span>
         <span class="SFct">createPipe</span>()
 
     <span class="SCmt">// Collision with the ground</span>
@@ -473,7 +473,7 @@
     }
 
     <span class="SCmt">// Play dying sound</span>
-    <span class="SLgc">if</span> g_GameOver do
+    <span class="SLgc">if</span> g_GameOver <span class="SLgc">do</span>
         <span class="SKwd">assume</span> <span class="SCst">Audio</span>.<span class="SCst">Voice</span>.<span class="SFct">play</span>(&g_SoundDie)
 }</span></div>
 <p>Creates a random up and down part of a new Pipe. </p>
@@ -503,7 +503,7 @@
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>()
 {
     <span class="SCmt">// '@init' can be called to reinitialize a variable to its default value</span>
-    <span class="SItr">@init</span>(&g_Bird)
+    <span class="SItr">@init</span>(&g_Bird, <span class="SNum">1</span>)
 
     g_Bird.pos.x = g_Rect.<span class="SFct">horzCenter</span>()
     g_Bird.pos.y = g_Rect.<span class="SFct">vertCenter</span>()
@@ -557,7 +557,7 @@
     g_Font = <span class="SCst">Font</span>.<span class="SFct">create</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"FlappyBirdy.ttf"</span>), <span class="SNum">50</span>)
 }</span></div>
 <div class="swag-watermark">
-Generated on 22-12-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
+Generated on 28-12-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
 </div>
 </div>
 </div>
