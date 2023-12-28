@@ -324,7 +324,7 @@ impl HashTable
     }
 
     // Returns true if the table contains the given key
-    mtd contains(key: K)->bool
+    mtd const contains(key: K)->bool
     {
         if !table do
             return false

@@ -4946,17 +4946,14 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext*             
         auto owner = startNode->ownerScope->owner;
         if (owner->hasExtMisc() && !owner->extMisc()->alternativeScopes.empty())
         {
-            //if (!owner->isParentOf(startNode))
+            auto  job       = context->job;
+            auto& toProcess = job->scopesToProcess;
+            for (auto& as : owner->extMisc()->alternativeScopes)
             {
-                auto  job       = context->job;
-                auto& toProcess = job->scopesToProcess;
-                for (auto& as : owner->extMisc()->alternativeScopes)
+                if (!hasAlternativeScope(scopes, as.scope) && (as.flags & ALTSCOPE_USING))
                 {
-                    if (!hasAlternativeScope(scopes, as.scope) && (as.flags & ALTSCOPE_USING))
-                    {
-                        addAlternativeScope(scopes, as.scope, as.flags);
-                        addAlternativeScopeOnce(toProcess, as.scope, as.flags);
-                    }
+                    addAlternativeScope(scopes, as.scope, as.flags);
+                    addAlternativeScopeOnce(toProcess, as.scope, as.flags);
                 }
             }
         }
