@@ -74,37 +74,6 @@ private func run(prg: Array's32, input: const [2] s32)->s32
     return output
 }
 
-func reverse(arr: [..] s32, s, e: s32)
-{
-    var start = s
-    var end = e
-    while start < end
-    {
-        swap(&arr[start], &arr[end])
-        start += 1
-        end -= 1
-    }
-}
-
-func nextPermutation(arr: [..] s32)->bool
-{
-    let size = cast(s32) @countof(arr)
-
-    var i = size - 2
-    while i >= 0 and arr[i] >= arr[i + 1] do
-        i -= 1
-    if i < 0 do
-        return false
-
-    var j = size - 1
-    while arr[j] <= arr[i] do
-        j -= 1
-
-    swap(&arr[i], &arr[j])
-    reverse(arr, i + 1, size - 1)
-    return true
-}
-
 func day7A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "7.txt")
@@ -126,7 +95,7 @@ func day7A()
         }
 
         total = Math.max(total, input)
-        if !nextPermutation(phase) do
+        if !Slice.nextPermutation(phase[..]) do
             break
     }
 
