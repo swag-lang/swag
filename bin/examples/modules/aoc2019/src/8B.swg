@@ -38,31 +38,26 @@ func day8B()
     let lines = assume File.readAllLines(dataPath)
 
     var x, y: s32
-    var pix:  [25,6] u8
+    var pix:  [25,6] rune
 
     visit,bytes c: lines[0]
     {
         if pix[x, y] == 0 and c != `2` do
-            pix[x, y] = c
+            pix[x, y] = c == `1` ? `X` : ` `
 
         x = (x + 1) % 25
-        if x == 0
-        {
+        if x == 0 do
             y = (y + 1) % 6
-        }
     }
 
     x, y = 0
     visit c: pix
     {
-        if pix[x,y] == `0` do
-            @print(" ")
-        else do
-            @print(pix[x,y]-`0`)
+        //Console.print(pix[x,y])
         x = (x + 1) % 25
         if x == 0
         {
-            @print("\n")
+            //Console.print("\n")
             y = y + 1
         }
     }
