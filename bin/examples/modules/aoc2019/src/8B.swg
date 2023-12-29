@@ -35,33 +35,21 @@ using Core
 func day8B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "8.txt")
-    let lines = assume File.readAllLines(dataPath)
 
-    var x, y: s32
-    var pix:  [25,6] rune
-
-    visit,bytes c: lines[0]
+    var pix: [25*6] rune
+    var x: s32
+    visit,bytes c: assume File.readAllText(dataPath)
     {
-        if pix[x, y] == 0 and c != `2` do
-            pix[x, y] = c == `1` ? `X` : ` `
-
-        x = (x + 1) % 25
-        if x == 0 do
-            y = (y + 1) % 6
+        if pix[x] == 0 and c != `2` do
+            pix[x] = c == `1` ? `X` : ` `
+        x = (x + 1) % (25*6)
     }
 
-    x, y = 0
-    visit c: pix
+/*
+    loop i: pix
     {
-        //Console.print(pix[x,y])
-        x = (x + 1) % 25
-        if x == 0
-        {
-            //Console.print("\n")
-            y = y + 1
-        }
-    }
-
-    //Console.print("total: ", total)
-    //@assert(total == 1716)
+        if i % 25 == 0 do
+            Console.print("\n")
+        Console.print(pix[i])
+    }*/
 }
