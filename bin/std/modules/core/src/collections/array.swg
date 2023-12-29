@@ -255,8 +255,8 @@ impl Array
         return @mkslice(buffer, count)
     }
 
-    // Ensure the Array is big enough to store at least 'newCount' elements
-    // Number of valid elements does not change
+    // Ensure the Array is big enough to store at least 'newCount' elements.
+    // The number of valid elements does not change.
     mtd grow(newCount: u64)
     {
         if newCount <= capacity do
@@ -265,8 +265,8 @@ impl Array
         reserve(newCapacity)
     }
 
-    // Reserve room for 'newCapacity' elements without changing the array count
-    // Number of valid elements does not change
+    // Reserve room for 'newCapacity' elements without changing the array count.
+    // The number of valid elements does not change.
     mtd reserve(newCapacity: u64)
     {
         if !newCapacity
