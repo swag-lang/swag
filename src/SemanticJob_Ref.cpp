@@ -844,7 +844,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
 
     arrayNode->flags |= AST_R_VALUE;
 
-    auto accessType = TypeManager::concreteType(arrayNode->access->typeInfo);
+    auto accessType = getConcreteTypeUnRef(arrayNode->access, CONCRETE_ALL);
     if (!(accessType->isNativeInteger()) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
     {
         Diagnostic diag{arrayNode->access, Fmt(Err(Err0485), arrayNode->access->typeInfo->getDisplayNameC())};
