@@ -117,7 +117,8 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
         {
             freeRegisterRC(context, node->assignment);
         }
-        else
+        // :ForceNoAffect
+        else if (node->assignment->resultRegisterRC.size())
         {
             if (!(node->semFlags & SEMFLAG_PRE_CAST))
             {

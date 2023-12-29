@@ -195,6 +195,8 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
 
         // If in a return expression, just push the caller retval
         AstNode* parentReturn = listNode->inSimpleReturn();
+        uint32_t startOffset  = 0;
+        bool     canDrop      = true;
         if (parentReturn)
         {
             if (node->ownerInline)
@@ -207,12 +209,34 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
 
             context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
             parentReturn->semFlags |= SEMFLAG_RETVAL;
+            canDrop = false;
         }
-        else
+
+        // If initializating a variable, then push the variable storage directly if possible.
+        // That way can avoid one affectation.
+        else if (listNode->parent->kind == AstNodeKind::VarDecl)
         {
-            auto offsetIdx = listNode->computedValue->storageOffset;
-            auto inst      = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
-            inst->b.u64    = offsetIdx;
+            auto varDecl = CastAst<AstVarDecl>(listNode->parent, AstNodeKind::VarDecl);
+            if (varDecl->assignment == listNode)
+            {
+                auto typeVar = TypeManager::concreteType(varDecl->typeInfo, CONCRETE_ALIAS);
+                if (!typeVar->isSlice() &&
+                    (!varDecl->hasExtMisc() || !varDecl->extMisc()->resolvedUserOpSymbolOverload))
+                {
+                    startOffset = listNode->parent->resolvedSymbolOverload->computedValue.storageOffset;
+                    auto inst   = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
+                    inst->b.u64 = startOffset;
+                    canDrop     = false;
+                }
+            }
+        }
+
+        // Default : assign to temporary storage
+        if (canDrop)
+        {
+            startOffset = listNode->computedValue->storageOffset;
+            auto inst   = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
+            inst->b.u64 = startOffset;
         }
 
         // Emit one affectation per child
@@ -238,7 +262,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
             SWAG_ASSERT(context->result == ContextResult::Done);
             freeRegisterRC(context, child);
 
-            if (!parentReturn)
+            if (canDrop)
             {
                 auto varOffset = (uint32_t) (listNode->computedValue->storageOffset + totalOffset);
                 node->ownerScope->symTable.addVarToDrop(nullptr, child->typeInfo, varOffset);
@@ -249,9 +273,17 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         freeRegisterRC(context, r0);
 
         // Reference to the stack, and store the number of element in a register
-        EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC[0])->b.u64 = listNode->computedValue->storageOffset;
-        if (!(node->specFlags & AstExpressionList::SPECFLAG_FOR_TUPLE))
-            EMIT_INST1(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1])->b.u64 = listNode->childs.size();
+        if (canDrop)
+        {
+            EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC[0])->b.u64 = startOffset;
+            if (!(node->specFlags & AstExpressionList::SPECFLAG_FOR_TUPLE))
+                EMIT_INST1(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1])->b.u64 = listNode->childs.size();
+        }
+        else
+        {
+            // :ForceNoAffect
+            freeRegisterRC(context, node);
+        }
     }
     else
     {
