@@ -75,7 +75,6 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     }
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
-
     leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
     switch (leftTypeInfo->nativeType)
@@ -360,8 +359,9 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
     }
 
     SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
+
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
-    node->typeInfo = TypeManager::concreteType(left->typeInfo);
+    leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
     switch (leftTypeInfo->nativeType)
     {
@@ -385,6 +385,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
     }
     }
 
+    node->typeInfo = leftTypeInfo;
     if (left->hasComputedValue() && right->hasComputedValue())
     {
         node->setFlagsValueIsComputed();
@@ -489,8 +490,9 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
     }
 
     SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
+
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
-    node->typeInfo = TypeManager::concreteType(left->typeInfo);
+    leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
     switch (leftTypeInfo->nativeType)
     {
@@ -514,6 +516,7 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
     }
     }
 
+    node->typeInfo = leftTypeInfo;
     if (left->hasComputedValue() && right->hasComputedValue())
     {
         node->setFlagsValueIsComputed();
@@ -591,8 +594,9 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
     }
 
     SWAG_CHECK(checkTypeIsNative(context, leftTypeInfo, rightTypeInfo, left, right));
+
     SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_TRY_COERCE));
-    node->typeInfo = TypeManager::concreteType(left->typeInfo);
+    leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
     switch (leftTypeInfo->nativeType)
     {
@@ -621,6 +625,7 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
     }
     }
 
+    node->typeInfo = leftTypeInfo;
     if (left->hasComputedValue() && right->hasComputedValue())
     {
         node->setFlagsValueIsComputed();

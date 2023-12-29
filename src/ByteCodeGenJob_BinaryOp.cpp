@@ -48,8 +48,7 @@ bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typ
             return Report::internalError(context->node, "emitBinaryOpPlus, type not supported");
         }
     }
-
-    if (typeInfo->isPointer())
+    else if (typeInfo->isPointer())
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(typeInfo), TypeInfoKind::Pointer);
         auto sizeOf  = typePtr->pointedType->sizeOf;

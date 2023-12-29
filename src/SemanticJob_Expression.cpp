@@ -243,6 +243,9 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
     auto rightT = ifFalse;
     auto leftT  = ifTrue;
 
+    getConcreteTypeUnRef(ifFalse, CONCRETE_ALL);
+    getConcreteTypeUnRef(ifTrue, CONCRETE_ALL);
+
     // We cast the true expression to the false expression.
     // But some times, it's better to do the other way
     if (leftT->typeInfo->isConst() ||
