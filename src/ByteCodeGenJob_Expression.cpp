@@ -237,6 +237,13 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
 
             SWAG_ASSERT(context->result == ContextResult::Done);
             freeRegisterRC(context, child);
+
+            if (!parentReturn)
+            {
+                auto varOffset = (uint32_t) (listNode->computedValue->storageOffset + totalOffset);
+                node->ownerScope->symTable.addVarToDrop(nullptr, child->typeInfo, varOffset);
+            }
+
             totalOffset += oneOffset;
         }
         freeRegisterRC(context, r0);

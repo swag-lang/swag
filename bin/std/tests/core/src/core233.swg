@@ -4,7 +4,7 @@ using Core
 //#[Swag.PrintBc, Swag.Optim("", false)]
 func toto()->[2] String
 {
-    return [String.from("a"),String.from("b")]
+    return [String.from("a"), String.from("b")]
 }
 
 //#[Swag.PrintBc]
