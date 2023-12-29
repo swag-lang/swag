@@ -36,11 +36,10 @@ Try every combination of the new phase settings on the amplifier feedback loop. 
 
 using Core
 
-private func run(op: &Array's32, input: const [2] s32, ip0: &s32)->{output: s32, stopped: bool}
+private func run(op: &Array's32, input: const [2] s32, ip: &s32)->{output: s32, stopped: bool}
 {
-    var output = 0's32
-    var phaseDone = ip0 != 0
-    var ip = ip0
+    var output = 0
+    var phaseDone = ip != 0
 
     while op[ip] != 99
     {
@@ -59,7 +58,7 @@ private func run(op: &Array's32, input: const [2] s32, ip0: &s32)->{output: s32,
         case 1:   op[op[ip+3]] = param0 + param1; ip += 4
         case 2:   op[op[ip+3]] = param0 * param1; ip += 4
         case 3:   op[op[ip+1]] = phaseDone ? input[1] : input[0]; ip += 2; phaseDone = true
-        case 4:   output = param0; ip += 2; ip0 = ip; return {output, false}
+        case 4:   output = param0; ip += 2; return {output, false}
         case 5:   ip = param0 ? param1 : ip+3
         case 6:   ip = !param0 ? param1 : ip+3
         case 7:   op[op[ip+3]] = param0 < param1 ? 1 : 0; ip += 4
@@ -79,25 +78,23 @@ func day7B()
     visit v: Tokenize.split(lines[0], `,`'u8) do
         prg.add(assume StrConv.toS32(v))
 
-    var phase = [5's32,6,7,8,9]
-    var total = 0's32
+    var phase = [5,6,7,8,9]
+    var total = 0
     loop
     {
         var op = [prg, prg, prg, prg, prg]
         var ip = [0, 0, 0, 0, 0]
-        var input = 0's32
-        #scope Big loop
+        var input, cpt = 0
+        loop
         {
-            loop cpt: 5
-            {
-                let result = run(&op[cpt], [phase[cpt], input], &ip[cpt])
-                if result.stopped and cpt == 4 do break Big
-                if result.output do
-                    input = result.output
-            }
+            let result = run(&op[cpt], [phase[cpt], input], &ip[cpt])
+            total = Math.max(total, result.output)
+            input = result.output
+            cpt = (cpt + 1) % 5
+            if result.stopped and !cpt do
+                break
         }
 
-        total = Math.max(total, input)
         if !Slice.nextPermutation(phase[..]) do
             break
     }
