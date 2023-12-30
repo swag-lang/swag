@@ -530,6 +530,13 @@ impl String
         return @mkslice(buffer, length)
     }
 
+    // Returns a slice type
+    #[Inline]
+    mtd const toConstSlice()->const [..] u8
+    {
+        return @mkslice(buffer, length)
+    }
+
     // Convert the string inplace to upper case.
     mtd makeUpper(set = CharacterSet.Latin1)
     {
