@@ -14,7 +14,7 @@ func day4B()
     if @isbytecode() do
         return
 
-    Time.Stopwatch.scopeMeasure()
+    //Time.Stopwatch.scopeMeasure()
     assume Jobs.setNumWorkers()
 
     struct ForJob

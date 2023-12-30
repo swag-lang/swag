@@ -1,4 +1,5 @@
-#global skip
+//#global skip
+
 struct A {}
 var G = [1, 2]
 impl A

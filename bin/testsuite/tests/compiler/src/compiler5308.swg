@@ -1,8 +1,8 @@
 #global testerror "Err0798"
-#[Swag.PrintBc]
+//#[Swag.PrintBc]
 #test
 {
-    #if #cfg == "fast-debug" and !@isbytecode()
+    #if true and !@isbytecode()
     {
         @print("toto")
     }

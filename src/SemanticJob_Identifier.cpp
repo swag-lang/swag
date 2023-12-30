@@ -3967,6 +3967,27 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
                 }
             }
         }
+
+        // 2 ufcs : priority to the first parameter that is not const
+        if (curMatch->ufcs && over->typeInfo->isFuncAttr())
+        {
+            auto typeFunc0 = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+            if (typeFunc0->parameters[0]->typeInfo->isConst())
+            {
+                for (size_t j = 0; j < countMatches; j++)
+                {
+                    if (matches[j]->ufcs && matches[j]->symbolOverload->typeInfo->isFuncAttr())
+                    {
+                        auto typeFunc1 = CastTypeInfo<TypeInfoFuncAttr>(matches[j]->symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
+                        if (!typeFunc1->parameters[0]->typeInfo->isConst())
+                        {
+                            curMatch->remove = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     // Eliminate all matches tag as 'remove'

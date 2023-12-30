@@ -524,15 +524,15 @@ impl String
     }
 
     // Returns a slice type
-    #[Inline]
+    #[Inline, Overload]
     mtd toSlice()->[..] u8
     {
         return @mkslice(buffer, length)
     }
 
     // Returns a slice type
-    #[Inline]
-    mtd const toConstSlice()->const [..] u8
+    #[Inline, Overload]
+    mtd const toSlice()->const [..] u8
     {
         return @mkslice(buffer, length)
     }
@@ -541,8 +541,6 @@ impl String
     mtd makeUpper(set = CharacterSet.Latin1)
     {
         let sl = @mkslice(buffer, length)
-
-        using CharacterSet
         switch set
         {
         case Latin1:
@@ -560,8 +558,6 @@ impl String
     mtd makeLower(set = CharacterSet.Latin1)
     {
         let sl = @mkslice(buffer, length)
-
-        using CharacterSet
         switch set
         {
         case Latin1:
