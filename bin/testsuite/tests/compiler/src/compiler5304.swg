@@ -10,4 +10,7 @@
     @assert(xr % yr == 0)
     @assert(xr | yr == 2)
     @assert(xr & yr == 2)
+    @assert(-xr == -2)
+    @assert(~xr == ~2)
+    @assert(!xr == false)
 }
