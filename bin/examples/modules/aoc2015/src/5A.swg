@@ -21,6 +21,14 @@ using Core
 
 func day5A()
 {
+    day5A0()
+    day5A1()
+}
+
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+func day5A0()
+{
     let dataPath = Path.combine(Path.getDirectoryName(#file), "5.txt")
     let lines = assume File.readAllLines(dataPath)
 
@@ -53,3 +61,33 @@ func day5A()
     @assert(total == 258)
 }
 
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+func day5A1()
+{
+    let dataPath = Path.combine(Path.getDirectoryName(#file), "5.txt")
+    let lines = assume File.readAllLines(dataPath)
+
+    var total = 0
+    var r0 = assume Parser.RegExp.create("ab|cd|pq|xy")
+    var r1 = assume Parser.RegExp.create("[aeiou]")
+    visit l: lines
+    {
+        if r0.grep(l).value do
+            continue
+        if r1.grepAll(l).count < 3 do
+            continue
+
+        loop i: l.length-1
+        {
+            if l[i] == l[i+1]
+            {
+                total += 1
+                break
+            }
+        }
+    }
+
+    //Console.print("total: ", total)
+    @assert(total == 258)
+}
