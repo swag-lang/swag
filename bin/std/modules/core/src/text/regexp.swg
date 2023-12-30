@@ -16,6 +16,7 @@ const RuneAsciiHexa         = cast(rune) 0x8000_000B
 const RuneStart             = cast(rune) 0x8000_000C
 const RuneEnd               = cast(rune) 0x8000_000D
 const RuneWordSwap          = cast(rune) 0x8000_000E
+const RuneGroup1            = cast(rune) 0x8000_000F
 
 const RuneUnicodeLetter         = cast(rune) 0x8001_0006
 const RuneUnicodeLetterLower    = cast(rune) 0x8001_0007
@@ -252,6 +253,20 @@ impl RegExp
         return result
     }
 
+    mtd setCapture(rank: s32, str: string)
+    {
+        visit &v: groups
+        {
+            if v.rank == rank
+            {
+                v.value = str
+                return
+            }
+        }
+
+        groups.add({rank, str})
+    }
+
     mtd matchInternal(str: string, forGrep: bool)->{ok: bool, buf: const *u8}
     {
         var result: retval
@@ -282,6 +297,29 @@ impl RegExp
             while !pstack1.isEmpty()
             {
                 let curState = pstack1.popBack()
+
+                let grp1 = curState.transitions.find(RuneGroup1)
+                if grp1
+                {
+                    if lastGroup
+                    {
+                        let strGroup = @mkstring(startGroup, srcPtr-startGroup)
+                        setCapture(lastGroup, strGroup)
+                    }
+
+                    lastGroup = curState.group
+                    startGroup = srcPtr
+
+                    let strGroup = getCapture(1)
+                    if Utf8.startsWith(@mkslice(srcPtr, srcLength - cpt), strGroup)
+                    {
+                        pstack2.add(grp1.value)
+                        cpt, srcPtr += cast(s32) @countof(strGroup)
+                        hasTerminal = curState.terminal
+                        continue
+                    }
+                }
+
                 ok = dfaMatch(pstack2, c, curState)
                 hasTerminal = curState.terminal
             }
@@ -294,7 +332,7 @@ impl RegExp
                     if lastGroup
                     {
                         let strGroup = @mkstring(startGroup, srcPtr-startGroup)
-                        groups.add({lastGroup, strGroup})
+                        setCapture(lastGroup, strGroup)
                     }
 
                     lastGroup = pstack2.back().group
@@ -328,7 +366,7 @@ impl RegExp
         if !forGrep and hasTerminal and srcPtr != startGroup
         {
             let strGroup = @mkstring(startGroup, srcPtr-startGroup)
-            groups.add({lastGroup, strGroup})
+            setCapture(lastGroup, strGroup)
         }
 
         if !hasTerminal do
@@ -1196,6 +1234,9 @@ impl RegExp
             case `p`:
                 pz = preprocessUnicode(sl)
                 return pz
+            case `1`:
+                preprocessed.add(RuneGroup1)
+                return pz + 2
             }
         }
 

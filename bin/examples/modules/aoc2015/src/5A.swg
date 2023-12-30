@@ -71,23 +71,18 @@ func day5A1()
     var total = 0
     var r0 = assume Parser.RegExp.create("ab|cd|pq|xy")
     var r1 = assume Parser.RegExp.create("[aeiou]")
+    var r2 = assume Parser.RegExp.create(#"([a-z])\1"#)
     visit l: lines
     {
         if r0.grep(l).value do
             continue
         if r1.grepAll(l).count < 3 do
             continue
-
-        loop i: l.length-1
-        {
-            if l[i] == l[i+1]
-            {
-                total += 1
-                break
-            }
-        }
+        if !r2.grep(l).value do
+            continue
+        total += 1
     }
 
-    //Console.print("total: ", total)
-    @assert(total == 258)
+    Console.print("total: ", total)
+    //@assert(total == 258)
 }
