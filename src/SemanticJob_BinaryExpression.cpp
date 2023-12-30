@@ -1445,7 +1445,6 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
             return Report::internalError(context->node, "resolveBoolExpression, token not supported");
         }
     }
-
     else if (node->tokenId == TokenId::KwdAnd)
     {
         if (module->mustOptimizeBytecode(node))
@@ -1478,7 +1477,6 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
             }
         }
     }
-
     else if (node->tokenId == TokenId::KwdOr)
     {
         if (module->mustOptimizeBytecode(node))

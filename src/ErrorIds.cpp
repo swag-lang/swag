@@ -1454,7 +1454,7 @@ void initErrors()
     SWAG_ERROR(Nte0103, "you can assign a lambda to a closure type, but not vice versa");
     SWAG_ERROR(Nte0087, "you can execute swag with '--callstack' to obtain more contextual details");
     SWAG_ERROR(Nte0009, "you can execute swag with '--dbg-catch' to initiate the bytecode debugger when an exception is raised");
-    SWAG_ERROR(Nte1046, "you can prefix with '#run' to force a compile-time call");
+    SWAG_ERROR(Nte1046, "if needed, you can prefix with '#run' to force a compile-time call");
     SWAG_ERROR(Nte1095, "you can't reference this runtime %s from the compile-time %s");
     SWAG_ERROR(Nte0149, "you might want to get the address of '%s' using '&'");
     SWAG_ERROR(Nte0014, "the duplicated underlying enum value is '%s'");

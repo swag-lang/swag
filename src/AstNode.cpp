@@ -997,13 +997,8 @@ bool AstNode::isConstant1()
 void AstNode::setPassThrough()
 {
     semanticFct = nullptr;
-    byteCodeFct = ByteCodeGenJob::emitPassThrough;
-    if (hasExtSemantic())
-    {
-        extSemantic()->semanticAfterFct  = nullptr;
-        extSemantic()->semanticBeforeFct = nullptr;
-    }
 
+    byteCodeFct = ByteCodeGenJob::emitPassThrough;
     if (hasExtByteCode())
     {
         extByteCode()->byteCodeAfterFct  = nullptr;
