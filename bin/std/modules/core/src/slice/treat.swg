@@ -13,7 +13,7 @@ func(T) modifyInPlace(values: [..] T, cb: func(*T))
 func(T) reverse(values: [..] T)
 {
     var i = 0'u64
-    var j = @countof(values)
+    var j = @countof(values)-1
     let d = @dataof(values)
     while i < j
     {
@@ -22,6 +22,7 @@ func(T) reverse(values: [..] T)
         j -= 1
     }
 }
+
 
 // Get a permutation of the slice
 // Shuffle the slice until no more permutation is possible, and then returns 'false'.
@@ -42,7 +43,7 @@ func(T) nextPermutation(arr: [..] T)->bool
 
     swap(&arr[i], &arr[j])
     if i+1 != size-1 do
-        reverse(arr[i+1..<size-1])
+        reverse(arr[i+1..size-1])
 
     return true
 }
