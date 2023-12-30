@@ -198,7 +198,7 @@ public func waitJob(job: *Job)
     }
 }
 
-// Operate on a range in parallel chunks
+// Operate on a range in parallel chunks.
 // Exposed variables:
 // - buffer: address of the element of the range to process
 // - data:   userData as passed to the macro
@@ -223,8 +223,8 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = n
         {
             #macro
             {
-                var #alias0 = #up scan
-                var #alias1 = #up userData
+                let #alias0 = #up scan
+                let #alias1 = #up userData
                 #mixin #up stmt
             }
 
@@ -270,7 +270,7 @@ public func(T) parallelVisit(range: [..] T, offset: u32 = 1, userData: *void = n
     visit &j: sliceJobs do waitJob(j)
 }
 
-// Do a for loop in parallel chunks
+// Do a for loop in parallel chunks.
 // Exposed variables:
 // - #alias0: current loop index
 // - #alias1: userData as passed to the macro
@@ -292,8 +292,8 @@ public func parallelFor(count: u32, userData: *void = null, stmt: code)
         {
             #macro
             {
-                var #alias0 = #up curIndex
-                var #alias1 = #up userData
+                let #alias0 = #up curIndex
+                let #alias1 = #up userData
                 #mixin #up stmt
             }
 
