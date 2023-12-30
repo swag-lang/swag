@@ -364,7 +364,7 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
         {
             node->semanticFct = SemanticJob::resolveTryBlock;
         }
-        else if (node->semanticFct == SemanticJob::resolveTryCatch)
+        else if (node->semanticFct == SemanticJob::resolveTryCatch || node->semanticFct == SemanticJob::resolveAssume)
         {
             node->ownerFct->addSpecFlags(AstFuncDecl::SPECFLAG_REG_GET_CONTEXT);
             node->semanticFct = nullptr;
