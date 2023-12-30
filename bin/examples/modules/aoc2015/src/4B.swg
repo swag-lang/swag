@@ -5,7 +5,7 @@ Now find one that starts with six zeroes.
 
 using Core
 
-var best: u64 = Swag.U64.Max
+private var best: u64 = Swag.U64.Max
 
 func day4B()
 {
@@ -14,7 +14,7 @@ func day4B()
     if @isbytecode() do
         return
 
-    //Time.Stopwatch.scopeMeasure()
+    Time.Stopwatch.scopeMeasure()
     assume Jobs.setNumWorkers()
 
     struct ForJob
