@@ -2522,7 +2522,8 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
 
         if (child)
         {
-            newSizeof += child->typeInfo->sizeOf;
+            auto childType = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
+            newSizeof += childType->sizeOf;
             if (!(child->flags & AST_CONST_EXPR))
                 fromNode->flags &= ~AST_CONST_EXPR;
         }

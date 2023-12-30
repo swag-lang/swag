@@ -151,9 +151,10 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
     for (auto child : node->childs)
     {
         auto typeParam      = g_TypeMgr->makeParam();
-        typeParam->typeInfo = child->typeInfo;
+        auto childType      = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
+        typeParam->typeInfo = childType;
         typeInfo->subTypes.push_back(typeParam);
-        typeInfo->sizeOf += child->typeInfo->sizeOf;
+        typeInfo->sizeOf += childType->sizeOf;
         if (!(child->flags & AST_CONST_EXPR))
             node->flags &= ~AST_CONST_EXPR;
         if (!(child->flags & AST_R_VALUE))

@@ -15,6 +15,14 @@ using Core
 
 func day2B()
 {
+    day2B0()
+    day2B1()
+}
+
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+func day2B0()
+{
     let dataPath = Path.combine(Path.getDirectoryName(#file), "2.txt")
 
     var total: u64
@@ -28,6 +36,29 @@ func day2B()
             f[0] = StrConv.toS32(r.getCapture(1))
             f[1] = StrConv.toS32(r.getCapture(2))
             f[2] = StrConv.toS32(r.getCapture(3))
+            Slice.sort(f[..])
+            total += f[0]*f[1]*f[2] + 2*f[0] + 2*f[1]
+        }
+    }
+
+    //Console.print("total: ", total)
+    @assert(total == 3783758)
+}
+
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+func day2B1()
+{
+    let dataPath = Path.combine(Path.getDirectoryName(#file), "2.txt")
+
+    var total: u64
+    assume
+    {
+        var r = Parser.RegExp.create(#"(\d+)x(\d+)x(\d+)"#)
+        visit line: File.readAllLines(dataPath)
+        {
+            discard r.match(line)
+            let f = [StrConv.toS32(r.getCapture(1)), StrConv.toS32(r.getCapture(2)), StrConv.toS32(r.getCapture(3))]
             Slice.sort(f[..])
             total += f[0]*f[1]*f[2] + 2*f[0] + 2*f[1]
         }
