@@ -122,7 +122,8 @@ public impl BitArray
         }
     }
 
-    // Reserve the given amount of bits
+    // Reserve the given amount of bits.
+    // The bits will **not** be initialized.
     #[Swag.Overload]
     mtd reserve(maxBits: u64)
     {
@@ -143,7 +144,7 @@ public impl BitArray
         realloc(capacity)
     }
 
-    // Reserve the given amount of bits and set an initial value to all bits
+    // Reserve the given amount of bits and set an initial value to all bits.
     #[Swag.Overload]
     mtd reserve(maxBits: u64, initialValue: bool)
     {
