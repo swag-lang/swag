@@ -20,6 +20,16 @@ using Core
 
 func day6A()
 {
+    day6A0()
+    day6A1()
+}
+
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+func day6A0()
+{
+    //Time.Stopwatch.scopeMeasure()
+
     let dataPath = Path.combine(Path.getDirectoryName(#file), "6.txt")
     let lines = assume File.readAllLines(dataPath)
 
@@ -56,4 +66,47 @@ func day6A()
 
     //Console.print("total: ", lights.count)
     @assert(lights.count == 377891)
+}
+
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+func day6A1()
+{
+    //Time.Stopwatch.scopeMeasure()
+
+    let dataPath = Path.combine(Path.getDirectoryName(#file), "6.txt")
+    let lines = assume File.readAllLines(dataPath)
+
+    var lights: Array'bool
+    lights.resize(1000*1000)
+
+    var r = assume Parser.RegExp.create(#"\d+"#)
+    visit l: lines
+    {
+        let nums = r.grepAll(l)
+        let x0 = assume StrConv.toU64(nums[0].value)
+        let y0 = assume StrConv.toU64(nums[1].value)
+        let x1 = assume StrConv.toU64(nums[2].value)
+        let y1 = assume StrConv.toU64(nums[3].value)
+
+        loop x: x0 to x1
+        {
+            loop y: y0 to y1
+            {
+                if l[6] == `n` do
+                    lights.ref2(x, y, 1000) = true
+                elif l[6] == `f` do
+                    lights.ref2(x, y, 1000) = false
+                else do
+                    lights.ref2(x, y, 1000) = !lights.ref2(x, y, 1000)
+            }
+        }
+    }
+
+    var total: u64
+    visit v: lights do
+        total += cast(s32) v
+
+    //Console.print("total: ", total)
+    @assert(total == 377891)
 }
