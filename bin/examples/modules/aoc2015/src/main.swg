@@ -16,4 +16,5 @@
     day4B()
     day5A()
     day5B()
+    day6A()
 }
