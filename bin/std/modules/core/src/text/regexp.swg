@@ -128,6 +128,8 @@ public struct RegExp
     startGroup:     const ^u8
     lastGroup:      s32
     hasTerminal:    bool
+    srcLength:      u64
+    parseIdx:       s32
 }
 
 impl RegExp
@@ -279,18 +281,6 @@ impl RegExp
         groups.add({rank, str})
     }
 
-    mtd closeGroup(state: *DfaNode)
-    {
-        if lastGroup
-        {
-            let strGroup = @mkstring(startGroup, srcPtr-startGroup)
-            setCapture(lastGroup, strGroup)
-        }
-
-        lastGroup = state.group
-        startGroup = srcPtr
-    }
-
     mtd matchInternal(str: string, forGrep: bool)->{ok: bool, buf: const *u8}
     {
         var result: retval
@@ -304,58 +294,44 @@ impl RegExp
         var pstack1 = &stack1
         var pstack2 = &stack2
 
-        var cpt = 0
-        let srcLength = @countof(str)
-
         srcPtr      = @dataof(str)
+        srcLength   = @countof(str)
         lastGroup   = 0
+        parseIdx    = 0
         startGroup  = srcPtr
         hasTerminal = false
 
-        #[Swag.Mixin]
-        func backward(what: rune)
+        while parseIdx < srcLength and !pstack1.isEmpty()
         {
-            let grp = curState.transitions.find(what)
-            if grp
-            {
-                closeGroup(curState)
-                let strGroup = getCapture(1 + (what - RuneGroup1))
-                if strGroup
-                {
-                    if Utf8.startsWith(@mkslice(srcPtr, srcLength - cpt), strGroup, ignoreCase ? .UnicodeNoCase : .Unicode)
-                    {
-                        pstack2.add(grp.value)
-                        cpt, srcPtr += cast(s32) @countof(strGroup)
-                        hasTerminal = curState.terminal
-                        continue
-                    }
-                }
-            }
-        }
-
-        while cpt < srcLength and !pstack1.isEmpty()
-        {
-            let (cr, eat) = Utf8.decodeRune(@mkslice(srcPtr, srcLength - cpt))
+            let (cr, eat) = Utf8.decodeRune(@mkslice(srcPtr, srcLength - parseIdx))
             let c = ignoreCase ? Unicode.toUpper(cr) : cr
 
-            var advance = false
+            var advance = 0
             while !pstack1.isEmpty()
             {
                 let curState = pstack1.popBack()
-                backward(RuneGroup1)
-                advance = dfaMatch(pstack2, c, curState)
                 hasTerminal = curState.terminal
+
+                advance = backward(pstack2, RuneGroup1, curState)
+                if advance
+                {
+                    parseIdx, srcPtr += advance
+                    advance = 0
+                    continue
+                }
+
+                advance = dfaMatch(pstack2, c, curState)
             }
 
             if pstack2.count and pstack2.back().group != lastGroup do
                 closeGroup(pstack2.back())
             if advance do
-                cpt, srcPtr += eat
+                parseIdx, srcPtr += eat
 
             swap(&pstack1, &pstack2)
 
             // Match RuneEnd when runes have been eaten, and we are not at a terminal
-            if cpt == srcLength and !pstack1.isEmpty() and !hasTerminal
+            if parseIdx == srcLength and !pstack1.isEmpty() and !hasTerminal
             {
                 let curState = pstack1.popBack()
                 discard dfaMatch(pstack2, RuneEnd, curState)
@@ -364,7 +340,7 @@ impl RegExp
             }
         }
 
-        if !forGrep and (cpt != srcLength) do
+        if !forGrep and (parseIdx != srcLength) do
             return result
 
         while !pstack1.isEmpty()
@@ -386,7 +362,40 @@ impl RegExp
         return {true, srcPtr}
     }
 
-    mtd dfaMatch(out: *Array'(*DfaNode), c: rune, curState: *DfaNode)->bool
+    mtd closeGroup(state: *DfaNode)
+    {
+        if lastGroup
+        {
+            let strGroup = @mkstring(startGroup, srcPtr-startGroup)
+            setCapture(lastGroup, strGroup)
+        }
+
+        lastGroup = state.group
+        startGroup = srcPtr
+    }
+
+    mtd backward(out: *Array'(*DfaNode),what: rune, state: *DfaNode)->s32
+    {
+        let grp = state.transitions.find(what)
+        if grp
+        {
+            closeGroup(state)
+            let strGroup = getCapture(1 + (what - RuneGroup1))
+            if strGroup
+            {
+                if Utf8.startsWith(@mkslice(srcPtr, srcLength - parseIdx), strGroup, ignoreCase ? .UnicodeNoCase : .Unicode)
+                {
+                    out.add(grp.value)
+                    hasTerminal = state.terminal
+                    return cast(s32) @countof(strGroup)
+                }
+            }
+        }
+
+        return 0
+    }
+
+    mtd dfaMatch(out: *Array'(*DfaNode), c: rune, curState: *DfaNode)->s32
     {
         var ok = false
 
@@ -407,21 +416,21 @@ impl RegExp
             checkTr(RuneWordSwap)
             hasStarted = true
             if ok do
-                return false
+                return 0
         }
         elif !wasWord and Unicode.isWord(c)
         {
             wasWord = true
             checkTr(RuneWordSwap)
             if ok do
-                return false
+                return 0
         }
         elif wasWord and !Unicode.isWord(c)
         {
             wasWord = false
             checkTr(RuneWordSwap)
             if ok do
-                return false
+                return 0
         }
 
         if Unicode.isAscii(c)
@@ -496,7 +505,7 @@ impl RegExp
         checkTr(c)
         checkTr(0'rune)
 
-        return ok
+        return ok ? 1 : 0
     }
 
     func addTransition(node: *NfaNode, c: rune, toNode: *NfaNode)
