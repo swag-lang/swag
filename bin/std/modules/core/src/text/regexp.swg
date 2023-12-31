@@ -124,12 +124,12 @@ public struct RegExp
     hasStarted:     bool
     wasWord:        bool
     ignoreCase:     bool
-    srcPtr:         const ^u8
-    startGroup:     const ^u8
+    bufStart:     const ^u8
+    parseIdx:       s32
+    groupStart:     const ^u8
     lastGroup:      s32
     hasTerminal:    bool
-    srcLength:      u64
-    parseIdx:       s32
+    bufLength:      u64
 }
 
 impl RegExp
@@ -294,16 +294,17 @@ impl RegExp
         var pstack1 = &stack1
         var pstack2 = &stack2
 
-        srcPtr      = @dataof(str)
-        srcLength   = @countof(str)
+        bufStart    = @dataof(str)
+        bufLength   = @countof(str)
         lastGroup   = 0
         parseIdx    = 0
-        startGroup  = srcPtr
+        groupStart  = bufStart
         hasTerminal = false
 
-        while parseIdx < srcLength and !pstack1.isEmpty()
+        while parseIdx < bufLength and !pstack1.isEmpty()
         {
-            let (cr, eat) = Utf8.decodeRune(@mkslice(srcPtr, srcLength - parseIdx))
+            let ptr = bufStart + parseIdx
+            let (cr, eat) = Utf8.decodeRune(@mkslice(ptr, bufLength - parseIdx))
             let c = ignoreCase ? Unicode.toUpper(cr) : cr
 
             var advance = 0
@@ -315,7 +316,7 @@ impl RegExp
                 advance = backward(pstack2, RuneGroup1, curState)
                 if advance
                 {
-                    parseIdx, srcPtr += advance
+                    parseIdx += advance
                     advance = 0
                     continue
                 }
@@ -326,12 +327,12 @@ impl RegExp
             if pstack2.count and pstack2.back().group != lastGroup do
                 closeGroup(pstack2.back())
             if advance do
-                parseIdx, srcPtr += eat
+                parseIdx += eat
 
             swap(&pstack1, &pstack2)
 
             // Match RuneEnd when runes have been eaten, and we are not at a terminal
-            if parseIdx == srcLength and !pstack1.isEmpty() and !hasTerminal
+            if parseIdx == bufLength and !pstack1.isEmpty() and !hasTerminal
             {
                 let curState = pstack1.popBack()
                 discard dfaMatch(pstack2, RuneEnd, curState)
@@ -340,7 +341,7 @@ impl RegExp
             }
         }
 
-        if !forGrep and (parseIdx != srcLength) do
+        if !forGrep and (parseIdx != bufLength) do
             return result
 
         while !pstack1.isEmpty()
@@ -350,28 +351,30 @@ impl RegExp
         }
 
         // Last group
-        if !forGrep and hasTerminal and srcPtr != startGroup
+        let ptr = bufStart + parseIdx
+        if !forGrep and hasTerminal and ptr != groupStart
         {
-            let strGroup = @mkstring(startGroup, srcPtr-startGroup)
+            let strGroup = @mkstring(groupStart, ptr-groupStart)
             setCapture(lastGroup, strGroup)
         }
 
         if !hasTerminal do
             return result
 
-        return {true, srcPtr}
+        return {true, ptr}
     }
 
     mtd closeGroup(state: *DfaNode)
     {
+        let ptr = bufStart + parseIdx
         if lastGroup
         {
-            let strGroup = @mkstring(startGroup, srcPtr-startGroup)
+            let strGroup = @mkstring(groupStart, ptr-groupStart)
             setCapture(lastGroup, strGroup)
         }
 
         lastGroup = state.group
-        startGroup = srcPtr
+        groupStart = ptr
     }
 
     mtd backward(out: *Array'(*DfaNode),what: rune, state: *DfaNode)->s32
@@ -383,7 +386,8 @@ impl RegExp
             let strGroup = getCapture(1 + (what - RuneGroup1))
             if strGroup
             {
-                if Utf8.startsWith(@mkslice(srcPtr, srcLength - parseIdx), strGroup, ignoreCase ? .UnicodeNoCase : .Unicode)
+                let ptr = bufStart + parseIdx
+                if Utf8.startsWith(@mkslice(ptr, bufLength - parseIdx), strGroup, ignoreCase ? .UnicodeNoCase : .Unicode)
                 {
                     out.add(grp.value)
                     hasTerminal = state.terminal
