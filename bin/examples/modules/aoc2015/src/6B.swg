@@ -45,12 +45,9 @@ func day6B()
             {
                 if l[6] == `n` do
                     lights.ref2(x, y, 1000) += 1
-                elif l[6] == `f`
-                {
-                    if lights.ref2(x, y, 1000) != 0 do
-                        lights.ref2(x, y, 1000) -= 1
-                }
-                else do
+                elif l[6] == `f` and lights.ref2(x, y, 1000) do
+                    lights.ref2(x, y, 1000) -= 1
+                elif l[6] == ` ` do
                     lights.ref2(x, y, 1000) += 2
             }
         }
