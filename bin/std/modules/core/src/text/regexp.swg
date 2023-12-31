@@ -288,66 +288,66 @@ impl RegExp
         var startGroup  = srcPtr
         var hasTerminal = false
 
-        while cpt < srcLength and !pstack1.isEmpty()
+        #[Swag.Mixin]
+        func closeGroup(state: *DfaNode)
         {
-            let (cr, eat) = Utf8.decodeRune(@mkslice(srcPtr, srcLength - cpt))
-            let c = ignoreCase ? Unicode.toUpper(cr) : cr
-
-            var ok = false
-            while !pstack1.isEmpty()
+            if lastGroup
             {
-                let curState = pstack1.popBack()
+                let strGroup = @mkstring(startGroup, srcPtr-startGroup)
+                setCapture(lastGroup, strGroup)
+            }
 
-                let grp1 = curState.transitions.find(RuneGroup1)
-                if grp1
+            lastGroup = state.group
+            startGroup = srcPtr
+        }
+
+        #[Swag.Mixin]
+        func backward(what: rune)
+        {
+            let grp = curState.transitions.find(what)
+            if grp
+            {
+                closeGroup(curState)
+                let strGroup = getCapture(1 + (what - RuneGroup1))
+                if strGroup
                 {
-                    if lastGroup
+                    if Utf8.startsWith(@mkslice(srcPtr, srcLength - cpt), strGroup, ignoreCase ? .UnicodeNoCase : .Unicode)
                     {
-                        let strGroup = @mkstring(startGroup, srcPtr-startGroup)
-                        setCapture(lastGroup, strGroup)
-                    }
-
-                    lastGroup = curState.group
-                    startGroup = srcPtr
-
-                    let strGroup = getCapture(1)
-                    if Utf8.startsWith(@mkslice(srcPtr, srcLength - cpt), strGroup)
-                    {
-                        pstack2.add(grp1.value)
+                        pstack2.add(grp.value)
                         cpt, srcPtr += cast(s32) @countof(strGroup)
                         hasTerminal = curState.terminal
                         continue
                     }
                 }
+            }
+        }
 
-                ok = dfaMatch(pstack2, c, curState)
+        while cpt < srcLength and !pstack1.isEmpty()
+        {
+            let (cr, eat) = Utf8.decodeRune(@mkslice(srcPtr, srcLength - cpt))
+            let c = ignoreCase ? Unicode.toUpper(cr) : cr
+
+            var advance = false
+            while !pstack1.isEmpty()
+            {
+                let curState = pstack1.popBack()
+                backward(RuneGroup1)
+                advance = dfaMatch(pstack2, c, curState)
                 hasTerminal = curState.terminal
             }
 
-            if ok
-            {
-                // Register group if changed
-                if pstack2.count and pstack2.back().group != lastGroup
-                {
-                    if lastGroup
-                    {
-                        let strGroup = @mkstring(startGroup, srcPtr-startGroup)
-                        setCapture(lastGroup, strGroup)
-                    }
-
-                    lastGroup = pstack2.back().group
-                    startGroup = srcPtr
-                }
-
+            if pstack2.count and pstack2.back().group != lastGroup do
+                closeGroup(pstack2.back())
+            if advance do
                 cpt, srcPtr += eat
-            }
 
             swap(&pstack1, &pstack2)
 
+            // Match RuneEnd when runes have been eaten, and we are not at a terminal
             if cpt == srcLength and !pstack1.isEmpty() and !hasTerminal
             {
                 let curState = pstack1.popBack()
-                ok = dfaMatch(pstack2, RuneEnd, curState)
+                discard dfaMatch(pstack2, RuneEnd, curState)
                 hasTerminal = curState.terminal
                 swap(&pstack1, &pstack2)
             }
