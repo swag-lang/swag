@@ -25,6 +25,7 @@ const RuneGroup6            = cast(rune) 0x8000_0060
 const RuneGroup7            = cast(rune) 0x8000_0070
 const RuneGroup8            = cast(rune) 0x8000_0080
 const RuneGroup9            = cast(rune) 0x8000_0090
+const RuneWhatever          = cast(rune) 0x8000_00A0
 
 const RuneUnicodeLetter         = cast(rune) 0x8001_0006
 const RuneUnicodeLetterLower    = cast(rune) 0x8001_0007
@@ -311,8 +312,9 @@ impl RegExp
             while !pstack1.isEmpty()
             {
                 let curState = pstack1.popBack()
-                hasTerminal = curState.terminal
-                advance = dfaMatch(pstack2, c, eat, curState)
+                let res = dfaMatch(pstack2, c, eat, curState)
+                if res do
+                    advance = res
             }
 
             if pstack2.count and pstack2.back().group != lastGroup do
@@ -321,6 +323,15 @@ impl RegExp
                 parseIdx += advance
 
             swap(&pstack1, &pstack2)
+
+            visit v: dref pstack1
+            {
+                if v.terminal
+                {
+                    hasTerminal = true
+                    break
+                }
+            }
 
             // Match RuneEnd when runes have been eaten, and we are not at a terminal
             if parseIdx == bufLength and !pstack1.isEmpty() and !hasTerminal
@@ -337,8 +348,8 @@ impl RegExp
 
         while !pstack1.isEmpty()
         {
-            let curState = pstack1.popBack()
-            hasTerminal = curState.terminal
+            if pstack1.popBack().terminal do
+                hasTerminal = true
         }
 
         // Last group
@@ -507,6 +518,7 @@ impl RegExp
             checkTr(RuneUnicodeSymbolMath)
 
         checkTr(c)
+        checkTr(RuneWhatever)
         checkTr(0'rune)
 
         return ok ? eat : 0
@@ -724,7 +736,7 @@ impl RegExp
 
             case `.`:
                 unionValidate()
-                nfaPush(0'rune)
+                nfaPush(RuneWhatever)
 
             case `\\`:
                 if isReservedChar(pz[1])
@@ -735,12 +747,10 @@ impl RegExp
 
                 unionValidate()
                 nfaPush(c)
-                break
 
             default:
                 unionValidate()
                 nfaPush(c)
-                break
             }
 
             cpt, pz += 1
