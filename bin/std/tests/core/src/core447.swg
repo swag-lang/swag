@@ -3,6 +3,11 @@ using Core
 {
     {
          var r = assume Parser.RegExp.create(#".*XY"#)
-         //@assert(r.match("tXY"))
+         @assert(r.match("tXY"))
+    }
+
+    {
+         var r = assume Parser.RegExp.create(#"<(\w+)>\s*.*\s*<\/aa>"#)
+         @assert(r.match("<aa>toto</aa>"))
     }
 }

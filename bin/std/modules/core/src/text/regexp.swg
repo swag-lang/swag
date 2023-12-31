@@ -324,6 +324,7 @@ impl RegExp
 
             swap(&pstack1, &pstack2)
 
+            // Do we have a terminal node ?
             visit v: dref pstack1
             {
                 if v.terminal
@@ -332,24 +333,27 @@ impl RegExp
                     break
                 }
             }
-
-            // Match RuneEnd when runes have been eaten, and we are not at a terminal
-            if parseIdx == bufLength and !pstack1.isEmpty() and !hasTerminal
-            {
-                let curState = pstack1.popBack()
-                discard dfaMatch(pstack2, RuneEnd, 1, curState)
-                hasTerminal = curState.terminal
-                swap(&pstack1, &pstack2)
-            }
         }
 
         if !forGrep and (parseIdx != bufLength) do
             return result
 
+        // Match RuneEnd when runes have been eaten, and we are not at a terminal
+        if !pstack1.isEmpty() and !hasTerminal
+        {
+            let curState = pstack1.popBack()
+            discard dfaMatch(pstack2, RuneEnd, 1, curState)
+            hasTerminal = curState.terminal
+            swap(&pstack1, &pstack2)
+        }
+
         while !pstack1.isEmpty()
         {
-            if pstack1.popBack().terminal do
+            if pstack1.popBack().terminal
+            {
                 hasTerminal = true
+                break
+            }
         }
 
         // Last group
