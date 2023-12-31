@@ -7,7 +7,7 @@ using Core
     }
 
     {
-         var r = assume Parser.RegExp.create(#"<(\w+)>\s*.*\s*<\/aa>"#)
-         @assert(r.match("<aa>toto</aa>"))
+         var r = assume Parser.RegExp.create(#"<(\w+)>.*<<\1>>"#)
+         @assert(r.match("<aa><<aa>>"))
     }
 }

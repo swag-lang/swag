@@ -69,6 +69,15 @@ public struct RegExpGrep
     index:  u64
 }
 
+struct DfaState
+{
+    node:           *DfaNode
+    groupStart:     const ^u8
+    parseIdx:       s32
+    lastGroup:      s32
+    groups:         Array'RegExpGroup
+}
+
 // Simple regular expression matcher.
 // | *                | zero or more
 // | ?                | zero or one
@@ -125,11 +134,7 @@ public struct RegExp
     hasStarted:     bool
     wasWord:        bool
     ignoreCase:     bool
-    bufStart:     const ^u8
-    parseIdx:       s32
-    groupStart:     const ^u8
-    lastGroup:      s32
-    hasTerminal:    bool
+    bufStart:       const ^u8
     bufLength:      u64
 }
 
@@ -268,9 +273,9 @@ impl RegExp
         return result
     }
 
-    mtd setCapture(rank: s32, str: string)
+    func setCapture(state: *DfaState, rank: s32, str: string)
     {
-        visit &v: groups
+        visit &v: state.groups
         {
             if v.rank == rank
             {
@@ -279,7 +284,7 @@ impl RegExp
             }
         }
 
-        groups.add({rank, str})
+        state.groups.add({rank, str})
     }
 
     mtd matchInternal(str: string, forGrep: bool)->{ok: bool, buf: const *u8}
@@ -289,133 +294,144 @@ impl RegExp
         if dfaNodes.isEmpty() do
             return result
 
-        var stack1, stack2: Array'(*DfaNode)
-        stack1.add(dfaNodes[0])
+        bufStart    = @dataof(str)
+        bufLength   = @countof(str)
+
+        var stack1, stack2: Array'DfaState
+        var grepTerm: DfaState
+
+        var st: DfaState
+        st.node       = dfaNodes[0]
+        st.groupStart = bufStart
+        stack1.add(st)
 
         var pstack1 = &stack1
         var pstack2 = &stack2
 
-        bufStart    = @dataof(str)
-        bufLength   = @countof(str)
-        lastGroup   = 0
-        parseIdx    = 0
-        groupStart  = bufStart
-        hasTerminal = false
-
-        while parseIdx < bufLength and !pstack1.isEmpty()
+        var mustEnd = false
+        while !pstack1.isEmpty() and !mustEnd
         {
-            let ptr = bufStart + parseIdx
-            let (cr, eat) = Utf8.decodeRune(@mkslice(ptr, bufLength - parseIdx))
-            let c = ignoreCase ? Unicode.toUpper(cr) : cr
-
-            var advance = 0
             while !pstack1.isEmpty()
             {
-                let curState = pstack1.popBack()
-                let res = dfaMatch(pstack2, c, eat, curState)
-                if res do
-                    advance = res
-            }
-
-            if pstack2.count and pstack2.back().group != lastGroup do
-                closeGroup(pstack2.back())
-            if advance do
-                parseIdx += advance
-
-            swap(&pstack1, &pstack2)
-
-            // Do we have a terminal node ?
-            visit v: dref pstack1
-            {
-                if v.terminal
+                var curState = pstack1.popBack()
+                if curState.parseIdx >= bufLength
                 {
-                    hasTerminal = true
-                    break
+                    pstack2.add(curState)
+                    continue
                 }
+
+                let ptr = bufStart + curState.parseIdx
+                let (cr, eat) = Utf8.decodeRune(@mkslice(ptr, bufLength - curState.parseIdx))
+                let c = ignoreCase ? Unicode.toUpper(cr) : cr
+
+                dfaMatch(pstack2, c, eat, &curState)
             }
+
+            swap(&pstack1, &pstack2)
+
+            var cptReachedEnd = 0
+            visit &v: dref pstack1
+            {
+                if v.parseIdx >= bufLength do
+                    cptReachedEnd += 1
+
+                if v.node.terminal and forGrep do
+                    grepTerm = dref v
+                elif v.node.terminal and v.parseIdx >= bufLength do
+                    mustEnd = true
+            }
+
+            if cptReachedEnd == pstack1.count do
+                mustEnd = true
         }
 
-        if !forGrep and (parseIdx != bufLength) do
-            return result
+        // Get the latest terminal node for a grep
+        if pstack1.isEmpty() and grepTerm.node do
+            pstack1.add(grepTerm)
 
-        // Match RuneEnd when runes have been eaten, and we are not at a terminal
-        if !pstack1.isEmpty() and !hasTerminal
+        loop
         {
-            let curState = pstack1.popBack()
-            discard dfaMatch(pstack2, RuneEnd, 1, curState)
-            hasTerminal = curState.terminal
+            while !pstack1.isEmpty()
+            {
+                var curState = pstack1.popBack()
+                if curState.node.terminal and (forGrep or curState.parseIdx >= bufLength)
+                {
+                    closeGroup(&curState)
+                    groups =,move curState.groups
+                    return {true, bufStart + curState.parseIdx}
+                }
+
+                dfaMatch(pstack2, RuneEnd, 0, &curState)
+            }
+
+            if pstack2.isEmpty() do
+                break
             swap(&pstack1, &pstack2)
         }
 
-        while !pstack1.isEmpty()
-        {
-            if pstack1.popBack().terminal
-            {
-                hasTerminal = true
-                break
-            }
-        }
-
-        // Last group
-        let ptr = bufStart + parseIdx
-        if !forGrep and hasTerminal and ptr != groupStart
-        {
-            let strGroup = @mkstring(groupStart, ptr-groupStart)
-            setCapture(lastGroup, strGroup)
-        }
-
-        if !hasTerminal do
-            return result
-
-        return {true, ptr}
+        return result
     }
 
-    mtd closeGroup(state: *DfaNode)
+    mtd closeGroup(state: *DfaState)
     {
-        let ptr = bufStart + parseIdx
-        if lastGroup
+        let ptr = bufStart + state.parseIdx
+        if state.lastGroup
         {
-            let strGroup = @mkstring(groupStart, ptr-groupStart)
-            setCapture(lastGroup, strGroup)
+            let strGroup = @mkstring(state.groupStart, ptr - state.groupStart)
+            setCapture(state, state.lastGroup, strGroup)
         }
 
-        lastGroup = state.group
-        groupStart = ptr
+        state.lastGroup = state.node.group
+        state.groupStart = ptr
     }
 
-    mtd backward(out: *Array'(*DfaNode),what: rune, state: *DfaNode)->s32
+    mtd backward(out: *Array'DfaState, what: rune, state: *DfaState)
     {
-        let grp = state.transitions.find(what)
+        let grp = state.node.transitions.find(what)
         if grp
         {
             closeGroup(state)
-            let strGroup = getCapture(1 + (what - RuneGroup1))
-            if strGroup
+
+            var strGroup: string
+            visit g: state.groups
             {
-                let ptr = bufStart + parseIdx
-                if Utf8.startsWith(@mkslice(ptr, bufLength - parseIdx), strGroup, ignoreCase ? .UnicodeNoCase : .Unicode)
+                if g.rank == 1 + (what - RuneGroup1)
                 {
-                    out.add(grp.value)
-                    hasTerminal = state.terminal
-                    return cast(s32) @countof(strGroup)
+                    strGroup = g.value
+                    break
+                }
+            }
+
+            if @countof(strGroup)
+            {
+                let ptr = bufStart + state.parseIdx
+                if Utf8.startsWith(@mkslice(ptr, bufLength - state.parseIdx), strGroup, ignoreCase ? .UnicodeNoCase : .Unicode)
+                {
+                    var st = dref state
+                    st.node = grp.value
+                    st.parseIdx += cast(s32) @countof(strGroup)
+                    out.add(st)
                 }
             }
         }
-
-        return 0
     }
 
-    mtd dfaMatch(out: *Array'(*DfaNode), c: rune, eat: s32, curState: *DfaNode)->s32
+    mtd dfaMatch(out: *Array'DfaState, c: rune, eat: s32, curState: *DfaState)
     {
         var ok = false
 
         #[Swag.Mixin]
-        func checkTr(c: rune)
+        func checkTr(c: rune, length: s32)
         {
-            let #mixin1 = curState.transitions.find(c)
+            let #mixin1 = curState.node.transitions.find(c)
             if #mixin1
             {
-                out.add(#mixin1.value)
+                var st = dref curState
+                st.node = #mixin1.value
+                if st.node.group != st.lastGroup do
+                    closeGroup(&st)
+                st.parseIdx += length
+                out.add(st)
                 ok = true
             }
         }
@@ -423,33 +439,31 @@ impl RegExp
         // Word transition
         if !hasStarted
         {
-            checkTr(RuneStart)
-            checkTr(RuneWordSwap)
+            checkTr(RuneStart, 0)
+            checkTr(RuneWordSwap, 0)
             hasStarted = true
             if ok do
-                return 0
+                return
         }
         elif !wasWord and Unicode.isWord(c)
         {
             wasWord = true
-            checkTr(RuneWordSwap)
+            checkTr(RuneWordSwap, 0)
             if ok do
-                return 0
+                return
         }
         elif wasWord and !Unicode.isWord(c)
         {
             wasWord = false
-            checkTr(RuneWordSwap)
+            checkTr(RuneWordSwap, 0)
             if ok do
-                return 0
+                return
         }
 
         // Backreference
         loop 9
         {
-            let advance = backward(out, RuneGroup1 + #index, curState)
-            if advance do
-                return advance
+            backward(out, RuneGroup1 + #index, curState)
         }
 
         if Unicode.isAscii(c)
@@ -457,75 +471,73 @@ impl RegExp
             let c8 = cast(u8) c
 
             if Latin1.isDigit(c8) do
-                checkTr(RuneAsciiDigit)
+                checkTr(RuneAsciiDigit, eat)
             else do
-                checkTr(RuneAsciiDigit | RuneInvert)
+                checkTr(RuneAsciiDigit | RuneInvert, eat)
 
             if Latin1.isHexDigit(c8) do
-                checkTr(RuneAsciiHexa)
+                checkTr(RuneAsciiHexa, eat)
             else do
-                checkTr(RuneAsciiHexa | RuneInvert)
+                checkTr(RuneAsciiHexa | RuneInvert, eat)
 
             if Latin1.isLetter(c8) do
-                checkTr(RuneAsciiLetter)
+                checkTr(RuneAsciiLetter, eat)
             else do
-                checkTr(RuneAsciiLetter | RuneInvert)
+                checkTr(RuneAsciiLetter | RuneInvert, eat)
 
             if Latin1.isLower(c8) do
-                checkTr(RuneAsciiLower)
+                checkTr(RuneAsciiLower, eat)
             else do
-                checkTr(RuneAsciiLower | RuneInvert)
+                checkTr(RuneAsciiLower | RuneInvert, eat)
 
             if Latin1.isUpper(c8) do
-                checkTr(RuneAsciiUpper)
+                checkTr(RuneAsciiUpper, eat)
             else do
-                checkTr(RuneAsciiUpper | RuneInvert)
+                checkTr(RuneAsciiUpper | RuneInvert, eat)
 
             if Latin1.isLetterOrDigit(c8) do
-                checkTr(RuneAsciiAlNum)
+                checkTr(RuneAsciiAlNum, eat)
             else do
-                checkTr(RuneAsciiAlNum | RuneInvert)
+                checkTr(RuneAsciiAlNum | RuneInvert, eat)
 
             if Latin1.isLetterOrDigit(c8) or c8 == `_` do
-                checkTr(RuneAsciiWord)
+                checkTr(RuneAsciiWord, eat)
             else do
-                checkTr(RuneAsciiWord | RuneInvert)
+                checkTr(RuneAsciiWord | RuneInvert, eat)
 
             if Latin1.isSpace(c8) do
-                checkTr(RuneAsciiSpace)
+                checkTr(RuneAsciiSpace, eat)
             else do
-                checkTr(RuneAsciiSpace | RuneInvert)
+                checkTr(RuneAsciiSpace | RuneInvert, eat)
 
             if c8 == ` ` or c8 == `\t` do
-                checkTr(RuneAsciiBlank)
+                checkTr(RuneAsciiBlank, eat)
             else do
-                checkTr(RuneAsciiBlank | RuneInvert)
+                checkTr(RuneAsciiBlank | RuneInvert, eat)
 
-            checkTr(RuneAscii)
+            checkTr(RuneAscii, eat)
         }
         else
         {
-            checkTr(RuneAscii | RuneInvert)
+            checkTr(RuneAscii | RuneInvert, eat)
         }
 
         if Unicode.isLetter(c) do
-            checkTr(RuneUnicodeLetter)
+            checkTr(RuneUnicodeLetter, eat)
         if Unicode.isLower(c) do
-            checkTr(RuneUnicodeLetterLower)
+            checkTr(RuneUnicodeLetterLower, eat)
         if Unicode.isUpper(c) do
-            checkTr(RuneUnicodeLetterUpper)
+            checkTr(RuneUnicodeLetterUpper, eat)
         if Unicode.isNumber(c) do
-            checkTr(RuneUnicodeNumber)
+            checkTr(RuneUnicodeNumber, eat)
         if Unicode.isSymbol(c) do
-            checkTr(RuneUnicodeSymbol)
+            checkTr(RuneUnicodeSymbol, eat)
         if Unicode.isSymbolMath(c) do
-            checkTr(RuneUnicodeSymbolMath)
+            checkTr(RuneUnicodeSymbolMath, eat)
 
-        checkTr(c)
-        checkTr(RuneWhatever)
-        checkTr(0'rune)
-
-        return ok ? eat : 0
+        checkTr(c, eat)
+        checkTr(RuneWhatever, eat)
+        checkTr(0'rune, eat)
     }
 
     func addTransition(node: *NfaNode, c: rune, toNode: *NfaNode)

@@ -7,9 +7,7 @@ struct Test
 }
 
 const TestCases: [] Test = [
-/*    {#"\bword\b"#, "word", true},
-    {#"\bword\b"#, "aword", false},
-    {#" \bword\b"#, " word", true},*/
+    {"a?", "", true},
 
     {"ab|c", "c", true},
 
@@ -24,7 +22,6 @@ const TestCases: [] Test = [
 
     {"a*", "aaa", true},
     {"a+", "aa", true},
-    {"a?", "", true},
     {"a{2,4}", "aaa", true},
     {"a{2,4}", "aaaaa", false},
 

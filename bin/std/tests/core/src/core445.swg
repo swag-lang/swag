@@ -8,15 +8,13 @@ using Core
     }
 
     {
-         //var r = assume Parser.RegExp.create(#"<(\w+)><\/\1>"#)
-         //@assert(r.match("<aa></aa>"))
          var r = assume Parser.RegExp.create(#"\/"#)
          @assert(r.match("/"))
     }
 
     {
-         var r = assume Parser.RegExp.create(#"<(\w+)><\/\1>"#)
-         @assert(r.match("<aa></aa>"))
+        var r = assume Parser.RegExp.create(#"<(\w+)><\/\1>"#)
+        @assert(r.match("<aa></aa>"))
     }
 
     {
@@ -24,6 +22,5 @@ using Core
          @assert(r.match("XX"))
          @assert(r.match("X X"))
          @assert(r.match("X         X"))
-         //@assert(r.match("<aa>toto</aa>"))
     }
 }
