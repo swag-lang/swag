@@ -184,6 +184,33 @@ impl HashTable
         Memory.free(oldTable, oldCapacity * @sizeof(HashTableEntry), allocator)
     }
 
+    mtd getNewIndex(key: K, idx: u64, hashVal: u64)->u64
+    {
+        var firstFree = Swag.U64.Max
+        var firstDeleted = Swag.U64.Max
+        var index = idx
+
+        while table[index].hash
+        {
+            if table[index].hash == HASH_DELETED and firstDeleted == Swag.U64.Max do
+                firstDeleted = index
+            elif table[index].hash == HASH_FREE and firstFree == Swag.U64.Max do
+                firstFree = index
+
+            if table[index].hash == hashVal and table[index].key == key do
+                return index
+
+            index = (index + 1) % capacity
+        }
+
+        if firstDeleted != Swag.U64.Max do
+            index = firstDeleted
+        elif firstFree != Swag.U64.Max do
+            index = firstFree
+
+        return index
+    }
+
     // Add a new key value pair. If the key already exists, then the value will be replaced
     #[Discardable, Overload]
     mtd add(key: K, value: V)->*HashTableEntry
@@ -194,15 +221,11 @@ impl HashTable
         let hashVal = hashKey(key)
         var index = hashVal % capacity
 
-        while table[index].hash >= HASH_FIRST
+        index = getNewIndex(key, index, hashVal)
+        if table[index].hash >= HASH_FIRST
         {
-            if table[index].hash == hashVal and table[index].key == key
-            {
-                table[index].value = value
-                return table + index
-            }
-
-            index = (index + 1) % capacity
+            table[index].value = value
+            return table + index
         }
 
         if table[index].hash == HASH_FREE
@@ -233,15 +256,11 @@ impl HashTable
         let hashVal = hashKey(key)
         var index = hashVal % capacity
 
-        while table[index].hash >= HASH_FIRST
+        index = getNewIndex(key, index, hashVal)
+        if table[index].hash >= HASH_FIRST
         {
-            if table[index].hash == hashVal and table[index].key == key
-            {
-                table[index].value =,move value
-                return table + index
-            }
-
-            index = (index + 1) % capacity
+            table[index].value =,move value
+            return table + index
         }
 
         if table[index].hash == HASH_FREE
@@ -271,15 +290,11 @@ impl HashTable
 
         var index = hashVal % capacity
 
-        while table[index].hash >= HASH_FIRST
+        index = getNewIndex(key, index, hashVal)
+        if table[index].hash >= HASH_FIRST
         {
-            if table[index].hash == hashVal and table[index].key == key
-            {
-                table[index].value =,moveraw value
-                return table + index
-            }
-
-            index = (index + 1) % capacity
+            table[index].value =,moveraw value
+            return table + index
         }
 
         if table[index].hash == HASH_FREE
