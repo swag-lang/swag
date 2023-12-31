@@ -405,6 +405,7 @@ impl RegExp
             }
         }
 
+        // Word transition
         if !hasStarted
         {
             checkTr(RuneStart)
@@ -428,9 +429,13 @@ impl RegExp
                 return 0
         }
 
-        let advance = backward(out, RuneGroup1, curState)
-        if advance do
-            return advance
+        // Backreference
+        loop 9
+        {
+            let advance = backward(out, RuneGroup1 + #index, curState)
+            if advance do
+                return advance
+        }
 
         if Unicode.isAscii(c)
         {
