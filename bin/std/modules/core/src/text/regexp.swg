@@ -312,22 +312,13 @@ impl RegExp
             {
                 let curState = pstack1.popBack()
                 hasTerminal = curState.terminal
-
-                advance = backward(pstack2, RuneGroup1, curState)
-                if advance
-                {
-                    parseIdx += advance
-                    advance = 0
-                    continue
-                }
-
-                advance = dfaMatch(pstack2, c, curState)
+                advance = dfaMatch(pstack2, c, eat, curState)
             }
 
             if pstack2.count and pstack2.back().group != lastGroup do
                 closeGroup(pstack2.back())
             if advance do
-                parseIdx += eat
+                parseIdx += advance
 
             swap(&pstack1, &pstack2)
 
@@ -335,7 +326,7 @@ impl RegExp
             if parseIdx == bufLength and !pstack1.isEmpty() and !hasTerminal
             {
                 let curState = pstack1.popBack()
-                discard dfaMatch(pstack2, RuneEnd, curState)
+                discard dfaMatch(pstack2, RuneEnd, 1, curState)
                 hasTerminal = curState.terminal
                 swap(&pstack1, &pstack2)
             }
@@ -399,7 +390,7 @@ impl RegExp
         return 0
     }
 
-    mtd dfaMatch(out: *Array'(*DfaNode), c: rune, curState: *DfaNode)->s32
+    mtd dfaMatch(out: *Array'(*DfaNode), c: rune, eat: s32, curState: *DfaNode)->s32
     {
         var ok = false
 
@@ -436,6 +427,10 @@ impl RegExp
             if ok do
                 return 0
         }
+
+        let advance = backward(out, RuneGroup1, curState)
+        if advance do
+            return advance
 
         if Unicode.isAscii(c)
         {
@@ -509,7 +504,7 @@ impl RegExp
         checkTr(c)
         checkTr(0'rune)
 
-        return ok ? 1 : 0
+        return ok ? eat : 0
     }
 
     func addTransition(node: *NfaNode, c: rune, toNode: *NfaNode)
