@@ -16,7 +16,15 @@ const RuneAsciiHexa         = cast(rune) 0x8000_000B
 const RuneStart             = cast(rune) 0x8000_000C
 const RuneEnd               = cast(rune) 0x8000_000D
 const RuneWordSwap          = cast(rune) 0x8000_000E
-const RuneGroup1            = cast(rune) 0x8000_000F
+const RuneGroup1            = cast(rune) 0x8000_0010
+const RuneGroup2            = cast(rune) 0x8000_0020
+const RuneGroup3            = cast(rune) 0x8000_0030
+const RuneGroup4            = cast(rune) 0x8000_0040
+const RuneGroup5            = cast(rune) 0x8000_0050
+const RuneGroup6            = cast(rune) 0x8000_0060
+const RuneGroup7            = cast(rune) 0x8000_0070
+const RuneGroup8            = cast(rune) 0x8000_0080
+const RuneGroup9            = cast(rune) 0x8000_0090
 
 const RuneUnicodeLetter         = cast(rune) 0x8001_0006
 const RuneUnicodeLetterLower    = cast(rune) 0x8001_0007
@@ -116,6 +124,10 @@ public struct RegExp
     hasStarted:     bool
     wasWord:        bool
     ignoreCase:     bool
+    srcPtr:         const ^u8
+    startGroup:     const ^u8
+    lastGroup:      s32
+    hasTerminal:    bool
 }
 
 impl RegExp
@@ -267,6 +279,18 @@ impl RegExp
         groups.add({rank, str})
     }
 
+    mtd closeGroup(state: *DfaNode)
+    {
+        if lastGroup
+        {
+            let strGroup = @mkstring(startGroup, srcPtr-startGroup)
+            setCapture(lastGroup, strGroup)
+        }
+
+        lastGroup = state.group
+        startGroup = srcPtr
+    }
+
     mtd matchInternal(str: string, forGrep: bool)->{ok: bool, buf: const *u8}
     {
         var result: retval
@@ -281,25 +305,12 @@ impl RegExp
         var pstack2 = &stack2
 
         var cpt = 0
-        var srcPtr = @dataof(str)
         let srcLength = @countof(str)
 
-        var lastGroup   = 0
-        var startGroup  = srcPtr
-        var hasTerminal = false
-
-        #[Swag.Mixin]
-        func closeGroup(state: *DfaNode)
-        {
-            if lastGroup
-            {
-                let strGroup = @mkstring(startGroup, srcPtr-startGroup)
-                setCapture(lastGroup, strGroup)
-            }
-
-            lastGroup = state.group
-            startGroup = srcPtr
-        }
+        srcPtr      = @dataof(str)
+        lastGroup   = 0
+        startGroup  = srcPtr
+        hasTerminal = false
 
         #[Swag.Mixin]
         func backward(what: rune)
@@ -1234,8 +1245,8 @@ impl RegExp
             case `p`:
                 pz = preprocessUnicode(sl)
                 return pz
-            case `1`:
-                preprocessed.add(RuneGroup1)
+            case `1`, `2`, `3`, `4`, `5`, `6`, `7`, `8`, `9`:
+                preprocessed.add(RuneGroup1 + (pz[1] - `1`))
                 return pz + 2
             }
         }
