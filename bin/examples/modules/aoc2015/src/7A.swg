@@ -45,32 +45,35 @@ using Core
 
     var result: String
     var r: Parser.RegExp
+
+    var map: HashTable'(string, string)
+    map.add("AND", "&")
+    map.add("OR", "|")
+    map.add("LSHIFT", "<<")
+    map.add("RSHIFT", ">>")
+
     assume
     {
-        visit l: assume File.readAllLines(dataPath)
+        visit l: File.readAllLines(dataPath)
         {
             l.replace("is", "_is")
             l.replace("if", "_if")
             l.replace("do", "_do")
             l.replace("in", "_in")
 
+            result += "private const "
             if r.match(#"(\w+) -> (\w+)"#, l) do
-                result += Format.toString("private const % = %\n", r[2], r[1])
-            elif r.match(#"(\w+) AND (\w+) -> (\w+)"#, l) do
-                result += Format.toString("private const % = % & %\n", r[3], r[1], map(r[2]).value, r[2])
-            elif r.match(#"(\w+) OR (\w+) -> (\w+)"#, l) do
-                result += Format.toString("private const % = % | %\n", r[3], r[1], r[2])
-            elif r.match(#"(\w+) LSHIFT (\d+) -> (\w+)"#, l) do
-                result += Format.toString("private const % = % << %\n", r[3], r[1], r[2])
-            elif assume r.match(#"(\w+) RSHIFT (\d+) -> (\w+)"#, l) do
-                result += Format.toString("private const % = % >> %\n", r[3], r[1], r[2])
-            elif assume r.match(#"NOT (\w+) -> (\w+)"#, l) do
-                result += Format.toString("private const % = ~%\n", r[2], r[1])
+                result += Format.toString("% = %", r[2], r[1])
+            elif r.match(#"(\w+) (\w+) (\w+) -> (\w+)"#, l) do
+                result += Format.toString("% = % % %", r[4], r[1], map.find(r[2]).value, r[3])
+            elif r.match(#"NOT (\w+) -> (\w+)"#, l) do
+                result += Format.toString("% = ~%", r[2], r[1])
+            result += "\n"
         }
     }
 
     return result
 }
 
-#print a
+//#print a
 #assert a == 46065
