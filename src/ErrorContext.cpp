@@ -87,7 +87,14 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
 
             Utf8 name;
             if (exp.node)
-                name = exp.node->resolvedSymbolName ? exp.node->resolvedSymbolName->name : exp.node->token.text;
+            {
+                if (exp.node->resolvedSymbolOverload && exp.node->resolvedSymbolOverload->node->ownerStructScope)
+                    name = Fmt("%s.%s", exp.node->resolvedSymbolOverload->node->ownerStructScope->name.c_str(), exp.node->resolvedSymbolOverload->symbol->name.c_str());
+                else if (exp.node->resolvedSymbolName)
+                    name = exp.node->resolvedSymbolName->name;
+                else
+                    name = exp.node->token.text;
+            }
 
             Diagnostic* note = nullptr;
             switch (exp.type)
