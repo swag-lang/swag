@@ -13,6 +13,7 @@ using Core
     var r: Parser.RegExp
 
     var map: HashTable'(string, string)
+    //map = [{"AND", "&"}, {"OR", "|"}, {"LSHIFT", "<<"}, {"RSHIFT", ">>"}]
     map.add("AND", "&")
     map.add("OR", "|")
     map.add("LSHIFT", "<<")
@@ -22,11 +23,7 @@ using Core
     {
         visit l: File.readAllLines(dataPath)
         {
-            l.replace("is", "_is")
-            l.replace("if", "_if")
-            l.replace("do", "_do")
-            l.replace("in", "_in")
-
+            l.makeUpper()
             result += "private const "
             if r.match(#"(\w+) -> b"#, l) do
                 result += Format.toString("b = %", 46065)
@@ -43,5 +40,5 @@ using Core
     return result
 }
 
-//#print a
-#assert a == 14134
+//#print A
+#assert A == 14134
