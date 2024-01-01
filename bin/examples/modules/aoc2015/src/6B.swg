@@ -22,10 +22,6 @@ using Core
 
 func day6B()
 {
-struct AA {}
-var lights1: HashSet'AA
-lights1.add({})
-
     //Time.Stopwatch.scopeMeasure()
 
     let dataPath = Path.combine(Path.getDirectoryName(#file), "6.txt")

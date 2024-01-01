@@ -850,6 +850,34 @@ bool SemanticJob::resolveIntrinsicLocation(SemanticContext* context)
             }
         }
 
+        if (locNode->ownerFct && locNode->ownerFct->typeInfo && locNode->ownerFct->requestedGeneric)
+        {
+            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(locNode->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+            for (auto it : typeFunc->replaceTypes)
+            {
+                bool fromGen = false;
+                if (it.second == locNode->typeInfo)
+                    fromGen = true;
+                else if (locNode->typeInfo->isPointer() && it.second == ((TypeInfoPointer*) locNode->typeInfo)->pointedType)
+                    fromGen = true;
+                else if (locNode->typeInfo->isSlice() && it.second == ((TypeInfoSlice*) locNode->typeInfo)->pointedType)
+                    fromGen = true;
+                else if (locNode->typeInfo->isArray() && it.second == ((TypeInfoArray*) locNode->typeInfo)->finalType)
+                    fromGen = true;
+
+                if (fromGen)
+                {
+                    auto it1 = typeFunc->replaceFrom.find(it.first);
+                    if (it1 != typeFunc->replaceFrom.end())
+                    {
+                        locNode = it1->second;
+                        done    = true;
+                        continue;
+                    }
+                }
+            }
+        }
+
         break;
     }
 

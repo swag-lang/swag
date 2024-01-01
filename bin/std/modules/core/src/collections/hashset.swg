@@ -7,7 +7,16 @@ struct(K) HashSetEntry
     key:    K
 }
 
+// A set of unique values.
 struct(K) HashSet
+    #validif
+    {
+        if !Hash.checkCanHash32'K() do
+            return false
+        if !Core.Compiler.checkCanCompareToSame'K() do
+            return false
+        return true
+    }
 {
     const HASH_FREE    = 0'u32
     const HASH_DELETED = 1'u32
@@ -174,9 +183,9 @@ impl HashSet
 
         while table[index].hash
         {
-            if table[index].hash == HASH_DELETED and firstDeleted == Swag.U64.Max do 
+            if table[index].hash == HASH_DELETED and firstDeleted == Swag.U64.Max do
                 firstDeleted = index
-            elif table[index].hash == HASH_FREE and firstFree == Swag.U64.Max do 
+            elif table[index].hash == HASH_FREE and firstFree == Swag.U64.Max do
                 firstFree = index
 
             if table[index].hash == hashVal and table[index].key == key do

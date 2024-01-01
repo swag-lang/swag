@@ -1348,12 +1348,12 @@ void initErrors()
     SWAG_ERROR(Nte0089, "missing %s of type '%s'");
     SWAG_ERROR(Nte0088, "missing parameter '%s' of type '%s'");
     SWAG_ERROR(Nte0072, "occured during compile-time evaluation");
-    SWAG_ERROR(Nte0078, "occured during the '#validif' validation of struct '%s'");
-    SWAG_ERROR(Nte0054, "occured during the '#validif' validation of the call to '%s'");
+    SWAG_ERROR(Nte0078, "occured during the '#validif' check of struct '%s'");
+    SWAG_ERROR(Nte0054, "occured during the '#validif' check of the call to '%s'");
     SWAG_ERROR(Nte0061, "occured during the generic instantiation of '%s'");
     SWAG_ERROR(Nte0059, "occured during the inline expansion of '%s'");
     SWAG_ERROR(Nte0060, "occured during the public export of '%s'");
-    SWAG_ERROR(Nte0033, "occured during the '#validifx' validation of the call to '%s'");
+    SWAG_ERROR(Nte0033, "occured during the '#validifx' check of the call to '%s'");
     SWAG_ERROR(Nte0004, "occured in generated code");
     SWAG_ERROR(Nte1115, "one function declares 'throw' while the other doesn't");
     SWAG_ERROR(Nte1112, "only the address of a returned reference can be taken, and this is %s");

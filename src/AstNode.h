@@ -563,6 +563,7 @@ struct AstFuncDecl : public AstNode
     AstNode*        validif;
     AstNode*        returnTypeDeducedNode;
     AstNode*        originalGeneric;
+    AstNode*        requestedGeneric;
     Scope*          scope;
     TypeInfoParam*  methodParam;
     Job*            pendingLambdaJob;

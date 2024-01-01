@@ -75,42 +75,48 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
 
         auto genCheckNode = note->sourceNode ? note->sourceNode : note->contextNode;
 
-        // This is a generic instance. Display type replacements.
-        if (genCheckNode &&
-            genCheckNode->ownerFct &&
-            genCheckNode->ownerFct->typeInfo &&
-            !doneGenParamsRemarks.contains(genCheckNode->ownerFct->typeInfo))
+        // It can happen that the location has nothing to do with the node where the error occurs
+        // (because of @location in a @compilererror for example).
+        // So hack to avoid displaying generic informations not relevant.
+        if (genCheckNode && genCheckNode->sourceFile == note->sourceFile)
         {
-            doneGenParamsRemarks.insert(genCheckNode->ownerFct->typeInfo);
-            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(genCheckNode->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
-            auto remarks  = Ast::computeGenericParametersReplacement(typeFunc->replaceTypes);
-            if (!remarks.empty())
-                note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
-        }
+            // This is a generic instance. Display type replacements.
+            if (genCheckNode &&
+                genCheckNode->ownerFct &&
+                genCheckNode->ownerFct->typeInfo &&
+                !doneGenParamsRemarks.contains(genCheckNode->ownerFct->typeInfo))
+            {
+                doneGenParamsRemarks.insert(genCheckNode->ownerFct->typeInfo);
+                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(genCheckNode->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+                auto remarks  = Ast::computeGenericParametersReplacement(typeFunc->replaceTypes);
+                if (!remarks.empty())
+                    note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
+            }
 
-        if (genCheckNode &&
-            genCheckNode->ownerStructScope &&
-            genCheckNode->ownerStructScope->owner->typeInfo &&
-            genCheckNode->ownerStructScope->owner->typeInfo->kind == TypeInfoKind::Struct &&
-            !doneGenParamsRemarks.contains(genCheckNode->ownerStructScope->owner->typeInfo))
-        {
-            doneGenParamsRemarks.insert(genCheckNode->ownerStructScope->owner->typeInfo);
-            auto typeStruct = CastTypeInfo<TypeInfoStruct>(genCheckNode->ownerStructScope->owner->typeInfo, TypeInfoKind::Struct);
-            auto remarks    = Ast::computeGenericParametersReplacement(typeStruct->replaceTypes);
-            if (!remarks.empty())
-                note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
-        }
+            if (genCheckNode &&
+                genCheckNode->ownerStructScope &&
+                genCheckNode->ownerStructScope->owner->typeInfo &&
+                genCheckNode->ownerStructScope->owner->typeInfo->kind == TypeInfoKind::Struct &&
+                !doneGenParamsRemarks.contains(genCheckNode->ownerStructScope->owner->typeInfo))
+            {
+                doneGenParamsRemarks.insert(genCheckNode->ownerStructScope->owner->typeInfo);
+                auto typeStruct = CastTypeInfo<TypeInfoStruct>(genCheckNode->ownerStructScope->owner->typeInfo, TypeInfoKind::Struct);
+                auto remarks    = Ast::computeGenericParametersReplacement(typeStruct->replaceTypes);
+                if (!remarks.empty())
+                    note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
+            }
 
-        if (genCheckNode &&
-            genCheckNode->typeInfo &&
-            genCheckNode->typeInfo->kind == TypeInfoKind::Struct &&
-            !doneGenParamsRemarks.contains(genCheckNode->typeInfo))
-        {
-            doneGenParamsRemarks.insert(genCheckNode->typeInfo);
-            auto typeStruct = CastTypeInfo<TypeInfoStruct>(genCheckNode->typeInfo, TypeInfoKind::Struct);
-            auto remarks    = Ast::computeGenericParametersReplacement(typeStruct->replaceTypes);
-            if (!remarks.empty())
-                note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
+            if (genCheckNode &&
+                genCheckNode->typeInfo &&
+                genCheckNode->typeInfo->kind == TypeInfoKind::Struct &&
+                !doneGenParamsRemarks.contains(genCheckNode->typeInfo))
+            {
+                doneGenParamsRemarks.insert(genCheckNode->typeInfo);
+                auto typeStruct = CastTypeInfo<TypeInfoStruct>(genCheckNode->typeInfo, TypeInfoKind::Struct);
+                auto remarks    = Ast::computeGenericParametersReplacement(typeStruct->replaceTypes);
+                if (!remarks.empty())
+                    note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
+            }
         }
 
         // Transform a note in a hint

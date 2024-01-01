@@ -674,6 +674,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     AstFuncDecl* newFunc = CastAst<AstFuncDecl>(newFuncNode, AstNodeKind::FuncDecl);
     newFunc->flags |= AST_FROM_GENERIC;
     newFunc->originalGeneric = funcNode;
+    newFunc->requestedGeneric = node;
 
     // If this is for testing a #validif match, we must not evaluate the function content until the
     // #validif has passed
@@ -736,6 +737,12 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
         newFunc->typeInfo          = newTypeFunc;
         if (noReplaceTypes)
             newTypeFunc->flags |= TYPEINFO_UNDEFINED;
+    }
+    else
+    {
+        newTypeFunc->replaceTypes  = cloneContext.replaceTypes;
+        newTypeFunc->replaceValues = cloneContext.replaceValues;
+        newTypeFunc->replaceFrom   = cloneContext.replaceFrom;
     }
 
     // Replace generic types and values in the function generic parameters

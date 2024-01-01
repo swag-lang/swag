@@ -6,9 +6,24 @@ public interface IHash32
     mtd const compute()->u32
 }
 
+#[Compiler]
+public func(T) checkCanHash32()->bool
+{
+    if @typeof(T) == string do
+        return true
+    if Reflection.isStruct(T) and !Reflection.hasInterface(T, IHash32) do
+        @compilererror("type '" ++ @typeof(T).fullname ++ "' does not implement the 'Hash.IHash32' interface", @location(T))
+    if Reflection.isStruct(T) do
+        return true
+    if @sizeof(T) != 8 and @sizeof(T) != 4 and !Reflection.isInteger(T) do
+        @compilererror("cannot hash a value of type '" ++ @typeof(T).fullname ++ "'", @location(T))
+    return true
+}
+
 // Hash the given value and returns the corresponding u32
 #[ConstExpr, Safety("", false)]
 public func(T) hash32(value: T)->u32
+    #validif checkCanHash32'T()
 {
     #if @typeof(T) == string
     {
@@ -16,7 +31,6 @@ public func(T) hash32(value: T)->u32
     }
     #elif Reflection.isStruct(T)
     {
-        #if !Reflection.hasInterface(T, IHash32) #do #error "type '" ++ @typeof(T).fullname ++ "' does not implement the 'Hash.IHash32' interface"
         #ast "return " ++ @typeof(T).fullname ++ ".IHash32.compute(value)"
     }
     #elif @sizeof(T) == 8
@@ -52,6 +66,4 @@ public func(T) hash32(value: T)->u32
         key = key ^ (key >> 16)
         return key
     }
-    #else #do
-        #error "cannot hash a value of type '" ++ @typeof(T).fullname ++ "'"
 }
