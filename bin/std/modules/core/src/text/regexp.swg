@@ -116,6 +116,7 @@ struct DfaState
 // | \p{Ll}           | unicode lower letter
 // | \p{Lu}           | unicode upper letter
 // | \p{Sm}           | unicode symbol math
+// | \1 to \9         | backreference to a capture block
 #[Swag.Opaque]
 public struct RegExp
 {
@@ -143,6 +144,19 @@ impl RegExp
     public mtd opDrop()
     {
         clear()
+    }
+
+    // You can get a capture group value by using the derefence syntax.
+    // Returns 'null' if the capture group does not exist
+    public mtd opIndex(idx: u64)->string
+    {
+        visit v: groups
+        {
+            if v.rank == idx do
+                return v.value
+        }
+
+        return null
     }
 
     mtd clearMatch()
