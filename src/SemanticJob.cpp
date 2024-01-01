@@ -277,12 +277,12 @@ JobResult SemanticJob::execute()
                     // in registerFuncSymbol by another thread
                     if (!(node->flags & AST_NO_SEMANTIC) && !(node->semFlags & SEMFLAG_FILE_JOB_PASS))
                     {
-                        auto job          = Allocator::alloc<SemanticJob>();
-                        job->sourceFile   = sourceFile;
-                        job->module       = module;
-                        job->dependentJob = dependentJob;
+                        auto job                 = Allocator::alloc<SemanticJob>();
+                        job->sourceFile          = sourceFile;
+                        job->module              = module;
+                        job->dependentJob        = dependentJob;
+                        job->context.errCxtSteps = context.errCxtSteps;
                         job->nodes.push_back(node);
-                        job->context.errCxtSteps.insert(job->context.errCxtSteps.end(), context.errCxtSteps.begin(), context.errCxtSteps.end());
                         g_ThreadMgr.addJob(job);
                     }
 
@@ -296,10 +296,11 @@ JobResult SemanticJob::execute()
                         break;
                     if (canDoSem)
                     {
-                        auto job          = Allocator::alloc<SemanticJob>();
-                        job->sourceFile   = sourceFile;
-                        job->module       = module;
-                        job->dependentJob = dependentJob;
+                        auto job                 = Allocator::alloc<SemanticJob>();
+                        job->sourceFile          = sourceFile;
+                        job->module              = module;
+                        job->dependentJob        = dependentJob;
+                        job->context.errCxtSteps = context.errCxtSteps;
                         job->nodes.push_back(node);
                         g_ThreadMgr.addJob(job);
                     }
@@ -322,10 +323,11 @@ JobResult SemanticJob::execute()
                 case AstNodeKind::Impl:
                     if (canDoSem)
                     {
-                        auto job          = Allocator::alloc<SemanticJob>();
-                        job->sourceFile   = sourceFile;
-                        job->module       = module;
-                        job->dependentJob = dependentJob;
+                        auto job                 = Allocator::alloc<SemanticJob>();
+                        job->sourceFile          = sourceFile;
+                        job->module              = module;
+                        job->dependentJob        = dependentJob;
+                        job->context.errCxtSteps = context.errCxtSteps;
                         job->nodes.push_back(node);
                         g_ThreadMgr.addJob(job);
                     }
