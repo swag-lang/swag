@@ -13,11 +13,7 @@ using Core
     var r: Parser.RegExp
 
     var map: HashTable'(string, string)
-    //map = [{"AND", "&"}, {"OR", "|"}, {"LSHIFT", "<<"}, {"RSHIFT", ">>"}]
-    map.add("AND", "&")
-    map.add("OR", "|")
-    map.add("LSHIFT", "<<")
-    map.add("RSHIFT", ">>")
+    map = [{"AND", "&"}, {"OR", "|"}, {"LSHIFT", "<<"}, {"RSHIFT", ">>"}]
 
     assume
     {
@@ -25,8 +21,8 @@ using Core
         {
             l.makeUpper()
             result += "private const "
-            if r.match(#"(\w+) -> b"#, l) do
-                result += Format.toString("b = %", 46065)
+            if r.match(#"(\w+) -> B"#, l) do
+                result += Format.toString("B = %", 46065)
             elif r.match(#"(\w+) -> (\w+)"#, l) do
                 result += Format.toString("% = %", r[2], r[1])
             elif r.match(#"(\w+) (\w+) (\w+) -> (\w+)"#, l) do

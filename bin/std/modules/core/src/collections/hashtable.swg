@@ -44,6 +44,12 @@ impl HashTable
         free()
     }
 
+    mtd opAffect(slice: const [..] {k: K, v: V})
+    {
+        visit v: slice do
+            add(v.k, v.v)
+    }
+
     mtd opPostCopy()
     {
         if !table do

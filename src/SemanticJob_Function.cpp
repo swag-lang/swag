@@ -593,6 +593,16 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         if (context->result != ContextResult::Done)
             return true;
     }
+    else
+    {
+        for (auto t : typeInfo->parameters)
+        {
+            if (t->typeInfo->isGeneric())
+            {
+                t->typeInfo = funcNode->parameters->childs[t->index]->typeInfo;
+            }
+        }
+    }
 
     // If a lambda function will wait for a match, then no need to deduce the return type
     // It will be done in the same way as parameters
