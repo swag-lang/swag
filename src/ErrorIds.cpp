@@ -115,7 +115,7 @@ void initErrors()
     SWAG_ERROR(San0010, "[sanity] stack overwrite     $ attempt to overrite the stack memory at offset '%lld' (stack size is '%lld')");
     SWAG_ERROR(San0004, "[sanity] uninitialized usage $ attempt to use uninitialized %s '%s'");
     SWAG_ERROR(San0003, "[sanity] uninitialized usage $ attempt to use uninitialized stack memory");
-    SWAG_ERROR(San0009, nullptr);
+    SWAG_ERROR(San0009, "[sanity] overflow            $ possible overflow in '%s' (type is '%s')");
     SWAG_ERROR(San0011, nullptr);
     SWAG_ERROR(San0012, nullptr);
     SWAG_ERROR(San0013, nullptr);
