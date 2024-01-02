@@ -22,4 +22,6 @@
     //day7B()  resolved by the compiler
     day8A()
     day8B()
+    day9A()
+    day9B()
 }

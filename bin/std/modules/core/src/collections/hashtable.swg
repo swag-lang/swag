@@ -226,9 +226,10 @@ impl HashTable
         return index
     }
 
-    // Add a new key value pair. If the key already exists, then the value will be replaced
+    // Add a new key value pair.
+    // If the key already exists, then the value will be replaced if 'updateValue' is true.
     #[Discardable, Overload]
-    mtd add(key: K, value: V)->*HashTableEntry
+    mtd add(key: K, value: V, updateValue = true)->*HashTableEntry
         #validif Reflection.canCopy(@typeof(K)) and Reflection.canCopy(@typeof(V))
     {
         grow()
@@ -239,7 +240,8 @@ impl HashTable
         index = getNewIndex(key, index, hashVal)
         if table[index].hash >= HASH_FIRST
         {
-            table[index].value = value
+            if updateValue do
+                table[index].value = value
             return table + index
         }
 
@@ -261,9 +263,10 @@ impl HashTable
         return table + index
     }
 
-    // Add a new key value pair. If the key already exists, then the value will be replaced
+    // Add a new key value pair.
+    // If the key already exists, then the value will be replaced if 'updateValue' is true.
     #[Discardable, Overload]
-    mtd add(key: K, value: &&V)->*HashTableEntry
+    mtd add(key: K, value: &&V, updateValue = true)->*HashTableEntry
         #validif Reflection.canCopy(@typeof(K))
     {
         grow()
@@ -274,7 +277,8 @@ impl HashTable
         index = getNewIndex(key, index, hashVal)
         if table[index].hash >= HASH_FIRST
         {
-            table[index].value =,move value
+            if updateValue do
+                table[index].value =,move value
             return table + index
         }
 
