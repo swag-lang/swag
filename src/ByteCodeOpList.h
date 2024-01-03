@@ -244,6 +244,7 @@ BYTECODE_OP(CopyRRtoRC, OPFLAG_WRITE_A | OPFLAG_READ_VAL64_B, "_ra_ = my_result 
 BYTECODE_OP(CopyRRtoRC2, OPFLAG_WRITE_A | OPFLAG_WRITE_B, "_ra_, _rb_ = my_result")
 
 BYTECODE_OP(CopyRTtoRC, OPFLAG_WRITE_A, "_ra_ = last_call_result")
+BYTECODE_OP(CopyRTtoRC2, OPFLAG_WRITE_A | OPFLAG_WRITE_B, "_ra_, _rb_ = my_result")
 BYTECODE_OP(CopyRCtoRT, OPFLAG_READ_A, "last_call_result = _ra_")
 
 BYTECODE_OP(CopySP, OPFLAG_WRITE_A | OPFLAG_READ_VAL32_B | OPFLAG_READ_C, "_ra_ = &_rc_")
