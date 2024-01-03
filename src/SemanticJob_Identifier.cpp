@@ -4550,6 +4550,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
             for (auto& p : dependentSymbols)
             {
                 auto symbol = p.symbol;
+
+                SharedLock lkn(symbol->mutex);
                 if (!needToCompleteSymbol(context, identifier, symbol))
                 {
                     Diagnostic diag{identifier, Fmt(Err(Err0116), Naming::kindName(symbol->kind).c_str(), identifier->token.ctext())};
