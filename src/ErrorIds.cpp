@@ -90,17 +90,17 @@ void initErrors()
     SWAG_ERROR(Saf0033, "safety failed 'overflow' $ value '%I64u' does not fit in type '%s'");
     SWAG_ERROR(Saf0035, "safety failed 'overflow' $ value '%I64d' does not fit in type '%s'");
     SWAG_ERROR(Saf0031, "safety failed 'overflow' $ value '%g' does not fit in type '%s'");
-    SWAG_ERROR(Saf0010, "safety failed 'overflow' $ overflow in '*' (type is '%s')");
-    SWAG_ERROR(Saf0009, "safety failed 'overflow' $ overflow in '*=' (type is '%s')");
-    SWAG_ERROR(Saf0012, "safety failed 'overflow' $ overflow in '+' (type is '%s')");
-    SWAG_ERROR(Saf0011, "safety failed 'overflow' $ overflow in '+=' (type is '%s')");
-    SWAG_ERROR(Saf0014, "safety failed 'overflow' $ overflow in '-' (type is '%s')");
-    SWAG_ERROR(Saf0013, "safety failed 'overflow' $ overflow in '-=' (type is '%s')");
-    SWAG_ERROR(Saf0015, "safety failed 'overflow' $ overflow in '<<' (type is '%s')");
-    SWAG_ERROR(Saf0016, "safety failed 'overflow' $ overflow in '>>' (type is '%s')");
-    SWAG_ERROR(Saf0017, "safety failed 'overflow' $ overflow in '-' (type is '%s')");
+    SWAG_ERROR(Saf0009, "safety failed 'overflow' $ overflow in '%s' (type is '%s')");
     SWAG_ERROR(Saf0018, "safety failed 'overflow' $ truncation from '%s' to '%s'");
     SWAG_ERROR(Saf0019, "safety failed 'switch' $ unexpected switch value ('Swag.Complete')");
+    SWAG_ERROR(Saf0010, nullptr);
+    SWAG_ERROR(Saf0011, nullptr);
+    SWAG_ERROR(Saf0012, nullptr);
+    SWAG_ERROR(Saf0013, nullptr);
+    SWAG_ERROR(Saf0014, nullptr);
+    SWAG_ERROR(Saf0015, nullptr);
+    SWAG_ERROR(Saf0016, nullptr);
+    SWAG_ERROR(Saf0017, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

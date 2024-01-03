@@ -43,7 +43,8 @@ func day1A()
         px += x*n; py += y*n
     }
 
-    //Console.print("total: ", px+py)
+    let total = Math.abs(px)+Math.abs(py)
+    //Console.print("total: ", total)
     @assert(total == 242)
 }
 
