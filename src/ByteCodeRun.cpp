@@ -1164,31 +1164,36 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
 
     case ByteCodeOp::ClearRR8:
     {
-        auto ptr                      = context->registersRR[0].pointer;
+        SWAG_ASSERT(context->bc->registerStoreRR != UINT32_MAX);
+        auto ptr                      = registersRC[context->bc->registerStoreRR].pointer;
         *(uint8_t*) (ptr + ip->c.u32) = 0;
         break;
     }
     case ByteCodeOp::ClearRR16:
     {
-        auto ptr                       = context->registersRR[0].pointer;
+        SWAG_ASSERT(context->bc->registerStoreRR != UINT32_MAX);
+        auto ptr                       = registersRC[context->bc->registerStoreRR].pointer;
         *(uint16_t*) (ptr + ip->c.u32) = 0;
         break;
     }
     case ByteCodeOp::ClearRR32:
     {
-        auto ptr                       = context->registersRR[0].pointer;
+        SWAG_ASSERT(context->bc->registerStoreRR != UINT32_MAX);
+        auto ptr                       = registersRC[context->bc->registerStoreRR].pointer;
         *(uint32_t*) (ptr + ip->c.u32) = 0;
         break;
     }
     case ByteCodeOp::ClearRR64:
     {
-        auto ptr                       = context->registersRR[0].pointer;
+        SWAG_ASSERT(context->bc->registerStoreRR != UINT32_MAX);
+        auto ptr                       = registersRC[context->bc->registerStoreRR].pointer;
         *(uint64_t*) (ptr + ip->c.u32) = 0;
         break;
     }
     case ByteCodeOp::ClearRRX:
     {
-        auto ptr = context->registersRR[0].pointer;
+        SWAG_ASSERT(context->bc->registerStoreRR != UINT32_MAX);
+        auto ptr = registersRC[context->bc->registerStoreRR].pointer;
         memset(ptr, 0, ip->b.u64);
         break;
     }
