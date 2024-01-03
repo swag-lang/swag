@@ -29,12 +29,11 @@ func day1A()
     var x = 0
     var y = 1
     var px, py = 0
-    visit v: split
+    visit it: split
     {
-        var str: String = v
-        str.trim()
-        let n = assume StrConv.toS32(str[1..])
-        switch str[0]
+        let v = Tokenize.trim(it)
+        let n = assume StrConv.toS32(v[1..])
+        switch v[0]
         {
         case `R`:  swap(&x, &y); y = -y
         case `L`:  swap(&x, &y); x = -x

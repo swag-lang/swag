@@ -245,6 +245,18 @@ func getToSpace(str: string)->string
     return @mkstring(@dataof(str), cpt)
 }
 
+// Trim the string.
+func trim(str: string)->string
+{
+    var countof = @countof(str)
+    var cpt = 0'u64
+    while cpt < countof and Latin1.isSpace(str[cpt]) do
+        cpt += 1
+    while countof and Latin1.isSpace(str[countof-1]) do
+        countof -= 1
+    return @mkstring(@dataof(str) + cpt, countof - cpt)
+}
+
 // Returns the first substring of 'str' containing only digits and letters
 func getWhileAlnum(str: string)->string
 {
