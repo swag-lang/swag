@@ -3434,7 +3434,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             /////////////////////////////////////
 
-        case ByteCodeOp::CopyRCtoRR:
+        case ByteCodeOp::CopyRAtoRR:
             pp.emit_LoadAddress_Indirect(offsetResult, RAX, RDI);
             if (ip->flags & BCI_IMM_A && ip->a.u64 <= 0x7FFFFFFF)
             {
@@ -3453,7 +3453,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
             break;
 
-        case ByteCodeOp::CopyRCtoRR2:
+        case ByteCodeOp::CopyRARBtoRR2:
         {
             int stackOffset = getParamStackOffset(coffFct, typeFunc->numParamsRegisters());
             pp.emit_Load64_Indirect(stackOffset, RAX, RDI);
@@ -3465,12 +3465,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         }
 
-        case ByteCodeOp::CopyRCtoRT:
+        case ByteCodeOp::CopyRAtoRT:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
             pp.emit_Store64_Indirect(offsetRT + regOffset(0), RAX, RDI);
             break;
 
-        case ByteCodeOp::CopyRRtoRC:
+        case ByteCodeOp::CopyRRtoRA:
         {
             int stackOffset = getParamStackOffset(coffFct, typeFunc->numParamsRegisters());
             pp.emit_Load64_Indirect(stackOffset, RAX, RDI);
@@ -3484,12 +3484,12 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             break;
         }
 
-        case ByteCodeOp::CopyRTtoRC:
+        case ByteCodeOp::CopyRTtoRA:
             pp.emit_Load64_Indirect(offsetRT + regOffset(0), RAX, RDI);
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             break;
 
-        case ByteCodeOp::CopyRTtoRC2:
+        case ByteCodeOp::CopyRT2toRARB:
             pp.emit_Load64_Indirect(offsetRT + regOffset(0), RAX, RDI);
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             pp.emit_Load64_Indirect(offsetRT + regOffset(1), RAX, RDI);
@@ -3778,7 +3778,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pushRVParams.clear();
             break;
 
-        case ByteCodeOp::CopyRCtoRRRet:
+        case ByteCodeOp::CopyRBtoRRRet:
             pp.emit_LoadAddress_Indirect(offsetResult, RAX, RDI);
             if (ip->flags & BCI_IMM_B && ip->b.u64 <= 0x7FFFFFFF)
             {

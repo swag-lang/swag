@@ -4187,7 +4187,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
             /////////////////////////////////////
 
-        case ByteCodeOp::CopyRCtoRRRet:
+        case ByteCodeOp::CopyRBtoRRRet:
             getReturnResult(context, buildParameters, moduleToGen, returnType, ip->flags & BCI_IMM_B, ip->b, allocR, allocResult);
 
         case ByteCodeOp::Ret:
@@ -4801,10 +4801,10 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
             /////////////////////////////////////
 
-        case ByteCodeOp::CopyRCtoRR:
+        case ByteCodeOp::CopyRAtoRR:
             getReturnResult(context, buildParameters, moduleToGen, returnType, ip->flags & BCI_IMM_A, ip->a, allocR, allocResult);
             break;
-        case ByteCodeOp::CopyRCtoRR2:
+        case ByteCodeOp::CopyRARBtoRR2:
         {
             auto r1        = builder.CreateLoad(I64_TY(), GEP64(allocR, ip->a.u32));
             auto r2        = builder.CreateLoad(I64_TY(), GEP64(allocR, ip->b.u32));
@@ -4813,14 +4813,14 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(r2, builder.CreateInBoundsGEP(I64_TY(), resultPtr, builder.getInt64(1)));
             break;
         }
-        case ByteCodeOp::CopyRCtoRT:
+        case ByteCodeOp::CopyRAtoRT:
         {
             auto r0 = GEP64(allocRR, 0);
             auto r1 = builder.CreateLoad(I64_TY(), GEP64(allocR, ip->a.u32));
             builder.CreateStore(r1, r0);
             break;
         }
-        case ByteCodeOp::CopyRRtoRC:
+        case ByteCodeOp::CopyRRtoRA:
         {
             auto r0 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
             auto r1 = TO_PTR_I8(func->getArg((int) func->arg_size() - 1));
@@ -4830,7 +4830,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         }
 
-        case ByteCodeOp::CopyRTtoRC:
+        case ByteCodeOp::CopyRTtoRA:
         {
             if (resultFuncCall)
                 storeTypedValueToRegister(context, buildParameters, resultFuncCall, ip->a.u32, allocR);
@@ -4842,7 +4842,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             }
             break;
         }
-        case ByteCodeOp::CopyRTtoRC2:
+        case ByteCodeOp::CopyRT2toRARB:
             storeRT2ToRegisters(context, buildParameters, ip->a.u32, ip->b.u32, allocR, allocRR);
             break;
 

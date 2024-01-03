@@ -200,11 +200,11 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         if (parentReturn)
         {
             if (node->ownerInline)
-                EMIT_INST1(context, ByteCodeOp::CopyRCtoRT, node->ownerInline->resultRegisterRC);
+                EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->ownerInline->resultRegisterRC);
             else
             {
-                EMIT_INST1(context, ByteCodeOp::CopyRRtoRC, node->resultRegisterRC);
-                EMIT_INST1(context, ByteCodeOp::CopyRCtoRT, node->resultRegisterRC);
+                EMIT_INST1(context, ByteCodeOp::CopyRRtoRA, node->resultRegisterRC);
+                EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->resultRegisterRC);
             }
 
             context->bc->maxCallResults = max(context->bc->maxCallResults, 1);

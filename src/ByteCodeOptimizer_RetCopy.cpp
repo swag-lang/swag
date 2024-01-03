@@ -66,13 +66,13 @@ static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
 
         // Change the original stack pointer offset to reference the variable instead of the temporary
         // copy
-        SWAG_ASSERT(ipOrg->op != ByteCodeOp::CopyRRtoRC);
+        SWAG_ASSERT(ipOrg->op != ByteCodeOp::CopyRRtoRA);
         ipOrg->b.u32 = ip->b.u32;
     }
     else
     {
-        SWAG_ASSERT(ip->op == ByteCodeOp::CopyRRtoRC);
-        SET_OP(ipOrg, ByteCodeOp::CopyRRtoRC);
+        SWAG_ASSERT(ip->op == ByteCodeOp::CopyRRtoRA);
+        SET_OP(ipOrg, ByteCodeOp::CopyRRtoRA);
         ipOrg->b.u64 = ip->b.u64;
     }
 
@@ -86,7 +86,7 @@ static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
         removeOpDrop(context, ipOrg, ip, orgOffset);
 
     // Remove the MakeStackPointer
-    // NO ! The register can be necessary for some code after, especially if this is a CopyRRtoRC
+    // NO ! The register can be necessary for some code after, especially if this is a CopyRRtoRA
     // ByteCodeOptimizer::setNop(context, ip);
 
     // Remove the memcpy
@@ -134,7 +134,7 @@ void ByteCodeOptimizer::registerParamsReg(ByteCodeOptContext* context, ByteCodeI
 //
 // MakeStackPointer X
 // (IncPointer64)
-// CopyRCtoRT X
+// CopyRAtoRT X
 // ...
 // Call
 // ...
@@ -151,13 +151,13 @@ bool ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
         bool startOk = false;
 
         if (ip->op == ByteCodeOp::MakeStackPointer &&
-            ip[1].op == ByteCodeOp::CopyRCtoRT &&
+            ip[1].op == ByteCodeOp::CopyRAtoRT &&
             ip->a.u32 == ip[1].a.u32)
             startOk = true;
 
         if (ip->op == ByteCodeOp::MakeStackPointer &&
             ip[1].op == ByteCodeOp::IncPointer64 &&
-            ip[2].op == ByteCodeOp::CopyRCtoRT &&
+            ip[2].op == ByteCodeOp::CopyRAtoRT &&
             ip->a.u32 == ip[2].a.u32)
             startOk = true;
 
@@ -193,7 +193,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
             {
                 if (ip->op == ByteCodeOp::MakeStackPointer)
                     optimRetCopy(context, ipOrg, ip);
-                else if (ip->op == ByteCodeOp::CopyRRtoRC && ip[1].a.u32 == ip[0].a.u32)
+                else if (ip->op == ByteCodeOp::CopyRRtoRA && ip[1].a.u32 == ip[0].a.u32)
                     optimRetCopy(context, ipOrg, ip);
             }
             else
@@ -262,13 +262,13 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
         registerMakeAddr(context, ip);
 
         if (ip->op == ByteCodeOp::MakeStackPointer &&
-            ip[1].op == ByteCodeOp::CopyRCtoRT &&
+            ip[1].op == ByteCodeOp::CopyRAtoRT &&
             ip->a.u32 == ip[1].a.u32)
             startOk = true;
 
         if (ip->op == ByteCodeOp::MakeStackPointer &&
             ip[1].op == ByteCodeOp::IncPointer64 &&
-            ip[2].op == ByteCodeOp::CopyRCtoRT &&
+            ip[2].op == ByteCodeOp::CopyRAtoRT &&
             ip->a.u32 == ip[2].a.u32 &&
             ip[1].a.u32 == ip[1].c.u32)
             startOk = true;
@@ -329,8 +329,8 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
 
                 if (ok)
                 {
-                    // Make CopyRCtoRT point to the MemCpy destination register
-                    if (ipOrg[1].op == ByteCodeOp::CopyRCtoRT)
+                    // Make CopyRAtoRT point to the MemCpy destination register
+                    if (ipOrg[1].op == ByteCodeOp::CopyRAtoRT)
                         ipOrg[1].a.u32 = ip->a.u32;
                     else
                     {
@@ -338,7 +338,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
                         ipOrg[1].a.u32 = ip->a.u32;
                         ipOrg[1].c.u64 = ip->a.u32;
 
-                        SWAG_ASSERT(ipOrg[2].op == ByteCodeOp::CopyRCtoRT);
+                        SWAG_ASSERT(ipOrg[2].op == ByteCodeOp::CopyRAtoRT);
                         ipOrg[2].a.u32 = ip->a.u32;
                     }
 
@@ -449,7 +449,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyStructVal(ByteCodeOptContext* context
             continue;
         }
 
-        if (ip[1].op == ByteCodeOp::CopyRTtoRC &&
+        if (ip[1].op == ByteCodeOp::CopyRTtoRA &&
             ip[2].op == ByteCodeOp::SetAtStackPointer64 &&
             ip[3].op == ByteCodeOp::IncSPPostCall &&
             ip[4].op == ByteCodeOp::CopyStack64 &&
@@ -459,7 +459,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyStructVal(ByteCodeOptContext* context
             ip[2].a.u32 = ip[4].a.u32;
             setNop(context, ip + 4);
         }
-        else if (ip[1].op == ByteCodeOp::CopyRTtoRC &&
+        else if (ip[1].op == ByteCodeOp::CopyRTtoRA &&
                  ip[2].op == ByteCodeOp::SetAtStackPointer64 &&
                  ip[3].op == ByteCodeOp::CopyStack64 &&
                  ip[1].a.u32 == ip[2].b.u32 &&

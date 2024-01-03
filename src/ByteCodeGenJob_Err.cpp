@@ -80,7 +80,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
             else if (!(context->node->semFlags & SEMFLAG_TRY_2))
             {
                 reserveRegisterRC(context, node->regInit, 1);
-                EMIT_INST1(context, ByteCodeOp::CopyRRtoRC, node->regInit);
+                EMIT_INST1(context, ByteCodeOp::CopyRRtoRA, node->regInit);
                 context->node->semFlags |= SEMFLAG_TRY_2;
             }
 
@@ -105,7 +105,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
                 else
                 {
                     auto r0 = reserveRegisterRC(context);
-                    EMIT_INST1(context, ByteCodeOp::CopyRRtoRC, r0);
+                    EMIT_INST1(context, ByteCodeOp::CopyRRtoRA, r0);
                     EMIT_INST1(context, ByteCodeOp::SetZeroAtPointerX, r0)->b.u64 = typeArr->sizeOf;
                     freeRegisterRC(context, r0);
                 }
@@ -118,7 +118,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
                     if (node->ownerInline)
                         EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->regInit, node->ownerInline->resultRegisterRC);
                     else
-                        EMIT_INST1(context, ByteCodeOp::CopyRRtoRC, node->regInit);
+                        EMIT_INST1(context, ByteCodeOp::CopyRRtoRA, node->regInit);
                     context->node->semFlags |= SEMFLAG_TRY_2;
                 }
 
@@ -141,7 +141,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
             {
                 auto r0 = reserveRegisterRC(context);
                 EMIT_INST1(context, ByteCodeOp::ClearRA, r0);
-                EMIT_INST1(context, ByteCodeOp::CopyRCtoRR, r0);
+                EMIT_INST1(context, ByteCodeOp::CopyRAtoRR, r0);
                 freeRegisterRC(context, r0);
             }
         }
@@ -156,7 +156,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
             {
                 auto r0 = reserveRegisterRC(context);
                 EMIT_INST1(context, ByteCodeOp::ClearRA, r0);
-                EMIT_INST2(context, ByteCodeOp::CopyRCtoRR2, r0, r0);
+                EMIT_INST2(context, ByteCodeOp::CopyRARBtoRR2, r0, r0);
                 freeRegisterRC(context, r0);
             }
         }

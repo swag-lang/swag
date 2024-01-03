@@ -497,7 +497,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     case ByteCodeOp::Jump:
         context->ip += ip->b.s32;
         break;
-    case ByteCodeOp::CopyRCtoRRRet:
+    case ByteCodeOp::CopyRBtoRRRet:
         context->registersRR[0].u64 = IMMB_U64(ip);
         // fallthrough
     case ByteCodeOp::Ret:
@@ -856,24 +856,24 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         context->registersRR[0].u64 = context->pop<uint64_t>();
         break;
 
-    case ByteCodeOp::CopyRCtoRT:
+    case ByteCodeOp::CopyRAtoRT:
         context->registersRR[0] = registersRC[ip->a.u32];
         break;
-    case ByteCodeOp::CopyRTtoRC:
+    case ByteCodeOp::CopyRTtoRA:
         registersRC[ip->a.u32] = context->registersRR[0];
         break;
 
-    case ByteCodeOp::CopyRCtoRR:
+    case ByteCodeOp::CopyRAtoRR:
         context->registersRR[0].u64 = IMMA_U64(ip);
         break;
-    case ByteCodeOp::CopyRCtoRR2:
+    case ByteCodeOp::CopyRARBtoRR2:
         context->registersRR[0] = registersRC[ip->a.u32];
         context->registersRR[1] = registersRC[ip->b.u32];
         break;
-    case ByteCodeOp::CopyRRtoRC:
+    case ByteCodeOp::CopyRRtoRA:
         registersRC[ip->a.u32].pointer = context->registersRR[0].pointer + ip->b.u64;
         break;
-    case ByteCodeOp::CopyRTtoRC2:
+    case ByteCodeOp::CopyRT2toRARB:
         registersRC[ip->a.u32] = context->registersRR[0];
         registersRC[ip->b.u32] = context->registersRR[1];
         break;

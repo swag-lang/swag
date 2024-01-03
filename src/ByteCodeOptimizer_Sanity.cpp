@@ -637,8 +637,8 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
         case ByteCodeOp::GetFromCompilerSeg32:
         case ByteCodeOp::GetFromCompilerSeg64:
         case ByteCodeOp::CopySP:
-        case ByteCodeOp::CopyRTtoRC:
-        case ByteCodeOp::CopyRRtoRC:
+        case ByteCodeOp::CopyRTtoRA:
+        case ByteCodeOp::CopyRRtoRA:
         case ByteCodeOp::CopySPVaargs:
         case ByteCodeOp::MakeLambda:
         case ByteCodeOp::CopyRBAddrToRA:
@@ -661,7 +661,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             ra->kind = ValueKind::Unknown;
             break;
 
-        case ByteCodeOp::CopyRCtoRT:
+        case ByteCodeOp::CopyRAtoRT:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
             if (ra->kind == ValueKind::StackAddr)
                 invalidateCurStateStack(cxt);
@@ -776,7 +776,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
         case ByteCodeOp::IntrinsicGetErr:
         case ByteCodeOp::IntrinsicModules:
         case ByteCodeOp::DeRefStringSlice:
-        case ByteCodeOp::CopyRTtoRC2:
+        case ByteCodeOp::CopyRT2toRARB:
         case ByteCodeOp::IntrinsicArguments:
         case ByteCodeOp::IntrinsicCompiler:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
@@ -1223,7 +1223,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
                 rc->reg.u64 -= vb.reg.s64;
             break;
 
-        case ByteCodeOp::CopyRCtoRR:
+        case ByteCodeOp::CopyRAtoRR:
             if (ip->flags & BCI_IMM_A)
                 break;
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
@@ -1231,7 +1231,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
                 return checkEscapeFrame(cxt, ra->reg.u32, ra->overload);
             break;
 
-        case ByteCodeOp::CopyRCtoRR2:
+        case ByteCodeOp::CopyRARBtoRR2:
             if (ip->flags & BCI_IMM_A)
                 break;
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));

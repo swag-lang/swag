@@ -1252,7 +1252,7 @@ void ByteCodeGenJob::emitRetValRef(ByteCodeGenContext* context, SymbolOverload* 
         if (overload->node->ownerInline && overload->node->ownerInline->resultRegisterRC.countResults)
             EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r0, overload->node->ownerInline->resultRegisterRC);
         else
-            EMIT_INST1(context, ByteCodeOp::CopyRRtoRC, r0);
+            EMIT_INST1(context, ByteCodeOp::CopyRRtoRA, r0);
     }
     else
     {

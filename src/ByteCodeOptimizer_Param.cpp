@@ -14,12 +14,12 @@ bool ByteCodeOptimizer::optimizePassParam(ByteCodeOptContext* context)
 
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
-        if (ip->op == ByteCodeOp::CopyRRtoRC)
+        if (ip->op == ByteCodeOp::CopyRRtoRA)
         {
             auto ipScan = ip + 1;
             while (!ByteCode::isRet(ipScan) && !(ipScan->flags & BCI_START_STMT) && !ByteCode::isJump(ipScan))
             {
-                if (ipScan->op == ByteCodeOp::CopyRRtoRC && ipScan->a.u32 == ip->a.u32)
+                if (ipScan->op == ByteCodeOp::CopyRRtoRA && ipScan->a.u32 == ip->a.u32)
                 {
                     if (ipScan->b.u64 >= ip->b.u64)
                     {

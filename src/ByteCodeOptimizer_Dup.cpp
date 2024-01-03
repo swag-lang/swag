@@ -328,7 +328,7 @@ bool ByteCodeOptimizer::optimizePassDupCopy(ByteCodeOptContext* context)
     if (!(context->contextBcFlags & OCF_HAS_DUP_COPY))
         return true;
 
-    optimizePassDupCopyOp(context, ByteCodeOp::CopyRRtoRC);
+    optimizePassDupCopyOp(context, ByteCodeOp::CopyRRtoRA);
     optimizePassDupCopyOp(context, ByteCodeOp::MakeBssSegPointer);
     optimizePassDupCopyOp(context, ByteCodeOp::MakeConstantSegPointer);
     optimizePassDupCopyOp(context, ByteCodeOp::MakeMutableSegPointer);

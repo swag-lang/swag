@@ -36,7 +36,7 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
             ByteCodeInstruction* startParamBlock = nullptr;
             while (true)
             {
-                if (ipn->op == ByteCodeOp::Ret || ipn->op == ByteCodeOp::CopyRCtoRRRet)
+                if (ipn->op == ByteCodeOp::Ret || ipn->op == ByteCodeOp::CopyRBtoRRRet)
                     break;
                 if (ipn->flags & BCI_START_STMT)
                     break;

@@ -806,7 +806,7 @@ void ByteCodeOptimizer::reduceAppend(ByteCodeOptContext* context, ByteCodeInstru
         switch (ip->op)
         {
         case ByteCodeOp::CopyRBtoRA64:
-        case ByteCodeOp::CopyRTtoRC:
+        case ByteCodeOp::CopyRTtoRA:
         case ByteCodeOp::MakeStackPointer:
         case ByteCodeOp::GetFromStack8:
         case ByteCodeOp::GetFromStack16:
@@ -845,7 +845,7 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
     switch (ip->op)
     {
     case ByteCodeOp::DecSPBP:
-        if (ip[1].op == ByteCodeOp::CopyRCtoRRRet &&
+        if (ip[1].op == ByteCodeOp::CopyRBtoRRRet &&
             ip[2].op == ByteCodeOp::End)
         {
             setNop(context, ip);
@@ -854,8 +854,8 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
         }
         break;
 
-    case ByteCodeOp::CopyRCtoRRRet:
-        if (ip[1].op == ByteCodeOp::CopyRCtoRRRet &&
+    case ByteCodeOp::CopyRBtoRRRet:
+        if (ip[1].op == ByteCodeOp::CopyRBtoRRRet &&
             ip[0].b.u64 == ip[1].b.u64 &&
             (ip[0].flags & BCI_IMM_B) == (ip[1].flags & BCI_IMM_B))
         {
@@ -864,23 +864,23 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
         }
         break;
 
-    case ByteCodeOp::CopyRCtoRR:
+    case ByteCodeOp::CopyRAtoRR:
         if (ip[1].op == ByteCodeOp::Ret)
         {
             ip[0].b.u64 = ip[0].a.u64;
             ip[0].a.u64 = ip[1].a.u64;
             ip[0].flags |= ip[0].flags & BCI_IMM_A ? BCI_IMM_B : 0;
             ip[0].flags &= ~BCI_IMM_A;
-            SET_OP(ip, ByteCodeOp::CopyRCtoRRRet);
+            SET_OP(ip, ByteCodeOp::CopyRBtoRRRet);
             if (!(ip[1].flags & BCI_START_STMT))
                 setNop(context, ip + 1);
             break;
         }
         break;
 
-    // Swap CopyRTtoRC and IncSPPostCall to put IncSPPostCall right next to the call, which
+    // Swap CopyRTtoRA and IncSPPostCall to put IncSPPostCall right next to the call, which
     // give the opportunity to optimize the call pop
-    case ByteCodeOp::CopyRTtoRC:
+    case ByteCodeOp::CopyRTtoRA:
         if (ip[1].op == ByteCodeOp::IncSPPostCall &&
             !(ip[1].flags & BCI_START_STMT))
         {
@@ -891,7 +891,7 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
         break;
 
     case ByteCodeOp::LocalCallPop:
-        if (ip[1].op == ByteCodeOp::CopyRTtoRC &&
+        if (ip[1].op == ByteCodeOp::CopyRTtoRA &&
             !(ip[1].flags & BCI_START_STMT))
         {
             SET_OP(ip, ByteCodeOp::LocalCallPopRC);
@@ -902,7 +902,7 @@ void ByteCodeOptimizer::reduceFunc(ByteCodeOptContext* context, ByteCodeInstruct
         break;
 
     case ByteCodeOp::LocalCallPopRC:
-        if (ip[1].op == ByteCodeOp::CopyRTtoRC &&
+        if (ip[1].op == ByteCodeOp::CopyRTtoRA &&
             !(ip[1].flags & BCI_START_STMT))
         {
             SET_OP(ip + 1, ByteCodeOp::CopyRBtoRA64);
@@ -1377,7 +1377,7 @@ void ByteCodeOptimizer::reduceStack(ByteCodeOptContext* context, ByteCodeInstruc
             break;
         }
 
-        if ((ip[1].op == ByteCodeOp::CopyRCtoRT) &&
+        if ((ip[1].op == ByteCodeOp::CopyRAtoRT) &&
             (ip[0].a.u32 == ip[1].a.u32) &&
             !(ip[1].flags & BCI_START_STMT))
         {
@@ -2896,8 +2896,8 @@ void ByteCodeOptimizer::reduceIncPtr(ByteCodeOptContext* context, ByteCodeInstru
 
         break;
 
-    case ByteCodeOp::CopyRRtoRC:
-        // Store offset of CopyRRtoRC directly in the instruction
+    case ByteCodeOp::CopyRRtoRA:
+        // Store offset of CopyRRtoRA directly in the instruction
         if (ip[1].op == ByteCodeOp::IncPointer64 &&
             ip[1].a.u32 == ip[1].c.u32 &&
             ip[0].a.u32 == ip[1].a.u32 &&
@@ -5771,7 +5771,7 @@ void ByteCodeOptimizer::reduceLateStack(ByteCodeOptContext* context, ByteCodeIns
     case ByteCodeOp::CopyStack16:
     case ByteCodeOp::CopyStack32:
     case ByteCodeOp::CopyStack64:
-        if (ip[1].op == ByteCodeOp::CopyRCtoRRRet || ip[1].op == ByteCodeOp::Ret)
+        if (ip[1].op == ByteCodeOp::CopyRBtoRRRet || ip[1].op == ByteCodeOp::Ret)
         {
             setNop(context, ip);
             break;
