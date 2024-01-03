@@ -638,6 +638,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
         case ByteCodeOp::GetFromCompilerSeg64:
         case ByteCodeOp::CopySP:
         case ByteCodeOp::CopyRTtoRA:
+        case ByteCodeOp::SaveRRtoRA:
         case ByteCodeOp::CopyRRtoRA:
         case ByteCodeOp::CopySPVaargs:
         case ByteCodeOp::MakeLambda:

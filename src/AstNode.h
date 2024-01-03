@@ -574,6 +574,7 @@ struct AstFuncDecl : public AstNode
     uint32_t stackSize;
     uint32_t nodeCounts;
     uint32_t registerGetContext = UINT32_MAX;
+    uint32_t registerStoreRR    = UINT32_MAX;
 };
 
 struct AstAttrDecl : public AstNode

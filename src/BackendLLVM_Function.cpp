@@ -4820,6 +4820,13 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             builder.CreateStore(r1, r0);
             break;
         }
+        case ByteCodeOp::SaveRRtoRA:
+        {
+            auto r0 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);
+            auto r1 = TO_PTR_I8(func->getArg((int) func->arg_size() - 1));
+            builder.CreateStore(r1, r0);
+            break;
+        }
         case ByteCodeOp::CopyRRtoRA:
         {
             auto r0 = GEP64_PTR_PTR_I8(allocR, ip->a.u32);

@@ -773,12 +773,18 @@ JobResult ByteCodeGenJob::execute()
                 context.bc->node &&
                 context.bc->node->kind == AstNodeKind::FuncDecl)
             {
-                // Retrieve the persistent register used to store the current context
                 auto funcNode = CastAst<AstFuncDecl>(context.bc->node, AstNodeKind::FuncDecl);
+
+                // Retrieve the persistent registers
                 if (funcNode->registerGetContext != UINT32_MAX)
                 {
                     context.bc->registerGetContext = funcNode->registerGetContext;
                     freeRegisterRC(&context, context.bc->registerGetContext);
+                }
+                if (funcNode->registerStoreRR != UINT32_MAX)
+                {
+                    context.bc->registerStoreRR = funcNode->registerStoreRR;
+                    freeRegisterRC(&context, context.bc->registerStoreRR);
                 }
             }
 

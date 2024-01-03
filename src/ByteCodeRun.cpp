@@ -870,8 +870,11 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         context->registersRR[0] = registersRC[ip->a.u32];
         context->registersRR[1] = registersRC[ip->b.u32];
         break;
+    case ByteCodeOp::SaveRRtoRA:
+        registersRC[ip->a.u32] = context->registersRR[0];
+        break;
     case ByteCodeOp::CopyRRtoRA:
-        registersRC[ip->a.u32].pointer = context->registersRR[0].pointer + ip->b.u64;
+        registersRC[ip->a.u32].pointer = registersRC[context->bc->registerStoreRR].pointer + ip->b.u64;
         break;
     case ByteCodeOp::CopyRT2toRARB:
         registersRC[ip->a.u32] = context->registersRR[0];

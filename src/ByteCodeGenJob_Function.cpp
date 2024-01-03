@@ -2216,6 +2216,21 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
         EMIT_INST1(context, ByteCodeOp::IntrinsicGetContext, funcNode->registerGetContext);
     }
 
+    // Store RR if input value is defined (return by address)
+    // If we are in a function that need to keep the RR0 register alive, we need to save it
+    auto ownerTypeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+    auto ownerReturnType   = ownerTypeInfoFunc->concreteReturnType();
+    if (!ownerReturnType->isVoid())
+    {
+        if (CallConv::returnByStackAddress(ownerTypeInfoFunc))
+        {
+            SWAG_ASSERT(funcNode->registerStoreRR == UINT32_MAX);
+            funcNode->registerStoreRR = reserveRegisterRC(context);
+            auto inst = EMIT_INST1(context, ByteCodeOp::SaveRRtoRA, funcNode->registerStoreRR);
+            inst->flags |= BCI_UNPURE;
+        }
+    }
+
     // Clear stack trace when entering a #<function>
     if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC &&
         context->sourceFile->module->buildCfg.errorStackTrace)
