@@ -4842,7 +4842,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
             }
             break;
         }
-        case ByteCodeOp::CopyRTtoRC2:
+        case ByteCodeOp::CopyRRtoRC2:
             storeRT2ToRegisters(context, buildParameters, ip->a.u32, ip->b.u32, allocR, allocRR);
             break;
 
