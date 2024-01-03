@@ -354,7 +354,8 @@ static bool dealWithWarning(Diagnostic& diag, Vector<const Diagnostic*>& notes)
 {
     if (diag.errorLevel != DiagnosticLevel::Warning)
         return true;
-    if (!diag.contextNode)
+    auto node = diag.contextNode ? diag.contextNode : diag.sourceNode;
+    if (!node)
         return true;
 
     // No warning if it's in a dependency
@@ -380,7 +381,6 @@ static bool dealWithWarning(Diagnostic& diag, Vector<const Diagnostic*>& notes)
     warnMsg.makeLower();
 
     // Check attributes in the ast hierarchy
-    auto node = diag.contextNode;
     while (node)
     {
         if (node->kind == AstNodeKind::AttrUse)
