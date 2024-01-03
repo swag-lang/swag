@@ -3489,7 +3489,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             break;
 
-        case ByteCodeOp::CopyRRtoRC2:
+        case ByteCodeOp::CopyRTtoRC2:
             pp.emit_Load64_Indirect(offsetRT + regOffset(0), RAX, RDI);
             pp.emit_Store64_Indirect(regOffset(ip->a.u32), RAX);
             pp.emit_Load64_Indirect(offsetRT + regOffset(1), RAX, RDI);

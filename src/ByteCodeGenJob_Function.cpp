@@ -2108,7 +2108,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             {
                 SWAG_ASSERT(numRegs == 2);
                 SWAG_ASSERT(!(node->semFlags & SEMFLAG_FROM_REF));
-                EMIT_INST2(context, ByteCodeOp::CopyRRtoRC2, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+                EMIT_INST2(context, ByteCodeOp::CopyRTtoRC2, node->resultRegisterRC[0], node->resultRegisterRC[1]);
             }
         }
     }

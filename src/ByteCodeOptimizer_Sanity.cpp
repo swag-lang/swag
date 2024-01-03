@@ -776,7 +776,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
         case ByteCodeOp::IntrinsicGetErr:
         case ByteCodeOp::IntrinsicModules:
         case ByteCodeOp::DeRefStringSlice:
-        case ByteCodeOp::CopyRRtoRC2:
+        case ByteCodeOp::CopyRTtoRC2:
         case ByteCodeOp::IntrinsicArguments:
         case ByteCodeOp::IntrinsicCompiler:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
