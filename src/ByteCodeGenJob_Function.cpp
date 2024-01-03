@@ -1615,24 +1615,18 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     else
         SWAG_CHECK(checkCatchError(context, varNode, node, node, node->parent, typeInfoFunc));
 
-    // If we are in a function that need to keep the RR0 register alive, we need to save it
-    bool rr0Saved = false;
-    if (node->ownerFct)
+    // In a defer block, the RR registers (result of the function) are set before the block.
+    // So we need to be sure that no defer statement will change them, to keep the return
+    // values intact
+    bool RRsaved = false;
+    if (node->ownerFct && node->flags & AST_IN_DEFER)
     {
         auto ownerTypeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
         auto ownerReturnType   = ownerTypeInfoFunc->concreteReturnType();
         if (!ownerReturnType->isVoid())
         {
-            if (CallConv::returnByStackAddress(ownerTypeInfoFunc))
-            {
-                EMIT_INST0(context, ByteCodeOp::PushRR);
-                rr0Saved = true;
-            }
-            else if (node->flags & AST_IN_DEFER)
-            {
-                EMIT_INST0(context, ByteCodeOp::PushRR);
-                rr0Saved = true;
-            }
+            EMIT_INST0(context, ByteCodeOp::PushRR);
+            RRsaved = true;
         }
     }
 
@@ -2133,7 +2127,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     }
 
     // If we are in a function that need to keep the RR0 register alive, we need to restore it
-    if (rr0Saved)
+    if (RRsaved)
     {
         EMIT_INST0(context, ByteCodeOp::PopRR);
     }
@@ -2226,7 +2220,7 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
         {
             SWAG_ASSERT(funcNode->registerStoreRR == UINT32_MAX);
             funcNode->registerStoreRR = reserveRegisterRC(context);
-            auto inst = EMIT_INST1(context, ByteCodeOp::SaveRRtoRA, funcNode->registerStoreRR);
+            auto inst                 = EMIT_INST1(context, ByteCodeOp::SaveRRtoRA, funcNode->registerStoreRR);
             inst->flags |= BCI_UNPURE;
         }
     }
