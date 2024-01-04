@@ -334,7 +334,7 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
         tokenizer.location                = parent->token.startLocation;
     }
 
-    auto sflags = parent->flags & (AST_RUN_BLOCK | AST_NO_BACKEND);
+    auto sflags = parent->flags & (AST_IN_RUN_BLOCK | AST_NO_BACKEND);
     sflags |= AST_GENERATED;
     if (logGenerated)
         sflags |= AST_GENERATED_USER;

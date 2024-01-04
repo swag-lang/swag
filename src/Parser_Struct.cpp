@@ -171,7 +171,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     {
         Scoped       scoped(this, parentScope);
         ScopedStruct scopedStruct(this, newScope);
-        ScopedFlags  scopedFlags(this, AST_INSIDE_IMPL);
+        ScopedFlags  scopedFlags(this, AST_IN_IMPL);
         while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
         {
             SWAG_CHECK(doTopLevelInstruction(implNode, &dummyResult));

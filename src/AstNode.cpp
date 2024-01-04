@@ -1052,7 +1052,7 @@ bool AstNode::isSameStackFrame(SymbolOverload* overload)
         return true;
 
     auto nodeVar = overload->node;
-    if ((flags & AST_RUN_BLOCK) != (nodeVar->flags & AST_RUN_BLOCK))
+    if ((flags & AST_IN_RUN_BLOCK) != (nodeVar->flags & AST_IN_RUN_BLOCK))
         return false;
     if (ownerFct != nodeVar->ownerFct)
         return false;

@@ -618,7 +618,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         symbolFlags |= OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_CONST_ASSIGN;
     else if (node->ownerScope->isGlobal() || (node->attributeFlags & ATTRIBUTE_GLOBAL))
         symbolFlags |= OVERLOAD_VAR_GLOBAL;
-    else if (node->ownerScope->isGlobalOrImpl() && (node->flags & AST_INSIDE_IMPL) && !(node->flags & AST_STRUCT_MEMBER))
+    else if (node->ownerScope->isGlobalOrImpl() && (node->flags & AST_IN_IMPL) && !(node->flags & AST_STRUCT_MEMBER))
         symbolFlags |= OVERLOAD_VAR_GLOBAL;
     else if (node->ownerScope->kind == ScopeKind::Struct)
         symbolFlags |= OVERLOAD_VAR_STRUCT;

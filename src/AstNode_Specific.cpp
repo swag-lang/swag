@@ -1187,7 +1187,7 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
         if (p->kind == AstNodeKind::FuncDecl)
         {
             cloneContext.ownerInline = nullptr;
-            cloneContext.removeFlags |= AST_RUN_BLOCK;
+            cloneContext.removeFlags |= AST_IN_RUN_BLOCK;
         }
         else
         {

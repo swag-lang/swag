@@ -673,7 +673,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
 
     AstFuncDecl* newFunc = CastAst<AstFuncDecl>(newFuncNode, AstNodeKind::FuncDecl);
     newFunc->flags |= AST_FROM_GENERIC;
-    newFunc->originalGeneric = funcNode;
+    newFunc->originalGeneric  = funcNode;
     newFunc->requestedGeneric = node;
 
     // If this is for testing a #validif match, we must not evaluate the function content until the

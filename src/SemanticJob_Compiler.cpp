@@ -138,7 +138,7 @@ bool SemanticJob::doExecuteCompilerNode(SemanticContext* context, AstNode* node,
             if (!symCount || !symSlice)
             {
                 // Force evaluation by a #run
-                if (node->flags & AST_RUN_BLOCK)
+                if (node->flags & AST_IN_RUN_BLOCK)
                 {
                     node->semFlags |= SEMFLAG_FORCE_CONST_EXPR;
                 }

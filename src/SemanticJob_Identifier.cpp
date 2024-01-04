@@ -1184,7 +1184,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         if (ownerFct)
         {
             auto fctAttributes = ownerFct->attributeFlags;
-            if (!(fctAttributes & ATTRIBUTE_COMPILER) && (overload->node->attributeFlags & ATTRIBUTE_COMPILER) && !(ownerFct->flags & AST_RUN_BLOCK))
+            if (!(fctAttributes & ATTRIBUTE_COMPILER) && (overload->node->attributeFlags & ATTRIBUTE_COMPILER) && !(ownerFct->flags & AST_IN_RUN_BLOCK))
             {
                 Diagnostic diag{identifier, Fmt(Err(Err0091), Naming::kindName(overload->node).c_str(), overload->node->token.ctext(), ownerFct->token.ctext())};
                 auto       note = Diagnostic::note(overload->node, overload->node->token, Fmt(Nte(Nte1070), Naming::kindName(overload->node).c_str()));
@@ -1400,7 +1400,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             {
                 auto fctAttributes = ownerFct->attributeFlags;
 
-                if (!(fctAttributes & ATTRIBUTE_COMPILER) && (funcDecl->attributeFlags & ATTRIBUTE_COMPILER) && !(identifier->flags & AST_RUN_BLOCK))
+                if (!(fctAttributes & ATTRIBUTE_COMPILER) && (funcDecl->attributeFlags & ATTRIBUTE_COMPILER) && !(identifier->flags & AST_IN_RUN_BLOCK))
                 {
                     Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0107), funcDecl->token.ctext(), ownerFct->token.ctext())};
                     auto       note = Diagnostic::note(overload->node, overload->node->token, Nte(Nte1064));

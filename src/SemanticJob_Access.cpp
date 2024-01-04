@@ -144,7 +144,7 @@ void SemanticJob::setDefaultAccess(AstNode* node)
 
     if (node->sourceFile && node->sourceFile->globalAttr & ATTRIBUTE_ACCESS_MASK)
         node->semFlags |= attributeToAccess(node->sourceFile->globalAttr);
-    else if (node->ownerStructScope && !(node->flags & AST_INSIDE_IMPL))
+    else if (node->ownerStructScope && !(node->flags & AST_IN_IMPL))
         node->semFlags |= attributeToAccess(node->ownerStructScope->owner->attributeFlags);
     else if (node->sourceFile && node->sourceFile->fromTests)
         node->semFlags |= attributeToAccess(ATTRIBUTE_PRIVATE);

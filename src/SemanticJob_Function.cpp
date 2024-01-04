@@ -1724,7 +1724,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     cloneContext.ownerBreakable = identifier->ownerBreakable;
     cloneContext.parentScope    = newScope;
     cloneContext.forceFlags |= identifier->flags & AST_NO_BACKEND;
-    cloneContext.forceFlags |= identifier->flags & AST_RUN_BLOCK;
+    cloneContext.forceFlags |= identifier->flags & AST_IN_RUN_BLOCK;
     cloneContext.forceFlags |= identifier->flags & AST_IN_DEFER;
     cloneContext.removeFlags |= AST_R_VALUE;
     cloneContext.cloneFlags |= CLONE_FORCE_OWNER_FCT;

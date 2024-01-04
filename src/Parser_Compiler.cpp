@@ -155,7 +155,7 @@ bool Parser::doCompilerAssert(AstNode* parent, AstNode** result)
     node->semanticFct                      = SemanticJob::resolveCompilerAssert;
     node->token                            = token;
 
-    ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
+    ScopedFlags scopedFlags(this, AST_IN_RUN_BLOCK | AST_NO_BACKEND);
     SWAG_CHECK(eatToken());
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
     SWAG_CHECK(eatSemiCol("'#assert' expression"));
@@ -216,7 +216,7 @@ bool Parser::doCompilerValidIf(AstNode* parent, AstNode** result)
         return error(node, Fmt(Err(Err1137), parent->token.ctext()));
     }
 
-    ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND | AST_IN_VALIDIF);
+    ScopedFlags scopedFlags(this, AST_IN_RUN_BLOCK | AST_NO_BACKEND | AST_IN_VALIDIF);
     if (token.id == TokenId::SymLeftCurly)
     {
         AstNode* funcNode;
@@ -248,7 +248,7 @@ bool Parser::doCompilerAst(AstNode* parent, AstNode** result)
     node->semanticFct                      = SemanticJob::resolveCompilerAstExpression;
     SWAG_CHECK(eatToken());
 
-    ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
+    ScopedFlags scopedFlags(this, AST_IN_RUN_BLOCK | AST_NO_BACKEND);
     if (token.id == TokenId::SymLeftCurly)
     {
         AstNode* funcNode;
@@ -299,7 +299,7 @@ bool Parser::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
     node->token                            = token;
     SWAG_CHECK(eatToken());
 
-    ScopedFlags scopedFlags(this, AST_RUN_BLOCK | AST_NO_BACKEND);
+    ScopedFlags scopedFlags(this, AST_IN_RUN_BLOCK | AST_NO_BACKEND);
     if (token.id == TokenId::SymLeftCurly)
     {
         AstNode* funcNode;
