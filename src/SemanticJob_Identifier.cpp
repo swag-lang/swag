@@ -2259,7 +2259,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
 
     // There is more than one possible match, and this is an identifier for a name alias.
     // We are fine
-    if (matches.size() > 1 && node && (node->flags & AST_NAME_ALIAS))
+    if (matches.size() > 1 && node && node->kind == AstNodeKind::Identifier && (node->specFlags & AstIdentifier::SPECFLAG_NAME_ALIAS))
         return true;
 
     // There is more than one possible match
@@ -4443,7 +4443,7 @@ bool SemanticJob::needToWaitForSymbol(SemanticContext* context, AstIdentifier* i
         return false;
 
     // For a name alias, we wait everything to be done...
-    if (identifier->flags & AST_NAME_ALIAS)
+    if (identifier->specFlags & AstIdentifier::SPECFLAG_NAME_ALIAS)
         return true;
 
     // This is enough to resolve, as we just need parameters, and that case means that some functions
@@ -4791,7 +4791,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
         return true;
 
     // Name alias with overloads (more than one match)
-    if (identifier->flags & AST_NAME_ALIAS && job->cacheMatches.size() > 1)
+    if (identifier->specFlags & AstIdentifier::SPECFLAG_NAME_ALIAS && job->cacheMatches.size() > 1)
     {
         identifier->resolvedSymbolName     = job->cacheMatches[0]->symbolOverload->symbol;
         identifier->resolvedSymbolOverload = nullptr;

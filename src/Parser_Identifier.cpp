@@ -457,7 +457,7 @@ bool Parser::doNameAlias(AstNode* parent, AstNode** result)
     AstNode* expr;
     SWAG_CHECK(doIdentifierRef(node, &expr, IDENTIFIER_NO_FCT_PARAMS | IDENTIFIER_NO_ARRAY));
     SWAG_CHECK(eatSemiCol("'namealias' expression"));
-    expr->childs.back()->flags |= AST_NAME_ALIAS;
+    expr->childs.back()->specFlags |= AstIdentifier::SPECFLAG_NAME_ALIAS;
 
     node->semanticFct        = SemanticJob::resolveNameAlias;
     node->resolvedSymbolName = currentScope->symTable.registerSymbolName(context, node, SymbolKind::NameAlias);
