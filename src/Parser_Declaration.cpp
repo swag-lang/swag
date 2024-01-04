@@ -605,7 +605,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
         solver->flags |= AST_GENERATED | AST_NO_ATTRIBUTE | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
         auto identifierRef = Ast::newIdentifierRef(sourceFile, orgSubDecl->token.text, solver);
         identifierRef->childs.back()->specFlags |= AstIdentifier::SPECFLAG_FORCE_RESOLVE;
-        orgSubDecl->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC3;
+        orgSubDecl->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC3 | AST_SPEC_SEMANTIC_HAS3;
     }
 }
 

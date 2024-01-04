@@ -381,6 +381,10 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
                 nodeFunc->addAlternativeScope(cloneContext.alternativeScope);
             symKind = SymbolKind::Function;
 
+            // Sub decl reference
+            if (subDecl->flags & AST_SPEC_SEMANTIC_HAS3)
+                nodeFunc->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC3 | AST_SPEC_SEMANTIC_HAS3;
+
             // Function is supposed to start semantic when captured parameters have been evaluated
             // So no semantic on it now
             if (nodeFunc->captureParameters)

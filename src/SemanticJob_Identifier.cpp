@@ -4454,6 +4454,7 @@ bool SemanticJob::needToWaitForSymbol(SemanticContext* context, AstIdentifier* i
     return true;
 }
 
+#pragma optimize("", off)
 bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* identifier, uint32_t riFlags)
 {
     auto  job                = context->job;
@@ -4627,6 +4628,13 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
         if (identifier != identifier->identifierRef()->childs.back())
             SWAG_CHECK(setupIdentifierRef(context, identifier));
 
+        return true;
+    }
+
+    // We just want the symbol
+    if (identifier->specFlags & AstIdentifier::SPECFLAG_FORCE_RESOLVE)
+    {
+        identifier->resolvedSymbolName = dependentSymbols[0].symbol;
         return true;
     }
 
