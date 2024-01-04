@@ -34,7 +34,7 @@
 
 bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode)
 {
-    if (!checkNode || (checkNode->flags & AST_NO_ATTRIBUTE))
+    if (!checkNode || (checkNode->kind == AstNodeKind::RefSubDecl))
         return true;
 
     if (checkNode->kind == AstNodeKind::Statement || checkNode->kind == AstNodeKind::StatementNoScope)

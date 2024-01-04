@@ -601,7 +601,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
     {
         auto solver         = Ast::newNode<AstRefSubDecl>(this, AstNodeKind::RefSubDecl, sourceFile, orgParent);
         solver->semanticFct = SemanticJob::resolveSubDeclRef;
-        solver->flags |= AST_GENERATED | AST_NO_ATTRIBUTE | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+        solver->flags |= AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
         solver->refSubDecl = orgSubDecl;
         orgSubDecl->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC3 | AST_SPEC_SEMANTIC_HAS3;
     }
