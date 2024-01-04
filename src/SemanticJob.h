@@ -362,7 +362,7 @@ struct SemanticJob : public Job
     static bool           appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, SymbolOverload* overload);
     static bool           fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload, AstNode* ufcsFirstParam);
     static bool           fillMatchContextGenericParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload);
-    static bool           needToCompleteSymbol(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol);
+    static bool           needToCompleteSymbol(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol, bool testOverloads);
     static bool           needToWaitForSymbol(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol);
     static bool           resolveIdentifier(SemanticContext* context, AstIdentifier* identifier, uint32_t riFlags);
     static TypeInfoEnum*  findEnumTypeInContext(SemanticContext* context, TypeInfo* typeInfo);

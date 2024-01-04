@@ -4392,21 +4392,24 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context)
     return resolveIdentifier(context, node, RI_ZERO);
 }
 
-bool SemanticJob::needToCompleteSymbol(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol)
+bool SemanticJob::needToCompleteSymbol(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol, bool testOverloads)
 {
     if (symbol->kind != SymbolKind::Struct && symbol->kind != SymbolKind::Interface)
         return true;
     if (identifier->callParameters || identifier->genericParameters)
         return true;
-    if (symbol->overloads.size() != 1)
-        return true;
 
-    // If this is a generic type, and it's from an instance, we must wait, because we will
-    // have to instantiate that symbol too
-    if (identifier->ownerStructScope && (identifier->ownerStructScope->owner->flags & AST_FROM_GENERIC) && symbol->overloads[0]->typeInfo->isGeneric())
-        return true;
-    if (identifier->ownerFct && (identifier->ownerFct->flags & AST_FROM_GENERIC) && symbol->overloads[0]->typeInfo->isGeneric())
-        return true;
+    if (testOverloads)
+    {
+        if (symbol->overloads.size() != 1)
+            return true;
+        // If this is a generic type, and it's from an instance, we must wait, because we will
+        // have to instantiate that symbol too
+        if (identifier->ownerStructScope && (identifier->ownerStructScope->owner->flags & AST_FROM_GENERIC) && symbol->overloads[0]->typeInfo->isGeneric())
+            return true;
+        if (identifier->ownerFct && (identifier->ownerFct->flags & AST_FROM_GENERIC) && symbol->overloads[0]->typeInfo->isGeneric())
+            return true;
+    }
 
     // If a structure is referencing itself, we will match the incomplete symbol for now
     if (identifier->flags & AST_STRUCT_MEMBER)
@@ -4552,7 +4555,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
                 auto symbol = p.symbol;
 
                 SharedLock lkn(symbol->mutex);
-                if (!needToCompleteSymbol(context, identifier, symbol))
+                if (!needToCompleteSymbol(context, identifier, symbol, false))
                 {
                     Diagnostic diag{identifier, Fmt(Err(Err0116), Naming::kindName(symbol->kind).c_str(), identifier->token.ctext())};
 
@@ -4598,7 +4601,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
             }
 
             // Can we make a partial match ?
-            if (needToCompleteSymbol(context, identifier, symbol))
+            if (needToCompleteSymbol(context, identifier, symbol, true))
             {
                 job->waitSymbolNoLock(symbol);
                 return true;
