@@ -494,6 +494,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     newNode->validif           = validif ? validif->clone(cloneContext) : nullptr;
     newNode->nodeCounts        = nodeCounts;
     newNode->makePointerLambda = makePointerLambda;
+    newNode->refSubDecl        = refSubDecl;
 
     // We have a correponsing MakePointerLambda, which has already been duplicated.
     // We then need to make 'makePointerLambda' point to it.
@@ -509,6 +510,22 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
                 auto mpl = CastAst<AstMakePointer>(p.node, AstNodeKind::MakePointerLambda);
                 if (mpl->lambda == newNode)
                     newNode->makePointerLambda = mpl;
+            }
+        }
+    }
+
+    if (refSubDecl)
+    {
+        // The duplicated MakePointerLambda is registered in context.nodeRefsToUpdate, so we search
+        // for one which has been updated to reference 'newNode'.
+        // And then we update the current 'makePointerLambda'.
+        for (const auto& p : context.nodeRefsToUpdate)
+        {
+            if (p.node->kind == AstNodeKind::RefSubDecl)
+            {
+                auto mpl = CastAst<AstRefSubDecl>(p.node, AstNodeKind::RefSubDecl);
+                if (mpl->refSubDecl == newNode)
+                    newNode->refSubDecl = mpl;
             }
         }
     }
@@ -1291,6 +1308,30 @@ AstNode* AstRange::clone(CloneContext& context)
     newNode->copyFrom(context, this);
     newNode->expressionLow = findChildRef(expressionLow, newNode);
     newNode->expressionUp  = findChildRef(expressionUp, newNode);
+    return newNode;
+}
+
+AstNode* AstRefSubDecl::clone(CloneContext& context)
+{
+    auto newNode = Ast::newNode<AstRefSubDecl>();
+    newNode->copyFrom(context, this);
+
+    if (refSubDecl)
+    {
+        // This is super hacky
+        // The problem is that the relation between a lambda and the makepointer lambda is tight,
+        // and with #mixin the lambda is not duplicated, but the makepointer lambda is...
+        // So this is a mess
+        if (context.forceFlags & AST_IN_MIXIN)
+        {
+            SWAG_ASSERT(refSubDecl->kind == AstNodeKind::FuncDecl);
+            ((AstFuncDecl*) refSubDecl)->refSubDecl = newNode;
+        }
+
+        newNode->refSubDecl = refSubDecl;
+        context.nodeRefsToUpdate.push_back({newNode, &newNode->refSubDecl});
+    }
+
     return newNode;
 }
 

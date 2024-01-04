@@ -37,6 +37,7 @@ struct TypeInfoFuncAttr;
 struct TypeInfoParam;
 struct TypeInfoStruct;
 struct ExportedTypeInfo;
+struct AstRefSubDecl;
 
 typedef bool (*SemanticFct)(SemanticContext* context);
 typedef bool (*ByteCodeFct)(ByteCodeGenContext* context);
@@ -174,6 +175,7 @@ enum class AstNodeKind : uint8_t
     SingleOp,
     MakePointer,
     MakePointerLambda,
+    RefSubDecl,
     BinaryOp,
     FactorOp,
     ExpressionList,
@@ -493,7 +495,6 @@ struct AstIdentifier : public AstNode
     static const uint16_t SPECFLAG_FROM_USING          = 0x0004;
     static const uint16_t SPECFLAG_CLOSURE_FIRST_PARAM = 0x0008;
     static const uint16_t SPECFLAG_SILENT_CALL         = 0x0010;
-    static const uint16_t SPECFLAG_FORCE_RESOLVE       = 0x0020;
 
     struct IdentifierExtension
     {
@@ -568,6 +569,7 @@ struct AstFuncDecl : public AstNode
     TypeInfoParam*  methodParam;
     Job*            pendingLambdaJob;
     AstMakePointer* makePointerLambda;
+    AstRefSubDecl*  refSubDecl;
     TypeInfoParam*  fromItfSymbol;
 
     uint32_t aliasMask;
@@ -1078,6 +1080,12 @@ struct AstMakePointer : public AstNode
     AstFuncDecl*      lambda;
     TypeInfoFuncAttr* deducedLambdaType = nullptr;
     TypeInfoFuncAttr* tryLambdaType     = nullptr;
+};
+
+struct AstRefSubDecl : public AstNode
+{
+    AstNode* clone(CloneContext& context);
+    AstNode* refSubDecl;
 };
 
 struct AstSubstBreakContinue : public AstNode

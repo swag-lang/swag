@@ -184,19 +184,13 @@ bool SemanticJob::resolveScopedStmtAfter(SemanticContext* context)
 
 bool SemanticJob::resolveSubDeclRef(SemanticContext* context)
 {
-    auto node = context->node;
+    auto node = CastAst<AstRefSubDecl>(context->node, AstNodeKind::RefSubDecl);
 
-    auto front = node->childs.front();
-    SWAG_ASSERT(front->resolvedSymbolName);
-
-    for (auto decl : front->resolvedSymbolName->nodes)
+    ScopedLock lk(node->refSubDecl->mutex);
+    if (node->refSubDecl->flags & AST_SPEC_SEMANTIC3)
     {
-        ScopedLock lk(decl->mutex);
-        if (decl->flags & AST_SPEC_SEMANTIC3)
-        {
-            decl->flags &= ~AST_SPEC_SEMANTIC3;
-            launchResolveSubDecl(context, decl);
-        }
+        node->refSubDecl->flags &= ~AST_SPEC_SEMANTIC3;
+        launchResolveSubDecl(context, node->refSubDecl);
     }
 
     return true;

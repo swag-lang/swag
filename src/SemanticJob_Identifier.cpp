@@ -4594,13 +4594,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
             if (!needToWaitForSymbol(context, identifier, symbol))
                 continue;
 
-            // We just want the symbol
-            if (identifier->specFlags & AstIdentifier::SPECFLAG_FORCE_RESOLVE)
-            {
-                identifier->resolvedSymbolName = symbol;
-                return true;
-            }
-
             // Can we make a partial match ?
             if (needToCompleteSymbol(context, identifier, symbol, true))
             {
@@ -4628,13 +4621,6 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
         if (identifier != identifier->identifierRef()->childs.back())
             SWAG_CHECK(setupIdentifierRef(context, identifier));
 
-        return true;
-    }
-
-    // We just want the symbol
-    if (identifier->specFlags & AstIdentifier::SPECFLAG_FORCE_RESOLVE)
-    {
-        identifier->resolvedSymbolName = dependentSymbols[0].symbol;
         return true;
     }
 

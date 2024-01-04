@@ -383,6 +383,9 @@ void AstNode::release()
     case AstNodeKind::Literal:
         Allocator::free<AstLiteral>(this);
         break;
+    case AstNodeKind::RefSubDecl:
+        Allocator::free<AstRefSubDecl>(this);
+        break;
     default:
         Allocator::free<AstNode>(this);
         break;
@@ -511,6 +514,8 @@ AstNode* AstNode::clone(CloneContext& context)
         return clone<AstWith>(this, context);
     case AstNodeKind::Literal:
         return clone<AstLiteral>(this, context);
+    case AstNodeKind::RefSubDecl:
+        return clone<AstRefSubDecl>(this, context);
 
     default:
     {
