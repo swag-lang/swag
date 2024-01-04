@@ -706,7 +706,7 @@ void AstNode::inheritComputedValue(AstNode* from)
 {
     if (!from)
         return;
-    inheritOrFlag(from, AST_VALUE_COMPUTED | AST_VALUE_IS_GENTYPEINFO);
+    inheritOrFlag(from, AST_VALUE_COMPUTED | AST_VALUE_IS_GEN_TYPEINFO);
     if (flags & AST_VALUE_COMPUTED)
     {
         flags |= AST_CONST_EXPR | AST_R_VALUE;
@@ -722,7 +722,7 @@ bool AstNode::hasComputedValue()
 
 bool AstNode::isConstantGenTypeInfo()
 {
-    return flags & AST_VALUE_IS_GENTYPEINFO;
+    return flags & AST_VALUE_IS_GEN_TYPEINFO;
 }
 
 ExportedTypeInfo* AstNode::getConstantGenTypeInfo()

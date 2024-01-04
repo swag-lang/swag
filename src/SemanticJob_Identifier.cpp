@@ -114,7 +114,7 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
 
     if (childBack->hasComputedValue())
         node->inheritComputedValue(childBack);
-    node->inheritOrFlag(childBack, AST_L_VALUE | AST_R_VALUE | AST_TRANSIENT | AST_VALUE_IS_GENTYPEINFO | AST_SIDE_EFFECTS);
+    node->inheritOrFlag(childBack, AST_L_VALUE | AST_R_VALUE | AST_TRANSIENT | AST_VALUE_IS_GEN_TYPEINFO | AST_SIDE_EFFECTS);
 
     // Symbol is in fact a constant value : no need for bytecode
     if (node->resolvedSymbolOverload &&
@@ -1196,7 +1196,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         if (overload->flags & OVERLOAD_COMPUTED_VALUE)
         {
             if (overload->node->isConstantGenTypeInfo())
-                identifier->flags |= AST_VALUE_IS_GENTYPEINFO;
+                identifier->flags |= AST_VALUE_IS_GEN_TYPEINFO;
             identifier->setFlagsValueIsComputed();
             *identifier->computedValue = overload->computedValue;
 

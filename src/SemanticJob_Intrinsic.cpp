@@ -745,7 +745,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
             auto any                           = (SwagAny*) expr->computedValue->getStorageAddr();
             expr->computedValue->storageOffset = expr->computedValue->storageSegment->offset((uint8_t*) any->type);
             node->inheritComputedValue(expr);
-            node->flags |= AST_VALUE_IS_GENTYPEINFO;
+            node->flags |= AST_VALUE_IS_GEN_TYPEINFO;
             node->typeInfo = g_TypeMgr->typeInfoTypeType;
             SWAG_CHECK(setupIdentifierRef(context, node));
         }

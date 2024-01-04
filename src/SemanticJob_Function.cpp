@@ -1103,7 +1103,7 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     }
 
     node->inheritComputedValue(child);
-    node->inheritOrFlag(child, AST_CONST_EXPR | AST_IS_GENERIC | AST_VALUE_IS_GENTYPEINFO | AST_OPAFFECT_CAST | AST_TRANSIENT);
+    node->inheritOrFlag(child, AST_CONST_EXPR | AST_IS_GENERIC | AST_VALUE_IS_GEN_TYPEINFO | AST_OPAFFECT_CAST | AST_TRANSIENT);
     if (node->childs.front()->semFlags & SEMFLAG_LITERAL_SUFFIX)
         node->semFlags |= SEMFLAG_LITERAL_SUFFIX;
 
