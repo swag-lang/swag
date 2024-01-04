@@ -37,7 +37,6 @@ struct TypeInfoFuncAttr;
 struct TypeInfoParam;
 struct TypeInfoStruct;
 struct ExportedTypeInfo;
-struct AstRefSubDecl;
 
 typedef bool (*SemanticFct)(SemanticContext* context);
 typedef bool (*ByteCodeFct)(ByteCodeGenContext* context);
@@ -569,7 +568,6 @@ struct AstFuncDecl : public AstNode
     TypeInfoParam*  methodParam;
     Job*            pendingLambdaJob;
     AstMakePointer* makePointerLambda;
-    AstRefSubDecl*  refSubDecl;
     TypeInfoParam*  fromItfSymbol;
 
     uint32_t aliasMask;
