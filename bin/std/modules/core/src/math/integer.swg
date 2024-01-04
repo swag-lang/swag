@@ -75,6 +75,13 @@ func makeRepeat64(v: u8)->u64
     return (~0'u64/255 * v)
 }
 
+// Make a 64 bits with two 32 bits
+#[ConstExpr, Inline]
+func make64(high, low: u32)->u64
+{
+    return (cast(u64) high << 32) | low
+}
+
 // Determin if an integer has a given byte
 #[ConstExpr, Inline, Overload]
 func hasByte(value: u16, byte: u8)->bool
