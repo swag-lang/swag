@@ -1,5 +1,5 @@
 #pragma once
-#include "SwagScope.h"
+#include "ScopeSwag.h"
 #include "Utf8.h"
 #include "Map.h"
 #include "ComputedValue.h"
@@ -99,7 +99,7 @@ struct Workspace
     Module*          filteredModule = nullptr;
     Module*          bootstrapModule;
     Module*          runtimeModule;
-    SwagScope        swagScope;
+    ScopeSwag        swagScope;
 
     atomic<int>      skippedModules = 0;
     atomic<uint64_t> totalTime      = 0;

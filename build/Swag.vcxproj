@@ -288,7 +288,7 @@
     <ClInclude Include="../src/Runtime.h" />
     <ClInclude Include="../src/Scope.h" />
     <ClInclude Include="../src/Scoped.h" />
-    <ClInclude Include="../src/SwagScope.h" />
+    <ClInclude Include="..\src\ScopeSwag.h" />
     <ClInclude Include="../src/Timer.h" />
     <ClInclude Include="../src/TokenIds.h" />
     <ClInclude Include="../src/TypeInfo.h" />
@@ -605,7 +605,7 @@
     <ClCompile Include="../src/SemanticJob.cpp" />
     <ClCompile Include="..\src\SemanticJob_Type.cpp" />
     <ClCompile Include="..\src\Statistics.cpp" />
-    <ClCompile Include="../src/SwagScope.cpp" />
+    <ClCompile Include="..\src\ScopeSwag.cpp" />
     <ClCompile Include="../src/SymTable.cpp" />
     <ClCompile Include="..\src\SemanticJob_Warn.cpp" />
     <ClCompile Include="..\src\Symbol.cpp" />

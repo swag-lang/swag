@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "SwagScope.h"
+#include "ScopeSwag.h"
 #include "TypeManager.h"
 #include "LanguageSpec.h"
 
-void SwagScope::registerType(TypeInfo* typeInfo)
+void ScopeSwag::registerType(TypeInfo* typeInfo)
 {
     if (!typeInfo->isStruct() && !typeInfo->isEnum())
         return;

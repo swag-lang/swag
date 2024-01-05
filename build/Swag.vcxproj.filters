@@ -83,9 +83,6 @@
     <ClCompile Include="..\src\SemanticJob_Op.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="../src/SwagScope.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
     <ClCompile Include="../src/Attribute.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
@@ -204,10 +201,10 @@
       <Filter>Backend</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ModuleDepManager.cpp">
-      <Filter>DepManager</Filter>
+      <Filter>Wmf\DepManager</Filter>
     </ClCompile>
     <ClCompile Include="..\src\FetchModuleFileSystemJob.cpp">
-      <Filter>DepManager</Filter>
+      <Filter>Wmf\DepManager</Filter>
     </ClCompile>
     <ClCompile Include="..\src\RaceCondition.cpp">
       <Filter>Threading</Filter>
@@ -644,6 +641,10 @@
     <ClCompile Include="..\src\ByteCodeDebugger_Set.cpp">
       <Filter>Backend\ByteCode\Debugger</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Workspace_Tags.cpp" />
+    <ClCompile Include="..\src\ScopeSwag.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
@@ -693,9 +694,6 @@
       <Filter>Syntax</Filter>
     </ClInclude>
     <ClInclude Include="../src/Generic.h">
-      <Filter>Semantic</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/SwagScope.h">
       <Filter>Semantic</Filter>
     </ClInclude>
     <ClInclude Include="../src/BackendLLVM.h">
@@ -750,10 +748,10 @@
       <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ModuleDepManager.h">
-      <Filter>DepManager</Filter>
+      <Filter>Wmf\DepManager</Filter>
     </ClInclude>
     <ClInclude Include="..\src\FetchModuleFileSystemJob.h">
-      <Filter>DepManager</Filter>
+      <Filter>Wmf\DepManager</Filter>
     </ClInclude>
     <ClInclude Include="..\src\RaceCondition.h">
       <Filter>Threading</Filter>
@@ -1007,6 +1005,9 @@
     <ClInclude Include="..\src\GenDoc.h">
       <Filter>GenDoc</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\ScopeSwag.h">
+      <Filter>Semantic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
@@ -1084,11 +1085,11 @@
     <Filter Include="Syntax\Parser">
       <UniqueIdentifier>{5bad38d1-b614-4137-9547-ef563589813e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="DepManager">
-      <UniqueIdentifier>{0953cd61-89b7-4c72-bc1f-72bf1d4c1458}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GenDoc">
       <UniqueIdentifier>{d2110678-479a-4478-8f76-2eb5853fe96c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Wmf\DepManager">
+      <UniqueIdentifier>{0953cd61-89b7-4c72-bc1f-72bf1d4c1458}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

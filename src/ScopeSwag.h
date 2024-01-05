@@ -4,7 +4,7 @@ struct TypeInfoStruct;
 struct TypeInfoEnum;
 struct Job;
 
-struct SwagScope
+struct ScopeSwag
 {
     void registerType(TypeInfo* typeInfo);
 

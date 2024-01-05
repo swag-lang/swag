@@ -7,6 +7,9 @@
 #include "JobThread.h"
 #include "TypeManager.h"
 #include "Naming.h"
+#ifdef SWAG_STATS
+#include "Timer.h"
+#endif
 
 bool Parser::error(AstNode* node, const Utf8& msg, const char* help, const char* hint)
 {
