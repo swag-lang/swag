@@ -647,6 +647,7 @@
     <ClCompile Include="..\src\Workspace_Clean.cpp" />
     <ClCompile Include="..\src\Workspace_New.cpp" />
     <ClCompile Include="..\src\Workspace_Script.cpp" />
+    <ClCompile Include="..\src\Workspace_Tags.cpp" />
     <ClCompile Include="..\src\X64Gen.cpp" />
   </ItemGroup>
   <ItemGroup>

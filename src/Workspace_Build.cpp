@@ -10,10 +10,10 @@
 #include "ByteCodeOptimizer.h"
 #include "ModuleDepManager.h"
 #include "Report.h"
-#include "ModuleManager.h"
 #include "TypeGenStructJob.h"
 #include "Naming.h"
 #include "SyntaxJob.h"
+#include "ModuleManager.h"
 
 void Workspace::computeModuleName(const Path& path, Utf8& moduleName, Path& moduleFolder, ModuleKind& kind)
 {
@@ -171,36 +171,6 @@ void Workspace::addRuntime()
     addRuntimeFile("systemallocator.swg");
     addRuntimeFile("scratchallocator.swg");
     addRuntimeFile("debugallocator.swg");
-}
-
-OneTag* Workspace::hasTag(const Utf8& name)
-{
-    for (auto& tag : tags)
-    {
-        if (tag.name == name)
-            return &tag;
-    }
-
-    return nullptr;
-}
-
-void Workspace::setupInternalTags()
-{
-    OneTag oneTag;
-
-    // Swag.Endian = "little" or "big" depending on the architecture
-    switch (g_CommandLine.target.arch)
-    {
-    case SwagTargetArch::X86_64:
-        oneTag.type       = g_TypeMgr->typeInfoString;
-        oneTag.value.text = "little";
-        oneTag.name       = "Swag.Endian";
-        tags.push_back(oneTag);
-        break;
-    default:
-        SWAG_ASSERT(false);
-        break;
-    }
 }
 
 Utf8 Workspace::getTargetFullName(const Utf8& buildCfg, const BackendTarget& target)
