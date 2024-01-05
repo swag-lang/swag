@@ -7,19 +7,19 @@ using Core
 
 func filter(file: File.FileInfo)->bool
 {
-    if Utf8.contains(file.fullname, "/vendor/")
+    if Utf8.contains(file.fullname, "/vendor/") do
         return false
-    if Utf8.contains(file.fullname, "/output/")
+    if Utf8.contains(file.fullname, "/output/") do
         return false
-    if Utf8.contains(file.fullname, "/dependencies/")
+    if Utf8.contains(file.fullname, "/dependencies/") do
         return false
-    if Utf8.contains(file.fullname, "/public/")
+    if Utf8.contains(file.fullname, "/public/") do
         return false
-    if Utf8.contains(file.fullname, "/datas/")
+    if Utf8.contains(file.fullname, "/datas/") do
         return true
-    if Utf8.contains(file.fullname, "/paint/theme/")
+    if Utf8.contains(file.fullname, "/paint/theme/") do
         return true
-    if Utf8.contains(file.fullname, "/shaders/")
+    if Utf8.contains(file.fullname, "/shaders/") do
         return true
 
     var ext = Path.getExtensionLowerCase(file.fullname)
@@ -35,9 +35,9 @@ func filter(file: File.FileInfo)->bool
     return false
 }
 
-#run
+#main
 {
-    let dataPath = Path.getDirectoryName(Path.getDirectoryName(#location.fileName))
+    let dataPath = Path.getDirectoryName(Path.getDirectoryName(#file))
     var binPath  = Path.combine(dataPath, "bin")
 
     // Enumerate list of files to release
@@ -49,14 +49,21 @@ func filter(file: File.FileInfo)->bool
 
     // Generate list of files
     var allLines: Array'string
-    visit f: allFiles
-        allLines.add(cast(string) f.fullname)
+    visit f: allFiles do
+        allLines.add(cast(string) f.fullname[9..])
+
+    let me = try Directory.getCurrent()
+    try Directory.setCurrent(Path.getDirectoryName(Path.getDirectoryName(dataPath)))
+
     catch File.delete("list.txt")
     try File.writeAllLines("list.txt", allLines)
-    defer catch File.delete("list.txt")
 
     // Zip them
     var name = Format.toString("swag-windows-x86-64-v%.%.%.zip", #swagversion, #swagrevision, #swagbuildnum)
-    var cmd  = Format.toString("a % -spf2 @list.txt", name)
-    try Env.doSyncProcess("7z.exe", cmd)
+    var cmd  = Format.toString("a % @list.txt", name)
+    Console.print("7z.exe ", cmd, "\n")
+    try Env.doSyncProcess(Path.combine(Path.getDirectoryName(#file), "7z.exe"), cmd)
+
+    catch File.delete("list.txt")
+    try Directory.setCurrent(me)
 }
