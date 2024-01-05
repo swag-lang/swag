@@ -1,11 +1,8 @@
 #include "pch.h"
 #include "Job.h"
-#include "Diagnostic.h"
 #include "Module.h"
 #include "Ast.h"
 #include "TypeManager.h"
-#include "ErrorIds.h"
-#include "Report.h"
 
 void Job::addDependentJob(Job* job)
 {
