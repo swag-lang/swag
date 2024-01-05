@@ -230,6 +230,17 @@ struct Semantic
     void      release();
     JobResult execute();
 
+    static void waitSymbolNoLock(Job* job, SymbolName* symbol);
+    static void waitAllStructInterfacesReg(Job* job, TypeInfo* typeInfo);
+    static void waitAllStructInterfaces(Job* job, TypeInfo* typeInfo);
+    static void waitAllStructSpecialMethods(Job* job, TypeInfo* typeInfo);
+    static void waitAllStructMethods(Job* job, TypeInfo* typeInfo);
+    static void waitStructGeneratedAlloc(Job* job, TypeInfo* typeInfo);
+    static void waitStructGenerated(Job* job, TypeInfo* typeInfo);
+    static void waitOverloadCompleted(Job* job, SymbolOverload* overload);
+    static void waitFuncDeclFullResolve(Job* job, AstFuncDecl* funcDecl);
+    static void waitTypeCompleted(Job* job, TypeInfo* typeInfo);
+
     static bool valueEqualsTo(const ComputedValue* value, AstNode* node);
     static bool valueEqualsTo(const ComputedValue* value1, const ComputedValue* value2, TypeInfo* typeInfo, uint64_t flags);
 
@@ -402,17 +413,6 @@ struct Semantic
     static bool preResolveAttrDecl(SemanticContext* context);
     static bool preResolveSubstBreakContinue(SemanticContext* context);
     static bool preResolveIdentifierRef(SemanticContext* context);
-
-    static void waitSymbolNoLock(Job* job, SymbolName* symbol);
-    static void waitAllStructInterfacesReg(Job* job, TypeInfo* typeInfo);
-    static void waitAllStructInterfaces(Job* job, TypeInfo* typeInfo);
-    static void waitAllStructSpecialMethods(Job* job, TypeInfo* typeInfo);
-    static void waitAllStructMethods(Job* job, TypeInfo* typeInfo);
-    static void waitStructGeneratedAlloc(Job* job, TypeInfo* typeInfo);
-    static void waitStructGenerated(Job* job, TypeInfo* typeInfo);
-    static void waitOverloadCompleted(Job* job, SymbolOverload* overload);
-    static void waitFuncDeclFullResolve(Job* job, AstFuncDecl* funcDecl);
-    static void waitTypeCompleted(Job* job, TypeInfo* typeInfo);
 
     static bool resolveSubDeclRef(SemanticContext* context);
     static bool resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right);
@@ -620,7 +620,7 @@ struct Semantic
         return res;
     }
 
-    SemanticContext context;
+    SemanticContext semContext;
 
     VectorNative<OneSymbolMatch>      cacheDependentSymbols;
     VectorNative<AlternativeScope>    cacheScopeHierarchy;
