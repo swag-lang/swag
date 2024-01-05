@@ -357,8 +357,7 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     YIELD();
 
     SWAG_CHECK(evaluateConstExpression(context, left, right));
-    if (context->result == ContextResult::Pending)
-        return true;
+    YIELD();
 
     // :ConcreteRef
     auto leftTypeInfo  = getConcreteTypeUnRef(left, CONCRETE_ALL);

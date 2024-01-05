@@ -117,8 +117,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     if (typeInfo->isStruct())
     {
         context->job->waitStructGenerated(typeInfo);
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
         SWAG_CHECK(emitCopyStruct(context, r0, r1, typeInfo, from));
         return true;
     }
@@ -126,8 +125,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     if (typeInfo->isArray())
     {
         context->job->waitStructGenerated(typeInfo);
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
         SWAG_CHECK(emitCopyArray(context, typeInfo, r0, r1, from));
         return true;
     }
@@ -833,8 +831,7 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
     {
     case TokenId::SymEqual:
         SWAG_CHECK(emitAffectEqual(context, r0, r1, nullptr, rightNode));
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
         break;
     case TokenId::SymPlusEqual:
         SWAG_CHECK(emitAffectPlusEqual(context, r0, r1));

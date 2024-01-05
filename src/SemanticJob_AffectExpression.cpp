@@ -322,8 +322,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     bool forTuple  = leftTypeInfo->isTuple();
 
     SWAG_CHECK(evaluateConstExpression(context, right));
-    if (context->result == ContextResult::Pending)
-        return true;
+    YIELD();
 
     // Cast from struct to interface : need to wait for all interfaces to be registered
     if (tokenId == TokenId::SymEqual)
@@ -331,8 +330,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
         if (leftTypeInfo->isInterface() && rightTypeInfo->isStruct())
         {
             context->job->waitAllStructInterfaces(rightTypeInfo);
-            if (context->result == ContextResult::Pending)
-                return true;
+            YIELD();
             SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UNCONST));
         }
     }
@@ -372,8 +370,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 if (leftTypeInfo->kind == rightTypeInfo->kind && rightTypeInfo->isSame(leftTypeInfo, CASTFLAG_CAST))
                 {
                     SWAG_CHECK(waitForStructUserOps(context, left));
-                    if (context->result == ContextResult::Pending)
-                        return true;
+                    YIELD();
                 }
                 else if (forTuple)
                 {
@@ -434,8 +431,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
             castFlags |= CASTFLAG_UNCONST;
 
         SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, nullptr, right, castFlags));
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
         break;
     }
 

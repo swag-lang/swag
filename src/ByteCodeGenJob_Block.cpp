@@ -1016,8 +1016,7 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
             continue;
 
         context->job->waitStructGenerated(one.typeStruct);
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
     }
 
     for (int i = count; i >= 0; i--)
@@ -1185,8 +1184,7 @@ bool ByteCodeGenJob::computeLeaveScope(ByteCodeGenContext* context, Scope* scope
     if (!scope->doneDrop.contains(context->node))
     {
         SWAG_CHECK(emitLeaveScopeDrop(context, scope, forceNoDrop));
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
         scope->doneDrop.push_back(context->node);
     }
 

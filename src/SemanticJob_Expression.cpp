@@ -137,8 +137,7 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
     for (auto child : node->childs)
     {
         SWAG_CHECK(checkIsConcreteOrType(context, child));
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
     }
 
     auto typeInfo = makeType<TypeInfoList>(TypeInfoKind::TypeListArray);
@@ -197,25 +196,20 @@ bool SemanticJob::evaluateConstExpression(SemanticContext* context, AstNode* nod
 bool SemanticJob::evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2)
 {
     SWAG_CHECK(evaluateConstExpression(context, node1));
-    if (context->result == ContextResult::Pending)
-        return true;
+    YIELD();
     SWAG_CHECK(evaluateConstExpression(context, node2));
-    if (context->result == ContextResult::Pending)
-        return true;
+    YIELD();
     return true;
 }
 
 bool SemanticJob::evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2, AstNode* node3)
 {
     SWAG_CHECK(evaluateConstExpression(context, node1));
-    if (context->result == ContextResult::Pending)
-        return true;
+    YIELD();
     SWAG_CHECK(evaluateConstExpression(context, node2));
-    if (context->result == ContextResult::Pending)
-        return true;
+    YIELD();
     SWAG_CHECK(evaluateConstExpression(context, node3));
-    if (context->result == ContextResult::Pending)
-        return true;
+    YIELD();
     return true;
 }
 
@@ -232,8 +226,7 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
     SWAG_CHECK(checkIsConcreteOrType(context, ifFalse));
 
     SWAG_CHECK(evaluateConstExpression(context, expression, ifTrue, ifFalse));
-    if (context->result == ContextResult::Pending)
-        return true;
+    YIELD();
 
     expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_ALL);
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, expression, CASTFLAG_AUTO_BOOL));

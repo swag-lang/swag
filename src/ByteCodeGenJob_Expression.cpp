@@ -182,8 +182,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
             if (typeChild->isStruct())
             {
                 context->job->waitStructGenerated(typeChild);
-                if (context->result == ContextResult::Pending)
-                    return true;
+                YIELD();
             }
         }
 

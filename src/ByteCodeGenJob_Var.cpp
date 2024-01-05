@@ -54,8 +54,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
     bool retVal   = resolved->flags & OVERLOAD_RETVAL;
 
     context->job->waitStructGenerated(typeInfo);
-    if (context->result == ContextResult::Pending)
-        return true;
+    YIELD();
 
     // Struct initialization
     bool mustDropLeft = false;

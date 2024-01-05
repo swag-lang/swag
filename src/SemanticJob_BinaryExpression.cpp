@@ -986,8 +986,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, right));
 
     SWAG_CHECK(evaluateConstExpression(context, left, right));
-    if (context->result == ContextResult::Pending)
-        return true;
+    YIELD();
 
     // Special case for enum : nothing is possible, except for flags
     TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo, CONCRETE_ALIAS);
@@ -1322,8 +1321,7 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, right));
 
     SWAG_CHECK(evaluateConstExpression(context, left, right));
-    if (context->result == ContextResult::Pending)
-        return true;
+    YIELD();
 
     // :ConcreteRef
     left->typeInfo     = getConcreteTypeUnRef(left, CONCRETE_ALL);
@@ -1386,8 +1384,7 @@ bool SemanticJob::resolveBoolExpression(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, right));
 
     SWAG_CHECK(evaluateConstExpression(context, left, right));
-    if (context->result == ContextResult::Pending)
-        return true;
+    YIELD();
 
     // :ConcreteRef
     auto leftTypeInfo  = getConcreteTypeUnRef(left, CONCRETE_ALL);
