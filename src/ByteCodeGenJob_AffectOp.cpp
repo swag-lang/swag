@@ -796,8 +796,7 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
     if (!(node->semFlags & SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         node->semFlags |= SEMFLAG_CAST1;
     }
 
@@ -816,14 +815,12 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
                 job->allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);
             job->allParamsTmp->childs = arrayNode->structFlatParams;
             SWAG_CHECK(emitUserOp(context, job->allParamsTmp));
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
         }
         else
         {
             SWAG_CHECK(emitUserOp(context));
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
         }
 
         return true;

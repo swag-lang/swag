@@ -76,11 +76,9 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
         auto typeNode   = node->childs[1];
         auto defaultVal = node->childs[2];
         SWAG_CHECK(evaluateConstExpression(context, nameNode));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         SWAG_CHECK(evaluateConstExpression(context, defaultVal));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
 
         SWAG_CHECK(checkIsConstExpr(context, nameNode->hasComputedValue(), nameNode, Err(Err0248), node->token.text));
         SWAG_VERIFY(nameNode->typeInfo->isString(), context->report({nameNode, Fmt(Err(Err0249), node->token.ctext(), nameNode->typeInfo->getDisplayNameC())}));
@@ -202,8 +200,7 @@ bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* nod
         }
     }
 
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
     if (!second->typeInfo->isPointerToTypeInfo())
         return context->report({second, Fmt(Err(Err0792), second->typeInfo->getDisplayNameC())});
 
@@ -226,14 +223,12 @@ bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
 
     SWAG_CHECK(checkIsConcrete(context, first));
     SWAG_CHECK(checkIsConcreteOrType(context, second));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     third->allocateComputedValue();
     third->computedValue->storageSegment = getConstantSegFromContext(third);
     SWAG_CHECK(typeGen.genExportedTypeInfo(context, third->typeInfo, third->computedValue->storageSegment, &third->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     auto firstTypeInfo = first->typeInfo->getConcreteAlias();
     SWAG_VERIFY(firstTypeInfo->isPointer() || firstTypeInfo->isStruct(), context->report({first, Fmt(Err(Err0793), firstTypeInfo->getDisplayNameC())}));
@@ -349,8 +344,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
         SWAG_VERIFY(!(typeInfo->isTuple()), context->report({expression, Err(Err0800)}));
         node->typeInfo = typeInfo;
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opCount, nullptr, nullptr, node, nullptr));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         node->typeInfo = g_TypeMgr->typeInfoU64;
         if (!node->byteCodeFct)
             node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
@@ -561,8 +555,7 @@ bool SemanticJob::resolveIntrinsicStringOf(SemanticContext* context)
 
     node->setFlagsValueIsComputed();
     SWAG_CHECK(checkIsConcreteOrType(context, expr, true));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     if (expr->computedValue)
     {
@@ -615,8 +608,7 @@ bool SemanticJob::resolveIntrinsicNameOf(SemanticContext* context)
 
     node->setFlagsValueIsComputed();
     SWAG_CHECK(checkIsConcreteOrType(context, expr, true));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     if (expr->isConstantGenTypeInfo())
     {
@@ -754,8 +746,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
             node->allocateComputedValue();
             node->computedValue->storageSegment = getConstantSegFromContext(node);
             SWAG_CHECK(typeGen.genExportedTypeInfo(context, expr->typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT, &node->typeInfo));
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
             node->byteCodeFct = ByteCodeGenJob::emitIntrinsicKindOf;
             node->flags |= AST_R_VALUE;
             SWAG_CHECK(setupIdentifierRef(context, node));
@@ -771,8 +762,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
         node->allocateComputedValue();
         node->computedValue->storageSegment = getConstantSegFromContext(node);
         SWAG_CHECK(typeGen.genExportedTypeInfo(context, expr->typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT, &node->typeInfo));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         node->byteCodeFct = ByteCodeGenJob::emitIntrinsicKindOf;
         node->flags |= AST_R_VALUE;
         SWAG_CHECK(setupIdentifierRef(context, node));
@@ -783,8 +773,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
     if (expr->typeInfo->isFuncAttr())
     {
         SWAG_CHECK(resolveTypeAsExpression(context, expr, &node->typeInfo, GEN_EXPORTED_TYPE_FORCE_NO_SCOPE));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         node->inheritComputedValue(expr);
         SWAG_CHECK(setupIdentifierRef(context, node));
         return true;
@@ -795,8 +784,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
     {
         auto typeEnum = CastTypeInfo<TypeInfoEnum>(expr->typeInfo, TypeInfoKind::Enum);
         SWAG_CHECK(resolveTypeAsExpression(context, expr, typeEnum->rawType, &node->typeInfo));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         node->inheritComputedValue(expr);
         SWAG_CHECK(setupIdentifierRef(context, node));
         return true;
@@ -807,8 +795,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
     {
         auto typeAlias = CastTypeInfo<TypeInfoAlias>(expr->typeInfo, TypeInfoKind::Alias);
         SWAG_CHECK(resolveTypeAsExpression(context, expr, typeAlias->rawType, &node->typeInfo));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         node->inheritComputedValue(expr);
         SWAG_CHECK(setupIdentifierRef(context, node));
         return true;
@@ -829,8 +816,7 @@ bool SemanticJob::resolveIntrinsicDeclType(SemanticContext* context)
     if (expr->flags & AST_CONST_EXPR)
     {
         SWAG_CHECK(executeCompilerNode(context, expr, true));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
     }
 
     expr->flags |= AST_NO_BYTECODE;
@@ -870,8 +856,7 @@ bool SemanticJob::resolveIntrinsicTypeOf(SemanticContext* context)
     expr->flags |= AST_NO_BYTECODE;
 
     SWAG_CHECK(resolveTypeAsExpression(context, expr, &node->typeInfo));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
     node->inheritComputedValue(expr);
     SWAG_CHECK(setupIdentifierRef(context, node));
     return true;

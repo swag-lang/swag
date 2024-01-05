@@ -181,8 +181,7 @@ bool ByteCodeGenJob::emitIntrinsicCountOf(ByteCodeGenContext* context, AstNode* 
     if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
     {
         SWAG_CHECK(emitUserOp(context));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         return true;
     }
 
@@ -218,8 +217,7 @@ bool ByteCodeGenJob::emitIntrinsicDataOf(ByteCodeGenContext* context)
     if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
     {
         SWAG_CHECK(emitUserOp(context));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         return true;
     }
 

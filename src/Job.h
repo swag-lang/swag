@@ -34,10 +34,6 @@ enum class ContextResult
     NewChilds1,
 };
 
-#define YIELD()                                 \
-    if (context->result != ContextResult::Done) \
-        return true;
-
 struct JobContext : public ErrorContext
 {
     void reset()
@@ -135,3 +131,7 @@ struct Job
     uint32_t flags           = 0;
     uint32_t affinity        = UINT32_MAX;
 };
+
+#define YIELD()                                 \
+    if (context->result != ContextResult::Done) \
+        return true;

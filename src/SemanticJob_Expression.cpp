@@ -64,8 +64,7 @@ bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNo
     for (auto child : node->childs)
     {
         SWAG_CHECK(checkIsConcreteOrType(context, child));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
     }
 
     auto typeInfo      = makeType<TypeInfoList>(TypeInfoKind::TypeListTuple);
@@ -115,8 +114,7 @@ bool SemanticJob::resolveExpressionListTuple(SemanticContext* context)
 {
     auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
     SWAG_CHECK(computeExpressionListTupleType(context, node));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     node->setBcNotifBefore(ByteCodeGenJob::emitExpressionListBefore);
     node->byteCodeFct = ByteCodeGenJob::emitExpressionList;
@@ -190,8 +188,7 @@ bool SemanticJob::evaluateConstExpression(SemanticContext* context, AstNode* nod
     {
         SWAG_CHECK(checkIsConcrete(context, node));
         SWAG_CHECK(executeCompilerNode(context, node, true));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
     }
 
     return true;
@@ -307,8 +304,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, ifZero));
 
     SWAG_CHECK(evaluateConstExpression(context, expression, ifZero));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     auto typeInfo = getConcreteTypeUnRef(expression, CONCRETE_ALL);
     if (typeInfo->isStruct())

@@ -77,8 +77,7 @@ bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
         if (node->hasSpecialFuncCall())
         {
             SWAG_CHECK(emitUserOp(context));
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
             node->semFlags |= SEMFLAG_EMIT_OP;
         }
         else
@@ -116,8 +115,7 @@ bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
     if (!(node->semFlags & SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         node->semFlags |= SEMFLAG_CAST1;
     }
 

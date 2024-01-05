@@ -53,8 +53,7 @@ bool ByteCodeGenJob::emitInRange(ByteCodeGenContext* context, AstNode* left, Ast
     if (left->hasSpecialFuncCall())
     {
         SWAG_CHECK(emitCompareOpSpecialFunc(context, left, low, r0, low->resultRegisterRC, excludeLow ? TokenId::SymGreater : TokenId::SymGreaterEqual));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         ra = context->node->resultRegisterRC;
     }
     else if (excludeLow)
@@ -72,8 +71,7 @@ bool ByteCodeGenJob::emitInRange(ByteCodeGenContext* context, AstNode* left, Ast
     if (left->hasSpecialFuncCall())
     {
         SWAG_CHECK(emitCompareOpSpecialFunc(context, left, up, r0, up->resultRegisterRC, excludeUp ? TokenId::SymLower : TokenId::SymLowerEqual));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         rb = context->node->resultRegisterRC;
     }
     else if (excludeUp)
@@ -107,8 +105,7 @@ bool ByteCodeGenJob::emitCompareOpSpecialFunc(ByteCodeGenContext* context, AstNo
     left->resultRegisterRC  = r0;
     right->resultRegisterRC = r1;
     SWAG_CHECK(emitUserOp(context, job->allParamsTmp, left, false));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
     SWAG_CHECK(emitCompareOpPostSpecialFunc(context, op));
 
     return true;
@@ -810,16 +807,14 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
     if (!(node->semFlags & SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->childs[0], TypeManager::concreteType(node->childs[0]->typeInfo), node->childs[0]->castedTypeInfo));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         node->semFlags |= SEMFLAG_CAST1;
     }
 
     if (!(node->semFlags & SEMFLAG_CAST2))
     {
         SWAG_CHECK(emitCast(context, node->childs[1], TypeManager::concreteType(node->childs[1]->typeInfo), node->childs[1]->castedTypeInfo));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         node->semFlags |= SEMFLAG_CAST2;
     }
 
@@ -827,8 +822,7 @@ bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
     if (node->hasSpecialFuncCall())
     {
         SWAG_CHECK(emitUserOp(context));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         SWAG_CHECK(emitCompareOpPostSpecialFunc(context, node->tokenId));
     }
     else

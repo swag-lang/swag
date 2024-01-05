@@ -100,15 +100,13 @@ bool SemanticJob::resolveImplForType(SemanticContext* context)
     back->allocateComputedValue();
     back->computedValue->storageSegment = getConstantSegFromContext(back);
     SWAG_CHECK(typeGen.genExportedTypeInfo(context, typeStruct, back->computedValue->storageSegment, &back->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     // Make a concrete type for the given interface
     first->allocateComputedValue();
     first->computedValue->storageSegment = getConstantSegFromContext(first);
     SWAG_CHECK(typeGen.genExportedTypeInfo(context, first->typeInfo, first->computedValue->storageSegment, &first->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     auto typeBaseInterface = CastTypeInfo<TypeInfoStruct>(first->typeInfo, TypeInfoKind::Interface);
     auto typeParamItf      = typeStruct->hasInterface(typeBaseInterface);
@@ -349,8 +347,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         {
             doneItfRef = true;
             SWAG_CHECK(TypeManager::collectInterface(context, typeStruct, typeBaseInterface, itfRef, true));
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
         }
 
         auto missingNode = typeInterface->fields[idx];
@@ -871,8 +868,7 @@ bool SemanticJob::solveValidIf(SemanticContext* context, AstStruct* structDecl)
         context->validIfParameters = nullptr;
         if (!result)
             return false;
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
     }
 
     // Result
@@ -899,8 +895,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     if (node->validif && !typeInfo->isGeneric())
     {
         SWAG_CHECK(solveValidIf(context, node));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
     }
 
     // Structure packing

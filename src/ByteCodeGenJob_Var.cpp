@@ -100,8 +100,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
             }
 
             SWAG_CHECK(emitUserOp(context, nullptr, node));
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
 
             return true;
         }
@@ -130,8 +129,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
             }
 
             SWAG_CHECK(emitCast(context, node->assignment, node->assignment->typeInfo, node->assignment->castedTypeInfo));
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
 
             if (!mustDropLeft)
                 node->assignment->flags |= AST_NO_LEFT_DROP;
@@ -172,8 +170,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
             {
                 node->allocateExtension(ExtensionKind::Misc);
                 emitAffectEqual(context, node->extMisc()->additionalRegisterRC, node->resultRegisterRC, node->typeInfo, node->assignment);
-                if (context->result != ContextResult::Done)
-                    return true;
+                YIELD();
             }
 
             freeRegisterRC(context, node);

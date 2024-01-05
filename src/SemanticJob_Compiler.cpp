@@ -96,8 +96,7 @@ bool SemanticJob::doExecuteCompilerNode(SemanticContext* context, AstNode* node,
     // Request to generate the corresponding bytecode
     {
         ByteCodeGenJob::askForByteCode(context->job, node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED);
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
     }
 
     // :CheckConstExprFuncReturnType
@@ -119,8 +118,7 @@ bool SemanticJob::doExecuteCompilerNode(SemanticContext* context, AstNode* node,
             // It is possible to convert a complex struct to a constant static array of values if the struct
             // implements 'opCount' and 'opSlice'
             context->job->waitAllStructMethods(realType);
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
 
             if (node->hasSpecialFuncCall())
             {
@@ -159,8 +157,7 @@ bool SemanticJob::doExecuteCompilerNode(SemanticContext* context, AstNode* node,
                 params.push_back(node);
                 SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opCount, nullptr, nullptr, node, params));
                 node->typeInfo = saveTypeStruct;
-                if (context->result != ContextResult::Done)
-                    return true;
+                YIELD();
 
                 SWAG_ASSERT(context->node->hasExtMisc());
 
@@ -169,11 +166,8 @@ bool SemanticJob::doExecuteCompilerNode(SemanticContext* context, AstNode* node,
                 extension->resolvedUserOpSymbolOverload = nullptr;
                 SWAG_ASSERT(execParams.specReturnOpCount);
 
-                {
-                    ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpCount->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
-                    if (context->result != ContextResult::Done)
-                        return true;
-                }
+                ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpCount->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                YIELD();
 
                 // opSlice
                 AstNode tmpNode;
@@ -183,18 +177,14 @@ bool SemanticJob::doExecuteCompilerNode(SemanticContext* context, AstNode* node,
                 params.push_back(&tmpNode);
                 SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opSlice, nullptr, nullptr, node, params));
                 node->typeInfo = saveTypeStruct;
-                if (context->result != ContextResult::Done)
-                    return true;
+                YIELD();
 
                 execParams.specReturnOpSlice            = extension->resolvedUserOpSymbolOverload;
                 extension->resolvedUserOpSymbolOverload = nullptr;
                 SWAG_ASSERT(execParams.specReturnOpSlice);
 
-                {
-                    ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpSlice->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
-                    if (context->result != ContextResult::Done)
-                        return true;
-                }
+                ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpSlice->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                YIELD();
 
                 // Is the type of the slice supported ?
                 bool ok           = false;
@@ -233,8 +223,7 @@ bool SemanticJob::doExecuteCompilerNode(SemanticContext* context, AstNode* node,
                     params.push_back(node);
                     SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opPostMove, nullptr, nullptr, node, params));
                     node->typeInfo = saveTypeStruct;
-                    if (context->result != ContextResult::Done)
-                        return true;
+                    YIELD();
 
                     execParams.specReturnOpPostMove         = extension->resolvedUserOpSymbolOverload;
                     extension->resolvedUserOpSymbolOverload = nullptr;
@@ -242,8 +231,7 @@ bool SemanticJob::doExecuteCompilerNode(SemanticContext* context, AstNode* node,
 
                     {
                         ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpPostMove->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
-                        if (context->result != ContextResult::Done)
-                            return true;
+                        YIELD();
                     }
                 }
 
@@ -256,18 +244,14 @@ bool SemanticJob::doExecuteCompilerNode(SemanticContext* context, AstNode* node,
                     params.push_back(node);
                     SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opDrop, nullptr, nullptr, node, params));
                     node->typeInfo = saveTypeStruct;
-                    if (context->result != ContextResult::Done)
-                        return true;
+                    YIELD();
 
                     execParams.specReturnOpDrop             = extension->resolvedUserOpSymbolOverload;
                     extension->resolvedUserOpSymbolOverload = nullptr;
                     SWAG_ASSERT(execParams.specReturnOpDrop);
 
-                    {
-                        ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpDrop->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
-                        if (context->result != ContextResult::Done)
-                            return true;
-                    }
+                    ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpDrop->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                    YIELD();
                 }
             }
         }
@@ -325,8 +309,7 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
         expression->typeInfo = g_TypeMgr->typeInfoVoid;
 
     SWAG_CHECK(executeCompilerNode(context, expression, false));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     context->node->inheritComputedValue(expression);
     if (context->node->hasComputedValue())
@@ -369,8 +352,7 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
     SWAG_VERIFY(typeInfo->isString(), context->report({expression, Fmt(Err(Err0234), expression->typeInfo->getDisplayNameC())}));
 
     SWAG_CHECK(executeCompilerNode(context, expression, false));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
     node->addSpecFlags(AstCompilerSpecFunc::SPECFLAG_AST_BLOCK);
 
     SWAG_CHECK(checkIsConstExpr(context, expression->hasComputedValue(), expression));
@@ -412,8 +394,7 @@ bool SemanticJob::resolveCompilerError(SemanticContext* context)
 
     auto msg = node->childs.front();
     SWAG_CHECK(evaluateConstExpression(context, msg));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
     SWAG_CHECK(checkIsConstExpr(context, msg->hasComputedValue(), msg, Fmt(Err(Err0237), node->token.ctext())));
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 
@@ -429,8 +410,7 @@ bool SemanticJob::resolveCompilerWarning(SemanticContext* context)
 
     auto msg = node->childs.front();
     SWAG_CHECK(evaluateConstExpression(context, msg));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
     SWAG_CHECK(checkIsConstExpr(context, msg->hasComputedValue(), msg, Fmt(Err(Err0237), node->token.ctext())));
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 
@@ -448,8 +428,7 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
     auto expr = node->childs[0];
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, expr, CASTFLAG_AUTO_BOOL | CASTFLAG_JUST_CHECK));
     SWAG_CHECK(executeCompilerNode(context, expr, true));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, expr, CASTFLAG_AUTO_BOOL));
     node->flags |= AST_NO_BYTECODE;
@@ -568,8 +547,7 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
 
     auto expr = context->node->childs[0];
     SWAG_CHECK(executeCompilerNode(context, expr, true));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     g_Log.lock();
     TypeInfo* typeInfo = TypeManager::concreteType(expr->typeInfo);
@@ -703,8 +681,7 @@ bool SemanticJob::resolveCompilerIf(SemanticContext* context)
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
 
     SWAG_CHECK(executeCompilerNode(context, node->boolExpression, true));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     node->boolExpression->flags |= AST_NO_BYTECODE;
     AstCompilerIfBlock* validatedNode = nullptr;

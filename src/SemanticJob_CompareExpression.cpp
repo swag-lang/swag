@@ -352,11 +352,9 @@ bool SemanticJob::resolveCompareExpression(SemanticContext* context)
     auto right = node->childs[1];
 
     SWAG_CHECK(checkIsConcreteOrType(context, left));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
     SWAG_CHECK(checkIsConcreteOrType(context, right));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     SWAG_CHECK(evaluateConstExpression(context, left, right));
     if (context->result == ContextResult::Pending)

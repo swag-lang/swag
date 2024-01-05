@@ -17,8 +17,7 @@ bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)
     if (!(child0->semFlags & SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, child0, typeInfo, child0->castedTypeInfo));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         child0->semFlags |= SEMFLAG_CAST1;
     }
 
@@ -26,8 +25,7 @@ bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)
     if (node->hasSpecialFuncCall())
     {
         SWAG_CHECK(emitUserOp(context, child0, nullptr, false));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         EMIT_INST1(context, ByteCodeOp::JumpIfZero64, node->resultRegisterRC)->b.s32 = child0->resultRegisterRC.size(); // After the "if not null"
         freeRegisterRC(context, node->resultRegisterRC);
         node->resultRegisterRC = child1->resultRegisterRC;
@@ -76,8 +74,7 @@ bool ByteCodeGenJob::emitConditionalOpAfterExpr(ByteCodeGenContext* context)
 
     // We need to cast right now, in case the shortcut is activated
     SWAG_CHECK(emitCast(context, expr, TypeManager::concreteType(expr->typeInfo), expr->castedTypeInfo));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
     binNode->semFlags |= SEMFLAG_CAST1;
 
     // Jump to ifFalse child

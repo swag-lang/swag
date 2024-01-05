@@ -739,8 +739,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
             exprNode->typeInfo = exprNode->castedTypeInfo;
 
         SWAG_CHECK(emitUserOp(context, nullptr, job->allParamsTmp));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
 
         // If it has been inlined, then the inline block contains the register we need
         auto back = job->allParamsTmp->childs.back();
@@ -987,16 +986,14 @@ bool ByteCodeGenJob::emitExplicitCast(ByteCodeGenContext* context)
     // First we cast with the user requested type. This is important to keep it, to
     // properly deref an 'any' for example
     SWAG_CHECK(emitCast(context, exprNode, typeInfo, fromTypeInfo, true));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     // Then we cast again if necessary to the requested final type that can have been
     // changed (type promotion for example)
     if (node->toCastTypeInfo != node->typeInfo && node->toCastTypeInfo != node->castedTypeInfo)
     {
         SWAG_CHECK(emitCast(context, node, node->typeInfo, node->toCastTypeInfo));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
     }
 
     return true;
@@ -1018,8 +1015,7 @@ bool ByteCodeGenJob::emitExplicitAutoCast(ByteCodeGenContext* context)
     auto typeInfo     = TypeManager::concreteType(node->typeInfo);
     auto fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
     SWAG_CHECK(emitCast(context, exprNode, typeInfo, fromTypeInfo));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
     node->castedTypeInfo = nullptr;
 
     return true;

@@ -388,8 +388,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
 
             toType = oneMatch.solvedParameters[i]->typeInfo;
             SWAG_CHECK(TypeManager::makeCompatibles(context, toType, nullptr, nodeCall, castFlags));
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
 
             if (!toType->isPointerRef() && nodeCall->typeInfo->isPointerRef())
             {
@@ -458,8 +457,7 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
         {
             toType = oneMatch.solvedParameters.back()->typeInfo;
             SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters.back()->typeInfo, nullptr, nodeCall));
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
         }
 
         // If passing a closure
@@ -1388,8 +1386,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         if (!identifier->ownerFct || !(identifier->ownerFct->flags & AST_IS_GENERIC))
         {
             SWAG_CHECK(setSymbolMatchCallParams(context, identifier, oneMatch));
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
         }
 
         // Be sure the call is valid
@@ -1494,8 +1491,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
                 {
                     // Need to wait for function full semantic resolve
                     context->job->waitFuncDeclFullResolve(funcDecl);
-                    if (context->result != ContextResult::Done)
-                        return true;
+                    YIELD();
 
                     // First pass, we inline the function.
                     // The identifier for the function call will be reresolved later when the content
@@ -1903,8 +1899,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             SWAG_ASSERT(false);
         }
 
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
 
         // For a function, sometime, we do not want call parameters
         bool forcedFine = false;
@@ -2076,17 +2071,13 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
 
     auto prevMatchesCount = matches.size();
     SWAG_CHECK(filterMatches(context, matches));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
     SWAG_CHECK(filterMatchesInContext(context, matches));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
     SWAG_CHECK(filterGenericMatches(context, matches, genericMatches));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
     SWAG_CHECK(filterGenericMatches(context, matches, genericMatchesSI));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     // If to match an instance, we always need an automatic opCast, then we only keep generic matches in order
     // to create an instance with the exact type.
@@ -2359,8 +2350,6 @@ void SemanticJob::checkCanInstantiateGenericSymbol(SemanticContext* context, One
 
     // Cannot instantiate if the type is incomplete
     Generic::waitForGenericParameters(context, firstMatch);
-    if (context->result != ContextResult::Done)
-        return;
 }
 
 bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch, bool forStruct)
@@ -2378,8 +2367,7 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
         return true;
 
     checkCanInstantiateGenericSymbol(context, firstMatch);
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     if (forStruct)
     {
@@ -2681,8 +2669,7 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext*                        
         context->silentError++;
         auto found = findIdentifierInScopes(context, symbolMatch, idref, id);
         context->silentError--;
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
 
         if (!found || symbolMatch.empty())
             return true;
@@ -3657,8 +3644,7 @@ bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*
             if (funcDecl->validif)
             {
                 SWAG_CHECK(solveValidIf(context, curMatch, funcDecl));
-                if (context->result != ContextResult::Done)
-                    return true;
+                YIELD();
                 if (curMatch->remove)
                     continue;
             }
@@ -4131,8 +4117,7 @@ bool SemanticJob::filterMatchesInContext(SemanticContext* context, VectorNative<
         VectorNative<std::pair<AstNode*, TypeInfoEnum*>> hasEnum;
         VectorNative<SymbolOverload*>                    testedOver;
         SWAG_CHECK(findEnumTypeInContext(context, over->node, typeEnum, hasEnum, testedOver));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
 
         if (typeEnum.size() == 1 && typeEnum[0]->scope == oneMatch->scope)
         {
@@ -4223,8 +4208,7 @@ bool SemanticJob::solveValidIf(SemanticContext* context, OneMatch* oneMatch, Ast
         context->validIfParameters = nullptr;
         if (!result)
             return false;
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
     }
 
     // Result
@@ -4717,8 +4701,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
                 tryMatch->secondTry         = tryUfcs == 1;
 
                 SWAG_CHECK(fillMatchContextCallParameters(context, symMatchContext, identifier, symbolOverload, ufcsFirstParam));
-                if (context->result != ContextResult::Done)
-                    return true;
+                YIELD();
                 SWAG_CHECK(fillMatchContextGenericParameters(context, symMatchContext, identifier, symbolOverload));
 
                 bool notACall = isFunctionButNotACall(context, identifier, symbolOverload->symbol);

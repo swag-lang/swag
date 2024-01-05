@@ -22,8 +22,7 @@ bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
         return true;
 
     SWAG_CHECK(computeLeaveScope(context, funcDecl->scope));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     emitDebugLine(context);
     EMIT_INST0(context, ByteCodeOp::Ret)->a.u32 = funcDecl->stackSize;
@@ -55,8 +54,7 @@ bool ByteCodeGenJob::emitFuncCallParam(ByteCodeGenContext* context)
     if (node->castedTypeInfo)
     {
         context->job->waitAllStructInterfaces(node->castedTypeInfo);
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
     }
 
     node->resultRegisterRC = front->resultRegisterRC;
@@ -89,14 +87,12 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
         if (!(returnExpression->semFlags & SEMFLAG_CAST1))
         {
             SWAG_CHECK(emitCast(context, returnExpression, TypeManager::concreteType(returnExpression->typeInfo), returnExpression->castedTypeInfo));
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
             returnExpression->semFlags |= SEMFLAG_CAST1;
         }
 
         context->job->waitStructGenerated(exprType);
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
 
         //
         // RETVAL
@@ -290,8 +286,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
 
     // Leave all scopes
     SWAG_CHECK(emitLeaveScopeReturn(context, &node->forceNoDrop, false));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     // A return inside an inline function is just a jump to the end of the block
     if (node->ownerInline && (node->semFlags & SEMFLAG_EMBEDDED_RETURN))
@@ -360,8 +355,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     if (node->resolvedSymbolOverload->node->flags & AST_DEFINED_INTRINSIC)
     {
         askForByteCode(context->job, node->resolvedSymbolOverload->node, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
     }
 
     // Some safety checks depending on the intrinsic
@@ -1228,8 +1222,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context)
     auto allParams = node->childs.empty() ? nullptr : node->childs.back();
     SWAG_ASSERT(!allParams || allParams->kind == AstNodeKind::FuncCallParams);
     SWAG_CHECK(emitCall(context, allParams, funcNode, nullptr, funcNode->resultRegisterRC, false, false, true));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
     emitPostCallUfcs(context);
     return true;
 }
@@ -1580,8 +1573,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
 
     // Be sure referenced function has bytecode
     askForByteCode(context->job, funcNode, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     int numCallParams = allParams ? (int) allParams->childs.size() : 0;
 
@@ -1603,8 +1595,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             uint32_t storageOffset;
             context->baseJob = context->job;
             SWAG_CHECK(typeGen.genExportedTypeInfo(context, concreteType, storageSegment, &storageOffset));
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
             storageOffsetsVariadicTypes.push_back(storageOffset);
         }
     }

@@ -364,15 +364,13 @@ bool SemanticJob::resolveUserOpCommutative(SemanticContext* context, const Utf8&
     if (leftTypeInfo->isStruct())
     {
         okLeft = resolveUserOp(context, name, opConst, opType, left, right, ROP_JUST_CHECK);
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
     }
 
     if (rightTypeInfo->isStruct())
     {
         okRight = resolveUserOp(context, name, opConst, opType, right, left, ROP_JUST_CHECK);
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
     }
 
     if (okLeft || (!okRight && leftTypeInfo->isStruct()))
@@ -390,8 +388,7 @@ bool SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfo
 
     VectorNative<FindUserOp> results;
     SWAG_CHECK(hasUserOp(context, name, leftStruct, nullptr, results));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
     if (results.empty())
         return true;
 
@@ -436,12 +433,10 @@ bool SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfo
                 continue;
 
             context->job->waitAllStructSpecialMethods(typeS);
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
 
             SWAG_CHECK(hasUserOp(context, name, typeS, field, result));
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
         }
     }
 
@@ -502,8 +497,7 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
         SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opAffectSuffix, left, &symbol));
         if (!symbol)
         {
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
 
             Diagnostic diag{context->node, context->node->token, Fmt(Err(Err0889), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
             auto       note0 = Diagnostic::note(right->childs.front(), Fmt(Nte(Nte0057), suffix.c_str()));
@@ -516,8 +510,7 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffectSuffix, suffix, nullptr, left, right));
         if (varDecl)
             varDecl->token = savedToken;
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         right->semFlags &= ~SEMFLAG_LITERAL_SUFFIX;
     }
 
@@ -528,8 +521,7 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
         SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opAffect, left, &symbol));
         if (!symbol)
         {
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
 
             Diagnostic diag{right, Fmt(Err(Err0908), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC())};
             diag.hint = Diagnostic::isType(rightTypeInfo);
@@ -561,8 +553,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
 {
     SymbolName* symbol = nullptr;
     SWAG_CHECK(waitUserOp(context, name, left, &symbol));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     bool justCheck = ropFlags & ROP_JUST_CHECK;
     auto leftType  = TypeManager::concretePtrRefType(left->typeInfo);

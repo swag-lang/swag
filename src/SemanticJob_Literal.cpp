@@ -388,8 +388,7 @@ bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
         identifier->identifierRef()->flags |= AST_SILENT_CHECK;
 
         auto res = resolveIdentifier(context, identifier, RI_ZERO);
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         if (res && identifier->typeInfo)
             return true;
 

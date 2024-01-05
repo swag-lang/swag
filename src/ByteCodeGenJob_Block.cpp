@@ -314,8 +314,7 @@ bool ByteCodeGenJob::emitIfAfterExpr(ByteCodeGenContext* context)
     auto ifNode = CastAst<AstIf>(node->parent, AstNodeKind::If);
 
     SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     ifNode->seekJumpExpression = context->bc->numInstructions;
     EMIT_INST1(context, ByteCodeOp::JumpIfFalse, node->resultRegisterRC);
@@ -328,8 +327,7 @@ bool ByteCodeGenJob::emitIfAfterIf(ByteCodeGenContext* context)
     auto node = context->node;
 
     SWAG_CHECK(computeLeaveScope(context, node->ownerScope));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     // This is the end of the if block. Need to jump after the else block, if there's one
     PushLocation pl(context, &node->token.endLocation);
@@ -435,8 +433,7 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
     if (loopNode->hasSpecialFuncCall())
     {
         SWAG_CHECK(emitUserOp(context, nullptr, loopNode));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
 
         // If opCount has been inlined, then the register of the inline block contains the result
         if (loopNode->childs.back()->kind == AstNodeKind::Inline)
@@ -608,8 +605,7 @@ bool ByteCodeGenJob::emitLoopAfterBlock(ByteCodeGenContext* context)
     PushLocation pl(context, &node->token.endLocation);
 
     SWAG_CHECK(computeLeaveScope(context, node->ownerScope));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     auto loopNode = static_cast<AstBreakable*>(node->parent);
 
@@ -839,8 +835,7 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
                     expr->resultRegisterRC.cannotFree                              = true;
 
                     SWAG_CHECK(emitCompareOpSpecialFunc(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRC, expr->resultRegisterRC, TokenId::SymEqualEqual));
-                    if (context->result != ContextResult::Done)
-                        return true;
+                    YIELD();
 
                     caseNode->ownerSwitch->resultRegisterRC.cannotFree             = false;
                     caseNode->ownerSwitch->expression->resultRegisterRC.cannotFree = false;
@@ -914,8 +909,7 @@ bool ByteCodeGenJob::emitSwitchCaseAfterBlock(ByteCodeGenContext* context)
 {
     auto node = context->node;
     SWAG_CHECK(computeLeaveScope(context, node->ownerScope));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     auto blockNode = CastAst<AstSwitchCaseBlock>(node, AstNodeKind::SwitchCaseBlock);
 
@@ -944,8 +938,7 @@ bool ByteCodeGenJob::emitFallThrough(ByteCodeGenContext* context)
     for (auto scope : context->job->collectScopes)
     {
         SWAG_CHECK(computeLeaveScope(context, scope));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
     }
 
     emitDebugLine(context);
@@ -963,8 +956,7 @@ bool ByteCodeGenJob::emitBreak(ByteCodeGenContext* context)
     for (auto scope : context->job->collectScopes)
     {
         SWAG_CHECK(computeLeaveScope(context, scope));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
     }
 
     emitDebugLine(context);
@@ -982,8 +974,7 @@ bool ByteCodeGenJob::emitContinue(ByteCodeGenContext* context)
     for (auto scope : context->job->collectScopes)
     {
         SWAG_CHECK(computeLeaveScope(context, scope));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
     }
 
     emitDebugLine(context);
@@ -1170,8 +1161,7 @@ bool ByteCodeGenJob::emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNat
     for (auto scope : context->job->collectScopes)
     {
         SWAG_CHECK(computeLeaveScope(context, scope, forceNoDrop, forError));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
     }
 
     return true;

@@ -2823,8 +2823,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
         }
 
         context->job->waitOverloadCompleted(structNode->resolvedSymbolOverload);
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
 
         TypeInfoParam*  foundField  = nullptr;
         TypeInfoStruct* foundStruct = nullptr;
@@ -2915,8 +2914,7 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
             continue;
 
         context->job->waitOverloadCompleted(it.typeStruct->declNode->resolvedSymbolOverload);
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
 
         for (auto field : it.typeStruct->fields)
         {
@@ -2930,8 +2928,7 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
                 continue;
 
             context->job->waitAllStructInterfaces(typeStruct);
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
 
             auto accessName = it.fieldAccessName;
             if (!accessName.empty())

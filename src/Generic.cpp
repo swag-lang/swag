@@ -397,11 +397,9 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // to instantiate them also (because those functions can be called by the compiler itself, not by the user)
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(match.symbolOverload->typeInfo, match.symbolOverload->typeInfo->kind);
     context->job->waitAllStructSpecialMethods(typeStruct);
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
     context->job->waitAllStructInterfaces(typeStruct);
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     // Clone original node
     auto overload   = match.symbolOverload;
@@ -589,8 +587,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
             node->typeInfo               = match.symbolOverload->typeInfo;
 
             SWAG_CHECK(instantiateDefaultGenericFunc(context));
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
         }
     }
 

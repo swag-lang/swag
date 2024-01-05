@@ -33,8 +33,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
 
     // Leave the current scope
     SWAG_CHECK(emitLeaveScopeReturn(context, nullptr, true));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     // Restore the error context, and keep error trace of current call
     if (!(context->node->semFlags & SEMFLAG_STACK_TRACE1))
@@ -87,8 +86,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
             TypeInfoPointer pt;
             pt.pointedType = returnType;
             SWAG_CHECK(emitInit(context, returnType, node->regInit, 1, nullptr, nullptr));
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
 
             if (!node->ownerInline)
                 freeRegisterRC(context, node->regInit);
@@ -125,8 +123,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
                 TypeInfoPointer pt;
                 pt.pointedType = typeArr->finalType;
                 SWAG_CHECK(emitInit(context, typeArr->finalType, node->regInit, typeArr->totalCount, nullptr, nullptr));
-                if (context->result != ContextResult::Done)
-                    return true;
+                YIELD();
 
                 freeRegisterRC(context, node->regInit);
             }
@@ -222,8 +219,7 @@ bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
     if (!(node->semFlags & SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, expr, TypeManager::concreteType(expr->typeInfo), expr->castedTypeInfo));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         node->semFlags |= SEMFLAG_CAST1;
     }
 
@@ -259,8 +255,7 @@ bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
     {
         freeRegisterRC(context, expr->resultRegisterRC);
         SWAG_CHECK(emitTryThrowExit(context, context->node));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
     }
 
     return true;
@@ -295,8 +290,7 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
     }
 
     SWAG_CHECK(emitTryThrowExit(context, tryNode));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     context->bc->out[tryNode->seekInsideJump].b.s32 = context->bc->numInstructions - tryNode->seekInsideJump - 1;
     SWAG_ASSERT(context->bc->out[tryNode->seekInsideJump].b.s32);
@@ -321,8 +315,7 @@ bool ByteCodeGenJob::emitTryCatch(ByteCodeGenContext* context)
     }
 
     SWAG_CHECK(emitTryThrowExit(context, tryNode));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     context->bc->out[tryNode->seekInsideJump].b.s32 = context->bc->numInstructions - tryNode->seekInsideJump - 1;
     SWAG_ASSERT(context->bc->out[tryNode->seekInsideJump].b.s32);

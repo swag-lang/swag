@@ -257,8 +257,7 @@ bool SemanticJob::resolveSwitchAfterExpr(SemanticContext* context)
     else
     {
         SWAG_CHECK(makeIntrinsicKindof(context, node));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
     }
 
     return true;
@@ -423,11 +422,9 @@ bool SemanticJob::resolveCase(SemanticContext* context)
                 if (typeInfo->isStruct())
                 {
                     SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opCmp, nullptr, nullptr, node->ownerSwitch->expression, rangeNode->expressionLow));
-                    if (context->result != ContextResult::Done)
-                        return true;
+                    YIELD();
                     SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opCmp, nullptr, nullptr, node->ownerSwitch->expression, rangeNode->expressionUp));
-                    if (context->result != ContextResult::Done)
-                        return true;
+                    YIELD();
                 }
                 else
                 {
@@ -448,8 +445,7 @@ bool SemanticJob::resolveCase(SemanticContext* context)
         else
         {
             SWAG_CHECK(checkIsConcreteOrType(context, oneExpression));
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
 
             // switch with an expression : compare case with the switch expression
             if (node->ownerSwitch->expression)
@@ -458,8 +454,7 @@ bool SemanticJob::resolveCase(SemanticContext* context)
                 if (typeInfo->isStruct())
                 {
                     SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opEquals, nullptr, nullptr, node->ownerSwitch->expression, oneExpression));
-                    if (context->result != ContextResult::Done)
-                        return true;
+                    YIELD();
                 }
                 else
                 {
@@ -522,8 +517,7 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
                     { return Nte(Nte1121); },
                     true);
                 SWAG_CHECK(resolveIntrinsicCountOf(context, node->expression, node->expression));
-                if (context->result != ContextResult::Done)
-                    return true;
+                YIELD();
             }
 
             SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, node->expression->typeInfo, nullptr, node->expression, CASTFLAG_TRY_COERCE));
@@ -585,8 +579,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
         auto id   = createTmpId(context, node, c.text);
         id->token = c;
         SWAG_CHECK(resolveIdentifier(context, id, RI_FOR_ZERO_GHOSTING));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
     }
 
     // Struct type : convert to a opVisit call

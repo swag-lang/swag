@@ -12,8 +12,7 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
     if (!(node->access->semFlags & SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         node->access->semFlags |= SEMFLAG_CAST1;
     }
 
@@ -45,8 +44,7 @@ bool ByteCodeGenJob::emitStringRef(ByteCodeGenContext* context)
     if (!(node->access->semFlags & SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         node->access->semFlags |= SEMFLAG_CAST1;
     }
 
@@ -69,8 +67,7 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
     if (!(node->access->semFlags & SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         node->access->semFlags |= SEMFLAG_CAST1;
     }
 
@@ -100,8 +97,7 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
     if (!(node->access->semFlags & SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         node->access->semFlags |= SEMFLAG_CAST1;
     }
 
@@ -263,8 +259,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     if (!(node->access->semFlags & SEMFLAG_CAST3))
     {
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         node->access->semFlags |= SEMFLAG_CAST3;
     }
 
@@ -513,8 +508,7 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicingUpperBound(ByteCodeGenContext* c
         job->allocateTempCallParams();
         job->allParamsTmp->childs.push_back(arrayNode);
         SWAG_CHECK(emitUserOp(context, job->allParamsTmp, nullptr, false));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         EMIT_INST1(context, ByteCodeOp::Add64byVB64, upperNode->resultRegisterRC)->b.s64 = -1;
         return true;
     }
@@ -543,16 +537,14 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
     if (!(node->lowerBound->semFlags & SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->lowerBound, node->lowerBound->typeInfo, node->lowerBound->castedTypeInfo));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         node->lowerBound->semFlags |= SEMFLAG_CAST1;
     }
 
     if (!(node->upperBound->semFlags & SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->upperBound, node->upperBound->typeInfo, node->upperBound->castedTypeInfo));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         node->upperBound->semFlags |= SEMFLAG_CAST1;
     }
 
@@ -573,8 +565,7 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
                 job->allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);
             job->allParamsTmp->childs = node->structFlatParams;
             SWAG_CHECK(emitUserOp(context, job->allParamsTmp));
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
             return true;
         }
 

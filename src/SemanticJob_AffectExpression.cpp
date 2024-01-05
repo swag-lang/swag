@@ -230,8 +230,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
 
     SWAG_CHECK(checkIsConcrete(context, left));
     SWAG_CHECK(checkIsConcreteOrType(context, right));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     SWAG_CHECK(checkIsConstAffect(context, left, right));
 
@@ -386,8 +385,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                     SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opIndexAffect, left, &symbol));
                     if (!symbol)
                     {
-                        if (context->result != ContextResult::Done)
-                            return true;
+                        YIELD();
 
                         Diagnostic diag{right, Fmt(Err(Err0225), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
                         diag.hint = Diagnostic::isType(rightTypeInfo);
@@ -405,14 +403,12 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                 if (leftTypeInfo->kind == rightTypeInfo->kind && rightTypeInfo->isSame(leftTypeInfo, CASTFLAG_CAST | CASTFLAG_FOR_AFFECT))
                 {
                     SWAG_CHECK(waitForStructUserOps(context, left));
-                    if (context->result != ContextResult::Done)
-                        return true;
+                    YIELD();
                 }
                 else if (rightTypeInfo->isInitializerList())
                 {
                     SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UNCONST | CASTFLAG_ACCEPT_PENDING));
-                    if (context->result != ContextResult::Done)
-                        return true;
+                    YIELD();
                 }
                 else
                 {
@@ -424,8 +420,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
                     }
 
                     SWAG_CHECK(resolveUserOpAffect(context, leftTypeInfo, rightTypeInfo, left, right));
-                    if (context->result != ContextResult::Done)
-                        return true;
+                    YIELD();
                 }
             }
 

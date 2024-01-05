@@ -280,8 +280,7 @@ bool SemanticJob::resolveArrayPointerSlicingUpperBound(SemanticContext* context)
     context->node = upperNode;
     SWAG_CHECK(resolveIntrinsicCountOf(context, upperNode, arrayNode));
     context->node = arrayNode;
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     if (upperNode->hasComputedValue())
     {
@@ -722,8 +721,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
         if (arrayNode->parent->parent->kind == AstNodeKind::MakePointer)
         {
             SWAG_CHECK(resolveArrayPointerDeRef(context));
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
             arrayNode->typeInfo = TypeManager::concreteType(arrayNode->typeInfo);
         }
 
@@ -1031,8 +1029,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
         SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opIndex, arrayNode->array, &symbol));
         if (!symbol)
         {
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
 
             if (arrayNode->array->token.text.empty())
             {

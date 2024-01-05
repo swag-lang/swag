@@ -170,8 +170,7 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
     {
         auto id = createTmpId(context, node, node->token.text);
         SWAG_CHECK(resolveIdentifier(context, id, RI_FOR_GHOSTING));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
     }
 
     // :opAffectConstExpr
@@ -490,15 +489,13 @@ bool SemanticJob::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl
             {
                 mpl->typeInfo = g_TypeMgr->typeInfoUndefined;
                 SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAffect, nullptr, nullptr, front, mpl, ROP_SIMPLE_CAST));
-                if (context->result != ContextResult::Done)
-                    return true;
+                YIELD();
             }
             else
             {
                 mpl->typeInfo = mpl->tryLambdaType;
                 SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opAssign, op->token.text, nullptr, front, mpl, ROP_SIMPLE_CAST));
-                if (context->result != ContextResult::Done)
-                    return true;
+                YIELD();
             }
 
             if (context->job->cacheMatches.empty() || context->job->cacheMatches.size() > 1)
@@ -764,8 +761,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
 
         SWAG_CHECK(checkIsConstExpr(context, node->typeConstraint, Err(Err0128)));
         SWAG_CHECK(evaluateConstExpression(context, node->typeConstraint));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         SWAG_ASSERT(node->typeConstraint->computedValue);
         if (!node->typeConstraint->computedValue->reg.b)
         {
@@ -886,8 +882,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             if (leftConcreteType->isInterface() && rightConcreteType->isStruct())
             {
                 context->job->waitAllStructInterfaces(rightConcreteType);
-                if (context->result != ContextResult::Done)
-                    return true;
+                YIELD();
             }
 
             auto castFlags = CASTFLAG_TRY_COERCE | CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_PTR_REF | CASTFLAG_FOR_AFFECT | CASTFLAG_FOR_VAR_INIT;
@@ -901,8 +896,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 SWAG_CHECK(TypeManager::makeCompatibles(context, node->type->typeInfo, nullptr, node->assignment, castFlags));
             }
 
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
 
             // :ConcreteRef
             if (!leftConcreteType->isPointerRef() && TypeManager::concreteType(node->assignment->typeInfo)->isPointerRef())
@@ -913,8 +907,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             if ((leftConcreteType->kind != rightConcreteType->kind) || !rightConcreteType->isSame(leftConcreteType, CASTFLAG_CAST))
             {
                 SWAG_CHECK(resolveUserOpAffect(context, leftConcreteType, rightConcreteType, node->type, node->assignment));
-                if (context->result != ContextResult::Done)
-                    return true;
+                YIELD();
 
                 // :opAffectConstExpr
                 if (symbolFlags & (OVERLOAD_VAR_STRUCT | OVERLOAD_VAR_GLOBAL | OVERLOAD_CONSTANT))
@@ -1021,8 +1014,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (lambdaExpr)
         {
             SWAG_CHECK(deduceLambdaParamTypeFrom(context, node, lambdaExpr, thisIsAGenericType));
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
         }
 
         // If this is a lambda parameter in an expression, this is fine, we will try to deduce the type
@@ -1132,8 +1124,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (node->typeInfo->isGeneric())
         {
             SWAG_CHECK(Generic::instantiateDefaultGenericVar(context, node));
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
         }
 
         // Register global variable in the list of global variables to drop if the variable is
@@ -1145,8 +1136,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             if (typeNode->isStruct() || typeNode->isArrayOfStruct())
             {
                 context->job->waitStructGeneratedAlloc(typeNode);
-                if (context->result != ContextResult::Done)
-                    return true;
+                YIELD();
                 if (typeNode->isArrayOfStruct())
                     typeNode = ((TypeInfoArray*) typeNode)->finalType;
                 TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(typeNode, TypeInfoKind::Struct);
@@ -1206,16 +1196,14 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (typeInfo->isStruct() || typeInfo->isArrayOfStruct())
         {
             SWAG_CHECK(waitForStructUserOps(context, node));
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
         }
 
         // Variable is still generic. Try to find default generic parameters to instantiate it
         if (node->typeInfo->isGeneric())
         {
             SWAG_CHECK(Generic::instantiateDefaultGenericVar(context, node));
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
         }
 
         SWAG_ASSERT(node->ownerScope);
@@ -1230,8 +1218,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(ownerFct->typeInfo, TypeInfoKind::FuncAttr);
                 auto returnType = typeFunc->concreteReturnType();
                 context->job->waitStructGenerated(returnType);
-                if (context->result != ContextResult::Done)
-                    return true;
+                YIELD();
 
                 if (!CallConv::returnStructByValue(typeFunc))
                     symbolFlags |= OVERLOAD_RETVAL;

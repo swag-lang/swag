@@ -469,8 +469,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
         paramType->computeScopedName();
         SWAG_VERIFY(paramType->scopedName == g_LangSpec->name_Swag_CompilerMsgMask, context->report({parameters, Fmt(Err(Err0804), paramType->getDisplayNameC())}));
         SWAG_CHECK(evaluateConstExpression(context, parameters));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         funcNode->parameters->flags |= AST_NO_BYTECODE;
     }
 
@@ -587,11 +586,9 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
             return context->report({funcNode, funcNode->tokenName, Fmt(Err(Err0751), funcNode->token.ctext())});
 
         SWAG_CHECK(setupFuncDeclParams(context, typeInfo, funcNode, funcNode->genericParameters, true));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         SWAG_CHECK(setupFuncDeclParams(context, typeInfo, funcNode, funcNode->parameters, false));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
     }
     else
     {
@@ -1157,8 +1154,7 @@ bool SemanticJob::resolveRetVal(SemanticContext* context)
     if (typeFct->returnType->isStruct())
     {
         context->job->waitStructGenerated(typeFct->returnType);
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
     }
 
     // If this is a simple return type, remove the retval stuff.
@@ -1385,8 +1381,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     // Check types
     auto child = node->childs[0];
     SWAG_CHECK(checkIsConcreteOrType(context, child));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     auto concreteType = TypeManager::concreteType(child->typeInfo);
 
@@ -1423,8 +1418,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     if (returnType && returnType->isStruct())
     {
         context->job->waitAllStructSpecialMethods(returnType);
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
     }
 
     // If returning retval, then returning nothing, as we will change the return parameter value in place
@@ -1438,8 +1432,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         if (returnType->isInterface())
         {
             context->job->waitAllStructInterfaces(child->typeInfo);
-            if (context->result != ContextResult::Done)
-                return true;
+            YIELD();
         }
 
         uint64_t castFlags = CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT | CASTFLAG_PTR_REF;

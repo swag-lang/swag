@@ -1135,21 +1135,16 @@ bool ByteCodeGenJob::emitStruct(ByteCodeGenContext* context)
     TypeInfoStruct* typeInfoStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
 
     generateStructAlloc(context, typeInfoStruct);
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     SWAG_CHECK(generateStruct_opInit(context, typeInfoStruct));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
     SWAG_CHECK(generateStruct_opDrop(context, typeInfoStruct));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
     SWAG_CHECK(generateStruct_opPostCopy(context, typeInfoStruct));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
     SWAG_CHECK(generateStruct_opPostMove(context, typeInfoStruct));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     auto       structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
     ScopedLock lk(structNode->mutex);
@@ -1399,8 +1394,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
     else if (!(node->count->semFlags & SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->count, node->count->typeInfo, node->count->castedTypeInfo));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         node->count->semFlags |= SEMFLAG_CAST1;
     }
 
@@ -1422,8 +1416,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
     }
 
     SWAG_CHECK(emitInit(context, pointedType, node->expression->resultRegisterRC, numToInit, node->count, node->parameters));
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     freeRegisterRC(context, node->expression);
     freeRegisterRC(context, node->count);
@@ -1463,8 +1456,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType
     {
         typeStruct = CastTypeInfo<TypeInfoStruct>(pointedType, TypeInfoKind::Struct);
         context->job->waitStructGenerated(typeStruct);
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         if (typeStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
             justClear = false;
     }
@@ -1667,44 +1659,36 @@ bool ByteCodeGenJob::emitDropCopyMove(ByteCodeGenContext* context)
     else if (!(node->count->semFlags & SEMFLAG_CAST1))
     {
         SWAG_CHECK(emitCast(context, node->count, node->count->typeInfo, node->count->castedTypeInfo));
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         node->count->semFlags |= SEMFLAG_CAST1;
     }
 
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeExpression->pointedType, TypeInfoKind::Struct);
     context->job->waitTypeCompleted(typeStruct);
-    if (context->result != ContextResult::Done)
-        return true;
+    YIELD();
 
     bool somethingToDo = false;
     switch (node->kind)
     {
     case AstNodeKind::Drop:
         generateStructAlloc(context, typeStruct);
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         generateStruct_opDrop(context, typeStruct);
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         somethingToDo = typeStruct->opDrop || typeStruct->opUserDropFct;
         break;
     case AstNodeKind::PostCopy:
         generateStructAlloc(context, typeStruct);
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         generateStruct_opPostCopy(context, typeStruct);
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         somethingToDo = typeStruct->opPostCopy || typeStruct->opUserPostCopyFct;
         break;
     case AstNodeKind::PostMove:
         generateStructAlloc(context, typeStruct);
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         generateStruct_opPostMove(context, typeStruct);
-        if (context->result != ContextResult::Done)
-            return true;
+        YIELD();
         somethingToDo = typeStruct->opPostMove || typeStruct->opUserPostMoveFct;
         break;
     default:
