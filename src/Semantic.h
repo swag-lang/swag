@@ -113,17 +113,16 @@ struct OneMatch
 
 struct SemanticContext : public JobContext
 {
+    Semantic*                         sem = nullptr;
     Vector<CastStructStructField>     castStructStructFields;
     Vector<CastCollectInterfaceField> castCollectInterfaceField;
     VectorNative<TypeInfoEnum*>       castCollectEnum;
     Set<TypeInfoEnum*>                castCollectEnumDone;
-    Semantic*                         sem               = nullptr;
     uint32_t                          castFlagsResult   = 0;
     TypeInfo*                         castErrorToType   = nullptr;
     TypeInfo*                         castErrorFromType = nullptr;
     uint64_t                          castErrorFlags    = 0;
     CastErrorType                     castErrorType     = CastErrorType::Zero;
-    bool                              forDebugger       = false;
 };
 
 struct OneOverload
@@ -621,6 +620,8 @@ struct Semantic
         return res;
     }
 
+    SemanticContext context;
+
     VectorNative<OneSymbolMatch>      cacheDependentSymbols;
     VectorNative<AlternativeScope>    cacheScopeHierarchy;
     VectorNative<AlternativeScopeVar> cacheScopeHierarchyVars;
@@ -634,13 +635,12 @@ struct Semantic
     VectorNative<OneTryMatch*>        cacheFreeTryMatch;
     VectorNative<AlternativeScope>    scopesToProcess;
     VectorNative<AstNode*>            tmpNodes;
-    SemanticContext                   context;
     Concat                            tmpConcat;
     AstIdentifierRef*                 tmpIdRef = nullptr;
-
-    AstFuncCallParam  closureFirstParam;
-    MatchResult       bestMatchResult;
-    BadSignatureInfos bestSignatureInfos;
-    SymbolOverload*   bestOverload = nullptr;
-    bool              canSpawn     = false;
+    AstFuncCallParam                  closureFirstParam;
+    MatchResult                       bestMatchResult;
+    BadSignatureInfos                 bestSignatureInfos;
+    SymbolOverload*                   bestOverload = nullptr;
+    bool                              canSpawn     = false;
+    bool                              forDebugger  = false;
 };
