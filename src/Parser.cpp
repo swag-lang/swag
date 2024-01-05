@@ -4,10 +4,8 @@
 #include "Parser.h"
 #include "Diagnostic.h"
 #include "Scoped.h"
-#include "ErrorIds.h"
 #include "JobThread.h"
 #include "TypeManager.h"
-#include "Timer.h"
 
 bool Parser::error(AstNode* node, const Utf8& msg, const char* help, const char* hint)
 {
@@ -486,15 +484,11 @@ bool Parser::generateAst()
     tokenizer.setup(context, sourceFile);
     SWAG_CHECK(eatToken());
 
-    if (!tokenizer.comment.empty())
-    {
-        // Module global comment must be put in module.swg
-        if (sourceFile->module->kind == ModuleKind::Config)
-        {
-            module->docComment = std::move(tokenizer.comment);
-        }
-    }
+    // Module global comment must be put in module.swg
+    if (!tokenizer.comment.empty() && sourceFile->module->kind == ModuleKind::Config)
+        module->docComment = std::move(tokenizer.comment);
 
+    // Parse !!!
     while (token.id != TokenId::EndOfFile)
         SWAG_CHECK(doTopLevelInstruction(sourceFile->astRoot, &dummyResult));
 

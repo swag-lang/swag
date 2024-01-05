@@ -3,9 +3,6 @@
 #include "SemanticJob.h"
 #include "ByteCodeGenJob.h"
 #include "Parser.h"
-#include "Diagnostic.h"
-#include "Report.h"
-#include "ErrorIds.h"
 #include "TypeManager.h"
 
 atomic<int> g_UniqueID;

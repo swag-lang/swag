@@ -3,7 +3,6 @@
 #include "Ast.h"
 #include "SemanticJob.h"
 #include "ByteCodeGenJob.h"
-#include "Parser.h"
 
 AstInline* Ast::newInline(SourceFile* sourceFile, AstNode* parent, Parser* parser)
 {
