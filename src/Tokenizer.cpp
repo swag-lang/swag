@@ -151,45 +151,6 @@ TokenId Tokenizer::tokenRelated(TokenId id)
     return TokenId::SymQuestion;
 }
 
-Utf8 Tokenizer::tokenToName(TokenId id)
-{
-    switch (id)
-    {
-    case TokenId::SymComma:
-        return ",";
-    case TokenId::SymColon:
-        return ":";
-    case TokenId::SymSemiColon:
-        return ";";
-    case TokenId::SymLeftCurly:
-        return "{";
-    case TokenId::SymRightCurly:
-        return "}";
-    case TokenId::SymLeftParen:
-        return "(";
-    case TokenId::SymRightParen:
-        return ")";
-    case TokenId::SymLeftSquare:
-        return "[";
-    case TokenId::SymRightSquare:
-        return "]";
-    case TokenId::SymDot:
-        return ".";
-    case TokenId::SymExclam:
-        return "!";
-    case TokenId::SymMinusGreat:
-        return "->";
-    case TokenId::SymEqual:
-        return "=";
-    case TokenId::SymVertical:
-        return "|";
-    default:
-        break;
-    }
-
-    return "???";
-}
-
 bool Tokenizer::nextToken(TokenParse& token)
 {
 #ifdef SWAG_STATS

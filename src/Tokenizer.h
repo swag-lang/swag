@@ -126,7 +126,6 @@ struct Tokenizer
     bool nextToken(TokenParse& token);
 
     static TokenId tokenRelated(TokenId id);
-    static Utf8    tokenToName(TokenId id);
 
     // clang-format off
     static bool isKeyword(TokenId id)           { return g_TokenFlags[(int) id] & TOKEN_KWD; }

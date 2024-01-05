@@ -6,6 +6,7 @@
 #include "Scoped.h"
 #include "JobThread.h"
 #include "TypeManager.h"
+#include "Naming.h"
 
 bool Parser::error(AstNode* node, const Utf8& msg, const char* help, const char* hint)
 {
@@ -168,8 +169,8 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
 
     if (token.id != id)
     {
-        Utf8       related = Tokenizer::tokenToName(id);
-        Diagnostic diag{sourceFile, token, Fmt(Err(Err1068), Tokenizer::tokenToName(id).c_str(), Tokenizer::tokenToName(id).c_str(), msg, token.ctext())};
+        Utf8       related = Naming::tokenToName(id);
+        Diagnostic diag{sourceFile, token, Fmt(Err(Err1068), Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, token.ctext())};
         auto       note             = Diagnostic::note(sourceFile, start, start, Fmt(Nte(Nte0020), related.c_str()));
         note->showMultipleCodeLines = token.startLocation.line != start.line;
         return context->report(diag, note);
@@ -209,7 +210,7 @@ bool Parser::eatToken(TokenId id, const char* msg)
     if (token.id != id)
     {
         prepareExpectTokenError();
-        Diagnostic diag{sourceFile, token, Fmt(Err(Err1048), Tokenizer::tokenToName(id).c_str(), Tokenizer::tokenToName(id).c_str(), msg, token.ctext())};
+        Diagnostic diag{sourceFile, token, Fmt(Err(Err1048), Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, token.ctext())};
         return context->report(diag);
     }
 

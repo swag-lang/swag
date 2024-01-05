@@ -1,12 +1,10 @@
 #include "pch.h"
 #include "SemanticJob.h"
 #include "Ast.h"
-#include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "ByteCode.h"
 #include "Module.h"
 #include "Report.h"
-#include "Naming.h"
 #include "Naming.h"
 
 bool SemanticJob::warnDeprecated(SemanticContext* context, AstNode* identifier)

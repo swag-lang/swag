@@ -476,3 +476,42 @@ Utf8 Naming::niceParameterRank(size_t idx)
     }
     return Fmt("parameter '%d'", idx);
 }
+
+Utf8 Naming::tokenToName(TokenId id)
+{
+    switch (id)
+    {
+    case TokenId::SymComma:
+        return ",";
+    case TokenId::SymColon:
+        return ":";
+    case TokenId::SymSemiColon:
+        return ";";
+    case TokenId::SymLeftCurly:
+        return "{";
+    case TokenId::SymRightCurly:
+        return "}";
+    case TokenId::SymLeftParen:
+        return "(";
+    case TokenId::SymRightParen:
+        return ")";
+    case TokenId::SymLeftSquare:
+        return "[";
+    case TokenId::SymRightSquare:
+        return "]";
+    case TokenId::SymDot:
+        return ".";
+    case TokenId::SymExclam:
+        return "!";
+    case TokenId::SymMinusGreat:
+        return "->";
+    case TokenId::SymEqual:
+        return "=";
+    case TokenId::SymVertical:
+        return "|";
+    default:
+        break;
+    }
+
+    return "???";
+}
