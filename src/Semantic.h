@@ -404,6 +404,17 @@ struct Semantic
     static bool preResolveSubstBreakContinue(SemanticContext* context);
     static bool preResolveIdentifierRef(SemanticContext* context);
 
+    static void waitSymbolNoLock(Job* job, SymbolName* symbol);
+    static void waitAllStructInterfacesReg(Job* job, TypeInfo* typeInfo);
+    static void waitAllStructInterfaces(Job* job, TypeInfo* typeInfo);
+    static void waitAllStructSpecialMethods(Job* job, TypeInfo* typeInfo);
+    static void waitAllStructMethods(Job* job, TypeInfo* typeInfo);
+    static void waitStructGeneratedAlloc(Job* job, TypeInfo* typeInfo);
+    static void waitStructGenerated(Job* job, TypeInfo* typeInfo);
+    static void waitOverloadCompleted(Job* job, SymbolOverload* overload);
+    static void waitFuncDeclFullResolve(Job* job, AstFuncDecl* funcDecl);
+    static void waitTypeCompleted(Job* job, TypeInfo* typeInfo);
+
     static bool resolveSubDeclRef(SemanticContext* context);
     static bool resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right);
     static bool resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right);

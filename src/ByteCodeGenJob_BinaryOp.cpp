@@ -4,6 +4,7 @@
 #include "ByteCode.h"
 #include "Ast.h"
 #include "Report.h"
+#include "Semantic.h"
 
 bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
@@ -777,7 +778,7 @@ bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams,
         if (!node->ownerFct || !node->ownerFct->mustInline())
         {
             // Need to wait for function full semantic resolve
-            context->job->waitFuncDeclFullResolve(funcDecl);
+            Semantic::waitFuncDeclFullResolve(context->job, funcDecl);
             YIELD();
             if (!(node->flags & AST_INLINED))
             {

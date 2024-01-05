@@ -4,6 +4,7 @@
 #include "ByteCode.h"
 #include "TypeManager.h"
 #include "Report.h"
+#include "Semantic.h"
 
 bool ByteCodeGenJob::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo, RegisterList& dstReg, RegisterList& srcReg, AstNode* from)
 {
@@ -116,7 +117,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->isStruct())
     {
-        context->job->waitStructGenerated(typeInfo);
+        Semantic::waitStructGenerated(context->job, typeInfo);
         YIELD();
         SWAG_CHECK(emitCopyStruct(context, r0, r1, typeInfo, from));
         return true;
@@ -124,7 +125,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->isArray())
     {
-        context->job->waitStructGenerated(typeInfo);
+        Semantic::waitStructGenerated(context->job, typeInfo);
         YIELD();
         SWAG_CHECK(emitCopyArray(context, typeInfo, r0, r1, from));
         return true;

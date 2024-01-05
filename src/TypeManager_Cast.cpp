@@ -222,7 +222,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
         {
             SWAG_ASSERT(context && context->baseJob);
             SWAG_ASSERT(context->result == ContextResult::Done);
-            context->baseJob->waitSymbolNoLock(symbol);
+            Semantic::waitSymbolNoLock(context->baseJob, symbol);
             return true;
         }
     }
@@ -333,7 +333,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
         {
             SWAG_ASSERT(context && context->baseJob);
             SWAG_ASSERT(context->result == ContextResult::Done);
-            context->baseJob->waitSymbolNoLock(symbol);
+            Semantic::waitSymbolNoLock(context->baseJob, symbol);
             return true;
         }
     }
@@ -2822,7 +2822,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
             }
         }
 
-        context->baseJob->waitOverloadCompleted(structNode->resolvedSymbolOverload);
+        Semantic::waitOverloadCompleted(context->baseJob, structNode->resolvedSymbolOverload);
         YIELD();
 
         TypeInfoParam*  foundField  = nullptr;
@@ -2913,7 +2913,7 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
         if (!(structNode->specFlags & AstStruct::SPECFLAG_HAS_USING))
             continue;
 
-        context->baseJob->waitOverloadCompleted(it.typeStruct->declNode->resolvedSymbolOverload);
+        Semantic::waitOverloadCompleted(context->baseJob, it.typeStruct->declNode->resolvedSymbolOverload);
         YIELD();
 
         for (auto field : it.typeStruct->fields)
@@ -2927,7 +2927,7 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
             if (typeStruct == it.typeStruct)
                 continue;
 
-            context->baseJob->waitAllStructInterfaces(typeStruct);
+            Semantic::waitAllStructInterfaces(context->baseJob, typeStruct);
             YIELD();
 
             auto accessName = it.fieldAccessName;
@@ -2976,7 +2976,7 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
     // We need to take care of "using" fields.
     if (fromType->isStruct() || fromType->isPointerTo(TypeInfoKind::Struct))
     {
-        context->baseJob->waitAllStructInterfaces(fromType);
+        Semantic::waitAllStructInterfaces(context->baseJob, fromType);
         if (context->result != ContextResult::Done)
         {
             SWAG_ASSERT(castFlags & CASTFLAG_ACCEPT_PENDING);

@@ -359,7 +359,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
                     ScopedLock lk1(forId->resolvedSymbolName->mutex);
                     if (forId->resolvedSymbolName->cptOverloads)
                     {
-                        context->baseJob->waitSymbolNoLock(forId->resolvedSymbolName);
+                        Semantic::waitSymbolNoLock(context->baseJob, forId->resolvedSymbolName);
                         return true;
                     }
                 }
@@ -1151,7 +1151,7 @@ bool Semantic::resolveRetVal(SemanticContext* context)
     // :WaitForPOD
     if (typeFct->returnType->isStruct())
     {
-        context->baseJob->waitStructGenerated(typeFct->returnType);
+        Semantic::waitStructGenerated(context->baseJob, typeFct->returnType);
         YIELD();
     }
 
@@ -1415,7 +1415,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
     // :WaitForPOD
     if (returnType && returnType->isStruct())
     {
-        context->baseJob->waitAllStructSpecialMethods(returnType);
+        Semantic::waitAllStructSpecialMethods(context->baseJob, returnType);
         YIELD();
     }
 
@@ -1429,7 +1429,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
         // If we are returning an interface, be sure they are defined before casting
         if (returnType->isInterface())
         {
-            context->baseJob->waitAllStructInterfaces(child->typeInfo);
+            Semantic::waitAllStructInterfaces(context->baseJob, child->typeInfo);
             YIELD();
         }
 

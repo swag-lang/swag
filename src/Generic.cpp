@@ -335,7 +335,7 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
     symbol->nodes.push_back(newNode);
 
     if (waitSymbol && context->result == ContextResult::Done)
-        job->waitSymbolNoLock(symbol);
+        Semantic::waitSymbolNoLock(job, symbol);
 
     // Run semantic on that struct/function
     auto sourceFile = context->sourceFile;
@@ -381,7 +381,7 @@ void Generic::waitForGenericParameters(SemanticContext* context, OneGenericMatch
                 continue;
         }
 
-        context->baseJob->waitOverloadCompleted(declNode->resolvedSymbolOverload);
+        Semantic::waitOverloadCompleted(context->baseJob, declNode->resolvedSymbolOverload);
         if (context->result == ContextResult::Pending)
             return;
 
@@ -397,9 +397,9 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // Be sure all methods have been registered, because we need opDrop & co to be known, as we need
     // to instantiate them also (because those functions can be called by the compiler itself, not by the user)
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(match.symbolOverload->typeInfo, match.symbolOverload->typeInfo->kind);
-    context->baseJob->waitAllStructSpecialMethods(typeStruct);
+    Semantic::waitAllStructSpecialMethods(context->baseJob, typeStruct);
     YIELD();
-    context->baseJob->waitAllStructInterfaces(typeStruct);
+    Semantic::waitAllStructInterfaces(context->baseJob, typeStruct);
     YIELD();
 
     // Clone original node

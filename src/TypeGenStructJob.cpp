@@ -5,6 +5,7 @@
 #include "Generic.h"
 #include "Module.h"
 #include "ModuleManager.h"
+#include "Semantic.h"
 
 bool TypeGenStructJob::computeStruct()
 {
@@ -260,19 +261,19 @@ JobResult TypeGenStructJob::execute()
     SWAG_ASSERT(typeInfo->isStruct() || typeInfo->isInterface());
     auto realType = CastTypeInfo<TypeInfoStruct>(typeInfo, typeInfo->kind);
 
-    waitTypeCompleted(typeInfo);
+    Semantic::waitTypeCompleted(this, typeInfo);
     if (baseContext->result != ContextResult::Done)
         return JobResult::KeepJobAlive;
 
     if (!(cflags & GEN_EXPORTED_TYPE_PARTIAL))
     {
-        waitAllStructInterfaces(realType);
+        Semantic::waitAllStructInterfaces(this, realType);
         if (baseContext->result != ContextResult::Done)
             return JobResult::KeepJobAlive;
-        waitAllStructMethods(realType);
+        Semantic::waitAllStructMethods(this, realType);
         if (baseContext->result != ContextResult::Done)
             return JobResult::KeepJobAlive;
-        waitStructGeneratedAlloc(realType);
+        Semantic::waitStructGeneratedAlloc(this, realType);
         if (baseContext->result != ContextResult::Done)
             return JobResult::KeepJobAlive;
     }

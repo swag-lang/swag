@@ -1015,7 +1015,7 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
         if (!one.typeStruct)
             continue;
 
-        context->job->waitStructGenerated(one.typeStruct);
+        Semantic::waitStructGenerated(context->job, one.typeStruct);
         YIELD();
     }
 

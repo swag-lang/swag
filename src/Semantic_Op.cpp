@@ -432,7 +432,7 @@ bool Semantic::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStr
             if (!typeS)
                 continue;
 
-            context->baseJob->waitAllStructSpecialMethods(typeS);
+            Semantic::waitAllStructSpecialMethods(context->baseJob, typeS);
             YIELD();
 
             SWAG_CHECK(hasUserOp(context, name, typeS, field, result));
@@ -464,7 +464,7 @@ bool Semantic::waitUserOp(SemanticContext* context, const Utf8& name, AstNode* l
     auto       symbol = *result;
     ScopedLock lkn(symbol->mutex);
     if (symbol->cptOverloads)
-        context->baseJob->waitSymbolNoLock(symbol);
+        Semantic::waitSymbolNoLock(context->baseJob, symbol);
 
     return true;
 }

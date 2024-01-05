@@ -567,7 +567,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         if (!typeVar->isStruct())
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-        context->job->waitStructGenerated(typeStructVar);
+        Semantic::waitStructGenerated(context->job, typeStructVar);
         YIELD();
         SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPECOP_GENERATED);
         generateStruct_opInit(context, typeStructVar);
@@ -847,7 +847,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         if (!typeVar->isStruct())
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-        context->job->waitStructGenerated(typeStructVar);
+        Semantic::waitStructGenerated(context->job, typeStructVar);
         YIELD();
         SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPECOP_GENERATED);
         generateStruct_opDrop(context, typeStructVar);
@@ -959,7 +959,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         if (!typeVar->isStruct())
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-        context->job->waitStructGenerated(typeStructVar);
+        Semantic::waitStructGenerated(context->job, typeStructVar);
         YIELD();
         SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPECOP_GENERATED);
         generateStruct_opPostCopy(context, typeStructVar);
@@ -1069,7 +1069,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         if (!typeVar->isStruct())
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-        context->job->waitStructGenerated(typeStructVar);
+        Semantic::waitStructGenerated(context->job, typeStructVar);
         YIELD();
         SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPECOP_GENERATED);
         generateStruct_opPostMove(context, typeStructVar);
@@ -1443,7 +1443,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType
     if (pointedType->isStruct())
     {
         typeStruct = CastTypeInfo<TypeInfoStruct>(pointedType, TypeInfoKind::Struct);
-        context->job->waitStructGenerated(typeStruct);
+        Semantic::waitStructGenerated(context->job, typeStruct);
         YIELD();
         if (typeStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
             justClear = false;
@@ -1652,7 +1652,7 @@ bool ByteCodeGenJob::emitDropCopyMove(ByteCodeGenContext* context)
     }
 
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeExpression->pointedType, TypeInfoKind::Struct);
-    context->job->waitTypeCompleted(typeStruct);
+    Semantic::waitTypeCompleted(context->job, typeStruct);
     YIELD();
 
     bool somethingToDo = false;

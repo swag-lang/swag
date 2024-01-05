@@ -720,7 +720,7 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
     auto exprTypeInfo = TypeManager::concretePtrRef(exprNode->typeInfo);
     if (typeNode->typeInfo->isInterface() && exprTypeInfo->isStruct())
     {
-        context->baseJob->waitAllStructInterfaces(exprTypeInfo);
+        Semantic::waitAllStructInterfaces(context->baseJob, exprTypeInfo);
         YIELD();
     }
 

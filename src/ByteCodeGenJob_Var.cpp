@@ -4,6 +4,7 @@
 #include "TypeManager.h"
 #include "Module.h"
 #include "Ast.h"
+#include "Semantic.h"
 
 bool ByteCodeGenJob::emitLocalVarDeclBefore(ByteCodeGenContext* context)
 {
@@ -53,7 +54,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
     auto typeInfo = TypeManager::concreteType(resolved->typeInfo, CONCRETE_FORCEALIAS);
     bool retVal   = resolved->flags & OVERLOAD_RETVAL;
 
-    context->job->waitStructGenerated(typeInfo);
+    Semantic::waitStructGenerated(context->job, typeInfo);
     YIELD();
 
     // Struct initialization

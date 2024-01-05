@@ -181,7 +181,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
             auto typeChild = TypeManager::concreteType(child->typeInfo);
             if (typeChild->isStruct())
             {
-                context->job->waitStructGenerated(typeChild);
+                Semantic::waitStructGenerated(context->job, typeChild);
                 YIELD();
             }
         }

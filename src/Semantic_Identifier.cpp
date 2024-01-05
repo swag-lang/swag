@@ -1170,7 +1170,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             auto parentStructNode = identifier->identifierRef()->startScope->owner;
             if (parentStructNode->resolvedSymbolOverload)
             {
-                context->baseJob->waitOverloadCompleted(parentStructNode->resolvedSymbolOverload);
+                Semantic::waitOverloadCompleted(context->baseJob, parentStructNode->resolvedSymbolOverload);
                 YIELD();
             }
         }
@@ -1355,7 +1355,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 
         // Now we need to be sure that the function is now complete
         // If not, we need to wait for it
-        context->baseJob->waitOverloadCompleted(overload);
+        Semantic::waitOverloadCompleted(context->baseJob, overload);
         YIELD();
 
         if (identifier->token.text == g_LangSpec->name_opInit)
@@ -1489,7 +1489,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                 if (!identifier->ownerFct || !identifier->ownerFct->mustInline() || forceInline)
                 {
                     // Need to wait for function full semantic resolve
-                    context->baseJob->waitFuncDeclFullResolve(funcDecl);
+                    Semantic::waitFuncDeclFullResolve(context->baseJob, funcDecl);
                     YIELD();
 
                     // First pass, we inline the function.
@@ -1802,7 +1802,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                 ScopedLock ls(symbol->mutex);
                 if ((symbol->kind != SymbolKind::Function || symbol->cptOverloadsInit != symbol->overloads.size()) && symbol->cptOverloads)
                 {
-                    job->waitSymbolNoLock(symbol);
+                    Semantic::waitSymbolNoLock(job, symbol);
                     return true;
                 }
             }
@@ -2683,7 +2683,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
             ScopedLock ls(symbol->mutex);
             if (symbol->cptOverloads)
             {
-                context->baseJob->waitSymbolNoLock(symbol);
+                Semantic::waitSymbolNoLock(context->baseJob, symbol);
                 return true;
             }
         }
@@ -3108,14 +3108,14 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
             // If we dereference something, be sure the owner has been completed
             if (identifierRef->startScope)
             {
-                job->waitTypeCompleted(identifierRef->startScope->owner->typeInfo);
+                Semantic::waitTypeCompleted(job, identifierRef->startScope->owner->typeInfo);
                 YIELD();
             }
 
             // Same if dereference is implied by a using var
             for (auto& sv : scopeHierarchyVars)
             {
-                job->waitTypeCompleted(sv.scope->owner->typeInfo);
+                Semantic::waitTypeCompleted(job, sv.scope->owner->typeInfo);
                 YIELD();
             }
 
@@ -3551,7 +3551,7 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext* context, SymbolMa
 
             if (typeStruct)
             {
-                context->baseJob->waitAllStructInterfacesReg(oneParam->typeInfo);
+                Semantic::waitAllStructInterfacesReg(context->baseJob, oneParam->typeInfo);
                 YIELD();
             }
 
@@ -4575,7 +4575,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
             // Can we make a partial match ?
             if (needToCompleteSymbol(context, identifier, symbol, true))
             {
-                job->waitSymbolNoLock(symbol);
+                Semantic::waitSymbolNoLock(job, symbol);
                 return true;
             }
 
@@ -4583,7 +4583,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
             SWAG_ASSERT(symbol->overloads.size() == 1);
             if (!(symbol->overloads[0]->flags & OVERLOAD_INCOMPLETE))
             {
-                job->waitSymbolNoLock(symbol);
+                Semantic::waitSymbolNoLock(job, symbol);
                 return true;
             }
         }

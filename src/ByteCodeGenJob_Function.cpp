@@ -54,7 +54,7 @@ bool ByteCodeGenJob::emitFuncCallParam(ByteCodeGenContext* context)
     // :WaitInterfaceReg
     if (node->castedTypeInfo)
     {
-        context->job->waitAllStructInterfaces(node->castedTypeInfo);
+        Semantic::waitAllStructInterfaces(context->job, node->castedTypeInfo);
         YIELD();
     }
 
@@ -92,7 +92,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             returnExpression->semFlags |= SEMFLAG_CAST1;
         }
 
-        context->job->waitStructGenerated(exprType);
+        Semantic::waitStructGenerated(context->job, exprType);
         YIELD();
 
         //

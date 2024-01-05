@@ -878,7 +878,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             // Cast from struct to interface : need to wait for all interfaces to be registered
             if (leftConcreteType->isInterface() && rightConcreteType->isStruct())
             {
-                context->baseJob->waitAllStructInterfaces(rightConcreteType);
+                Semantic::waitAllStructInterfaces(context->baseJob, rightConcreteType);
                 YIELD();
             }
 
@@ -1090,7 +1090,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     {
         if (isCompilerConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_LOCAL))
         {
-            context->baseJob->waitTypeCompleted(typeInfo);
+            Semantic::waitTypeCompleted(context->baseJob, typeInfo);
             YIELD();
         }
     }
@@ -1131,7 +1131,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             auto typeNode = node->typeInfo;
             if (typeNode->isStruct() || typeNode->isArrayOfStruct())
             {
-                context->baseJob->waitStructGeneratedAlloc(typeNode);
+                Semantic::waitStructGeneratedAlloc(context->baseJob, typeNode);
                 YIELD();
                 if (typeNode->isArrayOfStruct())
                     typeNode = ((TypeInfoArray*) typeNode)->finalType;
@@ -1213,7 +1213,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 auto ownerFct   = getFunctionForReturn(node);
                 auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(ownerFct->typeInfo, TypeInfoKind::FuncAttr);
                 auto returnType = typeFunc->concreteReturnType();
-                context->baseJob->waitStructGenerated(returnType);
+                Semantic::waitStructGenerated(context->baseJob, returnType);
                 YIELD();
 
                 if (!CallConv::returnStructByValue(typeFunc))

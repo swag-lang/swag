@@ -5,9 +5,10 @@
 #include "Module.h"
 #include "Ast.h"
 #include "TypeManager.h"
-#include "Context.h"
 #include "LanguageSpec.h"
 #include "Report.h"
+#include "Semantic.h"
+#include "Context.h"
 
 void ByteCodeGenJob::release()
 {
@@ -431,7 +432,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags, Byt
             if (flags & ASKBC_WAIT_SEMANTIC_RESOLVED)
             {
                 SWAG_ASSERT(job);
-                job->waitFuncDeclFullResolve(funcDecl);
+                Semantic::waitFuncDeclFullResolve(job, funcDecl);
                 if (job->baseContext->result != ContextResult::Done)
                     return;
             }
@@ -452,7 +453,7 @@ void ByteCodeGenJob::askForByteCode(Job* job, AstNode* node, uint32_t flags, Byt
         if (flags & ASKBC_WAIT_SEMANTIC_RESOLVED)
         {
             SWAG_ASSERT(funcDecl);
-            job->waitFuncDeclFullResolve(funcDecl);
+            Semantic::waitFuncDeclFullResolve(job, funcDecl);
             if (job->baseContext->result != ContextResult::Done)
                 return;
         }
@@ -602,7 +603,7 @@ JobResult ByteCodeGenJob::execute()
             {
                 auto typeStruct = CastTypeInfo<TypeInfoStruct>(originalNode->typeInfo, TypeInfoKind::Struct);
                 context.result  = ContextResult::Done;
-                waitAllStructInterfaces(typeStruct);
+                Semantic::waitAllStructInterfaces(this, typeStruct);
                 if (context.result == ContextResult::Pending)
                     return JobResult::KeepJobAlive;
                 SWAG_ASSERT(typeStruct->interfaces.size() == 1);
@@ -616,7 +617,7 @@ JobResult ByteCodeGenJob::execute()
             {
                 auto typeStruct = CastTypeInfo<TypeInfoStruct>(originalNode->typeInfo, TypeInfoKind::Struct);
                 context.result  = ContextResult::Done;
-                waitAllStructInterfaces(typeStruct);
+                Semantic::waitAllStructInterfaces(this, typeStruct);
                 if (context.result == ContextResult::Pending)
                     return JobResult::KeepJobAlive;
                 SWAG_ASSERT(typeStruct->interfaces.size() == 1);
