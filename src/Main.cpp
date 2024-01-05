@@ -5,12 +5,10 @@
 #include "Os.h"
 #include "ErrorIds.h"
 #include "Report.h"
-#include "Diagnostic.h"
-#include "Profiler.h"
 #include "CommandLine.h"
-#include "Statistics.h"
-#include "SourceFile.h"
-#include "Module.h"
+#ifdef SWAG_STATS
+#include "Profiler.h"
+#endif
 
 bool g_Exiting = false;
 

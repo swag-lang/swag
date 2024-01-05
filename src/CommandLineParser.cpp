@@ -1,11 +1,9 @@
-
 #include "pch.h"
 #include "CommandLine.h"
 #include "CommandLineParser.h"
 #include "Log.h"
 #include "ErrorIds.h"
 #include "Report.h"
-#include "Path.h"
 
 void CommandLineParser::setup(CommandLine* cmdLine)
 {
