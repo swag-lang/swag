@@ -9842,7 +9842,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 28-12-2023 with <a href="https://swag-lang.org/index.php">swag</a> 0.27.0</div>
+Generated on 05-01-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.28.0</div>
 </div>
 </div>
 </div>
