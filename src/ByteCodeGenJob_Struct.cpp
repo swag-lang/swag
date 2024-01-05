@@ -555,8 +555,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         SWAG_ASSERT(!(typeInfoStruct->opUserInitFct->content->flags & AST_NO_SEMANTIC));
 
         askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserInitFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
     }
 
     // Be sure sub structs are generated too
@@ -569,12 +568,10 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         context->job->waitStructGenerated(typeStructVar);
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
         SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPECOP_GENERATED);
         generateStruct_opInit(context, typeStructVar);
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
     }
 
     auto sourceFile = context->sourceFile;
@@ -838,8 +835,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
 
         needDrop = true;
         askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserDropFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
     }
 
     // Be sure sub structs are generated too
@@ -852,12 +848,10 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         context->job->waitStructGenerated(typeStructVar);
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
         SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPECOP_GENERATED);
         generateStruct_opDrop(context, typeStructVar);
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
         if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
             needDrop = true;
         if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
@@ -953,8 +947,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
 
         needPostCopy = true;
         askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostCopyFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
     }
 
     // Be sure sub structs are generated too
@@ -967,12 +960,10 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         context->job->waitStructGenerated(typeStructVar);
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
         SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPECOP_GENERATED);
         generateStruct_opPostCopy(context, typeStructVar);
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
         if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
             needPostCopy = true;
         if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
@@ -1066,8 +1057,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
 
         needPostMove = true;
         askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostMoveFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
     }
 
     // Be sure sub structs are generated too
@@ -1080,12 +1070,10 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         context->job->waitStructGenerated(typeStructVar);
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
         SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPECOP_GENERATED);
         generateStruct_opPostMove(context, typeStructVar);
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
         if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
             needPostMove = true;
         if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
