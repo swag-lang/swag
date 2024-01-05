@@ -307,8 +307,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
         {
             auto child = typeNode->childs[i];
             SWAG_CHECK(evaluateConstExpression(context, child));
-            if (context->result == ContextResult::Pending)
-                return true;
+            YIELD();
             if (child->hasComputedValue())
                 child->flags |= AST_NO_BYTECODE;
         }
@@ -722,8 +721,7 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     if (typeNode->typeInfo->isInterface() && exprTypeInfo->isStruct())
     {
         context->job->waitAllStructInterfaces(exprTypeInfo);
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
     }
 
     uint32_t castFlags = CASTFLAG_EXPLICIT | CASTFLAG_ACCEPT_PENDING;
@@ -732,8 +730,7 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     if (node->specFlags & AstCast::SPECFLAG_OVERFLOW)
         castFlags |= CASTFLAG_CAN_OVERFLOW;
     SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, nullptr, exprNode, castFlags));
-    if (context->result == ContextResult::Pending)
-        return true;
+    YIELD();
 
     node->typeInfo       = typeNode->typeInfo;
     node->toCastTypeInfo = typeNode->typeInfo;

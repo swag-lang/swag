@@ -18,8 +18,7 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
     {
         auto front = node->childs.front();
         SWAG_CHECK(evaluateConstExpression(context, front));
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
         SWAG_CHECK(checkIsConstExpr(context, front->hasComputedValue(), front, Err(Err0248), node->token.text));
         SWAG_VERIFY(front->typeInfo->isString(), context->report({front, Fmt(Err(Err0249), node->token.ctext(), front->typeInfo->getDisplayNameC())}));
         node->typeInfo = g_TypeMgr->typeInfoBool;
@@ -59,8 +58,7 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
     {
         auto front = node->childs.front();
         SWAG_CHECK(evaluateConstExpression(context, front));
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
         SWAG_CHECK(checkIsConstExpr(context, front->hasComputedValue(), front, Err(Err0248), node->token.text));
         SWAG_VERIFY(front->typeInfo->isString(), context->report({front, Fmt(Err(Err0249), node->token.ctext(), front->typeInfo->getDisplayNameC())}));
         auto tag       = g_Workspace->hasTag(front->computedValue->text);
@@ -533,8 +531,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
         SWAG_VERIFY(!(typeInfo->isTuple()), context->report({expression, Err(Err0796)}));
         node->typeInfo = typeInfo;
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opData, nullptr, nullptr, node, nullptr));
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
         node->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
         if (!node->byteCodeFct)
             node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;

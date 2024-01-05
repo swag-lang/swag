@@ -680,8 +680,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
         {
             auto toType = oneMatch->solvedParameters[i]->typeInfo;
             SWAG_CHECK(TypeManager::makeCompatibles(context, toType, nullptr, params[i], castFlags));
-            if (context->result == ContextResult::Pending)
-                return true;
+            YIELD();
 
             // :ConcreteRef
             if (params[i]->typeInfo->isPointerRef() && !toType->isPointerRef())

@@ -191,8 +191,7 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
         overload->computedValue.storageOffset = 0;
 
         SWAG_CHECK(evaluateConstExpression(context, node));
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
 
         node->flags |= AST_NO_BYTECODE;
         node->assignment->flags |= AST_NO_BYTECODE;
@@ -798,14 +797,12 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         else if (!(node->flags & AST_FROM_GENERIC) || !(node->semFlags & SEMFLAG_ASSIGN_COMPUTED))
         {
             SWAG_CHECK(checkIsConcreteOrType(context, node->assignment));
-            if (context->result == ContextResult::Pending)
-                return true;
+            YIELD();
 
             if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_FUNC_PARAM) || (node->assignment->flags & AST_CONST_EXPR))
             {
                 SWAG_CHECK(evaluateConstExpression(context, node->assignment));
-                if (context->result == ContextResult::Pending)
-                    return true;
+                YIELD();
                 if (symbolFlags & OVERLOAD_VAR_GLOBAL)
                     node->assignment->flags |= AST_NO_BYTECODE;
             }
@@ -1094,8 +1091,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
         if (isCompilerConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_LOCAL))
         {
             context->job->waitTypeCompleted(typeInfo);
-            if (context->result == ContextResult::Pending)
-                return true;
+            YIELD();
         }
     }
 

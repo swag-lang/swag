@@ -532,8 +532,7 @@ bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
         SWAG_CHECK(resolveArrayPointerRef(context));
     else
         SWAG_CHECK(resolveArrayPointerDeRef(context));
-    if (context->result == ContextResult::Pending)
-        return true;
+    YIELD();
 
     if (!(node->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DREF))
         node->inheritAndFlag1(AST_CONST_EXPR);

@@ -1170,8 +1170,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             if (parentStructNode->resolvedSymbolOverload)
             {
                 context->job->waitOverloadCompleted(parentStructNode->resolvedSymbolOverload);
-                if (context->result == ContextResult::Pending)
-                    return true;
+                YIELD();
             }
         }
 
@@ -1356,8 +1355,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
         // Now we need to be sure that the function is now complete
         // If not, we need to wait for it
         context->job->waitOverloadCompleted(overload);
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
 
         if (identifier->token.text == g_LangSpec->name_opInit)
             return context->report({identifier, identifier->token, Err(Err0100)});
@@ -1864,8 +1862,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
             forStruct     = true;
             auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Struct);
             typeInfo->match(oneOverload.symMatchContext);
-            if (context->result == ContextResult::Pending)
-                return true;
+            YIELD();
         }
         else if (rawTypeInfo->isInterface())
         {
@@ -2961,8 +2958,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
                 VectorNative<std::pair<AstNode*, TypeInfoEnum*>> hasEnum;
                 VectorNative<SymbolOverload*>                    testedOver;
                 SWAG_CHECK(findEnumTypeInContext(context, identifierRef, typeEnum, hasEnum, testedOver));
-                if (context->result == ContextResult::Pending)
-                    return true;
+                YIELD();
 
                 // More than one match : ambiguous
                 if (typeEnum.size() > 1)
@@ -3110,16 +3106,14 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
             if (identifierRef->startScope)
             {
                 job->waitTypeCompleted(identifierRef->startScope->owner->typeInfo);
-                if (context->result == ContextResult::Pending)
-                    return true;
+                YIELD();
             }
 
             // Same if dereference is implied by a using var
             for (auto& sv : scopeHierarchyVars)
             {
                 job->waitTypeCompleted(sv.scope->owner->typeInfo);
-                if (context->result == ContextResult::Pending)
-                    return true;
+                YIELD();
             }
 
             forceEnd  = false;
@@ -3279,8 +3273,7 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
                 // Be sure we have a missing parameter in order to try ufcs
                 auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
                 bool canTry   = canTryUfcs(context, typeFunc, node->callParameters, dependentVar, false);
-                if (context->result == ContextResult::Pending)
-                    return true;
+                YIELD();
                 if (canTry)
                 {
                     identifierRef->resolvedSymbolOverload = dependentVar->resolvedSymbolOverload;
@@ -3372,8 +3365,7 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
                 SWAG_ASSERT(identifierRef->previousResolvedNode);
                 auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
                 canTry        = canTryUfcs(context, typeFunc, node->callParameters, identifierRef->previousResolvedNode, true);
-                if (context->result == ContextResult::Pending)
-                    return true;
+                YIELD();
                 if (canTry)
                     *ufcsFirstParam = identifierRef->previousResolvedNode;
                 SWAG_VERIFY(node->callParameters, context->report({node, Fmt(Err(Err0020), typeFunc->getDisplayNameC())}));
@@ -3557,8 +3549,7 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
             if (typeStruct)
             {
                 context->job->waitAllStructInterfacesReg(oneParam->typeInfo);
-                if (context->result == ContextResult::Pending)
-                    return true;
+                YIELD();
             }
 
             // Variadic parameter must be the last one
@@ -4662,8 +4653,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
             AstNode* dependentVar     = nullptr;
             AstNode* dependentVarLeaf = nullptr;
             SWAG_CHECK(getUsingVar(context, identifierRef, identifier, symbolOverload, &dependentVar, &dependentVarLeaf));
-            if (context->result == ContextResult::Pending)
-                return true;
+            YIELD();
 
             // Get the ufcs first parameter if we can
             AstNode* ufcsFirstParam = nullptr;
@@ -4673,8 +4663,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
             if (!identifier->callParameters || identifier->callParameters->childs.empty() || !(identifier->callParameters->childs.front()->flags & AST_TO_UFCS))
             {
                 SWAG_CHECK(getUfcs(context, identifierRef, identifier, symbolOverload, &ufcsFirstParam));
-                if (context->result == ContextResult::Pending)
-                    return true;
+                YIELD();
                 if ((identifier->semFlags & SEMFLAG_FORCE_UFCS) && !ufcsFirstParam)
                     continue;
             }

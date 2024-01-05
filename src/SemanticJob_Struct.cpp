@@ -16,14 +16,11 @@ bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
 {
     SymbolName* symbol = nullptr;
     SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opPostCopy, node, &symbol));
-    if (context->result == ContextResult::Pending)
-        return true;
+    YIELD();
     SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opPostMove, node, &symbol));
-    if (context->result == ContextResult::Pending)
-        return true;
+    YIELD();
     SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opDrop, node, &symbol));
-    if (context->result == ContextResult::Pending)
-        return true;
+    YIELD();
     return true;
 }
 

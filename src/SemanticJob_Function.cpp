@@ -1002,8 +1002,7 @@ bool SemanticJob::resolveCaptureFuncCallParams(SemanticContext* context)
         if (typeField->isStruct())
         {
             SWAG_CHECK(waitForStructUserOps(context, c));
-            if (context->result == ContextResult::Pending)
-                return true;
+            YIELD();
             auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeField, TypeInfoKind::Struct);
             if (!typeStruct->isPlainOldData())
                 return context->report({c, Fmt(Err(Err0884), c->token.ctext())});
@@ -1093,8 +1092,7 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     if (checkForConcrete)
     {
         SWAG_CHECK(checkIsConcreteOrType(context, child));
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
         node->typeInfo = child->typeInfo;
         node->flags |= AST_R_VALUE;
     }
@@ -1111,8 +1109,7 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     if (checkForConcrete & !(node->flags & AST_OPAFFECT_CAST))
     {
         SWAG_CHECK(evaluateConstExpression(context, node));
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
     }
 
     node->resolvedSymbolName     = child->resolvedSymbolName;
@@ -1471,8 +1468,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     if (returnType && (returnType->isStruct() || returnType->isArrayOfStruct()))
     {
         SWAG_CHECK(waitForStructUserOps(context, funcNode->returnType));
-        if (context->result == ContextResult::Pending)
-            return true;
+        YIELD();
     }
 
     // :opAffectParam
