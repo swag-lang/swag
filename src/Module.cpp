@@ -1060,16 +1060,12 @@ bool Module::compileString(const Utf8& text)
     if (!parser.constructEmbeddedAst(text, parent, ip->node, CompilerAstKind::TopLevelInstruction, true))
         return false;
 
-    auto job        = Allocator::alloc<SemanticJob>();
-    job->sourceFile = files[0];
-    job->module     = this;
+    auto dependentJob = g_RunContext->callerContext->baseJob;
+    while (dependentJob && dependentJob->dependentJob)
+        dependentJob = dependentJob->dependentJob;
 
-    job->dependentJob = g_RunContext->callerContext->baseJob;
-    while (job->dependentJob && job->dependentJob->dependentJob)
-        job->dependentJob = job->dependentJob->dependentJob;
-
-    job->nodes.push_back(parent);
-    g_ThreadMgr.addJob(job);
+    SWAG_ASSERT(files[0]->module == this);
+    SemanticJob::newJob(dependentJob, files[0], parent, true);
     return true;
 }
 

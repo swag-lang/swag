@@ -12,12 +12,8 @@ JobResult ModuleSemanticJob::execute()
     {
         if (file->buildPass < BuildPass::Semantic)
             continue;
-
-        auto job          = Allocator::alloc<SemanticJob>();
-        job->sourceFile   = file;
-        job->module       = module;
-        job->dependentJob = dependentJob;
-        job->nodes.push_back(file->astRoot);
+        SWAG_ASSERT(file->module == module);
+        auto job = SemanticJob::newJob(dependentJob, file, file->astRoot, false);
         jobsToAdd.push_back(job);
     }
 

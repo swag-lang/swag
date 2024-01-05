@@ -1,9 +1,6 @@
 #include "pch.h"
 #include "SemanticJob.h"
-#include "Semantic.h"
-#include "SourceFile.h"
 #include "ThreadManager.h"
-#include "AstNode.h"
 #include "Module.h"
 #include "Timer.h"
 
@@ -107,12 +104,9 @@ JobResult SemanticJob::execute()
                     // in registerFuncSymbol by another thread
                     if (!(node->flags & AST_NO_SEMANTIC) && !(node->semFlags & SEMFLAG_FILE_JOB_PASS))
                     {
-                        auto job                     = Allocator::alloc<SemanticJob>();
-                        job->sourceFile              = sourceFile;
-                        job->module                  = module;
-                        job->dependentJob            = dependentJob;
+                        SWAG_ASSERT(sourceFile->module == module);
+                        auto job                     = newJob(dependentJob, sourceFile, node, false);
                         job->sem.context.errCxtSteps = sem.context.errCxtSteps;
-                        job->nodes.push_back(node);
                         g_ThreadMgr.addJob(job);
                     }
 
@@ -126,12 +120,9 @@ JobResult SemanticJob::execute()
                         break;
                     if (canDoSem)
                     {
-                        auto job                     = Allocator::alloc<SemanticJob>();
-                        job->sourceFile              = sourceFile;
-                        job->module                  = module;
-                        job->dependentJob            = dependentJob;
+                        SWAG_ASSERT(sourceFile->module == module);
+                        auto job                     = newJob(dependentJob, sourceFile, node, false);
                         job->sem.context.errCxtSteps = sem.context.errCxtSteps;
-                        job->nodes.push_back(node);
                         g_ThreadMgr.addJob(job);
                     }
 
@@ -153,12 +144,9 @@ JobResult SemanticJob::execute()
                 case AstNodeKind::Impl:
                     if (canDoSem)
                     {
-                        auto job                     = Allocator::alloc<SemanticJob>();
-                        job->sourceFile              = sourceFile;
-                        job->module                  = module;
-                        job->dependentJob            = dependentJob;
+                        SWAG_ASSERT(sourceFile->module == module);
+                        auto job                     = newJob(dependentJob, sourceFile, node, false);
                         job->sem.context.errCxtSteps = sem.context.errCxtSteps;
-                        job->nodes.push_back(node);
                         g_ThreadMgr.addJob(job);
                     }
 

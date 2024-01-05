@@ -932,12 +932,7 @@ void Semantic::launchResolveSubDecl(JobContext* context, AstNode* node)
     node->flags &= ~AST_NO_SEMANTIC;
     if (node->semFlags & SEMFLAG_FILE_JOB_PASS)
     {
-        auto job          = Allocator::alloc<SemanticJob>();
-        job->sourceFile   = context->sourceFile;
-        job->module       = context->sourceFile->module;
-        job->dependentJob = context->baseJob->dependentJob;
-        job->nodes.push_back(node);
-        g_ThreadMgr.addJob(job);
+        SemanticJob::newJob(context->baseJob->dependentJob, context->sourceFile, node, true);
     }
 }
 

@@ -4222,11 +4222,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
         // It's safe to create a job with the content as it has been fully evaluated.
         // It's NOT safe for the function itself as the job that deals with it can be
         // still running
-        auto job          = Allocator::alloc<SemanticJob>();
-        job->sourceFile   = context->sourceFile;
-        job->module       = context->sourceFile->module;
-        job->dependentJob = context->baseJob->dependentJob;
-        job->nodes.push_back(funcDecl->content);
+        auto job = SemanticJob::newJob(context->baseJob->dependentJob, context->sourceFile, funcDecl->content, false);
         job->sem.context.errCxtSteps.insert(job->sem.context.errCxtSteps.begin(),
                                             context->sem->context.errCxtSteps.begin(),
                                             context->sem->context.errCxtSteps.end());
