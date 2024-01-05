@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "Ast.h"
 #include "LanguageSpec.h"
 #include "ByteCode.h"
@@ -7,7 +7,7 @@
 #include "Report.h"
 #include "Naming.h"
 
-bool SemanticJob::warnDeprecated(SemanticContext* context, AstNode* identifier)
+bool Semantic::warnDeprecated(SemanticContext* context, AstNode* identifier)
 {
     auto node = identifier->resolvedSymbolOverload->node;
     if (!(node->attributeFlags & ATTRIBUTE_DEPRECATED))
@@ -66,7 +66,7 @@ bool SemanticJob::warnDeprecated(SemanticContext* context, AstNode* identifier)
     }
 }
 
-bool SemanticJob::warnUnusedFunction(Module* moduleToGen, ByteCode* one)
+bool Semantic::warnUnusedFunction(Module* moduleToGen, ByteCode* one)
 {
     if (moduleToGen->kind == ModuleKind::Test)
         return true;
@@ -97,7 +97,7 @@ bool SemanticJob::warnUnusedFunction(Module* moduleToGen, ByteCode* one)
     return Report::report(diag);
 }
 
-bool SemanticJob::warnUnusedVariables(SemanticContext* context, Scope* scope)
+bool Semantic::warnUnusedVariables(SemanticContext* context, Scope* scope)
 {
     auto node = context->node;
     if (!node->sourceFile || !node->sourceFile->module)
@@ -222,7 +222,7 @@ bool SemanticJob::warnUnusedVariables(SemanticContext* context, Scope* scope)
     return isOk;
 }
 
-bool SemanticJob::warnUnreachableCode(SemanticContext* context)
+bool Semantic::warnUnreachableCode(SemanticContext* context)
 {
     auto node = context->node;
 

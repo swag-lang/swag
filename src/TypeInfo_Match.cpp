@@ -2,7 +2,7 @@
 #include "TypeManager.h"
 #include "Ast.h"
 #include "Module.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "Generic.h"
 #include "LanguageSpec.h"
 
@@ -283,7 +283,7 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
                 auto  it1     = context.genericReplaceValues.find(cstName);
                 if (it1 != context.genericReplaceValues.end())
                 {
-                    if (!SemanticJob::valueEqualsTo(it1->second, cv, symbolArray->sizeNode->typeInfo, 0))
+                    if (!Semantic::valueEqualsTo(it1->second, cv, symbolArray->sizeNode->typeInfo, 0))
                     {
                         context.badSignatureInfos.badNode               = callParameter;
                         context.badSignatureInfos.badGenMatch           = cstName;
@@ -722,7 +722,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                         auto it = context.genericReplaceValues.find(symbolParameter->name);
                         if (it != context.genericReplaceValues.end() && it->second)
                         {
-                            if (symbolParameter->value && !SemanticJob::valueEqualsTo(it->second, symbolParameter->value, symbolParameter->typeInfo, 0))
+                            if (symbolParameter->value && !Semantic::valueEqualsTo(it->second, symbolParameter->value, symbolParameter->typeInfo, 0))
                             {
                                 context.result = MatchResult::NotEnoughGenericParameters;
                                 return;
@@ -843,9 +843,9 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                     if (!firstChild->hasComputedValue())
                     {
                         uint32_t     storageOffset  = UINT32_MAX;
-                        DataSegment* storageSegment = SemanticJob::getConstantSegFromContext(firstChild);
+                        DataSegment* storageSegment = Semantic::getConstantSegFromContext(firstChild);
                         firstChild->setFlagsValueIsComputed();
-                        SemanticJob::reserveAndStoreToSegment(context.semContext, storageSegment, storageOffset, firstChild->computedValue, firstChild->typeInfo, firstChild);
+                        Semantic::reserveAndStoreToSegment(context.semContext, storageSegment, storageOffset, firstChild->computedValue, firstChild->typeInfo, firstChild);
 
                         auto typeList                             = CastTypeInfo<TypeInfoList>(firstChild->typeInfo, TypeInfoKind::TypeListArray);
                         firstChild->computedValue->reg.u64        = typeList->subTypes.size();
@@ -890,7 +890,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                     auto it1 = context.genericReplaceValues.find(symbolParameter->name);
                     if (it1 != context.genericReplaceValues.end())
                     {
-                        if (!SemanticJob::valueEqualsTo(it1->second, callParameter))
+                        if (!Semantic::valueEqualsTo(it1->second, callParameter))
                         {
                             context.badSignatureInfos.badNode               = callParameter;
                             context.badSignatureInfos.badGenMatch           = symbolParameter->name;
@@ -929,7 +929,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                  symbolParameter->typeInfo->isStruct() ||
                  callParameter->typeInfo->isAlias() ||
                  !(symbolParameter->flags & TYPEINFOPARAM_DEFINED_VALUE) ||
-                 (SemanticJob::valueEqualsTo(symbolParameter->value, callParameter)))
+                 (Semantic::valueEqualsTo(symbolParameter->value, callParameter)))
         {
             auto it = context.genericReplaceTypes.find(symbolParameter->typeInfo->name);
             if (it == context.genericReplaceTypes.end())

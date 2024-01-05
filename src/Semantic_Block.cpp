@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "Ast.h"
 #include "AstOutput.h"
 #include "TypeManager.h"
@@ -10,7 +10,7 @@
 #include "LanguageSpec.h"
 #include "Parser.h"
 
-bool SemanticJob::resolveIf(SemanticContext* context)
+bool Semantic::resolveIf(SemanticContext* context)
 {
     auto module = context->sourceFile->module;
     auto node   = CastAst<AstIf>(context->node, AstNodeKind::If);
@@ -44,7 +44,7 @@ bool SemanticJob::resolveIf(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveWhile(SemanticContext* context)
+bool Semantic::resolveWhile(SemanticContext* context)
 {
     auto module = context->sourceFile->module;
     auto node   = CastAst<AstWhile>(context->node, AstNodeKind::While);
@@ -83,7 +83,7 @@ bool SemanticJob::resolveWhile(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveInlineBefore(SemanticContext* context)
+bool Semantic::resolveInlineBefore(SemanticContext* context)
 {
     auto node = CastAst<AstInline>(context->node, AstNodeKind::Inline);
 
@@ -177,7 +177,7 @@ bool SemanticJob::resolveInlineBefore(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveInlineAfter(SemanticContext* context)
+bool Semantic::resolveInlineAfter(SemanticContext* context)
 {
     auto node = CastAst<AstInline>(context->node, AstNodeKind::Inline);
     auto fct  = node->func;
@@ -201,21 +201,21 @@ bool SemanticJob::resolveInlineAfter(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveForBefore(SemanticContext* context)
+bool Semantic::resolveForBefore(SemanticContext* context)
 {
     auto node                        = CastAst<AstFor>(context->node, AstNodeKind::For);
     node->ownerScope->startStackSize = node->ownerScope->parentScope->startStackSize;
     return true;
 }
 
-bool SemanticJob::resolveLoopBefore(SemanticContext* context)
+bool Semantic::resolveLoopBefore(SemanticContext* context)
 {
     auto node                        = CastAst<AstLoop>(context->node, AstNodeKind::Loop);
     node->ownerScope->startStackSize = node->ownerScope->parentScope->startStackSize;
     return true;
 }
 
-bool SemanticJob::resolveFor(SemanticContext* context)
+bool Semantic::resolveFor(SemanticContext* context)
 {
     auto node = CastAst<AstFor>(context->node, AstNodeKind::For);
     SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
@@ -236,7 +236,7 @@ bool SemanticJob::resolveFor(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveSwitchAfterExpr(SemanticContext* context)
+bool Semantic::resolveSwitchAfterExpr(SemanticContext* context)
 {
     auto node       = context->node;
     auto switchNode = CastAst<AstSwitch>(node->parent, AstNodeKind::Switch);
@@ -263,7 +263,7 @@ bool SemanticJob::resolveSwitchAfterExpr(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveSwitch(SemanticContext* context)
+bool Semantic::resolveSwitch(SemanticContext* context)
 {
     auto node = CastAst<AstSwitch>(context->node, AstNodeKind::Switch);
 
@@ -407,7 +407,7 @@ bool SemanticJob::resolveSwitch(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveCase(SemanticContext* context)
+bool Semantic::resolveCase(SemanticContext* context)
 {
     auto node = CastAst<AstSwitchCase>(context->node, AstNodeKind::SwitchCase);
     for (auto oneExpression : node->expressions)
@@ -497,7 +497,7 @@ bool SemanticJob::resolveCase(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveLoop(SemanticContext* context)
+bool Semantic::resolveLoop(SemanticContext* context)
 {
     auto module = context->sourceFile->module;
     auto node   = CastAst<AstLoop>(context->node, AstNodeKind::Loop);
@@ -560,9 +560,9 @@ bool SemanticJob::resolveLoop(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveVisit(SemanticContext* context)
+bool Semantic::resolveVisit(SemanticContext* context)
 {
-    auto job        = context->job;
+    auto job        = context->baseJob;
     auto sourceFile = context->sourceFile;
     auto node       = CastAst<AstVisit>(context->node, AstNodeKind::Visit);
 
@@ -663,7 +663,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     Utf8 content;
 
     // Get back the expression string
-    auto& concat = context->job->tmpConcat;
+    auto& concat = context->sem->tmpConcat;
     concat.init(1024);
     AstOutput::OutputContext outputContext;
     SWAG_CHECK(AstOutput::outputNode(outputContext, concat, node->expression));
@@ -962,7 +962,7 @@ bool SemanticJob::resolveVisit(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveIndex(SemanticContext* context)
+bool Semantic::resolveIndex(SemanticContext* context)
 {
     auto node = context->node;
 
@@ -987,7 +987,7 @@ bool SemanticJob::resolveIndex(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::preResolveSubstBreakContinue(SemanticContext* context)
+bool Semantic::preResolveSubstBreakContinue(SemanticContext* context)
 {
     auto node = CastAst<AstSubstBreakContinue>(context->node, AstNodeKind::SubstBreakContinue);
 
@@ -999,7 +999,7 @@ bool SemanticJob::preResolveSubstBreakContinue(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveBreak(SemanticContext* context)
+bool Semantic::resolveBreak(SemanticContext* context)
 {
     auto node = CastAst<AstBreakContinue>(context->node, AstNodeKind::Break);
 
@@ -1021,7 +1021,7 @@ bool SemanticJob::resolveBreak(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveUnreachable(SemanticContext* context)
+bool Semantic::resolveUnreachable(SemanticContext* context)
 {
     auto node = context->node;
     SWAG_CHECK(warnUnreachableCode(context));
@@ -1029,7 +1029,7 @@ bool SemanticJob::resolveUnreachable(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveFallThrough(SemanticContext* context)
+bool Semantic::resolveFallThrough(SemanticContext* context)
 {
     auto node = CastAst<AstBreakContinue>(context->node, AstNodeKind::FallThrough);
     SWAG_VERIFY(node->ownerBreakable && node->ownerBreakable->kind == AstNodeKind::Switch, context->report({node, Err(Err0633)}));
@@ -1053,7 +1053,7 @@ bool SemanticJob::resolveFallThrough(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveContinue(SemanticContext* context)
+bool Semantic::resolveContinue(SemanticContext* context)
 {
     auto node = CastAst<AstBreakContinue>(context->node, AstNodeKind::Continue);
     SWAG_VERIFY(node->ownerBreakable, context->report({node, Err(Err0637)}));
@@ -1070,7 +1070,7 @@ bool SemanticJob::resolveContinue(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveScopeBreakable(SemanticContext* context)
+bool Semantic::resolveScopeBreakable(SemanticContext* context)
 {
     auto node = CastAst<AstScopeBreakable>(context->node, AstNodeKind::ScopeBreakable);
     node->block->setBcNotifBefore(ByteCodeGenJob::emitLabelBeforeBlock);

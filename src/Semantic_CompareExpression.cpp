@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "TypeManager.h"
 #include "ByteCodeGenJob.h"
 #include "Module.h"
@@ -8,7 +8,7 @@
 #include "LanguageSpec.h"
 #include "Ast.h"
 
-bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right)
+bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node          = context->node;
     auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
@@ -124,7 +124,7 @@ bool SemanticJob::resolveCompOpEqual(SemanticContext* context, AstNode* left, As
     return true;
 }
 
-bool SemanticJob::resolveCompOp3Way(SemanticContext* context, AstNode* left, AstNode* right)
+bool Semantic::resolveCompOp3Way(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node         = context->node;
     auto leftTypeInfo = left->typeInfo;
@@ -204,7 +204,7 @@ bool SemanticJob::resolveCompOp3Way(SemanticContext* context, AstNode* left, Ast
     return true;
 }
 
-bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, AstNode* right)
+bool Semantic::resolveCompOpLower(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node         = context->node;
     auto leftTypeInfo = left->typeInfo;
@@ -275,7 +275,7 @@ bool SemanticJob::resolveCompOpLower(SemanticContext* context, AstNode* left, As
     return true;
 }
 
-bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, AstNode* right)
+bool Semantic::resolveCompOpGreater(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node         = context->node;
     auto leftTypeInfo = left->typeInfo;
@@ -345,7 +345,7 @@ bool SemanticJob::resolveCompOpGreater(SemanticContext* context, AstNode* left, 
     return true;
 }
 
-bool SemanticJob::resolveCompareExpression(SemanticContext* context)
+bool Semantic::resolveCompareExpression(SemanticContext* context)
 {
     auto node  = CastAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
     auto left  = node->childs[0];

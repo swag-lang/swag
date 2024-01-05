@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
 #include "TypeManager.h"
 #include "LanguageSpec.h"
 #include "ErrorIds.h"
 
-bool SemanticJob::checkIsConstExpr(JobContext* context, bool test, AstNode* expression, const Utf8& errMsg, const Utf8& errParam)
+bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* expression, const Utf8& errMsg, const Utf8& errParam)
 {
     if (test)
         return true;
@@ -45,12 +45,12 @@ bool SemanticJob::checkIsConstExpr(JobContext* context, bool test, AstNode* expr
     return context->report(diag, note);
 }
 
-bool SemanticJob::checkIsConstExpr(JobContext* context, AstNode* expression, const Utf8& errMsg, const Utf8& errParam)
+bool Semantic::checkIsConstExpr(JobContext* context, AstNode* expression, const Utf8& errMsg, const Utf8& errParam)
 {
     return checkIsConstExpr(context, expression->flags & AST_CONST_EXPR, expression, errMsg, errParam);
 }
 
-bool SemanticJob::resolveExplicitNoInit(SemanticContext* context)
+bool Semantic::resolveExplicitNoInit(SemanticContext* context)
 {
     auto node = context->node;
     node->parent->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
@@ -59,7 +59,7 @@ bool SemanticJob::resolveExplicitNoInit(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNode* node)
+bool Semantic::computeExpressionListTupleType(SemanticContext* context, AstNode* node)
 {
     for (auto child : node->childs)
     {
@@ -110,7 +110,7 @@ bool SemanticJob::computeExpressionListTupleType(SemanticContext* context, AstNo
     return true;
 }
 
-bool SemanticJob::resolveExpressionListTuple(SemanticContext* context)
+bool Semantic::resolveExpressionListTuple(SemanticContext* context)
 {
     auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
     SWAG_CHECK(computeExpressionListTupleType(context, node));
@@ -130,7 +130,7 @@ bool SemanticJob::resolveExpressionListTuple(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
+bool Semantic::resolveExpressionListArray(SemanticContext* context)
 {
     auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
@@ -178,7 +178,7 @@ bool SemanticJob::resolveExpressionListArray(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::evaluateConstExpression(SemanticContext* context, AstNode* node)
+bool Semantic::evaluateConstExpression(SemanticContext* context, AstNode* node)
 {
     if ((node->flags & AST_CONST_EXPR) &&
         !node->typeInfo->isListArray() &&
@@ -193,7 +193,7 @@ bool SemanticJob::evaluateConstExpression(SemanticContext* context, AstNode* nod
     return true;
 }
 
-bool SemanticJob::evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2)
+bool Semantic::evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2)
 {
     SWAG_CHECK(evaluateConstExpression(context, node1));
     YIELD();
@@ -202,7 +202,7 @@ bool SemanticJob::evaluateConstExpression(SemanticContext* context, AstNode* nod
     return true;
 }
 
-bool SemanticJob::evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2, AstNode* node3)
+bool Semantic::evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2, AstNode* node3)
 {
     SWAG_CHECK(evaluateConstExpression(context, node1));
     YIELD();
@@ -213,7 +213,7 @@ bool SemanticJob::evaluateConstExpression(SemanticContext* context, AstNode* nod
     return true;
 }
 
-bool SemanticJob::resolveConditionalOp(SemanticContext* context)
+bool Semantic::resolveConditionalOp(SemanticContext* context)
 {
     auto node = context->node;
     SWAG_ASSERT(node->childs.size() == 3);
@@ -286,7 +286,7 @@ bool SemanticJob::resolveConditionalOp(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
+bool Semantic::resolveNullConditionalOp(SemanticContext* context)
 {
     auto node = context->node;
     SWAG_ASSERT(node->childs.size() >= 2);
@@ -373,7 +373,7 @@ bool SemanticJob::resolveNullConditionalOp(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveDefer(SemanticContext* context)
+bool Semantic::resolveDefer(SemanticContext* context)
 {
     auto node         = CastAst<AstDefer>(context->node, AstNodeKind::Defer);
     node->byteCodeFct = ByteCodeGenJob::emitDefer;
@@ -385,7 +385,7 @@ bool SemanticJob::resolveDefer(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveRange(SemanticContext* context)
+bool Semantic::resolveRange(SemanticContext* context)
 {
     auto node = CastAst<AstRange>(context->node, AstNodeKind::Range);
     SWAG_CHECK(checkIsConcrete(context, node->expressionLow));

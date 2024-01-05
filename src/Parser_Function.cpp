@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Ast.h"
 #include "Scoped.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "TypeManager.h"
 #include "ByteCodeGenJob.h"
 #include "Module.h"
@@ -124,7 +124,7 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
         while (true)
         {
             auto param         = Ast::newNode<AstFuncCallParam>(this, AstNodeKind::FuncCallParam, sourceFile, callParams);
-            param->semanticFct = SemanticJob::resolveFuncCallParam;
+            param->semanticFct = Semantic::resolveFuncCallParam;
             param->token       = token;
             AstNode* paramExpression;
 
@@ -364,7 +364,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             if (paramNode->assignment && paramNode->type)
             {
                 paramNode->type->allocateExtension(ExtensionKind::Semantic);
-                paramNode->type->extSemantic()->semanticAfterFct = SemanticJob::resolveVarDeclAfterType;
+                paramNode->type->extSemantic()->semanticAfterFct = Semantic::resolveVarDeclAfterType;
             }
         }
 
@@ -588,9 +588,9 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 {
     auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent);
     *result               = funcNode;
-    funcNode->semanticFct = SemanticJob::resolveFuncDecl;
+    funcNode->semanticFct = Semantic::resolveFuncDecl;
     funcNode->allocateExtension(ExtensionKind::Semantic);
-    funcNode->extSemantic()->semanticAfterFct = SemanticJob::sendCompilerMsgFuncDecl;
+    funcNode->extSemantic()->semanticAfterFct = Semantic::sendCompilerMsgFuncDecl;
 
     if (tokenizer.comment.length())
     {
@@ -823,7 +823,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     // Return type
     auto typeNode         = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclType, sourceFile, funcNode);
     funcNode->returnType  = typeNode;
-    typeNode->semanticFct = SemanticJob::resolveFuncDeclType;
+    typeNode->semanticFct = Semantic::resolveFuncDeclType;
     if (!funcForCompiler)
     {
         if (token.id == TokenId::SymMinusGreat)
@@ -898,13 +898,13 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
             if (funcNode->specFlags & AstFuncDecl::SPECFLAG_THROW)
             {
                 auto node         = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Try, sourceFile, funcNode);
-                node->semanticFct = SemanticJob::resolveTryBlock;
+                node->semanticFct = Semantic::resolveTryBlock;
                 node->addSpecFlags(AstTryCatchAssume::SPECFLAG_GENERATED | AstTryCatchAssume::SPECFLAG_BLOCK);
                 funcNode->content = node;
 
                 ScopedTryCatchAssume sc(this, (AstTryCatchAssume*) node);
                 auto                 returnNode = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, node);
-                returnNode->semanticFct         = SemanticJob::resolveReturn;
+                returnNode->semanticFct         = Semantic::resolveReturn;
                 funcNode->addSpecFlags(AstFuncDecl::SPECFLAG_SHORT_LAMBDA);
                 SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE, &dummyResult));
             }
@@ -913,7 +913,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 
                 auto stmt               = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, funcNode);
                 auto returnNode         = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, stmt);
-                returnNode->semanticFct = SemanticJob::resolveReturn;
+                returnNode->semanticFct = Semantic::resolveReturn;
                 funcNode->content       = returnNode;
                 funcNode->addSpecFlags(AstFuncDecl::SPECFLAG_SHORT_LAMBDA);
                 SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE, &dummyResult));
@@ -932,7 +932,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
             if (funcNode->specFlags & AstFuncDecl::SPECFLAG_THROW)
             {
                 auto node         = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Try, sourceFile, funcNode);
-                node->semanticFct = SemanticJob::resolveTryBlock;
+                node->semanticFct = Semantic::resolveTryBlock;
                 node->addSpecFlags(AstTryCatchAssume::SPECFLAG_GENERATED | AstTryCatchAssume::SPECFLAG_BLOCK);
                 funcNode->content = node;
 
@@ -961,7 +961,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
             {
                 auto node         = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Try, sourceFile, funcNode);
                 funcNode->content = node; // :AutomaticTryContent
-                node->semanticFct = SemanticJob::resolveTryBlock;
+                node->semanticFct = Semantic::resolveTryBlock;
                 node->addSpecFlags(AstTryCatchAssume::SPECFLAG_GENERATED | AstTryCatchAssume::SPECFLAG_BLOCK);
                 ScopedTryCatchAssume sc(this, (AstTryCatchAssume*) node);
                 SWAG_CHECK(doCurlyStatement(node, &resStmt));
@@ -976,7 +976,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
 
         newScope->owner = resStmt;
         resStmt->allocateExtension(ExtensionKind::Semantic);
-        resStmt->extSemantic()->semanticAfterFct = SemanticJob::resolveScopedStmtAfter;
+        resStmt->extSemantic()->semanticAfterFct = Semantic::resolveScopedStmtAfter;
         resStmt->setBcNotifAfter(ByteCodeGenJob::emitLeaveScope);
     }
 
@@ -987,7 +987,7 @@ bool Parser::doReturn(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, parent);
     *result           = node;
-    node->semanticFct = SemanticJob::resolveReturn;
+    node->semanticFct = Semantic::resolveReturn;
 
     // Return value
     SWAG_CHECK(eatToken());
@@ -1003,7 +1003,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
 {
     auto funcNode         = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, parent);
     *result               = funcNode;
-    funcNode->semanticFct = SemanticJob::resolveFuncDecl;
+    funcNode->semanticFct = Semantic::resolveFuncDecl;
     funcNode->flags |= AST_GENERATED;
 
     int id               = g_UniqueID.fetch_add(1);
@@ -1025,7 +1025,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
         auto capture      = Ast::newFuncCallParams(sourceFile, funcNode, this);
         capture->ownerFct = funcNode;
         Ast::removeFromParent(capture);
-        capture->semanticFct        = SemanticJob::resolveCaptureFuncCallParams;
+        capture->semanticFct        = Semantic::resolveCaptureFuncCallParams;
         funcNode->captureParameters = capture;
 
         SWAG_CHECK(eatToken());
@@ -1048,14 +1048,14 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
                 if (token.id == TokenId::SymAmpersand)
                 {
                     parentId              = Ast::newNode<AstMakePointer>(this, AstNodeKind::MakePointer, sourceFile, capture);
-                    parentId->semanticFct = SemanticJob::resolveMakePointer;
+                    parentId->semanticFct = Semantic::resolveMakePointer;
                     eatToken();
                     byRef = true;
                 }
                 else if (token.id == TokenId::KwdRef)
                 {
                     parentId              = Ast::newNode<AstMakePointer>(this, AstNodeKind::MakePointer, sourceFile, parentId);
-                    parentId->semanticFct = SemanticJob::resolveMakePointer;
+                    parentId->semanticFct = Semantic::resolveMakePointer;
                     parentId->addSpecFlags(AstMakePointer::SPECFLAG_TOREF);
                     eatToken();
                     byRef = true;
@@ -1114,7 +1114,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
     // Return type
     auto typeNode         = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclType, sourceFile, funcNode);
     funcNode->returnType  = typeNode;
-    typeNode->semanticFct = SemanticJob::resolveFuncDeclType;
+    typeNode->semanticFct = Semantic::resolveFuncDeclType;
     if (token.id == TokenId::SymMinusGreat)
     {
         // Do not accept a specified return type if lambda parameters are deduced
@@ -1141,7 +1141,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
         {
             SWAG_CHECK(eatToken());
             auto returnNode         = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, funcNode);
-            returnNode->semanticFct = SemanticJob::resolveReturn;
+            returnNode->semanticFct = Semantic::resolveReturn;
             funcNode->content       = returnNode;
             funcNode->addSpecFlags(AstFuncDecl::SPECFLAG_SHORT_LAMBDA);
             SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE, &dummyResult));
@@ -1216,7 +1216,7 @@ bool Parser::doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** r
     auto exprNode = Ast::newNode<AstMakePointer>(this, AstNodeKind::MakePointerLambda, sourceFile, parent);
     exprNode->inheritTokenLocation(lambda);
     exprNode->lambda      = lambdaDecl;
-    exprNode->semanticFct = SemanticJob::resolveMakePointerLambda;
+    exprNode->semanticFct = Semantic::resolveMakePointerLambda;
 
     if (lambdaDecl->captureParameters)
     {
@@ -1241,11 +1241,11 @@ bool Parser::doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** r
         block->inheritTokenLocation(lambdaDecl->captureParameters);
         block->flags |= AST_GENERATED;
         auto exprList         = Ast::newNode<AstExpressionList>(this, AstNodeKind::ExpressionList, sourceFile, block);
-        exprList->semanticFct = SemanticJob::resolveExpressionListTuple;
+        exprList->semanticFct = Semantic::resolveExpressionListTuple;
         exprList->addSpecFlags(AstExpressionList::SPECFLAG_FOR_TUPLE | AstExpressionList::SPECFLAG_FOR_CAPTURE);
         exprList->inheritTokenLocation(lambdaDecl->captureParameters);
         block->assignment = exprList;
-        SemanticJob::setVarDeclResolve(block);
+        Semantic::setVarDeclResolve(block);
 
         for (auto c : lambdaDecl->captureParameters->childs)
         {

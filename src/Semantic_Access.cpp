@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "Ast.h"
 #include "Naming.h"
 #include "Report.h"
 
-bool SemanticJob::canHaveGlobalAccess(AstNode* node)
+bool Semantic::canHaveGlobalAccess(AstNode* node)
 {
     switch (node->kind)
     {
@@ -23,7 +23,7 @@ bool SemanticJob::canHaveGlobalAccess(AstNode* node)
     }
 }
 
-bool SemanticJob::canInheritAccess(AstNode* node)
+bool Semantic::canInheritAccess(AstNode* node)
 {
     if (!node->parent)
         return false;
@@ -49,7 +49,7 @@ bool SemanticJob::canInheritAccess(AstNode* node)
     return true;
 }
 
-void SemanticJob::doInheritAccess(AstNode* forNode, AstNode* node)
+void Semantic::doInheritAccess(AstNode* forNode, AstNode* node)
 {
     // Access for a tuple definition is only defined by the content
     if (forNode->typeInfo && forNode->typeInfo->isTuple())
@@ -71,14 +71,14 @@ void SemanticJob::doInheritAccess(AstNode* forNode, AstNode* node)
     }
 }
 
-void SemanticJob::inheritAccess(AstNode* node)
+void Semantic::inheritAccess(AstNode* node)
 {
     if (!canInheritAccess(node))
         return;
     doInheritAccess(node->parent, node);
 }
 
-uint64_t SemanticJob::attributeToAccess(uint64_t attribute)
+uint64_t Semantic::attributeToAccess(uint64_t attribute)
 {
     uint64_t result = 0;
     if (attribute & ATTRIBUTE_PRIVATE)
@@ -90,7 +90,7 @@ uint64_t SemanticJob::attributeToAccess(uint64_t attribute)
     return result;
 }
 
-void SemanticJob::setIdentifierAccess(AstIdentifier* identifier, SymbolOverload* overload)
+void Semantic::setIdentifierAccess(AstIdentifier* identifier, SymbolOverload* overload)
 {
     if (!overload->node)
         return;
@@ -106,7 +106,7 @@ void SemanticJob::setIdentifierAccess(AstIdentifier* identifier, SymbolOverload*
         identifier->semFlags |= overload->node->semFlags & SEMFLAG_ACCESS_MASK;
 }
 
-void SemanticJob::setDefaultAccess(AstNode* node)
+void Semantic::setDefaultAccess(AstNode* node)
 {
     if (!canHaveGlobalAccess(node))
         return;
@@ -160,7 +160,7 @@ static AstNode* getErrorCulprit(AstNode* n, AstNode** onNode)
 {
     if (!n)
         return nullptr;
-    if (!SemanticJob::canInheritAccess(n))
+    if (!Semantic::canInheritAccess(n))
         return nullptr;
 
     if (n->kind == AstNodeKind::FuncDeclType)
@@ -207,7 +207,7 @@ static AstNode* getErrorCulprit(AstNode* n, AstNode** onNode)
     return nullptr;
 }
 
-bool SemanticJob::checkAccess(JobContext* context, AstNode* node)
+bool Semantic::checkAccess(JobContext* context, AstNode* node)
 {
     if (!canHaveGlobalAccess(node))
         return true;

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Ast.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "Scoped.h"
 #include "TypeManager.h"
 #include "ErrorIds.h"
@@ -10,7 +10,7 @@ bool Parser::doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeV
 {
     auto node         = Ast::newNode<AstTypeLambda>(this, AstNodeKind::TypeLambda, sourceFile, parent);
     *result           = node;
-    node->semanticFct = SemanticJob::resolveTypeLambdaClosure;
+    node->semanticFct = Semantic::resolveTypeLambdaClosure;
 
     if (inTypeVarDecl)
     {
@@ -262,7 +262,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
 
                     // Used to automatically solve enums
                     typeExpr->allocateExtension(ExtensionKind::Semantic);
-                    typeExpr->extSemantic()->semanticAfterFct = SemanticJob::resolveVarDeclAfterType;
+                    typeExpr->extSemantic()->semanticAfterFct = Semantic::resolveVarDeclAfterType;
 
                     // If we did not have specified a name, then this was not a type, but a name
                     // ex: func(x = 1)
@@ -320,7 +320,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
     structNode->flags |= AST_INTERNAL;
     structNode->originalParent = parent;
     structNode->allocateExtension(ExtensionKind::Semantic);
-    structNode->extSemantic()->semanticBeforeFct = SemanticJob::preResolveGeneratedStruct;
+    structNode->extSemantic()->semanticBeforeFct = Semantic::preResolveGeneratedStruct;
     structNode->addSpecFlags(AstStruct::SPECFLAG_ANONYMOUS);
     if (isUnion)
         structNode->addSpecFlags(AstStruct::SPECFLAG_UNION);
@@ -328,7 +328,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
     auto contentNode    = Ast::newNode<AstNode>(this, AstNodeKind::TupleContent, sourceFile, structNode);
     structNode->content = contentNode;
     contentNode->allocateExtension(ExtensionKind::Semantic);
-    contentNode->extSemantic()->semanticBeforeFct = SemanticJob::preResolveStructContent;
+    contentNode->extSemantic()->semanticBeforeFct = Semantic::preResolveStructContent;
 
     // Name
     Utf8 name = sourceFile->scopeFile->name + "_tuple_";
@@ -613,7 +613,7 @@ bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
     {
         auto node         = Ast::newTypeExpression(sourceFile, parent, this);
         *result           = node;
-        node->semanticFct = SemanticJob::resolveRetVal;
+        node->semanticFct = Semantic::resolveRetVal;
         node->flags |= AST_NO_BYTECODE_CHILDS;
         node->typeFlags |= TYPEFLAG_IS_RETVAL;
 
@@ -652,7 +652,7 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstCast>(this, AstNodeKind::Cast, sourceFile, parent);
     *result           = node;
-    node->semanticFct = SemanticJob::resolveExplicitCast;
+    node->semanticFct = Semantic::resolveExplicitCast;
     SWAG_CHECK(eatToken());
 
     // Cast modifiers
@@ -667,7 +667,7 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
     if (mdfFlags & MODIFIER_BIT)
     {
         node->addSpecFlags(AstCast::SPECFLAG_BIT);
-        node->semanticFct = SemanticJob::resolveExplicitBitCast;
+        node->semanticFct = Semantic::resolveExplicitBitCast;
     }
 
     if ((mdfFlags & MODIFIER_BIT) && (mdfFlags & MODIFIER_OVERFLOW))
@@ -693,7 +693,7 @@ bool Parser::doAutoCast(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstCast>(this, AstNodeKind::AutoCast, sourceFile, parent);
     *result           = node;
-    node->semanticFct = SemanticJob::resolveExplicitAutoCast;
+    node->semanticFct = Semantic::resolveExplicitAutoCast;
 
     SWAG_CHECK(eatToken());
     SWAG_CHECK(doUnaryExpression(node, EXPR_FLAG_NONE, &dummyResult));

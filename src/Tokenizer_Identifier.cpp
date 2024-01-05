@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "LanguageSpec.h"
 #include "ErrorIds.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 
 bool Tokenizer::doIdentifier(TokenParse& token)
 {
@@ -48,9 +48,9 @@ bool Tokenizer::doIdentifier(TokenParse& token)
             }
 
             Vector<Utf8> result;
-            SemanticJob::findClosestMatches(token.text, searchList, result);
+            Semantic::findClosestMatches(token.text, searchList, result);
             if (result.size())
-                return errorContext->report(diag, Diagnostic::note(SemanticJob::findClosestMatchesMsg(token.text, result)));
+                return errorContext->report(diag, Diagnostic::note(Semantic::findClosestMatchesMsg(token.text, result)));
 
             return errorContext->report(diag);
         }
@@ -69,9 +69,9 @@ bool Tokenizer::doIdentifier(TokenParse& token)
         }
 
         Vector<Utf8> result;
-        SemanticJob::findClosestMatches(token.text, searchList, result);
+        Semantic::findClosestMatches(token.text, searchList, result);
         if (result.size())
-            return errorContext->report(diag, Diagnostic::note(SemanticJob::findClosestMatchesMsg(token.text, result)));
+            return errorContext->report(diag, Diagnostic::note(Semantic::findClosestMatchesMsg(token.text, result)));
 
         return errorContext->report(diag);
     }

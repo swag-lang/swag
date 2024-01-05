@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "ByteCodeGenJob.h"
 #include "Module.h"
 #include "TypeManager.h"
@@ -10,7 +10,7 @@
 #include "Ast.h"
 #include "Naming.h"
 
-bool SemanticJob::getDigitHexa(SemanticContext* context, const SourceLocation& startLoc, const char* pzs, const char** _pz, int& result, const char* errMsg)
+bool Semantic::getDigitHexa(SemanticContext* context, const SourceLocation& startLoc, const char* pzs, const char** _pz, int& result, const char* errMsg)
 {
     auto node = context->node;
     auto pz   = *_pz;
@@ -33,7 +33,7 @@ bool SemanticJob::getDigitHexa(SemanticContext* context, const SourceLocation& s
     return true;
 }
 
-bool SemanticJob::processLiteralString(SemanticContext* context)
+bool Semantic::processLiteralString(SemanticContext* context)
 {
     auto node = CastAst<AstLiteral>(context->node, AstNodeKind::Literal);
     if (node->literalType != LiteralType::TT_STRING_ESCAPE &&
@@ -161,7 +161,7 @@ bool SemanticJob::processLiteralString(SemanticContext* context)
     return true;
 }
 
-Utf8 SemanticJob::checkLiteralValue(ComputedValue& computedValue, LiteralType& literalType, Register& literalValue, TypeInfo* typeSuffix, bool negApplied)
+Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& literalType, Register& literalValue, TypeInfo* typeSuffix, bool negApplied)
 {
     if (negApplied)
     {
@@ -366,7 +366,7 @@ Utf8 SemanticJob::checkLiteralValue(ComputedValue& computedValue, LiteralType& l
     return "";
 }
 
-bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
+bool Semantic::resolveLiteralSuffix(SemanticContext* context)
 {
     auto node = context->node;
 
@@ -400,7 +400,7 @@ bool SemanticJob::resolveLiteralSuffix(SemanticContext* context)
     return Report::internalError(context->node, "resolveLiteralSuffix, invalid token");
 }
 
-bool SemanticJob::resolveLiteral(SemanticContext* context)
+bool Semantic::resolveLiteral(SemanticContext* context)
 {
     auto node       = CastAst<AstLiteral>(context->node, AstNodeKind::Literal);
     auto sourceFile = context->sourceFile;

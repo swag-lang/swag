@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Ast.h"
 #include "Scoped.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "Module.h"
 #include "Naming.h"
 #include "TypeManager.h"
@@ -10,7 +10,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
 {
     auto implNode         = Ast::newNode<AstImpl>(this, AstNodeKind::Impl, sourceFile, parent);
     *result               = implNode;
-    implNode->semanticFct = SemanticJob::resolveImpl;
+    implNode->semanticFct = Semantic::resolveImpl;
 
     SWAG_VERIFY(module->acceptsCompileImpl, context->report({implNode, Err(Err1104)}));
 
@@ -49,10 +49,10 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doIdentifierRef(implNode, &implNode->identifierFor, IDENTIFIER_NO_FCT_PARAMS));
         implNode->identifierFor->allocateExtension(ExtensionKind::Semantic);
-        implNode->identifierFor->extSemantic()->semanticAfterFct = SemanticJob::resolveImplForAfterFor;
-        implNode->semanticFct                                    = SemanticJob::resolveImplFor;
+        implNode->identifierFor->extSemantic()->semanticAfterFct = Semantic::resolveImplForAfterFor;
+        implNode->semanticFct                                    = Semantic::resolveImplFor;
         implNode->allocateExtension(ExtensionKind::Semantic);
-        implNode->extSemantic()->semanticAfterFct = SemanticJob::resolveImplForType;
+        implNode->extSemantic()->semanticAfterFct = Semantic::resolveImplForType;
         identifierStruct                          = implNode->identifierFor;
         implInterface                             = true;
 
@@ -186,9 +186,9 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
 {
     auto structNode         = Ast::newNode<AstStruct>(this, AstNodeKind::StructDecl, sourceFile, parent);
     *result                 = structNode;
-    structNode->semanticFct = SemanticJob::resolveStruct;
+    structNode->semanticFct = Semantic::resolveStruct;
     structNode->allocateExtension(ExtensionKind::Semantic);
-    structNode->extSemantic()->semanticAfterFct = SemanticJob::sendCompilerMsgTypeDecl;
+    structNode->extSemantic()->semanticAfterFct = Semantic::sendCompilerMsgTypeDecl;
 
     if (!tokenizer.comment.empty())
     {
@@ -202,7 +202,7 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
     {
         structType              = SyntaxStructType::Interface;
         structNode->kind        = AstNodeKind::InterfaceDecl;
-        structNode->semanticFct = SemanticJob::resolveInterface;
+        structNode->semanticFct = Semantic::resolveInterface;
     }
     else if (token.id == TokenId::KwdUnion)
     {
@@ -340,7 +340,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
         auto contentNode    = Ast::newNode<AstNode>(this, AstNodeKind::StructContent, sourceFile, structNode);
         structNode->content = contentNode;
         contentNode->allocateExtension(ExtensionKind::Semantic);
-        contentNode->extSemantic()->semanticBeforeFct = SemanticJob::preResolveStructContent;
+        contentNode->extSemantic()->semanticBeforeFct = Semantic::preResolveStructContent;
 
         auto startLoc = token.startLocation;
         SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the 'struct' body"));
@@ -497,11 +497,11 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
         auto        varNode = Ast::newVarDecl(sourceFile, funcNode->token.text, parent, this);
         varNode->inheritTokenLocation(funcNode->token);
-        SemanticJob::setVarDeclResolve(varNode);
+        Semantic::setVarDeclResolve(varNode);
         varNode->flags |= AST_R_VALUE;
 
         auto typeNode         = Ast::newNode<AstTypeLambda>(this, AstNodeKind::TypeLambda, sourceFile, varNode);
-        typeNode->semanticFct = SemanticJob::resolveTypeLambdaClosure;
+        typeNode->semanticFct = Semantic::resolveTypeLambdaClosure;
         varNode->type         = typeNode;
         varNode->type->inheritTokenLocation(funcNode->token);
         Ast::removeFromParent(funcNode->parameters);

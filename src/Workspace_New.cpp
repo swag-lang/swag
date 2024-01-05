@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Workspace.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "ErrorIds.h"
 #include "Report.h"
 #include "Os.h"

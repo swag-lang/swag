@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "ByteCodeGenJob.h"
 #include "TypeManager.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 
-bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNode* child)
+bool Semantic::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNode* child)
 {
     auto node     = context->node;
     auto typeInfo = TypeManager::concreteType(child->typeInfo);
@@ -102,7 +102,7 @@ bool SemanticJob::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, Ast
     return true;
 }
 
-bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* child)
+bool Semantic::resolveUnaryOpExclam(SemanticContext* context, AstNode* child)
 {
     auto typeInfo = TypeManager::concreteType(child->typeInfo);
     if (typeInfo->isLambdaClosure() || typeInfo->isPointer() || typeInfo->isInterface() || typeInfo->isSlice())
@@ -147,7 +147,7 @@ bool SemanticJob::resolveUnaryOpExclam(SemanticContext* context, AstNode* child)
     return true;
 }
 
-bool SemanticJob::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
+bool Semantic::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
 {
     auto node     = context->node;
     auto typeInfo = TypeManager::concreteType(child->typeInfo);
@@ -215,7 +215,7 @@ bool SemanticJob::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
     return true;
 }
 
-bool SemanticJob::resolveUnaryOp(SemanticContext* context)
+bool Semantic::resolveUnaryOp(SemanticContext* context)
 {
     auto op    = context->node;
     auto child = op->childs[0];

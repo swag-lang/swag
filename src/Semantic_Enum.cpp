@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "TypeManager.h"
 #include "Ast.h"
 #include "LanguageSpec.h"
 #include "Workspace.h"
 
-bool SemanticJob::resolveEnum(SemanticContext* context)
+bool Semantic::resolveEnum(SemanticContext* context)
 {
     auto node     = CastAst<AstEnum>(context->node, AstNodeKind::EnumDecl);
     auto typeInfo = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
@@ -110,7 +110,7 @@ bool SemanticJob::resolveEnum(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveEnumType(SemanticContext* context)
+bool Semantic::resolveEnumType(SemanticContext* context)
 {
     auto typeNode = context->node;
     auto enumNode = context->node->parent;
@@ -204,7 +204,7 @@ bool SemanticJob::resolveEnumType(SemanticContext* context)
     return context->report({typeNode, Fmt(Err(Err0705), rawTypeInfo->getDisplayNameC())});
 }
 
-bool SemanticJob::resolveSubEnumValue(SemanticContext* context)
+bool Semantic::resolveSubEnumValue(SemanticContext* context)
 {
     auto node  = context->node;
     auto child = node->childs.front();
@@ -257,7 +257,7 @@ bool SemanticJob::resolveSubEnumValue(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveEnumValue(SemanticContext* context)
+bool Semantic::resolveEnumValue(SemanticContext* context)
 {
     auto valNode  = CastAst<AstEnumValue>(context->node, AstNodeKind::EnumValue);
     auto enumNode = valNode->findParent(AstNodeKind::EnumDecl);

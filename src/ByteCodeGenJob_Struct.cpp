@@ -5,7 +5,7 @@
 #include "Module.h"
 #include "TypeManager.h"
 #include "Report.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "LanguageSpec.h"
 #include "ModuleManager.h"
 
@@ -672,7 +672,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
                     RegisterList r0 = 0;
                     if (varDecl->assignment->typeInfo->isString())
                     {
-                        auto storageSegment = SemanticJob::getConstantSegFromContext(varDecl);
+                        auto storageSegment = Semantic::getConstantSegFromContext(varDecl);
                         auto storageOffset  = storageSegment->addString(varDecl->assignment->computedValue->text);
                         SWAG_ASSERT(storageOffset != UINT32_MAX);
                         emitMakeSegPointer(&cxt, storageSegment, storageOffset, 1);
@@ -693,7 +693,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
             }
             else if (typeVar->isString())
             {
-                auto storageSegment = SemanticJob::getConstantSegFromContext(varDecl);
+                auto storageSegment = Semantic::getConstantSegFromContext(varDecl);
                 auto storageOffset  = storageSegment->addString(varDecl->assignment->computedValue->text);
                 SWAG_ASSERT(storageOffset != UINT32_MAX);
                 emitMakeSegPointer(&cxt, storageSegment, storageOffset, 1);

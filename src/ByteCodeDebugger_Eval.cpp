@@ -2,6 +2,7 @@
 #include "ByteCode.h"
 #include "Module.h"
 #include "Ast.h"
+#include "Semantic.h"
 #include "SemanticJob.h"
 #include "ByteCodeGenJob.h"
 #include "Context.h"
@@ -54,7 +55,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     semanticJob->sourceFile = sourceFile;
     semanticJob->module     = sourceFile->module;
     semanticJob->nodes.push_back(child);
-    semanticJob->context.forDebugger = true;
+    semanticJob->sem.context.forDebugger = true;
 
     g_ThreadMgr.debuggerMode = true;
     g_ThreadMgr.addJob(semanticJob);

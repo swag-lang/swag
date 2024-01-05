@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ByteCode.h"
 #include "Module.h"
+#include "Semantic.h"
 #include "SemanticJob.h"
 #include "ByteCodeDebugger.h"
 #include "Workspace.h"
@@ -221,13 +222,15 @@ Utf8 ByteCodeDebugger::completion(ByteCodeRunContext* context, const Utf8& line,
 
     SemanticContext                   semContext;
     SemanticJob                       semJob;
+    Semantic                          sem;
     VectorNative<AlternativeScope>    scopeHierarchy;
     VectorNative<AlternativeScopeVar> scopeHierarchyVars;
     semContext.sourceFile = debugCxtIp->node->sourceFile;
     semContext.node       = debugCxtIp->node;
-    semContext.job        = &semJob;
+    semContext.baseJob    = &semJob;
+    semContext.sem        = &sem;
 
-    if (SemanticJob::collectScopeHierarchy(&semContext, scopeHierarchy, scopeHierarchyVars, debugCxtIp->node, COLLECT_ALL))
+    if (Semantic::collectScopeHierarchy(&semContext, scopeHierarchy, scopeHierarchyVars, debugCxtIp->node, COLLECT_ALL))
     {
         for (const auto& p : scopeHierarchy)
         {

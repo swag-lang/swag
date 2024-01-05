@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Scoped.h"
 #include "Ast.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "Workspace.h"
 #include "Module.h"
 #include "ByteCodeGenJob.h"
@@ -140,7 +140,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
 
         auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Using, sourceFile, parent);
         *result           = node;
-        node->semanticFct = SemanticJob::resolveUsing;
+        node->semanticFct = Semantic::resolveUsing;
         Ast::newIdentifierRef(sourceFile, varNode->token.text, node, this);
         return true;
     }
@@ -180,7 +180,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
     {
         auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Using, sourceFile, parent);
         *result           = node;
-        node->semanticFct = SemanticJob::resolveUsing;
+        node->semanticFct = Semantic::resolveUsing;
 
         SWAG_CHECK(doIdentifierRef(node, &dummyResult, IDENTIFIER_NO_PARAMS));
 
@@ -277,7 +277,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
             }
             else if (symbol->kind != SymbolKind::Namespace)
             {
-                return SemanticJob::duplicatedSymbolError(context, sourceFile, token, SymbolKind::Namespace, symbol->name, symbol->kind, symbol->nodes.front());
+                return Semantic::duplicatedSymbolError(context, sourceFile, token, SymbolKind::Namespace, symbol->name, symbol->kind, symbol->nodes.front());
             }
             else
                 newScope = CastTypeInfo<TypeInfoNamespace>(symbol->overloads[0]->typeInfo, TypeInfoKind::Namespace)->scope;
@@ -400,8 +400,8 @@ bool Parser::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind
     statement->flags |= AST_NEED_SCOPE;
     statement->byteCodeFct = ByteCodeGenJob::emitDebugNop;
     statement->allocateExtension(ExtensionKind::Semantic);
-    statement->extSemantic()->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
-    statement->extSemantic()->semanticAfterFct  = SemanticJob::resolveScopedStmtAfter;
+    statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;
+    statement->extSemantic()->semanticAfterFct  = Semantic::resolveScopedStmtAfter;
 
     return true;
 }
@@ -442,8 +442,8 @@ bool Parser::doScopedStatement(AstNode* parent, AstNode** result, bool mustHaveD
         AstNode* statement = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
         *result            = statement;
         statement->allocateExtension(ExtensionKind::Semantic);
-        statement->extSemantic()->semanticBeforeFct = SemanticJob::resolveScopedStmtBefore;
-        statement->extSemantic()->semanticAfterFct  = SemanticJob::resolveScopedStmtAfter;
+        statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;
+        statement->extSemantic()->semanticAfterFct  = Semantic::resolveScopedStmtAfter;
         statement->flags |= AST_NEED_SCOPE;
         newScope->owner = statement;
         SWAG_CHECK(doEmbeddedInstruction(statement, &dummyResult));
@@ -582,7 +582,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
         auto back = newAttrUse->childs.back();
         back->allocateExtension(ExtensionKind::Semantic);
         SWAG_ASSERT(!back->extSemantic()->semanticAfterFct);
-        back->extSemantic()->semanticAfterFct = SemanticJob::resolveAttrUse;
+        back->extSemantic()->semanticAfterFct = Semantic::resolveAttrUse;
 
         Ast::removeFromParent(newAttrUse);
         Ast::addChildBack(newParent, newAttrUse);
@@ -600,7 +600,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
     if (orgSubDecl->kind != AstNodeKind::FuncDecl || !(orgSubDecl->specFlags & AstFuncDecl::SPECFLAG_IS_LAMBDA_EXPRESSION))
     {
         auto solver         = Ast::newNode<AstRefSubDecl>(this, AstNodeKind::RefSubDecl, sourceFile, orgParent);
-        solver->semanticFct = SemanticJob::resolveSubDeclRef;
+        solver->semanticFct = Semantic::resolveSubDeclRef;
         solver->flags |= AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
         solver->refSubDecl = orgSubDecl;
         orgSubDecl->flags |= AST_NO_SEMANTIC | AST_SPEC_SEMANTIC3 | AST_SPEC_SEMANTIC_HAS3;
@@ -611,7 +611,7 @@ bool Parser::doCompilerScopeBreakable(AstNode* parent, AstNode** result)
 {
     auto labelNode         = Ast::newNode<AstScopeBreakable>(this, AstNodeKind::ScopeBreakable, sourceFile, parent);
     *result                = labelNode;
-    labelNode->semanticFct = SemanticJob::resolveScopeBreakable;
+    labelNode->semanticFct = Semantic::resolveScopeBreakable;
 
     SWAG_CHECK(eatToken());
     if (token.id != TokenId::SymLeftCurly)

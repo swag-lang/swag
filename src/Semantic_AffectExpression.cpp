@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Ast.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "TypeManager.h"
 #include "ByteCodeGenJob.h"
 #include "Module.h"
@@ -10,7 +10,7 @@
 #include "LanguageSpec.h"
 #include "Naming.h"
 
-bool SemanticJob::resolveMove(SemanticContext* context)
+bool Semantic::resolveMove(SemanticContext* context)
 {
     auto node  = context->node;
     auto right = node->childs[0];
@@ -42,7 +42,7 @@ bool SemanticJob::resolveMove(SemanticContext* context)
 // :DeduceLambdaType
 // This function is called when the type has been identified, and there's a lambda waiting for it.
 // This will launch the evaluation of the lambda now that we can deduce some missing types (like parameters)
-bool SemanticJob::resolveAfterKnownType(SemanticContext* context)
+bool Semantic::resolveAfterKnownType(SemanticContext* context)
 {
     auto node     = context->node;
     auto typeInfo = TypeManager::concreteType(node->typeInfo);
@@ -71,7 +71,7 @@ bool SemanticJob::resolveAfterKnownType(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, AstNode* right)
+bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, AstNode* right)
 {
     if (left->childs.back()->semFlags & SEMFLAG_IS_CONST_ASSIGN)
     {
@@ -221,7 +221,7 @@ bool SemanticJob::checkIsConstAffect(SemanticContext* context, AstNode* left, As
     return context->report(diag);
 }
 
-bool SemanticJob::resolveAffect(SemanticContext* context)
+bool Semantic::resolveAffect(SemanticContext* context)
 {
     auto node    = CastAst<AstOp>(context->node, AstNodeKind::AffectOp);
     auto left    = node->childs[0];
@@ -329,7 +329,7 @@ bool SemanticJob::resolveAffect(SemanticContext* context)
     {
         if (leftTypeInfo->isInterface() && rightTypeInfo->isStruct())
         {
-            context->job->waitAllStructInterfaces(rightTypeInfo);
+            context->baseJob->waitAllStructInterfaces(rightTypeInfo);
             YIELD();
             SWAG_CHECK(TypeManager::makeCompatibles(context, leftTypeInfo, left, right, CASTFLAG_UNCONST));
         }

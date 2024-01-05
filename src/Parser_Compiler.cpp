@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Workspace.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "Ast.h"
 #include "Scoped.h"
 #include "Module.h"
@@ -11,7 +11,7 @@ bool Parser::doIntrinsicTag(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstNode>(this, AstNodeKind::IntrinsicProp, sourceFile, parent);
     *result           = node;
-    node->semanticFct = SemanticJob::resolveIntrinsicTag;
+    node->semanticFct = Semantic::resolveIntrinsicTag;
 
     SWAG_CHECK(eatToken());
 
@@ -48,9 +48,9 @@ bool Parser::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind
         SWAG_VERIFY(token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, error(token, Fmt(Err(Err1083), token.ctext())));
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
         node->allocateExtension(ExtensionKind::Semantic);
-        node->extSemantic()->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
+        node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
         node->boolExpression->allocateExtension(ExtensionKind::Semantic);
-        node->boolExpression->extSemantic()->semanticAfterFct = SemanticJob::resolveCompilerIf;
+        node->boolExpression->extSemantic()->semanticAfterFct = Semantic::resolveCompilerIf;
     }
 
     // Block
@@ -89,7 +89,7 @@ bool Parser::doCompilerMixin(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstCompilerMixin>(this, AstNodeKind::CompilerMixin, sourceFile, parent);
     *result           = node;
-    node->semanticFct = SemanticJob::resolveCompilerMixin;
+    node->semanticFct = Semantic::resolveCompilerMixin;
     node->token       = token;
 
     SWAG_CHECK(eatToken());
@@ -134,7 +134,7 @@ bool Parser::doCompilerMacro(AstNode* parent, AstNode** result)
     auto node = Ast::newNode<AstCompilerMacro>(this, AstNodeKind::CompilerMacro, sourceFile, parent);
     *result   = node;
     node->allocateExtension(ExtensionKind::Semantic);
-    node->extSemantic()->semanticBeforeFct = SemanticJob::resolveCompilerMacro;
+    node->extSemantic()->semanticBeforeFct = Semantic::resolveCompilerMacro;
 
     SWAG_CHECK(eatToken());
     auto newScope = Ast::newScope(node, "", ScopeKind::Macro, node->ownerScope);
@@ -151,8 +151,8 @@ bool Parser::doCompilerAssert(AstNode* parent, AstNode** result)
     *result   = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
     node->allocateExtension(ExtensionKind::Semantic);
-    node->extSemantic()->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
-    node->semanticFct                      = SemanticJob::resolveCompilerAssert;
+    node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
+    node->semanticFct                      = Semantic::resolveCompilerAssert;
     node->token                            = token;
 
     ScopedFlags scopedFlags(this, AST_IN_RUN_BLOCK | AST_NO_BACKEND);
@@ -168,8 +168,8 @@ bool Parser::doCompilerError(AstNode* parent, AstNode** result)
     *result   = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
     node->allocateExtension(ExtensionKind::Semantic);
-    node->extSemantic()->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
-    node->semanticFct                      = SemanticJob::resolveCompilerError;
+    node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
+    node->semanticFct                      = Semantic::resolveCompilerError;
     node->token                            = token;
     SWAG_CHECK(eatToken());
 
@@ -184,8 +184,8 @@ bool Parser::doCompilerWarning(AstNode* parent, AstNode** result)
     *result   = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
     node->allocateExtension(ExtensionKind::Semantic);
-    node->extSemantic()->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
-    node->semanticFct                      = SemanticJob::resolveCompilerWarning;
+    node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
+    node->semanticFct                      = Semantic::resolveCompilerWarning;
     node->token                            = token;
     SWAG_CHECK(eatToken());
 
@@ -202,8 +202,8 @@ bool Parser::doCompilerValidIf(AstNode* parent, AstNode** result)
     if (tokenId == TokenId::CompilerValidIfx)
         node->kind = AstNodeKind::CompilerValidIfx;
     node->allocateExtension(ExtensionKind::Semantic);
-    node->extSemantic()->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
-    node->semanticFct                      = SemanticJob::resolveCompilerValidIfExpression;
+    node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
+    node->semanticFct                      = Semantic::resolveCompilerValidIfExpression;
     SWAG_CHECK(eatToken());
     parent->flags |= AST_HAS_SELECT_IF;
     node->flags |= AST_NO_BYTECODE_CHILDS;
@@ -244,8 +244,8 @@ bool Parser::doCompilerAst(AstNode* parent, AstNode** result)
     auto node = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerAst, sourceFile, parent);
     *result   = node;
     node->allocateExtension(ExtensionKind::Semantic);
-    node->extSemantic()->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
-    node->semanticFct                      = SemanticJob::resolveCompilerAstExpression;
+    node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
+    node->semanticFct                      = Semantic::resolveCompilerAstExpression;
     SWAG_CHECK(eatToken());
 
     ScopedFlags scopedFlags(this, AST_IN_RUN_BLOCK | AST_NO_BACKEND);
@@ -282,7 +282,7 @@ bool Parser::doCompilerRunTopLevel(AstNode* parent, AstNode** result)
     auto node = Ast::newNode<AstCompilerSpecFunc>(this, AstNodeKind::CompilerRun, sourceFile, parent);
     *result   = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
-    node->semanticFct = SemanticJob::resolveCompilerRun;
+    node->semanticFct = Semantic::resolveCompilerRun;
     SWAG_CHECK(doEmbeddedInstruction(node, &dummyResult));
     SWAG_CHECK(eatSemiCol("'#run' statement"));
     return true;
@@ -294,8 +294,8 @@ bool Parser::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
     *result   = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
     node->allocateExtension(ExtensionKind::Semantic);
-    node->extSemantic()->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
-    node->semanticFct                      = SemanticJob::resolveCompilerRun;
+    node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
+    node->semanticFct                      = Semantic::resolveCompilerRun;
     node->token                            = token;
     SWAG_CHECK(eatToken());
 
@@ -328,8 +328,8 @@ bool Parser::doCompilerPrint(AstNode* parent, AstNode** result)
     *result   = node;
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
     node->allocateExtension(ExtensionKind::Semantic);
-    node->extSemantic()->semanticBeforeFct = SemanticJob::preResolveCompilerInstruction;
-    node->semanticFct                      = SemanticJob::resolveCompilerPrint;
+    node->extSemantic()->semanticBeforeFct = Semantic::preResolveCompilerInstruction;
+    node->semanticFct                      = Semantic::resolveCompilerPrint;
     node->token                            = token;
     SWAG_CHECK(eatToken());
 
@@ -342,7 +342,7 @@ bool Parser::doCompilerForeignLib(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstNode>(this, AstNodeKind::CompilerForeignLib, sourceFile, parent);
     *result           = node;
-    node->semanticFct = SemanticJob::resolveCompilerForeignLib;
+    node->semanticFct = Semantic::resolveCompilerForeignLib;
 
     SWAG_CHECK(eatToken());
     SWAG_VERIFY(token.id == TokenId::LiteralString, error(token, Fmt(Err(Err1002), token.ctext())));
@@ -392,7 +392,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatToken());
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
         node->boolExpression->allocateExtension(ExtensionKind::Semantic);
-        node->boolExpression->extSemantic()->semanticAfterFct = SemanticJob::resolveCompilerIf;
+        node->boolExpression->extSemantic()->semanticAfterFct = Semantic::resolveCompilerIf;
 
         auto block    = Ast::newNode<AstCompilerIfBlock>(this, AstNodeKind::CompilerIfBlock, sourceFile, node);
         node->ifBlock = block;
@@ -572,7 +572,7 @@ bool Parser::doCompilerSpecialValue(AstNode* parent, AstNode** result)
     auto exprNode = Ast::newNode<AstNode>(this, AstNodeKind::CompilerSpecialValue, sourceFile, parent);
     *result       = exprNode;
     SWAG_CHECK(eatToken());
-    exprNode->semanticFct = SemanticJob::resolveCompilerSpecialValue;
+    exprNode->semanticFct = Semantic::resolveCompilerSpecialValue;
     return true;
 }
 
@@ -590,7 +590,7 @@ bool Parser::doIntrinsicLocation(AstNode* parent, AstNode** result)
     SWAG_CHECK(doIdentifierRef(exprNode, &dummyResult, IDENTIFIER_NO_PARAMS));
 
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
-    exprNode->semanticFct = SemanticJob::resolveIntrinsicLocation;
+    exprNode->semanticFct = Semantic::resolveIntrinsicLocation;
     return true;
 }
 
@@ -609,7 +609,7 @@ bool Parser::doIntrinsicDefined(AstNode* parent, AstNode** result)
 
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
 
-    exprNode->semanticFct = SemanticJob::resolveIntrinsicDefined;
+    exprNode->semanticFct = Semantic::resolveIntrinsicDefined;
     return true;
 }
 
@@ -641,7 +641,7 @@ bool Parser::doCompilerInclude(AstNode* parent, AstNode** result)
     ScopedFlags sc(this, AST_SILENT_CHECK);
     SWAG_CHECK(doExpression(exprNode, EXPR_FLAG_NONE, &dummyResult));
 
-    exprNode->semanticFct = SemanticJob::resolveCompilerInclude;
+    exprNode->semanticFct = Semantic::resolveCompilerInclude;
     return true;
 }
 

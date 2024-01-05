@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "TypeManager.h"
 #include "Module.h"
 #include "ByteCodeGenJob.h"
@@ -12,7 +12,7 @@
 #include "Parser.h"
 #include "Context.h"
 
-Diagnostic* SemanticJob::computeNonConstExprNote(AstNode* node)
+Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
 {
     VectorNative<AstNode*> childs;
     Ast::visit(node, [&](AstNode* n)
@@ -53,7 +53,7 @@ Diagnostic* SemanticJob::computeNonConstExprNote(AstNode* node)
     return nullptr;
 }
 
-bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr)
+bool Semantic::executeCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr)
 {
     // No need to run, this is already baked
     if (node->hasComputedValue())
@@ -84,7 +84,7 @@ bool SemanticJob::executeCompilerNode(SemanticContext* context, AstNode* node, b
     }
 }
 
-bool SemanticJob::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr)
+bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr)
 {
     // No need to run, this is already baked
     if (node->hasComputedValue())
@@ -95,7 +95,7 @@ bool SemanticJob::doExecuteCompilerNode(SemanticContext* context, AstNode* node,
 
     // Request to generate the corresponding bytecode
     {
-        ByteCodeGenJob::askForByteCode(context->job, node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED);
+        ByteCodeGenJob::askForByteCode(context->baseJob, node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED);
         YIELD();
     }
 
@@ -117,7 +117,7 @@ bool SemanticJob::doExecuteCompilerNode(SemanticContext* context, AstNode* node,
 
             // It is possible to convert a complex struct to a constant static array of values if the struct
             // implements 'opCount' and 'opSlice'
-            context->job->waitAllStructMethods(realType);
+            context->baseJob->waitAllStructMethods(realType);
             YIELD();
 
             if (node->hasSpecialFuncCall())
@@ -166,7 +166,7 @@ bool SemanticJob::doExecuteCompilerNode(SemanticContext* context, AstNode* node,
                 extension->resolvedUserOpSymbolOverload = nullptr;
                 SWAG_ASSERT(execParams.specReturnOpCount);
 
-                ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpCount->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                ByteCodeGenJob::askForByteCode(context->baseJob, execParams.specReturnOpCount->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
                 YIELD();
 
                 // opSlice
@@ -183,7 +183,7 @@ bool SemanticJob::doExecuteCompilerNode(SemanticContext* context, AstNode* node,
                 extension->resolvedUserOpSymbolOverload = nullptr;
                 SWAG_ASSERT(execParams.specReturnOpSlice);
 
-                ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpSlice->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                ByteCodeGenJob::askForByteCode(context->baseJob, execParams.specReturnOpSlice->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
                 YIELD();
 
                 // Is the type of the slice supported ?
@@ -230,7 +230,7 @@ bool SemanticJob::doExecuteCompilerNode(SemanticContext* context, AstNode* node,
                     SWAG_ASSERT(execParams.specReturnOpPostMove);
 
                     {
-                        ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpPostMove->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                        ByteCodeGenJob::askForByteCode(context->baseJob, execParams.specReturnOpPostMove->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
                         YIELD();
                     }
                 }
@@ -250,7 +250,7 @@ bool SemanticJob::doExecuteCompilerNode(SemanticContext* context, AstNode* node,
                     extension->resolvedUserOpSymbolOverload = nullptr;
                     SWAG_ASSERT(execParams.specReturnOpDrop);
 
-                    ByteCodeGenJob::askForByteCode(context->job, execParams.specReturnOpDrop->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                    ByteCodeGenJob::askForByteCode(context->baseJob, execParams.specReturnOpDrop->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
                     YIELD();
                 }
             }
@@ -261,18 +261,18 @@ bool SemanticJob::doExecuteCompilerNode(SemanticContext* context, AstNode* node,
     // In case there's a foreign call somewhere...
     if (node->extByteCode()->bc->hasForeignFunctionCalls)
     {
-        if (!module->waitForDependenciesDone(context->job))
+        if (!module->waitForDependenciesDone(context->baseJob))
         {
-            context->job->setPendingInfos(JobWaitKind::WaitDepDoneExec);
+            context->baseJob->setPendingInfos(JobWaitKind::WaitDepDoneExec);
             context->result = ContextResult::Pending;
             return true;
         }
     }
     else if (!node->extByteCode()->bc->hasForeignFunctionCallsModules.empty())
     {
-        if (!module->waitForDependenciesDone(context->job, node->extByteCode()->bc->hasForeignFunctionCallsModules))
+        if (!module->waitForDependenciesDone(context->baseJob, node->extByteCode()->bc->hasForeignFunctionCallsModules))
         {
-            context->job->setPendingInfos(JobWaitKind::WaitDepDoneExec);
+            context->baseJob->setPendingInfos(JobWaitKind::WaitDepDoneExec);
             context->result = ContextResult::Pending;
             return true;
         }
@@ -289,7 +289,7 @@ bool SemanticJob::doExecuteCompilerNode(SemanticContext* context, AstNode* node,
     return true;
 }
 
-bool SemanticJob::resolveCompilerForeignLib(SemanticContext* context)
+bool Semantic::resolveCompilerForeignLib(SemanticContext* context)
 {
     auto node   = context->node;
     auto module = context->sourceFile->module;
@@ -297,7 +297,7 @@ bool SemanticJob::resolveCompilerForeignLib(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveCompilerRun(SemanticContext* context)
+bool Semantic::resolveCompilerRun(SemanticContext* context)
 {
     auto node = CastAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerRun, AstNodeKind::CompilerRunExpression);
     if (node->flags & AST_IS_GENERIC)
@@ -319,7 +319,7 @@ bool SemanticJob::resolveCompilerRun(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveCompilerValidIfExpression(SemanticContext* context)
+bool Semantic::resolveCompilerValidIfExpression(SemanticContext* context)
 {
     auto node = CastAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerValidIf, AstNodeKind::CompilerValidIfx);
     if (node->flags & AST_IS_GENERIC)
@@ -336,7 +336,7 @@ bool SemanticJob::resolveCompilerValidIfExpression(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
+bool Semantic::resolveCompilerAstExpression(SemanticContext* context)
 {
     auto node = CastAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerAst);
     if (node->flags & AST_IS_GENERIC)
@@ -346,7 +346,7 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
     if (node->specFlags & AstCompilerSpecFunc::SPECFLAG_AST_BLOCK)
         return true;
 
-    auto job        = context->job;
+    auto job        = context->baseJob;
     auto expression = context->node->childs.back();
     auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
     SWAG_VERIFY(typeInfo->isString(), context->report({expression, Fmt(Err(Err0234), expression->typeInfo->getDisplayNameC())}));
@@ -386,7 +386,7 @@ bool SemanticJob::resolveCompilerAstExpression(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveCompilerError(SemanticContext* context)
+bool Semantic::resolveCompilerError(SemanticContext* context)
 {
     auto node = context->node;
     if (node->flags & AST_IS_GENERIC)
@@ -402,7 +402,7 @@ bool SemanticJob::resolveCompilerError(SemanticContext* context)
     return context->report(diag);
 }
 
-bool SemanticJob::resolveCompilerWarning(SemanticContext* context)
+bool Semantic::resolveCompilerWarning(SemanticContext* context)
 {
     auto node = context->node;
     if (node->flags & AST_IS_GENERIC)
@@ -418,7 +418,7 @@ bool SemanticJob::resolveCompilerWarning(SemanticContext* context)
     return context->report(diag);
 }
 
-bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
+bool Semantic::resolveCompilerAssert(SemanticContext* context)
 {
     auto node = context->node;
     if (node->flags & AST_IS_GENERIC)
@@ -438,7 +438,7 @@ bool SemanticJob::resolveCompilerAssert(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveCompilerMacro(SemanticContext* context)
+bool Semantic::resolveCompilerMacro(SemanticContext* context)
 {
     auto node             = context->node;
     auto scope            = node->childs.back()->ownerScope;
@@ -453,7 +453,7 @@ bool SemanticJob::resolveCompilerMacro(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
+bool Semantic::resolveCompilerMixin(SemanticContext* context)
 {
     auto node = CastAst<AstCompilerMixin>(context->node, AstNodeKind::CompilerMixin);
 
@@ -490,13 +490,13 @@ bool SemanticJob::resolveCompilerMixin(SemanticContext* context)
     cloneContent->addAlternativeScope(typeCode->content->parent->ownerScope);
     cloneContent->flags &= ~AST_NO_SEMANTIC;
     node->typeInfo = cloneContent->typeInfo;
-    context->job->nodes.push_back(cloneContent);
+    context->baseJob->nodes.push_back(cloneContent);
     context->result = ContextResult::NewChilds;
 
     return true;
 }
 
-bool SemanticJob::preResolveCompilerInstruction(SemanticContext* context)
+bool Semantic::preResolveCompilerInstruction(SemanticContext* context)
 {
     auto node = context->node;
     if (!(node->flags & AST_FROM_GENERIC))
@@ -539,7 +539,7 @@ bool SemanticJob::preResolveCompilerInstruction(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
+bool Semantic::resolveCompilerPrint(SemanticContext* context)
 {
     auto node = context->node;
     if (node->flags & AST_IS_GENERIC)
@@ -609,7 +609,7 @@ bool SemanticJob::resolveCompilerPrint(SemanticContext* context)
     return true;
 }
 
-void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlock* block)
+void Semantic::disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlock* block)
 {
     block->flags |= AST_NO_BYTECODE;
     block->flags |= AST_NO_SEMANTIC;
@@ -675,7 +675,7 @@ void SemanticJob::disableCompilerIfBlock(SemanticContext* context, AstCompilerIf
         disableCompilerIfBlock(context, p);
 }
 
-bool SemanticJob::resolveCompilerIf(SemanticContext* context)
+bool Semantic::resolveCompilerIf(SemanticContext* context)
 {
     auto node = CastAst<AstIf>(context->node->parent, AstNodeKind::CompilerIf);
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
@@ -707,9 +707,9 @@ bool SemanticJob::resolveCompilerIf(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveCompilerInclude(SemanticContext* context)
+bool Semantic::resolveCompilerInclude(SemanticContext* context)
 {
-    auto job    = context->job;
+    auto job    = context->baseJob;
     auto node   = context->node;
     auto module = context->sourceFile->module;
     auto back   = node->childs[0];
@@ -779,7 +779,7 @@ bool SemanticJob::resolveCompilerInclude(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveIntrinsicLocation(SemanticContext* context)
+bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
 {
     auto node      = context->node;
     auto locNode   = node->childs.front();
@@ -868,7 +868,7 @@ bool SemanticJob::resolveIntrinsicLocation(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveIntrinsicDefined(SemanticContext* context)
+bool Semantic::resolveIntrinsicDefined(SemanticContext* context)
 {
     auto node = context->node;
     node->setFlagsValueIsComputed();
@@ -877,7 +877,7 @@ bool SemanticJob::resolveIntrinsicDefined(SemanticContext* context)
     return true;
 }
 
-Utf8 SemanticJob::getCompilerFunctionString(AstNode* node, TokenId id)
+Utf8 Semantic::getCompilerFunctionString(AstNode* node, TokenId id)
 {
     switch (id)
     {
@@ -895,7 +895,7 @@ Utf8 SemanticJob::getCompilerFunctionString(AstNode* node, TokenId id)
     return "";
 }
 
-bool SemanticJob::resolveCompilerSpecialValue(SemanticContext* context)
+bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
 {
     auto node = context->node;
     switch (node->tokenId)
@@ -929,7 +929,7 @@ bool SemanticJob::resolveCompilerSpecialValue(SemanticContext* context)
         return true;
     case TokenId::CompilerCpu:
         node->setFlagsValueIsComputed();
-        node->computedValue->text = SemanticJob::getCompilerFunctionString(node, node->tokenId);
+        node->computedValue->text = Semantic::getCompilerFunctionString(node, node->tokenId);
         node->typeInfo            = g_TypeMgr->typeInfoString;
         return true;
 
@@ -942,7 +942,7 @@ bool SemanticJob::resolveCompilerSpecialValue(SemanticContext* context)
 
     case TokenId::CompilerBuildCfg:
         node->setFlagsValueIsComputed();
-        node->computedValue->text = SemanticJob::getCompilerFunctionString(node, node->tokenId);
+        node->computedValue->text = Semantic::getCompilerFunctionString(node, node->tokenId);
         node->typeInfo            = g_TypeMgr->typeInfoString;
         return true;
 

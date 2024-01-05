@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
 #include "Module.h"
@@ -8,7 +8,7 @@
 #include "Report.h"
 #include "Naming.h"
 
-bool SemanticJob::makeIntrinsicKindof(SemanticContext* context, AstNode* node)
+bool Semantic::makeIntrinsicKindof(SemanticContext* context, AstNode* node)
 {
     // Automatic convert to 'kindOf'
     // This has no sens to do a switch on an 'any'. So instead of raising an error,
@@ -43,7 +43,7 @@ bool SemanticJob::makeIntrinsicKindof(SemanticContext* context, AstNode* node)
     return true;
 }
 
-bool SemanticJob::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right)
+bool Semantic::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right)
 {
     if (leftTypeInfo->isNative() && rightTypeInfo->isNative())
         return true;
@@ -63,13 +63,13 @@ bool SemanticJob::checkTypeIsNative(SemanticContext* context, TypeInfo* leftType
     }
 }
 
-bool SemanticJob::checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+bool Semantic::checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
     SWAG_VERIFY(typeInfo->isNative(), notAllowedError(context, node, typeInfo));
     return true;
 }
 
-bool SemanticJob::sendCompilerMsgTypeDecl(SemanticContext* context)
+bool Semantic::sendCompilerMsgTypeDecl(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
@@ -104,7 +104,7 @@ bool SemanticJob::sendCompilerMsgTypeDecl(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
+bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
 {
     if (!node)
         return true;
@@ -171,7 +171,7 @@ bool SemanticJob::checkIsConcrete(SemanticContext* context, AstNode* node)
     return context->report(diag, note);
 }
 
-bool SemanticJob::checkIsConcreteOrType(SemanticContext* context, AstNode* node, bool typeOnly)
+bool Semantic::checkIsConcreteOrType(SemanticContext* context, AstNode* node, bool typeOnly)
 {
     if (node->flags & AST_R_VALUE)
         return true;
@@ -199,7 +199,7 @@ bool SemanticJob::checkIsConcreteOrType(SemanticContext* context, AstNode* node,
     return checkIsConcrete(context, node);
 }
 
-bool SemanticJob::resolveTypeLambdaClosure(SemanticContext* context)
+bool Semantic::resolveTypeLambdaClosure(SemanticContext* context)
 {
     auto node          = CastAst<AstTypeLambda>(context->node, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
     auto typeInfo      = makeType<TypeInfoFuncAttr>(TypeInfoKind::LambdaClosure);
@@ -279,7 +279,7 @@ bool SemanticJob::resolveTypeLambdaClosure(SemanticContext* context)
     return true;
 }
 
-void SemanticJob::forceConstType(SemanticContext* context, AstTypeExpression* node)
+void Semantic::forceConstType(SemanticContext* context, AstTypeExpression* node)
 {
     auto concrete = node->typeInfo->getConcreteAlias();
     if (concrete->isStruct() ||
@@ -295,7 +295,7 @@ void SemanticJob::forceConstType(SemanticContext* context, AstTypeExpression* no
     }
 }
 
-bool SemanticJob::resolveType(SemanticContext* context)
+bool Semantic::resolveType(SemanticContext* context)
 {
     auto typeNode = CastAst<AstTypeExpression>(context->node, AstNodeKind::TypeExpression);
 
@@ -583,7 +583,7 @@ bool SemanticJob::resolveType(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveTypeAliasBefore(SemanticContext* context)
+bool Semantic::resolveTypeAliasBefore(SemanticContext* context)
 {
     auto node = context->node;
 
@@ -614,7 +614,7 @@ bool SemanticJob::resolveTypeAliasBefore(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveTypeAlias(SemanticContext* context)
+bool Semantic::resolveTypeAlias(SemanticContext* context)
 {
     auto node         = context->node;
     auto typeInfo     = CastTypeInfo<TypeInfoAlias>(node->typeInfo, TypeInfoKind::Alias);
@@ -636,7 +636,7 @@ bool SemanticJob::resolveTypeAlias(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveExplicitBitCast(SemanticContext* context)
+bool Semantic::resolveExplicitBitCast(SemanticContext* context)
 {
     auto node     = CastAst<AstCast>(context->node, AstNodeKind::Cast);
     auto typeNode = node->childs[0];
@@ -707,7 +707,7 @@ bool SemanticJob::resolveExplicitBitCast(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveExplicitCast(SemanticContext* context)
+bool Semantic::resolveExplicitCast(SemanticContext* context)
 {
     auto node     = CastAst<AstCast>(context->node, AstNodeKind::Cast);
     auto typeNode = node->childs[0];
@@ -720,7 +720,7 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     auto exprTypeInfo = TypeManager::concretePtrRef(exprNode->typeInfo);
     if (typeNode->typeInfo->isInterface() && exprTypeInfo->isStruct())
     {
-        context->job->waitAllStructInterfaces(exprTypeInfo);
+        context->baseJob->waitAllStructInterfaces(exprTypeInfo);
         YIELD();
     }
 
@@ -769,7 +769,7 @@ bool SemanticJob::resolveExplicitCast(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveExplicitAutoCast(SemanticContext* context)
+bool Semantic::resolveExplicitAutoCast(SemanticContext* context)
 {
     auto node      = CastAst<AstCast>(context->node, AstNodeKind::AutoCast);
     auto exprNode  = node->childs[0];
@@ -783,7 +783,7 @@ bool SemanticJob::resolveExplicitAutoCast(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveTypeList(SemanticContext* context)
+bool Semantic::resolveTypeList(SemanticContext* context)
 {
     auto node = context->node;
     if (node->childs.size() == 1)
@@ -791,13 +791,13 @@ bool SemanticJob::resolveTypeList(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo** resultTypeInfo, uint32_t flags)
+bool Semantic::resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo** resultTypeInfo, uint32_t flags)
 {
     SWAG_CHECK(resolveTypeAsExpression(context, node, node->typeInfo, resultTypeInfo, flags));
     return true;
 }
 
-bool SemanticJob::resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, TypeInfo** resultTypeInfo, uint32_t flags)
+bool Semantic::resolveTypeAsExpression(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, TypeInfo** resultTypeInfo, uint32_t flags)
 {
     auto  sourceFile = context->sourceFile;
     auto  module     = sourceFile->module;

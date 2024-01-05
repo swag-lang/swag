@@ -4,7 +4,7 @@
 #include "ByteCodeStack.h"
 #include "TypeManager.h"
 #include "Context.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "Ast.h"
 #include "ErrorIds.h"
 
@@ -64,7 +64,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
     // Static array
     if (realType->isArray())
     {
-        auto     storageSegment             = SemanticJob::getConstantSegFromContext(node);
+        auto     storageSegment             = Semantic::getConstantSegFromContext(node);
         uint8_t* addrDst                    = nullptr;
         auto     offsetStorage              = storageSegment->reserve(realType->sizeOf, &addrDst);
         node->computedValue->storageOffset  = offsetStorage;
@@ -76,7 +76,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
 
     if (realType->isListArray())
     {
-        auto     storageSegment             = SemanticJob::getConstantSegFromContext(node);
+        auto     storageSegment             = Semantic::getConstantSegFromContext(node);
         uint8_t* addrDst                    = nullptr;
         auto     offsetStorage              = storageSegment->reserve(realType->sizeOf, &addrDst);
         node->computedValue->storageOffset  = offsetStorage;
@@ -94,7 +94,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         // If struct is marked as constexpr, then we can raw copy the struct content
         if ((realType->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR) || (node->semFlags & SEMFLAG_FORCE_CONST_EXPR))
         {
-            auto     storageSegment             = SemanticJob::getConstantSegFromContext(node);
+            auto     storageSegment             = Semantic::getConstantSegFromContext(node);
             uint8_t* addrDst                    = nullptr;
             auto     offsetStorage              = storageSegment->reserve(realType->sizeOf, &addrDst);
             node->computedValue->storageOffset  = offsetStorage;
@@ -165,7 +165,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         else
         {
             // Copy the content of the slice to the storage segment
-            auto     storageSegment             = SemanticJob::getConstantSegFromContext(node);
+            auto     storageSegment             = Semantic::getConstantSegFromContext(node);
             uint8_t* addrDst                    = nullptr;
             auto     offsetStorage              = storageSegment->reserve(sizeSlice, &addrDst);
             node->computedValue->storageOffset  = offsetStorage;
@@ -330,7 +330,7 @@ bool Module::executeNode(SourceFile* sourceFile, AstNode* node, JobContext* call
     {
         if (!params || !params->inheritSp)
         {
-            auto decSP = SemanticJob::getMaxStackSize(node);
+            auto decSP = Semantic::getMaxStackSize(node);
             g_RunContext->decSP(decSP);
             bc->dynStackSize += decSP;
 

@@ -26,61 +26,13 @@
     <ClCompile Include="../src/Scope.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SemanticJob_Declaration.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SemanticJob_Type.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SemanticJob_UnaryExpression.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SemanticJob_Var.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SemanticJob_Identifier.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SemanticJob_Enum.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SemanticJob_Compiler.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SemanticJob_BinaryExpression.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SemanticJob_Attribute.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SemanticJob_Expression.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
     <ClCompile Include="../src/AstNode.cpp">
       <Filter>Syntax</Filter>
     </ClCompile>
     <ClCompile Include="../src/CommandLine.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SemanticJob_Block.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SemanticJob_AffectExpression.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SemanticJob_Struct.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SemanticJob_Ref.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
     <ClCompile Include="../src/Generic.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SemanticJob_CompareExpression.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SemanticJob_Op.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="../src/Attribute.cpp">
@@ -91,9 +43,6 @@
     </ClCompile>
     <ClCompile Include="../src/AstOutput.cpp">
       <Filter>Syntax</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SemanticJob_Function.cpp">
-      <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="../src/BackendLLVM.cpp">
       <Filter>Backend\LLVM</Filter>
@@ -155,9 +104,6 @@
     <ClCompile Include="..\src\BackendX64_Main.cpp">
       <Filter>Backend\X64</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SemanticJob_Intrinsic.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
     <ClCompile Include="../src/BackendX64SaveObjJob.cpp">
       <Filter>Backend\X64</Filter>
     </ClCompile>
@@ -181,9 +127,6 @@
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeOptimizer_Jumps.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SemanticJob_Collect.cpp">
-      <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeOptimizer_RetCopy.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
@@ -380,9 +323,6 @@
     <ClCompile Include="..\src\BackendX64_Call.cpp">
       <Filter>Backend\X64</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SemanticJob_Literal.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\ByteCodeOptimizer_DupBlocks.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
@@ -430,9 +370,6 @@
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeDebugger_Frame.cpp">
       <Filter>Backend\ByteCode\Debugger</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SemanticJob_Warn.cpp">
-      <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeOptimizer_Sanity.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
@@ -605,9 +542,6 @@
     <ClCompile Include="..\src\ComputedValue.cpp">
       <Filter>Syntax</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SemanticJob_Access.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\SyntaxColor.cpp">
       <Filter>Syntax</Filter>
     </ClCompile>
@@ -622,9 +556,6 @@
     </ClCompile>
     <ClCompile Include="..\src\GenDoc_Pages.cpp">
       <Filter>GenDoc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SemanticJob_Error.cpp">
-      <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeOptimizer_Param.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
@@ -643,6 +574,78 @@
     </ClCompile>
     <ClCompile Include="..\src\Workspace_Tags.cpp" />
     <ClCompile Include="..\src\ScopeSwag.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Semantic.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Semantic_Access.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Semantic_AffectExpression.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Semantic_Attribute.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Semantic_BinaryExpression.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Semantic_Block.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Semantic_Collect.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Semantic_CompareExpression.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Semantic_Compiler.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Semantic_Declaration.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Semantic_Enum.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Semantic_Error.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Semantic_Expression.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Semantic_Function.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Semantic_Identifier.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Semantic_Intrinsic.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Semantic_Literal.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Semantic_Op.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Semantic_Ref.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Semantic_Struct.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Semantic_Type.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Semantic_UnaryExpression.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Semantic_Var.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Semantic_Warn.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1006,6 +1009,9 @@
       <Filter>GenDoc</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ScopeSwag.h">
+      <Filter>Semantic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Semantic.h">
       <Filter>Semantic</Filter>
     </ClInclude>
   </ItemGroup>

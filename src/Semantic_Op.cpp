@@ -1,13 +1,13 @@
 #include "pch.h"
 #include "TypeManager.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "Ast.h"
 #include "SourceFile.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "Mutex.h"
 
-bool SemanticJob::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node)
+bool Semantic::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node)
 {
     if (node->flags & AST_GENERATED)
         return true;
@@ -15,7 +15,7 @@ bool SemanticJob::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node
     return true;
 }
 
-Utf8 SemanticJob::getSpecialOpSignature(AstFuncDecl* node)
+Utf8 Semantic::getSpecialOpSignature(AstFuncDecl* node)
 {
     Utf8 result = "the signature should be ";
 
@@ -61,7 +61,7 @@ Utf8 SemanticJob::getSpecialOpSignature(AstFuncDecl* node)
     return result;
 }
 
-bool SemanticJob::checkFuncPrototypeOpNumParams(SemanticContext* context, AstFuncDecl* node, AstNode* parameters, uint32_t numWanted, bool exact)
+bool Semantic::checkFuncPrototypeOpNumParams(SemanticContext* context, AstFuncDecl* node, AstNode* parameters, uint32_t numWanted, bool exact)
 {
     auto numCur = parameters->childs.size();
     if (exact && (numCur != numWanted))
@@ -79,7 +79,7 @@ bool SemanticJob::checkFuncPrototypeOpNumParams(SemanticContext* context, AstFun
     return true;
 }
 
-bool SemanticJob::checkFuncPrototypeOpReturnType(SemanticContext* context, AstFuncDecl* node, TypeInfo* wanted)
+bool Semantic::checkFuncPrototypeOpReturnType(SemanticContext* context, AstFuncDecl* node, TypeInfo* wanted)
 {
     auto returnType = node->returnType->typeInfo->getConcreteAlias();
 
@@ -104,7 +104,7 @@ bool SemanticJob::checkFuncPrototypeOpReturnType(SemanticContext* context, AstFu
     return true;
 }
 
-bool SemanticJob::checkFuncPrototypeOpParam(SemanticContext* context, AstFuncDecl* node, AstNode* parameters, uint32_t index, TypeInfo* wanted)
+bool Semantic::checkFuncPrototypeOpParam(SemanticContext* context, AstFuncDecl* node, AstNode* parameters, uint32_t index, TypeInfo* wanted)
 {
     auto typeParam = parameters->childs[index]->typeInfo->getConcreteAlias();
     if (!typeParam->isSame(wanted, CASTFLAG_CAST))
@@ -112,7 +112,7 @@ bool SemanticJob::checkFuncPrototypeOpParam(SemanticContext* context, AstFuncDec
     return true;
 }
 
-bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
+bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
 {
     if (!node->isSpecialFunctionName())
         return true;
@@ -349,7 +349,7 @@ bool SemanticJob::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* no
     return true;
 }
 
-bool SemanticJob::resolveUserOpCommutative(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right)
+bool Semantic::resolveUserOpCommutative(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right)
 {
     auto node          = context->node;
     auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
@@ -380,7 +380,7 @@ bool SemanticJob::resolveUserOpCommutative(SemanticContext* context, const Utf8&
     return resolveUserOp(context, name, opConst, opType, right, left);
 }
 
-bool SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStruct* leftStruct, SymbolName** result)
+bool Semantic::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStruct* leftStruct, SymbolName** result)
 {
     *result = nullptr;
     if (leftStruct->isTuple())
@@ -410,7 +410,7 @@ bool SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfo
     return true;
 }
 
-bool SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStruct* leftStruct, TypeInfoParam* parentField, VectorNative<FindUserOp>& result)
+bool Semantic::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStruct* leftStruct, TypeInfoParam* parentField, VectorNative<FindUserOp>& result)
 {
     // In case of a generic instance, symbols are defined in the original generic structure scope, not
     // in the instance
@@ -432,7 +432,7 @@ bool SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfo
             if (!typeS)
                 continue;
 
-            context->job->waitAllStructSpecialMethods(typeS);
+            context->baseJob->waitAllStructSpecialMethods(typeS);
             YIELD();
 
             SWAG_CHECK(hasUserOp(context, name, typeS, field, result));
@@ -443,7 +443,7 @@ bool SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfo
     return true;
 }
 
-bool SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, AstNode* left, SymbolName** result)
+bool Semantic::hasUserOp(SemanticContext* context, const Utf8& name, AstNode* left, SymbolName** result)
 {
     auto leftType = TypeManager::concreteType(left->typeInfo);
     if (leftType->isArray())
@@ -455,7 +455,7 @@ bool SemanticJob::hasUserOp(SemanticContext* context, const Utf8& name, AstNode*
     return hasUserOp(context, name, leftStruct, result);
 }
 
-bool SemanticJob::waitUserOp(SemanticContext* context, const Utf8& name, AstNode* left, SymbolName** result)
+bool Semantic::waitUserOp(SemanticContext* context, const Utf8& name, AstNode* left, SymbolName** result)
 {
     SWAG_CHECK(hasUserOp(context, name, left, result));
     if (!*result)
@@ -464,12 +464,12 @@ bool SemanticJob::waitUserOp(SemanticContext* context, const Utf8& name, AstNode
     auto       symbol = *result;
     ScopedLock lkn(symbol->mutex);
     if (symbol->cptOverloads)
-        context->job->waitSymbolNoLock(symbol);
+        context->baseJob->waitSymbolNoLock(symbol);
 
     return true;
 }
 
-bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right)
+bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right)
 {
     // For a var, trick error system, because we want to point on '='
     AstVarDecl* varDecl = nullptr;
@@ -539,7 +539,7 @@ bool SemanticJob::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTy
     return true;
 }
 
-bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, uint32_t ropFlags)
+bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, uint32_t ropFlags)
 {
     VectorNative<AstNode*> params;
     SWAG_ASSERT(left);
@@ -549,7 +549,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
     return resolveUserOp(context, name, opConst, opType, left, params, ropFlags);
 }
 
-bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, VectorNative<AstNode*>& params, uint32_t ropFlags)
+bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, VectorNative<AstNode*>& params, uint32_t ropFlags)
 {
     SymbolName* symbol = nullptr;
     SWAG_CHECK(waitUserOp(context, name, left, &symbol));
@@ -584,7 +584,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
     }
 
     auto node       = context->node;
-    auto job        = context->job;
+    auto sem        = context->sem;
     auto sourceFile = context->sourceFile;
 
     SymbolMatchContext symMatchContext;
@@ -630,16 +630,16 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
         return context->report(diag);
     }
 
-    auto& listTryMatch = job->cacheListTryMatch;
+    auto& listTryMatch = sem->cacheListTryMatch;
     while (true)
     {
-        job->clearTryMatch();
+        sem->clearTryMatch();
 
         {
             SharedLock lk(symbol->mutex);
             for (auto overload : symbol->overloads)
             {
-                auto t               = job->getTryMatch();
+                auto t               = sem->getTryMatch();
                 t->symMatchContext   = symMatchContext;
                 t->overload          = overload;
                 t->genericParameters = genericParameters;
@@ -670,10 +670,10 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
     uint64_t castFlags = CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_UFCS | CASTFLAG_ACCEPT_PENDING | CASTFLAG_PARAMS;
     if (justCheck)
         castFlags |= CASTFLAG_JUST_CHECK;
-    if (job->cacheMatches.empty())
+    if (sem->cacheMatches.empty())
         return true;
 
-    auto oneMatch = job->cacheMatches[0];
+    auto oneMatch = sem->cacheMatches[0];
     for (size_t i = 0; i < params.size(); i++)
     {
         if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
@@ -753,7 +753,7 @@ bool SemanticJob::resolveUserOp(SemanticContext* context, const Utf8& name, cons
                         Ast::addChildFront(nodeCall, idRef);
 
                         // Add the 2 nodes to the semantic
-                        context->job->nodes.push_back(nodeCall);
+                        context->baseJob->nodes.push_back(nodeCall);
 
                         context->result = ContextResult::NewChilds;
                         return true;

@@ -5,6 +5,7 @@
 #include "ByteCode.h"
 #include "Ast.h"
 #include "Module.h"
+#include "Semantic.h"
 #include "SemanticJob.h"
 #include "Report.h"
 #include "ModuleManager.h"
@@ -1229,7 +1230,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context)
 
 void ByteCodeGenJob::computeSourceLocation(JobContext* context, AstNode* node, uint32_t* storageOffset, DataSegment** storageSegment, bool forceCompiler)
 {
-    auto seg        = SemanticJob::getConstantSegFromContext(context->node, forceCompiler);
+    auto seg        = Semantic::getConstantSegFromContext(context->node, forceCompiler);
     *storageSegment = seg;
 
     auto sourceFile = node->sourceFile;
@@ -1345,8 +1346,8 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
         case TokenId::CompilerCpu:
         {
             reserveLinearRegisterRC2(context, regList);
-            auto str            = SemanticJob::getCompilerFunctionString(node, defaultParam->assignment->tokenId);
-            auto storageSegment = SemanticJob::getConstantSegFromContext(context->node);
+            auto str            = Semantic::getCompilerFunctionString(node, defaultParam->assignment->tokenId);
+            auto storageSegment = Semantic::getConstantSegFromContext(context->node);
             auto storageOffset  = storageSegment->addString(str);
             SWAG_ASSERT(storageOffset != UINT32_MAX);
             emitMakeSegPointer(context, storageSegment, storageOffset, regList[0]);
@@ -1585,7 +1586,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         auto  numFuncParams  = (int) typeInfoFunc->parameters.size();
         auto  module         = context->sourceFile->module;
         auto& typeGen        = module->typeGen;
-        auto  storageSegment = SemanticJob::getConstantSegFromContext(allParams);
+        auto  storageSegment = Semantic::getConstantSegFromContext(allParams);
 
         // We must export one type per parameter
         for (int i = (int) numCallParams - 1; i >= numFuncParams - 1; i--)
@@ -1652,7 +1653,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
         auto numFuncParams  = (int) typeInfoFunc->parameters.size();
         auto numVariadic    = (uint32_t) (numCallParams - numFuncParams) + 1;
         int  offset         = numVariadic * 2 * sizeof(Register);
-        auto storageSegment = SemanticJob::getConstantSegFromContext(allParams);
+        auto storageSegment = Semantic::getConstantSegFromContext(allParams);
 
         for (int i = (int) numCallParams - 1; i >= numFuncParams - 1; i--)
         {
@@ -2254,7 +2255,7 @@ bool ByteCodeGenJob::emitForeignCall(ByteCodeGenContext* context)
 
 bool ByteCodeGenJob::makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl, AstNode* identifier)
 {
-    SWAG_CHECK(SemanticJob::makeInline((JobContext*) context, funcDecl, identifier));
+    SWAG_CHECK(Semantic::makeInline((JobContext*) context, funcDecl, identifier));
 
     // Create a semantic job to resolve the inline part, and wait for that to be finished
     context->job->setPending(JobWaitKind::MakeInline, nullptr, funcDecl, nullptr);

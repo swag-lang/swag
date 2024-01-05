@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Ast.h"
 #include "TypeManager.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "ByteCode.h"
 #include "Module.h"
 #include "LanguageSpec.h"
@@ -630,7 +630,7 @@ AstNode* AstBreakContinue::clone(CloneContext& context)
         {
             auto newNode = Ast::newNode<AstSubstBreakContinue>(nullptr, AstNodeKind::SubstBreakContinue, sourceFile, context.parent);
             newNode->allocateExtension(ExtensionKind::Semantic);
-            newNode->extSemantic()->semanticBeforeFct = SemanticJob::preResolveSubstBreakContinue;
+            newNode->extSemantic()->semanticBeforeFct = Semantic::preResolveSubstBreakContinue;
 
             CloneContext cloneContext = context;
             cloneContext.replaceTokens.clear();

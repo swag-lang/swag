@@ -2,7 +2,7 @@
 #include "Module.h"
 #include "ByteCode.h"
 #include "Context.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "PrepCompilerMsgJob.h"
 #include "ThreadManager.h"
 

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Ast.h"
 #include "Scoped.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "ErrorIds.h"
 #include "Naming.h"
 #include "TypeManager.h"
@@ -9,9 +9,9 @@
 bool Parser::doEnum(AstNode* parent, AstNode** result)
 {
     auto enumNode         = Ast::newNode<AstEnum>(this, AstNodeKind::EnumDecl, sourceFile, parent);
-    enumNode->semanticFct = SemanticJob::resolveEnum;
+    enumNode->semanticFct = Semantic::resolveEnum;
     enumNode->allocateExtension(ExtensionKind::Semantic);
-    enumNode->extSemantic()->semanticAfterFct = SemanticJob::sendCompilerMsgTypeDecl;
+    enumNode->extSemantic()->semanticAfterFct = Semantic::sendCompilerMsgTypeDecl;
     *result                                   = enumNode;
 
     if (!tokenizer.comment.empty())
@@ -74,7 +74,7 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
     // Raw type
     SWAG_CHECK(eatToken());
     auto typeNode         = Ast::newNode<AstNode>(this, AstNodeKind::EnumType, sourceFile, enumNode);
-    typeNode->semanticFct = SemanticJob::resolveEnumType;
+    typeNode->semanticFct = Semantic::resolveEnumType;
     if (token.id == TokenId::SymColon)
     {
         SWAG_CHECK(eatToken());
@@ -149,7 +149,7 @@ bool Parser::doSubEnumValue(AstNode* parent, AstNode** result)
 
     auto enumValue = Ast::newNode<AstEnumValue>(this, AstNodeKind::EnumValue, sourceFile, parent);
     enumValue->addSpecFlags(AstEnumValue::SPECFLAG_HAS_USING);
-    enumValue->semanticFct = SemanticJob::resolveSubEnumValue;
+    enumValue->semanticFct = Semantic::resolveSubEnumValue;
     *result                = enumValue;
 
     SWAG_CHECK(doIdentifierRef(enumValue, &dummyResult, IDENTIFIER_NO_PARAMS));
@@ -175,7 +175,7 @@ bool Parser::doEnumValue(AstNode* parent, AstNode** result)
     auto enumValue = Ast::newNode<AstEnumValue>(this, AstNodeKind::EnumValue, sourceFile, parent);
     *result        = enumValue;
     enumValue->inheritTokenName(token);
-    enumValue->semanticFct = SemanticJob::resolveEnumValue;
+    enumValue->semanticFct = Semantic::resolveEnumValue;
     currentScope->symTable.registerSymbolName(context, enumValue, SymbolKind::EnumValue);
 
     SWAG_CHECK(eatToken());

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "Ast.h"
 #include "ByteCodeGenJob.h"
 #include "TypeManager.h"
@@ -7,7 +7,7 @@
 #include "ErrorIds.h"
 #include "Naming.h"
 
-bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeInfo* typeInfoVar)
+bool Semantic::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeInfo* typeInfoVar)
 {
     auto node    = context->node;
     auto regNode = node->ownerScope ? node->ownerScope->owner : node;
@@ -41,21 +41,21 @@ bool SemanticJob::resolveUsingVar(SemanticContext* context, AstNode* varNode, Ty
     return true;
 }
 
-bool SemanticJob::resolveWithVarDeclAfter(SemanticContext* context)
+bool Semantic::resolveWithVarDeclAfter(SemanticContext* context)
 {
     SWAG_CHECK(resolveVarDeclAfter(context));
     SWAG_CHECK(resolveWith(context));
     return true;
 }
 
-bool SemanticJob::resolveWithAfterKnownType(SemanticContext* context)
+bool Semantic::resolveWithAfterKnownType(SemanticContext* context)
 {
     SWAG_CHECK(resolveAfterKnownType(context));
     SWAG_CHECK(resolveWith(context));
     return true;
 }
 
-bool SemanticJob::resolveWith(SemanticContext* context)
+bool Semantic::resolveWith(SemanticContext* context)
 {
     auto n = context->node->findParent(AstNodeKind::With);
     SWAG_ASSERT(n);
@@ -109,7 +109,7 @@ bool SemanticJob::resolveWith(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveUsing(SemanticContext* context)
+bool Semantic::resolveUsing(SemanticContext* context)
 {
     auto node  = context->node;
     auto idref = CastAst<AstIdentifierRef>(node->childs[0], AstNodeKind::IdentifierRef);
@@ -156,7 +156,7 @@ bool SemanticJob::resolveUsing(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveScopedStmtBefore(SemanticContext* context)
+bool Semantic::resolveScopedStmtBefore(SemanticContext* context)
 {
     auto node                        = context->node;
     node->ownerScope->startStackSize = node->ownerScope->parentScope->startStackSize;
@@ -176,13 +176,13 @@ bool SemanticJob::resolveScopedStmtBefore(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveScopedStmtAfter(SemanticContext* context)
+bool Semantic::resolveScopedStmtAfter(SemanticContext* context)
 {
     SWAG_CHECK(warnUnusedVariables(context, context->node->ownerScope));
     return true;
 }
 
-bool SemanticJob::resolveSubDeclRef(SemanticContext* context)
+bool Semantic::resolveSubDeclRef(SemanticContext* context)
 {
     auto node = CastAst<AstRefSubDecl>(context->node, AstNodeKind::RefSubDecl);
 

@@ -2,7 +2,7 @@
 #include "LanguageSpec.h"
 #include "ByteCodeGenJob.h"
 #include "ByteCode.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "Ast.h"
 
 bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
@@ -132,7 +132,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
         auto numFuncParams = func->parameters->childs.size();
 
         // Sort childs by parameter index
-        SemanticJob::sortParameters(allParams);
+        Semantic::sortParameters(allParams);
 
         // Simple case, every parameters are covered by the call, and there's no named param
         if (numFuncParams == numCallParams)

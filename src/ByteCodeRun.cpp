@@ -12,7 +12,7 @@
 #include "ErrorIds.h"
 #include "Report.h"
 #include "LanguageSpec.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "Module.h"
 #include "ByteCodeDebugger.h"
 

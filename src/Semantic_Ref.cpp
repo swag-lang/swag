@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
 #include "Module.h"
@@ -9,7 +9,7 @@
 #include "LanguageSpec.h"
 #include "Naming.h"
 
-bool SemanticJob::boundCheck(SemanticContext* context, TypeInfo* forType, AstNode* arrayNode, AstNode* arrayAccess, uint64_t maxCount)
+bool Semantic::boundCheck(SemanticContext* context, TypeInfo* forType, AstNode* arrayNode, AstNode* arrayAccess, uint64_t maxCount)
 {
     if (!arrayAccess->hasComputedValue())
         return true;
@@ -37,7 +37,7 @@ bool SemanticJob::boundCheck(SemanticContext* context, TypeInfo* forType, AstNod
     return true;
 }
 
-bool SemanticJob::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl* funcNode, AstNode* node)
+bool Semantic::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl* funcNode, AstNode* node)
 {
     Utf8 msg;
     Utf8 msg1;
@@ -69,7 +69,7 @@ bool SemanticJob::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl*
     return true;
 }
 
-bool SemanticJob::checkCanTakeAddress(SemanticContext* context, AstNode* node)
+bool Semantic::checkCanTakeAddress(SemanticContext* context, AstNode* node)
 {
     SWAG_ASSERT(node->kind == AstNodeKind::IdentifierRef || node->kind == AstNodeKind::ArrayPointerIndex);
     if (!(node->flags & AST_L_VALUE))
@@ -87,7 +87,7 @@ bool SemanticJob::checkCanTakeAddress(SemanticContext* context, AstNode* node)
     return true;
 }
 
-bool SemanticJob::resolveMakePointerLambda(SemanticContext* context)
+bool Semantic::resolveMakePointerLambda(SemanticContext* context)
 {
     auto     node  = CastAst<AstMakePointer>(context->node, AstNodeKind::MakePointerLambda, AstNodeKind::MakePointer);
     AstNode* child = nullptr;
@@ -127,7 +127,7 @@ bool SemanticJob::resolveMakePointerLambda(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveMakePointer(SemanticContext* context)
+bool Semantic::resolveMakePointer(SemanticContext* context)
 {
     auto node     = CastAst<AstMakePointer>(context->node, AstNodeKind::MakePointer);
     auto child    = node->childs.front();
@@ -271,7 +271,7 @@ bool SemanticJob::resolveMakePointer(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveArrayPointerSlicingUpperBound(SemanticContext* context)
+bool Semantic::resolveArrayPointerSlicingUpperBound(SemanticContext* context)
 {
     auto arrayNode = context->node;
     auto slicing   = CastAst<AstArrayPointerSlicing>(context->node->parent, AstNodeKind::ArrayPointerSlicing);
@@ -295,7 +295,7 @@ bool SemanticJob::resolveArrayPointerSlicingUpperBound(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
+bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
 {
     auto node         = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
     auto typeVar      = getConcreteTypeUnRef(node->array, CONCRETE_ALL);
@@ -439,7 +439,7 @@ bool SemanticJob::resolveArrayPointerSlicing(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveMoveRef(SemanticContext* context)
+bool Semantic::resolveMoveRef(SemanticContext* context)
 {
     auto node  = context->node;
     auto front = node->childs.front();
@@ -476,7 +476,7 @@ bool SemanticJob::resolveMoveRef(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveKeepRef(SemanticContext* context)
+bool Semantic::resolveKeepRef(SemanticContext* context)
 {
     auto node  = context->node;
     auto front = node->childs.front();
@@ -524,7 +524,7 @@ bool SemanticJob::resolveKeepRef(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
+bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
 {
     auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
 
@@ -576,7 +576,7 @@ bool SemanticJob::resolveArrayPointerIndex(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
+bool Semantic::resolveArrayPointerRef(SemanticContext* context)
 {
     auto arrayNode                    = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     arrayNode->resolvedSymbolName     = arrayNode->array->resolvedSymbolName;
@@ -754,7 +754,7 @@ bool SemanticJob::resolveArrayPointerRef(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::getConstantArrayPtr(SemanticContext* context, uint32_t* storageOffset, DataSegment** storageSegment)
+bool Semantic::getConstantArrayPtr(SemanticContext* context, uint32_t* storageOffset, DataSegment** storageSegment)
 {
     auto arrayNode = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     auto arrayType = TypeManager::concreteType(arrayNode->array->typeInfo);
@@ -813,7 +813,7 @@ bool SemanticJob::getConstantArrayPtr(SemanticContext* context, uint32_t* storag
     return true;
 }
 
-bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
+bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
 {
     auto arrayNode         = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     auto arrayAccess       = arrayNode->access;
@@ -1062,7 +1062,7 @@ bool SemanticJob::resolveArrayPointerDeRef(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::checkInitDropCount(SemanticContext* context, AstNode* node, AstNode* expression, AstNode* count)
+bool Semantic::checkInitDropCount(SemanticContext* context, AstNode* node, AstNode* expression, AstNode* count)
 {
     if (!count)
         return true;
@@ -1093,9 +1093,9 @@ bool SemanticJob::checkInitDropCount(SemanticContext* context, AstNode* node, As
     return true;
 }
 
-bool SemanticJob::resolveInit(SemanticContext* context)
+bool Semantic::resolveInit(SemanticContext* context)
 {
-    auto job                = context->job;
+    auto sem                = context->sem;
     auto node               = CastAst<AstInit>(context->node, AstNodeKind::Init);
     auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
@@ -1146,17 +1146,17 @@ bool SemanticJob::resolveInit(SemanticContext* context)
             for (auto child : node->parameters->childs)
                 symMatchContext.parameters.push_back(child);
 
-            auto& listTryMatch = job->cacheListTryMatch;
+            auto& listTryMatch = sem->cacheListTryMatch;
             while (true)
             {
-                job->clearTryMatch();
+                sem->clearTryMatch();
                 auto symbol = typeStruct->declNode->resolvedSymbolName;
 
                 {
                     SharedLock lk(symbol->mutex);
                     for (auto overload : symbol->overloads)
                     {
-                        auto t               = job->getTryMatch();
+                        auto t               = sem->getTryMatch();
                         t->symMatchContext   = symMatchContext;
                         t->overload          = overload;
                         t->genericParameters = nullptr;
@@ -1185,7 +1185,7 @@ bool SemanticJob::resolveInit(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveDropCopyMove(SemanticContext* context)
+bool Semantic::resolveDropCopyMove(SemanticContext* context)
 {
     auto node               = CastAst<AstDropCopyMove>(context->node, AstNodeKind::Drop, AstNodeKind::PostCopy, AstNodeKind::PostMove);
     auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);

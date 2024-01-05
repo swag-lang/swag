@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "Ast.h"
 #include "SourceFile.h"
 #include "Module.h"
@@ -32,7 +32,7 @@
             forNode->safetyOff |= __flag; \
     }
 
-bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode)
+bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode)
 {
     if (!checkNode || (checkNode->kind == AstNodeKind::RefSubDecl))
         return true;
@@ -196,7 +196,7 @@ bool SemanticJob::checkAttribute(SemanticContext* context, AstNode* oneAttribute
     }
 }
 
-void SemanticJob::inheritAttributesFromParent(AstNode* child)
+void Semantic::inheritAttributesFromParent(AstNode* child)
 {
     if (!child->parent)
         return;
@@ -207,7 +207,7 @@ void SemanticJob::inheritAttributesFromParent(AstNode* child)
     child->safetyOff |= child->parent->safetyOff;
 }
 
-void SemanticJob::inheritAttributesFrom(AstNode* child, uint64_t attributeFlags, uint16_t safetyOn, uint16_t safetyOff)
+void Semantic::inheritAttributesFrom(AstNode* child, uint64_t attributeFlags, uint16_t safetyOn, uint16_t safetyOff)
 {
     INHERIT_SAFETY(child, SAFETY_BOUNDCHECK);
     INHERIT_SAFETY(child, SAFETY_OVERFLOW);
@@ -228,7 +228,7 @@ void SemanticJob::inheritAttributesFrom(AstNode* child, uint64_t attributeFlags,
         INHERIT_ATTR(child, ATTRIBUTE_PUBLIC | ATTRIBUTE_INTERNAL | ATTRIBUTE_PRIVATE);
 }
 
-void SemanticJob::inheritAttributesFromOwnerFunc(AstNode* child)
+void Semantic::inheritAttributesFromOwnerFunc(AstNode* child)
 {
     SWAG_ASSERT(child->kind == AstNodeKind::FuncDecl);
     SWAG_ASSERT(child->ownerFct);
@@ -242,7 +242,7 @@ void SemanticJob::inheritAttributesFromOwnerFunc(AstNode* child)
     inheritAttributesFrom(child, attributeFlags, safetyOn, safetyOff);
 }
 
-bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result)
+bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result)
 {
     auto attrUse = forNode->hasExtOwner() ? forNode->extOwner()->ownerAttrUse : nullptr;
     SWAG_CHECK(collectAttributes(context, forNode, result, attrUse));
@@ -250,7 +250,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
     return true;
 }
 
-bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result, AstAttrUse* attrUse)
+bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result, AstAttrUse* attrUse)
 {
     if (!attrUse)
         attrUse = forNode->sourceFile->astAttrUse;
@@ -620,7 +620,7 @@ bool SemanticJob::collectAttributes(SemanticContext* context, AstNode* forNode, 
     return true;
 }
 
-bool SemanticJob::preResolveAttrDecl(SemanticContext* context)
+bool Semantic::preResolveAttrDecl(SemanticContext* context)
 {
     auto node     = CastAst<AstAttrDecl>(context->node, AstNodeKind::AttrDecl);
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
@@ -628,7 +628,7 @@ bool SemanticJob::preResolveAttrDecl(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveAttrDecl(SemanticContext* context)
+bool Semantic::resolveAttrDecl(SemanticContext* context)
 {
     auto node     = CastAst<AstAttrDecl>(context->node, AstNodeKind::AttrDecl);
     auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
@@ -648,7 +648,7 @@ bool SemanticJob::resolveAttrDecl(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveAttrUse(SemanticContext* context)
+bool Semantic::resolveAttrUse(SemanticContext* context)
 {
     auto node = CastAst<AstAttrUse>(context->node->parent, AstNodeKind::AttrUse);
     SWAG_VERIFY(node->content || (node->specFlags & AstAttrUse::SPECFLAG_GLOBAL), context->report({node, Err(Err0597)}));
@@ -656,7 +656,7 @@ bool SemanticJob::resolveAttrUse(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
+bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
 {
     for (auto child : node->childs)
     {

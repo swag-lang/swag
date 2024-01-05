@@ -4,7 +4,7 @@
 #include "Module.h"
 #include "TypeManager.h"
 #include "Ast.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "Report.h"
 
 bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)
@@ -290,8 +290,8 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         {
             node->semFlags |= SEMFLAG_EXPRLIST_CST;
             node->allocateComputedValue();
-            node->computedValue->storageSegment = SemanticJob::getConstantSegFromContext(node);
-            SWAG_CHECK(SemanticJob::reserveAndStoreToSegment(context, node->computedValue->storageSegment, node->computedValue->storageOffset, nullptr, typeList, node));
+            node->computedValue->storageSegment = Semantic::getConstantSegFromContext(node);
+            SWAG_CHECK(Semantic::reserveAndStoreToSegment(context, node->computedValue->storageSegment, node->computedValue->storageOffset, nullptr, typeList, node));
         }
 
         emitMakeSegPointer(context, node->computedValue->storageSegment, node->computedValue->storageOffset, node->resultRegisterRC[0]);
@@ -428,7 +428,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
         case NativeTypeKind::String:
         {
             reserveLinearRegisterRC2(context, regList);
-            auto storageSegment = SemanticJob::getConstantSegFromContext(node);
+            auto storageSegment = Semantic::getConstantSegFromContext(node);
             auto storageOffset  = storageSegment->addString(node->computedValue->text);
             SWAG_ASSERT(storageOffset != UINT32_MAX);
             emitMakeSegPointer(context, storageSegment, storageOffset, regList[0]);
@@ -465,7 +465,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     }
     else if (typeInfo->isPointer() && node->castedTypeInfo && node->castedTypeInfo->isString())
     {
-        auto storageSegment = SemanticJob::getConstantSegFromContext(node);
+        auto storageSegment = Semantic::getConstantSegFromContext(node);
         auto storageOffset  = storageSegment->addString(node->computedValue->text);
         SWAG_ASSERT(storageOffset != UINT32_MAX);
         emitMakeSegPointer(context, storageSegment, storageOffset, regList[0]);
@@ -473,7 +473,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     else if (typeInfo->isSlice() && node->castedTypeInfo && node->castedTypeInfo->isString())
     {
         reserveLinearRegisterRC2(context, regList);
-        auto storageSegment = SemanticJob::getConstantSegFromContext(node);
+        auto storageSegment = Semantic::getConstantSegFromContext(node);
         auto storageOffset  = storageSegment->addString(node->computedValue->text);
         SWAG_ASSERT(storageOffset != UINT32_MAX);
         emitMakeSegPointer(context, storageSegment, storageOffset, regList[0]);

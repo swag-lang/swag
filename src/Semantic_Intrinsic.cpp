@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
 #include "AstOutput.h"
@@ -9,7 +9,7 @@
 #include "LanguageSpec.h"
 #include "Workspace.h"
 
-bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
+bool Semantic::resolveIntrinsicTag(SemanticContext* context)
 {
     auto node = context->node;
     switch (node->tokenId)
@@ -114,7 +114,7 @@ bool SemanticJob::resolveIntrinsicTag(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode* node)
+bool Semantic::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode* node)
 {
     auto first     = node->childs.front();
     auto typeFirst = TypeManager::concreteType(first->typeInfo);
@@ -141,7 +141,7 @@ bool SemanticJob::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode
     return true;
 }
 
-bool SemanticJob::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, const char* name)
+bool Semantic::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, const char* name)
 {
     auto first  = node->childs.front();
     auto second = node->childs.back();
@@ -170,7 +170,7 @@ bool SemanticJob::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* n
     return true;
 }
 
-bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
+bool Semantic::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
     auto first  = node->childs.front();
     auto second = node->childs.back();
@@ -207,7 +207,7 @@ bool SemanticJob::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* nod
     return true;
 }
 
-bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
+bool Semantic::resolveIntrinsicMakeInterface(SemanticContext* context)
 {
     auto node   = context->node;
     auto params = node->childs.front();
@@ -241,7 +241,7 @@ bool SemanticJob::resolveIntrinsicMakeInterface(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, AstNode* expression)
+bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, AstNode* expression)
 {
     auto typeInfo = TypeManager::concretePtrRef(expression->typeInfo);
     typeInfo      = typeInfo->getConcreteAlias();
@@ -389,7 +389,7 @@ bool SemanticJob::resolveIntrinsicCountOf(SemanticContext* context, AstNode* nod
     return true;
 }
 
-bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, AstNode* expression)
+bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, AstNode* expression)
 {
     auto typeInfo = TypeManager::concretePtrRefType(expression->typeInfo);
 
@@ -418,7 +418,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
             }
             else
             {
-                node->computedValue->storageSegment = SemanticJob::getConstantSegFromContext(node);
+                node->computedValue->storageSegment = Semantic::getConstantSegFromContext(node);
                 node->computedValue->storageOffset  = node->computedValue->storageSegment->addString(expression->computedValue->text);
             }
         }
@@ -544,7 +544,7 @@ bool SemanticJob::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node
     return true;
 }
 
-bool SemanticJob::resolveIntrinsicStringOf(SemanticContext* context)
+bool Semantic::resolveIntrinsicStringOf(SemanticContext* context)
 {
     auto node     = context->node;
     auto expr     = node->childs.front();
@@ -598,7 +598,7 @@ bool SemanticJob::resolveIntrinsicStringOf(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveIntrinsicNameOf(SemanticContext* context)
+bool Semantic::resolveIntrinsicNameOf(SemanticContext* context)
 {
     auto node = context->node;
     auto expr = node->childs.front();
@@ -623,7 +623,7 @@ bool SemanticJob::resolveIntrinsicNameOf(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveIntrinsicRunes(SemanticContext* context)
+bool Semantic::resolveIntrinsicRunes(SemanticContext* context)
 {
     auto node     = context->node;
     auto expr     = node->childs.front();
@@ -647,7 +647,7 @@ bool SemanticJob::resolveIntrinsicRunes(SemanticContext* context)
     }
 
     // :SliceLiteral
-    auto storageSegment                 = SemanticJob::getConstantSegFromContext(context->node);
+    auto storageSegment                 = Semantic::getConstantSegFromContext(context->node);
     node->computedValue->storageSegment = storageSegment;
 
     SwagSlice* slice;
@@ -665,7 +665,7 @@ bool SemanticJob::resolveIntrinsicRunes(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
+bool Semantic::resolveIntrinsicSpread(SemanticContext* context)
 {
     auto node         = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto expr         = node->childs.front();
@@ -717,7 +717,7 @@ bool SemanticJob::resolveIntrinsicSpread(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
+bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
 {
     auto  node       = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto  expr       = node->childs.front();
@@ -802,7 +802,7 @@ bool SemanticJob::resolveIntrinsicKindOf(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveIntrinsicDeclType(SemanticContext* context)
+bool Semantic::resolveIntrinsicDeclType(SemanticContext* context)
 {
     auto node     = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto expr     = node->childs.front();
@@ -842,7 +842,7 @@ bool SemanticJob::resolveIntrinsicDeclType(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveIntrinsicTypeOf(SemanticContext* context)
+bool Semantic::resolveIntrinsicTypeOf(SemanticContext* context)
 {
     auto node     = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto expr     = node->childs.front();
@@ -859,7 +859,7 @@ bool SemanticJob::resolveIntrinsicTypeOf(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveIntrinsicProperty(SemanticContext* context)
+bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
 {
     auto node = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
 

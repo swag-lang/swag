@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Ast.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "TypeManager.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"

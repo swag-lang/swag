@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "ByteCodeGenJob.h"
 #include "Module.h"
 #include "Ast.h"
@@ -9,7 +9,7 @@
 #include "LanguageSpec.h"
 #include "Naming.h"
 
-uint32_t SemanticJob::alignOf(AstVarDecl* node)
+uint32_t Semantic::alignOf(AstVarDecl* node)
 {
     auto value = node->attributes.getValue(g_LangSpec->name_Swag_Align, g_LangSpec->name_value);
     if (value)
@@ -18,7 +18,7 @@ uint32_t SemanticJob::alignOf(AstVarDecl* node)
 }
 
 // Will be called after solving the initial var affect, but before tuple unpacking
-bool SemanticJob::resolveTupleUnpackBeforeVar(SemanticContext* context)
+bool Semantic::resolveTupleUnpackBeforeVar(SemanticContext* context)
 {
     SWAG_CHECK(resolveVarDeclAfter(context));
     SWAG_CHECK(resolveTupleUnpackBefore(context));
@@ -26,7 +26,7 @@ bool SemanticJob::resolveTupleUnpackBeforeVar(SemanticContext* context)
 }
 
 // Will be called after solving the initial var affect, but before tuple unpacking
-bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
+bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
 {
     auto scopeNode = CastAst<AstNode>(context->node->parent, AstNodeKind::StatementNoScope, AstNodeKind::Statement);
     auto varDecl   = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl);
@@ -37,7 +37,7 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
         varDecl->semFlags |= SEMFLAG_TUPLE_CONVERT;
         SWAG_CHECK(Ast::convertLiteralTupleToStructDecl(context, varDecl, varDecl->assignment, &varDecl->type));
         context->result = ContextResult::NewChilds;
-        context->job->nodes.push_back(varDecl->type);
+        context->baseJob->nodes.push_back(varDecl->type);
         return true;
     }
     else if (varDecl->semFlags & SEMFLAG_TUPLE_CONVERT)
@@ -86,26 +86,26 @@ bool SemanticJob::resolveTupleUnpackBefore(SemanticContext* context)
     return true;
 }
 
-void SemanticJob::setVarDeclResolve(AstVarDecl* varNode)
+void Semantic::setVarDeclResolve(AstVarDecl* varNode)
 {
     varNode->allocateExtension(ExtensionKind::Semantic);
-    varNode->extSemantic()->semanticBeforeFct = SemanticJob::resolveVarDeclBefore;
-    varNode->extSemantic()->semanticAfterFct  = SemanticJob::resolveVarDeclAfter;
+    varNode->extSemantic()->semanticBeforeFct = Semantic::resolveVarDeclBefore;
+    varNode->extSemantic()->semanticAfterFct  = Semantic::resolveVarDeclAfter;
 
     if (varNode->assignment)
     {
         varNode->assignment->allocateExtension(ExtensionKind::Semantic);
-        varNode->assignment->extSemantic()->semanticAfterFct = SemanticJob::resolveVarDeclAfterAssign;
+        varNode->assignment->extSemantic()->semanticAfterFct = Semantic::resolveVarDeclAfterAssign;
     }
 
     if (varNode->assignment && varNode->type)
     {
         varNode->type->allocateExtension(ExtensionKind::Semantic);
-        varNode->type->extSemantic()->semanticAfterFct = SemanticJob::resolveVarDeclAfterType;
+        varNode->type->extSemantic()->semanticAfterFct = Semantic::resolveVarDeclAfterType;
     }
 }
 
-bool SemanticJob::resolveVarDeclAfterType(SemanticContext* context)
+bool Semantic::resolveVarDeclAfterType(SemanticContext* context)
 {
     // :DeduceLambdaType
     resolveAfterKnownType(context);
@@ -153,7 +153,7 @@ bool SemanticJob::resolveVarDeclAfterType(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
+bool Semantic::resolveVarDeclAfter(SemanticContext* context)
 {
     auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
@@ -199,7 +199,7 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
         SWAG_ASSERT(node->computedValue->storageSegment);
         SWAG_ASSERT(node->computedValue->storageOffset != UINT32_MAX);
 
-        auto wantStorageSegment = SemanticJob::getConstantSegFromContext(node);
+        auto wantStorageSegment = Semantic::getConstantSegFromContext(node);
 
         // Copy value from compiler segment to real requested segment
         if (node->computedValue->storageSegment != wantStorageSegment)
@@ -233,7 +233,7 @@ bool SemanticJob::resolveVarDeclAfter(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::sendCompilerMsgGlobalVar(SemanticContext* context)
+bool Semantic::sendCompilerMsgGlobalVar(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
@@ -255,7 +255,7 @@ bool SemanticJob::sendCompilerMsgGlobalVar(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveVarDeclBefore(SemanticContext* context)
+bool Semantic::resolveVarDeclBefore(SemanticContext* context)
 {
     auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
@@ -286,9 +286,9 @@ bool SemanticJob::resolveVarDeclBefore(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
+bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
 {
-    auto job = context->job;
+    auto job = context->baseJob;
 
     auto parent = context->node->parent;
     while (parent && parent->kind != AstNodeKind::VarDecl && parent->kind != AstNodeKind::ConstDecl)
@@ -364,7 +364,7 @@ bool SemanticJob::resolveVarDeclAfterAssign(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags, uint32_t castFlags)
+bool Semantic::convertTypeListToArray(SemanticContext* context, AstVarDecl* node, bool isCompilerConstant, uint32_t symbolFlags, uint32_t castFlags)
 {
     auto typeList  = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListArray);
     auto typeArray = TypeManager::convertTypeListToArray(context, typeList, isCompilerConstant);
@@ -380,7 +380,7 @@ bool SemanticJob::convertTypeListToArray(SemanticContext* context, AstVarDecl* n
     return true;
 }
 
-DataSegment* SemanticJob::getSegmentForVar(SemanticContext* context, AstVarDecl* varNode)
+DataSegment* Semantic::getSegmentForVar(SemanticContext* context, AstVarDecl* varNode)
 {
     auto module   = varNode->sourceFile->module;
     auto typeInfo = TypeManager::concreteType(varNode->typeInfo);
@@ -422,7 +422,7 @@ DataSegment* SemanticJob::getSegmentForVar(SemanticContext* context, AstVarDecl*
 }
 
 // :DeduceLambdaType
-TypeInfo* SemanticJob::getDeducedLambdaType(SemanticContext* context, AstMakePointer* node)
+TypeInfo* Semantic::getDeducedLambdaType(SemanticContext* context, AstMakePointer* node)
 {
     SWAG_ASSERT(node->specFlags & AstMakePointer::SPECFLAG_DEP_TYPE);
 
@@ -446,7 +446,7 @@ TypeInfo* SemanticJob::getDeducedLambdaType(SemanticContext* context, AstMakePoi
 }
 
 // :DeduceLambdaType
-bool SemanticJob::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* nodeParam, bool& lambdaExpr, bool& genericType)
+bool Semantic::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* nodeParam, bool& lambdaExpr, bool& genericType)
 {
     auto mpl = nodeParam->ownerFct->makePointerLambda;
     if (!mpl || !(mpl->specFlags & AstMakePointer::SPECFLAG_DEP_TYPE))
@@ -497,10 +497,10 @@ bool SemanticJob::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl
                 YIELD();
             }
 
-            if (context->job->cacheMatches.empty() || context->job->cacheMatches.size() > 1)
+            if (context->sem->cacheMatches.empty() || context->sem->cacheMatches.size() > 1)
                 return true;
 
-            auto typeOverload = CastTypeInfo<TypeInfoFuncAttr>(context->job->cacheMatches[0]->oneOverload->overload->typeInfo, TypeInfoKind::FuncAttr);
+            auto typeOverload = CastTypeInfo<TypeInfoFuncAttr>(context->sem->cacheMatches[0]->oneOverload->overload->typeInfo, TypeInfoKind::FuncAttr);
             if (!typeOverload->parameters[1]->typeInfo->isLambdaClosure())
                 return true;
 
@@ -536,7 +536,7 @@ bool SemanticJob::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl
     return true;
 }
 
-bool SemanticJob::resolveVarDecl(SemanticContext* context)
+bool Semantic::resolveVarDecl(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
@@ -878,7 +878,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             // Cast from struct to interface : need to wait for all interfaces to be registered
             if (leftConcreteType->isInterface() && rightConcreteType->isStruct())
             {
-                context->job->waitAllStructInterfaces(rightConcreteType);
+                context->baseJob->waitAllStructInterfaces(rightConcreteType);
                 YIELD();
             }
 
@@ -1090,7 +1090,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
     {
         if (isCompilerConstant || (symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_LOCAL))
         {
-            context->job->waitTypeCompleted(typeInfo);
+            context->baseJob->waitTypeCompleted(typeInfo);
             YIELD();
         }
     }
@@ -1131,7 +1131,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             auto typeNode = node->typeInfo;
             if (typeNode->isStruct() || typeNode->isArrayOfStruct())
             {
-                context->job->waitStructGeneratedAlloc(typeNode);
+                context->baseJob->waitStructGeneratedAlloc(typeNode);
                 YIELD();
                 if (typeNode->isArrayOfStruct())
                     typeNode = ((TypeInfoArray*) typeNode)->finalType;
@@ -1213,7 +1213,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 auto ownerFct   = getFunctionForReturn(node);
                 auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(ownerFct->typeInfo, TypeInfoKind::FuncAttr);
                 auto returnType = typeFunc->concreteReturnType();
-                context->job->waitStructGenerated(returnType);
+                context->baseJob->waitStructGenerated(returnType);
                 YIELD();
 
                 if (!CallConv::returnStructByValue(typeFunc))
@@ -1257,7 +1257,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
             }
             else
             {
-                auto alignOf = SemanticJob::alignOf(node);
+                auto alignOf = Semantic::alignOf(node);
 
                 // Because of 'visit' (at least), it can happen that this is not up to date because of order of evaluation.
                 // So update it just in case (5294 bug)
@@ -1266,7 +1266,7 @@ bool SemanticJob::resolveVarDecl(SemanticContext* context)
                 node->ownerScope->startStackSize = (uint32_t) TypeManager::align(node->ownerScope->startStackSize, alignOf);
                 storageOffset                    = node->ownerScope->startStackSize;
                 node->ownerScope->startStackSize += typeInfo->isStruct() ? max(typeInfo->sizeOf, 8) : typeInfo->sizeOf;
-                SemanticJob::setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
+                Semantic::setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
             }
         }
 

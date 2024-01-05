@@ -1,15 +1,15 @@
 
 #include "pch.h"
 #include "Ast.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "ByteCodeGenJob.h"
 
 AstInline* Ast::newInline(SourceFile* sourceFile, AstNode* parent, Parser* parser)
 {
     auto node = Ast::newNode<AstInline>(parser, AstNodeKind::Inline, sourceFile, parent);
     node->allocateExtension(ExtensionKind::Semantic);
-    node->extSemantic()->semanticAfterFct  = SemanticJob::resolveInlineAfter;
-    node->extSemantic()->semanticBeforeFct = SemanticJob::resolveInlineBefore;
+    node->extSemantic()->semanticAfterFct  = Semantic::resolveInlineAfter;
+    node->extSemantic()->semanticBeforeFct = Semantic::resolveInlineBefore;
     node->setBcNotifBefore(ByteCodeGenJob::emitInlineBefore);
     node->byteCodeFct = ByteCodeGenJob::emitInline;
     return node;
@@ -18,7 +18,7 @@ AstInline* Ast::newInline(SourceFile* sourceFile, AstNode* parent, Parser* parse
 AstNode* Ast::newAffectOp(SourceFile* sourceFile, AstNode* parent, uint8_t opFlags, uint64_t attributeFlags, Parser* parser)
 {
     auto node         = Ast::newNode<AstOp>(parser, AstNodeKind::AffectOp, sourceFile, parent);
-    node->semanticFct = SemanticJob::resolveAffect;
+    node->semanticFct = Semantic::resolveAffect;
     node->attributeFlags |= attributeFlags;
     node->addSpecFlags(opFlags);
     return node;
@@ -27,14 +27,14 @@ AstNode* Ast::newAffectOp(SourceFile* sourceFile, AstNode* parent, uint8_t opFla
 AstStruct* Ast::newStructDecl(SourceFile* sourceFile, AstNode* parent, Parser* parser)
 {
     auto node         = Ast::newNode<AstStruct>(parser, AstNodeKind::StructDecl, sourceFile, parent);
-    node->semanticFct = SemanticJob::resolveStruct;
+    node->semanticFct = Semantic::resolveStruct;
     return node;
 }
 
 AstNode* Ast::newFuncDeclParams(SourceFile* sourceFile, AstNode* parent, Parser* parser)
 {
     auto node         = Ast::newNode<AstNode>(parser, AstNodeKind::FuncDeclParams, sourceFile, parent);
-    node->semanticFct = SemanticJob::resolveFuncDeclParams;
+    node->semanticFct = Semantic::resolveFuncDeclParams;
     node->flags |= AST_NO_BYTECODE_CHILDS; // We do not want default assignations to generate bytecode
     return node;
 }
@@ -42,21 +42,21 @@ AstNode* Ast::newFuncDeclParams(SourceFile* sourceFile, AstNode* parent, Parser*
 AstFuncCallParams* Ast::newFuncCallGenParams(SourceFile* sourceFile, AstNode* parent, Parser* parser)
 {
     auto node         = Ast::newNode<AstFuncCallParams>(parser, AstNodeKind::FuncCallParams, sourceFile, parent);
-    node->semanticFct = SemanticJob::resolveFuncCallGenParams;
+    node->semanticFct = Semantic::resolveFuncCallGenParams;
     return node;
 }
 
 AstFuncCallParams* Ast::newFuncCallParams(SourceFile* sourceFile, AstNode* parent, Parser* parser)
 {
     auto node         = Ast::newNode<AstFuncCallParams>(parser, AstNodeKind::FuncCallParams, sourceFile, parent);
-    node->semanticFct = SemanticJob::resolveFuncCallParams;
+    node->semanticFct = Semantic::resolveFuncCallParams;
     return node;
 }
 
 AstFuncCallParam* Ast::newFuncCallParam(SourceFile* sourceFile, AstNode* parent, Parser* parser)
 {
     auto node         = Ast::newNode<AstFuncCallParam>(parser, AstNodeKind::FuncCallParam, sourceFile, parent);
-    node->semanticFct = SemanticJob::resolveFuncCallParam;
+    node->semanticFct = Semantic::resolveFuncCallParam;
     return node;
 }
 
@@ -64,7 +64,7 @@ AstVarDecl* Ast::newVarDecl(SourceFile* sourceFile, const Utf8& name, AstNode* p
 {
     auto node         = Ast::newNode<AstVarDecl>(parser, kind, sourceFile, parent);
     node->token.text  = name;
-    node->semanticFct = SemanticJob::resolveVarDecl;
+    node->semanticFct = Semantic::resolveVarDecl;
     return node;
 }
 
@@ -72,14 +72,14 @@ AstIntrinsicProp* Ast::newIntrinsicProp(SourceFile* sourceFile, TokenId id, AstN
 {
     auto node         = Ast::newNode<AstIntrinsicProp>(parser, AstNodeKind::IntrinsicProp, sourceFile, parent);
     node->tokenId     = id;
-    node->semanticFct = SemanticJob::resolveIntrinsicProperty;
+    node->semanticFct = Semantic::resolveIntrinsicProperty;
     return node;
 }
 
 AstTypeExpression* Ast::newTypeExpression(SourceFile* sourceFile, AstNode* parent, Parser* parser)
 {
     auto node         = Ast::newNode<AstTypeExpression>(parser, AstNodeKind::TypeExpression, sourceFile, parent);
-    node->semanticFct = SemanticJob::resolveType;
+    node->semanticFct = Semantic::resolveType;
     return node;
 }
 
@@ -87,7 +87,7 @@ AstIdentifier* Ast::newIdentifier(SourceFile* sourceFile, const Utf8& name, AstI
 {
     auto node         = Ast::newNode<AstIdentifier>(parser, AstNodeKind::Identifier, sourceFile, parent);
     node->token.text  = name;
-    node->semanticFct = SemanticJob::resolveIdentifier;
+    node->semanticFct = Semantic::resolveIdentifier;
     if (identifierRef)
         node->inheritOwners(identifierRef);
     return node;
@@ -97,8 +97,8 @@ AstIdentifierRef* Ast::newIdentifierRef(SourceFile* sourceFile, AstNode* parent,
 {
     auto node = Ast::newNode<AstIdentifierRef>(parser, AstNodeKind::IdentifierRef, sourceFile, parent);
     node->allocateExtension(ExtensionKind::Semantic);
-    node->extSemantic()->semanticBeforeFct = SemanticJob::preResolveIdentifierRef;
-    node->semanticFct                      = SemanticJob::resolveIdentifierRef;
+    node->extSemantic()->semanticBeforeFct = Semantic::preResolveIdentifierRef;
+    node->semanticFct                      = Semantic::resolveIdentifierRef;
     node->byteCodeFct                      = ByteCodeGenJob::emitIdentifierRef;
     return node;
 }
@@ -111,7 +111,7 @@ AstIdentifierRef* Ast::newIdentifierRef(SourceFile* sourceFile, const Utf8& name
     node->token.text = name;
 
     auto id         = Ast::newNode<AstIdentifier>(parser, AstNodeKind::Identifier, sourceFile, node);
-    id->semanticFct = SemanticJob::resolveIdentifier;
+    id->semanticFct = Semantic::resolveIdentifier;
     id->token.text  = name;
     id->tokenId     = TokenId::Identifier;
     id->inheritOwners(node);
@@ -135,7 +135,7 @@ AstIdentifierRef* Ast::newMultiIdentifierRef(SourceFile* sourceFile, const Utf8&
             pz++;
 
         auto id              = Ast::newNode<AstIdentifier>(parser, AstNodeKind::Identifier, sourceFile, node);
-        id->semanticFct      = SemanticJob::resolveIdentifier;
+        id->semanticFct      = Semantic::resolveIdentifier;
         id->token.text.count = (int) (pz - pzStart);
         if (name.allocated)
         {

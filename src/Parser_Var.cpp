@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Ast.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "Scoped.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
@@ -143,7 +143,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
                 varNode->assignment = Ast::newIdentifierRef(sourceFile, front->token.text, varNode, this);
             }
 
-            SemanticJob::setVarDeclResolve(varNode);
+            Semantic::setVarDeclResolve(varNode);
 
             if (currentScope->isGlobalOrImpl())
                 SWAG_CHECK(currentScope->symTable.registerSymbolName(context, varNode, SymbolKind::Variable));
@@ -175,13 +175,13 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
         orgVarNode->assignment = assign;
         if (orgVarNode->assignment)
             orgVarNode->assignment->flags |= AST_NO_LEFT_DROP;
-        SemanticJob::setVarDeclResolve(orgVarNode);
+        Semantic::setVarDeclResolve(orgVarNode);
 
         // Must be done after 'setVarDeclResolve', because 'semanticAfterFct' is already affected
         orgVarNode->token.startLocation = leftNode->childs.front()->token.startLocation;
         orgVarNode->token.endLocation   = leftNode->childs.back()->token.endLocation;
         orgVarNode->allocateExtension(ExtensionKind::Semantic);
-        orgVarNode->extSemantic()->semanticAfterFct = SemanticJob::resolveTupleUnpackBeforeVar;
+        orgVarNode->extSemantic()->semanticAfterFct = Semantic::resolveTupleUnpackBeforeVar;
 
         if (currentScope->isGlobalOrImpl())
             SWAG_CHECK(currentScope->symTable.registerSymbolName(context, orgVarNode, SymbolKind::Variable));
@@ -226,7 +226,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
                 SWAG_CHECK(currentScope->symTable.registerSymbolName(context, varNode, SymbolKind::Variable));
             identifier          = Ast::newMultiIdentifierRef(sourceFile, Fmt("%s.item%u", tmpVarName.c_str(), idx++), varNode, this);
             varNode->assignment = identifier;
-            SemanticJob::setVarDeclResolve(varNode);
+            Semantic::setVarDeclResolve(varNode);
             varNode->assignment->flags |= AST_TUPLE_UNPACK;
         }
 
@@ -250,7 +250,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
         varNode->type = type;
         Ast::addChildBack(varNode, assign);
         varNode->assignment = assign;
-        SemanticJob::setVarDeclResolve(varNode);
+        Semantic::setVarDeclResolve(varNode);
         varNode->flags |= AST_R_VALUE;
 
         if (currentScope->isGlobalOrImpl())

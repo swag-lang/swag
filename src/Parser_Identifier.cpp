@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Ast.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "LanguageSpec.h"
 #include "Scoped.h"
 #include "ErrorIds.h"
@@ -119,7 +119,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 
     auto identifier = Ast::newNode<AstIdentifier>(this, AstNodeKind::Identifier, sourceFile, parent);
     identifier->inheritTokenLocation(token);
-    identifier->semanticFct = SemanticJob::resolveIdentifier;
+    identifier->semanticFct = Semantic::resolveIdentifier;
 
     if (scopeUpValue.id != TokenId::Invalid)
     {
@@ -208,7 +208,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
                 identifier->inheritTokenLocation(token);
                 identifier->token.text = "";
                 identifier->addSpecFlags(AstIdentifier::SPECFLAG_SILENT_CALL);
-                identifier->semanticFct = SemanticJob::resolveIdentifier;
+                identifier->semanticFct = Semantic::resolveIdentifier;
                 SWAG_CHECK(doFuncCallParameters(identifier, &identifier->callParameters, TokenId::SymRightParen));
             }
         }
@@ -330,22 +330,22 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
     if (token.id == TokenId::KwdTry)
     {
         node              = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Try, sourceFile, parent);
-        node->semanticFct = SemanticJob::resolveTry;
+        node->semanticFct = Semantic::resolveTry;
     }
     else if (token.id == TokenId::KwdCatch)
     {
         node              = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Catch, sourceFile, parent);
-        node->semanticFct = SemanticJob::resolveCatch;
+        node->semanticFct = Semantic::resolveCatch;
     }
     else if (token.id == TokenId::KwdTryCatch)
     {
         node              = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::TryCatch, sourceFile, parent);
-        node->semanticFct = SemanticJob::resolveTryCatch;
+        node->semanticFct = Semantic::resolveTryCatch;
     }
     else if (token.id == TokenId::KwdAssume)
     {
         node              = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Assume, sourceFile, parent);
-        node->semanticFct = SemanticJob::resolveAssume;
+        node->semanticFct = Semantic::resolveAssume;
     }
 
     *result = node;
@@ -360,11 +360,11 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
         SWAG_VERIFY(!afterDiscard, error(token, Err(Err1207)));
         SWAG_CHECK(doCurlyStatement(node, &dummyResult));
 
-        if (node->semanticFct == SemanticJob::resolveTry)
+        if (node->semanticFct == Semantic::resolveTry)
         {
-            node->semanticFct = SemanticJob::resolveTryBlock;
+            node->semanticFct = Semantic::resolveTryBlock;
         }
-        else if (node->semanticFct == SemanticJob::resolveTryCatch || node->semanticFct == SemanticJob::resolveAssume)
+        else if (node->semanticFct == Semantic::resolveTryCatch || node->semanticFct == Semantic::resolveAssume)
         {
             node->ownerFct->addSpecFlags(AstFuncDecl::SPECFLAG_REG_GET_CONTEXT);
             node->semanticFct = nullptr;
@@ -390,7 +390,7 @@ bool Parser::doThrow(AstNode* parent, AstNode** result)
     auto node = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Throw, sourceFile, parent);
     *result   = node;
     SWAG_VERIFY(node->ownerFct, error(node, Err(Err1028)));
-    node->semanticFct = SemanticJob::resolveThrow;
+    node->semanticFct = Semantic::resolveThrow;
     SWAG_CHECK(eatToken());
 
     SWAG_VERIFY(token.id != TokenId::KwdTry, error(token, Fmt(Err(Err1147), token.ctext(), node->token.ctext())));
@@ -412,7 +412,7 @@ bool Parser::doTypeAlias(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstAlias>(this, AstNodeKind::TypeAlias, sourceFile, parent);
     node->kwdLoc      = token;
-    node->semanticFct = SemanticJob::resolveUsing;
+    node->semanticFct = Semantic::resolveUsing;
 
     *result = node;
     SWAG_CHECK(eatToken());
@@ -430,8 +430,8 @@ bool Parser::doTypeAlias(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatSemiCol("'typealias' expression"));
 
     node->allocateExtension(ExtensionKind::Semantic);
-    node->extSemantic()->semanticBeforeFct = SemanticJob::resolveTypeAliasBefore;
-    node->semanticFct                      = SemanticJob::resolveTypeAlias;
+    node->extSemantic()->semanticBeforeFct = Semantic::resolveTypeAliasBefore;
+    node->semanticFct                      = Semantic::resolveTypeAlias;
     node->resolvedSymbolName               = currentScope->symTable.registerSymbolName(context, node, SymbolKind::TypeAlias);
     return true;
 }
@@ -440,7 +440,7 @@ bool Parser::doNameAlias(AstNode* parent, AstNode** result)
 {
     auto node         = Ast::newNode<AstAlias>(this, AstNodeKind::NameAlias, sourceFile, parent);
     node->kwdLoc      = token;
-    node->semanticFct = SemanticJob::resolveUsing;
+    node->semanticFct = Semantic::resolveUsing;
 
     *result = node;
     SWAG_CHECK(eatToken());
@@ -459,7 +459,7 @@ bool Parser::doNameAlias(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatSemiCol("'namealias' expression"));
     expr->childs.back()->specFlags |= AstIdentifier::SPECFLAG_NAME_ALIAS;
 
-    node->semanticFct        = SemanticJob::resolveNameAlias;
+    node->semanticFct        = Semantic::resolveNameAlias;
     node->resolvedSymbolName = currentScope->symTable.registerSymbolName(context, node, SymbolKind::NameAlias);
     return true;
 }
@@ -483,7 +483,7 @@ bool Parser::doTopLevelIdentifier(AstNode* parent, AstNode** result)
         notes.push_back(Diagnostic::note(Nte(Nte1120)));
     }
 
-    Utf8 appendMsg = SemanticJob::findClosestMatchesMsg(tokenIdentifier.text, {}, IdentifierSearchFor::TopLevelInstruction);
+    Utf8 appendMsg = Semantic::findClosestMatchesMsg(tokenIdentifier.text, {}, IdentifierSearchFor::TopLevelInstruction);
     if (!appendMsg.empty())
         notes.push_back(Diagnostic::note(appendMsg));
     return context->report(diag, notes);

@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Semantic.h"
 #include "SemanticJob.h"
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
@@ -11,7 +12,7 @@
 #include "LanguageSpec.h"
 #include "Naming.h"
 
-bool SemanticJob::resolveNameAlias(SemanticContext* context)
+bool Semantic::resolveNameAlias(SemanticContext* context)
 {
     auto node = CastAst<AstAlias>(context->node, AstNodeKind::NameAlias);
     auto back = node->childs.back();
@@ -66,7 +67,7 @@ bool SemanticJob::resolveNameAlias(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::preResolveIdentifierRef(SemanticContext* context)
+bool Semantic::preResolveIdentifierRef(SemanticContext* context)
 {
     auto node = CastAst<AstIdentifierRef>(context->node, AstNodeKind::IdentifierRef);
 
@@ -82,7 +83,7 @@ bool SemanticJob::preResolveIdentifierRef(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
+bool Semantic::resolveIdentifierRef(SemanticContext* context)
 {
     auto node      = static_cast<AstIdentifierRef*>(context->node);
     auto childBack = node->childs.back();
@@ -136,7 +137,7 @@ bool SemanticJob::resolveIdentifierRef(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node)
+bool Semantic::setupIdentifierRef(SemanticContext* context, AstNode* node)
 {
     // If type of previous one was const, then we force this node to be const (cannot change it)
     if (node->parent->typeInfo && node->parent->typeInfo->isConst())
@@ -229,7 +230,7 @@ bool SemanticJob::setupIdentifierRef(SemanticContext* context, AstNode* node)
     return true;
 }
 
-void SemanticJob::sortParameters(AstNode* allParams)
+void Semantic::sortParameters(AstNode* allParams)
 {
     ScopedLock lk(allParams->mutex);
 
@@ -247,7 +248,7 @@ void SemanticJob::sortParameters(AstNode* allParams)
     allParams->flags ^= AST_MUST_SORT_CHILDS;
 }
 
-void SemanticJob::dealWithIntrinsic(SemanticContext* context, AstIdentifier* identifier)
+void Semantic::dealWithIntrinsic(SemanticContext* context, AstIdentifier* identifier)
 {
     auto module = context->sourceFile->module;
 
@@ -270,7 +271,7 @@ void SemanticJob::dealWithIntrinsic(SemanticContext* context, AstIdentifier* ide
     }
 }
 
-void SemanticJob::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatch* oneMatch, int i)
+void Semantic::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatch* oneMatch, int i)
 {
     auto funcDecl = CastAst<AstFuncDecl>(nodeCall->typeInfo->declNode, AstNodeKind::FuncDecl);
     SWAG_ASSERT(!(funcDecl->flags & AST_IS_GENERIC));
@@ -333,7 +334,7 @@ void SemanticJob::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatc
     g_ThreadMgr.addJob(funcDecl->pendingLambdaJob);
 }
 
-bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier* identifier, OneMatch& oneMatch)
+bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier* identifier, OneMatch& oneMatch)
 {
     if (!identifier->callParameters)
         return true;
@@ -425,8 +426,8 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                     Ast::removeFromParent(idNode);
                     Ast::addChildFront(nodeCall, idNode);
 
-                    context->job->nodes.push_back(idNode);
-                    context->job->nodes.push_back(varNode);
+                    context->baseJob->nodes.push_back(idNode);
+                    context->baseJob->nodes.push_back(varNode);
                     nodeCall->flags &= ~AST_VALUE_COMPUTED;
 
                     context->result = ContextResult::NewChilds;
@@ -514,8 +515,8 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 idRef->extMisc()->exportNode = makePtrL;
 
                 // Add the 2 nodes to the semantic
-                context->job->nodes.push_back(idRef);
-                context->job->nodes.push_back(varNode);
+                context->baseJob->nodes.push_back(idRef);
+                context->baseJob->nodes.push_back(varNode);
 
                 // If call is inlined, then the identifier will be reevaluated, and the new variable, which is a child,
                 // will be reevaluated too, so twice because of the push above. So we set a special flag to not reevaluate
@@ -574,10 +575,10 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 {
                     auto moveRefNode = Ast::newNode<AstNode>(nullptr, AstNodeKind::MoveRef, sourceFile, newParam);
                     moveRefNode->flags |= AST_GENERATED;
-                    moveRefNode->semanticFct = SemanticJob::resolveMoveRef;
+                    moveRefNode->semanticFct = Semantic::resolveMoveRef;
                     auto mkPtrNode           = Ast::newNode<AstMakePointer>(nullptr, AstNodeKind::MakePointer, sourceFile, moveRefNode);
                     mkPtrNode->flags |= AST_GENERATED;
-                    mkPtrNode->semanticFct = SemanticJob::resolveMakePointer;
+                    mkPtrNode->semanticFct = Semantic::resolveMakePointer;
                     Ast::newIdentifierRef(sourceFile, varNode->token.text, mkPtrNode);
                 }
                 else
@@ -592,8 +593,8 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 newParam->extOwner()->nodesToFree.push_back(nodeCall);
 
                 // Add the 2 nodes to the semantic
-                context->job->nodes.push_back(newParam);
-                context->job->nodes.push_back(varNode);
+                context->baseJob->nodes.push_back(newParam);
+                context->baseJob->nodes.push_back(varNode);
 
                 // If call is inlined, then the identifier will be reevaluated, so the new variable, which is a child of
                 // that identifier, will be reevaluated too (so twice because of the push above).
@@ -711,8 +712,8 @@ bool SemanticJob::setSymbolMatchCallParams(SemanticContext* context, AstIdentifi
                 Ast::newIdentifierRef(sourceFile, varNode->token.text, newParam);
 
                 // Add the 2 nodes to the semantic
-                context->job->nodes.push_back(newParam);
-                context->job->nodes.push_back(varNode);
+                context->baseJob->nodes.push_back(newParam);
+                context->baseJob->nodes.push_back(varNode);
 
                 // If call is inlined, then the identifier will be reevaluated, and the new variable, which is a child,
                 // will be reevaluated too, so twice because of the push above. So we set a special flag to not reevaluate
@@ -759,7 +760,7 @@ static bool isStatementIdentifier(AstIdentifier* identifier)
     return false;
 }
 
-bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch)
+bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch)
 {
     auto symbol       = oneMatch.symbolOverload->symbol;
     auto overload     = oneMatch.symbolOverload;
@@ -956,7 +957,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
                     idNode->allocateIdentifierExtension();
                     idNode->identifierExtension->fromAlternateVar = child;
                     Ast::addChildFront(idRef, idNode);
-                    context->job->nodes.push_back(idNode);
+                    context->baseJob->nodes.push_back(idNode);
                     if (i == 0 && identifier->identifierExtension)
                     {
                         idNode->identifierExtension->scopeUpMode  = identifier->identifierExtension->scopeUpMode;
@@ -995,7 +996,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
                     idNode->identifierExtension->fromAlternateVar = dependentVar;
 
                 Ast::insertChild(idRef, idNode, newParent->childParentIdx());
-                context->job->nodes.push_back(idNode);
+                context->baseJob->nodes.push_back(idNode);
             }
 
             context->node->semanticState = AstNodeResolveState::Enter;
@@ -1137,9 +1138,9 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             Ast::removeFromParent(identifier->parent);
             Ast::addChildBack(typeNode, identifier->parent);
             typeNode->identifier = identifier->parent;
-            context->job->nodes.pop_back();
-            context->job->nodes.pop_back();
-            context->job->nodes.push_back(typeNode);
+            context->baseJob->nodes.pop_back();
+            context->baseJob->nodes.pop_back();
+            context->baseJob->nodes.push_back(typeNode);
             context->result = ContextResult::NewChilds;
             return true;
         }
@@ -1169,7 +1170,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
             auto parentStructNode = identifier->identifierRef()->startScope->owner;
             if (parentStructNode->resolvedSymbolOverload)
             {
-                context->job->waitOverloadCompleted(parentStructNode->resolvedSymbolOverload);
+                context->baseJob->waitOverloadCompleted(parentStructNode->resolvedSymbolOverload);
                 YIELD();
             }
         }
@@ -1354,7 +1355,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
 
         // Now we need to be sure that the function is now complete
         // If not, we need to wait for it
-        context->job->waitOverloadCompleted(overload);
+        context->baseJob->waitOverloadCompleted(overload);
         YIELD();
 
         if (identifier->token.text == g_LangSpec->name_opInit)
@@ -1488,7 +1489,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
                 if (!identifier->ownerFct || !identifier->ownerFct->mustInline() || forceInline)
                 {
                     // Need to wait for function full semantic resolve
-                    context->job->waitFuncDeclFullResolve(funcDecl);
+                    context->baseJob->waitFuncDeclFullResolve(funcDecl);
                     YIELD();
 
                     // First pass, we inline the function.
@@ -1578,7 +1579,7 @@ bool SemanticJob::setSymbolMatch(SemanticContext* context, AstIdentifierRef* ide
     return true;
 }
 
-void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload, uint32_t flags)
+void Semantic::setupContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload, uint32_t flags)
 {
     auto node = context->node;
 
@@ -1586,7 +1587,7 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
     oneTryMatch.symMatchContext.genericReplaceTypes.clear();
     oneTryMatch.symMatchContext.mapGenericTypesIndex.clear();
 
-    auto& toCheck = context->job->tmpNodes;
+    auto& toCheck = context->sem->tmpNodes;
     toCheck.clear();
 
     // If we are inside a struct, then we can inherit the generic concrete types of that struct
@@ -1667,7 +1668,7 @@ void SemanticJob::setupContextualGenericTypeReplacement(SemanticContext* context
     }
 }
 
-bool SemanticJob::isFunctionButNotACall(SemanticContext* context, AstNode* node, SymbolName* symbol)
+bool Semantic::isFunctionButNotACall(SemanticContext* context, AstNode* node, SymbolName* symbol)
 {
     AstIdentifier* id = nullptr;
     if (node && node->kind == AstNodeKind::Identifier)
@@ -1740,17 +1741,18 @@ static bool areGenericReplaceTypesIdentical(TypeInfo* typeInfo, OneGenericMatch&
     return true;
 }
 
-bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, uint32_t flags)
+bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& overloads, AstNode* node, uint32_t flags)
 {
     bool  justCheck        = flags & MIP_JUST_CHECK;
-    auto  job              = context->job;
-    auto& matches          = job->cacheMatches;
-    auto& genericMatches   = job->cacheGenericMatches;
-    auto& genericMatchesSI = job->cacheGenericMatchesSI;
+    auto  job              = context->baseJob;
+    auto  sem              = context->sem;
+    auto& matches          = sem->cacheMatches;
+    auto& genericMatches   = sem->cacheGenericMatches;
+    auto& genericMatchesSI = sem->cacheGenericMatchesSI;
 
-    job->clearMatch();
-    job->clearGenericMatch();
-    job->bestSignatureInfos.clear();
+    sem->clearMatch();
+    sem->clearGenericMatch();
+    sem->bestSignatureInfos.clear();
 
     bool forStruct = false;
     for (auto oneMatch : overloads)
@@ -1773,7 +1775,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                 symbolKind != SymbolKind::Interface &&
                 !overload->typeInfo->isLambdaClosure())
             {
-                auto match              = job->getOneMatch();
+                auto match              = sem->getOneMatch();
                 match->symbolOverload   = overload;
                 match->scope            = oneMatch->scope;
                 match->solvedParameters = std::move(oneOverload.symMatchContext.solvedParameters);
@@ -1931,12 +1933,12 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
         // accurate error. We find the longest match (the one that failed on the right most parameter)
         if (oneOverload.symMatchContext.result != MatchResult::Ok)
         {
-            if (job->bestSignatureInfos.badSignatureParameterIdx == -1 ||
-                (oneOverload.symMatchContext.badSignatureInfos.badSignatureParameterIdx > job->bestSignatureInfos.badSignatureParameterIdx))
+            if (sem->bestSignatureInfos.badSignatureParameterIdx == -1 ||
+                (oneOverload.symMatchContext.badSignatureInfos.badSignatureParameterIdx > sem->bestSignatureInfos.badSignatureParameterIdx))
             {
-                job->bestMatchResult    = oneOverload.symMatchContext.result;
-                job->bestSignatureInfos = oneOverload.symMatchContext.badSignatureInfos;
-                job->bestOverload       = overload;
+                sem->bestMatchResult    = oneOverload.symMatchContext.result;
+                sem->bestSignatureInfos = oneOverload.symMatchContext.badSignatureInfos;
+                sem->bestOverload       = overload;
             }
         }
 
@@ -1974,7 +1976,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
 
                 if (asMatch)
                 {
-                    auto match              = job->getOneMatch();
+                    auto match              = sem->getOneMatch();
                     match->symbolOverload   = overload;
                     match->solvedParameters = std::move(oneOverload.symMatchContext.solvedParameters);
                     match->dependentVar     = dependentVar;
@@ -1986,7 +1988,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
                     break;
                 }
 
-                auto* match                        = job->getOneGenericMatch();
+                auto* match                        = sem->getOneGenericMatch();
                 match->flags                       = oneOverload.symMatchContext.flags;
                 match->symbolName                  = symbol;
                 match->symbolOverload              = overload;
@@ -2033,7 +2035,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
 
                 if (canRegisterInstance)
                 {
-                    auto match              = job->getOneMatch();
+                    auto match              = sem->getOneMatch();
                     match->symbolOverload   = overload;
                     match->solvedParameters = std::move(oneOverload.symMatchContext.solvedParameters);
                     match->dependentVar     = dependentVar;
@@ -2328,7 +2330,7 @@ bool SemanticJob::matchIdentifierParameters(SemanticContext* context, VectorNati
     return true;
 }
 
-void SemanticJob::checkCanInstantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch)
+void Semantic::checkCanInstantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch)
 {
     auto symbol = firstMatch.symbolName;
 
@@ -2349,11 +2351,11 @@ void SemanticJob::checkCanInstantiateGenericSymbol(SemanticContext* context, One
     Generic::waitForGenericParameters(context, firstMatch);
 }
 
-bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch, bool forStruct)
+bool Semantic::instantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch, bool forStruct)
 {
-    auto       job               = context->job;
+    auto       sem               = context->sem;
     auto       node              = context->node;
-    auto&      matches           = job->cacheMatches;
+    auto&      matches           = sem->cacheMatches;
     auto       symbol            = firstMatch.symbolName;
     auto       genericParameters = firstMatch.genericParameters;
     ScopedLock lk(symbol->mutex);
@@ -2401,7 +2403,7 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
             SWAG_CHECK(Generic::instantiateStruct(context, genericParameters, firstMatch, alias));
             if (alias)
             {
-                auto oneMatch            = job->getOneMatch();
+                auto oneMatch            = sem->getOneMatch();
                 oneMatch->symbolOverload = firstMatch.symbolOverload;
                 matches.push_back(oneMatch);
             }
@@ -2413,7 +2415,7 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
         // So we match a generic struct as a normal match without instantiation (for now).
         else if (!(node->flags & AST_IS_GENERIC))
         {
-            auto oneMatch            = job->getOneMatch();
+            auto oneMatch            = sem->getOneMatch();
             oneMatch->symbolOverload = firstMatch.symbolOverload;
             matches.push_back(oneMatch);
             node->flags |= AST_IS_GENERIC;
@@ -2423,7 +2425,7 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
         else
         {
             SWAG_ASSERT(genericParameters);
-            auto oneMatch            = job->getOneMatch();
+            auto oneMatch            = sem->getOneMatch();
             oneMatch->symbolOverload = firstMatch.symbolOverload;
             matches.push_back(oneMatch);
             node->flags |= AST_IS_GENERIC;
@@ -2454,7 +2456,7 @@ bool SemanticJob::instantiateGenericSymbol(SemanticContext* context, OneGenericM
     return true;
 }
 
-bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match)
+bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match)
 {
     auto symbol       = match.symbolOverload->symbol;
     auto dependentVar = match.dependentVar;
@@ -2603,7 +2605,7 @@ bool SemanticJob::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* 
     return true;
 }
 
-TypeInfoEnum* SemanticJob::findEnumTypeInContext(SemanticContext* context, TypeInfo* typeInfo)
+TypeInfoEnum* Semantic::findEnumTypeInContext(SemanticContext* context, TypeInfo* typeInfo)
 {
     while (true)
     {
@@ -2643,11 +2645,11 @@ TypeInfoEnum* SemanticJob::findEnumTypeInContext(SemanticContext* context, TypeI
     return nullptr;
 }
 
-bool SemanticJob::findEnumTypeInContext(SemanticContext*                                  context,
-                                        AstNode*                                          node,
-                                        VectorNative<TypeInfoEnum*>&                      result,
-                                        VectorNative<std::pair<AstNode*, TypeInfoEnum*>>& has,
-                                        VectorNative<SymbolOverload*>&                    testedOver)
+bool Semantic::findEnumTypeInContext(SemanticContext*                                  context,
+                                     AstNode*                                          node,
+                                     VectorNative<TypeInfoEnum*>&                      result,
+                                     VectorNative<std::pair<AstNode*, TypeInfoEnum*>>& has,
+                                     VectorNative<SymbolOverload*>&                    testedOver)
 {
     result.clear();
     has.clear();
@@ -2681,7 +2683,7 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext*                        
             ScopedLock ls(symbol->mutex);
             if (symbol->cptOverloads)
             {
-                context->job->waitSymbolNoLock(symbol);
+                context->baseJob->waitSymbolNoLock(symbol);
                 return true;
             }
         }
@@ -2853,7 +2855,7 @@ bool SemanticJob::findEnumTypeInContext(SemanticContext*                        
     return true;
 }
 
-void SemanticJob::addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, uint32_t asflags)
+void Semantic::addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, uint32_t asflags)
 {
     for (auto& ds : symbols)
     {
@@ -2868,14 +2870,15 @@ void SemanticJob::addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, Symb
     symbols.push_back(osm);
 }
 
-bool SemanticJob::findIdentifierInScopes(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node)
+bool Semantic::findIdentifierInScopes(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node)
 {
-    return findIdentifierInScopes(context, context->job->cacheDependentSymbols, identifierRef, node);
+    return findIdentifierInScopes(context, context->sem->cacheDependentSymbols, identifierRef, node);
 }
 
-bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<OneSymbolMatch>& dependentSymbols, AstIdentifierRef* identifierRef, AstIdentifier* node)
+bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<OneSymbolMatch>& dependentSymbols, AstIdentifierRef* identifierRef, AstIdentifier* node)
 {
-    auto job = context->job;
+    auto job = context->baseJob;
+    auto sem = context->sem;
 
     // When this is "retval" type, no need to do fancy things, we take the corresponding function
     // return symbol. This will avoid some ambiguous resolutions with multiple tuples/structs.
@@ -2929,8 +2932,8 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
         return true;
     }
 
-    auto& scopeHierarchy     = job->cacheScopeHierarchy;
-    auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
+    auto& scopeHierarchy     = sem->cacheScopeHierarchy;
+    auto& scopeHierarchyVars = sem->cacheScopeHierarchyVars;
     auto  crc                = node->token.text.hash();
 
     bool forceEnd  = false;
@@ -3020,7 +3023,7 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
                         identifierRef->childs.pop_back();
                         Ast::addChildFront(identifierRef, id);
                         identifierRef->addSpecFlags(AstIdentifierRef::SPECFLAG_WITH_SCOPE);
-                        context->job->nodes.push_back(id);
+                        context->baseJob->nodes.push_back(id);
                     }
 
                     context->result = ContextResult::NewChilds;
@@ -3140,10 +3143,10 @@ bool SemanticJob::findIdentifierInScopes(SemanticContext* context, VectorNative<
     return true;
 }
 
-bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** result, AstNode** resultLeaf)
+bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** result, AstNode** resultLeaf)
 {
-    auto  job                = context->job;
-    auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
+    auto  sem                = context->sem;
+    auto& scopeHierarchyVars = sem->cacheScopeHierarchyVars;
 
     if (scopeHierarchyVars.empty())
         return true;
@@ -3289,7 +3292,7 @@ bool SemanticJob::getUsingVar(SemanticContext* context, AstIdentifierRef* identi
     return true;
 }
 
-bool SemanticJob::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstFuncCallParams* parameters, AstNode* ufcsNode, bool nodeIsExplicit)
+bool Semantic::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, AstFuncCallParams* parameters, AstNode* ufcsNode, bool nodeIsExplicit)
 {
     if (!ufcsNode || typeFunc->parameters.empty())
         return false;
@@ -3321,7 +3324,7 @@ bool SemanticJob::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFun
     return true;
 }
 
-bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** ufcsFirstParam)
+bool Semantic::getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** ufcsFirstParam)
 {
     auto symbol = overload->symbol;
 
@@ -3409,7 +3412,7 @@ bool SemanticJob::getUfcs(SemanticContext* context, AstIdentifierRef* identifier
     return true;
 }
 
-bool SemanticJob::appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, SymbolOverload* overload)
+bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, SymbolOverload* overload)
 {
     if (!(node->semFlags & SEMFLAG_LAST_PARAM_CODE) && (overload->symbol->kind == SymbolKind::Function))
     {
@@ -3470,7 +3473,7 @@ bool SemanticJob::appendLastCodeStatement(SemanticContext* context, AstIdentifie
     return true;
 }
 
-bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* identifier, SymbolOverload* overload, AstNode* ufcsFirstParam)
+bool Semantic::fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* identifier, SymbolOverload* overload, AstNode* ufcsFirstParam)
 {
     auto symbol         = overload->symbol;
     auto symbolKind     = symbol->kind;
@@ -3491,10 +3494,10 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
     {
         if (!(identifier->specFlags & AstIdentifier::SPECFLAG_CLOSURE_FIRST_PARAM))
         {
-            Ast::constructNode(&context->job->closureFirstParam);
-            context->job->closureFirstParam.kind     = AstNodeKind::FuncCallParam;
-            context->job->closureFirstParam.typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
-            symMatchContext.parameters.push_back(&context->job->closureFirstParam);
+            Ast::constructNode(&context->sem->closureFirstParam);
+            context->sem->closureFirstParam.kind     = AstNodeKind::FuncCallParam;
+            context->sem->closureFirstParam.typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
+            symMatchContext.parameters.push_back(&context->sem->closureFirstParam);
             symMatchContext.flags |= SymbolMatchContext::MATCH_CLOSURE_PARAM;
         }
     }
@@ -3548,7 +3551,7 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
 
             if (typeStruct)
             {
-                context->job->waitAllStructInterfacesReg(oneParam->typeInfo);
+                context->baseJob->waitAllStructInterfacesReg(oneParam->typeInfo);
                 YIELD();
             }
 
@@ -3568,7 +3571,7 @@ bool SemanticJob::fillMatchContextCallParameters(SemanticContext* context, Symbo
     return true;
 }
 
-bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload)
+bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload)
 {
     auto genericParameters = node->genericParameters;
 
@@ -3603,7 +3606,7 @@ bool SemanticJob::fillMatchContextGenericParameters(SemanticContext* context, Sy
     return true;
 }
 
-bool SemanticJob::filterMatches(SemanticContext* context, VectorNative<OneMatch*>& matches)
+bool Semantic::filterMatches(SemanticContext* context, VectorNative<OneMatch*>& matches)
 {
     auto node         = context->node;
     auto countMatches = matches.size();
@@ -3994,7 +3997,7 @@ static int scopeCost(Scope* from, Scope* to)
     return cost;
 }
 
-bool SemanticJob::filterGenericMatches(SemanticContext* context, VectorNative<OneMatch*>& matches, VectorNative<OneGenericMatch*>& genMatches)
+bool Semantic::filterGenericMatches(SemanticContext* context, VectorNative<OneMatch*>& matches, VectorNative<OneGenericMatch*>& genMatches)
 {
     // We have a match and more than one generic match
     // We need to be sure than instantiated another generic match will not be better than keeping
@@ -4095,7 +4098,7 @@ bool SemanticJob::filterGenericMatches(SemanticContext* context, VectorNative<On
     return true;
 }
 
-bool SemanticJob::filterMatchesInContext(SemanticContext* context, VectorNative<OneMatch*>& matches)
+bool Semantic::filterMatchesInContext(SemanticContext* context, VectorNative<OneMatch*>& matches)
 {
     if (matches.size() <= 1)
         return true;
@@ -4162,7 +4165,7 @@ bool SemanticJob::filterMatchesInContext(SemanticContext* context, VectorNative<
     return true;
 }
 
-bool SemanticJob::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl)
+bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl)
 {
     ScopedLock lk0(funcDecl->funcMutex);
     ScopedLock lk1(funcDecl->mutex);
@@ -4170,8 +4173,8 @@ bool SemanticJob::solveValidIf(SemanticContext* context, OneMatch* oneMatch, Ast
     // Be sure block has been solved
     if (!(funcDecl->specFlags & AstFuncDecl::SPECFLAG_PARTIAL_RESOLVE))
     {
-        funcDecl->dependentJobs.add(context->job);
-        context->job->setPending(JobWaitKind::SemPartialResolve, funcDecl->resolvedSymbolName, funcDecl, nullptr);
+        funcDecl->dependentJobs.add(context->baseJob);
+        context->baseJob->setPending(JobWaitKind::SemPartialResolve, funcDecl->resolvedSymbolName, funcDecl, nullptr);
         return true;
     }
 
@@ -4222,11 +4225,11 @@ bool SemanticJob::solveValidIf(SemanticContext* context, OneMatch* oneMatch, Ast
         auto job          = Allocator::alloc<SemanticJob>();
         job->sourceFile   = context->sourceFile;
         job->module       = context->sourceFile->module;
-        job->dependentJob = context->job->dependentJob;
+        job->dependentJob = context->baseJob->dependentJob;
         job->nodes.push_back(funcDecl->content);
-        job->context.errCxtSteps.insert(job->context.errCxtSteps.begin(),
-                                        context->job->context.errCxtSteps.begin(),
-                                        context->job->context.errCxtSteps.end());
+        job->sem.context.errCxtSteps.insert(job->sem.context.errCxtSteps.begin(),
+                                            context->sem->context.errCxtSteps.begin(),
+                                            context->sem->context.errCxtSteps.end());
 
         // This comes from a generic instantiation. Add context
         if (oneMatch->oneOverload->overload->typeInfo->isFromGeneric())
@@ -4239,7 +4242,7 @@ bool SemanticJob::solveValidIf(SemanticContext* context, OneMatch* oneMatch, Ast
             if (expNode.node->hasExtMisc() && expNode.node->extMisc()->exportNode)
                 expNode.node = expNode.node->extMisc()->exportNode;
             expNode.type = ErrCxtStepKind::Generic;
-            job->context.errCxtSteps.push_back(expNode);
+            job->sem.context.errCxtSteps.push_back(expNode);
         }
 
         // To avoid a race condition with the job that is currently dealing with the funcDecl,
@@ -4247,9 +4250,9 @@ bool SemanticJob::solveValidIf(SemanticContext* context, OneMatch* oneMatch, Ast
         funcDecl->content->allocateExtension(ExtensionKind::Semantic);
         auto sem = funcDecl->content->extension->semantic;
         SWAG_ASSERT(!sem->semanticAfterFct ||
-                    sem->semanticAfterFct == SemanticJob::resolveFuncDeclAfterSI ||
-                    sem->semanticAfterFct == SemanticJob::resolveScopedStmtAfter);
-        sem->semanticAfterFct = SemanticJob::resolveFuncDeclAfterSI;
+                    sem->semanticAfterFct == Semantic::resolveFuncDeclAfterSI ||
+                    sem->semanticAfterFct == Semantic::resolveScopedStmtAfter);
+        sem->semanticAfterFct = Semantic::resolveFuncDeclAfterSI;
 
         g_ThreadMgr.addJob(job);
     }
@@ -4257,11 +4260,11 @@ bool SemanticJob::solveValidIf(SemanticContext* context, OneMatch* oneMatch, Ast
     return true;
 }
 
-bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
+bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
 {
-    auto  job              = context->job;
+    auto  sem              = context->sem;
     auto  identifierRef    = node->identifierRef();
-    auto& dependentSymbols = job->cacheDependentSymbols;
+    auto& dependentSymbols = sem->cacheDependentSymbols;
 
     if (dependentSymbols.size() == 1)
         return true;
@@ -4333,7 +4336,7 @@ bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
             !identifierRef->startScope)
         {
             isValid                  = false;
-            auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
+            auto& scopeHierarchyVars = sem->cacheScopeHierarchyVars;
             for (auto& dep : scopeHierarchyVars)
             {
                 if (dep.scope->getFullName() == oneSymbol->ownerTable->scope->getFullName())
@@ -4361,13 +4364,13 @@ bool SemanticJob::filterSymbols(SemanticContext* context, AstIdentifier* node)
     return true;
 }
 
-bool SemanticJob::resolveIdentifier(SemanticContext* context)
+bool Semantic::resolveIdentifier(SemanticContext* context)
 {
     auto node = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
     return resolveIdentifier(context, node, RI_ZERO);
 }
 
-bool SemanticJob::needToCompleteSymbol(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol, bool testOverloads)
+bool Semantic::needToCompleteSymbol(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol, bool testOverloads)
 {
     if (symbol->kind != SymbolKind::Struct && symbol->kind != SymbolKind::Interface)
         return true;
@@ -4412,7 +4415,7 @@ bool SemanticJob::needToCompleteSymbol(SemanticContext* context, AstIdentifier* 
     return true;
 }
 
-bool SemanticJob::needToWaitForSymbol(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol)
+bool Semantic::needToWaitForSymbol(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol)
 {
     if (!symbol->cptOverloads && !(symbol->flags & SYMBOL_ATTRIBUTE_GEN))
         return false;
@@ -4429,13 +4432,13 @@ bool SemanticJob::needToWaitForSymbol(SemanticContext* context, AstIdentifier* i
     return true;
 }
 
-#pragma optimize("", off)
-bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* identifier, uint32_t riFlags)
+bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identifier, uint32_t riFlags)
 {
-    auto  job                = context->job;
-    auto& scopeHierarchy     = job->cacheScopeHierarchy;
-    auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
-    auto& dependentSymbols   = job->cacheDependentSymbols;
+    auto  job                = context->baseJob;
+    auto  sem                = context->sem;
+    auto& scopeHierarchy     = sem->cacheScopeHierarchy;
+    auto& scopeHierarchyVars = sem->cacheScopeHierarchyVars;
+    auto& dependentSymbols   = sem->cacheDependentSymbols;
     auto  identifierRef      = identifier->identifierRef();
 
     identifier->byteCodeFct = ByteCodeGenJob::emitIdentifier;
@@ -4614,7 +4617,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
         // case that number changes (other thread) during the resolution. Because if the number of overloads differs
         // at one point in the process (for a given symbol), then this will invalidate the resolution
         // (number of overloads can change when instantiating a generic)
-        auto& toSolveOverload = job->cacheToSolveOverload;
+        auto& toSolveOverload = sem->cacheToSolveOverload;
         toSolveOverload.clear();
         for (auto& p : dependentSymbols)
         {
@@ -4639,8 +4642,8 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
             return context->report({identifier, Fmt(Err(Err0133), identifier->token.ctext())});
         }
 
-        auto& listTryMatch = job->cacheListTryMatch;
-        job->clearTryMatch();
+        auto& listTryMatch = sem->cacheListTryMatch;
+        sem->clearTryMatch();
 
         for (auto& oneOver : toSolveOverload)
         {
@@ -4675,7 +4678,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
             // Will try with ufcs, and will try without
             for (int tryUfcs = 0; tryUfcs < 2; tryUfcs++)
             {
-                auto  tryMatch        = job->getTryMatch();
+                auto  tryMatch        = sem->getTryMatch();
                 auto& symMatchContext = tryMatch->symMatchContext;
 
                 tryMatch->genericParameters = identifier->genericParameters;
@@ -4709,7 +4712,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
 
         if (listTryMatch.empty())
         {
-            job->cacheMatches.clear();
+            sem->cacheMatches.clear();
             break;
         }
 
@@ -4745,7 +4748,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
         context->result = ContextResult::Done;
     }
 
-    if (job->cacheMatches.empty())
+    if (sem->cacheMatches.empty())
     {
         // We want to force the ufcs
         if (identifier->semFlags & SEMFLAG_FORCE_UFCS)
@@ -4763,16 +4766,16 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
         return true;
 
     // Name alias with overloads (more than one match)
-    if (identifier->specFlags & AstIdentifier::SPECFLAG_NAME_ALIAS && job->cacheMatches.size() > 1)
+    if (identifier->specFlags & AstIdentifier::SPECFLAG_NAME_ALIAS && sem->cacheMatches.size() > 1)
     {
-        identifier->resolvedSymbolName     = job->cacheMatches[0]->symbolOverload->symbol;
+        identifier->resolvedSymbolName     = sem->cacheMatches[0]->symbolOverload->symbol;
         identifier->resolvedSymbolOverload = nullptr;
         return true;
     }
 
     // Deal with ufcs. Now that the match is done, we will change the ast in order to
     // add the ufcs parameters to the function call parameters
-    auto& match = job->cacheMatches[0];
+    auto& match = sem->cacheMatches[0];
     if (match->ufcs && !hasForcedUfcs)
     {
         // Do not change AST if this is code inside a generic function
@@ -4800,7 +4803,7 @@ bool SemanticJob::resolveIdentifier(SemanticContext* context, AstIdentifier* ide
     return true;
 }
 
-void SemanticJob::collectAlternativeScopes(AstNode* startNode, VectorNative<AlternativeScope>& scopes)
+void Semantic::collectAlternativeScopes(AstNode* startNode, VectorNative<AlternativeScope>& scopes)
 {
     // Need to go deep for using vars, because we can have a using on a struct, which has also
     // a using itself, and so on...
@@ -4841,7 +4844,7 @@ void SemanticJob::collectAlternativeScopes(AstNode* startNode, VectorNative<Alte
     }
 }
 
-void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars)
+void Semantic::collectAlternativeScopeVars(AstNode* startNode, VectorNative<AlternativeScope>& scopes, VectorNative<AlternativeScopeVar>& scopesVars)
 {
     // Need to go deep for using vars, because we can have a using on a struct, which has also
     // a using itself, and so on...
@@ -4893,14 +4896,14 @@ void SemanticJob::collectAlternativeScopeVars(AstNode* startNode, VectorNative<A
     }
 }
 
-void SemanticJob::addAlternativeScopeOnce(VectorNative<AlternativeScope>& scopes, Scope* scope, uint32_t flags)
+void Semantic::addAlternativeScopeOnce(VectorNative<AlternativeScope>& scopes, Scope* scope, uint32_t flags)
 {
     if (hasAlternativeScope(scopes, scope))
         return;
     addAlternativeScope(scopes, scope, flags);
 }
 
-bool SemanticJob::hasAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope)
+bool Semantic::hasAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope)
 {
     for (auto& as : scopes)
     {
@@ -4911,7 +4914,7 @@ bool SemanticJob::hasAlternativeScope(VectorNative<AlternativeScope>& scopes, Sc
     return false;
 }
 
-void SemanticJob::addAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope, uint32_t flags)
+void Semantic::addAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope, uint32_t flags)
 {
     if (!scope)
         return;
@@ -4924,13 +4927,13 @@ void SemanticJob::addAlternativeScope(VectorNative<AlternativeScope>& scopes, Sc
     scopes.push_back(as);
 }
 
-void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext*                   context,
-                                                   VectorNative<AlternativeScope>&    scopes,
-                                                   VectorNative<AlternativeScopeVar>& scopesVars,
-                                                   AstNode*                           startNode,
-                                                   uint32_t                           flags,
-                                                   IdentifierScopeUpMode              scopeUpMode,
-                                                   TokenParse*                        scopeUpValue)
+void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                   context,
+                                                VectorNative<AlternativeScope>&    scopes,
+                                                VectorNative<AlternativeScopeVar>& scopesVars,
+                                                AstNode*                           startNode,
+                                                uint32_t                           flags,
+                                                IdentifierScopeUpMode              scopeUpMode,
+                                                TokenParse*                        scopeUpValue)
 {
     // Add registered alternative scopes of the node of the owner scope
     if (startNode->ownerScope && startNode->ownerScope->owner)
@@ -4938,8 +4941,8 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext*             
         auto owner = startNode->ownerScope->owner;
         if (owner->hasExtMisc() && !owner->extMisc()->alternativeScopes.empty())
         {
-            auto  job       = context->job;
-            auto& toProcess = job->scopesToProcess;
+            auto  sem       = context->sem;
+            auto& toProcess = sem->scopesToProcess;
             for (auto& as : owner->extMisc()->alternativeScopes)
             {
                 if (!hasAlternativeScope(scopes, as.scope) && (as.flags & ALTSCOPE_USING))
@@ -4954,8 +4957,8 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext*             
     // Add registered alternative scopes of the current node
     if (startNode->hasExtMisc() && !startNode->extMisc()->alternativeScopes.empty())
     {
-        auto  job       = context->job;
-        auto& toProcess = job->scopesToProcess;
+        auto  sem       = context->sem;
+        auto& toProcess = sem->scopesToProcess;
         for (auto& as : startNode->extMisc()->alternativeScopes)
         {
             if (!hasAlternativeScope(scopes, as.scope))
@@ -5053,16 +5056,16 @@ void SemanticJob::collectAlternativeScopeHierarchy(SemanticContext*             
     }
 }
 
-bool SemanticJob::collectScopeHierarchy(SemanticContext*                   context,
-                                        VectorNative<AlternativeScope>&    scopes,
-                                        VectorNative<AlternativeScopeVar>& scopesVars,
-                                        AstNode*                           startNode,
-                                        uint32_t                           flags,
-                                        IdentifierScopeUpMode              scopeUpMode,
-                                        TokenParse*                        scopeUpValue)
+bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
+                                     VectorNative<AlternativeScope>&    scopes,
+                                     VectorNative<AlternativeScopeVar>& scopesVars,
+                                     AstNode*                           startNode,
+                                     uint32_t                           flags,
+                                     IdentifierScopeUpMode              scopeUpMode,
+                                     TokenParse*                        scopeUpValue)
 {
-    auto  job        = context->job;
-    auto& toProcess  = job->scopesToProcess;
+    auto  sem        = context->sem;
+    auto& toProcess  = sem->scopesToProcess;
     auto  sourceFile = context->sourceFile;
 
     toProcess.clear();
@@ -5170,7 +5173,7 @@ bool SemanticJob::collectScopeHierarchy(SemanticContext*                   conte
     return true;
 }
 
-bool SemanticJob::checkCanThrow(SemanticContext* context)
+bool Semantic::checkCanThrow(SemanticContext* context)
 {
     auto node = context->node;
 
@@ -5192,7 +5195,7 @@ bool SemanticJob::checkCanThrow(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::checkCanCatch(SemanticContext* context)
+bool Semantic::checkCanCatch(SemanticContext* context)
 {
     auto node          = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Try, AstNodeKind::Catch, AstNodeKind::TryCatch, AstNodeKind::Assume);
     auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
@@ -5209,13 +5212,13 @@ bool SemanticJob::checkCanCatch(SemanticContext* context)
     return context->report({node, node->token, Fmt(Err(Err0139), node->token.ctext(), lastChild->token.ctext(), Naming::aKindName(lastChild->resolvedSymbolName->kind).c_str())});
 }
 
-bool SemanticJob::resolveTryBlock(SemanticContext* context)
+bool Semantic::resolveTryBlock(SemanticContext* context)
 {
     SWAG_CHECK(checkCanThrow(context));
     return true;
 }
 
-bool SemanticJob::resolveTry(SemanticContext* context)
+bool Semantic::resolveTry(SemanticContext* context)
 {
     auto node          = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Try);
     auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
@@ -5232,7 +5235,7 @@ bool SemanticJob::resolveTry(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveTryCatch(SemanticContext* context)
+bool Semantic::resolveTryCatch(SemanticContext* context)
 {
     auto node          = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::TryCatch);
     auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
@@ -5252,7 +5255,7 @@ bool SemanticJob::resolveTryCatch(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveCatch(SemanticContext* context)
+bool Semantic::resolveCatch(SemanticContext* context)
 {
     auto node          = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Catch);
     auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
@@ -5274,7 +5277,7 @@ bool SemanticJob::resolveCatch(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveAssume(SemanticContext* context)
+bool Semantic::resolveAssume(SemanticContext* context)
 {
     auto node          = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Assume);
     auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
@@ -5294,7 +5297,7 @@ bool SemanticJob::resolveAssume(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveThrow(SemanticContext* context)
+bool Semantic::resolveThrow(SemanticContext* context)
 {
     auto node      = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Throw);
     auto expr      = node->childs.front();

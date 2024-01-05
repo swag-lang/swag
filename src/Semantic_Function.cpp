@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "SemanticJob.h"
+#include "Semantic.h"
 #include "ByteCodeGenJob.h"
 #include "Ast.h"
 #include "Module.h"
@@ -9,15 +10,15 @@
 #include "LanguageSpec.h"
 #include "Naming.h"
 
-void SemanticJob::allocateOnStack(AstNode* node, TypeInfo* typeInfo)
+void Semantic::allocateOnStack(AstNode* node, TypeInfo* typeInfo)
 {
     node->allocateComputedValue();
     node->computedValue->storageOffset = node->ownerScope->startStackSize;
     node->ownerScope->startStackSize += typeInfo->isStruct() ? max(typeInfo->sizeOf, 8) : typeInfo->sizeOf;
-    SemanticJob::setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
+    Semantic::setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
 }
 
-bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcNode, AstNode* parameters, bool forGenerics)
+bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcNode, AstNode* parameters, bool forGenerics)
 {
     if (!parameters || (funcNode->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
         return true;
@@ -45,7 +46,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
             SWAG_ASSERT(nodeParam->typeInfo->isListTuple());
             SWAG_CHECK(Ast::convertLiteralTupleToStructDecl(context, nodeParam, nodeParam->assignment, &nodeParam->type));
             context->result = ContextResult::NewChilds;
-            context->job->nodes.push_back(nodeParam->type);
+            context->baseJob->nodes.push_back(nodeParam->type);
             return true;
         }
         else if (nodeParam->semFlags & SEMFLAG_TUPLE_CONVERT)
@@ -185,7 +186,7 @@ bool SemanticJob::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr
     return true;
 }
 
-bool SemanticJob::resolveFuncDeclParams(SemanticContext* context)
+bool Semantic::resolveFuncDeclParams(SemanticContext* context)
 {
     auto node = context->node;
     node->inheritOrFlag(AST_IS_GENERIC);
@@ -193,7 +194,7 @@ bool SemanticJob::resolveFuncDeclParams(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::sendCompilerMsgFuncDecl(SemanticContext* context)
+bool Semantic::sendCompilerMsgFuncDecl(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
@@ -223,7 +224,7 @@ bool SemanticJob::sendCompilerMsgFuncDecl(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveFuncDeclAfterSI(SemanticContext* context)
+bool Semantic::resolveFuncDeclAfterSI(SemanticContext* context)
 {
     auto saveNode = context->node;
     if (context->node->parent->kind == AstNodeKind::Inline)
@@ -244,7 +245,7 @@ bool SemanticJob::resolveFuncDeclAfterSI(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveFuncDecl(SemanticContext* context)
+bool Semantic::resolveFuncDecl(SemanticContext* context)
 {
     auto sourceFile = context->sourceFile;
     auto module     = sourceFile->module;
@@ -358,7 +359,7 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
                     ScopedLock lk1(forId->resolvedSymbolName->mutex);
                     if (forId->resolvedSymbolName->cptOverloads)
                     {
-                        context->job->waitSymbolNoLock(forId->resolvedSymbolName);
+                        context->baseJob->waitSymbolNoLock(forId->resolvedSymbolName);
                         return true;
                     }
                 }
@@ -404,12 +405,12 @@ bool SemanticJob::resolveFuncDecl(SemanticContext* context)
     if (!funcNode->content)
         genByteCode = false;
     if (genByteCode)
-        ByteCodeGenJob::askForByteCode(context->job, funcNode, 0);
+        ByteCodeGenJob::askForByteCode(context->baseJob, funcNode, 0);
 
     return true;
 }
 
-bool SemanticJob::setFullResolve(SemanticContext* context, AstFuncDecl* funcNode)
+bool Semantic::setFullResolve(SemanticContext* context, AstFuncDecl* funcNode)
 {
     ScopedLock lk(funcNode->funcMutex);
     funcNode->addSpecFlags(AstFuncDecl::SPECFLAG_FULL_RESOLVE | AstFuncDecl::SPECFLAG_PARTIAL_RESOLVE);
@@ -417,7 +418,7 @@ bool SemanticJob::setFullResolve(SemanticContext* context, AstFuncDecl* funcNode
     return true;
 }
 
-void SemanticJob::setFuncDeclParamsIndex(AstFuncDecl* funcNode)
+void Semantic::setFuncDeclParamsIndex(AstFuncDecl* funcNode)
 {
     if (funcNode->parameters)
     {
@@ -446,7 +447,7 @@ void SemanticJob::setFuncDeclParamsIndex(AstFuncDecl* funcNode)
     }
 }
 
-bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
+bool Semantic::resolveFuncDeclType(SemanticContext* context)
 {
     auto typeNode = context->node;
     auto funcNode = CastAst<AstFuncDecl>(typeNode->parent, AstNodeKind::FuncDecl);
@@ -695,13 +696,13 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     }
 
     // If this is a lambda waiting for a match to know the types of its parameters, need to wait
-    // Function SemanticJob::setSymbolMatch will wake us up as soon as a valid match is found
+    // Function Semantic::setSymbolMatch will wake us up as soon as a valid match is found
     if (funcNode->semFlags & SEMFLAG_PENDING_LAMBDA_TYPING)
     {
         if (!(funcNode->flags & AST_IS_GENERIC))
         {
-            funcNode->pendingLambdaJob = context->job;
-            context->job->setPending(JobWaitKind::PendingLambdaTyping, nullptr, funcNode, nullptr);
+            funcNode->pendingLambdaJob = context->baseJob;
+            context->baseJob->setPending(JobWaitKind::PendingLambdaTyping, nullptr, funcNode, nullptr);
         }
     }
 
@@ -803,7 +804,7 @@ bool SemanticJob::resolveFuncDeclType(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNode, uint32_t symbolFlags)
+bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNode, uint32_t symbolFlags)
 {
     if (!(symbolFlags & OVERLOAD_INCOMPLETE))
     {
@@ -893,14 +894,14 @@ bool SemanticJob::registerFuncSymbol(SemanticContext* context, AstFuncDecl* func
             funcNode->methodParam->attributes = typeFunc->attributes;
         }
 
-        context->job->decreaseMethodCount(funcNode, typeStruct);
+        context->sem->decreaseMethodCount(funcNode, typeStruct);
     }
 
     resolveSubDecls(context, funcNode);
     return true;
 }
 
-bool SemanticJob::isMethod(AstFuncDecl* funcNode)
+bool Semantic::isMethod(AstFuncDecl* funcNode)
 {
     if (funcNode->ownerStructScope &&
         funcNode->parent->kind != AstNodeKind::CompilerAst &&
@@ -919,7 +920,7 @@ bool SemanticJob::isMethod(AstFuncDecl* funcNode)
     return false;
 }
 
-void SemanticJob::launchResolveSubDecl(JobContext* context, AstNode* node)
+void Semantic::launchResolveSubDecl(JobContext* context, AstNode* node)
 {
     if (node->flags & (AST_SPEC_SEMANTIC1 | AST_SPEC_SEMANTIC2 | AST_SPEC_SEMANTIC3))
         return;
@@ -940,7 +941,7 @@ void SemanticJob::launchResolveSubDecl(JobContext* context, AstNode* node)
     }
 }
 
-void SemanticJob::resolveSubDecls(JobContext* context, AstFuncDecl* funcNode)
+void Semantic::resolveSubDecls(JobContext* context, AstFuncDecl* funcNode)
 {
     if (!funcNode)
         return;
@@ -971,7 +972,7 @@ void SemanticJob::resolveSubDecls(JobContext* context, AstFuncDecl* funcNode)
     }
 }
 
-bool SemanticJob::resolveCaptureFuncCallParams(SemanticContext* context)
+bool Semantic::resolveCaptureFuncCallParams(SemanticContext* context)
 {
     auto node = CastAst<AstFuncCallParams>(context->node, AstNodeKind::FuncCallParams);
     node->inheritOrFlag(AST_IS_GENERIC);
@@ -1028,7 +1029,7 @@ bool SemanticJob::resolveCaptureFuncCallParams(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveFuncCallGenParams(SemanticContext* context)
+bool Semantic::resolveFuncCallGenParams(SemanticContext* context)
 {
     auto node = context->node;
     node->inheritOrFlag(AST_IS_GENERIC);
@@ -1057,7 +1058,7 @@ bool SemanticJob::resolveFuncCallGenParams(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
+bool Semantic::resolveFuncCallParams(SemanticContext* context)
 {
     auto node = context->node;
     node->inheritOrFlag(AST_IS_GENERIC);
@@ -1065,7 +1066,7 @@ bool SemanticJob::resolveFuncCallParams(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
+bool Semantic::resolveFuncCallParam(SemanticContext* context)
 {
     auto node      = CastAst<AstFuncCallParam>(context->node, AstNodeKind::FuncCallParam);
     auto child     = node->childs.front();
@@ -1135,7 +1136,7 @@ bool SemanticJob::resolveFuncCallParam(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveRetVal(SemanticContext* context)
+bool Semantic::resolveRetVal(SemanticContext* context)
 {
     auto node    = context->node;
     auto fctDecl = node->ownerInline ? node->ownerInline->func : node->ownerFct;
@@ -1150,7 +1151,7 @@ bool SemanticJob::resolveRetVal(SemanticContext* context)
     // :WaitForPOD
     if (typeFct->returnType->isStruct())
     {
-        context->job->waitStructGenerated(typeFct->returnType);
+        context->baseJob->waitStructGenerated(typeFct->returnType);
         YIELD();
     }
 
@@ -1169,7 +1170,7 @@ bool SemanticJob::resolveRetVal(SemanticContext* context)
     return true;
 }
 
-void SemanticJob::propagateReturn(AstNode* node)
+void Semantic::propagateReturn(AstNode* node)
 {
     auto stopFct = node->ownerFct ? node->ownerFct->parent : nullptr;
     if (node->semFlags & SEMFLAG_EMBEDDED_RETURN)
@@ -1254,7 +1255,7 @@ void SemanticJob::propagateReturn(AstNode* node)
     }
 }
 
-AstFuncDecl* SemanticJob::getFunctionForReturn(AstNode* node)
+AstFuncDecl* Semantic::getFunctionForReturn(AstNode* node)
 {
     // For a return inside an inline block, take the inlined function, except for a mixin or
     // if the inlined function is flagged with 'Swag.CalleeReturn' (in that case we take the owner function)
@@ -1272,7 +1273,7 @@ AstFuncDecl* SemanticJob::getFunctionForReturn(AstNode* node)
     return funcNode;
 }
 
-bool SemanticJob::resolveReturn(SemanticContext* context)
+bool Semantic::resolveReturn(SemanticContext* context)
 {
     SWAG_CHECK(warnUnreachableCode(context));
 
@@ -1353,7 +1354,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
             {
                 SWAG_CHECK(Ast::convertLiteralTupleToStructDecl(context, funcNode->content, node->childs.front(), &funcNode->returnType));
                 Ast::setForceConstType(funcNode->returnType);
-                context->job->nodes.push_back(funcNode->returnType);
+                context->baseJob->nodes.push_back(funcNode->returnType);
                 context->result = ContextResult::NewChilds;
                 return true;
             }
@@ -1414,7 +1415,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     // :WaitForPOD
     if (returnType && returnType->isStruct())
     {
-        context->job->waitAllStructSpecialMethods(returnType);
+        context->baseJob->waitAllStructSpecialMethods(returnType);
         YIELD();
     }
 
@@ -1428,7 +1429,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
         // If we are returning an interface, be sure they are defined before casting
         if (returnType->isInterface())
         {
-            context->job->waitAllStructInterfaces(child->typeInfo);
+            context->baseJob->waitAllStructInterfaces(child->typeInfo);
             YIELD();
         }
 
@@ -1505,8 +1506,8 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
             idRef->allocateExtension(ExtensionKind::Owner);
             idRef->extOwner()->nodesToFree.push_back(child);
 
-            context->job->nodes.push_back(node->childs.front());
-            context->job->nodes.push_back(varNode);
+            context->baseJob->nodes.push_back(node->childs.front());
+            context->baseJob->nodes.push_back(varNode);
             varNode->semFlags |= SEMFLAG_ONCE;
             context->result = ContextResult::NewChilds;
             return true;
@@ -1541,7 +1542,7 @@ bool SemanticJob::resolveReturn(SemanticContext* context)
     return true;
 }
 
-uint32_t SemanticJob::getMaxStackSize(AstNode* node)
+uint32_t Semantic::getMaxStackSize(AstNode* node)
 {
     auto decSP = node->ownerScope->startStackSize;
 
@@ -1562,7 +1563,7 @@ uint32_t SemanticJob::getMaxStackSize(AstNode* node)
     return decSP;
 }
 
-void SemanticJob::setOwnerMaxStackSize(AstNode* node, uint32_t size)
+void Semantic::setOwnerMaxStackSize(AstNode* node, uint32_t size)
 {
     size = max(size, 1);
     size = (uint32_t) TypeManager::align(size, sizeof(void*));
@@ -1583,7 +1584,7 @@ void SemanticJob::setOwnerMaxStackSize(AstNode* node, uint32_t size)
     }
 }
 
-bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier)
+bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier)
 {
     CloneContext cloneContext;
 
@@ -1864,7 +1865,7 @@ bool SemanticJob::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode
     return true;
 }
 
-bool SemanticJob::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNode* identifier)
+bool Semantic::makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNode* identifier)
 {
     SWAG_CHECK(makeInline((JobContext*) context, funcDecl, identifier));
     context->result = ContextResult::NewChilds;

@@ -2,7 +2,7 @@
 #include "ByteCode.h"
 #include "Module.h"
 #include "Ast.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "ByteCodeGenJob.h"
 #include "Context.h"
 #include "TypeManager.h"

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "Ast.h"
 #include "Scoped.h"
 #include "ErrorIds.h"
@@ -11,8 +11,8 @@ bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
     auto attrNode = Ast::newNode<AstAttrDecl>(this, AstNodeKind::AttrDecl, sourceFile, parent);
     *result       = attrNode;
     attrNode->allocateExtension(ExtensionKind::Semantic);
-    attrNode->extSemantic()->semanticBeforeFct = SemanticJob::preResolveAttrDecl;
-    attrNode->semanticFct                      = SemanticJob::resolveAttrDecl;
+    attrNode->extSemantic()->semanticBeforeFct = Semantic::preResolveAttrDecl;
+    attrNode->semanticFct                      = Semantic::resolveAttrDecl;
 
     SWAG_CHECK(eatToken());
     SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err1072), token.ctext())));
@@ -98,7 +98,7 @@ bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
     auto back = attrBlockNode->childs.back();
     back->allocateExtension(ExtensionKind::Semantic);
     SWAG_ASSERT(!back->extSemantic()->semanticAfterFct);
-    back->extSemantic()->semanticAfterFct = SemanticJob::resolveAttrUse;
+    back->extSemantic()->semanticAfterFct = Semantic::resolveAttrUse;
 
     return true;
 }

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Workspace.h"
 #include "ThreadManager.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "ModuleBuildJob.h"
 #include "TypeManager.h"
 #include "Report.h"

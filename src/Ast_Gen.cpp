@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Ast.h"
 #include "SemanticJob.h"
+#include "Semantic.h"
 #include "ByteCodeGenJob.h"
 #include "Parser.h"
 #include "TypeManager.h"
@@ -120,16 +121,16 @@ bool Ast::convertLiteralTupleToStructVar(SemanticContext* context, TypeInfo* toT
     if (fromType)
     {
         fromNode->parent->typeInfo = toType;
-        context->job->nodes.push_back(identifierRef);
-        context->job->nodes.push_back(varNode);
+        context->baseJob->nodes.push_back(identifierRef);
+        context->baseJob->nodes.push_back(varNode);
     }
     else
     {
-        auto b = context->job->nodes.back();
-        context->job->nodes.pop_back();
-        context->job->nodes.push_back(identifierRef);
-        context->job->nodes.push_back(varNode);
-        context->job->nodes.push_back(b);
+        auto b = context->baseJob->nodes.back();
+        context->baseJob->nodes.pop_back();
+        context->baseJob->nodes.push_back(identifierRef);
+        context->baseJob->nodes.push_back(varNode);
+        context->baseJob->nodes.push_back(b);
     }
 
     return true;
@@ -155,12 +156,12 @@ bool Ast::convertLiteralTupleToStructType(SemanticContext* context, TypeInfoStru
     Ast::addChildBack(newParent, structNode);
     structNode->originalParent = newParent;
     structNode->allocateExtension(ExtensionKind::Semantic);
-    structNode->extSemantic()->semanticBeforeFct = SemanticJob::preResolveGeneratedStruct;
+    structNode->extSemantic()->semanticBeforeFct = Semantic::preResolveGeneratedStruct;
 
     auto contentNode    = Ast::newNode<AstNode>(nullptr, AstNodeKind::TupleContent, sourceFile, structNode);
     structNode->content = contentNode;
     contentNode->allocateExtension(ExtensionKind::Semantic);
-    contentNode->extSemantic()->semanticBeforeFct = SemanticJob::preResolveStructContent;
+    contentNode->extSemantic()->semanticBeforeFct = Semantic::preResolveStructContent;
 
     Utf8 name = sourceFile->scopeFile->name + "_tuple_";
     name += Fmt("%d", g_UniqueID.fetch_add(1));
@@ -244,7 +245,7 @@ bool Ast::convertLiteralTupleToStructType(SemanticContext* context, TypeInfoStru
 
     SWAG_CHECK(convertLiteralTupleToStructVar(context, typeInfo, fromNode, true));
 
-    context->job->nodes.push_back(structNode);
+    context->baseJob->nodes.push_back(structNode);
     context->result = ContextResult::NewChilds1;
 
     return true;
@@ -259,7 +260,7 @@ AstNode* Ast::convertTypeToTypeExpression(SemanticContext* context, AstNode* par
     {
         auto typeLambda             = CastTypeInfo<TypeInfoFuncAttr>(childType, TypeInfoKind::LambdaClosure);
         auto typeExprLambda         = Ast::newNode<AstTypeLambda>(nullptr, AstNodeKind::TypeLambda, sourceFile, parent);
-        typeExprLambda->semanticFct = SemanticJob::resolveTypeLambdaClosure;
+        typeExprLambda->semanticFct = Semantic::resolveTypeLambdaClosure;
         if (childType->flags & TYPEINFO_CAN_THROW)
             typeExprLambda->addSpecFlags(AstTypeLambda::SPECFLAG_CAN_THROW);
 
@@ -316,7 +317,7 @@ bool Ast::convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* ass
 
     auto contentNode = Ast::newNode<AstNode>(nullptr, AstNodeKind::TupleContent, sourceFile, structNode);
     contentNode->allocateExtension(ExtensionKind::Semantic);
-    contentNode->extSemantic()->semanticBeforeFct = SemanticJob::preResolveStructContent;
+    contentNode->extSemantic()->semanticBeforeFct = Semantic::preResolveStructContent;
     contentNode->addAlternativeScope(assignment->ownerScope);
     structNode->content        = contentNode;
     structNode->originalParent = assignment;
@@ -408,7 +409,7 @@ bool Ast::convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* ass
 
         rootScope->symTable.registerSymbolNameNoLock(context, structNode, SymbolKind::Struct);
         Ast::addChildBack(sourceFile->astRoot, structNode);
-        SemanticJob::newJob(context->job->dependentJob, sourceFile, structNode, true);
+        SemanticJob::newJob(context->baseJob->dependentJob, sourceFile, structNode, true);
     }
 
     return true;
@@ -476,13 +477,13 @@ bool Ast::convertStructParamsToTmpVar(SemanticContext* context, AstIdentifier* i
     // Call parameters have already been evaluated, so do not reevaluate them again
     back->callParameters->flags |= AST_NO_SEMANTIC;
     back->callParameters->semFlags |= node->semFlags & SEMFLAG_ACCESS_MASK;
-    SemanticJob::inheritAccess(back->callParameters);
+    Semantic::inheritAccess(back->callParameters);
 
     // :DupGen :StructParamsNoSem
     // Type has already been evaluated
     typeNode->identifier->flags |= AST_NO_SEMANTIC;
     typeNode->identifier->semFlags |= node->semFlags & SEMFLAG_ACCESS_MASK;
-    SemanticJob::inheritAccess(typeNode->identifier);
+    Semantic::inheritAccess(typeNode->identifier);
 
     // If this is in a return expression, then force the identifier type to be retval
     if (node->parent && node->parent->inSimpleReturn())
@@ -506,9 +507,9 @@ bool Ast::convertStructParamsToTmpVar(SemanticContext* context, AstIdentifier* i
     varParent->flags |= AST_REVERSE_SEMANTIC;
 
     // Add the 2 nodes to the semantic
-    context->job->nodes.pop_back();
-    context->job->nodes.push_back(idNode);
-    context->job->nodes.push_back(varNode);
+    context->baseJob->nodes.pop_back();
+    context->baseJob->nodes.push_back(idNode);
+    context->baseJob->nodes.push_back(varNode);
     context->result = ContextResult::NewChilds;
 
     return true;

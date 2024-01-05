@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "Ast.h"
 #include "Generic.h"
 #include "TypeManager.h"
@@ -32,7 +32,7 @@ static int getBadParamIdx(OneTryMatch& oneTry, AstNode* callParameters)
     return badParamIdx;
 }
 
-bool SemanticJob::preprocessMatchError(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1)
+bool Semantic::preprocessMatchError(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1)
 {
     SymbolOverload*    overload = oneTry.overload;
     auto&              match    = oneTry.symMatchContext;
@@ -57,7 +57,7 @@ bool SemanticJob::preprocessMatchError(SemanticContext* context, OneTryMatch& on
     return false;
 }
 
-void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1, uint32_t getFlags)
+void Semantic::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1, uint32_t getFlags)
 {
     // Smart changes for smarter errors (very specific cases)
     if (preprocessMatchError(context, oneTry, result0, result1))
@@ -543,7 +543,7 @@ void SemanticJob::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& o
     }
 }
 
-void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag, Vector<const Diagnostic*>& notes)
+void Semantic::symbolErrorNotes(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag, Vector<const Diagnostic*>& notes)
 {
     if (!node)
         return;
@@ -618,7 +618,7 @@ void SemanticJob::symbolErrorNotes(SemanticContext* context, VectorNative<OneTry
     }
 }
 
-void SemanticJob::symbolErrorRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag)
+void Semantic::symbolErrorRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag)
 {
     if (!node)
         return;
@@ -669,12 +669,12 @@ void SemanticJob::symbolErrorRemarks(SemanticContext* context, VectorNative<OneT
     }
 }
 
-bool SemanticJob::cannotMatchIdentifierError(SemanticContext*            context,
-                                             MatchResult                 result,
-                                             int                         paramIdx,
-                                             VectorNative<OneTryMatch*>& tryMatches,
-                                             AstNode*                    node,
-                                             Vector<const Diagnostic*>&  notes)
+bool Semantic::cannotMatchIdentifierError(SemanticContext*            context,
+                                          MatchResult                 result,
+                                          int                         paramIdx,
+                                          VectorNative<OneTryMatch*>& tryMatches,
+                                          AstNode*                    node,
+                                          Vector<const Diagnostic*>&  notes)
 {
     if (tryMatches.empty())
         return false;
@@ -813,7 +813,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext*            context
     return true;
 }
 
-bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node)
+bool Semantic::cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node)
 {
     AstIdentifier* identifier        = nullptr;
     AstNode*       genericParameters = nullptr;
@@ -1009,7 +1009,7 @@ bool SemanticJob::cannotMatchIdentifierError(SemanticContext* context, VectorNat
     return context->report(diag, notes);
 }
 
-Utf8 SemanticJob::findClosestMatchesMsg(const Utf8& searchName, const Vector<Utf8>& best)
+Utf8 Semantic::findClosestMatchesMsg(const Utf8& searchName, const Vector<Utf8>& best)
 {
     Utf8 appendMsg;
     switch (best.size())
@@ -1037,7 +1037,7 @@ Utf8 SemanticJob::findClosestMatchesMsg(const Utf8& searchName, const Vector<Utf
     return appendMsg;
 }
 
-void SemanticJob::findClosestMatches(const Utf8& searchName, const Vector<Utf8>& searchList, Vector<Utf8>& result)
+void Semantic::findClosestMatches(const Utf8& searchName, const Vector<Utf8>& searchList, Vector<Utf8>& result)
 {
     uint32_t bestScore = UINT32_MAX;
     result.clear();
@@ -1080,7 +1080,7 @@ void SemanticJob::findClosestMatches(const Utf8& searchName, const Vector<Utf8>&
     }
 }
 
-void SemanticJob::findClosestMatches(const Utf8& searchName, const VectorNative<AlternativeScope>& scopeHierarchy, Vector<Utf8>& best, IdentifierSearchFor searchFor)
+void Semantic::findClosestMatches(const Utf8& searchName, const VectorNative<AlternativeScope>& scopeHierarchy, Vector<Utf8>& best, IdentifierSearchFor searchFor)
 {
     Vector<Utf8> searchList;
     for (auto& as : scopeHierarchy)
@@ -1160,18 +1160,18 @@ void SemanticJob::findClosestMatches(const Utf8& searchName, const VectorNative<
     findClosestMatches(searchName, searchList, best);
 }
 
-Utf8 SemanticJob::findClosestMatchesMsg(const Utf8& searchName, const VectorNative<AlternativeScope>& scopeHierarchy, IdentifierSearchFor searchFor)
+Utf8 Semantic::findClosestMatchesMsg(const Utf8& searchName, const VectorNative<AlternativeScope>& scopeHierarchy, IdentifierSearchFor searchFor)
 {
     Vector<Utf8> best;
     findClosestMatches(searchName, scopeHierarchy, best, searchFor);
     return findClosestMatchesMsg(searchName, best);
 }
 
-void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node)
+void Semantic::unknownIdentifier(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node)
 {
-    auto  job                = context->job;
-    auto& scopeHierarchy     = job->cacheScopeHierarchy;
-    auto& scopeHierarchyVars = job->cacheScopeHierarchyVars;
+    auto  sem                = context->sem;
+    auto& scopeHierarchy     = sem->cacheScopeHierarchy;
+    auto& scopeHierarchyVars = sem->cacheScopeHierarchyVars;
 
     // What kind of thing to we search for ?
     auto searchFor = IdentifierSearchFor::Whatever;
@@ -1328,7 +1328,7 @@ void SemanticJob::unknownIdentifier(SemanticContext* context, AstIdentifierRef* 
     context->report(*diag, notes);
 }
 
-bool SemanticJob::notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg, AstNode* hintType)
+bool Semantic::notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg, AstNode* hintType)
 {
     Utf8 text = Fmt(Err(Err0005), node->token.ctext(), typeInfo->getDisplayNameC());
     if (msg)
@@ -1343,13 +1343,13 @@ bool SemanticJob::notAllowedError(ErrorContext* context, AstNode* node, TypeInfo
     return context->report(diag);
 }
 
-bool SemanticJob::duplicatedSymbolError(ErrorContext* context,
-                                        SourceFile*   sourceFile,
-                                        Token&        token,
-                                        SymbolKind    thisKind,
-                                        const Utf8&   thisName,
-                                        SymbolKind    otherKind,
-                                        AstNode*      otherSymbolDecl)
+bool Semantic::duplicatedSymbolError(ErrorContext* context,
+                                     SourceFile*   sourceFile,
+                                     Token&        token,
+                                     SymbolKind    thisKind,
+                                     const Utf8&   thisName,
+                                     SymbolKind    otherKind,
+                                     AstNode*      otherSymbolDecl)
 {
     Utf8 as;
     if (thisKind != otherKind)
@@ -1361,7 +1361,7 @@ bool SemanticJob::duplicatedSymbolError(ErrorContext* context,
     return context->report(diag, note);
 }
 
-bool SemanticJob::error(SemanticContext* context, const Utf8& msg)
+bool Semantic::error(SemanticContext* context, const Utf8& msg)
 {
     return context->report({context->node, msg});
 }

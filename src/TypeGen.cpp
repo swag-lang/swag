@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "TypeGen.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "Workspace.h"
 #include "ThreadManager.h"
 #include "TypeGenStructJob.h"

@@ -6,6 +6,7 @@
 #include "BackendX64.h"
 #include "ThreadManager.h"
 #include "Context.h"
+#include "Semantic.h"
 #include "SemanticJob.h"
 #include "ModuleManager.h"
 #include "Report.h"
@@ -1170,7 +1171,7 @@ bool Module::filterFunctionsToEmit()
     byteCodeFuncToGen.reserve((int) byteCodeFunc.size());
     for (auto bc : byteCodeFunc)
     {
-        SWAG_CHECK(SemanticJob::warnUnusedFunction(this, bc));
+        SWAG_CHECK(Semantic::warnUnusedFunction(this, bc));
         if (!bc->canEmit())
             continue;
         byteCodeFuncToGen.push_back(bc);

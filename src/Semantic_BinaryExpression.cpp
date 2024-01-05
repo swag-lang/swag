@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "TypeManager.h"
 #include "ByteCodeGenJob.h"
 #include "Concat.h"
@@ -11,7 +11,7 @@
 #include "Report.h"
 #include "LanguageSpec.h"
 
-bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right)
+bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node          = CastAst<AstOp>(context->node, AstNodeKind::FactorOp);
     auto sourceFile    = context->sourceFile;
@@ -201,7 +201,7 @@ bool SemanticJob::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, A
     return true;
 }
 
-bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right)
+bool Semantic::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node          = context->node;
     auto sourceFile    = context->sourceFile;
@@ -343,7 +343,7 @@ bool SemanticJob::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, 
     return true;
 }
 
-bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, AstNode* right)
+bool Semantic::resolveBinaryOpMul(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node          = context->node;
     auto sourceFile    = context->sourceFile;
@@ -474,7 +474,7 @@ bool SemanticJob::resolveBinaryOpMul(SemanticContext* context, AstNode* left, As
     return true;
 }
 
-bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNode* right)
+bool Semantic::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node          = context->node;
     auto sourceFile    = context->sourceFile;
@@ -580,7 +580,7 @@ bool SemanticJob::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, As
     return true;
 }
 
-bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left, AstNode* right)
+bool Semantic::resolveBinaryOpModulo(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node          = context->node;
     auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
@@ -669,7 +669,7 @@ bool SemanticJob::resolveBinaryOpModulo(SemanticContext* context, AstNode* left,
     return true;
 }
 
-bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstNode* right)
+bool Semantic::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node         = context->node;
     auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
@@ -779,7 +779,7 @@ bool SemanticJob::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstN
     return true;
 }
 
-bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, AstNode* right)
+bool Semantic::resolveBitmaskAnd(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node         = context->node;
     auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
@@ -886,7 +886,7 @@ bool SemanticJob::resolveBitmaskAnd(SemanticContext* context, AstNode* left, Ast
     return true;
 }
 
-bool SemanticJob::resolveAppend(SemanticContext* context, AstNode* left, AstNode* right)
+bool Semantic::resolveAppend(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node = context->node;
 
@@ -911,7 +911,7 @@ bool SemanticJob::resolveAppend(SemanticContext* context, AstNode* left, AstNode
     return true;
 }
 
-bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* right)
+bool Semantic::resolveXor(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node         = context->node;
     auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
@@ -976,7 +976,7 @@ bool SemanticJob::resolveXor(SemanticContext* context, AstNode* left, AstNode* r
     return true;
 }
 
-bool SemanticJob::resolveFactorExpression(SemanticContext* context)
+bool Semantic::resolveFactorExpression(SemanticContext* context)
 {
     auto node  = context->node;
     auto left  = node->childs[0];
@@ -1153,7 +1153,7 @@ bool SemanticJob::resolveFactorExpression(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode* right)
+bool Semantic::resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node         = CastAst<AstOp>(context->node, AstNodeKind::FactorOp);
     auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
@@ -1232,7 +1232,7 @@ bool SemanticJob::resolveShiftLeft(SemanticContext* context, AstNode* left, AstN
     return true;
 }
 
-bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, AstNode* right)
+bool Semantic::resolveShiftRight(SemanticContext* context, AstNode* left, AstNode* right)
 {
     auto node         = CastAst<AstOp>(context->node, AstNodeKind::FactorOp);
     auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
@@ -1311,7 +1311,7 @@ bool SemanticJob::resolveShiftRight(SemanticContext* context, AstNode* left, Ast
     return true;
 }
 
-bool SemanticJob::resolveShiftExpression(SemanticContext* context)
+bool Semantic::resolveShiftExpression(SemanticContext* context)
 {
     auto node  = context->node;
     auto left  = node->childs[0];
@@ -1373,7 +1373,7 @@ bool SemanticJob::resolveShiftExpression(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveBoolExpression(SemanticContext* context)
+bool Semantic::resolveBoolExpression(SemanticContext* context)
 {
     auto node   = context->node;
     auto left   = node->childs[0];

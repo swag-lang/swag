@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "Ast.h"
 #include "Workspace.h"
 #include "TypeManager.h"
@@ -12,7 +12,7 @@
 #include "Naming.h"
 #include "Parser.h"
 
-bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
+bool Semantic::waitForStructUserOps(SemanticContext* context, AstNode* node)
 {
     SymbolName* symbol = nullptr;
     SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opPostCopy, node, &symbol));
@@ -24,7 +24,7 @@ bool SemanticJob::waitForStructUserOps(SemanticContext* context, AstNode* node)
     return true;
 }
 
-bool SemanticJob::resolveImplForAfterFor(SemanticContext* context)
+bool Semantic::resolveImplForAfterFor(SemanticContext* context)
 {
     auto id   = context->node;
     auto node = CastAst<AstImpl>(context->node->parent, AstNodeKind::Impl);
@@ -72,7 +72,7 @@ bool SemanticJob::resolveImplForAfterFor(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveImplForType(SemanticContext* context)
+bool Semantic::resolveImplForType(SemanticContext* context)
 {
     auto     node       = CastAst<AstImpl>(context->node, AstNodeKind::Impl);
     auto     sourceFile = node->sourceFile;
@@ -127,10 +127,11 @@ bool SemanticJob::resolveImplForType(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveImplFor(SemanticContext* context)
+bool Semantic::resolveImplFor(SemanticContext* context)
 {
     auto node = CastAst<AstImpl>(context->node, AstNodeKind::Impl);
-    auto job  = context->job;
+    auto job  = context->baseJob;
+    auto sem  = context->sem;
 
     // Be sure the first identifier is an interface
     auto typeInfo = node->identifier->typeInfo;
@@ -144,9 +145,9 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     typeInfo = node->identifierFor->typeInfo;
     SWAG_ASSERT(typeInfo->isStruct());
 
-    VectorNative<AstNode*>& childs = job->tmpNodes;
-    job->tmpNodes.clear();
-    flattenStructChilds(context, node, job->tmpNodes);
+    VectorNative<AstNode*>& childs = sem->tmpNodes;
+    sem->tmpNodes.clear();
+    flattenStructChilds(context, node, sem->tmpNodes);
 
     SWAG_ASSERT(node->childs[0]->kind == AstNodeKind::IdentifierRef);
     SWAG_ASSERT(node->childs[1]->kind == AstNodeKind::IdentifierRef);
@@ -396,7 +397,7 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
         SWAG_CHECK(parser.constructEmbeddedAst(content, node, node, CompilerAstKind::MissingInterfaceMtd, true));
 
         for (size_t i = numChilds; i < node->childs.size(); i++)
-            context->job->nodes.push_back(node->childs[i]);
+            context->baseJob->nodes.push_back(node->childs[i]);
         context->result = ContextResult::NewChilds;
         return true;
     }
@@ -451,12 +452,12 @@ bool SemanticJob::resolveImplFor(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::resolveInterface(SemanticContext* context)
+bool Semantic::resolveInterface(SemanticContext* context)
 {
     auto node          = CastAst<AstStruct>(context->node, AstNodeKind::InterfaceDecl);
     auto sourceFile    = context->sourceFile;
     auto typeInterface = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
-    auto job           = context->job;
+    auto sem           = context->sem;
 
     typeInterface->declNode   = node;
     typeInterface->name       = node->token.text;
@@ -465,11 +466,11 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     uint32_t storageOffset = 0;
     uint32_t storageIndex  = 0;
 
-    VectorNative<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? job->tmpNodes : node->content->childs;
+    VectorNative<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? sem->tmpNodes : node->content->childs;
     if (node->flags & AST_STRUCT_COMPOUND)
     {
-        job->tmpNodes.clear();
-        flattenStructChilds(context, node->content, job->tmpNodes);
+        sem->tmpNodes.clear();
+        flattenStructChilds(context, node->content, sem->tmpNodes);
     }
 
     // itable
@@ -602,7 +603,7 @@ bool SemanticJob::resolveInterface(SemanticContext* context)
     return true;
 }
 
-void SemanticJob::decreaseInterfaceRegCount(TypeInfoStruct* typeInfoStruct)
+void Semantic::decreaseInterfaceRegCount(TypeInfoStruct* typeInfoStruct)
 {
     ScopedLock lk(typeInfoStruct->mutex);
     ScopedLock lk1(typeInfoStruct->scope->symTable.mutex);
@@ -613,7 +614,7 @@ void SemanticJob::decreaseInterfaceRegCount(TypeInfoStruct* typeInfoStruct)
         typeInfoStruct->scope->dependentJobs.setRunning();
 }
 
-void SemanticJob::decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct)
+void Semantic::decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct)
 {
     ScopedLock lk(typeInfoStruct->mutex);
     ScopedLock lk1(typeInfoStruct->scope->symTable.mutex);
@@ -624,7 +625,7 @@ void SemanticJob::decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct)
         typeInfoStruct->scope->dependentJobs.setRunning();
 }
 
-void SemanticJob::decreaseMethodCount(AstFuncDecl* funcNode, TypeInfoStruct* typeInfoStruct)
+void Semantic::decreaseMethodCount(AstFuncDecl* funcNode, TypeInfoStruct* typeInfoStruct)
 {
     ScopedLock lk(typeInfoStruct->mutex);
     ScopedLock lk1(typeInfoStruct->scope->symTable.mutex);
@@ -639,7 +640,7 @@ void SemanticJob::decreaseMethodCount(AstFuncDecl* funcNode, TypeInfoStruct* typ
         typeInfoStruct->scope->dependentJobs.setRunning();
 }
 
-bool SemanticJob::checkImplScopes(SemanticContext* context, AstImpl* node, Scope* scopeImpl, Scope* scope)
+bool Semantic::checkImplScopes(SemanticContext* context, AstImpl* node, Scope* scopeImpl, Scope* scope)
 {
     // impl scope and corresponding identifier scope must be the same !
     if (scopeImpl != scope)
@@ -652,7 +653,7 @@ bool SemanticJob::checkImplScopes(SemanticContext* context, AstImpl* node, Scope
     return true;
 }
 
-bool SemanticJob::resolveImpl(SemanticContext* context)
+bool Semantic::resolveImpl(SemanticContext* context)
 {
     auto node = CastAst<AstImpl>(context->node, AstNodeKind::Impl);
 
@@ -689,7 +690,7 @@ bool SemanticJob::resolveImpl(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::preResolveGeneratedStruct(SemanticContext* context)
+bool Semantic::preResolveGeneratedStruct(SemanticContext* context)
 {
     auto structNode = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl);
     auto parent     = structNode->originalParent;
@@ -731,7 +732,7 @@ bool SemanticJob::preResolveGeneratedStruct(SemanticContext* context)
     return true;
 }
 
-bool SemanticJob::preResolveStructContent(SemanticContext* context)
+bool Semantic::preResolveStructContent(SemanticContext* context)
 {
     auto node = (AstStruct*) context->node->parent;
     SWAG_ASSERT(node->kind == AstNodeKind::StructDecl || node->kind == AstNodeKind::InterfaceDecl);
@@ -804,7 +805,7 @@ bool SemanticJob::preResolveStructContent(SemanticContext* context)
     return true;
 }
 
-void SemanticJob::flattenStructChilds(SemanticContext* context, AstNode* parent, VectorNative<AstNode*>& result)
+void Semantic::flattenStructChilds(SemanticContext* context, AstNode* parent, VectorNative<AstNode*>& result)
 {
     SharedLock lock(parent->mutex);
     for (auto child : parent->childs)
@@ -848,7 +849,7 @@ void SemanticJob::flattenStructChilds(SemanticContext* context, AstNode* parent,
     }
 }
 
-bool SemanticJob::solveValidIf(SemanticContext* context, AstStruct* structDecl)
+bool Semantic::solveValidIf(SemanticContext* context, AstStruct* structDecl)
 {
     ScopedLock lk1(structDecl->mutex);
 
@@ -879,12 +880,13 @@ bool SemanticJob::solveValidIf(SemanticContext* context, AstStruct* structDecl)
     return true;
 }
 
-bool SemanticJob::resolveStruct(SemanticContext* context)
+bool Semantic::resolveStruct(SemanticContext* context)
 {
     auto node       = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl);
     auto sourceFile = context->sourceFile;
     auto typeInfo   = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
-    auto job        = context->job;
+    auto job        = context->baseJob;
+    auto sem        = context->sem;
 
     SWAG_ASSERT(typeInfo->declNode);
 
@@ -926,11 +928,11 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
     uint64_t structFlags       = TYPEINFO_STRUCT_ALL_UNINITIALIZED | TYPEINFO_STRUCT_EMPTY;
 
     // No need to flatten structure if it's not a compound (optim)
-    VectorNative<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? job->tmpNodes : node->content->childs;
+    VectorNative<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? sem->tmpNodes : node->content->childs;
     if (node->flags & AST_STRUCT_COMPOUND)
     {
-        job->tmpNodes.clear();
-        flattenStructChilds(context, node->content, job->tmpNodes);
+        sem->tmpNodes.clear();
+        flattenStructChilds(context, node->content, sem->tmpNodes);
     }
 
     typeInfo->alignOf = 0;
@@ -1316,7 +1318,7 @@ bool SemanticJob::resolveStruct(SemanticContext* context)
         extension->byteCodeJob               = Allocator::alloc<ByteCodeGenJob>();
         extension->byteCodeJob->sourceFile   = sourceFile;
         extension->byteCodeJob->module       = sourceFile->module;
-        extension->byteCodeJob->dependentJob = context->job->dependentJob;
+        extension->byteCodeJob->dependentJob = context->baseJob->dependentJob;
         extension->byteCodeJob->nodes.push_back(node);
         node->byteCodeFct = ByteCodeGenJob::emitStruct;
 

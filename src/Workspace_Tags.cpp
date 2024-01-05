@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Workspace.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 #include "ModuleBuildJob.h"
 #include "TypeManager.h"
 #include "LanguageSpec.h"
@@ -136,7 +136,7 @@ void Workspace::setupUserTags()
                 oneTag.value.reg  = token.literalValue;
                 oneTag.value.text = token.text;
 
-                auto errMsg = SemanticJob::checkLiteralValue(oneTag.value, literalType, token.literalValue, oneTag.type, neg);
+                auto errMsg = Semantic::checkLiteralValue(oneTag.value, literalType, token.literalValue, oneTag.type, neg);
                 if (!errMsg.empty())
                 {
                     auto err = Fmt(Err(Fat0015), oneTagName.c_str(), errMsg.c_str());

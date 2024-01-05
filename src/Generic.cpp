@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Semantic.h"
 #include "SemanticJob.h"
 #include "Generic.h"
 #include "Ast.h"
@@ -342,7 +343,7 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
 
     // Store stack of instantiation contexts
     auto srcCxt  = context;
-    auto destCxt = &newJob->context;
+    auto destCxt = &newJob->sem.context;
     destCxt->errCxtSteps.insert(destCxt->errCxtSteps.end(), srcCxt->errCxtSteps.begin(), srcCxt->errCxtSteps.end());
 
     // New context
@@ -380,7 +381,7 @@ void Generic::waitForGenericParameters(SemanticContext* context, OneGenericMatch
                 continue;
         }
 
-        context->job->waitOverloadCompleted(declNode->resolvedSymbolOverload);
+        context->baseJob->waitOverloadCompleted(declNode->resolvedSymbolOverload);
         if (context->result == ContextResult::Pending)
             return;
 
@@ -396,9 +397,9 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // Be sure all methods have been registered, because we need opDrop & co to be known, as we need
     // to instantiate them also (because those functions can be called by the compiler itself, not by the user)
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(match.symbolOverload->typeInfo, match.symbolOverload->typeInfo->kind);
-    context->job->waitAllStructSpecialMethods(typeStruct);
+    context->baseJob->waitAllStructSpecialMethods(typeStruct);
     YIELD();
-    context->job->waitAllStructInterfaces(typeStruct);
+    context->baseJob->waitAllStructInterfaces(typeStruct);
     YIELD();
 
     // Clone original node
@@ -481,7 +482,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // Replace generic values in the struct generic parameters
     SWAG_CHECK(updateGenericParameters(context, false, true, newType->genericParameters, structNode->genericParameters->childs, genericParameters, match));
 
-    auto structJob = end(context, context->job, sourceSymbol, structNode, true, cloneContext.replaceTypes);
+    auto structJob = end(context, context->baseJob, sourceSymbol, structNode, true, cloneContext.replaceTypes);
 
     instantiateSpecialFunc(context, structJob, cloneContext, &newType->opUserDropFct);
     instantiateSpecialFunc(context, structJob, cloneContext, &newType->opUserPostCopyFct);
@@ -518,11 +519,11 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
         newItf->flags |= AST_FROM_GENERIC;
         structNode->extOwner()->nodesToFree.push_back(newItf);
 
-        auto implJob = SemanticJob::newJob(context->job->dependentJob, context->sourceFile, newItf, false);
+        auto implJob = SemanticJob::newJob(context->baseJob->dependentJob, context->sourceFile, newItf, false);
         structJob->addDependentJob(implJob);
     }
 
-    context->job->jobsToAdd.push_back(structJob);
+    context->baseJob->jobsToAdd.push_back(structJob);
     return true;
 }
 
@@ -566,7 +567,7 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
     newTypeFunc->forceComputeName();
 
     ScopedLock lk(newFunc->resolvedSymbolName->mutex);
-    auto       newJob = end(context, context->job, newFunc->resolvedSymbolName, newFunc, false, cloneContext.replaceTypes);
+    auto       newJob = end(context, context->baseJob, newFunc->resolvedSymbolName, newFunc, false, cloneContext.replaceTypes);
     structJob->dependentJobs.add(newJob);
 }
 
@@ -746,8 +747,8 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     SWAG_CHECK(updateGenericParameters(context, true, true, newTypeFunc->genericParameters, newFunc->genericParameters->childs, genericParameters, match));
     newTypeFunc->forceComputeName();
 
-    auto job = end(context, context->job, match.symbolName, cloneNode, true, cloneContext.replaceTypes);
-    context->job->jobsToAdd.push_back(job);
+    auto job = end(context, context->baseJob, match.symbolName, cloneNode, true, cloneContext.replaceTypes);
+    context->baseJob->jobsToAdd.push_back(job);
 
     return true;
 }

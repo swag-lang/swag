@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "TypeManager.h"
 #include "Ast.h"
-#include "SemanticJob.h"
+#include "Semantic.h"
 
 TypeInfo* TypeInfoNative::clone()
 {
@@ -1086,7 +1086,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint64_t castFlags)
                         !TypeManager::makeCompatibles(&cxt, myGenParam->typeInfo, otherGenParam->typeInfo, nullptr, nullptr, castFlags | CASTFLAG_JUST_CHECK | CASTFLAG_COMMUTATIVE))
                         return false;
 
-                    if (!SemanticJob::valueEqualsTo(myGenParam->value, otherGenParam->value, myGenParam->typeInfo, 0))
+                    if (!Semantic::valueEqualsTo(myGenParam->value, otherGenParam->value, myGenParam->typeInfo, 0))
                         return false;
                 }
                 else if (!myGenParam->typeInfo->isSame(otherGenParam->typeInfo, castFlags))
