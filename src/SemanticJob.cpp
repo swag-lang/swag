@@ -61,17 +61,17 @@ JobResult SemanticJob::execute()
         }
     }
 
-    baseContext               = &sem.semContext;
-    sem.semContext.baseJob    = this;
-    sem.semContext.sem        = &sem;
-    sem.semContext.sourceFile = sourceFile;
-    sem.semContext.result     = ContextResult::Done;
+    baseContext        = &context;
+    context.baseJob    = this;
+    context.sem        = &sem;
+    context.sourceFile = sourceFile;
+    context.result     = ContextResult::Done;
 
     while (!nodes.empty())
     {
-        auto node           = nodes.back();
-        sem.semContext.node = node;
-        bool canDoSem       = !(node->flags & AST_NO_SEMANTIC);
+        auto node     = nodes.back();
+        context.node  = node;
+        bool canDoSem = !(node->flags & AST_NO_SEMANTIC);
 
         // To be sure that a bytecode job is not running on those nodes !
         SWAG_ASSERT(node->bytecodeState == AstNodeResolveState::Enter ||
@@ -105,8 +105,8 @@ JobResult SemanticJob::execute()
                     if (!(node->flags & AST_NO_SEMANTIC) && !(node->semFlags & SEMFLAG_FILE_JOB_PASS))
                     {
                         SWAG_ASSERT(sourceFile->module == module);
-                        auto job                        = newJob(dependentJob, sourceFile, node, false);
-                        job->sem.semContext.errCxtSteps = sem.semContext.errCxtSteps;
+                        auto job                 = newJob(dependentJob, sourceFile, node, false);
+                        job->context.errCxtSteps = context.errCxtSteps;
                         g_ThreadMgr.addJob(job);
                     }
 
@@ -121,8 +121,8 @@ JobResult SemanticJob::execute()
                     if (canDoSem)
                     {
                         SWAG_ASSERT(sourceFile->module == module);
-                        auto job                        = newJob(dependentJob, sourceFile, node, false);
-                        job->sem.semContext.errCxtSteps = sem.semContext.errCxtSteps;
+                        auto job                 = newJob(dependentJob, sourceFile, node, false);
+                        job->context.errCxtSteps = context.errCxtSteps;
                         g_ThreadMgr.addJob(job);
                     }
 
@@ -145,8 +145,8 @@ JobResult SemanticJob::execute()
                     if (canDoSem)
                     {
                         SWAG_ASSERT(sourceFile->module == module);
-                        auto job                        = newJob(dependentJob, sourceFile, node, false);
-                        job->sem.semContext.errCxtSteps = sem.semContext.errCxtSteps;
+                        auto job                 = newJob(dependentJob, sourceFile, node, false);
+                        job->context.errCxtSteps = context.errCxtSteps;
                         g_ThreadMgr.addJob(job);
                     }
 
@@ -157,12 +157,12 @@ JobResult SemanticJob::execute()
                 }
             }
 
-            node->semanticState   = AstNodeResolveState::ProcessingChilds;
-            sem.semContext.result = ContextResult::Done;
+            node->semanticState = AstNodeResolveState::ProcessingChilds;
+            context.result      = ContextResult::Done;
 
             if (node->hasExtSemantic() &&
                 node->extSemantic()->semanticBeforeFct &&
-                !node->extSemantic()->semanticBeforeFct(&sem.semContext))
+                !node->extSemantic()->semanticBeforeFct(&context))
             {
                 return JobResult::ReleaseJob;
             }
@@ -220,12 +220,12 @@ JobResult SemanticJob::execute()
                     break;
                 }
 
-                sem.semContext.result = ContextResult::Done;
-                if (!node->semanticFct(&sem.semContext))
+                context.result = ContextResult::Done;
+                if (!node->semanticFct(&context))
                     return JobResult::ReleaseJob;
-                else if (sem.semContext.result == ContextResult::Pending)
+                else if (context.result == ContextResult::Pending)
                     return JobResult::KeepJobAlive;
-                else if (sem.semContext.result == ContextResult::NewChilds)
+                else if (context.result == ContextResult::NewChilds)
                     continue;
             }
 
@@ -233,17 +233,17 @@ JobResult SemanticJob::execute()
 
         case AstNodeResolveState::PostChilds:
             sem.inheritAccess(node);
-            if (!sem.checkAccess(&sem.semContext, node))
+            if (!sem.checkAccess(&context, node))
                 return JobResult::ReleaseJob;
 
             if (node->hasExtSemantic() && node->extSemantic()->semanticAfterFct)
             {
-                sem.semContext.result = ContextResult::Done;
-                if (!node->extSemantic()->semanticAfterFct(&sem.semContext))
+                context.result = ContextResult::Done;
+                if (!node->extSemantic()->semanticAfterFct(&context))
                     return JobResult::ReleaseJob;
-                if (sem.semContext.result == ContextResult::Pending)
+                if (context.result == ContextResult::Pending)
                     return JobResult::KeepJobAlive;
-                if (sem.semContext.result == ContextResult::NewChilds)
+                if (context.result == ContextResult::NewChilds)
                     continue;
             }
 

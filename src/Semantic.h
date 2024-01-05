@@ -620,8 +620,6 @@ struct Semantic
         return res;
     }
 
-    SemanticContext semContext;
-
     VectorNative<OneSymbolMatch>      cacheDependentSymbols;
     VectorNative<AlternativeScope>    cacheScopeHierarchy;
     VectorNative<AlternativeScopeVar> cacheScopeHierarchyVars;

@@ -12,5 +12,6 @@ struct SemanticJob : public Job
     void                release() override;
     static SemanticJob* newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* rootNode, bool run);
 
-    Semantic sem;
+    SemanticContext context;
+    Semantic        sem;
 };

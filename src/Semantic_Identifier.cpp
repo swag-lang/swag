@@ -4222,10 +4222,11 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
         // It's safe to create a job with the content as it has been fully evaluated.
         // It's NOT safe for the function itself as the job that deals with it can be
         // still running
-        auto job = SemanticJob::newJob(context->baseJob->dependentJob, context->sourceFile, funcDecl->content, false);
-        job->sem.semContext.errCxtSteps.insert(job->sem.semContext.errCxtSteps.begin(),
-                                               context->sem->semContext.errCxtSteps.begin(),
-                                               context->sem->semContext.errCxtSteps.end());
+        auto job     = SemanticJob::newJob(context->baseJob->dependentJob, context->sourceFile, funcDecl->content, false);
+        auto baseJob = (SemanticJob*) context->baseJob;
+        job->context.errCxtSteps.insert(job->context.errCxtSteps.begin(),
+                                        baseJob->context.errCxtSteps.begin(),
+                                        baseJob->context.errCxtSteps.end());
 
         // This comes from a generic instantiation. Add context
         if (oneMatch->oneOverload->overload->typeInfo->isFromGeneric())
@@ -4238,7 +4239,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
             if (expNode.node->hasExtMisc() && expNode.node->extMisc()->exportNode)
                 expNode.node = expNode.node->extMisc()->exportNode;
             expNode.type = ErrCxtStepKind::Generic;
-            job->sem.semContext.errCxtSteps.push_back(expNode);
+            job->context.errCxtSteps.push_back(expNode);
         }
 
         // To avoid a race condition with the job that is currently dealing with the funcDecl,

@@ -343,7 +343,7 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
 
     // Store stack of instantiation contexts
     auto srcCxt  = context;
-    auto destCxt = &newJob->sem.semContext;
+    auto destCxt = &newJob->context;
     destCxt->errCxtSteps.insert(destCxt->errCxtSteps.end(), srcCxt->errCxtSteps.begin(), srcCxt->errCxtSteps.end());
 
     // New context
