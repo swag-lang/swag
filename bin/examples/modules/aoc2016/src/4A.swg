@@ -37,17 +37,10 @@ func day4A()
             }
 
             let res = StrConv.parseS64(l[idx..])
-            idx += res.eat+1
-
-            var crc: String
-            while Latin1.isLetter(l[idx])
-            {
-                crc += l[idx]
-                idx += 1
-            }
+            idx += res.eat
 
             var valid = true
-            visit,bytes c: crc
+            visit c: l[idx+1..idx+5]
             {
                 var max, maxi = 0'u64
                 loop i: count
