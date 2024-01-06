@@ -152,15 +152,17 @@ JobResult SemanticJob::execute()
                 context.result = ContextResult::Done;
                 if (!node->extSemantic()->semanticBeforeFct(&context))
                     return JobResult::ReleaseJob;
+                SWAG_ASSERT(context.result != ContextResult::Pending);
+                SWAG_ASSERT(context.result != ContextResult::NewChilds);
             }
-
-            node->semanticState = AstNodeResolveState::ProcessingChilds;
 
             if (node->flags & AST_NO_SEMANTIC)
             {
-                nodes.pop_back();
-                break;
+                node->semanticState = AstNodeResolveState::PostChilds;
+                continue;
             }
+
+            node->semanticState = AstNodeResolveState::ProcessingChilds;
 
             int start = (int) node->childs.count - 1;
             int end   = -1;
@@ -190,17 +192,15 @@ JobResult SemanticJob::execute()
         break;
 
         case AstNodeResolveState::ProcessingChilds:
+
+            if (node->flags & AST_NO_SEMANTIC)
+            {
+                node->semanticState = AstNodeResolveState::PostChilds;
+                continue;
+            }
+
             if (node->semanticFct)
             {
-                // Can have been changed after the state change
-                // Example: FuncDeclType can change the AST_NO_SEMANTIC flag of the function itself in case
-                // of Swag.compileif
-                if (node->flags & AST_NO_SEMANTIC)
-                {
-                    nodes.pop_back();
-                    break;
-                }
-
                 context.result = ContextResult::Done;
                 if (!node->semanticFct(&context))
                     return JobResult::ReleaseJob;
@@ -213,6 +213,7 @@ JobResult SemanticJob::execute()
             node->semanticState = AstNodeResolveState::PostChilds;
 
         case AstNodeResolveState::PostChilds:
+
             Semantic::inheritAccess(node);
             if (!Semantic::checkAccess(&context, node))
                 return JobResult::ReleaseJob;
