@@ -894,7 +894,7 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
             funcNode->methodParam->attributes = typeFunc->attributes;
         }
 
-        context->sem->decreaseMethodCount(funcNode, typeStruct);
+        decreaseMethodCount(funcNode, typeStruct);
     }
 
     resolveSubDecls(context, funcNode);

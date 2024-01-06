@@ -13,5 +13,4 @@ struct SemanticJob : public Job
     static SemanticJob* newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* rootNode, bool run);
 
     SemanticContext context;
-    Semantic        sem;
 };

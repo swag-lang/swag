@@ -1587,7 +1587,7 @@ void Semantic::setupContextualGenericTypeReplacement(SemanticContext* context, O
     oneTryMatch.symMatchContext.genericReplaceTypes.clear();
     oneTryMatch.symMatchContext.mapGenericTypesIndex.clear();
 
-    auto& toCheck = context->sem->tmpNodes;
+    auto& toCheck = context->tmpNodes;
     toCheck.clear();
 
     // If we are inside a struct, then we can inherit the generic concrete types of that struct
@@ -1745,14 +1745,13 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
 {
     bool  justCheck        = flags & MIP_JUST_CHECK;
     auto  job              = context->baseJob;
-    auto  sem              = context->sem;
-    auto& matches          = sem->cacheMatches;
-    auto& genericMatches   = sem->cacheGenericMatches;
-    auto& genericMatchesSI = sem->cacheGenericMatchesSI;
+    auto& matches          = context->cacheMatches;
+    auto& genericMatches   = context->cacheGenericMatches;
+    auto& genericMatchesSI = context->cacheGenericMatchesSI;
 
-    sem->clearMatch();
-    sem->clearGenericMatch();
-    sem->bestSignatureInfos.clear();
+    context->clearMatch();
+    context->clearGenericMatch();
+    context->bestSignatureInfos.clear();
 
     bool forStruct = false;
     for (auto oneMatch : overloads)
@@ -1775,7 +1774,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                 symbolKind != SymbolKind::Interface &&
                 !overload->typeInfo->isLambdaClosure())
             {
-                auto match              = sem->getOneMatch();
+                auto match              = context->getOneMatch();
                 match->symbolOverload   = overload;
                 match->scope            = oneMatch->scope;
                 match->solvedParameters = std::move(oneOverload.symMatchContext.solvedParameters);
@@ -1933,12 +1932,12 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
         // accurate error. We find the longest match (the one that failed on the right most parameter)
         if (oneOverload.symMatchContext.result != MatchResult::Ok)
         {
-            if (sem->bestSignatureInfos.badSignatureParameterIdx == -1 ||
-                (oneOverload.symMatchContext.badSignatureInfos.badSignatureParameterIdx > sem->bestSignatureInfos.badSignatureParameterIdx))
+            if (context->bestSignatureInfos.badSignatureParameterIdx == -1 ||
+                (oneOverload.symMatchContext.badSignatureInfos.badSignatureParameterIdx > context->bestSignatureInfos.badSignatureParameterIdx))
             {
-                sem->bestMatchResult    = oneOverload.symMatchContext.result;
-                sem->bestSignatureInfos = oneOverload.symMatchContext.badSignatureInfos;
-                sem->bestOverload       = overload;
+                context->bestMatchResult    = oneOverload.symMatchContext.result;
+                context->bestSignatureInfos = oneOverload.symMatchContext.badSignatureInfos;
+                context->bestOverload       = overload;
             }
         }
 
@@ -1976,7 +1975,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
 
                 if (asMatch)
                 {
-                    auto match              = sem->getOneMatch();
+                    auto match              = context->getOneMatch();
                     match->symbolOverload   = overload;
                     match->solvedParameters = std::move(oneOverload.symMatchContext.solvedParameters);
                     match->dependentVar     = dependentVar;
@@ -1988,7 +1987,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                     break;
                 }
 
-                auto* match                        = sem->getOneGenericMatch();
+                auto* match                        = context->getOneGenericMatch();
                 match->flags                       = oneOverload.symMatchContext.flags;
                 match->symbolName                  = symbol;
                 match->symbolOverload              = overload;
@@ -2035,7 +2034,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
 
                 if (canRegisterInstance)
                 {
-                    auto match              = sem->getOneMatch();
+                    auto match              = context->getOneMatch();
                     match->symbolOverload   = overload;
                     match->solvedParameters = std::move(oneOverload.symMatchContext.solvedParameters);
                     match->dependentVar     = dependentVar;
@@ -2353,9 +2352,8 @@ void Semantic::checkCanInstantiateGenericSymbol(SemanticContext* context, OneGen
 
 bool Semantic::instantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch, bool forStruct)
 {
-    auto       sem               = context->sem;
     auto       node              = context->node;
-    auto&      matches           = sem->cacheMatches;
+    auto&      matches           = context->cacheMatches;
     auto       symbol            = firstMatch.symbolName;
     auto       genericParameters = firstMatch.genericParameters;
     ScopedLock lk(symbol->mutex);
@@ -2403,7 +2401,7 @@ bool Semantic::instantiateGenericSymbol(SemanticContext* context, OneGenericMatc
             SWAG_CHECK(Generic::instantiateStruct(context, genericParameters, firstMatch, alias));
             if (alias)
             {
-                auto oneMatch            = sem->getOneMatch();
+                auto oneMatch            = context->getOneMatch();
                 oneMatch->symbolOverload = firstMatch.symbolOverload;
                 matches.push_back(oneMatch);
             }
@@ -2415,7 +2413,7 @@ bool Semantic::instantiateGenericSymbol(SemanticContext* context, OneGenericMatc
         // So we match a generic struct as a normal match without instantiation (for now).
         else if (!(node->flags & AST_IS_GENERIC))
         {
-            auto oneMatch            = sem->getOneMatch();
+            auto oneMatch            = context->getOneMatch();
             oneMatch->symbolOverload = firstMatch.symbolOverload;
             matches.push_back(oneMatch);
             node->flags |= AST_IS_GENERIC;
@@ -2425,7 +2423,7 @@ bool Semantic::instantiateGenericSymbol(SemanticContext* context, OneGenericMatc
         else
         {
             SWAG_ASSERT(genericParameters);
-            auto oneMatch            = sem->getOneMatch();
+            auto oneMatch            = context->getOneMatch();
             oneMatch->symbolOverload = firstMatch.symbolOverload;
             matches.push_back(oneMatch);
             node->flags |= AST_IS_GENERIC;
@@ -2872,13 +2870,12 @@ void Semantic::addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolN
 
 bool Semantic::findIdentifierInScopes(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node)
 {
-    return findIdentifierInScopes(context, context->sem->cacheDependentSymbols, identifierRef, node);
+    return findIdentifierInScopes(context, context->cacheDependentSymbols, identifierRef, node);
 }
 
 bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<OneSymbolMatch>& dependentSymbols, AstIdentifierRef* identifierRef, AstIdentifier* node)
 {
     auto job = context->baseJob;
-    auto sem = context->sem;
 
     // When this is "retval" type, no need to do fancy things, we take the corresponding function
     // return symbol. This will avoid some ambiguous resolutions with multiple tuples/structs.
@@ -2932,8 +2929,8 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         return true;
     }
 
-    auto& scopeHierarchy     = sem->cacheScopeHierarchy;
-    auto& scopeHierarchyVars = sem->cacheScopeHierarchyVars;
+    auto& scopeHierarchy     = context->cacheScopeHierarchy;
+    auto& scopeHierarchyVars = context->cacheScopeHierarchyVars;
     auto  crc                = node->token.text.hash();
 
     bool forceEnd  = false;
@@ -3145,8 +3142,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
 
 bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** result, AstNode** resultLeaf)
 {
-    auto  sem                = context->sem;
-    auto& scopeHierarchyVars = sem->cacheScopeHierarchyVars;
+    auto& scopeHierarchyVars = context->cacheScopeHierarchyVars;
 
     if (scopeHierarchyVars.empty())
         return true;
@@ -3494,10 +3490,10 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext* context, SymbolMa
     {
         if (!(identifier->specFlags & AstIdentifier::SPECFLAG_CLOSURE_FIRST_PARAM))
         {
-            Ast::constructNode(&context->sem->closureFirstParam);
-            context->sem->closureFirstParam.kind     = AstNodeKind::FuncCallParam;
-            context->sem->closureFirstParam.typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
-            symMatchContext.parameters.push_back(&context->sem->closureFirstParam);
+            Ast::constructNode(&context->closureFirstParam);
+            context->closureFirstParam.kind     = AstNodeKind::FuncCallParam;
+            context->closureFirstParam.typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
+            symMatchContext.parameters.push_back(&context->closureFirstParam);
             symMatchContext.flags |= SymbolMatchContext::MATCH_CLOSURE_PARAM;
         }
     }
@@ -4259,9 +4255,8 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
 
 bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
 {
-    auto  sem              = context->sem;
     auto  identifierRef    = node->identifierRef();
-    auto& dependentSymbols = sem->cacheDependentSymbols;
+    auto& dependentSymbols = context->cacheDependentSymbols;
 
     if (dependentSymbols.size() == 1)
         return true;
@@ -4333,7 +4328,7 @@ bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
             !identifierRef->startScope)
         {
             isValid                  = false;
-            auto& scopeHierarchyVars = sem->cacheScopeHierarchyVars;
+            auto& scopeHierarchyVars = context->cacheScopeHierarchyVars;
             for (auto& dep : scopeHierarchyVars)
             {
                 if (dep.scope->getFullName() == oneSymbol->ownerTable->scope->getFullName())
@@ -4432,10 +4427,9 @@ bool Semantic::needToWaitForSymbol(SemanticContext* context, AstIdentifier* iden
 bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identifier, uint32_t riFlags)
 {
     auto  job                = context->baseJob;
-    auto  sem                = context->sem;
-    auto& scopeHierarchy     = sem->cacheScopeHierarchy;
-    auto& scopeHierarchyVars = sem->cacheScopeHierarchyVars;
-    auto& dependentSymbols   = sem->cacheDependentSymbols;
+    auto& scopeHierarchy     = context->cacheScopeHierarchy;
+    auto& scopeHierarchyVars = context->cacheScopeHierarchyVars;
+    auto& dependentSymbols   = context->cacheDependentSymbols;
     auto  identifierRef      = identifier->identifierRef();
 
     identifier->byteCodeFct = ByteCodeGenJob::emitIdentifier;
@@ -4614,7 +4608,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         // case that number changes (other thread) during the resolution. Because if the number of overloads differs
         // at one point in the process (for a given symbol), then this will invalidate the resolution
         // (number of overloads can change when instantiating a generic)
-        auto& toSolveOverload = sem->cacheToSolveOverload;
+        auto& toSolveOverload = context->cacheToSolveOverload;
         toSolveOverload.clear();
         for (auto& p : dependentSymbols)
         {
@@ -4639,8 +4633,8 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
             return context->report({identifier, Fmt(Err(Err0133), identifier->token.ctext())});
         }
 
-        auto& listTryMatch = sem->cacheListTryMatch;
-        sem->clearTryMatch();
+        auto& listTryMatch = context->cacheListTryMatch;
+        context->clearTryMatch();
 
         for (auto& oneOver : toSolveOverload)
         {
@@ -4675,7 +4669,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
             // Will try with ufcs, and will try without
             for (int tryUfcs = 0; tryUfcs < 2; tryUfcs++)
             {
-                auto  tryMatch        = sem->getTryMatch();
+                auto  tryMatch        = context->getTryMatch();
                 auto& symMatchContext = tryMatch->symMatchContext;
 
                 tryMatch->genericParameters = identifier->genericParameters;
@@ -4709,7 +4703,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
 
         if (listTryMatch.empty())
         {
-            sem->cacheMatches.clear();
+            context->cacheMatches.clear();
             break;
         }
 
@@ -4745,7 +4739,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         context->result = ContextResult::Done;
     }
 
-    if (sem->cacheMatches.empty())
+    if (context->cacheMatches.empty())
     {
         // We want to force the ufcs
         if (identifier->semFlags & SEMFLAG_FORCE_UFCS)
@@ -4763,16 +4757,16 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         return true;
 
     // Name alias with overloads (more than one match)
-    if (identifier->specFlags & AstIdentifier::SPECFLAG_NAME_ALIAS && sem->cacheMatches.size() > 1)
+    if (identifier->specFlags & AstIdentifier::SPECFLAG_NAME_ALIAS && context->cacheMatches.size() > 1)
     {
-        identifier->resolvedSymbolName     = sem->cacheMatches[0]->symbolOverload->symbol;
+        identifier->resolvedSymbolName     = context->cacheMatches[0]->symbolOverload->symbol;
         identifier->resolvedSymbolOverload = nullptr;
         return true;
     }
 
     // Deal with ufcs. Now that the match is done, we will change the ast in order to
     // add the ufcs parameters to the function call parameters
-    auto& match = sem->cacheMatches[0];
+    auto& match = context->cacheMatches[0];
     if (match->ufcs && !hasForcedUfcs)
     {
         // Do not change AST if this is code inside a generic function
@@ -4938,8 +4932,7 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
         auto owner = startNode->ownerScope->owner;
         if (owner->hasExtMisc() && !owner->extMisc()->alternativeScopes.empty())
         {
-            auto  sem       = context->sem;
-            auto& toProcess = sem->scopesToProcess;
+            auto& toProcess = context->scopesToProcess;
             for (auto& as : owner->extMisc()->alternativeScopes)
             {
                 if (!hasAlternativeScope(scopes, as.scope) && (as.flags & ALTSCOPE_USING))
@@ -4954,8 +4947,7 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
     // Add registered alternative scopes of the current node
     if (startNode->hasExtMisc() && !startNode->extMisc()->alternativeScopes.empty())
     {
-        auto  sem       = context->sem;
-        auto& toProcess = sem->scopesToProcess;
+        auto& toProcess = context->scopesToProcess;
         for (auto& as : startNode->extMisc()->alternativeScopes)
         {
             if (!hasAlternativeScope(scopes, as.scope))
@@ -5061,8 +5053,7 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
                                      IdentifierScopeUpMode              scopeUpMode,
                                      TokenParse*                        scopeUpValue)
 {
-    auto  sem        = context->sem;
-    auto& toProcess  = sem->scopesToProcess;
+    auto& toProcess  = context->scopesToProcess;
     auto  sourceFile = context->sourceFile;
 
     toProcess.clear();

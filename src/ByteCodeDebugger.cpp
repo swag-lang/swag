@@ -228,7 +228,6 @@ Utf8 ByteCodeDebugger::completion(ByteCodeRunContext* context, const Utf8& line,
     semContext.sourceFile = debugCxtIp->node->sourceFile;
     semContext.node       = debugCxtIp->node;
     semContext.baseJob    = &semJob;
-    semContext.sem        = &sem;
 
     if (Semantic::collectScopeHierarchy(&semContext, scopeHierarchy, scopeHierarchyVars, debugCxtIp->node, COLLECT_ALL))
     {

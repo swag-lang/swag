@@ -1095,7 +1095,6 @@ bool Semantic::checkInitDropCount(SemanticContext* context, AstNode* node, AstNo
 
 bool Semantic::resolveInit(SemanticContext* context)
 {
-    auto sem                = context->sem;
     auto node               = CastAst<AstInit>(context->node, AstNodeKind::Init);
     auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
@@ -1146,17 +1145,17 @@ bool Semantic::resolveInit(SemanticContext* context)
             for (auto child : node->parameters->childs)
                 symMatchContext.parameters.push_back(child);
 
-            auto& listTryMatch = sem->cacheListTryMatch;
+            auto& listTryMatch = context->cacheListTryMatch;
             while (true)
             {
-                sem->clearTryMatch();
+                context->clearTryMatch();
                 auto symbol = typeStruct->declNode->resolvedSymbolName;
 
                 {
                     SharedLock lk(symbol->mutex);
                     for (auto overload : symbol->overloads)
                     {
-                        auto t               = sem->getTryMatch();
+                        auto t               = context->getTryMatch();
                         t->symMatchContext   = symMatchContext;
                         t->overload          = overload;
                         t->genericParameters = nullptr;

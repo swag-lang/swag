@@ -6,7 +6,7 @@
 
 void SemanticJob::release()
 {
-    sem.release();
+    context.release();
     Allocator::free<SemanticJob>(this);
 }
 
@@ -37,15 +37,15 @@ JobResult SemanticJob::execute()
         originalNode = nodes.front();
         SWAG_ASSERT(originalNode);
 
-        sem.canSpawn = originalNode->kind == AstNodeKind::Impl ||
-                       originalNode->kind == AstNodeKind::File ||
-                       originalNode->kind == AstNodeKind::StatementNoScope ||
-                       originalNode->kind == AstNodeKind::AttrUse ||
-                       originalNode->kind == AstNodeKind::CompilerIf;
+        context.canSpawn = originalNode->kind == AstNodeKind::Impl ||
+                           originalNode->kind == AstNodeKind::File ||
+                           originalNode->kind == AstNodeKind::StatementNoScope ||
+                           originalNode->kind == AstNodeKind::AttrUse ||
+                           originalNode->kind == AstNodeKind::CompilerIf;
 
         // Sub functions attributes inheritance
         if (originalNode->kind == AstNodeKind::FuncDecl && originalNode->ownerFct)
-            sem.inheritAttributesFromOwnerFunc(originalNode);
+            Semantic::inheritAttributesFromOwnerFunc(originalNode);
 
         // In configuration pass1, we only treat the #dependencies block
         if (sourceFile->module->kind == ModuleKind::Config && originalNode->kind == AstNodeKind::File)
@@ -63,7 +63,6 @@ JobResult SemanticJob::execute()
 
     baseContext        = &context;
     context.baseJob    = this;
-    context.sem        = &sem;
     context.sourceFile = sourceFile;
     context.result     = ContextResult::Done;
 
@@ -79,14 +78,14 @@ JobResult SemanticJob::execute()
                     (node->flags & (AST_VALUE_COMPUTED | AST_CONST_EXPR)));
 
         // Some attribute flags must propagate from parent to childs, whatever
-        sem.inheritAttributesFromParent(node);
+        Semantic::inheritAttributesFromParent(node);
 
         switch (node->semanticState)
         {
         case AstNodeResolveState::Enter:
         {
             // Some nodes need to spawn a new semantic job
-            if (sem.canSpawn && node != originalNode)
+            if (context.canSpawn && node != originalNode)
             {
                 switch (node->kind)
                 {
@@ -184,7 +183,7 @@ JobResult SemanticJob::execute()
                     if ((child->semFlags & SEMFLAG_ONCE) && child->semanticState != AstNodeResolveState::Enter)
                         continue;
 
-                    sem.enterState(child);
+                    Semantic::enterState(child);
                     nodes.push_back(child);
                 }
             }
@@ -201,7 +200,7 @@ JobResult SemanticJob::execute()
                     if ((child->semFlags & SEMFLAG_ONCE) && child->semanticState != AstNodeResolveState::Enter)
                         continue;
 
-                    sem.enterState(child);
+                    Semantic::enterState(child);
                     nodes.push_back(child);
                 }
             }
@@ -232,8 +231,8 @@ JobResult SemanticJob::execute()
             node->semanticState = AstNodeResolveState::PostChilds;
 
         case AstNodeResolveState::PostChilds:
-            sem.inheritAccess(node);
-            if (!sem.checkAccess(&context, node))
+            Semantic::inheritAccess(node);
+            if (!Semantic::checkAccess(&context, node))
                 return JobResult::ReleaseJob;
 
             if (node->hasExtSemantic() && node->extSemantic()->semanticAfterFct)

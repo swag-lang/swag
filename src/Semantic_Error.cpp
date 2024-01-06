@@ -1169,9 +1169,8 @@ Utf8 Semantic::findClosestMatchesMsg(const Utf8& searchName, const VectorNative<
 
 void Semantic::unknownIdentifier(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node)
 {
-    auto  sem                = context->sem;
-    auto& scopeHierarchy     = sem->cacheScopeHierarchy;
-    auto& scopeHierarchyVars = sem->cacheScopeHierarchyVars;
+    auto& scopeHierarchy     = context->cacheScopeHierarchy;
+    auto& scopeHierarchyVars = context->cacheScopeHierarchyVars;
 
     // What kind of thing to we search for ?
     auto searchFor = IdentifierSearchFor::Whatever;

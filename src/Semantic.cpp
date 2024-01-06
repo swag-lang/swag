@@ -6,23 +6,6 @@
 #include "TypeManager.h"
 #include "Timer.h"
 
-void Semantic::release()
-{
-    clearTryMatch();
-    clearGenericMatch();
-    clearMatch();
-
-    for (auto p : cacheFreeTryMatch)
-        Allocator::free<OneTryMatch>(p);
-    for (auto p : cacheFreeGenericMatches)
-        Allocator::free<OneGenericMatch>(p);
-    for (auto p : cacheFreeMatches)
-        Allocator::free<OneMatch>(p);
-    tmpConcat.release();
-    if (tmpIdRef)
-        tmpIdRef->release();
-}
-
 bool Semantic::setUnRef(AstNode* node)
 {
     if (node->kind == AstNodeKind::KeepRef)
@@ -64,19 +47,17 @@ TypeInfo* Semantic::getConcreteTypeUnRef(AstNode* node, uint32_t concreteFlags)
 
 AstIdentifier* Semantic::createTmpId(SemanticContext* context, AstNode* node, const Utf8& name)
 {
-    auto sem = context->sem;
-
-    if (!sem->tmpIdRef)
+    if (!context->tmpIdRef)
     {
-        sem->tmpIdRef = Ast::newIdentifierRef(context->sourceFile, name, nullptr, nullptr);
-        sem->tmpIdRef->childs.back()->flags |= AST_SILENT_CHECK;
-        sem->tmpIdRef->flags |= AST_SILENT_CHECK;
+        context->tmpIdRef = Ast::newIdentifierRef(context->sourceFile, name, nullptr, nullptr);
+        context->tmpIdRef->childs.back()->flags |= AST_SILENT_CHECK;
+        context->tmpIdRef->flags |= AST_SILENT_CHECK;
     }
 
-    sem->tmpIdRef->parent = node;
-    auto id               = CastAst<AstIdentifier>(sem->tmpIdRef->childs.back(), AstNodeKind::Identifier);
-    id->sourceFile        = context->sourceFile;
-    id->token.text        = node->token.text;
+    context->tmpIdRef->parent = node;
+    auto id                   = CastAst<AstIdentifier>(context->tmpIdRef->childs.back(), AstNodeKind::Identifier);
+    id->sourceFile            = context->sourceFile;
+    id->token.text            = node->token.text;
     id->inheritOwners(node);
     id->inheritTokenLocation(node);
     return id;

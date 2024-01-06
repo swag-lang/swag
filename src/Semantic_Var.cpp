@@ -497,10 +497,10 @@ bool Semantic::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* n
                 YIELD();
             }
 
-            if (context->sem->cacheMatches.empty() || context->sem->cacheMatches.size() > 1)
+            if (context->cacheMatches.empty() || context->cacheMatches.size() > 1)
                 return true;
 
-            auto typeOverload = CastTypeInfo<TypeInfoFuncAttr>(context->sem->cacheMatches[0]->oneOverload->overload->typeInfo, TypeInfoKind::FuncAttr);
+            auto typeOverload = CastTypeInfo<TypeInfoFuncAttr>(context->cacheMatches[0]->oneOverload->overload->typeInfo, TypeInfoKind::FuncAttr);
             if (!typeOverload->parameters[1]->typeInfo->isLambdaClosure())
                 return true;
 

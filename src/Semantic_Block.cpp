@@ -663,7 +663,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     Utf8 content;
 
     // Get back the expression string
-    auto& concat = context->sem->tmpConcat;
+    auto& concat = context->tmpConcat;
     concat.init(1024);
     AstOutput::OutputContext outputContext;
     SWAG_CHECK(AstOutput::outputNode(outputContext, concat, node->expression));

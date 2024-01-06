@@ -30,7 +30,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
     if (leftTypeInfo->isPointer())
     {
         node->typeInfo = leftTypeInfo;
-        if (!leftTypeInfo->isPointerArithmetic() && !context->sem->forDebugger)
+        if (!leftTypeInfo->isPointerArithmetic() && !context->forDebugger)
         {
             Diagnostic diag{node, node->token, Err(Err0192)};
             diag.addRange(left, Diagnostic::isType(leftTypeInfo));
@@ -53,7 +53,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
     // :PointerArithmetic
     if (rightTypeInfo->isPointer())
     {
-        if (!rightTypeInfo->isPointerArithmetic() && !context->sem->forDebugger)
+        if (!rightTypeInfo->isPointerArithmetic() && !context->forDebugger)
         {
             Diagnostic diag{node, node->token, Err(Err0192)};
             diag.addRange(right, Diagnostic::isType(rightTypeInfo));
@@ -229,7 +229,7 @@ bool Semantic::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, Ast
             return true;
         }
 
-        if (!leftTypeInfo->isPointerArithmetic() && !context->sem->forDebugger)
+        if (!leftTypeInfo->isPointerArithmetic() && !context->forDebugger)
         {
             Diagnostic diag{node, node->token, Err(Err0192)};
             diag.addRange(left, Diagnostic::isType(leftTypeInfo));

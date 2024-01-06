@@ -131,7 +131,6 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 {
     auto node = CastAst<AstImpl>(context->node, AstNodeKind::Impl);
     auto job  = context->baseJob;
-    auto sem  = context->sem;
 
     // Be sure the first identifier is an interface
     auto typeInfo = node->identifier->typeInfo;
@@ -145,9 +144,9 @@ bool Semantic::resolveImplFor(SemanticContext* context)
     typeInfo = node->identifierFor->typeInfo;
     SWAG_ASSERT(typeInfo->isStruct());
 
-    VectorNative<AstNode*>& childs = sem->tmpNodes;
-    sem->tmpNodes.clear();
-    flattenStructChilds(context, node, sem->tmpNodes);
+    VectorNative<AstNode*>& childs = context->tmpNodes;
+    context->tmpNodes.clear();
+    flattenStructChilds(context, node, context->tmpNodes);
 
     SWAG_ASSERT(node->childs[0]->kind == AstNodeKind::IdentifierRef);
     SWAG_ASSERT(node->childs[1]->kind == AstNodeKind::IdentifierRef);
@@ -457,7 +456,6 @@ bool Semantic::resolveInterface(SemanticContext* context)
     auto node          = CastAst<AstStruct>(context->node, AstNodeKind::InterfaceDecl);
     auto sourceFile    = context->sourceFile;
     auto typeInterface = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
-    auto sem           = context->sem;
 
     typeInterface->declNode   = node;
     typeInterface->name       = node->token.text;
@@ -466,11 +464,11 @@ bool Semantic::resolveInterface(SemanticContext* context)
     uint32_t storageOffset = 0;
     uint32_t storageIndex  = 0;
 
-    VectorNative<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? sem->tmpNodes : node->content->childs;
+    VectorNative<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? context->tmpNodes : node->content->childs;
     if (node->flags & AST_STRUCT_COMPOUND)
     {
-        sem->tmpNodes.clear();
-        flattenStructChilds(context, node->content, sem->tmpNodes);
+        context->tmpNodes.clear();
+        flattenStructChilds(context, node->content, context->tmpNodes);
     }
 
     // itable
@@ -886,7 +884,6 @@ bool Semantic::resolveStruct(SemanticContext* context)
     auto sourceFile = context->sourceFile;
     auto typeInfo   = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
     auto job        = context->baseJob;
-    auto sem        = context->sem;
 
     SWAG_ASSERT(typeInfo->declNode);
 
@@ -928,11 +925,11 @@ bool Semantic::resolveStruct(SemanticContext* context)
     uint64_t structFlags       = TYPEINFO_STRUCT_ALL_UNINITIALIZED | TYPEINFO_STRUCT_EMPTY;
 
     // No need to flatten structure if it's not a compound (optim)
-    VectorNative<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? sem->tmpNodes : node->content->childs;
+    VectorNative<AstNode*>& childs = (node->flags & AST_STRUCT_COMPOUND) ? context->tmpNodes : node->content->childs;
     if (node->flags & AST_STRUCT_COMPOUND)
     {
-        sem->tmpNodes.clear();
-        flattenStructChilds(context, node->content, sem->tmpNodes);
+        context->tmpNodes.clear();
+        flattenStructChilds(context, node->content, context->tmpNodes);
     }
 
     typeInfo->alignOf = 0;

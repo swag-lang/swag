@@ -111,20 +111,6 @@ struct OneMatch
     }
 };
 
-struct SemanticContext : public JobContext
-{
-    Semantic*                         sem = nullptr;
-    Vector<CastStructStructField>     castStructStructFields;
-    Vector<CastCollectInterfaceField> castCollectInterfaceField;
-    VectorNative<TypeInfoEnum*>       castCollectEnum;
-    Set<TypeInfoEnum*>                castCollectEnumDone;
-    uint32_t                          castFlagsResult   = 0;
-    TypeInfo*                         castErrorToType   = nullptr;
-    TypeInfo*                         castErrorFromType = nullptr;
-    uint64_t                          castErrorFlags    = 0;
-    CastErrorType                     castErrorType     = CastErrorType::Zero;
-};
-
 struct OneOverload
 {
     SymbolOverload* overload;
@@ -225,11 +211,112 @@ const uint32_t RI_FOR_ZERO_GHOSTING = 0x00000002;
 const uint32_t GDFM_HERE_IS = 0x00000001;
 const uint32_t GDFM_ALL     = 0xFFFFFFFF;
 
+struct SemanticContext : public JobContext
+{
+    void release()
+    {
+        clearTryMatch();
+        clearGenericMatch();
+        clearMatch();
+
+        for (auto p : cacheFreeTryMatch)
+            Allocator::free<OneTryMatch>(p);
+        for (auto p : cacheFreeGenericMatches)
+            Allocator::free<OneGenericMatch>(p);
+        for (auto p : cacheFreeMatches)
+            Allocator::free<OneMatch>(p);
+        tmpConcat.release();
+        if (tmpIdRef)
+            tmpIdRef->release();
+    }
+
+    void clearTryMatch()
+    {
+        for (auto p : cacheListTryMatch)
+            cacheFreeTryMatch.push_back(p);
+        cacheListTryMatch.clear();
+    }
+
+    OneTryMatch* getTryMatch()
+    {
+        if (cacheFreeTryMatch.empty())
+            return Allocator::alloc<OneTryMatch>();
+        auto res = cacheFreeTryMatch.back();
+        cacheFreeTryMatch.pop_back();
+        res->reset();
+        return res;
+    }
+
+    void clearMatch()
+    {
+        for (auto p : cacheMatches)
+            cacheFreeMatches.push_back(p);
+        cacheMatches.clear();
+    }
+
+    OneMatch* getOneMatch()
+    {
+        if (cacheFreeMatches.empty())
+            return Allocator::alloc<OneMatch>();
+        auto res = cacheFreeMatches.back();
+        cacheFreeMatches.pop_back();
+        res->reset();
+        return res;
+    }
+
+    void clearGenericMatch()
+    {
+        for (auto p : cacheGenericMatches)
+            cacheFreeGenericMatches.push_back(p);
+        cacheGenericMatches.clear();
+        cacheGenericMatchesSI.clear();
+    }
+
+    OneGenericMatch* getOneGenericMatch()
+    {
+        if (cacheFreeGenericMatches.empty())
+            return Allocator::alloc<OneGenericMatch>();
+        auto res = cacheFreeGenericMatches.back();
+        cacheFreeGenericMatches.pop_back();
+        res->reset();
+        return res;
+    }
+
+    Vector<CastStructStructField>     castStructStructFields;
+    Vector<CastCollectInterfaceField> castCollectInterfaceField;
+    VectorNative<TypeInfoEnum*>       castCollectEnum;
+    Set<TypeInfoEnum*>                castCollectEnumDone;
+    uint32_t                          castFlagsResult   = 0;
+    TypeInfo*                         castErrorToType   = nullptr;
+    TypeInfo*                         castErrorFromType = nullptr;
+    uint64_t                          castErrorFlags    = 0;
+    CastErrorType                     castErrorType     = CastErrorType::Zero;
+
+    VectorNative<OneSymbolMatch>      cacheDependentSymbols;
+    VectorNative<AlternativeScope>    cacheScopeHierarchy;
+    VectorNative<AlternativeScopeVar> cacheScopeHierarchyVars;
+    VectorNative<OneOverload>         cacheToSolveOverload;
+    VectorNative<OneMatch*>           cacheMatches;
+    VectorNative<OneMatch*>           cacheFreeMatches;
+    VectorNative<OneGenericMatch*>    cacheGenericMatches;
+    VectorNative<OneGenericMatch*>    cacheGenericMatchesSI;
+    VectorNative<OneGenericMatch*>    cacheFreeGenericMatches;
+    VectorNative<OneTryMatch*>        cacheListTryMatch;
+    VectorNative<OneTryMatch*>        cacheFreeTryMatch;
+    VectorNative<AlternativeScope>    scopesToProcess;
+    VectorNative<AstNode*>            tmpNodes;
+    Concat                            tmpConcat;
+    AstIdentifierRef*                 tmpIdRef = nullptr;
+    AstFuncCallParam                  closureFirstParam;
+    MatchResult                       bestMatchResult;
+    BadSignatureInfos                 bestSignatureInfos;
+    SymbolOverload*                   bestOverload = nullptr;
+    bool                              canSpawn     = false;
+    bool                              forDebugger  = false;
+};
+
 struct Semantic
 {
-    void      release();
-    JobResult execute();
-
     static void waitSymbolNoLock(Job* job, SymbolName* symbol);
     static void waitAllStructInterfacesReg(Job* job, TypeInfo* typeInfo);
     static void waitAllStructInterfaces(Job* job, TypeInfo* typeInfo);
@@ -567,78 +654,4 @@ struct Semantic
     static bool resolveDropCopyMove(SemanticContext* context);
     static bool resolveTupleUnpackBefore(SemanticContext* context);
     static bool resolveTupleUnpackBeforeVar(SemanticContext* context);
-
-    void clearTryMatch()
-    {
-        for (auto p : cacheListTryMatch)
-            cacheFreeTryMatch.push_back(p);
-        cacheListTryMatch.clear();
-    }
-
-    OneTryMatch* getTryMatch()
-    {
-        if (cacheFreeTryMatch.empty())
-            return Allocator::alloc<OneTryMatch>();
-        auto res = cacheFreeTryMatch.back();
-        cacheFreeTryMatch.pop_back();
-        res->reset();
-        return res;
-    }
-
-    void clearMatch()
-    {
-        for (auto p : cacheMatches)
-            cacheFreeMatches.push_back(p);
-        cacheMatches.clear();
-    }
-
-    OneMatch* getOneMatch()
-    {
-        if (cacheFreeMatches.empty())
-            return Allocator::alloc<OneMatch>();
-        auto res = cacheFreeMatches.back();
-        cacheFreeMatches.pop_back();
-        res->reset();
-        return res;
-    }
-
-    void clearGenericMatch()
-    {
-        for (auto p : cacheGenericMatches)
-            cacheFreeGenericMatches.push_back(p);
-        cacheGenericMatches.clear();
-        cacheGenericMatchesSI.clear();
-    }
-
-    OneGenericMatch* getOneGenericMatch()
-    {
-        if (cacheFreeGenericMatches.empty())
-            return Allocator::alloc<OneGenericMatch>();
-        auto res = cacheFreeGenericMatches.back();
-        cacheFreeGenericMatches.pop_back();
-        res->reset();
-        return res;
-    }
-
-    VectorNative<OneSymbolMatch>      cacheDependentSymbols;
-    VectorNative<AlternativeScope>    cacheScopeHierarchy;
-    VectorNative<AlternativeScopeVar> cacheScopeHierarchyVars;
-    VectorNative<OneOverload>         cacheToSolveOverload;
-    VectorNative<OneMatch*>           cacheMatches;
-    VectorNative<OneMatch*>           cacheFreeMatches;
-    VectorNative<OneGenericMatch*>    cacheGenericMatches;
-    VectorNative<OneGenericMatch*>    cacheGenericMatchesSI;
-    VectorNative<OneGenericMatch*>    cacheFreeGenericMatches;
-    VectorNative<OneTryMatch*>        cacheListTryMatch;
-    VectorNative<OneTryMatch*>        cacheFreeTryMatch;
-    VectorNative<AlternativeScope>    scopesToProcess;
-    VectorNative<AstNode*>            tmpNodes;
-    Concat                            tmpConcat;
-    AstIdentifierRef*                 tmpIdRef = nullptr;
-    AstFuncCallParam                  closureFirstParam;
-    MatchResult                       bestMatchResult;
-    BadSignatureInfos                 bestSignatureInfos;
-    SymbolOverload*                   bestOverload = nullptr;
-    bool                              canSpawn     = false;
-    bool                              forDebugger  = false;
 };

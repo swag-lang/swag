@@ -584,7 +584,6 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
     }
 
     auto node       = context->node;
-    auto sem        = context->sem;
     auto sourceFile = context->sourceFile;
 
     SymbolMatchContext symMatchContext;
@@ -630,16 +629,16 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
         return context->report(diag);
     }
 
-    auto& listTryMatch = sem->cacheListTryMatch;
+    auto& listTryMatch = context->cacheListTryMatch;
     while (true)
     {
-        sem->clearTryMatch();
+        context->clearTryMatch();
 
         {
             SharedLock lk(symbol->mutex);
             for (auto overload : symbol->overloads)
             {
-                auto t               = sem->getTryMatch();
+                auto t               = context->getTryMatch();
                 t->symMatchContext   = symMatchContext;
                 t->overload          = overload;
                 t->genericParameters = genericParameters;
@@ -670,10 +669,10 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
     uint64_t castFlags = CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_UFCS | CASTFLAG_ACCEPT_PENDING | CASTFLAG_PARAMS;
     if (justCheck)
         castFlags |= CASTFLAG_JUST_CHECK;
-    if (sem->cacheMatches.empty())
+    if (context->cacheMatches.empty())
         return true;
 
-    auto oneMatch = sem->cacheMatches[0];
+    auto oneMatch = context->cacheMatches[0];
     for (size_t i = 0; i < params.size(); i++)
     {
         if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
