@@ -95,38 +95,15 @@ JobResult SemanticJob::execute()
 
     if (!originalNode)
     {
+        baseContext     = &context;
+        context.baseJob = this;
+
         originalNode = nodes.front();
         SWAG_ASSERT(originalNode);
-
-        context.canSpawn = originalNode->kind == AstNodeKind::Impl ||
-                           originalNode->kind == AstNodeKind::File ||
-                           originalNode->kind == AstNodeKind::StatementNoScope ||
-                           originalNode->kind == AstNodeKind::AttrUse ||
-                           originalNode->kind == AstNodeKind::CompilerIf;
-
-        // Sub functions attributes inheritance
-        if (originalNode->kind == AstNodeKind::FuncDecl && originalNode->ownerFct)
-            Semantic::inheritAttributesFromOwnerFunc(originalNode);
-
-        // In configuration pass1, we only treat the #dependencies block
-        if (sourceFile->module->kind == ModuleKind::Config && originalNode->kind == AstNodeKind::File)
-        {
-            for (auto c : originalNode->childs)
-            {
-                if (c->kind != AstNodeKind::CompilerDependencies)
-                {
-                    c->flags |= AST_NO_SEMANTIC; // :FirstPassCfgNoSem
-                    c->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
-                }
-            }
-        }
+        Semantic::start(&context, sourceFile, originalNode);
     }
 
-    baseContext        = &context;
-    context.baseJob    = this;
-    context.sourceFile = sourceFile;
-    context.result     = ContextResult::Done;
-
+    context.result = ContextResult::Done;
     while (!nodes.empty())
     {
         auto node    = nodes.back();
@@ -166,19 +143,12 @@ JobResult SemanticJob::execute()
             if (!Semantic::setState(&context, node, AstNodeResolveState::ProcessingChilds))
                 return JobResult::ReleaseJob;
 
-            int start = (int) node->childs.count - 1;
-            int end   = -1;
-            int inc   = -1;
+            context.tmpNodes = node->childs;
             if (node->flags & AST_REVERSE_SEMANTIC)
+                context.tmpNodes.reverse();
+            for (int i = (int) context.tmpNodes.count - 1; i >= 0; i--)
             {
-                start = 0;
-                end   = (int) node->childs.count;
-                inc   = 1;
-            }
-
-            for (int i = start; i != end; i += inc)
-            {
-                auto child = node->childs[i];
+                auto child = context.tmpNodes[i];
 
                 // If the child has the AST_NO_SEMANTIC flag, do not push it.
                 // Special case for sub declarations, because we need to deal with SEMFLAG_FILE_JOB_PASS

@@ -4,6 +4,33 @@
 #include "Module.h"
 #include "TypeManager.h"
 
+void Semantic::start(SemanticContext* context, SourceFile* sourceFile, AstNode* originalNode)
+{
+    context->sourceFile = sourceFile;
+    context->canSpawn   = originalNode->kind == AstNodeKind::Impl ||
+                        originalNode->kind == AstNodeKind::File ||
+                        originalNode->kind == AstNodeKind::StatementNoScope ||
+                        originalNode->kind == AstNodeKind::AttrUse ||
+                        originalNode->kind == AstNodeKind::CompilerIf;
+
+    // Sub functions attributes inheritance
+    if (originalNode->kind == AstNodeKind::FuncDecl && originalNode->ownerFct)
+        Semantic::inheritAttributesFromOwnerFunc(originalNode);
+
+    // In configuration pass1, we only treat the #dependencies block
+    if (context->sourceFile->module->kind == ModuleKind::Config && originalNode->kind == AstNodeKind::File)
+    {
+        for (auto c : originalNode->childs)
+        {
+            if (c->kind != AstNodeKind::CompilerDependencies)
+            {
+                c->flags |= AST_NO_SEMANTIC; // :FirstPassCfgNoSem
+                c->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
+            }
+        }
+    }
+}
+
 bool Semantic::setUnRef(AstNode* node)
 {
     if (node->kind == AstNodeKind::KeepRef)

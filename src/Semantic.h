@@ -58,6 +58,8 @@ const uint32_t GDFM_ALL     = 0xFFFFFFFF;
 
 struct Semantic
 {
+    static void start(SemanticContext* context, SourceFile* sourceFile, AstNode* originalNode);
+
     static void waitSymbolNoLock(Job* job, SymbolName* symbol);
     static void waitAllStructInterfacesReg(Job* job, TypeInfo* typeInfo);
     static void waitAllStructInterfaces(Job* job, TypeInfo* typeInfo);
