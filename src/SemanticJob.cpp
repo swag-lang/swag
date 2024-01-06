@@ -117,7 +117,7 @@ JobResult SemanticJob::execute()
                     // trigger the resolve of the sub things by just removing AST_NO_SEMANTIC or by hand.
                     ScopedLock lk(node->mutex);
 
-                    // Flag AST_NO_SEMANTIC must be tested with the node locked, as it can be changed in 
+                    // Flag AST_NO_SEMANTIC must be tested with the node locked, as it can be changed in
                     // registerFuncSymbol by another thread
                     if (!(node->flags & AST_NO_SEMANTIC) && !(node->semFlags & SEMFLAG_FILE_JOB_PASS))
                     {
@@ -137,15 +137,14 @@ JobResult SemanticJob::execute()
                 }
             }
 
-            node->semanticState = AstNodeResolveState::ProcessingChilds;
-            context.result      = ContextResult::Done;
-
-            if (node->hasExtSemantic() &&
-                node->extSemantic()->semanticBeforeFct &&
-                !node->extSemantic()->semanticBeforeFct(&context))
+            if (node->hasExtSemantic() && node->extSemantic()->semanticBeforeFct)
             {
-                return JobResult::ReleaseJob;
+                context.result = ContextResult::Done;
+                if (!node->extSemantic()->semanticBeforeFct(&context))
+                    return JobResult::ReleaseJob;
             }
+
+            node->semanticState = AstNodeResolveState::ProcessingChilds;
 
             if (node->flags & AST_NO_SEMANTIC)
             {
