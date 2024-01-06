@@ -305,6 +305,7 @@
     <ClInclude Include="../src/SyntaxJob.h" />
     <ClInclude Include="../src/SourceFile.h" />
     <ClInclude Include="..\src\Semantic.h" />
+    <ClInclude Include="..\src\SemanticContext.h" />
     <ClInclude Include="..\src\Statistics.h" />
     <ClInclude Include="../src/ThreadManager.h" />
     <ClInclude Include="../src/Tokenizer.h" />
@@ -584,6 +585,7 @@
     <ClCompile Include="..\src\SaveGenJob.cpp" />
     <ClCompile Include="../src/SemanticJob.cpp" />
     <ClCompile Include="..\src\Semantic.cpp" />
+    <ClCompile Include="..\src\SemanticContext.cpp" />
     <ClCompile Include="..\src\Semantic_Access.cpp" />
     <ClCompile Include="..\src\Semantic_AffectExpression.cpp" />
     <ClCompile Include="..\src\Semantic_Attribute.cpp" />

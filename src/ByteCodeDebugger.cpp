@@ -222,7 +222,6 @@ Utf8 ByteCodeDebugger::completion(ByteCodeRunContext* context, const Utf8& line,
 
     SemanticContext                   semContext;
     SemanticJob                       semJob;
-    Semantic                          sem;
     VectorNative<AlternativeScope>    scopeHierarchy;
     VectorNative<AlternativeScopeVar> scopeHierarchyVars;
     semContext.sourceFile = debugCxtIp->node->sourceFile;

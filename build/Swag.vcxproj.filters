@@ -651,6 +651,9 @@
     <ClCompile Include="..\src\Semantic_Wait.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\SemanticContext.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
@@ -1015,6 +1018,9 @@
       <Filter>Semantic</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Semantic.h">
+      <Filter>Semantic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SemanticContext.h">
       <Filter>Semantic</Filter>
     </ClInclude>
   </ItemGroup>

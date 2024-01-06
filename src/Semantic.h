@@ -5,6 +5,7 @@
 #include "Diagnostic.h"
 #include "Scope.h"
 #include "Concat.h"
+#include "SemanticContext.h"
 
 struct SemanticJob;
 struct AstNode;
@@ -26,153 +27,6 @@ struct SymbolName;
 struct AstFuncCallParam;
 enum class AstNodeKind : uint8_t;
 enum class SymbolKind : uint8_t;
-
-struct CastStructStructField
-{
-    TypeInfoStruct* typeStruct;
-    uint32_t        offset;
-    TypeInfoParam*  field;
-};
-
-struct CastCollectInterfaceField
-{
-    TypeInfoStruct* typeStruct;
-    uint32_t        offset;
-    TypeInfoParam*  field;
-    Utf8            fieldAccessName;
-};
-
-struct OneTryMatch
-{
-    SymbolMatchContext symMatchContext;
-    SymbolOverload*    overload          = nullptr;
-    Scope*             scope             = nullptr;
-    AstNode*           dependentVar      = nullptr;
-    AstNode*           dependentVarLeaf  = nullptr;
-    AstNode*           callParameters    = nullptr;
-    AstNode*           genericParameters = nullptr;
-    uint32_t           cptOverloads      = 0;
-    uint32_t           cptOverloadsInit  = 0;
-    bool               ufcs              = false;
-    bool               secondTry         = false;
-
-    void reset()
-    {
-        symMatchContext.reset();
-        overload          = nullptr;
-        scope             = nullptr;
-        dependentVar      = nullptr;
-        dependentVarLeaf  = nullptr;
-        callParameters    = nullptr;
-        genericParameters = nullptr;
-        cptOverloads      = 0;
-        ufcs              = false;
-        secondTry         = false;
-    }
-};
-
-struct OneMatch
-{
-    struct ParamParameter
-    {
-        AstFuncCallParam* param;
-        int               indexParam;
-        TypeInfoParam*    resolvedParameter;
-    };
-
-    VectorNative<TypeInfoParam*> solvedParameters;
-    VectorNative<ParamParameter> paramParameters;
-
-    SymbolOverload* symbolOverload = nullptr;
-    Scope*          scope          = nullptr;
-    AstNode*        dependentVar   = nullptr;
-    OneTryMatch*    oneOverload    = nullptr;
-    TypeInfo*       typeWasForced  = nullptr;
-
-    uint32_t flags = 0;
-
-    bool ufcs       = false;
-    bool autoOpCast = false;
-    bool secondTry  = false;
-    bool remove     = false;
-
-    void reset()
-    {
-        solvedParameters.clear();
-        paramParameters.clear();
-        symbolOverload = nullptr;
-        dependentVar   = nullptr;
-        typeWasForced  = nullptr;
-        flags          = 0;
-        ufcs           = false;
-        secondTry      = false;
-        autoOpCast     = false;
-        remove         = false;
-    }
-};
-
-struct OneOverload
-{
-    SymbolOverload* overload;
-    Scope*          scope;
-    uint32_t        cptOverloads;
-    uint32_t        cptOverloadsInit;
-};
-
-struct OneGenericMatch
-{
-    VectorNative<TypeInfo*>         genericParametersCallTypes;
-    VectorNative<ComputedValue*>    genericParametersCallValues;
-    VectorNative<AstNode*>          genericParametersCallFrom;
-    VectorMap<Utf8, TypeInfo*>      genericReplaceTypes;
-    VectorMap<Utf8, ComputedValue*> genericReplaceValues;
-    VectorMap<Utf8, AstNode*>       genericReplaceFrom;
-    VectorNative<TypeInfo*>         genericParametersGenTypes;
-
-    VectorNative<AstNode*>       parameters;
-    VectorNative<TypeInfoParam*> solvedParameters;
-    SymbolName*                  symbolName        = nullptr;
-    SymbolOverload*              symbolOverload    = nullptr;
-    AstNode*                     genericParameters = nullptr;
-
-    uint32_t numOverloadsWhenChecked     = 0;
-    uint32_t numOverloadsInitWhenChecked = 0;
-    uint32_t flags                       = 0;
-    bool     secondTry                   = false;
-
-    void reset()
-    {
-        genericParametersCallTypes.clear();
-        genericParametersCallValues.clear();
-        genericParametersCallFrom.clear();
-        genericReplaceTypes.clear();
-        genericReplaceValues.clear();
-        genericReplaceFrom.clear();
-        genericParametersGenTypes.clear();
-        parameters.clear();
-        solvedParameters.clear();
-        symbolName                  = nullptr;
-        symbolOverload              = nullptr;
-        genericParameters           = nullptr;
-        numOverloadsWhenChecked     = 0;
-        numOverloadsInitWhenChecked = 0;
-        flags                       = 0;
-        secondTry                   = false;
-    }
-};
-
-struct OneSymbolMatch
-{
-    SymbolName* symbol  = nullptr;
-    Scope*      scope   = nullptr;
-    uint32_t    asFlags = 0;
-    bool        remove  = false;
-
-    bool operator==(const OneSymbolMatch& other)
-    {
-        return symbol == other.symbol;
-    }
-};
 
 enum class IdentifierSearchFor
 {
@@ -210,110 +64,6 @@ const uint32_t RI_FOR_ZERO_GHOSTING = 0x00000002;
 
 const uint32_t GDFM_HERE_IS = 0x00000001;
 const uint32_t GDFM_ALL     = 0xFFFFFFFF;
-
-struct SemanticContext : public JobContext
-{
-    void release()
-    {
-        clearTryMatch();
-        clearGenericMatch();
-        clearMatch();
-
-        for (auto p : cacheFreeTryMatch)
-            Allocator::free<OneTryMatch>(p);
-        for (auto p : cacheFreeGenericMatches)
-            Allocator::free<OneGenericMatch>(p);
-        for (auto p : cacheFreeMatches)
-            Allocator::free<OneMatch>(p);
-        tmpConcat.release();
-        if (tmpIdRef)
-            tmpIdRef->release();
-    }
-
-    void clearTryMatch()
-    {
-        for (auto p : cacheListTryMatch)
-            cacheFreeTryMatch.push_back(p);
-        cacheListTryMatch.clear();
-    }
-
-    OneTryMatch* getTryMatch()
-    {
-        if (cacheFreeTryMatch.empty())
-            return Allocator::alloc<OneTryMatch>();
-        auto res = cacheFreeTryMatch.back();
-        cacheFreeTryMatch.pop_back();
-        res->reset();
-        return res;
-    }
-
-    void clearMatch()
-    {
-        for (auto p : cacheMatches)
-            cacheFreeMatches.push_back(p);
-        cacheMatches.clear();
-    }
-
-    OneMatch* getOneMatch()
-    {
-        if (cacheFreeMatches.empty())
-            return Allocator::alloc<OneMatch>();
-        auto res = cacheFreeMatches.back();
-        cacheFreeMatches.pop_back();
-        res->reset();
-        return res;
-    }
-
-    void clearGenericMatch()
-    {
-        for (auto p : cacheGenericMatches)
-            cacheFreeGenericMatches.push_back(p);
-        cacheGenericMatches.clear();
-        cacheGenericMatchesSI.clear();
-    }
-
-    OneGenericMatch* getOneGenericMatch()
-    {
-        if (cacheFreeGenericMatches.empty())
-            return Allocator::alloc<OneGenericMatch>();
-        auto res = cacheFreeGenericMatches.back();
-        cacheFreeGenericMatches.pop_back();
-        res->reset();
-        return res;
-    }
-
-    Vector<CastStructStructField>     castStructStructFields;
-    Vector<CastCollectInterfaceField> castCollectInterfaceField;
-    VectorNative<TypeInfoEnum*>       castCollectEnum;
-    Set<TypeInfoEnum*>                castCollectEnumDone;
-    uint32_t                          castFlagsResult   = 0;
-    TypeInfo*                         castErrorToType   = nullptr;
-    TypeInfo*                         castErrorFromType = nullptr;
-    uint64_t                          castErrorFlags    = 0;
-    CastErrorType                     castErrorType     = CastErrorType::Zero;
-
-    VectorNative<OneSymbolMatch>      cacheDependentSymbols;
-    VectorNative<AlternativeScope>    cacheScopeHierarchy;
-    VectorNative<AlternativeScopeVar> cacheScopeHierarchyVars;
-    VectorNative<OneOverload>         cacheToSolveOverload;
-    VectorNative<OneMatch*>           cacheMatches;
-    VectorNative<OneMatch*>           cacheFreeMatches;
-    VectorNative<OneGenericMatch*>    cacheGenericMatches;
-    VectorNative<OneGenericMatch*>    cacheGenericMatchesSI;
-    VectorNative<OneGenericMatch*>    cacheFreeGenericMatches;
-    VectorNative<OneTryMatch*>        cacheListTryMatch;
-    VectorNative<OneTryMatch*>        cacheFreeTryMatch;
-    VectorNative<AlternativeScope>    scopesToProcess;
-    VectorNative<AstNode*>            tmpNodes;
-    Concat                            tmpConcat;
-    AstIdentifierRef*                 tmpIdRef = nullptr;
-    AstFuncCallParam                  closureFirstParam;
-    MatchResult                       bestMatchResult;
-    BadSignatureInfos                 bestSignatureInfos;
-    SymbolOverload*                   bestOverload = nullptr;
-    bool                              canSpawn     = false;
-    bool                              forDebugger  = false;
-};
 
 struct Semantic
 {
@@ -384,46 +134,44 @@ struct Semantic
     static bool findIdentifierInScopes(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
     static bool findIdentifierInScopes(SemanticContext* context, VectorNative<OneSymbolMatch>& dependentSymbols, AstIdentifierRef* identifierRef, AstIdentifier* node);
 
-    static void         decreaseInterfaceRegCount(TypeInfoStruct* typeInfoStruct);
-    static void         decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct);
-    static void         decreaseMethodCount(AstFuncDecl* funcNode, TypeInfoStruct* typeInfoStruct);
-    static uint32_t     alignOf(AstVarDecl* node);
-    static bool         isCompilerContext(AstNode* node);
-    static DataSegment* getConstantSegFromContext(AstNode* node, bool forceCompiler = false);
-    static void         enterState(AstNode* node);
-    static void         inheritAttributesFromParent(AstNode* child);
-    static void         inheritAttributesFrom(AstNode* child, uint64_t attributeFlags, uint16_t safetyOn, uint16_t safetyOff);
-    static void         inheritAttributesFromOwnerFunc(AstNode* child);
-    static bool         setupIdentifierRef(SemanticContext* context, AstNode* node);
-    static bool         derefConstantValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, DataSegment* storageSegment, uint8_t* ptr);
-    static bool         derefConstant(SemanticContext* context, uint8_t* ptr, SymbolOverload* overload, DataSegment* storageSegment);
-    static uint32_t     getMaxStackSize(AstNode* node);
-    static void         setOwnerMaxStackSize(AstNode* node, uint32_t size);
-    static bool         makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
-    static bool         makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
-    static void         sortParameters(AstNode* allParams);
-    static void         dealWithIntrinsic(SemanticContext* context, AstIdentifier* identifier);
-    static bool         setSymbolMatchCallParams(SemanticContext* context, AstIdentifier* identifier, OneMatch& oneMatch);
-    static bool         setSymbolMatch(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
-    static void         resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatch* oneMatch, int i);
-    static void         allocateOnStack(AstNode* node, TypeInfo* typeInfo);
-    static bool         setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters, bool forGenerics);
-    static Diagnostic*  computeNonConstExprNote(AstNode* node);
-    static bool         executeCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr);
-    static bool         doExecuteCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr);
-    static bool         reserveAndStoreToSegment(JobContext* context, DataSegment* storageSegment, uint32_t& storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
-    static bool         storeToSegment(JobContext* context, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
-    static bool         collectLiteralsToSegment(JobContext* context, DataSegment* storageSegment, uint32_t baseOffset, uint32_t& offset, AstNode* node);
-    static bool         collectStructLiterals(JobContext* context, DataSegment* storageSegment, uint32_t offsetStruct, AstNode* node);
-    static void         setupContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload, uint32_t flags);
-    static bool         canInheritAccess(AstNode* node);
-    static uint64_t     attributeToAccess(uint64_t attribute);
-    static void         doInheritAccess(AstNode* forNode, AstNode* node);
-    static void         inheritAccess(AstNode* node);
-    static void         setIdentifierAccess(AstIdentifier* identifier, SymbolOverload* overload);
-    static void         setDefaultAccess(AstNode* node);
-    static bool         canHaveGlobalAccess(AstNode* node);
+    static bool     canInheritAccess(AstNode* node);
+    static uint64_t attributeToAccess(uint64_t attribute);
+    static void     doInheritAccess(AstNode* forNode, AstNode* node);
+    static void     inheritAccess(AstNode* node);
+    static void     setIdentifierAccess(AstIdentifier* identifier, SymbolOverload* overload);
+    static void     setDefaultAccess(AstNode* node);
+    static bool     canHaveGlobalAccess(AstNode* node);
 
+    static void           decreaseInterfaceRegCount(TypeInfoStruct* typeInfoStruct);
+    static void           decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct);
+    static void           decreaseMethodCount(AstFuncDecl* funcNode, TypeInfoStruct* typeInfoStruct);
+    static uint32_t       alignOf(AstVarDecl* node);
+    static bool           isCompilerContext(AstNode* node);
+    static DataSegment*   getConstantSegFromContext(AstNode* node, bool forceCompiler = false);
+    static void           enterState(AstNode* node);
+    static void           inheritAttributesFromParent(AstNode* child);
+    static void           inheritAttributesFrom(AstNode* child, uint64_t attributeFlags, uint16_t safetyOn, uint16_t safetyOff);
+    static void           inheritAttributesFromOwnerFunc(AstNode* child);
+    static bool           setupIdentifierRef(SemanticContext* context, AstNode* node);
+    static bool           derefConstantValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, DataSegment* storageSegment, uint8_t* ptr);
+    static bool           derefConstant(SemanticContext* context, uint8_t* ptr, SymbolOverload* overload, DataSegment* storageSegment);
+    static uint32_t       getMaxStackSize(AstNode* node);
+    static void           setOwnerMaxStackSize(AstNode* node, uint32_t size);
+    static bool           makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
+    static bool           makeInline(SemanticContext* context, AstFuncDecl* funcDecl, AstNode* identifier);
+    static void           sortParameters(AstNode* allParams);
+    static void           dealWithIntrinsic(SemanticContext* context, AstIdentifier* identifier);
+    static bool           setSymbolMatchCallParams(SemanticContext* context, AstIdentifier* identifier, OneMatch& oneMatch);
+    static bool           setSymbolMatch(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
+    static void           resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatch* oneMatch, int i);
+    static void           allocateOnStack(AstNode* node, TypeInfo* typeInfo);
+    static bool           setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters, bool forGenerics);
+    static Diagnostic*    computeNonConstExprNote(AstNode* node);
+    static void           setupContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload, uint32_t flags);
+    static bool           executeCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr);
+    static bool           doExecuteCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr);
+    static bool           reserveAndStoreToSegment(JobContext* context, DataSegment* storageSegment, uint32_t& storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
+    static bool           storeToSegment(JobContext* context, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
     static void           findClosestMatches(const Utf8& searchName, const Vector<Utf8>& searchList, Vector<Utf8>& result);
     static Utf8           findClosestMatchesMsg(const Utf8& searchName, const Vector<Utf8>& best);
     static void           findClosestMatches(const Utf8& searchName, const VectorNative<AlternativeScope>& scopeHierarchy, Vector<Utf8>& best, IdentifierSearchFor searchFor = IdentifierSearchFor::Whatever);
@@ -439,6 +187,8 @@ struct Semantic
     static bool           collectConstantAssignment(SemanticContext* context, DataSegment** storageSegmentResult, uint32_t* storageOffsetResult, uint32_t& symbolFlags);
     static bool           collectConstantSlice(SemanticContext* context, AstNode* assignNode, TypeInfo* assignType, DataSegment* storageSegment, uint32_t& storageOffset);
     static bool           collectAssignment(SemanticContext* context, DataSegment* storageSegment, uint32_t& storageOffset, AstVarDecl* node, TypeInfo* typeInfo = nullptr);
+    static bool           collectLiteralsToSegment(JobContext* context, DataSegment* storageSegment, uint32_t baseOffset, uint32_t& offset, AstNode* node);
+    static bool           collectStructLiterals(JobContext* context, DataSegment* storageSegment, uint32_t offsetStruct, AstNode* node);
     static void           disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlock* block);
     static void           propagateReturn(AstNode* node);
     static bool           resolveMakePointer(SemanticContext* context);
