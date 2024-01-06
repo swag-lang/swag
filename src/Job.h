@@ -1,9 +1,8 @@
 #pragma once
 #include "DependentJobs.h"
-#include "VectorNative.h"
-#include "Utf8.h"
 #include "Mutex.h"
 #include "ErrorContext.h"
+
 struct JobThread;
 struct AstNode;
 struct SymbolName;

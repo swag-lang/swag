@@ -1,7 +1,7 @@
 #pragma once
-#include "Utf8.h"
 #include "CommandLine.h"
 #include "Mutex.h"
+
 struct Module;
 struct AstNode;
 struct Diagnostic;

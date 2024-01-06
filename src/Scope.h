@@ -1,10 +1,8 @@
 #pragma once
-#include "Utf8.h"
 #include "DependentJobs.h"
 #include "SymTable.h"
-#include "VectorNative.h"
 #include "Mutex.h"
-#include "Set.h"
+
 struct Scope;
 struct AstNode;
 struct AstDefer;

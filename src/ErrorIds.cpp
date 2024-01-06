@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "Utf8.h"
 #include "ErrorIds.h"
 
 #undef SWAG_ERROR

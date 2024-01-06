@@ -51,3 +51,12 @@ using namespace std;
 #define SWAG_CHECK_MEMORY
 #define SWAG_HAS_ASSERT
 #endif
+
+////////////////////////////
+
+#include "Allocator.h"
+#include "Vector.h"
+#include "VectorNative.h"
+#include "Utf8.h"
+#include "Map.h"
+#include "Set.h"

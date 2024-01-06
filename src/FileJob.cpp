@@ -3,7 +3,6 @@
 #include "Os.h"
 #include "Module.h"
 #include "Report.h"
-#include "Utf8.h"
 #include "ErrorIds.h"
 
 JobResult CopyFileJob::execute()

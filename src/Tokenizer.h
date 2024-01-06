@@ -1,6 +1,6 @@
 #pragma once
 #include "Register.h"
-#include "Utf8.h"
+
 struct SourceFile;
 struct TypeInfo;
 struct ErrorContext;

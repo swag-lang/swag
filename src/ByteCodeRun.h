@@ -1,5 +1,5 @@
 #pragma once
-#include "VectorNative.h"
+
 struct ByteCodeRunContext;
 struct ByteCodeInstruction;
 struct TypeInfo;

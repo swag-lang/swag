@@ -1,6 +1,6 @@
 #pragma once
-#include "VectorNative.h"
 #include "Mutex.h"
+
 struct Path;
 struct SwagSlice;
 

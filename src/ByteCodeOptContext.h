@@ -4,7 +4,6 @@
 #include "ByteCodeOp.h"
 #include "Job.h"
 #include "MapRegTo.h"
-#include "Map.h"
 
 struct ByteCode;
 struct ByteCodeGenContext;

@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "Utf8.h"
 #include "ByteCode.h"
 #include "Ast.h"
 #include "Module.h"

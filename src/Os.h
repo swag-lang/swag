@@ -1,6 +1,5 @@
 #pragma once
 #include "Log.h"
-#include "VectorNative.h"
 
 struct BuildParameters;
 struct Module;

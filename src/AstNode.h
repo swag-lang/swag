@@ -1,13 +1,10 @@
 #pragma once
-#include "Utf8.h"
 #include "Tokenizer.h"
 #include "AstFlags.h"
 #include "Register.h"
 #include "SymTable.h"
 #include "Attribute.h"
 #include "Scope.h"
-#include "Map.h"
-#include "VectorNative.h"
 #include "Mutex.h"
 
 struct AstAttrUse;

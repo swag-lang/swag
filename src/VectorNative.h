@@ -1,7 +1,6 @@
 #pragma once
 #include "Allocator.h"
 #include "Assert.h"
-#include "Vector.h"
 
 template<typename T>
 struct VectorNative

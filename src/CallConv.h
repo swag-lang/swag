@@ -1,5 +1,5 @@
 #pragma once
-#include "VectorNative.h"
+
 struct TypeInfo;
 struct TypeInfoFuncAttr;
 

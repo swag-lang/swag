@@ -1,5 +1,4 @@
 #pragma once
-#include "Utf8.h"
 
 #undef SWAG_ERROR
 #define SWAG_ERROR(__enum) __enum

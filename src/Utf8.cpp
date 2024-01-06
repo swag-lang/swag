@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "Utf8.h"
 #include "Crc32.h"
 #include "Statistics.h"
 #include "Runtime.h"

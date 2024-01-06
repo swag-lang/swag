@@ -4,7 +4,7 @@
 #include "ComputedValue.h"
 #include "Mutex.h"
 #include "Symbol.h"
-#include "Utf8.h"
+
 struct TypeInfo;
 struct Job;
 struct AstNode;

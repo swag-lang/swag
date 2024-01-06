@@ -579,7 +579,6 @@
     <ClCompile Include="..\src\Parser_Struct.cpp" />
     <ClCompile Include="..\src\Parser_Type.cpp" />
     <ClCompile Include="..\src\Parser_Var.cpp" />
-    <ClCompile Include="..\src\Path.cpp" />
     <ClCompile Include="..\src\PrepCompilerMsgJob.cpp" />
     <ClCompile Include="..\src\Profiler.cpp" />
     <ClCompile Include="..\src\Report.cpp" />

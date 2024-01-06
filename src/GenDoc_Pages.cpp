@@ -3,7 +3,6 @@
 #include "Module.h"
 #include "Report.h"
 #include "ErrorIds.h"
-#include "Vector.h"
 #include "Workspace.h"
 
 bool GenDoc::generatePages()

@@ -2,14 +2,10 @@
 #include "Assert.h"
 #include "Attribute.h"
 #include "CallConv.h"
-#include "Map.h"
 #include "Mutex.h"
 #include "RaceCondition.h"
 #include "Runtime.h"
 #include "TypeMatch.h"
-#include "Utf8.h"
-#include "Vector.h"
-#include "VectorNative.h"
 
 struct ComputedValue;
 struct AstFuncDecl;

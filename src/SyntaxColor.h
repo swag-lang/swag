@@ -1,6 +1,5 @@
 #pragma once
 #include "Log.h"
-#include "Utf8.h"
 
 enum class SyntaxColor
 {

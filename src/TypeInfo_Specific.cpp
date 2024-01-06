@@ -2,21 +2,6 @@
 #include "Ast.h"
 #include "Semantic.h"
 #include "TypeManager.h"
-#include "Assert.h"
-#include "AstNode.h"
-#include "Attribute.h"
-#include "CallConv.h"
-#include "Job.h"
-#include "Mutex.h"
-#include "Runtime.h"
-#include "Scope.h"
-#include "SemanticContext.h"
-#include "SourceFile.h"
-#include "Tokenizer.h"
-#include "TypeInfo.h"
-#include "Utf8.h"
-#include "Vector.h"
-#include "VectorNative.h"
 
 TypeInfo* TypeInfoNative::clone()
 {

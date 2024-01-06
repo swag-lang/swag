@@ -1,8 +1,8 @@
 #pragma once
 #include "TypeInfo.h"
 #include "Tokenizer.h"
-#include "Utf8.h"
 #include "LangHashTable.h"
+
 struct TypeInfoNative;
 
 struct LanguageSpec

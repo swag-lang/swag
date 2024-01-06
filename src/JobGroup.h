@@ -1,5 +1,4 @@
 #pragma once
-#include "VectorNative.h"
 #include "Mutex.h"
 #include "Job.h"
 

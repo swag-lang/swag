@@ -1,7 +1,6 @@
 #pragma once
-#include "Utf8.h"
 #include "Runtime.h"
-#include "Set.h"
+
 struct BuildCfg;
 
 const uint32_t SWAG_LIMIT_ARRAY_SIZE          = 0x7FFFFFFF;

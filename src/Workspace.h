@@ -1,11 +1,9 @@
 #pragma once
 #include "ScopeSwag.h"
-#include "Utf8.h"
-#include "Map.h"
 #include "ComputedValue.h"
 #include "Mutex.h"
-#include "Set.h"
 #include "Path.h"
+
 struct Module;
 struct Scope;
 struct SourceFile;
