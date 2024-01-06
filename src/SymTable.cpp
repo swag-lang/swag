@@ -1,17 +1,15 @@
 #include "pch.h"
 #include "SymTable.h"
-#include "Diagnostic.h"
-#include "SymTable.h"
 #include "Ast.h"
 #include "Module.h"
-#include "Naming.h"
 #include "Semantic.h"
 
 void SymTable::release()
 {
     for (auto s : allSymbols)
     {
-        for (auto over : s->overloads)
+        for (auto over : 
+            s->overloads)
             Allocator::free<SymbolOverload>(over);
         Allocator::free<SymbolName>(s);
     }

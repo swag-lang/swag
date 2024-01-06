@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Ast.h"
+#include "Symbol.h"
 #include "SymTableHash.h"
 
 void SymTableHash::clone(SymTableHash* from)

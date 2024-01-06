@@ -3,7 +3,6 @@
 #include "Register.h"
 #include "ComputedValue.h"
 #include "Mutex.h"
-#include "Symbol.h"
 
 struct TypeInfo;
 struct Job;

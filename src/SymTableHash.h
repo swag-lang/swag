@@ -1,5 +1,4 @@
 #pragma once
-struct Utf8;
 struct SymbolName;
 
 struct SymTableHash
