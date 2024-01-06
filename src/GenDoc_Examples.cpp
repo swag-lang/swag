@@ -51,10 +51,10 @@ bool GenDoc::processSourceFile(const Path& fileName, int titleLevel)
         lines.push_back(line);
 
     int i = 0;
-    while (i < lines.size())
+    while (i < (int) lines.size())
     {
         Utf8 code;
-        while (i < lines.size())
+        while (i < (int) lines.size())
         {
             auto& l        = lines[i++];
             Utf8  lineTrim = l;
@@ -68,7 +68,7 @@ bool GenDoc::processSourceFile(const Path& fileName, int titleLevel)
         outputCode(code, GENDOC_CODE_BLOCK | GENDOC_CODE_SYNTAX_COL);
 
         Vector<Utf8> linesUser;
-        while (i < lines.size())
+        while (i < (int) lines.size())
         {
             auto& l        = lines[i++];
             Utf8  lineTrim = l;

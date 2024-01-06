@@ -734,6 +734,8 @@ Diagnostic* Diagnostic::hereIs(AstNode* node, bool forceShowRange, bool forceNod
         note->showRange = forceShowRange;
         return note;
     }
+    default:
+        break;
     }
 
     auto note       = Diagnostic::note(node, node->token, Fmt(Nte(Nte0040), node->token.ctext()));

@@ -25,7 +25,7 @@ void ByteCodeDebugger::printLong(const Vector<Utf8>& all)
 
     int  cpt     = 0;
     bool canStop = true;
-    for (int i = 0; i < all.size(); i++)
+    for (int i = 0; i < (int) all.size(); i++)
     {
         if (cpt == 60 && canStop)
         {

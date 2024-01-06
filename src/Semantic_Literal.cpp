@@ -1,15 +1,14 @@
 #include "pch.h"
-#include "Semantic.h"
-#include "ByteCodeGenJob.h"
-#include "Module.h"
-#include "TypeManager.h"
-#include "ErrorIds.h"
-#include "Report.h"
-#include "Version.h"
-#include "LanguageSpec.h"
 #include "Ast.h"
-#include "Naming.h"
+#include "ByteCodeGenJob.h"
 #include "Diagnostic.h"
+#include "LanguageSpec.h"
+#include "Module.h"
+#include "Naming.h"
+#include "Report.h"
+#include "Semantic.h"
+#include "TypeManager.h"
+#include "Version.h"
 
 bool Semantic::getDigitHexa(SemanticContext* context, const SourceLocation& startLoc, const char* pzs, const char** _pz, int& result, const char* errMsg)
 {

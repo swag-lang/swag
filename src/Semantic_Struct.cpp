@@ -224,7 +224,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
         if (!itfSymbol)
         {
             Diagnostic diag{childFct, childFct->tokenName, Fmt(Err(Err0024), childFct->token.text.c_str(), typeInterface->name.c_str())};
-            auto       note = Diagnostic::note(findClosestMatchesMsg(childFct->token.text, {{typeInterface->scope}}, IdentifierSearchFor::Whatever));
+            auto       note = Diagnostic::note(findClosestMatchesMsg(childFct->token.text, {{typeInterface->scope, 0}}, IdentifierSearchFor::Whatever));
             return context->report(diag, note);
         }
 

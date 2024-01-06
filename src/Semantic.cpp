@@ -190,6 +190,8 @@ bool Semantic::setState(SemanticContext* context, AstNode* node, AstNodeResolveS
         if (!Semantic::checkAccess(context, node))
             return false;
         break;
+    default:
+        break;
     }
 
     return true;

@@ -818,14 +818,12 @@ bool Semantic::cannotMatchIdentifierError(SemanticContext* context, VectorNative
 {
     AstIdentifier* identifier        = nullptr;
     AstNode*       genericParameters = nullptr;
-    AstNode*       callParameters    = nullptr;
 
     // node can be null when we try to resolve a userOp
     if (node && (node->kind == AstNodeKind::Identifier || node->kind == AstNodeKind::FuncCall))
     {
         identifier        = CastAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
         genericParameters = identifier->genericParameters;
-        callParameters    = identifier->callParameters;
     }
     else
         node = context->node;
@@ -955,7 +953,7 @@ bool Semantic::cannotMatchIdentifierError(SemanticContext* context, VectorNative
             tm->symMatchContext.badSignatureInfos.castErrorType == CastErrorType::Const)
             badConstUfcs += 1;
     }
-    if (badConstUfcs == tryMatches.size())
+    if (badConstUfcs == (int) tryMatches.size())
     {
         while (tryMatches.size() > 1)
             tryMatches.pop_back();

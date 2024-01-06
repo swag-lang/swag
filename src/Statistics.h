@@ -59,7 +59,7 @@ struct Stats
 
     atomic<size_t> sizeBackendDbg = 0;
 
-    atomic<int> countOpFreq[(int) ByteCodeOp::End + 1][(int) ByteCodeOp::End + 1] = {0};
+    atomic<int> countOpFreq[(int) ByteCodeOp::End + 1][(int) ByteCodeOp::End + 1] = {{0}};
 
 #ifdef SWAG_DEV_MODE
     atomic<int> countTypesByKind[50] = {0};

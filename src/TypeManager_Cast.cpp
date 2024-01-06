@@ -311,7 +311,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
     if (fromType->nativeType == NativeTypeKind::U8)
         return true;
 
-    if (!canOverflow(context, fromNode, castFlags))
+    if (!isOverflowEnabled(context, fromNode, castFlags))
     {
         switch (fromType->nativeType)
         {
@@ -476,7 +476,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
     if (fromType->nativeType == NativeTypeKind::U16)
         return true;
 
-    if (!canOverflow(context, fromNode, castFlags))
+    if (!isOverflowEnabled(context, fromNode, castFlags))
     {
         switch (fromType->nativeType)
         {
@@ -563,6 +563,8 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
                 }
             }
             break;
+        default:
+            break;
         }
     }
 
@@ -639,7 +641,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
     if (fromType->nativeType == NativeTypeKind::U32)
         return true;
 
-    if (!canOverflow(context, fromNode, castFlags))
+    if (!isOverflowEnabled(context, fromNode, castFlags))
     {
         switch (fromType->nativeType)
         {
@@ -809,7 +811,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
         }
     }
 
-    if (!canOverflow(context, fromNode, castFlags))
+    if (!isOverflowEnabled(context, fromNode, castFlags))
     {
         switch (fromType->nativeType)
         {
@@ -951,7 +953,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
     if (fromType->nativeType == NativeTypeKind::S8)
         return true;
 
-    if (!canOverflow(context, fromNode, castFlags))
+    if (!isOverflowEnabled(context, fromNode, castFlags))
     {
         switch (fromType->nativeType)
         {
@@ -1124,7 +1126,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
     if (fromType->nativeType == NativeTypeKind::S16)
         return true;
 
-    if (!canOverflow(context, fromNode, castFlags))
+    if (!isOverflowEnabled(context, fromNode, castFlags))
     {
         switch (fromType->nativeType)
         {
@@ -1298,7 +1300,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
     if (fromType->nativeType == NativeTypeKind::S32)
         return true;
 
-    if (!canOverflow(context, fromNode, castFlags))
+    if (!isOverflowEnabled(context, fromNode, castFlags))
     {
         switch (fromType->nativeType)
         {
@@ -1308,7 +1310,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
             {
                 auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
                 auto value  = native->valueInteger;
-                if (value > UINT32_MAX)
+                if (value > INT32_MAX)
                 {
                     if (!(castFlags & CASTFLAG_JUST_CHECK))
                         errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS32);
@@ -1466,24 +1468,11 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
     if (fromType->nativeType == NativeTypeKind::S64)
         return true;
 
-    if (!canOverflow(context, fromNode, castFlags))
+    if (!isOverflowEnabled(context, fromNode, castFlags))
     {
         switch (fromType->nativeType)
         {
         case NativeTypeKind::U64:
-            if (fromType->isUntypedBinHex())
-            {
-                auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
-                auto value  = native->valueInteger;
-                if (value > UINT64_MAX)
-                {
-                    if (!(castFlags & CASTFLAG_JUST_CHECK))
-                        errorOutOfRange(context, fromNode, fromType, g_TypeMgr->typeInfoS64);
-                    return false;
-                }
-                break;
-            }
-
             if (fromNode && fromNode->hasComputedValue())
             {
                 if (fromNode->computedValue->reg.u64 > INT64_MAX)
@@ -1613,7 +1602,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
     if (fromType->nativeType == NativeTypeKind::F32)
         return true;
 
-    if (!canOverflow(context, fromNode, castFlags))
+    if (!isOverflowEnabled(context, fromNode, castFlags))
     {
         if (!fromNode && fromType->isUntypedInteger())
         {
@@ -1678,7 +1667,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
     if (fromType->nativeType == NativeTypeKind::F64)
         return true;
 
-    if (!canOverflow(context, fromNode, castFlags))
+    if (!isOverflowEnabled(context, fromNode, castFlags))
     {
         if (!fromNode && fromType->isUntypedInteger())
         {

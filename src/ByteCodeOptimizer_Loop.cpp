@@ -50,6 +50,8 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
             case ByteCodeOp::MakeLambda:
                 context->vecInst.push_back(ipScan);
                 break;
+            default:
+                break;
             }
 
             if (ByteCode::hasWriteRegInA(ipScan))

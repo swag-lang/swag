@@ -50,7 +50,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
 
         err->hint = parts[1];
 
-        for (int i = 2; i < parts.size(); i++)
+        for (int i = 2; i < (int) parts.size(); i++)
         {
             auto newNote = Diagnostic::note(parts[i]);
             notes.push_back(newNote);
@@ -140,12 +140,12 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
         note->collectRanges();
     }
 
-    for (int inote = 0; inote < notes.size(); inote++)
+    for (int inote = 0; inote < (int) notes.size(); inote++)
     {
         auto note = notes[inote];
         if (!note->display)
             continue;
-        for (int inote1 = 0; inote1 < notes.size(); inote1++)
+        for (int inote1 = 0; inote1 < (int) notes.size(); inote1++)
         {
             auto note1 = notes[inote1];
             if (note == note1)
@@ -226,8 +226,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
         }
     }
 
-    bool        showFileName = false;
-    Diagnostic* prevNote     = nullptr;
+    Diagnostic* prevNote = nullptr;
     for (auto note : notes)
     {
         if (!note->display)
@@ -237,7 +236,6 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
         {
             if (prevNote)
                 prevNote->closeFileName = true;
-            showFileName = true;
         }
 
         prevNote = note;

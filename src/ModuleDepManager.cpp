@@ -691,7 +691,7 @@ bool ModuleDepManager::execute()
         for (auto d : m.second->moduleDependencies)
             depNames.insert(d->module->name);
 
-        for (int i = 0; i < dep.size(); i++)
+        for (int i = 0; i < (int) dep.size(); i++)
         {
             auto d = dep[i];
             if (!d->module)

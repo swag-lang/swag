@@ -514,7 +514,7 @@ bool Semantic::resolveLoop(SemanticContext* context)
 
             {
                 PushErrCxtStep ec(
-                    context, node, ErrCxtStepKind::Note, [node]()
+                    context, node, ErrCxtStepKind::Note, []()
                     { return Nte(Nte1121); },
                     true);
                 SWAG_CHECK(resolveIntrinsicCountOf(context, node->expression, node->expression));

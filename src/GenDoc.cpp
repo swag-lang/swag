@@ -277,12 +277,12 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
     }
 
     int start = 0;
-    while (start < lines.size())
+    while (start < (int) lines.size())
     {
         UserBlock* blk = new UserBlock;
 
         // Start of a block
-        for (; start < lines.size(); start++)
+        for (; start < (int) lines.size(); start++)
         {
             auto line = lines[start];
             line.trim();
@@ -390,9 +390,9 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
             continue;
         }
 
-        for (; start < lines.size(); start++)
+        for (; start < (int) lines.size(); start++)
         {
-            bool lastLine = start == lines.size() - 1;
+            bool lastLine = start == (int) lines.size() - 1;
             auto line     = lines[start];
             line.trim();
 
@@ -510,7 +510,7 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
                 auto title = line;
                 start++;
 
-                for (; start < lines.size(); start++)
+                for (; start < (int) lines.size(); start++)
                 {
                     auto line1 = lines[start];
                     if (line1.startsWith("    "))
@@ -1010,9 +1010,9 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
                 tkn1.erase(tkn1.end());
 
             bool hasHeader = true;
-            for (int it = 0; it < tkn0.size(); it++)
+            for (int it = 0; it < (int) tkn0.size(); it++)
             {
-                if (it >= tkn1.size())
+                if (it >= (int) tkn1.size())
                 {
                     hasHeader = false;
                     break;
@@ -1056,7 +1056,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
             else
             {
                 helpContent += "<tr>";
-                for (int it = 0; it < tkn0.size(); it++)
+                for (int it = 0; it < (int) tkn0.size(); it++)
                 {
                     switch (tableAlignCols[it])
                     {
@@ -1118,17 +1118,17 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
 
             if (tkn.back().empty())
                 tkn.pop_back();
-            while (tkn.size() < tableColCount)
+            while ((int) tkn.size() < tableColCount)
                 tkn.push_back("");
-            while (tkn.size() > tableColCount)
+            while ((int) tkn.size() > tableColCount)
                 tkn.pop_back();
 
             helpContent += "<tr>";
-            for (int it = 0; it < tkn.size(); it++)
+            for (int it = 0; it < (int) tkn.size(); it++)
             {
                 auto& t = tkn[it];
 
-                if (it < tableAlignCols.size())
+                if (it < (int) tableAlignCols.size())
                 {
                     switch (tableAlignCols[it])
                     {
@@ -1168,7 +1168,7 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
 
             // Add one line break after each line, except the last line from a raw block, because we do
             // not want one useless empty line
-            if (i != user.lines.size() - 1)
+            if (i != (int) user.lines.size() - 1)
                 helpContent += "\n";
         }
         else if (user.kind == UserBlockKind::Paragraph)
@@ -1235,6 +1235,8 @@ void GenDoc::outputUserBlock(const UserBlock& user, int titleLevel, bool shortDe
         helpContent += Fmt("</h%d>\n", titleLevel + level + 1);
         break;
     }
+    default:
+        break;
     }
 }
 
@@ -1503,6 +1505,8 @@ bool GenDoc::generate(Module* mdl, BuildCfgDocKind kind)
     case BuildCfgDocKind::Examples:
         if (!generateExamples())
             return false;
+        break;
+    default:
         break;
     }
 

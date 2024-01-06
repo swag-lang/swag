@@ -444,7 +444,7 @@ void Workspace::computeWaitingJobs()
         {
         case JobWaitKind::WaitSymbol:
             SWAG_ASSERT(pendingJob->waitingSymbolSolved);
-            for (int i = 0; i < g_ThreadMgr.waitingJobs.size(); i++)
+            for (int i = 0; i < (int) g_ThreadMgr.waitingJobs.size(); i++)
             {
                 auto it = g_ThreadMgr.waitingJobs[i];
                 for (auto it1 : pendingJob->waitingSymbolSolved->nodes)
@@ -460,7 +460,7 @@ void Workspace::computeWaitingJobs()
         case JobWaitKind::GenExportedType:
         case JobWaitKind::GenExportedType1:
             SWAG_ASSERT(pendingJob->waitingType);
-            for (int i = 0; i < g_ThreadMgr.waitingJobs.size(); i++)
+            for (int i = 0; i < (int) g_ThreadMgr.waitingJobs.size(); i++)
             {
                 auto it = dynamic_cast<TypeGenStructJob*>(g_ThreadMgr.waitingJobs[i]);
                 if (it && it->typeInfo == pendingJob->waitingType)
@@ -474,7 +474,7 @@ void Workspace::computeWaitingJobs()
         default:
             if (pendingJob->waitingNode)
             {
-                for (int i = 0; i < g_ThreadMgr.waitingJobs.size(); i++)
+                for (int i = 0; i < (int) g_ThreadMgr.waitingJobs.size(); i++)
                 {
                     auto it = g_ThreadMgr.waitingJobs[i];
                     if (it->originalNode == pendingJob->waitingNode)
@@ -488,7 +488,7 @@ void Workspace::computeWaitingJobs()
 
             if (pendingJob->waitingType)
             {
-                for (int i = 0; i < g_ThreadMgr.waitingJobs.size(); i++)
+                for (int i = 0; i < (int) g_ThreadMgr.waitingJobs.size(); i++)
                 {
                     auto it = g_ThreadMgr.waitingJobs[i];
                     if (it->originalNode == pendingJob->waitingType->declNode)

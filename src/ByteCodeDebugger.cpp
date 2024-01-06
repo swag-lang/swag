@@ -853,7 +853,7 @@ void ByteCodeDebugger::tokenizeCommand(ByteCodeRunContext* context, const Utf8& 
             c.trim();
         arg.cmd = arg.split[0];
 
-        for (int i = 1; i < arg.split.size(); i++)
+        for (int i = 1; i < (int) arg.split.size(); i++)
         {
             arg.cmdExpr += arg.split[i];
             arg.cmdExpr += " ";

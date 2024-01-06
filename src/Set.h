@@ -21,22 +21,12 @@ struct SetUtf8 : public unordered_set<Utf8, HashUtf8, equal_to<Utf8>, StdAllocat
         : unordered_set<Utf8, HashUtf8, equal_to<Utf8>, StdAllocator<Utf8>>()
     {
     }
-
-    SetUtf8(const SetUtf8& other)
-        : unordered_set<Utf8, HashUtf8, equal_to<Utf8>, StdAllocator<Utf8>>(other)
-    {
-    }
 };
 
 struct SetPath : public unordered_set<Path, HashPath, equal_to<Path>, StdAllocator<Path>>
 {
     SetPath()
         : unordered_set<Path, HashPath, equal_to<Path>, StdAllocator<Path>>()
-    {
-    }
-
-    SetPath(const SetPath& other)
-        : unordered_set<Path, HashPath, equal_to<Path>, StdAllocator<Path>>(other)
     {
     }
 };

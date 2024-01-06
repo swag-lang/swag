@@ -8,11 +8,6 @@ struct Vector : public vector<T, StdAllocator<T>>
     {
     }
 
-    Vector(const Vector& other)
-        : vector<T, StdAllocator<T>>(other)
-    {
-    }
-
     Vector(const initializer_list<T>& other)
         : vector<T, StdAllocator<T>>(other)
     {

@@ -248,6 +248,9 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
             }
 
             break;
+
+        default:
+            break;
         }
     }
 
@@ -401,6 +404,9 @@ bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode*
                 return true;
             }
 
+            break;
+
+        default:
             break;
         }
     }

@@ -145,6 +145,8 @@ TokenId Tokenizer::tokenRelated(TokenId id)
         return TokenId::SymRightSquare;
     case TokenId::SymLeftCurly:
         return TokenId::SymRightCurly;
+    default:
+        break;
     }
 
     SWAG_ASSERT(false);

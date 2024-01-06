@@ -3687,6 +3687,8 @@ void ByteCodeOptimizer::reduceCmpJump(ByteCodeOptContext* context, ByteCodeInstr
         case ByteCodeOp::GetFromMutableSeg64:
             setNop(context, ip + 2);
             break;
+        default:
+            break;
         }
     }
 

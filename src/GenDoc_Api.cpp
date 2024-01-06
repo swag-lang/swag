@@ -109,7 +109,7 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
             if (it != symbolsMap.end())
                 it->second.push_back(n1);
             else
-                symbolsMap[n1->token.text] = {n1};
+                symbolsMap[n1->token.text] = VectorNative{n1};
         }
     }
 
@@ -247,7 +247,7 @@ void GenDoc::outputTitle(OneRef& c)
     helpContent += Fmt("<span class=\"api-item-title-kind\">%s</span> ", name.c_str());
 
     helpContent += "<span class=\"api-item-title-light\">";
-    for (int i = 0; i < tkn.size() - 1; i++)
+    for (int i = 0; i < (int) tkn.size() - 1; i++)
     {
         helpContent += tkn[i];
         helpContent += ".";
@@ -339,7 +339,7 @@ void GenDoc::collectNode(AstNode* node)
         if (it != collect.end())
             collect[name].push_back(node);
         else
-            collect[name] = {node};
+            collect[name] = VectorNative{node};
     }
 }
 
@@ -481,7 +481,7 @@ void GenDoc::generateTocSection(AstNodeKind kind, const char* sectionName)
 
 void GenDoc::generateToc()
 {
-    sort(allNodes.begin(), allNodes.end(), [this](OneRef& a, OneRef& b)
+    sort(allNodes.begin(), allNodes.end(), [](OneRef& a, OneRef& b)
          {
             int s0 = sortOrder(a.nodes[0]->kind);
             int s1 = sortOrder(b.nodes[0]->kind);
@@ -508,7 +508,7 @@ void GenDoc::generateContent()
     computeUserComments(moduleComment, module->docComment, false);
     outputUserComment(moduleComment);
 
-    sort(allNodes.begin(), allNodes.end(), [this](OneRef& a, OneRef& b)
+    sort(allNodes.begin(), allNodes.end(), [](OneRef& a, OneRef& b)
          { 
             if (a.nodes[0]->kind == AstNodeKind::ConstDecl && b.nodes[0]->kind != AstNodeKind::ConstDecl)
                 return true;
@@ -523,7 +523,7 @@ void GenDoc::generateContent()
     // Output content
     helpContent += "<h1>Content</h1>\n";
 
-    for (int i = 0; i < allNodes.size(); i++)
+    for (int i = 0; i < (int) allNodes.size(); i++)
     {
         auto& c  = allNodes[i];
         auto  n0 = c.nodes[0];
@@ -561,7 +561,7 @@ void GenDoc::generateContent()
 
             helpContent += "<table class=\"table-enumeration\">\n";
 
-            for (int j = i; j < allNodes.size(); j++)
+            for (int j = i; j < (int) allNodes.size(); j++)
             {
                 auto& c1 = allNodes[j];
                 auto  n  = c1.nodes[0];
@@ -602,7 +602,7 @@ void GenDoc::generateContent()
 
             helpContent += "<table class=\"table-enumeration\">\n";
 
-            for (int j = i; j < allNodes.size(); j++)
+            for (int j = i; j < (int) allNodes.size(); j++)
             {
                 auto& c1 = allNodes[j];
                 auto  n  = c1.nodes[0];
@@ -888,6 +888,8 @@ void GenDoc::generateContent()
 
             break;
         }
+        default:
+            break;
         }
     }
 }

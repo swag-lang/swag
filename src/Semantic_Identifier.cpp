@@ -2375,7 +2375,7 @@ bool Semantic::instantiateGenericSymbol(SemanticContext* context, OneGenericMatc
             auto identifier               = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
             identifier->genericParameters = Ast::newFuncCallGenParams(node->sourceFile, node);
             genericParameters             = identifier->genericParameters;
-            for (int i = 0; i < firstMatch.genericParametersCallTypes.size(); i++)
+            for (int i = 0; i < (int) firstMatch.genericParametersCallTypes.size(); i++)
             {
                 auto param          = firstMatch.genericParametersCallTypes[i];
                 auto callParam      = Ast::newFuncCallParam(node->sourceFile, genericParameters);
@@ -2987,7 +2987,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                         {
                             Diagnostic                diag{identifierRef, Fmt(Err(Err0144), node->token.ctext(), hasEnum[0].second->getDisplayNameC())};
                             Vector<const Diagnostic*> notes;
-                            auto                      closest = findClosestMatchesMsg(node->token.text, {{hasEnum[0].second->scope}}, IdentifierSearchFor::Whatever);
+                            auto                      closest = findClosestMatchesMsg(node->token.text, {{hasEnum[0].second->scope, 0}}, IdentifierSearchFor::Whatever);
                             if (!closest.empty())
                                 notes.push_back(Diagnostic::note(closest));
                             if (hasEnum[0].first)

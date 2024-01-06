@@ -360,13 +360,13 @@ bool ByteCodeOptimizer::insertNopBefore(ByteCodeOptContext* context, ByteCodeIns
     if (context->bc->numInstructions == context->bc->maxInstructions)
         return false;
 
-    for (int it = 0; it < context->nops.size(); it++)
+    for (int it = 0; it < (int) context->nops.size(); it++)
     {
         if (context->nops[it] > insert)
             context->nops[it]++;
     }
 
-    for (int it = 0; it < context->jumps.size(); it++)
+    for (int it = 0; it < (int) context->jumps.size(); it++)
     {
         auto jump = context->jumps[it];
         SWAG_ASSERT(ByteCode::isJumpOrDyn(jump));

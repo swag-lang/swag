@@ -9,11 +9,6 @@ struct Map : public unordered_map<K, V, hash<K>, equal_to<K>, StdAllocator<pair<
     {
     }
 
-    Map(const Map& other)
-        : unordered_map<K, V, hash<K>, equal_to<K>, StdAllocator<pair<const K, V>>>(other)
-    {
-    }
-
     void release()
     {
         this->~Map<K, V>();
@@ -27,12 +22,7 @@ struct MapUtf8 : public unordered_map<Utf8, V, HashUtf8, equal_to<Utf8>, StdAllo
     MapUtf8()
         : unordered_map<Utf8, V, HashUtf8, equal_to<Utf8>, StdAllocator<pair<const Utf8, V>>>()
     {
-    }
-
-    MapUtf8(const MapUtf8& other)
-        : unordered_map<Utf8, V, HashUtf8, equal_to<Utf8>, StdAllocator<pair<const Utf8, V>>>(other)
-    {
-    }
+    }      
 
     void release()
     {

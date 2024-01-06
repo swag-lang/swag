@@ -71,9 +71,6 @@
     <ClCompile Include="../src/TypeInfo.cpp">
       <Filter>Semantic\Type</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\TypeInfo_Match.cpp">
-      <Filter>Semantic\Type</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\TypeInfo_Specific.cpp">
       <Filter>Semantic\Type</Filter>
     </ClCompile>
@@ -422,9 +419,6 @@
     <ClCompile Include="../src/SyntaxJob.cpp">
       <Filter>Syntax</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Path.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Ast_New.cpp">
       <Filter>Syntax</Filter>
     </ClCompile>
@@ -654,6 +648,11 @@
     <ClCompile Include="..\src\SemanticContext.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\TypeManager_Concrete.cpp" />
+    <ClCompile Include="..\src\TypeManager_Error.cpp" />
+    <ClCompile Include="..\src\TypeManager_Promote.cpp" />
+    <ClCompile Include="..\src\TypeManager_Try.cpp" />
+    <ClCompile Include="..\src\TypeMatch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
@@ -1023,6 +1022,7 @@
     <ClInclude Include="..\src\SemanticContext.h">
       <Filter>Semantic</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\TypeMatch.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
