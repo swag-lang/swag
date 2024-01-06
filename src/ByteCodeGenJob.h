@@ -2,6 +2,8 @@
 #include "Job.h"
 #include "DependentJobs.h"
 #include "AstNode.h"
+#include "TypeInfo.h"
+
 struct SourceFile;
 struct SemanticContext;
 struct ByteCode;

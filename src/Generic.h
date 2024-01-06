@@ -1,21 +1,27 @@
 
 #pragma once
-struct SemanticContext;
-struct SymbolOverload;
-struct OneGenericMatch;
+struct AstFuncDecl;
+struct AstNode;
 struct AstVarDecl;
 struct CloneContext;
+struct Job;
+struct OneGenericMatch;
+struct SemanticContext;
+struct SymbolName;
+struct SymbolOverload;
+struct TypeInfo;
+struct TypeInfoParam;
 
-struct Generic
+namespace Generic
 {
-    static bool      updateGenericParameters(SemanticContext* context, bool doType, bool doNode, VectorNative<TypeInfoParam*>& typeGenericParameters, VectorNative<AstNode*>& nodeGenericParameters, AstNode* callGenericParameters, OneGenericMatch& match);
-    static Job*      end(SemanticContext* context, Job* dependentJob, SymbolName* symbol, AstNode* newNode, bool waitSymbol, VectorMap<Utf8, TypeInfo*>& replaceTypes);
-    static TypeInfo* doTypeSubstitution(VectorMap<Utf8, TypeInfo*>& replaceTypes, TypeInfo* typeInfo);
+    bool      updateGenericParameters(SemanticContext* context, bool doType, bool doNode, VectorNative<TypeInfoParam*>& typeGenericParameters, VectorNative<AstNode*>& nodeGenericParameters, AstNode* callGenericParameters, OneGenericMatch& match);
+    Job*      end(SemanticContext* context, Job* dependentJob, SymbolName* symbol, AstNode* newNode, bool waitSymbol, VectorMap<Utf8, TypeInfo*>& replaceTypes);
+    TypeInfo* doTypeSubstitution(VectorMap<Utf8, TypeInfo*>& replaceTypes, TypeInfo* typeInfo);
 
-    static void waitForGenericParameters(SemanticContext* context, OneGenericMatch& match);
-    static void instantiateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, AstFuncDecl** funcNode);
-    static bool instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool& alias);
-    static bool instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool validif = false);
-    static bool instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl* node);
-    static bool instantiateDefaultGenericFunc(SemanticContext* context);
-};
+    void waitForGenericParameters(SemanticContext* context, OneGenericMatch& match);
+    void instantiateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, AstFuncDecl** funcNode);
+    bool instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool& alias);
+    bool instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool validif = false);
+    bool instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl* node);
+    bool instantiateDefaultGenericFunc(SemanticContext* context);
+}; // namespace Generic

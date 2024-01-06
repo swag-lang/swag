@@ -1,13 +1,11 @@
 #include "pch.h"
-#include "Semantic.h"
-#include "SemanticJob.h"
 #include "Generic.h"
 #include "Ast.h"
-#include "TypeManager.h"
-#include "ErrorIds.h"
-#include "Naming.h"
 #include "DataSegment.h"
 #include "Diagnostic.h"
+#include "Naming.h"
+#include "SemanticJob.h"
+#include "TypeManager.h"
 
 bool Generic::updateGenericParameters(SemanticContext*              context,
                                       bool                          doType,

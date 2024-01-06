@@ -1,6 +1,4 @@
 #pragma once
-#include "Register.h"
-#include "Runtime.h"
 #include "Tokenizer.h"
 #include "RaceCondition.h"
 #include "ComputedValue.h"
