@@ -81,10 +81,7 @@ static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParamet
                 // We could have match a non const against a const
                 // We need to instantiate with the const equivalent, so make the call type const
                 if (!callTypeInfo->isConst() && wantedTypeInfo->isConst())
-                {
-                    callTypeInfo = callTypeInfo->clone();
-                    callTypeInfo->setConst();
-                }
+                    callTypeInfo = g_TypeMgr->makeConst(callTypeInfo);
 
                 auto regTypeInfo = callTypeInfo;
 

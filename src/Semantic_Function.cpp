@@ -1076,7 +1076,7 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
     {
         auto typeList = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
         if (typeList->isListArray())
-            node->typeInfo->setConst();
+            node->typeInfo = g_TypeMgr->makeConst(node->typeInfo);
     }
 
     node->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
