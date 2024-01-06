@@ -1,14 +1,35 @@
-
 #include "pch.h"
-#include "TypeManager.h"
-#include "Module.h"
+#include "Assert.h"
 #include "Ast.h"
-#include "Semantic.h"
+#include "AstFlags.h"
+#include "AstNode.h"
+#include "Attribute.h"
 #include "ByteCodeGenJob.h"
-#include "ErrorIds.h"
-#include "LanguageSpec.h"
-#include "Naming.h"
+#include "ComputedValue.h"
+#include "DataSegment.h"
+#include "DependentJobs.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
+#include "Job.h"
+#include "Module.h"
+#include "Mutex.h"
+#include "Naming.h"
+#include "Register.h"
+#include "Runtime.h"
+#include "Scope.h"
+#include "Semantic.h"
+#include "SemanticContext.h"
+#include "Set.h"
+#include "SourceFile.h"
+#include "Symbol.h"
+#include "Tokenizer.h"
+#include "TypeGen.h"
+#include "TypeInfo.h"
+#include "TypeManager.h"
+#include "TypeMatch.h"
+#include "Utf8.h"
+#include "Vector.h"
+#include "VectorNative.h"
 
 bool TypeManager::canOverflow(SemanticContext* context, AstNode* fromNode, uint64_t castFlags)
 {
@@ -2444,7 +2465,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             symContext.semContext = context;
             for (auto c : child->childs)
                 symContext.parameters.push_back(c);
-            toTypeStruct->match(symContext);
+            Match::match(toTypeStruct, symContext);
             switch (symContext.result)
             {
             case MatchResult::MissingNamedParameter:

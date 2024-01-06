@@ -1,17 +1,42 @@
 #include "pch.h"
-#include "Semantic.h"
-#include "SemanticJob.h"
-#include "ByteCodeGenJob.h"
 #include "Ast.h"
-#include "Workspace.h"
-#include "Generic.h"
-#include "TypeManager.h"
-#include "ThreadManager.h"
-#include "Module.h"
-#include "Report.h"
-#include "LanguageSpec.h"
-#include "Naming.h"
+#include "Assert.h"
+#include "AstFlags.h"
+#include "AstNode.h"
+#include "Attribute.h"
+#include "ByteCodeGenJob.h"
+#include "CallConv.h"
+#include "ComputedValue.h"
+#include "DependentJobs.h"
 #include "Diagnostic.h"
+#include "ErrorContext.h"
+#include "ErrorIds.h"
+#include "Generic.h"
+#include "Job.h"
+#include "LanguageSpec.h"
+#include "Module.h"
+#include "Mutex.h"
+#include "Naming.h"
+#include "Register.h"
+#include "Report.h"
+#include "Runtime.h"
+#include "Scope.h"
+#include "Semantic.h"
+#include "SemanticContext.h"
+#include "SemanticJob.h"
+#include "Set.h"
+#include "SourceFile.h"
+#include "Symbol.h"
+#include "SymTable.h"
+#include "ThreadManager.h"
+#include "Tokenizer.h"
+#include "TypeInfo.h"
+#include "TypeManager.h"
+#include "TypeMatch.h"
+#include "Utf8.h"
+#include "Vector.h"
+#include "VectorNative.h"
+#include "Workspace.h"
 
 bool Semantic::resolveNameAlias(SemanticContext* context)
 {
@@ -1863,24 +1888,24 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
         {
             forStruct     = true;
             auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Struct);
-            typeInfo->match(oneOverload.symMatchContext);
+            Match::match(typeInfo, oneOverload.symMatchContext);
             YIELD();
         }
         else if (rawTypeInfo->isInterface())
         {
             forStruct     = true;
             auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Interface);
-            typeInfo->match(oneOverload.symMatchContext);
+            Match::match(typeInfo, oneOverload.symMatchContext);
         }
         else if (rawTypeInfo->isFuncAttr())
         {
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(rawTypeInfo, TypeInfoKind::FuncAttr);
-            typeInfo->match(oneOverload.symMatchContext);
+            Match::match(typeInfo, oneOverload.symMatchContext);
         }
         else if (rawTypeInfo->isLambdaClosure())
         {
             auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(rawTypeInfo, TypeInfoKind::LambdaClosure);
-            typeInfo->match(oneOverload.symMatchContext);
+            Match::match(typeInfo, oneOverload.symMatchContext);
         }
         else if (rawTypeInfo->isKindGeneric())
         {
@@ -1891,7 +1916,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
             auto typeArr   = CastTypeInfo<TypeInfoArray>(rawTypeInfo, TypeInfoKind::Array);
             auto typeFinal = TypeManager::concreteType(typeArr->finalType);
             auto typeInfo  = CastTypeInfo<TypeInfoFuncAttr>(typeFinal, TypeInfoKind::LambdaClosure);
-            typeInfo->match(oneOverload.symMatchContext);
+            Match::match(typeInfo, oneOverload.symMatchContext);
         }
         else
         {

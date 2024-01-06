@@ -446,7 +446,6 @@ struct TypeInfoFuncAttr : public TypeInfo
 
     bool            isSame(TypeInfoFuncAttr* other, uint64_t castFlags, BadSignatureInfos& bi);
     bool            isSame(TypeInfoFuncAttr* from, uint64_t castFlags);
-    void            match(SymbolMatchContext& context);
     TypeInfo*       concreteReturnType();
     bool            isVariadic();
     bool            isCVariadic();
@@ -592,7 +591,6 @@ struct TypeInfoStruct : public TypeInfo
     bool           isSame(TypeInfo* to, uint64_t castFlags) override;
     TypeInfo*      clone() override;
     void           computeWhateverName(Utf8& resName, uint32_t nameType) override;
-    void           match(SymbolMatchContext& context);
     TypeInfoParam* findChildByNameNoLock(const Utf8& childName);
     TypeInfoParam* hasInterface(TypeInfoStruct* itf);
     TypeInfoParam* hasInterfaceNoLock(TypeInfoStruct* itf);

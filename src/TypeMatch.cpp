@@ -1,10 +1,25 @@
 #include "pch.h"
-#include "TypeManager.h"
+#include "TypeMatch.h"
+#include "Allocator.h"
+#include "Assert.h"
 #include "Ast.h"
-#include "Module.h"
+#include "AstFlags.h"
+#include "AstNode.h"
+#include "ComputedValue.h"
+#include "Job.h"
+#include "Register.h"
+#include "Runtime.h"
 #include "Semantic.h"
-#include "Generic.h"
-#include "LanguageSpec.h"
+#include "SemanticContext.h"
+#include "Symbol.h"
+#include "Tokenizer.h"
+#include "TypeInfo.h"
+#include "TypeManager.h"
+#include "Utf8.h"
+#include "Vector.h"
+#include "VectorNative.h"
+
+struct DataSegment;
 
 static void deduceGenericParam(SymbolMatchContext& context, AstNode* callParameter, TypeInfo* callTypeInfo, TypeInfo* wantedTypeInfo, int idxParam, uint64_t castFlags)
 {
@@ -1031,19 +1046,19 @@ static void matchParametersAndNamed(SymbolMatchContext& context, VectorNative<Ty
         matchNamedParameters(context, parameters, castFlags);
 }
 
-void TypeInfoFuncAttr::match(SymbolMatchContext& context)
+void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
 {
     context.result = MatchResult::Ok;
 
-    fillUserGenericParams(context, genericParameters);
+    fillUserGenericParams(context, typeFunc->genericParameters);
     if (context.result != MatchResult::Ok)
         return;
 
     // For a lambda
     if (context.flags & SymbolMatchContext::MATCH_FOR_LAMBDA)
     {
-        if (!(flags & TYPEINFO_GENERIC))
-            matchGenericParameters(context, this, genericParameters);
+        if (!(typeFunc->flags & TYPEINFO_GENERIC))
+            matchGenericParameters(context, typeFunc, typeFunc->genericParameters);
         return;
     }
 
@@ -1051,9 +1066,9 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     // We match in priority without an implicit automatic cast. If this does not match, then we
     // try with an implicit cast.
     context.autoOpCast = false;
-    if (declNode && declNode->kind == AstNodeKind::FuncDecl)
+    if (typeFunc->declNode && typeFunc->declNode->kind == AstNodeKind::FuncDecl)
     {
-        auto funcNode = CastAst<AstFuncDecl>(declNode, AstNodeKind::FuncDecl);
+        auto funcNode = CastAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
 
         uint32_t castFlags = CASTFLAG_DEFAULT;
         if (!funcNode->canOverload())
@@ -1062,10 +1077,10 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         if (funcNode->parameters && (funcNode->parameters->flags & AST_IS_GENERIC))
         {
             SymbolMatchContext cpyContext = context;
-            matchParametersAndNamed(cpyContext, parameters, castFlags);
+            matchParametersAndNamed(cpyContext, typeFunc->parameters, castFlags);
             if (cpyContext.result == MatchResult::BadSignature)
             {
-                matchParametersAndNamed(context, parameters, castFlags | CASTFLAG_AUTO_OPCAST);
+                matchParametersAndNamed(context, typeFunc->parameters, castFlags | CASTFLAG_AUTO_OPCAST);
                 if (context.semContext->result != ContextResult::Done)
                     return;
 
@@ -1080,12 +1095,12 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
         }
         else
         {
-            matchParametersAndNamed(context, parameters, castFlags | CASTFLAG_AUTO_OPCAST);
+            matchParametersAndNamed(context, typeFunc->parameters, castFlags | CASTFLAG_AUTO_OPCAST);
         }
     }
     else
     {
-        matchParametersAndNamed(context, parameters, CASTFLAG_TRY_COERCE | CASTFLAG_AUTO_OPCAST);
+        matchParametersAndNamed(context, typeFunc->parameters, CASTFLAG_TRY_COERCE | CASTFLAG_AUTO_OPCAST);
     }
 
     int cptDone = 0;
@@ -1102,18 +1117,18 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     context.cptResolved = min(context.cptResolved, cptDone);
 
     // Not enough parameters
-    size_t firstDefault  = firstDefaultValueIdx == UINT32_MAX ? parameters.size() : firstDefaultValueIdx;
+    size_t firstDefault  = typeFunc->firstDefaultValueIdx == UINT32_MAX ? typeFunc->parameters.size() : typeFunc->firstDefaultValueIdx;
     context.firstDefault = (uint32_t) firstDefault;
-    if (context.cptResolved < (int) firstDefault && parameters.size() && context.result == MatchResult::Ok)
+    if (context.cptResolved < (int) firstDefault && typeFunc->parameters.size() && context.result == MatchResult::Ok)
     {
-        auto back = parameters.back()->typeInfo;
+        auto back = typeFunc->parameters.back()->typeInfo;
         if (!back->isVariadic() && !back->isTypedVariadic() && !back->isCVariadic())
         {
             context.result = MatchResult::NotEnoughParameters;
             return;
         }
 
-        if (parameters.size() > 1 && context.cptResolved < (int) min(parameters.size() - 1, firstDefault))
+        if (typeFunc->parameters.size() > 1 && context.cptResolved < (int) min(typeFunc->parameters.size() - 1, firstDefault))
         {
             context.result = MatchResult::NotEnoughParameters;
             return;
@@ -1123,27 +1138,27 @@ void TypeInfoFuncAttr::match(SymbolMatchContext& context)
     if (context.result != MatchResult::Ok)
         return;
 
-    matchGenericParameters(context, this, genericParameters);
+    matchGenericParameters(context, typeFunc, typeFunc->genericParameters);
     if (context.result != MatchResult::Ok)
         return;
 }
 
-void TypeInfoStruct::match(SymbolMatchContext& context)
+void Match::match(TypeInfoStruct* typeStruct, SymbolMatchContext& context)
 {
     context.result = MatchResult::Ok;
 
-    fillUserGenericParams(context, genericParameters);
+    fillUserGenericParams(context, typeStruct->genericParameters);
     if (context.result != MatchResult::Ok)
         return;
 
-    flattenUsingFields();
-    matchParameters(context, flattenFields, CASTFLAG_TRY_COERCE | CASTFLAG_FORCE_UNCONST);
+    typeStruct->flattenUsingFields();
+    matchParameters(context, typeStruct->flattenFields, CASTFLAG_TRY_COERCE | CASTFLAG_FORCE_UNCONST);
     if (context.result != MatchResult::Ok)
         return;
 
-    matchNamedParameters(context, flattenFields, CASTFLAG_TRY_COERCE | CASTFLAG_FORCE_UNCONST);
+    matchNamedParameters(context, typeStruct->flattenFields, CASTFLAG_TRY_COERCE | CASTFLAG_FORCE_UNCONST);
     if (context.result != MatchResult::Ok)
         return;
 
-    matchGenericParameters(context, this, genericParameters);
+    matchGenericParameters(context, typeStruct, typeStruct->genericParameters);
 }
