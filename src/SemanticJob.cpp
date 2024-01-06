@@ -158,11 +158,13 @@ JobResult SemanticJob::execute()
 
             if (node->flags & AST_NO_SEMANTIC)
             {
-                node->semanticState = AstNodeResolveState::PostChilds;
+                if (!Semantic::setState(&context, node, AstNodeResolveState::PostChilds))
+                    return JobResult::ReleaseJob;
                 continue;
             }
 
-            node->semanticState = AstNodeResolveState::ProcessingChilds;
+            if (!Semantic::setState(&context, node, AstNodeResolveState::ProcessingChilds))
+                return JobResult::ReleaseJob;
 
             int start = (int) node->childs.count - 1;
             int end   = -1;
@@ -185,7 +187,8 @@ JobResult SemanticJob::execute()
                 if ((child->semFlags & SEMFLAG_ONCE) && child->semanticState != AstNodeResolveState::Enter)
                     continue;
 
-                Semantic::enterState(child);
+                if (!Semantic::setState(&context, child, AstNodeResolveState::Enter))
+                    return JobResult::ReleaseJob;
                 nodes.push_back(child);
             }
         }
@@ -195,7 +198,8 @@ JobResult SemanticJob::execute()
 
             if (node->flags & AST_NO_SEMANTIC)
             {
-                node->semanticState = AstNodeResolveState::PostChilds;
+                if (!Semantic::setState(&context, node, AstNodeResolveState::PostChilds))
+                    return JobResult::ReleaseJob;
                 continue;
             }
 
@@ -210,14 +214,11 @@ JobResult SemanticJob::execute()
                     continue;
             }
 
-            node->semanticState = AstNodeResolveState::PostChilds;
+            if (!Semantic::setState(&context, node, AstNodeResolveState::PostChilds))
+                return JobResult::ReleaseJob;
+            // fallthrough
 
         case AstNodeResolveState::PostChilds:
-
-            Semantic::inheritAccess(node);
-            if (!Semantic::checkAccess(&context, node))
-                return JobResult::ReleaseJob;
-
             if (node->hasExtSemantic() && node->extSemantic()->semanticAfterFct)
             {
                 context.result = ContextResult::Done;

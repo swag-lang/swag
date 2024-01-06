@@ -139,7 +139,7 @@ struct Semantic
     static uint32_t       alignOf(AstVarDecl* node);
     static bool           isCompilerContext(AstNode* node);
     static DataSegment*   getConstantSegFromContext(AstNode* node, bool forceCompiler = false);
-    static void           enterState(AstNode* node);
+    static bool           setState(SemanticContext* context, AstNode* node, AstNodeResolveState state);
     static void           inheritAttributesFromParent(AstNode* child);
     static void           inheritAttributesFrom(AstNode* child, uint64_t attributeFlags, uint16_t safetyOn, uint16_t safetyOff);
     static void           inheritAttributesFromOwnerFunc(AstNode* child);

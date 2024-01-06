@@ -138,24 +138,32 @@ DataSegment* Semantic::getConstantSegFromContext(AstNode* node, bool forceCompil
     return &module->constantSegment;
 }
 
-void Semantic::enterState(AstNode* node)
+bool Semantic::setState(SemanticContext* context, AstNode* node, AstNodeResolveState state)
 {
-    if (node->semanticState == AstNodeResolveState::Enter)
-        return;
+    if (node->semanticState == state)
+        return true;
+    node->semanticState = state;
 
-    node->semanticState = AstNodeResolveState::Enter;
-    switch (node->kind)
+    switch (state)
     {
-    case AstNodeKind::IdentifierRef:
-    {
-        AstIdentifierRef* idRef       = static_cast<AstIdentifierRef*>(node);
-        idRef->startScope             = nullptr;
-        idRef->resolvedSymbolName     = nullptr;
-        idRef->resolvedSymbolOverload = nullptr;
-        idRef->previousResolvedNode   = nullptr;
+    case AstNodeResolveState::Enter:
+        if (node->kind == AstNodeKind::IdentifierRef)
+        {
+            AstIdentifierRef* idRef       = static_cast<AstIdentifierRef*>(node);
+            idRef->startScope             = nullptr;
+            idRef->resolvedSymbolName     = nullptr;
+            idRef->resolvedSymbolOverload = nullptr;
+            idRef->previousResolvedNode   = nullptr;
+            break;
+        }
+        break;
+
+    case AstNodeResolveState::PostChilds:
+        Semantic::inheritAccess(node);
+        if (!Semantic::checkAccess(context, node))
+            return false;
         break;
     }
-    default:
-        break;
-    }
+
+    return true;
 }
