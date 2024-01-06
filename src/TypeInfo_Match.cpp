@@ -1147,31 +1147,3 @@ void TypeInfoStruct::match(SymbolMatchContext& context)
 
     matchGenericParameters(context, this, genericParameters);
 }
-
-TypeInfoParam* TypeInfoStruct::findChildByNameNoLock(const Utf8& childName)
-{
-    for (auto child : fields)
-    {
-        if (child->name == childName)
-            return child;
-    }
-
-    return nullptr;
-}
-
-TypeInfoParam* TypeInfoStruct::hasInterface(TypeInfoStruct* itf)
-{
-    SharedLock lk(mutex);
-    return hasInterfaceNoLock(itf);
-}
-
-TypeInfoParam* TypeInfoStruct::hasInterfaceNoLock(TypeInfoStruct* itf)
-{
-    for (auto child : interfaces)
-    {
-        if (child->typeInfo->isSame(itf, CASTFLAG_CAST))
-            return child;
-    }
-
-    return nullptr;
-}

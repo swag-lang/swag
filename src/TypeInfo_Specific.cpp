@@ -1,7 +1,22 @@
 #include "pch.h"
-#include "TypeManager.h"
 #include "Ast.h"
 #include "Semantic.h"
+#include "TypeManager.h"
+#include "Assert.h"
+#include "AstNode.h"
+#include "Attribute.h"
+#include "CallConv.h"
+#include "Job.h"
+#include "Mutex.h"
+#include "Runtime.h"
+#include "Scope.h"
+#include "SemanticContext.h"
+#include "SourceFile.h"
+#include "Tokenizer.h"
+#include "TypeInfo.h"
+#include "Utf8.h"
+#include "Vector.h"
+#include "VectorNative.h"
 
 TypeInfo* TypeInfoNative::clone()
 {
@@ -949,6 +964,34 @@ static void flatten(VectorNative<TypeInfoParam*>& result, TypeInfoParam* param)
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(param->typeInfo, TypeInfoKind::Struct);
     for (auto p : typeStruct->fields)
         flatten(result, p);
+}
+
+TypeInfoParam* TypeInfoStruct::findChildByNameNoLock(const Utf8& childName)
+{
+    for (auto child : fields)
+    {
+        if (child->name == childName)
+            return child;
+    }
+
+    return nullptr;
+}
+
+TypeInfoParam* TypeInfoStruct::hasInterface(TypeInfoStruct* itf)
+{
+    SharedLock lk(mutex);
+    return hasInterfaceNoLock(itf);
+}
+
+TypeInfoParam* TypeInfoStruct::hasInterfaceNoLock(TypeInfoStruct* itf)
+{
+    for (auto child : interfaces)
+    {
+        if (child->typeInfo->isSame(itf, CASTFLAG_CAST))
+            return child;
+    }
+
+    return nullptr;
 }
 
 void TypeInfoStruct::flattenUsingFields()
