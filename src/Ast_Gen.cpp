@@ -1,9 +1,7 @@
 #include "pch.h"
 #include "Ast.h"
+#include "Diagnostic.h"
 #include "SemanticJob.h"
-#include "Semantic.h"
-#include "ByteCodeGenJob.h"
-#include "Parser.h"
 #include "TypeManager.h"
 
 atomic<int> g_UniqueID;
