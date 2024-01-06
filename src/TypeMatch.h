@@ -1,7 +1,159 @@
 #pragma once
+#include "Utf8.h"
+
+struct AstNode;
 struct TypeInfoFuncAttr;
 struct TypeInfoStruct;
 struct SymbolMatchContext;
+struct TypeInfo;
+struct TypeInfoParam;
+struct ComputedValue;
+struct SemanticContext;
+
+enum class MatchResult
+{
+    Ok,
+    TooManyParameters,
+    TooManyGenericParameters,
+    NotEnoughParameters,
+    MissingParameters,
+    NotEnoughGenericParameters,
+    BadSignature,
+    CannotDeduceGenericType,
+    BadGenericSignature,
+    InvalidNamedParameter,
+    MissingNamedParameter,
+    DuplicatedNamedParameter,
+    MismatchGenericValue,
+    ValidIfFailed,
+    MismatchThrow,
+    NoReturnType,
+    MissingReturnType,
+    MismatchReturnType,
+};
+
+enum class CastErrorType
+{
+    Zero = 0,
+    Const,
+    SliceArray,
+    SafetyCastAny,
+};
+
+struct BadSignatureInfos
+{
+    Utf8           badGenMatch;
+    AstNode*       badNode                   = nullptr;
+    AstNode*       genMatchFromNode          = nullptr;
+    TypeInfo*      badSignatureRequestedType = nullptr;
+    TypeInfo*      badSignatureGivenType     = nullptr;
+    TypeInfo*      castErrorToType           = nullptr;
+    TypeInfo*      castErrorFromType         = nullptr;
+    ComputedValue* badGenValue1              = nullptr;
+    ComputedValue* badGenValue2              = nullptr;
+    MatchResult    matchResult               = MatchResult::Ok;
+
+    uint64_t      castErrorFlags           = 0;
+    CastErrorType castErrorType            = CastErrorType::Zero;
+    int           badSignatureParameterIdx = 0;
+    int           badSignatureNum1         = 0;
+    int           badSignatureNum2         = 0;
+
+    void clear()
+    {
+        badGenMatch.clear();
+        badNode                   = nullptr;
+        genMatchFromNode          = nullptr;
+        badSignatureRequestedType = nullptr;
+        badSignatureGivenType     = nullptr;
+        castErrorToType           = nullptr;
+        castErrorFromType         = nullptr;
+        badGenValue1              = nullptr;
+        badGenValue2              = nullptr;
+        matchResult               = MatchResult::Ok;
+        castErrorFlags            = 0;
+        castErrorType             = CastErrorType::Zero;
+        badSignatureParameterIdx  = -1;
+        badSignatureNum1          = 0;
+        badSignatureNum2          = 0;
+    }
+};
+
+struct SymbolMatchContext
+{
+    static const uint32_t MATCH_ACCEPT_NO_GENERIC = 0x00000001;
+    static const uint32_t MATCH_FOR_LAMBDA        = 0x00000002;
+    static const uint32_t MATCH_GENERIC_AUTO      = 0x00000004;
+    static const uint32_t MATCH_ERROR_VALUE_TYPE  = 0x00000008;
+    static const uint32_t MATCH_ERROR_TYPE_VALUE  = 0x00000010;
+    static const uint32_t MATCH_UNCONST           = 0x00000020;
+    static const uint32_t MATCH_UFCS              = 0x00000040;
+    static const uint32_t MATCH_CLOSURE_PARAM     = 0x00000080;
+
+    VectorNative<AstNode*>          genericParameters;
+    VectorNative<AstNode*>          parameters;
+    VectorNative<TypeInfoParam*>    solvedParameters;
+    VectorNative<TypeInfoParam*>    solvedCallParameters;
+    VectorNative<bool>              doneParameters;
+    VectorNative<TypeInfo*>         genericParametersCallTypes;
+    VectorNative<ComputedValue*>    genericParametersCallValues;
+    VectorNative<AstNode*>          genericParametersCallFrom;
+    VectorMap<Utf8, TypeInfo*>      genericReplaceTypes;
+    VectorMap<Utf8, ComputedValue*> genericReplaceValues;
+    VectorMap<Utf8, AstNode*>       genericReplaceFrom;
+    VectorNative<TypeInfo*>         genericParametersGenTypes;
+    VectorMap<Utf8, uint32_t>       mapGenericTypesIndex;
+    BadSignatureInfos               badSignatureInfos;
+
+    SemanticContext* semContext = nullptr;
+
+    uint32_t    flags;
+    MatchResult result;
+    int         cptResolved;
+    uint32_t    firstDefault;
+
+    bool hasNamedParameters;
+    bool autoOpCast;
+
+    SymbolMatchContext()
+    {
+        reset();
+    }
+
+    void reset()
+    {
+        genericParameters.clear();
+        parameters.clear();
+        solvedParameters.clear();
+        solvedCallParameters.clear();
+        doneParameters.clear();
+        genericParametersCallTypes.clear();
+        genericParametersCallValues.clear();
+        genericParametersCallFrom.clear();
+        genericReplaceTypes.clear();
+        genericReplaceValues.clear();
+        genericReplaceFrom.clear();
+        genericParametersGenTypes.clear();
+        mapGenericTypesIndex.clear();
+        badSignatureInfos.clear();
+
+        semContext = nullptr;
+
+        flags        = 0;
+        result       = MatchResult::Ok;
+        cptResolved  = 0;
+        firstDefault = UINT32_MAX;
+
+        hasNamedParameters = false;
+        autoOpCast         = false;
+    }
+
+    void resetTmp()
+    {
+        cptResolved        = 0;
+        hasNamedParameters = false;
+    }
+};
 
 namespace Match
 {
