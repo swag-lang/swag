@@ -8,6 +8,7 @@
 #include "Module.h"
 #include "ErrorIds.h"
 #include "Crc32.h"
+#include "Diagnostic.h"
 
 bool TypeGen::genExportedTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, uint32_t cflags, TypeInfo** ptrTypeInfo)
 {

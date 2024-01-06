@@ -7,6 +7,7 @@
 #include "ErrorIds.h"
 #include "Report.h"
 #include "Naming.h"
+#include "Diagnostic.h"
 
 bool Semantic::makeIntrinsicKindof(SemanticContext* context, AstNode* node)
 {

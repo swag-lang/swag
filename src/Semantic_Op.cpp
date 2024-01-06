@@ -6,6 +6,7 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "Mutex.h"
+#include "Diagnostic.h"
 
 bool Semantic::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node)
 {

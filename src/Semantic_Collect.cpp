@@ -4,6 +4,7 @@
 #include "Ast.h"
 #include "TypeManager.h"
 #include "Report.h"
+#include "Diagnostic.h"
 
 bool Semantic::reserveAndStoreToSegment(JobContext* context, DataSegment* storageSegment, uint32_t& storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
 {

@@ -1,6 +1,7 @@
 #pragma once
 #include "Job.h"
 #include "Semantic.h"
+
 struct SourceFile;
 struct AstNode;
 

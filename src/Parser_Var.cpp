@@ -5,6 +5,7 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "Naming.h"
+#include "Diagnostic.h"
 
 bool Parser::checkIsValidVarName(AstNode* node)
 {

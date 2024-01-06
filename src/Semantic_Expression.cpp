@@ -5,6 +5,7 @@
 #include "TypeManager.h"
 #include "LanguageSpec.h"
 #include "ErrorIds.h"
+#include "Diagnostic.h"
 
 bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* expression, const Utf8& errMsg, const Utf8& errParam)
 {

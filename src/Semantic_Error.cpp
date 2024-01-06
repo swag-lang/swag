@@ -7,6 +7,7 @@
 #include "AstOutput.h"
 #include "Naming.h"
 #include "SyntaxColor.h"
+#include "Diagnostic.h"
 
 static int getBadParamIdx(OneTryMatch& oneTry, AstNode* callParameters)
 {

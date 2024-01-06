@@ -5,6 +5,7 @@
 #include "TypeManager.h"
 #include "LanguageSpec.h"
 #include "Report.h"
+#include "Diagnostic.h"
 
 static void helpUserTags()
 {

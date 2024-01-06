@@ -6,6 +6,7 @@
 #include "Module.h"
 #include "ErrorIds.h"
 #include "Naming.h"
+#include "Diagnostic.h"
 
 bool Semantic::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeInfo* typeInfoVar)
 {

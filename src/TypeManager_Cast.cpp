@@ -8,6 +8,7 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "Naming.h"
+#include "Diagnostic.h"
 
 bool TypeManager::canOverflow(SemanticContext* context, AstNode* fromNode, uint64_t castFlags)
 {

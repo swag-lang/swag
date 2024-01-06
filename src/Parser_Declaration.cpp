@@ -6,6 +6,7 @@
 #include "Module.h"
 #include "ByteCodeGenJob.h"
 #include "LanguageSpec.h"
+#include "Diagnostic.h"
 #include "TypeManager.h"
 
 bool Parser::doCheckPublicInternalPrivate(Token& tokenAttr)

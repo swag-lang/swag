@@ -10,6 +10,7 @@
 #include "ErrorIds.h"
 #include "Report.h"
 #include "LanguageSpec.h"
+#include "Diagnostic.h"
 
 bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right)
 {

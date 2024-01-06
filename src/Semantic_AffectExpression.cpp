@@ -9,6 +9,7 @@
 #include "ThreadManager.h"
 #include "LanguageSpec.h"
 #include "Naming.h"
+#include "Diagnostic.h"
 
 bool Semantic::resolveMove(SemanticContext* context)
 {

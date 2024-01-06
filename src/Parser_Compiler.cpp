@@ -5,6 +5,7 @@
 #include "Scoped.h"
 #include "Module.h"
 #include "ErrorIds.h"
+#include "Diagnostic.h"
 #include "LanguageSpec.h"
 
 bool Parser::doIntrinsicTag(AstNode* parent, AstNode** result)

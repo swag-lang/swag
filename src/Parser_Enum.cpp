@@ -4,6 +4,7 @@
 #include "Semantic.h"
 #include "ErrorIds.h"
 #include "Naming.h"
+#include "Diagnostic.h"
 #include "TypeManager.h"
 
 bool Parser::doEnum(AstNode* parent, AstNode** result)

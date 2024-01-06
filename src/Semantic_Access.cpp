@@ -1,8 +1,9 @@
 #include "pch.h"
-#include "Semantic.h"
 #include "Ast.h"
+#include "Diagnostic.h"
 #include "Naming.h"
 #include "Report.h"
+#include "Semantic.h"
 
 bool Semantic::canHaveGlobalAccess(AstNode* node)
 {

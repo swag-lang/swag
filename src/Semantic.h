@@ -1,13 +1,7 @@
 #pragma once
-#include "Job.h"
-#include "Utf8.h"
-#include "TypeInfo.h"
-#include "Diagnostic.h"
-#include "Scope.h"
-#include "Concat.h"
 #include "SemanticContext.h"
 
-struct SemanticJob;
+struct Diagnostic;
 struct AstNode;
 struct Module;
 struct SourceFile;

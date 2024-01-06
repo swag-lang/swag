@@ -8,6 +8,7 @@
 #include "LanguageSpec.h"
 #include "Naming.h"
 #include "TypeManager.h"
+#include "Diagnostic.h"
 
 #define INHERIT_ATTR(__c, __f)          \
     if (!(__c->attributeFlags & (__f))) \

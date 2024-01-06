@@ -9,6 +9,7 @@
 #include "Os.h"
 #include "LanguageSpec.h"
 #include "Naming.h"
+#include "Diagnostic.h"
 
 void Semantic::allocateOnStack(AstNode* node, TypeInfo* typeInfo)
 {

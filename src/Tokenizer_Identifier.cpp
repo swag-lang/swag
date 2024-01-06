@@ -2,6 +2,7 @@
 #include "LanguageSpec.h"
 #include "ErrorIds.h"
 #include "Semantic.h"
+#include "Diagnostic.h"
 
 bool Tokenizer::doIdentifier(TokenParse& token)
 {

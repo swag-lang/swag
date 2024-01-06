@@ -9,6 +9,7 @@
 #include "LanguageSpec.h"
 #include "Ast.h"
 #include "Naming.h"
+#include "Diagnostic.h"
 
 bool Semantic::getDigitHexa(SemanticContext* context, const SourceLocation& startLoc, const char* pzs, const char** _pz, int& result, const char* errMsg)
 {

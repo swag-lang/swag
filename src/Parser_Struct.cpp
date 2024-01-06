@@ -5,6 +5,7 @@
 #include "Module.h"
 #include "Naming.h"
 #include "TypeManager.h"
+#include "Diagnostic.h"
 
 bool Parser::doImpl(AstNode* parent, AstNode** result)
 {

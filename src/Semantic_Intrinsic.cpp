@@ -8,6 +8,7 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "Workspace.h"
+#include "Diagnostic.h"
 
 bool Semantic::resolveIntrinsicTag(SemanticContext* context)
 {

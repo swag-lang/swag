@@ -4,6 +4,7 @@
 #include "Scoped.h"
 #include "TypeManager.h"
 #include "ErrorIds.h"
+#include "Diagnostic.h"
 #include "LanguageSpec.h"
 
 bool Parser::doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeVarDecl)

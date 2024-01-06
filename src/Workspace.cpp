@@ -5,6 +5,7 @@
 #include "ModuleBuildJob.h"
 #include "TypeManager.h"
 #include "Report.h"
+#include "Diagnostic.h"
 
 Workspace* g_Workspace = nullptr;
 

@@ -6,6 +6,7 @@
 #include "ByteCodeGenJob.h"
 #include "Module.h"
 #include "Naming.h"
+#include "Diagnostic.h"
 #include "LanguageSpec.h"
 
 bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** result)

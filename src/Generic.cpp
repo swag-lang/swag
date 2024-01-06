@@ -7,6 +7,7 @@
 #include "ErrorIds.h"
 #include "Naming.h"
 #include "DataSegment.h"
+#include "Diagnostic.h"
 
 bool Generic::updateGenericParameters(SemanticContext*              context,
                                       bool                          doType,

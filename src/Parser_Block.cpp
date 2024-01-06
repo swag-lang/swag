@@ -4,6 +4,7 @@
 #include "Scoped.h"
 #include "ErrorIds.h"
 #include "ByteCodeGenJob.h"
+#include "Diagnostic.h"
 #include "LanguageSpec.h"
 
 bool Parser::doIf(AstNode* parent, AstNode** result)

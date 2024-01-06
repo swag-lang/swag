@@ -9,6 +9,7 @@
 #include "Report.h"
 #include "LanguageSpec.h"
 #include "Parser.h"
+#include "Diagnostic.h"
 
 bool Semantic::resolveIf(SemanticContext* context)
 {

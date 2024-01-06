@@ -4,6 +4,7 @@
 #include "LanguageSpec.h"
 #include "Scoped.h"
 #include "ErrorIds.h"
+#include "Diagnostic.h"
 
 bool Parser::testIsSingleIdentifier(AstNode* node)
 {

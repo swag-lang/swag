@@ -4,6 +4,7 @@
 #include "TypeManager.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "Diagnostic.h"
 
 bool Semantic::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNode* child)
 {

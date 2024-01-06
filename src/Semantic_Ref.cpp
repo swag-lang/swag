@@ -8,6 +8,7 @@
 #include "Report.h"
 #include "LanguageSpec.h"
 #include "Naming.h"
+#include "Diagnostic.h"
 
 bool Semantic::boundCheck(SemanticContext* context, TypeInfo* forType, AstNode* arrayNode, AstNode* arrayAccess, uint64_t maxCount)
 {

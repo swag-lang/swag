@@ -8,6 +8,7 @@
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "Naming.h"
+#include "Diagnostic.h"
 
 uint32_t Semantic::alignOf(AstVarDecl* node)
 {
