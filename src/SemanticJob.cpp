@@ -24,6 +24,65 @@ SemanticJob* SemanticJob::newJob(Job* dependentJob, SourceFile* sourceFile, AstN
     return job;
 }
 
+bool SemanticJob::spawnJob()
+{
+    auto node = context.node;
+
+    // Some nodes need to spawn a new semantic job
+    if (context.canSpawn && node != originalNode)
+    {
+        switch (node->kind)
+        {
+        case AstNodeKind::AttrUse:
+            if (!node->ownerScope->isGlobalOrImpl() || ((AstAttrUse*) node)->specFlags & AstAttrUse::SPECFLAG_GLOBAL)
+                break;
+
+        case AstNodeKind::FuncDecl:
+        case AstNodeKind::StructDecl:
+        case AstNodeKind::InterfaceDecl:
+        case AstNodeKind::VarDecl:
+        case AstNodeKind::ConstDecl:
+        case AstNodeKind::TypeAlias:
+        case AstNodeKind::NameAlias:
+        case AstNodeKind::EnumDecl:
+        case AstNodeKind::CompilerAssert:
+        case AstNodeKind::CompilerPrint:
+        case AstNodeKind::CompilerError:
+        case AstNodeKind::CompilerWarning:
+        case AstNodeKind::CompilerRun:
+        case AstNodeKind::AttrDecl:
+        case AstNodeKind::CompilerIf:
+        case AstNodeKind::Impl:
+        {
+            // A sub thing can be waiting for the owner function to be resolved.
+            // We inform the parent function that we have seen the sub thing, and that
+            // the attributes context is now fine for it. That way, the parent function can
+            // trigger the resolve of the sub things by just removing AST_NO_SEMANTIC or by hand.
+            ScopedLock lk(node->mutex);
+
+            // Flag AST_NO_SEMANTIC must be tested with the node locked, as it can be changed in
+            // registerFuncSymbol by another thread
+            if (!(node->flags & AST_NO_SEMANTIC) && !(node->semFlags & SEMFLAG_FILE_JOB_PASS))
+            {
+                SWAG_ASSERT(sourceFile->module == module);
+                auto job                 = newJob(dependentJob, sourceFile, node, false);
+                job->context.errCxtSteps = context.errCxtSteps;
+                g_ThreadMgr.addJob(job);
+            }
+
+            node->semFlags |= SEMFLAG_FILE_JOB_PASS;
+            nodes.pop_back();
+            return true;
+        }
+
+        default:
+            break;
+        }
+    }
+
+    return false;
+}
+
 JobResult SemanticJob::execute()
 {
     ScopedLock lkExecute(executeMutex);
@@ -85,57 +144,8 @@ JobResult SemanticJob::execute()
         {
         case AstNodeResolveState::Enter:
         {
-            // Some nodes need to spawn a new semantic job
-            if (context.canSpawn && node != originalNode)
-            {
-                switch (node->kind)
-                {
-                case AstNodeKind::AttrUse:
-                    if (!node->ownerScope->isGlobalOrImpl() || ((AstAttrUse*) node)->specFlags & AstAttrUse::SPECFLAG_GLOBAL)
-                        break;
-
-                case AstNodeKind::FuncDecl:
-                case AstNodeKind::StructDecl:
-                case AstNodeKind::InterfaceDecl:
-                case AstNodeKind::VarDecl:
-                case AstNodeKind::ConstDecl:
-                case AstNodeKind::TypeAlias:
-                case AstNodeKind::NameAlias:
-                case AstNodeKind::EnumDecl:
-                case AstNodeKind::CompilerAssert:
-                case AstNodeKind::CompilerPrint:
-                case AstNodeKind::CompilerError:
-                case AstNodeKind::CompilerWarning:
-                case AstNodeKind::CompilerRun:
-                case AstNodeKind::AttrDecl:
-                case AstNodeKind::CompilerIf:
-                case AstNodeKind::Impl:
-                {
-                    // A sub thing can be waiting for the owner function to be resolved.
-                    // We inform the parent function that we have seen the sub thing, and that
-                    // the attributes context is now fine for it. That way, the parent function can
-                    // trigger the resolve of the sub things by just removing AST_NO_SEMANTIC or by hand.
-                    ScopedLock lk(node->mutex);
-
-                    // Flag AST_NO_SEMANTIC must be tested with the node locked, as it can be changed in
-                    // registerFuncSymbol by another thread
-                    if (!(node->flags & AST_NO_SEMANTIC) && !(node->semFlags & SEMFLAG_FILE_JOB_PASS))
-                    {
-                        SWAG_ASSERT(sourceFile->module == module);
-                        auto job                 = newJob(dependentJob, sourceFile, node, false);
-                        job->context.errCxtSteps = context.errCxtSteps;
-                        g_ThreadMgr.addJob(job);
-                    }
-
-                    node->semFlags |= SEMFLAG_FILE_JOB_PASS;
-                    nodes.pop_back();
-                    continue;
-                }
-
-                default:
-                    break;
-                }
-            }
+            if (spawnJob())
+                continue;
 
             if (node->hasExtSemantic() && node->extSemantic()->semanticBeforeFct)
             {
@@ -152,40 +162,29 @@ JobResult SemanticJob::execute()
                 break;
             }
 
-            auto countChilds = (int) node->childs.size();
+            int start = (int) node->childs.count - 1;
+            int end   = -1;
+            int inc   = -1;
             if (node->flags & AST_REVERSE_SEMANTIC)
             {
-                for (int i = 0; i < countChilds; i++)
-                {
-                    auto child = node->childs[i];
-
-                    // If the child has the AST_NO_SEMANTIC flag, do not push it.
-                    // Special case for sub declarations, because we need to deal with SEMFLAG_FILE_JOB_PASS
-                    if ((child->flags & AST_NO_SEMANTIC) && !(child->flags & AST_SUB_DECL))
-                        continue;
-                    if ((child->semFlags & SEMFLAG_ONCE) && child->semanticState != AstNodeResolveState::Enter)
-                        continue;
-
-                    Semantic::enterState(child);
-                    nodes.push_back(child);
-                }
+                start = 0;
+                end   = (int) node->childs.count;
+                inc   = 1;
             }
-            else
+
+            for (int i = start; i != end; i += inc)
             {
-                for (int i = countChilds - 1; i >= 0; i--)
-                {
-                    auto child = node->childs[i];
+                auto child = node->childs[i];
 
-                    // If the child has the AST_NO_SEMANTIC flag, do not push it.
-                    // Special case for sub declarations, because we need to deal with SEMFLAG_FILE_JOB_PASS
-                    if ((child->flags & AST_NO_SEMANTIC) && !(child->flags & AST_SUB_DECL))
-                        continue;
-                    if ((child->semFlags & SEMFLAG_ONCE) && child->semanticState != AstNodeResolveState::Enter)
-                        continue;
+                // If the child has the AST_NO_SEMANTIC flag, do not push it.
+                // Special case for sub declarations, because we need to deal with SEMFLAG_FILE_JOB_PASS
+                if ((child->flags & AST_NO_SEMANTIC) && !(child->flags & AST_SUB_DECL))
+                    continue;
+                if ((child->semFlags & SEMFLAG_ONCE) && child->semanticState != AstNodeResolveState::Enter)
+                    continue;
 
-                    Semantic::enterState(child);
-                    nodes.push_back(child);
-                }
+                Semantic::enterState(child);
+                nodes.push_back(child);
             }
         }
         break;

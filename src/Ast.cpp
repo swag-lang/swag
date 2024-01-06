@@ -268,7 +268,7 @@ void Ast::insertChild(AstNode* parent, AstNode* child, uint32_t index)
     {
         ScopedLock lk(parent->mutex);
         SWAG_RACE_CONDITION_WRITE(parent->raceC);
-        parent->childs.insertAtIndex(child, index);
+        parent->childs.insert_at_index(child, index);
     }
     else
     {

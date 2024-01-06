@@ -102,7 +102,13 @@ struct VectorNative
         count++;
     }
 
-    void insertAtIndex(const T& val, size_t index)
+    void reverse()
+    {
+        for (size_t i = 0; i < count / 2; i++)
+            swap(buffer[i], buffer[count - i - 1]);
+    }
+
+    void insert_at_index(const T& val, size_t index)
     {
         if (index == count)
         {
