@@ -75,6 +75,7 @@ struct TypeManager
     static bool safetyComputedValue(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
     static void getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, TypeInfo* toType, TypeInfo* fromType, uint64_t castFlags, CastErrorType castError = CastErrorType::Zero, bool forNote = false);
     static bool castError(SemanticContext* context, TypeInfo* requestedType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags, CastErrorType castErrorType = CastErrorType::Zero);
+
     static bool tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
     static bool tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
 
@@ -90,7 +91,6 @@ struct TypeManager
     static bool castToNativeS64(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
     static bool castToNativeF32(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
     static bool castToNativeF64(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-
     static bool castExpressionList(SemanticContext* context, TypeInfoList* fromTypeList, TypeInfo* toType, AstNode* fromNode, uint64_t castFlags);
     static bool castToEnum(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint64_t castFlags);
     static bool castToNative(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint64_t castFlags);
@@ -105,32 +105,33 @@ struct TypeManager
     static bool castToLambda(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
     static bool castToClosure(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
     static bool castToSlice(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags);
-
-    static TypeInfoArray*  convertTypeListToArray(JobContext* jobContext, TypeInfoList* typeList, bool isCompilerConstant);
-    static TypeInfoStruct* convertTypeListToStruct(JobContext* jobContext, TypeInfoList* typeList, bool isCompilerConstant);
-
     static bool makeCompatibles(SemanticContext* context, AstNode* leftNode, AstNode* rightNode, uint64_t castFlags = 0);
     static bool makeCompatibles(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint64_t castFlags = 0);
     static bool makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* toNode, AstNode* fromNode, uint64_t castFlags = 0);
 
-    static bool      collectInterface(SemanticContext* context, TypeInfoStruct* fromTypeStruct, TypeInfoStruct* toTypeItf, InterfaceRef& ref, bool skipFirst = false);
-    static TypeInfo* solidifyUntyped(TypeInfo* typeInfo);
-    static TypeInfo* resolveUntypedType(TypeInfo* typeInfo, uint32_t value);
-    static TypeInfo* literalTypeToType(LiteralType literalType);
-    static TypeInfo* literalTypeToType(LiteralType literalType, Register literalValue);
+    static TypeInfoArray*  convertTypeListToArray(JobContext* jobContext, TypeInfoList* typeList, bool isCompilerConstant);
+    static TypeInfoStruct* convertTypeListToStruct(JobContext* jobContext, TypeInfoList* typeList, bool isCompilerConstant);
+    static bool            collectInterface(SemanticContext* context, TypeInfoStruct* fromTypeStruct, TypeInfoStruct* toTypeItf, InterfaceRef& ref, bool skipFirst = false);
+    static TypeInfo*       solidifyUntyped(TypeInfo* typeInfo);
+    static TypeInfo*       resolveUntypedType(TypeInfo* typeInfo, uint32_t value);
+    static TypeInfo*       literalTypeToType(LiteralType literalType);
+    static TypeInfo*       literalTypeToType(LiteralType literalType, Register literalValue);
+    static uint64_t        align(uint64_t value, uint32_t align);
+    static uint32_t        alignOf(TypeInfo* typeInfo);
+
     static bool      promote(SemanticContext* context, AstNode* left, AstNode* right);
     static bool      promoteLeft(SemanticContext* context, AstNode* left, AstNode* right);
     static bool      promote32(SemanticContext* context, AstNode* right);
     static TypeInfo* promoteUntyped(TypeInfo* typeInfo);
     static void      promoteUntypedInteger(AstNode* left, AstNode* right);
-    static uint64_t  align(uint64_t value, uint32_t align);
-    static uint32_t  alignOf(TypeInfo* typeInfo);
+
     static bool      compareConcreteType(const ExportedTypeInfo* type1, const ExportedTypeInfo* type2);
     static void      convertStructParamToRef(AstNode* node, TypeInfo* typeInfo);
     static TypeInfo* concretePtrRefType(TypeInfo* typeInfo, uint32_t flags = CONCRETE_ALL);
     static TypeInfo* concreteType(TypeInfo* typeInfo, uint32_t flags = CONCRETE_ALL);
     static TypeInfo* concretePtrRef(TypeInfo* typeInfo);
     static TypeInfo* concretePtrRefCond(TypeInfo* typeInfo, AstNode* node);
+
     TypeInfo*        makeUnConst(TypeInfo* typeInfo);
     TypeInfo*        makeConst(TypeInfo* typeInfo);
     TypeInfoPointer* makePointerTo(TypeInfo* toType, uint64_t ptrFlags = 0);
