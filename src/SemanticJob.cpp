@@ -158,7 +158,10 @@ JobResult SemanticJob::execute()
                 for (int i = 0; i < countChilds; i++)
                 {
                     auto child = node->childs[i];
-                    if (child->flags & AST_NO_SEMANTIC)
+
+                    // If the child has the AST_NO_SEMANTIC flag, do not push it.
+                    // Special case for sub declarations, because we need to deal with SEMFLAG_FILE_JOB_PASS
+                    if ((child->flags & AST_NO_SEMANTIC) && !(child->flags & AST_SUB_DECL))
                         continue;
                     if ((child->semFlags & SEMFLAG_ONCE) && child->semanticState != AstNodeResolveState::Enter)
                         continue;
