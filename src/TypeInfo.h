@@ -4,7 +4,6 @@
 #include "CallConv.h"
 #include "Mutex.h"
 #include "RaceCondition.h"
-#include "Runtime.h"
 #include "TypeMatch.h"
 
 struct ComputedValue;

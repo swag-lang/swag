@@ -1,5 +1,6 @@
 #pragma once
 #include "Job.h"
+
 struct TypeGen;
 struct ExportedTypeInfo;
 struct AstFuncDecl;
