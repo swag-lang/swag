@@ -4,7 +4,6 @@
 #include "Attribute.h"
 #include "VectorNative.h"
 #include "Runtime.h"
-#include "CommandLine.h"
 #include "Mutex.h"
 #include "CallConv.h"
 #include "Map.h"

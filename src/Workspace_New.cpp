@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "Workspace.h"
-#include "Semantic.h"
+#include "CommandLine.h"
 #include "ErrorIds.h"
-#include "Report.h"
 #include "Os.h"
+#include "Report.h"
+#include "Workspace.h"
 
 void newScriptFile()
 {
