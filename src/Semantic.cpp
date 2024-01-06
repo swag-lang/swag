@@ -1,10 +1,8 @@
 #include "pch.h"
 #include "Semantic.h"
-#include "ThreadManager.h"
 #include "Ast.h"
 #include "Module.h"
 #include "TypeManager.h"
-#include "Timer.h"
 
 bool Semantic::setUnRef(AstNode* node)
 {

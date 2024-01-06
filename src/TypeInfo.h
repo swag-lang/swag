@@ -6,21 +6,20 @@
 #include "CallConv.h"
 #include "Map.h"
 
-struct Scope;
-struct TypeInfo;
-struct SymbolMatchContext;
-struct Job;
-struct AstNode;
-struct ByteCode;
-struct TypeInfo;
-struct TypeInfoParam;
-struct TypeInfoFuncAttr;
 struct AstFuncDecl;
-struct JobContext;
-struct SemanticContext;
-struct TypeInfoStruct;
+struct AstNode;
 struct BadSignatureInfos;
+struct ByteCode;
+struct Job;
+struct JobContext;
+struct Scope;
+struct SemanticContext;
+struct SymbolMatchContext;
 struct SymbolOverload;
+struct TypeInfo;
+struct TypeInfoFuncAttr;
+struct TypeInfoParam;
+struct TypeInfoStruct;
 enum class Intrisic;
 
 const int COMPUTE_NAME               = 0;

@@ -1,24 +1,21 @@
 #pragma once
 #include "SemanticContext.h"
 
-struct Diagnostic;
-struct AstNode;
-struct Module;
-struct SourceFile;
-struct Semantic;
-struct TypeInfoFuncAttr;
-struct SymbolName;
-struct AstIdentifierRef;
-struct SymbolOverload;
 struct AstAttrUse;
-struct AttributeList;
-struct ByteCodeGenJob;
-struct AstIdentifier;
-struct AstFuncDecl;
-struct DataSegmentLocation;
-struct DataSegment;
-struct SymbolName;
 struct AstFuncCallParam;
+struct AstFuncDecl;
+struct AstIdentifier;
+struct AstIdentifierRef;
+struct AstNode;
+struct AttributeList;
+struct DataSegment;
+struct Diagnostic;
+struct Module;
+struct Semantic;
+struct SourceFile;
+struct SymbolName;
+struct SymbolOverload;
+struct TypeInfoFuncAttr;
 enum class AstNodeKind : uint8_t;
 enum class SymbolKind : uint8_t;
 
