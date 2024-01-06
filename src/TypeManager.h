@@ -2,6 +2,7 @@
 #include "TypeInfo.h"
 #include "Map.h"
 #include "Statistics.h"
+
 struct AstNode;
 struct SourceFile;
 struct TypeInfo;

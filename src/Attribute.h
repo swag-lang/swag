@@ -4,6 +4,7 @@
 #include "Tokenizer.h"
 #include "RaceCondition.h"
 #include "ComputedValue.h"
+
 struct TypeInfo;
 
 const uint64_t ATTRIBUTE_CONSTEXPR           = 0x0000000000000001;

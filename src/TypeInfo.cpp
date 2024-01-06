@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "TypeInfo.h"
 #include "AstNode.h"
-#include "Mutex.h"
-#include "RaceCondition.h"
 #include "TypeManager.h"
 
 void TypeInfo::clearName()

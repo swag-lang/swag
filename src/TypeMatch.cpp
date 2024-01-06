@@ -1,23 +1,8 @@
 #include "pch.h"
 #include "TypeMatch.h"
-#include "Allocator.h"
-#include "Assert.h"
 #include "Ast.h"
-#include "AstFlags.h"
-#include "AstNode.h"
-#include "ComputedValue.h"
-#include "Job.h"
-#include "Register.h"
-#include "Runtime.h"
 #include "Semantic.h"
-#include "SemanticContext.h"
-#include "Symbol.h"
-#include "Tokenizer.h"
-#include "TypeInfo.h"
 #include "TypeManager.h"
-#include "Utf8.h"
-#include "Vector.h"
-#include "VectorNative.h"
 
 struct DataSegment;
 
