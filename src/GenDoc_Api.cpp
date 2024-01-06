@@ -1,12 +1,10 @@
 #include "pch.h"
+#include "Ast.h"
 #include "GenDoc.h"
 #include "Module.h"
-#include "Ast.h"
-#include "ErrorIds.h"
-#include "Report.h"
-#include "Workspace.h"
-#include "Version.h"
 #include "SyntaxColor.h"
+#include "TypeInfo.h"
+#include "Workspace.h"
 
 const uint32_t COLLECT_TABLE_ZERO     = 0x00000000;
 const uint32_t COLLECT_TABLE_SPECFUNC = 0x00000001;

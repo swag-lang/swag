@@ -1,6 +1,4 @@
 #pragma once
-#include "DependentJobs.h"
-#include "TypeInfo.h"
 
 struct JobContext;
 struct AstNode;
@@ -13,6 +11,7 @@ struct ComputedValue;
 struct DataSegment;
 struct Module;
 struct TypeGenStructJob;
+struct TypeInfo;
 
 static uint32_t GEN_EXPORTED_TYPE_SHOULD_WAIT    = 0x00000001;
 static uint32_t GEN_EXPORTED_TYPE_FORCE_NO_SCOPE = 0x00000002;

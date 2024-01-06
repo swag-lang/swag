@@ -1,14 +1,12 @@
 #include "pch.h"
 #include "TypeGen.h"
-#include "Semantic.h"
-#include "Workspace.h"
+#include "Crc32.h"
+#include "Diagnostic.h"
+#include "Module.h"
 #include "ThreadManager.h"
 #include "TypeGenStructJob.h"
 #include "TypeManager.h"
-#include "Module.h"
-#include "ErrorIds.h"
-#include "Crc32.h"
-#include "Diagnostic.h"
+#include "Workspace.h"
 
 bool TypeGen::genExportedTypeInfo(JobContext* context, TypeInfo* typeInfo, DataSegment* storageSegment, uint32_t* storage, uint32_t cflags, TypeInfo** ptrTypeInfo)
 {

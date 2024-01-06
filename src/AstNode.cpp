@@ -1,10 +1,11 @@
 #include "pch.h"
 #include "Ast.h"
-#include "ByteCodeGenJob.h"
-#include "Module.h"
 #include "ByteCode.h"
-#include "Parser.h"
+#include "ByteCodeGenJob.h"
 #include "Generic.h"
+#include "Module.h"
+#include "Parser.h"
+#include "TypeInfo.h"
 
 void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 {

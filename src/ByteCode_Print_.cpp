@@ -3,6 +3,7 @@
 #include "Ast.h"
 #include "Module.h"
 #include "ByteCodeDebugger.h"
+#include "TypeInfo.h"
 
 void ByteCode::printSourceCode(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, uint32_t* lastLine, SourceFile** lastFile)
 {

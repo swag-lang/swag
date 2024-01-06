@@ -2,10 +2,8 @@
 #include "Context.h"
 #include "ByteCode.h"
 #include "Module.h"
-#include "Backend.h"
-#include "ByteCodeStack.h"
 #include "ModuleManager.h"
-#include "Os.h"
+#include "TypeInfo.h"
 
 SwagContext                      g_DefaultContext;
 SwagProcessInfos                 g_ProcessInfos;

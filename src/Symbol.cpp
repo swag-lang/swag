@@ -1,5 +1,6 @@
 #include "pch.h"
-#include "Diagnostic.h"
+#include "Symbol.h"
+#include "Scope.h"
 #include "TypeManager.h"
 
 void SymbolOverload::from(SymbolOverload* other)

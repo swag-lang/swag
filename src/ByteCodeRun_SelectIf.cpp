@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "ErrorIds.h"
 #include "ByteCodeGenJob.h"
+#include "TypeInfo.h"
 
 bool ByteCodeRun::getVariadicSI(ByteCodeRunContext* context, ByteCodeInstruction* ip, Register* regPtr, Register* regCount)
 {
