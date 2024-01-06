@@ -2,7 +2,9 @@
 #include "SemanticJob.h"
 #include "ThreadManager.h"
 #include "Module.h"
+#ifdef SWAG_STATS
 #include "Timer.h"
+#endif
 
 void SemanticJob::release()
 {
@@ -24,13 +26,13 @@ SemanticJob* SemanticJob::newJob(Job* dependentJob, SourceFile* sourceFile, AstN
 
 JobResult SemanticJob::execute()
 {
-#ifdef SWAG_STATS
-    Timer timer(&g_Stats.semanticTime);
-#endif
-
     ScopedLock lkExecute(executeMutex);
     if (sourceFile->module->numErrors)
         return JobResult::ReleaseJob;
+
+#ifdef SWAG_STATS
+    Timer timer(&g_Stats.semanticTime);
+#endif
 
     if (!originalNode)
     {
@@ -68,9 +70,8 @@ JobResult SemanticJob::execute()
 
     while (!nodes.empty())
     {
-        auto node     = nodes.back();
-        context.node  = node;
-        bool canDoSem = !(node->flags & AST_NO_SEMANTIC);
+        auto node    = nodes.back();
+        context.node = node;
 
         // To be sure that a bytecode job is not running on those nodes !
         SWAG_ASSERT(node->bytecodeState == AstNodeResolveState::Enter ||
@@ -89,45 +90,13 @@ JobResult SemanticJob::execute()
             {
                 switch (node->kind)
                 {
-                case AstNodeKind::FuncDecl:
-                case AstNodeKind::StructDecl:
-                case AstNodeKind::InterfaceDecl:
-                {
-                    // A sub thing can be waiting for the owner function to be resolved.
-                    // We inform the parent function that we have seen the sub thing, and that
-                    // the attributes context is now fine for it. That way, the parent function can
-                    // trigger the resolve of the sub things by just removing AST_NO_SEMANTIC or by hand.
-                    ScopedLock lk(node->mutex);
-
-                    // Do NOT use canDoSem here, because we need to test the flag with the node locked, as it can be changed
-                    // in registerFuncSymbol by another thread
-                    if (!(node->flags & AST_NO_SEMANTIC) && !(node->semFlags & SEMFLAG_FILE_JOB_PASS))
-                    {
-                        SWAG_ASSERT(sourceFile->module == module);
-                        auto job                 = newJob(dependentJob, sourceFile, node, false);
-                        job->context.errCxtSteps = context.errCxtSteps;
-                        g_ThreadMgr.addJob(job);
-                    }
-
-                    node->semFlags |= SEMFLAG_FILE_JOB_PASS;
-                    nodes.pop_back();
-                    continue;
-                }
-
                 case AstNodeKind::AttrUse:
                     if (!node->ownerScope->isGlobalOrImpl() || ((AstAttrUse*) node)->specFlags & AstAttrUse::SPECFLAG_GLOBAL)
                         break;
-                    if (canDoSem)
-                    {
-                        SWAG_ASSERT(sourceFile->module == module);
-                        auto job                 = newJob(dependentJob, sourceFile, node, false);
-                        job->context.errCxtSteps = context.errCxtSteps;
-                        g_ThreadMgr.addJob(job);
-                    }
 
-                    nodes.pop_back();
-                    continue;
-
+                case AstNodeKind::FuncDecl:
+                case AstNodeKind::StructDecl:
+                case AstNodeKind::InterfaceDecl:
                 case AstNodeKind::VarDecl:
                 case AstNodeKind::ConstDecl:
                 case AstNodeKind::TypeAlias:
@@ -141,7 +110,16 @@ JobResult SemanticJob::execute()
                 case AstNodeKind::AttrDecl:
                 case AstNodeKind::CompilerIf:
                 case AstNodeKind::Impl:
-                    if (canDoSem)
+                {
+                    // A sub thing can be waiting for the owner function to be resolved.
+                    // We inform the parent function that we have seen the sub thing, and that
+                    // the attributes context is now fine for it. That way, the parent function can
+                    // trigger the resolve of the sub things by just removing AST_NO_SEMANTIC or by hand.
+                    ScopedLock lk(node->mutex);
+
+                    // Flag AST_NO_SEMANTIC must be tested with the node locked, as it can be changed in 
+                    // registerFuncSymbol by another thread
+                    if (!(node->flags & AST_NO_SEMANTIC) && !(node->semFlags & SEMFLAG_FILE_JOB_PASS))
                     {
                         SWAG_ASSERT(sourceFile->module == module);
                         auto job                 = newJob(dependentJob, sourceFile, node, false);
@@ -149,8 +127,11 @@ JobResult SemanticJob::execute()
                         g_ThreadMgr.addJob(job);
                     }
 
+                    node->semFlags |= SEMFLAG_FILE_JOB_PASS;
                     nodes.pop_back();
                     continue;
+                }
+
                 default:
                     break;
                 }
@@ -166,7 +147,7 @@ JobResult SemanticJob::execute()
                 return JobResult::ReleaseJob;
             }
 
-            if (!canDoSem)
+            if (node->flags & AST_NO_SEMANTIC)
             {
                 nodes.pop_back();
                 break;
@@ -213,7 +194,7 @@ JobResult SemanticJob::execute()
                 // Can have been changed after the state change
                 // Example: FuncDeclType can change the AST_NO_SEMANTIC flag of the function itself in case
                 // of Swag.compileif
-                if (!canDoSem)
+                if (node->flags & AST_NO_SEMANTIC)
                 {
                     nodes.pop_back();
                     break;
