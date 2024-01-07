@@ -1,15 +1,8 @@
 #include "pch.h"
 #include "ByteCodeGenJob.h"
 #include "ByteCodeGen.h"
-#include "Ast.h"
 #include "ByteCode.h"
-#include "Context.h"
-#include "LanguageSpec.h"
 #include "Module.h"
-#include "Report.h"
-#include "Semantic.h"
-#include "ThreadManager.h"
-#include "TypeManager.h"
 
 void ByteCodeGenJob::release()
 {
@@ -25,6 +18,12 @@ ByteCodeGenJob* ByteCodeGenJob::newJob(Job* dependentJob, SourceFile* sourceFile
     byteCodeJob->dependentJob = dependentJob;
     byteCodeJob->nodes.push_back(root);
     return byteCodeJob;
+}
+
+JobResult ByteCodeGenJob::leaveJob(AstNode* node)
+{
+    ByteCodeGen::releaseByteCodeJob(node);
+    return JobResult::ReleaseJob;
 }
 
 JobResult ByteCodeGenJob::waitForDependenciesGenerated()
@@ -107,12 +106,6 @@ JobResult ByteCodeGenJob::waitForDependenciesGenerated()
     }
 
     return JobResult::Continue;
-}
-
-JobResult ByteCodeGenJob::leaveJob(AstNode* node)
-{
-    ByteCodeGen::releaseByteCodeJob(node);
-    return JobResult::ReleaseJob;
 }
 
 JobResult ByteCodeGenJob::execute()
