@@ -46,6 +46,63 @@ bool ByteCodeGen::setupRuntime(ByteCodeGenContext* context, AstNode* node)
     return true;
 }
 
+bool ByteCodeGen::setupByteCodeGenerated(ByteCodeGenContext* context, AstNode* node)
+{
+    if (!context->bc)
+        return true;
+
+    EMIT_INST0(context, ByteCodeOp::End);
+
+    if (node->kind == AstNodeKind::FuncDecl || context->bc->isCompilerGenerated)
+    {
+#ifdef SWAG_STATS
+        g_Stats.numInstructions += context->bc->numInstructions;
+#endif
+
+        // Print resulting bytecode
+        if (node->attributeFlags & ATTRIBUTE_PRINT_BC && !(node->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
+        {
+            ScopedLock lk(context->sourceFile->module->mutexByteCode);
+            context->sourceFile->module->byteCodePrintBC.push_back(context->bc);
+        }
+
+        if (node->attributeFlags & ATTRIBUTE_PRINT_GEN_BC && !(node->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
+        {
+            ByteCodePrintOptions opt;
+            context->bc->print(opt);
+        }
+    }
+
+    // Byte code is generated (but not yet resolved, as we need all dependencies to be resolved too)
+    if (context->bc->node &&
+        context->bc->node->kind == AstNodeKind::FuncDecl)
+    {
+        auto funcNode = CastAst<AstFuncDecl>(context->bc->node, AstNodeKind::FuncDecl);
+
+        // Retrieve the persistent registers
+        if (funcNode->registerGetContext != UINT32_MAX)
+        {
+            context->bc->registerGetContext = funcNode->registerGetContext;
+            freeRegisterRC(context, context->bc->registerGetContext);
+        }
+        if (funcNode->registerStoreRR != UINT32_MAX)
+        {
+            context->bc->registerStoreRR = funcNode->registerStoreRR;
+            freeRegisterRC(context, context->bc->registerStoreRR);
+        }
+    }
+
+    // Get all nodes we are dependent on
+    // For the next pass (we will have to wait for all those nodes to resolved 
+    // before being resolved ourself)
+    ScopedLock lk(node->mutex);
+    getDependantCalls(node, node->extByteCode()->dependentNodes);
+    context->dependentNodesTmp = node->extByteCode()->dependentNodes;
+    node->semFlags |= SEMFLAG_BYTECODE_GENERATED;
+
+    return true;
+}
+
 bool ByteCodeGen::skipNodes(ByteCodeGenContext* context, AstNode* node)
 {
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;

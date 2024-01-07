@@ -234,57 +234,8 @@ JobResult ByteCodeGenJob::execute()
             }
         }
 
-        if (context.bc)
-        {
-            EMIT_INST0(&context, ByteCodeOp::End);
-
-            if (originalNode->kind == AstNodeKind::FuncDecl || context.bc->isCompilerGenerated)
-            {
-#ifdef SWAG_STATS
-                g_Stats.numInstructions += context.bc->numInstructions;
-#endif
-
-                // Print resulting bytecode
-                if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC && !(originalNode->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
-                {
-                    ScopedLock lk(module->mutexByteCode);
-                    module->byteCodePrintBC.push_back(context.bc);
-                }
-
-                if (originalNode->attributeFlags & ATTRIBUTE_PRINT_GEN_BC && !(originalNode->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
-                {
-                    ByteCodePrintOptions opt;
-                    context.bc->print(opt);
-                }
-            }
-
-            // Byte code is generated (but not yet resolved, as we need all dependencies to be resolved too)
-            if (context.bc->node &&
-                context.bc->node->kind == AstNodeKind::FuncDecl)
-            {
-                auto funcNode = CastAst<AstFuncDecl>(context.bc->node, AstNodeKind::FuncDecl);
-
-                // Retrieve the persistent registers
-                if (funcNode->registerGetContext != UINT32_MAX)
-                {
-                    context.bc->registerGetContext = funcNode->registerGetContext;
-                    ByteCodeGen::freeRegisterRC(&context, context.bc->registerGetContext);
-                }
-                if (funcNode->registerStoreRR != UINT32_MAX)
-                {
-                    context.bc->registerStoreRR = funcNode->registerStoreRR;
-                    ByteCodeGen::freeRegisterRC(&context, context.bc->registerStoreRR);
-                }
-            }
-
-            ScopedLock lk(originalNode->mutex);
-            ByteCodeGen::getDependantCalls(originalNode, originalNode->extByteCode()->dependentNodes);
-            context.dependentNodesTmp = originalNode->extByteCode()->dependentNodes;
-
-            originalNode->semFlags |= SEMFLAG_BYTECODE_GENERATED;
-            dependentJobs.setRunning();
-        }
-
+        ByteCodeGen::setupByteCodeGenerated(&context, originalNode);
+        dependentJobs.setRunning();
         pass = Pass::WaitForDependenciesGenerated;
     }
 
