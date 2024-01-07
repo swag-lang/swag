@@ -109,6 +109,12 @@ JobResult ByteCodeGenJob::waitForDependenciesGenerated()
     return JobResult::Continue;
 }
 
+JobResult ByteCodeGenJob::leaveJob(AstNode* node)
+{
+    ByteCodeGen::releaseByteCodeJob(node);
+    return JobResult::ReleaseJob;
+}
+
 JobResult ByteCodeGenJob::execute()
 {
     ScopedLock lkExecute(executeMutex);
@@ -126,10 +132,7 @@ JobResult ByteCodeGenJob::execute()
     }
 
     if (sourceFile->module->numErrors)
-    {
-        ByteCodeGen::releaseByteCodeJob(originalNode);
-        return JobResult::ReleaseJob;
-    }
+        return leaveJob(originalNode);
 
     if (pass == Pass::Generate)
     {
@@ -176,10 +179,7 @@ JobResult ByteCodeGenJob::execute()
         while (!nodes.empty())
         {
             if (sourceFile->numErrors)
-            {
-                ByteCodeGen::releaseByteCodeJob(originalNode);
-                return JobResult::ReleaseJob;
-            }
+                return leaveJob(originalNode);
 
             auto node      = nodes.back();
             context.node   = node;
@@ -191,10 +191,7 @@ JobResult ByteCodeGenJob::execute()
                 if (node->hasExtByteCode() && node->extByteCode()->byteCodeBeforeFct)
                 {
                     if (!node->extByteCode()->byteCodeBeforeFct(&context))
-                    {
-                        ByteCodeGen::releaseByteCodeJob(originalNode);
-                        return JobResult::ReleaseJob;
-                    }
+                        return leaveJob(originalNode);
                     if (context.result == ContextResult::Pending)
                         return JobResult::KeepJobAlive;
                     if (context.result == ContextResult::NewChilds)
@@ -228,18 +225,12 @@ JobResult ByteCodeGenJob::execute()
                 if (node->hasComputedValue())
                 {
                     if (!ByteCodeGen::emitComputedValue(&context))
-                    {
-                        ByteCodeGen::releaseByteCodeJob(originalNode);
-                        return JobResult::ReleaseJob;
-                    }
+                        return leaveJob(originalNode);
                 }
                 else if (node->byteCodeFct)
                 {
                     if (!node->byteCodeFct(&context))
-                    {
-                        ByteCodeGen::releaseByteCodeJob(originalNode);
-                        return JobResult::ReleaseJob;
-                    }
+                        return leaveJob(originalNode);
                     if (context.result == ContextResult::Pending)
                         return JobResult::KeepJobAlive;
                     if (context.result == ContextResult::NewChilds)
@@ -249,25 +240,24 @@ JobResult ByteCodeGenJob::execute()
                 node->bytecodeState = AstNodeResolveState::PostChilds;
 
             case AstNodeResolveState::PostChilds:
-                if (!(node->flags & AST_NO_BYTECODE))
+                if (node->flags & AST_NO_BYTECODE)
                 {
-                    if (node->hasExtByteCode() && node->extByteCode()->byteCodeAfterFct)
-                    {
-                        if (!node->extByteCode()->byteCodeAfterFct(&context))
-                        {
-                            ByteCodeGen::releaseByteCodeJob(originalNode);
-                            return JobResult::ReleaseJob;
-                        }
-
-                        if (context.result == ContextResult::Pending)
-                            return JobResult::KeepJobAlive;
-                        if (context.result == ContextResult::NewChilds)
-                            continue;
-                    }
+                    nodes.pop_back();
+                    break;
                 }
 
+                if (node->hasExtByteCode() && node->extByteCode()->byteCodeAfterFct)
+                {
+                    if (!node->extByteCode()->byteCodeAfterFct(&context))
+                        return leaveJob(originalNode);
+                    if (context.result == ContextResult::Pending)
+                        return JobResult::KeepJobAlive;
+                    if (context.result == ContextResult::NewChilds)
+                        continue;
+                }
                 nodes.pop_back();
                 break;
+
             default:
                 break;
             }
