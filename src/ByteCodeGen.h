@@ -104,6 +104,7 @@ namespace ByteCodeGen
     bool emitExpressionList(ByteCodeGenContext* context);
     bool emitLiteral(ByteCodeGenContext* context, AstNode* node, TypeInfo* toType, RegisterList& regList);
     bool emitLiteral(ByteCodeGenContext* context);
+    bool emitComputedValue(ByteCodeGenContext* context);
     bool emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2);
     bool emitBinaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2);
     bool emitBinaryOpMul(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2);

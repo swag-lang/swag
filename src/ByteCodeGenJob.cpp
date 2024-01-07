@@ -227,22 +227,11 @@ JobResult ByteCodeGenJob::execute()
                 // Computed constexpr value. Just emit the result
                 if (node->hasComputedValue())
                 {
-                    context.node = node;
-                    if (!ByteCodeGen::emitLiteral(&context))
+                    if (!ByteCodeGen::emitComputedValue(&context))
                     {
                         ByteCodeGen::releaseByteCodeJob(originalNode);
                         return JobResult::ReleaseJob;
                     }
-
-                    if (!ByteCodeGen::emitCast(&context, node, TypeManager::concreteType(node->typeInfo), node->castedTypeInfo))
-                    {
-                        ByteCodeGen::releaseByteCodeJob(originalNode);
-                        return JobResult::ReleaseJob;
-                    }
-
-                    // To be sure that cast is treated once
-                    node->castedTypeInfo = nullptr;
-                    SWAG_ASSERT(context.result == ContextResult::Done);
                 }
                 else if (node->byteCodeFct)
                 {

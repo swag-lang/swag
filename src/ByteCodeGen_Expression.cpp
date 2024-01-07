@@ -500,6 +500,19 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, TypeIn
     return true;
 }
 
+bool ByteCodeGen::emitComputedValue(ByteCodeGenContext* context)
+{
+    auto node = context->node;
+    SWAG_CHECK(emitLiteral(context));
+    SWAG_CHECK(emitCast(context, node, TypeManager::concreteType(node->typeInfo), node->castedTypeInfo));
+    SWAG_ASSERT(context->result == ContextResult::Done);
+
+    // To be sure that cast is treated once
+    node->castedTypeInfo = nullptr;
+
+    return true;
+}
+
 bool ByteCodeGen::emitDefer(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstDefer>(context->node, AstNodeKind::Defer);
