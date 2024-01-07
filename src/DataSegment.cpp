@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "DataSegment.h"
-#include "Module.h"
-#include "TypeManager.h"
-#include "Report.h"
 #include "ByteCode.h"
+#include "Module.h"
+#include "Report.h"
+#include "TypeManager.h"
 
 void DataSegment::setup(SegmentKind _kind, Module* _module)
 {
@@ -80,7 +80,7 @@ void DataSegment::initFrom(DataSegment* other)
         addInitPtrFunc(it.first, it.second);
 
     // This maps contain direct pointer to the original buffers from bootstrap/runtime.
-    // This is fine, as original buffers are persistent, and byte code will use them.
+    // This is fine, as original buffers are persistent, and bytecode will use them.
     // For runtime, offset are conserved, so this is fine too...
     for (auto& it : other->storedStrings)
         storedStrings[it.first] = it.second;
@@ -230,6 +230,7 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, TypeInfo* typeInf
 {
     SWAG_ASSERT(typeInfo->isNative());
     SWAG_ASSERT(typeInfo->nativeType != NativeTypeKind::Any);
+    SWAG_ASSERT(resultPtr);
 
     if (typeInfo->nativeType == NativeTypeKind::String)
     {
@@ -238,8 +239,7 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, TypeInfo* typeInf
         auto     storageOffset = reserve(2 * sizeof(uint64_t), &addr);
         ((uint64_t*) addr)[0]  = (uint64_t) computedValue.text.buffer;
         ((uint64_t*) addr)[1]  = (uint32_t) computedValue.text.count;
-        if (resultPtr)
-            *resultPtr = addr;
+        *resultPtr             = addr;
         addInitPtr(storageOffset, stringOffset);
         return storageOffset;
     }
@@ -252,8 +252,7 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, TypeInfo* typeInf
         auto it = storedValues8.find(computedValue.reg.u8);
         if (it != storedValues8.end())
         {
-            if (resultPtr)
-                *resultPtr = it->second.addr;
+            *resultPtr = it->second.addr;
             return it->second.offset;
         }
         break;
@@ -264,8 +263,7 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, TypeInfo* typeInf
         auto it = storedValues16.find(computedValue.reg.u16);
         if (it != storedValues16.end())
         {
-            if (resultPtr)
-                *resultPtr = it->second.addr;
+            *resultPtr = it->second.addr;
             return it->second.offset;
         }
         break;
@@ -276,8 +274,7 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, TypeInfo* typeInf
         auto it = storedValues32.find(computedValue.reg.u32);
         if (it != storedValues32.end())
         {
-            if (resultPtr)
-                *resultPtr = it->second.addr;
+            *resultPtr = it->second.addr;
             return it->second.offset;
         }
         break;
@@ -287,8 +284,7 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, TypeInfo* typeInf
         auto it = storedValues64.find(computedValue.reg.u64);
         if (it != storedValues64.end())
         {
-            if (resultPtr)
-                *resultPtr = it->second.addr;
+            *resultPtr = it->second.addr;
             return it->second.offset;
         }
         break;
@@ -297,8 +293,7 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, TypeInfo* typeInf
 
     uint8_t* addr;
     auto     storageOffset = reserveNoLock(typeInfo->sizeOf, &addr);
-    if (resultPtr)
-        *resultPtr = addr;
+    *resultPtr             = addr;
 
     switch (typeInfo->sizeOf)
     {
