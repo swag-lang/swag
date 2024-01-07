@@ -163,26 +163,31 @@ JobResult ByteCodeGenJob::execute()
                 }
 
                 node->bytecodeState = AstNodeResolveState::ProcessingChilds;
-                if (!node->hasComputedValue() && !node->childs.empty())
+
+                if (node->flags & AST_NO_BYTECODE)
                 {
-                    if (!(node->flags & AST_NO_BYTECODE_CHILDS) && !(node->flags & AST_NO_BYTECODE))
+                    nodes.pop_back();
+                    break;
+                }
+
+                if (!node->hasComputedValue() && !(node->flags & AST_NO_BYTECODE_CHILDS))
+                {
+                    for (int i = (int) node->childs.size() - 1; i >= 0; i--)
                     {
-                        for (int i = (int) node->childs.size() - 1; i >= 0; i--)
-                        {
-                            auto child           = node->childs[i];
-                            child->bytecodeState = AstNodeResolveState::Enter;
-                            nodes.push_back(child);
-                        }
+                        auto child           = node->childs[i];
+                        child->bytecodeState = AstNodeResolveState::Enter;
+                        nodes.push_back(child);
                     }
 
                     break;
                 }
+                // passthrough
 
             case AstNodeResolveState::ProcessingChilds:
                 if (node->flags & AST_NO_BYTECODE)
                 {
-                    node->bytecodeState = AstNodeResolveState::PostChilds;
-                    continue;
+                    nodes.pop_back();
+                    break;
                 }
 
                 // Computed constexpr value. Just emit the result
@@ -202,6 +207,7 @@ JobResult ByteCodeGenJob::execute()
                 }
 
                 node->bytecodeState = AstNodeResolveState::PostChilds;
+                // passthrough
 
             case AstNodeResolveState::PostChilds:
                 if (node->flags & AST_NO_BYTECODE)
