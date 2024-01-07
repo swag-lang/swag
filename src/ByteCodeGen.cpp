@@ -7,6 +7,44 @@
 #include "Semantic.h"
 #include "ThreadManager.h"
 #include "TypeManager.h"
+#include "LanguageSpec.h"
+#include "Context.h"
+
+bool ByteCodeGen::setupRuntime(ByteCodeGenContext* context, AstNode* node)
+{
+    // Register allocator interface to the default bytecode context
+    if (node->token.text == g_LangSpec->name_SystemAllocator)
+    {
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+        Semantic::waitAllStructInterfaces(context->baseJob, typeStruct);
+        YIELD();
+        SWAG_ASSERT(typeStruct->interfaces.size() == 1);
+        auto itable = context->sourceFile->module->constantSegment.address(typeStruct->interfaces[0]->offset);
+        SWAG_ASSERT(itable);
+        SWAG_ASSERT(((void**) itable)[0]);
+        g_SystemAllocatorTable = itable;
+    }
+
+    if (node->token.text == g_LangSpec->name_DebugAllocator)
+    {
+        auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+        Semantic::waitAllStructInterfaces(context->baseJob, typeStruct);
+        YIELD();
+        SWAG_ASSERT(typeStruct->interfaces.size() == 1);
+        auto itable = context->sourceFile->module->constantSegment.address(typeStruct->interfaces[0]->offset);
+        SWAG_ASSERT(itable);
+        SWAG_ASSERT(((void**) itable)[0]);
+        g_DebugAllocatorTable = itable;
+    }
+
+    if (g_SystemAllocatorTable && g_DebugAllocatorTable)
+    {
+        g_DefaultContext.allocator.data   = nullptr;
+        g_DefaultContext.allocator.itable = g_SystemAllocatorTable;
+    }
+
+    return true;
+}
 
 void ByteCodeGen::reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num)
 {

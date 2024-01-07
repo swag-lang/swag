@@ -123,6 +123,7 @@ JobResult ByteCodeGenJob::execute()
     {
         SWAG_ASSERT(nodes.size() == 1);
         originalNode = nodes.front();
+        SWAG_ASSERT(originalNode->extension);
 
         baseContext        = &context;
         context.baseJob    = this;
@@ -136,44 +137,14 @@ JobResult ByteCodeGenJob::execute()
 
     if (pass == Pass::Generate)
     {
-        SWAG_ASSERT(originalNode->extension);
-
         if (sourceFile->isRuntimeFile)
         {
-            // Register allocator interface to the default bytecode context
-            if (originalNode->token.text == g_LangSpec->name_SystemAllocator)
-            {
-                auto typeStruct = CastTypeInfo<TypeInfoStruct>(originalNode->typeInfo, TypeInfoKind::Struct);
-                context.result  = ContextResult::Done;
-                Semantic::waitAllStructInterfaces(this, typeStruct);
-                if (context.result == ContextResult::Pending)
-                    return JobResult::KeepJobAlive;
-                SWAG_ASSERT(typeStruct->interfaces.size() == 1);
-                auto itable = sourceFile->module->constantSegment.address(typeStruct->interfaces[0]->offset);
-                SWAG_ASSERT(itable);
-                SWAG_ASSERT(((void**) itable)[0]);
-                g_SystemAllocatorTable = itable;
-            }
-
-            if (originalNode->token.text == g_LangSpec->name_DebugAllocator)
-            {
-                auto typeStruct = CastTypeInfo<TypeInfoStruct>(originalNode->typeInfo, TypeInfoKind::Struct);
-                context.result  = ContextResult::Done;
-                Semantic::waitAllStructInterfaces(this, typeStruct);
-                if (context.result == ContextResult::Pending)
-                    return JobResult::KeepJobAlive;
-                SWAG_ASSERT(typeStruct->interfaces.size() == 1);
-                auto itable = sourceFile->module->constantSegment.address(typeStruct->interfaces[0]->offset);
-                SWAG_ASSERT(itable);
-                SWAG_ASSERT(((void**) itable)[0]);
-                g_DebugAllocatorTable = itable;
-            }
-
-            if (g_SystemAllocatorTable && g_DebugAllocatorTable)
-            {
-                g_DefaultContext.allocator.data   = nullptr;
-                g_DefaultContext.allocator.itable = g_SystemAllocatorTable;
-            }
+            context.result = ContextResult::Done;
+            if (!ByteCodeGen::setupRuntime(&context, originalNode))
+                return leaveJob(originalNode);
+            if (context.result == ContextResult::Pending)
+                return JobResult::KeepJobAlive;
+            SWAG_ASSERT(context.result == ContextResult::Done);
         }
 
         while (!nodes.empty())

@@ -79,6 +79,7 @@ const uint32_t ASKBC_WAIT_RESOLVED          = 0x00000004;
 
 namespace ByteCodeGen
 {
+    bool setupRuntime(ByteCodeGenContext* context, AstNode* node);
     void askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCode* caller = nullptr);
     bool makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl, AstNode* forNode);
 
