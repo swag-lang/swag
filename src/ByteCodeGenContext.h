@@ -11,63 +11,20 @@ struct ByteCodeGenContext : public JobContext
     void release();
     void allocateTempCallParams();
 
-    void setNoLocation()
-    {
-        noLocation = true;
-    }
+    void setNoLocation();
+    void restoreNoLocation();
+    void pushLocation(SourceLocation* loc);
+    void popLocation();
+    void pushNode(AstNode* pnode);
+    void popNode();
 
-    void restoreNoLocation()
-    {
-        noLocation = false;
-    }
-
-    void pushLocation(SourceLocation* loc)
-    {
-        stackForceLocation.push_back(loc);
-        forceLocation = loc;
-    }
-
-    void popLocation()
-    {
-        stackForceLocation.pop_back();
-        if (!stackForceLocation.empty())
-            forceLocation = stackForceLocation.back();
-        else
-            forceLocation = nullptr;
-    }
-
-    void pushNode(AstNode* pnode)
-    {
-        stackForceNode.push_back(pnode);
-        forceNode = pnode;
-    }
-
-    void popNode()
-    {
-        stackForceNode.pop_back();
-        if (!stackForceNode.empty())
-            forceNode = stackForceNode.back();
-        else
-            forceNode = nullptr;
-    }
-
-    VectorNative<AstNode*> collectChilds;
-    VectorNative<Scope*>   collectScopes;
-    VectorNative<AstNode*> dependentNodesTmp;
-
-    enum class Pass
-    {
-        Generate,
-        WaitForDependenciesGenerated,
-        ComputeDependenciesResolved,
-    };
-
-    AstNode* allParamsTmp = nullptr;
-    Pass     pass         = Pass::Generate;
-
+    VectorNative<AstNode*>        collectChilds;
+    VectorNative<Scope*>          collectScopes;
+    VectorNative<AstNode*>        dependentNodesTmp;
     VectorNative<AstNode*>        stackForceNode;
     VectorNative<SourceLocation*> stackForceLocation;
 
+    AstNode*        allParamsTmp  = nullptr;
     ByteCode*       bc            = nullptr;
     SourceLocation* forceLocation = nullptr;
     AstNode*        forceNode     = nullptr;

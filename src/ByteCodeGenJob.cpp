@@ -131,7 +131,7 @@ JobResult ByteCodeGenJob::execute()
         return JobResult::ReleaseJob;
     }
 
-    if (context.pass == ByteCodeGenContext::Pass::Generate)
+    if (pass == Pass::Generate)
     {
         SWAG_ASSERT(originalNode->extension);
 
@@ -336,19 +336,19 @@ JobResult ByteCodeGenJob::execute()
             dependentJobs.setRunning();
         }
 
-        context.pass = ByteCodeGenContext::Pass::WaitForDependenciesGenerated;
+        pass = Pass::WaitForDependenciesGenerated;
     }
 
     // Wait for other dependent nodes to be generated
     // That way we are sure that every one has registered depend nodes, so the full dependency graph is completed
     // for the next pass
-    if (context.pass == ByteCodeGenContext::Pass::WaitForDependenciesGenerated)
+    if (pass == Pass::WaitForDependenciesGenerated)
     {
         auto res = waitForDependenciesGenerated();
         if (res != JobResult::Continue)
             return res;
 
-        context.pass = ByteCodeGenContext::Pass::ComputeDependenciesResolved;
+        pass = Pass::ComputeDependenciesResolved;
     }
 
     // Inform dependencies that everything is done

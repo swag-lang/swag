@@ -11,5 +11,13 @@ struct ByteCodeGenJob : public Job
     JobResult              waitForDependenciesGenerated();
     static ByteCodeGenJob* newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* root);
 
+    enum class Pass
+    {
+        Generate,
+        WaitForDependenciesGenerated,
+        ComputeDependenciesResolved,
+    };
+
     ByteCodeGenContext context;
+    Pass               pass = Pass::Generate;
 };
