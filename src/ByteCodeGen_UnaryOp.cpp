@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ByteCodeGen.h"
+#include "ByteCodeOp.h"
 #include "Report.h"
 #include "TypeManager.h"
 
