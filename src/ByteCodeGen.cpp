@@ -49,47 +49,47 @@ bool ByteCodeGen::setupRuntime(ByteCodeGenContext* context, AstNode* node)
 
 bool ByteCodeGen::setupByteCodeGenerated(ByteCodeGenContext* context, AstNode* node)
 {
-    if (!context->bc)
-        return true;
-
-    EMIT_INST0(context, ByteCodeOp::End);
-
-    if (node->kind == AstNodeKind::FuncDecl || context->bc->isCompilerGenerated)
+    if (context->bc)
     {
+        EMIT_INST0(context, ByteCodeOp::End);
+
+        if (node->kind == AstNodeKind::FuncDecl || context->bc->isCompilerGenerated)
+        {
 #ifdef SWAG_STATS
-        g_Stats.numInstructions += context->bc->numInstructions;
+            g_Stats.numInstructions += context->bc->numInstructions;
 #endif
 
-        // Print resulting bytecode
-        if (node->attributeFlags & ATTRIBUTE_PRINT_BC && !(node->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
-        {
-            ScopedLock lk(context->sourceFile->module->mutexByteCode);
-            context->sourceFile->module->byteCodePrintBC.push_back(context->bc);
+            // Print resulting bytecode
+            if (node->attributeFlags & ATTRIBUTE_PRINT_BC && !(node->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
+            {
+                ScopedLock lk(context->sourceFile->module->mutexByteCode);
+                context->sourceFile->module->byteCodePrintBC.push_back(context->bc);
+            }
+
+            if (node->attributeFlags & ATTRIBUTE_PRINT_GEN_BC && !(node->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
+            {
+                ByteCodePrintOptions opt;
+                context->bc->print(opt);
+            }
         }
 
-        if (node->attributeFlags & ATTRIBUTE_PRINT_GEN_BC && !(node->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
+        // Byte code is generated (but not yet resolved, as we need all dependencies to be resolved too)
+        if (context->bc->node &&
+            context->bc->node->kind == AstNodeKind::FuncDecl)
         {
-            ByteCodePrintOptions opt;
-            context->bc->print(opt);
-        }
-    }
+            auto funcNode = CastAst<AstFuncDecl>(context->bc->node, AstNodeKind::FuncDecl);
 
-    // Byte code is generated (but not yet resolved, as we need all dependencies to be resolved too)
-    if (context->bc->node &&
-        context->bc->node->kind == AstNodeKind::FuncDecl)
-    {
-        auto funcNode = CastAst<AstFuncDecl>(context->bc->node, AstNodeKind::FuncDecl);
-
-        // Retrieve the persistent registers
-        if (funcNode->registerGetContext != UINT32_MAX)
-        {
-            context->bc->registerGetContext = funcNode->registerGetContext;
-            freeRegisterRC(context, context->bc->registerGetContext);
-        }
-        if (funcNode->registerStoreRR != UINT32_MAX)
-        {
-            context->bc->registerStoreRR = funcNode->registerStoreRR;
-            freeRegisterRC(context, context->bc->registerStoreRR);
+            // Retrieve the persistent registers
+            if (funcNode->registerGetContext != UINT32_MAX)
+            {
+                context->bc->registerGetContext = funcNode->registerGetContext;
+                freeRegisterRC(context, context->bc->registerGetContext);
+            }
+            if (funcNode->registerStoreRR != UINT32_MAX)
+            {
+                context->bc->registerStoreRR = funcNode->registerStoreRR;
+                freeRegisterRC(context, context->bc->registerStoreRR);
+            }
         }
     }
 
@@ -100,6 +100,7 @@ bool ByteCodeGen::setupByteCodeGenerated(ByteCodeGenContext* context, AstNode* n
     getDependantCalls(node, node->extByteCode()->dependentNodes);
     context->dependentNodesTmp = node->extByteCode()->dependentNodes;
     node->semFlags |= SEMFLAG_BYTECODE_GENERATED;
+    context->baseJob->dependentJobs.setRunning();
 
     return true;
 }

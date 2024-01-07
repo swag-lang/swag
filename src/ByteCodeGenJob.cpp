@@ -234,7 +234,6 @@ JobResult ByteCodeGenJob::execute()
         }
 
         ByteCodeGen::setupByteCodeGenerated(&context, originalNode);
-        dependentJobs.setRunning();
         pass = Pass::WaitForDependenciesGenerated;
     }
 
