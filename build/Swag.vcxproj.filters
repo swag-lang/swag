@@ -566,7 +566,6 @@
     <ClCompile Include="..\src\ByteCodeDebugger_Set.cpp">
       <Filter>Backend\ByteCode\Debugger</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Workspace_Tags.cpp" />
     <ClCompile Include="..\src\ScopeSwag.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
@@ -648,11 +647,24 @@
     <ClCompile Include="..\src\SemanticContext.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\TypeManager_Concrete.cpp" />
-    <ClCompile Include="..\src\TypeManager_Error.cpp" />
-    <ClCompile Include="..\src\TypeManager_Promote.cpp" />
-    <ClCompile Include="..\src\TypeManager_Try.cpp" />
-    <ClCompile Include="..\src\TypeMatch.cpp" />
+    <ClCompile Include="..\src\TypeManager_Concrete.cpp">
+      <Filter>Semantic\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\TypeManager_Error.cpp">
+      <Filter>Semantic\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\TypeManager_Promote.cpp">
+      <Filter>Semantic\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\TypeManager_Try.cpp">
+      <Filter>Semantic\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\TypeMatch.cpp">
+      <Filter>Semantic\Type</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Workspace_Tags.cpp">
+      <Filter>Wmf</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
@@ -1022,7 +1034,9 @@
     <ClInclude Include="..\src\SemanticContext.h">
       <Filter>Semantic</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\TypeMatch.h" />
+    <ClInclude Include="..\src\TypeMatch.h">
+      <Filter>Semantic\Type</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
