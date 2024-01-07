@@ -186,11 +186,6 @@ bool ByteCodeGen::skipNodes(ByteCodeGenContext* context, AstNode* node)
     return res == Ast::VisitResult::Stop ? false : true;
 }
 
-void ByteCodeGen::inherhitLocation(ByteCodeInstruction* inst, AstNode* node)
-{
-    inst->node = node;
-}
-
 void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCode* caller)
 {
     if (!node)

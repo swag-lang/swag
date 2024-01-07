@@ -86,7 +86,6 @@ namespace ByteCodeGen
     bool makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl, AstNode* forNode);
 
     void getDependantCalls(AstNode* depNode, VectorNative<AstNode*>& dep);
-    void inherhitLocation(ByteCodeInstruction* inst, AstNode* node);
     void collectLiteralsChilds(AstNode* node, VectorNative<AstNode*>* orderedChilds);
     void computeSourceLocation(JobContext* context, AstNode* node, uint32_t* storageOffset, DataSegment** storageSegment, bool forceCompiler = false);
     void releaseByteCodeJob(AstNode* node);
