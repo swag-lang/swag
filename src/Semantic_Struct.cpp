@@ -2,6 +2,7 @@
 #include "Ast.h"
 #include "ByteCode.h"
 #include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "LanguageSpec.h"
 #include "Module.h"
 #include "ModuleManager.h"

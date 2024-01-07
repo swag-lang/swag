@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "Ast.h"
 #include "ByteCode.h"
 #include "Context.h"

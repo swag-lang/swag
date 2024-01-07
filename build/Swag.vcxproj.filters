@@ -668,6 +668,9 @@
     <ClCompile Include="..\src\ByteCodeGen_Property.cpp">
       <Filter>Backend\ByteCode\Gen</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ByteCodeGenContext.cpp">
+      <Filter>Backend\ByteCode\Gen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
@@ -1041,6 +1044,9 @@
       <Filter>Semantic\Type</Filter>
     </ClInclude>
     <ClInclude Include="..\src\ByteCodeGen.h">
+      <Filter>Backend\ByteCode\Gen</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ByteCodeGenContext.h">
       <Filter>Backend\ByteCode\Gen</Filter>
     </ClInclude>
   </ItemGroup>

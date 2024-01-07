@@ -8,22 +8,6 @@
 #include "ThreadManager.h"
 #include "TypeManager.h"
 
-void ByteCodeGenContext::release()
-{
-    if (allParamsTmp)
-    {
-        allParamsTmp->childs.clear();
-        allParamsTmp->release();
-    }
-}
-
-void ByteCodeGenContext::allocateTempCallParams()
-{
-    if (!allParamsTmp)
-        allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);
-    allParamsTmp->childs.clear();
-}
-
 void ByteCodeGen::reserveRegisterRC(ByteCodeGenContext* context, RegisterList& rc, int num)
 {
     rc.clear();

@@ -1,6 +1,6 @@
 #pragma once
 #include "Job.h"
-#include "ByteCodeGen.h"
+#include "ByteCodeGenContext.h"
 
 struct ByteCodeGenJob : public Job
 {

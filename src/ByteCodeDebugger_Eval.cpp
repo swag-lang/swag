@@ -3,6 +3,7 @@
 #include "ByteCode.h"
 #include "ByteCodeDebugger.h"
 #include "ByteCodeGenJob.h"
+#include "ByteCodeGenContext.h"
 #include "Context.h"
 #include "Module.h"
 #include "Parser.h"

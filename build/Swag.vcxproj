@@ -264,6 +264,7 @@
     <ClInclude Include="../src/ModuleOutputJob.h" />
     <ClInclude Include="..\src\ByteCodeDebugger.h" />
     <ClInclude Include="..\src\ByteCodeGen.h" />
+    <ClInclude Include="..\src\ByteCodeGenContext.h" />
     <ClInclude Include="..\src\ByteCodeInstruction.h" />
     <ClInclude Include="..\src\CallConv.h" />
     <ClInclude Include="..\src\ComputedValue.h" />
@@ -382,6 +383,7 @@
     <ClCompile Include="../src/ByteCodeOptimizer.cpp" />
     <ClCompile Include="../src/ByteCodeOptimizerJob.cpp" />
     <ClCompile Include="..\src\ByteCodeGen.cpp" />
+    <ClCompile Include="..\src\ByteCodeGenContext.cpp" />
     <ClCompile Include="..\src\ByteCodeGen_AffectOp.cpp" />
     <ClCompile Include="..\src\ByteCodeGen_BinaryOp.cpp" />
     <ClCompile Include="..\src\ByteCodeGen_Block.cpp" />
