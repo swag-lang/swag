@@ -53,7 +53,9 @@ struct CommandLine
     bool dbgOff        = false;
     bool dbgCallStack  = false;
     bool dbgPrintBcExt = false;
-#ifndef SWAG_DEV_MODE
+#ifdef SWAG_DEV_MODE
+    bool dbgDevMode = true;
+#else
     bool dbgDevMode = false;
 #endif
 

@@ -654,16 +654,17 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
         }
     }
 
-#if SWAG_DEV_MODE
     if (diag.errorLevel == DiagnosticLevel::Error || diag.errorLevel == DiagnosticLevel::Panic)
     {
         if (!OS::isDebuggerAttached())
         {
-            OS::errorBox("[Developer Mode]", "Error raised !");
-            return false;
+            if (g_CommandLine.dbgDevMode)
+            {
+                OS::errorBox("[Developer Mode]", "Error raised !");
+                return false;
+            }
         }
     }
-#endif
 
     return diag.errorLevel == DiagnosticLevel::Error || diag.errorLevel == DiagnosticLevel::Panic ? false : true;
 }
