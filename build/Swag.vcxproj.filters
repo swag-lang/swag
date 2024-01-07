@@ -674,6 +674,9 @@
     <ClCompile Include="..\src\ByteCodeGen_Registers.cpp">
       <Filter>Backend\ByteCode\Gen</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\ByteCodeGen_Emit.cpp">
+      <Filter>Backend\ByteCode\Gen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">

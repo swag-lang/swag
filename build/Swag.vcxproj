@@ -389,6 +389,7 @@
     <ClCompile Include="..\src\ByteCodeGen_Block.cpp" />
     <ClCompile Include="..\src\ByteCodeGen_Cast.cpp" />
     <ClCompile Include="..\src\ByteCodeGen_CompareOp.cpp" />
+    <ClCompile Include="..\src\ByteCodeGen_Emit.cpp" />
     <ClCompile Include="..\src\ByteCodeGen_Err.cpp" />
     <ClCompile Include="..\src\ByteCodeGen_Expression.cpp" />
     <ClCompile Include="..\src\ByteCodeGen_Function.cpp" />
