@@ -380,57 +380,6 @@
     <ClCompile Include="..\src\Ast_Gen.cpp">
       <Filter>Syntax</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\mimalloc\init.c">
-      <Filter>Extern\mimalloc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\mimalloc\options.c">
-      <Filter>Extern\mimalloc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\mimalloc\os.c">
-      <Filter>Extern\mimalloc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\mimalloc\page.c">
-      <Filter>Extern\mimalloc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\mimalloc\random.c">
-      <Filter>Extern\mimalloc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\mimalloc\segment.c">
-      <Filter>Extern\mimalloc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\mimalloc\segment-cache.c">
-      <Filter>Extern\mimalloc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\mimalloc\alloc.c">
-      <Filter>Extern\mimalloc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\mimalloc\alloc-aligned.c">
-      <Filter>Extern\mimalloc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\mimalloc\alloc-override-osx.c">
-      <Filter>Extern\mimalloc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\mimalloc\alloc-posix.c">
-      <Filter>Extern\mimalloc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\mimalloc\arena.c">
-      <Filter>Extern\mimalloc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\mimalloc\bitmap.c">
-      <Filter>Extern\mimalloc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\mimalloc\heap.c">
-      <Filter>Extern\mimalloc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\mimalloc\alloc-override.c">
-      <Filter>Extern\mimalloc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\mimalloc\page-queue.c">
-      <Filter>Extern\mimalloc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\mimalloc\stats.c">
-      <Filter>Extern\mimalloc</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Symbol.cpp">
       <Filter>Semantic\Symbol</Filter>
     </ClCompile>
@@ -676,6 +625,9 @@
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeGen_Emit.cpp">
       <Filter>Backend\ByteCode\Gen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\mimalloc\static.c">
+      <Filter>Extern\mimalloc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -988,30 +940,6 @@
     </ClInclude>
     <ClInclude Include="..\src\Path.h">
       <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\mimalloc\mimalloc.h">
-      <Filter>Extern\mimalloc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\mimalloc\mimalloc-atomic.h">
-      <Filter>Extern\mimalloc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\mimalloc\mimalloc-internal.h">
-      <Filter>Extern\mimalloc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\mimalloc\mimalloc-new-delete.h">
-      <Filter>Extern\mimalloc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\mimalloc\mimalloc-override.h">
-      <Filter>Extern\mimalloc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\mimalloc\mimalloc-track.h">
-      <Filter>Extern\mimalloc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\mimalloc\mimalloc-types.h">
-      <Filter>Extern\mimalloc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\mimalloc\bitmap.h">
-      <Filter>Extern\mimalloc</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Symbol.h">
       <Filter>Semantic\Symbol</Filter>
