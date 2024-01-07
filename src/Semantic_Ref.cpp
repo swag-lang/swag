@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Semantic.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "Ast.h"
 #include "Module.h"
 #include "TypeManager.h"
@@ -114,7 +114,7 @@ bool Semantic::resolveMakePointerLambda(SemanticContext* context)
     else
         lambdaType->sizeOf = sizeof(void*);
     node->typeInfo    = lambdaType;
-    node->byteCodeFct = ByteCodeGenJob::emitMakeLambda;
+    node->byteCodeFct = ByteCodeGen::emitMakeLambda;
 
     // :CaptureBlock
     // Block capture
@@ -194,7 +194,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
     node->flags |= AST_R_VALUE;
     node->resolvedSymbolName     = child->resolvedSymbolName;
     node->resolvedSymbolOverload = child->resolvedSymbolOverload;
-    node->byteCodeFct            = ByteCodeGenJob::emitMakePointer;
+    node->byteCodeFct            = ByteCodeGen::emitMakePointer;
     node->inheritComputedValue(child);
 
     // A new pointer
@@ -208,7 +208,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
         typeInfo   = TypeManager::concretePtrRef(typeInfo);
         child->semFlags |= SEMFLAG_FORCE_NO_TAKE_ADDRESS;
         child->childs.back()->semFlags |= SEMFLAG_FORCE_NO_TAKE_ADDRESS;
-        node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
+        node->byteCodeFct = ByteCodeGen::emitPassThrough;
     }
 
     // If this is an array, then this is legit, the pointer will address the first
@@ -286,11 +286,11 @@ bool Semantic::resolveArrayPointerSlicingUpperBound(SemanticContext* context)
     if (upperNode->hasComputedValue())
     {
         upperNode->computedValue->reg.u64 -= 1;
-        upperNode->byteCodeFct = ByteCodeGenJob::emitLiteral;
+        upperNode->byteCodeFct = ByteCodeGen::emitLiteral;
     }
     else
     {
-        upperNode->byteCodeFct = ByteCodeGenJob::emitMakeArrayPointerSlicingUpperBound;
+        upperNode->byteCodeFct = ByteCodeGen::emitMakeArrayPointerSlicingUpperBound;
     }
 
     return true;
@@ -436,7 +436,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
         }
     }
 
-    node->byteCodeFct = ByteCodeGenJob::emitMakeArrayPointerSlicing;
+    node->byteCodeFct = ByteCodeGen::emitMakeArrayPointerSlicing;
     return true;
 }
 
@@ -473,7 +473,7 @@ bool Semantic::resolveMoveRef(SemanticContext* context)
     typeInfo->forceComputeName();
 
     node->typeInfo    = typeInfo;
-    node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
+    node->byteCodeFct = ByteCodeGen::emitPassThrough;
     return true;
 }
 
@@ -521,7 +521,7 @@ bool Semantic::resolveKeepRef(SemanticContext* context)
     }
 
     node->typeInfo    = typeInfo;
-    node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
+    node->byteCodeFct = ByteCodeGen::emitPassThrough;
     return true;
 }
 
@@ -639,7 +639,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
         arrayNode->typeInfo = typePtr->pointedType;
         arrayNode->flags |= AST_ARRAY_POINTER_REF;
         arrayNode->array->flags |= AST_ARRAY_POINTER_REF;
-        arrayNode->byteCodeFct = ByteCodeGenJob::emitPointerRef;
+        arrayNode->byteCodeFct = ByteCodeGen::emitPointerRef;
         break;
     }
 
@@ -649,7 +649,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
         if (arrayType->nativeType == NativeTypeKind::String)
         {
             arrayNode->typeInfo    = g_TypeMgr->typeInfoU8;
-            arrayNode->byteCodeFct = ByteCodeGenJob::emitStringRef;
+            arrayNode->byteCodeFct = ByteCodeGen::emitStringRef;
             arrayNode->flags |= AST_IS_CONST;
         }
         else
@@ -668,7 +668,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         auto typeArray         = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
         arrayNode->typeInfo    = typeArray->pointedType;
-        arrayNode->byteCodeFct = ByteCodeGenJob::emitArrayRef;
+        arrayNode->byteCodeFct = ByteCodeGen::emitArrayRef;
 
         // Try to dereference as a constant if we can
         uint32_t     storageOffset  = UINT32_MAX;
@@ -692,7 +692,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
         auto typePtr           = CastTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
         arrayNode->typeInfo    = typePtr->pointedType;
-        arrayNode->byteCodeFct = ByteCodeGenJob::emitSliceRef;
+        arrayNode->byteCodeFct = ByteCodeGen::emitSliceRef;
         break;
     }
 
@@ -819,7 +819,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
     auto arrayNode         = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     auto arrayAccess       = arrayNode->access;
     auto arrayType         = getConcreteTypeUnRef(arrayNode->array, CONCRETE_ALL);
-    arrayNode->byteCodeFct = ByteCodeGenJob::emitPointerDeRef;
+    arrayNode->byteCodeFct = ByteCodeGen::emitPointerDeRef;
 
     SWAG_CHECK(checkIsConcrete(context, arrayNode->array));
     SWAG_CHECK(checkIsConcrete(context, arrayNode->access));
@@ -1181,7 +1181,7 @@ bool Semantic::resolveInit(SemanticContext* context)
         }
     }
 
-    node->byteCodeFct = ByteCodeGenJob::emitInit;
+    node->byteCodeFct = ByteCodeGen::emitInit;
     return true;
 }
 
@@ -1205,6 +1205,6 @@ bool Semantic::resolveDropCopyMove(SemanticContext* context)
         }
     }
 
-    node->byteCodeFct = ByteCodeGenJob::emitDropCopyMove;
+    node->byteCodeFct = ByteCodeGen::emitDropCopyMove;
     return true;
 }

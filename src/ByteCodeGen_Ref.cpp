@@ -1,11 +1,11 @@
 #include "pch.h"
 #include "ByteCode.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "TypeManager.h"
 #include "Ast.h"
 #include "Report.h"
 
-bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
+bool ByteCodeGen::emitPointerRef(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
 
@@ -37,7 +37,7 @@ bool ByteCodeGenJob::emitPointerRef(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitStringRef(ByteCodeGenContext* context)
+bool ByteCodeGen::emitStringRef(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
 
@@ -58,7 +58,7 @@ bool ByteCodeGenJob::emitStringRef(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
+bool ByteCodeGen::emitArrayRef(ByteCodeGenContext* context)
 {
     auto node          = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     auto typeArray     = TypeManager::concreteType(node->array->typeInfo, CONCRETE_FORCEALIAS);
@@ -90,7 +90,7 @@ bool ByteCodeGenJob::emitArrayRef(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
+bool ByteCodeGen::emitSliceRef(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
 
@@ -128,7 +128,7 @@ bool ByteCodeGenJob::emitSliceRef(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context, TypeInfo* typeInfo)
+bool ByteCodeGen::emitStructDeRef(ByteCodeGenContext* context, TypeInfo* typeInfo)
 {
     auto node = context->node;
 
@@ -198,7 +198,7 @@ bool ByteCodeGenJob::emitStructDeRef(ByteCodeGenContext* context, TypeInfo* type
     return true;
 }
 
-bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, TypeInfo* typeInfo)
+bool ByteCodeGen::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, TypeInfo* typeInfo)
 {
     ensureCanBeChangedRC(context, r0);
 
@@ -249,9 +249,8 @@ bool ByteCodeGenJob::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0
     return true;
 }
 
-bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
+bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
 {
-    auto job      = context->job;
     auto node     = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     auto typeInfo = TypeManager::concretePtrRefType(node->array->typeInfo);
     auto castInfo = node->array->castedTypeInfo ? node->array->castedTypeInfo : nullptr;
@@ -317,10 +316,10 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
         // User special function
         if (node->hasSpecialFuncCall())
         {
-            if (!job->allParamsTmp)
-                job->allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);
-            job->allParamsTmp->childs = node->structFlatParams;
-            SWAG_CHECK(emitUserOp(context, job->allParamsTmp));
+            if (!context->allParamsTmp)
+                context->allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);
+            context->allParamsTmp->childs = node->structFlatParams;
+            SWAG_CHECK(emitUserOp(context, context->allParamsTmp));
             if (context->result != ContextResult::Done)
             {
                 node->semFlags |= SEMFLAG_FORCE_CAST_PTR_STRUCT;
@@ -445,7 +444,7 @@ bool ByteCodeGenJob::emitPointerDeRef(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
+bool ByteCodeGen::emitMakeLambda(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstMakePointer>(context->node, AstNodeKind::MakePointerLambda, AstNodeKind::MakePointer);
 
@@ -460,7 +459,7 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
     if (!funcNode->isForeign())
     {
         // Need to generate bytecode, if not already done or running
-        askForByteCode(context->job, funcNode, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
+        askForByteCode(context->baseJob, funcNode, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         YIELD();
     }
 
@@ -487,7 +486,7 @@ bool ByteCodeGenJob::emitMakeLambda(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitMakePointer(ByteCodeGenContext* context)
+bool ByteCodeGen::emitMakePointer(ByteCodeGenContext* context)
 {
     auto node              = context->node;
     auto front             = node->childs.front();
@@ -495,18 +494,17 @@ bool ByteCodeGenJob::emitMakePointer(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitMakeArrayPointerSlicingUpperBound(ByteCodeGenContext* context)
+bool ByteCodeGen::emitMakeArrayPointerSlicingUpperBound(ByteCodeGenContext* context)
 {
-    auto job       = context->job;
     auto upperNode = context->node;
     auto slicing   = CastAst<AstArrayPointerSlicing>(context->node->parent, AstNodeKind::ArrayPointerSlicing);
     auto arrayNode = slicing->array;
 
     if (upperNode->hasExtMisc() && upperNode->extMisc()->resolvedUserOpSymbolOverload)
     {
-        job->allocateTempCallParams();
-        job->allParamsTmp->childs.push_back(arrayNode);
-        SWAG_CHECK(emitUserOp(context, job->allParamsTmp, nullptr, false));
+        context->allocateTempCallParams();
+        context->allParamsTmp->childs.push_back(arrayNode);
+        SWAG_CHECK(emitUserOp(context, context->allParamsTmp, nullptr, false));
         YIELD();
         EMIT_INST1(context, ByteCodeOp::Add64byVB64, upperNode->resultRegisterRC)->b.s64 = -1;
         return true;
@@ -527,9 +525,8 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicingUpperBound(ByteCodeGenContext* c
     return Report::internalError(context->node, "emitMakeArrayPointerSlicingUpperBound, type not supported");
 }
 
-bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
+bool ByteCodeGen::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
 {
-    auto job     = context->job;
     auto node    = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
     auto typeVar = TypeManager::concretePtrRefType(node->array->typeInfo);
 
@@ -560,10 +557,10 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
         // User special function
         if (node->hasSpecialFuncCall())
         {
-            if (!job->allParamsTmp)
-                job->allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);
-            job->allParamsTmp->childs = node->structFlatParams;
-            SWAG_CHECK(emitUserOp(context, job->allParamsTmp));
+            if (!context->allParamsTmp)
+                context->allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);
+            context->allParamsTmp->childs = node->structFlatParams;
+            SWAG_CHECK(emitUserOp(context, context->allParamsTmp));
             YIELD();
             return true;
         }
@@ -615,7 +612,7 @@ bool ByteCodeGenJob::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
     return true;
 }
 
-void ByteCodeGenJob::emitSetZeroAtPointer(ByteCodeGenContext* context, uint64_t sizeOf, uint32_t registerIndex)
+void ByteCodeGen::emitSetZeroAtPointer(ByteCodeGenContext* context, uint64_t sizeOf, uint32_t registerIndex)
 {
     switch (sizeOf)
     {
@@ -637,7 +634,7 @@ void ByteCodeGenJob::emitSetZeroAtPointer(ByteCodeGenContext* context, uint64_t 
     }
 }
 
-void ByteCodeGenJob::emitSetZeroStack(ByteCodeGenContext* context, uint32_t offset, uint32_t sizeOf)
+void ByteCodeGen::emitSetZeroStack(ByteCodeGenContext* context, uint32_t offset, uint32_t sizeOf)
 {
     switch (sizeOf)
     {
@@ -659,7 +656,7 @@ void ByteCodeGenJob::emitSetZeroStack(ByteCodeGenContext* context, uint32_t offs
     }
 }
 
-void ByteCodeGenJob::emitMemCpy(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint64_t sizeOf)
+void ByteCodeGen::emitMemCpy(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint64_t sizeOf)
 {
     switch (sizeOf)
     {

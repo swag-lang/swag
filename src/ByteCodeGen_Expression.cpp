@@ -1,13 +1,13 @@
 #include "pch.h"
 #include "ByteCode.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "Module.h"
 #include "TypeManager.h"
 #include "Ast.h"
 #include "Semantic.h"
 #include "Report.h"
 
-bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)
+bool ByteCodeGen::emitNullConditionalOp(ByteCodeGenContext* context)
 {
     auto node     = context->node;
     auto child0   = node->childs[0];
@@ -67,7 +67,7 @@ bool ByteCodeGenJob::emitNullConditionalOp(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitConditionalOpAfterExpr(ByteCodeGenContext* context)
+bool ByteCodeGen::emitConditionalOpAfterExpr(ByteCodeGenContext* context)
 {
     auto expr    = context->node;
     auto binNode = CastAst<AstConditionalOpNode>(expr->parent, AstNodeKind::ConditionalExpression);
@@ -83,7 +83,7 @@ bool ByteCodeGenJob::emitConditionalOpAfterExpr(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitConditionalOpAfterIfTrue(ByteCodeGenContext* context)
+bool ByteCodeGen::emitConditionalOpAfterIfTrue(ByteCodeGenContext* context)
 {
     auto ifTrue  = context->node;
     auto binNode = CastAst<AstConditionalOpNode>(ifTrue->parent, AstNodeKind::ConditionalExpression);
@@ -104,7 +104,7 @@ bool ByteCodeGenJob::emitConditionalOpAfterIfTrue(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitConditionalOp(ByteCodeGenContext* context)
+bool ByteCodeGen::emitConditionalOp(ByteCodeGenContext* context)
 {
     auto node       = CastAst<AstConditionalOpNode>(context->node, AstNodeKind::ConditionalExpression);
     auto expression = node->childs[0];
@@ -129,7 +129,7 @@ bool ByteCodeGenJob::emitConditionalOp(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitExpressionListBefore(ByteCodeGenContext* context)
+bool ByteCodeGen::emitExpressionListBefore(ByteCodeGenContext* context)
 {
     auto node = context->node;
 
@@ -141,7 +141,7 @@ bool ByteCodeGenJob::emitExpressionListBefore(ByteCodeGenContext* context)
     return true;
 }
 
-void ByteCodeGenJob::collectLiteralsChilds(AstNode* node, VectorNative<AstNode*>* orderedChilds)
+void ByteCodeGen::collectLiteralsChilds(AstNode* node, VectorNative<AstNode*>* orderedChilds)
 {
     for (auto child : node->childs)
     {
@@ -152,10 +152,9 @@ void ByteCodeGenJob::collectLiteralsChilds(AstNode* node, VectorNative<AstNode*>
     }
 }
 
-bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
+bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
 {
     auto node     = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
-    auto job      = context->job;
     auto typeList = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
 
     // A non const expression list will be collected by the top ExpressionList
@@ -172,16 +171,16 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
 
     if (!(node->flags & AST_CONST_EXPR))
     {
-        job->collectChilds.clear();
-        collectLiteralsChilds(node, &job->collectChilds);
+        context->collectChilds.clear();
+        collectLiteralsChilds(node, &context->collectChilds);
 
         // Wait for generated struct if necessary
-        for (auto child : job->collectChilds)
+        for (auto child : context->collectChilds)
         {
             auto typeChild = TypeManager::concreteType(child->typeInfo);
             if (typeChild->isStruct())
             {
-                Semantic::waitStructGenerated(context->job, typeChild);
+                Semantic::waitStructGenerated(context->baseJob, typeChild);
                 YIELD();
             }
         }
@@ -240,7 +239,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
         size_t       totalOffset = 0;
         RegisterList r0;
         reserveRegisterRC(context, r0, 1);
-        for (auto child : job->collectChilds)
+        for (auto child : context->collectChilds)
         {
             child->flags |= AST_NO_LEFT_DROP;
 
@@ -302,7 +301,7 @@ bool ByteCodeGenJob::emitExpressionList(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
+bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context)
 {
     auto node = context->node;
     if (node->semFlags & SEMFLAG_LITERAL_SUFFIX)
@@ -311,7 +310,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, TypeInfo* toType, RegisterList& regList)
+bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, TypeInfo* toType, RegisterList& regList)
 {
     auto typeInfo = node->castedTypeInfo ? node->castedTypeInfo : node->typeInfo;
     typeInfo      = TypeManager::concreteType(typeInfo);
@@ -501,7 +500,7 @@ bool ByteCodeGenJob::emitLiteral(ByteCodeGenContext* context, AstNode* node, Typ
     return true;
 }
 
-bool ByteCodeGenJob::emitDefer(ByteCodeGenContext* context)
+bool ByteCodeGen::emitDefer(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstDefer>(context->node, AstNodeKind::Defer);
     SWAG_ASSERT(node->childs.size() == 1);

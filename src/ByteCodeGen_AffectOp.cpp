@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "Ast.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "ByteCode.h"
 #include "TypeManager.h"
 #include "Report.h"
 #include "Semantic.h"
 
-bool ByteCodeGenJob::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo, RegisterList& dstReg, RegisterList& srcReg, AstNode* from)
+bool ByteCodeGen::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo, RegisterList& dstReg, RegisterList& srcReg, AstNode* from)
 {
     auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
     auto finalType = TypeManager::concreteType(typeArray->finalType);
@@ -105,7 +105,7 @@ bool ByteCodeGenJob::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeIn
     return true;
 }
 
-bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* forcedTypeInfo, AstNode* from)
+bool ByteCodeGen::emitAffectEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* forcedTypeInfo, AstNode* from)
 {
     AstNode*  node         = context->node;
     auto      typeInfo     = forcedTypeInfo ? forcedTypeInfo : node->childs.front()->typeInfo;
@@ -117,7 +117,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->isStruct())
     {
-        Semantic::waitStructGenerated(context->job, typeInfo);
+        Semantic::waitStructGenerated(context->baseJob, typeInfo);
         YIELD();
         SWAG_CHECK(emitCopyStruct(context, r0, r1, typeInfo, from));
         return true;
@@ -125,7 +125,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
 
     if (typeInfo->isArray())
     {
-        Semantic::waitStructGenerated(context->job, typeInfo);
+        Semantic::waitStructGenerated(context->baseJob, typeInfo);
         YIELD();
         SWAG_CHECK(emitCopyArray(context, typeInfo, r0, r1, from));
         return true;
@@ -301,7 +301,7 @@ bool ByteCodeGenJob::emitAffectEqual(ByteCodeGenContext* context, RegisterList& 
     }
 }
 
-bool ByteCodeGenJob::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+bool ByteCodeGen::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     AstNode* node = context->node;
 
@@ -362,7 +362,7 @@ bool ByteCodeGenJob::emitAffectPlusEqual(ByteCodeGenContext* context, uint32_t r
     return Report::internalError(context->node, "emitAffectPlusEqual, type invalid");
 }
 
-bool ByteCodeGenJob::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+bool ByteCodeGen::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     AstNode* node = context->node;
 
@@ -423,7 +423,7 @@ bool ByteCodeGenJob::emitAffectMinusEqual(ByteCodeGenContext* context, uint32_t 
     return Report::internalError(context->node, "emitAffectMinusEqual, type invalid");
 }
 
-bool ByteCodeGenJob::emitAffectMulEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+bool ByteCodeGen::emitAffectMulEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     AstNode* node = context->node;
 
@@ -473,7 +473,7 @@ bool ByteCodeGenJob::emitAffectMulEqual(ByteCodeGenContext* context, uint32_t r0
     }
 }
 
-bool ByteCodeGenJob::emitAffectAndEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+bool ByteCodeGen::emitAffectAndEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     AstNode* node = context->node;
 
@@ -510,7 +510,7 @@ bool ByteCodeGenJob::emitAffectAndEqual(ByteCodeGenContext* context, uint32_t r0
     }
 }
 
-bool ByteCodeGenJob::emitAffectOrEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+bool ByteCodeGen::emitAffectOrEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     AstNode* node = context->node;
 
@@ -547,7 +547,7 @@ bool ByteCodeGenJob::emitAffectOrEqual(ByteCodeGenContext* context, uint32_t r0,
     }
 }
 
-bool ByteCodeGenJob::emitAffectXorEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+bool ByteCodeGen::emitAffectXorEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     AstNode* node = context->node;
 
@@ -584,7 +584,7 @@ bool ByteCodeGenJob::emitAffectXorEqual(ByteCodeGenContext* context, uint32_t r0
     }
 }
 
-bool ByteCodeGenJob::emitAffectShiftLeftEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+bool ByteCodeGen::emitAffectShiftLeftEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     AstNode* node = context->node;
 
@@ -628,7 +628,7 @@ bool ByteCodeGenJob::emitAffectShiftLeftEqual(ByteCodeGenContext* context, uint3
     }
 }
 
-bool ByteCodeGenJob::emitAffectShiftRightEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+bool ByteCodeGen::emitAffectShiftRightEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     AstNode* node = context->node;
 
@@ -673,7 +673,7 @@ bool ByteCodeGenJob::emitAffectShiftRightEqual(ByteCodeGenContext* context, uint
     }
 }
 
-bool ByteCodeGenJob::emitAffectPercentEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+bool ByteCodeGen::emitAffectPercentEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     AstNode* node = context->node;
 
@@ -725,7 +725,7 @@ bool ByteCodeGenJob::emitAffectPercentEqual(ByteCodeGenContext* context, uint32_
     }
 }
 
-bool ByteCodeGenJob::emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+bool ByteCodeGen::emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     AstNode* node = context->node;
 
@@ -785,9 +785,8 @@ bool ByteCodeGenJob::emitAffectDivEqual(ByteCodeGenContext* context, uint32_t r0
     }
 }
 
-bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
+bool ByteCodeGen::emitAffect(ByteCodeGenContext* context)
 {
-    auto     job       = context->job;
     AstNode* node      = context->node;
     AstNode* leftNode  = context->node->childs[0];
     AstNode* rightNode = context->node->childs[1];
@@ -810,10 +809,10 @@ bool ByteCodeGenJob::emitAffect(ByteCodeGenContext* context)
         if (node->semFlags & SEMFLAG_FLAT_PARAMS)
         {
             auto arrayNode = CastAst<AstArrayPointerIndex>(leftNode->childs.back(), AstNodeKind::ArrayPointerIndex);
-            if (!job->allParamsTmp)
-                job->allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);
-            job->allParamsTmp->childs = arrayNode->structFlatParams;
-            SWAG_CHECK(emitUserOp(context, job->allParamsTmp));
+            if (!context->allParamsTmp)
+                context->allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);
+            context->allParamsTmp->childs = arrayNode->structFlatParams;
+            SWAG_CHECK(emitUserOp(context, context->allParamsTmp));
             YIELD();
         }
         else

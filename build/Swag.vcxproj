@@ -44,7 +44,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (Stats)|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>ClangCL</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
@@ -52,7 +52,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>ClangCL</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
@@ -263,6 +263,7 @@
     <ClInclude Include="../src/ModuleGenOutputJob.h" />
     <ClInclude Include="../src/ModuleOutputJob.h" />
     <ClInclude Include="..\src\ByteCodeDebugger.h" />
+    <ClInclude Include="..\src\ByteCodeGen.h" />
     <ClInclude Include="..\src\ByteCodeInstruction.h" />
     <ClInclude Include="..\src\CallConv.h" />
     <ClInclude Include="..\src\ComputedValue.h" />
@@ -377,24 +378,25 @@
     <ClCompile Include="..\src\ByteCodeDebugger_Trace.cpp" />
     <ClCompile Include="..\src\ByteCodeDebugger_Value.cpp" />
     <ClCompile Include="..\src\ByteCodeDebugger_Eval.cpp" />
-    <ClCompile Include="..\src\ByteCodeGenJob_AffectOp.cpp" />
-    <ClCompile Include="..\src\ByteCodeGenJob_BinaryOp.cpp" />
-    <ClCompile Include="..\src\ByteCodeGenJob_Block.cpp" />
-    <ClCompile Include="..\src\ByteCodeGenJob_Cast.cpp" />
-    <ClCompile Include="..\src\ByteCodeGenJob_CompareOp.cpp" />
-    <ClCompile Include="..\src\ByteCodeGenJob_Err.cpp" />
-    <ClCompile Include="..\src\ByteCodeGenJob_Function.cpp" />
-    <ClCompile Include="..\src\ByteCodeGenJob_Identifier.cpp" />
-    <ClCompile Include="..\src\ByteCodeGenJob_Expression.cpp" />
     <ClCompile Include="../src/ByteCodeGenJob.cpp" />
     <ClCompile Include="../src/ByteCodeOptimizer.cpp" />
-    <ClCompile Include="..\src\ByteCodeGenJob_Property.cpp" />
-    <ClCompile Include="..\src\ByteCodeGenJob_Ref.cpp" />
-    <ClCompile Include="..\src\ByteCodeGenJob_Struct.cpp" />
-    <ClCompile Include="..\src\ByteCodeGenJob_UnaryOp.cpp" />
-    <ClCompile Include="..\src\ByteCodeGenJob_Var.cpp" />
-    <ClCompile Include="..\src\ByteCodeGenJob_Safety.cpp" />
     <ClCompile Include="../src/ByteCodeOptimizerJob.cpp" />
+    <ClCompile Include="..\src\ByteCodeGen.cpp" />
+    <ClCompile Include="..\src\ByteCodeGen_AffectOp.cpp" />
+    <ClCompile Include="..\src\ByteCodeGen_BinaryOp.cpp" />
+    <ClCompile Include="..\src\ByteCodeGen_Block.cpp" />
+    <ClCompile Include="..\src\ByteCodeGen_Cast.cpp" />
+    <ClCompile Include="..\src\ByteCodeGen_CompareOp.cpp" />
+    <ClCompile Include="..\src\ByteCodeGen_Err.cpp" />
+    <ClCompile Include="..\src\ByteCodeGen_Expression.cpp" />
+    <ClCompile Include="..\src\ByteCodeGen_Function.cpp" />
+    <ClCompile Include="..\src\ByteCodeGen_Identifier.cpp" />
+    <ClCompile Include="..\src\ByteCodeGen_Property.cpp" />
+    <ClCompile Include="..\src\ByteCodeGen_Ref.cpp" />
+    <ClCompile Include="..\src\ByteCodeGen_Safety.cpp" />
+    <ClCompile Include="..\src\ByteCodeGen_Struct.cpp" />
+    <ClCompile Include="..\src\ByteCodeGen_UnaryOp.cpp" />
+    <ClCompile Include="..\src\ByteCodeGen_Var.cpp" />
     <ClCompile Include="..\src\ByteCodeOptimizer_Err.cpp" />
     <ClCompile Include="..\src\ByteCodeOptimizer_Loop.cpp" />
     <ClCompile Include="..\src\ByteCodeOptimizer_Param.cpp" />

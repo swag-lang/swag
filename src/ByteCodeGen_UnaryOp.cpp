@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "TypeManager.h"
 #include "ByteCodeOp.h"
 #include "Report.h"
 
-bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t rt, uint32_t r0)
+bool ByteCodeGen::emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t rt, uint32_t r0)
 {
     auto typeInfo = TypeManager::concreteType(typeInfoExpr);
     if (!typeInfo->isNative())
@@ -34,7 +34,7 @@ bool ByteCodeGenJob::emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typ
     }
 }
 
-bool ByteCodeGenJob::emitUnaryOpInvert(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t rt, uint32_t r0)
+bool ByteCodeGen::emitUnaryOpInvert(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t rt, uint32_t r0)
 {
     auto typeInfo = TypeManager::concreteType(typeInfoExpr);
     if (!typeInfo->isNative())
@@ -63,7 +63,7 @@ bool ByteCodeGenJob::emitUnaryOpInvert(ByteCodeGenContext* context, TypeInfo* ty
     }
 }
 
-bool ByteCodeGenJob::emitUnaryOp(ByteCodeGenContext* context)
+bool ByteCodeGen::emitUnaryOp(ByteCodeGenContext* context)
 {
     AstNode* node  = context->node;
     auto     front = node->childs[0];

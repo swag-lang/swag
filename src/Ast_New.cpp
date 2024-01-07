@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "Ast.h"
 #include "Semantic.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 
 AstInline* Ast::newInline(SourceFile* sourceFile, AstNode* parent, Parser* parser)
 {
@@ -10,8 +10,8 @@ AstInline* Ast::newInline(SourceFile* sourceFile, AstNode* parent, Parser* parse
     node->allocateExtension(ExtensionKind::Semantic);
     node->extSemantic()->semanticAfterFct  = Semantic::resolveInlineAfter;
     node->extSemantic()->semanticBeforeFct = Semantic::resolveInlineBefore;
-    node->setBcNotifBefore(ByteCodeGenJob::emitInlineBefore);
-    node->byteCodeFct = ByteCodeGenJob::emitInline;
+    node->setBcNotifBefore(ByteCodeGen::emitInlineBefore);
+    node->byteCodeFct = ByteCodeGen::emitInline;
     return node;
 }
 
@@ -99,7 +99,7 @@ AstIdentifierRef* Ast::newIdentifierRef(SourceFile* sourceFile, AstNode* parent,
     node->allocateExtension(ExtensionKind::Semantic);
     node->extSemantic()->semanticBeforeFct = Semantic::preResolveIdentifierRef;
     node->semanticFct                      = Semantic::resolveIdentifierRef;
-    node->byteCodeFct                      = ByteCodeGenJob::emitIdentifierRef;
+    node->byteCodeFct                      = ByteCodeGen::emitIdentifierRef;
     return node;
 }
 

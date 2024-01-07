@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "ByteCode.h"
 #include "TypeManager.h"
 #include "Module.h"
 #include "Ast.h"
 #include "Semantic.h"
 
-bool ByteCodeGenJob::emitLocalVarDeclBefore(ByteCodeGenContext* context)
+bool ByteCodeGen::emitLocalVarDeclBefore(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
@@ -37,7 +37,7 @@ bool ByteCodeGenJob::emitLocalVarDeclBefore(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
+bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
@@ -54,7 +54,7 @@ bool ByteCodeGenJob::emitLocalVarDecl(ByteCodeGenContext* context)
     auto typeInfo = TypeManager::concreteType(resolved->typeInfo, CONCRETE_FORCEALIAS);
     bool retVal   = resolved->flags & OVERLOAD_RETVAL;
 
-    Semantic::waitStructGenerated(context->job, typeInfo);
+    Semantic::waitStructGenerated(context->baseJob, typeInfo);
     YIELD();
 
     // Struct initialization

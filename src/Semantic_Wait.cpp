@@ -3,6 +3,7 @@
 #include "Ast.h"
 #include "Module.h"
 #include "TypeManager.h"
+#include "LanguageSpec.h"
 
 void Semantic::waitSymbolNoLock(Job* job, SymbolName* symbol)
 {
@@ -228,4 +229,16 @@ void Semantic::waitTypeCompleted(Job* job, TypeInfo* typeInfo)
         orgTypeInfo->sizeOf = orgTypeInfo->getFakeAlias()->sizeOf;
     if (typeInfo->isFakeAlias())
         typeInfo->sizeOf = typeInfo->getFakeAlias()->sizeOf;
+}
+
+bool Semantic::waitForStructUserOps(SemanticContext* context, AstNode* node)
+{
+    SymbolName* symbol = nullptr;
+    SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opPostCopy, node, &symbol));
+    YIELD();
+    SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opPostMove, node, &symbol));
+    YIELD();
+    SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opDrop, node, &symbol));
+    YIELD();
+    return true;
 }

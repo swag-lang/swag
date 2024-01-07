@@ -1,19 +1,19 @@
 #include "pch.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "ByteCode.h"
 #include "TypeManager.h"
 #include "Ast.h"
 #include "Report.h"
 #include "Naming.h"
 
-bool ByteCodeGenJob::emitIdentifierRef(ByteCodeGenContext* context)
+bool ByteCodeGen::emitIdentifierRef(ByteCodeGenContext* context)
 {
     AstNode* node          = context->node;
     node->resultRegisterRC = node->childs.back()->resultRegisterRC;
     return true;
 }
 
-bool ByteCodeGenJob::sameStackFrame(ByteCodeGenContext* context, SymbolOverload* overload)
+bool ByteCodeGen::sameStackFrame(ByteCodeGenContext* context, SymbolOverload* overload)
 {
     if (context->node->isSameStackFrame(overload))
         return true;
@@ -31,7 +31,7 @@ bool ByteCodeGenJob::sameStackFrame(ByteCodeGenContext* context, SymbolOverload*
     return context->report(diag, notes);
 }
 
-bool ByteCodeGenJob::emitIdentifier(ByteCodeGenContext* context)
+bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
 {
     auto node = context->node;
     if (!(node->flags & AST_L_VALUE) && !(node->flags & AST_R_VALUE))

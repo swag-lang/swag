@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Ast.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "Diagnostic.h"
 #include "LanguageSpec.h"
 #include "Module.h"
@@ -479,7 +479,7 @@ bool Semantic::resolveLiteral(SemanticContext* context)
             if (!errMsg.empty())
                 return context->report({node, errMsg});
             node->typeInfo    = g_TypeMgr->typeInfoCharacter;
-            node->byteCodeFct = ByteCodeGenJob::emitLiteral;
+            node->byteCodeFct = ByteCodeGen::emitLiteral;
             return true;
         }
 
@@ -542,6 +542,6 @@ bool Semantic::resolveLiteral(SemanticContext* context)
     if (!errMsg.empty())
         return context->report({node, errMsg});
     node->typeInfo    = suffixType;
-    node->byteCodeFct = ByteCodeGenJob::emitLiteral;
+    node->byteCodeFct = ByteCodeGen::emitLiteral;
     return true;
 }

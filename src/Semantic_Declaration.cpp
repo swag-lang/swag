@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Semantic.h"
 #include "Ast.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "TypeManager.h"
 #include "Module.h"
 #include "ErrorIds.h"
@@ -165,13 +165,13 @@ bool Semantic::resolveScopedStmtBefore(SemanticContext* context)
 
     // Can already been set in some cases... So be sure to not overwrite it.
     auto afterFct = node->extByteCode()->byteCodeAfterFct;
-    if (afterFct != ByteCodeGenJob::emitIfAfterIf &&
-        afterFct != ByteCodeGenJob::emitSwitchCaseAfterBlock &&
-        afterFct != ByteCodeGenJob::emitLoopAfterBlock &&
-        afterFct != ByteCodeGenJob::emitLeaveScope)
+    if (afterFct != ByteCodeGen::emitIfAfterIf &&
+        afterFct != ByteCodeGen::emitSwitchCaseAfterBlock &&
+        afterFct != ByteCodeGen::emitLoopAfterBlock &&
+        afterFct != ByteCodeGen::emitLeaveScope)
     {
         SWAG_ASSERT(!afterFct);
-        node->extByteCode()->byteCodeAfterFct = ByteCodeGenJob::emitLeaveScope;
+        node->extByteCode()->byteCodeAfterFct = ByteCodeGen::emitLeaveScope;
     }
 
     return true;

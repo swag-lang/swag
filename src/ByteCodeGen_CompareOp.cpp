@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "TypeManager.h"
 #include "ByteCode.h"
 #include "Ast.h"
 #include "Report.h"
 
-bool ByteCodeGenJob::emitInRange(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r2)
+bool ByteCodeGen::emitInRange(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r2)
 {
     auto rangeNode  = CastAst<AstRange>(right, AstNodeKind::Range);
     auto low        = rangeNode->expressionLow;
@@ -94,24 +94,23 @@ bool ByteCodeGenJob::emitInRange(ByteCodeGenContext* context, AstNode* left, Ast
     return true;
 }
 
-bool ByteCodeGenJob::emitCompareOpSpecialFunc(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1, TokenId op)
+bool ByteCodeGen::emitCompareOpSpecialFunc(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1, TokenId op)
 {
     SWAG_ASSERT(left->hasSpecialFuncCall());
 
-    auto job = context->job;
-    job->allocateTempCallParams();
-    job->allParamsTmp->childs.push_back(left);
-    job->allParamsTmp->childs.push_back(right);
+    context->allocateTempCallParams();
+    context->allParamsTmp->childs.push_back(left);
+    context->allParamsTmp->childs.push_back(right);
     left->resultRegisterRC  = r0;
     right->resultRegisterRC = r1;
-    SWAG_CHECK(emitUserOp(context, job->allParamsTmp, left, false));
+    SWAG_CHECK(emitUserOp(context, context->allParamsTmp, left, false));
     YIELD();
     SWAG_CHECK(emitCompareOpPostSpecialFunc(context, op));
 
     return true;
 }
 
-bool ByteCodeGenJob::emitCompareOpPostSpecialFunc(ByteCodeGenContext* context, TokenId op)
+bool ByteCodeGen::emitCompareOpPostSpecialFunc(ByteCodeGenContext* context, TokenId op)
 {
     auto node = context->node;
     auto r2   = node->resultRegisterRC;
@@ -184,7 +183,7 @@ bool ByteCodeGenJob::emitCompareOpPostSpecialFunc(ByteCodeGenContext* context, T
     return true;
 }
 
-bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1, RegisterList& r2)
+bool ByteCodeGen::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1, RegisterList& r2)
 {
     auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
@@ -333,7 +332,7 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, AstNode* le
     return Report::internalError(context->node, "emitCompareOpEqual, type not supported");
 }
 
-bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1, RegisterList& r2)
+bool ByteCodeGen::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r1, RegisterList& r2)
 {
     auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
@@ -489,7 +488,7 @@ bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, AstNode*
     return Report::internalError(context->node, "emitCompareOpNotEqual, invalid type");
 }
 
-bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, RegisterList& r2)
+bool ByteCodeGen::emitCompareOpEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, RegisterList& r2)
 {
     auto node  = context->node;
     auto left  = node->childs.front();
@@ -498,7 +497,7 @@ bool ByteCodeGenJob::emitCompareOpEqual(ByteCodeGenContext* context, RegisterLis
     return true;
 }
 
-bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, RegisterList& r2)
+bool ByteCodeGen::emitCompareOpNotEqual(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, RegisterList& r2)
 {
     auto node  = context->node;
     auto left  = node->childs.front();
@@ -507,7 +506,7 @@ bool ByteCodeGenJob::emitCompareOpNotEqual(ByteCodeGenContext* context, Register
     return true;
 }
 
-bool ByteCodeGenJob::emitCompareOp3Way(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitCompareOp3Way(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(node->childs[0]->typeInfo);
@@ -554,7 +553,7 @@ bool ByteCodeGenJob::emitCompareOp3Way(ByteCodeGenContext* context, uint32_t r0,
     return true;
 }
 
-bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitCompareOpLower(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     auto typeInfo = TypeManager::concretePtrRefType(left->typeInfo);
     if (typeInfo->isNative())
@@ -608,7 +607,7 @@ bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, AstNode* le
     return true;
 }
 
-bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitCompareOpLower(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     auto node  = context->node;
     auto left  = node->childs.front();
@@ -617,7 +616,7 @@ bool ByteCodeGenJob::emitCompareOpLower(ByteCodeGenContext* context, uint32_t r0
     return true;
 }
 
-bool ByteCodeGenJob::emitCompareOpLowerEq(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitCompareOpLowerEq(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     auto typeInfo = TypeManager::concretePtrRefType(left->typeInfo);
     if (typeInfo->isNative())
@@ -671,7 +670,7 @@ bool ByteCodeGenJob::emitCompareOpLowerEq(ByteCodeGenContext* context, AstNode* 
     return true;
 }
 
-bool ByteCodeGenJob::emitCompareOpLowerEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitCompareOpLowerEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     auto node  = context->node;
     auto left  = node->childs.front();
@@ -680,7 +679,7 @@ bool ByteCodeGenJob::emitCompareOpLowerEq(ByteCodeGenContext* context, uint32_t 
     return true;
 }
 
-bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitCompareOpGreater(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     auto typeInfo = TypeManager::concretePtrRefType(left->typeInfo);
     if (typeInfo->isNative())
@@ -734,7 +733,7 @@ bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, AstNode* 
     return true;
 }
 
-bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitCompareOpGreater(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     auto node  = context->node;
     auto left  = node->childs.front();
@@ -743,7 +742,7 @@ bool ByteCodeGenJob::emitCompareOpGreater(ByteCodeGenContext* context, uint32_t 
     return true;
 }
 
-bool ByteCodeGenJob::emitCompareOpGreaterEq(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitCompareOpGreaterEq(ByteCodeGenContext* context, AstNode* left, AstNode* right, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     auto typeInfo = TypeManager::concretePtrRefType(left->typeInfo);
     if (typeInfo->isNative())
@@ -797,7 +796,7 @@ bool ByteCodeGenJob::emitCompareOpGreaterEq(ByteCodeGenContext* context, AstNode
     return true;
 }
 
-bool ByteCodeGenJob::emitCompareOpGreaterEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitCompareOpGreaterEq(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     auto node  = context->node;
     auto left  = node->childs.front();
@@ -806,7 +805,7 @@ bool ByteCodeGenJob::emitCompareOpGreaterEq(ByteCodeGenContext* context, uint32_
     return true;
 }
 
-bool ByteCodeGenJob::emitCompareOp(ByteCodeGenContext* context)
+bool ByteCodeGen::emitCompareOp(ByteCodeGenContext* context)
 {
     AstNode* node = context->node;
 

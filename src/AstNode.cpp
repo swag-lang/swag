@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Ast.h"
 #include "ByteCode.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "Generic.h"
 #include "Module.h"
 #include "Parser.h"
@@ -1004,7 +1004,7 @@ void AstNode::setPassThrough()
 {
     semanticFct = nullptr;
 
-    byteCodeFct = ByteCodeGenJob::emitPassThrough;
+    byteCodeFct = ByteCodeGen::emitPassThrough;
     if (hasExtByteCode())
     {
         extByteCode()->byteCodeAfterFct  = nullptr;

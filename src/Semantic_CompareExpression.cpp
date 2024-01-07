@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Semantic.h"
 #include "TypeManager.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "Module.h"
 #include "ErrorIds.h"
 #include "Report.h"
@@ -492,7 +492,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
         node->semFlags |= SEMFLAG_INVERSE_PARAMS;
     }
 
-    node->byteCodeFct = ByteCodeGenJob::emitCompareOp;
+    node->byteCodeFct = ByteCodeGen::emitCompareOp;
     node->inheritAndFlag2(AST_CONST_EXPR, AST_R_VALUE);
     node->inheritOrFlag(AST_SIDE_EFFECTS);
 

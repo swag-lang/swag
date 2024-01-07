@@ -239,48 +239,6 @@
     <ClCompile Include="../src/ByteCodeGenJob.cpp">
       <Filter>Backend\ByteCode\Gen</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGenJob_AffectOp.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGenJob_BinaryOp.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGenJob_Block.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGenJob_Cast.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGenJob_CompareOp.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGenJob_Expression.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGenJob_Function.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGenJob_Identifier.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGenJob_Property.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGenJob_Ref.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGenJob_Safety.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGenJob_Struct.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGenJob_UnaryOp.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGenJob_Var.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\ByteCode_Print_.cpp">
       <Filter>Backend\ByteCode</Filter>
     </ClCompile>
@@ -310,9 +268,6 @@
     </ClCompile>
     <ClCompile Include="..\src\ErrorIds.cpp">
       <Filter>Report</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\ByteCodeGenJob_Err.cpp">
-      <Filter>Backend\ByteCode\Gen</Filter>
     </ClCompile>
     <ClCompile Include="..\src\BackendLLVM_Call.cpp">
       <Filter>Backend\LLVM</Filter>
@@ -664,6 +619,54 @@
     </ClCompile>
     <ClCompile Include="..\src\Workspace_Tags.cpp">
       <Filter>Wmf</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ByteCodeGen_Ref.cpp">
+      <Filter>Backend\ByteCode\Gen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ByteCodeGen_Safety.cpp">
+      <Filter>Backend\ByteCode\Gen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ByteCodeGen_Struct.cpp">
+      <Filter>Backend\ByteCode\Gen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ByteCodeGen_UnaryOp.cpp">
+      <Filter>Backend\ByteCode\Gen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ByteCodeGen_Var.cpp">
+      <Filter>Backend\ByteCode\Gen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ByteCodeGen.cpp">
+      <Filter>Backend\ByteCode\Gen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ByteCodeGen_AffectOp.cpp">
+      <Filter>Backend\ByteCode\Gen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ByteCodeGen_BinaryOp.cpp">
+      <Filter>Backend\ByteCode\Gen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ByteCodeGen_Block.cpp">
+      <Filter>Backend\ByteCode\Gen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ByteCodeGen_Cast.cpp">
+      <Filter>Backend\ByteCode\Gen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ByteCodeGen_CompareOp.cpp">
+      <Filter>Backend\ByteCode\Gen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ByteCodeGen_Err.cpp">
+      <Filter>Backend\ByteCode\Gen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ByteCodeGen_Expression.cpp">
+      <Filter>Backend\ByteCode\Gen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ByteCodeGen_Function.cpp">
+      <Filter>Backend\ByteCode\Gen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ByteCodeGen_Identifier.cpp">
+      <Filter>Backend\ByteCode\Gen</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\ByteCodeGen_Property.cpp">
+      <Filter>Backend\ByteCode\Gen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1036,6 +1039,9 @@
     </ClInclude>
     <ClInclude Include="..\src\TypeMatch.h">
       <Filter>Semantic\Type</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\ByteCodeGen.h">
+      <Filter>Backend\ByteCode\Gen</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Semantic.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "Ast.h"
 #include "AstOutput.h"
 #include "Module.h"
@@ -138,7 +138,7 @@ bool Semantic::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode* n
     }
 
     node->typeInfo    = first->typeInfo;
-    node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeCallback;
+    node->byteCodeFct = ByteCodeGen::emitIntrinsicMakeCallback;
     return true;
 }
 
@@ -167,7 +167,7 @@ bool Semantic::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node
     ptrSlice->computeName();
     node->typeInfo = ptrSlice;
 
-    node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeSlice;
+    node->byteCodeFct = ByteCodeGen::emitIntrinsicMakeSlice;
     return true;
 }
 
@@ -204,7 +204,7 @@ bool Semantic::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node, 
         return context->report({second, Fmt(Err(Err0792), second->typeInfo->getDisplayNameC())});
 
     node->typeInfo    = g_TypeMgr->typeInfoAny;
-    node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeAny;
+    node->byteCodeFct = ByteCodeGen::emitIntrinsicMakeAny;
     return true;
 }
 
@@ -238,7 +238,7 @@ bool Semantic::resolveIntrinsicMakeInterface(SemanticContext* context)
     node->typeInfo = third->typeInfo;
     third->flags |= AST_NO_BYTECODE;
 
-    node->byteCodeFct = ByteCodeGenJob::emitIntrinsicMakeInterface;
+    node->byteCodeFct = ByteCodeGen::emitIntrinsicMakeInterface;
     return true;
 }
 
@@ -282,7 +282,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
         }
         else
         {
-            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
+            node->byteCodeFct = ByteCodeGen::emitIntrinsicCountOf;
         }
     }
     else if (typeInfo->isArray())
@@ -316,7 +316,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
         }
         else
         {
-            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
+            node->byteCodeFct = ByteCodeGen::emitIntrinsicCountOf;
             node->typeInfo    = g_TypeMgr->typeInfoU64;
         }
     }
@@ -335,7 +335,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
     }
     else if (typeInfo->isVariadic() || typeInfo->isTypedVariadic())
     {
-        node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
+        node->byteCodeFct = ByteCodeGen::emitIntrinsicCountOf;
         node->typeInfo    = g_TypeMgr->typeInfoU64;
     }
     else if (typeInfo->isStruct())
@@ -346,7 +346,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
         YIELD();
         node->typeInfo = g_TypeMgr->typeInfoU64;
         if (!node->byteCodeFct)
-            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCountOf;
+            node->byteCodeFct = ByteCodeGen::emitIntrinsicCountOf;
     }
     else
     {
@@ -425,7 +425,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
         }
         else
         {
-            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
+            node->byteCodeFct = ByteCodeGen::emitIntrinsicDataOf;
         }
     }
     else if (typeInfo->isSlice())
@@ -456,7 +456,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
         }
         else
         {
-            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
+            node->byteCodeFct = ByteCodeGen::emitIntrinsicDataOf;
         }
     }
     else if (typeInfo->isArray())
@@ -482,7 +482,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
         }
         else
         {
-            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
+            node->byteCodeFct = ByteCodeGen::emitIntrinsicDataOf;
         }
     }
     else if (typeInfo->isAny())
@@ -519,13 +519,13 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
         }
         else
         {
-            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
+            node->byteCodeFct = ByteCodeGen::emitIntrinsicDataOf;
         }
     }
     else if (typeInfo->isInterface())
     {
         node->typeInfo    = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
-        node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
+        node->byteCodeFct = ByteCodeGen::emitIntrinsicDataOf;
     }
     else if (typeInfo->isStruct())
     {
@@ -535,7 +535,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
         YIELD();
         node->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
         if (!node->byteCodeFct)
-            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicDataOf;
+            node->byteCodeFct = ByteCodeGen::emitIntrinsicDataOf;
     }
     else
     {
@@ -671,7 +671,7 @@ bool Semantic::resolveIntrinsicSpread(SemanticContext* context)
     auto node         = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto expr         = node->childs.front();
     auto typeInfo     = TypeManager::concreteType(expr->typeInfo);
-    node->byteCodeFct = ByteCodeGenJob::emitIntrinsicSpread;
+    node->byteCodeFct = ByteCodeGen::emitIntrinsicSpread;
 
     SWAG_VERIFY(node->parent && node->parent->parent && node->parent->parent->kind == AstNodeKind::FuncCallParam, context->report({node, node->token, Err(Err0806)}));
 
@@ -745,7 +745,7 @@ bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
             node->computedValue->storageSegment = getConstantSegFromContext(node);
             SWAG_CHECK(typeGen.genExportedTypeInfo(context, expr->typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT, &node->typeInfo));
             YIELD();
-            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicKindOf;
+            node->byteCodeFct = ByteCodeGen::emitIntrinsicKindOf;
             node->flags |= AST_R_VALUE;
             SWAG_CHECK(setupIdentifierRef(context, node));
         }
@@ -761,7 +761,7 @@ bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
         node->computedValue->storageSegment = getConstantSegFromContext(node);
         SWAG_CHECK(typeGen.genExportedTypeInfo(context, expr->typeInfo, node->computedValue->storageSegment, &node->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT, &node->typeInfo));
         YIELD();
-        node->byteCodeFct = ByteCodeGenJob::emitIntrinsicKindOf;
+        node->byteCodeFct = ByteCodeGen::emitIntrinsicKindOf;
         node->flags |= AST_R_VALUE;
         SWAG_CHECK(setupIdentifierRef(context, node));
         return true;
@@ -879,7 +879,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
         // Special case for a function parameter in a validif block, should be done at runtime
         if (expr->isValidIfParam(expr->resolvedSymbolOverload))
         {
-            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicIsConstExprSI;
+            node->byteCodeFct = ByteCodeGen::emitIntrinsicIsConstExprSI;
             break;
         }
 
@@ -1023,11 +1023,11 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
             SWAG_VERIFY(node->ownerFct && node->ownerFct->parameters && node->ownerFct->parameters->childs.size(), context->report({node, node->token, Err(Err0442)}));
             auto typeParam = node->ownerFct->parameters->childs.back()->typeInfo;
             SWAG_VERIFY(typeParam->isCVariadic(), context->report({node, node->token, Err(Err0442)}));
-            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCVaStart;
+            node->byteCodeFct = ByteCodeGen::emitIntrinsicCVaStart;
         }
         else if (node->tokenId == TokenId::IntrinsicCVaEnd)
         {
-            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCVaEnd;
+            node->byteCodeFct = ByteCodeGen::emitIntrinsicCVaEnd;
         }
         else
         {
@@ -1042,7 +1042,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
             SWAG_VERIFY(!node->typeInfo->isNative(NativeTypeKind::U16), context->report({node->childs[1], Fmt(Err(Err0445), node->typeInfo->getDisplayNameC(), "u32")}));
             SWAG_VERIFY(!node->typeInfo->isBool(), context->report({node->childs[1], Fmt(Err(Err0445), node->typeInfo->getDisplayNameC(), "u32")}));
 
-            node->byteCodeFct = ByteCodeGenJob::emitIntrinsicCVaArg;
+            node->byteCodeFct = ByteCodeGen::emitIntrinsicCVaArg;
         }
 
         break;

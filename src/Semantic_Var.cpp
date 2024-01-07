@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Semantic.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "Module.h"
 #include "Ast.h"
 #include "TypeManager.h"
@@ -188,7 +188,7 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
         node->flags |= AST_CONST_EXPR;
         node->semFlags |= SEMFLAG_EXEC_RET_STACK;
 
-        node->byteCodeFct                     = ByteCodeGenJob::emitLocalVarDecl;
+        node->byteCodeFct                     = ByteCodeGen::emitLocalVarDecl;
         overload->computedValue.storageOffset = 0;
 
         SWAG_CHECK(evaluateConstExpression(context, node));
@@ -1271,8 +1271,8 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             }
         }
 
-        node->setBcNotifBefore(ByteCodeGenJob::emitLocalVarDeclBefore);
-        node->byteCodeFct = ByteCodeGenJob::emitLocalVarDecl;
+        node->setBcNotifBefore(ByteCodeGen::emitLocalVarDeclBefore);
+        node->byteCodeFct = ByteCodeGen::emitLocalVarDecl;
         node->flags |= AST_R_VALUE;
     }
     else if (symbolFlags & OVERLOAD_VAR_FUNC_PARAM)

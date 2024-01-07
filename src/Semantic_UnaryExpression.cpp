@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Semantic.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "TypeManager.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
@@ -222,7 +222,7 @@ bool Semantic::resolveUnaryOp(SemanticContext* context)
     auto child = op->childs[0];
 
     op->typeInfo    = child->typeInfo;
-    op->byteCodeFct = ByteCodeGenJob::emitUnaryOp;
+    op->byteCodeFct = ByteCodeGen::emitUnaryOp;
 
     op->inheritOrFlag(child, AST_CONST_EXPR | AST_SIDE_EFFECTS);
     SWAG_CHECK(checkIsConcrete(context, child));

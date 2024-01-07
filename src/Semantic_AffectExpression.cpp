@@ -2,7 +2,7 @@
 #include "Ast.h"
 #include "Semantic.h"
 #include "TypeManager.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "Module.h"
 #include "ErrorIds.h"
 #include "Report.h"
@@ -18,7 +18,7 @@ bool Semantic::resolveMove(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, right));
     node->inheritOrFlag(right, AST_NO_LEFT_DROP | AST_FORCE_MOVE | AST_NO_RIGHT_DROP);
     node->typeInfo    = right->typeInfo;
-    node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
+    node->byteCodeFct = ByteCodeGen::emitPassThrough;
     if (right->resolvedSymbolOverload)
         right->resolvedSymbolOverload->flags |= OVERLOAD_HAS_MAKE_POINTER;
 
@@ -606,6 +606,6 @@ bool Semantic::resolveAffect(SemanticContext* context)
         return Report::internalError(context->node, "resolveAffect, invalid token");
     }
 
-    node->byteCodeFct = ByteCodeGenJob::emitAffect;
+    node->byteCodeFct = ByteCodeGen::emitAffect;
     return true;
 }

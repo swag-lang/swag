@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "TypeManager.h"
 #include "ByteCode.h"
 #include "Module.h"
 #include "Ast.h"
 #include "Report.h"
 
-bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo)
+bool ByteCodeGen::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo)
 {
     auto node = context->node;
 
@@ -73,7 +73,7 @@ bool ByteCodeGenJob::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* e
     return true;
 }
 
-bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
+bool ByteCodeGen::emitCastToInterface(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
 {
     auto node = context->node;
     if (fromTypeInfo->isPointerNull())
@@ -119,7 +119,7 @@ bool ByteCodeGenJob::emitCastToInterface(ByteCodeGenContext* context, AstNode* e
     return true;
 }
 
-bool ByteCodeGenJob::emitCastToNativeBool(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
+bool ByteCodeGen::emitCastToNativeBool(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
     auto r0 = reserveRegisterRC(context);
 
@@ -177,7 +177,7 @@ bool ByteCodeGenJob::emitCastToNativeBool(ByteCodeGenContext* context, AstNode* 
     return true;
 }
 
-bool ByteCodeGenJob::emitCastToNativeU8(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
+bool ByteCodeGen::emitCastToNativeU8(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
@@ -209,7 +209,7 @@ bool ByteCodeGenJob::emitCastToNativeU8(ByteCodeGenContext* context, AstNode* ex
     return true;
 }
 
-bool ByteCodeGenJob::emitCastToNativeU16(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
+bool ByteCodeGen::emitCastToNativeU16(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
@@ -246,7 +246,7 @@ bool ByteCodeGenJob::emitCastToNativeU16(ByteCodeGenContext* context, AstNode* e
     return true;
 }
 
-bool ByteCodeGenJob::emitCastToNativeU32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
+bool ByteCodeGen::emitCastToNativeU32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
@@ -287,7 +287,7 @@ bool ByteCodeGenJob::emitCastToNativeU32(ByteCodeGenContext* context, AstNode* e
     return true;
 }
 
-bool ByteCodeGenJob::emitCastToNativeU64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
+bool ByteCodeGen::emitCastToNativeU64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
     if (typeInfo->isPointer())
         return true;
@@ -334,7 +334,7 @@ bool ByteCodeGenJob::emitCastToNativeU64(ByteCodeGenContext* context, AstNode* e
 
     return true;
 }
-bool ByteCodeGenJob::emitCastToNativeS8(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
+bool ByteCodeGen::emitCastToNativeS8(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
@@ -366,7 +366,7 @@ bool ByteCodeGenJob::emitCastToNativeS8(ByteCodeGenContext* context, AstNode* ex
     return true;
 }
 
-bool ByteCodeGenJob::emitCastToNativeS16(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
+bool ByteCodeGen::emitCastToNativeS16(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
@@ -403,7 +403,7 @@ bool ByteCodeGenJob::emitCastToNativeS16(ByteCodeGenContext* context, AstNode* e
     return true;
 }
 
-bool ByteCodeGenJob::emitCastToNativeS32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
+bool ByteCodeGen::emitCastToNativeS32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
@@ -444,7 +444,7 @@ bool ByteCodeGenJob::emitCastToNativeS32(ByteCodeGenContext* context, AstNode* e
     return true;
 }
 
-bool ByteCodeGenJob::emitCastToNativeS64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
+bool ByteCodeGen::emitCastToNativeS64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
@@ -490,7 +490,7 @@ bool ByteCodeGenJob::emitCastToNativeS64(ByteCodeGenContext* context, AstNode* e
     return true;
 }
 
-bool ByteCodeGenJob::emitCastToNativeF32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
+bool ByteCodeGen::emitCastToNativeF32(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
@@ -536,7 +536,7 @@ bool ByteCodeGenJob::emitCastToNativeF32(ByteCodeGenContext* context, AstNode* e
     return true;
 }
 
-bool ByteCodeGenJob::emitCastToNativeF64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
+bool ByteCodeGen::emitCastToNativeF64(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
     if (!typeInfo->isNative())
         return Report::internalError(exprNode, "emitCast, expression type not native");
@@ -582,7 +582,7 @@ bool ByteCodeGenJob::emitCastToNativeF64(ByteCodeGenContext* context, AstNode* e
     return true;
 }
 
-bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo)
+bool ByteCodeGen::emitCastToNativeString(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo)
 {
     auto node = context->node;
 
@@ -633,7 +633,7 @@ bool ByteCodeGenJob::emitCastToNativeString(ByteCodeGenContext* context, AstNode
     return false;
 }
 
-bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
+bool ByteCodeGen::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
 {
     auto node        = context->node;
     auto toTypeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
@@ -707,13 +707,12 @@ bool ByteCodeGenJob::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprN
     return true;
 }
 
-bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, bool isExplicit)
+bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, bool isExplicit)
 {
     if (fromTypeInfo == nullptr)
         return true;
     SWAG_ASSERT(typeInfo);
 
-    auto job     = context->job;
     typeInfo     = TypeManager::concreteType(typeInfo, CONCRETE_ENUM | CONCRETE_FORCEALIAS);
     fromTypeInfo = TypeManager::concreteType(fromTypeInfo, CONCRETE_ENUM | CONCRETE_FUNC | CONCRETE_FORCEALIAS);
 
@@ -725,24 +724,24 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
         if (!(exprNode->semFlags & SEMFLAG_FLAT_PARAMS))
         {
             exprNode->semFlags |= SEMFLAG_FLAT_PARAMS;
-            job->allocateTempCallParams();
-            job->allParamsTmp->childs.push_back(exprNode);
-            job->allParamsTmp->allocateExtension(ExtensionKind::Misc);
-            job->allParamsTmp->extMisc()->resolvedUserOpSymbolOverload = exprNode->extMisc()->resolvedUserOpSymbolOverload;
-            job->allParamsTmp->inheritOwners(exprNode);
-            job->allParamsTmp->inheritTokenLocation(exprNode);
-            job->allParamsTmp->semFlags = 0;
-            job->allParamsTmp->flags &= ~AST_INLINED;
+            context->allocateTempCallParams();
+            context->allParamsTmp->childs.push_back(exprNode);
+            context->allParamsTmp->allocateExtension(ExtensionKind::Misc);
+            context->allParamsTmp->extMisc()->resolvedUserOpSymbolOverload = exprNode->extMisc()->resolvedUserOpSymbolOverload;
+            context->allParamsTmp->inheritOwners(exprNode);
+            context->allParamsTmp->inheritTokenLocation(exprNode);
+            context->allParamsTmp->semFlags = 0;
+            context->allParamsTmp->flags &= ~AST_INLINED;
         }
 
         if (!isExplicit)
             exprNode->typeInfo = exprNode->castedTypeInfo;
 
-        SWAG_CHECK(emitUserOp(context, nullptr, job->allParamsTmp));
+        SWAG_CHECK(emitUserOp(context, nullptr, context->allParamsTmp));
         YIELD();
 
         // If it has been inlined, then the inline block contains the register we need
-        auto back = job->allParamsTmp->childs.back();
+        auto back = context->allParamsTmp->childs.back();
         if (back->kind == AstNodeKind::Inline)
         {
             exprNode->resultRegisterRC = back->resultRegisterRC;
@@ -976,7 +975,7 @@ bool ByteCodeGenJob::emitCast(ByteCodeGenContext* context, AstNode* exprNode, Ty
     return true;
 }
 
-bool ByteCodeGenJob::emitExplicitCast(ByteCodeGenContext* context)
+bool ByteCodeGen::emitExplicitCast(ByteCodeGenContext* context)
 {
     auto node         = CastAst<AstCast>(context->node, AstNodeKind::Cast);
     auto typeInfo     = node->toCastTypeInfo;
@@ -999,7 +998,7 @@ bool ByteCodeGenJob::emitExplicitCast(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitExplicitAutoCast(ByteCodeGenContext* context)
+bool ByteCodeGen::emitExplicitAutoCast(ByteCodeGenContext* context)
 {
     auto node     = CastAst<AstCast>(context->node, AstNodeKind::AutoCast);
     auto exprNode = node->childs[0];

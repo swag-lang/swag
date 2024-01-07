@@ -4,7 +4,7 @@
 #include "BackendLLVM_Macros.h"
 #include "Module.h"
 #include "ByteCode.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "TypeManager.h"
 #include "LanguageSpec.h"
 #include "Report.h"
@@ -1314,56 +1314,56 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::BinOpPlusS8_Safe:
         {
             MK_BINOP8_CAB();
-            OP_OVERFLOW(sadd_with_overflow, CreateAdd, I8_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS8), true);
+            OP_OVERFLOW(sadd_with_overflow, CreateAdd, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS8), true);
             break;
         }
         case ByteCodeOp::BinOpPlusU8:
         case ByteCodeOp::BinOpPlusU8_Safe:
         {
             MK_BINOP8_CAB();
-            OP_OVERFLOW(uadd_with_overflow, CreateAdd, I8_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU8), false);
+            OP_OVERFLOW(uadd_with_overflow, CreateAdd, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU8), false);
             break;
         }
         case ByteCodeOp::BinOpPlusS16:
         case ByteCodeOp::BinOpPlusS16_Safe:
         {
             MK_BINOP16_CAB();
-            OP_OVERFLOW(sadd_with_overflow, CreateAdd, I16_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS16), true);
+            OP_OVERFLOW(sadd_with_overflow, CreateAdd, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS16), true);
             break;
         }
         case ByteCodeOp::BinOpPlusU16:
         case ByteCodeOp::BinOpPlusU16_Safe:
         {
             MK_BINOP16_CAB();
-            OP_OVERFLOW(uadd_with_overflow, CreateAdd, I16_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU16), false);
+            OP_OVERFLOW(uadd_with_overflow, CreateAdd, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU16), false);
             break;
         }
         case ByteCodeOp::BinOpPlusS32:
         case ByteCodeOp::BinOpPlusS32_Safe:
         {
             MK_BINOP32_CAB();
-            OP_OVERFLOW(sadd_with_overflow, CreateAdd, I32_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS32), true);
+            OP_OVERFLOW(sadd_with_overflow, CreateAdd, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS32), true);
             break;
         }
         case ByteCodeOp::BinOpPlusU32:
         case ByteCodeOp::BinOpPlusU32_Safe:
         {
             MK_BINOP32_CAB();
-            OP_OVERFLOW(uadd_with_overflow, CreateAdd, I32_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU32), false);
+            OP_OVERFLOW(uadd_with_overflow, CreateAdd, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU32), false);
             break;
         }
         case ByteCodeOp::BinOpPlusS64:
         case ByteCodeOp::BinOpPlusS64_Safe:
         {
             MK_BINOP64_CAB();
-            OP_OVERFLOW(sadd_with_overflow, CreateAdd, I64_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS64), true);
+            OP_OVERFLOW(sadd_with_overflow, CreateAdd, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS64), true);
             break;
         }
         case ByteCodeOp::BinOpPlusU64:
         case ByteCodeOp::BinOpPlusU64_Safe:
         {
             MK_BINOP64_CAB();
-            OP_OVERFLOW(uadd_with_overflow, CreateAdd, I64_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU64), false);
+            OP_OVERFLOW(uadd_with_overflow, CreateAdd, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU64), false);
             break;
         }
         case ByteCodeOp::BinOpPlusF32:
@@ -1385,56 +1385,56 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::BinOpMinusS8_Safe:
         {
             MK_BINOP8_CAB();
-            OP_OVERFLOW(ssub_with_overflow, CreateSub, I8_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS8), true);
+            OP_OVERFLOW(ssub_with_overflow, CreateSub, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS8), true);
             break;
         }
         case ByteCodeOp::BinOpMinusS16:
         case ByteCodeOp::BinOpMinusS16_Safe:
         {
             MK_BINOP16_CAB();
-            OP_OVERFLOW(ssub_with_overflow, CreateSub, I16_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS16), true);
+            OP_OVERFLOW(ssub_with_overflow, CreateSub, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS16), true);
             break;
         }
         case ByteCodeOp::BinOpMinusS32:
         case ByteCodeOp::BinOpMinusS32_Safe:
         {
             MK_BINOP32_CAB();
-            OP_OVERFLOW(ssub_with_overflow, CreateSub, I32_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS32), true);
+            OP_OVERFLOW(ssub_with_overflow, CreateSub, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS32), true);
             break;
         }
         case ByteCodeOp::BinOpMinusS64:
         case ByteCodeOp::BinOpMinusS64_Safe:
         {
             MK_BINOP64_CAB();
-            OP_OVERFLOW(ssub_with_overflow, CreateSub, I64_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS64), true);
+            OP_OVERFLOW(ssub_with_overflow, CreateSub, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS64), true);
             break;
         }
         case ByteCodeOp::BinOpMinusU8:
         case ByteCodeOp::BinOpMinusU8_Safe:
         {
             MK_BINOP8_CAB();
-            OP_OVERFLOW(usub_with_overflow, CreateSub, I8_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU8), false);
+            OP_OVERFLOW(usub_with_overflow, CreateSub, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU8), false);
             break;
         }
         case ByteCodeOp::BinOpMinusU16:
         case ByteCodeOp::BinOpMinusU16_Safe:
         {
             MK_BINOP16_CAB();
-            OP_OVERFLOW(usub_with_overflow, CreateSub, I16_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU16), false);
+            OP_OVERFLOW(usub_with_overflow, CreateSub, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU16), false);
             break;
         }
         case ByteCodeOp::BinOpMinusU32:
         case ByteCodeOp::BinOpMinusU32_Safe:
         {
             MK_BINOP32_CAB();
-            OP_OVERFLOW(usub_with_overflow, CreateSub, I32_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU32), false);
+            OP_OVERFLOW(usub_with_overflow, CreateSub, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU32), false);
             break;
         }
         case ByteCodeOp::BinOpMinusU64:
         case ByteCodeOp::BinOpMinusU64_Safe:
         {
             MK_BINOP64_CAB();
-            OP_OVERFLOW(usub_with_overflow, CreateSub, I64_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU64), false);
+            OP_OVERFLOW(usub_with_overflow, CreateSub, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU64), false);
             break;
         }
         case ByteCodeOp::BinOpMinusF32:
@@ -1456,56 +1456,56 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::BinOpMulS8_Safe:
         {
             MK_BINOP8_CAB();
-            OP_OVERFLOW(smul_with_overflow, CreateMul, I8_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS8), true);
+            OP_OVERFLOW(smul_with_overflow, CreateMul, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS8), true);
             break;
         }
         case ByteCodeOp::BinOpMulS16:
         case ByteCodeOp::BinOpMulS16_Safe:
         {
             MK_BINOP16_CAB();
-            OP_OVERFLOW(smul_with_overflow, CreateMul, I16_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS16), true);
+            OP_OVERFLOW(smul_with_overflow, CreateMul, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS16), true);
             break;
         }
         case ByteCodeOp::BinOpMulS32:
         case ByteCodeOp::BinOpMulS32_Safe:
         {
             MK_BINOP32_CAB();
-            OP_OVERFLOW(smul_with_overflow, CreateMul, I32_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS32), true);
+            OP_OVERFLOW(smul_with_overflow, CreateMul, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS32), true);
             break;
         }
         case ByteCodeOp::BinOpMulS64:
         case ByteCodeOp::BinOpMulS64_Safe:
         {
             MK_BINOP64_CAB();
-            OP_OVERFLOW(smul_with_overflow, CreateMul, I64_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS64), true);
+            OP_OVERFLOW(smul_with_overflow, CreateMul, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS64), true);
             break;
         }
         case ByteCodeOp::BinOpMulU8:
         case ByteCodeOp::BinOpMulU8_Safe:
         {
             MK_BINOP8_CAB();
-            OP_OVERFLOW(umul_with_overflow, CreateMul, I8_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU8), false);
+            OP_OVERFLOW(umul_with_overflow, CreateMul, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU8), false);
             break;
         }
         case ByteCodeOp::BinOpMulU16:
         case ByteCodeOp::BinOpMulU16_Safe:
         {
             MK_BINOP16_CAB();
-            OP_OVERFLOW(umul_with_overflow, CreateMul, I16_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU16), false);
+            OP_OVERFLOW(umul_with_overflow, CreateMul, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU16), false);
             break;
         }
         case ByteCodeOp::BinOpMulU32:
         case ByteCodeOp::BinOpMulU32_Safe:
         {
             MK_BINOP32_CAB();
-            OP_OVERFLOW(umul_with_overflow, CreateMul, I32_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU32), false);
+            OP_OVERFLOW(umul_with_overflow, CreateMul, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU32), false);
             break;
         }
         case ByteCodeOp::BinOpMulU64:
         case ByteCodeOp::BinOpMulU64_Safe:
         {
             MK_BINOP64_CAB();
-            OP_OVERFLOW(umul_with_overflow, CreateMul, I64_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU64), false);
+            OP_OVERFLOW(umul_with_overflow, CreateMul, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU64), false);
             break;
         }
         case ByteCodeOp::BinOpMulF32:
@@ -1795,7 +1795,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMinusEqS8_Safe:
         {
             MK_BINOPEQ8_CAB();
-            OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, I8_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS8), true);
+            OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS8), true);
             break;
         }
         case ByteCodeOp::AffectOpMinusEqS8_SSafe:
@@ -1819,7 +1819,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMinusEqS16_Safe:
         {
             MK_BINOPEQ16_CAB();
-            OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, I16_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS16), true);
+            OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS16), true);
             break;
         }
         case ByteCodeOp::AffectOpMinusEqS16_SSafe:
@@ -1843,7 +1843,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMinusEqS32_Safe:
         {
             MK_BINOPEQ32_CAB();
-            OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, I32_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS32), true);
+            OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS32), true);
             break;
         }
         case ByteCodeOp::AffectOpMinusEqS32_SSafe:
@@ -1867,7 +1867,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMinusEqS64_Safe:
         {
             MK_BINOPEQ64_CAB();
-            OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, I64_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS64), true);
+            OPEQ_OVERFLOW(ssub_with_overflow, CreateSub, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS64), true);
             break;
         }
         case ByteCodeOp::AffectOpMinusEqS64_SSafe:
@@ -1891,7 +1891,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMinusEqU8_Safe:
         {
             MK_BINOPEQ8_CAB();
-            OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I8_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU8), false);
+            OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU8), false);
             break;
         }
 
@@ -1899,7 +1899,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMinusEqU16_Safe:
         {
             MK_BINOPEQ16_CAB();
-            OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I16_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU16), false);
+            OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU16), false);
             break;
         }
 
@@ -1907,7 +1907,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMinusEqU32_Safe:
         {
             MK_BINOPEQ32_CAB();
-            OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I32_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU32), false);
+            OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU32), false);
             break;
         }
 
@@ -1915,7 +1915,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMinusEqU64_Safe:
         {
             MK_BINOPEQ64_CAB();
-            OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I64_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU64), false);
+            OPEQ_OVERFLOW(usub_with_overflow, CreateSub, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU64), false);
             break;
         }
 
@@ -1969,7 +1969,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpPlusEqS8_Safe:
         {
             MK_BINOPEQ8_CAB();
-            OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, I8_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS8), true);
+            OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS8), true);
             break;
         }
         case ByteCodeOp::AffectOpPlusEqS8_SSafe:
@@ -1993,7 +1993,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpPlusEqS16_Safe:
         {
             MK_BINOPEQ16_CAB();
-            OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, I16_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS16), true);
+            OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS16), true);
             break;
         }
         case ByteCodeOp::AffectOpPlusEqS16_SSafe:
@@ -2017,7 +2017,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpPlusEqS32_Safe:
         {
             MK_BINOPEQ32_CAB();
-            OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, I32_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS32), true);
+            OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS32), true);
             break;
         }
         case ByteCodeOp::AffectOpPlusEqS32_SSafe:
@@ -2041,7 +2041,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpPlusEqS64_Safe:
         {
             MK_BINOPEQ64_CAB();
-            OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, I64_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS64), true);
+            OPEQ_OVERFLOW(sadd_with_overflow, CreateAdd, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS64), true);
             break;
         }
         case ByteCodeOp::AffectOpPlusEqS64_SSafe:
@@ -2065,7 +2065,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpPlusEqU8_Safe:
         {
             MK_BINOPEQ8_CAB();
-            OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I8_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU8), false);
+            OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU8), false);
             break;
         }
 
@@ -2073,7 +2073,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpPlusEqU16_Safe:
         {
             MK_BINOPEQ16_CAB();
-            OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I16_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU16), false);
+            OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU16), false);
             break;
         }
 
@@ -2081,7 +2081,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpPlusEqU32_Safe:
         {
             MK_BINOPEQ32_CAB();
-            OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I32_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU32), false);
+            OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU32), false);
             break;
         }
 
@@ -2089,7 +2089,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpPlusEqU64_Safe:
         {
             MK_BINOPEQ64_CAB();
-            OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I64_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU64), false);
+            OPEQ_OVERFLOW(uadd_with_overflow, CreateAdd, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU64), false);
             break;
         }
 
@@ -2143,7 +2143,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMulEqS8_Safe:
         {
             MK_BINOPEQ8_CAB();
-            OPEQ_OVERFLOW(smul_with_overflow, CreateMul, I8_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS8), true);
+            OPEQ_OVERFLOW(smul_with_overflow, CreateMul, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS8), true);
             break;
         }
         case ByteCodeOp::AffectOpMulEqS8_SSafe:
@@ -2167,7 +2167,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMulEqS16_Safe:
         {
             MK_BINOPEQ16_CAB();
-            OPEQ_OVERFLOW(smul_with_overflow, CreateMul, I16_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS16), true);
+            OPEQ_OVERFLOW(smul_with_overflow, CreateMul, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS16), true);
             break;
         }
         case ByteCodeOp::AffectOpMulEqS16_SSafe:
@@ -2191,7 +2191,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMulEqS32_Safe:
         {
             MK_BINOPEQ32_CAB();
-            OPEQ_OVERFLOW(smul_with_overflow, CreateMul, I32_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS32), true);
+            OPEQ_OVERFLOW(smul_with_overflow, CreateMul, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS32), true);
             break;
         }
         case ByteCodeOp::AffectOpMulEqS32_SSafe:
@@ -2215,7 +2215,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMulEqS64_Safe:
         {
             MK_BINOPEQ64_CAB();
-            OPEQ_OVERFLOW(smul_with_overflow, CreateMul, I64_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS64), true);
+            OPEQ_OVERFLOW(smul_with_overflow, CreateMul, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS64), true);
             break;
         }
         case ByteCodeOp::AffectOpMulEqS64_SSafe:
@@ -2239,7 +2239,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMulEqU8_Safe:
         {
             MK_BINOPEQ8_CAB();
-            OPEQ_OVERFLOW(umul_with_overflow, CreateMul, I8_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU8), false);
+            OPEQ_OVERFLOW(umul_with_overflow, CreateMul, I8_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU8), false);
             break;
         }
 
@@ -2247,7 +2247,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMulEqU16_Safe:
         {
             MK_BINOPEQ16_CAB();
-            OPEQ_OVERFLOW(umul_with_overflow, CreateMul, I16_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU16), false);
+            OPEQ_OVERFLOW(umul_with_overflow, CreateMul, I16_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU16), false);
             break;
         }
 
@@ -2255,7 +2255,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMulEqU32_Safe:
         {
             MK_BINOPEQ32_CAB();
-            OPEQ_OVERFLOW(umul_with_overflow, CreateMul, I32_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU32), false);
+            OPEQ_OVERFLOW(umul_with_overflow, CreateMul, I32_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU32), false);
             break;
         }
 
@@ -2263,7 +2263,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::AffectOpMulEqU64_Safe:
         {
             MK_BINOPEQ64_CAB();
-            OPEQ_OVERFLOW(umul_with_overflow, CreateMul, I64_TY(), ByteCodeGenJob::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU64), false);
+            OPEQ_OVERFLOW(umul_with_overflow, CreateMul, I64_TY(), ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU64), false);
             break;
         }
 

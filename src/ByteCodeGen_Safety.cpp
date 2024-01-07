@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "ByteCode.h"
 #include "Module.h"
 #include "TypeManager.h"
@@ -7,7 +7,7 @@
 
 thread_local Utf8 typedMsg[(int) SafetyMsg::Count][(int) NativeTypeKind::Count][(int) NativeTypeKind::Count];
 
-const char* ByteCodeGenJob::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo* fromType)
+const char* ByteCodeGen::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo* fromType)
 {
     int m = (int) msg;
     int i = toType ? (int) toType->nativeType : 0;
@@ -127,14 +127,14 @@ const char* ByteCodeGenJob::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo*
     return typedMsg[m][i][j].c_str();
 }
 
-void ByteCodeGenJob::emitAssert(ByteCodeGenContext* context, uint32_t reg, const char* msg)
+void ByteCodeGen::emitAssert(ByteCodeGenContext* context, uint32_t reg, const char* msg)
 {
     PushICFlags ic(context, BCI_SAFETY);
     EMIT_INST1(context, ByteCodeOp::JumpIfTrue, reg)->b.s32   = 1;
     EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) msg;
 }
 
-bool ByteCodeGenJob::mustEmitSafety(ByteCodeGenContext* context, uint16_t what)
+bool ByteCodeGen::mustEmitSafety(ByteCodeGenContext* context, uint16_t what)
 {
     if (context->contextFlags & BCC_FLAG_NOSAFETY)
         return false;
@@ -143,7 +143,7 @@ bool ByteCodeGenJob::mustEmitSafety(ByteCodeGenContext* context, uint16_t what)
     return true;
 }
 
-void ByteCodeGenJob::emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits, const char* message)
+void ByteCodeGen::emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits, const char* message)
 {
     PushICFlags ic(context, BCI_SAFETY);
     if (bits == 8)
@@ -159,21 +159,21 @@ void ByteCodeGenJob::emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, 
     EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) message;
 }
 
-void ByteCodeGenJob::emitSafetyNullCheck(ByteCodeGenContext* context, uint32_t r)
+void ByteCodeGen::emitSafetyNullCheck(ByteCodeGenContext* context, uint32_t r)
 {
     if (!mustEmitSafety(context, SAFETY_NULL))
         return;
     emitSafetyNotZero(context, r, 64, safetyMsg(SafetyMsg::NullCheck));
 }
 
-void ByteCodeGenJob::emitSafetyErrCheck(ByteCodeGenContext* context, uint32_t r)
+void ByteCodeGen::emitSafetyErrCheck(ByteCodeGenContext* context, uint32_t r)
 {
     if (!mustEmitSafety(context, SAFETY_NULL))
         return;
     emitSafetyNotZero(context, r, 64, safetyMsg(SafetyMsg::ErrCheck));
 }
 
-bool ByteCodeGenJob::emitSafetyUnreachable(ByteCodeGenContext* context)
+bool ByteCodeGen::emitSafetyUnreachable(ByteCodeGenContext* context)
 {
     if ((context->contextFlags & BCC_FLAG_NOSAFETY) ||
         !context->sourceFile->module->mustEmitSafety(context->node->parent, SAFETY_UNREACHABLE))
@@ -188,7 +188,7 @@ bool ByteCodeGenJob::emitSafetyUnreachable(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitSafetySwitchDefault(ByteCodeGenContext* context)
+bool ByteCodeGen::emitSafetySwitchDefault(ByteCodeGenContext* context)
 {
     if ((context->contextFlags & BCC_FLAG_NOSAFETY) ||
         !context->sourceFile->module->mustEmitSafety(context->node->parent, SAFETY_SWITCH))
@@ -197,11 +197,11 @@ bool ByteCodeGenJob::emitSafetySwitchDefault(ByteCodeGenContext* context)
         return true;
     }
 
-    EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) ByteCodeGenJob::safetyMsg(SafetyMsg::SwitchComplete);
+    EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) ByteCodeGen::safetyMsg(SafetyMsg::SwitchComplete);
     return true;
 }
 
-bool ByteCodeGenJob::emitSafetyValue(ByteCodeGenContext* context, int r, TypeInfo* typeInfo)
+bool ByteCodeGen::emitSafetyValue(ByteCodeGenContext* context, int r, TypeInfo* typeInfo)
 {
     if (typeInfo->isNative(NativeTypeKind::Bool))
     {
@@ -216,7 +216,7 @@ bool ByteCodeGenJob::emitSafetyValue(ByteCodeGenContext* context, int r, TypeInf
         inst->b.u32 = 0xFE;
         inst->flags |= BCI_IMM_B;
         EMIT_INST1(context, ByteCodeOp::JumpIfZero8, r0)->b.s32   = 1;
-        EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) ByteCodeGenJob::safetyMsg(SafetyMsg::InvalidBool);
+        EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) ByteCodeGen::safetyMsg(SafetyMsg::InvalidBool);
         freeRegisterRC(context, r0);
         return true;
     }
@@ -232,7 +232,7 @@ bool ByteCodeGenJob::emitSafetyValue(ByteCodeGenContext* context, int r, TypeInf
         auto r0 = reserveRegisterRC(context);
         EMIT_INST3(context, ByteCodeOp::CompareOpEqualF32, r, r, r0);
         EMIT_INST1(context, ByteCodeOp::JumpIfTrue, r0)->b.s32    = 1;
-        EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) ByteCodeGenJob::safetyMsg(SafetyMsg::InvalidFloat);
+        EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) ByteCodeGen::safetyMsg(SafetyMsg::InvalidFloat);
         freeRegisterRC(context, r0);
         return true;
     }
@@ -248,7 +248,7 @@ bool ByteCodeGenJob::emitSafetyValue(ByteCodeGenContext* context, int r, TypeInf
         auto r0 = reserveRegisterRC(context);
         EMIT_INST3(context, ByteCodeOp::CompareOpEqualF64, r, r, r0);
         EMIT_INST1(context, ByteCodeOp::JumpIfTrue, r0)->b.s32    = 1;
-        EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) ByteCodeGenJob::safetyMsg(SafetyMsg::InvalidFloat);
+        EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = (uint8_t*) ByteCodeGen::safetyMsg(SafetyMsg::InvalidFloat);
         freeRegisterRC(context, r0);
         return true;
     }
@@ -256,7 +256,7 @@ bool ByteCodeGenJob::emitSafetyValue(ByteCodeGenContext* context, int r, TypeInf
     return true;
 }
 
-void ByteCodeGenJob::emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits)
+void ByteCodeGen::emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits)
 {
     if (!mustEmitSafety(context, SAFETY_MATH))
         return;
@@ -264,7 +264,7 @@ void ByteCodeGenJob::emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, 
     emitSafetyNotZero(context, r, bits, safetyMsg(SafetyMsg::NotZero));
 }
 
-void ByteCodeGenJob::emitSafetyBoundCheckLowerU32(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+void ByteCodeGen::emitSafetyBoundCheckLowerU32(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     PushICFlags ic(context, BCI_SAFETY);
 
@@ -274,7 +274,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckLowerU32(ByteCodeGenContext* context, u
     freeRegisterRC(context, re);
 }
 
-void ByteCodeGenJob::emitSafetyNeg(ByteCodeGenContext* context, uint32_t r0, TypeInfo* typeInfo, bool forAbs)
+void ByteCodeGen::emitSafetyNeg(ByteCodeGenContext* context, uint32_t r0, TypeInfo* typeInfo, bool forAbs)
 {
     PushICFlags ic(context, BCI_SAFETY);
 
@@ -324,7 +324,7 @@ void ByteCodeGenJob::emitSafetyNeg(ByteCodeGenContext* context, uint32_t r0, Typ
     freeRegisterRC(context, re);
 }
 
-void ByteCodeGenJob::emitSafetyBoundCheckLowerU64(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+void ByteCodeGen::emitSafetyBoundCheckLowerU64(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     PushICFlags ic(context, BCI_SAFETY);
 
@@ -334,7 +334,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckLowerU64(ByteCodeGenContext* context, u
     freeRegisterRC(context, re);
 }
 
-void ByteCodeGenJob::emitSafetyBoundCheckString(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+void ByteCodeGen::emitSafetyBoundCheckString(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     if (!mustEmitSafety(context, SAFETY_BOUNDCHECK))
         return;
@@ -342,7 +342,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckString(ByteCodeGenContext* context, uin
     emitSafetyBoundCheckLowerU64(context, r0, r1);
 }
 
-void ByteCodeGenJob::emitSafetyBoundCheckSlice(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
+void ByteCodeGen::emitSafetyBoundCheckSlice(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
     if (!mustEmitSafety(context, SAFETY_BOUNDCHECK))
         return;
@@ -350,7 +350,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckSlice(ByteCodeGenContext* context, uint
     emitSafetyBoundCheckLowerU64(context, r0, r1);
 }
 
-void ByteCodeGenJob::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint32_t r0, TypeInfoArray* typeInfoArray)
+void ByteCodeGen::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint32_t r0, TypeInfoArray* typeInfoArray)
 {
     if (!mustEmitSafety(context, SAFETY_BOUNDCHECK))
         return;
@@ -363,7 +363,7 @@ void ByteCodeGenJob::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint
     freeRegisterRC(context, r1);
 }
 
-void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* toType, bool isExplicit)
+void ByteCodeGen::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* toType, bool isExplicit)
 {
     if (!mustEmitSafety(context, SAFETY_ANY))
         return;
@@ -391,7 +391,7 @@ void ByteCodeGenJob::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exp
     freeRegisterRC(context, r1);
 }
 
-void ByteCodeGenJob::emitSafetyRange(ByteCodeGenContext* context, AstRange* node)
+void ByteCodeGen::emitSafetyRange(ByteCodeGenContext* context, AstRange* node)
 {
     if (!mustEmitSafety(context, SAFETY_BOUNDCHECK))
         return;
@@ -410,7 +410,7 @@ void ByteCodeGenJob::emitSafetyRange(ByteCodeGenContext* context, AstRange* node
     freeRegisterRC(context, re);
 }
 
-void ByteCodeGenJob::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, AstArrayPointerSlicing* node)
+void ByteCodeGen::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, AstArrayPointerSlicing* node)
 {
     if (!mustEmitSafety(context, SAFETY_BOUNDCHECK))
         return;
@@ -462,7 +462,7 @@ void ByteCodeGenJob::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, 
     }
 }
 
-void ByteCodeGenJob::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, AstNode* exprNode)
+void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, AstNode* exprNode)
 {
     if (!mustEmitSafety(context, SAFETY_OVERFLOW))
         return;

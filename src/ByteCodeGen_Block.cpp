@@ -1,11 +1,11 @@
 #include "pch.h"
 #include "LanguageSpec.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "ByteCode.h"
 #include "Semantic.h"
 #include "Ast.h"
 
-bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
+bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
 {
     auto node         = CastAst<AstInline>(context->node, AstNodeKind::Inline);
     auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(node->func->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
@@ -235,7 +235,7 @@ bool ByteCodeGenJob::emitInlineBefore(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitInline(ByteCodeGenContext* context)
+bool ByteCodeGen::emitInline(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstInline>(context->node, AstNodeKind::Inline);
 
@@ -285,7 +285,7 @@ bool ByteCodeGenJob::emitInline(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitIf(ByteCodeGenContext* context)
+bool ByteCodeGen::emitIf(ByteCodeGenContext* context)
 {
     auto ifNode = CastAst<AstIf>(context->node, AstNodeKind::If);
 
@@ -308,7 +308,7 @@ bool ByteCodeGenJob::emitIf(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitIfAfterExpr(ByteCodeGenContext* context)
+bool ByteCodeGen::emitIfAfterExpr(ByteCodeGenContext* context)
 {
     auto node   = context->node;
     auto ifNode = CastAst<AstIf>(node->parent, AstNodeKind::If);
@@ -322,7 +322,7 @@ bool ByteCodeGenJob::emitIfAfterExpr(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitIfAfterIf(ByteCodeGenContext* context)
+bool ByteCodeGen::emitIfAfterIf(ByteCodeGenContext* context)
 {
     auto node = context->node;
 
@@ -339,7 +339,7 @@ bool ByteCodeGenJob::emitIfAfterIf(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitLoop(ByteCodeGenContext* context)
+bool ByteCodeGen::emitLoop(ByteCodeGenContext* context)
 {
     auto node = static_cast<AstBreakable*>(context->node);
 
@@ -407,7 +407,7 @@ bool ByteCodeGenJob::emitLoop(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitLoopBeforeBlock(ByteCodeGenContext* context)
+bool ByteCodeGen::emitLoopBeforeBlock(ByteCodeGenContext* context)
 {
     auto node               = context->node;
     auto loopNode           = CastAst<AstLoop>(node->parent, AstNodeKind::Loop);
@@ -424,7 +424,7 @@ bool ByteCodeGenJob::emitLoopBeforeBlock(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
+bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
 {
     auto node     = context->node;
     auto loopNode = CastAst<AstLoop>(node->parent, AstNodeKind::Loop);
@@ -591,7 +591,7 @@ bool ByteCodeGenJob::emitLoopAfterExpr(ByteCodeGenContext* context)
     }
 }
 
-bool ByteCodeGenJob::emitLabelBeforeBlock(ByteCodeGenContext* context)
+bool ByteCodeGen::emitLabelBeforeBlock(ByteCodeGenContext* context)
 {
     auto node                        = context->node;
     auto loopNode                    = static_cast<AstBreakable*>(node->parent);
@@ -599,7 +599,7 @@ bool ByteCodeGenJob::emitLabelBeforeBlock(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitLoopAfterBlock(ByteCodeGenContext* context)
+bool ByteCodeGen::emitLoopAfterBlock(ByteCodeGenContext* context)
 {
     auto         node = context->node;
     PushLocation pl(context, &node->token.endLocation);
@@ -637,7 +637,7 @@ bool ByteCodeGenJob::emitLoopAfterBlock(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitWhileBeforeExpr(ByteCodeGenContext* context)
+bool ByteCodeGen::emitWhileBeforeExpr(ByteCodeGenContext* context)
 {
     auto node      = context->node;
     auto whileNode = CastAst<AstWhile>(node->parent, AstNodeKind::While);
@@ -655,7 +655,7 @@ bool ByteCodeGenJob::emitWhileBeforeExpr(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitWhileAfterExpr(ByteCodeGenContext* context)
+bool ByteCodeGen::emitWhileAfterExpr(ByteCodeGenContext* context)
 {
     auto node = context->node;
     SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
@@ -672,7 +672,7 @@ bool ByteCodeGenJob::emitWhileAfterExpr(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitForBeforeExpr(ByteCodeGenContext* context)
+bool ByteCodeGen::emitForBeforeExpr(ByteCodeGenContext* context)
 {
     auto node    = context->node;
     auto forNode = CastAst<AstFor>(node->parent, AstNodeKind::For);
@@ -685,7 +685,7 @@ bool ByteCodeGenJob::emitForBeforeExpr(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitForAfterExpr(ByteCodeGenContext* context)
+bool ByteCodeGen::emitForAfterExpr(ByteCodeGenContext* context)
 {
     auto node    = context->node;
     auto forNode = CastAst<AstFor>(node->parent, AstNodeKind::For);
@@ -696,7 +696,7 @@ bool ByteCodeGenJob::emitForAfterExpr(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitForBeforePost(ByteCodeGenContext* context)
+bool ByteCodeGen::emitForBeforePost(ByteCodeGenContext* context)
 {
     auto node    = context->node;
     auto forNode = CastAst<AstFor>(node->parent, AstNodeKind::For);
@@ -723,7 +723,7 @@ bool ByteCodeGenJob::emitForBeforePost(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitSwitch(ByteCodeGenContext* context)
+bool ByteCodeGen::emitSwitch(ByteCodeGenContext* context)
 {
     auto node       = context->node;
     auto switchNode = CastAst<AstSwitch>(node, AstNodeKind::Switch);
@@ -761,7 +761,7 @@ bool ByteCodeGenJob::emitSwitch(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitBeforeSwitch(ByteCodeGenContext* context)
+bool ByteCodeGen::emitBeforeSwitch(ByteCodeGenContext* context)
 {
     auto node       = context->node;
     auto switchNode = CastAst<AstSwitch>(node, AstNodeKind::Switch);
@@ -775,7 +775,7 @@ bool ByteCodeGenJob::emitBeforeSwitch(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitSwitchAfterExpr(ByteCodeGenContext* context)
+bool ByteCodeGen::emitSwitchAfterExpr(ByteCodeGenContext* context)
 {
     auto node       = context->node;
     auto switchNode = CastAst<AstSwitch>(node->parent, AstNodeKind::Switch);
@@ -789,14 +789,14 @@ bool ByteCodeGenJob::emitSwitchAfterExpr(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitSwitchCaseBeforeCase(ByteCodeGenContext* context)
+bool ByteCodeGen::emitSwitchCaseBeforeCase(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstSwitchCase>(context->node, AstNodeKind::SwitchCase);
     context->pushLocation(&node->ownerSwitch->token.startLocation);
     return true;
 }
 
-bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
+bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
 {
     auto node      = context->node;
     auto blockNode = CastAst<AstSwitchCaseBlock>(node, AstNodeKind::SwitchCaseBlock);
@@ -905,7 +905,7 @@ bool ByteCodeGenJob::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitSwitchCaseAfterBlock(ByteCodeGenContext* context)
+bool ByteCodeGen::emitSwitchCaseAfterBlock(ByteCodeGenContext* context)
 {
     auto node = context->node;
     SWAG_CHECK(computeLeaveScope(context, node->ownerScope));
@@ -929,13 +929,13 @@ bool ByteCodeGenJob::emitSwitchCaseAfterBlock(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitFallThrough(ByteCodeGenContext* context)
+bool ByteCodeGen::emitFallThrough(ByteCodeGenContext* context)
 {
     auto node     = context->node;
     auto fallNode = CastAst<AstBreakContinue>(node, AstNodeKind::FallThrough);
 
-    Scope::collectScopeFromToExcluded(fallNode->ownerScope, fallNode->ownerBreakable->ownerScope, context->job->collectScopes);
-    for (auto scope : context->job->collectScopes)
+    Scope::collectScopeFromToExcluded(fallNode->ownerScope, fallNode->ownerBreakable->ownerScope, context->collectScopes);
+    for (auto scope : context->collectScopes)
     {
         SWAG_CHECK(computeLeaveScope(context, scope));
         YIELD();
@@ -947,13 +947,13 @@ bool ByteCodeGenJob::emitFallThrough(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitBreak(ByteCodeGenContext* context)
+bool ByteCodeGen::emitBreak(ByteCodeGenContext* context)
 {
     auto node      = context->node;
     auto breakNode = CastAst<AstBreakContinue>(node, AstNodeKind::Break);
 
-    Scope::collectScopeFromToExcluded(breakNode->ownerScope, breakNode->ownerBreakable->ownerScope, context->job->collectScopes);
-    for (auto scope : context->job->collectScopes)
+    Scope::collectScopeFromToExcluded(breakNode->ownerScope, breakNode->ownerBreakable->ownerScope, context->collectScopes);
+    for (auto scope : context->collectScopes)
     {
         SWAG_CHECK(computeLeaveScope(context, scope));
         YIELD();
@@ -965,13 +965,13 @@ bool ByteCodeGenJob::emitBreak(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitContinue(ByteCodeGenContext* context)
+bool ByteCodeGen::emitContinue(ByteCodeGenContext* context)
 {
     auto node         = context->node;
     auto continueNode = CastAst<AstBreakContinue>(node, AstNodeKind::Continue);
 
-    Scope::collectScopeFromToExcluded(continueNode->ownerScope, continueNode->ownerBreakable->ownerScope, context->job->collectScopes);
-    for (auto scope : context->job->collectScopes)
+    Scope::collectScopeFromToExcluded(continueNode->ownerScope, continueNode->ownerBreakable->ownerScope, context->collectScopes);
+    for (auto scope : context->collectScopes)
     {
         SWAG_CHECK(computeLeaveScope(context, scope));
         YIELD();
@@ -983,7 +983,7 @@ bool ByteCodeGenJob::emitContinue(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitIndex(ByteCodeGenContext* context)
+bool ByteCodeGen::emitIndex(ByteCodeGenContext* context)
 {
     auto node              = context->node;
     node->resultRegisterRC = reserveRegisterRC(context);
@@ -996,7 +996,7 @@ bool ByteCodeGenJob::emitIndex(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop)
+bool ByteCodeGen::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop)
 {
     if (!scope)
         return true;
@@ -1015,7 +1015,7 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
         if (!one.typeStruct)
             continue;
 
-        Semantic::waitStructGenerated(context->job, one.typeStruct);
+        Semantic::waitStructGenerated(context->baseJob, one.typeStruct);
         YIELD();
     }
 
@@ -1087,7 +1087,7 @@ bool ByteCodeGenJob::emitLeaveScopeDrop(ByteCodeGenContext* context, Scope* scop
     return true;
 }
 
-bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* scope, bool forError)
+bool ByteCodeGen::emitDeferredStatements(ByteCodeGenContext* context, Scope* scope, bool forError)
 {
     if (!scope)
         return true;
@@ -1096,7 +1096,7 @@ bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* 
     if (numDeferred)
     {
         context->result = ContextResult::NewChilds;
-        auto job        = context->job;
+        auto job        = context->baseJob;
         for (size_t i = 0; i < numDeferred; i++)
         {
             auto node = scope->deferredNodes[i];
@@ -1128,7 +1128,7 @@ bool ByteCodeGenJob::emitDeferredStatements(ByteCodeGenContext* context, Scope* 
     return true;
 }
 
-bool ByteCodeGenJob::emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNative<SymbolOverload*>* forceNoDrop, bool forError)
+bool ByteCodeGen::emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNative<SymbolOverload*>* forceNoDrop, bool forError)
 {
     auto node     = context->node;
     auto funcNode = node->ownerFct;
@@ -1156,8 +1156,8 @@ bool ByteCodeGenJob::emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNat
     else
         topScope = funcNode->scope;
 
-    Scope::collectScopeFromToExcluded(node->ownerScope, topScope->parentScope, context->job->collectScopes);
-    for (auto scope : context->job->collectScopes)
+    Scope::collectScopeFromToExcluded(node->ownerScope, topScope->parentScope, context->collectScopes);
+    for (auto scope : context->collectScopes)
     {
         SWAG_CHECK(computeLeaveScope(context, scope, forceNoDrop, forError));
         YIELD();
@@ -1166,7 +1166,7 @@ bool ByteCodeGenJob::emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNat
     return true;
 }
 
-bool ByteCodeGenJob::computeLeaveScope(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop, bool forError)
+bool ByteCodeGen::computeLeaveScope(ByteCodeGenContext* context, Scope* scope, VectorNative<SymbolOverload*>* forceNoDrop, bool forError)
 {
     PushLocation pl(context, &context->node->token.endLocation);
 
@@ -1199,7 +1199,7 @@ bool ByteCodeGenJob::computeLeaveScope(ByteCodeGenContext* context, Scope* scope
     return true;
 }
 
-bool ByteCodeGenJob::emitLeaveScope(ByteCodeGenContext* context)
+bool ByteCodeGen::emitLeaveScope(ByteCodeGenContext* context)
 {
     auto node = context->node;
 

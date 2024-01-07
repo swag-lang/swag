@@ -3,7 +3,7 @@
 #include "Scoped.h"
 #include "Semantic.h"
 #include "TypeManager.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "Module.h"
 #include "Naming.h"
 #include "Diagnostic.h"
@@ -978,7 +978,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         newScope->owner = resStmt;
         resStmt->allocateExtension(ExtensionKind::Semantic);
         resStmt->extSemantic()->semanticAfterFct = Semantic::resolveScopedStmtAfter;
-        resStmt->setBcNotifAfter(ByteCodeGenJob::emitLeaveScope);
+        resStmt->setBcNotifAfter(ByteCodeGen::emitLeaveScope);
     }
 
     return true;
@@ -1155,7 +1155,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
             funcNode->content->token = token;
         }
 
-        funcNode->content->setBcNotifAfter(ByteCodeGenJob::emitLeaveScope);
+        funcNode->content->setBcNotifAfter(ByteCodeGen::emitLeaveScope);
         newScope->owner = funcNode->content;
     }
 

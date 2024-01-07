@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "TypeManager.h"
 #include "ByteCode.h"
 #include "Ast.h"
 #include "Report.h"
 #include "Semantic.h"
 
-bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
@@ -84,7 +84,7 @@ bool ByteCodeGenJob::emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typ
     return Report::internalError(context->node, "emitBinaryOpPlus, invalid native");
 }
 
-bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitBinaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     AstNode* node     = context->node;
     auto     typeInfo = TypeManager::concreteType(typeInfoExpr);
@@ -166,7 +166,7 @@ bool ByteCodeGenJob::emitBinaryOpMinus(ByteCodeGenContext* context, TypeInfo* ty
     return Report::internalError(context->node, "emitBinaryOpMinus, invalid native");
 }
 
-bool ByteCodeGenJob::emitBinaryOpMul(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitBinaryOpMul(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     // 'mul' will be done by the parent 'add' (mulAdd)
     if (context->node->specFlags & AstOp::SPECFLAG_FMA)
@@ -215,7 +215,7 @@ bool ByteCodeGenJob::emitBinaryOpMul(ByteCodeGenContext* context, TypeInfo* type
     }
 }
 
-bool ByteCodeGenJob::emitBinaryOpDiv(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitBinaryOpDiv(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
@@ -270,7 +270,7 @@ bool ByteCodeGenJob::emitBinaryOpDiv(ByteCodeGenContext* context, TypeInfo* type
     }
 }
 
-bool ByteCodeGenJob::emitBinaryOpModulo(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitBinaryOpModulo(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
@@ -317,7 +317,7 @@ bool ByteCodeGenJob::emitBinaryOpModulo(ByteCodeGenContext* context, TypeInfo* t
     }
 }
 
-bool ByteCodeGenJob::emitBitmaskAnd(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitBitmaskAnd(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
@@ -349,7 +349,7 @@ bool ByteCodeGenJob::emitBitmaskAnd(ByteCodeGenContext* context, TypeInfo* typeI
     }
 }
 
-bool ByteCodeGenJob::emitBitmaskOr(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitBitmaskOr(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
@@ -381,7 +381,7 @@ bool ByteCodeGenJob::emitBitmaskOr(ByteCodeGenContext* context, TypeInfo* typeIn
     }
 }
 
-bool ByteCodeGenJob::emitShiftLeft(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitShiftLeft(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
@@ -423,7 +423,7 @@ bool ByteCodeGenJob::emitShiftLeft(ByteCodeGenContext* context, TypeInfo* typeIn
     }
 }
 
-bool ByteCodeGenJob::emitShiftRight(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitShiftRight(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
@@ -463,7 +463,7 @@ bool ByteCodeGenJob::emitShiftRight(ByteCodeGenContext* context, TypeInfo* typeI
     }
 }
 
-bool ByteCodeGenJob::emitXor(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitXor(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
@@ -495,7 +495,7 @@ bool ByteCodeGenJob::emitXor(ByteCodeGenContext* context, TypeInfo* typeInfoExpr
     }
 }
 
-bool ByteCodeGenJob::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
+bool ByteCodeGen::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
 {
     auto left    = context->node;
     auto binNode = CastAst<AstBinaryOpNode>(left->parent, AstNodeKind::BinaryOp);
@@ -549,7 +549,7 @@ bool ByteCodeGenJob::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitLogicalAnd(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitLogicalAnd(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     auto node = CastAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
 
@@ -565,7 +565,7 @@ bool ByteCodeGenJob::emitLogicalAnd(ByteCodeGenContext* context, uint32_t r0, ui
     return true;
 }
 
-bool ByteCodeGenJob::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
+bool ByteCodeGen::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
 {
     auto left    = context->node;
     auto binNode = CastAst<AstBinaryOpNode>(left->parent, AstNodeKind::BinaryOp);
@@ -613,7 +613,7 @@ bool ByteCodeGenJob::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitLogicalOr(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
+bool ByteCodeGen::emitLogicalOr(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
     auto node = CastAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
     if (r2 != r1)
@@ -623,7 +623,7 @@ bool ByteCodeGenJob::emitLogicalOr(ByteCodeGenContext* context, uint32_t r0, uin
     return true;
 }
 
-bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
+bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
 {
     AstNode* node = context->node;
 
@@ -759,7 +759,7 @@ bool ByteCodeGenJob::emitBinaryOp(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, AstNode* forNode, bool freeRegisterParams)
+bool ByteCodeGen::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, AstNode* forNode, bool freeRegisterParams)
 {
     AstNode* node = forNode ? forNode : context->node;
     SWAG_ASSERT(node->extension);
@@ -778,7 +778,7 @@ bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams,
         if (!node->ownerFct || !node->ownerFct->mustInline())
         {
             // Need to wait for function full semantic resolve
-            Semantic::waitFuncDeclFullResolve(context->job, funcDecl);
+            Semantic::waitFuncDeclFullResolve(context->baseJob, funcDecl);
             YIELD();
             if (!(node->flags & AST_INLINED))
             {
@@ -792,7 +792,7 @@ bool ByteCodeGenJob::emitUserOp(ByteCodeGenContext* context, AstNode* allParams,
                 node->semFlags |= SEMFLAG_RESOLVE_INLINED;
                 auto back = node->childs.back();
                 SWAG_ASSERT(back->kind == AstNodeKind::Inline);
-                context->job->nodes.push_back(back);
+                context->baseJob->nodes.push_back(back);
                 context->result = ContextResult::NewChilds;
             }
 

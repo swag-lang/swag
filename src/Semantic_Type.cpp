@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Semantic.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "Ast.h"
 #include "Module.h"
 #include "TypeManager.h"
@@ -36,9 +36,9 @@ bool Semantic::makeIntrinsicKindof(SemanticContext* context, AstNode* node)
 
         node->typeInfo = resultTypeInfo;
         if (typeInfo->isAny())
-            node->byteCodeFct = ByteCodeGenJob::emitImplicitKindOfAny;
+            node->byteCodeFct = ByteCodeGen::emitImplicitKindOfAny;
         else
-            node->byteCodeFct = ByteCodeGenJob::emitImplicitKindOfInterface;
+            node->byteCodeFct = ByteCodeGen::emitImplicitKindOfInterface;
     }
 
     return true;
@@ -672,7 +672,7 @@ bool Semantic::resolveExplicitBitCast(SemanticContext* context)
     }
 
     node->typeInfo    = typeNode->typeInfo;
-    node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
+    node->byteCodeFct = ByteCodeGen::emitPassThrough;
     node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_COMPUTED | AST_R_VALUE | AST_L_VALUE | AST_SIDE_EFFECTS);
     node->inheritComputedValue(exprNode);
     node->resolvedSymbolName     = exprNode->resolvedSymbolName;
@@ -736,7 +736,7 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
     node->typeInfo       = typeNode->typeInfo;
     node->toCastTypeInfo = typeNode->typeInfo;
 
-    node->byteCodeFct = ByteCodeGenJob::emitExplicitCast;
+    node->byteCodeFct = ByteCodeGen::emitExplicitCast;
     node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_IS_GEN_TYPEINFO | AST_VALUE_COMPUTED | AST_R_VALUE | AST_L_VALUE | AST_SIDE_EFFECTS | AST_OPAFFECT_CAST);
     node->inheritComputedValue(exprNode);
     node->resolvedSymbolName     = exprNode->resolvedSymbolName;
@@ -778,7 +778,7 @@ bool Semantic::resolveExplicitAutoCast(SemanticContext* context)
     cloneType->flags |= TYPEINFO_AUTO_CAST;
     node->typeInfo = cloneType;
 
-    node->byteCodeFct = ByteCodeGenJob::emitExplicitAutoCast;
+    node->byteCodeFct = ByteCodeGen::emitExplicitAutoCast;
     node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_IS_GEN_TYPEINFO | AST_VALUE_COMPUTED | AST_SIDE_EFFECTS);
     node->inheritComputedValue(exprNode);
     return true;

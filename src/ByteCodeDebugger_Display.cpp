@@ -3,7 +3,7 @@
 #include "Module.h"
 #include "Ast.h"
 #include "Semantic.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "Context.h"
 #include "TypeManager.h"
 #include "ThreadManager.h"

@@ -1,28 +1,16 @@
 #include "pch.h"
-#include "Semantic.h"
 #include "Ast.h"
-#include "Workspace.h"
-#include "TypeManager.h"
-#include "ThreadManager.h"
-#include "ByteCodeGenJob.h"
-#include "Module.h"
 #include "ByteCode.h"
-#include "ModuleManager.h"
+#include "ByteCodeGenJob.h"
 #include "LanguageSpec.h"
+#include "Module.h"
+#include "ModuleManager.h"
 #include "Naming.h"
 #include "Parser.h"
-
-bool Semantic::waitForStructUserOps(SemanticContext* context, AstNode* node)
-{
-    SymbolName* symbol = nullptr;
-    SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opPostCopy, node, &symbol));
-    YIELD();
-    SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opPostMove, node, &symbol));
-    YIELD();
-    SWAG_CHECK(waitUserOp(context, g_LangSpec->name_opDrop, node, &symbol));
-    YIELD();
-    return true;
-}
+#include "Semantic.h"
+#include "ThreadManager.h"
+#include "TypeManager.h"
+#include "Workspace.h"
 
 bool Semantic::resolveImplForAfterFor(SemanticContext* context)
 {
@@ -1317,7 +1305,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
         extension->byteCodeJob->module       = sourceFile->module;
         extension->byteCodeJob->dependentJob = context->baseJob->dependentJob;
         extension->byteCodeJob->nodes.push_back(node);
-        node->byteCodeFct = ByteCodeGenJob::emitStruct;
+        node->byteCodeFct = ByteCodeGen::emitStruct;
 
         if (node->attributeFlags & ATTRIBUTE_GEN)
             node->resolvedSymbolName->addDependentJob(extension->byteCodeJob);

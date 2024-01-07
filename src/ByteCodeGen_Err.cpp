@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "ByteCode.h"
 #include "TypeManager.h"
 #include "Ast.h"
 #include "Module.h"
 #include "Report.h"
 
-bool ByteCodeGenJob::emitInitStackTrace(ByteCodeGenContext* context)
+bool ByteCodeGen::emitInitStackTrace(ByteCodeGenContext* context)
 {
     if (context->sourceFile->module->buildCfg.errorStackTrace)
     {
@@ -19,7 +19,7 @@ bool ByteCodeGenJob::emitInitStackTrace(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNode)
+bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNode)
 {
     auto node = CastAst<AstTryCatchAssume>(fromNode, AstNodeKind::Try, AstNodeKind::TryCatch, AstNodeKind::Throw);
 
@@ -178,7 +178,7 @@ bool ByteCodeGenJob::emitTryThrowExit(ByteCodeGenContext* context, AstNode* from
     return true;
 }
 
-bool ByteCodeGenJob::checkEscapedThrow(ByteCodeGenContext* context)
+bool ByteCodeGen::checkEscapedThrow(ByteCodeGenContext* context)
 {
     auto node = context->node;
     if (!(node->flags & AST_IN_DEFER))
@@ -208,7 +208,7 @@ bool ByteCodeGenJob::checkEscapedThrow(ByteCodeGenContext* context)
     return context->report(diag, Diagnostic::hereIs(defer));
 }
 
-bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
+bool ByteCodeGen::emitThrow(ByteCodeGenContext* context)
 {
     SWAG_CHECK(checkEscapedThrow(context));
 
@@ -261,7 +261,7 @@ bool ByteCodeGenJob::emitThrow(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
+bool ByteCodeGen::emitTry(ByteCodeGenContext* context)
 {
     SWAG_CHECK(checkEscapedThrow(context));
 
@@ -297,7 +297,7 @@ bool ByteCodeGenJob::emitTry(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitTryCatch(ByteCodeGenContext* context)
+bool ByteCodeGen::emitTryCatch(ByteCodeGenContext* context)
 {
     auto node    = context->node;
     auto tryNode = CastAst<AstTryCatchAssume>(node->extOwner()->ownerTryCatchAssume, AstNodeKind::TryCatch);
@@ -322,13 +322,13 @@ bool ByteCodeGenJob::emitTryCatch(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitCatch(ByteCodeGenContext* context)
+bool ByteCodeGen::emitCatch(ByteCodeGenContext* context)
 {
     EMIT_INST0(context, ByteCodeOp::InternalCatchErr);
     return true;
 }
 
-bool ByteCodeGenJob::emitAssume(ByteCodeGenContext* context)
+bool ByteCodeGen::emitAssume(ByteCodeGenContext* context)
 {
     if (!context->sourceFile->module->buildCfg.byteCodeEmitAssume)
         return true;

@@ -3,7 +3,7 @@
 #include "Ast.h"
 #include "AstOutput.h"
 #include "TypeManager.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "Module.h"
 #include "ErrorIds.h"
 #include "Report.h"
@@ -38,9 +38,9 @@ bool Semantic::resolveIf(SemanticContext* context)
         return true;
     }
 
-    node->byteCodeFct = ByteCodeGenJob::emitIf;
-    node->boolExpression->setBcNotifAfter(ByteCodeGenJob::emitIfAfterExpr);
-    node->ifBlock->setBcNotifAfter(ByteCodeGenJob::emitIfAfterIf, ByteCodeGenJob::emitLeaveScope);
+    node->byteCodeFct = ByteCodeGen::emitIf;
+    node->boolExpression->setBcNotifAfter(ByteCodeGen::emitIfAfterExpr);
+    node->ifBlock->setBcNotifAfter(ByteCodeGen::emitIfAfterIf, ByteCodeGen::emitLeaveScope);
 
     return true;
 }
@@ -72,10 +72,10 @@ bool Semantic::resolveWhile(SemanticContext* context)
         return context->report(diag);
     }
 
-    node->byteCodeFct = ByteCodeGenJob::emitLoop;
-    node->boolExpression->setBcNotifBefore(ByteCodeGenJob::emitWhileBeforeExpr);
-    node->boolExpression->setBcNotifAfter(ByteCodeGenJob::emitWhileAfterExpr);
-    node->block->setBcNotifAfter(ByteCodeGenJob::emitLoopAfterBlock, ByteCodeGenJob::emitLeaveScope);
+    node->byteCodeFct = ByteCodeGen::emitLoop;
+    node->boolExpression->setBcNotifBefore(ByteCodeGen::emitWhileBeforeExpr);
+    node->boolExpression->setBcNotifAfter(ByteCodeGen::emitWhileAfterExpr);
+    node->block->setBcNotifAfter(ByteCodeGen::emitLoopAfterBlock, ByteCodeGen::emitLeaveScope);
 
     // :SpecPropagateReturn
     if (node->breakableFlags & BREAKABLE_RETURN_IN_INFINIT_LOOP && node->breakList.empty())
@@ -222,13 +222,13 @@ bool Semantic::resolveFor(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression));
-    node->byteCodeFct = ByteCodeGenJob::emitLoop;
+    node->byteCodeFct = ByteCodeGen::emitLoop;
 
-    node->setBcNotifAfter(ByteCodeGenJob::emitLeaveScope);
-    node->boolExpression->setBcNotifBefore(ByteCodeGenJob::emitForBeforeExpr);
-    node->boolExpression->setBcNotifAfter(ByteCodeGenJob::emitForAfterExpr);
-    node->postExpression->setBcNotifBefore(ByteCodeGenJob::emitForBeforePost);
-    node->block->setBcNotifAfter(ByteCodeGenJob::emitLoopAfterBlock, ByteCodeGenJob::emitLeaveScope);
+    node->setBcNotifAfter(ByteCodeGen::emitLeaveScope);
+    node->boolExpression->setBcNotifBefore(ByteCodeGen::emitForBeforeExpr);
+    node->boolExpression->setBcNotifAfter(ByteCodeGen::emitForAfterExpr);
+    node->postExpression->setBcNotifBefore(ByteCodeGen::emitForBeforePost);
+    node->block->setBcNotifAfter(ByteCodeGen::emitLoopAfterBlock, ByteCodeGen::emitLeaveScope);
 
     // :SpecPropagateReturn
     if (node->breakableFlags & BREAKABLE_RETURN_IN_INFINIT_LOOP && node->breakList.empty())
@@ -272,14 +272,14 @@ bool Semantic::resolveSwitch(SemanticContext* context)
     SWAG_CHECK(collectAttributes(context, node, nullptr));
     SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_COMPLETE) || node->expression, context->report({node, node->token, Err(Err0607)}));
 
-    node->byteCodeFct = ByteCodeGenJob::emitSwitch;
+    node->byteCodeFct = ByteCodeGen::emitSwitch;
     if (!node->expression)
     {
-        node->setBcNotifBefore(ByteCodeGenJob::emitBeforeSwitch);
+        node->setBcNotifBefore(ByteCodeGen::emitBeforeSwitch);
         return true;
     }
 
-    node->expression->setBcNotifAfter(ByteCodeGenJob::emitSwitchAfterExpr);
+    node->expression->setBcNotifAfter(ByteCodeGen::emitSwitchAfterExpr);
 
     SWAG_CHECK(checkIsConcrete(context, node->expression));
     node->typeInfo = node->expression->typeInfo;
@@ -402,7 +402,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
         caseNode->specFlags   = AstSwitchCase::SPECFLAG_IS_DEFAULT;
         caseNode->ownerSwitch = node;
         node->cases.push_back(caseNode);
-        caseNode->byteCodeFct = ByteCodeGenJob::emitSafetySwitchDefault;
+        caseNode->byteCodeFct = ByteCodeGen::emitSafetySwitchDefault;
     }
 
     return true;
@@ -491,9 +491,9 @@ bool Semantic::resolveCase(SemanticContext* context)
         node->typeInfo = node->ownerSwitch->expression->typeInfo;
 
     if (!node->expressions.empty())
-        node->setBcNotifBefore(ByteCodeGenJob::emitSwitchCaseBeforeCase);
-    node->block->setBcNotifBefore(ByteCodeGenJob::emitSwitchCaseBeforeBlock);
-    node->block->setBcNotifAfter(ByteCodeGenJob::emitSwitchCaseAfterBlock, ByteCodeGenJob::emitLeaveScope);
+        node->setBcNotifBefore(ByteCodeGen::emitSwitchCaseBeforeCase);
+    node->block->setBcNotifBefore(ByteCodeGen::emitSwitchCaseBeforeBlock);
+    node->block->setBcNotifAfter(ByteCodeGen::emitSwitchCaseAfterBlock, ByteCodeGen::emitLeaveScope);
 
     return true;
 }
@@ -545,14 +545,14 @@ bool Semantic::resolveLoop(SemanticContext* context)
         }
 
         node->expression->allocateExtension(ExtensionKind::ByteCode);
-        node->expression->setBcNotifAfter(ByteCodeGenJob::emitLoopAfterExpr);
+        node->expression->setBcNotifAfter(ByteCodeGen::emitLoopAfterExpr);
     }
 
-    node->byteCodeFct = ByteCodeGenJob::emitLoop;
-    node->setBcNotifAfter(ByteCodeGenJob::emitLeaveScope);
-    node->block->setBcNotifAfter(ByteCodeGenJob::emitLoopAfterBlock, ByteCodeGenJob::emitLeaveScope);
+    node->byteCodeFct = ByteCodeGen::emitLoop;
+    node->setBcNotifAfter(ByteCodeGen::emitLeaveScope);
+    node->block->setBcNotifAfter(ByteCodeGen::emitLoopAfterBlock, ByteCodeGen::emitLeaveScope);
     if (!node->expression)
-        node->block->setBcNotifBefore(ByteCodeGenJob::emitLoopBeforeBlock);
+        node->block->setBcNotifBefore(ByteCodeGen::emitLoopBeforeBlock);
 
     // :SpecPropagateReturn
     if (node->breakableFlags & BREAKABLE_RETURN_IN_INFINIT_LOOP && node->breakList.empty())
@@ -984,7 +984,7 @@ bool Semantic::resolveIndex(SemanticContext* context)
 
     if (!node->typeInfo)
         node->typeInfo = g_TypeMgr->typeInfoU64;
-    node->byteCodeFct = ByteCodeGenJob::emitIndex;
+    node->byteCodeFct = ByteCodeGen::emitIndex;
     return true;
 }
 
@@ -1018,7 +1018,7 @@ bool Semantic::resolveBreak(SemanticContext* context)
     node->ownerBreakable->breakList.push_back(node);
 
     SWAG_CHECK(warnUnreachableCode(context));
-    node->byteCodeFct = ByteCodeGenJob::emitBreak;
+    node->byteCodeFct = ByteCodeGen::emitBreak;
     return true;
 }
 
@@ -1026,7 +1026,7 @@ bool Semantic::resolveUnreachable(SemanticContext* context)
 {
     auto node = context->node;
     SWAG_CHECK(warnUnreachableCode(context));
-    node->byteCodeFct = ByteCodeGenJob::emitUnreachable;
+    node->byteCodeFct = ByteCodeGen::emitUnreachable;
     return true;
 }
 
@@ -1049,7 +1049,7 @@ bool Semantic::resolveFallThrough(SemanticContext* context)
     SWAG_VERIFY(node->switchCase->caseIndex < (int) switchBlock->cases.size() - 1, context->report({node, Err(Err0635)}));
 
     SWAG_CHECK(warnUnreachableCode(context));
-    node->byteCodeFct = ByteCodeGenJob::emitFallThrough;
+    node->byteCodeFct = ByteCodeGen::emitFallThrough;
 
     return true;
 }
@@ -1067,14 +1067,14 @@ bool Semantic::resolveContinue(SemanticContext* context)
     node->ownerBreakable = checkBreakable;
 
     SWAG_CHECK(warnUnreachableCode(context));
-    node->byteCodeFct = ByteCodeGenJob::emitContinue;
+    node->byteCodeFct = ByteCodeGen::emitContinue;
     return true;
 }
 
 bool Semantic::resolveScopeBreakable(SemanticContext* context)
 {
     auto node = CastAst<AstScopeBreakable>(context->node, AstNodeKind::ScopeBreakable);
-    node->block->setBcNotifBefore(ByteCodeGenJob::emitLabelBeforeBlock);
-    node->block->setBcNotifAfter(ByteCodeGenJob::emitLoopAfterBlock, ByteCodeGenJob::emitLeaveScope);
+    node->block->setBcNotifBefore(ByteCodeGen::emitLabelBeforeBlock);
+    node->block->setBcNotifAfter(ByteCodeGen::emitLoopAfterBlock, ByteCodeGen::emitLeaveScope);
     return true;
 }

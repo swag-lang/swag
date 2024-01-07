@@ -4,7 +4,7 @@
 #include "Semantic.h"
 #include "Workspace.h"
 #include "Module.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "LanguageSpec.h"
 #include "Diagnostic.h"
 #include "TypeManager.h"
@@ -399,7 +399,7 @@ bool Parser::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind
 
     newScope->owner = statement;
     statement->flags |= AST_NEED_SCOPE;
-    statement->byteCodeFct = ByteCodeGenJob::emitDebugNop;
+    statement->byteCodeFct = ByteCodeGen::emitDebugNop;
     statement->allocateExtension(ExtensionKind::Semantic);
     statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;
     statement->extSemantic()->semanticAfterFct  = Semantic::resolveScopedStmtAfter;

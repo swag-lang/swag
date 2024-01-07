@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Semantic.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "Ast.h"
 #include "TypeManager.h"
 #include "LanguageSpec.h"
@@ -117,8 +117,8 @@ bool Semantic::resolveExpressionListTuple(SemanticContext* context)
     SWAG_CHECK(computeExpressionListTupleType(context, node));
     YIELD();
 
-    node->setBcNotifBefore(ByteCodeGenJob::emitExpressionListBefore);
-    node->byteCodeFct = ByteCodeGenJob::emitExpressionList;
+    node->setBcNotifBefore(ByteCodeGen::emitExpressionListBefore);
+    node->byteCodeFct = ByteCodeGen::emitExpressionList;
 
     // If the literal tuple is not constant, then we need to reserve some space in the
     // stack in order to store it.
@@ -163,8 +163,8 @@ bool Semantic::resolveExpressionListArray(SemanticContext* context)
         typeInfo->setConst();
 
     typeInfo->forceComputeName();
-    node->setBcNotifBefore(ByteCodeGenJob::emitExpressionListBefore);
-    node->byteCodeFct = ByteCodeGenJob::emitExpressionList;
+    node->setBcNotifBefore(ByteCodeGen::emitExpressionListBefore);
+    node->byteCodeFct = ByteCodeGen::emitExpressionList;
     node->typeInfo    = typeInfo;
 
     // If the literal array is not constant, then we need to reserve some space in the
@@ -276,13 +276,13 @@ bool Semantic::resolveConditionalOp(SemanticContext* context)
         }
 
         expression->release();
-        node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
+        node->byteCodeFct = ByteCodeGen::emitPassThrough;
         return true;
     }
 
-    expression->setBcNotifAfter(ByteCodeGenJob::emitConditionalOpAfterExpr);
-    ifTrue->setBcNotifAfter(ByteCodeGenJob::emitConditionalOpAfterIfTrue);
-    node->byteCodeFct = ByteCodeGenJob::emitConditionalOp;
+    expression->setBcNotifAfter(ByteCodeGen::emitConditionalOpAfterExpr);
+    ifTrue->setBcNotifAfter(ByteCodeGen::emitConditionalOpAfterIfTrue);
+    node->byteCodeFct = ByteCodeGen::emitConditionalOp;
 
     return true;
 }
@@ -368,7 +368,7 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
         SWAG_CHECK(TypeManager::makeCompatibles(context, expression, ifZero, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
 
         node->typeInfo    = expression->typeInfo;
-        node->byteCodeFct = ByteCodeGenJob::emitNullConditionalOp;
+        node->byteCodeFct = ByteCodeGen::emitNullConditionalOp;
     }
 
     return true;
@@ -377,7 +377,7 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
 bool Semantic::resolveDefer(SemanticContext* context)
 {
     auto node         = CastAst<AstDefer>(context->node, AstNodeKind::Defer);
-    node->byteCodeFct = ByteCodeGenJob::emitDefer;
+    node->byteCodeFct = ByteCodeGen::emitDefer;
 
     SWAG_ASSERT(node->childs.size() == 1);
     auto expr = node->childs.front();

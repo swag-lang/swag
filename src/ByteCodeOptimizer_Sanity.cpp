@@ -3,7 +3,7 @@
 #include "Ast.h"
 #include "Report.h"
 #include "Math.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "TypeManager.h"
 #include "Naming.h"
 

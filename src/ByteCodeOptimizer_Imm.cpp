@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "ByteCodeOptimizer.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "Tokenizer.h"
 #include "Log.h"
 #include "AstNode.h"

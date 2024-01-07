@@ -3,7 +3,7 @@
 #include "Semantic.h"
 #include "Scoped.h"
 #include "ErrorIds.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "Diagnostic.h"
 #include "LanguageSpec.h"
 

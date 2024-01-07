@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "SemanticJob.h"
 #include "Semantic.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "Ast.h"
 #include "Module.h"
 #include "TypeManager.h"
@@ -191,7 +191,7 @@ bool Semantic::resolveFuncDeclParams(SemanticContext* context)
 {
     auto node = context->node;
     node->inheritOrFlag(AST_IS_GENERIC);
-    node->byteCodeFct = ByteCodeGenJob::emitFuncDeclParams;
+    node->byteCodeFct = ByteCodeGen::emitFuncDeclParams;
     return true;
 }
 
@@ -300,7 +300,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
     if ((funcNode->attributeFlags & ATTRIBUTE_PUBLIC) && (funcNode->attributeFlags & ATTRIBUTE_INLINE) && !(funcNode->flags & AST_FROM_GENERIC))
         funcNode->ownerScope->addPublicNode(funcNode);
 
-    funcNode->byteCodeFct = ByteCodeGenJob::emitLocalFuncDecl;
+    funcNode->byteCodeFct = ByteCodeGen::emitLocalFuncDecl;
     typeInfo->stackSize   = funcNode->stackSize;
 
     // Check attributes
@@ -317,7 +317,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
 
     // Can be null for intrinsics etc...
     if (funcNode->content)
-        funcNode->content->setBcNotifBefore(ByteCodeGenJob::emitBeforeFuncDeclContent);
+        funcNode->content->setBcNotifBefore(ByteCodeGen::emitBeforeFuncDeclContent);
 
     // Do we have a return value
     if (funcNode->content && funcNode->returnType && !funcNode->returnType->typeInfo->isVoid())
@@ -406,7 +406,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
     if (!funcNode->content)
         genByteCode = false;
     if (genByteCode)
-        ByteCodeGenJob::askForByteCode(context->baseJob, funcNode, 0);
+        ByteCodeGen::askForByteCode(context->baseJob, funcNode, 0);
 
     return true;
 }
@@ -1079,7 +1079,7 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
             node->typeInfo = g_TypeMgr->makeConst(node->typeInfo);
     }
 
-    node->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
+    node->byteCodeFct = ByteCodeGen::emitFuncCallParam;
 
     // Can be called for generic parameters in type definition, in that case, we are a type, so no
     // test for concrete must be done
@@ -1276,7 +1276,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
     auto node     = CastAst<AstReturn>(context->node, AstNodeKind::Return);
     auto funcNode = getFunctionForReturn(node);
 
-    node->byteCodeFct      = ByteCodeGenJob::emitReturn;
+    node->byteCodeFct      = ByteCodeGen::emitReturn;
     node->resolvedFuncDecl = funcNode;
     auto funcReturnType    = TypeManager::concreteType(funcNode->returnType->typeInfo);
 
@@ -1629,16 +1629,16 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
         switch (inlineNode->extOwner()->ownerTryCatchAssume->kind)
         {
         case AstNodeKind::Try:
-            inlineNode->setBcNotifAfter(ByteCodeGenJob::emitTry);
+            inlineNode->setBcNotifAfter(ByteCodeGen::emitTry);
             break;
         case AstNodeKind::TryCatch:
-            inlineNode->setBcNotifAfter(ByteCodeGenJob::emitTryCatch);
+            inlineNode->setBcNotifAfter(ByteCodeGen::emitTryCatch);
             break;
         case AstNodeKind::Catch:
-            inlineNode->setBcNotifAfter(ByteCodeGenJob::emitCatch);
+            inlineNode->setBcNotifAfter(ByteCodeGen::emitCatch);
             break;
         case AstNodeKind::Assume:
-            inlineNode->setBcNotifAfter(ByteCodeGenJob::emitAssume);
+            inlineNode->setBcNotifAfter(ByteCodeGen::emitAssume);
             break;
         default:
             break;
@@ -1648,13 +1648,13 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
         if (identifier->hasExtByteCode())
         {
             auto extension = identifier->extByteCode();
-            if (extension->byteCodeAfterFct == ByteCodeGenJob::emitTry)
+            if (extension->byteCodeAfterFct == ByteCodeGen::emitTry)
                 extension->byteCodeAfterFct = nullptr;
-            else if (extension->byteCodeAfterFct == ByteCodeGenJob::emitTryCatch)
+            else if (extension->byteCodeAfterFct == ByteCodeGen::emitTryCatch)
                 extension->byteCodeAfterFct = nullptr;
-            else if (extension->byteCodeAfterFct == ByteCodeGenJob::emitCatch)
+            else if (extension->byteCodeAfterFct == ByteCodeGen::emitCatch)
                 extension->byteCodeAfterFct = nullptr;
-            else if (extension->byteCodeAfterFct == ByteCodeGenJob::emitAssume)
+            else if (extension->byteCodeAfterFct == ByteCodeGen::emitAssume)
                 extension->byteCodeAfterFct = nullptr;
         }
     }

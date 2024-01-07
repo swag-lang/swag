@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "Diagnostic.h"
 #include "Module.h"
 #include "Semantic.h"
@@ -63,8 +63,8 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
     if (!fromNode->sourceFile->module->mustEmitSafety(fromNode, SAFETY_OVERFLOW))
         return true;
 
-    auto msg  = ByteCodeGenJob::safetyMsg(SafetyMsg::CastTruncated, toType, fromType);
-    auto msg1 = ByteCodeGenJob::safetyMsg(SafetyMsg::CastNeg, toType, fromType);
+    auto msg  = ByteCodeGen::safetyMsg(SafetyMsg::CastTruncated, toType, fromType);
+    auto msg1 = ByteCodeGen::safetyMsg(SafetyMsg::CastNeg, toType, fromType);
 
     // Negative value to unsigned type
     if (fromType->isNativeIntegerSigned() && toType->isNativeIntegerUnsignedOrRune() && fromNode->computedValue->reg.s64 < 0)

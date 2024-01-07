@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "ByteCode.h"
 #include "Ast.h"
 #include "Module.h"
@@ -9,7 +9,7 @@
 #include "LanguageSpec.h"
 #include "ModuleManager.h"
 
-void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, TypeInfoStruct* typeStruct, EmitOpUserKind kind, bool pushParam, uint32_t offset, uint32_t numParams)
+void ByteCodeGen::emitOpCallUser(ByteCodeGenContext* context, TypeInfoStruct* typeStruct, EmitOpUserKind kind, bool pushParam, uint32_t offset, uint32_t numParams)
 {
     switch (kind)
     {
@@ -28,7 +28,7 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, TypeInfoStruct*
     }
 }
 
-void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc, bool pushParam, uint32_t offset, uint32_t numParams)
+void ByteCodeGen::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcDecl, ByteCode* bc, bool pushParam, uint32_t offset, uint32_t numParams)
 {
     if (!funcDecl && !bc)
         return;
@@ -39,9 +39,9 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
         bc->isUsed = true;
 
     if (funcDecl)
-        askForByteCode(context->job, funcDecl, 0, context->bc);
+        askForByteCode(context->baseJob, funcDecl, 0, context->bc);
     else if (bc && bc->node)
-        askForByteCode(context->job, bc->node, 0, context->bc);
+        askForByteCode(context->baseJob, bc->node, 0, context->bc);
 
     if (pushParam)
     {
@@ -82,7 +82,7 @@ void ByteCodeGenJob::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* fu
     EMIT_INST1(context, ByteCodeOp::IncSPPostCall, numParams * 8);
 }
 
-void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
+void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
     ScopedLock lk(typeInfoStruct->mutexGen);
     auto       structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
@@ -119,8 +119,8 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
                 symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opInit, g_LangSpec->name_opInitCrc);
                 if (symbol && symbol->cptOverloads)
                 {
-                    symbol->addDependentJob(context->job);
-                    context->job->setPending(JobWaitKind::EmitInit, symbol, structNode, nullptr);
+                    symbol->addDependentJob(context->baseJob);
+                    context->baseJob->setPending(JobWaitKind::EmitInit, symbol, structNode, nullptr);
                     return;
                 }
             }
@@ -133,8 +133,8 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
                 symbol = typeInfoStruct->opUserInitFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opInit, g_LangSpec->name_opInitCrc);
                 if (symbol && symbol->cptOverloads)
                 {
-                    symbol->addDependentJob(context->job);
-                    context->job->setPending(JobWaitKind::EmitInit, symbol, structNode, nullptr);
+                    symbol->addDependentJob(context->baseJob);
+                    context->baseJob->setPending(JobWaitKind::EmitInit, symbol, structNode, nullptr);
                     return;
                 }
             }
@@ -156,8 +156,8 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
                 symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opDrop, g_LangSpec->name_opDropCrc);
                 if (symbol && symbol->cptOverloads)
                 {
-                    symbol->addDependentJob(context->job);
-                    context->job->setPending(JobWaitKind::EmitDrop, symbol, structNode, nullptr);
+                    symbol->addDependentJob(context->baseJob);
+                    context->baseJob->setPending(JobWaitKind::EmitDrop, symbol, structNode, nullptr);
                     return;
                 }
             }
@@ -170,8 +170,8 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
                 symbol = typeInfoStruct->opUserDropFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opDrop, g_LangSpec->name_opDropCrc);
                 if (symbol && symbol->cptOverloads)
                 {
-                    symbol->addDependentJob(context->job);
-                    context->job->setPending(JobWaitKind::EmitDrop, symbol, structNode, nullptr);
+                    symbol->addDependentJob(context->baseJob);
+                    context->baseJob->setPending(JobWaitKind::EmitDrop, symbol, structNode, nullptr);
                     return;
                 }
             }
@@ -197,8 +197,8 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
                 symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostCopy, g_LangSpec->name_opPostCopyCrc);
                 if (symbol && symbol->cptOverloads)
                 {
-                    symbol->addDependentJob(context->job);
-                    context->job->setPending(JobWaitKind::EmitPostCopy, symbol, structNode, nullptr);
+                    symbol->addDependentJob(context->baseJob);
+                    context->baseJob->setPending(JobWaitKind::EmitPostCopy, symbol, structNode, nullptr);
                     return;
                 }
             }
@@ -211,8 +211,8 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
                 symbol = typeInfoStruct->opUserPostCopyFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opPostCopy, g_LangSpec->name_opPostCopyCrc);
                 if (symbol && symbol->cptOverloads)
                 {
-                    symbol->addDependentJob(context->job);
-                    context->job->setPending(JobWaitKind::EmitPostCopy, symbol, structNode, nullptr);
+                    symbol->addDependentJob(context->baseJob);
+                    context->baseJob->setPending(JobWaitKind::EmitPostCopy, symbol, structNode, nullptr);
                     return;
                 }
             }
@@ -236,8 +236,8 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
                 symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostMove, g_LangSpec->name_opPostMoveCrc);
                 if (symbol && symbol->cptOverloads)
                 {
-                    symbol->addDependentJob(context->job);
-                    context->job->setPending(JobWaitKind::EmitPostMove, symbol, structNode, nullptr);
+                    symbol->addDependentJob(context->baseJob);
+                    context->baseJob->setPending(JobWaitKind::EmitPostMove, symbol, structNode, nullptr);
                     return;
                 }
             }
@@ -250,8 +250,8 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
                 symbol = typeInfoStruct->opUserPostMoveFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opPostMove, g_LangSpec->name_opPostMoveCrc);
                 if (symbol && symbol->cptOverloads)
                 {
-                    symbol->addDependentJob(context->job);
-                    context->job->setPending(JobWaitKind::EmitPostMove, symbol, structNode, nullptr);
+                    symbol->addDependentJob(context->baseJob);
+                    context->baseJob->setPending(JobWaitKind::EmitPostMove, symbol, structNode, nullptr);
                     return;
                 }
             }
@@ -408,7 +408,7 @@ void ByteCodeGenJob::generateStructAlloc(ByteCodeGenContext* context, TypeInfoSt
     structNode->dependentJobs.setRunning();
 }
 
-void ByteCodeGenJob::emitOpCallUserArrayOfStruct(ByteCodeGenContext* context, TypeInfo* typeVar, EmitOpUserKind kind, bool pushParam, uint32_t offset)
+void ByteCodeGen::emitOpCallUserArrayOfStruct(ByteCodeGenContext* context, TypeInfo* typeVar, EmitOpUserKind kind, bool pushParam, uint32_t offset)
 {
     SWAG_ASSERT(typeVar->isArrayOfStruct());
     auto typeArray     = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
@@ -466,7 +466,7 @@ void ByteCodeGenJob::emitOpCallUserArrayOfStruct(ByteCodeGenContext* context, Ty
     }
 }
 
-void ByteCodeGenJob::emitOpCallUserFields(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct, EmitOpUserKind kind)
+void ByteCodeGen::emitOpCallUserFields(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct, EmitOpUserKind kind)
 {
     for (auto typeParam : typeInfoStruct->fields)
     {
@@ -508,7 +508,7 @@ void ByteCodeGenJob::emitOpCallUserFields(ByteCodeGenContext* context, TypeInfoS
     }
 }
 
-bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
+bool ByteCodeGen::generateStruct_opInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
     ScopedLock lk(typeInfoStruct->mutexGen);
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_INIT)
@@ -524,8 +524,8 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opInit, g_LangSpec->name_opInitCrc);
         if (symbol && symbol->cptOverloads)
         {
-            symbol->addDependentJob(context->job);
-            context->job->setPending(JobWaitKind::EmitInit, symbol, structNode, nullptr);
+            symbol->addDependentJob(context->baseJob);
+            context->baseJob->setPending(JobWaitKind::EmitInit, symbol, structNode, nullptr);
             return true;
         }
     }
@@ -538,8 +538,8 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         symbol = typeInfoStruct->opUserInitFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opInit, g_LangSpec->name_opInitCrc);
         if (symbol && symbol->cptOverloads)
         {
-            symbol->addDependentJob(context->job);
-            context->job->setPending(JobWaitKind::EmitInit, symbol, structNode, nullptr);
+            symbol->addDependentJob(context->baseJob);
+            context->baseJob->setPending(JobWaitKind::EmitInit, symbol, structNode, nullptr);
             return true;
         }
     }
@@ -554,7 +554,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         // Content must have been solved ! #validif pb
         SWAG_ASSERT(!(typeInfoStruct->opUserInitFct->content->flags & AST_NO_SEMANTIC));
 
-        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserInitFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
+        askForByteCode(context->baseJob, (AstFuncDecl*) typeInfoStruct->opUserInitFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         YIELD();
     }
 
@@ -567,7 +567,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
         if (!typeVar->isStruct())
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-        Semantic::waitStructGenerated(context->job, typeStructVar);
+        Semantic::waitStructGenerated(context->baseJob, typeStructVar);
         YIELD();
         SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPECOP_GENERATED);
         generateStruct_opInit(context, typeStructVar);
@@ -784,7 +784,7 @@ bool ByteCodeGenJob::generateStruct_opInit(ByteCodeGenContext* context, TypeInfo
     return true;
 }
 
-bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
+bool ByteCodeGen::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
     ScopedLock lk(typeInfoStruct->mutexGen);
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_DROP)
@@ -802,8 +802,8 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opDrop, g_LangSpec->name_opDropCrc);
         if (symbol && symbol->cptOverloads)
         {
-            symbol->addDependentJob(context->job);
-            context->job->setPending(JobWaitKind::EmitDrop, symbol, structNode, nullptr);
+            symbol->addDependentJob(context->baseJob);
+            context->baseJob->setPending(JobWaitKind::EmitDrop, symbol, structNode, nullptr);
             return true;
         }
     }
@@ -816,8 +816,8 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         symbol = typeInfoStruct->opUserDropFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opDrop, g_LangSpec->name_opDropCrc);
         if (symbol && symbol->cptOverloads)
         {
-            symbol->addDependentJob(context->job);
-            context->job->setPending(JobWaitKind::EmitDrop, symbol, structNode, nullptr);
+            symbol->addDependentJob(context->baseJob);
+            context->baseJob->setPending(JobWaitKind::EmitDrop, symbol, structNode, nullptr);
             return true;
         }
     }
@@ -834,7 +834,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         SWAG_ASSERT(!(typeInfoStruct->opUserDropFct->content->flags & AST_NO_SEMANTIC));
 
         needDrop = true;
-        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserDropFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
+        askForByteCode(context->baseJob, (AstFuncDecl*) typeInfoStruct->opUserDropFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         YIELD();
     }
 
@@ -847,7 +847,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
         if (!typeVar->isStruct())
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-        Semantic::waitStructGenerated(context->job, typeStructVar);
+        Semantic::waitStructGenerated(context->baseJob, typeStructVar);
         YIELD();
         SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPECOP_GENERATED);
         generateStruct_opDrop(context, typeStructVar);
@@ -895,7 +895,7 @@ bool ByteCodeGenJob::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfo
     return true;
 }
 
-bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
+bool ByteCodeGen::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
     ScopedLock lk(typeInfoStruct->mutexGen);
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_POST_COPY)
@@ -914,8 +914,8 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostCopy, g_LangSpec->name_opPostCopyCrc);
         if (symbol && symbol->cptOverloads)
         {
-            symbol->addDependentJob(context->job);
-            context->job->setPending(JobWaitKind::EmitPostCopy, symbol, structNode, nullptr);
+            symbol->addDependentJob(context->baseJob);
+            context->baseJob->setPending(JobWaitKind::EmitPostCopy, symbol, structNode, nullptr);
             return true;
         }
     }
@@ -928,8 +928,8 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         symbol = typeInfoStruct->opUserPostCopyFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opPostCopy, g_LangSpec->name_opPostCopyCrc);
         if (symbol && symbol->cptOverloads)
         {
-            symbol->addDependentJob(context->job);
-            context->job->setPending(JobWaitKind::EmitPostCopy, symbol, structNode, nullptr);
+            symbol->addDependentJob(context->baseJob);
+            context->baseJob->setPending(JobWaitKind::EmitPostCopy, symbol, structNode, nullptr);
             return true;
         }
     }
@@ -946,7 +946,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         SWAG_ASSERT(!(typeInfoStruct->opUserPostCopyFct->content->flags & AST_NO_SEMANTIC));
 
         needPostCopy = true;
-        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostCopyFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
+        askForByteCode(context->baseJob, (AstFuncDecl*) typeInfoStruct->opUserPostCopyFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         YIELD();
     }
 
@@ -959,7 +959,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
         if (!typeVar->isStruct())
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-        Semantic::waitStructGenerated(context->job, typeStructVar);
+        Semantic::waitStructGenerated(context->baseJob, typeStructVar);
         YIELD();
         SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPECOP_GENERATED);
         generateStruct_opPostCopy(context, typeStructVar);
@@ -1007,7 +1007,7 @@ bool ByteCodeGenJob::generateStruct_opPostCopy(ByteCodeGenContext* context, Type
     return true;
 }
 
-bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
+bool ByteCodeGen::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
     ScopedLock lk(typeInfoStruct->mutexGen);
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_POST_MOVE)
@@ -1024,8 +1024,8 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         symbol = typeInfoStruct->scope->symTable.findNoLock(g_LangSpec->name_opPostMove, g_LangSpec->name_opPostMoveCrc);
         if (symbol && symbol->cptOverloads)
         {
-            symbol->addDependentJob(context->job);
-            context->job->setPending(JobWaitKind::EmitPostMove, symbol, structNode, nullptr);
+            symbol->addDependentJob(context->baseJob);
+            context->baseJob->setPending(JobWaitKind::EmitPostMove, symbol, structNode, nullptr);
             return true;
         }
     }
@@ -1038,8 +1038,8 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         symbol = typeInfoStruct->opUserPostMoveFct->ownerScope->symTable.findNoLock(g_LangSpec->name_opPostMove, g_LangSpec->name_opPostMoveCrc);
         if (symbol && symbol->cptOverloads)
         {
-            symbol->addDependentJob(context->job);
-            context->job->setPending(JobWaitKind::EmitPostMove, symbol, structNode, nullptr);
+            symbol->addDependentJob(context->baseJob);
+            context->baseJob->setPending(JobWaitKind::EmitPostMove, symbol, structNode, nullptr);
             return true;
         }
     }
@@ -1056,7 +1056,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         SWAG_ASSERT(!(typeInfoStruct->opUserPostMoveFct->content->flags & AST_NO_SEMANTIC));
 
         needPostMove = true;
-        askForByteCode(context->job, (AstFuncDecl*) typeInfoStruct->opUserPostMoveFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
+        askForByteCode(context->baseJob, (AstFuncDecl*) typeInfoStruct->opUserPostMoveFct, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         YIELD();
     }
 
@@ -1069,7 +1069,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
         if (!typeVar->isStruct())
             continue;
         auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
-        Semantic::waitStructGenerated(context->job, typeStructVar);
+        Semantic::waitStructGenerated(context->baseJob, typeStructVar);
         YIELD();
         SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPECOP_GENERATED);
         generateStruct_opPostMove(context, typeStructVar);
@@ -1117,7 +1117,7 @@ bool ByteCodeGenJob::generateStruct_opPostMove(ByteCodeGenContext* context, Type
     return true;
 }
 
-bool ByteCodeGenJob::emitStruct(ByteCodeGenContext* context)
+bool ByteCodeGen::emitStruct(ByteCodeGenContext* context)
 {
     AstStruct*      node           = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl);
     TypeInfoStruct* typeInfoStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
@@ -1141,7 +1141,7 @@ bool ByteCodeGenJob::emitStruct(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo, AstNode* from)
+bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo, AstNode* from)
 {
     TypeInfoStruct* typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
 
@@ -1225,7 +1225,7 @@ bool ByteCodeGenJob::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r
     return true;
 }
 
-void ByteCodeGenJob::emitRetValRef(ByteCodeGenContext* context, SymbolOverload* resolved, RegisterList& r0, bool retVal, uint32_t stackOffset)
+void ByteCodeGen::emitRetValRef(ByteCodeGenContext* context, SymbolOverload* resolved, RegisterList& r0, bool retVal, uint32_t stackOffset)
 {
     auto node = context->node;
     if (retVal)
@@ -1246,7 +1246,7 @@ void ByteCodeGenJob::emitRetValRef(ByteCodeGenContext* context, SymbolOverload* 
     }
 }
 
-bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct, uint32_t regOffset, bool retVal)
+bool ByteCodeGen::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct, uint32_t regOffset, bool retVal)
 {
     auto node     = context->node;
     auto resolved = node->resolvedSymbolOverload;
@@ -1290,7 +1290,7 @@ bool ByteCodeGenJob::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct*
     return true;
 }
 
-void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t regOffset, bool retVal)
+void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t regOffset, bool retVal)
 {
     PushContextFlags cf(context, BCC_FLAG_NOSAFETY);
     auto             node     = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
@@ -1350,7 +1350,7 @@ void ByteCodeGenJob::emitStructParameters(ByteCodeGenContext* context, uint32_t 
     }
 }
 
-void ByteCodeGenJob::freeStructParametersRegisters(ByteCodeGenContext* context)
+void ByteCodeGen::freeStructParametersRegisters(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl);
     if (node->type && (node->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
@@ -1369,7 +1369,7 @@ void ByteCodeGenJob::freeStructParametersRegisters(ByteCodeGenContext* context)
     }
 }
 
-bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
+bool ByteCodeGen::emitInit(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstInit>(context->node, AstNodeKind::Init);
 
@@ -1417,7 +1417,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, RegisterList& rExpr, uint64_t numToInit, AstNode* count, AstNode* parameters)
+bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, RegisterList& rExpr, uint64_t numToInit, AstNode* count, AstNode* parameters)
 {
     // Determine if we just need to clear the memory
     bool justClear = true;
@@ -1443,7 +1443,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType
     if (pointedType->isStruct())
     {
         typeStruct = CastTypeInfo<TypeInfoStruct>(pointedType, TypeInfoKind::Struct);
-        Semantic::waitStructGenerated(context->job, typeStruct);
+        Semantic::waitStructGenerated(context->baseJob, typeStruct);
         YIELD();
         if (typeStruct->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES)
             justClear = false;
@@ -1626,7 +1626,7 @@ bool ByteCodeGenJob::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType
     return true;
 }
 
-bool ByteCodeGenJob::emitDropCopyMove(ByteCodeGenContext* context)
+bool ByteCodeGen::emitDropCopyMove(ByteCodeGenContext* context)
 {
     auto node           = CastAst<AstDropCopyMove>(context->node, AstNodeKind::Drop, AstNodeKind::PostCopy, AstNodeKind::PostMove);
     auto typeExpression = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->expression->typeInfo), TypeInfoKind::Pointer);
@@ -1652,7 +1652,7 @@ bool ByteCodeGenJob::emitDropCopyMove(ByteCodeGenContext* context)
     }
 
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeExpression->pointedType, TypeInfoKind::Struct);
-    Semantic::waitTypeCompleted(context->job, typeStruct);
+    Semantic::waitTypeCompleted(context->baseJob, typeStruct);
     YIELD();
 
     bool somethingToDo = false;

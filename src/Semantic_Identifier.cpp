@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Ast.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "Diagnostic.h"
 #include "Generic.h"
 #include "LanguageSpec.h"
@@ -97,7 +97,7 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
     }
 
     node->token.text  = childBack->token.text;
-    node->byteCodeFct = ByteCodeGenJob::emitIdentifierRef;
+    node->byteCodeFct = ByteCodeGen::emitIdentifierRef;
 
     // Flag inheritance
     node->flags |= AST_CONST_EXPR | AST_FROM_GENERIC_REPLACE;
@@ -1270,7 +1270,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             auto funcType           = (TypeInfoFuncAttr*) typeInfo->clone();
             funcType->kind          = TypeInfoKind::FuncAttr;
             identifier->typeInfo    = funcType;
-            identifier->byteCodeFct = ByteCodeGenJob::emitLambdaCall;
+            identifier->byteCodeFct = ByteCodeGen::emitLambdaCall;
 
             // Try/Assume
             if (identifier->hasExtOwner() &&
@@ -1280,16 +1280,16 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                 switch (identifier->extOwner()->ownerTryCatchAssume->kind)
                 {
                 case AstNodeKind::Try:
-                    identifier->setBcNotifAfter(ByteCodeGenJob::emitTry);
+                    identifier->setBcNotifAfter(ByteCodeGen::emitTry);
                     break;
                 case AstNodeKind::TryCatch:
-                    identifier->setBcNotifAfter(ByteCodeGenJob::emitTryCatch);
+                    identifier->setBcNotifAfter(ByteCodeGen::emitTryCatch);
                     break;
                 case AstNodeKind::Catch:
-                    identifier->setBcNotifAfter(ByteCodeGenJob::emitCatch);
+                    identifier->setBcNotifAfter(ByteCodeGen::emitCatch);
                     break;
                 case AstNodeKind::Assume:
-                    identifier->setBcNotifAfter(ByteCodeGenJob::emitAssume);
+                    identifier->setBcNotifAfter(ByteCodeGen::emitAssume);
                     break;
                 default:
                     break;
@@ -1510,7 +1510,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                         SWAG_CHECK(setupIdentifierRef(context, identifier));
                     }
 
-                    identifier->byteCodeFct = ByteCodeGenJob::emitPassThrough;
+                    identifier->byteCodeFct = ByteCodeGen::emitPassThrough;
                     return true;
                 }
             }
@@ -1522,12 +1522,12 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         if (identifier->token.text[0] == '@' && identifier->tokenId != TokenId::IntrinsicPrint)
         {
             dealWithIntrinsic(context, identifier);
-            identifier->byteCodeFct = ByteCodeGenJob::emitIntrinsic;
+            identifier->byteCodeFct = ByteCodeGen::emitIntrinsic;
         }
         else if (funcDecl->isForeign())
-            identifier->byteCodeFct = ByteCodeGenJob::emitForeignCall;
+            identifier->byteCodeFct = ByteCodeGen::emitForeignCall;
         else
-            identifier->byteCodeFct = ByteCodeGenJob::emitCall;
+            identifier->byteCodeFct = ByteCodeGen::emitCall;
 
         // Try/Assume
         if (identifier->hasExtOwner() &&
@@ -1537,16 +1537,16 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             switch (identifier->extOwner()->ownerTryCatchAssume->kind)
             {
             case AstNodeKind::Try:
-                identifier->setBcNotifAfter(ByteCodeGenJob::emitTry);
+                identifier->setBcNotifAfter(ByteCodeGen::emitTry);
                 break;
             case AstNodeKind::TryCatch:
-                identifier->setBcNotifAfter(ByteCodeGenJob::emitTryCatch);
+                identifier->setBcNotifAfter(ByteCodeGen::emitTryCatch);
                 break;
             case AstNodeKind::Catch:
-                identifier->setBcNotifAfter(ByteCodeGenJob::emitCatch);
+                identifier->setBcNotifAfter(ByteCodeGen::emitCatch);
                 break;
             case AstNodeKind::Assume:
-                identifier->setBcNotifAfter(ByteCodeGenJob::emitAssume);
+                identifier->setBcNotifAfter(ByteCodeGen::emitAssume);
                 break;
             default:
                 break;
@@ -2474,7 +2474,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
     fctCallParam->typeInfo = identifierRef->previousResolvedNode->typeInfo;
     fctCallParam->token    = identifierRef->previousResolvedNode->token;
     fctCallParam->inheritTokenLocation(node);
-    fctCallParam->byteCodeFct = ByteCodeGenJob::emitFuncCallParam;
+    fctCallParam->byteCodeFct = ByteCodeGen::emitFuncCallParam;
     fctCallParam->inheritOwners(node->callParameters);
     fctCallParam->flags |= AST_TO_UFCS | AST_GENERATED;
     fctCallParam->inheritOrFlag(node, AST_IN_MIXIN);
@@ -2572,7 +2572,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
                     copyChild->typeInfo               = child->typeInfo;
                 }
 
-                copyChild->byteCodeFct = ByteCodeGenJob::emitIdentifier;
+                copyChild->byteCodeFct = ByteCodeGen::emitIdentifier;
                 copyChild->flags |= AST_TO_UFCS | AST_L_VALUE;
                 copyChild->flags |= AST_UFCS_FCT;
             }
@@ -4432,7 +4432,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     auto& dependentSymbols   = context->cacheDependentSymbols;
     auto  identifierRef      = identifier->identifierRef();
 
-    identifier->byteCodeFct = ByteCodeGenJob::emitIdentifier;
+    identifier->byteCodeFct = ByteCodeGen::emitIdentifier;
 
     // Current file scope
     if (context->sourceFile && context->sourceFile->scopeFile && identifier->token.text == context->sourceFile->scopeFile->name)
@@ -5218,7 +5218,7 @@ bool Semantic::resolveTry(SemanticContext* context)
     node->typeInfo = lastChild->typeInfo;
     node->flags |= identifierRef->flags;
     node->inheritComputedValue(identifierRef);
-    node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
+    node->byteCodeFct = ByteCodeGen::emitPassThrough;
 
     return true;
 }
@@ -5233,8 +5233,8 @@ bool Semantic::resolveTryCatch(SemanticContext* context)
     SWAG_ASSERT(node->ownerFct);
     node->ownerFct->addSpecFlags(AstFuncDecl::SPECFLAG_REG_GET_CONTEXT);
 
-    node->setBcNotifBefore(ByteCodeGenJob::emitInitStackTrace);
-    node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
+    node->setBcNotifBefore(ByteCodeGen::emitInitStackTrace);
+    node->byteCodeFct = ByteCodeGen::emitPassThrough;
 
     node->typeInfo = lastChild->typeInfo;
     node->flags |= identifierRef->flags;
@@ -5254,8 +5254,8 @@ bool Semantic::resolveCatch(SemanticContext* context)
     node->ownerFct->addSpecFlags(AstFuncDecl::SPECFLAG_REG_GET_CONTEXT);
 
     node->allocateExtension(ExtensionKind::ByteCode);
-    node->setBcNotifBefore(ByteCodeGenJob::emitInitStackTrace);
-    node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
+    node->setBcNotifBefore(ByteCodeGen::emitInitStackTrace);
+    node->byteCodeFct = ByteCodeGen::emitPassThrough;
 
     node->typeInfo = lastChild->typeInfo;
     node->flags |= identifierRef->flags;
@@ -5276,11 +5276,11 @@ bool Semantic::resolveAssume(SemanticContext* context)
     node->ownerFct->addSpecFlags(AstFuncDecl::SPECFLAG_REG_GET_CONTEXT);
 
     node->allocateExtension(ExtensionKind::ByteCode);
-    node->setBcNotifBefore(ByteCodeGenJob::emitInitStackTrace);
+    node->setBcNotifBefore(ByteCodeGen::emitInitStackTrace);
     node->typeInfo = lastChild->typeInfo;
     node->flags |= identifierRef->flags;
     node->inheritComputedValue(identifierRef);
-    node->byteCodeFct = ByteCodeGenJob::emitPassThrough;
+    node->byteCodeFct = ByteCodeGen::emitPassThrough;
 
     return true;
 }
@@ -5303,6 +5303,6 @@ bool Semantic::resolveThrow(SemanticContext* context)
         context->node->printLoc();
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoAny, node, expr, CASTFLAG_AUTO_OPCAST | CASTFLAG_CONCRETE_ENUM));
-    node->byteCodeFct = ByteCodeGenJob::emitThrow;
+    node->byteCodeFct = ByteCodeGen::emitThrow;
     return true;
 }

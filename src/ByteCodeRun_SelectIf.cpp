@@ -3,7 +3,7 @@
 #include "ByteCode.h"
 #include "Module.h"
 #include "ErrorIds.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "TypeInfo.h"
 
 bool ByteCodeRun::getVariadicSI(ByteCodeRunContext* context, ByteCodeInstruction* ip, Register* regPtr, Register* regCount)
@@ -73,7 +73,7 @@ void* ByteCodeRun::executeLocationSI(ByteCodeRunContext* context, ByteCodeInstru
     auto         child          = callParams->childs[paramIdx];
     uint32_t     storageOffset  = UINT32_MAX;
     DataSegment* storageSegment = nullptr;
-    ByteCodeGenJob::computeSourceLocation(context->callerContext, child, &storageOffset, &storageSegment, true);
+    ByteCodeGen::computeSourceLocation(context->callerContext, child, &storageOffset, &storageSegment, true);
     return storageSegment->address(storageOffset);
 }
 

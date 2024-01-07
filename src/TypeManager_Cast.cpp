@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Ast.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "Diagnostic.h"
 #include "Module.h"
 #include "Naming.h"
@@ -2114,7 +2114,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             {
                 // When casting something complexe to any, we will copy the value to the stack to be sure
                 // that the memory layout is correct, without relying on registers being contiguous, and not being reallocated (by an optimize pass).
-                // See ByteCodeGenJob::emitCastToNativeAny
+                // See ByteCodeGen::emitCastToNativeAny
                 if (toNode->ownerFct && toType->numRegisters() > 1)
                 {
                     toNode->allocateExtension(ExtensionKind::Misc);
@@ -2141,7 +2141,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
         {
             // When casting something complexe to any, we will copy the value to the stack to be sure
             // that the memory layout is correct, without relying on registers being contiguous, and not being reallocated (by an optimize pass).
-            // See ByteCodeGenJob::emitCastToNativeAny
+            // See ByteCodeGen::emitCastToNativeAny
             if (fromNode->ownerFct && fromType->numRegisters() > 1)
             {
                 fromNode->allocateExtension(ExtensionKind::Misc);
@@ -2222,7 +2222,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
         {
             // When casting something complexe to any, we will copy the value to the stack to be sure
             // that the memory layout is correct, without relying on registers being contiguous, and not being reallocated (by an optimize pass).
-            // See ByteCodeGenJob::emitCastToNativeAny
+            // See ByteCodeGen::emitCastToNativeAny
             if (fromNode->ownerFct && fromType->numRegisters() > 1)
             {
                 fromNode->allocateExtension(ExtensionKind::Misc);
@@ -2443,7 +2443,7 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
             // We will copy the value to the stack to be sure that the memory layout is correct, without relying on
             // registers being contiguous, and not being reallocated (by an optimize pass).
             // This is the same problem when casting to 'any'.
-            // See ByteCodeGenJob::emitCastToNativeAny
+            // See ByteCodeGen::emitCastToNativeAny
             if (fromNode->ownerFct)
             {
                 fromNode->allocateExtension(ExtensionKind::Misc);

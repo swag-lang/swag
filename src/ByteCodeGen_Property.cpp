@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "ByteCode.h"
 #include "TypeManager.h"
 #include "Ast.h"
 #include "Report.h"
 
-bool ByteCodeGenJob::emitIntrinsicMakeAny(ByteCodeGenContext* context)
+bool ByteCodeGen::emitIntrinsicMakeAny(ByteCodeGenContext* context)
 {
     auto node  = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto front = node->childs.front();
@@ -18,7 +18,7 @@ bool ByteCodeGenJob::emitIntrinsicMakeAny(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitIntrinsicMakeCallback(ByteCodeGenContext* context)
+bool ByteCodeGen::emitIntrinsicMakeCallback(ByteCodeGenContext* context)
 {
     auto node    = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto ptrNode = node->childs.front();
@@ -27,7 +27,7 @@ bool ByteCodeGenJob::emitIntrinsicMakeCallback(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitIntrinsicMakeSlice(ByteCodeGenContext* context)
+bool ByteCodeGen::emitIntrinsicMakeSlice(ByteCodeGenContext* context)
 {
     auto node      = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto ptrNode   = node->childs.front();
@@ -42,7 +42,7 @@ bool ByteCodeGenJob::emitIntrinsicMakeSlice(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
+bool ByteCodeGen::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
 {
     auto node   = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto params = node->childs.front();
@@ -72,7 +72,7 @@ bool ByteCodeGenJob::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitIntrinsicSpread(ByteCodeGenContext* context)
+bool ByteCodeGen::emitIntrinsicSpread(ByteCodeGenContext* context)
 {
     auto node     = context->node;
     auto expr     = node->childs.back();
@@ -98,7 +98,7 @@ bool ByteCodeGenJob::emitIntrinsicSpread(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitIntrinsicLocationSI(ByteCodeGenContext* context)
+bool ByteCodeGen::emitIntrinsicLocationSI(ByteCodeGenContext* context)
 {
     auto node  = CastAst<AstNode>(context->node, AstNodeKind::IntrinsicLocation);
     auto front = node->childs.front();
@@ -114,7 +114,7 @@ bool ByteCodeGenJob::emitIntrinsicLocationSI(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitIntrinsicIsConstExprSI(ByteCodeGenContext* context)
+bool ByteCodeGen::emitIntrinsicIsConstExprSI(ByteCodeGenContext* context)
 {
     auto node  = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto front = node->childs.front();
@@ -130,7 +130,7 @@ bool ByteCodeGenJob::emitIntrinsicIsConstExprSI(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitKindOf(ByteCodeGenContext* context, AstNode* node, TypeInfoKind from)
+bool ByteCodeGen::emitKindOf(ByteCodeGenContext* context, AstNode* node, TypeInfoKind from)
 {
     SWAG_ASSERT(node->resultRegisterRC.size() == 2);
     ensureCanBeChangedRC(context, node->resultRegisterRC);
@@ -151,19 +151,19 @@ bool ByteCodeGenJob::emitKindOf(ByteCodeGenContext* context, AstNode* node, Type
     return true;
 }
 
-bool ByteCodeGenJob::emitImplicitKindOfAny(ByteCodeGenContext* context)
+bool ByteCodeGen::emitImplicitKindOfAny(ByteCodeGenContext* context)
 {
     SWAG_CHECK(emitKindOf(context, context->node, TypeInfoKind::Native));
     return true;
 }
 
-bool ByteCodeGenJob::emitImplicitKindOfInterface(ByteCodeGenContext* context)
+bool ByteCodeGen::emitImplicitKindOfInterface(ByteCodeGenContext* context)
 {
     SWAG_CHECK(emitKindOf(context, context->node, TypeInfoKind::Interface));
     return true;
 }
 
-bool ByteCodeGenJob::emitIntrinsicKindOf(ByteCodeGenContext* context)
+bool ByteCodeGen::emitIntrinsicKindOf(ByteCodeGenContext* context)
 {
     auto node     = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto front    = node->childs.front();
@@ -174,7 +174,7 @@ bool ByteCodeGenJob::emitIntrinsicKindOf(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitIntrinsicCountOf(ByteCodeGenContext* context, AstNode* node, AstNode* expr)
+bool ByteCodeGen::emitIntrinsicCountOf(ByteCodeGenContext* context, AstNode* node, AstNode* expr)
 {
     auto typeInfo = TypeManager::concretePtrRefType(expr->typeInfo);
 
@@ -200,7 +200,7 @@ bool ByteCodeGenJob::emitIntrinsicCountOf(ByteCodeGenContext* context, AstNode* 
     return Report::internalError(context->node, "emitIntrinsicCountOf, type not supported");
 }
 
-bool ByteCodeGenJob::emitIntrinsicCountOf(ByteCodeGenContext* context)
+bool ByteCodeGen::emitIntrinsicCountOf(ByteCodeGenContext* context)
 {
     auto node = context->node;
     auto expr = node->childs.back();
@@ -208,7 +208,7 @@ bool ByteCodeGenJob::emitIntrinsicCountOf(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitIntrinsicDataOf(ByteCodeGenContext* context)
+bool ByteCodeGen::emitIntrinsicDataOf(ByteCodeGenContext* context)
 {
     auto node     = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto front    = node->childs.front();

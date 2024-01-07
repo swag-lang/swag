@@ -1,16 +1,15 @@
 #include "pch.h"
-#include "LanguageSpec.h"
-#include "TypeManager.h"
-#include "ByteCodeGenJob.h"
-#include "ByteCode.h"
 #include "Ast.h"
+#include "ByteCode.h"
+#include "ByteCodeGen.h"
+#include "LanguageSpec.h"
 #include "Module.h"
-#include "Semantic.h"
-#include "SemanticJob.h"
-#include "Report.h"
 #include "ModuleManager.h"
+#include "Report.h"
+#include "SemanticJob.h"
+#include "TypeManager.h"
 
-bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
+bool ByteCodeGen::emitLocalFuncDecl(ByteCodeGenContext* context)
 {
     auto         funcDecl = CastAst<AstFuncDecl>(context->node, AstNodeKind::FuncDecl);
     PushLocation pl(context, &funcDecl->content->token.endLocation);
@@ -31,7 +30,7 @@ bool ByteCodeGenJob::emitLocalFuncDecl(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitFuncCallParam(ByteCodeGenContext* context)
+bool ByteCodeGen::emitFuncCallParam(ByteCodeGenContext* context)
 {
     auto node = CastAst<AstFuncCallParam>(context->node, AstNodeKind::FuncCallParam);
 
@@ -54,7 +53,7 @@ bool ByteCodeGenJob::emitFuncCallParam(ByteCodeGenContext* context)
     // :WaitInterfaceReg
     if (node->castedTypeInfo)
     {
-        Semantic::waitAllStructInterfaces(context->job, node->castedTypeInfo);
+        Semantic::waitAllStructInterfaces(context->baseJob, node->castedTypeInfo);
         YIELD();
     }
 
@@ -63,7 +62,7 @@ bool ByteCodeGenJob::emitFuncCallParam(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
+bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
 {
     AstReturn* node       = CastAst<AstReturn>(context->node, AstNodeKind::Return);
     auto       funcNode   = node->ownerFct;
@@ -92,7 +91,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
             returnExpression->semFlags |= SEMFLAG_CAST1;
         }
 
-        Semantic::waitStructGenerated(context->job, exprType);
+        Semantic::waitStructGenerated(context->baseJob, exprType);
         YIELD();
 
         //
@@ -304,7 +303,7 @@ bool ByteCodeGenJob::emitReturn(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitIntrinsicCVaStart(ByteCodeGenContext* context)
+bool ByteCodeGen::emitIntrinsicCVaStart(ByteCodeGenContext* context)
 {
     auto node      = context->node;
     auto childDest = node->childs[0];
@@ -324,7 +323,7 @@ bool ByteCodeGenJob::emitIntrinsicCVaStart(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitIntrinsicCVaEnd(ByteCodeGenContext* context)
+bool ByteCodeGen::emitIntrinsicCVaEnd(ByteCodeGenContext* context)
 {
     auto node      = context->node;
     auto childDest = node->childs[0];
@@ -334,7 +333,7 @@ bool ByteCodeGenJob::emitIntrinsicCVaEnd(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitIntrinsicCVaArg(ByteCodeGenContext* context)
+bool ByteCodeGen::emitIntrinsicCVaArg(ByteCodeGenContext* context)
 {
     auto node      = context->node;
     auto childDest = node->childs[0];
@@ -346,7 +345,7 @@ bool ByteCodeGenJob::emitIntrinsicCVaArg(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
+bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
 {
     auto node       = CastAst<AstIdentifier>(context->node, AstNodeKind::FuncCall);
     auto callParams = CastAst<AstNode>(node->childs[0], AstNodeKind::FuncCallParams);
@@ -355,7 +354,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     // to be generated
     if (node->resolvedSymbolOverload->node->flags & AST_DEFINED_INTRINSIC)
     {
-        askForByteCode(context->job, node->resolvedSymbolOverload->node, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
+        askForByteCode(context->baseJob, node->resolvedSymbolOverload->node, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
         YIELD();
     }
 
@@ -1143,7 +1142,7 @@ bool ByteCodeGenJob::emitIntrinsic(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
+bool ByteCodeGen::emitLambdaCall(ByteCodeGenContext* context)
 {
     auto node     = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
     auto overload = node->resolvedSymbolOverload;
@@ -1190,7 +1189,7 @@ bool ByteCodeGenJob::emitLambdaCall(ByteCodeGenContext* context)
     return true;
 }
 
-void ByteCodeGenJob::emitPostCallUfcs(ByteCodeGenContext* context)
+void ByteCodeGen::emitPostCallUfcs(ByteCodeGenContext* context)
 {
     AstNode* node = context->node;
 
@@ -1214,7 +1213,7 @@ void ByteCodeGenJob::emitPostCallUfcs(ByteCodeGenContext* context)
     }
 }
 
-bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context)
+bool ByteCodeGen::emitCall(ByteCodeGenContext* context)
 {
     AstNode* node     = context->node;
     auto     overload = node->resolvedSymbolOverload;
@@ -1228,7 +1227,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context)
     return true;
 }
 
-void ByteCodeGenJob::computeSourceLocation(JobContext* context, AstNode* node, uint32_t* storageOffset, DataSegment** storageSegment, bool forceCompiler)
+void ByteCodeGen::computeSourceLocation(JobContext* context, AstNode* node, uint32_t* storageOffset, DataSegment** storageSegment, bool forceCompiler)
 {
     auto seg        = Semantic::getConstantSegFromContext(context->node, forceCompiler);
     *storageSegment = seg;
@@ -1290,7 +1289,7 @@ void ByteCodeGenJob::computeSourceLocation(JobContext* context, AstNode* node, u
     *storageOffset = offset;
 }
 
-bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param, RegisterList& regList)
+bool ByteCodeGen::emitDefaultParamValue(ByteCodeGenContext* context, AstNode* param, RegisterList& regList)
 {
     auto node         = context->node;
     auto defaultParam = CastAst<AstVarDecl>(param, AstNodeKind::FuncDeclParam);
@@ -1366,7 +1365,7 @@ bool ByteCodeGenJob::emitDefaultParamValue(ByteCodeGenContext* context, AstNode*
     return true;
 }
 
-void ByteCodeGenJob::emitPushRAParams(ByteCodeGenContext* context, VectorNative<uint32_t>& accParams, bool forVariadic)
+void ByteCodeGen::emitPushRAParams(ByteCodeGenContext* context, VectorNative<uint32_t>& accParams, bool forVariadic)
 {
     auto node = context->node;
 
@@ -1419,7 +1418,7 @@ void ByteCodeGenJob::emitPushRAParams(ByteCodeGenContext* context, VectorNative<
     accParams.clear();
 }
 
-bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode, AstNode* callNode, AstNode* funcNode, AstNode* parent, TypeInfo* typeInfoFunc)
+bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode, AstNode* callNode, AstNode* funcNode, AstNode* parent, TypeInfo* typeInfoFunc)
 {
     bool raiseErrors = typeInfoFunc->flags & TYPEINFO_CAN_THROW;
     if (raiseErrors && (!callNode->hasExtOwner() || !callNode->extOwner()->ownerTryCatchAssume))
@@ -1456,7 +1455,7 @@ bool ByteCodeGenJob::checkCatchError(ByteCodeGenContext* context, AstNode* srcNo
     return true;
 }
 
-bool ByteCodeGenJob::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNode* node, TypeInfoFuncAttr* typeInfoFunc)
+bool ByteCodeGen::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNode* node, TypeInfoFuncAttr* typeInfoFunc)
 {
     node->resultRegisterRC = reserveRegisterRC(context);
 
@@ -1544,7 +1543,7 @@ bool ByteCodeGenJob::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNod
     return true;
 }
 
-bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, RegisterList& varNodeRegisters, bool foreign, bool lambda, bool freeRegistersParams)
+bool ByteCodeGen::emitCall(ByteCodeGenContext* context, AstNode* allParams, AstFuncDecl* funcNode, AstVarDecl* varNode, RegisterList& varNodeRegisters, bool foreign, bool lambda, bool freeRegistersParams)
 {
     AstNode* node = context->node;
 
@@ -1573,7 +1572,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     }
 
     // Be sure referenced function has bytecode
-    askForByteCode(context->job, funcNode, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
+    askForByteCode(context->baseJob, funcNode, ASKBC_WAIT_SEMANTIC_RESOLVED, context->bc);
     YIELD();
 
     int numCallParams = allParams ? (int) allParams->childs.size() : 0;
@@ -1594,7 +1593,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
             auto     child        = allParams->childs[i];
             auto     concreteType = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
             uint32_t storageOffset;
-            context->baseJob = context->job;
+            context->baseJob = context->baseJob;
             SWAG_CHECK(typeGen.genExportedTypeInfo(context, concreteType, storageSegment, &storageOffset));
             YIELD();
             storageOffsetsVariadicTypes.push_back(storageOffset);
@@ -2142,7 +2141,7 @@ bool ByteCodeGenJob::emitCall(ByteCodeGenContext* context, AstNode* allParams, A
     return true;
 }
 
-bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
+bool ByteCodeGen::emitFuncDeclParams(ByteCodeGenContext* context)
 {
     auto node     = context->node;
     auto funcNode = node->ownerFct;
@@ -2185,7 +2184,7 @@ bool ByteCodeGenJob::emitFuncDeclParams(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
+bool ByteCodeGen::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
 {
     auto node     = context->node;
     auto funcNode = node->ownerFct;
@@ -2242,7 +2241,7 @@ bool ByteCodeGenJob::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::emitForeignCall(ByteCodeGenContext* context)
+bool ByteCodeGen::emitForeignCall(ByteCodeGenContext* context)
 {
     AstNode* node      = context->node;
     auto     overload  = node->resolvedSymbolOverload;
@@ -2253,16 +2252,16 @@ bool ByteCodeGenJob::emitForeignCall(ByteCodeGenContext* context)
     return true;
 }
 
-bool ByteCodeGenJob::makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl, AstNode* identifier)
+bool ByteCodeGen::makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl, AstNode* identifier)
 {
     SWAG_CHECK(Semantic::makeInline((JobContext*) context, funcDecl, identifier));
 
     // Create a semantic job to resolve the inline part, and wait for that to be finished
-    context->job->setPending(JobWaitKind::MakeInline, nullptr, funcDecl, nullptr);
+    context->baseJob->setPending(JobWaitKind::MakeInline, nullptr, funcDecl, nullptr);
     auto inlineNode = identifier->childs.back();
     SWAG_ASSERT(inlineNode->kind == AstNodeKind::Inline);
-    auto job = SemanticJob::newJob(context->job->dependentJob, context->sourceFile, inlineNode, false);
-    job->addDependentJob(context->job);
-    context->job->jobsToAdd.push_back(job);
+    auto job = SemanticJob::newJob(context->baseJob->dependentJob, context->sourceFile, inlineNode, false);
+    job->addDependentJob(context->baseJob);
+    context->baseJob->jobsToAdd.push_back(job);
     return true;
 }

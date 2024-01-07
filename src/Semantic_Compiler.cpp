@@ -2,7 +2,7 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 #include "Module.h"
-#include "ByteCodeGenJob.h"
+#include "ByteCodeGen.h"
 #include "Workspace.h"
 #include "FileJob.h"
 #include "ByteCode.h"
@@ -95,7 +95,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
 
     // Request to generate the corresponding bytecode
     {
-        ByteCodeGenJob::askForByteCode(context->baseJob, node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED);
+        ByteCodeGen::askForByteCode(context->baseJob, node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED);
         YIELD();
     }
 
@@ -166,7 +166,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                 extension->resolvedUserOpSymbolOverload = nullptr;
                 SWAG_ASSERT(execParams.specReturnOpCount);
 
-                ByteCodeGenJob::askForByteCode(context->baseJob, execParams.specReturnOpCount->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                ByteCodeGen::askForByteCode(context->baseJob, execParams.specReturnOpCount->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
                 YIELD();
 
                 // opSlice
@@ -183,7 +183,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                 extension->resolvedUserOpSymbolOverload = nullptr;
                 SWAG_ASSERT(execParams.specReturnOpSlice);
 
-                ByteCodeGenJob::askForByteCode(context->baseJob, execParams.specReturnOpSlice->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                ByteCodeGen::askForByteCode(context->baseJob, execParams.specReturnOpSlice->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
                 YIELD();
 
                 // Is the type of the slice supported ?
@@ -230,7 +230,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                     SWAG_ASSERT(execParams.specReturnOpPostMove);
 
                     {
-                        ByteCodeGenJob::askForByteCode(context->baseJob, execParams.specReturnOpPostMove->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                        ByteCodeGen::askForByteCode(context->baseJob, execParams.specReturnOpPostMove->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
                         YIELD();
                     }
                 }
@@ -250,7 +250,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                     extension->resolvedUserOpSymbolOverload = nullptr;
                     SWAG_ASSERT(execParams.specReturnOpDrop);
 
-                    ByteCodeGenJob::askForByteCode(context->baseJob, execParams.specReturnOpDrop->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
+                    ByteCodeGen::askForByteCode(context->baseJob, execParams.specReturnOpDrop->node, ASKBC_WAIT_DONE | ASKBC_WAIT_RESOLVED | ASKBC_WAIT_SEMANTIC_RESOLVED);
                     YIELD();
                 }
             }
@@ -444,7 +444,7 @@ bool Semantic::resolveCompilerMacro(SemanticContext* context)
     auto scope            = node->childs.back()->ownerScope;
     scope->startStackSize = node->ownerScope->startStackSize;
 
-    node->setBcNotifAfter(ByteCodeGenJob::emitLeaveScope);
+    node->setBcNotifAfter(ByteCodeGen::emitLeaveScope);
 
     // Be sure #macro is used inside a macro
     if (!node->ownerInline || (node->ownerInline->attributeFlags & ATTRIBUTE_MIXIN) || !(node->ownerInline->attributeFlags & ATTRIBUTE_MACRO))
@@ -468,8 +468,8 @@ bool Semantic::resolveCompilerMixin(SemanticContext* context)
     auto expr = node->childs[0];
     SWAG_VERIFY(expr->typeInfo->isCode(), context->report({expr, Fmt(Err(Err0240), expr->typeInfo->getDisplayNameC())}));
 
-    node->setBcNotifBefore(ByteCodeGenJob::emitDebugNop);
-    node->byteCodeFct = ByteCodeGenJob::emitDebugNop;
+    node->setBcNotifBefore(ByteCodeGen::emitDebugNop);
+    node->byteCodeFct = ByteCodeGen::emitDebugNop;
     expr->flags |= AST_NO_BYTECODE;
 
     auto typeCode = CastTypeInfo<TypeInfoCode>(expr->typeInfo, TypeInfoKind::Code);
@@ -789,7 +789,7 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
     {
         node->flags &= ~AST_NO_BYTECODE;
         locNode->flags |= AST_NO_BYTECODE;
-        node->byteCodeFct = ByteCodeGenJob::emitIntrinsicLocationSI;
+        node->byteCodeFct = ByteCodeGen::emitIntrinsicLocationSI;
         return true;
     }
 
@@ -863,7 +863,7 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
         locNode = locNode->resolvedSymbolOverload->node;
 
     node->setFlagsValueIsComputed();
-    ByteCodeGenJob::computeSourceLocation(context, locNode, &node->computedValue->storageOffset, &node->computedValue->storageSegment);
+    ByteCodeGen::computeSourceLocation(context, locNode, &node->computedValue->storageOffset, &node->computedValue->storageSegment);
     SWAG_CHECK(setupIdentifierRef(context, node));
     return true;
 }
@@ -949,7 +949,7 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
     case TokenId::CompilerLocation:
         node->typeInfo = g_TypeMgr->makeConst(g_Workspace->swagScope.regTypeInfoSourceLoc);
         node->setFlagsValueIsComputed();
-        ByteCodeGenJob::computeSourceLocation(context, node, &node->computedValue->storageOffset, &node->computedValue->storageSegment);
+        ByteCodeGen::computeSourceLocation(context, node, &node->computedValue->storageOffset, &node->computedValue->storageSegment);
         SWAG_CHECK(setupIdentifierRef(context, node));
         return true;
 
