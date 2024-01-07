@@ -69,6 +69,7 @@ namespace Semantic
     void waitOverloadCompleted(Job* job, SymbolOverload* overload);
     void waitFuncDeclFullResolve(Job* job, AstFuncDecl* funcDecl);
     void waitTypeCompleted(Job* job, TypeInfo* typeInfo);
+    void waitForGenericParameters(SemanticContext* context, OneGenericMatch& match);
 
     bool valueEqualsTo(const ComputedValue* value, AstNode* node);
     bool valueEqualsTo(const ComputedValue* value1, const ComputedValue* value2, TypeInfo* typeInfo, uint64_t flags);

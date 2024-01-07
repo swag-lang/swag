@@ -1,16 +1,15 @@
 
 #pragma once
 struct AstFuncDecl;
-struct AstNode;
-struct AstVarDecl;
-struct CloneContext;
-struct Job;
-struct OneGenericMatch;
-struct SemanticContext;
-struct SymbolName;
-struct SymbolOverload;
-struct TypeInfo;
 struct TypeInfoParam;
+struct TypeInfo;
+struct SymbolName;
+struct SemanticContext;
+struct OneGenericMatch;
+struct Job;
+struct CloneContext;
+struct AstVarDecl;
+struct AstNode;
 
 namespace Generic
 {
@@ -18,7 +17,6 @@ namespace Generic
     Job*      end(SemanticContext* context, Job* dependentJob, SymbolName* symbol, AstNode* newNode, bool waitSymbol, VectorMap<Utf8, TypeInfo*>& replaceTypes);
     TypeInfo* doTypeSubstitution(VectorMap<Utf8, TypeInfo*>& replaceTypes, TypeInfo* typeInfo);
 
-    void waitForGenericParameters(SemanticContext* context, OneGenericMatch& match);
     void instantiateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, AstFuncDecl** funcNode);
     bool instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool& alias);
     bool instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool validif = false);

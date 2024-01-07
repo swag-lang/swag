@@ -357,37 +357,6 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
     return newJob;
 }
 
-void Generic::waitForGenericParameters(SemanticContext* context, OneGenericMatch& match)
-{
-    for (auto it : match.genericReplaceTypes)
-    {
-        auto typeInfo = it.second;
-        auto declNode = typeInfo->declNode;
-        if (!declNode)
-            continue;
-        if (!declNode->resolvedSymbolOverload)
-            continue;
-        if (declNode->resolvedSymbolOverload->symbol == match.symbolName)
-            continue;
-        if (typeInfo->isStruct())
-        {
-            auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-            if (typeStruct->fromGeneric)
-                continue;
-
-            // If a field in a struct has generic parameters with the struct itself, we authorize to wait
-            if (context->node->flags & AST_STRUCT_MEMBER && typeInfo == context->node->ownerStructScope->owner->typeInfo)
-                continue;
-        }
-
-        Semantic::waitOverloadCompleted(context->baseJob, declNode->resolvedSymbolOverload);
-        if (context->result == ContextResult::Pending)
-            return;
-
-        SWAG_ASSERT(typeInfo->sizeOf > 0);
-    }
-}
-
 bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool& alias)
 {
     auto node = context->node;

@@ -2347,7 +2347,7 @@ void Semantic::checkCanInstantiateGenericSymbol(SemanticContext* context, OneGen
     }
 
     // Cannot instantiate if the type is incomplete
-    Generic::waitForGenericParameters(context, firstMatch);
+    waitForGenericParameters(context, firstMatch);
 }
 
 bool Semantic::instantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch, bool forStruct)
