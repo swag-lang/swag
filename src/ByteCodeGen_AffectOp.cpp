@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "Ast.h"
-#include "ByteCodeGen.h"
 #include "ByteCode.h"
-#include "TypeManager.h"
+#include "ByteCodeGen.h"
 #include "Report.h"
 #include "Semantic.h"
+#include "TypeManager.h"
 
 bool ByteCodeGen::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo, RegisterList& dstReg, RegisterList& srcReg, AstNode* from)
 {

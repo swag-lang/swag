@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "ByteCodeGen.h"
-#include "TypeManager.h"
-#include "ByteCode.h"
 #include "Ast.h"
+#include "ByteCode.h"
+#include "ByteCodeGen.h"
 #include "Report.h"
+#include "TypeManager.h"
 
 bool ByteCodeGen::emitInRange(ByteCodeGenContext* context, AstNode* left, AstNode* right, RegisterList& r0, RegisterList& r2)
 {

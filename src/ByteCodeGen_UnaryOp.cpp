@@ -1,8 +1,7 @@
 #include "pch.h"
 #include "ByteCodeGen.h"
-#include "TypeManager.h"
-#include "ByteCodeOp.h"
 #include "Report.h"
+#include "TypeManager.h"
 
 bool ByteCodeGen::emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t rt, uint32_t r0)
 {

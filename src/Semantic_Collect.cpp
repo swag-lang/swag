@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "Semantic.h"
-#include "Module.h"
 #include "Ast.h"
-#include "TypeManager.h"
-#include "Report.h"
 #include "Diagnostic.h"
+#include "Module.h"
+#include "Report.h"
+#include "Semantic.h"
+#include "TypeManager.h"
 
 bool Semantic::reserveAndStoreToSegment(JobContext* context, DataSegment* storageSegment, uint32_t& storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
 {

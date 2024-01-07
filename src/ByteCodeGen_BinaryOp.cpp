@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "ByteCodeGen.h"
-#include "TypeManager.h"
-#include "ByteCode.h"
 #include "Ast.h"
+#include "ByteCode.h"
+#include "ByteCodeGen.h"
 #include "Report.h"
 #include "Semantic.h"
+#include "TypeManager.h"
 
 bool ByteCodeGen::emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {

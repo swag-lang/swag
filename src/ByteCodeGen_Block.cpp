@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "LanguageSpec.h"
-#include "ByteCodeGen.h"
-#include "ByteCode.h"
-#include "Semantic.h"
 #include "Ast.h"
+#include "ByteCode.h"
+#include "ByteCodeGen.h"
+#include "LanguageSpec.h"
+#include "Semantic.h"
 
 bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
 {

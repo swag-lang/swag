@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "ByteCodeGen.h"
-#include "ByteCode.h"
-#include "TypeManager.h"
 #include "Ast.h"
+#include "ByteCode.h"
+#include "ByteCodeGen.h"
 #include "Module.h"
 #include "Report.h"
+#include "TypeManager.h"
 
 bool ByteCodeGen::emitInitStackTrace(ByteCodeGenContext* context)
 {

@@ -1,9 +1,8 @@
 #include "pch.h"
-#include "ByteCodeGen.h"
 #include "ByteCode.h"
+#include "ByteCodeGen.h"
 #include "Module.h"
 #include "TypeManager.h"
-#include "Ast.h"
 
 thread_local Utf8 typedMsg[(int) SafetyMsg::Count][(int) NativeTypeKind::Count][(int) NativeTypeKind::Count];
 

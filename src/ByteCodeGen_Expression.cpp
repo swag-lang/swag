@@ -1,11 +1,11 @@
 #include "pch.h"
+#include "Ast.h"
 #include "ByteCode.h"
 #include "ByteCodeGen.h"
 #include "Module.h"
-#include "TypeManager.h"
-#include "Ast.h"
-#include "Semantic.h"
 #include "Report.h"
+#include "Semantic.h"
+#include "TypeManager.h"
 
 bool ByteCodeGen::emitNullConditionalOp(ByteCodeGenContext* context)
 {

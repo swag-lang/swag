@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "ByteCodeGen.h"
-#include "ByteCode.h"
-#include "TypeManager.h"
 #include "Ast.h"
-#include "Report.h"
+#include "ByteCode.h"
+#include "ByteCodeGen.h"
 #include "Naming.h"
+#include "Report.h"
+#include "TypeManager.h"
 
 bool ByteCodeGen::emitIdentifierRef(ByteCodeGenContext* context)
 {

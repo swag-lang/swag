@@ -1,13 +1,7 @@
 #include "pch.h"
-#include "ByteCodeGen.h"
-#include "Ast.h"
 #include "ByteCode.h"
-#include "ByteCodeGenJob.h"
-#include "Context.h"
-#include "LanguageSpec.h"
+#include "ByteCodeGen.h"
 #include "Module.h"
-#include "Semantic.h"
-#include "ThreadManager.h"
 #include "TypeManager.h"
 
 bool ByteCodeGen::emitPassThrough(ByteCodeGenContext* context)
