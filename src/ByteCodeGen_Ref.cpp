@@ -155,14 +155,14 @@ bool ByteCodeGen::emitStructDeRef(ByteCodeGenContext* context, TypeInfo* typeInf
 
     if (typeInfo->isSlice())
     {
-        transformResultToLinear2(context, node);
+        transformResultToLinear2(context, node->resultRegisterRC);
         EMIT_INST2(context, ByteCodeOp::DeRefStringSlice, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         return true;
     }
 
     if (typeInfo->isInterface())
     {
-        transformResultToLinear2(context, node);
+        transformResultToLinear2(context, node->resultRegisterRC);
         EMIT_INST2(context, ByteCodeOp::DeRefStringSlice, node->resultRegisterRC[0], node->resultRegisterRC[1]);
         return true;
     }

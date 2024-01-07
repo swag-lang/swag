@@ -80,7 +80,7 @@ bool ByteCodeGen::emitIntrinsicSpread(ByteCodeGenContext* context)
 
     if (typeInfo->isArray())
     {
-        transformResultToLinear2(context, expr);
+        transformResultToLinear2(context, expr->resultRegisterRC);
         node->resultRegisterRC = expr->resultRegisterRC;
         auto typeArr           = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto inst              = EMIT_INST1(context, ByteCodeOp::SetImmediate64, expr->resultRegisterRC[1]);

@@ -12,7 +12,7 @@ bool ByteCodeGen::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* expr
 
     if (fromTypeInfo->isPointerNull())
     {
-        transformResultToLinear2(context, exprNode);
+        transformResultToLinear2(context, exprNode->resultRegisterRC);
         node->resultRegisterRC = exprNode->resultRegisterRC;
         EMIT_INST1(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRC[1]);
         exprNode->semFlags |= SEMFLAG_TYPE_IS_NULL;
@@ -102,7 +102,7 @@ bool ByteCodeGen::emitCastToInterface(ByteCodeGenContext* context, AstNode* expr
     SWAG_ASSERT(exprNode->hasExtMisc());
     SWAG_ASSERT(exprNode->extMisc()->castItf);
 
-    transformResultToLinear2(context, exprNode);
+    transformResultToLinear2(context, exprNode->resultRegisterRC);
 
     // Need to make the pointer on the data
     if (exprNode->hasExtMisc() && exprNode->extMisc()->castOffset)
@@ -593,7 +593,7 @@ bool ByteCodeGen::emitCastToNativeString(ByteCodeGenContext* context, AstNode* e
 
     if (fromTypeInfo->isPointerNull())
     {
-        transformResultToLinear2(context, exprNode);
+        transformResultToLinear2(context, exprNode->resultRegisterRC);
         node->resultRegisterRC = exprNode->resultRegisterRC;
         EMIT_INST1(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRC[0]);
         EMIT_INST1(context, ByteCodeOp::ClearRA, exprNode->resultRegisterRC[1]);
@@ -609,7 +609,7 @@ bool ByteCodeGen::emitCastToNativeString(ByteCodeGenContext* context, AstNode* e
     if (fromTypeInfo->isArray())
     {
         auto typeArray = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
-        transformResultToLinear2(context, exprNode);
+        transformResultToLinear2(context, exprNode->resultRegisterRC);
         node->resultRegisterRC = exprNode->resultRegisterRC;
         auto inst              = EMIT_INST1(context, ByteCodeOp::SetImmediate64, exprNode->resultRegisterRC[1]);
         inst->b.u64            = typeArray->count;
@@ -624,7 +624,7 @@ bool ByteCodeGen::emitCastToNativeString(ByteCodeGenContext* context, AstNode* e
         SWAG_ASSERT(typeList->subTypes[0]->typeInfo->isPointer() || typeList->subTypes[0]->typeInfo->isArray());
         SWAG_ASSERT(typeList->subTypes[1]->typeInfo->isNative());
 #endif
-        transformResultToLinear2(context, exprNode);
+        transformResultToLinear2(context, exprNode->resultRegisterRC);
         node->resultRegisterRC = exprNode->resultRegisterRC;
         return true;
     }
@@ -680,7 +680,7 @@ bool ByteCodeGen::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprNode
     else if (fromTypeInfo->isListArray())
     {
         auto fromTypeList = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeListArray);
-        transformResultToLinear2(context, exprNode);
+        transformResultToLinear2(context, exprNode->resultRegisterRC);
         node->resultRegisterRC = exprNode->resultRegisterRC;
         auto inst              = EMIT_INST1(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1]);
         inst->b.u64            = fromTypeList->subTypes.count;
@@ -688,14 +688,14 @@ bool ByteCodeGen::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprNode
     else if (fromTypeInfo->isArray())
     {
         auto fromTypeArray = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
-        transformResultToLinear2(context, exprNode);
+        transformResultToLinear2(context, exprNode->resultRegisterRC);
         node->resultRegisterRC = exprNode->resultRegisterRC;
         auto inst              = EMIT_INST1(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1]);
         inst->b.u64            = fromTypeArray->sizeOf / toTypeSlice->pointedType->sizeOf;
     }
     else if (fromTypeInfo->isPointer())
     {
-        transformResultToLinear2(context, exprNode);
+        transformResultToLinear2(context, exprNode->resultRegisterRC);
         node->resultRegisterRC = exprNode->resultRegisterRC;
         EMIT_INST2(context, ByteCodeOp::DeRefStringSlice, node->resultRegisterRC[0], node->resultRegisterRC[1]);
     }

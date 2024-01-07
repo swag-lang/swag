@@ -86,11 +86,6 @@ void ByteCodeGen::reserveLinearRegisterRC2(ByteCodeGenContext* context, Register
     rc += context->bc->maxReservedRegisterRC++;
 }
 
-void ByteCodeGen::transformResultToLinear2(ByteCodeGenContext* context, AstNode* node)
-{
-    transformResultToLinear2(context, node->resultRegisterRC);
-}
-
 void ByteCodeGen::transformResultToLinear2(ByteCodeGenContext* context, RegisterList& resultRegisterRC)
 {
     bool onlyOne = false;
