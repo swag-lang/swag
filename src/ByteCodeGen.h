@@ -81,6 +81,7 @@ namespace ByteCodeGen
 {
     bool setupRuntime(ByteCodeGenContext* context, AstNode* node);
     bool setupByteCodeGenerated(ByteCodeGenContext* context, AstNode* node);
+    bool setupByteCodeResolved(ByteCodeGenContext* context, AstNode* node);
     void askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCode* caller = nullptr);
     bool makeInline(ByteCodeGenContext* context, AstFuncDecl* funcDecl, AstNode* forNode);
 

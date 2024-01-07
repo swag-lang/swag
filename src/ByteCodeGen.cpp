@@ -9,6 +9,7 @@
 #include "Semantic.h"
 #include "ThreadManager.h"
 #include "TypeManager.h"
+#include "Report.h"
 
 bool ByteCodeGen::setupRuntime(ByteCodeGenContext* context, AstNode* node)
 {
@@ -93,12 +94,74 @@ bool ByteCodeGen::setupByteCodeGenerated(ByteCodeGenContext* context, AstNode* n
     }
 
     // Get all nodes we are dependent on
-    // For the next pass (we will have to wait for all those nodes to resolved 
+    // For the next pass (we will have to wait for all those nodes to resolved
     // before being resolved ourself)
     ScopedLock lk(node->mutex);
     getDependantCalls(node, node->extByteCode()->dependentNodes);
     context->dependentNodesTmp = node->extByteCode()->dependentNodes;
     node->semFlags |= SEMFLAG_BYTECODE_GENERATED;
+
+    return true;
+}
+
+bool ByteCodeGen::setupByteCodeResolved(ByteCodeGenContext* context, AstNode* node)
+{
+    // Inform dependencies that everything is done
+    ByteCodeGen::releaseByteCodeJob(node);
+
+    // Register function in compiler list, now that we are done
+    if (node->attributeFlags & ATTRIBUTE_COMPILER_FUNC)
+        context->sourceFile->module->addCompilerFunc(node->extByteCode()->bc);
+
+    // #ast/#run etc... can have a #[Swag.PrintBc]. We need to print it now, because it's compile time, and the legit
+    // pipeline for printing (after bc optimize) will not be called in that case
+    if (context->bc && !g_ThreadMgr.debuggerMode)
+    {
+        if (node->attributeFlags & ATTRIBUTE_PRINT_BC || (node->ownerFct && node->ownerFct->attributeFlags & ATTRIBUTE_PRINT_BC))
+        {
+            if (node->attributeFlags & ATTRIBUTE_GENERATED_FUNC || node->kind != AstNodeKind::FuncDecl)
+            {
+                ByteCodePrintOptions opt;
+                context->bc->print(opt);
+            }
+        }
+    }
+
+    // Register runtime function type, by name
+    if (context->bc && context->sourceFile->isRuntimeFile)
+    {
+        ScopedLock lk(context->sourceFile->module->mutexFile);
+        context->sourceFile->module->mapRuntimeFcts[context->bc->getCallName()] = context->bc;
+    }
+
+    if (context->bc &&
+        context->bc->node &&
+        context->bc->node->kind == AstNodeKind::FuncDecl)
+    {
+        auto funcNode = CastAst<AstFuncDecl>(context->bc->node, AstNodeKind::FuncDecl);
+        if (!funcNode->sourceFile->shouldHaveError)
+        {
+            // Be sure that every used registers have been released
+            if (context->bc->maxReservedRegisterRC > context->bc->availableRegistersRC.size() + context->bc->staticRegs)
+            {
+                Report::internalError(funcNode, Fmt("function '%s' does not release all registers !", funcNode->token.ctext()));
+                if (node->attributeFlags & ATTRIBUTE_PRINT_BC)
+                {
+                    ByteCodePrintOptions opt;
+                    context->bc->print(opt);
+                }
+            }
+            else if (context->bc->maxReservedRegisterRC < context->bc->availableRegistersRC.size())
+            {
+                Report::internalError(funcNode, Fmt("function '%s' releases too many registers !", funcNode->token.ctext()));
+                if (node->attributeFlags & ATTRIBUTE_PRINT_BC)
+                {
+                    ByteCodePrintOptions opt;
+                    context->bc->print(opt);
+                }
+            }
+        }
+    }
 
     return true;
 }

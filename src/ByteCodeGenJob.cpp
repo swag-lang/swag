@@ -250,62 +250,6 @@ JobResult ByteCodeGenJob::execute()
         pass = Pass::ComputeDependenciesResolved;
     }
 
-    // Inform dependencies that everything is done
-    ByteCodeGen::releaseByteCodeJob(originalNode);
-
-    // Register function in compiler list, now that we are done
-    if (originalNode->attributeFlags & ATTRIBUTE_COMPILER_FUNC)
-        module->addCompilerFunc(originalNode->extByteCode()->bc);
-
-    // #ast/#run etc... can have a #[Swag.PrintBc]. We need to print it now, because it's compile time, and the legit
-    // pipeline for printing (after bc optimize) will not be called in that case
-    if (context.bc && !g_ThreadMgr.debuggerMode)
-    {
-        if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC || (originalNode->ownerFct && originalNode->ownerFct->attributeFlags & ATTRIBUTE_PRINT_BC))
-        {
-            if (originalNode->attributeFlags & ATTRIBUTE_GENERATED_FUNC || originalNode->kind != AstNodeKind::FuncDecl)
-            {
-                ByteCodePrintOptions opt;
-                context.bc->print(opt);
-            }
-        }
-    }
-
-    // Register runtime function type, by name
-    if (sourceFile->isRuntimeFile && context.bc)
-    {
-        ScopedLock lk(sourceFile->module->mutexFile);
-        sourceFile->module->mapRuntimeFcts[context.bc->getCallName()] = context.bc;
-    }
-
-    if (context.bc &&
-        context.bc->node &&
-        context.bc->node->kind == AstNodeKind::FuncDecl)
-    {
-        auto funcNode = CastAst<AstFuncDecl>(context.bc->node, AstNodeKind::FuncDecl);
-        if (!funcNode->sourceFile->shouldHaveError)
-        {
-            // Be sure that every used registers have been released
-            if (context.bc->maxReservedRegisterRC > context.bc->availableRegistersRC.size() + context.bc->staticRegs)
-            {
-                Report::internalError(funcNode, Fmt("function '%s' does not release all registers !", funcNode->token.ctext()));
-                if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC)
-                {
-                    ByteCodePrintOptions opt;
-                    context.bc->print(opt);
-                }
-            }
-            else if (context.bc->maxReservedRegisterRC < context.bc->availableRegistersRC.size())
-            {
-                Report::internalError(funcNode, Fmt("function '%s' releases too many registers !", funcNode->token.ctext()));
-                if (originalNode->attributeFlags & ATTRIBUTE_PRINT_BC)
-                {
-                    ByteCodePrintOptions opt;
-                    context.bc->print(opt);
-                }
-            }
-        }
-    }
-
+    ByteCodeGen::setupByteCodeResolved(&context, originalNode);
     return JobResult::ReleaseJob;
 }
