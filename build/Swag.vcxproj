@@ -395,6 +395,7 @@
     <ClCompile Include="..\src\ByteCodeGen_Identifier.cpp" />
     <ClCompile Include="..\src\ByteCodeGen_Property.cpp" />
     <ClCompile Include="..\src\ByteCodeGen_Ref.cpp" />
+    <ClCompile Include="..\src\ByteCodeGen_Registers.cpp" />
     <ClCompile Include="..\src\ByteCodeGen_Safety.cpp" />
     <ClCompile Include="..\src\ByteCodeGen_Struct.cpp" />
     <ClCompile Include="..\src\ByteCodeGen_UnaryOp.cpp" />
