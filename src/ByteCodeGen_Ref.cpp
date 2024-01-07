@@ -316,8 +316,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
         // User special function
         if (node->hasSpecialFuncCall())
         {
-            if (!context->allParamsTmp)
-                context->allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);
+            context->allocateTempCallParams();
             context->allParamsTmp->childs = node->structFlatParams;
             SWAG_CHECK(emitUserOp(context, context->allParamsTmp));
             if (context->result != ContextResult::Done)
@@ -557,8 +556,7 @@ bool ByteCodeGen::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
         // User special function
         if (node->hasSpecialFuncCall())
         {
-            if (!context->allParamsTmp)
-                context->allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);
+            context->allocateTempCallParams();
             context->allParamsTmp->childs = node->structFlatParams;
             SWAG_CHECK(emitUserOp(context, context->allParamsTmp));
             YIELD();

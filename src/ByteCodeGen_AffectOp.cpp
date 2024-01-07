@@ -809,8 +809,7 @@ bool ByteCodeGen::emitAffect(ByteCodeGenContext* context)
         if (node->semFlags & SEMFLAG_FLAT_PARAMS)
         {
             auto arrayNode = CastAst<AstArrayPointerIndex>(leftNode->childs.back(), AstNodeKind::ArrayPointerIndex);
-            if (!context->allParamsTmp)
-                context->allParamsTmp = Ast::newFuncCallParams(node->sourceFile, nullptr);
+            context->allocateTempCallParams();
             context->allParamsTmp->childs = arrayNode->structFlatParams;
             SWAG_CHECK(emitUserOp(context, context->allParamsTmp));
             YIELD();
