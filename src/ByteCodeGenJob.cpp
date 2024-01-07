@@ -257,12 +257,9 @@ JobResult ByteCodeGenJob::execute()
                     context.bc->print(opt);
                 }
             }
-        }
 
-        // Byte code is generated (but not yet resolved, as we need all dependencies to be resolved too)
-        {
-            if (context.bc &&
-                context.bc->node &&
+            // Byte code is generated (but not yet resolved, as we need all dependencies to be resolved too)
+            if (context.bc->node &&
                 context.bc->node->kind == AstNodeKind::FuncDecl)
             {
                 auto funcNode = CastAst<AstFuncDecl>(context.bc->node, AstNodeKind::FuncDecl);
@@ -299,7 +296,6 @@ JobResult ByteCodeGenJob::execute()
         auto res = waitForDependenciesGenerated();
         if (res != JobResult::Continue)
             return res;
-
         pass = Pass::ComputeDependenciesResolved;
     }
 
