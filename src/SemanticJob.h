@@ -7,11 +7,11 @@ struct AstNode;
 
 struct SemanticJob : public Job
 {
-    bool      spawnJob();
-    JobResult execute() override;
-
     virtual ~SemanticJob() = default;
-    void                release() override;
+    void release() override;
+
+    bool                spawnJob();
+    JobResult           execute() override;
     static SemanticJob* newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* rootNode, bool run);
 
     SemanticContext context;

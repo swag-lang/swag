@@ -457,15 +457,13 @@ void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCo
         auto extension = node->extByteCode();
         if (!extension->byteCodeJob)
         {
-            extension->byteCodeJob             = Allocator::alloc<ByteCodeGenJob>();
-            extension->byteCodeJob->sourceFile = sourceFile;
-            extension->byteCodeJob->module     = sourceFile->module;
+            Job* dependentJob;
             if (flags & ASKBC_WAIT_DONE)
-                extension->byteCodeJob->dependentJob = job;
+                dependentJob = job;
             else
-                extension->byteCodeJob->dependentJob = job->dependentJob;
+                dependentJob = job->dependentJob;
+            extension->byteCodeJob                      = ByteCodeGenJob::newJob(dependentJob, sourceFile, node);
             extension->byteCodeJob->context.errCxtSteps = job->baseContext->errCxtSteps;
-            extension->byteCodeJob->nodes.push_back(node);
             if (!extension->bc)
             {
                 extension->bc             = Allocator::alloc<ByteCode>();

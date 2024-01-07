@@ -17,6 +17,16 @@ void ByteCodeGenJob::release()
     Allocator::free<ByteCodeGenJob>(this);
 }
 
+ByteCodeGenJob* ByteCodeGenJob::newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* root)
+{
+    auto byteCodeJob          = Allocator::alloc<ByteCodeGenJob>();
+    byteCodeJob->sourceFile   = sourceFile;
+    byteCodeJob->module       = sourceFile->module;
+    byteCodeJob->dependentJob = dependentJob;
+    byteCodeJob->nodes.push_back(root);
+    return byteCodeJob;
+}
+
 JobResult ByteCodeGenJob::waitForDependenciesGenerated()
 {
     VectorNative<AstNode*> done;

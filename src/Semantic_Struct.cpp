@@ -1297,16 +1297,12 @@ bool Semantic::resolveStruct(SemanticContext* context)
     {
         node->flags &= ~AST_NO_BYTECODE;
         node->flags |= AST_NO_BYTECODE_CHILDS;
-
         SWAG_ASSERT(!node->hasExtByteCode() || !node->extByteCode()->byteCodeJob);
+
         node->allocateExtension(ExtensionKind::ByteCode);
-        auto extension                       = node->extByteCode();
-        extension->byteCodeJob               = Allocator::alloc<ByteCodeGenJob>();
-        extension->byteCodeJob->sourceFile   = sourceFile;
-        extension->byteCodeJob->module       = sourceFile->module;
-        extension->byteCodeJob->dependentJob = context->baseJob->dependentJob;
-        extension->byteCodeJob->nodes.push_back(node);
-        node->byteCodeFct = ByteCodeGen::emitStruct;
+        auto extension         = node->extByteCode();
+        extension->byteCodeJob = ByteCodeGenJob::newJob(context->baseJob->dependentJob, sourceFile, node);
+        node->byteCodeFct      = ByteCodeGen::emitStruct;
 
         if (node->attributeFlags & ATTRIBUTE_GEN)
             node->resolvedSymbolName->addDependentJob(extension->byteCodeJob);
