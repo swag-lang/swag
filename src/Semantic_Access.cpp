@@ -263,12 +263,9 @@ bool Semantic::checkAccess(JobContext* context, AstNode* node)
     if (!onNode)
         onNode = culprit;
 
-    auto accessCulprit = (culprit->semFlags & SEMFLAG_ACCESS_PRIVATE) ? "private" : "internal";
-    auto token         = node->token;
-    if (node->kind == AstNodeKind::FuncDecl)
-        token = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl)->tokenName;
+    auto       accessCulprit = (culprit->semFlags & SEMFLAG_ACCESS_PRIVATE) ? "private" : "internal";
     Diagnostic diag{node,
-                    token,
+                    node->getTokenName(),
                     Fmt(Err(Err0520),
                         Naming::kindName(node->resolvedSymbolOverload).c_str(),
                         node->token.ctext(),
@@ -281,7 +278,7 @@ bool Semantic::checkAccess(JobContext* context, AstNode* node)
     if (onNode == culprit)
         note = Diagnostic::note(culprit, culprit->token, Fmt(Nte(Nte1127), Naming::kindName(culprit->resolvedSymbolOverload).c_str(), accessCulprit));
     else
-        note  = Diagnostic::note(onNode, onNode->token, Fmt(Nte(Nte1122), accessCulprit, onNode->typeInfo->getDisplayNameC()));
+        note = Diagnostic::note(onNode, onNode->token, Fmt(Nte(Nte1122), accessCulprit, onNode->typeInfo->getDisplayNameC()));
     note1 = Diagnostic::hereIs(culprit);
     return context->report(diag, note, note1);
 }

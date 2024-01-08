@@ -1000,6 +1000,23 @@ bool AstNode::isConstant1()
     return false;
 }
 
+const Token& AstNode::getTokenName()
+{
+    if (kind == AstNodeKind::FuncDecl)
+    {
+        auto fctDecl = CastAst<AstFuncDecl>(this, AstNodeKind::FuncDecl);
+        return fctDecl->tokenName;
+    }
+
+    if (kind == AstNodeKind::StructDecl)
+    {
+        auto structDecl = CastAst<AstStruct>(this, AstNodeKind::StructDecl);
+        return structDecl->tokenName;
+    }
+
+    return token;
+}
+
 void AstNode::setPassThrough()
 {
     semanticFct = nullptr;
@@ -1065,7 +1082,7 @@ void AstNode::printLoc()
 {
     if (!sourceFile)
         return;
-    printf("%s:%d:%d\n", sourceFile->path.string().c_str(), token.startLocation.line+1, token.startLocation.column+1);
+    printf("%s:%d:%d\n", sourceFile->path.string().c_str(), token.startLocation.line + 1, token.startLocation.column + 1);
 }
 
 uint32_t AstNode::childParentIdx()

@@ -410,7 +410,7 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
             auto nodeStruct = CastAst<AstStruct>(subDecl, AstNodeKind::StructDecl);
             if (sym)
             {
-                Diagnostic diag{subDecl, subDecl->token, Fmt(Err(Err0346), "struct", subDecl->token.ctext())};
+                Diagnostic diag{nodeStruct, nodeStruct->tokenName, Fmt(Err(Err0346), "struct", subDecl->token.ctext())};
                 return context->report(diag);
             }
 

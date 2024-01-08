@@ -308,25 +308,26 @@ struct AstNode
     bool isSilentCall();
     bool isPublic();
 
-    void     setPassThrough();
-    AstNode* findChildRef(AstNode* ref, AstNode* fromChild);
-    AstNode* findChildRefRec(AstNode* ref, AstNode* fromChild);
-    AstNode* findParent(AstNodeKind parentKind);
-    AstNode* findParent(AstNodeKind parentKind1, AstNodeKind parentKind2);
-    AstNode* findChild(AstNodeKind childKind);
-    Utf8     getScopedName();
-    void     setOwnerAttrUse(AstAttrUse* attrUse);
-    void     swap2Childs();
-    bool     hasSpecialFuncCall();
-    bool     hasSpecialFuncCall(const Utf8& name);
-    AstNode* inSimpleReturn();
-    bool     forceTakeAddress();
-    void     computeLocation(SourceLocation& start, SourceLocation& end);
-    void     addAlternativeScope(Scope* scope, uint32_t altFlags = 0);
-    void     addAlternativeScopeVar(Scope* scope, AstNode* varNode, uint32_t altFlags = 0);
-    void     addAlternativeScopes(const VectorNative<AlternativeScope>& scopes);
-    uint32_t childParentIdx();
-    void     printLoc();
+    const Token& getTokenName();
+    void         setPassThrough();
+    AstNode*     findChildRef(AstNode* ref, AstNode* fromChild);
+    AstNode*     findChildRefRec(AstNode* ref, AstNode* fromChild);
+    AstNode*     findParent(AstNodeKind parentKind);
+    AstNode*     findParent(AstNodeKind parentKind1, AstNodeKind parentKind2);
+    AstNode*     findChild(AstNodeKind childKind);
+    Utf8         getScopedName();
+    void         setOwnerAttrUse(AstAttrUse* attrUse);
+    void         swap2Childs();
+    bool         hasSpecialFuncCall();
+    bool         hasSpecialFuncCall(const Utf8& name);
+    AstNode*     inSimpleReturn();
+    bool         forceTakeAddress();
+    void         computeLocation(SourceLocation& start, SourceLocation& end);
+    void         addAlternativeScope(Scope* scope, uint32_t altFlags = 0);
+    void         addAlternativeScopeVar(Scope* scope, AstNode* varNode, uint32_t altFlags = 0);
+    void         addAlternativeScopes(const VectorNative<AlternativeScope>& scopes);
+    uint32_t     childParentIdx();
+    void         printLoc();
 
     struct NodeExtensionByteCode
     {

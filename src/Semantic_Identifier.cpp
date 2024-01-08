@@ -2177,17 +2177,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                 params.push_back(p);
             }
 
-            Diagnostic* note;
-            if (overload->node->kind == AstNodeKind::FuncDecl)
-            {
-                auto funcDecl = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
-                note          = Diagnostic::note(overload->node, funcDecl->tokenName, couldBe);
-            }
-            else
-            {
-                note = Diagnostic::note(overload->node, overload->node->token, couldBe);
-            }
-
+            Diagnostic* note            = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
             note->showRange             = false;
             note->showMultipleCodeLines = false;
             notes.push_back(note);
