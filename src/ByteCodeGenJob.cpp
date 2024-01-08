@@ -3,6 +3,7 @@
 #include "ByteCodeGen.h"
 #include "ByteCode.h"
 #include "Module.h"
+#include "Semantic.h"
 
 void ByteCodeGenJob::release()
 {
@@ -225,6 +226,7 @@ JobResult ByteCodeGenJob::execute()
                     if (context.result == ContextResult::NewChilds)
                         continue;
                 }
+
                 nodes.pop_back();
                 break;
 

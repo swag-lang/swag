@@ -103,11 +103,11 @@ JobResult SemanticJob::execute()
         Semantic::start(&context, sourceFile, originalNode);
     }
 
-    context.result = ContextResult::Done;
     while (!nodes.empty())
     {
-        auto node    = nodes.back();
-        context.node = node;
+        auto node      = nodes.back();
+        context.node   = node;
+        context.result = ContextResult::Done;
 
         // To be sure that a bytecode job is not running on those nodes !
         SWAG_ASSERT(node->bytecodeState == AstNodeResolveState::Enter ||
@@ -178,11 +178,12 @@ JobResult SemanticJob::execute()
                 context.result = ContextResult::Done;
                 if (!node->semanticFct(&context))
                     return JobResult::ReleaseJob;
-                else if (context.result == ContextResult::Pending)
-                    return JobResult::KeepJobAlive;
-                else if (context.result == ContextResult::NewChilds)
-                    continue;
             }
+
+            if (context.result == ContextResult::Pending)
+                return JobResult::KeepJobAlive;
+            if (context.result == ContextResult::NewChilds)
+                continue;
 
             if (!Semantic::setState(&context, node, AstNodeResolveState::PostChilds))
                 return JobResult::ReleaseJob;

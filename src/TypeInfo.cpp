@@ -159,6 +159,35 @@ TypeInfo* TypeInfo::getConcreteAlias()
     return TypeManager::concreteType(this, CONCRETE_FORCEALIAS);
 }
 
+TypeInfo* TypeInfo::getFinalType()
+{
+    auto retType = this;
+    while (retType)
+    {
+        if (retType->isPointer())
+        {
+            retType = CastTypeInfo<TypeInfoPointer>(retType, TypeInfoKind::Pointer)->pointedType;
+            continue;
+        }
+
+        if (retType->isSlice())
+        {
+            retType = CastTypeInfo<TypeInfoSlice>(retType, TypeInfoKind::Slice)->pointedType;
+            continue;
+        }
+
+        if (retType->isArray())
+        {
+            retType = CastTypeInfo<TypeInfoArray>(retType, TypeInfoKind::Array)->finalType;
+            continue;
+        }
+
+        return retType;
+    }
+
+    return this;
+}
+
 TypeInfoStruct* TypeInfo::getStructOrPointedStruct()
 {
     auto self = getConcreteAlias();

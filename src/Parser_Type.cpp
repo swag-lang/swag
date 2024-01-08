@@ -318,7 +318,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
 bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, bool isUnion)
 {
     auto structNode = Ast::newStructDecl(sourceFile, parent, this);
-    structNode->flags |= AST_INTERNAL;
+    structNode->flags |= AST_INTERNAL | AST_GENERATED;
     structNode->originalParent = parent;
     structNode->allocateExtension(ExtensionKind::Semantic);
     structNode->extSemantic()->semanticBeforeFct = Semantic::preResolveGeneratedStruct;

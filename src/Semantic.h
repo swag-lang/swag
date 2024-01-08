@@ -92,6 +92,7 @@ namespace Semantic
     bool checkImplScopes(SemanticContext* context, AstImpl* node, Scope* scopeImpl, Scope* scope);
     void checkCanInstantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch);
     bool checkIsConstAffect(SemanticContext* context, AstNode* left, AstNode* right);
+    bool computeAccess(JobContext* context, AstNode* node);
     bool checkAccess(JobContext* context, AstNode* node);
     bool checkIsConstExpr(JobContext* context, bool test, AstNode* expression, const Utf8& errMsg = "", const Utf8& errParam = "");
     bool checkIsConstExpr(JobContext* context, AstNode* expression, const Utf8& errMsg = "", const Utf8& errParam = "");
@@ -130,8 +131,8 @@ namespace Semantic
     bool     canInheritAccess(AstNode* node);
     uint64_t attributeToAccess(uint64_t attribute);
     void     doInheritAccess(AstNode* forNode, AstNode* node);
-    void     inheritAccess(SemanticContext* context, AstNode* node);
-    void     setNodeAccess(SemanticContext* context, AstNode* node);
+    void     inheritAccess(AstNode* node);
+    void     setNodeAccess(AstNode* node);
     void     setDefaultAccess(AstNode* node);
     bool     canHaveGlobalAccess(AstNode* node);
 

@@ -1,4 +1,3 @@
-
 #global testerror "Err0520"
 
 struct C1913

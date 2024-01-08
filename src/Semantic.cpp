@@ -186,13 +186,16 @@ bool Semantic::setState(SemanticContext* context, AstNode* node, AstNodeResolveS
         break;
 
     case AstNodeResolveState::PostChilds:
-        setNodeAccess(context, node);
-        YIELD();
-        inheritAccess(context, node);
-        YIELD();
-        if (!checkAccess(context, node))
-            return false;
+        if (node->kind == AstNodeKind::FuncDecl ||
+            node->kind == AstNodeKind::StructDecl ||
+            node->kind == AstNodeKind::EnumDecl ||
+            node->kind == AstNodeKind::TypeAlias ||
+            node->kind == AstNodeKind::ConstDecl)
+        {
+            SWAG_CHECK(checkAccess(context, node));
+        }
         break;
+
     default:
         break;
     }

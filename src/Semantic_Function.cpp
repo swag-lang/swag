@@ -815,8 +815,6 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
         auto retType = funcNode->returnType->typeInfo;
         while (retType->isPointer())
             retType = CastTypeInfo<TypeInfoPointer>(retType, TypeInfoKind::Pointer)->pointedType;
-        if (retType->declNode)
-            doInheritAccess(funcNode, retType->declNode);
 
         // The function wants to return something, but has the 'Swag.CalleeReturn' attribute
         if (!funcNode->returnType->typeInfo->isVoid() && (funcNode->attributeFlags & ATTRIBUTE_CALLEE_RETURN))

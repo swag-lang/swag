@@ -108,6 +108,7 @@ struct TypeInfo
     bool isArrayOfEnum();
     bool isMethod();
 
+    TypeInfo*       getFinalType();
     TypeInfoStruct* getStructOrPointedStruct();
     TypeInfo*       getFakeAlias();
     TypeInfo*       getConcreteAlias();
