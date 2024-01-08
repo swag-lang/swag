@@ -707,7 +707,7 @@ bool ByteCodeGen::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprNode
     return true;
 }
 
-bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, bool isExplicit)
+bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, uint32_t castFlags)
 {
     if (fromTypeInfo == nullptr)
         return true;
@@ -733,9 +733,6 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
             context->allParamsTmp->semFlags = 0;
             context->allParamsTmp->flags &= ~AST_INLINED;
         }
-
-        if (!isExplicit)
-            exprNode->typeInfo = exprNode->castedTypeInfo;
 
         SWAG_CHECK(emitUserOp(context, nullptr, context->allParamsTmp));
         YIELD();
@@ -984,7 +981,7 @@ bool ByteCodeGen::emitExplicitCast(ByteCodeGenContext* context)
 
     // First we cast with the user requested type. This is important to keep it, to
     // properly deref an 'any' for example
-    SWAG_CHECK(emitCast(context, exprNode, typeInfo, fromTypeInfo, true));
+    SWAG_CHECK(emitCast(context, exprNode, typeInfo, fromTypeInfo, EMIT_CASTFLAG_EXPLICIT));
     YIELD();
 
     // Then we cast again if necessary to the requested final type that can have been
@@ -1013,7 +1010,7 @@ bool ByteCodeGen::emitExplicitAutoCast(ByteCodeGenContext* context)
 
     auto typeInfo     = TypeManager::concreteType(node->typeInfo);
     auto fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
-    SWAG_CHECK(emitCast(context, exprNode, typeInfo, fromTypeInfo));
+    SWAG_CHECK(emitCast(context, exprNode, typeInfo, fromTypeInfo, EMIT_CASTFLAG_AUTO));
     YIELD();
     node->castedTypeInfo = nullptr;
 

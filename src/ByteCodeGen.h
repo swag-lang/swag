@@ -32,6 +32,10 @@ enum class TokenId : uint16_t;
 
 #define SAFETY_ZERO_EPSILON 0.00001f
 
+const uint32_t EMIT_CASTFLAG_DEFAULT  = 0x00000000;
+const uint32_t EMIT_CASTFLAG_EXPLICIT = 0x00000001;
+const uint32_t EMIT_CASTFLAG_AUTO     = 0x00000002;
+
 enum EmitOpUserKind
 {
     Init,
@@ -181,7 +185,7 @@ namespace ByteCodeGen
     bool emitCastToNativeString(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo);
     bool emitCastToInterface(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo);
     bool emitCastToSlice(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo);
-    bool emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, bool isExplicit = false);
+    bool emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, uint32_t castFlags = EMIT_CASTFLAG_DEFAULT);
     bool emitFuncCallParam(ByteCodeGenContext* context);
     bool emitFuncDeclParams(ByteCodeGenContext* context);
     bool emitIfAfterExpr(ByteCodeGenContext* context);
