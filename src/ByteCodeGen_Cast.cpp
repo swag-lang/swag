@@ -771,7 +771,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
             anyNode = anyNode->childs.front();
         }
 
-        emitSafetyCastAny(context, anyNode, typeInfo, isExplicit);
+        emitSafetyCastAny(context, anyNode, typeInfo);
 
         // Dereference the any content, except for a reference, where we want to keep the pointer
         // (pointer that comes from the data is already in the correct register)

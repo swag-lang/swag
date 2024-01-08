@@ -362,7 +362,7 @@ void ByteCodeGen::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint32_
     freeRegisterRC(context, r1);
 }
 
-void ByteCodeGen::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* toType, bool isExplicit)
+void ByteCodeGen::emitSafetyCastAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* toType)
 {
     if (!mustEmitSafety(context, SAFETY_ANY))
         return;
