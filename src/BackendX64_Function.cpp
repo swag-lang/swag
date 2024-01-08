@@ -528,42 +528,42 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::BinOpMulS8:
         case ByteCodeOp::BinOpMulS8_Safe:
             emitBinOpIntNAtReg(pp, ip, X64Op::IMUL, X64Bits::B8);
-            emitOverflowSigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS8));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS8));
             break;
         case ByteCodeOp::BinOpMulS16:
         case ByteCodeOp::BinOpMulS16_Safe:
             emitBinOpIntNAtReg(pp, ip, X64Op::IMUL, X64Bits::B16);
-            emitOverflowSigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS16));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS16));
             break;
         case ByteCodeOp::BinOpMulS32:
         case ByteCodeOp::BinOpMulS32_Safe:
             emitBinOpIntNAtReg(pp, ip, X64Op::IMUL, X64Bits::B32);
-            emitOverflowSigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS32));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS32));
             break;
         case ByteCodeOp::BinOpMulS64:
         case ByteCodeOp::BinOpMulS64_Safe:
             emitBinOpIntNAtReg(pp, ip, X64Op::IMUL, X64Bits::B64);
-            emitOverflowSigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS64));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS64));
             break;
         case ByteCodeOp::BinOpMulU8:
         case ByteCodeOp::BinOpMulU8_Safe:
             emitBinOpIntNAtReg(pp, ip, X64Op::MUL, X64Bits::B8);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU8));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU8));
             break;
         case ByteCodeOp::BinOpMulU16:
         case ByteCodeOp::BinOpMulU16_Safe:
             emitBinOpIntNAtReg(pp, ip, X64Op::MUL, X64Bits::B16);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU16));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU16));
             break;
         case ByteCodeOp::BinOpMulU32:
         case ByteCodeOp::BinOpMulU32_Safe:
             emitBinOpIntNAtReg(pp, ip, X64Op::MUL, X64Bits::B32);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU32));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU32));
             break;
         case ByteCodeOp::BinOpMulU64:
         case ByteCodeOp::BinOpMulU64_Safe:
             emitBinOpIntNAtReg(pp, ip, X64Op::MUL, X64Bits::B64);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU64));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU64));
             break;
         case ByteCodeOp::BinOpMulF32:
             emitBinOpFloat32AtReg(pp, ip, X64Op::FMUL);
@@ -637,42 +637,42 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::BinOpPlusS8:
         case ByteCodeOp::BinOpPlusS8_Safe:
             emitBinOpIntNAtReg(pp, ip, X64Op::ADD, X64Bits::B8);
-            emitOverflowSigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS8));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS8));
             break;
         case ByteCodeOp::BinOpPlusS16:
         case ByteCodeOp::BinOpPlusS16_Safe:
             emitBinOpIntNAtReg(pp, ip, X64Op::ADD, X64Bits::B16);
-            emitOverflowSigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS16));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS16));
             break;
         case ByteCodeOp::BinOpPlusS32:
         case ByteCodeOp::BinOpPlusS32_Safe:
             emitBinOpIntNAtReg(pp, ip, X64Op::ADD, X64Bits::B32);
-            emitOverflowSigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS32));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS32));
             break;
         case ByteCodeOp::BinOpPlusS64:
         case ByteCodeOp::BinOpPlusS64_Safe:
             emitBinOpIntNAtReg(pp, ip, X64Op::ADD, X64Bits::B64);
-            emitOverflowSigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS64));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS64));
             break;
         case ByteCodeOp::BinOpPlusU8:
         case ByteCodeOp::BinOpPlusU8_Safe:
             emitBinOpIntNAtReg(pp, ip, X64Op::ADD, X64Bits::B8);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU8));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU8));
             break;
         case ByteCodeOp::BinOpPlusU16:
         case ByteCodeOp::BinOpPlusU16_Safe:
             emitBinOpIntNAtReg(pp, ip, X64Op::ADD, X64Bits::B16);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU16));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU16));
             break;
         case ByteCodeOp::BinOpPlusU32:
         case ByteCodeOp::BinOpPlusU32_Safe:
             emitBinOpIntNAtReg(pp, ip, X64Op::ADD, X64Bits::B32);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU32));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU32));
             break;
         case ByteCodeOp::BinOpPlusU64:
         case ByteCodeOp::BinOpPlusU64_Safe:
             emitBinOpIntNAtReg(pp, ip, X64Op::ADD, X64Bits::B64);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU64));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU64));
             break;
         case ByteCodeOp::BinOpPlusF32:
             emitBinOpFloat32AtReg(pp, ip, X64Op::FADD);
@@ -686,42 +686,42 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::BinOpMinusS8:
         case ByteCodeOp::BinOpMinusS8_Safe:
             emitBinOpIntNAtReg(pp, ip, X64Op::SUB, X64Bits::B8);
-            emitOverflowSigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS8));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS8));
             break;
         case ByteCodeOp::BinOpMinusS16:
         case ByteCodeOp::BinOpMinusS16_Safe:
             emitBinOpIntNAtReg(pp, ip, X64Op::SUB, X64Bits::B16);
-            emitOverflowSigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS16));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS16));
             break;
         case ByteCodeOp::BinOpMinusS32:
         case ByteCodeOp::BinOpMinusS32_Safe:
             emitBinOpIntNAtReg(pp, ip, X64Op::SUB, X64Bits::B32);
-            emitOverflowSigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS32));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS32));
             break;
         case ByteCodeOp::BinOpMinusS64:
         case ByteCodeOp::BinOpMinusS64_Safe:
             emitBinOpIntNAtReg(pp, ip, X64Op::SUB, X64Bits::B64);
-            emitOverflowSigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS64));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS64));
             break;
         case ByteCodeOp::BinOpMinusU8:
         case ByteCodeOp::BinOpMinusU8_Safe:
             emitBinOpIntNAtReg(pp, ip, X64Op::SUB, X64Bits::B8);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU8));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU8));
             break;
         case ByteCodeOp::BinOpMinusU16:
         case ByteCodeOp::BinOpMinusU16_Safe:
             emitBinOpIntNAtReg(pp, ip, X64Op::SUB, X64Bits::B16);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU16));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU16));
             break;
         case ByteCodeOp::BinOpMinusU32:
         case ByteCodeOp::BinOpMinusU32_Safe:
             emitBinOpIntNAtReg(pp, ip, X64Op::SUB, X64Bits::B32);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU32));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU32));
             break;
         case ByteCodeOp::BinOpMinusU64:
         case ByteCodeOp::BinOpMinusU64_Safe:
             emitBinOpIntNAtReg(pp, ip, X64Op::SUB, X64Bits::B64);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU64));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU64));
             break;
 
         case ByteCodeOp::BinOpMinusF32:
@@ -861,7 +861,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load8_Indirect(0, RAX, RAX);
             MK_IMMB_8(RCX);
             pp.emit_OpN(RAX, RCX, X64Op::IMUL, X64Bits::B8);
-            emitOverflowSigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS8));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS8));
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
             pp.emit_Store8_Indirect(0, RAX, RCX);
             break;
@@ -886,7 +886,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load16_Indirect(0, RAX, RAX);
             MK_IMMB_16(RCX);
             pp.emit_OpN(RAX, RCX, X64Op::IMUL, X64Bits::B16);
-            emitOverflowSigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS16));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS16));
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
             pp.emit_Store16_Indirect(0, RAX, RCX);
             break;
@@ -911,7 +911,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load32_Indirect(0, RAX, RAX);
             MK_IMMB_32(RCX);
             pp.emit_OpN(RAX, RCX, X64Op::IMUL, X64Bits::B32);
-            emitOverflowSigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS32));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS32));
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
             pp.emit_Store32_Indirect(0, RAX, RCX);
             break;
@@ -936,7 +936,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load64_Indirect(0, RAX, RAX);
             MK_IMMB_64(RCX);
             pp.emit_OpN(RAX, RCX, X64Op::IMUL, X64Bits::B64);
-            emitOverflowSigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS64));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS64));
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
             pp.emit_Store64_Indirect(0, RAX, RCX);
             break;
@@ -961,7 +961,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load8_Indirect(0, RAX, RAX);
             MK_IMMB_8(RCX);
             pp.emit_OpN(RAX, RCX, X64Op::MUL, X64Bits::B8);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU8));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU8));
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
             pp.emit_Store8_Indirect(0, RAX, RCX);
             break;
@@ -986,7 +986,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load16_Indirect(0, RAX, RAX);
             MK_IMMB_16(RCX);
             pp.emit_OpN(RAX, RCX, X64Op::MUL, X64Bits::B16);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU16));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU16));
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
             pp.emit_Store16_Indirect(0, RAX, RCX);
             break;
@@ -1011,7 +1011,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load32_Indirect(0, RAX, RAX);
             MK_IMMB_32(RCX);
             pp.emit_OpN(RAX, RCX, X64Op::MUL, X64Bits::B32);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU32));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU32));
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
             pp.emit_Store32_Indirect(0, RAX, RCX);
             break;
@@ -1036,7 +1036,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load64_Indirect(0, RAX, RAX);
             MK_IMMB_64(RCX);
             pp.emit_OpN(RAX, RCX, X64Op::MUL, X64Bits::B64);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU64));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU64));
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
             pp.emit_Store64_Indirect(0, RAX, RCX);
             break;
@@ -1562,7 +1562,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpPlusEqS8:
         case ByteCodeOp::AffectOpPlusEqS8_Safe:
             MK_BINOPEQ8_CAB(X64Op::ADD);
-            emitOverflowSigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS8));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS8));
             break;
         case ByteCodeOp::AffectOpPlusEqS8_SSafe:
         case ByteCodeOp::AffectOpPlusEqU8_SSafe:
@@ -1579,7 +1579,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpPlusEqS16:
         case ByteCodeOp::AffectOpPlusEqS16_Safe:
             MK_BINOPEQ16_CAB(X64Op::ADD);
-            emitOverflowSigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS16));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS16));
             break;
         case ByteCodeOp::AffectOpPlusEqS16_SSafe:
         case ByteCodeOp::AffectOpPlusEqU16_SSafe:
@@ -1596,7 +1596,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpPlusEqS32:
         case ByteCodeOp::AffectOpPlusEqS32_Safe:
             MK_BINOPEQ32_CAB(X64Op::ADD);
-            emitOverflowSigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS32));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS32));
             break;
         case ByteCodeOp::AffectOpPlusEqS32_SSafe:
         case ByteCodeOp::AffectOpPlusEqU32_SSafe:
@@ -1613,7 +1613,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpPlusEqS64:
         case ByteCodeOp::AffectOpPlusEqS64_Safe:
             MK_BINOPEQ64_CAB(X64Op::ADD);
-            emitOverflowSigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS64));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS64));
             break;
         case ByteCodeOp::AffectOpPlusEqS64_SSafe:
         case ByteCodeOp::AffectOpPlusEqU64_SSafe:
@@ -1630,25 +1630,25 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpPlusEqU8:
         case ByteCodeOp::AffectOpPlusEqU8_Safe:
             MK_BINOPEQ8_CAB(X64Op::ADD);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU8));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU8));
             break;
 
         case ByteCodeOp::AffectOpPlusEqU16:
         case ByteCodeOp::AffectOpPlusEqU16_Safe:
             MK_BINOPEQ16_CAB(X64Op::ADD);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU16));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU16));
             break;
 
         case ByteCodeOp::AffectOpPlusEqU32:
         case ByteCodeOp::AffectOpPlusEqU32_Safe:
             MK_BINOPEQ32_CAB(X64Op::ADD);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU32));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU32));
             break;
 
         case ByteCodeOp::AffectOpPlusEqU64:
         case ByteCodeOp::AffectOpPlusEqU64_Safe:
             MK_BINOPEQ64_CAB(X64Op::ADD);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU64));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU64));
             break;
 
         case ByteCodeOp::AffectOpPlusEqF32:
@@ -1676,7 +1676,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpMinusEqS8:
         case ByteCodeOp::AffectOpMinusEqS8_Safe:
             MK_BINOPEQ8_CAB(X64Op::SUB);
-            emitOverflowSigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS8));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS8));
             break;
         case ByteCodeOp::AffectOpMinusEqS8_SSafe:
         case ByteCodeOp::AffectOpMinusEqU8_SSafe:
@@ -1693,7 +1693,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpMinusEqS16:
         case ByteCodeOp::AffectOpMinusEqS16_Safe:
             MK_BINOPEQ16_CAB(X64Op::SUB);
-            emitOverflowSigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU16));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU16));
             break;
         case ByteCodeOp::AffectOpMinusEqS16_SSafe:
         case ByteCodeOp::AffectOpMinusEqU16_SSafe:
@@ -1710,7 +1710,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpMinusEqS32:
         case ByteCodeOp::AffectOpMinusEqS32_Safe:
             MK_BINOPEQ32_CAB(X64Op::SUB);
-            emitOverflowSigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS32));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS32));
             break;
         case ByteCodeOp::AffectOpMinusEqS32_SSafe:
         case ByteCodeOp::AffectOpMinusEqU32_SSafe:
@@ -1726,7 +1726,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
 
         case ByteCodeOp::AffectOpMinusEqS64:
         case ByteCodeOp::AffectOpMinusEqS64_Safe:
-            emitOverflowSigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS64));
+            emitOverflowSigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS64));
             MK_BINOPEQ64_CAB(X64Op::SUB);
             break;
         case ByteCodeOp::AffectOpMinusEqS64_SSafe:
@@ -1744,25 +1744,25 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::AffectOpMinusEqU8:
         case ByteCodeOp::AffectOpMinusEqU8_Safe:
             MK_BINOPEQ8_CAB(X64Op::SUB);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU8));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU8));
             break;
 
         case ByteCodeOp::AffectOpMinusEqU16:
         case ByteCodeOp::AffectOpMinusEqU16_Safe:
             MK_BINOPEQ16_CAB(X64Op::SUB);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU16));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU16));
             break;
 
         case ByteCodeOp::AffectOpMinusEqU32:
         case ByteCodeOp::AffectOpMinusEqU32_Safe:
             MK_BINOPEQ32_CAB(X64Op::SUB);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU32));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU32));
             break;
 
         case ByteCodeOp::AffectOpMinusEqU64:
         case ByteCodeOp::AffectOpMinusEqU64_Safe:
             MK_BINOPEQ64_CAB(X64Op::SUB);
-            emitOverflowUnsigned(pp, ip->node, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU64));
+            emitOverflowUnsigned(pp, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU64));
             break;
 
         case ByteCodeOp::AffectOpMinusEqF32:

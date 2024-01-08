@@ -45,10 +45,17 @@ uint32_t ByteCodeOptimizer::newTreeNode(ByteCodeOptContext* context, ByteCodeIns
 void ByteCodeOptimizer::setContextFlags(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
     // Mark some instructions for some specific passes
-    if (ip->node && ip->node->sourceFile && ip->node->sourceFile->module && ip->node->sourceFile->module->mustEmitSafetyOverflow(ip->node))
+    if (ip->node &&
+        ip->node->sourceFile &&
+        ip->node->sourceFile->module &&
+        ip->node->sourceFile->module->mustEmitSafetyOverflow(ip->node))
+    {
         ip->dynFlags |= BCID_SAFETY_OF;
+    }
     else
+    {
         ip->dynFlags &= ~BCID_SAFETY_OF;
+    }
 
     if (ip->node && ip->node->ownerInline)
         context->contextBcFlags |= OCF_HAS_INLINE;

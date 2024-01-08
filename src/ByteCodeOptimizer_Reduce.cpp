@@ -279,6 +279,32 @@ void ByteCodeOptimizer::reduceFactor(ByteCodeOptContext* context, ByteCodeInstru
             }
         }
 
+        if (ip[1].op == ByteCodeOp::DecrementRA64 &&
+            ip[1].a.u32 == ip[0].a.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[0].op    = ByteCodeOp::BinOpMinusU64_Safe;
+            ip[0].c.u32 = ip[0].a.u32;
+            ip[0].a.u32 = ip[0].b.u32;
+            ip[0].b.u32 = 1;
+            ip[0].flags |= BCI_IMM_B | BCI_CANT_OVERFLOW;
+            setNop(context, ip + 1);
+            break;
+        }
+
+        if (ip[1].op == ByteCodeOp::IncrementRA64 &&
+            ip[1].a.u32 == ip[0].a.u32 &&
+            !(ip[1].flags & BCI_START_STMT))
+        {
+            ip[0].op    = ByteCodeOp::BinOpPlusU64_Safe;
+            ip[0].c.u32 = ip[0].a.u32;
+            ip[0].a.u32 = ip[0].b.u32;
+            ip[0].b.u32 = 1;
+            ip[0].flags |= BCI_IMM_B | BCI_CANT_OVERFLOW;
+            setNop(context, ip + 1);
+            break;
+        }
+
         break;
 
     default:

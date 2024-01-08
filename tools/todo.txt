@@ -133,9 +133,6 @@ OPTIMS
          compiler2738.swg:19
 00000019  AffectOpPlusEqS32_Safe  A(1) B{0x1}       .E. .B.....  [r1] += 1
 -------------------------------------
-   00000008      CopyRBtoRA64  A[1] B(0)           ... .......  r1 = r0
-   00000009     DecrementRA64  A[1] A(1)           ... .......  r1--
-   -------------------------------------
 inline auto ?
 si une fonction est appelée une seule fois ?
 -------------------------------------
