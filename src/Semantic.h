@@ -130,8 +130,8 @@ namespace Semantic
     bool     canInheritAccess(AstNode* node);
     uint64_t attributeToAccess(uint64_t attribute);
     void     doInheritAccess(AstNode* forNode, AstNode* node);
-    void     inheritAccess(AstNode* node);
-    void     setIdentifierAccess(AstIdentifier* identifier, SymbolOverload* overload);
+    void     inheritAccess(SemanticContext* context, AstNode* node);
+    void     setNodeAccess(SemanticContext* context, AstNode* node);
     void     setDefaultAccess(AstNode* node);
     bool     canHaveGlobalAccess(AstNode* node);
 

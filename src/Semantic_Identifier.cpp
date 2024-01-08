@@ -767,8 +767,6 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
     auto dependentVar = oneMatch.dependentVar;
     auto sourceFile   = context->sourceFile;
 
-    setIdentifierAccess(identifier, overload);
-
     // Mark as used
     if (symbol)
         symbol->flags |= SYMBOL_USED;
@@ -4583,8 +4581,6 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         identifier->resolvedSymbolName     = symbol;
         identifier->resolvedSymbolOverload = symbol->overloads[0];
         identifier->typeInfo               = identifier->resolvedSymbolOverload->typeInfo;
-
-        setIdentifierAccess(identifier, symbol->overloads[0]);
 
         // In case identifier is part of a reference, need to initialize it
         if (identifier != identifier->identifierRef()->childs.back())

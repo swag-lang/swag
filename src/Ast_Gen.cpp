@@ -475,13 +475,13 @@ bool Ast::convertStructParamsToTmpVar(SemanticContext* context, AstIdentifier* i
     // Call parameters have already been evaluated, so do not reevaluate them again
     back->callParameters->flags |= AST_NO_SEMANTIC;
     back->callParameters->semFlags |= node->semFlags & SEMFLAG_ACCESS_MASK;
-    Semantic::inheritAccess(back->callParameters);
+    Semantic::inheritAccess(context, back->callParameters);
 
     // :DupGen :StructParamsNoSem
     // Type has already been evaluated
     typeNode->identifier->flags |= AST_NO_SEMANTIC;
     typeNode->identifier->semFlags |= node->semFlags & SEMFLAG_ACCESS_MASK;
-    Semantic::inheritAccess(typeNode->identifier);
+    Semantic::inheritAccess(context, typeNode->identifier);
 
     // If this is in a return expression, then force the identifier type to be retval
     if (node->parent && node->parent->inSimpleReturn())

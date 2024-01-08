@@ -186,8 +186,11 @@ bool Semantic::setState(SemanticContext* context, AstNode* node, AstNodeResolveS
         break;
 
     case AstNodeResolveState::PostChilds:
-        Semantic::inheritAccess(node);
-        if (!Semantic::checkAccess(context, node))
+        setNodeAccess(context, node);
+        YIELD();
+        inheritAccess(context, node);
+        YIELD();
+        if (!checkAccess(context, node))
             return false;
         break;
     default:
