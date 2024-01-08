@@ -68,6 +68,8 @@ TODO
 ****************************************
 
 -------------------------------------
+quand on prend tokenName pour funcDecl, faut prendre tokenName pour struct aussi (dans les erreurs)
+-------------------------------------
 warning ?
     var a = 1
     a = 2
