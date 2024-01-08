@@ -230,9 +230,12 @@ bool Semantic::checkAccess(JobContext* context, AstNode* node)
         if (!culprit)
             return Report::internalError(node, "bad access, but cannot find the culprit");
 
-        auto       accessCulprit = (culprit->semFlags & SEMFLAG_ACCESS_PRIVATE) ? "private" : "internal";
+        auto accessCulprit = (culprit->semFlags & SEMFLAG_ACCESS_PRIVATE) ? "private" : "internal";
+        auto token         = node->token;
+        if (node->kind == AstNodeKind::FuncDecl)
+            token = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl)->tokenName;
         Diagnostic diag{node,
-                        node->token,
+                        token,
                         Fmt(Err(Err0520),
                             Naming::kindName(node->resolvedSymbolOverload).c_str(),
                             node->token.ctext(),

@@ -570,7 +570,7 @@ void initErrors()
     SWAG_ERROR(Err0832, "literal overflow                                  $ can't negate number '%I64d' because '%I64u' is too large for type 's64'");
     SWAG_ERROR(Err0829, "literal overflow                                  $ can't negate number '%d' because '%u' is too large for type 's8'");
     SWAG_ERROR(Err0415, "literal overflow                                  $ the number '%I64u' is too large for type '%s'");
-    SWAG_ERROR(Err0520, "mismatch access                                   $ %s '%s' can't be public due to %s '%s' with '%s' access");
+    SWAG_ERROR(Err0520, "mismatch access                                   $ %s '%s' can't be public because %s '%s' has '%s' access");
     SWAG_ERROR(Err0503, "mismatch access                                   $ special function '%s' can't be internal because the struct has 'public' access");
     SWAG_ERROR(Err0506, "mismatch access                                   $ special function '%s' can't be public because the struct has 'internal' access");
     SWAG_ERROR(Err0549, "mismatch enum types                               $ expected an enum of type '%s', got '%s' instead");

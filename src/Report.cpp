@@ -1,14 +1,14 @@
 
 #include "pch.h"
-#include "Diagnostic.h"
-#include "Workspace.h"
-#include "Module.h"
+#include "Report.h"
+#include "Ast.h"
 #include "ByteCodeStack.h"
 #include "Context.h"
-#include "Ast.h"
+#include "Diagnostic.h"
 #include "LanguageSpec.h"
+#include "Module.h"
 #include "SaveGenJob.h"
-#include "Report.h"
+#include "Workspace.h"
 
 thread_local int  g_SilentError = 0;
 thread_local Utf8 g_SilentErrorMsg;
