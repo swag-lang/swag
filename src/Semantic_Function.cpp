@@ -811,17 +811,13 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
     {
         SWAG_CHECK(checkFuncPrototype(context, funcNode));
 
-        // Function inherits access from it's return type too (in case of type deduction)
-        auto retType = funcNode->returnType->typeInfo;
-        while (retType->isPointer())
-            retType = CastTypeInfo<TypeInfoPointer>(retType, TypeInfoKind::Pointer)->pointedType;
-
         // The function wants to return something, but has the 'Swag.CalleeReturn' attribute
         if (!funcNode->returnType->typeInfo->isVoid() && (funcNode->attributeFlags & ATTRIBUTE_CALLEE_RETURN))
         {
             Diagnostic diag{funcNode->returnType->childs.front(), Err(Err0766)};
             return context->report(diag);
         }
+
         // The function returns nothing but has the 'Swag.Discardable' attribute
         if (funcNode->returnType->typeInfo->isVoid() && funcNode->attributeFlags & ATTRIBUTE_DISCARDABLE)
             return context->report({funcNode, funcNode->tokenName, Fmt(Err(Err0767), funcNode->token.ctext())});

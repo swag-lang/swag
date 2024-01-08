@@ -24,6 +24,21 @@ bool Semantic::canHaveGlobalAccess(AstNode* node)
     }
 }
 
+bool Semantic::canHaveAccess(AstNode* node)
+{
+    if (!canHaveGlobalAccess(node))
+        return false;
+    if (!node->ownerScope || !node->ownerScope->isGlobalOrImpl())
+        return false;
+    if (node->flags & AST_FROM_GENERIC)
+        return false;
+    if (node->sourceFile->forceExport || node->sourceFile->imported)
+        return false;
+    if (node->token.text[0] == '@')
+        return false;
+    return true;
+}
+
 bool Semantic::canInheritAccess(AstNode* node)
 {
     if (!node->parent)
@@ -100,18 +115,23 @@ void Semantic::inheritAccess(AstNode* node)
     }
 }
 
-bool Semantic::computeAccess(AstNode* node)
+void Semantic::computeAccess(AstNode* node)
+{
+    if (!canHaveAccess(node))
+        return;
+    computeAccessRec(node);
+}
+
+void Semantic::computeAccessRec(AstNode* node)
 {
     setNodeAccess(node);
     for (auto c : node->childs)
     {
         if (!canInheritAccess(c))
             continue;
-        SWAG_CHECK(computeAccess(c));
+        computeAccessRec(c);
         inheritAccess(c);
     }
-
-    return true;
 }
 
 uint64_t Semantic::attributeToAccess(uint64_t attribute)
@@ -238,14 +258,6 @@ static AstNode* getErrorCulprit(AstNode* n, AstNode** onNode)
 
 bool Semantic::checkAccess(JobContext* context, AstNode* node)
 {
-    if (!canHaveGlobalAccess(node))
-        return true;
-    if (!node->ownerScope || !node->ownerScope->isGlobalOrImpl())
-        return true;
-    if (node->flags & AST_FROM_GENERIC)
-        return true;
-    if (node->sourceFile->forceExport || node->sourceFile->imported)
-        return true;
     computeAccess(node);
     if (!(node->attributeFlags & ATTRIBUTE_PUBLIC))
         return true;

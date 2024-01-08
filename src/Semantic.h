@@ -133,7 +133,9 @@ namespace Semantic
     void     setNodeAccess(AstNode* node);
     void     setDefaultAccess(AstNode* node);
     bool     canHaveGlobalAccess(AstNode* node);
-    bool     computeAccess(AstNode* node);
+    bool     canHaveAccess(AstNode* node);
+    void     computeAccess(AstNode* node);
+    void     computeAccessRec(AstNode* node);
     bool     checkAccess(JobContext* context, AstNode* node);
 
     void           decreaseInterfaceRegCount(TypeInfoStruct* typeInfoStruct);
