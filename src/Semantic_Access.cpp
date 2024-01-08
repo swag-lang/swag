@@ -119,6 +119,9 @@ void Semantic::computeAccess(AstNode* node)
 {
     if (!canHaveAccess(node))
         return;
+    if (node->semFlags & SEMFLAG_ACCESS_COMPUTED)
+        return;
+    node->semFlags |= SEMFLAG_ACCESS_COMPUTED;
     computeAccessRec(node);
 }
 

@@ -191,6 +191,11 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
     // and so we can wakeup all jobs waiting for that symbol to be solved
     if (!(toAdd.flags & OVERLOAD_INCOMPLETE))
     {
+        // For function, will be done later because we register the full
+        // symbol with the function type, and we want to compute the access
+        // after the complete semantic pass of the content (for exported inline)
+        if (symbol->kind != SymbolKind::Function)
+            Semantic::computeAccess(overload->node);
         symbol->decreaseOverloadNoLock();
     }
 
