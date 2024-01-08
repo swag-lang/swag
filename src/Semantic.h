@@ -92,8 +92,6 @@ namespace Semantic
     bool checkImplScopes(SemanticContext* context, AstImpl* node, Scope* scopeImpl, Scope* scope);
     void checkCanInstantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch);
     bool checkIsConstAffect(SemanticContext* context, AstNode* left, AstNode* right);
-    bool computeAccess(JobContext* context, AstNode* node);
-    bool checkAccess(JobContext* context, AstNode* node);
     bool checkIsConstExpr(JobContext* context, bool test, AstNode* expression, const Utf8& errMsg = "", const Utf8& errParam = "");
     bool checkIsConstExpr(JobContext* context, AstNode* expression, const Utf8& errMsg = "", const Utf8& errParam = "");
     bool checkInitDropCount(SemanticContext* context, AstNode* node, AstNode* expression, AstNode* count);
@@ -135,6 +133,8 @@ namespace Semantic
     void     setNodeAccess(AstNode* node);
     void     setDefaultAccess(AstNode* node);
     bool     canHaveGlobalAccess(AstNode* node);
+    bool     computeAccess(AstNode* node);
+    bool     checkAccess(JobContext* context, AstNode* node);
 
     void           decreaseInterfaceRegCount(TypeInfoStruct* typeInfoStruct);
     void           decreaseInterfaceCount(TypeInfoStruct* typeInfoStruct);
@@ -398,4 +398,4 @@ namespace Semantic
     bool resolveDropCopyMove(SemanticContext* context);
     bool resolveTupleUnpackBefore(SemanticContext* context);
     bool resolveTupleUnpackBeforeVar(SemanticContext* context);
-};
+}; // namespace Semantic

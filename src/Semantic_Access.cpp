@@ -104,6 +104,20 @@ void Semantic::inheritAccess(AstNode* node)
     }
 }
 
+bool Semantic::computeAccess(AstNode* node)
+{
+    setNodeAccess(node);
+    for (auto c : node->childs)
+    {
+        if (!canInheritAccess(c))
+            continue;
+        SWAG_CHECK(computeAccess(c));
+        inheritAccess(c);
+    }
+
+    return true;
+}
+
 uint64_t Semantic::attributeToAccess(uint64_t attribute)
 {
     uint64_t result = 0;
@@ -226,20 +240,6 @@ static AstNode* getErrorCulprit(AstNode* n, AstNode** onNode)
     return nullptr;
 }
 
-bool Semantic::computeAccess(JobContext* context, AstNode* node)
-{
-    setNodeAccess(node);
-    for (auto c : node->childs)
-    {
-        if (!canInheritAccess(c))
-            continue;
-        SWAG_CHECK(computeAccess(context, c));
-        inheritAccess(c);
-    }
-
-    return true;
-}
-
 bool Semantic::checkAccess(JobContext* context, AstNode* node)
 {
     if (!canHaveGlobalAccess(node))
@@ -250,7 +250,7 @@ bool Semantic::checkAccess(JobContext* context, AstNode* node)
         return true;
     if (node->sourceFile->forceExport || node->sourceFile->imported)
         return true;
-    computeAccess(context, node);
+    computeAccess(node);
     if (!(node->attributeFlags & ATTRIBUTE_PUBLIC))
         return true;
     if (!(node->semFlags & (SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE)))
