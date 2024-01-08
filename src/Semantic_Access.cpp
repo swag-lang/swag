@@ -73,10 +73,6 @@ void Semantic::setNodeAccess(AstNode* node)
 
 void Semantic::doInheritAccess(AstNode* forNode, AstNode* node)
 {
-    // Access for a tuple definition is only defined by the content
-    // if (forNode->typeInfo && forNode->typeInfo->isTuple())
-    //    forNode->semFlags &= ~SEMFLAG_ACCESS_MASK;
-
     if (node->semFlags & SEMFLAG_ACCESS_PRIVATE)
     {
         forNode->semFlags &= ~(SEMFLAG_ACCESS_PUBLIC | SEMFLAG_ACCESS_INTERNAL);
