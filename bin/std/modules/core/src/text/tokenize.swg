@@ -235,7 +235,7 @@ func splitAny(src: string, separators: const [..] rune, maxSplit: u32 = 0, remov
     return result
 }
 
-// Returns the first substring of 'str', stopping at the first blank character
+// Returns the first substring of 'str' stopping at the first blank character
 func getToSpace(str: string)->string
 {
     let countof = @countof(str)
