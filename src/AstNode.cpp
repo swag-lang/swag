@@ -1014,6 +1014,12 @@ const Token& AstNode::getTokenName()
         return structDecl->tokenName;
     }
 
+    if (kind == AstNodeKind::EnumDecl)
+    {
+        auto enumDecl = CastAst<AstEnum>(this, AstNodeKind::EnumDecl);
+        return enumDecl->tokenName;
+    }
+
     return token;
 }
 

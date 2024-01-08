@@ -26,6 +26,7 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
     SWAG_VERIFY(token.id != TokenId::SymLeftCurly, error(token, Err(Err1140)));
     SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err1074), token.ctext())));
     enumNode->inheritTokenName(token);
+    enumNode->tokenName = token;
     SWAG_CHECK(checkIsValidUserName(enumNode));
 
     // Add enum type and scope

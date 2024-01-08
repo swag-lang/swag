@@ -900,6 +900,7 @@ struct AstEnum : public AstNode
     ~AstEnum();
     AstNode* clone(CloneContext& context);
 
+    Token  tokenName;
     Scope* scope;
 };
 
