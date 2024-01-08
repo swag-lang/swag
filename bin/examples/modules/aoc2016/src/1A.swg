@@ -31,7 +31,7 @@ func day1A()
     var px, py = 0
     visit it: split
     {
-        let v = Tokenize.trim(it)
+        let v = Latin1.trim(it)
         let n = assume StrConv.toS32(v[1..])
         switch v[0]
         {

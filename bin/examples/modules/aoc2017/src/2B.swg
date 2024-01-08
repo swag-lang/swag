@@ -34,7 +34,7 @@ func day2B()
         #scope Done
         visit v: Tokenize.splitAny(l, [` `, `\t`])
         {
-            let value = assume StrConv.toS32(Tokenize.trim(v))
+            let value = assume StrConv.toS32(Latin1.trim(v))
             visit v1: values
             {
                 if value % v1 == 0
