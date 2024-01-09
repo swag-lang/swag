@@ -2567,7 +2567,7 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
         SWAG_CHECK(castStructToStruct(context, toStruct, fromStruct, toType, fromType, fromNode, castFlags, ok));
         if (ok || context->result == ContextResult::Pending)
         {
-            if (fromStruct != toStruct)
+            if (!fromStruct->isSame(toStruct, CASTFLAG_CAST))
                 context->castFlagsResult |= CASTFLAG_RESULT_STRUCT_CONVERT;
             return true;
         }
@@ -2583,7 +2583,7 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
         SWAG_CHECK(castStructToStruct(context, toStruct, fromStruct, toType, fromType, fromNode, castFlags, ok));
         if (ok || context->result == ContextResult::Pending)
         {
-            if (fromStruct != toStruct)
+            if (!fromStruct->isSame(toStruct, CASTFLAG_CAST))
                 context->castFlagsResult |= CASTFLAG_RESULT_STRUCT_CONVERT;
             return true;
         }
@@ -2643,7 +2643,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
             SWAG_CHECK(castStructToStruct(context, toStruct, fromStruct, toType, fromType, fromNode, castFlags, ok));
             if (ok || context->result == ContextResult::Pending)
             {
-                if (fromStruct != toStruct)
+                if (!fromStruct->isSame(toStruct, CASTFLAG_CAST))
                     context->castFlagsResult |= CASTFLAG_RESULT_STRUCT_CONVERT;
                 return true;
             }
@@ -2660,7 +2660,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         SWAG_CHECK(castStructToStruct(context, toStruct, fromStruct, toType, fromType, fromNode, castFlags, ok));
         if (ok || context->result == ContextResult::Pending)
         {
-            if (fromStruct != toStruct)
+            if (!fromStruct->isSame(toStruct, CASTFLAG_CAST))
                 context->castFlagsResult |= CASTFLAG_RESULT_STRUCT_CONVERT;
             return true;
         }

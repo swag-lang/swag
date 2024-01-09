@@ -4017,30 +4017,56 @@ bool Semantic::filterGenericMatches(SemanticContext* context, VectorNative<OneMa
     if (genMatches.size() > 1)
     {
         size_t bestS = 0;
+        size_t bestI = 0;
         for (size_t i = 0; i < genMatches.size(); i++)
         {
-            bestS = max(bestS, genMatches[i]->genericReplaceTypes.size());
+            if (genMatches[i]->genericReplaceTypes.size() > bestS)
+            {
+                bestS = genMatches[i]->genericReplaceTypes.size();
+                bestI = i;
+            }
         }
 
         for (size_t i = 0; i < genMatches.size(); i++)
         {
             if (genMatches[i]->genericReplaceTypes.size() < bestS)
             {
-                genMatches[i] = genMatches.back();
-                genMatches.pop_back();
-                i--;
+                if (genMatches[i]->flags == genMatches[bestI]->flags)
+                {
+                    genMatches[i] = genMatches.back();
+                    genMatches.pop_back();
+                    i--;
+                }
             }
         }
     }
 
+    // 'secondTry' is less prio than first ufcs try
     for (size_t i = 0; i < genMatches.size(); i++)
     {
-        // 'secondTry' is less prio than first ufcs try
         if (genMatches[i]->secondTry)
         {
             for (size_t j = 0; j < genMatches.size(); j++)
             {
                 if (!genMatches[j]->secondTry)
+                {
+                    genMatches[i] = genMatches.back();
+                    genMatches.pop_back();
+                    i--;
+                    break;
+                }
+            }
+        }
+    }
+
+    // A match with a struct conversion is less prio
+    for (size_t i = 0; i < genMatches.size(); i++)
+    {
+        if (genMatches[i]->flags & CASTFLAG_RESULT_STRUCT_CONVERT)
+        {
+            for (size_t j = 0; j < genMatches.size(); j++)
+            {
+                if (!(genMatches[j]->flags & CASTFLAG_RESULT_STRUCT_CONVERT))
                 {
                     genMatches[i] = genMatches.back();
                     genMatches.pop_back();
