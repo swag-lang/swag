@@ -7,4 +7,5 @@
 #main
 {
     day1A()
+    day1B()
 }
