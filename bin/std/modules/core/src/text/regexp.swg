@@ -211,6 +211,12 @@ impl RegExp
         return ""
     }
 
+    // Returns the array of captures
+    public mtd getCaptures()->const &Array'RegExpGroup
+    {
+        return &groups
+    }
+
     // Compile and match the expression.
     #[Swag.Overload]
     public mtd match(expr, str: string, ignoreCase = false)->bool throw

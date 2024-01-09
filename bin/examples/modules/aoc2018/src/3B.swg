@@ -46,10 +46,7 @@ func day3B()
         if alone do here.add(id)
     }
 
-    visit v: here
-    {
-        //Console.print("total: ", v)
-        @assert(v == 251)
-    }
+    @assert(here.count == 1)
+    @assert(here.contains(251))
 }
 
