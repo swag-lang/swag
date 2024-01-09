@@ -37,22 +37,19 @@ func day2B()
         {
             if i == j do continue
             var diff = 0
+            var result: String
             loop k: b
             {
-                diff += cast(s32) (b[k] != a[k])
+                if b[k] != a[k] do
+                    diff += 1
+                else do
+                    result += b[k]
                 if diff > 1 do
                     break
             }
 
             if diff == 1
             {
-                var result: String
-                loop k: b
-                {
-                    if b[k] != a[k] do continue
-                    result += b[k]
-                }
-
                 //Console.print("result ", result)
                 @assert(result == "nvosmkcdtdbfhyxsphzgraljq")
                 return
