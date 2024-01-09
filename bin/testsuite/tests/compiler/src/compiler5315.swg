@@ -1,12 +1,13 @@
-#global skip
-#[Swag.PrintBc]
+#global testerror "Err0016"
+//#[Swag.PrintBc]
 #test
 {
-    const C = [1, 2, 3, 4]
+    @panic("toto")
+    /*const C = [1, 2, 3, 4]
     var v = 0
     loop i: 4
     {
-        v += C[cast(u64) i]
+        v += C[i]
     }
-    @print(v)
+    @print(v)*/
 }
