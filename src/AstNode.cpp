@@ -532,7 +532,6 @@ AstNode* AstNode::clone(CloneContext& context)
                 cloneContext.parentScope->symTable.mapNames.clone(&ownerScope->symTable.mapNames);
 
             newNode->copyFrom(cloneContext, this);
-            context.nodeRefsToUpdate.clear();
             context.propageResult(cloneContext);
         }
         else
