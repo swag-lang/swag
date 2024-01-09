@@ -728,9 +728,9 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         else
         {
             SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err1089), token.ctext())));
-            funcNode->tokenName = token;
         }
 
+        funcNode->tokenName = token;
         funcNode->inheritTokenName(token);
         SWAG_CHECK(checkIsValidUserName(funcNode, &token));
 
