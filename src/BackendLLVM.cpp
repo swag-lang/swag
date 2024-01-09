@@ -69,6 +69,10 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             pp.scratchTy,                                                   // errorAllocator
             PTR_I8_TY(),                                                    // debugAllocator
             I64_TY(),                                                       // runtimeFlags
+            I64_TY(),                                                       // user0
+            I64_TY(),                                                       // user1
+            I64_TY(),                                                       // user2
+            I64_TY(),                                                       // user3
             llvm::ArrayType::get(I8_TY(), SWAG_MAX_TRACES * sizeof(void*)), // traces
             llvm::ArrayType::get(pp.errorTy, SWAG_MAX_ERRORS),              // errors
             llvm::ArrayType::get(I8_TY(), sizeof(SwagSourceCodeLocation)),  // exceptionLoc
@@ -81,7 +85,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
             I32_TY(),                                                       // hasError
         };
 
-        static_assert(sizeof(SwagContext) == 1312);
+        static_assert(sizeof(SwagContext) == 1344);
         pp.contextTy = llvm::StructType::create(context, members, "SwagContext");
         SWAG_ASSERT(pp.contextTy->isSized());
     }

@@ -135,6 +135,10 @@ typedef struct SwagContext
     SwagScratchAllocator    errorAllocator;
     void*                   debugAllocator;
     uint64_t                runtimeFlags;
+    uint64_t                user0;
+    uint64_t                user1;
+    uint64_t                user2;
+    uint64_t                user3;
     SwagSourceCodeLocation* traces[SWAG_MAX_TRACES];
     SwagErrorValue          errors[SWAG_MAX_ERRORS];
     SwagSourceCodeLocation  exceptionLoc;
