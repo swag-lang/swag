@@ -3,7 +3,7 @@
 
 // Transform the content of a slice with a given lambda
 #[Swag.Inline]
-func(T) modifyInPlace(values: [..] T, cb: func(*T))
+func(T) modify(values: [..] T, cb: func(*T))
 {
     loop i: values do
         cb(&values[i])
