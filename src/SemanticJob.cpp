@@ -187,7 +187,7 @@ JobResult SemanticJob::execute()
 
             if (!Semantic::setState(&context, node, AstNodeResolveState::PostChilds))
                 return JobResult::ReleaseJob;
-            SWAG_ASSERT(context.result != ContextResult::KeepJobAlive);
+            SWAG_ASSERT(context.result != ContextResult::Pending);
             SWAG_ASSERT(context.result != ContextResult::NewChilds);
             // fallthrough
 
