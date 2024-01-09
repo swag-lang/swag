@@ -1039,14 +1039,25 @@ impl RegExp
                 var end = pz[2]
                 if first > end do
                     swap(&first, &end)
-                while first < end
+
+                if first == `A` and end == `Z` do
+                    preprocessed.add(RuneAsciiUpper)
+                elif first == `a` and end == `z` do
+                    preprocessed.add(RuneAsciiLower)
+                elif first == `0` and end == `9` do
+                    preprocessed.add(RuneAsciiDigit)
+                else
                 {
+                    while first < end
+                    {
+                        preprocessed.add(first)
+                        preprocessed.add(`|`)
+                        first += 1
+                    }
+
                     preprocessed.add(first)
-                    preprocessed.add(`|`)
-                    first += 1
                 }
 
-                preprocessed.add(first)
                 pz += 3
                 continue
             }
