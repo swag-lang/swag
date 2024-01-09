@@ -85,9 +85,12 @@ func(T) quickSort(values: [..] T, cb: closure(T, T)->s32)
 
 // Sort the slice, by picking the right algorithm depending on the type and the
 // number of elements
-func(T) sort(values: [..] T)
+func(T) sort(values: [..] T, bigFirst = false)
 {
-    sort(values, func(x, y: T)->s32 => x <=> y)
+    if bigFirst do
+        sort(values, func(x, y: T)->s32 => y <=> x)
+    else do
+        sort(values, func(x, y: T)->s32 => x <=> y)
 }
 
 // Sort the slice, by picking the right algorithm depending on the type and the
