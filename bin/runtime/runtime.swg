@@ -129,33 +129,32 @@ func @args()->const [..] string
 
 ////////////////////////////////////////////////////////////
 
-var __runtimeFlags: RuntimeFlags = Zero
-var __debugAlloc:   *DebugAllocator
-var __sysAlloc:     SystemAllocator
+var __sysAlloc: SystemAllocator
 
 // Make a build configuration copy
 const __buildCfg = #run dref @compiler().getBuildCfg()
 
-func @rtflags()  => __runtimeFlags
-func @dbgalloc() => __debugAlloc
+func @rtflags()  => @getcontext().runtimeFlags
+func @dbgalloc() => cast(*DebugAllocator) @getcontext().debugAllocator
 func @sysalloc() => &__sysAlloc
 
 func __setupRuntime(flags: RuntimeFlags)
 {
-    __runtimeFlags = flags
-
     let cxt = @getcontext()
+    cxt.runtimeFlags = flags
+
     cxt.tempAllocator.setCapacity(__buildCfg.tempAllocatorCapacity, cxt.allocator)
     cxt.errorAllocator.setCapacity(__buildCfg.errorAllocatorCapacity, cxt.allocator)
 
     if __buildCfg.debugAllocator
     {
-        __debugAlloc = @alloc(@sizeof(DebugAllocator))
-        @init(__debugAlloc, 1)
-        __debugAlloc.captureAllocStack = __buildCfg.debugAllocatorCaptureStack
-        __debugAlloc.detectLeaks       = __buildCfg.debugAllocatorLeaks
-        __debugAlloc.setup(cxt.allocator)
-        cxt.allocator = dref __debugAlloc
+        let alloc: *DebugAllocator = @alloc(@sizeof(DebugAllocator))
+        @init(alloc, 1)
+        alloc.captureAllocStack = __buildCfg.debugAllocatorCaptureStack
+        alloc.detectLeaks       = __buildCfg.debugAllocatorLeaks
+        alloc.setup(cxt.allocator)
+        cxt.allocator = dref alloc
+        cxt.debugAllocator = alloc
     }
 }
 
@@ -164,8 +163,8 @@ func __closeRuntime()
     @getcontext().tempAllocator.release()
     @getcontext().errorAllocator.release()
 
-    if !(__runtimeFlags & .FromCompiler) and __buildCfg.debugAllocator do
-        __debugAlloc.printLeaks()
+    if !(@rtflags() & .FromCompiler) and __buildCfg.debugAllocator do
+        @dbgalloc().printLeaks()
 
     __exit()
 }

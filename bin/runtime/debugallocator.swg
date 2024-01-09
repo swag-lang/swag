@@ -29,13 +29,13 @@ struct DebugAllocator
     firstAlloc: *DebugAllocatorHeader   // First allocated block
     firstFree:  *DebugAllocatorHeader   // First freed block
     lastFree:   *DebugAllocatorHeader   // Last freed block
-    sizeAlloc:  u64                    // Total allocated memory, in bytes
-    sizeFree:   u64                    // Total of free blocks in quarantine
+    sizeAlloc:  u64                     // Total allocated memory, in bytes
+    sizeFree:   u64                     // Total of free blocks in quarantine
     countAlloc: u32                     // Number of allocated blocks
     nextId:     u32                     // The next allocated id to assign
 
     // Debug/behaviour parameters
-    maxFreeSize:        u64 = 4*1024   // Maximum total size (in kbs) of free blocks in quarantine
+    maxFreeSize:        u64 = 4*1024    // Maximum total size (in kbs) of free blocks in quarantine
     breakOnAllocId:     u32             // Will @assert when the current allocation id reaches that value
     showMaxLeaks:       u32 = 100       // Maximum number of memory leaks to show
     captureAllocStack   = true          // For each allocation, capture stack

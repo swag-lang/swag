@@ -417,6 +417,8 @@ namespace Swag
 
         tempAllocator:      ScratchAllocator                        // A temporary allocator for the user
         errorAllocator:     ScratchAllocator                        // A temporary allocator to store the error values
+        debugAllocator:     *void                                   // If defined, the used debug allocator
+        runtimeFlags:       RuntimeFlags                            // As initialized by the runtime
         traces:             [MaxTraces] const *SourceCodeLocation   // Stack trace, in case of errors
         errors:             [MaxErrors] ErrorValue                  // All errors
         exceptionLoc:       SourceCodeLocation                      // When an exception is raised, this is the code location
