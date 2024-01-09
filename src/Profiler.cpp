@@ -37,7 +37,13 @@ static Utf8 getProfileBc(ByteCode* bc, int level)
     while (level--)
         line += "    ";
 
-    line += bc->name;
+    if (bc->sourceFile)
+    {
+        line += bc->sourceFile->name;
+        line += " -- ";
+    }
+
+    line += bc->getCallName();
     return line;
 }
 
@@ -52,7 +58,8 @@ static Utf8 getProfileFFI(FFIStat& ffi, int level)
 
     while (line.count < COL2)
         line += " ";
-    line += ffi.func->getCallName();
+
+    line += ffi.name;
     return line;
 }
 
@@ -82,9 +89,9 @@ void profiler()
     // Collect
     //////////////////////////////////////////
 
-    Map<AstFuncDecl*, FFIStat> ffi;
-    Vector<FFIStat>            linFFi;
-    Vector<ByteCode*>          bcs;
+    MapUtf8<FFIStat>  ffi;
+    Vector<FFIStat>   linFFi;
+    Vector<ByteCode*> bcs;
 
     for (auto m : g_Workspace->modules)
     {
@@ -97,7 +104,7 @@ void profiler()
 
             for (auto it : bc->ffiProfile)
             {
-                ffi[it.first].func = it.first;
+                ffi[it.first].name = it.first;
                 ffi[it.first].count += it.second.count;
                 ffi[it.first].cum += it.second.cum;
             }
@@ -109,9 +116,11 @@ void profiler()
 
     sort(bcs.begin(), bcs.end(), [](ByteCode* a, ByteCode* b)
          { return b->profileCumTime < a->profileCumTime; });
+    while (!bcs.empty() && OS::timerToSeconds(bcs.back()->profileCumTime) <= g_CommandLine.profileMinTime)
+        bcs.pop_back();
 
     Utf8 line;
-    line += "#calls";
+    line += "#bccalls";
     while (line.count < COL1)
         line += " ";
     line += "cumtime";
@@ -144,10 +153,12 @@ void profiler()
         linFFi.push_back(it.second);
     sort(linFFi.begin(), linFFi.end(), [](const FFIStat& a, const FFIStat& b)
          { return b.cum < a.cum; });
+    while (!linFFi.empty() && OS::timerToSeconds(linFFi.back().cum) <= g_CommandLine.profileMinTime)
+        linFFi.pop_back();
 
     g_Log.eol();
     line.clear();
-    line += "#calls";
+    line += "#fficalls";
     while (line.count < COL1)
         line += " ";
     line += "cumtime";

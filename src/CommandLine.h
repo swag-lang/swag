@@ -34,6 +34,7 @@ struct CommandLine
     bool     profile        = false;
     Utf8     profileFilter;
     int      profileChildsLevel = 0;
+    float    profileMinTime     = 0.00001f;
 #endif
 
     // Input

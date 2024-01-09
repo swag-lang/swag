@@ -1,14 +1,10 @@
 #include "pch.h"
-#include "ByteCode.h"
 #include "Ast.h"
+#include "ByteCode.h"
+#include "LanguageSpec.h"
+#include "Module.h"
 #include "ModuleManager.h"
 #include "TypeManager.h"
-#include "Os.h"
-#include "Module.h"
-#include "Diagnostic.h"
-#include "ErrorIds.h"
-#include "LanguageSpec.h"
-#include "JobThread.h"
 
 void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, ByteCodeInstruction* ip)
 {
@@ -162,14 +158,16 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip, 
         now = OS::timerNow();
         context->bc->profileCumTime += now - context->bc->profileStart;
         context->bc->profileFFI += now - context->bc->profileStart;
-        context->bc->profileStart = now;
 
         if (ip->op == ByteCodeOp::ForeignCall || ip->op == ByteCodeOp::ForeignCallPop)
         {
             auto funcDecl = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
-            context->bc->ffiProfile[funcDecl].count += 1;
-            context->bc->ffiProfile[funcDecl].cum += now - context->bc->profileStart;
+            auto callName = funcDecl->getCallName();
+            context->bc->ffiProfile[callName].count += 1;
+            context->bc->ffiProfile[callName].cum += now - context->bc->profileStart;
         }
+
+        context->bc->profileStart = now;
     }
     else
     {

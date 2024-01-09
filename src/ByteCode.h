@@ -232,7 +232,7 @@ struct ByteCode
     VectorNative<AstNode*> dependentCalls;
     SetUtf8                hasForeignFunctionCallsModules;
 #ifdef SWAG_STATS
-    Map<AstFuncDecl*, FFIStat> ffiProfile;
+    MapUtf8<FFIStat> ffiProfile;
 #endif
 
     ByteCodeInstruction* out          = nullptr;
