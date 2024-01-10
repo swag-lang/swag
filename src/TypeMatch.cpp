@@ -332,6 +332,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                             context.genericParametersCallTypes[i]        = it->second.typeInfoReplace;
                             context.genericParametersCallFrom[i]         = it->second.fromNode;
                             context.mapGenericTypeToIndex[genType->name] = i;
+                            context.mapIndexToGenericType[i]             = genType;
                             continue;
                         }
                     }
