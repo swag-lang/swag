@@ -315,7 +315,9 @@ bool Semantic::resolveType(SemanticContext* context)
     }
 
     // Already solved
-    if ((typeNode->flags & AST_FROM_GENERIC) && typeNode->typeInfo && !typeNode->typeInfo->isNative(NativeTypeKind::Undefined))
+    if ((typeNode->flags & AST_FROM_GENERIC) && 
+        typeNode->typeInfo && 
+        !typeNode->typeInfo->isUndefined())
     {
         // Count is generic, need to reevaluate
         if (typeNode->typeInfo->flags & TYPEINFO_GENERIC_COUNT)
@@ -330,7 +332,9 @@ bool Semantic::resolveType(SemanticContext* context)
         }
     }
 
-    if ((typeNode->semFlags & SEMFLAG_TYPE_SOLVED) && typeNode->typeInfo && !typeNode->typeInfo->isNative(NativeTypeKind::Undefined))
+    if ((typeNode->semFlags & SEMFLAG_TYPE_SOLVED) && 
+        typeNode->typeInfo && 
+        !typeNode->typeInfo->isUndefined())
     {
         forceConstType(context, typeNode);
         return true;
@@ -399,7 +403,7 @@ bool Semantic::resolveType(SemanticContext* context)
     if (typeNode->identifier && !typeNode->identifier->childs.empty())
     {
         auto child = typeNode->identifier->childs.back();
-        if (!child->typeInfo || !child->typeInfo->isNative(NativeTypeKind::Undefined))
+        if (!child->typeInfo || !child->typeInfo->isUndefined())
         {
             if (child->resolvedSymbolName)
             {

@@ -392,7 +392,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
         for (int i = 0; i < wantedNumGenericParams; i++)
         {
             auto symbolParameter = genericParameters[i];
-            if (!symbolParameter->typeInfo->isNative(NativeTypeKind::Undefined))
+            if (!symbolParameter->typeInfo->isUndefined())
             {
                 auto it = context.genericReplaceTypes.find(symbolParameter->typeInfo->name);
                 if (it == context.genericReplaceTypes.end())

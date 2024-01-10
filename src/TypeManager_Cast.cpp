@@ -3195,6 +3195,8 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
     if (fromType == toType)
         return true;
+    //if (fromType->isUndefined() || toType->isUndefined())
+    //    return true;
 
     // Everything can be casted to or from type 'any'
     if (toType->isAny() || fromType->isAny())

@@ -712,7 +712,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint64_t castFlags, BadSi
 
         if (returnType &&
             other->returnType &&
-            !returnType->isNative(NativeTypeKind::Undefined) &&
+            !returnType->isUndefined() &&
             !returnType->isSame(other->returnType, castFlags))
         {
             bi.matchResult = MatchResult::MismatchReturnType;
@@ -758,9 +758,9 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint64_t castFlags, BadSi
             return false;
         for (size_t i = 0; i < capture.size(); i++)
         {
-            if (capture[i]->typeInfo->isNative(NativeTypeKind::Undefined))
+            if (capture[i]->typeInfo->isUndefined())
                 continue;
-            if (other->capture[i]->typeInfo->isNative(NativeTypeKind::Undefined))
+            if (other->capture[i]->typeInfo->isUndefined())
                 continue;
             auto type1 = TypeManager::concretePtrRef(capture[i]->typeInfo);
             auto type2 = TypeManager::concretePtrRef(other->capture[i]->typeInfo);
@@ -778,7 +778,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint64_t castFlags, BadSi
         auto type1 = parameters[i]->typeInfo;
         auto type2 = other->parameters[i + firstParam]->typeInfo;
 
-        if (type1->isNative(NativeTypeKind::Undefined) || type2->isNative(NativeTypeKind::Undefined))
+        if (type1->isUndefined() || type2->isUndefined())
             continue;
 
         if ((type1->flags & TYPEINFO_POINTER_MOVE_REF) != (type2->flags & TYPEINFO_POINTER_MOVE_REF))
@@ -838,7 +838,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint64_t castFlags)
             return false;
         if (!returnType && other->returnType && !other->returnType->isVoid())
             return false;
-        if (returnType && other->returnType && !returnType->isNative(NativeTypeKind::Undefined) && !returnType->isSame(other->returnType, castFlags))
+        if (returnType && other->returnType && !returnType->isUndefined() && !returnType->isSame(other->returnType, castFlags))
             return false;
     }
 

@@ -337,11 +337,11 @@ void Semantic::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneT
             auto type2 = CastTypeInfo<TypeInfoFuncAttr>(bi.badSignatureGivenType, TypeInfoKind::LambdaClosure);
             for (uint32_t i = 0; i < min(type1->parameters.count, type2->parameters.count); i++)
             {
-                if (type2->parameters[i]->typeInfo->isNative(NativeTypeKind::Undefined))
+                if (type2->parameters[i]->typeInfo->isUndefined())
                     type2->parameters[i]->typeInfo = type1->parameters[i]->typeInfo;
             }
 
-            if (type2->returnType && type1->returnType && type2->returnType->isNative(NativeTypeKind::Undefined))
+            if (type2->returnType && type1->returnType && type2->returnType->isUndefined())
                 type2->returnType = type1->returnType;
         }
 

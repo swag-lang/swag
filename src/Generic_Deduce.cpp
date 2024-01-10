@@ -34,7 +34,7 @@ void Generic::deduceGenericTypeReplacement(SymbolMatchContext& context, AstNode*
 
             // If user type is undefined, then we consider this is ok, because the undefined type will be changed to the generic one
             // Match is in fact the other way
-            if (callTypeInfo->isNative(NativeTypeKind::Undefined))
+            if (callTypeInfo->isUndefined())
                 same = true;
 
             // Yes, and the Map is not the same, then this is an error
@@ -367,8 +367,7 @@ void Generic::deduceGenericTypeReplacement(SymbolMatchContext& context, AstNode*
                 else
                     typeParam = typeLambda->parameters[idx];
 
-                if (symbolParam->typeInfo->isGeneric() &&
-                    !typeParam->typeInfo->isNative(NativeTypeKind::Undefined))
+                if (symbolParam->typeInfo->isGeneric() && !typeParam->typeInfo->isUndefined())
                 {
                     symbolTypeInfos.push_back(symbolParam->typeInfo);
                     typeInfos.push_back(typeParam->typeInfo);

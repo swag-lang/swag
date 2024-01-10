@@ -137,6 +137,7 @@ struct TypeInfo
     bool isBool()                           { return isNative(NativeTypeKind::Bool); }
     bool isRune()                           { return isNative(NativeTypeKind::Rune); }
     bool isVoid()                           { return isNative(NativeTypeKind::Void); }
+    bool isUndefined()                      { return isNative(NativeTypeKind::Undefined); }
     bool isCString()                        { return (kind == TypeInfoKind::Pointer) && (flags & TYPEINFO_C_STRING); }
     bool isLambda()                         { return (kind == TypeInfoKind::LambdaClosure) && !isClosure(); }
     bool isClosure()                        { return (flags & TYPEINFO_CLOSURE); }

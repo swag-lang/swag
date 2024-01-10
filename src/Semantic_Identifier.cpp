@@ -319,7 +319,7 @@ void Semantic::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatch* 
                    p->typeInfo = it->second.typeInfoReplace; });
 
     // Set return type
-    if (typeUndefinedFct->returnType->isNative(NativeTypeKind::Undefined))
+    if (typeUndefinedFct->returnType->isUndefined())
     {
         typeUndefinedFct->returnType = typeDefinedFct->returnType;
         if (funcDecl->returnType)
@@ -4373,7 +4373,9 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     }
 
     // Already solved
-    if ((identifier->flags & AST_FROM_GENERIC) && identifier->typeInfo && !identifier->typeInfo->isNative(NativeTypeKind::Undefined))
+    if ((identifier->flags & AST_FROM_GENERIC) && 
+        identifier->typeInfo && 
+        !identifier->typeInfo->isUndefined())
     {
         if (identifier->resolvedSymbolOverload)
         {

@@ -126,7 +126,7 @@ AstNode* AstIdentifier::clone(CloneContext& context)
             newNode->identifierExtension->fromAlternateVar = it->second.fromNode;
         }
 
-        if (!it->second.typeInfoReplace->isNative(NativeTypeKind::Undefined))
+        if (!it->second.typeInfoReplace->isUndefined())
             newNode->token.text = it->second.typeInfoReplace->name;
 
         newNode->typeInfo = it->second.typeInfoReplace;
