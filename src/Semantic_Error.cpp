@@ -1,13 +1,12 @@
 #include "pch.h"
-#include "Semantic.h"
 #include "Ast.h"
-#include "Generic.h"
-#include "TypeManager.h"
-#include "LanguageSpec.h"
 #include "AstOutput.h"
-#include "Naming.h"
-#include "SyntaxColor.h"
 #include "Diagnostic.h"
+#include "LanguageSpec.h"
+#include "Naming.h"
+#include "Semantic.h"
+#include "SyntaxColor.h"
+#include "TypeManager.h"
 
 static int getBadParamIdx(OneTryMatch& oneTry, AstNode* callParameters)
 {
@@ -783,16 +782,12 @@ bool Semantic::cannotMatchIdentifierError(SemanticContext*            context,
             getDiagnosticForMatch(context, *tryResult[i], errs0, errs1);
             fn += "        ";
 
-            if (g_CommandLine.logColors)
-                fn += Log::colorToVTS(LogColor::Red);
             Vector<Utf8> parts;
             Diagnostic::tokenizeError(errs0[0]->textMsg, parts);
             if (parts.size() > 1)
                 fn += parts[1];
             else
                 fn += parts[0];
-            if (g_CommandLine.logColors)
-                fn += Log::colorToVTS(LogColor::Default);
         }
 
         note->remarks.push_back(fn);
