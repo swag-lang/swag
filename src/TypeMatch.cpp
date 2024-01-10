@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "TypeMatch.h"
 #include "Ast.h"
+#include "Generic.h"
 #include "Semantic.h"
 #include "TypeManager.h"
 
@@ -945,82 +946,6 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
     }
 }
 
-static void fillUserGenericParams(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& genericParameters)
-{
-    int wantedNumGenericParams = (int) genericParameters.size();
-    int numGenericParams       = (int) context.genericParameters.size();
-
-    context.genericParametersCallTypes.expand_clear(wantedNumGenericParams);
-    context.genericParametersCallValues.expand_clear(wantedNumGenericParams);
-    context.genericParametersCallFrom.expand_clear(wantedNumGenericParams);
-    context.genericParametersGenTypes.set_size_clear(wantedNumGenericParams);
-
-    if (numGenericParams > wantedNumGenericParams)
-    {
-        context.badSignatureInfos.badSignatureNum1 = numGenericParams;
-        context.badSignatureInfos.badSignatureNum2 = wantedNumGenericParams;
-        context.result                             = MatchResult::TooManyGenericParameters;
-        return;
-    }
-
-    for (int i = 0; i < wantedNumGenericParams; i++)
-    {
-        auto genType = genericParameters[i];
-
-        context.mapGenericTypesIndex[genType->typeInfo->name] = i;
-        context.genericParametersGenTypes[i]                  = genType->typeInfo;
-    }
-
-    for (int i = 0; i < numGenericParams; i++)
-    {
-        const auto& genName     = genericParameters[i]->name;
-        const auto& genTypeName = genericParameters[i]->typeInfo->name;
-        auto        genNode     = context.genericParameters[i];
-        if (!context.genericParametersCallTypes[i])
-        {
-            context.genericReplaceTypes[genTypeName] = genNode->typeInfo;
-            context.genericReplaceValues[genName]    = genNode->computedValue;
-            context.genericReplaceFrom[genTypeName]  = genNode;
-
-            context.genericParametersCallTypes[i]  = genNode->typeInfo;
-            context.genericParametersCallValues[i] = genNode->computedValue;
-            context.genericParametersCallFrom[i]   = genNode;
-        }
-        else
-        {
-            context.genericReplaceTypes[genTypeName] = context.genericParametersCallTypes[i];
-            context.genericReplaceValues[genName]    = context.genericParametersCallValues[i];
-            context.genericReplaceFrom[genTypeName]  = context.genericParametersCallFrom[i];
-        }
-    }
-
-    for (auto i = numGenericParams; i < wantedNumGenericParams; i++)
-    {
-        const auto& genName     = genericParameters[i]->name;
-        const auto& genTypeName = genericParameters[i]->typeInfo->name;
-        if (context.genericParametersCallTypes[i])
-        {
-            context.genericReplaceTypes[genTypeName] = context.genericParametersCallTypes[i];
-            context.genericReplaceValues[genName]    = context.genericParametersCallValues[i];
-            context.genericReplaceFrom[genTypeName]  = context.genericParametersCallFrom[i];
-        }
-        else
-        {
-            auto it = context.genericReplaceTypes.find(genTypeName);
-            if (it != context.genericReplaceTypes.end())
-                context.genericParametersCallTypes[i] = it->second;
-
-            auto it1 = context.genericReplaceValues.find(genName);
-            if (it1 != context.genericReplaceValues.end())
-                context.genericParametersCallValues[i] = it1->second;
-
-            auto it2 = context.genericReplaceFrom.find(genTypeName);
-            if (it2 != context.genericReplaceFrom.end())
-                context.genericParametersCallFrom[i] = it2->second;
-        }
-    }
-}
-
 static void matchParametersAndNamed(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters, uint64_t castFlags)
 {
     matchParameters(context, parameters, castFlags);
@@ -1032,7 +957,7 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
 {
     context.result = MatchResult::Ok;
 
-    fillUserGenericParams(context, typeFunc->genericParameters);
+    Generic::fillUserGenericParams(context, typeFunc->genericParameters);
     if (context.result != MatchResult::Ok)
         return;
 
@@ -1129,7 +1054,7 @@ void Match::match(TypeInfoStruct* typeStruct, SymbolMatchContext& context)
 {
     context.result = MatchResult::Ok;
 
-    fillUserGenericParams(context, typeStruct->genericParameters);
+    Generic::fillUserGenericParams(context, typeStruct->genericParameters);
     if (context.result != MatchResult::Ok)
         return;
 

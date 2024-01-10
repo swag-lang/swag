@@ -163,7 +163,6 @@ namespace Semantic
     void           allocateOnStack(AstNode* node, TypeInfo* typeInfo);
     bool           setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters, bool forGenerics);
     Diagnostic*    computeNonConstExprNote(AstNode* node);
-    void           setupContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload, uint32_t flags);
     bool           executeCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr);
     bool           doExecuteCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr);
     bool           reserveAndStoreToSegment(JobContext* context, DataSegment* storageSegment, uint32_t& storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);

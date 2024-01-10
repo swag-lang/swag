@@ -1577,95 +1577,6 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
     return true;
 }
 
-void Semantic::setupContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload, uint32_t flags)
-{
-    auto node = context->node;
-
-    // Fresh start on generic types
-    oneTryMatch.symMatchContext.genericReplaceTypes.clear();
-    oneTryMatch.symMatchContext.mapGenericTypesIndex.clear();
-
-    auto& toCheck = context->tmpNodes;
-    toCheck.clear();
-
-    // If we are inside a struct, then we can inherit the generic concrete types of that struct
-    if (node->ownerStructScope)
-        toCheck.push_back(node->ownerStructScope->owner);
-
-    // If function A in a struct calls function B in the same struct, then we can inherit the match types of function A
-    // when instantiating function B
-    if (node->ownerFct && node->ownerStructScope && node->ownerFct->ownerStructScope == symOverload->node->ownerStructScope)
-        toCheck.push_back(node->ownerFct);
-
-    // We do not want function to deduce their generic type from context, as the generic type can be deduced from the
-    // parameters
-    if (node->ownerFct && !symOverload->typeInfo->isFuncAttr())
-        toCheck.push_back(node->ownerFct);
-
-    // Except for a second try
-    if (node->ownerFct && symOverload->typeInfo->isFuncAttr() && flags & MIP_SECOND_GENERIC_TRY)
-        toCheck.push_back(node->ownerFct);
-
-    // With A.B form, we try to get generic parameters from A if they exist
-    if (node->kind == AstNodeKind::Identifier)
-    {
-        auto identifier = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
-        if (identifier->identifierRef()->startScope)
-            toCheck.push_back(identifier->identifierRef()->startScope->owner);
-    }
-
-    // Except that with using, B could be in fact in another struct than A.
-    // In that case we have a dependentVar, so replace what needs to be replaced.
-    // What a mess...
-    if (oneTryMatch.dependentVarLeaf)
-    {
-        if (oneTryMatch.dependentVarLeaf->typeInfo && oneTryMatch.dependentVarLeaf->typeInfo->isStruct())
-        {
-            auto typeStruct = CastTypeInfo<TypeInfoStruct>(oneTryMatch.dependentVarLeaf->typeInfo, TypeInfoKind::Struct);
-            toCheck.push_back(typeStruct->declNode);
-        }
-    }
-
-    // Collect from the owner structure
-    for (auto one : toCheck)
-    {
-        if (one->kind == AstNodeKind::FuncDecl)
-        {
-            auto nodeFunc = CastAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
-            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(nodeFunc->typeInfo, TypeInfoKind::FuncAttr);
-
-            oneTryMatch.symMatchContext.genericReplaceTypes.reserve(typeFunc->replaceTypes.size());
-            for (auto oneReplace : typeFunc->replaceTypes)
-                oneTryMatch.symMatchContext.genericReplaceTypes[oneReplace.first] = oneReplace.second;
-
-            oneTryMatch.symMatchContext.genericReplaceValues.reserve(typeFunc->replaceValues.size());
-            for (auto oneReplace : typeFunc->replaceValues)
-                oneTryMatch.symMatchContext.genericReplaceValues[oneReplace.first] = oneReplace.second;
-
-            oneTryMatch.symMatchContext.genericReplaceFrom.reserve(typeFunc->replaceFrom.size());
-            for (auto oneReplace : typeFunc->replaceFrom)
-                oneTryMatch.symMatchContext.genericReplaceFrom[oneReplace.first] = oneReplace.second;
-        }
-        else if (one->kind == AstNodeKind::StructDecl)
-        {
-            auto nodeStruct = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
-            auto typeStruct = CastTypeInfo<TypeInfoStruct>(nodeStruct->typeInfo, TypeInfoKind::Struct);
-
-            oneTryMatch.symMatchContext.genericReplaceTypes.reserve(typeStruct->replaceTypes.size());
-            for (auto oneReplace : typeStruct->replaceTypes)
-                oneTryMatch.symMatchContext.genericReplaceTypes[oneReplace.first] = oneReplace.second;
-
-            oneTryMatch.symMatchContext.genericReplaceValues.reserve(typeStruct->replaceValues.size());
-            for (auto oneReplace : typeStruct->replaceValues)
-                oneTryMatch.symMatchContext.genericReplaceValues[oneReplace.first] = oneReplace.second;
-
-            oneTryMatch.symMatchContext.genericReplaceFrom.reserve(typeStruct->replaceFrom.size());
-            for (auto oneReplace : typeStruct->replaceFrom)
-                oneTryMatch.symMatchContext.genericReplaceFrom[oneReplace.first] = oneReplace.second;
-        }
-    }
-}
-
 bool Semantic::isFunctionButNotACall(SemanticContext* context, AstNode* node, SymbolName* symbol)
 {
     AstIdentifier* id = nullptr;
@@ -1851,7 +1762,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
             oneOverload.symMatchContext.flags |= SymbolMatchContext::MATCH_UFCS;
 
         // We collect type replacements depending on where the identifier is
-        setupContextualGenericTypeReplacement(context, oneOverload, overload, flags);
+        Generic::setupContextualGenericTypeReplacement(context, oneOverload, overload, flags);
 
         oneOverload.symMatchContext.semContext = context;
         context->castFlagsResult               = 0;
