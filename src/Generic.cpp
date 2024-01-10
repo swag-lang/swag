@@ -72,7 +72,7 @@ bool Generic::updateGenericParameters(SemanticContext*              context,
         }
 
         // We should not instantiate with unresolved types
-        auto genGen = match.genericParametersGenTypes[i];
+        auto genGen = match.mapIndexToGenericType[i];
         if (genGen->isKindGeneric())
         {
             if (param->typeInfo->isUntypedInteger() || param->typeInfo->isUntypedFloat())
@@ -471,8 +471,8 @@ void Generic::deduceGenericParam(SymbolMatchContext& context, AstNode* callParam
                 context.genericReplaceTypes[wantedTypeInfo->name] = st;
 
                 // If this is a valid generic argument, register it at the correct call position
-                auto itIdx = context.mapGenericTypesIndex.find(wantedTypeInfo->name);
-                if (itIdx != context.mapGenericTypesIndex.end())
+                auto itIdx = context.mapGenericTypeToIndex.find(wantedTypeInfo->name);
+                if (itIdx != context.mapGenericTypeToIndex.end())
                 {
                     context.genericParametersCallTypes[itIdx->second] = callTypeInfo;
                     context.genericParametersCallFrom[itIdx->second]  = callParameter;
@@ -748,7 +748,7 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
     context.genericParametersCallTypes.expand_clear(wantedNumGenericParams);
     context.genericParametersCallValues.expand_clear(wantedNumGenericParams);
     context.genericParametersCallFrom.expand_clear(wantedNumGenericParams);
-    context.genericParametersGenTypes.set_size_clear(wantedNumGenericParams);
+    context.mapIndexToGenericType.set_size_clear(wantedNumGenericParams);
 
     if (numGenericParams > wantedNumGenericParams)
     {
@@ -760,10 +760,10 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
 
     for (int i = 0; i < wantedNumGenericParams; i++)
     {
-        auto        genType                       = genericParameters[i]->typeInfo;
-        const auto& genTypeName                   = genType->name;
-        context.mapGenericTypesIndex[genTypeName] = i;
-        context.genericParametersGenTypes[i]      = genType;
+        auto        genType                        = genericParameters[i]->typeInfo;
+        const auto& genTypeName                    = genType->name;
+        context.mapGenericTypeToIndex[genTypeName] = i;
+        context.mapIndexToGenericType[i]           = genType;
     }
 
     GenericReplaceType                  st;
@@ -862,7 +862,7 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
 
     // Fresh start on generic types
     oneTryMatch.symMatchContext.genericReplaceTypes.clear();
-    oneTryMatch.symMatchContext.mapGenericTypesIndex.clear();
+    oneTryMatch.symMatchContext.mapGenericTypeToIndex.clear();
 
     auto& toCheck = context->tmpNodes;
     toCheck.clear();

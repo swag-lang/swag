@@ -1905,7 +1905,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                 match->genericParametersCallFrom   = std::move(oneOverload.symMatchContext.genericParametersCallFrom);
                 match->genericReplaceTypes         = std::move(oneOverload.symMatchContext.genericReplaceTypes);
                 match->genericReplaceValues        = std::move(oneOverload.symMatchContext.genericReplaceValues);
-                match->genericParametersGenTypes   = std::move(oneOverload.symMatchContext.genericParametersGenTypes);
+                match->mapIndexToGenericType       = std::move(oneOverload.symMatchContext.mapIndexToGenericType);
                 match->parameters                  = std::move(oneOverload.symMatchContext.parameters);
                 match->solvedParameters            = std::move(oneOverload.symMatchContext.solvedParameters);
                 match->genericParameters           = genericParameters;

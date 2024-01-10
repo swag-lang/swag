@@ -100,8 +100,8 @@ struct SymbolMatchContext
     VectorNative<AstNode*>              genericParametersCallFrom;
     VectorMap<Utf8, GenericReplaceType> genericReplaceTypes;
     VectorMap<Utf8, ComputedValue*>     genericReplaceValues;
-    VectorNative<TypeInfo*>             genericParametersGenTypes;
-    VectorMap<Utf8, uint32_t>           mapGenericTypesIndex;
+    VectorNative<TypeInfo*>             mapIndexToGenericType;
+    VectorMap<Utf8, uint32_t>           mapGenericTypeToIndex;
     BadSignatureInfos                   badSignatureInfos;
 
     SemanticContext* semContext = nullptr;
@@ -131,8 +131,8 @@ struct SymbolMatchContext
         genericParametersCallFrom.clear();
         genericReplaceTypes.clear();
         genericReplaceValues.clear();
-        genericParametersGenTypes.clear();
-        mapGenericTypesIndex.clear();
+        mapIndexToGenericType.clear();
+        mapGenericTypeToIndex.clear();
         badSignatureInfos.clear();
 
         semContext = nullptr;
