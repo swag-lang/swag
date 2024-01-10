@@ -302,8 +302,8 @@ void Semantic::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatch* 
         auto it            = typeDefinedFct->replaceTypes.find(undefinedType->name);
         if (it != typeDefinedFct->replaceTypes.end())
         {
-            undefinedType->name     = it->second->name;
-            undefinedType->typeInfo = it->second;
+            undefinedType->name     = it->second.typeInfoReplace->name;
+            undefinedType->typeInfo = it->second.typeInfoReplace;
         }
     }
 
@@ -313,10 +313,10 @@ void Semantic::resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatch* 
                    auto it = typeDefinedFct->replaceTypes.find(p->token.text);
                    if (it == typeDefinedFct->replaceTypes.end())
                        return;
-                   p->token.text = it->second->name;
+                   p->token.text = it->second.typeInfoReplace->name;
                    if (p->resolvedSymbolOverload)
-                       p->resolvedSymbolOverload->typeInfo = it->second;
-                   p->typeInfo = it->second; });
+                       p->resolvedSymbolOverload->typeInfo = it->second.typeInfoReplace;
+                   p->typeInfo = it->second.typeInfoReplace; });
 
     // Set return type
     if (typeUndefinedFct->returnType->isNative(NativeTypeKind::Undefined))
@@ -1643,7 +1643,7 @@ static bool areGenericReplaceTypesIdentical(TypeInfo* typeInfo, OneGenericMatch&
         auto it = typeFunc->replaceTypes.find(rt.first);
         if (it == typeFunc->replaceTypes.end())
             return false;
-        if (rt.second != it->second)
+        if (rt.second.typeInfoReplace != it->second.typeInfoReplace)
             return false;
     }
 
@@ -1905,7 +1905,6 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                 match->genericParametersCallFrom   = std::move(oneOverload.symMatchContext.genericParametersCallFrom);
                 match->genericReplaceTypes         = std::move(oneOverload.symMatchContext.genericReplaceTypes);
                 match->genericReplaceValues        = std::move(oneOverload.symMatchContext.genericReplaceValues);
-                match->genericReplaceFrom          = std::move(oneOverload.symMatchContext.genericReplaceFrom);
                 match->genericParametersGenTypes   = std::move(oneOverload.symMatchContext.genericParametersGenTypes);
                 match->parameters                  = std::move(oneOverload.symMatchContext.parameters);
                 match->solvedParameters            = std::move(oneOverload.symMatchContext.solvedParameters);
@@ -2084,7 +2083,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
             {
                 auto p      = g_TypeMgr->makeParam();
                 p->name     = og.first.c_str();
-                p->typeInfo = og.second;
+                p->typeInfo = og.second.typeInfoReplace;
                 params.push_back(p);
             }
 
@@ -4068,7 +4067,7 @@ bool Semantic::filterMatchesInContext(SemanticContext* context, VectorNative<One
                         auto it1 = typeFuncCheck->replaceTypes.find(it.first);
                         if (it1 == typeFuncCheck->replaceTypes.end())
                             continue;
-                        if (it.second != it1->second)
+                        if (it.second.typeInfoReplace != it1->second.typeInfoReplace)
                             oneMatch->remove = true;
                     }
                 }

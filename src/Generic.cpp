@@ -81,25 +81,29 @@ bool Generic::updateGenericParameters(SemanticContext*              context,
                 auto errNode = context->node;
 
                 TypeInfo* errType = nullptr;
-                for (auto& v : match.genericReplaceFrom)
+                for (auto& v : match.genericReplaceTypes)
                 {
-                    if (v.second->typeInfo->isUntypedInteger() || v.second->typeInfo->isUntypedFloat())
+                    auto fromNode = v.second.fromNode;
+                    if (!fromNode)
+                        continue;
+
+                    if (fromNode->typeInfo->isUntypedInteger() || fromNode->typeInfo->isUntypedFloat())
                     {
-                        errType = v.second->typeInfo;
-                        errNode = v.second;
+                        errType = fromNode->typeInfo;
+                        errNode = fromNode;
                         break;
                     }
 
-                    if (v.second->typeInfo->isListArray())
+                    if (fromNode->typeInfo->isListArray())
                     {
-                        auto listArr = CastTypeInfo<TypeInfoList>(v.second->typeInfo, TypeInfoKind::TypeListArray);
+                        auto listArr = CastTypeInfo<TypeInfoList>(fromNode->typeInfo, TypeInfoKind::TypeListArray);
                         if (listArr->subTypes[0]->typeInfo->isUntypedInteger() || listArr->subTypes[0]->typeInfo->isUntypedFloat())
                         {
-                            errType = v.second->typeInfo = listArr->subTypes[0]->typeInfo;
-                            if (v.second->kind == AstNodeKind::FuncCallParam)
-                                errNode = v.second->childs.front()->childs.front();
+                            errType = fromNode->typeInfo = listArr->subTypes[0]->typeInfo;
+                            if (fromNode->kind == AstNodeKind::FuncCallParam)
+                                errNode = fromNode->childs.front()->childs.front();
                             else
-                                errNode = v.second->childs.front();
+                                errNode = fromNode->childs.front();
                             break;
                         }
                     }
@@ -142,7 +146,7 @@ bool Generic::updateGenericParameters(SemanticContext*              context,
     return true;
 }
 
-TypeInfo* Generic::doTypeSubstitution(VectorMap<Utf8, TypeInfo*>& replaceTypes, TypeInfo* typeInfo)
+TypeInfo* Generic::doTypeSubstitution(VectorMap<Utf8, GenericReplaceType>& replaceTypes, TypeInfo* typeInfo)
 {
     if (!typeInfo)
         return nullptr;
@@ -157,18 +161,18 @@ TypeInfo* Generic::doTypeSubstitution(VectorMap<Utf8, TypeInfo*>& replaceTypes, 
     {
         // We can have a match on a lambda for a function attribute, when function has been generated
         // In that case, we want to be sure that the kind is function
-        if (typeInfo->isFuncAttr() && it->second->isLambdaClosure())
+        if (typeInfo->isFuncAttr() && it->second.typeInfoReplace->isLambdaClosure())
         {
-            auto t  = it->second->clone();
+            auto t  = it->second.typeInfoReplace->clone();
             t->kind = TypeInfoKind::FuncAttr;
             return t;
         }
 
         // Do not substitute with unconverted TypeList
-        if (!it->second->isListArray())
-            return it->second;
+        if (!it->second.typeInfoReplace->isListArray())
+            return it->second.typeInfoReplace;
         else if (typeInfo->isKindGeneric())
-            return TypeManager::convertTypeListToArray(nullptr, (TypeInfoList*) it->second, true);
+            return TypeManager::convertTypeListToArray(nullptr, (TypeInfoList*) it->second.typeInfoReplace, true);
     }
 
     // When type is a compound, we do substitution in the raw type
@@ -326,7 +330,7 @@ TypeInfo* Generic::doTypeSubstitution(VectorMap<Utf8, TypeInfo*>& replaceTypes, 
     return typeInfo;
 }
 
-Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNode* newNode, bool waitSymbol, VectorMap<Utf8, TypeInfo*>& replaceTypes)
+Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNode* newNode, bool waitSymbol, VectorMap<Utf8, GenericReplaceType>& replaceTypes)
 {
     // Need to wait for the struct/function to be semantic resolved
     symbol->cptOverloads++;
@@ -394,7 +398,7 @@ void Generic::deduceGenericParam(SymbolMatchContext& context, AstNode* callParam
             // Yes, and the Map is not the same, then this is an error
             else
             {
-                same = TypeManager::makeCompatibles(context.semContext, it->second, callTypeInfo, nullptr, nullptr, CASTFLAG_JUST_CHECK | CASTFLAG_PARAMS | castFlags);
+                same = TypeManager::makeCompatibles(context.semContext, it->second.typeInfoReplace, callTypeInfo, nullptr, nullptr, CASTFLAG_JUST_CHECK | CASTFLAG_PARAMS | castFlags);
                 if (context.semContext->result != ContextResult::Done)
                     return;
             }
@@ -402,15 +406,11 @@ void Generic::deduceGenericParam(SymbolMatchContext& context, AstNode* callParam
             if (!same)
             {
                 context.badSignatureInfos.badSignatureParameterIdx  = idxParam;
-                context.badSignatureInfos.badSignatureRequestedType = it->second;
+                context.badSignatureInfos.badSignatureRequestedType = it->second.typeInfoReplace;
+                context.badSignatureInfos.genMatchFromNode          = it->second.fromNode;
                 context.badSignatureInfos.badSignatureGivenType     = callTypeInfo;
                 context.badSignatureInfos.badGenMatch               = wantedTypeInfo->name;
                 SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
-
-                auto it1 = context.genericReplaceFrom.find(wantedTypeInfo->name);
-                if (it1 != context.genericReplaceFrom.end())
-                    context.badSignatureInfos.genMatchFromNode = it1->second;
-
                 context.result = MatchResult::BadSignature;
             }
         }
@@ -464,8 +464,11 @@ void Generic::deduceGenericParam(SymbolMatchContext& context, AstNode* callParam
                 }
 
                 // Associate the generic type with that concrete one
-                context.genericReplaceTypes[wantedTypeInfo->name] = regTypeInfo;
-                context.genericReplaceFrom[wantedTypeInfo->name]  = callParameter;
+                GenericReplaceType st;
+                st.typeInfoGeneric                                = wantedTypeInfo;
+                st.typeInfoReplace                                = regTypeInfo;
+                st.fromNode                                       = callParameter;
+                context.genericReplaceTypes[wantedTypeInfo->name] = st;
 
                 // If this is a valid generic argument, register it at the correct call position
                 auto itIdx = context.mapGenericTypesIndex.find(wantedTypeInfo->name);
@@ -643,15 +646,25 @@ void Generic::deduceGenericParam(SymbolMatchContext& context, AstNode* callParam
                     else
                     {
                         Allocator::free<ComputedValue>(cv);
-                        context.genericReplaceTypes[symbolArray->sizeNode->typeInfo->name] = symbolArray->sizeNode->typeInfo;
-                        context.genericReplaceFrom[symbolArray->sizeNode->typeInfo->name]  = symbolArray->sizeNode;
+
+                        GenericReplaceType st;
+                        st.typeInfoGeneric = symbolArray->sizeNode->typeInfo;
+                        st.typeInfoReplace = symbolArray->sizeNode->typeInfo;
+                        st.fromNode        = symbolArray->sizeNode;
+
+                        context.genericReplaceTypes[symbolArray->sizeNode->typeInfo->name] = st;
                     }
                 }
                 else
                 {
-                    context.genericReplaceValues[cstName]                              = cv;
-                    context.genericReplaceTypes[symbolArray->sizeNode->typeInfo->name] = symbolArray->sizeNode->typeInfo;
-                    context.genericReplaceFrom[symbolArray->sizeNode->typeInfo->name]  = symbolArray->sizeNode;
+                    context.genericReplaceValues[cstName] = cv;
+
+                    GenericReplaceType st;
+                    st.typeInfoGeneric = symbolArray->sizeNode->typeInfo;
+                    st.typeInfoReplace = symbolArray->sizeNode->typeInfo;
+                    st.fromNode        = symbolArray->sizeNode;
+
+                    context.genericReplaceTypes[symbolArray->sizeNode->typeInfo->name] = st;
                 }
             }
 
@@ -752,6 +765,7 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
         context.genericParametersGenTypes[i]                  = genType->typeInfo;
     }
 
+    GenericReplaceType st;
     for (int i = 0; i < numGenericParams; i++)
     {
         const auto& genName     = genericParameters[i]->name;
@@ -759,9 +773,12 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
         auto        genNode     = context.genericParameters[i];
         if (!context.genericParametersCallTypes[i])
         {
-            context.genericReplaceTypes[genTypeName] = genNode->typeInfo;
+            st.typeInfoGeneric = genericParameters[i]->typeInfo;
+            st.typeInfoReplace = genNode->typeInfo;
+            st.fromNode        = genNode;
+
+            context.genericReplaceTypes[genTypeName] = st;
             context.genericReplaceValues[genName]    = genNode->computedValue;
-            context.genericReplaceFrom[genTypeName]  = genNode;
 
             context.genericParametersCallTypes[i]  = genNode->typeInfo;
             context.genericParametersCallValues[i] = genNode->computedValue;
@@ -769,9 +786,12 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
         }
         else
         {
-            context.genericReplaceTypes[genTypeName] = context.genericParametersCallTypes[i];
+            st.typeInfoGeneric = nullptr;
+            st.typeInfoReplace = context.genericParametersCallTypes[i];
+            st.fromNode        = context.genericParametersCallFrom[i];
+
+            context.genericReplaceTypes[genTypeName] = st;
             context.genericReplaceValues[genName]    = context.genericParametersCallValues[i];
-            context.genericReplaceFrom[genTypeName]  = context.genericParametersCallFrom[i];
         }
     }
 
@@ -781,23 +801,25 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
         const auto& genTypeName = genericParameters[i]->typeInfo->name;
         if (context.genericParametersCallTypes[i])
         {
-            context.genericReplaceTypes[genTypeName] = context.genericParametersCallTypes[i];
+            st.typeInfoGeneric = nullptr;
+            st.typeInfoReplace = context.genericParametersCallTypes[i];
+            st.fromNode        = context.genericParametersCallFrom[i];
+
+            context.genericReplaceTypes[genTypeName] = st;
             context.genericReplaceValues[genName]    = context.genericParametersCallValues[i];
-            context.genericReplaceFrom[genTypeName]  = context.genericParametersCallFrom[i];
         }
         else
         {
             auto it = context.genericReplaceTypes.find(genTypeName);
             if (it != context.genericReplaceTypes.end())
-                context.genericParametersCallTypes[i] = it->second;
+            {
+                context.genericParametersCallTypes[i] = it->second.typeInfoReplace;
+                context.genericParametersCallFrom[i]  = it->second.fromNode;
+            }
 
             auto it1 = context.genericReplaceValues.find(genName);
             if (it1 != context.genericReplaceValues.end())
                 context.genericParametersCallValues[i] = it1->second;
-
-            auto it2 = context.genericReplaceFrom.find(genTypeName);
-            if (it2 != context.genericReplaceFrom.end())
-                context.genericParametersCallFrom[i] = it2->second;
         }
     }
 }
@@ -866,10 +888,6 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
             oneTryMatch.symMatchContext.genericReplaceValues.reserve(typeFunc->replaceValues.size());
             for (auto oneReplace : typeFunc->replaceValues)
                 oneTryMatch.symMatchContext.genericReplaceValues[oneReplace.first] = oneReplace.second;
-
-            oneTryMatch.symMatchContext.genericReplaceFrom.reserve(typeFunc->replaceFrom.size());
-            for (auto oneReplace : typeFunc->replaceFrom)
-                oneTryMatch.symMatchContext.genericReplaceFrom[oneReplace.first] = oneReplace.second;
         }
         else if (one->kind == AstNodeKind::StructDecl)
         {
@@ -883,10 +901,6 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
             oneTryMatch.symMatchContext.genericReplaceValues.reserve(typeStruct->replaceValues.size());
             for (auto oneReplace : typeStruct->replaceValues)
                 oneTryMatch.symMatchContext.genericReplaceValues[oneReplace.first] = oneReplace.second;
-
-            oneTryMatch.symMatchContext.genericReplaceFrom.reserve(typeStruct->replaceFrom.size());
-            for (auto oneReplace : typeStruct->replaceFrom)
-                oneTryMatch.symMatchContext.genericReplaceFrom[oneReplace.first] = oneReplace.second;
         }
     }
 }

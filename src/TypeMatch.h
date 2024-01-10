@@ -1,4 +1,6 @@
 #pragma once
+#include "Generic.h"
+
 struct AstNode;
 struct TypeInfoFuncAttr;
 struct TypeInfoStruct;
@@ -88,20 +90,19 @@ struct SymbolMatchContext
     static const uint32_t MATCH_UFCS              = 0x00000040;
     static const uint32_t MATCH_CLOSURE_PARAM     = 0x00000080;
 
-    VectorNative<AstNode*>          genericParameters;
-    VectorNative<AstNode*>          parameters;
-    VectorNative<TypeInfoParam*>    solvedParameters;
-    VectorNative<TypeInfoParam*>    solvedCallParameters;
-    VectorNative<bool>              doneParameters;
-    VectorNative<TypeInfo*>         genericParametersCallTypes;
-    VectorNative<ComputedValue*>    genericParametersCallValues;
-    VectorNative<AstNode*>          genericParametersCallFrom;
-    VectorMap<Utf8, TypeInfo*>      genericReplaceTypes;
-    VectorMap<Utf8, ComputedValue*> genericReplaceValues;
-    VectorMap<Utf8, AstNode*>       genericReplaceFrom;
-    VectorNative<TypeInfo*>         genericParametersGenTypes;
-    VectorMap<Utf8, uint32_t>       mapGenericTypesIndex;
-    BadSignatureInfos               badSignatureInfos;
+    VectorNative<AstNode*>              genericParameters;
+    VectorNative<AstNode*>              parameters;
+    VectorNative<TypeInfoParam*>        solvedParameters;
+    VectorNative<TypeInfoParam*>        solvedCallParameters;
+    VectorNative<bool>                  doneParameters;
+    VectorNative<TypeInfo*>             genericParametersCallTypes;
+    VectorNative<ComputedValue*>        genericParametersCallValues;
+    VectorNative<AstNode*>              genericParametersCallFrom;
+    VectorMap<Utf8, GenericReplaceType> genericReplaceTypes;
+    VectorMap<Utf8, ComputedValue*>     genericReplaceValues;
+    VectorNative<TypeInfo*>             genericParametersGenTypes;
+    VectorMap<Utf8, uint32_t>           mapGenericTypesIndex;
+    BadSignatureInfos                   badSignatureInfos;
 
     SemanticContext* semContext = nullptr;
 
@@ -130,7 +131,6 @@ struct SymbolMatchContext
         genericParametersCallFrom.clear();
         genericReplaceTypes.clear();
         genericReplaceValues.clear();
-        genericReplaceFrom.clear();
         genericParametersGenTypes.clear();
         mapGenericTypesIndex.clear();
         badSignatureInfos.clear();

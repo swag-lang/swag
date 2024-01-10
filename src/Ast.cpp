@@ -442,7 +442,7 @@ Utf8 Ast::computeGenericParametersReplacement(VectorNative<TypeInfoParam*>& para
     return result;
 }
 
-Vector<Utf8> Ast::computeGenericParametersReplacement(VectorMap<Utf8, TypeInfo*>& replace)
+Vector<Utf8> Ast::computeGenericParametersReplacement(VectorMap<Utf8, GenericReplaceType>& replace)
 {
     if (!replace.size())
         return {};
@@ -452,13 +452,13 @@ Vector<Utf8> Ast::computeGenericParametersReplacement(VectorMap<Utf8, TypeInfo*>
     for (auto p : replace)
     {
         // Can occur in case of constants (like string for example)
-        if (p.first == p.second->getDisplayName())
+        if (p.first == p.second.typeInfoReplace->getDisplayName())
             continue;
         if (p.first.length() > 2 && p.first[0] == '_' && p.first[1] == '_') // Generated name
             continue;
 
         remark = "with ";
-        remark += Fmt("%s = %s", p.first.c_str(), p.second->getDisplayNameC());
+        remark += Fmt("%s = %s", p.first.c_str(), p.second.typeInfoReplace->getDisplayNameC());
         result.push_back(remark);
     }
 

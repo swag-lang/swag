@@ -120,17 +120,16 @@ AstNode* AstIdentifier::clone(CloneContext& context)
     if (it != context.replaceTypes.end())
     {
         // :ForLocationInValidIf
-        auto it1 = context.replaceFrom.find(newNode->token.text);
-        if (it1 != context.replaceFrom.end())
+        if (it->second.fromNode)
         {
             newNode->allocateIdentifierExtension();
-            newNode->identifierExtension->fromAlternateVar = it1->second;
+            newNode->identifierExtension->fromAlternateVar = it->second.fromNode;
         }
 
-        if (!it->second->isNative(NativeTypeKind::Undefined))
-            newNode->token.text = it->second->name;
+        if (!it->second.typeInfoReplace->isNative(NativeTypeKind::Undefined))
+            newNode->token.text = it->second.typeInfoReplace->name;
 
-        newNode->typeInfo = it->second;
+        newNode->typeInfo = it->second.typeInfoReplace;
         if (newNode->typeInfo->declNode)
         {
             newNode->resolvedSymbolName     = newNode->typeInfo->declNode->resolvedSymbolName;

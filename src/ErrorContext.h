@@ -1,10 +1,12 @@
 #pragma once
+#include "Generic.h"
 
 struct AstNode;
 struct JobContext;
 struct TypeInfo;
 struct ErrorContext;
 struct Diagnostic;
+struct GenericReplaceType;
 struct SourceFile;
 
 enum class ErrCxtStepKind
@@ -21,12 +23,12 @@ enum class ErrCxtStepKind
 
 struct ErrorCxtStep
 {
-    AstNode*                   node = nullptr;
-    ErrCxtStepKind             type = ErrCxtStepKind::Note;
-    VectorMap<Utf8, TypeInfo*> replaceTypes;
-    bool                       locIsToken = false;
-    bool                       hide       = false;
-    function<Utf8()>           err;
+    AstNode*                            node = nullptr;
+    ErrCxtStepKind                      type = ErrCxtStepKind::Note;
+    VectorMap<Utf8, GenericReplaceType> replaceTypes;
+    bool                                locIsToken = false;
+    bool                                hide       = false;
+    function<Utf8()>                    err;
 };
 
 struct PushErrCxtStep

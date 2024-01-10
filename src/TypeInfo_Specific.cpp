@@ -533,7 +533,6 @@ TypeInfo* TypeInfoFuncAttr::clone()
     newType->attributeUsage       = attributeUsage;
     newType->callConv             = callConv;
     newType->replaceTypes         = replaceTypes;
-    newType->replaceFrom          = replaceFrom;
 
     for (size_t i = 0; i < genericParameters.size(); i++)
     {
@@ -735,7 +734,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint64_t castFlags, BadSi
                 auto it = typeOtherFunc->replaceTypes.find(r.first);
                 if (it == typeOtherFunc->replaceTypes.end())
                     return false;
-                if (r.second != it->second)
+                if (r.second.typeInfoReplace != it->second.typeInfoReplace)
                     return false;
             }
         }
@@ -1008,7 +1007,6 @@ TypeInfo* TypeInfoStruct::clone()
     newType->alignOf           = alignOf;
     newType->structName        = structName;
     newType->replaceTypes      = replaceTypes;
-    newType->replaceFrom       = replaceFrom;
 
     int size = (int) genericParameters.size();
     newType->genericParameters.reserve(size);

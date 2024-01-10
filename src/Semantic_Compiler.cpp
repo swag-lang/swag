@@ -833,24 +833,20 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
             for (auto it : typeFunc->replaceTypes)
             {
                 bool fromGen = false;
-                if (it.second == locNode->typeInfo)
+                if (it.second.typeInfoReplace == locNode->typeInfo)
                     fromGen = true;
-                else if (locNode->typeInfo->isPointer() && it.second == ((TypeInfoPointer*) locNode->typeInfo)->pointedType)
+                else if (locNode->typeInfo->isPointer() && it.second.typeInfoReplace == ((TypeInfoPointer*) locNode->typeInfo)->pointedType)
                     fromGen = true;
-                else if (locNode->typeInfo->isSlice() && it.second == ((TypeInfoSlice*) locNode->typeInfo)->pointedType)
+                else if (locNode->typeInfo->isSlice() && it.second.typeInfoReplace == ((TypeInfoSlice*) locNode->typeInfo)->pointedType)
                     fromGen = true;
-                else if (locNode->typeInfo->isArray() && it.second == ((TypeInfoArray*) locNode->typeInfo)->finalType)
+                else if (locNode->typeInfo->isArray() && it.second.typeInfoReplace == ((TypeInfoArray*) locNode->typeInfo)->finalType)
                     fromGen = true;
 
-                if (fromGen)
+                if (fromGen && it.second.fromNode)
                 {
-                    auto it1 = typeFunc->replaceFrom.find(it.first);
-                    if (it1 != typeFunc->replaceFrom.end())
-                    {
-                        locNode = it1->second;
-                        done    = true;
-                        continue;
-                    }
+                    locNode = it.second.fromNode;
+                    done    = true;
+                    continue;
                 }
             }
         }

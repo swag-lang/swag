@@ -329,16 +329,9 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                         auto it = context.genericReplaceTypes.find(genType->name);
                         if (it != context.genericReplaceTypes.end())
                         {
-                            context.genericParametersCallTypes[i]       = it->second;
+                            context.genericParametersCallTypes[i]       = it->second.typeInfoReplace;
+                            context.genericParametersCallFrom[i]        = it->second.fromNode;
                             context.mapGenericTypesIndex[genType->name] = i;
-
-                            auto it1 = context.genericReplaceFrom.find(genType->name);
-                            if (it1 != context.genericReplaceFrom.end())
-                            {
-                                context.genericReplaceFrom[genType->name] = it1->second;
-                                context.genericParametersCallFrom[i]      = it1->second;
-                            }
-
                             continue;
                         }
                     }
@@ -358,11 +351,10 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
 
                             context.genericParametersCallValues[i] = it->second;
 
-                            auto it1 = context.genericReplaceFrom.find(genType->name);
-                            if (it1 != context.genericReplaceFrom.end())
+                            auto it1 = context.genericReplaceTypes.find(genType->name);
+                            if (it1 != context.genericReplaceTypes.end())
                             {
-                                context.genericReplaceFrom[genType->name] = it1->second;
-                                context.genericParametersCallFrom[i]      = it1->second;
+                                context.genericParametersCallFrom[i] = it1->second.fromNode;
                             }
 
                             continue;
@@ -372,7 +364,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                         auto it1 = context.genericReplaceTypes.find(symbolParameter->name);
                         if (it1 != context.genericReplaceTypes.end())
                         {
-                            if (genType != it1->second)
+                            if (genType != it1->second.typeInfoReplace)
                             {
                                 context.result = MatchResult::NotEnoughGenericParameters;
                                 return;
@@ -440,7 +432,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                 for (auto one : context.genericReplaceTypes)
                 {
                     auto it = typeMyFunc->replaceTypes.find(one.first);
-                    if (it == typeMyFunc->replaceTypes.end() || it->second != one.second)
+                    if (it == typeMyFunc->replaceTypes.end() || it->second.typeInfoReplace != one.second.typeInfoReplace)
                     {
                         context.result = MatchResult::NotEnoughGenericParameters;
                         return;

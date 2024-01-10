@@ -75,9 +75,9 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(match.symbolOverload->node->typeInfo, TypeInfoKind::FuncAttr);
     for (auto& v : match.genericReplaceTypes)
     {
-        if (v.second->isListTuple())
+        if (v.second.typeInfoReplace->isListTuple())
         {
-            auto tpt = CastTypeInfo<TypeInfoList>(v.second, TypeInfoKind::TypeListTuple);
+            auto tpt = CastTypeInfo<TypeInfoList>(v.second.typeInfoReplace, TypeInfoKind::TypeListTuple);
             int  idx = 0;
             for (auto p : match.parameters)
             {
@@ -110,20 +110,22 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     CloneContext cloneContext;
     cloneContext.replaceTypes  = match.genericReplaceTypes;
     cloneContext.replaceValues = match.genericReplaceValues;
-    cloneContext.replaceFrom   = match.genericReplaceFrom;
 
     // We replace all types and generic types with undefined for now
     if (noReplaceTypes)
     {
+        GenericReplaceType st;
+        st.typeInfoReplace = g_TypeMgr->typeInfoUndefined;
+
         for (auto p : typeFunc->genericParameters)
         {
-            cloneContext.replaceTypes[p->typeInfo->name] = g_TypeMgr->typeInfoUndefined;
+            cloneContext.replaceTypes[p->typeInfo->name] = st;
         }
 
         for (auto p : typeFunc->parameters)
         {
             if (p->typeInfo->isGeneric())
-                cloneContext.replaceTypes[p->typeInfo->name] = g_TypeMgr->typeInfoUndefined;
+                cloneContext.replaceTypes[p->typeInfo->name] = st;
         }
     }
 
@@ -131,7 +133,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     // Make all types concrete in case of simple aliases
     for (auto& p : cloneContext.replaceTypes)
     {
-        p.second = TypeManager::concreteType(p.second, CONCRETE_ALIAS);
+        p.second.typeInfoReplace = TypeManager::concreteType(p.second.typeInfoReplace, CONCRETE_ALIAS);
     }
 
     // Clone original node
@@ -209,7 +211,6 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
         newTypeFunc->declNode      = newFunc;
         newTypeFunc->replaceTypes  = cloneContext.replaceTypes;
         newTypeFunc->replaceValues = cloneContext.replaceValues;
-        newTypeFunc->replaceFrom   = cloneContext.replaceFrom;
         newFunc->typeInfo          = newTypeFunc;
         if (noReplaceTypes)
             newTypeFunc->flags |= TYPEINFO_UNDEFINED;
@@ -218,7 +219,6 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     {
         newTypeFunc->replaceTypes  = cloneContext.replaceTypes;
         newTypeFunc->replaceValues = cloneContext.replaceValues;
-        newTypeFunc->replaceFrom   = cloneContext.replaceFrom;
     }
 
     // Replace generic types and values in the function generic parameters

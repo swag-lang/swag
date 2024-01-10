@@ -3,6 +3,7 @@
 #include "TypeInfo.h"
 #include "AstNode.h"
 #include "Concat.h"
+#include "Generic.h"
 
 struct AstFuncCallParam;
 struct SymbolName;
@@ -94,13 +95,12 @@ struct OneMatch
 
 struct OneGenericMatch
 {
-    VectorNative<TypeInfo*>         genericParametersCallTypes;
-    VectorNative<ComputedValue*>    genericParametersCallValues;
-    VectorNative<AstNode*>          genericParametersCallFrom;
-    VectorMap<Utf8, TypeInfo*>      genericReplaceTypes;
-    VectorMap<Utf8, ComputedValue*> genericReplaceValues;
-    VectorMap<Utf8, AstNode*>       genericReplaceFrom;
-    VectorNative<TypeInfo*>         genericParametersGenTypes;
+    VectorNative<TypeInfo*>             genericParametersCallTypes;
+    VectorNative<ComputedValue*>        genericParametersCallValues;
+    VectorNative<AstNode*>              genericParametersCallFrom;
+    VectorMap<Utf8, GenericReplaceType> genericReplaceTypes;
+    VectorMap<Utf8, ComputedValue*>     genericReplaceValues;
+    VectorNative<TypeInfo*>             genericParametersGenTypes;
 
     VectorNative<AstNode*>       parameters;
     VectorNative<TypeInfoParam*> solvedParameters;
@@ -120,7 +120,6 @@ struct OneGenericMatch
         genericParametersCallFrom.clear();
         genericReplaceTypes.clear();
         genericReplaceValues.clear();
-        genericReplaceFrom.clear();
         genericParametersGenTypes.clear();
         parameters.clear();
         solvedParameters.clear();

@@ -123,16 +123,19 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     CloneContext cloneContext;
     cloneContext.replaceTypes  = match.genericReplaceTypes;
     cloneContext.replaceValues = match.genericReplaceValues;
-    cloneContext.replaceFrom   = match.genericReplaceFrom;
 
     // Add the struct type replacement now, in case the struct has a field to replace
-    cloneContext.replaceTypes[overload->typeInfo->name] = newType;
+    GenericReplaceType st;
+    st.typeInfoGeneric                                  = overload->typeInfo;
+    st.typeInfoReplace                                  = newType;
+    st.fromNode                                         = overload->node;
+    cloneContext.replaceTypes[overload->typeInfo->name] = st;
 
     // :GenericConcreteAlias
     // Make all types concrete in case of simple aliases
     for (auto& p : cloneContext.replaceTypes)
     {
-        p.second = TypeManager::concreteType(p.second, CONCRETE_ALIAS);
+        p.second.typeInfoReplace = TypeManager::concreteType(p.second.typeInfoReplace, CONCRETE_ALIAS);
     }
 
     auto structNode = CastAst<AstStruct>(sourceNode->clone(cloneContext), AstNodeKind::StructDecl);
@@ -144,7 +147,6 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     newType->declNode           = structNode;
     newType->replaceTypes       = cloneContext.replaceTypes;
     newType->replaceValues      = cloneContext.replaceValues;
-    newType->replaceFrom        = cloneContext.replaceFrom;
     structNode->typeInfo        = newType;
     structNode->originalGeneric = sourceNode;
 

@@ -247,7 +247,7 @@ void Semantic::waitForGenericParameters(SemanticContext* context, OneGenericMatc
 {
     for (auto it : match.genericReplaceTypes)
     {
-        auto typeInfo = it.second;
+        auto typeInfo = it.second.typeInfoReplace;
         auto declNode = typeInfo->declNode;
         if (!declNode)
             continue;

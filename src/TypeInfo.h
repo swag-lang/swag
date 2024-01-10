@@ -314,13 +314,12 @@ struct TypeInfoFuncAttr : public TypeInfo
     int             numTotalRegisters();
     const CallConv& getCallConv();
 
-    VectorNative<TypeInfoParam*>    capture;
-    VectorNative<TypeInfoParam*>    genericParameters;
-    VectorNative<TypeInfoParam*>    parameters;
-    AttributeList                   attributes;
-    VectorMap<Utf8, TypeInfo*>      replaceTypes;
-    VectorMap<Utf8, ComputedValue*> replaceValues;
-    VectorMap<Utf8, AstNode*>       replaceFrom;
+    VectorNative<TypeInfoParam*>        capture;
+    VectorNative<TypeInfoParam*>        genericParameters;
+    VectorNative<TypeInfoParam*>        parameters;
+    AttributeList                       attributes;
+    VectorMap<Utf8, GenericReplaceType> replaceTypes;
+    VectorMap<Utf8, ComputedValue*>     replaceValues;
 
     TypeInfo* returnType = nullptr;
 
@@ -465,9 +464,8 @@ struct TypeInfoStruct : public TypeInfo
     VectorNative<TypeInfoParam*>          methods;
     VectorNative<TypeInfoParam*>          interfaces;
     VectorNative<TypeInfoParam*>          flattenFields;
-    VectorMap<Utf8, TypeInfo*>            replaceTypes;
+    VectorMap<Utf8, GenericReplaceType>   replaceTypes;
     VectorMap<Utf8, ComputedValue*>       replaceValues;
-    VectorMap<Utf8, AstNode*>             replaceFrom;
     VectorMap<TypeInfo*, SymbolOverload*> mapOpCast;
     VectorMap<TypeInfo*, SymbolOverload*> mapOpAffect[4];
     AttributeList                         attributes;
