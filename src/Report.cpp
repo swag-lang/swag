@@ -167,7 +167,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
                 note->showFileName &&
                 note->display &&
                 !note1->forceSourceFile &&
-                inote1 > inote &&
+                inote1 == inote + 1 &&
                 note1->textMsg.empty())
             {
                 note1->showFileName = false;

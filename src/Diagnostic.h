@@ -173,6 +173,12 @@ struct Diagnostic
         int             width = 0;
     };
 
+    Utf8            textMsg;
+    Vector<Utf8>    remarks;
+    Vector<Utf8>    autoRemarks;
+    Utf8            noteHeader;
+    DiagnosticLevel errorLevel;
+
     Vector<RangeHint> ranges;
     Vector<Utf8>      lines;
     Vector<int>       linesNo;
@@ -193,12 +199,6 @@ struct Diagnostic
     SourceLocation startLocation;
     SourceLocation endLocation;
     Utf8           hint;
-
-    Utf8            textMsg;
-    Vector<Utf8>    remarks;
-    Vector<Utf8>    autoRemarks;
-    Utf8            noteHeader;
-    DiagnosticLevel errorLevel;
 
     SourceFile* contextFile = nullptr;
     SourceFile* sourceFile  = nullptr;
