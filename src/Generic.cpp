@@ -819,10 +819,7 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
 
         if (context.genericParametersCallTypes[i].typeInfoReplace)
         {
-            st                 = context.genericParametersCallTypes[i];
-            st.typeInfoGeneric = genType->isGeneric() ? genType : nullptr;
-
-            context.genericReplaceTypes[genTypeName] = st;
+            context.genericReplaceTypes[genTypeName] = context.genericParametersCallTypes[i];
             context.genericReplaceValues[genName]    = context.genericParametersCallValues[i];
         }
         else
@@ -839,10 +836,9 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
 
     for (int i = 0; i < wantedNumGenericParams; i++)
     {
-        auto genType                                 = genericParameters[i]->typeInfo;
-        context.mapGenericTypeToIndex[genType->name] = i;
-        if (!context.genericParametersCallTypes[i].typeInfoGeneric)
-            context.genericParametersCallTypes[i].typeInfoGeneric = genType;
+        auto genType                                          = genericParameters[i]->typeInfo;
+        context.mapGenericTypeToIndex[genType->name]          = i;
+        context.genericParametersCallTypes[i].typeInfoGeneric = genType;
     }
 }
 
