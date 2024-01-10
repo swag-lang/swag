@@ -451,6 +451,7 @@
     <ClCompile Include="..\src\GenDoc_Api.cpp" />
     <ClCompile Include="..\src\GenDoc_Examples.cpp" />
     <ClCompile Include="..\src\GenDoc_Pages.cpp" />
+    <ClCompile Include="..\src\Generic_Deduce.cpp" />
     <ClCompile Include="..\src\Generic_Function.cpp" />
     <ClCompile Include="..\src\Generic_Struct.cpp" />
     <ClCompile Include="..\src\JobGroup.cpp" />
