@@ -26,21 +26,11 @@ void Generic::deduceGenericTypeReplacement(SymbolMatchContext& context, AstNode*
         auto it = context.genericReplaceTypes.find(wantedTypeInfo->name);
         if (it != context.genericReplaceTypes.end())
         {
-            bool same = false;
+            bool same = TypeManager::makeCompatibles(context.semContext, it->second.typeInfoReplace, callTypeInfo, nullptr, nullptr, CASTFLAG_JUST_CHECK | CASTFLAG_PARAMS | castFlags);
+            if (context.semContext->result != ContextResult::Done)
+                return;
 
-            // If user type is undefined, then we consider this is ok, because the undefined type will be changed to the generic one
-            // Match is in fact the other way
-            if (callTypeInfo->isUndefined())
-                same = true;
-
-            // Yes, and the Map is not the same, then this is an error
-            else
-            {
-                same = TypeManager::makeCompatibles(context.semContext, it->second.typeInfoReplace, callTypeInfo, nullptr, nullptr, CASTFLAG_JUST_CHECK | CASTFLAG_PARAMS | castFlags);
-                if (context.semContext->result != ContextResult::Done)
-                    return;
-            }
-
+            // The previous type is not the same, then this is an error
             if (!same)
             {
                 context.badSignatureInfos.badSignatureParameterIdx  = idxParam;
@@ -79,14 +69,12 @@ void Generic::deduceGenericTypeReplacement(SymbolMatchContext& context, AstNode*
                 {
                     auto callStruct   = CastTypeInfo<TypeInfoStruct>(callTypeInfo, TypeInfoKind::Struct);
                     auto wantedStruct = CastTypeInfo<TypeInfoStruct>(wantedTypeInfo, TypeInfoKind::Struct);
-                    if (callStruct->genericParameters.size() == wantedStruct->genericParameters.size() && callStruct->genericParameters.size())
+                    if (callStruct->genericParameters.size() == wantedStruct->genericParameters.size() &&
+                        callStruct->genericParameters.size())
                     {
                         auto newStructType = (TypeInfoStruct*) callStruct->clone();
                         for (size_t i = 0; i < callStruct->genericParameters.size(); i++)
-                        {
                             newStructType->genericParameters[i]->name = wantedStruct->genericParameters[i]->typeInfo->name;
-                        }
-
                         regTypeInfo = newStructType;
                     }
                 }
