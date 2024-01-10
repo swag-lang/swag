@@ -769,31 +769,29 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
 
         if (!context.genericParametersCallTypes[i].typeInfoReplace)
         {
-            st.typeInfoGeneric = genType->isGeneric() ? genType : nullptr;
+            st.typeInfoGeneric = genType;
             st.typeInfoReplace = genNode->typeInfo;
             st.fromNode        = genNode;
 
             context.genericReplaceTypes[genTypeName] = st;
-            context.genericReplaceValues[genName]    = genNode->computedValue;
             context.genericParametersCallTypes[i]    = st;
+            context.genericReplaceValues[genName]    = genNode->computedValue;
             context.genericParametersCallValues[i]   = genNode->computedValue;
         }
         else
         {
-            st                 = context.genericParametersCallTypes[i];
-            st.typeInfoGeneric = genType->isGeneric() ? genType : nullptr;
-
-            context.genericReplaceTypes[genTypeName] = st;
-            context.genericReplaceValues[genName]    = context.genericParametersCallValues[i];
+            context.genericParametersCallTypes[i].typeInfoGeneric = genType;
+            context.genericReplaceTypes[genTypeName]              = context.genericParametersCallTypes[i];
+            context.genericReplaceValues[genName]                 = context.genericParametersCallValues[i];
 
             // We have a new type replacement, so we must be sure that every other types registered in the
             // context.genericReplaceTypes are up to date too.
             // For example if type T is now s32, we must be sure that a potential *T or [..] T in the map will
             // be updated correspondinly.
-            if (st.typeInfoGeneric && context.genericReplaceTypes.size() > 1)
+            if (context.genericReplaceTypes.size() > 1)
             {
                 m.clear();
-                m[genTypeName] = st;
+                m[genTypeName] = context.genericParametersCallTypes[i];
 
                 for (auto& v : context.genericReplaceTypes)
                 {
