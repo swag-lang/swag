@@ -348,7 +348,7 @@ void Generic::deduceGenericTypeReplacement(SymbolMatchContext& context, AstNode*
         {
             auto symbolLambda = CastTypeInfo<TypeInfoFuncAttr>(wantedTypeInfo, TypeInfoKind::LambdaClosure);
             auto typeLambda   = CastTypeInfo<TypeInfoFuncAttr>(callTypeInfo, TypeInfoKind::LambdaClosure);
-            if (symbolLambda->returnType && symbolLambda->returnType->isGeneric())
+            if (symbolLambda->returnType && symbolLambda->returnType->isGeneric() && !typeLambda->returnType->isUndefined())
             {
                 symbolTypeInfos.push_back(symbolLambda->returnType);
                 typeInfos.push_back(typeLambda->returnType);
@@ -359,7 +359,6 @@ void Generic::deduceGenericTypeReplacement(SymbolMatchContext& context, AstNode*
             {
                 if (symbolLambda->isClosure() && !idx)
                     continue;
-                TypeInfoParam* symbolParam = symbolLambda->parameters[idx];
 
                 TypeInfoParam* typeParam;
                 if (symbolLambda->isClosure() && typeLambda->isLambda())
@@ -367,6 +366,7 @@ void Generic::deduceGenericTypeReplacement(SymbolMatchContext& context, AstNode*
                 else
                     typeParam = typeLambda->parameters[idx];
 
+                TypeInfoParam* symbolParam = symbolLambda->parameters[idx];
                 if (symbolParam->typeInfo->isGeneric() && !typeParam->typeInfo->isUndefined())
                 {
                     symbolTypeInfos.push_back(symbolParam->typeInfo);

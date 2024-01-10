@@ -1,15 +1,13 @@
 #include "pch.h"
-#include "SemanticJob.h"
-#include "Semantic.h"
-#include "ByteCodeGen.h"
 #include "Ast.h"
-#include "Module.h"
-#include "TypeManager.h"
-#include "ThreadManager.h"
-#include "Os.h"
-#include "LanguageSpec.h"
-#include "Naming.h"
+#include "ByteCodeGen.h"
 #include "Diagnostic.h"
+#include "LanguageSpec.h"
+#include "Module.h"
+#include "Naming.h"
+#include "Os.h"
+#include "SemanticJob.h"
+#include "TypeManager.h"
 
 void Semantic::allocateOnStack(AstNode* node, TypeInfo* typeInfo)
 {
