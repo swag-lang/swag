@@ -1,4 +1,4 @@
-#global skip
+//#global skip
 
 func(T, R) map(v: T, cb: func(T)->R)->R
 {
@@ -7,5 +7,5 @@ func(T, R) map(v: T, cb: func(T)->R)->R
 
 #test
 {
-    let res = map(1's32, func(x) => x != 0)
+    let res = map(1's32, func(x)->bool => x != 0)
 }

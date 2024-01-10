@@ -1118,10 +1118,6 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
     typeNode->semanticFct = Semantic::resolveFuncDeclType;
     if (token.id == TokenId::SymMinusGreat)
     {
-        // Do not accept a specified return type if lambda parameters are deduced
-        if (acceptMissingType && hasMissingType && *hasMissingType)
-            return error(token, Err(Err1165));
-
         Scoped    scoped(this, newScope);
         ScopedFct scopedFct(this, funcNode);
         SWAG_CHECK(eatToken());

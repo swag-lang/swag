@@ -837,7 +837,6 @@ void initErrors()
     SWAG_ERROR(Err0087, "unexpected identifier                             $ a global identifier like '%s' can't be used at the file level");
     SWAG_ERROR(Err1191, "unexpected lambda parameter name                  $ unexpected name when declaring a lambda type $ consider removing the name");
     SWAG_ERROR(Err1170, "unexpected lambda parameter type                  $ unexpected type $ when declaring lambda parameters, you should not combined inferred and explicit types");
-    SWAG_ERROR(Err1165, "unexpected lambda return type                     $ unexpected return type when parameters type are inferred $ when inferring lambda parameter types, the return type should also be inferred");
     SWAG_ERROR(Err1024, "unexpected line break in array type declaration   $ the type of the array should be placed on the same line as the array dimensions");
     SWAG_ERROR(Err0626, "unexpected name                                   $ too many 'visit' alias names (maximum is '2', but '%u' are provided)");
     SWAG_ERROR(Err1126, "unexpected operator modifier                      $ the operator modifier '%s' can't be applied to '%s'");
@@ -896,6 +895,7 @@ void initErrors()
     SWAG_ERROR(Err0109, "unused return value                               $ the return value of the function '%s' should be used $ if you don't need the return value, consider prefixing the call with 'discard'");
     SWAG_ERROR(Err1179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
     SWAG_ERROR(Err0092, "unused return value                               $ the return value of the lambda '%s' should be used $ if you don't need the return value, consider prefixing the call with 'discard'");
+    SWAG_ERROR(Err1165, nullptr);
     SWAG_ERROR(Err0680, nullptr);
     SWAG_ERROR(Err0367, nullptr);
     SWAG_ERROR(Err0282, nullptr);
