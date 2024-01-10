@@ -32,9 +32,6 @@
     <ClCompile Include="../src/CommandLine.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="../src/Generic.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
     <ClCompile Include="../src/Attribute.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
@@ -629,6 +626,15 @@
     <ClCompile Include="..\src\mimalloc\static.c">
       <Filter>Extern\mimalloc</Filter>
     </ClCompile>
+    <ClCompile Include="../src/Generic.cpp">
+      <Filter>Semantic\Generic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Generic_Function.cpp">
+      <Filter>Semantic\Generic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Generic_Struct.cpp">
+      <Filter>Semantic\Generic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
@@ -676,9 +682,6 @@
     </ClInclude>
     <ClInclude Include="../src/AstFlags.h">
       <Filter>Syntax</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Generic.h">
-      <Filter>Semantic</Filter>
     </ClInclude>
     <ClInclude Include="../src/BackendLLVM.h">
       <Filter>Backend\LLVM</Filter>
@@ -983,6 +986,9 @@
     <ClInclude Include="..\src\ByteCodeGenContext.h">
       <Filter>Backend\ByteCode\Gen</Filter>
     </ClInclude>
+    <ClInclude Include="../src/Generic.h">
+      <Filter>Semantic\Generic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
@@ -1065,6 +1071,9 @@
     </Filter>
     <Filter Include="Wmf\DepManager">
       <UniqueIdentifier>{0953cd61-89b7-4c72-bc1f-72bf1d4c1458}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Semantic\Generic">
+      <UniqueIdentifier>{f5e6288c-de4e-4778-8540-d85f85c3251f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
