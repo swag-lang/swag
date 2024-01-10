@@ -154,6 +154,7 @@ void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInf
         {
             SWAG_ASSERT(wantedArray->sizeNode);
             SWAG_ASSERT(wantedArray->sizeNode->resolvedSymbolName);
+            auto typeSize = wantedArray->sizeNode->typeInfo;
 
             ComputedValue* cv = Allocator::alloc<ComputedValue>();
             cv->reg.s64       = count;
@@ -163,38 +164,29 @@ void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInf
             auto  it      = context.genericReplaceValues.find(cstName);
             if (it != context.genericReplaceValues.end())
             {
-                if (!Semantic::valueEqualsTo(it->second, cv, wantedArray->sizeNode->typeInfo, 0))
+                if (!Semantic::valueEqualsTo(it->second, cv, typeSize, 0))
                 {
                     context.badSignatureInfos.badNode               = callParameter;
                     context.badSignatureInfos.badGenMatch           = cstName;
                     context.badSignatureInfos.badGenValue1          = it->second;
                     context.badSignatureInfos.badGenValue2          = cv;
-                    context.badSignatureInfos.badSignatureGivenType = wantedArray->sizeNode->typeInfo;
+                    context.badSignatureInfos.badSignatureGivenType = typeSize;
                     context.result                                  = MatchResult::MismatchGenericValue;
+                    break;
                 }
-                else
-                {
-                    Allocator::free<ComputedValue>(cv);
 
-                    GenericReplaceType st;
-                    st.typeInfoGeneric = wantedArray->sizeNode->typeInfo;
-                    st.typeInfoReplace = wantedArray->sizeNode->typeInfo;
-                    st.fromNode        = wantedArray->sizeNode;
-
-                    context.genericReplaceTypes[wantedArray->sizeNode->typeInfo->name] = st;
-                }
+                Allocator::free<ComputedValue>(cv);
             }
             else
             {
                 context.genericReplaceValues[cstName] = cv;
-
-                GenericReplaceType st;
-                st.typeInfoGeneric = wantedArray->sizeNode->typeInfo;
-                st.typeInfoReplace = wantedArray->sizeNode->typeInfo;
-                st.fromNode        = wantedArray->sizeNode;
-
-                context.genericReplaceTypes[wantedArray->sizeNode->typeInfo->name] = st;
             }
+
+            GenericReplaceType st;
+            st.typeInfoGeneric                          = typeSize;
+            st.typeInfoReplace                          = typeSize;
+            st.fromNode                                 = wantedArray->sizeNode;
+            context.genericReplaceTypes[typeSize->name] = st;
         }
 
         break;
