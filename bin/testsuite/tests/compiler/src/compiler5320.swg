@@ -1,4 +1,4 @@
-#global skip
+//#global skip
 struct(T) Array
 {
     buf: ^T

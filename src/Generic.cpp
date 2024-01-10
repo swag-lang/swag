@@ -769,11 +769,13 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
     for (int i = 0; i < numGenericParams; i++)
     {
         const auto& genName     = genericParameters[i]->name;
-        const auto& genTypeName = genericParameters[i]->typeInfo->name;
+        auto        genType     = genericParameters[i]->typeInfo;
+        const auto& genTypeName = genType->name;
         auto        genNode     = context.genericParameters[i];
+
         if (!context.genericParametersCallTypes[i])
         {
-            st.typeInfoGeneric = genericParameters[i]->typeInfo;
+            st.typeInfoGeneric = genType->isGeneric() ? genType : nullptr;
             st.typeInfoReplace = genNode->typeInfo;
             st.fromNode        = genNode;
 
@@ -786,12 +788,34 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
         }
         else
         {
-            st.typeInfoGeneric = nullptr;
+            st.typeInfoGeneric = genType->isGeneric() ? genType : nullptr;
             st.typeInfoReplace = context.genericParametersCallTypes[i];
             st.fromNode        = context.genericParametersCallFrom[i];
 
             context.genericReplaceTypes[genTypeName] = st;
             context.genericReplaceValues[genName]    = context.genericParametersCallValues[i];
+
+            // We have a new type replacement, so we must be sure that every other types registered in the
+            // context.genericReplaceTypes are up to date too.
+            // For example if type T is now s32, we must be sure that a potential *T or [..] T in the map will
+            // be updated correspondinly.
+            if (st.typeInfoGeneric)
+            {
+                VectorMap<Utf8, GenericReplaceType> m;
+                m[genTypeName] = st;
+                for (auto& v : context.genericReplaceTypes)
+                {
+                    if (v.first == genTypeName)
+                        continue;
+                    if (!v.second.typeInfoGeneric)
+                        continue;
+                    auto typeInfoReplace = doTypeSubstitution(m, v.second.typeInfoGeneric);
+                    if (typeInfoReplace != v.second.typeInfoGeneric)
+                    {
+                        v.second.typeInfoReplace = typeInfoReplace;
+                    }
+                }
+            }
         }
     }
 
