@@ -18,10 +18,8 @@ void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInf
                 auto num = min(wantedStruct->genericParameters.size(), callStruct->genericParameters.size());
                 for (size_t idx = 0; idx < num; idx++)
                 {
-                    auto genTypeInfo = wantedStruct->genericParameters[idx]->typeInfo;
-                    auto rawTypeInfo = callStruct->genericParameters[idx]->typeInfo;
-                    wantedTypeInfos.push_back(genTypeInfo);
-                    callTypeInfos.push_back(rawTypeInfo);
+                    wantedTypeInfos.push_back(wantedStruct->genericParameters[idx]->typeInfo);
+                    callTypeInfos.push_back(callStruct->genericParameters[idx]->typeInfo);
                 }
             }
             else
@@ -29,10 +27,8 @@ void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInf
                 auto num = min(wantedStruct->genericParameters.size(), callStruct->deducedGenericParameters.size());
                 for (size_t idx = 0; idx < num; idx++)
                 {
-                    auto genTypeInfo = wantedStruct->genericParameters[idx]->typeInfo;
-                    auto rawTypeInfo = callStruct->deducedGenericParameters[idx];
-                    wantedTypeInfos.push_back(genTypeInfo);
-                    callTypeInfos.push_back(rawTypeInfo);
+                    wantedTypeInfos.push_back(wantedStruct->genericParameters[idx]->typeInfo);
+                    callTypeInfos.push_back(callStruct->deducedGenericParameters[idx]);
                 }
             }
         }
@@ -71,10 +67,8 @@ void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInf
                     }
                 }
 
-                auto genTypeInfo = p->typeInfo;
-                auto rawTypeInfo = typeField;
-                wantedTypeInfos.push_back(genTypeInfo);
-                callTypeInfos.push_back(rawTypeInfo);
+                wantedTypeInfos.push_back(p->typeInfo);
+                callTypeInfos.push_back(typeField);
             }
         }
 
@@ -362,7 +356,6 @@ void Generic::deduceGenericTypeReplacement(SymbolMatchContext& context, AstNode*
         // reference as a concrete type
         callTypeInfo   = TypeManager::concretePtrRef(callTypeInfos.get_pop_back());
         wantedTypeInfo = wantedTypeInfos.get_pop_back();
-
         if (!callTypeInfo)
             continue;
 
