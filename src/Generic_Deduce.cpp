@@ -306,15 +306,15 @@ void Generic::deduceGenericTypeReplacement(SymbolMatchContext& context, AstNode*
         }
 
         bool canReg = true;
-        if (wantedTypeInfo->isPointer())
-            canReg = false;
-        else if (wantedTypeInfo->isStruct() && callTypeInfo->isStruct())
-            canReg = wantedTypeInfo->isSame(callTypeInfo, CASTFLAG_CAST);
 
         // Do not register type replacement if the concrete type is a pending lambda typing (we do not know
         // yet the type of parameters)
         if (callTypeInfo->declNode && (callTypeInfo->declNode->semFlags & SEMFLAG_PENDING_LAMBDA_TYPING))
             canReg = false;
+        else if (wantedTypeInfo->isPointer())
+            canReg = false;
+        else if (wantedTypeInfo->isStruct() && callTypeInfo->isStruct())
+            canReg = wantedTypeInfo->isSame(callTypeInfo, CASTFLAG_CAST);
 
         if (canReg)
         {
