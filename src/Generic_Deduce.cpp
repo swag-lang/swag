@@ -7,21 +7,17 @@ void Generic::deduceGenericTypeReplacement(SymbolMatchContext& context, AstNode*
 {
     SWAG_ASSERT(wantedTypeInfo->isGeneric());
 
-    // Need to register inside types when the generic type is a compound
-    VectorNative<TypeInfo*> symbolTypeInfos;
-    symbolTypeInfos.push_back(wantedTypeInfo);
-    VectorNative<TypeInfo*> typeInfos;
-    typeInfos.push_back(callTypeInfo);
-    while (symbolTypeInfos.size())
-    {
-        wantedTypeInfo = symbolTypeInfos.back();
+    VectorNative<TypeInfo*> wantedTypeInfos;
+    VectorNative<TypeInfo*> callTypeInfos;
+    wantedTypeInfos.push_back(wantedTypeInfo);
+    callTypeInfos.push_back(callTypeInfo);
 
+    while (wantedTypeInfos.size())
+    {
         // When we have a reference, we match with the real type, as we do not want a generic function/struct to have a
         // reference as a concrete type
-        callTypeInfo = TypeManager::concretePtrRef(typeInfos.back());
-
-        symbolTypeInfos.pop_back();
-        typeInfos.pop_back();
+        callTypeInfo   = TypeManager::concretePtrRef(callTypeInfos.get_pop_back());
+        wantedTypeInfo = wantedTypeInfos.get_pop_back();
 
         if (!callTypeInfo)
             continue;
@@ -139,8 +135,8 @@ void Generic::deduceGenericTypeReplacement(SymbolMatchContext& context, AstNode*
                     {
                         auto genTypeInfo = symbolStruct->genericParameters[idx]->typeInfo;
                         auto rawTypeInfo = typeStruct->genericParameters[idx]->typeInfo;
-                        symbolTypeInfos.push_back(genTypeInfo);
-                        typeInfos.push_back(rawTypeInfo);
+                        wantedTypeInfos.push_back(genTypeInfo);
+                        callTypeInfos.push_back(rawTypeInfo);
                     }
                 }
                 else
@@ -150,8 +146,8 @@ void Generic::deduceGenericTypeReplacement(SymbolMatchContext& context, AstNode*
                     {
                         auto genTypeInfo = symbolStruct->genericParameters[idx]->typeInfo;
                         auto rawTypeInfo = typeStruct->deducedGenericParameters[idx];
-                        symbolTypeInfos.push_back(genTypeInfo);
-                        typeInfos.push_back(rawTypeInfo);
+                        wantedTypeInfos.push_back(genTypeInfo);
+                        callTypeInfos.push_back(rawTypeInfo);
                     }
                 }
             }
@@ -192,8 +188,8 @@ void Generic::deduceGenericTypeReplacement(SymbolMatchContext& context, AstNode*
 
                     auto genTypeInfo = p->typeInfo;
                     auto rawTypeInfo = typeField;
-                    symbolTypeInfos.push_back(genTypeInfo);
-                    typeInfos.push_back(rawTypeInfo);
+                    wantedTypeInfos.push_back(genTypeInfo);
+                    callTypeInfos.push_back(rawTypeInfo);
                 }
             }
 
@@ -214,14 +210,14 @@ void Generic::deduceGenericTypeReplacement(SymbolMatchContext& context, AstNode*
                     auto canNext = symbolPtr->pointedType->isSame(typePtr->pointedType, CASTFLAG_CAST);
                     if (canNext)
                     {
-                        symbolTypeInfos.push_back(symbolPtr->pointedType);
-                        typeInfos.push_back(typePtr->pointedType);
+                        wantedTypeInfos.push_back(symbolPtr->pointedType);
+                        callTypeInfos.push_back(typePtr->pointedType);
                     }
                 }
                 else
                 {
-                    symbolTypeInfos.push_back(symbolPtr->pointedType);
-                    typeInfos.push_back(typePtr->pointedType);
+                    wantedTypeInfos.push_back(symbolPtr->pointedType);
+                    callTypeInfos.push_back(typePtr->pointedType);
                 }
             }
             else if (callTypeInfo->isStruct())
@@ -232,14 +228,14 @@ void Generic::deduceGenericTypeReplacement(SymbolMatchContext& context, AstNode*
                 auto canNext = symbolPtr->pointedType->isSame(callTypeInfo, CASTFLAG_CAST);
                 if (canNext)
                 {
-                    symbolTypeInfos.push_back(symbolPtr->pointedType);
-                    typeInfos.push_back(callTypeInfo);
+                    wantedTypeInfos.push_back(symbolPtr->pointedType);
+                    callTypeInfos.push_back(callTypeInfo);
                 }
             }
             else
             {
-                symbolTypeInfos.push_back(symbolPtr->pointedType);
-                typeInfos.push_back(callTypeInfo);
+                wantedTypeInfos.push_back(symbolPtr->pointedType);
+                callTypeInfos.push_back(callTypeInfo);
             }
             break;
         }
@@ -247,20 +243,20 @@ void Generic::deduceGenericTypeReplacement(SymbolMatchContext& context, AstNode*
         case TypeInfoKind::Array:
         {
             auto symbolArray = CastTypeInfo<TypeInfoArray>(wantedTypeInfo, TypeInfoKind::Array);
-            symbolTypeInfos.push_back(symbolArray->finalType);
+            wantedTypeInfos.push_back(symbolArray->finalType);
 
             uint32_t count = 0;
             if (callTypeInfo->isArray())
             {
                 auto typeArray = CastTypeInfo<TypeInfoArray>(callTypeInfo, TypeInfoKind::Array);
-                typeInfos.push_back(typeArray->finalType);
+                callTypeInfos.push_back(typeArray->finalType);
                 count = typeArray->count;
             }
             else
             {
                 SWAG_ASSERT(callTypeInfo->isListArray());
                 auto typeArray = CastTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListArray);
-                typeInfos.push_back(typeArray->subTypes[0]->typeInfo);
+                callTypeInfos.push_back(typeArray->subTypes[0]->typeInfo);
                 count = typeArray->subTypes.count;
             }
 
@@ -321,25 +317,25 @@ void Generic::deduceGenericTypeReplacement(SymbolMatchContext& context, AstNode*
             if (callTypeInfo->isSlice())
             {
                 auto typeSlice = CastTypeInfo<TypeInfoSlice>(callTypeInfo, TypeInfoKind::Slice);
-                symbolTypeInfos.push_back(symbolSlice->pointedType);
-                typeInfos.push_back(typeSlice->pointedType);
+                wantedTypeInfos.push_back(symbolSlice->pointedType);
+                callTypeInfos.push_back(typeSlice->pointedType);
             }
             else if (callTypeInfo->isArray())
             {
                 auto typeArray = CastTypeInfo<TypeInfoArray>(callTypeInfo, TypeInfoKind::Array);
-                symbolTypeInfos.push_back(symbolSlice->pointedType);
-                typeInfos.push_back(typeArray->pointedType);
+                wantedTypeInfos.push_back(symbolSlice->pointedType);
+                callTypeInfos.push_back(typeArray->pointedType);
             }
             else if (callTypeInfo->isListArray())
             {
                 auto typeArray = CastTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListArray);
-                symbolTypeInfos.push_back(symbolSlice->pointedType);
-                typeInfos.push_back(typeArray->subTypes[0]->typeInfo);
+                wantedTypeInfos.push_back(symbolSlice->pointedType);
+                callTypeInfos.push_back(typeArray->subTypes[0]->typeInfo);
             }
             else
             {
-                symbolTypeInfos.push_back(symbolSlice->pointedType);
-                typeInfos.push_back(callTypeInfo);
+                wantedTypeInfos.push_back(symbolSlice->pointedType);
+                callTypeInfos.push_back(callTypeInfo);
             }
             break;
         }
@@ -350,8 +346,8 @@ void Generic::deduceGenericTypeReplacement(SymbolMatchContext& context, AstNode*
             auto typeLambda   = CastTypeInfo<TypeInfoFuncAttr>(callTypeInfo, TypeInfoKind::LambdaClosure);
             if (symbolLambda->returnType && symbolLambda->returnType->isGeneric() && !typeLambda->returnType->isUndefined())
             {
-                symbolTypeInfos.push_back(symbolLambda->returnType);
-                typeInfos.push_back(typeLambda->returnType);
+                wantedTypeInfos.push_back(symbolLambda->returnType);
+                callTypeInfos.push_back(typeLambda->returnType);
             }
 
             auto num = symbolLambda->parameters.size();
@@ -369,8 +365,8 @@ void Generic::deduceGenericTypeReplacement(SymbolMatchContext& context, AstNode*
                 TypeInfoParam* symbolParam = symbolLambda->parameters[idx];
                 if (symbolParam->typeInfo->isGeneric() && !typeParam->typeInfo->isUndefined())
                 {
-                    symbolTypeInfos.push_back(symbolParam->typeInfo);
-                    typeInfos.push_back(typeParam->typeInfo);
+                    wantedTypeInfos.push_back(symbolParam->typeInfo);
+                    callTypeInfos.push_back(typeParam->typeInfo);
                 }
             }
             break;
