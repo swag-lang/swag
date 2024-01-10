@@ -388,6 +388,7 @@ struct AstNode
     void setBcNotifBefore(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf = nullptr);
     void setBcNotifAfter(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf = nullptr);
     void addSpecFlags(uint16_t fl);
+    void removeSpecFlags(uint16_t fl);
 
     // clang-format off
     bool               hasExtByteCode() { return extension && extension->bytecode; }

@@ -402,7 +402,7 @@ bool Parser::doThrow(AstNode* parent, AstNode** result)
     if (token.id == TokenId::IntrinsicGetErr)
     {
         SWAG_CHECK(doIdentifierRef(node, &dummyResult));
-        node->specFlags |= AstTryCatchAssume::SPECFLAG_THROW_GETERR;
+        node->addSpecFlags(AstTryCatchAssume::SPECFLAG_THROW_GETERR);
     }
     else
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
@@ -458,7 +458,7 @@ bool Parser::doNameAlias(AstNode* parent, AstNode** result)
     AstNode* expr;
     SWAG_CHECK(doIdentifierRef(node, &expr, IDENTIFIER_NO_FCT_PARAMS | IDENTIFIER_NO_ARRAY));
     SWAG_CHECK(eatSemiCol("'namealias' expression"));
-    expr->childs.back()->specFlags |= AstIdentifier::SPECFLAG_NAME_ALIAS;
+    expr->childs.back()->addSpecFlags(AstIdentifier::SPECFLAG_NAME_ALIAS);
 
     node->semanticFct        = Semantic::resolveNameAlias;
     node->resolvedSymbolName = currentScope->symTable.registerSymbolName(context, node, SymbolKind::NameAlias);

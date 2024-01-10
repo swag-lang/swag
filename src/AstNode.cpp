@@ -887,6 +887,11 @@ void AstNode::addSpecFlags(uint16_t fl)
     specFlags |= fl;
 }
 
+void AstNode::removeSpecFlags(uint16_t fl)
+{
+    specFlags &= ~fl;
+}
+
 void AstNode::allocateExtension(ExtensionKind extensionKind)
 {
     ScopedLock lk(mutex);

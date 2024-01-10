@@ -609,7 +609,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         if ((funcNode->semFlags & SEMFLAG_PENDING_LAMBDA_TYPING) && typeNode->typeInfo->isVoid())
         {
             typeNode->typeInfo = g_TypeMgr->typeInfoUndefined;
-            funcNode->specFlags &= (uint16_t) ~AstFuncDecl::SPECFLAG_SHORT_LAMBDA;
+            funcNode->removeSpecFlags(AstFuncDecl::SPECFLAG_SHORT_LAMBDA);
         }
     }
 
@@ -1522,7 +1522,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
     // Register symbol now that we have inferred the return type
     if (lateRegister)
     {
-        funcNode->specFlags &= (uint16_t) ~AstFuncDecl::SPECFLAG_FORCE_LATE_REGISTER;
+        funcNode->removeSpecFlags(AstFuncDecl::SPECFLAG_FORCE_LATE_REGISTER);
         typeInfoFunc->returnType = funcNode->returnType->typeInfo;
         typeInfoFunc->forceComputeName();
         SWAG_CHECK(registerFuncSymbol(context, funcNode));
