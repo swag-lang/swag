@@ -760,9 +760,10 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
 
     for (int i = 0; i < wantedNumGenericParams; i++)
     {
-        auto genType                                          = genericParameters[i];
-        context.mapGenericTypesIndex[genType->typeInfo->name] = i;
-        context.genericParametersGenTypes[i]                  = genType->typeInfo;
+        auto        genType                       = genericParameters[i]->typeInfo;
+        const auto& genTypeName                   = genType->name;
+        context.mapGenericTypesIndex[genTypeName] = i;
+        context.genericParametersGenTypes[i]      = genType;
     }
 
     GenericReplaceType                  st;
@@ -827,6 +828,7 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
         const auto& genName     = genericParameters[i]->name;
         auto        genType     = genericParameters[i]->typeInfo;
         const auto& genTypeName = genType->name;
+
         if (context.genericParametersCallTypes[i])
         {
             st.typeInfoGeneric = genType->isGeneric() ? genType : nullptr;
@@ -903,7 +905,7 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
         }
     }
 
-    // Collect from the owner structure
+    // Collect all
     for (auto one : toCheck)
     {
         if (one->kind == AstNodeKind::FuncDecl)
