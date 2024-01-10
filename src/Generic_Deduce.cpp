@@ -127,45 +127,49 @@ void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInf
 
     case TypeInfoKind::Array:
     {
-        auto symbolArray = CastTypeInfo<TypeInfoArray>(wantedTypeInfo, TypeInfoKind::Array);
-        wantedTypeInfos.push_back(symbolArray->finalType);
+        auto wantedArray = CastTypeInfo<TypeInfoArray>(wantedTypeInfo, TypeInfoKind::Array);
 
         uint32_t count = 0;
         if (callTypeInfo->isArray())
         {
-            auto typeArray = CastTypeInfo<TypeInfoArray>(callTypeInfo, TypeInfoKind::Array);
-            callTypeInfos.push_back(typeArray->finalType);
-            count = typeArray->count;
+            auto callArray = CastTypeInfo<TypeInfoArray>(callTypeInfo, TypeInfoKind::Array);
+            wantedTypeInfos.push_back(wantedArray->finalType);
+            callTypeInfos.push_back(callArray->finalType);
+            count = callArray->count;
+        }
+        else if (callTypeInfo->isListArray())
+        {
+            auto callList = CastTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListArray);
+            wantedTypeInfos.push_back(wantedArray->finalType);
+            callTypeInfos.push_back(callList->subTypes[0]->typeInfo);
+            count = callList->subTypes.count;
         }
         else
         {
-            SWAG_ASSERT(callTypeInfo->isListArray());
-            auto typeArray = CastTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListArray);
-            callTypeInfos.push_back(typeArray->subTypes[0]->typeInfo);
-            count = typeArray->subTypes.count;
+            SWAG_ASSERT(false);
         }
 
         // Array dimension was a generic symbol. Set the corresponding symbol in order to check its value
-        if (symbolArray->isGeneric() && symbolArray->flags & TYPEINFO_GENERIC_COUNT)
+        if (wantedArray->isGeneric() && wantedArray->flags & TYPEINFO_GENERIC_COUNT)
         {
-            SWAG_ASSERT(symbolArray->sizeNode);
-            SWAG_ASSERT(symbolArray->sizeNode->resolvedSymbolName);
+            SWAG_ASSERT(wantedArray->sizeNode);
+            SWAG_ASSERT(wantedArray->sizeNode->resolvedSymbolName);
 
             ComputedValue* cv = Allocator::alloc<ComputedValue>();
             cv->reg.s64       = count;
 
             // Constant already defined ?
-            auto& cstName = symbolArray->sizeNode->resolvedSymbolName->name;
-            auto  it1     = context.genericReplaceValues.find(cstName);
-            if (it1 != context.genericReplaceValues.end())
+            auto& cstName = wantedArray->sizeNode->resolvedSymbolName->name;
+            auto  it      = context.genericReplaceValues.find(cstName);
+            if (it != context.genericReplaceValues.end())
             {
-                if (!Semantic::valueEqualsTo(it1->second, cv, symbolArray->sizeNode->typeInfo, 0))
+                if (!Semantic::valueEqualsTo(it->second, cv, wantedArray->sizeNode->typeInfo, 0))
                 {
                     context.badSignatureInfos.badNode               = callParameter;
                     context.badSignatureInfos.badGenMatch           = cstName;
-                    context.badSignatureInfos.badGenValue1          = it1->second;
+                    context.badSignatureInfos.badGenValue1          = it->second;
                     context.badSignatureInfos.badGenValue2          = cv;
-                    context.badSignatureInfos.badSignatureGivenType = symbolArray->sizeNode->typeInfo;
+                    context.badSignatureInfos.badSignatureGivenType = wantedArray->sizeNode->typeInfo;
                     context.result                                  = MatchResult::MismatchGenericValue;
                 }
                 else
@@ -173,11 +177,11 @@ void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInf
                     Allocator::free<ComputedValue>(cv);
 
                     GenericReplaceType st;
-                    st.typeInfoGeneric = symbolArray->sizeNode->typeInfo;
-                    st.typeInfoReplace = symbolArray->sizeNode->typeInfo;
-                    st.fromNode        = symbolArray->sizeNode;
+                    st.typeInfoGeneric = wantedArray->sizeNode->typeInfo;
+                    st.typeInfoReplace = wantedArray->sizeNode->typeInfo;
+                    st.fromNode        = wantedArray->sizeNode;
 
-                    context.genericReplaceTypes[symbolArray->sizeNode->typeInfo->name] = st;
+                    context.genericReplaceTypes[wantedArray->sizeNode->typeInfo->name] = st;
                 }
             }
             else
@@ -185,11 +189,11 @@ void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInf
                 context.genericReplaceValues[cstName] = cv;
 
                 GenericReplaceType st;
-                st.typeInfoGeneric = symbolArray->sizeNode->typeInfo;
-                st.typeInfoReplace = symbolArray->sizeNode->typeInfo;
-                st.fromNode        = symbolArray->sizeNode;
+                st.typeInfoGeneric = wantedArray->sizeNode->typeInfo;
+                st.typeInfoReplace = wantedArray->sizeNode->typeInfo;
+                st.fromNode        = wantedArray->sizeNode;
 
-                context.genericReplaceTypes[symbolArray->sizeNode->typeInfo->name] = st;
+                context.genericReplaceTypes[wantedArray->sizeNode->typeInfo->name] = st;
             }
         }
 
@@ -198,28 +202,28 @@ void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInf
 
     case TypeInfoKind::Slice:
     {
-        auto symbolSlice = CastTypeInfo<TypeInfoSlice>(wantedTypeInfo, TypeInfoKind::Slice);
+        auto wantedSlice = CastTypeInfo<TypeInfoSlice>(wantedTypeInfo, TypeInfoKind::Slice);
         if (callTypeInfo->isSlice())
         {
-            auto typeSlice = CastTypeInfo<TypeInfoSlice>(callTypeInfo, TypeInfoKind::Slice);
-            wantedTypeInfos.push_back(symbolSlice->pointedType);
-            callTypeInfos.push_back(typeSlice->pointedType);
+            auto callSlice = CastTypeInfo<TypeInfoSlice>(callTypeInfo, TypeInfoKind::Slice);
+            wantedTypeInfos.push_back(wantedSlice->pointedType);
+            callTypeInfos.push_back(callSlice->pointedType);
         }
         else if (callTypeInfo->isArray())
         {
-            auto typeArray = CastTypeInfo<TypeInfoArray>(callTypeInfo, TypeInfoKind::Array);
-            wantedTypeInfos.push_back(symbolSlice->pointedType);
-            callTypeInfos.push_back(typeArray->pointedType);
+            auto callArray = CastTypeInfo<TypeInfoArray>(callTypeInfo, TypeInfoKind::Array);
+            wantedTypeInfos.push_back(wantedSlice->pointedType);
+            callTypeInfos.push_back(callArray->pointedType);
         }
         else if (callTypeInfo->isListArray())
         {
-            auto typeArray = CastTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListArray);
-            wantedTypeInfos.push_back(symbolSlice->pointedType);
-            callTypeInfos.push_back(typeArray->subTypes[0]->typeInfo);
+            auto callList = CastTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListArray);
+            wantedTypeInfos.push_back(wantedSlice->pointedType);
+            callTypeInfos.push_back(callList->subTypes[0]->typeInfo);
         }
         else
         {
-            wantedTypeInfos.push_back(symbolSlice->pointedType);
+            wantedTypeInfos.push_back(wantedSlice->pointedType);
             callTypeInfos.push_back(callTypeInfo);
         }
         break;
@@ -227,35 +231,39 @@ void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInf
 
     case TypeInfoKind::LambdaClosure:
     {
-        auto symbolLambda = CastTypeInfo<TypeInfoFuncAttr>(wantedTypeInfo, TypeInfoKind::LambdaClosure);
-        auto typeLambda   = CastTypeInfo<TypeInfoFuncAttr>(callTypeInfo, TypeInfoKind::LambdaClosure);
-        if (symbolLambda->returnType && symbolLambda->returnType->isGeneric() && !typeLambda->returnType->isUndefined())
+        auto wantedLambda = CastTypeInfo<TypeInfoFuncAttr>(wantedTypeInfo, TypeInfoKind::LambdaClosure);
+        auto callLambda   = CastTypeInfo<TypeInfoFuncAttr>(callTypeInfo, TypeInfoKind::LambdaClosure);
+
+        if (wantedLambda->returnType &&
+            wantedLambda->returnType->isGeneric() &&
+            !callLambda->returnType->isUndefined())
         {
-            wantedTypeInfos.push_back(symbolLambda->returnType);
-            callTypeInfos.push_back(typeLambda->returnType);
+            wantedTypeInfos.push_back(wantedLambda->returnType);
+            callTypeInfos.push_back(callLambda->returnType);
         }
 
-        auto num = symbolLambda->parameters.size();
+        auto num = wantedLambda->parameters.size();
         for (size_t idx = 0; idx < num; idx++)
         {
-            if (symbolLambda->isClosure() && !idx)
+            if (wantedLambda->isClosure() && !idx)
                 continue;
 
-            TypeInfoParam* typeParam;
-            if (symbolLambda->isClosure() && typeLambda->isLambda())
-                typeParam = typeLambda->parameters[idx - 1];
+            TypeInfoParam* callParam;
+            if (wantedLambda->isClosure() && callLambda->isLambda())
+                callParam = callLambda->parameters[idx - 1];
             else
-                typeParam = typeLambda->parameters[idx];
+                callParam = callLambda->parameters[idx];
 
-            TypeInfoParam* symbolParam = symbolLambda->parameters[idx];
-            if (symbolParam->typeInfo->isGeneric() && !typeParam->typeInfo->isUndefined())
+            TypeInfoParam* wantedParam = wantedLambda->parameters[idx];
+            if (wantedParam->typeInfo->isGeneric() && !callParam->typeInfo->isUndefined())
             {
-                wantedTypeInfos.push_back(symbolParam->typeInfo);
-                callTypeInfos.push_back(typeParam->typeInfo);
+                wantedTypeInfos.push_back(wantedParam->typeInfo);
+                callTypeInfos.push_back(callParam->typeInfo);
             }
         }
         break;
     }
+
     default:
         break;
     }
