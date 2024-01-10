@@ -71,7 +71,7 @@ bool Generic::updateGenericParameters(SemanticContext*              context,
         }
 
         // We should not instantiate with unresolved types
-        auto genGen = match.mapIndexToGenericType[i];
+        auto genGen = match.genericParametersCallTypes[i].typeInfoGeneric;
         if (genGen->isKindGeneric())
         {
             if (param->typeInfo->isUntypedInteger() || param->typeInfo->isUntypedFloat())
@@ -748,7 +748,6 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
 
     context.genericParametersCallTypes.expand_clear(wantedNumGenericParams);
     context.genericParametersCallValues.expand_clear(wantedNumGenericParams);
-    context.mapIndexToGenericType.set_size_clear(wantedNumGenericParams);
 
     if (numGenericParams > wantedNumGenericParams)
     {
@@ -756,14 +755,6 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
         context.badSignatureInfos.badSignatureNum2 = wantedNumGenericParams;
         context.result                             = MatchResult::TooManyGenericParameters;
         return;
-    }
-
-    for (int i = 0; i < wantedNumGenericParams; i++)
-    {
-        auto        genType                        = genericParameters[i]->typeInfo;
-        const auto& genTypeName                    = genType->name;
-        context.mapGenericTypeToIndex[genTypeName] = i;
-        context.mapIndexToGenericType[i]           = genType;
     }
 
     GenericReplaceType                  st;
@@ -844,6 +835,14 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
             if (it1 != context.genericReplaceValues.end())
                 context.genericParametersCallValues[i] = it1->second;
         }
+    }
+
+    for (int i = 0; i < wantedNumGenericParams; i++)
+    {
+        auto genType                                 = genericParameters[i]->typeInfo;
+        context.mapGenericTypeToIndex[genType->name] = i;
+        if (!context.genericParametersCallTypes[i].typeInfoGeneric)
+            context.genericParametersCallTypes[i].typeInfoGeneric = genType;
     }
 }
 

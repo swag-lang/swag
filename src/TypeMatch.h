@@ -99,7 +99,6 @@ struct SymbolMatchContext
     VectorNative<ComputedValue*>        genericParametersCallValues;
     VectorMap<Utf8, GenericReplaceType> genericReplaceTypes;
     VectorMap<Utf8, ComputedValue*>     genericReplaceValues;
-    VectorNative<TypeInfo*>             mapIndexToGenericType;
     VectorMap<Utf8, uint32_t>           mapGenericTypeToIndex;
     BadSignatureInfos                   badSignatureInfos;
 
@@ -129,7 +128,6 @@ struct SymbolMatchContext
         genericParametersCallValues.clear();
         genericReplaceTypes.clear();
         genericReplaceValues.clear();
-        mapIndexToGenericType.clear();
         mapGenericTypeToIndex.clear();
         badSignatureInfos.clear();
 

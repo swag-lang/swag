@@ -99,7 +99,6 @@ struct OneGenericMatch
     VectorNative<ComputedValue*>        genericParametersCallValues;
     VectorMap<Utf8, GenericReplaceType> genericReplaceTypes;
     VectorMap<Utf8, ComputedValue*>     genericReplaceValues;
-    VectorNative<TypeInfo*>             mapIndexToGenericType;
 
     VectorNative<AstNode*>       parameters;
     VectorNative<TypeInfoParam*> solvedParameters;
@@ -118,7 +117,6 @@ struct OneGenericMatch
         genericParametersCallValues.clear();
         genericReplaceTypes.clear();
         genericReplaceValues.clear();
-        mapIndexToGenericType.clear();
         parameters.clear();
         solvedParameters.clear();
         symbolName                  = nullptr;
