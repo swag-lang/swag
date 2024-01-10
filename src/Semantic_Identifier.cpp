@@ -1902,7 +1902,6 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                 match->symbolOverload              = overload;
                 match->genericParametersCallTypes  = std::move(oneOverload.symMatchContext.genericParametersCallTypes);
                 match->genericParametersCallValues = std::move(oneOverload.symMatchContext.genericParametersCallValues);
-                match->genericParametersCallFrom   = std::move(oneOverload.symMatchContext.genericParametersCallFrom);
                 match->genericReplaceTypes         = std::move(oneOverload.symMatchContext.genericReplaceTypes);
                 match->genericReplaceValues        = std::move(oneOverload.symMatchContext.genericReplaceValues);
                 match->mapIndexToGenericType       = std::move(oneOverload.symMatchContext.mapIndexToGenericType);
@@ -2275,19 +2274,16 @@ bool Semantic::instantiateGenericSymbol(SemanticContext* context, OneGenericMatc
             genericParameters             = identifier->genericParameters;
             for (int i = 0; i < (int) firstMatch.genericParametersCallTypes.size(); i++)
             {
-                auto param          = firstMatch.genericParametersCallTypes[i];
-                auto callParam      = Ast::newFuncCallParam(node->sourceFile, genericParameters);
-                callParam->typeInfo = param;
+                const auto& param     = firstMatch.genericParametersCallTypes[i];
+                auto        callParam = Ast::newFuncCallParam(node->sourceFile, genericParameters);
+                callParam->typeInfo   = param.typeInfoReplace;
+                if (param.fromNode)
+                    callParam->token = param.fromNode->token;
 
                 if (firstMatch.genericParametersCallValues[i])
                 {
                     callParam->allocateComputedValue();
                     *callParam->computedValue = *firstMatch.genericParametersCallValues[i];
-                }
-
-                if (firstMatch.genericParametersCallFrom[i])
-                {
-                    callParam->token = firstMatch.genericParametersCallFrom[i]->token;
                 }
             }
         }
@@ -3491,9 +3487,11 @@ bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, Symbo
         {
             auto oneParam = CastAst<AstFuncCallParam>(genericParameters->childs[i], AstNodeKind::FuncCallParam);
             symMatchContext.genericParameters.push_back(oneParam);
-            symMatchContext.genericParametersCallTypes.push_back(oneParam->typeInfo);
+            GenericReplaceType st;
+            st.typeInfoReplace = oneParam->typeInfo;
+            st.fromNode        = oneParam;
+            symMatchContext.genericParametersCallTypes.push_back(st);
             symMatchContext.genericParametersCallValues.push_back(oneParam->computedValue);
-            symMatchContext.genericParametersCallFrom.push_back(oneParam);
         }
     }
 

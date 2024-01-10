@@ -329,8 +329,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                         auto it = context.genericReplaceTypes.find(genType->name);
                         if (it != context.genericReplaceTypes.end())
                         {
-                            context.genericParametersCallTypes[i]        = it->second.typeInfoReplace;
-                            context.genericParametersCallFrom[i]         = it->second.fromNode;
+                            context.genericParametersCallTypes[i]        = it->second;
                             context.mapGenericTypeToIndex[genType->name] = i;
                             context.mapIndexToGenericType[i]             = genType;
                             continue;
@@ -351,13 +350,6 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                             }
 
                             context.genericParametersCallValues[i] = it->second;
-
-                            auto it1 = context.genericReplaceTypes.find(genType->name);
-                            if (it1 != context.genericReplaceTypes.end())
-                            {
-                                context.genericParametersCallFrom[i] = it1->second.fromNode;
-                            }
-
                             continue;
                         }
 
@@ -374,7 +366,9 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                     }
 
                     // Otherwise take the type, this is a match (genType can be either a generic type or a contextual match)
-                    context.genericParametersCallTypes[i] = genType;
+                    GenericReplaceType st;
+                    st.typeInfoReplace                    = genType;
+                    context.genericParametersCallTypes[i] = st;
                     context.flags &= ~SymbolMatchContext::MATCH_GENERIC_AUTO;
                 }
 
@@ -446,7 +440,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
     for (int i = 0; i < userGenericParams; i++)
     {
         auto callParameter   = context.genericParameters[i];
-        auto typeInfo        = TypeManager::concreteType(context.genericParametersCallTypes[i], CONCRETE_FUNC);
+        auto typeInfo        = TypeManager::concreteType(context.genericParametersCallTypes[i].typeInfoReplace, CONCRETE_FUNC);
         auto symbolParameter = genericParameters[i];
 
         if (myTypeInfo->isGeneric())
@@ -555,8 +549,11 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
             auto it = context.genericReplaceTypes.find(symbolParameter->typeInfo->name);
             if (it == context.genericReplaceTypes.end())
             {
-                context.genericParametersCallTypes[i] = callParameter->typeInfo;
-                context.genericParametersCallFrom[i]  = callParameter;
+                GenericReplaceType st;
+                st.typeInfoGeneric                    = symbolParameter->typeInfo->isGeneric() ? symbolParameter->typeInfo : nullptr;
+                st.typeInfoReplace                    = callParameter->typeInfo;
+                st.fromNode                           = callParameter;
+                context.genericParametersCallTypes[i] = st;
             }
         }
         else

@@ -4,7 +4,6 @@ struct AstFuncDecl;
 struct AstNode;
 struct AstVarDecl;
 struct CloneContext;
-struct GenericReplaceType;
 struct Job;
 struct OneTryMatch;
 struct OneGenericMatch;

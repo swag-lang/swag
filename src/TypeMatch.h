@@ -95,9 +95,8 @@ struct SymbolMatchContext
     VectorNative<TypeInfoParam*>        solvedParameters;
     VectorNative<TypeInfoParam*>        solvedCallParameters;
     VectorNative<bool>                  doneParameters;
-    VectorNative<TypeInfo*>             genericParametersCallTypes;
+    VectorNative<GenericReplaceType>    genericParametersCallTypes;
     VectorNative<ComputedValue*>        genericParametersCallValues;
-    VectorNative<AstNode*>              genericParametersCallFrom;
     VectorMap<Utf8, GenericReplaceType> genericReplaceTypes;
     VectorMap<Utf8, ComputedValue*>     genericReplaceValues;
     VectorNative<TypeInfo*>             mapIndexToGenericType;
@@ -128,7 +127,6 @@ struct SymbolMatchContext
         doneParameters.clear();
         genericParametersCallTypes.clear();
         genericParametersCallValues.clear();
-        genericParametersCallFrom.clear();
         genericReplaceTypes.clear();
         genericReplaceValues.clear();
         mapIndexToGenericType.clear();
