@@ -90,7 +90,6 @@ namespace Semantic
     bool checkCanThrow(SemanticContext* context);
     bool checkCanCatch(SemanticContext* context);
     bool checkImplScopes(SemanticContext* context, AstImpl* node, Scope* scopeImpl, Scope* scope);
-    void checkCanInstantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch);
     bool checkIsConstAffect(SemanticContext* context, AstNode* left, AstNode* right);
     bool checkIsConstExpr(JobContext* context, bool test, AstNode* expression, const Utf8& errMsg = "", const Utf8& errParam = "");
     bool checkIsConstExpr(JobContext* context, AstNode* expression, const Utf8& errMsg = "", const Utf8& errParam = "");
@@ -159,7 +158,7 @@ namespace Semantic
     void           dealWithIntrinsic(SemanticContext* context, AstIdentifier* identifier);
     bool           setSymbolMatchCallParams(SemanticContext* context, AstIdentifier* identifier, OneMatch& oneMatch);
     bool           setSymbolMatch(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
-    void           resolvePendingLambdaTyping(AstFuncCallParam* nodeCall, OneMatch* oneMatch, int i);
+    void           resolvePendingLambdaTyping(AstNode* funcDecl, TypeInfo* resolvedType, int i);
     void           allocateOnStack(AstNode* node, TypeInfo* typeInfo);
     bool           setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters, bool forGenerics);
     Diagnostic*    computeNonConstExprNote(AstNode* node);
@@ -211,7 +210,6 @@ namespace Semantic
     void           addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, uint32_t asflags);
     void           unknownIdentifier(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
     bool           ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match);
-    bool           instantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch, bool forStruct);
     bool           filterGenericMatches(SemanticContext* context, VectorNative<OneMatch*>& matches, VectorNative<OneGenericMatch*>& genMatches);
     bool           filterMatchesInContext(SemanticContext* context, VectorNative<OneMatch*>& matches);
     bool           solveValidIf(SemanticContext* context, AstStruct* structDecl);

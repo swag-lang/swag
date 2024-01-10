@@ -31,6 +31,8 @@ namespace Generic
     void      deduceGenericTypeReplacement(SymbolMatchContext& context, AstNode* callParameter, TypeInfo* callTypeInfo, TypeInfo* wantedTypeInfo, int idxParam, uint64_t castFlags);
     void      setContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload, uint32_t flags);
     void      setUserGenericTypeReplacement(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& genericParameters);
+    void      checkCanInstantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch);
+    bool      instantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch, bool forStruct);
 
     void instantiateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, AstFuncDecl** funcNode);
     bool instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool& alias);

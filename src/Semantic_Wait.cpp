@@ -273,3 +273,65 @@ void Semantic::waitForGenericParameters(SemanticContext* context, OneGenericMatc
         SWAG_ASSERT(typeInfo->sizeOf > 0);
     }
 }
+
+bool Semantic::needToCompleteSymbol(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol, bool testOverloads)
+{
+    if (symbol->kind != SymbolKind::Struct && symbol->kind != SymbolKind::Interface)
+        return true;
+    if (identifier->callParameters || identifier->genericParameters)
+        return true;
+
+    if (testOverloads)
+    {
+        if (symbol->overloads.size() != 1)
+            return true;
+        // If this is a generic type, and it's from an instance, we must wait, because we will
+        // have to instantiate that symbol too
+        if (identifier->ownerStructScope && (identifier->ownerStructScope->owner->flags & AST_FROM_GENERIC) && symbol->overloads[0]->typeInfo->isGeneric())
+            return true;
+        if (identifier->ownerFct && (identifier->ownerFct->flags & AST_FROM_GENERIC) && symbol->overloads[0]->typeInfo->isGeneric())
+            return true;
+    }
+
+    // If a structure is referencing itself, we will match the incomplete symbol for now
+    if (identifier->flags & AST_STRUCT_MEMBER)
+        return false;
+
+    // We can also do an incomplete match with the identifier of an Impl block
+    if (identifier->flags & AST_CAN_MATCH_INCOMPLETE)
+        return false;
+
+    // If identifier is in a pointer type expression, can incomplete resolve
+    if (identifier->parent->parent && identifier->parent->parent->kind == AstNodeKind::TypeExpression)
+    {
+        auto typeExprNode = CastAst<AstTypeExpression>(identifier->parent->parent, AstNodeKind::TypeExpression);
+        if (typeExprNode->typeFlags & TYPEFLAG_IS_PTR)
+            return false;
+
+        if (typeExprNode->parent && typeExprNode->parent->kind == AstNodeKind::TypeExpression)
+        {
+            typeExprNode = CastAst<AstTypeExpression>(typeExprNode->parent, AstNodeKind::TypeExpression);
+            if (typeExprNode->typeFlags & TYPEFLAG_IS_PTR)
+                return false;
+        }
+    }
+
+    return true;
+}
+
+bool Semantic::needToWaitForSymbol(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol)
+{
+    if (!symbol->cptOverloads && !(symbol->flags & SYMBOL_ATTRIBUTE_GEN))
+        return false;
+
+    // For a name alias, we wait everything to be done...
+    if (identifier->specFlags & AstIdentifier::SPECFLAG_NAME_ALIAS)
+        return true;
+
+    // This is enough to resolve, as we just need parameters, and that case means that some functions
+    // do not know their return type yet (short lambdas)
+    if (symbol->kind == SymbolKind::Function && symbol->overloads.size() == symbol->cptOverloadsInit)
+        return false;
+
+    return true;
+}

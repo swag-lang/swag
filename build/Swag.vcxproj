@@ -504,7 +504,9 @@
     <ClCompile Include="..\src\Semantic_Literal.cpp" />
     <ClCompile Include="..\src\Semantic_Op.cpp" />
     <ClCompile Include="..\src\Semantic_Ref.cpp" />
+    <ClCompile Include="..\src\Semantic_Scope.cpp" />
     <ClCompile Include="..\src\Semantic_Struct.cpp" />
+    <ClCompile Include="..\src\Semantic_TryCatch.cpp" />
     <ClCompile Include="..\src\Semantic_Type.cpp" />
     <ClCompile Include="..\src\Semantic_UnaryExpression.cpp" />
     <ClCompile Include="..\src\Semantic_Var.cpp" />

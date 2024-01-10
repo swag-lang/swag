@@ -1,0 +1,153 @@
+#include "pch.h"
+#include "Ast.h"
+#include "ByteCodeGen.h"
+#include "Diagnostic.h"
+#include "Naming.h"
+#include "SemanticJob.h"
+#include "TypeManager.h"
+
+bool Semantic::checkCanThrow(SemanticContext* context)
+{
+    auto node = context->node;
+
+    // For a try/throw inside an inline block, take the original function, except if it is flagged with 'Swag.CalleeReturn'
+    if (node->ownerInline)
+    {
+        if (!(node->ownerInline->func->attributeFlags & ATTRIBUTE_CALLEE_RETURN) && !(node->flags & AST_IN_MIXIN))
+            node->semFlags |= SEMFLAG_EMBEDDED_RETURN;
+    }
+
+    auto parentFct = (node->semFlags & SEMFLAG_EMBEDDED_RETURN) ? node->ownerInline->func : node->ownerFct;
+
+    if (parentFct->isSpecialFunctionName())
+        return context->report({node, node->token, Fmt(Err(Err0137), node->token.ctext(), node->token.ctext(), parentFct->token.ctext())});
+
+    if (!(parentFct->typeInfo->flags & TYPEINFO_CAN_THROW) && !(parentFct->attributeFlags & ATTRIBUTE_SHARP_FUNC))
+        return context->report({node, node->token, Fmt(Err(Err0138), node->token.ctext(), node->token.ctext(), parentFct->token.ctext())});
+
+    return true;
+}
+
+bool Semantic::checkCanCatch(SemanticContext* context)
+{
+    auto node          = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Try, AstNodeKind::Catch, AstNodeKind::TryCatch, AstNodeKind::Assume);
+    auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
+
+    for (auto c : identifierRef->childs)
+    {
+        if (!c->resolvedSymbolOverload)
+            continue;
+        if (c->resolvedSymbolOverload->symbol->kind == SymbolKind::Function || c->resolvedSymbolOverload->typeInfo->isLambdaClosure())
+            return true;
+    }
+
+    auto lastChild = identifierRef->childs.back();
+    return context->report({node, node->token, Fmt(Err(Err0139), node->token.ctext(), lastChild->token.ctext(), Naming::aKindName(lastChild->resolvedSymbolName->kind).c_str())});
+}
+
+bool Semantic::resolveTryBlock(SemanticContext* context)
+{
+    SWAG_CHECK(checkCanThrow(context));
+    return true;
+}
+
+bool Semantic::resolveTry(SemanticContext* context)
+{
+    auto node          = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Try);
+    auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
+    auto lastChild     = identifierRef->childs.back();
+
+    SWAG_CHECK(checkCanThrow(context));
+    SWAG_CHECK(checkCanCatch(context));
+
+    node->typeInfo = lastChild->typeInfo;
+    node->flags |= identifierRef->flags;
+    node->inheritComputedValue(identifierRef);
+    node->byteCodeFct = ByteCodeGen::emitPassThrough;
+
+    return true;
+}
+
+bool Semantic::resolveTryCatch(SemanticContext* context)
+{
+    auto node          = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::TryCatch);
+    auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
+    auto lastChild     = identifierRef->childs.back();
+
+    SWAG_CHECK(checkCanCatch(context));
+    SWAG_ASSERT(node->ownerFct);
+    node->ownerFct->addSpecFlags(AstFuncDecl::SPECFLAG_REG_GET_CONTEXT);
+
+    node->setBcNotifBefore(ByteCodeGen::emitInitStackTrace);
+    node->byteCodeFct = ByteCodeGen::emitPassThrough;
+
+    node->typeInfo = lastChild->typeInfo;
+    node->flags |= identifierRef->flags;
+    node->inheritComputedValue(identifierRef);
+
+    return true;
+}
+
+bool Semantic::resolveCatch(SemanticContext* context)
+{
+    auto node          = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Catch);
+    auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
+    auto lastChild     = identifierRef->childs.back();
+
+    SWAG_CHECK(checkCanCatch(context));
+    SWAG_ASSERT(node->ownerFct);
+    node->ownerFct->addSpecFlags(AstFuncDecl::SPECFLAG_REG_GET_CONTEXT);
+
+    node->allocateExtension(ExtensionKind::ByteCode);
+    node->setBcNotifBefore(ByteCodeGen::emitInitStackTrace);
+    node->byteCodeFct = ByteCodeGen::emitPassThrough;
+
+    node->typeInfo = lastChild->typeInfo;
+    node->flags |= identifierRef->flags;
+    node->flags &= ~AST_DISCARD;
+    node->inheritComputedValue(identifierRef);
+
+    return true;
+}
+
+bool Semantic::resolveAssume(SemanticContext* context)
+{
+    auto node          = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Assume);
+    auto identifierRef = CastAst<AstIdentifierRef>(node->childs.front(), AstNodeKind::IdentifierRef);
+    auto lastChild     = identifierRef->childs.back();
+
+    SWAG_CHECK(checkCanCatch(context));
+    SWAG_ASSERT(node->ownerFct);
+    node->ownerFct->addSpecFlags(AstFuncDecl::SPECFLAG_REG_GET_CONTEXT);
+
+    node->allocateExtension(ExtensionKind::ByteCode);
+    node->setBcNotifBefore(ByteCodeGen::emitInitStackTrace);
+    node->typeInfo = lastChild->typeInfo;
+    node->flags |= identifierRef->flags;
+    node->inheritComputedValue(identifierRef);
+    node->byteCodeFct = ByteCodeGen::emitPassThrough;
+
+    return true;
+}
+
+bool Semantic::resolveThrow(SemanticContext* context)
+{
+    auto node      = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Throw);
+    auto expr      = node->childs.front();
+    node->typeInfo = expr->typeInfo;
+
+    SWAG_CHECK(checkCanThrow(context));
+
+    auto type = TypeManager::concretePtrRefType(expr->typeInfo);
+
+    SWAG_VERIFY(!type->isVoid(), context->report({expr, Err(Err0573)}));
+    if (!type->isAny() || !(node->specFlags & AstTryCatchAssume::SPECFLAG_THROW_GETERR))
+        SWAG_VERIFY(type->isStruct(), context->report({expr, Fmt(Err(Err0570), type->getDisplayNameC())}));
+
+    if (type->isString())
+        context->node->printLoc();
+
+    SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoAny, node, expr, CASTFLAG_AUTO_OPCAST | CASTFLAG_CONCRETE_ENUM));
+    node->byteCodeFct = ByteCodeGen::emitThrow;
+    return true;
+}

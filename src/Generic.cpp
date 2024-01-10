@@ -359,3 +359,126 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
 
     return newJob;
 }
+
+
+void Generic::checkCanInstantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch)
+{
+    auto symbol = firstMatch.symbolName;
+
+    // Be sure number of overloads has not changed since then
+    if (firstMatch.numOverloadsWhenChecked != symbol->overloads.size())
+    {
+        context->result = ContextResult::NewChilds;
+        return;
+    }
+
+    if (firstMatch.numOverloadsInitWhenChecked != symbol->cptOverloadsInit)
+    {
+        context->result = ContextResult::NewChilds;
+        return;
+    }
+
+    // Cannot instantiate if the type is incomplete
+    Semantic::waitForGenericParameters(context, firstMatch);
+}
+
+bool Generic::instantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch, bool forStruct)
+{
+    auto       node              = context->node;
+    auto&      matches           = context->cacheMatches;
+    auto       symbol            = firstMatch.symbolName;
+    auto       genericParameters = firstMatch.genericParameters;
+    ScopedLock lk(symbol->mutex);
+
+    // If we are inside a generic function (not instantiated), then we are done, we
+    // cannot instantiate (can occure when evaluating function body of an incomplete short lammbda
+    if (node->ownerFct && node->ownerFct->flags & AST_IS_GENERIC)
+        return true;
+
+    checkCanInstantiateGenericSymbol(context, firstMatch);
+    YIELD();
+
+    if (forStruct)
+    {
+        // Be sure we have generic parameters if there's an automatic match
+        if (!genericParameters && (firstMatch.flags & SymbolMatchContext::MATCH_GENERIC_AUTO))
+        {
+            SWAG_ASSERT(!firstMatch.genericParametersCallTypes.empty());
+            auto identifier               = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+            identifier->genericParameters = Ast::newFuncCallGenParams(node->sourceFile, node);
+            genericParameters             = identifier->genericParameters;
+            for (int i = 0; i < (int) firstMatch.genericParametersCallTypes.size(); i++)
+            {
+                const auto& param     = firstMatch.genericParametersCallTypes[i];
+                auto        callParam = Ast::newFuncCallParam(node->sourceFile, genericParameters);
+                callParam->typeInfo   = param.typeInfoReplace;
+                if (param.fromNode)
+                    callParam->token = param.fromNode->token;
+
+                if (firstMatch.genericParametersCallValues[i])
+                {
+                    callParam->allocateComputedValue();
+                    *callParam->computedValue = *firstMatch.genericParametersCallValues[i];
+                }
+            }
+        }
+
+        // We can instantiate the struct because it's no more generic, and we have generic parameters to replace
+        if (!(node->flags & AST_IS_GENERIC) && genericParameters)
+        {
+            bool alias = false;
+            SWAG_CHECK(Generic::instantiateStruct(context, genericParameters, firstMatch, alias));
+            if (alias)
+            {
+                auto oneMatch            = context->getOneMatch();
+                oneMatch->symbolOverload = firstMatch.symbolOverload;
+                matches.push_back(oneMatch);
+            }
+        }
+
+        // The new struct is no more generic without generic parameters.
+        // It happens each time we reference a generic struct without generic parameters, like impl 'Array', @typeof(Array), self* Array or even
+        // a variable type (in that case we will try later to instantiate it with default generic parameters).
+        // So we match a generic struct as a normal match without instantiation (for now).
+        else if (!(node->flags & AST_IS_GENERIC))
+        {
+            auto oneMatch            = context->getOneMatch();
+            oneMatch->symbolOverload = firstMatch.symbolOverload;
+            matches.push_back(oneMatch);
+            node->flags |= AST_IS_GENERIC;
+        }
+
+        // The new struct is still generic and we have generic parameters
+        else
+        {
+            SWAG_ASSERT(genericParameters);
+            auto oneMatch            = context->getOneMatch();
+            oneMatch->symbolOverload = firstMatch.symbolOverload;
+            matches.push_back(oneMatch);
+            node->flags |= AST_IS_GENERIC;
+
+            // :DupGen
+            // We generate a new struct with the wanted generic parameters to have those names for replacement.
+            auto newStructType = CastTypeInfo<TypeInfoStruct>(firstMatch.symbolOverload->typeInfo, TypeInfoKind::Struct);
+            if (newStructType->genericParameters.size() == genericParameters->childs.size() && genericParameters->childs.size())
+            {
+                auto typeWasForced = firstMatch.symbolOverload->typeInfo->clone();
+                newStructType      = CastTypeInfo<TypeInfoStruct>(typeWasForced, TypeInfoKind::Struct);
+                for (size_t i = 0; i < genericParameters->childs.size(); i++)
+                {
+                    newStructType->genericParameters[i]->name     = genericParameters->childs[i]->typeInfo->name;
+                    newStructType->genericParameters[i]->typeInfo = genericParameters->childs[i]->typeInfo;
+                }
+
+                typeWasForced->forceComputeName();
+                oneMatch->typeWasForced = typeWasForced;
+            }
+        }
+    }
+    else
+    {
+        SWAG_CHECK(Generic::instantiateFunction(context, genericParameters, firstMatch));
+    }
+
+    return true;
+}
