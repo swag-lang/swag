@@ -257,6 +257,96 @@ void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInf
     }
 }
 
+void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, TypeInfo* callTypeInfo, uint64_t castFlags, int idxParam, VectorNative<TypeInfo*>& wantedTypeInfos, VectorNative<TypeInfo*>& callTypeInfos, AstNode* callParameter)
+{
+    // Do we already have mapped the generic parameter to something ?
+    auto it = context.genericReplaceTypes.find(wantedTypeInfo->name);
+    if (it != context.genericReplaceTypes.end())
+    {
+        // We must be sure that the registered type is the same as the new one
+        bool same = TypeManager::makeCompatibles(context.semContext, it->second.typeInfoReplace, callTypeInfo, nullptr, nullptr, CASTFLAG_JUST_CHECK | CASTFLAG_PARAMS | castFlags);
+        if (context.semContext->result != ContextResult::Done)
+            return;
+
+        // The previous type is not the same, then this is an error
+        if (!same)
+        {
+            context.badSignatureInfos.badSignatureParameterIdx  = idxParam;
+            context.badSignatureInfos.badSignatureRequestedType = it->second.typeInfoReplace;
+            context.badSignatureInfos.genMatchFromNode          = it->second.fromNode;
+            context.badSignatureInfos.badSignatureGivenType     = callTypeInfo;
+            context.badSignatureInfos.badGenMatch               = wantedTypeInfo->name;
+            SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
+            context.result = MatchResult::BadSignature;
+        }
+
+        return;
+    }
+
+    bool canReg = true;
+
+    // Do not register type replacement if the concrete type is a pending lambda typing (we do not know
+    // yet the type of parameters)
+    if (callTypeInfo->declNode && (callTypeInfo->declNode->semFlags & SEMFLAG_PENDING_LAMBDA_TYPING))
+        canReg = false;
+    else if (wantedTypeInfo->isPointer())
+        canReg = false;
+    else if (wantedTypeInfo->isStruct() && callTypeInfo->isStruct())
+        canReg = wantedTypeInfo->isSame(callTypeInfo, CASTFLAG_CAST);
+
+    if (!canReg)
+        return;
+
+    // We could have match a non const against a const
+    // We need to instantiate with the const equivalent, so make the call type const
+    if (!callTypeInfo->isConst() && wantedTypeInfo->isConst())
+        callTypeInfo = g_TypeMgr->makeConst(callTypeInfo);
+
+    auto regTypeInfo = callTypeInfo;
+
+    // :DupGen
+    if (wantedTypeInfo->isStruct() && callTypeInfo->isStruct())
+    {
+        auto callStruct   = CastTypeInfo<TypeInfoStruct>(callTypeInfo, TypeInfoKind::Struct);
+        auto wantedStruct = CastTypeInfo<TypeInfoStruct>(wantedTypeInfo, TypeInfoKind::Struct);
+        if (callStruct->genericParameters.size() == wantedStruct->genericParameters.size() &&
+            callStruct->genericParameters.size())
+        {
+            auto newStructType = (TypeInfoStruct*) callStruct->clone();
+            for (size_t i = 0; i < callStruct->genericParameters.size(); i++)
+                newStructType->genericParameters[i]->name = wantedStruct->genericParameters[i]->typeInfo->name;
+            regTypeInfo = newStructType;
+        }
+    }
+
+    if (wantedTypeInfo->isKindGeneric() && regTypeInfo->isListTuple())
+    {
+        context.badSignatureInfos.badSignatureParameterIdx  = idxParam;
+        context.badSignatureInfos.badSignatureRequestedType = wantedTypeInfo;
+        context.badSignatureInfos.badSignatureGivenType     = callTypeInfo;
+        SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
+        context.result = MatchResult::CannotDeduceGenericType;
+        return;
+    }
+
+    // Associate the generic type with that concrete one
+    GenericReplaceType st;
+    st.typeInfoGeneric                                = wantedTypeInfo;
+    st.typeInfoReplace                                = regTypeInfo;
+    st.fromNode                                       = callParameter;
+    context.genericReplaceTypes[wantedTypeInfo->name] = st;
+
+    // If this is a valid generic argument, register it at the correct call position
+    auto itIdx = context.mapGenericTypeToIndex.find(wantedTypeInfo->name);
+    if (itIdx != context.mapGenericTypeToIndex.end())
+    {
+        st.typeInfoGeneric                                = wantedTypeInfo;
+        st.typeInfoReplace                                = callTypeInfo;
+        st.fromNode                                       = callParameter;
+        context.genericParametersCallTypes[itIdx->second] = st;
+    }
+}
+
 void Generic::deduceGenericTypeReplacement(SymbolMatchContext& context, AstNode* callParameter, TypeInfo* callTypeInfo, TypeInfo* wantedTypeInfo, int idxParam, uint64_t castFlags)
 {
     SWAG_ASSERT(wantedTypeInfo->isGeneric());
@@ -276,94 +366,7 @@ void Generic::deduceGenericTypeReplacement(SymbolMatchContext& context, AstNode*
         if (!callTypeInfo)
             continue;
 
-        // Do we already have mapped the generic parameter to something ?
-        auto it = context.genericReplaceTypes.find(wantedTypeInfo->name);
-        if (it != context.genericReplaceTypes.end())
-        {
-            // We must be sure that the registered type is the same as the new one
-            bool same = TypeManager::makeCompatibles(context.semContext, it->second.typeInfoReplace, callTypeInfo, nullptr, nullptr, CASTFLAG_JUST_CHECK | CASTFLAG_PARAMS | castFlags);
-            if (context.semContext->result != ContextResult::Done)
-                return;
-
-            // The previous type is not the same, then this is an error
-            if (!same)
-            {
-                context.badSignatureInfos.badSignatureParameterIdx  = idxParam;
-                context.badSignatureInfos.badSignatureRequestedType = it->second.typeInfoReplace;
-                context.badSignatureInfos.genMatchFromNode          = it->second.fromNode;
-                context.badSignatureInfos.badSignatureGivenType     = callTypeInfo;
-                context.badSignatureInfos.badGenMatch               = wantedTypeInfo->name;
-                SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
-                context.result = MatchResult::BadSignature;
-            }
-
-            deduceSubType(context, wantedTypeInfo, callTypeInfo, wantedTypeInfos, callTypeInfos, callParameter);
-            continue;
-        }
-
-        bool canReg = true;
-
-        // Do not register type replacement if the concrete type is a pending lambda typing (we do not know
-        // yet the type of parameters)
-        if (callTypeInfo->declNode && (callTypeInfo->declNode->semFlags & SEMFLAG_PENDING_LAMBDA_TYPING))
-            canReg = false;
-        else if (wantedTypeInfo->isPointer())
-            canReg = false;
-        else if (wantedTypeInfo->isStruct() && callTypeInfo->isStruct())
-            canReg = wantedTypeInfo->isSame(callTypeInfo, CASTFLAG_CAST);
-
-        if (canReg)
-        {
-            // We could have match a non const against a const
-            // We need to instantiate with the const equivalent, so make the call type const
-            if (!callTypeInfo->isConst() && wantedTypeInfo->isConst())
-                callTypeInfo = g_TypeMgr->makeConst(callTypeInfo);
-
-            auto regTypeInfo = callTypeInfo;
-
-            // :DupGen
-            if (wantedTypeInfo->isStruct() && callTypeInfo->isStruct())
-            {
-                auto callStruct   = CastTypeInfo<TypeInfoStruct>(callTypeInfo, TypeInfoKind::Struct);
-                auto wantedStruct = CastTypeInfo<TypeInfoStruct>(wantedTypeInfo, TypeInfoKind::Struct);
-                if (callStruct->genericParameters.size() == wantedStruct->genericParameters.size() &&
-                    callStruct->genericParameters.size())
-                {
-                    auto newStructType = (TypeInfoStruct*) callStruct->clone();
-                    for (size_t i = 0; i < callStruct->genericParameters.size(); i++)
-                        newStructType->genericParameters[i]->name = wantedStruct->genericParameters[i]->typeInfo->name;
-                    regTypeInfo = newStructType;
-                }
-            }
-
-            if (wantedTypeInfo->isKindGeneric() && regTypeInfo->isListTuple())
-            {
-                context.badSignatureInfos.badSignatureParameterIdx  = idxParam;
-                context.badSignatureInfos.badSignatureRequestedType = wantedTypeInfo;
-                context.badSignatureInfos.badSignatureGivenType     = callTypeInfo;
-                SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
-                context.result = MatchResult::CannotDeduceGenericType;
-                return;
-            }
-
-            // Associate the generic type with that concrete one
-            GenericReplaceType st;
-            st.typeInfoGeneric                                = wantedTypeInfo;
-            st.typeInfoReplace                                = regTypeInfo;
-            st.fromNode                                       = callParameter;
-            context.genericReplaceTypes[wantedTypeInfo->name] = st;
-
-            // If this is a valid generic argument, register it at the correct call position
-            auto itIdx = context.mapGenericTypeToIndex.find(wantedTypeInfo->name);
-            if (itIdx != context.mapGenericTypeToIndex.end())
-            {
-                st.typeInfoGeneric                                = wantedTypeInfo;
-                st.typeInfoReplace                                = callTypeInfo;
-                st.fromNode                                       = callParameter;
-                context.genericParametersCallTypes[itIdx->second] = st;
-            }
-        }
-
+        deduceType(context, wantedTypeInfo, callTypeInfo, castFlags, idxParam, wantedTypeInfos, callTypeInfos, callParameter);
         deduceSubType(context, wantedTypeInfo, callTypeInfo, wantedTypeInfos, callTypeInfos, callParameter);
     }
 }
