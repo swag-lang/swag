@@ -84,22 +84,13 @@ void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInf
     case TypeInfoKind::Pointer:
     {
         auto wantedPointer = CastTypeInfo<TypeInfoPointer>(wantedTypeInfo, TypeInfoKind::Pointer);
-        if (callTypeInfo->isPointer())
+        if (wantedPointer->isPointerTo(TypeInfoKind::Struct) && callTypeInfo->isPointerTo(TypeInfoKind::Struct))
         {
+            // Because of using var cast, we can have here *A and *B with a match.
+            // But we do not want A and B to match in generic replacement.
+            // So we check they are the same.
             auto callPointer = CastTypeInfo<TypeInfoPointer>(callTypeInfo, TypeInfoKind::Pointer);
-            if (wantedPointer->isPointerTo(TypeInfoKind::Struct) && callPointer->isPointerTo(TypeInfoKind::Struct))
-            {
-                // Because of using var cast, we can have here *A and *B with a match.
-                // But we do not want A and B to match in generic replacement.
-                // So we check they are the same.
-                auto canNext = wantedPointer->pointedType->isSame(callPointer->pointedType, CASTFLAG_CAST);
-                if (canNext)
-                {
-                    wantedTypeInfos.push_back(wantedPointer->pointedType);
-                    callTypeInfos.push_back(callPointer->pointedType);
-                }
-            }
-            else
+            if (wantedPointer->pointedType->isSame(callPointer->pointedType, CASTFLAG_CAST))
             {
                 wantedTypeInfos.push_back(wantedPointer->pointedType);
                 callTypeInfos.push_back(callPointer->pointedType);
@@ -110,12 +101,17 @@ void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInf
             // Because of using var cast, we can have here *A and *B with a match.
             // But we do not want A and B to match in generic replacement.
             // So we check they are the same.
-            auto canNext = wantedPointer->pointedType->isSame(callTypeInfo, CASTFLAG_CAST);
-            if (canNext)
+            if (wantedPointer->pointedType->isSame(callTypeInfo, CASTFLAG_CAST))
             {
                 wantedTypeInfos.push_back(wantedPointer->pointedType);
                 callTypeInfos.push_back(callTypeInfo);
             }
+        }
+        else if (callTypeInfo->isPointer())
+        {
+            auto callPointer = CastTypeInfo<TypeInfoPointer>(callTypeInfo, TypeInfoKind::Pointer);
+            wantedTypeInfos.push_back(wantedPointer->pointedType);
+            callTypeInfos.push_back(callPointer->pointedType);
         }
         else
         {
