@@ -9,28 +9,28 @@ void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInf
     {
     case TypeInfoKind::Struct:
     {
-        auto symbolStruct = CastTypeInfo<TypeInfoStruct>(wantedTypeInfo, TypeInfoKind::Struct);
+        auto wantedStruct = CastTypeInfo<TypeInfoStruct>(wantedTypeInfo, TypeInfoKind::Struct);
         if (callTypeInfo->isStruct())
         {
-            auto typeStruct = CastTypeInfo<TypeInfoStruct>(callTypeInfo, TypeInfoKind::Struct);
-            if (!typeStruct->genericParameters.empty())
+            auto callStruct = CastTypeInfo<TypeInfoStruct>(callTypeInfo, TypeInfoKind::Struct);
+            if (!callStruct->genericParameters.empty())
             {
-                auto num = min(symbolStruct->genericParameters.size(), typeStruct->genericParameters.size());
+                auto num = min(wantedStruct->genericParameters.size(), callStruct->genericParameters.size());
                 for (size_t idx = 0; idx < num; idx++)
                 {
-                    auto genTypeInfo = symbolStruct->genericParameters[idx]->typeInfo;
-                    auto rawTypeInfo = typeStruct->genericParameters[idx]->typeInfo;
+                    auto genTypeInfo = wantedStruct->genericParameters[idx]->typeInfo;
+                    auto rawTypeInfo = callStruct->genericParameters[idx]->typeInfo;
                     wantedTypeInfos.push_back(genTypeInfo);
                     callTypeInfos.push_back(rawTypeInfo);
                 }
             }
             else
             {
-                auto num = min(symbolStruct->genericParameters.size(), typeStruct->deducedGenericParameters.size());
+                auto num = min(wantedStruct->genericParameters.size(), callStruct->deducedGenericParameters.size());
                 for (size_t idx = 0; idx < num; idx++)
                 {
-                    auto genTypeInfo = symbolStruct->genericParameters[idx]->typeInfo;
-                    auto rawTypeInfo = typeStruct->deducedGenericParameters[idx];
+                    auto genTypeInfo = wantedStruct->genericParameters[idx]->typeInfo;
+                    auto rawTypeInfo = callStruct->deducedGenericParameters[idx];
                     wantedTypeInfos.push_back(genTypeInfo);
                     callTypeInfos.push_back(rawTypeInfo);
                 }
@@ -38,8 +38,8 @@ void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInf
         }
         else if (callTypeInfo->isListTuple())
         {
-            auto typeList = CastTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListTuple);
-            auto num      = min(symbolStruct->genericParameters.size(), typeList->subTypes.size());
+            auto callList = CastTypeInfo<TypeInfoList>(callTypeInfo, TypeInfoKind::TypeListTuple);
+            auto num      = min(wantedStruct->genericParameters.size(), callList->subTypes.size());
             for (size_t idx = 0; idx < num; idx++)
             {
                 // A tuple typelist like {a: 1, b: 2} can have named parameters, which means that the order of
@@ -48,25 +48,25 @@ void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInf
                 // We have a generic parameter. We search in the struct the field that correspond to that type, in
                 // order to get the corresponding field name. Then we will search for the name in the typelist (if
                 // specified).
-                auto p       = symbolStruct->genericParameters[idx];
+                auto p       = wantedStruct->genericParameters[idx];
                 Utf8 nameVar = p->name;
-                for (size_t idx1 = 0; idx1 < symbolStruct->fields.size(); idx1++)
+                for (size_t idx1 = 0; idx1 < wantedStruct->fields.size(); idx1++)
                 {
-                    if (symbolStruct->fields[idx1]->typeInfo->name == symbolStruct->genericParameters[idx]->typeInfo->name)
+                    if (wantedStruct->fields[idx1]->typeInfo->name == wantedStruct->genericParameters[idx]->typeInfo->name)
                     {
-                        nameVar = symbolStruct->fields[idx1]->name;
+                        nameVar = wantedStruct->fields[idx1]->name;
                         break;
                     }
                 }
 
                 // Then the corresponding field name is searched in the typelist in case the user has specified one.
-                auto p1        = typeList->subTypes[idx];
+                auto p1        = callList->subTypes[idx];
                 auto typeField = p1->typeInfo;
-                for (size_t j = 0; j < typeList->subTypes.size(); j++)
+                for (size_t j = 0; j < callList->subTypes.size(); j++)
                 {
-                    if (nameVar == typeList->subTypes[j]->name)
+                    if (nameVar == callList->subTypes[j]->name)
                     {
-                        typeField = typeList->subTypes[j]->typeInfo;
+                        typeField = callList->subTypes[j]->typeInfo;
                         break;
                     }
                 }
@@ -83,26 +83,26 @@ void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInf
 
     case TypeInfoKind::Pointer:
     {
-        auto symbolPtr = CastTypeInfo<TypeInfoPointer>(wantedTypeInfo, TypeInfoKind::Pointer);
+        auto wantedPointer = CastTypeInfo<TypeInfoPointer>(wantedTypeInfo, TypeInfoKind::Pointer);
         if (callTypeInfo->isPointer())
         {
-            auto typePtr = CastTypeInfo<TypeInfoPointer>(callTypeInfo, TypeInfoKind::Pointer);
-            if (symbolPtr->isPointerTo(TypeInfoKind::Struct) && typePtr->isPointerTo(TypeInfoKind::Struct))
+            auto callPointer = CastTypeInfo<TypeInfoPointer>(callTypeInfo, TypeInfoKind::Pointer);
+            if (wantedPointer->isPointerTo(TypeInfoKind::Struct) && callPointer->isPointerTo(TypeInfoKind::Struct))
             {
                 // Because of using var cast, we can have here *A and *B with a match.
                 // But we do not want A and B to match in generic replacement.
                 // So we check they are the same.
-                auto canNext = symbolPtr->pointedType->isSame(typePtr->pointedType, CASTFLAG_CAST);
+                auto canNext = wantedPointer->pointedType->isSame(callPointer->pointedType, CASTFLAG_CAST);
                 if (canNext)
                 {
-                    wantedTypeInfos.push_back(symbolPtr->pointedType);
-                    callTypeInfos.push_back(typePtr->pointedType);
+                    wantedTypeInfos.push_back(wantedPointer->pointedType);
+                    callTypeInfos.push_back(callPointer->pointedType);
                 }
             }
             else
             {
-                wantedTypeInfos.push_back(symbolPtr->pointedType);
-                callTypeInfos.push_back(typePtr->pointedType);
+                wantedTypeInfos.push_back(wantedPointer->pointedType);
+                callTypeInfos.push_back(callPointer->pointedType);
             }
         }
         else if (callTypeInfo->isStruct())
@@ -110,16 +110,16 @@ void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInf
             // Because of using var cast, we can have here *A and *B with a match.
             // But we do not want A and B to match in generic replacement.
             // So we check they are the same.
-            auto canNext = symbolPtr->pointedType->isSame(callTypeInfo, CASTFLAG_CAST);
+            auto canNext = wantedPointer->pointedType->isSame(callTypeInfo, CASTFLAG_CAST);
             if (canNext)
             {
-                wantedTypeInfos.push_back(symbolPtr->pointedType);
+                wantedTypeInfos.push_back(wantedPointer->pointedType);
                 callTypeInfos.push_back(callTypeInfo);
             }
         }
         else
         {
-            wantedTypeInfos.push_back(symbolPtr->pointedType);
+            wantedTypeInfos.push_back(wantedPointer->pointedType);
             callTypeInfos.push_back(callTypeInfo);
         }
         break;
