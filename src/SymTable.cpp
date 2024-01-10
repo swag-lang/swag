@@ -8,8 +8,8 @@ void SymTable::release()
 {
     for (auto s : allSymbols)
     {
-        for (auto over : 
-            s->overloads)
+        for (auto over :
+             s->overloads)
             Allocator::free<SymbolOverload>(over);
         Allocator::free<SymbolName>(s);
     }

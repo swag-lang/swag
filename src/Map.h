@@ -22,7 +22,7 @@ struct MapUtf8 : public unordered_map<Utf8, V, HashUtf8, equal_to<Utf8>, StdAllo
     MapUtf8()
         : unordered_map<Utf8, V, HashUtf8, equal_to<Utf8>, StdAllocator<pair<const Utf8, V>>>()
     {
-    }      
+    }
 
     void release()
     {

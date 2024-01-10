@@ -957,7 +957,7 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
 {
     context.result = MatchResult::Ok;
 
-    Generic::fillUserGenericParams(context, typeFunc->genericParameters);
+    Generic::setUserGenericTypeReplacement(context, typeFunc->genericParameters);
     if (context.result != MatchResult::Ok)
         return;
 
@@ -1054,7 +1054,7 @@ void Match::match(TypeInfoStruct* typeStruct, SymbolMatchContext& context)
 {
     context.result = MatchResult::Ok;
 
-    Generic::fillUserGenericParams(context, typeStruct->genericParameters);
+    Generic::setUserGenericTypeReplacement(context, typeStruct->genericParameters);
     if (context.result != MatchResult::Ok)
         return;
 

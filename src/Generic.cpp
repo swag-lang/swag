@@ -357,7 +357,7 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
     return newJob;
 }
 
-void Generic::fillUserGenericParams(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& genericParameters)
+void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& genericParameters)
 {
     int wantedNumGenericParams = (int) genericParameters.size();
     int numGenericParams       = (int) context.genericParameters.size();
@@ -442,7 +442,7 @@ void Generic::fillUserGenericParams(SymbolMatchContext& context, VectorNative<Ty
     }
 }
 
-void Generic::setupContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload, uint32_t flags)
+void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload, uint32_t flags)
 {
     auto node = context->node;
 

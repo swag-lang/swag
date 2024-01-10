@@ -1762,7 +1762,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
             oneOverload.symMatchContext.flags |= SymbolMatchContext::MATCH_UFCS;
 
         // We collect type replacements depending on where the identifier is
-        Generic::setupContextualGenericTypeReplacement(context, oneOverload, overload, flags);
+        Generic::setContextualGenericTypeReplacement(context, oneOverload, overload, flags);
 
         oneOverload.symMatchContext.semContext = context;
         context->castFlagsResult               = 0;

@@ -19,8 +19,8 @@ namespace Generic
     bool      updateGenericParameters(SemanticContext* context, bool doType, bool doNode, VectorNative<TypeInfoParam*>& typeGenericParameters, VectorNative<AstNode*>& nodeGenericParameters, AstNode* callGenericParameters, OneGenericMatch& match);
     Job*      end(SemanticContext* context, Job* dependentJob, SymbolName* symbol, AstNode* newNode, bool waitSymbol, VectorMap<Utf8, TypeInfo*>& replaceTypes);
     TypeInfo* doTypeSubstitution(VectorMap<Utf8, TypeInfo*>& replaceTypes, TypeInfo* typeInfo);
-    void      setupContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload, uint32_t flags);
-    void      fillUserGenericParams(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& genericParameters);
+    void      setContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload, uint32_t flags);
+    void      setUserGenericTypeReplacement(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& genericParameters);
 
     void instantiateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, AstFuncDecl** funcNode);
     bool instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool& alias);
