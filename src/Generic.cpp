@@ -765,7 +765,9 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
         context.genericParametersGenTypes[i]                  = genType->typeInfo;
     }
 
-    GenericReplaceType st;
+    GenericReplaceType                  st;
+    VectorMap<Utf8, GenericReplaceType> m;
+
     for (int i = 0; i < numGenericParams; i++)
     {
         const auto& genName     = genericParameters[i]->name;
@@ -783,8 +785,8 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
             context.genericReplaceValues[genName]    = genNode->computedValue;
 
             context.genericParametersCallTypes[i]  = genNode->typeInfo;
-            context.genericParametersCallValues[i] = genNode->computedValue;
             context.genericParametersCallFrom[i]   = genNode;
+            context.genericParametersCallValues[i] = genNode->computedValue;
         }
         else
         {
@@ -799,15 +801,16 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
             // context.genericReplaceTypes are up to date too.
             // For example if type T is now s32, we must be sure that a potential *T or [..] T in the map will
             // be updated correspondinly.
-            if (st.typeInfoGeneric)
+            if (st.typeInfoGeneric && context.genericReplaceTypes.size() > 1)
             {
-                VectorMap<Utf8, GenericReplaceType> m;
+                m.clear();
                 m[genTypeName] = st;
+
                 for (auto& v : context.genericReplaceTypes)
                 {
-                    if (v.first == genTypeName)
-                        continue;
                     if (!v.second.typeInfoGeneric)
+                        continue;
+                    if (v.first == genTypeName)
                         continue;
                     auto typeInfoReplace = doTypeSubstitution(m, v.second.typeInfoGeneric);
                     if (typeInfoReplace != v.second.typeInfoGeneric)
@@ -822,10 +825,11 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
     for (auto i = numGenericParams; i < wantedNumGenericParams; i++)
     {
         const auto& genName     = genericParameters[i]->name;
-        const auto& genTypeName = genericParameters[i]->typeInfo->name;
+        auto        genType     = genericParameters[i]->typeInfo;
+        const auto& genTypeName = genType->name;
         if (context.genericParametersCallTypes[i])
         {
-            st.typeInfoGeneric = nullptr;
+            st.typeInfoGeneric = genType->isGeneric() ? genType : nullptr;
             st.typeInfoReplace = context.genericParametersCallTypes[i];
             st.fromNode        = context.genericParametersCallFrom[i];
 
@@ -843,7 +847,9 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
 
             auto it1 = context.genericReplaceValues.find(genName);
             if (it1 != context.genericReplaceValues.end())
+            {
                 context.genericParametersCallValues[i] = it1->second;
+            }
         }
     }
 }
