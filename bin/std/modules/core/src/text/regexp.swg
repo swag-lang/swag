@@ -205,6 +205,15 @@ impl RegExp
         return ""
     }
 
+    // Returns all the captured strings, in order
+    public mtd getCaptures()->Array'string
+    {
+        var result: retval
+        visit v: groups do
+            result.add(v.value)
+        return result
+    }
+
     // Compile and match the expression.
     #[Swag.Overload]
     public mtd match(expr, str: string, ignoreCase = false)->bool throw
