@@ -158,7 +158,7 @@ namespace Semantic
     void           dealWithIntrinsic(SemanticContext* context, AstIdentifier* identifier);
     bool           setSymbolMatchCallParams(SemanticContext* context, AstIdentifier* identifier, OneMatch& oneMatch);
     bool           setSymbolMatch(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* identifier, OneMatch& oneMatch);
-    void           resolvePendingLambdaTyping(AstNode* funcDecl, TypeInfo* resolvedType, int i);
+    void           resolvePendingLambdaTyping(SemanticContext* context, AstNode* funcDecl, TypeInfo* resolvedType, int i);
     void           allocateOnStack(AstNode* node, TypeInfo* typeInfo);
     bool           setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcAttr, AstNode* parameters, bool forGenerics);
     Diagnostic*    computeNonConstExprNote(AstNode* node);

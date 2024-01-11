@@ -569,6 +569,8 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
 static void matchParametersAndNamed(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters, uint64_t castFlags)
 {
     matchParameters(context, parameters, castFlags);
+    if (context.semContext->result != ContextResult::Done)
+        return;
     if (context.result == MatchResult::Ok)
         matchNamedParameters(context, parameters, castFlags);
 }
@@ -605,6 +607,8 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
         {
             SymbolMatchContext cpyContext = context;
             matchParametersAndNamed(cpyContext, typeFunc->parameters, castFlags);
+            if (cpyContext.semContext->result != ContextResult::Done)
+                return;
             if (cpyContext.result == MatchResult::BadSignature)
             {
                 matchParametersAndNamed(context, typeFunc->parameters, castFlags | CASTFLAG_AUTO_OPCAST);

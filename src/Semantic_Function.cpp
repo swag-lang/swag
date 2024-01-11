@@ -458,6 +458,32 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     {
         setFuncDeclParamsIndex(funcNode);
         funcNode->pendingLambdaJob = nullptr;
+
+        ScopedLock lk(funcNode->resolvedSymbolName->mutex);
+
+        // We were not a short lambda, so just wakup our dependencies
+        if (!(funcNode->resolvedSymbolOverload->flags & OVERLOAD_UNDEFINED))
+        {
+            funcNode->resolvedSymbolName->dependentJobs.setRunning();
+        }
+
+        // We were a short lambda, and the return type is now valid
+        // So we just wake up our dependencies, by decreasing the count
+        // (because the registration was the same as an incomplete one)
+        else if (!funcNode->returnType->typeInfo->isGeneric())
+        {
+            funcNode->resolvedSymbolOverload->flags &= ~OVERLOAD_UNDEFINED;
+            funcNode->resolvedSymbolName->decreaseOverloadNoLock();
+        }
+
+        // Return type is generic. We must evaluate the content to deduce it, so we 
+        // pass to short lambda mode again, so that the return evaluation will update
+        // the type.
+        else
+        {
+            funcNode->addSpecFlags(AstFuncDecl::SPECFLAG_SHORT_LAMBDA);
+        }
+
         return true;
     }
 
@@ -604,11 +630,13 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 
     // If a lambda function will wait for a match, then no need to deduce the return type
     // It will be done in the same way as parameters
+    bool shortLambdaPendingTyping = false;
     if (!(funcNode->flags & AST_IS_GENERIC))
     {
         if ((funcNode->semFlags & SEMFLAG_PENDING_LAMBDA_TYPING) && typeNode->typeInfo->isVoid())
         {
-            typeNode->typeInfo = g_TypeMgr->typeInfoUndefined;
+            shortLambdaPendingTyping = funcNode->specFlags & AstFuncDecl::SPECFLAG_SHORT_LAMBDA;
+            typeNode->typeInfo       = g_TypeMgr->typeInfoUndefined;
             funcNode->removeSpecFlags(AstFuncDecl::SPECFLAG_SHORT_LAMBDA);
         }
     }
@@ -799,6 +827,8 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
     uint32_t overFlags = 0;
     if (shortLambda || mustDeduceReturnType)
         overFlags |= OVERLOAD_INCOMPLETE;
+    if (shortLambdaPendingTyping)
+        overFlags |= OVERLOAD_UNDEFINED;
     SWAG_CHECK(registerFuncSymbol(context, funcNode, overFlags));
 
     return true;
@@ -1325,34 +1355,37 @@ bool Semantic::resolveReturn(SemanticContext* context)
     // Deduce return type
     auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(funcNode->typeInfo, TypeInfoKind::FuncAttr);
     bool lateRegister = funcNode->specFlags & AstFuncDecl::SPECFLAG_FORCE_LATE_REGISTER;
-    if (funcReturnType->isVoid() && !(funcNode->specFlags & AstFuncDecl::SPECFLAG_LATE_REGISTER_DONE))
+    if (funcReturnType->isVoid() || funcReturnType->isGeneric())
     {
-        // This is a short lambda without a specified return type. We now have it
-        bool tryDeduce = false;
-        if ((funcNode->specFlags & AstFuncDecl::SPECFLAG_SHORT_LAMBDA) && !(funcNode->returnType->specFlags & AstFuncDecl::SPECFLAG_RETURN_DEFINED))
-            tryDeduce = true;
-        if (funcNode->attributeFlags & ATTRIBUTE_RUN_GENERATED_EXP)
-            tryDeduce = true;
-        if (tryDeduce)
+        if (!(funcNode->specFlags & AstFuncDecl::SPECFLAG_LATE_REGISTER_DONE))
         {
-            funcNode->addSpecFlags(AstFuncDecl::SPECFLAG_FORCE_LATE_REGISTER);
-            typeInfoFunc->returnType = TypeManager::concreteType(node->childs.front()->typeInfo, CONCRETE_FUNC);
-            typeInfoFunc->returnType = TypeManager::promoteUntyped(typeInfoFunc->returnType);
-            auto concreteReturn      = TypeManager::concreteType(typeInfoFunc->returnType);
-            if (concreteReturn->isListTuple())
+            // This is a short lambda without a specified return type. We now have it
+            bool tryDeduce = false;
+            if ((funcNode->specFlags & AstFuncDecl::SPECFLAG_SHORT_LAMBDA) && !(funcNode->returnType->specFlags & AstFuncDecl::SPECFLAG_RETURN_DEFINED))
+                tryDeduce = true;
+            if (funcNode->attributeFlags & ATTRIBUTE_RUN_GENERATED_EXP)
+                tryDeduce = true;
+            if (tryDeduce)
             {
-                SWAG_CHECK(Ast::convertLiteralTupleToStructDecl(context, funcNode->content, node->childs.front(), &funcNode->returnType));
-                Ast::setForceConstType(funcNode->returnType);
-                context->baseJob->nodes.push_back(funcNode->returnType);
-                context->result = ContextResult::NewChilds;
-                return true;
-            }
+                funcNode->addSpecFlags(AstFuncDecl::SPECFLAG_FORCE_LATE_REGISTER);
+                typeInfoFunc->returnType = TypeManager::concreteType(node->childs.front()->typeInfo, CONCRETE_FUNC);
+                typeInfoFunc->returnType = TypeManager::promoteUntyped(typeInfoFunc->returnType);
+                auto concreteReturn      = TypeManager::concreteType(typeInfoFunc->returnType);
+                if (concreteReturn->isListTuple())
+                {
+                    SWAG_CHECK(Ast::convertLiteralTupleToStructDecl(context, funcNode->content, node->childs.front(), &funcNode->returnType));
+                    Ast::setForceConstType(funcNode->returnType);
+                    context->baseJob->nodes.push_back(funcNode->returnType);
+                    context->result = ContextResult::NewChilds;
+                    return true;
+                }
 
-            typeInfoFunc->forceComputeName();
-            funcNode->returnType->typeInfo  = typeInfoFunc->returnType;
-            funcNode->returnTypeDeducedNode = node;
-            funcNode->addSpecFlags(AstFuncDecl::SPECFLAG_LATE_REGISTER_DONE);
-            lateRegister = true;
+                typeInfoFunc->forceComputeName();
+                funcNode->returnType->typeInfo  = typeInfoFunc->returnType;
+                funcNode->returnTypeDeducedNode = node;
+                funcNode->addSpecFlags(AstFuncDecl::SPECFLAG_LATE_REGISTER_DONE);
+                lateRegister = true;
+            }
         }
     }
 

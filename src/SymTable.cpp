@@ -3,6 +3,7 @@
 #include "Ast.h"
 #include "Module.h"
 #include "Semantic.h"
+#include "TypeManager.h"
 
 void SymTable::release()
 {
@@ -133,20 +134,29 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
     SymbolOverload* overload = nullptr;
 
     // Remove incomplete flag
-    if (!(toAdd.flags & OVERLOAD_INCOMPLETE))
+    if (symbol->kind == SymbolKind::TypeAlias ||
+        symbol->kind == SymbolKind::Variable ||
+        symbol->kind == SymbolKind::Struct ||
+        symbol->kind == SymbolKind::Interface ||
+        symbol->kind == SymbolKind::Function)
     {
-        if (symbol->kind == SymbolKind::TypeAlias ||
-            symbol->kind == SymbolKind::Variable ||
-            symbol->kind == SymbolKind::Struct ||
-            symbol->kind == SymbolKind::Interface ||
-            symbol->kind == SymbolKind::Function)
+        for (auto resolved : symbol->overloads)
         {
-            for (auto resolved : symbol->overloads)
+            if (!(toAdd.flags & OVERLOAD_INCOMPLETE))
             {
-                if (resolved->typeInfo == toAdd.typeInfo && (resolved->flags & OVERLOAD_INCOMPLETE))
+                if ((resolved->flags & OVERLOAD_INCOMPLETE) && resolved->typeInfo == toAdd.typeInfo)
                 {
                     overload = resolved;
                     overload->flags &= ~OVERLOAD_INCOMPLETE;
+                    break;
+                }
+            }
+            else
+            {
+                if ((resolved->flags & OVERLOAD_UNDEFINED) && resolved->typeInfo->isSame(toAdd.typeInfo, CASTFLAG_CAST))
+                {
+                    overload = resolved;
+                    overload->flags &= ~OVERLOAD_UNDEFINED;
                     break;
                 }
             }
@@ -189,7 +199,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
 
     // One less overload. When this reached zero, this means we know every types for the same symbol,
     // and so we can wakeup all jobs waiting for that symbol to be solved
-    if (!(toAdd.flags & OVERLOAD_INCOMPLETE))
+    if (!(toAdd.flags & OVERLOAD_INCOMPLETE) && !(toAdd.flags & OVERLOAD_UNDEFINED))
     {
         // For function, will be done later because we register the full
         // symbol with the function type, and we want to compute the access
@@ -353,6 +363,7 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, Typ
         // This is fine to define an empty function multiple times, if the signatures are the same
         if (!node->isEmptyFct() &&
             !overload->node->isEmptyFct() &&
+            !(overload->flags & OVERLOAD_UNDEFINED) &&
             !(node->flags & AST_HAS_SELECT_IF) &&
             !(overload->node->flags & AST_HAS_SELECT_IF))
         {

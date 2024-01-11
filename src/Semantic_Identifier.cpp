@@ -269,7 +269,7 @@ void Semantic::dealWithIntrinsic(SemanticContext* context, AstIdentifier* identi
     }
 }
 
-void Semantic::resolvePendingLambdaTyping(AstNode* funcNode, TypeInfo* resolvedType, int i)
+void Semantic::resolvePendingLambdaTyping(SemanticContext* context, AstNode* funcNode, TypeInfo* resolvedType, int i)
 {
     auto funcDecl = CastAst<AstFuncDecl>(funcNode, AstNodeKind::FuncDecl);
     SWAG_ASSERT(!(funcDecl->flags & AST_IS_GENERIC));
@@ -324,12 +324,18 @@ void Semantic::resolvePendingLambdaTyping(AstNode* funcNode, TypeInfo* resolvedT
             funcDecl->returnType->typeInfo = typeDefinedFct->returnType;
     }
 
-    typeUndefinedFct->computeName();
+    typeUndefinedFct->forceComputeName();
 
     // Wake up semantic lambda job
     SWAG_ASSERT(funcDecl->pendingLambdaJob);
+
     funcDecl->semFlags &= ~SEMFLAG_PENDING_LAMBDA_TYPING;
-    g_ThreadMgr.addJob(funcDecl->pendingLambdaJob);
+
+    ScopedLock lk(funcDecl->resolvedSymbolOverload->symbol->mutex);
+    if (typeUndefinedFct->returnType->isGeneric())
+        funcDecl->resolvedSymbolOverload->flags |= OVERLOAD_INCOMPLETE;
+    Semantic::waitSymbolNoLock(context->baseJob, funcDecl->resolvedSymbolOverload->symbol);
+    context->baseJob->jobsToAdd.push_back(funcDecl->pendingLambdaJob);
 }
 
 bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier* identifier, OneMatch& oneMatch)
@@ -371,7 +377,10 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 
         // This is a lambda that was waiting for a match to have its types, and to continue solving its content
         if (nodeCall->typeInfo->isLambdaClosure() && (nodeCall->typeInfo->declNode->semFlags & SEMFLAG_PENDING_LAMBDA_TYPING))
-            resolvePendingLambdaTyping(nodeCall->typeInfo->declNode, oneMatch.solvedParameters[i]->typeInfo, (uint32_t) i);
+        {
+            resolvePendingLambdaTyping(context, nodeCall->typeInfo->declNode, oneMatch.solvedParameters[i]->typeInfo, (uint32_t) i);
+            YIELD();
+        }
 
         uint64_t castFlags = CASTFLAG_AUTO_OPCAST | CASTFLAG_ACCEPT_PENDING | CASTFLAG_PARAMS | CASTFLAG_PTR_REF | CASTFLAG_FOR_AFFECT | CASTFLAG_ACCEPT_MOVE_REF;
         if (i == 0 && oneMatch.ufcs)
@@ -3881,6 +3890,23 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     auto  identifierRef      = identifier->identifierRef();
 
     identifier->byteCodeFct = ByteCodeGen::emitIdentifier;
+
+    if (identifier->callParameters)
+    {
+        for (auto c : identifier->callParameters->childs)
+        {
+            if (c->resolvedSymbolOverload &&
+                c->typeInfo &&
+                c->typeInfo->isLambdaClosure() &&
+                c->typeInfo != c->resolvedSymbolOverload->typeInfo)
+            {
+                auto newTypeInfo    = c->resolvedSymbolOverload->typeInfo->clone();
+                newTypeInfo->kind   = TypeInfoKind::LambdaClosure;
+                newTypeInfo->sizeOf = c->typeInfo->sizeOf;
+                c->typeInfo         = newTypeInfo;
+            }
+        }
+    }
 
     // Current file scope
     if (context->sourceFile && context->sourceFile->scopeFile && identifier->token.text == context->sourceFile->scopeFile->name)

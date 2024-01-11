@@ -38,6 +38,7 @@ const uint32_t OVERLOAD_VAR_HAS_ASSIGN   = 0x01000000;
 const uint32_t OVERLOAD_PERSISTENT_REG   = 0x02000000;
 const uint32_t OVERLOAD_HINT_REG         = 0x04000000;
 const uint32_t OVERLOAD_INLINE_REG       = 0x08000000;
+const uint32_t OVERLOAD_UNDEFINED        = 0x10000000;
 
 struct SymbolOverload
 {

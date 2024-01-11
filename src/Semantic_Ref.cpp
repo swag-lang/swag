@@ -102,9 +102,10 @@ bool Semantic::resolveMakePointerLambda(SemanticContext* context)
     SWAG_CHECK(checkCanTakeAddress(context, child));
     SWAG_CHECK(checkIsConcrete(context, child));
     node->flags |= AST_R_VALUE;
-    node->resolvedSymbolName = child->resolvedSymbolName;
+    node->resolvedSymbolName     = child->resolvedSymbolName;
+    node->resolvedSymbolOverload = child->resolvedSymbolOverload;
 
-    auto funcNode = child->resolvedSymbolOverload->node;
+    auto funcNode = node->resolvedSymbolOverload->node;
     SWAG_CHECK(checkCanMakeFuncPointer(context, (AstFuncDecl*) funcNode, child));
 
     auto lambdaType  = child->typeInfo->clone();

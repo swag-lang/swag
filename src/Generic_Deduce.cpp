@@ -217,11 +217,27 @@ void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInf
         auto callLambda   = CastTypeInfo<TypeInfoFuncAttr>(callTypeInfo, TypeInfoKind::LambdaClosure);
 
         if (wantedLambda->returnType &&
-            wantedLambda->returnType->isGeneric() &&
-            !callLambda->returnType->isUndefined())
+            wantedLambda->returnType->isGeneric())
         {
-            wantedTypeInfos.push_back(wantedLambda->returnType);
-            callTypeInfos.push_back(callLambda->returnType);
+            if (!callLambda->returnType->isUndefined() && !callLambda->returnType->isGeneric())
+            {
+                wantedTypeInfos.push_back(wantedLambda->returnType);
+                callTypeInfos.push_back(callLambda->returnType);
+            }
+            else
+            {
+                AstFuncDecl* decl = CastAst<AstFuncDecl>(callLambda->declNode, AstNodeKind::FuncDecl);
+                if (decl->pendingLambdaJob && decl->resolvedSymbolOverload->flags & OVERLOAD_UNDEFINED)
+                {
+                    auto tt = doTypeSubstitution(context.genericReplaceTypes, wantedLambda);
+                    Semantic::resolvePendingLambdaTyping(context.semContext, callLambda->declNode, tt, 1);
+                    return;
+                }
+                else
+                {
+                    SWAG_ASSERT(!callLambda->returnType->isGeneric());
+                }
+            }
         }
 
         auto num = wantedLambda->parameters.size();
@@ -361,6 +377,8 @@ void Generic::deduceGenericTypeReplacement(SymbolMatchContext& context, AstNode*
 
         deduceType(context, wantedTypeInfo, callTypeInfo, castFlags, idxParam, wantedTypeInfos, callTypeInfos, callParameter);
         deduceSubType(context, wantedTypeInfo, callTypeInfo, wantedTypeInfos, callTypeInfos, callParameter);
+        if (context.semContext->result != ContextResult::Done)
+            return;
     }
 }
 
