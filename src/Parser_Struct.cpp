@@ -482,7 +482,6 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         }
 
         auto funcNode = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, nullptr);
-        funcNode->addSpecFlags(AstFuncDecl::SPECFLAG_EMPTY_FCT);
 
         SWAG_CHECK(checkIsValidUserName(funcNode));
         SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err1089), token.ctext())));

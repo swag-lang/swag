@@ -877,7 +877,6 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     {
         SWAG_VERIFY(!funcForCompiler, error(token, Fmt(Err(Err1054), funcNode->getDisplayNameC())));
         SWAG_CHECK(eatSemiCol("function declaration"));
-        funcNode->addSpecFlags(AstFuncDecl::SPECFLAG_EMPTY_FCT);
         return true;
     }
 

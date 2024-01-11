@@ -750,7 +750,10 @@ bool AstNode::isGeneratedSelf()
 
 bool AstNode::isEmptyFct()
 {
-    return kind == AstNodeKind::FuncDecl && specFlags & AstFuncDecl::SPECFLAG_EMPTY_FCT;
+    if (kind != AstNodeKind::FuncDecl)
+        return false;
+    auto funcDecl = CastAst<AstFuncDecl>(this, AstNodeKind::FuncDecl);
+    return funcDecl->content == nullptr;
 }
 
 bool AstNode::isForeign()
