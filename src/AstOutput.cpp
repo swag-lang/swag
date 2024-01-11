@@ -184,6 +184,8 @@ bool AstOutput::outputFuncSignature(OutputContext& context, Concat& concat, AstN
     // Throw
     if (node->specFlags & AstFuncDecl::SPECFLAG_THROW)
         CONCAT_FIXED_STR(concat, " throw");
+    else if (node->specFlags & AstFuncDecl::SPECFLAG_ASSUME)
+        CONCAT_FIXED_STR(concat, " assume");
 
     // #validif must be exported
     if (validif)
@@ -270,6 +272,8 @@ bool AstOutput::outputFunc(OutputContext& context, Concat& concat, AstFuncDecl* 
     // Throw
     if (funcDecl->specFlags & AstFuncDecl::SPECFLAG_THROW)
         CONCAT_FIXED_STR(concat, " throw");
+    else if (funcDecl->specFlags & AstFuncDecl::SPECFLAG_ASSUME)
+        CONCAT_FIXED_STR(concat, " assume");
 
     // Content, short lambda
     if (funcDecl->specFlags & AstFuncDecl::SPECFLAG_SHORT_LAMBDA)
@@ -2058,6 +2062,8 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
 
         if (node->specFlags & AstFuncDecl::SPECFLAG_THROW)
             CONCAT_FIXED_STR(concat, " throw");
+        else if (node->specFlags & AstFuncDecl::SPECFLAG_ASSUME)
+            CONCAT_FIXED_STR(concat, " assume");
         break;
     }
 

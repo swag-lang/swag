@@ -321,6 +321,7 @@ namespace Semantic
     bool resolveTryBlock(SemanticContext* context);
     bool resolveTry(SemanticContext* context);
     bool resolveTryCatch(SemanticContext* context);
+    bool resolveAssumeBlock(SemanticContext* context);
     bool resolveAssume(SemanticContext* context);
     bool resolveCatch(SemanticContext* context);
     bool resolveThrow(SemanticContext* context);

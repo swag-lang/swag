@@ -110,6 +110,11 @@ bool Semantic::resolveCatch(SemanticContext* context)
     return true;
 }
 
+bool Semantic::resolveAssumeBlock(SemanticContext* context)
+{
+    return true;
+}
+
 bool Semantic::resolveAssume(SemanticContext* context)
 {
     auto node          = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Assume);

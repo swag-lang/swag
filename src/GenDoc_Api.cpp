@@ -805,6 +805,8 @@ void GenDoc::generateContent()
 
                 if (funcNode->specFlags & AstFuncDecl::SPECFLAG_THROW)
                     code += " throw";
+                else if (funcNode->specFlags & AstFuncDecl::SPECFLAG_ASSUME)
+                    code += " assume";
                 code += "\n";
 
                 if (!subUserComment.shortDesc.lines.empty())

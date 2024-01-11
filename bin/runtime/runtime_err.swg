@@ -97,7 +97,8 @@ func __failedAssume(loc: SourceCodeLocation)
     if type.kind == TypeInfoKind.Struct
     {
         let typeStruct = cast(const *Swag.TypeInfoStruct) type
-        if @countof(typeStruct.fields) > 0 and typeStruct.fields[0].pointedType == Swag.BaseError
+        if (@countof(typeStruct.fields) > 0 and typeStruct.fields[0].pointedType == Swag.BaseError) or
+           (type == Swag.BaseError)
         {
             let data = @dataof(cxt.errors[cxt.errorIndex].value)
             let val = cast(const *Swag.BaseError) data
