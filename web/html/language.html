@@ -303,6 +303,9 @@
 <li><a href="#_170_error_management_trycatch">trycatch</a></li>
 <li><a href="#_170_error_management_try">try</a></li>
 <li><a href="#_170_error_management_assume">assume</a></li>
+<ul>
+<li><a href="#_170_error_management_assume_Implicit_assume">Implicit assume</a></li>
+</ul>
 <li><a href="#_170_error_management_Blocks">Blocks</a></li>
 <li><a href="#_170_error_management_Implicit_try">Implicit try</a></li>
 <li><a href="#_170_error_management_The_error_struct">The error struct</a></li>
@@ -6301,6 +6304,17 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <div class="blockquote blockquote-default">
 <p> If an error is never catched, then Swag will panic at runtime, as the top level caller always have an <span class="code-inline">assume</span>. </p>
 </div>
+<h4 id="_170_error_management_assume_Implicit_assume">Implicit assume </h4>
+<p>You can annotate the whole function with <span class="code-inline">assume</span> (instead of <span class="code-inline">throw</span>). This is equivalent of one big block around the function body. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc3A</span>() <span class="SKwd">assume</span>
+{
+    <span class="SCmt">// Here the program will stop with a panic message if 'count()' throws an error, but no</span>
+    <span class="SCmt">// need to specify 'assume'.</span>
+    <span class="SKwd">var</span> cpt  = <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
+
+    <span class="SCmt">// Same here. Implicit 'assume'.</span>
+    <span class="SKwd">var</span> cpt1 = <span class="SFct">count</span>(<span class="SStr">"filename"</span>)
+}</span></div>
 <h3 id="_170_error_management_Blocks">Blocks </h3>
 <p>You can use a block instead of one single statement (this does not create a scope). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">myFunc4</span>() <span class="SKwd">throw</span>

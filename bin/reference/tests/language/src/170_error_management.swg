@@ -112,7 +112,20 @@ func myFunc3()
 
 /**
 > If an error is never catched, then Swag will panic at runtime, as the top level caller always have an 'assume'.
+
+## Implicit assume
+You can annotate the whole function with 'assume' (instead of 'throw'). This is equivalent of one big block around the function body.
 */
+
+func myFunc3A() assume
+{
+    // Here the program will stop with a panic message if 'count()' throws an error, but no
+    // need to specify 'assume'.
+    var cpt  = count("filename")
+
+    // Same here. Implicit 'assume'.
+    var cpt1 = count("filename")
+}
 
 /**
 # Blocks
