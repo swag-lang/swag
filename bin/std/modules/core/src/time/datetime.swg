@@ -18,11 +18,11 @@ enum DayOfWeek
 
 enum DateTimeFormat
 {
-    DateTime        // DDDD MMMM D YYYY HH:MM:SS
-    DateTimeMs      // DDDD MMMM D YYYY HH:MM:SS.ZZZ
-    Iso             // YYYY-MM-DD HH:MM:SS
-    IsoMs           // YYYY-MM-DD HH:MM:SS.ZZZ
-    IsoHM           // YYYY-MM-DD HH:MM
+    DateTime        // `DAYOFWEEK MONTH DAY YYYY HH:MM:SS`
+    DateTimeMs      // `DAYOFWEEK MONTH DAY YYYY HH:MM:SS.ZZZ`
+    Iso             // `YYYY-MM-DD HH:MM:SS`
+    IsoMs           // `YYYY-MM-DD HH:MM:SS.ZZZ`
+    IsoHM           // `YYYY-MM-DD HH:MM`
 }
 
 // Represents an instant in time, typically expressed as a date and time of day
@@ -353,6 +353,18 @@ impl DateTime
 
 impl StrConv.IConvert for DateTime
 {
+    // Used when printing a date with [[Core.Format.toString]].
+    // | 'a' | `DateTimeFormat.DateTime`
+    // | 'b' | `DateTimeFormat.DateTimeMs`
+    // | 'c' | `DateTimeFormat.Iso`
+    // | 'd' | `DateTimeFormat.IsoMs`
+    // | 'e' | `DateTimeFormat.IsoHM`
+    //
+    // ```swag
+    // let myDate = DateTime.now()
+    // Console.print(Format.toString("%{a}", myDate))
+    // ```
+    // See [[Core.Time.DateTimeFormat]]
     mtd impl convert(buf: *ConcatBuffer, fmt: const *StrConv.ConvertFormat, strFormat: string)
     {
         var str: String
@@ -370,6 +382,8 @@ impl StrConv.IConvert for DateTime
                 str = toString(.Iso)
             case `d`:
                 str = toString(.IsoMs)
+            case `e`:
+                str = toString(.IsoHM)
             }
         }
 
