@@ -212,6 +212,13 @@ impl String
         }
     }
 
+    // Default visit, by bytes.
+    #[Macro]
+    mtd(ptr: bool, back: bool) opVisit(stmt: code)
+    {
+        opVisitbytes'(ptr, back)(stmt)
+    }
+
     // Set the length of the String to 0
     #[Inline]
     mtd clear()
