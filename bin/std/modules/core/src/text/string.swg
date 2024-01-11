@@ -249,6 +249,32 @@ impl String
     }
 
     // Replace all occurences of 'what' with 'by'
+    #[Swag.Overload]
+    mtd replace(what: rune, by: string)
+    {
+        if !length do
+            return
+        let byLength = @countof(by)
+
+        var idx = Utf8.indexOf(toString(), what, 0)
+        while idx != Swag.U64.Max
+        {
+            reserve(length + byLength + 1)
+            Memory.copyOver(buffer + idx + byLength, buffer + idx + 1, length - idx + 1)
+            Memory.copy(buffer + idx, @dataof(by), byLength)
+            length -= 1
+            length += byLength
+            idx += byLength
+            if idx == length do
+                break
+            idx = Utf8.indexOf(toString(), what, idx)
+        }
+
+        buffer[length] = 0;
+    }
+
+    // Replace all occurences of 'what' with 'by'
+    #[Swag.Overload]
     mtd replace(what, by: string, comparisonType = Utf8.ComparisonType.Latin1)
     {
         let whatLength = @countof(what)

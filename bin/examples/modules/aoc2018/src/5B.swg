@@ -17,7 +17,15 @@ What is the length of the shortest polymer you can produce by removing all units
 
 using Core
 
-func day5B() assume
+func day5B()
+{
+    day5B0()
+    day5B1()
+}
+
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+func day5B0() assume
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "5.txt")
     var read = File.readAllText(dataPath)
@@ -52,6 +60,37 @@ func day5B() assume
         }
 
         best = Math.min(best, line.length)
+    }
+
+    //Console.print("total: ", best)
+    @assert(best == 5122)
+}
+
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+func day5B1() assume
+{
+    let dataPath = Path.combine(Path.getDirectoryName(#file), "5.txt")
+    var read = File.readAllText(dataPath)
+
+    var best = Swag.U64.Max
+    loop x: 26
+    {
+        var line = read
+        line.replace(cast(rune) (x+`a`), "")
+        line.replace(cast(rune) (x+`A`), "")
+
+        var result: String
+        visit,bytes c, i: line
+        {
+            if i and Latin1.isLower(result.back()) != Latin1.isLower(c) and
+                     Latin1.toLower(result.back()) == Latin1.toLower(c) do
+                result.removeBack()
+            else do
+                result += c
+        }
+
+        best = Math.min(best, result.length)
     }
 
     //Console.print("total: ", best)
