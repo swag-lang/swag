@@ -22,6 +22,7 @@ enum DateTimeFormat
     DateTimeMs      // DDDD MMMM D YYYY HH:MM:SS.ZZZ
     Iso             // YYYY-MM-DD HH:MM:SS
     IsoMs           // YYYY-MM-DD HH:MM:SS.ZZZ
+    IsoHM           // YYYY-MM-DD HH:MM
 }
 
 // Represents an instant in time, typically expressed as a date and time of day
@@ -185,7 +186,7 @@ impl DateTime
             if checkDate and dayOfWeek != result.value.dayOfWeek() do
                 throw SyntaxError{}
         }
-        elif fmt == .Iso or fmt == .IsoMs
+        elif fmt == .Iso or fmt == .IsoMs or fmt == .IsoHM
         {
             // Year
             let (year, eat0, ovf0) = StrConv.parseU16(buf)
@@ -245,18 +246,22 @@ impl DateTime
         result.eat += eat4
         result.value.minute = minute
         buf = Tokenize.eatCount(buf, cast(u64) eat4)
-        if !@countof(buf) or buf[0] != `:` do
-            throw SyntaxError{}
-        buf = Tokenize.eatCount(buf, 1)
-        result.eat += 1
 
         // Seconds
-        let (second, eat5, ovf5) = StrConv.parseU8(buf)
-        if ovf5 do
-            throw SyntaxError{}
-        result.eat += eat5
-        result.value.second = second
-        buf = Tokenize.eatCount(buf, cast(u64) eat5)
+        if fmt != .IsoHM
+        {
+            if !@countof(buf) or buf[0] != `:` do
+                throw SyntaxError{}
+            buf = Tokenize.eatCount(buf, 1)
+            result.eat += 1
+
+            let (second, eat5, ovf5) = StrConv.parseU8(buf)
+            if ovf5 do
+                throw SyntaxError{}
+            result.eat += eat5
+            result.value.second = second
+            buf = Tokenize.eatCount(buf, cast(u64) eat5)
+        }
 
         // Milliseconds
         if fmt == .DateTimeMs or fmt == .IsoMs
@@ -329,6 +334,15 @@ impl DateTime
                 minute,
                 second,
                 millisecond
+            )
+        case IsoHM:
+            return Format.toString(
+                "%-%{02}-%{02} %{02}:%{02}",
+                year,
+                month,
+                day,
+                hour,
+                minute
             )
         }
 

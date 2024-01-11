@@ -263,6 +263,15 @@ impl RegExp
     }
 
     // Find the first occurence in the string
+    #[Swag.Overload]
+    public func grep(expr, str: string)->string throw
+    {
+        var r = create(expr)
+        return r.grep(str)
+    }
+
+    // Find the first occurence in the string
+    #[Swag.Overload]
     public mtd grep(str: string)->string
     {
         clearMatch()
