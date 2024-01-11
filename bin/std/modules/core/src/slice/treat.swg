@@ -14,7 +14,7 @@ func(T, R) map(values:const [..] T, cb: func(T)->R)->Array'R
 {
     var result: retval
     visit v: values do
-        result.add(cb(&values[i]))
+        result.add(cb(v))
     return result
 }
 

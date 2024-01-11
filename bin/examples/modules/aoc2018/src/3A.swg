@@ -92,13 +92,10 @@ func day3A1()
     visit l: lines
     {
         var r = assume Parser.RegExp.grepAll("\\d+", l)
-        let startX = assume StrConv.toS32(r[1])
-        let startY = assume StrConv.toS32(r[2])
-        let width  = assume StrConv.toS32(r[3])
-        let height = assume StrConv.toS32(r[4])
+        var v = Slice.map(r[..], func(x) => assume StrConv.toS32(x))
 
-        loop x: startX until startX+width do
-            loop y: startY until startY+height do
+        loop x: v[1] until v[1]+v[3] do
+            loop y: v[2] until v[2]+v[4] do
                 count.ref2(x, y, 1000) += 1
     }
 
