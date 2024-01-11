@@ -85,10 +85,10 @@ func day6A1()
     visit l: lines
     {
         let nums = r.grepAll(l)
-        let x0 = assume StrConv.toU64(nums[0].value)
-        let y0 = assume StrConv.toU64(nums[1].value)
-        let x1 = assume StrConv.toU64(nums[2].value)
-        let y1 = assume StrConv.toU64(nums[3].value)
+        let x0 = assume StrConv.toU64(nums[0])
+        let y0 = assume StrConv.toU64(nums[1])
+        let x1 = assume StrConv.toU64(nums[2])
+        let y1 = assume StrConv.toU64(nums[3])
 
         loop x: x0 to x1
         {
@@ -128,10 +128,10 @@ func day6A2()
     visit l: lines
     {
         let nums = r.grepAll(l)
-        let x0 = assume StrConv.toU64(nums[0].value)
-        let y0 = assume StrConv.toU64(nums[1].value)
-        let x1 = assume StrConv.toU64(nums[2].value)
-        let y1 = assume StrConv.toU64(nums[3].value)
+        let x0 = assume StrConv.toU64(nums[0])
+        let y0 = assume StrConv.toU64(nums[1])
+        let x1 = assume StrConv.toU64(nums[2])
+        let y1 = assume StrConv.toU64(nums[3])
 
         loop x: x0 to x1
         {

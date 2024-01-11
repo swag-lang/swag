@@ -14,8 +14,8 @@ using Core
         assume r.compile("a+")
         let res = r.grepAll("abcggggaaaa")
         @assert(res.count == 2)
-        @assert(res[0].value == "a")
-        @assert(res[1].value == "aaaa")
+        @assert(res[0] == "a")
+        @assert(res[1] == "aaaa")
     }
 
     {
@@ -23,7 +23,7 @@ using Core
         assume r.compile("A+", ignoreCase: true)
         let res = r.grepAll("abcggggaaaa")
         @assert(res.count == 2)
-        @assert(res[0].value == "a")
-        @assert(res[1].value == "aaaa")
+        @assert(res[0] == "a")
+        @assert(res[1] == "aaaa")
     }
 }

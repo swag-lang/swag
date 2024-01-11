@@ -226,10 +226,8 @@ TypeInfo* Generic::doTypeSubstitution(VectorMap<Utf8, GenericReplaceType>& repla
     {
         auto      typeArray      = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto      newPointedType = doTypeSubstitution(replaceTypes, typeArray->pointedType);
-        TypeInfo* newFinalType;
-        if (typeArray->pointedType == typeArray->finalType)
-            newFinalType = newPointedType;
-        else
+        TypeInfo* newFinalType   = newPointedType;
+        if (typeArray->pointedType != typeArray->finalType)
             newFinalType = doTypeSubstitution(replaceTypes, typeArray->finalType);
         if (newPointedType != typeArray->pointedType || newFinalType != typeArray->finalType)
         {
@@ -285,7 +283,7 @@ TypeInfo* Generic::doTypeSubstitution(VectorMap<Utf8, GenericReplaceType>& repla
 
             // If generic parameter is a closure, but the instantiated type is a lambda, then a conversion will
             // take place.
-            // But we want to be sure that the closure stays a closure in ordre for the conversion to take place.
+            // But we want to be sure that the closure stays a closure in order for the conversion to take place.
             // So transform the replaced lambda type by a closure one.
             if (param->typeInfo->isClosure() && newType->isLambda())
             {
@@ -359,7 +357,6 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
 
     return newJob;
 }
-
 
 void Generic::checkCanInstantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch)
 {

@@ -63,12 +63,6 @@ struct RegExpGroup
     value:  string
 }
 
-public struct RegExpGrep
-{
-    value:  string
-    index:  u64
-}
-
 struct DfaState
 {
     node:           *DfaNode
@@ -230,7 +224,16 @@ impl RegExp
     }
 
     // Find all the occurences in the string
-    public mtd grepAll(str: string)->Array'RegExpGrep
+    #[Swag.Overload]
+    public func grepAll(expr, str: string)->Array'string throw
+    {
+        var r = create(expr)
+        return r.grepAll(str)
+    }
+
+    // Find all the occurences in the string
+    #[Swag.Overload]
+    public mtd grepAll(str: string)->Array'string
     {
         var result: retval
         var res = str
@@ -239,12 +242,11 @@ impl RegExp
 
         loop
         {
-            var val = internalGrep(res)
-            if !val.value do
+            let val = internalGrep(res)
+            if !val do
                 break
-            val.index += @dataof(res) - @dataof(str)
             result.add(val)
-            let newStart = @dataof(val.value) + @countof(val.value)
+            let newStart = @dataof(val) + @countof(val)
             res = @mkstring(newStart, end - newStart)
         }
 
@@ -252,15 +254,14 @@ impl RegExp
     }
 
     // Find the first occurence in the string
-    public mtd grep(str: string)->RegExpGrep
+    public mtd grep(str: string)->string
     {
         clearMatch()
         return internalGrep(str)
     }
 
-    mtd internalGrep(str: string)->RegExpGrep
+    mtd internalGrep(str: string)->string
     {
-        var result: retval
         var beg = @dataof(str)
         var copy = @dataof(str)
         let pzEnd = beg + @countof(str)
@@ -280,11 +281,9 @@ impl RegExp
         }
 
         if !end do
-            return result
+            return null
 
-        result.value = @mkstring(beg, end - beg)
-        result.index = beg - @dataof(str)
-        return result
+        return @mkstring(beg, end - beg)
     }
 
     func setCapture(state: *DfaState, rank: s32, str: string)

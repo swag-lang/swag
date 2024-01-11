@@ -74,11 +74,11 @@ func day5A1()
     var r2 = assume Parser.RegExp.create(#"([a-z])\1"#)
     visit l: lines
     {
-        if r0.grep(l).value do
+        if r0.grep(l) do
             continue
         if r1.grepAll(l).count < 3 do
             continue
-        if !r2.grep(l).value do
+        if !r2.grep(l) do
             continue
         total += 1
     }

@@ -9,6 +9,15 @@ func(T) modify(values: [..] T, cb: func(*T))
         cb(&values[i])
 }
 
+// Transform the content of a slice with a given lambda
+func(T, R) map(values:const [..] T, cb: func(T)->R)->Array'R
+{
+    var result: retval
+    visit v: values do
+        result.add(cb(&values[i]))
+    return result
+}
+
 // Reverse the content of a slice
 func(T) reverse(values: [..] T)
 {
@@ -22,7 +31,6 @@ func(T) reverse(values: [..] T)
         j -= 1
     }
 }
-
 
 // Get a permutation of the slice
 // Shuffle the slice until no more permutation is possible, and then returns 'false'.

@@ -45,6 +45,14 @@ using Core
 
 func day3A()
 {
+    day3A0()
+    day3A1()
+}
+
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+func day3A0()
+{
     let dataPath = Path.combine(Path.getDirectoryName(#file), "3.txt")
     let lines = assume File.readAllLines(dataPath)
 
@@ -54,6 +62,36 @@ func day3A()
     visit l: lines
     {
         discard r.match(l)
+        let startX = assume StrConv.toS32(r[1])
+        let startY = assume StrConv.toS32(r[2])
+        let width  = assume StrConv.toS32(r[3])
+        let height = assume StrConv.toS32(r[4])
+
+        loop x: startX until startX+width do
+            loop y: startY until startY+height do
+                count.ref2(x, y, 1000) += 1
+    }
+
+    var total = 0
+    visit v: count do
+        if v > 1 do total += 1
+
+    //Console.print("total: ", total)
+    @assert(total == 100261)
+}
+
+/////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////
+func day3A1()
+{
+    let dataPath = Path.combine(Path.getDirectoryName(#file), "3.txt")
+    let lines = assume File.readAllLines(dataPath)
+
+    var count: Array's32
+    count.resize(1000*1000)
+    visit l: lines
+    {
+        var r = assume Parser.RegExp.grepAll("\\d+", l)
         let startX = assume StrConv.toS32(r[1])
         let startY = assume StrConv.toS32(r[2])
         let width  = assume StrConv.toS32(r[3])

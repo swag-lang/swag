@@ -328,7 +328,9 @@ void Semantic::resolvePendingLambdaTyping(SemanticContext* context, AstNode* fun
 
     // Wake up semantic lambda job
     SWAG_ASSERT(funcDecl->pendingLambdaJob);
+    SWAG_ASSERT(context->node->kind == AstNodeKind::Identifier);
 
+    context->node->semFlags |= SEMFLAG_PENDING_LAMBDA_TYPING;
     funcDecl->semFlags &= ~SEMFLAG_PENDING_LAMBDA_TYPING;
 
     ScopedLock lk(funcDecl->resolvedSymbolOverload->symbol->mutex);
@@ -3891,23 +3893,6 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
 
     identifier->byteCodeFct = ByteCodeGen::emitIdentifier;
 
-    if (identifier->callParameters)
-    {
-        for (auto c : identifier->callParameters->childs)
-        {
-            if (c->resolvedSymbolOverload &&
-                c->typeInfo &&
-                c->typeInfo->isLambdaClosure() &&
-                c->typeInfo != c->resolvedSymbolOverload->typeInfo)
-            {
-                auto newTypeInfo    = c->resolvedSymbolOverload->typeInfo->clone();
-                newTypeInfo->kind   = TypeInfoKind::LambdaClosure;
-                newTypeInfo->sizeOf = c->typeInfo->sizeOf;
-                c->typeInfo         = newTypeInfo;
-            }
-        }
-    }
-
     // Current file scope
     if (context->sourceFile && context->sourceFile->scopeFile && identifier->token.text == context->sourceFile->scopeFile->name)
     {
@@ -3923,6 +3908,25 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         identifier->typeInfo    = g_TypeMgr->typeInfoUndefined;
         identifierRef->typeInfo = identifierRef->previousResolvedNode->typeInfo;
         return true;
+    }
+
+    // We have updated one of the call parameters.
+    // So we must update the types.
+    if (identifier->callParameters && identifier->semFlags & SEMFLAG_PENDING_LAMBDA_TYPING)
+    {
+        for (auto c : identifier->callParameters->childs)
+        {
+            if (c->resolvedSymbolOverload &&
+                c->typeInfo &&
+                c->typeInfo->isLambdaClosure() &&
+                c->typeInfo != c->resolvedSymbolOverload->typeInfo)
+            {
+                auto newTypeInfo    = c->resolvedSymbolOverload->typeInfo->clone();
+                newTypeInfo->kind   = TypeInfoKind::LambdaClosure;
+                newTypeInfo->sizeOf = c->typeInfo->sizeOf;
+                c->typeInfo         = newTypeInfo;
+            }
+        }
     }
 
     // Already solved

@@ -115,7 +115,7 @@ func day7A1()
         let split = Tokenize.split(l, " bags contain ")
         visit v: r.grepAll(split[1])
         {
-            let splitVal = Tokenize.split(v.value, ` `'u8, 1)
+            let splitVal = Tokenize.split(v, ` `'u8, 1)
             id.findOrAdd(split[0]).value.add(splitVal[1])
         }
     }

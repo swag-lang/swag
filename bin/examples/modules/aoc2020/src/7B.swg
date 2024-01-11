@@ -49,7 +49,7 @@ func day7B0()
         let split = Tokenize.split(l, " bags contain ")
         visit v: r.grepAll(split[1])
         {
-            let splitVal = Tokenize.split(v.value, ` `'u8, 1)
+            let splitVal = Tokenize.split(v, ` `'u8, 1)
             let count = assume StrConv.toU32(splitVal[0])
             id.findOrAdd(split[0]).value.add({count, splitVal[1]})
         }
@@ -89,7 +89,7 @@ func day7B1()
         let split = Tokenize.split(l, " bags contain ")
         visit v: r.grepAll(split[1])
         {
-            discard r.match(v.value)
+            discard r.match(v)
             let count = assume StrConv.toU32(r.getCapture(1))
             id.findOrAdd(split[0]).value.add({count, r.getCapture(2)})
         }

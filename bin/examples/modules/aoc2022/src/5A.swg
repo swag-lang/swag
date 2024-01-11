@@ -70,9 +70,9 @@ func day5A()
         {
             let res = r.grepAll(l)
             if res.count == 0 do continue
-            var count   = assume StrConv.toU64(res[0].value)
-            let colFrom = assume StrConv.toS32(res[1].value)-1
-            let colTo   = assume StrConv.toS32(res[2].value)-1
+            var count   = assume StrConv.toU64(res[0])
+            let colFrom = assume StrConv.toS32(res[1])-1
+            let colTo   = assume StrConv.toS32(res[2])-1
 
             while count
             {
