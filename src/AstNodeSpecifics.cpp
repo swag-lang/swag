@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "Ast.h"
-#include "TypeManager.h"
-#include "Semantic.h"
 #include "ByteCode.h"
-#include "Module.h"
 #include "LanguageSpec.h"
+#include "Module.h"
+#include "Semantic.h"
+#include "TypeManager.h"
 
 AstNode* AstVarDecl::clone(CloneContext& context)
 {

@@ -1201,8 +1201,7 @@ Utf8 TypeInfoStruct::getDisplayName()
 
 void TypeInfoStruct::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
-    // For a tuple, we use the tuple syntax when this is an export
-    if (((nameType == COMPUTE_SCOPED_NAME_EXPORT) || nameType == COMPUTE_DISPLAY_NAME) && isTuple())
+    if (isTuple())
     {
         resName += "{";
         for (size_t i = 0; i < fields.size(); i++)

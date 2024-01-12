@@ -68,7 +68,7 @@
     <ClCompile Include="../src/TypeInfo.cpp">
       <Filter>Semantic\Type</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\TypeInfo_Specific.cpp">
+    <ClCompile Include="..\src\TypeInfoSpecifics.cpp">
       <Filter>Semantic\Type</Filter>
     </ClCompile>
     <ClCompile Include="../src/TypeManager.cpp">
@@ -254,7 +254,7 @@
     <ClCompile Include="..\src\LoadSourceFileJob.cpp">
       <Filter>Jobs</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\AstSpecificNodes.cpp">
+    <ClCompile Include="..\src\AstNodeSpecifics.cpp">
       <Filter>Syntax</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Module_CompilerMsg.cpp">

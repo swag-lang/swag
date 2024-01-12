@@ -339,7 +339,7 @@
     <ClCompile Include="../src/AstOutput.cpp" />
     <ClCompile Include="../src/Attribute.cpp" />
     <ClCompile Include="../src/Backend.cpp" />
-    <ClCompile Include="..\src\AstSpecificNodes.cpp" />
+    <ClCompile Include="..\src\AstNodeSpecifics.cpp" />
     <ClCompile Include="..\src\Ast_Gen.cpp" />
     <ClCompile Include="..\src\Ast_New.cpp" />
     <ClCompile Include="..\src\BackendLLVM_Call.cpp" />
@@ -538,7 +538,7 @@
     <ClCompile Include="..\src\Tokenizer_StringLiteral.cpp" />
     <ClCompile Include="..\src\Tokenizer_Symbol.cpp" />
     <ClCompile Include="../src/TypeInfo.cpp" />
-    <ClCompile Include="..\src\TypeInfo_Specific.cpp" />
+    <ClCompile Include="..\src\TypeInfoSpecifics.cpp" />
     <ClCompile Include="../src/TypeManager.cpp" />
     <ClCompile Include="..\src\TypeManager_Cast.cpp" />
     <ClCompile Include="..\src\TypeGen.cpp" />
