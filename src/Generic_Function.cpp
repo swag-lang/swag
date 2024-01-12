@@ -144,7 +144,9 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     auto cloneNode = funcNode;
     while (cloneNode->parent && cloneNode->parent->kind == AstNodeKind::AttrUse)
         cloneNode = cloneNode->parent;
-    cloneNode        = cloneNode->clone(cloneContext);
+
+    cloneNode = cloneNode->clone(cloneContext);
+
     auto newFuncNode = cloneNode;
     while (newFuncNode->kind == AstNodeKind::AttrUse)
         newFuncNode = newFuncNode->childs.back();
@@ -227,7 +229,6 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
 
     auto job = end(context, context->baseJob, match.symbolName, cloneNode, true, cloneContext.replaceTypes);
     context->baseJob->jobsToAdd.push_back(job);
-
     return true;
 }
 

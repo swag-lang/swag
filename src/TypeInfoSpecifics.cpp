@@ -1187,8 +1187,6 @@ const char* TypeInfoStruct::getDisplayNameC()
 
 Utf8 TypeInfoStruct::getDisplayName()
 {
-    if (isTuple())
-        return "tuple";
     if (declNode && declNode->kind == AstNodeKind::InterfaceDecl)
         return Fmt("interface %s", name.c_str());
     if (declNode && declNode->kind == AstNodeKind::StructDecl && ((AstStruct*) declNode)->specFlags & AstStruct::SPECFLAG_UNION)
@@ -1196,7 +1194,10 @@ Utf8 TypeInfoStruct::getDisplayName()
 
     Utf8 str;
     computeWhateverName(str, COMPUTE_DISPLAY_NAME);
-    return Fmt("struct %s", str.c_str());
+    if (isTuple())
+        return Fmt("%s", str.c_str());
+    else
+        return Fmt("struct %s", str.c_str());
 }
 
 void TypeInfoStruct::computeWhateverName(Utf8& resName, uint32_t nameType)
@@ -1204,18 +1205,23 @@ void TypeInfoStruct::computeWhateverName(Utf8& resName, uint32_t nameType)
     if (isTuple())
     {
         resName += "{";
-        for (size_t i = 0; i < fields.size(); i++)
+        for (auto param: fields)
         {
-            auto p = fields[i];
-            if (i)
+            if (param != fields.front())
                 resName += ", ";
-            if (!p->name.empty() && !(p->flags & TYPEINFOPARAM_AUTO_NAME))
+            if (!param->name.empty() && !(param->flags & TYPEINFOPARAM_AUTO_NAME))
             {
-                resName += p->name;
+                resName += param->name;
                 resName += ": ";
             }
 
-            resName += p->typeInfo->computeWhateverName(nameType);
+            resName += param->typeInfo->computeWhateverName(nameType);
+
+            if (nameType == COMPUTE_DISPLAY_NAME && resName.length() > 20)
+            {
+                resName += " ... ";
+                break;
+            }
         }
 
         resName += "}";
@@ -1224,9 +1230,6 @@ void TypeInfoStruct::computeWhateverName(Utf8& resName, uint32_t nameType)
 
     if (nameType != COMPUTE_NAME && nameType != COMPUTE_DISPLAY_NAME)
         getScopedName(resName);
-
-    if (!isTuple() || nameType != COMPUTE_DISPLAY_NAME)
-        resName += structName;
-
+    resName += structName;
     computeNameGenericParameters(genericParameters, resName, nameType);
 }

@@ -1208,6 +1208,10 @@ bool Semantic::resolveStruct(SemanticContext* context)
 
                     symTable.addSymbolTypeInfo(context, toAdd);
                 }
+                else
+                {
+                    typeParam->flags |= TYPEINFOPARAM_AUTO_NAME;
+                }
             }
             else
             {

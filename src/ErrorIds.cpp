@@ -887,9 +887,9 @@ void initErrors()
     SWAG_ERROR(Err0119, "unsupported generic                               $ unsupported generic type deduction, this is too complicated (embedded tuples)");
     SWAG_ERROR(Err0485, "unsupported index type                            $ the array access index must be an integer, got '%s' instead");
     SWAG_ERROR(Err1134, "unsupported tuple type                            $ tuple types are not supported for generic parameters");
-    SWAG_ERROR(Err0800, "unsupported type                                  $ the intrinsic '@countof' does not accept an argument of type 'tuple'");
+    SWAG_ERROR(Err0800, "unsupported type                                  $ the intrinsic '@countof' does not accept a tuple as an argument");
     SWAG_ERROR(Err0797, "unsupported type                                  $ the intrinsic '@dataof' does not accept an argument of type '%s'");
-    SWAG_ERROR(Err0796, "unsupported type                                  $ the intrinsic '@dataof' does not accept an argument of type 'tuple'");
+    SWAG_ERROR(Err0796, "unsupported type                                  $ the intrinsic '@dataof' does not accept a tuple as an argument");
     SWAG_ERROR(Err0733, "unsupported variadic parameters                   $ an inline function can't have variadic parameters");
     SWAG_ERROR(Err0780, "unused alias name                                 $ the alias name '%s' has no corresponding variable $ consider removing it");
     SWAG_ERROR(Err0109, "unused return value                               $ the return value of the function '%s' should be used $ if you don't need the return value, consider prefixing the call with 'discard'");

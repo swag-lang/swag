@@ -330,9 +330,12 @@ bool Ast::convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* ass
         auto subAffect = assignment->childs[idx];
 
         bool autoName = false;
+
         // User specified name
         if (!typeParam->name.empty())
+        {
             varName = typeParam->name;
+        }
 
         // If this is a single identifier, then we take the identifier name
         else if (subAffect->kind == AstNodeKind::IdentifierRef && subAffect->childs.back()->kind == AstNodeKind::Identifier)

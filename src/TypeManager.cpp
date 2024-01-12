@@ -251,10 +251,14 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
     typeStruct->fields.reserve((int) typeList->subTypes.size());
     for (size_t idx = 0; idx < typeList->subTypes.size(); idx++)
     {
-        auto one = typeList->subTypes[idx];
-        if (one->name.empty())
-            one->name = Fmt("item%u", idx);
-        typeStruct->fields.push_back((TypeInfoParam*) one->clone());
+        auto one       = typeList->subTypes[idx];
+        auto typeParam = (TypeInfoParam*) one->clone();
+        if (typeParam->name.empty())
+        {
+            typeParam->name = Fmt("item%u", idx);
+            typeParam->flags |= TYPEINFOPARAM_AUTO_NAME;
+        }
+        typeStruct->fields.push_back(typeParam);
     }
 
     typeStruct->structName = typeStruct->name;
