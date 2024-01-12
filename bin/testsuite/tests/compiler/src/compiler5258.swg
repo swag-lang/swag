@@ -11,6 +11,6 @@ impl A {
 #test
 {
     var x: A
-    visit,Bytes x
+    visit:Bytes x
     {}
 }

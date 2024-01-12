@@ -4,7 +4,7 @@ using Core
 #test
 {
     var str: String = "A⻨C"
-    visit,runes c, ir, i: str
+    visit:runes c, ir, i: str
     {
         switch i
         {

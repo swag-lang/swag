@@ -119,8 +119,8 @@ impl MyStruct
     var myStruct = MyStruct{}
     var cpt = 0
 
-    // To call a variant, add the extra name after a comma.
-    visit,reverse v, i: myStruct
+    // To call a variant, add the extra name after ':'.
+    visit:reverse v, i: myStruct
     {
         switch i
         {

@@ -25,4 +25,8 @@ impl S
     visit c: s
     {
     }
+
+    visit:bytes c: s
+    {
+    }
 }

@@ -26,7 +26,7 @@ impl S
     var x: S
 
     var cpt = 0
-    visit,bytes x
+    visit:bytes x
     {
         cpt += 1
         //@print("aa\n")

@@ -743,15 +743,6 @@ bool Parser::doModifiers(Token& forNode, TokenId tokenId, uint32_t& mdfFlags, As
             continue;
         }
 
-        if (opId == TokenId::KwdVisit && cpt == 1)
-        {
-            auto visit = CastAst<AstVisit>(node, AstNodeKind::Visit);
-            SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err1115), token.ctext())));
-            visit->extraNameToken = token;
-            SWAG_CHECK(eatToken());
-            continue;
-        }
-
         return error(token, Fmt(Err(Err1178), token.ctext()));
     }
 

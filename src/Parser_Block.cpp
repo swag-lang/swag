@@ -234,6 +234,15 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
     // Eat visit keyword
     SWAG_CHECK(eatToken());
 
+    // Specialized name
+    if (token.id == TokenId::SymColon)
+    {
+        SWAG_CHECK(eatToken());
+        SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err1115), token.ctext())));
+        node->extraNameToken = token;
+        SWAG_CHECK(eatToken());
+    }
+
     // Reverse loop
     uint32_t mdfFlags = 0;
     SWAG_CHECK(doModifiers(node->token, node->tokenId, mdfFlags, node));
