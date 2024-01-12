@@ -89,6 +89,14 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // Replace generic types in the struct generic parameters
     auto sourceNodeStruct = CastAst<AstStruct>(sourceNode, AstNodeKind::StructDecl);
     SWAG_CHECK(replaceGenericParameters(context, true, false, newType->genericParameters, sourceNodeStruct->genericParameters->childs, genericParameters, match));
+    
+    // For a tuple, replace inside types with real ones
+    if (newType->isTuple())
+    {
+        for (auto param: newType->fields)
+            param->typeInfo = Generic::replaceGenericTypes(match.genericReplaceTypes, param->typeInfo);
+    }
+
     newType->forceComputeName();
 
     // Be sure that after the generic instantiation, we will not have a match.
@@ -125,11 +133,14 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     cloneContext.replaceValues = match.genericReplaceValues;
 
     // Add the struct type replacement now, in case the struct has a field to replace
-    GenericReplaceType st;
-    st.typeInfoGeneric                                  = overload->typeInfo;
-    st.typeInfoReplace                                  = newType;
-    st.fromNode                                         = overload->node;
-    cloneContext.replaceTypes[overload->typeInfo->name] = st;
+    if (!genericStructType->isTuple())
+    {
+        GenericReplaceType st;
+        st.typeInfoGeneric                                  = genericStructType;
+        st.typeInfoReplace                                  = newType;
+        st.fromNode                                         = overload->node;
+        cloneContext.replaceTypes[overload->typeInfo->name] = st;
+    }
 
     // :GenericConcreteAlias
     // Make all types concrete in case of simple aliases
