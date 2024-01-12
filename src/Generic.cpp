@@ -64,7 +64,7 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneGenericMatch
     ScopedLock lk(symbol->mutex);
 
     // If we are inside a generic function (not instantiated), then we are done, we
-    // cannot instantiate (can occure when evaluating function body of an incomplete short lammbda
+    // cannot instantiate (can occure when evaluating function body of an incomplete short lambda)
     if (node->ownerFct && node->ownerFct->flags & AST_IS_GENERIC)
         return true;
 
