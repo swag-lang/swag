@@ -121,7 +121,7 @@ impl Struct
     #[Swag.Macro]
     {
         func(ptr: bool, back: bool) opVisit(using self, stmt: code) {}
-        func(ptr: bool, back: bool) opVisit,whatever(using self, stmt: code) {}
-        func(ptr: bool, back: bool) opVisit,another(using self, stmt: code) {}
+        func(ptr: bool, back: bool) opVisitWhatever(using self, stmt: code) {}
+        func(ptr: bool, back: bool) opVisitAnother(using self, stmt: code) {}
     }
 }

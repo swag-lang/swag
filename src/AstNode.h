@@ -531,7 +531,6 @@ struct AstFuncDecl : public AstNode
     static const uint16_t SPECFLAG_IS_LAMBDA_EXPRESSION = 0x1000;
     static const uint16_t SPECFLAG_ASSUME               = 0x2000;
     static const uint16_t SPECFLAG_IMPL                 = 0x4000;
-    static const uint16_t SPECFLAG_NAME_VARIANT         = 0x8000;
 
     ~AstFuncDecl();
     AstNode*    clone(CloneContext& context);

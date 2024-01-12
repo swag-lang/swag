@@ -3,7 +3,7 @@ struct A {}
 impl A {
 
     //#[Swag.Macro]
-    /*mtd(x: bool, y: bool) opVisit,Bytes(s: code)
+    /*mtd(x: bool, y: bool) opVisitBytes(s: code)
     {
     }*/
 }

@@ -111,17 +111,7 @@ bool AstOutput::outputAttrUse(OutputContext& context, Concat& concat, AstNode* n
 
 bool AstOutput::outputFuncName(OutputContext& context, Concat& concat, AstFuncDecl* node)
 {
-    if (!(node->specFlags & AstFuncDecl::SPECFLAG_NAME_VARIANT))
-    {
-        concat.addString(node->token.text);
-        return true;
-    }
-
-    concat.addString(node->tokenName.text);
-    concat.addChar(',');
-    Utf8 variantName{node->token.text.buffer + node->tokenName.text.length()};
-    concat.addString(variantName);
-
+    concat.addString(node->token.text);
     return true;
 }
 

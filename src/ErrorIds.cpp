@@ -306,7 +306,7 @@ void initErrors()
     SWAG_ERROR(Err0662, "invalid 'impl'                                    $ expected a struct name or an enum name after 'impl' but '%s' is '%s'");
     SWAG_ERROR(Err0646, "invalid 'impl'                                    $ expected an interface name after 'impl' but '%s' is %s");
     SWAG_ERROR(Err0029, "invalid 'namealias'                               $ can't alias a struct member");
-    SWAG_ERROR(Err1214, "invalid 'opVisit' name                            $ function should be named 'opVisit' $ if you want to declare a visit variant, declare the alternate name after a comma");
+    SWAG_ERROR(Err1214, "invalid 'opVisit' name                            $ an 'opVisit' variant should be a valid identifier, found '%s' instead");
     SWAG_ERROR(Err0332, "invalid 'orelse' type                             $ the 'orelse' operator dnoes not accept the type '%s' as an argument");
     SWAG_ERROR(Err0342, "invalid 'orelse' type                             $ the 'orelse' operator does not accept the type 'struct' as an argument");
     SWAG_ERROR(Err0771, "invalid 'retval'                                  $ the 'retval' special type is not allowed in a function that returns nothing");

@@ -3,7 +3,7 @@ struct S {}
 impl S
 {
     #[Swag.Macro]
-    mtd(ptr: bool, back: bool) opVisit,Bytes(stmt: code)
+    mtd(ptr: bool, back: bool) opVisitBytes(stmt: code)
     {
         loop 4
         {

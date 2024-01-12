@@ -1,12 +1,9 @@
 #include "pch.h"
-#include "TypeManager.h"
-#include "Semantic.h"
 #include "Ast.h"
-#include "SourceFile.h"
-#include "ErrorIds.h"
-#include "LanguageSpec.h"
-#include "Mutex.h"
 #include "Diagnostic.h"
+#include "LanguageSpec.h"
+#include "Semantic.h"
+#include "TypeManager.h"
 
 bool Semantic::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node)
 {
@@ -122,10 +119,12 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
     bool  isOpVisit = name.find(g_LangSpec->name_opVisit) == 0;
     auto  parent    = node->findParent(AstNodeKind::Impl);
 
-    // opVisit variant should have been declared with the ',' syntax
-    if (isOpVisit && name != g_LangSpec->name_opVisit && !(node->specFlags & AstFuncDecl::SPECFLAG_NAME_VARIANT))
+    // opVisit variant should be a name
+    if (isOpVisit && name != g_LangSpec->name_opVisit && !SWAG_IS_ALPHA(name[7]))
     {
-        Diagnostic diag{node, node->tokenName, Fmt(Err(Err1214), node->token.ctext())};
+        auto start = node->tokenName.startLocation;
+        start.column += 7;
+        Diagnostic diag{node->sourceFile, start, node->tokenName.endLocation, Fmt(Err(Err1214), node->token.ctext() + 7)};
         return context->report(diag);
     }
 
