@@ -4927,7 +4927,7 @@
 <tr><td> index     </td><td> the pixel index</td></tr>
 <tr><td> x         </td><td> the pixel x coordinates</td></tr>
 <tr><td> y         </td><td> the pixel y coordinates</td></tr>
-<tr><td>  userData </td><td> as passed to the macro</td></tr>
+<tr><td> userData  </td><td> as passed to the macro</td></tr>
 </table>
 <p>
 <table class="api-item">
@@ -9842,7 +9842,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 11-01-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.28.0</div>
+Generated on 12-01-2024 with <a href="https://swag-lang.org/index.php">swag</a> 0.28.0</div>
 </div>
 </div>
 </div>
