@@ -38,7 +38,7 @@ func day8B()
 
     const S = 25*6
     var pix: [S] rune
-    visit:bytes c, i: assume File.readAllText(dataPath)
+    visit:Bytes c, i: assume File.readAllText(dataPath)
     {
         if pix[i%S] == 0 and c != `2` do
             pix[i%S] = c == `1` ? `X` : ` `

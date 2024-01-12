@@ -5,7 +5,7 @@ using Core
 #test
 {
     var str: String = "ABC"
-    visit:bytes c, i: str
+    visit:Bytes c, i: str
     {
         switch i
         {

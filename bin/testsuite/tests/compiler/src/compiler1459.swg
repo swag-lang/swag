@@ -5,7 +5,7 @@ struct S
 impl S
 {
     #[Swag.Macro, Swag.CalleeReturn]
-    func(ptr: bool, back: bool) opVisit,bytes(using self, stmt: code)
+    func(ptr: bool, back: bool) opVisit,Bytes(using self, stmt: code)
     {
         #scope up
         loop 5
@@ -26,7 +26,7 @@ impl S
     var x: S
 
     var cpt = 0
-    visit:bytes x
+    visit:Bytes x
     {
         //@print("AAA\n")
         cpt += 1

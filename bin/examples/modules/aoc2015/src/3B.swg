@@ -28,7 +28,7 @@ func day3B()
 
     var pos: [2] Pos
     var set: HashSet'u64
-    visit:bytes c, i: assume File.readAllText(dataPath)
+    visit:Bytes c, i: assume File.readAllText(dataPath)
     {
         let who = i&1
         switch c

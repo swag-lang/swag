@@ -6,7 +6,7 @@
 {
     var str: String = "toto"
     var cpt = 0
-    visit:runes str
+    visit:Runes str
     {
         cpt += 1
     }

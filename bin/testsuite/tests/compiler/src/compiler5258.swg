@@ -3,7 +3,7 @@ struct A {}
 impl A {
 
     #[Swag.Macro]
-    mtd(x: bool, y: bool) opVisit,bytes(s: code)
+    mtd(x: bool, y: bool) opVisit,Bytes(s: code)
     {
     }
 }
@@ -11,6 +11,6 @@ impl A {
 #test
 {
     var x: A
-    visit:Bytes x
+    visit:Byte x
     {}
 }
