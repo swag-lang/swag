@@ -101,7 +101,7 @@ void Semantic::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneT
         destLambdaDecl = CastAst<AstTypeLambda>(overload->node->typeInfo->declNode, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
 
     // In case it's generic, and we have real types
-    bi.badSignatureRequestedType = Generic::doTypeSubstitution(oneTry.symMatchContext.genericReplaceTypes, bi.badSignatureRequestedType);
+    bi.badSignatureRequestedType = Generic::replaceGenericTypes(oneTry.symMatchContext.genericReplaceTypes, bi.badSignatureRequestedType);
 
     // See if it would have worked with an explicit cast, to give a hint in the error message
     Utf8 hintMsg;

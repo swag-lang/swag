@@ -128,7 +128,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         }
         else if (wantedTypeInfo->isGeneric())
         {
-            Generic::deduceGenericTypeReplacement(context, callParameter, callTypeInfo, wantedTypeInfo, (int) i, castFlags & (CASTFLAG_ACCEPT_PENDING | CASTFLAG_AUTO_OPCAST));
+            Generic::deduceGenericTypes(context, callParameter, callTypeInfo, wantedTypeInfo, (int) i, castFlags & (CASTFLAG_ACCEPT_PENDING | CASTFLAG_AUTO_OPCAST));
             if (context.semContext->result != ContextResult::Done)
                 return;
         }
@@ -215,7 +215,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
             }
             else if (wantedTypeInfo->isGeneric())
             {
-                Generic::deduceGenericTypeReplacement(context, callParameter, callTypeInfo, wantedTypeInfo, (int) j, castFlags & (CASTFLAG_ACCEPT_PENDING | CASTFLAG_AUTO_OPCAST));
+                Generic::deduceGenericTypes(context, callParameter, callTypeInfo, wantedTypeInfo, (int) j, castFlags & (CASTFLAG_ACCEPT_PENDING | CASTFLAG_AUTO_OPCAST));
             }
 
             context.solvedParameters[j]                  = wantedParameter;

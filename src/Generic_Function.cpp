@@ -32,7 +32,7 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
     *specialFct = newFunc;
 
     // Generate and initialize a new type if the type is still generic
-    // The type is still generic if the doTypeSubstitution didn't find any type to change
+    // The type is still generic if the replaceGenericTypes didn't find any type to change
     // (for example if we have just generic value)
     TypeInfoFuncAttr* newTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(newFunc->typeInfo, newFunc->typeInfo->kind);
     if (newTypeFunc->isGeneric())
@@ -201,7 +201,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     }
 
     // Generate and initialize a new type if the type is still generic
-    // The type is still generic if the doTypeSubstitution didn't find any type to change
+    // The type is still generic if the replaceGenericTypes didn't find any type to change
     // (for example if we have just generic value)
     TypeInfoFuncAttr* newTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(newFunc->typeInfo, newFunc->typeInfo->kind);
     if (newTypeFunc->isGeneric() || noReplaceTypes)
@@ -222,7 +222,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     }
 
     // Replace generic types and values in the function generic parameters
-    SWAG_CHECK(updateGenericParameters(context, true, true, newTypeFunc->genericParameters, newFunc->genericParameters->childs, genericParameters, match));
+    SWAG_CHECK(replaceGenericParameters(context, true, true, newTypeFunc->genericParameters, newFunc->genericParameters->childs, genericParameters, match));
     newTypeFunc->forceComputeName();
 
     auto job = end(context, context->baseJob, match.symbolName, cloneNode, true, cloneContext.replaceTypes);

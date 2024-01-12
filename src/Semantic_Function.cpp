@@ -476,7 +476,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             funcNode->resolvedSymbolName->decreaseOverloadNoLock();
         }
 
-        // Return type is generic. We must evaluate the content to deduce it, so we 
+        // Return type is generic. We must evaluate the content to deduce it, so we
         // pass to short lambda mode again, so that the return evaluation will update
         // the type.
         else

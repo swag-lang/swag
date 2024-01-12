@@ -644,6 +644,9 @@
     <ClCompile Include="..\src\Semantic_Scope.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Generic_Replace.cpp">
+      <Filter>Semantic\Generic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">

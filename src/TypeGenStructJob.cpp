@@ -112,7 +112,7 @@ bool TypeGenStructJob::computeStruct()
         // Update fields with types if generic
         for (auto field : realType->fields)
         {
-            field->typeInfo = Generic::doTypeSubstitution(realType->replaceTypes, field->typeInfo);
+            field->typeInfo = Generic::replaceGenericTypes(realType->replaceTypes, field->typeInfo);
         }
 
         // Update methods with types if generic
@@ -120,7 +120,7 @@ bool TypeGenStructJob::computeStruct()
         {
             for (auto method : realType->methods)
             {
-                method->typeInfo = Generic::doTypeSubstitution(realType->replaceTypes, method->typeInfo);
+                method->typeInfo = Generic::replaceGenericTypes(realType->replaceTypes, method->typeInfo);
             }
         }
     }

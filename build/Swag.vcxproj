@@ -453,6 +453,7 @@
     <ClCompile Include="..\src\GenDoc_Pages.cpp" />
     <ClCompile Include="..\src\Generic_Deduce.cpp" />
     <ClCompile Include="..\src\Generic_Function.cpp" />
+    <ClCompile Include="..\src\Generic_Replace.cpp" />
     <ClCompile Include="..\src\Generic_Struct.cpp" />
     <ClCompile Include="..\src\JobGroup.cpp" />
     <ClCompile Include="..\src\LoadSourceFileJob.cpp" />

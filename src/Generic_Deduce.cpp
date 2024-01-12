@@ -229,7 +229,7 @@ void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInf
                 AstFuncDecl* decl = CastAst<AstFuncDecl>(callLambda->declNode, AstNodeKind::FuncDecl);
                 if (decl->pendingLambdaJob && decl->resolvedSymbolOverload->flags & OVERLOAD_UNDEFINED)
                 {
-                    auto tt = doTypeSubstitution(context.genericReplaceTypes, wantedLambda);
+                    auto tt = replaceGenericTypes(context.genericReplaceTypes, wantedLambda);
                     Semantic::resolvePendingLambdaTyping(context.semContext, callLambda->declNode, tt, 1);
                     return;
                 }
@@ -357,7 +357,7 @@ void Generic::deduceType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, 
     }
 }
 
-void Generic::deduceGenericTypeReplacement(SymbolMatchContext& context, AstNode* callParameter, TypeInfo* callTypeInfo, TypeInfo* wantedTypeInfo, int idxParam, uint64_t castFlags)
+void Generic::deduceGenericTypes(SymbolMatchContext& context, AstNode* callParameter, TypeInfo* callTypeInfo, TypeInfo* wantedTypeInfo, int idxParam, uint64_t castFlags)
 {
     SWAG_ASSERT(wantedTypeInfo->isGeneric());
 
@@ -379,187 +379,5 @@ void Generic::deduceGenericTypeReplacement(SymbolMatchContext& context, AstNode*
         deduceSubType(context, wantedTypeInfo, callTypeInfo, wantedTypeInfos, callTypeInfos, callParameter);
         if (context.semContext->result != ContextResult::Done)
             return;
-    }
-}
-
-void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& genericParameters)
-{
-    int wantedNumGenericParams = (int) genericParameters.size();
-    int numGenericParams       = (int) context.genericParameters.size();
-    if (!numGenericParams && !wantedNumGenericParams)
-        return;
-
-    context.genericParametersCallTypes.expand_clear(wantedNumGenericParams);
-    context.genericParametersCallValues.expand_clear(wantedNumGenericParams);
-
-    if (numGenericParams > wantedNumGenericParams)
-    {
-        context.badSignatureInfos.badSignatureNum1 = numGenericParams;
-        context.badSignatureInfos.badSignatureNum2 = wantedNumGenericParams;
-        context.result                             = MatchResult::TooManyGenericParameters;
-        return;
-    }
-
-    GenericReplaceType                  st;
-    VectorMap<Utf8, GenericReplaceType> m;
-
-    for (int i = 0; i < numGenericParams; i++)
-    {
-        const auto& genName     = genericParameters[i]->name;
-        auto        genType     = genericParameters[i]->typeInfo;
-        const auto& genTypeName = genType->name;
-        auto        genNode     = context.genericParameters[i];
-
-        if (!context.genericParametersCallTypes[i].typeInfoReplace)
-        {
-            st.typeInfoGeneric = genType;
-            st.typeInfoReplace = genNode->typeInfo;
-            st.fromNode        = genNode;
-
-            context.genericReplaceTypes[genTypeName] = st;
-            context.genericParametersCallTypes[i]    = st;
-            context.genericReplaceValues[genName]    = genNode->computedValue;
-            context.genericParametersCallValues[i]   = genNode->computedValue;
-        }
-        else
-        {
-            context.genericParametersCallTypes[i].typeInfoGeneric = genType;
-            context.genericReplaceTypes[genTypeName]              = context.genericParametersCallTypes[i];
-            context.genericReplaceValues[genName]                 = context.genericParametersCallValues[i];
-
-            // We have a new type replacement, so we must be sure that every other types registered in the
-            // context.genericReplaceTypes are up to date too.
-            // For example if type T is now s32, we must be sure that a potential *T or [..] T in the map will
-            // be updated correspondinly.
-            if (context.genericReplaceTypes.size() > 1)
-            {
-                m.clear();
-                m[genTypeName] = context.genericParametersCallTypes[i];
-
-                for (auto& v : context.genericReplaceTypes)
-                {
-                    if (!v.second.typeInfoGeneric)
-                        continue;
-                    if (v.first == genTypeName)
-                        continue;
-                    auto typeInfoReplace = doTypeSubstitution(m, v.second.typeInfoGeneric);
-                    if (typeInfoReplace != v.second.typeInfoGeneric)
-                    {
-                        v.second.typeInfoReplace = typeInfoReplace;
-                    }
-                }
-            }
-        }
-    }
-
-    for (auto i = numGenericParams; i < wantedNumGenericParams; i++)
-    {
-        const auto& genName     = genericParameters[i]->name;
-        auto        genType     = genericParameters[i]->typeInfo;
-        const auto& genTypeName = genType->name;
-
-        if (context.genericParametersCallTypes[i].typeInfoReplace)
-        {
-            context.genericReplaceTypes[genTypeName] = context.genericParametersCallTypes[i];
-            context.genericReplaceValues[genName]    = context.genericParametersCallValues[i];
-        }
-        else
-        {
-            auto it = context.genericReplaceTypes.find(genTypeName);
-            if (it != context.genericReplaceTypes.end())
-                context.genericParametersCallTypes[i] = it->second;
-
-            auto it1 = context.genericReplaceValues.find(genName);
-            if (it1 != context.genericReplaceValues.end())
-                context.genericParametersCallValues[i] = it1->second;
-        }
-    }
-
-    for (int i = 0; i < wantedNumGenericParams; i++)
-    {
-        auto genType                                          = genericParameters[i]->typeInfo;
-        context.mapGenericTypeToIndex[genType->name]          = i;
-        context.genericParametersCallTypes[i].typeInfoGeneric = genType;
-    }
-}
-
-void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload, uint32_t flags)
-{
-    auto node = context->node;
-
-    // Fresh start on generic types
-    oneTryMatch.symMatchContext.genericReplaceTypes.clear();
-    oneTryMatch.symMatchContext.mapGenericTypeToIndex.clear();
-
-    auto& toCheck = context->tmpNodes;
-    toCheck.clear();
-
-    // If we are inside a struct, then we can inherit the generic concrete types of that struct
-    if (node->ownerStructScope)
-        toCheck.push_back(node->ownerStructScope->owner);
-
-    // If function A in a struct calls function B in the same struct, then we can inherit the match types of function A
-    // when instantiating function B
-    if (node->ownerFct && node->ownerStructScope && node->ownerFct->ownerStructScope == symOverload->node->ownerStructScope)
-        toCheck.push_back(node->ownerFct);
-
-    // We do not want function to deduce their generic type from context, as the generic type can be deduced from the
-    // parameters
-    if (node->ownerFct && !symOverload->typeInfo->isFuncAttr())
-        toCheck.push_back(node->ownerFct);
-
-    // Except for a second try
-    if (node->ownerFct && symOverload->typeInfo->isFuncAttr() && flags & MIP_SECOND_GENERIC_TRY)
-        toCheck.push_back(node->ownerFct);
-
-    // With A.B form, we try to get generic parameters from A if they exist
-    if (node->kind == AstNodeKind::Identifier)
-    {
-        auto identifier = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
-        if (identifier->identifierRef()->startScope)
-            toCheck.push_back(identifier->identifierRef()->startScope->owner);
-    }
-
-    // Except that with using, B could be in fact in another struct than A.
-    // In that case we have a dependentVar, so replace what needs to be replaced.
-    // What a mess...
-    if (oneTryMatch.dependentVarLeaf)
-    {
-        if (oneTryMatch.dependentVarLeaf->typeInfo && oneTryMatch.dependentVarLeaf->typeInfo->isStruct())
-        {
-            auto typeStruct = CastTypeInfo<TypeInfoStruct>(oneTryMatch.dependentVarLeaf->typeInfo, TypeInfoKind::Struct);
-            toCheck.push_back(typeStruct->declNode);
-        }
-    }
-
-    // Collect all
-    for (auto one : toCheck)
-    {
-        if (one->kind == AstNodeKind::FuncDecl)
-        {
-            auto nodeFunc = CastAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
-            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(nodeFunc->typeInfo, TypeInfoKind::FuncAttr);
-
-            oneTryMatch.symMatchContext.genericReplaceTypes.reserve(typeFunc->replaceTypes.size());
-            for (auto oneReplace : typeFunc->replaceTypes)
-                oneTryMatch.symMatchContext.genericReplaceTypes[oneReplace.first] = oneReplace.second;
-
-            oneTryMatch.symMatchContext.genericReplaceValues.reserve(typeFunc->replaceValues.size());
-            for (auto oneReplace : typeFunc->replaceValues)
-                oneTryMatch.symMatchContext.genericReplaceValues[oneReplace.first] = oneReplace.second;
-        }
-        else if (one->kind == AstNodeKind::StructDecl)
-        {
-            auto nodeStruct = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
-            auto typeStruct = CastTypeInfo<TypeInfoStruct>(nodeStruct->typeInfo, TypeInfoKind::Struct);
-
-            oneTryMatch.symMatchContext.genericReplaceTypes.reserve(typeStruct->replaceTypes.size());
-            for (auto oneReplace : typeStruct->replaceTypes)
-                oneTryMatch.symMatchContext.genericReplaceTypes[oneReplace.first] = oneReplace.second;
-
-            oneTryMatch.symMatchContext.genericReplaceValues.reserve(typeStruct->replaceValues.size());
-            for (auto oneReplace : typeStruct->replaceValues)
-                oneTryMatch.symMatchContext.genericReplaceValues[oneReplace.first] = oneReplace.second;
-        }
     }
 }

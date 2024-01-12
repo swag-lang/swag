@@ -53,7 +53,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     }
 
     // Replace a type by another one during generic instantiation
-    typeInfo = Generic::doTypeSubstitution(context.replaceTypes, from->typeInfo);
+    typeInfo = Generic::replaceGenericTypes(context.replaceTypes, from->typeInfo);
     if (typeInfo != from->typeInfo)
         flags |= AST_FROM_GENERIC;
 

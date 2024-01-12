@@ -88,7 +88,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
 
     // Replace generic types in the struct generic parameters
     auto sourceNodeStruct = CastAst<AstStruct>(sourceNode, AstNodeKind::StructDecl);
-    SWAG_CHECK(updateGenericParameters(context, true, false, newType->genericParameters, sourceNodeStruct->genericParameters->childs, genericParameters, match));
+    SWAG_CHECK(replaceGenericParameters(context, true, false, newType->genericParameters, sourceNodeStruct->genericParameters->childs, genericParameters, match));
     newType->forceComputeName();
 
     // Be sure that after the generic instantiation, we will not have a match.
@@ -151,7 +151,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     structNode->originalGeneric = sourceNode;
 
     // Replace generic values in the struct generic parameters
-    SWAG_CHECK(updateGenericParameters(context, false, true, newType->genericParameters, structNode->genericParameters->childs, genericParameters, match));
+    SWAG_CHECK(replaceGenericParameters(context, false, true, newType->genericParameters, structNode->genericParameters->childs, genericParameters, match));
 
     auto structJob = end(context, context->baseJob, sourceSymbol, structNode, true, cloneContext.replaceTypes);
 

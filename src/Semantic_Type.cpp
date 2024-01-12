@@ -315,8 +315,8 @@ bool Semantic::resolveType(SemanticContext* context)
     }
 
     // Already solved
-    if ((typeNode->flags & AST_FROM_GENERIC) && 
-        typeNode->typeInfo && 
+    if ((typeNode->flags & AST_FROM_GENERIC) &&
+        typeNode->typeInfo &&
         !typeNode->typeInfo->isUndefined())
     {
         // Count is generic, need to reevaluate
@@ -332,8 +332,8 @@ bool Semantic::resolveType(SemanticContext* context)
         }
     }
 
-    if ((typeNode->semFlags & SEMFLAG_TYPE_SOLVED) && 
-        typeNode->typeInfo && 
+    if ((typeNode->semFlags & SEMFLAG_TYPE_SOLVED) &&
+        typeNode->typeInfo &&
         !typeNode->typeInfo->isUndefined())
     {
         forceConstType(context, typeNode);
