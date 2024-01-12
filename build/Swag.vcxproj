@@ -339,7 +339,7 @@
     <ClCompile Include="../src/AstOutput.cpp" />
     <ClCompile Include="../src/Attribute.cpp" />
     <ClCompile Include="../src/Backend.cpp" />
-    <ClCompile Include="..\src\AstNode_Specific.cpp" />
+    <ClCompile Include="..\src\AstSpecificNodes.cpp" />
     <ClCompile Include="..\src\Ast_Gen.cpp" />
     <ClCompile Include="..\src\Ast_New.cpp" />
     <ClCompile Include="..\src\BackendLLVM_Call.cpp" />

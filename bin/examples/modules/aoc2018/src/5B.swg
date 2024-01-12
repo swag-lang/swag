@@ -81,7 +81,7 @@ func day5B1() assume
         line.replace(cast(rune) Latin1.toUpper(x), "")
 
         var result: String
-        visit,bytes c, i: line
+        visit c, i: line
         {
             if i and result.back() ^ c == 32 do
                 result.removeBack()

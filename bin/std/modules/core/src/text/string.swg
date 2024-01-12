@@ -216,7 +216,7 @@ impl String
     #[Macro]
     mtd(ptr: bool, back: bool) opVisit(stmt: code)
     {
-        opVisitbytes'(ptr, back)(stmt)
+        opVisitbytes'(ptr, back)(|#alias0, #alias1| stmt)
     }
 
     // Set the length of the String to 0
