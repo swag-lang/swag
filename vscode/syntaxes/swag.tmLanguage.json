@@ -251,7 +251,7 @@
       "patterns": [
         {
           "name": "entity.name.function.intrinsic",
-          "match": "\\b(opVisit)(,\\w+)\\b",
+          "match": "\\b(opVisit)(\\w+)\\b",
           "captures": {
             "1": {
               "name": "entity.name.function.intrinsic"
