@@ -81,14 +81,14 @@ void Log::print(LogSymbol symbol)
 
     case LogSymbol::DownRight:
         if (g_CommandLine.logAscii)
-            print("*");
+            print("|");
         else
             print("\xe2\x94\x94");
         break;
 
     case LogSymbol::UpRight:
         if (g_CommandLine.logAscii)
-            print("*");
+            print("|");
         else
             print("\xe2\x94\x8c");
         break;
