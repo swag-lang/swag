@@ -139,12 +139,12 @@ struct Diagnostic
     void addRange(AstNode* node, const Utf8& h);
     void addRange(const Token& node, const Utf8& h);
 
-    void setupColors(bool verboseMode);
+    void setupColors();
     void collectSourceCode();
     void sortRanges();
     void collectRanges();
     Utf8 syntax(const Utf8& line, SyntaxColorContext& cxt);
-    void printSourceCode(bool verboseMode);
+    void printSourceCode();
     void printSourceLine();
     void printErrorLevel();
     void printMarginLineNo(int lineNo);
@@ -153,8 +153,8 @@ struct Diagnostic
     void setColorRanges(DiagnosticLevel level);
     void printRanges();
 
-    void reportCompact(bool verboseMode);
-    void report(bool verboseMode = false);
+    void reportCompact();
+    void report();
 
     static void        tokenizeError(const Utf8& err, Vector<Utf8>& tokens);
     static Utf8        oneLiner(const Utf8& err);
@@ -188,7 +188,6 @@ struct Diagnostic
     Utf8              lineCode;
     int               lineCodeNum = 0;
     int               minBlanks   = 0;
-    LogColor          verboseColor;
     LogColor          errorColor;
     LogColor          hintColor;
     LogColor          marginBorderColor;

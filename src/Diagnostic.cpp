@@ -5,20 +5,19 @@
 #include "Naming.h"
 #include "SyntaxColor.h"
 
-void Diagnostic::setupColors(bool verboseMode)
+void Diagnostic::setupColors()
 {
-    verboseColor      = LogColor::DarkCyan;
-    errorColor        = verboseMode ? verboseColor : LogColor::Red;
-    marginBorderColor = verboseMode ? verboseColor : LogColor::Cyan;
-    codeLineNoColor   = verboseMode ? verboseColor : LogColor::Gray;
-    hintColor         = verboseMode ? verboseColor : LogColor::White;
-    rangeNoteColor    = verboseMode ? verboseColor : LogColor::White;
-    warningColor      = verboseMode ? verboseColor : LogColor::Magenta;
-    noteColor         = verboseMode ? verboseColor : LogColor::Cyan;
-    stackColor        = verboseMode ? verboseColor : LogColor::DarkYellow;
-    remarkColor       = verboseMode ? verboseColor : LogColor::White;
-    autoRemarkColor   = verboseMode ? verboseColor : LogColor::Gray;
-    sourceFileColor   = verboseMode ? verboseColor : LogColor::Gray;
+    errorColor        = LogColor::Red;
+    marginBorderColor = LogColor::Cyan;
+    codeLineNoColor   = LogColor::Gray;
+    hintColor         = LogColor::White;
+    rangeNoteColor    = LogColor::White;
+    warningColor      = LogColor::Magenta;
+    noteColor         = LogColor::Cyan;
+    stackColor        = LogColor::DarkYellow;
+    remarkColor       = LogColor::White;
+    autoRemarkColor   = LogColor::Gray;
+    sourceFileColor   = LogColor::Gray;
 }
 
 void Diagnostic::setup()
@@ -342,9 +341,9 @@ void Diagnostic::collectRanges()
     }
 }
 
-void Diagnostic::reportCompact(bool verboseMode)
+void Diagnostic::reportCompact()
 {
-    setupColors(verboseMode);
+    setupColors();
     printErrorLevel();
     printSourceLine();
     g_Log.print(oneLiner(textMsg));
@@ -387,7 +386,7 @@ Utf8 Diagnostic::syntax(const Utf8& line, SyntaxColorContext& cxt)
     return syntaxColor(line, cxt);
 }
 
-void Diagnostic::printSourceCode(bool verboseMode)
+void Diagnostic::printSourceCode()
 {
     if (lineCode.empty())
         return;
@@ -404,18 +403,9 @@ void Diagnostic::printSourceCode(bool verboseMode)
         return;
     printMargin(false, true, lineCodeNum);
 
-    Utf8 colored;
-    if (verboseMode)
-    {
-        g_Log.setColor(verboseColor);
-        colored = lineCode.c_str() + minBlanks;
-    }
-    else
-    {
-        g_Log.setColor(LogColor::White);
-        colored = syntax(lineCode.c_str() + minBlanks, cxt);
-    }
+    g_Log.setColor(LogColor::White);
 
+    auto colored = syntax(lineCode.c_str() + minBlanks, cxt);
     g_Log.print(colored);
     g_Log.eol();
 }
@@ -544,29 +534,14 @@ void Diagnostic::printRanges()
                 startIndex++;
             }
         }
-
-        // Print all the vertical bars of remaining ranges
-        /* if (!ranges.empty())
-        {
-            g_Log.eol();
-            printMargin(false, true);
-            startIndex = minBlanks;
-            for (const auto& r : ranges)
-            {
-                ALIGN(r.mid);
-                setColorRanges(r.errorLevel);
-                g_Log.print(LogSymbol::VerticalLine);
-                startIndex++;
-            }
-        }*/
     }
 
     g_Log.eol();
 }
 
-void Diagnostic::report(bool verboseMode)
+void Diagnostic::report()
 {
-    setupColors(verboseMode);
+    setupColors();
 
     // Message level
     if (showErrorLevel)
@@ -606,7 +581,7 @@ void Diagnostic::report(bool verboseMode)
     // Source code
     if (showSourceCode)
     {
-        printSourceCode(verboseMode);
+        printSourceCode();
         printRanges();
     }
 

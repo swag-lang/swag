@@ -267,12 +267,12 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
     }
 }
 
-static void reportInternal(const Diagnostic& diag, const Vector<const Diagnostic*>& inNotes, bool verbose)
+static void reportInternal(const Diagnostic& diag, const Vector<const Diagnostic*>& inNotes)
 {
     if (g_CommandLine.errorOneLine)
     {
         auto c = new Diagnostic{diag};
-        c->reportCompact(verbose);
+        c->reportCompact();
         g_Log.setDefaultColor();
         return;
     }
@@ -300,7 +300,7 @@ static void reportInternal(const Diagnostic& diag, const Vector<const Diagnostic
             n->emptyMarginBefore = false;
 
         n->isNote = !first;
-        n->report(verbose);
+        n->report();
         first = false;
 
         prevHasSomething = hasSomething;
@@ -553,7 +553,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
             if (dismiss)
             {
                 if (g_CommandLine.verboseTestErrors)
-                    reportInternal(diag, notes, true);
+                    reportInternal(diag, notes);
                 return false;
             }
         }
@@ -589,7 +589,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
             if (dismiss)
             {
                 if (g_CommandLine.verboseTestErrors)
-                    reportInternal(diag, notes, true);
+                    reportInternal(diag, notes);
                 return true;
             }
         }
@@ -602,7 +602,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
     }
 
     // Print error/warning
-    reportInternal(diag, notes, false);
+    reportInternal(diag, notes);
 
     if (runContext)
     {
