@@ -1349,8 +1349,7 @@ bool Semantic::duplicatedSymbolError(ErrorContext* context,
         as = Fmt("as %s", Naming::aKindName(otherKind).c_str());
 
     Diagnostic diag{sourceFile, token, Fmt(Err(Err0305), Naming::kindName(thisKind).c_str(), thisName.c_str(), as.c_str())};
-
-    auto note = Diagnostic::note(otherSymbolDecl, otherSymbolDecl->token, Nte(Nte0036));
+    auto       note = Diagnostic::note(otherSymbolDecl, otherSymbolDecl->getTokenName(), Nte(Nte0036));
     return context->report(diag, note);
 }
 

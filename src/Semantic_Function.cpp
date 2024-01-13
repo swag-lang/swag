@@ -258,7 +258,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
         if (sourceFile->module->mainIsDefined)
         {
             Diagnostic diag{funcNode, Err(Err0739)};
-            auto       note = Diagnostic::note(module->mainIsDefined, Nte(Nte0036));
+            auto       note = Diagnostic::note(module->mainIsDefined, module->mainIsDefined->getTokenName(), Nte(Nte0036));
             return context->report(diag, note);
         }
 

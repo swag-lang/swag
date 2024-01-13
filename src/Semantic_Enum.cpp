@@ -23,7 +23,7 @@ bool Semantic::resolveEnum(SemanticContext* context)
         {
             if (p != node)
             {
-                note            = Diagnostic::note(p, p->token, Nte(Nte0036));
+                note            = Diagnostic::note(p, p->getTokenName(), Nte(Nte0036));
                 note->showRange = false;
                 break;
             }
@@ -69,7 +69,7 @@ bool Semantic::resolveEnum(SemanticContext* context)
                     if (it != valText.end())
                     {
                         Diagnostic diag{one->declNode, one->declNode->token, Fmt(Err(Err0684), one->name.c_str())};
-                        auto       note  = Diagnostic::note(it->second, it->second->token, Nte(Nte0036));
+                        auto       note  = Diagnostic::note(it->second, it->second->getTokenName(), Nte(Nte0036));
                         auto       val   = Ast::literalToString(rawType, *one->value);
                         auto       note1 = Diagnostic::note(Fmt(Nte(Nte0014), val.c_str()));
                         return context->report(diag, note, note1);
@@ -88,7 +88,7 @@ bool Semantic::resolveEnum(SemanticContext* context)
                     if (it != val64.end())
                     {
                         Diagnostic diag{one->declNode, one->declNode->token, Fmt(Err(Err0684), one->name.c_str())};
-                        auto       note  = Diagnostic::note(it->second, it->second->token, Nte(Nte0036));
+                        auto       note  = Diagnostic::note(it->second, it->second->getTokenName(), Nte(Nte0036));
                         auto       val   = Ast::literalToString(rawType, *one->value);
                         auto       note1 = Diagnostic::note(Fmt(Nte(Nte0014), val.c_str()));
                         return context->report(diag, note, note1);
