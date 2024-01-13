@@ -466,25 +466,10 @@ void Diagnostic::printRanges()
         const auto& r = ranges[i];
 
         ALIGN(r.startLocation.column);
+
         setColorRanges(r.errorLevel);
-
-        /*
-        while (startIndex < r.mid && startIndex < (uint32_t) lineCode.length())
-        {
-            startIndex++;
-            g_Log.print(LogSymbol::HorizontalLine);
-        }
-
-        if (!r.hint.empty() && i != ranges.size() - 1)
-        {
-            startIndex++;
-            g_Log.print(LogSymbol::HorizontalLineMidVert);
-        }
-        else if (r.startLocation.column == r.endLocation.column)
-        {
-            startIndex++;
-            g_Log.print(LogSymbol::HorizontalLine);
-        }*/
+        if (i != ranges.size() - 1 && r.mergeNext)
+            setColorRanges(ranges[i + 1].errorLevel);
 
         while (startIndex < (int) r.startLocation.column + r.width && startIndex < (int) lineCode.length())
         {

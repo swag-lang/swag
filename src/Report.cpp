@@ -210,6 +210,14 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
                                 if (note1->ranges.size() == 1)
                                     note1->display = false;
                             }
+
+                            // Two same ranges
+                            else if(note1->ranges.size() == 1 && note->ranges.size() == 1)
+                            {
+                                r1.mergeNext = true;
+                                note->ranges.insert(note->ranges.begin(), r1);
+                                note1->display = false;
+                            }
                         }
 
                         canAdd = false;

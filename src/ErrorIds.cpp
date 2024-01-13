@@ -1360,7 +1360,7 @@ void initErrors()
     SWAG_ERROR(Nte1115, "one function declares 'throw' while the other doesn't");
     SWAG_ERROR(Nte1112, "only the address of a returned reference can be taken, and this is %s");
     SWAG_ERROR(Nte0150, "only variables can be initialized that way");
-    SWAG_ERROR(Nte1113, "parameter mismatch detected");
+    SWAG_ERROR(Nte1113, "parameter mismatch (type is '%s')");
     SWAG_ERROR(Nte0146, "pointer arithmetic is only valid for pointers declared with '^', not '*'");
     SWAG_ERROR(Nte0086, "possibly comes from '%s'");
     SWAG_ERROR(Nte0022, "potential issue detected in your program's compile-time component");

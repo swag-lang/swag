@@ -257,10 +257,10 @@ bool Semantic::resolveImplFor(SemanticContext* context)
             {
             case MatchResult::BadSignature:
             {
-                Diagnostic diag{childFct->parameters->childs[bi.badSignatureNum2], Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
-                diag.hint = Nte(Nte1113);
-                auto note = Diagnostic::note(typeLambda->parameters[bi.badSignatureNum1]->declNode, Fmt(Nte(Nte0081), typeLambda->parameters[bi.badSignatureNum1]->typeInfo->getDisplayNameC()));
-                return context->report(diag, note);
+                Diagnostic diag{childFct, childFct->getTokenName(), Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
+                auto       note  = Diagnostic::note(childFct->parameters->childs[bi.badSignatureNum2], Fmt(Nte(Nte1113), childFct->parameters->childs[bi.badSignatureNum2]->typeInfo->getDisplayNameC()));
+                auto       note1 = Diagnostic::note(typeLambda->parameters[bi.badSignatureNum1]->declNode, Fmt(Nte(Nte0081), typeLambda->parameters[bi.badSignatureNum1]->typeInfo->getDisplayNameC()));
+                return context->report(diag, note, note1);
             }
 
             case MatchResult::MissingReturnType:

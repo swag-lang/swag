@@ -172,6 +172,7 @@ struct Diagnostic
         DiagnosticLevel errorLevel;
         int             width = 0;
         int             mid   = 0;
+        bool            mergeNext = false;
     };
 
     Utf8            textMsg;
