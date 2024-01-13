@@ -181,9 +181,9 @@ struct Diagnostic
     DiagnosticLevel errorLevel;
 
     Vector<RangeHint> ranges;
-    Vector<Utf8>      lines;
-    Vector<int>       linesNo;
-    uint32_t          minBlanks = UINT32_MAX;
+    Utf8              lineCode;
+    int               lineCodeNum = 0;
+    uint32_t          minBlanks   = 0;
     LogColor          verboseColor;
     LogColor          errorColor;
     LogColor          hintColor;
@@ -206,10 +206,9 @@ struct Diagnostic
     AstNode*    sourceNode  = nullptr;
     AstNode*    contextNode = nullptr;
 
-    bool showSourceCode        = false;
-    bool showRange             = true;
-    bool showMultipleCodeLines = true;
-    bool showFileName          = true;
+    bool showSourceCode = false;
+    bool showRange      = true;
+    bool showFileName   = true;
 
     bool showErrorLevel    = true;
     bool display           = true;

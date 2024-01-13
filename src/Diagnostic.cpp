@@ -5,6 +5,9 @@
 #include "Naming.h"
 #include "SyntaxColor.h"
 
+const uint32_t MAX_INDENT_BLANKS = 10;
+const uint32_t MAX_RIGHT_COLUMN  = 80;
+
 void Diagnostic::setupColors(bool verboseMode)
 {
     verboseColor      = LogColor::DarkCyan;
@@ -27,16 +30,6 @@ void Diagnostic::setup()
         showFileName = false;
     if (!sourceFile || sourceFile->path.empty() || !hasLocation)
         showSourceCode = false;
-
-    switch (errorLevel)
-    {
-    case DiagnosticLevel::Note:
-        showMultipleCodeLines = false;
-        break;
-    default:
-        showMultipleCodeLines = true;
-        break;
-    }
 }
 
 void Diagnostic::addRange(const SourceLocation& start, const SourceLocation& end, const Utf8& h)
@@ -238,36 +231,36 @@ void Diagnostic::printRemarks()
     }
 }
 
-static void fixRange(const Utf8& backLine, SourceLocation& startLocation, uint32_t& range, char c1, char c2)
+static void fixRange(const Utf8& lineCode, SourceLocation& startLocation, uint32_t& range, char c1, char c2)
 {
     if (range == 1)
         return;
 
     uint32_t decal = startLocation.column;
     uint32_t cpt   = 0;
-    for (uint32_t i = decal; i < backLine.length() && i < decal + range; i++)
+    for (uint32_t i = decal; i < lineCode.length() && i < decal + range; i++)
     {
-        if (backLine[i] == c1)
+        if (lineCode[i] == c1)
             cpt++;
-        else if (backLine[i] == c2)
+        else if (lineCode[i] == c2)
             cpt--;
     }
 
-    if (cpt > 0 && ((decal + range) < backLine.length()) && backLine[decal + range] == c2)
+    if (cpt > 0 && ((decal + range) < lineCode.length()) && lineCode[decal + range] == c2)
     {
         range++;
     }
-    else if (cpt > 0 && (decal < backLine.length()) && backLine[decal] == c1)
+    else if (cpt > 0 && (decal < lineCode.length()) && lineCode[decal] == c1)
     {
         startLocation.column++;
         range--;
     }
-    else if (cpt < 0 && decal && ((decal - 1) < backLine.length()) && backLine[decal - 1] == c1)
+    else if (cpt < 0 && decal && ((decal - 1) < lineCode.length()) && lineCode[decal - 1] == c1)
     {
         startLocation.column--;
         range++;
     }
-    else if (cpt < 0 && ((decal + range - 1) < backLine.length()) && backLine[decal + range - 1] == c2)
+    else if (cpt < 0 && ((decal + range - 1) < lineCode.length()) && lineCode[decal + range - 1] == c2)
     {
         range--;
     }
@@ -294,8 +287,6 @@ void Diagnostic::collectRanges()
     // Preprocess ranges
     for (auto& r : ranges)
     {
-        const auto& backLine = lines.back();
-
         // No multiline range... a test, to reduce verbosity
         if (r.endLocation.line > r.startLocation.line)
         {
@@ -311,21 +302,21 @@ void Diagnostic::collectRanges()
         if (r.endLocation.line == r.startLocation.line)
             r.width = r.endLocation.column - r.startLocation.column;
         else
-            r.width = (int) backLine.length() - r.startLocation.column;
+            r.width = (int) lineCode.length() - r.startLocation.column;
         r.width = max(1, r.width);
 
         // Special case for a range == 1.
-        if (r.width == 1 && r.startLocation.column < backLine.count)
+        if (r.width == 1 && r.startLocation.column < lineCode.count)
         {
             int decal = r.startLocation.column;
 
             // If this is a word, than take the whole word
-            if ((backLine[decal] & 0x80) == 0)
+            if ((lineCode[decal] & 0x80) == 0)
             {
-                bool isCWord = isalpha(backLine[decal]) || backLine[decal] == '_' || backLine[decal] == '#' || backLine[decal] == '@';
+                bool isCWord = isalpha(lineCode[decal]) || lineCode[decal] == '_' || lineCode[decal] == '#' || lineCode[decal] == '@';
                 if (isCWord)
                 {
-                    while (SWAG_IS_ALNUM(backLine[decal + 1]) || backLine[decal + 1] == '_')
+                    while (SWAG_IS_ALNUM(lineCode[decal + 1]) || lineCode[decal + 1] == '_')
                     {
                         decal += 1;
                         r.width += 1;
@@ -334,9 +325,9 @@ void Diagnostic::collectRanges()
 
                 // If this is an operator
 #define ISOP(__c) __c == '>' || __c == '<' || __c == '=' || __c == '-' || __c == '+' || __c == '*' || __c == '/' || __c == '%'
-                if (ISOP(backLine[decal]))
+                if (ISOP(lineCode[decal]))
                 {
-                    while (ISOP(backLine[decal + 1]))
+                    while (ISOP(lineCode[decal + 1]))
                     {
                         decal += 1;
                         r.width += 1;
@@ -346,9 +337,9 @@ void Diagnostic::collectRanges()
         }
 
         // Fix
-        fixRange(backLine, r.startLocation, r.width, '{', '}');
-        fixRange(backLine, r.startLocation, r.width, '(', ')');
-        fixRange(backLine, r.startLocation, r.width, '[', ']');
+        fixRange(lineCode, r.startLocation, r.width, '{', '}');
+        fixRange(lineCode, r.startLocation, r.width, '(', ')');
+        fixRange(lineCode, r.startLocation, r.width, '[', ']');
 
         r.mid = r.startLocation.column + r.width / 2;
     }
@@ -370,41 +361,23 @@ void Diagnostic::collectSourceCode()
     location0.line -= sourceFile->offsetGetLine;
     location1.line -= sourceFile->offsetGetLine;
 
-    // Get all lines of code
-    if (showMultipleCodeLines)
-    {
-        for (int i = -2; i <= 0; i++)
-        {
-            if ((int) location0.line + i < 0)
-                continue;
-            bool eof     = false;
-            auto oneLine = sourceFile->getLine(location0.line + i, &eof);
-            lines.push_back(eof ? Utf8(" ") : oneLine);
-            linesNo.push_back(location0.line + i + 1);
-        }
-    }
-    else
-    {
-        lines.push_back(sourceFile->getLine(location0.line));
-        linesNo.push_back(location0.line + 1);
-    }
+    lineCode    = sourceFile->getLine(location0.line);
+    lineCodeNum = location0.line + 1;
+    minBlanks   = 0;
 
     // Remove blanks on the left, but keep indentation
-    for (size_t i = 0; i < lines.size(); i++)
+    const char* pz = lineCode.c_str();
+    if (*pz && *pz != '\n' && *pz != '\r')
     {
-        auto        line = lines[i];
-        const char* pz   = line.c_str();
-        if (*pz && *pz != '\n' && *pz != '\r')
+        uint32_t countBlanks = 0;
+        while (SWAG_IS_BLANK(*pz))
         {
-            uint32_t countBlanks = 0;
-            while (SWAG_IS_BLANK(*pz))
-            {
-                pz++;
-                countBlanks++;
-            }
-
-            minBlanks = min(minBlanks, countBlanks);
+            pz++;
+            countBlanks++;
         }
+
+        if (countBlanks > MAX_INDENT_BLANKS)
+            minBlanks = countBlanks - MAX_INDENT_BLANKS;
     }
 }
 
@@ -419,7 +392,7 @@ Utf8 Diagnostic::syntax(const Utf8& line, SyntaxColorContext& cxt)
 
 void Diagnostic::printSourceCode(bool verboseMode)
 {
-    if (!lines.size())
+    if (lineCode.empty())
         return;
 
     if (showRange && (showErrorLevel || showFileName))
@@ -428,28 +401,26 @@ void Diagnostic::printSourceCode(bool verboseMode)
     // Print all lines except the one that really contains the relevant stuff (and ranges)
     SyntaxColorContext cxt;
     cxt.mode = SyntaxColorMode::ForLog;
-    for (size_t i = 0; i < lines.size(); i++)
+
+    const char* pz = lineCode.c_str();
+    if (*pz == 0 || *pz == '\n' || *pz == '\r')
+        return;
+    printMargin(false, true, lineCodeNum);
+
+    Utf8 colored;
+    if (verboseMode)
     {
-        const char* pz = lines[i].c_str();
-        if (*pz == 0 || *pz == '\n' || *pz == '\r')
-            continue;
-        printMargin(false, true, linesNo[i]);
-
-        Utf8 colored;
-        if (verboseMode)
-        {
-            g_Log.setColor(verboseColor);
-            colored = lines[i].c_str() + minBlanks;
-        }
-        else
-        {
-            g_Log.setColor(LogColor::White);
-            colored = syntax(lines[i].c_str() + minBlanks, cxt);
-        }
-
-        g_Log.print(colored);
-        g_Log.eol();
+        g_Log.setColor(verboseColor);
+        colored = lineCode.c_str() + minBlanks;
     }
+    else
+    {
+        g_Log.setColor(LogColor::White);
+        colored = syntax(lineCode.c_str() + minBlanks, cxt);
+    }
+
+    g_Log.print(colored);
+    g_Log.eol();
 }
 
 void Diagnostic::setColorRanges(DiagnosticLevel level)
@@ -476,13 +447,12 @@ void Diagnostic::printRanges()
     if (ranges.empty())
         return;
 
-    const auto& backLine = lines.back();
     printMargin(false, true);
 
 #define ALIGN(__where)                                                        \
-    while (startIndex < __where && startIndex < (uint32_t) backLine.length()) \
+    while (startIndex < __where && startIndex < (uint32_t) lineCode.length()) \
     {                                                                         \
-        if (backLine[startIndex] == '\t')                                     \
+        if (lineCode[startIndex] == '\t')                                     \
             g_Log.print("\t");                                                \
         else                                                                  \
             g_Log.print(" ");                                                 \
@@ -498,7 +468,7 @@ void Diagnostic::printRanges()
         ALIGN(r.startLocation.column);
         setColorRanges(r.errorLevel);
 
-        while (startIndex < r.mid && startIndex < (uint32_t) backLine.length())
+        while (startIndex < r.mid && startIndex < (uint32_t) lineCode.length())
         {
             startIndex++;
             g_Log.print(LogSymbol::HorizontalLine);
@@ -515,7 +485,7 @@ void Diagnostic::printRanges()
             g_Log.print(LogSymbol::HorizontalLine);
         }
 
-        while (startIndex < r.startLocation.column + r.width && startIndex < (uint32_t) backLine.length())
+        while (startIndex < r.startLocation.column + r.width && startIndex < (uint32_t) lineCode.length())
         {
             startIndex++;
             g_Log.print(LogSymbol::HorizontalLine);
@@ -553,7 +523,7 @@ void Diagnostic::printRanges()
             setColorRanges(r.errorLevel);
 
             if (i == ranges.size() - 1 &&
-                r.mid + 3 + r.hint.length() > 80 &&
+                r.mid + 3 + r.hint.length() > MAX_RIGHT_COLUMN &&
                 r.mid - 2 - r.hint.length() > minBlanks)
             {
                 ALIGN(r.mid - 2 - r.hint.length());
@@ -564,7 +534,7 @@ void Diagnostic::printRanges()
                 ranges.clear();
             }
             else if (i == ranges.size() - 1 &&
-                     r.mid + 3 + r.hint.length() > 80)
+                     r.mid + 3 + r.hint.length() > MAX_RIGHT_COLUMN)
             {
                 g_Log.print(r.hint);
                 ranges.clear();

@@ -2094,9 +2094,8 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                 params.push_back(p);
             }
 
-            Diagnostic* note            = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
-            note->showRange             = false;
-            note->showMultipleCodeLines = false;
+            Diagnostic* note = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
+            note->showRange  = false;
             notes.push_back(note);
         }
 
@@ -4012,9 +4011,8 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
                     Vector<const Diagnostic*> notes;
                     for (auto& p1 : dependentSymbols)
                     {
-                        auto note                   = Diagnostic::note(p1.symbol->nodes[0], p1.symbol->nodes[0]->token, "could be");
-                        note->showRange             = false;
-                        note->showMultipleCodeLines = false;
+                        auto note       = Diagnostic::note(p1.symbol->nodes[0], p1.symbol->nodes[0]->token, "could be");
+                        note->showRange = false;
                         notes.push_back(note);
                     }
 
