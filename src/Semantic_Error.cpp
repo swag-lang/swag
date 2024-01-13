@@ -387,12 +387,9 @@ void Semantic::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneT
         }
         else if (oneTry.ufcs && bi.badSignatureParameterIdx == 0)
         {
-            diag          = new Diagnostic{diagNode,
-                                  Fmt(Err(Err0095),
-                                      bi.badSignatureRequestedType->getDisplayNameC(),
-                                      bi.badSignatureGivenType->getDisplayNameC())};
-            auto nodeCall = diagNode->parent->childs.back();
+            diag          = new Diagnostic{diagNode, Fmt(Err(Err0095), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC())};
             hintMsg       = Diagnostic::isType(bi.badSignatureGivenType);
+            auto nodeCall = diagNode->parent->childs.back();
             if (!oneTry.overload->node->isSpecialFunctionName())
                 diag->addRange(nodeCall->token, Fmt(Nte(Nte1093), bi.badSignatureGivenType->getDisplayNameC()));
         }
@@ -400,17 +397,11 @@ void Semantic::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneT
         {
             if (diagNode->kind == AstNodeKind::FuncDeclParam)
                 diagNode = node;
-            diag = new Diagnostic{diagNode,
-                                  Fmt(Err(Err0106),
-                                      bi.badSignatureRequestedType->getDisplayNameC(),
-                                      bi.badSignatureGivenType->getDisplayNameC())};
+            diag = new Diagnostic{diagNode, Fmt(Err(Err0106), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC())};
         }
         else
         {
-            diag = new Diagnostic{diagNode,
-                                  Fmt(Err(Err0053),
-                                      bi.badSignatureRequestedType->getDisplayNameC(),
-                                      bi.badSignatureGivenType->getDisplayNameC())};
+            diag = new Diagnostic{diagNode, Fmt(Err(Err0053), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC())};
         }
 
         diag->hint = hintMsg;
