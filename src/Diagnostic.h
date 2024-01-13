@@ -170,7 +170,8 @@ struct Diagnostic
         SourceLocation  endLocation;
         Utf8            hint;
         DiagnosticLevel errorLevel;
-        int             width = 0;
+        uint32_t        width = 0;
+        uint32_t        mid   = 0;
     };
 
     Utf8            textMsg;

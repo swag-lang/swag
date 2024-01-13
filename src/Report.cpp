@@ -37,6 +37,11 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
     Diagnostic::tokenizeError(err->textMsg, parts);
     if (parts.size() > 1)
     {
+        std::swap(parts[0], parts[1]);
+        for (int i = 0; i < 10; i++)
+            parts[0].insert(i, parts[1][i]);
+        parts[1].remove(0, 10);
+
         err->textMsg = parts[0];
 
         if (!err->hint.empty())

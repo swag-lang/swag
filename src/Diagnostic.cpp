@@ -238,7 +238,7 @@ void Diagnostic::printRemarks()
     }
 }
 
-static void fixRange(const Utf8& backLine, SourceLocation& startLocation, int& range, char c1, char c2)
+static void fixRange(const Utf8& backLine, SourceLocation& startLocation, uint32_t& range, char c1, char c2)
 {
     if (range == 1)
         return;
@@ -349,6 +349,8 @@ void Diagnostic::collectRanges()
         fixRange(backLine, r.startLocation, r.width, '{', '}');
         fixRange(backLine, r.startLocation, r.width, '(', ')');
         fixRange(backLine, r.startLocation, r.width, '[', ']');
+
+        r.mid = r.startLocation.column + r.width / 2;
     }
 }
 
@@ -477,34 +479,40 @@ void Diagnostic::printRanges()
     const auto& backLine = lines.back();
     printMargin(false, true);
 
-    // Print all marks
+#define ALIGN(__where)                                                        \
+    while (startIndex < __where && startIndex < (uint32_t) backLine.length()) \
+    {                                                                         \
+        if (backLine[startIndex] == '\t')                                     \
+            g_Log.print("\t");                                                \
+        else                                                                  \
+            g_Log.print(" ");                                                 \
+        startIndex++;                                                         \
+    }
+
+    // Print all ranges underlines
     auto startIndex = minBlanks;
     for (size_t i = 0; i < ranges.size(); i++)
     {
         const auto& r = ranges[i];
 
-        while (startIndex < r.startLocation.column && startIndex < (uint32_t) backLine.length())
-        {
-            if (backLine[startIndex] == '\t')
-                g_Log.print("\t");
-            else
-                g_Log.print(" ");
-            startIndex++;
-        }
-
+        ALIGN(r.startLocation.column);
         setColorRanges(r.errorLevel);
-        auto mid = r.startLocation.column + r.width / 2;
 
-        while (startIndex < mid && startIndex < (uint32_t) backLine.length())
+        while (startIndex < r.mid && startIndex < (uint32_t) backLine.length())
         {
             startIndex++;
             g_Log.print(LogSymbol::HorizontalLine);
         }
 
-        if (!r.hint.empty())
+        if (!r.hint.empty() && i != ranges.size() - 1)
         {
             startIndex++;
             g_Log.print(LogSymbol::HorizontalLineMidVert);
+        }
+        else if (r.startLocation.column == r.endLocation.column)
+        {
+            startIndex++;
+            g_Log.print(LogSymbol::HorizontalLine);
         }
 
         while (startIndex < r.startLocation.column + r.width && startIndex < (uint32_t) backLine.length())
@@ -514,7 +522,7 @@ void Diagnostic::printRanges()
         }
     }
 
-    // Remove all ranges with an empty hint
+    // Remove all ranges with an empty message
     for (size_t i = 0; i < ranges.size(); i++)
     {
         if (ranges[i].hint.empty())
@@ -524,34 +532,45 @@ void Diagnostic::printRanges()
         }
     }
 
+    setColorRanges(ranges.back().errorLevel);
+    g_Log.print(" ");
+    g_Log.print(ranges.back().hint);
+    ranges.pop_back();
+
     while (ranges.size())
     {
-        // Print the last hint
         g_Log.eol();
         printMargin(false, true);
+
         startIndex = minBlanks;
         for (size_t i = 0; i < ranges.size(); i++)
         {
-            const auto& r   = ranges[i];
-            auto        mid = r.startLocation.column + r.width / 2;
+            const auto& r = ranges[i];
+            setColorRanges(r.errorLevel);
 
-            while (startIndex < mid && startIndex < (uint32_t) backLine.length())
+            if (i == ranges.size() - 1 && r.mid + 3 + r.hint.length() > 80)
             {
-                if (backLine[startIndex] == '\t')
-                    g_Log.print("\t");
-                else
+                if (r.mid - 2 - r.hint.length() > minBlanks)
+                {
+                    ALIGN(r.mid - 2 - r.hint.length());
+                    g_Log.print(r.hint);
                     g_Log.print(" ");
-                startIndex++;
+                    g_Log.print(LogSymbol::HorizontalLine);
+                    g_Log.print(LogSymbol::DownLeft);
+                    ranges.clear();
+                }
+                else
+                {
+                    g_Log.print(r.hint);
+                    ranges.clear();
+                }
             }
-
-            if (i == ranges.size() - 1 || startIndex + r.hint.length() + 5 < (ranges[i + 1].startLocation.column + ranges[i + 1].width / 2))
+            else if (i == ranges.size() - 1 || startIndex + r.hint.length() + 5 < (ranges[i + 1].startLocation.column + ranges[i + 1].width / 2))
             {
-                setColorRanges(r.errorLevel);
+                ALIGN(r.mid);
                 g_Log.print(LogSymbol::DownRight);
                 g_Log.print(LogSymbol::HorizontalLine);
-                g_Log.print(LogSymbol::HorizontalLine);
                 g_Log.print(" ");
-                // g_Log.setColor(hintColor);
                 g_Log.print(r.hint);
                 startIndex += r.hint.length() + 4;
                 ranges.erase(ranges.begin() + i);
@@ -559,36 +578,26 @@ void Diagnostic::printRanges()
             }
             else
             {
-                setColorRanges(r.errorLevel);
+                ALIGN(r.mid);
                 g_Log.print(LogSymbol::VerticalLine);
                 startIndex++;
             }
         }
 
-        // Print all the vertical bars
-        if (!ranges.empty())
+        // Print all the vertical bars of remaining ranges
+        /* if (!ranges.empty())
         {
             g_Log.eol();
             printMargin(false, true);
             startIndex = minBlanks;
             for (const auto& r : ranges)
             {
-                auto mid = r.startLocation.column + r.width / 2;
-
-                while (startIndex < mid && startIndex < (uint32_t) backLine.length())
-                {
-                    if (backLine[startIndex] == '\t')
-                        g_Log.print("\t");
-                    else
-                        g_Log.print(" ");
-                    startIndex++;
-                }
-
+                ALIGN(r.mid);
                 setColorRanges(r.errorLevel);
                 g_Log.print(LogSymbol::VerticalLine);
                 startIndex++;
             }
-        }
+        }*/
     }
 
     g_Log.eol();

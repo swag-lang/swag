@@ -31,6 +31,7 @@ enum class LogSymbol
     HorizontalLineMidVert,
     HorizontalLine2MidVert,
     DownRight,
+    DownLeft,
     UpRight,
     DotCenter,
     DotList,
