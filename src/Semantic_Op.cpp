@@ -341,9 +341,17 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         Utf8 appendMsg = findClosestMatchesMsg(node->tokenName.text, best);
 
         Diagnostic diag{node, node->tokenName, Fmt(Err(Err0078), name.c_str())};
-        auto       note  = Diagnostic::note(node, node->tokenName, appendMsg);
-        auto       note1 = Diagnostic::note(Nte(Nte0114));
-        return context->report(diag, note, note1);
+        if (appendMsg.empty())
+        {
+            auto note = Diagnostic::note(Nte(Nte0114));
+            return context->report(diag, note);
+        }
+        else
+        {
+            auto note  = Diagnostic::note(node, node->getTokenName(), appendMsg);
+            auto note1 = Diagnostic::note(Nte(Nte0114));
+            return context->report(diag, note, note1);
+        }
     }
 
     return true;

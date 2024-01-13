@@ -532,10 +532,14 @@ void Diagnostic::printRanges()
         }
     }
 
-    setColorRanges(ranges.back().errorLevel);
-    g_Log.print(" ");
-    g_Log.print(ranges.back().hint);
-    ranges.pop_back();
+    // The last one in on the same line as the underline
+    if (ranges.size())
+    {
+        setColorRanges(ranges.back().errorLevel);
+        g_Log.print(" ");
+        g_Log.print(ranges.back().hint);
+        ranges.pop_back();
+    }
 
     while (ranges.size())
     {
@@ -548,24 +552,24 @@ void Diagnostic::printRanges()
             const auto& r = ranges[i];
             setColorRanges(r.errorLevel);
 
-            if (i == ranges.size() - 1 && r.mid + 3 + r.hint.length() > 80)
+            if (i == ranges.size() - 1 &&
+                r.mid + 3 + r.hint.length() > 80 &&
+                r.mid - 2 - r.hint.length() > minBlanks)
             {
-                if (r.mid - 2 - r.hint.length() > minBlanks)
-                {
-                    ALIGN(r.mid - 2 - r.hint.length());
-                    g_Log.print(r.hint);
-                    g_Log.print(" ");
-                    g_Log.print(LogSymbol::HorizontalLine);
-                    g_Log.print(LogSymbol::DownLeft);
-                    ranges.clear();
-                }
-                else
-                {
-                    g_Log.print(r.hint);
-                    ranges.clear();
-                }
+                ALIGN(r.mid - 2 - r.hint.length());
+                g_Log.print(r.hint);
+                g_Log.print(" ");
+                g_Log.print(LogSymbol::HorizontalLine);
+                g_Log.print(LogSymbol::DownLeft);
+                ranges.clear();
             }
-            else if (i == ranges.size() - 1 || startIndex + r.hint.length() + 5 < (ranges[i + 1].startLocation.column + ranges[i + 1].width / 2))
+            else if (i == ranges.size() - 1 &&
+                     r.mid + 3 + r.hint.length() > 80)
+            {
+                g_Log.print(r.hint);
+                ranges.clear();
+            }
+            else if (i == ranges.size() - 1)
             {
                 ALIGN(r.mid);
                 g_Log.print(LogSymbol::DownRight);
