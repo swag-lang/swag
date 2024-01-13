@@ -297,8 +297,9 @@ bool Parser::doDiscard(AstNode* parent, AstNode** result)
         if (Tokenizer::isIntrinsicReturn(token.id))
         {
             Diagnostic diag{sourceFile, token, Fmt(Err(Err1179), token.ctext())};
-            auto       note = Diagnostic::note(sourceFile, discardToken, Nte(Nte1019));
-            return context->report(diag, note);
+            auto       note  = Diagnostic::note(sourceFile, discardToken, Nte(Nte1131));
+            auto       note1 = Diagnostic::note(Nte(Nte1019));
+            return context->report(diag, note, note1);
         }
 
         return error(token, Fmt(Err(Err1173), token.ctext()));

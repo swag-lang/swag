@@ -1464,7 +1464,7 @@ void initErrors()
     SWAG_ERROR(Nte0149, "you might want to get the address of '%s' using '&'");
     SWAG_ERROR(Nte1108, "you need to take the address of a value to make a reference");
     SWAG_ERROR(Nte1122, "this has '%s' access (type is '%s')");
-    SWAG_ERROR(Nte1131, nullptr);
+    SWAG_ERROR(Nte1131, "this 'discard' should be removed");
     SWAG_ERROR(Nte0028, nullptr);
     SWAG_ERROR(Nte1023, nullptr);
     SWAG_ERROR(Nte1071, nullptr);
