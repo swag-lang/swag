@@ -30,7 +30,6 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
                         if (!param->assignment)
                         {
                             Diagnostic diag{node->sourceFile, node->type->token, Fmt(Err(Err0721), typeExpr->identifier->resolvedSymbolName->name.c_str())};
-                            diag.hint = Nte(Nte1056);
                             return context->report(diag, Diagnostic::hereIs(typeExpr->identifier->resolvedSymbolOverload));
                         }
 

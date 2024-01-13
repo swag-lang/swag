@@ -231,7 +231,7 @@ void Diagnostic::printRemarks()
     }
 }
 
-static void fixRange(const Utf8& lineCode, SourceLocation& startLocation, uint32_t& range, char c1, char c2)
+static void fixRange(const Utf8& lineCode, SourceLocation& startLocation, int& range, char c1, char c2)
 {
     if (range == 1)
         return;
@@ -449,18 +449,18 @@ void Diagnostic::printRanges()
 
     printMargin(false, true);
 
-#define ALIGN(__where)                                                        \
-    while (startIndex < __where && startIndex < (uint32_t) lineCode.length()) \
-    {                                                                         \
-        if (lineCode[startIndex] == '\t')                                     \
-            g_Log.print("\t");                                                \
-        else                                                                  \
-            g_Log.print(" ");                                                 \
-        startIndex++;                                                         \
+#define ALIGN(__where)                                                         \
+    while (startIndex < (int) __where && startIndex < (int) lineCode.length()) \
+    {                                                                          \
+        if (lineCode[startIndex] == '\t')                                      \
+            g_Log.print("\t");                                                 \
+        else                                                                   \
+            g_Log.print(" ");                                                  \
+        startIndex++;                                                          \
     }
 
     // Print all ranges underlines
-    auto startIndex = minBlanks;
+    int startIndex = minBlanks;
     for (size_t i = 0; i < ranges.size(); i++)
     {
         const auto& r = ranges[i];
@@ -468,6 +468,7 @@ void Diagnostic::printRanges()
         ALIGN(r.startLocation.column);
         setColorRanges(r.errorLevel);
 
+        /*
         while (startIndex < r.mid && startIndex < (uint32_t) lineCode.length())
         {
             startIndex++;
@@ -483,9 +484,9 @@ void Diagnostic::printRanges()
         {
             startIndex++;
             g_Log.print(LogSymbol::HorizontalLine);
-        }
+        }*/
 
-        while (startIndex < r.startLocation.column + r.width && startIndex < (uint32_t) lineCode.length())
+        while (startIndex < (int) r.startLocation.column + r.width && startIndex < (int) lineCode.length())
         {
             startIndex++;
             g_Log.print(LogSymbol::HorizontalLine);
@@ -505,10 +506,14 @@ void Diagnostic::printRanges()
     // The last one in on the same line as the underline
     if (ranges.size())
     {
-        setColorRanges(ranges.back().errorLevel);
-        g_Log.print(" ");
-        g_Log.print(ranges.back().hint);
-        ranges.pop_back();
+        auto& r = ranges.back();
+        if (ranges.size() != 1 || startIndex + 1 + r.hint.length() < MAX_RIGHT_COLUMN)
+        {
+            setColorRanges(r.errorLevel);
+            g_Log.print(" ");
+            g_Log.print(r.hint);
+            ranges.pop_back();
+        }
     }
 
     while (ranges.size())
@@ -523,10 +528,10 @@ void Diagnostic::printRanges()
             setColorRanges(r.errorLevel);
 
             if (i == ranges.size() - 1 &&
-                r.mid + 3 + r.hint.length() > MAX_RIGHT_COLUMN &&
-                r.mid - 2 - r.hint.length() > minBlanks)
+                r.mid + 3 + (int) r.hint.length() > MAX_RIGHT_COLUMN &&
+                r.mid - 2 - (int) r.hint.length() > minBlanks)
             {
-                ALIGN(r.mid - 2 - r.hint.length());
+                ALIGN(r.mid - 2 - (int) r.hint.length());
                 g_Log.print(r.hint);
                 g_Log.print(" ");
                 g_Log.print(LogSymbol::HorizontalLine);

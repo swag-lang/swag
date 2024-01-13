@@ -170,8 +170,8 @@ struct Diagnostic
         SourceLocation  endLocation;
         Utf8            hint;
         DiagnosticLevel errorLevel;
-        uint32_t        width = 0;
-        uint32_t        mid   = 0;
+        int             width = 0;
+        int             mid   = 0;
     };
 
     Utf8            textMsg;
@@ -183,7 +183,7 @@ struct Diagnostic
     Vector<RangeHint> ranges;
     Utf8              lineCode;
     int               lineCodeNum = 0;
-    uint32_t          minBlanks   = 0;
+    int               minBlanks   = 0;
     LogColor          verboseColor;
     LogColor          errorColor;
     LogColor          hintColor;
@@ -209,6 +209,7 @@ struct Diagnostic
     bool showSourceCode = false;
     bool showRange      = true;
     bool showFileName   = true;
+    bool mergeWithUp    = false;
 
     bool showErrorLevel    = true;
     bool display           = true;

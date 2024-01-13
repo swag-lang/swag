@@ -258,7 +258,6 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
                     if (!param->assignment)
                     {
                         Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0715), identifier->resolvedSymbolName->name.c_str())};
-                        diag.hint = Nte(Nte1056);
                         return context->report(diag, Diagnostic::hereIs(identifier->resolvedSymbolOverload));
                     }
 
@@ -295,8 +294,6 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
                 if (contextualNode)
                 {
                     Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0715), node->token.ctext())};
-                    diag.hint = Nte(Nte1057);
-                    diag.addRange(contextualNode, Nte(Nte1056));
                     return context->report(diag);
                 }
             }

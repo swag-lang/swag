@@ -1418,7 +1418,6 @@ void initErrors()
     SWAG_ERROR(Nte1030, "this argument has been named");
     SWAG_ERROR(Nte0062, "this can be converted too");
     SWAG_ERROR(Nte0071, "this function call can't be evaluated at compile-time");
-    SWAG_ERROR(Nte1057, "this function can't be instantiated");
     SWAG_ERROR(Nte1073, "this function does not support UFCS of type '%s'");
     SWAG_ERROR(Nte1078, "this function does not support aliased names");
     SWAG_ERROR(Nte1064, "this function has the '#[Swag.Compiler]' attribute, which makes it compile-time only");
@@ -1437,7 +1436,6 @@ void initErrors()
     SWAG_ERROR(Nte0077, "this parameter is missing its type");
     SWAG_ERROR(Nte1088, "this previous parameter has a default value");
     SWAG_ERROR(Nte1004, "this should be designated as 'const %s'");
-    SWAG_ERROR(Nte1056, "this should be followed by generic arguments");
     SWAG_ERROR(Nte1077, "this should be lower than this");
     SWAG_ERROR(Nte1125, "this slice appears to be null or empty");
     SWAG_ERROR(Nte1126, "this string appears to be null or empty");
@@ -1465,6 +1463,8 @@ void initErrors()
     SWAG_ERROR(Nte1108, "you need to take the address of a value to make a reference");
     SWAG_ERROR(Nte1122, "this has '%s' access (type is '%s')");
     SWAG_ERROR(Nte1131, "this 'discard' should be removed");
+    SWAG_ERROR(Nte1056, nullptr);
+    SWAG_ERROR(Nte1057, nullptr);
     SWAG_ERROR(Nte0028, nullptr);
     SWAG_ERROR(Nte1023, nullptr);
     SWAG_ERROR(Nte1071, nullptr);

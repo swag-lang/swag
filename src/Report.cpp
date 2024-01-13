@@ -201,12 +201,15 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
                             continue;
 
                         // Exact same range, but there's no hint. Eat the hint.
-                        if (r0.startLocation == r1.startLocation && r0.endLocation == r1.endLocation && r0.hint.empty())
+                        if (r0.startLocation == r1.startLocation && r0.endLocation == r1.endLocation)
                         {
-                            r0.hint = r1.hint;
-                            r1.hint.clear();
-                            if (note1->ranges.size() == 1)
-                                note1->display = false;
+                            if (r0.hint.empty())
+                            {
+                                r0.hint = r1.hint;
+                                r1.hint.clear();
+                                if (note1->ranges.size() == 1)
+                                    note1->display = false;
+                            }
                         }
 
                         canAdd = false;

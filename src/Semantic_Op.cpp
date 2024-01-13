@@ -633,7 +633,6 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
             { return Fmt(Nte(Nte0051), name.c_str(), leftType->getDisplayNameC()); },
             true);
         Diagnostic diag(left, Fmt(Err(Err0715), name.c_str()));
-        diag.hint = Nte(Nte1056);
         return context->report(diag);
     }
 
