@@ -895,7 +895,7 @@ void initErrors()
     SWAG_ERROR(Err0109, "unused return value                               $ the return value of the function '%s' should be used $ if you don't need the return value, consider prefixing the call with 'discard'");
     SWAG_ERROR(Err1179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
     SWAG_ERROR(Err0092, "unused return value                               $ the return value of the lambda '%s' should be used $ if you don't need the return value, consider prefixing the call with 'discard'");
-    SWAG_ERROR(Err1165, nullptr);
+    SWAG_ERROR(Err1165, "const mismatch                                    $ the UFCS argument should be mutable but is not");
     SWAG_ERROR(Err0680, nullptr);
     SWAG_ERROR(Err0367, nullptr);
     SWAG_ERROR(Err0282, nullptr);
@@ -1463,7 +1463,7 @@ void initErrors()
     SWAG_ERROR(Nte1108, "you need to take the address of a value to make a reference");
     SWAG_ERROR(Nte1122, "this has '%s' access (type is '%s')");
     SWAG_ERROR(Nte1131, "this 'discard' should be removed");
-    SWAG_ERROR(Nte1056, nullptr);
+    SWAG_ERROR(Nte1056, "the function needs a mutable type '%s' as its first argument");
     SWAG_ERROR(Nte1057, nullptr);
     SWAG_ERROR(Nte0028, nullptr);
     SWAG_ERROR(Nte1023, nullptr);

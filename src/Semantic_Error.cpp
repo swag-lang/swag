@@ -63,8 +63,13 @@ void Semantic::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneT
     if (preprocessMatchError(context, oneTry, result0, result1))
         return;
 
+    BadSignatureInfos& bi        = oneTry.symMatchContext.badSignatureInfos;
+    bi.badSignatureGivenType     = Generic::replaceGenericTypes(oneTry.symMatchContext.genericReplaceTypes, bi.badSignatureGivenType);
+    bi.badSignatureRequestedType = Generic::replaceGenericTypes(oneTry.symMatchContext.genericReplaceTypes, bi.badSignatureRequestedType);
+    bi.castErrorFromType         = Generic::replaceGenericTypes(oneTry.symMatchContext.genericReplaceTypes, bi.castErrorFromType);
+    bi.castErrorToType           = Generic::replaceGenericTypes(oneTry.symMatchContext.genericReplaceTypes, bi.castErrorToType);
+
     auto              node              = context->node;
-    BadSignatureInfos bi                = oneTry.symMatchContext.badSignatureInfos;
     auto              symbol            = oneTry.overload->symbol;
     SymbolOverload*   overload          = oneTry.overload;
     auto              genericParameters = oneTry.genericParameters;
@@ -387,11 +392,22 @@ void Semantic::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneT
         }
         else if (oneTry.ufcs && bi.badSignatureParameterIdx == 0)
         {
-            diag          = new Diagnostic{diagNode, Fmt(Err(Err0095), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC())};
-            hintMsg       = Diagnostic::isType(bi.badSignatureGivenType);
-            auto nodeCall = diagNode->parent->childs.back();
-            if (!oneTry.overload->node->isSpecialFunctionName())
-                diag->addRange(nodeCall->token, Fmt(Nte(Nte1093), bi.badSignatureGivenType->getDisplayNameC()));
+            if (bi.castErrorType == CastErrorType::Const)
+            {
+                diag = new Diagnostic{diagNode, Fmt(Err(Err1165), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC())};
+                if (!oneTry.overload->node->isSpecialFunctionName())
+                    diag->addRange(diagNode->parent->childs.back()->token, Fmt(Nte(Nte1056), bi.badSignatureGivenType->getDisplayNameC()));
+                hintMsg = Diagnostic::isType(bi.badSignatureGivenType);
+                if (diagNode->resolvedSymbolOverload && diagNode->resolvedSymbolOverload->flags & OVERLOAD_IS_LET)
+                    result1.push_back(Diagnostic::note(diagNode->resolvedSymbolOverload->node, diagNode->resolvedSymbolOverload->node->token, Nte(Nte1050)));
+            }
+            else
+            {
+                diag = new Diagnostic{diagNode, Fmt(Err(Err0095), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC())};
+                if (!oneTry.overload->node->isSpecialFunctionName())
+                    diag->addRange(diagNode->parent->childs.back()->token, Fmt(Nte(Nte1093), bi.badSignatureGivenType->getDisplayNameC()));
+                hintMsg = Diagnostic::isType(bi.badSignatureGivenType);
+            }
         }
         else if (paramNode && paramNode->typeInfo->isSelf() && bi.badSignatureParameterIdx == 0)
         {
