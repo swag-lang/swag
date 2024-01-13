@@ -93,7 +93,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
             {
                 doneGenParamsRemarks.insert(genCheckNode->ownerFct->typeInfo);
                 auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(genCheckNode->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
-                auto remarks  = Ast::computeGenericParametersReplacement(typeFunc->replaceTypes);
+                auto remarks  = Generic::computeGenericParametersReplacement(typeFunc->replaceTypes);
                 if (!remarks.empty())
                     note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
             }
@@ -106,7 +106,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
             {
                 doneGenParamsRemarks.insert(genCheckNode->ownerStructScope->owner->typeInfo);
                 auto typeStruct = CastTypeInfo<TypeInfoStruct>(genCheckNode->ownerStructScope->owner->typeInfo, TypeInfoKind::Struct);
-                auto remarks    = Ast::computeGenericParametersReplacement(typeStruct->replaceTypes);
+                auto remarks    = Generic::computeGenericParametersReplacement(typeStruct->replaceTypes);
                 if (!remarks.empty())
                     note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
             }
@@ -118,7 +118,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
             {
                 doneGenParamsRemarks.insert(genCheckNode->typeInfo);
                 auto typeStruct = CastTypeInfo<TypeInfoStruct>(genCheckNode->typeInfo, TypeInfoKind::Struct);
-                auto remarks    = Ast::computeGenericParametersReplacement(typeStruct->replaceTypes);
+                auto remarks    = Generic::computeGenericParametersReplacement(typeStruct->replaceTypes);
                 if (!remarks.empty())
                     note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
             }
@@ -212,7 +212,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
                             }
 
                             // Two same ranges
-                            else if(note1->ranges.size() == 1 && note->ranges.size() == 1)
+                            else if (note1->ranges.size() == 1 && note->ranges.size() == 1)
                             {
                                 r1.mergeNext = true;
                                 note->ranges.insert(note->ranges.begin(), r1);

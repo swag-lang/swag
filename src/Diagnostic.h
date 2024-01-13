@@ -122,6 +122,9 @@ struct Diagnostic
         setup();
     }
 
+    static const uint32_t MAX_INDENT_BLANKS = 10;
+    static const uint32_t MAX_RIGHT_COLUMN  = 80;
+
     // clang-format off
     static Diagnostic* note(const Utf8& msg) { return new Diagnostic{msg, DiagnosticLevel::Note}; }
     static Diagnostic* note(AstNode* node, const Token& token, const Utf8& msg) { return new Diagnostic{node, token, msg, DiagnosticLevel::Note}; }
@@ -170,8 +173,8 @@ struct Diagnostic
         SourceLocation  endLocation;
         Utf8            hint;
         DiagnosticLevel errorLevel;
-        int             width = 0;
-        int             mid   = 0;
+        int             width     = 0;
+        int             mid       = 0;
         bool            mergeNext = false;
     };
 

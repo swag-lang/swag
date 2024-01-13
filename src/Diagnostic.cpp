@@ -5,9 +5,6 @@
 #include "Naming.h"
 #include "SyntaxColor.h"
 
-const uint32_t MAX_INDENT_BLANKS = 10;
-const uint32_t MAX_RIGHT_COLUMN  = 80;
-
 void Diagnostic::setupColors(bool verboseMode)
 {
     verboseColor      = LogColor::DarkCyan;

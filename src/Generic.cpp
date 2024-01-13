@@ -2,6 +2,7 @@
 #include "Generic.h"
 #include "Ast.h"
 #include "SemanticJob.h"
+#include "Diagnostic.h"
 
 Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNode* newNode, bool waitSymbol, VectorMap<Utf8, GenericReplaceType>& replaceTypes)
 {
@@ -336,4 +337,42 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
                 oneTryMatch.symMatchContext.genericReplaceValues[oneReplace.first] = oneReplace.second;
         }
     }
+}
+
+Vector<Utf8> Generic::computeGenericParametersReplacement(VectorMap<Utf8, GenericReplaceType>& replace)
+{
+    if (!replace.size())
+        return {};
+
+    Vector<Utf8> result;
+    Utf8         remark;
+    for (auto p : replace)
+    {
+        // Can occur in case of constants (like string for example)
+        if (p.first == p.second.typeInfoReplace->getDisplayName())
+            continue;
+        if (p.first.length() > 2 && p.first[0] == '_' && p.first[1] == '_') // Generated name
+            continue;
+
+        Utf8 rem = "with ";
+        rem += Fmt("%s = %s", p.first.c_str(), p.second.typeInfoReplace->getDisplayNameC());
+        rem.replace("struct ", "");
+
+        if (remark.empty() || remark.length() + rem.length() + 2 < Diagnostic::MAX_RIGHT_COLUMN)
+        {
+            if (!remark.empty())
+                remark += ", ";
+            remark += rem;
+        }
+        else
+        {
+            result.push_back(remark);
+            remark.clear();
+        }
+    }
+
+    if (!remark.empty())
+        result.push_back(remark);
+
+    return result;
 }
