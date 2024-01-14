@@ -645,7 +645,13 @@
       <Filter>Semantic\Generic</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SemanticError.cpp">
-      <Filter>Semantic</Filter>
+      <Filter>Semantic\Error</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SemanticError_Find.cpp">
+      <Filter>Semantic\Error</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SemanticError_Diag.cpp">
+      <Filter>Semantic\Error</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1002,7 +1008,7 @@
       <Filter>Semantic\Generic</Filter>
     </ClInclude>
     <ClInclude Include="..\src\SemanticError.h">
-      <Filter>Semantic</Filter>
+      <Filter>Semantic\Error</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1089,6 +1095,9 @@
     </Filter>
     <Filter Include="Semantic\Generic">
       <UniqueIdentifier>{f5e6288c-de4e-4778-8540-d85f85c3251f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Semantic\Error">
+      <UniqueIdentifier>{af92c054-3e94-448e-a2c0-bd00870ba138}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
