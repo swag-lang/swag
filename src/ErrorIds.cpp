@@ -151,7 +151,7 @@ void initErrors()
     SWAG_ERROR(Err0739, "'#main' already defined                           $ only one '#main' function is allowed per module");
     SWAG_ERROR(Err0791, "'@mkany' inconsistency                            $ the pointer type '%s' and the '@mkany' second argument '%s' are unrelated");
     SWAG_ERROR(Err1181, "'default' already defined                         $ only one 'default' statement is allowed per 'switch'");
-    SWAG_ERROR(Err1123, "'impl' kind mismatch                              $ this implementation kind (%s) and the type of '%s' (%s) are not the same");
+    SWAG_ERROR(Err1123, "'impl' kind mismatch                              $ implementation kind (%s) and the type of '%s' (%s) are not the same");
     SWAG_ERROR(Err0613, "'switch' value already defined                    $ the 'switch' value '%d' has already been defined");
     SWAG_ERROR(Err0614, "'switch' value already defined                    $ the 'switch' value '%f' has already been defined");
     SWAG_ERROR(Err0611, "'switch' value already defined                    $ the 'switch' value '%s' has already been defined");
@@ -203,7 +203,7 @@ void initErrors()
     SWAG_ERROR(Err0516, "dependency error                                  $ can't resolve the dependency to the module '%s' because of a version mismatched");
     SWAG_ERROR(Err0518, "dependency error                                  $ can't resolve the dependency to the module '%s' because version '%s' was not found at '%s'");
     SWAG_ERROR(Err2030, "dependency error                                  $ can't resolve the dependency to the module '%s' because version '%s' was not found");
-    SWAG_ERROR(Err0150, "division by zero                                  $ this expression evaluates to 0");
+    SWAG_ERROR(Err0150, "division by zero                                  $ division by an expression which evaluates to 0");
     SWAG_ERROR(Err0645, "double initialization                             $ you should not initialize a struct with both the type syntax and an assignment");
     SWAG_ERROR(Err1116, "duplicated '#import' location                     $ the '#import' location has already been defined");
     SWAG_ERROR(Err1117, "duplicated '#import' version                      $ the '#import' version has already been defined");
@@ -733,7 +733,7 @@ void initErrors()
     SWAG_ERROR(Err0741, "non-contiguous '#alias'                           $ non-contiguous '#alias' in function '%s', missing '#alias%u'");
     SWAG_ERROR(Err0446, "non-transferable 'cvarargs' type                  $ a parameter with the type 'cvarargs' can't be passed to another function");
     SWAG_ERROR(Err0013, "not a value                                       $ %s '%s' is not a valid value in this context");
-    SWAG_ERROR(Err0003, "not a value                                       $ this is an implicit reference to a static struct member of '%s'");
+    SWAG_ERROR(Err0003, "not a value                                       $ implicit reference to a static struct member of '%s'");
     SWAG_ERROR(Err0157, "not enough arguments                              $ not enough arguments for %s");
     SWAG_ERROR(Err0016, "not enough arguments                              $ not enough arguments to call %s");
     SWAG_ERROR(Err0035, "not enough generic arguments                      $ not enough generic arguments for %s");
