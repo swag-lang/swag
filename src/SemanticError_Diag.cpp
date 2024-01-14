@@ -414,7 +414,7 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
     }
 }
 
-static int getBadParamIdx(OneTryMatch& oneTry, AstNode* callParameters)
+static int getBadParamIdx(const OneTryMatch& oneTry, AstNode* callParameters)
 {
     const BadSignatureInfos& bi = oneTry.symMatchContext.badSignatureInfos;
 
@@ -447,23 +447,21 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
     bi.castErrorFromType         = Generic::replaceGenericTypes(oneTry.symMatchContext.genericReplaceTypes, bi.castErrorFromType);
     bi.castErrorToType           = Generic::replaceGenericTypes(oneTry.symMatchContext.genericReplaceTypes, bi.castErrorToType);
 
-    SymbolOverload* overload       = oneTry.overload;
-    auto            callParameters = oneTry.callParameters;
-    auto&           match          = oneTry.symMatchContext;
-
     ErrorParam errorParam;
-    errorParam.oneTry    = &oneTry;
-    errorParam.result0   = &result0;
-    errorParam.result1   = &result1;
-    errorParam.getFlags  = getFlags;
-    errorParam.errorNode = context->node;
+    errorParam.oneTry   = &oneTry;
+    errorParam.result0  = &result0;
+    errorParam.result1  = &result1;
+    errorParam.getFlags = getFlags;
 
     // Get the call parameter that failed
+    auto callParameters    = oneTry.callParameters;
     errorParam.badParamIdx = getBadParamIdx(oneTry, callParameters);
     if (oneTry.callParameters && errorParam.badParamIdx >= 0 && errorParam.badParamIdx < callParameters->childs.size())
         errorParam.failedParam = static_cast<AstFuncCallParam*>(callParameters->childs[errorParam.badParamIdx]);
     errorParam.badParamIdx += 1;
 
+    // Error node
+    errorParam.errorNode = context->node;
     if (errorParam.errorNode->isSilentCall())
     {
         errorParam.errorNode = errorParam.errorNode->parent->childs[errorParam.errorNode->childParentIdx() - 1];
@@ -471,6 +469,7 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
     }
 
     // Get parameters of destination symbol
+    SymbolOverload* overload = oneTry.overload;
     if (overload->node->kind == AstNodeKind::FuncDecl)
     {
         errorParam.destFuncDecl   = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
@@ -488,7 +487,7 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
     }
 
     // See if it would have worked with an explicit cast, to give a hint in the error message
-    switch (match.result)
+    switch (oneTry.symMatchContext.result)
     {
     case MatchResult::BadSignature:
     case MatchResult::BadGenericSignature:
@@ -519,7 +518,7 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
         break;
     }
 
-    switch (match.result)
+    switch (oneTry.symMatchContext.result)
     {
     case MatchResult::ValidIfFailed:
         errorValidIfFailed(context, errorParam);
