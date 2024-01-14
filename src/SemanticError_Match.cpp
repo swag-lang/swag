@@ -7,7 +7,7 @@
 #include "Semantic.h"
 #include "SyntaxColor.h"
 
-bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, MatchResult result, int paramIdx, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Vector<const Diagnostic*>& notes)
+static bool cannotMatchIdentifier(SemanticContext* context, MatchResult result, int paramIdx, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Vector<const Diagnostic*>& notes)
 {
     if (tryMatches.empty())
         return false;
@@ -112,7 +112,7 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, MatchRe
         if (result == MatchResult::BadSignature || result == MatchResult::BadGenericSignature)
         {
             Vector<const Diagnostic*> errs0, errs1;
-            getDiagnosticForMatch(context, *tryResult[i], errs0, errs1);
+            SemanticError::getDiagnosticForMatch(context, *tryResult[i], errs0, errs1);
             fn += "        ";
 
             Vector<Utf8> parts;
@@ -132,7 +132,7 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, MatchRe
 
     // Locate to the first error
     Vector<const Diagnostic*> errs0, errs1;
-    getDiagnosticForMatch(context, *tryResult[0], errs0, errs1);
+    SemanticError::getDiagnosticForMatch(context, *tryResult[0], errs0, errs1);
     note->sourceFile      = errs0[0]->sourceFile;
     note->startLocation   = errs0[0]->startLocation;
     note->endLocation     = errs0[0]->endLocation;
@@ -310,11 +310,11 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
     Vector<const Diagnostic*> notes;
     symbolErrorNotes(context, tryMatches, node, &diag, notes);
 
-    cannotMatchIdentifierError(context, MatchResult::ValidIfFailed, 0, tryMatches, node, notes);
-    cannotMatchIdentifierError(context, MatchResult::NotEnoughParameters, 0, tryMatches, node, notes);
-    cannotMatchIdentifierError(context, MatchResult::TooManyParameters, 0, tryMatches, node, notes);
-    cannotMatchIdentifierError(context, MatchResult::NotEnoughGenericParameters, 0, tryMatches, node, notes);
-    cannotMatchIdentifierError(context, MatchResult::TooManyGenericParameters, 0, tryMatches, node, notes);
+    cannotMatchIdentifier(context, MatchResult::ValidIfFailed, 0, tryMatches, node, notes);
+    cannotMatchIdentifier(context, MatchResult::NotEnoughParameters, 0, tryMatches, node, notes);
+    cannotMatchIdentifier(context, MatchResult::TooManyParameters, 0, tryMatches, node, notes);
+    cannotMatchIdentifier(context, MatchResult::NotEnoughGenericParameters, 0, tryMatches, node, notes);
+    cannotMatchIdentifier(context, MatchResult::TooManyGenericParameters, 0, tryMatches, node, notes);
 
     // For a bad signature, only show the ones with the greatest match
     int paramIdx;
@@ -326,7 +326,7 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
         {
             Vector<const Diagnostic*> notesTmp;
             auto                      m = what == 0 ? MatchResult::BadSignature : MatchResult::BadGenericSignature;
-            if (!cannotMatchIdentifierError(context, m, paramIdx++, tryMatches, node, notesTmp))
+            if (!cannotMatchIdentifier(context, m, paramIdx++, tryMatches, node, notesTmp))
                 break;
             notesSig = notesTmp;
         }

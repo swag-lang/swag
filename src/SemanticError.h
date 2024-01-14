@@ -44,12 +44,12 @@ namespace SemanticError
 
     void getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1, uint32_t getFlags = GDFM_ALL);
 
-    void symbolErrorNotes(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag, Vector<const Diagnostic*>& notes);
-    void symbolErrorRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag);
-    bool cannotMatchIdentifierError(SemanticContext* context, MatchResult result, int paramIdx, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Vector<const Diagnostic*>& notes);
     bool cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node);
 
     void unknownIdentifierError(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
+
+    void symbolErrorNotes(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag, Vector<const Diagnostic*>& notes);
+    void symbolErrorRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag);
     bool notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg = nullptr, AstNode* hintType = nullptr);
     bool duplicatedSymbolError(ErrorContext* context, SourceFile* sourceFile, Token& token, SymbolKind thisKind, const Utf8& thisName, SymbolKind otherKind, AstNode* otherSymbolDecl);
     bool error(SemanticContext* context, const Utf8& msg);
