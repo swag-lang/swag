@@ -48,7 +48,8 @@ namespace SemanticError
     void symbolErrorRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag);
     bool cannotMatchIdentifierError(SemanticContext* context, MatchResult result, int paramIdx, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Vector<const Diagnostic*>& notes);
     bool cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node);
-    void unknownIdentifier(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
+
+    void unknownIdentifierError(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
     bool notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg = nullptr, AstNode* hintType = nullptr);
     bool duplicatedSymbolError(ErrorContext* context, SourceFile* sourceFile, Token& token, SymbolKind thisKind, const Utf8& thisName, SymbolKind otherKind, AstNode* otherSymbolDecl);
     bool error(SemanticContext* context, const Utf8& msg);

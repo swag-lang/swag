@@ -489,8 +489,10 @@
     <ClCompile Include="..\src\Semantic.cpp" />
     <ClCompile Include="..\src\SemanticContext.cpp" />
     <ClCompile Include="..\src\SemanticError.cpp" />
+    <ClCompile Include="..\src\SemanticError_Match.cpp" />
     <ClCompile Include="..\src\SemanticError_Diag.cpp" />
     <ClCompile Include="..\src\SemanticError_Find.cpp" />
+    <ClCompile Include="..\src\SemanticError_Unknown.cpp" />
     <ClCompile Include="..\src\Semantic_Access.cpp" />
     <ClCompile Include="..\src\Semantic_AffectExpression.cpp" />
     <ClCompile Include="..\src\Semantic_Attribute.cpp" />

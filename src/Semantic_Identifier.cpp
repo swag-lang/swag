@@ -4223,7 +4223,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         {
             if (identifierRef->flags & AST_SILENT_CHECK)
                 return true;
-            SemanticError::unknownIdentifier(context, identifierRef, CastAst<AstIdentifier>(identifier, AstNodeKind::Identifier));
+            SemanticError::unknownIdentifierError(context, identifierRef, CastAst<AstIdentifier>(identifier, AstNodeKind::Identifier));
             return false;
         }
 
