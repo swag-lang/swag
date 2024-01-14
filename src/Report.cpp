@@ -24,57 +24,18 @@ static bool fuzzySameLine(uint32_t line1, uint32_t line2)
     return false;
 }
 
-static void cleanNotes(Vector<Diagnostic*>& notes)
+static void computeAutoRemarks(Vector<Diagnostic*>& notes)
 {
-    // Remove notes without messages
-    for (int i = 0; i < notes.size(); i++)
-    {
-        if (notes[i]->textMsg.empty())
-        {
-            notes.erase(notes.begin() + i);
-            i--;
-            continue;
-        }
-    }
-
-    // Error message can have different parts
-    // We generate hint and notes...
-    auto         err = notes[0];
-    Vector<Utf8> parts;
-    Diagnostic::tokenizeError(err->textMsg, parts);
-    if (parts.size() > 1)
-    {
-        err->textMsg = parts[0];
-
-        if (!err->hint.empty())
-        {
-            auto newNote = Diagnostic::note(err->sourceFile, err->startLocation, err->endLocation, err->hint);
-            if (notes.size() == 1)
-                notes.push_back(newNote);
-            else
-                notes.insert(++notes.begin(), newNote);
-        }
-
-        err->hint = parts[1];
-
-        for (int i = 2; i < (int) parts.size(); i++)
-        {
-            auto newNote = Diagnostic::note(parts[i]);
-            notes.push_back(newNote);
-        }
-    }
-
     Set<void*> doneGenParamsRemarks;
     for (auto note : notes)
     {
         if (!note->display)
             continue;
 
-        auto genCheckNode = note->sourceNode ? note->sourceNode : note->contextNode;
-
         // It can happen that the location has nothing to do with the node where the error occurs
         // (because of @location in a @compilererror for example).
         // So hack to avoid displaying generic informations not relevant.
+        auto genCheckNode = note->sourceNode ? note->sourceNode : note->contextNode;
         if (genCheckNode && genCheckNode->sourceFile == note->sourceFile)
         {
             // This is a generic instance. Display type replacements.
@@ -115,6 +76,55 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
                     note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
             }
         }
+    }
+}
+
+static void cleanNotes(Vector<Diagnostic*>& notes)
+{
+    // Remove notes without messages
+    for (int i = 0; i < notes.size(); i++)
+    {
+        if (notes[i]->textMsg.empty())
+        {
+            notes.erase(notes.begin() + i);
+            i--;
+            continue;
+        }
+    }
+
+    // Error message can have different parts.
+    // We generate hint and notes...
+    auto         err = notes[0];
+    Vector<Utf8> parts;
+    Diagnostic::tokenizeError(err->textMsg, parts);
+    if (parts.size() > 1)
+    {
+        err->textMsg = parts[0];
+
+        if (!err->hint.empty())
+        {
+            auto newNote = Diagnostic::note(err->sourceFile, err->startLocation, err->endLocation, err->hint);
+            if (notes.size() == 1)
+                notes.push_back(newNote);
+            else
+                notes.insert(++notes.begin(), newNote);
+        }
+
+        err->hint = parts[1];
+
+        for (int i = 2; i < (int) parts.size(); i++)
+        {
+            auto newNote = Diagnostic::note(parts[i]);
+            notes.push_back(newNote);
+        }
+    }
+
+    computeAutoRemarks(notes);
+
+    for (auto note : notes)
+    {
+        if (!note->display)
+            continue;
 
         // Transform a note in a hint
         if (note->errorLevel == DiagnosticLevel::Note)
@@ -142,6 +152,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
         auto note = notes[inote];
         if (!note->display)
             continue;
+
         for (int inote1 = 0; inote1 < (int) notes.size(); inote1++)
         {
             auto note1 = notes[inote1];
@@ -236,6 +247,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
         }
     }
 
+    // Compute the space needed to display all line numbers
     int lineCodeMaxDigits = 0;
     for (auto note : notes)
         lineCodeMaxDigits = max(lineCodeMaxDigits, note->lineCodeNumDigits);
