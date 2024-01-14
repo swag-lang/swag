@@ -37,6 +37,13 @@ void Log::print(LogSymbol symbol)
             print("\xe2\x94\x82");
         break;
 
+    case LogSymbol::VerticalLineDot:
+        if (g_CommandLine.logAscii)
+            print("|");
+        else
+            print("\xe2\x94\x86");
+        break;
+
     case LogSymbol::VerticalLineUp:
         if (g_CommandLine.logAscii)
             print("|");

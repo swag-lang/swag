@@ -26,6 +26,7 @@ enum class LogColor
 enum class LogSymbol
 {
     VerticalLine,
+    VerticalLineDot,
     VerticalLineUp,
     HorizontalLine,
     HorizontalLine2,

@@ -172,10 +172,20 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
 
     if (token.id != id)
     {
-        Utf8       related = Naming::tokenToName(id);
-        Diagnostic diag{sourceFile, token, Fmt(Err(Err1068), Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, token.ctext())};
-        auto       note = Diagnostic::note(sourceFile, start, start, Fmt(Nte(Nte0020), related.c_str()));
-        return context->report(diag, note);
+        Utf8 related = Naming::tokenToName(id);
+        auto diagMsg = Fmt(Err(Err1068), Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, token.ctext());
+
+        if (token.id == TokenId::EndOfFile)
+        {
+            Diagnostic diag{sourceFile, start, start, diagMsg};
+            return context->report(diag);
+        }
+        else
+        {
+            Diagnostic diag{sourceFile, token, diagMsg};
+            auto       note = Diagnostic::note(sourceFile, start, start, Fmt(Nte(Nte0020), related.c_str()));
+            return context->report(diag, note);
+        }
     }
 
     SWAG_CHECK(eatToken());

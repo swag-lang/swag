@@ -17,13 +17,9 @@ static bool fuzzySameLine(uint32_t line1, uint32_t line2)
 {
     if (line1 == line2)
         return true;
-    if (line1 == line2 + 1)
+    if (line1 > line2 && line1 - line2 <= 10)
         return true;
-    if (line1 == line2 + 2)
-        return true;
-    if (line1 + 1 == line2)
-        return true;
-    if (line1 + 2 == line2)
+    if (line2 > line1 && line2 - line1 <= 10)
         return true;
     return false;
 }
@@ -167,14 +163,14 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
                 sourceFile1 = sourceFile1->fileForSourceLocation;
 
             // No need to repeat the same source file line reference
-            if (fuzzySameLine(note->startLocation.line, note1->startLocation.line) &&
-                fuzzySameLine(note->endLocation.line, note1->endLocation.line) &&
-                sourceFile0 == sourceFile1 &&
+            if (sourceFile0 == sourceFile1 &&
                 note->showFileName &&
                 note->display &&
                 !note1->forceSourceFile &&
                 inote1 == inote + 1 &&
-                note1->textMsg.empty())
+                note1->textMsg.empty() &&
+                fuzzySameLine(note->startLocation.line, note1->startLocation.line) &&
+                fuzzySameLine(note->endLocation.line, note1->endLocation.line))
             {
                 note1->showFileName = false;
             }
@@ -196,6 +192,8 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
                     for (size_t j = 0; j < note->ranges.size(); j++)
                     {
                         auto& r0 = note->ranges[j];
+                        if (i == j)
+                            continue;
                         if (r0.endLocation.column <= r1.startLocation.column)
                             continue;
                         if (r0.startLocation.column >= r1.endLocation.column)

@@ -562,7 +562,7 @@ void Diagnostic::report()
     {
         printMarginLineNo(0);
         g_Log.setColor(marginBorderColor);
-        g_Log.print(LogSymbol::VerticalLine);
+        g_Log.print(LogSymbol::VerticalLineDot);
         g_Log.eol();
     }
     else
