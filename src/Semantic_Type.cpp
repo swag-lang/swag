@@ -1,13 +1,13 @@
 #include "pch.h"
-#include "Semantic.h"
-#include "ByteCodeGen.h"
 #include "Ast.h"
-#include "Module.h"
-#include "TypeManager.h"
-#include "ErrorIds.h"
-#include "Report.h"
-#include "Naming.h"
+#include "ByteCodeGen.h"
 #include "Diagnostic.h"
+#include "Module.h"
+#include "Naming.h"
+#include "Report.h"
+#include "Semantic.h"
+#include "SemanticError.h"
+#include "TypeManager.h"
 
 bool Semantic::makeIntrinsicKindof(SemanticContext* context, AstNode* node)
 {
@@ -66,7 +66,7 @@ bool Semantic::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInf
 
 bool Semantic::checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo)
 {
-    SWAG_VERIFY(typeInfo->isNative(), notAllowedError(context, node, typeInfo));
+    SWAG_VERIFY(typeInfo->isNative(), SemanticError::notAllowedError(context, node, typeInfo));
     return true;
 }
 

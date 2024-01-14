@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "SemanticError.h"
 #include "Ast.h"
 #include "AstOutput.h"
 #include "Diagnostic.h"
@@ -441,7 +442,7 @@ static int getBadParamIdx(OneTryMatch& oneTry, AstNode* callParameters)
     return badParamIdx;
 }
 
-void Semantic::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1, uint32_t getFlags)
+void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1, uint32_t getFlags)
 {
     BadSignatureInfos& bi        = oneTry.symMatchContext.badSignatureInfos;
     bi.badSignatureGivenType     = Generic::replaceGenericTypes(oneTry.symMatchContext.genericReplaceTypes, bi.badSignatureGivenType);
@@ -581,7 +582,7 @@ void Semantic::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneT
     }
 }
 
-void Semantic::symbolErrorNotes(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag, Vector<const Diagnostic*>& notes)
+void SemanticError::symbolErrorNotes(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag, Vector<const Diagnostic*>& notes)
 {
     if (!node)
         return;
@@ -656,7 +657,7 @@ void Semantic::symbolErrorNotes(SemanticContext* context, VectorNative<OneTryMat
     }
 }
 
-void Semantic::symbolErrorRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag)
+void SemanticError::symbolErrorRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag)
 {
     if (!node)
         return;
@@ -707,12 +708,7 @@ void Semantic::symbolErrorRemarks(SemanticContext* context, VectorNative<OneTryM
     }
 }
 
-bool Semantic::cannotMatchIdentifierError(SemanticContext*            context,
-                                          MatchResult                 result,
-                                          int                         paramIdx,
-                                          VectorNative<OneTryMatch*>& tryMatches,
-                                          AstNode*                    node,
-                                          Vector<const Diagnostic*>&  notes)
+bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, MatchResult result, int paramIdx, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Vector<const Diagnostic*>& notes)
 {
     if (tryMatches.empty())
         return false;
@@ -847,7 +843,7 @@ bool Semantic::cannotMatchIdentifierError(SemanticContext*            context,
     return true;
 }
 
-bool Semantic::cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node)
+bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node)
 {
     AstIdentifier* identifier        = nullptr;
     AstNode*       genericParameters = nullptr;
@@ -998,7 +994,7 @@ bool Semantic::cannotMatchIdentifierError(SemanticContext* context, VectorNative
     {
         // Be sure this is not because of an invalid special function signature
         if (tryMatches[0]->overload->node->kind == AstNodeKind::FuncDecl)
-            SWAG_CHECK(checkFuncPrototype(context, CastAst<AstFuncDecl>(tryMatches[0]->overload->node, AstNodeKind::FuncDecl)));
+            SWAG_CHECK(Semantic::checkFuncPrototype(context, CastAst<AstFuncDecl>(tryMatches[0]->overload->node, AstNodeKind::FuncDecl)));
 
         Vector<const Diagnostic*> errs0, errs1;
         getDiagnosticForMatch(context, *tryMatches[0], errs0, errs1, getFlags);
@@ -1041,7 +1037,7 @@ bool Semantic::cannotMatchIdentifierError(SemanticContext* context, VectorNative
     return context->report(diag, notes);
 }
 
-Utf8 Semantic::findClosestMatchesMsg(const Utf8& searchName, const Vector<Utf8>& best)
+Utf8 SemanticError::findClosestMatchesMsg(const Utf8& searchName, const Vector<Utf8>& best)
 {
     Utf8 appendMsg;
     switch (best.size())
@@ -1069,7 +1065,7 @@ Utf8 Semantic::findClosestMatchesMsg(const Utf8& searchName, const Vector<Utf8>&
     return appendMsg;
 }
 
-void Semantic::findClosestMatches(const Utf8& searchName, const Vector<Utf8>& searchList, Vector<Utf8>& result)
+void SemanticError::findClosestMatches(const Utf8& searchName, const Vector<Utf8>& searchList, Vector<Utf8>& result)
 {
     uint32_t bestScore = UINT32_MAX;
     result.clear();
@@ -1112,7 +1108,7 @@ void Semantic::findClosestMatches(const Utf8& searchName, const Vector<Utf8>& se
     }
 }
 
-void Semantic::findClosestMatches(const Utf8& searchName, const VectorNative<AlternativeScope>& scopeHierarchy, Vector<Utf8>& best, IdentifierSearchFor searchFor)
+void SemanticError::findClosestMatches(const Utf8& searchName, const VectorNative<AlternativeScope>& scopeHierarchy, Vector<Utf8>& best, IdentifierSearchFor searchFor)
 {
     Vector<Utf8> searchList;
     for (auto& as : scopeHierarchy)
@@ -1192,14 +1188,14 @@ void Semantic::findClosestMatches(const Utf8& searchName, const VectorNative<Alt
     findClosestMatches(searchName, searchList, best);
 }
 
-Utf8 Semantic::findClosestMatchesMsg(const Utf8& searchName, const VectorNative<AlternativeScope>& scopeHierarchy, IdentifierSearchFor searchFor)
+Utf8 SemanticError::findClosestMatchesMsg(const Utf8& searchName, const VectorNative<AlternativeScope>& scopeHierarchy, IdentifierSearchFor searchFor)
 {
     Vector<Utf8> best;
     findClosestMatches(searchName, scopeHierarchy, best, searchFor);
     return findClosestMatchesMsg(searchName, best);
 }
 
-void Semantic::unknownIdentifier(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node)
+void SemanticError::unknownIdentifier(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node)
 {
     auto& scopeHierarchy     = context->cacheScopeHierarchy;
     auto& scopeHierarchyVars = context->cacheScopeHierarchyVars;
@@ -1219,11 +1215,11 @@ void Semantic::unknownIdentifier(SemanticContext* context, AstIdentifierRef* ide
     if (identifierRef->startScope)
     {
         scopeHierarchy.clear();
-        addAlternativeScopeOnce(scopeHierarchy, identifierRef->startScope);
+        Semantic::addAlternativeScopeOnce(scopeHierarchy, identifierRef->startScope);
     }
     else
     {
-        collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, COLLECT_ALL);
+        Semantic::collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, COLLECT_ALL);
     }
 
     Vector<const Diagnostic*> notes;
@@ -1359,7 +1355,7 @@ void Semantic::unknownIdentifier(SemanticContext* context, AstIdentifierRef* ide
     context->report(*diag, notes);
 }
 
-bool Semantic::notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg, AstNode* hintType)
+bool SemanticError::notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg, AstNode* hintType)
 {
     Utf8 text = Fmt(Err(Err0005), node->token.ctext(), typeInfo->getDisplayNameC());
     if (msg)
@@ -1374,13 +1370,7 @@ bool Semantic::notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* t
     return context->report(diag);
 }
 
-bool Semantic::duplicatedSymbolError(ErrorContext* context,
-                                     SourceFile*   sourceFile,
-                                     Token&        token,
-                                     SymbolKind    thisKind,
-                                     const Utf8&   thisName,
-                                     SymbolKind    otherKind,
-                                     AstNode*      otherSymbolDecl)
+bool SemanticError::duplicatedSymbolError(ErrorContext* context, SourceFile* sourceFile, Token& token, SymbolKind thisKind, const Utf8& thisName, SymbolKind otherKind, AstNode* otherSymbolDecl)
 {
     Utf8 as;
     if (thisKind != otherKind)
@@ -1391,7 +1381,7 @@ bool Semantic::duplicatedSymbolError(ErrorContext* context,
     return context->report(diag, note);
 }
 
-bool Semantic::error(SemanticContext* context, const Utf8& msg)
+bool SemanticError::error(SemanticContext* context, const Utf8& msg)
 {
     return context->report({context->node, msg});
 }

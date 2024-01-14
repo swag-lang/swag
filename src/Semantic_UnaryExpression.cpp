@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "Semantic.h"
 #include "ByteCodeGen.h"
-#include "TypeManager.h"
-#include "ErrorIds.h"
-#include "LanguageSpec.h"
 #include "Diagnostic.h"
+#include "LanguageSpec.h"
+#include "Semantic.h"
+#include "SemanticError.h"
+#include "TypeManager.h"
 
 bool Semantic::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNode* child)
 {
@@ -233,7 +233,7 @@ bool Semantic::resolveUnaryOp(SemanticContext* context)
     if (typeInfo->isEnum())
     {
         if (!(typeInfo->flags & TYPEINFO_ENUM_FLAGS))
-            return notAllowedError(context, op, typeInfo, "because the enum is not marked with '#[Swag.EnumFlags]'");
+            return SemanticError::notAllowedError(context, op, typeInfo, "because the enum is not marked with '#[Swag.EnumFlags]'");
     }
 
     // :ConcreteRef

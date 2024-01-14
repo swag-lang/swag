@@ -1,13 +1,14 @@
 #include "pch.h"
-#include "Scoped.h"
 #include "Ast.h"
-#include "Semantic.h"
-#include "Workspace.h"
-#include "Module.h"
 #include "ByteCodeGen.h"
-#include "LanguageSpec.h"
 #include "Diagnostic.h"
+#include "LanguageSpec.h"
+#include "Module.h"
+#include "Scoped.h"
+#include "Semantic.h"
+#include "SemanticError.h"
 #include "TypeManager.h"
+#include "Workspace.h"
 
 bool Parser::doCheckPublicInternalPrivate(Token& tokenAttr)
 {
@@ -278,7 +279,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
             }
             else if (symbol->kind != SymbolKind::Namespace)
             {
-                return Semantic::duplicatedSymbolError(context, sourceFile, token, SymbolKind::Namespace, symbol->name, symbol->kind, symbol->nodes.front());
+                return SemanticError::duplicatedSymbolError(context, sourceFile, token, SymbolKind::Namespace, symbol->name, symbol->kind, symbol->nodes.front());
             }
             else
                 newScope = CastTypeInfo<TypeInfoNamespace>(symbol->overloads[0]->typeInfo, TypeInfoKind::Namespace)->scope;

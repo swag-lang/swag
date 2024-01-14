@@ -299,6 +299,7 @@
     <ClInclude Include="../src/SourceFile.h" />
     <ClInclude Include="..\src\Semantic.h" />
     <ClInclude Include="..\src\SemanticContext.h" />
+    <ClInclude Include="..\src\SemanticError.h" />
     <ClInclude Include="..\src\Statistics.h" />
     <ClInclude Include="../src/ThreadManager.h" />
     <ClInclude Include="../src/Tokenizer.h" />
@@ -487,6 +488,7 @@
     <ClCompile Include="../src/SemanticJob.cpp" />
     <ClCompile Include="..\src\Semantic.cpp" />
     <ClCompile Include="..\src\SemanticContext.cpp" />
+    <ClCompile Include="..\src\SemanticError.cpp" />
     <ClCompile Include="..\src\Semantic_Access.cpp" />
     <ClCompile Include="..\src\Semantic_AffectExpression.cpp" />
     <ClCompile Include="..\src\Semantic_Attribute.cpp" />
@@ -497,7 +499,6 @@
     <ClCompile Include="..\src\Semantic_Compiler.cpp" />
     <ClCompile Include="..\src\Semantic_Declaration.cpp" />
     <ClCompile Include="..\src\Semantic_Enum.cpp" />
-    <ClCompile Include="..\src\Semantic_Error.cpp" />
     <ClCompile Include="..\src\Semantic_Expression.cpp" />
     <ClCompile Include="..\src\Semantic_Function.cpp" />
     <ClCompile Include="..\src\Semantic_Identifier.cpp" />

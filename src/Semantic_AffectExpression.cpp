@@ -1,15 +1,13 @@
 #include "pch.h"
 #include "Ast.h"
-#include "Semantic.h"
-#include "TypeManager.h"
 #include "ByteCodeGen.h"
-#include "Module.h"
-#include "ErrorIds.h"
-#include "Report.h"
-#include "ThreadManager.h"
+#include "Diagnostic.h"
 #include "LanguageSpec.h"
 #include "Naming.h"
-#include "Diagnostic.h"
+#include "Report.h"
+#include "Semantic.h"
+#include "SemanticError.h"
+#include "TypeManager.h"
 
 bool Semantic::resolveMove(SemanticContext* context)
 {
@@ -258,9 +256,9 @@ bool Semantic::resolveAffect(SemanticContext* context)
                 if (node->tokenId != TokenId::SymVerticalEqual &&
                     node->tokenId != TokenId::SymAmpersandEqual &&
                     node->tokenId != TokenId::SymCircumflexEqual)
-                    return notAllowedError(context, node, leftTypeInfo, nullptr, left);
+                    return SemanticError::notAllowedError(context, node, leftTypeInfo, nullptr, left);
                 if (!(leftTypeInfo->getConcreteAlias()->flags & TYPEINFO_ENUM_FLAGS) || !(rightTypeInfo->getConcreteAlias()->flags & TYPEINFO_ENUM_FLAGS))
-                    return notAllowedError(context, node, leftTypeInfo, "because the enum is not marked with '#[Swag.EnumFlags]'", left);
+                    return SemanticError::notAllowedError(context, node, leftTypeInfo, "because the enum is not marked with '#[Swag.EnumFlags]'", left);
                 forEnumFlags = true;
             }
         }
@@ -460,7 +458,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
             leftTypeInfo->nativeType == NativeTypeKind::F32 ||
             leftTypeInfo->nativeType == NativeTypeKind::F64)
         {
-            return notAllowedError(context, node, leftTypeInfo);
+            return SemanticError::notAllowedError(context, node, leftTypeInfo);
         }
 
         break;
@@ -494,7 +492,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
             leftTypeInfo->nativeType == NativeTypeKind::F32 ||
             leftTypeInfo->nativeType == NativeTypeKind::F64)
         {
-            return notAllowedError(context, node, leftTypeInfo);
+            return SemanticError::notAllowedError(context, node, leftTypeInfo);
         }
         break;
     }
@@ -545,7 +543,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
             leftTypeInfo->nativeType == NativeTypeKind::String ||
             leftTypeInfo->nativeType == NativeTypeKind::CString)
         {
-            return notAllowedError(context, node, leftTypeInfo);
+            return SemanticError::notAllowedError(context, node, leftTypeInfo);
         }
         break;
     }
@@ -570,7 +568,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
             leftTypeInfo->nativeType == NativeTypeKind::String ||
             leftTypeInfo->nativeType == NativeTypeKind::CString)
         {
-            return notAllowedError(context, node, leftTypeInfo);
+            return SemanticError::notAllowedError(context, node, leftTypeInfo);
         }
         break;
     }
@@ -597,7 +595,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
             leftTypeInfo->nativeType == NativeTypeKind::String ||
             leftTypeInfo->nativeType == NativeTypeKind::CString)
         {
-            return notAllowedError(context, node, leftTypeInfo);
+            return SemanticError::notAllowedError(context, node, leftTypeInfo);
         }
         break;
     }

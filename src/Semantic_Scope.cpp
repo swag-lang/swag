@@ -3,6 +3,7 @@
 #include "Diagnostic.h"
 #include "LanguageSpec.h"
 #include "Module.h"
+#include "SemanticError.h"
 #include "SemanticJob.h"
 #include "TypeManager.h"
 #include "Workspace.h"
@@ -141,7 +142,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                         {
                             Diagnostic                diag{identifierRef, Fmt(Err(Err0144), node->token.ctext(), hasEnum[0].second->getDisplayNameC())};
                             Vector<const Diagnostic*> notes;
-                            auto                      closest = findClosestMatchesMsg(node->token.text, {{hasEnum[0].second->scope, 0}}, IdentifierSearchFor::Whatever);
+                            auto                      closest = SemanticError::findClosestMatchesMsg(node->token.text, {{hasEnum[0].second->scope, 0}}, IdentifierSearchFor::Whatever);
                             if (!closest.empty())
                                 notes.push_back(Diagnostic::note(closest));
                             if (hasEnum[0].first)
@@ -284,7 +285,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         {
             if (identifierRef->flags & AST_SILENT_CHECK)
                 return true;
-            unknownIdentifier(context, identifierRef, node);
+            SemanticError::unknownIdentifier(context, identifierRef, node);
             return false;
         }
 

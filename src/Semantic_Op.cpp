@@ -3,6 +3,7 @@
 #include "Diagnostic.h"
 #include "LanguageSpec.h"
 #include "Semantic.h"
+#include "SemanticError.h"
 #include "TypeManager.h"
 
 bool Semantic::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node)
@@ -337,8 +338,8 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         searchList.push_back(g_LangSpec->name_opIndexAffect);
         searchList.push_back(g_LangSpec->name_opVisit);
 
-        findClosestMatches(node->tokenName.text, searchList, best);
-        Utf8 appendMsg = findClosestMatchesMsg(node->tokenName.text, best);
+        SemanticError::findClosestMatches(node->tokenName.text, searchList, best);
+        Utf8 appendMsg = SemanticError::findClosestMatchesMsg(node->tokenName.text, best);
 
         Diagnostic diag{node, node->tokenName, Fmt(Err(Err0078), name.c_str())};
         if (appendMsg.empty())

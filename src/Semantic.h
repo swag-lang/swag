@@ -18,17 +18,6 @@ struct TypeInfoFuncAttr;
 enum class AstNodeKind : uint8_t;
 enum class SymbolKind : uint8_t;
 
-enum class IdentifierSearchFor
-{
-    Whatever,
-    Type,
-    Function,
-    Attribute,
-    Keyword,
-    TopLevelInstruction,
-    Struct,
-};
-
 struct FindUserOp
 {
     SymbolName*     symbol;
@@ -51,9 +40,6 @@ const uint32_t ROP_SIMPLE_CAST = 0x00000002;
 const uint32_t RI_ZERO              = 0x00000000;
 const uint32_t RI_FOR_GHOSTING      = 0x00000001;
 const uint32_t RI_FOR_ZERO_GHOSTING = 0x00000002;
-
-const uint32_t GDFM_HERE_IS = 0x00000001;
-const uint32_t GDFM_ALL     = 0xFFFFFFFF;
 
 namespace Semantic
 {
@@ -99,13 +85,6 @@ namespace Semantic
     bool warnUnusedVariables(SemanticContext* context, Scope* scope);
     bool warnUnreachableCode(SemanticContext* context);
     bool warnDeprecated(SemanticContext* context, AstNode* identifier);
-
-    bool error(SemanticContext* context, const Utf8& msg);
-    bool notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg = nullptr, AstNode* hintType = nullptr);
-    bool duplicatedSymbolError(ErrorContext* context, SourceFile* sourceFile, Token& token, SymbolKind thisKind, const Utf8& thisName, SymbolKind otherKind, AstNode* otherSymbolDecl);
-    void getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1, uint32_t getFlags = GDFM_ALL);
-    void symbolErrorRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag);
-    void symbolErrorNotes(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag, Vector<const Diagnostic*>& notes);
 
     bool hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStruct* leftStruct, TypeInfoParam* parentField, VectorNative<FindUserOp>& result);
     bool hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStruct* leftStruct, SymbolName** result);
@@ -165,13 +144,7 @@ namespace Semantic
     bool           doExecuteCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr);
     bool           reserveAndStoreToSegment(JobContext* context, DataSegment* storageSegment, uint32_t& storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
     bool           storeToSegment(JobContext* context, DataSegment* storageSegment, uint32_t storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment);
-    void           findClosestMatches(const Utf8& searchName, const Vector<Utf8>& searchList, Vector<Utf8>& result);
-    Utf8           findClosestMatchesMsg(const Utf8& searchName, const Vector<Utf8>& best);
-    void           findClosestMatches(const Utf8& searchName, const VectorNative<AlternativeScope>& scopeHierarchy, Vector<Utf8>& best, IdentifierSearchFor searchFor = IdentifierSearchFor::Whatever);
-    Utf8           findClosestMatchesMsg(const Utf8& searchName, const VectorNative<AlternativeScope>& scopeHierarchy, IdentifierSearchFor searchFor);
     bool           isFunctionButNotACall(SemanticContext* context, AstNode* node, SymbolName* symbol);
-    bool           cannotMatchIdentifierError(SemanticContext* context, MatchResult result, int paramIdx, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Vector<const Diagnostic*>& notes);
-    bool           cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node);
     bool           matchIdentifierParameters(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, uint32_t flags = 0);
     bool           evaluateConstExpression(SemanticContext* context, AstNode* node);
     bool           evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2);
@@ -207,7 +180,6 @@ namespace Semantic
     TypeInfoEnum*  findEnumTypeInContext(SemanticContext* context, TypeInfo* typeInfo);
     bool           findEnumTypeInContext(SemanticContext* context, AstNode* node, VectorNative<TypeInfoEnum*>& result, VectorNative<std::pair<AstNode*, TypeInfoEnum*>>& has, VectorNative<SymbolOverload*>& testedOver);
     void           addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, uint32_t asflags);
-    void           unknownIdentifier(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
     bool           ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match);
     bool           filterGenericMatches(SemanticContext* context, VectorNative<OneMatch*>& matches, VectorNative<OneGenericMatch*>& genMatches);
     bool           filterMatchesInContext(SemanticContext* context, VectorNative<OneMatch*>& matches);

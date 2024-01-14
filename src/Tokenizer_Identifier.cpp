@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "LanguageSpec.h"
-#include "ErrorIds.h"
-#include "Semantic.h"
 #include "Diagnostic.h"
+#include "LanguageSpec.h"
+#include "Semantic.h"
+#include "SemanticError.h"
 
 bool Tokenizer::doIdentifier(TokenParse& token)
 {
@@ -49,9 +49,9 @@ bool Tokenizer::doIdentifier(TokenParse& token)
             }
 
             Vector<Utf8> result;
-            Semantic::findClosestMatches(token.text, searchList, result);
+            SemanticError::findClosestMatches(token.text, searchList, result);
             if (result.size())
-                return errorContext->report(diag, Diagnostic::note(Semantic::findClosestMatchesMsg(token.text, result)));
+                return errorContext->report(diag, Diagnostic::note(SemanticError::findClosestMatchesMsg(token.text, result)));
 
             return errorContext->report(diag);
         }
@@ -70,9 +70,9 @@ bool Tokenizer::doIdentifier(TokenParse& token)
         }
 
         Vector<Utf8> result;
-        Semantic::findClosestMatches(token.text, searchList, result);
+        SemanticError::findClosestMatches(token.text, searchList, result);
         if (result.size())
-            return errorContext->report(diag, Diagnostic::note(Semantic::findClosestMatchesMsg(token.text, result)));
+            return errorContext->report(diag, Diagnostic::note(SemanticError::findClosestMatchesMsg(token.text, result)));
 
         return errorContext->report(diag);
     }

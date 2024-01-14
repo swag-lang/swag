@@ -3,6 +3,7 @@
 #include "Ast.h"
 #include "Module.h"
 #include "Semantic.h"
+#include "SemanticError.h"
 #include "TypeManager.h"
 
 void SymTable::release()
@@ -340,7 +341,7 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, Typ
     if (symbol->kind != kind)
     {
         auto front = symbol->nodes.front();
-        return Semantic::duplicatedSymbolError(context, node->sourceFile, *token, kind, symbol->name, symbol->kind, front);
+        return SemanticError::duplicatedSymbolError(context, node->sourceFile, *token, kind, symbol->name, symbol->kind, front);
     }
 
     if (symbol->kind == SymbolKind::Namespace)
@@ -353,7 +354,7 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, Typ
     if (!canOverload && !symbol->overloads.empty())
     {
         auto firstOverload = symbol->overloads[0];
-        return Semantic::duplicatedSymbolError(context, node->sourceFile, *token, symbol->kind, symbol->name, firstOverload->symbol->kind, firstOverload->node);
+        return SemanticError::duplicatedSymbolError(context, node->sourceFile, *token, symbol->kind, symbol->name, firstOverload->symbol->kind, firstOverload->node);
     }
 
     // A symbol with the same type already exists
@@ -368,7 +369,7 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, Typ
             !(overload->node->flags & AST_HAS_SELECT_IF))
         {
             auto firstOverload = overload;
-            return Semantic::duplicatedSymbolError(context, node->sourceFile, *token, symbol->kind, symbol->name, firstOverload->symbol->kind, firstOverload->node);
+            return SemanticError::duplicatedSymbolError(context, node->sourceFile, *token, symbol->kind, symbol->name, firstOverload->symbol->kind, firstOverload->node);
         }
     }
 
@@ -392,7 +393,7 @@ bool SymTable::registerNameAlias(ErrorContext* context, AstNode* node, SymbolNam
             }
         }
 
-        return Semantic::duplicatedSymbolError(context, node->sourceFile, node->token, SymbolKind::NameAlias, symbol->name, symbol->kind, firstOverload->node);
+        return SemanticError::duplicatedSymbolError(context, node->sourceFile, node->token, SymbolKind::NameAlias, symbol->name, symbol->kind, firstOverload->node);
     }
 
     SWAG_ASSERT(!otherSymbol->cptOverloads);

@@ -6,6 +6,7 @@
 #include "Module.h"
 #include "Naming.h"
 #include "Report.h"
+#include "SemanticError.h"
 #include "SemanticJob.h"
 #include "ThreadManager.h"
 #include "TypeManager.h"
@@ -2007,7 +2008,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
     {
         if (justCheck)
             return false;
-        return cannotMatchIdentifierError(context, overloads, node);
+        return SemanticError::cannotMatchIdentifierError(context, overloads, node);
     }
 
     // Multi instantiation in case of #validif
@@ -2064,7 +2065,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
 
             auto symbol = overloads[0]->overload->symbol;
             auto match  = matches[0];
-            return duplicatedSymbolError(context, node->sourceFile, node->token, symbol->kind, symbol->name, match->symbolOverload->symbol->kind, match->symbolOverload->node);
+            return SemanticError::duplicatedSymbolError(context, node->sourceFile, node->token, symbol->kind, symbol->name, match->symbolOverload->symbol->kind, match->symbolOverload->node);
         }
 
         return true;
@@ -2147,7 +2148,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
         if (justCheck)
             return false;
 
-        return cannotMatchIdentifierError(context, overloads, node);
+        return SemanticError::cannotMatchIdentifierError(context, overloads, node);
     }
 
     // There is more than one possible match, and this is an identifier for a name alias.
@@ -2179,7 +2180,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
             }
 
             SWAG_ASSERT(otherNode);
-            return duplicatedSymbolError(context, node->sourceFile, node->token, symbol->kind, symbol->name, otherKind, otherNode);
+            return SemanticError::duplicatedSymbolError(context, node->sourceFile, node->token, symbol->kind, symbol->name, otherKind, otherNode);
         }
 
         Diagnostic                diag{node, node->token, Fmt(Err(Err0116), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
@@ -4222,7 +4223,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         {
             if (identifierRef->flags & AST_SILENT_CHECK)
                 return true;
-            unknownIdentifier(context, identifierRef, CastAst<AstIdentifier>(identifier, AstNodeKind::Identifier));
+            SemanticError::unknownIdentifier(context, identifierRef, CastAst<AstIdentifier>(identifier, AstNodeKind::Identifier));
             return false;
         }
 

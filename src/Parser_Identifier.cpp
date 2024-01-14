@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "Ast.h"
-#include "Semantic.h"
+#include "Diagnostic.h"
 #include "LanguageSpec.h"
 #include "Scoped.h"
-#include "ErrorIds.h"
-#include "Diagnostic.h"
+#include "Semantic.h"
+#include "SemanticError.h"
 
 bool Parser::testIsSingleIdentifier(AstNode* node)
 {
@@ -485,7 +485,7 @@ bool Parser::doTopLevelIdentifier(AstNode* parent, AstNode** result)
         notes.push_back(Diagnostic::note(Nte(Nte1120)));
     }
 
-    Utf8 appendMsg = Semantic::findClosestMatchesMsg(tokenIdentifier.text, {}, IdentifierSearchFor::TopLevelInstruction);
+    Utf8 appendMsg = SemanticError::findClosestMatchesMsg(tokenIdentifier.text, {}, IdentifierSearchFor::TopLevelInstruction);
     if (!appendMsg.empty())
         notes.push_back(Diagnostic::note(appendMsg));
     return context->report(diag, notes);

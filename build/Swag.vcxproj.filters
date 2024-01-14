@@ -503,9 +503,6 @@
     <ClCompile Include="..\src\Semantic_Enum.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Semantic_Error.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Semantic_Expression.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
@@ -646,6 +643,9 @@
     </ClCompile>
     <ClCompile Include="..\src\Generic_Replace.cpp">
       <Filter>Semantic\Generic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SemanticError.cpp">
+      <Filter>Semantic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1000,6 +1000,9 @@
     </ClInclude>
     <ClInclude Include="../src/Generic.h">
       <Filter>Semantic\Generic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SemanticError.h">
+      <Filter>Semantic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

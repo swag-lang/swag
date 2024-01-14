@@ -1,16 +1,13 @@
 #include "pch.h"
-#include "Semantic.h"
-#include "TypeManager.h"
-#include "ByteCodeGen.h"
-#include "Concat.h"
 #include "Ast.h"
-#include "SourceFile.h"
-#include "Module.h"
-#include "Math.h"
-#include "ErrorIds.h"
-#include "Report.h"
-#include "LanguageSpec.h"
+#include "ByteCodeGen.h"
 #include "Diagnostic.h"
+#include "LanguageSpec.h"
+#include "Math.h"
+#include "Report.h"
+#include "Semantic.h"
+#include "SemanticError.h"
+#include "TypeManager.h"
 
 bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right)
 {
@@ -1006,10 +1003,10 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
         if (node->tokenId != TokenId::SymVertical &&
             node->tokenId != TokenId::SymAmpersand &&
             node->tokenId != TokenId::SymCircumflex)
-            return notAllowedError(context, node, leftTypeInfo);
+            return SemanticError::notAllowedError(context, node, leftTypeInfo);
 
         if (leftTypeInfo->isEnum() && !(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS) && rightTypeInfo == leftTypeInfo)
-            return notAllowedError(context, node, leftTypeInfo, "because the enum is not marked with '#[Swag.EnumFlags]'");
+            return SemanticError::notAllowedError(context, node, leftTypeInfo, "because the enum is not marked with '#[Swag.EnumFlags]'");
 
         if (leftTypeInfo->isEnum() && !(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS))
             return context->report({node, Fmt(Err(Err0037), node->token.ctext(), leftTypeInfo->getDisplayNameC())});

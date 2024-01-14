@@ -9,6 +9,7 @@
 #include "Naming.h"
 #include "Parser.h"
 #include "Semantic.h"
+#include "SemanticError.h"
 #include "ThreadManager.h"
 #include "TypeManager.h"
 #include "Workspace.h"
@@ -213,7 +214,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
         if (!itfSymbol)
         {
             Diagnostic diag{childFct, childFct->tokenName, Fmt(Err(Err0024), childFct->token.text.c_str(), typeInterface->name.c_str())};
-            auto       note = Diagnostic::note(findClosestMatchesMsg(childFct->token.text, {{typeInterface->scope, 0}}, IdentifierSearchFor::Whatever));
+            auto       note = Diagnostic::note(SemanticError::findClosestMatchesMsg(childFct->token.text, {{typeInterface->scope, 0}}, IdentifierSearchFor::Whatever));
             return context->report(diag, note);
         }
 
