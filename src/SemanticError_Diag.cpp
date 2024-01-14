@@ -353,9 +353,11 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
     diag->hint = hintMsg;
     errorParam.result0->push_back(diag);
 
+    // Generic comes from
     if (bi.genMatchFromNode)
     {
-        auto note = Diagnostic::note(bi.genMatchFromNode, Fmt(Nte(Nte0075), bi.genMatchFromNode->typeInfo->getDisplayNameC()));
+        auto msg  = Fmt(Nte(Nte0075), bi.genMatchFromNode->typeInfo->getDisplayNameC());
+        auto note = Diagnostic::note(bi.genMatchFromNode, msg);
         errorParam.addResult1(note);
     }
 
@@ -365,6 +367,11 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
     TypeManager::getCastErrorMsg(castMsg, castHint, castRemarks, bi.castErrorToType, bi.castErrorFromType, bi.castErrorFlags, bi.castErrorType, true);
     if (!castMsg.empty())
     {
+        Vector<Utf8> parts;
+        Diagnostic::tokenizeError(castMsg, parts);
+        if (parts.size() > 1)
+            castMsg = parts[1];
+
         if (errorParam.oneTry->dependentVar)
         {
             if (errorParam.oneTry->dependentVar->isGeneratedSelf())
@@ -378,10 +385,6 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
                 errorParam.addResult1(note);
             }
         }
-        else if (castHint.empty())
-        {
-            errorParam.addResult1(Diagnostic::note(castMsg));
-        }
         else
         {
             auto note  = Diagnostic::note(diag->sourceNode, diag->sourceNode->token, castMsg);
@@ -389,8 +392,11 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
             errorParam.addResult1(note);
         }
     }
-    else if (diag->hint.empty())
-        diag->hint = castHint;
+    else if (!castHint.empty())
+    {
+        if (diag->hint.empty())
+            diag->hint = castHint;
+    }
 
     // Here is
     if (errorParam.getFlags & GDFM_HERE_IS)

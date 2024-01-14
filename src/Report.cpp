@@ -62,16 +62,6 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
         }
     }
 
-    // Sometime an error is put inside a note, so be sure we deal also with the separator in that case
-    for (auto note : notes)
-    {
-        Diagnostic::tokenizeError(note->textMsg, parts);
-        if (parts.size() == 1)
-            continue;
-
-        note->textMsg = parts[1];
-    }
-
     Set<void*> doneGenParamsRemarks;
     for (auto note : notes)
     {

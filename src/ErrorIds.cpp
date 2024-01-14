@@ -1374,7 +1374,7 @@ void initErrors()
     SWAG_ERROR(Nte0074, "the UFCS argument is derived from 'this'");
     SWAG_ERROR(Nte0084, "the UFCS argument is derived from an implicit 'using const self' parameter");
     SWAG_ERROR(Nte0073, "the UFCS argument originates from an implicit 'using self' parameter");
-    SWAG_ERROR(Nte1123, "the array has %d elements of type '%s', which doesn't match a slice of type '%s'");
+    SWAG_ERROR(Nte1123, "the array has %d element(s) of type '%s', which doesn't match a slice of type '%s'");
     SWAG_ERROR(Nte0018, "the concealed call to '%s' returns type '%s', lacking a subscope");
     SWAG_ERROR(Nte0056, "the counterpart is an implicit 'using self' as an initial parameter");
     SWAG_ERROR(Nte0014, "the duplicated underlying enum value is '%s'");

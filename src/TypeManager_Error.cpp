@@ -146,14 +146,13 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
     }
     else if (toType->isInterface() && ((fromType->isStruct()) || (fromType->isPointerTo(TypeInfoKind::Struct))))
     {
-        auto fromTypeCpy = fromType;
-        if (fromTypeCpy->isPointerTo(TypeInfoKind::Struct))
+        if (fromType->isPointerTo(TypeInfoKind::Struct))
         {
-            hint        = Diagnostic::isType(fromTypeCpy);
-            fromTypeCpy = CastTypeInfo<TypeInfoPointer>(fromTypeCpy, TypeInfoKind::Pointer)->pointedType;
+            hint     = Diagnostic::isType(fromType);
+            fromType = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer)->pointedType;
         }
 
-        msg = Fmt(ErrNte(Err0176, forNote), fromTypeCpy->getDisplayNameC(), toType->getDisplayNameC());
+        msg = Fmt(ErrNte(Err0176, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
     else if (!toType->isPointerRef() && toType->isPointer() && fromType->isNativeInteger())
     {
@@ -172,9 +171,7 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
     {
         auto fromTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(fromType, TypeInfoKind::LambdaClosure);
         if (fromTypeFunc->firstDefaultValueIdx != UINT32_MAX)
-        {
             msg = Fmt(ErrNte(Err0690, forNote));
-        }
     }
     else if (!fromType->isPointer() && toType->isPointerRef())
     {
@@ -184,9 +181,8 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
     }
     else if (toType->isTuple() && fromType->isTuple())
     {
-        Utf8 toName;
+        Utf8 toName, fromName;
         toType->computeWhateverName(toName, COMPUTE_DISPLAY_NAME);
-        Utf8 fromName;
         fromType->computeWhateverName(fromName, COMPUTE_DISPLAY_NAME);
         remarks.push_back(Fmt("source type is %s", fromName.c_str()));
         remarks.push_back(Fmt("requested type is %s", toName.c_str()));
