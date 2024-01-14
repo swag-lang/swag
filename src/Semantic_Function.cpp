@@ -1430,7 +1430,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
         Diagnostic* note = nullptr;
 
         if (node->ownerInline && !(node->semFlags & SEMFLAG_EMBEDDED_RETURN))
-            note = Diagnostic::note(funcNode, Fmt(Nte(Nte0011), node->ownerInline->func->token.ctext(), funcNode->token.ctext()));
+            note = Diagnostic::note(funcNode, funcNode->getTokenName(), Fmt(Nte(Nte0011), node->ownerInline->func->token.ctext(), funcNode->token.ctext()));
 
         return context->report(diag, note);
     }

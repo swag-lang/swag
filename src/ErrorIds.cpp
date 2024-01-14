@@ -506,8 +506,8 @@ void initErrors()
     SWAG_ERROR(Err0192, "invalid pointer arithmetic                        $ pointer arithmetic is not allowed");
     SWAG_ERROR(Err0579, "invalid pointer arithmetic                        $ pointer arithmetic requires an integer, got '%s' instead");
     SWAG_ERROR(Err0193, "invalid pointer arithmetic                        $ pointer slicing is not allowed");
-    SWAG_ERROR(Err0529, "invalid range                                     $ the range lower bound '%I64u' is greater than the upper bound '%I64u'");
-    SWAG_ERROR(Err0528, "invalid range                                     $ the range lower bound '%lld' is greater than the upper bound '%lld'");
+    SWAG_ERROR(Err0529, "invalid range                                     $ the lower bound '%I64u' is greater than the upper bound '%I64u'");
+    SWAG_ERROR(Err0528, "invalid range                                     $ the lower bound '%lld' is greater than the upper bound '%lld'");
     SWAG_ERROR(Err0002, "invalid range type                                $ unexpected type '%s' in a range expression");
     SWAG_ERROR(Err0517, "invalid reference                                 $ 'ref' requires a pointer or a reference as an expression, got '%s' instead");
     SWAG_ERROR(Err0132, "invalid reference                                 $ invalid reference to the current file scope name");

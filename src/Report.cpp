@@ -147,11 +147,16 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
         note->collectRanges();
     }
 
+    // Move ranges from note to note if they share the same line of code, and they do not overlap
     for (int inote = 0; inote < (int) notes.size(); inote++)
     {
         auto note = notes[inote];
         if (!note->display)
             continue;
+
+        auto sourceFile0 = note->sourceFile;
+        if (sourceFile0 && sourceFile0->fileForSourceLocation)
+            sourceFile0 = sourceFile0->fileForSourceLocation;
 
         for (int inote1 = 0; inote1 < (int) notes.size(); inote1++)
         {
@@ -161,27 +166,10 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
             if (!note1->display)
                 continue;
 
-            auto sourceFile0 = note->sourceFile;
-            if (sourceFile0 && sourceFile0->fileForSourceLocation)
-                sourceFile0 = sourceFile0->fileForSourceLocation;
             auto sourceFile1 = note1->sourceFile;
             if (sourceFile1 && sourceFile1->fileForSourceLocation)
                 sourceFile1 = sourceFile1->fileForSourceLocation;
 
-            // No need to repeat the same source file line reference
-            if (sourceFile0 == sourceFile1 &&
-                note->showFileName &&
-                note->display &&
-                !note1->forceSourceFile &&
-                inote1 == inote + 1 &&
-                note1->textMsg.empty() &&
-                fuzzySameLine(note->startLocation.line, note1->startLocation.line) &&
-                fuzzySameLine(note->endLocation.line, note1->endLocation.line))
-            {
-                note1->showFileName = false;
-            }
-
-            // Move ranges from note to note if they share the same line of code, and they do not overlap
             if (note->showRange &&
                 note1->showRange &&
                 sourceFile0 == sourceFile1 &&
@@ -198,8 +186,6 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
                     for (size_t j = 0; j < note->ranges.size(); j++)
                     {
                         auto& r0 = note->ranges[j];
-                        if (i == j)
-                            continue;
                         if (r0.endLocation.column <= r1.startLocation.column)
                             continue;
                         if (r0.startLocation.column >= r1.endLocation.column)
@@ -215,8 +201,6 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
                                 if (note1->ranges.size() == 1)
                                     note1->display = false;
                             }
-
-                            // Two same ranges
                             else if (note1->ranges.size() == 1 && note->ranges.size() == 1)
                             {
                                 r1.mergeNext = true;
@@ -243,6 +227,44 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
                     note->remarks.insert(note->remarks.end(), note1->remarks.begin(), note1->remarks.end());
                     note1->display = false;
                 }
+            }
+        }
+    }
+
+    // No need to repeat the same source file line reference
+    for (int inote = 0; inote < (int) notes.size(); inote++)
+    {
+        auto note = notes[inote];
+        if (!note->display)
+            continue;
+        if (!note->showFileName)
+            continue;
+
+        auto sourceFile0 = note->sourceFile;
+        if (sourceFile0 && sourceFile0->fileForSourceLocation)
+            sourceFile0 = sourceFile0->fileForSourceLocation;
+
+        for (int inote1 = inote + 1; inote1 < (int) notes.size(); inote1++)
+        {
+            auto note1 = notes[inote1];
+            if (!note1->display)
+                continue;
+
+            auto sourceFile1 = note1->sourceFile;
+            if (sourceFile1 && sourceFile1->fileForSourceLocation)
+                sourceFile1 = sourceFile1->fileForSourceLocation;
+
+            if (sourceFile0 == sourceFile1 &&
+                !note1->forceSourceFile &&
+                note1->textMsg.empty() &&
+                fuzzySameLine(note->startLocation.line, note1->startLocation.line) &&
+                fuzzySameLine(note->endLocation.line, note1->endLocation.line))
+            {
+                note1->showFileName = false;
+            }
+            else
+            {
+                break;
             }
         }
     }

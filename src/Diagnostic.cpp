@@ -266,8 +266,14 @@ void Diagnostic::collectRanges()
 {
     if (!showRange || !showSourceCode)
         return;
+
+    // The main hint is transformed to a range
     if (hasLocation)
+    {
         ranges.push_back({startLocation, endLocation, hint, errorLevel});
+        hint.clear();
+    }
+
     if (ranges.empty())
         return;
 
