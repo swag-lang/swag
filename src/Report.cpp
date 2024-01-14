@@ -30,7 +30,18 @@ static bool fuzzySameLine(uint32_t line1, uint32_t line2)
 
 static void cleanNotes(Vector<Diagnostic*>& notes)
 {
-    // Error message can have differents parts
+    // Remove notes without messages
+    for (int i = 0; i < notes.size(); i++)
+    {
+        if (notes[i]->textMsg.empty())
+        {
+            notes.erase(notes.begin() + i);
+            i--;
+            continue;
+        }
+    }
+
+    // Error message can have different parts
     // We generate hint and notes...
     auto         err = notes[0];
     Vector<Utf8> parts;

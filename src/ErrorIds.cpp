@@ -563,7 +563,7 @@ void initErrors()
     SWAG_ERROR(Err0627, "invalid visit                                     $ can't visit a variadic type by pointer");
     SWAG_ERROR(Err0636, "invalid visit                                     $ can't visit an enum content by pointer");
     SWAG_ERROR(Err0629, "invalid visit                                     $ can't visit type '%s'");
-    SWAG_ERROR(Err1139, "invalid visit                                     $ cannot find the '%s' visit variant in '%s'");
+    SWAG_ERROR(Err1139, "invalid visit                                     $ cannot find the '%s' visit specialization in '%s'");
     SWAG_ERROR(Err0557, "invalid visit                                     $ the type '%s' cannot be visited with 'visit'");
     SWAG_ERROR(Err0486, "invalid void dereference                          $ dereferencing a pointer to 'void' is not valid $ 'void' does not have a valid size");
     SWAG_ERROR(Err0558, "linker error                                      $ the LLVM backend failed to create the target '%s'");

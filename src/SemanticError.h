@@ -7,6 +7,7 @@ struct AstIdentifier;
 struct AstIdentifierRef;
 struct AstNode;
 struct ByteCode;
+
 struct Diagnostic;
 struct ErrorContext;
 struct Module;
