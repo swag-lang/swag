@@ -4,7 +4,6 @@
 #include "Diagnostic.h"
 #include "Naming.h"
 #include "Semantic.h"
-#include "TypeManager.h"
 
 void SemanticError::commonErrorNotes(SemanticContext* context, const VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag, Vector<const Diagnostic*>& notes)
 {
