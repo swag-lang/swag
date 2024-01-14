@@ -1,20 +1,18 @@
 #include "pch.h"
 #include "Module.h"
-#include "Workspace.h"
-#include "ByteCode.h"
 #include "BackendLLVM.h"
 #include "BackendX64.h"
-#include "ThreadManager.h"
+#include "ByteCode.h"
 #include "Context.h"
-#include "Semantic.h"
-#include "SemanticJob.h"
-#include "ModuleManager.h"
-#include "Report.h"
 #include "LanguageSpec.h"
-#include "SaveGenJob.h"
+#include "ModuleManager.h"
 #include "Parser.h"
+#include "Report.h"
+#include "SaveGenJob.h"
+#include "SemanticError.h"
+#include "SemanticJob.h"
 #include "ThreadManager.h"
-#include "ModuleBuildJob.h"
+#include "Workspace.h"
 
 void Module::setup(const Utf8& moduleName, const Path& modulePath)
 {
@@ -1167,7 +1165,7 @@ bool Module::filterFunctionsToEmit()
     byteCodeFuncToGen.reserve((int) byteCodeFunc.size());
     for (auto bc : byteCodeFunc)
     {
-        SWAG_CHECK(Semantic::warnUnusedFunction(this, bc));
+        SWAG_CHECK(SemanticError::warnUnusedFunction(this, bc));
         if (!bc->canEmit())
             continue;
         byteCodeFuncToGen.push_back(bc);

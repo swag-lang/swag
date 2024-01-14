@@ -1,13 +1,14 @@
 #include "pch.h"
-#include "Semantic.h"
 #include "Ast.h"
-#include "LanguageSpec.h"
 #include "ByteCode.h"
+#include "LanguageSpec.h"
 #include "Module.h"
-#include "Report.h"
 #include "Naming.h"
+#include "Report.h"
+#include "Semantic.h"
+#include "SemanticError.h"
 
-bool Semantic::warnDeprecated(SemanticContext* context, AstNode* identifier)
+bool SemanticError::warnDeprecated(SemanticContext* context, AstNode* identifier)
 {
     auto node = identifier->resolvedSymbolOverload->node;
     if (!(node->attributeFlags & ATTRIBUTE_DEPRECATED))
@@ -66,7 +67,7 @@ bool Semantic::warnDeprecated(SemanticContext* context, AstNode* identifier)
     }
 }
 
-bool Semantic::warnUnusedFunction(Module* moduleToGen, ByteCode* one)
+bool SemanticError::warnUnusedFunction(Module* moduleToGen, ByteCode* one)
 {
     if (moduleToGen->kind == ModuleKind::Test)
         return true;
@@ -97,7 +98,7 @@ bool Semantic::warnUnusedFunction(Module* moduleToGen, ByteCode* one)
     return Report::report(diag);
 }
 
-bool Semantic::warnUnusedVariables(SemanticContext* context, Scope* scope)
+bool SemanticError::warnUnusedVariables(SemanticContext* context, Scope* scope)
 {
     auto node = context->node;
     if (!node->sourceFile || !node->sourceFile->module)
@@ -222,7 +223,7 @@ bool Semantic::warnUnusedVariables(SemanticContext* context, Scope* scope)
     return isOk;
 }
 
-bool Semantic::warnUnreachableCode(SemanticContext* context)
+bool SemanticError::warnUnreachableCode(SemanticContext* context)
 {
     auto node = context->node;
 

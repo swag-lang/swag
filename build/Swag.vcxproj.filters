@@ -536,9 +536,6 @@
     <ClCompile Include="..\src\Semantic_Var.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Semantic_Warn.cpp">
-      <Filter>Semantic</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\Semantic_Wait.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
@@ -651,6 +648,9 @@
       <Filter>Semantic\Error</Filter>
     </ClCompile>
     <ClCompile Include="..\src\SemanticError_Diag.cpp">
+      <Filter>Semantic\Error</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SemanticError_Warn.cpp">
       <Filter>Semantic\Error</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1027,7 +1027,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             symbolKind = SymbolKind::Enum;
     }
 
-    SWAG_CHECK(warnDeprecated(context, identifier));
+    SWAG_CHECK(SemanticError::warnDeprecated(context, identifier));
 
     if (symbolKind != SymbolKind::Variable && symbolKind != SymbolKind::Function)
     {

@@ -2,16 +2,19 @@
 #include "TypeMatch.h"
 #include "Symbol.h"
 
-struct SemanticContext;
-struct OneTryMatch;
-struct Diagnostic;
-struct AstNode;
 struct AlternativeScope;
-struct SourceFile;
-struct ErrorContext;
-struct Token;
-struct AstIdentifierRef;
 struct AstIdentifier;
+struct AstIdentifierRef;
+struct AstNode;
+struct ByteCode;
+struct Diagnostic;
+struct ErrorContext;
+struct Module;
+struct OneTryMatch;
+struct Scope;
+struct SemanticContext;
+struct SourceFile;
+struct Token;
 
 const uint32_t GDFM_HERE_IS = 0x00000001;
 const uint32_t GDFM_ALL     = 0xFFFFFFFF;
@@ -34,7 +37,13 @@ namespace SemanticError
     void findClosestMatches(const Utf8& searchName, const VectorNative<AlternativeScope>& scopeHierarchy, Vector<Utf8>& best, IdentifierSearchFor searchFor);
     Utf8 findClosestMatchesMsg(const Utf8& searchName, const VectorNative<AlternativeScope>& scopeHierarchy, IdentifierSearchFor searchFor);
 
+    bool warnUnusedFunction(Module* moduleToGen, ByteCode* one);
+    bool warnUnusedVariables(SemanticContext* context, Scope* scope);
+    bool warnUnreachableCode(SemanticContext* context);
+    bool warnDeprecated(SemanticContext* context, AstNode* identifier);
+
     void getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1, uint32_t getFlags = GDFM_ALL);
+
     void symbolErrorNotes(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag, Vector<const Diagnostic*>& notes);
     void symbolErrorRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag);
     bool cannotMatchIdentifierError(SemanticContext* context, MatchResult result, int paramIdx, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Vector<const Diagnostic*>& notes);

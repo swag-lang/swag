@@ -81,11 +81,6 @@ namespace Semantic
     bool checkIsConstExpr(JobContext* context, AstNode* expression, const Utf8& errMsg = "", const Utf8& errParam = "");
     bool checkInitDropCount(SemanticContext* context, AstNode* node, AstNode* expression, AstNode* count);
 
-    bool warnUnusedFunction(Module* moduleToGen, ByteCode* one);
-    bool warnUnusedVariables(SemanticContext* context, Scope* scope);
-    bool warnUnreachableCode(SemanticContext* context);
-    bool warnDeprecated(SemanticContext* context, AstNode* identifier);
-
     bool hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStruct* leftStruct, TypeInfoParam* parentField, VectorNative<FindUserOp>& result);
     bool hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStruct* leftStruct, SymbolName** result);
     bool hasUserOp(SemanticContext* context, const Utf8& name, AstNode* left, SymbolName** result);

@@ -6,6 +6,7 @@
 #include "Module.h"
 #include "Naming.h"
 #include "Os.h"
+#include "SemanticError.h"
 #include "SemanticJob.h"
 #include "TypeManager.h"
 
@@ -384,7 +385,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
     }
 
     // Warnings
-    SWAG_CHECK(warnUnusedVariables(context, funcNode->scope));
+    SWAG_CHECK(SemanticError::warnUnusedVariables(context, funcNode->scope));
 
     // Now the full function has been solved, so we wakeup jobs depending on that
     SWAG_CHECK(setFullResolve(context, funcNode));
@@ -1294,7 +1295,7 @@ AstFuncDecl* Semantic::getFunctionForReturn(AstNode* node)
 
 bool Semantic::resolveReturn(SemanticContext* context)
 {
-    SWAG_CHECK(warnUnreachableCode(context));
+    SWAG_CHECK(SemanticError::warnUnreachableCode(context));
 
     auto node     = CastAst<AstReturn>(context->node, AstNodeKind::Return);
     auto funcNode = getFunctionForReturn(node);

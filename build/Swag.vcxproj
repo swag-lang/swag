@@ -515,7 +515,7 @@
     <ClCompile Include="..\src\Semantic_UnaryExpression.cpp" />
     <ClCompile Include="..\src\Semantic_Var.cpp" />
     <ClCompile Include="..\src\Semantic_Wait.cpp" />
-    <ClCompile Include="..\src\Semantic_Warn.cpp" />
+    <ClCompile Include="..\src\SemanticError_Warn.cpp" />
     <ClCompile Include="..\src\Statistics.cpp" />
     <ClCompile Include="..\src\ScopeSwag.cpp" />
     <ClCompile Include="../src/SymTable.cpp" />

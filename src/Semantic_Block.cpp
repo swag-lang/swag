@@ -1,15 +1,14 @@
 #include "pch.h"
-#include "Semantic.h"
 #include "Ast.h"
 #include "AstOutput.h"
-#include "TypeManager.h"
 #include "ByteCodeGen.h"
-#include "Module.h"
-#include "ErrorIds.h"
-#include "Report.h"
-#include "LanguageSpec.h"
-#include "Parser.h"
 #include "Diagnostic.h"
+#include "LanguageSpec.h"
+#include "Module.h"
+#include "Parser.h"
+#include "Semantic.h"
+#include "SemanticError.h"
+#include "TypeManager.h"
 
 bool Semantic::resolveIf(SemanticContext* context)
 {
@@ -1017,7 +1016,7 @@ bool Semantic::resolveBreak(SemanticContext* context)
     SWAG_VERIFY(node->ownerBreakable, context->report({node, Err(Err0632)}));
     node->ownerBreakable->breakList.push_back(node);
 
-    SWAG_CHECK(warnUnreachableCode(context));
+    SWAG_CHECK(SemanticError::warnUnreachableCode(context));
     node->byteCodeFct = ByteCodeGen::emitBreak;
     return true;
 }
@@ -1025,7 +1024,7 @@ bool Semantic::resolveBreak(SemanticContext* context)
 bool Semantic::resolveUnreachable(SemanticContext* context)
 {
     auto node = context->node;
-    SWAG_CHECK(warnUnreachableCode(context));
+    SWAG_CHECK(SemanticError::warnUnreachableCode(context));
     node->byteCodeFct = ByteCodeGen::emitUnreachable;
     return true;
 }
@@ -1048,7 +1047,7 @@ bool Semantic::resolveFallThrough(SemanticContext* context)
     auto switchBlock = CastAst<AstSwitch>(node->ownerBreakable, AstNodeKind::Switch);
     SWAG_VERIFY(node->switchCase->caseIndex < (int) switchBlock->cases.size() - 1, context->report({node, Err(Err0635)}));
 
-    SWAG_CHECK(warnUnreachableCode(context));
+    SWAG_CHECK(SemanticError::warnUnreachableCode(context));
     node->byteCodeFct = ByteCodeGen::emitFallThrough;
 
     return true;
@@ -1066,7 +1065,7 @@ bool Semantic::resolveContinue(SemanticContext* context)
     checkBreakable->continueList.push_back(node);
     node->ownerBreakable = checkBreakable;
 
-    SWAG_CHECK(warnUnreachableCode(context));
+    SWAG_CHECK(SemanticError::warnUnreachableCode(context));
     node->byteCodeFct = ByteCodeGen::emitContinue;
     return true;
 }

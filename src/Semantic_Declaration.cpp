@@ -1,12 +1,11 @@
 #include "pch.h"
-#include "Semantic.h"
 #include "Ast.h"
 #include "ByteCodeGen.h"
-#include "TypeManager.h"
-#include "Module.h"
-#include "ErrorIds.h"
-#include "Naming.h"
 #include "Diagnostic.h"
+#include "Naming.h"
+#include "Semantic.h"
+#include "SemanticError.h"
+#include "TypeManager.h"
 
 bool Semantic::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeInfo* typeInfoVar)
 {
@@ -179,7 +178,7 @@ bool Semantic::resolveScopedStmtBefore(SemanticContext* context)
 
 bool Semantic::resolveScopedStmtAfter(SemanticContext* context)
 {
-    SWAG_CHECK(warnUnusedVariables(context, context->node->ownerScope));
+    SWAG_CHECK(SemanticError::warnUnusedVariables(context, context->node->ownerScope));
     return true;
 }
 
