@@ -173,8 +173,8 @@ void SemanticError::unknownIdentifierError(SemanticContext* context, AstIdentifi
     }
 
     VectorNative<OneTryMatch*> v;
-    symbolErrorRemarks(context, v, node, diag);
-    symbolErrorNotes(context, v, node, diag, notes);
+    errorRemarks(context, v, node, diag);
+    errorNotes(context, v, node, diag, notes);
 
     context->report(*diag, notes);
 }

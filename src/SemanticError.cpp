@@ -6,7 +6,7 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 
-void SemanticError::symbolErrorNotes(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag, Vector<const Diagnostic*>& notes)
+void SemanticError::errorNotes(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag, Vector<const Diagnostic*>& notes)
 {
     if (!node)
         return;
@@ -81,7 +81,7 @@ void SemanticError::symbolErrorNotes(SemanticContext* context, VectorNative<OneT
     }
 }
 
-void SemanticError::symbolErrorRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag)
+void SemanticError::errorRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag)
 {
     if (!node)
         return;
