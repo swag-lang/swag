@@ -25,43 +25,30 @@ void SemanticError::commonErrorNotes(SemanticContext* context, const VectorNativ
     // If we have an UFCS call, and the match does not come from its symbol table, then that means that we have not found the
     // symbol in the original struct also.
     if ((node->kind == AstNodeKind::Identifier || node->kind == AstNodeKind::FuncCall) &&
-        !tryMatches.empty())
+        tryMatches.size() == 1)
     {
-        auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
-        if (identifier->identifierRef()->startScope)
+        auto identifier    = CastAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+        auto identifierRef = identifier->identifierRef();
+        auto overload      = tryMatches[0]->overload;
+
+        if (identifierRef->startScope &&
+            identifier->ownerStructScope &&
+            tryMatches[0]->ufcs &&
+            overload->node->ownerStructScope &&
+            overload->node->ownerStructScope->owner != identifierRef->startScope->owner)
         {
-            size_t notFound = 0;
-            for (auto tryMatch : tryMatches)
+            if (identifierRef->typeInfo)
             {
-                if (tryMatch->ufcs &&
-                    tryMatch->overload->node->ownerStructScope &&
-                    identifier->ownerStructScope &&
-                    tryMatch->overload->node->ownerStructScope->owner != identifier->identifierRef()->startScope->owner)
-                    notFound++;
+                auto msg = Fmt(Nte(Nte0043), Naming::kindName(overload).c_str(), node->token.ctext(), identifierRef->typeInfo->getDisplayNameC(), overload->node->ownerStructScope->owner->token.ctext());
+                diag->remarks.push_back(msg);
             }
 
-            if (notFound == tryMatches.size())
+            for (auto s : identifierRef->startScope->childScopes)
             {
-                if (identifier->identifierRef()->typeInfo)
+                if (s->kind == ScopeKind::Impl && s->symTable.find(node->token.text))
                 {
-                    auto over = tryMatches.front()->overload;
-                    auto msg  = Fmt(Nte(Nte0043),
-                                   Naming::kindName(over).c_str(),
-                                   node->token.ctext(),
-                                   identifier->identifierRef()->typeInfo->getDisplayNameC(),
-                                   over->node->ownerStructScope->owner->token.ctext());
+                    auto msg = Fmt(Nte(Nte0044), node->token.ctext(), s->getFullName().c_str());
                     diag->remarks.push_back(msg);
-                }
-
-                for (auto s : identifier->identifierRef()->startScope->childScopes)
-                {
-                    if (s->kind == ScopeKind::Impl)
-                    {
-                        if (s->symTable.find(node->token.text))
-                        {
-                            diag->remarks.push_back(Fmt(Nte(Nte0044), node->token.ctext(), s->getFullName().c_str()));
-                        }
-                    }
                 }
             }
         }
