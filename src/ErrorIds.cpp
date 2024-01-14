@@ -1462,7 +1462,7 @@ void initErrors()
     SWAG_ERROR(Nte1122, "this has '%s' access (type is '%s')");
     SWAG_ERROR(Nte1131, "this 'discard' should be removed");
     SWAG_ERROR(Nte1056, "the function needs a mutable type '%s' as its first argument");
-    SWAG_ERROR(Nte1094, nullptr);
+    SWAG_ERROR(Nte1094, "here is the corresponding parameter of the %s");
     SWAG_ERROR(Nte0144, nullptr);
     SWAG_ERROR(Nte1057, nullptr);
     SWAG_ERROR(Nte0028, nullptr);

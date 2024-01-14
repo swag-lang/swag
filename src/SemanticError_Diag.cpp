@@ -276,7 +276,7 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
     }
 
     AstNode* destParamNode = nullptr;
-    if (errorParam.destParameters && bi.badSignatureParameterIdx < errorParam.destParameters->childs.size())
+    if (errorParam.destParameters && bi.badSignatureParameterIdx < (int) errorParam.destParameters->childs.size())
         destParamNode = errorParam.destParameters->childs[bi.badSignatureParameterIdx];
 
     SWAG_ASSERT(errorParam.oneTry->callParameters);
@@ -406,6 +406,12 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
             SWAG_ASSERT(errorParam.destFuncDecl);
             errorParam.addResult1(Diagnostic::hereIs(errorParam.destFuncDecl));
         }
+        else if (destParamNode && (destParamNode->flags & AST_GENERATED))
+        {
+            auto        msg  = Fmt(Nte(Nte1094), Naming::kindName(overload).c_str());
+            Diagnostic* note = Diagnostic::note(destParamNode, destParamNode->token, msg);
+            errorParam.addResult1(note);
+        }
         else if (destParamNode)
         {
             auto        msg  = Fmt(Nte(Nte0066), destParamNode->token.ctext(), Naming::kindName(overload).c_str());
@@ -461,7 +467,7 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
     // Get the call parameter that failed
     auto callParameters    = oneTry.callParameters;
     errorParam.badParamIdx = getBadParamIdx(oneTry, callParameters);
-    if (oneTry.callParameters && errorParam.badParamIdx >= 0 && errorParam.badParamIdx < callParameters->childs.size())
+    if (oneTry.callParameters && errorParam.badParamIdx >= 0 && errorParam.badParamIdx < (int) callParameters->childs.size())
         errorParam.failedParam = static_cast<AstFuncCallParam*>(callParameters->childs[errorParam.badParamIdx]);
     errorParam.badParamIdx += 1;
 
