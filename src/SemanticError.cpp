@@ -21,52 +21,46 @@ void SemanticError::commonErrorNotes(SemanticContext* context, const VectorNativ
         auto note = Diagnostic::note(tryMatches[0]->dependentVar, tryMatches[0]->dependentVar->token, msg);
         notes.push_back(note);
     }
-}
 
-void SemanticError::commonErrorRemarks(SemanticContext* context, const VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag)
-{
-    if (!node)
-        return;
-    if (node->kind != AstNodeKind::Identifier && node->kind != AstNodeKind::FuncCall)
-        return;
-    if (tryMatches.empty())
-        return;
-
-    // If we have an UFCS call, and the match does not come from its symtable, then that means that we have not found the
+    // If we have an UFCS call, and the match does not come from its symbol table, then that means that we have not found the
     // symbol in the original struct also.
-    auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
-    if (identifier->identifierRef()->startScope && !tryMatches.empty())
+    if ((node->kind == AstNodeKind::Identifier || node->kind == AstNodeKind::FuncCall) &&
+        !tryMatches.empty())
     {
-        size_t notFound = 0;
-        for (auto tryMatch : tryMatches)
+        auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+        if (identifier->identifierRef()->startScope)
         {
-            if (tryMatch->ufcs &&
-                tryMatch->overload->node->ownerStructScope &&
-                identifier->ownerStructScope &&
-                tryMatch->overload->node->ownerStructScope->owner != identifier->identifierRef()->startScope->owner)
-                notFound++;
-        }
-
-        if (notFound == tryMatches.size())
-        {
-            if (identifier->identifierRef()->typeInfo)
+            size_t notFound = 0;
+            for (auto tryMatch : tryMatches)
             {
-                auto over = tryMatches.front()->overload;
-                auto msg  = Fmt(Nte(Nte0043),
-                               Naming::kindName(over).c_str(),
-                               node->token.ctext(),
-                               identifier->identifierRef()->typeInfo->getDisplayNameC(),
-                               over->node->ownerStructScope->owner->token.ctext());
-                diag->remarks.push_back(msg);
+                if (tryMatch->ufcs &&
+                    tryMatch->overload->node->ownerStructScope &&
+                    identifier->ownerStructScope &&
+                    tryMatch->overload->node->ownerStructScope->owner != identifier->identifierRef()->startScope->owner)
+                    notFound++;
             }
 
-            for (auto s : identifier->identifierRef()->startScope->childScopes)
+            if (notFound == tryMatches.size())
             {
-                if (s->kind == ScopeKind::Impl)
+                if (identifier->identifierRef()->typeInfo)
                 {
-                    if (s->symTable.find(node->token.text))
+                    auto over = tryMatches.front()->overload;
+                    auto msg  = Fmt(Nte(Nte0043),
+                                   Naming::kindName(over).c_str(),
+                                   node->token.ctext(),
+                                   identifier->identifierRef()->typeInfo->getDisplayNameC(),
+                                   over->node->ownerStructScope->owner->token.ctext());
+                    diag->remarks.push_back(msg);
+                }
+
+                for (auto s : identifier->identifierRef()->startScope->childScopes)
+                {
+                    if (s->kind == ScopeKind::Impl)
                     {
-                        diag->remarks.push_back(Fmt(Nte(Nte0044), node->token.ctext(), s->getFullName().c_str()));
+                        if (s->symTable.find(node->token.text))
+                        {
+                            diag->remarks.push_back(Fmt(Nte(Nte0044), node->token.ctext(), s->getFullName().c_str()));
+                        }
                     }
                 }
             }

@@ -15,7 +15,7 @@ void Diagnostic::setupColors()
     warningColor      = LogColor::Magenta;
     noteColor         = LogColor::Cyan;
     stackColor        = LogColor::DarkYellow;
-    remarkColor       = LogColor::White;
+    remarkColor       = LogColor::Gray;
     autoRemarkColor   = LogColor::Gray;
     sourceFileColor   = LogColor::Gray;
 }
@@ -209,7 +209,6 @@ void Diagnostic::printRemarks()
 
     if (!remarks.empty())
     {
-        printMargin(true, true);
         for (auto r : remarks)
         {
             if (r.empty())
