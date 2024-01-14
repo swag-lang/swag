@@ -2825,47 +2825,53 @@ bool Semantic::getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef
     if (isFunctionButNotACall(context, node, symbol))
         canDoUfcs = false;
 
-    if (canDoUfcs)
+    if (!canDoUfcs)
+        return true;
+
+    // If a variable is defined just before a function call, then this can be an UFCS (uniform function call syntax)
+    if (identifierRef->resolvedSymbolName && identifierRef->previousResolvedNode)
     {
-        // If a variable is defined just before a function call, then this can be an UFCS (uniform function call syntax)
-        if (identifierRef->resolvedSymbolName && identifierRef->previousResolvedNode)
+        bool canTry = false;
+
+        // Before was a variable
+        if (identifierRef->resolvedSymbolName->kind == SymbolKind::Variable)
+            canTry = true;
+        // Before was an enum value
+        else if (identifierRef->resolvedSymbolName->kind == SymbolKind::EnumValue)
+            canTry = true;
+        // Before was a function call
+        else if (identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
+                 identifierRef->previousResolvedNode &&
+                 identifierRef->previousResolvedNode->kind == AstNodeKind::FuncCall)
+            canTry = true;
+        // Before was an inlined function call
+        else if (identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
+                 identifierRef->previousResolvedNode &&
+                 identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier &&
+                 identifierRef->previousResolvedNode->childs.size() &&
+                 identifierRef->previousResolvedNode->childs.front()->kind == AstNodeKind::FuncCallParams &&
+                 identifierRef->previousResolvedNode->childs.back()->kind == AstNodeKind::Inline)
+            canTry = true;
+
+        if (canTry)
         {
-            bool canTry = false;
-
-            // Before was a variable
-            if (identifierRef->resolvedSymbolName->kind == SymbolKind::Variable)
-                canTry = true;
-            // Before was an enum value
-            else if (identifierRef->resolvedSymbolName->kind == SymbolKind::EnumValue)
-                canTry = true;
-            // Before was a function call
-            else if (identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
-                     identifierRef->previousResolvedNode &&
-                     identifierRef->previousResolvedNode->kind == AstNodeKind::FuncCall)
-                canTry = true;
-            // Before was an inlined function call
-            else if (identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
-                     identifierRef->previousResolvedNode &&
-                     identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier &&
-                     identifierRef->previousResolvedNode->childs.size() &&
-                     identifierRef->previousResolvedNode->childs.front()->kind == AstNodeKind::FuncCallParams &&
-                     identifierRef->previousResolvedNode->childs.back()->kind == AstNodeKind::Inline)
-                canTry = true;
-
-            if (canTry)
+            SWAG_ASSERT(identifierRef->previousResolvedNode);
+            if (!node->callParameters)
             {
-                SWAG_ASSERT(identifierRef->previousResolvedNode);
-                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
-                canTry        = canTryUfcs(context, typeFunc, node->callParameters, identifierRef->previousResolvedNode, true);
-                YIELD();
-                if (canTry)
-                    *ufcsFirstParam = identifierRef->previousResolvedNode;
-                SWAG_VERIFY(node->callParameters, context->report({node, Fmt(Err(Err0020), typeFunc->getDisplayNameC())}));
+                Diagnostic diag{node, Fmt(Err(Err0020), Naming::kindName(overload).c_str())};
+                auto       note = Diagnostic::hereIs(overload);
+                return context->report(diag, note);
             }
+
+            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+            canTry        = canTryUfcs(context, typeFunc, node->callParameters, identifierRef->previousResolvedNode, true);
+            YIELD();
+            if (canTry)
+                *ufcsFirstParam = identifierRef->previousResolvedNode;
         }
     }
 
-    if (canDoUfcs && symbol->kind == SymbolKind::Variable)
+    if (symbol->kind == SymbolKind::Variable)
     {
         bool fine = false;
 

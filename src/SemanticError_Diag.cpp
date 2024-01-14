@@ -75,8 +75,7 @@ static void errorMissingParameters(SemanticContext* context, ErrorParam& errorPa
         node = errorParam.errorNode;
 
     auto overload = errorParam.oneTry->overload;
-    Utf8 niceName = "the " + Naming::kindName(overload);
-    auto diag     = new Diagnostic{node, Fmt(Err(Err0020), niceName.c_str())};
+    auto diag     = new Diagnostic{node, Fmt(Err(Err0020), Naming::kindName(overload).c_str())};
     errorParam.result0->push_back(diag);
     errorParam.addResult1(Diagnostic::hereIs(overload));
 }
@@ -91,7 +90,7 @@ static void errorNotEnoughParameters(SemanticContext* context, ErrorParam& error
 
     Diagnostic* diag;
     if (!callParameters || callParameters->childs.empty())
-        diag = new Diagnostic{node, node->token, Fmt(Err(Err0020), niceName.c_str())};
+        diag = new Diagnostic{node, node->token, Fmt(Err(Err0020), Naming::kindName(overload).c_str())};
     else if (errorParam.destAttrDecl)
         diag = new Diagnostic{node, node->token, Fmt(Err(Err0157), niceName.c_str())};
     else

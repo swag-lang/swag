@@ -683,7 +683,7 @@ void initErrors()
     SWAG_ERROR(Err1086, "missing 'visit' expression                        $ expected the element to visit before '%s'");
     SWAG_ERROR(Err1212, "missing 'visit' variable                          $ expected another 'visit' variable between ',' and ':' $ the first 'visit' variable is the value, the second one is the index");
     SWAG_ERROR(Err1087, "missing 'while' boolean expression                $ expected a boolean expression before '%s'");
-    SWAG_ERROR(Err0020, "missing arguments                                 $ %s should have arguments but none were provided");
+    SWAG_ERROR(Err0020, "missing arguments                                 $ the %s should have arguments but none were provided");
     SWAG_ERROR(Err0601, "missing arguments                                 $ the '#[Swag.Using]' attribute should have at least one argument");
     SWAG_ERROR(Err0075, "missing attribute                                 $ 'opVisit' functions must have the '#[Swag.Macro]' attribute");
     SWAG_ERROR(Err1026, "missing attribute name                            $ expected an attribute name before '('");
