@@ -51,6 +51,8 @@ void Diagnostic::addRange(const Token& token, const Utf8& h)
 
 void Diagnostic::addRange(AstNode* node, const Utf8& h)
 {
+    if (!node)
+        return;
     SourceLocation start, end;
     node->computeLocation(start, end);
     addRange(start, end, h);
