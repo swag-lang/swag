@@ -1367,7 +1367,6 @@ void initErrors()
     SWAG_ERROR(Nte0126, "public structs should export all their special functions");
     SWAG_ERROR(Nte1052, "should be casted to a sized integer like 's32', 's64', etc.");
     SWAG_ERROR(Nte0081, "should conform to type '%s'");
-    SWAG_ERROR(Nte1094, "should this be removed?")
     SWAG_ERROR(Nte1001, "the % s '%s' has only been used as a scope to find function '%s'");
     SWAG_ERROR(Nte0046, "the %s '%s' is waiting for %s '%s' to be solved");
     SWAG_ERROR(Nte0043, "the %s '%s' wasn't found in '%s'. The alternative from '%s' was selected");
@@ -1414,7 +1413,6 @@ void initErrors()
     SWAG_ERROR(Nte1070, "this %s has the '#[Swag.Compiler]' attribute, which makes it compile-time only");
     SWAG_ERROR(Nte1084, "this %s is of type '%s'");
     SWAG_ERROR(Nte0006, "this 'using' field is convertible");
-    SWAG_ERROR(Nte0144, "this appears to be a potentially invalid UFCS call");
     SWAG_ERROR(Nte1030, "this argument has been named");
     SWAG_ERROR(Nte0062, "this can be converted too");
     SWAG_ERROR(Nte0071, "this function call can't be evaluated at compile-time");
@@ -1464,6 +1462,8 @@ void initErrors()
     SWAG_ERROR(Nte1122, "this has '%s' access (type is '%s')");
     SWAG_ERROR(Nte1131, "this 'discard' should be removed");
     SWAG_ERROR(Nte1056, "the function needs a mutable type '%s' as its first argument");
+    SWAG_ERROR(Nte1094, nullptr);
+    SWAG_ERROR(Nte0144, nullptr);
     SWAG_ERROR(Nte1057, nullptr);
     SWAG_ERROR(Nte0028, nullptr);
     SWAG_ERROR(Nte1023, nullptr);

@@ -441,37 +441,8 @@ static int getBadParamIdx(OneTryMatch& oneTry, AstNode* callParameters)
     return badParamIdx;
 }
 
-bool Semantic::preprocessMatchError(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1)
-{
-    SymbolOverload*    overload = oneTry.overload;
-    auto&              match    = oneTry.symMatchContext;
-    BadSignatureInfos& bi       = oneTry.symMatchContext.badSignatureInfos;
-    auto               typeFunc = overload->symbol->kind == SymbolKind::Function ? CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr) : nullptr;
-
-    // UFCS.toto(a, ...) with in fact toto(a, ...)
-    if (match.result == MatchResult::BadSignature &&
-        typeFunc &&
-        match.parameters.size() == typeFunc->parameters.size() + 1 &&
-        oneTry.ufcs &&
-        typeFunc->parameters.size() >= 1 &&
-        !typeFunc->parameters[0]->typeInfo->isSelf() &&
-        bi.badSignatureParameterIdx == 0)
-    {
-        auto ufcs  = match.parameters[0];
-        auto note  = Diagnostic::note(ufcs, ufcs->token, Nte(Nte0144));
-        note->hint = Nte(Nte1094);
-        result1.push_back(note);
-    }
-
-    return false;
-}
-
 void Semantic::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1, uint32_t getFlags)
 {
-    // Smart changes for smarter errors (very specific cases)
-    if (preprocessMatchError(context, oneTry, result0, result1))
-        return;
-
     BadSignatureInfos& bi        = oneTry.symMatchContext.badSignatureInfos;
     bi.badSignatureGivenType     = Generic::replaceGenericTypes(oneTry.symMatchContext.genericReplaceTypes, bi.badSignatureGivenType);
     bi.badSignatureRequestedType = Generic::replaceGenericTypes(oneTry.symMatchContext.genericReplaceTypes, bi.badSignatureRequestedType);
