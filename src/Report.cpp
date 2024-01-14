@@ -563,7 +563,11 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
             if (dismiss)
             {
                 if (g_CommandLine.verboseTestErrors)
-                    reportInternal(diag, notes);
+                {
+                    if (g_CommandLine.verboseErrorFilter.empty() || diag.textMsg.containsNoCase(g_CommandLine.verboseErrorFilter))
+                        reportInternal(diag, notes);
+                }
+
                 return false;
             }
         }
@@ -599,7 +603,11 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
             if (dismiss)
             {
                 if (g_CommandLine.verboseTestErrors)
-                    reportInternal(diag, notes);
+                {
+                    if (g_CommandLine.verboseErrorFilter.empty() || diag.textMsg.containsNoCase(g_CommandLine.verboseErrorFilter))
+                        reportInternal(diag, notes);
+                }
+
                 return true;
             }
         }

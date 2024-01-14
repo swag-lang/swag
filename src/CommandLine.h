@@ -88,6 +88,7 @@ struct CommandLine
     bool  errorAbsolute         = false;
     bool  errorSyntaxColor      = true;
     float errorSyntaxColorLum   = -1.0f;
+    Utf8  verboseErrorFilter;
 
     // Output
     Utf8 buildCfg           = "fast-debug";

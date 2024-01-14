@@ -18,9 +18,10 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu sc doc",           "--verbose-path",             nullptr,    CommandLineType::Bool,          &cmdLine->verbosePath, nullptr, "log global paths");
     addArg("bu sc",               "--verbose-link",             nullptr,    CommandLineType::Bool,          &cmdLine->verboseLink, nullptr, "log linker command line");
     addArg("bu sc",               "--verbose-ctypes",           nullptr,    CommandLineType::Bool,          &cmdLine->verboseConcreteTypes, nullptr, "log generated concrete types");
-    addArg("te",                  "--verbose-test-errors",      nullptr,    CommandLineType::Bool,          &cmdLine->verboseTestErrors, nullptr, "log errors during test");
     addArg("bu sc te doc",        "--verbose-stages",           nullptr,    CommandLineType::Bool,          &cmdLine->verboseStages, nullptr, "log compiler stages");                                             
-                                                                
+    addArg("te",                  "--verbose-errors",           "-ve",      CommandLineType::Bool,          &cmdLine->verboseTestErrors, nullptr, "log errors during test");
+    addArg("te",                  "--verbose-errors-filter",    "-vef",     CommandLineType::String,        &cmdLine->verboseErrorFilter, nullptr, "filter log errors during test");
+
     addArg("bu sc doc",           "--error-oneline",            "-el",      CommandLineType::Bool,          &cmdLine->errorOneLine, nullptr, "display errors in a single line");
     addArg("bu sc doc",           "--error-absolute",           "-ea",      CommandLineType::Bool,          &cmdLine->errorAbsolute, nullptr, "display absolute paths when an error is raised");
     addArg("bu sc doc",           "--error-syntax-color",       "-es",      CommandLineType::Bool,          &cmdLine->errorSyntaxColor, nullptr, "syntax color code when an error is raised");
