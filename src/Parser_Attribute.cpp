@@ -18,6 +18,7 @@ bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
     SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err1072), token.ctext())));
 
     attrNode->inheritTokenName(token);
+    attrNode->tokenName = token;
 
     auto typeInfo      = makeType<TypeInfoFuncAttr>();
     typeInfo->declNode = attrNode;

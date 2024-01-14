@@ -1016,6 +1016,12 @@ const Token& AstNode::getTokenName()
         return fctDecl->tokenName;
     }
 
+    if (kind == AstNodeKind::AttrDecl)
+    {
+        auto attrDecl = CastAst<AstAttrDecl>(this, AstNodeKind::AttrDecl);
+        return attrDecl->tokenName;
+    }
+
     if (kind == AstNodeKind::StructDecl)
     {
         auto structDecl = CastAst<AstStruct>(this, AstNodeKind::StructDecl);

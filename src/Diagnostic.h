@@ -221,5 +221,4 @@ struct Diagnostic
     bool hasLocation     = false;
     bool forceSourceFile = false;
     bool isNote          = false;
-    bool closeFileName   = false;
 };

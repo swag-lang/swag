@@ -580,6 +580,7 @@ struct AstAttrDecl : public AstNode
 {
     AstNode* clone(CloneContext& context);
 
+    Token    tokenName;
     AstNode* parameters;
 };
 

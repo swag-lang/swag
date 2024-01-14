@@ -209,6 +209,8 @@ void Diagnostic::printRemarks()
 
     if (!remarks.empty())
     {
+        if (autoRemarks.empty())
+            printMargin(true, true);
         for (auto r : remarks)
         {
             if (r.empty())
@@ -575,8 +577,7 @@ void Diagnostic::report()
             g_Log.eol();
         printMarginLineNo(0);
         g_Log.setColor(marginBorderColor);
-        g_Log.print(LogSymbol::UpRight);
-        g_Log.print(LogSymbol::HorizontalLine);
+        g_Log.print(LogSymbol::VerticalLine);
         g_Log.print(" ");
         g_Log.setColor(sourceFileColor);
         printSourceLine();
@@ -593,15 +594,6 @@ void Diagnostic::report()
 
     // Code remarks
     printRemarks();
-
-    if (showSourceCode && closeFileName)
-    {
-        printMarginLineNo(0);
-        g_Log.setColor(marginBorderColor);
-        g_Log.print(LogSymbol::DownRight);
-        g_Log.print(LogSymbol::HorizontalLine);
-        g_Log.eol();
-    }
 
     g_Log.setDefaultColor();
 }

@@ -242,30 +242,6 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
             }
         }
     }
-
-    Diagnostic* prevNote = nullptr;
-    for (auto note : notes)
-    {
-        if (!note->display)
-            continue;
-
-        if (note->showFileName || !note->showSourceCode)
-        {
-            if (prevNote)
-                prevNote->closeFileName = true;
-        }
-
-        prevNote = note;
-    }
-
-    for (size_t i = notes.size() - 1; i >= 0; i--)
-    {
-        if (notes[i]->display)
-        {
-            notes[i]->closeFileName = true;
-            break;
-        }
-    }
 }
 
 static void reportInternal(const Diagnostic& diag, const Vector<const Diagnostic*>& inNotes)

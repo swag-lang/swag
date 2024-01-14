@@ -548,6 +548,7 @@ AstNode* AstAttrDecl::clone(CloneContext& context)
 {
     auto newNode = Ast::newNode<AstAttrDecl>();
     newNode->copyFrom(context, this);
+    newNode->tokenName = tokenName;
 
     newNode->parameters = findChildRef(parameters, newNode);
     return newNode;
