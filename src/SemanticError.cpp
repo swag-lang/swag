@@ -12,7 +12,6 @@ void SemanticError::errorNotes(SemanticContext* context, VectorNative<OneTryMatc
         return;
     if (node->kind != AstNodeKind::Identifier && node->kind != AstNodeKind::FuncCall)
         return;
-    auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
 
     // Symbol has been found with a using : display it
     if (tryMatches.size() == 1 && tryMatches[0]->dependentVar)
@@ -22,61 +21,6 @@ void SemanticError::errorNotes(SemanticContext* context, VectorNative<OneTryMatc
         {
             auto note = Diagnostic::note(tryMatches[0]->dependentVar, Fmt(Nte(Nte0013), tryMatches[0]->overload->symbol->name.c_str()));
             notes.push_back(note);
-        }
-    }
-
-    // Additional error if the first parameter does not match, or if nothing matches
-    bool badUfcs = tryMatches.empty();
-    for (auto over : tryMatches)
-    {
-        if (over->symMatchContext.result == MatchResult::BadSignature && over->symMatchContext.badSignatureInfos.badSignatureParameterIdx == 0)
-        {
-            badUfcs = true;
-            break;
-        }
-    }
-
-    if (badUfcs && !identifier->identifierRef()->startScope)
-    {
-        // There's something before (identifier is not the only one in the identifierRef).
-        if (identifier != identifier->parent->childs.front())
-        {
-            auto idIdx = identifier->childParentIdx();
-            auto prev  = identifier->identifierRef()->childs[idIdx - 1];
-            if (prev->resolvedSymbolName)
-            {
-                if (prev->hasExtMisc() && prev->extMisc()->resolvedUserOpSymbolOverload)
-                {
-                    auto typeInfo = TypeManager::concreteType(prev->extMisc()->resolvedUserOpSymbolOverload->typeInfo);
-                    auto note     = Diagnostic::note(prev, Fmt(Nte(Nte0018), prev->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str(), typeInfo->getDisplayNameC()));
-                    note->hint    = Diagnostic::isType(typeInfo);
-                    notes.push_back(note);
-                    return;
-                }
-
-                if (prev->kind == AstNodeKind::ArrayPointerIndex)
-                {
-                    auto api = CastAst<AstArrayPointerIndex>(prev, AstNodeKind::ArrayPointerIndex);
-                    if (api->array->typeInfo)
-                    {
-                        prev           = api->array;
-                        auto typeArray = CastTypeInfo<TypeInfoArray>(api->array->typeInfo, TypeInfoKind::Array);
-                        auto note      = Diagnostic::note(prev, Fmt(Nte(Nte0000), prev->token.ctext(), typeArray->finalType->getDisplayNameC()));
-                        notes.push_back(note);
-                    }
-                }
-                else
-                {
-                    Diagnostic* note = nullptr;
-                    if (prev->typeInfo)
-                        note = Diagnostic::note(prev, Fmt(Nte(Nte0001), prev->token.ctext(), Naming::aKindName(prev->resolvedSymbolName->kind).c_str(), prev->typeInfo->getDisplayNameC()));
-                    else
-                        note = Diagnostic::note(prev, Fmt(Nte(Nte0010), prev->token.ctext(), Naming::aKindName(prev->resolvedSymbolName->kind).c_str()));
-                    notes.push_back(note);
-                    if (prev->resolvedSymbolOverload)
-                        notes.push_back(Diagnostic::hereIs(prev));
-                }
-            }
         }
     }
 }

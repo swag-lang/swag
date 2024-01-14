@@ -106,11 +106,47 @@ static Diagnostic* unknownIdentifierInScope(AstIdentifierRef* identifierRef, Ast
     return diag;
 }
 
+static bool badParentScope(AstIdentifier* identifier, Vector<const Diagnostic*>& notes)
+{
+    if (identifier->identifierRef()->startScope || identifier == identifier->parent->childs.front())
+        return false;
+
+    auto prev = identifier->identifierRef()->childs[identifier->childParentIdx() - 1];
+    if (!prev->resolvedSymbolName)
+        return false;
+
+    if (prev->hasExtMisc() && prev->extMisc()->resolvedUserOpSymbolOverload)
+    {
+        auto typeInfo = TypeManager::concreteType(prev->extMisc()->resolvedUserOpSymbolOverload->typeInfo);
+        auto msg      = Fmt(Nte(Nte0018), prev->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str(), typeInfo->getDisplayNameC());
+        auto note     = Diagnostic::note(prev, msg);
+        notes.push_back(note);
+    }
+    else if (prev->kind == AstNodeKind::ArrayPointerIndex)
+    {
+        auto api       = CastAst<AstArrayPointerIndex>(prev, AstNodeKind::ArrayPointerIndex);
+        auto typeArray = CastTypeInfo<TypeInfoArray>(api->array->typeInfo, TypeInfoKind::Array);
+        auto note      = Diagnostic::note(api->array, Fmt(Nte(Nte0000), api->array->token.ctext(), typeArray->finalType->getDisplayNameC()));
+        notes.push_back(note);
+    }
+    else
+    {
+        Diagnostic* note     = nullptr;
+        auto        kindName = Naming::aKindName(prev->resolvedSymbolName->kind);
+        if (prev->typeInfo)
+            note = Diagnostic::note(prev, Fmt(Nte(Nte0001), prev->token.ctext(), kindName.c_str(), prev->typeInfo->getDisplayNameC()));
+        else
+            note = Diagnostic::note(prev, Fmt(Nte(Nte0010), prev->token.ctext(), kindName.c_str()));
+        notes.push_back(note);
+        if (prev->resolvedSymbolOverload)
+            notes.push_back(Diagnostic::hereIs(prev));
+    }
+
+    return true;
+}
+
 void SemanticError::unknownIdentifierError(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node)
 {
-    auto& scopeHierarchy     = context->cacheScopeHierarchy;
-    auto& scopeHierarchyVars = context->cacheScopeHierarchyVars;
-
     // What kind of thing to we search for ?
     auto searchFor = IdentifierSearchFor::Whatever;
     if (node->parent->parent && node->parent->parent->kind == AstNodeKind::TypeExpression && node->parent->childs.back() == node)
@@ -151,18 +187,18 @@ void SemanticError::unknownIdentifierError(SemanticContext* context, AstIdentifi
     }
 
     // Find best matches
-    if (identifierRef->startScope)
+    if (!badParentScope(node, notes))
     {
+        auto& scopeHierarchy     = context->cacheScopeHierarchy;
+        auto& scopeHierarchyVars = context->cacheScopeHierarchyVars;
         scopeHierarchy.clear();
-        Semantic::addAlternativeScopeOnce(scopeHierarchy, identifierRef->startScope);
+        if (identifierRef->startScope)
+            Semantic::addAlternativeScopeOnce(scopeHierarchy, identifierRef->startScope);
+        else
+            Semantic::collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, COLLECT_ALL);
+        Utf8 appendMsg = findClosestMatchesMsg(node->token.text, scopeHierarchy, searchFor);
+        notes.push_back(Diagnostic::note(appendMsg));
     }
-    else
-    {
-        Semantic::collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, COLLECT_ALL);
-    }
-
-    Utf8 appendMsg = findClosestMatchesMsg(node->token.text, scopeHierarchy, searchFor);
-    notes.push_back(Diagnostic::note(appendMsg));
 
     // Error in scope context
     if (identifierRef->startScope)
