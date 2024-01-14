@@ -256,7 +256,7 @@ void initErrors()
     SWAG_ERROR(Err0859, "forbidden call                                    $ the 'compileString' function is not accessible in this context $ this compiler stage does not allow meta-programmation");
     SWAG_ERROR(Err0231, "forbidden copy                                    $ the copy of '%s' is disabled because the struct is marked with '#[Swag.NoCopy]'");
     SWAG_ERROR(Err0893, "generic symbol already defined                    $ the generic symbol '%s' has already been defined in a parent scope");
-    SWAG_ERROR(Err0070, "generic type msimatch                             $ unexpected type of the generic %s for %s ('%s' expected, '%s' provided)");
+    SWAG_ERROR(Err0070, "generic type msimatch                             $ unexpected type of the generic %s ('%s' expected, '%s' provided)");
     SWAG_ERROR(Err1019, "identifier expected                               $ expected a function call after '%s', found '%s' instead");
     SWAG_ERROR(Err0431, "immutable global variable                         $ the global variable '%s' is immutable at compile-time because it's initialized to 0");
     SWAG_ERROR(Err1056, "incomplete 'case' expression list                 $ expected another expression after ',' and before ':' $ ',' indicates a list of 'case' expressions; provide the next expression or consider removing the ','");
@@ -448,8 +448,8 @@ void initErrors()
     SWAG_ERROR(Err0039, "invalid generic                                   $ can't instantiate the generic struct '%s' because of missing contextual types replacements");
     SWAG_ERROR(Err0123, "invalid generic                                   $ the generic value '%s' has already been deduced from arguments to be '%s', and '%s' is provided here");
     SWAG_ERROR(Err0815, "invalid generic argument                          $ invalid usage of %s ('%s') as a generic argument $ a generic argument must be a literal or a type");
-    SWAG_ERROR(Err0054, "invalid generic argument                          $ unexpected generic %s for %s (a type is expected but a value is provided) $ this is a literal but a type was expected");
-    SWAG_ERROR(Err0057, "invalid generic argument                          $ unexpected generic %s for %s (a value is expected but a type is provided) $ this is a type but a literal was expected");
+    SWAG_ERROR(Err0054, "invalid generic argument                          $ unexpected generic %s (a type is expected but a value is provided) $ this is a literal but a type was expected");
+    SWAG_ERROR(Err0057, "invalid generic argument                          $ unexpected generic %s (a value is expected but a type is provided) $ this is a type but a literal was expected");
     SWAG_ERROR(Err0659, "invalid generic parameter                         $ the special function '%s' expects a literal as a generic parameter, got type '%s' instead");
     SWAG_ERROR(Err1058, "invalid generic parameter name                    $ expected an identifier as the generic name, found '%s' instead");
     SWAG_ERROR(Err2004, "invalid hexadecimal number format                 $ hexadecimal literals can only contain digits 0-9, A-F, and a-f, found '%s' instead");
@@ -1325,7 +1325,7 @@ void initErrors()
     SWAG_ERROR(Nte0026, "here is the %s");
     SWAG_ERROR(Nte0031, "here is the deprecated definition");
     SWAG_ERROR(Nte0064, "here is the field causing the recursion");
-    SWAG_ERROR(Nte0068, "here is the generic parameter '%s' of %s");
+    SWAG_ERROR(Nte0068, "here is the generic parameter '%s' of the %s");
     SWAG_ERROR(Nte0075, "here is the origin of the instantiation type '%s'");
     SWAG_ERROR(Nte0035, "here is the other '#import'");
     SWAG_ERROR(Nte0036, "here is the other definition");

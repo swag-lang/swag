@@ -213,24 +213,23 @@ static void errorBadGenericSignature(SemanticContext* context, ErrorParam& error
     auto                     overload  = errorParam.oneTry->overload;
     const auto&              match     = errorParam.oneTry->symMatchContext;
     const BadSignatureInfos& bi        = match.badSignatureInfos;
-    Utf8                     niceName  = "the " + Naming::kindName(overload);
     Utf8                     niceArg   = Naming::niceArgumentRank(errorParam.badParamIdx);
     auto                     errorNode = match.genericParameters[bi.badSignatureParameterIdx];
 
     Diagnostic* diag;
     if (match.flags & SymbolMatchContext::MATCH_ERROR_VALUE_TYPE)
     {
-        auto msg = Fmt(Err(Err0054), niceArg.c_str(), niceName.c_str());
+        auto msg = Fmt(Err(Err0054), niceArg.c_str());
         diag     = new Diagnostic{errorNode, msg};
     }
     else if (match.flags & SymbolMatchContext::MATCH_ERROR_TYPE_VALUE)
     {
-        auto msg = Fmt(Err(Err0057), niceArg.c_str(), niceName.c_str());
+        auto msg = Fmt(Err(Err0057), niceArg.c_str());
         diag     = new Diagnostic{errorNode, msg};
     }
     else
     {
-        auto msg   = Fmt(Err(Err0070), niceArg.c_str(), niceName.c_str(), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
+        auto msg   = Fmt(Err(Err0070), niceArg.c_str(), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
         diag       = new Diagnostic{errorNode, msg};
         diag->hint = errorParam.explicitCastMsg;
     }
@@ -243,7 +242,7 @@ static void errorBadGenericSignature(SemanticContext* context, ErrorParam& error
         if (errorParam.destFuncDecl && bi.badSignatureParameterIdx < (int) errorParam.destFuncDecl->genericParameters->childs.size())
         {
             auto reqParam = errorParam.destFuncDecl->genericParameters->childs[bi.badSignatureParameterIdx];
-            auto note     = Diagnostic::note(reqParam, Fmt(Nte(Nte0068), reqParam->token.ctext(), niceName.c_str()));
+            auto note     = Diagnostic::note(reqParam, Fmt(Nte(Nte0068), reqParam->token.ctext(), Naming::kindName(overload).c_str()));
             errorParam.addResult1(note);
         }
         else
