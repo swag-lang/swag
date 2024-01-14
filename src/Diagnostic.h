@@ -122,8 +122,9 @@ struct Diagnostic
         setup();
     }
 
-    static const uint32_t MAX_INDENT_BLANKS = 10;
-    static const uint32_t MAX_RIGHT_COLUMN  = 80;
+    static const uint32_t        MAX_INDENT_BLANKS       = 10;
+    static const uint32_t        MAX_RIGHT_COLUMN        = 80;
+    static constexpr const char* ERROR_MESSAGE_SEPARATOR = "$";
 
     // clang-format off
     static Diagnostic* note(const Utf8& msg) { return new Diagnostic{msg, DiagnosticLevel::Note}; }
@@ -164,9 +165,6 @@ struct Diagnostic
     static Diagnostic* hereIs(SymbolOverload* overload, bool forceShowRange = false);
     static Diagnostic* hereIs(AstNode* node, bool forceShowRange = false, bool forceNode = false);
 
-    static const int             MAX_LINE_DIGITS         = 5;
-    static constexpr const char* ERROR_MESSAGE_SEPARATOR = "$";
-
     struct RangeHint
     {
         SourceLocation  startLocation;
@@ -186,8 +184,10 @@ struct Diagnostic
 
     Vector<RangeHint> ranges;
     Utf8              lineCode;
-    int               lineCodeNum = 0;
-    int               minBlanks   = 0;
+    int               lineCodeNum       = 0;
+    int               lineCodeNumDigits = 0;
+    int               lineCodeMaxDigits = 0;
+    int               minBlanks         = 0;
     LogColor          errorColor;
     LogColor          hintColor;
     LogColor          marginBorderColor;

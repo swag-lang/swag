@@ -240,6 +240,12 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
             }
         }
     }
+
+    int lineCodeMaxDigits = 0;
+    for (auto note : notes)
+        lineCodeMaxDigits = max(lineCodeMaxDigits, note->lineCodeNumDigits);
+    for (auto note : notes)
+        note->lineCodeMaxDigits = lineCodeMaxDigits;
 }
 
 static void reportInternal(const Diagnostic& diag, const Vector<const Diagnostic*>& inNotes)

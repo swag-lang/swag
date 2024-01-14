@@ -82,15 +82,8 @@ void Diagnostic::printMarginLineNo(int lineNo)
 {
     g_Log.setColor(codeLineNoColor);
 
-    auto l = lineNo;
-    int  m = 0;
-    while (l)
-    {
-        l /= 10;
-        m++;
-    }
-
-    while (m++ < MAX_LINE_DIGITS)
+    int m = lineNo ? lineCodeNumDigits : 0;
+    while (m++ < lineCodeMaxDigits + 1)
         g_Log.print(" ");
     if (lineNo)
         g_Log.print(Fmt("%d", lineNo));
@@ -280,6 +273,14 @@ void Diagnostic::collectRanges()
 
     collectSourceCode();
     sortRanges();
+
+    lineCodeNumDigits = 0;
+    auto l            = lineCodeNum;
+    while (l)
+    {
+        l /= 10;
+        lineCodeNumDigits++;
+    }
 
     // Preprocess ranges
     for (auto& r : ranges)
