@@ -259,13 +259,6 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
     auto                     overload = errorParam.oneTry->overload;
     const auto&              match    = errorParam.oneTry->symMatchContext;
     const BadSignatureInfos& bi       = match.badSignatureInfos;
-    Utf8                     niceName = "the " + Naming::kindName(overload);
-
-    AstNode* paramNode = nullptr;
-    if (errorParam.destFuncDecl)
-        paramNode = errorParam.destFuncDecl->parameters->childs[bi.badSignatureParameterIdx];
-    else if (errorParam.destAttrDecl)
-        paramNode = errorParam.destAttrDecl->parameters->childs[bi.badSignatureParameterIdx];
 
     // In case of lambda, replace undefined with the corresponding match, if possible
     if (bi.badSignatureRequestedType->isLambdaClosure() && bi.badSignatureGivenType->isLambdaClosure())
@@ -282,8 +275,12 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
             type2->returnType = type1->returnType;
     }
 
+    AstNode* destParamNode = nullptr;
+    if (errorParam.destParameters && bi.badSignatureParameterIdx < errorParam.destParameters->childs.size())
+        destParamNode = errorParam.destParameters->childs[bi.badSignatureParameterIdx];
+
     SWAG_ASSERT(errorParam.oneTry->callParameters);
-    auto diagNode = match.parameters[bi.badSignatureParameterIdx];
+    auto callParamNode = match.parameters[bi.badSignatureParameterIdx];
 
     Diagnostic* diag;
     Utf8        hintMsg = errorParam.explicitCastMsg;
@@ -293,7 +290,7 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
         typeStruct->flattenUsingFields();
         auto msg = Fmt(Err(Err0723), typeStruct->flattenFields[errorParam.badParamIdx - 1]->name.c_str(), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
-        diag     = new Diagnostic{diagNode, msg};
+        diag     = new Diagnostic{callParamNode, msg};
     }
     else if (errorParam.oneTry->ufcs && bi.badSignatureParameterIdx == 0 && errorParam.oneTry->dependentVar)
     {
@@ -324,33 +321,33 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
     {
         if (bi.castErrorType == CastErrorType::Const)
         {
-            diag = new Diagnostic{diagNode, Fmt(Err(Err1165), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC())};
+            diag = new Diagnostic{callParamNode, Fmt(Err(Err1165), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC())};
             if (!overload->node->isSpecialFunctionName())
-                diag->addRange(diagNode->parent->childs.back()->token, Fmt(Nte(Nte1056), bi.badSignatureGivenType->getDisplayNameC()));
+                diag->addRange(callParamNode->parent->childs.back()->token, Fmt(Nte(Nte1056), bi.badSignatureGivenType->getDisplayNameC()));
             hintMsg = Diagnostic::isType(bi.badSignatureGivenType);
-            if (diagNode->resolvedSymbolOverload && diagNode->resolvedSymbolOverload->flags & OVERLOAD_IS_LET)
+            if (callParamNode->resolvedSymbolOverload && callParamNode->resolvedSymbolOverload->flags & OVERLOAD_IS_LET)
             {
-                auto note = Diagnostic::note(diagNode->resolvedSymbolOverload->node, diagNode->resolvedSymbolOverload->node->token, Nte(Nte1050));
+                auto note = Diagnostic::note(callParamNode->resolvedSymbolOverload->node, callParamNode->resolvedSymbolOverload->node->token, Nte(Nte1050));
                 errorParam.addResult1(note);
             }
         }
         else
         {
-            diag = new Diagnostic{diagNode, Fmt(Err(Err0095), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC())};
+            diag = new Diagnostic{callParamNode, Fmt(Err(Err0095), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC())};
             if (!overload->node->isSpecialFunctionName())
-                diag->addRange(diagNode->parent->childs.back()->token, Fmt(Nte(Nte1093), bi.badSignatureGivenType->getDisplayNameC()));
+                diag->addRange(callParamNode->parent->childs.back()->token, Fmt(Nte(Nte1093), bi.badSignatureGivenType->getDisplayNameC()));
             hintMsg = Diagnostic::isType(bi.badSignatureGivenType);
         }
     }
-    else if (paramNode && paramNode->typeInfo->isSelf() && bi.badSignatureParameterIdx == 0)
+    else if (destParamNode && destParamNode->typeInfo->isSelf() && bi.badSignatureParameterIdx == 0)
     {
-        if (diagNode->kind == AstNodeKind::FuncDeclParam)
-            diagNode = errorParam.errorNode;
-        diag = new Diagnostic{diagNode, Fmt(Err(Err0106), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC())};
+        if (callParamNode->kind == AstNodeKind::FuncDeclParam)
+            callParamNode = errorParam.errorNode;
+        diag = new Diagnostic{callParamNode, Fmt(Err(Err0106), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC())};
     }
     else
     {
-        diag = new Diagnostic{diagNode, Fmt(Err(Err0053), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC())};
+        diag = new Diagnostic{callParamNode, Fmt(Err(Err0053), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC())};
     }
 
     diag->hint = hintMsg;
@@ -398,13 +395,15 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
     // Here is
     if (errorParam.getFlags & GDFM_HERE_IS)
     {
-        if (errorParam.destFuncDecl && paramNode && paramNode->isGeneratedSelf())
+        if (destParamNode && destParamNode->isGeneratedSelf())
         {
+            SWAG_ASSERT(errorParam.destFuncDecl);
             errorParam.addResult1(Diagnostic::hereIs(errorParam.destFuncDecl));
         }
-        else if (paramNode)
+        else if (destParamNode)
         {
-            Diagnostic* note = Diagnostic::note(paramNode, paramNode->token, Fmt(Nte(Nte0066), paramNode->token.ctext(), niceName.c_str()));
+            auto        msg  = Fmt(Nte(Nte0066), destParamNode->token.ctext(), Naming::kindName(overload).c_str());
+            Diagnostic* note = Diagnostic::note(destParamNode, destParamNode->token, msg);
             errorParam.addResult1(note);
         }
         else

@@ -1330,7 +1330,7 @@ void initErrors()
     SWAG_ERROR(Nte0035, "here is the other '#import'");
     SWAG_ERROR(Nte0036, "here is the other definition");
     SWAG_ERROR(Nte0063, "here is the other return statement");
-    SWAG_ERROR(Nte0066, "here is the parameter '%s' of %s");
+    SWAG_ERROR(Nte0066, "here is the corresponding parameter '%s' of the %s");
     SWAG_ERROR(Nte0037, "here is the previous definition");
     SWAG_ERROR(Nte0024, "here is the prior declaration");
     SWAG_ERROR(Nte0032, "here is the problematic attribute");
