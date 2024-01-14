@@ -12,6 +12,7 @@ static bool cannotMatchIdentifier(SemanticContext* context, MatchResult result, 
     if (tryMatches.empty())
         return false;
 
+    // Filter matches depending on argument
     bool                       hasCorrectResult = false;
     VectorNative<OneTryMatch*> tryResult;
     for (size_t i = 0; i < tryMatches.size(); i++)
@@ -64,7 +65,6 @@ static bool cannotMatchIdentifier(SemanticContext* context, MatchResult result, 
     case MatchResult::BadGenericSignature:
         note = Diagnostic::note(node, node->token, Fmt("the generic %s does not match", Naming::niceArgumentRank(paramIdx + 1).c_str()));
         break;
-        break;
     default:
         SWAG_ASSERT(false);
         break;
@@ -76,6 +76,7 @@ static bool cannotMatchIdentifier(SemanticContext* context, MatchResult result, 
 
     for (size_t i = 0; i < min(tryResult.size(), MAX_OVERLOADS); i++)
     {
+        concat.clear();
         if (tryResult[i]->overload->node->kind == AstNodeKind::FuncDecl)
         {
             auto funcNode = CastAst<AstFuncDecl>(tryResult[i]->overload->node, AstNodeKind::FuncDecl);
@@ -105,26 +106,33 @@ static bool cannotMatchIdentifier(SemanticContext* context, MatchResult result, 
         }
 
         Utf8 fn = Fmt("%d: %s", i + 1, n.c_str());
-
         note->remarks.push_back(fn);
-        fn.clear();
 
+        // Additional (more precise) information in case of bad signature
         if (result == MatchResult::BadSignature || result == MatchResult::BadGenericSignature)
         {
             Vector<const Diagnostic*> errs0, errs1;
             SemanticError::getDiagnosticForMatch(context, *tryResult[i], errs0, errs1);
-            fn += "        ";
-
             Vector<Utf8> parts;
             Diagnostic::tokenizeError(errs0[0]->textMsg, parts);
-            if (parts.size() > 1)
-                fn += parts[1];
-            else
-                fn += parts[0];
-        }
 
-        note->remarks.push_back(fn);
-        concat.clear();
+            if (tryResult.size() == 1)
+            {
+                if (parts.size() > 1)
+                    note->textMsg = parts[1];
+                else
+                    note->textMsg = parts[0];
+            }
+            else
+            {
+                fn = "   => ";
+                if (parts.size() > 1)
+                    fn += parts[1];
+                else
+                    fn += parts[0];
+                note->remarks.push_back(fn);
+            }
+        }
     }
 
     if (tryResult.size() >= MAX_OVERLOADS)

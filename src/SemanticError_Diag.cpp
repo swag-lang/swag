@@ -229,7 +229,7 @@ static void errorBadGenericSignature(SemanticContext* context, ErrorParam& error
     }
     else
     {
-        auto msg   = Fmt(Err(Err0070), niceArg.c_str(), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
+        auto msg   = Fmt(Err(Err0070), bi.badSignatureRequestedType->getDisplayNameC(), niceArg.c_str(), bi.badSignatureGivenType->getDisplayNameC());
         diag       = new Diagnostic{errorNode, msg};
         diag->hint = errorParam.explicitCastMsg;
     }
