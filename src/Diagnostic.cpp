@@ -446,15 +446,15 @@ void Diagnostic::printRanges()
         startIndex++;                                                          \
     }
 
-    // Print all ranges underlines
+    // Print all underlines
     int startIndex = minBlanks;
     for (size_t i = 0; i < ranges.size(); i++)
     {
         const auto& r = ranges[i];
+        setColorRanges(r.errorLevel);
 
         ALIGN(r.startLocation.column);
 
-        setColorRanges(r.errorLevel);
         if (i != ranges.size() - 1 && r.mergeNext)
             setColorRanges(ranges[i + 1].errorLevel);
 
@@ -492,15 +492,22 @@ void Diagnostic::printRanges()
     {
         g_Log.eol();
         printMargin(false, true);
-
         startIndex = minBlanks;
+
         for (size_t i = 0; i < ranges.size(); i++)
         {
             const auto& r = ranges[i];
             setColorRanges(r.errorLevel);
 
-            if (i == ranges.size() - 1 &&
-                r.mid + 3 + (int) r.hint.length() > MAX_RIGHT_COLUMN &&
+            if (i != ranges.size() - 1)
+            {
+                ALIGN(r.mid);
+                g_Log.print(LogSymbol::VerticalLine);
+                startIndex++;
+                continue;
+            }
+
+            if (r.mid + 3 + (int) r.hint.length() > MAX_RIGHT_COLUMN &&
                 r.mid - 2 - (int) r.hint.length() > minBlanks)
             {
                 ALIGN(r.mid - 2 - (int) r.hint.length());
@@ -510,13 +517,19 @@ void Diagnostic::printRanges()
                 g_Log.print(LogSymbol::DownLeft);
                 ranges.clear();
             }
-            else if (i == ranges.size() - 1 &&
-                     r.mid + 3 + r.hint.length() > MAX_RIGHT_COLUMN)
+            else if (r.mid + 3 + r.hint.length() > MAX_RIGHT_COLUMN)
             {
+                ALIGN(r.mid);
+                g_Log.print(LogSymbol::VerticalLineUp);
+                g_Log.eol();
+                printMargin(false, true);
+                startIndex = minBlanks;
+
+                setColorRanges(r.errorLevel);
                 g_Log.print(r.hint);
                 ranges.clear();
             }
-            else if (i == ranges.size() - 1)
+            else
             {
                 ALIGN(r.mid);
                 g_Log.print(LogSymbol::DownRight);
@@ -526,12 +539,6 @@ void Diagnostic::printRanges()
                 startIndex += r.hint.length() + 4;
                 ranges.erase(ranges.begin() + i);
                 i--;
-            }
-            else
-            {
-                ALIGN(r.mid);
-                g_Log.print(LogSymbol::VerticalLine);
-                startIndex++;
             }
         }
     }

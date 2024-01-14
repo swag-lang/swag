@@ -37,6 +37,13 @@ void Log::print(LogSymbol symbol)
             print("\xe2\x94\x82");
         break;
 
+    case LogSymbol::VerticalLineUp:
+        if (g_CommandLine.logAscii)
+            print("|");
+        else
+            print("\xe2\x95\xb5");
+        break;
+
     case LogSymbol::DotCenter:
         if (g_CommandLine.logAscii)
             print(".");
@@ -98,6 +105,13 @@ void Log::print(LogSymbol symbol)
             print("|");
         else
             print("\xe2\x94\x8c");
+        break;
+
+    case LogSymbol::RightDown:
+        if (g_CommandLine.logAscii)
+            print("|");
+        else
+            print("\xe2\x94\x90");
         break;
     }
 }
