@@ -17,7 +17,7 @@ static Diagnostic* unknownIdentifierInScope(AstIdentifierRef* identifierRef, Ast
         auto diag       = new Diagnostic{node, Fmt(Err(Err0093), node->token.ctext())};
         auto structNode = CastAst<AstStruct>(identifierRef->startScope->owner, AstNodeKind::StructDecl);
         auto errNode    = structNode->originalParent ? structNode->originalParent : identifierRef->startScope->owner;
-        auto note       = Diagnostic::note(errNode, errNode->token, Nte(Nte0030));
+        auto note       = Diagnostic::note(errNode, Nte(Nte0030));
         notes.push_back(note);
         return diag;
     }
