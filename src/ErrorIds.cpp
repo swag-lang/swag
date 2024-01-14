@@ -528,7 +528,7 @@ void initErrors()
     SWAG_ERROR(Err1064, "invalid top-level instruction                     $ expected a top-level instruction, found '%s' instead");
     SWAG_ERROR(Err0482, "invalid tuple dereference                         $ tuples can't be dereferenced like pointers");
     SWAG_ERROR(Err0292, "invalid tuple unpacking                           $ can't unpack an empty tuple");
-    SWAG_ERROR(Err0291, "invalid tuple unpacking                           $ can't unpack type '%s' $ expected a struct or a tuple");
+    SWAG_ERROR(Err0291, "invalid tuple unpacking                           $ can't unpack type '%s' $ a struct or a tuple is expected");
     SWAG_ERROR(Err0569, "invalid type                                      $ the affect expression has type 'void'");
     SWAG_ERROR(Err0307, "invalid type                                      $ the initialization expression has type 'void'");
     SWAG_ERROR(Err0807, "invalid type                                      $ the intrinsic '@spread' can't be used with type '%s' $ this kind of type can't be spreaded");

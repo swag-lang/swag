@@ -72,9 +72,8 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
     {
         Diagnostic diag{varDecl, varDecl->token, Fmt(Err(Err0293), numUnpack, typeStruct->fields.size())};
         diag.addRange(varDecl->assignment, Fmt(Nte(Nte1068), typeStruct->fields.size()));
-        PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, []()
-                          { return Nte(Nte0133); });
-        return context->report(diag);
+        auto note = Diagnostic::note(Nte(Nte0133));
+        return context->report(diag, note);
     }
 
     if (numUnpack > typeStruct->fields.size())
@@ -126,8 +125,6 @@ bool Semantic::resolveVarDeclAfterType(SemanticContext* context)
             varDecl->type->typeInfo->isCVariadic())
         {
             Diagnostic diag{varDecl, varDecl->assignToken, Err(Err0685)};
-            diag.hint = Nte(Nte1061);
-            diag.addRange(varDecl->type, Diagnostic::isType(varDecl->type->typeInfo));
             return context->report(diag);
         }
     }
