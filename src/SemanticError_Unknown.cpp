@@ -209,8 +209,8 @@ void SemanticError::unknownIdentifierError(SemanticContext* context, AstIdentifi
     }
 
     VectorNative<OneTryMatch*> v;
-    errorRemarks(context, v, node, diag);
-    errorNotes(context, v, node, diag, notes);
+    commonErrorRemarks(context, v, node, diag);
+    commonErrorNotes(context, v, node, diag, notes);
 
     context->report(*diag, notes);
 }

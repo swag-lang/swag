@@ -180,7 +180,7 @@ struct VectorNative
         return buffer + count;
     }
 
-    bool empty()
+    bool empty() const
     {
         return count == 0;
     }
@@ -202,7 +202,7 @@ struct VectorNative
         return buffer[count - 1];
     }
 
-    const T& front()
+    const T& front() const
     {
         return buffer[0];
     }

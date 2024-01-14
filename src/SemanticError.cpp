@@ -6,26 +6,24 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 
-void SemanticError::errorNotes(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag, Vector<const Diagnostic*>& notes)
+void SemanticError::commonErrorNotes(SemanticContext* context, const VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag, Vector<const Diagnostic*>& notes)
 {
     if (!node)
         return;
-    if (node->kind != AstNodeKind::Identifier && node->kind != AstNodeKind::FuncCall)
-        return;
 
-    // Symbol has been found with a using : display it
-    if (tryMatches.size() == 1 && tryMatches[0]->dependentVar)
+    // Symbol has been found thanks to a using
+    if ((node->kind == AstNodeKind::Identifier || node->kind == AstNodeKind::FuncCall) &&
+        tryMatches.size() == 1 &&
+        tryMatches[0]->dependentVar &&
+        !tryMatches[0]->dependentVar->isGeneratedSelf())
     {
-        // Do not generate a note if this is a generated 'using' in case of methods
-        if (!tryMatches[0]->dependentVar->isGeneratedSelf())
-        {
-            auto note = Diagnostic::note(tryMatches[0]->dependentVar, Fmt(Nte(Nte0013), tryMatches[0]->overload->symbol->name.c_str()));
-            notes.push_back(note);
-        }
+        auto msg  = Fmt(Nte(Nte0013), tryMatches[0]->overload->symbol->getFullName().c_str());
+        auto note = Diagnostic::note(tryMatches[0]->dependentVar, tryMatches[0]->dependentVar->token, msg);
+        notes.push_back(note);
     }
 }
 
-void SemanticError::errorRemarks(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag)
+void SemanticError::commonErrorRemarks(SemanticContext* context, const VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag)
 {
     if (!node)
         return;

@@ -151,8 +151,8 @@ static bool cannotMatchSingle(SemanticContext* context, AstNode* node, VectorNat
     Vector<const Diagnostic*> errs0, errs1;
     SemanticError::getDiagnosticForMatch(context, *tryMatches[0], errs0, errs1, getFlags);
     SWAG_ASSERT(!errs0.empty());
-    SemanticError::errorRemarks(context, tryMatches, node, const_cast<Diagnostic*>(errs0[0]));
-    SemanticError::errorNotes(context, tryMatches, node, const_cast<Diagnostic*>(errs0[0]), errs1);
+    SemanticError::commonErrorRemarks(context, tryMatches, node, const_cast<Diagnostic*>(errs0[0]));
+    SemanticError::commonErrorNotes(context, tryMatches, node, const_cast<Diagnostic*>(errs0[0]), errs1);
     return context->report(*errs0[0], errs1);
 }
 
@@ -160,10 +160,10 @@ static bool cannotMatchOverload(SemanticContext* context, AstNode* node, VectorN
 {
     // Multiple tryMatches
     Diagnostic diag{node, node->token, Fmt(Err(Err0113), tryMatches.size(), tryMatches[0]->overload->symbol->name.c_str())};
-    SemanticError::errorRemarks(context, tryMatches, node, &diag);
+    SemanticError::commonErrorRemarks(context, tryMatches, node, &diag);
 
     Vector<const Diagnostic*> notes;
-    SemanticError::errorNotes(context, tryMatches, node, &diag, notes);
+    SemanticError::commonErrorNotes(context, tryMatches, node, &diag, notes);
 
     cannotMatchIdentifier(context, MatchResult::ValidIfFailed, 0, tryMatches, node, notes);
     cannotMatchIdentifier(context, MatchResult::NotEnoughParameters, 0, tryMatches, node, notes);
