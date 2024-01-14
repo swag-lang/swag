@@ -306,17 +306,19 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             // ...
             if (token.id == TokenId::SymDotDotDot)
             {
-                auto newTypeExpression             = Ast::newTypeExpression(sourceFile, paramNode);
-                paramNode->type                    = newTypeExpression;
-                newTypeExpression->typeFromLiteral = g_TypeMgr->typeInfoVariadic;
+                auto newTypeExpression               = Ast::newTypeExpression(sourceFile, paramNode);
+                paramNode->type                      = newTypeExpression;
+                newTypeExpression->typeFromLiteral   = g_TypeMgr->typeInfoVariadic;
+                newTypeExpression->token.endLocation = token.endLocation;
                 SWAG_CHECK(eatToken());
             }
             // cvarargs
             else if (token.id == TokenId::KwdCVarArgs)
             {
-                auto newTypeExpression             = Ast::newTypeExpression(sourceFile, paramNode);
-                paramNode->type                    = newTypeExpression;
-                newTypeExpression->typeFromLiteral = g_TypeMgr->typeInfoCVariadic;
+                auto newTypeExpression               = Ast::newTypeExpression(sourceFile, paramNode);
+                paramNode->type                      = newTypeExpression;
+                newTypeExpression->typeFromLiteral   = g_TypeMgr->typeInfoCVariadic;
+                newTypeExpression->token.endLocation = token.endLocation;
                 SWAG_CHECK(eatToken());
             }
             else
