@@ -1027,6 +1027,7 @@ AstNode* AstEnum::clone(CloneContext& context)
     auto newNode = Ast::newNode<AstEnum>();
     newNode->copyFrom(context, this, false);
     newNode->tokenName = tokenName;
+    newNode->type      = findChildRef(type, newNode);
 
     auto cloneContext             = context;
     cloneContext.parent           = newNode;

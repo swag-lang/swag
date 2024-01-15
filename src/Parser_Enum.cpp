@@ -80,7 +80,7 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
     if (token.id == TokenId::SymColon)
     {
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(doTypeExpression(typeNode, EXPR_FLAG_NONE, &dummyResult));
+        SWAG_CHECK(doTypeExpression(typeNode, EXPR_FLAG_NONE, &enumNode->type));
     }
 
     // Content of enum

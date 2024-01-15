@@ -507,7 +507,7 @@ void Diagnostic::printRanges()
                 continue;
             }
 
-            if (r.mid + 3 + (int) r.hint.length() > MAX_RIGHT_COLUMN &&
+            if (r.mid + 3 + (int) r.hint.length() > (int) MAX_RIGHT_COLUMN &&
                 r.mid - 2 - (int) r.hint.length() > minBlanks)
             {
                 ALIGN(r.mid - 2 - (int) r.hint.length());
@@ -517,7 +517,7 @@ void Diagnostic::printRanges()
                 g_Log.print(LogSymbol::DownLeft);
                 ranges.clear();
             }
-            else if (r.mid + 3 + r.hint.length() > MAX_RIGHT_COLUMN)
+            else if (r.mid + 3 + r.hint.length() > (int) MAX_RIGHT_COLUMN)
             {
                 ALIGN(r.mid);
                 g_Log.print(LogSymbol::VerticalLineUp);

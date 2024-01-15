@@ -901,8 +901,9 @@ struct AstEnum : public AstNode
     ~AstEnum();
     AstNode* clone(CloneContext& context);
 
-    Token  tokenName;
-    Scope* scope;
+    Token    tokenName;
+    AstNode* type;
+    Scope*   scope;
 };
 
 struct AstEnumValue : public AstNode

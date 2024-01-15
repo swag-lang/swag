@@ -218,11 +218,10 @@ bool Semantic::resolveSubEnumValue(SemanticContext* context)
     if (!node->typeInfo->isEnum())
     {
         Diagnostic diag{node, Fmt(Err(Err0173), node->typeInfo->getDisplayNameC())};
-        return context->report(diag, Diagnostic::hereIs(node));
+        return context->report(diag, Diagnostic::hereIs(node->resolvedSymbolOverload));
     }
 
-    auto enumNode = node->findParent(AstNodeKind::EnumDecl);
-    SWAG_ASSERT(enumNode);
+    auto enumNode = CastAst<AstEnum>(node->findParent(AstNodeKind::EnumDecl), AstNodeKind::EnumDecl);
     auto typeEnum = CastTypeInfo<TypeInfoEnum>(enumNode->typeInfo, TypeInfoKind::Enum);
     if (typeEnum->rawType->isGeneric())
         return true;
@@ -234,7 +233,9 @@ bool Semantic::resolveSubEnumValue(SemanticContext* context)
     if (!concreteTypeSubEnum->isSame(concreteTypeEnum, CASTFLAG_EXACT))
     {
         Diagnostic diag{node, Fmt(Err(Err0549), concreteTypeEnum->getDisplayNameC(), concreteTypeSubEnum->getDisplayNameC())};
-        return context->report(diag, Diagnostic::hereIs(node));
+        auto       note  = Diagnostic::hereIs(node->resolvedSymbolOverload);
+        auto       note1 = Diagnostic::hereIs(enumNode->type);
+        return context->report(diag, note, note1);
     }
 
     // Add a symbol in the enum scope

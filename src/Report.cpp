@@ -71,7 +71,7 @@ static void computeAutoRemarks(Vector<Diagnostic*>& notes)
 static void cleanNotes(Vector<Diagnostic*>& notes)
 {
     // Remove notes without messages
-    for (int i = 0; i < notes.size(); i++)
+    for (int i = 0; i < (int) notes.size(); i++)
     {
         if (notes[i]->textMsg.empty())
         {
