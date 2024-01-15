@@ -1422,7 +1422,6 @@ void initErrors()
     SWAG_ERROR(Nte1018, "this is a constant");
     SWAG_ERROR(Nte1079, "this is a lambda expression");
     SWAG_ERROR(Nte1024, "this is a pointer type declaration due to '*'");
-    SWAG_ERROR(Nte1010, "this is a tuple type");
     SWAG_ERROR(Nte1040, "this is a type value, aka 'typeinfo', aka '%s'");
     SWAG_ERROR(Nte1099, "this is an unnamed '?' parameter");
     SWAG_ERROR(Nte0002, "this is the expected signature");
@@ -1463,6 +1462,7 @@ void initErrors()
     SWAG_ERROR(Nte1131, "this 'discard' should be removed");
     SWAG_ERROR(Nte1056, "the function needs a mutable type '%s' as its first argument");
     SWAG_ERROR(Nte1094, "here is the corresponding parameter of the %s");
+    SWAG_ERROR(Nte1010, nullptr);
     SWAG_ERROR(Nte0040, nullptr);
     SWAG_ERROR(Nte1057, nullptr);
     SWAG_ERROR(Nte0028, nullptr);

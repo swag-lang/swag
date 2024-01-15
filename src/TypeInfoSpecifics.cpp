@@ -298,9 +298,9 @@ void TypeInfoList::computeWhateverName(Utf8& resName, uint32_t nameType)
             resName += subTypes[0]->typeInfo->name;
         }
     }
-    else if (nameType == COMPUTE_DISPLAY_NAME)
+    else
     {
-        resName = "tuple";
+        resName = TypeInfoStruct::computeTupleDisplayName(subTypes, nameType);
     }
 }
 
@@ -1200,31 +1200,37 @@ Utf8 TypeInfoStruct::getDisplayName()
         return Fmt("struct %s", str.c_str());
 }
 
+Utf8 TypeInfoStruct::computeTupleDisplayName(const VectorNative<TypeInfoParam*>& fields, uint32_t nameType)
+{
+    Utf8 resName = "{";
+    for (auto param : fields)
+    {
+        if (param != fields.front())
+            resName += ", ";
+        if (!param->name.empty() && !(param->flags & TYPEINFOPARAM_AUTO_NAME))
+        {
+            resName += param->name;
+            resName += ": ";
+        }
+
+        resName += param->typeInfo->computeWhateverName(nameType);
+
+        if (nameType == COMPUTE_DISPLAY_NAME && resName.length() > 20)
+        {
+            resName += " ... ";
+            break;
+        }
+    }
+
+    resName += "}";
+    return resName;
+}
+
 void TypeInfoStruct::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
     if (isTuple())
     {
-        resName += "{";
-        for (auto param : fields)
-        {
-            if (param != fields.front())
-                resName += ", ";
-            if (!param->name.empty() && !(param->flags & TYPEINFOPARAM_AUTO_NAME))
-            {
-                resName += param->name;
-                resName += ": ";
-            }
-
-            resName += param->typeInfo->computeWhateverName(nameType);
-
-            if (nameType == COMPUTE_DISPLAY_NAME && resName.length() > 20)
-            {
-                resName += " ... ";
-                break;
-            }
-        }
-
-        resName += "}";
+        resName = TypeInfoStruct::computeTupleDisplayName(fields, nameType);
         return;
     }
 

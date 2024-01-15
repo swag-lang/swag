@@ -454,6 +454,7 @@ struct TypeInfoStruct : public TypeInfo
     TypeInfoParam* hasInterfaceNoLock(TypeInfoStruct* itf);
     const char*    getDisplayNameC() override;
     Utf8           getDisplayName() override;
+    static Utf8    computeTupleDisplayName(const VectorNative<TypeInfoParam*>& fields, uint32_t nameType);
     bool           canRawCopy();
     bool           isPlainOldData();
     void           flattenUsingFields();

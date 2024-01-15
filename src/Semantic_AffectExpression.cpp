@@ -334,6 +334,14 @@ bool Semantic::resolveAffect(SemanticContext* context)
         }
     }
 
+    // For tuples, we can only affect
+    else if (forTuple)
+    {
+        Diagnostic diag{node, node->token, Fmt(Err(Err0168), node->token.ctext())};
+        auto       note = Diagnostic::note(left, Diagnostic::isType(leftTypeInfo));
+        return context->report(diag, note);
+    }
+
     switch (tokenId)
     {
     case TokenId::SymEqual:
@@ -437,9 +445,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
     case TokenId::SymLowerLowerEqual:
     case TokenId::SymGreaterGreaterEqual:
     {
-        if (forTuple)
-            return context->report({node, node->token, Fmt(Err(Err0168), node->token.ctext())});
-        else if (forStruct)
+        if (forStruct)
         {
             const char* op = tokenId == TokenId::SymLowerLowerEqual ? "<<=" : ">>=";
             if (arrayNode)
@@ -468,9 +474,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
     case TokenId::SymVerticalEqual:
     case TokenId::SymCircumflexEqual:
     {
-        if (forTuple)
-            return context->report({node, node->token, Fmt(Err(Err0168), node->token.ctext())});
-        else if (forStruct)
+        if (forStruct)
         {
             const char* op = "&=";
             if (tokenId == TokenId::SymVerticalEqual)
@@ -500,9 +504,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
     case TokenId::SymPlusEqual:
     case TokenId::SymMinusEqual:
     {
-        if (forTuple)
-            return context->report({node, node->token, Fmt(Err(Err0168), node->token.ctext())});
-        else if (forStruct)
+        if (forStruct)
         {
             const char* op = tokenId == TokenId::SymPlusEqual ? "+=" : "-=";
             if (arrayNode)
@@ -550,9 +552,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
 
     case TokenId::SymSlashEqual:
     {
-        if (forTuple)
-            return context->report({node, node->token, Fmt(Err(Err0168), node->token.ctext())});
-        else if (forStruct)
+        if (forStruct)
         {
             if (arrayNode)
                 SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opIndexAssign, "/=", nullptr, left, arrayNode->structFlatParams));
@@ -576,9 +576,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
     case TokenId::SymPercentEqual:
     case TokenId::SymAsteriskEqual:
     {
-        if (forTuple)
-            return context->report({node, node->token, Fmt(Err(Err0168), node->token.ctext())});
-        else if (forStruct)
+        if (forStruct)
         {
             const char* op = tokenId == TokenId::SymPercentEqual ? "%=" : "*=";
             if (arrayNode)

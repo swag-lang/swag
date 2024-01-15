@@ -602,11 +602,7 @@ Utf8 Diagnostic::isType(TypeInfo* typeInfo)
     if (!typeInfo)
         return "";
 
-    Utf8 str;
-    if (typeInfo->isTuple() || typeInfo->isListTuple())
-        str = Nte(Nte1010);
-    else
-        str = Fmt(Nte(Nte1011), typeInfo->getDisplayNameC());
+    auto str = Fmt(Nte(Nte1011), typeInfo->getDisplayNameC());
 
     if (typeInfo->isAlias())
     {

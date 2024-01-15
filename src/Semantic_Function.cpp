@@ -1034,7 +1034,7 @@ bool Semantic::resolveCaptureFuncCallParams(SemanticContext* context)
         return context->report({c, Fmt(Err(Err0875), c->token.ctext(), aKindName.c_str(), aKindName.c_str())});
     }
 
-    // As this is the capture block resolved in the right context, we can now evaluate the corresponding slosure
+    // As this is the capture block resolved in the right context, we can now evaluate the corresponding closure
     auto mpl = CastAst<AstMakePointer>(node->parent, AstNodeKind::MakePointerLambda);
     SWAG_ASSERT(mpl->lambda);
 
