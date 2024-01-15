@@ -2076,32 +2076,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
     {
         if (justCheck)
             return false;
-
-        auto                      symbol  = overloads[0]->overload->symbol;
-        auto                      errNode = node ? node : context->node;
-        Diagnostic                diag{errNode, errNode->token, Fmt(Err(Err0115), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
-        Vector<const Diagnostic*> notes;
-        for (auto match : genericMatches)
-        {
-            auto overload = match->symbolOverload;
-            auto couldBe  = Fmt("could be of type '%s'", overload->typeInfo->getDisplayNameC());
-
-            VectorNative<TypeInfoParam*> params;
-            for (auto og : match->genericReplaceTypes)
-            {
-                auto p      = g_TypeMgr->makeParam();
-                p->name     = og.first.c_str();
-                p->typeInfo = og.second.typeInfoReplace;
-                params.push_back(p);
-            }
-
-            Diagnostic* note = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
-            note->showRange  = false;
-            notes.push_back(note);
-        }
-
-        context->report(diag, notes);
-        return false;
+        return SemanticError::ambiguousGenericError(context, node, overloads, genericMatches);
     }
 
     // We remove all generated nodes, because if they exist, they do not participate to the
@@ -2153,82 +2128,20 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
 
     // There is more than one possible match, and this is an identifier for a name alias.
     // We are fine
-    if (matches.size() > 1 && node && node->kind == AstNodeKind::Identifier && (node->specFlags & AstIdentifier::SPECFLAG_NAME_ALIAS))
+    if (matches.size() > 1 &&
+        node &&
+        node->kind == AstNodeKind::Identifier &&
+        (node->specFlags & AstIdentifier::SPECFLAG_NAME_ALIAS))
+    {
         return true;
+    }
 
     // There is more than one possible match
     if (matches.size() > 1)
     {
         if (justCheck)
             return false;
-        if (!node)
-            node = context->node;
-        auto symbol = overloads[0]->overload->symbol;
-
-        if (flags & MIP_FOR_GHOSTING)
-        {
-            AstNode*   otherNode = nullptr;
-            SymbolKind otherKind = SymbolKind::Invalid;
-            for (auto match : matches)
-            {
-                if (match->symbolOverload->node != node && !match->symbolOverload->node->isParentOf(node))
-                {
-                    otherKind = match->symbolOverload->symbol->kind;
-                    otherNode = match->symbolOverload->node;
-                    break;
-                }
-            }
-
-            SWAG_ASSERT(otherNode);
-            return SemanticError::duplicatedSymbolError(context, node->sourceFile, node->token, symbol->kind, symbol->name, otherKind, otherNode);
-        }
-
-        Diagnostic                diag{node, node->token, Fmt(Err(Err0116), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str())};
-        Vector<const Diagnostic*> notes;
-        for (auto match : matches)
-        {
-            auto        overload = match->symbolOverload;
-            Diagnostic* note     = nullptr;
-
-            if (overload->typeInfo->isFuncAttr())
-            {
-                auto funcDecl = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl, AstNodeKind::AttrDecl);
-                if (overload->typeInfo->flags & TYPEINFO_FROM_GENERIC)
-                {
-                    auto         typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
-                    AstFuncDecl* funcNode = CastAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
-                    auto         orgNode  = funcNode->originalGeneric ? funcNode->originalGeneric : overload->typeInfo->declNode;
-                    auto         couldBe  = Fmt(Nte(Nte0045), orgNode->typeInfo->getDisplayNameC());
-                    note                  = Diagnostic::note(overload->node, funcDecl->tokenName, couldBe);
-                    note->remarks.push_back(Fmt(Nte(Nte0047), overload->typeInfo->getDisplayNameC()));
-                }
-                else
-                {
-                    auto couldBe = Fmt(Nte(Nte0048), overload->typeInfo->getDisplayNameC());
-                    note         = Diagnostic::note(overload->node, funcDecl->tokenName, couldBe);
-                }
-
-                if (!overload->typeInfo->isLambdaClosure())
-                    note->showRange = false;
-            }
-            else if (overload->typeInfo->isStruct())
-            {
-                auto couldBe    = Fmt(Nte(Nte0049), overload->typeInfo->getDisplayNameC());
-                note            = Diagnostic::note(overload->node, overload->node->token, couldBe);
-                note->showRange = false;
-            }
-            else
-            {
-                auto concreteType = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
-                auto couldBe      = Fmt(Nte(Nte0050), Naming::aKindName(match->symbolOverload).c_str(), concreteType->getDisplayNameC());
-                note              = Diagnostic::note(overload->node, overload->node->token, couldBe);
-            }
-
-            note->noteHeader = "could be";
-            notes.push_back(note);
-        }
-
-        return context->report(diag, notes);
+        return SemanticError::ambiguousIdentifierError(context, node, overloads, matches, flags);
     }
 
     return true;

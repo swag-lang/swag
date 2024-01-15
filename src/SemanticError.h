@@ -7,10 +7,10 @@ struct AstIdentifier;
 struct AstIdentifierRef;
 struct AstNode;
 struct ByteCode;
-
 struct Diagnostic;
 struct ErrorContext;
 struct Module;
+struct OneMatch;
 struct OneTryMatch;
 struct Scope;
 struct SemanticContext;
@@ -46,6 +46,8 @@ namespace SemanticError
     void getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1, uint32_t getFlags = GDFM_ALL);
 
     bool cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node);
+    bool ambiguousGenericError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& overloads, VectorNative<OneGenericMatch*>& genericMatches);
+    bool ambiguousIdentifierError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& overloads, VectorNative<OneMatch*>& matches, uint32_t flags);
 
     void unknownIdentifierError(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
 
