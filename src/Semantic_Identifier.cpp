@@ -3921,24 +3921,9 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         {
             for (auto& p : dependentSymbols)
             {
-                auto symbol = p.symbol;
-
-                SharedLock lkn(symbol->mutex);
-                if (!needToCompleteSymbol(context, identifier, symbol, false))
-                {
-                    Diagnostic diag{identifier, Fmt(Err(Err0116), Naming::kindName(symbol->kind).c_str(), identifier->token.ctext())};
-
-                    Vector<const Diagnostic*> notes;
-                    for (auto& p1 : dependentSymbols)
-                    {
-                        auto note       = Diagnostic::note(p1.symbol->nodes[0], p1.symbol->nodes[0]->token, "could be");
-                        note->showRange = false;
-                        notes.push_back(note);
-                    }
-
-                    context->report(diag, notes);
-                    return false;
-                }
+                SharedLock lkn(p.symbol->mutex);
+                if (!needToCompleteSymbol(context, identifier, p.symbol, false))
+                    return SemanticError::ambiguousSymbolError(context, identifier, p.symbol, dependentSymbols);
             }
         }
     }

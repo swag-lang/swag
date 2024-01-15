@@ -425,17 +425,32 @@ bool SemanticError::ambiguousIdentifierError(SemanticContext* context, AstNode* 
         else if (overload->typeInfo->isStruct())
         {
             auto couldBe = Fmt(Nte(Nte0049), overload->typeInfo->getDisplayNameC());
-            note         = Diagnostic::note(overload->node, overload->node->token, couldBe);
+            note         = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
         }
         else
         {
             auto concreteType = TypeManager::concreteType(overload->typeInfo, CONCRETE_ALIAS);
             auto couldBe      = Fmt(Nte(Nte0050), Naming::aKindName(match->symbolOverload).c_str(), concreteType->getDisplayNameC());
-            note              = Diagnostic::note(overload->node, overload->node->token, couldBe);
+            note              = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
         }
 
         note->forceSourceFile = true;
         note->showRange       = false;
+        notes.push_back(note);
+    }
+
+    return context->report(diag, notes);
+}
+
+bool SemanticError::ambiguousSymbolError(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol, VectorNative<OneSymbolMatch>& dependentSymbols)
+{
+    Diagnostic diag{identifier, Fmt(Err(Err0116), Naming::kindName(symbol->kind).c_str(), identifier->token.ctext())};
+
+    Vector<const Diagnostic*> notes;
+    for (auto& p1 : dependentSymbols)
+    {
+        auto note       = Diagnostic::note(p1.symbol->nodes[0], p1.symbol->nodes[0]->token, "could be");
+        note->showRange = false;
         notes.push_back(note);
     }
 

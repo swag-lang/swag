@@ -11,10 +11,12 @@ struct Diagnostic;
 struct ErrorContext;
 struct Module;
 struct OneMatch;
+struct OneSymbolMatch;
 struct OneTryMatch;
 struct Scope;
 struct SemanticContext;
 struct SourceFile;
+struct SymbolName;
 struct Token;
 
 const uint32_t GDFM_HERE_IS = 0x00000001;
@@ -48,6 +50,7 @@ namespace SemanticError
     bool cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node);
     bool ambiguousGenericError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& overloads, VectorNative<OneGenericMatch*>& genericMatches);
     bool ambiguousIdentifierError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& overloads, VectorNative<OneMatch*>& matches, uint32_t flags);
+    bool ambiguousSymbolError(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol, VectorNative<OneSymbolMatch>& dependentSymbols);
 
     void unknownIdentifierError(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
 
