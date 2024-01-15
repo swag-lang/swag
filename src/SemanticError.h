@@ -49,7 +49,7 @@ namespace SemanticError
 
     bool cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node);
     bool ambiguousGenericError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& overloads, VectorNative<OneGenericMatch*>& genericMatches);
-    bool ambiguousIdentifierError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& overloads, VectorNative<OneMatch*>& matches, uint32_t flags);
+    bool ambiguousOverloadError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& overloads, VectorNative<OneMatch*>& matches, uint32_t flags);
     bool ambiguousSymbolError(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol, VectorNative<OneSymbolMatch>& dependentSymbols);
 
     void unknownIdentifierError(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);

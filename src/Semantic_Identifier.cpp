@@ -2141,7 +2141,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
     {
         if (justCheck)
             return false;
-        return SemanticError::ambiguousIdentifierError(context, node, overloads, matches, flags);
+        return SemanticError::ambiguousOverloadError(context, node, overloads, matches, flags);
     }
 
     return true;

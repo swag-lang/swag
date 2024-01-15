@@ -659,6 +659,9 @@
     <ClCompile Include="..\src\SemanticError_Match.cpp">
       <Filter>Semantic\Error</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\SemanticError_Ambiguous.cpp">
+      <Filter>Semantic\Error</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
