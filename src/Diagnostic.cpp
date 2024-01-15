@@ -72,9 +72,7 @@ void Diagnostic::printSourceLine()
     if (!g_CommandLine.errorOneLine)
         g_Log.setColor(sourceFileColor);
     g_Log.print(path.string().c_str());
-    if (hasLocation && isNote)
-        g_Log.print(Fmt(":%d ", startLocation.line + 1));
-    else if (hasLocation)
+    if (hasLocation)
         g_Log.print(Fmt(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
     else
         g_Log.print(": ");

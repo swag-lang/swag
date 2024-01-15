@@ -213,9 +213,7 @@ struct Diagnostic
     bool showFileName   = true;
 
     bool canBeMerged       = true;
-    bool mergeWithUp       = false;
     bool display           = true;
     bool emptyMarginBefore = true;
     bool hasLocation       = false;
-    bool isNote            = false;
 };
