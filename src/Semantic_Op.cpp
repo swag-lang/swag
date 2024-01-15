@@ -510,7 +510,7 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
 
             Diagnostic diag{context->node, context->node->token, Fmt(Err(Err0889), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
             auto       note0 = Diagnostic::note(right->childs.front(), Fmt(Nte(Nte0057), suffix.c_str()));
-            auto       note1 = Diagnostic::hereIs(leftTypeInfo->declNode, false, true);
+            auto       note1 = Diagnostic::hereIs(leftTypeInfo->declNode, true);
             diag.hint        = Fmt(Nte(Nte1047), g_LangSpec->name_opAffectSuffix.c_str());
             diag.addRange(left->token, Diagnostic::isType(leftTypeInfo));
             return context->report(diag, note0, note1);
@@ -574,7 +574,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
 
         Diagnostic* note = nullptr;
         if (leftType->declNode)
-            note = Diagnostic::hereIs(leftType->declNode, false, true);
+            note = Diagnostic::hereIs(leftType->declNode, true);
 
         if (!opConst)
         {

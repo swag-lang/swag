@@ -820,7 +820,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             auto                      prevIdentifier = CastAst<AstIdentifier>(prevNode, AstNodeKind::Identifier);
             auto                      widthNode      = prevIdentifier->identifierExtension->fromAlternateVar;
             notes.push_back(Diagnostic::note(oneMatch.oneOverload->overload->node, Fmt(Nte(Nte1073), prevNode->typeInfo->getDisplayNameC())));
-            notes.push_back(Diagnostic::hereIs(widthNode, false, true));
+            notes.push_back(Diagnostic::hereIs(widthNode, true));
             notes.push_back(Diagnostic::note(Fmt(Nte(Nte1130), identifierRef->startScope->name.c_str())));
             return context->report(diag, notes);
         }
@@ -2997,7 +2997,7 @@ bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, Symbo
         {
             auto       firstNode = symbol->nodes.front();
             Diagnostic diag{genericParameters, Fmt(Err(Err0130), node->token.ctext(), Naming::aKindName(symbol->kind).c_str())};
-            return context->report(diag, Diagnostic::hereIs(firstNode, false, true));
+            return context->report(diag, Diagnostic::hereIs(firstNode, true));
         }
 
         auto childCount = genericParameters->childs.size();

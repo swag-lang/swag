@@ -373,7 +373,6 @@ bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* nod
 
         Diagnostic* note      = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
         note->forceSourceFile = true;
-        note->showRange       = false;
         notes.push_back(note);
     }
 
@@ -435,7 +434,6 @@ bool SemanticError::ambiguousIdentifierError(SemanticContext* context, AstNode* 
         }
 
         note->forceSourceFile = true;
-        note->showRange       = false;
         notes.push_back(note);
     }
 
@@ -449,8 +447,8 @@ bool SemanticError::ambiguousSymbolError(SemanticContext* context, AstIdentifier
     Vector<const Diagnostic*> notes;
     for (auto& p1 : dependentSymbols)
     {
-        auto note       = Diagnostic::note(p1.symbol->nodes[0], p1.symbol->nodes[0]->token, "could be");
-        note->showRange = false;
+        auto note             = Diagnostic::note(p1.symbol->nodes[0], p1.symbol->nodes[0]->token, "could be");
+        note->forceSourceFile = true;
         notes.push_back(note);
     }
 

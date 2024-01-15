@@ -258,7 +258,7 @@ void Diagnostic::sortRanges()
 
 void Diagnostic::collectRanges()
 {
-    if (!showRange || !showSourceCode)
+    if (!showSourceCode)
         return;
 
     // The main hint is transformed to a range
@@ -393,7 +393,7 @@ void Diagnostic::printSourceCode()
     if (lineCode.empty())
         return;
 
-    if (showRange && (showErrorLevel || showFileName))
+    if (showErrorLevel || showFileName)
         printMargin(true);
 
     // Print all lines except the one that really contains the relevant stuff (and ranges)
@@ -629,15 +629,15 @@ Utf8 Diagnostic::isType(AstNode* node)
     return isType(node->typeInfo);
 }
 
-Diagnostic* Diagnostic::hereIs(AstNode* node, bool forceShowRange, bool forceNode)
+Diagnostic* Diagnostic::hereIs(AstNode* node, bool forceNode)
 {
     if (!forceNode && node->resolvedSymbolOverload)
-        return hereIs(node->resolvedSymbolOverload, forceShowRange);
+        return hereIs(node->resolvedSymbolOverload);
 
     if (node->resolvedSymbolOverload)
     {
-        auto note       = Diagnostic::note(node, node->getTokenName(), Fmt(Nte(Nte0090), Naming::kindName(node->resolvedSymbolOverload).c_str(), node->token.ctext()));
-        note->showRange = forceShowRange;
+        auto note             = Diagnostic::note(node, node->getTokenName(), Fmt(Nte(Nte0090), Naming::kindName(node->resolvedSymbolOverload).c_str(), node->token.ctext()));
+        note->forceSourceFile = true;
         return note;
     }
 
@@ -645,34 +645,34 @@ Diagnostic* Diagnostic::hereIs(AstNode* node, bool forceShowRange, bool forceNod
     {
     case AstNodeKind::EnumDecl:
     {
-        auto note       = Diagnostic::note(node, node->token, Fmt(Nte(Nte0090), "declaration of enum", node->token.ctext()));
-        note->showRange = forceShowRange;
+        auto note             = Diagnostic::note(node, node->token, Fmt(Nte(Nte0090), "declaration of enum", node->token.ctext()));
+        note->forceSourceFile = true;
         return note;
     }
     case AstNodeKind::StructDecl:
     {
-        auto structDecl = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
-        auto note       = Diagnostic::note(structDecl, structDecl->tokenName, Fmt(Nte(Nte0090), "declaration of struct", node->token.ctext()));
-        note->showRange = forceShowRange;
+        auto structDecl       = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
+        auto note             = Diagnostic::note(structDecl, structDecl->tokenName, Fmt(Nte(Nte0090), "declaration of struct", node->token.ctext()));
+        note->forceSourceFile = true;
         return note;
     }
     case AstNodeKind::FuncDecl:
     {
-        auto fctDecl    = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
-        auto note       = Diagnostic::note(fctDecl, fctDecl->tokenName, Fmt(Nte(Nte0090), "declaration of function", node->token.ctext()));
-        note->showRange = forceShowRange;
+        auto fctDecl          = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        auto note             = Diagnostic::note(fctDecl, fctDecl->tokenName, Fmt(Nte(Nte0090), "declaration of function", node->token.ctext()));
+        note->forceSourceFile = true;
         return note;
     }
     default:
         break;
     }
 
-    auto note       = Diagnostic::note(node, node->token, Fmt(Nte(Nte0040), node->token.ctext()));
-    note->showRange = forceShowRange;
+    auto note             = Diagnostic::note(node, node->token, Fmt(Nte(Nte0040), node->token.ctext()));
+    note->forceSourceFile = true;
     return note;
 }
 
-Diagnostic* Diagnostic::hereIs(SymbolOverload* overload, bool forceShowRange)
+Diagnostic* Diagnostic::hereIs(SymbolOverload* overload)
 {
     if (!overload)
         return nullptr;
@@ -683,13 +683,13 @@ Diagnostic* Diagnostic::hereIs(SymbolOverload* overload, bool forceShowRange)
 
     if (site->typeInfo && site->typeInfo->isTuple())
     {
-        auto note       = Diagnostic::note(site, site->token, Nte(Nte0030));
-        note->showRange = false;
+        auto note             = Diagnostic::note(site, site->token, Nte(Nte0030));
+        note->forceSourceFile = true;
         return note;
     }
 
-    auto note       = Diagnostic::note(site, site->getTokenName(), Fmt(Nte(Nte0090), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()));
-    note->showRange = forceShowRange;
+    auto note             = Diagnostic::note(site, site->getTokenName(), Fmt(Nte(Nte0090), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()));
+    note->forceSourceFile = true;
     return note;
 }
 

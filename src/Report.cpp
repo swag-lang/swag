@@ -132,7 +132,6 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
             note->hasLocation)
         {
             note->showErrorLevel = false;
-            note->showRange      = true;
             note->hint           = note->textMsg;
             note->textMsg.clear();
         }
@@ -166,8 +165,6 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
             if (sourceFile0 == sourceFile1 &&
                 note->startLocation.line == note1->startLocation.line &&
                 note->endLocation.line == note1->endLocation.line &&
-                note->showRange &&
-                note1->showRange &&
                 !note1->forceSourceFile &&
                 note1->ranges.size() &&
                 (note1->errorLevel == DiagnosticLevel::Note))

@@ -77,7 +77,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     if (scopeKind != newScope->kind)
     {
         Diagnostic  diag{implNode, Fmt(Err(Err1123), Naming::kindName(scopeKind).c_str(), implNode->token.ctext(), Naming::kindName(newScope->kind).c_str())};
-        auto        note  = Diagnostic::hereIs(newScope->owner, false, true);
+        auto        note  = Diagnostic::hereIs(newScope->owner, true);
         Diagnostic* note1 = nullptr;
         if (newScope->kind == ScopeKind::Enum)
             note1 = Diagnostic::note(Fmt(Nte(Nte0147), implNode->token.ctext()));
@@ -258,7 +258,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
             {
                 auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
                 Diagnostic diag{implNode->identifier, Fmt(Err(Err1123), Naming::kindName(newScope->kind).c_str(), implNode->token.ctext(), Naming::kindName(ScopeKind::Struct).c_str())};
-                auto       note = Diagnostic::hereIs(structNode, false, true);
+                auto       note = Diagnostic::hereIs(structNode, true);
                 return context->report(diag, note);
             }
             else

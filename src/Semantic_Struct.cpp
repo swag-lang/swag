@@ -290,17 +290,17 @@ bool Semantic::resolveImplFor(SemanticContext* context)
             case MatchResult::MismatchThrow:
             {
                 Diagnostic diag{child, child->token, Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
-                diag.hint       = Nte(Nte1115);
-                auto note       = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0002));
-                note->showRange = false;
+                diag.hint             = Nte(Nte1115);
+                auto note             = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0002));
+                note->forceSourceFile = true;
                 return context->report(diag, note);
             }
 
             default:
             {
                 Diagnostic diag{child, child->token, Fmt(Err(Err0652), child->token.ctext(), typeBaseInterface->name.c_str())};
-                auto       note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0002));
-                note->showRange = false;
+                auto       note       = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0002));
+                note->forceSourceFile = true;
                 return context->report(diag, note);
             }
             }

@@ -162,8 +162,8 @@ struct Diagnostic
     static bool        hastErrorId(const Utf8& textMsg);
     static Utf8        isType(TypeInfo* typeInfo);
     static Utf8        isType(AstNode* node);
-    static Diagnostic* hereIs(SymbolOverload* overload, bool forceShowRange = false);
-    static Diagnostic* hereIs(AstNode* node, bool forceShowRange = false, bool forceNode = false);
+    static Diagnostic* hereIs(SymbolOverload* overload);
+    static Diagnostic* hereIs(AstNode* node, bool forceNode = false);
 
     struct RangeHint
     {
@@ -209,15 +209,13 @@ struct Diagnostic
     AstNode*    contextNode = nullptr;
 
     bool showSourceCode = false;
-    bool showRange      = true;
+    bool showErrorLevel = true;
     bool showFileName   = true;
-    bool mergeWithUp    = false;
 
-    bool showErrorLevel    = true;
+    bool forceSourceFile   = false;
+    bool mergeWithUp       = false;
     bool display           = true;
     bool emptyMarginBefore = true;
-
-    bool hasLocation     = false;
-    bool forceSourceFile = false;
-    bool isNote          = false;
+    bool hasLocation       = false;
+    bool isNote            = false;
 };

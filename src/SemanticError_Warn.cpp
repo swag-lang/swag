@@ -53,8 +53,8 @@ bool SemanticError::warnDeprecated(SemanticContext* context, AstNode* identifier
     }
 
     Diagnostic diag{identifier, identifier->token, Fmt(Err(Wrn0003), Naming::kindName(symbol->kind).c_str(), identifier->resolvedSymbolOverload->symbol->name.c_str()), DiagnosticLevel::Warning};
-    auto       note1 = Diagnostic::note(node, node->token, Nte(Nte0031));
-    note1->showRange = false;
+    auto       note1       = Diagnostic::note(node, node->token, Nte(Nte0031));
+    note1->forceSourceFile = true;
 
     if (v && v->text.empty())
     {

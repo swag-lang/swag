@@ -22,7 +22,7 @@ bool ByteCodeGen::sameStackFrame(ByteCodeGenContext* context, SymbolOverload* ov
 
     Vector<const Diagnostic*> notes;
 
-    notes.push_back(Diagnostic::hereIs(overload, true));
+    notes.push_back(Diagnostic::hereIs(overload));
     if (context->node->ownerFct && context->node->ownerFct->attributeFlags & ATTRIBUTE_GENERATED_FUNC)
         notes.push_back(Diagnostic::note(Fmt(Nte(Nte1095), Naming::kindName(overload).c_str(), context->node->ownerFct->getDisplayName().c_str())));
     if (overload->fromInlineParam)
