@@ -374,9 +374,8 @@ void initErrors()
     SWAG_ERROR(Err0033, "invalid bitcast                                   $ bitcasting to a larger type is not allowed ('%s' to '%s')");
     SWAG_ERROR(Err0031, "invalid bitcast                                   $ bitcasting to type '%s' is not allowed $ expected integer, rune, or float");
     SWAG_ERROR(Err1207, "invalid block start                               $ a block start '{' is not allowed after 'discard try/assume/catch'");
-    SWAG_ERROR(Err0875, "invalid capture                                   $ can't capture '%s' because it's a closure $ capturing a closure type is not supported");
+    SWAG_ERROR(Err0875, "invalid capture                                   $ can't capture '%s' because it's %s $ capturing %s type is not supported");
     SWAG_ERROR(Err0884, "invalid capture                                   $ can't capture '%s' because it's not a plain old data struct $ a struct is not plain old data if it contains 'opDrop', 'opPostCopy' or 'opPostMove'");
-    SWAG_ERROR(Err0887, "invalid capture                                   $ can't capture type '%s'");
     SWAG_ERROR(Err2028, "invalid character                                 $ the character '%s' is not recognized in this context");
     SWAG_ERROR(Err0302, "invalid character literal                         $ can't convert a character literal to type '%s'");
     SWAG_ERROR(Err0262, "invalid character literal                         $ the character literal '%s' seems to be a string and not a character");
@@ -896,6 +895,7 @@ void initErrors()
     SWAG_ERROR(Err1179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
     SWAG_ERROR(Err0092, "unused return value                               $ the return value of the lambda '%s' should be used $ if you don't need the return value, consider prefixing the call with 'discard'");
     SWAG_ERROR(Err1165, "const mismatch                                    $ the UFCS argument should be mutable but is not");
+    SWAG_ERROR(Err0887, nullptr);
     SWAG_ERROR(Err0680, nullptr);
     SWAG_ERROR(Err0367, nullptr);
     SWAG_ERROR(Err0282, nullptr);

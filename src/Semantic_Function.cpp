@@ -1030,9 +1030,8 @@ bool Semantic::resolveCaptureFuncCallParams(SemanticContext* context)
             continue;
         }
 
-        if (typeField->isClosure())
-            return context->report({c, Fmt(Err(Err0875), c->token.ctext())});
-        return context->report({c, Fmt(Err(Err0887), typeField->getDisplayNameC())});
+        auto aKindName = Naming::aKindName(typeField);
+        return context->report({c, Fmt(Err(Err0875), c->token.ctext(), aKindName.c_str(), aKindName.c_str())});
     }
 
     // As this is the capture block resolved in the right context, we can now evaluate the corresponding slosure
