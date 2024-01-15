@@ -289,7 +289,9 @@ bool Semantic::checkAccess(JobContext* context, AstNode* node)
     if (onNode == culprit)
         note = Diagnostic::note(culprit, culprit->token, Fmt(Nte(Nte1127), Naming::kindName(culprit->resolvedSymbolOverload).c_str(), accessCulprit));
     else
-        note = Diagnostic::note(onNode, onNode->token, Fmt(Nte(Nte1122), accessCulprit, onNode->typeInfo->getDisplayNameC()));
-    note1 = Diagnostic::hereIs(culprit);
+    {
+        note  = Diagnostic::note(onNode, onNode->token, Fmt(Nte(Nte1122), accessCulprit, onNode->typeInfo->getDisplayNameC()));
+        note1 = Diagnostic::hereIs(culprit);
+    }
     return context->report(diag, note, note1);
 }

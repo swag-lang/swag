@@ -484,8 +484,8 @@ void initErrors()
     SWAG_ERROR(Err2019, "invalid number prefix                             $ expected '0x' for hexadecimal or '0b' for binary, found '%s' instead");
     SWAG_ERROR(Err0666, "invalid opaque struct                             $ a struct marked with '#[Swag.Opaque]' requires a 'public' access");
     SWAG_ERROR(Err0667, "invalid opaque struct                             $ the struct can't be marked with '#[Swag.Opaque]' because the whole file is exported with '#global export'");
-    SWAG_ERROR(Err0225, "invalid operation                                 $ can't affect by index a type '%s' to '%s' because no corresponding function 'opIndexAffect' has been found");
-    SWAG_ERROR(Err0889, "invalid operation                                 $ can't initialize a type '%s' with '%s' because no corresponding 'opAffectSuffix' function can be found in '%s'");
+    SWAG_ERROR(Err0225, "invalid operation                                 $ can't affect by index a type '%s' to '%s' because no corresponding 'opIndexAffect' can be found");
+    SWAG_ERROR(Err0889, "invalid operation                                 $ can't initialize a type '%s' with '%s' because no corresponding 'opAffectSuffix' can be found");
     SWAG_ERROR(Err0186, "invalid operation                                 $ missing special function '%s' in '%s' when solving operator '%s'");
     SWAG_ERROR(Err0079, "invalid operation                                 $ missing special function '%s' in '%s'");
     SWAG_ERROR(Err0833, "invalid operation                                 $ the bit inversion operation '~' is not allowed on type '%s'");

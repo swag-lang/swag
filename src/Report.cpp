@@ -183,7 +183,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
                             else if (note1->ranges.size() == 1 && note->ranges.size() == 1)
                             {
                                 r1.mergeNext = true;
-                                note->ranges.insert(note->ranges.begin(), r1);
+                                note->ranges.insert(note->ranges.begin() + j, r1);
                                 note->remarks.insert(note->remarks.end(), note1->remarks.begin(), note1->remarks.end());
                                 note1->display = false;
                             }
