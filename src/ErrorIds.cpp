@@ -1262,7 +1262,7 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Nte0050, "%s of type '%s'");
+    SWAG_ERROR(Nte0050, "could be %s of type '%s'");
     SWAG_ERROR(Nte0110, "'#alias' is only valid within a '#[Swag.Macro]' or '#[Swag.Mixin]' function");
     SWAG_ERROR(Nte0120, "'#mixin' is only valid within a '#[Swag.Mixin]' function");
     SWAG_ERROR(Nte0010, "'%s' is %s and does not have a subscope");
@@ -1279,13 +1279,13 @@ void initErrors()
     SWAG_ERROR(Nte0139, "'with' should be followed by a single identifier");
     SWAG_ERROR(Nte1031, "a '%s' block must start with '#do' or must be enclosed in '{}'");
     SWAG_ERROR(Nte1022, "a '%s' block must start with 'do' or must be enclosed in '{}'");
-    SWAG_ERROR(Nte0048, "a function of type '%s'");
+    SWAG_ERROR(Nte0048, "could be a function of type '%s'");
     SWAG_ERROR(Nte1050, "a local variable declared with 'let' is immutable and can't be changed");
     SWAG_ERROR(Nte1114, "a return type is missing");
     SWAG_ERROR(Nte0124, "a standard function in an 'impl' block should not shadow a function from the matching interface");
     SWAG_ERROR(Nte0100, "an attribute is not a function; consider removing it");
     SWAG_ERROR(Nte1121, "an implicit '@countof' is present here");
-    SWAG_ERROR(Nte0045, "an instance of the generic function '%s'");
+    SWAG_ERROR(Nte0045, "could be an instance of the generic function '%s'");
     SWAG_ERROR(Nte0038, "associated command line option: '%s'");
     SWAG_ERROR(Nte0132, "both parts of an 'orelse' should be of identical type");
     SWAG_ERROR(Nte0019, "but it is applied on this %s");
@@ -1398,7 +1398,7 @@ void initErrors()
     SWAG_ERROR(Nte0047, "the resulting type is '%s'");
     SWAG_ERROR(Nte0005, "the return type of an '#ast' block should be of type 'string'");
     SWAG_ERROR(Nte1037, "the slicing lower bound type is invalid, expected an integer, got '%s' instead");
-    SWAG_ERROR(Nte0049, "the struct '%s'");
+    SWAG_ERROR(Nte0049, "could be the struct '%s'");
     SWAG_ERROR(Nte0044, "the symbol '%s' is already present in the interface scope '%s'");
     SWAG_ERROR(Nte0013, "the symbol '%s' was located through a 'using' statement");
     SWAG_ERROR(Nte1020, "the symbol '...' is used to declare variadic function parameters, which is not valid in this context");

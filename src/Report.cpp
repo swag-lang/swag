@@ -127,21 +127,14 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
             continue;
 
         // Transform a note in a hint
-        if (note->errorLevel == DiagnosticLevel::Note)
+        if (note->errorLevel == DiagnosticLevel::Note &&
+            note->hint.empty() &&
+            note->hasLocation)
         {
-            if (note->hint.empty() && note->hasLocation)
-            {
-                note->showErrorLevel = false;
-                if (!note->noteHeader.empty())
-                {
-                    note->hint = note->noteHeader;
-                    note->hint += " ";
-                }
-
-                note->hint += note->textMsg;
-                note->textMsg.clear();
-                note->showRange = true;
-            }
+            note->showErrorLevel = false;
+            note->showRange      = true;
+            note->hint           = note->textMsg;
+            note->textMsg.clear();
         }
 
         note->collectRanges();

@@ -179,7 +179,6 @@ struct Diagnostic
     Utf8            textMsg;
     Vector<Utf8>    remarks;
     Vector<Utf8>    autoRemarks;
-    Utf8            noteHeader;
     DiagnosticLevel errorLevel;
 
     Vector<RangeHint> ranges;

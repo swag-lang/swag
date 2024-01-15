@@ -434,7 +434,6 @@ bool SemanticError::ambiguousIdentifierError(SemanticContext* context, AstNode* 
             note              = Diagnostic::note(overload->node, overload->node->token, couldBe);
         }
 
-        note->noteHeader      = "could be";
         note->forceSourceFile = true;
         note->showRange       = false;
         notes.push_back(note);

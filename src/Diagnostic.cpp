@@ -162,15 +162,7 @@ void Diagnostic::printErrorLevel()
         if (emptyMarginBefore)
             printMargin(true);
         g_Log.setColor(noteColor);
-        if (noteHeader.empty())
-        {
-            g_Log.print("note: ");
-        }
-        else
-        {
-            g_Log.print(noteHeader);
-            g_Log.print(": ");
-        }
+        g_Log.print("note: ");
         break;
 
     default:
