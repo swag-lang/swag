@@ -40,7 +40,7 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
             {
                 auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
                 Diagnostic diag{implNode->identifier, Fmt(Err(Err1123), Naming::kindName(newScope->kind).c_str(), implNode->token.ctext(), Naming::kindName(ScopeKind::Enum).c_str())};
-                auto       note  = Diagnostic::hereIs(enumNode, true);
+                auto       note  = Diagnostic::hereIs(enumNode);
                 auto       note1 = Diagnostic::note(Fmt(Nte(Nte0147), implNode->token.ctext()));
                 return context->report(diag, note, note1);
             }

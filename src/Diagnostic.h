@@ -162,8 +162,8 @@ struct Diagnostic
     static bool        hastErrorId(const Utf8& textMsg);
     static Utf8        isType(TypeInfo* typeInfo);
     static Utf8        isType(AstNode* node);
+    static Diagnostic* hereIs(AstNode* node);
     static Diagnostic* hereIs(SymbolOverload* overload);
-    static Diagnostic* hereIs(AstNode* node, bool forceNode = false);
 
     struct RangeHint
     {

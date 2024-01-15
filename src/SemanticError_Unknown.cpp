@@ -52,7 +52,7 @@ static Diagnostic* unknownIdentifierInScope(AstIdentifierRef* identifierRef, Ast
         auto altEnum = prevIdentifier->identifierExtension->alternateEnum;
         auto msg     = Fmt(Err(Err0492), node->token.ctext(), altEnum->getDisplayNameC(), whereScopeName.c_str(), displayName.c_str());
         diag         = new Diagnostic{node, node->token, msg};
-        notes.push_back(Diagnostic::hereIs(altEnum->declNode, true));
+        notes.push_back(Diagnostic::hereIs(altEnum->declNode));
     }
     else if (!typeWhere)
     {
@@ -95,7 +95,7 @@ static Diagnostic* unknownIdentifierInScope(AstIdentifierRef* identifierRef, Ast
     case AstNodeKind::InterfaceDecl:
     case AstNodeKind::EnumDecl:
     {
-        auto note = Diagnostic::hereIs(identifierRef->startScope->owner, true);
+        auto note = Diagnostic::hereIs(identifierRef->startScope->owner);
         notes.push_back(note);
         break;
     }

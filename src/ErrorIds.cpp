@@ -1319,7 +1319,6 @@ void initErrors()
     SWAG_ERROR(Nte0136, "force the evaluation using '#run'");
     SWAG_ERROR(Nte0114, "function names that start with 'op' followed by an uppercase letter are reserved for struct special functions");
     SWAG_ERROR(Nte0116, "function parameters are immutable and can't be modified");
-    SWAG_ERROR(Nte0040, "here is '%s'");
     SWAG_ERROR(Nte0016, "here is another one");
     SWAG_ERROR(Nte0015, "here is one");
     SWAG_ERROR(Nte0090, "here is the %s '%s'");
@@ -1464,6 +1463,7 @@ void initErrors()
     SWAG_ERROR(Nte1131, "this 'discard' should be removed");
     SWAG_ERROR(Nte1056, "the function needs a mutable type '%s' as its first argument");
     SWAG_ERROR(Nte1094, "here is the corresponding parameter of the %s");
+    SWAG_ERROR(Nte0040, nullptr);
     SWAG_ERROR(Nte1057, nullptr);
     SWAG_ERROR(Nte0028, nullptr);
     SWAG_ERROR(Nte1023, nullptr);

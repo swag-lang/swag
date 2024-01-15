@@ -729,7 +729,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             if (!ok)
             {
                 Diagnostic diag{node, Fmt(Err(Err0848), node->token.ctext(), concreteTypeEnum->getDisplayNameC())};
-                auto       note = Diagnostic::hereIs(concreteNodeType->declNode, true);
+                auto       note = Diagnostic::hereIs(concreteNodeType->declNode);
                 return context->report(diag, note);
             }
         }

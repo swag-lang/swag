@@ -627,66 +627,20 @@ Utf8 Diagnostic::isType(AstNode* node)
     return isType(node->typeInfo);
 }
 
-Diagnostic* Diagnostic::hereIs(AstNode* node, bool forceNode)
-{
-    if (!forceNode && node->resolvedSymbolOverload)
-        return hereIs(node->resolvedSymbolOverload);
-
-    if (node->resolvedSymbolOverload)
-    {
-        auto note         = Diagnostic::note(node, node->getTokenName(), Fmt(Nte(Nte0090), Naming::kindName(node->resolvedSymbolOverload).c_str(), node->token.ctext()));
-        note->canBeMerged = false;
-        return note;
-    }
-
-    switch (node->kind)
-    {
-    case AstNodeKind::EnumDecl:
-    {
-        auto note         = Diagnostic::note(node, node->token, Fmt(Nte(Nte0090), "declaration of enum", node->token.ctext()));
-        note->canBeMerged = false;
-        return note;
-    }
-    case AstNodeKind::StructDecl:
-    {
-        auto structDecl   = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
-        auto note         = Diagnostic::note(structDecl, structDecl->tokenName, Fmt(Nte(Nte0090), "declaration of struct", node->token.ctext()));
-        note->canBeMerged = false;
-        return note;
-    }
-    case AstNodeKind::FuncDecl:
-    {
-        auto fctDecl      = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
-        auto note         = Diagnostic::note(fctDecl, fctDecl->tokenName, Fmt(Nte(Nte0090), "declaration of function", node->token.ctext()));
-        note->canBeMerged = false;
-        return note;
-    }
-    default:
-        break;
-    }
-
-    auto note         = Diagnostic::note(node, node->token, Fmt(Nte(Nte0040), node->token.ctext()));
-    note->canBeMerged = false;
-    return note;
-}
-
 Diagnostic* Diagnostic::hereIs(SymbolOverload* overload)
 {
-    if (!overload)
+    return hereIs(overload->node);
+}
+
+Diagnostic* Diagnostic::hereIs(AstNode* node)
+{
+    if (!node)
         return nullptr;
-    if (overload->node && overload->node->flags & AST_GENERATED)
+    if (node->flags & AST_GENERATED)
         return nullptr;
 
-    auto site = overload->node;
-
-    if (site->typeInfo && site->typeInfo->isTuple())
-    {
-        auto note         = Diagnostic::note(site, site->token, Nte(Nte0030));
-        note->canBeMerged = false;
-        return note;
-    }
-
-    auto note         = Diagnostic::note(site, site->getTokenName(), Fmt(Nte(Nte0090), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()));
+    auto msg          = Fmt(Nte(Nte0090), Naming::kindName(node).c_str(), node->token.ctext());
+    auto note         = Diagnostic::note(node, node->getTokenName(), msg);
     note->canBeMerged = false;
     return note;
 }
