@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "ByteCodeGen.h"
-#include "ByteCode.h"
-#include "TypeManager.h"
-#include "Module.h"
 #include "Ast.h"
+#include "ByteCode.h"
+#include "ByteCodeGen.h"
+#include "Module.h"
 #include "Semantic.h"
+#include "TypeManager.h"
 
 bool ByteCodeGen::emitLocalVarDeclBefore(ByteCodeGenContext* context)
 {
