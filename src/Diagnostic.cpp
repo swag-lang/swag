@@ -488,6 +488,7 @@ void Diagnostic::printRanges()
         }
     }
 
+    auto numRanges = ranges.size();
     while (ranges.size())
     {
         g_Log.eol();
@@ -507,7 +508,8 @@ void Diagnostic::printRanges()
                 continue;
             }
 
-            if (r.mid + 3 + (int) r.hint.length() > (int) MAX_RIGHT_COLUMN &&
+            if (ranges.size() == 1 &&
+                r.mid + 3 + (int) r.hint.length() > (int) MAX_RIGHT_COLUMN &&
                 r.mid - 2 - (int) r.hint.length() > minBlanks)
             {
                 ALIGN(r.mid - 2 - (int) r.hint.length());
@@ -517,13 +519,17 @@ void Diagnostic::printRanges()
                 g_Log.print(LogSymbol::DownLeft);
                 ranges.clear();
             }
-            else if (r.mid + 3 + r.hint.length() > (int) MAX_RIGHT_COLUMN)
+            else if (ranges.size() == 1 &&
+                     r.mid + 3 + r.hint.length() > (int) MAX_RIGHT_COLUMN)
             {
-                ALIGN(r.mid);
-                g_Log.print(LogSymbol::VerticalLineUp);
-                g_Log.eol();
-                printMargin(false, true);
-                startIndex = minBlanks;
+                if (numRanges == 1)
+                {
+                    ALIGN(r.mid);
+                    g_Log.print(LogSymbol::VerticalLineUp);
+                    g_Log.eol();
+                    printMargin(false, true);
+                    startIndex = minBlanks;
+                }
 
                 setColorRanges(r.errorLevel);
                 g_Log.print(r.hint);

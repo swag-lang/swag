@@ -226,7 +226,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         if (!(castFlags & CASTFLAG_EXPLICIT) || (castFlags & CASTFLAG_COERCE))
         {
             if (TypeManager::makeCompatibles(context, toType, fromType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK))
-                notes.push_back(Diagnostic::note(Fmt(Nte(Nte1032), toType->getDisplayNameC())));
+                notes.push_back(Diagnostic::note(fromNode, Fmt(Nte(Nte1032), toType->getDisplayNameC())));
         }
 
         Diagnostic diag{fromNode, msg};
