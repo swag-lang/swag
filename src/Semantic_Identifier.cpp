@@ -2970,7 +2970,9 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext* context, SymbolMa
                     oneParam->typeInfo->isTypedVariadic() ||
                     oneParam->typeInfo->isCVariadic())
                 {
-                    return context->report({oneParam, Err(Err0734)});
+                    Diagnostic diag{oneParam, Err(Err0887)};
+                    diag.hint = Diagnostic::isType(oneParam);
+                    return context->report(diag);
                 }
             }
         }

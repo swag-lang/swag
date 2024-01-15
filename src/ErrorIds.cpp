@@ -657,6 +657,7 @@ void initErrors()
     SWAG_ERROR(Err1177, "misplaced tuple unpacking                         $ tuple unpacking is not allowed in %s");
     SWAG_ERROR(Err0696, "misplaced type                                    $ '%s' is only valid when declaring a function parameter");
     SWAG_ERROR(Err0734, "misplaced variadic parameter                      $ a variadic parameter must be the last one");
+    SWAG_ERROR(Err0887, "misplaced variadic argument                       $ a variadic argument must be the last one");
     SWAG_ERROR(Err1023, "missing '#alias' number                           $ '#alias' variable names should end with a number such as '#alias0', '#alias1', etc.");
     SWAG_ERROR(Err0694, "missing '#do'                                     $ missing either '#do' or '{' before '%s'");
     SWAG_ERROR(Err1002, "missing '#foreignlib' string argument             $ expected the library name after '#foreignlib', found '%s' instead $ use '#foreignlib \"path/to/library\"' to specify the library to import");
@@ -895,7 +896,6 @@ void initErrors()
     SWAG_ERROR(Err1179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
     SWAG_ERROR(Err0092, "unused return value                               $ the return value of the lambda '%s' should be used $ if you don't need the return value, consider prefixing the call with 'discard'");
     SWAG_ERROR(Err1165, "const mismatch                                    $ the UFCS argument should be mutable but is not");
-    SWAG_ERROR(Err0887, nullptr);
     SWAG_ERROR(Err0680, nullptr);
     SWAG_ERROR(Err0367, nullptr);
     SWAG_ERROR(Err0282, nullptr);
