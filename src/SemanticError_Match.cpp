@@ -411,27 +411,20 @@ bool SemanticError::ambiguousIdentifierError(SemanticContext* context, AstNode* 
         auto        overload = match->symbolOverload;
         Diagnostic* note     = nullptr;
 
-        if (overload->typeInfo->isFuncAttr())
+        if (overload->typeInfo->isFuncAttr() && overload->typeInfo->flags & TYPEINFO_FROM_GENERIC)
         {
-            if (overload->typeInfo->flags & TYPEINFO_FROM_GENERIC)
-            {
-                auto couldBe = Fmt(Nte(Nte0045), overload->typeInfo->getDisplayNameC());
-                note         = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
-            }
-            else
-            {
-                auto couldBe = Fmt(Nte(Nte0048), overload->typeInfo->getDisplayNameC());
-                note         = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
-            }
-
-            //if (!overload->typeInfo->isLambdaClosure())
-            //    note->showRange = false;
+            auto couldBe = Fmt(Nte(Nte0045), overload->typeInfo->getDisplayNameC());
+            note         = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
+        }
+        else if (overload->typeInfo->isFuncAttr())
+        {
+            auto couldBe = Fmt(Nte(Nte0048), overload->typeInfo->getDisplayNameC());
+            note         = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
         }
         else if (overload->typeInfo->isStruct())
         {
-            auto couldBe    = Fmt(Nte(Nte0049), overload->typeInfo->getDisplayNameC());
-            note            = Diagnostic::note(overload->node, overload->node->token, couldBe);
-            note->showRange = false;
+            auto couldBe = Fmt(Nte(Nte0049), overload->typeInfo->getDisplayNameC());
+            note         = Diagnostic::note(overload->node, overload->node->token, couldBe);
         }
         else
         {
@@ -442,6 +435,7 @@ bool SemanticError::ambiguousIdentifierError(SemanticContext* context, AstNode* 
 
         note->noteHeader      = "could be";
         note->forceSourceFile = true;
+        note->showRange       = false;
         notes.push_back(note);
     }
 
