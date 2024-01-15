@@ -5,7 +5,7 @@
 // Just want to test Swag here...
 
 #main
-{
+{/*
     day1A()
     day1B()
     day2A()
@@ -15,5 +15,6 @@
     day4A()
     day4B()
     day5A()
-    day5B()
+    day5B()*/
+    day6A()
 }
