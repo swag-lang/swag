@@ -1,15 +1,17 @@
 #include "pch.h"
-#include "SemanticError.h"
 #include "Ast.h"
 #include "Diagnostic.h"
 #include "LanguageSpec.h"
 #include "Naming.h"
 #include "Semantic.h"
+#include "SemanticError.h"
 #include "TypeManager.h"
 
 static Diagnostic* unknownIdentifierInScope(AstIdentifierRef* identifierRef, AstIdentifier* node, Vector<const Diagnostic*>& notes)
 {
-    auto typeRef = TypeManager::concreteType(identifierRef->typeInfo)->getFinalType();
+    auto typeRef = TypeManager::concreteType(identifierRef->typeInfo);
+    if (typeRef)
+        typeRef = typeRef->getFinalType();
 
     // Error inside a tuple
     if (typeRef && typeRef->isTuple())
