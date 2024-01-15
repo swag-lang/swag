@@ -34,40 +34,33 @@ What is the size of the region containing all locations which have a total dista
 
 using Core
 
+//#[Swag.PrintBc]
 func day6B() assume
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "6.txt")
     var lines = File.readAllLines(dataPath)
 
-    var coords: Array'{x, y: s32}
-    visit l: lines
-    {
-        let split = Tokenize.split(l, `,`'u8)
-        let vx = assume StrConv.toS32(Latin1.trim(split[0]))
-        let vy = assume StrConv.toS32(Latin1.trim(split[1]))
-        coords.add({vx, vy})
-    }
-
-    const W = 1000
+    const W = 700
 
     var arr: Array's32
     arr.resize(W*W)
 
-    visit c, who: coords
+    visit l: lines
     {
+        let split = Tokenize.split(l, `,`'u8)
+        let cx = assume StrConv.toS32(Latin1.trim(split[0]))+W/2
+        let cy = assume StrConv.toS32(Latin1.trim(split[1]))+W/2
+
         loop i: W*W
         {
-            let x = i%W
-            let y = i/W
-            let d = Math.abs(c.x+500 - x) + Math.abs(c.y+500 - y)
-            arr.ref2(x, y, W) += d
+            let x = i%W, y = i/W
+            let d = Math.abs(cx - x) + Math.abs(cy - y)
+            arr[i] += d
         }
     }
 
     var total = 0
-    visit v: arr do
-        if v<10000 do
-            total += 1
+    visit v: arr do total += cast(s32) (v<10000)
 
     //Console.print("total: ", total)
     @assert(total == 43852)
