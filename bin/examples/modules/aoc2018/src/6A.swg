@@ -77,27 +77,27 @@ func day6A() assume
 
     visit c, who: coords
     {
-        loop x: W
+        loop i: W*W
         {
-            loop y: W
+            let x = i%W
+            let y = i/W
+            let d = Math.abs(c.x - x) + Math.abs(c.y - y)
+
+            var r = ref arr.ref2(x, y, W)
+            if d < r.d or !r.who
             {
-                let border = !x or !y or x == W-1 or y==W-1
-                let d = Math.abs(c.x - x) + Math.abs(c.y - y)
+                let border = cast(s32) (!x or !y or x == W-1 or y==W-1)
 
-                var r = ref arr.ref2(x, y, W)
-                if d < r.d or !r.who
+                if r.who
                 {
-                    if r.who
-                    {
-                        count[r.who-1] -= 1
-                        if border do borders[r.who-1] -= 1
-                    }
-
-                    r = {d, cast(s32) who+1}
-
-                    count[who] += 1
-                    if border do borders[who] += 1
+                    count[r.who-1] -= 1
+                    borders[r.who-1] -= border
                 }
+
+                r = {d, cast(s32) who+1}
+
+                count[who] += 1
+                borders[who] += border
             }
         }
     }
@@ -107,6 +107,6 @@ func day6A() assume
         if !borders[#index] do
             total = Math.max(v, total)
 
-    //Console.print("total: ", max)
+    //Console.print("total: ", total)
     @assert(total == 3882)
 }
