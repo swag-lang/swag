@@ -1139,7 +1139,12 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             }
         }
 
-        SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_PUBLIC), context->report({node, Err(Err0313)}));
+        if (node->attributeFlags & ATTRIBUTE_PUBLIC)
+        {
+            Diagnostic diag{node, node->getTokenName(), Err(Err0313)};
+            auto       note = Diagnostic::hereIs(node->findParent(TokenId::KwdPublic));
+            return context->report(diag, note);
+        }
 
         node->flags |= AST_R_VALUE;
         storageSegment = getSegmentForVar(context, node);

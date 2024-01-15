@@ -632,13 +632,14 @@ Diagnostic* Diagnostic::hereIs(AstNode* node)
 {
     if (!node)
         return nullptr;
-    if (node->flags & AST_GENERATED)
+
+    if (node->flags & AST_GENERATED &&
+        node->tokenId != TokenId::KwdPrivate &&
+        node->tokenId != TokenId::KwdPublic)
         return nullptr;
 
-    auto msg          = Fmt(Nte(Nte0090), Naming::kindName(node).c_str(), node->token.ctext());
-    auto note         = Diagnostic::note(node, node->getTokenName(), msg);
-    note->canBeMerged = false;
-    return note;
+    auto msg = Fmt(Nte(Nte0090), Naming::kindName(node).c_str(), node->token.ctext());
+    return Diagnostic::note(node, node->getTokenName(), msg);
 }
 
 void Diagnostic::tokenizeError(const Utf8& err, Vector<Utf8>& tokens)

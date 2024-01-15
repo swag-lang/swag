@@ -1187,6 +1187,14 @@ Utf8 AstNode::getScopedName()
     return result;
 }
 
+AstNode* AstNode::findParent(TokenId tkn)
+{
+    auto find = parent;
+    while (find && find->tokenId != tkn)
+        find = find->parent;
+    return find;
+}
+
 AstNode* AstNode::findParent(AstNodeKind parentKind)
 {
     auto find = parent;

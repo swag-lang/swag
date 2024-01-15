@@ -301,9 +301,10 @@ Utf8 Naming::kindName(AstNode* node, Utf8& article)
         article = "a";
         return "function";
 
+    case AstNodeKind::AttrUse:
     case AstNodeKind::AttrDecl:
         article = "an";
-        return "attribute declaration";
+        return "attribute";
 
     case AstNodeKind::EnumDecl:
         article = "an";

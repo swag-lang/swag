@@ -65,14 +65,14 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
         newScope = newScope->parentScope;
 
     tokenizer.propagateComment = true;
-    SWAG_CHECK(eatToken());
 
     SWAG_ASSERT(newScope);
     Scoped scoped(this, newScope);
     auto   attrUse = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
-    *result        = attrUse;
+    *result = attrUse;
     attrUse->flags |= AST_GENERATED;
     attrUse->attributeFlags = attr;
+    SWAG_CHECK(eatToken());
 
     AstNode* topStmt = nullptr;
 
