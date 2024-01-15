@@ -514,7 +514,7 @@ void initErrors()
     SWAG_ERROR(Err0764, "invalid return type                               $ a function can't return type '%s'");
     SWAG_ERROR(Err0732, "invalid return type                               $ a function return of type 'void' is invalid $ just omit the return type if you want the function to return nothing");
     SWAG_ERROR(Err0126, "invalid return type                               $ the function 'opSlice' must return a string or a slice, got '%s' instead");
-    SWAG_ERROR(Err0163, "invalid return value assignment                   $ the function does not return a value");
+    SWAG_ERROR(Err0163, "invalid return value assignment                   $ the call does not return a value");
     SWAG_ERROR(Err0537, "invalid runtime typeinfo                          $ failed to convert '%s' to a runtime typeinfo");
     SWAG_ERROR(Err0593, "invalid safety argument                           $ invalid safety value '%s' $ the acceptable safety values are 'boundcheck|overflow|math|switch|unreachable|any|bool|nan|sanity|null'");
     SWAG_ERROR(Err0320, "invalid slicing                                   $ can't slice '%s' because 'opSlice' was not found in type '%s'");
@@ -722,7 +722,7 @@ void initErrors()
     SWAG_ERROR(Err0779, "missing return value                              $ expected a return value because the return type has already been deduced to be '%s'");
     SWAG_ERROR(Err0772, "missing return value                              $ expected an expression of type '%s' after 'return'");
     SWAG_ERROR(Err0748, "missing return value                              $ not all control paths of %s returns a value");
-    SWAG_ERROR(Err0749, "missing return value                              $ the %s returns type '%s' but lacks a 'return' in its body");
+    SWAG_ERROR(Err0749, "missing return value                              $ the %s returns a type '%s' but lacks a 'return' in its body");
     SWAG_ERROR(Err1185, "missing slicing upper bound                       $ expected an upper bound expression after '..<' $ if you want to slice to the end, consider using '..' instead of '..>'");
     SWAG_ERROR(Err1025, "missing struct name                               $ expected the struct name before the start of the body '{'");
     SWAG_ERROR(Err0707, "missing test error                                $ expected at least one error, but none was raised");
