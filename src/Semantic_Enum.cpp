@@ -23,8 +23,8 @@ bool Semantic::resolveEnum(SemanticContext* context)
         {
             if (p != node)
             {
-                note                  = Diagnostic::note(p, p->getTokenName(), Nte(Nte0036));
-                note->forceSourceFile = true;
+                note              = Diagnostic::note(p, p->getTokenName(), Nte(Nte0036));
+                note->canBeMerged = false;
                 break;
             }
         }

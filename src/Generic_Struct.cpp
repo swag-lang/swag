@@ -88,11 +88,11 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // Replace generic types in the struct generic parameters
     auto sourceNodeStruct = CastAst<AstStruct>(sourceNode, AstNodeKind::StructDecl);
     SWAG_CHECK(replaceGenericParameters(context, true, false, newType->genericParameters, sourceNodeStruct->genericParameters->childs, genericParameters, match));
-    
+
     // For a tuple, replace inside types with real ones
     if (newType->isTuple())
     {
-        for (auto param: newType->fields)
+        for (auto param : newType->fields)
             param->typeInfo = Generic::replaceGenericTypes(match.genericReplaceTypes, param->typeInfo);
     }
 

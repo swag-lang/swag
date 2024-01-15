@@ -298,9 +298,9 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
         }
     }
 
-    auto note             = Diagnostic::note(prevNodeLocal, prevNodeLocal->token, msg);
-    note->forceSourceFile = true;
-    note->hint            = hint;
+    auto note         = Diagnostic::note(prevNodeLocal, prevNodeLocal->token, msg);
+    note->canBeMerged = false;
+    note->hint        = hint;
 
     Utf8 remark, sym;
     if (prevJob->waitingSymbolSolved)
@@ -381,12 +381,12 @@ void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
             {
                 if (prevJob->nodes.size() > 1 && prevJob->originalNode->kind == AstNodeKind::FuncDecl)
                 {
-                    auto front            = prevJob->nodes.front();
-                    auto back             = prevJob->nodes.back();
-                    auto msg              = Fmt(Nte(Nte0046), Naming::kindName(front).c_str(), front->token.ctext(), Naming::kindName(back).c_str(), back->token.ctext());
-                    auto note             = Diagnostic::note(back, back->token, msg);
-                    note->forceSourceFile = true;
-                    note->hint            = Diagnostic::isType(back->typeInfo);
+                    auto front        = prevJob->nodes.front();
+                    auto back         = prevJob->nodes.back();
+                    auto msg          = Fmt(Nte(Nte0046), Naming::kindName(front).c_str(), front->token.ctext(), Naming::kindName(back).c_str(), back->token.ctext());
+                    auto note         = Diagnostic::note(back, back->token, msg);
+                    note->canBeMerged = false;
+                    note->hint        = Diagnostic::isType(back->typeInfo);
                     notes.push_back(note);
                 }
 

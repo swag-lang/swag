@@ -636,8 +636,8 @@ Diagnostic* Diagnostic::hereIs(AstNode* node, bool forceNode)
 
     if (node->resolvedSymbolOverload)
     {
-        auto note             = Diagnostic::note(node, node->getTokenName(), Fmt(Nte(Nte0090), Naming::kindName(node->resolvedSymbolOverload).c_str(), node->token.ctext()));
-        note->forceSourceFile = true;
+        auto note         = Diagnostic::note(node, node->getTokenName(), Fmt(Nte(Nte0090), Naming::kindName(node->resolvedSymbolOverload).c_str(), node->token.ctext()));
+        note->canBeMerged = false;
         return note;
     }
 
@@ -645,30 +645,30 @@ Diagnostic* Diagnostic::hereIs(AstNode* node, bool forceNode)
     {
     case AstNodeKind::EnumDecl:
     {
-        auto note             = Diagnostic::note(node, node->token, Fmt(Nte(Nte0090), "declaration of enum", node->token.ctext()));
-        note->forceSourceFile = true;
+        auto note         = Diagnostic::note(node, node->token, Fmt(Nte(Nte0090), "declaration of enum", node->token.ctext()));
+        note->canBeMerged = false;
         return note;
     }
     case AstNodeKind::StructDecl:
     {
-        auto structDecl       = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
-        auto note             = Diagnostic::note(structDecl, structDecl->tokenName, Fmt(Nte(Nte0090), "declaration of struct", node->token.ctext()));
-        note->forceSourceFile = true;
+        auto structDecl   = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
+        auto note         = Diagnostic::note(structDecl, structDecl->tokenName, Fmt(Nte(Nte0090), "declaration of struct", node->token.ctext()));
+        note->canBeMerged = false;
         return note;
     }
     case AstNodeKind::FuncDecl:
     {
-        auto fctDecl          = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
-        auto note             = Diagnostic::note(fctDecl, fctDecl->tokenName, Fmt(Nte(Nte0090), "declaration of function", node->token.ctext()));
-        note->forceSourceFile = true;
+        auto fctDecl      = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        auto note         = Diagnostic::note(fctDecl, fctDecl->tokenName, Fmt(Nte(Nte0090), "declaration of function", node->token.ctext()));
+        note->canBeMerged = false;
         return note;
     }
     default:
         break;
     }
 
-    auto note             = Diagnostic::note(node, node->token, Fmt(Nte(Nte0040), node->token.ctext()));
-    note->forceSourceFile = true;
+    auto note         = Diagnostic::note(node, node->token, Fmt(Nte(Nte0040), node->token.ctext()));
+    note->canBeMerged = false;
     return note;
 }
 
@@ -683,13 +683,13 @@ Diagnostic* Diagnostic::hereIs(SymbolOverload* overload)
 
     if (site->typeInfo && site->typeInfo->isTuple())
     {
-        auto note             = Diagnostic::note(site, site->token, Nte(Nte0030));
-        note->forceSourceFile = true;
+        auto note         = Diagnostic::note(site, site->token, Nte(Nte0030));
+        note->canBeMerged = false;
         return note;
     }
 
-    auto note             = Diagnostic::note(site, site->getTokenName(), Fmt(Nte(Nte0090), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()));
-    note->forceSourceFile = true;
+    auto note         = Diagnostic::note(site, site->getTokenName(), Fmt(Nte(Nte0090), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()));
+    note->canBeMerged = false;
     return note;
 }
 

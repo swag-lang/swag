@@ -1205,7 +1205,7 @@ void TypeInfoStruct::computeWhateverName(Utf8& resName, uint32_t nameType)
     if (isTuple())
     {
         resName += "{";
-        for (auto param: fields)
+        for (auto param : fields)
         {
             if (param != fields.front())
                 resName += ", ";

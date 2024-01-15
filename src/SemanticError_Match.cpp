@@ -142,10 +142,10 @@ static bool cannotMatchIdentifier(SemanticContext* context, MatchResult result, 
     // Locate to the first error
     Vector<const Diagnostic*> errs0, errs1;
     SemanticError::getDiagnosticForMatch(context, *tryResult[0], errs0, errs1);
-    note->sourceFile      = errs0[0]->sourceFile;
-    note->startLocation   = errs0[0]->startLocation;
-    note->endLocation     = errs0[0]->endLocation;
-    note->forceSourceFile = true;
+    note->sourceFile    = errs0[0]->sourceFile;
+    note->startLocation = errs0[0]->startLocation;
+    note->endLocation   = errs0[0]->endLocation;
+    note->canBeMerged   = false;
 
     notes.push_back(note);
     return true;
@@ -371,8 +371,8 @@ bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* nod
             params.push_back(p);
         }
 
-        Diagnostic* note      = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
-        note->forceSourceFile = true;
+        Diagnostic* note  = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
+        note->canBeMerged = false;
         notes.push_back(note);
     }
 
@@ -433,7 +433,7 @@ bool SemanticError::ambiguousIdentifierError(SemanticContext* context, AstNode* 
             note              = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
         }
 
-        note->forceSourceFile = true;
+        note->canBeMerged = false;
         notes.push_back(note);
     }
 
@@ -447,8 +447,8 @@ bool SemanticError::ambiguousSymbolError(SemanticContext* context, AstIdentifier
     Vector<const Diagnostic*> notes;
     for (auto& p1 : dependentSymbols)
     {
-        auto note             = Diagnostic::note(p1.symbol->nodes[0], p1.symbol->nodes[0]->token, "could be");
-        note->forceSourceFile = true;
+        auto note         = Diagnostic::note(p1.symbol->nodes[0], p1.symbol->nodes[0]->token, "could be");
+        note->canBeMerged = false;
         notes.push_back(note);
     }
 

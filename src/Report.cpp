@@ -13,17 +13,6 @@
 thread_local int  g_SilentError = 0;
 thread_local Utf8 g_SilentErrorMsg;
 
-static bool fuzzySameLine(uint32_t line1, uint32_t line2)
-{
-    if (line1 == line2)
-        return true;
-    if (line1 > line2 && line1 - line2 <= 10)
-        return true;
-    if (line2 > line1 && line2 - line1 <= 10)
-        return true;
-    return false;
-}
-
 static void computeAutoRemarks(Vector<Diagnostic*>& notes)
 {
     Set<void*> doneGenParamsRemarks;
@@ -143,7 +132,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
     for (int inote = 0; inote < (int) notes.size(); inote++)
     {
         auto note = notes[inote];
-        if (!note->display)
+        if (!note->display || !note->canBeMerged)
             continue;
 
         auto sourceFile0 = note->sourceFile;
@@ -165,7 +154,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
             if (sourceFile0 == sourceFile1 &&
                 note->startLocation.line == note1->startLocation.line &&
                 note->endLocation.line == note1->endLocation.line &&
-                !note1->forceSourceFile &&
+                note1->canBeMerged &&
                 note1->ranges.size() &&
                 (note1->errorLevel == DiagnosticLevel::Note))
             {
@@ -245,11 +234,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
             if (sourceFile1 && sourceFile1->fileForSourceLocation)
                 sourceFile1 = sourceFile1->fileForSourceLocation;
 
-            if (sourceFile0 == sourceFile1 &&
-                !note1->forceSourceFile &&
-                note1->textMsg.empty() &&
-                fuzzySameLine(note->startLocation.line, note1->startLocation.line) &&
-                fuzzySameLine(note->endLocation.line, note1->endLocation.line))
+            if (sourceFile0 == sourceFile1 && note1->textMsg.empty())
             {
                 note1->showFileName = false;
             }
