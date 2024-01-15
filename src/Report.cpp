@@ -170,13 +170,13 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
             if (sourceFile1 && sourceFile1->fileForSourceLocation)
                 sourceFile1 = sourceFile1->fileForSourceLocation;
 
-            if (note->showRange &&
-                note1->showRange &&
-                sourceFile0 == sourceFile1 &&
+            if (sourceFile0 == sourceFile1 &&
                 note->startLocation.line == note1->startLocation.line &&
                 note->endLocation.line == note1->endLocation.line &&
-                note1->ranges.size() &&
+                note->showRange &&
+                note1->showRange &&
                 !note1->forceSourceFile &&
+                note1->ranges.size() &&
                 (note1->errorLevel == DiagnosticLevel::Note))
             {
                 for (size_t i = 0; i < note1->ranges.size(); i++)

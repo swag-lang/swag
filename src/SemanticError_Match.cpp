@@ -371,8 +371,9 @@ bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* nod
             params.push_back(p);
         }
 
-        Diagnostic* note = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
-        note->showRange  = false;
+        Diagnostic* note      = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
+        note->forceSourceFile = true;
+        note->showRange       = false;
         notes.push_back(note);
     }
 
