@@ -527,11 +527,11 @@ struct X64Gen
 
     void emit_SetA(CPURegister reg = RAX);
     void emit_SetAE(CPURegister reg = RAX);
+    void emit_SetG(CPURegister reg = RAX);
     void emit_SetB();
     void emit_SetBE();
     void emit_SetE();
     void emit_SetEP();
-    void emit_SetG();
     void emit_SetGE();
     void emit_SetL();
     void emit_SetLE();

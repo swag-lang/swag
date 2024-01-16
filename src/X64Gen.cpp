@@ -706,27 +706,41 @@ void X64Gen::emit_CopyF64(CPURegister regDst, CPURegister regSrc)
 
 /////////////////////////////////////////////////////////////////////
 
+void X64Gen::emit_SetA(CPURegister reg)
+{
+    SWAG_ASSERT(reg == RAX || reg == R8);
+    if (reg >= R8)
+        concat.addU8(0x41);
+    concat.addU8(0x0F);
+    concat.addU8(0x97);
+    concat.addU8(0xC0 | (reg & 0b111));
+}
+
+void X64Gen::emit_SetAE(CPURegister reg)
+{
+    SWAG_ASSERT(reg == RAX || reg == R8);
+    if (reg >= R8)
+        concat.addU8(0x41);
+    concat.addU8(0x0F);
+    concat.addU8(0x93);
+    concat.addU8(0xC0 | (reg & 0b111));
+}
+
+void X64Gen::emit_SetG(CPURegister reg)
+{
+    SWAG_ASSERT(reg == RAX || reg == R8);
+    if (reg >= R8)
+        concat.addU8(0x41);
+    concat.addU8(0x0F);
+    concat.addU8(0x9F);
+    concat.addU8(0xC0 | (reg & 0b111));
+}
+
 void X64Gen::emit_SetNE()
 {
     concat.addU8(0x0F);
     concat.addU8(0x95);
     concat.addU8(0xC0);
-}
-
-void X64Gen::emit_SetA(CPURegister reg)
-{
-    SWAG_ASSERT(reg < R8);
-    concat.addU8(0x0F);
-    concat.addU8(0x97);
-    concat.addU8(0xC0 | reg);
-}
-
-void X64Gen::emit_SetAE(CPURegister reg)
-{
-    SWAG_ASSERT(reg < R8);
-    concat.addU8(0x0F);
-    concat.addU8(0x93);
-    concat.addU8(0xC0 | reg);
 }
 
 void X64Gen::emit_SetNA()
@@ -789,13 +803,6 @@ void X64Gen::emit_SetNEP()
     // or al, ah
     concat.addU8(0x08);
     concat.addU8(0xE0);
-}
-
-void X64Gen::emit_SetG()
-{
-    concat.addU8(0x0F);
-    concat.addU8(0x9F);
-    concat.addU8(0xC0);
 }
 
 void X64Gen::emit_SetGE()

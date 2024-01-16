@@ -2030,7 +2030,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::CompareOp3Way8:
             pp.emit_ClearN(R8, X64Bits::B32);
             MK_BINOP8_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
-            concat.addString4("\x41\x0F\x9F\xC0"); // setg r8b
+            pp.emit_SetG(R8);
             pp.emit_Load32_Immediate(RAX, 0xFFFFFFFF);
             pp.emit_CMovN(RAX, R8, X64Bits::B32, X64Op::CMOVGE);
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RAX);
@@ -2038,7 +2038,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::CompareOp3Way16:
             pp.emit_ClearN(R8, X64Bits::B32);
             MK_BINOP16_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
-            concat.addString4("\x41\x0F\x9F\xC0"); // setg r8b
+            pp.emit_SetG(R8);
             pp.emit_Load32_Immediate(RAX, 0xFFFFFFFF);
             pp.emit_CMovN(RAX, R8, X64Bits::B32, X64Op::CMOVGE);
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RAX);
@@ -2046,7 +2046,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::CompareOp3Way32:
             pp.emit_ClearN(R8, X64Bits::B32);
             MK_BINOP32_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
-            concat.addString4("\x41\x0F\x9F\xC0"); // setg r8b
+            pp.emit_SetG(R8);
             pp.emit_Load32_Immediate(RAX, 0xFFFFFFFF);
             pp.emit_CMovN(RAX, R8, X64Bits::B32, X64Op::CMOVGE);
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RAX);
@@ -2054,7 +2054,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::CompareOp3Way64:
             pp.emit_ClearN(R8, X64Bits::B32);
             MK_BINOP64_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
-            concat.addString4("\x41\x0F\x9F\xC0"); // setg r8b
+            pp.emit_SetG(R8);
             pp.emit_Load32_Immediate(RAX, 0xFFFFFFFF);
             pp.emit_CMovN(RAX, R8, X64Bits::B32, X64Op::CMOVGE);
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RAX);
@@ -2063,9 +2063,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_ClearN(R8, X64Bits::B32);
             MK_IMMA_F32(XMM0);
             MK_IMMB_F32(XMM1);
-            concat.addString3("\x0F\x2E\xC1");     // ucomiss xmm0, xmm1
-            concat.addString4("\x41\x0F\x97\xC0"); // seta r8b
-            concat.addString3("\x0F\x2E\xC8");     // ucomiss xmm1, xmm0
+            concat.addString3("\x0F\x2E\xC1"); // ucomiss xmm0, xmm1
+            pp.emit_SetA(R8);
+            concat.addString3("\x0F\x2E\xC8"); // ucomiss xmm1, xmm0
             pp.emit_Load32_Immediate(RAX, 0xFFFFFFFF);
             pp.emit_CMovN(RAX, R8, X64Bits::B32, X64Op::CMOVBE);
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RAX);
@@ -2075,7 +2075,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             MK_IMMA_F64(XMM0);
             MK_IMMB_F64(XMM1);
             concat.addString4("\x66\x0F\x2E\xC1"); // ucomisd xmm0, xmm1
-            concat.addString4("\x41\x0F\x97\xC0"); // seta r8b
+            pp.emit_SetA(R8);
             concat.addString4("\x66\x0F\x2E\xC8"); // ucomisd xmm1, xmm0
             pp.emit_Load32_Immediate(RAX, 0xFFFFFFFF);
             pp.emit_CMovN(RAX, R8, X64Bits::B32, X64Op::CMOVBE);
