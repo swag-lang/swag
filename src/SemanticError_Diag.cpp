@@ -12,10 +12,9 @@ struct ErrorParam
     Vector<const Diagnostic*>* result0;
     Vector<const Diagnostic*>* result1;
 
-    AstNode*          errorNode   = nullptr;
-    AstFuncCallParam* failedParam = nullptr;
-    int               badParamIdx = 0;
-    uint32_t          getFlags;
+    AstNode*          errorNode      = nullptr;
+    AstFuncCallParam* failedParam    = nullptr;
+    int               badParamIdx    = 0;
     AstFuncDecl*      destFuncDecl   = nullptr;
     AstTypeLambda*    destLambdaDecl = nullptr;
     AstAttrDecl*      destAttrDecl   = nullptr;
@@ -237,18 +236,16 @@ static void errorBadGenericSignature(SemanticContext* context, ErrorParam& error
     errorParam.result0->push_back(diag);
 
     // Here is
-    if (errorParam.getFlags & GDFM_HERE_IS)
+    if (errorParam.destFuncDecl &&
+        bi.badSignatureParameterIdx < (int) errorParam.destFuncDecl->genericParameters->childs.size())
     {
-        if (errorParam.destFuncDecl && bi.badSignatureParameterIdx < (int) errorParam.destFuncDecl->genericParameters->childs.size())
-        {
-            auto reqParam = errorParam.destFuncDecl->genericParameters->childs[bi.badSignatureParameterIdx];
-            auto note     = Diagnostic::note(reqParam, Fmt(Nte(Nte0068), reqParam->token.ctext(), Naming::kindName(overload).c_str()));
-            errorParam.addResult1(note);
-        }
-        else
-        {
-            errorParam.addResult1(Diagnostic::hereIs(overload));
-        }
+        auto reqParam = errorParam.destFuncDecl->genericParameters->childs[bi.badSignatureParameterIdx];
+        auto note     = Diagnostic::note(reqParam, Fmt(Nte(Nte0068), reqParam->token.ctext(), Naming::kindName(overload).c_str()));
+        errorParam.addResult1(note);
+    }
+    else
+    {
+        errorParam.addResult1(Diagnostic::hereIs(overload));
     }
 }
 
@@ -280,7 +277,7 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
         destParamNode = errorParam.destParameters->childs[bi.badSignatureParameterIdx];
     auto callParamNode = match.parameters[bi.badSignatureParameterIdx];
 
-    Diagnostic* diag = nullptr;
+    Diagnostic* diag               = nullptr;
     bool        addSpecificCastErr = true;
     if (overload->typeInfo->isStruct())
     {
@@ -393,29 +390,26 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
     }
 
     // Here is
-    if (errorParam.getFlags & GDFM_HERE_IS)
+    if (destParamNode && destParamNode->isGeneratedSelf())
     {
-        if (destParamNode && destParamNode->isGeneratedSelf())
-        {
-            SWAG_ASSERT(errorParam.destFuncDecl);
-            errorParam.addResult1(Diagnostic::hereIs(errorParam.destFuncDecl));
-        }
-        else if (destParamNode && (destParamNode->flags & AST_GENERATED))
-        {
-            auto        msg  = Fmt(Nte(Nte1094), Naming::kindName(overload).c_str());
-            Diagnostic* note = Diagnostic::note(destParamNode, destParamNode->token, msg);
-            errorParam.addResult1(note);
-        }
-        else if (destParamNode)
-        {
-            auto        msg  = Fmt(Nte(Nte0066), destParamNode->token.ctext(), Naming::kindName(overload).c_str());
-            Diagnostic* note = Diagnostic::note(destParamNode, destParamNode->token, msg);
-            errorParam.addResult1(note);
-        }
-        else
-        {
-            errorParam.addResult1(Diagnostic::hereIs(overload));
-        }
+        SWAG_ASSERT(errorParam.destFuncDecl);
+        errorParam.addResult1(Diagnostic::hereIs(errorParam.destFuncDecl));
+    }
+    else if (destParamNode && (destParamNode->flags & AST_GENERATED))
+    {
+        auto        msg  = Fmt(Nte(Nte1094), Naming::kindName(overload).c_str());
+        Diagnostic* note = Diagnostic::note(destParamNode, destParamNode->token, msg);
+        errorParam.addResult1(note);
+    }
+    else if (destParamNode)
+    {
+        auto        msg  = Fmt(Nte(Nte0066), destParamNode->token.ctext(), Naming::kindName(overload).c_str());
+        Diagnostic* note = Diagnostic::note(destParamNode, destParamNode->token, msg);
+        errorParam.addResult1(note);
+    }
+    else
+    {
+        errorParam.addResult1(Diagnostic::hereIs(overload));
     }
 }
 
@@ -444,7 +438,7 @@ static int getBadParamIdx(const OneTryMatch& oneTry, AstNode* callParameters)
     return badParamIdx;
 }
 
-void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1, uint32_t getFlags)
+void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1)
 {
     BadSignatureInfos& bi        = oneTry.symMatchContext.badSignatureInfos;
     bi.badSignatureGivenType     = Generic::replaceGenericTypes(oneTry.symMatchContext.genericReplaceTypes, bi.badSignatureGivenType);
@@ -453,10 +447,9 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
     bi.castErrorToType           = Generic::replaceGenericTypes(oneTry.symMatchContext.genericReplaceTypes, bi.castErrorToType);
 
     ErrorParam errorParam;
-    errorParam.oneTry   = &oneTry;
-    errorParam.result0  = &result0;
-    errorParam.result1  = &result1;
-    errorParam.getFlags = getFlags;
+    errorParam.oneTry  = &oneTry;
+    errorParam.result0 = &result0;
+    errorParam.result1 = &result1;
 
     // Get the call parameter that failed
     auto callParameters    = oneTry.callParameters;

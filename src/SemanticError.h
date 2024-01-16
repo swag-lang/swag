@@ -19,9 +19,6 @@ struct SourceFile;
 struct SymbolName;
 struct Token;
 
-const uint32_t GDFM_HERE_IS = 0x00000001;
-const uint32_t GDFM_ALL     = 0xFFFFFFFF;
-
 enum class IdentifierSearchFor
 {
     Whatever,
@@ -45,7 +42,7 @@ namespace SemanticError
     bool warnUnreachableCode(SemanticContext* context);
     bool warnDeprecated(SemanticContext* context, AstNode* identifier);
 
-    void getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1, uint32_t getFlags = GDFM_ALL);
+    void getDiagnosticForMatch(SemanticContext* context, OneTryMatch& oneTry, Vector<const Diagnostic*>& result0, Vector<const Diagnostic*>& result1);
 
     bool cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node);
     bool ambiguousGenericError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& overloads, VectorNative<OneGenericMatch*>& genericMatches);

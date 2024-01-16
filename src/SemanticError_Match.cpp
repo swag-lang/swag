@@ -74,8 +74,39 @@ static bool cannotMatchIdentifier(SemanticContext* context, MatchResult result, 
     AstOutput::OutputContext outCxt;
     concat.init(10 * 1024);
 
-    for (size_t i = 0; i < min(tryResult.size(), MAX_OVERLOADS); i++)
+    auto maxOverloads = min(tryResult.size(), MAX_OVERLOADS);
+
+    // Additional error message per overload
+    Vector<Utf8> addMsg;
+    for (size_t i = 0; i < maxOverloads; i++)
     {
+        Vector<const Diagnostic*> errs0, errs1;
+        Vector<Utf8>              parts;
+
+        SemanticError::getDiagnosticForMatch(context, *tryResult[i], errs0, errs1);
+        Diagnostic::tokenizeError(errs0[0]->textMsg, parts);
+        SWAG_ASSERT(parts.size() > 1);
+        addMsg.push_back(parts[1]);
+    }
+
+    // Determine if all "per function" errors are the same
+    bool allAddMsgAreEquals = true;
+    for (size_t i = 1; i < maxOverloads; i++)
+    {
+        if (addMsg[i] != addMsg[0])
+            allAddMsgAreEquals = false;
+    }
+
+    // Replace the generic error message with the most specific one, if all specifics are equals
+    if (result == MatchResult::BadSignature || result == MatchResult::BadGenericSignature)
+    {
+        if (allAddMsgAreEquals)
+            note->textMsg = addMsg[0];
+    }
+
+    for (size_t i = 0; i < maxOverloads; i++)
+    {
+        // Output the function signature
         concat.clear();
         if (tryResult[i]->overload->node->kind == AstNodeKind::FuncDecl)
         {
@@ -111,25 +142,10 @@ static bool cannotMatchIdentifier(SemanticContext* context, MatchResult result, 
         // Additional (more precise) information in case of bad signature
         if (result == MatchResult::BadSignature || result == MatchResult::BadGenericSignature)
         {
-            Vector<const Diagnostic*> errs0, errs1;
-            SemanticError::getDiagnosticForMatch(context, *tryResult[i], errs0, errs1);
-            Vector<Utf8> parts;
-            Diagnostic::tokenizeError(errs0[0]->textMsg, parts);
-
-            if (tryResult.size() == 1)
-            {
-                if (parts.size() > 1)
-                    note->textMsg = parts[1];
-                else
-                    note->textMsg = parts[0];
-            }
-            else
+            if (!allAddMsgAreEquals)
             {
                 fn = "   => ";
-                if (parts.size() > 1)
-                    fn += parts[1];
-                else
-                    fn += parts[0];
+                fn += addMsg[i];
                 note->remarks.push_back(fn);
             }
         }
@@ -150,14 +166,14 @@ static bool cannotMatchIdentifier(SemanticContext* context, MatchResult result, 
     return true;
 }
 
-static bool cannotMatchSingle(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches, uint32_t getFlags)
+static bool cannotMatchSingle(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches)
 {
     // Be sure this is not because of an invalid special function signature
     if (tryMatches[0]->overload->node->kind == AstNodeKind::FuncDecl)
         SWAG_CHECK(Semantic::checkFuncPrototype(context, CastAst<AstFuncDecl>(tryMatches[0]->overload->node, AstNodeKind::FuncDecl)));
 
     Vector<const Diagnostic*> errs0, errs1;
-    SemanticError::getDiagnosticForMatch(context, *tryMatches[0], errs0, errs1, getFlags);
+    SemanticError::getDiagnosticForMatch(context, *tryMatches[0], errs0, errs1);
     SWAG_ASSERT(!errs0.empty());
     SemanticError::commonErrorNotes(context, tryMatches, node, const_cast<Diagnostic*>(errs0[0]), errs1);
     return context->report(*errs0[0], errs1);
@@ -325,7 +341,7 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
 
     // All errors are because of a const problem on the UFCS argument
     // Then just raise one error
-    uint32_t getFlags     = GDFM_ALL;
+    /* uint32_t getFlags     = GDFM_ALL;
     int      badConstUfcs = 0;
     for (auto& tm : tryMatches)
     {
@@ -339,10 +355,10 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
         while (tryMatches.size() > 1)
             tryMatches.pop_back();
         getFlags &= ~GDFM_HERE_IS;
-    }
+    }*/
 
     if (tryMatches.size() == 1)
-        return cannotMatchSingle(context, node, tryMatches, getFlags);
+        return cannotMatchSingle(context, node, tryMatches);
     else
         return cannotMatchOverload(context, node, tryMatches);
 }
