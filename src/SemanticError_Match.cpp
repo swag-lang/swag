@@ -156,7 +156,7 @@ static bool cannotMatchIdentifier(SemanticContext*            context,
         }
     }
 
-    if (tryResult.size() >= MAX_OVERLOADS)
+    if (tryResult.size() > MAX_OVERLOADS)
         note->remarks.push_back("...");
 
     // Locate to the first error
