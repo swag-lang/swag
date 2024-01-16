@@ -283,7 +283,7 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
     {
         auto typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
         typeStruct->flattenUsingFields();
-        auto msg = Fmt(Err(Err0723), typeStruct->flattenFields[errorParam.badParamIdx - 1]->name.c_str(), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
+        auto msg = Fmt(Err(Err0723), bi.badSignatureRequestedType->getDisplayNameC(), typeStruct->flattenFields[errorParam.badParamIdx - 1]->name.c_str(), bi.badSignatureGivenType->getDisplayNameC());
         diag     = new Diagnostic{callParamNode, msg};
     }
     else if (errorParam.oneTry->ufcs && bi.badSignatureParameterIdx == 0 && bi.castErrorType == CastErrorType::Const)
@@ -492,18 +492,9 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
         if (bi.badSignatureGivenType->isPointer())
             break;
 
-        if (bi.badSignatureRequestedType->isNative())
+        if (bi.badSignatureRequestedType->isNative() || bi.badSignatureRequestedType->isStruct())
         {
             if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_TRY_COERCE | CASTFLAG_JUST_CHECK))
-            {
-                errorParam.explicitCastMsg = Fmt(Nte(Nte1025), bi.badSignatureRequestedType->name.c_str());
-                break;
-            }
-        }
-
-        if (bi.badSignatureRequestedType->isStruct())
-        {
-            if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK))
             {
                 errorParam.explicitCastMsg = Fmt(Nte(Nte1025), bi.badSignatureRequestedType->name.c_str());
                 break;

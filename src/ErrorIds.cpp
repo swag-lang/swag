@@ -799,7 +799,7 @@ void initErrors()
     SWAG_ERROR(Err0048, "type mismatch                                     $ expected type '*Swag.CVaList', got '%s' instead");
     SWAG_ERROR(Err0568, "type mismatch                                     $ the '%s' assignment requires an expression of type '%s', got '%s' instead");
     SWAG_ERROR(Err0252, "type mismatch                                     $ type '%s' and type '%s' defined in the command line for '%s' are incompatible");
-    SWAG_ERROR(Err0723, "type mismatch                                     $ type mismatch for field '%s' ('%s' expected, '%s' provided)");
+    SWAG_ERROR(Err0723, "type mismatch                                     $ expected '%s' for field '%s', got '%s' instead");
     SWAG_ERROR(Err0065, "type mismatch                                     $ unexpected return type for special function '%s' ('%s' expected, '%s' provided)");
     SWAG_ERROR(Err0639, "unauthorized function overload                    $ a function with the same name '%s' has already been declared $ if you want to declare an overload, mark all functions with '#[Swag.Overload]'");
     SWAG_ERROR(Err1097, "unexpected '#elif'                                $ '#elif' found without a preceding '#if' directive");
