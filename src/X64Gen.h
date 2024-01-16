@@ -452,6 +452,8 @@ struct X64Gen
     void emit_CmpF32(CPURegister reg1, CPURegister reg2);
     void emit_CmpF64(CPURegister reg1, CPURegister reg2);
 
+    void emit_CopyDownUp(CPURegister reg, X64Bits numBits);
+
     void emit_CmpN_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, X64Bits numBits);
     void emit_CmpF32_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg);
     void emit_CmpF64_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg);

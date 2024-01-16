@@ -1354,7 +1354,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_LoadS8S16_Indirect(0, RAX, RAX);
             MK_IMMB_8(RCX);
             pp.emit_OpN(RAX, RCX, X64Op::IDIV, X64Bits::B8);
-            concat.addString2("\x88\xe0"); // mov al, ah
+            pp.emit_CopyDownUp(RAX, X64Bits::B8);
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
             pp.emit_Store8_Indirect(0, RAX, RCX);
             break;
@@ -1362,7 +1362,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_LoadS8S16_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             MK_IMMB_8(RCX);
             pp.emit_OpN(RAX, RCX, X64Op::IDIV, X64Bits::B8);
-            concat.addString2("\x88\xe0"); // mov al, ah
+            pp.emit_CopyDownUp(RAX, X64Bits::B8);
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
             pp.emit_Store8_Indirect(0, RAX, RCX);
             break;
@@ -1370,7 +1370,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_LoadS8S16_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             pp.emit_Load8_Indirect(offsetStack + ip->b.u32, RCX, RDI);
             pp.emit_OpN(RAX, RCX, X64Op::IDIV, X64Bits::B8);
-            concat.addString2("\x88\xe0"); // mov al, ah
+            pp.emit_CopyDownUp(RAX, X64Bits::B8);
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
             pp.emit_Store8_Indirect(0, RAX, RCX);
             break;
@@ -1458,7 +1458,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_LoadS8S16_Indirect(0, RAX, RAX);
             MK_IMMB_8(RCX);
             pp.emit_OpN(RAX, RCX, X64Op::DIV, X64Bits::B8);
-            concat.addString2("\x88\xe0"); // mov al, ah
+            pp.emit_CopyDownUp(RAX, X64Bits::B8);
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
             pp.emit_Store8_Indirect(0, RAX, RCX);
             break;
@@ -1466,7 +1466,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_LoadU8U32_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             MK_IMMB_8(RCX);
             pp.emit_OpN(RAX, RCX, X64Op::DIV, X64Bits::B8);
-            concat.addString2("\x88\xe0"); // mov al, ah
+            pp.emit_CopyDownUp(RAX, X64Bits::B8);
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
             pp.emit_Store8_Indirect(0, RAX, RCX);
             break;
@@ -1474,7 +1474,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_LoadU8U32_Indirect(offsetStack + ip->a.u32, RAX, RDI);
             pp.emit_Load8_Indirect(offsetStack + ip->b.u32, RCX, RDI);
             pp.emit_OpN(RAX, RCX, X64Op::DIV, X64Bits::B8);
-            concat.addString2("\x88\xe0"); // mov al, ah
+            pp.emit_CopyDownUp(RAX, X64Bits::B8);
             pp.emit_LoadAddress_Indirect(offsetStack + ip->a.u32, RCX, RDI);
             pp.emit_Store8_Indirect(0, RAX, RCX);
             break;

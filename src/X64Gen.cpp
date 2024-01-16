@@ -2117,3 +2117,10 @@ void X64Gen::emitUnwind(uint32_t& offset, uint32_t sizeProlog, const VectorNativ
         offset += 2;
     }
 }
+
+void X64Gen::emit_CopyDownUp(CPURegister reg, X64Bits numBits)
+{
+    SWAG_ASSERT(reg == RAX);
+    SWAG_ASSERT(numBits == X64Bits::B8);
+    concat.addString2("\x88\xe0"); // mov al, ah
+}
