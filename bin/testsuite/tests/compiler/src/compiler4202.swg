@@ -9,7 +9,7 @@ impl B
 
 struct(T) A
 {
-    rng: T
+    b: T
 }
 
 impl A
@@ -19,7 +19,7 @@ impl A
     #[Swag.Inline]
     mtd toto()
     {
-        rng.titi()
+        b.titi()
     }
 }
 

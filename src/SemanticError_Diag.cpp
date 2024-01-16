@@ -318,30 +318,6 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
             errorParam.addResult1(Diagnostic::note(callOver->node, callOver->node->token, Nte(Nte1050)));
     }
 
-    // Associated dependent var
-    if (errorParam.oneTry->dependentVar)
-    {
-        if (errorParam.oneTry->dependentVar->isGeneratedSelf())
-        {
-            auto ownerFct = errorParam.oneTry->dependentVar->ownerFct;
-            if (bi.badSignatureGivenType->isConst())
-            {
-                auto note = Diagnostic::note(ownerFct, ownerFct->getTokenName(), Nte(Nte0084));
-                errorParam.addResult1(note);
-            }
-            else
-            {
-                auto note = Diagnostic::note(ownerFct, ownerFct->getTokenName(), Nte(Nte0073));
-                errorParam.addResult1(note);
-            }
-        }
-        else
-        {
-            auto note = Diagnostic::note(errorParam.oneTry->dependentVar, Nte(Nte0074));
-            errorParam.addResult1(note);
-        }
-    }
-
     // Generic comes from
     if (bi.genMatchFromNode)
     {

@@ -1371,9 +1371,6 @@ void initErrors()
     SWAG_ERROR(Nte0046, "the %s '%s' is waiting for %s '%s' to be solved");
     SWAG_ERROR(Nte0043, "the %s '%s' wasn't found in '%s'. The alternative from '%s' was selected");
     SWAG_ERROR(Nte1060, "the 'dref' operation isn't possible here");
-    SWAG_ERROR(Nte0074, "the UFCS argument is derived from 'this'");
-    SWAG_ERROR(Nte0084, "the UFCS argument is derived from an implicit 'using const self' parameter");
-    SWAG_ERROR(Nte0073, "the UFCS argument originates from an implicit 'using self' parameter");
     SWAG_ERROR(Nte1123, "the array has %d element(s) of type '%s', which doesn't match a slice of type '%s'");
     SWAG_ERROR(Nte0018, "the call to '%s' returns type '%s', which doen't have a subscope");
     SWAG_ERROR(Nte0056, "the counterpart is an implicit 'using self' as an initial parameter");
@@ -1460,6 +1457,9 @@ void initErrors()
     SWAG_ERROR(Nte1122, "this has '%s' access (type is '%s')");
     SWAG_ERROR(Nte1131, "this 'discard' should be removed");
     SWAG_ERROR(Nte1094, "here is the corresponding parameter");
+    SWAG_ERROR(Nte0074, nullptr);
+    SWAG_ERROR(Nte0084, nullptr);
+    SWAG_ERROR(Nte0073, nullptr);
     SWAG_ERROR(Nte1056, nullptr);
     SWAG_ERROR(Nte1093, nullptr);
     SWAG_ERROR(Nte1010, nullptr);
