@@ -4,7 +4,7 @@
 #include "LanguageSpec.h"
 #include "Math.h"
 
-void BackendX64::emitShiftRightArithmetic(X64Gen& pp, ByteCodeInstruction* ip, X64Bits numBits)
+void BackendX64::emitShiftRightArithmetic(EncoderX64& pp, ByteCodeInstruction* ip, X64Bits numBits)
 {
     if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))
     {
@@ -51,7 +51,7 @@ void BackendX64::emitShiftRightArithmetic(X64Gen& pp, ByteCodeInstruction* ip, X
     pp.emit_StoreN_Indirect(regOffset(ip->c.u32), RAX, RDI, numBits);
 }
 
-void BackendX64::emitShiftRightEqArithmetic(X64Gen& pp, ByteCodeInstruction* ip, X64Bits numBits)
+void BackendX64::emitShiftRightEqArithmetic(EncoderX64& pp, ByteCodeInstruction* ip, X64Bits numBits)
 {
     if (ip->flags & BCI_IMM_B)
     {
@@ -106,7 +106,7 @@ void BackendX64::emitShiftRightEqArithmetic(X64Gen& pp, ByteCodeInstruction* ip,
     }
 }
 
-void BackendX64::emitShiftLogical(X64Gen& pp, ByteCodeInstruction* ip, X64Bits numBits, X64Op op)
+void BackendX64::emitShiftLogical(EncoderX64& pp, ByteCodeInstruction* ip, X64Bits numBits, X64Op op)
 {
     if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= (uint32_t) numBits)
     {
@@ -159,7 +159,7 @@ void BackendX64::emitShiftLogical(X64Gen& pp, ByteCodeInstruction* ip, X64Bits n
     }
 }
 
-void BackendX64::emitShiftEqLogical(X64Gen& pp, ByteCodeInstruction* ip, X64Bits numBits, X64Op op)
+void BackendX64::emitShiftEqLogical(EncoderX64& pp, ByteCodeInstruction* ip, X64Bits numBits, X64Op op)
 {
     pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
     if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= (uint32_t) numBits)
@@ -206,7 +206,7 @@ void BackendX64::emitShiftEqLogical(X64Gen& pp, ByteCodeInstruction* ip, X64Bits
     }
 }
 
-void BackendX64::emitOverflowSigned(X64Gen& pp, ByteCodeInstruction* ip, const char* msg)
+void BackendX64::emitOverflowSigned(EncoderX64& pp, ByteCodeInstruction* ip, const char* msg)
 {
     bool nw = (ip->node->attributeFlags & ATTRIBUTE_CAN_OVERFLOW_ON) || (ip->flags & BCI_CAN_OVERFLOW) ? false : true;
     if (nw && module->mustEmitSafetyOverflow(ip->node) && !(ip->flags & BCI_CANT_OVERFLOW))
@@ -220,7 +220,7 @@ void BackendX64::emitOverflowSigned(X64Gen& pp, ByteCodeInstruction* ip, const c
     }
 }
 
-void BackendX64::emitOverflowUnsigned(X64Gen& pp, ByteCodeInstruction* ip, const char* msg)
+void BackendX64::emitOverflowUnsigned(EncoderX64& pp, ByteCodeInstruction* ip, const char* msg)
 {
     bool nw = (ip->node->attributeFlags & ATTRIBUTE_CAN_OVERFLOW_ON) || (ip->flags & BCI_CAN_OVERFLOW) ? false : true;
     if (nw && module->mustEmitSafetyOverflow(ip->node) && !(ip->flags & BCI_CANT_OVERFLOW))
@@ -234,7 +234,7 @@ void BackendX64::emitOverflowUnsigned(X64Gen& pp, ByteCodeInstruction* ip, const
     }
 }
 
-void BackendX64::emitInternalPanic(X64Gen& pp, AstNode* node, const char* msg)
+void BackendX64::emitInternalPanic(EncoderX64& pp, AstNode* node, const char* msg)
 {
     auto np = node->sourceFile->path.string();
     pp.pushParams.clear();
@@ -248,7 +248,7 @@ void BackendX64::emitInternalPanic(X64Gen& pp, AstNode* node, const char* msg)
     emitInternalCallExt(pp, module, g_LangSpec->name__panic, pp.pushParams);
 }
 
-void BackendX64::emitSymbolRelocation(X64Gen& pp, const Utf8& name)
+void BackendX64::emitSymbolRelocation(EncoderX64& pp, const Utf8& name)
 {
     auto& concat  = pp.concat;
     auto  callSym = pp.getOrAddSymbol(name, CoffSymbolKind::Extern);
@@ -267,7 +267,7 @@ void BackendX64::emitSymbolRelocation(X64Gen& pp, const Utf8& name)
     }
 }
 
-void BackendX64::emitBinOpFloat32(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
+void BackendX64::emitBinOpFloat32(EncoderX64& pp, ByteCodeInstruction* ip, X64Op op)
 {
     if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
     {
@@ -300,7 +300,7 @@ void BackendX64::emitBinOpFloat32(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
     }
 }
 
-void BackendX64::emitBinOpFloat64(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
+void BackendX64::emitBinOpFloat64(EncoderX64& pp, ByteCodeInstruction* ip, X64Op op)
 {
     if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
     {
@@ -333,19 +333,19 @@ void BackendX64::emitBinOpFloat64(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
     }
 }
 
-void BackendX64::emitBinOpFloat32AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
+void BackendX64::emitBinOpFloat32AtReg(EncoderX64& pp, ByteCodeInstruction* ip, X64Op op)
 {
     emitBinOpFloat32(pp, ip, op);
     pp.emit_StoreF32_Indirect(regOffset(ip->c.u32), XMM0);
 }
 
-void BackendX64::emitBinOpFloat64AtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op)
+void BackendX64::emitBinOpFloat64AtReg(EncoderX64& pp, ByteCodeInstruction* ip, X64Op op)
 {
     emitBinOpFloat64(pp, ip, op);
     pp.emit_StoreF64_Indirect(regOffset(ip->c.u32), XMM0);
 }
 
-void BackendX64::emitBinOpIntN(X64Gen& pp, ByteCodeInstruction* ip, X64Op op, X64Bits numBits)
+void BackendX64::emitBinOpIntN(EncoderX64& pp, ByteCodeInstruction* ip, X64Op op, X64Bits numBits)
 {
     if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
     {
@@ -467,13 +467,13 @@ void BackendX64::emitBinOpIntN(X64Gen& pp, ByteCodeInstruction* ip, X64Op op, X6
     }
 }
 
-void BackendX64::emitBinOpIntNAtReg(X64Gen& pp, ByteCodeInstruction* ip, X64Op op, X64Bits numBits)
+void BackendX64::emitBinOpIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, X64Op op, X64Bits numBits)
 {
     emitBinOpIntN(pp, ip, op, numBits);
     pp.emit_StoreN_Indirect(regOffset(ip->c.u32), RAX, RDI, numBits);
 }
 
-void BackendX64::emitBinOpDivIntNAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool isSigned, X64Bits numBits, bool modulo)
+void BackendX64::emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, bool isSigned, X64Bits numBits, bool modulo)
 {
     switch (numBits)
     {
@@ -564,7 +564,7 @@ void BackendX64::emitBinOpDivIntNAtReg(X64Gen& pp, ByteCodeInstruction* ip, bool
     }
 }
 
-void BackendX64::emitAddSubMul64(X64Gen& pp, ByteCodeInstruction* ip, uint64_t mul, X64Op op)
+void BackendX64::emitAddSubMul64(EncoderX64& pp, ByteCodeInstruction* ip, uint64_t mul, X64Op op)
 {
     SWAG_ASSERT(op == X64Op::ADD || op == X64Op::SUB);
 

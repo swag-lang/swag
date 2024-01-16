@@ -278,9 +278,6 @@
     <ClCompile Include="..\src\CallConv.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\X64Gen.cpp">
-      <Filter>Backend\X64</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\BackendX64_Emit.cpp">
       <Filter>Backend\X64</Filter>
     </ClCompile>
@@ -662,6 +659,9 @@
     <ClCompile Include="..\src\SemanticError_Ambiguous.cpp">
       <Filter>Semantic\Error</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\EncoderX64.cpp">
+      <Filter>Backend\X64</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
@@ -893,9 +893,6 @@
     <ClInclude Include="..\src\CallConv.h">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\X64Gen.h">
-      <Filter>Backend\X64</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\Report.h">
       <Filter>Report</Filter>
     </ClInclude>
@@ -1018,6 +1015,9 @@
     </ClInclude>
     <ClInclude Include="..\src\SemanticError.h">
       <Filter>Semantic\Error</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\EncoderX64.h">
+      <Filter>Backend\X64</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -335,7 +335,7 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
 #ifdef SWAG_DEV_MODE
     if (!forDbg && g_CommandLine.dbgPrintBcExt)
     {
-        //line.devMode = Fmt("%08d %08X %08d ", ip->treeNode, ip->crc, ip->serial);
+        // line.devMode = Fmt("%08d %08X %08d ", ip->treeNode, ip->crc, ip->serial);
         if (ip->sourceFile)
         {
             Path sf = ip->sourceFile;

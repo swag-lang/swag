@@ -2320,7 +2320,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             // + 7 for this instruction
             pp.emit_Symbol_RelocationAddr(RAX, symbolFuncIndex, concat.totalCount() - startAddress + 5 + 7);
             concat.addString3("\x48\x01\xC8"); // add rax, rcx
-            concat.addString2("\xFF\xE0");     // jmp rax
+            pp.emit_Jump(RAX);
 
             auto currentOffset = (int32_t) pp.concat.totalCount();
 
@@ -4727,7 +4727,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     return ok;
 }
 
-uint32_t BackendX64::getOrCreateLabel(X64Gen& pp, uint32_t ip)
+uint32_t BackendX64::getOrCreateLabel(EncoderX64& pp, uint32_t ip)
 {
     auto it = pp.labels.find(ip);
     if (it == pp.labels.end())

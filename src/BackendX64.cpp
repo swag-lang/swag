@@ -318,7 +318,7 @@ JobResult BackendX64::prepareOutput(int stage, const BuildParameters& buildParam
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
     if (!perThread[ct][precompileIndex])
-        perThread[ct][precompileIndex] = new X64Gen;
+        perThread[ct][precompileIndex] = new EncoderX64;
 
     auto& pp     = *perThread[ct][precompileIndex];
     auto& concat = pp.concat;
@@ -499,7 +499,7 @@ JobResult BackendX64::prepareOutput(int stage, const BuildParameters& buildParam
     return JobResult::ReleaseJob;
 }
 
-CoffFunction* BackendX64::registerFunction(X64Gen& pp, AstNode* node, uint32_t symbolIndex)
+CoffFunction* BackendX64::registerFunction(EncoderX64& pp, AstNode* node, uint32_t symbolIndex)
 {
     CoffFunction cf;
     cf.node        = node;

@@ -275,7 +275,7 @@ struct CoffFunction
     uint32_t               numScratchRegs          = 0;
 };
 
-struct X64Gen
+struct EncoderX64
 {
     Utf8   filename;
     Concat concat;
@@ -470,6 +470,7 @@ struct X64Gen
     void emit_LongJumpOp(JumpType jumpType);
     void emit_NearJumpOp(JumpType jumpType);
     void emit_Jump(JumpType jumpType, int32_t instructionCount, int32_t jumpOffset);
+    void emit_Jump(CPURegister reg);
 
     void emit_Extend_U16U64(CPURegister regSrc, CPURegister regDst);
     void emit_Extend_U8U64(CPURegister regSrc, CPURegister regDst);

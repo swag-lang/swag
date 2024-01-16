@@ -277,7 +277,7 @@ void BackendX64::dbgEmitCompilerFlagsDebugS(Concat& concat)
     *patchSCount = concat.totalCount() - patchSOffset;
 }
 
-void BackendX64::dbgStartRecord(X64Gen& pp, Concat& concat, uint16_t what)
+void BackendX64::dbgStartRecord(EncoderX64& pp, Concat& concat, uint16_t what)
 {
     SWAG_ASSERT(pp.dbgRecordIdx < pp.MAX_RECORD);
     pp.dbgStartRecordPtr[pp.dbgRecordIdx]    = concat.addU16Addr(0);
@@ -286,7 +286,7 @@ void BackendX64::dbgStartRecord(X64Gen& pp, Concat& concat, uint16_t what)
     pp.dbgRecordIdx++;
 }
 
-void BackendX64::dbgEndRecord(X64Gen& pp, Concat& concat, bool align)
+void BackendX64::dbgEndRecord(EncoderX64& pp, Concat& concat, bool align)
 {
     if (align)
         concat.align(4);
@@ -303,7 +303,7 @@ void BackendX64::dbgEmitTruncatedString(Concat& concat, const Utf8& str)
     concat.addU8(0);
 }
 
-void BackendX64::dbgEmitSecRel(X64Gen& pp, Concat& concat, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset)
+void BackendX64::dbgEmitSecRel(EncoderX64& pp, Concat& concat, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset)
 {
     CoffRelocation reloc;
 
@@ -525,7 +525,7 @@ bool BackendX64::dbgEmitDataDebugT(const BuildParameters& buildParameters)
     return true;
 }
 
-DbgTypeRecord* BackendX64::dbgAddTypeRecord(X64Gen& pp)
+DbgTypeRecord* BackendX64::dbgAddTypeRecord(EncoderX64& pp)
 {
     auto tr   = pp.dbgTypeRecords.addObj<DbgTypeRecord>();
     tr->index = (DbgTypeIndex) pp.dbgTypeRecordsCount + 0x1000;
@@ -573,7 +573,7 @@ DbgTypeIndex BackendX64::dbgGetSimpleType(TypeInfo* typeInfo)
     return SimpleTypeKind::None;
 }
 
-DbgTypeIndex BackendX64::dbgGetOrCreatePointerToType(X64Gen& pp, TypeInfo* typeInfo, bool asRef)
+DbgTypeIndex BackendX64::dbgGetOrCreatePointerToType(EncoderX64& pp, TypeInfo* typeInfo, bool asRef)
 {
     auto simpleType = dbgGetSimpleType(typeInfo);
     if (simpleType != SimpleTypeKind::None)
@@ -587,7 +587,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreatePointerToType(X64Gen& pp, TypeInfo* typeI
     return tr->index;
 }
 
-DbgTypeIndex BackendX64::dbgGetOrCreatePointerPointerToType(X64Gen& pp, TypeInfo* typeInfo)
+DbgTypeIndex BackendX64::dbgGetOrCreatePointerPointerToType(EncoderX64& pp, TypeInfo* typeInfo)
 {
     // Pointer to something complex
     auto tr                    = dbgAddTypeRecord(pp);
@@ -596,7 +596,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreatePointerPointerToType(X64Gen& pp, TypeInfo
     return tr->index;
 }
 
-DbgTypeIndex BackendX64::dbgEmitTypeSlice(X64Gen& pp, TypeInfo* typeInfo, TypeInfo* pointedType, DbgTypeIndex* value)
+DbgTypeIndex BackendX64::dbgEmitTypeSlice(EncoderX64& pp, TypeInfo* typeInfo, TypeInfo* pointedType, DbgTypeIndex* value)
 {
     auto         tr0 = dbgAddTypeRecord(pp);
     DbgTypeField field;
@@ -631,7 +631,7 @@ DbgTypeIndex BackendX64::dbgEmitTypeSlice(X64Gen& pp, TypeInfo* typeInfo, TypeIn
     return tr1->index;
 }
 
-void BackendX64::dbgRecordFields(X64Gen& pp, DbgTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset)
+void BackendX64::dbgRecordFields(EncoderX64& pp, DbgTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset)
 {
     tr->LF_FieldList.fields.reserve(typeStruct->fields.count);
     for (auto& p : typeStruct->fields)
@@ -651,7 +651,7 @@ void BackendX64::dbgRecordFields(X64Gen& pp, DbgTypeRecord* tr, TypeInfoStruct* 
     }
 }
 
-DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool forceUnRef)
+DbgTypeIndex BackendX64::dbgGetOrCreateType(EncoderX64& pp, TypeInfo* typeInfo, bool forceUnRef)
 {
     typeInfo = typeInfo->getConcreteAlias();
 
@@ -987,7 +987,7 @@ DbgTypeIndex BackendX64::dbgGetOrCreateType(X64Gen& pp, TypeInfo* typeInfo, bool
     }
 }
 
-void BackendX64::dbgEmitConstant(X64Gen& pp, Concat& concat, AstNode* node, const Utf8& name)
+void BackendX64::dbgEmitConstant(EncoderX64& pp, Concat& concat, AstNode* node, const Utf8& name)
 {
     if (node->typeInfo->isNative() && node->typeInfo->sizeOf <= 8)
     {
@@ -1018,7 +1018,7 @@ void BackendX64::dbgEmitConstant(X64Gen& pp, Concat& concat, AstNode* node, cons
     }
 }
 
-void BackendX64::dbgEmitGlobalDebugS(X64Gen& pp, Concat& concat, VectorNative<AstNode*>& gVars, uint32_t segSymIndex)
+void BackendX64::dbgEmitGlobalDebugS(EncoderX64& pp, Concat& concat, VectorNative<AstNode*>& gVars, uint32_t segSymIndex)
 {
     concat.addU32(DEBUG_S_SYMBOLS);
     auto patchSCount  = concat.addU32Addr(0);
@@ -1096,7 +1096,7 @@ static uint32_t getFileChecksum(MapPath<uint32_t>& mapFileNames,
     return checkSymIndex * 8;
 }
 
-bool BackendX64::dbgEmitLines(X64Gen&            pp,
+bool BackendX64::dbgEmitLines(EncoderX64&        pp,
                               MapPath<uint32_t>& mapFileNames,
                               Vector<uint32_t>&  arrFileNames,
                               Utf8&              stringTable,
@@ -1456,7 +1456,7 @@ bool BackendX64::dbgEmitFctDebugS(const BuildParameters& buildParameters)
     return true;
 }
 
-bool BackendX64::dbgEmitScope(X64Gen& pp, Concat& concat, CoffFunction& f, Scope* scope)
+bool BackendX64::dbgEmitScope(EncoderX64& pp, Concat& concat, CoffFunction& f, Scope* scope)
 {
     // Empty scope
     if (!scope->backendEnd)

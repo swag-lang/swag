@@ -330,7 +330,7 @@
     <ClInclude Include="..\src\Vector.h" />
     <ClInclude Include="..\src\Report.h" />
     <ClInclude Include="..\src\SaveGenJob.h" />
-    <ClInclude Include="..\src\X64Gen.h" />
+    <ClInclude Include="..\src\EncoderX64.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="../src/Allocator.cpp" />
@@ -566,7 +566,7 @@
     <ClCompile Include="..\src\Workspace_New.cpp" />
     <ClCompile Include="..\src\Workspace_Script.cpp" />
     <ClCompile Include="..\src\Workspace_Tags.cpp" />
-    <ClCompile Include="..\src\X64Gen.cpp" />
+    <ClCompile Include="..\src\EncoderX64.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\FileJob.cpp" />
