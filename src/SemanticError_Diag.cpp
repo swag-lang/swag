@@ -290,7 +290,7 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
     {
         auto msg  = Fmt(Err(Err1165));
         diag      = new Diagnostic{context->node, context->node->token, msg};
-        auto note = Diagnostic::note(callParamNode, Diagnostic::isType(bi.badSignatureGivenType));
+        auto note = Diagnostic::note(callParamNode, Diagnostic::isType(callParamNode));
         errorParam.addResult1(note);
         addSpecificCastErr = false;
     }
@@ -298,7 +298,7 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
     {
         auto msg  = Fmt(Err(Err0095), bi.badSignatureRequestedType->getDisplayNameC());
         diag      = new Diagnostic{context->node, context->node->token, msg};
-        auto note = Diagnostic::note(callParamNode, Diagnostic::isType(bi.badSignatureGivenType));
+        auto note = Diagnostic::note(callParamNode, Diagnostic::isType(callParamNode));
         errorParam.addResult1(note);
     }
     else
@@ -397,13 +397,12 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
     }
     else if (destParamNode && (destParamNode->flags & AST_GENERATED))
     {
-        auto        msg  = Fmt(Nte(Nte1094), Naming::kindName(overload).c_str());
-        Diagnostic* note = Diagnostic::note(destParamNode, destParamNode->token, msg);
+        Diagnostic* note = Diagnostic::note(destParamNode, destParamNode->token, Nte(Nte1094));
         errorParam.addResult1(note);
     }
     else if (destParamNode)
     {
-        auto        msg  = Fmt(Nte(Nte0066), destParamNode->token.ctext(), Naming::kindName(overload).c_str());
+        auto        msg  = Fmt(Nte(Nte0066), destParamNode->token.ctext());
         Diagnostic* note = Diagnostic::note(destParamNode, destParamNode->token, msg);
         errorParam.addResult1(note);
     }

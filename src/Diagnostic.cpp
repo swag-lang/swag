@@ -655,12 +655,17 @@ Utf8 Diagnostic::isType(TypeInfo* typeInfo)
     return str;
 }
 
+Utf8 Diagnostic::isType(SymbolOverload* overload)
+{
+    if (!overload || !overload->typeInfo)
+        return "";
+    return Fmt(Nte(Nte1084), Naming::kindName(overload).c_str(), overload->typeInfo->getDisplayNameC());
+}
+
 Utf8 Diagnostic::isType(AstNode* node)
 {
-    if (!node->typeInfo)
-        return "";
     if (node->resolvedSymbolOverload)
-        return Fmt(Nte(Nte1084), Naming::kindName(node->resolvedSymbolOverload).c_str(), node->typeInfo->getDisplayNameC());
+        return isType(node->resolvedSymbolOverload);
     return isType(node->typeInfo);
 }
 

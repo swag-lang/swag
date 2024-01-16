@@ -1330,7 +1330,7 @@ void initErrors()
     SWAG_ERROR(Nte0035, "here is the other '#import'");
     SWAG_ERROR(Nte0036, "here is the other definition");
     SWAG_ERROR(Nte0063, "here is the other return statement");
-    SWAG_ERROR(Nte0066, "here is the corresponding parameter '%s' of the %s");
+    SWAG_ERROR(Nte0066, "here is the corresponding parameter '%s'");
     SWAG_ERROR(Nte0037, "here is the previous definition");
     SWAG_ERROR(Nte0024, "here is the prior declaration");
     SWAG_ERROR(Nte0032, "here is the problematic attribute");
@@ -1410,7 +1410,7 @@ void initErrors()
     SWAG_ERROR(Nte1049, "there's an implied first parameter 'self'");
     SWAG_ERROR(Nte1127, "this %s has '%s' access");
     SWAG_ERROR(Nte1070, "this %s has the '#[Swag.Compiler]' attribute, which makes it compile-time only");
-    SWAG_ERROR(Nte1084, "this %s is of type '%s'");
+    SWAG_ERROR(Nte1084, "this %s has type '%s'");
     SWAG_ERROR(Nte0006, "this 'using' field is convertible");
     SWAG_ERROR(Nte1030, "this argument has been named");
     SWAG_ERROR(Nte0062, "this can be converted too");
@@ -1459,7 +1459,7 @@ void initErrors()
     SWAG_ERROR(Nte1108, "you need to take the address of a value to make a reference");
     SWAG_ERROR(Nte1122, "this has '%s' access (type is '%s')");
     SWAG_ERROR(Nte1131, "this 'discard' should be removed");
-    SWAG_ERROR(Nte1094, "here is the corresponding parameter of the %s");
+    SWAG_ERROR(Nte1094, "here is the corresponding parameter");
     SWAG_ERROR(Nte1056, nullptr);
     SWAG_ERROR(Nte1093, nullptr);
     SWAG_ERROR(Nte1010, nullptr);
