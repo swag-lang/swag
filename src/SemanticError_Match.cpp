@@ -48,7 +48,7 @@ static bool cannotMatchIdentifier(SemanticContext*            context,
     switch (result)
     {
     case MatchResult::ValidIfFailed:
-        note = Diagnostic::note(node, node->token, "all '#validif' have failed");
+        note = Diagnostic::note(node, node->token, "all [[#validif]] have failed");
         break;
     case MatchResult::TooManyParameters:
         note = Diagnostic::note(node, node->token, "too many arguments");

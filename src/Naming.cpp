@@ -463,7 +463,7 @@ Utf8 Naming::niceArgumentRank(size_t idx)
     case 3:
         return "third argument";
     }
-    return Fmt("argument '%d'", idx);
+    return Fmt("argument [[%d]]", idx);
 }
 
 Utf8 Naming::niceParameterRank(size_t idx)
@@ -477,7 +477,7 @@ Utf8 Naming::niceParameterRank(size_t idx)
     case 3:
         return "third parameter";
     }
-    return Fmt("parameter '%d'", idx);
+    return Fmt("parameter [[%d]]", idx);
 }
 
 Utf8 Naming::tokenToName(TokenId id)

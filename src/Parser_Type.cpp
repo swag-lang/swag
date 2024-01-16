@@ -368,7 +368,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
         ScopedStruct     ss(this, structNode->scope);
 
         auto startLoc = token.startLocation;
-        SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the 'struct' body"));
+        SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[struct]] body"));
         while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
             SWAG_CHECK(doStructBody(contentNode, SyntaxStructType::Struct, &dummyResult));
         SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc));
@@ -686,9 +686,9 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
     }
 
     auto startLoc = token.startLocation;
-    SWAG_CHECK(eatToken(TokenId::SymLeftParen, "after 'cast'"));
+    SWAG_CHECK(eatToken(TokenId::SymLeftParen, "after [[cast]]"));
     SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &dummyResult));
-    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the 'cast' type expression"));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the [[cast]] type expression"));
 
     SWAG_CHECK(doUnaryExpression(node, EXPR_FLAG_NONE, &dummyResult));
     return true;

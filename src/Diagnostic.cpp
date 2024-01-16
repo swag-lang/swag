@@ -649,7 +649,7 @@ Utf8 Diagnostic::isType(TypeInfo* typeInfo)
     {
         auto typeAlias = CastTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
         if (typeAlias->rawType)
-            str += Fmt(" (aka '%s')", typeAlias->rawType->getConcreteAlias()->getDisplayNameC());
+            str += Fmt(" (aka [[%s]])", typeAlias->rawType->getConcreteAlias()->getDisplayNameC());
     }
 
     return str;

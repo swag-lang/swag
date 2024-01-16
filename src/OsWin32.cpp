@@ -95,7 +95,7 @@ namespace OS
 
         winSdkFolder.append(bestName.c_str());
         if (g_CommandLine.verbosePath)
-            g_Log.messageVerbose(Fmt("winsdk path is '%s'", winSdkFolder.string().c_str()));
+            g_Log.messageVerbose(Fmt("winsdk path is [[%s]]", winSdkFolder.string().c_str()));
 
         return true;
     }

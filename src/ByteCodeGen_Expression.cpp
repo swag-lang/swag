@@ -494,7 +494,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, TypeIn
     }
     else
     {
-        return Report::internalError(context->node, Fmt("emitLiteral, unsupported type '%s'", typeInfo->getDisplayNameC()).c_str());
+        return Report::internalError(context->node, Fmt("emitLiteral, unsupported type [[%s]]", typeInfo->getDisplayNameC()).c_str());
     }
 
     return true;

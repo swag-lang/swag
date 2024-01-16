@@ -62,12 +62,12 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     }
     else
     {
-        SWAG_CHECK(checkIsSingleIdentifier(implNode->identifier, "as an 'impl' block name"));
+        SWAG_CHECK(checkIsSingleIdentifier(implNode->identifier, "as an [[impl]] block name"));
     }
 
     // Content of impl block
     auto startLoc = token.startLocation;
-    SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the 'impl' body"));
+    SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[impl]] body"));
 
     // Get existing scope or create a new one
     auto& structName     = identifierStruct->childs.back()->token.text;
@@ -179,7 +179,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         }
     }
 
-    SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the 'impl' body"));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the [[impl]] body"));
     return true;
 }
 
@@ -344,10 +344,10 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
         contentNode->extSemantic()->semanticBeforeFct = Semantic::preResolveStructContent;
 
         auto startLoc = token.startLocation;
-        SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the 'struct' body"));
+        SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[struct]] body"));
         while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
             SWAG_CHECK(doStructBody(contentNode, structType, &dummyResult));
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the 'struct' body"));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the [[struct]] body"));
     }
 
     return true;

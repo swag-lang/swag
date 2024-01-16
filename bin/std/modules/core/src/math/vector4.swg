@@ -28,7 +28,7 @@ impl Vector4
         #if op == "-"#do
             return Vector4{-x, -y, -z, -w}
         #else #do
-            #error "unsupported unary operation '" ++ op ++ "'"
+            #error "unsupported unary operation [[" ++ op ++ "]]"
     }
 
     // Set the vector to zero

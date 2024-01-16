@@ -33,7 +33,7 @@ impl Point
         #elif op == "-="    { x -= other.x; y -= other.y; }
         #elif op == "*="    { x *= other.x; y *= other.y; }
         #elif op == "/="    { x /= other.x; y /= other.y; }
-        #else               #do #error "unsupported assign operation '" ++ op ++ "'"
+        #else               #do #error "unsupported assign operation [[" ++ op ++ "]]"
     }
 
     mtd(op: string) opAssign(value: f32)
@@ -42,7 +42,7 @@ impl Point
         #elif op == "-="    { x -= value; y -= value; }
         #elif op == "*="    { x *= value; y *= value; }
         #elif op == "/="    { x /= value; y /= value; }
-        #else               #do #error "unsupported assign operation '" ++ op ++ "'"
+        #else               #do #error "unsupported assign operation [[" ++ op ++ "]]"
     }
 
     mtd(op: string) const opBinary(other: Point)->Self
@@ -51,7 +51,7 @@ impl Point
         #elif op == "-" #do return Point{x - other.x, y - other.y}
         #elif op == "*" #do return Point{x * other.x, y * other.y}
         #elif op == "/" #do return Point{x / other.x, y / other.y}
-        #else           #do #error "unsupported binary operation '" ++ op ++ "'"
+        #else           #do #error "unsupported binary operation [[" ++ op ++ "]]"
     }
 
     mtd(op: string) const opBinary(value: f32)->Self
@@ -60,7 +60,7 @@ impl Point
         #elif op == "-" #do return Point{x - value, y - value}
         #elif op == "*" #do return Point{x * value, y * value}
         #elif op == "/" #do return Point{x / value, y / value}
-        #else           #do #error "unsupported binary operation '" ++ op ++ "'"
+        #else           #do #error "unsupported binary operation [[" ++ op ++ "]]"
     }
 
     mtd(op: string) const opUnary()->Self
@@ -74,7 +74,7 @@ impl Point
 		}
         #else
         {
-            #error "unsupported unary operation '" ++ op ++ "'"
+            #error "unsupported unary operation [[" ++ op ++ "]]"
         }
     }
 

@@ -147,7 +147,7 @@ bool ByteCodeGen::setupByteCodeResolved(ByteCodeGenContext* context, AstNode* no
             // Be sure that every used registers have been released
             if (context->bc->maxReservedRegisterRC > context->bc->availableRegistersRC.size() + context->bc->staticRegs)
             {
-                Report::internalError(funcNode, Fmt("function '%s' does not release all registers !", funcNode->token.ctext()));
+                Report::internalError(funcNode, Fmt("function [[%s]] does not release all registers !", funcNode->token.ctext()));
                 if (node->attributeFlags & ATTRIBUTE_PRINT_BC)
                 {
                     ByteCodePrintOptions opt;
@@ -156,7 +156,7 @@ bool ByteCodeGen::setupByteCodeResolved(ByteCodeGenContext* context, AstNode* no
             }
             else if (context->bc->maxReservedRegisterRC < context->bc->availableRegistersRC.size())
             {
-                Report::internalError(funcNode, Fmt("function '%s' releases too many registers !", funcNode->token.ctext()));
+                Report::internalError(funcNode, Fmt("function [[%s]] releases too many registers !", funcNode->token.ctext()));
                 if (node->attributeFlags & ATTRIBUTE_PRINT_BC)
                 {
                     ByteCodePrintOptions opt;

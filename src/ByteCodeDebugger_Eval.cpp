@@ -204,7 +204,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     {
         if (!concrete->isNativeIntegerOrRune() && !concrete->isNativeFloat())
         {
-            g_ByteCodeDebugger.printCmdError(Fmt("cannot apply print format to type '%s'", concrete->getDisplayNameC()));
+            g_ByteCodeDebugger.printCmdError(Fmt("cannot apply print format to type [[%s]]", concrete->getDisplayNameC()));
             return BcDbgCommandResult::Continue;
         }
 

@@ -89,10 +89,12 @@ func __failedAssume(loc: SourceCodeLocation)
     @memcpy(&str[len], @dataof(U), @countof(U))
     len += @countof(U)
     var maxLen = @min(@countof(type.fullname), 128)
-    str[len] = `'`; len += 1
+    str[len] = `[`; len += 1
+    str[len] = `[`; len += 1
     @memcpy(&str[len], @dataof(type.fullname), maxLen)
     len += maxLen
-    str[len] = `'`; len += 1
+    str[len] = `]`; len += 1
+    str[len] = `]`; len += 1
 
     if type.kind == TypeInfoKind.Struct
     {

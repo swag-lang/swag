@@ -9,7 +9,7 @@ func checkFormat(fct: string, fmt: string, values: ...)
     if cptPercent != @countof(values)
     {
         #[Match("validif", false)]
-        var str = toString("bad number of arguments to '%' ('%' requested, '%' provided)", fct, cptPercent, @countof(values))
+        var str = toString("bad number of arguments to [[%]] ([[%]] requested, [[%]] provided)", fct, cptPercent, @countof(values))
         @compilererror(str, @location(values))
     }
 }

@@ -46,14 +46,14 @@ namespace BackendLinker
                             {
                                 Utf8 l2 = pze + 8;
                                 l2.trim();
-                                auto l1 = Fmt("module '%s': linker error: %s", module->name.c_str(), l2.c_str());
+                                auto l1 = Fmt("module [[%s]]: linker error: %s", module->name.c_str(), l2.c_str());
                                 l       = l1;
                             }
                             else
                             {
                                 Utf8 l2 = pzw + 10;
                                 l2.trim();
-                                auto l1 = Fmt("module '%s': linker warning: %s", module->name.c_str(), l2.c_str());
+                                auto l1 = Fmt("module [[%s]]: linker warning: %s", module->name.c_str(), l2.c_str());
                                 l       = l1;
                             }
                         }

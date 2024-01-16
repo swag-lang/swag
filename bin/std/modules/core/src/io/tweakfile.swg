@@ -77,7 +77,7 @@ impl TweakFile
                 }
 
                 if !currentFolder do
-                    throw SyntaxError{Errors.mkString(Format.toString("unknown folder '%'", folderName)), line: idx + 1}
+                    throw SyntaxError{Errors.mkString(Format.toString("unknown folder [[%]]", folderName)), line: idx + 1}
                 continue
             }
 
@@ -93,7 +93,7 @@ impl TweakFile
             // Search value into folder
             let field = Reflection.getField(currentFolder.type, id)
             if !field do
-                throw SyntaxError{Errors.mkString(Format.toString("value '%' not found in folder '%'", id, currentFolder.type.name)), line: idx + 1}
+                throw SyntaxError{Errors.mkString(Format.toString("value [[%]] not found in folder [[%]]", id, currentFolder.type.name)), line: idx + 1}
             one = Tokenize.eatCount(one, @countof(id))
             one = Tokenize.eatSpaces(one)
             if !@countof(one) do
@@ -104,9 +104,9 @@ impl TweakFile
                 one = Tokenize.eatCount(one, 1)
                 let otherField = Reflection.getField(currentFolder.type, one)
                 if !otherField do
-                    throw SyntaxError{Errors.mkString(Format.toString("reference '%' not found in folder '%'", one, currentFolder.type.name)), line: idx + 1}
+                    throw SyntaxError{Errors.mkString(Format.toString("reference [[%]] not found in folder [[%]]", one, currentFolder.type.name)), line: idx + 1}
                 if field.pointedType != otherField.pointedType do
-                    throw SyntaxError{Errors.mkString(Format.toString("reference '%' type mismatch", one)), line: idx + 1}
+                    throw SyntaxError{Errors.mkString(Format.toString("reference [[%]] type mismatch", one)), line: idx + 1}
                 var refr: Ref{currentFolder, otherField, field}
                 refs.add(refr)
                 continue

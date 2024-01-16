@@ -34,11 +34,11 @@ bool Parser::doLiteral(AstNode* parent, AstNode** result)
             {
             case TokenId::KwdTrue:
             case TokenId::KwdFalse:
-                return error(token, Fmt(Err(Err1219), "'bool' literals"));
+                return error(token, Fmt(Err(Err1219), "[[bool]] literals"));
             case TokenId::LiteralString:
-                return error(token, Fmt(Err(Err1219), "'string' literals"));
+                return error(token, Fmt(Err(Err1219), "[[string]] literals"));
             case TokenId::KwdNull:
-                return error(token, Fmt(Err(Err1219), "'null'"));
+                return error(token, Fmt(Err(Err1219), "[[null]]"));
             default:
                 return error(token, Fmt(Err(Err1219), "that kind of literal"));
             }
@@ -244,7 +244,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, uint32_t exprFlags, AstN
         *result = expr;
         expr->flags |= AST_IN_ATOMIC_EXPR;
         if (parent)
-            SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, Fmt("to end the '%s' expression", parent->token.ctext())));
+            SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, Fmt("to end the [[%s]] expression", parent->token.ctext())));
         else
             SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the left expression"));
         break;

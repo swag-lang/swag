@@ -100,7 +100,7 @@ impl Rng
     #[Swag.Overload]
     mtd nextU32(min, max: u32)->u32
     {
-        Debug.assert(max > min, "'max' must be greater than 'min'")
+        Debug.assert(max > min, "[[max]] must be greater than [[min]]")
         let range = cast(u32) (max - min)
         let value = nextU32() % range
         return min + value
@@ -111,7 +111,7 @@ impl Rng
     #[Swag.Overload]
     mtd nextU64(min, max: u64)->u64
     {
-        Debug.assert(max > min, "'max' must be greater than 'min'")
+        Debug.assert(max > min, "[[max]] must be greater than [[min]]")
         let range = cast(u64) (max - min)
         let value = nextU64() % range
         return min + value
@@ -122,7 +122,7 @@ impl Rng
     #[Swag.Overload]
     mtd nextS32(min, max: s32)->s32
     {
-        Debug.assert(max > min, "'max' must be greater than 'min'")
+        Debug.assert(max > min, "[[max]] must be greater than [[min]]")
         let range = cast(u32) (max - min)
         let value = cast(s32) (nextU32() % range)
         return min + value
@@ -133,7 +133,7 @@ impl Rng
     #[Swag.Overload]
     mtd nextS64(min, max: s64)->s64
     {
-        Debug.assert(max > min, "'max' must be greater than 'min'")
+        Debug.assert(max > min, "[[max]] must be greater than [[min]]")
         let range = cast(u64) (max - min)
         let value = cast(s64) (nextU64() % range)
         return min + value
@@ -144,7 +144,7 @@ impl Rng
     #[Swag.Overload]
     mtd nextF32(min, max: f32)->f32
     {
-        Debug.assert(max > min, "'max' must be greater than 'min'")
+        Debug.assert(max > min, "[[max]] must be greater than [[min]]")
         let range = max - min
         let value = nextF32()
         return min + (value * range)
@@ -155,7 +155,7 @@ impl Rng
     #[Swag.Overload]
     mtd nextF64(min, max: f64)->f64
     {
-        Debug.assert(max > min, "'max' must be greater than 'min'")
+        Debug.assert(max > min, "[[max]] must be greater than [[min]]")
         let range = max - min
         let value = nextF64()
         return min + (value * range)

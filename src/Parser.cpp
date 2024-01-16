@@ -127,17 +127,17 @@ bool Parser::invalidTokenError(InvalidTokenError kind, AstNode* parent)
         {
             if (Tokenizer::isKeyword(parent->tokenId))
             {
-                Utf8 forWhat = Fmt("'%s'", parent->token.ctext());
+                Utf8 forWhat = Fmt("[[%s]]", parent->token.ctext());
                 msg          = Fmt(Err(Err1076), forWhat.c_str(), token.ctext());
             }
             else if (Tokenizer::isCompiler(parent->tokenId))
             {
-                Utf8 forWhat = Fmt("the compiler directive '%s'", parent->token.ctext());
+                Utf8 forWhat = Fmt("the compiler directive [[%s]]", parent->token.ctext());
                 msg          = Fmt(Err(Err1076), forWhat.c_str(), token.ctext());
             }
             else if (Tokenizer::isSymbol(parent->tokenId))
             {
-                Utf8 forWhat = Fmt("the symbol '%s'", parent->token.ctext());
+                Utf8 forWhat = Fmt("the symbol [[%s]]", parent->token.ctext());
                 msg          = Fmt(Err(Err1076), forWhat.c_str(), token.ctext());
             }
         }

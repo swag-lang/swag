@@ -36,7 +36,7 @@ impl Vector2
         #elif op == "-="    { x -= other.x; y -= other.y; }
         #elif op == "*="    { x *= other.x; y *= other.y; }
         #elif op == "/="    { x /= other.x; y /= other.y; }
-        #else               #do #error "unsupported assign operation '" ++ op ++ "'"
+        #else               #do #error "unsupported assign operation [[" ++ op ++ "]]"
     }
 
     mtd(op: string) opAssign(value: f32)
@@ -45,7 +45,7 @@ impl Vector2
         #elif op == "-="    { x -= value; y -= value; }
         #elif op == "*="    { x *= value; y *= value; }
         #elif op == "/="    { x /= value; y /= value; }
-        #else               #do #error "unsupported assign operation '" ++ op ++ "'"
+        #else               #do #error "unsupported assign operation [[" ++ op ++ "]]"
     }
 
     mtd(op: string) const opBinary(other: Self)->Self
@@ -54,7 +54,7 @@ impl Vector2
         #elif op == "-" #do return Self{x - other.x, y - other.y}
         #elif op == "*" #do return Self{x * other.x, y * other.y}
         #elif op == "/" #do return Self{x / other.x, y / other.y}
-        #else           #do #error "unsupported binary operation '" ++ op ++ "'"
+        #else           #do #error "unsupported binary operation [[" ++ op ++ "]]"
     }
 
     mtd(op: string) const opBinary(value: f32)->Self
@@ -63,7 +63,7 @@ impl Vector2
         #elif op == "-" #do return Self{x - value, y - value}
         #elif op == "*" #do return Self{x * value, y * value}
         #elif op == "/" #do return Self{x / value, y / value}
-        #else           #do #error "unsupported binary operation '" ++ op ++ "'"
+        #else           #do #error "unsupported binary operation [[" ++ op ++ "]]"
     }
 
     mtd(op: string) const opUnary()->Self
@@ -71,7 +71,7 @@ impl Vector2
         #if op == "-" #do
             return Self{-x, -y}
         #else #do
-            #error "unsupported unary operation '" ++ op ++ "'"
+            #error "unsupported unary operation [[" ++ op ++ "]]"
     }
 
     // Set content

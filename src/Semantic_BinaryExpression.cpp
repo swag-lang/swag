@@ -1006,7 +1006,7 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
             return SemanticError::notAllowedError(context, node, leftTypeInfo);
 
         if (leftTypeInfo->isEnum() && !(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS) && rightTypeInfo == leftTypeInfo)
-            return SemanticError::notAllowedError(context, node, leftTypeInfo, "because the enum is not marked with '#[Swag.EnumFlags]'");
+            return SemanticError::notAllowedError(context, node, leftTypeInfo, "because the enum is not marked with [[#[Swag.EnumFlags]]]");
 
         if (leftTypeInfo->isEnum() && !(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS))
             return context->report({node, Fmt(Err(Err0037), node->token.ctext(), leftTypeInfo->getDisplayNameC())});

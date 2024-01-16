@@ -155,7 +155,7 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
 
             auto tokenComma = token;
             if (callParams->specFlags & AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT)
-                SWAG_CHECK(eatToken(TokenId::SymComma, "in 'struct' initialization parameters"));
+                SWAG_CHECK(eatToken(TokenId::SymComma, "in [[struct]] initialization parameters"));
             else
                 SWAG_CHECK(eatToken(TokenId::SymComma, "in function call parameters"));
 
@@ -432,9 +432,9 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
     // To avoid calling 'format' in case we know this is fine, otherwise it will be called each time, even when ok
     auto startLoc = token.startLocation;
     if (token.id != TokenId::SymLeftParen && parent->kind == AstNodeKind::AttrDecl)
-        SWAG_CHECK(eatToken(TokenId::SymLeftParen, Fmt("to declare the attribute parameters of '%s'", parent->token.ctext())));
+        SWAG_CHECK(eatToken(TokenId::SymLeftParen, Fmt("to declare the attribute parameters of [[%s]]", parent->token.ctext())));
     else if (token.id != TokenId::SymLeftParen)
-        SWAG_CHECK(eatToken(TokenId::SymLeftParen, Fmt("to declare the function parameters of '%s'", parent->token.ctext())));
+        SWAG_CHECK(eatToken(TokenId::SymLeftParen, Fmt("to declare the function parameters of [[%s]]", parent->token.ctext())));
     else
         SWAG_CHECK(eatToken());
 
@@ -1068,7 +1068,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
             {
                 PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, []()
                                   { return Nte(Nte0145); });
-                SWAG_CHECK(eatToken(TokenId::SymVertical, "to start the 'closure' capture block"));
+                SWAG_CHECK(eatToken(TokenId::SymVertical, "to start the [[closure]] capture block"));
             }
 
             while (token.id != TokenId::SymVertical)

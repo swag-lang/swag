@@ -228,7 +228,7 @@ bool Module::isValidName(const Utf8& name, Utf8& errorStr)
             if (!isalnum(name[i]) && name[i] != '_')
             {
                 error  = true;
-                reason = Fmt("forbidden character '%c'", name[i]);
+                reason = Fmt("forbidden character [[%c]]", name[i]);
                 break;
             }
         }
@@ -236,7 +236,7 @@ bool Module::isValidName(const Utf8& name, Utf8& errorStr)
 
     if (error)
     {
-        errorStr = Fmt("invalid module name '%s', ", name.c_str());
+        errorStr = Fmt("invalid module name [[%s]], ", name.c_str());
         errorStr += reason;
         return false;
     }

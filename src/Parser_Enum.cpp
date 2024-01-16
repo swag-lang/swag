@@ -86,10 +86,10 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
     // Content of enum
     Scoped scoped(this, newScope);
     auto   startLoc = token.startLocation;
-    SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the 'enum' body"));
+    SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[enum]] body"));
     while (token.id != TokenId::SymRightCurly && token.id != TokenId::EndOfFile)
         SWAG_CHECK(doEnumContent(enumNode, &dummyResult));
-    SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the 'enum' body"));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the [[enum]] body"));
     return true;
 }
 

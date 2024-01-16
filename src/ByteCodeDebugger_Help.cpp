@@ -60,7 +60,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext* context, const 
         }
 
         if (!ok)
-            g_ByteCodeDebugger.printCmdError(Fmt("unknown debugger command '%s'", arg.split[1].c_str()));
+            g_ByteCodeDebugger.printCmdError(Fmt("unknown debugger command [[%s]]", arg.split[1].c_str()));
         return BcDbgCommandResult::Continue;
     }
 

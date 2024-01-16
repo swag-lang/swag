@@ -746,7 +746,7 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
         struct stat stat_buf;
         int         rc = stat(fullFileName.string().c_str(), &stat_buf);
         SWAG_VERIFY(rc == 0, context->report({back, Fmt(Err(Err0223), back->computedValue->text.c_str())}));
-        SWAG_CHECK(context->checkSizeOverflow("'#load'", stat_buf.st_size, SWAG_LIMIT_COMPILER_LOAD));
+        SWAG_CHECK(context->checkSizeOverflow("[[#load]]", stat_buf.st_size, SWAG_LIMIT_COMPILER_LOAD));
 
         auto     newJob         = Allocator::alloc<LoadFileJob>();
         auto     storageSegment = getConstantSegFromContext(node);

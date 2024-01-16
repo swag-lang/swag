@@ -100,7 +100,7 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
     }
 
     auto startLoc = token.startLocation;
-    SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the 'switch' body"));
+    SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[switch]] body"));
 
     AstSwitchCase* defaultCase = nullptr;
     bool           hasDefault  = false;
@@ -179,7 +179,7 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
         switchNode->cases.push_back(defaultCase);
     }
 
-    SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the 'switch' body"));
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the [[switch]] body"));
 
     return true;
 }
@@ -208,7 +208,7 @@ bool Parser::doFor(AstNode* parent, AstNode** result)
 
     // Boolean expression
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
-    SWAG_CHECK(eatSemiCol("'for' boolean expression"));
+    SWAG_CHECK(eatSemiCol("[[for]] boolean expression"));
 
     // Post expression
     if (token.id == TokenId::SymLeftCurly)
@@ -482,7 +482,7 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
             return error(token, Fmt(Err(Err1142), token.ctext()));
 
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the 'defer' argument"));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the [[defer]] argument"));
     }
 
     ScopedFlags scopedFlags(this, AST_IN_DEFER);

@@ -140,7 +140,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, AstNo
         if (left->kind == AstNodeKind::Identifier && left->specFlags & (AstIdentifier::SPECFLAG_FROM_USING | AstIdentifier::SPECFLAG_FROM_WITH))
         {
             auto leftId = CastAst<AstIdentifier>(left, AstNodeKind::Identifier);
-            hint        = "this is equivalent to '";
+            hint        = "this is equivalent to [[";
             for (size_t ic = 0; ic < orgLeft->childs.size(); ic++)
             {
                 auto c = orgLeft->childs[ic];
@@ -150,9 +150,9 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, AstNo
             }
 
             if (left->specFlags & AstIdentifier::SPECFLAG_FROM_USING)
-                hint += "' because of a 'using'";
+                hint += "]] because of a [[using]]";
             else
-                hint += "' because of a 'with'";
+                hint += "]] because of a [[with]]";
 
             SWAG_ASSERT(left->resolvedSymbolOverload);
             if (left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM && left->typeInfo->isConst())
@@ -258,7 +258,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                     node->tokenId != TokenId::SymCircumflexEqual)
                     return SemanticError::notAllowedError(context, node, leftTypeInfo, nullptr, left);
                 if (!(leftTypeInfo->getConcreteAlias()->flags & TYPEINFO_ENUM_FLAGS) || !(rightTypeInfo->getConcreteAlias()->flags & TYPEINFO_ENUM_FLAGS))
-                    return SemanticError::notAllowedError(context, node, leftTypeInfo, "because the enum is not marked with '#[Swag.EnumFlags]'", left);
+                    return SemanticError::notAllowedError(context, node, leftTypeInfo, "because the enum is not marked with [[#[Swag.EnumFlags]]]", left);
                 forEnumFlags = true;
             }
         }

@@ -341,7 +341,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
         if (!itfRef.itf)
         {
             Diagnostic diag{node, node->token, Fmt(Err(Err0657), typeBaseInterface->name.c_str(), typeInfo->getDisplayNameC())};
-            auto       note = Diagnostic::note(missingNode->declNode, missingNode->declNode->token, Fmt("missing '%s'", missingNode->name.c_str()));
+            auto       note = Diagnostic::note(missingNode->declNode, missingNode->declNode->token, Fmt("missing [[%s]]", missingNode->name.c_str()));
             return context->report(diag, note);
         }
 

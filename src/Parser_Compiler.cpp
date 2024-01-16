@@ -115,18 +115,18 @@ bool Parser::doCompilerMixin(AstNode* parent, AstNode** result)
         {
             auto tokenId = token.id;
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify another '#mixin' block argument"));
+            SWAG_CHECK(eatToken(TokenId::SymEqual, "to specify another [[#mixin]] block argument"));
             SWAG_CHECK(doEmbeddedInstruction(nullptr, &stmt));
             node->replaceTokens[tokenId] = stmt;
             node->extOwner()->nodesToFree.push_back(stmt);
             if (token.id != TokenId::SymRightCurly)
-                SWAG_CHECK(eatSemiCol("'#mixin' replacement statement"));
+                SWAG_CHECK(eatSemiCol("[[#mixin]] replacement statement"));
         }
 
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the '#mixin' replacement statement"));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the [[#mixin]] replacement statement"));
     }
 
-    SWAG_CHECK(eatSemiCol("'#mixin' expression"));
+    SWAG_CHECK(eatSemiCol("[[#mixin]] expression"));
     return true;
 }
 
@@ -159,7 +159,7 @@ bool Parser::doCompilerAssert(AstNode* parent, AstNode** result)
     ScopedFlags scopedFlags(this, AST_IN_RUN_BLOCK | AST_NO_BACKEND);
     SWAG_CHECK(eatToken());
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
-    SWAG_CHECK(eatSemiCol("'#assert' expression"));
+    SWAG_CHECK(eatSemiCol("[[#assert]] expression"));
     return true;
 }
 
@@ -175,7 +175,7 @@ bool Parser::doCompilerError(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
-    SWAG_CHECK(eatSemiCol("'#error' expression"));
+    SWAG_CHECK(eatSemiCol("[[#error]] expression"));
     return true;
 }
 
@@ -191,7 +191,7 @@ bool Parser::doCompilerWarning(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
-    SWAG_CHECK(eatSemiCol("'#warning' expression"));
+    SWAG_CHECK(eatSemiCol("[[#warning]] expression"));
     return true;
 }
 
@@ -234,7 +234,7 @@ bool Parser::doCompilerValidIf(AstNode* parent, AstNode** result)
     else
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
-        SWAG_CHECK(eatSemiCol("'#validifx' expression"));
+        SWAG_CHECK(eatSemiCol("[[#validifx]] expression"));
     }
 
     return true;
@@ -265,7 +265,7 @@ bool Parser::doCompilerAst(AstNode* parent, AstNode** result)
     else
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
-        SWAG_CHECK(eatSemiCol("'#ast' expression"));
+        SWAG_CHECK(eatSemiCol("[[#ast]] expression"));
     }
 
     return true;
@@ -285,7 +285,7 @@ bool Parser::doCompilerRunTopLevel(AstNode* parent, AstNode** result)
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
     node->semanticFct = Semantic::resolveCompilerRun;
     SWAG_CHECK(doEmbeddedInstruction(node, &dummyResult));
-    SWAG_CHECK(eatSemiCol("'#run' statement"));
+    SWAG_CHECK(eatSemiCol("[[#run]] statement"));
     return true;
 }
 
@@ -317,7 +317,7 @@ bool Parser::doCompilerRunEmbedded(AstNode* parent, AstNode** result)
     else
     {
         SWAG_CHECK(doEmbeddedInstruction(node, &dummyResult));
-        SWAG_CHECK(eatSemiCol("'#run' expression"));
+        SWAG_CHECK(eatSemiCol("[[#run]] expression"));
     }
 
     return true;
@@ -335,7 +335,7 @@ bool Parser::doCompilerPrint(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatToken());
 
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
-    SWAG_CHECK(eatSemiCol("'#print' expression"));
+    SWAG_CHECK(eatSemiCol("[[#print]] expression"));
     return true;
 }
 
@@ -350,7 +350,7 @@ bool Parser::doCompilerForeignLib(AstNode* parent, AstNode** result)
 
     AstNode* literal;
     SWAG_CHECK(doLiteral(node, &literal));
-    SWAG_CHECK(eatSemiCol("'#foreignlib'"));
+    SWAG_CHECK(eatSemiCol("[[#foreignlib]]"));
     return true;
 }
 
@@ -370,7 +370,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         }
 
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatSemiCol("'#global export'"));
+        SWAG_CHECK(eatSemiCol("[[#global export]]"));
     }
 
     /////////////////////////////////
@@ -380,7 +380,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         if (sourceFile->imported)
             sourceFile->imported->isSwag = true;
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatSemiCol("'#global generated'"));
+        SWAG_CHECK(eatSemiCol("[[#global generated]]"));
     }
 
     /////////////////////////////////
@@ -402,7 +402,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         block->flags |= AST_GLOBAL_NODE;
 
         ScopedCompilerIfBlock scopedIf(this, block);
-        SWAG_CHECK(eatSemiCol("'#global if'"));
+        SWAG_CHECK(eatSemiCol("[[#global if]]"));
         while (token.id != TokenId::EndOfFile)
         {
             SWAG_CHECK(doTopLevelInstruction(block, &dummyResult));
@@ -458,7 +458,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         }
 
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(eatSemiCol("'#global testpass'"));
+        SWAG_CHECK(eatSemiCol("[[#global testpass]]"));
     }
 
     /////////////////////////////////
@@ -497,7 +497,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
             module->shouldHaveError     = true;
             sourceFile->shouldHaveErrorString.push_back(token.text);
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(eatSemiCol("'#global testerror'"));
+            SWAG_CHECK(eatSemiCol("[[#global testerror]]"));
         }
         else
         {
@@ -509,7 +509,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
             module->shouldHaveWarning     = true;
             sourceFile->shouldHaveWarningString.push_back(token.text);
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(eatSemiCol("'#global testwarning'"));
+            SWAG_CHECK(eatSemiCol("[[#global testwarning]]"));
         }
     }
 
@@ -542,7 +542,7 @@ bool Parser::doCompilerGlobal(AstNode* parent, AstNode** result)
         attrUse->extOwner()->ownerAttrUse = sourceFile->astAttrUse;
         attrUse->flags |= AST_GLOBAL_NODE;
         sourceFile->astAttrUse = attrUse;
-        SWAG_CHECK(eatSemiCol("'#global attribute'"));
+        SWAG_CHECK(eatSemiCol("[[#global attribute]]"));
     }
 
     /////////////////////////////////
@@ -667,7 +667,7 @@ bool Parser::doCompilerLoad(AstNode* parent)
     node->inheritTokenLocation(token);
     SWAG_CHECK(eatToken());
 
-    SWAG_CHECK(eatSemiCol("'#load' expression"));
+    SWAG_CHECK(eatSemiCol("[[#load]] expression"));
     if (sourceFile->module->kind == ModuleKind::Config)
     {
         if (node->hasExtOwner() && node->extOwner()->ownerCompilerIfBlock)
@@ -734,7 +734,7 @@ bool Parser::doCompilerImport(AstNode* parent)
         }
     }
 
-    SWAG_CHECK(eatSemiCol("'#import' expression"));
+    SWAG_CHECK(eatSemiCol("[[#import]] expression"));
     if (sourceFile->isGenerated || sourceFile->module->kind == ModuleKind::Config)
     {
         if (node->hasExtOwner() && node->extOwner()->ownerCompilerIfBlock)
@@ -755,7 +755,7 @@ bool Parser::doCompilerPlaceHolder(AstNode* parent)
     node->inheritTokenName(token);
     node->inheritTokenLocation(token);
     SWAG_CHECK(eatToken());
-    SWAG_CHECK(eatSemiCol("'#placeholder' expression"));
+    SWAG_CHECK(eatSemiCol("[[#placeholder]] expression"));
 
     currentScope->symTable.registerSymbolName(context, node, SymbolKind::PlaceHolder);
 

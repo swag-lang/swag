@@ -105,7 +105,7 @@ ByteCode* ByteCodeDebugger::findCmdBc(const Utf8& name)
         return nullptr;
     }
 
-    g_ByteCodeDebugger.printCmdError(Fmt("cannot find function '%s'", name.c_str()));
+    g_ByteCodeDebugger.printCmdError(Fmt("cannot find function [[%s]]", name.c_str()));
     return nullptr;
 }
 
@@ -158,7 +158,7 @@ bool ByteCodeDebugger::getRegIdx(ByteCodeRunContext* context, const Utf8& arg, i
 
     if (regN >= context->getRegCount(debugCxtRc))
     {
-        g_ByteCodeDebugger.printCmdError(Fmt("invalid register number, maximum value is '%u'", (uint32_t) context->getRegCount(debugCxtRc) - 1));
+        g_ByteCodeDebugger.printCmdError(Fmt("invalid register number, maximum value is [[%u]]", (uint32_t) context->getRegCount(debugCxtRc) - 1));
         return false;
     }
 
@@ -684,7 +684,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
                 g_Log.print(LogSymbol::HorizontalLine);
             g_Log.eol();
 
-            g_Log.print(Fmt("build configuration            = '%s'\n", g_CommandLine.buildCfg.c_str()));
+            g_Log.print(Fmt("build configuration            = [[%s]]\n", g_CommandLine.buildCfg.c_str()));
 
             Module* module = nullptr;
             if (context->bc->sourceFile)
@@ -781,9 +781,9 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         else if (result == BcDbgCommandResult::Return)
             return false;
         else if (result == BcDbgCommandResult::BadArguments)
-            g_ByteCodeDebugger.printCmdError(Fmt("bad '%s' arguments", arg.cmd.c_str()));
+            g_ByteCodeDebugger.printCmdError(Fmt("bad [[%s]] arguments", arg.cmd.c_str()));
         else if (result == BcDbgCommandResult::Invalid)
-            g_ByteCodeDebugger.printCmdError(Fmt("unknown debugger command '%s'", arg.cmd.c_str()));
+            g_ByteCodeDebugger.printCmdError(Fmt("unknown debugger command [[%s]]", arg.cmd.c_str()));
         continue;
     }
 

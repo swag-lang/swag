@@ -2336,7 +2336,7 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
             break;
 
         default:
-            Report::internalError(cxt.bc->sourceFile->module, Fmt("unknown instruction '%s' during sanity check", g_ByteCodeOpDesc[(int) ip->op].name));
+            Report::internalError(cxt.bc->sourceFile->module, Fmt("unknown instruction [[%s]] during sanity check", g_ByteCodeOpDesc[(int) ip->op].name));
             return false;
         }
 

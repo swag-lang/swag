@@ -188,7 +188,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
 
         if (token.id != TokenId::SymComma)
         {
-            SWAG_CHECK(eatSemiCol("'using' declaration"));
+            SWAG_CHECK(eatSemiCol("[[using]] declaration"));
             break;
         }
 
@@ -313,7 +313,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
 
     if (forGlobal)
     {
-        SWAG_CHECK(eatSemiCol("'#global namespace'"));
+        SWAG_CHECK(eatSemiCol("[[#global namespace]]"));
         Scoped scoped(this, newScope);
         while (token.id != TokenId::EndOfFile)
         {

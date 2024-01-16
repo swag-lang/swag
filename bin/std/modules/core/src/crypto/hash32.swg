@@ -12,11 +12,11 @@ public func(T) checkCanHash32()->bool
     if @typeof(T) == string do
         return true
     if Reflection.isStruct(T) and !Reflection.hasInterface(T, IHash32) do
-        @compilererror("type '" ++ @typeof(T).fullname ++ "' does not implement the 'Hash.IHash32' interface", @location(T))
+        @compilererror("type [[" ++ @typeof(T).fullname ++ "]] does not implement the [[Hash.IHash32]] interface", @location(T))
     if Reflection.isStruct(T) do
         return true
     if @sizeof(T) != 8 and @sizeof(T) != 4 and !Reflection.isInteger(T) do
-        @compilererror("cannot hash a value of type '" ++ @typeof(T).fullname ++ "'", @location(T))
+        @compilererror("cannot hash a value of type [[" ++ @typeof(T).fullname ++ "]]", @location(T))
     return true
 }
 

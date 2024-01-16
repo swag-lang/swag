@@ -1,7 +1,7 @@
 ﻿#include "pch.h"
 #include "Log.h"
-#include "Os.h"
 #include "CommandLine.h"
+#include "Os.h"
 
 Log g_Log;
 
@@ -132,7 +132,13 @@ void Log::print(const char* message)
             eol();
     }
     else
-        cout << message;
+    {
+        Utf8 m;
+        m.setView(message, (uint32_t) strlen(message));
+        m.replace("[[", "'");
+        m.replace("]]", "'");
+        cout << m.c_str();
+    }
 }
 
 void Log::eol()

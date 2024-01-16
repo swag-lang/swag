@@ -47,7 +47,7 @@ public impl JSon
         zapBlanks()
         let c = stream.readU8()
         if c != `[` do
-            throw getError("malformed array, missing opening '['")
+            throw getError("malformed array, missing opening [[[]]")
 
         return false
     }
@@ -57,7 +57,7 @@ public impl JSon
         zapBlanks()
         let c = stream.readU8()
         if c != `]` do
-            throw getError("malformed array; missing closing ']'")
+            throw getError("malformed array; missing closing [[]]]")
     }
 
     mtd toNextSequenceElement(_countElem: *u64)->bool
@@ -72,7 +72,7 @@ public impl JSon
         zapBlanks()
         let c = stream.readU8()
         if c != `{` do
-            throw getError("malformed root, missing opening '{'")
+            throw getError("malformed root, missing opening [[{]]")
     }
 
     mtd endRoot() throw
@@ -80,7 +80,7 @@ public impl JSon
         zapBlanks()
         let c = stream.readU8()
         if c != `}` do
-            throw getError("malformed root, missing closing '}'")
+            throw getError("malformed root, missing closing [[}]]")
     }
 
     mtd beginSection(_kind: SectionKind) throw
@@ -88,7 +88,7 @@ public impl JSon
         zapBlanks()
         let c = stream.readU8()
         if c != `{` do
-            throw getError("malformed struct, missing opening '{'")
+            throw getError("malformed struct, missing opening [[{]]")
     }
 
     mtd endSection() throw
@@ -96,7 +96,7 @@ public impl JSon
         zapBlanks()
         let c = stream.readU8()
         if c != `}` do
-            throw getError("malformed struct, missing closing '}'")
+            throw getError("malformed struct, missing closing [[}]]")
     }
 
     mtd beginStruct(_structType: typeinfo, _structData: const *u8)->bool throw
@@ -115,7 +115,7 @@ public impl JSon
         zapBlanks()
         var c = stream.readU8()
         if c != `"` do
-            throw getError("malformed property name, missing opening '\"'")
+            throw getError("malformed property name, missing opening [[\"]]")
 
         propName.clear()
         c = stream.readU8()
@@ -129,12 +129,12 @@ public impl JSon
             throw getError("invalid property name")
 
         if c != `"` do
-            throw getError("malformed property name, missing closing '\"'")
+            throw getError("malformed property name, missing closing [[\"]]")
 
         zapBlanks()
         c = stream.readU8()
         if c != `:` do
-            throw getError("malformed property, missing ':' after name")
+            throw getError("malformed property, missing [[:]] after name")
 
         return true
     }
@@ -244,7 +244,7 @@ public impl JSon
             zapBlanks()
             var c = stream.readU8()
             if c != `"` do
-                throw getError("malformed string, missing opening '\"'")
+                throw getError("malformed string, missing opening [[\"]]")
 
             c = stream.peekU8()
             while c and c != `"`
@@ -256,7 +256,7 @@ public impl JSon
 
             c = stream.readU8()
             if c != `"` do
-                throw getError("malformed string, missing closing '\"'")
+                throw getError("malformed string, missing closing [[\"]]")
 
             return result
         }

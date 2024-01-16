@@ -25,7 +25,7 @@ void Workspace::computeModuleName(const Path& path, Utf8& moduleName, Path& modu
     if (!Module::isValidName(cFileName, errorStr))
     {
         errorStr = "fatal error: " + errorStr;
-        errorStr += Fmt(" (path is '%s')", path.string().c_str());
+        errorStr += Fmt(" (path is [[%s]])", path.string().c_str());
         Report::error(errorStr);
         OS::exit(-1);
     }
@@ -191,7 +191,7 @@ void Workspace::setupTarget()
     // Target directory
     targetPath = getTargetPath(g_CommandLine.buildCfg, g_CommandLine.target);
     if (g_CommandLine.verbosePath)
-        g_Log.messageVerbose(Fmt("target path is '%s'", targetPath.string().c_str()));
+        g_Log.messageVerbose(Fmt("target path is [[%s]]", targetPath.string().c_str()));
 
     error_code err;
     if (!filesystem::exists(targetPath, err) && !filesystem::create_directories(targetPath, err))
@@ -224,7 +224,7 @@ void Workspace::setupTarget()
     }
 
     if (g_CommandLine.verbosePath)
-        g_Log.messageVerbose(Fmt("cache path is '%s'", cachePath.string().c_str()));
+        g_Log.messageVerbose(Fmt("cache path is [[%s]]", cachePath.string().c_str()));
 }
 
 Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
@@ -291,7 +291,7 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
         case AstNodeKind::VarDecl:
         case AstNodeKind::EnumValue:
             msg += " ";
-            msg += Fmt("because of %s '%s'", Naming::kindName(prevJob->waitingHintNode).c_str(), prevJob->waitingHintNode->token.ctext());
+            msg += Fmt("because of %s [[%s]]", Naming::kindName(prevJob->waitingHintNode).c_str(), prevJob->waitingHintNode->token.ctext());
             break;
         default:
             break;
@@ -304,7 +304,7 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
 
     Utf8 remark, sym;
     if (prevJob->waitingSymbolSolved)
-        sym = Fmt("%s '%s'", Naming::kindName(prevJob->waitingSymbolSolved->kind).c_str(), prevJob->waitingSymbolSolved->getFullName().c_str());
+        sym = Fmt("%s [[%s]]", Naming::kindName(prevJob->waitingSymbolSolved->kind).c_str(), prevJob->waitingSymbolSolved->getFullName().c_str());
 
     switch (prevJob->waitingKind)
     {
@@ -803,7 +803,7 @@ bool Workspace::build()
         if (!g_CommandLine.scriptCommand)
         {
             if (g_CommandLine.verbosePath)
-                g_Log.messageVerbose(Fmt("workspace path is '%s'", workspacePath.string().c_str()));
+                g_Log.messageVerbose(Fmt("workspace path is [[%s]]", workspacePath.string().c_str()));
             if (g_CommandLine.listDepCmd || g_CommandLine.getDepCmd)
                 g_Log.messageHeaderCentered("Workspace", workspacePath.filename().string().c_str());
             else

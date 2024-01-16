@@ -19,13 +19,13 @@ void ByteCodeDebugger::printBreakpoints(ByteCodeRunContext* context)
         switch (bkp.type)
         {
         case DebugBkpType::FuncName:
-            g_Log.print(Fmt("function with a match on '%s'", bkp.name.c_str()));
+            g_Log.print(Fmt("function with a match on [[%s]]", bkp.name.c_str()));
             break;
         case DebugBkpType::FileLine:
-            g_Log.print(Fmt("file %s, line '%d'", bkp.name.c_str(), bkp.line));
+            g_Log.print(Fmt("file %s, line [[%d]]", bkp.name.c_str(), bkp.line));
             break;
         case DebugBkpType::InstructionIndex:
-            g_Log.print(Fmt("instruction '%d'", bkp.line));
+            g_Log.print(Fmt("instruction [[%d]]", bkp.line));
             break;
         }
 
@@ -54,7 +54,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
             {
                 if (!bkp.autoDisabled)
                 {
-                    printMsgBkp(Fmt("breakpoint hit #%d function with a match on '%s'", idxBkp, bkp.name.c_str()));
+                    printMsgBkp(Fmt("breakpoint hit #%d function with a match on [[%s]]", idxBkp, bkp.name.c_str()));
                     debugStepMode          = DebugStepMode::None;
                     context->debugOn       = true;
                     debugForcePrintContext = true;
@@ -80,7 +80,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
             {
                 if (!bkp.autoDisabled)
                 {
-                    printMsgBkp(Fmt("breakpoint hit #%d at line '%d'", idxBkp, bkp.line));
+                    printMsgBkp(Fmt("breakpoint hit #%d at line [[%d]]", idxBkp, bkp.line));
                     debugStepMode          = DebugStepMode::None;
                     context->debugOn       = true;
                     debugForcePrintContext = true;
@@ -105,7 +105,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
             {
                 if (!bkp.autoDisabled)
                 {
-                    printMsgBkp(Fmt("breakpoint hit #%d at instruction '%d'", idxBkp, bkp.line));
+                    printMsgBkp(Fmt("breakpoint hit #%d at instruction [[%d]]", idxBkp, bkp.line));
                     debugStepMode          = DebugStepMode::None;
                     context->debugOn       = true;
                     debugForcePrintContext = true;
@@ -232,7 +232,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFunc(ByteCodeRunContext* context, c
 
     if (g_ByteCodeDebugger.addBreakpoint(context, bkp))
     {
-        g_ByteCodeDebugger.printCmdResult(Fmt("breakpoint #%d function with a match on '%s'", g_ByteCodeDebugger.debugBreakpoints.size(), bkp.name.c_str()));
+        g_ByteCodeDebugger.printCmdResult(Fmt("breakpoint #%d function with a match on [[%s]]", g_ByteCodeDebugger.debugBreakpoints.size(), bkp.name.c_str()));
     }
 
     return BcDbgCommandResult::Continue;
@@ -259,7 +259,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakLine(ByteCodeRunContext* context, c
     bkp.autoRemove = oneShot;
     if (g_ByteCodeDebugger.addBreakpoint(context, bkp))
     {
-        g_ByteCodeDebugger.printCmdResult(Fmt("breakpoint #%d, file '%s', line '%d'", g_ByteCodeDebugger.debugBreakpoints.size(), bkp.name.c_str(), bkp.line));
+        g_ByteCodeDebugger.printCmdResult(Fmt("breakpoint #%d, file [[%s]], line [[%d]]", g_ByteCodeDebugger.debugBreakpoints.size(), bkp.name.c_str(), bkp.line));
     }
 
     return BcDbgCommandResult::Continue;
@@ -284,7 +284,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFileLine(ByteCodeRunContext* contex
         curFile = g_Workspace->findFile(arg.split[2] + ".swgs");
     if (!curFile)
     {
-        g_ByteCodeDebugger.printCmdError(Fmt("cannot find file '%s'", arg.split[2].c_str()));
+        g_ByteCodeDebugger.printCmdError(Fmt("cannot find file [[%s]]", arg.split[2].c_str()));
         return BcDbgCommandResult::Continue;
     }
 
@@ -295,7 +295,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFileLine(ByteCodeRunContext* contex
     bkp.autoRemove = oneShot;
     if (g_ByteCodeDebugger.addBreakpoint(context, bkp))
     {
-        g_ByteCodeDebugger.printCmdResult(Fmt("breakpoint #%d, file '%s', line '%d'", g_ByteCodeDebugger.debugBreakpoints.size(), bkp.name.c_str(), bkp.line));
+        g_ByteCodeDebugger.printCmdResult(Fmt("breakpoint #%d, file [[%s]], line [[%d]]", g_ByteCodeDebugger.debugBreakpoints.size(), bkp.name.c_str(), bkp.line));
     }
 
     return BcDbgCommandResult::Continue;
