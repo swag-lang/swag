@@ -6,6 +6,7 @@
 #include "Workspace.h"
 #include "LanguageSpec.h"
 #include "ByteCode.h"
+#pragma optimize("", off)
 
 // https://github.com/microsoft/microsoft-pdb/blob/master/include/cvinfo.h
 
@@ -297,7 +298,8 @@ void BackendX64::dbgEndRecord(X64Gen& pp, Concat& concat, bool align)
 void BackendX64::dbgEmitTruncatedString(Concat& concat, const Utf8& str)
 {
     SWAG_ASSERT(str.length() < 0xF00); // Magic number from llvm codeviewdebug (should truncate)
-    concat.addString(str.buffer, str.count);
+    if (str.buffer && str.count)
+        concat.addString(str.buffer, str.count);
     concat.addU8(0);
 }
 
