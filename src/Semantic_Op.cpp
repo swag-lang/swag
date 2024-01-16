@@ -95,9 +95,9 @@ bool Semantic::checkFuncPrototypeOpReturnType(SemanticContext* context, AstFuncD
 
     if (!returnType->isSame(wanted, CASTFLAG_CAST))
     {
-        if (node->returnType->childs.empty())
-            return context->report({node->returnType, Fmt(Err(Err0065), node->token.ctext(), wanted->name.c_str(), returnType->getDisplayNameC())});
-        return context->report({node->returnType->childs.front(), Fmt(Err(Err0065), node->token.ctext(), wanted->name.c_str(), returnType->getDisplayNameC())});
+        auto childNode = node->returnType->childs.empty() ? node->returnType : node->returnType->childs.front();
+        auto msg       = Fmt(Err(Err0065), wanted->getDisplayNameC(), node->token.ctext(), returnType->getDisplayNameC());
+        return context->report({childNode, msg});
     }
 
     return true;
