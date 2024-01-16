@@ -133,8 +133,8 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     pp.computeUnwind(unwindRegs, unwindOffsetRegs, sizeStack + sizeParamsStack, sizeProlog, unwind);
 
     // Registers are stored after the sizeParamsStack area, which is used to store parameters for function calls
-    pp.concat.addString4("\x48\x8D\xBC\x24");
-    pp.concat.addU32(sizeParamsStack); // lea rdi, [rsp + sizeParamsStack]
+    concat.addString4("\x48\x8D\xBC\x24");
+    concat.addU32(sizeParamsStack); // lea rdi, [rsp + sizeParamsStack]
 
     // Save register parameters
     uint32_t iReg = 0;
@@ -2030,7 +2030,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::CompareOp3Way8:
             pp.emit_ClearN(R8, X64Bits::B32);
             MK_BINOP8_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
-            pp.concat.addString4("\x41\x0F\x9F\xC0"); // setg r8b
+            concat.addString4("\x41\x0F\x9F\xC0"); // setg r8b
             pp.emit_Load32_Immediate(RAX, 0xFFFFFFFF);
             pp.emit_CMovN(RAX, R8, X64Bits::B32, X64Op::CMOVGE);
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RAX);
@@ -2038,7 +2038,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::CompareOp3Way16:
             pp.emit_ClearN(R8, X64Bits::B32);
             MK_BINOP16_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
-            pp.concat.addString4("\x41\x0F\x9F\xC0"); // setg r8b
+            concat.addString4("\x41\x0F\x9F\xC0"); // setg r8b
             pp.emit_Load32_Immediate(RAX, 0xFFFFFFFF);
             pp.emit_CMovN(RAX, R8, X64Bits::B32, X64Op::CMOVGE);
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RAX);
@@ -2046,7 +2046,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::CompareOp3Way32:
             pp.emit_ClearN(R8, X64Bits::B32);
             MK_BINOP32_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
-            pp.concat.addString4("\x41\x0F\x9F\xC0"); // setg r8b
+            concat.addString4("\x41\x0F\x9F\xC0"); // setg r8b
             pp.emit_Load32_Immediate(RAX, 0xFFFFFFFF);
             pp.emit_CMovN(RAX, R8, X64Bits::B32, X64Op::CMOVGE);
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RAX);
@@ -2054,7 +2054,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         case ByteCodeOp::CompareOp3Way64:
             pp.emit_ClearN(R8, X64Bits::B32);
             MK_BINOP64_CAB(emit_CmpN_IndirectDst, emit_CmpN_Indirect, emit_CmpN);
-            pp.concat.addString4("\x41\x0F\x9F\xC0"); // setg r8b
+            concat.addString4("\x41\x0F\x9F\xC0"); // setg r8b
             pp.emit_Load32_Immediate(RAX, 0xFFFFFFFF);
             pp.emit_CMovN(RAX, R8, X64Bits::B32, X64Op::CMOVGE);
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RAX);
@@ -2063,9 +2063,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_ClearN(R8, X64Bits::B32);
             MK_IMMA_F32(XMM0);
             MK_IMMB_F32(XMM1);
-            pp.concat.addString3("\x0F\x2E\xC1");     // ucomiss xmm0, xmm1
-            pp.concat.addString4("\x41\x0F\x97\xC0"); // seta r8b
-            pp.concat.addString3("\x0F\x2E\xC8");     // ucomiss xmm1, xmm0
+            concat.addString3("\x0F\x2E\xC1");     // ucomiss xmm0, xmm1
+            concat.addString4("\x41\x0F\x97\xC0"); // seta r8b
+            concat.addString3("\x0F\x2E\xC8");     // ucomiss xmm1, xmm0
             pp.emit_Load32_Immediate(RAX, 0xFFFFFFFF);
             pp.emit_CMovN(RAX, R8, X64Bits::B32, X64Op::CMOVBE);
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RAX);
@@ -2074,9 +2074,9 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_ClearN(R8, X64Bits::B32);
             MK_IMMA_F64(XMM0);
             MK_IMMB_F64(XMM1);
-            pp.concat.addString4("\x66\x0F\x2E\xC1"); // ucomisd xmm0, xmm1
-            pp.concat.addString4("\x41\x0F\x97\xC0"); // seta r8b
-            pp.concat.addString4("\x66\x0F\x2E\xC8"); // ucomisd xmm1, xmm0
+            concat.addString4("\x66\x0F\x2E\xC1"); // ucomisd xmm0, xmm1
+            concat.addString4("\x41\x0F\x97\xC0"); // seta r8b
+            concat.addString4("\x66\x0F\x2E\xC8"); // ucomisd xmm1, xmm0
             pp.emit_Load32_Immediate(RAX, 0xFFFFFFFF);
             pp.emit_CMovN(RAX, R8, X64Bits::B32, X64Op::CMOVBE);
             pp.emit_Store32_Indirect(regOffset(ip->c.u32), RAX);
@@ -3990,28 +3990,28 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
             MK_IMMB_8(RAX);
             MK_IMMC_8(RDX);
-            pp.concat.addString4("\xF0\x0F\xB0\x11"); // lock CMPXCHG [rcx], dl
+            concat.addString4("\xF0\x0F\xB0\x11"); // lock CMPXCHG [rcx], dl
             pp.emit_Store8_Indirect(regOffset(ip->d.u32), RAX);
             break;
         case ByteCodeOp::IntrinsicAtomicCmpXchgS16:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
             MK_IMMB_16(RAX);
             MK_IMMC_16(RDX);
-            pp.concat.addString5("\x66\xF0\x0F\xB1\x11"); // lock CMPXCHG [rcx], dx
+            concat.addString5("\x66\xF0\x0F\xB1\x11"); // lock CMPXCHG [rcx], dx
             pp.emit_Store16_Indirect(regOffset(ip->d.u32), RAX);
             break;
         case ByteCodeOp::IntrinsicAtomicCmpXchgS32:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
             MK_IMMB_32(RAX);
             MK_IMMC_32(RDX);
-            pp.concat.addString4("\xF0\x0F\xB1\x11"); // lock CMPXCHG [rcx], edx
+            concat.addString4("\xF0\x0F\xB1\x11"); // lock CMPXCHG [rcx], edx
             pp.emit_Store32_Indirect(regOffset(ip->d.u32), RAX);
             break;
         case ByteCodeOp::IntrinsicAtomicCmpXchgS64:
             pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
             MK_IMMB_64(RAX);
             MK_IMMC_64(RDX);
-            pp.concat.addString5("\xF0\x48\x0F\xB1\x11"); // lock CMPXCHG [rcx], rdx
+            concat.addString5("\xF0\x48\x0F\xB1\x11"); // lock CMPXCHG [rcx], rdx
             pp.emit_Store64_Indirect(regOffset(ip->d.u32), RAX);
             break;
 
