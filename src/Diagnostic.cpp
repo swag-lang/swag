@@ -178,7 +178,6 @@ void Diagnostic::printRemarks()
 {
     if (!autoRemarks.empty())
     {
-        printMargin(true, true);
         for (auto r : autoRemarks)
         {
             if (r.empty())
@@ -194,8 +193,6 @@ void Diagnostic::printRemarks()
 
     if (!remarks.empty())
     {
-        if (autoRemarks.empty())
-            printMargin(true, true);
         for (auto r : remarks)
         {
             if (r.empty())
@@ -592,6 +589,14 @@ void Diagnostic::report()
         printMargin(false, true);
     }
 
+    // Code remarks
+    if (printRemarksBefore)
+    {
+        printRemarks();
+        if (!autoRemarks.empty() || !remarks.empty())
+            printMargin(true, true);
+    }
+
     // Source code
     if (showSourceCode)
     {
@@ -600,7 +605,12 @@ void Diagnostic::report()
     }
 
     // Code remarks
-    printRemarks();
+    if (!printRemarksBefore)
+    {
+        if (!autoRemarks.empty() || !remarks.empty())
+            printMargin(true, true);
+        printRemarks();
+    }
 
     g_Log.setDefaultColor();
 }

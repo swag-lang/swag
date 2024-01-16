@@ -212,7 +212,9 @@ struct Diagnostic
     bool showErrorLevel = true;
     bool showFileName   = true;
 
-    bool canBeMerged       = true;
+    bool canBeMerged        = true;
+    bool printRemarksBefore = false;
+
     bool display           = true;
     bool emptyMarginBefore = true;
     bool hasLocation       = false;

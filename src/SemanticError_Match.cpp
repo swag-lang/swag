@@ -7,7 +7,13 @@
 #include "Semantic.h"
 #include "SyntaxColor.h"
 
-static bool cannotMatchIdentifier(SemanticContext* context, MatchResult result, int paramIdx, VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Vector<const Diagnostic*>& notes)
+static bool cannotMatchIdentifier(SemanticContext*            context,
+                                  MatchResult                 result,
+                                  int                         paramIdx,
+                                  VectorNative<OneTryMatch*>& tryMatches,
+                                  AstNode*                    node,
+                                  Vector<const Diagnostic*>&  notes,
+                                  int&                        overloadIndex)
 {
     if (tryMatches.empty())
         return false;
@@ -136,17 +142,16 @@ static bool cannotMatchIdentifier(SemanticContext* context, MatchResult result, 
             n = syntaxColor(n, cxt);
         }
 
-        Utf8 fn = Fmt("%d: %s", i + 1, n.c_str());
-        note->remarks.push_back(fn);
+        note->remarks.push_back(Fmt("overload %d: %s", overloadIndex++, n.c_str()));
 
         // Additional (more precise) information in case of bad signature
         if (result == MatchResult::BadSignature || result == MatchResult::BadGenericSignature)
         {
             if (!allAddMsgAreEquals)
             {
-                fn = "   => ";
-                fn += addMsg[i];
-                note->remarks.push_back(fn);
+                Utf8 msg = " => ";
+                msg += addMsg[i];
+                note->remarks.push_back(msg);
             }
         }
     }
@@ -157,10 +162,11 @@ static bool cannotMatchIdentifier(SemanticContext* context, MatchResult result, 
     // Locate to the first error
     Vector<const Diagnostic*> errs0, errs1;
     SemanticError::getDiagnosticForMatch(context, *tryResult[0], errs0, errs1);
-    note->sourceFile    = errs0[0]->sourceFile;
-    note->startLocation = errs0[0]->startLocation;
-    note->endLocation   = errs0[0]->endLocation;
-    note->canBeMerged   = false;
+    note->sourceFile         = errs0[0]->sourceFile;
+    note->startLocation      = errs0[0]->startLocation;
+    note->endLocation        = errs0[0]->endLocation;
+    note->canBeMerged        = false;
+    note->printRemarksBefore = true;
 
     notes.push_back(note);
     return true;
@@ -186,26 +192,27 @@ static bool cannotMatchOverload(SemanticContext* context, AstNode* node, VectorN
     Vector<const Diagnostic*> notes;
     SemanticError::commonErrorNotes(context, tryMatches, node, &diag, notes);
 
-    cannotMatchIdentifier(context, MatchResult::ValidIfFailed, 0, tryMatches, node, notes);
-    cannotMatchIdentifier(context, MatchResult::NotEnoughParameters, 0, tryMatches, node, notes);
-    cannotMatchIdentifier(context, MatchResult::TooManyParameters, 0, tryMatches, node, notes);
-    cannotMatchIdentifier(context, MatchResult::NotEnoughGenericParameters, 0, tryMatches, node, notes);
-    cannotMatchIdentifier(context, MatchResult::TooManyGenericParameters, 0, tryMatches, node, notes);
+    int overloadIndex = 1;
+    cannotMatchIdentifier(context, MatchResult::ValidIfFailed, 0, tryMatches, node, notes, overloadIndex);
+    cannotMatchIdentifier(context, MatchResult::NotEnoughParameters, 0, tryMatches, node, notes, overloadIndex);
+    cannotMatchIdentifier(context, MatchResult::TooManyParameters, 0, tryMatches, node, notes, overloadIndex);
+    cannotMatchIdentifier(context, MatchResult::NotEnoughGenericParameters, 0, tryMatches, node, notes, overloadIndex);
+    cannotMatchIdentifier(context, MatchResult::TooManyGenericParameters, 0, tryMatches, node, notes, overloadIndex);
 
     // For a bad signature, only show the ones with the greatest match
-    int paramIdx;
     for (int what = 0; what < 2; what++)
     {
         Vector<const Diagnostic*> notesSig;
-        paramIdx = 0;
+        int                       paramIdx = 0;
         while (true)
         {
             Vector<const Diagnostic*> notesTmp;
             auto                      m = what == 0 ? MatchResult::BadSignature : MatchResult::BadGenericSignature;
-            if (!cannotMatchIdentifier(context, m, paramIdx++, tryMatches, node, notesTmp))
+            if (!cannotMatchIdentifier(context, m, paramIdx++, tryMatches, node, notesTmp, overloadIndex))
                 break;
             notesSig = notesTmp;
         }
+
         notes.insert(notes.end(), notesSig.begin(), notesSig.end());
     }
 
