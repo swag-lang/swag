@@ -197,8 +197,10 @@ void initErrors()
     SWAG_ERROR(Err0758, "conflicting attributes                            $ the '#[Swag.Macro]' and '#[Swag.Mixin]' attributes are mutually exclusive, the %s can't have both");
     SWAG_ERROR(Err0759, "conflicting attributes                            $ the '#[Swag.Mixin]' and '#[Swag.Inline]' attributes are mutually exclusive, the %s can't have both");
     SWAG_ERROR(Err1186, "conflicting cast modifiers                        $ the '%s' and '%s' cast modifiers are mutually exclusive and can't be used together");
-    SWAG_ERROR(Err0141, "const mismatch                                    $ the intrinsic '%s' requires a mutable pointer as a first argument, got type '%s' instead");
-    SWAG_ERROR(Err0169, "const mismatch                                    $ the intrinsic '%s' requires a mutable variable as a first argument, got type '%s' instead");
+    SWAG_ERROR(Err0418, "const mismatch                                    $ casting from an immutable type '%s' to a mutable one '%s' is not allowed");
+    SWAG_ERROR(Err1165, "const mismatch                                    $ the UFCS argument should be mutable but is not");
+    SWAG_ERROR(Err0141, "const mismatch                                    $ the intrinsic '%s' requires a mutable pointer as a first argument, got '%s' instead");
+    SWAG_ERROR(Err0169, "const mismatch                                    $ the intrinsic '%s' requires a mutable variable as a first argument, got '%s' instead");
     SWAG_ERROR(Err0556, "defer escape throw                                $ an error cannot escape a 'defer' or 'defer(err)' block");
     SWAG_ERROR(Err0516, "dependency error                                  $ can't resolve the dependency to the module '%s' because of a version mismatched");
     SWAG_ERROR(Err0518, "dependency error                                  $ can't resolve the dependency to the module '%s' because version '%s' was not found at '%s'");
@@ -791,13 +793,11 @@ void initErrors()
     SWAG_ERROR(Err0907, "type mismatch                                     $ casting from '%s' to pointer type is not allowed $ only conversion from type 'u64' is accepted");
     SWAG_ERROR(Err0436, "type mismatch                                     $ casting from a type value ('typeinfo') to a compile type ('%s') is not allowed");
     SWAG_ERROR(Err0041, "type mismatch                                     $ casting from a value pointer '%s' to a block pointer '%s' is not allowed");
-    SWAG_ERROR(Err0418, "type mismatch                                     $ casting from an immutable type '%s' to a mutable one '%s' is not allowed");
     SWAG_ERROR(Err0178, "type mismatch                                     $ casting from closure to lambda is not allowed");
-    SWAG_ERROR(Err0095, "type mismatch                                     $ expected '%s' for the UFCS argument, got '%s' instead");
+    SWAG_ERROR(Err0095, "type mismatch                                     $ expected '%s' for the UFCS argument");
     SWAG_ERROR(Err0053, "type mismatch                                     $ expected type '%s', got '%s' instead");
     SWAG_ERROR(Err0048, "type mismatch                                     $ expected type '*Swag.CVaList', got '%s' instead");
     SWAG_ERROR(Err0568, "type mismatch                                     $ the '%s' assignment requires an expression of type '%s', got '%s' instead");
-    SWAG_ERROR(Err0106, "type mismatch                                     $ the type of the 'self' parameter should be '%s', got '%s' instead");
     SWAG_ERROR(Err0252, "type mismatch                                     $ type '%s' and type '%s' defined in the command line for '%s' are incompatible");
     SWAG_ERROR(Err0723, "type mismatch                                     $ type mismatch for field '%s' ('%s' expected, '%s' provided)");
     SWAG_ERROR(Err0065, "type mismatch                                     $ unexpected return type for special function '%s' ('%s' expected, '%s' provided)");
@@ -895,7 +895,7 @@ void initErrors()
     SWAG_ERROR(Err0109, "unused return value                               $ the return value of the function '%s' should be used $ if you don't need the return value, consider prefixing the call with 'discard'");
     SWAG_ERROR(Err1179, "unused return value                               $ the return value of the intrinsic '%s' should be used");
     SWAG_ERROR(Err0092, "unused return value                               $ the return value of the lambda '%s' should be used $ if you don't need the return value, consider prefixing the call with 'discard'");
-    SWAG_ERROR(Err1165, "const mismatch                                    $ the UFCS argument should be mutable but is not");
+    SWAG_ERROR(Err0106, nullptr);
     SWAG_ERROR(Err0680, nullptr);
     SWAG_ERROR(Err0367, nullptr);
     SWAG_ERROR(Err0282, nullptr);
@@ -1281,7 +1281,7 @@ void initErrors()
     SWAG_ERROR(Nte1031, "a '%s' block must start with '#do' or must be enclosed in '{}'");
     SWAG_ERROR(Nte1022, "a '%s' block must start with 'do' or must be enclosed in '{}'");
     SWAG_ERROR(Nte0048, "could be a function of type '%s'");
-    SWAG_ERROR(Nte1050, "a local variable declared with 'let' is immutable and can't be changed");
+    SWAG_ERROR(Nte1050, "a 'let' variable is immutable and can't be changed");
     SWAG_ERROR(Nte1114, "a return type is missing");
     SWAG_ERROR(Nte0124, "a standard function in an 'impl' block should not shadow a function from the matching interface");
     SWAG_ERROR(Nte0100, "an attribute is not a function; consider removing it");
@@ -1381,7 +1381,6 @@ void initErrors()
     SWAG_ERROR(Nte0042, "the function '%s' is not marked with the '#[Swag.ConstExpr]' attribute");
     SWAG_ERROR(Nte0011, "the function '%s' is tagged with '#[Swag.CalleeReturn]', implying the return value is utilized within '%s'");
     SWAG_ERROR(Nte1039, "the function call returns an immutable '%s'");
-    SWAG_ERROR(Nte1093, "the function doesn't accept type '%s' as its first argument");
     SWAG_ERROR(Nte1017, "the function is tagged with the '#[Swag.Inline]' attribute");
     SWAG_ERROR(Nte1015, "the function is tagged with the '#[Swag.Macro]' attribute");
     SWAG_ERROR(Nte1016, "the function is tagged with the '#[Swag.Mixin]' attribute");
@@ -1460,8 +1459,9 @@ void initErrors()
     SWAG_ERROR(Nte1108, "you need to take the address of a value to make a reference");
     SWAG_ERROR(Nte1122, "this has '%s' access (type is '%s')");
     SWAG_ERROR(Nte1131, "this 'discard' should be removed");
-    SWAG_ERROR(Nte1056, "the function needs a mutable type '%s' as its first argument");
     SWAG_ERROR(Nte1094, "here is the corresponding parameter of the %s");
+    SWAG_ERROR(Nte1056, nullptr);
+    SWAG_ERROR(Nte1093, nullptr);
     SWAG_ERROR(Nte1010, nullptr);
     SWAG_ERROR(Nte0040, nullptr);
     SWAG_ERROR(Nte1057, nullptr);

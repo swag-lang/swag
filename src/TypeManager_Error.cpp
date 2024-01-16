@@ -119,7 +119,15 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
     return true;
 }
 
-void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, TypeInfo* toType, TypeInfo* fromType, uint64_t castFlags, CastErrorType castError, bool forNote)
+void TypeManager::getCastErrorMsg(Utf8&         msg,
+                                  Utf8&         hint,
+                                  Vector<Utf8>& remarks,
+                                  TypeInfo*     toType,
+                                  TypeInfo*     fromType,
+                                  AstNode*      fromNode,
+                                  uint64_t      castFlags,
+                                  CastErrorType castError,
+                                  bool          forNote)
 {
     msg.clear();
     hint.clear();
@@ -214,7 +222,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         Utf8                      hint, msg;
         Vector<const Diagnostic*> notes;
         Vector<Utf8>              remarks;
-        getCastErrorMsg(msg, hint, remarks, toType, fromType, castFlags, castErrorType);
+        getCastErrorMsg(msg, hint, remarks, toType, fromType, fromNode, castFlags, castErrorType);
         SWAG_ASSERT(fromNode);
 
         if (msg.empty())

@@ -412,21 +412,23 @@ void Diagnostic::printSourceCode()
 
 void Diagnostic::setColorRanges(DiagnosticLevel level)
 {
-    switch (level)
-    {
-    case DiagnosticLevel::Error:
-    case DiagnosticLevel::Panic:
-        g_Log.setColor(errorColor);
-        break;
-    case DiagnosticLevel::Warning:
-        g_Log.setColor(warningColor);
-        break;
-    case DiagnosticLevel::Note:
-        g_Log.setColor(rangeNoteColor);
-        break;
-    default:
-        break;
-    }
+    g_Log.setColor(rangeNoteColor);
+
+    /* switch (level)
+        {
+        case DiagnosticLevel::Error:
+        case DiagnosticLevel::Panic:
+            g_Log.setColor(errorColor);
+            break;
+        case DiagnosticLevel::Warning:
+            g_Log.setColor(warningColor);
+            break;
+        case DiagnosticLevel::Note:
+            g_Log.setColor(rangeNoteColor);
+            break;
+        default:
+            break;
+        }*/
 }
 
 void Diagnostic::printRanges()
