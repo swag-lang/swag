@@ -6,6 +6,7 @@ enum class LogColor
     Black,
     White,
     Gray,
+    LegitGray,
     Red,
     Blue,
     Green,
@@ -21,6 +22,8 @@ enum class LogColor
     Default,
     Bold,
     UnBold,
+    Underline,
+    UnUnderline,
 };
 
 enum class LogSymbol
@@ -50,66 +53,21 @@ enum class LogPassType
 
 struct Log
 {
-    static constexpr const char* colorToVTS(LogColor color)
-    {
-        switch (color)
-        {
-        case LogColor::Bold:
-            return "\x1b[1m";
-        case LogColor::UnBold:
-            return "\x1b[0m";
-
-        case LogColor::Black:
-            return "\x1b[30m";
-
-        case LogColor::DarkRed:
-            return "\x1b[31m";
-        case LogColor::DarkGreen:
-            return "\x1b[32m";
-        case LogColor::DarkYellow:
-            return "\x1b[33m";
-        case LogColor::DarkBlue:
-            return "\x1b[34m";
-        case LogColor::DarkMagenta:
-            return "\x1b[35m";
-        case LogColor::DarkCyan:
-            return "\x1b[36m";
-        case LogColor::Gray:
-            return "\x1b[37m";
-
-        case LogColor::Red:
-            return "\x1b[91m";
-        case LogColor::Green:
-            return "\x1b[92m";
-        case LogColor::Yellow:
-            return "\x1b[93m";
-        case LogColor::Blue:
-            return "\x1b[94m";
-        case LogColor::Magenta:
-            return "\x1b[95m";
-        case LogColor::Cyan:
-            return "\x1b[96m";
-        case LogColor::White:
-            return "\x1b[97m";
-
-        default:
-            break;
-        }
-
-        return "";
-    }
-
-    void setColor(LogColor color);
-    void setDefaultColor();
+    static Utf8 colorToVTS(LogColor color);
+    void        setColor(LogColor color);
+    void        setDefaultColor();
 
     void lock();
     void unlock();
 
+    Utf8 removeFormat(const char* message);
+    Utf8 format(const char* message);
+
     void printHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor, const char* dot);
     void printHeaderCentered(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor);
-    void print(const char* message);
+    void print(const char* message, bool raw = false);
     void print(const char* message, LogColor color);
-    void print(const Utf8& message);
+    void print(const Utf8& message, bool raw = false);
     void print(LogSymbol symbol);
     void eol();
 
@@ -122,6 +80,7 @@ struct Log
 
     Mutex        mutexAccess;
     Vector<Utf8> store;
+    Utf8         curColor;
     Utf8         storeLine;
     bool         storeMode = false;
 };

@@ -8,10 +8,28 @@
 
 ByteCodeDebugger g_ByteCodeDebugger;
 
+Utf8 ByteCodeDebugger::COLOR_VTS_CUR_INSTRUCTION;
+Utf8 ByteCodeDebugger::COLOR_VTS_NAME;
+Utf8 ByteCodeDebugger::COLOR_VTS_TYPE;
+Utf8 ByteCodeDebugger::COLOR_VTS_LOCATION;
+Utf8 ByteCodeDebugger::COLOR_VTS_INDEX;
+Utf8 ByteCodeDebugger::COLOR_VTS_DEFAULT;
+Utf8 ByteCodeDebugger::COLOR_VTS_BREAKPOINT;
+int  ByteCodeDebugger::LINE_W;
+
 void ByteCodeDebugger::setup()
 {
     if (commands.size())
         return;
+
+    COLOR_VTS_CUR_INSTRUCTION = Log::colorToVTS(COLOR_CUR_INSTRUCTION);
+    COLOR_VTS_NAME            = Log::colorToVTS(COLOR_NAME);
+    COLOR_VTS_TYPE            = Log::colorToVTS(COLOR_TYPE);
+    COLOR_VTS_LOCATION        = Log::colorToVTS(COLOR_LOCATION);
+    COLOR_VTS_INDEX           = Log::colorToVTS(COLOR_INDEX);
+    COLOR_VTS_DEFAULT         = Log::colorToVTS(COLOR_DEFAULT);
+    COLOR_VTS_BREAKPOINT      = Log::colorToVTS(COLOR_BREAKPOINT);
+    LINE_W                    = 71;
 
     // clang-format off
     commands.push_back({"<RET>",       "",  "",                       "repeat the last command", nullptr});

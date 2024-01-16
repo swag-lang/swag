@@ -136,11 +136,8 @@ static bool cannotMatchIdentifier(SemanticContext*            context,
         if (n.back() == ';')
             n.count--;
 
-        if (g_CommandLine.logColors)
-        {
-            SyntaxColorContext cxt;
-            n = syntaxColor(n, cxt);
-        }
+        SyntaxColorContext cxt;
+        n = syntaxColor(n, cxt);
 
         note->preRemarks.push_back(Fmt("overload %d: %s", overloadIndex++, n.c_str()));
 

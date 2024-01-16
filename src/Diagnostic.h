@@ -144,7 +144,6 @@ struct Diagnostic
     void collectSourceCode();
     void sortRanges();
     void collectRanges();
-    Utf8 syntax(const Utf8& line, SyntaxColorContext& cxt);
     void printSourceCode();
     void printSourceLine();
     void printErrorLevel();

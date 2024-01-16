@@ -15,15 +15,72 @@ void Log::unlock()
     mutexAccess.unlock();
 }
 
+Utf8 Log::colorToVTS(LogColor color)
+{
+    if (!g_CommandLine.logColors)
+        return "";
+
+    switch (color)
+    {
+    case LogColor::Bold:
+        return "\x1b[1m";
+    case LogColor::UnBold:
+        return "\x1b[22m";
+    case LogColor::Underline:
+        return "\x1b[4m";
+    case LogColor::UnUnderline:
+        return "\x1b[24m";
+
+    case LogColor::Black:
+        return "\x1b[30m";
+
+    case LogColor::DarkRed:
+        return "\x1b[31m";
+    case LogColor::DarkGreen:
+        return "\x1b[32m";
+    case LogColor::DarkYellow:
+        return "\x1b[33m";
+    case LogColor::DarkBlue:
+        return "\x1b[34m";
+    case LogColor::DarkMagenta:
+        return "\x1b[35m";
+    case LogColor::DarkCyan:
+        return "\x1b[36m";
+    case LogColor::LegitGray:
+        return "\x1b[37m";
+    case LogColor::Gray:
+        return Fmt("\x1b[38;2;%d;%d;%dm", 0x8F, 0x8F, 0x8F);
+
+    case LogColor::Red:
+        return "\x1b[91m";
+    case LogColor::Green:
+        return "\x1b[92m";
+    case LogColor::Yellow:
+        return "\x1b[93m";
+    case LogColor::Blue:
+        return "\x1b[94m";
+    case LogColor::Magenta:
+        return "\x1b[95m";
+    case LogColor::Cyan:
+        return "\x1b[96m";
+    case LogColor::White:
+        return "\x1b[97m";
+
+    default:
+        break;
+    }
+
+    return "";
+}
+
 void Log::setDefaultColor()
 {
-    setColor(LogColor::Gray);
+    setColor(LogColor::LegitGray);
 }
 
 void Log::setColor(LogColor color)
 {
-    if (g_CommandLine.logColors)
-        print(colorToVTS(color));
+    print(colorToVTS(color));
 }
 
 void Log::print(LogSymbol symbol)
@@ -123,22 +180,94 @@ void Log::print(LogSymbol symbol)
     }
 }
 
-void Log::print(const char* message)
+Utf8 Log::removeFormat(const char* message)
+{
+    Utf8 m;
+    auto pz = message;
+    while (*pz)
+    {
+        if (*pz == '\x1b')
+        {
+            while (*pz != 'm')
+                pz++;
+            pz++;
+        }
+        else if (pz[0] == '[' && pz[1] == '[' && (pz == message || pz[-1] != '['))
+        {
+            pz += 2;
+        }
+        else if (pz[0] == ']' && pz[1] == ']' && pz[2] != ']')
+        {
+            pz += 2;
+        }
+        else
+            m += *pz++;
+    }
+
+    return m;
+}
+
+Utf8 Log::format(const char* message)
+{
+    Utf8 m;
+    auto pz = message;
+    while (*pz)
+    {
+        if (*pz == '\x1b')
+        {
+            curColor.clear();
+            while (*pz != 'm')
+                curColor += *pz++;
+            curColor += *pz++;
+            m += curColor;
+        }
+        else if (pz[0] == '[' && pz[1] == '[' && (pz == message || pz[-1] != '['))
+        {
+            if (curColor == colorToVTS(LogColor::White))
+                m += colorToVTS(LogColor::Gray);
+            else
+                m += colorToVTS(LogColor::Bold);
+            pz += 2;
+        }
+        else if (pz[0] == ']' && pz[1] == ']' && pz[2] != ']')
+        {
+            m += curColor;
+            m += colorToVTS(LogColor::UnBold);
+            m += colorToVTS(LogColor::UnUnderline);
+            pz += 2;
+        }
+        else
+            m += *pz++;
+    }
+
+    return m;
+}
+
+void Log::print(const char* message, bool raw)
 {
     if (storeMode)
     {
         storeLine += message;
         if (storeLine.back() == '\n')
             eol();
+        return;
     }
+
+    if (raw)
+        cout << message;
     else
-    {
-        Utf8 m;
-        m.setView(message, (uint32_t) strlen(message));
-        m.replace("[[", "'");
-        m.replace("]]", "'");
-        cout << m.c_str();
-    }
+        cout << format(message).c_str();
+}
+
+void Log::print(const Utf8& message, bool raw)
+{
+    print(message.c_str(), raw);
+}
+
+void Log::print(const char* message, LogColor color)
+{
+    setColor(color);
+    print(message);
 }
 
 void Log::eol()
@@ -150,17 +279,6 @@ void Log::eol()
     }
     else
         cout << "\n";
-}
-
-void Log::print(const Utf8& message)
-{
-    print(message.c_str());
-}
-
-void Log::print(const char* message, LogColor color)
-{
-    setColor(color);
-    print(message);
 }
 
 const int CENTER_COLUMN = 24;

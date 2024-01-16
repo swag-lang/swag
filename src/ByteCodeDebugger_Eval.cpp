@@ -214,7 +214,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     }
     else
     {
-        str = Fmt("(%s%s%s) ", COLOR_VTS_TYPE, res.type->getDisplayNameC(), COLOR_VTS_DEFAULT);
+        str = Fmt("(%s%s%s) ", COLOR_VTS_TYPE.c_str(), res.type->getDisplayNameC(), COLOR_VTS_DEFAULT.c_str());
         g_ByteCodeDebugger.appendTypedValue(context, str, res, 0);
     }
 

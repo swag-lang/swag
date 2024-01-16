@@ -44,14 +44,14 @@ struct ByteCodeDebugger
     static const LogColor COLOR_INDEX           = LogColor::Cyan;
     static const LogColor COLOR_DEFAULT         = LogColor::Gray;
 
-    static constexpr const char* COLOR_VTS_CUR_INSTRUCTION = Log::colorToVTS(COLOR_CUR_INSTRUCTION);
-    static constexpr const char* COLOR_VTS_NAME            = Log::colorToVTS(COLOR_NAME);
-    static constexpr const char* COLOR_VTS_TYPE            = Log::colorToVTS(COLOR_TYPE);
-    static constexpr const char* COLOR_VTS_LOCATION        = Log::colorToVTS(COLOR_LOCATION);
-    static constexpr const char* COLOR_VTS_INDEX           = Log::colorToVTS(COLOR_INDEX);
-    static constexpr const char* COLOR_VTS_DEFAULT         = Log::colorToVTS(COLOR_DEFAULT);
-    static constexpr const char* COLOR_VTS_BREAKPOINT      = Log::colorToVTS(COLOR_BREAKPOINT);
-    static const int             LINE_W                    = 71;
+    static Utf8 COLOR_VTS_CUR_INSTRUCTION;
+    static Utf8 COLOR_VTS_NAME;
+    static Utf8 COLOR_VTS_TYPE;
+    static Utf8 COLOR_VTS_LOCATION;
+    static Utf8 COLOR_VTS_INDEX;
+    static Utf8 COLOR_VTS_DEFAULT;
+    static Utf8 COLOR_VTS_BREAKPOINT;
+    static int  LINE_W;
 
     struct EvaluateResult
     {

@@ -222,6 +222,11 @@ static Utf8 getColor(SyntaxColorMode mode, SyntaxColor color)
 
 Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
 {
+    if (!g_CommandLine.errorSyntaxColor)
+        return line;
+    if (!g_CommandLine.logColors)
+        return line;
+
     auto        mode = context.mode;
     const char* pz   = line.c_str();
     uint32_t    c, offset;

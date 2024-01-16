@@ -9,7 +9,7 @@ void Diagnostic::setupColors()
 {
     errorColor        = LogColor::Red;
     marginBorderColor = LogColor::Cyan;
-    codeLineNoColor   = LogColor::Gray;
+    codeLineNoColor   = LogColor::Cyan;
     hintColor         = LogColor::White;
     rangeNoteColor    = LogColor::White;
     warningColor      = LogColor::Magenta;
@@ -18,7 +18,7 @@ void Diagnostic::setupColors()
     preRemarkColor    = LogColor::Cyan;
     remarkColor       = LogColor::Gray;
     autoRemarkColor   = LogColor::Gray;
-    sourceFileColor   = LogColor::Gray;
+    sourceFileColor   = LogColor::Cyan;
 }
 
 void Diagnostic::setup()
@@ -399,15 +399,6 @@ void Diagnostic::collectSourceCode()
     }
 }
 
-Utf8 Diagnostic::syntax(const Utf8& line, SyntaxColorContext& cxt)
-{
-    if (!g_CommandLine.logColors)
-        return line;
-    if (!g_CommandLine.errorSyntaxColor)
-        return line;
-    return syntaxColor(line, cxt);
-}
-
 void Diagnostic::printSourceCode()
 {
     if (lineCode.empty())
@@ -427,8 +418,8 @@ void Diagnostic::printSourceCode()
 
     g_Log.setColor(LogColor::White);
 
-    auto colored = syntax(lineCode.c_str() + minBlanks, cxt);
-    g_Log.print(colored);
+    auto colored = syntaxColor(lineCode.c_str() + minBlanks, cxt);
+    g_Log.print(colored, true);
     g_Log.eol();
 }
 
@@ -532,11 +523,13 @@ void Diagnostic::printRanges()
                 continue;
             }
 
+            auto unformat = g_Log.removeFormat(r.hint.c_str());
+
             if (ranges.size() == 1 &&
-                r.mid + 3 + (int) r.hint.length() > (int) MAX_RIGHT_COLUMN &&
-                r.mid - 2 - (int) r.hint.length() > minBlanks)
+                r.mid + 3 + (int) unformat.length() > (int) MAX_RIGHT_COLUMN &&
+                r.mid - 2 - (int) unformat.length() > minBlanks)
             {
-                ALIGN(r.mid - 2 - (int) r.hint.length());
+                ALIGN(r.mid - 2 - (int) unformat.length());
                 g_Log.print(r.hint);
                 g_Log.print(" ");
                 g_Log.print(LogSymbol::HorizontalLine);
@@ -544,7 +537,7 @@ void Diagnostic::printRanges()
                 ranges.clear();
             }
             else if (ranges.size() == 1 &&
-                     r.mid + 3 + r.hint.length() > (int) MAX_RIGHT_COLUMN)
+                     r.mid + 3 + unformat.length() > (int) MAX_RIGHT_COLUMN)
             {
                 if (numRanges == 1)
                 {
