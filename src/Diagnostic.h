@@ -150,6 +150,7 @@ struct Diagnostic
     void printErrorLevel();
     void printMarginLineNo(int lineNo);
     void printMargin(bool eol = false, bool maxDigits = false, int lineNo = 0);
+    void printPreRemarks();
     void printRemarks();
     void setColorRanges(DiagnosticLevel level);
     void printRanges();
@@ -177,6 +178,7 @@ struct Diagnostic
     };
 
     Utf8            textMsg;
+    Vector<Utf8>    preRemarks;
     Vector<Utf8>    remarks;
     Vector<Utf8>    autoRemarks;
     DiagnosticLevel errorLevel;
@@ -194,6 +196,7 @@ struct Diagnostic
     LogColor          warningColor;
     LogColor          noteColor;
     LogColor          stackColor;
+    LogColor          preRemarkColor;
     LogColor          autoRemarkColor;
     LogColor          remarkColor;
     LogColor          sourceFileColor;
@@ -212,9 +215,7 @@ struct Diagnostic
     bool showErrorLevel = true;
     bool showFileName   = true;
 
-    bool canBeMerged        = true;
-    bool printRemarksBefore = false;
-
+    bool canBeMerged       = true;
     bool display           = true;
     bool emptyMarginBefore = true;
     bool hasLocation       = false;

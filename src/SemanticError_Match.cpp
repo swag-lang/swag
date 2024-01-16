@@ -142,7 +142,7 @@ static bool cannotMatchIdentifier(SemanticContext*            context,
             n = syntaxColor(n, cxt);
         }
 
-        note->remarks.push_back(Fmt("overload %d: %s", overloadIndex++, n.c_str()));
+        note->preRemarks.push_back(Fmt("overload %d: %s", overloadIndex++, n.c_str()));
 
         // Additional (more precise) information in case of bad signature
         if (result == MatchResult::BadSignature || result == MatchResult::BadGenericSignature)
@@ -151,22 +151,21 @@ static bool cannotMatchIdentifier(SemanticContext*            context,
             {
                 Utf8 msg = " => ";
                 msg += addMsg[i];
-                note->remarks.push_back(msg);
+                note->preRemarks.push_back(msg);
             }
         }
     }
 
     if (tryResult.size() > MAX_OVERLOADS)
-        note->remarks.push_back("...");
+        note->preRemarks.push_back("...");
 
     // Locate to the first error
     Vector<const Diagnostic*> errs0, errs1;
     SemanticError::getDiagnosticForMatch(context, *tryResult[0], errs0, errs1);
-    note->sourceFile         = errs0[0]->sourceFile;
-    note->startLocation      = errs0[0]->startLocation;
-    note->endLocation        = errs0[0]->endLocation;
-    note->canBeMerged        = false;
-    note->printRemarksBefore = true;
+    note->sourceFile    = errs0[0]->sourceFile;
+    note->startLocation = errs0[0]->startLocation;
+    note->endLocation   = errs0[0]->endLocation;
+    note->canBeMerged   = false;
     notes.push_back(note);
 
     return true;

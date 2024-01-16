@@ -15,6 +15,7 @@ void Diagnostic::setupColors()
     warningColor      = LogColor::Magenta;
     noteColor         = LogColor::Cyan;
     stackColor        = LogColor::DarkYellow;
+    preRemarkColor    = LogColor::Cyan;
     remarkColor       = LogColor::Gray;
     autoRemarkColor   = LogColor::Gray;
     sourceFileColor   = LogColor::Gray;
@@ -174,6 +175,33 @@ void Diagnostic::printErrorLevel()
     }
 }
 
+void Diagnostic::printPreRemarks()
+{
+    if (!preRemarks.empty())
+    {
+        for (auto r : preRemarks)
+        {
+            if (r.empty())
+                continue;
+            printMargin(false, true, 0);
+            if (r.empty() || r[0] == ' ')
+            {
+                g_Log.setColor(remarkColor);
+                g_Log.print(" ");
+            }
+            else
+            {
+                g_Log.setColor(preRemarkColor);
+                g_Log.print(LogSymbol::DotList);
+            }
+
+            g_Log.print(" ");
+            g_Log.print(r);
+            g_Log.eol();
+        }
+    }
+}
+
 void Diagnostic::printRemarks()
 {
     if (!autoRemarks.empty())
@@ -199,10 +227,7 @@ void Diagnostic::printRemarks()
                 continue;
             printMargin(false, true, 0);
             g_Log.setColor(remarkColor);
-            if (r.empty() || r[0] == ' ')
-                g_Log.print(" ");
-            else
-                g_Log.print(LogSymbol::DotList);
+            g_Log.print(LogSymbol::DotList);
             g_Log.print(" ");
             g_Log.print(r);
             g_Log.eol();
@@ -589,12 +614,11 @@ void Diagnostic::report()
         printMargin(false, true);
     }
 
-    // Code remarks
-    if (printRemarksBefore)
+    // Code pre remarks
+    if (!preRemarks.empty())
     {
-        printRemarks();
-        if (!autoRemarks.empty() || !remarks.empty())
-            printMargin(true, true);
+        printPreRemarks();
+        printMargin(true, true);
     }
 
     // Source code
@@ -605,10 +629,9 @@ void Diagnostic::report()
     }
 
     // Code remarks
-    if (!printRemarksBefore)
+    if (!autoRemarks.empty() || !remarks.empty())
     {
-        if (!autoRemarks.empty() || !remarks.empty())
-            printMargin(true, true);
+        printMargin(true, true);
         printRemarks();
     }
 
