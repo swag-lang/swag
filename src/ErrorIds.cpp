@@ -775,9 +775,9 @@ void initErrors()
     SWAG_ERROR(Err0051, "system error                                      $ failed to add '%s' to the 'PATH' variable");
     SWAG_ERROR(Err0045, "system error                                      $ failed to create the process '%s' (::CreatePipe)");
     SWAG_ERROR(Err0046, "system error                                      $ failed to create the process '%s'");
-    SWAG_ERROR(Err0026, "too many arguments                                $ too many arguments ('%d' expected, '%d' provided)");
-    SWAG_ERROR(Err0044, "too many generic arguments                        $ too many generic arguments for %s '%s' ('%d' expected, '%d' provided)");
-    SWAG_ERROR(Err0450, "too many generic parameters                       $ expected one single generic parameter for function '%s', but '%d' are provided");
+    SWAG_ERROR(Err0026, "too many arguments                                $ expected '%d' argument(s), got '%d' instead");
+    SWAG_ERROR(Err0044, "too many generic arguments                        $ expected '%d' generic argument(s) for %s '%s', got '%d' instead");
+    SWAG_ERROR(Err0450, "too many generic parameters                       $ expected one single generic parameter for special function '%s', got '%d' instead");
     SWAG_ERROR(Err0071, "too many generic parameters                       $ too many generic parameters for special function '%s'");
     SWAG_ERROR(Err0197, "too many initializers                             $ expected '%d' value(s) to initialize '%s', got '%d' instead");
     SWAG_ERROR(Err0204, "too many initializers                             $ expected '%d' value(s) to initialize the array, got '%d' instead");

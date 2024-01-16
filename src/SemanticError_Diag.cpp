@@ -180,7 +180,7 @@ static void errorTooManyGenericParameters(SemanticContext* context, ErrorParam& 
     {
         if (genericParameters)
             errNode = genericParameters->childs[match.badSignatureInfos.badSignatureNum2];
-        auto msg = Fmt(Err(Err0044), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str(), match.badSignatureInfos.badSignatureNum2, match.badSignatureInfos.badSignatureNum1);
+        auto msg = Fmt(Err(Err0044), match.badSignatureInfos.badSignatureNum2, Naming::kindName(symbol->kind).c_str(), symbol->name.c_str(), match.badSignatureInfos.badSignatureNum1);
         diag     = new Diagnostic{errNode, msg};
     }
 
