@@ -13,7 +13,7 @@ void Diagnostic::setupColors()
     hintColor         = LogColor::White;
     rangeNoteColor    = LogColor::White;
     warningColor      = LogColor::Magenta;
-    noteColor         = LogColor::Cyan;
+    noteColor         = LogColor::White;
     stackColor        = LogColor::DarkYellow;
     preRemarkColor    = LogColor::Cyan;
     remarkColor       = LogColor::Gray;
