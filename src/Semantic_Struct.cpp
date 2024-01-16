@@ -1103,12 +1103,12 @@ bool Semantic::resolveStruct(SemanticContext* context)
 
                     if (!node->genericParameters)
                     {
-                        Diagnostic diag{node, node->tokenName, Fmt(Err(Err0671), node->token.ctext(), varDecl->token.ctext())};
+                        Diagnostic diag{node, node->getTokenName(), Fmt(Err(Err0671), node->token.ctext(), varDecl->token.ctext())};
                         auto       note = Diagnostic::note(child, child->token, Diagnostic::isType(child->typeInfo));
                         return context->report(diag, note);
                     }
 
-                    Diagnostic diag{node, node->tokenName, Fmt(Err(Err0672), node->token.ctext(), varDecl->token.ctext())};
+                    Diagnostic diag{node, node->getTokenName(), Fmt(Err(Err0672), node->token.ctext(), varDecl->token.ctext())};
                     auto       note = Diagnostic::note(child, child->token, Diagnostic::isType(child->typeInfo));
                     return context->report(diag, note);
                 }

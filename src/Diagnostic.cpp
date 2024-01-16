@@ -681,6 +681,7 @@ Diagnostic* Diagnostic::hereIs(AstNode* node)
 
     if (node->flags & AST_GENERATED &&
         node->tokenId != TokenId::KwdPrivate &&
+        node->tokenId != TokenId::KwdInternal &&
         node->tokenId != TokenId::KwdPublic)
         return nullptr;
 

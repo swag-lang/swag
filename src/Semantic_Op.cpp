@@ -86,12 +86,12 @@ bool Semantic::checkFuncPrototypeOpReturnType(SemanticContext* context, AstFuncD
     if (wanted == nullptr)
     {
         if (returnType->isVoid())
-            return context->report({node, node->tokenName, Fmt(Err(Err0063), node->token.ctext())});
+            return context->report({node, node->getTokenName(), Fmt(Err(Err0063), node->token.ctext())});
         return true;
     }
 
     if (!wanted->isVoid() && returnType->isVoid())
-        return context->report({node, node->tokenName, Fmt(Err(Err0064), node->token.ctext(), wanted->getDisplayNameC())});
+        return context->report({node, node->getTokenName(), Fmt(Err(Err0064), node->token.ctext(), wanted->getDisplayNameC())});
 
     if (!returnType->isSame(wanted, CASTFLAG_CAST))
     {
@@ -125,35 +125,37 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
     {
         auto start = node->tokenName.startLocation;
         start.column += 7;
-        Diagnostic diag{node->sourceFile, start, node->tokenName.endLocation, Fmt(Err(Err1214), node->token.ctext() + 7)};
+        Diagnostic diag{node->sourceFile, start, node->getTokenName().endLocation, Fmt(Err(Err1214), node->token.ctext() + 7)};
         return context->report(diag);
     }
 
     // Special function outside an impl block
     if (!parent)
     {
-        Diagnostic diag{node, node->tokenName, Fmt(Err(Err0067), node->token.ctext())};
+        Diagnostic diag{node, node->getTokenName(), Fmt(Err(Err0067), node->token.ctext())};
         return context->report(diag);
     }
 
     if (node->ownerScope->kind == ScopeKind::Impl)
     {
-        Diagnostic diag{node, node->tokenName, Fmt(Err(Err0494), node->token.ctext())};
+        Diagnostic diag{node, node->getTokenName(), Fmt(Err(Err0494), node->token.ctext())};
         return context->report(diag);
     }
 
     if ((node->ownerScope->owner->attributeFlags & ATTRIBUTE_PUBLIC) && !(node->attributeFlags & ATTRIBUTE_PUBLIC))
     {
-        Diagnostic diag{node, node->tokenName, Fmt(Err(Err0503), node->token.ctext())};
-        auto       note = Diagnostic::note(Nte(Nte0126));
-        return context->report(diag, note);
+        Diagnostic diag{node, node->getTokenName(), Fmt(Err(Err0503), node->token.ctext())};
+        auto       note  = Diagnostic::note(Nte(Nte0126));
+        auto       note1 = Diagnostic::hereIs(node->findParent(TokenId::KwdInternal));
+        return context->report(diag, note, note1);
     }
 
     if (!(node->ownerScope->owner->attributeFlags & ATTRIBUTE_PUBLIC) && (node->attributeFlags & ATTRIBUTE_PUBLIC))
     {
-        Diagnostic diag{node, node->tokenName, Fmt(Err(Err0506), node->token.ctext())};
-        auto       note = Diagnostic::note(Nte(Nte0127));
-        return context->report(diag, note);
+        Diagnostic diag{node, node->getTokenName(), Fmt(Err(Err0506), node->token.ctext())};
+        auto       note  = Diagnostic::note(Nte(Nte0127));
+        auto       note1 = Diagnostic::hereIs(node->findParent(TokenId::KwdPublic));
+        return context->report(diag, note, note1);
     }
 
     PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [node]()
@@ -171,7 +173,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
             return true;
 
         // First parameter must be be struct
-        SWAG_VERIFY(node->parameters, context->report({node, node->tokenName, Fmt(Err(Err0068), name.c_str())}));
+        SWAG_VERIFY(node->parameters, context->report({node, node->getTokenName(), Fmt(Err(Err0068), name.c_str())}));
         auto firstGen  = node->parameters->childs.front();
         auto firstType = firstGen->typeInfo;
         SWAG_VERIFY(firstType->isPointer(), context->report({firstGen, Fmt(Err(Err0069), name.c_str(), typeStruct->getDisplayNameC(), firstType->getDisplayNameC())}));
@@ -186,7 +188,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         name == g_LangSpec->name_opIndexAssign ||
         name == g_LangSpec->name_opAffectSuffix)
     {
-        SWAG_VERIFY(node->genericParameters, context->report({node, node->tokenName, Fmt(Err(Err0470), name.c_str())}));
+        SWAG_VERIFY(node->genericParameters, context->report({node, node->getTokenName(), Fmt(Err(Err0470), name.c_str())}));
         SWAG_VERIFY(node->genericParameters->childs.size() <= 2, context->report({node->genericParameters, Fmt(Err(Err0071), name.c_str())}));
         auto firstGen = node->genericParameters->childs.front();
         SWAG_VERIFY(firstGen->specFlags & AstVarDecl::SPECFLAG_GENERIC_CONSTANT, context->report({firstGen, Fmt(Err(Err0659), name.c_str(), firstGen->typeInfo->getDisplayNameC())}));
@@ -194,7 +196,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
     }
     else if (isOpVisit)
     {
-        SWAG_VERIFY(node->genericParameters, context->report({node, node->tokenName, Fmt(Err(Err0470), name.c_str())}));
+        SWAG_VERIFY(node->genericParameters, context->report({node, node->getTokenName(), Fmt(Err(Err0470), name.c_str())}));
         SWAG_VERIFY(node->genericParameters->childs.size() >= 2, context->report({node->genericParameters, Fmt(Err(Err0544), name.c_str())}));
         SWAG_VERIFY(node->genericParameters->childs.size() <= 3, context->report({node->genericParameters, Fmt(Err(Err0071), name.c_str())}));
         auto firstGen = node->genericParameters->childs[0];
@@ -341,7 +343,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         SemanticError::findClosestMatches(node->tokenName.text, searchList, best);
         Utf8 appendMsg = SemanticError::findClosestMatchesMsg(node->tokenName.text, best);
 
-        Diagnostic diag{node, node->tokenName, Fmt(Err(Err0078), name.c_str())};
+        Diagnostic diag{node, node->getTokenName(), Fmt(Err(Err0078), name.c_str())};
         if (appendMsg.empty())
         {
             auto note = Diagnostic::note(Nte(Nte0114));
