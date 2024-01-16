@@ -413,6 +413,8 @@ struct X64Gen
     CPURegister storageReg      = RAX;
     CPURegister storageMemReg   = RAX;
 
+    void emit_nop();
+
     void clearInstructionCache();
 
     uint16_t computeUnwindPush(CPURegister reg, uint32_t offsetSubRSP);

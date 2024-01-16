@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "BackendX64.h"
-#include "Module.h"
 #include "ByteCode.h"
 #include "Context.h"
-#include "Report.h"
 #include "LanguageSpec.h"
+#include "Module.h"
+#include "Report.h"
 #include "TypeManager.h"
 
 bool BackendX64::emitOS(const BuildParameters& buildParameters)

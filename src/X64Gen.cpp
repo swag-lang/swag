@@ -1,11 +1,12 @@
 #include "pch.h"
-#include "pch.h"
-#include "Register.h"
-#include "Math.h"
-#include "ByteCode.h"
-#include "CallConv.h"
 #include "X64Gen.h"
+#include "Math.h"
 #include "TypeManager.h"
+
+void X64Gen::emit_nop()
+{
+    concat.addU8(0x90); // nop
+}
 
 void X64Gen::clearInstructionCache()
 {

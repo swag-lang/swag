@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "Module.h"
 #include "BackendX64SaveObjJob.h"
-#include "ModulePrepOutputJob.h"
 #include "BackendX64.h"
+#include "Module.h"
+#include "ModulePrepOutputJob.h"
 #include "Timer.h"
 
 JobResult BackendX64SaveObjJob::execute()
@@ -13,6 +13,5 @@ JobResult BackendX64SaveObjJob::execute()
 #endif
 
     ((BackendX64*) module->backend)->saveObjFile(prepJob->buildParameters);
-
     return JobResult::ReleaseJob;
 }

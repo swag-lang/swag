@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "BackendX64.h"
 #include "BackendX64_Macros.h"
+#include "ByteCode.h"
 #include "ByteCodeGen.h"
+#include "LanguageSpec.h"
+#include "Module.h"
 #include "Report.h"
 #include "TypeManager.h"
-#include "LanguageSpec.h"
-#include "ByteCode.h"
-#include "Module.h"
 
 bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
@@ -214,7 +214,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
         switch (ip->op)
         {
         case ByteCodeOp::DebugNop:
-            concat.addU8(0x90); // nop
+            pp.emit_nop();
             break;
 
             /////////////////////////////////////
