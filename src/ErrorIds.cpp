@@ -1264,6 +1264,7 @@ void initErrors()
 
     SWAG_ERROR(Nte0050, "could be %s of type '%s'");
     SWAG_ERROR(Nte0144, "could be %s");
+    SWAG_ERROR(Nte0074, "could be");
     SWAG_ERROR(Nte0110, "'#alias' is only valid within a '#[Swag.Macro]' or '#[Swag.Mixin]' function");
     SWAG_ERROR(Nte0120, "'#mixin' is only valid within a '#[Swag.Mixin]' function");
     SWAG_ERROR(Nte0010, "'%s' is %s and does not have a subscope");
@@ -1457,7 +1458,6 @@ void initErrors()
     SWAG_ERROR(Nte1122, "this has '%s' access (type is '%s')");
     SWAG_ERROR(Nte1131, "this 'discard' should be removed");
     SWAG_ERROR(Nte1094, "here is the corresponding parameter");
-    SWAG_ERROR(Nte0074, nullptr);
     SWAG_ERROR(Nte0084, nullptr);
     SWAG_ERROR(Nte0073, nullptr);
     SWAG_ERROR(Nte1056, nullptr);

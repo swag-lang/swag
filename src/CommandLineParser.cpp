@@ -12,15 +12,12 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("all",                 "--log-colors",               nullptr,    CommandLineType::Bool,          &cmdLine->logColors, nullptr, "output to console can be colored");
     addArg("all",                 "--log-ascii",                nullptr,    CommandLineType::Bool,          &cmdLine->logAscii, nullptr, "output to console only use ascii characters (no unicode)");
     addArg("all",                 "--ignore-bad-params",        nullptr,    CommandLineType::Bool,          &cmdLine->ignoreBadParams, nullptr, "ignore unknown params instead of raising an error");
-                                                                
                                                                                                             
     addArg("all",                 "--verbose-cmdline",          nullptr,    CommandLineType::Bool,          &cmdLine->verboseCmdLine, nullptr, "log swag command line");
     addArg("bu sc doc",           "--verbose-path",             nullptr,    CommandLineType::Bool,          &cmdLine->verbosePath, nullptr, "log global paths");
     addArg("bu sc",               "--verbose-link",             nullptr,    CommandLineType::Bool,          &cmdLine->verboseLink, nullptr, "log linker command line");
     addArg("bu sc",               "--verbose-ctypes",           nullptr,    CommandLineType::Bool,          &cmdLine->verboseConcreteTypes, nullptr, "log generated concrete types");
     addArg("bu sc te doc",        "--verbose-stages",           nullptr,    CommandLineType::Bool,          &cmdLine->verboseStages, nullptr, "log compiler stages");                                             
-    addArg("te",                  "--verbose-errors",           "-ve",      CommandLineType::Bool,          &cmdLine->verboseTestErrors, nullptr, "log errors during test");
-    addArg("te",                  "--verbose-errors-filter",    "-vef",     CommandLineType::String,        &cmdLine->verboseErrorFilter, nullptr, "filter log errors during test");
 
     addArg("bu sc doc",           "--error-oneline",            "-el",      CommandLineType::Bool,          &cmdLine->errorOneLine, nullptr, "display errors in a single line");
     addArg("bu sc doc",           "--error-absolute",           "-ea",      CommandLineType::Bool,          &cmdLine->errorAbsolute, nullptr, "display absolute paths when an error is raised");
@@ -41,12 +38,13 @@ void CommandLineParser::setup(CommandLine* cmdLine)
                                                                                                             
     addArg("te",                  "--test-bytecode",            "-tb",      CommandLineType::Bool,          &cmdLine->runByteCodeTests, nullptr, "run #test functions as bytecode");
     addArg("te",                  "--test-native",              "-tn",      CommandLineType::Bool,          &cmdLine->runBackendTests, nullptr, "run #test functions as native");
+    addArg("te",                  "--test-filter",              "-tf",      CommandLineType::String,        &cmdLine->testFilter, nullptr, "will only compile and test files that match the filter");
+    addArg("te",                  "--test-verbose",             "-ve",      CommandLineType::Bool,          &cmdLine->verboseTestErrors, nullptr, "log errors during test");
+    addArg("te",                  "--test-verbose-filter",      "-vef",     CommandLineType::String,        &cmdLine->verboseErrorFilter, nullptr, "filter log errors during test");
                                                                                                             
     addArg("bu sc doc",           "--rebuild",                  nullptr,    CommandLineType::Bool,          &cmdLine->rebuild, nullptr, "full rebuild");
     addArg("bu sc doc",           "--rebuild-all",              nullptr,    CommandLineType::Bool,          &cmdLine->rebuildAll, nullptr, "full rebuild (with all dependencies)");
     addArg("ge doc",              "--force",                    nullptr,    CommandLineType::Bool,          &cmdLine->getDepForce, nullptr, "force to flush dependencies");
-                                                                                                            
-    addArg("te",                  "--test-filter",              nullptr,    CommandLineType::String,        &cmdLine->testFilter, nullptr, "will only compile and test files that match the filter");
                                                                                                             
     addArg("bu sc",               "--dbg-catch",                nullptr,    CommandLineType::Bool,          &cmdLine->dbgCatch, nullptr, "open bytecode debugger (bcdbg) in case of compile time errors");
     addArg("bu sc",               "--dbg-main",                 nullptr,    CommandLineType::Bool,          &cmdLine->dbgMain, nullptr, "open bytecode debugger (bcdbg) at the start of #main");

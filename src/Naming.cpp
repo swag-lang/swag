@@ -51,6 +51,8 @@ Utf8 Naming::kindName(SymbolName* symbol, AstNode* node, TypeInfo* typeInfo, uin
     if (overFlags & OVERLOAD_VAR_FUNC_PARAM)
     {
         article = "a";
+        if (overFlags & OVERLOAD_GENERIC)
+            return "generic parameter";
         return "function parameter";
     }
 

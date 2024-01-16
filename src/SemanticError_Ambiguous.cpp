@@ -16,19 +16,8 @@ bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* nod
     Vector<const Diagnostic*> notes;
     for (auto match : genericMatches)
     {
-        auto overload = match->symbolOverload;
-        auto couldBe  = Fmt("could be of type '%s'", overload->typeInfo->getDisplayNameC());
-
-        VectorNative<TypeInfoParam*> params;
-        for (auto og : match->genericReplaceTypes)
-        {
-            auto p      = g_TypeMgr->makeParam();
-            p->name     = og.first.c_str();
-            p->typeInfo = og.second.typeInfoReplace;
-            params.push_back(p);
-        }
-
-        Diagnostic* note  = Diagnostic::note(overload->node, overload->node->getTokenName(), couldBe);
+        auto overload     = match->symbolOverload;
+        auto note         = Diagnostic::note(overload->node, overload->node->getTokenName(), Nte(Nte0074));
         note->canBeMerged = false;
         notes.push_back(note);
     }
