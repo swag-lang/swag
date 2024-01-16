@@ -1262,9 +1262,6 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Nte0050, "could be %s of type '%s'");
-    SWAG_ERROR(Nte0144, "could be %s");
-    SWAG_ERROR(Nte0074, "could be");
     SWAG_ERROR(Nte0110, "'#alias' is only valid within a '#[Swag.Macro]' or '#[Swag.Mixin]' function");
     SWAG_ERROR(Nte0120, "'#mixin' is only valid within a '#[Swag.Mixin]' function");
     SWAG_ERROR(Nte0010, "'%s' is %s and does not have a subscope");
@@ -1281,13 +1278,11 @@ void initErrors()
     SWAG_ERROR(Nte0139, "'with' should be followed by a single identifier");
     SWAG_ERROR(Nte1031, "a '%s' block must start with '#do' or must be enclosed in '{}'");
     SWAG_ERROR(Nte1022, "a '%s' block must start with 'do' or must be enclosed in '{}'");
-    SWAG_ERROR(Nte0048, "could be a function of type '%s'");
     SWAG_ERROR(Nte1050, "a 'let' variable is immutable and can't be changed");
     SWAG_ERROR(Nte1114, "a return type is missing");
     SWAG_ERROR(Nte0124, "a standard function in an 'impl' block should not shadow a function from the matching interface");
     SWAG_ERROR(Nte0100, "an attribute is not a function; consider removing it");
     SWAG_ERROR(Nte1121, "an implicit '@countof' is present here");
-    SWAG_ERROR(Nte0045, "could be an instance of the generic function '%s'");
     SWAG_ERROR(Nte0038, "associated command line option: '%s'");
     SWAG_ERROR(Nte0132, "both parts of an 'orelse' should be of identical type");
     SWAG_ERROR(Nte0019, "but it is applied on this %s");
@@ -1312,6 +1307,12 @@ void initErrors()
     SWAG_ERROR(Nte0147, "consider writing 'impl enum %s' instead");
     SWAG_ERROR(Nte1074, "copying an array of structs is not allowed here");
     SWAG_ERROR(Nte0102, "could 'self' be missing?");
+    SWAG_ERROR(Nte0050, "could be %s of type '%s'");
+    SWAG_ERROR(Nte0144, "could be %s");
+    SWAG_ERROR(Nte0048, "could be a function of type '%s'");
+    SWAG_ERROR(Nte0045, "could be an instance of the generic function '%s'");
+    SWAG_ERROR(Nte0049, "could be the struct '%s'");
+    SWAG_ERROR(Nte0074, "could be");
     SWAG_ERROR(Nte1085, "detected an enum implementation block");
     SWAG_ERROR(Nte1120, "did you forget 'var' or 'const' to declare a global variable or a constant?");
     SWAG_ERROR(Nte0153, "employ '{}' for an intentional empty statement");
@@ -1324,6 +1325,8 @@ void initErrors()
     SWAG_ERROR(Nte0015, "here is one");
     SWAG_ERROR(Nte0090, "here is the %s '%s'");
     SWAG_ERROR(Nte0026, "here is the %s");
+    SWAG_ERROR(Nte0066, "here is the corresponding parameter '%s'");
+    SWAG_ERROR(Nte1094, "here is the corresponding parameter");
     SWAG_ERROR(Nte0031, "here is the deprecated definition");
     SWAG_ERROR(Nte0064, "here is the field causing the recursion");
     SWAG_ERROR(Nte0068, "here is the generic parameter '%s' of the %s");
@@ -1331,7 +1334,6 @@ void initErrors()
     SWAG_ERROR(Nte0035, "here is the other '#import'");
     SWAG_ERROR(Nte0036, "here is the other definition");
     SWAG_ERROR(Nte0063, "here is the other return statement");
-    SWAG_ERROR(Nte0066, "here is the corresponding parameter '%s'");
     SWAG_ERROR(Nte0037, "here is the previous definition");
     SWAG_ERROR(Nte0024, "here is the prior declaration");
     SWAG_ERROR(Nte0032, "here is the problematic attribute");
@@ -1395,7 +1397,6 @@ void initErrors()
     SWAG_ERROR(Nte0047, "the resulting type is '%s'");
     SWAG_ERROR(Nte0005, "the return type of an '#ast' block should be of type 'string'");
     SWAG_ERROR(Nte1037, "the slicing lower bound type is invalid, expected an integer, got '%s' instead");
-    SWAG_ERROR(Nte0049, "could be the struct '%s'");
     SWAG_ERROR(Nte0044, "the symbol '%s' is already present in the interface scope '%s'");
     SWAG_ERROR(Nte0013, "the symbol '%s' was located through a 'using' statement");
     SWAG_ERROR(Nte1020, "the symbol '...' is used to declare variadic function parameters, which is not valid in this context");
@@ -1409,6 +1410,7 @@ void initErrors()
     SWAG_ERROR(Nte1127, "this %s has '%s' access");
     SWAG_ERROR(Nte1070, "this %s has the '#[Swag.Compiler]' attribute, which makes it compile-time only");
     SWAG_ERROR(Nte1084, "this %s has type '%s'");
+    SWAG_ERROR(Nte1131, "this 'discard' should be removed");
     SWAG_ERROR(Nte0006, "this 'using' field is convertible");
     SWAG_ERROR(Nte1030, "this argument has been named");
     SWAG_ERROR(Nte0062, "this can be converted too");
@@ -1416,6 +1418,7 @@ void initErrors()
     SWAG_ERROR(Nte1073, "this function does not support UFCS of type '%s'");
     SWAG_ERROR(Nte1078, "this function does not support aliased names");
     SWAG_ERROR(Nte1064, "this function has the '#[Swag.Compiler]' attribute, which makes it compile-time only");
+    SWAG_ERROR(Nte1122, "this has '%s' access (type is '%s')");
     SWAG_ERROR(Nte1018, "this is a constant");
     SWAG_ERROR(Nte1079, "this is a lambda expression");
     SWAG_ERROR(Nte1024, "this is a pointer type declaration due to '*'");
@@ -1455,9 +1458,6 @@ void initErrors()
     SWAG_ERROR(Nte1095, "you can't reference this runtime %s from the compile-time %s");
     SWAG_ERROR(Nte0149, "you might want to get the address of '%s' using '&'");
     SWAG_ERROR(Nte1108, "you need to take the address of a value to make a reference");
-    SWAG_ERROR(Nte1122, "this has '%s' access (type is '%s')");
-    SWAG_ERROR(Nte1131, "this 'discard' should be removed");
-    SWAG_ERROR(Nte1094, "here is the corresponding parameter");
     SWAG_ERROR(Nte0084, nullptr);
     SWAG_ERROR(Nte0073, nullptr);
     SWAG_ERROR(Nte1056, nullptr);
