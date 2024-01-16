@@ -3,11 +3,6 @@
 #include "Math.h"
 #include "TypeManager.h"
 
-void X64Gen::emit_nop()
-{
-    concat.addU8(0x90); // nop
-}
-
 void X64Gen::clearInstructionCache()
 {
     storageRegCount = UINT32_MAX;
@@ -2116,6 +2111,13 @@ void X64Gen::emitUnwind(uint32_t& offset, uint32_t sizeProlog, const VectorNativ
         concat.addU16(0);
         offset += 2;
     }
+}
+
+/////////////////////////////////////////////////////////////////////
+
+void X64Gen::emit_nop()
+{
+    concat.addU8(0x90); // nop
 }
 
 void X64Gen::emit_CopyDownUp(CPURegister reg, X64Bits numBits)
