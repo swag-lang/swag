@@ -167,8 +167,8 @@ static bool cannotMatchIdentifier(SemanticContext*            context,
     note->endLocation        = errs0[0]->endLocation;
     note->canBeMerged        = false;
     note->printRemarksBefore = true;
-
     notes.push_back(note);
+
     return true;
 }
 

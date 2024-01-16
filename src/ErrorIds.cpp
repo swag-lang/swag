@@ -757,7 +757,7 @@ void initErrors()
     SWAG_ERROR(Err0477, "out of range slicing                              $ the slicing bound '%I64u' is out of range (max is '%I64u')");
     SWAG_ERROR(Err0476, "out of range slicing                              $ the slicing lower bound '%I64u' is greater than the upper bound '%I64u'");
     SWAG_ERROR(Err0688, "out of range slicing                              $ the slicing upper bound exclusion with '..<' is not possible because it is zero");
-    SWAG_ERROR(Err0113, "overload mismatch                                 $ found '%d' overloads for '%s', but none matched the provided arguments");
+    SWAG_ERROR(Err0113, "overload mismatch                                 $ found '%d' overloads for '%s', but none matched the arguments");
     SWAG_ERROR(Err0201, "recursive evaluation                              $ the struct '%s' references itself, which is causing a recursion");
     SWAG_ERROR(Err1018, "redundant access modifier                         $ the '%s' access modifier is unnecessary because of '#global export' $ consider removing the 'public' modifier, as '#global export' ensures all declarations in this file are publicly accessible");
     SWAG_ERROR(Err0078, "reserved function name                            $ the function name '%s' is reserved by the compiler");
