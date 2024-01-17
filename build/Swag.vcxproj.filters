@@ -53,9 +53,6 @@
     <ClCompile Include="..\src\BackendLLVM_Function.cpp">
       <Filter>Backend\LLVM</Filter>
     </ClCompile>
-    <ClCompile Include="../src/BackendLLVMFunctionBodyJob.cpp">
-      <Filter>Backend\LLVM</Filter>
-    </ClCompile>
     <ClCompile Include="../src/LLVMSetup.cpp">
       <Filter>Backend\LLVM</Filter>
     </ClCompile>
@@ -90,9 +87,6 @@
       <Filter>Backend\SCBE</Filter>
     </ClCompile>
     <ClCompile Include="..\src\BackendSCBE_Function.cpp">
-      <Filter>Backend\SCBE</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\BackendSCBEFunctionBodyJob.cpp">
       <Filter>Backend\SCBE</Filter>
     </ClCompile>
     <ClCompile Include="..\src\BackendSCBE_Main.cpp">
@@ -665,6 +659,9 @@
     <ClCompile Include="..\src\EncoderCPU.cpp">
       <Filter>Backend\SCBE</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\BackendFunctionBodyJob.cpp">
+      <Filter>Backend</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
@@ -716,9 +713,6 @@
     <ClInclude Include="../src/BackendLLVM.h">
       <Filter>Backend\LLVM</Filter>
     </ClInclude>
-    <ClInclude Include="../src/BackendLLVMFunctionBodyJob.h">
-      <Filter>Backend\LLVM</Filter>
-    </ClInclude>
     <ClInclude Include="../src/LLVMSetup.h">
       <Filter>Backend\LLVM</Filter>
     </ClInclude>
@@ -738,9 +732,6 @@
       <Filter>Semantic\Type</Filter>
     </ClInclude>
     <ClInclude Include="..\src\BackendSCBE.h">
-      <Filter>Backend\SCBE</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\BackendSCBEFunctionBodyJob.h">
       <Filter>Backend\SCBE</Filter>
     </ClInclude>
     <ClInclude Include="..\src\BackendLLVM_Macros.h">
@@ -920,9 +911,6 @@
     <ClInclude Include="..\src\Vector.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\BackendFunctionBodyJobBase.h">
-      <Filter>Jobs</Filter>
-    </ClInclude>
     <ClInclude Include="../src/ModuleExportJob.h">
       <Filter>Jobs</Filter>
     </ClInclude>
@@ -1024,6 +1012,9 @@
     </ClInclude>
     <ClInclude Include="..\src\EncoderCPU.h">
       <Filter>Backend\SCBE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\BackendFunctionBodyJob.h">
+      <Filter>Backend</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -17,7 +17,7 @@ struct Scope;
 struct TypeInfoParam;
 struct AstVarDecl;
 struct Job;
-struct BackendFunctionBodyJobBase;
+struct BackendFunctionBodyJob;
 enum class JobResult;
 enum class BuildCfgBackendKind;
 
@@ -38,15 +38,14 @@ struct Backend
     {
     }
 
-    virtual JobResult                   prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob);
-    virtual bool                        generateOutput(const BuildParameters& backendParameters);
-    virtual BackendFunctionBodyJobBase* newFunctionJob();
-    virtual bool                        emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
+    virtual JobResult prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob);
+    virtual bool      generateOutput(const BuildParameters& backendParameters);
+    virtual bool      emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
 
     void setMustCompile();
     bool isUpToDate(uint64_t moreRecentSourceFile, bool invert = false);
 
-    void addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJobBase* job, int start, int end);
+    void addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJob* job, int start, int end);
     void getRangeFunctionIndexForJob(const BuildParameters& buildParameters, Module* moduleToGen, int& start, int& end);
     bool emitAllFunctionBodies(const BuildParameters& buildParameters, Module* moduleToGen, Job* ownerJob);
 

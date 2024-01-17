@@ -28,11 +28,10 @@ struct BackendSCBE : public Backend
 
     void release();
 
-    bool                        createRuntime(const BuildParameters& buildParameters);
-    JobResult                   prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob) override;
-    bool                        generateOutput(const BuildParameters& backendParameters) override;
-    BackendFunctionBodyJobBase* newFunctionJob() override;
-    bool                        emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc) override;
+    bool      createRuntime(const BuildParameters& buildParameters);
+    JobResult prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob) override;
+    bool      generateOutput(const BuildParameters& backendParameters) override;
+    bool      emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc) override;
 
     uint32_t getOrCreateLabel(EncoderX64& pp, uint32_t ip);
     void     emitOverflowSigned(EncoderX64& pp, ByteCodeInstruction* ip, const char* msg);

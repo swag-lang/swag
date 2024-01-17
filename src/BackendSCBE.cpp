@@ -1,18 +1,12 @@
 #include "pch.h"
 #include "BackendSCBE.h"
 #include "BackendLinker.h"
-#include "BackendSCBEFunctionBodyJob.h"
 #include "BackendSCBESaveObjJob.h"
 #include "ErrorIds.h"
 #include "Module.h"
 #include "Os.h"
 #include "Report.h"
 #include "Workspace.h"
-
-BackendFunctionBodyJobBase* BackendSCBE::newFunctionJob()
-{
-    return Allocator::alloc<BackendSCBEFunctionBodyJob>();
-}
 
 bool BackendSCBE::emitHeader(const BuildParameters& buildParameters)
 {

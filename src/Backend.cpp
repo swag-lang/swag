@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Backend.h"
-#include "BackendFunctionBodyJobBase.h"
+#include "BackendFunctionBodyJob.h"
 #include "ByteCode.h"
 #include "CallConv.h"
 #include "LLVMSetup.h"
@@ -22,12 +22,6 @@ bool Backend::generateOutput(const BuildParameters& backendParameters)
 bool Backend::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
     return false;
-}
-
-BackendFunctionBodyJobBase* Backend::newFunctionJob()
-{
-    SWAG_ASSERT(false);
-    return nullptr;
 }
 
 void Backend::setup()
@@ -321,7 +315,7 @@ bool Backend::saveExportFile()
     return true;
 }
 
-void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJobBase* job, int start, int end)
+void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJob* job, int start, int end)
 {
     for (int i = start; i < end; i++)
     {
@@ -363,11 +357,11 @@ bool Backend::emitAllFunctionBodies(const BuildParameters& buildParameters, Modu
     int end   = 0;
     getRangeFunctionIndexForJob(buildParameters, moduleToGen, start, end);
 
-    BackendFunctionBodyJobBase* job = newFunctionJob();
-    job->module                     = moduleToGen;
-    job->dependentJob               = ownerJob;
-    job->buildParameters            = buildParameters;
-    job->backend                    = this;
+    BackendFunctionBodyJob* job = Allocator::alloc<BackendFunctionBodyJob>();
+    job->module                 = moduleToGen;
+    job->dependentJob           = ownerJob;
+    job->buildParameters        = buildParameters;
+    job->backend                = this;
 
     // Put the bootstrap and the runtime in the first file
     int precompileIndex = buildParameters.precompileIndex;

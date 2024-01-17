@@ -100,10 +100,9 @@ struct BackendLLVM : public Backend
         memset(perThread, 0, sizeof(perThread));
     }
 
-    JobResult                   prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob) override;
-    bool                        generateOutput(const BuildParameters& backendParameters) override;
-    BackendFunctionBodyJobBase* newFunctionJob() override;
-    bool                        emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc) override;
+    JobResult prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob) override;
+    bool      generateOutput(const BuildParameters& backendParameters) override;
+    bool      emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc) override;
 
     bool                createRuntime(const BuildParameters& buildParameters);
     llvm::Value*        getImmediateConstantA(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits);

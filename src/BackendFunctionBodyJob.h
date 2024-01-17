@@ -6,8 +6,16 @@ struct Module;
 struct Backend;
 struct ByteCode;
 
-struct BackendFunctionBodyJobBase : public Job
+struct BackendFunctionBodyJob : public Job
 {
+    virtual ~BackendFunctionBodyJob() = default;
+    JobResult execute() override;
+
+    void release() override
+    {
+        Allocator::free<BackendFunctionBodyJob>(this);
+    }
+
     BuildParameters         buildParameters;
     VectorNative<ByteCode*> byteCodeFunc;
     Backend*                backend = nullptr;
