@@ -178,10 +178,7 @@ void BackendSCBE::emitBinOpFloat32(EncoderX64& pp, ByteCodeInstruction* ip, CPUO
     if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
     {
         pp.emit_LoadF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
-        pp.concat.addU8(0xF3);
-        pp.concat.addU8(0x0F);
-        pp.concat.addU8((uint8_t) op);
-        pp.emit_ModRM(REG_OFFSET(ip->b.u32), XMM0, RDI);
+        pp.emit_OpF32(REG_OFFSET(ip->b.u32), XMM0, RDI, op);
     }
     else
     {
@@ -211,10 +208,7 @@ void BackendSCBE::emitBinOpFloat64(EncoderX64& pp, ByteCodeInstruction* ip, CPUO
     if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
     {
         pp.emit_LoadF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
-        pp.concat.addU8(0xF2);
-        pp.concat.addU8(0x0F);
-        pp.concat.addU8((uint8_t) op);
-        pp.emit_ModRM(REG_OFFSET(ip->b.u32), XMM0, RDI);
+        pp.emit_OpF64(REG_OFFSET(ip->b.u32), XMM0, RDI, op);
     }
     else
     {
