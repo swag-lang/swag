@@ -4409,13 +4409,13 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
             case TokenId::IntrinsicMin:
                 MK_IMMB_F32(XMM0);
                 MK_IMMC_F32(XMM1);
-                concat.addString4("\xF3\x0F\x5D\xC1"); // minss xmm0, xmm1
+                pp.emit_OpF32(XMM0, XMM1, CPUOp::FMIN);
                 pp.emit_StoreF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
                 break;
             case TokenId::IntrinsicMax:
                 MK_IMMB_F32(XMM0);
                 MK_IMMC_F32(XMM1);
-                concat.addString4("\xF3\x0F\x5F\xC1"); // maxss xmm0, xmm1
+                pp.emit_OpF32(XMM0, XMM1, CPUOp::FMAX);
                 pp.emit_StoreF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
                 break;
 
@@ -4449,13 +4449,13 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
             case TokenId::IntrinsicMin:
                 MK_IMMB_F64(XMM0);
                 MK_IMMC_F64(XMM1);
-                concat.addString4("\xF2\x0F\x5D\xC1"); // minss xmm0, xmm1
+                pp.emit_OpF64(XMM0, XMM1, CPUOp::FMIN);
                 pp.emit_StoreF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
                 break;
             case TokenId::IntrinsicMax:
                 MK_IMMB_F64(XMM0);
                 MK_IMMC_F64(XMM1);
-                concat.addString4("\xF2\x0F\x5F\xC1"); // maxss xmm0, xmm1
+                pp.emit_OpF64(XMM0, XMM1, CPUOp::FMAX);
                 pp.emit_StoreF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
                 break;
 
