@@ -186,21 +186,17 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     }
 
     // If we are in a function, inherit also the scopes from the function.
-    // Be carreful that if the call is inside a #macro, we do not want to inherit the function (3550)
+    // Be careful that if the call is inside a #macro, we do not want to inherit the function (3550)
     if (node->ownerFct &&
         node->ownerFct->hasExtMisc() &&
-        node->ownerFct->extMisc()->alternativeScopes.size() &&
         !node->findParent(AstNodeKind::CompilerMacro))
     {
-        newFunc->addAlternativeScopes(node->ownerFct->extMisc()->alternativeScopes);
+        newFunc->addAlternativeScopes(node->ownerFct->extMisc());
     }
 
     // Inherit alternative scopes from the generic function
-    if (funcNode->hasExtMisc() &&
-        funcNode->extMisc()->alternativeScopes.size())
-    {
-        newFunc->addAlternativeScopes(funcNode->extMisc()->alternativeScopes);
-    }
+    if (funcNode->hasExtMisc())
+        newFunc->addAlternativeScopes(funcNode->extMisc());
 
     // Generate and initialize a new type if the type is still generic
     // The type is still generic if the replaceGenericTypes didn't find any type to change

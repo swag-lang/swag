@@ -450,7 +450,7 @@ bool Ast::convertStructParamsToTmpVar(SemanticContext* context, AstIdentifier* i
 
     // Inherit alternative scopes.
     if (identifier->parent->hasExtMisc())
-        varNode->addAlternativeScopes(identifier->parent->extMisc()->alternativeScopes);
+        varNode->addAlternativeScopes(identifier->parent->extMisc());
 
     // If we are in a const declaration, that temporary variable should be a const too...
     if (identifier->parent->parent->kind == AstNodeKind::ConstDecl)

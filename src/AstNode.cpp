@@ -1142,11 +1142,15 @@ void AstNode::addAlternativeScopeVar(Scope* scope, AstNode* varNode, uint32_t al
     extMisc()->alternativeScopesVars.push_back(sv);
 }
 
-void AstNode::addAlternativeScopes(const VectorNative<AlternativeScope>& scopes)
+void AstNode::addAlternativeScopes(NodeExtensionMisc* ext)
 {
+    SharedLock(ext->mutexAltScopes);
+    if (ext->alternativeScopes.empty())
+        return;
+
     allocateExtension(ExtensionKind::Misc);
     ScopedLock(extMisc()->mutexAltScopes);
-    extMisc()->alternativeScopes.append(scopes);
+    extMisc()->alternativeScopes.append(ext->alternativeScopes);
 }
 
 void AstNode::computeLocation(SourceLocation& start, SourceLocation& end)

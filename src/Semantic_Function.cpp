@@ -1697,8 +1697,8 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     AstNode* parentNode = funcDecl;
     while (parentNode)
     {
-        if (parentNode->hasExtMisc() && !parentNode->extMisc()->alternativeScopes.empty())
-            inlineNode->addAlternativeScopes(parentNode->extMisc()->alternativeScopes);
+        if (parentNode->hasExtMisc())
+            inlineNode->addAlternativeScopes(parentNode->extMisc());
         parentNode = parentNode->parent;
     }
 

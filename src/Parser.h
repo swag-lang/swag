@@ -3,6 +3,7 @@
 #include "AstFlags.h"
 #include "Scope.h"
 #include "ErrorContext.h"
+
 struct SourceFile;
 struct AstVarDecl;
 struct AstNode;

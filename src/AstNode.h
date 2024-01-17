@@ -24,6 +24,7 @@ struct ByteCode;
 struct ByteCodeGenContext;
 struct ByteCodeGenJob;
 struct DocContent;
+struct ExportedTypeInfo;
 struct GenericReplaceType;
 struct Job;
 struct Parser;
@@ -34,7 +35,6 @@ struct TypeInfo;
 struct TypeInfoFuncAttr;
 struct TypeInfoParam;
 struct TypeInfoStruct;
-struct ExportedTypeInfo;
 
 typedef bool (*SemanticFct)(SemanticContext* context);
 typedef bool (*ByteCodeFct)(ByteCodeGenContext* context);
@@ -327,7 +327,6 @@ struct AstNode
     void         computeLocation(SourceLocation& start, SourceLocation& end);
     void         addAlternativeScope(Scope* scope, uint32_t altFlags = 0);
     void         addAlternativeScopeVar(Scope* scope, AstNode* varNode, uint32_t altFlags = 0);
-    void         addAlternativeScopes(const VectorNative<AlternativeScope>& scopes);
     uint32_t     childParentIdx();
     void         printLoc();
 
@@ -391,6 +390,7 @@ struct AstNode
     void setBcNotifAfter(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf = nullptr);
     void addSpecFlags(uint16_t fl);
     void removeSpecFlags(uint16_t fl);
+    void addAlternativeScopes(NodeExtensionMisc* ext);
 
     // clang-format off
     bool               hasExtByteCode() { return extension && extension->bytecode; }
