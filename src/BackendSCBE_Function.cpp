@@ -2054,9 +2054,9 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
             pp.emit_ClearN(R8, CPUBits::B32);
             MK_IMMA_F32(XMM0);
             MK_IMMB_F32(XMM1);
-            concat.addString3("\x0F\x2E\xC1"); // ucomiss xmm0, xmm1
+            pp.emit_OpF32(XMM0, XMM1, CPUOp::UCOMIF);
             pp.emit_SetA(R8);
-            concat.addString3("\x0F\x2E\xC8"); // ucomiss xmm1, xmm0
+            pp.emit_OpF32(XMM1, XMM0, CPUOp::UCOMIF);
             pp.emit_Load32_Immediate(RAX, 0xFFFFFFFF);
             pp.emit_CMovN(RAX, R8, CPUBits::B32, CPUOp::CMOVBE);
             pp.emit_Store32_Indirect(REG_OFFSET(ip->c.u32), RAX);
@@ -2065,9 +2065,9 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
             pp.emit_ClearN(R8, CPUBits::B32);
             MK_IMMA_F64(XMM0);
             MK_IMMB_F64(XMM1);
-            concat.addString4("\x66\x0F\x2E\xC1"); // ucomisd xmm0, xmm1
+            pp.emit_OpF64(XMM0, XMM1, CPUOp::UCOMIF);
             pp.emit_SetA(R8);
-            concat.addString4("\x66\x0F\x2E\xC8"); // ucomisd xmm1, xmm0
+            pp.emit_OpF64(XMM1, XMM0, CPUOp::UCOMIF);
             pp.emit_Load32_Immediate(RAX, 0xFFFFFFFF);
             pp.emit_CMovN(RAX, R8, CPUBits::B32, CPUOp::CMOVBE);
             pp.emit_Store32_Indirect(REG_OFFSET(ip->c.u32), RAX);

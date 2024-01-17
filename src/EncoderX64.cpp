@@ -1027,7 +1027,7 @@ void EncoderX64::emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUB
 
 void EncoderX64::emit_OpF32(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits srcBits)
 {
-    if (op != CPUOp::FSQRT && op != CPUOp::FAND)
+    if (op != CPUOp::FSQRT && op != CPUOp::FAND && op != CPUOp::UCOMIF)
     {
         concat.addU8(0xF3);
         emit_REX(srcBits, regSrc);
@@ -1040,7 +1040,7 @@ void EncoderX64::emit_OpF32(CPURegister regDst, CPURegister regSrc, CPUOp op, CP
 
 void EncoderX64::emit_OpF64(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits srcBits)
 {
-    if (op != CPUOp::FSQRT && op != CPUOp::FAND)
+    if (op != CPUOp::FSQRT && op != CPUOp::FAND && op != CPUOp::UCOMIF)
     {
         concat.addU8(0xF2);
         emit_REX(srcBits, regSrc);

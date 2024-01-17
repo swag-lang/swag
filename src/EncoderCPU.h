@@ -48,6 +48,7 @@ enum class CPUOp : uint8_t
     SUB    = 0x29,
     CVTI2F = 0x2A,
     CVTF2I = 0x2C,
+    UCOMIF = 0x2E,
     XOR    = 0x31,
     CMOVB  = 0x42,
     CMOVE  = 0x44,
