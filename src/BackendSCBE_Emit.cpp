@@ -256,41 +256,7 @@ void BackendSCBE::emitBinOpIntN(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp o
     if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
     {
         pp.emit_LoadN_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
-        pp.emit_REX(numBits);
-        if (op == CPUOp::MUL)
-        {
-            if (numBits == CPUBits::B8)
-                pp.concat.addString1("\xF6");
-            else
-                pp.concat.addString1("\xF7");
-            pp.emit_ModRM(REG_OFFSET(ip->b.u32), 4, RDI);
-        }
-        else if (op == CPUOp::IMUL)
-        {
-            if (numBits == CPUBits::B8)
-            {
-                pp.concat.addString1("\xF6");
-                pp.emit_ModRM(REG_OFFSET(ip->b.u32), 5, RDI);
-            }
-            else if (numBits == CPUBits::B16)
-            {
-                pp.concat.addString1("\xF7");
-                pp.emit_ModRM(REG_OFFSET(ip->b.u32), 5, RDI);
-            }
-            else
-            {
-                pp.concat.addString2("\x0F\xAF");
-                pp.emit_ModRM(REG_OFFSET(ip->b.u32), RAX, RDI);
-            }
-        }
-        else
-        {
-            if (numBits == CPUBits::B8)
-                pp.concat.addU8((uint8_t) op + 1);
-            else
-                pp.concat.addU8((uint8_t) op | 2);
-            pp.emit_ModRM(REG_OFFSET(ip->b.u32), RAX, RDI);
-        }
+        pp.emit_OpN(REG_OFFSET(ip->b.u32), RAX, RDI, op, numBits);
     }
     // Mul by power of 2 => shift by log2
     else if (op == CPUOp::MUL &&

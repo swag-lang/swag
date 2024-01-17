@@ -1012,6 +1012,42 @@ void EncoderX64::emit_OpF64(CPURegister regSrc, CPURegister regDst, CPUOp op)
         SWAG_ASSERT(false);
 }
 
+void EncoderX64::emit_OpN(uint32_t offsetStack, CPURegister reg, CPURegister memReg, CPUOp op, CPUBits numBits)
+{
+    emit_REX(numBits);
+    if (op == CPUOp::MUL)
+    {
+        emit_Spec8(0xF7, numBits);
+        emit_ModRM(offsetStack, 4, RDI);
+    }
+    else if (op == CPUOp::IMUL)
+    {
+        if (numBits == CPUBits::B8)
+        {
+            concat.addU8(0xF6);
+            emit_ModRM(offsetStack, 5, RDI);
+        }
+        else if (numBits == CPUBits::B16)
+        {
+            concat.addU8(0xF7);
+            emit_ModRM(offsetStack, 5, RDI);
+        }
+        else
+        {
+            concat.addString2("\x0F\xAF");
+            emit_ModRM(offsetStack, RAX, RDI);
+        }
+    }
+    else
+    {
+        if (numBits == CPUBits::B8)
+            concat.addU8((uint8_t) op + 1);
+        else
+            concat.addU8((uint8_t) op | 2);
+        emit_ModRM(offsetStack, RAX, RDI);
+    }
+}
+
 void EncoderX64::emit_OpN_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, CPUOp op, CPUBits numBits, bool lock)
 {
     SWAG_ASSERT(memReg < R8);

@@ -114,6 +114,8 @@ struct EncoderX64 : public EncoderCPU
     void emit_OpF32(CPURegister regSrc, CPURegister regDst, CPUOp op);
     void emit_OpF64(CPURegister regSrc, CPURegister regDst, CPUOp op);
 
+    void emit_OpN(uint32_t offsetStack, CPURegister reg, CPURegister memReg, CPUOp op, CPUBits numBits);
+
     void emit_OpN_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, CPUOp op, CPUBits numBits, bool lock = false);
     void emit_OpF32_Indirect(CPURegister reg, CPURegister memReg, CPUOp op);
     void emit_OpF64_Indirect(CPURegister reg, CPURegister memReg, CPUOp op);
