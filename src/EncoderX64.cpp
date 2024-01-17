@@ -1065,9 +1065,34 @@ void EncoderX64::emit_OpN_Indirect(uint32_t offsetStack, CPURegister reg, CPUReg
     SWAG_ASSERT(memReg < R8);
     if (lock)
         concat.addU8(0xF0);
+
     emit_REX(numBits, reg);
-    emit_Spec8((uint8_t) op, numBits);
-    emit_ModRM(offsetStack, reg, memReg);
+    if (op == CPUOp::DIV || op == CPUOp::IDIV)
+    {
+        SWAG_ASSERT(reg == RAX);
+
+        emit_Spec8(0xF7, numBits);
+
+        if (offsetStack == 0)
+        {
+            concat.addU8((uint8_t) op - 0xBA);
+        }
+        else if (offsetStack <= 0x7F)
+        {
+            concat.addU8((uint8_t) op - 0x7A);
+            concat.addU8((uint8_t) offsetStack);
+        }
+        else
+        {
+            concat.addU8((uint8_t) op - 0x3A);
+            concat.addU32(offsetStack);
+        }
+    }
+    else
+    {
+        emit_Spec8((uint8_t) op, numBits);
+        emit_ModRM(offsetStack, reg, memReg);
+    }
 }
 
 void EncoderX64::emit_OpF32_Indirect(CPURegister reg, CPURegister memReg, CPUOp op)

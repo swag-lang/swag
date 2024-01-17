@@ -297,6 +297,7 @@ void BackendSCBE::emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip,
         else
             pp.emit_LoadU8U32_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);
         break;
+
     case CPUBits::B16:
         if (ip->flags & BCI_IMM_A)
             pp.emit_Load16_Immediate(RAX, ip->a.u16);
@@ -307,6 +308,7 @@ void BackendSCBE::emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip,
         else
             pp.emit_ClearN(RDX, CPUBits::B16);
         break;
+
     case CPUBits::B32:
         if (ip->flags & BCI_IMM_A)
             pp.emit_Load32_Immediate(RAX, ip->a.u32);
@@ -317,6 +319,7 @@ void BackendSCBE::emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip,
         else
             pp.emit_ClearN(RDX, CPUBits::B32);
         break;
+
     case CPUBits::B64:
         if (ip->flags & BCI_IMM_A)
             pp.emit_Load64_Immediate(RAX, ip->a.u64);
@@ -327,6 +330,7 @@ void BackendSCBE::emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip,
         else
             pp.emit_ClearN(RDX, CPUBits::B64);
         break;
+
     default:
         SWAG_ASSERT(false);
         break;
@@ -339,28 +343,7 @@ void BackendSCBE::emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip,
     }
     else
     {
-        // div [rdi+?]
-        pp.emit_REX(numBits);
-        if (numBits == CPUBits::B8)
-            pp.concat.addU8(0xF6);
-        else
-            pp.concat.addU8(0xF7);
-
-        uint32_t offsetStack = ip->b.u32 * sizeof(Register);
-        if (offsetStack == 0)
-        {
-            pp.concat.addU8(0x37 | (isSigned ? 0b1000 : 0));
-        }
-        else if (offsetStack <= 0x7F)
-        {
-            pp.concat.addU8(0x77 | (isSigned ? 0b1000 : 0));
-            pp.concat.addU8((uint8_t) offsetStack);
-        }
-        else
-        {
-            pp.concat.addU8(0xB7 | (isSigned ? 0b1000 : 0));
-            pp.concat.addU32(offsetStack);
-        }
+        pp.emit_OpN_Indirect(REG_OFFSET(ip->b.u32), RAX, RDI, isSigned ? CPUOp::IDIV : CPUOp::DIV, numBits);
     }
 
     // modulo in 8 bits stores the reminder in AH and not RDX
