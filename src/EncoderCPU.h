@@ -56,6 +56,7 @@ enum class CPUOp : uint8_t
     CMOVG  = 0x4F,
     FADD   = 0x58,
     FMUL   = 0x59,
+    CVTSD  = 0x5A,
     FSUB   = 0x5C,
     FDIV   = 0x5E,
     XCHG   = 0x87,

@@ -392,7 +392,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         case ByteCodeOp::CastF64F32:
             pp.emit_LoadF64_Indirect(REG_OFFSET(ip->b.u32), XMM0);
-            concat.addString4("\xf2\x0f\x5a\xc0"); // cvtsd2ss xmm0, xmm0
+            pp.emit_OpF64(RAX, XMM0, CPUOp::CVTSD);
             pp.emit_StoreF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
 
@@ -456,7 +456,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::CastF32F64:
             pp.emit_LoadF32_Indirect(REG_OFFSET(ip->b.u32), XMM0);
-            concat.addString4("\xf3\x0f\x5a\xc0"); // cvtss2sd xmm0, xmm0
+            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTSD);
             pp.emit_StoreF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
 
