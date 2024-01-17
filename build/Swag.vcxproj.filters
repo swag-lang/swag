@@ -653,14 +653,14 @@
     <ClCompile Include="..\src\SemanticError_Ambiguous.cpp">
       <Filter>Semantic\Error</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\EncoderX64.cpp">
-      <Filter>Backend\SCBE</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\EncoderCPU.cpp">
-      <Filter>Backend\SCBE</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\BackendFunctionBodyJob.cpp">
       <Filter>Backend</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\EncoderCPU.cpp">
+      <Filter>Backend\SCBE\Encoder</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\EncoderX64.cpp">
+      <Filter>Backend\SCBE\Encoder</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1007,14 +1007,14 @@
     <ClInclude Include="..\src\SemanticError.h">
       <Filter>Semantic\Error</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\EncoderX64.h">
-      <Filter>Backend\SCBE</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\EncoderCPU.h">
-      <Filter>Backend\SCBE</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\BackendFunctionBodyJob.h">
       <Filter>Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\EncoderX64.h">
+      <Filter>Backend\SCBE\Encoder</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\EncoderCPU.h">
+      <Filter>Backend\SCBE\Encoder</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1104,6 +1104,9 @@
     </Filter>
     <Filter Include="Backend\SCBE">
       <UniqueIdentifier>{8a2a36d9-44c6-423d-8d02-ff5e04508f18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Backend\SCBE\Encoder">
+      <UniqueIdentifier>{cf0fe3a7-5c87-4647-aa5e-c94b12fee9af}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
