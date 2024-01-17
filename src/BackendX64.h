@@ -36,20 +36,20 @@ struct BackendX64 : public Backend
     uint32_t getOrCreateLabel(EncoderX64& pp, uint32_t ip);
     void     emitOverflowSigned(EncoderX64& pp, ByteCodeInstruction* ip, const char* msg);
     void     emitOverflowUnsigned(EncoderX64& pp, ByteCodeInstruction* ip, const char* msg);
-    void     emitShiftRightArithmetic(EncoderX64& pp, ByteCodeInstruction* ip, X64Bits numBits);
-    void     emitShiftLogical(EncoderX64& pp, ByteCodeInstruction* ip, X64Bits numBits, X64Op op);
-    void     emitShiftRightEqArithmetic(EncoderX64& pp, ByteCodeInstruction* ip, X64Bits numBits);
-    void     emitShiftEqLogical(EncoderX64& pp, ByteCodeInstruction* ip, X64Bits numBits, X64Op op);
+    void     emitShiftRightArithmetic(EncoderX64& pp, ByteCodeInstruction* ip, CPUBits numBits);
+    void     emitShiftLogical(EncoderX64& pp, ByteCodeInstruction* ip, CPUBits numBits, CPUOp op);
+    void     emitShiftRightEqArithmetic(EncoderX64& pp, ByteCodeInstruction* ip, CPUBits numBits);
+    void     emitShiftEqLogical(EncoderX64& pp, ByteCodeInstruction* ip, CPUBits numBits, CPUOp op);
     void     emitInternalPanic(EncoderX64& pp, AstNode* node, const char* msg);
     bool     emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
-    void     emitBinOpFloat32(EncoderX64& pp, ByteCodeInstruction* ip, X64Op op);
-    void     emitBinOpFloat32AtReg(EncoderX64& pp, ByteCodeInstruction* ip, X64Op op);
-    void     emitBinOpFloat64(EncoderX64& pp, ByteCodeInstruction* ip, X64Op op);
-    void     emitBinOpFloat64AtReg(EncoderX64& pp, ByteCodeInstruction* ip, X64Op op);
-    void     emitBinOpIntN(EncoderX64& pp, ByteCodeInstruction* ip, X64Op op, X64Bits numBits);
-    void     emitBinOpIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, X64Op op, X64Bits numBits);
-    void     emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, bool isSigned, X64Bits numBits, bool modulo = false);
-    void     emitAddSubMul64(EncoderX64& pp, ByteCodeInstruction* ip, uint64_t mul, X64Op op);
+    void     emitBinOpFloat32(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op);
+    void     emitBinOpFloat32AtReg(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op);
+    void     emitBinOpFloat64(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op);
+    void     emitBinOpFloat64AtReg(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op);
+    void     emitBinOpIntN(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
+    void     emitBinOpIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
+    void     emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, bool isSigned, CPUBits numBits, bool modulo = false);
+    void     emitAddSubMul64(EncoderX64& pp, ByteCodeInstruction* ip, uint64_t mul, CPUOp op);
 
     bool emitXData(const BuildParameters& buildParameters);
     bool emitPData(const BuildParameters& buildParameters);
@@ -98,10 +98,10 @@ struct BackendX64 : public Backend
 
     uint32_t getParamStackOffset(CoffFunction* coffFct, int paramIdx);
     void     emitGetParam(EncoderX64& pp, CoffFunction* coffFct, int reg, uint32_t paramIdx, int sizeOf, uint64_t toAdd = 0, int derefSize = 0);
-    void     emitCall(EncoderX64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<X64PushParam>& pushParams, uint32_t offsetRT, bool localCall);
+    void     emitCall(EncoderX64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT, bool localCall);
     void     emitCall(EncoderX64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall);
     void     emitInternalCall(EncoderX64& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT = UINT32_MAX);
-    void     emitInternalCallExt(EncoderX64& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<X64PushParam>& pushParams, uint32_t offsetRT = UINT32_MAX, TypeInfoFuncAttr* typeFunc = nullptr);
+    void     emitInternalCallExt(EncoderX64& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT = UINT32_MAX, TypeInfoFuncAttr* typeFunc = nullptr);
     void     emitCall(EncoderX64& pp, const Utf8& funcName);
 
     CoffFunction* registerFunction(EncoderX64& pp, AstNode* node, uint32_t symbolIndex);

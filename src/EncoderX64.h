@@ -15,9 +15,9 @@ struct EncoderX64 : public EncoderCPU
 
     uint8_t getREX(bool w = true, bool r = false, bool x = false, bool b = false);
     uint8_t getModRM(uint8_t mod, uint8_t r, uint8_t m);
-    void    emit_REX(X64Bits numBits, CPURegister reg1 = RAX, CPURegister reg2 = RAX);
+    void    emit_REX(CPUBits numBits, CPURegister reg1 = RAX, CPURegister reg2 = RAX);
     void    emit_ModRM(uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t op = 1);
-    void    emit_Spec8(uint8_t value, X64Bits numBits);
+    void    emit_Spec8(uint8_t value, CPUBits numBits);
 
     CoffSymbol* getSymbol(const Utf8& name);
     CoffSymbol* getOrAddSymbol(const Utf8& name, CoffSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
@@ -32,36 +32,36 @@ struct EncoderX64 : public EncoderCPU
 
     void emit_Call_Indirect(CPURegister reg);
     void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, void* retCopyAddr = nullptr);
-    void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<X64PushParam>& pushRAParams, uint32_t offsetRT, void* retCopyAddr = nullptr);
-    void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, VectorNative<X64PushParam>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopyAddr = nullptr);
+    void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<CPUPushParam>& pushRAParams, uint32_t offsetRT, void* retCopyAddr = nullptr);
+    void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, VectorNative<CPUPushParam>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopyAddr = nullptr);
     void emit_Call_Result(TypeInfoFuncAttr* typeFunc, uint32_t offsetRT);
     void emit_Ret();
 
-    void emit_ClearN(CPURegister reg, X64Bits numBits);
+    void emit_ClearN(CPURegister reg, CPUBits numBits);
     void emit_ClearX(uint32_t count, uint32_t offset, CPURegister reg);
 
-    void emit_CmpN(CPURegister regSrc, CPURegister regDst, X64Bits numBits);
+    void emit_CmpN(CPURegister regSrc, CPURegister regDst, CPUBits numBits);
     void emit_CmpF32(CPURegister reg1, CPURegister reg2);
     void emit_CmpF64(CPURegister reg1, CPURegister reg2);
 
-    void emit_CopyDownUp(CPURegister reg, X64Bits numBits);
+    void emit_CopyDownUp(CPURegister reg, CPUBits numBits);
 
-    void emit_CmpN_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, X64Bits numBits);
+    void emit_CmpN_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, CPUBits numBits);
     void emit_CmpF32_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg);
     void emit_CmpF64_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg);
 
-    void emit_CmpN_Immediate(CPURegister reg, uint64_t value, X64Bits numBits);
+    void emit_CmpN_Immediate(CPURegister reg, uint64_t value, CPUBits numBits);
 
-    void emit_CmpN_IndirectDst(uint32_t offsetStack, uint32_t value, X64Bits numBits);
+    void emit_CmpN_IndirectDst(uint32_t offsetStack, uint32_t value, CPUBits numBits);
 
-    void emit_CopyN(CPURegister regDst, CPURegister regSrc, X64Bits numBits);
+    void emit_CopyN(CPURegister regDst, CPURegister regSrc, CPUBits numBits);
     void emit_CopyF32(CPURegister regDst, CPURegister regSrc);
     void emit_CopyF64(CPURegister regDst, CPURegister regSrc);
     void emit_CopyX(uint32_t count, uint32_t offset, CPURegister regDst, CPURegister regSrc);
 
-    void emit_LongJumpOp(JumpType jumpType);
-    void emit_NearJumpOp(JumpType jumpType);
-    void emit_Jump(JumpType jumpType, int32_t instructionCount, int32_t jumpOffset);
+    void emit_LongJumpOp(CPUJumpType jumpType);
+    void emit_NearJumpOp(CPUJumpType jumpType);
+    void emit_Jump(CPUJumpType jumpType, int32_t instructionCount, int32_t jumpOffset);
     void emit_Jump(CPURegister reg);
 
     void emit_Extend_U16U64(CPURegister regSrc, CPURegister regDst);
@@ -71,13 +71,13 @@ struct EncoderX64 : public EncoderCPU
     void emit_Load16_Immediate(CPURegister reg, uint16_t value);
     void emit_Load32_Immediate(CPURegister reg, uint32_t value);
     void emit_Load64_Immediate(CPURegister reg, uint64_t value, bool force64bits = false);
-    void emit_LoadN_Immediate(CPURegister reg, uint64_t value, X64Bits numBits);
+    void emit_LoadN_Immediate(CPURegister reg, uint64_t value, CPUBits numBits);
 
     void emit_Load8_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg = RDI);
     void emit_Load16_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg = RDI);
     void emit_Load32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg = RDI);
     void emit_Load64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg = RDI);
-    void emit_LoadN_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg, X64Bits numBits);
+    void emit_LoadN_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg, CPUBits numBits);
     void emit_LoadF32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg = RDI);
     void emit_LoadF64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg = RDI);
 
@@ -92,7 +92,7 @@ struct EncoderX64 : public EncoderCPU
     void emit_Store64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg = RDI);
     void emit_StoreF32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg = RDI);
     void emit_StoreF64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg = RDI);
-    void emit_StoreN_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg, X64Bits numBits);
+    void emit_StoreN_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg, CPUBits numBits);
 
     void emit_LoadAddress_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg);
 
@@ -107,16 +107,16 @@ struct EncoderX64 : public EncoderCPU
     void emit_LoadU8U32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg);
     void emit_LoadU8U64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg);
 
-    void emit_OpN(CPURegister regSrc, CPURegister regDst, X64Op op, X64Bits numBits);
-    void emit_OpF32(CPURegister regSrc, CPURegister regDst, X64Op op);
-    void emit_OpF64(CPURegister regSrc, CPURegister regDst, X64Op op);
+    void emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUBits numBits);
+    void emit_OpF32(CPURegister regSrc, CPURegister regDst, CPUOp op);
+    void emit_OpF64(CPURegister regSrc, CPURegister regDst, CPUOp op);
 
-    void emit_OpN_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, X64Op op, X64Bits numBits, bool lock = false);
-    void emit_OpF32_Indirect(CPURegister reg, CPURegister memReg, X64Op op);
-    void emit_OpF64_Indirect(CPURegister reg, CPURegister memReg, X64Op op);
+    void emit_OpN_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, CPUOp op, CPUBits numBits, bool lock = false);
+    void emit_OpF32_Indirect(CPURegister reg, CPURegister memReg, CPUOp op);
+    void emit_OpF64_Indirect(CPURegister reg, CPURegister memReg, CPUOp op);
 
-    void emit_OpN_Immediate(CPURegister reg, uint64_t value, X64Op op, X64Bits numBits);
-    void emit_OpN_IndirectDst(uint32_t offsetStack, uint64_t value, CPURegister memReg, X64Op op, X64Bits numBits);
+    void emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, CPUBits numBits);
+    void emit_OpN_IndirectDst(uint32_t offsetStack, uint64_t value, CPURegister memReg, CPUOp op, CPUBits numBits);
 
     void emit_SetA(CPURegister reg = RAX);
     void emit_SetAE(CPURegister reg = RAX);
@@ -138,14 +138,14 @@ struct EncoderX64 : public EncoderCPU
 
     void emit_nop();
 
-    void emit_TestN(CPURegister regSrc, CPURegister regDst, X64Bits numBits);
-    void emit_NotN(CPURegister reg, X64Bits numBits);
-    void emit_NotN_Indirect(uint32_t stackOffset, CPURegister memReg, X64Bits numBits);
-    void emit_IncN_Indirect(uint32_t stackOffset, CPURegister memReg, X64Bits numBits);
-    void emit_DecN_Indirect(uint32_t stackOffset, CPURegister memReg, X64Bits numBits);
-    void emit_NegN(CPURegister reg, X64Bits numBits);
-    void emit_NegN_Indirect(uint32_t stackOffset, CPURegister memReg, X64Bits numBits);
-    void emit_CMovN(CPURegister regDst, CPURegister regSrc, X64Bits numBits, X64Op op);
-    void emit_BSwapN(CPURegister reg, X64Bits numBits);
-    void emit_ShiftN(CPURegister reg, uint32_t value, X64Bits numBits, X64Op op);
+    void emit_TestN(CPURegister regSrc, CPURegister regDst, CPUBits numBits);
+    void emit_NotN(CPURegister reg, CPUBits numBits);
+    void emit_NotN_Indirect(uint32_t stackOffset, CPURegister memReg, CPUBits numBits);
+    void emit_IncN_Indirect(uint32_t stackOffset, CPURegister memReg, CPUBits numBits);
+    void emit_DecN_Indirect(uint32_t stackOffset, CPURegister memReg, CPUBits numBits);
+    void emit_NegN(CPURegister reg, CPUBits numBits);
+    void emit_NegN_Indirect(uint32_t stackOffset, CPURegister memReg, CPUBits numBits);
+    void emit_CMovN(CPURegister regDst, CPURegister regSrc, CPUBits numBits, CPUOp op);
+    void emit_BSwapN(CPURegister reg, CPUBits numBits);
+    void emit_ShiftN(CPURegister reg, uint32_t value, CPUBits numBits, CPUOp op);
 };

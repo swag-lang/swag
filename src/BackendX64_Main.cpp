@@ -94,7 +94,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     pp.emit_Store64_Immediate(0, module->moduleDependencies.count + 1, RAX);
 
     //__process_infos.args
-    pp.emit_ClearN(RCX, X64Bits::B64);
+    pp.emit_ClearN(RCX, CPUBits::B64);
     pp.emit_Symbol_RelocationAddr(RAX, pp.symPI_argsAddr, 0);
     pp.emit_Store64_Indirect(0, RCX, RAX);
     pp.emit_Symbol_RelocationAddr(RAX, pp.symPI_argsCount, 0);
@@ -111,14 +111,14 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
 
     // Set default context in TLS
     pp.pushParams.clear();
-    pp.pushParams.push_back({X64PushParamType::RelocV, pp.symPI_contextTlsId});
-    pp.pushParams.push_back({X64PushParamType::RelocV, pp.symPI_defaultContext});
+    pp.pushParams.push_back({CPUPushParamType::RelocV, pp.symPI_contextTlsId});
+    pp.pushParams.push_back({CPUPushParamType::RelocV, pp.symPI_defaultContext});
     emitInternalCallExt(pp, module, g_LangSpec->name__tlsSetValue, pp.pushParams);
 
     // Setup runtime
     auto rtFlags = Backend::getRuntimeFlags(module);
     pp.pushParams.clear();
-    pp.pushParams.push_back({X64PushParamType::Imm64, rtFlags});
+    pp.pushParams.push_back({CPUPushParamType::Imm64, rtFlags});
     emitInternalCallExt(pp, module, g_LangSpec->name__setupRuntime, pp.pushParams);
 
     // Load all dependencies
@@ -133,13 +133,13 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
         nameLib += Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::DynamicLib);
 
         pp.pushParams.clear();
-        pp.pushParams.push_back({X64PushParamType::GlobalString, (uint64_t) nameLib.c_str()});
-        pp.pushParams.push_back({X64PushParamType::Imm, (uint64_t) nameLib.length()});
+        pp.pushParams.push_back({CPUPushParamType::GlobalString, (uint64_t) nameLib.c_str()});
+        pp.pushParams.push_back({CPUPushParamType::Imm, (uint64_t) nameLib.length()});
         emitInternalCallExt(pp, module, g_LangSpec->name__loaddll, pp.pushParams);
     }
 
     pp.pushParams.clear();
-    pp.pushParams.push_back({X64PushParamType::RelocAddr, pp.symPI_processInfos});
+    pp.pushParams.push_back({CPUPushParamType::RelocAddr, pp.symPI_processInfos});
 
     // Call to global init of all dependencies
     for (size_t i = 0; i < moduleDependencies.size(); i++)
@@ -207,7 +207,7 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
 
     emitCall(pp, g_LangSpec->name__closeRuntime);
 
-    pp.emit_ClearN(RAX, X64Bits::B64);
+    pp.emit_ClearN(RAX, CPUBits::B64);
     pp.emit_Add32_RSP(40);
     pp.emit_Ret();
 
@@ -285,9 +285,9 @@ bool BackendX64::emitGlobalPreMain(const BuildParameters& buildParameters)
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
-    pp.pushParams.push_back({X64PushParamType::RelocAddr, pp.symPI_processInfos});
-    pp.pushParams.push_back({X64PushParamType::Reg, 0});
-    pp.pushParams.push_back({X64PushParamType::Imm, sizeof(SwagProcessInfos)});
+    pp.pushParams.push_back({CPUPushParamType::RelocAddr, pp.symPI_processInfos});
+    pp.pushParams.push_back({CPUPushParamType::Reg, 0});
+    pp.pushParams.push_back({CPUPushParamType::Imm, sizeof(SwagProcessInfos)});
     emitInternalCallExt(pp, module, g_LangSpec->name_memcpy, pp.pushParams);
 
     // Call to #premain functions
@@ -340,9 +340,9 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
 
     // Copy process infos passed as a parameter to the process info struct of this module
     pp.pushParams.clear();
-    pp.pushParams.push_back({X64PushParamType::RelocAddr, pp.symPI_processInfos});
-    pp.pushParams.push_back({X64PushParamType::Reg, 0});
-    pp.pushParams.push_back({X64PushParamType::Imm, sizeof(SwagProcessInfos)});
+    pp.pushParams.push_back({CPUPushParamType::RelocAddr, pp.symPI_processInfos});
+    pp.pushParams.push_back({CPUPushParamType::Reg, 0});
+    pp.pushParams.push_back({CPUPushParamType::Imm, sizeof(SwagProcessInfos)});
     emitInternalCallExt(pp, module, g_LangSpec->name_memcpy, pp.pushParams);
 
     // Thread local storage
@@ -355,7 +355,7 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
     {
         if (!dep->module->isSwag)
         {
-            pp.emit_OpN_Immediate(RCX, sizeof(SwagModule), X64Op::ADD, X64Bits::B64);
+            pp.emit_OpN_Immediate(RCX, sizeof(SwagModule), CPUOp::ADD, CPUBits::B64);
             continue;
         }
 
@@ -365,10 +365,10 @@ bool BackendX64::emitGlobalInit(const BuildParameters& buildParameters)
         // Count types is stored as a uint64_t at the start of the address
         pp.emit_Load64_Indirect(0, R8, cc.returnByRegisterInteger);
         pp.emit_Store64_Indirect(sizeof(uint64_t), R8, RCX);
-        pp.emit_OpN_Immediate(cc.returnByRegisterInteger, sizeof(uint64_t), X64Op::ADD, X64Bits::B64);
+        pp.emit_OpN_Immediate(cc.returnByRegisterInteger, sizeof(uint64_t), CPUOp::ADD, CPUBits::B64);
         pp.emit_Store64_Indirect(0, cc.returnByRegisterInteger, RCX);
 
-        pp.emit_OpN_Immediate(RCX, sizeof(SwagModule), X64Op::ADD, X64Bits::B64);
+        pp.emit_OpN_Immediate(RCX, sizeof(SwagModule), CPUOp::ADD, CPUBits::B64);
     }
 
     // Call to #init functions

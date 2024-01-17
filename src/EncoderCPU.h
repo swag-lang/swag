@@ -22,7 +22,7 @@ struct ByteCodeInstruction;
 #define UWOP_ALLOC_LARGE 1
 #define UWOP_ALLOC_SMALL 2
 
-enum class X64Bits : uint32_t
+enum class CPUBits : uint32_t
 {
     B8  = 8,
     B16 = 16,
@@ -30,7 +30,7 @@ enum class X64Bits : uint32_t
     B64 = 64,
 };
 
-enum class X64PushParamType
+enum class CPUPushParamType
 {
     Reg,
     RegAdd,
@@ -44,14 +44,14 @@ enum class X64PushParamType
     GlobalString,
 };
 
-struct X64PushParam
+struct CPUPushParam
 {
-    X64PushParamType type = X64PushParamType::Reg;
+    CPUPushParamType type = CPUPushParamType::Reg;
     uint64_t         reg  = 0;
     uint64_t         val  = 0;
 };
 
-enum class X64Op : uint8_t
+enum class CPUOp : uint8_t
 {
     ADD    = 0x01,
     OR     = 0x09,
@@ -96,7 +96,7 @@ enum Disp
     REGREG = 0b11,
 };
 
-enum JumpType
+enum CPUJumpType
 {
     JNO,
     JNZ,
@@ -282,9 +282,9 @@ struct EncoderCPU
     Concat postConcat;
 
     VectorNative<const Utf8*>  stringTable;
-    VectorNative<X64PushParam> pushParams;
-    VectorNative<X64PushParam> pushParams2;
-    VectorNative<X64PushParam> pushParams3;
+    VectorNative<CPUPushParam> pushParams;
+    VectorNative<CPUPushParam> pushParams2;
+    VectorNative<CPUPushParam> pushParams3;
     VectorNative<TypeInfo*>    pushParamsTypes;
     CoffRelocationTable        relocTableTextSection;
     CoffRelocationTable        relocTableCSSection;

@@ -48,7 +48,7 @@ void BackendX64::emitGetParam(EncoderX64& pp, CoffFunction* coffFct, int reg, ui
     case 4:
         SWAG_ASSERT(!toAdd);
         if (paramIdx < coffFct->numScratchRegs)
-            pp.emit_CopyN(RAX, (CPURegister) (cc.firstScratchRegister + paramIdx), X64Bits::B32);
+            pp.emit_CopyN(RAX, (CPURegister) (cc.firstScratchRegister + paramIdx), CPUBits::B32);
         else
             pp.emit_Load32_Indirect(paramStack, RAX, RDI);
         pp.emit_Store64_Indirect(REG_OFFSET(reg), RAX);
@@ -115,7 +115,7 @@ void BackendX64::emitGetParam(EncoderX64& pp, CoffFunction* coffFct, int reg, ui
             pp.emit_Load64_Indirect((uint32_t) toAdd, RAX, RAX);
             break;
         default:
-            pp.emit_OpN_Immediate(RAX, toAdd, X64Op::ADD, X64Bits::B64);
+            pp.emit_OpN_Immediate(RAX, toAdd, CPUOp::ADD, CPUBits::B64);
             break;
         }
 
@@ -123,7 +123,7 @@ void BackendX64::emitGetParam(EncoderX64& pp, CoffFunction* coffFct, int reg, ui
     }
 }
 
-void BackendX64::emitCall(EncoderX64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<X64PushParam>& pushParams, uint32_t offsetRT, bool localCall)
+void BackendX64::emitCall(EncoderX64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT, bool localCall)
 {
     // Push parameters
     pp.emit_Call_Parameters(typeFunc, pushParams, offsetRT);
@@ -173,9 +173,9 @@ void BackendX64::emitCall(EncoderX64& pp, TypeInfoFuncAttr* typeFunc, const Utf8
 
 void BackendX64::emitCall(EncoderX64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall)
 {
-    VectorNative<X64PushParam> p;
+    VectorNative<CPUPushParam> p;
     for (auto r : pushRAParams)
-        p.push_back({X64PushParamType::Reg, r});
+        p.push_back({CPUPushParamType::Reg, r});
     emitCall(pp, typeFunc, funcName, p, offsetRT, localCall);
 }
 
@@ -185,21 +185,21 @@ void BackendX64::emitInternalCall(EncoderX64& pp, Module* moduleToGen, const Utf
     SWAG_ASSERT(typeFunc);
 
     // Invert order
-    VectorNative<X64PushParam> p;
+    VectorNative<CPUPushParam> p;
     for (int i = (int) pushRAParams.size() - 1; i >= 0; i--)
-        p.push_back({X64PushParamType::Reg, pushRAParams[i]});
+        p.push_back({CPUPushParamType::Reg, pushRAParams[i]});
 
     emitCall(pp, typeFunc, funcName, p, offsetRT, true);
 }
 
-void BackendX64::emitInternalCallExt(EncoderX64& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<X64PushParam>& pushParams, uint32_t offsetRT, TypeInfoFuncAttr* typeFunc)
+void BackendX64::emitInternalCallExt(EncoderX64& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT, TypeInfoFuncAttr* typeFunc)
 {
     if (!typeFunc)
         typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
     SWAG_ASSERT(typeFunc);
 
     // Invert order
-    VectorNative<X64PushParam> p;
+    VectorNative<CPUPushParam> p;
     for (int i = (int) pushParams.size() - 1; i >= 0; i--)
         p.push_back({pushParams[i]});
 
@@ -257,7 +257,7 @@ void BackendX64::emitByteCodeCallParameters(EncoderX64& pp, TypeInfoFuncAttr* ty
     {
         auto reg = pushRAParams.back();
         pp.emit_Load64_Indirect(REG_OFFSET(reg), RAX);
-        pp.emit_TestN(RAX, RAX, X64Bits::B64);
+        pp.emit_TestN(RAX, RAX, CPUBits::B64);
 
         // If not zero, jump to closure call
         pp.emit_LongJumpOp(JZ);

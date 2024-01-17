@@ -245,22 +245,22 @@
         if (!(ip->flags & (BCI_IMM_A | BCI_IMM_B)))                      \
         {                                                                \
             pp.emit_Load8_Indirect(REG_OFFSET(ip->a.u32), RAX);          \
-            pp.__opInd(REG_OFFSET(ip->b.u32), RAX, RDI, X64Bits::B8);    \
+            pp.__opInd(REG_OFFSET(ip->b.u32), RAX, RDI, CPUBits::B8);    \
         }                                                                \
         else if ((ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))    \
         {                                                                \
             pp.emit_Load8_Immediate(RAX, ip->a.u8);                      \
-            pp.__opInd(REG_OFFSET(ip->b.u32), RAX, RDI, X64Bits::B8);    \
+            pp.__opInd(REG_OFFSET(ip->b.u32), RAX, RDI, CPUBits::B8);    \
         }                                                                \
         else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))    \
         {                                                                \
-            pp.__opIndDst(REG_OFFSET(ip->a.u32), ip->b.u8, X64Bits::B8); \
+            pp.__opIndDst(REG_OFFSET(ip->a.u32), ip->b.u8, CPUBits::B8); \
         }                                                                \
         else                                                             \
         {                                                                \
             MK_IMMA_8(RAX);                                              \
             MK_IMMB_8(RCX);                                              \
-            pp.__op(RAX, RCX, X64Bits::B8);                              \
+            pp.__op(RAX, RCX, CPUBits::B8);                              \
         }                                                                \
     }
 
@@ -269,22 +269,22 @@
         if (!(ip->flags & (BCI_IMM_A | BCI_IMM_B)))                        \
         {                                                                  \
             pp.emit_Load16_Indirect(REG_OFFSET(ip->a.u32), RAX);           \
-            pp.__opInd(REG_OFFSET(ip->b.u32), RAX, RDI, X64Bits::B16);     \
+            pp.__opInd(REG_OFFSET(ip->b.u32), RAX, RDI, CPUBits::B16);     \
         }                                                                  \
         else if ((ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))      \
         {                                                                  \
             pp.emit_Load16_Immediate(RAX, ip->a.u16);                      \
-            pp.__opInd(REG_OFFSET(ip->b.u32), RAX, RDI, X64Bits::B16);     \
+            pp.__opInd(REG_OFFSET(ip->b.u32), RAX, RDI, CPUBits::B16);     \
         }                                                                  \
         else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))      \
         {                                                                  \
-            pp.__opIndDst(REG_OFFSET(ip->a.u32), ip->b.u16, X64Bits::B16); \
+            pp.__opIndDst(REG_OFFSET(ip->a.u32), ip->b.u16, CPUBits::B16); \
         }                                                                  \
         else                                                               \
         {                                                                  \
             MK_IMMA_16(RAX);                                               \
             MK_IMMB_16(RCX);                                               \
-            pp.__op(RAX, RCX, X64Bits::B16);                               \
+            pp.__op(RAX, RCX, CPUBits::B16);                               \
         }                                                                  \
     }
 
@@ -293,22 +293,22 @@
         if (!(ip->flags & (BCI_IMM_A | BCI_IMM_B)))                        \
         {                                                                  \
             pp.emit_Load32_Indirect(REG_OFFSET(ip->a.u32), RAX);           \
-            pp.__opInd(REG_OFFSET(ip->b.u32), RAX, RDI, X64Bits::B32);     \
+            pp.__opInd(REG_OFFSET(ip->b.u32), RAX, RDI, CPUBits::B32);     \
         }                                                                  \
         else if ((ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))      \
         {                                                                  \
             pp.emit_Load32_Immediate(RAX, ip->a.u32);                      \
-            pp.__opInd(REG_OFFSET(ip->b.u32), RAX, RDI, X64Bits::B32);     \
+            pp.__opInd(REG_OFFSET(ip->b.u32), RAX, RDI, CPUBits::B32);     \
         }                                                                  \
         else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))      \
         {                                                                  \
-            pp.__opIndDst(REG_OFFSET(ip->a.u32), ip->b.u32, X64Bits::B32); \
+            pp.__opIndDst(REG_OFFSET(ip->a.u32), ip->b.u32, CPUBits::B32); \
         }                                                                  \
         else                                                               \
         {                                                                  \
             MK_IMMA_32(RAX);                                               \
             MK_IMMB_32(RCX);                                               \
-            pp.__op(RAX, RCX, X64Bits::B32);                               \
+            pp.__op(RAX, RCX, CPUBits::B32);                               \
         }                                                                  \
     }
 
@@ -317,22 +317,22 @@
         if (!(ip->flags & (BCI_IMM_A | BCI_IMM_B)))                                              \
         {                                                                                        \
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);                                 \
-            pp.__opInd(REG_OFFSET(ip->b.u32), RAX, RDI, X64Bits::B64);                           \
+            pp.__opInd(REG_OFFSET(ip->b.u32), RAX, RDI, CPUBits::B64);                           \
         }                                                                                        \
         else if ((ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))                            \
         {                                                                                        \
             pp.emit_Load64_Immediate(RAX, ip->a.u64);                                            \
-            pp.__opInd(REG_OFFSET(ip->b.u32), RAX, RDI, X64Bits::B64);                           \
+            pp.__opInd(REG_OFFSET(ip->b.u32), RAX, RDI, CPUBits::B64);                           \
         }                                                                                        \
         else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B) && ip->b.u64 <= 0x7FFFFFFF) \
         {                                                                                        \
-            pp.__opIndDst(REG_OFFSET(ip->a.u32), ip->b.u32, X64Bits::B64);                       \
+            pp.__opIndDst(REG_OFFSET(ip->a.u32), ip->b.u32, CPUBits::B64);                       \
         }                                                                                        \
         else                                                                                     \
         {                                                                                        \
             MK_IMMA_64(RAX);                                                                     \
             MK_IMMB_64(RCX);                                                                     \
-            pp.__op(RAX, RCX, X64Bits::B64);                                                     \
+            pp.__op(RAX, RCX, CPUBits::B64);                                                     \
         }                                                                                        \
     }
 
@@ -384,24 +384,24 @@
     {                                                         \
         pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);  \
         MK_IMMB_8(RCX);                                       \
-        pp.emit_OpN_Indirect(0, RCX, RAX, __op, X64Bits::B8); \
+        pp.emit_OpN_Indirect(0, RCX, RAX, __op, CPUBits::B8); \
     }
 
 #define MK_BINOPEQ8_SCAB(__op)                                                                   \
     {                                                                                            \
         if (ip->flags & BCI_IMM_B)                                                               \
-            pp.emit_OpN_IndirectDst(offsetStack + ip->a.u32, ip->b.u64, RDI, __op, X64Bits::B8); \
+            pp.emit_OpN_IndirectDst(offsetStack + ip->a.u32, ip->b.u64, RDI, __op, CPUBits::B8); \
         else                                                                                     \
         {                                                                                        \
             pp.emit_Load8_Indirect(REG_OFFSET(ip->b.u32), RAX);                                  \
-            pp.emit_OpN_Indirect(offsetStack + ip->a.u32, RAX, RDI, __op, X64Bits::B8);          \
+            pp.emit_OpN_Indirect(offsetStack + ip->a.u32, RAX, RDI, __op, CPUBits::B8);          \
         }                                                                                        \
     }
 
 #define MK_BINOPEQ8_SSCAB(__op)                                                     \
     {                                                                               \
         pp.emit_Load8_Indirect(offsetStack + ip->b.u32, RAX, RDI);                  \
-        pp.emit_OpN_Indirect(offsetStack + ip->a.u32, RAX, RDI, __op, X64Bits::B8); \
+        pp.emit_OpN_Indirect(offsetStack + ip->a.u32, RAX, RDI, __op, CPUBits::B8); \
     }
 
 //////////////////////////////////
@@ -410,24 +410,24 @@
     {                                                          \
         pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);   \
         MK_IMMB_16(RCX);                                       \
-        pp.emit_OpN_Indirect(0, RCX, RAX, __op, X64Bits::B16); \
+        pp.emit_OpN_Indirect(0, RCX, RAX, __op, CPUBits::B16); \
     }
 
 #define MK_BINOPEQ16_SCAB(__op)                                                                   \
     {                                                                                             \
         if (ip->flags & BCI_IMM_B)                                                                \
-            pp.emit_OpN_IndirectDst(offsetStack + ip->a.u32, ip->b.u64, RDI, __op, X64Bits::B16); \
+            pp.emit_OpN_IndirectDst(offsetStack + ip->a.u32, ip->b.u64, RDI, __op, CPUBits::B16); \
         else                                                                                      \
         {                                                                                         \
             pp.emit_Load16_Indirect(REG_OFFSET(ip->b.u32), RAX);                                  \
-            pp.emit_OpN_Indirect(offsetStack + ip->a.u32, RAX, RDI, __op, X64Bits::B16);          \
+            pp.emit_OpN_Indirect(offsetStack + ip->a.u32, RAX, RDI, __op, CPUBits::B16);          \
         }                                                                                         \
     }
 
 #define MK_BINOPEQ16_SSCAB(__op)                                                     \
     {                                                                                \
         pp.emit_Load16_Indirect(offsetStack + ip->b.u32, RAX, RDI);                  \
-        pp.emit_OpN_Indirect(offsetStack + ip->a.u32, RAX, RDI, __op, X64Bits::B16); \
+        pp.emit_OpN_Indirect(offsetStack + ip->a.u32, RAX, RDI, __op, CPUBits::B16); \
     }
 
 //////////////////////////////////
@@ -436,24 +436,24 @@
     {                                                          \
         pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);   \
         MK_IMMB_32(RCX);                                       \
-        pp.emit_OpN_Indirect(0, RCX, RAX, __op, X64Bits::B32); \
+        pp.emit_OpN_Indirect(0, RCX, RAX, __op, CPUBits::B32); \
     }
 
 #define MK_BINOPEQ32_SCAB(__op)                                                                   \
     {                                                                                             \
         if (ip->flags & BCI_IMM_B)                                                                \
-            pp.emit_OpN_IndirectDst(offsetStack + ip->a.u32, ip->b.u64, RDI, __op, X64Bits::B32); \
+            pp.emit_OpN_IndirectDst(offsetStack + ip->a.u32, ip->b.u64, RDI, __op, CPUBits::B32); \
         else                                                                                      \
         {                                                                                         \
             pp.emit_Load32_Indirect(REG_OFFSET(ip->b.u32), RAX);                                  \
-            pp.emit_OpN_Indirect(offsetStack + ip->a.u32, RAX, RDI, __op, X64Bits::B32);          \
+            pp.emit_OpN_Indirect(offsetStack + ip->a.u32, RAX, RDI, __op, CPUBits::B32);          \
         }                                                                                         \
     }
 
 #define MK_BINOPEQ32_SSCAB(__op)                                                     \
     {                                                                                \
         pp.emit_Load32_Indirect(offsetStack + ip->b.u32, RAX, RDI);                  \
-        pp.emit_OpN_Indirect(offsetStack + ip->a.u32, RAX, RDI, __op, X64Bits::B32); \
+        pp.emit_OpN_Indirect(offsetStack + ip->a.u32, RAX, RDI, __op, CPUBits::B32); \
     }
 
 //////////////////////////////////
@@ -462,24 +462,24 @@
     {                                                          \
         pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);   \
         MK_IMMB_64(RCX);                                       \
-        pp.emit_OpN_Indirect(0, RCX, RAX, __op, X64Bits::B64); \
+        pp.emit_OpN_Indirect(0, RCX, RAX, __op, CPUBits::B64); \
     }
 
 #define MK_BINOPEQ64_SCAB(__op)                                                                   \
     {                                                                                             \
         if (ip->flags & BCI_IMM_B)                                                                \
-            pp.emit_OpN_IndirectDst(offsetStack + ip->a.u32, ip->b.u64, RDI, __op, X64Bits::B64); \
+            pp.emit_OpN_IndirectDst(offsetStack + ip->a.u32, ip->b.u64, RDI, __op, CPUBits::B64); \
         else                                                                                      \
         {                                                                                         \
             pp.emit_Load64_Indirect(REG_OFFSET(ip->b.u32), RAX);                                  \
-            pp.emit_OpN_Indirect(offsetStack + ip->a.u32, RAX, RDI, __op, X64Bits::B64);          \
+            pp.emit_OpN_Indirect(offsetStack + ip->a.u32, RAX, RDI, __op, CPUBits::B64);          \
         }                                                                                         \
     }
 
 #define MK_BINOPEQ64_SSCAB(__op)                                                     \
     {                                                                                \
         pp.emit_Load64_Indirect(offsetStack + ip->b.u32, RAX, RDI);                  \
-        pp.emit_OpN_Indirect(offsetStack + ip->a.u32, RAX, RDI, __op, X64Bits::B64); \
+        pp.emit_OpN_Indirect(offsetStack + ip->a.u32, RAX, RDI, __op, CPUBits::B64); \
     }
 
 //////////////////////////////////
@@ -528,28 +528,28 @@
     {                                                               \
         pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);        \
         MK_IMMB_8(RAX);                                             \
-        pp.emit_OpN_Indirect(0, RAX, RCX, __op, X64Bits::B8, true); \
+        pp.emit_OpN_Indirect(0, RAX, RCX, __op, CPUBits::B8, true); \
     }
 
 #define MK_BINOPEQ16_LOCK_CAB(__op)                                  \
     {                                                                \
         pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);         \
         MK_IMMB_16(RAX);                                             \
-        pp.emit_OpN_Indirect(0, RAX, RCX, __op, X64Bits::B16, true); \
+        pp.emit_OpN_Indirect(0, RAX, RCX, __op, CPUBits::B16, true); \
     }
 
 #define MK_BINOPEQ32_LOCK_CAB(__op)                                  \
     {                                                                \
         pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);         \
         MK_IMMB_32(RAX);                                             \
-        pp.emit_OpN_Indirect(0, RAX, RCX, __op, X64Bits::B32, true); \
+        pp.emit_OpN_Indirect(0, RAX, RCX, __op, CPUBits::B32, true); \
     }
 
 #define MK_BINOPEQ64_LOCK_CAB(__op)                                  \
     {                                                                \
         pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);         \
         MK_IMMB_64(RAX);                                             \
-        pp.emit_OpN_Indirect(0, RAX, RCX, __op, X64Bits::B64, true); \
+        pp.emit_OpN_Indirect(0, RAX, RCX, __op, CPUBits::B64, true); \
     }
 
 //////////////////////////////////
@@ -559,17 +559,17 @@
         if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_C))                   \
         {                                                                           \
             pp.emit_Load8_Indirect(REG_OFFSET(ip->a.u32), RAX);                     \
-            pp.emit_CmpN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, X64Bits::B8);    \
+            pp.emit_CmpN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B8);    \
         }                                                                           \
         else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_C))               \
         {                                                                           \
-            pp.emit_CmpN_IndirectDst(REG_OFFSET(ip->a.u32), ip->c.u8, X64Bits::B8); \
+            pp.emit_CmpN_IndirectDst(REG_OFFSET(ip->a.u32), ip->c.u8, CPUBits::B8); \
         }                                                                           \
         else                                                                        \
         {                                                                           \
             MK_IMMA_8(RAX);                                                         \
             MK_IMMC_8(RCX);                                                         \
-            pp.emit_CmpN(RAX, RCX, X64Bits::B8);                                    \
+            pp.emit_CmpN(RAX, RCX, CPUBits::B8);                                    \
         }                                                                           \
         pp.emit_Jump(__op, i, ip->b.s32);                                           \
     }
@@ -579,17 +579,17 @@
         if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_C))                     \
         {                                                                             \
             pp.emit_Load16_Indirect(REG_OFFSET(ip->a.u32), RAX);                      \
-            pp.emit_CmpN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, X64Bits::B16);     \
+            pp.emit_CmpN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B16);     \
         }                                                                             \
         else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_C))                 \
         {                                                                             \
-            pp.emit_CmpN_IndirectDst(REG_OFFSET(ip->a.u32), ip->c.u16, X64Bits::B16); \
+            pp.emit_CmpN_IndirectDst(REG_OFFSET(ip->a.u32), ip->c.u16, CPUBits::B16); \
         }                                                                             \
         else                                                                          \
         {                                                                             \
             MK_IMMA_16(RAX);                                                          \
             MK_IMMC_16(RCX);                                                          \
-            pp.emit_CmpN(RAX, RCX, X64Bits::B16);                                     \
+            pp.emit_CmpN(RAX, RCX, CPUBits::B16);                                     \
         }                                                                             \
         pp.emit_Jump(__op, i, ip->b.s32);                                             \
     }
@@ -599,17 +599,17 @@
         if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_C))                     \
         {                                                                             \
             pp.emit_Load32_Indirect(REG_OFFSET(ip->a.u32), RAX);                      \
-            pp.emit_CmpN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, X64Bits::B32);     \
+            pp.emit_CmpN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B32);     \
         }                                                                             \
         else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_C))                 \
         {                                                                             \
-            pp.emit_CmpN_IndirectDst(REG_OFFSET(ip->a.u32), ip->c.u32, X64Bits::B32); \
+            pp.emit_CmpN_IndirectDst(REG_OFFSET(ip->a.u32), ip->c.u32, CPUBits::B32); \
         }                                                                             \
         else                                                                          \
         {                                                                             \
             MK_IMMA_32(RAX);                                                          \
             MK_IMMC_32(RCX);                                                          \
-            pp.emit_CmpN(RAX, RCX, X64Bits::B32);                                     \
+            pp.emit_CmpN(RAX, RCX, CPUBits::B32);                                     \
         }                                                                             \
         pp.emit_Jump(__op, i, ip->b.s32);                                             \
     }
@@ -619,17 +619,17 @@
         if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_C))                                \
         {                                                                                        \
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);                                 \
-            pp.emit_CmpN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, X64Bits::B64);                \
+            pp.emit_CmpN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, CPUBits::B64);                \
         }                                                                                        \
         else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_C) && ip->c.u64 <= 0x7fffffff) \
         {                                                                                        \
-            pp.emit_CmpN_IndirectDst(REG_OFFSET(ip->a.u32), ip->c.u32, X64Bits::B64);            \
+            pp.emit_CmpN_IndirectDst(REG_OFFSET(ip->a.u32), ip->c.u32, CPUBits::B64);            \
         }                                                                                        \
         else                                                                                     \
         {                                                                                        \
             MK_IMMA_64(RAX);                                                                     \
             MK_IMMC_64(RCX);                                                                     \
-            pp.emit_CmpN(RAX, RCX, X64Bits::B64);                                                \
+            pp.emit_CmpN(RAX, RCX, CPUBits::B64);                                                \
         }                                                                                        \
         pp.emit_Jump(__op, i, ip->b.s32);                                                        \
     }
