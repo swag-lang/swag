@@ -1341,6 +1341,10 @@ void EncoderX64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, C
         SWAG_ASSERT(value <= 0x7F);
         break;
 
+    case CPUOp::BT:
+        SWAG_ASSERT(value <= 0x7F);
+        break;
+
     default:
         SWAG_ASSERT(false);
         break;
@@ -1362,16 +1366,17 @@ void EncoderX64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, C
     }
     else if (value <= 0x7F)
     {
-        emit_REX(numBits);
         switch (op)
         {
         case CPUOp::ADD:
+            emit_REX(numBits);
             concat.addU8(0x83);
             concat.addU8(0xC0 | reg);
             concat.addU8((uint8_t) value);
             break;
 
         case CPUOp::SUB:
+            emit_REX(numBits);
             concat.addU8(0x83);
             concat.addU8(0xE8 | reg);
             concat.addU8((uint8_t) value);
@@ -1379,6 +1384,7 @@ void EncoderX64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, C
 
         case CPUOp::IMUL:
             SWAG_ASSERT(reg == RAX);
+            emit_REX(numBits);
             concat.addU8(0x6B);
             concat.addU8(0xC0);
             concat.addU8((uint8_t) value);
@@ -1386,6 +1392,7 @@ void EncoderX64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, C
 
         case CPUOp::XOR:
             SWAG_ASSERT(reg == RAX);
+            emit_REX(numBits);
             if (numBits == CPUBits::B8)
                 concat.addU8(0x34);
             else
@@ -1396,6 +1403,7 @@ void EncoderX64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, C
         case CPUOp::SAR:
         case CPUOp::SHR:
         case CPUOp::SHL:
+            emit_REX(numBits);
             value = min(value, (uint32_t) numBits - 1);
             if (value == 1)
             {
@@ -1408,6 +1416,14 @@ void EncoderX64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, C
                 concat.addU8((uint8_t) op | reg);
                 concat.addU8((uint8_t) value);
             }
+            break;
+
+        case CPUOp::BT:
+            emit_REX(numBits, RAX, reg);
+            concat.addU8(0x0F);
+            concat.addU8((uint8_t) op);
+            concat.addU8(0xE2);
+            concat.addU8((uint8_t) value);
             break;
 
         default:

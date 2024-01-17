@@ -68,6 +68,7 @@ enum class CPUOp : uint8_t
     FMAX   = 0x5F,
     XCHG   = 0x87,
     POPCNT = 0xB8,
+    BT     = 0xBA,
     BSF    = 0xBC,
     BSR    = 0xBD,
     MUL    = 0xC0,

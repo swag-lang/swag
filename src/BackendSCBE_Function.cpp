@@ -3731,8 +3731,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
             // Test if it's a bytecode lambda
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), R10);
-            concat.addString4("\x49\x0F\xBA\xE2"); // bt r10, ??
-            concat.addU8(SWAG_LAMBDA_BC_MARKER_BIT);
+            pp.emit_OpN_Immediate(R10, SWAG_LAMBDA_BC_MARKER_BIT, CPUOp::BT, CPUBits::B64);
             pp.emit_LongJumpOp(JB);
             concat.addU32(0);
             auto jumpToBCAddr   = (uint32_t*) concat.getSeekPtr() - 1;
