@@ -133,8 +133,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
     pp.computeUnwind(unwindRegs, unwindOffsetRegs, sizeStack + sizeParamsStack, sizeProlog, unwind);
 
     // Registers are stored after the sizeParamsStack area, which is used to store parameters for function calls
-    concat.addString4("\x48\x8D\xBC\x24");
-    concat.addU32(sizeParamsStack); // lea rdi, [rsp + sizeParamsStack]
+    pp.emit_LoadAddress_Indirect(sizeParamsStack, RDI, RSP);
 
     // Save register parameters
     uint32_t iReg = 0;
