@@ -2310,7 +2310,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
             // + 5 for the two following instructions
             // + 7 for this instruction
             pp.emit_Symbol_RelocationAddr(RAX, symbolFuncIndex, concat.totalCount() - startAddress + 5 + 7);
-            concat.addString3("\x48\x01\xC8"); // add rax, rcx
+            pp.emit_OpN(RCX, RAX, CPUOp::ADD, CPUBits::B64);
             pp.emit_Jump(RAX);
 
             auto currentOffset = (int32_t) pp.concat.totalCount();
