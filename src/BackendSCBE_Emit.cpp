@@ -9,7 +9,7 @@ void BackendSCBE::emitShiftRightArithmetic(EncoderX64& pp, ByteCodeInstruction* 
     if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))
     {
         pp.emit_LoadN_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
-        pp.emit_ShiftN(RAX, min(ip->b.u32, (uint32_t) numBits - 1), numBits, CPUOp::SAR);
+        pp.emit_OpN_Immediate(RAX, ip->b.u32, CPUOp::SAR, numBits);
     }
     else
     {
