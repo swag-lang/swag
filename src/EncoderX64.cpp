@@ -946,6 +946,15 @@ void EncoderX64::emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUB
         emit_Spec8(0xF7, numBits);
         concat.addU8(op == CPUOp::IMUL ? 0xE9 : 0xE1);
     }
+    else if (op == CPUOp::SAR)
+    {
+        SWAG_ASSERT(regDst == RAX && regSrc == RCX);
+        if (numBits == CPUBits::B8)
+            concat.addU8(0xD2);
+        else
+            concat.addU8(0xD3);
+        concat.addU8(0xF8);
+    }
     else
     {
         emit_Spec8((uint8_t) op, numBits);
