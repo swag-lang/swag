@@ -1,9 +1,5 @@
 #pragma once
 #include "EncoderCPU.h"
-#include "Backend.h"
-#include "BackendParameters.h"
-#include "DataSegment.h"
-#include "CallConv.h"
 
 enum X64DispMode
 {
@@ -11,6 +7,10 @@ enum X64DispMode
     DISP32 = 0b10,
     REGREG = 0b11,
 };
+
+#define UWOP_PUSH_NONVOL 0
+#define UWOP_ALLOC_LARGE 1
+#define UWOP_ALLOC_SMALL 2
 
 struct EncoderX64 : public EncoderCPU
 {

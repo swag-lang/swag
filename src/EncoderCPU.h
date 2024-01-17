@@ -18,10 +18,6 @@ struct ByteCodeInstruction;
     if (__s % 16)       \
         __s += 16 - (__s % 16);
 
-#define UWOP_PUSH_NONVOL 0
-#define UWOP_ALLOC_LARGE 1
-#define UWOP_ALLOC_SMALL 2
-
 enum class CPUBits : uint32_t
 {
     B8  = 8,
@@ -81,14 +77,6 @@ enum class CPUOp : uint8_t
     CMOVG  = 0x4F,
 };
 
-enum class CoffSymbolKind
-{
-    Function,
-    Extern,
-    Custom,
-    GlobalString,
-};
-
 enum CPUJumpType
 {
     JNO,
@@ -105,27 +93,6 @@ enum CPUJumpType
     JP,
     JNP,
     JUMP,
-};
-
-struct CoffSymbol
-{
-    Utf8           name;
-    CoffSymbolKind kind;
-    uint32_t       value;
-    uint32_t       index;
-    uint16_t       sectionIdx;
-};
-
-struct CoffRelocation
-{
-    uint32_t virtualAddress;
-    uint32_t symbolIndex;
-    uint16_t type;
-};
-
-struct CoffRelocationTable
-{
-    Vector<CoffRelocation> table;
 };
 
 struct LabelToSolve
@@ -248,6 +215,35 @@ struct DbgLines
     SourceFile*     sourceFile;
     Vector<DbgLine> lines;
     AstFuncDecl*    inlined = nullptr;
+};
+
+enum class CoffSymbolKind
+{
+    Function,
+    Extern,
+    Custom,
+    GlobalString,
+};
+
+struct CoffSymbol
+{
+    Utf8           name;
+    CoffSymbolKind kind;
+    uint32_t       value;
+    uint32_t       index;
+    uint16_t       sectionIdx;
+};
+
+struct CoffRelocation
+{
+    uint32_t virtualAddress;
+    uint32_t symbolIndex;
+    uint16_t type;
+};
+
+struct CoffRelocationTable
+{
+    Vector<CoffRelocation> table;
 };
 
 struct CoffFunction
