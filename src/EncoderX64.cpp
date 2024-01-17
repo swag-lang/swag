@@ -954,10 +954,7 @@ void EncoderX64::emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUB
              op == CPUOp::SHL)
     {
         SWAG_ASSERT(regDst == RAX && regSrc == RCX);
-        if (numBits == CPUBits::B8)
-            concat.addU8(0xD2);
-        else
-            concat.addU8(0xD3);
+        emit_Spec8(0xD3, numBits);
         concat.addU8((uint8_t) op);
     }
     else if (op == CPUOp::ADD ||

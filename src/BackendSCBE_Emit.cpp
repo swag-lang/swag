@@ -293,14 +293,20 @@ void BackendSCBE::emitBinOpIntN(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp o
         }
     }
     // Mul by power of 2 => shift by log2
-    else if (op == CPUOp::MUL && !(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B) && isPowerOfTwo(ip->b.u64) && (ip->b.u64 < (uint64_t) numBits))
+    else if (op == CPUOp::MUL &&
+             !(ip->flags & BCI_IMM_A) &&
+             (ip->flags & BCI_IMM_B) &&
+             isPowerOfTwo(ip->b.u64) &&
+             (ip->b.u64 < (uint64_t) numBits))
     {
         pp.emit_LoadN_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
         pp.emit_Load8_Immediate(RCX, (uint8_t) log2(ip->b.u64));
-        pp.emit_REX(numBits);
-        pp.concat.addString2("\xD3\xE0"); // shl rax, cl
+        pp.emit_OpN(RCX, RAX, CPUOp::SHL, numBits);
     }
-    else if ((op == CPUOp::AND || op == CPUOp::OR || op == CPUOp::XOR || op == CPUOp::ADD || op == CPUOp::SUB) && !(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B) && (ip->b.u64 <= 0x7FFFFFFF))
+    else if ((op == CPUOp::AND || op == CPUOp::OR || op == CPUOp::XOR || op == CPUOp::ADD || op == CPUOp::SUB) &&
+             !(ip->flags & BCI_IMM_A) &&
+             (ip->flags & BCI_IMM_B) &&
+             (ip->b.u64 <= 0x7FFFFFFF))
     {
         pp.emit_LoadN_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
         pp.emit_REX(numBits);
