@@ -993,23 +993,19 @@ void EncoderX64::emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUB
 void EncoderX64::emit_OpF32(CPURegister regSrc, CPURegister regDst, CPUOp op)
 {
     SWAG_ASSERT(regSrc == XMM0 && regDst == XMM1);
-    if (op == CPUOp::MUL)
-        concat.addString4("\xF3\x0F\x59\xC1"); // mulss xmm0, xmm1
-    else if (op == CPUOp::DIV)
-        concat.addString4("\xF3\x0F\x5E\xC1"); // divss xmm0, xmm1
-    else
-        SWAG_ASSERT(false);
+    concat.addU8(0xF3);
+    concat.addU8(0x0F);
+    concat.addU8((uint8_t) op);
+    concat.addU8(0xC1);
 }
 
 void EncoderX64::emit_OpF64(CPURegister regSrc, CPURegister regDst, CPUOp op)
 {
     SWAG_ASSERT(regSrc == XMM0 && regDst == XMM1);
-    if (op == CPUOp::MUL)
-        concat.addString4("\xF2\x0F\x59\xC1"); // mulsd xmm0, xmm1
-    else if (op == CPUOp::DIV)
-        concat.addString4("\xF2\x0F\x5E\xC1"); // divsd xmm0, xmm1
-    else
-        SWAG_ASSERT(false);
+    concat.addU8(0xF2);
+    concat.addU8(0x0F);
+    concat.addU8((uint8_t) op);
+    concat.addU8(0xC1);
 }
 
 void EncoderX64::emit_OpN(uint32_t offsetStack, CPURegister reg, CPURegister memReg, CPUOp op, CPUBits numBits)
