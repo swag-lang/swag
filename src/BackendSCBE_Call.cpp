@@ -165,7 +165,7 @@ void BackendSCBE::emitCall(EncoderX64& pp, TypeInfoFuncAttr* typeFunc, const Utf
         {
             if (typeFunc->declNode->sourceFile->module->buildCfg.errorStackTrace)
             {
-                concat.addU8(0x90); // nop
+                pp.emit_nop();
             }
         }
     }
