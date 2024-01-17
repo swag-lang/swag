@@ -935,11 +935,22 @@ void EncoderX64::emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUB
 {
     emit_REX(numBits, regSrc, regDst);
     if (op == CPUOp::DIV ||
-        op == CPUOp::IDIV)
+        op == CPUOp::IDIV ||
+        op == CPUOp::MOD ||
+        op == CPUOp::IMOD)
     {
         SWAG_ASSERT(regSrc == RAX && regDst == RCX);
         emit_Spec8(0xF7, numBits);
-        concat.addU8((uint8_t) op);
+        concat.addU8((uint8_t) op & ~2);
+
+        if (op == CPUOp::MOD || op == CPUOp::IMOD)
+        {
+            // modulo in 8 bits stores the reminder in AH and not RDX
+            if (numBits == CPUBits::B8)
+                concat.addString2("\x88\xE0"); // mov al, ah
+            else
+                concat.addString3("\x48\x89\xd0"); // mov rax, rdx
+        }
     }
     else if (op == CPUOp::MUL ||
              op == CPUOp::IMUL)
@@ -1067,7 +1078,10 @@ void EncoderX64::emit_OpN_Indirect(uint32_t offsetStack, CPURegister reg, CPUReg
         concat.addU8(0xF0);
 
     emit_REX(numBits, reg);
-    if (op == CPUOp::DIV || op == CPUOp::IDIV)
+    if (op == CPUOp::DIV ||
+        op == CPUOp::IDIV ||
+        op == CPUOp::MOD ||
+        op == CPUOp::IMOD)
     {
         SWAG_ASSERT(reg == RAX);
 
@@ -1075,17 +1089,26 @@ void EncoderX64::emit_OpN_Indirect(uint32_t offsetStack, CPURegister reg, CPUReg
 
         if (offsetStack == 0)
         {
-            concat.addU8((uint8_t) op - 0xBA);
+            concat.addU8(((uint8_t) op & ~2) - 0xBA);
         }
         else if (offsetStack <= 0x7F)
         {
-            concat.addU8((uint8_t) op - 0x7A);
+            concat.addU8(((uint8_t) op & ~2) - 0x7A);
             concat.addU8((uint8_t) offsetStack);
         }
         else
         {
-            concat.addU8((uint8_t) op - 0x3A);
+            concat.addU8(((uint8_t) op & ~2) - 0x3A);
             concat.addU32(offsetStack);
+        }
+
+        if (op == CPUOp::MOD || op == CPUOp::IMOD)
+        {
+            // modulo in 8 bits stores the reminder in AH and not RDX
+            if (numBits == CPUBits::B8)
+                concat.addString2("\x88\xE0"); // mov al, ah
+            else
+                concat.addString3("\x48\x89\xd0"); // mov rax, rdx
         }
     }
     else

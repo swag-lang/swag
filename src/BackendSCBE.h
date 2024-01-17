@@ -47,7 +47,7 @@ struct BackendSCBE : public Backend
     void     emitBinOpFloat64AtReg(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op);
     void     emitBinOpIntN(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
     void     emitBinOpIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
-    void     emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, bool isSigned, CPUBits numBits, bool modulo = false);
+    void     emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
     void     emitAddSubMul64(EncoderX64& pp, ByteCodeInstruction* ip, uint64_t mul, CPUOp op);
 
     bool emitXData(const BuildParameters& buildParameters);

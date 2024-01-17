@@ -285,14 +285,16 @@ void BackendSCBE::emitBinOpIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, CP
     pp.emit_StoreN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, numBits);
 }
 
-void BackendSCBE::emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, bool isSigned, CPUBits numBits, bool modulo)
+void BackendSCBE::emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
 {
+    SWAG_ASSERT(op == CPUOp::DIV || op == CPUOp::MOD || op == CPUOp::IDIV || op == CPUOp::IMOD);
+
     switch (numBits)
     {
     case CPUBits::B8:
         if (ip->flags & BCI_IMM_A)
             pp.emit_Load32_Immediate(RAX, (uint32_t) ip->a.u8);
-        else if (isSigned)
+        else if (op == CPUOp::IDIV || op == CPUOp::IMOD)
             pp.emit_LoadS8S32_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);
         else
             pp.emit_LoadU8U32_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);
@@ -303,7 +305,7 @@ void BackendSCBE::emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip,
             pp.emit_Load16_Immediate(RAX, ip->a.u16);
         else
             pp.emit_Load16_Indirect(REG_OFFSET(ip->a.u32), RAX);
-        if (isSigned)
+        if (op == CPUOp::IDIV || op == CPUOp::IMOD)
             pp.emit_Cwd();
         else
             pp.emit_ClearN(RDX, CPUBits::B16);
@@ -314,7 +316,7 @@ void BackendSCBE::emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip,
             pp.emit_Load32_Immediate(RAX, ip->a.u32);
         else
             pp.emit_Load32_Indirect(REG_OFFSET(ip->a.u32), RAX);
-        if (isSigned)
+        if (op == CPUOp::IDIV || op == CPUOp::IMOD)
             pp.emit_Cdq();
         else
             pp.emit_ClearN(RDX, CPUBits::B32);
@@ -325,7 +327,7 @@ void BackendSCBE::emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip,
             pp.emit_Load64_Immediate(RAX, ip->a.u64);
         else
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);
-        if (isSigned)
+        if (op == CPUOp::IDIV || op == CPUOp::IMOD)
             pp.emit_Cqo();
         else
             pp.emit_ClearN(RDX, CPUBits::B64);
@@ -339,24 +341,14 @@ void BackendSCBE::emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip,
     if (ip->flags & BCI_IMM_B)
     {
         pp.emit_LoadN_Immediate(RCX, ip->b.u64, numBits);
-        pp.emit_OpN(RAX, RCX, isSigned ? CPUOp::IDIV : CPUOp::DIV, numBits);
+        pp.emit_OpN(RAX, RCX, op, numBits);
     }
     else
     {
-        pp.emit_OpN_Indirect(REG_OFFSET(ip->b.u32), RAX, RDI, isSigned ? CPUOp::IDIV : CPUOp::DIV, numBits);
+        pp.emit_OpN_Indirect(REG_OFFSET(ip->b.u32), RAX, RDI, op, numBits);
     }
 
-    // modulo in 8 bits stores the reminder in AH and not RDX
-    if (modulo)
-    {
-        if (numBits == CPUBits::B8)
-            pp.concat.addString2("\x88\xE2"); // mov dl, ah
-        pp.emit_StoreN_Indirect(REG_OFFSET(ip->c.u32), RDX, RDI, numBits);
-    }
-    else
-    {
-        pp.emit_StoreN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, numBits);
-    }
+    pp.emit_StoreN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, numBits);
 }
 
 void BackendSCBE::emitAddSubMul64(EncoderX64& pp, ByteCodeInstruction* ip, uint64_t mul, CPUOp op)
