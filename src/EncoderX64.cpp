@@ -1031,7 +1031,7 @@ void EncoderX64::emit_OpF64_Indirect(CPURegister reg, CPURegister memReg, CPUOp 
     emit_StoreF64_Indirect(0, XMM0, memReg);
 }
 
-void EncoderX64::emit_OpN_IndirectDstReg(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUBits numBits)
+void EncoderX64::emit_OpN_IndirectDst(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUBits numBits)
 {
     emit_REX(numBits, regSrc, regDst);
     if (op == CPUOp::SAR ||
@@ -1044,6 +1044,33 @@ void EncoderX64::emit_OpN_IndirectDstReg(CPURegister regSrc, CPURegister regDst,
         else
             concat.addU8(0xD3);
         concat.addU8(((uint8_t) op) & ~0xC0);
+    }
+    else
+    {
+        SWAG_ASSERT(false);
+    }
+}
+
+void EncoderX64::emit_OpN_IndirectDst(CPURegister reg, uint64_t value, CPUOp op, CPUBits numBits)
+{
+    if (op == CPUOp::SHR ||
+        op == CPUOp::SHL)
+    {
+        SWAG_ASSERT(reg == RAX);
+        value = min(value, (uint32_t) numBits - 1);
+
+        emit_REX(numBits);
+        if (value == 1)
+        {
+            emit_Spec8(0xD1, numBits);
+            concat.addU8((uint8_t) op & ~0xC0);
+        }
+        else
+        {
+            emit_Spec8(0xC1, numBits);
+            concat.addU8((uint8_t) op & ~0xC0);
+            concat.addU8((uint8_t) value);
+        }
     }
     else
     {

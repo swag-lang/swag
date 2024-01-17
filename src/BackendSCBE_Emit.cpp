@@ -68,7 +68,7 @@ void BackendSCBE::emitShiftRightEqArithmetic(EncoderX64& pp, ByteCodeInstruction
         pp.emit_CMovN(RCX, RAX, numBits, CPUOp::CMOVG);
 
         pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);
-        pp.emit_OpN_IndirectDstReg(RCX, RAX, CPUOp::SAR, numBits);
+        pp.emit_OpN_IndirectDst(RCX, RAX, CPUOp::SAR, numBits);
     }
 }
 
@@ -115,7 +115,7 @@ void BackendSCBE::emitShiftEqLogical(EncoderX64& pp, ByteCodeInstruction* ip, CP
     }
     else if (ip->flags & BCI_IMM_B)
     {
-        pp.emit_ShiftN(RAX, ip->b.u8, numBits, (CPUOp) ((uint8_t) op & ~0xC0));
+        pp.emit_OpN_IndirectDst(RAX, ip->b.u8, op, numBits);
     }
     else
     {
@@ -128,7 +128,7 @@ void BackendSCBE::emitShiftEqLogical(EncoderX64& pp, ByteCodeInstruction* ip, CP
         pp.emit_ClearN(RCX, numBits);
         pp.emit_StoreN_Indirect(0, RCX, RAX, numBits);
         *seekPtr = (uint8_t) (pp.concat.totalCount() - seekJmp);
-        pp.emit_OpN_IndirectDstReg(RCX, RAX, op, numBits);
+        pp.emit_OpN_IndirectDst(RCX, RAX, op, numBits);
     }
 }
 
