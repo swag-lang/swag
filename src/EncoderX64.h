@@ -14,14 +14,10 @@ enum X64DispMode
 
 struct EncoderX64 : public EncoderCPU
 {
-    void clearInstructionCache();
-
     uint16_t computeUnwindPush(CPURegister reg, uint32_t offsetSubRSP);
     void     computeUnwind(const VectorNative<CPURegister>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind);
     void     emitUnwind(uint32_t& offset, uint32_t sizeProlog, const VectorNative<uint16_t>& unwind);
 
-    uint8_t getREX(bool w = true, bool r = false, bool x = false, bool b = false);
-    uint8_t getModRM(uint8_t mod, uint8_t r, uint8_t m);
     void    emit_REX(CPUBits numBits, CPURegister reg1 = RAX, CPURegister reg2 = RAX);
     void    emit_ModRM(uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t op = 1);
     void    emit_Spec8(uint8_t value, CPUBits numBits);

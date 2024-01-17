@@ -662,6 +662,9 @@
     <ClCompile Include="..\src\EncoderX64.cpp">
       <Filter>Backend\X64</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\EncoderCPU.cpp">
+      <Filter>Backend\X64</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">

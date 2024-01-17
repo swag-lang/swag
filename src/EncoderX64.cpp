@@ -3,16 +3,7 @@
 #include "Math.h"
 #include "TypeManager.h"
 
-void EncoderX64::clearInstructionCache()
-{
-    storageRegCount = UINT32_MAX;
-    storageRegStack = 0;
-    storageRegBits  = 0;
-    storageMemReg   = RAX;
-    storageReg      = RAX;
-}
-
-uint8_t EncoderX64::getREX(bool w, bool r, bool x, bool b)
+static uint8_t getREX(bool w, bool r, bool x, bool b)
 {
     uint8_t REX = 0x40;
     if (w) // 64 bits
@@ -26,7 +17,7 @@ uint8_t EncoderX64::getREX(bool w, bool r, bool x, bool b)
     return REX;
 }
 
-uint8_t EncoderX64::getModRM(uint8_t mod, uint8_t r, uint8_t m)
+static uint8_t getModRM(uint8_t mod, uint8_t r, uint8_t m)
 {
     return (mod << 6) | ((r & 0b111) << 3) | (m & 0b111);
 }

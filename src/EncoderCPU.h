@@ -1,16 +1,9 @@
 #pragma once
 #include "Backend.h"
-#include "BackendParameters.h"
+#include "ComputedValue.h"
 #include "DataSegment.h"
 #include "CallConv.h"
-
-struct Module;
-struct BuildParameters;
-struct Job;
-struct DataSegment;
-struct ByteCode;
-struct TypeInfo;
-struct ByteCodeInstruction;
+#include "Concat.h"
 
 #define REG_OFFSET(__r) __r * sizeof(Register)
 
@@ -266,6 +259,8 @@ struct CoffFunction
 
 struct EncoderCPU
 {
+    void clearInstructionCache();
+
     Utf8   filename;
     Concat concat;
     Concat postConcat;
