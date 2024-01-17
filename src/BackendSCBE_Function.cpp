@@ -113,10 +113,13 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
         sizeStack += sizeof(void*);
 
     // Check stack
-    if (sizeStack + sizeParamsStack >= SWAG_LIMIT_PAGE_STACK)
+    if (g_CommandLine.target.os == SwagTargetOs::Windows)
     {
-        pp.emit_Load64_Immediate(RAX, sizeStack + sizeParamsStack);
-        emitCall(pp, "__chkstk");
+        if (sizeStack + sizeParamsStack >= SWAG_LIMIT_PAGE_STACK)
+        {
+            pp.emit_Load64_Immediate(RAX, sizeStack + sizeParamsStack);
+            emitCall(pp, "__chkstk");
+        }
     }
 
     pp.emit_Sub32_RSP(sizeStack + sizeParamsStack);
