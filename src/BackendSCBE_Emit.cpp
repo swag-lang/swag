@@ -309,41 +309,7 @@ void BackendSCBE::emitBinOpIntN(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp o
              (ip->b.u64 <= 0x7FFFFFFF))
     {
         pp.emit_LoadN_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
-        pp.emit_REX(numBits);
-        if (ip->b.u32 <= 0x7F)
-        {
-            if (numBits == CPUBits::B8)
-            {
-                pp.concat.addU8((uint8_t) op + 3);
-            }
-            else
-            {
-                pp.concat.addU8(0x83);
-                pp.concat.addU8(0xBF + (uint8_t) op);
-            }
-            pp.concat.addU8(ip->b.u8);
-        }
-        else
-        {
-            switch (numBits)
-            {
-            case CPUBits::B8:
-                pp.concat.addU8((uint8_t) op + 3);
-                pp.concat.addU8(ip->b.u8);
-                break;
-            case CPUBits::B16:
-                pp.concat.addU8(0x81);
-                pp.concat.addU8(0xBF + (uint8_t) op);
-                pp.concat.addU16(ip->b.u16);
-                break;
-            case CPUBits::B32:
-            case CPUBits::B64:
-                pp.concat.addU8(0x81);
-                pp.concat.addU8(0xBF + (uint8_t) op);
-                pp.concat.addU32(ip->b.u32);
-                break;
-            }
-        }
+        pp.emit_OpN_IndirectDst(RAX, ip->b.u64, op, numBits);
     }
     else
     {
