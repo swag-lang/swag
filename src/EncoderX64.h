@@ -120,6 +120,7 @@ struct EncoderX64 : public EncoderCPU
 
     void emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, CPUBits numBits);
     void emit_OpN_IndirectDst(uint32_t offsetStack, uint64_t value, CPURegister memReg, CPUOp op, CPUBits numBits);
+    void emit_OpN_IndirectDstReg(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUBits numBits);
 
     void emit_SetA(CPURegister reg = RAX);
     void emit_SetAE(CPURegister reg = RAX);

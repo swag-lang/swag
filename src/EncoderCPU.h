@@ -60,8 +60,6 @@ enum class CPUOp : uint8_t
     SHR    = 0xE8,
     SAL    = 0xF0,
     SAR    = 0xF8,
-    SHLEQ  = 0x20,
-    SHREQ  = 0x28,
     CMOVB  = 0x42,
     CMOVE  = 0x44,
     CMOVBE = 0x46,

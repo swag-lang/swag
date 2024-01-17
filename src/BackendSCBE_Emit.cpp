@@ -68,26 +68,7 @@ void BackendSCBE::emitShiftRightEqArithmetic(EncoderX64& pp, ByteCodeInstruction
         pp.emit_CMovN(RCX, RAX, numBits, CPUOp::CMOVG);
 
         pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);
-        //pp.emit_OpN(RCX, RAX, CPUOp::SAR, numBits);
-
-        switch (numBits)
-        {
-        case CPUBits::B8:
-            pp.concat.addString2("\xd2\x38");
-            break;
-        case CPUBits::B16:
-            pp.concat.addString3("\x66\xd3\x38");
-            break;
-        case CPUBits::B32:
-            pp.concat.addString2("\xd3\x38");
-            break;
-        case CPUBits::B64:
-            pp.concat.addString3("\x48\xd3\x38");
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
+        pp.emit_OpN_IndirectDstReg(RCX, RAX, CPUOp::SAR, numBits);
     }
 }
 
@@ -134,7 +115,7 @@ void BackendSCBE::emitShiftEqLogical(EncoderX64& pp, ByteCodeInstruction* ip, CP
     }
     else if (ip->flags & BCI_IMM_B)
     {
-        pp.emit_ShiftN(RAX, ip->b.u8, numBits, op);
+        pp.emit_ShiftN(RAX, ip->b.u8, numBits, (CPUOp) ((uint8_t) op & ~0xC0));
     }
     else
     {
@@ -147,7 +128,7 @@ void BackendSCBE::emitShiftEqLogical(EncoderX64& pp, ByteCodeInstruction* ip, CP
         pp.emit_ClearN(RCX, numBits);
         pp.emit_StoreN_Indirect(0, RCX, RAX, numBits);
         *seekPtr = (uint8_t) (pp.concat.totalCount() - seekJmp);
-        pp.emit_OpN(RCX, RAX, op, numBits);
+        pp.emit_OpN_IndirectDstReg(RCX, RAX, op, numBits);
     }
 }
 

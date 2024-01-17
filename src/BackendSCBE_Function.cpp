@@ -765,34 +765,34 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::AffectOpShiftLeftEqS8:
         case ByteCodeOp::AffectOpShiftLeftEqU8:
-            emitShiftEqLogical(pp, ip, CPUBits::B8, CPUOp::SHLEQ);
+            emitShiftEqLogical(pp, ip, CPUBits::B8, CPUOp::SHL);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqS16:
         case ByteCodeOp::AffectOpShiftLeftEqU16:
-            emitShiftEqLogical(pp, ip, CPUBits::B16, CPUOp::SHLEQ);
+            emitShiftEqLogical(pp, ip, CPUBits::B16, CPUOp::SHL);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqS32:
         case ByteCodeOp::AffectOpShiftLeftEqU32:
-            emitShiftEqLogical(pp, ip, CPUBits::B32, CPUOp::SHLEQ);
+            emitShiftEqLogical(pp, ip, CPUBits::B32, CPUOp::SHL);
             break;
         case ByteCodeOp::AffectOpShiftLeftEqS64:
         case ByteCodeOp::AffectOpShiftLeftEqU64:
-            emitShiftEqLogical(pp, ip, CPUBits::B64, CPUOp::SHLEQ);
+            emitShiftEqLogical(pp, ip, CPUBits::B64, CPUOp::SHL);
             break;
 
             /////////////////////////////////////
 
         case ByteCodeOp::AffectOpShiftRightEqU8:
-            emitShiftEqLogical(pp, ip, CPUBits::B8, CPUOp::SHREQ);
+            emitShiftEqLogical(pp, ip, CPUBits::B8, CPUOp::SHR);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU16:
-            emitShiftEqLogical(pp, ip, CPUBits::B16, CPUOp::SHREQ);
+            emitShiftEqLogical(pp, ip, CPUBits::B16, CPUOp::SHR);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU32:
-            emitShiftEqLogical(pp, ip, CPUBits::B32, CPUOp::SHREQ);
+            emitShiftEqLogical(pp, ip, CPUBits::B32, CPUOp::SHR);
             break;
         case ByteCodeOp::AffectOpShiftRightEqU64:
-            emitShiftEqLogical(pp, ip, CPUBits::B64, CPUOp::SHREQ);
+            emitShiftEqLogical(pp, ip, CPUBits::B64, CPUOp::SHR);
             break;
 
         case ByteCodeOp::AffectOpShiftRightEqS8:

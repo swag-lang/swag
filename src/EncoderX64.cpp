@@ -951,9 +951,7 @@ void EncoderX64::emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUB
     else if (op == CPUOp::SAR ||
              op == CPUOp::SAL ||
              op == CPUOp::SHR ||
-             op == CPUOp::SHL ||
-             op == CPUOp::SHREQ ||
-             op == CPUOp::SHLEQ)
+             op == CPUOp::SHL)
     {
         SWAG_ASSERT(regDst == RAX && regSrc == RCX);
         if (numBits == CPUBits::B8)
@@ -1031,6 +1029,26 @@ void EncoderX64::emit_OpF64_Indirect(CPURegister reg, CPURegister memReg, CPUOp 
     concat.addU8((uint8_t) op);
     concat.addU8(0xC1);
     emit_StoreF64_Indirect(0, XMM0, memReg);
+}
+
+void EncoderX64::emit_OpN_IndirectDstReg(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUBits numBits)
+{
+    emit_REX(numBits, regSrc, regDst);
+    if (op == CPUOp::SAR ||
+        op == CPUOp::SHR ||
+        op == CPUOp::SHL)
+    {
+        SWAG_ASSERT(regDst == RAX && regSrc == RCX);
+        if (numBits == CPUBits::B8)
+            concat.addU8(0xD2);
+        else
+            concat.addU8(0xD3);
+        concat.addU8(((uint8_t) op) & ~0xC0);
+    }
+    else
+    {
+        SWAG_ASSERT(false);
+    }
 }
 
 void EncoderX64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, CPUBits numBits)
