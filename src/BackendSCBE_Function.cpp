@@ -1795,7 +1795,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         case ByteCodeOp::LowerZeroToTrue:
             pp.emit_Load32_Indirect(REG_OFFSET(ip->a.u32), RAX);
-            pp.emit_ShiftN(RAX, 31, CPUBits::B32, CPUOp::SHR);
+            pp.emit_OpN_Immediate(RAX, 31, CPUOp::SHR, CPUBits::B32);
             pp.emit_Store8_Indirect(REG_OFFSET(ip->a.u32), RAX);
             break;
         case ByteCodeOp::LowerEqZeroToTrue:
@@ -1813,7 +1813,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
         case ByteCodeOp::GreaterEqZeroToTrue:
             pp.emit_Load32_Indirect(REG_OFFSET(ip->a.u32), RAX);
             pp.emit_NotN(RAX, CPUBits::B32);
-            pp.emit_ShiftN(RAX, 31, CPUBits::B32, CPUOp::SHR);
+            pp.emit_OpN_Immediate(RAX, 31, CPUOp::SHR, CPUBits::B32);
             pp.emit_Store8_Indirect(REG_OFFSET(ip->a.u32), RAX);
             break;
 

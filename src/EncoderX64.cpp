@@ -1143,6 +1143,8 @@ void EncoderX64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, C
         break;
 
     case CPUOp::SAR:
+    case CPUOp::SHR:
+    case CPUOp::SHL:
         SWAG_ASSERT(reg == RAX || reg == RCX);
         SWAG_ASSERT(value <= 0x7F);
         break;
@@ -1174,32 +1176,52 @@ void EncoderX64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, C
         case CPUOp::ADD:
             concat.addU8(0x83);
             concat.addU8(0xC0 | reg);
+            concat.addU8((uint8_t) value);
             break;
+
         case CPUOp::SUB:
             concat.addU8(0x83);
             concat.addU8(0xE8 | reg);
+            concat.addU8((uint8_t) value);
             break;
+
         case CPUOp::IMUL:
             SWAG_ASSERT(reg == RAX);
             concat.addU8(0x6B);
             concat.addU8(0xC0);
+            concat.addU8((uint8_t) value);
             break;
+
         case CPUOp::XOR:
             SWAG_ASSERT(reg == RAX);
             if (numBits == CPUBits::B8)
                 concat.addU8(0x34);
             else
                 concat.addString("\x83\xF0");
+            concat.addU8((uint8_t) value);
             break;
+
         case CPUOp::SAR:
-            emit_Spec8(0xC1, numBits);
-            concat.addU8(0xF8 | reg);
+        case CPUOp::SHR:
+        case CPUOp::SHL:
+            value = min(value, (uint32_t) numBits - 1);
+            if (value == 1)
+            {
+                emit_Spec8(0xD1, numBits);
+                concat.addU8((uint8_t) op | reg);
+            }
+            else
+            {
+                emit_Spec8(0xC1, numBits);
+                concat.addU8((uint8_t) op | reg);
+                concat.addU8((uint8_t) value);
+            }
             break;
+
         default:
             SWAG_ASSERT(false);
             break;
         }
-        concat.addU8((uint8_t) value);
     }
     else
     {
@@ -2099,25 +2121,6 @@ void EncoderX64::emit_BSwapN(CPURegister reg, CPUBits numBits)
     emit_REX(numBits);
     concat.addU8(0x0F);
     concat.addU8(0xC8);
-}
-
-void EncoderX64::emit_ShiftN(CPURegister reg, uint32_t value, CPUBits numBits, CPUOp op)
-{
-    SWAG_ASSERT(reg == RAX);
-    value = min(value, (uint32_t) numBits - 1);
-
-    emit_REX(numBits);
-    if (value == 1)
-    {
-        emit_Spec8(0xD1, numBits);
-        concat.addU8((uint8_t) op);
-    }
-    else
-    {
-        emit_Spec8(0xC1, numBits);
-        concat.addU8((uint8_t) op);
-        concat.addU8((uint8_t) value);
-    }
 }
 
 uint16_t EncoderX64::computeUnwindPush(CPURegister reg, uint32_t offsetSubRSP)

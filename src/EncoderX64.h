@@ -152,5 +152,4 @@ struct EncoderX64 : public EncoderCPU
     void emit_NegN_Indirect(uint32_t stackOffset, CPURegister memReg, CPUBits numBits);
     void emit_CMovN(CPURegister regDst, CPURegister regSrc, CPUBits numBits, CPUOp op);
     void emit_BSwapN(CPURegister reg, CPUBits numBits);
-    void emit_ShiftN(CPURegister reg, uint32_t value, CPUBits numBits, CPUOp op);
 };

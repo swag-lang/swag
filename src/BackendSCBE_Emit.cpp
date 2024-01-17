@@ -62,7 +62,7 @@ void BackendSCBE::emitShiftLogical(EncoderX64& pp, ByteCodeInstruction* ip, CPUB
     else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))
     {
         pp.emit_LoadN_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
-        pp.emit_ShiftN(RAX, ip->b.u8, numBits, op);
+        pp.emit_OpN_Immediate(RAX, ip->b.u8, op, numBits);
         pp.emit_StoreN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, numBits);
     }
     else
