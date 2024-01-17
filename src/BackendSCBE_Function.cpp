@@ -3981,28 +3981,28 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);
             MK_IMMB_8(RAX);
             MK_IMMC_8(RDX);
-            concat.addString4("\xF0\x0F\xB0\x11"); // lock CMPXCHG [rcx], dl
+            pp.emit_CmpXChg(RCX, RDX, CPUBits::B8);
             pp.emit_Store8_Indirect(REG_OFFSET(ip->d.u32), RAX);
             break;
         case ByteCodeOp::IntrinsicAtomicCmpXchgS16:
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);
             MK_IMMB_16(RAX);
             MK_IMMC_16(RDX);
-            concat.addString5("\x66\xF0\x0F\xB1\x11"); // lock CMPXCHG [rcx], dx
+            pp.emit_CmpXChg(RCX, RDX, CPUBits::B16);
             pp.emit_Store16_Indirect(REG_OFFSET(ip->d.u32), RAX);
             break;
         case ByteCodeOp::IntrinsicAtomicCmpXchgS32:
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);
             MK_IMMB_32(RAX);
             MK_IMMC_32(RDX);
-            concat.addString4("\xF0\x0F\xB1\x11"); // lock CMPXCHG [rcx], edx
+            pp.emit_CmpXChg(RCX, RDX, CPUBits::B32);
             pp.emit_Store32_Indirect(REG_OFFSET(ip->d.u32), RAX);
             break;
         case ByteCodeOp::IntrinsicAtomicCmpXchgS64:
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);
             MK_IMMB_64(RAX);
             MK_IMMC_64(RDX);
-            concat.addString5("\xF0\x48\x0F\xB1\x11"); // lock CMPXCHG [rcx], rdx
+            pp.emit_CmpXChg(RCX, RDX, CPUBits::B64);
             pp.emit_Store64_Indirect(REG_OFFSET(ip->d.u32), RAX);
             break;
 

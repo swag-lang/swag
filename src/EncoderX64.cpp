@@ -2300,6 +2300,21 @@ void EncoderX64::emit_CMovN(CPURegister regDst, CPURegister regSrc, CPUBits numB
     concat.addU8(getModRM(REGREG, regDst, regSrc));
 }
 
+void EncoderX64::emit_CmpXChg(CPURegister regDst, CPURegister regSrc, CPUBits numBits)
+{
+    SWAG_ASSERT(regDst == RCX && regSrc == RDX);
+
+    // lock CMPXCHG [rcx], dl
+    if (numBits == CPUBits::B16)
+        emit_REX(numBits);
+    concat.addU8(0xF0);
+    if (numBits == CPUBits::B64)
+        emit_REX(numBits);
+    concat.addU8(0x0F);
+    emit_Spec8(0xB1, numBits);
+    concat.addU8(0x11);
+}
+
 void EncoderX64::emit_BSwapN(CPURegister reg, CPUBits numBits)
 {
     SWAG_ASSERT(reg == RAX);
