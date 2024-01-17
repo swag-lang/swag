@@ -944,9 +944,27 @@ void EncoderX64::emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUB
     else if (op == CPUOp::MUL ||
              op == CPUOp::IMUL)
     {
-        SWAG_ASSERT(regSrc == RAX && regDst == RCX);
-        emit_Spec8(0xF7, numBits);
-        concat.addU8(op == CPUOp::IMUL ? 0xE9 : 0xE1);
+        if (op == CPUOp::MUL && regSrc == RCX && regDst == RAX)
+        {
+            if (numBits == CPUBits::B8 || numBits == CPUBits::B16)
+                concat.addU8(0xF6);
+            else
+                concat.addU8(0xF7);
+            concat.addU8(0xE1);
+        }
+        else if (op == CPUOp::IMUL && regSrc == RCX && regDst == RAX)
+        {
+            if (numBits == CPUBits::B8 || numBits == CPUBits::B16)
+                concat.addString2("\xF6\xE9");
+            else
+                concat.addString3("\x0F\xAF\xC1");
+        }
+        else
+        {
+            SWAG_ASSERT(regSrc == RAX && regDst == RCX);
+            emit_Spec8(0xF7, numBits);
+            concat.addU8(op == CPUOp::IMUL ? 0xE9 : 0xE1);
+        }
     }
     else if (op == CPUOp::SAR ||
              op == CPUOp::SAL ||
