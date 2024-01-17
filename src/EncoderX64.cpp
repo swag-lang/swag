@@ -1053,7 +1053,8 @@ void EncoderX64::emit_OpN_IndirectDst(CPURegister regSrc, CPURegister regDst, CP
 
 void EncoderX64::emit_OpN_IndirectDst(CPURegister reg, uint64_t value, CPUOp op, CPUBits numBits)
 {
-    if (op == CPUOp::SHR ||
+    if (op == CPUOp::SAR ||
+        op == CPUOp::SHR ||
         op == CPUOp::SHL)
     {
         SWAG_ASSERT(reg == RAX);

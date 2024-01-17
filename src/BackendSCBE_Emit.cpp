@@ -27,7 +27,6 @@ void BackendSCBE::emitShiftRightArithmetic(EncoderX64& pp, ByteCodeInstruction* 
             pp.emit_LoadN_Immediate(RAX, ip->a.u64, numBits);
         else
             pp.emit_LoadN_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
-
         pp.emit_OpN(RCX, RAX, CPUOp::SAR, numBits);
     }
 
@@ -39,26 +38,7 @@ void BackendSCBE::emitShiftRightEqArithmetic(EncoderX64& pp, ByteCodeInstruction
     if (ip->flags & BCI_IMM_B)
     {
         pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);
-        switch (numBits)
-        {
-        case CPUBits::B8:
-            pp.concat.addString2("\xC0\x38"); // sar byte ptr [rax], ??
-            break;
-        case CPUBits::B16:
-            pp.concat.addString3("\x66\xC1\x38");
-            break;
-        case CPUBits::B32:
-            pp.concat.addString2("\xC1\x38");
-            break;
-        case CPUBits::B64:
-            pp.concat.addString3("\x48\xC1\x38");
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
-
-        pp.concat.addU8((uint8_t) min(ip->b.u32, (uint32_t) numBits - 1));
+        pp.emit_OpN_IndirectDst(RAX, ip->b.u32, CPUOp::SAR, numBits);
     }
     else
     {
