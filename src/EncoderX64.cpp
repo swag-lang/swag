@@ -933,13 +933,13 @@ void EncoderX64::emit_CmpN_IndirectDst(uint32_t offsetStack, uint32_t value, CPU
 
 void EncoderX64::emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUBits numBits)
 {
-    emit_REX(numBits, regSrc, regDst);
     if (op == CPUOp::DIV ||
         op == CPUOp::IDIV ||
         op == CPUOp::MOD ||
         op == CPUOp::IMOD)
     {
         SWAG_ASSERT(regSrc == RAX && regDst == RCX);
+        emit_REX(numBits, regSrc, regDst);
         emit_Spec8(0xF7, numBits);
         concat.addU8((uint8_t) op & ~2);
 
@@ -955,6 +955,7 @@ void EncoderX64::emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUB
     else if (op == CPUOp::MUL ||
              op == CPUOp::IMUL)
     {
+        emit_REX(numBits, regSrc, regDst);
         if (op == CPUOp::MUL && regSrc == RCX && regDst == RAX)
         {
             if (numBits == CPUBits::B8 || numBits == CPUBits::B16)
@@ -983,6 +984,7 @@ void EncoderX64::emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUB
              op == CPUOp::SHL)
     {
         SWAG_ASSERT(regDst == RAX && regSrc == RCX);
+        emit_REX(numBits, regSrc, regDst);
         emit_Spec8(0xD3, numBits);
         concat.addU8((uint8_t) op);
     }
@@ -992,6 +994,7 @@ void EncoderX64::emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUB
              op == CPUOp::AND ||
              op == CPUOp::OR)
     {
+        emit_REX(numBits, regSrc, regDst);
         emit_Spec8((uint8_t) op, numBits);
         concat.addU8(getModRM(REGREG, regSrc, regDst));
     }
@@ -999,6 +1002,19 @@ void EncoderX64::emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUB
              op == CPUOp::BSR)
     {
         SWAG_ASSERT(regSrc == RAX && regDst == RAX);
+        emit_REX(numBits, regSrc, regDst);
+        concat.addU8(0x0F);
+        concat.addU8((uint8_t) op);
+        concat.addU8(0xC0);
+    }
+    else if (op == CPUOp::POPCNT)
+    {
+        SWAG_ASSERT(regSrc == RAX && regDst == RAX);
+        if (numBits == CPUBits::B16)
+            emit_REX(numBits, regSrc, regDst);
+        concat.addU8(0xF3);
+        if (numBits == CPUBits::B64)
+            emit_REX(numBits, regSrc, regDst);
         concat.addU8(0x0F);
         concat.addU8((uint8_t) op);
         concat.addU8(0xC0);

@@ -61,6 +61,7 @@ enum class CPUOp : uint8_t
     FSUB   = 0x5C,
     FDIV   = 0x5E,
     XCHG   = 0x87,
+    POPCNT = 0xB8,
     BSF    = 0xBC,
     BSR    = 0xBD,
     MUL    = 0xC0,

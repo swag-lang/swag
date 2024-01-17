@@ -4020,7 +4020,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 break;
             case TokenId::IntrinsicBitCountNz:
                 MK_IMMB_U8_TO_U32(RAX);
-                concat.addString4("\xF3\x0F\xB8\xC0"); // popcnt eax, eax
+                pp.emit_OpN(RAX, RAX, CPUOp::POPCNT, CPUBits::B32);
                 pp.emit_Store8_Indirect(REG_OFFSET(ip->a.u32), RAX);
                 break;
             case TokenId::IntrinsicBitCountTz:
@@ -4059,8 +4059,8 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 pp.emit_Store16_Indirect(REG_OFFSET(ip->a.u32), RAX);
                 break;
             case TokenId::IntrinsicBitCountNz:
-                MK_IMMB_U8_TO_U16(RAX);
-                concat.addString5("\x66\xF3\x0F\xB8\xC0"); // popcnt ax, ax
+                MK_IMMB_16(RAX);
+                pp.emit_OpN(RAX, RAX, CPUOp::POPCNT, CPUBits::B16);
                 pp.emit_Store16_Indirect(REG_OFFSET(ip->a.u32), RAX);
                 break;
             case TokenId::IntrinsicBitCountTz:
@@ -4105,7 +4105,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 break;
             case TokenId::IntrinsicBitCountNz:
                 MK_IMMB_32(RAX);
-                concat.addString4("\xF3\x0F\xB8\xC0"); // popcnt eax, eax
+                pp.emit_OpN(RAX, RAX, CPUOp::POPCNT, CPUBits::B32);
                 pp.emit_Store32_Indirect(REG_OFFSET(ip->a.u32), RAX);
                 break;
             case TokenId::IntrinsicBitCountTz:
@@ -4150,7 +4150,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 break;
             case TokenId::IntrinsicBitCountNz:
                 MK_IMMB_64(RAX);
-                concat.addString5("\xF3\x48\x0F\xB8\xC0"); // popcnt rax, rax
+                pp.emit_OpN(RAX, RAX, CPUOp::POPCNT, CPUBits::B64);
                 pp.emit_Store64_Indirect(REG_OFFSET(ip->a.u32), RAX);
                 break;
             case TokenId::IntrinsicBitCountTz:
