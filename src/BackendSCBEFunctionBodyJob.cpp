@@ -12,11 +12,11 @@ JobResult BackendSCBEFunctionBodyJob::execute()
     Timer timer1{&g_Stats.prepOutputTimeJob_GenFunc};
 #endif
 
-    BackendSCBE* bachendX64 = (BackendSCBE*) backend;
+    BackendSCBE* bachendSCBE = (BackendSCBE*) backend;
 
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *bachendX64->perThread[ct][precompileIndex];
+    auto& pp              = *bachendSCBE->perThread[ct][precompileIndex];
     auto& concat          = pp.concat;
 
     // :ChkStk
@@ -26,7 +26,7 @@ JobResult BackendSCBEFunctionBodyJob::execute()
     {
         concat.align(16);
         auto symbolFuncIndex  = pp.getOrAddSymbol("__chkstk", CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
-        auto coffFct          = bachendX64->registerFunction(pp, nullptr, symbolFuncIndex);
+        auto coffFct          = bachendSCBE->registerFunction(pp, nullptr, symbolFuncIndex);
         coffFct->startAddress = concat.totalCount();
 
         concat.addString1("\x51");                           // push rcx
@@ -54,7 +54,7 @@ JobResult BackendSCBEFunctionBodyJob::execute()
             continue;
 
         // Emit the internal function
-        if (!bachendX64->emitFunctionBody(buildParameters, module, one))
+        if (!bachendSCBE->emitFunctionBody(buildParameters, module, one))
             return JobResult::ReleaseJob;
     }
 
