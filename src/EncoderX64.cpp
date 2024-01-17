@@ -2267,11 +2267,20 @@ void EncoderX64::emit_CMovN(CPURegister regDst, CPURegister regSrc, CPUBits numB
 void EncoderX64::emit_BSwapN(CPURegister reg, CPUBits numBits)
 {
     SWAG_ASSERT(reg == RAX);
-    SWAG_ASSERT(numBits == CPUBits::B32 || numBits == CPUBits::B64);
+    SWAG_ASSERT(numBits == CPUBits::B16 || numBits == CPUBits::B32 || numBits == CPUBits::B64);
 
     emit_REX(numBits);
-    concat.addU8(0x0F);
-    concat.addU8(0xC8);
+    if (numBits == CPUBits::B16)
+    {
+        concat.addU8(0xC1);
+        concat.addU8(0xC0);
+        concat.addU8(8);
+    }
+    else
+    {
+        concat.addU8(0x0F);
+        concat.addU8(0xC8);
+    }
 }
 
 uint16_t EncoderX64::computeUnwindPush(CPURegister reg, uint32_t offsetSubRSP)

@@ -4080,7 +4080,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 break;
             case TokenId::IntrinsicByteSwap:
                 MK_IMMB_16(RAX);
-                concat.addString4("\x66\xC1\xC0\x08"); // rol ax, 8
+                pp.emit_BSwapN(RAX, CPUBits::B16);
                 pp.emit_Store16_Indirect(REG_OFFSET(ip->a.u32), RAX);
                 break;
             default:
