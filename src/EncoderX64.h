@@ -18,9 +18,9 @@ struct EncoderX64 : public EncoderCPU
     void     computeUnwind(const VectorNative<CPURegister>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind);
     void     emitUnwind(uint32_t& offset, uint32_t sizeProlog, const VectorNative<uint16_t>& unwind);
 
-    void    emit_REX(CPUBits numBits, CPURegister reg1 = RAX, CPURegister reg2 = RAX);
-    void    emit_ModRM(uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t op = 1);
-    void    emit_Spec8(uint8_t value, CPUBits numBits);
+    void emit_REX(CPUBits numBits, CPURegister reg1 = RAX, CPURegister reg2 = RAX);
+    void emit_ModRM(uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t op = 1);
+    void emit_Spec8(uint8_t value, CPUBits numBits);
 
     CoffSymbol* getSymbol(const Utf8& name);
     CoffSymbol* getOrAddSymbol(const Utf8& name, CoffSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);

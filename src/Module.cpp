@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Module.h"
 #include "BackendLLVM.h"
-#include "BackendX64.h"
+#include "BackendSCBE.h"
 #include "ByteCode.h"
 #include "Context.h"
 #include "LanguageSpec.h"
@@ -450,7 +450,7 @@ void Module::allocateBackend()
             backend = new BackendLLVM(this);
             break;
         case BackendGenType::SCBE:
-            backend = new BackendX64(this);
+            backend = new BackendSCBE(this);
             break;
         default:
             SWAG_ASSERT(false);

@@ -83,23 +83,23 @@
     <ClCompile Include="..\src\TypeGenStructJob.cpp">
       <Filter>Semantic\Type</Filter>
     </ClCompile>
-    <ClCompile Include="../src/BackendX64.cpp">
-      <Filter>Backend\X64</Filter>
+    <ClCompile Include="..\src\BackendSCBE.cpp">
+      <Filter>Backend\SCBE</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\BackendX64_Data.cpp">
-      <Filter>Backend\X64</Filter>
+    <ClCompile Include="..\src\BackendSCBE_Data.cpp">
+      <Filter>Backend\SCBE</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\BackendX64_Function.cpp">
-      <Filter>Backend\X64</Filter>
+    <ClCompile Include="..\src\BackendSCBE_Function.cpp">
+      <Filter>Backend\SCBE</Filter>
     </ClCompile>
-    <ClCompile Include="../src/BackendX64FunctionBodyJob.cpp">
-      <Filter>Backend\X64</Filter>
+    <ClCompile Include="..\src\BackendSCBEFunctionBodyJob.cpp">
+      <Filter>Backend\SCBE</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\BackendX64_Main.cpp">
-      <Filter>Backend\X64</Filter>
+    <ClCompile Include="..\src\BackendSCBE_Main.cpp">
+      <Filter>Backend\SCBE</Filter>
     </ClCompile>
-    <ClCompile Include="../src/BackendX64SaveObjJob.cpp">
-      <Filter>Backend\X64</Filter>
+    <ClCompile Include="..\src\BackendSCBESaveObjJob.cpp">
+      <Filter>Backend\SCBE</Filter>
     </ClCompile>
     <ClCompile Include="../src/ByteCodeOptimizer.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
@@ -131,8 +131,8 @@
     <ClCompile Include="../src/ByteCodeOptimizerJob.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\BackendX64_Dbg.cpp">
-      <Filter>Backend\X64</Filter>
+    <ClCompile Include="..\src\BackendSCBE_Dbg.cpp">
+      <Filter>Backend\SCBE</Filter>
     </ClCompile>
     <ClCompile Include="../src/BackendLinker.cpp">
       <Filter>Backend</Filter>
@@ -269,8 +269,8 @@
     <ClCompile Include="..\src\BackendLLVM_Call.cpp">
       <Filter>Backend\LLVM</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\BackendX64_Call.cpp">
-      <Filter>Backend\X64</Filter>
+    <ClCompile Include="..\src\BackendSCBE_Call.cpp">
+      <Filter>Backend\SCBE</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeOptimizer_DupBlocks.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
@@ -278,8 +278,8 @@
     <ClCompile Include="..\src\CallConv.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\BackendX64_Emit.cpp">
-      <Filter>Backend\X64</Filter>
+    <ClCompile Include="..\src\BackendSCBE_Emit.cpp">
+      <Filter>Backend\SCBE</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Report.cpp">
       <Filter>Report</Filter>
@@ -660,10 +660,10 @@
       <Filter>Semantic\Error</Filter>
     </ClCompile>
     <ClCompile Include="..\src\EncoderX64.cpp">
-      <Filter>Backend\X64</Filter>
+      <Filter>Backend\SCBE</Filter>
     </ClCompile>
     <ClCompile Include="..\src\EncoderCPU.cpp">
-      <Filter>Backend\X64</Filter>
+      <Filter>Backend\SCBE</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -737,20 +737,20 @@
     <ClInclude Include="..\src\TypeGen.h">
       <Filter>Semantic\Type</Filter>
     </ClInclude>
-    <ClInclude Include="../src/BackendX64.h">
-      <Filter>Backend\X64</Filter>
+    <ClInclude Include="..\src\BackendSCBE.h">
+      <Filter>Backend\SCBE</Filter>
     </ClInclude>
-    <ClInclude Include="../src/BackendX64FunctionBodyJob.h">
-      <Filter>Backend\X64</Filter>
+    <ClInclude Include="..\src\BackendSCBEFunctionBodyJob.h">
+      <Filter>Backend\SCBE</Filter>
     </ClInclude>
     <ClInclude Include="..\src\BackendLLVM_Macros.h">
       <Filter>Backend\LLVM</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\BackendX64_Macros.h">
-      <Filter>Backend\X64</Filter>
+    <ClInclude Include="..\src\BackendSCBE_Macros.h">
+      <Filter>Backend\SCBE</Filter>
     </ClInclude>
-    <ClInclude Include="../src/BackendX64SaveObjJob.h">
-      <Filter>Backend\X64</Filter>
+    <ClInclude Include="..\src\BackendSCBESaveObjJob.h">
+      <Filter>Backend\SCBE</Filter>
     </ClInclude>
     <ClInclude Include="../src/ByteCodeOptimizer.h">
       <Filter>Backend\ByteCode\Optimize</Filter>
@@ -1020,10 +1020,10 @@
       <Filter>Semantic\Error</Filter>
     </ClInclude>
     <ClInclude Include="..\src\EncoderX64.h">
-      <Filter>Backend\X64</Filter>
+      <Filter>Backend\SCBE</Filter>
     </ClInclude>
     <ClInclude Include="..\src\EncoderCPU.h">
-      <Filter>Backend\X64</Filter>
+      <Filter>Backend\SCBE</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1038,9 +1038,6 @@
     </Filter>
     <Filter Include="Backend\LLVM">
       <UniqueIdentifier>{c60a90b2-c79e-4690-938f-f6f4ab31461c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Backend\X64">
-      <UniqueIdentifier>{8a2a36d9-44c6-423d-8d02-ff5e04508f18}</UniqueIdentifier>
     </Filter>
     <Filter Include="Backend\ByteCode">
       <UniqueIdentifier>{5facb5bb-a2a0-45dd-aa6c-20852346b20a}</UniqueIdentifier>
@@ -1113,6 +1110,9 @@
     </Filter>
     <Filter Include="Semantic\Error">
       <UniqueIdentifier>{af92c054-3e94-448e-a2c0-bd00870ba138}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Backend\SCBE">
+      <UniqueIdentifier>{8a2a36d9-44c6-423d-8d02-ff5e04508f18}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

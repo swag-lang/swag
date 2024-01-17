@@ -4,7 +4,7 @@
 #include "Workspace.h"
 #include "Diagnostic.h"
 #include "TypeManager.h"
-#include "BackendX64.h"
+#include "BackendSCBE.h"
 #include "Context.h"
 #include "ByteCodeDebugger.h"
 #include "Report.h"

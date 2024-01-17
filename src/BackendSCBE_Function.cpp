@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "BackendX64.h"
-#include "BackendX64_Macros.h"
+#include "BackendSCBE.h"
+#include "BackendSCBE_Macros.h"
 #include "ByteCode.h"
 #include "ByteCodeGen.h"
 #include "LanguageSpec.h"
@@ -8,7 +8,7 @@
 #include "Report.h"
 #include "TypeManager.h"
 
-bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
+bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
     // Do not emit a text function if we are not compiling a test executable
     if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC) && (buildParameters.compileType != BackendCompileType::Test))
@@ -4727,7 +4727,7 @@ bool BackendX64::emitFunctionBody(const BuildParameters& buildParameters, Module
     return ok;
 }
 
-uint32_t BackendX64::getOrCreateLabel(EncoderX64& pp, uint32_t ip)
+uint32_t BackendSCBE::getOrCreateLabel(EncoderX64& pp, uint32_t ip)
 {
     auto it = pp.labels.find(ip);
     if (it == pp.labels.end())

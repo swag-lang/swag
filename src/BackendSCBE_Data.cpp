@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "BackendX64.h"
+#include "BackendSCBE.h"
 
-bool BackendX64::buildRelocSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CoffRelocationTable& relocTable, SegmentKind me)
+bool BackendSCBE::buildRelocSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CoffRelocationTable& relocTable, SegmentKind me)
 {
     if (!dataSegment->buckets.size())
         return true;

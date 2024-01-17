@@ -12,15 +12,15 @@ struct ByteCode;
 struct TypeInfo;
 struct ByteCodeInstruction;
 
-struct BackendX64 : public Backend
+struct BackendSCBE : public Backend
 {
-    BackendX64(Module* mdl)
+    BackendSCBE(Module* mdl)
         : Backend{mdl}
     {
         memset(perThread, 0, sizeof(perThread));
     }
 
-    BackendX64()
+    BackendSCBE()
         : Backend{nullptr}
     {
         memset(perThread, 0, sizeof(perThread));

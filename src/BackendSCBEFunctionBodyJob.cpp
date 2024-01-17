@@ -1,18 +1,18 @@
 #include "pch.h"
-#include "BackendX64FunctionBodyJob.h"
-#include "BackendX64.h"
+#include "BackendSCBEFunctionBodyJob.h"
+#include "BackendSCBE.h"
 #include "ByteCode.h"
 #include "Module.h"
 #include "Timer.h"
 
-JobResult BackendX64FunctionBodyJob::execute()
+JobResult BackendSCBEFunctionBodyJob::execute()
 {
 #ifdef SWAG_STATS
     Timer timer0{&g_Stats.prepOutputStage1TimeJob};
     Timer timer1{&g_Stats.prepOutputTimeJob_GenFunc};
 #endif
 
-    BackendX64* bachendX64 = (BackendX64*) backend;
+    BackendSCBE* bachendX64 = (BackendSCBE*) backend;
 
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
