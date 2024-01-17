@@ -351,7 +351,7 @@ JobResult BackendSCBE::prepareOutput(int stage, const BuildParameters& buildPara
         pp.textSectionOffset       = concat.totalCount();
         *pp.patchTextSectionOffset = pp.textSectionOffset;
 
-        emitAllFunctionBody(buildParameters, module, ownerJob);
+        emitAllFunctionBodies(buildParameters, module, ownerJob);
         return JobResult::KeepJobAlive;
     }
 

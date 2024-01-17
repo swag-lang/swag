@@ -32,6 +32,7 @@ struct BackendSCBE : public Backend
     JobResult                   prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob) override;
     bool                        generateOutput(const BuildParameters& backendParameters) override;
     BackendFunctionBodyJobBase* newFunctionJob() override;
+    bool                        emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc) override;
 
     uint32_t getOrCreateLabel(EncoderX64& pp, uint32_t ip);
     void     emitOverflowSigned(EncoderX64& pp, ByteCodeInstruction* ip, const char* msg);
@@ -41,7 +42,6 @@ struct BackendSCBE : public Backend
     void     emitShiftRightEqArithmetic(EncoderX64& pp, ByteCodeInstruction* ip, CPUBits numBits);
     void     emitShiftEqLogical(EncoderX64& pp, ByteCodeInstruction* ip, CPUBits numBits, CPUOp op);
     void     emitInternalPanic(EncoderX64& pp, AstNode* node, const char* msg);
-    bool     emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
     void     emitBinOpFloat32(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op);
     void     emitBinOpFloat32AtReg(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op);
     void     emitBinOpFloat64(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op);

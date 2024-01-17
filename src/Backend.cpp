@@ -19,6 +19,11 @@ bool Backend::generateOutput(const BuildParameters& backendParameters)
     return true;
 }
 
+bool Backend::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
+{
+    return false;
+}
+
 BackendFunctionBodyJobBase* Backend::newFunctionJob()
 {
     SWAG_ASSERT(false);
@@ -349,7 +354,7 @@ void Backend::getRangeFunctionIndexForJob(const BuildParameters& buildParameters
     }
 }
 
-bool Backend::emitAllFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, Job* ownerJob)
+bool Backend::emitAllFunctionBodies(const BuildParameters& buildParameters, Module* moduleToGen, Job* ownerJob)
 {
     SWAG_ASSERT(moduleToGen);
 

@@ -2,7 +2,6 @@
 #include "BackendLLVMFunctionBodyJob.h"
 #include "BackendLLVM.h"
 #include "ByteCode.h"
-#include "Module.h"
 #include "Timer.h"
 
 JobResult BackendLLVMFunctionBodyJob::execute()
