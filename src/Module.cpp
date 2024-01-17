@@ -449,7 +449,7 @@ void Module::allocateBackend()
         case BackendGenType::LLVM:
             backend = new BackendLLVM(this);
             break;
-        case BackendGenType::X64:
+        case BackendGenType::SCBE:
             backend = new BackendX64(this);
             break;
         default:

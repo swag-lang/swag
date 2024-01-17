@@ -111,7 +111,7 @@ struct CommandLine
     uint32_t maxRecurse  = 16 * 1024;
 
     // Backend
-    BackendGenType backendGenType = BackendGenType::X64;
+    BackendGenType backendGenType = BackendGenType::SCBE;
     bool           output         = true;
     bool           outputTest     = true;
     bool           outputLegit    = true;

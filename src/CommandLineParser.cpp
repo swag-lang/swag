@@ -80,7 +80,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu sc",               "--stack-size-rt",            nullptr,    CommandLineType::Int,           &cmdLine->stackSizeRT, nullptr, "set the stack size for backend");
     addArg("bu sc",               "--stack-size-bc",            nullptr,    CommandLineType::Int,           &cmdLine->stackSizeBC, nullptr, "set the stack size for bytecode");
                                                                                                             
-    addArg("bu sc",               "--backend",                  nullptr,    CommandLineType::EnumInt,       &cmdLine->backendGenType, "llvm|x64", "the type of backend to use");
+    addArg("bu sc",               "--backend",                  nullptr,    CommandLineType::EnumInt,       &cmdLine->backendGenType, "llvm|scbe", "the type of backend to use");
     addArg("ru",                  "--bytecode",                 nullptr,    CommandLineType::Bool,          &cmdLine->scriptMode, nullptr, "run in bytecode mode");
     addArg("cl",                  "--script",                   nullptr,    CommandLineType::Bool,          &cmdLine->scriptMode, nullptr, "clean also script cache");
     addArg("sc",                  "--script-run",               nullptr,    CommandLineType::Bool,          &cmdLine->scriptRun, nullptr, "run script, or just compile if false");
@@ -92,7 +92,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("all",                 "--stats-freq-op1",           nullptr,    CommandLineType::String,        &cmdLine->statsFreqOp1, nullptr, "[stats] name of the bytecode op to display statistics about");
     addArg("bu sc ru te",         "--profile",                  nullptr,    CommandLineType::Bool,          &cmdLine->profile, nullptr, "[stats] profile bytecode execution");
     addArg("bu sc ru te",         "--profile-filter",           nullptr,    CommandLineType::String,        &cmdLine->profileFilter, nullptr, "[stats] filter profile output names");
-    addArg("bu sc ru te",         "--profile-childs",           nullptr,    CommandLineType::Int,           &cmdLine->profileChildsLevel, nullptr, "[stats] diplay to the a given amount of sub-functions level");
+    addArg("bu sc ru te",         "--profile-childs",           nullptr,    CommandLineType::Int,           &cmdLine->profileChildsLevel, nullptr, "[stats] display to the a given amount of sub-functions level");
 #endif                                                          
                                                                 
     addArg("cl sc",               "--clean-dep",                nullptr,    CommandLineType::Bool,          &cmdLine->cleanDep, nullptr, "removes the content of the dependency folder");

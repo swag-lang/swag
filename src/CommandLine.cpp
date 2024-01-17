@@ -32,8 +32,8 @@ bool CommandLine::check()
     if (verboseCmdLine || verbosePath || verboseLink || verboseTestErrors || verboseConcreteTypes || verboseStages)
         verbose = true;
 
-    // Check special backend X64
-    if (backendGenType == BackendGenType::X64)
+    // Check special backend SCBE
+    if (backendGenType == BackendGenType::SCBE)
     {
         if (target.os != SwagTargetOs::Windows)
         {

@@ -188,7 +188,7 @@ void Stats::print()
     g_Log.messageHeaderDot("mem symname", Fmt("%s", Utf8::toNiceSize(memSymName.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
     g_Log.messageHeaderDot("mem symover", Fmt("%s", Utf8::toNiceSize(memSymOver.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
     g_Log.messageHeaderDot("mem cstr", Fmt("%s", Utf8::toNiceSize(memUtf8CStr.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
-    if (g_CommandLine.backendGenType == BackendGenType::X64)
+    if (g_CommandLine.backendGenType == BackendGenType::SCBE)
         g_Log.messageHeaderDot("mem x64 dbg", Fmt("%s", Utf8::toNiceSize(sizeBackendDbg.load()).c_str()), COLOR_HEADER, COLOR_VALUE);
 
     /////////////////////////

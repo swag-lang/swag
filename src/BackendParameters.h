@@ -23,7 +23,7 @@ struct BackendTarget
 enum class BackendGenType
 {
     LLVM,
-    X64,
+    SCBE,
 };
 
 enum class BackendObjType

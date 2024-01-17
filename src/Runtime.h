@@ -159,7 +159,7 @@ typedef FuncCB (*SwagMakeCallback)(void*);
 enum class SwagBackendGenType : uint32_t
 {
     ByteCode,
-    X64,
+    SCBE,
     LLVM
 };
 
@@ -189,7 +189,7 @@ typedef struct SwagProcessInfos
     SwagContext*       defaultContext = nullptr;
     SwagBytecodeRun    byteCodeRun    = nullptr;
     SwagMakeCallback   makeCallback   = nullptr;
-    SwagBackendGenType backendKind    = SwagBackendGenType::X64;
+    SwagBackendGenType backendKind    = SwagBackendGenType::SCBE;
 } SwagProcessInfos;
 
 struct BuildCfgBackendLLVM
@@ -204,7 +204,7 @@ struct BuildCfgBackendLLVM
     bool fpMathApproxFunc   = false;
 };
 
-struct BuildCfgBackendX64
+struct BuildCfgBackendSCBE
 {
 };
 
@@ -316,7 +316,7 @@ struct BuildCfg
 
     // Specific backend parameters
     BuildCfgBackendLLVM backendLLVM;
-    BuildCfgBackendX64  backendX64;
+    BuildCfgBackendSCBE backendSCBE;
 
     // Paths
     SwagSlice repoPath;

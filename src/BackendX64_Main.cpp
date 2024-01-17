@@ -105,9 +105,9 @@ bool BackendX64::emitMain(const BuildParameters& buildParameters)
     pp.emit_Symbol_RelocationAddr(RCX, pp.symPI_defaultContext, 0);
     pp.emit_Store64_Indirect(0, RAX, RCX);
 
-    // Set current backend as X64
+    // Set current backend as SCBE
     pp.emit_Symbol_RelocationAddr(RCX, pp.symPI_backendKind, 0);
-    pp.emit_Store32_Immediate(0, (uint32_t) SwagBackendGenType::X64, RCX);
+    pp.emit_Store32_Immediate(0, (uint32_t) SwagBackendGenType::SCBE, RCX);
 
     // Set default context in TLS
     pp.pushParams.clear();

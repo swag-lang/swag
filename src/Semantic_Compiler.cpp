@@ -900,8 +900,8 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
         node->setFlagsValueIsComputed();
         switch (g_CommandLine.backendGenType)
         {
-        case BackendGenType::X64:
-            node->computedValue->reg.u64 = (uint64_t) SwagBackendGenType::X64;
+        case BackendGenType::SCBE:
+            node->computedValue->reg.u64 = (uint64_t) SwagBackendGenType::SCBE;
             break;
         case BackendGenType::LLVM:
             node->computedValue->reg.u64 = (uint64_t) SwagBackendGenType::LLVM;

@@ -1,1 +1,1 @@
-..\bin\swag test -w:../bin/testsuite --backend:x64 --rebuild %1 %2 %3 %4 %5
+..\bin\swag test -w:../bin/testsuite --rebuild %1 %2 %3 %4 %5

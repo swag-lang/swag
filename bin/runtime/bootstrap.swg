@@ -670,7 +670,7 @@ namespace Swag
     enum Backend
     {
         ByteCode    // Bytecode
-        X64         // X86_64 backend
+        SCBE        // SCBE backend (SwagCustomBackEnd)
         LLVM        // LLVM backend
     }
 
@@ -700,8 +700,8 @@ namespace Swag
         fpMathApproxFunc:   bool = false
     }
 
-    // 'x86_64' backend specific options
-    struct BuildCfgBackendX64
+    // 'SCBE' backend specific options
+    struct BuildCfgBackendSCBE
     {
     }
 
@@ -814,7 +814,7 @@ namespace Swag
         linkerArgs:     string                  // Additional linker arguments
 
         backendLLVM:    BuildCfgBackendLLVM     // Specific LLVM options
-        backendX64:     BuildCfgBackendX64      // Specific X86_64 options
+        backendSCBE:    BuildCfgBackendSCBE     // Specific SCBE options
 
         repoPath:       string                  // Repository access path to the module
 
