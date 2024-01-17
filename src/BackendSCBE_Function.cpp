@@ -352,42 +352,42 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::CastS8F32:
             pp.emit_LoadS8S32_Indirect(REG_OFFSET(ip->b.u32), RAX, RDI);
-            concat.addString4("\xf3\x0f\x2a\xc0"); // cvtsi2ss xmm0, eax
+            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTSI);
             pp.emit_StoreF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastS16F32:
             pp.emit_LoadS16S32_Indirect(REG_OFFSET(ip->b.u32), RAX, RDI);
-            concat.addString4("\xf3\x0f\x2a\xc0"); // cvtsi2ss xmm0, eax
+            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTSI);
             pp.emit_StoreF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastS32F32:
             pp.emit_Load32_Indirect(REG_OFFSET(ip->b.u32), RAX);
-            concat.addString4("\xf3\x0f\x2a\xc0"); // cvtsi2ss xmm0, eax
+            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTSI);
             pp.emit_StoreF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastS64F32:
             pp.emit_Load64_Indirect(REG_OFFSET(ip->b.u32), RAX);
-            concat.addString5("\xF3\x48\x0F\x2A\xC0"); // cvtsi2ss xmm0, rax
+            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTSI, CPUBits::B64);
             pp.emit_StoreF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastU8F32:
             pp.emit_LoadU8U32_Indirect(REG_OFFSET(ip->b.u32), RAX, RDI);
-            concat.addString4("\xf3\x0f\x2a\xc0"); // cvtsi2ss xmm0, eax
+            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTSI);
             pp.emit_StoreF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastU16F32:
             pp.emit_LoadU16U32_Indirect(REG_OFFSET(ip->b.u32), RAX, RDI);
-            concat.addString4("\xf3\x0f\x2a\xc0"); // cvtsi2ss xmm0, eax
+            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTSI);
             pp.emit_StoreF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastU32F32:
             pp.emit_Load32_Indirect(REG_OFFSET(ip->b.u32), RAX);
-            concat.addString5("\xF3\x48\x0F\x2A\xC0"); // cvtsi2ss xmm0, rax => rax and not eax to avoid a signed conversion
+            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTSI, CPUBits::B64);
             pp.emit_StoreF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastU64F32:
             pp.emit_Load64_Indirect(REG_OFFSET(ip->b.u32), RAX);
-            concat.addString5("\xF3\x48\x0F\x2A\xC0"); // cvtsi2ss xmm0, rax
+            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTSI, CPUBits::B64);
             pp.emit_StoreF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastF64F32:
@@ -398,37 +398,37 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::CastS8F64:
             pp.emit_LoadS8S32_Indirect(REG_OFFSET(ip->b.u32), RAX, RDI);
-            concat.addString4("\xF2\x0F\x2A\xC0"); // cvtsi2sd xmm0, eax
+            pp.emit_OpF64(RAX, XMM0, CPUOp::CVTSI);
             pp.emit_StoreF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastS16F64:
             pp.emit_LoadS16S32_Indirect(REG_OFFSET(ip->b.u32), RAX, RDI);
-            concat.addString4("\xF2\x0F\x2A\xC0"); // cvtsi2sd xmm0, eax
+            pp.emit_OpF64(RAX, XMM0, CPUOp::CVTSI);
             pp.emit_StoreF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastS32F64:
             pp.emit_Load32_Indirect(REG_OFFSET(ip->b.u32), RAX);
-            concat.addString4("\xF2\x0F\x2A\xC0"); // cvtsi2sd xmm0, eax
+            pp.emit_OpF64(RAX, XMM0, CPUOp::CVTSI);
             pp.emit_StoreF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastS64F64:
             pp.emit_Load64_Indirect(REG_OFFSET(ip->b.u32), RAX);
-            concat.addString5("\xf2\x48\x0f\x2a\xc0"); // cvtsi2sd xmm0, rax
+            pp.emit_OpF64(RAX, XMM0, CPUOp::CVTSI, CPUBits::B64);
             pp.emit_StoreF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastU8F64:
             pp.emit_LoadU8U32_Indirect(REG_OFFSET(ip->b.u32), RAX, RDI);
-            concat.addString4("\xF2\x0F\x2A\xC0"); // cvtsi2sd xmm0, eax
+            pp.emit_OpF64(RAX, XMM0, CPUOp::CVTSI);
             pp.emit_StoreF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastU16F64:
             pp.emit_LoadU16U32_Indirect(REG_OFFSET(ip->b.u32), RAX, RDI);
-            concat.addString4("\xF2\x0F\x2A\xC0"); // cvtsi2sd xmm0, eax
+            pp.emit_OpF64(RAX, XMM0, CPUOp::CVTSI);
             pp.emit_StoreF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastU32F64:
             pp.emit_Load32_Indirect(REG_OFFSET(ip->b.u32), RAX);
-            concat.addString4("\xF2\x0F\x2A\xC0"); // cvtsi2sd xmm0, eax
+            pp.emit_OpF64(RAX, XMM0, CPUOp::CVTSI);
             pp.emit_StoreF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastU64F64:

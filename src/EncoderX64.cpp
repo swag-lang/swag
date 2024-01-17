@@ -1001,22 +1001,22 @@ void EncoderX64::emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUB
     }
 }
 
-void EncoderX64::emit_OpF32(CPURegister regSrc, CPURegister regDst, CPUOp op)
+void EncoderX64::emit_OpF32(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUBits srcBits)
 {
-    SWAG_ASSERT(regSrc == XMM0 && regDst == XMM1);
     concat.addU8(0xF3);
+    emit_REX(srcBits, regSrc);
     concat.addU8(0x0F);
     concat.addU8((uint8_t) op);
-    concat.addU8(0xC1);
+    concat.addU8(0xC0 | regDst | regSrc << 3);
 }
 
-void EncoderX64::emit_OpF64(CPURegister regSrc, CPURegister regDst, CPUOp op)
+void EncoderX64::emit_OpF64(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUBits srcBits)
 {
-    SWAG_ASSERT(regSrc == XMM0 && regDst == XMM1);
     concat.addU8(0xF2);
+    emit_REX(srcBits, regSrc);
     concat.addU8(0x0F);
     concat.addU8((uint8_t) op);
-    concat.addU8(0xC1);
+    concat.addU8(0xC0 | regDst | regSrc << 3);
 }
 
 void EncoderX64::emit_OpN(uint32_t offsetStack, CPURegister reg, CPURegister memReg, CPUOp op, CPUBits numBits)

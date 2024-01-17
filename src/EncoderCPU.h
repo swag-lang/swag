@@ -46,6 +46,7 @@ enum class CPUOp : uint8_t
     OR     = 0x09,
     AND    = 0x21,
     SUB    = 0x29,
+    CVTSI  = 0x2A,
     XOR    = 0x31,
     CMOVB  = 0x42,
     CMOVE  = 0x44,
