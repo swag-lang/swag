@@ -62,6 +62,7 @@ struct EncoderX64 : public EncoderCPU
     void emit_CopyF64(CPURegister regDst, CPURegister regSrc);
     void emit_CopyX(uint32_t count, uint32_t offset, CPURegister regDst, CPURegister regSrc);
 
+    void emit_JumpTable(CPURegister table, CPURegister offset);
     void emit_LongJumpOp(CPUJumpType jumpType);
     void emit_NearJumpOp(CPUJumpType jumpType);
     void emit_Jump(CPUJumpType jumpType, int32_t instructionCount, int32_t jumpOffset);
@@ -157,4 +158,5 @@ struct EncoderX64 : public EncoderCPU
     void emit_CMovN(CPURegister regDst, CPURegister regSrc, CPUBits numBits, CPUOp op);
     void emit_CmpXChg(CPURegister regDst, CPURegister regSrc, CPUBits numBits);
     void emit_BSwapN(CPURegister reg, CPUBits numBits);
+    void emit_CastU64F64(CPURegister regSrc, CPURegister regDst);
 };

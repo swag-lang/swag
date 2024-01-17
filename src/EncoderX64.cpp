@@ -1636,6 +1636,13 @@ void EncoderX64::emit_LongJumpOp(CPUJumpType jumpType)
     }
 }
 
+void EncoderX64::emit_JumpTable(CPURegister table, CPURegister offset)
+{
+    SWAG_ASSERT(table == RCX && offset == RAX);
+    emit_REX(CPUBits::B64);
+    concat.addString3("\x63\x0C\x81"); // movsx rcx, dword ptr [rcx + rax*4]
+}
+
 void EncoderX64::emit_Jump(CPUJumpType jumpType, int32_t instructionCount, int32_t jumpOffset)
 {
     LabelToSolve label;
@@ -2443,4 +2450,16 @@ void EncoderX64::emit_CopyDownUp(CPURegister reg, CPUBits numBits)
     SWAG_ASSERT(reg == RAX);
     SWAG_ASSERT(numBits == CPUBits::B8);
     concat.addString2("\x88\xe0"); // mov al, ah
+}
+
+void EncoderX64::emit_CastU64F64(CPURegister regSrc, CPURegister regDst)
+{
+    SWAG_ASSERT(regSrc == RAX && regDst == XMM0);
+    concat.addString5("\x66\x48\x0F\x6E\xC8"); // movq xmm1, rax
+    emit_Symbol_RelocationAddr(RCX, symCst_U64F64, 0);
+    concat.addString4("\x66\x0F\x62\x09");     // punpckldq xmm1, xmmword ptr [rcx]
+    concat.addString5("\x66\x0F\x5C\x49\x10"); // subpd xmm1, xmmword ptr [rcx + 16]
+    concat.addString4("\x66\x0F\x28\xC1");     // movapd xmm0, xmm1
+    concat.addString4("\x66\x0F\x15\xC1");     // unpckhpd xmm0, xmm1
+    concat.addString4("\xF2\x0F\x58\xC1");     // addsd xmm0, xmm1
 }
