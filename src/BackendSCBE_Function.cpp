@@ -3168,7 +3168,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);
             pp.emit_Load64_Immediate(RCX, ip->b.u64);
             pp.emit_ClearN(RDX, CPUBits::B64);
-            concat.addString3("\x48\xf7\xf9"); // idiv rax, rcx
+            pp.emit_OpN(RCX, RAX, CPUOp::IDIV, CPUBits::B64);
             pp.emit_Store64_Indirect(REG_OFFSET(ip->a.u32), RAX);
             break;
 
