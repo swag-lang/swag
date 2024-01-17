@@ -89,13 +89,6 @@ enum class CoffSymbolKind
     GlobalString,
 };
 
-enum Disp
-{
-    DISP8  = 0b01,
-    DISP32 = 0b10,
-    REGREG = 0b11,
-};
-
 enum CPUJumpType
 {
     JNO,

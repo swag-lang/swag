@@ -5,6 +5,13 @@
 #include "DataSegment.h"
 #include "CallConv.h"
 
+enum X64DispMode
+{
+    DISP8  = 0b01,
+    DISP32 = 0b10,
+    REGREG = 0b11,
+};
+
 struct EncoderX64 : public EncoderCPU
 {
     void clearInstructionCache();
