@@ -1072,6 +1072,11 @@ void EncoderX64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, C
         SWAG_ASSERT(reg == RAX);
         break;
 
+    case CPUOp::SAR:
+        SWAG_ASSERT(reg == RCX);
+        SWAG_ASSERT(value <= 0x7F);
+        break;
+
     default:
         SWAG_ASSERT(false);
         break;
@@ -1115,6 +1120,13 @@ void EncoderX64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, C
                 concat.addU8(0x34);
             else
                 concat.addString("\x83\xF0");
+            break;
+        case CPUOp::SAR:
+            if (numBits == CPUBits::B8)
+                concat.addU8(0xC0);
+            else
+                concat.addU8(0xC1);
+            concat.addU8(0xF8 | reg);
             break;
         default:
             SWAG_ASSERT(false);

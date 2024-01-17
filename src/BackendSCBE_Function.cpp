@@ -4022,7 +4022,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
             case TokenId::IntrinsicAbs:
                 MK_IMMB_8(RAX);
                 pp.emit_CopyN(RCX, RAX, CPUBits::B8);
-                concat.addString3("\xC0\xF9\x07"); // sar cl, 7
+                pp.emit_OpN_Immediate(RCX, 7, CPUOp::SAR, CPUBits::B8);
                 pp.emit_OpN(RCX, RAX, CPUOp::XOR, CPUBits::B8);
                 pp.emit_OpN(RCX, RAX, CPUOp::SUB, CPUBits::B8);
                 pp.emit_Store8_Indirect(REG_OFFSET(ip->a.u32), RAX);
@@ -4062,7 +4062,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
             case TokenId::IntrinsicAbs:
                 MK_IMMB_16(RAX);
                 pp.emit_CopyN(RCX, RAX, CPUBits::B16);
-                concat.addString4("\x66\xC1\xF9\x0F"); // sar cx, 15
+                pp.emit_OpN_Immediate(RCX, 15, CPUOp::SAR, CPUBits::B16);
                 pp.emit_OpN(RCX, RAX, CPUOp::XOR, CPUBits::B16);
                 pp.emit_OpN(RCX, RAX, CPUOp::SUB, CPUBits::B16);
                 pp.emit_Store16_Indirect(REG_OFFSET(ip->a.u32), RAX);
@@ -4107,7 +4107,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
             case TokenId::IntrinsicAbs:
                 MK_IMMB_32(RAX);
                 pp.emit_CopyN(RCX, RAX, CPUBits::B32);
-                concat.addString3("\xC1\xF9\x1F"); // sar ecx, 31
+                pp.emit_OpN_Immediate(RCX, 31, CPUOp::SAR, CPUBits::B32);
                 pp.emit_OpN(RCX, RAX, CPUOp::XOR, CPUBits::B32);
                 pp.emit_OpN(RCX, RAX, CPUOp::SUB, CPUBits::B32);
                 pp.emit_Store32_Indirect(REG_OFFSET(ip->a.u32), RAX);
@@ -4152,7 +4152,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
             case TokenId::IntrinsicAbs:
                 MK_IMMB_64(RAX);
                 pp.emit_CopyN(RCX, RAX, CPUBits::B64);
-                concat.addString4("\x48\xC1\xF9\x3F"); // sar rcx, 63
+                pp.emit_OpN_Immediate(RCX, 63, CPUOp::SAR, CPUBits::B64);
                 pp.emit_OpN(RCX, RAX, CPUOp::XOR, CPUBits::B64);
                 pp.emit_OpN(RCX, RAX, CPUOp::SUB, CPUBits::B64);
                 pp.emit_Store64_Indirect(REG_OFFSET(ip->a.u32), RAX);
