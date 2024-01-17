@@ -2216,7 +2216,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
             pp.emit_Load64_Immediate(RAX, 0x80000000);
             pp.emit_Store64_Indirect(offsetFLT, RAX, RDI);
             pp.emit_LoadF32_Indirect(offsetFLT, XMM1, RDI);
-            concat.addString3("\x0f\x57\xc1"); // xorps xmm0, xmm1
+            pp.emit_OpF32(XMM0, XMM1, CPUOp::FXOR);
             pp.emit_StoreF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::NegF64:
@@ -2224,7 +2224,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
             pp.emit_Load64_Immediate(RAX, 0x80000000'00000000);
             pp.emit_Store64_Indirect(offsetFLT, RAX, RDI);
             pp.emit_LoadF64_Indirect(offsetFLT, XMM1, RDI);
-            concat.addString4("\x66\x0f\x57\xc1"); // xorpd xmm0, xmm1
+            pp.emit_OpF64(XMM0, XMM1, CPUOp::FXOR);
             pp.emit_StoreF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
 
