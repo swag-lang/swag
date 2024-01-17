@@ -1019,6 +1019,9 @@
     <ClInclude Include="..\src\EncoderX64.h">
       <Filter>Backend\X64</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\EncoderCPU.h">
+      <Filter>Backend\X64</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
