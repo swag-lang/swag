@@ -42,7 +42,7 @@ void BackendSCBE::emitShiftRightEqArithmetic(EncoderX64& pp, ByteCodeInstruction
         switch (numBits)
         {
         case CPUBits::B8:
-            pp.concat.addString2("\xC0\x38");
+            pp.concat.addString2("\xC0\x38"); // sar byte ptr [rax], ??
             break;
         case CPUBits::B16:
             pp.concat.addString3("\x66\xC1\x38");
@@ -68,6 +68,8 @@ void BackendSCBE::emitShiftRightEqArithmetic(EncoderX64& pp, ByteCodeInstruction
         pp.emit_CMovN(RCX, RAX, numBits, CPUOp::CMOVG);
 
         pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);
+        //pp.emit_OpN(RCX, RAX, CPUOp::SAR, numBits);
+
         switch (numBits)
         {
         case CPUBits::B8:
@@ -113,27 +115,7 @@ void BackendSCBE::emitShiftLogical(EncoderX64& pp, ByteCodeInstruction* ip, CPUB
             pp.emit_Load8_Immediate(RCX, ip->b.u8);
         else
             pp.emit_Load32_Indirect(REG_OFFSET(ip->b.u32), RCX);
-
-        switch (numBits)
-        {
-        case CPUBits::B8:
-            pp.concat.addString1("\xD2");
-            break;
-        case CPUBits::B16:
-            pp.concat.addString2("\x66\xD3");
-            break;
-        case CPUBits::B32:
-            pp.concat.addString1("\xD3");
-            break;
-        case CPUBits::B64:
-            pp.concat.addString2("\x48\xD3");
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
-
-        pp.concat.addU8((uint8_t) op);
+        pp.emit_OpN(RCX, RAX, op, numBits);
 
         pp.emit_ClearN(R8, numBits);
         pp.emit_CmpN_Immediate(RCX, (uint32_t) numBits - 1, CPUBits::B32);
@@ -165,27 +147,7 @@ void BackendSCBE::emitShiftEqLogical(EncoderX64& pp, ByteCodeInstruction* ip, CP
         pp.emit_ClearN(RCX, numBits);
         pp.emit_StoreN_Indirect(0, RCX, RAX, numBits);
         *seekPtr = (uint8_t) (pp.concat.totalCount() - seekJmp);
-
-        switch (numBits)
-        {
-        case CPUBits::B8:
-            pp.concat.addString1("\xd2");
-            break;
-        case CPUBits::B16:
-            pp.concat.addString2("\x66\xd3");
-            break;
-        case CPUBits::B32:
-            pp.concat.addString1("\xd3");
-            break;
-        case CPUBits::B64:
-            pp.concat.addString2("\x48\xd3");
-            break;
-        default:
-            SWAG_ASSERT(false);
-            break;
-        }
-
-        pp.concat.addU8((uint8_t) op);
+        pp.emit_OpN(RCX, RAX, op, numBits);
     }
 }
 

@@ -934,31 +934,46 @@ void EncoderX64::emit_CmpN_IndirectDst(uint32_t offsetStack, uint32_t value, CPU
 void EncoderX64::emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUBits numBits)
 {
     emit_REX(numBits, regSrc, regDst);
-    if (op == CPUOp::DIV || op == CPUOp::IDIV)
+    if (op == CPUOp::DIV ||
+        op == CPUOp::IDIV)
     {
         SWAG_ASSERT(regSrc == RAX && regDst == RCX);
         emit_Spec8(0xF7, numBits);
         concat.addU8((uint8_t) op);
     }
-    else if (op == CPUOp::MUL || op == CPUOp::IMUL)
+    else if (op == CPUOp::MUL ||
+             op == CPUOp::IMUL)
     {
         SWAG_ASSERT(regSrc == RAX && regDst == RCX);
         emit_Spec8(0xF7, numBits);
         concat.addU8(op == CPUOp::IMUL ? 0xE9 : 0xE1);
     }
-    else if (op == CPUOp::SAR)
+    else if (op == CPUOp::SAR ||
+             op == CPUOp::SAL ||
+             op == CPUOp::SHR ||
+             op == CPUOp::SHL ||
+             op == CPUOp::SHREQ ||
+             op == CPUOp::SHLEQ)
     {
         SWAG_ASSERT(regDst == RAX && regSrc == RCX);
         if (numBits == CPUBits::B8)
             concat.addU8(0xD2);
         else
             concat.addU8(0xD3);
-        concat.addU8(0xF8);
+        concat.addU8((uint8_t) op);
     }
-    else
+    else if (op == CPUOp::ADD ||
+             op == CPUOp::SUB ||
+             op == CPUOp::XOR ||
+             op == CPUOp::AND ||
+             op == CPUOp::OR)
     {
         emit_Spec8((uint8_t) op, numBits);
         concat.addU8(getModRM(REGREG, regSrc, regDst));
+    }
+    else
+    {
+        SWAG_ASSERT(false);
     }
 }
 
