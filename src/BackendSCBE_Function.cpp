@@ -341,94 +341,94 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::CastF32S32:
             pp.emit_LoadF32_Indirect(REG_OFFSET(ip->b.u32), XMM0);
-            concat.addString4("\xf3\x0f\x2c\xc0"); // cvttss2si eax, xmm0
+            pp.emit_OpF32(XMM0, RAX, CPUOp::CVTF2I);
             pp.emit_Store32_Indirect(REG_OFFSET(ip->a.u32), RAX);
             break;
         case ByteCodeOp::CastF64S64:
             pp.emit_LoadF64_Indirect(REG_OFFSET(ip->b.u32), XMM0);
-            concat.addString5("\xf2\x48\x0f\x2c\xc0"); // cvttss2si rax, xmm0
+            pp.emit_OpF64(XMM0, RAX, CPUOp::CVTF2I, CPUBits::B64);
             pp.emit_Store64_Indirect(REG_OFFSET(ip->a.u32), RAX);
             break;
 
         case ByteCodeOp::CastS8F32:
             pp.emit_LoadS8S32_Indirect(REG_OFFSET(ip->b.u32), RAX, RDI);
-            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTSI);
+            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTI2F);
             pp.emit_StoreF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastS16F32:
             pp.emit_LoadS16S32_Indirect(REG_OFFSET(ip->b.u32), RAX, RDI);
-            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTSI);
+            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTI2F);
             pp.emit_StoreF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastS32F32:
             pp.emit_Load32_Indirect(REG_OFFSET(ip->b.u32), RAX);
-            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTSI);
+            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTI2F);
             pp.emit_StoreF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastS64F32:
             pp.emit_Load64_Indirect(REG_OFFSET(ip->b.u32), RAX);
-            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTSI, CPUBits::B64);
+            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTI2F, CPUBits::B64);
             pp.emit_StoreF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastU8F32:
             pp.emit_LoadU8U32_Indirect(REG_OFFSET(ip->b.u32), RAX, RDI);
-            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTSI);
+            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTI2F);
             pp.emit_StoreF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastU16F32:
             pp.emit_LoadU16U32_Indirect(REG_OFFSET(ip->b.u32), RAX, RDI);
-            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTSI);
+            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTI2F);
             pp.emit_StoreF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastU32F32:
             pp.emit_Load32_Indirect(REG_OFFSET(ip->b.u32), RAX);
-            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTSI, CPUBits::B64);
+            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTI2F, CPUBits::B64);
             pp.emit_StoreF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastU64F32:
             pp.emit_Load64_Indirect(REG_OFFSET(ip->b.u32), RAX);
-            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTSI, CPUBits::B64);
+            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTI2F, CPUBits::B64);
             pp.emit_StoreF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastF64F32:
             pp.emit_LoadF64_Indirect(REG_OFFSET(ip->b.u32), XMM0);
-            pp.emit_OpF64(RAX, XMM0, CPUOp::CVTSD);
+            pp.emit_OpF64(RAX, XMM0, CPUOp::CVTF2F);
             pp.emit_StoreF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
 
         case ByteCodeOp::CastS8F64:
             pp.emit_LoadS8S32_Indirect(REG_OFFSET(ip->b.u32), RAX, RDI);
-            pp.emit_OpF64(RAX, XMM0, CPUOp::CVTSI);
+            pp.emit_OpF64(RAX, XMM0, CPUOp::CVTI2F);
             pp.emit_StoreF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastS16F64:
             pp.emit_LoadS16S32_Indirect(REG_OFFSET(ip->b.u32), RAX, RDI);
-            pp.emit_OpF64(RAX, XMM0, CPUOp::CVTSI);
+            pp.emit_OpF64(RAX, XMM0, CPUOp::CVTI2F);
             pp.emit_StoreF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastS32F64:
             pp.emit_Load32_Indirect(REG_OFFSET(ip->b.u32), RAX);
-            pp.emit_OpF64(RAX, XMM0, CPUOp::CVTSI);
+            pp.emit_OpF64(RAX, XMM0, CPUOp::CVTI2F);
             pp.emit_StoreF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastS64F64:
             pp.emit_Load64_Indirect(REG_OFFSET(ip->b.u32), RAX);
-            pp.emit_OpF64(RAX, XMM0, CPUOp::CVTSI, CPUBits::B64);
+            pp.emit_OpF64(RAX, XMM0, CPUOp::CVTI2F, CPUBits::B64);
             pp.emit_StoreF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastU8F64:
             pp.emit_LoadU8U32_Indirect(REG_OFFSET(ip->b.u32), RAX, RDI);
-            pp.emit_OpF64(RAX, XMM0, CPUOp::CVTSI);
+            pp.emit_OpF64(RAX, XMM0, CPUOp::CVTI2F);
             pp.emit_StoreF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastU16F64:
             pp.emit_LoadU16U32_Indirect(REG_OFFSET(ip->b.u32), RAX, RDI);
-            pp.emit_OpF64(RAX, XMM0, CPUOp::CVTSI);
+            pp.emit_OpF64(RAX, XMM0, CPUOp::CVTI2F);
             pp.emit_StoreF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastU32F64:
             pp.emit_Load32_Indirect(REG_OFFSET(ip->b.u32), RAX);
-            pp.emit_OpF64(RAX, XMM0, CPUOp::CVTSI);
+            pp.emit_OpF64(RAX, XMM0, CPUOp::CVTI2F);
             pp.emit_StoreF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         case ByteCodeOp::CastU64F64:
@@ -456,7 +456,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
         case ByteCodeOp::CastF32F64:
             pp.emit_LoadF32_Indirect(REG_OFFSET(ip->b.u32), XMM0);
-            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTSD);
+            pp.emit_OpF32(RAX, XMM0, CPUOp::CVTF2F);
             pp.emit_StoreF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
 
