@@ -433,23 +433,15 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
             break;
         case ByteCodeOp::CastU64F64:
         {
-            // Code from llvm/clang
-            // movq      xmm1, rdi
-            // punpckldq xmm1, xmmword ptr[rip + .LCPI0_0] # xmm1 = xmm1[0], mem[0], xmm1[1], mem[1]
-            // subpd     xmm1, xmmword ptr[rip + .LCPI0_1]
-            // movapd    xmm0, xmm1
-            // unpckhpd  xmm0, xmm1                        # xmm0 = xmm0[1], xmm1[1]
-            // addsd     xmm0, xmm1
             pp.emit_Load64_Indirect(REG_OFFSET(ip->b.u32), RAX);
-            concat.addString5("\x66\x48\x0F\x6E\xC8"); // movq xmm1, rax
 
+            concat.addString5("\x66\x48\x0F\x6E\xC8"); // movq xmm1, rax
             pp.emit_Symbol_RelocationAddr(RCX, pp.symCst_U64F64, 0);
             concat.addString4("\x66\x0F\x62\x09");     // punpckldq xmm1, xmmword ptr [rcx]
             concat.addString5("\x66\x0F\x5C\x49\x10"); // subpd xmm1, xmmword ptr [rcx + 16]
             concat.addString4("\x66\x0F\x28\xC1");     // movapd xmm0, xmm1
             concat.addString4("\x66\x0F\x15\xC1");     // unpckhpd xmm0, xmm1
             concat.addString4("\xF2\x0F\x58\xC1");     // addsd xmm0, xmm1
-
             pp.emit_StoreF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
         }
