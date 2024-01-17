@@ -12,7 +12,7 @@ struct ByteCode;
 struct TypeInfo;
 struct ByteCodeInstruction;
 
-#define regOffset(__r) __r * sizeof(Register)
+#define REG_OFFSET(__r) __r * sizeof(Register)
 
 #define MK_ALIGN16(__s) \
     if (__s % 16)       \

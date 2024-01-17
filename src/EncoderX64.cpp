@@ -1549,7 +1549,7 @@ void EncoderX64::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative
             if (CallConv::structParamByValue(typeFuncBC, type))
             {
                 SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
-                emit_Load64_Indirect(regOffset(reg), RAX);
+                emit_Load64_Indirect(REG_OFFSET(reg), RAX);
                 emit_Load64_Indirect(0, cc.paramByRegisterInteger[i], RAX);
             }
             else if (cc.useRegisterFloat && type->isNative(NativeTypeKind::F32))
@@ -1563,7 +1563,7 @@ void EncoderX64::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative
                 else
                 {
                     SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
-                    emit_LoadF32_Indirect(regOffset(reg), cc.paramByRegisterFloat[i]);
+                    emit_LoadF32_Indirect(REG_OFFSET(reg), cc.paramByRegisterFloat[i]);
                 }
             }
             else if (cc.useRegisterFloat && type->isNative(NativeTypeKind::F64))
@@ -1576,7 +1576,7 @@ void EncoderX64::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative
                 else
                 {
                     SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
-                    emit_LoadF64_Indirect(regOffset(reg), cc.paramByRegisterFloat[i]);
+                    emit_LoadF64_Indirect(REG_OFFSET(reg), cc.paramByRegisterFloat[i]);
                 }
             }
             else
@@ -1602,11 +1602,11 @@ void EncoderX64::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative
                     emit_LoadAddress_Indirect((uint32_t) paramsRegisters[i].reg, cc.paramByRegisterInteger[i], RDI);
                     break;
                 case X64PushParamType::RegAdd:
-                    emit_Load64_Indirect(regOffset(reg), cc.paramByRegisterInteger[i]);
+                    emit_Load64_Indirect(REG_OFFSET(reg), cc.paramByRegisterInteger[i]);
                     emit_OpN_Immediate(cc.paramByRegisterInteger[i], paramsRegisters[i].val, X64Op::ADD, X64Bits::B64);
                     break;
                 case X64PushParamType::RegMul:
-                    emit_Load64_Indirect(regOffset(reg), RAX);
+                    emit_Load64_Indirect(REG_OFFSET(reg), RAX);
                     emit_OpN_Immediate(RAX, paramsRegisters[i].val, X64Op::IMUL, X64Bits::B64);
                     emit_CopyN(cc.paramByRegisterInteger[i], RAX, X64Bits::B64);
                     break;
@@ -1618,7 +1618,7 @@ void EncoderX64::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative
                     break;
                 default:
                     SWAG_ASSERT(paramsRegisters[i].type == X64PushParamType::Reg);
-                    emit_Load64_Indirect(regOffset(reg), cc.paramByRegisterInteger[i]);
+                    emit_Load64_Indirect(REG_OFFSET(reg), cc.paramByRegisterInteger[i]);
                     break;
                 }
             }
@@ -1639,7 +1639,7 @@ void EncoderX64::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative
         // This is a C variadic parameter
         if (i >= maxParamsPerRegister)
         {
-            emit_Load64_Indirect(regOffset(reg), RAX);
+            emit_Load64_Indirect(REG_OFFSET(reg), RAX);
             emit_Store64_Indirect(offsetStack, RAX, RSP);
         }
 
@@ -1664,7 +1664,7 @@ void EncoderX64::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative
             // Struct by copy. Will be a pointer to the stack
             if (type->isStruct())
             {
-                emit_Load64_Indirect(regOffset(reg), RAX);
+                emit_Load64_Indirect(REG_OFFSET(reg), RAX);
 
                 // Store the content of the struct in the stack
                 if (CallConv::structParamByValue(typeFuncBC, type))
@@ -1701,19 +1701,19 @@ void EncoderX64::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative
                 switch (sizeOf)
                 {
                 case 1:
-                    emit_Load8_Indirect(regOffset(reg), RAX);
+                    emit_Load8_Indirect(REG_OFFSET(reg), RAX);
                     emit_Store8_Indirect(offsetStack, RAX, RSP);
                     break;
                 case 2:
-                    emit_Load16_Indirect(regOffset(reg), RAX);
+                    emit_Load16_Indirect(REG_OFFSET(reg), RAX);
                     emit_Store16_Indirect(offsetStack, RAX, RSP);
                     break;
                 case 4:
-                    emit_Load32_Indirect(regOffset(reg), RAX);
+                    emit_Load32_Indirect(REG_OFFSET(reg), RAX);
                     emit_Store32_Indirect(offsetStack, RAX, RSP);
                     break;
                 case 8:
-                    emit_Load64_Indirect(regOffset(reg), RAX);
+                    emit_Load64_Indirect(REG_OFFSET(reg), RAX);
                     emit_Store64_Indirect(offsetStack, RAX, RSP);
                     break;
                 default:
@@ -1841,7 +1841,7 @@ void EncoderX64::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNa
         if (typeFunc->isVariadic())
             reg = (uint32_t) pushParams3[2].reg;
 
-        emit_Load64_Indirect(regOffset(reg), RAX);
+        emit_Load64_Indirect(REG_OFFSET(reg), RAX);
         emit_TestN(RAX, RAX, X64Bits::B64);
 
         // If not zero, jump to closure call

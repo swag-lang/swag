@@ -11,11 +11,11 @@ uint32_t BackendX64::getParamStackOffset(CoffFunction* coffFct, int paramIdx)
     // If this was passed as a register, then get the value from storeS4 (where input registers have been saved)
     // instead of value from the stack
     if (paramIdx < (int) cc.paramByRegisterCount)
-        return regOffset(paramIdx) + coffFct->offsetLocalStackParams;
+        return REG_OFFSET(paramIdx) + coffFct->offsetLocalStackParams;
 
     // Value from the caller stack
     else
-        return regOffset(paramIdx) + coffFct->offsetCallerStackParams;
+        return REG_OFFSET(paramIdx) + coffFct->offsetCallerStackParams;
 }
 
 void BackendX64::emitGetParam(EncoderX64& pp, CoffFunction* coffFct, int reg, uint32_t paramIdx, int sizeOf, uint64_t toAdd, int deRefSize)
@@ -35,7 +35,7 @@ void BackendX64::emitGetParam(EncoderX64& pp, CoffFunction* coffFct, int reg, ui
             pp.emit_Extend_U8U64((CPURegister) (cc.firstScratchRegister + paramIdx), RAX);
         else
             pp.emit_LoadU8U64_Indirect(paramStack, RAX, RDI);
-        pp.emit_Store64_Indirect(regOffset(reg), RAX);
+        pp.emit_Store64_Indirect(REG_OFFSET(reg), RAX);
         return;
     case 2:
         SWAG_ASSERT(!toAdd);
@@ -43,7 +43,7 @@ void BackendX64::emitGetParam(EncoderX64& pp, CoffFunction* coffFct, int reg, ui
             pp.emit_Extend_U16U64((CPURegister) (cc.firstScratchRegister + paramIdx), RAX);
         else
             pp.emit_LoadU16U64_Indirect(paramStack, RAX, RDI);
-        pp.emit_Store64_Indirect(regOffset(reg), RAX);
+        pp.emit_Store64_Indirect(REG_OFFSET(reg), RAX);
         return;
     case 4:
         SWAG_ASSERT(!toAdd);
@@ -51,7 +51,7 @@ void BackendX64::emitGetParam(EncoderX64& pp, CoffFunction* coffFct, int reg, ui
             pp.emit_CopyN(RAX, (CPURegister) (cc.firstScratchRegister + paramIdx), X64Bits::B32);
         else
             pp.emit_Load32_Indirect(paramStack, RAX, RDI);
-        pp.emit_Store64_Indirect(regOffset(reg), RAX);
+        pp.emit_Store64_Indirect(REG_OFFSET(reg), RAX);
         return;
     }
 
@@ -65,7 +65,7 @@ void BackendX64::emitGetParam(EncoderX64& pp, CoffFunction* coffFct, int reg, ui
         auto scratch = (CPURegister) (cc.firstScratchRegister + paramIdx);
         if (toAdd == 0 && deRefSize == 0)
         {
-            pp.emit_Store64_Indirect(regOffset(reg), scratch);
+            pp.emit_Store64_Indirect(REG_OFFSET(reg), scratch);
         }
         else
         {
@@ -88,7 +88,7 @@ void BackendX64::emitGetParam(EncoderX64& pp, CoffFunction* coffFct, int reg, ui
                 break;
             }
 
-            pp.emit_Store64_Indirect(regOffset(reg), RAX);
+            pp.emit_Store64_Indirect(REG_OFFSET(reg), RAX);
         }
     }
 
@@ -119,7 +119,7 @@ void BackendX64::emitGetParam(EncoderX64& pp, CoffFunction* coffFct, int reg, ui
             break;
         }
 
-        pp.emit_Store64_Indirect(regOffset(reg), RAX);
+        pp.emit_Store64_Indirect(REG_OFFSET(reg), RAX);
     }
 }
 
@@ -237,11 +237,11 @@ void BackendX64::emitByteCodeCall(EncoderX64& pp, TypeInfoFuncAttr* typeFuncBC, 
         stackOffset += sizeof(Register);
         if (idxReg <= 2)
         {
-            pp.emit_Load64_Indirect(regOffset(pushRAParams[idxParam]), idxToReg[idxReg]);
+            pp.emit_Load64_Indirect(REG_OFFSET(pushRAParams[idxParam]), idxToReg[idxReg]);
         }
         else
         {
-            pp.emit_Load64_Indirect(regOffset(pushRAParams[idxParam]), RAX);
+            pp.emit_Load64_Indirect(REG_OFFSET(pushRAParams[idxParam]), RAX);
             pp.emit_Store64_Indirect(stackOffset, RAX, RSP);
         }
     }
@@ -256,7 +256,7 @@ void BackendX64::emitByteCodeCallParameters(EncoderX64& pp, TypeInfoFuncAttr* ty
     if (typeFuncBC->isClosure())
     {
         auto reg = pushRAParams.back();
-        pp.emit_Load64_Indirect(regOffset(reg), RAX);
+        pp.emit_Load64_Indirect(REG_OFFSET(reg), RAX);
         pp.emit_TestN(RAX, RAX, X64Bits::B64);
 
         // If not zero, jump to closure call

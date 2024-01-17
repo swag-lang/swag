@@ -8,7 +8,7 @@ void BackendX64::emitShiftRightArithmetic(EncoderX64& pp, ByteCodeInstruction* i
 {
     if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))
     {
-        pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
+        pp.emit_LoadN_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
         pp.emit_ShiftN(RAX, min(ip->b.u32, (uint32_t) numBits - 1), numBits, X64Op::SAR);
     }
     else
@@ -17,7 +17,7 @@ void BackendX64::emitShiftRightArithmetic(EncoderX64& pp, ByteCodeInstruction* i
             pp.emit_Load8_Immediate(RCX, (uint8_t) min(ip->b.u32, (uint32_t) numBits - 1));
         else
         {
-            pp.emit_Load32_Indirect(regOffset(ip->b.u32), RCX);
+            pp.emit_Load32_Indirect(REG_OFFSET(ip->b.u32), RCX);
             pp.emit_Load32_Immediate(RAX, (uint32_t) numBits - 1);
             pp.emit_CmpN_Immediate(RCX, (uint32_t) numBits - 1, X64Bits::B32);
             pp.emit_CMovN(RCX, RAX, numBits, X64Op::CMOVG);
@@ -26,7 +26,7 @@ void BackendX64::emitShiftRightArithmetic(EncoderX64& pp, ByteCodeInstruction* i
         if (ip->flags & BCI_IMM_A)
             pp.emit_LoadN_Immediate(RAX, ip->a.u64, numBits);
         else
-            pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
+            pp.emit_LoadN_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
 
         switch (numBits)
         {
@@ -48,14 +48,14 @@ void BackendX64::emitShiftRightArithmetic(EncoderX64& pp, ByteCodeInstruction* i
         }
     }
 
-    pp.emit_StoreN_Indirect(regOffset(ip->c.u32), RAX, RDI, numBits);
+    pp.emit_StoreN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, numBits);
 }
 
 void BackendX64::emitShiftRightEqArithmetic(EncoderX64& pp, ByteCodeInstruction* ip, X64Bits numBits)
 {
     if (ip->flags & BCI_IMM_B)
     {
-        pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
+        pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);
         switch (numBits)
         {
         case X64Bits::B8:
@@ -79,12 +79,12 @@ void BackendX64::emitShiftRightEqArithmetic(EncoderX64& pp, ByteCodeInstruction*
     }
     else
     {
-        pp.emit_Load32_Indirect(regOffset(ip->b.u32), RCX);
+        pp.emit_Load32_Indirect(REG_OFFSET(ip->b.u32), RCX);
         pp.emit_Load32_Immediate(RAX, (uint32_t) numBits - 1);
         pp.emit_CmpN_Immediate(RCX, (uint32_t) numBits - 1, X64Bits::B32);
         pp.emit_CMovN(RCX, RAX, numBits, X64Op::CMOVG);
 
-        pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
+        pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);
         switch (numBits)
         {
         case X64Bits::B8:
@@ -111,25 +111,25 @@ void BackendX64::emitShiftLogical(EncoderX64& pp, ByteCodeInstruction* ip, X64Bi
     if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= (uint32_t) numBits)
     {
         pp.emit_ClearN(RAX, numBits);
-        pp.emit_StoreN_Indirect(regOffset(ip->c.u32), RAX, RDI, numBits);
+        pp.emit_StoreN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, numBits);
     }
     else if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))
     {
-        pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
+        pp.emit_LoadN_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
         pp.emit_ShiftN(RAX, ip->b.u8, numBits, op);
-        pp.emit_StoreN_Indirect(regOffset(ip->c.u32), RAX, RDI, numBits);
+        pp.emit_StoreN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, numBits);
     }
     else
     {
         if (ip->flags & BCI_IMM_A)
             pp.emit_LoadN_Immediate(RAX, ip->a.u64, numBits);
         else
-            pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
+            pp.emit_LoadN_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
 
         if (ip->flags & BCI_IMM_B)
             pp.emit_Load8_Immediate(RCX, ip->b.u8);
         else
-            pp.emit_Load32_Indirect(regOffset(ip->b.u32), RCX);
+            pp.emit_Load32_Indirect(REG_OFFSET(ip->b.u32), RCX);
 
         switch (numBits)
         {
@@ -155,13 +155,13 @@ void BackendX64::emitShiftLogical(EncoderX64& pp, ByteCodeInstruction* ip, X64Bi
         pp.emit_ClearN(R8, numBits);
         pp.emit_CmpN_Immediate(RCX, (uint32_t) numBits - 1, X64Bits::B32);
         pp.emit_CMovN(RAX, R8, numBits, X64Op::CMOVG);
-        pp.emit_StoreN_Indirect(regOffset(ip->c.u32), RAX, RDI, numBits);
+        pp.emit_StoreN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, numBits);
     }
 }
 
 void BackendX64::emitShiftEqLogical(EncoderX64& pp, ByteCodeInstruction* ip, X64Bits numBits, X64Op op)
 {
-    pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
+    pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);
     if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= (uint32_t) numBits)
     {
         pp.emit_ClearN(RCX, numBits);
@@ -173,7 +173,7 @@ void BackendX64::emitShiftEqLogical(EncoderX64& pp, ByteCodeInstruction* ip, X64
     }
     else
     {
-        pp.emit_Load32_Indirect(regOffset(ip->b.u32), RCX);
+        pp.emit_Load32_Indirect(REG_OFFSET(ip->b.u32), RCX);
         pp.emit_CmpN_Immediate(RCX, (uint32_t) numBits, X64Bits::B32);
         pp.emit_NearJumpOp(JL);
         pp.concat.addU8(0); // clear + store below
@@ -271,11 +271,11 @@ void BackendX64::emitBinOpFloat32(EncoderX64& pp, ByteCodeInstruction* ip, X64Op
 {
     if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
     {
-        pp.emit_LoadF32_Indirect(regOffset(ip->a.u32), XMM0);
+        pp.emit_LoadF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
         pp.concat.addU8(0xF3);
         pp.concat.addU8(0x0F);
         pp.concat.addU8((uint8_t) op);
-        pp.emit_ModRM(regOffset(ip->b.u32), XMM0, RDI);
+        pp.emit_ModRM(REG_OFFSET(ip->b.u32), XMM0, RDI);
     }
     else
     {
@@ -285,14 +285,14 @@ void BackendX64::emitBinOpFloat32(EncoderX64& pp, ByteCodeInstruction* ip, X64Op
             pp.emit_CopyF32(XMM0, RAX);
         }
         else
-            pp.emit_LoadF32_Indirect(regOffset(ip->a.u32), XMM0);
+            pp.emit_LoadF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
         if (ip->flags & BCI_IMM_B)
         {
             pp.emit_Load32_Immediate(RAX, ip->b.u32);
             pp.emit_CopyF32(XMM1, RAX);
         }
         else
-            pp.emit_LoadF32_Indirect(regOffset(ip->b.u32), XMM1);
+            pp.emit_LoadF32_Indirect(REG_OFFSET(ip->b.u32), XMM1);
         pp.concat.addU8(0xF3);
         pp.concat.addU8(0x0F);
         pp.concat.addU8((uint8_t) op);
@@ -304,11 +304,11 @@ void BackendX64::emitBinOpFloat64(EncoderX64& pp, ByteCodeInstruction* ip, X64Op
 {
     if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
     {
-        pp.emit_LoadF64_Indirect(regOffset(ip->a.u32), XMM0);
+        pp.emit_LoadF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
         pp.concat.addU8(0xF2);
         pp.concat.addU8(0x0F);
         pp.concat.addU8((uint8_t) op);
-        pp.emit_ModRM(regOffset(ip->b.u32), XMM0, RDI);
+        pp.emit_ModRM(REG_OFFSET(ip->b.u32), XMM0, RDI);
     }
     else
     {
@@ -318,14 +318,14 @@ void BackendX64::emitBinOpFloat64(EncoderX64& pp, ByteCodeInstruction* ip, X64Op
             pp.emit_CopyF64(XMM0, RAX);
         }
         else
-            pp.emit_LoadF64_Indirect(regOffset(ip->a.u32), XMM0);
+            pp.emit_LoadF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
         if (ip->flags & BCI_IMM_B)
         {
             pp.emit_Load64_Immediate(RAX, ip->b.u64);
             pp.emit_CopyF64(XMM1, RAX);
         }
         else
-            pp.emit_LoadF64_Indirect(regOffset(ip->b.u32), XMM1);
+            pp.emit_LoadF64_Indirect(REG_OFFSET(ip->b.u32), XMM1);
         pp.concat.addU8(0xF2);
         pp.concat.addU8(0x0F);
         pp.concat.addU8((uint8_t) op);
@@ -336,20 +336,20 @@ void BackendX64::emitBinOpFloat64(EncoderX64& pp, ByteCodeInstruction* ip, X64Op
 void BackendX64::emitBinOpFloat32AtReg(EncoderX64& pp, ByteCodeInstruction* ip, X64Op op)
 {
     emitBinOpFloat32(pp, ip, op);
-    pp.emit_StoreF32_Indirect(regOffset(ip->c.u32), XMM0);
+    pp.emit_StoreF32_Indirect(REG_OFFSET(ip->c.u32), XMM0);
 }
 
 void BackendX64::emitBinOpFloat64AtReg(EncoderX64& pp, ByteCodeInstruction* ip, X64Op op)
 {
     emitBinOpFloat64(pp, ip, op);
-    pp.emit_StoreF64_Indirect(regOffset(ip->c.u32), XMM0);
+    pp.emit_StoreF64_Indirect(REG_OFFSET(ip->c.u32), XMM0);
 }
 
 void BackendX64::emitBinOpIntN(EncoderX64& pp, ByteCodeInstruction* ip, X64Op op, X64Bits numBits)
 {
     if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
     {
-        pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
+        pp.emit_LoadN_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
         pp.emit_REX(numBits);
         if (op == X64Op::MUL)
         {
@@ -357,24 +357,24 @@ void BackendX64::emitBinOpIntN(EncoderX64& pp, ByteCodeInstruction* ip, X64Op op
                 pp.concat.addString1("\xF6");
             else
                 pp.concat.addString1("\xF7");
-            pp.emit_ModRM(regOffset(ip->b.u32), 4, RDI);
+            pp.emit_ModRM(REG_OFFSET(ip->b.u32), 4, RDI);
         }
         else if (op == X64Op::IMUL)
         {
             if (numBits == X64Bits::B8)
             {
                 pp.concat.addString1("\xF6");
-                pp.emit_ModRM(regOffset(ip->b.u32), 5, RDI);
+                pp.emit_ModRM(REG_OFFSET(ip->b.u32), 5, RDI);
             }
             else if (numBits == X64Bits::B16)
             {
                 pp.concat.addString1("\xF7");
-                pp.emit_ModRM(regOffset(ip->b.u32), 5, RDI);
+                pp.emit_ModRM(REG_OFFSET(ip->b.u32), 5, RDI);
             }
             else
             {
                 pp.concat.addString2("\x0F\xAF");
-                pp.emit_ModRM(regOffset(ip->b.u32), RAX, RDI);
+                pp.emit_ModRM(REG_OFFSET(ip->b.u32), RAX, RDI);
             }
         }
         else
@@ -383,20 +383,20 @@ void BackendX64::emitBinOpIntN(EncoderX64& pp, ByteCodeInstruction* ip, X64Op op
                 pp.concat.addU8((uint8_t) op + 1);
             else
                 pp.concat.addU8((uint8_t) op | 2);
-            pp.emit_ModRM(regOffset(ip->b.u32), RAX, RDI);
+            pp.emit_ModRM(REG_OFFSET(ip->b.u32), RAX, RDI);
         }
     }
     // Mul by power of 2 => shift by log2
     else if (op == X64Op::MUL && !(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B) && isPowerOfTwo(ip->b.u64) && (ip->b.u64 < (uint64_t) numBits))
     {
-        pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
+        pp.emit_LoadN_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
         pp.emit_Load8_Immediate(RCX, (uint8_t) log2(ip->b.u64));
         pp.emit_REX(numBits);
         pp.concat.addString2("\xD3\xE0"); // shl rax, cl
     }
     else if ((op == X64Op::AND || op == X64Op::OR || op == X64Op::XOR || op == X64Op::ADD || op == X64Op::SUB) && !(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B) && (ip->b.u64 <= 0x7FFFFFFF))
     {
-        pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
+        pp.emit_LoadN_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
         pp.emit_REX(numBits);
         if (ip->b.u32 <= 0x7F)
         {
@@ -438,11 +438,11 @@ void BackendX64::emitBinOpIntN(EncoderX64& pp, ByteCodeInstruction* ip, X64Op op
         if (ip->flags & BCI_IMM_A)
             pp.emit_LoadN_Immediate(RAX, ip->a.u64, numBits);
         else
-            pp.emit_LoadN_Indirect(regOffset(ip->a.u32), RAX, RDI, numBits);
+            pp.emit_LoadN_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI, numBits);
         if (ip->flags & BCI_IMM_B)
             pp.emit_LoadN_Immediate(RCX, ip->b.u64, numBits);
         else
-            pp.emit_LoadN_Indirect(regOffset(ip->b.u32), RCX, RDI, numBits);
+            pp.emit_LoadN_Indirect(REG_OFFSET(ip->b.u32), RCX, RDI, numBits);
 
         if (op == X64Op::MUL)
         {
@@ -470,7 +470,7 @@ void BackendX64::emitBinOpIntN(EncoderX64& pp, ByteCodeInstruction* ip, X64Op op
 void BackendX64::emitBinOpIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, X64Op op, X64Bits numBits)
 {
     emitBinOpIntN(pp, ip, op, numBits);
-    pp.emit_StoreN_Indirect(regOffset(ip->c.u32), RAX, RDI, numBits);
+    pp.emit_StoreN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, numBits);
 }
 
 void BackendX64::emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, bool isSigned, X64Bits numBits, bool modulo)
@@ -481,15 +481,15 @@ void BackendX64::emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, 
         if (ip->flags & BCI_IMM_A)
             pp.emit_Load32_Immediate(RAX, (uint32_t) ip->a.u8);
         else if (isSigned)
-            pp.emit_LoadS8S32_Indirect(regOffset(ip->a.u32), RAX, RDI);
+            pp.emit_LoadS8S32_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);
         else
-            pp.emit_LoadU8U32_Indirect(regOffset(ip->a.u32), RAX, RDI);
+            pp.emit_LoadU8U32_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI);
         break;
     case X64Bits::B16:
         if (ip->flags & BCI_IMM_A)
             pp.emit_Load16_Immediate(RAX, ip->a.u16);
         else
-            pp.emit_Load16_Indirect(regOffset(ip->a.u32), RAX);
+            pp.emit_Load16_Indirect(REG_OFFSET(ip->a.u32), RAX);
         if (isSigned)
             pp.emit_Cwd();
         else
@@ -499,7 +499,7 @@ void BackendX64::emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, 
         if (ip->flags & BCI_IMM_A)
             pp.emit_Load32_Immediate(RAX, ip->a.u32);
         else
-            pp.emit_Load32_Indirect(regOffset(ip->a.u32), RAX);
+            pp.emit_Load32_Indirect(REG_OFFSET(ip->a.u32), RAX);
         if (isSigned)
             pp.emit_Cdq();
         else
@@ -509,7 +509,7 @@ void BackendX64::emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, 
         if (ip->flags & BCI_IMM_A)
             pp.emit_Load64_Immediate(RAX, ip->a.u64);
         else
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RAX);
+            pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);
         if (isSigned)
             pp.emit_Cqo();
         else
@@ -556,11 +556,11 @@ void BackendX64::emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, 
     {
         if (numBits == X64Bits::B8)
             pp.concat.addString2("\x88\xE2"); // mov dl, ah
-        pp.emit_StoreN_Indirect(regOffset(ip->c.u32), RDX, RDI, numBits);
+        pp.emit_StoreN_Indirect(REG_OFFSET(ip->c.u32), RDX, RDI, numBits);
     }
     else
     {
-        pp.emit_StoreN_Indirect(regOffset(ip->c.u32), RAX, RDI, numBits);
+        pp.emit_StoreN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, numBits);
     }
 }
 
@@ -571,7 +571,7 @@ void BackendX64::emitAddSubMul64(EncoderX64& pp, ByteCodeInstruction* ip, uint64
     auto val = ip->b.u64 * mul;
     if (ip->flags & BCI_IMM_B && val <= 0x7FFFFFFF && ip->a.u32 == ip->c.u32)
     {
-        pp.emit_OpN_IndirectDst(regOffset(ip->a.u32), (uint32_t) val, RDI, op, X64Bits::B64);
+        pp.emit_OpN_IndirectDst(REG_OFFSET(ip->a.u32), (uint32_t) val, RDI, op, X64Bits::B64);
     }
     else
     {
@@ -579,17 +579,17 @@ void BackendX64::emitAddSubMul64(EncoderX64& pp, ByteCodeInstruction* ip, uint64
             pp.emit_Load64_Immediate(RAX, val);
         else
         {
-            pp.emit_Load64_Indirect(regOffset(ip->b.u32), RAX);
+            pp.emit_Load64_Indirect(REG_OFFSET(ip->b.u32), RAX);
             pp.emit_OpN_Immediate(RAX, mul, X64Op::IMUL, X64Bits::B64);
         }
 
         if (ip->a.u32 == ip->c.u32)
-            pp.emit_OpN_Indirect(regOffset(ip->a.u32), RAX, RDI, op, X64Bits::B64);
+            pp.emit_OpN_Indirect(REG_OFFSET(ip->a.u32), RAX, RDI, op, X64Bits::B64);
         else
         {
-            pp.emit_Load64_Indirect(regOffset(ip->a.u32), RCX);
+            pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);
             pp.emit_OpN(RAX, RCX, op, X64Bits::B64);
-            pp.emit_Store64_Indirect(regOffset(ip->c.u32), RCX);
+            pp.emit_Store64_Indirect(REG_OFFSET(ip->c.u32), RCX);
         }
     }
 }
