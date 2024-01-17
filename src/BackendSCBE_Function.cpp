@@ -4485,14 +4485,14 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
             {
             case TokenId::IntrinsicSqrt:
                 MK_IMMB_F32(XMM0);
-                concat.addString3("\x0F\x51\xC0"); // sqrtps xmm0, xmm0
+                pp.emit_OpF32(XMM0, XMM0, CPUOp::FSQRT);
                 pp.emit_StoreF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
                 break;
             case TokenId::IntrinsicAbs:
                 MK_IMMB_F32(XMM0);
                 pp.emit_Load64_Immediate(RAX, 0x7FFFFFFF);
                 pp.emit_CopyF64(XMM1, RAX);
-                concat.addString3("\x0F\x54\xC1"); // andps xmm0, xmm1
+                pp.emit_OpF32(XMM0, XMM1, CPUOp::FAND);
                 pp.emit_StoreF32_Indirect(REG_OFFSET(ip->a.u32), XMM0);
                 break;
 
@@ -4571,14 +4571,14 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
             {
             case TokenId::IntrinsicSqrt:
                 MK_IMMB_F64(XMM0);
-                concat.addString4("\x66\x0F\x51\xC0"); // sqrtpd xmm0, xmm0
+                pp.emit_OpF64(XMM0, XMM0, CPUOp::FSQRT);
                 pp.emit_StoreF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
                 break;
             case TokenId::IntrinsicAbs:
                 MK_IMMB_F64(XMM0);
                 pp.emit_Load64_Immediate(RAX, 0x7FFFFFFF'FFFFFFFF);
                 pp.emit_CopyF64(XMM1, RAX);
-                concat.addString4("\x66\x0F\x54\xC1"); // andpd xmm0, xmm1
+                pp.emit_OpF64(XMM0, XMM1, CPUOp::FAND);
                 pp.emit_StoreF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
                 break;
 
