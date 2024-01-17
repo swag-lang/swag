@@ -431,9 +431,10 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
     if (startNode->ownerScope && startNode->ownerScope->owner)
     {
         auto owner = startNode->ownerScope->owner;
-        if (owner->hasExtMisc() && !owner->extMisc()->alternativeScopes.empty())
+        if (owner->hasExtMisc())
         {
-            auto& toProcess = context->scopesToProcess;
+            SharedLock lk(owner->extMisc()->mutexAltScopes);
+            auto&      toProcess = context->scopesToProcess;
             for (auto& as : owner->extMisc()->alternativeScopes)
             {
                 if (!hasAlternativeScope(scopes, as.scope) && (as.flags & ALTSCOPE_USING))
@@ -446,9 +447,10 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
     }
 
     // Add registered alternative scopes of the current node
-    if (startNode->hasExtMisc() && !startNode->extMisc()->alternativeScopes.empty())
+    if (startNode->hasExtMisc())
     {
-        auto& toProcess = context->scopesToProcess;
+        SharedLock lk(startNode->extMisc()->mutexAltScopes);
+        auto&      toProcess = context->scopesToProcess;
         for (auto& as : startNode->extMisc()->alternativeScopes)
         {
             if (!hasAlternativeScope(scopes, as.scope))
@@ -457,7 +459,10 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
                 addAlternativeScopeOnce(toProcess, as.scope, as.flags);
             }
         }
+    }
 
+    if (startNode->hasExtMisc())
+    {
         // Can only take a using var if in the same function
         if (startNode->ownerFct == context->node->ownerFct || startNode == context->node->ownerFct)
         {
