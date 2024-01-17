@@ -995,6 +995,14 @@ void EncoderX64::emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUB
         emit_Spec8((uint8_t) op, numBits);
         concat.addU8(getModRM(REGREG, regSrc, regDst));
     }
+    else if (op == CPUOp::BSF ||
+             op == CPUOp::BSR)
+    {
+        SWAG_ASSERT(regSrc == RAX && regDst == RAX);
+        concat.addU8(0x0F);
+        concat.addU8((uint8_t) op);
+        concat.addU8(0xC0);
+    }
     else
     {
         SWAG_ASSERT(false);

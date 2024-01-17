@@ -4025,14 +4025,14 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 break;
             case TokenId::IntrinsicBitCountTz:
                 MK_IMMB_U8_TO_U32(RAX);
-                concat.addString3("\x0F\xBC\xC0"); // bsf eax, eax
+                pp.emit_OpN(RAX, RAX, CPUOp::BSF, CPUBits::B32);
                 pp.emit_Load32_Immediate(RCX, 8);
                 pp.emit_CMovN(RAX, RCX, CPUBits::B32, CPUOp::CMOVE);
                 pp.emit_Store8_Indirect(REG_OFFSET(ip->a.u32), RAX);
                 break;
             case TokenId::IntrinsicBitCountLz:
                 MK_IMMB_U8_TO_U32(RAX);
-                concat.addString3("\x0F\xBD\xC0"); // bsr eax, eax
+                pp.emit_OpN(RAX, RAX, CPUOp::BSR, CPUBits::B32);
                 pp.emit_Load32_Immediate(RCX, 15);
                 pp.emit_CMovN(RAX, RCX, CPUBits::B32, CPUOp::CMOVE);
                 pp.emit_OpN_Immediate(RAX, 7, CPUOp::XOR, CPUBits::B32);
@@ -4065,14 +4065,14 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 break;
             case TokenId::IntrinsicBitCountTz:
                 MK_IMMB_16(RAX);
-                concat.addString4("\x66\x0F\xBC\xC0"); // bsf ax, ax
+                pp.emit_OpN(RAX, RAX, CPUOp::BSF, CPUBits::B16);
                 pp.emit_Load16_Immediate(RCX, 16);
                 pp.emit_CMovN(RAX, RCX, CPUBits::B16, CPUOp::CMOVE);
                 pp.emit_Store16_Indirect(REG_OFFSET(ip->a.u32), RAX);
                 break;
             case TokenId::IntrinsicBitCountLz:
                 MK_IMMB_16(RAX);
-                concat.addString4("\x66\x0F\xBD\xC0"); // bsr ax, ax
+                pp.emit_OpN(RAX, RAX, CPUOp::BSR, CPUBits::B16);
                 pp.emit_Load16_Immediate(RCX, 31);
                 pp.emit_CMovN(RAX, RCX, CPUBits::B16, CPUOp::CMOVE);
                 pp.emit_OpN_Immediate(RAX, 15, CPUOp::XOR, CPUBits::B16);
@@ -4110,14 +4110,14 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 break;
             case TokenId::IntrinsicBitCountTz:
                 MK_IMMB_32(RAX);
-                concat.addString3("\x0F\xBC\xC0"); // bsf eax, eax
+                pp.emit_OpN(RAX, RAX, CPUOp::BSF, CPUBits::B32);
                 pp.emit_Load32_Immediate(RCX, 32);
                 pp.emit_CMovN(RAX, RCX, CPUBits::B32, CPUOp::CMOVE);
                 pp.emit_Store32_Indirect(REG_OFFSET(ip->a.u32), RAX);
                 break;
             case TokenId::IntrinsicBitCountLz:
                 MK_IMMB_32(RAX);
-                concat.addString3("\x0F\xBD\xC0"); // bsr eax, eax
+                pp.emit_OpN(RAX, RAX, CPUOp::BSR, CPUBits::B32);
                 pp.emit_Load32_Immediate(RCX, 63);
                 pp.emit_CMovN(RAX, RCX, CPUBits::B32, CPUOp::CMOVE);
                 pp.emit_OpN_Immediate(RAX, 31, CPUOp::XOR, CPUBits::B32);
@@ -4155,14 +4155,14 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
                 break;
             case TokenId::IntrinsicBitCountTz:
                 MK_IMMB_64(RAX);
-                concat.addString4("\x48\x0F\xBC\xC0"); // bsf rax, rax
+                pp.emit_OpN(RAX, RAX, CPUOp::BSF, CPUBits::B64);
                 pp.emit_Load32_Immediate(RCX, 64);
                 pp.emit_CMovN(RAX, RCX, CPUBits::B64, CPUOp::CMOVE);
                 pp.emit_Store64_Indirect(REG_OFFSET(ip->a.u32), RAX);
                 break;
             case TokenId::IntrinsicBitCountLz:
                 MK_IMMB_64(RAX);
-                concat.addString4("\x48\x0F\xBD\xC0"); // bsr rax, rax
+                pp.emit_OpN(RAX, RAX, CPUOp::BSR, CPUBits::B64);
                 pp.emit_Load64_Immediate(RCX, 127);
                 pp.emit_CMovN(RAX, RCX, CPUBits::B64, CPUOp::CMOVE);
                 pp.emit_OpN_Immediate(RAX, 63, CPUOp::XOR, CPUBits::B64);
