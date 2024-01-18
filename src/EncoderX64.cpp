@@ -1278,56 +1278,16 @@ void EncoderX64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, C
     case CPUOp::ADD:
         SWAG_ASSERT(numBits == CPUBits::B64);
         SWAG_ASSERT(reg == RAX || reg == RCX);
-        if (value == 0)
-            return;
-        if (value == 1)
-        {
-            emit_REX(numBits);
-            concat.addU8(0xFF);
-            concat.addU8(0xC0 | reg); // inc rax
-            return;
-        }
         break;
 
     case CPUOp::SUB:
         SWAG_ASSERT(numBits == CPUBits::B64);
-        SWAG_ASSERT(reg == RAX || reg == RCX);
-        if (value == 0)
-            return;
-        if (value == 1)
-        {
-            emit_REX(numBits);
-            concat.addU8(0xFF);
-            concat.addU8(0xC8 | reg); // dec rax
-            return;
-        }
+        SWAG_ASSERT(reg == RAX || reg == RCX || reg == RSP);
         break;
 
     case CPUOp::IMUL:
         SWAG_ASSERT(numBits == CPUBits::B64);
         SWAG_ASSERT(reg == RAX || reg == RCX);
-        if (value == 1)
-            return;
-        if (value == 0)
-        {
-            emit_ClearN(reg, numBits);
-            return;
-        }
-        if (value == 2)
-        {
-            emit_REX(numBits);
-            concat.addU8(0xD1);
-            concat.addU8(0xE0 | reg); // shl rax, 1
-            return;
-        }
-        if (isPowerOfTwo(value))
-        {
-            emit_REX(numBits);
-            concat.addU8(0xC1);
-            concat.addU8(0xE0 | reg); // shl rax, ??
-            concat.addU8((uint8_t) log2(value));
-            return;
-        }
         break;
 
     case CPUOp::XOR:
@@ -1350,48 +1310,75 @@ void EncoderX64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, C
         break;
     }
 
-    if (value > 0x7FFFFFFF)
-    {
-        if (op == CPUOp::IMUL)
-        {
-            SWAG_ASSERT(reg == RAX);
-            emit_Load64_Immediate(RCX, value);
-            emit_OpN(RCX, reg, op, numBits);
-        }
-        else
-        {
-            emit_Load64_Immediate(R8, value);
-            emit_OpN(R8, reg, op, numBits);
-        }
-    }
-    else if (value <= 0x7F)
+    if (value <= 0x7F)
     {
         switch (op)
         {
         case CPUOp::ADD:
+            if (value == 0)
+                return;
             emit_REX(numBits);
-            concat.addU8(0x83);
-            concat.addU8(0xC0 | reg);
-            concat.addU8((uint8_t) value);
+            if (value == 1)
+            {
+                concat.addU8(0xFF);
+                concat.addU8(0xC0 | reg); // inc rax
+            }
+            else
+            {
+                concat.addU8(0x83);
+                concat.addU8(0xC0 | reg);
+                concat.addU8((uint8_t) value);
+            }
             break;
 
         case CPUOp::SUB:
+            if (value == 0)
+                return;
             emit_REX(numBits);
-            concat.addU8(0x83);
-            concat.addU8(0xE8 | reg);
-            concat.addU8((uint8_t) value);
+            if (value == 1)
+            {
+                concat.addU8(0xFF);
+                concat.addU8(0xC8 | reg); // dec rax
+            }
+            else
+            {
+                concat.addU8(0x83);
+                concat.addU8(0xE8 | reg);
+                concat.addU8((uint8_t) value);
+            }
             break;
 
         case CPUOp::IMUL:
-            SWAG_ASSERT(reg == RAX);
+            if (value == 1)
+                return;
+            if (value == 0)
+            {
+                emit_ClearN(reg, numBits);
+                return;
+            }
+
             emit_REX(numBits);
-            concat.addU8(0x6B);
-            concat.addU8(0xC0);
-            concat.addU8((uint8_t) value);
+            if (value == 2)
+            {
+                concat.addU8(0xD1);
+                concat.addU8(0xE0 | reg); // shl rax, 1
+            }
+            else if (isPowerOfTwo(value))
+            {
+                concat.addU8(0xC1);
+                concat.addU8(0xE0 | reg); // shl rax, ??
+                concat.addU8((uint8_t) log2(value));
+            }
+            else
+            {
+                SWAG_ASSERT(reg == RAX);
+                concat.addU8(0x6B);
+                concat.addU8(0xC0);
+                concat.addU8((uint8_t) value);
+            }
             break;
 
         case CPUOp::XOR:
-            SWAG_ASSERT(reg == RAX);
             emit_REX(numBits);
             if (numBits == CPUBits::B8)
                 concat.addU8(0x34);
@@ -1429,6 +1416,20 @@ void EncoderX64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, C
         default:
             SWAG_ASSERT(false);
             break;
+        }
+    }
+    else if (value > 0x7FFFFFFF)
+    {
+        if (op == CPUOp::IMUL)
+        {
+            SWAG_ASSERT(reg == RAX);
+            emit_Load64_Immediate(RCX, value);
+            emit_OpN(RCX, reg, op, numBits);
+        }
+        else
+        {
+            emit_Load64_Immediate(R8, value);
+            emit_OpN(R8, reg, op, numBits);
         }
     }
     else
