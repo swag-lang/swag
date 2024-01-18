@@ -125,9 +125,6 @@
     <ClCompile Include="../src/ByteCodeOptimizerJob.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\BackendSCBEDbg.cpp">
-      <Filter>Backend\SCBE</Filter>
-    </ClCompile>
     <ClCompile Include="../src/BackendLinker.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
@@ -662,6 +659,9 @@
     <ClCompile Include="../src/Context.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\BackendSCBEDbg.cpp">
+      <Filter>Backend\SCBE\Debug</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
@@ -1017,7 +1017,10 @@
       <Filter>Backend</Filter>
     </ClInclude>
     <ClInclude Include="..\src\BackendSCBEDbg.h">
-      <Filter>Backend\SCBE</Filter>
+      <Filter>Backend\SCBE\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\DebugCodeView.h">
+      <Filter>Backend\SCBE\Debug</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1107,6 +1110,9 @@
     </Filter>
     <Filter Include="Backend\SCBE\Encoder">
       <UniqueIdentifier>{cf0fe3a7-5c87-4647-aa5e-c94b12fee9af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Backend\SCBE\Debug">
+      <UniqueIdentifier>{b28422c8-2f49-43b1-b9a6-a4bd13417541}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

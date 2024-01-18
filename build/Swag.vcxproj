@@ -267,6 +267,7 @@
     <ClInclude Include="..\src\ByteCodeInstruction.h" />
     <ClInclude Include="..\src\CallConv.h" />
     <ClInclude Include="..\src\ComputedValue.h" />
+    <ClInclude Include="..\src\DebugCodeView.h" />
     <ClInclude Include="..\src\EncoderCPU.h" />
     <ClInclude Include="..\src\ErrorContext.h" />
     <ClInclude Include="..\src\ErrorList.h" />

@@ -2,6 +2,7 @@
 #include "BackendSCBE.h"
 #include "BackendSCBEDbg.h"
 #include "ByteCode.h"
+#include "DebugCodeView.h"
 #include "LanguageSpec.h"
 #include "Module.h"
 #include "TypeManager.h"
