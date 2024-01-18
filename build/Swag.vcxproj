@@ -267,7 +267,7 @@
     <ClInclude Include="..\src\ByteCodeInstruction.h" />
     <ClInclude Include="..\src\CallConv.h" />
     <ClInclude Include="..\src\ComputedValue.h" />
-    <ClInclude Include="..\src\DebugCodeView.h" />
+    <ClInclude Include="..\src\BackendSCBEDbg_CodeView.h" />
     <ClInclude Include="..\src\EncoderCPU.h" />
     <ClInclude Include="..\src\ErrorContext.h" />
     <ClInclude Include="..\src\ErrorList.h" />
@@ -446,7 +446,7 @@
     <ClCompile Include="..\src\ByteCodeRun_SelectIf.cpp" />
     <ClCompile Include="..\src\CallConv.cpp" />
     <ClCompile Include="..\src\ComputedValue.cpp" />
-    <ClCompile Include="..\src\DebugCodeView.cpp" />
+    <ClCompile Include="..\src\BackendSCBEDbg_CodeView.cpp" />
     <ClCompile Include="..\src\EncoderCPU.cpp" />
     <ClCompile Include="..\src\ErrorContext.cpp" />
     <ClCompile Include="..\src\ErrorIds.cpp" />

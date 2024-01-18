@@ -662,7 +662,7 @@
     <ClCompile Include="..\src\BackendSCBEDbg.cpp">
       <Filter>Backend\SCBE\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\DebugCodeView.cpp">
+    <ClCompile Include="..\src\BackendSCBEDbg_CodeView.cpp">
       <Filter>Backend\SCBE\Debug</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1022,7 +1022,7 @@
     <ClInclude Include="..\src\BackendSCBEDbg.h">
       <Filter>Backend\SCBE\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\DebugCodeView.h">
+    <ClInclude Include="..\src\BackendSCBEDbg_CodeView.h">
       <Filter>Backend\SCBE\Debug</Filter>
     </ClInclude>
   </ItemGroup>

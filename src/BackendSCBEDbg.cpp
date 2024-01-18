@@ -2,7 +2,7 @@
 #include "BackendSCBEDbg.h"
 #include "BackendSCBE.h"
 #include "ByteCode.h"
-#include "DebugCodeView.h"
+#include "BackendSCBEDbg_CodeView.h"
 #include "EncoderCPU.h"
 #include "LanguageSpec.h"
 #include "Module.h"
@@ -79,7 +79,7 @@ void BackendSCBEDbg::dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCod
 
 bool BackendSCBEDbg::dbgEmit(const BuildParameters& buildParameters, BackendSCBE* scbe, EncoderCPU& pp)
 {
-    DebugCodeView dbg;
+    BackendSCBEDbg_CodeView dbg;
     dbg.scbe = scbe;
     return dbg.dbgEmit(buildParameters, pp);
 }

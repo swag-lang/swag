@@ -1,15 +1,14 @@
 #include "pch.h"
 #include "BackendSCBE.h"
-#include "DebugCodeView.h"
+#include "BackendSCBEDbg_CodeView.h"
 #include "ByteCode.h"
-#include "DebugCodeView.h"
 #include "LanguageSpec.h"
 #include "Module.h"
 #include "TypeManager.h"
 #include "Version.h"
 #include "Workspace.h"
 
-Utf8 DebugCodeView::dbgGetScopedName(AstNode* node)
+Utf8 BackendSCBEDbg_CodeView::dbgGetScopedName(AstNode* node)
 {
     auto nn = node->getScopedName();
     Utf8 result;
@@ -35,7 +34,7 @@ Utf8 DebugCodeView::dbgGetScopedName(AstNode* node)
     return result;
 }
 
-void DebugCodeView::dbgEmitCompilerFlagsDebugS(Concat& concat)
+void BackendSCBEDbg_CodeView::dbgEmitCompilerFlagsDebugS(Concat& concat)
 {
     concat.addU32(DEBUG_S_SYMBOLS);
     auto patchSCount  = concat.addU32Addr(0); // Size of sub section
@@ -69,7 +68,7 @@ void DebugCodeView::dbgEmitCompilerFlagsDebugS(Concat& concat)
     *patchSCount = concat.totalCount() - patchSOffset;
 }
 
-void DebugCodeView::dbgStartRecord(EncoderCPU& pp, Concat& concat, uint16_t what)
+void BackendSCBEDbg_CodeView::dbgStartRecord(EncoderCPU& pp, Concat& concat, uint16_t what)
 {
     SWAG_ASSERT(pp.dbgRecordIdx < pp.MAX_RECORD);
     pp.dbgStartRecordPtr[pp.dbgRecordIdx]    = concat.addU16Addr(0);
@@ -78,7 +77,7 @@ void DebugCodeView::dbgStartRecord(EncoderCPU& pp, Concat& concat, uint16_t what
     pp.dbgRecordIdx++;
 }
 
-void DebugCodeView::dbgEndRecord(EncoderCPU& pp, Concat& concat, bool align)
+void BackendSCBEDbg_CodeView::dbgEndRecord(EncoderCPU& pp, Concat& concat, bool align)
 {
     if (align)
         concat.align(4);
@@ -87,7 +86,7 @@ void DebugCodeView::dbgEndRecord(EncoderCPU& pp, Concat& concat, bool align)
     *pp.dbgStartRecordPtr[pp.dbgRecordIdx] = (uint16_t) (concat.totalCount() - pp.dbgStartRecordOffset[pp.dbgRecordIdx]);
 }
 
-void DebugCodeView::dbgEmitTruncatedString(Concat& concat, const Utf8& str)
+void BackendSCBEDbg_CodeView::dbgEmitTruncatedString(Concat& concat, const Utf8& str)
 {
     SWAG_ASSERT(str.length() < 0xF00); // Magic number from llvm codeviewdebug (should truncate)
     if (str.buffer && str.count)
@@ -95,7 +94,7 @@ void DebugCodeView::dbgEmitTruncatedString(Concat& concat, const Utf8& str)
     concat.addU8(0);
 }
 
-void DebugCodeView::dbgEmitSecRel(EncoderCPU& pp, Concat& concat, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset)
+void BackendSCBEDbg_CodeView::dbgEmitSecRel(EncoderCPU& pp, Concat& concat, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset)
 {
     CoffRelocation reloc;
 
@@ -114,7 +113,7 @@ void DebugCodeView::dbgEmitSecRel(EncoderCPU& pp, Concat& concat, uint32_t symbo
     concat.addU16(0);
 }
 
-void DebugCodeView::dbgEmitEmbeddedValue(Concat& concat, TypeInfo* valueType, ComputedValue& val)
+void BackendSCBEDbg_CodeView::dbgEmitEmbeddedValue(Concat& concat, TypeInfo* valueType, ComputedValue& val)
 {
     SWAG_ASSERT(valueType->isNative());
     switch (valueType->nativeType)
@@ -171,7 +170,7 @@ void DebugCodeView::dbgEmitEmbeddedValue(Concat& concat, TypeInfo* valueType, Co
     }
 }
 
-bool DebugCodeView::dbgEmitDataDebugT(EncoderCPU& pp)
+bool BackendSCBEDbg_CodeView::dbgEmitDataDebugT(EncoderCPU& pp)
 {
     auto& concat = pp.concat;
 
@@ -314,7 +313,7 @@ bool DebugCodeView::dbgEmitDataDebugT(EncoderCPU& pp)
     return true;
 }
 
-DbgTypeRecord* DebugCodeView::dbgAddTypeRecord(EncoderCPU& pp)
+DbgTypeRecord* BackendSCBEDbg_CodeView::dbgAddTypeRecord(EncoderCPU& pp)
 {
     auto tr   = pp.dbgTypeRecords.addObj<DbgTypeRecord>();
     tr->index = (DbgTypeIndex) pp.dbgTypeRecordsCount + 0x1000;
@@ -322,7 +321,7 @@ DbgTypeRecord* DebugCodeView::dbgAddTypeRecord(EncoderCPU& pp)
     return tr;
 }
 
-DbgTypeIndex DebugCodeView::dbgGetSimpleType(TypeInfo* typeInfo)
+DbgTypeIndex BackendSCBEDbg_CodeView::dbgGetSimpleType(TypeInfo* typeInfo)
 {
     if (typeInfo->isNative())
     {
@@ -362,7 +361,7 @@ DbgTypeIndex DebugCodeView::dbgGetSimpleType(TypeInfo* typeInfo)
     return SimpleTypeKind::None;
 }
 
-DbgTypeIndex DebugCodeView::dbgGetOrCreatePointerToType(EncoderCPU& pp, TypeInfo* typeInfo, bool asRef)
+DbgTypeIndex BackendSCBEDbg_CodeView::dbgGetOrCreatePointerToType(EncoderCPU& pp, TypeInfo* typeInfo, bool asRef)
 {
     auto simpleType = dbgGetSimpleType(typeInfo);
     if (simpleType != SimpleTypeKind::None)
@@ -376,7 +375,7 @@ DbgTypeIndex DebugCodeView::dbgGetOrCreatePointerToType(EncoderCPU& pp, TypeInfo
     return tr->index;
 }
 
-DbgTypeIndex DebugCodeView::dbgGetOrCreatePointerPointerToType(EncoderCPU& pp, TypeInfo* typeInfo)
+DbgTypeIndex BackendSCBEDbg_CodeView::dbgGetOrCreatePointerPointerToType(EncoderCPU& pp, TypeInfo* typeInfo)
 {
     // Pointer to something complex
     auto tr                    = dbgAddTypeRecord(pp);
@@ -385,7 +384,7 @@ DbgTypeIndex DebugCodeView::dbgGetOrCreatePointerPointerToType(EncoderCPU& pp, T
     return tr->index;
 }
 
-DbgTypeIndex DebugCodeView::dbgEmitTypeSlice(EncoderCPU& pp, TypeInfo* typeInfo, TypeInfo* pointedType, DbgTypeIndex* value)
+DbgTypeIndex BackendSCBEDbg_CodeView::dbgEmitTypeSlice(EncoderCPU& pp, TypeInfo* typeInfo, TypeInfo* pointedType, DbgTypeIndex* value)
 {
     auto         tr0 = dbgAddTypeRecord(pp);
     DbgTypeField field;
@@ -420,7 +419,7 @@ DbgTypeIndex DebugCodeView::dbgEmitTypeSlice(EncoderCPU& pp, TypeInfo* typeInfo,
     return tr1->index;
 }
 
-void DebugCodeView::dbgRecordFields(EncoderCPU& pp, DbgTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset)
+void BackendSCBEDbg_CodeView::dbgRecordFields(EncoderCPU& pp, DbgTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset)
 {
     tr->LF_FieldList.fields.reserve(typeStruct->fields.count);
     for (auto& p : typeStruct->fields)
@@ -440,7 +439,7 @@ void DebugCodeView::dbgRecordFields(EncoderCPU& pp, DbgTypeRecord* tr, TypeInfoS
     }
 }
 
-DbgTypeIndex DebugCodeView::dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeInfo, bool forceUnRef)
+DbgTypeIndex BackendSCBEDbg_CodeView::dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeInfo, bool forceUnRef)
 {
     typeInfo = typeInfo->getConcreteAlias();
 
@@ -776,7 +775,7 @@ DbgTypeIndex DebugCodeView::dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeInf
     }
 }
 
-void DebugCodeView::dbgEmitConstant(EncoderCPU& pp, Concat& concat, AstNode* node, const Utf8& name)
+void BackendSCBEDbg_CodeView::dbgEmitConstant(EncoderCPU& pp, Concat& concat, AstNode* node, const Utf8& name)
 {
     if (node->typeInfo->isNative() && node->typeInfo->sizeOf <= 8)
     {
@@ -807,7 +806,7 @@ void DebugCodeView::dbgEmitConstant(EncoderCPU& pp, Concat& concat, AstNode* nod
     }
 }
 
-void DebugCodeView::dbgEmitGlobalDebugS(EncoderCPU& pp, Concat& concat, VectorNative<AstNode*>& gVars, uint32_t segSymIndex)
+void BackendSCBEDbg_CodeView::dbgEmitGlobalDebugS(EncoderCPU& pp, Concat& concat, VectorNative<AstNode*>& gVars, uint32_t segSymIndex)
 {
     concat.addU32(DEBUG_S_SYMBOLS);
     auto patchSCount  = concat.addU32Addr(0);
@@ -885,13 +884,13 @@ static uint32_t getFileChecksum(MapPath<uint32_t>& mapFileNames,
     return checkSymIndex * 8;
 }
 
-bool DebugCodeView::dbgEmitLines(EncoderCPU&        pp,
-                                  MapPath<uint32_t>& mapFileNames,
-                                  Vector<uint32_t>&  arrFileNames,
-                                  Utf8&              stringTable,
-                                  Concat&            concat,
-                                  CoffFunction&      f,
-                                  size_t             idxDbgLines)
+bool BackendSCBEDbg_CodeView::dbgEmitLines(EncoderCPU&        pp,
+                                           MapPath<uint32_t>& mapFileNames,
+                                           Vector<uint32_t>&  arrFileNames,
+                                           Utf8&              stringTable,
+                                           Concat&            concat,
+                                           CoffFunction&      f,
+                                           size_t             idxDbgLines)
 {
     auto& dbgLines   = f.dbgLines[idxDbgLines];
     auto  sourceFile = dbgLines.sourceFile;
@@ -930,7 +929,7 @@ bool DebugCodeView::dbgEmitLines(EncoderCPU&        pp,
     return true;
 }
 
-bool DebugCodeView::dbgEmitFctDebugS(EncoderCPU& pp)
+bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
 {
     auto& concat = pp.concat;
 
@@ -1242,7 +1241,7 @@ bool DebugCodeView::dbgEmitFctDebugS(EncoderCPU& pp)
     return true;
 }
 
-bool DebugCodeView::dbgEmitScope(EncoderCPU& pp, Concat& concat, CoffFunction& f, Scope* scope)
+bool BackendSCBEDbg_CodeView::dbgEmitScope(EncoderCPU& pp, Concat& concat, CoffFunction& f, Scope* scope)
 {
     // Empty scope
     if (!scope->backendEnd)
@@ -1362,7 +1361,7 @@ bool DebugCodeView::dbgEmitScope(EncoderCPU& pp, Concat& concat, CoffFunction& f
     return true;
 }
 
-bool DebugCodeView::dbgEmit(const BuildParameters& buildParameters, EncoderCPU& pp)
+bool BackendSCBEDbg_CodeView::dbgEmit(const BuildParameters& buildParameters, EncoderCPU& pp)
 {
     auto& concat = pp.concat;
 
