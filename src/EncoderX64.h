@@ -43,8 +43,6 @@ struct EncoderX64 : public EncoderCPU
     void emit_CmpF32(CPURegister reg1, CPURegister reg2);
     void emit_CmpF64(CPURegister reg1, CPURegister reg2);
 
-    void emit_CopyDownUp(CPURegister reg, CPUBits numBits);
-
     void emit_CmpN_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, CPUBits numBits);
     void emit_CmpF32_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg);
     void emit_CmpF64_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg);
@@ -142,8 +140,6 @@ struct EncoderX64 : public EncoderCPU
     void emit_Cdq();
     void emit_Cqo();
 
-    void emit_nop();
-
     void emit_TestN(CPURegister regSrc, CPURegister regDst, CPUBits numBits);
     void emit_NotN(CPURegister reg, CPUBits numBits);
     void emit_NotN_Indirect(uint32_t stackOffset, CPURegister memReg, CPUBits numBits);
@@ -154,5 +150,7 @@ struct EncoderX64 : public EncoderCPU
     void emit_CMovN(CPURegister regDst, CPURegister regSrc, CPUBits numBits, CPUOp op);
     void emit_CmpXChg(CPURegister regDst, CPURegister regSrc, CPUBits numBits);
     void emit_BSwapN(CPURegister reg, CPUBits numBits);
+    void emit_Nop();
+    void emit_CopyDownUp(CPURegister reg, CPUBits numBits);
     void emit_CastU64F64(CPURegister regSrc, CPURegister regDst);
 };

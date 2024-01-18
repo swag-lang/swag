@@ -216,7 +216,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
         switch (ip->op)
         {
         case ByteCodeOp::DebugNop:
-            pp.emit_nop();
+            pp.emit_Nop();
             break;
 
             /////////////////////////////////////

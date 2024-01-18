@@ -2347,7 +2347,7 @@ void EncoderX64::emitUnwind(uint32_t& offset, uint32_t sizeProlog, const VectorN
 
 /////////////////////////////////////////////////////////////////////
 
-void EncoderX64::emit_nop()
+void EncoderX64::emit_Nop()
 {
     concat.addU8(0x90); // nop
 }

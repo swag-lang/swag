@@ -165,7 +165,7 @@ void BackendSCBE::emitCall(EncoderX64& pp, TypeInfoFuncAttr* typeFunc, const Utf
         {
             if (typeFunc->declNode->sourceFile->module->buildCfg.errorStackTrace)
             {
-                pp.emit_nop();
+                pp.emit_Nop();
             }
         }
     }
