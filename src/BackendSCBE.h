@@ -32,22 +32,23 @@ struct BackendSCBE : public Backend
     JobResult prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob) override;
     bool      generateOutput(const BuildParameters& backendParameters) override;
     bool      emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc) override;
+    bool      saveObjFile(const BuildParameters& buildParameters);
 
-    void     emitOverflowSigned(EncoderX64& pp, ByteCodeInstruction* ip, const char* msg);
-    void     emitOverflowUnsigned(EncoderX64& pp, ByteCodeInstruction* ip, const char* msg);
-    void     emitShiftRightArithmetic(EncoderX64& pp, ByteCodeInstruction* ip, CPUBits numBits);
-    void     emitShiftLogical(EncoderX64& pp, ByteCodeInstruction* ip, CPUBits numBits, CPUOp op);
-    void     emitShiftRightEqArithmetic(EncoderX64& pp, ByteCodeInstruction* ip, CPUBits numBits);
-    void     emitShiftEqLogical(EncoderX64& pp, ByteCodeInstruction* ip, CPUBits numBits, CPUOp op);
-    void     emitInternalPanic(EncoderX64& pp, AstNode* node, const char* msg);
-    void     emitBinOpFloat32(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op);
-    void     emitBinOpFloat32AtReg(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op);
-    void     emitBinOpFloat64(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op);
-    void     emitBinOpFloat64AtReg(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op);
-    void     emitBinOpIntN(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
-    void     emitBinOpIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
-    void     emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
-    void     emitAddSubMul64(EncoderX64& pp, ByteCodeInstruction* ip, uint64_t mul, CPUOp op);
+    void emitOverflowSigned(EncoderX64& pp, ByteCodeInstruction* ip, const char* msg);
+    void emitOverflowUnsigned(EncoderX64& pp, ByteCodeInstruction* ip, const char* msg);
+    void emitShiftRightArithmetic(EncoderX64& pp, ByteCodeInstruction* ip, CPUBits numBits);
+    void emitShiftLogical(EncoderX64& pp, ByteCodeInstruction* ip, CPUBits numBits, CPUOp op);
+    void emitShiftRightEqArithmetic(EncoderX64& pp, ByteCodeInstruction* ip, CPUBits numBits);
+    void emitShiftEqLogical(EncoderX64& pp, ByteCodeInstruction* ip, CPUBits numBits, CPUOp op);
+    void emitInternalPanic(EncoderX64& pp, AstNode* node, const char* msg);
+    void emitBinOpFloat32(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op);
+    void emitBinOpFloat32AtReg(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op);
+    void emitBinOpFloat64(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op);
+    void emitBinOpFloat64AtReg(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op);
+    void emitBinOpIntN(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
+    void emitBinOpIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
+    void emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
+    void emitAddSubMul64(EncoderX64& pp, ByteCodeInstruction* ip, uint64_t mul, CPUOp op);
 
     bool emitXData(const BuildParameters& buildParameters);
     bool emitPData(const BuildParameters& buildParameters);
@@ -81,8 +82,6 @@ struct BackendSCBE : public Backend
     bool           emitDebug(const BuildParameters& buildParameters);
     void           emitByteCodeCall(EncoderX64& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
     void           emitByteCodeCallParameters(EncoderX64& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
-
-    bool saveObjFile(const BuildParameters& buildParameters);
 
     bool buildRelocSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CoffRelocationTable& relocTable, SegmentKind me);
 
