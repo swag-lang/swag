@@ -569,5 +569,5 @@ bool BackendSCBEDbg::emit(const BuildParameters& buildParameters, BackendSCBE* s
 {
     BackendSCBEDbg_CodeView dbg;
     dbg.scbe = scbe;
-    return dbg.dbgEmit(buildParameters, pp);
+    return dbg.emit(buildParameters, pp);
 }

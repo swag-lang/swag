@@ -8,7 +8,7 @@
 #include "Version.h"
 #include "Workspace.h"
 
-void BackendSCBEDbg_CodeView::dbgEmitCompilerFlagsDebugS(Concat& concat)
+void BackendSCBEDbg_CodeView::emitCompilerFlagsDebugS(Concat& concat)
 {
     concat.addU32(DEBUG_S_SYMBOLS);
     auto patchSCount  = concat.addU32Addr(0); // Size of sub section
@@ -42,7 +42,7 @@ void BackendSCBEDbg_CodeView::dbgEmitCompilerFlagsDebugS(Concat& concat)
     *patchSCount = concat.totalCount() - patchSOffset;
 }
 
-void BackendSCBEDbg_CodeView::dbgStartRecord(EncoderCPU& pp, Concat& concat, uint16_t what)
+void BackendSCBEDbg_CodeView::startRecord(EncoderCPU& pp, Concat& concat, uint16_t what)
 {
     SWAG_ASSERT(pp.dbgRecordIdx < pp.MAX_RECORD);
     pp.dbgStartRecordPtr[pp.dbgRecordIdx]    = concat.addU16Addr(0);
@@ -51,7 +51,7 @@ void BackendSCBEDbg_CodeView::dbgStartRecord(EncoderCPU& pp, Concat& concat, uin
     pp.dbgRecordIdx++;
 }
 
-void BackendSCBEDbg_CodeView::dbgEndRecord(EncoderCPU& pp, Concat& concat, bool align)
+void BackendSCBEDbg_CodeView::endRecord(EncoderCPU& pp, Concat& concat, bool align)
 {
     if (align)
         concat.align(4);
@@ -60,7 +60,7 @@ void BackendSCBEDbg_CodeView::dbgEndRecord(EncoderCPU& pp, Concat& concat, bool 
     *pp.dbgStartRecordPtr[pp.dbgRecordIdx] = (uint16_t) (concat.totalCount() - pp.dbgStartRecordOffset[pp.dbgRecordIdx]);
 }
 
-void BackendSCBEDbg_CodeView::dbgEmitTruncatedString(Concat& concat, const Utf8& str)
+void BackendSCBEDbg_CodeView::emitTruncatedString(Concat& concat, const Utf8& str)
 {
     SWAG_ASSERT(str.length() < 0xF00); // Magic number from llvm codeviewdebug (should truncate)
     if (str.buffer && str.count)
@@ -68,7 +68,7 @@ void BackendSCBEDbg_CodeView::dbgEmitTruncatedString(Concat& concat, const Utf8&
     concat.addU8(0);
 }
 
-void BackendSCBEDbg_CodeView::dbgEmitSecRel(EncoderCPU& pp, Concat& concat, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset)
+void BackendSCBEDbg_CodeView::emitSecRel(EncoderCPU& pp, Concat& concat, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset)
 {
     CoffRelocation reloc;
 
@@ -87,7 +87,7 @@ void BackendSCBEDbg_CodeView::dbgEmitSecRel(EncoderCPU& pp, Concat& concat, uint
     concat.addU16(0);
 }
 
-void BackendSCBEDbg_CodeView::dbgEmitEmbeddedValue(Concat& concat, TypeInfo* valueType, ComputedValue& val)
+void BackendSCBEDbg_CodeView::emitEmbeddedValue(Concat& concat, TypeInfo* valueType, ComputedValue& val)
 {
     SWAG_ASSERT(valueType->isNative());
     switch (valueType->nativeType)
@@ -144,7 +144,7 @@ void BackendSCBEDbg_CodeView::dbgEmitEmbeddedValue(Concat& concat, TypeInfo* val
     }
 }
 
-bool BackendSCBEDbg_CodeView::dbgEmitDataDebugT(EncoderCPU& pp)
+bool BackendSCBEDbg_CodeView::emitDataDebugT(EncoderCPU& pp)
 {
     auto& concat = pp.concat;
 
@@ -154,7 +154,7 @@ bool BackendSCBEDbg_CodeView::dbgEmitDataDebugT(EncoderCPU& pp)
 
     while (true)
     {
-        dbgStartRecord(pp, concat, f->kind);
+        startRecord(pp, concat, f->kind);
         switch (f->kind)
         {
         case LF_ARGLIST:
@@ -188,14 +188,14 @@ bool BackendSCBEDbg_CodeView::dbgEmitDataDebugT(EncoderCPU& pp)
         case LF_FUNC_ID:
             concat.addU32(0);                 // ParentScope
             concat.addU32(f->LF_FuncId.type); // @type
-            dbgEmitTruncatedString(concat, f->node->token.text);
+            emitTruncatedString(concat, f->node->token.text);
             break;
 
         // lfMFuncId
         case LF_MFUNC_ID:
             concat.addU32(f->LF_MFuncId.parentType);
             concat.addU32(f->LF_MFuncId.type);
-            dbgEmitTruncatedString(concat, f->node->token.text);
+            emitTruncatedString(concat, f->node->token.text);
             break;
 
         case LF_ARRAY:
@@ -203,7 +203,7 @@ bool BackendSCBEDbg_CodeView::dbgEmitDataDebugT(EncoderCPU& pp)
             concat.addU32(f->LF_Array.indexType);
             concat.addU16(LF_ULONG);
             concat.addU32(f->LF_Array.sizeOf);
-            dbgEmitTruncatedString(concat, "");
+            emitTruncatedString(concat, "");
             break;
 
         case LF_DERIVED:
@@ -228,10 +228,10 @@ bool BackendSCBEDbg_CodeView::dbgEmitDataDebugT(EncoderCPU& pp)
                     concat.addU32(p.type);
                     break;
                 case LF_ENUMERATE:
-                    dbgEmitEmbeddedValue(concat, p.valueType, p.value);
+                    emitEmbeddedValue(concat, p.valueType, p.value);
                     break;
                 }
-                dbgEmitTruncatedString(concat, p.name);
+                emitTruncatedString(concat, p.name);
             }
             break;
 
@@ -254,7 +254,7 @@ bool BackendSCBEDbg_CodeView::dbgEmitDataDebugT(EncoderCPU& pp)
             concat.addU16(0); // properties
             concat.addU32(f->LF_Enum.underlyingType);
             concat.addU32(f->LF_Enum.fieldList);
-            dbgEmitTruncatedString(concat, f->name);
+            emitTruncatedString(concat, f->name);
             break;
 
         case LF_STRUCTURE:
@@ -265,11 +265,11 @@ bool BackendSCBEDbg_CodeView::dbgEmitDataDebugT(EncoderCPU& pp)
             concat.addU32(0);                                  // vTableShape
             concat.addU16(LF_ULONG);                           // LF_ULONG
             concat.addU32(f->LF_Structure.sizeOf);
-            dbgEmitTruncatedString(concat, f->name);
+            emitTruncatedString(concat, f->name);
             break;
         }
 
-        dbgEndRecord(pp, concat, false);
+        endRecord(pp, concat, false);
 
         cpt += sizeof(DbgTypeRecord);
         f += 1;
@@ -287,11 +287,11 @@ bool BackendSCBEDbg_CodeView::dbgEmitDataDebugT(EncoderCPU& pp)
     return true;
 }
 
-void BackendSCBEDbg_CodeView::dbgEmitConstant(EncoderCPU& pp, Concat& concat, AstNode* node, const Utf8& name)
+void BackendSCBEDbg_CodeView::emitConstant(EncoderCPU& pp, Concat& concat, AstNode* node, const Utf8& name)
 {
     if (node->typeInfo->isNative() && node->typeInfo->sizeOf <= 8)
     {
-        dbgStartRecord(pp, concat, S_CONSTANT);
+        startRecord(pp, concat, S_CONSTANT);
         concat.addU32(BackendSCBEDbg::getOrCreateType(pp, node->typeInfo));
         switch (node->typeInfo->sizeOf)
         {
@@ -313,12 +313,12 @@ void BackendSCBEDbg_CodeView::dbgEmitConstant(EncoderCPU& pp, Concat& concat, As
             break;
         }
 
-        dbgEmitTruncatedString(concat, name);
-        dbgEndRecord(pp, concat);
+        emitTruncatedString(concat, name);
+        endRecord(pp, concat);
     }
 }
 
-void BackendSCBEDbg_CodeView::dbgEmitGlobalDebugS(EncoderCPU& pp, Concat& concat, VectorNative<AstNode*>& gVars, uint32_t segSymIndex)
+void BackendSCBEDbg_CodeView::emitGlobalDebugS(EncoderCPU& pp, Concat& concat, VectorNative<AstNode*>& gVars, uint32_t segSymIndex)
 {
     concat.addU32(DEBUG_S_SYMBOLS);
     auto patchSCount  = concat.addU32Addr(0);
@@ -329,11 +329,11 @@ void BackendSCBEDbg_CodeView::dbgEmitGlobalDebugS(EncoderCPU& pp, Concat& concat
         // Compile time constant
         if (p->hasComputedValue())
         {
-            dbgEmitConstant(pp, concat, p, BackendSCBEDbg::getScopedName(p));
+            emitConstant(pp, concat, p, BackendSCBEDbg::getScopedName(p));
             continue;
         }
 
-        dbgStartRecord(pp, concat, S_LDATA32);
+        startRecord(pp, concat, S_LDATA32);
         concat.addU32(BackendSCBEDbg::getOrCreateType(pp, p->typeInfo));
 
         CoffRelocation reloc;
@@ -353,19 +353,19 @@ void BackendSCBEDbg_CodeView::dbgEmitGlobalDebugS(EncoderCPU& pp, Concat& concat
         concat.addU16(0);
 
         auto nn = BackendSCBEDbg::getScopedName(p);
-        dbgEmitTruncatedString(concat, nn);
-        dbgEndRecord(pp, concat);
+        emitTruncatedString(concat, nn);
+        endRecord(pp, concat);
     }
 
     // Fake symbol, because lld linker (since v12) generates a warning if this subsection is empty (wtf)
     if (patchSOffset == concat.totalCount())
     {
-        dbgStartRecord(pp, concat, S_LDATA32);
+        startRecord(pp, concat, S_LDATA32);
         concat.addU32(BackendSCBEDbg::getOrCreateType(pp, g_TypeMgr->typeInfoBool));
         concat.addU32(0);
-        dbgEmitTruncatedString(concat, "__fake__");
+        emitTruncatedString(concat, "__fake__");
         concat.addU16(0);
-        dbgEndRecord(pp, concat);
+        endRecord(pp, concat);
     }
 
     *patchSCount = concat.totalCount() - patchSOffset;
@@ -396,7 +396,7 @@ static uint32_t getFileChecksum(MapPath<uint32_t>& mapFileNames,
     return checkSymIndex * 8;
 }
 
-bool BackendSCBEDbg_CodeView::dbgEmitLines(EncoderCPU&        pp,
+bool BackendSCBEDbg_CodeView::emitLines(EncoderCPU&        pp,
                                            MapPath<uint32_t>& mapFileNames,
                                            Vector<uint32_t>&  arrFileNames,
                                            Utf8&              stringTable,
@@ -415,7 +415,7 @@ bool BackendSCBEDbg_CodeView::dbgEmitLines(EncoderCPU&        pp,
     // Relocate to the first (relative) byte offset of the first line
     // Size is the address of the next subsection start, or the end of the function for the last one
     auto startByteIndex = lines[0].byteOffset;
-    dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex, lines[0].byteOffset);
+    emitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex, lines[0].byteOffset);
     concat.addU16(0); // Flags
     uint32_t endAddress;
     if (idxDbgLines != f.dbgLines.size() - 1)
@@ -441,7 +441,7 @@ bool BackendSCBEDbg_CodeView::dbgEmitLines(EncoderCPU&        pp,
     return true;
 }
 
-bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
+bool BackendSCBEDbg_CodeView::emitFctDebugS(EncoderCPU& pp)
 {
     auto& concat = pp.concat;
 
@@ -484,7 +484,7 @@ bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
             // Proc ID
             // PROCSYM32
             /////////////////////////////////
-            dbgStartRecord(pp, concat, S_LPROC32_ID);
+            startRecord(pp, concat, S_LPROC32_ID);
             concat.addU32(0);                             // Parent = 0
             concat.addU32(0);                             // End = 0
             concat.addU32(0);                             // Next = 0
@@ -492,15 +492,15 @@ bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
             concat.addU32(0);                             // DbgStart = 0
             concat.addU32(0);                             // DbgEnd = 0
             concat.addU32(tr->index);                     // FuncID type index
-            dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
+            emitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
             concat.addU8(0); // ProcSymFlags Flags = ProcSymFlags::None
             auto nn = BackendSCBEDbg::getScopedName(f.node);
-            dbgEmitTruncatedString(concat, nn);
-            dbgEndRecord(pp, concat);
+            emitTruncatedString(concat, nn);
+            endRecord(pp, concat);
 
             // Frame Proc
             /////////////////////////////////
-            dbgStartRecord(pp, concat, S_FRAMEPROC);
+            startRecord(pp, concat, S_FRAMEPROC);
             concat.addU32(f.frameSize); // FrameSize
             concat.addU32(0);           // Padding
             concat.addU32(0);           // Offset of padding
@@ -508,7 +508,7 @@ bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
             concat.addU32(0);           // Exception handler offset
             concat.addU32(0);           // Exception handler section
             concat.addU32(0);           // Flags (defines frame register)
-            dbgEndRecord(pp, concat);
+            endRecord(pp, concat);
 
             // Capture parameters
             /////////////////////////////////
@@ -537,20 +537,20 @@ bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
                     }
 
                     //////////
-                    dbgStartRecord(pp, concat, S_LOCAL);
+                    startRecord(pp, concat, S_LOCAL);
                     concat.addU32(typeIdx); // Type
                     concat.addU16(0);
-                    dbgEmitTruncatedString(concat, child->token.text);
-                    dbgEndRecord(pp, concat);
+                    emitTruncatedString(concat, child->token.text);
+                    endRecord(pp, concat);
 
                     //////////
-                    dbgStartRecord(pp, concat, S_DEFRANGE_REGISTER_REL);
+                    startRecord(pp, concat, S_DEFRANGE_REGISTER_REL);
                     concat.addU16(R_R12); // Register
                     concat.addU16(0);     // Flags
                     concat.addU32(overload->computedValue.storageOffset);
-                    dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
+                    emitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
                     concat.addU16((uint16_t) (f.endAddress - f.startAddress)); // Range
-                    dbgEndRecord(pp, concat);
+                    endRecord(pp, concat);
                 }
             }
 
@@ -603,7 +603,7 @@ bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
                     }
 
                     //////////
-                    dbgStartRecord(pp, concat, S_LOCAL);
+                    startRecord(pp, concat, S_LOCAL);
                     concat.addU32(typeIdx); // Type
                     concat.addU16(1);       // set fIsParam. If not set, callstack signature won't be good.
 
@@ -611,11 +611,11 @@ bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
                     // Because i don't know how two deal with those parameters (in fact we have 2 parameters/registers in the calling convention,
                     // but the signature has only one visible parameter).
                     if (typeParam->numRegisters() == 2)
-                        dbgEmitTruncatedString(concat, "__" + child->token.text);
+                        emitTruncatedString(concat, "__" + child->token.text);
                     else
-                        dbgEmitTruncatedString(concat, child->token.text);
+                        emitTruncatedString(concat, child->token.text);
 
-                    dbgEndRecord(pp, concat);
+                    endRecord(pp, concat);
 
                     //////////
                     uint32_t offsetStackParam = 0;
@@ -628,13 +628,13 @@ bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
                     regCounter += typeParam->numRegisters();
 
                     //////////
-                    dbgStartRecord(pp, concat, S_DEFRANGE_REGISTER_REL);
+                    startRecord(pp, concat, S_DEFRANGE_REGISTER_REL);
                     concat.addU16(R_RDI); // Register
                     concat.addU16(0);     // Flags
                     concat.addU32(offsetStackParam);
-                    dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
+                    emitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
                     concat.addU16((uint16_t) (f.endAddress - f.startAddress)); // Range
-                    dbgEndRecord(pp, concat);
+                    endRecord(pp, concat);
 
                     // If we have 2 registers then we cannot create a symbol flagged as 'parameter' in order to really see it.
                     if (typeParam->numRegisters() == 2)
@@ -642,20 +642,20 @@ bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
                         typeIdx = BackendSCBEDbg::getOrCreateType(pp, typeParam);
 
                         //////////
-                        dbgStartRecord(pp, concat, S_LOCAL);
+                        startRecord(pp, concat, S_LOCAL);
                         concat.addU32(typeIdx); // Type
                         concat.addU16(0);       // set fIsParam to 0
-                        dbgEmitTruncatedString(concat, child->token.text);
-                        dbgEndRecord(pp, concat);
+                        emitTruncatedString(concat, child->token.text);
+                        endRecord(pp, concat);
 
                         //////////
-                        dbgStartRecord(pp, concat, S_DEFRANGE_REGISTER_REL);
+                        startRecord(pp, concat, S_DEFRANGE_REGISTER_REL);
                         concat.addU16(R_RDI); // Register
                         concat.addU16(0);     // Flags
                         concat.addU32(offsetStackParam);
-                        dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
+                        emitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
                         concat.addU16((uint16_t) (f.endAddress - f.startAddress)); // Range
-                        dbgEndRecord(pp, concat);
+                        endRecord(pp, concat);
                     }
 
                     // Codeview seems to need this pointer to be named "this"...
@@ -663,20 +663,20 @@ bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
                     if (typeFunc->isMethod() && child->token.text == g_LangSpec->name_self)
                     {
                         //////////
-                        dbgStartRecord(pp, concat, S_LOCAL);
+                        startRecord(pp, concat, S_LOCAL);
                         concat.addU32(typeIdx); // Type
                         concat.addU16(1);       // set fIsParam
-                        dbgEmitTruncatedString(concat, "this");
-                        dbgEndRecord(pp, concat);
+                        emitTruncatedString(concat, "this");
+                        endRecord(pp, concat);
 
                         //////////
-                        dbgStartRecord(pp, concat, S_DEFRANGE_REGISTER_REL);
+                        startRecord(pp, concat, S_DEFRANGE_REGISTER_REL);
                         concat.addU16(R_RDI); // Register
                         concat.addU16(0);     // Flags
                         concat.addU32(offsetStackParam);
-                        dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
+                        emitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
                         concat.addU16((uint16_t) (f.endAddress - f.startAddress)); // Range
-                        dbgEndRecord(pp, concat);
+                        endRecord(pp, concat);
                     }
                 }
             }
@@ -684,12 +684,12 @@ bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
             // Lexical blocks
             /////////////////////////////////
             auto funcDecl = CastAst<AstFuncDecl>(f.node, AstNodeKind::FuncDecl);
-            dbgEmitScope(pp, concat, f, funcDecl->scope);
+            emitScope(pp, concat, f, funcDecl->scope);
 
             // End
             /////////////////////////////////
-            dbgStartRecord(pp, concat, S_PROC_ID_END);
-            dbgEndRecord(pp, concat);
+            startRecord(pp, concat, S_PROC_ID_END);
+            endRecord(pp, concat);
 
             *patchSCount = concat.totalCount() - patchSOffset;
         }
@@ -728,7 +728,7 @@ bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
         /////////////////////////////////
         for (size_t idxDbgLines = 0; idxDbgLines < f.dbgLines.size(); idxDbgLines++)
         {
-            dbgEmitLines(pp, mapFileNames, arrFileNames, stringTable, concat, f, idxDbgLines);
+            emitLines(pp, mapFileNames, arrFileNames, stringTable, concat, f, idxDbgLines);
         }
     }
 
@@ -753,7 +753,7 @@ bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
     return true;
 }
 
-bool BackendSCBEDbg_CodeView::dbgEmitScope(EncoderCPU& pp, Concat& concat, CoffFunction& f, Scope* scope)
+bool BackendSCBEDbg_CodeView::emitScope(EncoderCPU& pp, Concat& concat, CoffFunction& f, Scope* scope)
 {
     // Empty scope
     if (!scope->backendEnd)
@@ -761,13 +761,13 @@ bool BackendSCBEDbg_CodeView::dbgEmitScope(EncoderCPU& pp, Concat& concat, CoffF
 
     // Header
     /////////////////////////////////
-    dbgStartRecord(pp, concat, S_BLOCK32);
+    startRecord(pp, concat, S_BLOCK32);
     concat.addU32(0);                                       // Parent = 0;
     concat.addU32(0);                                       // End = 0;
     concat.addU32(scope->backendEnd - scope->backendStart); // CodeSize;
-    dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex, scope->backendStart);
-    dbgEmitTruncatedString(concat, "");
-    dbgEndRecord(pp, concat);
+    emitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex, scope->backendStart);
+    emitTruncatedString(concat, "");
+    endRecord(pp, concat);
 
     // Local variables marked as global
     /////////////////////////////////
@@ -784,7 +784,7 @@ bool BackendSCBEDbg_CodeView::dbgEmitScope(EncoderCPU& pp, Concat& concat, CoffF
 
         SWAG_ASSERT(localVar->attributeFlags & ATTRIBUTE_GLOBAL);
 
-        dbgStartRecord(pp, concat, S_LDATA32);
+        startRecord(pp, concat, S_LDATA32);
         concat.addU32(BackendSCBEDbg::getOrCreateType(pp, typeInfo));
 
         CoffRelocation reloc;
@@ -804,8 +804,8 @@ bool BackendSCBEDbg_CodeView::dbgEmitScope(EncoderCPU& pp, Concat& concat, CoffF
         pp.relocTableDBGSSection.table.push_back(reloc);
         concat.addU16(0);
 
-        dbgEmitTruncatedString(concat, localVar->token.text);
-        dbgEndRecord(pp, concat);
+        emitTruncatedString(concat, localVar->token.text);
+        endRecord(pp, concat);
     }
 
     // Local constants
@@ -816,7 +816,7 @@ bool BackendSCBEDbg_CodeView::dbgEmitScope(EncoderCPU& pp, Concat& concat, CoffF
         if (localConst->ownerScope != scope)
             continue;
 
-        dbgEmitConstant(pp, concat, localConst, localConst->token.text);
+        emitConstant(pp, concat, localConst, localConst->token.text);
     }
 
     // Local variables
@@ -831,27 +831,27 @@ bool BackendSCBEDbg_CodeView::dbgEmitScope(EncoderCPU& pp, Concat& concat, CoffF
         auto            typeInfo = overload->typeInfo;
 
         //////////
-        dbgStartRecord(pp, concat, S_LOCAL);
+        startRecord(pp, concat, S_LOCAL);
         if (overload->flags & OVERLOAD_RETVAL)
             concat.addU32(BackendSCBEDbg::getOrCreatePointerToType(pp, typeInfo, true)); // Type
         else
             concat.addU32(BackendSCBEDbg::getOrCreateType(pp, typeInfo)); // Type
         concat.addU16(0);                                                    // CV_LVARFLAGS
-        dbgEmitTruncatedString(concat, localVar->token.text);
-        dbgEndRecord(pp, concat);
+        emitTruncatedString(concat, localVar->token.text);
+        endRecord(pp, concat);
 
         //////////
-        dbgStartRecord(pp, concat, S_DEFRANGE_REGISTER_REL);
+        startRecord(pp, concat, S_DEFRANGE_REGISTER_REL);
         concat.addU16(R_RDI);                  // Register
         concat.addU16(0);                      // Flags
         if (overload->flags & OVERLOAD_RETVAL) // Offset to register
             concat.addU32(scbe->getParamStackOffset(&f, typeFunc->numParamsRegisters()));
         else
             concat.addU32(overload->computedValue.storageOffset + f.offsetStack);
-        dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex, localVar->ownerScope->backendStart);
+        emitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex, localVar->ownerScope->backendStart);
         auto endOffsetVar = localVar->ownerScope->backendEnd == 0 ? f.endAddress : localVar->ownerScope->backendEnd;
         concat.addU16((uint16_t) (endOffsetVar - localVar->ownerScope->backendStart)); // Range
-        dbgEndRecord(pp, concat);
+        endRecord(pp, concat);
     }
 
     // Sub scopes
@@ -864,16 +864,16 @@ bool BackendSCBEDbg_CodeView::dbgEmitScope(EncoderCPU& pp, Concat& concat, CoffF
     }
 
     for (auto c : scope->childScopes)
-        dbgEmitScope(pp, concat, f, c);
+        emitScope(pp, concat, f, c);
 
     // End
     /////////////////////////////////
-    dbgStartRecord(pp, concat, S_END);
-    dbgEndRecord(pp, concat);
+    startRecord(pp, concat, S_END);
+    endRecord(pp, concat);
     return true;
 }
 
-bool BackendSCBEDbg_CodeView::dbgEmit(const BuildParameters& buildParameters, EncoderCPU& pp)
+bool BackendSCBEDbg_CodeView::emit(const BuildParameters& buildParameters, EncoderCPU& pp)
 {
     auto& concat = pp.concat;
 
@@ -884,11 +884,11 @@ bool BackendSCBEDbg_CodeView::dbgEmit(const BuildParameters& buildParameters, En
     if (buildParameters.buildCfg->backendDebugInformations)
     {
         pp.dbgTypeRecords.init(100 * 1024);
-        dbgEmitCompilerFlagsDebugS(concat);
-        dbgEmitGlobalDebugS(pp, concat, scbe->module->globalVarsMutable, pp.symMSIndex);
-        dbgEmitGlobalDebugS(pp, concat, scbe->module->globalVarsBss, pp.symBSIndex);
-        dbgEmitGlobalDebugS(pp, concat, scbe->module->globalVarsConstant, pp.symCSIndex);
-        dbgEmitFctDebugS(pp);
+        emitCompilerFlagsDebugS(concat);
+        emitGlobalDebugS(pp, concat, scbe->module->globalVarsMutable, pp.symMSIndex);
+        emitGlobalDebugS(pp, concat, scbe->module->globalVarsBss, pp.symBSIndex);
+        emitGlobalDebugS(pp, concat, scbe->module->globalVarsConstant, pp.symCSIndex);
+        emitFctDebugS(pp);
     }
     *pp.patchDBGSCount = concat.totalCount() - *pp.patchDBGSOffset;
 
@@ -898,7 +898,7 @@ bool BackendSCBEDbg_CodeView::dbgEmit(const BuildParameters& buildParameters, En
     concat.addU32(DEBUG_SECTION_MAGIC);
     if (buildParameters.buildCfg->backendDebugInformations)
     {
-        dbgEmitDataDebugT(pp);
+        emitDataDebugT(pp);
     }
     *pp.patchDBGTCount = concat.totalCount() - *pp.patchDBGTOffset;
 
