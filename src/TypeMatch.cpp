@@ -260,13 +260,13 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
         if (callParameter->kind != AstNodeKind::FuncCallParam)
         {
             fakeParam.typeInfo  = callParameter->typeInfo;
-            fakeParam.extension = callParameter->extension;
+            fakeParam.extension = callParameter->extension.load();
             callParameter       = &fakeParam;
         }
 
         auto param = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
 
-        // If this is a code paramater added by the semantic, force to match the last parameter
+        // If this is a code parameter added by the semantic, force to match the last parameter
         // of the function
         if (param->semFlags & SEMFLAG_AUTO_CODE_PARAM)
         {

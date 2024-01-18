@@ -3683,7 +3683,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
         // To avoid a race condition with the job that is currently dealing with the funcDecl,
         // we will reevaluate it with a semanticAfterFct trick
         funcDecl->content->allocateExtension(ExtensionKind::Semantic);
-        auto sem = funcDecl->content->extension->semantic;
+        auto sem = funcDecl->content->extSemantic();
         SWAG_ASSERT(!sem->semanticAfterFct ||
                     sem->semanticAfterFct == Semantic::resolveFuncDeclAfterSI ||
                     sem->semanticAfterFct == Semantic::resolveScopedStmtAfter);

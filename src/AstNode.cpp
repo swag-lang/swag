@@ -858,15 +858,15 @@ void AstNode::setBcNotifBefore(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf)
     allocateExtension(ExtensionKind::ByteCode);
 
 #ifdef SWAG_HAS_ASSERT
-    if (extension->bytecode->byteCodeBeforeFct != nullptr &&
-        extension->bytecode->byteCodeBeforeFct != fct &&
-        extension->bytecode->byteCodeBeforeFct != checkIf)
+    if (extByteCode()->byteCodeBeforeFct != nullptr &&
+        extByteCode()->byteCodeBeforeFct != fct &&
+        extByteCode()->byteCodeBeforeFct != checkIf)
     {
         SWAG_ASSERT(false);
     }
 #endif
 
-    extension->bytecode->byteCodeBeforeFct = fct;
+    extByteCode()->byteCodeBeforeFct = fct;
 }
 
 void AstNode::setBcNotifAfter(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf)
@@ -874,15 +874,15 @@ void AstNode::setBcNotifAfter(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf)
     allocateExtension(ExtensionKind::ByteCode);
 
 #ifdef SWAG_HAS_ASSERT
-    if (extension->bytecode->byteCodeAfterFct != nullptr &&
-        extension->bytecode->byteCodeAfterFct != fct &&
-        extension->bytecode->byteCodeAfterFct != checkIf)
+    if (extByteCode()->byteCodeAfterFct != nullptr &&
+        extByteCode()->byteCodeAfterFct != fct &&
+        extByteCode()->byteCodeAfterFct != checkIf)
     {
         SWAG_ASSERT(false);
     }
 #endif
 
-    extension->bytecode->byteCodeAfterFct = fct;
+    extByteCode()->byteCodeAfterFct = fct;
 }
 
 void AstNode::addSpecFlags(uint16_t fl)
@@ -916,7 +916,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
     case ExtensionKind::ByteCode:
         if (hasExtByteCode())
             return;
-        extension->bytecode = Allocator::alloc<NodeExtensionByteCode>();
+        extension.load()->bytecode = Allocator::alloc<NodeExtensionByteCode>();
 #ifdef SWAG_STATS
         g_Stats.memNodesExt += Allocator::alignSize(sizeof(NodeExtensionByteCode));
 #endif
@@ -925,7 +925,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
     case ExtensionKind::Semantic:
         if (hasExtSemantic())
             return;
-        extension->semantic = Allocator::alloc<NodeExtensionSemantic>();
+        extension.load()->semantic = Allocator::alloc<NodeExtensionSemantic>();
 #ifdef SWAG_STATS
         g_Stats.memNodesExt += Allocator::alignSize(sizeof(NodeExtensionSemantic));
 #endif
@@ -934,7 +934,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
     case ExtensionKind::Owner:
         if (hasExtOwner())
             return;
-        extension->owner = Allocator::alloc<NodeExtensionOwner>();
+        extension.load()->owner = Allocator::alloc<NodeExtensionOwner>();
 #ifdef SWAG_STATS
         g_Stats.memNodesExt += Allocator::alignSize(sizeof(NodeExtensionOwner));
 #endif
@@ -943,7 +943,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
     default:
         if (hasExtMisc())
             return;
-        extension->misc = Allocator::alloc<NodeExtensionMisc>();
+        extension.load()->misc = Allocator::alloc<NodeExtensionMisc>();
 #ifdef SWAG_STATS
         g_Stats.memNodesExt += Allocator::alignSize(sizeof(NodeExtensionMisc));
 #endif
