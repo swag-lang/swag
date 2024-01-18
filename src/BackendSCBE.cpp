@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "BackendSCBE.h"
-#include "BackendSCBEDbg.h"
+#include "EncoderDebug.h"
 #include "BackendLinker.h"
 #include "BackendSCBESaveObjJob.h"
 #include "ErrorIds.h"
@@ -874,7 +874,7 @@ bool BackendSCBE::emitDebug(const BuildParameters& buildParameters)
     auto beforeCount = concat.totalCount();
 #endif
 
-    BackendSCBEDbg::emit(buildParameters, this, pp);
+    EncoderDebug::emit(buildParameters, this, pp);
 
 #ifdef SWAG_STATS
     g_Stats.sizeBackendDbg += concat.totalCount() - beforeCount;

@@ -56,9 +56,6 @@
     <ClCompile Include="../src/LLVMSetup.cpp">
       <Filter>Backend\LLVM</Filter>
     </ClCompile>
-    <ClCompile Include="../src/BackendLLVMDbg.cpp">
-      <Filter>Backend\LLVM</Filter>
-    </ClCompile>
     <ClCompile Include="../src/OsWin32.cpp">
       <Filter>Os</Filter>
     </ClCompile>
@@ -659,11 +656,14 @@
     <ClCompile Include="../src/Context.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\BackendSCBEDbg.cpp">
+    <ClCompile Include="..\src\EncoderDebug.cpp">
       <Filter>Backend\SCBE\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\BackendSCBEDbg_CodeView.cpp">
+    <ClCompile Include="..\src\EncoderDebug_CodeView.cpp">
       <Filter>Backend\SCBE\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/BackendLLVMDbg.cpp">
+      <Filter>Backend\LLVM\Debug</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -717,9 +717,6 @@
       <Filter>Backend\LLVM</Filter>
     </ClInclude>
     <ClInclude Include="../src/LLVMSetup.h">
-      <Filter>Backend\LLVM</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/BackendLLVMDbg.h">
       <Filter>Backend\LLVM</Filter>
     </ClInclude>
     <ClInclude Include="..\src\TypeGenStructJob.h">
@@ -1019,11 +1016,14 @@
     <ClInclude Include="../src/Context.h">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\BackendSCBEDbg.h">
+    <ClInclude Include="..\src\EncoderDebug.h">
       <Filter>Backend\SCBE\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\BackendSCBEDbg_CodeView.h">
+    <ClInclude Include="..\src\EncoderDebug_CodeView.h">
       <Filter>Backend\SCBE\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/BackendLLVMDbg.h">
+      <Filter>Backend\LLVM\Debug</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1116,6 +1116,9 @@
     </Filter>
     <Filter Include="Backend\SCBE\Debug">
       <UniqueIdentifier>{b28422c8-2f49-43b1-b9a6-a4bd13417541}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Backend\LLVM\Debug">
+      <UniqueIdentifier>{17aeccd5-174b-441a-9ec9-f75478e99431}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

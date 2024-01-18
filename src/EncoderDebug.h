@@ -125,7 +125,7 @@ struct DbgLines
     AstFuncDecl*    inlined = nullptr;
 };
 
-struct BackendSCBEDbg
+struct EncoderDebug
 {
     static void           getStructFields(EncoderCPU& pp, DbgTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset);
     static DbgTypeIndex   getTypeSlice(EncoderCPU& pp, TypeInfo* typeInfo, TypeInfo* pointedType, DbgTypeIndex* value);

@@ -1,6 +1,6 @@
 #pragma once
 #include "Backend.h"
-#include "BackendSCBEDbg.h"
+#include "EncoderDebug.h"
 #include "ComputedValue.h"
 #include "DataSegment.h"
 #include "CallConv.h"

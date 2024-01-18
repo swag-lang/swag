@@ -142,20 +142,20 @@ enum SimpleTypeMode : DbgTypeIndex
     NearPointer128 = 7  // 128 bit near pointer
 };
 
-struct BackendSCBEDbg_CodeView
+struct EncoderDebug_CodeView
 {
-    void startRecord(EncoderCPU& pp, Concat& concat, uint16_t what);
-    void endRecord(EncoderCPU& pp, Concat& concat, bool align = true);
-    void emitEmbeddedValue(Concat& concat, TypeInfo* valueType, ComputedValue& val);
-    void emitSecRel(EncoderCPU& pp, Concat& concat, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset = 0);
-    void emitTruncatedString(Concat& concat, const Utf8& str);
-    void emitCompilerFlagsDebugS(Concat& concat);
-    void emitConstant(EncoderCPU& pp, Concat& concat, AstNode* node, const Utf8& name);
-    void emitGlobalDebugS(EncoderCPU& pp, Concat& concat, VectorNative<AstNode*>& gVars, uint32_t segSymIndex);
+    void startRecord(EncoderCPU& pp, uint16_t what);
+    void endRecord(EncoderCPU& pp, bool align = true);
+    void emitEmbeddedValue(EncoderCPU& pp, TypeInfo* valueType, ComputedValue& val);
+    void emitSecRel(EncoderCPU& pp, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset = 0);
+    void emitTruncatedString(EncoderCPU& pp, const Utf8& str);
+    void emitCompilerFlagsDebugS(EncoderCPU& pp);
+    void emitConstant(EncoderCPU& pp, AstNode* node, const Utf8& name);
+    void emitGlobalDebugS(EncoderCPU& pp, VectorNative<AstNode*>& gVars, uint32_t segSymIndex);
     bool emitDataDebugT(EncoderCPU& pp);
     bool emitLines(EncoderCPU& pp, MapPath<uint32_t>&, Vector<uint32_t>&, Utf8&, Concat& concat, CoffFunction& f, size_t idxDbgLines);
     bool emitFctDebugS(EncoderCPU& pp);
-    bool emitScope(EncoderCPU& pp, Concat& concat, CoffFunction& f, Scope* scope);
+    bool emitScope(EncoderCPU& pp, CoffFunction& f, Scope* scope);
     bool emit(const BuildParameters& buildParameters, EncoderCPU& pp);
 
     BackendSCBE* scbe = nullptr;

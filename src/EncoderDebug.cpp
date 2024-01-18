@@ -1,16 +1,16 @@
 #include "pch.h"
-#include "BackendSCBEDbg.h"
 #include "BackendSCBE.h"
 #include "ByteCode.h"
-#include "BackendSCBEDbg_CodeView.h"
 #include "EncoderCPU.h"
+#include "EncoderDebug.h"
+#include "EncoderDebug_CodeView.h"
 #include "LanguageSpec.h"
 #include "Module.h"
 #include "TypeManager.h"
 #include "Version.h"
 #include "Workspace.h"
 
-DbgTypeIndex BackendSCBEDbg::getTypeSlice(EncoderCPU& pp, TypeInfo* typeInfo, TypeInfo* pointedType, DbgTypeIndex* value)
+DbgTypeIndex EncoderDebug::getTypeSlice(EncoderCPU& pp, TypeInfo* typeInfo, TypeInfo* pointedType, DbgTypeIndex* value)
 {
     auto         tr0 = addTypeRecord(pp);
     DbgTypeField field;
@@ -45,7 +45,7 @@ DbgTypeIndex BackendSCBEDbg::getTypeSlice(EncoderCPU& pp, TypeInfo* typeInfo, Ty
     return tr1->index;
 }
 
-void BackendSCBEDbg::getStructFields(EncoderCPU& pp, DbgTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset)
+void EncoderDebug::getStructFields(EncoderCPU& pp, DbgTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset)
 {
     tr->LF_FieldList.fields.reserve(typeStruct->fields.count);
     for (auto& p : typeStruct->fields)
@@ -65,7 +65,7 @@ void BackendSCBEDbg::getStructFields(EncoderCPU& pp, DbgTypeRecord* tr, TypeInfo
     }
 }
 
-DbgTypeIndex BackendSCBEDbg::getOrCreateType(EncoderCPU& pp, TypeInfo* typeInfo, bool forceUnRef)
+DbgTypeIndex EncoderDebug::getOrCreateType(EncoderCPU& pp, TypeInfo* typeInfo, bool forceUnRef)
 {
     typeInfo = typeInfo->getConcreteAlias();
 
@@ -224,7 +224,7 @@ DbgTypeIndex BackendSCBEDbg::getOrCreateType(EncoderCPU& pp, TypeInfo* typeInfo,
     if (typeInfo->isStruct())
     {
         TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-        auto            sname      = BackendSCBEDbg::getScopedName(typeStruct->declNode);
+        auto            sname      = EncoderDebug::getScopedName(typeStruct->declNode);
 
         if (typeStruct->flags & TYPEINFO_FROM_GENERIC)
         {
@@ -252,7 +252,7 @@ DbgTypeIndex BackendSCBEDbg::getOrCreateType(EncoderCPU& pp, TypeInfo* typeInfo,
             DbgTypeField field;
             field.kind = LF_ONEMETHOD;
             field.type = getOrCreateType(pp, p->typeInfo);
-            field.name = BackendSCBEDbg::getScopedName(p->typeInfo->declNode);
+            field.name = EncoderDebug::getScopedName(p->typeInfo->declNode);
             tr0->LF_FieldList.fields.emplace_back(std::move(field));
         }
 
@@ -273,7 +273,7 @@ DbgTypeIndex BackendSCBEDbg::getOrCreateType(EncoderCPU& pp, TypeInfo* typeInfo,
     if (typeInfo->isEnum())
     {
         TypeInfoEnum* typeInfoEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        auto          sname        = BackendSCBEDbg::getScopedName(typeInfoEnum->declNode);
+        auto          sname        = EncoderDebug::getScopedName(typeInfoEnum->declNode);
 
         // List of values
         if (typeInfoEnum->rawType->isNativeInteger())
@@ -401,7 +401,7 @@ DbgTypeIndex BackendSCBEDbg::getOrCreateType(EncoderCPU& pp, TypeInfo* typeInfo,
     }
 }
 
-DbgTypeIndex BackendSCBEDbg::getSimpleType(TypeInfo* typeInfo)
+DbgTypeIndex EncoderDebug::getSimpleType(TypeInfo* typeInfo)
 {
     if (typeInfo->isNative())
     {
@@ -441,7 +441,7 @@ DbgTypeIndex BackendSCBEDbg::getSimpleType(TypeInfo* typeInfo)
     return SimpleTypeKind::None;
 }
 
-DbgTypeIndex BackendSCBEDbg::getOrCreatePointerToType(EncoderCPU& pp, TypeInfo* typeInfo, bool asRef)
+DbgTypeIndex EncoderDebug::getOrCreatePointerToType(EncoderCPU& pp, TypeInfo* typeInfo, bool asRef)
 {
     auto simpleType = getSimpleType(typeInfo);
     if (simpleType != SimpleTypeKind::None)
@@ -455,7 +455,7 @@ DbgTypeIndex BackendSCBEDbg::getOrCreatePointerToType(EncoderCPU& pp, TypeInfo* 
     return tr->index;
 }
 
-DbgTypeIndex BackendSCBEDbg::getOrCreatePointerPointerToType(EncoderCPU& pp, TypeInfo* typeInfo)
+DbgTypeIndex EncoderDebug::getOrCreatePointerPointerToType(EncoderCPU& pp, TypeInfo* typeInfo)
 {
     // Pointer to something complex
     auto tr                    = addTypeRecord(pp);
@@ -464,7 +464,7 @@ DbgTypeIndex BackendSCBEDbg::getOrCreatePointerPointerToType(EncoderCPU& pp, Typ
     return tr->index;
 }
 
-DbgTypeRecord* BackendSCBEDbg::addTypeRecord(EncoderCPU& pp)
+DbgTypeRecord* EncoderDebug::addTypeRecord(EncoderCPU& pp)
 {
     auto tr   = pp.dbgTypeRecords.addObj<DbgTypeRecord>();
     tr->index = (DbgTypeIndex) pp.dbgTypeRecordsCount + 0x1000;
@@ -472,7 +472,7 @@ DbgTypeRecord* BackendSCBEDbg::addTypeRecord(EncoderCPU& pp)
     return tr;
 }
 
-Utf8 BackendSCBEDbg::getScopedName(AstNode* node)
+Utf8 EncoderDebug::getScopedName(AstNode* node)
 {
     auto nn = node->getScopedName();
     Utf8 result;
@@ -498,7 +498,7 @@ Utf8 BackendSCBEDbg::getScopedName(AstNode* node)
     return result;
 }
 
-void BackendSCBEDbg::setLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset)
+void EncoderDebug::setLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset)
 {
     if (!coffFct->node || coffFct->node->isSpecialFunctionGenerated())
         return;
@@ -565,9 +565,9 @@ void BackendSCBEDbg::setLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeIn
     }
 }
 
-bool BackendSCBEDbg::emit(const BuildParameters& buildParameters, BackendSCBE* scbe, EncoderCPU& pp)
+bool EncoderDebug::emit(const BuildParameters& buildParameters, BackendSCBE* scbe, EncoderCPU& pp)
 {
-    BackendSCBEDbg_CodeView dbg;
+    EncoderDebug_CodeView dbg;
     dbg.scbe = scbe;
     return dbg.emit(buildParameters, pp);
 }
