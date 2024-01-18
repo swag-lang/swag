@@ -272,7 +272,9 @@ struct CoffFunction
 
 struct EncoderCPU
 {
-    void clearInstructionCache();
+    void        clearInstructionCache();
+    CoffSymbol* getSymbol(const Utf8& name);
+    CoffSymbol* getOrAddSymbol(const Utf8& name, CoffSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
 
     Utf8   filename;
     Concat concat;

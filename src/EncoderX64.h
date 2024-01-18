@@ -22,8 +22,6 @@ struct EncoderX64 : public EncoderCPU
     void     computeUnwind(const VectorNative<CPURegister>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind);
     void     emitUnwind(uint32_t& offset, uint32_t sizeProlog, const VectorNative<uint16_t>& unwind);
 
-    CoffSymbol* getSymbol(const Utf8& name);
-    CoffSymbol* getOrAddSymbol(const Utf8& name, CoffSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
     void        emit_Symbol_RelocationAddr(CPURegister reg, uint32_t symbolIndex, uint32_t offset);
     void        emit_Symbol_RelocationValue(CPURegister reg, uint32_t symbolIndex, uint32_t offset);
     void        emit_GlobalString(const Utf8& str, CPURegister reg);
