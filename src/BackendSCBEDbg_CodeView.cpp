@@ -287,474 +287,12 @@ bool BackendSCBEDbg_CodeView::dbgEmitDataDebugT(EncoderCPU& pp)
     return true;
 }
 
-DbgTypeRecord* BackendSCBEDbg_CodeView::dbgAddTypeRecord(EncoderCPU& pp)
-{
-    auto tr   = pp.dbgTypeRecords.addObj<DbgTypeRecord>();
-    tr->index = (DbgTypeIndex) pp.dbgTypeRecordsCount + 0x1000;
-    pp.dbgTypeRecordsCount++;
-    return tr;
-}
-
-DbgTypeIndex BackendSCBEDbg_CodeView::dbgGetSimpleType(TypeInfo* typeInfo)
-{
-    if (typeInfo->isNative())
-    {
-        switch (typeInfo->nativeType)
-        {
-        case NativeTypeKind::Void:
-            return SimpleTypeKind::Void;
-        case NativeTypeKind::Bool:
-            return SimpleTypeKind::Boolean8;
-        case NativeTypeKind::S8:
-            return SimpleTypeKind::SByte;
-        case NativeTypeKind::S16:
-            return SimpleTypeKind::Int16;
-        case NativeTypeKind::S32:
-            return SimpleTypeKind::Int32;
-        case NativeTypeKind::S64:
-            return SimpleTypeKind::Int64;
-        case NativeTypeKind::U8:
-            return SimpleTypeKind::Byte;
-        case NativeTypeKind::U16:
-            return SimpleTypeKind::UInt16;
-        case NativeTypeKind::U32:
-            return SimpleTypeKind::UInt32;
-        case NativeTypeKind::U64:
-            return SimpleTypeKind::UInt64;
-        case NativeTypeKind::F32:
-            return SimpleTypeKind::Float32;
-        case NativeTypeKind::F64:
-            return SimpleTypeKind::Float64;
-        case NativeTypeKind::Rune:
-            return SimpleTypeKind::Character32;
-        default:
-            break;
-        }
-    }
-
-    return SimpleTypeKind::None;
-}
-
-DbgTypeIndex BackendSCBEDbg_CodeView::dbgGetOrCreatePointerToType(EncoderCPU& pp, TypeInfo* typeInfo, bool asRef)
-{
-    auto simpleType = dbgGetSimpleType(typeInfo);
-    if (simpleType != SimpleTypeKind::None)
-        return (DbgTypeIndex) (simpleType | (NearPointer64 << 8));
-
-    // Pointer to something complex
-    auto tr                    = dbgAddTypeRecord(pp);
-    tr->kind                   = LF_POINTER;
-    tr->LF_Pointer.pointeeType = dbgGetOrCreateType(pp, typeInfo, !asRef);
-    tr->LF_Pointer.asRef       = asRef;
-    return tr->index;
-}
-
-DbgTypeIndex BackendSCBEDbg_CodeView::dbgGetOrCreatePointerPointerToType(EncoderCPU& pp, TypeInfo* typeInfo)
-{
-    // Pointer to something complex
-    auto tr                    = dbgAddTypeRecord(pp);
-    tr->kind                   = LF_POINTER;
-    tr->LF_Pointer.pointeeType = dbgGetOrCreatePointerToType(pp, typeInfo, false);
-    return tr->index;
-}
-
-DbgTypeIndex BackendSCBEDbg_CodeView::dbgEmitTypeSlice(EncoderCPU& pp, TypeInfo* typeInfo, TypeInfo* pointedType, DbgTypeIndex* value)
-{
-    auto         tr0 = dbgAddTypeRecord(pp);
-    DbgTypeField field;
-    tr0->kind           = LF_FIELDLIST;
-    field.kind          = LF_MEMBER;
-    field.type          = dbgGetOrCreatePointerToType(pp, pointedType, false);
-    field.value.reg.u32 = 0;
-    field.name.setView(g_LangSpec->name_data);
-    tr0->LF_FieldList.fields.reserve(2);
-    tr0->LF_FieldList.fields.emplace_back(std::move(field));
-
-    field.kind          = LF_MEMBER;
-    field.type          = (DbgTypeIndex) (SimpleTypeKind::UInt64);
-    field.value.reg.u32 = sizeof(void*);
-    field.name.setView(g_LangSpec->name_count);
-    tr0->LF_FieldList.fields.emplace_back(std::move(field));
-
-    auto tr1                      = dbgAddTypeRecord(pp);
-    tr1->kind                     = LF_STRUCTURE;
-    tr1->LF_Structure.memberCount = 2;
-    tr1->LF_Structure.sizeOf      = 2 * sizeof(void*);
-    tr1->LF_Structure.fieldList   = tr0->index;
-    if (typeInfo->isSlice())
-    {
-        tr1->name = "[..] ";
-        tr1->name += pointedType->name; // debugger doesn't like 'const' before a slice name
-    }
-    else
-        tr1->name = typeInfo->name;
-
-    *value = tr1->index;
-    return tr1->index;
-}
-
-void BackendSCBEDbg_CodeView::dbgRecordFields(EncoderCPU& pp, DbgTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset)
-{
-    tr->LF_FieldList.fields.reserve(typeStruct->fields.count);
-    for (auto& p : typeStruct->fields)
-    {
-        DbgTypeField field;
-        field.kind = LF_MEMBER;
-        field.type = dbgGetOrCreateType(pp, p->typeInfo);
-        field.name.setView(p->name);
-        field.value.reg.u32 = baseOffset + p->offset;
-        tr->LF_FieldList.fields.emplace_back(std::move(field));
-
-        if (p->flags & TYPEINFOPARAM_HAS_USING && p->typeInfo->isStruct())
-        {
-            auto typeStructField = CastTypeInfo<TypeInfoStruct>(p->typeInfo, TypeInfoKind::Struct);
-            dbgRecordFields(pp, tr, typeStructField, baseOffset + p->offset);
-        }
-    }
-}
-
-DbgTypeIndex BackendSCBEDbg_CodeView::dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeInfo, bool forceUnRef)
-{
-    typeInfo = typeInfo->getConcreteAlias();
-
-    // Simple type
-    auto simpleType = dbgGetSimpleType(typeInfo);
-    if (simpleType != SimpleTypeKind::None)
-        return simpleType;
-
-    // Pointer
-    /////////////////////////////////
-    if (typeInfo->isPointer())
-    {
-        auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        return dbgGetOrCreatePointerToType(pp, typePtr->pointedType, typePtr->isPointerRef() && !forceUnRef);
-    }
-
-    // In the cache
-    /////////////////////////////////
-    using P                      = Map<TypeInfo*, DbgTypeIndex>;
-    pair<P::iterator, bool> iter = pp.dbgMapTypes.insert(P::value_type(typeInfo, 0));
-    if (!iter.second)
-        return iter.first->second;
-
-    // Slice
-    /////////////////////////////////
-    if (typeInfo->isSlice())
-    {
-        auto typeInfoPtr = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-        return dbgEmitTypeSlice(pp, typeInfo, typeInfoPtr->pointedType, &iter.first->second);
-    }
-
-    // TypedVariadic
-    /////////////////////////////////
-    if (typeInfo->isVariadic())
-    {
-        return dbgEmitTypeSlice(pp, typeInfo, g_TypeMgr->typeInfoAny, &iter.first->second);
-    }
-
-    // TypedVariadic
-    /////////////////////////////////
-    if (typeInfo->isTypedVariadic())
-    {
-        auto typeInfoPtr = CastTypeInfo<TypeInfoVariadic>(typeInfo, TypeInfoKind::TypedVariadic);
-        return dbgEmitTypeSlice(pp, typeInfo, typeInfoPtr->rawType, &iter.first->second);
-    }
-
-    // Static array
-    /////////////////////////////////
-    if (typeInfo->isArray())
-    {
-        auto typeArr             = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        auto tr                  = dbgAddTypeRecord(pp);
-        tr->kind                 = LF_ARRAY;
-        tr->LF_Array.elementType = dbgGetOrCreateType(pp, typeArr->pointedType, true);
-        tr->LF_Array.indexType   = SimpleTypeKind::UInt64;
-        tr->LF_Array.sizeOf      = typeArr->sizeOf;
-        iter.first->second       = tr->index;
-        return tr->index;
-    }
-
-    // Native string
-    /////////////////////////////////
-    if (typeInfo->isString())
-    {
-        auto         tr0 = dbgAddTypeRecord(pp);
-        DbgTypeField field;
-        tr0->kind           = LF_FIELDLIST;
-        field.kind          = LF_MEMBER;
-        field.type          = (DbgTypeIndex) (SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
-        field.value.reg.u32 = 0;
-        field.name.setView(g_LangSpec->name_data);
-        tr0->LF_FieldList.fields.reserve(2);
-        tr0->LF_FieldList.fields.emplace_back(std::move(field));
-
-        field.kind          = LF_MEMBER;
-        field.type          = (DbgTypeIndex) (SimpleTypeKind::UInt64);
-        field.value.reg.u32 = sizeof(void*);
-        field.name.setView(g_LangSpec->name_sizeof);
-        tr0->LF_FieldList.fields.emplace_back(std::move(field));
-
-        auto tr1                      = dbgAddTypeRecord(pp);
-        tr1->kind                     = LF_STRUCTURE;
-        tr1->LF_Structure.memberCount = 2;
-        tr1->LF_Structure.sizeOf      = 2 * sizeof(void*);
-        tr1->LF_Structure.fieldList   = tr0->index;
-        tr1->name.setView(g_LangSpec->name_string);
-
-        iter.first->second = tr1->index;
-        return tr1->index;
-    }
-
-    // Interface
-    /////////////////////////////////
-    if (typeInfo->isInterface())
-    {
-        auto         tr0 = dbgAddTypeRecord(pp);
-        DbgTypeField field;
-        tr0->kind           = LF_FIELDLIST;
-        field.kind          = LF_MEMBER;
-        field.type          = (DbgTypeIndex) (SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
-        field.value.reg.u32 = 0;
-        field.name.setView(g_LangSpec->name_data);
-        tr0->LF_FieldList.fields.reserve(2);
-        tr0->LF_FieldList.fields.emplace_back(std::move(field));
-
-        field.kind          = LF_MEMBER;
-        field.type          = dbgGetOrCreatePointerPointerToType(pp, g_Workspace->swagScope.regTypeInfoStruct);
-        field.value.reg.u32 = sizeof(void*);
-        field.name.setView(g_LangSpec->name_itable);
-        tr0->LF_FieldList.fields.emplace_back(std::move(field));
-
-        auto tr1                      = dbgAddTypeRecord(pp);
-        tr1->kind                     = LF_STRUCTURE;
-        tr1->LF_Structure.memberCount = 2;
-        tr1->LF_Structure.sizeOf      = 2 * sizeof(void*);
-        tr1->LF_Structure.fieldList   = tr0->index;
-        tr1->name.setView(g_LangSpec->name_interface);
-
-        iter.first->second = tr1->index;
-        return tr1->index;
-    }
-
-    // Any
-    /////////////////////////////////
-    if (typeInfo->isAny())
-    {
-        auto         tr0 = dbgAddTypeRecord(pp);
-        DbgTypeField field;
-        tr0->kind           = LF_FIELDLIST;
-        field.kind          = LF_MEMBER;
-        field.type          = (DbgTypeIndex) (SimpleTypeKind::UnsignedCharacter | (NearPointer64 << 8));
-        field.value.reg.u32 = 0;
-        field.name.setView(g_LangSpec->name_ptrvalue);
-        tr0->LF_FieldList.fields.reserve(2);
-        tr0->LF_FieldList.fields.emplace_back(std::move(field));
-
-        field.kind          = LF_MEMBER;
-        field.type          = dbgGetOrCreatePointerToType(pp, g_Workspace->swagScope.regTypeInfo, false);
-        field.value.reg.u32 = sizeof(void*);
-        field.name.setView(g_LangSpec->name_typeinfo);
-        tr0->LF_FieldList.fields.emplace_back(std::move(field));
-
-        auto tr1                      = dbgAddTypeRecord(pp);
-        tr1->kind                     = LF_STRUCTURE;
-        tr1->LF_Structure.memberCount = 2;
-        tr1->LF_Structure.sizeOf      = 2 * sizeof(void*);
-        tr1->LF_Structure.fieldList   = tr0->index;
-        tr1->name.setView(g_LangSpec->name_any);
-
-        iter.first->second = tr1->index;
-        return tr1->index;
-    }
-
-    // Structure
-    /////////////////////////////////
-    if (typeInfo->isStruct())
-    {
-        TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-        auto            sname      = BackendSCBEDbg::dbgGetScopedName(typeStruct->declNode);
-
-        if (typeStruct->flags & TYPEINFO_FROM_GENERIC)
-        {
-            auto pz = strchr(typeStruct->name.c_str(), '\'');
-            if (pz)
-                sname += pz;
-        }
-
-        // Create a forward reference, in case a field points to the struct itself
-        auto tr2                  = dbgAddTypeRecord(pp);
-        tr2->kind                 = LF_STRUCTURE;
-        tr2->LF_Structure.forward = true;
-        tr2->name                 = sname;
-
-        iter.first->second = tr2->index;
-
-        // List of fields, after the forward ref
-        auto tr0  = dbgAddTypeRecord(pp);
-        tr0->kind = LF_FIELDLIST;
-        dbgRecordFields(pp, tr0, typeStruct, 0);
-
-        tr0->LF_FieldList.fields.reserve(typeStruct->methods.count);
-        for (auto& p : typeStruct->methods)
-        {
-            DbgTypeField field;
-            field.kind = LF_ONEMETHOD;
-            field.type = dbgGetOrCreateType(pp, p->typeInfo);
-            field.name = BackendSCBEDbg::dbgGetScopedName(p->typeInfo->declNode);
-            tr0->LF_FieldList.fields.emplace_back(std::move(field));
-        }
-
-        // Struct itself, pointing to the field list
-        auto tr1                      = dbgAddTypeRecord(pp);
-        tr1->kind                     = LF_STRUCTURE;
-        tr1->LF_Structure.memberCount = (uint16_t) typeStruct->fields.size();
-        tr1->LF_Structure.sizeOf      = (uint16_t) typeStruct->sizeOf;
-        tr1->LF_Structure.fieldList   = tr0->index;
-        tr1->name                     = sname;
-
-        iter.first->second = tr1->index;
-        return tr1->index;
-    }
-
-    // Enum
-    /////////////////////////////////
-    if (typeInfo->isEnum())
-    {
-        TypeInfoEnum* typeInfoEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        auto          sname        = BackendSCBEDbg::dbgGetScopedName(typeInfoEnum->declNode);
-
-        // List of values
-        if (typeInfoEnum->rawType->isNativeInteger())
-        {
-            auto tr0  = dbgAddTypeRecord(pp);
-            tr0->kind = LF_FIELDLIST;
-            tr0->LF_FieldList.fields.reserve(typeInfoEnum->values.count);
-
-            VectorNative<TypeInfoEnum*> collect;
-            typeInfoEnum->collectEnums(collect);
-            for (auto typeEnum : collect)
-            {
-                for (auto& value : typeEnum->values)
-                {
-                    if (!value->value)
-                        continue;
-                    DbgTypeField field;
-                    field.kind      = LF_ENUMERATE;
-                    field.type      = dbgGetOrCreateType(pp, value->typeInfo);
-                    field.name      = value->name;
-                    field.valueType = typeInfoEnum->rawType;
-                    field.value     = *value->value;
-                    tr0->LF_FieldList.fields.emplace_back(std::move(field));
-                }
-            }
-
-            // Enum itself, pointing to the field list
-            auto tr1                    = dbgAddTypeRecord(pp);
-            tr1->kind                   = LF_ENUM;
-            tr1->LF_Enum.count          = (uint16_t) typeInfoEnum->values.size();
-            tr1->LF_Enum.fieldList      = tr0->index;
-            tr1->LF_Enum.underlyingType = dbgGetOrCreateType(pp, typeInfoEnum->rawType);
-            tr1->name                   = sname;
-
-            iter.first->second = tr1->index;
-            return tr1->index;
-        }
-
-        else
-        {
-            return dbgGetOrCreateType(pp, typeInfoEnum->rawType);
-        }
-    }
-
-    // Function
-    /////////////////////////////////
-    if (typeInfo->isFuncAttr() || typeInfo->isLambdaClosure())
-    {
-        TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
-        auto              tr0      = dbgAddTypeRecord(pp);
-
-        // Get the arg list type. We construct a string with all parameters to be able to
-        // store something in the cache
-        Utf8 args;
-        for (auto& p : typeFunc->parameters)
-        {
-            args += p->typeInfo->name;
-            args += "@";
-        }
-
-        bool isMethod = typeFunc->isMethod();
-        auto numArgs  = (uint16_t) typeFunc->parameters.size();
-
-        DbgTypeIndex argsTypeIndex;
-        using P1                       = MapUtf8<DbgTypeIndex>;
-        pair<P1::iterator, bool> iter1 = pp.dbgMapTypesNames.insert(P1::value_type(args, 0));
-        if (iter1.second)
-        {
-            auto tr1              = dbgAddTypeRecord(pp);
-            tr1->kind             = LF_ARGLIST;
-            tr1->LF_ArgList.count = numArgs;
-            for (size_t i = 0; i < typeFunc->parameters.size(); i++)
-            {
-                auto p = typeFunc->parameters[i];
-                tr1->LF_ArgList.args.push_back(dbgGetOrCreateType(pp, p->typeInfo));
-            }
-
-            iter1.first->second = tr1->index;
-            argsTypeIndex       = tr1->index;
-        }
-        else
-            argsTypeIndex = iter1.first->second;
-
-        if (isMethod)
-        {
-            tr0->kind                    = LF_MFUNCTION;
-            tr0->LF_MFunction.returnType = dbgGetOrCreateType(pp, typeFunc->returnType);
-            auto typeThis                = CastTypeInfo<TypeInfoPointer>(typeFunc->parameters[0]->typeInfo, TypeInfoKind::Pointer);
-            tr0->LF_MFunction.structType = dbgGetOrCreateType(pp, typeThis->pointedType);
-            tr0->LF_MFunction.thisType   = dbgGetOrCreateType(pp, typeThis);
-            tr0->LF_MFunction.numArgs    = numArgs;
-            tr0->LF_MFunction.argsType   = argsTypeIndex;
-        }
-        else
-        {
-            tr0->kind                    = LF_PROCEDURE;
-            tr0->LF_Procedure.returnType = dbgGetOrCreateType(pp, typeFunc->returnType);
-            tr0->LF_Procedure.numArgs    = numArgs;
-            tr0->LF_Procedure.argsType   = argsTypeIndex;
-        }
-
-        if (typeInfo->isLambdaClosure())
-        {
-            auto trp                    = dbgAddTypeRecord(pp);
-            trp->kind                   = LF_POINTER;
-            trp->LF_Pointer.pointeeType = tr0->index;
-            iter.first->second          = trp->index;
-            return trp->index;
-        }
-
-        iter.first->second = tr0->index;
-        return tr0->index;
-    }
-
-    switch (typeInfo->sizeOf)
-    {
-    case 1:
-        return (DbgTypeIndex) SimpleTypeKind::UnsignedCharacter;
-    case 2:
-        return (DbgTypeIndex) SimpleTypeKind::UInt16;
-    case 4:
-        return (DbgTypeIndex) SimpleTypeKind::UInt32;
-    default:
-        return (DbgTypeIndex) SimpleTypeKind::UInt64;
-    }
-}
-
 void BackendSCBEDbg_CodeView::dbgEmitConstant(EncoderCPU& pp, Concat& concat, AstNode* node, const Utf8& name)
 {
     if (node->typeInfo->isNative() && node->typeInfo->sizeOf <= 8)
     {
         dbgStartRecord(pp, concat, S_CONSTANT);
-        concat.addU32(dbgGetOrCreateType(pp, node->typeInfo));
+        concat.addU32(BackendSCBEDbg::dbgGetOrCreateType(pp, node->typeInfo));
         switch (node->typeInfo->sizeOf)
         {
         case 1:
@@ -791,12 +329,12 @@ void BackendSCBEDbg_CodeView::dbgEmitGlobalDebugS(EncoderCPU& pp, Concat& concat
         // Compile time constant
         if (p->hasComputedValue())
         {
-            dbgEmitConstant(pp, concat, p, BackendSCBEDbg::dbgGetScopedName(p));
+            dbgEmitConstant(pp, concat, p, BackendSCBEDbg::getScopedName(p));
             continue;
         }
 
         dbgStartRecord(pp, concat, S_LDATA32);
-        concat.addU32(dbgGetOrCreateType(pp, p->typeInfo));
+        concat.addU32(BackendSCBEDbg::dbgGetOrCreateType(pp, p->typeInfo));
 
         CoffRelocation reloc;
 
@@ -814,7 +352,7 @@ void BackendSCBEDbg_CodeView::dbgEmitGlobalDebugS(EncoderCPU& pp, Concat& concat
         pp.relocTableDBGSSection.table.push_back(reloc);
         concat.addU16(0);
 
-        auto nn = BackendSCBEDbg::dbgGetScopedName(p);
+        auto nn = BackendSCBEDbg::getScopedName(p);
         dbgEmitTruncatedString(concat, nn);
         dbgEndRecord(pp, concat);
     }
@@ -823,7 +361,7 @@ void BackendSCBEDbg_CodeView::dbgEmitGlobalDebugS(EncoderCPU& pp, Concat& concat
     if (patchSOffset == concat.totalCount())
     {
         dbgStartRecord(pp, concat, S_LDATA32);
-        concat.addU32(dbgGetOrCreateType(pp, g_TypeMgr->typeInfoBool));
+        concat.addU32(BackendSCBEDbg::dbgGetOrCreateType(pp, g_TypeMgr->typeInfoBool));
         concat.addU32(0);
         dbgEmitTruncatedString(concat, "__fake__");
         concat.addU16(0);
@@ -921,19 +459,19 @@ bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
 
         // Add a func id type record
         /////////////////////////////////
-        auto tr  = dbgAddTypeRecord(pp);
+        auto tr  = BackendSCBEDbg::dbgAddTypeRecord(pp);
         tr->node = f.node;
         if (typeFunc->isMethod())
         {
             tr->kind                  = LF_MFUNC_ID;
             auto typeThis             = CastTypeInfo<TypeInfoPointer>(typeFunc->parameters[0]->typeInfo, TypeInfoKind::Pointer);
-            tr->LF_MFuncId.parentType = dbgGetOrCreateType(pp, typeThis->pointedType);
-            tr->LF_MFuncId.type       = dbgGetOrCreateType(pp, typeFunc);
+            tr->LF_MFuncId.parentType = BackendSCBEDbg::dbgGetOrCreateType(pp, typeThis->pointedType);
+            tr->LF_MFuncId.type       = BackendSCBEDbg::dbgGetOrCreateType(pp, typeFunc);
         }
         else
         {
             tr->kind           = LF_FUNC_ID;
-            tr->LF_FuncId.type = dbgGetOrCreateType(pp, typeFunc);
+            tr->LF_FuncId.type = BackendSCBEDbg::dbgGetOrCreateType(pp, typeFunc);
         }
 
         // Symbol
@@ -956,7 +494,7 @@ bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
             concat.addU32(tr->index);                     // FuncID type index
             dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
             concat.addU8(0); // ProcSymFlags Flags = ProcSymFlags::None
-            auto nn = BackendSCBEDbg::dbgGetScopedName(f.node);
+            auto nn = BackendSCBEDbg::getScopedName(f.node);
             dbgEmitTruncatedString(concat, nn);
             dbgEndRecord(pp, concat);
 
@@ -991,10 +529,10 @@ bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
                     switch (typeParam->kind)
                     {
                     case TypeInfoKind::Array:
-                        typeIdx = dbgGetOrCreatePointerToType(pp, typeParam, false);
+                        typeIdx = BackendSCBEDbg::dbgGetOrCreatePointerToType(pp, typeParam, false);
                         break;
                     default:
-                        typeIdx = dbgGetOrCreateType(pp, typeParam);
+                        typeIdx = BackendSCBEDbg::dbgGetOrCreateType(pp, typeParam);
                         break;
                     }
 
@@ -1032,9 +570,9 @@ bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
                     {
                     case TypeInfoKind::Struct:
                         if (CallConv::structParamByValue(typeFunc, typeParam))
-                            typeIdx = dbgGetOrCreateType(pp, typeParam);
+                            typeIdx = BackendSCBEDbg::dbgGetOrCreateType(pp, typeParam);
                         else
-                            typeIdx = dbgGetOrCreatePointerToType(pp, typeParam, true);
+                            typeIdx = BackendSCBEDbg::dbgGetOrCreatePointerToType(pp, typeParam, true);
                         break;
 
                     case TypeInfoKind::Pointer:
@@ -1043,24 +581,24 @@ bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
                         {
                             auto typeRef = TypeManager::concretePtrRefType(typeParam);
                             if (CallConv::structParamByValue(typeFunc, typeRef))
-                                typeIdx = dbgGetOrCreateType(pp, typeRef);
+                                typeIdx = BackendSCBEDbg::dbgGetOrCreateType(pp, typeRef);
                             else
-                                typeIdx = dbgGetOrCreateType(pp, typeParam);
+                                typeIdx = BackendSCBEDbg::dbgGetOrCreateType(pp, typeParam);
                         }
                         else
                         {
-                            typeIdx = dbgGetOrCreateType(pp, typeParam);
+                            typeIdx = BackendSCBEDbg::dbgGetOrCreateType(pp, typeParam);
                         }
 
                         break;
                     }
 
                     case TypeInfoKind::Array:
-                        typeIdx = dbgGetOrCreatePointerToType(pp, typeParam, false);
+                        typeIdx = BackendSCBEDbg::dbgGetOrCreatePointerToType(pp, typeParam, false);
                         break;
 
                     default:
-                        typeIdx = dbgGetOrCreateType(pp, typeParam);
+                        typeIdx = BackendSCBEDbg::dbgGetOrCreateType(pp, typeParam);
                         break;
                     }
 
@@ -1101,7 +639,7 @@ bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
                     // If we have 2 registers then we cannot create a symbol flagged as 'parameter' in order to really see it.
                     if (typeParam->numRegisters() == 2)
                     {
-                        typeIdx = dbgGetOrCreateType(pp, typeParam);
+                        typeIdx = BackendSCBEDbg::dbgGetOrCreateType(pp, typeParam);
 
                         //////////
                         dbgStartRecord(pp, concat, S_LOCAL);
@@ -1173,7 +711,7 @@ bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
                 concat.addU32(CV_INLINEE_SOURCE_LINE_SIGNATURE);
 
                 auto checkSymIndex = getFileChecksum(mapFileNames, arrFileNames, stringTable, dbgLines.sourceFile);
-                auto typeIdx       = dbgGetOrCreateType(pp, dbgLines.inlined->typeInfo);
+                auto typeIdx       = BackendSCBEDbg::dbgGetOrCreateType(pp, dbgLines.inlined->typeInfo);
 
                 for (auto l : dbgLines.lines)
                 {
@@ -1247,7 +785,7 @@ bool BackendSCBEDbg_CodeView::dbgEmitScope(EncoderCPU& pp, Concat& concat, CoffF
         SWAG_ASSERT(localVar->attributeFlags & ATTRIBUTE_GLOBAL);
 
         dbgStartRecord(pp, concat, S_LDATA32);
-        concat.addU32(dbgGetOrCreateType(pp, typeInfo));
+        concat.addU32(BackendSCBEDbg::dbgGetOrCreateType(pp, typeInfo));
 
         CoffRelocation reloc;
         auto           segSymIndex = overload->flags & OVERLOAD_VAR_BSS ? pp.symBSIndex : pp.symMSIndex;
@@ -1295,10 +833,10 @@ bool BackendSCBEDbg_CodeView::dbgEmitScope(EncoderCPU& pp, Concat& concat, CoffF
         //////////
         dbgStartRecord(pp, concat, S_LOCAL);
         if (overload->flags & OVERLOAD_RETVAL)
-            concat.addU32(dbgGetOrCreatePointerToType(pp, typeInfo, true)); // Type
+            concat.addU32(BackendSCBEDbg::dbgGetOrCreatePointerToType(pp, typeInfo, true)); // Type
         else
-            concat.addU32(dbgGetOrCreateType(pp, typeInfo)); // Type
-        concat.addU16(0);                                    // CV_LVARFLAGS
+            concat.addU32(BackendSCBEDbg::dbgGetOrCreateType(pp, typeInfo)); // Type
+        concat.addU16(0);                                                    // CV_LVARFLAGS
         dbgEmitTruncatedString(concat, localVar->token.text);
         dbgEndRecord(pp, concat);
 

@@ -132,7 +132,15 @@ struct DbgLines
 
 struct BackendSCBEDbg
 {
-    static void dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);
-    static Utf8 dbgGetScopedName(AstNode* node);
-    static bool dbgEmit(const BuildParameters& buildParameters, BackendSCBE* scbe, EncoderCPU& pp);
+    static void           dbgRecordFields(EncoderCPU& pp, DbgTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset);
+    static DbgTypeIndex   dbgEmitTypeSlice(EncoderCPU& pp, TypeInfo* typeInfo, TypeInfo* pointedType, DbgTypeIndex* value);
+    static DbgTypeIndex   dbgGetSimpleType(TypeInfo* typeInfo);
+    static DbgTypeIndex   dbgGetOrCreatePointerToType(EncoderCPU& pp, TypeInfo* typeInfo, bool asRef);
+    static DbgTypeIndex   dbgGetOrCreatePointerPointerToType(EncoderCPU& pp, TypeInfo* typeInfo);
+    static DbgTypeIndex   dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeInfo, bool forceUnRef = false);
+    static DbgTypeRecord* dbgAddTypeRecord(EncoderCPU& pp);
+
+    static void setLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);
+    static Utf8 getScopedName(AstNode* node);
+    static bool emit(const BuildParameters& buildParameters, BackendSCBE* scbe, EncoderCPU& pp);
 };

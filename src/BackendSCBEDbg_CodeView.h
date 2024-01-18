@@ -158,27 +158,19 @@ enum SimpleTypeMode : DbgTypeIndex
 
 struct BackendSCBEDbg_CodeView
 {
-    void           dbgStartRecord(EncoderCPU& pp, Concat& concat, uint16_t what);
-    void           dbgEndRecord(EncoderCPU& pp, Concat& concat, bool align = true);
-    DbgTypeIndex   dbgGetSimpleType(TypeInfo* typeInfo);
-    DbgTypeIndex   dbgGetOrCreatePointerToType(EncoderCPU& pp, TypeInfo* typeInfo, bool asRef);
-    DbgTypeIndex   dbgGetOrCreatePointerPointerToType(EncoderCPU& pp, TypeInfo* typeInfo);
-    void           dbgRecordFields(EncoderCPU& pp, DbgTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset);
-    DbgTypeIndex   dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeInfo, bool forceUnRef = false);
-    DbgTypeRecord* dbgAddTypeRecord(EncoderCPU& pp);
-
-    DbgTypeIndex dbgEmitTypeSlice(EncoderCPU& pp, TypeInfo* typeInfo, TypeInfo* pointedType, DbgTypeIndex* value);
-    void         dbgEmitEmbeddedValue(Concat& concat, TypeInfo* valueType, ComputedValue& val);
-    void         dbgEmitSecRel(EncoderCPU& pp, Concat& concat, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset = 0);
-    void         dbgEmitTruncatedString(Concat& concat, const Utf8& str);
-    void         dbgEmitCompilerFlagsDebugS(Concat& concat);
-    void         dbgEmitConstant(EncoderCPU& pp, Concat& concat, AstNode* node, const Utf8& name);
-    void         dbgEmitGlobalDebugS(EncoderCPU& pp, Concat& concat, VectorNative<AstNode*>& gVars, uint32_t segSymIndex);
-    bool         dbgEmitDataDebugT(EncoderCPU& pp);
-    bool         dbgEmitLines(EncoderCPU& pp, MapPath<uint32_t>&, Vector<uint32_t>&, Utf8&, Concat& concat, CoffFunction& f, size_t idxDbgLines);
-    bool         dbgEmitFctDebugS(EncoderCPU& pp);
-    bool         dbgEmitScope(EncoderCPU& pp, Concat& concat, CoffFunction& f, Scope* scope);
-    bool         dbgEmit(const BuildParameters& buildParameters, EncoderCPU& pp);
+    void dbgStartRecord(EncoderCPU& pp, Concat& concat, uint16_t what);
+    void dbgEndRecord(EncoderCPU& pp, Concat& concat, bool align = true);
+    void dbgEmitEmbeddedValue(Concat& concat, TypeInfo* valueType, ComputedValue& val);
+    void dbgEmitSecRel(EncoderCPU& pp, Concat& concat, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset = 0);
+    void dbgEmitTruncatedString(Concat& concat, const Utf8& str);
+    void dbgEmitCompilerFlagsDebugS(Concat& concat);
+    void dbgEmitConstant(EncoderCPU& pp, Concat& concat, AstNode* node, const Utf8& name);
+    void dbgEmitGlobalDebugS(EncoderCPU& pp, Concat& concat, VectorNative<AstNode*>& gVars, uint32_t segSymIndex);
+    bool dbgEmitDataDebugT(EncoderCPU& pp);
+    bool dbgEmitLines(EncoderCPU& pp, MapPath<uint32_t>&, Vector<uint32_t>&, Utf8&, Concat& concat, CoffFunction& f, size_t idxDbgLines);
+    bool dbgEmitFctDebugS(EncoderCPU& pp);
+    bool dbgEmitScope(EncoderCPU& pp, Concat& concat, CoffFunction& f, Scope* scope);
+    bool dbgEmit(const BuildParameters& buildParameters, EncoderCPU& pp);
 
     BackendSCBE* scbe = nullptr;
 };

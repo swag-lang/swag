@@ -874,7 +874,7 @@ bool BackendSCBE::emitDebug(const BuildParameters& buildParameters)
     auto beforeCount = concat.totalCount();
 #endif
 
-    BackendSCBEDbg::dbgEmit(buildParameters, this, pp);
+    BackendSCBEDbg::emit(buildParameters, this, pp);
 
 #ifdef SWAG_STATS
     g_Stats.sizeBackendDbg += concat.totalCount() - beforeCount;
