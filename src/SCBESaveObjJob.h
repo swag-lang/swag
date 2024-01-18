@@ -3,9 +3,9 @@
 struct Module;
 struct ModulePrepOutputStage1Job;
 
-struct BackendSCBESaveObjJob : public Job
+struct SCBESaveObjJob : public Job
 {
-    BackendSCBESaveObjJob()
+    SCBESaveObjJob()
     {
         flags |= JOB_IS_IO;
     }

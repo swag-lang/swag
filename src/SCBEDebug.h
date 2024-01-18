@@ -7,7 +7,7 @@ struct BuildParameters;
 struct ByteCodeInstruction;
 struct CoffFunction;
 struct EncoderCPU;
-struct BackendSCBE;
+struct SCBE;
 
 using DbgTypeIndex = uint32_t;
 
@@ -137,5 +137,5 @@ struct SCBEDebug
     static void           setLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);
     static Utf8           getScopedName(AstNode* node);
 
-    static bool emit(const BuildParameters& buildParameters, BackendSCBE* scbe, EncoderCPU& pp);
+    static bool emit(const BuildParameters& buildParameters, SCBE* scbe, EncoderCPU& pp);
 };

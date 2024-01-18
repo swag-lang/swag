@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "BackendSCBE.h"
+#include "SCBE.h"
 #include "ByteCode.h"
 #include "Context.h"
 #include "LanguageSpec.h"
@@ -7,7 +7,7 @@
 #include "Report.h"
 #include "TypeManager.h"
 
-bool BackendSCBE::emitOS(const BuildParameters& buildParameters)
+bool SCBE::emitOS(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -56,7 +56,7 @@ bool BackendSCBE::emitOS(const BuildParameters& buildParameters)
     }
 }
 
-bool BackendSCBE::emitMain(const BuildParameters& buildParameters)
+bool SCBE::emitMain(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -241,7 +241,7 @@ bool BackendSCBE::emitMain(const BuildParameters& buildParameters)
     return true;
 }
 
-bool BackendSCBE::emitGetTypeTable(const BuildParameters& buildParameters)
+bool SCBE::emitGetTypeTable(const BuildParameters& buildParameters)
 {
     if (buildParameters.buildCfg->backendKind != BuildCfgBackendKind::DynamicLib)
         return true;
@@ -278,7 +278,7 @@ bool BackendSCBE::emitGetTypeTable(const BuildParameters& buildParameters)
     return true;
 }
 
-bool BackendSCBE::emitGlobalPreMain(const BuildParameters& buildParameters)
+bool SCBE::emitGlobalPreMain(const BuildParameters& buildParameters)
 {
     int         ct              = buildParameters.compileType;
     int         precompileIndex = buildParameters.precompileIndex;
@@ -333,7 +333,7 @@ bool BackendSCBE::emitGlobalPreMain(const BuildParameters& buildParameters)
     return true;
 }
 
-bool BackendSCBE::emitGlobalInit(const BuildParameters& buildParameters)
+bool SCBE::emitGlobalInit(const BuildParameters& buildParameters)
 {
     int         ct              = buildParameters.compileType;
     int         precompileIndex = buildParameters.precompileIndex;
@@ -414,7 +414,7 @@ bool BackendSCBE::emitGlobalInit(const BuildParameters& buildParameters)
     return true;
 }
 
-bool BackendSCBE::emitGlobalDrop(const BuildParameters& buildParameters)
+bool SCBE::emitGlobalDrop(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;

@@ -158,5 +158,5 @@ struct SCBEDebug_CodeView
     bool emitScope(EncoderCPU& pp, CoffFunction& f, Scope* scope);
     bool emit(const BuildParameters& buildParameters, EncoderCPU& pp);
 
-    BackendSCBE* scbe = nullptr;
+    SCBE* scbe = nullptr;
 };

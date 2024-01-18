@@ -1,27 +1,27 @@
 #include "pch.h"
-#include "BackendSCBE.h"
+#include "SCBE.h"
 #include "SCBEDebug.h"
 #include "BackendLinker.h"
-#include "BackendSCBESaveObjJob.h"
+#include "SCBESaveObjJob.h"
 #include "ErrorIds.h"
 #include "Module.h"
 #include "Os.h"
 #include "Report.h"
 #include "Workspace.h"
 
-BackendSCBE::BackendSCBE(Module* mdl)
+SCBE::SCBE(Module* mdl)
     : Backend{mdl}
 {
     memset(perThread, 0, sizeof(perThread));
 }
 
-BackendSCBE::BackendSCBE()
+SCBE::SCBE()
     : Backend{nullptr}
 {
     memset(perThread, 0, sizeof(perThread));
 }
 
-bool BackendSCBE::emitHeader(const BuildParameters& buildParameters)
+bool SCBE::emitHeader(const BuildParameters& buildParameters)
 {
     int       ct              = buildParameters.compileType;
     int       precompileIndex = buildParameters.precompileIndex;
@@ -225,7 +225,7 @@ bool BackendSCBE::emitHeader(const BuildParameters& buildParameters)
     return true;
 }
 
-bool BackendSCBE::createRuntime(const BuildParameters& buildParameters)
+bool SCBE::createRuntime(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -320,7 +320,7 @@ bool BackendSCBE::createRuntime(const BuildParameters& buildParameters)
     return true;
 }
 
-JobResult BackendSCBE::prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob)
+JobResult SCBE::prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob)
 {
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
@@ -496,7 +496,7 @@ JobResult BackendSCBE::prepareOutput(int stage, const BuildParameters& buildPara
     if (pp.pass == BackendPreCompilePass::GenerateObj)
     {
         pp.pass           = BackendPreCompilePass::Release;
-        auto job          = Allocator::alloc<BackendSCBESaveObjJob>();
+        auto job          = Allocator::alloc<SCBESaveObjJob>();
         job->module       = module;
         job->dependentJob = ownerJob;
         job->prepJob      = (ModulePrepOutputStage1Job*) ownerJob;
@@ -507,7 +507,7 @@ JobResult BackendSCBE::prepareOutput(int stage, const BuildParameters& buildPara
     return JobResult::ReleaseJob;
 }
 
-CoffFunction* BackendSCBE::registerFunction(EncoderX64& pp, AstNode* node, uint32_t symbolIndex)
+CoffFunction* SCBE::registerFunction(EncoderX64& pp, AstNode* node, uint32_t symbolIndex)
 {
     CoffFunction cf;
     cf.node        = node;
@@ -516,7 +516,7 @@ CoffFunction* BackendSCBE::registerFunction(EncoderX64& pp, AstNode* node, uint3
     return &pp.functions.back();
 }
 
-void BackendSCBE::registerFunction(CoffFunction* fct, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, VectorNative<uint16_t>& unwind)
+void SCBE::registerFunction(CoffFunction* fct, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, VectorNative<uint16_t>& unwind)
 {
     fct->startAddress = startAddress;
     fct->endAddress   = endAddress;
@@ -524,7 +524,7 @@ void BackendSCBE::registerFunction(CoffFunction* fct, uint32_t startAddress, uin
     fct->unwind       = std::move(unwind);
 }
 
-bool BackendSCBE::emitXData(const BuildParameters& buildParameters)
+bool SCBE::emitXData(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -546,7 +546,7 @@ bool BackendSCBE::emitXData(const BuildParameters& buildParameters)
     return true;
 }
 
-bool BackendSCBE::emitPData(const BuildParameters& buildParameters)
+bool SCBE::emitPData(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -588,7 +588,7 @@ bool BackendSCBE::emitPData(const BuildParameters& buildParameters)
     return true;
 }
 
-bool BackendSCBE::emitDirectives(const BuildParameters& buildParameters)
+bool SCBE::emitDirectives(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -603,7 +603,7 @@ bool BackendSCBE::emitDirectives(const BuildParameters& buildParameters)
     return true;
 }
 
-bool BackendSCBE::emitSymbolTable(const BuildParameters& buildParameters)
+bool SCBE::emitSymbolTable(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -670,7 +670,7 @@ bool BackendSCBE::emitSymbolTable(const BuildParameters& buildParameters)
     return true;
 }
 
-bool BackendSCBE::emitStringTable(const BuildParameters& buildParameters)
+bool SCBE::emitStringTable(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -690,7 +690,7 @@ bool BackendSCBE::emitStringTable(const BuildParameters& buildParameters)
     return true;
 }
 
-bool BackendSCBE::emitRelocationTable(Concat& concat, CoffRelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count)
+bool SCBE::emitRelocationTable(Concat& concat, CoffRelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count)
 {
     SWAG_ASSERT(cofftable.table.size() < UINT32_MAX);
     auto tableSize = (uint32_t) cofftable.table.size();
@@ -719,7 +719,7 @@ bool BackendSCBE::emitRelocationTable(Concat& concat, CoffRelocationTable& cofft
     return true;
 }
 
-bool BackendSCBE::saveObjFile(const BuildParameters& buildParameters)
+bool SCBE::saveObjFile(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -849,7 +849,7 @@ bool BackendSCBE::saveObjFile(const BuildParameters& buildParameters)
     return true;
 }
 
-bool BackendSCBE::generateOutput(const BuildParameters& buildParameters)
+bool SCBE::generateOutput(const BuildParameters& buildParameters)
 {
     // Do we need to generate the file ?
     if (!mustCompile)
@@ -863,7 +863,7 @@ bool BackendSCBE::generateOutput(const BuildParameters& buildParameters)
     return BackendLinker::link(buildParameters, module, files);
 }
 
-bool BackendSCBE::emitDebug(const BuildParameters& buildParameters)
+bool SCBE::emitDebug(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;

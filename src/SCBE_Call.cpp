@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "BackendSCBE.h"
+#include "SCBE.h"
 #include "TypeManager.h"
 #include "Module.h"
 #include "Workspace.h"
 
-uint32_t BackendSCBE::getParamStackOffset(CoffFunction* coffFct, int paramIdx)
+uint32_t SCBE::getParamStackOffset(CoffFunction* coffFct, int paramIdx)
 {
     const auto& cc = coffFct->typeFunc->getCallConv();
 
@@ -18,7 +18,7 @@ uint32_t BackendSCBE::getParamStackOffset(CoffFunction* coffFct, int paramIdx)
         return REG_OFFSET(paramIdx) + coffFct->offsetCallerStackParams;
 }
 
-void BackendSCBE::emitGetParam(EncoderX64& pp, CoffFunction* coffFct, int reg, uint32_t paramIdx, int sizeOf, uint64_t toAdd, int deRefSize)
+void SCBE::emitGetParam(EncoderX64& pp, CoffFunction* coffFct, int reg, uint32_t paramIdx, int sizeOf, uint64_t toAdd, int deRefSize)
 {
     auto        typeFunc   = coffFct->typeFunc;
     const auto& cc         = typeFunc->getCallConv();
@@ -123,7 +123,7 @@ void BackendSCBE::emitGetParam(EncoderX64& pp, CoffFunction* coffFct, int reg, u
     }
 }
 
-void BackendSCBE::emitCall(EncoderX64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT, bool localCall)
+void SCBE::emitCall(EncoderX64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT, bool localCall)
 {
     // Push parameters
     pp.emit_Call_Parameters(typeFunc, pushParams, offsetRT);
@@ -154,7 +154,7 @@ void BackendSCBE::emitCall(EncoderX64& pp, TypeInfoFuncAttr* typeFunc, const Utf
     }
 }
 
-void BackendSCBE::emitCall(EncoderX64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall)
+void SCBE::emitCall(EncoderX64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall)
 {
     VectorNative<CPUPushParam> p;
     for (auto r : pushRAParams)
@@ -162,7 +162,7 @@ void BackendSCBE::emitCall(EncoderX64& pp, TypeInfoFuncAttr* typeFunc, const Utf
     emitCall(pp, typeFunc, funcName, p, offsetRT, localCall);
 }
 
-void BackendSCBE::emitInternalCall(EncoderX64& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT)
+void SCBE::emitInternalCall(EncoderX64& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT)
 {
     auto typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
     SWAG_ASSERT(typeFunc);
@@ -175,7 +175,7 @@ void BackendSCBE::emitInternalCall(EncoderX64& pp, Module* moduleToGen, const Ut
     emitCall(pp, typeFunc, funcName, p, offsetRT, true);
 }
 
-void BackendSCBE::emitInternalCallExt(EncoderX64& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT, TypeInfoFuncAttr* typeFunc)
+void SCBE::emitInternalCallExt(EncoderX64& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT, TypeInfoFuncAttr* typeFunc)
 {
     if (!typeFunc)
         typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
@@ -189,7 +189,7 @@ void BackendSCBE::emitInternalCallExt(EncoderX64& pp, Module* moduleToGen, const
     emitCall(pp, typeFunc, funcName, p, offsetRT, true);
 }
 
-void BackendSCBE::emitByteCodeCall(EncoderX64& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
+void SCBE::emitByteCodeCall(EncoderX64& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
 {
     int idxReg = 0;
     for (int idxParam = typeFuncBC->numReturnRegisters() - 1; idxParam >= 0; idxParam--, idxReg++)
@@ -224,7 +224,7 @@ void BackendSCBE::emitByteCodeCall(EncoderX64& pp, TypeInfoFuncAttr* typeFuncBC,
     }
 }
 
-void BackendSCBE::emitByteCodeCallParameters(EncoderX64& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
+void SCBE::emitByteCodeCallParameters(EncoderX64& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
 {
     // If the closure is assigned to a lambda, then we must not use the first parameter (the first
     // parameter is the capture context, which does not exist in a normal function)

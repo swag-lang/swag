@@ -204,7 +204,7 @@ struct BuildCfgBackendLLVM
     bool fpMathApproxFunc   = false;
 };
 
-struct BuildCfgBackendSCBE
+struct BuildCfgSCBE
 {
 };
 
@@ -316,7 +316,7 @@ struct BuildCfg
 
     // Specific backend parameters
     BuildCfgBackendLLVM backendLLVM;
-    BuildCfgBackendSCBE backendSCBE;
+    BuildCfgSCBE backendSCBE;
 
     // Paths
     SwagSlice repoPath;

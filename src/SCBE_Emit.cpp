@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "BackendSCBE.h"
+#include "SCBE.h"
 #include "ByteCode.h"
 #include "LanguageSpec.h"
 #include "Math.h"
 
-void BackendSCBE::emitShiftRightArithmetic(EncoderX64& pp, ByteCodeInstruction* ip, CPUBits numBits)
+void SCBE::emitShiftRightArithmetic(EncoderX64& pp, ByteCodeInstruction* ip, CPUBits numBits)
 {
     if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))
     {
@@ -33,7 +33,7 @@ void BackendSCBE::emitShiftRightArithmetic(EncoderX64& pp, ByteCodeInstruction* 
     pp.emit_StoreN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, numBits);
 }
 
-void BackendSCBE::emitShiftRightEqArithmetic(EncoderX64& pp, ByteCodeInstruction* ip, CPUBits numBits)
+void SCBE::emitShiftRightEqArithmetic(EncoderX64& pp, ByteCodeInstruction* ip, CPUBits numBits)
 {
     if (ip->flags & BCI_IMM_B)
     {
@@ -52,7 +52,7 @@ void BackendSCBE::emitShiftRightEqArithmetic(EncoderX64& pp, ByteCodeInstruction
     }
 }
 
-void BackendSCBE::emitShiftLogical(EncoderX64& pp, ByteCodeInstruction* ip, CPUBits numBits, CPUOp op)
+void SCBE::emitShiftLogical(EncoderX64& pp, ByteCodeInstruction* ip, CPUBits numBits, CPUOp op)
 {
     if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= (uint32_t) numBits)
     {
@@ -85,7 +85,7 @@ void BackendSCBE::emitShiftLogical(EncoderX64& pp, ByteCodeInstruction* ip, CPUB
     }
 }
 
-void BackendSCBE::emitShiftEqLogical(EncoderX64& pp, ByteCodeInstruction* ip, CPUBits numBits, CPUOp op)
+void SCBE::emitShiftEqLogical(EncoderX64& pp, ByteCodeInstruction* ip, CPUBits numBits, CPUOp op)
 {
     pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);
     if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= (uint32_t) numBits)
@@ -112,7 +112,7 @@ void BackendSCBE::emitShiftEqLogical(EncoderX64& pp, ByteCodeInstruction* ip, CP
     }
 }
 
-void BackendSCBE::emitOverflowSigned(EncoderX64& pp, ByteCodeInstruction* ip, const char* msg)
+void SCBE::emitOverflowSigned(EncoderX64& pp, ByteCodeInstruction* ip, const char* msg)
 {
     bool nw = (ip->node->attributeFlags & ATTRIBUTE_CAN_OVERFLOW_ON) || (ip->flags & BCI_CAN_OVERFLOW) ? false : true;
     if (nw && module->mustEmitSafetyOverflow(ip->node) && !(ip->flags & BCI_CANT_OVERFLOW))
@@ -126,7 +126,7 @@ void BackendSCBE::emitOverflowSigned(EncoderX64& pp, ByteCodeInstruction* ip, co
     }
 }
 
-void BackendSCBE::emitOverflowUnsigned(EncoderX64& pp, ByteCodeInstruction* ip, const char* msg)
+void SCBE::emitOverflowUnsigned(EncoderX64& pp, ByteCodeInstruction* ip, const char* msg)
 {
     bool nw = (ip->node->attributeFlags & ATTRIBUTE_CAN_OVERFLOW_ON) || (ip->flags & BCI_CAN_OVERFLOW) ? false : true;
     if (nw && module->mustEmitSafetyOverflow(ip->node) && !(ip->flags & BCI_CANT_OVERFLOW))
@@ -140,7 +140,7 @@ void BackendSCBE::emitOverflowUnsigned(EncoderX64& pp, ByteCodeInstruction* ip, 
     }
 }
 
-void BackendSCBE::emitInternalPanic(EncoderX64& pp, AstNode* node, const char* msg)
+void SCBE::emitInternalPanic(EncoderX64& pp, AstNode* node, const char* msg)
 {
     auto np = node->sourceFile->path.string();
     pp.pushParams.clear();
@@ -154,7 +154,7 @@ void BackendSCBE::emitInternalPanic(EncoderX64& pp, AstNode* node, const char* m
     emitInternalCallExt(pp, module, g_LangSpec->name__panic, pp.pushParams);
 }
 
-void BackendSCBE::emitSymbolRelocation(EncoderX64& pp, const Utf8& name)
+void SCBE::emitSymbolRelocation(EncoderX64& pp, const Utf8& name)
 {
     auto& concat  = pp.concat;
     auto  callSym = pp.getOrAddSymbol(name, CoffSymbolKind::Extern);
@@ -169,7 +169,7 @@ void BackendSCBE::emitSymbolRelocation(EncoderX64& pp, const Utf8& name)
     }
 }
 
-void BackendSCBE::emitBinOpFloat32(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op)
+void SCBE::emitBinOpFloat32(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op)
 {
     if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
     {
@@ -196,7 +196,7 @@ void BackendSCBE::emitBinOpFloat32(EncoderX64& pp, ByteCodeInstruction* ip, CPUO
     }
 }
 
-void BackendSCBE::emitBinOpFloat64(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op)
+void SCBE::emitBinOpFloat64(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op)
 {
     if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
     {
@@ -223,19 +223,19 @@ void BackendSCBE::emitBinOpFloat64(EncoderX64& pp, ByteCodeInstruction* ip, CPUO
     }
 }
 
-void BackendSCBE::emitBinOpFloat32AtReg(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op)
+void SCBE::emitBinOpFloat32AtReg(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op)
 {
     emitBinOpFloat32(pp, ip, op);
     pp.emit_StoreF32_Indirect(REG_OFFSET(ip->c.u32), XMM0);
 }
 
-void BackendSCBE::emitBinOpFloat64AtReg(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op)
+void SCBE::emitBinOpFloat64AtReg(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op)
 {
     emitBinOpFloat64(pp, ip, op);
     pp.emit_StoreF64_Indirect(REG_OFFSET(ip->c.u32), XMM0);
 }
 
-void BackendSCBE::emitBinOpIntN(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
+void SCBE::emitBinOpIntN(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
 {
     if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
     {
@@ -275,13 +275,13 @@ void BackendSCBE::emitBinOpIntN(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp o
     }
 }
 
-void BackendSCBE::emitBinOpIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
+void SCBE::emitBinOpIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
 {
     emitBinOpIntN(pp, ip, op, numBits);
     pp.emit_StoreN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, numBits);
 }
 
-void BackendSCBE::emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
+void SCBE::emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
 {
     SWAG_ASSERT(op == CPUOp::DIV || op == CPUOp::MOD || op == CPUOp::IDIV || op == CPUOp::IMOD);
 
@@ -347,7 +347,7 @@ void BackendSCBE::emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip,
     pp.emit_StoreN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, numBits);
 }
 
-void BackendSCBE::emitAddSubMul64(EncoderX64& pp, ByteCodeInstruction* ip, uint64_t mul, CPUOp op)
+void SCBE::emitAddSubMul64(EncoderX64& pp, ByteCodeInstruction* ip, uint64_t mul, CPUOp op)
 {
     SWAG_ASSERT(op == CPUOp::ADD || op == CPUOp::SUB);
 

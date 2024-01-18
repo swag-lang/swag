@@ -12,10 +12,10 @@ struct ByteCode;
 struct TypeInfo;
 struct ByteCodeInstruction;
 
-struct BackendSCBE : public Backend
+struct SCBE : public Backend
 {
-    BackendSCBE(Module* mdl);
-    BackendSCBE();
+    SCBE(Module* mdl);
+    SCBE();
 
     void release();
 

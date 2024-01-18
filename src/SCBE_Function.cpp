@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "BackendSCBE.h"
-#include "BackendSCBE_Macros.h"
+#include "SCBE.h"
+#include "SCBE_Macros.h"
 #include "ByteCode.h"
 #include "ByteCodeGen.h"
 #include "LanguageSpec.h"
@@ -8,7 +8,7 @@
 #include "Report.h"
 #include "TypeManager.h"
 
-bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
+bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
     // Do not emit a text function if we are not compiling a test executable
     if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC) && (buildParameters.compileType != BackendCompileType::Test))

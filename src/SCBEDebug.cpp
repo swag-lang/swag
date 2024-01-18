@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "BackendSCBE.h"
+#include "SCBE.h"
 #include "ByteCode.h"
 #include "EncoderCPU.h"
 #include "SCBEDebug.h"
@@ -565,7 +565,7 @@ void SCBEDebug::setLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruc
     }
 }
 
-bool SCBEDebug::emit(const BuildParameters& buildParameters, BackendSCBE* scbe, EncoderCPU& pp)
+bool SCBEDebug::emit(const BuildParameters& buildParameters, SCBE* scbe, EncoderCPU& pp)
 {
     SCBEDebug_CodeView dbg;
     dbg.scbe = scbe;
