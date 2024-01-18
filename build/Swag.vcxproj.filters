@@ -173,12 +173,6 @@
     <ClCompile Include="../src/Concat.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="../src/Context.cpp">
-      <Filter>Backend\Runtime</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/CompilerItf.cpp">
-      <Filter>Backend\Runtime</Filter>
-    </ClCompile>
     <ClCompile Include="../src/Workspace.cpp">
       <Filter>Wmf</Filter>
     </ClCompile>
@@ -662,6 +656,12 @@
     <ClCompile Include="..\src\EncoderX64.cpp">
       <Filter>Backend\SCBE\Encoder</Filter>
     </ClCompile>
+    <ClCompile Include="../src/CompilerItf.cpp">
+      <Filter>Backend</Filter>
+    </ClCompile>
+    <ClCompile Include="../src/Context.cpp">
+      <Filter>Backend</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
@@ -796,15 +796,6 @@
     </ClInclude>
     <ClInclude Include="../src/Concat.h">
       <Filter>Core</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Runtime.h">
-      <Filter>Backend\Runtime</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/Context.h">
-      <Filter>Backend\Runtime</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/CompilerItf.h">
-      <Filter>Backend\Runtime</Filter>
     </ClInclude>
     <ClInclude Include="../src/Workspace.h">
       <Filter>Wmf</Filter>
@@ -1016,6 +1007,15 @@
     <ClInclude Include="..\src\EncoderCPU.h">
       <Filter>Backend\SCBE\Encoder</Filter>
     </ClInclude>
+    <ClInclude Include="../src/Runtime.h">
+      <Filter>Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/CompilerItf.h">
+      <Filter>Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="../src/Context.h">
+      <Filter>Backend</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
@@ -1071,9 +1071,6 @@
     </Filter>
     <Filter Include="Semantic\Type">
       <UniqueIdentifier>{5d3754c6-5cd6-4c17-beb5-5141ff0d58e8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Backend\Runtime">
-      <UniqueIdentifier>{512aad17-43cb-4e62-b39d-3200f0ee9ced}</UniqueIdentifier>
     </Filter>
     <Filter Include="Extern">
       <UniqueIdentifier>{c9693071-61f7-47a0-91a4-00e7adb04d7a}</UniqueIdentifier>
