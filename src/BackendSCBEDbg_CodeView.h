@@ -1,18 +1,5 @@
 #pragma once
-#include "Backend.h"
-#include "BackendParameters.h"
-#include "DataSegment.h"
-
-struct BuildParameters;
-struct ByteCode;
-struct ByteCodeInstruction;
-struct CoffFunction;
-struct DataSegment;
-struct EncoderCPU;
-struct Job;
-struct Module;
-struct TypeInfo;
-struct BackendSCBE;
+//#include "Backend.h"
 
 // https://github.com/microsoft/microsoft-pdb/blob/master/include/cvinfo.h
 
