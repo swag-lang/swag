@@ -206,19 +206,19 @@ bool BackendSCBE::emitMain(const BuildParameters& buildParameters)
             if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
                 continue;
 
-            emitCall(pp, bc->getCallName());
+            pp.emit_Call(bc->getCallName());
         }
     }
 
     // Call to main
     if (module->byteCodeMainFunc)
     {
-        emitCall(pp, module->byteCodeMainFunc->getCallName());
+        pp.emit_Call(module->byteCodeMainFunc->getCallName());
     }
 
     // Call to global drop of this module
     auto thisDrop = module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
-    emitCall(pp, thisDrop);
+    pp.emit_Call(thisDrop);
 
     // Call to global drop of all dependencies
     for (int i = (int) moduleDependencies.size() - 1; i >= 0; i--)
@@ -227,10 +227,10 @@ bool BackendSCBE::emitMain(const BuildParameters& buildParameters)
         if (!dep->module->isSwag)
             continue;
         auto nameFct = dep->module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
-        emitCall(pp, nameFct);
+        pp.emit_Call(nameFct);
     }
 
-    emitCall(pp, g_LangSpec->name__closeRuntime);
+    pp.emit_Call(g_LangSpec->name__closeRuntime);
 
     pp.emit_ClearN(RAX, CPUBits::B64);
     pp.emit_OpN_Immediate(RSP, 40, CPUOp::ADD, CPUBits::B64);
@@ -321,7 +321,7 @@ bool BackendSCBE::emitGlobalPreMain(const BuildParameters& buildParameters)
         auto node = bc->node;
         if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
-        emitCall(pp, bc->getCallName());
+        pp.emit_Call(bc->getCallName());
     }
 
     pp.emit_OpN_Immediate(RSP, 48, CPUOp::ADD, CPUBits::B64);
@@ -385,7 +385,7 @@ bool BackendSCBE::emitGlobalInit(const BuildParameters& buildParameters)
         }
 
         auto callTable = dep->module->getGlobalPrivFct(g_LangSpec->name_getTypeTable);
-        emitCall(pp, callTable);
+        pp.emit_Call(callTable);
 
         // Count types is stored as a uint64_t at the start of the address
         pp.emit_Load64_Indirect(0, R8, cc.returnByRegisterInteger);
@@ -402,7 +402,7 @@ bool BackendSCBE::emitGlobalInit(const BuildParameters& buildParameters)
         auto node = bc->node;
         if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
-        emitCall(pp, bc->getCallName());
+        pp.emit_Call(bc->getCallName());
     }
 
     pp.emit_OpN_Immediate(RSP, 48, CPUOp::ADD, CPUBits::B64);
@@ -443,7 +443,7 @@ bool BackendSCBE::emitGlobalDrop(const BuildParameters& buildParameters)
         auto node = bc->node;
         if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
-        emitCall(pp, bc->getCallName());
+        pp.emit_Call(bc->getCallName());
     }
 
     // __dropGlobalVariables

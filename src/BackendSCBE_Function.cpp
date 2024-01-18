@@ -118,7 +118,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
         if (sizeStack + sizeParamsStack >= SWAG_LIMIT_PAGE_STACK)
         {
             pp.emit_Load64_Immediate(RAX, sizeStack + sizeParamsStack);
-            emitCall(pp, "__chkstk");
+            pp.emit_Call("__chkstk");
         }
     }
 
@@ -4666,13 +4666,13 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
             pp.emit_Jump(JZ, i, ip->b.s32);
             break;
         case ByteCodeOp::InternalPushErr:
-            emitCall(pp, g_LangSpec->name__pusherr);
+            pp.emit_Call(g_LangSpec->name__pusherr);
             break;
         case ByteCodeOp::InternalPopErr:
-            emitCall(pp, g_LangSpec->name__poperr);
+            pp.emit_Call(g_LangSpec->name__poperr);
             break;
         case ByteCodeOp::InternalCatchErr:
-            emitCall(pp, g_LangSpec->name__catcherr);
+            pp.emit_Call(g_LangSpec->name__catcherr);
             break;
         case ByteCodeOp::InternalInitStackTrace:
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);

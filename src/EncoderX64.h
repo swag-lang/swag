@@ -29,6 +29,8 @@ struct EncoderX64 : public EncoderCPU
     void emit_Push(CPURegister reg);
     void emit_Pop(CPURegister reg);
 
+    void emit_Call(const Utf8& symbolName);
+    void emit_Call_Far(const Utf8& symbolName);
     void emit_Call_Indirect(CPURegister reg);
     void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, void* retCopyAddr = nullptr);
     void emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<CPUPushParam>& pushRAParams, uint32_t offsetRT, void* retCopyAddr = nullptr);

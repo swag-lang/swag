@@ -123,34 +123,16 @@ void BackendSCBE::emitGetParam(EncoderX64& pp, CoffFunction* coffFct, int reg, u
     }
 }
 
-void BackendSCBE::emitCall(EncoderX64& pp, const Utf8& funcName)
-{
-    pp.concat.addU8(0xE8); // call
-    emitSymbolRelocation(pp, funcName);
-}
-
 void BackendSCBE::emitCall(EncoderX64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT, bool localCall)
 {
     // Push parameters
     pp.emit_Call_Parameters(typeFunc, pushParams, offsetRT);
 
-    auto& concat = pp.concat;
-
     // Dll imported function name will have "__imp_" before (imported mangled name)
     if (!localCall)
-    {
-        // Need to make a far call
-        concat.addU8(0xFF); // call
-        concat.addU8(0x15);
-
-        auto callSym = pp.getOrAddSymbol("__imp_" + funcName, CoffSymbolKind::Extern);
-        pp.addSymbolRelocation(concat.totalCount() - pp.textSectionOffset, callSym->index, IMAGE_REL_AMD64_REL32);
-        concat.addU32(0);
-    }
+        pp.emit_Call_Far("__imp_" + funcName);
     else
-    {
-        emitCall(pp, funcName);
-    }
+        pp.emit_Call(funcName);
 
     // Store result
     pp.emit_Call_Result(typeFunc, offsetRT);

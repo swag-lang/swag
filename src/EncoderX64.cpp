@@ -1736,6 +1736,31 @@ void EncoderX64::emit_ClearX(uint32_t count, uint32_t offset, CPURegister reg)
 
 /////////////////////////////////////////////////////////////////////
 
+void EncoderX64::emit_Call_Far(const Utf8& symbolName)
+{
+    concat.addU8(0xFF);
+    concat.addU8(0x15);
+    auto callSym = getOrAddSymbol(symbolName, CoffSymbolKind::Extern);
+    addSymbolRelocation(concat.totalCount() - textSectionOffset, callSym->index, IMAGE_REL_AMD64_REL32);
+    concat.addU32(0);
+}
+
+void EncoderX64::emit_Call(const Utf8& symbolName)
+{
+    concat.addU8(0xE8);
+
+    auto callSym = getOrAddSymbol(symbolName, CoffSymbolKind::Extern);
+    if (callSym->kind == CoffSymbolKind::Function)
+    {
+        concat.addS32((callSym->value + textSectionOffset) - (concat.totalCount() + 4));
+    }
+    else
+    {
+        addSymbolRelocation(concat.totalCount() - textSectionOffset, callSym->index, IMAGE_REL_AMD64_REL32);
+        concat.addU32(0);
+    }
+}
+
 void EncoderX64::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<CPUPushParam>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopyAddr)
 {
     const auto& cc                = typeFuncBC->getCallConv();
