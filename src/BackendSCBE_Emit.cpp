@@ -164,11 +164,7 @@ void BackendSCBE::emitSymbolRelocation(EncoderX64& pp, const Utf8& name)
     }
     else
     {
-        CoffRelocation reloc;
-        reloc.virtualAddress = concat.totalCount() - pp.textSectionOffset;
-        reloc.symbolIndex    = callSym->index;
-        reloc.type           = IMAGE_REL_AMD64_REL32;
-        pp.relocTableTextSection.table.push_back(reloc);
+        pp.addSymbolRelocation(concat.totalCount() - pp.textSectionOffset, callSym->index, IMAGE_REL_AMD64_REL32);
         concat.addU32(0);
     }
 }

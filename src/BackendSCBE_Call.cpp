@@ -123,6 +123,12 @@ void BackendSCBE::emitGetParam(EncoderX64& pp, CoffFunction* coffFct, int reg, u
     }
 }
 
+void BackendSCBE::emitCall(EncoderX64& pp, const Utf8& funcName)
+{
+    pp.concat.addU8(0xE8); // call
+    emitSymbolRelocation(pp, funcName);
+}
+
 void BackendSCBE::emitCall(EncoderX64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT, bool localCall)
 {
     // Push parameters
@@ -137,13 +143,8 @@ void BackendSCBE::emitCall(EncoderX64& pp, TypeInfoFuncAttr* typeFunc, const Utf
         concat.addU8(0xFF); // call
         concat.addU8(0x15);
 
-        CoffRelocation reloc;
-        reloc.virtualAddress = concat.totalCount() - pp.textSectionOffset;
-
-        auto callSym      = pp.getOrAddSymbol("__imp_" + funcName, CoffSymbolKind::Extern);
-        reloc.symbolIndex = callSym->index;
-        reloc.type        = IMAGE_REL_AMD64_REL32;
-        pp.relocTableTextSection.table.push_back(reloc);
+        auto callSym = pp.getOrAddSymbol("__imp_" + funcName, CoffSymbolKind::Extern);
+        pp.addSymbolRelocation(concat.totalCount() - pp.textSectionOffset, callSym->index, IMAGE_REL_AMD64_REL32);
         concat.addU32(0);
     }
     else
@@ -204,12 +205,6 @@ void BackendSCBE::emitInternalCallExt(EncoderX64& pp, Module* moduleToGen, const
         p.push_back({pushParams[i]});
 
     emitCall(pp, typeFunc, funcName, p, offsetRT, true);
-}
-
-void BackendSCBE::emitCall(EncoderX64& pp, const Utf8& funcName)
-{
-    pp.concat.addU8(0xE8); // call
-    emitSymbolRelocation(pp, funcName);
 }
 
 void BackendSCBE::emitByteCodeCall(EncoderX64& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams)
