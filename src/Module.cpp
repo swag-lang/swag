@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Module.h"
-#include "BackendLLVM.h"
+#include "LLVM.h"
 #include "SCBE.h"
 #include "ByteCode.h"
 #include "Context.h"
@@ -447,7 +447,7 @@ void Module::allocateBackend()
         switch (g_CommandLine.backendGenType)
         {
         case BackendGenType::LLVM:
-            backend = new BackendLLVM(this);
+            backend = new LLVM(this);
             break;
         case BackendGenType::SCBE:
             backend = new SCBE(this);

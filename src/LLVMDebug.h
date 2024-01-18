@@ -1,7 +1,7 @@
 #pragma once
 
 struct AstNode;
-struct BackendLLVM;
+struct LLVM;
 struct BuildParameters;
 struct ByteCode;
 struct ByteCodeInstruction;
@@ -13,7 +13,7 @@ struct TypeInfoFuncAttr;
 
 struct LLVMDebug
 {
-    void                    setup(BackendLLVM* m, llvm::Module* module);
+    void                    setup(LLVM* m, llvm::Module* module);
     llvm::DISubprogram*     startFunction(ByteCode* bc, AstFuncDecl** resultDecl = nullptr);
     void                    startFunction(const BuildParameters& buildParameters, LLVMPerThread& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack);
     void                    finalize();
@@ -29,7 +29,7 @@ struct LLVMDebug
     llvm::DISubroutineType* getFunctionType(TypeInfoFuncAttr* typeFunc, llvm::DIFile* file);
     llvm::DIScope*          getOrCreateScope(llvm::DIFile* file, Scope* scope);
 
-    BackendLLVM*         llvm        = nullptr;
+    LLVM*         llvm        = nullptr;
     llvm::LLVMContext*   llvmContext = nullptr;
     llvm::Module*        llvmModule  = nullptr;
     llvm::DIBuilder*     dbgBuilder  = nullptr;

@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "BackendLLVM.h"
-#include "BackendLLVM_Macros.h"
+#include "LLVM.h"
+#include "LLVM_Macros.h"
 #include "Module.h"
 #include "TypeManager.h"
 #include "Workspace.h"
 #include "Report.h"
 
-void BackendLLVM::getReturnResult(llvm::LLVMContext&     context,
+void LLVM::getReturnResult(llvm::LLVMContext&     context,
                                   const BuildParameters& buildParameters,
                                   Module*                moduleToGen,
                                   TypeInfo*              returnType,
@@ -103,7 +103,7 @@ void BackendLLVM::getReturnResult(llvm::LLVMContext&     context,
     }
 }
 
-void BackendLLVM::createRet(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, TypeInfo* returnType, llvm::AllocaInst* allocResult)
+void LLVM::createRet(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, TypeInfo* returnType, llvm::AllocaInst* allocResult)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -169,7 +169,7 @@ void BackendLLVM::createRet(const BuildParameters& buildParameters, Module* modu
     }
 }
 
-llvm::FunctionType* BackendLLVM::getOrCreateFuncType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, bool closureToLambda)
+llvm::FunctionType* LLVM::getOrCreateFuncType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, bool closureToLambda)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -275,7 +275,7 @@ llvm::FunctionType* BackendLLVM::getOrCreateFuncType(const BuildParameters& buil
     return result;
 }
 
-bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
+bool LLVM::emitGetParam(llvm::LLVMContext&     context,
                                const BuildParameters& buildParameters,
                                llvm::Function*        func,
                                TypeInfoFuncAttr*      typeFunc,
@@ -465,7 +465,7 @@ bool BackendLLVM::emitGetParam(llvm::LLVMContext&     context,
     return true;
 }
 
-bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParameters,
+bool LLVM::emitCallParameters(const BuildParameters&        buildParameters,
                                      llvm::AllocaInst*             allocR,
                                      llvm::AllocaInst*             allocRR,
                                      Module*                       moduleToGen,
@@ -589,7 +589,7 @@ bool BackendLLVM::emitCallParameters(const BuildParameters&        buildParamete
     return true;
 }
 
-bool BackendLLVM::emitCallReturnValue(const BuildParameters& buildParameters,
+bool LLVM::emitCallReturnValue(const BuildParameters& buildParameters,
                                       llvm::AllocaInst*      allocRR,
                                       Module*                moduleToGen,
                                       TypeInfoFuncAttr*      typeFuncBC,
@@ -653,7 +653,7 @@ bool BackendLLVM::emitCallReturnValue(const BuildParameters& buildParameters,
     return true;
 }
 
-llvm::Value* BackendLLVM::emitCall(const BuildParameters&        buildParameters,
+llvm::Value* LLVM::emitCall(const BuildParameters&        buildParameters,
                                    Module*                       moduleToGen,
                                    const Utf8&                   funcName,
                                    TypeInfoFuncAttr*             typeFuncBC,
@@ -685,7 +685,7 @@ llvm::Value* BackendLLVM::emitCall(const BuildParameters&        buildParameters
     return builder.CreateCall(func, {params.begin(), params.end()});
 }
 
-llvm::Value* BackendLLVM::emitCall(const BuildParameters&      buildParameters,
+llvm::Value* LLVM::emitCall(const BuildParameters&      buildParameters,
                                    Module*                     moduleToGen,
                                    const char*                 name,
                                    llvm::AllocaInst*           allocR,
@@ -707,7 +707,7 @@ llvm::Value* BackendLLVM::emitCall(const BuildParameters&      buildParameters,
     return emitCall(buildParameters, moduleToGen, name, typeFunc, allocR, allocT, pushRAParams, pushVParams, true);
 }
 
-void BackendLLVM::emitByteCodeCallParameters(const BuildParameters&      buildParameters,
+void LLVM::emitByteCodeCallParameters(const BuildParameters&      buildParameters,
                                              llvm::AllocaInst*           allocR,
                                              llvm::AllocaInst*           allocRR,
                                              llvm::AllocaInst*           allocT,

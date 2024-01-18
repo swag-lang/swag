@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "BackendLLVM.h"
-#include "BackendLLVM_Macros.h"
+#include "LLVM.h"
+#include "LLVM_Macros.h"
 #include "Module.h"
 #include "ByteCode.h"
 #include "Context.h"
 #include "LanguageSpec.h"
 
-bool BackendLLVM::emitOS(const BuildParameters& buildParameters)
+bool LLVM::emitOS(const BuildParameters& buildParameters)
 {
     if (g_CommandLine.target.os == SwagTargetOs::Windows)
     {
@@ -69,7 +69,7 @@ bool BackendLLVM::emitOS(const BuildParameters& buildParameters)
     return true;
 }
 
-bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
+bool LLVM::emitMain(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -277,7 +277,7 @@ bool BackendLLVM::emitMain(const BuildParameters& buildParameters)
     return true;
 }
 
-bool BackendLLVM::emitGetTypeTable(const BuildParameters& buildParameters)
+bool LLVM::emitGetTypeTable(const BuildParameters& buildParameters)
 {
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
@@ -302,7 +302,7 @@ bool BackendLLVM::emitGetTypeTable(const BuildParameters& buildParameters)
     return true;
 }
 
-bool BackendLLVM::emitGlobalPreMain(const BuildParameters& buildParameters)
+bool LLVM::emitGlobalPreMain(const BuildParameters& buildParameters)
 {
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
@@ -343,7 +343,7 @@ bool BackendLLVM::emitGlobalPreMain(const BuildParameters& buildParameters)
     return true;
 }
 
-bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
+bool LLVM::emitGlobalInit(const BuildParameters& buildParameters)
 {
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
@@ -422,7 +422,7 @@ bool BackendLLVM::emitGlobalInit(const BuildParameters& buildParameters)
     return true;
 }
 
-bool BackendLLVM::emitGlobalDrop(const BuildParameters& buildParameters)
+bool LLVM::emitGlobalDrop(const BuildParameters& buildParameters)
 {
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;

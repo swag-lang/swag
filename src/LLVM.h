@@ -92,9 +92,9 @@ struct LLVMPerThread
     LLVMDebug* dbg = nullptr;
 };
 
-struct BackendLLVM : public Backend
+struct LLVM : public Backend
 {
-    BackendLLVM(Module* mdl)
+    LLVM(Module* mdl)
         : Backend{mdl}
     {
         memset(perThread, 0, sizeof(perThread));

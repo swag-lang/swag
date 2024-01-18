@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "BackendLLVM.h"
+#include "LLVM.h"
 #include "LLVMDebug.h"
-#include "BackendLLVM_Macros.h"
+#include "LLVM_Macros.h"
 #include "Module.h"
 #include "ByteCode.h"
 #include "ByteCodeGen.h"
@@ -9,7 +9,7 @@
 #include "LanguageSpec.h"
 #include "Report.h"
 
-bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
+bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
     // Do not emit a text function if we are not compiling a test executable
     if (bc->node && (bc->node->attributeFlags & ATTRIBUTE_TEST_FUNC) && (buildParameters.compileType != BackendCompileType::Test))
@@ -5800,7 +5800,7 @@ bool BackendLLVM::emitFunctionBody(const BuildParameters& buildParameters, Modul
     return ok;
 }
 
-llvm::Type* BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfo* typeInfo)
+llvm::Type* LLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfo* typeInfo)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -5869,7 +5869,7 @@ llvm::Type* BackendLLVM::swagTypeToLLVMType(const BuildParameters& buildParamete
     return nullptr;
 }
 
-llvm::BasicBlock* BackendLLVM::getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func, int64_t ip)
+llvm::BasicBlock* LLVM::getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func, int64_t ip)
 {
     auto& context = *pp.context;
 
@@ -5884,7 +5884,7 @@ llvm::BasicBlock* BackendLLVM::getOrCreateLabel(LLVMPerThread& pp, llvm::Functio
     return it->second;
 }
 
-void BackendLLVM::setFuncAttributes(const BuildParameters& buildParameters, Module* moduleToGen, AstFuncDecl* funcNode, ByteCode* bc, llvm::Function* func)
+void LLVM::setFuncAttributes(const BuildParameters& buildParameters, Module* moduleToGen, AstFuncDecl* funcNode, ByteCode* bc, llvm::Function* func)
 {
     if (!moduleToGen->mustOptimizeBackend(bc->node))
     {

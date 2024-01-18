@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "BackendLLVM.h"
+#include "LLVM.h"
 #include "LLVMDebug.h"
-#include "BackendLLVM_Macros.h"
+#include "LLVM_Macros.h"
 #include "ByteCode.h"
 #include "Module.h"
 #include "Version.h"
@@ -13,7 +13,7 @@ static llvm::DILocation* debugLocGet(unsigned Line, unsigned Col, const llvm::MD
     return llvm::DILocation::get(Scope->getContext(), Line, Col, const_cast<llvm::MDNode*>(Scope), const_cast<llvm::MDNode*>(InlinedAt), ImplicitCode);
 }
 
-void LLVMDebug::setup(BackendLLVM* m, llvm::Module* modu)
+void LLVMDebug::setup(LLVM* m, llvm::Module* modu)
 {
     llvm          = m;
     isOptimized   = !m->module->buildParameters.isDebug();

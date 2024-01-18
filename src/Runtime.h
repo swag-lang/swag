@@ -192,7 +192,7 @@ typedef struct SwagProcessInfos
     SwagBackendGenType backendKind    = SwagBackendGenType::SCBE;
 } SwagProcessInfos;
 
-struct BuildCfgBackendLLVM
+struct BuildCfgLLVM
 {
     bool outputIR = false; // Write a '.ir' text file just next to the temporary file
 
@@ -315,7 +315,7 @@ struct BuildCfg
     SwagSlice linkerArgs;
 
     // Specific backend parameters
-    BuildCfgBackendLLVM backendLLVM;
+    BuildCfgLLVM backendLLVM;
     BuildCfgSCBE backendSCBE;
 
     // Paths

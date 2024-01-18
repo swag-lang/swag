@@ -1,16 +1,16 @@
 #include "pch.h"
-#include "BackendLLVM.h"
 #include "BackendLinker.h"
-#include "BackendLLVM_Macros.h"
-#include "LLVMDebug.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "LLVM.h"
+#include "LLVM_Macros.h"
+#include "LLVMDebug.h"
 #include "Module.h"
 #include "Os.h"
 #include "Report.h"
 #include "Workspace.h"
 
-bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
+bool LLVM::createRuntime(const BuildParameters& buildParameters)
 {
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
@@ -200,7 +200,7 @@ bool BackendLLVM::createRuntime(const BuildParameters& buildParameters)
     return true;
 }
 
-JobResult BackendLLVM::prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob)
+JobResult LLVM::prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob)
 {
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
@@ -283,7 +283,7 @@ JobResult BackendLLVM::prepareOutput(int stage, const BuildParameters& buildPara
     return JobResult::ReleaseJob;
 }
 
-bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
+bool LLVM::generateObjFile(const BuildParameters& buildParameters)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -488,7 +488,7 @@ bool BackendLLVM::generateObjFile(const BuildParameters& buildParameters)
     return true;
 }
 
-bool BackendLLVM::generateOutput(const BuildParameters& buildParameters)
+bool LLVM::generateOutput(const BuildParameters& buildParameters)
 {
     // Do we need to generate the file ?
     if (!mustCompile)

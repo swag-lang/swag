@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "BackendLLVM.h"
+#include "LLVM.h"
 #include "LLVMDebug.h"
-#include "BackendLLVM_Macros.h"
+#include "LLVM_Macros.h"
 #include "Module.h"
 
-bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSegment* dataSegment)
+bool LLVM::emitDataSegment(const BuildParameters& buildParameters, DataSegment* dataSegment)
 {
     if (!dataSegment->buckets.size())
         return true;
@@ -103,7 +103,7 @@ bool BackendLLVM::emitDataSegment(const BuildParameters& buildParameters, DataSe
     return true;
 }
 
-bool BackendLLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegment* dataSegment, SegmentKind me)
+bool LLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegment* dataSegment, SegmentKind me)
 {
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
