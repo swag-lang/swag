@@ -446,6 +446,7 @@
     <ClCompile Include="..\src\ByteCodeRun_SelectIf.cpp" />
     <ClCompile Include="..\src\CallConv.cpp" />
     <ClCompile Include="..\src\ComputedValue.cpp" />
+    <ClCompile Include="..\src\DebugCodeView.cpp" />
     <ClCompile Include="..\src\EncoderCPU.cpp" />
     <ClCompile Include="..\src\ErrorContext.cpp" />
     <ClCompile Include="..\src\ErrorIds.cpp" />

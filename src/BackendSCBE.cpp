@@ -326,11 +326,7 @@ JobResult BackendSCBE::prepareOutput(int stage, const BuildParameters& buildPara
     int precompileIndex = buildParameters.precompileIndex;
 
     if (!perThread[ct][precompileIndex])
-    {
-        auto encoder                   = new EncoderX64;
-        encoder->dbg.scbe              = this;
-        perThread[ct][precompileIndex] = encoder;
-    }
+        perThread[ct][precompileIndex] = new EncoderX64;
 
     auto& pp     = *perThread[ct][precompileIndex];
     auto& concat = pp.concat;
@@ -878,7 +874,7 @@ bool BackendSCBE::emitDebug(const BuildParameters& buildParameters)
     auto beforeCount = concat.totalCount();
 #endif
 
-    pp.dbg.dbgEmit(buildParameters, pp);
+    BackendSCBEDbg::dbgEmit(buildParameters, this, pp);
 
 #ifdef SWAG_STATS
     g_Stats.sizeBackendDbg += concat.totalCount() - beforeCount;

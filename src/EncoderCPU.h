@@ -1,10 +1,10 @@
 #pragma once
 #include "Backend.h"
+#include "BackendSCBEDbg.h"
 #include "ComputedValue.h"
 #include "DataSegment.h"
 #include "CallConv.h"
 #include "Concat.h"
-#include "BackendSCBEDbg.h"
 
 #define REG_OFFSET(__r) __r * sizeof(Register)
 
@@ -164,8 +164,6 @@ struct EncoderCPU
     uint32_t    getOrCreateLabel(uint32_t ip);
     CoffSymbol* getOrCreateGlobalString(const Utf8& str);
     void        addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type);
-
-    BackendSCBEDbg dbg;
 
     Utf8   filename;
     Concat concat;
