@@ -94,7 +94,7 @@ bool BackendSCBE::emitMain(const BuildParameters& buildParameters)
     auto bcAlloc = (ByteCode*) ByteCode::undoByteCodeLambda(((void**) g_SystemAllocatorTable)[0]);
     SWAG_ASSERT(bcAlloc);
     pp.emit_Symbol_RelocationAddr(RAX, pp.symDefaultAllocTable, 0);
-    concat.addString3("\x48\x8d\x0d"); // lea rcx, qword ptr ????????[rip]
+    pp.emit_LoadAddress_Indirect(0, RCX, RIP);
     emitSymbolRelocation(pp, bcAlloc->getCallName());
     pp.emit_Store64_Indirect(0, RCX, RAX);
 

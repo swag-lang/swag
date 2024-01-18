@@ -11,11 +11,6 @@ enum CallConvKind
 
 enum CPURegister : uint8_t
 {
-    //
-    // X64
-    // Values can be used directly by the X64 backend
-    //
-
     RAX  = 0b0000,
     RBX  = 0b0011,
     RCX  = 0b0001,
@@ -36,6 +31,7 @@ enum CPURegister : uint8_t
     XMM1 = 0b0001,
     XMM2 = 0b0010,
     XMM3 = 0b0011,
+    RIP  = 0b10000,
 };
 
 struct CallConv

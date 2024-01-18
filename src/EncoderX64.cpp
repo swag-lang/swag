@@ -316,8 +316,18 @@ void EncoderX64::emit_LoadF64_Indirect(uint32_t stackOffset, CPURegister reg, CP
 
 void EncoderX64::emit_LoadAddress_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    if (stackOffset == 0)
+    if (memReg == RIP)
+    {
+        SWAG_ASSERT(stackOffset == 0);
+        SWAG_ASSERT(reg == RCX);
+        emit_REX(CPUBits::B64, reg, memReg);
+        concat.addU8(0x8D);
+        concat.addU8(0x0D);
+    }
+    else if (stackOffset == 0)
+    {
         emit_CopyN(reg, memReg, CPUBits::B64);
+    }
     else
     {
         emit_REX(CPUBits::B64, reg, memReg);
