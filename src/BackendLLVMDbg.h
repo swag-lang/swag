@@ -1,27 +1,25 @@
 #pragma once
 
-struct ByteCode;
-struct SourceFile;
-struct TypeInfoFuncAttr;
 struct AstNode;
-struct TypeInfo;
-struct ByteCodeInstruction;
-struct LLVMPerThread;
 struct BackendLLVM;
 struct BuildParameters;
+struct ByteCode;
+struct ByteCodeInstruction;
+struct LLVMPerThread;
 struct Scope;
+struct SourceFile;
+struct TypeInfo;
+struct TypeInfoFuncAttr;
 
 struct BackendLLVMDbg
 {
-    void                setup(BackendLLVM* m, llvm::Module* module);
-    llvm::DISubprogram* startFunction(ByteCode* bc, AstFuncDecl** resultDecl = nullptr);
-    void                startFunction(const BuildParameters& buildParameters, LLVMPerThread& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack);
-    void                finalize();
-    void                setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteCodeInstruction* ip);
-    void                createGlobalVariablesForSegment(const BuildParameters& buildParameters, llvm::Type* type, llvm::GlobalVariable* var);
-
-    llvm::DIFile* getOrCreateFile(SourceFile* file);
-
+    void                    setup(BackendLLVM* m, llvm::Module* module);
+    llvm::DISubprogram*     startFunction(ByteCode* bc, AstFuncDecl** resultDecl = nullptr);
+    void                    startFunction(const BuildParameters& buildParameters, LLVMPerThread& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack);
+    void                    finalize();
+    void                    setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteCodeInstruction* ip);
+    void                    createGlobalVariablesForSegment(const BuildParameters& buildParameters, llvm::Type* type, llvm::GlobalVariable* var);
+    llvm::DIFile*           getOrCreateFile(SourceFile* file);
     llvm::DIType*           getSliceType(TypeInfo* typeInfo, TypeInfo* pointedType, llvm::DIFile* file);
     llvm::DIType*           getEnumType(TypeInfo* typeInfo, llvm::DIFile* file);
     llvm::DIType*           getPointerToType(TypeInfo* typeInfo, llvm::DIFile* file);

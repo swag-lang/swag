@@ -125,7 +125,7 @@
     <ClCompile Include="../src/ByteCodeOptimizerJob.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\BackendSCBE_Dbg.cpp">
+    <ClCompile Include="..\src\BackendSCBEDbg.cpp">
       <Filter>Backend\SCBE</Filter>
     </ClCompile>
     <ClCompile Include="../src/BackendLinker.cpp">
@@ -1015,6 +1015,9 @@
     </ClInclude>
     <ClInclude Include="../src/Context.h">
       <Filter>Backend</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\BackendSCBEDbg.h">
+      <Filter>Backend\SCBE</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -14,17 +14,8 @@ struct ByteCodeInstruction;
 
 struct BackendSCBE : public Backend
 {
-    BackendSCBE(Module* mdl)
-        : Backend{mdl}
-    {
-        memset(perThread, 0, sizeof(perThread));
-    }
-
-    BackendSCBE()
-        : Backend{nullptr}
-    {
-        memset(perThread, 0, sizeof(perThread));
-    }
+    BackendSCBE(Module* mdl);
+    BackendSCBE();
 
     void release();
 
@@ -50,6 +41,10 @@ struct BackendSCBE : public Backend
     void emitBinOpDivIntNAtReg(EncoderX64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
     void emitAddSubMul64(EncoderX64& pp, ByteCodeInstruction* ip, uint64_t mul, CPUOp op);
 
+    bool emitDebug(const BuildParameters& buildParameters);
+    void emitByteCodeCall(EncoderX64& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
+    void emitByteCodeCallParameters(EncoderX64& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
+
     bool emitXData(const BuildParameters& buildParameters);
     bool emitPData(const BuildParameters& buildParameters);
     bool emitDirectives(const BuildParameters& buildParameters);
@@ -57,31 +52,6 @@ struct BackendSCBE : public Backend
     bool emitStringTable(const BuildParameters& buildParameters);
     bool emitRelocationTable(Concat& concat, CoffRelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count);
     bool emitHeader(const BuildParameters& buildParameters);
-
-    DbgTypeIndex   dbgEmitTypeSlice(EncoderX64& pp, TypeInfo* typeInfo, TypeInfo* pointedType, DbgTypeIndex* value);
-    void           dbgEmitEmbeddedValue(Concat& concat, TypeInfo* valueType, ComputedValue& val);
-    void           dbgStartRecord(EncoderX64& pp, Concat& concat, uint16_t what);
-    void           dbgEndRecord(EncoderX64& pp, Concat& concat, bool align = true);
-    void           dbgEmitSecRel(EncoderX64& pp, Concat& concat, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset = 0);
-    void           dbgEmitTruncatedString(Concat& concat, const Utf8& str);
-    DbgTypeIndex   dbgGetSimpleType(TypeInfo* typeInfo);
-    DbgTypeIndex   dbgGetOrCreatePointerToType(EncoderX64& pp, TypeInfo* typeInfo, bool asRef);
-    DbgTypeIndex   dbgGetOrCreatePointerPointerToType(EncoderX64& pp, TypeInfo* typeInfo);
-    void           dbgRecordFields(EncoderX64& pp, DbgTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset);
-    DbgTypeIndex   dbgGetOrCreateType(EncoderX64& pp, TypeInfo* typeInfo, bool forceUnRef = false);
-    DbgTypeRecord* dbgAddTypeRecord(EncoderX64& pp);
-    Utf8           dbgGetScopedName(AstNode* node);
-    void           dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);
-    void           dbgEmitCompilerFlagsDebugS(Concat& concat);
-    void           dbgEmitConstant(EncoderX64& pp, Concat& concat, AstNode* node, const Utf8& name);
-    void           dbgEmitGlobalDebugS(EncoderX64& pp, Concat& concat, VectorNative<AstNode*>& gVars, uint32_t segSymIndex);
-    bool           dbgEmitDataDebugT(const BuildParameters& buildParameters);
-    bool           dbgEmitLines(EncoderX64& pp, MapPath<uint32_t>&, Vector<uint32_t>&, Utf8&, Concat& concat, CoffFunction& f, size_t idxDbgLines);
-    bool           dbgEmitFctDebugS(const BuildParameters& buildParameters);
-    bool           dbgEmitScope(EncoderX64& pp, Concat& concat, CoffFunction& f, Scope* scope);
-    bool           emitDebug(const BuildParameters& buildParameters);
-    void           emitByteCodeCall(EncoderX64& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
-    void           emitByteCodeCallParameters(EncoderX64& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
 
     bool buildRelocSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CoffRelocationTable& relocTable, SegmentKind me);
 

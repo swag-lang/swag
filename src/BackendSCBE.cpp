@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "BackendSCBE.h"
+#include "BackendSCBEDbg.h"
 #include "BackendLinker.h"
 #include "BackendSCBESaveObjJob.h"
 #include "ErrorIds.h"
@@ -7,6 +8,18 @@
 #include "Os.h"
 #include "Report.h"
 #include "Workspace.h"
+
+BackendSCBE::BackendSCBE(Module* mdl)
+    : Backend{mdl}
+{
+    memset(perThread, 0, sizeof(perThread));
+}
+
+BackendSCBE::BackendSCBE()
+    : Backend{nullptr}
+{
+    memset(perThread, 0, sizeof(perThread));
+}
 
 bool BackendSCBE::emitHeader(const BuildParameters& buildParameters)
 {
@@ -311,8 +324,13 @@ JobResult BackendSCBE::prepareOutput(int stage, const BuildParameters& buildPara
 {
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;
+
     if (!perThread[ct][precompileIndex])
-        perThread[ct][precompileIndex] = new EncoderX64;
+    {
+        auto encoder                   = new EncoderX64;
+        encoder->dbg.scbe              = this;
+        perThread[ct][precompileIndex] = encoder;
+    }
 
     auto& pp     = *perThread[ct][precompileIndex];
     auto& concat = pp.concat;
@@ -847,4 +865,23 @@ bool BackendSCBE::generateOutput(const BuildParameters& buildParameters)
         files.push_back(perThread[buildParameters.compileType][i]->filename);
 
     return BackendLinker::link(buildParameters, module, files);
+}
+
+bool BackendSCBE::emitDebug(const BuildParameters& buildParameters)
+{
+    int   ct              = buildParameters.compileType;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& pp              = *perThread[ct][precompileIndex];
+    auto& concat          = pp.concat;
+
+#ifdef SWAG_STATS
+    auto beforeCount = concat.totalCount();
+#endif
+
+    pp.dbg.dbgEmit(buildParameters, pp);
+
+#ifdef SWAG_STATS
+    g_Stats.sizeBackendDbg += concat.totalCount() - beforeCount;
+#endif
+    return true;
 }
