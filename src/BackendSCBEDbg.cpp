@@ -10,6 +10,32 @@
 #include "Version.h"
 #include "Workspace.h"
 
+Utf8 BackendSCBEDbg::dbgGetScopedName(AstNode* node)
+{
+    auto nn = node->getScopedName();
+    Utf8 result;
+    result.reserve(nn.allocated);
+
+    auto pz      = nn.buffer;
+    bool lastDot = false;
+    for (uint32_t i = 0; i < nn.length(); i++, pz++)
+    {
+        if (*pz == '.')
+        {
+            if (lastDot)
+                continue;
+            lastDot = true;
+            result += "::";
+            continue;
+        }
+
+        result += *pz;
+        lastDot = false;
+    }
+
+    return result;
+}
+
 void BackendSCBEDbg::dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset)
 {
     if (!coffFct->node || coffFct->node->isSpecialFunctionGenerated())

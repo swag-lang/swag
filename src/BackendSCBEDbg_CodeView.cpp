@@ -8,32 +8,6 @@
 #include "Version.h"
 #include "Workspace.h"
 
-Utf8 BackendSCBEDbg_CodeView::dbgGetScopedName(AstNode* node)
-{
-    auto nn = node->getScopedName();
-    Utf8 result;
-    result.reserve(nn.allocated);
-
-    auto pz      = nn.buffer;
-    bool lastDot = false;
-    for (uint32_t i = 0; i < nn.length(); i++, pz++)
-    {
-        if (*pz == '.')
-        {
-            if (lastDot)
-                continue;
-            lastDot = true;
-            result += "::";
-            continue;
-        }
-
-        result += *pz;
-        lastDot = false;
-    }
-
-    return result;
-}
-
 void BackendSCBEDbg_CodeView::dbgEmitCompilerFlagsDebugS(Concat& concat)
 {
     concat.addU32(DEBUG_S_SYMBOLS);
@@ -598,7 +572,7 @@ DbgTypeIndex BackendSCBEDbg_CodeView::dbgGetOrCreateType(EncoderCPU& pp, TypeInf
     if (typeInfo->isStruct())
     {
         TypeInfoStruct* typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-        auto            sname      = dbgGetScopedName(typeStruct->declNode);
+        auto            sname      = BackendSCBEDbg::dbgGetScopedName(typeStruct->declNode);
 
         if (typeStruct->flags & TYPEINFO_FROM_GENERIC)
         {
@@ -626,7 +600,7 @@ DbgTypeIndex BackendSCBEDbg_CodeView::dbgGetOrCreateType(EncoderCPU& pp, TypeInf
             DbgTypeField field;
             field.kind = LF_ONEMETHOD;
             field.type = dbgGetOrCreateType(pp, p->typeInfo);
-            field.name = dbgGetScopedName(p->typeInfo->declNode);
+            field.name = BackendSCBEDbg::dbgGetScopedName(p->typeInfo->declNode);
             tr0->LF_FieldList.fields.emplace_back(std::move(field));
         }
 
@@ -647,7 +621,7 @@ DbgTypeIndex BackendSCBEDbg_CodeView::dbgGetOrCreateType(EncoderCPU& pp, TypeInf
     if (typeInfo->isEnum())
     {
         TypeInfoEnum* typeInfoEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        auto          sname        = dbgGetScopedName(typeInfoEnum->declNode);
+        auto          sname        = BackendSCBEDbg::dbgGetScopedName(typeInfoEnum->declNode);
 
         // List of values
         if (typeInfoEnum->rawType->isNativeInteger())
@@ -817,7 +791,7 @@ void BackendSCBEDbg_CodeView::dbgEmitGlobalDebugS(EncoderCPU& pp, Concat& concat
         // Compile time constant
         if (p->hasComputedValue())
         {
-            dbgEmitConstant(pp, concat, p, dbgGetScopedName(p));
+            dbgEmitConstant(pp, concat, p, BackendSCBEDbg::dbgGetScopedName(p));
             continue;
         }
 
@@ -840,7 +814,7 @@ void BackendSCBEDbg_CodeView::dbgEmitGlobalDebugS(EncoderCPU& pp, Concat& concat
         pp.relocTableDBGSSection.table.push_back(reloc);
         concat.addU16(0);
 
-        auto nn = dbgGetScopedName(p);
+        auto nn = BackendSCBEDbg::dbgGetScopedName(p);
         dbgEmitTruncatedString(concat, nn);
         dbgEndRecord(pp, concat);
     }
@@ -982,7 +956,7 @@ bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
             concat.addU32(tr->index);                     // FuncID type index
             dbgEmitSecRel(pp, concat, f.symbolIndex, pp.symCOIndex);
             concat.addU8(0); // ProcSymFlags Flags = ProcSymFlags::None
-            auto nn = dbgGetScopedName(f.node);
+            auto nn = BackendSCBEDbg::dbgGetScopedName(f.node);
             dbgEmitTruncatedString(concat, nn);
             dbgEndRecord(pp, concat);
 

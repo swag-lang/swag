@@ -166,7 +166,6 @@ struct BackendSCBEDbg_CodeView
     void           dbgRecordFields(EncoderCPU& pp, DbgTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset);
     DbgTypeIndex   dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeInfo, bool forceUnRef = false);
     DbgTypeRecord* dbgAddTypeRecord(EncoderCPU& pp);
-    Utf8           dbgGetScopedName(AstNode* node);
 
     DbgTypeIndex dbgEmitTypeSlice(EncoderCPU& pp, TypeInfo* typeInfo, TypeInfo* pointedType, DbgTypeIndex* value);
     void         dbgEmitEmbeddedValue(Concat& concat, TypeInfo* valueType, ComputedValue& val);

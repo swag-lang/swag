@@ -133,5 +133,6 @@ struct DbgLines
 struct BackendSCBEDbg
 {
     static void dbgSetLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);
+    static Utf8 dbgGetScopedName(AstNode* node);
     static bool dbgEmit(const BuildParameters& buildParameters, BackendSCBE* scbe, EncoderCPU& pp);
 };
