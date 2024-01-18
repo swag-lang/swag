@@ -101,7 +101,7 @@ enum CPUJumpType
     JUMP,
 };
 
-struct LabelToSolve
+struct CPULabelToSolve
 {
     uint32_t ipDest;
     int32_t  currentOffset;
@@ -109,6 +109,7 @@ struct LabelToSolve
 };
 
 using DbgTypeIndex = uint32_t;
+
 struct DbgTypeRecordArgList
 {
     Vector<DbgTypeIndex> args;
@@ -282,27 +283,27 @@ struct EncoderCPU
     Concat concat;
     Concat postConcat;
 
-    VectorNative<const Utf8*>  stringTable;
-    VectorNative<CPUPushParam> pushParams;
-    VectorNative<CPUPushParam> pushParams2;
-    VectorNative<CPUPushParam> pushParams3;
-    VectorNative<TypeInfo*>    pushParamsTypes;
-    CoffRelocationTable        relocTableTextSection;
-    CoffRelocationTable        relocTableCSSection;
-    CoffRelocationTable        relocTableMSSection;
-    CoffRelocationTable        relocTableTSSection;
-    CoffRelocationTable        relocTableTLSSection;
-    CoffRelocationTable        relocTablePDSection;
-    CoffRelocationTable        relocTableDBGSSection;
-    Vector<CoffSymbol>         allSymbols;
-    MapUtf8<uint32_t>          mapSymbols;
-    MapUtf8<uint32_t>          globalStrings;
-    Map<uint32_t, int32_t>     labels;
-    DataSegment                globalSegment;
-    DataSegment                stringSegment;
-    VectorNative<LabelToSolve> labelsToSolve;
-    Utf8                       directives;
-    Vector<CoffFunction>       functions;
+    VectorNative<const Utf8*>     stringTable;
+    VectorNative<CPUPushParam>    pushParams;
+    VectorNative<CPUPushParam>    pushParams2;
+    VectorNative<CPUPushParam>    pushParams3;
+    VectorNative<TypeInfo*>       pushParamsTypes;
+    CoffRelocationTable           relocTableTextSection;
+    CoffRelocationTable           relocTableCSSection;
+    CoffRelocationTable           relocTableMSSection;
+    CoffRelocationTable           relocTableTSSection;
+    CoffRelocationTable           relocTableTLSSection;
+    CoffRelocationTable           relocTablePDSection;
+    CoffRelocationTable           relocTableDBGSSection;
+    Vector<CoffSymbol>            allSymbols;
+    MapUtf8<uint32_t>             mapSymbols;
+    MapUtf8<uint32_t>             globalStrings;
+    Map<uint32_t, int32_t>        labels;
+    DataSegment                   globalSegment;
+    DataSegment                   stringSegment;
+    VectorNative<CPULabelToSolve> labelsToSolve;
+    Utf8                          directives;
+    Vector<CoffFunction>          functions;
 
     uint32_t* patchSymbolTableOffset = nullptr;
     uint32_t* patchSymbolTableCount  = nullptr;

@@ -2309,8 +2309,8 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
 
             auto currentOffset = (int32_t) pp.concat.totalCount();
 
-            int32_t*     tableConstant = (int32_t*) addrConstant;
-            LabelToSolve label;
+            int32_t*        tableConstant = (int32_t*) addrConstant;
+            CPULabelToSolve label;
             for (uint32_t idx = 0; idx < ip->c.u32; idx++)
             {
                 label.ipDest        = tableCompiler[idx] + i + 1;
@@ -3798,7 +3798,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
                     pp.emit_CopyF64(cc.returnByRegisterFloat, RAX);
             }
 
-            pp.emit_OpN_Immediate(RSP, sizeStack + sizeParamsStack, CPUOp::ADD, CPUBits::B64);            
+            pp.emit_OpN_Immediate(RSP, sizeStack + sizeParamsStack, CPUOp::ADD, CPUBits::B64);
             for (int32_t rRet = (int32_t) unwindRegs.size() - 1; rRet >= 0; rRet--)
                 pp.emit_Pop(unwindRegs[rRet]);
             pp.emit_Ret();

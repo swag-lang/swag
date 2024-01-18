@@ -1552,7 +1552,7 @@ void EncoderX64::emit_JumpTable(CPURegister table, CPURegister offset)
 
 void EncoderX64::emit_Jump(CPUJumpType jumpType, int32_t instructionCount, int32_t jumpOffset)
 {
-    LabelToSolve label;
+    CPULabelToSolve label;
     label.ipDest = jumpOffset + instructionCount + 1;
 
     // Can we solve the label now ?
