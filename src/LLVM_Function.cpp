@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "LLVM.h"
-#include "LLVMDebug.h"
+#include "LLVM_Debug.h"
 #include "LLVM_Macros.h"
 #include "Module.h"
 #include "ByteCode.h"

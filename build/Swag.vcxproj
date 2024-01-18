@@ -222,14 +222,14 @@
     <ClInclude Include="../src/Backend.h" />
     <ClInclude Include="..\src\AstOutput.h" />
     <ClInclude Include="..\src\BackendFunctionBodyJob.h" />
-    <ClInclude Include="..\src\LLVMDebug.h" />
-    <ClInclude Include="..\src\BackendLLVM_Macros.h" />
+    <ClInclude Include="..\src\LLVM_Debug.h" />
+    <ClInclude Include="..\src\LLVM_Macros.h" />
     <ClInclude Include="../src/BackendLinker.h" />
-    <ClInclude Include="../src/BackendLLVM.h" />
+    <ClInclude Include="..\src\LLVM.h" />
     <ClInclude Include="..\src\SCBE.h" />
-    <ClInclude Include="..\src\SCBEDebug.h" />
+    <ClInclude Include="..\src\SCBE_Debug.h" />
     <ClInclude Include="..\src\SCBE_Macros.h" />
-    <ClInclude Include="..\src\SCBESaveObjJob.h" />
+    <ClInclude Include="..\src\SCBE_SaveObjJob.h" />
     <ClInclude Include="..\src\BackendParameters.h" />
     <ClInclude Include="../src/ByteCode.h" />
     <ClInclude Include="../src/ByteCodeGenJob.h" />
@@ -237,7 +237,7 @@
     <ClInclude Include="../src/ByteCodeOptimizer.h" />
     <ClInclude Include="../src/ByteCodeOptimizerJob.h" />
     <ClInclude Include="../src/CompilerItf.h" />
-    <ClInclude Include="../src/LLVMSetup.h" />
+    <ClInclude Include="..\src\LLVM_Setup.h" />
     <ClInclude Include="../src/ModuleManager.h" />
     <ClInclude Include="../src/ByteCodeOp.h" />
     <ClInclude Include="../src/ByteCodeOpList.h" />
@@ -267,8 +267,8 @@
     <ClInclude Include="..\src\ByteCodeInstruction.h" />
     <ClInclude Include="..\src\CallConv.h" />
     <ClInclude Include="..\src\ComputedValue.h" />
-    <ClInclude Include="..\src\SCBEDebug_CodeView.h" />
-    <ClInclude Include="..\src\SCBECPU.h" />
+    <ClInclude Include="..\src\SCBE_CodeView.h" />
+    <ClInclude Include="..\src\SCBE_CPU.h" />
     <ClInclude Include="..\src\ErrorContext.h" />
     <ClInclude Include="..\src\ErrorList.h" />
     <ClInclude Include="..\src\Crc32.h" />
@@ -319,7 +319,7 @@
     <ClInclude Include="../src/Workspace.h" />
     <ClInclude Include="..\src\ErrorIds.h" />
     <ClInclude Include="..\src\LangHashTable.h" />
-    <ClInclude Include="..\src\LLVMInc.h" />
+    <ClInclude Include="..\src\LLVM_Inc.h" />
     <ClInclude Include="..\src\Math.h" />
     <ClInclude Include="..\src\ModuleDepManager.h" />
     <ClInclude Include="..\src\FetchModuleFileSystemJob.h" />
@@ -331,7 +331,7 @@
     <ClInclude Include="..\src\Vector.h" />
     <ClInclude Include="..\src\Report.h" />
     <ClInclude Include="..\src\SaveGenJob.h" />
-    <ClInclude Include="..\src\SCBEX64.h" />
+    <ClInclude Include="..\src\SCBE_X64.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="../src/Allocator.cpp" />
@@ -344,22 +344,22 @@
     <ClCompile Include="..\src\AstNodeSpecifics.cpp" />
     <ClCompile Include="..\src\Ast_Gen.cpp" />
     <ClCompile Include="..\src\Ast_New.cpp" />
-    <ClCompile Include="..\src\BackendLLVM_Call.cpp" />
-    <ClCompile Include="..\src\BackendLLVM_Data.cpp" />
-    <ClCompile Include="..\src\LLVMDebug.cpp" />
-    <ClCompile Include="..\src\BackendLLVM_Emit.cpp" />
-    <ClCompile Include="..\src\BackendLLVM_Function.cpp" />
-    <ClCompile Include="..\src\BackendLLVM_Main.cpp" />
+    <ClCompile Include="..\src\LLVM_Call.cpp" />
+    <ClCompile Include="..\src\LLVM_Data.cpp" />
+    <ClCompile Include="..\src\LLVM_Debug.cpp" />
+    <ClCompile Include="..\src\LLVM_Emit.cpp" />
+    <ClCompile Include="..\src\LLVM_Function.cpp" />
+    <ClCompile Include="..\src\LLVM_Main.cpp" />
     <ClCompile Include="../src/BackendLinker.cpp" />
-    <ClCompile Include="../src/BackendLLVM.cpp" />
+    <ClCompile Include="..\src\LLVM.cpp" />
     <ClCompile Include="..\src\SCBE.cpp" />
     <ClCompile Include="..\src\SCBE_Call.cpp" />
     <ClCompile Include="..\src\SCBE_Data.cpp" />
-    <ClCompile Include="..\src\SCBEDebug.cpp" />
+    <ClCompile Include="..\src\SCBE_Debug.cpp" />
     <ClCompile Include="..\src\BackendFunctionBodyJob.cpp" />
     <ClCompile Include="..\src\SCBE_Emit.cpp" />
     <ClCompile Include="..\src\SCBE_Function.cpp" />
-    <ClCompile Include="..\src\SCBESaveObjJob.cpp" />
+    <ClCompile Include="..\src\SCBE_SaveObjJob.cpp" />
     <ClCompile Include="..\src\SCBE_Main.cpp" />
     <ClCompile Include="../src/ByteCode.cpp" />
     <ClCompile Include="..\src\ByteCodeDebugger_Break.cpp" />
@@ -409,7 +409,7 @@
     <ClCompile Include="..\src\ByteCodeOptimizer_Reduce.cpp" />
     <ClCompile Include="..\src\ByteCodeOptimizer_RetCopy.cpp" />
     <ClCompile Include="../src/CompilerItf.cpp" />
-    <ClCompile Include="../src/LLVMSetup.cpp" />
+    <ClCompile Include="..\src\LLVM_Setup.cpp" />
     <ClCompile Include="../src/ModuleManager.cpp" />
     <ClCompile Include="../src/ByteCodeRun.cpp" />
     <ClCompile Include="../src/ByteCodeRunContext.cpp" />
@@ -446,8 +446,8 @@
     <ClCompile Include="..\src\ByteCodeRun_SelectIf.cpp" />
     <ClCompile Include="..\src\CallConv.cpp" />
     <ClCompile Include="..\src\ComputedValue.cpp" />
-    <ClCompile Include="..\src\SCBEDebug_CodeView.cpp" />
-    <ClCompile Include="..\src\SCBECPU.cpp" />
+    <ClCompile Include="..\src\SCBE_CodeView.cpp" />
+    <ClCompile Include="..\src\SCBE_CPU.cpp" />
     <ClCompile Include="..\src\ErrorContext.cpp" />
     <ClCompile Include="..\src\ErrorIds.cpp" />
     <ClCompile Include="..\src\GenDoc.cpp" />
@@ -568,7 +568,7 @@
     <ClCompile Include="..\src\Workspace_New.cpp" />
     <ClCompile Include="..\src\Workspace_Script.cpp" />
     <ClCompile Include="..\src\Workspace_Tags.cpp" />
-    <ClCompile Include="..\src\SCBEX64.cpp" />
+    <ClCompile Include="..\src\SCBE_X64.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\FileJob.cpp" />

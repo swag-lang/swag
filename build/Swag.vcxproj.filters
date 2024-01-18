@@ -41,19 +41,7 @@
     <ClCompile Include="../src/AstOutput.cpp">
       <Filter>Syntax</Filter>
     </ClCompile>
-    <ClCompile Include="../src/BackendLLVM.cpp">
-      <Filter>Backend\LLVM</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\BackendLLVM_Main.cpp">
-      <Filter>Backend\LLVM</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\BackendLLVM_Data.cpp">
-      <Filter>Backend\LLVM</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\BackendLLVM_Function.cpp">
-      <Filter>Backend\LLVM</Filter>
-    </ClCompile>
-    <ClCompile Include="../src/LLVMSetup.cpp">
+    <ClCompile Include="..\src\LLVM_Setup.cpp">
       <Filter>Backend\LLVM</Filter>
     </ClCompile>
     <ClCompile Include="../src/OsWin32.cpp">
@@ -77,19 +65,7 @@
     <ClCompile Include="..\src\TypeGenStructJob.cpp">
       <Filter>Semantic\Type</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SCBE.cpp">
-      <Filter>Backend\SCBE</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SCBE_Data.cpp">
-      <Filter>Backend\SCBE</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SCBE_Function.cpp">
-      <Filter>Backend\SCBE</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SCBE_Main.cpp">
-      <Filter>Backend\SCBE</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SCBESaveObjJob.cpp">
+    <ClCompile Include="..\src\SCBE_SaveObjJob.cpp">
       <Filter>Backend\SCBE</Filter>
     </ClCompile>
     <ClCompile Include="../src/ByteCodeOptimizer.cpp">
@@ -248,20 +224,11 @@
     <ClCompile Include="..\src\ErrorIds.cpp">
       <Filter>Report</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\BackendLLVM_Call.cpp">
-      <Filter>Backend\LLVM</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SCBE_Call.cpp">
-      <Filter>Backend\SCBE</Filter>
-    </ClCompile>
     <ClCompile Include="..\src\ByteCodeOptimizer_DupBlocks.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
     <ClCompile Include="..\src\CallConv.cpp">
       <Filter>Backend</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\SCBE_Emit.cpp">
-      <Filter>Backend\SCBE</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Report.cpp">
       <Filter>Report</Filter>
@@ -403,9 +370,6 @@
     </ClCompile>
     <ClCompile Include="..\src\Parser_Type.cpp">
       <Filter>Syntax\Parser</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\BackendLLVM_Emit.cpp">
-      <Filter>Backend\LLVM</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ModuleGenDocJob.cpp">
       <Filter>Jobs</Filter>
@@ -644,10 +608,10 @@
     <ClCompile Include="..\src\BackendFunctionBodyJob.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SCBECPU.cpp">
+    <ClCompile Include="..\src\SCBE_CPU.cpp">
       <Filter>Backend\SCBE\Encoder</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SCBEX64.cpp">
+    <ClCompile Include="..\src\SCBE_X64.cpp">
       <Filter>Backend\SCBE\Encoder</Filter>
     </ClCompile>
     <ClCompile Include="../src/CompilerItf.cpp">
@@ -656,14 +620,50 @@
     <ClCompile Include="../src/Context.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SCBEDebug.cpp">
+    <ClCompile Include="..\src\SCBE_Debug.cpp">
       <Filter>Backend\SCBE\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SCBEDebug_CodeView.cpp">
+    <ClCompile Include="..\src\SCBE_CodeView.cpp">
       <Filter>Backend\SCBE\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\LLVMDebug.cpp">
+    <ClCompile Include="..\src\LLVM_Debug.cpp">
       <Filter>Backend\LLVM\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\LLVM.cpp">
+      <Filter>Backend\LLVM\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\LLVM_Call.cpp">
+      <Filter>Backend\LLVM\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\LLVM_Data.cpp">
+      <Filter>Backend\LLVM\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\LLVM_Emit.cpp">
+      <Filter>Backend\LLVM\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\LLVM_Function.cpp">
+      <Filter>Backend\LLVM\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\LLVM_Main.cpp">
+      <Filter>Backend\LLVM\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SCBE.cpp">
+      <Filter>Backend\SCBE\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SCBE_Call.cpp">
+      <Filter>Backend\SCBE\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SCBE_Data.cpp">
+      <Filter>Backend\SCBE\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SCBE_Emit.cpp">
+      <Filter>Backend\SCBE\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SCBE_Function.cpp">
+      <Filter>Backend\SCBE\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SCBE_Main.cpp">
+      <Filter>Backend\SCBE\Main</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -713,10 +713,7 @@
     <ClInclude Include="../src/AstFlags.h">
       <Filter>Syntax</Filter>
     </ClInclude>
-    <ClInclude Include="../src/BackendLLVM.h">
-      <Filter>Backend\LLVM</Filter>
-    </ClInclude>
-    <ClInclude Include="../src/LLVMSetup.h">
+    <ClInclude Include="..\src\LLVM_Setup.h">
       <Filter>Backend\LLVM</Filter>
     </ClInclude>
     <ClInclude Include="..\src\TypeGenStructJob.h">
@@ -731,16 +728,7 @@
     <ClInclude Include="..\src\TypeGen.h">
       <Filter>Semantic\Type</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SCBE.h">
-      <Filter>Backend\SCBE</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\BackendLLVM_Macros.h">
-      <Filter>Backend\LLVM</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SCBE_Macros.h">
-      <Filter>Backend\SCBE</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SCBESaveObjJob.h">
+    <ClInclude Include="..\src\SCBE_SaveObjJob.h">
       <Filter>Backend\SCBE</Filter>
     </ClInclude>
     <ClInclude Include="../src/ByteCodeOptimizer.h">
@@ -812,7 +800,7 @@
     <ClInclude Include="..\src\Math.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\LLVMInc.h">
+    <ClInclude Include="..\src\LLVM_Inc.h">
       <Filter>Backend\LLVM</Filter>
     </ClInclude>
     <ClInclude Include="..\src\BackendParameters.h">
@@ -1001,10 +989,10 @@
     <ClInclude Include="..\src\BackendFunctionBodyJob.h">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SCBEX64.h">
+    <ClInclude Include="..\src\SCBE_X64.h">
       <Filter>Backend\SCBE\Encoder</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SCBECPU.h">
+    <ClInclude Include="..\src\SCBE_CPU.h">
       <Filter>Backend\SCBE\Encoder</Filter>
     </ClInclude>
     <ClInclude Include="../src/Runtime.h">
@@ -1016,14 +1004,26 @@
     <ClInclude Include="../src/Context.h">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SCBEDebug.h">
+    <ClInclude Include="..\src\SCBE_Debug.h">
       <Filter>Backend\SCBE\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\SCBEDebug_CodeView.h">
+    <ClInclude Include="..\src\SCBE_CodeView.h">
       <Filter>Backend\SCBE\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\LLVMDebug.h">
+    <ClInclude Include="..\src\LLVM_Debug.h">
       <Filter>Backend\LLVM\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\LLVM.h">
+      <Filter>Backend\LLVM\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\LLVM_Macros.h">
+      <Filter>Backend\LLVM\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SCBE.h">
+      <Filter>Backend\SCBE\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SCBE_Macros.h">
+      <Filter>Backend\SCBE\Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1119,6 +1119,12 @@
     </Filter>
     <Filter Include="Backend\LLVM\Debug">
       <UniqueIdentifier>{17aeccd5-174b-441a-9ec9-f75478e99431}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Backend\LLVM\Main">
+      <UniqueIdentifier>{1cb6b8d2-f779-49e8-84a3-7d89d0891b58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Backend\SCBE\Main">
+      <UniqueIdentifier>{24d808cc-e601-49c5-b178-22d4017d8451}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

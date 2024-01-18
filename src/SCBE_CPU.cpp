@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "SCBECPU.h"
+#include "SCBE_CPU.h"
 
-void SCBECPU::clearInstructionCache()
+void SCBE_CPU::clearInstructionCache()
 {
     storageRegCount = UINT32_MAX;
     storageRegStack = 0;
@@ -10,7 +10,7 @@ void SCBECPU::clearInstructionCache()
     storageReg      = RAX;
 }
 
-CoffSymbol* SCBECPU::getSymbol(const Utf8& name)
+CoffSymbol* SCBE_CPU::getSymbol(const Utf8& name)
 {
     auto it = mapSymbols.find(name);
     if (it != mapSymbols.end())
@@ -18,7 +18,7 @@ CoffSymbol* SCBECPU::getSymbol(const Utf8& name)
     return nullptr;
 }
 
-CoffSymbol* SCBECPU::getOrAddSymbol(const Utf8& name, CoffSymbolKind kind, uint32_t value, uint16_t sectionIdx)
+CoffSymbol* SCBE_CPU::getOrAddSymbol(const Utf8& name, CoffSymbolKind kind, uint32_t value, uint16_t sectionIdx)
 {
     auto it = getSymbol(name);
     if (it)
@@ -49,7 +49,7 @@ CoffSymbol* SCBECPU::getOrAddSymbol(const Utf8& name, CoffSymbolKind kind, uint3
     return &allSymbols.back();
 }
 
-void SCBECPU::addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type)
+void SCBE_CPU::addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type)
 {
     CoffRelocation reloc;
     reloc.virtualAddress = virtualAddr;
@@ -58,7 +58,7 @@ void SCBECPU::addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, ui
     relocTableTextSection.table.push_back(reloc);
 }
 
-CoffSymbol* SCBECPU ::getOrCreateGlobalString(const Utf8& str)
+CoffSymbol* SCBE_CPU ::getOrCreateGlobalString(const Utf8& str)
 {
     auto        it  = globalStrings.find(str);
     CoffSymbol* sym = nullptr;
@@ -75,7 +75,7 @@ CoffSymbol* SCBECPU ::getOrCreateGlobalString(const Utf8& str)
     return sym;
 }
 
-uint32_t SCBECPU ::getOrCreateLabel(uint32_t ip)
+uint32_t SCBE_CPU ::getOrCreateLabel(uint32_t ip)
 {
     auto it = labels.find(ip);
     if (it == labels.end())

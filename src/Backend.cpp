@@ -3,7 +3,7 @@
 #include "BackendFunctionBodyJob.h"
 #include "ByteCode.h"
 #include "CallConv.h"
-#include "LLVMSetup.h"
+#include "LLVM_Setup.h"
 #include "Module.h"
 #include "ModuleSaveExportJob.h"
 #include "Version.h"

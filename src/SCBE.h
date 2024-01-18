@@ -2,7 +2,7 @@
 #include "Backend.h"
 #include "BackendParameters.h"
 #include "DataSegment.h"
-#include "SCBEX64.h"
+#include "SCBE_X64.h"
 
 struct Module;
 struct BuildParameters;
@@ -25,25 +25,25 @@ struct SCBE : public Backend
     bool      emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc) override;
     bool      saveObjFile(const BuildParameters& buildParameters);
 
-    void emitOverflowSigned(SCBEX64& pp, ByteCodeInstruction* ip, const char* msg);
-    void emitOverflowUnsigned(SCBEX64& pp, ByteCodeInstruction* ip, const char* msg);
-    void emitShiftRightArithmetic(SCBEX64& pp, ByteCodeInstruction* ip, CPUBits numBits);
-    void emitShiftLogical(SCBEX64& pp, ByteCodeInstruction* ip, CPUBits numBits, CPUOp op);
-    void emitShiftRightEqArithmetic(SCBEX64& pp, ByteCodeInstruction* ip, CPUBits numBits);
-    void emitShiftEqLogical(SCBEX64& pp, ByteCodeInstruction* ip, CPUBits numBits, CPUOp op);
-    void emitInternalPanic(SCBEX64& pp, AstNode* node, const char* msg);
-    void emitBinOpFloat32(SCBEX64& pp, ByteCodeInstruction* ip, CPUOp op);
-    void emitBinOpFloat32AtReg(SCBEX64& pp, ByteCodeInstruction* ip, CPUOp op);
-    void emitBinOpFloat64(SCBEX64& pp, ByteCodeInstruction* ip, CPUOp op);
-    void emitBinOpFloat64AtReg(SCBEX64& pp, ByteCodeInstruction* ip, CPUOp op);
-    void emitBinOpIntN(SCBEX64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
-    void emitBinOpIntNAtReg(SCBEX64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
-    void emitBinOpDivIntNAtReg(SCBEX64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
-    void emitAddSubMul64(SCBEX64& pp, ByteCodeInstruction* ip, uint64_t mul, CPUOp op);
+    void emitOverflowSigned(SCBE_X64& pp, ByteCodeInstruction* ip, const char* msg);
+    void emitOverflowUnsigned(SCBE_X64& pp, ByteCodeInstruction* ip, const char* msg);
+    void emitShiftRightArithmetic(SCBE_X64& pp, ByteCodeInstruction* ip, CPUBits numBits);
+    void emitShiftLogical(SCBE_X64& pp, ByteCodeInstruction* ip, CPUBits numBits, CPUOp op);
+    void emitShiftRightEqArithmetic(SCBE_X64& pp, ByteCodeInstruction* ip, CPUBits numBits);
+    void emitShiftEqLogical(SCBE_X64& pp, ByteCodeInstruction* ip, CPUBits numBits, CPUOp op);
+    void emitInternalPanic(SCBE_X64& pp, AstNode* node, const char* msg);
+    void emitBinOpFloat32(SCBE_X64& pp, ByteCodeInstruction* ip, CPUOp op);
+    void emitBinOpFloat32AtReg(SCBE_X64& pp, ByteCodeInstruction* ip, CPUOp op);
+    void emitBinOpFloat64(SCBE_X64& pp, ByteCodeInstruction* ip, CPUOp op);
+    void emitBinOpFloat64AtReg(SCBE_X64& pp, ByteCodeInstruction* ip, CPUOp op);
+    void emitBinOpIntN(SCBE_X64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
+    void emitBinOpIntNAtReg(SCBE_X64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
+    void emitBinOpDivIntNAtReg(SCBE_X64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
+    void emitAddSubMul64(SCBE_X64& pp, ByteCodeInstruction* ip, uint64_t mul, CPUOp op);
 
     bool emitDebug(const BuildParameters& buildParameters);
-    void emitByteCodeCall(SCBEX64& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
-    void emitByteCodeCallParameters(SCBEX64& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
+    void emitByteCodeCall(SCBE_X64& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
+    void emitByteCodeCallParameters(SCBE_X64& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
 
     bool emitXData(const BuildParameters& buildParameters);
     bool emitPData(const BuildParameters& buildParameters);
@@ -61,17 +61,17 @@ struct SCBE : public Backend
     bool emitGlobalDrop(const BuildParameters& buildParameters);
     bool emitOS(const BuildParameters& buildParameters);
     bool emitMain(const BuildParameters& buildParameters);
-    void emitSymbolRelocation(SCBEX64& pp, const Utf8& name);
+    void emitSymbolRelocation(SCBE_X64& pp, const Utf8& name);
 
     uint32_t getParamStackOffset(CoffFunction* coffFct, int paramIdx);
-    void     emitGetParam(SCBEX64& pp, CoffFunction* coffFct, int reg, uint32_t paramIdx, int sizeOf, uint64_t toAdd = 0, int derefSize = 0);
-    void     emitCall(SCBEX64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT, bool localCall);
-    void     emitCall(SCBEX64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall);
-    void     emitInternalCall(SCBEX64& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT = UINT32_MAX);
-    void     emitInternalCallExt(SCBEX64& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT = UINT32_MAX, TypeInfoFuncAttr* typeFunc = nullptr);
+    void     emitGetParam(SCBE_X64& pp, CoffFunction* coffFct, int reg, uint32_t paramIdx, int sizeOf, uint64_t toAdd = 0, int derefSize = 0);
+    void     emitCall(SCBE_X64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT, bool localCall);
+    void     emitCall(SCBE_X64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall);
+    void     emitInternalCall(SCBE_X64& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT = UINT32_MAX);
+    void     emitInternalCallExt(SCBE_X64& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT = UINT32_MAX, TypeInfoFuncAttr* typeFunc = nullptr);
 
-    CoffFunction* registerFunction(SCBEX64& pp, AstNode* node, uint32_t symbolIndex);
+    CoffFunction* registerFunction(SCBE_X64& pp, AstNode* node, uint32_t symbolIndex);
     void          registerFunction(CoffFunction* fct, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, VectorNative<uint16_t>& unwind);
 
-    SCBEX64* perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
+    SCBE_X64* perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];
 };

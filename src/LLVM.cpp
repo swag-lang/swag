@@ -4,7 +4,7 @@
 #include "LanguageSpec.h"
 #include "LLVM.h"
 #include "LLVM_Macros.h"
-#include "LLVMDebug.h"
+#include "LLVM_Debug.h"
 #include "Module.h"
 #include "Os.h"
 #include "Report.h"
@@ -231,7 +231,7 @@ JobResult LLVM::prepareOutput(int stage, const BuildParameters& buildParameters,
 
         if (buildParameters.buildCfg->backendDebugInformations)
         {
-            pp.dbg = new LLVMDebug;
+            pp.dbg = new LLVM_Debug;
             pp.dbg->setup(this, pp.module);
         }
 

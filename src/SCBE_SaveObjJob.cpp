@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "SCBESaveObjJob.h"
+#include "SCBE_SaveObjJob.h"
 #include "SCBE.h"
 #include "Module.h"
 #include "ModulePrepOutputJob.h"
 #include "Timer.h"
 
-JobResult SCBESaveObjJob::execute()
+JobResult SCBE_SaveObjJob::execute()
 {
 #ifdef SWAG_STATS
     Timer timer0{&g_Stats.prepOutputStage1TimeJob};

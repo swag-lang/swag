@@ -142,21 +142,21 @@ enum SimpleTypeMode : DbgTypeIndex
     NearPointer128 = 7  // 128 bit near pointer
 };
 
-struct SCBEDebug_CodeView
+struct SCBE_CodeView
 {
-    void startRecord(SCBECPU& pp, uint16_t what);
-    void endRecord(SCBECPU& pp, bool align = true);
-    void emitEmbeddedValue(SCBECPU& pp, TypeInfo* valueType, ComputedValue& val);
-    void emitSecRel(SCBECPU& pp, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset = 0);
-    void emitTruncatedString(SCBECPU& pp, const Utf8& str);
-    void emitCompilerFlagsDebugS(SCBECPU& pp);
-    void emitConstant(SCBECPU& pp, AstNode* node, const Utf8& name);
-    void emitGlobalDebugS(SCBECPU& pp, VectorNative<AstNode*>& gVars, uint32_t segSymIndex);
-    bool emitDataDebugT(SCBECPU& pp);
-    bool emitLines(SCBECPU& pp, MapPath<uint32_t>&, Vector<uint32_t>&, Utf8&, Concat& concat, CoffFunction& f, size_t idxDbgLines);
-    bool emitFctDebugS(SCBECPU& pp);
-    bool emitScope(SCBECPU& pp, CoffFunction& f, Scope* scope);
-    bool emit(const BuildParameters& buildParameters, SCBECPU& pp);
+    void startRecord(SCBE_CPU& pp, uint16_t what);
+    void endRecord(SCBE_CPU& pp, bool align = true);
+    void emitEmbeddedValue(SCBE_CPU& pp, TypeInfo* valueType, ComputedValue& val);
+    void emitSecRel(SCBE_CPU& pp, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset = 0);
+    void emitTruncatedString(SCBE_CPU& pp, const Utf8& str);
+    void emitCompilerFlagsDebugS(SCBE_CPU& pp);
+    void emitConstant(SCBE_CPU& pp, AstNode* node, const Utf8& name);
+    void emitGlobalDebugS(SCBE_CPU& pp, VectorNative<AstNode*>& gVars, uint32_t segSymIndex);
+    bool emitDataDebugT(SCBE_CPU& pp);
+    bool emitLines(SCBE_CPU& pp, MapPath<uint32_t>&, Vector<uint32_t>&, Utf8&, Concat& concat, CoffFunction& f, size_t idxDbgLines);
+    bool emitFctDebugS(SCBE_CPU& pp);
+    bool emitScope(SCBE_CPU& pp, CoffFunction& f, Scope* scope);
+    bool emit(const BuildParameters& buildParameters, SCBE_CPU& pp);
 
     SCBE* scbe = nullptr;
 };

@@ -1,6 +1,6 @@
 #pragma once
 #include "Backend.h"
-#include "SCBEDebug.h"
+#include "SCBE_Debug.h"
 #include "ComputedValue.h"
 #include "DataSegment.h"
 #include "CallConv.h"
@@ -156,7 +156,7 @@ struct CoffFunction
     uint32_t               numScratchRegs          = 0;
 };
 
-struct SCBECPU
+struct SCBE_CPU
 {
     void        clearInstructionCache();
     CoffSymbol* getSymbol(const Utf8& name);

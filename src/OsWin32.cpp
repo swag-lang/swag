@@ -917,7 +917,7 @@ namespace OS
         return _byteswap_uint64(value);
     }
 
-    thread_local SCBEX64 g_X64GenFFI;
+    thread_local SCBE_X64 g_X64GenFFI;
 
     void ffi(ByteCodeRunContext* context, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, const VectorNative<uint32_t>& pushRAParam, void* retCopyAddr)
     {
@@ -942,7 +942,7 @@ namespace OS
 
             // We need to generate unwind stuff to get a correct callstack, and in case the runtime caises an exception
             // with 'RaiseException' (panic, error, etc.)
-            // The function information is always the same, that's why we generate only one table per SCBEX64.
+            // The function information is always the same, that's why we generate only one table per SCBE_X64.
             VectorNative<CPURegister> unwindRegs;
             VectorNative<uint32_t>    unwindOffsetRegs;
             VectorNative<uint16_t>    unwind;

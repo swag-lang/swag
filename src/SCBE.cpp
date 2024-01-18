@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "SCBE.h"
-#include "SCBEDebug.h"
+#include "SCBE_Debug.h"
 #include "BackendLinker.h"
-#include "SCBESaveObjJob.h"
+#include "SCBE_SaveObjJob.h"
 #include "ErrorIds.h"
 #include "Module.h"
 #include "Os.h"
@@ -326,7 +326,7 @@ JobResult SCBE::prepareOutput(int stage, const BuildParameters& buildParameters,
     int precompileIndex = buildParameters.precompileIndex;
 
     if (!perThread[ct][precompileIndex])
-        perThread[ct][precompileIndex] = new SCBEX64;
+        perThread[ct][precompileIndex] = new SCBE_X64;
 
     auto& pp     = *perThread[ct][precompileIndex];
     auto& concat = pp.concat;
@@ -496,7 +496,7 @@ JobResult SCBE::prepareOutput(int stage, const BuildParameters& buildParameters,
     if (pp.pass == BackendPreCompilePass::GenerateObj)
     {
         pp.pass           = BackendPreCompilePass::Release;
-        auto job          = Allocator::alloc<SCBESaveObjJob>();
+        auto job          = Allocator::alloc<SCBE_SaveObjJob>();
         job->module       = module;
         job->dependentJob = ownerJob;
         job->prepJob      = (ModulePrepOutputStage1Job*) ownerJob;
@@ -507,7 +507,7 @@ JobResult SCBE::prepareOutput(int stage, const BuildParameters& buildParameters,
     return JobResult::ReleaseJob;
 }
 
-CoffFunction* SCBE::registerFunction(SCBEX64& pp, AstNode* node, uint32_t symbolIndex)
+CoffFunction* SCBE::registerFunction(SCBE_X64& pp, AstNode* node, uint32_t symbolIndex)
 {
     CoffFunction cf;
     cf.node        = node;
@@ -874,7 +874,7 @@ bool SCBE::emitDebug(const BuildParameters& buildParameters)
     auto beforeCount = concat.totalCount();
 #endif
 
-    SCBEDebug::emit(buildParameters, this, pp);
+    SCBE_Debug::emit(buildParameters, this, pp);
 
 #ifdef SWAG_STATS
     g_Stats.sizeBackendDbg += concat.totalCount() - beforeCount;

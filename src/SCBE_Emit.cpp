@@ -4,7 +4,7 @@
 #include "LanguageSpec.h"
 #include "Math.h"
 
-void SCBE::emitShiftRightArithmetic(SCBEX64& pp, ByteCodeInstruction* ip, CPUBits numBits)
+void SCBE::emitShiftRightArithmetic(SCBE_X64& pp, ByteCodeInstruction* ip, CPUBits numBits)
 {
     if (!(ip->flags & BCI_IMM_A) && (ip->flags & BCI_IMM_B))
     {
@@ -33,7 +33,7 @@ void SCBE::emitShiftRightArithmetic(SCBEX64& pp, ByteCodeInstruction* ip, CPUBit
     pp.emit_StoreN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, numBits);
 }
 
-void SCBE::emitShiftRightEqArithmetic(SCBEX64& pp, ByteCodeInstruction* ip, CPUBits numBits)
+void SCBE::emitShiftRightEqArithmetic(SCBE_X64& pp, ByteCodeInstruction* ip, CPUBits numBits)
 {
     if (ip->flags & BCI_IMM_B)
     {
@@ -52,7 +52,7 @@ void SCBE::emitShiftRightEqArithmetic(SCBEX64& pp, ByteCodeInstruction* ip, CPUB
     }
 }
 
-void SCBE::emitShiftLogical(SCBEX64& pp, ByteCodeInstruction* ip, CPUBits numBits, CPUOp op)
+void SCBE::emitShiftLogical(SCBE_X64& pp, ByteCodeInstruction* ip, CPUBits numBits, CPUOp op)
 {
     if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= (uint32_t) numBits)
     {
@@ -85,7 +85,7 @@ void SCBE::emitShiftLogical(SCBEX64& pp, ByteCodeInstruction* ip, CPUBits numBit
     }
 }
 
-void SCBE::emitShiftEqLogical(SCBEX64& pp, ByteCodeInstruction* ip, CPUBits numBits, CPUOp op)
+void SCBE::emitShiftEqLogical(SCBE_X64& pp, ByteCodeInstruction* ip, CPUBits numBits, CPUOp op)
 {
     pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);
     if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= (uint32_t) numBits)
@@ -112,7 +112,7 @@ void SCBE::emitShiftEqLogical(SCBEX64& pp, ByteCodeInstruction* ip, CPUBits numB
     }
 }
 
-void SCBE::emitOverflowSigned(SCBEX64& pp, ByteCodeInstruction* ip, const char* msg)
+void SCBE::emitOverflowSigned(SCBE_X64& pp, ByteCodeInstruction* ip, const char* msg)
 {
     bool nw = (ip->node->attributeFlags & ATTRIBUTE_CAN_OVERFLOW_ON) || (ip->flags & BCI_CAN_OVERFLOW) ? false : true;
     if (nw && module->mustEmitSafetyOverflow(ip->node) && !(ip->flags & BCI_CANT_OVERFLOW))
@@ -126,7 +126,7 @@ void SCBE::emitOverflowSigned(SCBEX64& pp, ByteCodeInstruction* ip, const char* 
     }
 }
 
-void SCBE::emitOverflowUnsigned(SCBEX64& pp, ByteCodeInstruction* ip, const char* msg)
+void SCBE::emitOverflowUnsigned(SCBE_X64& pp, ByteCodeInstruction* ip, const char* msg)
 {
     bool nw = (ip->node->attributeFlags & ATTRIBUTE_CAN_OVERFLOW_ON) || (ip->flags & BCI_CAN_OVERFLOW) ? false : true;
     if (nw && module->mustEmitSafetyOverflow(ip->node) && !(ip->flags & BCI_CANT_OVERFLOW))
@@ -140,7 +140,7 @@ void SCBE::emitOverflowUnsigned(SCBEX64& pp, ByteCodeInstruction* ip, const char
     }
 }
 
-void SCBE::emitInternalPanic(SCBEX64& pp, AstNode* node, const char* msg)
+void SCBE::emitInternalPanic(SCBE_X64& pp, AstNode* node, const char* msg)
 {
     auto np = node->sourceFile->path.string();
     pp.pushParams.clear();
@@ -154,7 +154,7 @@ void SCBE::emitInternalPanic(SCBEX64& pp, AstNode* node, const char* msg)
     emitInternalCallExt(pp, module, g_LangSpec->name__panic, pp.pushParams);
 }
 
-void SCBE::emitSymbolRelocation(SCBEX64& pp, const Utf8& name)
+void SCBE::emitSymbolRelocation(SCBE_X64& pp, const Utf8& name)
 {
     auto& concat  = pp.concat;
     auto  callSym = pp.getOrAddSymbol(name, CoffSymbolKind::Extern);
@@ -169,7 +169,7 @@ void SCBE::emitSymbolRelocation(SCBEX64& pp, const Utf8& name)
     }
 }
 
-void SCBE::emitBinOpFloat32(SCBEX64& pp, ByteCodeInstruction* ip, CPUOp op)
+void SCBE::emitBinOpFloat32(SCBE_X64& pp, ByteCodeInstruction* ip, CPUOp op)
 {
     if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
     {
@@ -196,7 +196,7 @@ void SCBE::emitBinOpFloat32(SCBEX64& pp, ByteCodeInstruction* ip, CPUOp op)
     }
 }
 
-void SCBE::emitBinOpFloat64(SCBEX64& pp, ByteCodeInstruction* ip, CPUOp op)
+void SCBE::emitBinOpFloat64(SCBE_X64& pp, ByteCodeInstruction* ip, CPUOp op)
 {
     if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
     {
@@ -223,19 +223,19 @@ void SCBE::emitBinOpFloat64(SCBEX64& pp, ByteCodeInstruction* ip, CPUOp op)
     }
 }
 
-void SCBE::emitBinOpFloat32AtReg(SCBEX64& pp, ByteCodeInstruction* ip, CPUOp op)
+void SCBE::emitBinOpFloat32AtReg(SCBE_X64& pp, ByteCodeInstruction* ip, CPUOp op)
 {
     emitBinOpFloat32(pp, ip, op);
     pp.emit_StoreF32_Indirect(REG_OFFSET(ip->c.u32), XMM0);
 }
 
-void SCBE::emitBinOpFloat64AtReg(SCBEX64& pp, ByteCodeInstruction* ip, CPUOp op)
+void SCBE::emitBinOpFloat64AtReg(SCBE_X64& pp, ByteCodeInstruction* ip, CPUOp op)
 {
     emitBinOpFloat64(pp, ip, op);
     pp.emit_StoreF64_Indirect(REG_OFFSET(ip->c.u32), XMM0);
 }
 
-void SCBE::emitBinOpIntN(SCBEX64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
+void SCBE::emitBinOpIntN(SCBE_X64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
 {
     if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))
     {
@@ -275,13 +275,13 @@ void SCBE::emitBinOpIntN(SCBEX64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits
     }
 }
 
-void SCBE::emitBinOpIntNAtReg(SCBEX64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
+void SCBE::emitBinOpIntNAtReg(SCBE_X64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
 {
     emitBinOpIntN(pp, ip, op, numBits);
     pp.emit_StoreN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, numBits);
 }
 
-void SCBE::emitBinOpDivIntNAtReg(SCBEX64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
+void SCBE::emitBinOpDivIntNAtReg(SCBE_X64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
 {
     SWAG_ASSERT(op == CPUOp::DIV || op == CPUOp::MOD || op == CPUOp::IDIV || op == CPUOp::IMOD);
 
@@ -347,7 +347,7 @@ void SCBE::emitBinOpDivIntNAtReg(SCBEX64& pp, ByteCodeInstruction* ip, CPUOp op,
     pp.emit_StoreN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, numBits);
 }
 
-void SCBE::emitAddSubMul64(SCBEX64& pp, ByteCodeInstruction* ip, uint64_t mul, CPUOp op)
+void SCBE::emitAddSubMul64(SCBE_X64& pp, ByteCodeInstruction* ip, uint64_t mul, CPUOp op)
 {
     SWAG_ASSERT(op == CPUOp::ADD || op == CPUOp::SUB);
 

@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "SCBE.h"
-#include "SCBEDebug_CodeView.h"
+#include "SCBE_CodeView.h"
 #include "ByteCode.h"
 #include "LanguageSpec.h"
 #include "Module.h"
@@ -8,7 +8,7 @@
 #include "Version.h"
 #include "Workspace.h"
 
-void SCBEDebug_CodeView::emitCompilerFlagsDebugS(SCBECPU& pp)
+void SCBE_CodeView::emitCompilerFlagsDebugS(SCBE_CPU& pp)
 {
     auto& concat = pp.concat;
 
@@ -44,7 +44,7 @@ void SCBEDebug_CodeView::emitCompilerFlagsDebugS(SCBECPU& pp)
     *patchSCount = concat.totalCount() - patchSOffset;
 }
 
-void SCBEDebug_CodeView::startRecord(SCBECPU& pp, uint16_t what)
+void SCBE_CodeView::startRecord(SCBE_CPU& pp, uint16_t what)
 {
     auto& concat = pp.concat;
     SWAG_ASSERT(pp.dbgRecordIdx < pp.MAX_RECORD);
@@ -54,7 +54,7 @@ void SCBEDebug_CodeView::startRecord(SCBECPU& pp, uint16_t what)
     pp.dbgRecordIdx++;
 }
 
-void SCBEDebug_CodeView::endRecord(SCBECPU& pp, bool align)
+void SCBE_CodeView::endRecord(SCBE_CPU& pp, bool align)
 {
     auto& concat = pp.concat;
     if (align)
@@ -64,7 +64,7 @@ void SCBEDebug_CodeView::endRecord(SCBECPU& pp, bool align)
     *pp.dbgStartRecordPtr[pp.dbgRecordIdx] = (uint16_t) (concat.totalCount() - pp.dbgStartRecordOffset[pp.dbgRecordIdx]);
 }
 
-void SCBEDebug_CodeView::emitTruncatedString(SCBECPU& pp, const Utf8& str)
+void SCBE_CodeView::emitTruncatedString(SCBE_CPU& pp, const Utf8& str)
 {
     auto& concat = pp.concat;
     SWAG_ASSERT(str.length() < 0xF00); // Magic number from llvm codeview debug (should truncate)
@@ -73,7 +73,7 @@ void SCBEDebug_CodeView::emitTruncatedString(SCBECPU& pp, const Utf8& str)
     concat.addU8(0);
 }
 
-void SCBEDebug_CodeView::emitSecRel(SCBECPU& pp, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset)
+void SCBE_CodeView::emitSecRel(SCBE_CPU& pp, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset)
 {
     auto& concat = pp.concat;
 
@@ -93,7 +93,7 @@ void SCBEDebug_CodeView::emitSecRel(SCBECPU& pp, uint32_t symbolIndex, uint32_t 
     concat.addU16(0);
 }
 
-void SCBEDebug_CodeView::emitEmbeddedValue(SCBECPU& pp, TypeInfo* valueType, ComputedValue& val)
+void SCBE_CodeView::emitEmbeddedValue(SCBE_CPU& pp, TypeInfo* valueType, ComputedValue& val)
 {
     auto& concat = pp.concat;
     SWAG_ASSERT(valueType->isNative());
@@ -151,7 +151,7 @@ void SCBEDebug_CodeView::emitEmbeddedValue(SCBECPU& pp, TypeInfo* valueType, Com
     }
 }
 
-bool SCBEDebug_CodeView::emitDataDebugT(SCBECPU& pp)
+bool SCBE_CodeView::emitDataDebugT(SCBE_CPU& pp)
 {
     auto& concat = pp.concat;
 
@@ -294,13 +294,13 @@ bool SCBEDebug_CodeView::emitDataDebugT(SCBECPU& pp)
     return true;
 }
 
-void SCBEDebug_CodeView::emitConstant(SCBECPU& pp, AstNode* node, const Utf8& name)
+void SCBE_CodeView::emitConstant(SCBE_CPU& pp, AstNode* node, const Utf8& name)
 {
     auto& concat = pp.concat;
     if (node->typeInfo->isNative() && node->typeInfo->sizeOf <= 8)
     {
         startRecord(pp, S_CONSTANT);
-        concat.addU32(SCBEDebug::getOrCreateType(pp, node->typeInfo));
+        concat.addU32(SCBE_Debug::getOrCreateType(pp, node->typeInfo));
         switch (node->typeInfo->sizeOf)
         {
         case 1:
@@ -326,7 +326,7 @@ void SCBEDebug_CodeView::emitConstant(SCBECPU& pp, AstNode* node, const Utf8& na
     }
 }
 
-void SCBEDebug_CodeView::emitGlobalDebugS(SCBECPU& pp, VectorNative<AstNode*>& gVars, uint32_t segSymIndex)
+void SCBE_CodeView::emitGlobalDebugS(SCBE_CPU& pp, VectorNative<AstNode*>& gVars, uint32_t segSymIndex)
 {
     auto& concat = pp.concat;
     concat.addU32(DEBUG_S_SYMBOLS);
@@ -338,12 +338,12 @@ void SCBEDebug_CodeView::emitGlobalDebugS(SCBECPU& pp, VectorNative<AstNode*>& g
         // Compile time constant
         if (p->hasComputedValue())
         {
-            emitConstant(pp, p, SCBEDebug::getScopedName(p));
+            emitConstant(pp, p, SCBE_Debug::getScopedName(p));
             continue;
         }
 
         startRecord(pp, S_LDATA32);
-        concat.addU32(SCBEDebug::getOrCreateType(pp, p->typeInfo));
+        concat.addU32(SCBE_Debug::getOrCreateType(pp, p->typeInfo));
 
         CoffRelocation reloc;
 
@@ -361,7 +361,7 @@ void SCBEDebug_CodeView::emitGlobalDebugS(SCBECPU& pp, VectorNative<AstNode*>& g
         pp.relocTableDBGSSection.table.push_back(reloc);
         concat.addU16(0);
 
-        auto nn = SCBEDebug::getScopedName(p);
+        auto nn = SCBE_Debug::getScopedName(p);
         emitTruncatedString(pp, nn);
         endRecord(pp);
     }
@@ -370,7 +370,7 @@ void SCBEDebug_CodeView::emitGlobalDebugS(SCBECPU& pp, VectorNative<AstNode*>& g
     if (patchSOffset == concat.totalCount())
     {
         startRecord(pp, S_LDATA32);
-        concat.addU32(SCBEDebug::getOrCreateType(pp, g_TypeMgr->typeInfoBool));
+        concat.addU32(SCBE_Debug::getOrCreateType(pp, g_TypeMgr->typeInfoBool));
         concat.addU32(0);
         emitTruncatedString(pp, "__fake__");
         concat.addU16(0);
@@ -405,7 +405,7 @@ static uint32_t getFileChecksum(MapPath<uint32_t>& mapFileNames,
     return checkSymIndex * 8;
 }
 
-bool SCBEDebug_CodeView::emitLines(SCBECPU&        pp,
+bool SCBE_CodeView::emitLines(SCBE_CPU&        pp,
                                    MapPath<uint32_t>& mapFileNames,
                                    Vector<uint32_t>&  arrFileNames,
                                    Utf8&              stringTable,
@@ -450,7 +450,7 @@ bool SCBEDebug_CodeView::emitLines(SCBECPU&        pp,
     return true;
 }
 
-bool SCBEDebug_CodeView::emitFctDebugS(SCBECPU& pp)
+bool SCBE_CodeView::emitFctDebugS(SCBE_CPU& pp)
 {
     auto& concat = pp.concat;
 
@@ -468,19 +468,19 @@ bool SCBEDebug_CodeView::emitFctDebugS(SCBECPU& pp)
 
         // Add a func id type record
         /////////////////////////////////
-        auto tr  = SCBEDebug::addTypeRecord(pp);
+        auto tr  = SCBE_Debug::addTypeRecord(pp);
         tr->node = f.node;
         if (typeFunc->isMethod())
         {
             tr->kind                  = LF_MFUNC_ID;
             auto typeThis             = CastTypeInfo<TypeInfoPointer>(typeFunc->parameters[0]->typeInfo, TypeInfoKind::Pointer);
-            tr->LF_MFuncId.parentType = SCBEDebug::getOrCreateType(pp, typeThis->pointedType);
-            tr->LF_MFuncId.type       = SCBEDebug::getOrCreateType(pp, typeFunc);
+            tr->LF_MFuncId.parentType = SCBE_Debug::getOrCreateType(pp, typeThis->pointedType);
+            tr->LF_MFuncId.type       = SCBE_Debug::getOrCreateType(pp, typeFunc);
         }
         else
         {
             tr->kind           = LF_FUNC_ID;
-            tr->LF_FuncId.type = SCBEDebug::getOrCreateType(pp, typeFunc);
+            tr->LF_FuncId.type = SCBE_Debug::getOrCreateType(pp, typeFunc);
         }
 
         // Symbol
@@ -503,7 +503,7 @@ bool SCBEDebug_CodeView::emitFctDebugS(SCBECPU& pp)
             concat.addU32(tr->index);                     // FuncID type index
             emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
             concat.addU8(0); // ProcSymFlags Flags = ProcSymFlags::None
-            auto nn = SCBEDebug::getScopedName(f.node);
+            auto nn = SCBE_Debug::getScopedName(f.node);
             emitTruncatedString(pp, nn);
             endRecord(pp);
 
@@ -538,10 +538,10 @@ bool SCBEDebug_CodeView::emitFctDebugS(SCBECPU& pp)
                     switch (typeParam->kind)
                     {
                     case TypeInfoKind::Array:
-                        typeIdx = SCBEDebug::getOrCreatePointerToType(pp, typeParam, false);
+                        typeIdx = SCBE_Debug::getOrCreatePointerToType(pp, typeParam, false);
                         break;
                     default:
-                        typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
+                        typeIdx = SCBE_Debug::getOrCreateType(pp, typeParam);
                         break;
                     }
 
@@ -579,9 +579,9 @@ bool SCBEDebug_CodeView::emitFctDebugS(SCBECPU& pp)
                     {
                     case TypeInfoKind::Struct:
                         if (CallConv::structParamByValue(typeFunc, typeParam))
-                            typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
+                            typeIdx = SCBE_Debug::getOrCreateType(pp, typeParam);
                         else
-                            typeIdx = SCBEDebug::getOrCreatePointerToType(pp, typeParam, true);
+                            typeIdx = SCBE_Debug::getOrCreatePointerToType(pp, typeParam, true);
                         break;
 
                     case TypeInfoKind::Pointer:
@@ -590,24 +590,24 @@ bool SCBEDebug_CodeView::emitFctDebugS(SCBECPU& pp)
                         {
                             auto typeRef = TypeManager::concretePtrRefType(typeParam);
                             if (CallConv::structParamByValue(typeFunc, typeRef))
-                                typeIdx = SCBEDebug::getOrCreateType(pp, typeRef);
+                                typeIdx = SCBE_Debug::getOrCreateType(pp, typeRef);
                             else
-                                typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
+                                typeIdx = SCBE_Debug::getOrCreateType(pp, typeParam);
                         }
                         else
                         {
-                            typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
+                            typeIdx = SCBE_Debug::getOrCreateType(pp, typeParam);
                         }
 
                         break;
                     }
 
                     case TypeInfoKind::Array:
-                        typeIdx = SCBEDebug::getOrCreatePointerToType(pp, typeParam, false);
+                        typeIdx = SCBE_Debug::getOrCreatePointerToType(pp, typeParam, false);
                         break;
 
                     default:
-                        typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
+                        typeIdx = SCBE_Debug::getOrCreateType(pp, typeParam);
                         break;
                     }
 
@@ -648,7 +648,7 @@ bool SCBEDebug_CodeView::emitFctDebugS(SCBECPU& pp)
                     // If we have 2 registers then we cannot create a symbol flagged as 'parameter' in order to really see it.
                     if (typeParam->numRegisters() == 2)
                     {
-                        typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
+                        typeIdx = SCBE_Debug::getOrCreateType(pp, typeParam);
 
                         //////////
                         startRecord(pp, S_LOCAL);
@@ -720,7 +720,7 @@ bool SCBEDebug_CodeView::emitFctDebugS(SCBECPU& pp)
                 concat.addU32(CV_INLINEE_SOURCE_LINE_SIGNATURE);
 
                 auto checkSymIndex = getFileChecksum(mapFileNames, arrFileNames, stringTable, dbgLines.sourceFile);
-                auto typeIdx       = SCBEDebug::getOrCreateType(pp, dbgLines.inlined->typeInfo);
+                auto typeIdx       = SCBE_Debug::getOrCreateType(pp, dbgLines.inlined->typeInfo);
 
                 for (auto l : dbgLines.lines)
                 {
@@ -762,7 +762,7 @@ bool SCBEDebug_CodeView::emitFctDebugS(SCBECPU& pp)
     return true;
 }
 
-bool SCBEDebug_CodeView::emitScope(SCBECPU& pp, CoffFunction& f, Scope* scope)
+bool SCBE_CodeView::emitScope(SCBE_CPU& pp, CoffFunction& f, Scope* scope)
 {
     auto& concat = pp.concat;
 
@@ -796,7 +796,7 @@ bool SCBEDebug_CodeView::emitScope(SCBECPU& pp, CoffFunction& f, Scope* scope)
         SWAG_ASSERT(localVar->attributeFlags & ATTRIBUTE_GLOBAL);
 
         startRecord(pp, S_LDATA32);
-        concat.addU32(SCBEDebug::getOrCreateType(pp, typeInfo));
+        concat.addU32(SCBE_Debug::getOrCreateType(pp, typeInfo));
 
         CoffRelocation reloc;
         auto           segSymIndex = overload->flags & OVERLOAD_VAR_BSS ? pp.symBSIndex : pp.symMSIndex;
@@ -844,9 +844,9 @@ bool SCBEDebug_CodeView::emitScope(SCBECPU& pp, CoffFunction& f, Scope* scope)
         //////////
         startRecord(pp, S_LOCAL);
         if (overload->flags & OVERLOAD_RETVAL)
-            concat.addU32(SCBEDebug::getOrCreatePointerToType(pp, typeInfo, true)); // Type
+            concat.addU32(SCBE_Debug::getOrCreatePointerToType(pp, typeInfo, true)); // Type
         else
-            concat.addU32(SCBEDebug::getOrCreateType(pp, typeInfo)); // Type
+            concat.addU32(SCBE_Debug::getOrCreateType(pp, typeInfo)); // Type
         concat.addU16(0);                                            // CV_LVARFLAGS
         emitTruncatedString(pp, localVar->token.text);
         endRecord(pp);
@@ -884,7 +884,7 @@ bool SCBEDebug_CodeView::emitScope(SCBECPU& pp, CoffFunction& f, Scope* scope)
     return true;
 }
 
-bool SCBEDebug_CodeView::emit(const BuildParameters& buildParameters, SCBECPU& pp)
+bool SCBE_CodeView::emit(const BuildParameters& buildParameters, SCBE_CPU& pp)
 {
     auto& concat = pp.concat;
 

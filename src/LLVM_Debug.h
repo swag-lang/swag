@@ -11,7 +11,7 @@ struct SourceFile;
 struct TypeInfo;
 struct TypeInfoFuncAttr;
 
-struct LLVMDebug
+struct LLVM_Debug
 {
     void                    setup(LLVM* m, llvm::Module* module);
     llvm::DISubprogram*     startFunction(ByteCode* bc, AstFuncDecl** resultDecl = nullptr);
