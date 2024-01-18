@@ -292,7 +292,7 @@ void BackendSCBEDbg_CodeView::dbgEmitConstant(EncoderCPU& pp, Concat& concat, As
     if (node->typeInfo->isNative() && node->typeInfo->sizeOf <= 8)
     {
         dbgStartRecord(pp, concat, S_CONSTANT);
-        concat.addU32(BackendSCBEDbg::dbgGetOrCreateType(pp, node->typeInfo));
+        concat.addU32(BackendSCBEDbg::getOrCreateType(pp, node->typeInfo));
         switch (node->typeInfo->sizeOf)
         {
         case 1:
@@ -334,7 +334,7 @@ void BackendSCBEDbg_CodeView::dbgEmitGlobalDebugS(EncoderCPU& pp, Concat& concat
         }
 
         dbgStartRecord(pp, concat, S_LDATA32);
-        concat.addU32(BackendSCBEDbg::dbgGetOrCreateType(pp, p->typeInfo));
+        concat.addU32(BackendSCBEDbg::getOrCreateType(pp, p->typeInfo));
 
         CoffRelocation reloc;
 
@@ -361,7 +361,7 @@ void BackendSCBEDbg_CodeView::dbgEmitGlobalDebugS(EncoderCPU& pp, Concat& concat
     if (patchSOffset == concat.totalCount())
     {
         dbgStartRecord(pp, concat, S_LDATA32);
-        concat.addU32(BackendSCBEDbg::dbgGetOrCreateType(pp, g_TypeMgr->typeInfoBool));
+        concat.addU32(BackendSCBEDbg::getOrCreateType(pp, g_TypeMgr->typeInfoBool));
         concat.addU32(0);
         dbgEmitTruncatedString(concat, "__fake__");
         concat.addU16(0);
@@ -459,19 +459,19 @@ bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
 
         // Add a func id type record
         /////////////////////////////////
-        auto tr  = BackendSCBEDbg::dbgAddTypeRecord(pp);
+        auto tr  = BackendSCBEDbg::addTypeRecord(pp);
         tr->node = f.node;
         if (typeFunc->isMethod())
         {
             tr->kind                  = LF_MFUNC_ID;
             auto typeThis             = CastTypeInfo<TypeInfoPointer>(typeFunc->parameters[0]->typeInfo, TypeInfoKind::Pointer);
-            tr->LF_MFuncId.parentType = BackendSCBEDbg::dbgGetOrCreateType(pp, typeThis->pointedType);
-            tr->LF_MFuncId.type       = BackendSCBEDbg::dbgGetOrCreateType(pp, typeFunc);
+            tr->LF_MFuncId.parentType = BackendSCBEDbg::getOrCreateType(pp, typeThis->pointedType);
+            tr->LF_MFuncId.type       = BackendSCBEDbg::getOrCreateType(pp, typeFunc);
         }
         else
         {
             tr->kind           = LF_FUNC_ID;
-            tr->LF_FuncId.type = BackendSCBEDbg::dbgGetOrCreateType(pp, typeFunc);
+            tr->LF_FuncId.type = BackendSCBEDbg::getOrCreateType(pp, typeFunc);
         }
 
         // Symbol
@@ -529,10 +529,10 @@ bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
                     switch (typeParam->kind)
                     {
                     case TypeInfoKind::Array:
-                        typeIdx = BackendSCBEDbg::dbgGetOrCreatePointerToType(pp, typeParam, false);
+                        typeIdx = BackendSCBEDbg::getOrCreatePointerToType(pp, typeParam, false);
                         break;
                     default:
-                        typeIdx = BackendSCBEDbg::dbgGetOrCreateType(pp, typeParam);
+                        typeIdx = BackendSCBEDbg::getOrCreateType(pp, typeParam);
                         break;
                     }
 
@@ -570,9 +570,9 @@ bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
                     {
                     case TypeInfoKind::Struct:
                         if (CallConv::structParamByValue(typeFunc, typeParam))
-                            typeIdx = BackendSCBEDbg::dbgGetOrCreateType(pp, typeParam);
+                            typeIdx = BackendSCBEDbg::getOrCreateType(pp, typeParam);
                         else
-                            typeIdx = BackendSCBEDbg::dbgGetOrCreatePointerToType(pp, typeParam, true);
+                            typeIdx = BackendSCBEDbg::getOrCreatePointerToType(pp, typeParam, true);
                         break;
 
                     case TypeInfoKind::Pointer:
@@ -581,24 +581,24 @@ bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
                         {
                             auto typeRef = TypeManager::concretePtrRefType(typeParam);
                             if (CallConv::structParamByValue(typeFunc, typeRef))
-                                typeIdx = BackendSCBEDbg::dbgGetOrCreateType(pp, typeRef);
+                                typeIdx = BackendSCBEDbg::getOrCreateType(pp, typeRef);
                             else
-                                typeIdx = BackendSCBEDbg::dbgGetOrCreateType(pp, typeParam);
+                                typeIdx = BackendSCBEDbg::getOrCreateType(pp, typeParam);
                         }
                         else
                         {
-                            typeIdx = BackendSCBEDbg::dbgGetOrCreateType(pp, typeParam);
+                            typeIdx = BackendSCBEDbg::getOrCreateType(pp, typeParam);
                         }
 
                         break;
                     }
 
                     case TypeInfoKind::Array:
-                        typeIdx = BackendSCBEDbg::dbgGetOrCreatePointerToType(pp, typeParam, false);
+                        typeIdx = BackendSCBEDbg::getOrCreatePointerToType(pp, typeParam, false);
                         break;
 
                     default:
-                        typeIdx = BackendSCBEDbg::dbgGetOrCreateType(pp, typeParam);
+                        typeIdx = BackendSCBEDbg::getOrCreateType(pp, typeParam);
                         break;
                     }
 
@@ -639,7 +639,7 @@ bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
                     // If we have 2 registers then we cannot create a symbol flagged as 'parameter' in order to really see it.
                     if (typeParam->numRegisters() == 2)
                     {
-                        typeIdx = BackendSCBEDbg::dbgGetOrCreateType(pp, typeParam);
+                        typeIdx = BackendSCBEDbg::getOrCreateType(pp, typeParam);
 
                         //////////
                         dbgStartRecord(pp, concat, S_LOCAL);
@@ -711,7 +711,7 @@ bool BackendSCBEDbg_CodeView::dbgEmitFctDebugS(EncoderCPU& pp)
                 concat.addU32(CV_INLINEE_SOURCE_LINE_SIGNATURE);
 
                 auto checkSymIndex = getFileChecksum(mapFileNames, arrFileNames, stringTable, dbgLines.sourceFile);
-                auto typeIdx       = BackendSCBEDbg::dbgGetOrCreateType(pp, dbgLines.inlined->typeInfo);
+                auto typeIdx       = BackendSCBEDbg::getOrCreateType(pp, dbgLines.inlined->typeInfo);
 
                 for (auto l : dbgLines.lines)
                 {
@@ -785,7 +785,7 @@ bool BackendSCBEDbg_CodeView::dbgEmitScope(EncoderCPU& pp, Concat& concat, CoffF
         SWAG_ASSERT(localVar->attributeFlags & ATTRIBUTE_GLOBAL);
 
         dbgStartRecord(pp, concat, S_LDATA32);
-        concat.addU32(BackendSCBEDbg::dbgGetOrCreateType(pp, typeInfo));
+        concat.addU32(BackendSCBEDbg::getOrCreateType(pp, typeInfo));
 
         CoffRelocation reloc;
         auto           segSymIndex = overload->flags & OVERLOAD_VAR_BSS ? pp.symBSIndex : pp.symMSIndex;
@@ -833,9 +833,9 @@ bool BackendSCBEDbg_CodeView::dbgEmitScope(EncoderCPU& pp, Concat& concat, CoffF
         //////////
         dbgStartRecord(pp, concat, S_LOCAL);
         if (overload->flags & OVERLOAD_RETVAL)
-            concat.addU32(BackendSCBEDbg::dbgGetOrCreatePointerToType(pp, typeInfo, true)); // Type
+            concat.addU32(BackendSCBEDbg::getOrCreatePointerToType(pp, typeInfo, true)); // Type
         else
-            concat.addU32(BackendSCBEDbg::dbgGetOrCreateType(pp, typeInfo)); // Type
+            concat.addU32(BackendSCBEDbg::getOrCreateType(pp, typeInfo)); // Type
         concat.addU16(0);                                                    // CV_LVARFLAGS
         dbgEmitTruncatedString(concat, localVar->token.text);
         dbgEndRecord(pp, concat);

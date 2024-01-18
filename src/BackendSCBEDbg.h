@@ -1,17 +1,12 @@
 #pragma once
 #include "Backend.h"
-#include "BackendParameters.h"
-#include "DataSegment.h"
+//#include "BackendParameters.h"
+//#include "DataSegment.h"
 
 struct BuildParameters;
-struct ByteCode;
 struct ByteCodeInstruction;
 struct CoffFunction;
-struct DataSegment;
 struct EncoderCPU;
-struct Job;
-struct Module;
-struct TypeInfo;
 struct BackendSCBE;
 
 using DbgTypeIndex = uint32_t;
@@ -132,15 +127,15 @@ struct DbgLines
 
 struct BackendSCBEDbg
 {
-    static void           dbgRecordFields(EncoderCPU& pp, DbgTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset);
-    static DbgTypeIndex   dbgEmitTypeSlice(EncoderCPU& pp, TypeInfo* typeInfo, TypeInfo* pointedType, DbgTypeIndex* value);
-    static DbgTypeIndex   dbgGetSimpleType(TypeInfo* typeInfo);
-    static DbgTypeIndex   dbgGetOrCreatePointerToType(EncoderCPU& pp, TypeInfo* typeInfo, bool asRef);
-    static DbgTypeIndex   dbgGetOrCreatePointerPointerToType(EncoderCPU& pp, TypeInfo* typeInfo);
-    static DbgTypeIndex   dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeInfo, bool forceUnRef = false);
-    static DbgTypeRecord* dbgAddTypeRecord(EncoderCPU& pp);
+    static void           getStructFields(EncoderCPU& pp, DbgTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset);
+    static DbgTypeIndex   getTypeSlice(EncoderCPU& pp, TypeInfo* typeInfo, TypeInfo* pointedType, DbgTypeIndex* value);
+    static DbgTypeIndex   getSimpleType(TypeInfo* typeInfo);
+    static DbgTypeIndex   getOrCreatePointerToType(EncoderCPU& pp, TypeInfo* typeInfo, bool asRef);
+    static DbgTypeIndex   getOrCreatePointerPointerToType(EncoderCPU& pp, TypeInfo* typeInfo);
+    static DbgTypeIndex   getOrCreateType(EncoderCPU& pp, TypeInfo* typeInfo, bool forceUnRef = false);
+    static DbgTypeRecord* addTypeRecord(EncoderCPU& pp);
+    static void           setLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);
+    static Utf8           getScopedName(AstNode* node);
 
-    static void setLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);
-    static Utf8 getScopedName(AstNode* node);
     static bool emit(const BuildParameters& buildParameters, BackendSCBE* scbe, EncoderCPU& pp);
 };

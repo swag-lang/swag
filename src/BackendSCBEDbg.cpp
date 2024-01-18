@@ -10,13 +10,13 @@
 #include "Version.h"
 #include "Workspace.h"
 
-DbgTypeIndex BackendSCBEDbg::dbgEmitTypeSlice(EncoderCPU& pp, TypeInfo* typeInfo, TypeInfo* pointedType, DbgTypeIndex* value)
+DbgTypeIndex BackendSCBEDbg::getTypeSlice(EncoderCPU& pp, TypeInfo* typeInfo, TypeInfo* pointedType, DbgTypeIndex* value)
 {
-    auto         tr0 = dbgAddTypeRecord(pp);
+    auto         tr0 = addTypeRecord(pp);
     DbgTypeField field;
     tr0->kind           = LF_FIELDLIST;
     field.kind          = LF_MEMBER;
-    field.type          = dbgGetOrCreatePointerToType(pp, pointedType, false);
+    field.type          = getOrCreatePointerToType(pp, pointedType, false);
     field.value.reg.u32 = 0;
     field.name.setView(g_LangSpec->name_data);
     tr0->LF_FieldList.fields.reserve(2);
@@ -28,7 +28,7 @@ DbgTypeIndex BackendSCBEDbg::dbgEmitTypeSlice(EncoderCPU& pp, TypeInfo* typeInfo
     field.name.setView(g_LangSpec->name_count);
     tr0->LF_FieldList.fields.emplace_back(std::move(field));
 
-    auto tr1                      = dbgAddTypeRecord(pp);
+    auto tr1                      = addTypeRecord(pp);
     tr1->kind                     = LF_STRUCTURE;
     tr1->LF_Structure.memberCount = 2;
     tr1->LF_Structure.sizeOf      = 2 * sizeof(void*);
@@ -45,14 +45,14 @@ DbgTypeIndex BackendSCBEDbg::dbgEmitTypeSlice(EncoderCPU& pp, TypeInfo* typeInfo
     return tr1->index;
 }
 
-void BackendSCBEDbg::dbgRecordFields(EncoderCPU& pp, DbgTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset)
+void BackendSCBEDbg::getStructFields(EncoderCPU& pp, DbgTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset)
 {
     tr->LF_FieldList.fields.reserve(typeStruct->fields.count);
     for (auto& p : typeStruct->fields)
     {
         DbgTypeField field;
         field.kind = LF_MEMBER;
-        field.type = dbgGetOrCreateType(pp, p->typeInfo);
+        field.type = getOrCreateType(pp, p->typeInfo);
         field.name.setView(p->name);
         field.value.reg.u32 = baseOffset + p->offset;
         tr->LF_FieldList.fields.emplace_back(std::move(field));
@@ -60,17 +60,17 @@ void BackendSCBEDbg::dbgRecordFields(EncoderCPU& pp, DbgTypeRecord* tr, TypeInfo
         if (p->flags & TYPEINFOPARAM_HAS_USING && p->typeInfo->isStruct())
         {
             auto typeStructField = CastTypeInfo<TypeInfoStruct>(p->typeInfo, TypeInfoKind::Struct);
-            dbgRecordFields(pp, tr, typeStructField, baseOffset + p->offset);
+            getStructFields(pp, tr, typeStructField, baseOffset + p->offset);
         }
     }
 }
 
-DbgTypeIndex BackendSCBEDbg::dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeInfo, bool forceUnRef)
+DbgTypeIndex BackendSCBEDbg::getOrCreateType(EncoderCPU& pp, TypeInfo* typeInfo, bool forceUnRef)
 {
     typeInfo = typeInfo->getConcreteAlias();
 
     // Simple type
-    auto simpleType = dbgGetSimpleType(typeInfo);
+    auto simpleType = getSimpleType(typeInfo);
     if (simpleType != SimpleTypeKind::None)
         return simpleType;
 
@@ -79,7 +79,7 @@ DbgTypeIndex BackendSCBEDbg::dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeIn
     if (typeInfo->isPointer())
     {
         auto typePtr = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        return dbgGetOrCreatePointerToType(pp, typePtr->pointedType, typePtr->isPointerRef() && !forceUnRef);
+        return getOrCreatePointerToType(pp, typePtr->pointedType, typePtr->isPointerRef() && !forceUnRef);
     }
 
     // In the cache
@@ -94,14 +94,14 @@ DbgTypeIndex BackendSCBEDbg::dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeIn
     if (typeInfo->isSlice())
     {
         auto typeInfoPtr = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-        return dbgEmitTypeSlice(pp, typeInfo, typeInfoPtr->pointedType, &iter.first->second);
+        return getTypeSlice(pp, typeInfo, typeInfoPtr->pointedType, &iter.first->second);
     }
 
     // TypedVariadic
     /////////////////////////////////
     if (typeInfo->isVariadic())
     {
-        return dbgEmitTypeSlice(pp, typeInfo, g_TypeMgr->typeInfoAny, &iter.first->second);
+        return getTypeSlice(pp, typeInfo, g_TypeMgr->typeInfoAny, &iter.first->second);
     }
 
     // TypedVariadic
@@ -109,7 +109,7 @@ DbgTypeIndex BackendSCBEDbg::dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeIn
     if (typeInfo->isTypedVariadic())
     {
         auto typeInfoPtr = CastTypeInfo<TypeInfoVariadic>(typeInfo, TypeInfoKind::TypedVariadic);
-        return dbgEmitTypeSlice(pp, typeInfo, typeInfoPtr->rawType, &iter.first->second);
+        return getTypeSlice(pp, typeInfo, typeInfoPtr->rawType, &iter.first->second);
     }
 
     // Static array
@@ -117,9 +117,9 @@ DbgTypeIndex BackendSCBEDbg::dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeIn
     if (typeInfo->isArray())
     {
         auto typeArr             = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        auto tr                  = dbgAddTypeRecord(pp);
+        auto tr                  = addTypeRecord(pp);
         tr->kind                 = LF_ARRAY;
-        tr->LF_Array.elementType = dbgGetOrCreateType(pp, typeArr->pointedType, true);
+        tr->LF_Array.elementType = getOrCreateType(pp, typeArr->pointedType, true);
         tr->LF_Array.indexType   = SimpleTypeKind::UInt64;
         tr->LF_Array.sizeOf      = typeArr->sizeOf;
         iter.first->second       = tr->index;
@@ -130,7 +130,7 @@ DbgTypeIndex BackendSCBEDbg::dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeIn
     /////////////////////////////////
     if (typeInfo->isString())
     {
-        auto         tr0 = dbgAddTypeRecord(pp);
+        auto         tr0 = addTypeRecord(pp);
         DbgTypeField field;
         tr0->kind           = LF_FIELDLIST;
         field.kind          = LF_MEMBER;
@@ -146,7 +146,7 @@ DbgTypeIndex BackendSCBEDbg::dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeIn
         field.name.setView(g_LangSpec->name_sizeof);
         tr0->LF_FieldList.fields.emplace_back(std::move(field));
 
-        auto tr1                      = dbgAddTypeRecord(pp);
+        auto tr1                      = addTypeRecord(pp);
         tr1->kind                     = LF_STRUCTURE;
         tr1->LF_Structure.memberCount = 2;
         tr1->LF_Structure.sizeOf      = 2 * sizeof(void*);
@@ -161,7 +161,7 @@ DbgTypeIndex BackendSCBEDbg::dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeIn
     /////////////////////////////////
     if (typeInfo->isInterface())
     {
-        auto         tr0 = dbgAddTypeRecord(pp);
+        auto         tr0 = addTypeRecord(pp);
         DbgTypeField field;
         tr0->kind           = LF_FIELDLIST;
         field.kind          = LF_MEMBER;
@@ -172,12 +172,12 @@ DbgTypeIndex BackendSCBEDbg::dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeIn
         tr0->LF_FieldList.fields.emplace_back(std::move(field));
 
         field.kind          = LF_MEMBER;
-        field.type          = dbgGetOrCreatePointerPointerToType(pp, g_Workspace->swagScope.regTypeInfoStruct);
+        field.type          = getOrCreatePointerPointerToType(pp, g_Workspace->swagScope.regTypeInfoStruct);
         field.value.reg.u32 = sizeof(void*);
         field.name.setView(g_LangSpec->name_itable);
         tr0->LF_FieldList.fields.emplace_back(std::move(field));
 
-        auto tr1                      = dbgAddTypeRecord(pp);
+        auto tr1                      = addTypeRecord(pp);
         tr1->kind                     = LF_STRUCTURE;
         tr1->LF_Structure.memberCount = 2;
         tr1->LF_Structure.sizeOf      = 2 * sizeof(void*);
@@ -192,7 +192,7 @@ DbgTypeIndex BackendSCBEDbg::dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeIn
     /////////////////////////////////
     if (typeInfo->isAny())
     {
-        auto         tr0 = dbgAddTypeRecord(pp);
+        auto         tr0 = addTypeRecord(pp);
         DbgTypeField field;
         tr0->kind           = LF_FIELDLIST;
         field.kind          = LF_MEMBER;
@@ -203,12 +203,12 @@ DbgTypeIndex BackendSCBEDbg::dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeIn
         tr0->LF_FieldList.fields.emplace_back(std::move(field));
 
         field.kind          = LF_MEMBER;
-        field.type          = dbgGetOrCreatePointerToType(pp, g_Workspace->swagScope.regTypeInfo, false);
+        field.type          = getOrCreatePointerToType(pp, g_Workspace->swagScope.regTypeInfo, false);
         field.value.reg.u32 = sizeof(void*);
         field.name.setView(g_LangSpec->name_typeinfo);
         tr0->LF_FieldList.fields.emplace_back(std::move(field));
 
-        auto tr1                      = dbgAddTypeRecord(pp);
+        auto tr1                      = addTypeRecord(pp);
         tr1->kind                     = LF_STRUCTURE;
         tr1->LF_Structure.memberCount = 2;
         tr1->LF_Structure.sizeOf      = 2 * sizeof(void*);
@@ -234,7 +234,7 @@ DbgTypeIndex BackendSCBEDbg::dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeIn
         }
 
         // Create a forward reference, in case a field points to the struct itself
-        auto tr2                  = dbgAddTypeRecord(pp);
+        auto tr2                  = addTypeRecord(pp);
         tr2->kind                 = LF_STRUCTURE;
         tr2->LF_Structure.forward = true;
         tr2->name                 = sname;
@@ -242,22 +242,22 @@ DbgTypeIndex BackendSCBEDbg::dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeIn
         iter.first->second = tr2->index;
 
         // List of fields, after the forward ref
-        auto tr0  = dbgAddTypeRecord(pp);
+        auto tr0  = addTypeRecord(pp);
         tr0->kind = LF_FIELDLIST;
-        dbgRecordFields(pp, tr0, typeStruct, 0);
+        getStructFields(pp, tr0, typeStruct, 0);
 
         tr0->LF_FieldList.fields.reserve(typeStruct->methods.count);
         for (auto& p : typeStruct->methods)
         {
             DbgTypeField field;
             field.kind = LF_ONEMETHOD;
-            field.type = dbgGetOrCreateType(pp, p->typeInfo);
+            field.type = getOrCreateType(pp, p->typeInfo);
             field.name = BackendSCBEDbg::getScopedName(p->typeInfo->declNode);
             tr0->LF_FieldList.fields.emplace_back(std::move(field));
         }
 
         // Struct itself, pointing to the field list
-        auto tr1                      = dbgAddTypeRecord(pp);
+        auto tr1                      = addTypeRecord(pp);
         tr1->kind                     = LF_STRUCTURE;
         tr1->LF_Structure.memberCount = (uint16_t) typeStruct->fields.size();
         tr1->LF_Structure.sizeOf      = (uint16_t) typeStruct->sizeOf;
@@ -278,7 +278,7 @@ DbgTypeIndex BackendSCBEDbg::dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeIn
         // List of values
         if (typeInfoEnum->rawType->isNativeInteger())
         {
-            auto tr0  = dbgAddTypeRecord(pp);
+            auto tr0  = addTypeRecord(pp);
             tr0->kind = LF_FIELDLIST;
             tr0->LF_FieldList.fields.reserve(typeInfoEnum->values.count);
 
@@ -292,7 +292,7 @@ DbgTypeIndex BackendSCBEDbg::dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeIn
                         continue;
                     DbgTypeField field;
                     field.kind      = LF_ENUMERATE;
-                    field.type      = dbgGetOrCreateType(pp, value->typeInfo);
+                    field.type      = getOrCreateType(pp, value->typeInfo);
                     field.name      = value->name;
                     field.valueType = typeInfoEnum->rawType;
                     field.value     = *value->value;
@@ -301,11 +301,11 @@ DbgTypeIndex BackendSCBEDbg::dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeIn
             }
 
             // Enum itself, pointing to the field list
-            auto tr1                    = dbgAddTypeRecord(pp);
+            auto tr1                    = addTypeRecord(pp);
             tr1->kind                   = LF_ENUM;
             tr1->LF_Enum.count          = (uint16_t) typeInfoEnum->values.size();
             tr1->LF_Enum.fieldList      = tr0->index;
-            tr1->LF_Enum.underlyingType = dbgGetOrCreateType(pp, typeInfoEnum->rawType);
+            tr1->LF_Enum.underlyingType = getOrCreateType(pp, typeInfoEnum->rawType);
             tr1->name                   = sname;
 
             iter.first->second = tr1->index;
@@ -314,7 +314,7 @@ DbgTypeIndex BackendSCBEDbg::dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeIn
 
         else
         {
-            return dbgGetOrCreateType(pp, typeInfoEnum->rawType);
+            return getOrCreateType(pp, typeInfoEnum->rawType);
         }
     }
 
@@ -323,7 +323,7 @@ DbgTypeIndex BackendSCBEDbg::dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeIn
     if (typeInfo->isFuncAttr() || typeInfo->isLambdaClosure())
     {
         TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
-        auto              tr0      = dbgAddTypeRecord(pp);
+        auto              tr0      = addTypeRecord(pp);
 
         // Get the arg list type. We construct a string with all parameters to be able to
         // store something in the cache
@@ -342,13 +342,13 @@ DbgTypeIndex BackendSCBEDbg::dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeIn
         pair<P1::iterator, bool> iter1 = pp.dbgMapTypesNames.insert(P1::value_type(args, 0));
         if (iter1.second)
         {
-            auto tr1              = dbgAddTypeRecord(pp);
+            auto tr1              = addTypeRecord(pp);
             tr1->kind             = LF_ARGLIST;
             tr1->LF_ArgList.count = numArgs;
             for (size_t i = 0; i < typeFunc->parameters.size(); i++)
             {
                 auto p = typeFunc->parameters[i];
-                tr1->LF_ArgList.args.push_back(dbgGetOrCreateType(pp, p->typeInfo));
+                tr1->LF_ArgList.args.push_back(getOrCreateType(pp, p->typeInfo));
             }
 
             iter1.first->second = tr1->index;
@@ -360,24 +360,24 @@ DbgTypeIndex BackendSCBEDbg::dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeIn
         if (isMethod)
         {
             tr0->kind                    = LF_MFUNCTION;
-            tr0->LF_MFunction.returnType = dbgGetOrCreateType(pp, typeFunc->returnType);
+            tr0->LF_MFunction.returnType = getOrCreateType(pp, typeFunc->returnType);
             auto typeThis                = CastTypeInfo<TypeInfoPointer>(typeFunc->parameters[0]->typeInfo, TypeInfoKind::Pointer);
-            tr0->LF_MFunction.structType = dbgGetOrCreateType(pp, typeThis->pointedType);
-            tr0->LF_MFunction.thisType   = dbgGetOrCreateType(pp, typeThis);
+            tr0->LF_MFunction.structType = getOrCreateType(pp, typeThis->pointedType);
+            tr0->LF_MFunction.thisType   = getOrCreateType(pp, typeThis);
             tr0->LF_MFunction.numArgs    = numArgs;
             tr0->LF_MFunction.argsType   = argsTypeIndex;
         }
         else
         {
             tr0->kind                    = LF_PROCEDURE;
-            tr0->LF_Procedure.returnType = dbgGetOrCreateType(pp, typeFunc->returnType);
+            tr0->LF_Procedure.returnType = getOrCreateType(pp, typeFunc->returnType);
             tr0->LF_Procedure.numArgs    = numArgs;
             tr0->LF_Procedure.argsType   = argsTypeIndex;
         }
 
         if (typeInfo->isLambdaClosure())
         {
-            auto trp                    = dbgAddTypeRecord(pp);
+            auto trp                    = addTypeRecord(pp);
             trp->kind                   = LF_POINTER;
             trp->LF_Pointer.pointeeType = tr0->index;
             iter.first->second          = trp->index;
@@ -401,7 +401,7 @@ DbgTypeIndex BackendSCBEDbg::dbgGetOrCreateType(EncoderCPU& pp, TypeInfo* typeIn
     }
 }
 
-DbgTypeIndex BackendSCBEDbg::dbgGetSimpleType(TypeInfo* typeInfo)
+DbgTypeIndex BackendSCBEDbg::getSimpleType(TypeInfo* typeInfo)
 {
     if (typeInfo->isNative())
     {
@@ -441,30 +441,30 @@ DbgTypeIndex BackendSCBEDbg::dbgGetSimpleType(TypeInfo* typeInfo)
     return SimpleTypeKind::None;
 }
 
-DbgTypeIndex BackendSCBEDbg::dbgGetOrCreatePointerToType(EncoderCPU& pp, TypeInfo* typeInfo, bool asRef)
+DbgTypeIndex BackendSCBEDbg::getOrCreatePointerToType(EncoderCPU& pp, TypeInfo* typeInfo, bool asRef)
 {
-    auto simpleType = dbgGetSimpleType(typeInfo);
+    auto simpleType = getSimpleType(typeInfo);
     if (simpleType != SimpleTypeKind::None)
         return (DbgTypeIndex) (simpleType | (NearPointer64 << 8));
 
     // Pointer to something complex
-    auto tr                    = dbgAddTypeRecord(pp);
+    auto tr                    = addTypeRecord(pp);
     tr->kind                   = LF_POINTER;
-    tr->LF_Pointer.pointeeType = dbgGetOrCreateType(pp, typeInfo, !asRef);
+    tr->LF_Pointer.pointeeType = getOrCreateType(pp, typeInfo, !asRef);
     tr->LF_Pointer.asRef       = asRef;
     return tr->index;
 }
 
-DbgTypeIndex BackendSCBEDbg::dbgGetOrCreatePointerPointerToType(EncoderCPU& pp, TypeInfo* typeInfo)
+DbgTypeIndex BackendSCBEDbg::getOrCreatePointerPointerToType(EncoderCPU& pp, TypeInfo* typeInfo)
 {
     // Pointer to something complex
-    auto tr                    = dbgAddTypeRecord(pp);
+    auto tr                    = addTypeRecord(pp);
     tr->kind                   = LF_POINTER;
-    tr->LF_Pointer.pointeeType = dbgGetOrCreatePointerToType(pp, typeInfo, false);
+    tr->LF_Pointer.pointeeType = getOrCreatePointerToType(pp, typeInfo, false);
     return tr->index;
 }
 
-DbgTypeRecord* BackendSCBEDbg::dbgAddTypeRecord(EncoderCPU& pp)
+DbgTypeRecord* BackendSCBEDbg::addTypeRecord(EncoderCPU& pp)
 {
     auto tr   = pp.dbgTypeRecords.addObj<DbgTypeRecord>();
     tr->index = (DbgTypeIndex) pp.dbgTypeRecordsCount + 0x1000;
