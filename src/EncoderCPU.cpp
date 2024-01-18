@@ -58,7 +58,7 @@ void EncoderCPU::addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex,
     relocTableTextSection.table.push_back(reloc);
 }
 
-CoffSymbol* EncoderCPU ::addGlobalString(const Utf8& str)
+CoffSymbol* EncoderCPU ::getOrCreateGlobalString(const Utf8& str)
 {
     auto        it  = globalStrings.find(str);
     CoffSymbol* sym = nullptr;
@@ -73,4 +73,17 @@ CoffSymbol* EncoderCPU ::addGlobalString(const Utf8& str)
     }
 
     return sym;
+}
+
+uint32_t EncoderCPU ::getOrCreateLabel(uint32_t ip)
+{
+    auto it = labels.find(ip);
+    if (it == labels.end())
+    {
+        auto count = concat.totalCount();
+        labels[ip] = count;
+        return count;
+    }
+
+    return it->second;
 }

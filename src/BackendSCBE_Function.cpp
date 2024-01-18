@@ -194,7 +194,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
             dbgSetLocation(coffFct, bc, ip, concat.totalCount() - beforeProlog);
 
         if (ip->flags & BCI_JUMP_DEST)
-            getOrCreateLabel(pp, i);
+            pp.getOrCreateLabel(i);
 
         if (ip->flags & (BCI_START_STMT | BCI_JUMP_DEST))
             pp.clearInstructionCache();
@@ -4709,17 +4709,4 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
     pp.clearInstructionCache();
 
     return ok;
-}
-
-uint32_t BackendSCBE::getOrCreateLabel(EncoderX64& pp, uint32_t ip)
-{
-    auto it = pp.labels.find(ip);
-    if (it == pp.labels.end())
-    {
-        auto count    = pp.concat.totalCount();
-        pp.labels[ip] = count;
-        return count;
-    }
-
-    return it->second;
 }

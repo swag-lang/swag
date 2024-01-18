@@ -276,7 +276,8 @@ struct EncoderCPU
     void        clearInstructionCache();
     CoffSymbol* getSymbol(const Utf8& name);
     CoffSymbol* getOrAddSymbol(const Utf8& name, CoffSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
-    CoffSymbol* addGlobalString(const Utf8& str);
+    uint32_t    getOrCreateLabel(uint32_t ip);
+    CoffSymbol* getOrCreateGlobalString(const Utf8& str);
     void        addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type);
 
     Utf8   filename;

@@ -70,7 +70,7 @@ void EncoderX64::emit_Spec8(uint8_t value, CPUBits numBits)
 void EncoderX64::emit_GlobalString(const Utf8& str, CPURegister reg)
 {
     emit_Load64_Immediate(reg, 0, true);
-    auto sym = addGlobalString(str);
+    auto sym = getOrCreateGlobalString(str);
     addSymbolRelocation((concat.totalCount() - 8) - textSectionOffset, sym->index, IMAGE_REL_AMD64_ADDR64);
 }
 
