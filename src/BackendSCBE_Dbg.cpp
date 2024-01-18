@@ -1,12 +1,11 @@
 #include "pch.h"
 #include "BackendSCBE.h"
+#include "ByteCode.h"
+#include "LanguageSpec.h"
 #include "Module.h"
 #include "TypeManager.h"
 #include "Version.h"
 #include "Workspace.h"
-#include "LanguageSpec.h"
-#include "ByteCode.h"
-#pragma optimize("", off)
 
 // https://github.com/microsoft/microsoft-pdb/blob/master/include/cvinfo.h
 
