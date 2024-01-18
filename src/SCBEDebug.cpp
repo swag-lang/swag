@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "SCBE.h"
 #include "ByteCode.h"
-#include "EncoderCPU.h"
+#include "SCBECPU.h"
 #include "SCBEDebug.h"
 #include "SCBEDebug_CodeView.h"
 #include "LanguageSpec.h"
@@ -10,7 +10,7 @@
 #include "Version.h"
 #include "Workspace.h"
 
-DbgTypeIndex SCBEDebug::getTypeSlice(EncoderCPU& pp, TypeInfo* typeInfo, TypeInfo* pointedType, DbgTypeIndex* value)
+DbgTypeIndex SCBEDebug::getTypeSlice(SCBECPU& pp, TypeInfo* typeInfo, TypeInfo* pointedType, DbgTypeIndex* value)
 {
     auto         tr0 = addTypeRecord(pp);
     DbgTypeField field;
@@ -45,7 +45,7 @@ DbgTypeIndex SCBEDebug::getTypeSlice(EncoderCPU& pp, TypeInfo* typeInfo, TypeInf
     return tr1->index;
 }
 
-void SCBEDebug::getStructFields(EncoderCPU& pp, DbgTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset)
+void SCBEDebug::getStructFields(SCBECPU& pp, DbgTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset)
 {
     tr->LF_FieldList.fields.reserve(typeStruct->fields.count);
     for (auto& p : typeStruct->fields)
@@ -65,7 +65,7 @@ void SCBEDebug::getStructFields(EncoderCPU& pp, DbgTypeRecord* tr, TypeInfoStruc
     }
 }
 
-DbgTypeIndex SCBEDebug::getOrCreateType(EncoderCPU& pp, TypeInfo* typeInfo, bool forceUnRef)
+DbgTypeIndex SCBEDebug::getOrCreateType(SCBECPU& pp, TypeInfo* typeInfo, bool forceUnRef)
 {
     typeInfo = typeInfo->getConcreteAlias();
 
@@ -441,7 +441,7 @@ DbgTypeIndex SCBEDebug::getSimpleType(TypeInfo* typeInfo)
     return SimpleTypeKind::None;
 }
 
-DbgTypeIndex SCBEDebug::getOrCreatePointerToType(EncoderCPU& pp, TypeInfo* typeInfo, bool asRef)
+DbgTypeIndex SCBEDebug::getOrCreatePointerToType(SCBECPU& pp, TypeInfo* typeInfo, bool asRef)
 {
     auto simpleType = getSimpleType(typeInfo);
     if (simpleType != SimpleTypeKind::None)
@@ -455,7 +455,7 @@ DbgTypeIndex SCBEDebug::getOrCreatePointerToType(EncoderCPU& pp, TypeInfo* typeI
     return tr->index;
 }
 
-DbgTypeIndex SCBEDebug::getOrCreatePointerPointerToType(EncoderCPU& pp, TypeInfo* typeInfo)
+DbgTypeIndex SCBEDebug::getOrCreatePointerPointerToType(SCBECPU& pp, TypeInfo* typeInfo)
 {
     // Pointer to something complex
     auto tr                    = addTypeRecord(pp);
@@ -464,7 +464,7 @@ DbgTypeIndex SCBEDebug::getOrCreatePointerPointerToType(EncoderCPU& pp, TypeInfo
     return tr->index;
 }
 
-DbgTypeRecord* SCBEDebug::addTypeRecord(EncoderCPU& pp)
+DbgTypeRecord* SCBEDebug::addTypeRecord(SCBECPU& pp)
 {
     auto tr   = pp.dbgTypeRecords.addObj<DbgTypeRecord>();
     tr->index = (DbgTypeIndex) pp.dbgTypeRecordsCount + 0x1000;
@@ -565,7 +565,7 @@ void SCBEDebug::setLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruc
     }
 }
 
-bool SCBEDebug::emit(const BuildParameters& buildParameters, SCBE* scbe, EncoderCPU& pp)
+bool SCBEDebug::emit(const BuildParameters& buildParameters, SCBE* scbe, SCBECPU& pp)
 {
     SCBEDebug_CodeView dbg;
     dbg.scbe = scbe;

@@ -77,19 +77,19 @@
     <ClCompile Include="..\src\TypeGenStructJob.cpp">
       <Filter>Semantic\Type</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\BackendSCBE.cpp">
+    <ClCompile Include="..\src\SCBE.cpp">
       <Filter>Backend\SCBE</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\BackendSCBE_Data.cpp">
+    <ClCompile Include="..\src\SCBE_Data.cpp">
       <Filter>Backend\SCBE</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\BackendSCBE_Function.cpp">
+    <ClCompile Include="..\src\SCBE_Function.cpp">
       <Filter>Backend\SCBE</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\BackendSCBE_Main.cpp">
+    <ClCompile Include="..\src\SCBE_Main.cpp">
       <Filter>Backend\SCBE</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\BackendSCBESaveObjJob.cpp">
+    <ClCompile Include="..\src\SCBESaveObjJob.cpp">
       <Filter>Backend\SCBE</Filter>
     </ClCompile>
     <ClCompile Include="../src/ByteCodeOptimizer.cpp">
@@ -251,7 +251,7 @@
     <ClCompile Include="..\src\BackendLLVM_Call.cpp">
       <Filter>Backend\LLVM</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\BackendSCBE_Call.cpp">
+    <ClCompile Include="..\src\SCBE_Call.cpp">
       <Filter>Backend\SCBE</Filter>
     </ClCompile>
     <ClCompile Include="..\src\ByteCodeOptimizer_DupBlocks.cpp">
@@ -260,7 +260,7 @@
     <ClCompile Include="..\src\CallConv.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\BackendSCBE_Emit.cpp">
+    <ClCompile Include="..\src\SCBE_Emit.cpp">
       <Filter>Backend\SCBE</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Report.cpp">
@@ -644,10 +644,10 @@
     <ClCompile Include="..\src\BackendFunctionBodyJob.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\EncoderCPU.cpp">
+    <ClCompile Include="..\src\SCBECPU.cpp">
       <Filter>Backend\SCBE\Encoder</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\EncoderX64.cpp">
+    <ClCompile Include="..\src\SCBEX64.cpp">
       <Filter>Backend\SCBE\Encoder</Filter>
     </ClCompile>
     <ClCompile Include="../src/CompilerItf.cpp">
@@ -731,16 +731,16 @@
     <ClInclude Include="..\src\TypeGen.h">
       <Filter>Semantic\Type</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\BackendSCBE.h">
+    <ClInclude Include="..\src\SCBE.h">
       <Filter>Backend\SCBE</Filter>
     </ClInclude>
     <ClInclude Include="..\src\BackendLLVM_Macros.h">
       <Filter>Backend\LLVM</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\BackendSCBE_Macros.h">
+    <ClInclude Include="..\src\SCBE_Macros.h">
       <Filter>Backend\SCBE</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\BackendSCBESaveObjJob.h">
+    <ClInclude Include="..\src\SCBESaveObjJob.h">
       <Filter>Backend\SCBE</Filter>
     </ClInclude>
     <ClInclude Include="../src/ByteCodeOptimizer.h">
@@ -1001,10 +1001,10 @@
     <ClInclude Include="..\src\BackendFunctionBodyJob.h">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\EncoderX64.h">
+    <ClInclude Include="..\src\SCBEX64.h">
       <Filter>Backend\SCBE\Encoder</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\EncoderCPU.h">
+    <ClInclude Include="..\src\SCBECPU.h">
       <Filter>Backend\SCBE\Encoder</Filter>
     </ClInclude>
     <ClInclude Include="../src/Runtime.h">

@@ -226,10 +226,10 @@
     <ClInclude Include="..\src\BackendLLVM_Macros.h" />
     <ClInclude Include="../src/BackendLinker.h" />
     <ClInclude Include="../src/BackendLLVM.h" />
-    <ClInclude Include="..\src\BackendSCBE.h" />
+    <ClInclude Include="..\src\SCBE.h" />
     <ClInclude Include="..\src\SCBEDebug.h" />
-    <ClInclude Include="..\src\BackendSCBE_Macros.h" />
-    <ClInclude Include="..\src\BackendSCBESaveObjJob.h" />
+    <ClInclude Include="..\src\SCBE_Macros.h" />
+    <ClInclude Include="..\src\SCBESaveObjJob.h" />
     <ClInclude Include="..\src\BackendParameters.h" />
     <ClInclude Include="../src/ByteCode.h" />
     <ClInclude Include="../src/ByteCodeGenJob.h" />
@@ -268,7 +268,7 @@
     <ClInclude Include="..\src\CallConv.h" />
     <ClInclude Include="..\src\ComputedValue.h" />
     <ClInclude Include="..\src\SCBEDebug_CodeView.h" />
-    <ClInclude Include="..\src\EncoderCPU.h" />
+    <ClInclude Include="..\src\SCBECPU.h" />
     <ClInclude Include="..\src\ErrorContext.h" />
     <ClInclude Include="..\src\ErrorList.h" />
     <ClInclude Include="..\src\Crc32.h" />
@@ -331,7 +331,7 @@
     <ClInclude Include="..\src\Vector.h" />
     <ClInclude Include="..\src\Report.h" />
     <ClInclude Include="..\src\SaveGenJob.h" />
-    <ClInclude Include="..\src\EncoderX64.h" />
+    <ClInclude Include="..\src\SCBEX64.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="../src/Allocator.cpp" />
@@ -352,15 +352,15 @@
     <ClCompile Include="..\src\BackendLLVM_Main.cpp" />
     <ClCompile Include="../src/BackendLinker.cpp" />
     <ClCompile Include="../src/BackendLLVM.cpp" />
-    <ClCompile Include="..\src\BackendSCBE.cpp" />
-    <ClCompile Include="..\src\BackendSCBE_Call.cpp" />
-    <ClCompile Include="..\src\BackendSCBE_Data.cpp" />
+    <ClCompile Include="..\src\SCBE.cpp" />
+    <ClCompile Include="..\src\SCBE_Call.cpp" />
+    <ClCompile Include="..\src\SCBE_Data.cpp" />
     <ClCompile Include="..\src\SCBEDebug.cpp" />
     <ClCompile Include="..\src\BackendFunctionBodyJob.cpp" />
-    <ClCompile Include="..\src\BackendSCBE_Emit.cpp" />
-    <ClCompile Include="..\src\BackendSCBE_Function.cpp" />
-    <ClCompile Include="..\src\BackendSCBESaveObjJob.cpp" />
-    <ClCompile Include="..\src\BackendSCBE_Main.cpp" />
+    <ClCompile Include="..\src\SCBE_Emit.cpp" />
+    <ClCompile Include="..\src\SCBE_Function.cpp" />
+    <ClCompile Include="..\src\SCBESaveObjJob.cpp" />
+    <ClCompile Include="..\src\SCBE_Main.cpp" />
     <ClCompile Include="../src/ByteCode.cpp" />
     <ClCompile Include="..\src\ByteCodeDebugger_Break.cpp" />
     <ClCompile Include="..\src\ByteCodeDebugger_Display.cpp" />
@@ -447,7 +447,7 @@
     <ClCompile Include="..\src\CallConv.cpp" />
     <ClCompile Include="..\src\ComputedValue.cpp" />
     <ClCompile Include="..\src\SCBEDebug_CodeView.cpp" />
-    <ClCompile Include="..\src\EncoderCPU.cpp" />
+    <ClCompile Include="..\src\SCBECPU.cpp" />
     <ClCompile Include="..\src\ErrorContext.cpp" />
     <ClCompile Include="..\src\ErrorIds.cpp" />
     <ClCompile Include="..\src\GenDoc.cpp" />
@@ -568,7 +568,7 @@
     <ClCompile Include="..\src\Workspace_New.cpp" />
     <ClCompile Include="..\src\Workspace_Script.cpp" />
     <ClCompile Include="..\src\Workspace_Tags.cpp" />
-    <ClCompile Include="..\src\EncoderX64.cpp" />
+    <ClCompile Include="..\src\SCBEX64.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\FileJob.cpp" />

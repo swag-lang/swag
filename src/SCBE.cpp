@@ -326,7 +326,7 @@ JobResult SCBE::prepareOutput(int stage, const BuildParameters& buildParameters,
     int precompileIndex = buildParameters.precompileIndex;
 
     if (!perThread[ct][precompileIndex])
-        perThread[ct][precompileIndex] = new EncoderX64;
+        perThread[ct][precompileIndex] = new SCBEX64;
 
     auto& pp     = *perThread[ct][precompileIndex];
     auto& concat = pp.concat;
@@ -507,7 +507,7 @@ JobResult SCBE::prepareOutput(int stage, const BuildParameters& buildParameters,
     return JobResult::ReleaseJob;
 }
 
-CoffFunction* SCBE::registerFunction(EncoderX64& pp, AstNode* node, uint32_t symbolIndex)
+CoffFunction* SCBE::registerFunction(SCBEX64& pp, AstNode* node, uint32_t symbolIndex)
 {
     CoffFunction cf;
     cf.node        = node;

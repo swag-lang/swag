@@ -1,5 +1,5 @@
 #pragma once
-#include "EncoderCPU.h"
+#include "SCBECPU.h"
 
 enum X64DispMode
 {
@@ -12,7 +12,7 @@ enum X64DispMode
 #define UWOP_ALLOC_LARGE 1
 #define UWOP_ALLOC_SMALL 2
 
-struct EncoderX64 : public EncoderCPU
+struct SCBEX64 : public SCBECPU
 {
     void emit_REX(CPUBits numBits, CPURegister reg1 = RAX, CPURegister reg2 = RAX);
     void emit_ModRM(uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t op = 1);

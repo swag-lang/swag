@@ -156,7 +156,7 @@ struct CoffFunction
     uint32_t               numScratchRegs          = 0;
 };
 
-struct EncoderCPU
+struct SCBECPU
 {
     void        clearInstructionCache();
     CoffSymbol* getSymbol(const Utf8& name);

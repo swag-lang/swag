@@ -8,7 +8,7 @@
 #include "Version.h"
 #include "Workspace.h"
 
-void SCBEDebug_CodeView::emitCompilerFlagsDebugS(EncoderCPU& pp)
+void SCBEDebug_CodeView::emitCompilerFlagsDebugS(SCBECPU& pp)
 {
     auto& concat = pp.concat;
 
@@ -44,7 +44,7 @@ void SCBEDebug_CodeView::emitCompilerFlagsDebugS(EncoderCPU& pp)
     *patchSCount = concat.totalCount() - patchSOffset;
 }
 
-void SCBEDebug_CodeView::startRecord(EncoderCPU& pp, uint16_t what)
+void SCBEDebug_CodeView::startRecord(SCBECPU& pp, uint16_t what)
 {
     auto& concat = pp.concat;
     SWAG_ASSERT(pp.dbgRecordIdx < pp.MAX_RECORD);
@@ -54,7 +54,7 @@ void SCBEDebug_CodeView::startRecord(EncoderCPU& pp, uint16_t what)
     pp.dbgRecordIdx++;
 }
 
-void SCBEDebug_CodeView::endRecord(EncoderCPU& pp, bool align)
+void SCBEDebug_CodeView::endRecord(SCBECPU& pp, bool align)
 {
     auto& concat = pp.concat;
     if (align)
@@ -64,7 +64,7 @@ void SCBEDebug_CodeView::endRecord(EncoderCPU& pp, bool align)
     *pp.dbgStartRecordPtr[pp.dbgRecordIdx] = (uint16_t) (concat.totalCount() - pp.dbgStartRecordOffset[pp.dbgRecordIdx]);
 }
 
-void SCBEDebug_CodeView::emitTruncatedString(EncoderCPU& pp, const Utf8& str)
+void SCBEDebug_CodeView::emitTruncatedString(SCBECPU& pp, const Utf8& str)
 {
     auto& concat = pp.concat;
     SWAG_ASSERT(str.length() < 0xF00); // Magic number from llvm codeview debug (should truncate)
@@ -73,7 +73,7 @@ void SCBEDebug_CodeView::emitTruncatedString(EncoderCPU& pp, const Utf8& str)
     concat.addU8(0);
 }
 
-void SCBEDebug_CodeView::emitSecRel(EncoderCPU& pp, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset)
+void SCBEDebug_CodeView::emitSecRel(SCBECPU& pp, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset)
 {
     auto& concat = pp.concat;
 
@@ -93,7 +93,7 @@ void SCBEDebug_CodeView::emitSecRel(EncoderCPU& pp, uint32_t symbolIndex, uint32
     concat.addU16(0);
 }
 
-void SCBEDebug_CodeView::emitEmbeddedValue(EncoderCPU& pp, TypeInfo* valueType, ComputedValue& val)
+void SCBEDebug_CodeView::emitEmbeddedValue(SCBECPU& pp, TypeInfo* valueType, ComputedValue& val)
 {
     auto& concat = pp.concat;
     SWAG_ASSERT(valueType->isNative());
@@ -151,7 +151,7 @@ void SCBEDebug_CodeView::emitEmbeddedValue(EncoderCPU& pp, TypeInfo* valueType, 
     }
 }
 
-bool SCBEDebug_CodeView::emitDataDebugT(EncoderCPU& pp)
+bool SCBEDebug_CodeView::emitDataDebugT(SCBECPU& pp)
 {
     auto& concat = pp.concat;
 
@@ -294,7 +294,7 @@ bool SCBEDebug_CodeView::emitDataDebugT(EncoderCPU& pp)
     return true;
 }
 
-void SCBEDebug_CodeView::emitConstant(EncoderCPU& pp, AstNode* node, const Utf8& name)
+void SCBEDebug_CodeView::emitConstant(SCBECPU& pp, AstNode* node, const Utf8& name)
 {
     auto& concat = pp.concat;
     if (node->typeInfo->isNative() && node->typeInfo->sizeOf <= 8)
@@ -326,7 +326,7 @@ void SCBEDebug_CodeView::emitConstant(EncoderCPU& pp, AstNode* node, const Utf8&
     }
 }
 
-void SCBEDebug_CodeView::emitGlobalDebugS(EncoderCPU& pp, VectorNative<AstNode*>& gVars, uint32_t segSymIndex)
+void SCBEDebug_CodeView::emitGlobalDebugS(SCBECPU& pp, VectorNative<AstNode*>& gVars, uint32_t segSymIndex)
 {
     auto& concat = pp.concat;
     concat.addU32(DEBUG_S_SYMBOLS);
@@ -405,7 +405,7 @@ static uint32_t getFileChecksum(MapPath<uint32_t>& mapFileNames,
     return checkSymIndex * 8;
 }
 
-bool SCBEDebug_CodeView::emitLines(EncoderCPU&        pp,
+bool SCBEDebug_CodeView::emitLines(SCBECPU&        pp,
                                    MapPath<uint32_t>& mapFileNames,
                                    Vector<uint32_t>&  arrFileNames,
                                    Utf8&              stringTable,
@@ -450,7 +450,7 @@ bool SCBEDebug_CodeView::emitLines(EncoderCPU&        pp,
     return true;
 }
 
-bool SCBEDebug_CodeView::emitFctDebugS(EncoderCPU& pp)
+bool SCBEDebug_CodeView::emitFctDebugS(SCBECPU& pp)
 {
     auto& concat = pp.concat;
 
@@ -762,7 +762,7 @@ bool SCBEDebug_CodeView::emitFctDebugS(EncoderCPU& pp)
     return true;
 }
 
-bool SCBEDebug_CodeView::emitScope(EncoderCPU& pp, CoffFunction& f, Scope* scope)
+bool SCBEDebug_CodeView::emitScope(SCBECPU& pp, CoffFunction& f, Scope* scope)
 {
     auto& concat = pp.concat;
 
@@ -884,7 +884,7 @@ bool SCBEDebug_CodeView::emitScope(EncoderCPU& pp, CoffFunction& f, Scope* scope
     return true;
 }
 
-bool SCBEDebug_CodeView::emit(const BuildParameters& buildParameters, EncoderCPU& pp)
+bool SCBEDebug_CodeView::emit(const BuildParameters& buildParameters, SCBECPU& pp)
 {
     auto& concat = pp.concat;
 
