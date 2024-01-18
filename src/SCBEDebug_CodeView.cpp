@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "BackendSCBE.h"
-#include "EncoderDebug_CodeView.h"
+#include "SCBEDebug_CodeView.h"
 #include "ByteCode.h"
 #include "LanguageSpec.h"
 #include "Module.h"
@@ -8,7 +8,7 @@
 #include "Version.h"
 #include "Workspace.h"
 
-void EncoderDebug_CodeView::emitCompilerFlagsDebugS(EncoderCPU& pp)
+void SCBEDebug_CodeView::emitCompilerFlagsDebugS(EncoderCPU& pp)
 {
     auto& concat = pp.concat;
 
@@ -44,7 +44,7 @@ void EncoderDebug_CodeView::emitCompilerFlagsDebugS(EncoderCPU& pp)
     *patchSCount = concat.totalCount() - patchSOffset;
 }
 
-void EncoderDebug_CodeView::startRecord(EncoderCPU& pp, uint16_t what)
+void SCBEDebug_CodeView::startRecord(EncoderCPU& pp, uint16_t what)
 {
     auto& concat = pp.concat;
     SWAG_ASSERT(pp.dbgRecordIdx < pp.MAX_RECORD);
@@ -54,7 +54,7 @@ void EncoderDebug_CodeView::startRecord(EncoderCPU& pp, uint16_t what)
     pp.dbgRecordIdx++;
 }
 
-void EncoderDebug_CodeView::endRecord(EncoderCPU& pp, bool align)
+void SCBEDebug_CodeView::endRecord(EncoderCPU& pp, bool align)
 {
     auto& concat = pp.concat;
     if (align)
@@ -64,7 +64,7 @@ void EncoderDebug_CodeView::endRecord(EncoderCPU& pp, bool align)
     *pp.dbgStartRecordPtr[pp.dbgRecordIdx] = (uint16_t) (concat.totalCount() - pp.dbgStartRecordOffset[pp.dbgRecordIdx]);
 }
 
-void EncoderDebug_CodeView::emitTruncatedString(EncoderCPU& pp, const Utf8& str)
+void SCBEDebug_CodeView::emitTruncatedString(EncoderCPU& pp, const Utf8& str)
 {
     auto& concat = pp.concat;
     SWAG_ASSERT(str.length() < 0xF00); // Magic number from llvm codeview debug (should truncate)
@@ -73,7 +73,7 @@ void EncoderDebug_CodeView::emitTruncatedString(EncoderCPU& pp, const Utf8& str)
     concat.addU8(0);
 }
 
-void EncoderDebug_CodeView::emitSecRel(EncoderCPU& pp, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset)
+void SCBEDebug_CodeView::emitSecRel(EncoderCPU& pp, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset)
 {
     auto& concat = pp.concat;
 
@@ -93,7 +93,7 @@ void EncoderDebug_CodeView::emitSecRel(EncoderCPU& pp, uint32_t symbolIndex, uin
     concat.addU16(0);
 }
 
-void EncoderDebug_CodeView::emitEmbeddedValue(EncoderCPU& pp, TypeInfo* valueType, ComputedValue& val)
+void SCBEDebug_CodeView::emitEmbeddedValue(EncoderCPU& pp, TypeInfo* valueType, ComputedValue& val)
 {
     auto& concat = pp.concat;
     SWAG_ASSERT(valueType->isNative());
@@ -151,7 +151,7 @@ void EncoderDebug_CodeView::emitEmbeddedValue(EncoderCPU& pp, TypeInfo* valueTyp
     }
 }
 
-bool EncoderDebug_CodeView::emitDataDebugT(EncoderCPU& pp)
+bool SCBEDebug_CodeView::emitDataDebugT(EncoderCPU& pp)
 {
     auto& concat = pp.concat;
 
@@ -294,13 +294,13 @@ bool EncoderDebug_CodeView::emitDataDebugT(EncoderCPU& pp)
     return true;
 }
 
-void EncoderDebug_CodeView::emitConstant(EncoderCPU& pp, AstNode* node, const Utf8& name)
+void SCBEDebug_CodeView::emitConstant(EncoderCPU& pp, AstNode* node, const Utf8& name)
 {
     auto& concat = pp.concat;
     if (node->typeInfo->isNative() && node->typeInfo->sizeOf <= 8)
     {
         startRecord(pp, S_CONSTANT);
-        concat.addU32(EncoderDebug::getOrCreateType(pp, node->typeInfo));
+        concat.addU32(SCBEDebug::getOrCreateType(pp, node->typeInfo));
         switch (node->typeInfo->sizeOf)
         {
         case 1:
@@ -326,7 +326,7 @@ void EncoderDebug_CodeView::emitConstant(EncoderCPU& pp, AstNode* node, const Ut
     }
 }
 
-void EncoderDebug_CodeView::emitGlobalDebugS(EncoderCPU& pp, VectorNative<AstNode*>& gVars, uint32_t segSymIndex)
+void SCBEDebug_CodeView::emitGlobalDebugS(EncoderCPU& pp, VectorNative<AstNode*>& gVars, uint32_t segSymIndex)
 {
     auto& concat = pp.concat;
     concat.addU32(DEBUG_S_SYMBOLS);
@@ -338,12 +338,12 @@ void EncoderDebug_CodeView::emitGlobalDebugS(EncoderCPU& pp, VectorNative<AstNod
         // Compile time constant
         if (p->hasComputedValue())
         {
-            emitConstant(pp, p, EncoderDebug::getScopedName(p));
+            emitConstant(pp, p, SCBEDebug::getScopedName(p));
             continue;
         }
 
         startRecord(pp, S_LDATA32);
-        concat.addU32(EncoderDebug::getOrCreateType(pp, p->typeInfo));
+        concat.addU32(SCBEDebug::getOrCreateType(pp, p->typeInfo));
 
         CoffRelocation reloc;
 
@@ -361,7 +361,7 @@ void EncoderDebug_CodeView::emitGlobalDebugS(EncoderCPU& pp, VectorNative<AstNod
         pp.relocTableDBGSSection.table.push_back(reloc);
         concat.addU16(0);
 
-        auto nn = EncoderDebug::getScopedName(p);
+        auto nn = SCBEDebug::getScopedName(p);
         emitTruncatedString(pp, nn);
         endRecord(pp);
     }
@@ -370,7 +370,7 @@ void EncoderDebug_CodeView::emitGlobalDebugS(EncoderCPU& pp, VectorNative<AstNod
     if (patchSOffset == concat.totalCount())
     {
         startRecord(pp, S_LDATA32);
-        concat.addU32(EncoderDebug::getOrCreateType(pp, g_TypeMgr->typeInfoBool));
+        concat.addU32(SCBEDebug::getOrCreateType(pp, g_TypeMgr->typeInfoBool));
         concat.addU32(0);
         emitTruncatedString(pp, "__fake__");
         concat.addU16(0);
@@ -405,13 +405,13 @@ static uint32_t getFileChecksum(MapPath<uint32_t>& mapFileNames,
     return checkSymIndex * 8;
 }
 
-bool EncoderDebug_CodeView::emitLines(EncoderCPU&        pp,
-                                        MapPath<uint32_t>& mapFileNames,
-                                        Vector<uint32_t>&  arrFileNames,
-                                        Utf8&              stringTable,
-                                        Concat&            concat,
-                                        CoffFunction&      f,
-                                        size_t             idxDbgLines)
+bool SCBEDebug_CodeView::emitLines(EncoderCPU&        pp,
+                                   MapPath<uint32_t>& mapFileNames,
+                                   Vector<uint32_t>&  arrFileNames,
+                                   Utf8&              stringTable,
+                                   Concat&            concat,
+                                   CoffFunction&      f,
+                                   size_t             idxDbgLines)
 {
     auto& dbgLines   = f.dbgLines[idxDbgLines];
     auto  sourceFile = dbgLines.sourceFile;
@@ -450,7 +450,7 @@ bool EncoderDebug_CodeView::emitLines(EncoderCPU&        pp,
     return true;
 }
 
-bool EncoderDebug_CodeView::emitFctDebugS(EncoderCPU& pp)
+bool SCBEDebug_CodeView::emitFctDebugS(EncoderCPU& pp)
 {
     auto& concat = pp.concat;
 
@@ -468,19 +468,19 @@ bool EncoderDebug_CodeView::emitFctDebugS(EncoderCPU& pp)
 
         // Add a func id type record
         /////////////////////////////////
-        auto tr  = EncoderDebug::addTypeRecord(pp);
+        auto tr  = SCBEDebug::addTypeRecord(pp);
         tr->node = f.node;
         if (typeFunc->isMethod())
         {
             tr->kind                  = LF_MFUNC_ID;
             auto typeThis             = CastTypeInfo<TypeInfoPointer>(typeFunc->parameters[0]->typeInfo, TypeInfoKind::Pointer);
-            tr->LF_MFuncId.parentType = EncoderDebug::getOrCreateType(pp, typeThis->pointedType);
-            tr->LF_MFuncId.type       = EncoderDebug::getOrCreateType(pp, typeFunc);
+            tr->LF_MFuncId.parentType = SCBEDebug::getOrCreateType(pp, typeThis->pointedType);
+            tr->LF_MFuncId.type       = SCBEDebug::getOrCreateType(pp, typeFunc);
         }
         else
         {
             tr->kind           = LF_FUNC_ID;
-            tr->LF_FuncId.type = EncoderDebug::getOrCreateType(pp, typeFunc);
+            tr->LF_FuncId.type = SCBEDebug::getOrCreateType(pp, typeFunc);
         }
 
         // Symbol
@@ -503,7 +503,7 @@ bool EncoderDebug_CodeView::emitFctDebugS(EncoderCPU& pp)
             concat.addU32(tr->index);                     // FuncID type index
             emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
             concat.addU8(0); // ProcSymFlags Flags = ProcSymFlags::None
-            auto nn = EncoderDebug::getScopedName(f.node);
+            auto nn = SCBEDebug::getScopedName(f.node);
             emitTruncatedString(pp, nn);
             endRecord(pp);
 
@@ -538,10 +538,10 @@ bool EncoderDebug_CodeView::emitFctDebugS(EncoderCPU& pp)
                     switch (typeParam->kind)
                     {
                     case TypeInfoKind::Array:
-                        typeIdx = EncoderDebug::getOrCreatePointerToType(pp, typeParam, false);
+                        typeIdx = SCBEDebug::getOrCreatePointerToType(pp, typeParam, false);
                         break;
                     default:
-                        typeIdx = EncoderDebug::getOrCreateType(pp, typeParam);
+                        typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
                         break;
                     }
 
@@ -579,9 +579,9 @@ bool EncoderDebug_CodeView::emitFctDebugS(EncoderCPU& pp)
                     {
                     case TypeInfoKind::Struct:
                         if (CallConv::structParamByValue(typeFunc, typeParam))
-                            typeIdx = EncoderDebug::getOrCreateType(pp, typeParam);
+                            typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
                         else
-                            typeIdx = EncoderDebug::getOrCreatePointerToType(pp, typeParam, true);
+                            typeIdx = SCBEDebug::getOrCreatePointerToType(pp, typeParam, true);
                         break;
 
                     case TypeInfoKind::Pointer:
@@ -590,24 +590,24 @@ bool EncoderDebug_CodeView::emitFctDebugS(EncoderCPU& pp)
                         {
                             auto typeRef = TypeManager::concretePtrRefType(typeParam);
                             if (CallConv::structParamByValue(typeFunc, typeRef))
-                                typeIdx = EncoderDebug::getOrCreateType(pp, typeRef);
+                                typeIdx = SCBEDebug::getOrCreateType(pp, typeRef);
                             else
-                                typeIdx = EncoderDebug::getOrCreateType(pp, typeParam);
+                                typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
                         }
                         else
                         {
-                            typeIdx = EncoderDebug::getOrCreateType(pp, typeParam);
+                            typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
                         }
 
                         break;
                     }
 
                     case TypeInfoKind::Array:
-                        typeIdx = EncoderDebug::getOrCreatePointerToType(pp, typeParam, false);
+                        typeIdx = SCBEDebug::getOrCreatePointerToType(pp, typeParam, false);
                         break;
 
                     default:
-                        typeIdx = EncoderDebug::getOrCreateType(pp, typeParam);
+                        typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
                         break;
                     }
 
@@ -648,7 +648,7 @@ bool EncoderDebug_CodeView::emitFctDebugS(EncoderCPU& pp)
                     // If we have 2 registers then we cannot create a symbol flagged as 'parameter' in order to really see it.
                     if (typeParam->numRegisters() == 2)
                     {
-                        typeIdx = EncoderDebug::getOrCreateType(pp, typeParam);
+                        typeIdx = SCBEDebug::getOrCreateType(pp, typeParam);
 
                         //////////
                         startRecord(pp, S_LOCAL);
@@ -720,7 +720,7 @@ bool EncoderDebug_CodeView::emitFctDebugS(EncoderCPU& pp)
                 concat.addU32(CV_INLINEE_SOURCE_LINE_SIGNATURE);
 
                 auto checkSymIndex = getFileChecksum(mapFileNames, arrFileNames, stringTable, dbgLines.sourceFile);
-                auto typeIdx       = EncoderDebug::getOrCreateType(pp, dbgLines.inlined->typeInfo);
+                auto typeIdx       = SCBEDebug::getOrCreateType(pp, dbgLines.inlined->typeInfo);
 
                 for (auto l : dbgLines.lines)
                 {
@@ -762,7 +762,7 @@ bool EncoderDebug_CodeView::emitFctDebugS(EncoderCPU& pp)
     return true;
 }
 
-bool EncoderDebug_CodeView::emitScope(EncoderCPU& pp, CoffFunction& f, Scope* scope)
+bool SCBEDebug_CodeView::emitScope(EncoderCPU& pp, CoffFunction& f, Scope* scope)
 {
     auto& concat = pp.concat;
 
@@ -796,7 +796,7 @@ bool EncoderDebug_CodeView::emitScope(EncoderCPU& pp, CoffFunction& f, Scope* sc
         SWAG_ASSERT(localVar->attributeFlags & ATTRIBUTE_GLOBAL);
 
         startRecord(pp, S_LDATA32);
-        concat.addU32(EncoderDebug::getOrCreateType(pp, typeInfo));
+        concat.addU32(SCBEDebug::getOrCreateType(pp, typeInfo));
 
         CoffRelocation reloc;
         auto           segSymIndex = overload->flags & OVERLOAD_VAR_BSS ? pp.symBSIndex : pp.symMSIndex;
@@ -844,10 +844,10 @@ bool EncoderDebug_CodeView::emitScope(EncoderCPU& pp, CoffFunction& f, Scope* sc
         //////////
         startRecord(pp, S_LOCAL);
         if (overload->flags & OVERLOAD_RETVAL)
-            concat.addU32(EncoderDebug::getOrCreatePointerToType(pp, typeInfo, true)); // Type
+            concat.addU32(SCBEDebug::getOrCreatePointerToType(pp, typeInfo, true)); // Type
         else
-            concat.addU32(EncoderDebug::getOrCreateType(pp, typeInfo)); // Type
-        concat.addU16(0);                                                 // CV_LVARFLAGS
+            concat.addU32(SCBEDebug::getOrCreateType(pp, typeInfo)); // Type
+        concat.addU16(0);                                            // CV_LVARFLAGS
         emitTruncatedString(pp, localVar->token.text);
         endRecord(pp);
 
@@ -884,7 +884,7 @@ bool EncoderDebug_CodeView::emitScope(EncoderCPU& pp, CoffFunction& f, Scope* sc
     return true;
 }
 
-bool EncoderDebug_CodeView::emit(const BuildParameters& buildParameters, EncoderCPU& pp)
+bool SCBEDebug_CodeView::emit(const BuildParameters& buildParameters, EncoderCPU& pp)
 {
     auto& concat = pp.concat;
 

@@ -2,7 +2,7 @@
 #include "BackendLLVM.h"
 #include "BackendLinker.h"
 #include "BackendLLVM_Macros.h"
-#include "BackendLLVMDbg.h"
+#include "LLVMDebug.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "Module.h"
@@ -231,7 +231,7 @@ JobResult BackendLLVM::prepareOutput(int stage, const BuildParameters& buildPara
 
         if (buildParameters.buildCfg->backendDebugInformations)
         {
-            pp.dbg = new BackendLLVMDbg;
+            pp.dbg = new LLVMDebug;
             pp.dbg->setup(this, pp.module);
         }
 

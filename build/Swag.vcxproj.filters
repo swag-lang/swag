@@ -656,13 +656,13 @@
     <ClCompile Include="../src/Context.cpp">
       <Filter>Backend</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\EncoderDebug.cpp">
+    <ClCompile Include="..\src\SCBEDebug.cpp">
       <Filter>Backend\SCBE\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\EncoderDebug_CodeView.cpp">
+    <ClCompile Include="..\src\SCBEDebug_CodeView.cpp">
       <Filter>Backend\SCBE\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="../src/BackendLLVMDbg.cpp">
+    <ClCompile Include="..\src\LLVMDebug.cpp">
       <Filter>Backend\LLVM\Debug</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1016,13 +1016,13 @@
     <ClInclude Include="../src/Context.h">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\EncoderDebug.h">
+    <ClInclude Include="..\src\SCBEDebug.h">
       <Filter>Backend\SCBE\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\EncoderDebug_CodeView.h">
+    <ClInclude Include="..\src\SCBEDebug_CodeView.h">
       <Filter>Backend\SCBE\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="../src/BackendLLVMDbg.h">
+    <ClInclude Include="..\src\LLVMDebug.h">
       <Filter>Backend\LLVM\Debug</Filter>
     </ClInclude>
   </ItemGroup>

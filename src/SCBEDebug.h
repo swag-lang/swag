@@ -1,7 +1,7 @@
 #pragma once
 #include "Backend.h"
-//#include "BackendParameters.h"
-//#include "DataSegment.h"
+// #include "BackendParameters.h"
+// #include "DataSegment.h"
 
 struct BuildParameters;
 struct ByteCodeInstruction;
@@ -125,7 +125,7 @@ struct DbgLines
     AstFuncDecl*    inlined = nullptr;
 };
 
-struct EncoderDebug
+struct SCBEDebug
 {
     static void           getStructFields(EncoderCPU& pp, DbgTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset);
     static DbgTypeIndex   getTypeSlice(EncoderCPU& pp, TypeInfo* typeInfo, TypeInfo* pointedType, DbgTypeIndex* value);

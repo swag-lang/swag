@@ -49,7 +49,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
     coffFct->typeFunc     = typeFunc;
     coffFct->startAddress = startAddress;
     if (debug)
-        EncoderDebug::setLocation(coffFct, bc, nullptr, 0);
+        SCBEDebug::setLocation(coffFct, bc, nullptr, 0);
 
     // In order, starting at RSP, we have :
     //
@@ -191,7 +191,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
             continue;
 
         if (debug)
-            EncoderDebug::setLocation(coffFct, bc, ip, concat.totalCount() - beforeProlog);
+            SCBEDebug::setLocation(coffFct, bc, ip, concat.totalCount() - beforeProlog);
 
         if (ip->flags & BCI_JUMP_DEST)
             pp.getOrCreateLabel(i);

@@ -9,7 +9,7 @@ struct DataSegment;
 struct ByteCode;
 struct TypeInfo;
 struct ByteCodeInstruction;
-struct BackendLLVMDbg;
+struct LLVMDebug;
 enum class SegmentKind;
 
 struct LLVMPerThread
@@ -89,7 +89,7 @@ struct LLVMPerThread
     Map<TypeInfoFuncAttr*, llvm::FunctionType*> mapFctTypeForeignClosure;
 
     // Debug infos
-    BackendLLVMDbg* dbg = nullptr;
+    LLVMDebug* dbg = nullptr;
 };
 
 struct BackendLLVM : public Backend

@@ -142,7 +142,7 @@ enum SimpleTypeMode : DbgTypeIndex
     NearPointer128 = 7  // 128 bit near pointer
 };
 
-struct EncoderDebug_CodeView
+struct SCBEDebug_CodeView
 {
     void startRecord(EncoderCPU& pp, uint16_t what);
     void endRecord(EncoderCPU& pp, bool align = true);

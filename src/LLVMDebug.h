@@ -11,7 +11,7 @@ struct SourceFile;
 struct TypeInfo;
 struct TypeInfoFuncAttr;
 
-struct BackendLLVMDbg
+struct LLVMDebug
 {
     void                    setup(BackendLLVM* m, llvm::Module* module);
     llvm::DISubprogram*     startFunction(ByteCode* bc, AstFuncDecl** resultDecl = nullptr);

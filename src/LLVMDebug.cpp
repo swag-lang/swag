@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "BackendLLVM.h"
-#include "BackendLLVMDbg.h"
+#include "LLVMDebug.h"
 #include "BackendLLVM_Macros.h"
 #include "ByteCode.h"
 #include "Module.h"
@@ -13,7 +13,7 @@ static llvm::DILocation* debugLocGet(unsigned Line, unsigned Col, const llvm::MD
     return llvm::DILocation::get(Scope->getContext(), Line, Col, const_cast<llvm::MDNode*>(Scope), const_cast<llvm::MDNode*>(InlinedAt), ImplicitCode);
 }
 
-void BackendLLVMDbg::setup(BackendLLVM* m, llvm::Module* modu)
+void LLVMDebug::setup(BackendLLVM* m, llvm::Module* modu)
 {
     llvm          = m;
     isOptimized   = !m->module->buildParameters.isDebug();
@@ -79,7 +79,7 @@ void BackendLLVMDbg::setup(BackendLLVM* m, llvm::Module* modu)
     }
 }
 
-llvm::DIFile* BackendLLVMDbg::getOrCreateFile(SourceFile* file)
+llvm::DIFile* LLVMDebug::getOrCreateFile(SourceFile* file)
 {
     auto it = mapFiles.find(file->path);
     if (it != mapFiles.end())
@@ -91,7 +91,7 @@ llvm::DIFile* BackendLLVMDbg::getOrCreateFile(SourceFile* file)
     return dbgfile;
 }
 
-llvm::DIType* BackendLLVMDbg::getEnumType(TypeInfo* typeInfo, llvm::DIFile* file)
+llvm::DIType* LLVMDebug::getEnumType(TypeInfo* typeInfo, llvm::DIFile* file)
 {
     auto it = mapTypes.find(typeInfo);
     if (it != mapTypes.end())
@@ -129,7 +129,7 @@ llvm::DIType* BackendLLVMDbg::getEnumType(TypeInfo* typeInfo, llvm::DIFile* file
     return getType(typeInfoEnum->rawType, file);
 }
 
-llvm::DIType* BackendLLVMDbg::getPointerToType(TypeInfo* typeInfo, llvm::DIFile* file)
+llvm::DIType* LLVMDebug::getPointerToType(TypeInfo* typeInfo, llvm::DIFile* file)
 {
     auto it = mapPtrTypes.find(typeInfo);
     if (it != mapPtrTypes.end())
@@ -139,7 +139,7 @@ llvm::DIType* BackendLLVMDbg::getPointerToType(TypeInfo* typeInfo, llvm::DIFile*
     return result;
 }
 
-llvm::DIType* BackendLLVMDbg::getReferenceToType(TypeInfo* typeInfo, llvm::DIFile* file)
+llvm::DIType* LLVMDebug::getReferenceToType(TypeInfo* typeInfo, llvm::DIFile* file)
 {
     auto it = mapRefTypes.find(typeInfo);
     if (it != mapRefTypes.end())
@@ -149,7 +149,7 @@ llvm::DIType* BackendLLVMDbg::getReferenceToType(TypeInfo* typeInfo, llvm::DIFil
     return result;
 }
 
-llvm::DIType* BackendLLVMDbg::getStructType(TypeInfo* typeInfo, llvm::DIFile* file)
+llvm::DIType* LLVMDebug::getStructType(TypeInfo* typeInfo, llvm::DIFile* file)
 {
     auto it = mapTypes.find(typeInfo);
     if (it != mapTypes.end())
@@ -183,7 +183,7 @@ llvm::DIType* BackendLLVMDbg::getStructType(TypeInfo* typeInfo, llvm::DIFile* fi
     return result;
 }
 
-llvm::DIType* BackendLLVMDbg::getSliceType(TypeInfo* typeInfo, TypeInfo* pointedType, llvm::DIFile* file)
+llvm::DIType* LLVMDebug::getSliceType(TypeInfo* typeInfo, TypeInfo* pointedType, llvm::DIFile* file)
 {
     auto it = mapTypes.find(typeInfo);
     if (it != mapTypes.end())
@@ -204,7 +204,7 @@ llvm::DIType* BackendLLVMDbg::getSliceType(TypeInfo* typeInfo, TypeInfo* pointed
     return result;
 }
 
-llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
+llvm::DIType* LLVMDebug::getType(TypeInfo* typeInfo, llvm::DIFile* file)
 {
     if (!typeInfo)
         return s32Ty;
@@ -327,7 +327,7 @@ llvm::DIType* BackendLLVMDbg::getType(TypeInfo* typeInfo, llvm::DIFile* file)
     }
 }
 
-llvm::DISubroutineType* BackendLLVMDbg::getFunctionType(TypeInfoFuncAttr* typeFunc, llvm::DIFile* file)
+llvm::DISubroutineType* LLVMDebug::getFunctionType(TypeInfoFuncAttr* typeFunc, llvm::DIFile* file)
 {
     auto it = mapFuncTypes.find(typeFunc);
     if (it != mapFuncTypes.end())
@@ -365,7 +365,7 @@ llvm::DISubroutineType* BackendLLVMDbg::getFunctionType(TypeInfoFuncAttr* typeFu
     return result;
 }
 
-llvm::DISubprogram* BackendLLVMDbg::startFunction(ByteCode* bc, AstFuncDecl** resultDecl)
+llvm::DISubprogram* LLVMDebug::startFunction(ByteCode* bc, AstFuncDecl** resultDecl)
 {
     SWAG_ASSERT(dbgBuilder);
 
@@ -413,7 +413,7 @@ llvm::DISubprogram* BackendLLVMDbg::startFunction(ByteCode* bc, AstFuncDecl** re
     return SP;
 }
 
-void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMPerThread& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack)
+void LLVMDebug::startFunction(const BuildParameters& buildParameters, LLVMPerThread& pp, ByteCode* bc, llvm::Function* func, llvm::AllocaInst* stack)
 {
     if (bc->node && bc->node->isSpecialFunctionGenerated())
         return;
@@ -632,7 +632,7 @@ void BackendLLVMDbg::startFunction(const BuildParameters& buildParameters, LLVMP
     }
 }
 
-void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteCodeInstruction* ip)
+void LLVMDebug::setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteCodeInstruction* ip)
 {
     if (bc->node && bc->node->isSpecialFunctionGenerated())
         return;
@@ -678,7 +678,7 @@ void BackendLLVMDbg::setLocation(llvm::IRBuilder<>* builder, ByteCode* bc, ByteC
     }
 }
 
-llvm::DIScope* BackendLLVMDbg::getOrCreateScope(llvm::DIFile* file, Scope* scope)
+llvm::DIScope* LLVMDebug::getOrCreateScope(llvm::DIFile* file, Scope* scope)
 {
     SWAG_ASSERT(scope);
 
@@ -739,7 +739,7 @@ llvm::DIScope* BackendLLVMDbg::getOrCreateScope(llvm::DIFile* file, Scope* scope
     return parent;
 }
 
-void BackendLLVMDbg::createGlobalVariablesForSegment(const BuildParameters& buildParameters, llvm::Type* type, llvm::GlobalVariable* var)
+void LLVMDebug::createGlobalVariablesForSegment(const BuildParameters& buildParameters, llvm::Type* type, llvm::GlobalVariable* var)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -856,7 +856,7 @@ void BackendLLVMDbg::createGlobalVariablesForSegment(const BuildParameters& buil
     }
 }
 
-void BackendLLVMDbg::finalize()
+void LLVMDebug::finalize()
 {
     SWAG_ASSERT(dbgBuilder);
     dbgBuilder->finalize();
