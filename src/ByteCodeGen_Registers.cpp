@@ -44,13 +44,18 @@ uint32_t ByteCodeGen::reserveRegisterRC(ByteCodeGenContext* context, const Symbo
     if (!context->bc->availableRegistersRC.empty())
     {
         sortRegistersRC(context);
-        if (overload && overload->flags & OVERLOAD_HINT_REG)
+
+        if (overload)
         {
-            auto it = context->bc->availableRegistersRC.find(overload->symRegisters[0]);
-            if (it != -1)
+            SharedLock lk(overload->symbol->mutex);
+            if (overload->flags & OVERLOAD_HINT_REG)
             {
-                context->bc->availableRegistersRC.erase_unordered(it);
-                return overload->symRegisters[0];
+                auto it = context->bc->availableRegistersRC.find(overload->symRegisters[0]);
+                if (it != -1)
+                {
+                    context->bc->availableRegistersRC.erase_unordered(it);
+                    return overload->symRegisters[0];
+                }
             }
         }
 

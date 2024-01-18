@@ -17,6 +17,7 @@ void SymbolOverload::from(SymbolOverload* other)
 
 void SymbolOverload::setRegisters(const RegisterList& reg, uint32_t fl)
 {
+    ScopedLock lk(symbol->mutex);
     if (fl == OVERLOAD_HINT_REG)
     {
         if (flags & OVERLOAD_INLINE_REG)
