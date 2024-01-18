@@ -84,7 +84,7 @@ bool BackendSCBE::emitMain(const BuildParameters& buildParameters)
     auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
 
     auto beforeProlog = concat.totalCount();
-    pp.emit_Sub32_RSP(40);
+    pp.emit_OpN_Immediate(RSP, 40, CPUOp::SUB, CPUBits::B64);
     auto                   sizeProlog = concat.totalCount() - beforeProlog;
     VectorNative<uint16_t> unwind;
     pp.computeUnwind({}, {}, 40, sizeProlog, unwind);
@@ -233,7 +233,7 @@ bool BackendSCBE::emitMain(const BuildParameters& buildParameters)
     emitCall(pp, g_LangSpec->name__closeRuntime);
 
     pp.emit_ClearN(RAX, CPUBits::B64);
-    pp.emit_Add32_RSP(40);
+    pp.emit_OpN_Immediate(RSP, 40, CPUOp::ADD, CPUBits::B64);
     pp.emit_Ret();
 
     uint32_t endAddress = concat.totalCount();
@@ -263,12 +263,12 @@ bool BackendSCBE::emitGetTypeTable(const BuildParameters& buildParameters)
         pp.directives += Fmt("/EXPORT:%s ", thisInit.c_str());
 
     auto beforeProlog = concat.totalCount();
-    pp.emit_Sub32_RSP(40);
+    pp.emit_OpN_Immediate(RSP, 40, CPUOp::SUB, CPUBits::B64);
     auto                   sizeProlog = concat.totalCount() - beforeProlog;
     VectorNative<uint16_t> unwind;
     pp.computeUnwind({}, {}, 40, sizeProlog, unwind);
 
-    pp.emit_Add32_RSP(40);
+    pp.emit_OpN_Immediate(RSP, 40, CPUOp::ADD, CPUBits::B64);
     pp.emit_Symbol_RelocationAddr(cc.returnByRegisterInteger, pp.symCSIndex, module->typesSliceOffset);
     pp.emit_Ret();
 
@@ -298,7 +298,7 @@ bool BackendSCBE::emitGlobalPreMain(const BuildParameters& buildParameters)
 
     auto beforeProlog = concat.totalCount();
     pp.emit_Push(RDI);
-    pp.emit_Sub32_RSP(48);
+    pp.emit_OpN_Immediate(RSP, 48, CPUOp::SUB, CPUBits::B64);
     auto                   sizeProlog = concat.totalCount() - beforeProlog;
     VectorNative<uint16_t> unwind;
     pp.computeUnwind({}, {}, 48, sizeProlog, unwind);
@@ -324,7 +324,7 @@ bool BackendSCBE::emitGlobalPreMain(const BuildParameters& buildParameters)
         emitCall(pp, bc->getCallName());
     }
 
-    pp.emit_Add32_RSP(48);
+    pp.emit_OpN_Immediate(RSP, 48, CPUOp::ADD, CPUBits::B64);
     pp.emit_Pop(RDI);
     pp.emit_Ret();
 
@@ -353,7 +353,7 @@ bool BackendSCBE::emitGlobalInit(const BuildParameters& buildParameters)
 
     auto beforeProlog = concat.totalCount();
     pp.emit_Push(RDI);
-    pp.emit_Sub32_RSP(48);
+    pp.emit_OpN_Immediate(RSP, 48, CPUOp::SUB, CPUBits::B64);
     auto                   sizeProlog = concat.totalCount() - beforeProlog;
     VectorNative<uint16_t> unwind;
     pp.computeUnwind({}, {}, 48, sizeProlog, unwind);
@@ -405,7 +405,7 @@ bool BackendSCBE::emitGlobalInit(const BuildParameters& buildParameters)
         emitCall(pp, bc->getCallName());
     }
 
-    pp.emit_Add32_RSP(48);
+    pp.emit_OpN_Immediate(RSP, 48, CPUOp::ADD, CPUBits::B64);
     pp.emit_Pop(RDI);
     pp.emit_Ret();
 
@@ -432,7 +432,7 @@ bool BackendSCBE::emitGlobalDrop(const BuildParameters& buildParameters)
         pp.directives += Fmt("/EXPORT:%s ", thisDrop.c_str());
 
     auto beforeProlog = concat.totalCount();
-    pp.emit_Sub32_RSP(40);
+    pp.emit_OpN_Immediate(RSP, 40, CPUOp::SUB, CPUBits::B64);
     auto                   sizeProlog = concat.totalCount() - beforeProlog;
     VectorNative<uint16_t> unwind;
     pp.computeUnwind({}, {}, 40, sizeProlog, unwind);
@@ -449,7 +449,7 @@ bool BackendSCBE::emitGlobalDrop(const BuildParameters& buildParameters)
     // __dropGlobalVariables
     emitInternalCallExt(pp, module, g_LangSpec->name__dropGlobalVariables, pp.pushParams);
 
-    pp.emit_Add32_RSP(40);
+    pp.emit_OpN_Immediate(RSP, 40, CPUOp::ADD, CPUBits::B64);
     pp.emit_Ret();
 
     uint32_t endAddress = concat.totalCount();

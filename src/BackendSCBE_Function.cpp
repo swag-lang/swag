@@ -122,7 +122,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
         }
     }
 
-    pp.emit_Sub32_RSP(sizeStack + sizeParamsStack);
+    pp.emit_OpN_Immediate(RSP, sizeStack + sizeParamsStack, CPUOp::SUB, CPUBits::B64);
 
     // We need to start at sizeof(void*) because the call has pushed one register on the stack
     coffFct->offsetCallerStackParams = (uint32_t) (sizeof(void*) + (unwindRegs.size() * sizeof(void*)) + sizeStack);
@@ -3798,7 +3798,7 @@ bool BackendSCBE::emitFunctionBody(const BuildParameters& buildParameters, Modul
                     pp.emit_CopyF64(cc.returnByRegisterFloat, RAX);
             }
 
-            pp.emit_Add32_RSP(sizeStack + sizeParamsStack);
+            pp.emit_OpN_Immediate(RSP, sizeStack + sizeParamsStack, CPUOp::ADD, CPUBits::B64);            
             for (int32_t rRet = (int32_t) unwindRegs.size() - 1; rRet >= 0; rRet--)
                 pp.emit_Pop(unwindRegs[rRet]);
             pp.emit_Ret();

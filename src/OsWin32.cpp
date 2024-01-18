@@ -951,7 +951,7 @@ namespace OS
             gen.emit_Push(RDI);
             unwindRegs.push_back(RDI);
             unwindOffsetRegs.push_back(gen.concat.totalCount());
-            gen.emit_Sub32_RSP(stackSize);
+            gen.emit_OpN_Immediate(RSP, stackSize, CPUOp::SUB, CPUBits::B64);
             auto sizeProlog = gen.concat.totalCount();
             gen.computeUnwind(unwindRegs, unwindOffsetRegs, stackSize, sizeProlog, unwind);
 
@@ -973,7 +973,7 @@ namespace OS
         SWAG_ASSERT(startOffset < JIT_SIZE_BUFFER);
 
         gen.emit_Push(RDI);
-        gen.emit_Sub32_RSP(stackSize);
+        gen.emit_OpN_Immediate(RSP, stackSize, CPUOp::SUB, CPUBits::B64);
         gen.emit_Load64_Immediate(RDI, (uint64_t) context->sp, true);
         gen.emit_Call_Parameters(typeInfoFunc, pushRAParam, 0, retCopyAddr);
         gen.emit_Load64_Immediate(RAX, (uint64_t) foreignPtr, true);
@@ -985,7 +985,7 @@ namespace OS
             gen.emit_Call_Result(typeInfoFunc, 0);
         }
 
-        gen.emit_Add32_RSP(stackSize);
+        gen.emit_OpN_Immediate(RSP, stackSize, CPUOp::ADD, CPUBits::B64);
         gen.emit_Pop(RDI);
         gen.emit_Ret();
 

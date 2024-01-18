@@ -67,42 +67,6 @@ void EncoderX64::emit_Spec8(uint8_t value, CPUBits numBits)
 
 /////////////////////////////////////////////////////////////////////
 
-void EncoderX64::emit_Sub32_RSP(uint32_t value)
-{
-    if (value)
-    {
-        if (value <= 0x7F)
-        {
-            concat.addString3("\x48\x83\xEC"); // sub rsp, ??
-            concat.addU8((uint8_t) value);
-        }
-        else
-        {
-            concat.addString3("\x48\x81\xEC"); // sub rsp, ????????
-            concat.addU32(value);
-        }
-    }
-}
-
-void EncoderX64::emit_Add32_RSP(uint32_t value)
-{
-    if (value)
-    {
-        if (value <= 0x7F)
-        {
-            concat.addString3("\x48\x83\xC4"); // add rsp, ??
-            concat.addU8((uint8_t) value);
-        }
-        else
-        {
-            concat.addString3("\x48\x81\xC4"); // add rsp, ????????
-            concat.addU32(value);
-        }
-    }
-}
-
-/////////////////////////////////////////////////////////////////////
-
 void EncoderX64::emit_GlobalString(const Utf8& str, CPURegister reg)
 {
     emit_Load64_Immediate(reg, 0, true);
@@ -1277,7 +1241,7 @@ void EncoderX64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, C
     {
     case CPUOp::ADD:
         SWAG_ASSERT(numBits == CPUBits::B64);
-        SWAG_ASSERT(reg == RAX || reg == RCX);
+        SWAG_ASSERT(reg == RAX || reg == RCX || reg == RSP);
         break;
 
     case CPUOp::SUB:
@@ -1316,10 +1280,11 @@ void EncoderX64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, C
         {
         case CPUOp::ADD:
             if (value == 0)
-                return;
+                return;            
             emit_REX(numBits);
             if (value == 1)
             {
+                SWAG_ASSERT(reg != RSP);
                 concat.addU8(0xFF);
                 concat.addU8(0xC0 | reg); // inc rax
             }
@@ -1337,6 +1302,7 @@ void EncoderX64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, C
             emit_REX(numBits);
             if (value == 1)
             {
+                SWAG_ASSERT(reg != RSP);
                 concat.addU8(0xFF);
                 concat.addU8(0xC8 | reg); // dec rax
             }
@@ -1428,6 +1394,7 @@ void EncoderX64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, C
         }
         else
         {
+            SWAG_ASSERT(reg != RSP);
             emit_Load64_Immediate(R8, value);
             emit_OpN(R8, reg, op, numBits);
         }
@@ -1441,13 +1408,19 @@ void EncoderX64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, C
             if (reg == RAX)
                 concat.addU8(0x05);
             else
-                concat.addString2("\x81\xC1");
+            {
+                concat.addU8(0x81);
+                concat.addU8(0xC0 | reg);
+            }
             break;
         case CPUOp::SUB:
             if (reg == RAX)
                 concat.addU8(0x2D);
             else
-                concat.addString2("\x81\xE9");
+            {
+                concat.addU8(0x81);
+                concat.addU8(0xE8 | reg);
+            }
             break;
         case CPUOp::IMUL:
             SWAG_ASSERT(reg == RAX);
