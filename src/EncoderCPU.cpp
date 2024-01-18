@@ -48,3 +48,29 @@ CoffSymbol* EncoderCPU::getOrAddSymbol(const Utf8& name, CoffSymbolKind kind, ui
     mapSymbols[name] = (uint32_t) allSymbols.size() - 1;
     return &allSymbols.back();
 }
+
+void EncoderCPU::addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type)
+{
+    CoffRelocation reloc;
+    reloc.virtualAddress = virtualAddr;
+    reloc.symbolIndex    = symbolIndex;
+    reloc.type           = type;
+    relocTableTextSection.table.push_back(reloc);
+}
+
+CoffSymbol* EncoderCPU ::addGlobalString(const Utf8& str)
+{
+    auto        it  = globalStrings.find(str);
+    CoffSymbol* sym = nullptr;
+    if (it != globalStrings.end())
+        sym = &allSymbols[it->second];
+    else
+    {
+        Utf8 symName       = Fmt("__str%u", (uint32_t) globalStrings.size());
+        sym                = getOrAddSymbol(symName, CoffSymbolKind::GlobalString);
+        globalStrings[str] = sym->index;
+        sym->value         = stringSegment.addStringNoLock(str);
+    }
+
+    return sym;
+}

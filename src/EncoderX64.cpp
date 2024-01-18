@@ -70,55 +70,27 @@ void EncoderX64::emit_Spec8(uint8_t value, CPUBits numBits)
 void EncoderX64::emit_GlobalString(const Utf8& str, CPURegister reg)
 {
     emit_Load64_Immediate(reg, 0, true);
-
-    auto        it  = globalStrings.find(str);
-    CoffSymbol* sym = nullptr;
-    if (it != globalStrings.end())
-        sym = &allSymbols[it->second];
-    else
-    {
-        Utf8 symName       = Fmt("__str%u", (uint32_t) globalStrings.size());
-        sym                = getOrAddSymbol(symName, CoffSymbolKind::GlobalString);
-        globalStrings[str] = sym->index;
-        sym->value         = stringSegment.addStringNoLock(str);
-    }
-
-    CoffRelocation reloc;
-    reloc.virtualAddress = (concat.totalCount() - 8) - textSectionOffset;
-    reloc.symbolIndex    = sym->index;
-    reloc.type           = IMAGE_REL_AMD64_ADDR64;
-    relocTableTextSection.table.push_back(reloc);
+    auto sym = addGlobalString(str);
+    addSymbolRelocation((concat.totalCount() - 8) - textSectionOffset, sym->index, IMAGE_REL_AMD64_ADDR64);
 }
 
 void EncoderX64::emit_Symbol_RelocationAddr(CPURegister reg, uint32_t symbolIndex, uint32_t offset)
 {
     SWAG_ASSERT(reg == RAX || reg == RCX || reg == RDX || reg == R8 || reg == R9 || reg == RDI);
-
     emit_REX(CPUBits::B64, reg);
     concat.addU8(0x8D);
     concat.addU8(0x05 | ((reg & 0b111) << 3));
-
-    CoffRelocation reloc;
-    reloc.virtualAddress = concat.totalCount() - textSectionOffset;
-    reloc.symbolIndex    = symbolIndex;
-    reloc.type           = IMAGE_REL_AMD64_REL32;
-    relocTableTextSection.table.push_back(reloc);
+    addSymbolRelocation(concat.totalCount() - textSectionOffset, symbolIndex, IMAGE_REL_AMD64_REL32);
     concat.addU32(offset);
 }
 
 void EncoderX64::emit_Symbol_RelocationValue(CPURegister reg, uint32_t symbolIndex, uint32_t offset)
 {
     SWAG_ASSERT(reg == RAX || reg == RCX || reg == RDX || reg == R8 || reg == R9);
-
     emit_REX(CPUBits::B64, reg);
     concat.addU8(0x8B);
     concat.addU8(0x05 | ((reg & 0b111) << 3));
-
-    CoffRelocation reloc;
-    reloc.virtualAddress = concat.totalCount() - textSectionOffset;
-    reloc.symbolIndex    = symbolIndex;
-    reloc.type           = IMAGE_REL_AMD64_REL32;
-    relocTableTextSection.table.push_back(reloc);
+    addSymbolRelocation(concat.totalCount() - textSectionOffset, symbolIndex, IMAGE_REL_AMD64_REL32);
     concat.addU32(offset);
 }
 
@@ -1241,7 +1213,7 @@ void EncoderX64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, C
         {
         case CPUOp::ADD:
             if (value == 0)
-                return;            
+                return;
             emit_REX(numBits);
             if (value == 1)
             {
