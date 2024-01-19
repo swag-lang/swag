@@ -4,11 +4,11 @@
 #include "Module.h"
 #include "Workspace.h"
 
-void SCBE::emitGetParam(SCBE_X64& pp, CPUFunction* coffFct, int reg, uint32_t paramIdx, int sizeOf, uint64_t toAdd, int deRefSize)
+void SCBE::emitGetParam(SCBE_X64& pp, CPUFunction* cpuFct, int reg, uint32_t paramIdx, int sizeOf, uint64_t toAdd, int deRefSize)
 {
-    auto        typeFunc   = coffFct->typeFunc;
+    auto        typeFunc   = cpuFct->typeFunc;
     const auto& cc         = typeFunc->getCallConv();
-    int         paramStack = pp.getParamStackOffset(coffFct, paramIdx);
+    int         paramStack = pp.getParamStackOffset(cpuFct, paramIdx);
     auto        typeParam  = TypeManager::concreteType(typeFunc->parameters[typeFunc->registerIdxToParamIdx(paramIdx)]->typeInfo);
     if (typeParam->isAutoConstPointerRef())
         typeParam = TypeManager::concretePtrRefType(typeParam);
@@ -17,7 +17,7 @@ void SCBE::emitGetParam(SCBE_X64& pp, CPUFunction* coffFct, int reg, uint32_t pa
     {
     case 1:
         SWAG_ASSERT(!toAdd);
-        if (paramIdx < coffFct->numScratchRegs)
+        if (paramIdx < cpuFct->numScratchRegs)
             pp.emit_Extend_U8U64((CPURegister) (cc.firstScratchRegister + paramIdx), RAX);
         else
             pp.emit_LoadU8U64_Indirect(paramStack, RAX, RDI);
@@ -25,7 +25,7 @@ void SCBE::emitGetParam(SCBE_X64& pp, CPUFunction* coffFct, int reg, uint32_t pa
         return;
     case 2:
         SWAG_ASSERT(!toAdd);
-        if (paramIdx < coffFct->numScratchRegs)
+        if (paramIdx < cpuFct->numScratchRegs)
             pp.emit_Extend_U16U64((CPURegister) (cc.firstScratchRegister + paramIdx), RAX);
         else
             pp.emit_LoadU16U64_Indirect(paramStack, RAX, RDI);
@@ -33,7 +33,7 @@ void SCBE::emitGetParam(SCBE_X64& pp, CPUFunction* coffFct, int reg, uint32_t pa
         return;
     case 4:
         SWAG_ASSERT(!toAdd);
-        if (paramIdx < coffFct->numScratchRegs)
+        if (paramIdx < cpuFct->numScratchRegs)
             pp.emit_CopyN(RAX, (CPURegister) (cc.firstScratchRegister + paramIdx), CPUBits::B32);
         else
             pp.emit_Load32_Indirect(paramStack, RAX, RDI);
@@ -46,7 +46,7 @@ void SCBE::emitGetParam(SCBE_X64& pp, CPUFunction* coffFct, int reg, uint32_t pa
     bool structByValue = CallConv::structParamByValue(typeFunc, typeParam);
 
     // Use scratch registers
-    if (paramIdx < coffFct->numScratchRegs && !structByValue)
+    if (paramIdx < cpuFct->numScratchRegs && !structByValue)
     {
         auto scratch = (CPURegister) (cc.firstScratchRegister + paramIdx);
         if (toAdd == 0 && deRefSize == 0)

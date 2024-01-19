@@ -89,6 +89,15 @@ uint32_t SCBE_CPU ::getOrCreateLabel(uint32_t ip)
     return it->second;
 }
 
+CPUFunction* SCBE_CPU::registerFunction(AstNode* node, uint32_t symbolIndex)
+{
+    CPUFunction cf;
+    cf.node        = node;
+    cf.symbolIndex = symbolIndex;
+    functions.push_back(cf);
+    return &functions.back();
+}
+
 uint32_t SCBE_CPU ::getParamStackOffset(CPUFunction* cpuFct, int paramIdx)
 {
     const auto& cc = cpuFct->typeFunc->getCallConv();

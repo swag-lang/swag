@@ -6,6 +6,8 @@
 #include "CallConv.h"
 #include "Concat.h"
 
+struct AstNode;
+
 #define REG_OFFSET(__r) __r * sizeof(Register)
 
 enum class CPUBits : uint32_t
@@ -154,13 +156,14 @@ struct CPUFunction
 
 struct SCBE_CPU
 {
-    void       clearInstructionCache();
-    CPUSymbol* getSymbol(const Utf8& name);
-    CPUSymbol* getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
-    uint32_t   getOrCreateLabel(uint32_t ip);
-    CPUSymbol* getOrCreateGlobalString(const Utf8& str);
-    void       addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type);
-    uint32_t   getParamStackOffset(CPUFunction* cpuFct, int paramIdx);
+    void         clearInstructionCache();
+    CPUSymbol*   getSymbol(const Utf8& name);
+    CPUSymbol*   getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
+    uint32_t     getOrCreateLabel(uint32_t ip);
+    CPUSymbol*   getOrCreateGlobalString(const Utf8& str);
+    void         addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type);
+    CPUFunction* registerFunction(AstNode* node, uint32_t symbolIndex);
+    uint32_t     getParamStackOffset(CPUFunction* cpuFct, int paramIdx);
 
     Utf8   filename;
     Concat concat;

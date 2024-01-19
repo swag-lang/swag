@@ -132,6 +132,6 @@ struct SCBE_Debug
     static SCBE_DebugTypeIndex   getOrCreatePointerPointerToType(SCBE_CPU& pp, TypeInfo* typeInfo);
     static SCBE_DebugTypeIndex   getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, bool forceUnRef = false);
     static SCBE_DebugTypeRecord* addTypeRecord(SCBE_CPU& pp);
-    static void                  setLocation(CPUFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);
+    static void                  setLocation(CPUFunction* cpuFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);
     static Utf8                  getScopedName(AstNode* node);
 };

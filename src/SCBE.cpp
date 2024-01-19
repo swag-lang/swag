@@ -228,15 +228,6 @@ JobResult SCBE::prepareOutput(int stage, const BuildParameters& buildParameters,
     return JobResult::ReleaseJob;
 }
 
-CPUFunction* SCBE::registerFunction(SCBE_X64& pp, AstNode* node, uint32_t symbolIndex)
-{
-    CPUFunction cf;
-    cf.node        = node;
-    cf.symbolIndex = symbolIndex;
-    pp.functions.push_back(cf);
-    return &pp.functions.back();
-}
-
 void SCBE::registerFunction(CPUFunction* fct, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, VectorNative<uint16_t>& unwind)
 {
     fct->startAddress = startAddress;

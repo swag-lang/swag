@@ -20,9 +20,9 @@ bool SCBE::emitOS(const BuildParameters& buildParameters)
         // :ChkStk Stack probing
         // See SWAG_LIMIT_PAGE_STACK
         auto symbolFuncIndex = pp.getOrAddSymbol("__chkstk", CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
-        auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
+        auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
         SWAG_ASSERT(g_CommandLine.target.arch == SwagTargetArch::X86_64);
-        coffFct->startAddress = concat.totalCount();
+        cpuFct->startAddress = concat.totalCount();
         if (g_CommandLine.target.arch == SwagTargetArch::X86_64)
         {
             concat.addString1("\x51");                           // push rcx
@@ -41,7 +41,7 @@ bool SCBE::emitOS(const BuildParameters& buildParameters)
             concat.addString1("\x59");                           // pop rcx
             concat.addString1("\xc3");                           // ret
         }
-        coffFct->endAddress = concat.totalCount();
+        cpuFct->endAddress = concat.totalCount();
 
         // int _DllMainCRTStartup(void*, int, void*)
         pp.getOrAddSymbol("_DllMainCRTStartup", CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
@@ -81,7 +81,7 @@ bool SCBE::emitMain(const BuildParameters& buildParameters)
     }
 
     auto symbolFuncIndex = pp.getOrAddSymbol(entryPoint, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
-    auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
+    auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 
     auto beforeProlog = concat.totalCount();
     pp.emit_OpN_Immediate(RSP, 40, CPUOp::SUB, CPUBits::B64);
@@ -237,7 +237,7 @@ bool SCBE::emitMain(const BuildParameters& buildParameters)
     pp.emit_Ret();
 
     uint32_t endAddress = concat.totalCount();
-    registerFunction(coffFct, startAddress, endAddress, sizeProlog, unwind);
+    registerFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
     return true;
 }
 
@@ -257,7 +257,7 @@ bool SCBE::emitGetTypeTable(const BuildParameters& buildParameters)
 
     auto thisInit        = module->getGlobalPrivFct(g_LangSpec->name_getTypeTable);
     auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
-    auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
+    auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
         pp.directives += Fmt("/EXPORT:%s ", thisInit.c_str());
@@ -273,7 +273,7 @@ bool SCBE::emitGetTypeTable(const BuildParameters& buildParameters)
     pp.emit_Ret();
 
     uint32_t endAddress = concat.totalCount();
-    registerFunction(coffFct, startAddress, endAddress, sizeProlog, unwind);
+    registerFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
 
     return true;
 }
@@ -291,7 +291,7 @@ bool SCBE::emitGlobalPreMain(const BuildParameters& buildParameters)
 
     auto thisInit        = module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
     auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
-    auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
+    auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
         pp.directives += Fmt("/EXPORT:%s ", thisInit.c_str());
@@ -329,7 +329,7 @@ bool SCBE::emitGlobalPreMain(const BuildParameters& buildParameters)
     pp.emit_Ret();
 
     uint32_t endAddress = concat.totalCount();
-    registerFunction(coffFct, startAddress, endAddress, sizeProlog, unwind);
+    registerFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
     return true;
 }
 
@@ -346,7 +346,7 @@ bool SCBE::emitGlobalInit(const BuildParameters& buildParameters)
 
     auto thisInit        = module->getGlobalPrivFct(g_LangSpec->name_globalInit);
     auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
-    auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
+    auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
         pp.directives += Fmt("/EXPORT:%s ", thisInit.c_str());
@@ -410,7 +410,7 @@ bool SCBE::emitGlobalInit(const BuildParameters& buildParameters)
     pp.emit_Ret();
 
     uint32_t endAddress = concat.totalCount();
-    registerFunction(coffFct, startAddress, endAddress, sizeProlog, unwind);
+    registerFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
     return true;
 }
 
@@ -426,7 +426,7 @@ bool SCBE::emitGlobalDrop(const BuildParameters& buildParameters)
 
     auto thisDrop        = module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
     auto symbolFuncIndex = pp.getOrAddSymbol(thisDrop, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
-    auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
+    auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
         pp.directives += Fmt("/EXPORT:%s ", thisDrop.c_str());
@@ -453,6 +453,6 @@ bool SCBE::emitGlobalDrop(const BuildParameters& buildParameters)
     pp.emit_Ret();
 
     uint32_t endAddress = concat.totalCount();
-    registerFunction(coffFct, startAddress, endAddress, sizeProlog, unwind);
+    registerFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
     return true;
 }

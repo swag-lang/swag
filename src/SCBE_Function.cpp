@@ -44,12 +44,12 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
     }
 
     // Symbol
-    auto symbolFuncIndex  = pp.getOrAddSymbol(funcName, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
-    auto coffFct          = registerFunction(pp, bc->node, symbolFuncIndex);
-    coffFct->typeFunc     = typeFunc;
-    coffFct->startAddress = startAddress;
+    auto symbolFuncIndex = pp.getOrAddSymbol(funcName, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    auto cpuFct          = pp.registerFunction(bc->node, symbolFuncIndex);
+    cpuFct->typeFunc     = typeFunc;
+    cpuFct->startAddress = startAddress;
     if (debug)
-        SCBE_Debug::setLocation(coffFct, bc, nullptr, 0);
+        SCBE_Debug::setLocation(cpuFct, bc, nullptr, 0);
 
     // In order, starting at RSP, we have :
     //
@@ -99,13 +99,13 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
     unwindOffsetRegs.push_back(concat.totalCount() - beforeProlog);
 
     // Push on scratch register per parameter
-    while (coffFct->numScratchRegs < min(cc.numScratchRegisters, min(cc.paramByRegisterCount, numTotalRegs)))
+    while (cpuFct->numScratchRegs < min(cc.numScratchRegisters, min(cc.paramByRegisterCount, numTotalRegs)))
     {
-        auto cpuReg = (CPURegister) (cc.firstScratchRegister + coffFct->numScratchRegs);
+        auto cpuReg = (CPURegister) (cc.firstScratchRegister + cpuFct->numScratchRegs);
         pp.emit_Push(cpuReg);
         unwindRegs.push_back(cpuReg);
         unwindOffsetRegs.push_back(concat.totalCount() - beforeProlog);
-        coffFct->numScratchRegs++;
+        cpuFct->numScratchRegs++;
     }
 
     // Stack align
@@ -125,10 +125,10 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
     pp.emit_OpN_Immediate(RSP, sizeStack + sizeParamsStack, CPUOp::SUB, CPUBits::B64);
 
     // We need to start at sizeof(void*) because the call has pushed one register on the stack
-    coffFct->offsetCallerStackParams = (uint32_t) (sizeof(void*) + (unwindRegs.size() * sizeof(void*)) + sizeStack);
-    coffFct->offsetStack             = offsetStack;
-    coffFct->offsetLocalStackParams  = offsetS4;
-    coffFct->frameSize               = sizeStack + sizeParamsStack;
+    cpuFct->offsetCallerStackParams = (uint32_t) (sizeof(void*) + (unwindRegs.size() * sizeof(void*)) + sizeStack);
+    cpuFct->offsetStack             = offsetStack;
+    cpuFct->offsetLocalStackParams  = offsetS4;
+    cpuFct->frameSize               = sizeStack + sizeParamsStack;
 
     // Unwind information (with the pushed registers)
     VectorNative<uint16_t> unwind;
@@ -143,13 +143,13 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
     while (iReg < min(cc.paramByRegisterCount, numTotalRegs))
     {
         auto     typeParam   = typeFunc->registerIdxToType(iReg);
-        uint32_t stackOffset = pp.getParamStackOffset(coffFct, iReg);
+        uint32_t stackOffset = pp.getParamStackOffset(cpuFct, iReg);
         if (cc.useRegisterFloat && typeParam->isNativeFloat())
             pp.emit_StoreF64_Indirect(stackOffset, cc.paramByRegisterFloat[iReg], RDI);
         else
             pp.emit_Store64_Indirect(stackOffset, cc.paramByRegisterInteger[iReg], RDI);
 
-        if (iReg < coffFct->numScratchRegs)
+        if (iReg < cpuFct->numScratchRegs)
             pp.emit_Load64_Indirect(stackOffset, (CPURegister) (cc.firstScratchRegister + iReg), RDI);
 
         iReg++;
@@ -158,7 +158,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
     // Save pointer to return value if this is a return by copy
     if (CallConv::returnByAddress(typeFunc) && iReg < cc.paramByRegisterCount)
     {
-        uint32_t stackOffset = pp.getParamStackOffset(coffFct, iReg);
+        uint32_t stackOffset = pp.getParamStackOffset(cpuFct, iReg);
         pp.emit_Store64_Indirect(stackOffset, cc.paramByRegisterInteger[iReg], RDI);
         iReg++;
     }
@@ -168,7 +168,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
     {
         while (iReg < cc.paramByRegisterCount)
         {
-            uint32_t stackOffset = coffFct->offsetCallerStackParams + REG_OFFSET(iReg);
+            uint32_t stackOffset = cpuFct->offsetCallerStackParams + REG_OFFSET(iReg);
             pp.emit_Store64_Indirect(stackOffset, cc.paramByRegisterInteger[iReg], RDI);
             iReg++;
         }
@@ -191,7 +191,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             continue;
 
         if (debug)
-            SCBE_Debug::setLocation(coffFct, bc, ip, concat.totalCount() - beforeProlog);
+            SCBE_Debug::setLocation(cpuFct, bc, ip, concat.totalCount() - beforeProlog);
 
         if (ip->flags & BCI_JUMP_DEST)
             pp.getOrCreateLabel(i);
@@ -2853,35 +2853,35 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
 
         case ByteCodeOp::ClearRR8:
         {
-            int stackOffset = pp.getParamStackOffset(coffFct, typeFunc->numParamsRegisters());
+            int stackOffset = pp.getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
             pp.emit_Load64_Indirect(stackOffset, RAX, RDI);
             pp.emit_Store8_Immediate(ip->c.u32, 0, RAX);
             break;
         }
         case ByteCodeOp::ClearRR16:
         {
-            int stackOffset = pp.getParamStackOffset(coffFct, typeFunc->numParamsRegisters());
+            int stackOffset = pp.getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
             pp.emit_Load64_Indirect(stackOffset, RAX, RDI);
             pp.emit_Store16_Immediate(ip->c.u32, 0, RAX);
             break;
         }
         case ByteCodeOp::ClearRR32:
         {
-            int stackOffset = pp.getParamStackOffset(coffFct, typeFunc->numParamsRegisters());
+            int stackOffset = pp.getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
             pp.emit_Load64_Indirect(stackOffset, RAX, RDI);
             pp.emit_Store32_Immediate(ip->c.u32, 0, RAX);
             break;
         }
         case ByteCodeOp::ClearRR64:
         {
-            int stackOffset = pp.getParamStackOffset(coffFct, typeFunc->numParamsRegisters());
+            int stackOffset = pp.getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
             pp.emit_Load64_Indirect(stackOffset, RAX, RDI);
             pp.emit_Store64_Immediate(ip->c.u32, 0, RAX);
             break;
         }
         case ByteCodeOp::ClearRRX:
         {
-            int stackOffset = pp.getParamStackOffset(coffFct, typeFunc->numParamsRegisters());
+            int stackOffset = pp.getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
             pp.emit_Load64_Indirect(stackOffset, RAX, RDI);
 
             SWAG_ASSERT(ip->c.s64 >= 0 && ip->c.s64 <= 0x7FFFFFFF);
@@ -3323,7 +3323,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             int paramIdx    = typeFunc->numParamsRegisters();
             if (CallConv::returnByAddress(typeFunc))
                 paramIdx += 1;
-            stackOffset = coffFct->offsetCallerStackParams + REG_OFFSET(paramIdx);
+            stackOffset = cpuFct->offsetCallerStackParams + REG_OFFSET(paramIdx);
             pp.emit_LoadAddress_Indirect(stackOffset, RAX, RDI);
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);
             pp.emit_Store64_Indirect(0, RAX, RCX);
@@ -3440,7 +3440,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
 
         case ByteCodeOp::CopyRARBtoRR2:
         {
-            int stackOffset = pp.getParamStackOffset(coffFct, typeFunc->numParamsRegisters());
+            int stackOffset = pp.getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
             pp.emit_Load64_Indirect(stackOffset, RAX, RDI);
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);
             pp.emit_Store64_Indirect(0, RCX, RAX);
@@ -3457,14 +3457,14 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
 
         case ByteCodeOp::SaveRRtoRA:
         {
-            int stackOffset = pp.getParamStackOffset(coffFct, typeFunc->numParamsRegisters());
+            int stackOffset = pp.getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
             pp.emit_Load64_Indirect(stackOffset, RAX, RDI);
             pp.emit_Store64_Indirect(REG_OFFSET(ip->a.u32), RAX);
             break;
         }
         case ByteCodeOp::CopyRRtoRA:
         {
-            int stackOffset = pp.getParamStackOffset(coffFct, typeFunc->numParamsRegisters());
+            int stackOffset = pp.getParamStackOffset(cpuFct, typeFunc->numParamsRegisters());
             pp.emit_Load64_Indirect(stackOffset, RAX, RDI);
             if (ip->b.u64)
             {
@@ -3589,53 +3589,53 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             /////////////////////////////////////
 
         case ByteCodeOp::GetParam8:
-            emitGetParam(pp, coffFct, ip->a.u32, ip->b.u64u32.high, 1);
+            emitGetParam(pp, cpuFct, ip->a.u32, ip->b.u64u32.high, 1);
             break;
         case ByteCodeOp::GetParam16:
-            emitGetParam(pp, coffFct, ip->a.u32, ip->b.u64u32.high, 2);
+            emitGetParam(pp, cpuFct, ip->a.u32, ip->b.u64u32.high, 2);
             break;
         case ByteCodeOp::GetParam32:
-            emitGetParam(pp, coffFct, ip->a.u32, ip->b.u64u32.high, 4);
+            emitGetParam(pp, cpuFct, ip->a.u32, ip->b.u64u32.high, 4);
             break;
         case ByteCodeOp::GetParam64:
-            emitGetParam(pp, coffFct, ip->a.u32, ip->b.u64u32.high, 8);
+            emitGetParam(pp, cpuFct, ip->a.u32, ip->b.u64u32.high, 8);
             break;
         case ByteCodeOp::GetParam64x2:
-            emitGetParam(pp, coffFct, ip->a.u32, ip->b.u64u32.high, 8);
-            emitGetParam(pp, coffFct, ip->c.u32, ip->d.u64u32.high, 8);
+            emitGetParam(pp, cpuFct, ip->a.u32, ip->b.u64u32.high, 8);
+            emitGetParam(pp, cpuFct, ip->c.u32, ip->d.u64u32.high, 8);
             break;
         case ByteCodeOp::GetIncParam64:
-            emitGetParam(pp, coffFct, ip->a.u32, ip->b.u64u32.high, 8, ip->d.u64);
+            emitGetParam(pp, cpuFct, ip->a.u32, ip->b.u64u32.high, 8, ip->d.u64);
             break;
 
             /////////////////////////////////////
 
         case ByteCodeOp::GetParam64DeRef8:
-            emitGetParam(pp, coffFct, ip->a.u32, ip->b.u64u32.high, 8, 0, 1);
+            emitGetParam(pp, cpuFct, ip->a.u32, ip->b.u64u32.high, 8, 0, 1);
             break;
         case ByteCodeOp::GetParam64DeRef16:
-            emitGetParam(pp, coffFct, ip->a.u32, ip->b.u64u32.high, 8, 0, 2);
+            emitGetParam(pp, cpuFct, ip->a.u32, ip->b.u64u32.high, 8, 0, 2);
             break;
         case ByteCodeOp::GetParam64DeRef32:
-            emitGetParam(pp, coffFct, ip->a.u32, ip->b.u64u32.high, 8, 0, 4);
+            emitGetParam(pp, cpuFct, ip->a.u32, ip->b.u64u32.high, 8, 0, 4);
             break;
         case ByteCodeOp::GetParam64DeRef64:
-            emitGetParam(pp, coffFct, ip->a.u32, ip->b.u64u32.high, 8, 0, 8);
+            emitGetParam(pp, cpuFct, ip->a.u32, ip->b.u64u32.high, 8, 0, 8);
             break;
 
             /////////////////////////////////////
 
         case ByteCodeOp::GetIncParam64DeRef8:
-            emitGetParam(pp, coffFct, ip->a.u32, ip->b.u64u32.high, 8, ip->d.u64, 1);
+            emitGetParam(pp, cpuFct, ip->a.u32, ip->b.u64u32.high, 8, ip->d.u64, 1);
             break;
         case ByteCodeOp::GetIncParam64DeRef16:
-            emitGetParam(pp, coffFct, ip->a.u32, ip->b.u64u32.high, 8, ip->d.u64, 2);
+            emitGetParam(pp, cpuFct, ip->a.u32, ip->b.u64u32.high, 8, ip->d.u64, 2);
             break;
         case ByteCodeOp::GetIncParam64DeRef32:
-            emitGetParam(pp, coffFct, ip->a.u32, ip->b.u64u32.high, 8, ip->d.u64, 4);
+            emitGetParam(pp, cpuFct, ip->a.u32, ip->b.u64u32.high, 8, ip->d.u64, 4);
             break;
         case ByteCodeOp::GetIncParam64DeRef64:
-            emitGetParam(pp, coffFct, ip->a.u32, ip->b.u64u32.high, 8, ip->d.u64, 8);
+            emitGetParam(pp, cpuFct, ip->a.u32, ip->b.u64u32.high, 8, ip->d.u64, 8);
             break;
 
             /////////////////////////////////////
@@ -4705,7 +4705,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
     }
 
     uint32_t endAddress = concat.totalCount();
-    registerFunction(coffFct, startAddress, endAddress, sizeProlog, unwind);
+    registerFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
     pp.clearInstructionCache();
 
     return ok;

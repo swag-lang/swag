@@ -498,20 +498,20 @@ Utf8 SCBE_Debug::getScopedName(AstNode* node)
     return result;
 }
 
-void SCBE_Debug::setLocation(CPUFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset)
+void SCBE_Debug::setLocation(CPUFunction* cpuFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset)
 {
-    if (!coffFct->node || coffFct->node->isSpecialFunctionGenerated())
+    if (!cpuFct->node || cpuFct->node->isSpecialFunctionGenerated())
         return;
 
     if (!ip)
     {
         SCBE_DebugLine dbgLine;
-        dbgLine.line       = coffFct->node->token.startLocation.line + 1;
+        dbgLine.line       = cpuFct->node->token.startLocation.line + 1;
         dbgLine.byteOffset = byteOffset;
         SCBE_DebugLines dbgLines;
-        dbgLines.sourceFile = coffFct->node->sourceFile;
+        dbgLines.sourceFile = cpuFct->node->sourceFile;
         dbgLines.lines.push_back(dbgLine);
-        coffFct->dbgLines.push_back(dbgLines);
+        cpuFct->dbgLines.push_back(dbgLines);
         return;
     }
 
@@ -536,22 +536,22 @@ void SCBE_Debug::setLocation(CPUFunction* coffFct, ByteCode* bc, ByteCodeInstruc
         scope = scope->parentScope;
     }
 
-    SWAG_ASSERT(!coffFct->dbgLines.empty());
+    SWAG_ASSERT(!cpuFct->dbgLines.empty());
 
     AstFuncDecl* inlined = nullptr;
     if (ip->node && ip->node->ownerInline)
         inlined = ip->node->ownerInline->func;
 
-    if (coffFct->dbgLines.back().sourceFile != loc.file || inlined != coffFct->dbgLines.back().inlined)
+    if (cpuFct->dbgLines.back().sourceFile != loc.file || inlined != cpuFct->dbgLines.back().inlined)
     {
         SCBE_DebugLines dbgLines;
         dbgLines.sourceFile = loc.file;
         dbgLines.inlined    = inlined;
-        coffFct->dbgLines.push_back(dbgLines);
+        cpuFct->dbgLines.push_back(dbgLines);
     }
 
     // Add a new line if it is different from the previous one
-    auto& lines = coffFct->dbgLines.back().lines;
+    auto& lines = cpuFct->dbgLines.back().lines;
     if (lines.empty())
     {
         lines.push_back({loc.location->line + 1, byteOffset});
