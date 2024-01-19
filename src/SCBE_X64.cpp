@@ -101,7 +101,7 @@ void SCBE_X64::emit_Symbol_RelocationValue(CPURegister reg, uint32_t symbolIndex
     concat.addU32(offset);
 }
 
-void SCBE_X64::emit_Symbol_GlobalString(const Utf8& str, CPURegister reg)
+void SCBE_X64::emit_Symbol_GlobalString(CPURegister reg, const Utf8& str)
 {
     emit_Load64_Immediate(reg, 0, true);
     auto sym = getOrCreateGlobalString(str);
@@ -764,12 +764,12 @@ void SCBE_X64::emit_CmpN(CPURegister regSrc, CPURegister regDst, CPUBits numBits
     concat.addU8(getModRM(REGREG, regDst, regSrc));
 }
 
-void SCBE_X64::emit_CmpF32(CPURegister reg1, CPURegister reg2)
+void SCBE_X64::emit_CmpF32(CPURegister regSrc, CPURegister regDst)
 {
-    SWAG_ASSERT(reg1 < R8 && reg2 < R8);
+    SWAG_ASSERT(regSrc < R8 && regDst < R8);
     concat.addU8(0x0F);
     concat.addU8(0x2F);
-    concat.addU8(getModRM(REGREG, reg1, reg2));
+    concat.addU8(getModRM(REGREG, regSrc, regDst));
 }
 
 void SCBE_X64::emit_CmpF64(CPURegister reg1, CPURegister reg2)
@@ -1884,7 +1884,7 @@ void SCBE_X64::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<C
                     emit_CopyN(cc.paramByRegisterInteger[i], RAX, CPUBits::B64);
                     break;
                 case CPUPushParamType::GlobalString:
-                    emit_Symbol_GlobalString((const char*) paramsRegisters[i].reg, cc.paramByRegisterInteger[i]);
+                    emit_Symbol_GlobalString(cc.paramByRegisterInteger[i], (const char*) paramsRegisters[i].reg);
                     break;
                 default:
                     SWAG_ASSERT(paramsRegisters[i].type == CPUPushParamType::Reg);

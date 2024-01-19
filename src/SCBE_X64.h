@@ -13,7 +13,7 @@ struct SCBE_X64 : public SCBE_CPU
     void emit_Symbol_RelocationRef(const Utf8& name);
     void emit_Symbol_RelocationAddr(CPURegister reg, uint32_t symbolIndex, uint32_t offset);
     void emit_Symbol_RelocationValue(CPURegister reg, uint32_t symbolIndex, uint32_t offset);
-    void emit_Symbol_GlobalString(const Utf8& str, CPURegister reg);
+    void emit_Symbol_GlobalString(CPURegister reg, const Utf8& str);
 
     void emit_Push(CPURegister reg);
     void emit_Pop(CPURegister reg);
@@ -31,8 +31,8 @@ struct SCBE_X64 : public SCBE_CPU
     void emit_ClearX(uint32_t count, uint32_t offset, CPURegister reg);
 
     void emit_CmpN(CPURegister regSrc, CPURegister regDst, CPUBits numBits);
-    void emit_CmpF32(CPURegister reg1, CPURegister reg2);
-    void emit_CmpF64(CPURegister reg1, CPURegister reg2);
+    void emit_CmpF32(CPURegister regSrc, CPURegister regDst);
+    void emit_CmpF64(CPURegister regSrc, CPURegister regDst);
 
     void emit_CmpN_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, CPUBits numBits);
     void emit_CmpF32_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg);
