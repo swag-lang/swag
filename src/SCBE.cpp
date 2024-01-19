@@ -143,7 +143,17 @@ JobResult SCBE::prepareOutput(int stage, const BuildParameters& buildParameters,
         pp.filename = Fmt("%s%d", buildParameters.outputFileName.c_str(), precompileIndex);
         pp.filename += Backend::getObjectFileExtension(g_CommandLine.target);
 
-        SCBE_Coff::emitHeader(buildParameters, pp);
+        auto objFileType = Backend::getObjType(g_CommandLine.target);
+        switch (objFileType)
+        {
+        case BackendObjType::Coff:
+            SCBE_Coff::emitHeader(buildParameters, pp);
+            break;
+        default:
+            Report::internalError(module, "SCBE::prepareOutput, unsupported output");
+            break;
+        }
+
         createRuntime(buildParameters);
     }
 
@@ -189,8 +199,16 @@ JobResult SCBE::prepareOutput(int stage, const BuildParameters& buildParameters,
         // This is it for functions
         *pp.patchTextSectionSize = concat.totalCount() - pp.textSectionOffset;
 
-        // Tables
-        SCBE_Coff::emitPostFunc(buildParameters, pp);
+        auto objFileType = Backend::getObjType(g_CommandLine.target);
+        switch (objFileType)
+        {
+        case BackendObjType::Coff:
+            SCBE_Coff::emitPostFunc(buildParameters, pp);
+            break;
+        default:
+            Report::internalError(module, "SCBE::prepareOutput, unsupported output");
+            break;
+        }
 
         if (!pp.relocTableTextSection.table.empty())
         {
