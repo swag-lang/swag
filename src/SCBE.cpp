@@ -480,7 +480,7 @@ JobResult SCBE::prepareOutput(int stage, const BuildParameters& buildParameters,
             if (!pp.relocTableMSSection.table.empty())
             {
                 *pp.patchMSSectionRelocTableOffset = msRelocOffset;
-                emitRelocationTable(pp.postConcat, pp.relocTableMSSection, pp.patchMSSectionFlags, pp.patchMSSectionRelocTableCount);
+                SCBE_Coff::emitRelocationTable(pp, pp.relocTableMSSection, pp.patchMSSectionFlags, pp.patchMSSectionRelocTableCount);
             }
 
             uint32_t tlsRelocOffset = csRelocOffset + pp.postConcat.totalCount();
