@@ -392,6 +392,17 @@ bool SCBE_Coff::emitRelocationTable(Concat& concat, CPURelocationTable& cofftabl
     return true;
 }
 
+bool SCBE_Coff::emitPostFunc(const BuildParameters& buildParameters, SCBE_X64& pp)
+{
+    emitSymbolTable(buildParameters, pp);
+    emitStringTable(buildParameters, pp);
+    emitDirectives(buildParameters, pp);
+    emitXData(buildParameters, pp);
+    emitPData(buildParameters, pp);
+
+    return true;
+}
+
 bool SCBE_Coff::emitBuffer(FILE* f, const BuildParameters& buildParameters, SCBE_CPU& pp)
 {
     auto module          = buildParameters.module;

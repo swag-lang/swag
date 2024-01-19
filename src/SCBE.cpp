@@ -190,13 +190,7 @@ JobResult SCBE::prepareOutput(int stage, const BuildParameters& buildParameters,
         *pp.patchTextSectionSize = concat.totalCount() - pp.textSectionOffset;
 
         // Tables
-        SCBE_Coff::emitSymbolTable(buildParameters, pp);
-        SCBE_Coff::emitStringTable(buildParameters, pp);
-        SCBE_Coff::emitDirectives(buildParameters, pp);
-
-        // Unwinding sections
-        SCBE_Coff::emitXData(buildParameters, pp);
-        SCBE_Coff::emitPData(buildParameters, pp);
+        SCBE_Coff::emitPostFunc(buildParameters, pp);
 
         // Debug sections
         emitDebug(buildParameters);
