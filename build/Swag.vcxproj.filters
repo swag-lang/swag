@@ -65,9 +65,6 @@
     <ClCompile Include="..\src\TypeGenStructJob.cpp">
       <Filter>Semantic\Type</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\SCBE_SaveObjJob.cpp">
-      <Filter>Backend\SCBE</Filter>
-    </ClCompile>
     <ClCompile Include="../src/ByteCodeOptimizer.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
@@ -665,6 +662,12 @@
     <ClCompile Include="..\src\SCBE_Main.cpp">
       <Filter>Backend\SCBE\Main</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\SCBE_SaveObjJob.cpp">
+      <Filter>Backend\SCBE\Obj</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\SCBE_Coff.cpp">
+      <Filter>Backend\SCBE\Obj</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
@@ -727,9 +730,6 @@
     </ClInclude>
     <ClInclude Include="..\src\TypeGen.h">
       <Filter>Semantic\Type</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\SCBE_SaveObjJob.h">
-      <Filter>Backend\SCBE</Filter>
     </ClInclude>
     <ClInclude Include="../src/ByteCodeOptimizer.h">
       <Filter>Backend\ByteCode\Optimize</Filter>
@@ -1025,6 +1025,12 @@
     <ClInclude Include="..\src\SCBE_Macros.h">
       <Filter>Backend\SCBE\Main</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\SCBE_SaveObjJob.h">
+      <Filter>Backend\SCBE\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\SCBE_Coff.h">
+      <Filter>Backend\SCBE\Obj</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Main">
@@ -1125,6 +1131,9 @@
     </Filter>
     <Filter Include="Backend\SCBE\Main">
       <UniqueIdentifier>{24d808cc-e601-49c5-b178-22d4017d8451}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Backend\SCBE\Obj">
+      <UniqueIdentifier>{5b17cb69-4d96-4b78-aeea-02449687dd00}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

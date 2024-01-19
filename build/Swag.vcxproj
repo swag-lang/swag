@@ -227,6 +227,7 @@
     <ClInclude Include="../src/BackendLinker.h" />
     <ClInclude Include="..\src\LLVM.h" />
     <ClInclude Include="..\src\SCBE.h" />
+    <ClInclude Include="..\src\SCBE_Coff.h" />
     <ClInclude Include="..\src\SCBE_Debug.h" />
     <ClInclude Include="..\src\SCBE_Macros.h" />
     <ClInclude Include="..\src\SCBE_SaveObjJob.h" />
@@ -354,6 +355,7 @@
     <ClCompile Include="..\src\LLVM.cpp" />
     <ClCompile Include="..\src\SCBE.cpp" />
     <ClCompile Include="..\src\SCBE_Call.cpp" />
+    <ClCompile Include="..\src\SCBE_Coff.cpp" />
     <ClCompile Include="..\src\SCBE_Data.cpp" />
     <ClCompile Include="..\src\SCBE_Debug.cpp" />
     <ClCompile Include="..\src\BackendFunctionBodyJob.cpp" />
