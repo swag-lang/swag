@@ -420,6 +420,10 @@ bool SCBE_Coff::emitRelocationTable(Concat& concat, CPURelocationTable& cofftabl
 
 bool SCBE_Coff::emitPostFunc(const BuildParameters& buildParameters, SCBE_CPU& pp)
 {
+    auto  module          = buildParameters.module;
+    int   precompileIndex = buildParameters.precompileIndex;
+    auto& concat          = pp.concat;
+
     emitSymbolTable(buildParameters, pp);
     emitStringTable(buildParameters, pp);
     emitDirectives(buildParameters, pp);
@@ -433,6 +437,88 @@ bool SCBE_Coff::emitPostFunc(const BuildParameters& buildParameters, SCBE_CPU& p
 #ifdef SWAG_STATS
     g_Stats.sizeBackendDbg += pp.concat.totalCount() - beforeCount;
 #endif
+
+    if (!pp.relocTableTextSection.table.empty())
+    {
+        concat.align(16);
+        *pp.patchTextSectionRelocTableOffset = concat.totalCount();
+        emitRelocationTable(pp.concat, pp.relocTableTextSection, pp.patchTextSectionFlags, pp.patchTextSectionRelocTableCount);
+    }
+
+    if (!pp.relocTablePDSection.table.empty())
+    {
+        concat.align(16);
+        *pp.patchPDSectionRelocTableOffset = concat.totalCount();
+        emitRelocationTable(pp.concat, pp.relocTablePDSection, pp.patchPDSectionFlags, pp.patchPDSectionRelocTableCount);
+    }
+
+    // Segments
+    uint32_t ssOffset = concat.totalCount();
+    if (pp.stringSegment.totalCount)
+    {
+        *pp.patchSSCount  = pp.stringSegment.totalCount;
+        *pp.patchSSOffset = ssOffset;
+    }
+
+    if (precompileIndex == 0)
+    {
+        uint32_t gsOffset  = ssOffset + pp.stringSegment.totalCount;
+        uint32_t csOffset  = gsOffset + pp.globalSegment.totalCount;
+        uint32_t msOffset  = csOffset + module->constantSegment.totalCount;
+        uint32_t tlsOffset = msOffset + module->mutableSegment.totalCount;
+
+        // We do not use concat to avoid dummy copies. We will save the segments as they are
+        if (pp.globalSegment.totalCount)
+        {
+            *pp.patchGSCount  = pp.globalSegment.totalCount;
+            *pp.patchGSOffset = gsOffset;
+        }
+
+        if (module->constantSegment.totalCount)
+        {
+            *pp.patchCSCount  = module->constantSegment.totalCount;
+            *pp.patchCSOffset = csOffset;
+        }
+
+        if (module->mutableSegment.totalCount)
+        {
+            *pp.patchMSCount  = module->mutableSegment.totalCount;
+            *pp.patchMSOffset = msOffset;
+        }
+
+        if (module->tlsSegment.totalCount)
+        {
+            *pp.patchTLSCount  = module->tlsSegment.totalCount;
+            *pp.patchTLSOffset = tlsOffset;
+        }
+
+        // And we use another concat buffer for relocation tables of segments, because they must be defined after
+        // the content
+        pp.postConcat.init();
+
+        // Warning ! Should be the last segment
+        uint32_t csRelocOffset = tlsOffset + module->tlsSegment.totalCount;
+
+        if (!pp.relocTableCSSection.table.empty())
+        {
+            *pp.patchCSSectionRelocTableOffset = csRelocOffset;
+            emitRelocationTable(pp.postConcat, pp.relocTableCSSection, pp.patchCSSectionFlags, pp.patchCSSectionRelocTableCount);
+        }
+
+        uint32_t msRelocOffset = csRelocOffset + pp.postConcat.totalCount();
+        if (!pp.relocTableMSSection.table.empty())
+        {
+            *pp.patchMSSectionRelocTableOffset = msRelocOffset;
+            emitRelocationTable(pp.postConcat, pp.relocTableMSSection, pp.patchMSSectionFlags, pp.patchMSSectionRelocTableCount);
+        }
+
+        uint32_t tlsRelocOffset = csRelocOffset + pp.postConcat.totalCount();
+        if (!pp.relocTableTLSSection.table.empty())
+        {
+            *pp.patchTLSSectionRelocTableOffset = tlsRelocOffset;
+            emitRelocationTable(pp.postConcat, pp.relocTableTLSSection, pp.patchTLSSectionFlags, pp.patchTLSSectionRelocTableCount);
+        }
+    }
 
     return true;
 }

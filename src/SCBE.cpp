@@ -161,12 +161,11 @@ JobResult SCBE::prepareOutput(int stage, const BuildParameters& buildParameters,
     {
         pp.pass = BackendPreCompilePass::End;
 
-        // Align .text section to 16 bytes
         concat.align(16);
         pp.textSectionOffset       = concat.totalCount();
         *pp.patchTextSectionOffset = pp.textSectionOffset;
-
         emitAllFunctionBodies(buildParameters, module, ownerJob);
+
         return JobResult::KeepJobAlive;
     }
 
@@ -199,6 +198,13 @@ JobResult SCBE::prepareOutput(int stage, const BuildParameters& buildParameters,
         // This is it for functions
         *pp.patchTextSectionSize = concat.totalCount() - pp.textSectionOffset;
 
+        // Align all segments to 16 bytes
+        pp.stringSegment.align(16);
+        pp.globalSegment.align(16);
+        module->constantSegment.align(16);
+        module->mutableSegment.align(16);
+
+        // Emit
         auto objFileType = Backend::getObjType(g_CommandLine.target);
         switch (objFileType)
         {
@@ -208,94 +214,6 @@ JobResult SCBE::prepareOutput(int stage, const BuildParameters& buildParameters,
         default:
             Report::internalError(module, "SCBE::prepareOutput, unsupported output");
             break;
-        }
-
-        if (!pp.relocTableTextSection.table.empty())
-        {
-            concat.align(16);
-            *pp.patchTextSectionRelocTableOffset = concat.totalCount();
-            SCBE_Coff::emitRelocationTable(pp.concat, pp.relocTableTextSection, pp.patchTextSectionFlags, pp.patchTextSectionRelocTableCount);
-        }
-
-        if (!pp.relocTablePDSection.table.empty())
-        {
-            concat.align(16);
-            *pp.patchPDSectionRelocTableOffset = concat.totalCount();
-            SCBE_Coff::emitRelocationTable(pp.concat, pp.relocTablePDSection, pp.patchPDSectionFlags, pp.patchPDSectionRelocTableCount);
-        }
-
-        // Align all segments to 16 bytes
-        pp.stringSegment.align(16);
-        pp.globalSegment.align(16);
-        module->constantSegment.align(16);
-        module->mutableSegment.align(16);
-
-        // Segments
-        uint32_t ssOffset = concat.totalCount();
-        if (pp.stringSegment.totalCount)
-        {
-            *pp.patchSSCount  = pp.stringSegment.totalCount;
-            *pp.patchSSOffset = ssOffset;
-        }
-
-        if (precompileIndex == 0)
-        {
-            uint32_t gsOffset  = ssOffset + pp.stringSegment.totalCount;
-            uint32_t csOffset  = gsOffset + pp.globalSegment.totalCount;
-            uint32_t msOffset  = csOffset + module->constantSegment.totalCount;
-            uint32_t tlsOffset = msOffset + module->mutableSegment.totalCount;
-
-            // We do not use concat to avoid dummy copies. We will save the segments as they are
-            if (pp.globalSegment.totalCount)
-            {
-                *pp.patchGSCount  = pp.globalSegment.totalCount;
-                *pp.patchGSOffset = gsOffset;
-            }
-
-            if (module->constantSegment.totalCount)
-            {
-                *pp.patchCSCount  = module->constantSegment.totalCount;
-                *pp.patchCSOffset = csOffset;
-            }
-
-            if (module->mutableSegment.totalCount)
-            {
-                *pp.patchMSCount  = module->mutableSegment.totalCount;
-                *pp.patchMSOffset = msOffset;
-            }
-
-            if (module->tlsSegment.totalCount)
-            {
-                *pp.patchTLSCount  = module->tlsSegment.totalCount;
-                *pp.patchTLSOffset = tlsOffset;
-            }
-
-            // And we use another concat buffer for relocation tables of segments, because they must be defined after
-            // the content
-            pp.postConcat.init();
-
-            // Warning ! Should be the last segment
-            uint32_t csRelocOffset = tlsOffset + module->tlsSegment.totalCount;
-
-            if (!pp.relocTableCSSection.table.empty())
-            {
-                *pp.patchCSSectionRelocTableOffset = csRelocOffset;
-                SCBE_Coff::emitRelocationTable(pp.postConcat, pp.relocTableCSSection, pp.patchCSSectionFlags, pp.patchCSSectionRelocTableCount);
-            }
-
-            uint32_t msRelocOffset = csRelocOffset + pp.postConcat.totalCount();
-            if (!pp.relocTableMSSection.table.empty())
-            {
-                *pp.patchMSSectionRelocTableOffset = msRelocOffset;
-                SCBE_Coff::emitRelocationTable(pp.postConcat, pp.relocTableMSSection, pp.patchMSSectionFlags, pp.patchMSSectionRelocTableCount);
-            }
-
-            uint32_t tlsRelocOffset = csRelocOffset + pp.postConcat.totalCount();
-            if (!pp.relocTableTLSSection.table.empty())
-            {
-                *pp.patchTLSSectionRelocTableOffset = tlsRelocOffset;
-                SCBE_Coff::emitRelocationTable(pp.postConcat, pp.relocTableTLSSection, pp.patchTLSSectionFlags, pp.patchTLSSectionRelocTableCount);
-            }
         }
     }
 
