@@ -24,8 +24,7 @@ struct SCBE : public Backend
     bool      generateOutput(const BuildParameters& backendParameters) override;
     bool      emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc) override;
     bool      saveObjFile(const BuildParameters& buildParameters);
-
-    static void computeUnwind(const VectorNative<CPURegister>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind);
+    void      computeUnwind(const VectorNative<CPURegister>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind);
 
     void emitOverflowSigned(SCBE_X64& pp, ByteCodeInstruction* ip, const char* msg);
     void emitOverflowUnsigned(SCBE_X64& pp, ByteCodeInstruction* ip, const char* msg);

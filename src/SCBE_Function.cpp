@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "SCBE.h"
+#include "SCBE_Coff.h"
 #include "SCBE_Macros.h"
 #include "ByteCode.h"
 #include "ByteCodeGen.h"
@@ -14,45 +15,15 @@ void SCBE::computeUnwind(const VectorNative<CPURegister>& unwindRegs,
                          uint32_t                         offsetSubRSP,
                          VectorNative<uint16_t>&          unwind)
 {
-    // UNWIND_CODE
-    // UBYTE:8: offset of the instruction after the "sub rsp"
-    // UBYTE:4: code (UWOP_ALLOC_LARGE or UWOP_ALLOC_SMALL)
-    // UBYTE:4: info (will code the size of the decrement of rsp)
-
-    SWAG_ASSERT(offsetSubRSP <= 0xFF);
-    SWAG_ASSERT((sizeStack & 7) == 0); // Must be aligned
-
-    if (sizeStack <= 128)
+    auto objFileType = Backend::getObjType(g_CommandLine.target);
+    switch (objFileType)
     {
-        SWAG_ASSERT(sizeStack >= 8);
-        sizeStack -= 8;
-        sizeStack /= 8;
-        auto unwind0 = (uint16_t) (UWOP_ALLOC_SMALL | (sizeStack << 4));
-        unwind0 <<= 8;
-        unwind0 |= (uint16_t) offsetSubRSP;
-        unwind.push_back(unwind0);
-    }
-    else
-    {
-        SWAG_ASSERT(sizeStack <= (512 * 1024) - 8);
-        auto unwind0 = (uint16_t) (UWOP_ALLOC_LARGE);
-        unwind0 <<= 8;
-        unwind0 |= (uint16_t) offsetSubRSP;
-        unwind.push_back(unwind0);
-        unwind0 = (uint16_t) (sizeStack / 8);
-        unwind.push_back(unwind0);
-    }
-
-    // Now we put the registers.
-    // At the end because array must be sorted in 'offset in prolog' descending order.
-    // So RDI, which is the first 'push', must be the last
-    for (int32_t i = (int32_t) unwindRegs.size() - 1; i >= 0; i--)
-    {
-        uint16_t unwind0 = 0;
-        unwind0          = (unwindRegs[i] << 12);
-        unwind0 |= (UWOP_PUSH_NONVOL << 8);
-        unwind0 |= (uint8_t) unwindOffsetRegs[i];
-        unwind.push_back(unwind0);
+    case BackendObjType::Coff:
+        SCBE_Coff::computeUnwind(unwindRegs, unwindOffsetRegs, sizeStack, offsetSubRSP, unwind);
+        break;
+    default:
+        Report::internalError(module, "SCBE::computeUnwind, unsupported output");
+        break;
     }
 }
 

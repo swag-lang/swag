@@ -954,7 +954,7 @@ namespace OS
             unwindOffsetRegs.push_back(gen.concat.totalCount());
             gen.emit_OpN_Immediate(RSP, stackSize, CPUOp::SUB, CPUBits::B64);
             auto sizeProlog = gen.concat.totalCount();
-            SCBE::computeUnwind(unwindRegs, unwindOffsetRegs, stackSize, sizeProlog, unwind);
+            SCBE_Coff::computeUnwind(unwindRegs, unwindOffsetRegs, stackSize, sizeProlog, unwind);
 
             // Add function table
             auto* rtFunc              = new RUNTIME_FUNCTION(); // leak, but it's fine
