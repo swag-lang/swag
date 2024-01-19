@@ -157,8 +157,8 @@ void SCBE::emitInternalPanic(SCBE_X64& pp, AstNode* node, const char* msg)
 void SCBE::emitSymbolRelocation(SCBE_X64& pp, const Utf8& name)
 {
     auto& concat  = pp.concat;
-    auto  callSym = pp.getOrAddSymbol(name, CoffSymbolKind::Extern);
-    if (callSym->kind == CoffSymbolKind::Function)
+    auto  callSym = pp.getOrAddSymbol(name, CPUSymbolKind::Extern);
+    if (callSym->kind == CPUSymbolKind::Function)
     {
         concat.addS32((callSym->value + pp.textSectionOffset) - (concat.totalCount() + 4));
     }

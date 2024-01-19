@@ -78,7 +78,7 @@ void SCBE_CodeView::emitSecRel(SCBE_CPU& pp, uint32_t symbolIndex, uint32_t segI
     auto& concat = pp.concat;
 
     // Function symbol index relocation
-    CoffRelocation reloc;
+    CPURelocation reloc;
     reloc.type           = IMAGE_REL_AMD64_SECREL;
     reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
     reloc.symbolIndex    = symbolIndex;
@@ -156,7 +156,7 @@ bool SCBE_CodeView::emitDataDebugT(SCBE_CPU& pp)
     auto& concat = pp.concat;
 
     auto bucket = pp.dbgTypeRecords.firstBucket;
-    auto f      = (DbgTypeRecord*) bucket->datas;
+    auto f      = (SCBE_DebugTypeRecord*) bucket->datas;
     int  cpt    = 0;
 
     while (true)
@@ -278,7 +278,7 @@ bool SCBE_CodeView::emitDataDebugT(SCBE_CPU& pp)
 
         endRecord(pp, false);
 
-        cpt += sizeof(DbgTypeRecord);
+        cpt += sizeof(SCBE_DebugTypeRecord);
         f += 1;
 
         if (cpt >= (int) pp.dbgTypeRecords.bucketCount(bucket))
@@ -287,7 +287,7 @@ bool SCBE_CodeView::emitDataDebugT(SCBE_CPU& pp)
             if (!bucket)
                 break;
             cpt = 0;
-            f   = (DbgTypeRecord*) bucket->datas;
+            f   = (SCBE_DebugTypeRecord*) bucket->datas;
         }
     }
 
@@ -345,7 +345,7 @@ void SCBE_CodeView::emitGlobalDebugS(SCBE_CPU& pp, VectorNative<AstNode*>& gVars
         startRecord(pp, S_LDATA32);
         concat.addU32(SCBE_Debug::getOrCreateType(pp, p->typeInfo));
 
-        CoffRelocation reloc;
+        CPURelocation reloc;
 
         // symbol index relocation inside segment
         reloc.type           = IMAGE_REL_AMD64_SECREL;
@@ -405,13 +405,13 @@ static uint32_t getFileChecksum(MapPath<uint32_t>& mapFileNames,
     return checkSymIndex * 8;
 }
 
-bool SCBE_CodeView::emitLines(SCBE_CPU&        pp,
-                                   MapPath<uint32_t>& mapFileNames,
-                                   Vector<uint32_t>&  arrFileNames,
-                                   Utf8&              stringTable,
-                                   Concat&            concat,
-                                   CoffFunction&      f,
-                                   size_t             idxDbgLines)
+bool SCBE_CodeView::emitLines(SCBE_CPU&          pp,
+                              MapPath<uint32_t>& mapFileNames,
+                              Vector<uint32_t>&  arrFileNames,
+                              Utf8&              stringTable,
+                              Concat&            concat,
+                              CPUFunction&       f,
+                              size_t             idxDbgLines)
 {
     auto& dbgLines   = f.dbgLines[idxDbgLines];
     auto  sourceFile = dbgLines.sourceFile;
@@ -534,7 +534,7 @@ bool SCBE_CodeView::emitFctDebugS(SCBE_CPU& pp)
                     if (!typeParam || !overload)
                         continue;
 
-                    DbgTypeIndex typeIdx;
+                    SCBE_DebugTypeIndex typeIdx;
                     switch (typeParam->kind)
                     {
                     case TypeInfoKind::Array:
@@ -574,7 +574,7 @@ bool SCBE_CodeView::emitFctDebugS(SCBE_CPU& pp)
                     auto child     = decl->parameters->childs[i];
                     auto typeParam = typeFunc->parameters[i]->typeInfo;
 
-                    DbgTypeIndex typeIdx;
+                    SCBE_DebugTypeIndex typeIdx;
                     switch (typeParam->kind)
                     {
                     case TypeInfoKind::Struct:
@@ -762,7 +762,7 @@ bool SCBE_CodeView::emitFctDebugS(SCBE_CPU& pp)
     return true;
 }
 
-bool SCBE_CodeView::emitScope(SCBE_CPU& pp, CoffFunction& f, Scope* scope)
+bool SCBE_CodeView::emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
 {
     auto& concat = pp.concat;
 
@@ -798,8 +798,8 @@ bool SCBE_CodeView::emitScope(SCBE_CPU& pp, CoffFunction& f, Scope* scope)
         startRecord(pp, S_LDATA32);
         concat.addU32(SCBE_Debug::getOrCreateType(pp, typeInfo));
 
-        CoffRelocation reloc;
-        auto           segSymIndex = overload->flags & OVERLOAD_VAR_BSS ? pp.symBSIndex : pp.symMSIndex;
+        CPURelocation reloc;
+        auto          segSymIndex = overload->flags & OVERLOAD_VAR_BSS ? pp.symBSIndex : pp.symMSIndex;
 
         // symbol index relocation inside segment
         reloc.type           = IMAGE_REL_AMD64_SECREL;
@@ -847,7 +847,7 @@ bool SCBE_CodeView::emitScope(SCBE_CPU& pp, CoffFunction& f, Scope* scope)
             concat.addU32(SCBE_Debug::getOrCreatePointerToType(pp, typeInfo, true)); // Type
         else
             concat.addU32(SCBE_Debug::getOrCreateType(pp, typeInfo)); // Type
-        concat.addU16(0);                                            // CV_LVARFLAGS
+        concat.addU16(0);                                             // CV_LVARFLAGS
         emitTruncatedString(pp, localVar->token.text);
         endRecord(pp);
 

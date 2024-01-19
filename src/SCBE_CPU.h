@@ -8,10 +8,6 @@
 
 #define REG_OFFSET(__r) __r * sizeof(Register)
 
-#define MK_ALIGN16(__s) \
-    if (__s % 16)       \
-        __s += 16 - (__s % 16);
-
 enum class CPUBits : uint32_t
 {
     B8  = 8,
@@ -109,7 +105,7 @@ struct CPULabelToSolve
     uint8_t* patch;
 };
 
-enum class CoffSymbolKind
+enum class CPUSymbolKind
 {
     Function,
     Extern,
@@ -117,53 +113,53 @@ enum class CoffSymbolKind
     GlobalString,
 };
 
-struct CoffSymbol
+struct CPUSymbol
 {
-    Utf8           name;
-    CoffSymbolKind kind;
-    uint32_t       value;
-    uint32_t       index;
-    uint16_t       sectionIdx;
+    Utf8          name;
+    CPUSymbolKind kind;
+    uint32_t      value;
+    uint32_t      index;
+    uint16_t      sectionIdx;
 };
 
-struct CoffRelocation
+struct CPURelocation
 {
     uint32_t virtualAddress;
     uint32_t symbolIndex;
     uint16_t type;
 };
 
-struct CoffRelocationTable
+struct CPURelocationTable
 {
-    Vector<CoffRelocation> table;
+    Vector<CPURelocation> table;
 };
 
-struct CoffFunction
+struct CPUFunction
 {
-    VectorNative<uint16_t> unwind;
-    Vector<DbgLines>       dbgLines;
-    AstNode*               node                    = nullptr;
-    TypeInfoFuncAttr*      typeFunc                = nullptr;
-    uint32_t               symbolIndex             = 0;
-    uint32_t               startAddress            = 0;
-    uint32_t               endAddress              = 0;
-    uint32_t               xdataOffset             = 0;
-    uint32_t               sizeProlog              = 0;
-    uint32_t               offsetStack             = 0;
-    uint32_t               offsetCallerStackParams = 0;
-    uint32_t               offsetLocalStackParams  = 0;
-    uint32_t               frameSize               = 0;
-    uint32_t               numScratchRegs          = 0;
+    VectorNative<uint16_t>  unwind;
+    Vector<SCBE_DebugLines> dbgLines;
+    AstNode*                node                    = nullptr;
+    TypeInfoFuncAttr*       typeFunc                = nullptr;
+    uint32_t                symbolIndex             = 0;
+    uint32_t                startAddress            = 0;
+    uint32_t                endAddress              = 0;
+    uint32_t                xdataOffset             = 0;
+    uint32_t                sizeProlog              = 0;
+    uint32_t                offsetStack             = 0;
+    uint32_t                offsetCallerStackParams = 0;
+    uint32_t                offsetLocalStackParams  = 0;
+    uint32_t                frameSize               = 0;
+    uint32_t                numScratchRegs          = 0;
 };
 
 struct SCBE_CPU
 {
-    void        clearInstructionCache();
-    CoffSymbol* getSymbol(const Utf8& name);
-    CoffSymbol* getOrAddSymbol(const Utf8& name, CoffSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
-    uint32_t    getOrCreateLabel(uint32_t ip);
-    CoffSymbol* getOrCreateGlobalString(const Utf8& str);
-    void        addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type);
+    void       clearInstructionCache();
+    CPUSymbol* getSymbol(const Utf8& name);
+    CPUSymbol* getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32_t value = 0, uint16_t sectionIdx = 0);
+    uint32_t   getOrCreateLabel(uint32_t ip);
+    CPUSymbol* getOrCreateGlobalString(const Utf8& str);
+    void       addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type);
 
     Utf8   filename;
     Concat concat;
@@ -174,14 +170,14 @@ struct SCBE_CPU
     VectorNative<CPUPushParam>    pushParams2;
     VectorNative<CPUPushParam>    pushParams3;
     VectorNative<TypeInfo*>       pushParamsTypes;
-    CoffRelocationTable           relocTableTextSection;
-    CoffRelocationTable           relocTableCSSection;
-    CoffRelocationTable           relocTableMSSection;
-    CoffRelocationTable           relocTableTSSection;
-    CoffRelocationTable           relocTableTLSSection;
-    CoffRelocationTable           relocTablePDSection;
-    CoffRelocationTable           relocTableDBGSSection;
-    Vector<CoffSymbol>            allSymbols;
+    CPURelocationTable            relocTableTextSection;
+    CPURelocationTable            relocTableCSSection;
+    CPURelocationTable            relocTableMSSection;
+    CPURelocationTable            relocTableTSSection;
+    CPURelocationTable            relocTableTLSSection;
+    CPURelocationTable            relocTablePDSection;
+    CPURelocationTable            relocTableDBGSSection;
+    Vector<CPUSymbol>             allSymbols;
     MapUtf8<uint32_t>             mapSymbols;
     MapUtf8<uint32_t>             globalStrings;
     Map<uint32_t, int32_t>        labels;
@@ -189,7 +185,7 @@ struct SCBE_CPU
     DataSegment                   stringSegment;
     VectorNative<CPULabelToSolve> labelsToSolve;
     Utf8                          directives;
-    Vector<CoffFunction>          functions;
+    Vector<CPUFunction>           functions;
 
     uint32_t* patchSymbolTableOffset = nullptr;
     uint32_t* patchSymbolTableCount  = nullptr;
@@ -286,14 +282,14 @@ struct SCBE_CPU
     BackendPreCompilePass pass = {BackendPreCompilePass::Init};
 
     // Debug infos
-    static const int             MAX_RECORD   = 4;
-    uint16_t                     dbgRecordIdx = 0;
-    uint16_t*                    dbgStartRecordPtr[MAX_RECORD];
-    uint32_t                     dbgStartRecordOffset[MAX_RECORD];
-    uint32_t                     dbgTypeRecordsCount = 0;
-    Concat                       dbgTypeRecords;
-    Map<TypeInfo*, DbgTypeIndex> dbgMapTypes;
-    MapUtf8<DbgTypeIndex>        dbgMapTypesNames;
+    static const int                    MAX_RECORD   = 4;
+    uint16_t                            dbgRecordIdx = 0;
+    uint16_t*                           dbgStartRecordPtr[MAX_RECORD];
+    uint32_t                            dbgStartRecordOffset[MAX_RECORD];
+    uint32_t                            dbgTypeRecordsCount = 0;
+    Concat                              dbgTypeRecords;
+    Map<TypeInfo*, SCBE_DebugTypeIndex> dbgMapTypes;
+    MapUtf8<SCBE_DebugTypeIndex>        dbgMapTypesNames;
 
     uint32_t    storageRegCount = UINT32_MAX;
     uint32_t    storageRegStack = 0;

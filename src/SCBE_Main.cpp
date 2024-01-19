@@ -19,7 +19,7 @@ bool SCBE::emitOS(const BuildParameters& buildParameters)
     {
         // :ChkStk Stack probing
         // See SWAG_LIMIT_PAGE_STACK
-        auto symbolFuncIndex = pp.getOrAddSymbol("__chkstk", CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+        auto symbolFuncIndex = pp.getOrAddSymbol("__chkstk", CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
         auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
         SWAG_ASSERT(g_CommandLine.target.arch == SwagTargetArch::X86_64);
         coffFct->startAddress = concat.totalCount();
@@ -44,7 +44,7 @@ bool SCBE::emitOS(const BuildParameters& buildParameters)
         coffFct->endAddress = concat.totalCount();
 
         // int _DllMainCRTStartup(void*, int, void*)
-        pp.getOrAddSymbol("_DllMainCRTStartup", CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
+        pp.getOrAddSymbol("_DllMainCRTStartup", CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset);
         pp.emit_Load64_Immediate(RAX, 1);
         pp.emit_Ret();
         return true;
@@ -80,7 +80,7 @@ bool SCBE::emitMain(const BuildParameters& buildParameters)
         return false;
     }
 
-    auto symbolFuncIndex = pp.getOrAddSymbol(entryPoint, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    auto symbolFuncIndex = pp.getOrAddSymbol(entryPoint, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
 
     auto beforeProlog = concat.totalCount();
@@ -256,7 +256,7 @@ bool SCBE::emitGetTypeTable(const BuildParameters& buildParameters)
     auto startAddress = concat.totalCount();
 
     auto thisInit        = module->getGlobalPrivFct(g_LangSpec->name_getTypeTable);
-    auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
@@ -290,7 +290,7 @@ bool SCBE::emitGlobalPreMain(const BuildParameters& buildParameters)
     auto startAddress = concat.totalCount();
 
     auto thisInit        = module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
-    auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
@@ -345,7 +345,7 @@ bool SCBE::emitGlobalInit(const BuildParameters& buildParameters)
     auto startAddress = concat.totalCount();
 
     auto thisInit        = module->getGlobalPrivFct(g_LangSpec->name_globalInit);
-    auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
@@ -425,7 +425,7 @@ bool SCBE::emitGlobalDrop(const BuildParameters& buildParameters)
     auto startAddress = concat.totalCount();
 
     auto thisDrop        = module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
-    auto symbolFuncIndex = pp.getOrAddSymbol(thisDrop, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    auto symbolFuncIndex = pp.getOrAddSymbol(thisDrop, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct         = registerFunction(pp, nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)

@@ -4,7 +4,7 @@
 #include "Module.h"
 #include "Workspace.h"
 
-uint32_t SCBE::getParamStackOffset(CoffFunction* coffFct, int paramIdx)
+uint32_t SCBE::getParamStackOffset(CPUFunction* coffFct, int paramIdx)
 {
     const auto& cc = coffFct->typeFunc->getCallConv();
 
@@ -18,7 +18,7 @@ uint32_t SCBE::getParamStackOffset(CoffFunction* coffFct, int paramIdx)
         return REG_OFFSET(paramIdx) + coffFct->offsetCallerStackParams;
 }
 
-void SCBE::emitGetParam(SCBE_X64& pp, CoffFunction* coffFct, int reg, uint32_t paramIdx, int sizeOf, uint64_t toAdd, int deRefSize)
+void SCBE::emitGetParam(SCBE_X64& pp, CPUFunction* coffFct, int reg, uint32_t paramIdx, int sizeOf, uint64_t toAdd, int deRefSize)
 {
     auto        typeFunc   = coffFct->typeFunc;
     const auto& cc         = typeFunc->getCallConv();

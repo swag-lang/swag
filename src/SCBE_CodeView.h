@@ -74,7 +74,7 @@ const uint16_t R_R12 = 340;
 // const uint16_t R_RBP = 334;
 // const uint16_t R_RSP = 335;
 
-enum SimpleTypeKind : DbgTypeIndex
+enum SimpleTypeKind : SCBE_DebugTypeIndex
 {
     None          = 0x0000, // uncharacterized type (no type)
     Void          = 0x0003, // void
@@ -130,7 +130,7 @@ enum SimpleTypeKind : DbgTypeIndex
     Boolean128 = 0x0034, // 128 bit boolean
 };
 
-enum SimpleTypeMode : DbgTypeIndex
+enum SimpleTypeMode : SCBE_DebugTypeIndex
 {
     Direct         = 0, // Not a pointer
     NearPointer    = 1, // Near pointer
@@ -153,9 +153,9 @@ struct SCBE_CodeView
     void emitConstant(SCBE_CPU& pp, AstNode* node, const Utf8& name);
     void emitGlobalDebugS(SCBE_CPU& pp, VectorNative<AstNode*>& gVars, uint32_t segSymIndex);
     bool emitDataDebugT(SCBE_CPU& pp);
-    bool emitLines(SCBE_CPU& pp, MapPath<uint32_t>&, Vector<uint32_t>&, Utf8&, Concat& concat, CoffFunction& f, size_t idxDbgLines);
+    bool emitLines(SCBE_CPU& pp, MapPath<uint32_t>&, Vector<uint32_t>&, Utf8&, Concat& concat, CPUFunction& f, size_t idxDbgLines);
     bool emitFctDebugS(SCBE_CPU& pp);
-    bool emitScope(SCBE_CPU& pp, CoffFunction& f, Scope* scope);
+    bool emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope);
     bool emit(const BuildParameters& buildParameters, SCBE_CPU& pp);
 
     SCBE* scbe = nullptr;

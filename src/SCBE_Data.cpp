@@ -1,17 +1,17 @@
 #include "pch.h"
 #include "SCBE.h"
 
-bool SCBE::buildRelocSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CoffRelocationTable& relocTable, SegmentKind me)
+bool SCBE::buildRelocSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CPURelocationTable& relocTable, SegmentKind me)
 {
     if (!dataSegment->buckets.size())
         return true;
     if (!dataSegment->totalCount)
         return true;
 
-    int            ct              = buildParameters.compileType;
-    int            precompileIndex = buildParameters.precompileIndex;
-    auto&          pp              = *perThread[ct][precompileIndex];
-    CoffRelocation reloc;
+    int           ct              = buildParameters.compileType;
+    int           precompileIndex = buildParameters.precompileIndex;
+    auto&         pp              = *perThread[ct][precompileIndex];
+    CPURelocation reloc;
 
     SWAG_ASSERT(precompileIndex == 0);
     for (auto& k : dataSegment->initPtr)
@@ -54,7 +54,7 @@ bool SCBE::buildRelocSegment(const BuildParameters& buildParameters, DataSegment
     {
         *(void**) dataSegment->address(k.first) = 0;
 
-        auto sym             = pp.getOrAddSymbol(k.second, CoffSymbolKind::Extern);
+        auto sym             = pp.getOrAddSymbol(k.second, CPUSymbolKind::Extern);
         reloc.virtualAddress = k.first;
         reloc.symbolIndex    = sym->index;
         reloc.type           = IMAGE_REL_AMD64_ADDR64;

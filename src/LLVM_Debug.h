@@ -29,7 +29,7 @@ struct LLVM_Debug
     llvm::DISubroutineType* getFunctionType(TypeInfoFuncAttr* typeFunc, llvm::DIFile* file);
     llvm::DIScope*          getOrCreateScope(llvm::DIFile* file, Scope* scope);
 
-    LLVM*         llvm        = nullptr;
+    LLVM*                llvm        = nullptr;
     llvm::LLVMContext*   llvmContext = nullptr;
     llvm::Module*        llvmModule  = nullptr;
     llvm::DIBuilder*     dbgBuilder  = nullptr;

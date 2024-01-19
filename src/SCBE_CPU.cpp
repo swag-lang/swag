@@ -10,7 +10,7 @@ void SCBE_CPU::clearInstructionCache()
     storageReg      = RAX;
 }
 
-CoffSymbol* SCBE_CPU::getSymbol(const Utf8& name)
+CPUSymbol* SCBE_CPU::getSymbol(const Utf8& name)
 {
     auto it = mapSymbols.find(name);
     if (it != mapSymbols.end())
@@ -18,16 +18,16 @@ CoffSymbol* SCBE_CPU::getSymbol(const Utf8& name)
     return nullptr;
 }
 
-CoffSymbol* SCBE_CPU::getOrAddSymbol(const Utf8& name, CoffSymbolKind kind, uint32_t value, uint16_t sectionIdx)
+CPUSymbol* SCBE_CPU::getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32_t value, uint16_t sectionIdx)
 {
     auto it = getSymbol(name);
     if (it)
     {
         if (it->kind == kind)
             return it;
-        if (kind == CoffSymbolKind::Extern)
+        if (kind == CPUSymbolKind::Extern)
             return it;
-        if (kind == CoffSymbolKind::Function && it->kind == CoffSymbolKind::Extern)
+        if (kind == CPUSymbolKind::Function && it->kind == CPUSymbolKind::Extern)
         {
             it->kind  = kind;
             it->value = value;
@@ -37,7 +37,7 @@ CoffSymbol* SCBE_CPU::getOrAddSymbol(const Utf8& name, CoffSymbolKind kind, uint
         SWAG_ASSERT(false);
     }
 
-    CoffSymbol sym;
+    CPUSymbol sym;
     sym.name       = name;
     sym.kind       = kind;
     sym.value      = value;
@@ -51,23 +51,23 @@ CoffSymbol* SCBE_CPU::getOrAddSymbol(const Utf8& name, CoffSymbolKind kind, uint
 
 void SCBE_CPU::addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, uint16_t type)
 {
-    CoffRelocation reloc;
+    CPURelocation reloc;
     reloc.virtualAddress = virtualAddr;
     reloc.symbolIndex    = symbolIndex;
     reloc.type           = type;
     relocTableTextSection.table.push_back(reloc);
 }
 
-CoffSymbol* SCBE_CPU ::getOrCreateGlobalString(const Utf8& str)
+CPUSymbol* SCBE_CPU ::getOrCreateGlobalString(const Utf8& str)
 {
-    auto        it  = globalStrings.find(str);
-    CoffSymbol* sym = nullptr;
+    auto       it  = globalStrings.find(str);
+    CPUSymbol* sym = nullptr;
     if (it != globalStrings.end())
         sym = &allSymbols[it->second];
     else
     {
         Utf8 symName       = Fmt("__str%u", (uint32_t) globalStrings.size());
-        sym                = getOrAddSymbol(symName, CoffSymbolKind::GlobalString);
+        sym                = getOrAddSymbol(symName, CPUSymbolKind::GlobalString);
         globalStrings[str] = sym->index;
         sym->value         = stringSegment.addStringNoLock(str);
     }

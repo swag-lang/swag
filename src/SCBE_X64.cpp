@@ -1740,7 +1740,7 @@ void SCBE_X64::emit_Call_Far(const Utf8& symbolName)
 {
     concat.addU8(0xFF);
     concat.addU8(0x15);
-    auto callSym = getOrAddSymbol(symbolName, CoffSymbolKind::Extern);
+    auto callSym = getOrAddSymbol(symbolName, CPUSymbolKind::Extern);
     addSymbolRelocation(concat.totalCount() - textSectionOffset, callSym->index, IMAGE_REL_AMD64_REL32);
     concat.addU32(0);
 }
@@ -1749,8 +1749,8 @@ void SCBE_X64::emit_Call(const Utf8& symbolName)
 {
     concat.addU8(0xE8);
 
-    auto callSym = getOrAddSymbol(symbolName, CoffSymbolKind::Extern);
-    if (callSym->kind == CoffSymbolKind::Function)
+    auto callSym = getOrAddSymbol(symbolName, CPUSymbolKind::Extern);
+    if (callSym->kind == CPUSymbolKind::Function)
     {
         concat.addS32((callSym->value + textSectionOffset) - (concat.totalCount() + 4));
     }
@@ -2314,10 +2314,10 @@ uint16_t SCBE_X64::computeUnwindPush(CPURegister reg, uint32_t offsetSubRSP)
 }
 
 void SCBE_X64::computeUnwind(const VectorNative<CPURegister>& unwindRegs,
-                               const VectorNative<uint32_t>&    unwindOffsetRegs,
-                               uint32_t                         sizeStack,
-                               uint32_t                         offsetSubRSP,
-                               VectorNative<uint16_t>&          unwind)
+                             const VectorNative<uint32_t>&    unwindOffsetRegs,
+                             uint32_t                         sizeStack,
+                             uint32_t                         offsetSubRSP,
+                             VectorNative<uint16_t>&          unwind)
 {
     // UNWIND_CODE
     // UBYTE:8: offset of the instruction after the "sub rsp"

@@ -44,7 +44,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
     }
 
     // Symbol
-    auto symbolFuncIndex  = pp.getOrAddSymbol(funcName, CoffSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    auto symbolFuncIndex  = pp.getOrAddSymbol(funcName, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto coffFct          = registerFunction(pp, bc->node, symbolFuncIndex);
     coffFct->typeFunc     = typeFunc;
     coffFct->startAddress = startAddress;
@@ -3647,9 +3647,9 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             Utf8 callName = funcNode->getCallName();
             pp.emit_Load64_Immediate(RAX, 0, true);
 
-            CoffRelocation reloc;
+            CPURelocation reloc;
             reloc.virtualAddress = concat.totalCount() - sizeof(uint64_t) - pp.textSectionOffset;
-            auto callSym         = pp.getOrAddSymbol(callName, CoffSymbolKind::Extern);
+            auto callSym         = pp.getOrAddSymbol(callName, CPUSymbolKind::Extern);
             reloc.symbolIndex    = callSym->index;
             reloc.type           = IMAGE_REL_AMD64_ADDR64;
             pp.relocTableTextSection.table.push_back(reloc);

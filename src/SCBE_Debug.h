@@ -1,141 +1,139 @@
 #pragma once
 #include "Backend.h"
-// #include "BackendParameters.h"
-// #include "DataSegment.h"
 
 struct BuildParameters;
 struct ByteCodeInstruction;
-struct CoffFunction;
+struct CPUFunction;
 struct SCBE_CPU;
 struct SCBE;
 
-using DbgTypeIndex = uint32_t;
+using SCBE_DebugTypeIndex = uint32_t;
 
-struct DbgTypeRecordArgList
+struct SCBE_DebugTypeRecordArgList
 {
-    Vector<DbgTypeIndex> args;
-    uint32_t             count = 0;
+    Vector<SCBE_DebugTypeIndex> args;
+    uint32_t                    count = 0;
 };
 
-struct DbgTypeRecordProcedure
+struct SCBE_DebugTypeRecordProcedure
 {
-    DbgTypeIndex returnType = 0;
-    DbgTypeIndex argsType   = 0;
-    uint16_t     numArgs    = 0;
+    SCBE_DebugTypeIndex returnType = 0;
+    SCBE_DebugTypeIndex argsType   = 0;
+    uint16_t            numArgs    = 0;
 };
 
-struct DbgTypeRecordMFunction
+struct SCBE_DebugTypeRecordMFunction
 {
-    DbgTypeIndex returnType = 0;
-    DbgTypeIndex structType = 0;
-    DbgTypeIndex thisType   = 0;
-    DbgTypeIndex argsType   = 0;
-    uint16_t     numArgs    = 0;
+    SCBE_DebugTypeIndex returnType = 0;
+    SCBE_DebugTypeIndex structType = 0;
+    SCBE_DebugTypeIndex thisType   = 0;
+    SCBE_DebugTypeIndex argsType   = 0;
+    uint16_t            numArgs    = 0;
 };
 
-struct DbgTypeRecordFuncId
+struct SCBE_DebugTypeRecordFuncId
 {
-    DbgTypeIndex type = 0;
+    SCBE_DebugTypeIndex type = 0;
 };
 
-struct DbgTypeRecordMFuncId
+struct SCBE_DebugTypeRecordMFuncId
 {
-    DbgTypeIndex parentType = 0;
-    DbgTypeIndex type       = 0;
+    SCBE_DebugTypeIndex parentType = 0;
+    SCBE_DebugTypeIndex type       = 0;
 };
 
-struct DbgTypeField
+struct SCBE_DebugTypeField
 {
-    Utf8          name;
-    ComputedValue value;
-    TypeInfo*     valueType       = nullptr;
-    DbgTypeIndex  type            = 0;
-    uint16_t      accessSpecifier = 0;
-    uint16_t      kind            = 0;
+    Utf8                name;
+    ComputedValue       value;
+    TypeInfo*           valueType       = nullptr;
+    SCBE_DebugTypeIndex type            = 0;
+    uint16_t            accessSpecifier = 0;
+    uint16_t            kind            = 0;
 };
 
-struct DbgTypeRecordFieldList
+struct SCBE_DebugTypeRecordFieldList
 {
-    Vector<DbgTypeField> fields;
+    Vector<SCBE_DebugTypeField> fields;
 };
 
-struct DbgTypeRecordDerivedList
+struct SCBE_DebugTypeRecordDerivedList
 {
-    Vector<DbgTypeIndex> derived;
+    Vector<SCBE_DebugTypeIndex> derived;
 };
 
-struct DbgTypeRecordStructure
+struct SCBE_DebugTypeRecordStructure
 {
-    DbgTypeIndex fieldList   = 0;
-    DbgTypeIndex derivedList = 0;
-    uint32_t     sizeOf      = 0;
-    uint16_t     memberCount = 0;
-    bool         forward     = false;
+    SCBE_DebugTypeIndex fieldList   = 0;
+    SCBE_DebugTypeIndex derivedList = 0;
+    uint32_t            sizeOf      = 0;
+    uint16_t            memberCount = 0;
+    bool                forward     = false;
 };
 
-struct DbgTypeRecordEnum
+struct SCBE_DebugTypeRecordEnum
 {
-    DbgTypeIndex fieldList      = 0;
-    DbgTypeIndex underlyingType = 0;
-    uint16_t     count          = 0;
+    SCBE_DebugTypeIndex fieldList      = 0;
+    SCBE_DebugTypeIndex underlyingType = 0;
+    uint16_t            count          = 0;
 };
 
-struct DbgTypeRecordArray
+struct SCBE_DebugTypeRecordArray
 {
-    DbgTypeIndex elementType = 0;
-    DbgTypeIndex indexType   = 0;
-    uint32_t     sizeOf      = 0;
+    SCBE_DebugTypeIndex elementType = 0;
+    SCBE_DebugTypeIndex indexType   = 0;
+    uint32_t            sizeOf      = 0;
 };
 
-struct DbgTypeRecordPointer
+struct SCBE_DebugTypeRecordPointer
 {
-    DbgTypeIndex pointeeType = 0;
-    bool         asRef       = false;
+    SCBE_DebugTypeIndex pointeeType = 0;
+    bool                asRef       = false;
 };
 
-struct DbgTypeRecord
+struct SCBE_DebugTypeRecord
 {
-    Utf8                     name;
-    AstNode*                 node = nullptr;
-    DbgTypeRecordArgList     LF_ArgList;
-    DbgTypeRecordProcedure   LF_Procedure;
-    DbgTypeRecordMFunction   LF_MFunction;
-    DbgTypeRecordFuncId      LF_FuncId;
-    DbgTypeRecordMFuncId     LF_MFuncId;
-    DbgTypeRecordFieldList   LF_FieldList;
-    DbgTypeRecordDerivedList LF_DerivedList;
-    DbgTypeRecordStructure   LF_Structure;
-    DbgTypeRecordArray       LF_Array;
-    DbgTypeRecordPointer     LF_Pointer;
-    DbgTypeRecordEnum        LF_Enum;
-    DbgTypeIndex             index = 0;
-    uint16_t                 kind  = 0;
+    Utf8                            name;
+    AstNode*                        node = nullptr;
+    SCBE_DebugTypeRecordArgList     LF_ArgList;
+    SCBE_DebugTypeRecordProcedure   LF_Procedure;
+    SCBE_DebugTypeRecordMFunction   LF_MFunction;
+    SCBE_DebugTypeRecordFuncId      LF_FuncId;
+    SCBE_DebugTypeRecordMFuncId     LF_MFuncId;
+    SCBE_DebugTypeRecordFieldList   LF_FieldList;
+    SCBE_DebugTypeRecordDerivedList LF_DerivedList;
+    SCBE_DebugTypeRecordStructure   LF_Structure;
+    SCBE_DebugTypeRecordArray       LF_Array;
+    SCBE_DebugTypeRecordPointer     LF_Pointer;
+    SCBE_DebugTypeRecordEnum        LF_Enum;
+    SCBE_DebugTypeIndex             index = 0;
+    uint16_t                        kind  = 0;
 };
 
-struct DbgLine
+struct SCBE_DebugLine
 {
     uint32_t line;
     uint32_t byteOffset;
 };
 
-struct DbgLines
+struct SCBE_DebugLines
 {
-    SourceFile*     sourceFile;
-    Vector<DbgLine> lines;
-    AstFuncDecl*    inlined = nullptr;
+    SourceFile*            sourceFile;
+    Vector<SCBE_DebugLine> lines;
+    AstFuncDecl*           inlined = nullptr;
 };
 
 struct SCBE_Debug
 {
-    static void           getStructFields(SCBE_CPU& pp, DbgTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset);
-    static DbgTypeIndex   getTypeSlice(SCBE_CPU& pp, TypeInfo* typeInfo, TypeInfo* pointedType, DbgTypeIndex* value);
-    static DbgTypeIndex   getSimpleType(TypeInfo* typeInfo);
-    static DbgTypeIndex   getOrCreatePointerToType(SCBE_CPU& pp, TypeInfo* typeInfo, bool asRef);
-    static DbgTypeIndex   getOrCreatePointerPointerToType(SCBE_CPU& pp, TypeInfo* typeInfo);
-    static DbgTypeIndex   getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, bool forceUnRef = false);
-    static DbgTypeRecord* addTypeRecord(SCBE_CPU& pp);
-    static void           setLocation(CoffFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);
-    static Utf8           getScopedName(AstNode* node);
+    static void                  getStructFields(SCBE_CPU& pp, SCBE_DebugTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset);
+    static SCBE_DebugTypeIndex   getTypeSlice(SCBE_CPU& pp, TypeInfo* typeInfo, TypeInfo* pointedType, SCBE_DebugTypeIndex* value);
+    static SCBE_DebugTypeIndex   getSimpleType(TypeInfo* typeInfo);
+    static SCBE_DebugTypeIndex   getOrCreatePointerToType(SCBE_CPU& pp, TypeInfo* typeInfo, bool asRef);
+    static SCBE_DebugTypeIndex   getOrCreatePointerPointerToType(SCBE_CPU& pp, TypeInfo* typeInfo);
+    static SCBE_DebugTypeIndex   getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo, bool forceUnRef = false);
+    static SCBE_DebugTypeRecord* addTypeRecord(SCBE_CPU& pp);
+    static void                  setLocation(CPUFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);
+    static Utf8                  getScopedName(AstNode* node);
 
     static bool emit(const BuildParameters& buildParameters, SCBE* scbe, SCBE_CPU& pp);
 };

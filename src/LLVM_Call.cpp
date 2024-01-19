@@ -7,13 +7,13 @@
 #include "Report.h"
 
 void LLVM::getReturnResult(llvm::LLVMContext&     context,
-                                  const BuildParameters& buildParameters,
-                                  Module*                moduleToGen,
-                                  TypeInfo*              returnType,
-                                  bool                   imm,
-                                  Register&              reg,
-                                  llvm::AllocaInst*      allocR,
-                                  llvm::AllocaInst*      allocResult)
+                           const BuildParameters& buildParameters,
+                           Module*                moduleToGen,
+                           TypeInfo*              returnType,
+                           bool                   imm,
+                           Register&              reg,
+                           llvm::AllocaInst*      allocR,
+                           llvm::AllocaInst*      allocResult)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -276,15 +276,15 @@ llvm::FunctionType* LLVM::getOrCreateFuncType(const BuildParameters& buildParame
 }
 
 bool LLVM::emitGetParam(llvm::LLVMContext&     context,
-                               const BuildParameters& buildParameters,
-                               llvm::Function*        func,
-                               TypeInfoFuncAttr*      typeFunc,
-                               uint32_t               rdest,
-                               uint32_t               paramIdx,
-                               llvm::AllocaInst*      allocR,
-                               int                    sizeOf,
-                               uint64_t               toAdd,
-                               int                    deRefSize)
+                        const BuildParameters& buildParameters,
+                        llvm::Function*        func,
+                        TypeInfoFuncAttr*      typeFunc,
+                        uint32_t               rdest,
+                        uint32_t               paramIdx,
+                        llvm::AllocaInst*      allocR,
+                        int                    sizeOf,
+                        uint64_t               toAdd,
+                        int                    deRefSize)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -466,14 +466,14 @@ bool LLVM::emitGetParam(llvm::LLVMContext&     context,
 }
 
 bool LLVM::emitCallParameters(const BuildParameters&        buildParameters,
-                                     llvm::AllocaInst*             allocR,
-                                     llvm::AllocaInst*             allocRR,
-                                     Module*                       moduleToGen,
-                                     TypeInfoFuncAttr*             typeFuncBC,
-                                     VectorNative<llvm::Value*>&   params,
-                                     const VectorNative<uint32_t>& pushParams,
-                                     const Vector<llvm::Value*>&   values,
-                                     bool                          closureToLambda)
+                              llvm::AllocaInst*             allocR,
+                              llvm::AllocaInst*             allocRR,
+                              Module*                       moduleToGen,
+                              TypeInfoFuncAttr*             typeFuncBC,
+                              VectorNative<llvm::Value*>&   params,
+                              const VectorNative<uint32_t>& pushParams,
+                              const Vector<llvm::Value*>&   values,
+                              bool                          closureToLambda)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -590,10 +590,10 @@ bool LLVM::emitCallParameters(const BuildParameters&        buildParameters,
 }
 
 bool LLVM::emitCallReturnValue(const BuildParameters& buildParameters,
-                                      llvm::AllocaInst*      allocRR,
-                                      Module*                moduleToGen,
-                                      TypeInfoFuncAttr*      typeFuncBC,
-                                      llvm::Value*           callResult)
+                               llvm::AllocaInst*      allocRR,
+                               Module*                moduleToGen,
+                               TypeInfoFuncAttr*      typeFuncBC,
+                               llvm::Value*           callResult)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -654,14 +654,14 @@ bool LLVM::emitCallReturnValue(const BuildParameters& buildParameters,
 }
 
 llvm::Value* LLVM::emitCall(const BuildParameters&        buildParameters,
-                                   Module*                       moduleToGen,
-                                   const Utf8&                   funcName,
-                                   TypeInfoFuncAttr*             typeFuncBC,
-                                   llvm::AllocaInst*             allocR,
-                                   llvm::AllocaInst*             allocRR,
-                                   const VectorNative<uint32_t>& pushParams,
-                                   const Vector<llvm::Value*>&   values,
-                                   bool                          localCall)
+                            Module*                       moduleToGen,
+                            const Utf8&                   funcName,
+                            TypeInfoFuncAttr*             typeFuncBC,
+                            llvm::AllocaInst*             allocR,
+                            llvm::AllocaInst*             allocRR,
+                            const VectorNative<uint32_t>& pushParams,
+                            const Vector<llvm::Value*>&   values,
+                            bool                          localCall)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
@@ -686,12 +686,12 @@ llvm::Value* LLVM::emitCall(const BuildParameters&        buildParameters,
 }
 
 llvm::Value* LLVM::emitCall(const BuildParameters&      buildParameters,
-                                   Module*                     moduleToGen,
-                                   const char*                 name,
-                                   llvm::AllocaInst*           allocR,
-                                   llvm::AllocaInst*           allocT,
-                                   const Vector<uint32_t>&     regs,
-                                   const Vector<llvm::Value*>& values)
+                            Module*                     moduleToGen,
+                            const char*                 name,
+                            llvm::AllocaInst*           allocR,
+                            llvm::AllocaInst*           allocT,
+                            const Vector<uint32_t>&     regs,
+                            const Vector<llvm::Value*>& values)
 {
     auto typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(name);
     getOrCreateFuncType(buildParameters, moduleToGen, typeFunc);
@@ -708,14 +708,14 @@ llvm::Value* LLVM::emitCall(const BuildParameters&      buildParameters,
 }
 
 void LLVM::emitByteCodeCallParameters(const BuildParameters&      buildParameters,
-                                             llvm::AllocaInst*           allocR,
-                                             llvm::AllocaInst*           allocRR,
-                                             llvm::AllocaInst*           allocT,
-                                             VectorNative<llvm::Value*>& params,
-                                             TypeInfoFuncAttr*           typeFuncBC,
-                                             VectorNative<uint32_t>&     pushRAParams,
-                                             const Vector<llvm::Value*>& values,
-                                             bool                        closureToLambda)
+                                      llvm::AllocaInst*           allocR,
+                                      llvm::AllocaInst*           allocRR,
+                                      llvm::AllocaInst*           allocT,
+                                      VectorNative<llvm::Value*>& params,
+                                      TypeInfoFuncAttr*           typeFuncBC,
+                                      VectorNative<uint32_t>&     pushRAParams,
+                                      const Vector<llvm::Value*>& values,
+                                      bool                        closureToLambda)
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;
