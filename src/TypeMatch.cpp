@@ -260,7 +260,7 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
         if (callParameter->kind != AstNodeKind::FuncCallParam)
         {
             fakeParam.typeInfo  = callParameter->typeInfo;
-            fakeParam.extension = callParameter->extension.load();
+            fakeParam.extension = callParameter->extension;
             callParameter       = &fakeParam;
         }
 

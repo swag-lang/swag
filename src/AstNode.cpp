@@ -916,7 +916,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
     case ExtensionKind::ByteCode:
         if (hasExtByteCode())
             return;
-        extension.load()->bytecode = Allocator::alloc<NodeExtensionByteCode>();
+        extension->bytecode = Allocator::alloc<NodeExtensionByteCode>();
 #ifdef SWAG_STATS
         g_Stats.memNodesExt += Allocator::alignSize(sizeof(NodeExtensionByteCode));
 #endif
@@ -925,7 +925,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
     case ExtensionKind::Semantic:
         if (hasExtSemantic())
             return;
-        extension.load()->semantic = Allocator::alloc<NodeExtensionSemantic>();
+        extension->semantic = Allocator::alloc<NodeExtensionSemantic>();
 #ifdef SWAG_STATS
         g_Stats.memNodesExt += Allocator::alignSize(sizeof(NodeExtensionSemantic));
 #endif
@@ -934,7 +934,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
     case ExtensionKind::Owner:
         if (hasExtOwner())
             return;
-        extension.load()->owner = Allocator::alloc<NodeExtensionOwner>();
+        extension->owner = Allocator::alloc<NodeExtensionOwner>();
 #ifdef SWAG_STATS
         g_Stats.memNodesExt += Allocator::alignSize(sizeof(NodeExtensionOwner));
 #endif
@@ -943,7 +943,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
     default:
         if (hasExtMisc())
             return;
-        extension.load()->misc = Allocator::alloc<NodeExtensionMisc>();
+        extension->misc = Allocator::alloc<NodeExtensionMisc>();
 #ifdef SWAG_STATS
         g_Stats.memNodesExt += Allocator::alignSize(sizeof(NodeExtensionMisc));
 #endif
@@ -1125,7 +1125,7 @@ void AstNode::addAlternativeScope(Scope* scope, uint32_t altFlags)
     sv.flags = altFlags;
 
     allocateExtension(ExtensionKind::Misc);
-    ScopedLock(extMisc()->mutexAltScopes);
+    ScopedLock lk(extMisc()->mutexAltScopes);
     extMisc()->alternativeScopes.push_back(sv);
 }
 
@@ -1138,18 +1138,18 @@ void AstNode::addAlternativeScopeVar(Scope* scope, AstNode* varNode, uint32_t al
     sv.flags    = altFlags;
 
     allocateExtension(ExtensionKind::Misc);
-    ScopedLock(extMisc()->mutexAltScopes);
+    ScopedLock lk(extMisc()->mutexAltScopes);
     extMisc()->alternativeScopesVars.push_back(sv);
 }
 
 void AstNode::addAlternativeScopes(NodeExtensionMisc* ext)
 {
-    SharedLock(ext->mutexAltScopes);
+    SharedLock lk(ext->mutexAltScopes);
     if (ext->alternativeScopes.empty())
         return;
 
     allocateExtension(ExtensionKind::Misc);
-    ScopedLock(extMisc()->mutexAltScopes);
+    ScopedLock lk1(extMisc()->mutexAltScopes);
     extMisc()->alternativeScopes.append(ext->alternativeScopes);
 }
 

@@ -378,10 +378,10 @@ struct AstNode
 
     struct NodeExtension
     {
-        atomic<NodeExtensionByteCode*> bytecode = nullptr;
-        atomic<NodeExtensionSemantic*> semantic = nullptr;
-        atomic<NodeExtensionOwner*>    owner    = nullptr;
-        atomic<NodeExtensionMisc*>     misc     = nullptr;
+        NodeExtensionByteCode* bytecode = nullptr;
+        NodeExtensionSemantic* semantic = nullptr;
+        NodeExtensionOwner*    owner    = nullptr;
+        NodeExtensionMisc*     misc     = nullptr;
     };
 
     void allocateExtension(ExtensionKind extensionKind);
@@ -393,14 +393,14 @@ struct AstNode
     void addAlternativeScopes(NodeExtensionMisc* ext);
 
     // clang-format off
-    bool                   hasExtByteCode() { return extension.load() && extension.load()->bytecode; }
-    bool                   hasExtSemantic() { return extension.load() && extension.load()->semantic; }
-    bool                   hasExtOwner()    { return extension.load() && extension.load()->owner; }
-    bool                   hasExtMisc()     { return extension.load() && extension.load()->misc; }
-    NodeExtensionByteCode* extByteCode()    { return extension.load()->bytecode; }
-    NodeExtensionSemantic* extSemantic()    { return extension.load()->semantic; }
-    NodeExtensionOwner*    extOwner()       { return extension.load()->owner; }
-    NodeExtensionMisc*     extMisc()        { return extension.load()->misc; }
+    bool                   hasExtByteCode() { return extension && extension->bytecode; }
+    bool                   hasExtSemantic() { return extension && extension->semantic; }
+    bool                   hasExtOwner()    { return extension && extension->owner; }
+    bool                   hasExtMisc()     { return extension && extension->misc; }
+    NodeExtensionByteCode* extByteCode()    { return extension->bytecode; }
+    NodeExtensionSemantic* extSemantic()    { return extension->semantic; }
+    NodeExtensionOwner*    extOwner()       { return extension->owner; }
+    NodeExtensionMisc*     extMisc()        { return extension->misc; }
     // clang-format on
 
     AstNodeKind         kind;
@@ -427,9 +427,9 @@ struct AstNode
     SymbolName*     resolvedSymbolName;
     SymbolOverload* resolvedSymbolOverload;
 
-    AstNode*               parent;
-    SourceFile*            sourceFile;
-    atomic<NodeExtension*> extension;
+    AstNode*       parent;
+    SourceFile*    sourceFile;
+    NodeExtension* extension;
 
     SemanticFct semanticFct;
     ByteCodeFct byteCodeFct;
