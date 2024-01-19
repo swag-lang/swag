@@ -455,7 +455,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             break;
         case ByteCodeOp::CastU64F64:
             pp.emit_Load64_Indirect(REG_OFFSET(ip->b.u32), RAX);
-            pp.emit_CastU64F64(RAX, XMM0);
+            pp.emit_CastU64F64(XMM0, RAX);
             pp.emit_StoreF64_Indirect(REG_OFFSET(ip->a.u32), XMM0);
             break;
 

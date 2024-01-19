@@ -143,5 +143,5 @@ struct SCBE_X64 : public SCBE_CPU
     void emit_BSwapN(CPURegister reg, CPUBits numBits);
     void emit_Nop();
     void emit_CopyDownUp(CPURegister reg, CPUBits numBits);
-    void emit_CastU64F64(CPURegister regSrc, CPURegister regDst);
+    void emit_CastU64F64(CPURegister regDst, CPURegister regSrc);
 };

@@ -2332,7 +2332,7 @@ void SCBE_X64::emit_CopyDownUp(CPURegister reg, CPUBits numBits)
     concat.addString2("\x88\xe0"); // mov al, ah
 }
 
-void SCBE_X64::emit_CastU64F64(CPURegister regSrc, CPURegister regDst)
+void SCBE_X64::emit_CastU64F64(CPURegister regDst, CPURegister regSrc)
 {
     SWAG_ASSERT(regSrc == RAX && regDst == XMM0);
     concat.addString5("\x66\x48\x0F\x6E\xC8"); // movq xmm1, rax
