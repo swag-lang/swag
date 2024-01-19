@@ -4705,7 +4705,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
     }
 
     uint32_t endAddress = concat.totalCount();
-    registerFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
+    initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
     pp.clearInstructionCache();
 
     return ok;

@@ -1,11 +1,11 @@
 #include "pch.h"
 #include "SCBE.h"
-#include "SCBE_Coff.h"
 #include "BackendLinker.h"
 #include "ErrorIds.h"
 #include "Module.h"
 #include "Os.h"
 #include "Report.h"
+#include "SCBE_Coff.h"
 #include "SCBE_SaveObjJob.h"
 #include "Workspace.h"
 
@@ -228,7 +228,7 @@ JobResult SCBE::prepareOutput(int stage, const BuildParameters& buildParameters,
     return JobResult::ReleaseJob;
 }
 
-void SCBE::registerFunction(CPUFunction* fct, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, VectorNative<uint16_t>& unwind)
+void SCBE::initFunction(CPUFunction* fct, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, VectorNative<uint16_t>& unwind)
 {
     fct->startAddress = startAddress;
     fct->endAddress   = endAddress;
@@ -257,7 +257,7 @@ bool SCBE::saveObjFile(const BuildParameters& buildParameters)
     switch (objFileType)
     {
     case BackendObjType::Coff:
-        SCBE_Coff::emitBuffer(f, buildParameters, pp);
+        SCBE_Coff::saveFileBuffer(f, buildParameters, pp);
         break;
     default:
         Report::internalError(module, "SCBE::saveObjFile, unsupported output");

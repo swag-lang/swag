@@ -25,5 +25,5 @@ struct SCBE_Coff
     static bool emitRelocationTable(Concat& concat, CPURelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count);
     static bool emitPostFunc(const BuildParameters& buildParameters, SCBE_CPU& pp);
 
-    static bool emitBuffer(FILE* f, const BuildParameters& buildParameters, SCBE_CPU& pp);
+    static bool saveFileBuffer(FILE* f, const BuildParameters& buildParameters, SCBE_CPU& pp);
 };

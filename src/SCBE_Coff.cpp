@@ -523,7 +523,7 @@ bool SCBE_Coff::emitPostFunc(const BuildParameters& buildParameters, SCBE_CPU& p
     return true;
 }
 
-bool SCBE_Coff::emitBuffer(FILE* f, const BuildParameters& buildParameters, SCBE_CPU& pp)
+bool SCBE_Coff::saveFileBuffer(FILE* f, const BuildParameters& buildParameters, SCBE_CPU& pp)
 {
     auto module          = buildParameters.module;
     int  precompileIndex = buildParameters.precompileIndex;
