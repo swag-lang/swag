@@ -142,7 +142,7 @@ struct SCBE_X64 : public SCBE_CPU
     void emit_DecN_Indirect(uint32_t stackOffset, CPURegister memReg, CPUBits numBits);
     void emit_NegN(CPURegister reg, CPUBits numBits);
     void emit_NegN_Indirect(uint32_t stackOffset, CPURegister memReg, CPUBits numBits);
-    void emit_CMovN(CPURegister regDst, CPURegister regSrc, CPUBits numBits, CPUOp op);
+    void emit_CMovN(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits numBits);
     void emit_CmpXChg(CPURegister regDst, CPURegister regSrc, CPUBits numBits);
     void emit_BSwapN(CPURegister reg, CPUBits numBits);
     void emit_Nop();

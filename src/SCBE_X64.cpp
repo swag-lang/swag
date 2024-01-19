@@ -2274,7 +2274,7 @@ void SCBE_X64::emit_NegN_Indirect(uint32_t stackOffset, CPURegister memReg, CPUB
     }
 }
 
-void SCBE_X64::emit_CMovN(CPURegister regDst, CPURegister regSrc, CPUBits numBits, CPUOp op)
+void SCBE_X64::emit_CMovN(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits numBits)
 {
     if (numBits < CPUBits::B32)
         numBits = CPUBits::B32;

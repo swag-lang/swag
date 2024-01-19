@@ -23,21 +23,21 @@ struct SCBE : public Backend
     JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob) override;
     bool      generateOutput(const BuildParameters& backendParameters) override;
     bool      emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc) override;
-    bool      saveObjFile(const BuildParameters& buildParameters);
-    void      computeUnwind(const VectorNative<CPURegister>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind);
-    bool      emitGetTypeTable(const BuildParameters& buildParameters);
-    bool      emitGlobalPreMain(const BuildParameters& buildParameters);
-    bool      emitGlobalInit(const BuildParameters& buildParameters);
-    bool      emitGlobalDrop(const BuildParameters& buildParameters);
-    bool      emitOS(const BuildParameters& buildParameters);
-    bool      emitMain(const BuildParameters& buildParameters);
+
+    bool saveObjFile(const BuildParameters& buildParameters);
+    bool emitGetTypeTable(const BuildParameters& buildParameters);
+    bool emitGlobalPreMain(const BuildParameters& buildParameters);
+    bool emitGlobalInit(const BuildParameters& buildParameters);
+    bool emitGlobalDrop(const BuildParameters& buildParameters);
+    bool emitOS(const BuildParameters& buildParameters);
+    bool emitMain(const BuildParameters& buildParameters);
 
     void emitOverflowSigned(SCBE_X64& pp, ByteCodeInstruction* ip, const char* msg);
     void emitOverflowUnsigned(SCBE_X64& pp, ByteCodeInstruction* ip, const char* msg);
     void emitShiftRightArithmetic(SCBE_X64& pp, ByteCodeInstruction* ip, CPUBits numBits);
-    void emitShiftLogical(SCBE_X64& pp, ByteCodeInstruction* ip, CPUBits numBits, CPUOp op);
+    void emitShiftLogical(SCBE_X64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
     void emitShiftRightEqArithmetic(SCBE_X64& pp, ByteCodeInstruction* ip, CPUBits numBits);
-    void emitShiftEqLogical(SCBE_X64& pp, ByteCodeInstruction* ip, CPUBits numBits, CPUOp op);
+    void emitShiftEqLogical(SCBE_X64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
     void emitInternalPanic(SCBE_X64& pp, AstNode* node, const char* msg);
     void emitBinOpFloat32(SCBE_X64& pp, ByteCodeInstruction* ip, CPUOp op);
     void emitBinOpFloat32AtReg(SCBE_X64& pp, ByteCodeInstruction* ip, CPUOp op);
@@ -56,6 +56,7 @@ struct SCBE : public Backend
     void emitInternalCallExt(SCBE_X64& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<CPUPushParam>& pushParams, uint32_t offsetRT = UINT32_MAX, TypeInfoFuncAttr* typeFunc = nullptr);
 
     bool buildRelocSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CPURelocationTable& relocTable, SegmentKind me);
+    void computeUnwind(const VectorNative<CPURegister>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind);
     void initFunction(CPUFunction* fct, uint32_t startAddress, uint32_t endAddress, uint32_t sizeProlog, VectorNative<uint16_t>& unwind);
 
     SCBE_X64* perThread[BackendCompileType::Count][MAX_PRECOMPILE_BUFFERS];

@@ -20,7 +20,7 @@ void SCBE::emitShiftRightArithmetic(SCBE_X64& pp, ByteCodeInstruction* ip, CPUBi
             pp.emit_Load32_Indirect(REG_OFFSET(ip->b.u32), RCX);
             pp.emit_Load32_Immediate(RAX, (uint32_t) numBits - 1);
             pp.emit_CmpN_Immediate(RCX, (uint32_t) numBits - 1, CPUBits::B32);
-            pp.emit_CMovN(RCX, RAX, numBits, CPUOp::CMOVG);
+            pp.emit_CMovN(RCX, RAX, CPUOp::CMOVG, numBits);
         }
 
         if (ip->flags & BCI_IMM_A)
@@ -45,14 +45,14 @@ void SCBE::emitShiftRightEqArithmetic(SCBE_X64& pp, ByteCodeInstruction* ip, CPU
         pp.emit_Load32_Indirect(REG_OFFSET(ip->b.u32), RCX);
         pp.emit_Load32_Immediate(RAX, (uint32_t) numBits - 1);
         pp.emit_CmpN_Immediate(RCX, (uint32_t) numBits - 1, CPUBits::B32);
-        pp.emit_CMovN(RCX, RAX, numBits, CPUOp::CMOVG);
+        pp.emit_CMovN(RCX, RAX, CPUOp::CMOVG, numBits);
 
         pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);
         pp.emit_OpN_IndirectDst(RCX, RAX, CPUOp::SAR, numBits);
     }
 }
 
-void SCBE::emitShiftLogical(SCBE_X64& pp, ByteCodeInstruction* ip, CPUBits numBits, CPUOp op)
+void SCBE::emitShiftLogical(SCBE_X64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
 {
     if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= (uint32_t) numBits)
     {
@@ -80,12 +80,12 @@ void SCBE::emitShiftLogical(SCBE_X64& pp, ByteCodeInstruction* ip, CPUBits numBi
 
         pp.emit_ClearN(R8, numBits);
         pp.emit_CmpN_Immediate(RCX, (uint32_t) numBits - 1, CPUBits::B32);
-        pp.emit_CMovN(RAX, R8, numBits, CPUOp::CMOVG);
+        pp.emit_CMovN(RAX, R8, CPUOp::CMOVG, numBits);
         pp.emit_StoreN_Indirect(REG_OFFSET(ip->c.u32), RAX, RDI, numBits);
     }
 }
 
-void SCBE::emitShiftEqLogical(SCBE_X64& pp, ByteCodeInstruction* ip, CPUBits numBits, CPUOp op)
+void SCBE::emitShiftEqLogical(SCBE_X64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits)
 {
     pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RAX);
     if ((ip->flags & BCI_IMM_B) && ip->b.u32 >= (uint32_t) numBits)
