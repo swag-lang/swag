@@ -22,7 +22,7 @@ static uint8_t getModRM(uint8_t mod, uint8_t r, uint8_t m)
     return (mod << 6) | ((r & 0b111) << 3) | (m & 0b111);
 }
 
-void SCBE_X64::emit_REX(CPUBits numBits, CPURegister reg1, CPURegister reg2)
+static void emit_REX(Concat& concat, CPUBits numBits, CPURegister reg1 = RAX, CPURegister reg2 = RAX)
 {
     if (numBits == CPUBits::B16)
         concat.addU8(0x66);
@@ -30,7 +30,7 @@ void SCBE_X64::emit_REX(CPUBits numBits, CPURegister reg1, CPURegister reg2)
         concat.addU8(getREX(numBits == CPUBits::B64, reg1 >= R8, false, reg2 >= R8));
 }
 
-void SCBE_X64::emit_ModRM(uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t op)
+static void emit_ModRM(Concat& concat, uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t op = 1)
 {
     if (stackOffset == 0 && (memReg < R8 || memReg == R12))
     {
@@ -57,7 +57,7 @@ void SCBE_X64::emit_ModRM(uint32_t stackOffset, uint8_t reg, uint8_t memReg, uin
     }
 }
 
-void SCBE_X64::emit_Spec8(uint8_t value, CPUBits numBits)
+static void emit_Spec8(Concat& concat, uint8_t value, CPUBits numBits)
 {
     if (numBits == CPUBits::B8)
         concat.addU8(value & ~1);
@@ -67,17 +67,10 @@ void SCBE_X64::emit_Spec8(uint8_t value, CPUBits numBits)
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emit_GlobalString(const Utf8& str, CPURegister reg)
-{
-    emit_Load64_Immediate(reg, 0, true);
-    auto sym = getOrCreateGlobalString(str);
-    addSymbolRelocation((concat.totalCount() - 8) - textSectionOffset, sym->index, IMAGE_REL_AMD64_ADDR64);
-}
-
 void SCBE_X64::emit_Symbol_RelocationAddr(CPURegister reg, uint32_t symbolIndex, uint32_t offset)
 {
     SWAG_ASSERT(reg == RAX || reg == RCX || reg == RDX || reg == R8 || reg == R9 || reg == RDI);
-    emit_REX(CPUBits::B64, reg);
+    emit_REX(concat, CPUBits::B64, reg);
     concat.addU8(0x8D);
     concat.addU8(0x05 | ((reg & 0b111) << 3));
     addSymbolRelocation(concat.totalCount() - textSectionOffset, symbolIndex, IMAGE_REL_AMD64_REL32);
@@ -87,11 +80,18 @@ void SCBE_X64::emit_Symbol_RelocationAddr(CPURegister reg, uint32_t symbolIndex,
 void SCBE_X64::emit_Symbol_RelocationValue(CPURegister reg, uint32_t symbolIndex, uint32_t offset)
 {
     SWAG_ASSERT(reg == RAX || reg == RCX || reg == RDX || reg == R8 || reg == R9);
-    emit_REX(CPUBits::B64, reg);
+    emit_REX(concat, CPUBits::B64, reg);
     concat.addU8(0x8B);
     concat.addU8(0x05 | ((reg & 0b111) << 3));
     addSymbolRelocation(concat.totalCount() - textSectionOffset, symbolIndex, IMAGE_REL_AMD64_REL32);
     concat.addU32(offset);
+}
+
+void SCBE_X64::emit_Symbol_GlobalString(const Utf8& str, CPURegister reg)
+{
+    emit_Load64_Immediate(reg, 0, true);
+    auto sym = getOrCreateGlobalString(str);
+    addSymbolRelocation((concat.totalCount() - 8) - textSectionOffset, sym->index, IMAGE_REL_AMD64_ADDR64);
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -127,81 +127,81 @@ void SCBE_X64::emit_Ret()
 
 void SCBE_X64::emit_LoadS8S16_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    emit_REX(CPUBits::B16, reg, memReg);
+    emit_REX(concat, CPUBits::B16, reg, memReg);
     concat.addU8(0x0F);
     concat.addU8(0xBE);
-    emit_ModRM(stackOffset, reg, memReg);
+    emit_ModRM(concat, stackOffset, reg, memReg);
 }
 
 void SCBE_X64::emit_LoadS8S32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    emit_REX(CPUBits::B32, reg, memReg);
+    emit_REX(concat, CPUBits::B32, reg, memReg);
     concat.addU8(0x0F);
     concat.addU8(0xBE);
-    emit_ModRM(stackOffset, reg, memReg);
+    emit_ModRM(concat, stackOffset, reg, memReg);
 }
 
 void SCBE_X64::emit_LoadS16S32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    emit_REX(CPUBits::B32, reg, memReg);
+    emit_REX(concat, CPUBits::B32, reg, memReg);
     concat.addU8(0x0F);
     concat.addU8(0xBF);
-    emit_ModRM(stackOffset, reg, memReg);
+    emit_ModRM(concat, stackOffset, reg, memReg);
 }
 
 void SCBE_X64::emit_LoadS8S64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    emit_REX(CPUBits::B64, reg, memReg);
+    emit_REX(concat, CPUBits::B64, reg, memReg);
     concat.addU8(0x0F);
     concat.addU8(0xBE);
-    emit_ModRM(stackOffset, reg, memReg);
+    emit_ModRM(concat, stackOffset, reg, memReg);
 }
 
 void SCBE_X64::emit_LoadS16S64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    emit_REX(CPUBits::B64, reg, memReg);
+    emit_REX(concat, CPUBits::B64, reg, memReg);
     concat.addU8(0x0F);
     concat.addU8(0xBF);
-    emit_ModRM(stackOffset, reg, memReg);
+    emit_ModRM(concat, stackOffset, reg, memReg);
 }
 
 void SCBE_X64::emit_LoadS32S64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    emit_REX(CPUBits::B64, reg, memReg);
+    emit_REX(concat, CPUBits::B64, reg, memReg);
     concat.addU8(0x63);
-    emit_ModRM(stackOffset, reg, memReg);
+    emit_ModRM(concat, stackOffset, reg, memReg);
 }
 
 void SCBE_X64::emit_LoadU8U32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    emit_REX(CPUBits::B32, reg, memReg);
+    emit_REX(concat, CPUBits::B32, reg, memReg);
     concat.addU8(0x0F);
     concat.addU8(0xB6);
-    emit_ModRM(stackOffset, reg, memReg);
+    emit_ModRM(concat, stackOffset, reg, memReg);
 }
 
 void SCBE_X64::emit_LoadU16U32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    emit_REX(CPUBits::B32, reg, memReg);
+    emit_REX(concat, CPUBits::B32, reg, memReg);
     concat.addU8(0x0F);
     concat.addU8(0xB7);
-    emit_ModRM(stackOffset, reg, memReg);
+    emit_ModRM(concat, stackOffset, reg, memReg);
 }
 
 void SCBE_X64::emit_LoadU8U64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    emit_REX(CPUBits::B64, reg, memReg);
+    emit_REX(concat, CPUBits::B64, reg, memReg);
     concat.addU8(0x0F);
     concat.addU8(0xB6);
-    emit_ModRM(stackOffset, reg, memReg);
+    emit_ModRM(concat, stackOffset, reg, memReg);
 }
 
 void SCBE_X64::emit_LoadU16U64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    emit_REX(CPUBits::B64, reg, memReg);
+    emit_REX(concat, CPUBits::B64, reg, memReg);
     concat.addU8(0x0F);
     concat.addU8(0xB7);
-    emit_ModRM(stackOffset, reg, memReg);
+    emit_ModRM(concat, stackOffset, reg, memReg);
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -217,9 +217,9 @@ void SCBE_X64::emit_Load8_Indirect(uint32_t stackOffset, CPURegister reg, CPUReg
         return;
     }
 
-    emit_REX(CPUBits::B8, reg, memReg);
+    emit_REX(concat, CPUBits::B8, reg, memReg);
     concat.addU8(0x8A);
-    emit_ModRM(stackOffset, reg, memReg);
+    emit_ModRM(concat, stackOffset, reg, memReg);
 }
 
 void SCBE_X64::emit_Load16_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
@@ -233,9 +233,9 @@ void SCBE_X64::emit_Load16_Indirect(uint32_t stackOffset, CPURegister reg, CPURe
         return;
     }
 
-    emit_REX(CPUBits::B16, reg, memReg);
+    emit_REX(concat, CPUBits::B16, reg, memReg);
     concat.addU8(0x8B);
-    emit_ModRM(stackOffset, reg, memReg);
+    emit_ModRM(concat, stackOffset, reg, memReg);
 }
 
 void SCBE_X64::emit_Load32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
@@ -251,9 +251,9 @@ void SCBE_X64::emit_Load32_Indirect(uint32_t stackOffset, CPURegister reg, CPURe
         return;
     }
 
-    emit_REX(CPUBits::B32, reg, memReg);
+    emit_REX(concat, CPUBits::B32, reg, memReg);
     concat.addU8(0x8B);
-    emit_ModRM(stackOffset, reg, memReg);
+    emit_ModRM(concat, stackOffset, reg, memReg);
 }
 
 void SCBE_X64::emit_Load64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
@@ -267,9 +267,9 @@ void SCBE_X64::emit_Load64_Indirect(uint32_t stackOffset, CPURegister reg, CPURe
         return;
     }
 
-    emit_REX(CPUBits::B64, reg, memReg);
+    emit_REX(concat, CPUBits::B64, reg, memReg);
     concat.addU8(0x8B);
-    emit_ModRM(stackOffset, reg, memReg);
+    emit_ModRM(concat, stackOffset, reg, memReg);
 }
 
 void SCBE_X64::emit_LoadN_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg, CPUBits numBits)
@@ -300,7 +300,7 @@ void SCBE_X64::emit_LoadF32_Indirect(uint32_t stackOffset, CPURegister reg, CPUR
     concat.addU8(0xF3);
     concat.addU8(0x0F);
     concat.addU8(0x10);
-    emit_ModRM(stackOffset, reg, memReg);
+    emit_ModRM(concat, stackOffset, reg, memReg);
 }
 
 void SCBE_X64::emit_LoadF64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
@@ -309,7 +309,7 @@ void SCBE_X64::emit_LoadF64_Indirect(uint32_t stackOffset, CPURegister reg, CPUR
     concat.addU8(0xF2);
     concat.addU8(0x0F);
     concat.addU8(0x10);
-    emit_ModRM(stackOffset, reg, memReg);
+    emit_ModRM(concat, stackOffset, reg, memReg);
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -320,7 +320,7 @@ void SCBE_X64::emit_LoadAddress_Indirect(uint32_t stackOffset, CPURegister reg, 
     {
         SWAG_ASSERT(stackOffset == 0);
         SWAG_ASSERT(reg == RCX);
-        emit_REX(CPUBits::B64, reg, memReg);
+        emit_REX(concat, CPUBits::B64, reg, memReg);
         concat.addU8(0x8D);
         concat.addU8(0x0D);
     }
@@ -330,9 +330,9 @@ void SCBE_X64::emit_LoadAddress_Indirect(uint32_t stackOffset, CPURegister reg, 
     }
     else
     {
-        emit_REX(CPUBits::B64, reg, memReg);
+        emit_REX(concat, CPUBits::B64, reg, memReg);
         concat.addU8(0x8D);
-        emit_ModRM(stackOffset, reg, memReg);
+        emit_ModRM(concat, stackOffset, reg, memReg);
     }
 }
 
@@ -340,9 +340,9 @@ void SCBE_X64::emit_LoadAddress_Indirect(uint32_t stackOffset, CPURegister reg, 
 
 void SCBE_X64::emit_Store8_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    emit_REX(CPUBits::B8, reg, memReg);
+    emit_REX(concat, CPUBits::B8, reg, memReg);
     concat.addU8(0x88);
-    emit_ModRM(stackOffset, reg, memReg);
+    emit_ModRM(concat, stackOffset, reg, memReg);
 
     storageRegCount = concat.totalCount();
     storageRegStack = stackOffset;
@@ -353,9 +353,9 @@ void SCBE_X64::emit_Store8_Indirect(uint32_t stackOffset, CPURegister reg, CPURe
 
 void SCBE_X64::emit_Store16_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    emit_REX(CPUBits::B16, reg, memReg);
+    emit_REX(concat, CPUBits::B16, reg, memReg);
     concat.addU8(0x89);
-    emit_ModRM(stackOffset, reg, memReg);
+    emit_ModRM(concat, stackOffset, reg, memReg);
 
     storageRegCount = concat.totalCount();
     storageRegStack = stackOffset;
@@ -366,9 +366,9 @@ void SCBE_X64::emit_Store16_Indirect(uint32_t stackOffset, CPURegister reg, CPUR
 
 void SCBE_X64::emit_Store32_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    emit_REX(CPUBits::B32, reg, memReg);
+    emit_REX(concat, CPUBits::B32, reg, memReg);
     concat.addU8(0x89);
-    emit_ModRM(stackOffset, reg, memReg);
+    emit_ModRM(concat, stackOffset, reg, memReg);
 
     storageRegCount = concat.totalCount();
     storageRegStack = stackOffset;
@@ -379,9 +379,9 @@ void SCBE_X64::emit_Store32_Indirect(uint32_t stackOffset, CPURegister reg, CPUR
 
 void SCBE_X64::emit_Store64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
 {
-    emit_REX(CPUBits::B64, reg, memReg);
+    emit_REX(concat, CPUBits::B64, reg, memReg);
     concat.addU8(0x89);
-    emit_ModRM(stackOffset, reg, memReg);
+    emit_ModRM(concat, stackOffset, reg, memReg);
 
     storageRegCount = concat.totalCount();
     storageRegStack = stackOffset;
@@ -418,7 +418,7 @@ void SCBE_X64::emit_StoreF32_Indirect(uint32_t stackOffset, CPURegister reg, CPU
     concat.addU8(0xF3);
     concat.addU8(0x0F);
     concat.addU8(0x11);
-    emit_ModRM(stackOffset, reg, memReg);
+    emit_ModRM(concat, stackOffset, reg, memReg);
 }
 
 void SCBE_X64::emit_StoreF64_Indirect(uint32_t stackOffset, CPURegister reg, CPURegister memReg)
@@ -427,7 +427,7 @@ void SCBE_X64::emit_StoreF64_Indirect(uint32_t stackOffset, CPURegister reg, CPU
     concat.addU8(0xF2);
     concat.addU8(0x0F);
     concat.addU8(0x11);
-    emit_ModRM(stackOffset, reg, memReg);
+    emit_ModRM(concat, stackOffset, reg, memReg);
 }
 
 /////////////////////////////////////////////////////////////////////
@@ -435,7 +435,7 @@ void SCBE_X64::emit_StoreF64_Indirect(uint32_t stackOffset, CPURegister reg, CPU
 void SCBE_X64::emit_Store8_Immediate(uint32_t stackOffset, uint8_t val, CPURegister memReg)
 {
     concat.addU8(0xC6);
-    emit_ModRM(stackOffset, 0, memReg);
+    emit_ModRM(concat, stackOffset, 0, memReg);
     concat.addU8(val);
 }
 
@@ -443,23 +443,23 @@ void SCBE_X64::emit_Store16_Immediate(uint32_t stackOffset, uint16_t val, CPUReg
 {
     concat.addU8(0x66);
     concat.addU8(0xC7);
-    emit_ModRM(stackOffset, 0, memReg);
+    emit_ModRM(concat, stackOffset, 0, memReg);
     concat.addU16(val);
 }
 
 void SCBE_X64::emit_Store32_Immediate(uint32_t stackOffset, uint32_t val, CPURegister memReg)
 {
     concat.addU8(0xC7);
-    emit_ModRM(stackOffset, 0, memReg);
+    emit_ModRM(concat, stackOffset, 0, memReg);
     concat.addU32((uint32_t) val);
 }
 
 void SCBE_X64::emit_Store64_Immediate(uint32_t stackOffset, uint64_t val, CPURegister memReg)
 {
     SWAG_ASSERT(val <= 0xFFFFFFFF);
-    emit_REX(CPUBits::B64);
+    emit_REX(concat, CPUBits::B64);
     concat.addU8(0xC7);
-    emit_ModRM(stackOffset, 0, memReg);
+    emit_ModRM(concat, stackOffset, 0, memReg);
     concat.addU32((uint32_t) val);
 }
 
@@ -506,7 +506,7 @@ void SCBE_X64::emit_Load64_Immediate(CPURegister reg, uint64_t value, bool force
 {
     if (force64bits)
     {
-        emit_REX(CPUBits::B64, RAX, reg);
+        emit_REX(concat, CPUBits::B64, RAX, reg);
         concat.addU8(0xB8 | reg);
         concat.addU64(value);
         return;
@@ -524,7 +524,7 @@ void SCBE_X64::emit_Load64_Immediate(CPURegister reg, uint64_t value, bool force
         return;
     }
 
-    emit_REX(CPUBits::B64, RAX, reg);
+    emit_REX(concat, CPUBits::B64, RAX, reg);
     if (value <= 0x7FFFFFFF)
     {
         concat.addU8(0xC7);
@@ -564,8 +564,8 @@ void SCBE_X64::emit_LoadN_Immediate(CPURegister reg, uint64_t value, CPUBits num
 
 void SCBE_X64::emit_ClearN(CPURegister reg, CPUBits numBits)
 {
-    emit_REX(numBits, reg, reg);
-    emit_Spec8((uint8_t) CPUOp::XOR, numBits);
+    emit_REX(concat, numBits, reg, reg);
+    emit_Spec8(concat, (uint8_t) CPUOp::XOR, numBits);
     concat.addU8(getModRM(REGREG, reg, reg));
 }
 
@@ -573,7 +573,7 @@ void SCBE_X64::emit_ClearN(CPURegister reg, CPUBits numBits)
 
 void SCBE_X64::emit_CopyN(CPURegister regDst, CPURegister regSrc, CPUBits numBits)
 {
-    emit_REX(numBits, regSrc, regDst);
+    emit_REX(concat, numBits, regSrc, regDst);
     if (numBits == CPUBits::B8)
         concat.addU8(0x88);
     else
@@ -596,7 +596,7 @@ void SCBE_X64::emit_CopyF64(CPURegister regDst, CPURegister regSrc)
     SWAG_ASSERT(regSrc == RAX);
     SWAG_ASSERT(regDst == XMM0 || regDst == XMM1 || regDst == XMM2 || regDst == XMM3);
     concat.addU8(0x66);
-    emit_REX(CPUBits::B64);
+    emit_REX(concat, CPUBits::B64);
     concat.addU8(0x0F);
     concat.addU8(0x6E);
     concat.addU8(0xC0 | (regDst << 3));
@@ -728,7 +728,7 @@ void SCBE_X64::emit_SetLE()
 
 void SCBE_X64::emit_TestN(CPURegister regSrc, CPURegister regDst, CPUBits numBits)
 {
-    emit_REX(numBits, regDst, regSrc);
+    emit_REX(concat, numBits, regDst, regSrc);
     if (numBits == CPUBits::B8)
         concat.addU8(0x84);
     else
@@ -738,8 +738,8 @@ void SCBE_X64::emit_TestN(CPURegister regSrc, CPURegister regDst, CPUBits numBit
 
 void SCBE_X64::emit_CmpN(CPURegister regSrc, CPURegister regDst, CPUBits numBits)
 {
-    emit_REX(numBits, regDst, regSrc);
-    emit_Spec8(0x39, numBits);
+    emit_REX(concat, numBits, regDst, regSrc);
+    emit_Spec8(concat, 0x39, numBits);
     concat.addU8(getModRM(REGREG, regDst, regSrc));
 }
 
@@ -765,7 +765,7 @@ void SCBE_X64::emit_CmpN_Immediate(CPURegister reg, uint64_t value, CPUBits numB
     if (value <= 0x7f)
     {
         SWAG_ASSERT(reg == RAX || reg == RCX);
-        emit_REX(numBits);
+        emit_REX(concat, numBits);
         concat.addU8(0x83);
         concat.addU8(0xF8 | reg);
         concat.addU8((uint8_t) value);
@@ -773,7 +773,7 @@ void SCBE_X64::emit_CmpN_Immediate(CPURegister reg, uint64_t value, CPUBits numB
     else if (value <= 0x7fffffff)
     {
         SWAG_ASSERT(reg == RAX);
-        emit_REX(numBits);
+        emit_REX(concat, numBits);
         concat.addU8(0x3d);
         concat.addU32((uint32_t) value);
     }
@@ -788,9 +788,9 @@ void SCBE_X64::emit_CmpN_Immediate(CPURegister reg, uint64_t value, CPUBits numB
 void SCBE_X64::emit_CmpN_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, CPUBits numBits)
 {
     SWAG_ASSERT(reg < R8 && memReg < R8);
-    emit_REX(numBits);
-    emit_Spec8(0x3B, numBits);
-    emit_ModRM(offsetStack, reg, memReg);
+    emit_REX(concat, numBits);
+    emit_Spec8(concat, 0x3B, numBits);
+    emit_ModRM(concat, offsetStack, reg, memReg);
 }
 
 void SCBE_X64::emit_CmpF32_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg)
@@ -798,7 +798,7 @@ void SCBE_X64::emit_CmpF32_Indirect(uint32_t offsetStack, CPURegister reg, CPURe
     SWAG_ASSERT(reg < R8 && memReg < R8);
     concat.addU8(0x0F);
     concat.addU8(0x2E);
-    emit_ModRM(offsetStack, reg, memReg);
+    emit_ModRM(concat, offsetStack, reg, memReg);
 }
 
 void SCBE_X64::emit_CmpF64_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg)
@@ -807,28 +807,28 @@ void SCBE_X64::emit_CmpF64_Indirect(uint32_t offsetStack, CPURegister reg, CPURe
     concat.addU8(0x66);
     concat.addU8(0x0F);
     concat.addU8(0x2F);
-    emit_ModRM(offsetStack, reg, memReg);
+    emit_ModRM(concat, offsetStack, reg, memReg);
 }
 
 void SCBE_X64::emit_CmpN_IndirectDst(uint32_t offsetStack, uint32_t value, CPUBits numBits)
 {
-    emit_REX(numBits);
+    emit_REX(concat, numBits);
     if (numBits == CPUBits::B8)
     {
         concat.addU8(0x80);
-        emit_ModRM(offsetStack, RDI, RDI);
+        emit_ModRM(concat, offsetStack, RDI, RDI);
         concat.addU8((uint8_t) value);
     }
     else if (value <= 0x7F)
     {
         concat.addU8(0x83);
-        emit_ModRM(offsetStack, RDI, RDI);
+        emit_ModRM(concat, offsetStack, RDI, RDI);
         concat.addU8((uint8_t) value);
     }
     else
     {
         concat.addU8(0x81);
-        emit_ModRM(offsetStack, RDI, RDI);
+        emit_ModRM(concat, offsetStack, RDI, RDI);
         if (numBits == CPUBits::B16)
             concat.addU16((uint16_t) value);
         else
@@ -845,8 +845,8 @@ void SCBE_X64::emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUBit
         op == CPUOp::MOD ||
         op == CPUOp::IMOD)
     {
-        emit_REX(numBits, regSrc, regDst);
-        emit_Spec8(0xF7, numBits);
+        emit_REX(concat, numBits, regSrc, regDst);
+        emit_Spec8(concat, 0xF7, numBits);
         concat.addU8((uint8_t) op & ~2);
 
         if (op == CPUOp::MOD || op == CPUOp::IMOD)
@@ -861,7 +861,7 @@ void SCBE_X64::emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUBit
     else if (op == CPUOp::MUL ||
              op == CPUOp::IMUL)
     {
-        emit_REX(numBits, regSrc, regDst);
+        emit_REX(concat, numBits, regSrc, regDst);
         if (op == CPUOp::MUL && regSrc == RCX && regDst == RAX)
         {
             if (numBits == CPUBits::B8 || numBits == CPUBits::B16)
@@ -880,7 +880,7 @@ void SCBE_X64::emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUBit
         else
         {
             SWAG_ASSERT(regSrc == RAX && regDst == RCX);
-            emit_Spec8(0xF7, numBits);
+            emit_Spec8(concat, 0xF7, numBits);
             concat.addU8(op == CPUOp::IMUL ? 0xE9 : 0xE1);
         }
     }
@@ -890,8 +890,8 @@ void SCBE_X64::emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUBit
              op == CPUOp::SHL)
     {
         SWAG_ASSERT(regDst == RAX && regSrc == RCX);
-        emit_REX(numBits, regSrc, regDst);
-        emit_Spec8(0xD3, numBits);
+        emit_REX(concat, numBits, regSrc, regDst);
+        emit_Spec8(concat, 0xD3, numBits);
         concat.addU8((uint8_t) op);
     }
     else if (op == CPUOp::ADD ||
@@ -900,15 +900,15 @@ void SCBE_X64::emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUBit
              op == CPUOp::AND ||
              op == CPUOp::OR)
     {
-        emit_REX(numBits, regSrc, regDst);
-        emit_Spec8((uint8_t) op, numBits);
+        emit_REX(concat, numBits, regSrc, regDst);
+        emit_Spec8(concat, (uint8_t) op, numBits);
         concat.addU8(getModRM(REGREG, regSrc, regDst));
     }
     else if (op == CPUOp::BSF ||
              op == CPUOp::BSR)
     {
         SWAG_ASSERT(regSrc == RAX && regDst == RAX);
-        emit_REX(numBits, regSrc, regDst);
+        emit_REX(concat, numBits, regSrc, regDst);
         concat.addU8(0x0F);
         concat.addU8((uint8_t) op);
         concat.addU8(0xC0);
@@ -917,10 +917,10 @@ void SCBE_X64::emit_OpN(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUBit
     {
         SWAG_ASSERT(regSrc == RAX && regDst == RAX);
         if (numBits == CPUBits::B16)
-            emit_REX(numBits, regSrc, regDst);
+            emit_REX(concat, numBits, regSrc, regDst);
         concat.addU8(0xF3);
         if (numBits == CPUBits::B64)
-            emit_REX(numBits, regSrc, regDst);
+            emit_REX(concat, numBits, regSrc, regDst);
         concat.addU8(0x0F);
         concat.addU8((uint8_t) op);
         concat.addU8(0xC0);
@@ -939,7 +939,7 @@ void SCBE_X64::emit_OpF32(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUB
         op != CPUOp::FXOR)
     {
         concat.addU8(0xF3);
-        emit_REX(srcBits, regSrc);
+        emit_REX(concat, srcBits, regSrc);
     }
 
     concat.addU8(0x0F);
@@ -955,7 +955,7 @@ void SCBE_X64::emit_OpF64(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUB
         op != CPUOp::FXOR)
     {
         concat.addU8(0xF2);
-        emit_REX(srcBits, regSrc);
+        emit_REX(concat, srcBits, regSrc);
     }
     else
     {
@@ -969,28 +969,28 @@ void SCBE_X64::emit_OpF64(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUB
 
 void SCBE_X64::emit_OpN(uint32_t offsetStack, CPURegister reg, CPURegister memReg, CPUOp op, CPUBits numBits)
 {
-    emit_REX(numBits);
+    emit_REX(concat, numBits);
     if (op == CPUOp::MUL)
     {
-        emit_Spec8(0xF7, numBits);
-        emit_ModRM(offsetStack, 4, RDI);
+        emit_Spec8(concat, 0xF7, numBits);
+        emit_ModRM(concat, offsetStack, 4, RDI);
     }
     else if (op == CPUOp::IMUL)
     {
         if (numBits == CPUBits::B8)
         {
             concat.addU8(0xF6);
-            emit_ModRM(offsetStack, 5, RDI);
+            emit_ModRM(concat, offsetStack, 5, RDI);
         }
         else if (numBits == CPUBits::B16)
         {
             concat.addU8(0xF7);
-            emit_ModRM(offsetStack, 5, RDI);
+            emit_ModRM(concat, offsetStack, 5, RDI);
         }
         else
         {
             concat.addString2("\x0F\xAF");
-            emit_ModRM(offsetStack, RAX, RDI);
+            emit_ModRM(concat, offsetStack, RAX, RDI);
         }
     }
     else
@@ -999,7 +999,7 @@ void SCBE_X64::emit_OpN(uint32_t offsetStack, CPURegister reg, CPURegister memRe
             concat.addU8((uint8_t) op + 1);
         else
             concat.addU8((uint8_t) op | 2);
-        emit_ModRM(offsetStack, RAX, RDI);
+        emit_ModRM(concat, offsetStack, RAX, RDI);
     }
 }
 
@@ -1008,7 +1008,7 @@ void SCBE_X64::emit_OpF32(uint32_t offsetStack, CPURegister reg, CPURegister mem
     concat.addU8(0xF3);
     concat.addU8(0x0F);
     concat.addU8((uint8_t) op);
-    emit_ModRM(offsetStack, XMM0, RDI);
+    emit_ModRM(concat, offsetStack, XMM0, RDI);
 }
 
 void SCBE_X64::emit_OpF64(uint32_t offsetStack, CPURegister reg, CPURegister memReg, CPUOp op)
@@ -1016,7 +1016,7 @@ void SCBE_X64::emit_OpF64(uint32_t offsetStack, CPURegister reg, CPURegister mem
     concat.addU8(0xF2);
     concat.addU8(0x0F);
     concat.addU8((uint8_t) op);
-    emit_ModRM(offsetStack, XMM0, RDI);
+    emit_ModRM(concat, offsetStack, XMM0, RDI);
 }
 
 void SCBE_X64::emit_OpN_Indirect(uint32_t offsetStack, CPURegister reg, CPURegister memReg, CPUOp op, CPUBits numBits, bool lock)
@@ -1025,7 +1025,7 @@ void SCBE_X64::emit_OpN_Indirect(uint32_t offsetStack, CPURegister reg, CPURegis
     if (lock)
         concat.addU8(0xF0);
 
-    emit_REX(numBits, reg);
+    emit_REX(concat, numBits, reg);
     if (op == CPUOp::DIV ||
         op == CPUOp::IDIV ||
         op == CPUOp::MOD ||
@@ -1033,7 +1033,7 @@ void SCBE_X64::emit_OpN_Indirect(uint32_t offsetStack, CPURegister reg, CPURegis
     {
         SWAG_ASSERT(reg == RAX);
 
-        emit_Spec8(0xF7, numBits);
+        emit_Spec8(concat, 0xF7, numBits);
 
         if (offsetStack == 0)
         {
@@ -1061,8 +1061,8 @@ void SCBE_X64::emit_OpN_Indirect(uint32_t offsetStack, CPURegister reg, CPURegis
     }
     else
     {
-        emit_Spec8((uint8_t) op, numBits);
-        emit_ModRM(offsetStack, reg, memReg);
+        emit_Spec8(concat, (uint8_t) op, numBits);
+        emit_ModRM(concat, offsetStack, reg, memReg);
     }
 }
 
@@ -1092,7 +1092,7 @@ void SCBE_X64::emit_OpF64_Indirect(CPURegister reg, CPURegister memReg, CPUOp op
 
 void SCBE_X64::emit_OpN_IndirectDst(CPURegister regSrc, CPURegister regDst, CPUOp op, CPUBits numBits)
 {
-    emit_REX(numBits, regSrc, regDst);
+    emit_REX(concat, numBits, regSrc, regDst);
     if (op == CPUOp::SAR ||
         op == CPUOp::SHR ||
         op == CPUOp::SHL)
@@ -1119,22 +1119,22 @@ void SCBE_X64::emit_OpN_IndirectDst(CPURegister reg, uint64_t value, CPUOp op, C
         SWAG_ASSERT(reg == RAX);
         value = min(value, (uint32_t) numBits - 1);
 
-        emit_REX(numBits);
+        emit_REX(concat, numBits);
         if (value == 1)
         {
-            emit_Spec8(0xD1, numBits);
+            emit_Spec8(concat, 0xD1, numBits);
             concat.addU8((uint8_t) op & ~0xC0);
         }
         else
         {
-            emit_Spec8(0xC1, numBits);
+            emit_Spec8(concat, 0xC1, numBits);
             concat.addU8((uint8_t) op & ~0xC0);
             concat.addU8((uint8_t) value);
         }
     }
     else if (op == CPUOp::AND || op == CPUOp::OR || op == CPUOp::XOR || op == CPUOp::ADD || op == CPUOp::SUB)
     {
-        emit_REX(numBits);
+        emit_REX(concat, numBits);
         if (value <= 0x7F)
         {
             if (numBits == CPUBits::B8)
@@ -1224,7 +1224,7 @@ void SCBE_X64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, CPU
         case CPUOp::ADD:
             if (value == 0)
                 return;
-            emit_REX(numBits);
+            emit_REX(concat, numBits);
             if (value == 1)
             {
                 SWAG_ASSERT(reg != RSP);
@@ -1242,7 +1242,7 @@ void SCBE_X64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, CPU
         case CPUOp::SUB:
             if (value == 0)
                 return;
-            emit_REX(numBits);
+            emit_REX(concat, numBits);
             if (value == 1)
             {
                 SWAG_ASSERT(reg != RSP);
@@ -1266,7 +1266,7 @@ void SCBE_X64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, CPU
                 return;
             }
 
-            emit_REX(numBits);
+            emit_REX(concat, numBits);
             if (value == 2)
             {
                 concat.addU8(0xD1);
@@ -1288,7 +1288,7 @@ void SCBE_X64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, CPU
             break;
 
         case CPUOp::XOR:
-            emit_REX(numBits);
+            emit_REX(concat, numBits);
             if (numBits == CPUBits::B8)
                 concat.addU8(0x34);
             else
@@ -1299,23 +1299,23 @@ void SCBE_X64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, CPU
         case CPUOp::SAR:
         case CPUOp::SHR:
         case CPUOp::SHL:
-            emit_REX(numBits);
+            emit_REX(concat, numBits);
             value = min(value, (uint32_t) numBits - 1);
             if (value == 1)
             {
-                emit_Spec8(0xD1, numBits);
+                emit_Spec8(concat, 0xD1, numBits);
                 concat.addU8((uint8_t) op | reg);
             }
             else
             {
-                emit_Spec8(0xC1, numBits);
+                emit_Spec8(concat, 0xC1, numBits);
                 concat.addU8((uint8_t) op | reg);
                 concat.addU8((uint8_t) value);
             }
             break;
 
         case CPUOp::BT:
-            emit_REX(numBits, RAX, reg);
+            emit_REX(concat, numBits, RAX, reg);
             concat.addU8(0x0F);
             concat.addU8((uint8_t) op);
             concat.addU8(0xE2);
@@ -1344,7 +1344,7 @@ void SCBE_X64::emit_OpN_Immediate(CPURegister reg, uint64_t value, CPUOp op, CPU
     }
     else
     {
-        emit_REX(numBits);
+        emit_REX(concat, numBits);
         switch (op)
         {
         case CPUOp::ADD:
@@ -1390,7 +1390,7 @@ void SCBE_X64::emit_OpN_IndirectDst(uint32_t offsetStack, uint64_t value, CPUReg
         return;
     }
 
-    emit_REX(numBits);
+    emit_REX(concat, numBits);
     if (numBits == CPUBits::B8)
         concat.addU8(0x80);
     else if (value <= 0x7F)
@@ -1424,7 +1424,7 @@ void SCBE_X64::emit_OpN_IndirectDst(uint32_t offsetStack, uint64_t value, CPUReg
 
 void SCBE_X64::emit_Extend_U8U64(CPURegister regSrc, CPURegister regDst)
 {
-    emit_REX(CPUBits::B64, regDst, regSrc);
+    emit_REX(concat, CPUBits::B64, regDst, regSrc);
     concat.addU8(0x0F);
     concat.addU8(0xB6);
     concat.addU8(getModRM(REGREG, regDst, regSrc));
@@ -1432,7 +1432,7 @@ void SCBE_X64::emit_Extend_U8U64(CPURegister regSrc, CPURegister regDst)
 
 void SCBE_X64::emit_Extend_U16U64(CPURegister regSrc, CPURegister regDst)
 {
-    emit_REX(CPUBits::B64, regDst, regSrc);
+    emit_REX(concat, CPUBits::B64, regDst, regSrc);
     concat.addU8(0x0F);
     concat.addU8(0xB7);
     concat.addU8(getModRM(REGREG, regDst, regSrc));
@@ -1556,7 +1556,7 @@ void SCBE_X64::emit_LongJumpOp(CPUJumpType jumpType)
 void SCBE_X64::emit_JumpTable(CPURegister table, CPURegister offset)
 {
     SWAG_ASSERT(table == RCX && offset == RAX);
-    emit_REX(CPUBits::B64);
+    emit_REX(concat, CPUBits::B64);
     concat.addString3("\x63\x0C\x81"); // movsx rcx, dword ptr [rcx + rax*4]
 }
 
@@ -1863,7 +1863,7 @@ void SCBE_X64::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<C
                     emit_CopyN(cc.paramByRegisterInteger[i], RAX, CPUBits::B64);
                     break;
                 case CPUPushParamType::GlobalString:
-                    emit_GlobalString((const char*) paramsRegisters[i].reg, cc.paramByRegisterInteger[i]);
+                    emit_Symbol_GlobalString((const char*) paramsRegisters[i].reg, cc.paramByRegisterInteger[i]);
                     break;
                 default:
                     SWAG_ASSERT(paramsRegisters[i].type == CPUPushParamType::Reg);
@@ -2158,7 +2158,7 @@ void SCBE_X64::emit_Call_Indirect(CPURegister reg)
 
 void SCBE_X64::emit_Cwd()
 {
-    emit_REX(CPUBits::B16);
+    emit_REX(concat, CPUBits::B16);
     concat.addU8(0x99);
 }
 
@@ -2169,7 +2169,7 @@ void SCBE_X64::emit_Cdq()
 
 void SCBE_X64::emit_Cqo()
 {
-    emit_REX(CPUBits::B64);
+    emit_REX(concat, CPUBits::B64);
     concat.addU8(0x99);
 }
 
@@ -2179,7 +2179,7 @@ void SCBE_X64::emit_NotN(CPURegister reg, CPUBits numBits)
 {
     SWAG_ASSERT(reg < R8);
 
-    emit_REX(numBits);
+    emit_REX(concat, numBits);
     if (numBits == CPUBits::B8)
         concat.addU8(0xF6);
     else
@@ -2191,7 +2191,7 @@ void SCBE_X64::emit_NotN_Indirect(uint32_t stackOffset, CPURegister memReg, CPUB
 {
     SWAG_ASSERT(memReg == RDI);
 
-    emit_REX(numBits);
+    emit_REX(concat, numBits);
     if (numBits == CPUBits::B8)
         concat.addU8(0xF6);
     else
@@ -2212,23 +2212,23 @@ void SCBE_X64::emit_NotN_Indirect(uint32_t stackOffset, CPURegister memReg, CPUB
 void SCBE_X64::emit_IncN_Indirect(uint32_t stackOffset, CPURegister memReg, CPUBits numBits)
 {
     SWAG_ASSERT(memReg < R8);
-    emit_REX(numBits);
+    emit_REX(concat, numBits);
     if (numBits == CPUBits::B8)
         concat.addU8(0xFE);
     else
         concat.addU8(0xFF);
-    emit_ModRM(stackOffset, 0, memReg);
+    emit_ModRM(concat, stackOffset, 0, memReg);
 }
 
 void SCBE_X64::emit_DecN_Indirect(uint32_t stackOffset, CPURegister memReg, CPUBits numBits)
 {
     SWAG_ASSERT(memReg < R8);
-    emit_REX(numBits);
+    emit_REX(concat, numBits);
     if (numBits == CPUBits::B8)
         concat.addU8(0xFE);
     else
         concat.addU8(0xFF);
-    emit_ModRM(stackOffset, 1, memReg);
+    emit_ModRM(concat, stackOffset, 1, memReg);
 }
 
 void SCBE_X64::emit_NegN(CPURegister reg, CPUBits numBits)
@@ -2236,7 +2236,7 @@ void SCBE_X64::emit_NegN(CPURegister reg, CPUBits numBits)
     SWAG_ASSERT(reg < R8);
     SWAG_ASSERT(numBits == CPUBits::B32 || numBits == CPUBits::B64);
 
-    emit_REX(numBits);
+    emit_REX(concat, numBits);
     concat.addU8(0xF7);
     concat.addU8(0xD8 | (reg & 0b111));
 }
@@ -2246,7 +2246,7 @@ void SCBE_X64::emit_NegN_Indirect(uint32_t stackOffset, CPURegister memReg, CPUB
     SWAG_ASSERT(memReg == RDI);
     SWAG_ASSERT(numBits == CPUBits::B32 || numBits == CPUBits::B64);
 
-    emit_REX(numBits);
+    emit_REX(concat, numBits);
     concat.addU8(0xF7);
     if (stackOffset <= 0x7F)
     {
@@ -2264,7 +2264,7 @@ void SCBE_X64::emit_CMovN(CPURegister regDst, CPURegister regSrc, CPUBits numBit
 {
     if (numBits < CPUBits::B32)
         numBits = CPUBits::B32;
-    emit_REX(numBits, regDst, regSrc);
+    emit_REX(concat, numBits, regDst, regSrc);
     concat.addU8(0x0F);
     concat.addU8((uint8_t) op);
     concat.addU8(getModRM(REGREG, regDst, regSrc));
@@ -2276,12 +2276,12 @@ void SCBE_X64::emit_CmpXChg(CPURegister regDst, CPURegister regSrc, CPUBits numB
 
     // lock CMPXCHG [rcx], dl
     if (numBits == CPUBits::B16)
-        emit_REX(numBits);
+        emit_REX(concat, numBits);
     concat.addU8(0xF0);
     if (numBits == CPUBits::B64)
-        emit_REX(numBits);
+        emit_REX(concat, numBits);
     concat.addU8(0x0F);
-    emit_Spec8(0xB1, numBits);
+    emit_Spec8(concat, 0xB1, numBits);
     concat.addU8(0x11);
 }
 
@@ -2290,7 +2290,7 @@ void SCBE_X64::emit_BSwapN(CPURegister reg, CPUBits numBits)
     SWAG_ASSERT(reg == RAX);
     SWAG_ASSERT(numBits == CPUBits::B16 || numBits == CPUBits::B32 || numBits == CPUBits::B64);
 
-    emit_REX(numBits);
+    emit_REX(concat, numBits);
     if (numBits == CPUBits::B16)
     {
         concat.addU8(0xC1);
@@ -2304,7 +2304,7 @@ void SCBE_X64::emit_BSwapN(CPURegister reg, CPUBits numBits)
     }
 }
 
-uint16_t SCBE_X64::computeUnwindPush(CPURegister reg, uint32_t offsetSubRSP)
+static uint16_t computeUnwindPush(CPURegister reg, uint32_t offsetSubRSP)
 {
     uint16_t unwind0 = 0;
     unwind0          = (reg << 12);
@@ -2359,7 +2359,7 @@ void SCBE_X64::computeUnwind(const VectorNative<CPURegister>& unwindRegs,
 
 void SCBE_X64::emit_Nop()
 {
-    concat.addU8(0x90); // nop
+    concat.addU8(0x90);
 }
 
 void SCBE_X64::emit_CopyDownUp(CPURegister reg, CPUBits numBits)

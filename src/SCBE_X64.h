@@ -14,16 +14,11 @@ enum X64DispMode
 
 struct SCBE_X64 : public SCBE_CPU
 {
-    void emit_REX(CPUBits numBits, CPURegister reg1 = RAX, CPURegister reg2 = RAX);
-    void emit_ModRM(uint32_t stackOffset, uint8_t reg, uint8_t memReg, uint8_t op = 1);
-    void emit_Spec8(uint8_t value, CPUBits numBits);
-
-    uint16_t computeUnwindPush(CPURegister reg, uint32_t offsetSubRSP);
-    void     computeUnwind(const VectorNative<CPURegister>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind);
+    void computeUnwind(const VectorNative<CPURegister>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind);
 
     void emit_Symbol_RelocationAddr(CPURegister reg, uint32_t symbolIndex, uint32_t offset);
     void emit_Symbol_RelocationValue(CPURegister reg, uint32_t symbolIndex, uint32_t offset);
-    void emit_GlobalString(const Utf8& str, CPURegister reg);
+    void emit_Symbol_GlobalString(const Utf8& str, CPURegister reg);
 
     void emit_Push(CPURegister reg);
     void emit_Pop(CPURegister reg);
