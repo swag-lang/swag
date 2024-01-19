@@ -45,7 +45,7 @@ struct SCBE_X64 : public SCBE_CPU
     void emit_CopyN(CPURegister regDst, CPURegister regSrc, CPUBits numBits);
     void emit_CopyF32(CPURegister regDst, CPURegister regSrc);
     void emit_CopyF64(CPURegister regDst, CPURegister regSrc);
-    void emit_CopyX(uint32_t count, uint32_t offset, CPURegister regDst, CPURegister regSrc);
+    void emit_CopyX(CPURegister regDst, CPURegister regSrc, uint32_t count, uint32_t offset);
     void emit_CopyDownUp(CPURegister reg, CPUBits numBits);
 
     void emit_JumpTable(CPURegister table, CPURegister offset);

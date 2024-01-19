@@ -3205,22 +3205,22 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
         case ByteCodeOp::MemCpy8:
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);
             pp.emit_Load64_Indirect(REG_OFFSET(ip->b.u32), RDX);
-            pp.emit_CopyX(1, 0, RCX, RDX);
+            pp.emit_CopyX(RCX, RDX, 1, 0);
             break;
         case ByteCodeOp::MemCpy16:
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);
             pp.emit_Load64_Indirect(REG_OFFSET(ip->b.u32), RDX);
-            pp.emit_CopyX(2, 0, RCX, RDX);
+            pp.emit_CopyX(RCX, RDX, 2, 0);
             break;
         case ByteCodeOp::MemCpy32:
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);
             pp.emit_Load64_Indirect(REG_OFFSET(ip->b.u32), RDX);
-            pp.emit_CopyX(4, 0, RCX, RDX);
+            pp.emit_CopyX(RCX, RDX, 4, 0);
             break;
         case ByteCodeOp::MemCpy64:
             pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);
             pp.emit_Load64_Indirect(REG_OFFSET(ip->b.u32), RDX);
-            pp.emit_CopyX(8, 0, RCX, RDX);
+            pp.emit_CopyX(RCX, RDX, 8, 0);
             break;
 
             /////////////////////////////////////
@@ -3230,7 +3230,7 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             {
                 pp.emit_Load64_Indirect(REG_OFFSET(ip->a.u32), RCX);
                 pp.emit_Load64_Indirect(REG_OFFSET(ip->b.u32), RDX);
-                pp.emit_CopyX(ip->c.u32, 0, RCX, RDX);
+                pp.emit_CopyX(RCX, RDX, ip->c.u32, 0);
             }
             else
             {

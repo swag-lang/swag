@@ -1625,7 +1625,7 @@ void SCBE_X64::emit_Jump(CPURegister reg)
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emit_CopyX(uint32_t count, uint32_t offset, CPURegister regDst, CPURegister regSrc)
+void SCBE_X64::emit_CopyX(CPURegister regDst, CPURegister regSrc, uint32_t count, uint32_t offset)
 {
     if (!count)
         return;
