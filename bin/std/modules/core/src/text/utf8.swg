@@ -551,7 +551,15 @@ func indexOfAny(src: const [..] u8, what: const [..] rune, startByteIndex = 0'u6
 }
 
 // Returns true if 'src' contains the string 'what'
+#[Swag.Overload]
 func contains(src: const [..] u8, what: string)->bool
+{
+    return indexOf(src, what) != Swag.U64.Max
+}
+
+// Returns true if 'src' contains the string 'what'
+#[Swag.Overload]
+func contains(src: const [..] u8, what: rune)->bool
 {
     return indexOf(src, what) != Swag.U64.Max
 }
