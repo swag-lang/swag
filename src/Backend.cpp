@@ -9,7 +9,7 @@
 #include "Version.h"
 #include "Workspace.h"
 
-JobResult Backend::prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob)
+JobResult Backend::prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob)
 {
     return JobResult::ReleaseJob;
 }

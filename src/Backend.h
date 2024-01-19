@@ -38,7 +38,7 @@ struct Backend
     {
     }
 
-    virtual JobResult prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob);
+    virtual JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob);
     virtual bool      generateOutput(const BuildParameters& backendParameters);
     virtual bool      emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc);
 

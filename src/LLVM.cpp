@@ -200,7 +200,7 @@ bool LLVM::createRuntime(const BuildParameters& buildParameters)
     return true;
 }
 
-JobResult LLVM::prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob)
+JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob)
 {
     int ct              = buildParameters.compileType;
     int precompileIndex = buildParameters.precompileIndex;

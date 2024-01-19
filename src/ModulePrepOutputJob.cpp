@@ -27,7 +27,7 @@ JobResult ModulePrepOutputStage1Job::execute()
         }
     }
 
-    return module->backend->prepareOutput(1, buildParameters, this);
+    return module->backend->prepareOutput(buildParameters, 1, this);
 }
 
 JobResult ModulePrepOutputStage2Job::execute()
@@ -36,5 +36,5 @@ JobResult ModulePrepOutputStage2Job::execute()
     Timer timer{&g_Stats.prepOutputStage2TimeJob};
 #endif
 
-    return module->backend->prepareOutput(2, buildParameters, this);
+    return module->backend->prepareOutput(buildParameters, 2, this);
 }

@@ -116,7 +116,7 @@ bool SCBE::createRuntime(const BuildParameters& buildParameters)
     return true;
 }
 
-JobResult SCBE::prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob)
+JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob)
 {
     int  ct              = buildParameters.compileType;
     int  precompileIndex = buildParameters.precompileIndex;

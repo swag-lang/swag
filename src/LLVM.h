@@ -100,7 +100,7 @@ struct LLVM : public Backend
         memset(perThread, 0, sizeof(perThread));
     }
 
-    JobResult prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob) override;
+    JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob) override;
     bool      generateOutput(const BuildParameters& backendParameters) override;
     bool      emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc) override;
 
