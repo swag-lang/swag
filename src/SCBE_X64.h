@@ -46,6 +46,7 @@ struct SCBE_X64 : public SCBE_CPU
     void emit_CopyF32(CPURegister regDst, CPURegister regSrc);
     void emit_CopyF64(CPURegister regDst, CPURegister regSrc);
     void emit_CopyX(uint32_t count, uint32_t offset, CPURegister regDst, CPURegister regSrc);
+    void emit_CopyDownUp(CPURegister reg, CPUBits numBits);
 
     void emit_JumpTable(CPURegister table, CPURegister offset);
     void emit_LongJumpOp(CPUJumpType jumpType);
@@ -131,7 +132,7 @@ struct SCBE_X64 : public SCBE_CPU
     void emit_Cdq();
     void emit_Cqo();
 
-    void emit_TestN(CPURegister regSrc, CPURegister regDst, CPUBits numBits);
+    void emit_TestN(CPURegister regDst, CPURegister regSrc, CPUBits numBits);
     void emit_NotN(CPURegister reg, CPUBits numBits);
     void emit_NotN_Indirect(uint32_t stackOffset, CPURegister memReg, CPUBits numBits);
     void emit_IncN_Indirect(uint32_t stackOffset, CPURegister memReg, CPUBits numBits);
@@ -142,6 +143,5 @@ struct SCBE_X64 : public SCBE_CPU
     void emit_CmpXChg(CPURegister regDst, CPURegister regSrc, CPUBits numBits);
     void emit_BSwapN(CPURegister reg, CPUBits numBits);
     void emit_Nop();
-    void emit_CopyDownUp(CPURegister reg, CPUBits numBits);
     void emit_CastU64F64(CPURegister regDst, CPURegister regSrc);
 };

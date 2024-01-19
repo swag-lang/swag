@@ -69,7 +69,7 @@ static void emit_Spec8(Concat& concat, uint8_t value, CPUBits numBits)
 
 void SCBE_X64::emit_Symbol_RelocationRef(const Utf8& name)
 {
-    auto  callSym = getOrAddSymbol(name, CPUSymbolKind::Extern);
+    auto callSym = getOrAddSymbol(name, CPUSymbolKind::Extern);
     if (callSym->kind == CPUSymbolKind::Function)
     {
         concat.addS32((callSym->value + textSectionOffset) - (concat.totalCount() + 4));
@@ -616,6 +616,13 @@ void SCBE_X64::emit_CopyF64(CPURegister regDst, CPURegister regSrc)
     concat.addU8(0xC0 | (regDst << 3));
 }
 
+void SCBE_X64::emit_CopyDownUp(CPURegister reg, CPUBits numBits)
+{
+    SWAG_ASSERT(reg == RAX);
+    SWAG_ASSERT(numBits == CPUBits::B8);
+    concat.addString2("\x88\xe0"); // mov al, ah
+}
+
 /////////////////////////////////////////////////////////////////////
 
 void SCBE_X64::emit_SetA(CPURegister reg)
@@ -740,14 +747,14 @@ void SCBE_X64::emit_SetLE()
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emit_TestN(CPURegister regSrc, CPURegister regDst, CPUBits numBits)
+void SCBE_X64::emit_TestN(CPURegister regDst, CPURegister regSrc, CPUBits numBits)
 {
-    emit_REX(concat, numBits, regDst, regSrc);
+    emit_REX(concat, numBits, regSrc, regDst);
     if (numBits == CPUBits::B8)
         concat.addU8(0x84);
     else
         concat.addU8(0x85);
-    concat.addU8(getModRM(REGREG, regDst, regSrc));
+    concat.addU8(getModRM(REGREG, regSrc, regDst));
 }
 
 void SCBE_X64::emit_CmpN(CPURegister regSrc, CPURegister regDst, CPUBits numBits)
@@ -2323,13 +2330,6 @@ void SCBE_X64::emit_BSwapN(CPURegister reg, CPUBits numBits)
 void SCBE_X64::emit_Nop()
 {
     concat.addU8(0x90);
-}
-
-void SCBE_X64::emit_CopyDownUp(CPURegister reg, CPUBits numBits)
-{
-    SWAG_ASSERT(reg == RAX);
-    SWAG_ASSERT(numBits == CPUBits::B8);
-    concat.addString2("\x88\xe0"); // mov al, ah
 }
 
 void SCBE_X64::emit_CastU64F64(CPURegister regDst, CPURegister regSrc)
