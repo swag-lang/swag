@@ -144,8 +144,8 @@ enum SimpleTypeMode : SCBE_DebugTypeIndex
 
 struct SCBE_CodeView
 {
-    void startRecord(SCBE_CPU& pp, uint16_t what);
-    void endRecord(SCBE_CPU& pp, bool align = true);
+    void emitStartRecord(SCBE_CPU& pp, uint16_t what);
+    void emitEndRecord(SCBE_CPU& pp, bool align = true);
     void emitEmbeddedValue(SCBE_CPU& pp, TypeInfo* valueType, ComputedValue& val);
     void emitSecRel(SCBE_CPU& pp, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset = 0);
     void emitTruncatedString(SCBE_CPU& pp, const Utf8& str);

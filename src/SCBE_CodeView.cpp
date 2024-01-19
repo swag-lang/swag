@@ -44,7 +44,7 @@ void SCBE_CodeView::emitCompilerFlagsDebugS(SCBE_CPU& pp)
     *patchSCount = concat.totalCount() - patchSOffset;
 }
 
-void SCBE_CodeView::startRecord(SCBE_CPU& pp, uint16_t what)
+void SCBE_CodeView::emitStartRecord(SCBE_CPU& pp, uint16_t what)
 {
     auto& concat = pp.concat;
     SWAG_ASSERT(pp.dbgRecordIdx < pp.MAX_RECORD);
@@ -54,7 +54,7 @@ void SCBE_CodeView::startRecord(SCBE_CPU& pp, uint16_t what)
     pp.dbgRecordIdx++;
 }
 
-void SCBE_CodeView::endRecord(SCBE_CPU& pp, bool align)
+void SCBE_CodeView::emitEndRecord(SCBE_CPU& pp, bool align)
 {
     auto& concat = pp.concat;
     if (align)
@@ -161,7 +161,7 @@ bool SCBE_CodeView::emitDataDebugT(SCBE_CPU& pp)
 
     while (true)
     {
-        startRecord(pp, f->kind);
+        emitStartRecord(pp, f->kind);
         switch (f->kind)
         {
         case LF_ARGLIST:
@@ -276,7 +276,7 @@ bool SCBE_CodeView::emitDataDebugT(SCBE_CPU& pp)
             break;
         }
 
-        endRecord(pp, false);
+        emitEndRecord(pp, false);
 
         cpt += sizeof(SCBE_DebugTypeRecord);
         f += 1;
@@ -299,7 +299,7 @@ void SCBE_CodeView::emitConstant(SCBE_CPU& pp, AstNode* node, const Utf8& name)
     auto& concat = pp.concat;
     if (node->typeInfo->isNative() && node->typeInfo->sizeOf <= 8)
     {
-        startRecord(pp, S_CONSTANT);
+        emitStartRecord(pp, S_CONSTANT);
         concat.addU32(SCBE_Debug::getOrCreateType(pp, node->typeInfo));
         switch (node->typeInfo->sizeOf)
         {
@@ -322,7 +322,7 @@ void SCBE_CodeView::emitConstant(SCBE_CPU& pp, AstNode* node, const Utf8& name)
         }
 
         emitTruncatedString(pp, name);
-        endRecord(pp);
+        emitEndRecord(pp);
     }
 }
 
@@ -342,7 +342,7 @@ void SCBE_CodeView::emitGlobalDebugS(SCBE_CPU& pp, VectorNative<AstNode*>& gVars
             continue;
         }
 
-        startRecord(pp, S_LDATA32);
+        emitStartRecord(pp, S_LDATA32);
         concat.addU32(SCBE_Debug::getOrCreateType(pp, p->typeInfo));
 
         CPURelocation reloc;
@@ -363,18 +363,18 @@ void SCBE_CodeView::emitGlobalDebugS(SCBE_CPU& pp, VectorNative<AstNode*>& gVars
 
         auto nn = SCBE_Debug::getScopedName(p);
         emitTruncatedString(pp, nn);
-        endRecord(pp);
+        emitEndRecord(pp);
     }
 
     // Fake symbol, because lld linker (since v12) generates a warning if this subsection is empty (wtf)
     if (patchSOffset == concat.totalCount())
     {
-        startRecord(pp, S_LDATA32);
+        emitStartRecord(pp, S_LDATA32);
         concat.addU32(SCBE_Debug::getOrCreateType(pp, g_TypeMgr->typeInfoBool));
         concat.addU32(0);
         emitTruncatedString(pp, "__fake__");
         concat.addU16(0);
-        endRecord(pp);
+        emitEndRecord(pp);
     }
 
     *patchSCount = concat.totalCount() - patchSOffset;
@@ -493,7 +493,7 @@ bool SCBE_CodeView::emitFctDebugS(SCBE_CPU& pp)
             // Proc ID
             // PROCSYM32
             /////////////////////////////////
-            startRecord(pp, S_LPROC32_ID);
+            emitStartRecord(pp, S_LPROC32_ID);
             concat.addU32(0);                             // Parent = 0
             concat.addU32(0);                             // End = 0
             concat.addU32(0);                             // Next = 0
@@ -505,11 +505,11 @@ bool SCBE_CodeView::emitFctDebugS(SCBE_CPU& pp)
             concat.addU8(0); // ProcSymFlags Flags = ProcSymFlags::None
             auto nn = SCBE_Debug::getScopedName(f.node);
             emitTruncatedString(pp, nn);
-            endRecord(pp);
+            emitEndRecord(pp);
 
             // Frame Proc
             /////////////////////////////////
-            startRecord(pp, S_FRAMEPROC);
+            emitStartRecord(pp, S_FRAMEPROC);
             concat.addU32(f.frameSize); // FrameSize
             concat.addU32(0);           // Padding
             concat.addU32(0);           // Offset of padding
@@ -517,7 +517,7 @@ bool SCBE_CodeView::emitFctDebugS(SCBE_CPU& pp)
             concat.addU32(0);           // Exception handler offset
             concat.addU32(0);           // Exception handler section
             concat.addU32(0);           // Flags (defines frame register)
-            endRecord(pp);
+            emitEndRecord(pp);
 
             // Capture parameters
             /////////////////////////////////
@@ -546,20 +546,20 @@ bool SCBE_CodeView::emitFctDebugS(SCBE_CPU& pp)
                     }
 
                     //////////
-                    startRecord(pp, S_LOCAL);
+                    emitStartRecord(pp, S_LOCAL);
                     concat.addU32(typeIdx); // Type
                     concat.addU16(0);
                     emitTruncatedString(pp, child->token.text);
-                    endRecord(pp);
+                    emitEndRecord(pp);
 
                     //////////
-                    startRecord(pp, S_DEFRANGE_REGISTER_REL);
+                    emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
                     concat.addU16(R_R12); // Register
                     concat.addU16(0);     // Flags
                     concat.addU32(overload->computedValue.storageOffset);
                     emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
                     concat.addU16((uint16_t) (f.endAddress - f.startAddress)); // Range
-                    endRecord(pp);
+                    emitEndRecord(pp);
                 }
             }
 
@@ -612,7 +612,7 @@ bool SCBE_CodeView::emitFctDebugS(SCBE_CPU& pp)
                     }
 
                     //////////
-                    startRecord(pp, S_LOCAL);
+                    emitStartRecord(pp, S_LOCAL);
                     concat.addU32(typeIdx); // Type
                     concat.addU16(1);       // set fIsParam. If not set, callstack signature won't be good.
 
@@ -624,7 +624,7 @@ bool SCBE_CodeView::emitFctDebugS(SCBE_CPU& pp)
                     else
                         emitTruncatedString(pp, child->token.text);
 
-                    endRecord(pp);
+                    emitEndRecord(pp);
 
                     //////////
                     uint32_t offsetStackParam = 0;
@@ -637,13 +637,13 @@ bool SCBE_CodeView::emitFctDebugS(SCBE_CPU& pp)
                     regCounter += typeParam->numRegisters();
 
                     //////////
-                    startRecord(pp, S_DEFRANGE_REGISTER_REL);
+                    emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
                     concat.addU16(R_RDI); // Register
                     concat.addU16(0);     // Flags
                     concat.addU32(offsetStackParam);
                     emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
                     concat.addU16((uint16_t) (f.endAddress - f.startAddress)); // Range
-                    endRecord(pp);
+                    emitEndRecord(pp);
 
                     // If we have 2 registers then we cannot create a symbol flagged as 'parameter' in order to really see it.
                     if (typeParam->numRegisters() == 2)
@@ -651,20 +651,20 @@ bool SCBE_CodeView::emitFctDebugS(SCBE_CPU& pp)
                         typeIdx = SCBE_Debug::getOrCreateType(pp, typeParam);
 
                         //////////
-                        startRecord(pp, S_LOCAL);
+                        emitStartRecord(pp, S_LOCAL);
                         concat.addU32(typeIdx); // Type
                         concat.addU16(0);       // set fIsParam to 0
                         emitTruncatedString(pp, child->token.text);
-                        endRecord(pp);
+                        emitEndRecord(pp);
 
                         //////////
-                        startRecord(pp, S_DEFRANGE_REGISTER_REL);
+                        emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
                         concat.addU16(R_RDI); // Register
                         concat.addU16(0);     // Flags
                         concat.addU32(offsetStackParam);
                         emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
                         concat.addU16((uint16_t) (f.endAddress - f.startAddress)); // Range
-                        endRecord(pp);
+                        emitEndRecord(pp);
                     }
 
                     // Codeview seems to need this pointer to be named "this"...
@@ -672,20 +672,20 @@ bool SCBE_CodeView::emitFctDebugS(SCBE_CPU& pp)
                     if (typeFunc->isMethod() && child->token.text == g_LangSpec->name_self)
                     {
                         //////////
-                        startRecord(pp, S_LOCAL);
+                        emitStartRecord(pp, S_LOCAL);
                         concat.addU32(typeIdx); // Type
                         concat.addU16(1);       // set fIsParam
                         emitTruncatedString(pp, "this");
-                        endRecord(pp);
+                        emitEndRecord(pp);
 
                         //////////
-                        startRecord(pp, S_DEFRANGE_REGISTER_REL);
+                        emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
                         concat.addU16(R_RDI); // Register
                         concat.addU16(0);     // Flags
                         concat.addU32(offsetStackParam);
                         emitSecRel(pp, f.symbolIndex, pp.symCOIndex);
                         concat.addU16((uint16_t) (f.endAddress - f.startAddress)); // Range
-                        endRecord(pp);
+                        emitEndRecord(pp);
                     }
                 }
             }
@@ -697,8 +697,8 @@ bool SCBE_CodeView::emitFctDebugS(SCBE_CPU& pp)
 
             // End
             /////////////////////////////////
-            startRecord(pp, S_PROC_ID_END);
-            endRecord(pp);
+            emitStartRecord(pp, S_PROC_ID_END);
+            emitEndRecord(pp);
 
             *patchSCount = concat.totalCount() - patchSOffset;
         }
@@ -772,13 +772,13 @@ bool SCBE_CodeView::emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
 
     // Header
     /////////////////////////////////
-    startRecord(pp, S_BLOCK32);
+    emitStartRecord(pp, S_BLOCK32);
     concat.addU32(0);                                       // Parent = 0;
     concat.addU32(0);                                       // End = 0;
     concat.addU32(scope->backendEnd - scope->backendStart); // CodeSize;
     emitSecRel(pp, f.symbolIndex, pp.symCOIndex, scope->backendStart);
     emitTruncatedString(pp, "");
-    endRecord(pp);
+    emitEndRecord(pp);
 
     // Local variables marked as global
     /////////////////////////////////
@@ -795,7 +795,7 @@ bool SCBE_CodeView::emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
 
         SWAG_ASSERT(localVar->attributeFlags & ATTRIBUTE_GLOBAL);
 
-        startRecord(pp, S_LDATA32);
+        emitStartRecord(pp, S_LDATA32);
         concat.addU32(SCBE_Debug::getOrCreateType(pp, typeInfo));
 
         CPURelocation reloc;
@@ -816,7 +816,7 @@ bool SCBE_CodeView::emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
         concat.addU16(0);
 
         emitTruncatedString(pp, localVar->token.text);
-        endRecord(pp);
+        emitEndRecord(pp);
     }
 
     // Local constants
@@ -842,17 +842,17 @@ bool SCBE_CodeView::emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
         auto            typeInfo = overload->typeInfo;
 
         //////////
-        startRecord(pp, S_LOCAL);
+        emitStartRecord(pp, S_LOCAL);
         if (overload->flags & OVERLOAD_RETVAL)
             concat.addU32(SCBE_Debug::getOrCreatePointerToType(pp, typeInfo, true)); // Type
         else
             concat.addU32(SCBE_Debug::getOrCreateType(pp, typeInfo)); // Type
         concat.addU16(0);                                             // CV_LVARFLAGS
         emitTruncatedString(pp, localVar->token.text);
-        endRecord(pp);
+        emitEndRecord(pp);
 
         //////////
-        startRecord(pp, S_DEFRANGE_REGISTER_REL);
+        emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
         concat.addU16(R_RDI);                  // Register
         concat.addU16(0);                      // Flags
         if (overload->flags & OVERLOAD_RETVAL) // Offset to register
@@ -862,7 +862,7 @@ bool SCBE_CodeView::emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
         emitSecRel(pp, f.symbolIndex, pp.symCOIndex, localVar->ownerScope->backendStart);
         auto endOffsetVar = localVar->ownerScope->backendEnd == 0 ? f.endAddress : localVar->ownerScope->backendEnd;
         concat.addU16((uint16_t) (endOffsetVar - localVar->ownerScope->backendStart)); // Range
-        endRecord(pp);
+        emitEndRecord(pp);
     }
 
     // Sub scopes
@@ -879,8 +879,8 @@ bool SCBE_CodeView::emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
 
     // End
     /////////////////////////////////
-    startRecord(pp, S_END);
-    endRecord(pp);
+    emitStartRecord(pp, S_END);
+    emitEndRecord(pp);
     return true;
 }
 
