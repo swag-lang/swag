@@ -95,7 +95,7 @@ bool SCBE::emitMain(const BuildParameters& buildParameters)
     SWAG_ASSERT(bcAlloc);
     pp.emit_Symbol_RelocationAddr(RAX, pp.symDefaultAllocTable, 0);
     pp.emit_LoadAddress_Indirect(0, RCX, RIP);
-    emitSymbolRelocation(pp, bcAlloc->getCallName());
+    pp.emit_Symbol_RelocationRef(bcAlloc->getCallName());
     pp.emit_Store64_Indirect(0, RCX, RAX);
 
     // mainContext.allocator.itable = &defaultAllocTable;

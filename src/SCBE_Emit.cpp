@@ -154,21 +154,6 @@ void SCBE::emitInternalPanic(SCBE_X64& pp, AstNode* node, const char* msg)
     emitInternalCallExt(pp, module, g_LangSpec->name__panic, pp.pushParams);
 }
 
-void SCBE::emitSymbolRelocation(SCBE_X64& pp, const Utf8& name)
-{
-    auto& concat  = pp.concat;
-    auto  callSym = pp.getOrAddSymbol(name, CPUSymbolKind::Extern);
-    if (callSym->kind == CPUSymbolKind::Function)
-    {
-        concat.addS32((callSym->value + pp.textSectionOffset) - (concat.totalCount() + 4));
-    }
-    else
-    {
-        pp.addSymbolRelocation(concat.totalCount() - pp.textSectionOffset, callSym->index, IMAGE_REL_AMD64_REL32);
-        concat.addU32(0);
-    }
-}
-
 void SCBE::emitBinOpFloat32(SCBE_X64& pp, ByteCodeInstruction* ip, CPUOp op)
 {
     if (!(ip->flags & BCI_IMM_A) && !(ip->flags & BCI_IMM_B))

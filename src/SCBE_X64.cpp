@@ -67,6 +67,20 @@ static void emit_Spec8(Concat& concat, uint8_t value, CPUBits numBits)
 
 /////////////////////////////////////////////////////////////////////
 
+void SCBE_X64::emit_Symbol_RelocationRef(const Utf8& name)
+{
+    auto  callSym = getOrAddSymbol(name, CPUSymbolKind::Extern);
+    if (callSym->kind == CPUSymbolKind::Function)
+    {
+        concat.addS32((callSym->value + textSectionOffset) - (concat.totalCount() + 4));
+    }
+    else
+    {
+        addSymbolRelocation(concat.totalCount() - textSectionOffset, callSym->index, IMAGE_REL_AMD64_REL32);
+        concat.addU32(0);
+    }
+}
+
 void SCBE_X64::emit_Symbol_RelocationAddr(CPURegister reg, uint32_t symbolIndex, uint32_t offset)
 {
     SWAG_ASSERT(reg == RAX || reg == RCX || reg == RDX || reg == R8 || reg == R9 || reg == RDI);
