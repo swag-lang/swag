@@ -749,12 +749,12 @@ void SCBE_X64::emit_SetLE()
 
 void SCBE_X64::emit_TestN(CPURegister regDst, CPURegister regSrc, CPUBits numBits)
 {
-    emit_REX(concat, numBits, regSrc, regDst);
+    emit_REX(concat, numBits, regDst, regSrc);
     if (numBits == CPUBits::B8)
         concat.addU8(0x84);
     else
         concat.addU8(0x85);
-    concat.addU8(getModRM(REGREG, regSrc, regDst));
+    concat.addU8(getModRM(REGREG, regDst, regSrc));
 }
 
 void SCBE_X64::emit_CmpN(CPURegister regSrc, CPURegister regDst, CPUBits numBits)
