@@ -83,11 +83,11 @@ bool SCBE::emitMain(const BuildParameters& buildParameters)
     auto symbolFuncIndex = pp.getOrAddSymbol(entryPoint, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
     auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 
-    auto beforeProlog = concat.totalCount();
-    pp.emit_OpN_Immediate(RSP, 40, CPUOp::SUB, CPUBits::B64);
-    auto                   sizeProlog = concat.totalCount() - beforeProlog;
     VectorNative<uint16_t> unwind;
-    pp.computeUnwind({}, {}, 40, sizeProlog, unwind);
+    auto                   beforeProlog = concat.totalCount();
+    pp.emit_OpN_Immediate(RSP, 40, CPUOp::SUB, CPUBits::B64);
+    auto sizeProlog = concat.totalCount() - beforeProlog;
+    SCBE::computeUnwind({}, {}, 40, sizeProlog, unwind);
 
     // Set default system allocator function
     SWAG_ASSERT(g_SystemAllocatorTable);
@@ -262,11 +262,11 @@ bool SCBE::emitGetTypeTable(const BuildParameters& buildParameters)
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
         pp.directives += Fmt("/EXPORT:%s ", thisInit.c_str());
 
-    auto beforeProlog = concat.totalCount();
-    pp.emit_OpN_Immediate(RSP, 40, CPUOp::SUB, CPUBits::B64);
-    auto                   sizeProlog = concat.totalCount() - beforeProlog;
     VectorNative<uint16_t> unwind;
-    pp.computeUnwind({}, {}, 40, sizeProlog, unwind);
+    auto                   beforeProlog = concat.totalCount();
+    pp.emit_OpN_Immediate(RSP, 40, CPUOp::SUB, CPUBits::B64);
+    auto sizeProlog = concat.totalCount() - beforeProlog;
+    SCBE::computeUnwind({}, {}, 40, sizeProlog, unwind);
 
     pp.emit_OpN_Immediate(RSP, 40, CPUOp::ADD, CPUBits::B64);
     pp.emit_Symbol_RelocationAddr(cc.returnByRegisterInteger, pp.symCSIndex, module->typesSliceOffset);
@@ -296,12 +296,12 @@ bool SCBE::emitGlobalPreMain(const BuildParameters& buildParameters)
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
         pp.directives += Fmt("/EXPORT:%s ", thisInit.c_str());
 
-    auto beforeProlog = concat.totalCount();
+    VectorNative<uint16_t> unwind;
+    auto                   beforeProlog = concat.totalCount();
     pp.emit_Push(RDI);
     pp.emit_OpN_Immediate(RSP, 48, CPUOp::SUB, CPUBits::B64);
-    auto                   sizeProlog = concat.totalCount() - beforeProlog;
-    VectorNative<uint16_t> unwind;
-    pp.computeUnwind({}, {}, 48, sizeProlog, unwind);
+    auto sizeProlog = concat.totalCount() - beforeProlog;
+    SCBE::computeUnwind({}, {}, 48, sizeProlog, unwind);
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
@@ -351,12 +351,12 @@ bool SCBE::emitGlobalInit(const BuildParameters& buildParameters)
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
         pp.directives += Fmt("/EXPORT:%s ", thisInit.c_str());
 
-    auto beforeProlog = concat.totalCount();
+    VectorNative<uint16_t> unwind;
+    auto                   beforeProlog = concat.totalCount();
     pp.emit_Push(RDI);
     pp.emit_OpN_Immediate(RSP, 48, CPUOp::SUB, CPUBits::B64);
-    auto                   sizeProlog = concat.totalCount() - beforeProlog;
-    VectorNative<uint16_t> unwind;
-    pp.computeUnwind({}, {}, 48, sizeProlog, unwind);
+    auto sizeProlog = concat.totalCount() - beforeProlog;
+    SCBE::computeUnwind({}, {}, 48, sizeProlog, unwind);
 
     // Store first parameter on stack (process infos ptr)
     SWAG_ASSERT(cc.paramByRegisterCount >= 1);
@@ -431,11 +431,11 @@ bool SCBE::emitGlobalDrop(const BuildParameters& buildParameters)
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
         pp.directives += Fmt("/EXPORT:%s ", thisDrop.c_str());
 
-    auto beforeProlog = concat.totalCount();
-    pp.emit_OpN_Immediate(RSP, 40, CPUOp::SUB, CPUBits::B64);
-    auto                   sizeProlog = concat.totalCount() - beforeProlog;
     VectorNative<uint16_t> unwind;
-    pp.computeUnwind({}, {}, 40, sizeProlog, unwind);
+    auto                   beforeProlog = concat.totalCount();
+    pp.emit_OpN_Immediate(RSP, 40, CPUOp::SUB, CPUBits::B64);
+    auto sizeProlog = concat.totalCount() - beforeProlog;
+    SCBE::computeUnwind({}, {}, 40, sizeProlog, unwind);
 
     // Call to #drop functions
     for (auto bc : module->byteCodeDropFunc)

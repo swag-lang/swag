@@ -14,8 +14,6 @@ enum X64DispMode
 
 struct SCBE_X64 : public SCBE_CPU
 {
-    void computeUnwind(const VectorNative<CPURegister>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind);
-
     void emit_Symbol_RelocationAddr(CPURegister reg, uint32_t symbolIndex, uint32_t offset);
     void emit_Symbol_RelocationValue(CPURegister reg, uint32_t symbolIndex, uint32_t offset);
     void emit_Symbol_GlobalString(const Utf8& str, CPURegister reg);
