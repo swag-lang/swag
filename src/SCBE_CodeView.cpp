@@ -634,7 +634,7 @@ bool SCBE_CodeView::emitFctDebugS(SCBE_CPU& pp)
                         regParam += 2;
                     else if (typeFunc->isVariadic())
                         regParam = 0;
-                    offsetStackParam = scbe->getParamStackOffset(&f, regParam);
+                    offsetStackParam = pp.getParamStackOffset(&f, regParam);
                     regCounter += typeParam->numRegisters();
 
                     //////////
@@ -857,7 +857,7 @@ bool SCBE_CodeView::emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
         concat.addU16(R_RDI);                  // Register
         concat.addU16(0);                      // Flags
         if (overload->flags & OVERLOAD_RETVAL) // Offset to register
-            concat.addU32(scbe->getParamStackOffset(&f, typeFunc->numParamsRegisters()));
+            concat.addU32(pp.getParamStackOffset(&f, typeFunc->numParamsRegisters()));
         else
             concat.addU32(overload->computedValue.storageOffset + f.offsetStack);
         emitSecRel(pp, f.symbolIndex, pp.symCOIndex, localVar->ownerScope->backendStart);

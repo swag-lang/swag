@@ -144,19 +144,17 @@ enum SimpleTypeMode : SCBE_DebugTypeIndex
 
 struct SCBE_CodeView
 {
-    void emitStartRecord(SCBE_CPU& pp, uint16_t what);
-    void emitEndRecord(SCBE_CPU& pp, bool align = true);
-    void emitEmbeddedValue(SCBE_CPU& pp, TypeInfo* valueType, ComputedValue& val);
-    void emitSecRel(SCBE_CPU& pp, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset = 0);
-    void emitTruncatedString(SCBE_CPU& pp, const Utf8& str);
-    void emitCompilerFlagsDebugS(SCBE_CPU& pp);
-    void emitConstant(SCBE_CPU& pp, AstNode* node, const Utf8& name);
-    void emitGlobalDebugS(SCBE_CPU& pp, VectorNative<AstNode*>& gVars, uint32_t segSymIndex);
-    bool emitDataDebugT(SCBE_CPU& pp);
-    bool emitLines(SCBE_CPU& pp, MapPath<uint32_t>&, Vector<uint32_t>&, Utf8&, Concat& concat, CPUFunction& f, size_t idxDbgLines);
-    bool emitFctDebugS(SCBE_CPU& pp);
-    bool emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope);
-    bool emit(const BuildParameters& buildParameters, SCBE_CPU& pp);
-
-    SCBE* scbe = nullptr;
+    static void emitStartRecord(SCBE_CPU& pp, uint16_t what);
+    static void emitEndRecord(SCBE_CPU& pp, bool align = true);
+    static void emitEmbeddedValue(SCBE_CPU& pp, TypeInfo* valueType, ComputedValue& val);
+    static void emitSecRel(SCBE_CPU& pp, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset = 0);
+    static void emitTruncatedString(SCBE_CPU& pp, const Utf8& str);
+    static void emitCompilerFlagsDebugS(SCBE_CPU& pp);
+    static void emitConstant(SCBE_CPU& pp, AstNode* node, const Utf8& name);
+    static void emitGlobalDebugS(SCBE_CPU& pp, VectorNative<AstNode*>& gVars, uint32_t segSymIndex);
+    static bool emitDataDebugT(SCBE_CPU& pp);
+    static bool emitLines(SCBE_CPU& pp, MapPath<uint32_t>&, Vector<uint32_t>&, Utf8&, Concat& concat, CPUFunction& f, size_t idxDbgLines);
+    static bool emitFctDebugS(SCBE_CPU& pp);
+    static bool emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope);
+    static bool emit(const BuildParameters& buildParameters, SCBE_CPU& pp);
 };

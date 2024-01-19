@@ -567,7 +567,5 @@ void SCBE_Debug::setLocation(CPUFunction* coffFct, ByteCode* bc, ByteCodeInstruc
 
 bool SCBE_Debug::emit(const BuildParameters& buildParameters, SCBE* scbe, SCBE_CPU& pp)
 {
-    SCBE_CodeView dbg;
-    dbg.scbe = scbe;
-    return dbg.emit(buildParameters, pp);
+    return SCBE_CodeView::emit(buildParameters, pp);
 }

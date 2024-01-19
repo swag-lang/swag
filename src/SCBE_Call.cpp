@@ -4,25 +4,11 @@
 #include "Module.h"
 #include "Workspace.h"
 
-uint32_t SCBE::getParamStackOffset(CPUFunction* coffFct, int paramIdx)
-{
-    const auto& cc = coffFct->typeFunc->getCallConv();
-
-    // If this was passed as a register, then get the value from storeS4 (where input registers have been saved)
-    // instead of value from the stack
-    if (paramIdx < (int) cc.paramByRegisterCount)
-        return REG_OFFSET(paramIdx) + coffFct->offsetLocalStackParams;
-
-    // Value from the caller stack
-    else
-        return REG_OFFSET(paramIdx) + coffFct->offsetCallerStackParams;
-}
-
 void SCBE::emitGetParam(SCBE_X64& pp, CPUFunction* coffFct, int reg, uint32_t paramIdx, int sizeOf, uint64_t toAdd, int deRefSize)
 {
     auto        typeFunc   = coffFct->typeFunc;
     const auto& cc         = typeFunc->getCallConv();
-    int         paramStack = getParamStackOffset(coffFct, paramIdx);
+    int         paramStack = pp.getParamStackOffset(coffFct, paramIdx);
     auto        typeParam  = TypeManager::concreteType(typeFunc->parameters[typeFunc->registerIdxToParamIdx(paramIdx)]->typeInfo);
     if (typeParam->isAutoConstPointerRef())
         typeParam = TypeManager::concretePtrRefType(typeParam);

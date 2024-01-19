@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "SCBE_CPU.h"
+#include "TypeInfo.h"
 
 void SCBE_CPU::clearInstructionCache()
 {
@@ -86,4 +87,17 @@ uint32_t SCBE_CPU ::getOrCreateLabel(uint32_t ip)
     }
 
     return it->second;
+}
+
+uint32_t SCBE_CPU ::getParamStackOffset(CPUFunction* cpuFct, int paramIdx)
+{
+    const auto& cc = cpuFct->typeFunc->getCallConv();
+
+    // If this was passed as a register, then get the value from storeS4 (where input registers have been saved)
+    // instead of value from the stack
+    if (paramIdx < (int) cc.paramByRegisterCount)
+        return REG_OFFSET(paramIdx) + cpuFct->offsetLocalStackParams;
+
+    // Value from the caller stack
+    return REG_OFFSET(paramIdx) + cpuFct->offsetCallerStackParams;
 }
