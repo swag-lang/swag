@@ -12,6 +12,7 @@
 bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
 {
     int       precompileIndex = buildParameters.precompileIndex;
+    auto      module          = buildParameters.module;
     auto&     concat          = pp.concat;
     const int NUM_SECTIONS_0  = 12;
     const int NUM_SECTIONS_X  = 7;
@@ -151,15 +152,15 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
         // bss section
         /////////////////////////////////////////////
         pp.sectionIndexBS = secIndex++;
-        concat.addString(".bss\0\0\0\0", 8);                // .Name
-        concat.addU32(0);                                   // .VirtualSize
-        concat.addU32(0);                                   // .VirtualAddress
-        concat.addU32(scbe->module->bssSegment.totalCount); // .SizeOfRawData
-        concat.addU32(0);                                   // .PointerToRawData
-        concat.addU32(0);                                   // .PointerToRelocations
-        concat.addU32(0);                                   // .PointerToLinenumbers
-        concat.addU16(0);                                   // .NumberOfRelocations
-        concat.addU16(0);                                   // .NumberOfLinenumbers
+        concat.addString(".bss\0\0\0\0", 8);          // .Name
+        concat.addU32(0);                             // .VirtualSize
+        concat.addU32(0);                             // .VirtualAddress
+        concat.addU32(module->bssSegment.totalCount); // .SizeOfRawData
+        concat.addU32(0);                             // .PointerToRawData
+        concat.addU32(0);                             // .PointerToRelocations
+        concat.addU32(0);                             // .PointerToLinenumbers
+        concat.addU16(0);                             // .NumberOfRelocations
+        concat.addU16(0);                             // .NumberOfLinenumbers
         concat.addU32(IMAGE_SCN_CNT_UNINITIALIZED_DATA | IMAGE_SCN_MEM_READ | IMAGE_SCN_MEM_WRITE | IMAGE_SCN_ALIGN_1BYTES);
 
         // global section
@@ -394,7 +395,8 @@ bool SCBE_Coff::emitRelocationTable(SCBE_CPU& pp, CPURelocationTable& cofftable,
 
 bool SCBE_Coff::emitBuffer(FILE* f, const BuildParameters& buildParameters, SCBE_CPU& pp)
 {
-    int precompileIndex = buildParameters.precompileIndex;
+    auto module          = buildParameters.module;
+    int  precompileIndex = buildParameters.precompileIndex;
 
     // Output the full concat buffer
     SWAG_IF_ASSERT(uint32_t totalCount = 0);
@@ -437,38 +439,38 @@ bool SCBE_Coff::emitBuffer(FILE* f, const BuildParameters& buildParameters, SCBE
         // The constant segment
         SWAG_ASSERT(totalCount == *pp.patchCSOffset || *pp.patchCSOffset == 0);
         SWAG_IF_ASSERT(subTotal = 0);
-        for (auto oneB : scbe->module->constantSegment.buckets)
+        for (auto oneB : module->constantSegment.buckets)
         {
             SWAG_IF_ASSERT(totalCount += oneB.count);
             SWAG_IF_ASSERT(subTotal += oneB.count);
             fwrite(oneB.buffer, oneB.count, 1, f);
         }
         SWAG_ASSERT(subTotal == *pp.patchCSCount || *pp.patchCSCount == 0);
-        SWAG_ASSERT(subTotal == scbe->module->constantSegment.totalCount);
+        SWAG_ASSERT(subTotal == module->constantSegment.totalCount);
 
         // The mutable segment
         SWAG_ASSERT(totalCount == *pp.patchMSOffset || *pp.patchMSOffset == 0);
         SWAG_IF_ASSERT(subTotal = 0);
-        for (auto oneB : scbe->module->mutableSegment.buckets)
+        for (auto oneB : module->mutableSegment.buckets)
         {
             SWAG_IF_ASSERT(totalCount += oneB.count);
             SWAG_IF_ASSERT(subTotal += oneB.count);
             fwrite(oneB.buffer, oneB.count, 1, f);
         }
         SWAG_ASSERT(subTotal == *pp.patchMSCount || *pp.patchMSCount == 0);
-        SWAG_ASSERT(subTotal == scbe->module->mutableSegment.totalCount);
+        SWAG_ASSERT(subTotal == module->mutableSegment.totalCount);
 
         // The tls segment
         SWAG_ASSERT(totalCount == *pp.patchTLSOffset || *pp.patchTLSOffset == 0);
         SWAG_IF_ASSERT(subTotal = 0);
-        for (auto oneB : scbe->module->tlsSegment.buckets)
+        for (auto oneB : module->tlsSegment.buckets)
         {
             SWAG_IF_ASSERT(totalCount += oneB.count);
             SWAG_IF_ASSERT(subTotal += oneB.count);
             fwrite(oneB.buffer, oneB.count, 1, f);
         }
         SWAG_ASSERT(subTotal == *pp.patchTLSCount || *pp.patchTLSCount == 0);
-        SWAG_ASSERT(subTotal == scbe->module->tlsSegment.totalCount);
+        SWAG_ASSERT(subTotal == module->tlsSegment.totalCount);
 
         // The post concat buffer that contains relocation tables for CS and DS
         bucket = pp.postConcat.firstBucket;

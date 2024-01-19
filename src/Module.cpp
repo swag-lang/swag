@@ -18,6 +18,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
 {
     ScopedLock lk(mutexFile);
 
+    buildParameters.module = this;
     mutableSegment.setup(SegmentKind::Data, this);
     constantSegment.setup(SegmentKind::Constant, this);
     bssSegment.setup(SegmentKind::Bss, this);

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "SCBE.h"
 #include "SCBE_CodeView.h"
+#include "SCBE_Coff.h"
 #include "ByteCode.h"
 #include "LanguageSpec.h"
 #include "Module.h"
@@ -887,6 +888,7 @@ bool SCBE_CodeView::emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
 bool SCBE_CodeView::emit(const BuildParameters& buildParameters, SCBE_CPU& pp)
 {
     auto& concat = pp.concat;
+    auto  module = buildParameters.module;
 
     // .debug$S
     concat.align(16);
@@ -896,9 +898,9 @@ bool SCBE_CodeView::emit(const BuildParameters& buildParameters, SCBE_CPU& pp)
     {
         pp.dbgTypeRecords.init(100 * 1024);
         emitCompilerFlagsDebugS(pp);
-        emitGlobalDebugS(pp, scbe->module->globalVarsMutable, pp.symMSIndex);
-        emitGlobalDebugS(pp, scbe->module->globalVarsBss, pp.symBSIndex);
-        emitGlobalDebugS(pp, scbe->module->globalVarsConstant, pp.symCSIndex);
+        emitGlobalDebugS(pp, module->globalVarsMutable, pp.symMSIndex);
+        emitGlobalDebugS(pp, module->globalVarsBss, pp.symBSIndex);
+        emitGlobalDebugS(pp, module->globalVarsConstant, pp.symCSIndex);
         emitFctDebugS(pp);
     }
     *pp.patchDBGSCount = concat.totalCount() - *pp.patchDBGSOffset;
@@ -916,7 +918,7 @@ bool SCBE_CodeView::emit(const BuildParameters& buildParameters, SCBE_CPU& pp)
     {
         concat.align(16);
         *pp.patchDBGSSectionRelocTableOffset = concat.totalCount();
-        scbe->emitRelocationTable(pp.concat, pp.relocTableDBGSSection, pp.patchDBGSSectionFlags, pp.patchDBGSSectionRelocTableCount);
+        SCBE_Coff::emitRelocationTable(pp, pp.relocTableDBGSSection, pp.patchDBGSSectionFlags, pp.patchDBGSSectionRelocTableCount);
     }
 
     return true;

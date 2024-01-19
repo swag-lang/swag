@@ -2,6 +2,7 @@
 #include "Runtime.h"
 
 struct BuildCfg;
+struct Module;
 
 const uint32_t SWAG_LIMIT_ARRAY_SIZE          = 0x7FFFFFFF;
 const uint32_t SWAG_LIMIT_COMPILER_LOAD       = 0x7FFFFFFF;
@@ -73,6 +74,7 @@ struct BuildParameters
     SetUtf8                foreignLibs;
     VectorNative<AstNode*> globalUsings;
     Utf8                   outputFileName;
+    Module*                module          = nullptr;
     BuildCfg*              buildCfg        = nullptr;
     int                    precompileIndex = 0;
     BackendCompileType     compileType     = BackendCompileType::Normal;
