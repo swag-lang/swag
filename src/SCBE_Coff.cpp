@@ -363,9 +363,8 @@ bool SCBE_Coff::emitStringTable(const BuildParameters& buildParameters, SCBE_CPU
     return true;
 }
 
-bool SCBE_Coff::emitRelocationTable(SCBE_CPU& pp, CPURelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count)
+bool SCBE_Coff::emitRelocationTable(Concat& concat, CPURelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count)
 {
-    auto& concat = pp.concat;
     SWAG_ASSERT(cofftable.table.size() < UINT32_MAX);
     auto tableSize = (uint32_t) cofftable.table.size();
     if (tableSize > 0xFFFF)
@@ -481,4 +480,6 @@ bool SCBE_Coff::emitBuffer(FILE* f, const BuildParameters& buildParameters, SCBE
             bucket = bucket->nextBucket;
         }
     }
+
+    return true;
 }

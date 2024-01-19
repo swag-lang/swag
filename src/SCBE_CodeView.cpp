@@ -918,7 +918,7 @@ bool SCBE_CodeView::emit(const BuildParameters& buildParameters, SCBE_CPU& pp)
     {
         concat.align(16);
         *pp.patchDBGSSectionRelocTableOffset = concat.totalCount();
-        SCBE_Coff::emitRelocationTable(pp, pp.relocTableDBGSSection, pp.patchDBGSSectionFlags, pp.patchDBGSSectionRelocTableCount);
+        SCBE_Coff::emitRelocationTable(pp.concat, pp.relocTableDBGSSection, pp.patchDBGSSectionFlags, pp.patchDBGSSectionRelocTableCount);
     }
 
     return true;

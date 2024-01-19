@@ -45,14 +45,6 @@ struct SCBE : public Backend
     void emitByteCodeCall(SCBE_X64& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
     void emitByteCodeCallParameters(SCBE_X64& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
 
-    bool emitXData(const BuildParameters& buildParameters);
-    bool emitPData(const BuildParameters& buildParameters);
-    bool emitDirectives(const BuildParameters& buildParameters);
-    bool emitSymbolTable(const BuildParameters& buildParameters);
-    bool emitStringTable(const BuildParameters& buildParameters);
-    bool emitRelocationTable(Concat& concat, CPURelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count);
-    bool emitHeader(const BuildParameters& buildParameters);
-
     bool buildRelocSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CPURelocationTable& relocTable, SegmentKind me);
 
     bool emitGetTypeTable(const BuildParameters& buildParameters);

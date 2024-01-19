@@ -21,6 +21,6 @@ struct SCBE_Coff
     static bool emitDirectives(const BuildParameters& buildParameters, SCBE_CPU& pp);
     static bool emitSymbolTable(const BuildParameters& buildParameters, SCBE_CPU& pp);
     static bool emitStringTable(const BuildParameters& buildParameters, SCBE_CPU& pp);
-    static bool emitRelocationTable(SCBE_CPU& pp, CPURelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count);
+    static bool emitRelocationTable(Concat& concat, CPURelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count);
     static bool emitBuffer(FILE* f, const BuildParameters& buildParameters, SCBE_CPU& pp);
 };
