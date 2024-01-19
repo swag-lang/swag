@@ -118,8 +118,10 @@ bool SCBE::createRuntime(const BuildParameters& buildParameters)
 
 JobResult SCBE::prepareOutput(int stage, const BuildParameters& buildParameters, Job* ownerJob)
 {
-    int ct              = buildParameters.compileType;
-    int precompileIndex = buildParameters.precompileIndex;
+    int  ct              = buildParameters.compileType;
+    int  precompileIndex = buildParameters.precompileIndex;
+    auto objFileType     = Backend::getObjType(g_CommandLine.target);
+
     SWAG_ASSERT(module == buildParameters.module);
 
     if (!perThread[ct][precompileIndex])
@@ -138,12 +140,9 @@ JobResult SCBE::prepareOutput(int stage, const BuildParameters& buildParameters,
 
     if (pp.pass == BackendPreCompilePass::Init)
     {
-        pp.pass = BackendPreCompilePass::FunctionBodies;
-
         pp.filename = Fmt("%s%d", buildParameters.outputFileName.c_str(), precompileIndex);
         pp.filename += Backend::getObjectFileExtension(g_CommandLine.target);
 
-        auto objFileType = Backend::getObjType(g_CommandLine.target);
         switch (objFileType)
         {
         case BackendObjType::Coff:
@@ -155,17 +154,16 @@ JobResult SCBE::prepareOutput(int stage, const BuildParameters& buildParameters,
         }
 
         createRuntime(buildParameters);
+        pp.pass = BackendPreCompilePass::FunctionBodies;
     }
 
     if (pp.pass == BackendPreCompilePass::FunctionBodies)
     {
-        pp.pass = BackendPreCompilePass::End;
-
         concat.align(16);
         pp.textSectionOffset       = concat.totalCount();
         *pp.patchTextSectionOffset = pp.textSectionOffset;
         emitAllFunctionBodies(buildParameters, module, ownerJob);
-
+        pp.pass = BackendPreCompilePass::End;
         return JobResult::KeepJobAlive;
     }
 
@@ -177,8 +175,6 @@ JobResult SCBE::prepareOutput(int stage, const BuildParameters& buildParameters,
             return JobResult::ReleaseJob;
         if (stage == 1)
             return JobResult::ReleaseJob;
-
-        pp.pass = BackendPreCompilePass::GenerateObj;
 
         // Specific functions in the main file
         if (precompileIndex == 0)
@@ -205,7 +201,6 @@ JobResult SCBE::prepareOutput(int stage, const BuildParameters& buildParameters,
         module->mutableSegment.align(16);
 
         // Emit
-        auto objFileType = Backend::getObjType(g_CommandLine.target);
         switch (objFileType)
         {
         case BackendObjType::Coff:
@@ -215,6 +210,8 @@ JobResult SCBE::prepareOutput(int stage, const BuildParameters& buildParameters,
             Report::internalError(module, "SCBE::prepareOutput, unsupported output");
             break;
         }
+
+        pp.pass = BackendPreCompilePass::GenerateObj;
     }
 
     if (pp.pass == BackendPreCompilePass::GenerateObj)
