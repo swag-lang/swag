@@ -8,10 +8,6 @@ enum X64DispMode
     REGREG = 0b11,
 };
 
-#define UWOP_PUSH_NONVOL 0
-#define UWOP_ALLOC_LARGE 1
-#define UWOP_ALLOC_SMALL 2
-
 struct SCBE_X64 : public SCBE_CPU
 {
     void emit_Symbol_RelocationRef(const Utf8& name);

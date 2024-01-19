@@ -1,7 +1,6 @@
 #pragma once
 #include "Backend.h"
 
-struct BuildParameters;
 struct ByteCodeInstruction;
 struct CPUFunction;
 struct SCBE_CPU;

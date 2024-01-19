@@ -1,6 +1,6 @@
 #pragma once
 #include "Job.h"
-struct Module;
+
 struct ModulePrepOutputStage1Job;
 
 struct SCBE_SaveObjJob : public Job

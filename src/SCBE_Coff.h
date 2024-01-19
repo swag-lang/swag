@@ -1,17 +1,12 @@
 #pragma once
-#include "Backend.h"
-#include "BackendParameters.h"
-#include "DataSegment.h"
-#include "SCBE_CPU.h"
 
-struct Module;
 struct BuildParameters;
-struct Job;
-struct DataSegment;
-struct ByteCode;
-struct TypeInfo;
-struct ByteCodeInstruction;
 struct CPURelocationTable;
+struct SCBE_CPU;
+
+#define UWOP_PUSH_NONVOL 0
+#define UWOP_ALLOC_LARGE 1
+#define UWOP_ALLOC_SMALL 2
 
 struct SCBE_Coff
 {
