@@ -7,6 +7,7 @@
 #include "Report.h"
 #include "SCBE_SaveObjJob.h"
 #include "SCBE_Coff.h"
+#include "SCBE_CodeView.h"
 #include "Workspace.h"
 
 bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
@@ -212,7 +213,32 @@ bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
     return true;
 }
 
-bool SCBE_Coff::emitXData(const BuildParameters& buildParameters, SCBE_X64& pp)
+void SCBE_Coff::emitUnwind(Concat& concat, uint32_t& offset, uint32_t sizeProlog, const VectorNative<uint16_t>& unwind)
+{
+    SWAG_ASSERT(sizeProlog <= 255);
+
+    concat.addU8(1);                       // Version
+    concat.addU8((uint8_t) sizeProlog);    // Size of prolog
+    concat.addU8((uint8_t) unwind.size()); // Count of unwind codes
+    concat.addU8(0);                       // Frame register | offset
+    offset += 4;
+
+    // Unwind array
+    for (auto un : unwind)
+    {
+        concat.addU16(un);
+        offset += 2;
+    }
+
+    // Align
+    if (unwind.size() & 1)
+    {
+        concat.addU16(0);
+        offset += 2;
+    }
+}
+
+bool SCBE_Coff::emitXData(const BuildParameters& buildParameters, SCBE_CPU& pp)
 {
     auto& concat = pp.concat;
 
@@ -224,7 +250,7 @@ bool SCBE_Coff::emitXData(const BuildParameters& buildParameters, SCBE_X64& pp)
     for (auto& f : pp.functions)
     {
         f.xdataOffset = offset;
-        pp.emitUnwind(offset, f.sizeProlog, f.unwind);
+        emitUnwind(pp.concat, offset, f.sizeProlog, f.unwind);
     }
 
     *pp.patchXDCount = concat.totalCount() - *pp.patchXDOffset;
@@ -392,13 +418,21 @@ bool SCBE_Coff::emitRelocationTable(Concat& concat, CPURelocationTable& cofftabl
     return true;
 }
 
-bool SCBE_Coff::emitPostFunc(const BuildParameters& buildParameters, SCBE_X64& pp)
+bool SCBE_Coff::emitPostFunc(const BuildParameters& buildParameters, SCBE_CPU& pp)
 {
     emitSymbolTable(buildParameters, pp);
     emitStringTable(buildParameters, pp);
     emitDirectives(buildParameters, pp);
     emitXData(buildParameters, pp);
     emitPData(buildParameters, pp);
+
+#ifdef SWAG_STATS
+    auto beforeCount = pp.concat.totalCount();
+#endif
+    SCBE_CodeView::emit(buildParameters, pp);
+#ifdef SWAG_STATS
+    g_Stats.sizeBackendDbg += pp.concat.totalCount() - beforeCount;
+#endif
 
     return true;
 }

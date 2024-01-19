@@ -5,6 +5,7 @@
 #include "Diagnostic.h"
 #include "TypeManager.h"
 #include "SCBE.h"
+#include "SCBE_Coff.h"
 #include "Context.h"
 #include "ByteCodeDebugger.h"
 #include "Report.h"
@@ -962,7 +963,7 @@ namespace OS
             rtFunc->UnwindInfoAddress = JIT_SIZE_BUFFER;
             uint32_t offset           = 0;
             concat.currentSP          = gen.concat.firstBucket->datas + JIT_SIZE_BUFFER;
-            gen.emitUnwind(offset, sizeProlog, unwind);
+            SCBE_Coff::emitUnwind(gen.concat, offset, sizeProlog, unwind);
             RtlAddFunctionTable(rtFunc, 1, (DWORD64) gen.concat.firstBucket->datas);
 
             // Restore back the start of the buffer

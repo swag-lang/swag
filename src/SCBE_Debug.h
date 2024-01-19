@@ -134,6 +134,4 @@ struct SCBE_Debug
     static SCBE_DebugTypeRecord* addTypeRecord(SCBE_CPU& pp);
     static void                  setLocation(CPUFunction* coffFct, ByteCode* bc, ByteCodeInstruction* ip, uint32_t byteOffset);
     static Utf8                  getScopedName(AstNode* node);
-
-    static bool emit(const BuildParameters& buildParameters, SCBE* scbe, SCBE_CPU& pp);
 };

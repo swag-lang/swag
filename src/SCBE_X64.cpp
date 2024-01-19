@@ -2355,31 +2355,6 @@ void SCBE_X64::computeUnwind(const VectorNative<CPURegister>& unwindRegs,
         unwind.push_back(computeUnwindPush(unwindRegs[i], unwindOffsetRegs[i]));
 }
 
-void SCBE_X64::emitUnwind(uint32_t& offset, uint32_t sizeProlog, const VectorNative<uint16_t>& unwind)
-{
-    SWAG_ASSERT(sizeProlog <= 255);
-
-    concat.addU8(1);                       // Version
-    concat.addU8((uint8_t) sizeProlog);    // Size of prolog
-    concat.addU8((uint8_t) unwind.size()); // Count of unwind codes
-    concat.addU8(0);                       // Frame register | offset
-    offset += 4;
-
-    // Unwind array
-    for (auto un : unwind)
-    {
-        concat.addU16(un);
-        offset += 2;
-    }
-
-    // Align
-    if (unwind.size() & 1)
-    {
-        concat.addU16(0);
-        offset += 2;
-    }
-}
-
 /////////////////////////////////////////////////////////////////////
 
 void SCBE_X64::emit_Nop()

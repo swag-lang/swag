@@ -20,7 +20,6 @@ struct SCBE_X64 : public SCBE_CPU
 
     uint16_t computeUnwindPush(CPURegister reg, uint32_t offsetSubRSP);
     void     computeUnwind(const VectorNative<CPURegister>& unwindRegs, const VectorNative<uint32_t>& unwindOffsetRegs, uint32_t sizeStack, uint32_t offsetSubRSP, VectorNative<uint16_t>& unwind);
-    void     emitUnwind(uint32_t& offset, uint32_t sizeProlog, const VectorNative<uint16_t>& unwind);
 
     void emit_Symbol_RelocationAddr(CPURegister reg, uint32_t symbolIndex, uint32_t offset);
     void emit_Symbol_RelocationValue(CPURegister reg, uint32_t symbolIndex, uint32_t offset);

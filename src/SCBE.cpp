@@ -192,9 +192,6 @@ JobResult SCBE::prepareOutput(int stage, const BuildParameters& buildParameters,
         // Tables
         SCBE_Coff::emitPostFunc(buildParameters, pp);
 
-        // Debug sections
-        emitDebug(buildParameters);
-
         if (!pp.relocTableTextSection.table.empty())
         {
             concat.align(16);
@@ -383,23 +380,4 @@ bool SCBE::generateOutput(const BuildParameters& buildParameters)
         files.push_back(perThread[buildParameters.compileType][i]->filename);
 
     return BackendLinker::link(buildParameters, module, files);
-}
-
-bool SCBE::emitDebug(const BuildParameters& buildParameters)
-{
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *perThread[ct][precompileIndex];
-    auto& concat          = pp.concat;
-
-#ifdef SWAG_STATS
-    auto beforeCount = concat.totalCount();
-#endif
-
-    SCBE_Debug::emit(buildParameters, this, pp);
-
-#ifdef SWAG_STATS
-    g_Stats.sizeBackendDbg += concat.totalCount() - beforeCount;
-#endif
-    return true;
 }

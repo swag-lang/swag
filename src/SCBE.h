@@ -41,7 +41,6 @@ struct SCBE : public Backend
     void emitBinOpDivIntNAtReg(SCBE_X64& pp, ByteCodeInstruction* ip, CPUOp op, CPUBits numBits);
     void emitAddSubMul64(SCBE_X64& pp, ByteCodeInstruction* ip, uint64_t mul, CPUOp op);
 
-    bool emitDebug(const BuildParameters& buildParameters);
     void emitByteCodeCall(SCBE_X64& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
     void emitByteCodeCallParameters(SCBE_X64& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t offsetRT, VectorNative<uint32_t>& pushRAParams);
 
