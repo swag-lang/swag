@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "SCBE_SaveObjJob.h"
-#include "SCBE.h"
 #include "Module.h"
 #include "ModulePrepOutputJob.h"
+#include "SCBE.h"
 #include "Timer.h"
 
 JobResult SCBE_SaveObjJob::execute()

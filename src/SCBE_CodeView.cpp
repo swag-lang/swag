@@ -9,7 +9,27 @@
 #include "Version.h"
 #include "Workspace.h"
 
-void SCBE_CodeView::emitCompilerFlagsDebugS(SCBE_CPU& pp)
+static void emitStartRecord(SCBE_CPU& pp, uint16_t what)
+{
+    auto& concat = pp.concat;
+    SWAG_ASSERT(pp.dbgRecordIdx < pp.MAX_RECORD);
+    pp.dbgStartRecordPtr[pp.dbgRecordIdx]    = concat.addU16Addr(0);
+    pp.dbgStartRecordOffset[pp.dbgRecordIdx] = concat.totalCount();
+    concat.addU16(what);
+    pp.dbgRecordIdx++;
+}
+
+static void emitEndRecord(SCBE_CPU& pp, bool align = true)
+{
+    auto& concat = pp.concat;
+    if (align)
+        concat.align(4);
+    SWAG_ASSERT(pp.dbgRecordIdx);
+    pp.dbgRecordIdx--;
+    *pp.dbgStartRecordPtr[pp.dbgRecordIdx] = (uint16_t) (concat.totalCount() - pp.dbgStartRecordOffset[pp.dbgRecordIdx]);
+}
+
+static void emitCompilerFlagsDebugS(SCBE_CPU& pp)
 {
     auto& concat = pp.concat;
 
@@ -45,27 +65,7 @@ void SCBE_CodeView::emitCompilerFlagsDebugS(SCBE_CPU& pp)
     *patchSCount = concat.totalCount() - patchSOffset;
 }
 
-void SCBE_CodeView::emitStartRecord(SCBE_CPU& pp, uint16_t what)
-{
-    auto& concat = pp.concat;
-    SWAG_ASSERT(pp.dbgRecordIdx < pp.MAX_RECORD);
-    pp.dbgStartRecordPtr[pp.dbgRecordIdx]    = concat.addU16Addr(0);
-    pp.dbgStartRecordOffset[pp.dbgRecordIdx] = concat.totalCount();
-    concat.addU16(what);
-    pp.dbgRecordIdx++;
-}
-
-void SCBE_CodeView::emitEndRecord(SCBE_CPU& pp, bool align)
-{
-    auto& concat = pp.concat;
-    if (align)
-        concat.align(4);
-    SWAG_ASSERT(pp.dbgRecordIdx);
-    pp.dbgRecordIdx--;
-    *pp.dbgStartRecordPtr[pp.dbgRecordIdx] = (uint16_t) (concat.totalCount() - pp.dbgStartRecordOffset[pp.dbgRecordIdx]);
-}
-
-void SCBE_CodeView::emitTruncatedString(SCBE_CPU& pp, const Utf8& str)
+static void emitTruncatedString(SCBE_CPU& pp, const Utf8& str)
 {
     auto& concat = pp.concat;
     SWAG_ASSERT(str.length() < 0xF00); // Magic number from llvm codeview debug (should truncate)
@@ -74,7 +74,7 @@ void SCBE_CodeView::emitTruncatedString(SCBE_CPU& pp, const Utf8& str)
     concat.addU8(0);
 }
 
-void SCBE_CodeView::emitSecRel(SCBE_CPU& pp, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset)
+static void emitSecRel(SCBE_CPU& pp, uint32_t symbolIndex, uint32_t segIndex, uint32_t offset = 0)
 {
     auto& concat = pp.concat;
 
@@ -94,7 +94,7 @@ void SCBE_CodeView::emitSecRel(SCBE_CPU& pp, uint32_t symbolIndex, uint32_t segI
     concat.addU16(0);
 }
 
-void SCBE_CodeView::emitEmbeddedValue(SCBE_CPU& pp, TypeInfo* valueType, ComputedValue& val)
+static void emitEmbeddedValue(SCBE_CPU& pp, TypeInfo* valueType, ComputedValue& val)
 {
     auto& concat = pp.concat;
     SWAG_ASSERT(valueType->isNative());
@@ -152,7 +152,7 @@ void SCBE_CodeView::emitEmbeddedValue(SCBE_CPU& pp, TypeInfo* valueType, Compute
     }
 }
 
-bool SCBE_CodeView::emitDataDebugT(SCBE_CPU& pp)
+static bool emitDataDebugT(SCBE_CPU& pp)
 {
     auto& concat = pp.concat;
 
@@ -295,7 +295,7 @@ bool SCBE_CodeView::emitDataDebugT(SCBE_CPU& pp)
     return true;
 }
 
-void SCBE_CodeView::emitConstant(SCBE_CPU& pp, AstNode* node, const Utf8& name)
+static void emitConstant(SCBE_CPU& pp, AstNode* node, const Utf8& name)
 {
     auto& concat = pp.concat;
     if (node->typeInfo->isNative() && node->typeInfo->sizeOf <= 8)
@@ -327,7 +327,7 @@ void SCBE_CodeView::emitConstant(SCBE_CPU& pp, AstNode* node, const Utf8& name)
     }
 }
 
-void SCBE_CodeView::emitGlobalDebugS(SCBE_CPU& pp, VectorNative<AstNode*>& gVars, uint32_t segSymIndex)
+static void emitGlobalDebugS(SCBE_CPU& pp, VectorNative<AstNode*>& gVars, uint32_t segSymIndex)
 {
     auto& concat = pp.concat;
     concat.addU32(DEBUG_S_SYMBOLS);
@@ -406,13 +406,13 @@ static uint32_t getFileChecksum(MapPath<uint32_t>& mapFileNames,
     return checkSymIndex * 8;
 }
 
-bool SCBE_CodeView::emitLines(SCBE_CPU&          pp,
-                              MapPath<uint32_t>& mapFileNames,
-                              Vector<uint32_t>&  arrFileNames,
-                              Utf8&              stringTable,
-                              Concat&            concat,
-                              CPUFunction&       f,
-                              size_t             idxDbgLines)
+static bool emitLines(SCBE_CPU&          pp,
+                      MapPath<uint32_t>& mapFileNames,
+                      Vector<uint32_t>&  arrFileNames,
+                      Utf8&              stringTable,
+                      Concat&            concat,
+                      CPUFunction&       f,
+                      size_t             idxDbgLines)
 {
     auto& dbgLines   = f.dbgLines[idxDbgLines];
     auto  sourceFile = dbgLines.sourceFile;
@@ -451,7 +451,129 @@ bool SCBE_CodeView::emitLines(SCBE_CPU&          pp,
     return true;
 }
 
-bool SCBE_CodeView::emitFctDebugS(SCBE_CPU& pp)
+static bool emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
+{
+    auto& concat = pp.concat;
+
+    // Empty scope
+    if (!scope->backendEnd)
+        return true;
+
+    // Header
+    /////////////////////////////////
+    emitStartRecord(pp, S_BLOCK32);
+    concat.addU32(0);                                       // Parent = 0;
+    concat.addU32(0);                                       // End = 0;
+    concat.addU32(scope->backendEnd - scope->backendStart); // CodeSize;
+    emitSecRel(pp, f.symbolIndex, pp.symCOIndex, scope->backendStart);
+    emitTruncatedString(pp, "");
+    emitEndRecord(pp);
+
+    // Local variables marked as global
+    /////////////////////////////////
+    auto funcDecl = (AstFuncDecl*) f.node;
+    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
+    for (int i = 0; i < (int) funcDecl->localGlobalVars.size(); i++)
+    {
+        auto localVar = funcDecl->localGlobalVars[i];
+        if (localVar->ownerScope != scope)
+            continue;
+
+        SymbolOverload* overload = localVar->resolvedSymbolOverload;
+        auto            typeInfo = overload->typeInfo;
+
+        SWAG_ASSERT(localVar->attributeFlags & ATTRIBUTE_GLOBAL);
+
+        emitStartRecord(pp, S_LDATA32);
+        concat.addU32(SCBE_Debug::getOrCreateType(pp, typeInfo));
+
+        CPURelocation reloc;
+        auto          segSymIndex = overload->flags & OVERLOAD_VAR_BSS ? pp.symBSIndex : pp.symMSIndex;
+
+        // symbol index relocation inside segment
+        reloc.type           = IMAGE_REL_AMD64_SECREL;
+        reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
+        reloc.symbolIndex    = segSymIndex;
+        pp.relocTableDBGSSection.table.push_back(reloc);
+        concat.addU32(overload->computedValue.storageOffset);
+
+        // segment relocation
+        reloc.type           = IMAGE_REL_AMD64_SECTION;
+        reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
+        reloc.symbolIndex    = segSymIndex;
+        pp.relocTableDBGSSection.table.push_back(reloc);
+        concat.addU16(0);
+
+        emitTruncatedString(pp, localVar->token.text);
+        emitEndRecord(pp);
+    }
+
+    // Local constants
+    /////////////////////////////////
+    for (int i = 0; i < (int) funcDecl->localConstants.size(); i++)
+    {
+        auto localConst = funcDecl->localConstants[i];
+        if (localConst->ownerScope != scope)
+            continue;
+
+        emitConstant(pp, localConst, localConst->token.text);
+    }
+
+    // Local variables
+    /////////////////////////////////
+    for (int i = 0; i < (int) f.node->extByteCode()->bc->localVars.size(); i++)
+    {
+        auto localVar = f.node->extByteCode()->bc->localVars[i];
+        if (localVar->ownerScope != scope)
+            continue;
+
+        SymbolOverload* overload = localVar->resolvedSymbolOverload;
+        auto            typeInfo = overload->typeInfo;
+
+        //////////
+        emitStartRecord(pp, S_LOCAL);
+        if (overload->flags & OVERLOAD_RETVAL)
+            concat.addU32(SCBE_Debug::getOrCreatePointerToType(pp, typeInfo, true)); // Type
+        else
+            concat.addU32(SCBE_Debug::getOrCreateType(pp, typeInfo)); // Type
+        concat.addU16(0);                                             // CV_LVARFLAGS
+        emitTruncatedString(pp, localVar->token.text);
+        emitEndRecord(pp);
+
+        //////////
+        emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
+        concat.addU16(R_RDI);                  // Register
+        concat.addU16(0);                      // Flags
+        if (overload->flags & OVERLOAD_RETVAL) // Offset to register
+            concat.addU32(pp.getParamStackOffset(&f, typeFunc->numParamsRegisters()));
+        else
+            concat.addU32(overload->computedValue.storageOffset + f.offsetStack);
+        emitSecRel(pp, f.symbolIndex, pp.symCOIndex, localVar->ownerScope->backendStart);
+        auto endOffsetVar = localVar->ownerScope->backendEnd == 0 ? f.endAddress : localVar->ownerScope->backendEnd;
+        concat.addU16((uint16_t) (endOffsetVar - localVar->ownerScope->backendStart)); // Range
+        emitEndRecord(pp);
+    }
+
+    // Sub scopes
+    // Must be sorted, from first to last. We use the byte index of the first instruction in the block
+    /////////////////////////////////
+    if (scope->childScopes.size() > 1)
+    {
+        sort(scope->childScopes.begin(), scope->childScopes.end(), [](Scope* n1, Scope* n2)
+             { return n1->backendStart < n2->backendStart; });
+    }
+
+    for (auto c : scope->childScopes)
+        emitScope(pp, f, c);
+
+    // End
+    /////////////////////////////////
+    emitStartRecord(pp, S_END);
+    emitEndRecord(pp);
+    return true;
+}
+
+static bool emitFctDebugS(SCBE_CPU& pp)
 {
     auto& concat = pp.concat;
 
@@ -760,128 +882,6 @@ bool SCBE_CodeView::emitFctDebugS(SCBE_CPU& pp)
     concat.addU32(stringTable.length());
     concat.addString(stringTable);
 
-    return true;
-}
-
-bool SCBE_CodeView::emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
-{
-    auto& concat = pp.concat;
-
-    // Empty scope
-    if (!scope->backendEnd)
-        return true;
-
-    // Header
-    /////////////////////////////////
-    emitStartRecord(pp, S_BLOCK32);
-    concat.addU32(0);                                       // Parent = 0;
-    concat.addU32(0);                                       // End = 0;
-    concat.addU32(scope->backendEnd - scope->backendStart); // CodeSize;
-    emitSecRel(pp, f.symbolIndex, pp.symCOIndex, scope->backendStart);
-    emitTruncatedString(pp, "");
-    emitEndRecord(pp);
-
-    // Local variables marked as global
-    /////////////////////////////////
-    auto funcDecl = (AstFuncDecl*) f.node;
-    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
-    for (int i = 0; i < (int) funcDecl->localGlobalVars.size(); i++)
-    {
-        auto localVar = funcDecl->localGlobalVars[i];
-        if (localVar->ownerScope != scope)
-            continue;
-
-        SymbolOverload* overload = localVar->resolvedSymbolOverload;
-        auto            typeInfo = overload->typeInfo;
-
-        SWAG_ASSERT(localVar->attributeFlags & ATTRIBUTE_GLOBAL);
-
-        emitStartRecord(pp, S_LDATA32);
-        concat.addU32(SCBE_Debug::getOrCreateType(pp, typeInfo));
-
-        CPURelocation reloc;
-        auto          segSymIndex = overload->flags & OVERLOAD_VAR_BSS ? pp.symBSIndex : pp.symMSIndex;
-
-        // symbol index relocation inside segment
-        reloc.type           = IMAGE_REL_AMD64_SECREL;
-        reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
-        reloc.symbolIndex    = segSymIndex;
-        pp.relocTableDBGSSection.table.push_back(reloc);
-        concat.addU32(overload->computedValue.storageOffset);
-
-        // segment relocation
-        reloc.type           = IMAGE_REL_AMD64_SECTION;
-        reloc.virtualAddress = concat.totalCount() - *pp.patchDBGSOffset;
-        reloc.symbolIndex    = segSymIndex;
-        pp.relocTableDBGSSection.table.push_back(reloc);
-        concat.addU16(0);
-
-        emitTruncatedString(pp, localVar->token.text);
-        emitEndRecord(pp);
-    }
-
-    // Local constants
-    /////////////////////////////////
-    for (int i = 0; i < (int) funcDecl->localConstants.size(); i++)
-    {
-        auto localConst = funcDecl->localConstants[i];
-        if (localConst->ownerScope != scope)
-            continue;
-
-        emitConstant(pp, localConst, localConst->token.text);
-    }
-
-    // Local variables
-    /////////////////////////////////
-    for (int i = 0; i < (int) f.node->extByteCode()->bc->localVars.size(); i++)
-    {
-        auto localVar = f.node->extByteCode()->bc->localVars[i];
-        if (localVar->ownerScope != scope)
-            continue;
-
-        SymbolOverload* overload = localVar->resolvedSymbolOverload;
-        auto            typeInfo = overload->typeInfo;
-
-        //////////
-        emitStartRecord(pp, S_LOCAL);
-        if (overload->flags & OVERLOAD_RETVAL)
-            concat.addU32(SCBE_Debug::getOrCreatePointerToType(pp, typeInfo, true)); // Type
-        else
-            concat.addU32(SCBE_Debug::getOrCreateType(pp, typeInfo)); // Type
-        concat.addU16(0);                                             // CV_LVARFLAGS
-        emitTruncatedString(pp, localVar->token.text);
-        emitEndRecord(pp);
-
-        //////////
-        emitStartRecord(pp, S_DEFRANGE_REGISTER_REL);
-        concat.addU16(R_RDI);                  // Register
-        concat.addU16(0);                      // Flags
-        if (overload->flags & OVERLOAD_RETVAL) // Offset to register
-            concat.addU32(pp.getParamStackOffset(&f, typeFunc->numParamsRegisters()));
-        else
-            concat.addU32(overload->computedValue.storageOffset + f.offsetStack);
-        emitSecRel(pp, f.symbolIndex, pp.symCOIndex, localVar->ownerScope->backendStart);
-        auto endOffsetVar = localVar->ownerScope->backendEnd == 0 ? f.endAddress : localVar->ownerScope->backendEnd;
-        concat.addU16((uint16_t) (endOffsetVar - localVar->ownerScope->backendStart)); // Range
-        emitEndRecord(pp);
-    }
-
-    // Sub scopes
-    // Must be sorted, from first to last. We use the byte index of the first instruction in the block
-    /////////////////////////////////
-    if (scope->childScopes.size() > 1)
-    {
-        sort(scope->childScopes.begin(), scope->childScopes.end(), [](Scope* n1, Scope* n2)
-             { return n1->backendStart < n2->backendStart; });
-    }
-
-    for (auto c : scope->childScopes)
-        emitScope(pp, f, c);
-
-    // End
-    /////////////////////////////////
-    emitStartRecord(pp, S_END);
-    emitEndRecord(pp);
     return true;
 }
 
