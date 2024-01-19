@@ -1443,7 +1443,7 @@ void SCBE_X64::emit_OpN_IndirectDst(uint32_t offsetStack, uint64_t value, CPUReg
 
 /////////////////////////////////////////////////////////////////////
 
-void SCBE_X64::emit_Extend_U8U64(CPURegister regSrc, CPURegister regDst)
+void SCBE_X64::emit_Extend_U8U64(CPURegister regDst, CPURegister regSrc)
 {
     emit_REX(concat, CPUBits::B64, regDst, regSrc);
     concat.addU8(0x0F);
@@ -1451,7 +1451,7 @@ void SCBE_X64::emit_Extend_U8U64(CPURegister regSrc, CPURegister regDst)
     concat.addU8(getModRM(REGREG, regDst, regSrc));
 }
 
-void SCBE_X64::emit_Extend_U16U64(CPURegister regSrc, CPURegister regDst)
+void SCBE_X64::emit_Extend_U16U64(CPURegister regDst, CPURegister regSrc)
 {
     emit_REX(concat, CPUBits::B64, regDst, regSrc);
     concat.addU8(0x0F);

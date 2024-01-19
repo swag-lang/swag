@@ -18,7 +18,7 @@ void SCBE::emitGetParam(SCBE_X64& pp, CPUFunction* cpuFct, int reg, uint32_t par
     case 1:
         SWAG_ASSERT(!toAdd);
         if (paramIdx < cpuFct->numScratchRegs)
-            pp.emit_Extend_U8U64((CPURegister) (cc.firstScratchRegister + paramIdx), RAX);
+            pp.emit_Extend_U8U64(RAX, (CPURegister) (cc.firstScratchRegister + paramIdx));
         else
             pp.emit_LoadU8U64_Indirect(paramStack, RAX, RDI);
         pp.emit_Store64_Indirect(REG_OFFSET(reg), RAX);
@@ -26,7 +26,7 @@ void SCBE::emitGetParam(SCBE_X64& pp, CPUFunction* cpuFct, int reg, uint32_t par
     case 2:
         SWAG_ASSERT(!toAdd);
         if (paramIdx < cpuFct->numScratchRegs)
-            pp.emit_Extend_U16U64((CPURegister) (cc.firstScratchRegister + paramIdx), RAX);
+            pp.emit_Extend_U16U64(RAX, (CPURegister) (cc.firstScratchRegister + paramIdx));
         else
             pp.emit_LoadU16U64_Indirect(paramStack, RAX, RDI);
         pp.emit_Store64_Indirect(REG_OFFSET(reg), RAX);

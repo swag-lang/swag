@@ -419,6 +419,7 @@ void Semantic::addAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope
     scopes.push_back(as);
 }
 
+#pragma optimize("", off)
 void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                   context,
                                                 VectorNative<AlternativeScope>&    scopes,
                                                 VectorNative<AlternativeScopeVar>& scopesVars,
@@ -550,6 +551,7 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
         }
     }
 }
+#pragma optimize("", on)
 
 bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
                                      VectorNative<AlternativeScope>&    scopes,
