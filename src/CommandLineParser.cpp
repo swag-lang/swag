@@ -76,9 +76,10 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu sc",               "--tag",                      nullptr,    CommandLineType::StringSet,     &cmdLine->tags, nullptr, "add a build tag, with an optional associated type and value");
     addArg("bu sc",               "--args",                     nullptr,    CommandLineType::String,        &cmdLine->userArguments, nullptr, "pass some specific arguments to the user code");
                                                                                                             
-    addArg("bu sc",               "--max-recurse",              nullptr,    CommandLineType::Int,           &cmdLine->maxRecurse, nullptr, "maximum recursion level in bytecode (0 for no limit)");
-    addArg("bu sc",               "--stack-size-rt",            nullptr,    CommandLineType::Int,           &cmdLine->stackSizeRT, nullptr, "set the stack size for backend");
-    addArg("bu sc",               "--stack-size-bc",            nullptr,    CommandLineType::Int,           &cmdLine->stackSizeBC, nullptr, "set the stack size for bytecode");
+    addArg("bu sc",               "--limit-recurse-bc",         nullptr,    CommandLineType::Int,           &cmdLine->maxRecurse, nullptr, "maximum recursion level in bytecode (0 for no limit)");
+    addArg("bu sc",               "--limit-recurse-inline",     nullptr,    CommandLineType::Int,           &cmdLine->maxInline, nullptr, "maximum code inline level (0 for no limit)");
+    addArg("bu sc",               "--limit-stack-bc",           nullptr,    CommandLineType::Int,           &cmdLine->stackSizeBC, nullptr, "set the stack size for bytecode");
+    addArg("bu sc",               "--limit-stack-rt",           nullptr,    CommandLineType::Int,           &cmdLine->stackSizeRT, nullptr, "set the stack size for backend");
                                                                                                             
     addArg("bu sc",               "--backend",                  nullptr,    CommandLineType::EnumInt,       &cmdLine->backendGenType, "llvm|scbe", "the type of backend to use");
     addArg("ru",                  "--bytecode",                 nullptr,    CommandLineType::Bool,          &cmdLine->scriptMode, nullptr, "run in bytecode mode");

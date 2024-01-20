@@ -281,7 +281,6 @@ void initErrors()
     SWAG_ERROR(Err0514, "incorrect import location                         $ the [[#import]] location has an incorrect format $ expecting [[location=\"mode@accesspath\"]] where mode is [[swag]] or [[disk]]");
     SWAG_ERROR(Err0468, "index out of bounds                               $ the given index [[%I64u]] exceeds the maximum value [[%I64u]]");
     SWAG_ERROR(Err0880, "infinite [[while]]                                $ the while condition is always [[true]], which creates an infinite loop $ if you intentionally want to create an infinite loop, consider using a loop without argument [[loop { ... }]]");
-    SWAG_ERROR(Err0775, "infinite recursion                                $ can't expand [[%s]] because it is recursive and will lead to an infinite recursion");
     SWAG_ERROR(Err1169, "invalid [[#alias]] number                         $ [[#alias]] variable names should end with a number, found [[%s]] instead");
     SWAG_ERROR(Err1136, "invalid [[#global]] instruction                   $ [[%s]] is not recognized as a valid [[#global]] instruction");
     SWAG_ERROR(Err1109, "invalid [[#import]] location                      $ expected a [[#import]] location path, found [[%]] instead");
@@ -749,7 +748,8 @@ void initErrors()
     SWAG_ERROR(Err1032, "out of range [[#mixin]] number                    $ a [[#mixin]] number should be in the range [0, 31], found [[%u]]");
     SWAG_ERROR(Err1209, "out of range [[#up]] count                        $ the [[#up]] count should be in the range [1, 255], found [[%u]]");
     SWAG_ERROR(Err1132, "out of range array dimensions                     $ array dimensions can't exceed [[254]]");
-    SWAG_ERROR(Err0076, "out of range call level                           $ the limit defined with [[--max-recurse:%d]] has been reached");
+    SWAG_ERROR(Err0076, "out of range call level                           $ the limit defined with [[--limit-recurse-bc:%d]] has been reached");
+    SWAG_ERROR(Err0775, "out of range inline level                         $ can't expand [[%s]] because the limit defined with [[--limit-inline:%d]] has been reached");
     SWAG_ERROR(Err0287, "out of range character literal                    $ can't convert the character literal [[0x%x]] to [[u16]], this is out of range");
     SWAG_ERROR(Err0263, "out of range character literal                    $ can't convert the character literal [[0x%x]] to [[u8]], this is out of range");
     SWAG_ERROR(Err0708, "out of range enum value                           $ the enum value [[%s]] exceeds the valid range of type [[%s]]");

@@ -72,23 +72,24 @@ struct CommandLine
     pair<void*, void*>         userArgumentsSlice;
 
     // Display
-    bool  silent                = false;
-    bool  ignoreBadParams       = false;
-    bool  logColors             = true;
-    bool  logAscii              = false;
-    bool  verbose               = false;
-    bool  verboseCmdLine        = false;
-    bool  verbosePath           = false;
-    bool  verboseLink           = false;
-    bool  verboseTestErrors     = false;
-    bool  verboseConcreteTypes  = false;
-    bool  verboseBackendCommand = false;
-    bool  verboseStages         = false;
-    bool  errorOneLine          = false;
-    bool  errorAbsolute         = false;
-    bool  errorSyntaxColor      = true;
-    float errorSyntaxColorLum   = -1.0f;
-    Utf8  verboseErrorFilter;
+    bool silent                = false;
+    bool ignoreBadParams       = false;
+    bool logColors             = true;
+    bool logAscii              = false;
+    bool verbose               = false;
+    bool verboseCmdLine        = false;
+    bool verbosePath           = false;
+    bool verboseLink           = false;
+    bool verboseTestErrors     = false;
+    bool verboseConcreteTypes  = false;
+    bool verboseBackendCommand = false;
+    bool verboseStages         = false;
+    Utf8 verboseErrorFilter;
+
+    bool  errorOneLine        = false;
+    bool  errorAbsolute       = false;
+    bool  errorSyntaxColor    = true;
+    float errorSyntaxColorLum = -1.0f;
 
     // Output
     Utf8 buildCfg           = "fast-debug";
@@ -109,6 +110,7 @@ struct CommandLine
     uint32_t stackSizeRT = 1024 * 1024;
     uint32_t stackSizeBC = 512 * 1024;
     uint32_t maxRecurse  = 16 * 1024;
+    uint32_t maxInline   = 50;
 
     // Backend
     BackendGenType backendGenType = BackendGenType::SCBE;
