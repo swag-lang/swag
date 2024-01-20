@@ -1,4 +1,4 @@
-//#global skip
+#global testerror "Err0557"
 struct String {}
 struct(K, V) HashTable {}
 

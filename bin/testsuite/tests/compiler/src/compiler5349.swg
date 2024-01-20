@@ -1,4 +1,4 @@
-#global skip
+//#global skip
 struct Arr {}
 
 func(T) toto(v: [..] T)

@@ -1206,18 +1206,11 @@ Utf8 TypeInfoStruct::computeTupleDisplayName(const VectorNative<TypeInfoParam*>&
     for (auto param : fields)
     {
         if (param != fields.front())
-            resName += ", ";
-        if (!param->name.empty() && !(param->flags & TYPEINFOPARAM_AUTO_NAME))
-        {
-            resName += param->name;
-            resName += ": ";
-        }
-
+            resName += ",";
         resName += param->typeInfo->computeWhateverName(nameType);
-
         if (nameType == COMPUTE_DISPLAY_NAME && resName.length() > 20)
         {
-            resName += " ... ";
+            resName += "...";
             break;
         }
     }
