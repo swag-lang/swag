@@ -402,8 +402,8 @@ void initErrors()
     SWAG_ERROR(Err0511, "invalid dependency                                $ the dependency module folder [[%s]] does not exist");
     SWAG_ERROR(Err0194, "invalid dereference                               $ [[%s]] has type [[%s]] and can't be dereferenced by index because pointer arithmetic is not allowed");
     SWAG_ERROR(Err0085, "invalid dereference                               $ [[%s]] has type [[%s]] and can't be dereferenced like a struct or a pointer to struct");
-    SWAG_ERROR(Err0227, "invalid dereference                               $ can't dereference [[%s]] by index because the special function [[opIndex]] can't be found in type [[%s]]");
-    SWAG_ERROR(Err0226, "invalid dereference                               $ can't dereference by index because the special function [[opIndex]] can't be found in type [[%s]]");
+    SWAG_ERROR(Err0227, "invalid dereference                               $ can't dereference [[%s]] by index because the special function [[opIndex]] can't be found in [[%s]]");
+    SWAG_ERROR(Err0226, "invalid dereference                               $ can't dereference by index because the special function [[opIndex]] can't be found in [[%s]]");
     SWAG_ERROR(Err0481, "invalid dereference                               $ derefencing type [[%s]] is not valid");
     SWAG_ERROR(Err0173, "invalid embedded enum                             $ expected an enum type, got [[%s]] instead");
     SWAG_ERROR(Err1073, "invalid embedded instruction                      $ expected an embedded instruction or a curly block, found [[%s]] instead");
