@@ -1211,11 +1211,25 @@ Utf8 TypeInfoStruct::computeTupleDisplayName(const VectorNative<TypeInfoParam*>&
     {
         if (param != fields.front())
             resName += ",";
-        resName += param->typeInfo->computeWhateverName(nameType);
-        if (nameType == COMPUTE_DISPLAY_NAME && resName.length() > 20)
+
+        if (nameType != COMPUTE_DISPLAY_NAME)
         {
-            resName += "...";
-            break;
+            if (!param->name.empty() && !(param->flags & TYPEINFOPARAM_AUTO_NAME))
+            {
+                resName += param->name;
+                resName += ": ";
+            }
+        }
+
+        resName += param->typeInfo->computeWhateverName(nameType);
+
+        if (nameType == COMPUTE_DISPLAY_NAME)
+        {
+            if (resName.length() > 20)
+            {
+                resName += "...";
+                break;
+            }
         }
     }
 
