@@ -481,7 +481,7 @@ void Diagnostic::printLastRangeHint(int curColumn)
     auto leftColumn = curColumn;
 
     Vector<Utf8> tokens;
-    int          maxLength = MAX_RIGHT_COLUMN - leftColumn;
+    int          maxLength = MAX_RIGHT_COLUMN - leftColumn + minBlanks;
     Utf8::wordWrap(r.hint, tokens, max(maxLength, MAX_RIGHT_COLUMN / 2));
 
     for (size_t i = 0; i < tokens.size(); i++)
@@ -492,6 +492,7 @@ void Diagnostic::printLastRangeHint(int curColumn)
         {
             curColumn = printRangesVerticalBars(ranges.size() - 1);
             curColumn = alignRangeColumn(curColumn, leftColumn);
+            setColorRanges(r.errorLevel);
         }
     }
 }
