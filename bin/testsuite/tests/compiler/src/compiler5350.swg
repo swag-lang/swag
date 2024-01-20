@@ -1,4 +1,4 @@
-#global skip
+//#global skip
 struct String {}
 struct(K, V) HashTable {}
 

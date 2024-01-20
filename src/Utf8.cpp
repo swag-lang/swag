@@ -825,6 +825,27 @@ void Utf8::wordWrap(const Utf8& str, Vector<Utf8>& tokens, int maxLength)
     {
         while (i && !SWAG_IS_BLANK(*pz))
         {
+            // Special display format
+            if (pz[0] == '[' && pz[1] == '[')
+            {
+                one += *pz++;
+                one += *pz++;
+                i -= 2;
+                while (i && (pz[0] != ']' || pz[1] != ']' || pz[2] == ']'))
+                {
+                    one += *pz++;
+                    i--;
+                }
+                if (i)
+                {
+                    one += *pz++;
+                    one += *pz++;
+                    i -= 2;
+                }
+
+                continue;
+            }
+
             one += *pz++;
             i--;
         }
