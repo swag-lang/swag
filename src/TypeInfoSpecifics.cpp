@@ -116,6 +116,16 @@ TypeInfo* TypeInfoPointer::clone()
     return newType;
 }
 
+Utf8 TypeInfoPointer::getDisplayName()
+{
+    if (flags & TYPEINFO_POINTER_AUTO_REF)
+        return pointedType->getDisplayName();
+
+    Utf8 str;
+    computeWhateverName(str, COMPUTE_DISPLAY_NAME);
+    return str;
+}
+
 void TypeInfoPointer::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
     if (flags & TYPEINFO_C_STRING)
@@ -1177,12 +1187,6 @@ bool TypeInfoStruct::canRawCopy()
 bool TypeInfoStruct::isPlainOldData()
 {
     return canRawCopy() && !opDrop && !opUserDropFct;
-}
-
-const char* TypeInfoStruct::getDisplayNameC()
-{
-    auto res = getDisplayName();
-    return _strdup(res.c_str()); // Leak and slow, but only for messages
 }
 
 Utf8 TypeInfoStruct::getDisplayName()

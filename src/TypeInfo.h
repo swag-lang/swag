@@ -165,15 +165,15 @@ struct TypeInfo
     bool isCharacter()                      { return (flags & TYPEINFO_CHARACTER); }
     // clang-format on
 
-    virtual bool        isSame(TypeInfo* from, uint64_t castFlags);
-    virtual TypeInfo*   clone() = 0;
-    virtual int         numRegisters();
-    virtual Utf8        getDisplayName();
-    virtual const char* getDisplayNameC();
-    virtual void        computeWhateverName(Utf8& resName, uint32_t nameType);
+    virtual bool      isSame(TypeInfo* from, uint64_t castFlags);
+    virtual TypeInfo* clone() = 0;
+    virtual int       numRegisters();
+    virtual Utf8      getDisplayName();
+    virtual void      computeWhateverName(Utf8& resName, uint32_t nameType);
 
-    void copyFrom(TypeInfo* from);
-    void setConst();
+    const char* getDisplayNameC();
+    void        copyFrom(TypeInfo* from);
+    void        setConst();
 
     // clang-format off
     void            computeName() { computeWhateverName(COMPUTE_NAME); }
@@ -277,8 +277,9 @@ struct TypeInfoEnum : public TypeInfo
     bool      isSame(TypeInfo* to, uint64_t castFlags) override;
     Utf8      getDisplayName() override;
     TypeInfo* clone() override;
-    bool      contains(const Utf8& valueName);
-    void      collectEnums(VectorNative<TypeInfoEnum*>& collect);
+
+    bool contains(const Utf8& valueName);
+    void collectEnums(VectorNative<TypeInfoEnum*>& collect);
 
     VectorNative<TypeInfoParam*> values;
     AttributeList                attributes;
@@ -338,6 +339,7 @@ struct TypeInfoPointer : public TypeInfo
     }
 
     void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
+    Utf8      getDisplayName() override;
     bool      isSame(TypeInfo* to, uint64_t castFlags) override;
     TypeInfo* clone() override;
 
@@ -446,14 +448,14 @@ struct TypeInfoStruct : public TypeInfo
         return 1;
     }
 
-    bool           isSame(TypeInfo* to, uint64_t castFlags) override;
-    TypeInfo*      clone() override;
-    void           computeWhateverName(Utf8& resName, uint32_t nameType) override;
+    bool      isSame(TypeInfo* to, uint64_t castFlags) override;
+    TypeInfo* clone() override;
+    Utf8      getDisplayName() override;
+    void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
+
     TypeInfoParam* findChildByNameNoLock(const Utf8& childName);
     TypeInfoParam* hasInterface(TypeInfoStruct* itf);
     TypeInfoParam* hasInterfaceNoLock(TypeInfoStruct* itf);
-    const char*    getDisplayNameC() override;
-    Utf8           getDisplayName() override;
     static Utf8    computeTupleDisplayName(const VectorNative<TypeInfoParam*>& fields, uint32_t nameType);
     bool           canRawCopy();
     bool           isPlainOldData();
