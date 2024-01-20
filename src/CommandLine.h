@@ -107,10 +107,10 @@ struct CommandLine
     SetUtf8      tags;
     Vector<Path> libPaths;
 
-    uint32_t stackSizeRT = 1024 * 1024;
-    uint32_t stackSizeBC = 512 * 1024;
-    uint32_t maxRecurse  = 16 * 1024;
-    uint32_t maxInline   = 50;
+    uint32_t limitStackRT     = 1024 * 1024;
+    uint32_t limitStackBC     = 512 * 1024;
+    uint32_t limitRecurseBC   = 16 * 1024;
+    uint32_t limitInlineLevel = 50;
 
     // Backend
     BackendGenType backendGenType = BackendGenType::SCBE;

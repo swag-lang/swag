@@ -11,17 +11,17 @@ CommandLine g_CommandLine;
 bool CommandLine::check()
 {
     // Stack
-    stackSizeRT = (uint32_t) Allocator::alignSize(stackSizeRT);
-    if (stackSizeRT < SWAG_LIMIT_MIN_STACK || stackSizeRT > SWAG_LIMIT_MAX_STACK)
+    limitStackRT = (uint32_t) Allocator::alignSize(limitStackRT);
+    if (limitStackRT < SWAG_LIMIT_MIN_STACK || limitStackRT > SWAG_LIMIT_MAX_STACK)
     {
-        Report::error(Fmt(Err(Fat0030), Utf8::toNiceSize(stackSizeRT).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MIN_STACK).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MAX_STACK).c_str()));
+        Report::error(Fmt(Err(Fat0030), Utf8::toNiceSize(limitStackRT).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MIN_STACK).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MAX_STACK).c_str()));
         return false;
     }
 
-    stackSizeBC = (uint32_t) Allocator::alignSize(stackSizeBC);
-    if (stackSizeBC < SWAG_LIMIT_MIN_STACK || stackSizeBC > SWAG_LIMIT_MAX_STACK)
+    limitStackBC = (uint32_t) Allocator::alignSize(limitStackBC);
+    if (limitStackBC < SWAG_LIMIT_MIN_STACK || limitStackBC > SWAG_LIMIT_MAX_STACK)
     {
-        Report::error(Fmt(Err(Fat0030), Utf8::toNiceSize(stackSizeBC).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MIN_STACK).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MAX_STACK).c_str()));
+        Report::error(Fmt(Err(Fat0030), Utf8::toNiceSize(limitStackBC).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MIN_STACK).c_str(), Utf8::toNiceSize(SWAG_LIMIT_MAX_STACK).c_str()));
         return false;
     }
 

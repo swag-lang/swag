@@ -2228,8 +2228,8 @@ bool ByteCodeGen::emitBeforeFuncDeclContent(ByteCodeGenContext* context)
     // Should be aligned !
     SWAG_ASSERT(!(funcNode->stackSize & 7));
 
-    if (funcNode->stackSize > g_CommandLine.stackSizeRT)
-        Report::report({funcNode, Fmt(Err(Err0536), Utf8::toNiceSize(g_CommandLine.stackSizeRT).c_str())});
+    if (funcNode->stackSize > g_CommandLine.limitStackRT)
+        Report::report({funcNode, Fmt(Err(Err0536), Utf8::toNiceSize(g_CommandLine.limitStackRT).c_str())});
 
     context->bc->stackSize    = funcNode->stackSize;
     context->bc->dynStackSize = funcNode->stackSize;

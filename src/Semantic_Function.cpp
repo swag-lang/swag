@@ -1611,19 +1611,21 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     CloneContext cloneContext;
 
     // Be sure this is not recursive
-    int  cpt         = 0;
-    auto ownerInline = identifier->ownerInline;
+    uint32_t cpt         = 0;
+    auto     ownerInline = identifier->ownerInline;
     while (ownerInline)
     {
         if (ownerInline->func == funcDecl)
+        {
             cpt++;
-        ownerInline = ownerInline->ownerInline;
-    }
+            if (g_CommandLine.limitInlineLevel && cpt > g_CommandLine.limitInlineLevel)
+            {
+                Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0775), identifier->token.ctext(), g_CommandLine.limitInlineLevel)};
+                return context->report(diag);
+            }
+        }
 
-    if (g_CommandLine.maxInline && cpt > g_CommandLine.maxInline)
-    {
-        Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0775), identifier->token.ctext(), g_CommandLine.maxInline)};
-        return context->report(diag);
+        ownerInline = ownerInline->ownerInline;
     }
 
     // The content will be inline in its separated syntax block

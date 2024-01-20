@@ -49,9 +49,9 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodebc)
         }
         else
         {
-            stack = (uint8_t*) Allocator::alloc(g_CommandLine.stackSizeBC);
+            stack = (uint8_t*) Allocator::alloc(g_CommandLine.limitStackBC);
 #ifdef SWAG_STATS
-            g_Stats.memBcStack += g_CommandLine.stackSizeBC;
+            g_Stats.memBcStack += g_CommandLine.limitStackBC;
 #endif
         }
     }
@@ -59,7 +59,7 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodebc)
     jc.sourceFile = sf;
     node          = nd;
 
-    bp    = stack + g_CommandLine.stackSizeBC;
+    bp    = stack + g_CommandLine.limitStackBC;
     sp    = bp;
     spAlt = stack;
     bc    = nodebc;
@@ -72,7 +72,7 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodebc)
     registersRC.count = 0;
     g_ByteCodeStackTrace->steps.reserve(4096);
 
-    maxRecurse          = g_CommandLine.maxRecurse;
+    maxRecurse          = g_CommandLine.limitRecurseBC;
     internalPanicSymbol = nullptr;
     internalPanicHint.clear();
 
@@ -82,7 +82,7 @@ void ByteCodeRunContext::setup(SourceFile* sf, AstNode* nd, ByteCode* nodebc)
 
 void ByteCodeRunContext::stackOverflow()
 {
-    OS::raiseException(SWAG_EXCEPTION_TO_COMPILER_HANDLER, Fmt(Err(Err0536), Utf8::toNiceSize(g_CommandLine.stackSizeBC).c_str()));
+    OS::raiseException(SWAG_EXCEPTION_TO_COMPILER_HANDLER, Fmt(Err(Err0536), Utf8::toNiceSize(g_CommandLine.limitStackBC).c_str()));
 }
 
 int ByteCodeRunContext::getRegCount(int cur)
