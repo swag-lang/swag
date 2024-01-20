@@ -1,4 +1,4 @@
-//#global skip
+#global testerror "Err0053"
 struct Arr {}
 
 func(T) toto(v: [..] T)
