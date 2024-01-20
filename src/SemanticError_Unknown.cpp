@@ -70,8 +70,9 @@ static Diagnostic* unknownIdentifierInScope(AstIdentifierRef* identifierRef, Ast
     }
     else if (typeWhere->kind == TypeInfoKind::Struct && node->token.text.startsWith(g_LangSpec->name_opVisit))
     {
+        auto visitNode = CastAst<AstVisit>(node->findParent(AstNodeKind::Visit), AstNodeKind::Visit);
         Utf8 variant{node->token.text.buffer + g_LangSpec->name_opVisit.length()};
-        diag = new Diagnostic{node, node->token, Fmt(Err(Err1139), variant.c_str(), typeWhere->getDisplayNameC())};
+        diag = new Diagnostic{visitNode, visitNode->extraNameToken, Fmt(Err(Err1139), variant.c_str(), typeWhere->getDisplayNameC())};
     }
     else if (typeWhere->kind == TypeInfoKind::Struct && node->callParameters)
     {
