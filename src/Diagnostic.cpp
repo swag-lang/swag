@@ -15,7 +15,7 @@ void Diagnostic::setupColors()
     warningColor      = LogColor::Magenta;
     noteColor         = LogColor::White;
     stackColor        = LogColor::DarkYellow;
-    preRemarkColor    = LogColor::Cyan;
+    preRemarkColor    = LogColor::White;
     remarkColor       = LogColor::Gray;
     autoRemarkColor   = LogColor::Gray;
     sourceFileColor   = LogColor::Cyan;
