@@ -217,8 +217,7 @@ struct Diagnostic
     bool showErrorLevel = true;
     bool showFileName   = true;
 
-    bool canBeMerged       = true;
-    bool display           = true;
-    bool emptyMarginBefore = true;
-    bool hasLocation       = false;
+    bool canBeMerged = true;
+    bool display     = true;
+    bool hasLocation = false;
 };

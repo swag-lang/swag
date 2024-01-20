@@ -227,21 +227,16 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
         for (int inote1 = inote + 1; inote1 < (int) notes.size(); inote1++)
         {
             auto note1 = notes[inote1];
-            if (!note1->display)
+            if (!note1->display || !note1->hasLocation)
                 continue;
 
             auto sourceFile1 = note1->sourceFile;
             if (sourceFile1 && sourceFile1->fileForSourceLocation)
                 sourceFile1 = sourceFile1->fileForSourceLocation;
 
-            if (sourceFile0 == sourceFile1 && note1->textMsg.empty())
-            {
-                note1->showFileName = false;
-            }
-            else
-            {
+            if (sourceFile0 && sourceFile1 && sourceFile0->path != sourceFile1->path)
                 break;
-            }
+            note1->showFileName = false;
         }
     }
 
@@ -273,19 +268,11 @@ static void reportInternal(const Diagnostic& diag, const Vector<const Diagnostic
     cleanNotes(notes);
     g_Log.eol();
 
-    bool prevHasSomething = true;
     for (auto n : notes)
     {
         if (!n->display)
             continue;
-
-        auto hasSomething = n->showFileName || n->showSourceCode || !n->remarks.empty();
-        if (!hasSomething && !prevHasSomething)
-            n->emptyMarginBefore = false;
-
         n->report();
-
-        prevHasSomething = hasSomething;
     }
 
     g_Log.setDefaultColor();

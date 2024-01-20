@@ -158,9 +158,6 @@ void Diagnostic::printErrorLevel()
         break;
 
     case DiagnosticLevel::Note:
-        if (emptyMarginBefore)
-            printMargin(true, true);
-        printMargin(false, true);
         g_Log.setColor(noteColor);
         g_Log.print("note: ");
         break;
@@ -601,13 +598,23 @@ void Diagnostic::report()
 {
     setupColors();
 
+    bool hasContent = showSourceCode || !remarks.empty() || !autoRemarks.empty() || !preRemarks.empty();
+    if (errorLevel == DiagnosticLevel::Note)
+    {
+        printMarginLineNo(0);
+        g_Log.setColor(marginBorderColor);
+        g_Log.print(LogSymbol::VerticalLineDot);
+        g_Log.eol();
+    }
+
     // Message level
     if (showErrorLevel)
     {
-        printErrorLevel();
-
         if (errorLevel == DiagnosticLevel::Note)
         {
+            printMargin(false, true);
+            printErrorLevel();
+
             Vector<Utf8> tokens;
             Utf8::wordWrap(textMsg, tokens, g_CommandLine.errorRightColumn);
             for (size_t i = 0; i < tokens.size(); i++)
@@ -620,24 +627,21 @@ void Diagnostic::report()
                     printMargin(false, true);
                 }
             }
-        }
+
+            showErrorLevel = false;
+            g_Log.eol();
+            if (hasContent)
+            {
+                printMargin(false, true);
+                g_Log.eol();
+            }
+            }
         else
         {
+            printErrorLevel();
             g_Log.print(textMsg);
+            g_Log.eol();
         }
-
-        g_Log.eol();
-    }
-    else if (!showFileName)
-    {
-        printMarginLineNo(0);
-        g_Log.setColor(marginBorderColor);
-        g_Log.print(LogSymbol::VerticalLineDot);
-        g_Log.eol();
-    }
-    else
-    {
-        printMargin(true);
     }
 
     // Source file and location on their own line
