@@ -850,7 +850,7 @@ void Utf8::wordWrap(const Utf8& str, Vector<Utf8>& tokens, int maxLength)
             i--;
         }
 
-        if (i && (int) one.length() > maxLength)
+        if (i && (int) one.length() > maxLength && i > 10)
         {
             tokens.push_back(one);
             one.clear();
