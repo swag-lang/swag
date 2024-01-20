@@ -425,23 +425,21 @@ void Diagnostic::printSourceCode()
 
 void Diagnostic::setColorRanges(DiagnosticLevel level)
 {
-    g_Log.setColor(rangeNoteColor);
-
-    /* switch (level)
-        {
-        case DiagnosticLevel::Error:
-        case DiagnosticLevel::Panic:
-            g_Log.setColor(errorColor);
-            break;
-        case DiagnosticLevel::Warning:
-            g_Log.setColor(warningColor);
-            break;
-        case DiagnosticLevel::Note:
-            g_Log.setColor(rangeNoteColor);
-            break;
-        default:
-            break;
-        }*/
+    switch (level)
+    {
+    case DiagnosticLevel::Error:
+    case DiagnosticLevel::Panic:
+        g_Log.setColor(errorColor);
+        break;
+    case DiagnosticLevel::Warning:
+        g_Log.setColor(warningColor);
+        break;
+    case DiagnosticLevel::Note:
+        g_Log.setColor(rangeNoteColor);
+        break;
+    default:
+        break;
+    }
 }
 
 int Diagnostic::alignRangeColumn(int curColumn, int where)
@@ -465,7 +463,7 @@ int Diagnostic::printRangesVerticalBars(size_t maxMarks)
     for (size_t ii = 0; ii < maxMarks; ii++)
     {
         const auto& rr = ranges[ii];
-        setColorRanges(rr.errorLevel);
+        g_Log.setColor(rangeNoteColor);
         curColumn = alignRangeColumn(curColumn, rr.mid);
         g_Log.print(LogSymbol::VerticalLine);
         curColumn++;
@@ -486,13 +484,12 @@ void Diagnostic::printLastRangeHint(int curColumn)
 
     for (size_t i = 0; i < tokens.size(); i++)
     {
-        setColorRanges(r.errorLevel);
+        g_Log.setColor(rangeNoteColor);
         g_Log.print(tokens[i]);
         if (i != tokens.size() - 1)
         {
             curColumn = printRangesVerticalBars(ranges.size() - 1);
             curColumn = alignRangeColumn(curColumn, leftColumn);
-            setColorRanges(r.errorLevel);
         }
     }
 }
@@ -553,7 +550,7 @@ void Diagnostic::printRanges()
         auto  mid      = r.mid - minBlanks;
 
         curColumn = printRangesVerticalBars(ranges.size() - 1);
-        setColorRanges(r.errorLevel);
+        g_Log.setColor(rangeNoteColor);
 
         // Can we stick the hint before the line reference ? (must be the last one)
         if (ranges.size() == 1 &&

@@ -46,7 +46,7 @@ void initErrors()
     SWAG_ERROR(Fat0015, "[fatal] invalid [[--tag:%s]] value (%s)");
     SWAG_ERROR(Fat0012, "[fatal] invalid module [[%s]]; missing configuration file [[%s]]");
     SWAG_ERROR(Fat0013, "[fatal] invalid script file extension; expected [[.swgs]] found [[%s]]");
-    SWAG_ERROR(Fat0014, "[fatal] invalid swag command [[%s]]");
+    SWAG_ERROR(Fat0014, "[fatal] invalid [[Swag]] command [[%s]]");
     SWAG_ERROR(Fat0016, "[fatal] invalid workspace [[%s]]; missing [[modules/]] or [[tests/]] subfolder");
     SWAG_ERROR(Fat0018, "[fatal] module [[%s]] already exists in [[/modules]]");
     SWAG_ERROR(Fat0028, "[fatal] module [[%s]] can't be found in that workspace");
@@ -1451,10 +1451,10 @@ void initErrors()
     SWAG_ERROR(Nte0058, "unable to resolve type [[%s]]");
     SWAG_ERROR(Nte1097, "unnamed parameters ([[?]]) should not have an explicitly specified type");
     SWAG_ERROR(Nte1101, "use [[#type]] before [[%s]] if it's a type, or specify a type with [[:]] if this is a parameter name");
-    SWAG_ERROR(Nte0012, "use [[-w:<path>]] or [[--workspace:<path>]] to specify a valid workspace folder or run swag from an appropriate workspace");
+    SWAG_ERROR(Nte0012, "use [[-w:<path>]] or [[--workspace:<path>]] to specify a valid workspace folder or run [[Swag]] from an appropriate workspace");
     SWAG_ERROR(Nte0103, "you can assign a lambda to a closure type, but not vice versa");
-    SWAG_ERROR(Nte0087, "you can execute swag with [[--callstack]] to obtain more contextual details");
-    SWAG_ERROR(Nte0009, "you can execute swag with [[--dbg-catch]] to initiate the bytecode debugger when an exception is raised");
+    SWAG_ERROR(Nte0087, "you can execute [[Swag]] with [[--callstack]] to obtain more contextual details");
+    SWAG_ERROR(Nte0009, "you can execute [[Swag]] with [[--dbg-catch]] to initiate the bytecode debugger when an exception is raised");
     SWAG_ERROR(Nte1095, "you can't reference this runtime %s from the compile-time %s");
     SWAG_ERROR(Nte0149, "you might want to get the address of [[%s]] using [[&]]");
     SWAG_ERROR(Nte1108, "you need to take the address of a value to make a reference");
