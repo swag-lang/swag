@@ -288,10 +288,8 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
     }
     else if (errorParam.oneTry->ufcs && bi.badSignatureParameterIdx == 0 && bi.castErrorType == CastErrorType::Const)
     {
-        auto msg  = Fmt(Err(Err1165));
-        diag      = new Diagnostic{context->node, context->node->token, msg};
-        auto note = Diagnostic::note(callParamNode, Diagnostic::isType(callParamNode));
-        errorParam.addResult1(note);
+        auto msg           = Fmt(Err(Err1165), bi.badSignatureGivenType->getDisplayNameC());
+        diag               = new Diagnostic{callParamNode, callParamNode->token, msg};
         addSpecificCastErr = false;
     }
     else if (errorParam.oneTry->ufcs && bi.badSignatureParameterIdx == 0)

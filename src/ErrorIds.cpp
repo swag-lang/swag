@@ -198,7 +198,7 @@ void initErrors()
     SWAG_ERROR(Err0759, "conflicting attributes                            $ the [[#[Swag.Mixin]]] and [[#[Swag.Inline]]] attributes are mutually exclusive, the %s can't have both  ");
     SWAG_ERROR(Err1186, "conflicting cast modifiers                        $ the [[%s]] and [[%s]] cast modifiers are mutually exclusive and can't be used together");
     SWAG_ERROR(Err0418, "const mismatch                                    $ casting from an immutable type [[%s]] to a mutable one [[%s]] is not allowed");
-    SWAG_ERROR(Err1165, "const mismatch                                    $ the UFCS argument should be mutable but is not");
+    SWAG_ERROR(Err1165, "const mismatch                                    $ the UFCS argument should be mutable but is not (type is [[%s]])");
     SWAG_ERROR(Err0141, "const mismatch                                    $ the intrinsic [[%s]] requires a mutable pointer as a first argument, got [[%s]] instead");
     SWAG_ERROR(Err0169, "const mismatch                                    $ the intrinsic [[%s]] requires a mutable variable as a first argument, got [[%s]] instead");
     SWAG_ERROR(Err0556, "defer escape throw                                $ an error cannot escape a [[defer]] or [[defer(err)]] block");
