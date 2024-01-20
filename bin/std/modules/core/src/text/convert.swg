@@ -513,8 +513,13 @@ func convertBool(buf: *ConcatBuffer, value: bool)
 func convertRune(buf: *ConcatBuffer, value: rune)
 {
     var arr: [4] u8
-    let count = Utf8.encodeRune(arr, value)
-    buf.addBytes(@mkslice(&arr[0], cast(u64) count))
+    if !value do
+        buf.addBytes("?")
+    else
+    {
+        let count = Utf8.encodeRune(arr, value)
+        buf.addBytes(@mkslice(&arr[0], cast(u64) count))
+    }
 }
 
 // Templated version. Convert a value of type 'T'

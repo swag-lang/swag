@@ -59,7 +59,6 @@ func day7A() assume
             last = k
         if v.prev.length == 0 do
             first = Math.min(first, k)
-        //Slice.sort(v.next)
     }
 
     var result: String

@@ -639,6 +639,14 @@ impl String
         result.makeLower(set)
         return result
     }
+
+    // Returns true if the string contains 'what'
+    #[Overload]
+    {
+        mtd contains(what: u8) => Utf8.contains(toSlice(), what)
+        mtd contains(what: rune) => Utf8.contains(toSlice(), what)
+        mtd contains(what: string) => Utf8.contains(toSlice(), what)
+    }
 }
 
 impl Hash.IHash32 for String

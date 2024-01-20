@@ -564,6 +564,13 @@ func contains(src: const [..] u8, what: rune)->bool
     return indexOf(src, what) != Swag.U64.Max
 }
 
+// Returns true if 'src' contains the string 'what'
+#[Swag.Overload]
+func contains(src: const [..] u8, what: u8)->bool
+{
+    return Slice.contains(src, what)
+}
+
 // Find the last rune occurence of 'what', and returns the byte index of it.
 // Returns 'Swag.U64.Max' if not found
 #[Swag.Overload]
