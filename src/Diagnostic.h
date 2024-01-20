@@ -152,6 +152,9 @@ struct Diagnostic
     void printPreRemarks();
     void printRemarks();
     void setColorRanges(DiagnosticLevel level);
+    int  alignRangeColumn(int curColumn, int where);
+    int  printRangesVerticalBars(size_t maxMarks);
+    void printLastRangeHint(int curColumn);
     void printRanges();
 
     void reportCompact();

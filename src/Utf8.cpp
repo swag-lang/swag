@@ -810,6 +810,47 @@ void Utf8::tokenize(const Utf8& str, char c, Vector<Utf8>& tokens, bool keepEmpt
     }
 }
 
+void Utf8::wordWrap(const Utf8& str, Vector<Utf8>& tokens, int maxLength)
+{
+    tokens.clear();
+
+    auto pz = str.buffer;
+    if (!pz)
+        return;
+
+    auto i = str.count;
+    Utf8 one;
+
+    while (i)
+    {
+        while (i && !SWAG_IS_BLANK(*pz))
+        {
+            one += *pz++;
+            i--;
+        }
+
+        if (i && (int) one.length() > maxLength)
+        {
+            tokens.push_back(one);
+            one.clear();
+            while (i && SWAG_IS_BLANK(*pz))
+            {
+                pz++;
+                i--;
+            }
+        }
+
+        while (i && SWAG_IS_BLANK(*pz))
+        {
+            one += *pz++;
+            i--;
+        }
+    }
+
+    if (!one.empty())
+        tokens.push_back(one);
+}
+
 void Utf8::tokenizeBlanks(const Utf8& str, Vector<Utf8>& tokens)
 {
     tokens.clear();

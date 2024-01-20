@@ -444,6 +444,58 @@ void Diagnostic::setColorRanges(DiagnosticLevel level)
         }*/
 }
 
+int Diagnostic::alignRangeColumn(int curColumn, int where)
+{
+    while (curColumn < where)
+    {
+        if (lineCode[curColumn] == '\t')
+            g_Log.print("\t");
+        else
+            g_Log.print(" ");
+        curColumn++;
+    }
+    return curColumn;
+}
+
+int Diagnostic::printRangesVerticalBars(size_t maxMarks)
+{
+    g_Log.eol();
+    printMargin(false, true);
+    int curColumn = minBlanks;
+    for (size_t ii = 0; ii < maxMarks; ii++)
+    {
+        const auto& rr = ranges[ii];
+        setColorRanges(rr.errorLevel);
+        curColumn = alignRangeColumn(curColumn, rr.mid);
+        g_Log.print(LogSymbol::VerticalLine);
+        curColumn++;
+    }
+
+    return curColumn;
+}
+
+void Diagnostic::printLastRangeHint(int curColumn)
+{
+    auto& r = ranges.back();
+
+    auto leftColumn = curColumn;
+
+    Vector<Utf8> tokens;
+    int          maxLength = MAX_RIGHT_COLUMN - leftColumn;
+    Utf8::wordWrap(r.hint, tokens, max(maxLength, MAX_RIGHT_COLUMN / 2));
+
+    for (size_t i = 0; i < tokens.size(); i++)
+    {
+        setColorRanges(r.errorLevel);
+        g_Log.print(tokens[i]);
+        if (i != tokens.size() - 1)
+        {
+            curColumn = printRangesVerticalBars(ranges.size() - 1);
+            curColumn = alignRangeColumn(curColumn, leftColumn);
+        }
+    }
+}
+
 void Diagnostic::printRanges()
 {
     if (ranges.empty())
@@ -451,31 +503,20 @@ void Diagnostic::printRanges()
 
     printMargin(false, true);
 
-#define ALIGN(__where)                                                         \
-    while (startIndex < (int) __where && startIndex < (int) lineCode.length()) \
-    {                                                                          \
-        if (lineCode[startIndex] == '\t')                                      \
-            g_Log.print("\t");                                                 \
-        else                                                                   \
-            g_Log.print(" ");                                                  \
-        startIndex++;                                                          \
-    }
-
     // Print all underlines
-    int startIndex = minBlanks;
+    int curColumn = minBlanks;
     for (size_t i = 0; i < ranges.size(); i++)
     {
         const auto& r = ranges[i];
         setColorRanges(r.errorLevel);
-
-        ALIGN(r.startLocation.column);
+        curColumn = alignRangeColumn(curColumn, r.startLocation.column);
 
         if (i != ranges.size() - 1 && r.mergeNext)
             setColorRanges(ranges[i + 1].errorLevel);
 
-        while (startIndex < (int) r.startLocation.column + r.width && startIndex < (int) lineCode.length())
+        while (curColumn < (int) r.startLocation.column + r.width && curColumn <= (int) lineCode.length())
         {
-            startIndex++;
+            curColumn++;
             g_Log.print(LogSymbol::HorizontalLine);
         }
     }
@@ -490,15 +531,15 @@ void Diagnostic::printRanges()
         }
     }
 
-    // The last one in on the same line as the underline
+    // The last one in on the same line as the underline.
     if (ranges.size())
     {
-        auto& r = ranges.back();
-        if (ranges.size() != 1 || startIndex + 1 + r.hint.length() < MAX_RIGHT_COLUMN)
+        auto& r        = ranges.back();
+        auto  unformat = g_Log.removeFormat(r.hint.c_str());
+        if (ranges.size() != 1 || curColumn + 1 + unformat.length() < MAX_RIGHT_COLUMN)
         {
-            setColorRanges(r.errorLevel);
             g_Log.print(" ");
-            g_Log.print(r.hint);
+            printLastRangeHint(curColumn + 1);
             ranges.pop_back();
         }
     }
@@ -506,64 +547,52 @@ void Diagnostic::printRanges()
     auto numRanges = ranges.size();
     while (ranges.size())
     {
-        g_Log.eol();
-        printMargin(false, true);
-        startIndex = minBlanks;
+        auto& r        = ranges.back();
+        auto  unformat = g_Log.removeFormat(r.hint.c_str());
+        auto  mid      = r.mid - minBlanks;
 
-        for (size_t i = 0; i < ranges.size(); i++)
+        curColumn = printRangesVerticalBars(ranges.size() - 1);
+        setColorRanges(r.errorLevel);
+
+        // Can we stick the hint before the line reference ? (must be the last one)
+        if (ranges.size() == 1 &&
+            mid + 3 + (int) unformat.length() > (int) MAX_RIGHT_COLUMN &&
+            mid - 2 - (int) unformat.length() > minBlanks)
         {
-            const auto& r = ranges[i];
-            setColorRanges(r.errorLevel);
-
-            if (i != ranges.size() - 1)
-            {
-                ALIGN(r.mid);
-                g_Log.print(LogSymbol::VerticalLine);
-                startIndex++;
-                continue;
-            }
-
-            auto unformat = g_Log.removeFormat(r.hint.c_str());
-
-            if (ranges.size() == 1 &&
-                r.mid + 3 + (int) unformat.length() > (int) MAX_RIGHT_COLUMN &&
-                r.mid - 2 - (int) unformat.length() > minBlanks)
-            {
-                ALIGN(r.mid - 2 - (int) unformat.length());
-                g_Log.print(r.hint);
-                g_Log.print(" ");
-                g_Log.print(LogSymbol::HorizontalLine);
-                g_Log.print(LogSymbol::DownLeft);
-                ranges.clear();
-            }
-            else if (ranges.size() == 1 &&
-                     r.mid + 3 + unformat.length() > (int) MAX_RIGHT_COLUMN)
-            {
-                if (numRanges == 1)
-                {
-                    ALIGN(r.mid);
-                    g_Log.print(LogSymbol::VerticalLineUp);
-                    g_Log.eol();
-                    printMargin(false, true);
-                    startIndex = minBlanks;
-                }
-
-                setColorRanges(r.errorLevel);
-                g_Log.print(r.hint);
-                ranges.clear();
-            }
-            else
-            {
-                ALIGN(r.mid);
-                g_Log.print(LogSymbol::DownRight);
-                g_Log.print(LogSymbol::HorizontalLine);
-                g_Log.print(" ");
-                g_Log.print(r.hint);
-                startIndex += r.hint.length() + 4;
-                ranges.erase(ranges.begin() + i);
-                i--;
-            }
+            curColumn = alignRangeColumn(curColumn, r.mid - 2 - (int) unformat.length());
+            g_Log.print(r.hint);
+            g_Log.print(" ");
+            g_Log.print(LogSymbol::HorizontalLine);
+            g_Log.print(LogSymbol::DownLeft);
         }
+
+        // The hint is the last one, and is too big to be on the right
+        // So make it on its own line
+        else if (ranges.size() == 1 &&
+                 mid + 3 + unformat.length() > (int) MAX_RIGHT_COLUMN)
+        {
+            if (numRanges == 1)
+            {
+                curColumn = alignRangeColumn(curColumn, r.mid);
+                g_Log.print(LogSymbol::VerticalLineUp);
+                g_Log.eol();
+                printMargin(false, true);
+                curColumn = minBlanks;
+            }
+
+            printLastRangeHint(curColumn);
+        }
+        else
+        {
+            curColumn = alignRangeColumn(curColumn, r.mid);
+            g_Log.print(LogSymbol::DownRight);
+            g_Log.print(LogSymbol::HorizontalLine);
+            g_Log.print(" ");
+            curColumn += 3;
+            printLastRangeHint(curColumn);
+        }
+
+        ranges.pop_back();
     }
 
     g_Log.eol();
