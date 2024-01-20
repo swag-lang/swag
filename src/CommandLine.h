@@ -86,10 +86,11 @@ struct CommandLine
     bool verboseStages         = false;
     Utf8 verboseErrorFilter;
 
-    bool  errorOneLine        = false;
-    bool  errorAbsolute       = false;
-    bool  errorSyntaxColor    = true;
-    float errorSyntaxColorLum = -1.0f;
+    bool     errorOneLine        = false;
+    bool     errorAbsolute       = false;
+    bool     errorSyntaxColor    = true;
+    uint32_t errorRightColumn    = 80;
+    float    errorSyntaxColorLum = -1.0f;
 
     // Output
     Utf8 buildCfg           = "fast-debug";

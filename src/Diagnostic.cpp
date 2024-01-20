@@ -481,8 +481,8 @@ void Diagnostic::printLastRangeHint(int curColumn)
     auto leftColumn = curColumn;
 
     Vector<Utf8> tokens;
-    int          maxLength = MAX_RIGHT_COLUMN - leftColumn + minBlanks;
-    Utf8::wordWrap(r.hint, tokens, max(maxLength, MAX_RIGHT_COLUMN / 2));
+    int          maxLength = g_CommandLine.errorRightColumn - leftColumn + minBlanks;
+    Utf8::wordWrap(r.hint, tokens, max(maxLength, (int) g_CommandLine.errorRightColumn / 2));
 
     for (size_t i = 0; i < tokens.size(); i++)
     {
@@ -537,7 +537,7 @@ void Diagnostic::printRanges()
     {
         auto& r        = ranges.back();
         auto  unformat = g_Log.removeFormat(r.hint.c_str());
-        if (ranges.size() != 1 || curColumn + 1 + unformat.length() < MAX_RIGHT_COLUMN)
+        if (ranges.size() != 1 || curColumn + 1 + unformat.length() < g_CommandLine.errorRightColumn)
         {
             g_Log.print(" ");
             printLastRangeHint(curColumn + 1);
@@ -557,7 +557,7 @@ void Diagnostic::printRanges()
 
         // Can we stick the hint before the line reference ? (must be the last one)
         if (ranges.size() == 1 &&
-            mid + 3 + (int) unformat.length() > (int) MAX_RIGHT_COLUMN &&
+            mid + 3 + (int) unformat.length() > (int) g_CommandLine.errorRightColumn &&
             mid - 2 - (int) unformat.length() > minBlanks)
         {
             curColumn = alignRangeColumn(curColumn, r.mid - 2 - (int) unformat.length());
@@ -570,7 +570,7 @@ void Diagnostic::printRanges()
         // The hint is the last one, and is too big to be on the right
         // So make it on its own line
         else if (ranges.size() == 1 &&
-                 mid + 3 + unformat.length() > (int) MAX_RIGHT_COLUMN)
+                 mid + 3 + (int) unformat.length() > (int) g_CommandLine.errorRightColumn)
         {
             if (numRanges == 1)
             {

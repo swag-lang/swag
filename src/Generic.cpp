@@ -358,7 +358,7 @@ Vector<Utf8> Generic::computeGenericParametersReplacement(VectorMap<Utf8, Generi
         rem += Fmt("%s = %s", p.first.c_str(), p.second.typeInfoReplace->getDisplayNameC());
         rem.replace("struct ", "");
 
-        if (remark.empty() || remark.length() + rem.length() + 2 < Diagnostic::MAX_RIGHT_COLUMN)
+        if (remark.empty() || remark.length() + rem.length() + 2 < g_CommandLine.errorRightColumn)
         {
             if (!remark.empty())
                 remark += ", ";

@@ -123,7 +123,6 @@ struct Diagnostic
     }
 
     static const uint32_t        MAX_INDENT_BLANKS       = 10;
-    static const uint32_t        MAX_RIGHT_COLUMN        = 80;
     static constexpr const char* ERROR_MESSAGE_SEPARATOR = "$";
 
     // clang-format off
