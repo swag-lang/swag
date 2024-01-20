@@ -294,10 +294,8 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
     }
     else if (errorParam.oneTry->ufcs && bi.badSignatureParameterIdx == 0)
     {
-        auto msg  = Fmt(Err(Err0095), bi.badSignatureRequestedType->getDisplayNameC());
-        diag      = new Diagnostic{context->node, context->node->token, msg};
-        auto note = Diagnostic::note(callParamNode, Diagnostic::isType(callParamNode));
-        errorParam.addResult1(note);
+        auto msg = Fmt(Err(Err0095), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
+        diag     = new Diagnostic{callParamNode, callParamNode->token, msg};
     }
     else
     {

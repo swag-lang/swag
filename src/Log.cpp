@@ -88,14 +88,11 @@ void Log::print(LogSymbol symbol)
     switch (symbol)
     {
     case LogSymbol::VerticalLine:
+    case LogSymbol::VerticalLineDot:
         if (g_CommandLine.logAscii)
             print("|");
         else
             print("\xe2\x94\x82");
-        break;
-
-    case LogSymbol::VerticalLineDot:
-        print("|");
         break;
 
     case LogSymbol::VerticalLineUp:

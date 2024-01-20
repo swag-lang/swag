@@ -342,24 +342,6 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
             tryMatches = n;
     }
 
-    // All errors are because of a const problem on the UFCS argument
-    // Then just raise one error
-    /* uint32_t getFlags     = GDFM_ALL;
-    int      badConstUfcs = 0;
-    for (auto& tm : tryMatches)
-    {
-        if (tm->ufcs &&
-            tm->symMatchContext.badSignatureInfos.badSignatureParameterIdx == 0 &&
-            tm->symMatchContext.badSignatureInfos.castErrorType == CastErrorType::Const)
-            badConstUfcs += 1;
-    }
-    if (badConstUfcs == (int) tryMatches.size())
-    {
-        while (tryMatches.size() > 1)
-            tryMatches.pop_back();
-        getFlags &= ~GDFM_HERE_IS;
-    }*/
-
     if (tryMatches.size() == 1)
         return cannotMatchSingle(context, node, tryMatches);
     else
