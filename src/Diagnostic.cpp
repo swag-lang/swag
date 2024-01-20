@@ -104,7 +104,7 @@ void Diagnostic::printMargin(bool eol, bool printLineNo, int lineNo)
 
     g_Log.setColor(marginBorderColor);
     g_Log.print(LogSymbol::VerticalLine);
-    g_Log.print("  ");
+    g_Log.print(" ");
 
     if (eol)
         g_Log.eol();
@@ -159,7 +159,8 @@ void Diagnostic::printErrorLevel()
 
     case DiagnosticLevel::Note:
         if (emptyMarginBefore)
-            printMargin(true);
+            printMargin(true, true);
+        printMargin(false, true);
         g_Log.setColor(noteColor);
         g_Log.print("note: ");
         break;
@@ -604,7 +605,27 @@ void Diagnostic::report()
     if (showErrorLevel)
     {
         printErrorLevel();
-        g_Log.print(textMsg);
+
+        if (errorLevel == DiagnosticLevel::Note)
+        {
+            Vector<Utf8> tokens;
+            Utf8::wordWrap(textMsg, tokens, g_CommandLine.errorRightColumn);
+            for (size_t i = 0; i < tokens.size(); i++)
+            {
+                g_Log.setColor(rangeNoteColor);
+                g_Log.print(tokens[i]);
+                if (i != tokens.size() - 1)
+                {
+                    g_Log.eol();
+                    printMargin(false, true);
+                }
+            }
+        }
+        else
+        {
+            g_Log.print(textMsg);
+        }
+
         g_Log.eol();
     }
     else if (!showFileName)
