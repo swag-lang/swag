@@ -528,6 +528,7 @@ void Diagnostic::printRanges()
     }
 
     // The last one in on the same line as the underline.
+    auto orgNumRanges = ranges.size();
     if (ranges.size())
     {
         auto& r        = ranges.back();
@@ -565,7 +566,8 @@ void Diagnostic::printRanges()
         // The hint is the last one, and is too big to be on the right
         // So make it on its own line
         else if (ranges.size() == 1 &&
-                 mid + 3 + (int) unformat.length() > (int) g_CommandLine.errorRightColumn)
+                 ((mid + 3 + (int) unformat.length() > (int) g_CommandLine.errorRightColumn) ||
+                  orgNumRanges >= 3))
         {
             if (numRanges == 1)
             {
