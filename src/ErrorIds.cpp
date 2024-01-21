@@ -356,7 +356,7 @@ void initErrors()
     SWAG_ERROR(Err0234, "invalid character                                 $ the character [[%s]] is not recognized in this context");
     SWAG_ERROR(Err0235, "invalid character literal                         $ can't convert a character literal to type [[%s]]");
     SWAG_ERROR(Err0236, "invalid character literal                         $ the character literal [[%s]] seems to be a string and not a character");
-    SWAG_ERROR(Err0237, "invalid character syntax                          $ characters should be delimited with backticks [[`]] and not quotes $ consider using the syntax `%s` instead");
+    SWAG_ERROR(Err0237, "invalid character syntax                          $ characters should be delimited with backticks [[`]] and not quotes $ consider using the syntax [[`%s`]] instead");
     SWAG_ERROR(Err0238, "invalid comparison                                $ a slice comparison is only allowed with [[null]], got [[%s]]");
     SWAG_ERROR(Err0239, "invalid comparison                                $ an [[any]] comparison is only allowed with [[null]] or with a type, got [[%s]] instead");
     SWAG_ERROR(Err0240, "invalid comparison                                $ an interface comparison is only allowed with [[null]], another interface or with a type, got [[%s]] instead");
