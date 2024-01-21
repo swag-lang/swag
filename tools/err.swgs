@@ -1,0 +1,13 @@
+
+// Swag script file
+#dependencies
+{
+    // Here you can add your external dependencies
+    // #import "core" location="swag@std"
+}
+
+#main
+{
+    @print("Hello world !\n")
+}
+
