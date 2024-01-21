@@ -197,8 +197,8 @@ void initErrors()
     SWAG_ERROR(Err0075, "empty [[interface]]                               $ the interface [[%s]] should contain at least one function declaration");
     SWAG_ERROR(Err0076, "empty [[switch]]                                  $ the body of the [[switch]] is empty $ consider adding some cases, or removing it");
     SWAG_ERROR(Err0077, "empty array literal                               $ an array literal should contain at least one value");
-    SWAG_ERROR(Err0078, "empty compiler function body                      $ %s requires a body; expected [[{]] but found [[;]] instead");
-    SWAG_ERROR(Err0079, "empty namespace name                              $ expected the namespace name before [[%s]]");
+    SWAG_ERROR(Err0078, "empty compiler function body                      $ a %s requires a body; expected [[{]] but found [[;]] instead");
+    SWAG_ERROR(Err0079, "missing namespace name                            $ expected the namespace name before [[%s]]");
     SWAG_ERROR(Err0080, "enum already defined                              $ the enum [[%s]] has already been defined");
     SWAG_ERROR(Err0081, "escaping stack frame                              $ you can't reference the %s [[%s]] because it's in a different stack frame");
     SWAG_ERROR(Err0082, "exception!                                        $ compile-time execution exception");
@@ -894,7 +894,7 @@ void initErrors()
     SWAG_ERROR(Nte0008, "[[%s]] might represent either a type or a parameter name");
     SWAG_ERROR(Nte0009, "[[%s]] was located within [[%s]] due to a [[using]] field");
     SWAG_ERROR(Nte0010, "[[==]] is the comparison operator; did you intend to affect something with [[=]]?");
-    SWAG_ERROR(Nte0011, "[[closure]] should be accompanied by capture parameters enclosed in [[|...|]]");
+    SWAG_ERROR(Nte0011, "[[closure]] should be followed by the capture parameters enclosed in [[|...|]]");
     SWAG_ERROR(Nte0012, "[[discard]] can't be accociated with an intrinsic, as an intrinsic result should always be used");
     SWAG_ERROR(Nte0013, "[[namealias]] should be associated with a namespace, a function or a variable instead of a type");
     SWAG_ERROR(Nte0014, "[[with]] should be followed by a single identifier");

@@ -1028,6 +1028,12 @@ const Token& AstNode::getTokenName()
         return structDecl->tokenName;
     }
 
+    if (kind == AstNodeKind::InterfaceDecl)
+    {
+        auto itfDecl = CastAst<AstStruct>(this, AstNodeKind::InterfaceDecl);
+        return itfDecl->tokenName;
+    }
+
     if (kind == AstNodeKind::EnumDecl)
     {
         auto enumDecl = CastAst<AstEnum>(this, AstNodeKind::EnumDecl);

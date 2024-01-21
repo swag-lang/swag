@@ -17,7 +17,7 @@ bool Semantic::resolveEnum(SemanticContext* context)
     // Be sure we have only one enum node
     if (node->resolvedSymbolName && node->resolvedSymbolName->nodes.size() > 1)
     {
-        Diagnostic  diag({node, node->token, Fmt(Err(Err0080), node->resolvedSymbolName->name.c_str())});
+        Diagnostic  diag({node, node->getTokenName(), Fmt(Err(Err0080), node->resolvedSymbolName->name.c_str())});
         Diagnostic* note = nullptr;
         for (auto p : node->resolvedSymbolName->nodes)
         {
