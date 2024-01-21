@@ -293,9 +293,8 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
             {
                 if (isHereTmp.contains(typeInfo))
                 {
-                    Diagnostic diag{forNode, Fmt(Err(Err0068), child->token.ctext())};
-                    auto       note = Diagnostic::note(child, Nte(Nte0075));
-                    return context->report(diag, note);
+                    Diagnostic diag{child, Fmt(Err(Err0068), child->token.ctext())};
+                    return context->report(diag);
                 }
 
                 if (isHereGlobal.contains(typeInfo))

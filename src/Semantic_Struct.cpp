@@ -541,7 +541,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
         storageIndex++;
     }
 
-    SWAG_VERIFY(!typeITable->fields.empty(), context->report({node, node->token, Fmt(Err(Err0075), node->token.ctext())}));
+    SWAG_VERIFY(!typeITable->fields.empty(), context->report({node, node->getTokenName(), Fmt(Err(Err0075), node->token.ctext())}));
     typeInterface->itable = typeITable;
 
     // Struct interface, with one pointer for the data, and one pointer for itable

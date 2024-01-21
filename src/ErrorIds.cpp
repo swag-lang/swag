@@ -189,7 +189,7 @@ void initErrors()
     SWAG_ERROR(Err0067, "duplicated [[#import]]                            $ the [[#import]] version of the module [[%s]] is already defined as [[%s]]");
     SWAG_ERROR(Err0068, "duplicated attribute                              $ the attribute [[%s]] is assigned twice, but [[Swag.AttrMulti]] is not present in the declaration");
     SWAG_ERROR(Err0069, "duplicated enum value                             $ the enum value [[%s]] is already defined with the same underlying value");
-    SWAG_ERROR(Err0070, "duplicated instruction modifier                   $ the instruction modifier [[%s]] has already been defined");
+    SWAG_ERROR(Err0070, "duplicated instruction modifier                   $ an instruction modifier [[%s]] has already been defined");
     SWAG_ERROR(Err0071, "duplicated operator                               $ expected an expression, found another operator [[%s]] instead");
     SWAG_ERROR(Err0072, "empty [[#mixin]] replacement block                $ an empty [[mixin]] block is useless $ add some content to the [[#mixin]] block or consider removing it");
     SWAG_ERROR(Err0073, "empty [[case]] statement                          $ a [[case]] statement should not be empty");
@@ -958,7 +958,7 @@ void initErrors()
     SWAG_ERROR(Nte0072, "here is the other return statement");
     SWAG_ERROR(Nte0073, "here is the previous definition");
     SWAG_ERROR(Nte0074, "here is the prior declaration");
-    SWAG_ERROR(Nte0075, "here is the problematic attribute");
+    SWAG_ERROR(Nte0075, nullptr);
     SWAG_ERROR(Nte0076, "here is the reference to the immutable value");
     SWAG_ERROR(Nte0077, "here is the runtime argument corresponding to [[%s]]");
     SWAG_ERROR(Nte0078, "here is the tuple definition");
