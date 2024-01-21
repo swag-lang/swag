@@ -815,6 +815,7 @@ void initErrors()
     SWAG_ERROR(Err1143, "unexpected [[for]]                                $ the [[for]] keyword is not valid in an enum implementation");
     SWAG_ERROR(Err0289, "unexpected [[impl]]                               $ [[impl]] associated with a function should only be used within an [[impl for]] block");
     SWAG_ERROR(Err1095, "unexpected [[mtd]]                                $ expected [[func]] or [[closure]] instead of [[mtd]] to declare a lambda type");
+    SWAG_ERROR(Err0106, "unexpected [[return]]                             $ [[return]] is implicit after [[=>]] $ consider removing it");
     SWAG_ERROR(Err1144, "unexpected [[retval]] return type                 $ [[retval]] is only valid as a local variable type");
     SWAG_ERROR(Err1088, "unexpected [[throw]] qualifier                    $ an attribute can't have the [[throw]] qualifier as it can't raise errors");
     SWAG_ERROR(Err1030, "unexpected [[var]] in struct                      $ [[var]] is unnecessary in struct variable declarations $ struct variables should be declared as [[fieldName: Type]] without [[var]]");
@@ -895,7 +896,6 @@ void initErrors()
     SWAG_ERROR(Err0109, "unused return value                               $ the return value of the function [[%s]] should be used $ if you don't need the return value, consider prefixing the call with [[discard]]");
     SWAG_ERROR(Err1179, "unused return value                               $ the return value of the intrinsic [[%s]] should be used");
     SWAG_ERROR(Err0092, "unused return value                               $ the return value of the lambda [[%s]] should be used $ if you don't need the return value, consider prefixing the call with [[discard]]");
-    SWAG_ERROR(Err0106, "unexpected [[return]]                             $ [[return]] is implicit after [[=>]] $ consider removing it");
     SWAG_ERROR(Err0680, nullptr);
     SWAG_ERROR(Err0367, nullptr);
     SWAG_ERROR(Err0282, nullptr);
