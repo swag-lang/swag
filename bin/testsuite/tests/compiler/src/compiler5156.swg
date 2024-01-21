@@ -1,5 +1,5 @@
-#global testerror "Wrn0009"
-#global #[Swag.Warn("Wrn0009", Swag.WarnLevel.Error)]
+#global testerror "Wrn0003"
+#global #[Swag.Warn("Wrn0003", Swag.WarnLevel.Error)]
 
 func toto()->{x, y: s32}
 {

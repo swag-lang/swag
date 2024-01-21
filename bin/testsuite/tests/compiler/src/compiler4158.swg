@@ -1,5 +1,5 @@
-#global testwarning "wrn0002"
-#[Swag.Warn("wrn0002", Swag.WarnLevel.Enable)]
+#global testwarning "Wrn0006"
+#[Swag.Warn("Wrn0006", Swag.WarnLevel.Enable)]
 func(T) toto(x: s32)
 {
 }

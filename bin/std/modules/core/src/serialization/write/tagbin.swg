@@ -154,17 +154,17 @@ impl TagBin
         output.addNative(val.pointedType.crc32)
     }
 
-    #[Warn("wrn0002", WarnLevel.Disable)]
+    #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd endElement()
     {
     }
 
-    #[Warn("wrn0002", WarnLevel.Disable)]
+    #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd beginValue()
     {
     }
 
-    #[Warn("wrn0002", WarnLevel.Disable)]
+    #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd endValue()
     {
     }
@@ -207,7 +207,7 @@ impl TagBin
         return false
     }
 
-    #[Warn("wrn0002", WarnLevel.Disable)]
+    #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd endSequence()
     {
     }

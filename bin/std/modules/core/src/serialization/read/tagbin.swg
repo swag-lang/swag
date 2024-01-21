@@ -212,7 +212,7 @@ impl TagBin
             throw SerializationError{"invalid root signature"}
     }
 
-    #[Warn("wrn0002", WarnLevel.Disable)]
+    #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd endRoot() throw
     {
     }
@@ -401,12 +401,12 @@ impl TagBin
         convertNextNative = null
     }
 
-    #[Warn("wrn0002", WarnLevel.Disable)]
+    #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd beginValue() throw
     {
     }
 
-    #[Warn("wrn0002", WarnLevel.Disable)]
+    #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd endValue() throw
     {
     }
@@ -474,12 +474,12 @@ impl TagBin
         return false
     }
 
-    #[Warn("wrn0002", WarnLevel.Disable)]
+    #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd endSequence() throw
     {
     }
 
-    #[Warn("wrn0002", WarnLevel.Disable)]
+    #[Warn("Wrn0006", WarnLevel.Disable)]
     mtd toNextSequenceElement(countElem: *u64)->bool
     {
         if dref countElem == 0 do

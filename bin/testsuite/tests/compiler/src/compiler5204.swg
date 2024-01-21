@@ -1,6 +1,6 @@
 struct A{x: s32}
 
-#[Swag.Warn("Wrn0009", Swag.WarnLevel.Disable)]
+#[Swag.Warn("Wrn0003", Swag.WarnLevel.Disable)]
 #[Swag.Inline]
 func toto()
 {

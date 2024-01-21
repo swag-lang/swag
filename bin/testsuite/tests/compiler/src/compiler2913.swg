@@ -1,4 +1,4 @@
-#[Swag.Warn("Wrn0009", Swag.WarnLevel.Disable)]
+#[Swag.Warn("Wrn0003", Swag.WarnLevel.Disable)]
 func toto()
 {
     var seenIEnd = false

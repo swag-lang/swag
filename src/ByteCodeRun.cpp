@@ -4239,7 +4239,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
         case SwagExceptionKind::Warning:
             level = DiagnosticLevel::Warning;
             if (!Diagnostic::hastErrorId(txt))
-                userMsg = Fmt(Err(Wrn0011), txt.c_str());
+                userMsg = Fmt(Err(Wrn0001), txt.c_str());
             else
                 userMsg = txt;
             break;

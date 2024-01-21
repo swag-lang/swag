@@ -1,4 +1,4 @@
-#global testwarning "wrn0002"
+#global testwarning "Wrn0006"
 
 interface I
 {
@@ -11,12 +11,12 @@ struct A
 
 impl I for A
 {
-    #[Swag.Warn("wrn0002", Swag.WarnLevel.Enable)]
+    #[Swag.Warn("Wrn0006", Swag.WarnLevel.Enable)]
     mtd titi(x: s32)
     {
     }
 
-    #[Swag.Warn("wrn0002", Swag.WarnLevel.Enable)]
+    #[Swag.Warn("Wrn0006", Swag.WarnLevel.Enable)]
     mtd impl toto()
     {
     }

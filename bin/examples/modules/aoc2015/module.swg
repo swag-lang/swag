@@ -12,6 +12,6 @@
         cfg.embbedImports  = true
         cfg.backendKind    = .Executable
         cfg.backendSubKind = .Default
-        cfg.warnAsDisabled = "Wrn0002"
+        cfg.warnAsDisabled = "Wrn0006"
     }
 }

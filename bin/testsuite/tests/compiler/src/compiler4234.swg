@@ -11,7 +11,7 @@ func toto(x: string)->string
     }
 }
 
-//#[Swag.Warn("wrn0003|wrn0002", Swag.WarnLevel.Disable)]
+//#[Swag.Warn("Wrn0002|Wrn0006", Swag.WarnLevel.Disable)]
 #test
 {
     var y = "5"
