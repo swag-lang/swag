@@ -1,4 +1,4 @@
-#global testerror "Err1033"
+#global testerror "Err0525"
 
 #message()
 {

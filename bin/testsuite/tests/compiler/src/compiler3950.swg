@@ -1,4 +1,4 @@
-#global testerror "Err0848"
+#global testerror "Err0567"
 
 enum OT: string
 {

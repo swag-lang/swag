@@ -1,4 +1,4 @@
-#global testerror "Err1183"
+#global testerror "Err0433"
 #dependencies
 {
 }

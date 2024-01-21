@@ -1,5 +1,5 @@
 
-#global testerror "Err1048"
+#global testerror "Err0083"
 
 func toto(x, y: s64)
 {

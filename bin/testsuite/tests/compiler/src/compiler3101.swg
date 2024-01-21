@@ -1,4 +1,4 @@
-#global testerror "Err0860"
+#global testerror "Err0226"
 
 #[Swag.NotGeneric]
 #test

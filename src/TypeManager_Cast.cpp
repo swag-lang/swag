@@ -1922,7 +1922,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             // Too many fields
             else if (toTypeStruct->fields.size() < child->childs.size())
             {
-                Diagnostic diag{child->childs[toTypeStruct->fields.count], Fmt(Err(Err0197), toTypeStruct->fields.size(), toTypeStruct->getDisplayNameC(), child->childs.size())};
+                Diagnostic diag{child->childs[toTypeStruct->fields.count], Fmt(Err(Err0636), toTypeStruct->fields.size(), toTypeStruct->getDisplayNameC(), child->childs.size())};
                 return context->report(diag);
             }
 
@@ -1937,27 +1937,27 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             {
                 auto       badParamIdx = symContext.badSignatureInfos.badSignatureParameterIdx;
                 auto       failedParam = child->childs[badParamIdx];
-                Diagnostic diag{failedParam, Fmt(Err(Err0006), Naming::niceArgumentRank(badParamIdx + 1).c_str())};
+                Diagnostic diag{failedParam, Fmt(Err(Err0571), Naming::niceArgumentRank(badParamIdx + 1).c_str())};
                 auto       otherParam = child->childs[badParamIdx - 1];
                 if (otherParam->hasExtMisc() && otherParam->extMisc()->isNamed)
                     otherParam = otherParam->extMisc()->isNamed;
-                diag.addRange(otherParam, Nte(Nte1030));
+                diag.addRange(otherParam, Nte(Nte0151));
                 return context->report(diag);
             }
             case MatchResult::DuplicatedNamedParameter:
             {
                 auto       failedParam = child->childs[symContext.badSignatureInfos.badSignatureParameterIdx];
-                Diagnostic diag{failedParam->extMisc()->isNamed, Fmt(Err(Err0011), failedParam->extMisc()->isNamed->token.ctext())};
+                Diagnostic diag{failedParam->extMisc()->isNamed, Fmt(Err(Err0023), failedParam->extMisc()->isNamed->token.ctext())};
                 auto       otherParam = child->childs[symContext.badSignatureInfos.badSignatureNum1];
                 if (otherParam->hasExtMisc() && otherParam->extMisc()->isNamed)
                     otherParam = otherParam->extMisc()->isNamed;
-                diag.addRange(otherParam, Nte(Nte1059));
+                diag.addRange(otherParam, Nte(Nte0165));
                 return context->report(diag);
             }
             case MatchResult::InvalidNamedParameter:
             {
                 auto       failedParam = child->childs[symContext.badSignatureInfos.badSignatureParameterIdx];
-                Diagnostic diag{failedParam->extMisc()->isNamed, Fmt(Err(Err0008), failedParam->extMisc()->isNamed->token.ctext())};
+                Diagnostic diag{failedParam->extMisc()->isNamed, Fmt(Err(Err0727), failedParam->extMisc()->isNamed->token.ctext())};
                 if (toTypeStruct->declNode && !(toTypeStruct->declNode->flags & AST_GENERATED) && toTypeStruct->declNode->resolvedSymbolOverload)
                     return context->report(diag, Diagnostic::hereIs(toTypeStruct->declNode->resolvedSymbolOverload));
                 return context->report(diag);
@@ -2343,9 +2343,9 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
                     {
                         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
                         {
-                            Diagnostic diag{fromNode, Fmt(Err(Err0200), fromType->getDisplayNameC(), toType->getDisplayNameC(), fromStruct->getDisplayNameC(), toStruct->getDisplayNameC())};
-                            auto       note1 = Diagnostic::note(foundField->declNode, Nte(Nte0015));
-                            auto       note2 = Diagnostic::note(field->declNode, Nte(Nte0016));
+                            Diagnostic diag{fromNode, Fmt(Err(Err0014), fromType->getDisplayNameC(), toType->getDisplayNameC(), fromStruct->getDisplayNameC(), toStruct->getDisplayNameC())};
+                            auto       note1 = Diagnostic::note(foundField->declNode, Nte(Nte0061));
+                            auto       note2 = Diagnostic::note(field->declNode, Nte(Nte0060));
                             return context->report(diag, note1, note2);
                         }
                     }
@@ -2381,9 +2381,9 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
             {
                 if (foundField)
                 {
-                    Diagnostic diag{context->node, Fmt(Err(Err0034), fromTypeStruct->structName.c_str(), toTypeItf->name.c_str())};
-                    auto       note1 = Diagnostic::note(it.field->declNode, Nte(Nte0006));
-                    auto       note2 = Diagnostic::note(foundField->declNode, Nte(Nte0062));
+                    Diagnostic diag{context->node, Fmt(Err(Err0016), fromTypeStruct->structName.c_str(), toTypeItf->name.c_str())};
+                    auto       note1 = Diagnostic::note(it.field->declNode, Nte(Nte0150));
+                    auto       note2 = Diagnostic::note(foundField->declNode, Nte(Nte0152));
                     return context->report(diag, note1, note2);
                 }
 
@@ -2846,9 +2846,9 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
             if (!(castFlags & CASTFLAG_JUST_CHECK))
             {
                 if (toTypeArray->count > fromTypeList->subTypes.size())
-                    context->report({fromNode, Fmt(Err(Err0203), toTypeArray->count, fromTypeList->subTypes.size())});
+                    context->report({fromNode, Fmt(Err(Err0596), toTypeArray->count, fromTypeList->subTypes.size())});
                 else
-                    context->report({fromNode, Fmt(Err(Err0204), toTypeArray->count, fromTypeList->subTypes.size())});
+                    context->report({fromNode, Fmt(Err(Err0637), toTypeArray->count, fromTypeList->subTypes.size())});
             }
 
             return false;

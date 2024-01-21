@@ -1,2 +1,2 @@
-#global testerror "Err0250"
+#global testerror "Err0396"
 var G: const void

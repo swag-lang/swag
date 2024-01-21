@@ -1,4 +1,4 @@
-#global testerror "Err1097"
+#global testerror "Err0659"
 #elif
 {
     #print "toto"

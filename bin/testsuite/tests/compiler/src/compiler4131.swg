@@ -1,4 +1,4 @@
-//#global testerror "Err0417"
+//#global testerror "Err0820"
 #assert #run @compiler().getBuildCfg().byteCodeOptimizeLevel >= 0
 
 #[Swag.Safety("nan", false)]

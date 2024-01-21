@@ -1,4 +1,4 @@
-#global testerror "Err0822"
+#global testerror "Err0477"
 
 struct Point
 {

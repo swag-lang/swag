@@ -1,4 +1,4 @@
-#global testerror "Err0812"
+#global testerror "Err0154"
 struct(T) A
 {
     x: s32

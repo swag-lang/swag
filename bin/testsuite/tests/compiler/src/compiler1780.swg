@@ -1,5 +1,5 @@
 
-#global testerror "Err0150"
+#global testerror "Err0062"
 
 //#[Swag.PrintBc]
 #[Swag.Safety("", true)]

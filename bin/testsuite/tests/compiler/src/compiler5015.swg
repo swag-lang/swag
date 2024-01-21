@@ -1,4 +1,4 @@
-#global testerror "Err0283"
+#global testerror "Err0201"
 #test
 {
     let a = @gettag("toto", s32, s32)

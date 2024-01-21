@@ -204,7 +204,7 @@ bool ByteCodeGen::checkEscapedThrow(ByteCodeGenContext* context)
         }
     }
 
-    Diagnostic diag{node, Err(Err0556)};
+    Diagnostic diag{node, Err(Err0058)};
     return context->report(diag, Diagnostic::hereIs(defer));
 }
 

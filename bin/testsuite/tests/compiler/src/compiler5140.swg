@@ -1,4 +1,4 @@
-#global testerror "Err0295"
+#global testerror "Err0698"
 
 #main(x: s32)
 {

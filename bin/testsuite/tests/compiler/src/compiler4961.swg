@@ -1,4 +1,4 @@
-#global testerror "Err1105"
+#global testerror "Err0324"
 #test
 {
     let a = (a && b)

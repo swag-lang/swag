@@ -24,10 +24,10 @@ bool Semantic::resolveMove(SemanticContext* context)
     {
         if ((right->typeInfo->isStruct() && right->typeInfo->isConst()) || right->typeInfo->isConstPointerRef())
         {
-            Diagnostic diag{right, Fmt(Err(Err0559), right->typeInfo->getDisplayNameC())};
+            Diagnostic diag{right, Fmt(Err(Err0328), right->typeInfo->getDisplayNameC())};
             if (right->resolvedSymbolOverload && right->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
             {
-                auto note = Diagnostic::note(Nte(Nte0116));
+                auto note = Diagnostic::note(Nte(Nte0059));
                 return context->report(diag, note);
             }
 
@@ -58,9 +58,9 @@ bool Semantic::resolveAfterKnownType(SemanticContext* context)
     // Cannot cast from closure to lambda
     if (node->typeInfo->getConcreteAlias()->isLambda() && mpl->lambda->typeInfo->getConcreteAlias()->isClosure())
     {
-        Diagnostic diag{mpl, Err(Err0185)};
+        Diagnostic diag{mpl, Err(Err0643)};
         diag.addRange(node, Diagnostic::isType(node->typeInfo));
-        auto note = Diagnostic::note(Nte(Nte0103));
+        auto note = Diagnostic::note(Nte(Nte0191));
         return context->report(diag, note);
     }
 
@@ -126,7 +126,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, AstNo
             if (child->isFunctionCall() && (child->typeInfo->isConst() || child->typeInfo->isStruct()))
             {
                 left = child;
-                hint = Fmt(Nte(Nte1039), left->typeInfo->getDisplayNameC());
+                hint = Fmt(Nte(Nte0119), left->typeInfo->getDisplayNameC());
                 break;
             }
 
@@ -156,9 +156,9 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, AstNo
 
             SWAG_ASSERT(left->resolvedSymbolOverload);
             if (left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM && left->typeInfo->isConst())
-                note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, Nte(Nte0023));
+                note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, Nte(Nte0076));
             else if (!(left->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM))
-                note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, Nte(Nte0023), Diagnostic::isType(left->typeInfo));
+                note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, Nte(Nte0076), Diagnostic::isType(left->typeInfo));
         }
     }
 
@@ -166,20 +166,20 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, AstNo
     {
         if (left == left->parent->childs.back())
         {
-            Diagnostic diag{node, node->token, Fmt(Err(Err0740), left->resolvedSymbolName->name.c_str())};
+            Diagnostic diag{node, node->token, Fmt(Err(Err0106), left->resolvedSymbolName->name.c_str())};
             diag.addRange(left, Diagnostic::isType(left->typeInfo));
-            auto note1 = Diagnostic::note(Nte(Nte0116));
+            auto note1 = Diagnostic::note(Nte(Nte0059));
             return context->report(diag, note, note1);
         }
         else if (left->typeInfo->isConstPointerRef())
         {
-            Diagnostic diag{node, node->token, Fmt(Err(Err0740), left->resolvedSymbolName->name.c_str())};
+            Diagnostic diag{node, node->token, Fmt(Err(Err0106), left->resolvedSymbolName->name.c_str())};
             diag.addRange(left, Diagnostic::isType(left->typeInfo));
             return context->report(diag, note);
         }
         else
         {
-            Diagnostic diag{node, node->token, Fmt(Err(Err0740), left->resolvedSymbolName->name.c_str())};
+            Diagnostic diag{node, node->token, Fmt(Err(Err0106), left->resolvedSymbolName->name.c_str())};
             diag.addRange(left, Diagnostic::isType(left->typeInfo));
             return context->report(diag, note);
         }
@@ -189,15 +189,15 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, AstNo
         left->resolvedSymbolOverload->flags & OVERLOAD_IS_LET &&
         (!left->resolvedSymbolOverload->typeInfo->isPointerRef() || right->kind == AstNodeKind::KeepRef))
     {
-        Diagnostic diag{node, node->token, Err(Err0564)};
-        diag.addRange(left, Nte(Nte1050));
+        Diagnostic diag{node, node->token, Err(Err0104)};
+        diag.addRange(left, Nte(Nte0017));
         note = Diagnostic::hereIs(left->resolvedSymbolOverload->node);
         return context->report(diag, note);
     }
 
     if (left->flags & AST_L_VALUE)
     {
-        Diagnostic diag{node, node->token, Err(Err0564)};
+        Diagnostic diag{node, node->token, Err(Err0104)};
         if (hint.empty())
             hint = Diagnostic::isType(left);
         diag.addRange(left, hint);
@@ -206,14 +206,14 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, AstNo
 
     if (left->resolvedSymbolOverload && left->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE)
     {
-        Diagnostic diag{node, node->token, Err(Err0564)};
+        Diagnostic diag{node, node->token, Err(Err0104)};
         if (hint.empty())
-            hint = Nte(Nte1018);
+            hint = Nte(Nte0158);
         diag.addRange(left, hint);
         return context->report(diag);
     }
 
-    Diagnostic diag{node, node->token, Err(Err0565)};
+    Diagnostic diag{node, node->token, Err(Err0215)};
     if (hint.empty())
         hint = Diagnostic::isType(left);
     diag.addRange(left, hint);
@@ -266,7 +266,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
 
     rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
 
-    SWAG_VERIFY(!rightTypeInfo->isVoid(), context->report({right, Err(Err0569)}));
+    SWAG_VERIFY(!rightTypeInfo->isVoid(), context->report({right, Err(Err0386)}));
 
     // Be sure modifiers are relevant
     if (right->kind == AstNodeKind::NoDrop || right->kind == AstNodeKind::Move)
@@ -276,17 +276,17 @@ bool Semantic::resolveAffect(SemanticContext* context)
 
         auto leftConcrete = TypeManager::concreteType(leftTypeInfo);
         if (right->flags & AST_NO_LEFT_DROP)
-            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST), context->report({node, node->token, Fmt(Err(Err0568), g_LangSpec->name_nodrop.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST), context->report({node, node->token, Fmt(Err(Err0654), g_LangSpec->name_nodrop.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
         if (right->flags & AST_NO_RIGHT_DROP)
-            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST), context->report({node, node->token, Fmt(Err(Err0568), g_LangSpec->name_moveraw.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST), context->report({node, node->token, Fmt(Err(Err0654), g_LangSpec->name_moveraw.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
         if (right->flags & AST_FORCE_MOVE)
-            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST), context->report({node, node->token, Fmt(Err(Err0568), g_LangSpec->name_move.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST), context->report({node, node->token, Fmt(Err(Err0654), g_LangSpec->name_move.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
     }
 
     // No direct operations on any, except affect any to any
     if (leftTypeInfo->isAny() && node->tokenId != TokenId::SymEqual)
     {
-        Diagnostic diag{node, node->token, Fmt(Err(Err0005), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+        Diagnostic diag{node, node->token, Fmt(Err(Err0352), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag);
     }
@@ -337,7 +337,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
     // For tuples, we can only affect
     else if (forTuple)
     {
-        Diagnostic diag{node, node->token, Fmt(Err(Err0168), node->token.ctext())};
+        Diagnostic diag{node, node->token, Fmt(Err(Err0351), node->token.ctext())};
         auto       note = Diagnostic::note(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag, note);
     }
@@ -357,7 +357,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
             !leftTypeInfo->isArray() &&
             !leftTypeInfo->isAlias() &&
             !leftTypeInfo->isEnum())
-            return context->report({left, Fmt(Err(Err0571), Naming::kindName(leftTypeInfo).c_str(), leftTypeInfo->getDisplayNameC())});
+            return context->report({left, Fmt(Err(Err0105), Naming::kindName(leftTypeInfo).c_str(), leftTypeInfo->getDisplayNameC())});
         if (!rightTypeInfo->isNative() &&
             !rightTypeInfo->isPointer() &&
             !rightTypeInfo->isSlice() &&
@@ -368,7 +368,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
             !rightTypeInfo->isInterface() &&
             !rightTypeInfo->isArray() &&
             !rightTypeInfo->isAlias())
-            return context->report({right, Fmt(Err(Err0572), Naming::aKindName(rightTypeInfo).c_str(), rightTypeInfo->getDisplayNameC())});
+            return context->report({right, Fmt(Err(Err0107), Naming::aKindName(rightTypeInfo).c_str(), rightTypeInfo->getDisplayNameC())});
 
         if (forStruct)
         {
@@ -381,7 +381,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                 }
                 else if (forTuple)
                 {
-                    return context->report({node, node->token, Fmt(Err(Err0168), node->token.ctext())});
+                    return context->report({node, node->token, Fmt(Err(Err0351), node->token.ctext())});
                 }
                 else
                 {
@@ -391,11 +391,11 @@ bool Semantic::resolveAffect(SemanticContext* context)
                     {
                         YIELD();
 
-                        Diagnostic diag{right, Fmt(Err(Err0225), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
+                        Diagnostic diag{right, Fmt(Err(Err0342), rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
                         diag.hint = Diagnostic::isType(rightTypeInfo);
                         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
 
-                        auto note = Diagnostic::note(node, node->token, Fmt(Nte(Nte0051), "opIndexAffect", rightTypeInfo->getDisplayNameC()));
+                        auto note = Diagnostic::note(node, node->token, Fmt(Nte(Nte0143), "opIndexAffect", rightTypeInfo->getDisplayNameC()));
                         return context->report(diag, note);
                     }
 
@@ -418,7 +418,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                 {
                     if (leftTypeInfo->isTuple())
                     {
-                        Diagnostic diag{node, node->token, Err(Err0574)};
+                        Diagnostic diag{node, node->token, Err(Err0216)};
                         diag.addRange(right, Diagnostic::isType(rightTypeInfo));
                         return context->report(diag);
                     }
@@ -519,21 +519,21 @@ bool Semantic::resolveAffect(SemanticContext* context)
         {
             if (!leftTypeInfo->isPointerArithmetic())
             {
-                Diagnostic diag{node, node->token, Err(Err0192)};
+                Diagnostic diag{node, node->token, Err(Err0360)};
                 diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-                auto note = Diagnostic::note(Nte(Nte0146));
+                auto note = Diagnostic::note(Nte(Nte0103));
                 return context->report(diag, note);
             }
 
             if (leftTypeInfo->isPointerTo(NativeTypeKind::Void))
             {
-                Diagnostic diag{node, node->token, Err(Err0111)};
+                Diagnostic diag{node, node->token, Err(Err0359)};
                 diag.addRange(left, Diagnostic::isType(leftTypeInfo));
                 return context->report(diag);
             }
 
             rightTypeInfo = TypeManager::concreteType(right->typeInfo);
-            SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, Fmt(Err(Err0579), rightTypeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, Fmt(Err(Err0361), rightTypeInfo->getDisplayNameC())}));
             SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, left, right, CASTFLAG_TRY_COERCE));
             break;
         }

@@ -639,7 +639,7 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             break;
         }
         case ByteCodeOp::MakeCompilerSegPointer:
-            return Report::report({ip->node, Err(Err0060)});
+            return Report::report({ip->node, Err(Err0177)});
 
         case ByteCodeOp::MakeStackPointer:
         {

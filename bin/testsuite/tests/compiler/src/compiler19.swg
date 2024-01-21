@@ -1,4 +1,4 @@
-//#global testerror "Err2002"
+//#global testerror "Err0287"
 #global testpass lexer;
 
 .

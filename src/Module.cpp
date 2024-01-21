@@ -681,15 +681,15 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         {
             if (dep->location != tokenLocation.text && !tokenLocation.text.empty() && !dep->location.empty())
             {
-                Diagnostic diag{importNode, tokenLocation, Fmt(Err(Err0284), dep->name.c_str(), dep->location.c_str())};
-                auto       note = Diagnostic::note(dep->node, Nte(Nte0037));
+                Diagnostic diag{importNode, tokenLocation, Fmt(Err(Err0068), dep->name.c_str(), dep->location.c_str())};
+                auto       note = Diagnostic::note(dep->node, Nte(Nte0073));
                 return Report::report(diag, note);
             }
 
             if (dep->version != tokenVersion.text && !tokenVersion.text.empty() && !dep->version.empty())
             {
-                Diagnostic diag{importNode, tokenVersion, Fmt(Err(Err0286), dep->name.c_str(), dep->version.c_str())};
-                auto       note = Diagnostic::note(dep->node, Nte(Nte0037));
+                Diagnostic diag{importNode, tokenVersion, Fmt(Err(Err0069), dep->name.c_str(), dep->version.c_str())};
+                auto       note = Diagnostic::note(dep->node, Nte(Nte0073));
                 return Report::report(diag, note);
             }
 
@@ -712,8 +712,8 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
 
     if (splits.size() != 3 || splits[0].empty() || splits[1].empty() || splits[2].empty())
     {
-        Diagnostic diag{importNode, tokenVersion, Err(Err0288)};
-        auto       note = Diagnostic::note(Nte(Nte0085));
+        Diagnostic diag{importNode, tokenVersion, Err(Err0313)};
+        auto       note = Diagnostic::note(Nte(Nte0142));
         return Report::report(diag, note);
     }
 
@@ -744,8 +744,8 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         {
             if (!isdigit(splits[i][j]))
             {
-                Diagnostic diag{importNode, tokenVersion, Err(Err0288)};
-                auto       note = Diagnostic::note(Err(Nte0085));
+                Diagnostic diag{importNode, tokenVersion, Err(Err0313)};
+                auto       note = Diagnostic::note(Err(Nte0142));
                 return Report::report(diag, note);
             }
         }
@@ -753,18 +753,18 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         *setVer = atoi(splits[i]);
         if (*setVer < 0)
         {
-            Diagnostic diag{importNode, tokenVersion, Err(Err0288)};
-            auto       note = Diagnostic::note(Err(Nte0085));
+            Diagnostic diag{importNode, tokenVersion, Err(Err0313)};
+            auto       note = Diagnostic::note(Err(Nte0142));
             return Report::report(diag, note);
         }
 
         switch (i)
         {
         case 1:
-            SWAG_VERIFY(dep->verNum != UINT32_MAX, Report::report({importNode, tokenVersion, Fmt(Err(Err0335), dep->revNum)}));
+            SWAG_VERIFY(dep->verNum != UINT32_MAX, Report::report({importNode, tokenVersion, Fmt(Err(Err0127), dep->revNum)}));
             break;
         case 2:
-            SWAG_VERIFY(dep->revNum != UINT32_MAX, Report::report({importNode, tokenVersion, Fmt(Err(Err0336), dep->buildNum)}));
+            SWAG_VERIFY(dep->revNum != UINT32_MAX, Report::report({importNode, tokenVersion, Fmt(Err(Err0126), dep->buildNum)}));
             break;
         }
     }
@@ -1047,7 +1047,7 @@ bool Module::compileString(const Utf8& text)
     // Is it still possible to generate some code ?
     if (!acceptsCompileString)
     {
-        Report::report({ip->node, ip->node->token, Err(Err0859)});
+        Report::report({ip->node, ip->node->token, Err(Err0112)});
         return false;
     }
 

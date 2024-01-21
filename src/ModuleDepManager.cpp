@@ -150,14 +150,14 @@ bool ModuleDepManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
     // No cfg file, we are done, we need one !
     error_code err;
     if (!filesystem::exists(remotePath, err))
-        return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0508), SWAG_CFG_FILE, remotePath.string().c_str())});
+        return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0093), SWAG_CFG_FILE, remotePath.string().c_str())});
 
     // Otherwise we copy the config file to the cache path, with a unique name.
     // Then later we will parse that file to get informations from the module
     FILE* fsrc = nullptr;
     if (fopen_s(&fsrc, remotePath.string().c_str(), "rbN"))
     {
-        return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0509), remotePath.string().c_str())});
+        return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0094), remotePath.string().c_str())});
     }
 
     // Remove source configuration file
@@ -172,7 +172,7 @@ bool ModuleDepManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
     if (fopen_s(&fdest, destPath.string().c_str(), "wbN"))
     {
         fclose(fsrc);
-        return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0510), SWAG_CFG_FILE, dep->name.c_str())});
+        return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0089), SWAG_CFG_FILE, dep->name.c_str())});
     }
 
     // Copy content
@@ -206,7 +206,7 @@ bool ModuleDepManager::fetchModuleCfgSwag(ModuleDependency* dep, Utf8& cfgFilePa
     if (!err)
         remotePath = remotePath1;
     if (!filesystem::exists(remotePath, err))
-        return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0511), remotePath.string().c_str())});
+        return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0256), remotePath.string().c_str())});
     if (!fetch)
         return true;
     dep->resolvedLocation = remotePath;
@@ -225,7 +225,7 @@ bool ModuleDepManager::fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePa
     if (!err)
         remotePath = remotePath1;
     if (!filesystem::exists(remotePath, err))
-        return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0511), remotePath.string().c_str())});
+        return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0256), remotePath.string().c_str())});
     if (!fetch)
         return true;
 
@@ -236,20 +236,20 @@ bool ModuleDepManager::fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePa
 bool ModuleDepManager::fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName, bool fetch)
 {
     if (dep->location.empty())
-        return Report::report({dep->node, Fmt(Err(Err0513), dep->name.c_str())});
+        return Report::report({dep->node, Fmt(Err(Err0255), dep->name.c_str())});
 
     Vector<Utf8> tokens;
     Utf8::tokenize(dep->location, '@', tokens);
     if (tokens.size() != 2)
     {
         if (dep->isLocalToWorkspace)
-            return Report::report({dep->node, Err(Err0514)});
-        return Report::report({dep->node, dep->tokenLocation, Err(Err0514)});
+            return Report::report({dep->node, Err(Err0135)});
+        return Report::report({dep->node, dep->tokenLocation, Err(Err0135)});
     }
 
     // Check mode
     if (tokens[0] != g_LangSpec->name_swag && tokens[0] != g_LangSpec->name_disk)
-        return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0515), tokens[0].c_str())});
+        return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0323), tokens[0].c_str())});
     dep->locationParam = tokens[1];
 
     cfgFilePath.clear();
@@ -356,8 +356,8 @@ bool ModuleDepManager::resolveModuleDependency(Module* srcModule, ModuleDependen
         case CompareVersionResult::VERSION_GREATER:
         case CompareVersionResult::VERSION_LOWER:
         {
-            Diagnostic diag{dep->node, Fmt(Err(Err0516), dep->name.c_str(), dep->verNum, cfgModule->fetchDep->verNum)};
-            auto       note = Diagnostic::note(cfgModule->fetchDep->node, Nte(Nte0035));
+            Diagnostic diag{dep->node, Fmt(Err(Err0059), dep->name.c_str(), dep->verNum, cfgModule->fetchDep->verNum)};
+            auto       note = Diagnostic::note(cfgModule->fetchDep->node, Nte(Nte0070));
             Report::report(diag, note);
             return false;
         }
@@ -566,12 +566,12 @@ bool ModuleDepManager::execute()
         {
             if (dep->resolvedLocation.empty())
             {
-                Diagnostic diag{dep->node, Fmt(Err(Err2030), dep->name.c_str(), dep->version.c_str())};
+                Diagnostic diag{dep->node, Fmt(Err(Err0061), dep->name.c_str(), dep->version.c_str())};
                 Report::report(diag);
             }
             else
             {
-                Diagnostic diag{dep->node, Fmt(Err(Err0518), dep->name.c_str(), dep->version.c_str(), dep->resolvedLocation.c_str())};
+                Diagnostic diag{dep->node, Fmt(Err(Err0060), dep->name.c_str(), dep->version.c_str(), dep->resolvedLocation.c_str())};
                 Report::report(diag);
             }
             ok = false;
@@ -648,7 +648,7 @@ bool ModuleDepManager::execute()
                 pathSrc.append(m.second->name.c_str());
                 if (!filesystem::exists(pathSrc, err) && !filesystem::create_directories(pathSrc, err))
                 {
-                    Report::errorOS(Fmt(Err(Err0604), pathSrc.string().c_str()));
+                    Report::errorOS(Fmt(Err(Err0100), pathSrc.string().c_str()));
                     ok = false;
                     continue;
                 }

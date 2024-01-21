@@ -1,4 +1,4 @@
-#global testerror "Err0163"
+#global testerror "Err0372"
 #test
 {
     var chooseStepFunction: func()

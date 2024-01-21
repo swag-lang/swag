@@ -1,4 +1,4 @@
-#global testerror "Err0001"
+#global testerror "Err0245"
 #test
 {
 	@assert("toto" > "toto")

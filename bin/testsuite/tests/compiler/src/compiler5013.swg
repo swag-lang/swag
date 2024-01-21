@@ -1,4 +1,4 @@
-#global testerror "Err0795"
+#global testerror "Err0207"
 #test
 {
     var ptr: *s32

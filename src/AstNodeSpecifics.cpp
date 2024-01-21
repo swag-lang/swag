@@ -371,7 +371,7 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
             auto nodeFunc = CastAst<AstFuncDecl>(subDecl, AstNodeKind::FuncDecl);
             if (sym)
             {
-                Diagnostic diag{nodeFunc, nodeFunc->tokenName, Fmt(Err(Err0346), "function", subDecl->token.ctext())};
+                Diagnostic diag{nodeFunc, nodeFunc->tokenName, Fmt(Err(Err0628), "function", subDecl->token.ctext())};
                 return context->report(diag);
             }
 
@@ -409,7 +409,7 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
             auto nodeStruct = CastAst<AstStruct>(subDecl, AstNodeKind::StructDecl);
             if (sym)
             {
-                Diagnostic diag{nodeStruct, nodeStruct->tokenName, Fmt(Err(Err0346), "struct", subDecl->token.ctext())};
+                Diagnostic diag{nodeStruct, nodeStruct->tokenName, Fmt(Err(Err0628), "struct", subDecl->token.ctext())};
                 return context->report(diag);
             }
 
@@ -421,7 +421,7 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
         case AstNodeKind::InterfaceDecl:
             if (sym)
             {
-                Diagnostic diag{subDecl, subDecl->token, Fmt(Err(Err0346), "interface", subDecl->token.ctext())};
+                Diagnostic diag{subDecl, subDecl->token, Fmt(Err(Err0628), "interface", subDecl->token.ctext())};
                 return context->report(diag);
             }
 

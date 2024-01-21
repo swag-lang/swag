@@ -32,21 +32,21 @@ Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
                 {
                     if (!(c->resolvedSymbolOverload->node->attributeFlags & ATTRIBUTE_CONSTEXPR))
                     {
-                        auto result  = Diagnostic::note(c, c->token, Fmt(Nte(Nte0042), c->resolvedSymbolName->name.c_str()));
-                        result->hint = Nte(Nte1046);
+                        auto result  = Diagnostic::note(c, c->token, Fmt(Nte(Nte0117), c->resolvedSymbolName->name.c_str()));
+                        result->hint = Nte(Nte0079);
                         return result;
                     }
 
-                    return Diagnostic::note(c, c->token, Nte(Nte0071));
+                    return Diagnostic::note(c, c->token, Nte(Nte0153));
                 }
             }
 
             if (c->resolvedSymbolName->kind == SymbolKind::Variable)
             {
-                return Diagnostic::note(c, c->token, Fmt(Nte(Nte0041), c->resolvedSymbolName->name.c_str()));
+                return Diagnostic::note(c, c->token, Fmt(Nte(Nte0005), c->resolvedSymbolName->name.c_str()));
             }
 
-            return Diagnostic::note(c, Nte(Nte0070));
+            return Diagnostic::note(c, Nte(Nte0056));
         }
     }
 
@@ -111,7 +111,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
         {
             if (realType->isTuple())
             {
-                Diagnostic diag{node, Err(Err0321)};
+                Diagnostic diag{node, Err(Err0043)};
                 return context->report(diag);
             }
 
@@ -122,8 +122,8 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
 
             if (node->hasSpecialFuncCall())
             {
-                Diagnostic diag{node, Fmt(Err(Err0281), realType->getDisplayNameC())};
-                diag.hint = Fmt(Nte(Nte1047), node->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str());
+                Diagnostic diag{node, Fmt(Err(Err0042), realType->getDisplayNameC())};
+                diag.hint = Fmt(Nte(Nte0144), node->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str());
                 return context->report(diag);
             }
 
@@ -142,8 +142,8 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                 }
                 else
                 {
-                    Diagnostic diag{node, Fmt(Err(Err0281), realType->getDisplayNameC())};
-                    diag.hint = Nte(Nte0136);
+                    Diagnostic diag{node, Fmt(Err(Err0042), realType->getDisplayNameC())};
+                    diag.hint = Nte(Nte0057);
                     return context->report(diag);
                 }
             }
@@ -204,13 +204,13 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                         ok = true;
                     if (!ok)
                     {
-                        Diagnostic diag{node, Fmt(Err(Err0059), typeSliceContent->getDisplayNameC())};
+                        Diagnostic diag{node, Fmt(Err(Err0032), typeSliceContent->getDisplayNameC())};
                         return context->report(diag);
                     }
                 }
                 else
                 {
-                    Diagnostic diag{node, Fmt(Err(Err0058), concreteType->getDisplayNameC())};
+                    Diagnostic diag{node, Fmt(Err(Err0029), concreteType->getDisplayNameC())};
                     return context->report(diag);
                 }
 
@@ -329,7 +329,7 @@ bool Semantic::resolveCompilerValidIfExpression(SemanticContext* context)
     auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
     if (!typeInfo->isBool())
     {
-        Diagnostic diag{expression, Fmt(Err(Err0233), node->token.ctext(), typeInfo->getDisplayNameC())};
+        Diagnostic diag{expression, Fmt(Err(Err0191), node->token.ctext(), typeInfo->getDisplayNameC())};
         return context->report(diag);
     }
 
@@ -349,7 +349,7 @@ bool Semantic::resolveCompilerAstExpression(SemanticContext* context)
     auto job        = context->baseJob;
     auto expression = context->node->childs.back();
     auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
-    SWAG_VERIFY(typeInfo->isString(), context->report({expression, Fmt(Err(Err0234), expression->typeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(typeInfo->isString(), context->report({expression, Fmt(Err(Err0621), expression->typeInfo->getDisplayNameC())}));
 
     SWAG_CHECK(executeCompilerNode(context, expression, false));
     YIELD();
@@ -395,10 +395,10 @@ bool Semantic::resolveCompilerError(SemanticContext* context)
     auto msg = node->childs.front();
     SWAG_CHECK(evaluateConstExpression(context, msg));
     YIELD();
-    SWAG_CHECK(checkIsConstExpr(context, msg->hasComputedValue(), msg, Fmt(Err(Err0237), node->token.ctext())));
+    SWAG_CHECK(checkIsConstExpr(context, msg->hasComputedValue(), msg, Fmt(Err(Err0034), node->token.ctext())));
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 
-    Diagnostic diag{node, node->token, Fmt(Err(Err0433), msg->computedValue->text.c_str()), DiagnosticLevel::Error};
+    Diagnostic diag{node, node->token, Fmt(Err(Err0001), msg->computedValue->text.c_str()), DiagnosticLevel::Error};
     return context->report(diag);
 }
 
@@ -411,7 +411,7 @@ bool Semantic::resolveCompilerWarning(SemanticContext* context)
     auto msg = node->childs.front();
     SWAG_CHECK(evaluateConstExpression(context, msg));
     YIELD();
-    SWAG_CHECK(checkIsConstExpr(context, msg->hasComputedValue(), msg, Fmt(Err(Err0237), node->token.ctext())));
+    SWAG_CHECK(checkIsConstExpr(context, msg->hasComputedValue(), msg, Fmt(Err(Err0034), node->token.ctext())));
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 
     Diagnostic diag{node, node->token, msg->computedValue->text, DiagnosticLevel::Warning};
@@ -434,7 +434,7 @@ bool Semantic::resolveCompilerAssert(SemanticContext* context)
     node->flags |= AST_NO_BYTECODE;
 
     if (!expr->computedValue->reg.b)
-        return context->report({node, node->token, Err(Err0238)});
+        return context->report({node, node->token, Err(Err0045)});
     return true;
 }
 
@@ -448,7 +448,7 @@ bool Semantic::resolveCompilerMacro(SemanticContext* context)
 
     // Be sure #macro is used inside a macro
     if (!node->ownerInline || (node->ownerInline->attributeFlags & ATTRIBUTE_MIXIN) || !(node->ownerInline->attributeFlags & ATTRIBUTE_MACRO))
-        return context->report({node, Err(Err0239)});
+        return context->report({node, Err(Err0445)});
 
     return true;
 }
@@ -466,7 +466,7 @@ bool Semantic::resolveCompilerMixin(SemanticContext* context)
     node->semFlags |= SEMFLAG_COMPILER_INSERT;
 
     auto expr = node->childs[0];
-    SWAG_VERIFY(expr->typeInfo->isCode(), context->report({expr, Fmt(Err(Err0240), expr->typeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(expr->typeInfo->isCode(), context->report({expr, Fmt(Err(Err0193), expr->typeInfo->getDisplayNameC())}));
 
     node->setBcNotifBefore(ByteCodeGen::emitDebugNop);
     node->byteCodeFct = ByteCodeGen::emitDebugNop;
@@ -714,8 +714,8 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
     auto module = context->sourceFile->module;
     auto back   = node->childs[0];
 
-    SWAG_CHECK(checkIsConstExpr(context, back->hasComputedValue(), back, Err(Err0242)));
-    SWAG_VERIFY(back->typeInfo == g_TypeMgr->typeInfoString, context->report({back, Fmt(Err(Err0243), back->typeInfo->getDisplayNameC())}));
+    SWAG_CHECK(checkIsConstExpr(context, back->hasComputedValue(), back, Err(Err0030)));
+    SWAG_VERIFY(back->typeInfo == g_TypeMgr->typeInfoString, context->report({back, Fmt(Err(Err0192), back->typeInfo->getDisplayNameC())}));
     node->setFlagsValueIsComputed();
 
     if (!(node->semFlags & SEMFLAG_LOAD))
@@ -739,13 +739,13 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
                 // Search the file itself, without any special path
                 fullFileName = filename;
                 if (!filesystem::exists(fullFileName, err))
-                    return context->report({back, Fmt(Err(Err0244), filename.c_str())});
+                    return context->report({back, Fmt(Err(Err0713), filename.c_str())});
             }
         }
 
         struct stat stat_buf;
         int         rc = stat(fullFileName.string().c_str(), &stat_buf);
-        SWAG_VERIFY(rc == 0, context->report({back, Fmt(Err(Err0223), back->computedValue->text.c_str())}));
+        SWAG_VERIFY(rc == 0, context->report({back, Fmt(Err(Err0096), back->computedValue->text.c_str())}));
         SWAG_CHECK(context->checkSizeOverflow("[[#load]]", stat_buf.st_size, SWAG_LIMIT_COMPILER_LOAD));
 
         auto     newJob         = Allocator::alloc<LoadFileJob>();
@@ -950,12 +950,12 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
         return true;
 
     case TokenId::CompilerCallerLocation:
-        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, Err(Err0254)}));
+        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, Err(Err0499)}));
         node->typeInfo = g_Workspace->swagScope.regTypeInfoSourceLoc;
         return true;
 
     case TokenId::CompilerCallerFunction:
-        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, Err(Err0255)}));
+        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, Err(Err0498)}));
         node->typeInfo = g_TypeMgr->typeInfoString;
         return true;
 

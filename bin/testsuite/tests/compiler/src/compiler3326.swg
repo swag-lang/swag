@@ -1,4 +1,4 @@
-#global testerror "Err0770"
+#global testerror "Err0622"
 #test
 {
     var a = #run {

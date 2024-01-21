@@ -16,8 +16,8 @@ bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* express
 
     if (expression->hasSpecialFuncCall())
     {
-        Diagnostic diag{expression, expression->token, Fmt(Err(Err0281), expression->typeInfo->getDisplayNameC())};
-        diag.hint = Fmt(Nte(Nte1047), expression->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str());
+        Diagnostic diag{expression, expression->token, Fmt(Err(Err0042), expression->typeInfo->getDisplayNameC())};
+        diag.hint = Fmt(Nte(Nte0144), expression->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str());
         return context->report(diag, note);
     }
 
@@ -27,7 +27,7 @@ bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* express
     else if (errMsg.length())
         message = errMsg;
     else
-        message = Err(Err0798);
+        message = Err(Err0038);
 
     Diagnostic diag{expression, message};
 
@@ -247,7 +247,7 @@ bool Semantic::resolveConditionalOp(SemanticContext* context)
     // Make the cast
     {
         PushErrCxtStep ec(context, rightT, ErrCxtStepKind::Note, []()
-                          { return Nte(Nte0055); });
+                          { return Nte(Nte0185); });
         SWAG_CHECK(TypeManager::makeCompatibles(context, rightT, leftT, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
     }
 
@@ -303,7 +303,7 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
     auto typeInfo = getConcreteTypeUnRef(expression, CONCRETE_ALL);
     if (typeInfo->isStruct())
     {
-        Diagnostic diag{node->sourceFile, node->token, Err(Err0342)};
+        Diagnostic diag{node->sourceFile, node->token, Err(Err0166)};
         diag.addRange(expression, Diagnostic::isType(typeInfo));
         return context->report(diag);
     }
@@ -315,7 +315,7 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
              !typeInfo->isNativeFloat() &&
              !typeInfo->isLambdaClosure())
     {
-        Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0332), typeInfo->getDisplayNameC())};
+        Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0165), typeInfo->getDisplayNameC())};
         diag.addRange(expression, Diagnostic::isType(typeInfo));
         return context->report(diag);
     }
@@ -364,7 +364,7 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
     else
     {
         PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::Note, []()
-                           { return Nte(Nte0132); });
+                           { return Nte(Nte0023); });
         SWAG_CHECK(TypeManager::makeCompatibles(context, expression, ifZero, CASTFLAG_COMMUTATIVE | CASTFLAG_STRICT));
 
         node->typeInfo    = expression->typeInfo;
@@ -394,7 +394,7 @@ bool Semantic::resolveRange(SemanticContext* context)
 
     auto typeInfo = TypeManager::concreteType(node->expressionLow->typeInfo);
     if (!typeInfo->isNativeIntegerOrRune() && !typeInfo->isNativeFloat())
-        return context->report({node->expressionLow, Fmt(Err(Err0002), node->expressionLow->typeInfo->getDisplayNameC())});
+        return context->report({node->expressionLow, Fmt(Err(Err0365), node->expressionLow->typeInfo->getDisplayNameC())});
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, node->expressionLow, node->expressionUp, CASTFLAG_COMMUTATIVE));
 

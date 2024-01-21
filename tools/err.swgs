@@ -75,7 +75,7 @@ func addFiles(folder: string, extension: string)
         if !l.startsWith("SWAG_ERROR(") do continue
         let what = l[11..13]
 
-        if what != "Fat" and what != "Saf" and what != "San" do continue
+        if what != "Err" do continue
 
         ids.findOrAdd(what).value += 1
 

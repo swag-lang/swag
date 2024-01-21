@@ -184,7 +184,7 @@ static bool cannotMatchSingle(SemanticContext* context, AstNode* node, VectorNat
 static bool cannotMatchOverload(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches)
 {
     // Multiple tryMatches
-    Diagnostic                diag{node, node->token, Fmt(Err(Err0113), tryMatches.size(), tryMatches[0]->overload->symbol->name.c_str())};
+    Diagnostic                diag{node, node->token, Fmt(Err(Err0614), tryMatches.size(), tryMatches[0]->overload->symbol->name.c_str())};
     Vector<const Diagnostic*> notes;
     SemanticError::commonErrorNotes(context, tryMatches, node, &diag, notes);
 

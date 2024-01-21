@@ -1,3 +1,3 @@
-﻿#global testpass syntax
-#global testerror "Err0702"
-var 1: s32
+#global testpass syntax
+#global testerror "Err0410"
+var 1: s32   

@@ -855,7 +855,7 @@ bool ByteCodeGen::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStr
         if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
             needDrop = true;
         if (typeStructVar->opDrop || typeStructVar->opUserDropFct)
-            SWAG_VERIFY(!(structNode->specFlags & AstStruct::SPECFLAG_UNION), context->report({typeParam->declNode, Fmt(Err(Err0911), typeStructVar->getDisplayNameC(), "opDrop")}));
+            SWAG_VERIFY(!(structNode->specFlags & AstStruct::SPECFLAG_UNION), context->report({typeParam->declNode, Fmt(Err(Err0735), typeStructVar->getDisplayNameC(), "opDrop")}));
     }
 
     typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_DROP;
@@ -967,7 +967,7 @@ bool ByteCodeGen::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInf
         if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
             needPostCopy = true;
         if (typeStructVar->opPostCopy || typeStructVar->opUserPostCopyFct)
-            SWAG_VERIFY(!(structNode->specFlags & AstStruct::SPECFLAG_UNION), context->report({typeParam->declNode, Fmt(Err(Err0911), typeStructVar->getDisplayNameC(), "opPostCopy")}));
+            SWAG_VERIFY(!(structNode->specFlags & AstStruct::SPECFLAG_UNION), context->report({typeParam->declNode, Fmt(Err(Err0735), typeStructVar->getDisplayNameC(), "opPostCopy")}));
     }
 
     typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_COPY;
@@ -1077,7 +1077,7 @@ bool ByteCodeGen::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInf
         if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
             needPostMove = true;
         if (typeStructVar->opPostMove || typeStructVar->opUserPostMoveFct)
-            SWAG_VERIFY(!(structNode->specFlags & AstStruct::SPECFLAG_UNION), context->report({typeParam->declNode, Fmt(Err(Err0911), typeStructVar->getDisplayNameC(), "opPostMove")}));
+            SWAG_VERIFY(!(structNode->specFlags & AstStruct::SPECFLAG_UNION), context->report({typeParam->declNode, Fmt(Err(Err0735), typeStructVar->getDisplayNameC(), "opPostMove")}));
     }
 
     typeInfoStruct->flags |= TYPEINFO_STRUCT_NO_POST_MOVE;
@@ -1166,7 +1166,7 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r0, 
     {
         if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_COPY)
         {
-            Diagnostic diag{from, Fmt(Err(Err0231), typeInfo->getDisplayNameC())};
+            Diagnostic diag{from, Fmt(Err(Err0113), typeInfo->getDisplayNameC())};
             diag.hint = Diagnostic::isType(typeInfoStruct);
             return context->report(diag);
         }

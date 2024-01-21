@@ -1,4 +1,4 @@
-#global testerror "Err0005"
+#global testerror "Err0352"
 
 //#[Swag.EnumFlags]
 enum Days

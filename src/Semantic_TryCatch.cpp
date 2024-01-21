@@ -20,10 +20,10 @@ bool Semantic::checkCanThrow(SemanticContext* context)
     auto parentFct = (node->semFlags & SEMFLAG_EMBEDDED_RETURN) ? node->ownerInline->func : node->ownerFct;
 
     if (parentFct->isSpecialFunctionName())
-        return context->report({node, node->token, Fmt(Err(Err0137), node->token.ctext(), node->token.ctext(), parentFct->token.ctext())});
+        return context->report({node, node->token, Fmt(Err(Err0452), node->token.ctext(), node->token.ctext(), parentFct->token.ctext())});
 
     if (!(parentFct->typeInfo->flags & TYPEINFO_CAN_THROW) && !(parentFct->attributeFlags & ATTRIBUTE_SHARP_FUNC))
-        return context->report({node, node->token, Fmt(Err(Err0138), node->token.ctext(), node->token.ctext(), parentFct->token.ctext())});
+        return context->report({node, node->token, Fmt(Err(Err0451), node->token.ctext(), node->token.ctext(), parentFct->token.ctext())});
 
     return true;
 }
@@ -42,7 +42,7 @@ bool Semantic::checkCanCatch(SemanticContext* context)
     }
 
     auto lastChild = identifierRef->childs.back();
-    return context->report({node, node->token, Fmt(Err(Err0139), node->token.ctext(), lastChild->token.ctext(), Naming::aKindName(lastChild->resolvedSymbolName->kind).c_str())});
+    return context->report({node, node->token, Fmt(Err(Err0500), node->token.ctext(), lastChild->token.ctext(), Naming::aKindName(lastChild->resolvedSymbolName->kind).c_str())});
 }
 
 bool Semantic::resolveTryBlock(SemanticContext* context)
@@ -145,9 +145,9 @@ bool Semantic::resolveThrow(SemanticContext* context)
 
     auto type = TypeManager::concretePtrRefType(expr->typeInfo);
 
-    SWAG_VERIFY(!type->isVoid(), context->report({expr, Err(Err0573)}));
+    SWAG_VERIFY(!type->isVoid(), context->report({expr, Err(Err0380)}));
     if (!type->isAny() || !(node->specFlags & AstTryCatchAssume::SPECFLAG_THROW_GETERR))
-        SWAG_VERIFY(type->isStruct(), context->report({expr, Fmt(Err(Err0570), type->getDisplayNameC())}));
+        SWAG_VERIFY(type->isStruct(), context->report({expr, Fmt(Err(Err0381), type->getDisplayNameC())}));
 
     if (type->isString())
         context->node->printLoc();

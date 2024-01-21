@@ -1,4 +1,4 @@
-#global testerror "Err0004"
+#global testerror "Err0085"
 
 func toto() #validif false
 {

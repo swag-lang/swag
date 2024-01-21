@@ -1,4 +1,4 @@
-#global testerror "Err0908"
+#global testerror "Err0645"
 
 struct TOTO
 {

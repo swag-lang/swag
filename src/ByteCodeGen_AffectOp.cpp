@@ -62,8 +62,8 @@ bool ByteCodeGen::emitCopyArray(ByteCodeGenContext* context, TypeInfo* typeInfo,
     auto typeStruct = CastTypeInfo<TypeInfoStruct>(finalType, TypeInfoKind::Struct);
     if (typeStruct->flags & TYPEINFO_STRUCT_NO_COPY)
     {
-        Diagnostic diag{from, Fmt(Err(Err0231), typeStruct->getDisplayNameC()), Diagnostic::isType(typeArray)};
-        diag.addRange(context->node->token, Nte(Nte1074));
+        Diagnostic diag{from, Fmt(Err(Err0113), typeStruct->getDisplayNameC()), Diagnostic::isType(typeArray)};
+        diag.addRange(context->node->token, Nte(Nte0044));
         return context->report(diag);
     }
 

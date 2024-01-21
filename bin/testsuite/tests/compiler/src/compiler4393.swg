@@ -1,4 +1,4 @@
-//#global testerror "Err0808"
+//#global testerror "Err0015"
 //#[Swag.PrintBc]
 func(T) insertionSort(x: const [..] T, cb: closure(T, T)->s32)
 {

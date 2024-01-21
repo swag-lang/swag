@@ -1,4 +1,4 @@
-#global testerror "Err0549"
+#global testerror "Err0430"
 
 enum XY: s32
 {

@@ -49,11 +49,11 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
     // #self
     if (node->token.text == g_LangSpec->name_sharpself)
     {
-        SWAG_VERIFY(node->ownerFct, context->report({node, Err(Err0348)}));
+        SWAG_VERIFY(node->ownerFct, context->report({node, Err(Err0448)}));
         AstNode* parent = node;
         while ((parent->ownerFct->attributeFlags & ATTRIBUTE_SHARP_FUNC) && parent->ownerFct->parent->ownerFct)
             parent = parent->ownerFct->parent;
-        SWAG_VERIFY(parent, context->report({parent, Err(Err0348)}));
+        SWAG_VERIFY(parent, context->report({parent, Err(Err0448)}));
 
         if (parent->ownerScope->kind == ScopeKind::Struct || parent->ownerScope->kind == ScopeKind::Enum)
         {
@@ -62,7 +62,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         }
         else
         {
-            SWAG_VERIFY(parent->ownerFct, context->report({parent, Err(Err0348)}));
+            SWAG_VERIFY(parent->ownerFct, context->report({parent, Err(Err0448)}));
             parent = parent->ownerFct;
 
             // Force scope
@@ -118,9 +118,9 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                 // More than one match : ambiguous
                 if (typeEnum.size() > 1)
                 {
-                    Diagnostic diag{identifierRef, Fmt(Err(Err0080), node->token.ctext())};
+                    Diagnostic diag{identifierRef, Fmt(Err(Err0018), node->token.ctext())};
                     for (auto t : typeEnum)
-                        diag.remarks.push_back(Fmt(Nte(Nte0086), t->getDisplayNameC()));
+                        diag.remarks.push_back(Fmt(Nte(Nte0104), t->getDisplayNameC()));
                     return context->report(diag);
                 }
 
@@ -140,7 +140,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                     {
                         if (hasEnum.size())
                         {
-                            Diagnostic                diag{identifierRef, Fmt(Err(Err0144), node->token.ctext(), hasEnum[0].second->getDisplayNameC())};
+                            Diagnostic                diag{identifierRef, Fmt(Err(Err0711), node->token.ctext(), hasEnum[0].second->getDisplayNameC())};
                             Vector<const Diagnostic*> notes;
                             auto                      closest = SemanticError::findClosestMatchesMsg(node->token.text, {{hasEnum[0].second->scope, 0}}, IdentifierSearchFor::Whatever);
                             if (!closest.empty())
@@ -151,7 +151,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                             return context->report(diag, notes);
                         }
 
-                        Diagnostic diag{identifierRef, Fmt(Err(Err0881), node->token.ctext())};
+                        Diagnostic diag{identifierRef, Fmt(Err(Err0721), node->token.ctext())};
 
                         // Call to a function ?
                         Diagnostic* note = nullptr;
@@ -583,13 +583,13 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
 
                 if (!startScope && i == 0)
                 {
-                    Diagnostic diag{context->node, *scopeUpValue, Err(Err0136)};
+                    Diagnostic diag{context->node, *scopeUpValue, Err(Err0450)};
                     return context->report(diag);
                 }
 
                 if (!startScope && i)
                 {
-                    Diagnostic diag{context->node, *scopeUpValue, Fmt(Err(Err0576), scopeUpValue->literalValue.u8)};
+                    Diagnostic diag{context->node, *scopeUpValue, Fmt(Err(Err0148), scopeUpValue->literalValue.u8)};
                     return context->report(diag);
                 }
 
@@ -664,7 +664,7 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
         }
     }
 
-    SWAG_VERIFY(scopeUpMode == IdentifierScopeUpMode::None, context->report({startNode, Err(Err0136)}));
+    SWAG_VERIFY(scopeUpMode == IdentifierScopeUpMode::None, context->report({startNode, Err(Err0450)}));
 
     return true;
 }

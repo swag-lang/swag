@@ -1,2 +1,3 @@
-﻿#global testerror "Err2004"
+#global testerror "Err0309"
 0xAG
+ co

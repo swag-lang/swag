@@ -1,4 +1,4 @@
-#global testerror "Err0115"
+#global testerror "Err0019"
 func(v: string) toto(x: u8) {}
 func(v: string) toto(x: u16) {}
 

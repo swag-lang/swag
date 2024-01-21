@@ -1,2 +1,3 @@
-﻿#global testerror "Err2017";
+#global testerror "Err0246";
 #unittest
+SWA

@@ -1,4 +1,4 @@
-#global testerror "Err1150"
+#global testerror "Err0495"
 public
 #[Swag.Implicit]
 {

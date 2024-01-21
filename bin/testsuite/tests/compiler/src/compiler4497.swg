@@ -1,4 +1,4 @@
-#global testerror "Err0564"
+#global testerror "Err0104"
 typealias Vec4 = [8] f32
 
 //#[Swag.PrintBc]

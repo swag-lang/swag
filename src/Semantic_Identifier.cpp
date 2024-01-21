@@ -33,7 +33,7 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
             {
                 if (c->resolvedSymbolName && c->resolvedSymbolName->kind == SymbolKind::Variable)
                 {
-                    SWAG_VERIFY(cptVar == 0, context->report({back, Err(Err0029)}));
+                    SWAG_VERIFY(cptVar == 0, context->report({back, Err(Err0163)}));
                     cptVar++;
                 }
             }
@@ -44,17 +44,17 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
         back->resolvedSymbolName->kind != SymbolKind::Function &&
         back->resolvedSymbolName->kind != SymbolKind::Variable)
     {
-        Diagnostic                diag{back, Fmt(Err(Err0030), Naming::aKindName(back->resolvedSymbolName->kind).c_str())};
+        Diagnostic                diag{back, Fmt(Err(Err0329), Naming::aKindName(back->resolvedSymbolName->kind).c_str())};
         Vector<const Diagnostic*> notes;
 
-        notes.push_back(Diagnostic::note(Nte(Nte1075)));
+        notes.push_back(Diagnostic::note(Nte(Nte0013)));
 
         if (back->resolvedSymbolName->kind == SymbolKind::Enum ||
             back->resolvedSymbolName->kind == SymbolKind::Interface ||
             back->resolvedSymbolName->kind == SymbolKind::TypeAlias ||
             back->resolvedSymbolName->kind == SymbolKind::Struct)
         {
-            notes.push_back(Diagnostic::note(node, node->kwdLoc, Fmt(Nte(Nte0125), Naming::aKindName(back->resolvedSymbolName->kind).c_str())));
+            notes.push_back(Diagnostic::note(node, node->kwdLoc, Fmt(Nte(Nte0025), Naming::aKindName(back->resolvedSymbolName->kind).c_str())));
         }
 
         return context->report(diag, notes);
@@ -798,7 +798,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         !prevNode->typeInfo->isPointerTo(TypeInfoKind::Struct) &&
         !prevNode->typeInfo->isStruct())
     {
-        Diagnostic diag{prevNode, Fmt(Err(Err0085), prevNode->token.ctext(), prevNode->typeInfo->getDisplayNameC())};
+        Diagnostic diag{prevNode, Fmt(Err(Err0258), prevNode->token.ctext(), prevNode->typeInfo->getDisplayNameC())};
         return context->report(diag);
     }
 
@@ -815,29 +815,29 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
     {
         if (prevNode->kind == AstNodeKind::Identifier && prevNode->specFlags & AstIdentifier::SPECFLAG_FROM_WITH)
         {
-            Diagnostic                diag{prevNode, Fmt(Err(Err0310), prevNode->token.ctext(), symbol->name.c_str())};
+            Diagnostic                diag{prevNode, Fmt(Err(Err0587), prevNode->token.ctext(), symbol->name.c_str())};
             Vector<const Diagnostic*> notes;
             auto                      prevIdentifier = CastAst<AstIdentifier>(prevNode, AstNodeKind::Identifier);
             auto                      widthNode      = prevIdentifier->identifierExtension->fromAlternateVar;
-            notes.push_back(Diagnostic::note(oneMatch.oneOverload->overload->node, Fmt(Nte(Nte1073), prevNode->typeInfo->getDisplayNameC())));
+            notes.push_back(Diagnostic::note(oneMatch.oneOverload->overload->node, Fmt(Nte(Nte0154), prevNode->typeInfo->getDisplayNameC())));
             notes.push_back(Diagnostic::hereIs(widthNode));
-            notes.push_back(Diagnostic::note(Fmt(Nte(Nte1130), identifierRef->startScope->name.c_str())));
+            notes.push_back(Diagnostic::note(Fmt(Nte(Nte0031), identifierRef->startScope->name.c_str())));
             return context->report(diag, notes);
         }
 
         if (oneMatch.oneOverload->scope == identifierRef->startScope)
         {
-            Diagnostic diag{prevNode, Fmt(Err(Err0097), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), prevNode->token.ctext(), symbol->name.c_str())};
-            diag.addRange(identifier->token, Fmt(Nte(Nte1073), prevNode->typeInfo->getDisplayNameC()));
+            Diagnostic diag{prevNode, Fmt(Err(Err0586), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), prevNode->token.ctext(), symbol->name.c_str())};
+            diag.addRange(identifier->token, Fmt(Nte(Nte0154), prevNode->typeInfo->getDisplayNameC()));
             Vector<const Diagnostic*> notes;
-            notes.push_back(Diagnostic::note(Fmt(Nte(Nte1001), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), prevNode->token.ctext(), symbol->name.c_str())));
+            notes.push_back(Diagnostic::note(Fmt(Nte(Nte0109), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), prevNode->token.ctext(), symbol->name.c_str())));
             notes.push_back(Diagnostic::hereIs(oneMatch.oneOverload->overload));
-            notes.push_back(Diagnostic::note(Fmt(Nte(Nte1080), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), identifierRef->startScope->name.c_str())));
+            notes.push_back(Diagnostic::note(Fmt(Nte(Nte0035), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), identifierRef->startScope->name.c_str())));
             return context->report(diag, notes);
         }
 
-        Diagnostic diag{prevNode, Fmt(Err(Err0097), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), prevNode->token.ctext(), symbol->name.c_str())};
-        diag.addRange(identifier->token, Fmt(Nte(Nte1073), prevNode->typeInfo->getDisplayNameC()));
+        Diagnostic diag{prevNode, Fmt(Err(Err0586), Naming::kindName(prevNode->resolvedSymbolName->kind).c_str(), prevNode->token.ctext(), symbol->name.c_str())};
+        diag.addRange(identifier->token, Fmt(Nte(Nte0154), prevNode->typeInfo->getDisplayNameC()));
         return context->report(diag, Diagnostic::hereIs(oneMatch.oneOverload->overload));
     }
 
@@ -849,7 +849,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         identifier->parent == identifierRef &&
         identifierRef->childs.back() != identifier)
     {
-        return context->report({identifier, Fmt(Err(Err0187), symbol->name.c_str(), identifier->typeInfo->getDisplayNameC())});
+        return context->report({identifier, Fmt(Err(Err0549), symbol->name.c_str(), identifier->typeInfo->getDisplayNameC())});
     }
 
     // A.X and A is a slice : missing index
@@ -860,7 +860,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         identifier->parent == identifierRef &&
         identifierRef->childs.back() != identifier)
     {
-        return context->report({identifier, Fmt(Err(Err0180), symbol->name.c_str(), identifier->typeInfo->getDisplayNameC())});
+        return context->report({identifier, Fmt(Err(Err0550), symbol->name.c_str(), identifier->typeInfo->getDisplayNameC())});
     }
 
     // Reapply back the values of the match to the call parameter node
@@ -1033,7 +1033,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
     {
         if (isStatementIdentifier(identifier))
         {
-            Diagnostic diag{identifier, Err(Err0096)};
+            Diagnostic diag{identifier, Err(Err0626)};
             return context->report(diag);
         }
     }
@@ -1061,7 +1061,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             idRef->previousResolvedNode &&
             idRef->previousResolvedNode->resolvedSymbolName->kind == SymbolKind::Variable)
         {
-            Diagnostic diag{idRef->previousResolvedNode, Fmt(Err(Err0481), idRef->previousResolvedNode->typeInfo->getDisplayNameC())};
+            Diagnostic diag{idRef->previousResolvedNode, Fmt(Err(Err0261), idRef->previousResolvedNode->typeInfo->getDisplayNameC())};
             return context->report(diag);
         }
 
@@ -1086,7 +1086,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             !(identifier->flags & AST_GENERATED) &&
             !(identifier->callParameters->specFlags & AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT))
         {
-            Diagnostic diag{identifier, identifier->token, Err(Err1128)};
+            Diagnostic diag{identifier, identifier->token, Err(Err0378)};
             return context->report(diag);
         }
 
@@ -1192,8 +1192,8 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             auto fctAttributes = ownerFct->attributeFlags;
             if (!(fctAttributes & ATTRIBUTE_COMPILER) && (overload->node->attributeFlags & ATTRIBUTE_COMPILER) && !(ownerFct->flags & AST_IN_RUN_BLOCK))
             {
-                Diagnostic diag{identifier, Fmt(Err(Err0091), Naming::kindName(overload->node).c_str(), overload->node->token.ctext(), ownerFct->token.ctext())};
-                auto       note = Diagnostic::note(overload->node, overload->node->token, Fmt(Nte(Nte1070), Naming::kindName(overload->node).c_str()));
+                Diagnostic diag{identifier, Fmt(Err(Err0175), Naming::kindName(overload->node).c_str(), overload->node->token.ctext(), ownerFct->token.ctext())};
+                auto       note = Diagnostic::note(overload->node, overload->node->token, Fmt(Nte(Nte0147), Naming::kindName(overload->node).c_str()));
                 return context->report(diag, note);
             }
         }
@@ -1259,7 +1259,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                 {
                     if (!(overload->node->attributeFlags & ATTRIBUTE_DISCARDABLE) && !(identifier->flags & AST_DISCARD))
                     {
-                        Diagnostic diag(identifier, identifier->token, Fmt(Err(Err0092), overload->node->token.ctext()));
+                        Diagnostic diag(identifier, identifier->token, Fmt(Err(Err0752), overload->node->token.ctext()));
                         return context->report(diag, Diagnostic::hereIs(overload));
                     }
                     else
@@ -1270,7 +1270,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             }
             else if (typeInfoRet->isVoid() && (identifier->flags & AST_DISCARD))
             {
-                Diagnostic diag{identifier, identifier->token, Err(Err0094)};
+                Diagnostic diag{identifier, identifier->token, Err(Err0158)};
                 return context->report(diag, Diagnostic::hereIs(overload));
             }
 
@@ -1318,7 +1318,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         {
             if (isStatementIdentifier(identifier))
             {
-                Diagnostic diag{idRef, Err(Err0096)};
+                Diagnostic diag{idRef, Err(Err0626)};
                 return context->report(diag);
             }
         }
@@ -1337,8 +1337,8 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             auto prev = identifier->identifierRef()->childs[childIdx - 1];
             if (prev->resolvedSymbolName && prev->resolvedSymbolName->kind == SymbolKind::Variable && !(prev->flags & AST_FROM_UFCS))
             {
-                Diagnostic diag{prev, Fmt(Err(Err0097), Naming::kindName(prev->resolvedSymbolOverload->node).c_str(), prev->token.ctext(), identifier->token.ctext())};
-                diag.addRange(identifier->token, Fmt(Nte(Nte1073), prev->typeInfo->getDisplayNameC()));
+                Diagnostic diag{prev, Fmt(Err(Err0586), Naming::kindName(prev->resolvedSymbolOverload->node).c_str(), prev->token.ctext(), identifier->token.ctext())};
+                diag.addRange(identifier->token, Fmt(Nte(Nte0154), prev->typeInfo->getDisplayNameC()));
                 return context->report(diag, Diagnostic::hereIs(funcDecl));
             }
         }
@@ -1347,7 +1347,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 
         // Be sure it's () and not {}
         if (identifier->callParameters && (identifier->callParameters->specFlags & AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT))
-            return context->report({identifier->callParameters, Fmt(Err(Err0098), identifier->token.ctext())});
+            return context->report({identifier->callParameters, Fmt(Err(Err0292), identifier->token.ctext())});
 
         // Capture syntax
         if (identifier->callParameters && !identifier->callParameters->aliasNames.empty())
@@ -1355,8 +1355,8 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             if (!(overload->node->attributeFlags & (ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN)))
             {
                 auto       cp = identifier->callParameters;
-                Diagnostic diag{cp->sourceFile, cp->aliasNames.front().startLocation, cp->aliasNames.back().endLocation, Fmt(Err(Err0099), identifier->token.ctext())};
-                diag.addRange(identifier->token, Nte(Nte1078));
+                Diagnostic diag{cp->sourceFile, cp->aliasNames.front().startLocation, cp->aliasNames.back().endLocation, Fmt(Err(Err0678), identifier->token.ctext())};
+                diag.addRange(identifier->token, Nte(Nte0155));
                 return context->report(diag);
             }
         }
@@ -1367,18 +1367,18 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         YIELD();
 
         if (identifier->token.text == g_LangSpec->name_opInit)
-            return context->report({identifier, identifier->token, Err(Err0100)});
+            return context->report({identifier, identifier->token, Err(Err0109)});
         if (identifier->token.text == g_LangSpec->name_opDrop)
-            return context->report({identifier, identifier->token, Err(Err0101)});
+            return context->report({identifier, identifier->token, Err(Err0108)});
         if (identifier->token.text == g_LangSpec->name_opPostCopy)
-            return context->report({identifier, identifier->token, Err(Err0103)});
+            return context->report({identifier, identifier->token, Err(Err0110)});
         if (identifier->token.text == g_LangSpec->name_opPostMove)
-            return context->report({identifier, identifier->token, Err(Err0104)});
+            return context->report({identifier, identifier->token, Err(Err0111)});
 
         // Be sure this is not a 'forward' decl
         if (funcDecl->isEmptyFct() && !funcDecl->isForeign() && identifier->token.text[0] != '@')
         {
-            Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0105), identifier->token.ctext())};
+            Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0293), identifier->token.ctext())};
             return context->report(diag, Diagnostic::hereIs(overload));
         }
 
@@ -1406,8 +1406,8 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 
                 if (!(fctAttributes & ATTRIBUTE_COMPILER) && (funcDecl->attributeFlags & ATTRIBUTE_COMPILER) && !(identifier->flags & AST_IN_RUN_BLOCK))
                 {
-                    Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0107), funcDecl->token.ctext(), ownerFct->token.ctext())};
-                    auto       note = Diagnostic::note(overload->node, overload->node->token, Nte(Nte1064));
+                    Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0176), funcDecl->token.ctext(), ownerFct->token.ctext())};
+                    auto       note = Diagnostic::note(overload->node, overload->node->token, Nte(Nte0156));
                     return context->report(diag, note);
                 }
             }
@@ -1468,7 +1468,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             {
                 if (!(funcDecl->attributeFlags & ATTRIBUTE_DISCARDABLE) && !(identifier->flags & AST_DISCARD))
                 {
-                    Diagnostic diag(identifier, identifier->token, Fmt(Err(Err0109), overload->node->token.ctext()));
+                    Diagnostic diag(identifier, identifier->token, Fmt(Err(Err0750), overload->node->token.ctext()));
                     return context->report(diag, Diagnostic::hereIs(overload));
                 }
                 else
@@ -1479,7 +1479,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         }
         else if (returnType->isVoid() && (identifier->flags & AST_DISCARD))
         {
-            Diagnostic diag{identifier, identifier->token, Err(Err0094)};
+            Diagnostic diag{identifier, identifier->token, Err(Err0158)};
             return context->report(diag, Diagnostic::hereIs(overload));
         }
 
@@ -2653,16 +2653,16 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
         {
             if (dep.node->isGeneratedSelf())
             {
-                Diagnostic diag{dependentVar, Fmt(Err(Err0117), dependentVar->typeInfo->getDisplayNameC())};
-                auto       note  = Diagnostic::note(dep.node->ownerFct, dep.node->ownerFct->token, Nte(Nte0056));
-                auto       note1 = Diagnostic::note(Nte(Nte0143));
+                Diagnostic diag{dependentVar, Fmt(Err(Err0013), dependentVar->typeInfo->getDisplayNameC())};
+                auto       note  = Diagnostic::note(dep.node->ownerFct, dep.node->ownerFct->token, Nte(Nte0115));
+                auto       note1 = Diagnostic::note(Nte(Nte0034));
                 return context->report(diag, note, note1);
             }
             else
             {
-                Diagnostic diag{dep.node, Fmt(Err(Err0117), dependentVar->typeInfo->getDisplayNameC())};
-                auto       note  = Diagnostic::note(dependentVar, Nte(Nte0016));
-                auto       note1 = Diagnostic::note(Nte(Nte0143));
+                Diagnostic diag{dep.node, Fmt(Err(Err0013), dependentVar->typeInfo->getDisplayNameC())};
+                auto       note  = Diagnostic::note(dependentVar, Nte(Nte0060));
+                auto       note1 = Diagnostic::note(Nte(Nte0034));
                 return context->report(diag, note, note1);
             }
         }
@@ -2771,7 +2771,7 @@ bool Semantic::getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef
             SWAG_ASSERT(identifierRef->previousResolvedNode);
             if (!node->callParameters)
             {
-                Diagnostic diag{node, Fmt(Err(Err0020), Naming::kindName(overload).c_str())};
+                Diagnostic diag{node, Fmt(Err(Err0541), Naming::kindName(overload).c_str())};
                 auto       note = Diagnostic::hereIs(overload);
                 return context->report(diag, note);
             }
@@ -2810,8 +2810,8 @@ bool Semantic::getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef
             if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind != SymbolKind::Variable)
             {
                 auto       subNode = identifierRef->previousResolvedNode ? identifierRef->previousResolvedNode : node;
-                Diagnostic diag{subNode, subNode->token, Fmt(Err(Err0124), identifierRef->resolvedSymbolName->name.c_str(), Naming::aKindName(identifierRef->resolvedSymbolName->kind).c_str())};
-                diag.addRange(node->token, Nte(Nte1079));
+                Diagnostic diag{subNode, subNode->token, Fmt(Err(Err0318), identifierRef->resolvedSymbolName->name.c_str(), Naming::aKindName(identifierRef->resolvedSymbolName->kind).c_str())};
+                diag.addRange(node->token, Nte(Nte0159));
                 return context->report(diag);
             }
         }
@@ -2853,7 +2853,7 @@ bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* 
                         case AstNodeKind::CompilerIf:
                         case AstNodeKind::While:
                         {
-                            Diagnostic diag{node, node->token, Fmt(Err(Err0686), Naming::kindName(overload).c_str(), overload->node->token.ctext(), brotherParent->token.ctext())};
+                            Diagnostic diag{node, node->token, Fmt(Err(Err0156), Naming::kindName(overload).c_str(), overload->node->token.ctext(), brotherParent->token.ctext())};
                             return context->report(diag, Diagnostic::hereIs(overload->node));
                         }
                         default:
@@ -2926,12 +2926,12 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext* context, SymbolMa
         {
             if (symbolKind == SymbolKind::Variable)
             {
-                Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0125), identifier->token.ctext(), symbol->overloads[0]->typeInfo->getDisplayNameC())};
+                Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0291), identifier->token.ctext(), symbol->overloads[0]->typeInfo->getDisplayNameC())};
                 return context->report(diag, Diagnostic::hereIs(symbol->overloads[0]));
             }
             else
             {
-                Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0127), identifier->token.ctext(), Naming::aKindName(symbol->kind).c_str())};
+                Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0290), identifier->token.ctext(), Naming::aKindName(symbol->kind).c_str())};
                 return context->report(diag, Diagnostic::hereIs(symbol->overloads[0]));
             }
         }
@@ -2970,7 +2970,7 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext* context, SymbolMa
                     oneParam->typeInfo->isTypedVariadic() ||
                     oneParam->typeInfo->isCVariadic())
                 {
-                    Diagnostic diag{oneParam, Err(Err0887)};
+                    Diagnostic diag{oneParam, Err(Err0515)};
                     diag.hint = Diagnostic::isType(oneParam);
                     return context->report(diag);
                 }
@@ -2998,7 +2998,7 @@ bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, Symbo
             symbolKind != SymbolKind::TypeAlias)
         {
             auto       firstNode = symbol->nodes.front();
-            Diagnostic diag{genericParameters, Fmt(Err(Err0130), node->token.ctext(), Naming::aKindName(symbol->kind).c_str())};
+            Diagnostic diag{genericParameters, Fmt(Err(Err0686), node->token.ctext(), Naming::aKindName(symbol->kind).c_str())};
             return context->report(diag, Diagnostic::hereIs(firstNode));
         }
 
@@ -3817,7 +3817,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     // Current file scope
     if (context->sourceFile && context->sourceFile->scopeFile && identifier->token.text == context->sourceFile->scopeFile->name)
     {
-        SWAG_VERIFY(identifier == identifierRef->childs.front(), context->report({identifier, Err(Err0132)}));
+        SWAG_VERIFY(identifier == identifierRef->childs.front(), context->report({identifier, Err(Err0367)}));
         identifierRef->startScope = context->sourceFile->scopeFile;
         return true;
     }
@@ -3906,7 +3906,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     // Filter symbols
     SWAG_CHECK(filterSymbols(context, identifier));
     if (dependentSymbols.empty())
-        return context->report({identifier, Fmt(Err(Err0133), identifier->token.ctext())});
+        return context->report({identifier, Fmt(Err(Err0733), identifier->token.ctext())});
 
     // If we have multiple symbols, we need to check that no one can be solved as incomplete, otherwhise it
     // can lead to ambiguities, or even worse, take the wrong one.
@@ -4013,7 +4013,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
         {
             if (identifierRef->flags & AST_SILENT_CHECK)
                 return true;
-            return context->report({identifier, Fmt(Err(Err0133), identifier->token.ctext())});
+            return context->report({identifier, Fmt(Err(Err0733), identifier->token.ctext())});
         }
 
         auto& listTryMatch = context->cacheListTryMatch;

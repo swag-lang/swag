@@ -1,4 +1,4 @@
-#global testerror "Err0053"
+#global testerror "Err0652"
 attr Toto(x: f32)
 
 #[Toto(true)]

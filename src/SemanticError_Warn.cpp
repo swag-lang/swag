@@ -53,7 +53,7 @@ bool SemanticError::warnDeprecated(SemanticContext* context, AstNode* identifier
     }
 
     Diagnostic diag{identifier, identifier->token, Fmt(Err(Wrn0002), Naming::kindName(symbol->kind).c_str(), identifier->resolvedSymbolOverload->symbol->name.c_str()), DiagnosticLevel::Warning};
-    auto       note1   = Diagnostic::note(node, node->token, Nte(Nte0031));
+    auto       note1   = Diagnostic::note(node, node->token, Nte(Nte0066));
     note1->canBeMerged = false;
 
     if (v && v->text.empty())
@@ -94,7 +94,7 @@ bool SemanticError::warnUnusedFunction(Module* moduleToGen, ByteCode* one)
 
     Diagnostic diag{funcDecl, funcDecl->tokenName, Fmt(Err(Wrn0006), "function", "function", funcDecl->token.ctext()), DiagnosticLevel::Warning};
     if (!funcDecl->isSpecialFunctionName())
-        diag.hint = Fmt(Nte(Nte1092), funcDecl->token.ctext());
+        diag.hint = Fmt(Nte(Nte0082), funcDecl->token.ctext());
     return Report::report(diag);
 }
 
@@ -178,7 +178,7 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, Scope* scope)
         if (overload->flags & OVERLOAD_VAR_LOCAL)
         {
             Diagnostic diag{front, front->token, Fmt(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
-            auto       note = Diagnostic::note(Fmt(Nte(Nte1092), sym->name.c_str()));
+            auto       note = Diagnostic::note(Fmt(Nte(Nte0082), sym->name.c_str()));
             isOk            = isOk && context->report(diag, note);
         }
         else if (overload->flags & OVERLOAD_VAR_FUNC_PARAM)
@@ -195,27 +195,27 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, Scope* scope)
             if (front->isGeneratedSelf())
             {
                 Diagnostic diag{front->ownerFct, front->ownerFct->token, Fmt(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
-                diag.hint = Nte(Nte1049);
-                auto note = Diagnostic::note(Nte(Nte0142));
+                diag.hint = Nte(Nte0145);
+                auto note = Diagnostic::note(Nte(Nte0039));
                 isOk      = isOk && context->report(diag, note);
             }
             else
             {
                 Diagnostic diag{front, front->token, Fmt(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
-                auto       note = Diagnostic::note(Fmt(Nte(Nte1092), sym->name.c_str()));
+                auto       note = Diagnostic::note(Fmt(Nte(Nte0082), sym->name.c_str()));
                 isOk            = isOk && context->report(diag, note);
             }
         }
         else if (overload->flags & OVERLOAD_VAR_CAPTURE)
         {
             Diagnostic diag{front, front->token, Fmt(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
-            auto       note = Diagnostic::note(Fmt(Nte(Nte1092), sym->name.c_str()));
+            auto       note = Diagnostic::note(Fmt(Nte(Nte0082), sym->name.c_str()));
             isOk            = isOk && context->report(diag, note);
         }
         else if (overload->flags & OVERLOAD_CONSTANT)
         {
             Diagnostic diag{front, front->token, Fmt(Err(Wrn0006), Naming::kindName(overload).c_str(), Naming::kindName(overload).c_str(), sym->name.c_str()), DiagnosticLevel::Warning};
-            auto       note = Diagnostic::note(Fmt(Nte(Nte1092), sym->name.c_str()));
+            auto       note = Diagnostic::note(Fmt(Nte(Nte0082), sym->name.c_str()));
             isOk            = isOk && context->report(diag, note);
         }
     }

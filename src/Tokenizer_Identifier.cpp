@@ -6,7 +6,7 @@
 
 bool Tokenizer::doIdentifier(TokenParse& token)
 {
-    while (idLetters[(uint32_t) curBuffer[0]])
+    while (idLetters[(uint8_t) curBuffer[0]])
     {
         curBuffer++;
         location.column++;
@@ -38,7 +38,7 @@ bool Tokenizer::doIdentifier(TokenParse& token)
         else
         {
             token.endLocation = location;
-            Diagnostic diag{sourceFile, token, Fmt(Err(Err2017), token.ctext())};
+            Diagnostic diag{sourceFile, token, Fmt(Err(Err0246), token.ctext())};
 
             Vector<Utf8> searchList{};
             for (int i = 0; i < (int) g_LangSpec->keywords.allocated; i++)
@@ -59,7 +59,7 @@ bool Tokenizer::doIdentifier(TokenParse& token)
     else if (token.text[0] == '@')
     {
         token.endLocation = location;
-        Diagnostic diag{sourceFile, token, Fmt(Err(Err2027), token.ctext())};
+        Diagnostic diag{sourceFile, token, Fmt(Err(Err0317), token.ctext())};
 
         Vector<Utf8> searchList{};
         for (int i = 0; i < (int) g_LangSpec->keywords.allocated; i++)

@@ -140,17 +140,17 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
     }
     else if (castError == CastErrorType::Const)
     {
-        msg = Fmt(ErrNte(Err0418, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
+        msg = Fmt(ErrNte(Err0054, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
     else if (castError == CastErrorType::SliceArray)
     {
         auto to   = CastTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
         auto from = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
-        hint      = Fmt(Nte(Nte1123), from->totalCount, from->finalType->getDisplayNameC(), to->pointedType->getDisplayNameC());
+        hint      = Fmt(Nte(Nte0113), from->totalCount, from->finalType->getDisplayNameC(), to->pointedType->getDisplayNameC());
     }
     else if (toType->isPointerArithmetic() && !fromType->isPointerArithmetic())
     {
-        msg = Fmt(ErrNte(Err0041, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
+        msg = Fmt(ErrNte(Err0649, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
     else if (toType->isInterface() && ((fromType->isStruct()) || (fromType->isPointerTo(TypeInfoKind::Struct))))
     {
@@ -160,32 +160,32 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
             fromType = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer)->pointedType;
         }
 
-        msg = Fmt(ErrNte(Err0176, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
+        msg = Fmt(ErrNte(Err0315, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
     else if (!toType->isPointerRef() && toType->isPointer() && fromType->isNativeInteger())
     {
-        msg = Fmt(ErrNte(Err0907, forNote), fromType->getDisplayNameC());
+        msg = Fmt(ErrNte(Err0647, forNote), fromType->getDisplayNameC());
     }
     else if (fromType->isPointerToTypeInfo() && !toType->isPointerToTypeInfo())
     {
-        hint = Fmt(Nte(Nte1040), fromType->getDisplayNameC());
-        msg  = Fmt(ErrNte(Err0436, forNote), toType->getDisplayNameC());
+        hint = Fmt(Nte(Nte0161), fromType->getDisplayNameC());
+        msg  = Fmt(ErrNte(Err0648, forNote), toType->getDisplayNameC());
     }
     else if (fromType->isClosure() && toType->isLambda())
     {
-        msg = Fmt(ErrNte(Err0178, forNote));
+        msg = Fmt(ErrNte(Err0650, forNote));
     }
     else if (toType->isLambdaClosure() && fromType->isLambdaClosure())
     {
         auto fromTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(fromType, TypeInfoKind::LambdaClosure);
         if (fromTypeFunc->firstDefaultValueIdx != UINT32_MAX)
-            msg = Fmt(ErrNte(Err0690, forNote));
+            msg = Fmt(ErrNte(Err0252, forNote));
     }
     else if (!fromType->isPointer() && toType->isPointerRef())
     {
         auto toPtrRef = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
         if (fromType->isSame(toPtrRef->pointedType, CASTFLAG_CAST))
-            hint = Nte(Nte1108);
+            hint = Nte(Nte0196);
     }
     else if (toType->isTuple() && fromType->isTuple())
     {
@@ -195,7 +195,7 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
         remarks.push_back(Fmt("source type is %s", fromName.c_str()));
         remarks.push_back(Fmt("requested type is %s", toName.c_str()));
 
-        msg = ErrNte(Err0028, forNote);
+        msg = ErrNte(Err0642, forNote);
     }
 }
 
@@ -226,7 +226,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         SWAG_ASSERT(fromNode);
 
         if (msg.empty())
-            msg = Fmt(Err(Err0177), fromType->getDisplayNameC(), toType->getDisplayNameC());
+            msg = Fmt(Err(Err0646), fromType->getDisplayNameC(), toType->getDisplayNameC());
         if (!hint.empty())
             notes.push_back(Diagnostic::note(fromNode, hint));
 
@@ -234,7 +234,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         if (!(castFlags & CASTFLAG_EXPLICIT) || (castFlags & CASTFLAG_COERCE))
         {
             if (TypeManager::makeCompatibles(context, toType, fromType, nullptr, nullptr, CASTFLAG_EXPLICIT | CASTFLAG_JUST_CHECK))
-                notes.push_back(Diagnostic::note(fromNode, Fmt(Nte(Nte1032), toType->getDisplayNameC())));
+                notes.push_back(Diagnostic::note(fromNode, Fmt(Nte(Nte0030), toType->getDisplayNameC())));
         }
 
         Diagnostic diag{fromNode, msg};

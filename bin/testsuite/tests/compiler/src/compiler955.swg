@@ -1,5 +1,5 @@
 
-#global testerror "Err0020"
+#global testerror "Err0541"
 
 func toto()->s32 => 666
 

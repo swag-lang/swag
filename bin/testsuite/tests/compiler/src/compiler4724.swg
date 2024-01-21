@@ -1,4 +1,4 @@
-#global testerror "Err0520"
+#global testerror "Err0427"
 private typealias B = s32
 public func toto4724(x: B)
 {

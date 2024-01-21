@@ -260,25 +260,25 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
 
     if (depNode)
     {
-        msg = Fmt(Nte(Nte0046), Naming::kindName(prevNode).c_str(), prevNode->token.ctext(), Naming::kindName(depNode).c_str(), depNode->token.ctext());
+        msg = Fmt(Nte(Nte0110), Naming::kindName(prevNode).c_str(), prevNode->token.ctext(), Naming::kindName(depNode).c_str(), depNode->token.ctext());
     }
     else if (prevNode && prevJob->waitingType)
     {
-        msg  = Fmt(Nte(Nte0053), Naming::kindName(prevNode).c_str(), prevNode->token.ctext(), prevJob->waitingType->getDisplayNameC());
+        msg  = Fmt(Nte(Nte0055), Naming::kindName(prevNode).c_str(), prevNode->token.ctext(), prevJob->waitingType->getDisplayNameC());
         hint = Diagnostic::isType(prevNode->typeInfo);
     }
     else if (prevJob->waitingType && dynamic_cast<TypeGenStructJob*>(prevJob))
     {
-        msg      = Fmt(Nte(Nte0058), prevJob->waitingType->getDisplayNameC());
+        msg      = Fmt(Nte(Nte0187), prevJob->waitingType->getDisplayNameC());
         prevNode = prevJob->waitingType->declNode;
     }
     else if (prevJob->waitingType)
     {
-        msg = Fmt(Nte(Nte0058), prevJob->waitingType->getDisplayNameC());
+        msg = Fmt(Nte(Nte0187), prevJob->waitingType->getDisplayNameC());
     }
     else
     {
-        msg  = Fmt(Nte(Nte0065), Naming::kindName(prevNode).c_str(), prevNode->token.ctext());
+        msg  = Fmt(Nte(Nte0186), Naming::kindName(prevNode).c_str(), prevNode->token.ctext());
         hint = Diagnostic::isType(prevNode->typeInfo);
     }
 
@@ -383,7 +383,7 @@ void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
                 {
                     auto front        = prevJob->nodes.front();
                     auto back         = prevJob->nodes.back();
-                    auto msg          = Fmt(Nte(Nte0046), Naming::kindName(front).c_str(), front->token.ctext(), Naming::kindName(back).c_str(), back->token.ctext());
+                    auto msg          = Fmt(Nte(Nte0110), Naming::kindName(front).c_str(), front->token.ctext(), Naming::kindName(back).c_str(), back->token.ctext());
                     auto note         = Diagnostic::note(back, back->token, msg);
                     note->canBeMerged = false;
                     note->hint        = Diagnostic::isType(back->typeInfo);
@@ -402,7 +402,7 @@ void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
                 notes.push_back(note);
 
             auto       prevNodeLocal = pendingJob->originalNode ? pendingJob->originalNode : pendingJob->nodes.front();
-            Diagnostic diag{prevNodeLocal, prevNodeLocal->token, Fmt(Err(Err0419), Naming::kindName(prevNodeLocal).c_str(), prevNodeLocal->token.ctext())};
+            Diagnostic diag{prevNodeLocal, prevNodeLocal->token, Fmt(Err(Err0625), Naming::kindName(prevNodeLocal).c_str(), prevNodeLocal->token.ctext())};
             Report::report(diag, notes);
             auto sourceFile                   = Report::getDiagFile(diag);
             sourceFile->module->hasCycleError = true;
@@ -415,7 +415,7 @@ void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
             auto note = errorPendingJob(pendingJob, nullptr);
             if (!note)
                 continue;
-            Diagnostic diag{note->sourceFile, note->startLocation, note->endLocation, Err(Err0027)};
+            Diagnostic diag{note->sourceFile, note->startLocation, note->endLocation, Err(Err0087)};
             Report::report(diag, note);
         }
     }

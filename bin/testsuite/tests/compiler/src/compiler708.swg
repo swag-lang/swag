@@ -1,4 +1,4 @@
-#global testerror "Err1068"
+#global testerror "Err0546"
 #test
 {
 	loop(i: 2)

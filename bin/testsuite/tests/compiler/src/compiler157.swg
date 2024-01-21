@@ -1,4 +1,4 @@
 #global testpass syntax;
 
-#global testerror "Err1172";
+#global testerror "Err0585";
 var xxxx;

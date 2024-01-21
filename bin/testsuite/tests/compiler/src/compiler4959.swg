@@ -1,4 +1,4 @@
-#global testerror "Err1164"
+#global testerror "Err0144"
 #test
 {
     #scope 0

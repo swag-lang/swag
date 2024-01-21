@@ -1,4 +1,4 @@
-﻿#include "pch.h"
+#include "pch.h"
 #include "Tokenizer.h"
 #include "ErrorIds.h"
 
@@ -81,7 +81,7 @@ bool Tokenizer::doStringLiteral(TokenParse& token)
         if (!multiline && SWAG_IS_EOL(c))
         {
             token.startLocation = location;
-            error(token, Err(Err2018));
+            error(token, Err(Err0132));
             return false;
         }
 
@@ -89,7 +89,7 @@ bool Tokenizer::doStringLiteral(TokenParse& token)
         if (!c)
         {
             location = token.startLocation;
-            error(token, Err(Err2018));
+            error(token, Err(Err0132));
             return false;
         }
 
@@ -185,7 +185,7 @@ bool Tokenizer::doCharacterLiteral(TokenParse& token)
         if (SWAG_IS_EOL(c))
         {
             token.startLocation = location;
-            error(token, Err(Err2026));
+            error(token, Err(Err0124));
             return false;
         }
 
@@ -193,7 +193,7 @@ bool Tokenizer::doCharacterLiteral(TokenParse& token)
         if (!c)
         {
             location = token.startLocation;
-            error(token, Err(Err2026));
+            error(token, Err(Err0124));
             return false;
         }
 

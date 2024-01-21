@@ -688,7 +688,7 @@ Utf8 Diagnostic::isType(TypeInfo* typeInfo)
     if (!typeInfo)
         return "";
 
-    auto str = Fmt(Nte(Nte1011), typeInfo->getDisplayNameC());
+    auto str = Fmt(Nte(Nte0177), typeInfo->getDisplayNameC());
 
     if (typeInfo->isAlias())
     {
@@ -704,7 +704,7 @@ Utf8 Diagnostic::isType(SymbolOverload* overload)
 {
     if (!overload || !overload->typeInfo)
         return "";
-    return Fmt(Nte(Nte1084), Naming::kindName(overload).c_str(), overload->typeInfo->getDisplayNameC());
+    return Fmt(Nte(Nte0148), Naming::kindName(overload).c_str(), overload->typeInfo->getDisplayNameC());
 }
 
 Utf8 Diagnostic::isType(AstNode* node)
@@ -730,7 +730,7 @@ Diagnostic* Diagnostic::hereIs(AstNode* node)
         node->tokenId != TokenId::KwdPublic)
         return nullptr;
 
-    auto msg = Fmt(Nte(Nte0090), Naming::kindName(node).c_str(), node->token.ctext());
+    auto msg = Fmt(Nte(Nte0062), Naming::kindName(node).c_str(), node->token.ctext());
     return Diagnostic::note(node, node->getTokenName(), msg);
 }
 

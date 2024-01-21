@@ -1,4 +1,4 @@
-#global testerror "Err1002"
+#global testerror "Err0518"
 #foreignlib
 
 func toto(){}

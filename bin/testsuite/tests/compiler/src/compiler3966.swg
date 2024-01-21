@@ -1,4 +1,4 @@
-#global testerror "Err0517"
+#global testerror "Err0366"
 
 var G: VV
 var PC: bool

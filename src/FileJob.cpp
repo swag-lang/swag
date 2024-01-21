@@ -22,7 +22,7 @@ JobResult CopyFileJob::execute()
     if (fopen_s(&fsrc, sourcePath.string().c_str(), "rbN"))
     {
         module->numErrors++;
-        Report::errorOS(Fmt(Err(Err0502), sourcePath.string().c_str()));
+        Report::errorOS(Fmt(Err(Err0095), sourcePath.string().c_str()));
         return JobResult::ReleaseJob;
     }
 
@@ -30,7 +30,7 @@ JobResult CopyFileJob::execute()
     {
         module->numErrors++;
         fclose(fsrc);
-        Report::errorOS(Fmt(Err(Err0502), destPath.string().c_str()));
+        Report::errorOS(Fmt(Err(Err0095), destPath.string().c_str()));
         return JobResult::ReleaseJob;
     }
 
@@ -56,7 +56,7 @@ JobResult LoadFileJob::execute()
     FILE* fsrc = nullptr;
     if (fopen_s(&fsrc, sourcePath.string().c_str(), "rbN"))
     {
-        Report::errorOS(Fmt(Err(Err0502), sourcePath.string().c_str()));
+        Report::errorOS(Fmt(Err(Err0095), sourcePath.string().c_str()));
         return JobResult::ReleaseJob;
     }
 

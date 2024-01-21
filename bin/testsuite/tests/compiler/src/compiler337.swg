@@ -1,7 +1,7 @@
 
 ;
 
-#global testerror "Err0468";
+#global testerror "Err0136";
 //#[Swag.PrintBc]
 #test
 {

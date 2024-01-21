@@ -1,2 +1,2 @@
 #global #[Swag.Offset("q")]
-#global testerror "Err0600"
+#global testerror "Err0494"
