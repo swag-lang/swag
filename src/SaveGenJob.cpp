@@ -23,7 +23,7 @@ bool SaveGenJob::flush(Module* module)
         if (fopen_s(&h, publicPath.string().c_str(), "wN"))
         {
             module->numErrors++;
-            Report::errorOS(Fmt(Err(Err0098), publicPath.string().c_str()));
+            Report::errorOS(Fmt(Err(Err0096), publicPath.string().c_str()));
             return false;
         }
 

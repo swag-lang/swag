@@ -1,5 +1,5 @@
 
-#global testerror "Err0495"
+#global testerror "Err0494"
 
 public
 #[Swag.Inline]

@@ -150,7 +150,7 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
     }
     else if (toType->isPointerArithmetic() && !fromType->isPointerArithmetic())
     {
-        msg = Fmt(ErrNte(Err0649, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
+        msg = Fmt(ErrNte(Err0646, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
     else if (toType->isInterface() && ((fromType->isStruct()) || (fromType->isPointerTo(TypeInfoKind::Struct))))
     {
@@ -160,26 +160,26 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
             fromType = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer)->pointedType;
         }
 
-        msg = Fmt(ErrNte(Err0315, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
+        msg = Fmt(ErrNte(Err0314, forNote), fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
     else if (!toType->isPointerRef() && toType->isPointer() && fromType->isNativeInteger())
     {
-        msg = Fmt(ErrNte(Err0647, forNote), fromType->getDisplayNameC());
+        msg = Fmt(ErrNte(Err0644, forNote), fromType->getDisplayNameC());
     }
     else if (fromType->isPointerToTypeInfo() && !toType->isPointerToTypeInfo())
     {
         hint = Fmt(Nte(Nte0161), fromType->getDisplayNameC());
-        msg  = Fmt(ErrNte(Err0648, forNote), toType->getDisplayNameC());
+        msg  = Fmt(ErrNte(Err0645, forNote), toType->getDisplayNameC());
     }
     else if (fromType->isClosure() && toType->isLambda())
     {
-        msg = Fmt(ErrNte(Err0650, forNote));
+        msg = Fmt(ErrNte(Err0647, forNote));
     }
     else if (toType->isLambdaClosure() && fromType->isLambdaClosure())
     {
         auto fromTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(fromType, TypeInfoKind::LambdaClosure);
         if (fromTypeFunc->firstDefaultValueIdx != UINT32_MAX)
-            msg = Fmt(ErrNte(Err0252, forNote));
+            msg = Fmt(ErrNte(Err0251, forNote));
     }
     else if (!fromType->isPointer() && toType->isPointerRef())
     {
@@ -195,7 +195,7 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
         remarks.push_back(Fmt("source type is %s", fromName.c_str()));
         remarks.push_back(Fmt("requested type is %s", toName.c_str()));
 
-        msg = ErrNte(Err0642, forNote);
+        msg = ErrNte(Err0640, forNote);
     }
 }
 
@@ -226,7 +226,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         SWAG_ASSERT(fromNode);
 
         if (msg.empty())
-            msg = Fmt(Err(Err0646), fromType->getDisplayNameC(), toType->getDisplayNameC());
+            msg = Fmt(Err(Err0643), fromType->getDisplayNameC(), toType->getDisplayNameC());
         if (!hint.empty())
             notes.push_back(Diagnostic::note(fromNode, hint));
 

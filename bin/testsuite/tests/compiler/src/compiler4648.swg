@@ -1,4 +1,4 @@
-#global testerror "Err0550"
+#global testerror "Err0549"
 struct A { r: s32 }
 
 #test

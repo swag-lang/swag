@@ -1428,12 +1428,12 @@ bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode,
 
         if (callNode->kind == AstNodeKind::Inline)
         {
-            Diagnostic diag{callNode->sourceFile, callNode->token, Fmt(Err(Err0545), funcNode->token.ctext())};
+            Diagnostic diag{callNode->sourceFile, callNode->token, Fmt(Err(Err0544), funcNode->token.ctext())};
             return context->report(diag, Diagnostic::hereIs(srcNode));
         }
         else
         {
-            Diagnostic diag{callNode, Fmt(Err(Err0545), funcNode->token.ctext())};
+            Diagnostic diag{callNode, Fmt(Err(Err0544), funcNode->token.ctext())};
             return context->report(diag, Diagnostic::hereIs(srcNode));
         }
     }
@@ -1447,7 +1447,7 @@ bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode,
         {
             if (!srcNode)
                 srcNode = typeInfoFunc->declNode;
-            Diagnostic diag{parent, parent->token, Fmt(Err(Err0503), parent->token.ctext(), srcNode->token.ctext())};
+            Diagnostic diag{parent, parent->token, Fmt(Err(Err0502), parent->token.ctext(), srcNode->token.ctext())};
             return context->report(diag, Diagnostic::hereIs(srcNode));
         }
     }
@@ -1910,7 +1910,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context, AstNode* allParams, AstF
     // Pass a variadic parameter to another function
     auto numVariadic = (uint32_t) (numCallParams - numTypeParams) + 1;
     if (typeInfoFunc->flags & TYPEINFO_VARIADIC)
-        SWAG_VERIFY(numVariadic <= SWAG_LIMIT_MAX_VARIADIC_PARAMS, context->report({allParams, Fmt(Err(Err0641), SWAG_LIMIT_MAX_VARIADIC_PARAMS, numVariadic)}));
+        SWAG_VERIFY(numVariadic <= SWAG_LIMIT_MAX_VARIADIC_PARAMS, context->report({allParams, Fmt(Err(Err0639), SWAG_LIMIT_MAX_VARIADIC_PARAMS, numVariadic)}));
 
     auto lastParam = allParams && !allParams->childs.empty() ? allParams->childs.back() : nullptr;
 

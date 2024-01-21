@@ -16,7 +16,7 @@ static Diagnostic* unknownIdentifierInScope(AstIdentifierRef* identifierRef, Ast
     // Error inside a tuple
     if (typeRef && typeRef->isTuple())
     {
-        auto diag       = new Diagnostic{node, Fmt(Err(Err0719), node->token.ctext())};
+        auto diag       = new Diagnostic{node, Fmt(Err(Err0716), node->token.ctext())};
         auto structNode = CastAst<AstStruct>(identifierRef->startScope->owner, AstNodeKind::StructDecl);
         auto errNode    = structNode->originalParent ? structNode->originalParent : identifierRef->startScope->owner;
         auto note       = Diagnostic::note(errNode, Nte(Nte0078));
@@ -47,40 +47,40 @@ static Diagnostic* unknownIdentifierInScope(AstIdentifierRef* identifierRef, Ast
     auto idRef   = node->identifierRef();
     if (idRef && (idRef->flags & AST_TUPLE_UNPACK) && varDecl)
     {
-        diag = new Diagnostic{node, Fmt(Err(Err0722), varDecl->token.ctext(), displayName.c_str())};
+        diag = new Diagnostic{node, Fmt(Err(Err0719), varDecl->token.ctext(), displayName.c_str())};
     }
     else if (prevIdentifier && prevIdentifier->identifierExtension && prevIdentifier->identifierExtension->alternateEnum)
     {
         auto altEnum = prevIdentifier->identifierExtension->alternateEnum;
-        auto msg     = Fmt(Err(Err0717), node->token.ctext(), altEnum->getDisplayNameC(), whereScopeName.c_str(), displayName.c_str());
+        auto msg     = Fmt(Err(Err0714), node->token.ctext(), altEnum->getDisplayNameC(), whereScopeName.c_str(), displayName.c_str());
         diag         = new Diagnostic{node, node->token, msg};
         notes.push_back(Diagnostic::hereIs(altEnum->declNode));
     }
     else if (!typeWhere)
     {
-        diag = new Diagnostic{node, node->token, Fmt(Err(Err0716), node->token.ctext(), whereScopeName.c_str(), displayName.c_str())};
+        diag = new Diagnostic{node, node->token, Fmt(Err(Err0713), node->token.ctext(), whereScopeName.c_str(), displayName.c_str())};
     }
     else if (typeWhere->kind == TypeInfoKind::Enum)
     {
-        diag = new Diagnostic{node, node->token, Fmt(Err(Err0711), node->token.ctext(), typeWhere->getDisplayNameC())};
+        diag = new Diagnostic{node, node->token, Fmt(Err(Err0708), node->token.ctext(), typeWhere->getDisplayNameC())};
     }
     else if (typeWhere->kind == TypeInfoKind::Struct && node->token.text == g_LangSpec->name_opVisit)
     {
-        diag = new Diagnostic{node, node->token, Fmt(Err(Err0421), typeWhere->getDisplayNameC())};
+        diag = new Diagnostic{node, node->token, Fmt(Err(Err0420), typeWhere->getDisplayNameC())};
     }
     else if (typeWhere->kind == TypeInfoKind::Struct && node->token.text.startsWith(g_LangSpec->name_opVisit))
     {
         auto visitNode = CastAst<AstVisit>(node->findParent(AstNodeKind::Visit), AstNodeKind::Visit);
         Utf8 variant{node->token.text.buffer + g_LangSpec->name_opVisit.length()};
-        diag = new Diagnostic{visitNode, visitNode->extraNameToken, Fmt(Err(Err0420), variant.c_str(), typeWhere->getDisplayNameC())};
+        diag = new Diagnostic{visitNode, visitNode->extraNameToken, Fmt(Err(Err0419), variant.c_str(), typeWhere->getDisplayNameC())};
     }
     else if (typeWhere->kind == TypeInfoKind::Struct && node->callParameters)
     {
-        diag = new Diagnostic{node, node->token, Fmt(Err(Err0726), node->token.ctext(), typeWhere->getDisplayNameC())};
+        diag = new Diagnostic{node, node->token, Fmt(Err(Err0723), node->token.ctext(), typeWhere->getDisplayNameC())};
     }
     else
     {
-        diag = new Diagnostic{node, node->token, Fmt(Err(Err0718), node->token.ctext(), typeWhere->getDisplayNameC())};
+        diag = new Diagnostic{node, node->token, Fmt(Err(Err0715), node->token.ctext(), typeWhere->getDisplayNameC())};
     }
 
     // Variable before
@@ -169,23 +169,23 @@ void SemanticError::unknownIdentifierError(SemanticContext* context, AstIdentifi
     {
     case IdentifierSearchFor::Function:
         if (node->token.text[0] == '#')
-            diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0709), node->token.ctext())};
+            diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0706), node->token.ctext())};
         else if (node->token.text[0] == '@')
-            diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0724), node->token.ctext())};
+            diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0721), node->token.ctext())};
         else
-            diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0715), node->token.ctext())};
+            diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0712), node->token.ctext())};
         break;
     case IdentifierSearchFor::Attribute:
-        diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0708), node->token.ctext())};
+        diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0705), node->token.ctext())};
         break;
     case IdentifierSearchFor::Type:
-        diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0730), node->token.ctext())};
+        diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0727), node->token.ctext())};
         break;
     case IdentifierSearchFor::Struct:
-        diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0729), node->token.ctext())};
+        diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0726), node->token.ctext())};
         break;
     default:
-        diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0720), node->token.ctext())};
+        diag = new Diagnostic{node->sourceFile, node->token, Fmt(Err(Err0717), node->token.ctext())};
         break;
     }
 

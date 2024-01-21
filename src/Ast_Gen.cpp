@@ -101,13 +101,13 @@ bool Ast::convertLiteralTupleToStructVar(SemanticContext* context, TypeInfo* toT
         int maxCount = (int) typeStruct->fields.size();
         if (countParams > maxCount)
         {
-            Diagnostic diag{fromNode->childs[maxCount], Fmt(Err(Err0638), maxCount, countParams)};
+            Diagnostic diag{fromNode->childs[maxCount], Fmt(Err(Err0636), maxCount, countParams)};
             return context->report(diag);
         }
 
         if (countParams < maxCount)
         {
-            Diagnostic diag{fromNode->childs.back(), Fmt(Err(Err0597), maxCount, countParams)};
+            Diagnostic diag{fromNode->childs.back(), Fmt(Err(Err0596), maxCount, countParams)};
             return context->report(diag);
         }
     }
@@ -190,9 +190,9 @@ bool Ast::convertLiteralTupleToStructType(SemanticContext* context, TypeInfoStru
     int countParams = (int) typeList->subTypes.size();
     int maxCount    = (int) toType->fields.size();
     if (countParams > maxCount)
-        return context->report({fromNode->childs.front()->childs[maxCount], Fmt(Err(Err0638), maxCount, countParams)});
+        return context->report({fromNode->childs.front()->childs[maxCount], Fmt(Err(Err0636), maxCount, countParams)});
     if (countParams < maxCount)
-        return context->report({fromNode->childs.front()->childs.back(), Fmt(Err(Err0597), maxCount, countParams)});
+        return context->report({fromNode->childs.front()->childs.back(), Fmt(Err(Err0596), maxCount, countParams)});
 
     // Each field of the toType struct must have a type given by the tuple.
     // But as that tuple can have named parameters, we need to find the correct type depending
@@ -221,7 +221,7 @@ bool Ast::convertLiteralTupleToStructType(SemanticContext* context, TypeInfoStru
             if (typeField->isListArray())
                 typeField = TypeManager::convertTypeListToArray(context, (TypeInfoList*) typeField, false);
             if (typeField->isListTuple())
-                return context->report({fromNode, Err(Err0742)});
+                return context->report({fromNode, Err(Err0739)});
 
             // This is used for generic automatic deduction. We can use typeInfo->genericParameters, or we would
             // have to construct a struct AST with generic parameters too, and this is not possible as the struct
@@ -439,7 +439,7 @@ bool Ast::convertStructParamsToTmpVar(SemanticContext* context, AstIdentifier* i
 
     // Be sure it's the NAME{} syntax
     if (!(identifier->callParameters->specFlags & AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT))
-        return context->report({callP, Fmt(Err(Err0378), identifier->typeInfo->name.c_str())});
+        return context->report({callP, Fmt(Err(Err0377), identifier->typeInfo->name.c_str())});
 
     auto varParent = identifier->identifierRef()->parent;
     while (varParent->kind == AstNodeKind::ExpressionList)

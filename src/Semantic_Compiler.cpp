@@ -349,7 +349,7 @@ bool Semantic::resolveCompilerAstExpression(SemanticContext* context)
     auto job        = context->baseJob;
     auto expression = context->node->childs.back();
     auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
-    SWAG_VERIFY(typeInfo->isString(), context->report({expression, Fmt(Err(Err0621), expression->typeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(typeInfo->isString(), context->report({expression, Fmt(Err(Err0620), expression->typeInfo->getDisplayNameC())}));
 
     SWAG_CHECK(executeCompilerNode(context, expression, false));
     YIELD();
@@ -448,7 +448,7 @@ bool Semantic::resolveCompilerMacro(SemanticContext* context)
 
     // Be sure #macro is used inside a macro
     if (!node->ownerInline || (node->ownerInline->attributeFlags & ATTRIBUTE_MIXIN) || !(node->ownerInline->attributeFlags & ATTRIBUTE_MACRO))
-        return context->report({node, Err(Err0445)});
+        return context->report({node, Err(Err0444)});
 
     return true;
 }
@@ -739,13 +739,13 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
                 // Search the file itself, without any special path
                 fullFileName = filename;
                 if (!filesystem::exists(fullFileName, err))
-                    return context->report({back, Fmt(Err(Err0713), filename.c_str())});
+                    return context->report({back, Fmt(Err(Err0710), filename.c_str())});
             }
         }
 
         struct stat stat_buf;
         int         rc = stat(fullFileName.string().c_str(), &stat_buf);
-        SWAG_VERIFY(rc == 0, context->report({back, Fmt(Err(Err0096), back->computedValue->text.c_str())}));
+        SWAG_VERIFY(rc == 0, context->report({back, Fmt(Err(Err0097), back->computedValue->text.c_str())}));
         SWAG_CHECK(context->checkSizeOverflow("[[#load]]", stat_buf.st_size, SWAG_LIMIT_COMPILER_LOAD));
 
         auto     newJob         = Allocator::alloc<LoadFileJob>();
@@ -950,12 +950,12 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
         return true;
 
     case TokenId::CompilerCallerLocation:
-        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, Err(Err0499)}));
+        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, Err(Err0498)}));
         node->typeInfo = g_Workspace->swagScope.regTypeInfoSourceLoc;
         return true;
 
     case TokenId::CompilerCallerFunction:
-        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, Err(Err0498)}));
+        SWAG_VERIFY(node->parent->kind == AstNodeKind::FuncDeclParam, context->report({node, Err(Err0497)}));
         node->typeInfo = g_TypeMgr->typeInfoString;
         return true;
 

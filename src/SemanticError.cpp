@@ -56,7 +56,7 @@ void SemanticError::commonErrorNotes(SemanticContext* context, const VectorNativ
 
 bool SemanticError::notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg, AstNode* hintType)
 {
-    Utf8 text = Fmt(Err(Err0352), node->token.ctext(), typeInfo->getDisplayNameC());
+    Utf8 text = Fmt(Err(Err0351), node->token.ctext(), typeInfo->getDisplayNameC());
     if (msg)
     {
         text += " ";
@@ -75,7 +75,7 @@ bool SemanticError::duplicatedSymbolError(ErrorContext* context, SourceFile* sou
     if (thisKind != otherKind)
         as = Fmt("as %s", Naming::aKindName(otherKind).c_str());
 
-    Diagnostic diag{sourceFile, token, Fmt(Err(Err0627), Naming::kindName(thisKind).c_str(), thisName.c_str(), as.c_str())};
+    Diagnostic diag{sourceFile, token, Fmt(Err(Err0626), Naming::kindName(thisKind).c_str(), thisName.c_str(), as.c_str())};
     auto       note = Diagnostic::note(otherSymbolDecl, otherSymbolDecl->getTokenName(), Nte(Nte0071));
     return context->report(diag, note);
 }

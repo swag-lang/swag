@@ -1,4 +1,4 @@
-#global testerror "Err0317"
+#global testerror "Err0316"
 
 #[Swag.Macro]
 func toto(stmt: code)

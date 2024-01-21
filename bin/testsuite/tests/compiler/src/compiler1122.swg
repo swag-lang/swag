@@ -1,5 +1,5 @@
 
-#global testerror "Err0311"
+#global testerror "Err0310"
 
 #[Swag.public]
 struct Random

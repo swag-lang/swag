@@ -394,7 +394,7 @@ bool Semantic::resolveRange(SemanticContext* context)
 
     auto typeInfo = TypeManager::concreteType(node->expressionLow->typeInfo);
     if (!typeInfo->isNativeIntegerOrRune() && !typeInfo->isNativeFloat())
-        return context->report({node->expressionLow, Fmt(Err(Err0365), node->expressionLow->typeInfo->getDisplayNameC())});
+        return context->report({node->expressionLow, Fmt(Err(Err0364), node->expressionLow->typeInfo->getDisplayNameC())});
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, node->expressionLow, node->expressionUp, CASTFLAG_COMMUTATIVE));
 

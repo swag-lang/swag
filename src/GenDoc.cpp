@@ -1488,7 +1488,7 @@ bool GenDoc::generate(Module* mdl, BuildCfgDocKind kind)
     FILE* f = nullptr;
     if (fopen_s(&f, fullFileName.c_str(), "wb"))
     {
-        Report::errorOS(Fmt(Err(Err0098), fullFileName.c_str()));
+        Report::errorOS(Fmt(Err(Err0096), fullFileName.c_str()));
         return false;
     }
 

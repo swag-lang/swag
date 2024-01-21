@@ -1,4 +1,4 @@
-#global testerror "Err0751"
+#global testerror "Err0748"
 #test
 {
 	discard @countof("1")

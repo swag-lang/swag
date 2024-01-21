@@ -1,4 +1,4 @@
-#global testerror "Err0347"
+#global testerror "Err0346"
 #test
 {
     var x = "a" - "b"

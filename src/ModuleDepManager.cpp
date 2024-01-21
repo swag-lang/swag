@@ -206,7 +206,7 @@ bool ModuleDepManager::fetchModuleCfgSwag(ModuleDependency* dep, Utf8& cfgFilePa
     if (!err)
         remotePath = remotePath1;
     if (!filesystem::exists(remotePath, err))
-        return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0256), remotePath.string().c_str())});
+        return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0255), remotePath.string().c_str())});
     if (!fetch)
         return true;
     dep->resolvedLocation = remotePath;
@@ -225,7 +225,7 @@ bool ModuleDepManager::fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePa
     if (!err)
         remotePath = remotePath1;
     if (!filesystem::exists(remotePath, err))
-        return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0256), remotePath.string().c_str())});
+        return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0255), remotePath.string().c_str())});
     if (!fetch)
         return true;
 
@@ -236,7 +236,7 @@ bool ModuleDepManager::fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePa
 bool ModuleDepManager::fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, Utf8& cfgFileName, bool fetch)
 {
     if (dep->location.empty())
-        return Report::report({dep->node, Fmt(Err(Err0255), dep->name.c_str())});
+        return Report::report({dep->node, Fmt(Err(Err0254), dep->name.c_str())});
 
     Vector<Utf8> tokens;
     Utf8::tokenize(dep->location, '@', tokens);
@@ -249,7 +249,7 @@ bool ModuleDepManager::fetchModuleCfg(ModuleDependency* dep, Utf8& cfgFilePath, 
 
     // Check mode
     if (tokens[0] != g_LangSpec->name_swag && tokens[0] != g_LangSpec->name_disk)
-        return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0323), tokens[0].c_str())});
+        return Report::report({dep->node, dep->tokenLocation, Fmt(Err(Err0322), tokens[0].c_str())});
     dep->locationParam = tokens[1];
 
     cfgFilePath.clear();

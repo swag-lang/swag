@@ -1,6 +1,6 @@
 
 
-#global testerror "Err0679";
+#global testerror "Err0676";
 attr toto() -> "func"
 attr toto1() -> "var"
 

@@ -1,2 +1,2 @@
-#global testerror "Err0440"
+#global testerror "Err0439"
 #import "test_foreign"

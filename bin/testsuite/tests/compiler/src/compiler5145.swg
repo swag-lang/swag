@@ -1,4 +1,4 @@
-#global testerror "Err0720"
+#global testerror "Err0717"
 
 const aa = 0
 const b = Aa

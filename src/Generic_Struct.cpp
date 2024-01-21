@@ -29,7 +29,7 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
                         auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
                         if (!param->assignment)
                         {
-                            Diagnostic diag{node->sourceFile, node->type->token, Fmt(Err(Err0558), typeExpr->identifier->resolvedSymbolName->name.c_str())};
+                            Diagnostic diag{node->sourceFile, node->type->token, Fmt(Err(Err0557), typeExpr->identifier->resolvedSymbolName->name.c_str())};
                             return context->report(diag, Diagnostic::hereIs(typeExpr->identifier->resolvedSymbolOverload));
                         }
 
@@ -60,7 +60,7 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
 bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool& alias)
 {
     auto node = context->node;
-    SWAG_VERIFY(!match.genericReplaceTypes.empty(), context->report({node, Fmt(Err(Err0302), node->token.ctext())}));
+    SWAG_VERIFY(!match.genericReplaceTypes.empty(), context->report({node, Fmt(Err(Err0301), node->token.ctext())}));
 
     // Be sure all methods have been registered, because we need opDrop & co to be known, as we need
     // to instantiate them also (because those functions can be called by the compiler itself, not by the user)
@@ -78,7 +78,7 @@ bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParame
     // In that case, we need to retrieve the real struct
     auto genericStructType = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, overload->typeInfo->kind);
     auto sourceSymbol      = match.symbolName;
-    SWAG_VERIFY(sourceNode->kind == AstNodeKind::StructDecl, context->report({node, node->token, Fmt(Err(Err0298), node->token.ctext())}));
+    SWAG_VERIFY(sourceNode->kind == AstNodeKind::StructDecl, context->report({node, node->token, Fmt(Err(Err0297), node->token.ctext())}));
 
     // Make a new type
     auto newType = CastTypeInfo<TypeInfoStruct>(genericStructType->clone(), genericStructType->kind);

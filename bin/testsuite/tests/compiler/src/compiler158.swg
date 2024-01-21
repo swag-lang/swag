@@ -1,5 +1,5 @@
 
 ;
 
-#global testerror "Err0585";
+#global testerror "Err0584";
 var x, y;

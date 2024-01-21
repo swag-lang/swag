@@ -1,4 +1,4 @@
-#global testerror "Err0399"
+#global testerror "Err0398"
 
 #[Swag.ConstExpr]
 func isInteger(type: typeinfo) => 1

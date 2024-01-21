@@ -1,4 +1,4 @@
-#global testerror "Err0296"
+#global testerror "Err0295"
 func to(to: s32)
 {
 }

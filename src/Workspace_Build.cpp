@@ -402,7 +402,7 @@ void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
                 notes.push_back(note);
 
             auto       prevNodeLocal = pendingJob->originalNode ? pendingJob->originalNode : pendingJob->nodes.front();
-            Diagnostic diag{prevNodeLocal, prevNodeLocal->token, Fmt(Err(Err0625), Naming::kindName(prevNodeLocal).c_str(), prevNodeLocal->token.ctext())};
+            Diagnostic diag{prevNodeLocal, prevNodeLocal->token, Fmt(Err(Err0624), Naming::kindName(prevNodeLocal).c_str(), prevNodeLocal->token.ctext())};
             Report::report(diag, notes);
             auto sourceFile                   = Report::getDiagFile(diag);
             sourceFile->module->hasCycleError = true;

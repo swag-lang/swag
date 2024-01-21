@@ -16,9 +16,9 @@ bool Parser::checkIsValidVarName(AstNode* node)
     {
         auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (identifier->genericParameters)
-            return error(identifier->genericParameters, Fmt(Err(Err0411), identifier->token.ctext()));
+            return error(identifier->genericParameters, Fmt(Err(Err0410), identifier->token.ctext()));
         if (identifier->callParameters)
-            return error(identifier->callParameters, Fmt(Err(Err0412), identifier->token.ctext()));
+            return error(identifier->callParameters, Fmt(Err(Err0411), identifier->token.ctext()));
     }
 
     if (node->token.text[0] != '#')
@@ -30,7 +30,7 @@ bool Parser::checkIsValidVarName(AstNode* node)
         if (node->token.text.find(g_LangSpec->name_atmixin) == 0)
         {
             if (node->token.text == g_LangSpec->name_atmixin)
-                return error(node->token, Err(Err0526));
+                return error(node->token, Err(Err0525));
 
             const char* pz    = node->token.text.buffer + 6;
             auto        endpz = node->token.text.buffer + node->token.text.count;
@@ -45,7 +45,7 @@ bool Parser::checkIsValidVarName(AstNode* node)
             }
 
             if (num >= 10)
-                return error(node->token, Fmt(Err(Err0602), num));
+                return error(node->token, Fmt(Err(Err0601), num));
             if (node->ownerFct)
                 node->ownerFct->addSpecFlags(AstFuncDecl::SPECFLAG_SPEC_MIXIN);
 
@@ -56,7 +56,7 @@ bool Parser::checkIsValidVarName(AstNode* node)
         if (node->token.text.find(g_LangSpec->name_atalias) == 0)
         {
             if (node->token.text == g_LangSpec->name_atalias)
-                return error(node->token, Err(Err0516));
+                return error(node->token, Err(Err0515));
 
             const char* pz    = node->token.text.buffer + 6;
             auto        endpz = node->token.text.buffer + node->token.text.count;
@@ -71,7 +71,7 @@ bool Parser::checkIsValidVarName(AstNode* node)
             }
 
             if (num >= 32)
-                return error(node->token, Fmt(Err(Err0601), num));
+                return error(node->token, Fmt(Err(Err0600), num));
             if (node->ownerFct)
                 node->ownerFct->aliasMask |= 1 << num;
 
@@ -79,7 +79,7 @@ bool Parser::checkIsValidVarName(AstNode* node)
         }
     }
 
-    return error(node->token, Fmt(Err(Err0408), node->token.ctext()));
+    return error(node->token, Fmt(Err(Err0407), node->token.ctext()));
 }
 
 bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, bool forLet)
@@ -154,7 +154,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
     // Tuple dereference
     else if (leftNode->kind == AstNodeKind::MultiIdentifierTuple)
     {
-        SWAG_VERIFY(acceptDeref, error(leftNode, Fmt(Err(Err0512), Naming::aKindName(currentScope->kind).c_str())));
+        SWAG_VERIFY(acceptDeref, error(leftNode, Fmt(Err(Err0511), Naming::aKindName(currentScope->kind).c_str())));
 
         auto parentNode = Ast::newNode<AstNode>(this, AstNodeKind::StatementNoScope, sourceFile, parent);
         *result         = parentNode;
@@ -271,7 +271,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result)
         kind = AstNodeKind::ConstDecl;
         SWAG_CHECK(eatToken());
         if (token.id != TokenId::SymLeftParen)
-            SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err0250), token.ctext())));
+            SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err0249), token.ctext())));
     }
     else
     {
@@ -279,7 +279,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result)
         kind  = AstNodeKind::VarDecl;
         SWAG_CHECK(eatToken());
         if (token.id != TokenId::SymLeftParen)
-            SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err0410), isLet ? "let" : "var", token.ctext())));
+            SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err0409), isLet ? "let" : "var", token.ctext())));
     }
 
     SWAG_CHECK(doVarDecl(parent, result, kind, false, isLet));
@@ -298,9 +298,9 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
         {
             Utf8 msg;
             if (kind == AstNodeKind::ConstDecl)
-                msg = Fmt(Err(Err0547), token.ctext());
+                msg = Fmt(Err(Err0546), token.ctext());
             else
-                msg = Fmt(Err(Err0585), token.ctext());
+                msg = Fmt(Err(Err0584), token.ctext());
 
             Diagnostic diag{sourceFile, token, msg};
             if (token.id == TokenId::SymEqualEqual)
@@ -380,7 +380,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
     {
         if (!parent || parent->kind != AstNodeKind::If)
         {
-            SWAG_VERIFY(token.id != TokenId::SymEqualEqual, error(token, Err(Err0680)));
+            SWAG_VERIFY(token.id != TokenId::SymEqualEqual, error(token, Err(Err0677)));
             SWAG_CHECK(eatSemiCol("variable declaration"));
         }
     }

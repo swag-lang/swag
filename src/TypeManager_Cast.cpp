@@ -1922,7 +1922,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             // Too many fields
             else if (toTypeStruct->fields.size() < child->childs.size())
             {
-                Diagnostic diag{child->childs[toTypeStruct->fields.count], Fmt(Err(Err0636), toTypeStruct->fields.size(), toTypeStruct->getDisplayNameC(), child->childs.size())};
+                Diagnostic diag{child->childs[toTypeStruct->fields.count], Fmt(Err(Err0634), toTypeStruct->fields.size(), toTypeStruct->getDisplayNameC(), child->childs.size())};
                 return context->report(diag);
             }
 
@@ -1937,7 +1937,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             {
                 auto       badParamIdx = symContext.badSignatureInfos.badSignatureParameterIdx;
                 auto       failedParam = child->childs[badParamIdx];
-                Diagnostic diag{failedParam, Fmt(Err(Err0571), Naming::niceArgumentRank(badParamIdx + 1).c_str())};
+                Diagnostic diag{failedParam, Fmt(Err(Err0570), Naming::niceArgumentRank(badParamIdx + 1).c_str())};
                 auto       otherParam = child->childs[badParamIdx - 1];
                 if (otherParam->hasExtMisc() && otherParam->extMisc()->isNamed)
                     otherParam = otherParam->extMisc()->isNamed;
@@ -1957,7 +1957,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
             case MatchResult::InvalidNamedParameter:
             {
                 auto       failedParam = child->childs[symContext.badSignatureInfos.badSignatureParameterIdx];
-                Diagnostic diag{failedParam->extMisc()->isNamed, Fmt(Err(Err0727), failedParam->extMisc()->isNamed->token.ctext())};
+                Diagnostic diag{failedParam->extMisc()->isNamed, Fmt(Err(Err0724), failedParam->extMisc()->isNamed->token.ctext())};
                 if (toTypeStruct->declNode && !(toTypeStruct->declNode->flags & AST_GENERATED) && toTypeStruct->declNode->resolvedSymbolOverload)
                     return context->report(diag, Diagnostic::hereIs(toTypeStruct->declNode->resolvedSymbolOverload));
                 return context->report(diag);
@@ -2846,9 +2846,9 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
             if (!(castFlags & CASTFLAG_JUST_CHECK))
             {
                 if (toTypeArray->count > fromTypeList->subTypes.size())
-                    context->report({fromNode, Fmt(Err(Err0596), toTypeArray->count, fromTypeList->subTypes.size())});
+                    context->report({fromNode, Fmt(Err(Err0595), toTypeArray->count, fromTypeList->subTypes.size())});
                 else
-                    context->report({fromNode, Fmt(Err(Err0637), toTypeArray->count, fromTypeList->subTypes.size())});
+                    context->report({fromNode, Fmt(Err(Err0635), toTypeArray->count, fromTypeList->subTypes.size())});
             }
 
             return false;

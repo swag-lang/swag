@@ -1,4 +1,4 @@
 
-#global testerror "Err0720"
+#global testerror "Err0717"
                 var connected = true
                 var previousState = currentState

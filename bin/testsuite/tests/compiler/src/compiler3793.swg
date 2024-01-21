@@ -1,3 +1,3 @@
-#global testerror "Err0327"
+#global testerror "Err0326"
 #[Swag.Foreign("a.lib", "")]
 func toto();

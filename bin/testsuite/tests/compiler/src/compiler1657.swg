@@ -1,5 +1,5 @@
 
-#global testerror "Err0608"
+#global testerror "Err0607"
 
 const g: u8 = `漢`'u8
 #assert g == 32

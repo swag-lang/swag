@@ -72,7 +72,7 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
 #ifdef SWAG_DEV_MODE
         SWAG_ASSERT(false);
 #endif
-        context->report({Fmt(Err(Err0714), funcName.c_str())});
+        context->report({Fmt(Err(Err0711), funcName.c_str())});
         return nullptr;
     }
 

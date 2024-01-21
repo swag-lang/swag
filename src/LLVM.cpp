@@ -334,7 +334,7 @@ bool LLVM::generateObjFile(const BuildParameters& buildParameters)
     auto        target = llvm::TargetRegistry::lookupTarget(targetTriple.c_str(), error);
     if (!target)
     {
-        Report::error(Fmt(Err(Err0423), targetTriple.c_str()));
+        Report::error(Fmt(Err(Err0422), targetTriple.c_str()));
         return false;
     }
 
