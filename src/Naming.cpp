@@ -371,6 +371,10 @@ Utf8 Naming::kindName(AstNode* node, Utf8& article)
         article = "a";
         return "constraint";
 
+    case AstNodeKind::Defer:
+        article = "an";
+        return "instruction";
+
     default:
         break;
     }

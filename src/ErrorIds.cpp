@@ -172,7 +172,6 @@ void initErrors()
     SWAG_ERROR(Err0050, "conflicting attributes                            $ the [[#[Swag.Macro]]] and [[#[Swag.Inline]]] attributes are mutually exclusive");
     SWAG_ERROR(Err0051, "conflicting attributes                            $ the [[#[Swag.Macro]]] and [[#[Swag.Mixin]]] attributes are mutually exclusive");
     SWAG_ERROR(Err0052, "conflicting attributes                            $ the [[#[Swag.Mixin]]] and [[#[Swag.Inline]]] attributes are mutually exclusive");
-
     SWAG_ERROR(Err0053, "conflicting cast modifiers                        $ the [[%s]] and [[%s]] cast modifiers are mutually exclusive");
     SWAG_ERROR(Err0054, "const mismatch                                    $ casting from an immutable type [[%s]] to a mutable one [[%s]] is not allowed");
     SWAG_ERROR(Err0055, "const mismatch                                    $ the UFCS argument should be mutable but is not (type is [[%s]])");
@@ -182,7 +181,7 @@ void initErrors()
     SWAG_ERROR(Err0059, "dependency error                                  $ can't resolve the dependency to the module [[%s]] because of a version mismatched");
     SWAG_ERROR(Err0060, "dependency error                                  $ can't resolve the dependency to the module [[%s]] because version [[%s]] was not found at [[%s]]");
     SWAG_ERROR(Err0061, "dependency error                                  $ can't resolve the dependency to the module [[%s]] because version [[%s]] was not found");
-    SWAG_ERROR(Err0062, "division by zero                                  $ division by an expression which evaluates to 0");
+    SWAG_ERROR(Err0062, "division by zero                                  $ this divider expression evaluates to 0");
     SWAG_ERROR(Err0063, "double initialization                             $ you should not initialize a struct with both the type syntax and an assignment");
     SWAG_ERROR(Err0064, "duplicated [[#import]] location                   $ the [[#import]] location has already been defined");
     SWAG_ERROR(Err0065, "duplicated [[#import]] version                    $ the [[#import]] version has already been defined");

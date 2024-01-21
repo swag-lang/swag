@@ -269,9 +269,6 @@
     <ClCompile Include="..\src\ByteCodeOptimizer_Swap.cpp">
       <Filter>Backend\ByteCode\Optimize</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Naming.cpp">
-      <Filter>Report</Filter>
-    </ClCompile>
     <ClCompile Include="../src/ModuleExportJob.cpp">
       <Filter>Jobs</Filter>
     </ClCompile>
@@ -668,6 +665,9 @@
     <ClCompile Include="..\src\SCBE_Coff.cpp">
       <Filter>Backend\SCBE\Obj</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Naming.cpp">
+      <Filter>Syntax</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">
@@ -881,9 +881,6 @@
     <ClInclude Include="..\src\ByteCodeDebugger.h">
       <Filter>Backend\ByteCode\Debugger</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Naming.h">
-      <Filter>Report</Filter>
-    </ClInclude>
     <ClInclude Include="../src/Register.h">
       <Filter>Backend\ByteCode</Filter>
     </ClInclude>
@@ -1030,6 +1027,9 @@
     </ClInclude>
     <ClInclude Include="..\src\SCBE_Coff.h">
       <Filter>Backend\SCBE\Obj</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Naming.h">
+      <Filter>Syntax</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
