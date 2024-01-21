@@ -215,9 +215,9 @@ void initErrors()
     SWAG_ERROR(Err0093, "file not found                                    $ the file [[%s]] can't be found in the module folder [[%s]]");
     SWAG_ERROR(Err0094, "file open error                                   $ failed to access file [[%s]]");
     SWAG_ERROR(Err0095, "file open error                                   $ failed to open file [[%s]]");
+    SWAG_ERROR(Err0098, "file open error                                   $ failed to open file [[%s]] for writing");
     SWAG_ERROR(Err0096, "file open error                                   $ failed to open the [[#include]] file [[%s]]");
     SWAG_ERROR(Err0097, "file read error                                   $ failed to read source file [[%s]]");
-    SWAG_ERROR(Err0098, "file write error                                  $ failed to open file [[%s]] for writing");
     SWAG_ERROR(Err0099, "file write error                                  $ failed to write to file [[%s]]");
     SWAG_ERROR(Err0100, "folder error                                      $ failed to create directory [[%s]]");
     SWAG_ERROR(Err0101, "forbidden [[@postcopy]]                           $ the intrinsic [[@postcopy]] can't be called on type [[%s]] because of [[#[Swag.NoCopy]]]");
