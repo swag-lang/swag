@@ -567,7 +567,7 @@ void Diagnostic::printRanges()
         // So make it on its own line
         else if (ranges.size() == 1 &&
                  ((mid + 3 + (int) unformat.length() > (int) g_CommandLine.errorRightColumn) ||
-                  orgNumRanges >= 3))
+                  orgNumRanges >= 2))
         {
             if (numRanges == 1)
             {
