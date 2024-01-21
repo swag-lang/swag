@@ -86,6 +86,11 @@ struct LanguageSpec
     Utf8 name_Swag_ExportType;
     Utf8 name_Swag_Warn;
     Utf8 name_Swag_ConstExpr;
+    Utf8 name_Swag_Macro;
+    Utf8 name_Swag_Mixin;
+    Utf8 name_Swag_Inline;
+    Utf8 name_Swag_NotGeneric;
+    Utf8 name_Swag_CalleeReturn;
 
     Utf8 name_opInitGenerated;
     Utf8 name_opDropGenerated;

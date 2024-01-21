@@ -700,8 +700,9 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
 
         // Register attribute itself
         OneAttribute oneAttribute;
-        oneAttribute.name = resolvedName->getFullName();
-        oneAttribute.node = node;
+        oneAttribute.name  = resolvedName->getFullName();
+        oneAttribute.node  = node;
+        oneAttribute.child = child;
 
         // Register all call parameters, and their value
         uint32_t numParams = 0;

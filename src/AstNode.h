@@ -313,6 +313,7 @@ struct AstNode
     AstNode* findParent(AstNodeKind parentKind);
     AstNode* findParent(AstNodeKind parentKind1, AstNodeKind parentKind2);
     AstNode* findChild(AstNodeKind childKind);
+    AstNode* findParentAttrUse(const Utf8& name);
     AstNode* findParent(TokenId tkn);
 
     const Token& getTokenName();

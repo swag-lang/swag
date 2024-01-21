@@ -83,6 +83,7 @@ struct OneAttribute
     Utf8                       name;
     Vector<AttributeParameter> parameters;
     AstNode*                   node     = nullptr;
+    AstNode*                   child    = nullptr;
     TypeInfoFuncAttr*          typeFunc = nullptr;
 };
 

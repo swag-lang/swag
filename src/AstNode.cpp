@@ -1203,6 +1203,23 @@ Utf8 AstNode::getScopedName()
     return result;
 }
 
+AstNode* AstNode::findParentAttrUse(const Utf8& name)
+{
+    auto search = parent;
+    while (search)
+    {
+        if (search->kind == AstNodeKind::AttrUse)
+        {
+            auto attrDecl = CastAst<AstAttrUse>(search, AstNodeKind::AttrUse);
+            auto it       = attrDecl->attributes.getAttribute(name);
+            if (it)
+                return it->child ? it->child : it->node;
+        }
+    }
+
+    return nullptr;
+}
+
 AstNode* AstNode::findParent(TokenId tkn)
 {
     auto find = parent;

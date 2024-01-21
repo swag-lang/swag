@@ -561,11 +561,36 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 
         if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC)
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, funcNode->tokenName, Fmt(Err(Err0224), funcNode->getDisplayNameC())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({funcNode, funcNode->tokenName, Fmt(Err(Err0225), funcNode->getDisplayNameC())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, funcNode->tokenName, Fmt(Err(Err0223), funcNode->getDisplayNameC())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC), context->report({funcNode, funcNode->tokenName, Fmt(Err(Err0226), funcNode->getDisplayNameC())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_CALLEE_RETURN), context->report({funcNode, funcNode->tokenName, Fmt(Err(Err0222), funcNode->getDisplayNameC())}));
+            if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
+            {
+                Diagnostic diag{funcNode, funcNode->tokenName, Fmt(Err(Err0224), funcNode->getDisplayNameC())};
+                auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Macro);
+                return context->report(diag, Diagnostic::note(attr, Fmt(Nte(Nte0063), "attribute")));
+            }
+            if (funcNode->attributeFlags & ATTRIBUTE_MIXIN)
+            {
+                Diagnostic diag{funcNode, funcNode->tokenName, Fmt(Err(Err0225), funcNode->getDisplayNameC())};
+                auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Mixin);
+                return context->report(diag, Diagnostic::note(attr, Fmt(Nte(Nte0063), "attribute")));
+            }
+            if (funcNode->attributeFlags & ATTRIBUTE_INLINE)
+            {
+                Diagnostic diag{funcNode, funcNode->tokenName, Fmt(Err(Err0223), funcNode->getDisplayNameC())};
+                auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Inline);
+                return context->report(diag, Diagnostic::note(attr, Fmt(Nte(Nte0063), "attribute")));
+            }
+            if (funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC)
+            {
+                Diagnostic diag{funcNode, funcNode->tokenName, Fmt(Err(Err0226), funcNode->getDisplayNameC())};
+                auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_NotGeneric);
+                return context->report(diag, Diagnostic::note(attr, Fmt(Nte(Nte0063), "attribute")));
+            }
+            if (funcNode->attributeFlags & ATTRIBUTE_CALLEE_RETURN)
+            {
+                Diagnostic diag{funcNode, funcNode->tokenName, Fmt(Err(Err0222), funcNode->getDisplayNameC())};
+                auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_CalleeReturn);
+                return context->report(diag, Diagnostic::note(attr, Fmt(Nte(Nte0063), "attribute")));
+            }
         }
     }
 
