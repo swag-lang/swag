@@ -3,11 +3,79 @@
 #dependencies
 {
     // Here you can add your external dependencies
-    // #import "core" location="swag@std"
+    #import "core" location="swag@std"
+}
+
+using Core
+
+struct OneFile
+{
+    name:       String
+    content:    String
+    newContent: String
+    changed:    bool
+}
+
+var files: Array'OneFile
+
+func replace(dst, src: string)
+{
+    visit &f: files
+    {
+        var idx = 0'u64
+        loop
+        {
+            idx = f.content.indexOf(src, idx)
+            if idx == Swag.U64.Max do
+                break
+            Console.printf("% % %\n", dst, f.content[idx..idx+6], f.name)
+            f.newContent[idx+3] = src[3]
+            f.newContent[idx+4] = src[4]
+            f.newContent[idx+5] = src[5]
+            f.newContent[idx+6] = src[6]
+            f.changed = true
+            idx += 1
+        }
+    }
+}
+
+func addFiles(folder: string)
+{
+    let srcFiles = assume Directory.enumerateFiles(folder, recurse: true)
+    visit f: srcFiles
+    {
+        var of: OneFile
+        of.name = f.fullname
+        of.content = assume File.readAllText(f.fullname)
+        of.newContent = of.content
+        files.add(of)
+    }
 }
 
 #main
 {
-    @print("Hello world !\n")
+    addFiles("../src/")
+    addFiles("../bin/testsuite/tests")
+    addFiles("../bin/std/tests")
+
+    var ids: HashTable'(string, s32)
+
+    let lines = assume File.readAllLines("../src/errorids.cpp")
+    visit l: lines
+    {
+        l = Latin1.trim(l)
+        if !l.startsWith("SWAG_ERROR(") do continue
+
+        ids.findOrAdd(l[11..13]).value += 1
+        var dst: String = l[11..13]
+        dst += Format.toString("%{04}", ids.findOrAdd(l[11..13]).value)
+        replace(dst, l[11..17])
+    }
+
+    visit f: files
+    {
+        if !f.changed do continue
+        assume File.writeAllBytes(f.name, f.newContent)
+    }
 }
 
