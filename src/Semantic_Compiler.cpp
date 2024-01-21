@@ -143,7 +143,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                 else
                 {
                     Diagnostic diag{node, Fmt(Err(Err0042), realType->getDisplayNameC())};
-                    diag.hint = Nte(Nte0057);
+                    diag.hint = Nte(Nte0079);
                     return context->report(diag);
                 }
             }

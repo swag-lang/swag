@@ -125,13 +125,13 @@ void initErrors()
     SWAG_ERROR(Err0003, "%s");
     SWAG_ERROR(Err0004, "[[#global export]] already defined                $ only one [[#global export]] is allowed per file");
     SWAG_ERROR(Err0005, "[[#main]] already defined                         $ only one [[#main]] function is allowed per module");
-    SWAG_ERROR(Err0006, "[[@mkany]] inconsistency                          $ the pointer type [[%s]] and the [[@mkany]] second argument [[%s]] are unrelated");
+    SWAG_ERROR(Err0006, "[[@mkany]] inconsistency                          $ the pointer type [[%s]] and the second argument [[%s]] are unrelated");
     SWAG_ERROR(Err0007, "[[default]] already defined                       $ only one [[default]] statement is allowed per [[switch]]");
-    SWAG_ERROR(Err0008, "[[impl]] kind mismatch                            $ implementation kind (%s) and the type of [[%s]] (%s) are not the same");
+    SWAG_ERROR(Err0008, "[[impl]] kind mismatch                            $ the implementation kind (%s) and the type of [[%s]] (%s) are not the same");
     SWAG_ERROR(Err0009, "[[switch]] value already defined                  $ the [[switch]] value [[%d]] has already been defined");
     SWAG_ERROR(Err0010, "[[switch]] value already defined                  $ the [[switch]] value [[%f]] has already been defined");
     SWAG_ERROR(Err0011, "[[switch]] value already defined                  $ the [[switch]] value [[%s]] has already been defined");
-    SWAG_ERROR(Err0012, "access modifier already defined                   $ invalid use of [[%s]] access modifier previously specifying [[%s]]");
+    SWAG_ERROR(Err0012, "access modifier already defined                   $ invalid use of a [[%s]] access modifier after [[%s]]");
     SWAG_ERROR(Err0013, "ambiguous [[using]]                               $ unexpected [[using]] on two variables with the same type ([[%s]])");
     SWAG_ERROR(Err0014, "ambiguous cast                                    $ there are multiple [[using]] fields of type [[%s]] in [[%s]]");
     SWAG_ERROR(Err0015, "ambiguous generic instantiation                   $ can't instantiate the generic %s [[%s]] with an unsized value");
@@ -154,7 +154,7 @@ void initErrors()
     SWAG_ERROR(Err0032, "compile-time evaluation required                  $ a slice of type [[%s]] can't be converted to a compile-time value");
     SWAG_ERROR(Err0033, "compile-time evaluation required                  $ the [[%s]] argument can't be evaluated at compile-time");
     SWAG_ERROR(Err0034, "compile-time evaluation required                  $ the [[%s]] message can't be evaluated at compile-time");
-    SWAG_ERROR(Err0035, "compile-time evaluation required                  $ the [[case]] expression can't be evaluated at compile-time $ the [[switch]] is marked as [[#[Swag.Complete][[, so the expression must be constant");
+    SWAG_ERROR(Err0035, "compile-time evaluation required                  $ the [[case]] expression can't be evaluated at compile-time $ the [[switch]] is marked as [[#[Swag.Complete]]], so the expression must be constant");
     SWAG_ERROR(Err0036, "compile-time evaluation required                  $ the array dimension can't be evaluated at compile-time");
     SWAG_ERROR(Err0037, "compile-time evaluation required                  $ the attribute parameter can't be evaluated at compile-time");
     SWAG_ERROR(Err0038, "compile-time evaluation required                  $ the expression can't be evaluated at compile-time");
@@ -169,6 +169,7 @@ void initErrors()
     SWAG_ERROR(Err0047, "compiler limit reached                            $ the size of the data segment [[%s]] is too big (maximum size is [[0x%I64x]] bytes)");
     SWAG_ERROR(Err0048, "conflicting attributes                            $ the [[#[Swag.Compiler]]] and [[#[Swag.Tls]]] attributes are mutually exclusive");
     SWAG_ERROR(Err0049, "conflicting attributes                            $ the [[#[Swag.Inline]]] and [[#[Swag.NoInline]]] attributes are mutually exclusive");
+//HERE
     SWAG_ERROR(Err0050, "conflicting attributes                            $ the [[#[Swag.Macro]]] and [[#[Swag.Inline]]] attributes are mutually exclusive, the %s can't have both");
     SWAG_ERROR(Err0051, "conflicting attributes                            $ the [[#[Swag.Macro]]] and [[#[Swag.Mixin]]] attributes are mutually exclusive, the %s can't have both");
     SWAG_ERROR(Err0052, "conflicting attributes                            $ the [[#[Swag.Mixin]]] and [[#[Swag.Inline]]] attributes are mutually exclusive, the %s can't have both");
@@ -606,7 +607,7 @@ void initErrors()
     SWAG_ERROR(Err0484, "misplaced attribute                               $ an interface member relocation with [[#[Swag.Offset]]] is not allowed");
     SWAG_ERROR(Err0485, "misplaced attribute                               $ incorrect attribute usage");
     SWAG_ERROR(Err0486, "misplaced attribute                               $ the %s can't have the [[#[Swag.Implicit]]] attribute because it is generic");
-    SWAG_ERROR(Err0487, "misplaced attribute                               $ the [[#[Swag.CalleeReturn]]] attribute can't be applied to function [[%s]] $ [[#[Swag.CalledReturn]]] can only be applied to a macro ([[#[Swag.Macro][[) or a mixin ([[#[Swag.Mixin][[)");
+    SWAG_ERROR(Err0487, "misplaced attribute                               $ the [[#[Swag.CalleeReturn]]] attribute can't be applied to function [[%s]] $ [[#[Swag.CalledReturn]]] can only be applied to a macro ([[#[Swag.Macro]]]) or a mixin ([[#[Swag.Mixin]]])");
     SWAG_ERROR(Err0488, "misplaced attribute                               $ the [[#[Swag.Complete]]] attribute can't be applied to function [[%s]] $ #[Swag.Complete] can only be applied to [[opAffect]] and [[opAffectSuffix]]");
     SWAG_ERROR(Err0489, "misplaced attribute                               $ the [[#[Swag.Discardable]]] attribute can only be applied to lambda variables, got [[%s]]");
     SWAG_ERROR(Err0490, "misplaced attribute                               $ the [[#[Swag.Implicit]]] attribute can't be applied to function [[%s]] $ #[Swag.Implicit] can only be applied to [[opAffect]], [[opAffectSuffix]] and [[opCast]]");
@@ -940,7 +941,7 @@ void initErrors()
     SWAG_ERROR(Nte0054, "employ [[{}]] for an intentional empty statement");
     SWAG_ERROR(Nte0055, "entity %s [[%s]] awaits the generation of type [[%s]]");
     SWAG_ERROR(Nte0056, "evaluation failed during compile-time");
-    SWAG_ERROR(Nte0057, "force the evaluation using [[#run]]");
+    SWAG_ERROR(Nte0057, nullptr);
     SWAG_ERROR(Nte0058, "function names that start with [[op]] followed by an uppercase letter are reserved for struct special functions");
     SWAG_ERROR(Nte0059, "function parameters are immutable and can't be modified");
     SWAG_ERROR(Nte0060, "here is another one");
@@ -1001,7 +1002,7 @@ void initErrors()
     SWAG_ERROR(Nte0115, "the counterpart is an implicit [[using self]] as an initial parameter");
     SWAG_ERROR(Nte0116, "the duplicated underlying enum value is [[%s]]");
     SWAG_ERROR(Nte0117, "the function [[%s]] is not marked with the [[#[Swag.ConstExpr]]] attribute");
-    SWAG_ERROR(Nte0118, "the function [[%s]] is tagged with [[#[Swag.CalleeReturn][[, implying the return value is utilized within [[%s]]");
+    SWAG_ERROR(Nte0118, "the function [[%s]] is tagged with [[#[Swag.CalleeReturn]]], implying the return value is utilized within [[%s]]");
     SWAG_ERROR(Nte0119, "the function call returns an immutable [[%s]]");
     SWAG_ERROR(Nte0120, "the function is tagged with the [[#[Swag.Inline]]] attribute");
     SWAG_ERROR(Nte0121, "the function is tagged with the [[#[Swag.Macro]]] attribute");
@@ -1080,7 +1081,7 @@ void initErrors()
     SWAG_ERROR(Nte0194, "you can't reference this runtime %s from the compile-time %s");
     SWAG_ERROR(Nte0195, "you might want to get the address of [[%s]] using [[&]]");
     SWAG_ERROR(Nte0196, "you need to take the address of a value to make a reference");
-    SWAG_ERROR(Nte0197, nullptr);
+    SWAG_ERROR(Nte0197, "the value could come from [[%s]]");
     SWAG_ERROR(Nte0198, nullptr);
     SWAG_ERROR(Nte0199, nullptr);
 }

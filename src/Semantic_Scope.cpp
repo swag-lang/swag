@@ -118,10 +118,15 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                 // More than one match : ambiguous
                 if (typeEnum.size() > 1)
                 {
-                    Diagnostic diag{identifierRef, Fmt(Err(Err0018), node->token.ctext())};
+                    Diagnostic                diag{identifierRef, Fmt(Err(Err0018), node->token.ctext())};
+                    Vector<const Diagnostic*> notes;
                     for (auto t : typeEnum)
-                        diag.remarks.push_back(Fmt(Nte(Nte0104), t->getDisplayNameC()));
-                    return context->report(diag);
+                    {
+                        auto msg = Fmt(Nte(Nte0197), t->getDisplayNameC());
+                        notes.push_back(Diagnostic::note(t->declNode, t->declNode->getTokenName(), msg));
+                    }
+
+                    return context->report(diag, notes);
                 }
 
                 // One single match : we are done
