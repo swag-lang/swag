@@ -1,21 +1,57 @@
 #global export
 #global namespace Slice
 
-// Transform the content of a slice with a given lambda
+// Transform in place the content of a slice with a given lambda
 #[Swag.Inline]
-func(T) modify(values: [..] T, cb: func(*T))
+func(T) modify(values: [..] T, cb: closure(*T))
 {
     loop i: values do
         cb(&values[i])
 }
 
 // Transform the content of a slice with a given lambda
-func(T, R) map(values:const [..] T, cb: func(T)->R)->Array'R
+func(T, R) map(values: const [..] T, cb: closure(T)->R)->Array'R
 {
     var result: retval
     visit v: values do
         result.add(cb(v))
     return result
+}
+
+// Returns true if 'cb' returns true for all values
+func(T) allOf(values: const [..] T, cb: closure(T)->bool)->bool
+{
+    visit v: values
+    {
+        if !cb(v) do
+            return false
+    }
+
+    return true
+}
+
+// Returns true if 'cb' returns true for at least one value
+func(T) anyOf(values: const [..] T, cb: closure(T)->bool)->bool
+{
+    visit v: values
+    {
+        if cb(v) do
+            return true
+    }
+
+    return false
+}
+
+// Returns true if 'cb' returns false for all values
+func(T) noneOf(values: const [..] T, cb: closure(T)->bool)->bool
+{
+    visit v: values
+    {
+        if cb(v) do
+            return false
+    }
+
+    return true
 }
 
 // Reverse the content of a slice
