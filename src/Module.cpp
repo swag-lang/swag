@@ -173,7 +173,7 @@ void Module::computePublicPath()
         {
             if (!filesystem::create_directories(publicPath, err))
             {
-                Report::errorOS(Fmt(Err(Fat0006), publicPath.string().c_str()));
+                Report::errorOS(Fmt(Err(Fat0019), publicPath.string().c_str()));
                 OS::exit(-1);
             }
         }
@@ -188,7 +188,7 @@ void Module::computePublicPath()
         {
             if (!filesystem::create_directories(publicPath, err))
             {
-                Report::errorOS(Fmt(Err(Fat0006), publicPath.string().c_str()));
+                Report::errorOS(Fmt(Err(Fat0019), publicPath.string().c_str()));
                 OS::exit(-1);
             }
         }

@@ -1,4 +1,4 @@
-#global testerror "Saf0027"
+#global testerror "Saf0009"
 
 #assert #run @compiler().getBuildCfg().byteCodeOptimizeLevel >= 0
 

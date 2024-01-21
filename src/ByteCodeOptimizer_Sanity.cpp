@@ -397,7 +397,7 @@ static bool checkOverflow(Context& cxt, bool isValid, const char* msgKind, TypeI
 {
     if (isValid)
         return true;
-    return raiseError(cxt, Fmt(Err(San0009), msgKind, type->getDisplayNameC()));
+    return raiseError(cxt, Fmt(Err(San0010), msgKind, type->getDisplayNameC()));
 }
 
 static bool checkDivZero(Context& cxt, Value& value, bool isZero, SymbolOverload* overload = nullptr)
@@ -407,22 +407,22 @@ static bool checkDivZero(Context& cxt, Value& value, bool isZero, SymbolOverload
     if (!isZero)
         return true;
     if (overload)
-        return raiseError(cxt, Fmt(Err(San0008), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
-    return raiseError(cxt, Err(San0007));
+        return raiseError(cxt, Fmt(Err(San0002), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
+    return raiseError(cxt, Err(San0001));
 }
 
 static bool checkEscapeFrame(Context& cxt, uint64_t stackOffset, SymbolOverload* overload = nullptr)
 {
     SWAG_ASSERT(stackOffset >= 0 && stackOffset < UINT32_MAX);
     if (overload)
-        return raiseError(cxt, Fmt(Err(San0002), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
-    return raiseError(cxt, Err(San0001));
+        return raiseError(cxt, Fmt(Err(San0004), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
+    return raiseError(cxt, Err(San0003));
 }
 
 static bool checkStackOffset(Context& cxt, uint64_t stackOffset, uint32_t sizeOf = 0)
 {
     if (stackOffset + sizeOf > (size_t) STATE()->stack.count)
-        return raiseError(cxt, Fmt(Err(San0010), stackOffset + sizeOf, STATE()->stack.count));
+        return raiseError(cxt, Fmt(Err(San0007), stackOffset + sizeOf, STATE()->stack.count));
     return true;
 }
 
@@ -444,8 +444,8 @@ static bool checkStackInitialized(Context& cxt, void* addr, uint32_t sizeOf, Sym
     if (value.kind == ValueKind::Invalid)
     {
         if (overload)
-            return raiseError(cxt, Fmt(Err(San0004), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
-        return raiseError(cxt, Err(San0003));
+            return raiseError(cxt, Fmt(Err(San0008), Naming::kindName(overload).c_str(), overload->symbol->name.c_str()), overload);
+        return raiseError(cxt, Err(San0009));
     }
 
     return true;

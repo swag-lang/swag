@@ -385,7 +385,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, TypeIn
         case NativeTypeKind::Bool:
             EMIT_INST1(context, ByteCodeOp::SetImmediate32, regList)->b.b = node->computedValue->reg.b;
             if (mustEmitSafety(context, SAFETY_BOOL) && node->computedValue->reg.u8 & 0xFE)
-                return context->report({node, Err(Saf0020)});
+                return context->report({node, Err(Saf0003)});
             return true;
         case NativeTypeKind::U8:
             EMIT_INST1(context, ByteCodeOp::SetImmediate32, regList)->b.u8 = node->computedValue->reg.u8;
@@ -414,12 +414,12 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, TypeIn
         case NativeTypeKind::F32:
             EMIT_INST1(context, ByteCodeOp::SetImmediate32, regList)->b.f32 = node->computedValue->reg.f32;
             if (mustEmitSafety(context, SAFETY_NAN) && isnan(node->computedValue->reg.f32))
-                return context->report({node, Err(Saf0021)});
+                return context->report({node, Err(Saf0016)});
             return true;
         case NativeTypeKind::F64:
             EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList)->b.f64 = node->computedValue->reg.f64;
             if (mustEmitSafety(context, SAFETY_NAN) && isnan(node->computedValue->reg.f64))
-                return context->report({node, Err(Saf0021)});
+                return context->report({node, Err(Saf0016)});
             return true;
         case NativeTypeKind::Rune:
             EMIT_INST1(context, ByteCodeOp::SetImmediate32, regList)->b.u64 = node->computedValue->reg.u32;

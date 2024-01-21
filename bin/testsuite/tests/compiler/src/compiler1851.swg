@@ -1,5 +1,5 @@
 
-#global testerror "Saf0008"
+#global testerror "Saf0004"
 
 struct A
 {

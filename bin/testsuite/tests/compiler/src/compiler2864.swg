@@ -1,4 +1,4 @@
-#global testerror "Saf0022"
+#global testerror "Saf0014"
 #assert #run @compiler().getBuildCfg().byteCodeOptimizeLevel >= 0
 
 //#[Swag.PrintBc]

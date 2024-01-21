@@ -10,7 +10,7 @@ void newScriptFile()
     ofstream file(g_CommandLine.scriptName);
     if (!file.is_open())
     {
-        Report::errorOS(Fmt(Err(Fat0007), g_CommandLine.scriptName.c_str()));
+        Report::errorOS(Fmt(Err(Fat0020), g_CommandLine.scriptName.c_str()));
         OS::exit(-1);
     }
 
@@ -45,13 +45,13 @@ void Workspace::newModule(const Utf8& moduleName)
 
     if (filesystem::exists(modulePath, err))
     {
-        Report::errorOS(Fmt(Err(Fat0018), moduleName.c_str()));
+        Report::errorOS(Fmt(Err(Fat0028), moduleName.c_str()));
         OS::exit(-1);
     }
 
     if (!filesystem::create_directories(modulePath, err))
     {
-        Report::errorOS(Fmt(Err(Fat0004), modulePath.string().c_str()));
+        Report::errorOS(Fmt(Err(Fat0017), modulePath.string().c_str()));
         OS::exit(-1);
     }
 
@@ -61,7 +61,7 @@ void Workspace::newModule(const Utf8& moduleName)
     ofstream fileCfg(cfgFileName);
     if (!fileCfg.is_open())
     {
-        Report::errorOS(Fmt(Err(Fat0005), cfgFileName.string().c_str()));
+        Report::errorOS(Fmt(Err(Fat0018), cfgFileName.string().c_str()));
         OS::exit(-1);
     }
 
@@ -90,7 +90,7 @@ void Workspace::newModule(const Utf8& moduleName)
     modulePath.append(SWAG_SRC_FOLDER);
     if (!filesystem::create_directories(modulePath, err))
     {
-        Report::errorOS(Fmt(Err(Fat0004), modulePath.string().c_str()));
+        Report::errorOS(Fmt(Err(Fat0017), modulePath.string().c_str()));
         OS::exit(-1);
     }
 
@@ -116,7 +116,7 @@ void Workspace::newModule(const Utf8& moduleName)
     ofstream file(modulePath);
     if (!file.is_open())
     {
-        Report::errorOS(Fmt(Err(Fat0005), modulePath.string().c_str()));
+        Report::errorOS(Fmt(Err(Fat0018), modulePath.string().c_str()));
         OS::exit(-1);
     }
     if (g_CommandLine.test)
@@ -138,7 +138,7 @@ void Workspace::newCommand()
 
     if (workspacePath.empty())
     {
-        Report::error(Err(Fat0011));
+        Report::error(Err(Fat0013));
         OS::exit(-1);
     }
 
@@ -149,32 +149,32 @@ void Workspace::newCommand()
     {
         if (filesystem::exists(workspacePath, err))
         {
-            Report::error(Fmt(Err(Fat0025), workspacePath.string().c_str()));
+            Report::error(Fmt(Err(Fat0034), workspacePath.string().c_str()));
             OS::exit(-1);
         }
 
         // Create workspace folders
         if (!filesystem::create_directories(workspacePath, err))
         {
-            Report::errorOS(Fmt(Err(Fat0004), workspacePath.string().c_str()));
+            Report::errorOS(Fmt(Err(Fat0017), workspacePath.string().c_str()));
             OS::exit(-1);
         }
 
         if (!filesystem::create_directories(testsPath, err))
         {
-            Report::errorOS(Fmt(Err(Fat0004), testsPath.string().c_str()));
+            Report::errorOS(Fmt(Err(Fat0017), testsPath.string().c_str()));
             OS::exit(-1);
         }
 
         if (!filesystem::create_directories(modulesPath, err))
         {
-            Report::errorOS(Fmt(Err(Fat0004), modulesPath.string().c_str()));
+            Report::errorOS(Fmt(Err(Fat0017), modulesPath.string().c_str()));
             OS::exit(-1);
         }
 
         if (!filesystem::create_directories(dependenciesPath, err))
         {
-            Report::errorOS(Fmt(Err(Fat0004), dependenciesPath.string().c_str()));
+            Report::errorOS(Fmt(Err(Fat0017), dependenciesPath.string().c_str()));
             OS::exit(-1);
         }
 
@@ -187,7 +187,7 @@ void Workspace::newCommand()
     {
         if (!filesystem::exists(workspacePath, err))
         {
-            Report::error(Fmt(Err(Fat0026), workspacePath.string().c_str()));
+            Report::error(Fmt(Err(Fat0035), workspacePath.string().c_str()));
             OS::exit(-1);
         }
 

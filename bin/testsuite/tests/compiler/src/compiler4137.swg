@@ -1,4 +1,4 @@
-#global testerror "Saf0026"
+#global testerror "Saf0010"
 
 #[Swag.Optim("", false)]
 #[Swag.Safety("math", true)]

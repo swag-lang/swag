@@ -20,105 +20,90 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Fat0031, "[cmdline] [[%s]] needs [[true]] or [[false]] as argument ([[%s]] provided)");
-    SWAG_ERROR(Fat0034, "[cmdline] [[%s]] needs a string argument");
-    SWAG_ERROR(Fat0032, "[cmdline] [[%s]] needs an integer argument ([[%s]] provided)");
-    SWAG_ERROR(Fat0035, "[cmdline] [[%s]] needs an integer argument");
-    SWAG_ERROR(Fat0033, "[cmdline] [[%s]] requires [[%s]]");
-    SWAG_ERROR(Fat0030, "[cmdline] [[--stack-size]] out of range (%s provided, range is [%s, %s])");
-    SWAG_ERROR(Fat0036, "[cmdline] unknown argument [[%s]]");
-    SWAG_ERROR(Fat0037, "[cmdline] unsupported [[--arch]] [[%s]] for x64 backend");
-    SWAG_ERROR(Fat0038, "[cmdline] unsupported [[--os]] [[%s]] for x64 backend");
-    SWAG_ERROR(Fat0002, "[fatal] cache directory [[%s]] not found");
-    SWAG_ERROR(Fat0029, "[fatal] dependency module [[%s]] can't be found in that workspace");
-    SWAG_ERROR(Fat0027, "[fatal] duplicated module name; more than one module with the name [[%s]] is present in the workspace (path is [[%s]])");
-    SWAG_ERROR(Fat0011, "[fatal] expected workspace folder [[--workspace]]");
-    SWAG_ERROR(Fat0021, "[fatal] failed due to compiler bootstrap issues");
-    SWAG_ERROR(Fat0022, "[fatal] failed due to compiler runtime issues");
-    SWAG_ERROR(Fat0003, "[fatal] failed to create cache directory [[%s]]");
-    SWAG_ERROR(Fat0004, "[fatal] failed to create directory [[%s]]");
-    SWAG_ERROR(Fat0005, "[fatal] failed to create file [[%s]]");
-    SWAG_ERROR(Fat0006, "[fatal] failed to create public directory [[%s]]");
-    SWAG_ERROR(Fat0007, "[fatal] failed to create script file [[%s]]");
-    SWAG_ERROR(Fat0008, "[fatal] failed to create target directory [[%s]]");
-    SWAG_ERROR(Fat0009, "[fatal] failed to delete directory [[%s]]");
-    SWAG_ERROR(Fat0010, "[fatal] failed to delete file [[%s]]");
-    SWAG_ERROR(Fat0015, "[fatal] invalid [[--tag:%s]] value (%s)");
-    SWAG_ERROR(Fat0012, "[fatal] invalid module [[%s]]; missing configuration file [[%s]]");
-    SWAG_ERROR(Fat0013, "[fatal] invalid script file extension; expected [[.swgs]] found [[%s]]");
-    SWAG_ERROR(Fat0014, "[fatal] invalid [[Swag]] command [[%s]]");
-    SWAG_ERROR(Fat0016, "[fatal] invalid workspace [[%s]]; missing [[modules/]] or [[tests/]] subfolder");
-    SWAG_ERROR(Fat0018, "[fatal] module [[%s]] already exists in [[/modules]]");
-    SWAG_ERROR(Fat0028, "[fatal] module [[%s]] can't be found in that workspace");
-    SWAG_ERROR(Fat0019, "[fatal] not enough memory");
-    SWAG_ERROR(Fat0020, "[fatal] script file [[%s]] not found");
-    SWAG_ERROR(Fat0017, "[fatal] script file missing (use [[--file:<filename>.swgs]])");
-    SWAG_ERROR(Fat0023, "[fatal] unexpected compile tag value [[%s]] (use [[--tag:%s]])");
-    SWAG_ERROR(Fat0024, "[fatal] unknown compile tag type [[%s]] (use [[--tag:%s]])");
-    SWAG_ERROR(Fat0025, "[fatal] workspace folder [[%s]] already exists");
-    SWAG_ERROR(Fat0026, "[fatal] workspace folder [[%s]] not found");
-    SWAG_ERROR(Fat0039, "[fatal] unable to locate the windows sdk folder");
-    SWAG_ERROR(Fat0040, nullptr);
+    SWAG_ERROR(Fat0001, "[cmdline] [[%s]] needs [[true]] or [[false]] as argument ([[%s]] provided)");
+    SWAG_ERROR(Fat0002, "[cmdline] [[%s]] needs a string argument");
+    SWAG_ERROR(Fat0003, "[cmdline] [[%s]] needs an integer argument ([[%s]] provided)");
+    SWAG_ERROR(Fat0004, "[cmdline] [[%s]] needs an integer argument");
+    SWAG_ERROR(Fat0005, "[cmdline] [[%s]] requires [[%s]]");
+    SWAG_ERROR(Fat0006, "[cmdline] [[--stack-size]] out of range (%s provided, range is [%s, %s])");
+    SWAG_ERROR(Fat0007, "[cmdline] unknown argument [[%s]]");
+    SWAG_ERROR(Fat0008, "[cmdline] unsupported [[--arch]] [[%s]] for x64 backend");
+    SWAG_ERROR(Fat0009, "[cmdline] unsupported [[--os]] [[%s]] for x64 backend");
+    SWAG_ERROR(Fat0010, "[fatal] cache directory [[%s]] not found");
+    SWAG_ERROR(Fat0011, "[fatal] dependency module [[%s]] can't be found in that workspace");
+    SWAG_ERROR(Fat0012, "[fatal] duplicated module name; more than one module with the name [[%s]] is present in the workspace (path is [[%s]])");
+    SWAG_ERROR(Fat0013, "[fatal] expected workspace folder [[--workspace]]");
+    SWAG_ERROR(Fat0014, "[fatal] failed due to compiler bootstrap issues");
+    SWAG_ERROR(Fat0015, "[fatal] failed due to compiler runtime issues");
+    SWAG_ERROR(Fat0016, "[fatal] failed to create cache directory [[%s]]");
+    SWAG_ERROR(Fat0017, "[fatal] failed to create directory [[%s]]");
+    SWAG_ERROR(Fat0018, "[fatal] failed to create file [[%s]]");
+    SWAG_ERROR(Fat0019, "[fatal] failed to create public directory [[%s]]");
+    SWAG_ERROR(Fat0020, "[fatal] failed to create script file [[%s]]");
+    SWAG_ERROR(Fat0021, "[fatal] failed to create target directory [[%s]]");
+    SWAG_ERROR(Fat0022, "[fatal] failed to delete directory [[%s]]");
+    SWAG_ERROR(Fat0023, "[fatal] failed to delete file [[%s]]");
+    SWAG_ERROR(Fat0024, "[fatal] invalid [[--tag:%s]] value (%s)");
+    SWAG_ERROR(Fat0025, "[fatal] invalid script file extension; expected [[.swgs]] found [[%s]]");
+    SWAG_ERROR(Fat0026, "[fatal] invalid [[Swag]] command [[%s]]");
+    SWAG_ERROR(Fat0027, "[fatal] invalid workspace [[%s]]; missing [[modules/]] or [[tests/]] subfolder");
+    SWAG_ERROR(Fat0028, "[fatal] module [[%s]] already exists in [[/modules]]");
+    SWAG_ERROR(Fat0029, "[fatal] module [[%s]] can't be found in that workspace");
+    SWAG_ERROR(Fat0030, "[fatal] script file [[%s]] not found");
+    SWAG_ERROR(Fat0031, "[fatal] script file missing (use [[--file:<filename>.swgs]])");
+    SWAG_ERROR(Fat0032, "[fatal] unexpected compile tag value [[%s]] (use [[--tag:%s]])");
+    SWAG_ERROR(Fat0033, "[fatal] unknown compile tag type [[%s]] (use [[--tag:%s]])");
+    SWAG_ERROR(Fat0034, "[fatal] workspace folder [[%s]] already exists");
+    SWAG_ERROR(Fat0035, "[fatal] workspace folder [[%s]] not found");
+    SWAG_ERROR(Fat0036, "[fatal] unable to locate the windows sdk folder");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Saf0002, "safety failed [[any]] $ invalid dynamic cast from [[any]] to [[%s]]");
-    SWAG_ERROR(Saf0028, "safety failed [[any]] $ invalid dynamic cast of a null value to [[%s]]");
-    SWAG_ERROR(Saf0020, "safety failed [[bool]] $ invalid boolean value");
-    SWAG_ERROR(Saf0008, "safety failed [[boundcheck]] $ index out of bounds");
-    SWAG_ERROR(Saf0034, "safety failed [[boundcheck]] $ range error, lower > upper");
-    SWAG_ERROR(Saf0004, "safety failed [[boundcheck]] $ slice error, lower > upper");
-    SWAG_ERROR(Saf0005, "safety failed [[boundcheck]] $ slice error, upper out of bounds");
-    SWAG_ERROR(Saf0003, "safety failed [[math]] $ [[@abs]] overflow (type is [[%s]])");
-    SWAG_ERROR(Saf0027, "safety failed [[math]] $ [[@acos]] invalid argument (type is [[%s]])");
-    SWAG_ERROR(Saf0026, "safety failed [[math]] $ [[@asin]] invalid argument (type is [[%s]])");
-    SWAG_ERROR(Saf0023, "safety failed [[math]] $ [[@log]] invalid argument (type is [[%s]])");
-    SWAG_ERROR(Saf0025, "safety failed [[math]] $ [[@log10]] invalid argument (type is [[%s]])");
-    SWAG_ERROR(Saf0024, "safety failed [[math]] $ [[@log2]] invalid argument (type is [[%s]])");
-    SWAG_ERROR(Saf0022, "safety failed [[math]] $ [[@sqrt]] invalid argument (type is [[%s]])");
-    SWAG_ERROR(Saf0007, "safety failed [[math]] $ division by zero");
-    SWAG_ERROR(Saf0021, "safety failed [[nan]] $ invalid float (NaN)");
-    SWAG_ERROR(Saf0001, "safety failed [[null]] $ dereferencing a null pointer");
-    SWAG_ERROR(Saf0036, "safety failed [[null]] $ trying to throw a non existing error");
-    SWAG_ERROR(Saf0032, "safety failed [[overflow]] $ negative value [[%I64d]] on unsigned type [[%s]]");
-    SWAG_ERROR(Saf0006, "safety failed [[overflow]] $ negative value [[%s]] on unsigned type [[%s]]");
-    SWAG_ERROR(Saf0030, "safety failed [[overflow]] $ negative value [[%g]] on unsigned type [[%s]]");
-    SWAG_ERROR(Saf0029, "safety failed [[overflow]] $ value [[%s]] ([[%I64u]] in decimal) does not fit in type [[%s]]");
-    SWAG_ERROR(Saf0033, "safety failed [[overflow]] $ value [[%I64u]] does not fit in type [[%s]]");
-    SWAG_ERROR(Saf0035, "safety failed [[overflow]] $ value [[%I64d]] does not fit in type [[%s]]");
-    SWAG_ERROR(Saf0031, "safety failed [[overflow]] $ value [[%g]] does not fit in type [[%s]]");
-    SWAG_ERROR(Saf0009, "safety failed [[overflow]] $ overflow in [[%s]] (type is [[%s]])");
-    SWAG_ERROR(Saf0018, "safety failed [[overflow]] $ truncation from [[%s]] to [[%s]]");
-    SWAG_ERROR(Saf0019, "safety failed [[switch]] $ unexpected switch value ([[Swag.Complete]])");
-    SWAG_ERROR(Saf0010, nullptr);
-    SWAG_ERROR(Saf0011, nullptr);
-    SWAG_ERROR(Saf0012, nullptr);
-    SWAG_ERROR(Saf0013, nullptr);
-    SWAG_ERROR(Saf0014, nullptr);
-    SWAG_ERROR(Saf0015, nullptr);
-    SWAG_ERROR(Saf0016, nullptr);
-    SWAG_ERROR(Saf0017, nullptr);
+    SWAG_ERROR(Saf0001, "safety failed [[any]] $ invalid dynamic cast from [[any]] to [[%s]]");
+    SWAG_ERROR(Saf0002, "safety failed [[any]] $ invalid dynamic cast of a null value to [[%s]]");
+    SWAG_ERROR(Saf0003, "safety failed [[bool]] $ invalid boolean value");
+    SWAG_ERROR(Saf0004, "safety failed [[boundcheck]] $ index out of bounds");
+    SWAG_ERROR(Saf0005, "safety failed [[boundcheck]] $ range error, lower > upper");
+    SWAG_ERROR(Saf0006, "safety failed [[boundcheck]] $ slice error, lower > upper");
+    SWAG_ERROR(Saf0007, "safety failed [[boundcheck]] $ slice error, upper out of bounds");
+    SWAG_ERROR(Saf0008, "safety failed [[math]] $ [[@abs]] overflow (type is [[%s]])");
+    SWAG_ERROR(Saf0009, "safety failed [[math]] $ [[@acos]] invalid argument (type is [[%s]])");
+    SWAG_ERROR(Saf0010, "safety failed [[math]] $ [[@asin]] invalid argument (type is [[%s]])");
+    SWAG_ERROR(Saf0011, "safety failed [[math]] $ [[@log]] invalid argument (type is [[%s]])");
+    SWAG_ERROR(Saf0012, "safety failed [[math]] $ [[@log10]] invalid argument (type is [[%s]])");
+    SWAG_ERROR(Saf0013, "safety failed [[math]] $ [[@log2]] invalid argument (type is [[%s]])");
+    SWAG_ERROR(Saf0014, "safety failed [[math]] $ [[@sqrt]] invalid argument (type is [[%s]])");
+    SWAG_ERROR(Saf0015, "safety failed [[math]] $ division by zero");
+    SWAG_ERROR(Saf0016, "safety failed [[nan]] $ invalid float (NaN)");
+    SWAG_ERROR(Saf0017, "safety failed [[null]] $ dereferencing a null pointer");
+    SWAG_ERROR(Saf0018, "safety failed [[null]] $ trying to throw a non existing error");
+    SWAG_ERROR(Saf0019, "safety failed [[overflow]] $ negative value [[%I64d]] on unsigned type [[%s]]");
+    SWAG_ERROR(Saf0020, "safety failed [[overflow]] $ negative value [[%s]] on unsigned type [[%s]]");
+    SWAG_ERROR(Saf0021, "safety failed [[overflow]] $ negative value [[%g]] on unsigned type [[%s]]");
+    SWAG_ERROR(Saf0022, "safety failed [[overflow]] $ value [[%s]] ([[%I64u]] in decimal) does not fit in type [[%s]]");
+    SWAG_ERROR(Saf0023, "safety failed [[overflow]] $ value [[%I64u]] does not fit in type [[%s]]");
+    SWAG_ERROR(Saf0024, "safety failed [[overflow]] $ value [[%I64d]] does not fit in type [[%s]]");
+    SWAG_ERROR(Saf0025, "safety failed [[overflow]] $ value [[%g]] does not fit in type [[%s]]");
+    SWAG_ERROR(Saf0026, "safety failed [[overflow]] $ overflow in [[%s]] (type is [[%s]])");
+    SWAG_ERROR(Saf0027, "safety failed [[overflow]] $ truncation from [[%s]] to [[%s]]");
+    SWAG_ERROR(Saf0028, "safety failed [[switch]] $ unexpected switch value ([[Swag.Complete]])");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(San0007, "[sanity] division by zero    $ possible division by zero");
-    SWAG_ERROR(San0008, "[sanity] division by zero    $ possible division by zero of %s [[%s]]");
-    SWAG_ERROR(San0001, "[sanity] frame escape        $ attempt to return a local or a temporary variable");
-    SWAG_ERROR(San0002, "[sanity] frame escape        $ attempt to return of %s [[%s]]");
+    SWAG_ERROR(San0001, "[sanity] division by zero    $ possible division by zero");
+    SWAG_ERROR(San0002, "[sanity] division by zero    $ possible division by zero of %s [[%s]]");
+    SWAG_ERROR(San0003, "[sanity] frame escape        $ attempt to return a local or a temporary variable");
+    SWAG_ERROR(San0004, "[sanity] frame escape        $ attempt to return of %s [[%s]]");
     SWAG_ERROR(San0005, "[sanity] null dereference    $ attempt to dereference a null pointer");
     SWAG_ERROR(San0006, "[sanity] null dereference    $ attempt to dereference null %s [[%s]]");
-    SWAG_ERROR(San0010, "[sanity] stack overwrite     $ attempt to overrite the stack memory at offset [[%lld]] (stack size is [[%lld]])");
-    SWAG_ERROR(San0004, "[sanity] uninitialized usage $ attempt to use uninitialized %s [[%s]]");
-    SWAG_ERROR(San0003, "[sanity] uninitialized usage $ attempt to use uninitialized stack memory");
-    SWAG_ERROR(San0009, "[sanity] overflow            $ possible overflow in [[%s]] (type is [[%s]])");
-    SWAG_ERROR(San0011, nullptr);
-    SWAG_ERROR(San0012, nullptr);
-    SWAG_ERROR(San0013, nullptr);
-    SWAG_ERROR(San0014, nullptr);
+    SWAG_ERROR(San0007, "[sanity] stack overwrite     $ attempt to overrite the stack memory at offset [[%lld]] (stack size is [[%lld]])");
+    SWAG_ERROR(San0008, "[sanity] uninitialized usage $ attempt to use uninitialized %s [[%s]]");
+    SWAG_ERROR(San0009, "[sanity] uninitialized usage $ attempt to use uninitialized stack memory");
+    SWAG_ERROR(San0010, "[sanity] overflow            $ possible overflow in [[%s]] (type is [[%s]])");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

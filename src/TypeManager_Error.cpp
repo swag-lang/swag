@@ -23,11 +23,11 @@ bool TypeManager::errorOutOfRange(SemanticContext* context, AstNode* fromNode, T
         switch (fromType->nativeType)
         {
         case NativeTypeKind::F32:
-            return context->report({fromNode, Fmt(Err(Saf0030), fromNode->computedValue->reg.f32, toType->getDisplayNameC())});
+            return context->report({fromNode, Fmt(Err(Saf0021), fromNode->computedValue->reg.f32, toType->getDisplayNameC())});
         case NativeTypeKind::F64:
-            return context->report({fromNode, Fmt(Err(Saf0030), fromNode->computedValue->reg.f64, toType->getDisplayNameC())});
+            return context->report({fromNode, Fmt(Err(Saf0021), fromNode->computedValue->reg.f64, toType->getDisplayNameC())});
         default:
-            return context->report({fromNode, Fmt(Err(Saf0032), fromNode->computedValue->reg.s64, toType->getDisplayNameC())});
+            return context->report({fromNode, Fmt(Err(Saf0019), fromNode->computedValue->reg.s64, toType->getDisplayNameC())});
         }
     }
 
@@ -35,20 +35,20 @@ bool TypeManager::errorOutOfRange(SemanticContext* context, AstNode* fromNode, T
     {
         if (std::tolower(fromNode->token.text[1]) == 'x' || std::tolower(fromNode->token.text[1]) == 'b')
         {
-            return context->report({fromNode, Fmt(Err(Saf0029), fromNode->token.ctext(), fromNode->computedValue->reg.u64, toType->getDisplayNameC())});
+            return context->report({fromNode, Fmt(Err(Saf0022), fromNode->token.ctext(), fromNode->computedValue->reg.u64, toType->getDisplayNameC())});
         }
     }
 
     switch (fromType->nativeType)
     {
     case NativeTypeKind::F32:
-        return context->report({fromNode, Fmt(Err(Saf0031), fromNode->computedValue->reg.f32, toType->getDisplayNameC())});
+        return context->report({fromNode, Fmt(Err(Saf0025), fromNode->computedValue->reg.f32, toType->getDisplayNameC())});
     case NativeTypeKind::F64:
-        return context->report({fromNode, Fmt(Err(Saf0031), fromNode->computedValue->reg.f64, toType->getDisplayNameC())});
+        return context->report({fromNode, Fmt(Err(Saf0025), fromNode->computedValue->reg.f64, toType->getDisplayNameC())});
     default:
         if (fromType->isNativeIntegerSigned())
-            return context->report({fromNode, Fmt(Err(Saf0035), fromNode->computedValue->reg.s64, toType->getDisplayNameC())});
-        return context->report({fromNode, Fmt(Err(Saf0033), fromNode->computedValue->reg.u64, toType->getDisplayNameC())});
+            return context->report({fromNode, Fmt(Err(Saf0024), fromNode->computedValue->reg.s64, toType->getDisplayNameC())});
+        return context->report({fromNode, Fmt(Err(Saf0023), fromNode->computedValue->reg.u64, toType->getDisplayNameC())});
     }
 }
 
@@ -136,7 +136,7 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
 
     if (castError == CastErrorType::SafetyCastAny)
     {
-        msg = Fmt(Err(Saf0002), toType->getDisplayNameC());
+        msg = Fmt(Err(Saf0001), toType->getDisplayNameC());
     }
     else if (castError == CastErrorType::Const)
     {

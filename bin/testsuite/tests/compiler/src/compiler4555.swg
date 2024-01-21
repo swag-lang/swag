@@ -1,4 +1,4 @@
-#global testerror "Saf0005"
+#global testerror "Saf0007"
 
 typealias A = string
 

@@ -57,7 +57,7 @@ void Workspace::setupUserTags()
                 auto it = g_LangSpec->keywords.find(tokens1[1]);
                 if (!it || *it != TokenId::NativeType)
                 {
-                    Report::error(Fmt(Err(Fat0024), tokens1[1].c_str(), oneTagName.c_str()));
+                    Report::error(Fmt(Err(Fat0033), tokens1[1].c_str(), oneTagName.c_str()));
                     helpUserTags();
                     OS::exit(-1);
                 }
@@ -125,7 +125,7 @@ void Workspace::setupUserTags()
 
                     if (token.id != TokenId::LiteralNumber && token.id != TokenId::LiteralString)
                     {
-                        Report::error(Fmt(Err(Fat0023), tokenVal.c_str(), oneTagName.c_str()));
+                        Report::error(Fmt(Err(Fat0032), tokenVal.c_str(), oneTagName.c_str()));
                         helpUserTags();
                         OS::exit(-1);
                     }
@@ -140,7 +140,7 @@ void Workspace::setupUserTags()
                 auto errMsg = Semantic::checkLiteralValue(oneTag.value, literalType, token.literalValue, oneTag.type, neg);
                 if (!errMsg.empty())
                 {
-                    auto err = Fmt(Err(Fat0015), oneTagName.c_str(), errMsg.c_str());
+                    auto err = Fmt(Err(Fat0024), oneTagName.c_str(), errMsg.c_str());
                     Report::error(err);
                     helpUserTags();
                     OS::exit(-1);

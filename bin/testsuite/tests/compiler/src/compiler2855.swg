@@ -1,4 +1,4 @@
-#global testerror "Saf0003"
+#global testerror "Saf0008"
 #[Swag.Safety("", true)]
 #test
 {

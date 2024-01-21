@@ -1,4 +1,4 @@
-#global testerror "Saf0006"
+#global testerror "Saf0020"
 func toto(x: rune){}
 
 #[Swag.Safety("", true)]

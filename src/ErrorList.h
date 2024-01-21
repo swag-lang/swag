@@ -35,10 +35,6 @@ SWAG_ERROR(Fat0033),
 SWAG_ERROR(Fat0034),
 SWAG_ERROR(Fat0035),
 SWAG_ERROR(Fat0036),
-SWAG_ERROR(Fat0037),
-SWAG_ERROR(Fat0038),
-SWAG_ERROR(Fat0039),
-SWAG_ERROR(Fat0040),
 
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
@@ -1181,10 +1177,6 @@ SWAG_ERROR(San0007),
 SWAG_ERROR(San0008),
 SWAG_ERROR(San0009),
 SWAG_ERROR(San0010),
-SWAG_ERROR(San0011),
-SWAG_ERROR(San0012),
-SWAG_ERROR(San0013),
-SWAG_ERROR(San0014),
 
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////
@@ -1515,14 +1507,6 @@ SWAG_ERROR(Saf0025),
 SWAG_ERROR(Saf0026),
 SWAG_ERROR(Saf0027),
 SWAG_ERROR(Saf0028),
-SWAG_ERROR(Saf0029),
-SWAG_ERROR(Saf0030),
-SWAG_ERROR(Saf0031),
-SWAG_ERROR(Saf0032),
-SWAG_ERROR(Saf0033),
-SWAG_ERROR(Saf0034),
-SWAG_ERROR(Saf0035),
-SWAG_ERROR(Saf0036),
 
 /////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////

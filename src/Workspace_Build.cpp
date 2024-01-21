@@ -196,7 +196,7 @@ void Workspace::setupTarget()
     error_code err;
     if (!filesystem::exists(targetPath, err) && !filesystem::create_directories(targetPath, err))
     {
-        Report::errorOS(Fmt(Err(Fat0008), targetPath.string().c_str()));
+        Report::errorOS(Fmt(Err(Fat0021), targetPath.string().c_str()));
         OS::exit(-1);
     }
 
@@ -204,14 +204,14 @@ void Workspace::setupTarget()
     setupCachePath();
     if (!filesystem::exists(cachePath, err))
     {
-        Report::errorOS(Fmt(Err(Fat0002), cachePath.string().c_str()));
+        Report::errorOS(Fmt(Err(Fat0010), cachePath.string().c_str()));
         OS::exit(-1);
     }
 
     cachePath.append(SWAG_CACHE_FOLDER);
     if (!filesystem::exists(cachePath, err) && !filesystem::create_directories(cachePath, err))
     {
-        Report::errorOS(Fmt(Err(Fat0003), cachePath.string().c_str()));
+        Report::errorOS(Fmt(Err(Fat0016), cachePath.string().c_str()));
         OS::exit(-1);
     }
 
@@ -219,7 +219,7 @@ void Workspace::setupTarget()
     cachePath.append(workspacePath.filename().string() + "-" + targetFullName.c_str());
     if (!filesystem::exists(cachePath, err) && !filesystem::create_directories(cachePath, err))
     {
-        Report::errorOS(Fmt(Err(Fat0003), cachePath.string().c_str()));
+        Report::errorOS(Fmt(Err(Fat0016), cachePath.string().c_str()));
         OS::exit(-1);
     }
 
@@ -557,7 +557,7 @@ bool Workspace::buildRTModule(Module* module)
 
     if (module->numErrors)
     {
-        Report::error(module->kind == ModuleKind::BootStrap ? Err(Fat0021) : Err(Fat0022));
+        Report::error(module->kind == ModuleKind::BootStrap ? Err(Fat0014) : Err(Fat0015));
         return false;
     }
 
@@ -575,7 +575,7 @@ bool Workspace::buildRTModule(Module* module)
     // Errors !!!
     if (module->numErrors)
     {
-        Report::error(module->kind == ModuleKind::BootStrap ? Err(Fat0021) : Err(Fat0022));
+        Report::error(module->kind == ModuleKind::BootStrap ? Err(Fat0014) : Err(Fat0015));
         return false;
     }
 
@@ -655,7 +655,7 @@ bool Workspace::buildTarget()
     {
         if (!filteredModule)
         {
-            Report::error(Fmt(Err(Fat0028), g_CommandLine.moduleName.c_str()));
+            Report::error(Fmt(Err(Fat0029), g_CommandLine.moduleName.c_str()));
             return false;
         }
 
@@ -670,7 +670,7 @@ bool Workspace::buildTarget()
                 auto       it = g_Workspace->mapModulesNames.find(dep->name);
                 if (it == g_Workspace->mapModulesNames.end())
                 {
-                    Report::error(Fmt(Err(Fat0029), dep->name.c_str()));
+                    Report::error(Fmt(Err(Fat0011), dep->name.c_str()));
                     return false;
                 }
 

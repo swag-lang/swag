@@ -108,7 +108,7 @@ namespace OS
 
         if (!getWinSdk())
         {
-            Report::error(Err(Fat0039));
+            Report::error(Err(Fat0036));
             g_Log.lock();
             g_Log.setColor(LogColor::Cyan);
             g_Log.print("=> in order to build a windows executable or dll, you must install the latest version of the windows 10 sdk!\n");

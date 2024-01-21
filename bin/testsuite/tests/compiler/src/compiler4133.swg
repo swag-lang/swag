@@ -1,5 +1,5 @@
-#global testerror "Saf0021"
-#global testerror "Saf0023"
+#global testerror "Saf0016"
+#global testerror "Saf0011"
 
 #assert #run @compiler().getBuildCfg().byteCodeOptimizeLevel >= 0
 
