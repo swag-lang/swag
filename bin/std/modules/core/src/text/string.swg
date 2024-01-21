@@ -640,12 +640,19 @@ impl String
         return result
     }
 
-    // Returns true if the string contains 'what'
     #[Overload]
     {
-        mtd contains(what: u8) => Utf8.contains(toSlice(), what)
-        mtd contains(what: rune) => Utf8.contains(toSlice(), what)
-        mtd contains(what: string) => Utf8.contains(toSlice(), what)
+        // Returns true if the string contains 'what'
+        mtd const contains(what: u8)     => Utf8.contains(toSlice(), what)
+        mtd const contains(what: rune)   => Utf8.contains(toSlice(), what)
+        mtd const contains(what: string) => Utf8.contains(toSlice(), what)
+
+        // Return true if the string starts with 'str'
+        mtd const startsWith(str: string, comparisonType = Utf8.ComparisonType.Latin1) => Utf8.startsWith(toSlice(), str, comparisonType)
+
+        // Find 'what', and returns the byte index of it
+        mtd const indexOf(what: string, startByteIndex = 0'u64, comparisonType = Utf8.ComparisonType.Latin1) => Utf8.indexOf(toSlice(), what, startByteIndex, comparisonType)
+        mtd const indexOf(what: rune, startByteIndex = 0'u64) => Utf8.indexOf(toSlice(), what, startByteIndex)
     }
 }
 
