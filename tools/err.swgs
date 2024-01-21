@@ -18,30 +18,37 @@ struct OneFile
 
 var files: Array'OneFile
 
-func replace(dst, src: string)
+func replace(dst, src: string, inSwg, inCpp: &s32)
 {
     visit &f: files
     {
         var idx = 0'u64
         loop
         {
-            idx = f.content.indexOf(src, idx)
+            idx = f.content.indexOf(src, idx, Utf8.ComparisonType.Latin1NoCase)
             if idx == Swag.U64.Max do
                 break
-            Console.printf("% % %\n", dst, f.content[idx..idx+6], f.name)
-            f.newContent[idx+3] = src[3]
-            f.newContent[idx+4] = src[4]
-            f.newContent[idx+5] = src[5]
-            f.newContent[idx+6] = src[6]
-            f.changed = true
+
+            if Path.getExtension(f.name) == ".swg" do
+                inSwg += 1
+            elif Path.getFileName(f.name) != "ErrorIds.cpp" and Path.getFileName(f.name) != "ErrorList.h" do
+                inCpp += 1
+
+            if f.newContent[idx..idx+6] != dst[..6]
+            {
+                Console.printf("% % %\n", dst, f.content[idx..idx+6], f.name)
+                loop i: 7 do f.newContent[idx+i] = dst[i]
+                f.changed = true
+            }
+
             idx += 1
         }
     }
 }
 
-func addFiles(folder: string)
+func addFiles(folder: string, extension: string)
 {
-    let srcFiles = assume Directory.enumerateFiles(folder, recurse: true)
+    let srcFiles = assume Directory.enumerateFiles(folder, extension, recurse: true)
     visit f: srcFiles
     {
         var of: OneFile
@@ -54,9 +61,10 @@ func addFiles(folder: string)
 
 #main
 {
-    addFiles("../src/")
-    addFiles("../bin/testsuite/tests")
-    addFiles("../bin/std/tests")
+    addFiles("../src/", ".cpp")
+    addFiles("../src/", ".h")
+    addFiles("../bin", ".swg")
+    addFiles("../bin", ".swgs")
 
     var ids: HashTable'(string, s32)
 
@@ -65,11 +73,23 @@ func addFiles(folder: string)
     {
         l = Latin1.trim(l)
         if !l.startsWith("SWAG_ERROR(") do continue
+        let what = l[11..13]
 
-        ids.findOrAdd(l[11..13]).value += 1
-        var dst: String = l[11..13]
-        dst += Format.toString("%{04}", ids.findOrAdd(l[11..13]).value)
-        replace(dst, l[11..17])
+        if what != "Wrn" do continue
+
+        ids.findOrAdd(what).value += 1
+
+        var dst: String
+        dst += what
+        dst += Format.toString("%{04}", ids.findOrAdd(what).value)
+
+        var inSwg, inCpp: s32
+        replace(dst, l[11..17], &inSwg, &inCpp)
+
+        if !inCpp do
+            Console.printf("UNUSED: %\n", l[11..17])
+        if !inSwg and what != "Fat" and what != "Nte" do
+            Console.printf("UNTESTED: %\n", l[11..17])
     }
 
     visit f: files
