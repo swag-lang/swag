@@ -357,7 +357,7 @@ void initErrors()
     SWAG_ERROR(Err0235, "invalid character literal                         $ can't convert a character literal to type [[%s]]");
     SWAG_ERROR(Err0236, "invalid character literal                         $ the character literal [[%s]] seems to be a string and not a character");
     SWAG_ERROR(Err0237, "invalid character syntax                          $ characters should be delimited with backticks [[`]] and not quotes $ consider using the syntax `%s` instead");
-    SWAG_ERROR(Err0238, "invalid closure parameters                        $ expected [[(]] to start the list of parameters of the closure, found [[%s]] instead");
+    SWAG_ERROR(Err0238, nullptr);
     SWAG_ERROR(Err0239, "invalid comparison                                $ a slice comparison is only allowed with [[null]], got [[%s]]");
     SWAG_ERROR(Err0240, "invalid comparison                                $ an [[any]] comparison is only allowed with [[null]] or with a type, got [[%s]] instead");
     SWAG_ERROR(Err0241, "invalid comparison                                $ an interface comparison is only allowed with [[null]], another interface or with a type, got [[%s]] instead");
@@ -748,7 +748,7 @@ void initErrors()
     SWAG_ERROR(Err0626, "standalone expression                             $ an expression value should be used $ consider removing it");
     SWAG_ERROR(Err0627, "symbol already defined                            $ the %s [[%s]] has already been defined %s");
     SWAG_ERROR(Err0628, "symbol already defined                            $ the %s [[%s]] has already been defined in a parent scope");
-    SWAG_ERROR(Err0629, "system error                                      $ failed to add [[%s]] to the [[PATH]] variable");
+    SWAG_ERROR(Err0629, nullptr);
     SWAG_ERROR(Err0630, "system error                                      $ failed to create the process [[%s]] (::CreatePipe)");
     SWAG_ERROR(Err0631, "system error                                      $ failed to create the process [[%s]]");
     SWAG_ERROR(Err0632, "too many arguments                                $ expected [[%d]] argument(s), got [[%d]] instead");
@@ -763,7 +763,7 @@ void initErrors()
     SWAG_ERROR(Err0641, "too many variadic parameters                      $ the maximum number of variadic parameters is [[%s]], got [[%d]] instead");
     SWAG_ERROR(Err0642, "tuple type mismatch                               $ the source and the requested tuples are not compatible");
     SWAG_ERROR(Err0643, "type mismatch                                     $ a closure can't be assigned to a lambda type");
-    SWAG_ERROR(Err0644, "type mismatch                                     $ can't %s [[%s]] %s [[%s]]");
+    SWAG_ERROR(Err0644, nullptr);
     SWAG_ERROR(Err0645, "type mismatch                                     $ can't initialize type [[%s]] from type [[%s]]");
     SWAG_ERROR(Err0646, "type mismatch                                     $ casting from [[%s]] to [[%s]] is not allowed");
     SWAG_ERROR(Err0647, "type mismatch                                     $ casting from [[%s]] to pointer type is not allowed $ only conversion from type [[u64]] is accepted");

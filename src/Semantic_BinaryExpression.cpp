@@ -1011,7 +1011,7 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
         if (leftTypeInfo->isEnum() && !(leftTypeInfo->flags & TYPEINFO_ENUM_FLAGS))
             return context->report({node, Fmt(Err(Err0349), node->token.ctext(), leftTypeInfo->getDisplayNameC())});
         if (rightTypeInfo->isEnum() && !(rightTypeInfo->flags & TYPEINFO_ENUM_FLAGS))
-            return context->report({node, Fmt(Err(Err0349), node->token.ctext(), rightTypeInfo->getDisplayNameC())});
+            return context->report({node, Fmt(Err(Err0350), node->token.ctext(), rightTypeInfo->getDisplayNameC())});
     }
 
     // :ConcreteRef
