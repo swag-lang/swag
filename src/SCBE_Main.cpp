@@ -51,7 +51,7 @@ bool SCBE::emitOS(const BuildParameters& buildParameters)
     }
     else
     {
-        Report::error(module, Fmt(Err(Err0735), Backend::getOsName(g_CommandLine.target)));
+        SWAG_ASSERT(false);
         return false;
     }
 }
@@ -76,7 +76,7 @@ bool SCBE::emitMain(const BuildParameters& buildParameters)
             entryPoint = "WinMainCRTStartup";
         break;
     default:
-        Report::error(module, Fmt(Err(Err0735), Backend::getOsName(g_CommandLine.target)));
+        SWAG_ASSERT(false);
         return false;
     }
 

@@ -558,10 +558,7 @@ bool Semantic::resolveIntrinsicStringOf(SemanticContext* context)
     if (expr->computedValue)
     {
         if (expr->isConstantGenTypeInfo())
-        {
-            auto t                    = expr->getConstantGenTypeInfo();
-            node->computedValue->text = Utf8{(const char*) t->fullName.buffer, (uint32_t) t->fullName.count};
-        }
+            node->computedValue->text = Utf8{expr->getConstantGenTypeInfo()->fullName};
         else if (typeInfo->isString())
             node->computedValue->text = expr->computedValue->text;
         else if (typeInfo->isNative())
@@ -583,17 +580,11 @@ bool Semantic::resolveIntrinsicStringOf(SemanticContext* context)
             node->computedValue->text.append((const char*) b->datas, concat.bucketCount(b));
     }
     else if (expr->resolvedSymbolName)
-    {
         node->computedValue->text = expr->resolvedSymbolName->getFullName();
-    }
     else if (expr->resolvedSymbolOverload)
-    {
         node->computedValue->text = expr->resolvedSymbolOverload->symbol->getFullName();
-    }
     else
-    {
         return context->report({expr, Err(Err0734)});
-    }
 
     node->typeInfo = g_TypeMgr->typeInfoString;
     return true;
@@ -609,10 +600,7 @@ bool Semantic::resolveIntrinsicNameOf(SemanticContext* context)
     YIELD();
 
     if (expr->isConstantGenTypeInfo())
-    {
-        auto t                    = expr->getConstantGenTypeInfo();
-        node->computedValue->text = Utf8{(const char*) t->name.buffer, (uint32_t) t->name.count};
-    }
+        node->computedValue->text = Utf8{expr->getConstantGenTypeInfo()->name};
     else if (expr->resolvedSymbolName)
         node->computedValue->text = expr->resolvedSymbolName->name;
     else if (expr->resolvedSymbolOverload)
