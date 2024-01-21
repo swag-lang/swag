@@ -169,10 +169,10 @@ void initErrors()
     SWAG_ERROR(Err0047, "compiler limit reached                            $ the size of the data segment [[%s]] is too big (maximum size is [[0x%I64x]] bytes)");
     SWAG_ERROR(Err0048, "conflicting attributes                            $ the [[#[Swag.Compiler]]] and [[#[Swag.Tls]]] attributes are mutually exclusive");
     SWAG_ERROR(Err0049, "conflicting attributes                            $ the [[#[Swag.Inline]]] and [[#[Swag.NoInline]]] attributes are mutually exclusive");
-//HERE
-    SWAG_ERROR(Err0050, "conflicting attributes                            $ the [[#[Swag.Macro]]] and [[#[Swag.Inline]]] attributes are mutually exclusive, the %s can't have both");
-    SWAG_ERROR(Err0051, "conflicting attributes                            $ the [[#[Swag.Macro]]] and [[#[Swag.Mixin]]] attributes are mutually exclusive, the %s can't have both");
-    SWAG_ERROR(Err0052, "conflicting attributes                            $ the [[#[Swag.Mixin]]] and [[#[Swag.Inline]]] attributes are mutually exclusive, the %s can't have both");
+    SWAG_ERROR(Err0050, "conflicting attributes                            $ the [[#[Swag.Macro]]] and [[#[Swag.Inline]]] attributes are mutually exclusive");
+    SWAG_ERROR(Err0051, "conflicting attributes                            $ the [[#[Swag.Macro]]] and [[#[Swag.Mixin]]] attributes are mutually exclusive");
+    SWAG_ERROR(Err0052, "conflicting attributes                            $ the [[#[Swag.Mixin]]] and [[#[Swag.Inline]]] attributes are mutually exclusive");
+
     SWAG_ERROR(Err0053, "conflicting cast modifiers                        $ the [[%s]] and [[%s]] cast modifiers are mutually exclusive");
     SWAG_ERROR(Err0054, "const mismatch                                    $ casting from an immutable type [[%s]] to a mutable one [[%s]] is not allowed");
     SWAG_ERROR(Err0055, "const mismatch                                    $ the UFCS argument should be mutable but is not (type is [[%s]])");

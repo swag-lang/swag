@@ -550,15 +550,11 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 
         if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, funcNode->tokenName, Fmt(Err(Err0050), funcNode->getDisplayNameC())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MIXIN), context->report({funcNode, funcNode->tokenName, Fmt(Err(Err0051), funcNode->getDisplayNameC())}));
             funcNode->attributeFlags |= ATTRIBUTE_INLINE;
         }
 
         if (funcNode->attributeFlags & ATTRIBUTE_MIXIN)
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_INLINE), context->report({funcNode, funcNode->tokenName, Fmt(Err(Err0052), funcNode->getDisplayNameC())}));
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_MACRO), context->report({funcNode, funcNode->tokenName, Fmt(Err(Err0051), funcNode->getDisplayNameC())}));
             funcNode->attributeFlags |= ATTRIBUTE_INLINE;
             funcNode->attributeFlags |= ATTRIBUTE_MACRO;
         }

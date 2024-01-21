@@ -348,14 +348,18 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                     SWAG_VERIFY(attrParam->value.text.find(".", 0) == -1, context->report({child, attrParam->token, Err(Err0326)}));
                 }
 
-                if (*it == ATTRIBUTE_INLINE && (flags & ATTRIBUTE_NO_INLINE))
-                    return context->report({child, Err(Err0049)});
-                if (*it == ATTRIBUTE_NO_INLINE && (flags & ATTRIBUTE_INLINE))
-                    return context->report({child, Err(Err0049)});
-                if (*it == ATTRIBUTE_TLS && (flags & ATTRIBUTE_COMPILER))
+#define EXLUSIVE(__a, __b) ((*it == __a && (flags & __b)) || (*it == __b && (flags & __a)))
+
+                if (EXLUSIVE(ATTRIBUTE_TLS, ATTRIBUTE_COMPILER))
                     return context->report({child, Err(Err0048)});
-                if (*it == ATTRIBUTE_COMPILER && (flags & ATTRIBUTE_TLS))
-                    return context->report({child, Err(Err0048)});
+                if (EXLUSIVE(ATTRIBUTE_INLINE, ATTRIBUTE_NO_INLINE))
+                    return context->report({child, Err(Err0049)});
+                if (EXLUSIVE(ATTRIBUTE_MACRO, ATTRIBUTE_INLINE))
+                    return context->report({child, Err(Err0050)});
+                if (EXLUSIVE(ATTRIBUTE_MACRO, ATTRIBUTE_MIXIN))
+                    return context->report({child, Err(Err0051)});
+                if (EXLUSIVE(ATTRIBUTE_MIXIN, ATTRIBUTE_INLINE))
+                    return context->report({child, Err(Err0052)});
             }
 
             //////
