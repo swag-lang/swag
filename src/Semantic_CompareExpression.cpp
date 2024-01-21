@@ -406,7 +406,10 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
     if (leftTypeInfo->isTuple() || rightTypeInfo->isTuple())
     {
         Diagnostic diag{node->sourceFile, node->token, Err(Err0241)};
-        diag.addRange(left, Diagnostic::isType(leftTypeInfo));
+        if (leftTypeInfo->isTuple())
+            diag.addRange(left, Diagnostic::isType(leftTypeInfo));
+        else
+            diag.addRange(right, Diagnostic::isType(rightTypeInfo));
         return context->report(diag);
     }
 
