@@ -889,6 +889,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         if (token.id == TokenId::SymEqualGreater)
         {
             SWAG_CHECK(eatToken());
+            SWAG_VERIFY(token.id != TokenId::KwdReturn, error(token, Fmt(Err(Err0106))));
 
             if (funcNode->specFlags & AstFuncDecl::SPECFLAG_THROW)
             {
@@ -918,7 +919,6 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
             }
             else
             {
-
                 auto stmt               = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, funcNode);
                 auto returnNode         = Ast::newNode<AstReturn>(this, AstNodeKind::Return, sourceFile, stmt);
                 returnNode->semanticFct = Semantic::resolveReturn;

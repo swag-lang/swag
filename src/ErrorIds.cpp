@@ -895,7 +895,7 @@ void initErrors()
     SWAG_ERROR(Err0109, "unused return value                               $ the return value of the function [[%s]] should be used $ if you don't need the return value, consider prefixing the call with [[discard]]");
     SWAG_ERROR(Err1179, "unused return value                               $ the return value of the intrinsic [[%s]] should be used");
     SWAG_ERROR(Err0092, "unused return value                               $ the return value of the lambda [[%s]] should be used $ if you don't need the return value, consider prefixing the call with [[discard]]");
-    SWAG_ERROR(Err0106, nullptr);
+    SWAG_ERROR(Err0106, "unexpected [[return]]                             $ [[return]] is implicit after [[=>]] $ consider removing it");
     SWAG_ERROR(Err0680, nullptr);
     SWAG_ERROR(Err0367, nullptr);
     SWAG_ERROR(Err0282, nullptr);
