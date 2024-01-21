@@ -229,7 +229,7 @@ func memcmp(dst, src: const ^void, size: u64)->s32
         return 0
     let p1 = cast(const ^s8) dst
     let p2 = cast(const ^s8) src
-    return p1[len] - p2[len]
+    return cast(s32) p1[len] - cast(s32) p2[len]
 }
 
 ////////////////////////////////////////////////////////////
