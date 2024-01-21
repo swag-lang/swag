@@ -510,7 +510,7 @@ void Diagnostic::printRanges()
         if (i != ranges.size() - 1 && r.mergeNext)
             setColorRanges(ranges[i + 1].errorLevel);
 
-        while (curColumn < (int) r.startLocation.column + r.width && curColumn <= (int) lineCode.length())
+        while (curColumn < (int) r.startLocation.column + r.width && curColumn <= (int) lineCode.length() + 1)
         {
             curColumn++;
             g_Log.print(LogSymbol::HorizontalLine);
@@ -635,7 +635,7 @@ void Diagnostic::report()
                 printMargin(false, true);
                 g_Log.eol();
             }
-            }
+        }
         else
         {
             printErrorLevel();

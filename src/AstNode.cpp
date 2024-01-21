@@ -1040,6 +1040,12 @@ const Token& AstNode::getTokenName()
         return enumDecl->tokenName;
     }
 
+    if (kind == AstNodeKind::Impl)
+    {
+        auto implDecl = CastAst<AstImpl>(this, AstNodeKind::Impl);
+        return implDecl->identifier->getTokenName();
+    }
+
     return token;
 }
 

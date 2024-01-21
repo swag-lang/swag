@@ -1167,7 +1167,6 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r0, 
         if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_COPY)
         {
             Diagnostic diag{from, Fmt(Err(Err0113), typeInfo->getDisplayNameC())};
-            diag.hint = Diagnostic::isType(typeInfoStruct);
             return context->report(diag);
         }
 
