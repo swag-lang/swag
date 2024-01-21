@@ -366,6 +366,11 @@ Utf8 Naming::kindName(AstNode* node, Utf8& article)
         article = "a";
         return "type";
 
+    case AstNodeKind::CompilerValidIf:
+    case AstNodeKind::CompilerValidIfx:
+        article = "a";
+        return "constraint";
+
     default:
         break;
     }

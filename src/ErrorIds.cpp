@@ -148,7 +148,7 @@ void initErrors()
     SWAG_ERROR(Err0026, "capture size overflow                             $ the total requested size is [[%u]] bytes but the maximum authorized size is [[%u]]");
     SWAG_ERROR(Err0027, "compile-time evaluation failed                    $ can't transform the type [[%s]] to a constant array because [[opCount]] returns [[0]]");
     SWAG_ERROR(Err0028, "compile-time evaluation failed                    $ can't transform the type [[%s]] to a constant array because [[opSlice]] returns an empty slice");
-    SWAG_ERROR(Err0029, "compile-time evaluation failed                    $ the type [[%s]] can't be converted to constant expression");
+    SWAG_ERROR(Err0029, "compile-time evaluation required                  $ the type [[%s]] can't be converted to constant expression");
     SWAG_ERROR(Err0030, "compile-time evaluation required                  $ [[#include]] requited its filename argument to be evaluated at compile-time");
     SWAG_ERROR(Err0031, "compile-time evaluation required                  $ [[%s]] can't be evaluated at compile-time");
     SWAG_ERROR(Err0032, "compile-time evaluation required                  $ a slice of type [[%s]] can't be converted to a compile-time value");
@@ -172,7 +172,7 @@ void initErrors()
     SWAG_ERROR(Err0050, "conflicting attributes                            $ the [[#[Swag.Macro]]] and [[#[Swag.Inline]]] attributes are mutually exclusive, the %s can't have both");
     SWAG_ERROR(Err0051, "conflicting attributes                            $ the [[#[Swag.Macro]]] and [[#[Swag.Mixin]]] attributes are mutually exclusive, the %s can't have both");
     SWAG_ERROR(Err0052, "conflicting attributes                            $ the [[#[Swag.Mixin]]] and [[#[Swag.Inline]]] attributes are mutually exclusive, the %s can't have both");
-    SWAG_ERROR(Err0053, "conflicting cast modifiers                        $ the [[%s]] and [[%s]] cast modifiers are mutually exclusive and can't be used together");
+    SWAG_ERROR(Err0053, "conflicting cast modifiers                        $ the [[%s]] and [[%s]] cast modifiers are mutually exclusive");
     SWAG_ERROR(Err0054, "const mismatch                                    $ casting from an immutable type [[%s]] to a mutable one [[%s]] is not allowed");
     SWAG_ERROR(Err0055, "const mismatch                                    $ the UFCS argument should be mutable but is not (type is [[%s]])");
     SWAG_ERROR(Err0056, "const mismatch                                    $ the intrinsic [[%s]] requires a mutable pointer as a first argument, got [[%s]] instead");
@@ -185,10 +185,10 @@ void initErrors()
     SWAG_ERROR(Err0063, "double initialization                             $ you should not initialize a struct with both the type syntax and an assignment");
     SWAG_ERROR(Err0064, "duplicated [[#import]] location                   $ the [[#import]] location has already been defined");
     SWAG_ERROR(Err0065, "duplicated [[#import]] version                    $ the [[#import]] version has already been defined");
+    SWAG_ERROR(Err0068, "duplicated [[#import]]                            $ the [[#import]] location of the module [[%s]] is already defined as [[%s]]");
+    SWAG_ERROR(Err0069, "duplicated [[#import]]                            $ the [[#import]] version of the module [[%s]] is already defined as [[%s]]");
     SWAG_ERROR(Err0066, "duplicated attribute                              $ the attribute [[%s]] is assigned twice, but [[Swag.AttrMulti]] is not present in the declaration");
     SWAG_ERROR(Err0067, "duplicated enum value                             $ the enum value [[%s]] is already defined with the same underlying value");
-    SWAG_ERROR(Err0068, "duplicated import                                 $ the [[#import]] location of the module [[%s]] is already defined as [[%s]]");
-    SWAG_ERROR(Err0069, "duplicated import                                 $ the [[#import]] version of the module [[%s]] is already defined as [[%s]]");
     SWAG_ERROR(Err0070, "duplicated instruction modifier                   $ the instruction modifier [[%s]] has already been defined");
     SWAG_ERROR(Err0071, "duplicated operator                               $ expected an expression, found another operator [[%s]] instead");
     SWAG_ERROR(Err0072, "empty [[#mixin]] replacement block                $ an empty [[mixin]] block is useless $ add some content to the [[#mixin]] block or consider removing it");
