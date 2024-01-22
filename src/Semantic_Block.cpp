@@ -834,7 +834,13 @@ bool Semantic::resolveVisit(SemanticContext* context)
     // Variadic
     else if (typeInfo->isVariadic() || typeInfo->isTypedVariadic())
     {
-        SWAG_VERIFY(!(node->specFlags & AstVisit::SPECFLAG_WANT_POINTER), context->report({node, node->token, Err(Err0416)}));
+        if (node->specFlags & AstVisit::SPECFLAG_WANT_POINTER)
+        {
+            Diagnostic diag{node, node->wantPointerToken, Err(Err0416)};
+            auto       note = Diagnostic::note(node->expression, Diagnostic::isType(node->expression->typeInfo));
+            return context->report(diag, note);
+        }
+
         content += Fmt("{ loop%s %s { ", visitBack.c_str(), (const char*) concat.firstBucket->datas);
         firstAliasVar = 0;
         content += "let ";
@@ -849,8 +855,14 @@ bool Semantic::resolveVisit(SemanticContext* context)
     // Enum
     else if (typeInfo->isEnum())
     {
+        if (node->specFlags & AstVisit::SPECFLAG_WANT_POINTER)
+        {
+            Diagnostic diag{node, node->wantPointerToken, Err(Err0417)};
+            auto       note = Diagnostic::note(node->expression, Diagnostic::isType(node->expression->typeInfo));
+            return context->report(diag, note);
+        }
+
         auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        SWAG_VERIFY(!(node->specFlags & AstVisit::SPECFLAG_WANT_POINTER), context->report({node, node->token, Err(Err0417)}));
         content += Fmt("{ let __addr%u = @typeof(%s); ", id, (const char*) concat.firstBucket->datas);
         content += Fmt("loop%s %d { ", visitBack.c_str(), typeEnum->values.size());
         firstAliasVar = 1;
