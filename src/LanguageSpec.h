@@ -92,6 +92,7 @@ struct LanguageSpec
     Utf8 name_Swag_NotGeneric;
     Utf8 name_Swag_CalleeReturn;
     Utf8 name_Swag_Complete;
+    Utf8 name_Swag_Discardable;
 
     Utf8 name_opInitGenerated;
     Utf8 name_opDropGenerated;

@@ -819,7 +819,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             Vector<const Diagnostic*> notes;
             auto                      prevIdentifier = CastAst<AstIdentifier>(prevNode, AstNodeKind::Identifier);
             auto                      widthNode      = prevIdentifier->identifierExtension->fromAlternateVar;
-            notes.push_back(Diagnostic::note(oneMatch.oneOverload->overload->node, Fmt(Nte(Nte0154), prevNode->typeInfo->getDisplayNameC())));
+            notes.push_back(Diagnostic::note(oneMatch.oneOverload->overload->node, oneMatch.oneOverload->overload->node->getTokenName(), Fmt(Nte(Nte0154), prevNode->typeInfo->getDisplayNameC())));
             notes.push_back(Diagnostic::hereIs(widthNode));
             notes.push_back(Diagnostic::note(Fmt(Nte(Nte0031), identifierRef->startScope->name.c_str())));
             return context->report(diag, notes);

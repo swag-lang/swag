@@ -933,7 +933,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
         // Waiting for myself !
         if (child->typeInfo == typeInfo)
         {
-            Diagnostic diag{node, Fmt(Err(Err0614), typeInfo->getDisplayNameC())};
+            Diagnostic diag{node, node->getTokenName(), Fmt(Err(Err0614), node->token.ctext())};
             auto       note = Diagnostic::note(child, Nte(Nte0067));
             return context->report(diag, note);
         }

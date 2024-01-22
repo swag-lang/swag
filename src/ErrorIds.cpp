@@ -893,7 +893,7 @@ void initErrors()
     SWAG_ERROR(Nte0007, "[[%s]] is needed because of the function return type");
     SWAG_ERROR(Nte0008, "[[%s]] might represent either a type or a parameter name");
     SWAG_ERROR(Nte0009, "[[%s]] was located within [[%s]] due to a [[using]] field");
-    SWAG_ERROR(Nte0010, "[[==]] is the comparison operator; did you intend to affect something with [[=]]?");
+    SWAG_ERROR(Nte0010, "[[==]] is the comparison operator; did you intend to affect something with [[=]] ?");
     SWAG_ERROR(Nte0011, "[[closure]] should be followed by the capture parameters enclosed in [[|...|]]");
     SWAG_ERROR(Nte0012, "[[discard]] can't be accociated with an intrinsic, as an intrinsic result should always be used");
     SWAG_ERROR(Nte0013, "[[namealias]] should be associated with a namespace, a function or a variable instead of a type");

@@ -889,7 +889,12 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
 
         // The function returns nothing but has the 'Swag.Discardable' attribute
         if (funcNode->returnType->typeInfo->isVoid() && funcNode->attributeFlags & ATTRIBUTE_DISCARDABLE)
-            return context->report({funcNode, funcNode->tokenName, Fmt(Err(Err0573), funcNode->token.ctext())});
+        {
+            auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Discardable);
+            auto       note = Diagnostic::note(attr, Fmt(Nte(Nte0063), "attribute"));
+            Diagnostic diag{funcNode, funcNode->tokenName, Fmt(Err(Err0573), funcNode->token.ctext())};
+            return context->report(diag, note);
+        }
     }
 
     if (funcNode->flags & AST_IS_GENERIC)
