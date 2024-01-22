@@ -176,6 +176,7 @@ struct Diagnostic
         DiagnosticLevel errorLevel;
         int             width     = 0;
         int             mid       = 0;
+        bool            hasBar    = false;
         bool            mergeNext = false;
     };
 

@@ -460,7 +460,8 @@ int Diagnostic::printRangesVerticalBars(size_t maxMarks)
     int curColumn = minBlanks;
     for (size_t ii = 0; ii < maxMarks; ii++)
     {
-        const auto& rr = ranges[ii];
+        auto& rr  = ranges[ii];
+        rr.hasBar = true;
         g_Log.setColor(rangeNoteColor);
         curColumn = alignRangeColumn(curColumn, rr.mid);
         g_Log.print(LogSymbol::VerticalLine);
@@ -541,7 +542,6 @@ void Diagnostic::printRanges()
         }
     }
 
-    auto numRanges = ranges.size();
     while (ranges.size())
     {
         auto& r        = ranges.back();
@@ -551,10 +551,11 @@ void Diagnostic::printRanges()
         curColumn = printRangesVerticalBars(ranges.size() - 1);
         g_Log.setColor(rangeNoteColor);
 
+        bool notEnoughRoomRight = ((mid + 3 + (int) unformat.length() > (int) g_CommandLine.errorRightColumn) || orgNumRanges >= 2);
+        bool enoughRoomLeft     = mid - 2 - (int) unformat.length() >= 0;
+
         // Can we stick the hint before the line reference ? (must be the last one)
-        if (ranges.size() == 1 &&
-            mid + 3 + (int) unformat.length() > (int) g_CommandLine.errorRightColumn &&
-            mid - 2 - (int) unformat.length() > minBlanks)
+        if (ranges.size() == 1 && notEnoughRoomRight && enoughRoomLeft)
         {
             curColumn = alignRangeColumn(curColumn, r.mid - 2 - (int) unformat.length());
             g_Log.print(r.hint);
@@ -565,11 +566,9 @@ void Diagnostic::printRanges()
 
         // The hint is the last one, and is too big to be on the right
         // So make it on its own line
-        else if (ranges.size() == 1 &&
-                 ((mid + 3 + (int) unformat.length() > (int) g_CommandLine.errorRightColumn) ||
-                  orgNumRanges >= 2))
+        else if (ranges.size() == 1 && notEnoughRoomRight)
         {
-            if (numRanges == 1)
+            if (!ranges.back().hasBar)
             {
                 curColumn = alignRangeColumn(curColumn, r.mid);
                 g_Log.print(LogSymbol::VerticalLineUp);
@@ -577,6 +576,9 @@ void Diagnostic::printRanges()
                 printMargin(false, true);
                 curColumn = minBlanks;
             }
+
+            if (mid - 2 - (int) unformat.length() > -4)
+                curColumn = alignRangeColumn(curColumn, curColumn + 4);
 
             printLastRangeHint(curColumn);
         }

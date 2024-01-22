@@ -7,6 +7,6 @@ struct A
 func toto()
 {
     var a: A
-                                                               var c = &a[1]
+                                                                     var cccccccccccccccc = &a[1]
     @print(c.x)
 }

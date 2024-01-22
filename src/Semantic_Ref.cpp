@@ -62,7 +62,7 @@ bool Semantic::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl* fu
     if (!msg.empty())
     {
         Diagnostic diag{node, msg};
-        auto       note  = Diagnostic::hereIs(funcNode->resolvedSymbolOverload);
+        auto       note  = Diagnostic::hereIs(funcNode);
         auto       note1 = Diagnostic::note(msg1);
         return context->report(diag, note, note1);
     }
