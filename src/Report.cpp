@@ -268,11 +268,23 @@ static void reportInternal(const Diagnostic& diag, const Vector<const Diagnostic
     cleanNotes(notes);
     g_Log.eol();
 
+    bool marginBefore = true;
     for (auto n : notes)
     {
         if (!n->display)
             continue;
+
+        n->setupColors();
+        if (n->errorLevel == DiagnosticLevel::Note && marginBefore)
+        {
+            n->printMarginLineNo(0);
+            g_Log.setColor(n->marginBorderColor);
+            g_Log.print(LogSymbol::VerticalLineDot);
+            g_Log.eol();
+        }
+
         n->report();
+        marginBefore = n->hasContent;
     }
 
     g_Log.setDefaultColor();

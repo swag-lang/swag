@@ -197,6 +197,7 @@ struct Diagnostic
     LogColor          marginBorderColor;
     LogColor          rangeNoteColor;
     LogColor          warningColor;
+    LogColor          noteTitleColor;
     LogColor          noteColor;
     LogColor          stackColor;
     LogColor          preRemarkColor;
@@ -221,4 +222,5 @@ struct Diagnostic
     bool canBeMerged = true;
     bool display     = true;
     bool hasLocation = false;
+    bool hasContent  = false;
 };

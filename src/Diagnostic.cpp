@@ -14,6 +14,7 @@ void Diagnostic::setupColors()
     rangeNoteColor    = LogColor::White;
     warningColor      = LogColor::Magenta;
     noteColor         = LogColor::White;
+    noteTitleColor    = LogColor::DarkYellow;
     stackColor        = LogColor::DarkYellow;
     preRemarkColor    = LogColor::White;
     remarkColor       = LogColor::Gray;
@@ -27,6 +28,7 @@ void Diagnostic::setup()
         showFileName = false;
     if (!sourceFile || sourceFile->path.empty() || !hasLocation)
         showSourceCode = false;
+    hasContent = showSourceCode || !remarks.empty() || !autoRemarks.empty() || !preRemarks.empty();
 }
 
 void Diagnostic::addRange(const SourceLocation& start, const SourceLocation& end, const Utf8& h)
@@ -158,8 +160,9 @@ void Diagnostic::printErrorLevel()
         break;
 
     case DiagnosticLevel::Note:
-        g_Log.setColor(noteColor);
+        g_Log.setColor(noteTitleColor);
         g_Log.print("note: ");
+        g_Log.setColor(noteColor);
         break;
 
     default:
@@ -600,17 +603,6 @@ void Diagnostic::printRanges()
 
 void Diagnostic::report()
 {
-    setupColors();
-
-    bool hasContent = showSourceCode || !remarks.empty() || !autoRemarks.empty() || !preRemarks.empty();
-    if (errorLevel == DiagnosticLevel::Note)
-    {
-        printMarginLineNo(0);
-        g_Log.setColor(marginBorderColor);
-        g_Log.print(LogSymbol::VerticalLineDot);
-        g_Log.eol();
-    }
-
     // Message level
     if (showErrorLevel)
     {
