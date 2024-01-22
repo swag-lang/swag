@@ -2998,8 +2998,9 @@ bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, Symbo
             symbolKind != SymbolKind::TypeAlias)
         {
             auto       firstNode = symbol->nodes.front();
-            Diagnostic diag{genericParameters, Fmt(Err(Err0683), node->token.ctext(), Naming::aKindName(symbol->kind).c_str())};
-            return context->report(diag, Diagnostic::hereIs(firstNode));
+            Diagnostic diag{genericParameters, Fmt(Err(Err0683), Naming::aKindName(symbol->kind).c_str())};
+            auto       note = Diagnostic::note(node, node->token, Fmt(Nte(Nte0199), node->token.ctext(), Naming::aKindName(symbol->kind).c_str()));
+            return context->report(diag, note, Diagnostic::hereIs(firstNode));
         }
 
         auto childCount = genericParameters->childs.size();

@@ -531,8 +531,9 @@ void Diagnostic::printRanges()
         }
     }
 
-    // The last one in on the same line as the underline.
     auto orgNumRanges = ranges.size();
+
+    // The last one in on the same line as the underline if there is enough room
     if (ranges.size())
     {
         auto& r        = ranges.back();
@@ -541,17 +542,6 @@ void Diagnostic::printRanges()
         {
             g_Log.print(" ");
             printLastRangeHint(curColumn + 1);
-            ranges.pop_back();
-        }
-        else if (ranges.size() != 1)
-        {
-            curColumn = printRangesVerticalBars(ranges.size() - 1);
-            curColumn = alignRangeColumn(curColumn, r.mid);
-            g_Log.print(LogSymbol::DownRight);
-            g_Log.print(LogSymbol::HorizontalLine);
-            g_Log.print(" ");
-            curColumn += 3;
-            printLastRangeHint(curColumn);
             ranges.pop_back();
         }
     }

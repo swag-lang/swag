@@ -802,10 +802,10 @@ void initErrors()
     SWAG_ERROR(Err0680, "unexpected end of comment                         $ unexpected end of multi-line comment [[*/]] after %s $ beginning [[/*]] of multi-line comment is missing");
     SWAG_ERROR(Err0681, "unexpected end of file within comment             $ this multi-line comment is missing its closing [[*/]]");
     SWAG_ERROR(Err0682, "unexpected function body                          $ a function tagged with the [[#[Swag.Foreign]]] attribute can't have a body");
-    SWAG_ERROR(Err0683, "unexpected generic arguments                      $ the identifier [[%s]] is %s and not a function or a struct");
+    SWAG_ERROR(Err0683, "unexpected generic arguments                      $ unexpected generic arguments after %s");
     SWAG_ERROR(Err0684, "unexpected generic function                       $ the function [[%s]] appears to be generic despite the [[#[Swag.NotGeneric]]] attribute");
-    SWAG_ERROR(Err0685, "unexpected generic parameters                     $ a function interface can't have generic parameters starting with [[(]]");
-    SWAG_ERROR(Err0686, "unexpected generic parameters                     $ expected an non-generic name without generic parameters starting with [[]]]]");
+    SWAG_ERROR(Err0685, "unexpected generic parameters                     $ a function interface can't have generic parameters");
+    SWAG_ERROR(Err0686, "unexpected generic arguments                      $ expected an non-generic name without generic parameters");
     SWAG_ERROR(Err0687, "unexpected generic parameters                     $ the function [[%s]] can't have generic parameters because of the [[#[Swag.NotGeneric]]] attribute");
     SWAG_ERROR(Err0688, "unexpected generic parameters                     $ the special function [[%s]] can't have generic parameters");
     SWAG_ERROR(Err0689, "unexpected identifier                             $ a global identifier like [[%s]] can't be used at the file level");
@@ -1082,7 +1082,7 @@ void initErrors()
     SWAG_ERROR(Nte0196, "you need to take the address of a value to make a reference");
     SWAG_ERROR(Nte0197, "the value could come from [[%s]]");
     SWAG_ERROR(Nte0198, "this suffix wants the literal to be converted to [[%s]]");
-    SWAG_ERROR(Nte0199, nullptr);
+    SWAG_ERROR(Nte0199, "the identifier [[%s]] is %s and not a function or a struct");
 }
 
 Utf8 Err(ErrorID idx)

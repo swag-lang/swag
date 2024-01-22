@@ -624,7 +624,14 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
 
         if (funcNode->genericParameters)
         {
-            SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC), context->report({funcNode->genericParameters, Fmt(Err(Err0687), funcNode->token.ctext())}));
+            if (funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC)
+            {
+                auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_NotGeneric);
+                auto       note = Diagnostic::note(attr, Fmt(Nte(Nte0063), "attribute"));
+                Diagnostic diag{funcNode->genericParameters, Fmt(Err(Err0687), funcNode->token.ctext())};
+                return context->report(diag, note);
+            }
+
             funcNode->flags |= AST_IS_GENERIC;
         }
 
@@ -632,7 +639,12 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
             typeInfo->flags |= TYPEINFO_GENERIC;
 
         if ((funcNode->attributeFlags & ATTRIBUTE_NOT_GENERIC) && funcNode->flags & AST_IS_GENERIC)
-            return context->report({funcNode, funcNode->tokenName, Fmt(Err(Err0684), funcNode->token.ctext())});
+        {
+            auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_NotGeneric);
+            auto       note = Diagnostic::note(attr, Fmt(Nte(Nte0063), "attribute"));
+            Diagnostic diag{funcNode, funcNode->tokenName, Fmt(Err(Err0684), funcNode->token.ctext())};
+            return context->report(diag, note);
+        }
 
         SWAG_CHECK(setupFuncDeclParams(context, typeInfo, funcNode, funcNode->genericParameters, true));
         YIELD();
@@ -865,8 +877,10 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
         // The function wants to return something, but has the 'Swag.CalleeReturn' attribute
         if (!funcNode->returnType->typeInfo->isVoid() && (funcNode->attributeFlags & ATTRIBUTE_CALLEE_RETURN))
         {
+            auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_CalleeReturn);
+            auto       note = Diagnostic::note(attr, Fmt(Nte(Nte0063), "attribute"));
             Diagnostic diag{funcNode->returnType->childs.front(), Err(Err0697)};
-            return context->report(diag);
+            return context->report(diag, note);
         }
 
         // The function returns nothing but has the 'Swag.Discardable' attribute
