@@ -1215,6 +1215,8 @@ AstNode* AstNode::findParentAttrUse(const Utf8& name)
             if (it)
                 return it->child ? it->child : it->node;
         }
+
+        search = search->parent;
     }
 
     return nullptr;

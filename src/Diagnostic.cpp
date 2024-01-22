@@ -447,7 +447,7 @@ int Diagnostic::alignRangeColumn(int curColumn, int where)
 {
     while (curColumn < where)
     {
-        if (lineCode[curColumn] == '\t')
+        if (curColumn < (int) lineCode.count && lineCode[curColumn] == '\t')
             g_Log.print("\t");
         else
             g_Log.print(" ");

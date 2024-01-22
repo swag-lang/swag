@@ -74,6 +74,7 @@ void LanguageSpec::setupNames()
     name_Swag_Inline       = "Swag.Inline";
     name_Swag_NotGeneric   = "Swag.NotGeneric";
     name_Swag_CalleeReturn = "Swag.CalleeReturn";
+    name_Swag_Complete     = "Swag.Complete";
 
     name_opBinary       = "opBinary";
     name_opUnary        = "opUnary";

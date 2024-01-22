@@ -354,7 +354,12 @@ bool Semantic::resolveSwitch(SemanticContext* context)
     {
         // No default for a complete switch
         auto back = node->cases.back();
-        SWAG_VERIFY(!back->expressions.empty(), context->report({back, back->token, Err(Err0663)}));
+        if (back->expressions.empty())
+        {
+            auto attr = back->findParentAttrUse(g_LangSpec->name_Swag_Complete);
+            auto note = Diagnostic::note(attr, Fmt(Nte(Nte0063), "attribute"));
+            return context->report({back, back->token, Err(Err0663)}, note);
+        }
 
         // When a switch is marked as complete, be sure every definitions have been covered
         if (node->typeInfo->isEnum())

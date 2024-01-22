@@ -304,7 +304,11 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
 
     // Check attributes
     if ((funcNode->isForeign()) && funcNode->content)
-        return context->report({funcNode, Err(Err0682)});
+    {
+        auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Foreign);
+        auto note = Diagnostic::note(attr, Fmt(Nte(Nte0063), "attribute"));
+        return context->report({funcNode, funcNode->getTokenName(), Err(Err0682)}, note);
+    }
 
     if (!(funcNode->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
     {
