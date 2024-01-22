@@ -443,11 +443,11 @@ void Diagnostic::setColorRanges(DiagnosticLevel level)
     }
 }
 
-int Diagnostic::alignRangeColumn(int curColumn, int where)
+int Diagnostic::alignRangeColumn(int curColumn, int where, bool withCode)
 {
     while (curColumn < where)
     {
-        if (curColumn < (int) lineCode.count && lineCode[curColumn] == '\t')
+        if (withCode && curColumn < (int) lineCode.count && lineCode[curColumn] == '\t')
             g_Log.print("\t");
         else
             g_Log.print(" ");
@@ -491,7 +491,7 @@ void Diagnostic::printLastRangeHint(int curColumn)
         if (i != tokens.size() - 1)
         {
             curColumn = printRangesVerticalBars(ranges.size() - 1);
-            curColumn = alignRangeColumn(curColumn, leftColumn);
+            curColumn = alignRangeColumn(curColumn, leftColumn, false);
         }
     }
 }
