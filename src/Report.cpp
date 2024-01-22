@@ -275,6 +275,9 @@ static void reportInternal(const Diagnostic& diag, const Vector<const Diagnostic
             continue;
 
         n->setupColors();
+
+        if (!n->showErrorLevel)
+            marginBefore = true;
         if (n->errorLevel == DiagnosticLevel::Note && marginBefore)
         {
             n->printMarginLineNo(0);

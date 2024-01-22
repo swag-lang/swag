@@ -177,7 +177,7 @@ void initErrors()
     SWAG_ERROR(Err0055, "const mismatch                                    $ the UFCS argument should be mutable but is not (type is [[%s]])");
     SWAG_ERROR(Err0056, "const mismatch                                    $ the intrinsic [[%s]] requires a mutable pointer as a first argument, got [[%s]] instead");
     SWAG_ERROR(Err0057, "const mismatch                                    $ the intrinsic [[%s]] requires a mutable variable as a first argument, got [[%s]] instead");
-    SWAG_ERROR(Err0058, "defer escape throw                                $ an error cannot escape a [[defer]] or [[defer(err)]] block");
+    SWAG_ERROR(Err0058, "defer escape throw                                $ an error can't escape a [[defer]] or [[defer(err)]] block");
     SWAG_ERROR(Err0059, "dependency error                                  $ can't resolve the dependency to the module [[%s]] because of a version mismatched");
     SWAG_ERROR(Err0060, "dependency error                                  $ can't resolve the dependency to the module [[%s]] because version [[%s]] was not found at [[%s]]");
     SWAG_ERROR(Err0061, "dependency error                                  $ can't resolve the dependency to the module [[%s]] because version [[%s]] was not found");
@@ -538,8 +538,8 @@ void initErrors()
     SWAG_ERROR(Err0416, "invalid visit                                     $ can't visit a variadic type by pointer");
     SWAG_ERROR(Err0417, "invalid visit                                     $ can't visit an enum content by pointer");
     SWAG_ERROR(Err0418, "invalid visit                                     $ can't visit type [[%s]]");
-    SWAG_ERROR(Err0419, "invalid visit                                     $ cannot find the [[%s]] visit specialization in [[%s]]");
-    SWAG_ERROR(Err0420, "invalid visit                                     $ the type [[%s]] cannot be visited with [[visit]]");
+    SWAG_ERROR(Err0419, "invalid visit                                     $ can't find the [[%s]] visit specialization in [[%s]]");
+    SWAG_ERROR(Err0420, "invalid visit                                     $ the type [[%s]] can't be visited with [[visit]]");
     SWAG_ERROR(Err0421, "invalid void dereference                          $ dereferencing a pointer to [[void]] is not valid $ [[void]] does not have a valid size");
     SWAG_ERROR(Err0422, "linker error                                      $ the LLVM backend failed to create the target [[%s]]");
     SWAG_ERROR(Err0423, "literal overflow                                  $ can't negate number [[%I64d]] because [[%I64u]] is too large for type [[s64]]");
