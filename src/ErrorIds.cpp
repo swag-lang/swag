@@ -1081,7 +1081,7 @@ void initErrors()
     SWAG_ERROR(Nte0195, "you might want to get the address of [[%s]] using [[&]]");
     SWAG_ERROR(Nte0196, "you need to take the address of a value to make a reference");
     SWAG_ERROR(Nte0197, "the value could come from [[%s]]");
-    SWAG_ERROR(Nte0198, nullptr);
+    SWAG_ERROR(Nte0198, "this suffix wants the literal to be converted to [[%s]]");
     SWAG_ERROR(Nte0199, nullptr);
 }
 

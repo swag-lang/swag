@@ -540,7 +540,14 @@ bool Semantic::resolveLiteral(SemanticContext* context)
 
     auto errMsg = checkLiteralValue(*node->computedValue, node->literalType, node->literalValue, suffixType, negApplied);
     if (!errMsg.empty())
-        return context->report({node, errMsg});
+    {
+        Diagnostic  diag{node, node->token, errMsg};
+        Diagnostic* note = nullptr;
+        if (suffix && suffix->typeInfo)
+            note = Diagnostic::note(suffix, Fmt(Nte(Nte0198), suffix->typeInfo->getDisplayNameC()));
+        return context->report(diag, note);
+    }
+
     node->typeInfo    = suffixType;
     node->byteCodeFct = ByteCodeGen::emitLiteral;
     return true;
