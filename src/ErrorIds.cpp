@@ -423,12 +423,12 @@ void initErrors()
     SWAG_ERROR(Err0301, "invalid generic                                   $ can't instantiate the generic struct [[%s]] because of missing contextual types replacements");
     SWAG_ERROR(Err0302, "invalid generic                                   $ the generic value [[%s]] has already been deduced from arguments to be [[%s]], and [[%s]] is provided here");
     SWAG_ERROR(Err0303, "invalid generic argument                          $ invalid usage of %s ([[%s]]) as a generic argument $ a generic argument must be a literal or a type");
-    SWAG_ERROR(Err0304, "invalid generic argument                          $ unexpected generic %s (a type is expected but a value is provided) $ this is a literal but a type was expected");
-    SWAG_ERROR(Err0305, "invalid generic argument                          $ unexpected generic %s (a value is expected but a type is provided) $ this is a type but a literal was expected");
+    SWAG_ERROR(Err0304, "invalid generic argument                          $ a type is expected but got a value instead");
+    SWAG_ERROR(Err0305, "invalid generic argument                          $ a value is expected but got a type instead");
     SWAG_ERROR(Err0306, "invalid generic parameter                         $ the special function [[%s]] expects a literal as a generic parameter, got type [[%s]] instead");
     SWAG_ERROR(Err0307, "invalid generic parameter name                    $ expected an identifier as the generic name, found [[%s]] instead");
-    SWAG_ERROR(Err0308, "invalid hexadecimal number format                 $ hexadecimal literals can only contain digits 0-9, A-F, and a-f, found [[%s]] instead");
-    SWAG_ERROR(Err0309, "invalid identifier                                $ expected an identifier here");
+    SWAG_ERROR(Err0308, "invalid hexadecimal number format                 $ hexadecimal literals can only contain digits [[0-9]], [[A-F]], and [[a-f]], found [[%s]] instead");
+    SWAG_ERROR(Err0309, nullptr);
     SWAG_ERROR(Err0310, "invalid identifier                                $ expected an identifier, found [[%s]] instead");
     SWAG_ERROR(Err0311, "invalid identifier list                           $ [[with]] does not support multiple identifiers");
     SWAG_ERROR(Err0312, "invalid import version                            $ the [[#import]] version format is invalid");

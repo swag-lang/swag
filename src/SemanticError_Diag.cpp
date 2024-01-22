@@ -218,12 +218,12 @@ static void errorBadGenericSignature(SemanticContext* context, ErrorParam& error
     Diagnostic* diag;
     if (match.flags & SymbolMatchContext::MATCH_ERROR_VALUE_TYPE)
     {
-        auto msg = Fmt(Err(Err0304), niceArg.c_str());
+        auto msg = Fmt(Err(Err0304));
         diag     = new Diagnostic{errorNode, msg};
     }
     else if (match.flags & SymbolMatchContext::MATCH_ERROR_TYPE_VALUE)
     {
-        auto msg = Fmt(Err(Err0305), niceArg.c_str());
+        auto msg = Fmt(Err(Err0305));
         diag     = new Diagnostic{errorNode, msg};
     }
     else

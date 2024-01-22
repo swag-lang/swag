@@ -108,7 +108,7 @@ bool Parser::doFuncCallParameters(AstNode* parent, AstFuncCallParams** result, T
         SWAG_CHECK(eatToken());
         while (token.id != TokenId::SymVertical)
         {
-            SWAG_CHECK(checkIsIdentifier(token, Err(Err0309)));
+            SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err0310), token.ctext())));
             callParams->aliasNames.push_back(token);
             SWAG_CHECK(eatToken());
             if (token.id == TokenId::SymVertical)
