@@ -1168,10 +1168,9 @@ bool Semantic::resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode
 
     if (!leftTypeInfo->isNativeIntegerOrRune())
     {
-        Diagnostic diag{left, Fmt(Err(Err0388), leftTypeInfo->getDisplayNameC())};
-        diag.hint = Diagnostic::isType(leftTypeInfo);
-        diag.addRange(node->token, Nte(Nte0130));
-        return context->report(diag);
+        Diagnostic diag{node, node->token, Fmt(Err(Err0388), leftTypeInfo->getDisplayNameC())};
+        auto       note = Diagnostic::note(left, Diagnostic::isType(left));
+        return context->report(diag, note);
     }
 
     if (left->hasComputedValue() && right->hasComputedValue())

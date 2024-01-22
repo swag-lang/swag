@@ -416,7 +416,7 @@ void initErrors()
     SWAG_ERROR(Err0294, "invalid function name                             $ a function name ([[%s]]) can't start with [[@]], this is reserved for intrinsics");
     SWAG_ERROR(Err0295, "invalid function name                             $ expected a function name, found [[%s]]");
     SWAG_ERROR(Err0296, "invalid generated [[impl]] block                  $ [[impl]] block generation is permissible only within a [[#message]] with [[Swag.CompilerMsgMask.AttributeGen]]");
-    SWAG_ERROR(Err0297, "invalid generic                                   $ a partial type alias ([[%s]]) for a generic struct instantiation is not supported");
+    SWAG_ERROR(Err0297, "invalid generic                                   $ a generic struct instantiation of a partial type alias ([[%s]]) is not supported");
     SWAG_ERROR(Err0298, "invalid generic                                   $ can't deduce the generic arguments when calling %s [[%s]]");
     SWAG_ERROR(Err0299, "invalid generic                                   $ can't deduce the generic type [[%s]] from type [[%s]]");
     SWAG_ERROR(Err0300, "invalid generic                                   $ can't instantiate the generic function [[%s]] because of missing contextual types replacements");
@@ -498,8 +498,8 @@ void initErrors()
     SWAG_ERROR(Err0376, "invalid slicing                                   $ slicing is invalid on a multi-dimensional array");
     SWAG_ERROR(Err0377, "invalid struct initialization                     $ expected [[{}]] to initialize a struct, and not [[()]] which is reserved for function calls");
     SWAG_ERROR(Err0378, "invalid struct name                               $ expected the struct name, found [[%s]] instead");
-    SWAG_ERROR(Err0379, "invalid throw type                                $ throw needs a struct or @err() as an expression, but there's nothing here");
-    SWAG_ERROR(Err0380, "invalid throw type                                $ throw needs a struct or @err() as an expression, got [[%s]] instead");
+    SWAG_ERROR(Err0379, "invalid throw type                                $ throw needs a struct or [[@err()]] as an expression, but there's nothing here");
+    SWAG_ERROR(Err0380, "invalid throw type                                $ throw needs a struct or [[@err()]] as an expression, got [[%s]] instead");
     SWAG_ERROR(Err0381, "invalid top-level instruction                     $ expected a top-level instruction, found [[%s]] instead");
     SWAG_ERROR(Err0382, "invalid tuple dereference                         $ tuples can't be dereferenced like pointers");
     SWAG_ERROR(Err0383, "invalid tuple unpacking                           $ can't unpack an empty tuple");
@@ -1013,7 +1013,7 @@ void initErrors()
     SWAG_ERROR(Nte0127, "the number of values ([[%d]]) is greater than one");
     SWAG_ERROR(Nte0128, "the number of values is variable and could be greater than one");
     SWAG_ERROR(Nte0129, "the operation is not allowed on a non-pointer types");
-    SWAG_ERROR(Nte0130, "the operation is not allowed");
+    SWAG_ERROR(Nte0130, nullptr);
     SWAG_ERROR(Nte0131, "the operator [[++]] requires compile-time strings as arguments");
     SWAG_ERROR(Nte0132, "the parent scope for [[impl]] is [[%s]], but the parent scope for [[%s]] is [[%s]]");
     SWAG_ERROR(Nte0133, "the resulting type is [[%s]]");
