@@ -537,10 +537,21 @@ void Diagnostic::printRanges()
     {
         auto& r        = ranges.back();
         auto  unformat = g_Log.removeFormat(r.hint.c_str());
-        if (ranges.size() != 1 || curColumn + 1 + unformat.length() < g_CommandLine.errorRightColumn)
+        if (curColumn + 1 + unformat.length() < g_CommandLine.errorRightColumn)
         {
             g_Log.print(" ");
             printLastRangeHint(curColumn + 1);
+            ranges.pop_back();
+        }
+        else if (ranges.size() != 1)
+        {
+            curColumn = printRangesVerticalBars(ranges.size() - 1);
+            curColumn = alignRangeColumn(curColumn, r.mid);
+            g_Log.print(LogSymbol::DownRight);
+            g_Log.print(LogSymbol::HorizontalLine);
+            g_Log.print(" ");
+            curColumn += 3;
+            printLastRangeHint(curColumn);
             ranges.pop_back();
         }
     }
