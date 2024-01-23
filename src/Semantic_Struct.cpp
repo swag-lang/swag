@@ -266,7 +266,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 
             case MatchResult::MissingReturnType:
             {
-                Diagnostic diag{child, child->token, Fmt(Err(Err0430), child->token.ctext(), typeBaseInterface->name.c_str())};
+                Diagnostic diag{child, child->getTokenName(), Fmt(Err(Err0430), child->token.ctext(), typeBaseInterface->name.c_str())};
                 diag.hint = Nte(Nte0018);
                 auto note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Fmt(Nte(Nte0123), typeLambda->returnType->getDisplayNameC()));
                 return context->report(diag, note);
@@ -289,7 +289,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 
             case MatchResult::MismatchThrow:
             {
-                Diagnostic diag{child, child->token, Fmt(Err(Err0430), child->token.ctext(), typeBaseInterface->name.c_str())};
+                Diagnostic diag{child, child->getTokenName(), Fmt(Err(Err0430), child->token.ctext(), typeBaseInterface->name.c_str())};
                 diag.hint         = Nte(Nte0099);
                 auto note         = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0163));
                 note->canBeMerged = false;
@@ -298,7 +298,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 
             default:
             {
-                Diagnostic diag{child, child->token, Fmt(Err(Err0430), child->token.ctext(), typeBaseInterface->name.c_str())};
+                Diagnostic diag{child, child->getTokenName(), Fmt(Err(Err0430), child->token.ctext(), typeBaseInterface->name.c_str())};
                 auto       note   = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0163));
                 note->canBeMerged = false;
                 return context->report(diag, note);

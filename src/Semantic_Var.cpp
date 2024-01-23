@@ -637,7 +637,12 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     }
 
     if (node->attributeFlags & ATTRIBUTE_DISCARDABLE && !concreteNodeType->isLambdaClosure())
-        return context->report({node, node->token, Fmt(Err(Err0489), concreteNodeType->getDisplayNameC())});
+    {
+        Diagnostic diag{node, node->token, Fmt(Err(Err0489), concreteNodeType->getDisplayNameC())};
+        auto       attr = node->findParentAttrUse(g_LangSpec->name_Swag_Discardable);
+        auto       note = Diagnostic::note(attr, Fmt(Nte(Nte0063), "attribute"));
+        return context->report(diag, note);
+    }
 
     // Check for missing initialization
     // This is ok to not have an initialization for structs, as they are initialized by default

@@ -269,7 +269,14 @@ bool Semantic::resolveSwitch(SemanticContext* context)
 
     // Deal with complete
     SWAG_CHECK(collectAttributes(context, node, nullptr));
-    SWAG_VERIFY(!(node->attributeFlags & ATTRIBUTE_COMPLETE) || node->expression, context->report({node, node->token, Err(Err0483)}));
+
+    if ((node->attributeFlags & ATTRIBUTE_COMPLETE) && !node->expression)
+    {
+        Diagnostic diag{node, node->token, Err(Err0483)};
+        auto       attr = node->findParentAttrUse(g_LangSpec->name_Swag_Complete);
+        auto       note = Diagnostic::note(attr, Fmt(Nte(Nte0063), "attribute"));
+        return context->report(diag, note);
+    }
 
     node->byteCodeFct = ByteCodeGen::emitSwitch;
     if (!node->expression)

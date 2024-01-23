@@ -598,9 +598,34 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         }
     }
 
-    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_COMPLETE) || funcNode->token.text == g_LangSpec->name_opAffect || funcNode->token.text == g_LangSpec->name_opAffectSuffix, context->report({funcNode, funcNode->tokenName, Fmt(Err(Err0488), funcNode->token.ctext())}));
-    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_IMPLICIT) || funcNode->token.text == g_LangSpec->name_opAffect || funcNode->token.text == g_LangSpec->name_opAffectSuffix || funcNode->token.text == g_LangSpec->name_opCast, context->report({funcNode, funcNode->tokenName, Fmt(Err(Err0490), funcNode->token.ctext())}));
-    SWAG_VERIFY(!(funcNode->attributeFlags & ATTRIBUTE_CALLEE_RETURN) || (funcNode->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO)), context->report({funcNode, funcNode->tokenName, Fmt(Err(Err0487), funcNode->token.ctext())}));
+    if ((funcNode->attributeFlags & ATTRIBUTE_COMPLETE) &&
+        funcNode->token.text != g_LangSpec->name_opAffect &&
+        funcNode->token.text != g_LangSpec->name_opAffectSuffix)
+    {
+        Diagnostic diag{funcNode, funcNode->tokenName, Fmt(Err(Err0488), funcNode->token.ctext())};
+        auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Complete);
+        auto       note = Diagnostic::note(attr, Fmt(Nte(Nte0063), "attribute"));
+        return context->report(diag, note);
+    }
+
+    if ((funcNode->attributeFlags & ATTRIBUTE_IMPLICIT) &&
+        funcNode->token.text != g_LangSpec->name_opAffect &&
+        funcNode->token.text != g_LangSpec->name_opAffectSuffix &&
+        funcNode->token.text != g_LangSpec->name_opCast)
+    {
+        Diagnostic diag{funcNode, funcNode->tokenName, Fmt(Err(Err0490), funcNode->token.ctext())};
+        auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Implicit);
+        auto       note = Diagnostic::note(attr, Fmt(Nte(Nte0063), "attribute"));
+        context->report(diag, note);
+    }
+
+    if ((funcNode->attributeFlags & ATTRIBUTE_CALLEE_RETURN) && !(funcNode->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO)))
+    {
+        Diagnostic diag{funcNode, funcNode->tokenName, Fmt(Err(Err0487), funcNode->token.ctext())};
+        auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_CalleeReturn);
+        auto       note = Diagnostic::note(attr, Fmt(Nte(Nte0063), "attribute"));
+        return context->report(diag, note);
+    }
 
     // Implicit attribute cannot be used on a generic function
     // This is because "extra" generic parameters must be specified and not deduced, and this is not possible for an implicit cast
@@ -612,7 +637,12 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         if (funcNode->token.text == g_LangSpec->name_opAffect && !funcNode->genericParameters)
             ok = true;
         if (!ok)
-            return context->report({funcNode, funcNode->tokenName, Fmt(Err(Err0486), funcNode->getDisplayNameC())});
+        {
+            Diagnostic diag{funcNode, funcNode->tokenName, Fmt(Err(Err0486), funcNode->getDisplayNameC())};
+            auto       attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Implicit);
+            auto       note = Diagnostic::note(attr, Fmt(Nte(Nte0063), "attribute"));
+            return context->report(diag, note);
+        }
     }
 
     if (!(funcNode->flags & AST_FROM_GENERIC))

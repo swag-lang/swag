@@ -560,7 +560,7 @@ void initErrors()
     SWAG_ERROR(Err0438, "misplaced [[#global]]                             $ [[#global]] should be placed at the very top of the file");
     SWAG_ERROR(Err0439, "misplaced [[#import]]                             $ [[#import]] can only be used within [[module.swg]] or [[.swgs]] files");
     SWAG_ERROR(Err0440, "misplaced [[#import]]                             $ [[#import]] must be placed within the [[#dependencies]] block");
-    SWAG_ERROR(Err0441, "misplaced [[#index]]                              $ the intrinsic [[#index]] is only valid within a breakable block such as [[loop]], [[visit]], [[for]], etc.");
+    SWAG_ERROR(Err0441, "misplaced [[#index]]                              $ the keyword [[#index]] is only valid within a breakable block such as [[loop]], [[visit]], [[for]], etc.");
     SWAG_ERROR(Err0442, "misplaced [[#load]]                               $ [[#load]] can only be used within [[module.swg]] or [[.swgs]] files");
     SWAG_ERROR(Err0443, "misplaced [[#load]]                               $ [[#load]] must be placed within the [[#dependencies]] block");
     SWAG_ERROR(Err0444, "misplaced [[#macro]]                              $ [[#macro]] can only be used within a [[#[Swag.Macro]]] function");
