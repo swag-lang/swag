@@ -95,7 +95,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
     typeInfoFunc->parameters[0]->typeInfo = g_TypeMgr->makePointerTo(typeInfoStruct, typeInfoFunc->parameters[0]->typeInfo->flags);
     typeInfoFunc->forceComputeName();
 
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < (int) EmitOpUserKind::Max; i++)
     {
         auto        kind  = (EmitOpUserKind) i;
         ByteCode**  resOp = nullptr;

@@ -36,12 +36,13 @@ const uint32_t EMIT_CASTFLAG_DEFAULT  = 0x00000000;
 const uint32_t EMIT_CASTFLAG_EXPLICIT = 0x00000001;
 const uint32_t EMIT_CASTFLAG_AUTO     = 0x00000002;
 
-enum EmitOpUserKind
+enum class EmitOpUserKind
 {
     Init,
     Drop,
     PostCopy,
     PostMove,
+    Max
 };
 
 enum class SafetyMsg
