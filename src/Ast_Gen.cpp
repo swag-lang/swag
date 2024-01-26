@@ -327,38 +327,31 @@ bool Ast::convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* ass
     }
 
     // Compute structure name
-    structNode->token.text = typeList->computeTupleName(context);
+    Utf8 name = sourceFile->scopeFile->name + "_tuple_";
+    name += Fmt("%d", g_UniqueID.fetch_add(1));
+    structNode->token.text = name;
 
     // Add struct type and scope
     structNode->inheritOwners(sourceFile->astRoot);
-    Scope*     rootScope = structNode->ownerScope;
-    ScopedLock lk(rootScope->symTable.mutex);
-    auto       symbol = rootScope->symTable.findNoLock(structNode->token.text);
-    if (symbol)
-    {
-        sourceFile->astRoot->allocateExtension(ExtensionKind::Owner);
-        sourceFile->astRoot->extOwner()->nodesToFree.push_back(structNode);
-    }
-    else
-    {
-        auto typeInfo        = makeType<TypeInfoStruct>();
-        auto newScope        = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, rootScope, true);
-        typeInfo->declNode   = structNode;
-        typeInfo->name       = structNode->token.text;
-        typeInfo->structName = structNode->token.text;
-        typeInfo->scope      = newScope;
-        typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
-        structNode->typeInfo = typeInfo;
-        structNode->scope    = newScope;
-        Ast::visit(structNode->content, [&](AstNode* n)
-                   {
+    Scope* rootScope = structNode->ownerScope;
+
+    auto typeInfo        = makeType<TypeInfoStruct>();
+    auto newScope        = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, rootScope, true);
+    typeInfo->declNode   = structNode;
+    typeInfo->name       = structNode->token.text;
+    typeInfo->structName = structNode->token.text;
+    typeInfo->scope      = newScope;
+    typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE;
+    structNode->typeInfo = typeInfo;
+    structNode->scope    = newScope;
+    Ast::visit(structNode->content, [&](AstNode* n)
+               {
                         n->ownerStructScope = newScope;
                         n->ownerScope = newScope; });
 
-        rootScope->symTable.registerSymbolNameNoLock(context, structNode, SymbolKind::Struct);
-        Ast::addChildBack(sourceFile->astRoot, structNode);
-        SemanticJob::newJob(context->baseJob->dependentJob, sourceFile, structNode, true);
-    }
+    rootScope->symTable.registerSymbolName(context, structNode, SymbolKind::Struct);
+    Ast::addChildBack(sourceFile->astRoot, structNode);
+    SemanticJob::newJob(context->baseJob->dependentJob, sourceFile, structNode, true);
 
     return true;
 }

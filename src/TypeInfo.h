@@ -399,7 +399,6 @@ struct TypeInfoList : public TypeInfo
     bool      isSame(TypeInfo* to, uint64_t castFlags) override;
     TypeInfo* clone() override;
     void      computeWhateverName(Utf8& resName, uint32_t nameType) override;
-    Utf8      computeTupleName(JobContext* context);
 
     VectorNative<TypeInfoParam*> subTypes;
 

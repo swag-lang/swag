@@ -244,8 +244,12 @@ TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfo
 
 TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeInfoList* typeList, bool isCompilerConstant)
 {
-    auto typeStruct  = makeType<TypeInfoStruct>();
-    typeStruct->name = typeList->computeTupleName(context);
+    auto typeStruct = makeType<TypeInfoStruct>();
+
+    Utf8 name = context->sourceFile->scopeFile->name + "_tuple_";
+    name += Fmt("%d", g_UniqueID.fetch_add(1));
+    typeStruct->name = name;
+
     typeStruct->flags |= TYPEINFO_STRUCT_IS_TUPLE;
 
     typeStruct->fields.reserve((int) typeList->subTypes.size());
