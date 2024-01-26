@@ -1,7 +1,7 @@
 //#global testerror "Err0299"
 struct A { x: s32; }
 
-func(T) toto(x: T)
+func toto(x: {x: s32})
 {
     var a: A = x
 }
@@ -9,6 +9,5 @@ func(T) toto(x: T)
 //#[Swag.PrintBc]
 #test
 {
-    toto(A{1's32})
-    //toto({2'f32})
+    toto({1's32})
 }
