@@ -249,59 +249,6 @@ bool Ast::convertLiteralTupleToStructType(SemanticContext* context, TypeInfoStru
     return true;
 }
 
-AstNode* Ast::convertTypeToTypeExpression(SemanticContext* context, AstNode* parent, AstNode* assignment, TypeInfo* childType, bool raiseErrors)
-{
-    auto sourceFile = context->sourceFile;
-
-    // Tuple item is a lambda
-    if (childType->isLambdaClosure())
-    {
-        auto typeLambda             = CastTypeInfo<TypeInfoFuncAttr>(childType, TypeInfoKind::LambdaClosure);
-        auto typeExprLambda         = Ast::newNode<AstTypeLambda>(nullptr, AstNodeKind::TypeLambda, sourceFile, parent);
-        typeExprLambda->semanticFct = Semantic::resolveTypeLambdaClosure;
-        if (childType->flags & TYPEINFO_CAN_THROW)
-            typeExprLambda->addSpecFlags(AstTypeLambda::SPECFLAG_CAN_THROW);
-
-        // Parameters
-        auto params                = Ast::newNode<AstNode>(nullptr, AstNodeKind::FuncDeclParams, sourceFile, typeExprLambda);
-        typeExprLambda->parameters = params;
-        for (auto p : typeLambda->parameters)
-        {
-            auto typeParam = convertTypeToTypeExpression(context, params, assignment, p->typeInfo, raiseErrors);
-            if (!typeParam)
-                return nullptr;
-        }
-
-        // Return type
-        if (typeLambda->returnType && !typeLambda->returnType->isVoid())
-        {
-            typeExprLambda->returnType = convertTypeToTypeExpression(context, typeExprLambda, assignment, typeLambda->returnType, raiseErrors);
-            if (!typeExprLambda->returnType)
-                return nullptr;
-        }
-
-        return typeExprLambda;
-    }
-
-    auto typeExpression = Ast::newTypeExpression(sourceFile, parent);
-    typeExpression->flags |= AST_NO_BYTECODE_CHILDS;
-    if (childType->isConst())
-        typeExpression->typeFlags |= TYPEFLAG_IS_CONST;
-
-    if (childType->isListTuple())
-    {
-        AstStruct* inStructNode;
-        if (!convertLiteralTupleToStructDecl(context, assignment, &inStructNode))
-            return nullptr;
-        typeExpression->identifier = Ast::newIdentifierRef(sourceFile, inStructNode->token.text, typeExpression);
-        return typeExpression;
-    }
-
-    typeExpression->typeInfo = childType;
-    typeExpression->flags |= AST_NO_SEMANTIC;
-    return typeExpression;
-}
-
 bool Ast::convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* assignment, AstStruct** result)
 {
     auto       sourceFile = context->sourceFile;
@@ -512,4 +459,57 @@ bool Ast::convertStructParamsToTmpVar(SemanticContext* context, AstIdentifier* i
     context->result = ContextResult::NewChilds;
 
     return true;
+}
+
+AstNode* Ast::convertTypeToTypeExpression(SemanticContext* context, AstNode* parent, AstNode* assignment, TypeInfo* childType, bool raiseErrors)
+{
+    auto sourceFile = context->sourceFile;
+
+    // Tuple item is a lambda
+    if (childType->isLambdaClosure())
+    {
+        auto typeLambda             = CastTypeInfo<TypeInfoFuncAttr>(childType, TypeInfoKind::LambdaClosure);
+        auto typeExprLambda         = Ast::newNode<AstTypeLambda>(nullptr, AstNodeKind::TypeLambda, sourceFile, parent);
+        typeExprLambda->semanticFct = Semantic::resolveTypeLambdaClosure;
+        if (childType->flags & TYPEINFO_CAN_THROW)
+            typeExprLambda->addSpecFlags(AstTypeLambda::SPECFLAG_CAN_THROW);
+
+        // Parameters
+        auto params                = Ast::newNode<AstNode>(nullptr, AstNodeKind::FuncDeclParams, sourceFile, typeExprLambda);
+        typeExprLambda->parameters = params;
+        for (auto p : typeLambda->parameters)
+        {
+            auto typeParam = convertTypeToTypeExpression(context, params, assignment, p->typeInfo, raiseErrors);
+            if (!typeParam)
+                return nullptr;
+        }
+
+        // Return type
+        if (typeLambda->returnType && !typeLambda->returnType->isVoid())
+        {
+            typeExprLambda->returnType = convertTypeToTypeExpression(context, typeExprLambda, assignment, typeLambda->returnType, raiseErrors);
+            if (!typeExprLambda->returnType)
+                return nullptr;
+        }
+
+        return typeExprLambda;
+    }
+
+    auto typeExpression = Ast::newTypeExpression(sourceFile, parent);
+    typeExpression->flags |= AST_NO_BYTECODE_CHILDS;
+    if (childType->isConst())
+        typeExpression->typeFlags |= TYPEFLAG_IS_CONST;
+
+    if (childType->isListTuple())
+    {
+        AstStruct* inStructNode;
+        if (!convertLiteralTupleToStructDecl(context, assignment, &inStructNode))
+            return nullptr;
+        typeExpression->identifier = Ast::newIdentifierRef(sourceFile, inStructNode->token.text, typeExpression);
+        return typeExpression;
+    }
+
+    typeExpression->typeInfo = childType;
+    typeExpression->flags |= AST_NO_SEMANTIC;
+    return typeExpression;
 }

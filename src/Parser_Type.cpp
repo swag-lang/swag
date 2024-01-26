@@ -368,10 +368,10 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
         ScopedStruct     ss(this, structNode->scope);
 
         auto startLoc = token.startLocation;
-        SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[struct]] body"));
+        SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[tuple]] body"));
         while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
             SWAG_CHECK(doStructBody(contentNode, SyntaxStructType::Struct, &dummyResult));
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc));
+        SWAG_CHECK(eatCloseToken(TokenId::SymRightCurly, startLoc, "to end the [[tuple]] body"));
     }
 
     // Reference to that struct
