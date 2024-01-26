@@ -246,6 +246,7 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
             case MatchResult::TooManyParameters:
             case MatchResult::ValidIfFailed:
             case MatchResult::NotEnoughGenericParameters:
+            case MatchResult::CannotDeduceGenericType:
                 n.push_back(oneMatch);
                 break;
             default:
