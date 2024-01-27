@@ -286,7 +286,7 @@ bool Parser::saveEmbeddedAst(const Utf8& content, AstNode* fromNode, Path& tmpFi
     return true;
 }
 
-bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode* fromNode, CompilerAstKind kind, bool logGenerated)
+bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode* fromNode, CompilerAstKind kind, bool logGenerated, AstNode** result)
 {
     Utf8     tmpFileName     = "<generated>";
     Path     tmpFilePath     = "<generated>";
@@ -353,6 +353,9 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
     ScopedFlags scopedFlags(this, sflags);
     SWAG_CHECK(eatToken());
 
+    if (!result)
+        result = &dummyResult;
+
     while (true)
     {
         if (token.id == TokenId::EndOfFile)
@@ -361,19 +364,19 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
         {
         case CompilerAstKind::TopLevelInstruction:
         case CompilerAstKind::MissingInterfaceMtd:
-            SWAG_CHECK(doTopLevelInstruction(parent, &dummyResult));
+            SWAG_CHECK(doTopLevelInstruction(parent, result));
             break;
         case CompilerAstKind::StructVarDecl:
-            SWAG_CHECK(doVarDecl(parent, &dummyResult, AstNodeKind::VarDecl));
+            SWAG_CHECK(doVarDecl(parent, result, AstNodeKind::VarDecl));
             break;
         case CompilerAstKind::EnumValue:
-            SWAG_CHECK(doEnumValue(parent, &dummyResult));
+            SWAG_CHECK(doEnumValue(parent, result));
             break;
         case CompilerAstKind::EmbeddedInstruction:
-            SWAG_CHECK(doEmbeddedInstruction(parent, &dummyResult));
+            SWAG_CHECK(doEmbeddedInstruction(parent, result));
             break;
         case CompilerAstKind::Expression:
-            SWAG_CHECK(doExpression(parent, EXPR_FLAG_NONE, &dummyResult));
+            SWAG_CHECK(doExpression(parent, EXPR_FLAG_NONE, result));
             break;
         default:
             SWAG_ASSERT(false);

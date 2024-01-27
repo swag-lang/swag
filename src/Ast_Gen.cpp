@@ -509,6 +509,7 @@ AstNode* Ast::convertTypeToTypeExpression(SemanticContext* context, AstNode* par
     return typeExpression;
 }
 
+#pragma optimize("", off)
 bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInfo* typeRight)
 {
     // Be sure another thread does not do the same thing
@@ -541,16 +542,16 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
 
     Parser parser;
     parser.setup(context, context->sourceFile->module, context->sourceFile);
-    auto structDecl = CastAst<AstStruct>(typeLeft->declNode, AstNodeKind::StructDecl);
-    SWAG_CHECK(parser.constructEmbeddedAst(content, structDecl, structDecl, CompilerAstKind::TopLevelInstruction, false));
+    auto     structDecl = CastAst<AstStruct>(typeLeft->declNode, AstNodeKind::StructDecl);
+    AstNode* result     = nullptr;
+    SWAG_CHECK(parser.constructEmbeddedAst(content, structDecl, structDecl, CompilerAstKind::TopLevelInstruction, false, &result));
 
-    auto implDecl = typeLeft->declNode->childs.back();
-    SWAG_ASSERT(implDecl->kind == AstNodeKind::Impl);
-    auto mtdDecl = implDecl->childs.back();
+    SWAG_ASSERT(result->kind == AstNodeKind::Impl);
+    auto mtdDecl = result->childs.back();
     SWAG_ASSERT(mtdDecl->kind == AstNodeKind::FuncDecl);
 
     auto job = context->baseJob;
-    job->nodes.push_back(implDecl);
+    job->nodes.push_back(result);
     context->result = ContextResult::NewChilds;
     return true;
 }
