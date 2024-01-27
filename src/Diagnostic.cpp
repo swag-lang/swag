@@ -713,6 +713,8 @@ Utf8 Diagnostic::isType(AstNode* node)
 
 Diagnostic* Diagnostic::hereIs(SymbolOverload* overload)
 {
+    if (!overload)
+        return nullptr;
     return hereIs(overload->node);
 }
 

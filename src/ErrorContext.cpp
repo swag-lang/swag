@@ -128,10 +128,13 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
                 exp.locIsToken = true;
                 break;
             case ErrCxtStepKind::HereIs:
+            {
+                ScopedLock lk(exp.node->mutex);
                 note = Diagnostic::hereIs(exp.node->resolvedSymbolOverload);
                 if (!note)
                     continue;
                 break;
+            }
             default:
                 break;
             }
