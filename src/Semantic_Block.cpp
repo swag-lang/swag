@@ -443,8 +443,8 @@ bool Semantic::resolveCase(SemanticContext* context)
                     SWAG_CHECK(TypeManager::promote32(context, node->ownerSwitch->expression));
                     SWAG_CHECK(TypeManager::promote32(context, rangeNode->expressionLow));
                     SWAG_CHECK(TypeManager::promote32(context, rangeNode->expressionUp));
-                    SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, rangeNode->expressionLow, CASTFLAG_COMPARE | CASTFLAG_TRY_COERCE));
-                    SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, rangeNode->expressionUp, CASTFLAG_COMPARE | CASTFLAG_TRY_COERCE));
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, rangeNode->expressionLow, CASTFLAG_FOR_COMPARE | CASTFLAG_TRY_COERCE));
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, rangeNode->expressionUp, CASTFLAG_FOR_COMPARE | CASTFLAG_TRY_COERCE));
                 }
             }
             else
@@ -472,7 +472,7 @@ bool Semantic::resolveCase(SemanticContext* context)
                 {
                     PushErrCxtStep ec(context, node->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo]()
                                       { return Fmt(Nte(Nte0141), typeInfo->getDisplayNameC(), "the switch expression"), Diagnostic::isType(typeInfo); });
-                    SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, oneExpression, CASTFLAG_COMPARE));
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, oneExpression, CASTFLAG_FOR_COMPARE));
                 }
 
                 // If the switch expression is constant, and the expression is constant too, then we can do the
@@ -493,7 +493,7 @@ bool Semantic::resolveCase(SemanticContext* context)
             // switch without an expression : a case is a boolean expression
             else
             {
-                SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, oneExpression->typeInfo, nullptr, oneExpression, CASTFLAG_COMPARE | CASTFLAG_AUTO_BOOL));
+                SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, oneExpression->typeInfo, nullptr, oneExpression, CASTFLAG_FOR_COMPARE | CASTFLAG_AUTO_BOOL));
             }
         }
     }

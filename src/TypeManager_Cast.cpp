@@ -2684,7 +2684,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
             return true;
 
         // Fine to compare pointers of TypeInfos, even if not of the same type
-        if ((castFlags & CASTFLAG_COMPARE) && fromType->isPointerToTypeInfo() && toType->isPointerToTypeInfo())
+        if ((castFlags & CASTFLAG_FOR_COMPARE) && fromType->isPointerToTypeInfo() && toType->isPointerToTypeInfo())
             return true;
 
         // Pointer to *void or *void to pointer
