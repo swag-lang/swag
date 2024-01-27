@@ -854,7 +854,7 @@ void initErrors()
     SWAG_ERROR(Err0732, "unsuitable struct for union                       $ the struct [[%s]] is not suitable for union because it contains an [[%s]] function");
     SWAG_ERROR(Err0733, "unsupported [[@nameof]] argument                  $ can't evaluate the [[@nameof]] argument");
     SWAG_ERROR(Err0734, "unsupported [[@stringof]] argument                $ can't evaluate the [[@stringof]] argument");
-    SWAG_ERROR(Err0735, nullptr);
+    SWAG_ERROR(Err0735, "unsupported equality operation                    $ can't automatically test [[%s]] for equality $ a special function [[opEquals]] is necessary");
     SWAG_ERROR(Err0736, "unsupported array type                            $ can't declare a static array of type [[void]]");
     SWAG_ERROR(Err0737, "unsupported callback                              $ the intrinsic [[@mkcallback]] does not allow a function returning [[%s]]");
     SWAG_ERROR(Err0738, "unsupported callback                              $ the intrinsic [[@mkcallback]] does not allow a function with more than [[%d]] parameters, found [[%d]]");
@@ -1013,7 +1013,7 @@ void initErrors()
     SWAG_ERROR(Nte0127, "the number of values ([[%d]]) is greater than one");
     SWAG_ERROR(Nte0128, "the number of values is variable and could be greater than one");
     SWAG_ERROR(Nte0129, "the operation is not allowed on a non-pointer types");
-    SWAG_ERROR(Nte0130, nullptr);
+    SWAG_ERROR(Nte0130, "the field [[%s]] has type [[%s]] which is not compared automatically");
     SWAG_ERROR(Nte0131, "the operator [[++]] requires compile-time strings as arguments");
     SWAG_ERROR(Nte0132, "the parent scope for [[impl]] is [[%s]], but the parent scope for [[%s]] is [[%s]]");
     SWAG_ERROR(Nte0133, "the resulting type is [[%s]]");

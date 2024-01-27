@@ -511,6 +511,24 @@ AstNode* Ast::convertTypeToTypeExpression(SemanticContext* context, AstNode* par
 
 bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInfo* typeRight)
 {
+    auto typeLeftStruct  = CastTypeInfo<TypeInfoStruct>(typeLeft, TypeInfoKind::Struct);
+    auto typeRightStruct = CastTypeInfo<TypeInfoStruct>(typeRight, TypeInfoKind::Struct);
+
+    // Check if it can be generated, or raise an error
+    for (auto f : typeLeftStruct->fields)
+    {
+        if (f->typeInfo->isArray())
+        {
+            Diagnostic  diag{context->node, context->node->token, Fmt(Err(Err0735), typeLeft->getDisplayNameC())};
+            Diagnostic* note = nullptr;
+            if (f->declNode)
+                note = Diagnostic::note(f->declNode, f->declNode->token, Fmt(Nte(Nte0130), f->name.c_str(), f->typeInfo->getDisplayNameC()));
+            else
+                note = Diagnostic::note(Fmt(Nte(Nte0130), f->name.c_str(), f->typeInfo->getDisplayNameC()));
+            return context->report(diag, note);
+        }
+    }
+
     // Be sure another thread does not do the same thing
     {
         ScopedLock lk(typeLeft->mutex);
@@ -522,9 +540,6 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
 
         typeLeft->flags |= TYPEINFO_GENERATED_OPEQUALS;
     }
-
-    auto typeLeftStruct  = CastTypeInfo<TypeInfoStruct>(typeLeft, TypeInfoKind::Struct);
-    auto typeRightStruct = CastTypeInfo<TypeInfoStruct>(typeRight, TypeInfoKind::Struct);
 
     Utf8 content;
 
