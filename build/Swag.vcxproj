@@ -513,7 +513,7 @@
     <ClCompile Include="..\src\Semantic_Identifier.cpp" />
     <ClCompile Include="..\src\Semantic_Intrinsic.cpp" />
     <ClCompile Include="..\src\Semantic_Literal.cpp" />
-    <ClCompile Include="..\src\Semantic_Op.cpp" />
+    <ClCompile Include="..\src\Semantic_UserOp.cpp" />
     <ClCompile Include="..\src\Semantic_Ref.cpp" />
     <ClCompile Include="..\src\Semantic_Scope.cpp" />
     <ClCompile Include="..\src\Semantic_Struct.cpp" />

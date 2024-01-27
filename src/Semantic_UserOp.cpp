@@ -5,6 +5,7 @@
 #include "Semantic.h"
 #include "SemanticError.h"
 #include "TypeManager.h"
+#include "Report.h"
 
 bool Semantic::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node)
 {
@@ -360,35 +361,42 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
     return true;
 }
 
-bool Semantic::resolveUserOpCommutative(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right)
+bool Semantic::resolveUserOpCommutative(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, uint32_t ropFlags)
 {
     auto node          = context->node;
     auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
 
-    // Simple case
+    // Simple case if the right expression is not a struct (and left is)
+    // Only one way of solving.
     if (leftTypeInfo->isStruct() && !rightTypeInfo->isStruct())
-        return resolveUserOp(context, name, opConst, opType, left, right);
+        return resolveUserOp(context, name, opConst, opType, left, right, ropFlags);
 
-    bool okLeft  = false;
-    bool okRight = false;
     if (leftTypeInfo->isStruct())
     {
-        okLeft = resolveUserOp(context, name, opConst, opType, left, right, ROP_JUST_CHECK);
+        g_SilentError++;
+        resolveUserOp(context, name, opConst, opType, left, right, ropFlags);
+        g_SilentError--;
         YIELD();
+        if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
+            return true;
     }
 
     if (rightTypeInfo->isStruct())
     {
-        okRight = resolveUserOp(context, name, opConst, opType, right, left, ROP_JUST_CHECK);
+        g_SilentError++;
+        resolveUserOp(context, name, opConst, opType, right, left, ropFlags);
+        g_SilentError--;
         YIELD();
+        if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
+        {
+            node->semFlags |= SEMFLAG_INVERSE_PARAMS;
+            return true;
+        }
     }
 
-    if (okLeft || (!okRight && leftTypeInfo->isStruct()))
-        return resolveUserOp(context, name, opConst, opType, left, right);
-
-    node->semFlags |= SEMFLAG_INVERSE_PARAMS;
-    return resolveUserOp(context, name, opConst, opType, right, left);
+    // Will raise an error
+    return resolveUserOp(context, name, opConst, opType, left, right, ropFlags);
 }
 
 bool Semantic::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStruct* leftStruct, SymbolName** result)
@@ -566,14 +574,10 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
     SWAG_CHECK(waitUserOp(context, name, left, &symbol));
     YIELD();
 
-    bool justCheck = ropFlags & ROP_JUST_CHECK;
-    auto leftType  = TypeManager::concretePtrRefType(left->typeInfo);
+    auto leftType = TypeManager::concretePtrRefType(left->typeInfo);
 
     if (!symbol)
     {
-        if (justCheck)
-            return false;
-
         Diagnostic* note = nullptr;
         if (leftType->declNode)
             note = Diagnostic::hereIs(leftType->declNode);
@@ -666,7 +670,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
                 context, left->parent, ErrCxtStepKind::Note, [name, leftType]()
                 { return Fmt(Nte(Nte0143), name.c_str(), leftType->getDisplayNameC()); },
                 true);
-            SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, nullptr, justCheck ? MIP_JUST_CHECK : 0));
+            SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, nullptr));
         }
 
         if (context->result == ContextResult::Pending)
@@ -677,8 +681,6 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
     }
 
     uint64_t castFlags = CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_UFCS | CASTFLAG_ACCEPT_PENDING | CASTFLAG_PARAMS;
-    if (justCheck)
-        castFlags |= CASTFLAG_JUST_CHECK;
     if (context->cacheMatches.empty())
         return true;
 
@@ -772,23 +774,18 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
         }
     }
 
-    // Make the real cast for all the call parameters
-    if (!justCheck)
-    {
-        auto overload  = oneMatch->symbolOverload;
-        node->typeInfo = overload->typeInfo;
-        node->allocateExtension(ExtensionKind::Misc);
-        node->extMisc()->resolvedUserOpSymbolOverload = overload;
-        SWAG_ASSERT(symbol && symbol->kind == SymbolKind::Function);
-        SWAG_ASSERT(overload);
+    // Result
+    auto overload  = oneMatch->symbolOverload;
+    node->typeInfo = overload->typeInfo;
+    node->allocateExtension(ExtensionKind::Misc);
+    node->extMisc()->resolvedUserOpSymbolOverload = overload;
+    SWAG_ASSERT(symbol && symbol->kind == SymbolKind::Function);
+    SWAG_ASSERT(overload);
 
-        // Allocate room on the stack to store the result of the function call
-        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
-        if (CallConv::returnNeedsStack(typeFunc))
-        {
-            allocateOnStack(node, typeFunc->concreteReturnType());
-        }
-    }
+    // Allocate room on the stack to store the result of the function call
+    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
+    if (CallConv::returnNeedsStack(typeFunc))
+        allocateOnStack(node, typeFunc->concreteReturnType());
 
     return true;
 }

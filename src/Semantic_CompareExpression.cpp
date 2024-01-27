@@ -20,8 +20,10 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
         auto ptr2 = right->getConstantGenTypeInfo();
         node->setFlagsValueIsComputed();
         node->computedValue->reg.b = TypeManager::compareConcreteType(ptr1, ptr2);
+        return true;
     }
-    else if (left->hasComputedValue() && right->hasComputedValue())
+
+    if (left->hasComputedValue() && right->hasComputedValue())
     {
         node->setFlagsValueIsComputed();
 
@@ -32,16 +34,20 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
             SWAG_ASSERT(right->castedTypeInfo && right->castedTypeInfo->isPointerNull());
             auto slice                 = (SwagSlice*) left->computedValue->getStorageAddr();
             node->computedValue->reg.b = !slice->buffer;
+            return true;
         }
-        else if (leftTypeInfo->isInterface())
+
+        if (leftTypeInfo->isInterface())
         {
             // Can only be compared to null
             // :ComparedToNull
             SWAG_ASSERT(right->castedTypeInfo && right->castedTypeInfo->isPointerNull());
             auto slice                 = (SwagInterface*) left->computedValue->getStorageAddr();
             node->computedValue->reg.b = !slice->itable;
+            return true;
         }
-        else if (leftTypeInfo->isAny())
+
+        if (leftTypeInfo->isAny())
         {
             // Can only be compared to null
             auto any = (SwagAny*) left->computedValue->getStorageAddr();
@@ -57,67 +63,94 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
                 auto ptr2                  = right->getConstantGenTypeInfo();
                 node->computedValue->reg.b = TypeManager::compareConcreteType(ptr1, ptr2);
             }
+            return true;
         }
-        else if (leftTypeInfo->isPointerNull())
+
+        if (leftTypeInfo->isPointerNull())
         {
             node->computedValue->reg.b = right->typeInfo->isPointerNull();
+            return true;
         }
-        else if (leftTypeInfo->isPointer())
+
+        if (leftTypeInfo->isPointer())
         {
             node->computedValue->reg.b = left->computedValue->storageSegment == right->computedValue->storageSegment &&
                                          left->computedValue->storageOffset == right->computedValue->storageOffset;
+            return true;
         }
-        else
-        {
-            switch (leftTypeInfo->nativeType)
-            {
-            case NativeTypeKind::Bool:
-                node->computedValue->reg.b = left->computedValue->reg.b == right->computedValue->reg.b;
-                break;
-            case NativeTypeKind::F32:
-                node->computedValue->reg.b = left->computedValue->reg.f32 == right->computedValue->reg.f32;
-                break;
-            case NativeTypeKind::F64:
-                node->computedValue->reg.b = left->computedValue->reg.f64 == right->computedValue->reg.f64;
-                break;
-            case NativeTypeKind::S8:
-            case NativeTypeKind::U8:
-                node->computedValue->reg.b = left->computedValue->reg.u8 == right->computedValue->reg.u8;
-                break;
-            case NativeTypeKind::S16:
-            case NativeTypeKind::U16:
-                node->computedValue->reg.b = left->computedValue->reg.u16 == right->computedValue->reg.u16;
-                break;
-            case NativeTypeKind::S32:
-            case NativeTypeKind::U32:
-            case NativeTypeKind::Rune:
-                node->computedValue->reg.b = left->computedValue->reg.u32 == right->computedValue->reg.u32;
-                break;
-            case NativeTypeKind::S64:
-            case NativeTypeKind::U64:
-                node->computedValue->reg.b = left->computedValue->reg.u64 == right->computedValue->reg.u64;
-                break;
-            case NativeTypeKind::String:
-                node->computedValue->reg.b = left->computedValue->text == right->computedValue->text;
-                break;
 
-            default:
-            {
-                Diagnostic diag{context->node, context->node->token, Fmt(Err(Err0244), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
-                diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-                return context->report(diag);
-            }
-            }
+        switch (leftTypeInfo->nativeType)
+        {
+        case NativeTypeKind::Bool:
+            node->computedValue->reg.b = left->computedValue->reg.b == right->computedValue->reg.b;
+            break;
+        case NativeTypeKind::F32:
+            node->computedValue->reg.b = left->computedValue->reg.f32 == right->computedValue->reg.f32;
+            break;
+        case NativeTypeKind::F64:
+            node->computedValue->reg.b = left->computedValue->reg.f64 == right->computedValue->reg.f64;
+            break;
+        case NativeTypeKind::S8:
+        case NativeTypeKind::U8:
+            node->computedValue->reg.b = left->computedValue->reg.u8 == right->computedValue->reg.u8;
+            break;
+        case NativeTypeKind::S16:
+        case NativeTypeKind::U16:
+            node->computedValue->reg.b = left->computedValue->reg.u16 == right->computedValue->reg.u16;
+            break;
+        case NativeTypeKind::S32:
+        case NativeTypeKind::U32:
+        case NativeTypeKind::Rune:
+            node->computedValue->reg.b = left->computedValue->reg.u32 == right->computedValue->reg.u32;
+            break;
+        case NativeTypeKind::S64:
+        case NativeTypeKind::U64:
+            node->computedValue->reg.b = left->computedValue->reg.u64 == right->computedValue->reg.u64;
+            break;
+        case NativeTypeKind::String:
+            node->computedValue->reg.b = left->computedValue->text == right->computedValue->text;
+            break;
+
+        default:
+        {
+            Diagnostic diag{context->node, context->node->token, Fmt(Err(Err0244), node->token.ctext(), leftTypeInfo->getDisplayNameC())};
+            diag.addRange(left, Diagnostic::isType(leftTypeInfo));
+            return context->report(diag);
         }
+        }
+
+        return true;
     }
-    else if (leftTypeInfo->isAny() && rightTypeInfo->isPointerToTypeInfo())
+
+    // Any versus type, always valid
+    if (leftTypeInfo->isAny() && rightTypeInfo->isPointerToTypeInfo())
     {
-        // Ok, specific case
+        return true;
     }
-    else if (leftTypeInfo->isStruct() || rightTypeInfo->isStruct())
+
+    // Struct against no struct. Must have opEquals.
+    if (leftTypeInfo->isStruct() != rightTypeInfo->isStruct() &&
+        (leftTypeInfo->isStruct() || rightTypeInfo->isStruct()))
     {
-        SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opEquals, nullptr, nullptr, left, right));
         node->typeInfo = g_TypeMgr->typeInfoBool;
+        SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opEquals, nullptr, nullptr, left, right));
+        YIELD();
+        return true;
+    }
+
+    // Struct against struct.
+    if (leftTypeInfo->isStruct() || rightTypeInfo->isStruct())
+    {
+        node->typeInfo = g_TypeMgr->typeInfoBool;
+        g_SilentError++;
+        resolveUserOpCommutative(context, g_LangSpec->name_opEquals, nullptr, nullptr, left, right);
+        g_SilentError--;
+        YIELD();
+
+        if (!node->hasExtMisc() || !node->extMisc()->resolvedUserOpSymbolOverload)
+        {
+            SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opEquals, nullptr, nullptr, left, right));
+        }
     }
 
     return true;
@@ -403,14 +436,17 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
     }
 
     // Cannot compare tuples
-    if (leftTypeInfo->isTuple() || rightTypeInfo->isTuple())
+    if (node->tokenId != TokenId::SymEqualEqual)
     {
-        Diagnostic diag{node->sourceFile, node->token, Err(Err0241)};
-        if (leftTypeInfo->isTuple())
-            diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-        else
-            diag.addRange(right, Diagnostic::isType(rightTypeInfo));
-        return context->report(diag);
+        if (leftTypeInfo->isTuple() || rightTypeInfo->isTuple())
+        {
+            Diagnostic diag{node->sourceFile, node->token, Err(Err0241)};
+            if (leftTypeInfo->isTuple())
+                diag.addRange(left, Diagnostic::isType(leftTypeInfo));
+            else
+                diag.addRange(right, Diagnostic::isType(rightTypeInfo));
+            return context->report(diag);
+        }
     }
 
     // :ComparedToNull
@@ -501,9 +537,11 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
     {
     case TokenId::SymEqualEqual:
         SWAG_CHECK(resolveCompOpEqual(context, left, right));
+        YIELD();
         break;
     case TokenId::SymExclamEqual:
         SWAG_CHECK(resolveCompOpEqual(context, left, right));
+        YIELD();
         if (node->computedValue)
             node->computedValue->reg.b = !node->computedValue->reg.b;
         break;

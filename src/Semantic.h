@@ -34,8 +34,7 @@ const uint32_t MIP_FOR_GHOSTING       = 0x00000002;
 const uint32_t MIP_FOR_ZERO_GHOSTING  = 0x00000004;
 const uint32_t MIP_SECOND_GENERIC_TRY = 0x00000008;
 
-const uint32_t ROP_JUST_CHECK  = 0x00000001;
-const uint32_t ROP_SIMPLE_CAST = 0x00000002;
+const uint32_t ROP_SIMPLE_CAST = 0x00000001;
 
 const uint32_t RI_ZERO              = 0x00000000;
 const uint32_t RI_FOR_GHOSTING      = 0x00000001;
@@ -275,7 +274,7 @@ namespace Semantic
     bool resolveCompilerInclude(SemanticContext* context);
     bool resolveIntrinsicDefined(SemanticContext* context);
     bool resolveIntrinsicLocation(SemanticContext* context);
-    bool resolveUserOpCommutative(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right);
+    bool resolveUserOpCommutative(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, uint32_t ropFlags = 0);
     bool resolveUserOp(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, uint32_t ropFlags = 0);
     bool resolveUserOp(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, VectorNative<AstNode*>& params, uint32_t ropFlags = 0);
     bool resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right);

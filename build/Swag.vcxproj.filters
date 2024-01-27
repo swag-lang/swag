@@ -455,7 +455,7 @@
     <ClCompile Include="..\src\Semantic_Literal.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Semantic_Op.cpp">
+    <ClCompile Include="..\src\Semantic_UserOp.cpp">
       <Filter>Semantic</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Semantic_Ref.cpp">
