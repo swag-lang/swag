@@ -402,8 +402,6 @@ bool Semantic::resolveUserOpCommutative(SemanticContext* context, const Utf8& na
 bool Semantic::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStruct* leftStruct, SymbolName** result)
 {
     *result = nullptr;
-    if (leftStruct->isTuple())
-        return true;
 
     VectorNative<FindUserOp> results;
     SWAG_CHECK(hasUserOp(context, name, leftStruct, nullptr, results));

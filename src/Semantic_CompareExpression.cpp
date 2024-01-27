@@ -139,18 +139,21 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
     }
 
     // Struct against struct.
-    if (leftTypeInfo->isStruct() || rightTypeInfo->isStruct())
+    if (leftTypeInfo->isStruct() && rightTypeInfo->isStruct())
     {
         node->typeInfo = g_TypeMgr->typeInfoBool;
         g_SilentError++;
         resolveUserOpCommutative(context, g_LangSpec->name_opEquals, nullptr, nullptr, left, right);
         g_SilentError--;
         YIELD();
+        if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
+            return true;
 
-        if (!node->hasExtMisc() || !node->extMisc()->resolvedUserOpSymbolOverload)
-        {
+        if (!leftTypeInfo->isSame(rightTypeInfo, CASTFLAG_CAST | CASTFLAG_FOR_COMPARE))
             SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opEquals, nullptr, nullptr, left, right));
-        }
+
+        SWAG_CHECK(Ast::generateOpEquals(context, leftTypeInfo, rightTypeInfo));
+        YIELD();
     }
 
     return true;

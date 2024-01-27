@@ -58,6 +58,7 @@ namespace Ast
     bool     convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* assignment, AstStruct** result);
     bool     convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* parent, AstNode* assignment, AstNode** result);
     bool     convertStructParamsToTmpVar(SemanticContext* context, AstIdentifier* identifier);
+    bool     generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInfo* typeRight);
 
     template<typename T>
     void constructNode(T* node)

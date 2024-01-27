@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "Ast.h"
 #include "Diagnostic.h"
+#include "Parser.h"
 #include "SemanticJob.h"
 #include "TypeManager.h"
+#include "LanguageSpec.h"
 
 atomic<int> g_UniqueID;
 
@@ -505,4 +507,50 @@ AstNode* Ast::convertTypeToTypeExpression(SemanticContext* context, AstNode* par
     typeExpression->typeInfo = childType;
     typeExpression->flags |= AST_NO_SEMANTIC;
     return typeExpression;
+}
+
+bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInfo* typeRight)
+{
+    // Be sure another thread does not do the same thing
+    {
+        ScopedLock lk(typeLeft->mutex);
+        if (typeLeft->flags & TYPEINFO_GENERATED_OPEQUALS)
+        {
+            context->result = ContextResult::NewChilds;
+            return true;
+        }
+
+        typeLeft->flags |= TYPEINFO_GENERATED_OPEQUALS;
+    }
+
+    auto typeLeftStruct  = CastTypeInfo<TypeInfoStruct>(typeLeft, TypeInfoKind::Struct);
+    auto typeRightStruct = CastTypeInfo<TypeInfoStruct>(typeRight, TypeInfoKind::Struct);
+
+    Utf8 content;
+
+    content += Fmt("impl %s {\n", typeLeftStruct->structName.c_str());
+    content += Fmt("func opEquals(m: %s, o: %s)->bool { return ", typeLeftStruct->structName.c_str(), typeRightStruct->structName.c_str());
+    for (size_t i = 0; i < typeLeftStruct->fields.size(); i++)
+    {
+        if (i)
+            content += " and ";
+        content += Fmt("m.%s == o.%s", typeLeftStruct->fields[i]->name.c_str(), typeRightStruct->fields[i]->name.c_str());
+    }
+
+    content += "\n}\n}";
+
+    Parser parser;
+    parser.setup(context, context->sourceFile->module, context->sourceFile);
+    auto structDecl = CastAst<AstStruct>(typeLeft->declNode, AstNodeKind::StructDecl);
+    SWAG_CHECK(parser.constructEmbeddedAst(content, structDecl, structDecl, CompilerAstKind::TopLevelInstruction, false));
+
+    auto implDecl = typeLeft->declNode->childs.back();
+    SWAG_ASSERT(implDecl->kind == AstNodeKind::Impl);
+    auto mtdDecl = implDecl->childs.back();
+    SWAG_ASSERT(mtdDecl->kind == AstNodeKind::FuncDecl);
+
+    auto job = context->baseJob;
+    job->nodes.push_back(implDecl);
+    context->result = ContextResult::NewChilds;
+    return true;
 }

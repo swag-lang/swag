@@ -36,12 +36,12 @@ private var nums:    Array'{num, x, lx, y: s32}
 
 private func hasSymbol(x, y: s32)->bool
 {
+    //return symbols.contains({x, y})
     visit s: symbols
     {
         if s.x == x and s.y == y do
             return true
     }
-
     return false
 }
 
