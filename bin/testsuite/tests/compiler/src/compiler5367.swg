@@ -2,6 +2,7 @@ struct(T) Arr
 {
 }
 
+var G = 0
 impl Arr
 {
     mtd(V) contains(value: V)
@@ -11,7 +12,8 @@ impl Arr
 
     mtd toto()->const [..] T
     {
-        #print @typeof(T).name
+        if G == 1 do
+            @assert(@typeof(T).name == "C")
         return [{1, 2}]
     }
 }
@@ -27,5 +29,6 @@ struct C
     var arr2: Arr'{x, y: s32}
 
     discard arr2.toto()
+    G = 1
     discard arr1.toto()
 }
