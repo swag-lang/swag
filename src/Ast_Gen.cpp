@@ -509,7 +509,6 @@ AstNode* Ast::convertTypeToTypeExpression(SemanticContext* context, AstNode* par
     return typeExpression;
 }
 
-#pragma optimize("", off)
 bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInfo* typeRight)
 {
     // Be sure another thread does not do the same thing
