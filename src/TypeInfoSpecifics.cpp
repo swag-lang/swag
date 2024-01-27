@@ -1068,7 +1068,9 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint64_t castFlags)
         return false;
 
     // A tuple can only match a tuple, and a struct a struct
-    if (!(castFlags & CASTFLAG_CAST) || (castFlags & CASTFLAG_FOR_GENERIC))
+    if (!(castFlags & CASTFLAG_CAST) ||
+        (castFlags & CASTFLAG_FOR_GENERIC) ||
+        (castFlags & CASTFLAG_EXACT_TUPLE_STRUCT))
     {
         if (isTuple() != to->isTuple())
             return false;
@@ -1158,6 +1160,8 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint64_t castFlags)
                 compareNames = true;
             else if (!(castFlags & CASTFLAG_FOR_AFFECT) && !(castFlags & CASTFLAG_FOR_COMPARE))
                 compareNames = true;
+            else if (castFlags & CASTFLAG_EXACT_TUPLE_STRUCT)
+                compareNames = true;
             if (compareNames)
             {
                 if (fields[i]->name != other->fields[i]->name)
@@ -1207,7 +1211,7 @@ Utf8 TypeInfoStruct::computeTupleDisplayName(const VectorNative<TypeInfoParam*>&
             if (!param->name.empty() && !(param->flags & TYPEINFOPARAM_AUTO_NAME))
             {
                 resName += param->name;
-                resName += ": ";
+                resName += ":";
             }
         }
 
@@ -1229,7 +1233,7 @@ Utf8 TypeInfoStruct::computeTupleDisplayName(const VectorNative<TypeInfoParam*>&
 
 void TypeInfoStruct::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
-    if (isTuple())
+    if (isTuple() && nameType != COMPUTE_NAME)
     {
         resName = TypeInfoStruct::computeTupleDisplayName(fields, nameType);
         return;

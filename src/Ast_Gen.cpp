@@ -530,12 +530,12 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
     Utf8 content;
 
     content += Fmt("impl %s {\n", typeLeftStruct->structName.c_str());
-    content += Fmt("func opEquals(m: %s, o: %s)->bool { return ", typeLeftStruct->structName.c_str(), typeRightStruct->structName.c_str());
+    content += Fmt("mtd opEquals(o: %s)->bool\n{\nreturn ", typeRightStruct->structName.c_str());
     for (size_t i = 0; i < typeLeftStruct->fields.size(); i++)
     {
         if (i)
-            content += " and ";
-        content += Fmt("m.%s == o.%s", typeLeftStruct->fields[i]->name.c_str(), typeRightStruct->fields[i]->name.c_str());
+            content += " and\n";
+        content += Fmt("%s == o.%s", typeLeftStruct->fields[i]->name.c_str(), typeRightStruct->fields[i]->name.c_str());
     }
 
     content += "\n}\n}";
@@ -544,7 +544,9 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
     parser.setup(context, context->sourceFile->module, context->sourceFile);
     auto     structDecl = CastAst<AstStruct>(typeLeft->declNode, AstNodeKind::StructDecl);
     AstNode* result     = nullptr;
-    SWAG_CHECK(parser.constructEmbeddedAst(content, structDecl, structDecl, CompilerAstKind::TopLevelInstruction, false, &result));
+    SWAG_CHECK(parser.constructEmbeddedAst(content, structDecl, structDecl, CompilerAstKind::TopLevelInstruction, true, &result));
+
+    result->addAlternativeScope(typeRightStruct->declNode->ownerScope);
 
     SWAG_ASSERT(result->kind == AstNodeKind::Impl);
     SWAG_ASSERT(result->childs.back()->kind == AstNodeKind::FuncDecl);
