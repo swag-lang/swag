@@ -25,11 +25,6 @@ impl Vector2
         x, y = value
     }
 
-    mtd opEquals(other: Self)->bool
-    {
-        return x == other.x and y == other.y
-    }
-
     mtd(op: string) opAssign(other: Self)
     {
         #if   op == "+="    { x += other.x; y += other.y; }

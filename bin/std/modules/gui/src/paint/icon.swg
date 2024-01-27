@@ -11,14 +11,6 @@ struct Icon
 
 impl Icon
 {
-    mtd opEquals(other: Self)->bool
-    {
-        return imageList == other.imageList and
-               index == other.index and
-               sizeX == other.sizeX and
-               sizeY == other.sizeY
-    }
-
     #[Swag.Inline]
     mtd const isValid() => imageList != null
 

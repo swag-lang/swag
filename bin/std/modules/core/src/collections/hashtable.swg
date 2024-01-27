@@ -14,8 +14,6 @@ struct(K, V) HashTable
     {
         if !Hash.checkCanHash32'K() do
             return false
-        if !Core.Compiler.checkCanCompareToSame'K() do
-            return false
         return true
     }
 {

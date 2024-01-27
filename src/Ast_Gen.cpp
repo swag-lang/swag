@@ -529,7 +529,7 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
     Utf8 content;
 
     content += Fmt("impl %s {\n", typeLeftStruct->structName.c_str());
-    content += Fmt("mtd opEquals(o: %s)->bool\n{\nreturn ", typeRightStruct->structName.c_str());
+    content += Fmt("mtd const opEquals(o: %s)->bool\n{\nreturn ", typeRightStruct->structName.c_str());
     for (size_t i = 0; i < typeLeftStruct->fields.size(); i++)
     {
         if (i)

@@ -22,11 +22,6 @@ impl Point
         x, y = value
     }
 
-    mtd const opEquals(other: Point)->bool
-    {
-        return x == other.x and y == other.y
-    }
-
     mtd(op: string) opAssign(other: Point)
     {
         #if   op == "+="    { x += other.x; y += other.y; }

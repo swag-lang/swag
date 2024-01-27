@@ -10,14 +10,3 @@ struct RichEditRuneStyle
     fontMode    = FontFamilyStyle.Regular
     underline   = UnderlineStyle.None
 }
-
-impl RichEditRuneStyle
-{
-    mtd opEquals(other: Self)->bool
-    {
-        return  colBk == other.colBk and
-                colFg == other.colFg and
-                fontMode == other.fontMode and
-                underline == other.underline
-    }
-}

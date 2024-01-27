@@ -32,14 +32,6 @@ public struct IntPoint
     x, y: CInt
 }
 
-impl IntPoint
-{
-    public mtd opEquals(other: Self)->bool
-    {
-        return x == other.x and y == other.y
-    }
-}
-
 struct IntRect
 {
     left:   CInt

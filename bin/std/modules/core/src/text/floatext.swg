@@ -419,11 +419,6 @@ impl FloatExt
         return false
     }
 
-    func opEquals(using self, other: Self)->bool
-    {
-        return mant == other.mant and exp == other.exp and neg == other.neg
-    }
-
     // ShortestDecimal stores in d the shortest decimal representation of f
     // which belongs to the open interval (lower, upper), where f is supposed
     // to lie. It returns false whenever the result is unsure. The implementation

@@ -27,11 +27,6 @@ impl Vector3
         x, y, z = value
     }
 
-    mtd opEquals(other: Self)->bool
-    {
-        return x == other.x and y == other.y and z == other.z
-    }
-
     mtd(op: string) opAssign(other: Self)
     {
         #if   op == "+="    { x += other.x; y += other.y; z += other.z; }

@@ -18,11 +18,6 @@ impl Vector4
         x, y, z, w = value
     }
 
-    mtd opEquals(other: Self)->bool
-    {
-        return x == other.x and y == other.y and z == other.z and w == other.w
-    }
-
     mtd(op: string) opUnary()->Self
     {
         #if op == "-"#do
