@@ -547,8 +547,7 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
     SWAG_CHECK(parser.constructEmbeddedAst(content, structDecl, structDecl, CompilerAstKind::TopLevelInstruction, false, &result));
 
     SWAG_ASSERT(result->kind == AstNodeKind::Impl);
-    auto mtdDecl = result->childs.back();
-    SWAG_ASSERT(mtdDecl->kind == AstNodeKind::FuncDecl);
+    SWAG_ASSERT(result->childs.back()->kind == AstNodeKind::FuncDecl);
 
     auto job = context->baseJob;
     job->nodes.push_back(result);
