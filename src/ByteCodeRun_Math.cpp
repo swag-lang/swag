@@ -270,6 +270,12 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         case TokenId::IntrinsicMax:
             ra.u8 = max(rb.u8, rc.u8);
             break;
+        case TokenId::IntrinsicRol:
+            ra.u8 = (rb.u8 << rc.u32) | (rb.u8 >> (8 - rc.u32));
+            break;
+        case TokenId::IntrinsicRor:
+            ra.u8 = (rb.u8 >> rc.u32) | (rb.u8 << (8 - rc.u32));
+            break;
         default:
             SWAG_ASSERT(false);
             break;
@@ -286,6 +292,12 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             break;
         case TokenId::IntrinsicMax:
             ra.u16 = max(rb.u16, rc.u16);
+            break;
+        case TokenId::IntrinsicRol:
+            ra.u16 = (rb.u16 << rc.u32) | (rb.u16 >> (16 - rc.u32));
+            break;
+        case TokenId::IntrinsicRor:
+            ra.u16 = (rb.u16 >> rc.u32) | (rb.u16 << (16 - rc.u32));
             break;
         default:
             SWAG_ASSERT(false);
@@ -304,6 +316,12 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
         case TokenId::IntrinsicMax:
             ra.u32 = max(rb.u32, rc.u32);
             break;
+        case TokenId::IntrinsicRol:
+            ra.u32 = (rb.u32 << rc.u32) | (rb.u32 >> (32 - rc.u32));
+            break;
+        case TokenId::IntrinsicRor:
+            ra.u32 = (rb.u32 >> rc.u32) | (rb.u32 << (32 - rc.u32));
+            break;
         default:
             SWAG_ASSERT(false);
             break;
@@ -320,6 +338,12 @@ bool ByteCodeRun::executeMathIntrinsic(JobContext* context, ByteCodeInstruction*
             break;
         case TokenId::IntrinsicMax:
             ra.u64 = max(rb.u64, rc.u64);
+            break;
+        case TokenId::IntrinsicRol:
+            ra.u64 = (rb.u64 << rc.u32) | (rb.u64 >> (64 - rc.u32));
+            break;
+        case TokenId::IntrinsicRor:
+            ra.u64 = (rb.u64 >> rc.u32) | (rb.u64 << (64 - rc.u32));
             break;
         default:
             SWAG_ASSERT(false);

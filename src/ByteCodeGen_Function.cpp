@@ -963,6 +963,42 @@ bool ByteCodeGen::emitIntrinsic(ByteCodeGenContext* context)
         break;
     }
 
+    case TokenId::IntrinsicRol:
+    case TokenId::IntrinsicRor:
+    {
+        node->resultRegisterRC                  = reserveRegisterRC(context);
+        node->identifierRef()->resultRegisterRC = node->resultRegisterRC;
+        node->parent->resultRegisterRC          = node->resultRegisterRC;
+        auto child0                             = callParams->childs[0];
+        auto child1                             = callParams->childs[1];
+        auto typeInfo                           = TypeManager::concreteType(child0->typeInfo);
+        SWAG_ASSERT(typeInfo->isNative());
+        ByteCodeOp op = ByteCodeOp::End;
+        switch (typeInfo->nativeType)
+        {
+        case NativeTypeKind::U8:
+            op = ByteCodeOp::IntrinsicU8x2;
+            break;
+        case NativeTypeKind::U16:
+            op = ByteCodeOp::IntrinsicU16x2;
+            break;
+        case NativeTypeKind::U32:
+            op = ByteCodeOp::IntrinsicU32x2;
+            break;
+        case NativeTypeKind::U64:
+            op = ByteCodeOp::IntrinsicU64x2;
+            break;
+        default:
+            return Report::internalError(context->node, "emitIntrinsic, IntrinsicRol/IntrinsicRor invalid type");
+        }
+
+        auto inst   = EMIT_INST3(context, op, node->resultRegisterRC, child0->resultRegisterRC, child1->resultRegisterRC);
+        inst->d.u32 = (uint32_t) node->tokenId;
+        freeRegisterRC(context, child0);
+        freeRegisterRC(context, child1);
+        break;
+    }
+
     case TokenId::IntrinsicByteSwap:
     {
         node->resultRegisterRC                  = reserveRegisterRC(context);

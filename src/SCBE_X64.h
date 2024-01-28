@@ -142,6 +142,7 @@ struct SCBE_X64 : public SCBE_CPU
     void emit_CMovN(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits numBits);
     void emit_CmpXChg(CPURegister regDst, CPURegister regSrc, CPUBits numBits);
     void emit_BSwapN(CPURegister reg, CPUBits numBits);
+    void emit_RotateN(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits numBits);
     void emit_Nop();
     void emit_CastU64F64(CPURegister regDst, CPURegister regSrc);
 };

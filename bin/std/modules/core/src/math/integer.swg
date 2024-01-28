@@ -138,6 +138,16 @@ func hasByte(value: u64, byte: u8)->bool
     func abs(x: s16) => @abs(x)
     func abs(x: s32) => @abs(x)
     func abs(x: s64) => @abs(x)
+
+    func rol(x, y: u8)  => @rol(x, y)
+    func rol(x, y: u16) => @rol(x, y)
+    func rol(x, y: u32) => @rol(x, y)
+    func rol(x, y: u64) => @rol(x, y)
+
+    func ror(x, y: u8)  => @ror(x, y)
+    func ror(x, y: u16) => @ror(x, y)
+    func ror(x, y: u32) => @ror(x, y)
+    func ror(x, y: u64) => @ror(x, y)
 }
 
 // Find the gcd between 'a' and 'b'

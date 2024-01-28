@@ -1111,6 +1111,18 @@ func @strcmp(str1, str2: cstring)->s32;
     func @byteswap(value: u32)->u32;
     func @byteswap(value: u64)->u64;
 
+    // Rotate bits left
+    func @rol(value, num: u8)->u8;
+    func @rol(value, num: u16)->u16;
+    func @rol(value, num: u32)->u32;
+    func @rol(value, num: u64)->u64;
+
+    // Rotate bits right
+    func @ror(value, num: u8)->u8;
+    func @ror(value, num: u16)->u16;
+    func @ror(value, num: u32)->u32;
+    func @ror(value, num: u64)->u64;
+
     // Returns '(val1 * val2) + val3'
     func @muladd(val1, val2, val3: f32)->f32;
     func @muladd(val1, val2, val3: f64)->f64;

@@ -238,6 +238,8 @@ Intrisic keywords always start with '@'. As user identifiers cannot start the sa
 @min
 @pow
 @realloc
+@rol
+@ror
 @round
 @sin
 @sinh

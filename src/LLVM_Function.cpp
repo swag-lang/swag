@@ -5516,6 +5516,12 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             case TokenId::IntrinsicMax:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, {I8_TY()}, {r1, r2}), r0);
                 break;
+            case TokenId::IntrinsicRol:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fshl, {I8_TY()}, {r1, r1, r2}), r0);
+                break;
+            case TokenId::IntrinsicRor:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fshr, {I8_TY()}, {r1, r1, r2}), r0);
+                break;
             default:
                 ok = false;
                 Report::internalError(moduleToGen, Fmt("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
@@ -5535,6 +5541,12 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             case TokenId::IntrinsicMax:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, {I16_TY()}, {r1, r2}), r0);
+                break;
+            case TokenId::IntrinsicRol:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fshl, {I16_TY()}, {r1, r1, r2}), r0);
+                break;
+            case TokenId::IntrinsicRor:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fshr, {I16_TY()}, {r1, r1, r2}), r0);
                 break;
             default:
                 ok = false;
@@ -5556,6 +5568,12 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
             case TokenId::IntrinsicMax:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, {I32_TY()}, {r1, r2}), r0);
                 break;
+            case TokenId::IntrinsicRol:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fshl, {I32_TY()}, {r1, r1, r2}), r0);
+                break;
+            case TokenId::IntrinsicRor:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fshr, {I32_TY()}, {r1, r1, r2}), r0);
+                break;
             default:
                 ok = false;
                 Report::internalError(moduleToGen, Fmt("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
@@ -5575,6 +5593,12 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 break;
             case TokenId::IntrinsicMax:
                 builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::umax, {I64_TY()}, {r1, r2}), r0);
+                break;
+            case TokenId::IntrinsicRol:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fshl, {I64_TY()}, {r1, r1, r2}), r0);
+                break;
+            case TokenId::IntrinsicRor:
+                builder.CreateStore(builder.CreateIntrinsic(llvm::Intrinsic::fshr, {I64_TY()}, {r1, r1, r2}), r0);
                 break;
             default:
                 ok = false;

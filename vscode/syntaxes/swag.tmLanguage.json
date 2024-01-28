@@ -142,7 +142,7 @@
       "patterns": [
         {
           "name": "entity.name.tag",
-          "match": "(@)\\b(muladd|byteswap|bitcountnz|bitcounttz|bitcountlz|min|max|sqrt|sin|cos|tan|sinh|cosh|tanh|asin|acos|atan|atan2|log|log2|log10|floor|ceil|trunc|round|abs|exp|exp2|pow|alloc|realloc|free|memcpy|memmove|memset|memcmp|strlen|strcmp|atomadd|atomand|atomor|atomxor|atomxchg|atomcmpxchg|cvastart|cvaend|cvaarg)\\b"
+          "match": "(@)\\b(rol|ror|muladd|byteswap|bitcountnz|bitcounttz|bitcountlz|min|max|sqrt|sin|cos|tan|sinh|cosh|tanh|asin|acos|atan|atan2|log|log2|log10|floor|ceil|trunc|round|abs|exp|exp2|pow|alloc|realloc|free|memcpy|memmove|memset|memcmp|strlen|strcmp|atomadd|atomand|atomor|atomxor|atomxchg|atomcmpxchg|cvastart|cvaend|cvaarg)\\b"
         }
       ]
     },

@@ -435,6 +435,8 @@ void LanguageSpec::setupKeywords()
     keywords.add("@bitcountnz", TokenId::IntrinsicBitCountNz);
     keywords.add("@bitcounttz", TokenId::IntrinsicBitCountTz);
     keywords.add("@bitcountlz", TokenId::IntrinsicBitCountLz);
+    keywords.add("@rol", TokenId::IntrinsicRol);
+    keywords.add("@ror", TokenId::IntrinsicRor);
     keywords.add("@min", TokenId::IntrinsicMin);
     keywords.add("@max", TokenId::IntrinsicMax);
     keywords.add("@sqrt", TokenId::IntrinsicSqrt);

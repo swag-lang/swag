@@ -4317,6 +4317,18 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 pp.emit_CMovN(RAX, RCX, CPUOp::CMOVB, CPUBits::B32);
                 pp.emit_Store8_Indirect(REG_OFFSET(ip->a.u32), RAX);
                 break;
+            case TokenId::IntrinsicRol:
+                MK_IMMB_S8_TO_S32(RAX);
+                MK_IMMC_S8_TO_S32(RCX);
+                pp.emit_RotateN(RAX, RCX, CPUOp::ROL, CPUBits::B32);
+                pp.emit_Store8_Indirect(REG_OFFSET(ip->a.u32), RAX);
+                break;
+            case TokenId::IntrinsicRor:
+                MK_IMMB_S8_TO_S32(RAX);
+                MK_IMMC_S8_TO_S32(RCX);
+                pp.emit_RotateN(RAX, RCX, CPUOp::ROR, CPUBits::B32);
+                pp.emit_Store8_Indirect(REG_OFFSET(ip->a.u32), RAX);
+                break;
             default:
                 ok = false;
                 Report::internalError(moduleToGen, Fmt("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
@@ -4341,6 +4353,18 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 MK_IMMC_16(RCX);
                 pp.emit_CmpN(RAX, RCX, CPUBits::B16);
                 pp.emit_CMovN(RAX, RCX, CPUOp::CMOVB, CPUBits::B16);
+                pp.emit_Store16_Indirect(REG_OFFSET(ip->a.u32), RAX);
+                break;
+            case TokenId::IntrinsicRol:
+                MK_IMMB_16(RAX);
+                MK_IMMC_16(RCX);
+                pp.emit_RotateN(RAX, RCX, CPUOp::ROL, CPUBits::B32);
+                pp.emit_Store16_Indirect(REG_OFFSET(ip->a.u32), RAX);
+                break;
+            case TokenId::IntrinsicRor:
+                MK_IMMB_16(RAX);
+                MK_IMMC_16(RCX);
+                pp.emit_RotateN(RAX, RCX, CPUOp::ROR, CPUBits::B32);
                 pp.emit_Store16_Indirect(REG_OFFSET(ip->a.u32), RAX);
                 break;
             default:
@@ -4369,6 +4393,18 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 pp.emit_CMovN(RAX, RCX, CPUOp::CMOVB, CPUBits::B32);
                 pp.emit_Store32_Indirect(REG_OFFSET(ip->a.u32), RAX);
                 break;
+            case TokenId::IntrinsicRol:
+                MK_IMMB_32(RAX);
+                MK_IMMC_32(RCX);
+                pp.emit_RotateN(RAX, RCX, CPUOp::ROL, CPUBits::B32);
+                pp.emit_Store32_Indirect(REG_OFFSET(ip->a.u32), RAX);
+                break;
+            case TokenId::IntrinsicRor:
+                MK_IMMB_32(RAX);
+                MK_IMMC_32(RCX);
+                pp.emit_RotateN(RAX, RCX, CPUOp::ROR, CPUBits::B32);
+                pp.emit_Store32_Indirect(REG_OFFSET(ip->a.u32), RAX);
+                break;
             default:
                 ok = false;
                 Report::internalError(moduleToGen, Fmt("unknown intrinsic [[%s]] during backend generation", g_ByteCodeOpDesc[(int) ip->op].name));
@@ -4393,6 +4429,18 @@ bool SCBE::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
                 MK_IMMC_64(RCX);
                 pp.emit_CmpN(RAX, RCX, CPUBits::B64);
                 pp.emit_CMovN(RAX, RCX, CPUOp::CMOVB, CPUBits::B64);
+                pp.emit_Store64_Indirect(REG_OFFSET(ip->a.u32), RAX);
+                break;
+            case TokenId::IntrinsicRol:
+                MK_IMMB_64(RAX);
+                MK_IMMC_64(RCX);
+                pp.emit_RotateN(RAX, RCX, CPUOp::ROL, CPUBits::B64);
+                pp.emit_Store64_Indirect(REG_OFFSET(ip->a.u32), RAX);
+                break;
+            case TokenId::IntrinsicRor:
+                MK_IMMB_64(RAX);
+                MK_IMMC_64(RCX);
+                pp.emit_RotateN(RAX, RCX, CPUOp::ROR, CPUBits::B64);
                 pp.emit_Store64_Indirect(REG_OFFSET(ip->a.u32), RAX);
                 break;
             default:
