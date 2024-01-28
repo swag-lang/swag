@@ -426,8 +426,8 @@ TypeInfo* TypeManager::makeUnConst(TypeInfo* typeInfo)
 {
     if (!typeInfo->isConst())
         return typeInfo;
-    if (typeInfo->isFakeAlias())
-        return typeInfo->getFakeAlias();
+    if (typeInfo->isConstAlias())
+        return typeInfo->getConstAlias();
 
     ScopedLock lk(mutex);
 
@@ -459,7 +459,7 @@ TypeInfo* TypeManager::makeConst(TypeInfo* typeInfo)
         auto typeAlias = makeType<TypeInfoAlias>();
         typeAlias->copyFrom(typeInfo);
         typeAlias->rawType = typeInfo;
-        typeAlias->flags |= TYPEINFO_CONST | TYPEINFO_FAKE_ALIAS;
+        typeAlias->flags |= TYPEINFO_CONST | TYPEINFO_CONST_ALIAS;
         mapConst[typeInfo] = typeAlias;
         return typeAlias;
     }
@@ -517,7 +517,7 @@ void TypeManager::convertStructParamToRef(AstNode* node, TypeInfo* typeInfo)
     if (!node->typeInfo->isGeneric() && typeInfo->isStruct())
     {
         auto typeRef         = makeType<TypeInfoPointer>();
-        typeInfo             = typeInfo->getFakeAlias();
+        typeInfo             = typeInfo->getConstAlias();
         typeRef->flags       = typeInfo->flags | TYPEINFO_CONST | TYPEINFO_POINTER_REF | TYPEINFO_POINTER_AUTO_REF;
         typeRef->pointedType = typeInfo;
         typeRef->sizeOf      = sizeof(void*);

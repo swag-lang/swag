@@ -149,8 +149,8 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
         if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
             return true;
 
-        leftTypeInfo  = leftTypeInfo->getFakeAlias();
-        rightTypeInfo = rightTypeInfo->getFakeAlias();
+        leftTypeInfo  = leftTypeInfo->getConstAlias();
+        rightTypeInfo = rightTypeInfo->getConstAlias();
         if (!leftTypeInfo->isSame(rightTypeInfo, CASTFLAG_CAST | CASTFLAG_FOR_COMPARE))
             SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opEquals, nullptr, nullptr, left, right));
 

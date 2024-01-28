@@ -147,9 +147,9 @@ bool TypeInfo::isPointerConstVoid()
     return isPointerVoid() && isConst();
 }
 
-TypeInfo* TypeInfo::getFakeAlias()
+TypeInfo* TypeInfo::getConstAlias()
 {
-    if (!(flags & TYPEINFO_FAKE_ALIAS))
+    if (!(flags & TYPEINFO_CONST_ALIAS))
         return this;
     return ((TypeInfoAlias*) this)->rawType;
 }

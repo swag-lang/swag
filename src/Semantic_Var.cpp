@@ -3,12 +3,10 @@
 #include "ByteCodeGen.h"
 #include "Module.h"
 #include "Ast.h"
-#include "TypeManager.h"
-#include "Generic.h"
-#include "ErrorIds.h"
+#include "Diagnostic.h"
 #include "LanguageSpec.h"
 #include "Naming.h"
-#include "Diagnostic.h"
+#include "TypeManager.h"
 
 uint32_t Semantic::alignOf(AstVarDecl* node)
 {

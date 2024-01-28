@@ -56,7 +56,7 @@ const uint64_t TYPEINFO_SPREAD                   = 0x00000000'00800000;
 const uint64_t TYPEINFO_UNDEFINED                = 0x00000000'01000000;
 const uint64_t TYPEINFO_ENUM_INDEX               = 0x00000000'02000000;
 const uint64_t TYPEINFO_STRICT                   = 0x00000000'04000000;
-const uint64_t TYPEINFO_FAKE_ALIAS               = 0x00000000'08000000;
+const uint64_t TYPEINFO_CONST_ALIAS              = 0x00000000'08000000;
 const uint64_t TYPEINFO_HAS_USING                = 0x00000000'10000000;
 const uint64_t TYPEINFO_FUNC_IS_ATTR             = 0x00000000'20000000;
 const uint64_t TYPEINFO_FROM_GENERIC             = 0x00000000'40000000;
@@ -111,7 +111,7 @@ struct TypeInfo
 
     TypeInfo*       getFinalType();
     TypeInfoStruct* getStructOrPointedStruct();
-    TypeInfo*       getFakeAlias();
+    TypeInfo*       getConstAlias();
     TypeInfo*       getConcreteAlias();
 
     // clang-format off
@@ -162,7 +162,7 @@ struct TypeInfo
     bool isUntypedInteger()                 { return (flags & TYPEINFO_UNTYPED_INTEGER); }
     bool isUntypedFloat()                   { return (flags & TYPEINFO_UNTYPED_FLOAT); }
     bool isUntypedBinHex()                  { return (flags & TYPEINFO_UNTYPED_BINHEXA); }
-    bool isFakeAlias()                      { return (flags & TYPEINFO_FAKE_ALIAS); }
+    bool isConstAlias()                      { return (flags & TYPEINFO_CONST_ALIAS); }
     bool isCharacter()                      { return (flags & TYPEINFO_CHARACTER); }
     // clang-format on
 
@@ -534,7 +534,7 @@ template<typename T>
 inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind)
 {
     SWAG_ASSERT(ptr);
-    T* casted = static_cast<T*>(ptr->getFakeAlias());
+    T* casted = static_cast<T*>(ptr->getConstAlias());
     SWAG_ASSERT(casted->kind == kind);
     return casted;
 }
@@ -543,7 +543,7 @@ template<typename T>
 inline T* CastTypeInfo(TypeInfo* ptr, TypeInfoKind kind1, TypeInfoKind kind2)
 {
     SWAG_ASSERT(ptr);
-    T* casted = static_cast<T*>(ptr->getFakeAlias());
+    T* casted = static_cast<T*>(ptr->getConstAlias());
     SWAG_ASSERT(casted->kind == kind1 || casted->kind == kind2);
     return casted;
 }

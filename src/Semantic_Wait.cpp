@@ -225,10 +225,10 @@ void Semantic::waitTypeCompleted(Job* job, TypeInfo* typeInfo)
     orgTypeInfo = TypeManager::concreteType(orgTypeInfo);
     if (orgTypeInfo->isArray())
         orgTypeInfo->sizeOf = ((TypeInfoArray*) orgTypeInfo)->finalType->sizeOf * ((TypeInfoArray*) orgTypeInfo)->totalCount;
-    if (orgTypeInfo->isFakeAlias())
-        orgTypeInfo->sizeOf = orgTypeInfo->getFakeAlias()->sizeOf;
-    if (typeInfo->isFakeAlias())
-        typeInfo->sizeOf = typeInfo->getFakeAlias()->sizeOf;
+    if (orgTypeInfo->isConstAlias())
+        orgTypeInfo->sizeOf = orgTypeInfo->getConstAlias()->sizeOf;
+    if (typeInfo->isConstAlias())
+        typeInfo->sizeOf = typeInfo->getConstAlias()->sizeOf;
 }
 
 bool Semantic::waitForStructUserOps(SemanticContext* context, AstNode* node)

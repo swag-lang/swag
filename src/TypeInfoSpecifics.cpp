@@ -73,7 +73,7 @@ TypeInfo* TypeInfoAlias::clone()
 
 void TypeInfoAlias::computeWhateverName(Utf8& resName, uint32_t nameType)
 {
-    if (nameType == COMPUTE_DISPLAY_NAME && flags & TYPEINFO_FAKE_ALIAS)
+    if (nameType == COMPUTE_DISPLAY_NAME && flags & TYPEINFO_CONST_ALIAS)
     {
         if (flags & TYPEINFO_CONST)
             resName += "const ";
@@ -104,7 +104,7 @@ bool TypeInfoAlias::isSame(TypeInfo* to, uint64_t castFlags)
         return rawType->isSame(other->rawType, castFlags);
     }
 
-    SWAG_ASSERT(flags & TYPEINFO_FAKE_ALIAS);
+    SWAG_ASSERT(flags & TYPEINFO_CONST_ALIAS);
     return rawType->isSame(to, castFlags);
 }
 
@@ -1045,7 +1045,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint64_t castFlags)
     if (this == to)
         return true;
 
-    if (to->flags & TYPEINFO_FAKE_ALIAS)
+    if (to->flags & TYPEINFO_CONST_ALIAS)
         to = static_cast<TypeInfoAlias*>(to)->rawType;
 
     if (castFlags & CASTFLAG_CAST)

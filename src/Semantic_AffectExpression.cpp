@@ -85,7 +85,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, AstNo
     if ((left->flags & AST_CONST_EXPR) ||
         (left->flags & AST_IS_CONST) ||
         !(left->flags & AST_L_VALUE) ||
-        (left->typeInfo->isFakeAlias() && left->typeInfo->isConst()) ||
+        (left->typeInfo->isConstAlias() && left->typeInfo->isConst()) ||
         (left->typeInfo->isConstPointerRef() && right->kind != AstNodeKind::KeepRef))
     {
         isConst = true;
