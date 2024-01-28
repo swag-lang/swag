@@ -1888,6 +1888,110 @@ bool TypeManager::castToEnum(SemanticContext* context, TypeInfo* toType, TypeInf
     return castError(context, toType, fromType, fromNode, castFlags);
 }
 
+bool TypeManager::castSubExpressionList(SemanticContext* context, AstNode* child, TypeInfo* toType, uint64_t castFlags)
+{
+    auto exprNode          = CastAst<AstExpressionList>(child, AstNodeKind::ExpressionList);
+    auto toTypeStruct      = CastTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::Struct);
+    exprNode->castToStruct = toTypeStruct;
+
+    bool hasChanged = false;
+
+    // Not enough fields
+    if (toTypeStruct->fields.size() > child->childs.size())
+    {
+        exprNode->castToStruct = toTypeStruct;
+    }
+
+    // Too many fields
+    else if (toTypeStruct->fields.size() < child->childs.size())
+    {
+        auto       msg = Fmt(Err(Err0634), toTypeStruct->fields.size(), toTypeStruct->getDisplayNameC(), child->childs.size());
+        Diagnostic diag{child->childs[toTypeStruct->fields.count], msg};
+        return context->report(diag);
+    }
+
+    SymbolMatchContext symContext;
+    symContext.semContext = context;
+    for (auto c : child->childs)
+        symContext.parameters.push_back(c);
+    Match::match(toTypeStruct, symContext);
+
+    switch (symContext.result)
+    {
+    case MatchResult::MissingNamedParameter:
+    {
+        auto       badParamIdx = symContext.badSignatureInfos.badSignatureParameterIdx;
+        auto       failedParam = child->childs[badParamIdx];
+        Diagnostic diag{failedParam, Fmt(Err(Err0570), Naming::niceArgumentRank(badParamIdx + 1).c_str())};
+        auto       otherParam = child->childs[badParamIdx - 1];
+        if (otherParam->hasExtMisc() && otherParam->extMisc()->isNamed)
+            otherParam = otherParam->extMisc()->isNamed;
+        diag.addRange(otherParam, Nte(Nte0151));
+        return context->report(diag);
+    }
+    case MatchResult::DuplicatedNamedParameter:
+    {
+        auto       failedParam = child->childs[symContext.badSignatureInfos.badSignatureParameterIdx];
+        Diagnostic diag{failedParam->extMisc()->isNamed, Fmt(Err(Err0023), failedParam->extMisc()->isNamed->token.ctext())};
+        auto       otherParam = child->childs[symContext.badSignatureInfos.badSignatureNum1];
+        if (otherParam->hasExtMisc() && otherParam->extMisc()->isNamed)
+            otherParam = otherParam->extMisc()->isNamed;
+        diag.addRange(otherParam, Nte(Nte0165));
+        return context->report(diag);
+    }
+    case MatchResult::InvalidNamedParameter:
+    {
+        auto       failedParam = child->childs[symContext.badSignatureInfos.badSignatureParameterIdx];
+        Diagnostic diag{failedParam->extMisc()->isNamed, Fmt(Err(Err0724), failedParam->extMisc()->isNamed->token.ctext())};
+        if (toTypeStruct->declNode && !(toTypeStruct->declNode->flags & AST_GENERATED) && toTypeStruct->declNode->resolvedSymbolOverload)
+            return context->report(diag, Diagnostic::hereIs(toTypeStruct->declNode->resolvedSymbolOverload));
+        return context->report(diag);
+    }
+    default:
+        break;
+    }
+
+    for (size_t j = 0; j < child->childs.size(); j++)
+    {
+        auto           childJ = child->childs[j];
+        TypeInfoParam* fieldJ = symContext.solvedCallParameters[j];
+
+        auto oldType = childJ->typeInfo;
+        SWAG_CHECK(TypeManager::makeCompatibles(context, fieldJ->typeInfo, childJ->typeInfo, nullptr, childJ, castFlags | CASTFLAG_TRY_COERCE));
+        if (childJ->typeInfo != oldType)
+            hasChanged = true;
+
+        // Collect array to slice : will need special treatment when collecting constants
+        if (childJ->typeInfo->isListArray() && fieldJ->typeInfo->isSlice())
+        {
+            childJ->allocateExtension(ExtensionKind::Misc);
+            childJ->extMisc()->collectTypeInfo = fieldJ->typeInfo;
+        }
+
+        // We use castOffset to store the offset to the field, in order to collect later at the right position
+        // Note that offset is +1 to differentiate it from a "default" 0.
+        childJ->allocateExtension(ExtensionKind::Misc);
+        auto newOffset = (uint32_t) fieldJ->offset + 1;
+        if (childJ->extMisc()->castOffset != newOffset)
+        {
+            childJ->extMisc()->castOffset = newOffset;
+            hasChanged                    = true;
+        }
+    }
+
+    if (child->typeInfo->sizeOf != toTypeStruct->sizeOf)
+        hasChanged = true;
+
+    if (hasChanged)
+    {
+        Semantic::computeExpressionListTupleType(context, child);
+        SWAG_ASSERT(context->result == ContextResult::Done);
+        child->typeInfo->sizeOf = toTypeStruct->sizeOf;
+    }
+
+    return true;
+}
+
 bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fromTypeList, TypeInfo* toType, AstNode* fromNode, uint64_t castFlags)
 {
     auto fromSize = fromTypeList->subTypes.size();
@@ -1909,100 +2013,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
         // Expression list inside another expression list (like a struct inside an array)
         if (child && child->kind == AstNodeKind::ExpressionList && toType->isStruct())
         {
-            auto exprNode          = CastAst<AstExpressionList>(child, AstNodeKind::ExpressionList);
-            auto toTypeStruct      = CastTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::Struct);
-            exprNode->castToStruct = toTypeStruct;
-
-            bool hasChanged = false;
-
-            // Not enough fields
-            if (toTypeStruct->fields.size() > child->childs.size())
-                exprNode->castToStruct = toTypeStruct;
-
-            // Too many fields
-            else if (toTypeStruct->fields.size() < child->childs.size())
-            {
-                Diagnostic diag{child->childs[toTypeStruct->fields.count], Fmt(Err(Err0634), toTypeStruct->fields.size(), toTypeStruct->getDisplayNameC(), child->childs.size())};
-                return context->report(diag);
-            }
-
-            SymbolMatchContext symContext;
-            symContext.semContext = context;
-            for (auto c : child->childs)
-                symContext.parameters.push_back(c);
-            Match::match(toTypeStruct, symContext);
-            switch (symContext.result)
-            {
-            case MatchResult::MissingNamedParameter:
-            {
-                auto       badParamIdx = symContext.badSignatureInfos.badSignatureParameterIdx;
-                auto       failedParam = child->childs[badParamIdx];
-                Diagnostic diag{failedParam, Fmt(Err(Err0570), Naming::niceArgumentRank(badParamIdx + 1).c_str())};
-                auto       otherParam = child->childs[badParamIdx - 1];
-                if (otherParam->hasExtMisc() && otherParam->extMisc()->isNamed)
-                    otherParam = otherParam->extMisc()->isNamed;
-                diag.addRange(otherParam, Nte(Nte0151));
-                return context->report(diag);
-            }
-            case MatchResult::DuplicatedNamedParameter:
-            {
-                auto       failedParam = child->childs[symContext.badSignatureInfos.badSignatureParameterIdx];
-                Diagnostic diag{failedParam->extMisc()->isNamed, Fmt(Err(Err0023), failedParam->extMisc()->isNamed->token.ctext())};
-                auto       otherParam = child->childs[symContext.badSignatureInfos.badSignatureNum1];
-                if (otherParam->hasExtMisc() && otherParam->extMisc()->isNamed)
-                    otherParam = otherParam->extMisc()->isNamed;
-                diag.addRange(otherParam, Nte(Nte0165));
-                return context->report(diag);
-            }
-            case MatchResult::InvalidNamedParameter:
-            {
-                auto       failedParam = child->childs[symContext.badSignatureInfos.badSignatureParameterIdx];
-                Diagnostic diag{failedParam->extMisc()->isNamed, Fmt(Err(Err0724), failedParam->extMisc()->isNamed->token.ctext())};
-                if (toTypeStruct->declNode && !(toTypeStruct->declNode->flags & AST_GENERATED) && toTypeStruct->declNode->resolvedSymbolOverload)
-                    return context->report(diag, Diagnostic::hereIs(toTypeStruct->declNode->resolvedSymbolOverload));
-                return context->report(diag);
-            }
-            default:
-                break;
-            }
-
-            for (size_t j = 0; j < child->childs.size(); j++)
-            {
-                auto           childJ = child->childs[j];
-                TypeInfoParam* fieldJ = symContext.solvedCallParameters[j];
-
-                auto oldType = childJ->typeInfo;
-                SWAG_CHECK(TypeManager::makeCompatibles(context, fieldJ->typeInfo, childJ->typeInfo, nullptr, childJ, castFlags | CASTFLAG_TRY_COERCE));
-                if (childJ->typeInfo != oldType)
-                    hasChanged = true;
-
-                // Collect array to slice : will need special treatment when collecting constants
-                if (childJ->typeInfo->isListArray() && fieldJ->typeInfo->isSlice())
-                {
-                    childJ->allocateExtension(ExtensionKind::Misc);
-                    childJ->extMisc()->collectTypeInfo = fieldJ->typeInfo;
-                }
-
-                // We use castOffset to store the offset to the field, in order to collect later at the right position
-                // Note that offset is +1 to differentiate it from a "default" 0.
-                childJ->allocateExtension(ExtensionKind::Misc);
-                auto newOffset = (uint32_t) fieldJ->offset + 1;
-                if (childJ->extMisc()->castOffset != newOffset)
-                {
-                    childJ->extMisc()->castOffset = newOffset;
-                    hasChanged                    = true;
-                }
-            }
-
-            if (child->typeInfo->sizeOf != toTypeStruct->sizeOf)
-                hasChanged = true;
-
-            if (hasChanged)
-            {
-                Semantic::computeExpressionListTupleType(context, child);
-                SWAG_ASSERT(context->result == ContextResult::Done);
-                child->typeInfo->sizeOf = toTypeStruct->sizeOf;
-            }
+            SWAG_CHECK(castSubExpressionList(context, child, toType, castFlags));
         }
 
         SWAG_CHECK(TypeManager::makeCompatibles(context, toType, fromTypeList->subTypes[i]->typeInfo, nullptr, child, castFlags | CASTFLAG_TRY_COERCE));
