@@ -28,3 +28,14 @@ public func murmur3(h: u64)->u64
     key ^= key >> 33
     return key
 }
+
+#[Safety("", false), Overload]
+public func murmur3(a, b: u32)->u32
+{
+    var na = a * 0xcc9e2d51
+    na = ((na >> 17) | (na << (32 - 17)))
+    na *= 0x1b873593
+    var nb = b ^ a
+    nb = ((nb >> 19) | (nb << (32 - 19)))
+    return nb * 5 + 0xe6546b64
+}
