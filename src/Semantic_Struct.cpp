@@ -320,76 +320,8 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 
     // Be sure every functions of the interface has been covered. If it's not the case,
     // we generate the missing parts.
-    Vector<const Diagnostic*> notes;
-    InterfaceRef              itfRef;
-    bool                      doneItfRef = false;
-    Utf8                      content;
-    for (uint32_t idx = 0; idx < numFctInterface; idx++)
-    {
-        // Function is there
-        if (mapItIdxToFunc[idx])
-            continue;
-
-        if (!doneItfRef)
-        {
-            doneItfRef = true;
-            SWAG_CHECK(TypeManager::collectInterface(context, typeStruct, typeBaseInterface, itfRef, true));
-            YIELD();
-        }
-
-        auto missingNode = typeInterface->fields[idx];
-        if (!itfRef.itf)
-        {
-            Diagnostic diag{node, node->getTokenName(), Fmt(Err(Err0129), typeBaseInterface->name.c_str(), typeInfo->getDisplayNameC())};
-            auto       note = Diagnostic::note(missingNode->declNode, missingNode->declNode->getTokenName(), Fmt("missing [[%s]]", missingNode->name.c_str()));
-            return context->report(diag, note);
-        }
-
-        content += "func impl ";
-        content += missingNode->name;
-
-        content += "(using self";
-        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(missingNode->typeInfo, TypeInfoKind::LambdaClosure);
-        for (size_t i = 1; i < typeFunc->parameters.size(); i++)
-        {
-            content += ", ";
-            auto type = typeFunc->parameters[i]->typeInfo;
-            type->computeScopedNameExport();
-            content += Fmt("p%d: %s", i, type->scopedNameExport.c_str());
-        }
-        content += ")";
-
-        content += " => ";
-        content += itfRef.fieldRef;
-        content += ".";
-        content += typeBaseInterface->name;
-        content += ".";
-        content += missingNode->name;
-
-        content += "(";
-        for (size_t i = 1; i < typeFunc->parameters.size(); i++)
-        {
-            if (i != 1)
-                content += ",";
-            content += Fmt("p%d", i);
-        }
-        content += ")\n";
-    }
-
-    // We have generated methods, so restart
-    if (!content.empty())
-    {
-        int numChilds = (int) node->childs.size();
-
-        Parser parser;
-        parser.setup(context, context->sourceFile->module, context->sourceFile);
-        SWAG_CHECK(parser.constructEmbeddedAst(content, node, node, CompilerAstKind::MissingInterfaceMtd, true));
-
-        for (size_t i = numChilds; i < node->childs.size(); i++)
-            context->baseJob->nodes.push_back(node->childs[i]);
-        context->result = ContextResult::NewChilds;
-        return true;
-    }
+    SWAG_CHECK(Ast::generateMissingInterfaceFct(context, mapItIdxToFunc, typeStruct, typeBaseInterface, typeInterface));
+    YIELD();
 
     // Construct itable in the constant segment
     // Header has 2 pointers

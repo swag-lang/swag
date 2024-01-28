@@ -314,7 +314,7 @@
     <ClCompile Include="..\src\Ast_New.cpp">
       <Filter>Syntax</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Ast_Gen.cpp">
+    <ClCompile Include="..\src\Ast_Generate.cpp">
       <Filter>Syntax</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Symbol.cpp">
@@ -666,6 +666,9 @@
       <Filter>Backend\SCBE\Obj</Filter>
     </ClCompile>
     <ClCompile Include="..\src\Naming.cpp">
+      <Filter>Syntax</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Ast_Convert.cpp">
       <Filter>Syntax</Filter>
     </ClCompile>
   </ItemGroup>

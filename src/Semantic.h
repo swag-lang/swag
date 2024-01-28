@@ -294,6 +294,7 @@ namespace Semantic
     bool resolveImplForAfterFor(SemanticContext* context);
     bool resolveImplForType(SemanticContext* context);
     bool resolveImplFor(SemanticContext* context);
+    bool generateMissingInterfaceFct(const uint32_t& numFctInterface, VectorNative<AstFuncDecl*>& mapItIdxToFunc, SemanticContext* context, TypeInfoStruct* typeStruct, TypeInfoStruct* typeBaseInterface, TypeInfoStruct* typeInterface, AstImpl* node, TypeInfo* typeInfo, bool& retFlag);
     bool resolveStruct(SemanticContext* context);
     bool resolveInterface(SemanticContext* context);
     bool resolveEnum(SemanticContext* context);

@@ -1,10 +1,8 @@
 #include "pch.h"
 #include "Ast.h"
 #include "Diagnostic.h"
-#include "Parser.h"
 #include "SemanticJob.h"
 #include "TypeManager.h"
-#include "LanguageSpec.h"
 
 atomic<int> g_UniqueID;
 
@@ -507,66 +505,4 @@ AstNode* Ast::convertTypeToTypeExpression(SemanticContext* context, AstNode* par
     typeExpression->typeInfo = childType;
     typeExpression->flags |= AST_NO_SEMANTIC;
     return typeExpression;
-}
-
-bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInfo* typeRight)
-{
-    auto typeLeftStruct  = CastTypeInfo<TypeInfoStruct>(typeLeft, TypeInfoKind::Struct);
-    auto typeRightStruct = CastTypeInfo<TypeInfoStruct>(typeRight, TypeInfoKind::Struct);
-
-    // Check if it can be generated, or raise an error
-    for (auto f : typeLeftStruct->fields)
-    {
-        if (f->typeInfo->isArray())
-        {
-            Diagnostic  diag{context->node, context->node->token, Fmt(Err(Err0735), typeLeft->getDisplayNameC())};
-            Diagnostic* note = nullptr;
-            if (f->declNode)
-                note = Diagnostic::note(f->declNode, f->declNode->token, Fmt(Nte(Nte0130), f->name.c_str(), f->typeInfo->getDisplayNameC()));
-            else
-                note = Diagnostic::note(Fmt(Nte(Nte0130), f->name.c_str(), f->typeInfo->getDisplayNameC()));
-            return context->report(diag, note);
-        }
-    }
-
-    // Be sure another thread does not do the same thing
-    {
-        ScopedLock lk(typeLeft->mutex);
-        if (typeLeft->flags & TYPEINFO_GENERATED_OPEQUALS)
-        {
-            context->result = ContextResult::NewChilds;
-            return true;
-        }
-
-        typeLeft->flags |= TYPEINFO_GENERATED_OPEQUALS;
-    }
-
-    Utf8 content;
-
-    content += Fmt("impl %s {\n", typeLeftStruct->structName.c_str());
-    content += Fmt("mtd const opEquals(o: %s)->bool\n{\nreturn ", typeRightStruct->structName.c_str());
-    for (size_t i = 0; i < typeLeftStruct->fields.size(); i++)
-    {
-        if (i)
-            content += " and\n";
-        content += Fmt("%s == o.%s", typeLeftStruct->fields[i]->name.c_str(), typeRightStruct->fields[i]->name.c_str());
-    }
-
-    content += "\n}\n}";
-
-    Parser parser;
-    parser.setup(context, context->sourceFile->module, context->sourceFile);
-    auto     structDecl = CastAst<AstStruct>(typeLeft->declNode, AstNodeKind::StructDecl);
-    AstNode* result     = nullptr;
-    SWAG_CHECK(parser.constructEmbeddedAst(content, structDecl, structDecl, CompilerAstKind::TopLevelInstruction, true, &result));
-
-    result->addAlternativeScope(typeRightStruct->declNode->ownerScope);
-
-    SWAG_ASSERT(result->kind == AstNodeKind::Impl);
-    SWAG_ASSERT(result->childs.back()->kind == AstNodeKind::FuncDecl);
-
-    auto job = context->baseJob;
-    job->nodes.push_back(result);
-    context->result = ContextResult::NewChilds;
-    return true;
 }
