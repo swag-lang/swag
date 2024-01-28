@@ -582,7 +582,7 @@ public impl Crc32
         crc = ~cur
     }
 
-    // Returns the crc32 hash value for the given buffer
+    // Returns the hash value for the given buffer
     #[Swag.ConstExpr]
     func compute(buffer: const [..] u8)->u32
     {

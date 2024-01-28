@@ -15,7 +15,7 @@ func(T) bigEndianToNative(x: T)->T
 #if BIG_ENDIAN #do
     return x
 #else #do
-    return @byteswap(x)
+    return Math.byteswap(x)
 }
 
 // Convert a native arch integer to a big endian
@@ -25,7 +25,7 @@ func(T) nativeToBigEndian(x: T)->T
 #if BIG_ENDIAN #do
     return x
 #else #do
-    return @byteswap(x)
+    return Math.byteswap(x)
 }
 
 // Convert a little endian integer to current arch native format
@@ -33,7 +33,7 @@ func(T) nativeToBigEndian(x: T)->T
 func(T) littleEndianToNative(x: T)->T
 {
 #if BIG_ENDIAN #do
-    return @byteswap(x)
+    return Math.byteswap(x)
 #else #do
     return x
 }

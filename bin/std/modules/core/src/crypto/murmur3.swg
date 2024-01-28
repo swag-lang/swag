@@ -38,3 +38,14 @@ public func murmur3(a, b: u32)->u32
     nb = Math.ror(na, 19) * 5
     return nb + 0xe6546b64
 }
+
+#[Safety("", false), Overload]
+public func murmur3(a, b: u64)->u64
+{
+    const K = 0x9ddfea08eb382d69
+    var na = (a ^ b) * K
+    na ^= (na >> 47)
+    var nb = (b ^ na) * K
+    nb ^= (nb >> 47)
+    return nb * K
+}
