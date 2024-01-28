@@ -10,18 +10,13 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
     auto typeLeftStruct  = CastTypeInfo<TypeInfoStruct>(typeLeft, TypeInfoKind::Struct);
     auto typeRightStruct = CastTypeInfo<TypeInfoStruct>(typeRight, TypeInfoKind::Struct);
 
-    // Check if it can be generated, or raise an error
+    bool hasStruct = false;
     for (auto f : typeLeftStruct->fields)
     {
-        if (f->typeInfo->isArray())
+        if (f->typeInfo->isStruct() || f->typeInfo->isArrayOfStruct())
         {
-            Diagnostic  diag{context->node, context->node->token, Fmt(Err(Err0735), typeLeft->getDisplayNameC())};
-            Diagnostic* note = nullptr;
-            if (f->declNode)
-                note = Diagnostic::note(f->declNode, f->declNode->token, Fmt(Nte(Nte0130), f->name.c_str(), f->typeInfo->getDisplayNameC()));
-            else
-                note = Diagnostic::note(Fmt(Nte(Nte0130), f->name.c_str(), f->typeInfo->getDisplayNameC()));
-            return context->report(diag, note);
+            hasStruct = true;
+            break;
         }
     }
 
@@ -41,13 +36,39 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
 
     content += Fmt("impl %s {\n", typeLeftStruct->structName.c_str());
     content += Fmt("mtd const opEquals(o: %s)->bool\n{\n", typeRightStruct->structName.c_str());
-    for (size_t i = 0; i < typeLeftStruct->fields.size(); i++)
+    if (!hasStruct)
     {
-        content += Fmt("if %s != o.%s do return false\n", typeLeftStruct->fields[i]->name.c_str(), typeRightStruct->fields[i]->name.c_str());
+        content += "return @memcmp(cast(const ^void) self, cast(const ^void) &o, @sizeof(Self)) == 0\n";
+    }
+    else
+    {
+        for (size_t i = 0; i < typeLeftStruct->fields.size(); i++)
+        {
+            auto typeField = typeLeftStruct->fields[i];
+            auto leftN     = typeLeftStruct->fields[i]->name.c_str();
+            auto rightN    = typeRightStruct->fields[i]->name.c_str();
+
+            if (typeField->typeInfo->isArray())
+            {
+                auto typeArr = CastTypeInfo<TypeInfoArray>(typeField->typeInfo, TypeInfoKind::Array);
+                if (!typeArr->finalType->isStruct())
+                    content += Fmt("if @memcmp(&%s[0], &o.%s[0], @sizeof(%s)) != 0 do return false\n", leftN, rightN, leftN);
+                else
+                {
+                    content += Fmt("loop i: %s do ", leftN);
+                    content += Fmt("if %s[i] != o.%s[i] do return false\n", leftN, rightN);
+                }
+
+                continue;
+            }
+
+            content += Fmt("if %s != o.%s do return false\n", leftN, rightN);
+        }
+
+        content += "return true\n";
     }
 
-    content += "return true\n";
-    content += "\n}\n}";
+    content += "}\n}";
 
     Parser parser;
     parser.setup(context, context->sourceFile->module, context->sourceFile);
