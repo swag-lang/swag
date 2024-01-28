@@ -1,9 +1,6 @@
 #include "pch.h"
-#include "ByteCodeRun.h"
-#include "Diagnostic.h"
 #include "ByteCode.h"
-#include "Context.h"
-#include "ErrorIds.h"
+#include "ByteCodeRun.h"
 
 void ByteCodeRun::executeLeftShift(Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits, bool isSigned)
 {
