@@ -336,7 +336,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
     contentNode->extSemantic()->semanticBeforeFct = Semantic::preResolveStructContent;
 
     // Name
-    Utf8 name = sourceFile->scopeFile->name + "_tuple_";
+    Utf8 name = sourceFile->scopeFile->name + "_tpl3_";
     name += Fmt("%d", g_UniqueID.fetch_add(1));
     structNode->token.text = std::move(name);
 

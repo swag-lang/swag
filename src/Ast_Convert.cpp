@@ -161,7 +161,7 @@ bool Ast::convertLiteralTupleToStructType(SemanticContext* context, TypeInfoStru
     contentNode->allocateExtension(ExtensionKind::Semantic);
     contentNode->extSemantic()->semanticBeforeFct = Semantic::preResolveStructContent;
 
-    Utf8 name = sourceFile->scopeFile->name + "_tuple_";
+    Utf8 name = sourceFile->scopeFile->name + "_tpl1_";
     name += Fmt("%d", g_UniqueID.fetch_add(1));
     structNode->token.text = std::move(name);
 
@@ -327,7 +327,7 @@ bool Ast::convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* ass
     }
 
     // Compute structure name
-    Utf8 name = sourceFile->scopeFile->name + "_tuple_";
+    Utf8 name = sourceFile->scopeFile->name + "_tpl2_";
     name += Fmt("%d", g_UniqueID.fetch_add(1));
     structNode->token.text = name;
 
