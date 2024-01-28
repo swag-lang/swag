@@ -9,14 +9,6 @@ struct(K) HashSetEntry
 
 // A set of unique values.
 struct(K) HashSet
-    #validif
-    {
-        if !Hash.checkCanHash32'K() do
-            return false
-        if !Core.Compiler.checkCanCompareToSame'K() do
-            return false
-        return true
-    }
 {
     const HASH_FREE    = 0'u32
     const HASH_DELETED = 1'u32

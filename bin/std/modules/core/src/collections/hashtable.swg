@@ -10,12 +10,6 @@ struct(K, V) HashTableEntry
 
 // Map a key to a value.
 struct(K, V) HashTable
-    #validif
-    {
-        if !Hash.checkCanHash32'K() do
-            return false
-        return true
-    }
 {
     const HASH_FREE    = 0'u32
     const HASH_DELETED = 1'u32
