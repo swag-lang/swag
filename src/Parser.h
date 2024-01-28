@@ -1,6 +1,6 @@
 #pragma once
 #include "Tokenizer.h"
-#include "AstFlags.h"
+#include "Ast_Flags.h"
 #include "Scope.h"
 #include "ErrorContext.h"
 
