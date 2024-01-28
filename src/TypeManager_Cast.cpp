@@ -1941,11 +1941,22 @@ bool TypeManager::castSubExpressionList(SemanticContext* context, AstNode* child
     }
     case MatchResult::InvalidNamedParameter:
     {
-        auto       failedParam = child->childs[symContext.badSignatureInfos.badSignatureParameterIdx];
-        Diagnostic diag{failedParam->extMisc()->isNamed, Fmt(Err(Err0724), failedParam->extMisc()->isNamed->token.ctext())};
+        auto        failedParam = child->childs[symContext.badSignatureInfos.badSignatureParameterIdx];
+        Diagnostic  diag{failedParam->extMisc()->isNamed, Fmt(Err(Err0735), failedParam->extMisc()->isNamed->token.ctext())};
+        Diagnostic* note = nullptr;
+
         if (toTypeStruct->declNode && !(toTypeStruct->declNode->flags & AST_GENERATED) && toTypeStruct->declNode->resolvedSymbolOverload)
-            return context->report(diag, Diagnostic::hereIs(toTypeStruct->declNode->resolvedSymbolOverload));
-        return context->report(diag);
+        {
+            note = Diagnostic::hereIs(toTypeStruct->declNode->resolvedSymbolOverload);
+        }
+        else if (toTypeStruct->declNode && toTypeStruct->declNode->flags & AST_GENERATED && toTypeStruct->isTuple())
+        {
+            auto structDecl = CastAst<AstStruct>(toTypeStruct->declNode, AstNodeKind::StructDecl);
+            if (structDecl->originalParent)
+                note = Diagnostic::note(structDecl->originalParent, Nte(Nte0078));
+        }
+
+        return context->report(diag, note);
     }
     default:
         break;

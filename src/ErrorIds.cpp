@@ -854,7 +854,7 @@ void initErrors()
     SWAG_ERROR(Err0732, "unsuitable struct for union                       $ the struct [[%s]] is not suitable for union because it contains an [[%s]] function");
     SWAG_ERROR(Err0733, "unsupported [[@nameof]] argument                  $ can't evaluate the [[@nameof]] argument");
     SWAG_ERROR(Err0734, "unsupported [[@stringof]] argument                $ can't evaluate the [[@stringof]] argument");
-    SWAG_ERROR(Err0735, nullptr);
+    SWAG_ERROR(Err0735, "unknown field name                                $ the field name [[%s]] can't be found");
     SWAG_ERROR(Err0736, "unsupported array type                            $ can't declare a static array of type [[void]]");
     SWAG_ERROR(Err0737, "unsupported callback                              $ the intrinsic [[@mkcallback]] does not allow a function returning [[%s]]");
     SWAG_ERROR(Err0738, "unsupported callback                              $ the intrinsic [[@mkcallback]] does not allow a function with more than [[%d]] parameters, found [[%d]]");
