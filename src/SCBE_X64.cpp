@@ -2293,12 +2293,11 @@ void SCBE_X64::emit_CMovN(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUB
 
 void SCBE_X64::emit_RotateN(CPURegister regDst, CPURegister regSrc, CPUOp op, CPUBits numBits)
 {
-    if (numBits < CPUBits::B32)
-        numBits = CPUBits::B32;
+    SWAG_ASSERT(numBits >= CPUBits::B32);
+    SWAG_ASSERT(regDst == RAX && regSrc == RCX);
     emit_REX(concat, numBits, regDst, regSrc);
     concat.addU8(0xD3);
     concat.addU8((uint8_t) op);
-    concat.addU8(getModRM(REGREG, regDst, regSrc));
 }
 
 void SCBE_X64::emit_CmpXChg(CPURegister regDst, CPURegister regSrc, CPUBits numBits)
