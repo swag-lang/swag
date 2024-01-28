@@ -134,7 +134,7 @@ bool Ast::convertLiteralTupleToStructVar(SemanticContext* context, TypeInfo* toT
     return true;
 }
 
-bool Ast::convertLiteralTupleToStructType(SemanticContext* context, TypeInfoStruct* toType, AstNode* fromNode)
+bool Ast::convertLiteralTupleToStructType(SemanticContext* context, AstNode* paramNode, TypeInfoStruct* toType, AstNode* fromNode)
 {
     auto sourceFile = context->sourceFile;
     auto typeList   = CastTypeInfo<TypeInfoList>(fromNode->typeInfo, TypeInfoKind::TypeListTuple);
@@ -155,6 +155,8 @@ bool Ast::convertLiteralTupleToStructType(SemanticContext* context, TypeInfoStru
     structNode->originalParent = newParent;
     structNode->allocateExtension(ExtensionKind::Semantic);
     structNode->extSemantic()->semanticBeforeFct = Semantic::preResolveGeneratedStruct;
+    structNode->allocateExtension(ExtensionKind::Misc);
+    structNode->extMisc()->exportNode = paramNode;
 
     auto contentNode    = Ast::newNode<AstNode>(nullptr, AstNodeKind::TupleContent, sourceFile, structNode);
     structNode->content = contentNode;

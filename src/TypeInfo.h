@@ -88,6 +88,7 @@ const uint8_t TYPEINFOPARAM_HAS_USING        = 0x02;
 const uint8_t TYPEINFOPARAM_AUTO_NAME        = 0x04;
 const uint8_t TYPEINFOPARAM_GENERIC_TYPE     = 0x08;
 const uint8_t TYPEINFOPARAM_GENERIC_CONSTANT = 0x10;
+const uint8_t TYPEINFOPARAM_HIDE_FROM_NAME   = 0x20;
 
 struct TypeInfo
 {

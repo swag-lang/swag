@@ -261,6 +261,7 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
         {
             typeStruct->fields.push_back(typeParam);
             typeParam = (TypeInfoParam*) one->clone();
+            typeParam->flags |= TYPEINFOPARAM_HIDE_FROM_NAME;
         }
 
         typeParam->name = Fmt("item%u", idx);
@@ -273,9 +274,10 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
     // Generate some fake nodes
     // This peace of code is necessary to solve something like :
     // let s = [{1, 2}, {3, 4}]
-    auto structDecl            = Ast::newStructDecl(context->sourceFile, nullptr);
-    structDecl->originalParent = typeList->declNode;
-    typeStruct->declNode       = structDecl;
+    auto structDecl = Ast::newStructDecl(context->sourceFile, nullptr);
+    structDecl->allocateExtension(ExtensionKind::Misc);
+    structDecl->extMisc()->exportNode = typeList->declNode;
+    typeStruct->declNode              = structDecl;
     typeStruct->declNode->flags |= AST_GENERATED;
     typeStruct->declNode->typeInfo   = typeStruct;
     typeStruct->declNode->ownerScope = context->sourceFile->scopeFile;

@@ -87,7 +87,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
                     {
                         PushErrCxtStep ec(context, typeFunc->declNode, ErrCxtStepKind::HereIs, nullptr);
                         auto           typeDest = CastTypeInfo<TypeInfoStruct>(match.solvedParameters[idx]->typeInfo, TypeInfoKind::Struct);
-                        SWAG_CHECK(Ast::convertLiteralTupleToStructType(context, typeDest, p));
+                        SWAG_CHECK(Ast::convertLiteralTupleToStructType(context, match.solvedParameters[idx]->declNode, typeDest, p));
                         SWAG_ASSERT(context->result != ContextResult::Done);
                         return true;
                     }
@@ -95,7 +95,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
                     {
                         PushErrCxtStep ec(context, typeFunc->declNode, ErrCxtStepKind::HereIs, nullptr);
                         auto           typeDest = TypeManager::convertTypeListToStruct(context, tpt, true);
-                        SWAG_CHECK(Ast::convertLiteralTupleToStructType(context, typeDest, p));
+                        SWAG_CHECK(Ast::convertLiteralTupleToStructType(context, nullptr, typeDest, p));
                         SWAG_ASSERT(context->result != ContextResult::Done);
                         return true;
                     }

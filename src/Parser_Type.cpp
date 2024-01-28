@@ -329,6 +329,8 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
     structNode->addSpecFlags(AstStruct::SPECFLAG_ANONYMOUS);
     if (isUnion)
         structNode->addSpecFlags(AstStruct::SPECFLAG_UNION);
+    structNode->allocateExtension(ExtensionKind::Misc);
+    structNode->extMisc()->exportNode = structNode;
 
     auto contentNode    = Ast::newNode<AstNode>(this, AstNodeKind::TupleContent, sourceFile, structNode);
     structNode->content = contentNode;

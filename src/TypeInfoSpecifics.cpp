@@ -1201,21 +1201,15 @@ Utf8 TypeInfoStruct::getDisplayName()
 Utf8 TypeInfoStruct::computeTupleDisplayName(const VectorNative<TypeInfoParam*>& fields, uint32_t nameType)
 {
     Utf8 resName = "{";
+    bool first   = true;
     for (auto param : fields)
     {
-        if (param != fields.front())
+        if (param->flags & TYPEINFOPARAM_HIDE_FROM_NAME)
+            continue;
+
+        if (!first)
             resName += ",";
-
-        if (nameType != COMPUTE_DISPLAY_NAME)
-        {
-            if (!param->name.empty() && !(param->flags & TYPEINFOPARAM_AUTO_NAME))
-            {
-                resName += param->name;
-                resName += ":";
-            }
-        }
-
-        resName += param->typeInfo->computeWhateverName(nameType);
+        first = false;
 
         if (nameType == COMPUTE_DISPLAY_NAME)
         {
@@ -1225,6 +1219,14 @@ Utf8 TypeInfoStruct::computeTupleDisplayName(const VectorNative<TypeInfoParam*>&
                 break;
             }
         }
+
+        if (!param->name.empty() && !(param->flags & TYPEINFOPARAM_AUTO_NAME))
+        {
+            resName += param->name;
+            resName += ":";
+        }
+
+        resName += param->typeInfo->computeWhateverName(nameType);
     }
 
     resName += "}";

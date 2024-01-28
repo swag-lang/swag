@@ -33,6 +33,7 @@ struct OneTryMatch
     AstNode*           dependentVarLeaf  = nullptr;
     AstNode*           callParameters    = nullptr;
     AstNode*           genericParameters = nullptr;
+    TypeInfo*          type              = nullptr;
     uint32_t           cptOverloads      = 0;
     uint32_t           cptOverloadsInit  = 0;
     bool               ufcs              = false;
@@ -47,6 +48,7 @@ struct OneTryMatch
         dependentVarLeaf  = nullptr;
         callParameters    = nullptr;
         genericParameters = nullptr;
+        type              = nullptr;
         cptOverloads      = 0;
         ufcs              = false;
         secondTry         = false;

@@ -5,6 +5,7 @@
 #include "Module.h"
 #include "Naming.h"
 #include "Semantic.h"
+#include "SemanticError.h"
 #include "TypeManager.h"
 
 bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
@@ -1919,44 +1920,19 @@ bool TypeManager::castSubExpressionList(SemanticContext* context, AstNode* child
     switch (symContext.result)
     {
     case MatchResult::MissingNamedParameter:
-    {
-        auto       badParamIdx = symContext.badSignatureInfos.badSignatureParameterIdx;
-        auto       failedParam = child->childs[badParamIdx];
-        Diagnostic diag{failedParam, Fmt(Err(Err0570), Naming::niceArgumentRank(badParamIdx + 1).c_str())};
-        auto       otherParam = child->childs[badParamIdx - 1];
-        if (otherParam->hasExtMisc() && otherParam->extMisc()->isNamed)
-            otherParam = otherParam->extMisc()->isNamed;
-        diag.addRange(otherParam, Nte(Nte0151));
-        return context->report(diag);
-    }
     case MatchResult::DuplicatedNamedParameter:
-    {
-        auto       failedParam = child->childs[symContext.badSignatureInfos.badSignatureParameterIdx];
-        Diagnostic diag{failedParam->extMisc()->isNamed, Fmt(Err(Err0023), failedParam->extMisc()->isNamed->token.ctext())};
-        auto       otherParam = child->childs[symContext.badSignatureInfos.badSignatureNum1];
-        if (otherParam->hasExtMisc() && otherParam->extMisc()->isNamed)
-            otherParam = otherParam->extMisc()->isNamed;
-        diag.addRange(otherParam, Nte(Nte0165));
-        return context->report(diag);
-    }
     case MatchResult::InvalidNamedParameter:
     {
-        auto        failedParam = child->childs[symContext.badSignatureInfos.badSignatureParameterIdx];
-        Diagnostic  diag{failedParam->extMisc()->isNamed, Fmt(Err(Err0735), failedParam->extMisc()->isNamed->token.ctext())};
-        Diagnostic* note = nullptr;
-
-        if (toTypeStruct->declNode && !(toTypeStruct->declNode->flags & AST_GENERATED) && toTypeStruct->declNode->resolvedSymbolOverload)
-        {
-            note = Diagnostic::hereIs(toTypeStruct->declNode->resolvedSymbolOverload);
-        }
-        else if (toTypeStruct->declNode && toTypeStruct->declNode->flags & AST_GENERATED && toTypeStruct->isTuple())
-        {
-            auto structDecl = CastAst<AstStruct>(toTypeStruct->declNode, AstNodeKind::StructDecl);
-            if (structDecl->originalParent)
-                note = Diagnostic::note(structDecl->originalParent, Nte(Nte0078));
-        }
-
-        return context->report(diag, note);
+        Vector<const Diagnostic*> result0;
+        Vector<const Diagnostic*> result1;
+        OneTryMatch               oneTry;
+        oneTry.symMatchContext = symContext;
+        oneTry.callParameters  = child;
+        oneTry.overload        = toTypeStruct->declNode->resolvedSymbolOverload;
+        oneTry.type            = toTypeStruct;
+        SemanticError::getDiagnosticForMatch(context, oneTry, result0, result1);
+        SWAG_ASSERT(!result0.empty());
+        return context->report(*result0[0], result1);
     }
     default:
         break;

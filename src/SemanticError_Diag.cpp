@@ -50,10 +50,29 @@ static void errorMissingNamedParameter(SemanticContext* context, ErrorParam& err
 static void errorInvalidNamedParameter(SemanticContext* context, ErrorParam& errorParam)
 {
     SWAG_ASSERT(errorParam.failedParam && errorParam.failedParam->hasExtMisc() && errorParam.failedParam->extMisc()->isNamed);
-    auto msg  = Fmt(Err(Err0724), errorParam.failedParam->extMisc()->isNamed->token.ctext());
-    auto diag = new Diagnostic{errorParam.failedParam->extMisc()->isNamed, msg};
+
+    Utf8 msg;
+    auto isNamed  = errorParam.failedParam->extMisc()->isNamed;
+    auto typeInfo = errorParam.oneTry->overload ? errorParam.oneTry->overload->typeInfo : errorParam.oneTry->type;
+    if (errorParam.destFuncDecl)
+    {
+        msg = Fmt(Err(Err0724), isNamed->token.ctext());
+        errorParam.addResult1(Diagnostic::hereIs(errorParam.oneTry->overload));
+    }
+    else if (typeInfo && typeInfo->declNode && !(typeInfo->declNode->flags & AST_GENERATED) && typeInfo->declNode->resolvedSymbolOverload)
+    {
+        msg = Fmt(Err(Err0735), isNamed->token.ctext(), typeInfo->getDisplayNameC());
+        errorParam.addResult1(Diagnostic::hereIs(typeInfo->declNode->resolvedSymbolOverload));
+    }
+    else if (typeInfo && typeInfo->declNode && typeInfo->declNode->flags & AST_GENERATED && typeInfo->isTuple())
+    {
+        msg = Fmt(Err(Err0735), isNamed->token.ctext(), typeInfo->getDisplayNameC());
+        if (typeInfo->declNode->hasExtMisc() && typeInfo->declNode->extMisc()->exportNode)
+            errorParam.addResult1(Diagnostic::note(typeInfo->declNode->extMisc()->exportNode, Nte(Nte0078)));
+    }
+
+    auto diag = new Diagnostic{isNamed, msg};
     errorParam.result0->push_back(diag);
-    errorParam.addResult1(Diagnostic::hereIs(errorParam.oneTry->overload));
 }
 
 static void errorDuplicatedNamedParameter(SemanticContext* context, ErrorParam& errorParam)
@@ -439,20 +458,23 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
 
     // Get parameters of destination symbol
     SymbolOverload* overload = oneTry.overload;
-    if (overload->node->kind == AstNodeKind::FuncDecl)
+    if (overload)
     {
-        errorParam.destFuncDecl   = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
-        errorParam.destParameters = errorParam.destFuncDecl->parameters;
-    }
-    else if (overload->node->kind == AstNodeKind::AttrDecl)
-    {
-        errorParam.destAttrDecl   = CastAst<AstAttrDecl>(overload->node, AstNodeKind::AttrDecl);
-        errorParam.destParameters = errorParam.destAttrDecl->parameters;
-    }
-    else if (overload->node->kind == AstNodeKind::VarDecl)
-    {
-        errorParam.destLambdaDecl = CastAst<AstTypeLambda>(overload->node->typeInfo->declNode, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
-        errorParam.destParameters = errorParam.destLambdaDecl->parameters;
+        if (overload->node->kind == AstNodeKind::FuncDecl)
+        {
+            errorParam.destFuncDecl   = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
+            errorParam.destParameters = errorParam.destFuncDecl->parameters;
+        }
+        else if (overload->node->kind == AstNodeKind::AttrDecl)
+        {
+            errorParam.destAttrDecl   = CastAst<AstAttrDecl>(overload->node, AstNodeKind::AttrDecl);
+            errorParam.destParameters = errorParam.destAttrDecl->parameters;
+        }
+        else if (overload->node->kind == AstNodeKind::VarDecl)
+        {
+            errorParam.destLambdaDecl = CastAst<AstTypeLambda>(overload->node->typeInfo->declNode, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
+            errorParam.destParameters = errorParam.destLambdaDecl->parameters;
+        }
     }
 
     // See if it would have worked with an explicit cast, to give a hint in the error message
