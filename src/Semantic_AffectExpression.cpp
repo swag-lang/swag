@@ -83,7 +83,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, AstNo
 
     // Check that left type is mutable
     bool isConst = false;
-    if ((left->hasFlagConstExpr()) ||
+    if ((left->flags & AST_CONST_EXPR) ||
         (left->flags & AST_IS_CONST) ||
         !(left->flags & AST_L_VALUE) ||
         (left->typeInfo->isConstAlias() && left->typeInfo->isConst()) ||

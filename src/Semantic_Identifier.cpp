@@ -103,7 +103,7 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
     node->flags |= AST_CONST_EXPR | AST_FROM_GENERIC_REPLACE;
     for (auto child : node->childs)
     {
-        if (!(child->hasFlagConstExpr()))
+        if (!(child->flags & AST_CONST_EXPR))
             node->flags &= ~AST_CONST_EXPR;
         if (!(child->flags & AST_FROM_GENERIC_REPLACE))
             node->flags &= ~AST_FROM_GENERIC_REPLACE;
@@ -1430,7 +1430,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 
         // The function call is constexpr if the function is, and all parameters are
         auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(identifier->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
-        if (identifier->resolvedSymbolOverload->node->hasFlagConstExpr())
+        if (identifier->resolvedSymbolOverload->node->flags & AST_CONST_EXPR)
         {
             if (identifier->callParameters)
                 identifier->inheritAndFlag1(identifier->callParameters, AST_CONST_EXPR);
@@ -1439,7 +1439,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 
             // Be sure that the return type is compatible with a compile time execution.
             // Otherwise, we do not want the AST_CONST_EXPR_FLAG
-            if (identifier->hasFlagConstExpr())
+            if (identifier->flags & AST_CONST_EXPR)
             {
                 auto returnType = typeFunc->concreteReturnType();
 

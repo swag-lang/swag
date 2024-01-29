@@ -998,7 +998,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
             // Var has an initialization
             else if (varDecl->assignment && !(varDecl->flags & AST_EXPLICITLY_NOT_INITIALIZED))
             {
-                SWAG_CHECK(checkIsConstExpr(context, varDecl->assignment->hasFlagConstExpr(), varDecl->assignment, Err(Err0041)));
+                SWAG_CHECK(checkIsConstExpr(context, varDecl->assignment->flags & AST_CONST_EXPR, varDecl->assignment, Err(Err0041)));
 
                 auto typeInfoAssignment = varDecl->assignment->typeInfo->getConcreteAlias();
                 typeInfoAssignment      = TypeManager::concreteType(varDecl->assignment->typeInfo, CONCRETE_ENUM);

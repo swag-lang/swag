@@ -21,7 +21,7 @@ Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
     for (int i = (int) childs.size() - 1; i >= 0; i--)
     {
         auto c = childs[i];
-        if (c->hasFlagConstExpr())
+        if (c->flags & AST_CONST_EXPR)
             continue;
 
         if (c->resolvedSymbolName)

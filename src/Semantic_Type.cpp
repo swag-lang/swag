@@ -527,7 +527,7 @@ bool Semantic::resolveType(SemanticContext* context)
             bool     genericCount = false;
 
             if (child->kind == AstNodeKind::IdentifierRef &&
-                !(child->hasFlagConstExpr()) &&
+                !(child->flags & AST_CONST_EXPR) &&
                 typeNode->ownerStructScope &&
                 typeNode->ownerStructScope->owner->typeInfo->isGeneric())
             {

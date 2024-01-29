@@ -264,7 +264,7 @@ bool ByteCodeGen::emitInline(ByteCodeGenContext* context)
         {
             // Happens when the mixin is in a constexpr expression, inside a scope which is the real non constexpr code.
             // In that case we need to release our registers, because it's a compile time execution done.
-            if ((node->parent->hasFlagConstExpr()) != (node->ownerScope->owner->hasFlagConstExpr()))
+            if ((node->parent->flags & AST_CONST_EXPR) != (node->ownerScope->owner->flags & AST_CONST_EXPR))
             {
                 for (auto r : node->extMisc()->registersToRelease)
                     freeRegisterRC(context, r);
