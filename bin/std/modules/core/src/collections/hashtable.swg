@@ -370,7 +370,7 @@ impl HashTable
 
     // Find the given key, and returns the corresponding entry.
     // Returns null if the key is not there.
-    mtd find(key: K)->*HashTableEntry
+    mtd const find(key: K)->*HashTableEntry
     {
         if !table do
             return null
@@ -386,6 +386,15 @@ impl HashTable
         }
 
         return null
+    }
+
+    // Find the given key, and returns the corresponding value.
+    // If the key does not exist, then it will return 'val' instead
+    mtd const get(key: K, val: V)->V
+    {
+        let it = find(key)
+        if !it do return val
+        return it.value
     }
 
     // Get the entry if it exists, or creates a new one with a default value

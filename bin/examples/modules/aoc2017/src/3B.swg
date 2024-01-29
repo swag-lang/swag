@@ -31,19 +31,12 @@ func day3B()
     var arr: HashTable'({x, y: s32}, s32)
     arr.add({0, 0}, 1)
 
-    #[Swag.Macro]
-    func sum(x, y: s32)->s32
+    func sum(x, y: s32, a: @decltype(arr))->s32
     {
         var s: s32
-        loop dx: -1 to 1
-        {
-            loop dy: -1 to 1
-            {
-                let it = #up arr.find({x+dx, y+dy})
-                if !it do continue
-                s += it.value
-            }
-        }
+        loop dx: -1 to 1 do
+            loop dy: -1 to 1 do
+                s += a.get({x+dx, y+dy}, 0)
         return s
     }
 
@@ -56,14 +49,15 @@ func day3B()
             loop l
             {
                 x += dx; y += dy
-                let s = sum(x, y)
-                arr.add({x, y}, s)
+                let s = sum(x, y, arr)
                 if s >= D
                 {
-                    @assert(s == 312453)
                     //Console.print("total: ", s)
+                    @assert(s == 312453)
                     return
                 }
+
+                arr.add({x, y}, s)
             }
         }
     }
