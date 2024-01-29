@@ -396,7 +396,6 @@ void Ast::convertTypeStructToStructDecl(JobContext* context, TypeInfoStruct* typ
         f->declNode           = Ast::newVarDecl(context->sourceFile, f->name, typeStruct->declNode);
         f->declNode->typeInfo = f->typeInfo;
         f->declNode->flags |= AST_GENERATED;
-        f->offset = typeStruct->sizeOf;
 
         AddSymbolTypeInfo toAdd;
         toAdd.kind                          = SymbolKind::Variable;

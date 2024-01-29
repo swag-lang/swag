@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ThreadManager.h"
+#include "AstNode.h"
 #include "Context.h"
 #include "JobThread.h"
 #include "Module.h"

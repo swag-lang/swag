@@ -271,7 +271,9 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
     for (size_t idx = 0; idx < typeList->subTypes.size(); idx++)
     {
         auto one       = typeList->subTypes[idx];
+        one->offset    = typeStruct->sizeOf;
         auto typeParam = (TypeInfoParam*) one->clone();
+
         if (!typeParam->name.empty())
         {
             typeStruct->fields.push_back(typeParam);
