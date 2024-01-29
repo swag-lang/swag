@@ -1204,9 +1204,6 @@ Utf8 TypeInfoStruct::computeTupleDisplayName(const VectorNative<TypeInfoParam*>&
     bool first   = true;
     for (auto param : fields)
     {
-        if (param->flags & TYPEINFOPARAM_HIDE_FROM_NAME)
-            continue;
-
         if (!first)
             resName += ",";
         first = false;

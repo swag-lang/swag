@@ -391,6 +391,8 @@ void Ast::convertTypeStructToStructDecl(JobContext* context, TypeInfoStruct* typ
     typeStruct->scope->owner         = typeStruct->declNode;
     typeStruct->alignOf              = 1;
     structDecl->scope                = typeStruct->scope;
+
+    int idx = 0;
     for (auto f : typeStruct->fields)
     {
         f->declNode           = Ast::newVarDecl(context->sourceFile, f->name, typeStruct->declNode);
@@ -402,10 +404,17 @@ void Ast::convertTypeStructToStructDecl(JobContext* context, TypeInfoStruct* typ
         toAdd.node                          = f->declNode;
         toAdd.typeInfo                      = f->typeInfo;
         toAdd.storageOffset                 = f->offset;
-        toAdd.aliasName                     = &f->name;
         toAdd.flags                         = OVERLOAD_VAR_STRUCT;
         f->declNode->resolvedSymbolOverload = typeStruct->scope->symTable.addSymbolTypeInfo((ErrorContext*) context, toAdd);
-        f->declNode->resolvedSymbolName     = f->declNode->resolvedSymbolOverload->symbol;
+
+        if (!(f->flags & TYPEINFOPARAM_AUTO_NAME))
+        {
+            Utf8 n                              = Fmt("item%d", idx++);
+            toAdd.aliasName                     = &n;
+            f->declNode->resolvedSymbolOverload = typeStruct->scope->symTable.addSymbolTypeInfo((ErrorContext*) context, toAdd);
+        }
+
+        f->declNode->resolvedSymbolName = f->declNode->resolvedSymbolOverload->symbol;
     }
 }
 
