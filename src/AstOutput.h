@@ -1,13 +1,19 @@
 #pragma once
 #include "Job.h"
-#include "AstNode.h"
-#include "Allocator.h"
-#include "SourceFile.h"
-#include "CommandLine.h"
-struct Utf8;
-struct Scope;
+
+struct AstEnum;
+struct AstNode;
+struct AstStruct;
+struct AstTypeExpression;
+struct AstVarDecl;
+struct AttributeList;
+struct ComputedValue;
 struct Concat;
+struct Scope;
+struct TypeInfo;
 struct TypeInfoEnum;
+struct TypeInfoFuncAttr;
+
 enum class ScopeKind : uint8_t;
 
 struct AstOutput

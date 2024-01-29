@@ -1,12 +1,7 @@
 #include "pch.h"
-#include "Diagnostic.h"
-#include "SourceFile.h"
-#include "TypeInfo.h"
-#include "ErrorIds.h"
-#include "Naming.h"
-#include "Log.h"
-#include "LanguageSpec.h"
 #include "SyntaxColor.h"
+#include "LanguageSpec.h"
+#include "SourceFile.h"
 
 struct RGBColor
 {

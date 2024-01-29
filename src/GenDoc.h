@@ -1,10 +1,13 @@
 #pragma once
 #include "Job.h"
 #include "AstOutput.h"
+#include "AstNode.h"
 #include "Concat.h"
+
 struct Scope;
 struct AstStruct;
 struct AstFuncDecl;
+enum class BuildCfgDocKind;
 
 static const uint32_t GENDOC_CODE_REFS       = 0x00000001;
 static const uint32_t GENDOC_CODE_BLOCK      = 0x00000002;
