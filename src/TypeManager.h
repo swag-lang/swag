@@ -111,15 +111,17 @@ struct TypeManager
     static bool makeCompatibles(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint64_t castFlags = 0);
     static bool makeCompatibles(SemanticContext* context, TypeInfo* toType, AstNode* toNode, AstNode* fromNode, uint64_t castFlags = 0);
 
+    static void            convertStructParamToRef(AstNode* node, TypeInfo* typeInfo);
     static TypeInfoArray*  convertTypeListToArray(JobContext* jobContext, TypeInfoList* typeList, bool isCompilerConstant);
     static TypeInfoStruct* convertTypeListToStruct(JobContext* jobContext, TypeInfoList* typeList, bool isCompilerConstant);
-    static bool            collectInterface(SemanticContext* context, TypeInfoStruct* fromTypeStruct, TypeInfoStruct* toTypeItf, InterfaceRef& ref, bool skipFirst = false);
-    static TypeInfo*       solidifyUntyped(TypeInfo* typeInfo);
-    static TypeInfo*       resolveUntypedType(TypeInfo* typeInfo, uint32_t value);
-    static TypeInfo*       literalTypeToType(LiteralType literalType);
-    static TypeInfo*       literalTypeToType(LiteralType literalType, Register literalValue);
-    static uint64_t        align(uint64_t value, uint32_t align);
-    static uint32_t        alignOf(TypeInfo* typeInfo);
+
+    static bool      collectInterface(SemanticContext* context, TypeInfoStruct* fromTypeStruct, TypeInfoStruct* toTypeItf, InterfaceRef& ref, bool skipFirst = false);
+    static TypeInfo* solidifyUntyped(TypeInfo* typeInfo);
+    static TypeInfo* resolveUntypedType(TypeInfo* typeInfo, uint32_t value);
+    static TypeInfo* literalTypeToType(LiteralType literalType);
+    static TypeInfo* literalTypeToType(LiteralType literalType, Register literalValue);
+    static uint64_t  align(uint64_t value, uint32_t align);
+    static uint32_t  alignOf(TypeInfo* typeInfo);
 
     static bool      promote(SemanticContext* context, AstNode* left, AstNode* right);
     static bool      promoteLeft(SemanticContext* context, AstNode* left, AstNode* right);
@@ -128,7 +130,6 @@ struct TypeManager
     static void      promoteUntypedInteger(AstNode* left, AstNode* right);
 
     static bool      compareConcreteType(const ExportedTypeInfo* type1, const ExportedTypeInfo* type2);
-    static void      convertStructParamToRef(AstNode* node, TypeInfo* typeInfo);
     static TypeInfo* concretePtrRefType(TypeInfo* typeInfo, uint32_t flags = CONCRETE_ALL);
     static TypeInfo* concreteType(TypeInfo* typeInfo, uint32_t flags = CONCRETE_ALL);
     static TypeInfo* concretePtrRef(TypeInfo* typeInfo);

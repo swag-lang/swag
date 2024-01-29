@@ -1,12 +1,7 @@
 #include "pch.h"
 #include "TypeManager.h"
 #include "Ast.h"
-#include "AstNode.h"
 #include "Job.h"
-#include "Mutex.h"
-#include "Semantic.h"
-#include "Tokenizer.h"
-#include "TypeInfo.h"
 #include "Workspace.h"
 
 TypeManager* g_TypeMgr = nullptr;
@@ -191,6 +186,23 @@ void TypeManager::setup()
     PR(F32, F64, typeInfoF64);
 
     PR(F64, F64, typeInfoF64);
+}
+
+void TypeManager::convertStructParamToRef(AstNode* node, TypeInfo* typeInfo)
+{
+    SWAG_ASSERT(node->kind == AstNodeKind::FuncDeclParam);
+
+    // A struct/interface is forced to be a const reference
+    if (!node->typeInfo->isGeneric() && typeInfo->isStruct())
+    {
+        auto typeRef         = makeType<TypeInfoPointer>();
+        typeInfo             = typeInfo->getConstAlias();
+        typeRef->flags       = typeInfo->flags | TYPEINFO_CONST | TYPEINFO_POINTER_REF | TYPEINFO_POINTER_AUTO_REF;
+        typeRef->pointedType = typeInfo;
+        typeRef->sizeOf      = sizeof(void*);
+        typeRef->computeName();
+        node->typeInfo = typeRef;
+    }
 }
 
 TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfoList* typeList, bool isCompilerConstant)
@@ -485,21 +497,4 @@ TypeInfoParam* TypeManager::makeParam()
     g_Stats.memParams += Allocator::alignSize(sizeof(TypeInfoParam));
 #endif
     return typeParam;
-}
-
-void TypeManager::convertStructParamToRef(AstNode* node, TypeInfo* typeInfo)
-{
-    SWAG_ASSERT(node->kind == AstNodeKind::FuncDeclParam);
-
-    // A struct/interface is forced to be a const reference
-    if (!node->typeInfo->isGeneric() && typeInfo->isStruct())
-    {
-        auto typeRef         = makeType<TypeInfoPointer>();
-        typeInfo             = typeInfo->getConstAlias();
-        typeRef->flags       = typeInfo->flags | TYPEINFO_CONST | TYPEINFO_POINTER_REF | TYPEINFO_POINTER_AUTO_REF;
-        typeRef->pointedType = typeInfo;
-        typeRef->sizeOf      = sizeof(void*);
-        typeRef->computeName();
-        node->typeInfo = typeRef;
-    }
 }
