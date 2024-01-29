@@ -88,7 +88,7 @@ static Diagnostic* unknownIdentifierInScope(AstIdentifierRef* identifierRef, Ast
     if (prevIdentifier &&
         prevIdentifier->resolvedSymbolName &&
         prevIdentifier->resolvedSymbolName->kind == SymbolKind::Variable &&
-        !(prevIdentifier->hasFlagGenerated()))
+        !(prevIdentifier->flags & AST_GENERATED))
     {
         diag->addRange(prevIdentifier, Diagnostic::isType(prevIdentifier));
     }

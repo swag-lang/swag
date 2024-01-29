@@ -1084,7 +1084,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
 
         // Be sure it's the NAME{} syntax
         if (identifier->callParameters &&
-            !(identifier->hasFlagGenerated()) &&
+            !(identifier->flags & AST_GENERATED) &&
             !(identifier->callParameters->specFlags & AstFuncCallParams::SPECFLAG_CALL_FOR_STRUCT))
         {
             Diagnostic diag{identifier, identifier->token, Err(Err0377)};
@@ -1095,7 +1095,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
         bool canConvertStructParams = false;
         bool canOptimAffect         = false;
         if (identifier->callParameters &&
-            !(identifier->hasFlagGenerated()) &&
+            !(identifier->flags & AST_GENERATED) &&
             !(identifier->flags & AST_IN_TYPE_VAR_DECLARATION) &&
             !(identifier->flags & AST_IN_FUNC_DECL_PARAMS))
         {

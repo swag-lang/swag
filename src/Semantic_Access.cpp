@@ -74,7 +74,7 @@ void Semantic::setNodeAccess(AstNode* node)
         return;
     if (!overload->node)
         return;
-    if (overload->node->hasFlagGenerated())
+    if (overload->node->flags & AST_GENERATED)
         return;
     if (overload->symbol->kind == SymbolKind::Namespace)
         return;
@@ -163,7 +163,7 @@ void Semantic::setDefaultAccess(AstNode* node)
         return;
     if (node->flags & AST_STRUCT_MEMBER)
         return;
-    if (node->hasFlagGenerated())
+    if (node->flags & AST_GENERATED)
         return;
     if (!node->ownerScope || !node->ownerScope->isGlobalOrImpl())
         return;

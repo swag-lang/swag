@@ -21,9 +21,9 @@ bool Parser::testIsSingleIdentifier(AstNode* node)
 
 bool Parser::testIsValidUserName(AstNode* node)
 {
-    if (node->parent && (node->parent->hasFlagGenerated()))
+    if (node->parent && (node->parent->flags & AST_GENERATED))
         return true;
-    if (node->hasFlagGenerated())
+    if (node->flags & AST_GENERATED)
         return true;
 
     // An identifier that starts with '__' is reserved for internal usage !

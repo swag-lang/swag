@@ -12,7 +12,7 @@
 
 bool Semantic::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node)
 {
-    if (node->hasFlagGenerated())
+    if (node->flags & AST_GENERATED)
         return true;
     SWAG_CHECK(checkFuncPrototypeOp(context, node));
     return true;

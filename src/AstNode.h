@@ -1,6 +1,5 @@
 #pragma once
 #include "Attribute.h"
-#include "AstFlags.h"
 #include "DependentJobs.h"
 #include "Mutex.h"
 #include "Register.h"
@@ -402,10 +401,6 @@ struct AstNode
     NodeExtensionSemantic* extSemantic()    { return extension->semantic; }
     NodeExtensionOwner*    extOwner()       { return extension->owner; }
     NodeExtensionMisc*     extMisc()        { return extension->misc; }
-    // clang-format on
-
-    // clang-format off
-    bool hasFlagGenerated() const           { return flags & AST_GENERATED; }
     // clang-format on
 
     AstNodeKind         kind;

@@ -498,7 +498,7 @@ void LLVM_Debug::startFunction(const BuildParameters& buildParameters, LLVMPerTh
         for (auto localVar : bc->localVars)
         {
             SymbolOverload* overload = localVar->resolvedSymbolOverload;
-            if (overload->node->hasFlagGenerated())
+            if (overload->node->flags & AST_GENERATED)
                 continue;
 
             if (overload->flags & OVERLOAD_RETVAL)
@@ -608,7 +608,7 @@ void LLVM_Debug::startFunction(const BuildParameters& buildParameters, LLVMPerTh
     for (auto localVar : bc->localVars)
     {
         SymbolOverload* overload = localVar->resolvedSymbolOverload;
-        if (overload->node->hasFlagGenerated())
+        if (overload->node->flags & AST_GENERATED)
             continue;
 
         auto  typeInfo = overload->typeInfo;

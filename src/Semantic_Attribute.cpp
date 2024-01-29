@@ -49,7 +49,7 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
     if (checkNode->kind == AstNodeKind::AttrUse)
     {
         auto attrUse = CastAst<AstAttrUse>(checkNode, AstNodeKind::AttrUse);
-        if (checkNode->hasFlagGenerated() && attrUse->content->kind == AstNodeKind::Namespace && attrUse->content->hasFlagGenerated())
+        if (checkNode->flags & AST_GENERATED && attrUse->content->kind == AstNodeKind::Namespace && attrUse->content->flags & AST_GENERATED)
             SWAG_CHECK(checkAttribute(context, oneAttribute, attrUse->content->childs.front()));
         else
             SWAG_CHECK(checkAttribute(context, oneAttribute, attrUse->content));
