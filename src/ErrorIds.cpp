@@ -142,7 +142,7 @@ void initErrors()
     SWAG_ERROR(Err0020, "ambiguous symbol                                  $ ambiguous resolution of the special function [[%s]]");
     SWAG_ERROR(Err0021, "ambiguous syntax                                  $ ambiguity arises between initializing [[%s]] and starting a new block");
     SWAG_ERROR(Err0022, "ambiguous syntax                                  $ ambiguous declaration within lambda type parameters");
-    SWAG_ERROR(Err0023, "argument already defined                          $ the named argument [[%s]] has already been defined");
+    SWAG_ERROR(Err0023, "argument already defined                          $ the argument [[%s]] has already been defined");
     SWAG_ERROR(Err0024, "bytecode stack overflow                           $ the required size exceeds the limit [[%s]] given by [[--stack-size]]");
     SWAG_ERROR(Err0025, "can't resolve foreign call                        $ failed to load the module [[%s]] while resolving the foreign function [[%s]]: %s");
     SWAG_ERROR(Err0026, "capture size overflow                             $ the total requested size is [[%u]] bytes but the maximum authorized size is [[%u]]");

@@ -44,8 +44,10 @@ static void errorMissingNamedParameter(SemanticContext* context, ErrorParam& err
     SWAG_ASSERT(errorParam.badParamIdx >= 2);
     auto msg  = Fmt(Err(Err0570), Naming::niceArgumentRank(errorParam.badParamIdx).c_str());
     auto diag = new Diagnostic{errorParam.failedParam, msg};
-    diag->addRange(errorParam.oneTry->callParameters->childs[errorParam.badParamIdx - 2], Nte(Nte0151));
     errorParam.result0->push_back(diag);
+
+    auto note = Diagnostic::note(errorParam.oneTry->callParameters->childs[errorParam.badParamIdx - 2], Nte(Nte0151));
+    errorParam.addResult1(note);
 }
 
 static void errorInvalidNamedParameter(SemanticContext* context, ErrorParam& errorParam)
@@ -79,12 +81,14 @@ static void errorInvalidNamedParameter(SemanticContext* context, ErrorParam& err
 static void errorDuplicatedNamedParameter(SemanticContext* context, ErrorParam& errorParam)
 {
     SWAG_ASSERT(errorParam.failedParam && errorParam.failedParam->hasExtMisc() && errorParam.failedParam->extMisc()->isNamed);
-    auto   msg   = Fmt(Err(Err0023), errorParam.failedParam->extMisc()->isNamed->token.ctext());
-    auto   diag  = new Diagnostic{errorParam.failedParam->extMisc()->isNamed, msg};
+    auto msg  = Fmt(Err(Err0023), errorParam.failedParam->extMisc()->isNamed->token.ctext());
+    auto diag = new Diagnostic{errorParam.failedParam->extMisc()->isNamed, msg};
+    errorParam.result0->push_back(diag);
+
     size_t other = errorParam.oneTry->symMatchContext.badSignatureInfos.badSignatureNum1;
     SWAG_ASSERT(other < errorParam.oneTry->callParameters->childs.size());
-    diag->addRange(errorParam.oneTry->callParameters->childs[other], Nte(Nte0165));
-    errorParam.result0->push_back(diag);
+    auto note = Diagnostic::note(errorParam.oneTry->callParameters->childs[other], Nte(Nte0165));
+    errorParam.addResult1(note);
 }
 
 static void errorMissingParameters(SemanticContext* context, ErrorParam& errorParam)
