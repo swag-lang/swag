@@ -398,7 +398,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
     if (typeInfo->isListArray())
     {
         auto typeList  = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListArray);
-        auto typeArray = TypeManager::convertTypeListToArray(context, typeList, expression->flags & AST_CONST_EXPR);
+        auto typeArray = TypeManager::convertTypeListToArray(context, typeList, expression->hasFlagConstExpr());
         SWAG_CHECK(TypeManager::makeCompatibles(context, typeArray, nullptr, expression, CASTFLAG_DEFAULT));
         typeInfo = typeArray;
     }
@@ -800,7 +800,7 @@ bool Semantic::resolveIntrinsicDeclType(SemanticContext* context)
 
     SWAG_VERIFY(!typeInfo->isKindGeneric(), context->report({expr, Err(Err0396)}));
 
-    if (expr->flags & AST_CONST_EXPR)
+    if (expr->hasFlagConstExpr())
     {
         SWAG_CHECK(executeCompilerNode(context, expr, true));
         YIELD();

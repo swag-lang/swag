@@ -801,7 +801,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             SWAG_CHECK(checkIsConcreteOrType(context, node->assignment));
             YIELD();
 
-            if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_FUNC_PARAM) || (node->assignment->flags & AST_CONST_EXPR))
+            if ((symbolFlags & OVERLOAD_VAR_GLOBAL) || (symbolFlags & OVERLOAD_VAR_FUNC_PARAM) || (node->assignment->hasFlagConstExpr()))
             {
                 SWAG_CHECK(evaluateConstExpression(context, node->assignment));
                 YIELD();
@@ -826,7 +826,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             }
             else
             {
-                SWAG_CHECK(checkIsConstExpr(context, node->assignment->flags & AST_CONST_EXPR, node->assignment, Err(Err0041)));
+                SWAG_CHECK(checkIsConstExpr(context, node->assignment->hasFlagConstExpr(), node->assignment, Err(Err0041)));
             }
         }
     }

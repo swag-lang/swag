@@ -406,6 +406,8 @@ struct AstNode
 
     // clang-format off
     bool hasFlagGenerated() const           { return flags & AST_GENERATED; }
+    bool hasFlagConstExpr() const           { return flags & AST_CONST_EXPR; }
+    bool hasFlagValueComputed() const       { return flags & AST_VALUE_COMPUTED; }
     // clang-format on
 
     AstNodeKind         kind;

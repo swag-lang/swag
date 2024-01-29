@@ -416,7 +416,7 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
             }
 
             // Copy from a constant
-            SWAG_ASSERT(assign->flags & AST_CONST_EXPR);
+            SWAG_ASSERT(assign->hasFlagConstExpr());
             uint8_t* addrDst;
             storageOffset = storageSegment->reserve(typeInfo->sizeOf, &addrDst, Semantic::alignOf(node));
             SWAG_ASSERT(overload->computedValue.storageSegment != storageSegment);

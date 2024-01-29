@@ -2010,7 +2010,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
         {
             auto childType = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
             newSizeof += childType->sizeOf;
-            if (!(child->flags & AST_CONST_EXPR))
+            if (!(child->hasFlagConstExpr()))
                 fromNode->flags &= ~AST_CONST_EXPR;
         }
     }
@@ -2025,7 +2025,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
         fromNode->typeInfo   = fromTypeList;
 
         // :ExprListArrayStorage
-        if (!(fromNode->flags & AST_CONST_EXPR) && fromNode->ownerScope && fromNode->ownerFct)
+        if (!(fromNode->hasFlagConstExpr()) && fromNode->ownerScope && fromNode->ownerFct)
         {
             SWAG_ASSERT(fromNode->computedValue);
             fromNode->ownerScope->startStackSize -= oldSizeof;
@@ -3087,7 +3087,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
             while (fromNode && fromNode->kind != AstNodeKind::ExpressionList)
                 fromNode = fromNode->childs.empty() ? nullptr : fromNode->childs.front();
 
-            if (fromNode && (fromNode->flags & AST_CONST_EXPR))
+            if (fromNode && (fromNode->hasFlagConstExpr()))
             {
 #ifdef SWAG_HAS_ASSERT
                 TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(fromNode->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
