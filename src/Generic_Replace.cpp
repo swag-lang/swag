@@ -6,6 +6,7 @@
 #include "SemanticJob.h"
 #include "TypeManager.h"
 #include "Symbol.h"
+#include "Ast_Flags.h"
 
 bool Generic::replaceGenericParameters(SemanticContext*              context,
                                        bool                          doType,

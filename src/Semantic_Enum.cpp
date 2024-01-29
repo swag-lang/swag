@@ -6,6 +6,7 @@
 #include "Workspace.h"
 #include "Diagnostic.h"
 #include "Scope.h"
+#include "Ast_Flags.h"
 
 bool Semantic::resolveEnum(SemanticContext* context)
 {

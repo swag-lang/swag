@@ -7,6 +7,7 @@
 #include "LanguageSpec.h"
 #include "Naming.h"
 #include "TypeManager.h"
+#include "Ast_Flags.h"
 
 uint32_t Semantic::alignOf(AstVarDecl* node)
 {

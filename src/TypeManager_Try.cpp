@@ -3,6 +3,7 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 #include "Scope.h"
+#include "Ast_Flags.h"
 
 bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {

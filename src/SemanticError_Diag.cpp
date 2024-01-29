@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Ast_Flags.h"
 #include "SemanticError.h"
 #include "Ast.h"
 #include "Diagnostic.h"

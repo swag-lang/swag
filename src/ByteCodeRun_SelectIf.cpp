@@ -5,6 +5,7 @@
 #include "ErrorIds.h"
 #include "ByteCodeGen.h"
 #include "TypeInfo.h"
+#include "Ast_Flags.h"
 
 bool ByteCodeRun::getVariadicSI(ByteCodeRunContext* context, ByteCodeInstruction* ip, Register* regPtr, Register* regCount)
 {

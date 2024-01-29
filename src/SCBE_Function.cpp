@@ -8,6 +8,7 @@
 #include "Module.h"
 #include "Report.h"
 #include "TypeManager.h"
+#include "Ast_Flags.h"
 
 void SCBE::computeUnwind(const VectorNative<CPURegister>& unwindRegs,
                          const VectorNative<uint32_t>&    unwindOffsetRegs,

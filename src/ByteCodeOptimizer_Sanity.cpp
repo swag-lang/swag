@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "ByteCodeOptimizer.h"
 #include "Ast.h"
-#include "Report.h"
+#include "Ast_Flags.h"
+#include "ByteCodeOptimizer.h"
 #include "Math.h"
-#include "ByteCodeGen.h"
-#include "TypeManager.h"
 #include "Naming.h"
+#include "Report.h"
+#include "TypeManager.h"
 
 #define STATE() cxt.states[cxt.state]
 

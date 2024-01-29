@@ -1,10 +1,11 @@
 #include "pch.h"
 #include "ByteCode.h"
 #include "Ast.h"
+#include "Ast_Flags.h"
+#include "ByteCodeDebugger.h"
+#include "Crc32.h"
 #include "Module.h"
 #include "TypeManager.h"
-#include "Crc32.h"
-#include "ByteCodeDebugger.h"
 
 #undef BYTECODE_OP
 #define BYTECODE_OP(__op, __flags, __dis) {__flags, (uint32_t) strlen(#__op), #__op, __dis},

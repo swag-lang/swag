@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Ast.h"
+#include "Ast_Flags.h"
 #include "GenDoc.h"
 #include "Module.h"
 #include "SyntaxColor.h"

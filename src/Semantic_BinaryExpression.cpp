@@ -8,6 +8,7 @@
 #include "Semantic.h"
 #include "SemanticError.h"
 #include "TypeManager.h"
+#include "Ast_Flags.h"
 
 bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right)
 {

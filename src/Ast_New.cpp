@@ -1,6 +1,7 @@
 
 #include "pch.h"
 #include "Ast.h"
+#include "Ast_Flags.h"
 #include "Semantic.h"
 #include "ByteCodeGen.h"
 

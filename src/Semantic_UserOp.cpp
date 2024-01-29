@@ -7,6 +7,7 @@
 #include "TypeManager.h"
 #include "Report.h"
 #include "Scope.h"
+#include "Ast_Flags.h"
 
 bool Semantic::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node)
 {

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Ast.h"
+#include "Ast_Flags.h"
 #include "Diagnostic.h"
 #include "Scope.h"
 #include "SemanticJob.h"

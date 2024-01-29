@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "ByteCodeGen.h"
+#include "Ast_Flags.h"
 #include "Ast.h"
 #include "ByteCode.h"
 #include "ByteCodeGenJob.h"

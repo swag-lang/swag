@@ -9,6 +9,7 @@
 #include "Naming.h"
 #include "TypeManager.h"
 #include "Diagnostic.h"
+#include "Ast_Flags.h"
 
 #define INHERIT_ATTR(__c, __f)          \
     if (!(__c->attributeFlags & (__f))) \

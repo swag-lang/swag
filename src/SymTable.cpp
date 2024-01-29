@@ -6,6 +6,7 @@
 #include "Semantic.h"
 #include "SemanticError.h"
 #include "TypeManager.h"
+#include "Ast_Flags.h"
 
 void SymTable::release()
 {

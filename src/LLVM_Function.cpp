@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Ast_Flags.h"
 #include "LLVM.h"
 #include "LLVM_Debug.h"
 #include "LLVM_Macros.h"

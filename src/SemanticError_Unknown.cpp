@@ -6,6 +6,7 @@
 #include "Semantic.h"
 #include "SemanticError.h"
 #include "TypeManager.h"
+#include "Ast_Flags.h"
 
 static Diagnostic* unknownIdentifierInScope(AstIdentifierRef* identifierRef, AstIdentifier* node, Vector<const Diagnostic*>& notes)
 {

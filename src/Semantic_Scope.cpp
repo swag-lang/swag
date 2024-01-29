@@ -8,6 +8,7 @@
 #include "TypeManager.h"
 #include "Workspace.h"
 #include "Scope.h"
+#include "Ast_Flags.h"
 
 void Semantic::addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, uint32_t asflags)
 {
