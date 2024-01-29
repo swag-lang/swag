@@ -27,6 +27,8 @@ void ByteCodeGen::emitOpCallUser(ByteCodeGenContext* context, TypeInfoStruct* ty
     case EmitOpUserKind::PostMove:
         emitOpCallUser(context, typeStruct->opUserPostMoveFct, typeStruct->opPostMove, pushParam, offset, numParams);
         break;
+    default:
+        break;
     }
 }
 
@@ -266,6 +268,8 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
             addName = ".opPostMoveGenerated";
             break;
         }
+        default:
+            break;
         }
 
         // Be sure sub structs are generated too
@@ -400,6 +404,8 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
                 opInit->node                = funcNode;
             }
             break;
+        default:
+            break;
         }
     }
 
@@ -497,6 +503,8 @@ void ByteCodeGen::emitOpCallUserFields(ByteCodeGenContext* context, TypeInfoStru
             case EmitOpUserKind::PostMove:
                 if (!typeStructVar->opPostMove && !typeStructVar->opUserPostMoveFct)
                     continue;
+                break;
+            default:
                 break;
             }
 
