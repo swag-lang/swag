@@ -1,12 +1,13 @@
 #include "pch.h"
 #include "TypeManager.h"
-#include "Tokenizer.h"
-#include "Workspace.h"
-#include "TypeInfo.h"
-#include "Mutex.h"
-#include "AstNode.h"
 #include "Ast.h"
+#include "AstNode.h"
 #include "Job.h"
+#include "Mutex.h"
+#include "Semantic.h"
+#include "Tokenizer.h"
+#include "TypeInfo.h"
+#include "Workspace.h"
 
 TypeManager* g_TypeMgr = nullptr;
 

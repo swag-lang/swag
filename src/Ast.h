@@ -7,6 +7,7 @@
 struct Utf8;
 struct Scope;
 struct Concat;
+struct JobContext;
 struct TypeInfoEnum;
 enum class ScopeKind : uint8_t;
 
@@ -52,14 +53,15 @@ namespace Ast
     AstInline*         newInline(SourceFile* sourceFile, AstNode* parent, Parser* parser = nullptr);
     AstNode*           newAffectOp(SourceFile* sourceFile, AstNode* parent, uint8_t opFlags, uint64_t attributeFlags, Parser* parser = nullptr);
 
-    bool     convertLiteralTupleToStructVar(SemanticContext* context, TypeInfo* toType, AstNode* fromNode, bool fromType = false);
-    bool     convertLiteralTupleToStructType(SemanticContext* context, AstNode* paramNode, TypeInfoStruct* toType, AstNode* fromNode);
-    AstNode* convertTypeToTypeExpression(SemanticContext* context, AstNode* parent, AstNode* assignment, TypeInfo* childType, bool raiseErrors = true);
-    bool     convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* assignment, AstStruct** result);
-    bool     convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* parent, AstNode* assignment, AstNode** result);
-    bool     convertStructParamsToTmpVar(SemanticContext* context, AstIdentifier* identifier);
-    bool     generateMissingInterfaceFct(SemanticContext* context, VectorNative<AstFuncDecl*>& mapItIdxToFunc, TypeInfoStruct* typeStruct, TypeInfoStruct* typeBaseInterface, TypeInfoStruct* typeInterface);
-    bool     generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInfo* typeRight);
+    bool     convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, AstNode* fromNode, bool fromType = false);
+    bool     convertLiteralTupleToStructType(JobContext* context, AstNode* paramNode, TypeInfoStruct* toType, AstNode* fromNode);
+    AstNode* convertTypeToTypeExpression(JobContext* context, AstNode* parent, AstNode* assignment, TypeInfo* childType, bool raiseErrors = true);
+    bool     convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignment, AstStruct** result);
+    bool     convertLiteralTupleToStructDecl(JobContext* context, AstNode* parent, AstNode* assignment, AstNode** result);
+    bool     convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identifier);
+
+    bool generateMissingInterfaceFct(SemanticContext* context, VectorNative<AstFuncDecl*>& mapItIdxToFunc, TypeInfoStruct* typeStruct, TypeInfoStruct* typeBaseInterface, TypeInfoStruct* typeInterface);
+    bool generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInfo* typeRight);
 
     template<typename T>
     void constructNode(T* node)

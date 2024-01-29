@@ -6,7 +6,7 @@
 
 atomic<int> g_UniqueID;
 
-bool Ast::convertLiteralTupleToStructVar(SemanticContext* context, TypeInfo* toType, AstNode* fromNode, bool fromType)
+bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, AstNode* fromNode, bool fromType)
 {
     if (fromNode->flags & AST_STRUCT_CONVERT)
         return true;
@@ -134,7 +134,7 @@ bool Ast::convertLiteralTupleToStructVar(SemanticContext* context, TypeInfo* toT
     return true;
 }
 
-bool Ast::convertLiteralTupleToStructType(SemanticContext* context, AstNode* paramNode, TypeInfoStruct* toType, AstNode* fromNode)
+bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNode, TypeInfoStruct* toType, AstNode* fromNode)
 {
     auto sourceFile = context->sourceFile;
     auto typeList   = CastTypeInfo<TypeInfoList>(fromNode->typeInfo, TypeInfoKind::TypeListTuple);
@@ -251,7 +251,7 @@ bool Ast::convertLiteralTupleToStructType(SemanticContext* context, AstNode* par
     return true;
 }
 
-bool Ast::convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* assignment, AstStruct** result)
+bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignment, AstStruct** result)
 {
     auto       sourceFile = context->sourceFile;
     AstStruct* structNode = Ast::newStructDecl(sourceFile, nullptr);
@@ -358,7 +358,7 @@ bool Ast::convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* ass
     return true;
 }
 
-bool Ast::convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* parent, AstNode* assignment, AstNode** result)
+bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* parent, AstNode* assignment, AstNode** result)
 {
     auto       sourceFile = context->sourceFile;
     AstStruct* structNode;
@@ -372,7 +372,7 @@ bool Ast::convertLiteralTupleToStructDecl(SemanticContext* context, AstNode* par
     return true;
 }
 
-bool Ast::convertStructParamsToTmpVar(SemanticContext* context, AstIdentifier* identifier)
+bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identifier)
 {
     auto node       = context->node;
     auto sourceFile = identifier->sourceFile;
@@ -456,7 +456,7 @@ bool Ast::convertStructParamsToTmpVar(SemanticContext* context, AstIdentifier* i
     return true;
 }
 
-AstNode* Ast::convertTypeToTypeExpression(SemanticContext* context, AstNode* parent, AstNode* assignment, TypeInfo* childType, bool raiseErrors)
+AstNode* Ast::convertTypeToTypeExpression(JobContext* context, AstNode* parent, AstNode* assignment, TypeInfo* childType, bool raiseErrors)
 {
     auto sourceFile = context->sourceFile;
 
