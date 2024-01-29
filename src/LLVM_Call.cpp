@@ -2,9 +2,9 @@
 #include "LLVM.h"
 #include "LLVM_Macros.h"
 #include "Module.h"
+#include "Report.h"
 #include "TypeManager.h"
 #include "Workspace.h"
-#include "Report.h"
 
 void LLVM::getReturnResult(llvm::LLVMContext&     context,
                            const BuildParameters& buildParameters,

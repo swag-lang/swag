@@ -1,14 +1,14 @@
 #include "pch.h"
 #include "AstFlags.h"
+#include "ByteCode.h"
+#include "ByteCodeGen.h"
+#include "LanguageSpec.h"
 #include "LLVM.h"
 #include "LLVM_Debug.h"
 #include "LLVM_Macros.h"
 #include "Module.h"
-#include "ByteCode.h"
-#include "ByteCodeGen.h"
-#include "TypeManager.h"
-#include "LanguageSpec.h"
 #include "Report.h"
+#include "TypeManager.h"
 
 bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc)
 {
