@@ -1,12 +1,11 @@
 #include "pch.h"
 #include "GenDoc.h"
-#include "Module.h"
-#include "Ast.h"
 #include "ErrorIds.h"
+#include "Module.h"
 #include "Report.h"
-#include "Workspace.h"
-#include "Version.h"
 #include "SyntaxColor.h"
+#include "Version.h"
+#include "Workspace.h"
 
 static const char* START_NOTE      = "> NOTE:";
 static const char* START_TIP       = "> TIP:";

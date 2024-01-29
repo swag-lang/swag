@@ -1,8 +1,8 @@
 #include "pch.h"
+#include "ErrorIds.h"
 #include "GenDoc.h"
 #include "Module.h"
 #include "Report.h"
-#include "ErrorIds.h"
 
 void GenDoc::addTitle(const Utf8& title, int level)
 {
