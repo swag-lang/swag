@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "Workspace.h"
-#include "CommandLineParser.h"
-#include "Version.h"
-#include "Os.h"
-#include "ErrorIds.h"
-#include "Report.h"
 #include "CommandLine.h"
+#include "CommandLineParser.h"
+#include "ErrorIds.h"
+#include "Os.h"
+#include "Report.h"
+#include "Version.h"
+#include "Workspace.h"
 #ifdef SWAG_STATS
 #include "Profiler.h"
 #endif

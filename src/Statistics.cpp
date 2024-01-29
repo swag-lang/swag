@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "Statistics.h"
-#include "Workspace.h"
-#include "Os.h"
 #include "Module.h"
+#include "Os.h"
 #include "ThreadManager.h"
+#include "Workspace.h"
 
 #ifdef SWAG_STATS
 Stats g_Stats;

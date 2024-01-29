@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CommandLineParser.h"
-#include "Version.h"
 #include "Os.h"
+#include "Version.h"
 
 static void printExamples()
 {
