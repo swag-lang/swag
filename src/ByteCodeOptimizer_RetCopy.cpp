@@ -2,6 +2,7 @@
 #include "ByteCodeOptimizer.h"
 #include "SourceFile.h"
 #include "AstNode.h"
+#include "Scope.h"
 #include "TypeInfo.h"
 #include "TypeManager.h"
 

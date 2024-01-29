@@ -2,6 +2,7 @@
 #include "TypeInfo.h"
 #include "AstNode.h"
 #include "TypeManager.h"
+#include "Scope.h"
 
 void TypeInfo::clearName()
 {

@@ -2,6 +2,7 @@
 #include "Ast.h"
 #include "Semantic.h"
 #include "TypeManager.h"
+#include "Scope.h"
 
 bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {

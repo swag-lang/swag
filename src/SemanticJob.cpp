@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Scope.h"
 #include "SemanticJob.h"
 #include "ThreadManager.h"
 #include "Module.h"

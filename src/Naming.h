@@ -1,4 +1,5 @@
 #pragma once
+#include "Scope.h"
 
 struct SymbolName;
 struct AstNode;

@@ -3,6 +3,7 @@
 #include "Ast.h"
 #include "LanguageSpec.h"
 #include "Naming.h"
+#include "Symbol.h"
 #include "SyntaxColor.h"
 
 void Diagnostic::setupColors()

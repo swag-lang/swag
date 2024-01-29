@@ -5,6 +5,7 @@
 #include "LanguageSpec.h"
 #include "Workspace.h"
 #include "Diagnostic.h"
+#include "Scope.h"
 
 bool Semantic::resolveEnum(SemanticContext* context)
 {

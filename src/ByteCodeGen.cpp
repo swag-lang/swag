@@ -10,6 +10,7 @@
 #include "ThreadManager.h"
 #include "TypeManager.h"
 #include "Report.h"
+#include "Scope.h"
 
 bool ByteCodeGen::setupRuntime(ByteCodeGenContext* context, AstNode* node)
 {

@@ -1,8 +1,9 @@
 #include "pch.h"
-#include "TypeManager.h"
 #include "Ast.h"
-#include "ByteCodeDebugger.h"
 #include "ByteCode.h"
+#include "ByteCodeDebugger.h"
+#include "Symbol.h"
+#include "TypeManager.h"
 #include "Workspace.h"
 
 bool ByteCodeDebugger::getValueFormat(const Utf8& cmd, ValueFormat& fmt)

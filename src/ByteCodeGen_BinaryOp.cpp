@@ -4,6 +4,7 @@
 #include "ByteCodeGen.h"
 #include "Report.h"
 #include "Semantic.h"
+#include "Symbol.h"
 #include "TypeManager.h"
 
 bool ByteCodeGen::emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)

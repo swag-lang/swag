@@ -1,11 +1,10 @@
 #pragma once
-#include "Tokenizer.h"
 #include "Ast_Flags.h"
-#include "Register.h"
-#include "SymTable.h"
 #include "Attribute.h"
-#include "Scope.h"
+#include "DependentJobs.h"
 #include "Mutex.h"
+#include "Register.h"
+#include "Tokenizer.h"
 
 struct AstAttrUse;
 struct AstBreakable;
@@ -28,6 +27,7 @@ struct ExportedTypeInfo;
 struct GenericReplaceType;
 struct Job;
 struct Parser;
+struct Scope;
 struct SemanticContext;
 struct SymbolName;
 struct SymbolOverload;

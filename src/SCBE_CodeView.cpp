@@ -8,6 +8,7 @@
 #include "TypeManager.h"
 #include "Version.h"
 #include "Workspace.h"
+#include "Scope.h"
 
 static void emitStartRecord(SCBE_CPU& pp, uint16_t what)
 {

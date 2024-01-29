@@ -4,6 +4,8 @@
 #include "Ast.h"
 #include "ErrorIds.h"
 #include "Report.h"
+#include "Symbol.h"
+#include "Scope.h"
 
 PushErrCxtStep::PushErrCxtStep(ErrorContext* context, AstNode* node, ErrCxtStepKind kind, function<Utf8()> err, bool locIsToken)
     : cxt{context}

@@ -5,6 +5,7 @@
 #include "Naming.h"
 #include "SemanticJob.h"
 #include "TypeManager.h"
+#include "Symbol.h"
 
 bool Generic::replaceGenericParameters(SemanticContext*              context,
                                        bool                          doType,

@@ -5,6 +5,7 @@
 #include "SyntaxColor.h"
 #include "TypeInfo.h"
 #include "Workspace.h"
+#include "Scope.h"
 
 const uint32_t COLLECT_TABLE_ZERO     = 0x00000000;
 const uint32_t COLLECT_TABLE_SPECFUNC = 0x00000001;

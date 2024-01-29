@@ -4,6 +4,7 @@
 #include "ByteCodeGen.h"
 #include "Naming.h"
 #include "Report.h"
+#include "Symbol.h"
 #include "TypeManager.h"
 
 bool ByteCodeGen::emitIdentifierRef(ByteCodeGenContext* context)

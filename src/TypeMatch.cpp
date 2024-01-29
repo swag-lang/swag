@@ -4,6 +4,7 @@
 #include "Generic.h"
 #include "Semantic.h"
 #include "TypeManager.h"
+#include "Symbol.h"
 
 static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters, uint64_t forceCastFlags = 0)
 {

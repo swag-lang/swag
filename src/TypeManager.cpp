@@ -3,6 +3,7 @@
 #include "Ast.h"
 #include "Job.h"
 #include "Workspace.h"
+#include "Scope.h"
 
 TypeManager* g_TypeMgr = nullptr;
 

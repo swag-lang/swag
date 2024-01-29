@@ -4,6 +4,7 @@
 #include "ByteCodeGen.h"
 #include "Module.h"
 #include "Report.h"
+#include "Scope.h"
 #include "TypeManager.h"
 
 bool ByteCodeGen::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo)

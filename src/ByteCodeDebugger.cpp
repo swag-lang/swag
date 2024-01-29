@@ -5,6 +5,7 @@
 #include "SemanticJob.h"
 #include "ByteCodeDebugger.h"
 #include "Workspace.h"
+#include "Scope.h"
 
 ByteCodeDebugger g_ByteCodeDebugger;
 

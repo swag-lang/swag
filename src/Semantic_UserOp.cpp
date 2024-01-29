@@ -6,6 +6,7 @@
 #include "SemanticError.h"
 #include "TypeManager.h"
 #include "Report.h"
+#include "Scope.h"
 
 bool Semantic::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node)
 {

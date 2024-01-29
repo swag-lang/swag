@@ -4,6 +4,7 @@
 #include "Diagnostic.h"
 #include "SemanticJob.h"
 #include "TypeManager.h"
+#include "Symbol.h"
 
 void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, AstFuncDecl** specialFct)
 {

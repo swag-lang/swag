@@ -1,9 +1,10 @@
 #include "pch.h"
+#include "Ast.h"
 #include "ByteCode.h"
 #include "ByteCodeGen.h"
-#include "TypeManager.h"
-#include "Ast.h"
 #include "Report.h"
+#include "Symbol.h"
+#include "TypeManager.h"
 
 bool ByteCodeGen::emitPointerRef(ByteCodeGenContext* context)
 {

@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Generic.h"
 #include "Ast.h"
+#include "Scope.h"
 #include "SemanticJob.h"
-#include "Diagnostic.h"
 
 Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNode* newNode, bool waitSymbol, VectorMap<Utf8, GenericReplaceType>& replaceTypes)
 {

@@ -2,6 +2,7 @@
 #include "SymTable.h"
 #include "Ast.h"
 #include "Module.h"
+#include "Scope.h"
 #include "Semantic.h"
 #include "SemanticError.h"
 #include "TypeManager.h"

@@ -1,11 +1,10 @@
 #include "pch.h"
 #include "SourceFile.h"
-#include "Module.h"
-#include "Timer.h"
-#include "Ast.h"
 #include "Diagnostic.h"
-#include "ErrorIds.h"
+#include "Module.h"
 #include "Report.h"
+#include "Scope.h"
+#include "Timer.h"
 
 void SourceFile::release()
 {

@@ -4,6 +4,7 @@
 #include "ByteCodeGen.h"
 #include "Module.h"
 #include "Report.h"
+#include "Scope.h"
 #include "Semantic.h"
 #include "TypeManager.h"
 

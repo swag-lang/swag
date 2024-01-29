@@ -5,6 +5,7 @@
 #include "ByteCode.h"
 #include "Module.h"
 #include "Version.h"
+#include "Scope.h"
 #include "TypeManager.h"
 #include "Workspace.h"
 

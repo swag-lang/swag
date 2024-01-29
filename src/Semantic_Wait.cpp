@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "TypeManager.h"
 #include "LanguageSpec.h"
+#include "Scope.h"
 
 void Semantic::waitSymbolNoLock(Job* job, SymbolName* symbol)
 {

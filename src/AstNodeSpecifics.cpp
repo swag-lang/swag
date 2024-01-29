@@ -3,6 +3,7 @@
 #include "ByteCode.h"
 #include "LanguageSpec.h"
 #include "Module.h"
+#include "Scope.h"
 #include "Semantic.h"
 #include "TypeManager.h"
 

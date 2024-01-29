@@ -8,6 +8,7 @@
 #include "Report.h"
 #include "SemanticJob.h"
 #include "TypeManager.h"
+#include "Scope.h"
 
 bool ByteCodeGen::emitLocalFuncDecl(ByteCodeGenContext* context)
 {

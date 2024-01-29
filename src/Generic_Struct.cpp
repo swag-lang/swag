@@ -4,6 +4,7 @@
 #include "Diagnostic.h"
 #include "SemanticJob.h"
 #include "TypeManager.h"
+#include "Symbol.h"
 
 bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl* node)
 {

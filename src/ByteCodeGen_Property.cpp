@@ -1,9 +1,10 @@
 #include "pch.h"
-#include "ByteCodeGen.h"
-#include "ByteCode.h"
-#include "TypeManager.h"
 #include "Ast.h"
+#include "ByteCode.h"
+#include "ByteCodeGen.h"
 #include "Report.h"
+#include "Symbol.h"
+#include "TypeManager.h"
 
 bool ByteCodeGen::emitIntrinsicMakeAny(ByteCodeGenContext* context)
 {

@@ -1,13 +1,14 @@
 #include "pch.h"
+#include "AstOutput.h"
 #include "Ast.h"
-#include "Semantic.h"
-#include "TypeManager.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
-#include "AstOutput.h"
 #include "Module.h"
-#include "Report.h"
 #include "Naming.h"
+#include "Report.h"
+#include "Scope.h"
+#include "Semantic.h"
+#include "TypeManager.h"
 
 void AstOutput::incIndentStatement(AstNode* node, int& indent)
 {

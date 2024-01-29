@@ -3,6 +3,7 @@
 #include "ByteCode.h"
 #include "ByteCodeGen.h"
 #include "LanguageSpec.h"
+#include "Scope.h"
 #include "Semantic.h"
 
 bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)

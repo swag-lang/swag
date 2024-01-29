@@ -6,6 +6,7 @@
 #include "SCBE.h"
 #include "SCBE_CodeView.h"
 #include "SCBE_CPU.h"
+#include "Scope.h"
 #include "TypeManager.h"
 #include "Version.h"
 #include "Workspace.h"

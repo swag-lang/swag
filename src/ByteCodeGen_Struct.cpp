@@ -8,6 +8,7 @@
 #include "Semantic.h"
 #include "LanguageSpec.h"
 #include "ModuleManager.h"
+#include "Scope.h"
 
 void ByteCodeGen::emitOpCallUser(ByteCodeGenContext* context, TypeInfoStruct* typeStruct, EmitOpUserKind kind, bool pushParam, uint32_t offset, uint32_t numParams)
 {

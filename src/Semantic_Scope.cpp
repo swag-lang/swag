@@ -7,6 +7,7 @@
 #include "SemanticJob.h"
 #include "TypeManager.h"
 #include "Workspace.h"
+#include "Scope.h"
 
 void Semantic::addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, uint32_t asflags)
 {
