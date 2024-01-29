@@ -2,14 +2,15 @@
 #include "AstNode.h"
 #include "Allocator.h"
 #include "Statistics.h"
-struct Utf8;
-struct Scope;
+
 struct Concat;
 struct JobContext;
+struct Scope;
 struct SourceFile;
 struct TypeInfoEnum;
-struct TypeInfoStruct;
 struct TypeInfoList;
+struct TypeInfoStruct;
+struct Utf8;
 enum class ScopeKind : uint8_t;
 
 namespace Ast
