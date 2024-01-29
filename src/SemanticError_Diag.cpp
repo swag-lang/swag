@@ -18,6 +18,7 @@ struct ErrorParam
     AstFuncDecl*      destFuncDecl   = nullptr;
     AstTypeLambda*    destLambdaDecl = nullptr;
     AstAttrDecl*      destAttrDecl   = nullptr;
+    AstStruct*        destStructDecl = nullptr;
     AstNode*          destParameters = nullptr;
     Utf8              explicitCastMsg;
 
@@ -51,28 +52,28 @@ static void errorInvalidNamedParameter(SemanticContext* context, ErrorParam& err
 {
     SWAG_ASSERT(errorParam.failedParam && errorParam.failedParam->hasExtMisc() && errorParam.failedParam->extMisc()->isNamed);
 
-    Utf8 msg;
     auto isNamed  = errorParam.failedParam->extMisc()->isNamed;
-    auto typeInfo = errorParam.oneTry->overload ? errorParam.oneTry->overload->typeInfo : errorParam.oneTry->type;
-    if (errorParam.destFuncDecl)
+    auto typeInfo = errorParam.oneTry->type;
+    SWAG_ASSERT(typeInfo);
+
+    if (errorParam.destStructDecl)
     {
-        msg = Fmt(Err(Err0724), isNamed->token.ctext());
-        errorParam.addResult1(Diagnostic::hereIs(errorParam.oneTry->overload));
-    }
-    else if (typeInfo && typeInfo->declNode && !(typeInfo->declNode->flags & AST_GENERATED) && typeInfo->declNode->resolvedSymbolOverload)
-    {
-        msg = Fmt(Err(Err0735), isNamed->token.ctext(), typeInfo->getDisplayNameC());
-        errorParam.addResult1(Diagnostic::hereIs(typeInfo->declNode->resolvedSymbolOverload));
-    }
-    else if (typeInfo && typeInfo->declNode && typeInfo->declNode->flags & AST_GENERATED && typeInfo->isTuple())
-    {
-        msg = Fmt(Err(Err0735), isNamed->token.ctext(), typeInfo->getDisplayNameC());
+        errorParam.result0->push_back(new Diagnostic{isNamed, Fmt(Err(Err0735), isNamed->token.ctext(), typeInfo->getDisplayNameC())});
         if (typeInfo->declNode->hasExtMisc() && typeInfo->declNode->extMisc()->exportNode)
             errorParam.addResult1(Diagnostic::note(typeInfo->declNode->extMisc()->exportNode, Nte(Nte0078)));
-    }
+        else if (errorParam.oneTry->overload)
+            errorParam.addResult1(Diagnostic::hereIs(errorParam.oneTry->overload));
 
-    auto diag = new Diagnostic{isNamed, msg};
-    errorParam.result0->push_back(diag);
+        AlternativeScope altScope;
+        altScope.scope = errorParam.destStructDecl->scope;
+        auto msg       = SemanticError::findClosestMatchesMsg(isNamed->token.text, {altScope}, IdentifierSearchFor::Whatever);
+        errorParam.addResult1(Diagnostic::note(msg));
+    }
+    else
+    {
+        errorParam.result0->push_back(new Diagnostic{isNamed, Fmt(Err(Err0724), isNamed->token.ctext())});
+        errorParam.addResult1(Diagnostic::hereIs(errorParam.oneTry->overload));
+    }
 }
 
 static void errorDuplicatedNamedParameter(SemanticContext* context, ErrorParam& errorParam)
@@ -441,6 +442,9 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
     errorParam.result0 = &result0;
     errorParam.result1 = &result1;
 
+    if (!oneTry.type && oneTry.overload)
+        oneTry.type = oneTry.overload->typeInfo;
+
     // Get the call parameter that failed
     auto callParameters    = oneTry.callParameters;
     errorParam.badParamIdx = getBadParamIdx(oneTry, callParameters);
@@ -457,24 +461,26 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
     }
 
     // Get parameters of destination symbol
-    SymbolOverload* overload = oneTry.overload;
-    if (overload)
+    AstNode* declNode = oneTry.overload ? oneTry.overload->node : oneTry.type->declNode;
+    SWAG_ASSERT(declNode);
+    if (declNode->kind == AstNodeKind::FuncDecl)
     {
-        if (overload->node->kind == AstNodeKind::FuncDecl)
-        {
-            errorParam.destFuncDecl   = CastAst<AstFuncDecl>(overload->node, AstNodeKind::FuncDecl);
-            errorParam.destParameters = errorParam.destFuncDecl->parameters;
-        }
-        else if (overload->node->kind == AstNodeKind::AttrDecl)
-        {
-            errorParam.destAttrDecl   = CastAst<AstAttrDecl>(overload->node, AstNodeKind::AttrDecl);
-            errorParam.destParameters = errorParam.destAttrDecl->parameters;
-        }
-        else if (overload->node->kind == AstNodeKind::VarDecl)
-        {
-            errorParam.destLambdaDecl = CastAst<AstTypeLambda>(overload->node->typeInfo->declNode, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
-            errorParam.destParameters = errorParam.destLambdaDecl->parameters;
-        }
+        errorParam.destFuncDecl   = CastAst<AstFuncDecl>(declNode, AstNodeKind::FuncDecl);
+        errorParam.destParameters = errorParam.destFuncDecl->parameters;
+    }
+    else if (declNode->kind == AstNodeKind::AttrDecl)
+    {
+        errorParam.destAttrDecl   = CastAst<AstAttrDecl>(declNode, AstNodeKind::AttrDecl);
+        errorParam.destParameters = errorParam.destAttrDecl->parameters;
+    }
+    else if (declNode->kind == AstNodeKind::VarDecl)
+    {
+        errorParam.destLambdaDecl = CastAst<AstTypeLambda>(declNode->typeInfo->declNode, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
+        errorParam.destParameters = errorParam.destLambdaDecl->parameters;
+    }
+    else if (declNode->kind == AstNodeKind::StructDecl)
+    {
+        errorParam.destStructDecl = CastAst<AstStruct>(declNode, AstNodeKind::StructDecl);
     }
 
     // See if it would have worked with an explicit cast, to give a hint in the error message

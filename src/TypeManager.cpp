@@ -285,6 +285,7 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
     typeStruct->scope        = Ast::newScope(typeStruct->declNode, "", ScopeKind::Struct, context->sourceFile->scopeFile);
     typeStruct->scope->owner = typeStruct->declNode;
     typeStruct->alignOf      = 1;
+    structDecl->scope        = typeStruct->scope;
     for (auto f : typeStruct->fields)
     {
         f->declNode           = Ast::newVarDecl(context->sourceFile, f->name, typeStruct->declNode);
@@ -297,6 +298,7 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
         toAdd.node                          = f->declNode;
         toAdd.typeInfo                      = f->typeInfo;
         toAdd.storageOffset                 = f->offset;
+        toAdd.aliasName                     = &f->name;
         toAdd.flags                         = OVERLOAD_VAR_STRUCT;
         f->declNode->resolvedSymbolOverload = typeStruct->scope->symTable.addSymbolTypeInfo((ErrorContext*) context, toAdd);
         f->declNode->resolvedSymbolName     = f->declNode->resolvedSymbolOverload->symbol;
