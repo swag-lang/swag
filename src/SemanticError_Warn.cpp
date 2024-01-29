@@ -140,7 +140,7 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, Scope* scope)
         // Remove generated symbol, except when unpacking a tuple.
         if (front->kind != AstNodeKind::VarDecl || !(front->specFlags & AstVarDecl::SPECFLAG_TUPLE_AFFECT))
         {
-            if (front->flags & AST_GENERATED)
+            if (front->hasFlagGenerated())
                 continue;
         }
 

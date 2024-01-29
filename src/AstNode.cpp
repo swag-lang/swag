@@ -1175,7 +1175,7 @@ void AstNode::computeLocation(SourceLocation& start, SourceLocation& end)
             break;
         if (p->kind == AstNodeKind::Inline)
             break;
-        if (p->flags & AST_GENERATED)
+        if (p->hasFlagGenerated())
             continue;
         if (p->kind == AstNodeKind::FuncDeclType && p->childs.empty())
             continue;

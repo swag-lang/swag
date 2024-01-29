@@ -398,7 +398,7 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
         SWAG_ASSERT(errorParam.destFuncDecl);
         errorParam.addNote(Diagnostic::hereIs(errorParam.destFuncDecl));
     }
-    else if (destParamNode && (destParamNode->flags & AST_GENERATED))
+    else if (destParamNode && (destParamNode->hasFlagGenerated()))
     {
         Diagnostic* note = Diagnostic::note(destParamNode, destParamNode->token, Nte(Nte0065));
         errorParam.addNote(note);

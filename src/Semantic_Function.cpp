@@ -270,7 +270,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
     // No semantic on a generic function, or a macro
     if (funcNode->flags & AST_IS_GENERIC)
     {
-        if ((funcNode->attributeFlags & ATTRIBUTE_PUBLIC) && !(funcNode->flags & AST_GENERATED))
+        if ((funcNode->attributeFlags & ATTRIBUTE_PUBLIC) && !(funcNode->hasFlagGenerated()))
             funcNode->ownerScope->addPublicNode(funcNode);
         return true;
     }
@@ -290,7 +290,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
 
     if (funcNode->attributeFlags & ATTRIBUTE_MACRO)
     {
-        if ((funcNode->attributeFlags & ATTRIBUTE_PUBLIC) && !(funcNode->flags & AST_GENERATED) && !(funcNode->flags & AST_FROM_GENERIC))
+        if ((funcNode->attributeFlags & ATTRIBUTE_PUBLIC) && !(funcNode->hasFlagGenerated()) && !(funcNode->flags & AST_FROM_GENERIC))
             funcNode->ownerScope->addPublicNode(funcNode);
         SWAG_CHECK(setFullResolve(context, funcNode));
         return true;

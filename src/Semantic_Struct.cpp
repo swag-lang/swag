@@ -1119,7 +1119,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
                 }
 
                 // User cannot name its variables itemX
-                if (!(node->flags & AST_GENERATED) && hasItemName)
+                if (!(node->hasFlagGenerated()) && hasItemName)
                 {
                     return context->report({child, child->token, Fmt(Err(Err0619), child->token.ctext())});
                 }

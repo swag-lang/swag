@@ -42,7 +42,7 @@ static bool canCollectNode(AstNode* node)
         return false;
     if (node->flags & AST_FROM_GENERIC)
         return false;
-    if (node->flags & AST_GENERATED)
+    if (node->hasFlagGenerated())
         return false;
     if (node->attributeFlags & ATTRIBUTE_NO_DOC)
         return false;

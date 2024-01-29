@@ -662,7 +662,7 @@ bool AstOutput::outputLambdaExpression(OutputContext& context, Concat& concat, A
         bool first = true;
         for (auto p : funcDecl->parameters->childs)
         {
-            if ((p->flags & AST_GENERATED) && !(p->flags & AST_GENERATED_USER))
+            if ((p->hasFlagGenerated()) && !(p->flags & AST_GENERATED_USER))
                 continue;
             if (!first)
                 CONCAT_FIXED_STR(concat, ", ");
@@ -718,7 +718,7 @@ bool AstOutput::outputVarDecl(OutputContext& context, Concat& concat, AstVarDecl
 
     if (varNode->type)
     {
-        if (!(varNode->type->flags & AST_GENERATED) || (varNode->type->flags & AST_GENERATED_USER))
+        if (!(varNode->type->hasFlagGenerated()) || (varNode->type->flags & AST_GENERATED_USER))
         {
             if (!isSelf)
             {
@@ -896,7 +896,7 @@ bool AstOutput::outputType(OutputContext& context, Concat& concat, AstTypeExpres
                 auto id = CastAst<AstIdentifier>(node->identifier->childs.back(), AstNodeKind::Identifier);
                 if (id->callParameters)
                 {
-                    if (id->flags & AST_GENERATED)
+                    if (id->hasFlagGenerated())
                     {
                         CONCAT_FIXED_STR(concat, " = {");
                         SWAG_CHECK(outputNode(context, concat, id->callParameters));
@@ -1030,7 +1030,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         return true;
     if (node->hasExtMisc() && node->extMisc()->exportNode)
         node = node->extMisc()->exportNode;
-    if (node->flags & AST_GENERATED && !(node->flags & AST_GENERATED_USER))
+    if (node->hasFlagGenerated() && !(node->flags & AST_GENERATED_USER))
         return true;
 
     // Preprend some stuff
@@ -1127,7 +1127,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         {
             if (c->hasExtMisc() && c->extMisc()->exportNode)
                 c = c->extMisc()->exportNode;
-            if ((c->flags & AST_GENERATED) && !(c->flags & AST_GENERATED_USER))
+            if ((c->hasFlagGenerated()) && !(c->flags & AST_GENERATED_USER))
                 continue;
             if (!first)
                 CONCAT_FIXED_STR(concat, ", ");
@@ -1336,7 +1336,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         int idx = 0;
         for (auto child : exprNode->childs)
         {
-            if (child->flags & AST_GENERATED)
+            if (child->hasFlagGenerated())
                 continue;
             if (idx++)
                 CONCAT_FIXED_STR(concat, ", ");
@@ -1840,7 +1840,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     {
         for (auto child : node->childs)
         {
-            if (child->flags & AST_GENERATED)
+            if (child->hasFlagGenerated())
                 continue;
             context.indent++;
             SWAG_CHECK(outputNode(context, concat, child));
@@ -1899,7 +1899,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
         first = true;
         for (auto child : funcCallParams->childs)
         {
-            if (child->flags & AST_GENERATED)
+            if (child->hasFlagGenerated())
                 continue;
             if (!first)
                 CONCAT_FIXED_STR(concat, ", ");
