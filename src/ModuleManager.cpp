@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "ModuleManager.h"
-#include "Workspace.h"
-#include "Context.h"
-#include "Module.h"
 #include "Backend.h"
+#include "Context.h"
 #include "LanguageSpec.h"
+#include "Module.h"
+#include "Workspace.h"
 
 ModuleManager* g_ModuleMgr = nullptr;
 

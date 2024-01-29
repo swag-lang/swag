@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "Module.h"
 #include "FetchModuleFileSystemJob.h"
-#include "Workspace.h"
-#include "FileJob.h"
-#include "ThreadManager.h"
 #include "ErrorIds.h"
-#include "Report.h"
+#include "FileJob.h"
+#include "Module.h"
 #include "Os.h"
+#include "Report.h"
+#include "ThreadManager.h"
+#include "Workspace.h"
 
 JobResult FetchModuleFileSystemJob::execute()
 {

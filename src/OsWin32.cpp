@@ -1,14 +1,14 @@
 #include "pch.h"
 #ifdef _WIN32
 #include <DbgHelp.h>
-#include "Workspace.h"
+#include "ByteCodeDebugger.h"
+#include "Context.h"
 #include "Diagnostic.h"
-#include "TypeManager.h"
+#include "Report.h"
 #include "SCBE.h"
 #include "SCBE_Coff.h"
-#include "Context.h"
-#include "ByteCodeDebugger.h"
-#include "Report.h"
+#include "TypeManager.h"
+#include "Workspace.h"
 
 #pragma comment(lib, "dbghelp.lib")
 

@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "Workspace.h"
-#include "Semantic.h"
-#include "ModuleBuildJob.h"
-#include "TypeManager.h"
-#include "LanguageSpec.h"
-#include "Report.h"
 #include "Diagnostic.h"
+#include "LanguageSpec.h"
+#include "ModuleBuildJob.h"
+#include "Report.h"
+#include "Semantic.h"
+#include "TypeManager.h"
+#include "Workspace.h"
 
 static void helpUserTags()
 {

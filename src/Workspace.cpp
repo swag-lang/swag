@@ -1,11 +1,10 @@
 #include "pch.h"
 #include "Workspace.h"
-#include "ThreadManager.h"
-#include "Semantic.h"
-#include "ModuleBuildJob.h"
-#include "TypeManager.h"
-#include "Report.h"
 #include "Diagnostic.h"
+#include "ModuleBuildJob.h"
+#include "Report.h"
+#include "ThreadManager.h"
+#include "TypeManager.h"
 
 Workspace* g_Workspace = nullptr;
 

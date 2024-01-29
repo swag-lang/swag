@@ -1,14 +1,13 @@
 #include "pch.h"
-#include "Allocator.h"
 #include "ModuleDepManager.h"
-#include "Workspace.h"
-#include "ThreadManager.h"
-#include "ModuleBuildJob.h"
-#include "FetchModuleFileSystemJob.h"
 #include "Diagnostic.h"
+#include "FetchModuleFileSystemJob.h"
 #include "LanguageSpec.h"
+#include "ModuleBuildJob.h"
 #include "Report.h"
 #include "SyntaxJob.h"
+#include "ThreadManager.h"
+#include "Workspace.h"
 
 ModuleDepManager* g_ModuleCfgMgr = nullptr;
 

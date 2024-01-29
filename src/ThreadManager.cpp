@@ -1,10 +1,9 @@
 #include "pch.h"
 #include "ThreadManager.h"
-#include "JobThread.h"
 #include "Context.h"
+#include "JobThread.h"
 #include "Module.h"
 #include "Workspace.h"
-#include "AstNode.h"
 
 ThreadManager g_ThreadMgr;
 

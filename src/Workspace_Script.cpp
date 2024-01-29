@@ -1,10 +1,9 @@
 #include "pch.h"
-#include "Workspace.h"
-#include "Os.h"
-#include "ErrorIds.h"
-#include "Report.h"
-#include "Diagnostic.h"
 #include "CommandLine.h"
+#include "Diagnostic.h"
+#include "Os.h"
+#include "Report.h"
+#include "Workspace.h"
 
 void Workspace::setScriptWorkspace(const Utf8& name)
 {
