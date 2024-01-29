@@ -1,11 +1,5 @@
 #include "pch.h"
 #include "Allocator.h"
-#include "CommandLine.h"
-#include "Os.h"
-#include "ErrorIds.h"
-#include "Report.h"
-#include "Statistics.h"
-#include "ThreadManager.h"
 #include "mimalloc/mimalloc.h"
 
 #ifdef SWAG_CHECK_MEMORY

@@ -1,10 +1,8 @@
 #include "pch.h"
 #include "Concat.h"
-#include "CommandLine.h"
+#include "ErrorIds.h"
 #include "Os.h"
 #include "Report.h"
-#include "ErrorIds.h"
-#include "Statistics.h"
 
 void Concat::init(int size)
 {

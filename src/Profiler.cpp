@@ -1,12 +1,7 @@
 #include "pch.h"
-#include "Statistics.h"
-#include "Workspace.h"
-#include "Version.h"
-#include "Os.h"
-#include "Module.h"
 #include "ByteCode.h"
-#include "Ast.h"
-#include "AstNode.h"
+#include "Module.h"
+#include "Workspace.h"
 #ifdef SWAG_STATS
 
 const int COL1 = 12;

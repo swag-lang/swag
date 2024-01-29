@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "ByteCodeOptimizer.h"
+#include "ByteCodeGen.h"
 #include "ByteCodeOptimizerJob.h"
 #include "Module.h"
-#include "ThreadManager.h"
 #include "Statistics.h"
-#include "ByteCodeGen.h"
+#include "ThreadManager.h"
 
 uint32_t ByteCodeOptimizer::newTreeNode(ByteCodeOptContext* context, ByteCodeInstruction* ip, bool& here)
 {
