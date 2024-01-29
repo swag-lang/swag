@@ -3,7 +3,7 @@
 #include "SemanticJob.h"
 #include "TypeManager.h"
 #include "Symbol.h"
-#include "Ast_Flags.h"
+#include "AstFlags.h"
 
 void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, TypeInfo*& callTypeInfo, VectorNative<TypeInfo*>& wantedTypeInfos, VectorNative<TypeInfo*>& callTypeInfos, AstNode* callParameter)
 {

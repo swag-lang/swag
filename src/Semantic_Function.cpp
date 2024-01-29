@@ -9,7 +9,7 @@
 #include "SemanticError.h"
 #include "SemanticJob.h"
 #include "TypeManager.h"
-#include "Ast_Flags.h"
+#include "AstFlags.h"
 
 void Semantic::allocateOnStack(AstNode* node, TypeInfo* typeInfo)
 {

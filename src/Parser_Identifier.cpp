@@ -5,6 +5,7 @@
 #include "Scoped.h"
 #include "Semantic.h"
 #include "SemanticError.h"
+#include "SourceFile.h"
 
 bool Parser::testIsSingleIdentifier(AstNode* node)
 {

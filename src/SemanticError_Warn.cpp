@@ -7,7 +7,7 @@
 #include "Report.h"
 #include "Semantic.h"
 #include "SemanticError.h"
-#include "Ast_Flags.h"
+#include "AstFlags.h"
 
 bool SemanticError::warnDeprecated(SemanticContext* context, AstNode* identifier)
 {

@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "Ast.h"
-#include "LoadSourceFileJob.h"
 #include "SyntaxJob.h"
+#include "LoadSourceFileJob.h"
 #include "Parser.h"
+#include "SourceFile.h"
 
 JobResult SyntaxJob::execute()
 {

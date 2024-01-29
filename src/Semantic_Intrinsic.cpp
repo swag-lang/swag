@@ -9,7 +9,7 @@
 #include "LanguageSpec.h"
 #include "Workspace.h"
 #include "Diagnostic.h"
-#include "Ast_Flags.h"
+#include "AstFlags.h"
 
 bool Semantic::resolveIntrinsicTag(SemanticContext* context)
 {

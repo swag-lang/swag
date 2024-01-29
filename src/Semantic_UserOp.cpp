@@ -1,13 +1,14 @@
 #include "pch.h"
 #include "Ast.h"
+#include "AstFlags.h"
 #include "Diagnostic.h"
 #include "LanguageSpec.h"
-#include "Semantic.h"
-#include "SemanticError.h"
-#include "TypeManager.h"
 #include "Report.h"
 #include "Scope.h"
-#include "Ast_Flags.h"
+#include "Semantic.h"
+#include "SemanticError.h"
+#include "SourceFile.h"
+#include "TypeManager.h"
 
 bool Semantic::checkFuncPrototype(SemanticContext* context, AstFuncDecl* node)
 {

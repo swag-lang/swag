@@ -8,7 +8,7 @@
 #include "Semantic.h"
 #include "SemanticError.h"
 #include "TypeManager.h"
-#include "Ast_Flags.h"
+#include "AstFlags.h"
 
 bool Semantic::makeIntrinsicKindof(SemanticContext* context, AstNode* node)
 {

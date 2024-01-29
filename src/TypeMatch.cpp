@@ -5,7 +5,7 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 #include "Symbol.h"
-#include "Ast_Flags.h"
+#include "AstFlags.h"
 
 static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters, uint64_t forceCastFlags = 0)
 {

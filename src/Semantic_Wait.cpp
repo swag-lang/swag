@@ -5,7 +5,7 @@
 #include "TypeManager.h"
 #include "LanguageSpec.h"
 #include "Scope.h"
-#include "Ast_Flags.h"
+#include "AstFlags.h"
 
 void Semantic::waitSymbolNoLock(Job* job, SymbolName* symbol)
 {

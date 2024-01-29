@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "Ast.h"
-#include "Ast_Flags.h"
+#include "AstFlags.h"
 #include "Diagnostic.h"
 #include "Scope.h"
 #include "SemanticJob.h"
+#include "SourceFile.h"
 #include "TypeManager.h"
 
 atomic<int> g_UniqueID;

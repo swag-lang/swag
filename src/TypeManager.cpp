@@ -2,6 +2,7 @@
 #include "TypeManager.h"
 #include "Ast.h"
 #include "Job.h"
+#include "SourceFile.h"
 #include "Workspace.h"
 #include "Scope.h"
 

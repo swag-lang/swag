@@ -1,13 +1,12 @@
 #pragma once
 #include "AstNode.h"
 #include "Allocator.h"
-#include "SourceFile.h"
-#include "CommandLine.h"
 #include "Statistics.h"
 struct Utf8;
 struct Scope;
 struct Concat;
 struct JobContext;
+struct SourceFile;
 struct TypeInfoEnum;
 struct TypeInfoStruct;
 struct TypeInfoList;

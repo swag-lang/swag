@@ -716,7 +716,7 @@
     <ClInclude Include="../src/Backend.h">
       <Filter>Backend</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\Ast_Flags.h">
+    <ClInclude Include="..\src\AstFlags.h">
       <Filter>Syntax</Filter>
     </ClInclude>
     <ClInclude Include="..\src\LLVM_Setup.h">

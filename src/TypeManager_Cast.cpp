@@ -7,7 +7,7 @@
 #include "Semantic.h"
 #include "SemanticError.h"
 #include "TypeManager.h"
-#include "Ast_Flags.h"
+#include "AstFlags.h"
 
 bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {

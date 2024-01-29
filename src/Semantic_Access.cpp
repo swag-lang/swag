@@ -1,10 +1,11 @@
 #include "pch.h"
-#include "Ast_Flags.h"
 #include "Ast.h"
+#include "AstFlags.h"
 #include "Diagnostic.h"
 #include "Naming.h"
 #include "Report.h"
 #include "Semantic.h"
+#include "SourceFile.h"
 
 bool Semantic::canHaveGlobalAccess(AstNode* node)
 {

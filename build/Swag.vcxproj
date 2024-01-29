@@ -216,7 +216,7 @@
     <ClInclude Include="../src/Allocator.h" />
     <ClInclude Include="../src/Assert.h" />
     <ClInclude Include="../src/Ast.h" />
-    <ClInclude Include="..\src\Ast_Flags.h" />
+    <ClInclude Include="..\src\AstFlags.h" />
     <ClInclude Include="../src/AstNode.h" />
     <ClInclude Include="../src/Attribute.h" />
     <ClInclude Include="../src/Backend.h" />

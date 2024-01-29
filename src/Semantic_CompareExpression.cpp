@@ -6,7 +6,7 @@
 #include "Report.h"
 #include "Semantic.h"
 #include "TypeManager.h"
-#include "Ast_Flags.h"
+#include "AstFlags.h"
 
 bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right)
 {

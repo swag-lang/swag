@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Ast_Flags.h"
+#include "AstFlags.h"
 #include "Module.h"
 #include "ByteCode.h"
 #include "ByteCodeStack.h"

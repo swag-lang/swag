@@ -3,6 +3,7 @@
 #include "Diagnostic.h"
 #include "Parser.h"
 #include "SemanticJob.h"
+#include "SourceFile.h"
 #include "TypeManager.h"
 
 bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInfo* typeRight)

@@ -5,7 +5,7 @@
 #include "Naming.h"
 #include "SemanticJob.h"
 #include "TypeManager.h"
-#include "Ast_Flags.h"
+#include "AstFlags.h"
 
 bool Semantic::checkCanThrow(SemanticContext* context)
 {

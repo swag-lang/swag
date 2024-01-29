@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Ast_Flags.h"
+#include "AstFlags.h"
 #include "Generic.h"
 #include "Ast.h"
 #include "Diagnostic.h"

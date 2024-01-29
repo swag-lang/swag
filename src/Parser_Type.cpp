@@ -1,11 +1,11 @@
 #include "pch.h"
 #include "Ast.h"
-#include "Semantic.h"
-#include "Scoped.h"
-#include "TypeManager.h"
-#include "ErrorIds.h"
 #include "Diagnostic.h"
 #include "LanguageSpec.h"
+#include "Scoped.h"
+#include "Semantic.h"
+#include "SourceFile.h"
+#include "TypeManager.h"
 
 bool Parser::doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeVarDecl)
 {

@@ -1,9 +1,10 @@
 #include "pch.h"
-#include "Semantic.h"
 #include "Ast.h"
-#include "Scoped.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "Scoped.h"
+#include "Semantic.h"
+#include "SourceFile.h"
 #include "TypeManager.h"
 
 bool Parser::doAttrDecl(AstNode* parent, AstNode** result)

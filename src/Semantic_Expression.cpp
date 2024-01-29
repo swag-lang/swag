@@ -7,7 +7,7 @@
 #include "ErrorIds.h"
 #include "Diagnostic.h"
 #include "Symbol.h"
-#include "Ast_Flags.h"
+#include "AstFlags.h"
 
 bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* expression, const Utf8& errMsg, const Utf8& errParam)
 {

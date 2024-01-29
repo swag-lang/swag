@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Generic.h"
 #include "Ast.h"
-#include "Ast_Flags.h"
+#include "AstFlags.h"
 #include "Diagnostic.h"
 #include "SemanticJob.h"
 #include "TypeManager.h"

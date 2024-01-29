@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "Diagnostic.h"
 #include "Ast.h"
-#include "Ast_Flags.h"
+#include "AstFlags.h"
 #include "LanguageSpec.h"
 #include "Naming.h"
+#include "SourceFile.h"
 #include "Symbol.h"
 #include "SyntaxColor.h"
 

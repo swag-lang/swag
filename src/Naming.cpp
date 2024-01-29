@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Ast_Flags.h"
+#include "AstFlags.h"
 #include "TypeInfo.h"
 #include "AstNode.h"
 #include "Naming.h"

@@ -8,7 +8,7 @@
 #include "Scope.h"
 #include "TypeManager.h"
 #include "Workspace.h"
-#include "Ast_Flags.h"
+#include "AstFlags.h"
 
 static llvm::DILocation* debugLocGet(unsigned Line, unsigned Col, const llvm::MDNode* Scope, const llvm::MDNode* InlinedAt = nullptr, bool ImplicitCode = false)
 {

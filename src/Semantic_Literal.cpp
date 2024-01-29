@@ -9,7 +9,7 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 #include "Version.h"
-#include "Ast_Flags.h"
+#include "AstFlags.h"
 
 bool Semantic::getDigitHexa(SemanticContext* context, const SourceLocation& startLoc, const char* pzs, const char** _pz, int& result, const char* errMsg)
 {

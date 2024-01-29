@@ -10,7 +10,7 @@
 #include "SemanticJob.h"
 #include "ThreadManager.h"
 #include "TypeManager.h"
-#include "Ast_Flags.h"
+#include "AstFlags.h"
 
 bool Semantic::resolveNameAlias(SemanticContext* context)
 {

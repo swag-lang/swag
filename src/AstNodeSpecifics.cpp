@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Ast.h"
-#include "Ast_Flags.h"
+#include "AstFlags.h"
 #include "ByteCode.h"
 #include "LanguageSpec.h"
 #include "Module.h"

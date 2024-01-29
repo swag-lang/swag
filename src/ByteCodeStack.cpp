@@ -7,7 +7,7 @@
 #include "ErrorIds.h"
 #include "ByteCodeDebugger.h"
 #include "SyntaxColor.h"
-#include "Ast_Flags.h"
+#include "AstFlags.h"
 
 thread_local ByteCodeStack  g_ByteCodeStackTraceVal;
 thread_local ByteCodeStack* g_ByteCodeStackTrace = &g_ByteCodeStackTraceVal;
