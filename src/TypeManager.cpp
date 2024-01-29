@@ -251,7 +251,7 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
     name += Fmt("%d", g_UniqueID.fetch_add(1));
     typeStruct->name = name;
 
-    typeStruct->flags |= TYPEINFO_STRUCT_IS_TUPLE;
+    typeStruct->flags |= TYPEINFO_STRUCT_IS_TUPLE | TYPEINFO_GHOST_TUPLE;
 
     typeStruct->fields.reserve((int) typeList->subTypes.size());
     for (size_t idx = 0; idx < typeList->subTypes.size(); idx++)
@@ -267,46 +267,14 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
 
         typeParam->name = Fmt("item%u", idx);
         typeParam->flags |= TYPEINFOPARAM_AUTO_NAME;
+        typeStruct->sizeOf += one->typeInfo->sizeOf;
         typeStruct->fields.push_back(typeParam);
     }
 
     typeStruct->structName = typeStruct->name;
+    typeStruct->declNode   = typeList->declNode;
 
-    // Generate some fake nodes
-    // This peace of code is necessary to solve something like :
-    // let s = [{1, 2}, {3, 4}]
-    auto structDecl = Ast::newStructDecl(context->sourceFile, nullptr);
-    structDecl->allocateExtension(ExtensionKind::Misc);
-    structDecl->extMisc()->exportNode = typeList->declNode;
-    typeStruct->declNode              = structDecl;
-    typeStruct->declNode->flags |= AST_GENERATED;
-    typeStruct->declNode->typeInfo   = typeStruct;
-    typeStruct->declNode->ownerScope = context->sourceFile->scopeFile;
-    typeStruct->flags |= TYPEINFO_GHOST_TUPLE;
-    typeStruct->scope        = Ast::newScope(typeStruct->declNode, "", ScopeKind::Struct, context->sourceFile->scopeFile);
-    typeStruct->scope->owner = typeStruct->declNode;
-    typeStruct->alignOf      = 1;
-    structDecl->scope        = typeStruct->scope;
-    for (auto f : typeStruct->fields)
-    {
-        f->declNode           = Ast::newVarDecl(context->sourceFile, f->name, typeStruct->declNode);
-        f->declNode->typeInfo = f->typeInfo;
-        f->declNode->flags |= AST_GENERATED;
-        f->offset = typeStruct->sizeOf;
-
-        AddSymbolTypeInfo toAdd;
-        toAdd.kind                          = SymbolKind::Variable;
-        toAdd.node                          = f->declNode;
-        toAdd.typeInfo                      = f->typeInfo;
-        toAdd.storageOffset                 = f->offset;
-        toAdd.aliasName                     = &f->name;
-        toAdd.flags                         = OVERLOAD_VAR_STRUCT;
-        f->declNode->resolvedSymbolOverload = typeStruct->scope->symTable.addSymbolTypeInfo((ErrorContext*) context, toAdd);
-        f->declNode->resolvedSymbolName     = f->declNode->resolvedSymbolOverload->symbol;
-
-        typeStruct->sizeOf += f->typeInfo->sizeOf;
-    }
-
+    Ast::convertTypeStructToStructDecl(context, typeStruct);
     return typeStruct;
 }
 

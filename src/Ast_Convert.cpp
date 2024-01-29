@@ -372,6 +372,41 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* parent, 
     return true;
 }
 
+void Ast::convertTypeStructToStructDecl(JobContext* context, TypeInfoStruct* typeStruct)
+{
+    // Generate some fake nodes
+    // This peace of code is necessary to solve something like :
+    // let s = [{1, 2}, {3, 4}]
+    auto structDecl = Ast::newStructDecl(context->sourceFile, nullptr);
+    structDecl->allocateExtension(ExtensionKind::Misc);
+    structDecl->extMisc()->exportNode = typeStruct->declNode;
+    typeStruct->declNode              = structDecl;
+    typeStruct->declNode->flags |= AST_GENERATED;
+    typeStruct->declNode->typeInfo   = typeStruct;
+    typeStruct->declNode->ownerScope = context->sourceFile->scopeFile;
+    typeStruct->scope                = Ast::newScope(typeStruct->declNode, "", ScopeKind::Struct, context->sourceFile->scopeFile);
+    typeStruct->scope->owner         = typeStruct->declNode;
+    typeStruct->alignOf              = 1;
+    structDecl->scope                = typeStruct->scope;
+    for (auto f : typeStruct->fields)
+    {
+        f->declNode           = Ast::newVarDecl(context->sourceFile, f->name, typeStruct->declNode);
+        f->declNode->typeInfo = f->typeInfo;
+        f->declNode->flags |= AST_GENERATED;
+        f->offset = typeStruct->sizeOf;
+
+        AddSymbolTypeInfo toAdd;
+        toAdd.kind                          = SymbolKind::Variable;
+        toAdd.node                          = f->declNode;
+        toAdd.typeInfo                      = f->typeInfo;
+        toAdd.storageOffset                 = f->offset;
+        toAdd.aliasName                     = &f->name;
+        toAdd.flags                         = OVERLOAD_VAR_STRUCT;
+        f->declNode->resolvedSymbolOverload = typeStruct->scope->symTable.addSymbolTypeInfo((ErrorContext*) context, toAdd);
+        f->declNode->resolvedSymbolName     = f->declNode->resolvedSymbolOverload->symbol;
+    }
+}
+
 bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identifier)
 {
     auto node       = context->node;

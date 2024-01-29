@@ -9,6 +9,8 @@ struct Scope;
 struct Concat;
 struct JobContext;
 struct TypeInfoEnum;
+struct TypeInfoStruct;
+struct TypeInfoList;
 enum class ScopeKind : uint8_t;
 
 namespace Ast
@@ -58,6 +60,7 @@ namespace Ast
     AstNode* convertTypeToTypeExpression(JobContext* context, AstNode* parent, AstNode* assignment, TypeInfo* childType, bool raiseErrors = true);
     bool     convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignment, AstStruct** result);
     bool     convertLiteralTupleToStructDecl(JobContext* context, AstNode* parent, AstNode* assignment, AstNode** result);
+    void     convertTypeStructToStructDecl(JobContext* context, TypeInfoStruct* typeStruct);
     bool     convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identifier);
 
     bool generateMissingInterfaceFct(SemanticContext* context, VectorNative<AstFuncDecl*>& mapItIdxToFunc, TypeInfoStruct* typeStruct, TypeInfoStruct* typeBaseInterface, TypeInfoStruct* typeInterface);
