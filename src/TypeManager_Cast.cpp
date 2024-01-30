@@ -2613,6 +2613,9 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
 
 bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
+    if (castFlags & CASTFLAG_UFCS)
+        fromType = TypeManager::concretePtrRef(fromType);
+
     // To "cstring"
     if (toType->isCString())
     {
