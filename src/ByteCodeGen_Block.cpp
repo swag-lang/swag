@@ -249,6 +249,7 @@ bool ByteCodeGen::emitInline(ByteCodeGenContext* context)
     if (node->parent->semFlags & SEMFLAG_FROM_REF && !node->parent->forceTakeAddress())
     {
         SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRC, node->typeInfo));
+        node->parent->resultRegisterRC = node->resultRegisterRC;
     }
 
     // Release persistent list of registers (except if mixin, because in that
