@@ -6,7 +6,7 @@ struct(T) A
 impl A
 {
     #[Swag.Inline]
-    mtd opIndex(x: s32)->const &T
+    mtd opIndex(x: u64)->const &T
     {
         return buffer + x
     }
