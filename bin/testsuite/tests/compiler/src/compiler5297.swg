@@ -1,6 +1,7 @@
 #test
 {
     // s32 version
+    #[Swag.Overload]
     func(T) isNull(x: T)->bool
         #validif @typeof(T) == s32
     {
@@ -8,6 +9,7 @@
     }
 
     // f32/f64 version
+    #[Swag.Overload]
     func(T) isNull(x: T)->bool
         #validif @typeof(T) == f32 or @typeof(T) == f64
     {

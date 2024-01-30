@@ -612,10 +612,13 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
     }
 
     auto accessType = TypeManager::concreteType(arrayNode->access->typeInfo);
-    if (!(accessType->isNativeInteger()) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
+    if (!arrayType->isStruct())
     {
-        Diagnostic diag{arrayNode->access, Fmt(Err(Err0740), arrayNode->access->typeInfo->getDisplayNameC())};
-        return context->report(diag);
+        if (!(accessType->isNativeInteger()) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
+        {
+            Diagnostic diag{arrayNode->access, Fmt(Err(Err0740), arrayNode->access->typeInfo->getDisplayNameC())};
+            return context->report(diag);
+        }
     }
 
     switch (arrayType->kind)
@@ -699,8 +702,6 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
     }
 
     case TypeInfoKind::Struct:
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
-
         if (arrayType->isTuple())
         {
             if (arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DREF)

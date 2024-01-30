@@ -7,8 +7,8 @@
 #include "LanguageSpec.h"
 #include "Module.h"
 #include "SaveGenJob.h"
-#include "Workspace.h"
 #include "Scope.h"
+#include "Workspace.h"
 
 thread_local int  g_SilentError = 0;
 thread_local Utf8 g_SilentErrorMsg;

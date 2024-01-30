@@ -31,8 +31,8 @@ typealias ConstF64 = Const'f64
     func sign(x: f32) => x < 0 ? -1 : 1
     func sign(x: f64) => x < 0 ? -1 : 1
 
-    func saturate(x: f32) => clamp(x, 0, 1)
-    func saturate(x: f64) => clamp(x, 0, 1)
+    func saturate(x: f32) => clamp(x, 0'f32, 1'f32)
+    func saturate(x: f64) => clamp(x, 0'f64, 1'f64)
     func lerp(x, y, factor: f32) => x + factor * (y - x)
     func lerp(x, y, factor: f64) => x + factor * (y - x)
 
@@ -53,13 +53,13 @@ typealias ConstF64 = Const'f64
 
     func smoothstep(edge0, edge1, x: f32)->f32
     {
-        let t = clamp((x - edge0) / (edge1 - edge0), 0, 1)
+        let t = clamp((x - edge0) / (edge1 - edge0), 0'f32, 1'f32)
         return t * t * (3 - 2*t)
     }
 
     func smoothstep(edge0, edge1, x: f64)->f64
     {
-        let t = clamp((x - edge0) / (edge1 - edge0), 0, 1)
+        let t = clamp((x - edge0) / (edge1 - edge0), 0'f64, 1'f64)
         return t * t * (3 - 2*t)
     }
 
@@ -78,21 +78,6 @@ typealias ConstF64 = Const'f64
 
 #[Swag.ConstExpr, Swag.Inline, Swag.Overload]
 {
-    func min(x, y: f32) => @min(x, y)
-    func min(x, y: f64) => @min(x, y)
-    func max(x, y: f32) => @max(x, y)
-    func max(x, y: f64) => @max(x, y)
-
-    func min(x, y, z: f32) => @min(@min(x, y), z)
-    func min(x, y, z: f64) => @min(@min(x, y), z)
-    func max(x, y, z: f32) => @max(@max(x, y), z)
-    func max(x, y, z: f64) => @max(@max(x, y), z)
-
-    func min(x, y, z, w: f32) => @min(@min(@min(x, y), z), w)
-    func min(x, y, z, w: f64) => @min(@min(@min(x, y), z), w)
-    func max(x, y, z, w: f32) => @max(@max(@max(x, y), z), w)
-    func max(x, y, z, w: f64) => @max(@max(@max(x, y), z), w)
-
     func atan2(x, y: f32) => @atan2(x, y)
     func atan2(x, y: f64) => @atan2(x, y)
 

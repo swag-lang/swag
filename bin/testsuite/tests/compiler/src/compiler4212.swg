@@ -1,3 +1,4 @@
+#[Swag.Overload]
 func(T) toto(y: T)->T
 {
     var x = y
@@ -5,6 +6,7 @@ func(T) toto(y: T)->T
     return x
 }
 
+#[Swag.Overload]
 func(T) toto(y, z: T)->T
 {
     var x1 = y

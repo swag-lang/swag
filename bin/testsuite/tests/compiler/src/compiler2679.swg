@@ -1,3 +1,4 @@
+#[Swag.Overload]
 func(T) min(x, y: T) => x < y ? x : y
 
 #test
@@ -7,4 +8,5 @@ func(T) min(x, y: T) => x < y ? x : y
     var x1 = min(1's32, 2's32, 3's32)
 }
 
+#[Swag.Overload]
 func(T) min(x, y, z: T) => min(min(x, y), z)

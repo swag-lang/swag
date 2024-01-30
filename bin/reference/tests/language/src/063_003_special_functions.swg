@@ -28,7 +28,7 @@ impl Struct
     func opSlice(using self, low, up: u64)->string { return "true"; }
 
     // Get value by index
-    func opIndex(using self, index: u64)->WhateverType { return true; }
+    func opIndex(using self, index: OneType)->WhateverType { return true; }
 
     // Called by @countof
     // Use in a 'loop' block for example
@@ -82,9 +82,9 @@ impl Struct
     // Can be overloaded
     // Called by '[] ='
     #[Swag.Overload]
-    func opIndexAffect(using self, index: u64, value: OneType) {}
+    func opIndexAffect(using self, index: OneType, value: OneType) {}
     #[Swag.Overload]
-    func opIndexAffect(using self, index: u64, value: AnotherType) {}
+    func opIndexAffect(using self, index: OneType, value: AnotherType) {}
 
     // Binary operator. 'op' generic argument contains the operator string
     // Generic function, can be overloaded
@@ -111,9 +111,9 @@ impl Struct
     // Generic function, can be overloaded
     // Called by '+=', '-=', '*=', '/=', '%=', '|=', '&=', '^=', '<<=', '>>='
     #[Swag.Overload]
-    func(op: string) opIndexAssign(using self, index: u64, value: OneType) {}
+    func(op: string) opIndexAssign(using self, index: OneType, value: OneType) {}
     #[Swag.Overload]
-    func(op: string) opIndexAssign(using self, index: u64, value: AnotherType) {}
+    func(op: string) opIndexAssign(using self, index: OneType, value: AnotherType) {}
 
     // Called by a 'visit' block
     // Can have multiple versions, by adding a name after 'opVisit'

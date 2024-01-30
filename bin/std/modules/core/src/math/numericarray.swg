@@ -45,6 +45,7 @@ impl NumericArray
         return result
     }
 
+    #[Overload]
     func(op: string) opAssign(using self, value: T)
     {
         loop i: N
@@ -62,6 +63,7 @@ impl NumericArray
         }
     }
 
+    #[Overload]
     func(op: string) opAssign(using self, value: Self)
     {
         loop i: N

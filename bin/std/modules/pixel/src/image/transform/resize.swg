@@ -160,8 +160,8 @@ namespace ResizeTools
         {
             let center = u / scale
 
-            var left = Math.max(cast(s64) Math.floor(center - width), 0)
-            var right = Math.min(cast(s64) Math.ceil(center + width), srcSize - 1)
+            var left  = cast(u64) Math.max(cast(s64) Math.floor(center - width), 0)
+            var right = cast(u64) Math.min(cast(s64) Math.ceil(center + width), srcSize - 1)
 
             // Cut edge points to fit in filter window in case of spill-off
             if right - left + 1 > windowSize

@@ -104,6 +104,7 @@ impl String
         buffer[index] = value
     }
 
+    #[Overload]
     mtd(op: string) opAssign(value: string)
     {
         #if op == "+=" #do
@@ -112,6 +113,7 @@ impl String
             #error "invalid operator '" ++ op ++ "'"
     }
 
+    #[Overload]
     mtd(op: string) opAssign(value: rune)
     {
         #if op == "+=" #do
@@ -120,6 +122,7 @@ impl String
             #error "invalid operator '" ++ op ++ "'"
     }
 
+    #[Overload]
     mtd(op: string) opAssign(value: u8)
     {
         #if op == "+=" #do

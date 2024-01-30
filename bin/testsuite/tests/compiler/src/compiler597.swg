@@ -1,11 +1,11 @@
-
-
-
 #global testerror "Err0019"
+
+#[Swag.Overload]
 func(op: string) toto()
 {
 }
 
+#[Swag.Overload]
 func(op: s32) toto()
 {
 }

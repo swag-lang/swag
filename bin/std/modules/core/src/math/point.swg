@@ -22,6 +22,7 @@ impl Point
         x, y = value
     }
 
+    #[Swag.Overload]
     mtd(op: string) opAssign(other: Point)
     {
         #if   op == "+="    { x += other.x; y += other.y; }
@@ -31,6 +32,7 @@ impl Point
         #else               #do #error "unsupported assign operation [[" ++ op ++ "]]"
     }
 
+    #[Swag.Overload]
     mtd(op: string) opAssign(value: f32)
     {
         #if   op == "+="    { x += value; y += value; }
@@ -40,6 +42,7 @@ impl Point
         #else               #do #error "unsupported assign operation [[" ++ op ++ "]]"
     }
 
+    #[Swag.Overload]
     mtd(op: string) const opBinary(other: Point)->Self
     {
         #if   op == "+" #do return Point{x + other.x, y + other.y}
@@ -49,6 +52,7 @@ impl Point
         #else           #do #error "unsupported binary operation [[" ++ op ++ "]]"
     }
 
+    #[Swag.Overload]
     mtd(op: string) const opBinary(value: f32)->Self
     {
         #if   op == "+" #do return Point{x + value, y + value}

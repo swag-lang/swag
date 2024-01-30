@@ -1,8 +1,10 @@
+#[Swag.Overload]
 func(T) toto(x: T)
 {
     @assert(false)
 }
 
+#[Swag.Overload]
 func(T) toto(x: const [..] T)
 {
 }

@@ -1,10 +1,12 @@
 var G = 0
 
+#[Swag.Overload]
 func(T) toto(x: *T)
 {
     G += 1
 }
 
+#[Swag.Overload]
 func(T) toto(x: const [..] T)
 {
     G += 2

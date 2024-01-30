@@ -554,6 +554,17 @@ impl Array
         count -= num
     }
 
+    // Remove the given 'value'
+    // If not found, does nothing
+    #[Overload]
+    mtd(V) remove(value: V)
+    {
+        let idx = Slice.findLinear(toSlice(), value)
+        if idx == Swag.U64.Max do
+            return
+        removeAt(idx)
+    }
+
     // Remove an element at 'index' by replacing it with the last element.
     // Order is **not preserved**
     mtd removeAt(index: u64)
@@ -597,16 +608,6 @@ impl Array
         {
             Memory.copyOver(buffer + index, buffer + index + numValues, @sizeof(T) * (count - index))
         }
-    }
-
-    // Remove the given 'value'
-    // If not found, does nothing
-    mtd(V) remove(value: V)
-    {
-        let idx = Slice.findLinear(toSlice(), value)
-        if idx == Swag.U64.Max do
-            return
-        removeAt(idx)
     }
 
     // Remove the given 'value'

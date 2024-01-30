@@ -31,7 +31,7 @@ Utf8 Semantic::getSpecialOpSignature(AstFuncDecl* node)
     else if (node->token.text == g_LangSpec->name_opSlice)
         result += "[[func opSlice(self, low, up: u64) -> <string or slice>]]";
     else if (node->token.text == g_LangSpec->name_opIndex)
-        result += "[[func opIndex(self, index: u64) -> WhateverType]]";
+        result += "[[func opIndex(self, index: WhateverType) -> WhateverType]]";
     else if (node->token.text == g_LangSpec->name_opCount)
         result += "[[func opCount(self) -> u64]]";
     else if (node->token.text == g_LangSpec->name_opData)
@@ -47,7 +47,7 @@ Utf8 Semantic::getSpecialOpSignature(AstFuncDecl* node)
     else if (node->token.text == g_LangSpec->name_opAffectSuffix)
         result += "[[func(suffix: string) opAffectSuffix(self, value: WhateverType)]]";
     else if (node->token.text == g_LangSpec->name_opIndexAffect)
-        result += "[[func opIndexAffect(self, index: u64, value: WhateverType)]]";
+        result += "[[func opIndexAffect(self, index: WhateverType, value: WhateverType)]]";
     else if (node->token.text == g_LangSpec->name_opBinary)
         result += "[[func(op: string) opBinary(self, other: WhateverType) -> Self]]";
     else if (node->token.text == g_LangSpec->name_opUnary)
@@ -55,7 +55,7 @@ Utf8 Semantic::getSpecialOpSignature(AstFuncDecl* node)
     else if (node->token.text == g_LangSpec->name_opAssign)
         result += "[[func(op: string) opAssign(self, value: WhateverType)]]";
     else if (node->token.text == g_LangSpec->name_opIndexAssign)
-        result += "[[func(op: string) opIndexAssign(self, index: u64, value: WhateverType)]]";
+        result += "[[func(op: string) opIndexAssign(self, index: WhateverType, value: WhateverType)]]";
     else if (node->token.text.startsWith(g_LangSpec->name_opVisit))
         result += "[[func(ptr: bool, back: bool) opVisit(self, stmt: code)]]";
     else
@@ -300,22 +300,16 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 2, false));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, nullptr));
-        for (uint32_t i = 1; i < (uint32_t) parameters->childs.size(); i++)
-            SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, i, g_TypeMgr->typeInfoU64));
     }
     else if (name == g_LangSpec->name_opIndexAssign)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 3, false));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoVoid));
-        for (uint32_t i = 1; i < (uint32_t) parameters->childs.size() - 1; i++)
-            SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, i, g_TypeMgr->typeInfoU64));
     }
     else if (name == g_LangSpec->name_opIndexAffect)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 3, false));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoVoid));
-        for (uint32_t i = 1; i < (uint32_t) parameters->childs.size() - 1; i++)
-            SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, i, g_TypeMgr->typeInfoU64));
     }
     else if (name == g_LangSpec->name_opInit && node->sourceFile->isGenerated)
     {
@@ -681,11 +675,16 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
         context->result = ContextResult::Done;
     }
 
-    uint64_t castFlags = CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_UFCS | CASTFLAG_ACCEPT_PENDING | CASTFLAG_PARAMS;
     if (context->cacheMatches.empty())
         return true;
 
     auto oneMatch = context->cacheMatches[0];
+
+    uint64_t castFlags = CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_UFCS | CASTFLAG_ACCEPT_PENDING | CASTFLAG_PARAMS;
+    auto     funcNode  = CastAst<AstFuncDecl>(oneMatch->oneOverload->overload->node, AstNodeKind::FuncDecl);
+    if (!funcNode->canOverload())
+        castFlags |= CASTFLAG_TRY_COERCE;
+
     for (size_t i = 0; i < params.size(); i++)
     {
         if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])

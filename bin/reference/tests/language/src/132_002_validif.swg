@@ -37,6 +37,7 @@ You can use `#validif` to make a kind of a generic specialisation.
 #test
 {
     // s32 version
+    #[Swag.Overload]
     func(T) isNull(x: T)->bool
         #validif @typeof(T) == s32
     {
@@ -44,6 +45,7 @@ You can use `#validif` to make a kind of a generic specialisation.
     }
 
     // f32/f64 version
+    #[Swag.Overload]
     func(T) isNull(x: T)->bool
         #validif @typeof(T) == f32 or @typeof(T) == f64
     {

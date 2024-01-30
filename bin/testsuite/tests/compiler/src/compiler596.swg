@@ -1,8 +1,11 @@
 #global testerror "Err0613"
+
+#[Swag.Overload]
 func(op: string) toto()
 {
 }
 
+#[Swag.Overload]
 func(op: s32) toto()
 {
 }

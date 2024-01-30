@@ -27,6 +27,7 @@ impl Vector3
         x, y, z = value
     }
 
+    #[Swag.Overload]
     mtd(op: string) opAssign(other: Self)
     {
         #if   op == "+="    { x += other.x; y += other.y; z += other.z; }
@@ -36,6 +37,7 @@ impl Vector3
         #else               #do #error "unsupported assign operation [[" ++ op ++ "]]"
     }
 
+    #[Swag.Overload]
     mtd(op: string) opAssign(value: f32)
     {
         #if   op == "+="    { x += value; y += value; z += value; }
@@ -45,6 +47,7 @@ impl Vector3
         #else               #do #error "unsupported assign operation [[" ++ op ++ "]]"
     }
 
+    #[Swag.Overload]
     mtd(op: string) opBinary(other: Self)->Self
     {
         #if   op == "+" #do return Self{x + other.x, y + other.y, z + other.z}
@@ -54,6 +57,7 @@ impl Vector3
         #else           #do #error "unsupported binary operation [[" ++ op ++ "]]"
     }
 
+    #[Swag.Overload]
     mtd(op: string) opBinary(value: f32)->Self
     {
         #if   op == "+" #do return Self{x + value, y + value, z + value}
