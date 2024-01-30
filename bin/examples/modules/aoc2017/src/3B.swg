@@ -23,9 +23,6 @@ using Core
 
 func day3B()
 {
-    var x, y, dx, dy: s32
-    var l = 0
-
     const D = 312051
 
     var arr: HashTable'({x, y: s32}, s32)
@@ -40,15 +37,18 @@ func day3B()
         return s
     }
 
+    var x, y: s32
+    var l = 0
+
     loop
     {
-        const O = [{1, 1, 0}, {0, 0, -1}, {1, -1, 0}, {0, 0, 1}]
+        const O = [{dl: 1, dx: 1, dy: 0}, {0, 0, -1}, {1, -1, 0}, {0, 0, 1}]
         visit v: O
         {
-            l += v.item0; dx = v.item1; dy = v.item2
+            l += v.dl
             loop l
             {
-                x += dx; y += dy
+                x += v.dx; y += v.dy
                 let s = sum(x, y, arr)
                 if s >= D
                 {
