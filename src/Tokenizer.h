@@ -78,7 +78,7 @@ struct Token
     SourceLocation startLocation;
     SourceLocation endLocation;
 
-    const char* ctext()
+    const char* ctext() const
     {
         return text.c_str();
     }

@@ -33,12 +33,13 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
         node->boolExpression->flags |= AST_GENERATED;
         node->boolExpression->inheritTokenLocation(varDecl);
 
-        SWAG_CHECK(doScopedStatement(node, (AstNode**) &node->ifBlock));
+        SWAG_CHECK(doScopedStatement(node, node->token, (AstNode**) &node->ifBlock));
 
         if (token.id == TokenId::KwdElse)
         {
+            auto tokenElse = token;
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doScopedStatement(node, (AstNode**) &node->elseBlock));
+            SWAG_CHECK(doScopedStatement(node, tokenElse, (AstNode**) &node->elseBlock));
         }
         else if (token.id == TokenId::KwdElif)
         {
@@ -50,12 +51,13 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
     else
     {
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
-        SWAG_CHECK(doScopedStatement(node, (AstNode**) &node->ifBlock));
+        SWAG_CHECK(doScopedStatement(node, node->token, (AstNode**) &node->ifBlock));
 
         if (token.id == TokenId::KwdElse)
         {
+            auto tokenElse = token;
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(doScopedStatement(node, (AstNode**) &node->elseBlock));
+            SWAG_CHECK(doScopedStatement(node, tokenElse, (AstNode**) &node->elseBlock));
         }
         else if (token.id == TokenId::KwdElif)
         {
@@ -78,7 +80,7 @@ bool Parser::doWhile(AstNode* parent, AstNode** result)
         ScopedBreakable scoped(this, node);
         SWAG_VERIFY(token.id != TokenId::SymLeftCurly && token.id != TokenId::SymSemiColon, error(token, Fmt(Err(Err0539), token.ctext())));
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
-        SWAG_CHECK(doScopedStatement(node, &node->block));
+        SWAG_CHECK(doScopedStatement(node, node->token, &node->block));
     }
 
     return true;
@@ -221,7 +223,7 @@ bool Parser::doFor(AstNode* parent, AstNode** result)
     Ast::removeFromParent(node->boolExpression);
     Ast::addChildBack(node, node->boolExpression);
 
-    SWAG_CHECK(doScopedStatement(node, &node->block));
+    SWAG_CHECK(doScopedStatement(node, node->token, &node->block));
     return true;
 }
 
@@ -289,7 +291,7 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
     }
 
     // Visit statement code block
-    SWAG_CHECK(doScopedStatement(node, &node->block));
+    SWAG_CHECK(doScopedStatement(node, node->token, &node->block));
 
     // We do not want semantic on the block part, as this has to be solved when the block
     // is inlined
@@ -317,7 +319,7 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
     // loop can be empty for an infinit loop
     if (token.id == TokenId::SymLeftCurly)
     {
-        SWAG_CHECK(doScopedStatement(node, &node->block));
+        SWAG_CHECK(doScopedStatement(node, node->token, &node->block));
         return true;
     }
 
@@ -386,7 +388,7 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
         var->assignment = identifer;
     }
 
-    SWAG_CHECK(doScopedStatement(node, &node->block));
+    SWAG_CHECK(doScopedStatement(node, node->token, &node->block));
     return true;
 }
 
@@ -457,7 +459,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
         }
     }
 
-    SWAG_CHECK(doScopedStatement(node, &dummyResult));
+    SWAG_CHECK(doScopedStatement(node, node->token, &dummyResult));
     return true;
 }
 
@@ -486,7 +488,7 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
     }
 
     ScopedFlags scopedFlags(this, AST_IN_DEFER);
-    SWAG_CHECK(doScopedStatement(node, &dummyResult, false));
+    SWAG_CHECK(doScopedStatement(node, node->token, &dummyResult, false));
     return true;
 }
 

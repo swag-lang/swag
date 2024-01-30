@@ -408,7 +408,7 @@ bool Parser::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind
     return true;
 }
 
-bool Parser::doScopedStatement(AstNode* parent, AstNode** result, bool mustHaveDo)
+bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode** result, bool mustHaveDo)
 {
     SWAG_VERIFY(token.id != TokenId::SymSemiColon, error(token, Err(Err0264), Nte(Nte0054)));
 
@@ -424,7 +424,7 @@ bool Parser::doScopedStatement(AstNode* parent, AstNode** result, bool mustHaveD
             if (token.id != TokenId::KwdDo)
             {
                 Diagnostic diag{sourceFile, token, Fmt(Err(Err0533), token.ctext())};
-                auto       note = Diagnostic::note(parent, parent->token, Fmt(Nte(Nte0016), parent->token.ctext()));
+                auto       note = Diagnostic::note(parent, forToken, Fmt(Nte(Nte0016), forToken.ctext()));
                 return context->report(diag, note);
             }
 
