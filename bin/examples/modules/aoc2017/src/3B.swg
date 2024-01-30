@@ -26,7 +26,7 @@ func day3B()
     const D = 312051
 
     var arr: HashTable'({x, y: s32}, s32)
-    arr.add({0, 0}, 1)
+    arr[{0, 0}] = 1
 
     func sum(x, y: s32, a: @decltype(arr))->s32
     {
@@ -57,7 +57,7 @@ func day3B()
                     return
                 }
 
-                arr.add({x, y}, s)
+                arr[{x, y}] = s
             }
         }
     }

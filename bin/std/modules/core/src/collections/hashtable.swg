@@ -70,6 +70,22 @@ impl HashTable
         table = newTable
     }
 
+    mtd opIndexAffect(key: K, val: V)
+    {
+        let it = find(key)
+        if it do
+            it.value = val
+        else do
+            add(key, val)
+    }
+
+    mtd opIndex(key: K)->const &V
+    {
+        let it = find(key)
+        if it do return &it.value
+        return null
+    }
+
     // alias0 is the key, and alias1 is the value
     #[Macro]
     mtd(ptr: bool, back: bool) const opVisit(stmt: code)
