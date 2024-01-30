@@ -846,10 +846,13 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
     arrayNode->flags |= AST_R_VALUE;
 
     auto accessType = getConcreteTypeUnRef(arrayNode->access, CONCRETE_ALL);
-    if (!(accessType->isNativeInteger()) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
+    if (!arrayType->isStruct())
     {
-        Diagnostic diag{arrayNode->access, Fmt(Err(Err0740), arrayNode->access->typeInfo->getDisplayNameC())};
-        return context->report(diag);
+        if (!(accessType->isNativeInteger()) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
+        {
+            Diagnostic diag{arrayNode->access, Fmt(Err(Err0740), arrayNode->access->typeInfo->getDisplayNameC())};
+            return context->report(diag);
+        }
     }
 
     // Do not set resolvedSymbolOverload !

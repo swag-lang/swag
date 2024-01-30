@@ -288,7 +288,9 @@ bool Semantic::resolveSwitch(SemanticContext* context)
     node->expression->setBcNotifAfter(ByteCodeGen::emitSwitchAfterExpr);
 
     SWAG_CHECK(checkIsConcrete(context, node->expression));
-    node->typeInfo = node->expression->typeInfo;
+
+    node->expression->typeInfo = getConcreteTypeUnRef(node->expression, CONCRETE_ALIAS);
+    node->typeInfo             = node->expression->typeInfo;
 
     auto typeSwitch = TypeManager::concreteType(node->typeInfo);
 
@@ -472,7 +474,8 @@ bool Semantic::resolveCase(SemanticContext* context)
                 {
                     PushErrCxtStep ec(context, node->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo]()
                                       { return Fmt(Nte(Nte0141), typeInfo->getDisplayNameC(), "the switch expression"), Diagnostic::isType(typeInfo); });
-                    SWAG_CHECK(TypeManager::makeCompatibles(context, node->ownerSwitch->expression, oneExpression, CASTFLAG_FOR_COMPARE));
+                    auto           typeSwitch = TypeManager::concretePtrRefType(node->ownerSwitch->expression->typeInfo, CONCRETE_FUNC);
+                    SWAG_CHECK(TypeManager::makeCompatibles(context, typeSwitch, node->ownerSwitch->expression, oneExpression, CASTFLAG_FOR_COMPARE));
                 }
 
                 // If the switch expression is constant, and the expression is constant too, then we can do the

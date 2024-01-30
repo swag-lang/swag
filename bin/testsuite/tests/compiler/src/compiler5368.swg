@@ -16,6 +16,6 @@ func toto()
 {
     var arr0: Arr'{x: s32}
     var arr1: Arr'{y: s32}
-    let a = arr0[0's32]
-    let b = arr1[0's32]
+    let a = arr0[0]
+    let b = arr1[0]
 }
