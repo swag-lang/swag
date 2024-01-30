@@ -1,4 +1,4 @@
-#global skip
+//#global skip
 var G: rune = `A`
 func toto()->const &rune
 {
@@ -8,9 +8,5 @@ func toto()->const &rune
 #test
 {
     let a = cast(rune) toto()
-/*
-    switch toto()
-    {
-    case `A`: break
-    }*/
+    @assert(a == `A`)
 }
