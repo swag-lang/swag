@@ -426,6 +426,8 @@ bool Semantic::resolveCase(SemanticContext* context)
     auto node = CastAst<AstSwitchCase>(context->node, AstNodeKind::SwitchCase);
     for (auto oneExpression : node->expressions)
     {
+        oneExpression->typeInfo = getConcreteTypeUnRef(oneExpression, CONCRETE_ALIAS);
+
         // Range
         if (oneExpression->kind == AstNodeKind::Range)
         {
