@@ -671,6 +671,15 @@
     <ClCompile Include="..\src\Ast_Convert.cpp">
       <Filter>Syntax</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\Semantic_Identifier_Ufcs.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Semantic_Identifier_Filter.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\Semantic_Identifier_Match.cpp">
+      <Filter>Semantic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="../src/ThreadManager.h">

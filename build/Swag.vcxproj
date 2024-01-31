@@ -512,6 +512,9 @@
     <ClCompile Include="..\src\Semantic_Expression.cpp" />
     <ClCompile Include="..\src\Semantic_Function.cpp" />
     <ClCompile Include="..\src\Semantic_Identifier.cpp" />
+    <ClCompile Include="..\src\Semantic_Identifier_Filter.cpp" />
+    <ClCompile Include="..\src\Semantic_Identifier_Match.cpp" />
+    <ClCompile Include="..\src\Semantic_Identifier_Ufcs.cpp" />
     <ClCompile Include="..\src\Semantic_Intrinsic.cpp" />
     <ClCompile Include="..\src\Semantic_Literal.cpp" />
     <ClCompile Include="..\src\Semantic_UserOp.cpp" />
