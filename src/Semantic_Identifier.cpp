@@ -1222,11 +1222,18 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
             // then we take the next statement, after the function, and put it as the last parameter
             SWAG_CHECK(appendLastCodeStatement(context, identifier, symbolOverload));
 
+            // This if for a lambda
+            bool forLambda = false;
+            if (identifier->forceTakeAddress() && isFunctionButNotACall(context, identifier, symbolOverload->symbol))
+                forLambda = true;
+
             // Will try with ufcs, and will try without
             for (int tryUfcs = 0; tryUfcs < 2; tryUfcs++)
             {
                 auto  tryMatch        = context->getTryMatch();
                 auto& symMatchContext = tryMatch->symMatchContext;
+
+                tryMatch->symMatchContext.flags |= forLambda ? SymbolMatchContext::MATCH_FOR_LAMBDA : 0;
 
                 tryMatch->genericParameters = identifier->genericParameters;
                 tryMatch->callParameters    = identifier->callParameters;
@@ -1242,10 +1249,6 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
                 SWAG_CHECK(fillMatchContextCallParameters(context, symMatchContext, identifier, symbolOverload, ufcsFirstParam));
                 YIELD();
                 SWAG_CHECK(fillMatchContextGenericParameters(context, symMatchContext, identifier, symbolOverload));
-
-                bool notACall = isFunctionButNotACall(context, identifier, symbolOverload->symbol);
-                if (identifier->forceTakeAddress() && notACall)
-                    symMatchContext.flags |= SymbolMatchContext::MATCH_FOR_LAMBDA;
 
                 listTryMatch.push_back(tryMatch);
 
