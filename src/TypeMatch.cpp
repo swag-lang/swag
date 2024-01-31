@@ -96,6 +96,8 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             castFlags |= CASTFLAG_LITERAL_SUFFIX;
         if (callParameter->flags & AST_TRANSIENT && wantedTypeInfo->isPointerMoveRef())
             castFlags |= CASTFLAG_ACCEPT_MOVE_REF;
+        // if (!(wantedParameter->flags & TYPEINFOPARAM_FROM_GENERIC))
+        //     castFlags |= CASTFLAG_TRY_COERCE;
         castFlags |= forceCastFlags | CASTFLAG_PARAMS | CASTFLAG_PTR_REF;
 
         context.semContext->castFlagsResult   = 0;

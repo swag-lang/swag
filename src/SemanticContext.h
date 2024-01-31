@@ -74,6 +74,7 @@ struct OneMatch
 
     uint32_t matchFlags      = 0;
     uint32_t castFlagsResult = 0;
+    uint32_t prio            = 0;
 
     bool ufcs   = false;
     bool remove = false;
@@ -88,6 +89,7 @@ struct OneMatch
         typeWasForced   = nullptr;
         matchFlags      = 0;
         castFlagsResult = 0;
+        prio            = 0;
         ufcs            = false;
         remove          = false;
     }

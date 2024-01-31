@@ -309,6 +309,7 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
 
                 auto newParam      = newLambda->parameters[idx];
                 newParam->typeInfo = newType;
+                newParam->flags |= TYPEINFOPARAM_FROM_GENERIC;
             }
         }
 
