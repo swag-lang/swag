@@ -74,8 +74,9 @@ struct OneMatch
     uint32_t matchFlags      = 0;
     uint32_t castFlagsResult = 0;
 
-    bool ufcs   = false;
-    bool remove = false;
+    bool ufcs       = false;
+    bool autoOpCast = false;
+    bool remove     = false;
 
     void reset()
     {
@@ -87,6 +88,7 @@ struct OneMatch
         matchFlags      = 0;
         castFlagsResult = 0;
         ufcs            = false;
+        autoOpCast      = false;
         remove          = false;
     }
 };
