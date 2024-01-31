@@ -80,11 +80,11 @@ bool Semantic::filterMatches(SemanticContext* context, VectorNative<OneMatch*>& 
         }
 
         // Priority to 'ufcs'
-        if (curMatch->ufcs)
+        if (!curMatch->ufcs)
         {
             for (size_t j = 0; j < countMatches; j++)
             {
-                if (!matches[j]->ufcs)
+                if (matches[j]->ufcs)
                 {
                     curMatch->remove = true;
                     break;
@@ -478,7 +478,7 @@ bool Semantic::filterGenericMatches(SemanticContext* context, VectorNative<OneMa
         }
     }
 
-    // 'secondTry' is less prio than first ufcs try
+    // priority to 'ufcs'
     for (size_t i = 0; i < genMatches.size(); i++)
     {
         if (!genMatches[i]->ufcs)
