@@ -140,6 +140,19 @@ bool Semantic::filterMatches(SemanticContext* context, VectorNative<OneMatch*>& 
             }
         }
 
+        // Priority if no CASTFLAG_RESULT_STRUCT_CONVERT
+        if (curMatch->castFlagsResult & CASTFLAG_RESULT_STRUCT_CONVERT)
+        {
+            for (size_t j = 0; j < countMatches; j++)
+            {
+                if (!(matches[j]->castFlagsResult & CASTFLAG_RESULT_STRUCT_CONVERT))
+                {
+                    curMatch->remove = true;
+                    break;
+                }
+            }
+        }
+
         // Priority to a match without an auto cast
         if (curMatch->autoOpCast)
         {
@@ -173,19 +186,6 @@ bool Semantic::filterMatches(SemanticContext* context, VectorNative<OneMatch*>& 
             for (size_t j = 0; j < countMatches; j++)
             {
                 if (matches[j]->symbolOverload->flags & (OVERLOAD_VAR_LOCAL | OVERLOAD_VAR_FUNC_PARAM | OVERLOAD_VAR_INLINE))
-                {
-                    curMatch->remove = true;
-                    break;
-                }
-            }
-        }
-
-        // Priority if no CASTFLAG_RESULT_STRUCT_CONVERT
-        if (curMatch->oneOverload && curMatch->oneOverload->symMatchContext.castFlagsResult & CASTFLAG_RESULT_STRUCT_CONVERT)
-        {
-            for (size_t j = 0; j < countMatches; j++)
-            {
-                if (matches[j]->oneOverload && !(matches[j]->oneOverload->symMatchContext.castFlagsResult & CASTFLAG_RESULT_STRUCT_CONVERT))
                 {
                     curMatch->remove = true;
                     break;
