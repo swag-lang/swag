@@ -247,12 +247,12 @@ static void errorBadGenericSignature(SemanticContext* context, ErrorParam& error
     auto                     errorNode = match.genericParameters[bi.badSignatureParameterIdx];
 
     Diagnostic* diag;
-    if (match.flags & SymbolMatchContext::MATCH_ERROR_VALUE_TYPE)
+    if (match.matchFlags & SymbolMatchContext::MATCH_ERROR_VALUE_TYPE)
     {
         auto msg = Fmt(Err(Err0304));
         diag     = new Diagnostic{errorNode, msg};
     }
-    else if (match.flags & SymbolMatchContext::MATCH_ERROR_TYPE_VALUE)
+    else if (match.matchFlags & SymbolMatchContext::MATCH_ERROR_TYPE_VALUE)
     {
         auto msg = Fmt(Err(Err0305));
         diag     = new Diagnostic{errorNode, msg};
@@ -434,7 +434,7 @@ static int getBadParamIdx(const OneTryMatch& oneTry, AstNode* callParameters)
         badParamIdx--;
 
     // This is a closure with a generated first parameter
-    if (oneTry.symMatchContext.flags & SymbolMatchContext::MATCH_CLOSURE_PARAM)
+    if (oneTry.symMatchContext.matchFlags & SymbolMatchContext::MATCH_CLOSURE_PARAM)
         badParamIdx--;
 
     return badParamIdx;

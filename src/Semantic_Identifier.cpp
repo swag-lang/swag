@@ -766,7 +766,7 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext* context, SymbolMa
             context->closureFirstParam.kind     = AstNodeKind::FuncCallParam;
             context->closureFirstParam.typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
             symMatchContext.parameters.push_back(&context->closureFirstParam);
-            symMatchContext.flags |= SymbolMatchContext::MATCH_CLOSURE_PARAM;
+            symMatchContext.matchFlags |= SymbolMatchContext::MATCH_CLOSURE_PARAM;
         }
     }
 
@@ -1233,7 +1233,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
                 auto  tryMatch        = context->getTryMatch();
                 auto& symMatchContext = tryMatch->symMatchContext;
 
-                tryMatch->symMatchContext.flags |= forLambda ? SymbolMatchContext::MATCH_FOR_LAMBDA : 0;
+                tryMatch->symMatchContext.matchFlags |= forLambda ? SymbolMatchContext::MATCH_FOR_LAMBDA : 0;
 
                 tryMatch->genericParameters = identifier->genericParameters;
                 tryMatch->callParameters    = identifier->callParameters;

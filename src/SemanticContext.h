@@ -71,7 +71,8 @@ struct OneMatch
     OneTryMatch*    oneOverload    = nullptr;
     TypeInfo*       typeWasForced  = nullptr;
 
-    uint32_t flags = 0;
+    uint32_t matchFlags      = 0;
+    uint32_t castFlagsResult = 0;
 
     bool ufcs       = false;
     bool autoOpCast = false;
@@ -81,13 +82,14 @@ struct OneMatch
     {
         solvedParameters.clear();
         paramParameters.clear();
-        symbolOverload = nullptr;
-        dependentVar   = nullptr;
-        typeWasForced  = nullptr;
-        flags          = 0;
-        ufcs           = false;
-        autoOpCast     = false;
-        remove         = false;
+        symbolOverload  = nullptr;
+        dependentVar    = nullptr;
+        typeWasForced   = nullptr;
+        matchFlags      = 0;
+        castFlagsResult = 0;
+        ufcs            = false;
+        autoOpCast      = false;
+        remove          = false;
     }
 };
 
@@ -106,7 +108,8 @@ struct OneGenericMatch
 
     uint32_t numOverloadsWhenChecked     = 0;
     uint32_t numOverloadsInitWhenChecked = 0;
-    uint32_t flags                       = 0;
+    uint32_t matchFlags                  = 0;
+    uint32_t castFlagsResult             = 0;
     bool     ufcs                        = false;
 
     void reset()
@@ -122,7 +125,8 @@ struct OneGenericMatch
         genericParameters           = nullptr;
         numOverloadsWhenChecked     = 0;
         numOverloadsInitWhenChecked = 0;
-        flags                       = 0;
+        matchFlags                  = 0;
+        castFlagsResult             = 0;
         ufcs                        = false;
     }
 };

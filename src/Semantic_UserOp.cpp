@@ -597,7 +597,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
     auto sourceFile = context->sourceFile;
 
     SymbolMatchContext symMatchContext;
-    symMatchContext.flags |= SymbolMatchContext::MATCH_UNCONST; // Do not test const
+    symMatchContext.matchFlags |= SymbolMatchContext::MATCH_UNCONST; // Do not test const
     for (auto param : params)
         symMatchContext.parameters.push_back(param);
 

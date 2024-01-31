@@ -31,7 +31,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         if (i >= parameters.size() && !isAfterVariadic)
         {
             if (context.result == MatchResult::BadSignature &&
-                (context.flags & SymbolMatchContext::MATCH_UFCS) &&
+                (context.matchFlags & SymbolMatchContext::MATCH_UFCS) &&
                 context.badSignatureInfos.badSignatureParameterIdx == 0)
             {
                 return;
@@ -87,9 +87,9 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         }
 
         uint64_t castFlags = CASTFLAG_JUST_CHECK | CASTFLAG_ACCEPT_PENDING | CASTFLAG_FOR_AFFECT;
-        if (context.flags & SymbolMatchContext::MATCH_UNCONST)
+        if (context.matchFlags & SymbolMatchContext::MATCH_UNCONST)
             castFlags |= CASTFLAG_UNCONST;
-        if (context.flags & SymbolMatchContext::MATCH_UFCS && i == 0)
+        if (context.matchFlags & SymbolMatchContext::MATCH_UFCS && i == 0)
             castFlags |= CASTFLAG_UFCS;
         if (callParameter->semFlags & SEMFLAG_LITERAL_SUFFIX)
             castFlags |= CASTFLAG_LITERAL_SUFFIX;
@@ -107,7 +107,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         if (context.semContext->result != ContextResult::Done)
             return;
 
-        context.flags |= context.semContext->castFlagsResult;
+        context.castFlagsResult |= context.semContext->castFlagsResult;
         if (context.cptResolved < (int) context.doneParameters.size())
             context.doneParameters[context.cptResolved] = true;
 
@@ -312,10 +312,10 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
     if (!userGenericParams && wantedNumGenericParams)
     {
         if (myTypeInfo->isGeneric() ||
-            (context.flags & SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC) ||
+            (context.matchFlags & SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC) ||
             !context.genericReplaceTypes.empty())
         {
-            context.flags |= SymbolMatchContext::MATCH_GENERIC_AUTO;
+            context.matchFlags |= SymbolMatchContext::MATCH_GENERIC_AUTO;
             if (!myTypeInfo->isGeneric() || !context.parameters.size())
             {
                 for (int i = 0; i < wantedNumGenericParams; i++)
@@ -371,7 +371,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                     GenericReplaceType st;
                     st.typeInfoReplace                    = genType;
                     context.genericParametersCallTypes[i] = st;
-                    context.flags &= ~SymbolMatchContext::MATCH_GENERIC_AUTO;
+                    context.matchFlags &= ~SymbolMatchContext::MATCH_GENERIC_AUTO;
                 }
 
                 context.result = MatchResult::Ok;
@@ -401,7 +401,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                 {
                     // When we try to match an untyped generic lambda with a typed instance, we must fail.
                     // This will force a new instance with deduced types if necessary
-                    if (context.genericReplaceTypes.empty() && context.flags & SymbolMatchContext::MATCH_FOR_LAMBDA)
+                    if (context.genericReplaceTypes.empty() && context.matchFlags & SymbolMatchContext::MATCH_FOR_LAMBDA)
                     {
                         context.result = MatchResult::NotEnoughGenericParameters;
                         return;
@@ -486,7 +486,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                     context.badSignatureInfos.badSignatureRequestedType = symbolParameter->typeInfo;
                     context.badSignatureInfos.badSignatureGivenType     = typeInfo;
                     context.result                                      = MatchResult::BadGenericSignature;
-                    context.flags |= SymbolMatchContext::MATCH_ERROR_VALUE_TYPE;
+                    context.matchFlags |= SymbolMatchContext::MATCH_ERROR_VALUE_TYPE;
                     continue;
                 }
 
@@ -496,7 +496,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                     context.badSignatureInfos.badSignatureRequestedType = symbolParameter->typeInfo;
                     context.badSignatureInfos.badSignatureGivenType     = typeInfo;
                     context.result                                      = MatchResult::BadGenericSignature;
-                    context.flags |= SymbolMatchContext::MATCH_ERROR_TYPE_VALUE;
+                    context.matchFlags |= SymbolMatchContext::MATCH_ERROR_TYPE_VALUE;
                     continue;
                 }
 
@@ -586,7 +586,7 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
         return;
 
     // For a lambda
-    if (context.flags & SymbolMatchContext::MATCH_FOR_LAMBDA)
+    if (context.matchFlags & SymbolMatchContext::MATCH_FOR_LAMBDA)
     {
         if (!(typeFunc->flags & TYPEINFO_GENERIC))
             matchGenericParameters(context, typeFunc, typeFunc->genericParameters);

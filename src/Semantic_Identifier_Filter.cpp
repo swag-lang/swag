@@ -93,11 +93,11 @@ bool Semantic::filterMatches(SemanticContext* context, VectorNative<OneMatch*>& 
         }
 
         // Priority to a 'moveref' call
-        if (curMatch->flags & CASTFLAG_RESULT_AUTO_MOVE_OPAFFECT)
+        if (curMatch->castFlagsResult & CASTFLAG_RESULT_AUTO_MOVE_OPAFFECT)
         {
             for (size_t j = 0; j < countMatches; j++)
             {
-                if (!(matches[j]->flags & CASTFLAG_RESULT_AUTO_MOVE_OPAFFECT))
+                if (!(matches[j]->castFlagsResult & CASTFLAG_RESULT_AUTO_MOVE_OPAFFECT))
                 {
                     matches[j]->remove = true;
                 }
@@ -105,11 +105,11 @@ bool Semantic::filterMatches(SemanticContext* context, VectorNative<OneMatch*>& 
         }
 
         // Priority to a guess 'moveref' call
-        if (curMatch->flags & CASTFLAG_RESULT_GUESS_MOVE)
+        if (curMatch->castFlagsResult & CASTFLAG_RESULT_GUESS_MOVE)
         {
             for (size_t j = 0; j < countMatches; j++)
             {
-                if (!(matches[j]->flags & CASTFLAG_RESULT_GUESS_MOVE))
+                if (!(matches[j]->castFlagsResult & CASTFLAG_RESULT_GUESS_MOVE))
                 {
                     matches[j]->remove = true;
                 }
@@ -157,11 +157,11 @@ bool Semantic::filterMatches(SemanticContext* context, VectorNative<OneMatch*>& 
         }
 
         // Priority if no CASTFLAG_RESULT_STRUCT_CONVERT
-        if (curMatch->oneOverload && curMatch->oneOverload->symMatchContext.flags & CASTFLAG_RESULT_STRUCT_CONVERT)
+        if (curMatch->oneOverload && curMatch->oneOverload->symMatchContext.castFlagsResult & CASTFLAG_RESULT_STRUCT_CONVERT)
         {
             for (size_t j = 0; j < countMatches; j++)
             {
-                if (matches[j]->oneOverload && !(matches[j]->oneOverload->symMatchContext.flags & CASTFLAG_RESULT_STRUCT_CONVERT))
+                if (matches[j]->oneOverload && !(matches[j]->oneOverload->symMatchContext.castFlagsResult & CASTFLAG_RESULT_STRUCT_CONVERT))
                 {
                     curMatch->remove = true;
                     break;
@@ -468,7 +468,8 @@ bool Semantic::filterGenericMatches(SemanticContext* context, VectorNative<OneMa
         {
             if (genMatches[i]->genericReplaceTypes.size() < bestS)
             {
-                if (genMatches[i]->flags == genMatches[bestI]->flags)
+                if (genMatches[i]->matchFlags == genMatches[bestI]->matchFlags &&
+                    genMatches[i]->castFlagsResult == genMatches[bestI]->castFlagsResult)
                 {
                     genMatches[i] = genMatches.back();
                     genMatches.pop_back();
@@ -499,11 +500,11 @@ bool Semantic::filterGenericMatches(SemanticContext* context, VectorNative<OneMa
     // A match with a struct conversion is less prio
     for (size_t i = 0; i < genMatches.size(); i++)
     {
-        if (genMatches[i]->flags & CASTFLAG_RESULT_STRUCT_CONVERT)
+        if (genMatches[i]->castFlagsResult & CASTFLAG_RESULT_STRUCT_CONVERT)
         {
             for (size_t j = 0; j < genMatches.size(); j++)
             {
-                if (!(genMatches[j]->flags & CASTFLAG_RESULT_STRUCT_CONVERT))
+                if (!(genMatches[j]->castFlagsResult & CASTFLAG_RESULT_STRUCT_CONVERT))
                 {
                     genMatches[i] = genMatches.back();
                     genMatches.pop_back();
@@ -517,7 +518,7 @@ bool Semantic::filterGenericMatches(SemanticContext* context, VectorNative<OneMa
     // If there's one match, but we match with a untyped int conversion, and there's more than one
     // generic match. We must remove the match in order to raised on multiple overload error, otherwise
     // we can match or not with an untyped integer depending on instantiation order.
-    if (matches.size() == 1 && genMatches.size() > 1 && matches[0]->flags & CASTFLAG_RESULT_TYPE_CONVERT)
+    if (matches.size() == 1 && genMatches.size() > 1 && matches[0]->castFlagsResult & CASTFLAG_RESULT_TYPE_CONVERT)
     {
         matches.clear();
     }

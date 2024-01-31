@@ -1472,13 +1472,13 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
             {
                 auto typeInfo = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Struct);
                 if (!typeInfo->isGeneric())
-                    oneOverload.symMatchContext.flags |= SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC;
+                    oneOverload.symMatchContext.matchFlags |= SymbolMatchContext::MATCH_ACCEPT_NO_GENERIC;
             }
         }
 
         // This way, a special cast can be done for the first parameter of a function
         if (oneOverload.ufcs)
-            oneOverload.symMatchContext.flags |= SymbolMatchContext::MATCH_UFCS;
+            oneOverload.symMatchContext.matchFlags |= SymbolMatchContext::MATCH_UFCS;
 
         // We collect type replacements depending on where the identifier is
         Generic::setContextualGenericTypeReplacement(context, oneOverload, overload, flags);
@@ -1609,13 +1609,15 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                     match->dependentVar     = dependentVar;
                     match->ufcs             = oneOverload.ufcs;
                     match->oneOverload      = &oneOverload;
-                    match->flags            = oneOverload.symMatchContext.flags;
+                    match->matchFlags       = oneOverload.symMatchContext.matchFlags;
+                    match->castFlagsResult  = oneOverload.symMatchContext.castFlagsResult;
                     matches.push_back(match);
                     break;
                 }
 
                 auto* match                        = context->getOneGenericMatch();
-                match->flags                       = oneOverload.symMatchContext.flags;
+                match->matchFlags                  = oneOverload.symMatchContext.matchFlags;
+                match->castFlagsResult             = oneOverload.symMatchContext.castFlagsResult;
                 match->symbolName                  = symbol;
                 match->symbolOverload              = overload;
                 match->genericParametersCallTypes  = std::move(oneOverload.symMatchContext.genericParametersCallTypes);
@@ -1666,7 +1668,8 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                     match->autoOpCast       = oneOverload.symMatchContext.autoOpCast;
                     match->oneOverload      = &oneOverload;
                     match->typeWasForced    = typeWasForced;
-                    match->flags            = oneOverload.symMatchContext.flags;
+                    match->matchFlags       = oneOverload.symMatchContext.matchFlags;
+                    match->castFlagsResult  = oneOverload.symMatchContext.castFlagsResult;
 
                     // As indexParam and resolvedParameter are directly stored in the node, we need to save them
                     // with the corresponding match, as they can be overwritten by another match attempt

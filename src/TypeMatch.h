@@ -104,7 +104,8 @@ struct SymbolMatchContext
 
     SemanticContext* semContext = nullptr;
 
-    uint32_t    flags;
+    uint32_t    matchFlags;
+    uint32_t    castFlagsResult;
     MatchResult result;
     int         cptResolved;
     uint32_t    firstDefault;
@@ -133,10 +134,11 @@ struct SymbolMatchContext
 
         semContext = nullptr;
 
-        flags        = 0;
-        result       = MatchResult::Ok;
-        cptResolved  = 0;
-        firstDefault = UINT32_MAX;
+        matchFlags      = 0;
+        castFlagsResult = 0;
+        result          = MatchResult::Ok;
+        cptResolved     = 0;
+        firstDefault    = UINT32_MAX;
 
         hasNamedParameters = false;
         autoOpCast         = false;
