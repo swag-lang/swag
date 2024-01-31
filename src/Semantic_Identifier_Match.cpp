@@ -1406,6 +1406,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                 match->symbolOverload   = overload;
                 match->scope            = oneMatch->scope;
                 match->solvedParameters = std::move(oneOverload.symMatchContext.solvedParameters);
+                match->solvedCastFlags  = std::move(oneOverload.symMatchContext.solvedCastFlags);
                 match->dependentVar     = dependentVar;
                 match->ufcs             = oneOverload.ufcs;
                 matches.push_back(match);
@@ -1606,6 +1607,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                     auto match              = context->getOneMatch();
                     match->symbolOverload   = overload;
                     match->solvedParameters = std::move(oneOverload.symMatchContext.solvedParameters);
+                    match->solvedCastFlags  = std::move(oneOverload.symMatchContext.solvedCastFlags);
                     match->dependentVar     = dependentVar;
                     match->ufcs             = oneOverload.ufcs;
                     match->oneOverload      = &oneOverload;
@@ -1626,6 +1628,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                 match->genericReplaceValues        = std::move(oneOverload.symMatchContext.genericReplaceValues);
                 match->parameters                  = std::move(oneOverload.symMatchContext.parameters);
                 match->solvedParameters            = std::move(oneOverload.symMatchContext.solvedParameters);
+                match->solvedCastFlags             = std::move(oneOverload.symMatchContext.solvedCastFlags);
                 match->genericParameters           = genericParameters;
                 match->numOverloadsWhenChecked     = oneOverload.cptOverloads;
                 match->numOverloadsInitWhenChecked = oneOverload.cptOverloadsInit;
@@ -1663,6 +1666,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                     auto match              = context->getOneMatch();
                     match->symbolOverload   = overload;
                     match->solvedParameters = std::move(oneOverload.symMatchContext.solvedParameters);
+                    match->solvedCastFlags  = std::move(oneOverload.symMatchContext.solvedCastFlags);
                     match->dependentVar     = dependentVar;
                     match->ufcs             = oneOverload.ufcs;
                     match->autoOpCast       = oneOverload.symMatchContext.autoOpCast;

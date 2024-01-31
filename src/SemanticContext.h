@@ -63,6 +63,7 @@ struct OneMatch
     };
 
     VectorNative<TypeInfoParam*> solvedParameters;
+    VectorNative<uint32_t>       solvedCastFlags;
     VectorNative<ParamParameter> paramParameters;
 
     SymbolOverload* symbolOverload = nullptr;
@@ -81,6 +82,7 @@ struct OneMatch
     void reset()
     {
         solvedParameters.clear();
+        solvedCastFlags.clear();
         paramParameters.clear();
         symbolOverload  = nullptr;
         dependentVar    = nullptr;
@@ -102,6 +104,7 @@ struct OneGenericMatch
 
     VectorNative<AstNode*>       parameters;
     VectorNative<TypeInfoParam*> solvedParameters;
+    VectorNative<uint32_t>       solvedCastFlags;
     SymbolName*                  symbolName        = nullptr;
     SymbolOverload*              symbolOverload    = nullptr;
     AstNode*                     genericParameters = nullptr;
@@ -120,6 +123,7 @@ struct OneGenericMatch
         genericReplaceValues.clear();
         parameters.clear();
         solvedParameters.clear();
+        solvedCastFlags.clear();
         symbolName                  = nullptr;
         symbolOverload              = nullptr;
         genericParameters           = nullptr;
