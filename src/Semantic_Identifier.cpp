@@ -1244,7 +1244,6 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
                 tryMatch->ufcs              = ufcsFirstParam || hasForcedUfcs;
                 tryMatch->cptOverloads      = oneOver.cptOverloads;
                 tryMatch->cptOverloadsInit  = oneOver.cptOverloadsInit;
-                tryMatch->secondTry         = tryUfcs == 1;
 
                 SWAG_CHECK(fillMatchContextCallParameters(context, symMatchContext, identifier, symbolOverload, ufcsFirstParam));
                 YIELD();

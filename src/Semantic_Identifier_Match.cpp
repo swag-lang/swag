@@ -1608,7 +1608,6 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                     match->solvedParameters = std::move(oneOverload.symMatchContext.solvedParameters);
                     match->dependentVar     = dependentVar;
                     match->ufcs             = oneOverload.ufcs;
-                    match->secondTry        = oneOverload.secondTry;
                     match->oneOverload      = &oneOverload;
                     match->flags            = oneOverload.symMatchContext.flags;
                     matches.push_back(match);
@@ -1628,7 +1627,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                 match->genericParameters           = genericParameters;
                 match->numOverloadsWhenChecked     = oneOverload.cptOverloads;
                 match->numOverloadsInitWhenChecked = oneOverload.cptOverloadsInit;
-                match->secondTry                   = oneOverload.secondTry;
+                match->ufcs                        = oneOverload.ufcs;
                 if (overload->node->flags & AST_HAS_SELECT_IF && overload->node->kind == AstNodeKind::FuncDecl)
                     genericMatchesSI.push_back(match);
                 else
@@ -1664,7 +1663,6 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                     match->solvedParameters = std::move(oneOverload.symMatchContext.solvedParameters);
                     match->dependentVar     = dependentVar;
                     match->ufcs             = oneOverload.ufcs;
-                    match->secondTry        = oneOverload.secondTry;
                     match->autoOpCast       = oneOverload.symMatchContext.autoOpCast;
                     match->oneOverload      = &oneOverload;
                     match->typeWasForced    = typeWasForced;
