@@ -12,6 +12,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
     // One boolean per used parameter
     context.doneParameters.set_size_clear((int) parameters.size());
     context.solvedParameters.set_size_clear((int) parameters.size());
+    context.solvedCastFlags.set_size_clear((int) parameters.size());
     context.solvedCallParameters.set_size_clear((int) parameters.size());
     context.resetTmp();
 
@@ -139,6 +140,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         {
             context.solvedParameters[context.cptResolved]     = wantedParameter;
             context.solvedCallParameters[context.cptResolved] = wantedParameter;
+            context.solvedCastFlags[context.cptResolved]      = context.semContext->castFlagsResult;
         }
 
         if (callParameter->kind == AstNodeKind::FuncCallParam)
