@@ -6,6 +6,19 @@
 #include "SemanticJob.h"
 #include "TypeManager.h"
 
+static void cleanMatches(VectorNative<OneMatch*>& matches)
+{
+    for (size_t i = 0; i < matches.size(); i++)
+    {
+        if (matches[i]->remove)
+        {
+            matches[i] = matches.back();
+            matches.pop_back();
+            i--;
+        }
+    }
+}
+
 bool Semantic::filterMatches(SemanticContext* context, VectorNative<OneMatch*>& matches)
 {
     auto node         = context->node;
@@ -23,6 +36,7 @@ bool Semantic::filterMatches(SemanticContext* context, VectorNative<OneMatch*>& 
         }
     }
 
+    // Direct elimination of a match
     for (size_t i = 0; i < countMatches; i++)
     {
         auto curMatch = matches[i];
@@ -62,9 +76,19 @@ bool Semantic::filterMatches(SemanticContext* context, VectorNative<OneMatch*>& 
                 continue;
             }
         }
+    }
 
-        if (countMatches == 1)
-            return true;
+    cleanMatches(matches);
+    countMatches = matches.size();
+    if (countMatches == 1)
+        return true;
+
+    // Priorities
+    for (size_t i = 0; i < countMatches; i++)
+    {
+        auto curMatch = matches[i];
+        auto over     = curMatch->symbolOverload;
+        auto overSym  = over->symbol;
 
         // In case of an alias, we take the first one, which should be the 'closest' one.
         // Not sure this is true, perhaps one day will have to change the way we find it.
@@ -370,17 +394,7 @@ bool Semantic::filterMatches(SemanticContext* context, VectorNative<OneMatch*>& 
         }
     }
 
-    // Eliminate all matches tag as 'remove'
-    for (size_t i = 0; i < matches.size(); i++)
-    {
-        if (matches[i]->remove)
-        {
-            matches[i] = matches.back();
-            matches.pop_back();
-            i--;
-        }
-    }
-
+    cleanMatches(matches);
     return true;
 }
 
