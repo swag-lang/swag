@@ -179,6 +179,9 @@ namespace Semantic
     bool           filterMatchesInContext(SemanticContext* context, VectorNative<OneMatch*>& matches);
     bool           solveValidIf(SemanticContext* context, AstStruct* structDecl);
     bool           solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl);
+    bool           filterMatchesDirect(SemanticContext* context, VectorNative<OneMatch*>& matches);
+    bool           filterMatchesCompare(SemanticContext* context, VectorNative<OneMatch*>& matches);
+    bool           filterMatchesPrio(SemanticContext* context, VectorNative<OneMatch*>& matches);
     bool           filterMatches(SemanticContext* context, VectorNative<OneMatch*>& matches);
     bool           filterSymbols(SemanticContext* context, AstIdentifier* node);
     void           flattenStructChilds(SemanticContext* context, AstNode* parent, VectorNative<AstNode*>& result);
