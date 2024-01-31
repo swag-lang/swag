@@ -1669,7 +1669,6 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                     match->solvedCastFlags  = std::move(oneOverload.symMatchContext.solvedCastFlags);
                     match->dependentVar     = dependentVar;
                     match->ufcs             = oneOverload.ufcs;
-                    match->autoOpCast       = oneOverload.symMatchContext.autoOpCast;
                     match->oneOverload      = &oneOverload;
                     match->typeWasForced    = typeWasForced;
                     match->matchFlags       = oneOverload.symMatchContext.matchFlags;
@@ -1711,7 +1710,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
     // to create an instance with the exact type.
     // We only test the first match here, because the filtering of matches would have remove it if some other instances
     // without autoOpCast are present.
-    if (matches.size() > 0 && matches[0]->autoOpCast && (genericMatches.size() > 0 || genericMatchesSI.size() > 0))
+    if (matches.size() > 0 && (matches[0]->castFlagsResult & CASTFLAG_RESULT_GEN_AUTO_OPCAST) && (genericMatches.size() > 0 || genericMatchesSI.size() > 0))
     {
         prevMatchesCount = 0;
         matches.clear();

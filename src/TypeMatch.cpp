@@ -598,7 +598,7 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
     // Very special case because of automatic cast and generics.
     // We match in priority without an implicit automatic cast. If this does not match, then we
     // try with an implicit cast.
-    context.autoOpCast = false;
+    context.castFlagsResult &= ~CASTFLAG_RESULT_GEN_AUTO_OPCAST;
     if (typeFunc->declNode && typeFunc->declNode->kind == AstNodeKind::FuncDecl)
     {
         auto funcNode = CastAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
@@ -621,7 +621,9 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
 
                 // We have a match with an automatic cast (opAffect or opCast).
                 if (context.result == MatchResult::Ok)
-                    context.autoOpCast = true;
+                {
+                    context.castFlagsResult |= CASTFLAG_RESULT_GEN_AUTO_OPCAST;
+                }
             }
             else
             {

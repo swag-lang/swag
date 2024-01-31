@@ -112,7 +112,6 @@ struct SymbolMatchContext
     uint32_t    firstDefault;
 
     bool hasNamedParameters;
-    bool autoOpCast;
 
     SymbolMatchContext()
     {
@@ -143,7 +142,6 @@ struct SymbolMatchContext
         firstDefault    = UINT32_MAX;
 
         hasNamedParameters = false;
-        autoOpCast         = false;
     }
 
     void resetTmp()

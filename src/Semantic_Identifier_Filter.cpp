@@ -154,11 +154,11 @@ bool Semantic::filterMatches(SemanticContext* context, VectorNative<OneMatch*>& 
         }
 
         // Priority to a match without an auto cast
-        if (curMatch->autoOpCast)
+        if (curMatch->castFlagsResult & CASTFLAG_RESULT_GEN_AUTO_OPCAST)
         {
             for (size_t j = 0; j < countMatches; j++)
             {
-                if (!matches[j]->autoOpCast)
+                if (!(matches[j]->castFlagsResult & CASTFLAG_RESULT_GEN_AUTO_OPCAST))
                 {
                     curMatch->remove = true;
                     break;
