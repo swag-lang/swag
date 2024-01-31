@@ -155,6 +155,19 @@ bool Semantic::filterMatchesCompare(SemanticContext* context, VectorNative<OneMa
             }
         }
 
+        // Priority to no coerce
+        if (curMatch->castFlagsResult & CASTFLAG_RESULT_COERCE)
+        {
+            for (size_t j = 0; j < countMatches; j++)
+            {
+                if (!(matches[j]->castFlagsResult & CASTFLAG_RESULT_COERCE))
+                {
+                    curMatch->remove = true;
+                    break;
+                }
+            }
+        }
+
         // Priority to a non empty function
         if (over->node->isEmptyFct())
         {
