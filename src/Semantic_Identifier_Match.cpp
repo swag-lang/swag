@@ -1701,8 +1701,8 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
     YIELD();
     SWAG_CHECK(filterMatchesInContext(context, matches));
     YIELD();
-    //SWAG_CHECK(filterMatchesPrio(context, matches));
-    //YIELD();
+    // SWAG_CHECK(filterMatchesPrio(context, matches));
+    // YIELD();
     SWAG_CHECK(filterGenericMatches(context, matches, genericMatches));
     YIELD();
     SWAG_CHECK(filterGenericMatches(context, matches, genericMatchesSI));

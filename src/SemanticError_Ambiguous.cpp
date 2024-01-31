@@ -5,7 +5,7 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 
-bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& overloads, VectorNative<OneGenericMatch*>& genericMatches)
+bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& overloads, VectorNative<OneMatch*>& genericMatches)
 {
     auto symbol = overloads[0]->overload->symbol;
     if (!node)

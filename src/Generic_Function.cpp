@@ -51,7 +51,7 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
     structJob->dependentJobs.add(newJob);
 }
 
-bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool validif)
+bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneMatch& match, bool validif)
 {
     auto node = context->node;
 

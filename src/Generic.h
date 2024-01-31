@@ -6,7 +6,7 @@ struct AstVarDecl;
 struct CloneContext;
 struct Job;
 struct OneTryMatch;
-struct OneGenericMatch;
+struct OneMatch;
 struct SemanticContext;
 struct SymbolMatchContext;
 struct SymbolName;
@@ -23,7 +23,7 @@ struct GenericReplaceType
 
 namespace Generic
 {
-    bool         replaceGenericParameters(SemanticContext* context, bool doType, bool doNode, VectorNative<TypeInfoParam*>& typeGenericParameters, VectorNative<AstNode*>& nodeGenericParameters, AstNode* callGenericParameters, OneGenericMatch& match);
+    bool         replaceGenericParameters(SemanticContext* context, bool doType, bool doNode, VectorNative<TypeInfoParam*>& typeGenericParameters, VectorNative<AstNode*>& nodeGenericParameters, AstNode* callGenericParameters, OneMatch& match);
     TypeInfo*    replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& replaceTypes, TypeInfo* typeInfo);
     Job*         end(SemanticContext* context, Job* dependentJob, SymbolName* symbol, AstNode* newNode, bool waitSymbol, VectorMap<Utf8, GenericReplaceType>& replaceTypes);
     void         deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, TypeInfo*& callTypeInfo, VectorNative<TypeInfo*>& wantedTypeInfos, VectorNative<TypeInfo*>& callTypeInfos, AstNode* callParameter);
@@ -31,13 +31,13 @@ namespace Generic
     void         deduceGenericTypes(SymbolMatchContext& context, AstNode* callParameter, TypeInfo* callTypeInfo, TypeInfo* wantedTypeInfo, int idxParam, uint64_t castFlags);
     void         setContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload, uint32_t flags);
     void         setUserGenericTypeReplacement(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& genericParameters);
-    void         checkCanInstantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch);
-    bool         instantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch, bool forStruct);
+    void         checkCanInstantiateGenericSymbol(SemanticContext* context, OneMatch& firstMatch);
+    bool         instantiateGenericSymbol(SemanticContext* context, OneMatch& firstMatch, bool forStruct);
     Vector<Utf8> computeGenericParametersReplacement(VectorMap<Utf8, GenericReplaceType>& replace);
 
     void instantiateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, AstFuncDecl** funcNode);
-    bool instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool& alias);
-    bool instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool validif = false);
+    bool instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneMatch& match, bool& alias);
+    bool instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneMatch& match, bool validif = false);
     bool instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl* node);
     bool instantiateDefaultGenericFunc(SemanticContext* context);
 }; // namespace Generic

@@ -245,7 +245,7 @@ bool Semantic::waitForStructUserOps(SemanticContext* context, AstNode* node)
     return true;
 }
 
-void Semantic::waitForGenericParameters(SemanticContext* context, OneGenericMatch& match)
+void Semantic::waitForGenericParameters(SemanticContext* context, OneMatch& match)
 {
     for (auto it : match.genericReplaceTypes)
     {

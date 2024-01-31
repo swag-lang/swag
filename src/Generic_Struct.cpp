@@ -59,7 +59,7 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
     return context->report({node, Fmt(Err(Err0086), node->typeInfo->getDisplayNameC())});
 }
 
-bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneGenericMatch& match, bool& alias)
+bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneMatch& match, bool& alias)
 {
     auto node = context->node;
     SWAG_VERIFY(!match.genericReplaceTypes.empty(), context->report({node, Fmt(Err(Err0301), node->token.ctext())}));

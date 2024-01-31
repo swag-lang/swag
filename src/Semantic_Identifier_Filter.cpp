@@ -466,7 +466,7 @@ bool Semantic::filterMatches(SemanticContext* context, VectorNative<OneMatch*>& 
     return true;
 }
 
-static bool areGenericReplaceTypesIdentical(TypeInfo* typeInfo, OneGenericMatch& match)
+static bool areGenericReplaceTypesIdentical(TypeInfo* typeInfo, OneMatch& match)
 {
     if (typeInfo->kind != TypeInfoKind::FuncAttr)
         return false;
@@ -500,7 +500,7 @@ static int scopeCost(Scope* from, Scope* to)
     return cost;
 }
 
-bool Semantic::filterGenericMatches(SemanticContext* context, VectorNative<OneMatch*>& matches, VectorNative<OneGenericMatch*>& genMatches)
+bool Semantic::filterGenericMatches(SemanticContext* context, VectorNative<OneMatch*>& matches, VectorNative<OneMatch*>& genMatches)
 {
     // We have a match and more than one generic match
     // We need to be sure than instantiated another generic match will not be better than keeping
@@ -610,7 +610,7 @@ bool Semantic::filterGenericMatches(SemanticContext* context, VectorNative<OneMa
     // instantiate 'without' autoOpCast, because it would result in a autoOpCast too).
     if (matches.size() && genMatches.size())
     {
-        VectorNative<OneGenericMatch*> newGenericMatches;
+        VectorNative<OneMatch*> newGenericMatches;
         newGenericMatches.reserve((int) genMatches.size());
         for (size_t im = 0; im < matches.size(); im++)
         {

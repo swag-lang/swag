@@ -10,7 +10,7 @@ void SemanticContext::release()
     for (auto p : cacheFreeTryMatch)
         Allocator::free<OneTryMatch>(p);
     for (auto p : cacheFreeGenericMatches)
-        Allocator::free<OneGenericMatch>(p);
+        Allocator::free<OneMatch>(p);
     for (auto p : cacheFreeMatches)
         Allocator::free<OneMatch>(p);
     tmpConcat.release();
@@ -60,10 +60,10 @@ void SemanticContext::clearGenericMatch()
     cacheGenericMatchesSI.clear();
 }
 
-OneGenericMatch* SemanticContext::getOneGenericMatch()
+OneMatch* SemanticContext::getOneGenericMatch()
 {
     if (cacheFreeGenericMatches.empty())
-        return Allocator::alloc<OneGenericMatch>();
+        return Allocator::alloc<OneMatch>();
     auto res = cacheFreeGenericMatches.back();
     cacheFreeGenericMatches.pop_back();
     res->reset();

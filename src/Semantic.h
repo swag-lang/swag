@@ -54,7 +54,7 @@ namespace Semantic
     void waitOverloadCompleted(Job* job, SymbolOverload* overload);
     void waitFuncDeclFullResolve(Job* job, AstFuncDecl* funcDecl);
     void waitTypeCompleted(Job* job, TypeInfo* typeInfo);
-    void waitForGenericParameters(SemanticContext* context, OneGenericMatch& match);
+    void waitForGenericParameters(SemanticContext* context, OneMatch& match);
 
     bool valueEqualsTo(const ComputedValue* value, AstNode* node);
     bool valueEqualsTo(const ComputedValue* value1, const ComputedValue* value2, TypeInfo* typeInfo, uint64_t flags);
@@ -175,7 +175,7 @@ namespace Semantic
     bool           findEnumTypeInContext(SemanticContext* context, AstNode* node, VectorNative<TypeInfoEnum*>& result, VectorNative<std::pair<AstNode*, TypeInfoEnum*>>& has, VectorNative<SymbolOverload*>& testedOver);
     void           addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, uint32_t asflags);
     bool           ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match);
-    bool           filterGenericMatches(SemanticContext* context, VectorNative<OneMatch*>& matches, VectorNative<OneGenericMatch*>& genMatches);
+    bool           filterGenericMatches(SemanticContext* context, VectorNative<OneMatch*>& matches, VectorNative<OneMatch*>& genMatches);
     bool           filterMatchesInContext(SemanticContext* context, VectorNative<OneMatch*>& matches);
     bool           solveValidIf(SemanticContext* context, AstStruct* structDecl);
     bool           solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFuncDecl* funcDecl);

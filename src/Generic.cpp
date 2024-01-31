@@ -37,7 +37,7 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
     return newJob;
 }
 
-void Generic::checkCanInstantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch)
+void Generic::checkCanInstantiateGenericSymbol(SemanticContext* context, OneMatch& firstMatch)
 {
     auto symbol = firstMatch.symbolName;
 
@@ -58,7 +58,7 @@ void Generic::checkCanInstantiateGenericSymbol(SemanticContext* context, OneGene
     Semantic::waitForGenericParameters(context, firstMatch);
 }
 
-bool Generic::instantiateGenericSymbol(SemanticContext* context, OneGenericMatch& firstMatch, bool forStruct)
+bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& firstMatch, bool forStruct)
 {
     auto       node              = context->node;
     auto&      matches           = context->cacheMatches;

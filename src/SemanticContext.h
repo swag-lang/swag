@@ -62,58 +62,31 @@ struct OneMatch
         TypeInfoParam*    resolvedParameter;
     };
 
-    VectorNative<TypeInfoParam*> solvedParameters;
-    VectorNative<uint32_t>       solvedCastFlags;
-    VectorNative<ParamParameter> paramParameters;
-
-    SymbolOverload* symbolOverload = nullptr;
-    Scope*          scope          = nullptr;
-    AstNode*        dependentVar   = nullptr;
-    OneTryMatch*    oneOverload    = nullptr;
-    TypeInfo*       typeWasForced  = nullptr;
-
-    uint32_t matchFlags      = 0;
-    uint32_t castFlagsResult = 0;
-    uint32_t prio            = 0;
-
-    bool ufcs   = false;
-    bool remove = false;
-
-    void reset()
-    {
-        solvedParameters.clear();
-        solvedCastFlags.clear();
-        paramParameters.clear();
-        symbolOverload  = nullptr;
-        dependentVar    = nullptr;
-        typeWasForced   = nullptr;
-        matchFlags      = 0;
-        castFlagsResult = 0;
-        prio            = 0;
-        ufcs            = false;
-        remove          = false;
-    }
-};
-
-struct OneGenericMatch
-{
     VectorNative<GenericReplaceType>    genericParametersCallTypes;
     VectorNative<ComputedValue*>        genericParametersCallValues;
     VectorMap<Utf8, GenericReplaceType> genericReplaceTypes;
     VectorMap<Utf8, ComputedValue*>     genericReplaceValues;
+    VectorNative<TypeInfoParam*>        solvedParameters;
+    VectorNative<uint32_t>              solvedCastFlags;
+    VectorNative<ParamParameter>        paramParameters;
+    VectorNative<AstNode*>              parameters;
 
-    VectorNative<AstNode*>       parameters;
-    VectorNative<TypeInfoParam*> solvedParameters;
-    VectorNative<uint32_t>       solvedCastFlags;
-    SymbolName*                  symbolName        = nullptr;
-    SymbolOverload*              symbolOverload    = nullptr;
-    AstNode*                     genericParameters = nullptr;
+    SymbolName*     symbolName        = nullptr;
+    SymbolOverload* symbolOverload    = nullptr;
+    Scope*          scope             = nullptr;
+    AstNode*        dependentVar      = nullptr;
+    OneTryMatch*    oneOverload       = nullptr;
+    TypeInfo*       typeWasForced     = nullptr;
+    AstNode*        genericParameters = nullptr;
 
-    uint32_t numOverloadsWhenChecked     = 0;
-    uint32_t numOverloadsInitWhenChecked = 0;
     uint32_t matchFlags                  = 0;
     uint32_t castFlagsResult             = 0;
-    bool     ufcs                        = false;
+    uint32_t prio                        = 0;
+    uint32_t numOverloadsWhenChecked     = 0;
+    uint32_t numOverloadsInitWhenChecked = 0;
+
+    bool ufcs   = false;
+    bool remove = false;
 
     void reset()
     {
@@ -121,17 +94,26 @@ struct OneGenericMatch
         genericParametersCallValues.clear();
         genericReplaceTypes.clear();
         genericReplaceValues.clear();
-        parameters.clear();
         solvedParameters.clear();
         solvedCastFlags.clear();
-        symbolName                  = nullptr;
-        symbolOverload              = nullptr;
-        genericParameters           = nullptr;
-        numOverloadsWhenChecked     = 0;
-        numOverloadsInitWhenChecked = 0;
+        paramParameters.clear();
+        parameters.clear();
+        symbolName        = nullptr;
+        symbolOverload    = nullptr;
+        scope             = nullptr;
+        dependentVar      = nullptr;
+        oneOverload       = nullptr;
+        typeWasForced     = nullptr;
+        genericParameters = nullptr;
+
         matchFlags                  = 0;
         castFlagsResult             = 0;
-        ufcs                        = false;
+        prio                        = 0;
+        numOverloadsWhenChecked     = 0;
+        numOverloadsInitWhenChecked = 0;
+
+        ufcs   = false;
+        remove = false;
     }
 };
 
@@ -158,13 +140,13 @@ struct OneSymbolMatch
 
 struct SemanticContext : public JobContext
 {
-    void             release();
-    void             clearTryMatch();
-    OneTryMatch*     getTryMatch();
-    void             clearMatch();
-    OneMatch*        getOneMatch();
-    void             clearGenericMatch();
-    OneGenericMatch* getOneGenericMatch();
+    void         release();
+    void         clearTryMatch();
+    OneTryMatch* getTryMatch();
+    void         clearMatch();
+    OneMatch*    getOneMatch();
+    void         clearGenericMatch();
+    OneMatch*    getOneGenericMatch();
 
     Vector<CastStructStructField>     castStructStructFields;
     Vector<CastCollectInterfaceField> castCollectInterfaceField;
@@ -182,9 +164,9 @@ struct SemanticContext : public JobContext
     VectorNative<OneOverload>         cacheToSolveOverload;
     VectorNative<OneMatch*>           cacheMatches;
     VectorNative<OneMatch*>           cacheFreeMatches;
-    VectorNative<OneGenericMatch*>    cacheGenericMatches;
-    VectorNative<OneGenericMatch*>    cacheGenericMatchesSI;
-    VectorNative<OneGenericMatch*>    cacheFreeGenericMatches;
+    VectorNative<OneMatch*>           cacheGenericMatches;
+    VectorNative<OneMatch*>           cacheGenericMatchesSI;
+    VectorNative<OneMatch*>           cacheFreeGenericMatches;
     VectorNative<OneTryMatch*>        cacheListTryMatch;
     VectorNative<OneTryMatch*>        cacheFreeTryMatch;
     VectorNative<AlternativeScope>    scopesToProcess;

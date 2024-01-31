@@ -14,7 +14,7 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
                                        VectorNative<TypeInfoParam*>& typeGenericParameters,
                                        VectorNative<AstNode*>&       nodeGenericParameters,
                                        AstNode*                      callGenericParameters,
-                                       OneGenericMatch&              match)
+                                       OneMatch&                     match)
 {
     for (size_t i = 0; i < typeGenericParameters.size(); i++)
     {
