@@ -236,7 +236,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
 
     // :ConcreteRef
     TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo, CONCRETE_ALIAS);
-    TypeInfo* rightTypeInfo = getConcreteTypeUnRef(right, CONCRETE_ALIAS);
+    TypeInfo* rightTypeInfo = getConcreteTypeUnRef(right, CONCRETE_FUNC | CONCRETE_ALIAS);
     if (right->semFlags & SEMFLAG_FROM_REF)
         leftTypeInfo = getConcreteTypeUnRef(left, CONCRETE_ALIAS);
     else if (leftTypeInfo->isPointerRef() && !rightTypeInfo->isPointerRef())

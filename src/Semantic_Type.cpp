@@ -723,7 +723,7 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
 
     // When we cast from a structure to an interface, we need to be sure that every interfaces are
     // registered in the structure type, otherwise the cast can fail depending on the compile order
-    exprNode->typeInfo = getConcreteTypeUnRef(exprNode, CONCRETE_ALIAS);
+    exprNode->typeInfo = getConcreteTypeUnRef(exprNode, CONCRETE_FUNC | CONCRETE_ALIAS);
     auto exprTypeInfo  = exprNode->typeInfo;
     if (typeNode->typeInfo->isInterface() && exprTypeInfo->isStruct())
     {
