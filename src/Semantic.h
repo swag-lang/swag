@@ -182,7 +182,6 @@ namespace Semantic
     bool           filterMatchesDirect(SemanticContext* context, VectorNative<OneMatch*>& matches);
     bool           filterMatchesCompare(SemanticContext* context, VectorNative<OneMatch*>& matches);
     bool           filterMatchesPrio(SemanticContext* context, VectorNative<OneMatch*>& matches);
-    bool           filterMatches(SemanticContext* context, VectorNative<OneMatch*>& matches);
     bool           filterSymbols(SemanticContext* context, AstIdentifier* node);
     void           flattenStructChilds(SemanticContext* context, AstNode* parent, VectorNative<AstNode*>& result);
     bool           setFullResolve(SemanticContext* context, AstFuncDecl* funcNode);

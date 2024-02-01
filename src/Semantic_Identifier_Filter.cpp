@@ -24,6 +24,18 @@ bool Semantic::filterMatchesDirect(SemanticContext* context, VectorNative<OneMat
     auto node         = context->node;
     auto countMatches = matches.size();
 
+    // Sometimes we don't care about multiple symbols with the same name
+    if (countMatches > 1 && node->parent && node->parent->parent)
+    {
+        auto grandParent = node->parent->parent;
+        if (grandParent->kind == AstNodeKind::IntrinsicDefined ||
+            (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicNameOf))
+        {
+            matches.count = 1;
+            return true;
+        }
+    }
+
     for (size_t i = 0; i < countMatches; i++)
     {
         auto curMatch = matches[i];
@@ -65,14 +77,17 @@ bool Semantic::filterMatchesDirect(SemanticContext* context, VectorNative<OneMat
         }
     }
 
+    cleanMatches(matches);
     return true;
 }
 
 bool Semantic::filterMatchesCompare(SemanticContext* context, VectorNative<OneMatch*>& matches)
 {
-    auto node         = context->node;
     auto countMatches = matches.size();
+    if (countMatches <= 1)
+        return true;
 
+    auto node = context->node;
     for (size_t i = 0; i < countMatches; i++)
     {
         auto curMatch = matches[i];
@@ -396,6 +411,7 @@ bool Semantic::filterMatchesCompare(SemanticContext* context, VectorNative<OneMa
         }
     }
 
+    cleanMatches(matches);
     return true;
 }
 
@@ -412,7 +428,7 @@ bool Semantic::filterMatchesPrio(SemanticContext* context, VectorNative<OneMatch
         m->prio = 0;
         for (auto flags : m->solvedCastFlags)
         {
-            if (!(flags & CASTFLAG_RESULT_COERCE))
+            if (!(flags & CASTFLAG_RESULT_COERCE) || (flags & CASTFLAG_RESULT_UNTYPED_CONVERT))
                 continue;
             m->prio++;
         }
@@ -432,37 +448,6 @@ bool Semantic::filterMatchesPrio(SemanticContext* context, VectorNative<OneMatch
     }
 
     cleanMatches(matches);
-    return true;
-}
-
-bool Semantic::filterMatches(SemanticContext* context, VectorNative<OneMatch*>& matches)
-{
-    auto node         = context->node;
-    auto countMatches = matches.size();
-
-    // Sometimes we don't care about multiple symbols with the same name
-    if (countMatches > 1 && node->parent && node->parent->parent)
-    {
-        auto grandParent = node->parent->parent;
-        if (grandParent->kind == AstNodeKind::IntrinsicDefined ||
-            (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicNameOf))
-        {
-            matches.count = 1;
-            return true;
-        }
-    }
-
-    SWAG_CHECK(filterMatchesDirect(context, matches));
-    YIELD();
-    cleanMatches(matches);
-    if (matches.size() <= 1)
-        return true;
-
-    SWAG_CHECK(filterMatchesCompare(context, matches));
-    cleanMatches(matches);
-    if (matches.size() <= 1)
-        return true;
-
     return true;
 }
 

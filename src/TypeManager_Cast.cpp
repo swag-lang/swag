@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Ast.h"
+#include "AstFlags.h"
 #include "ByteCodeGen.h"
 #include "Diagnostic.h"
 #include "Module.h"
@@ -7,7 +8,6 @@
 #include "Semantic.h"
 #include "SemanticError.h"
 #include "TypeManager.h"
-#include "AstFlags.h"
 
 bool TypeManager::castToNativeBool(SemanticContext* context, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {

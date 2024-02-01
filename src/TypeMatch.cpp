@@ -96,8 +96,8 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             castFlags |= CASTFLAG_LITERAL_SUFFIX;
         if (callParameter->flags & AST_TRANSIENT && wantedTypeInfo->isPointerMoveRef())
             castFlags |= CASTFLAG_ACCEPT_MOVE_REF;
-        // if (!(wantedParameter->flags & TYPEINFOPARAM_FROM_GENERIC))
-        //     castFlags |= CASTFLAG_TRY_COERCE;
+        if (!(wantedParameter->flags & TYPEINFOPARAM_FROM_GENERIC))
+            castFlags |= CASTFLAG_TRY_COERCE;
         castFlags |= forceCastFlags | CASTFLAG_PARAMS | CASTFLAG_PTR_REF;
 
         context.semContext->castFlagsResult   = 0;
@@ -604,20 +604,15 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
     if (typeFunc->declNode && typeFunc->declNode->kind == AstNodeKind::FuncDecl)
     {
         auto funcNode = CastAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
-
-        uint32_t castFlags = CASTFLAG_DEFAULT;
-        if (!funcNode->canOverload())
-            castFlags |= CASTFLAG_TRY_COERCE;
-
         if (funcNode->parameters && (funcNode->parameters->flags & AST_IS_GENERIC))
         {
             SymbolMatchContext cpyContext = context;
-            matchParametersAndNamed(cpyContext, typeFunc->parameters, castFlags);
+            matchParametersAndNamed(cpyContext, typeFunc->parameters, CASTFLAG_DEFAULT);
             if (cpyContext.semContext->result != ContextResult::Done)
                 return;
             if (cpyContext.result == MatchResult::BadSignature)
             {
-                matchParametersAndNamed(context, typeFunc->parameters, castFlags | CASTFLAG_AUTO_OPCAST);
+                matchParametersAndNamed(context, typeFunc->parameters, CASTFLAG_AUTO_OPCAST);
                 if (context.semContext->result != ContextResult::Done)
                     return;
 
@@ -634,7 +629,7 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
         }
         else
         {
-            matchParametersAndNamed(context, typeFunc->parameters, castFlags | CASTFLAG_AUTO_OPCAST);
+            matchParametersAndNamed(context, typeFunc->parameters, CASTFLAG_AUTO_OPCAST);
         }
     }
     else

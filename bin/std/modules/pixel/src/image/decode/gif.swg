@@ -192,7 +192,7 @@ impl Decoder
 
     mtd initTable(keySize: s32)
     {
-        table.bulk = Math.max(1 << (keySize + 1), 0x100)
+        table.bulk = Math.max(1 << (keySize + 1), 0x100's32)
         table.nentries = (1 << keySize) + 2
         table.entries.resize(table.bulk)
         loop key: 1 << keySize do

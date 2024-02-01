@@ -1697,16 +1697,18 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
     }
 
     auto prevMatchesCount = matches.size();
-    SWAG_CHECK(filterMatches(context, matches));
+    SWAG_CHECK(filterMatchesDirect(context, matches));
     YIELD();
+    SWAG_CHECK(filterMatchesCompare(context, matches));
     SWAG_CHECK(filterMatchesInContext(context, matches));
-    YIELD();
     SWAG_CHECK(filterMatchesPrio(context, matches));
-    YIELD();
+
     SWAG_CHECK(filterGenericMatches(context, matches, genericMatches));
-    YIELD();
     SWAG_CHECK(filterGenericMatches(context, matches, genericMatchesSI));
-    YIELD();
+    SWAG_CHECK(filterMatchesPrio(context, genericMatches));
+    SWAG_CHECK(filterMatchesPrio(context, genericMatchesSI));
+
+    SWAG_ASSERT(context->result == ContextResult::Done);
 
     // If to match an instance, we always need an automatic opCast, then we only keep generic matches in order
     // to create an instance with the exact type.

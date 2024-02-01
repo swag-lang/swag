@@ -679,17 +679,14 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
         return true;
 
     auto oneMatch = context->cacheMatches[0];
-
-    uint64_t castFlags = CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_UFCS | CASTFLAG_ACCEPT_PENDING | CASTFLAG_PARAMS;
-    auto     funcNode  = CastAst<AstFuncDecl>(oneMatch->oneOverload->overload->node, AstNodeKind::FuncDecl);
-    if (!funcNode->canOverload())
-        castFlags |= CASTFLAG_TRY_COERCE;
-
     for (size_t i = 0; i < params.size(); i++)
     {
         if (i < oneMatch->solvedParameters.size() && oneMatch->solvedParameters[i])
         {
-            auto toType = oneMatch->solvedParameters[i]->typeInfo;
+            auto     toType    = oneMatch->solvedParameters[i]->typeInfo;
+            uint64_t castFlags = CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_UFCS | CASTFLAG_ACCEPT_PENDING | CASTFLAG_PARAMS;
+            if (!(oneMatch->solvedParameters[i]->flags & TYPEINFOPARAM_FROM_GENERIC))
+                castFlags |= CASTFLAG_TRY_COERCE;
             SWAG_CHECK(TypeManager::makeCompatibles(context, toType, nullptr, params[i], castFlags));
             YIELD();
 
