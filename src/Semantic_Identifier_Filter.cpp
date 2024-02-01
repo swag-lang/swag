@@ -412,14 +412,14 @@ bool Semantic::filterMatchesPrio(SemanticContext* context, VectorNative<OneMatch
         m->prio = 0;
         for (auto flags : m->solvedCastFlags)
         {
-            if (flags & CASTFLAG_RESULT_COERCE)
+            if (!(flags & CASTFLAG_RESULT_COERCE))
                 continue;
             m->prio++;
         }
     }
 
     sort(matches.begin(), matches.end(), [](OneMatch* x, OneMatch* y)
-         { return x->prio > y->prio; });
+         { return x->prio < y->prio; });
 
     auto prio = matches[0]->prio;
     for (auto m : matches)
@@ -427,7 +427,7 @@ bool Semantic::filterMatchesPrio(SemanticContext* context, VectorNative<OneMatch
         if (m->symbolOverload->symbol->kind != SymbolKind::Function)
             continue;
 
-        if (m->prio < prio)
+        if (m->prio > prio)
             m->remove = true;
     }
 
