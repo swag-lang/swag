@@ -10,14 +10,14 @@ impl Duration
     #[Swag.Overload]
     mtd opAffect(v: s32)
     {
-        @assert(v == 6)
+        @assert(v == 4)
     }
 
     #[Swag.Implicit]
     #[Swag.Overload]
     mtd opAffect(v: f32)
     {
-        @assert(v == 6)
+        @assert(v == 4)
     }
 }
 
