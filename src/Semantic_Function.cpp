@@ -945,7 +945,7 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
     if (!(funcNode->flags & AST_FROM_GENERIC))
     {
         SharedLock lk(funcNode->ownerScope->symTable.mutex);
-        if (funcNode->resolvedSymbolName->overloads.size() > 1 && !funcNode->canOverload())
+        if (funcNode->resolvedSymbolName->overloads.size() > 1 && !(funcNode->attributeFlags & ATTRIBUTE_OVERLOAD))
         {
             AstFuncDecl* other = nullptr;
             for (auto n : funcNode->resolvedSymbolName->nodes)

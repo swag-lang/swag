@@ -944,7 +944,7 @@ func @strlen(str: cstring)->u64;
 func @strcmp(str1, str2: cstring)->s32;
 
 // Atomic operations
-#[Swag.Discardable]
+#[Swag.Discardable, Swag.Overload]
 {
     // Atomic 'add'
     func @atomadd(addr: *s8, value: s8)->s8;
@@ -1008,7 +1008,7 @@ func @strcmp(str1, str2: cstring)->s32;
 }
 
 // Constant intrinsics
-#[Swag.ConstExpr]
+#[Swag.ConstExpr, Swag.Overload]
 {
     func @sqrt(value: f32)->f32;
     func @sqrt(value: f64)->f64;

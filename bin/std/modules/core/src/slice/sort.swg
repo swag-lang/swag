@@ -85,6 +85,7 @@ func(T) quickSort(values: [..] T, cb: closure(T, T)->s32)
 
 // Sort the slice, by picking the right algorithm depending on the type and the
 // number of elements
+#[Swag.Overload]
 func(T) sort(values: [..] T, bigFirst = false)
 {
     if bigFirst do
@@ -95,6 +96,7 @@ func(T) sort(values: [..] T, bigFirst = false)
 
 // Sort the slice, by picking the right algorithm depending on the type and the
 // number of elements
+#[Swag.Overload]
 func(T) sort(values: [..] T, cb: closure(T, T)->s32)
 {
     Debug.assert(cb != null)
@@ -105,12 +107,14 @@ func(T) sort(values: [..] T, cb: closure(T, T)->s32)
 }
 
 // Returns true if the slice is sorted
+#[Swag.Overload]
 func(T) isSorted(values: const [..] T)->bool
 {
     return isSorted(values, func(x, y: T)->s32 => x <=> y)
 }
 
 // Returns true if the slice is sorted
+#[Swag.Overload]
 func(T) isSorted(values: const [..] T, cb: closure(T, T)->s32)->bool
 {
     Debug.assert(cb != null)

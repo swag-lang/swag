@@ -225,18 +225,19 @@ impl Wnd
         mtd getFont()           => style.getFont()
     }
 
-    #[Swag.Inline]
+    #[Swag.Inline, Swag.Overload]
     func(T) create(parent: *Wnd = null, id: WndId = null, hook: HookEvent = null)->*T
     {
         return create(parent, "", {}, id: id, hook: hook)
     }
 
-    #[Swag.Inline]
+    #[Swag.Inline, Swag.Overload]
     func(T) create(parent: *Wnd, position: Math.Rectangle, id: WndId = null, hook: HookEvent = null)->*T
     {
         return create(parent, "", position, id: id, hook: hook)
     }
 
+    #[Swag.Overload]
     func(T) create(parent: *Wnd, name: string, position: Math.Rectangle, id: WndId = null, hook: HookEvent = null)->*T
     {
         let res = Memory.new'T()

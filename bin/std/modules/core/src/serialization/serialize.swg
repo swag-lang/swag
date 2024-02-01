@@ -89,7 +89,7 @@ impl Serializer
     }
 
     // Serialize one value
-    #[Swag.Optim("", false)]
+    #[Swag.Optim("", false), Swag.Overload]
     mtd(MT) serialize(name: string, crc32: u32, res: *MT) throw
     {
         var value: Swag.TypeValue
@@ -161,7 +161,7 @@ impl Serializer
     }
 
     // Serialize one value
-    #[Swag.Mixin]
+    #[Swag.Mixin, Swag.Overload]
     mtd(MT) serialize(name: string, res: *MT) throw
     {
         serialize(name, Hash.Crc32.compute(name), res)

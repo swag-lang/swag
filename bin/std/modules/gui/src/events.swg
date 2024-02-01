@@ -50,6 +50,7 @@ struct Event
 
 impl Event
 {
+    #[Swag.Overload]
     func(T) create()->*T
     {
         let res = Memory.new'T()
@@ -57,6 +58,7 @@ impl Event
         return res
     }
 
+    #[Swag.Overload]
     func(T) create(kind: EventKind)->*T
     {
         let res = Memory.new'T()

@@ -178,25 +178,6 @@ bool AstFuncDecl::mustInline()
     return mustUserInline() || mustAutoInline();
 }
 
-bool AstFuncDecl::canOverload()
-{
-    if (attributeFlags & ATTRIBUTE_OVERLOAD)
-        return true;
-    if (token.text[0] == '@')
-        return true;
-
-    if (genericParameters)
-    {
-        auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
-        for (auto p : typeFct->genericParameters)
-            if (!(p->flags & TYPEINFOPARAM_GENERIC_CONSTANT))
-                return true;
-        return false;
-    }
-
-    return false;
-}
-
 Utf8 AstFuncDecl::getCallName()
 {
     if (attributeFlags & (ATTRIBUTE_FOREIGN | ATTRIBUTE_PUBLIC))
