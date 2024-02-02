@@ -173,6 +173,16 @@ bool Semantic::setupIdentifierRef(SemanticContext* context, AstNode* node)
     if (!(identifierRef->semFlags & SEMFLAG_TYPE_SOLVED))
         identifierRef->typeInfo = typeInfo;
 
+    // Deref
+    if (node->typeInfo->isFuncAttr() || node->typeInfo->isLambdaClosure())
+    {
+        if (scopeType->isPointerRef() && node != identifierRef->childs.back())
+        {
+            setUnRef(node);
+            scopeType = TypeManager::concretePtrRef(scopeType);
+        }
+    }
+
     switch (scopeType->kind)
     {
     case TypeInfoKind::Enum:

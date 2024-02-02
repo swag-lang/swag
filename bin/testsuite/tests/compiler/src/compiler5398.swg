@@ -24,6 +24,7 @@ impl A
     var a: A
     a.ptr[0] = &b
 
-    let c = a.toto().x //= 4
-    @assert(c == 6)
+    @assert(b.x == 6)
+    a.toto().x = 4
+    @assert(b.x == 4)
 }
