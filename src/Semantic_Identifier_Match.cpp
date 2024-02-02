@@ -182,8 +182,9 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
             toType = oneMatch.solvedParameters[i]->typeInfo;
             SWAG_CHECK(TypeManager::makeCompatibles(context, toType, nullptr, nodeCall, castFlags));
             YIELD();
-
-            if (!toType->isPointerRef() && nodeCall->typeInfo->isPointerRef())
+            
+            auto typeCall = TypeManager::concreteType(nodeCall->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
+            if (!toType->isPointerRef() && typeCall->isPointerRef())
             {
                 // :ConcreteRef
                 setUnRef(nodeCall);
