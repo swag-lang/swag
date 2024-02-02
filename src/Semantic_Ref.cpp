@@ -556,7 +556,17 @@ bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
 
             // There's a 'opIndex' function
             if (node->hasExtMisc() && node->extMisc()->resolvedUserOpSymbolOverload)
-                typeReturn = TypeManager::concretePtrRefType(node->extMisc()->resolvedUserOpSymbolOverload->typeInfo);
+                typeReturn = TypeManager::concreteType(node->extMisc()->resolvedUserOpSymbolOverload->typeInfo);
+
+            // Unref
+            if (typeReturn->isPointerRef() && !(node->semFlags & SEMFLAG_FROM_REF))
+            {
+                auto returnType = CastTypeInfo<TypeInfoPointer>(typeReturn, TypeInfoKind::Pointer)->pointedType;
+                if (returnType->isPointer())
+                    node->semFlags |= SEMFLAG_FROM_PTR_REF;
+            }
+
+            typeReturn = TypeManager::concretePtrRefType(typeReturn);
 
             // Get the pointed type if we have a pointer
             if (typeReturn->isPointer())
