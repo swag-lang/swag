@@ -3314,6 +3314,12 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
         }
     }
 
+    if (context->result != ContextResult::Done)
+    {
+        SWAG_ASSERT(castFlags & CASTFLAG_ACCEPT_PENDING);
+        return true;
+    }
+
     // Const mismatch
     if (!toType->isKindGeneric() && !toType->isLambdaClosure() && !(castFlags & CASTFLAG_FORCE_UNCONST))
     {

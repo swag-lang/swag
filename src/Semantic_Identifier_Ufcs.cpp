@@ -28,7 +28,7 @@ bool Semantic::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, 
                                                     ufcsNode->typeInfo,
                                                     nullptr,
                                                     ufcsNode,
-                                                    CASTFLAG_JUST_CHECK | CASTFLAG_UFCS);
+                                                    CASTFLAG_JUST_CHECK | CASTFLAG_UFCS | CASTFLAG_ACCEPT_PENDING);
     if (context->result != ContextResult::Done)
         return false;
 

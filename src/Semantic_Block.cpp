@@ -289,7 +289,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
 
     SWAG_CHECK(checkIsConcrete(context, node->expression));
 
-    node->expression->typeInfo = getConcreteTypeUnRef(node->expression, CONCRETE_ALIAS);
+    node->expression->typeInfo = getConcreteTypeUnRef(node->expression, CONCRETE_FUNC | CONCRETE_ALIAS);
     node->typeInfo             = node->expression->typeInfo;
 
     auto typeSwitch = TypeManager::concreteType(node->typeInfo);
@@ -426,7 +426,7 @@ bool Semantic::resolveCase(SemanticContext* context)
     auto node = CastAst<AstSwitchCase>(context->node, AstNodeKind::SwitchCase);
     for (auto oneExpression : node->expressions)
     {
-        oneExpression->typeInfo = getConcreteTypeUnRef(oneExpression, CONCRETE_ALIAS);
+        oneExpression->typeInfo = getConcreteTypeUnRef(oneExpression, CONCRETE_FUNC | CONCRETE_ALIAS);
 
         // Range
         if (oneExpression->kind == AstNodeKind::Range)

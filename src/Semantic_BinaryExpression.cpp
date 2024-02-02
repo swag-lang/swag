@@ -988,12 +988,12 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
     YIELD();
 
     // Special case for enum : nothing is possible, except for flags
-    TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo, CONCRETE_ALIAS);
-    TypeInfo* rightTypeInfo = getConcreteTypeUnRef(right, CONCRETE_ALIAS);
+    TypeInfo* leftTypeInfo  = TypeManager::concreteType(left->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
+    TypeInfo* rightTypeInfo = getConcreteTypeUnRef(right, CONCRETE_FUNC | CONCRETE_ALIAS);
     if (right->semFlags & SEMFLAG_FROM_REF)
-        leftTypeInfo = getConcreteTypeUnRef(left, CONCRETE_ALIAS);
+        leftTypeInfo = getConcreteTypeUnRef(left, CONCRETE_FUNC | CONCRETE_ALIAS);
     else if (leftTypeInfo->isPointerRef() && !rightTypeInfo->isPointerRef())
-        leftTypeInfo = getConcreteTypeUnRef(left, CONCRETE_ALIAS);
+        leftTypeInfo = getConcreteTypeUnRef(left, CONCRETE_FUNC | CONCRETE_ALIAS);
     SWAG_ASSERT(leftTypeInfo);
     SWAG_ASSERT(rightTypeInfo);
 

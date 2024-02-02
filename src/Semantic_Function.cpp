@@ -1530,7 +1530,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
             YIELD();
         }
 
-        uint64_t castFlags = CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT | CASTFLAG_PTR_REF;
+        uint64_t castFlags = CASTFLAG_UNCONST | CASTFLAG_AUTO_OPCAST | CASTFLAG_TRY_COERCE | CASTFLAG_FOR_AFFECT | CASTFLAG_PTR_REF | CASTFLAG_ACCEPT_PENDING;
 
         if (funcNode->attributeFlags & ATTRIBUTE_AST_FUNC)
         {
@@ -1538,6 +1538,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
                               { return Nte(Nte0134); },
                               true};
             SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
+            YIELD();
         }
         else if (funcNode->attributeFlags & ATTRIBUTE_SHARP_FUNC)
         {
@@ -1545,6 +1546,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
                               { return Fmt(Nte(Nte0007), returnType->getDisplayNameC()); },
                               true};
             SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
+            YIELD();
         }
         else
         {
@@ -1554,6 +1556,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
             PushErrCxtStep ec{context, nodeErr, ErrCxtStepKind::Note, [returnType]()
                               { return Fmt(Nte(Nte0007), returnType->getDisplayNameC()); }};
             SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
+            YIELD();
         }
     }
 

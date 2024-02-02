@@ -525,7 +525,8 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
     // Must not make types compatible for a struct, as we can compare a struct with whatever other type in a opEquals function.
     else if (!leftTypeInfo->isStruct() && !rightTypeInfo->isStruct())
     {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COMMUTATIVE | CASTFLAG_FORCE_UNCONST | CASTFLAG_FOR_COMPARE | CASTFLAG_TRY_COERCE));
+        SWAG_CHECK(TypeManager::makeCompatibles(context, left, right, CASTFLAG_COMMUTATIVE | CASTFLAG_FORCE_UNCONST | CASTFLAG_FOR_COMPARE | CASTFLAG_TRY_COERCE | CASTFLAG_ACCEPT_PENDING));
+        YIELD();
     }
 
     // Struct is on the right, so we need to inverse the test
