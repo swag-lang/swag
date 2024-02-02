@@ -19,7 +19,6 @@ impl A
 
 #[Swag.Optim("", false)]
 #[Swag.Safety("", false)]
-//#[Swag.PrintBc]
 #test
 {
     var b: B
