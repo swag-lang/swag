@@ -1,4 +1,4 @@
-#global skip
+//#global skip
 struct B
 {
     x: s32 = 6
@@ -19,6 +19,7 @@ impl A
 
 #[Swag.Optim("", false)]
 #[Swag.Safety("", false)]
+//#[Swag.PrintBc]
 #test
 {
     var b: B
@@ -28,7 +29,6 @@ impl A
     @assert(b.x == 6)
     var idx = -1
     idx += 1
-    if a[idx].x == 6 do
-        a[0].x = 4
+    a[idx].x = 4
     @assert(b.x == 4)
 }

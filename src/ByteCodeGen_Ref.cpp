@@ -262,7 +262,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
         SWAG_CHECK(emitCast(context, node->access, node->access->typeInfo, node->access->castedTypeInfo));
         YIELD();
         if (node->semFlags & SEMFLAG_FROM_PTR_REF)
-            EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST2(context, ByteCodeOp::DeRef64, node->array->resultRegisterRC, node->array->resultRegisterRC);
         node->access->semFlags |= SEMFLAG_CAST3;
     }
 
