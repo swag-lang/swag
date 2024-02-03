@@ -182,7 +182,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
             toType = oneMatch.solvedParameters[i]->typeInfo;
             SWAG_CHECK(TypeManager::makeCompatibles(context, toType, nullptr, nodeCall, castFlags));
             YIELD();
-            
+
             auto typeCall = TypeManager::concreteType(nodeCall->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
             if (!toType->isPointerRef() && typeCall->isPointerRef())
             {
@@ -389,7 +389,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 context->baseJob->nodes.push_back(newParam);
                 context->baseJob->nodes.push_back(varNode);
 
-                // If call is inlined, then the identifier will be reevaluated, so the new variable, which is a child of
+                // If call is inline, then the identifier will be reevaluated, so the new variable, which is a child of
                 // that identifier, will be reevaluated too (so twice because of the push above).
                 // So we set a special flag to not reevaluate it twice.
                 varNode->semFlags |= SEMFLAG_ONCE;
@@ -910,6 +910,10 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                     if (canOptimAffect)
                         castFlags |= CASTFLAG_NO_TUPLE_TO_STRUCT;
                     SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters[idx]->typeInfo, nullptr, nodeCall, castFlags));
+
+                    auto typeCall = TypeManager::concreteType(nodeCall->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
+                    if (!oneMatch.solvedParameters[idx]->typeInfo->isPointerRef() && typeCall->isPointerRef())
+                        setUnRef(nodeCall);
                 }
             }
         }
