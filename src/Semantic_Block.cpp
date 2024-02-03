@@ -588,10 +588,10 @@ bool Semantic::resolveVisit(SemanticContext* context)
     if (!typeInfo->isEnum())
         SWAG_CHECK(checkIsConcrete(context, node->expression));
     if (typeInfo->isListArray())
-        typeInfo = g_TypeMgr->convertTypeListToArray(context, (TypeInfoList*) typeInfo, node->expression->flags & AST_CONST_EXPR);
+        typeInfo = TypeManager::convertTypeListToArray(context, (TypeInfoList*) typeInfo, node->expression->flags & AST_CONST_EXPR);
 
     // Be sure that aliases are not defined elsewhere
-    for (auto c : node->aliasNames)
+    for (const auto& c : node->aliasNames)
     {
         auto id   = createTmpId(context, node, c.text);
         id->token = c;
@@ -608,6 +608,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         AstIdentifierRef* identifierRef = nullptr;
         AstIdentifier*    callVisit     = nullptr;
         AstVarDecl*       varNode       = nullptr;
+
         if (node->expression->kind != AstNodeKind::IdentifierRef)
         {
             varNode = Ast::newVarDecl(sourceFile, Fmt("__9tmp_%d", g_UniqueID.fetch_add(1)), node);
@@ -621,7 +622,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         }
         else
         {
-            identifierRef = (AstIdentifierRef*) Ast::clone(node->expression, node);
+            identifierRef = (AstIdentifierRef*) Ast::cloneRaw(node->expression, node);
             newExpression = identifierRef;
         }
 

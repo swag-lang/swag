@@ -59,10 +59,12 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 
     // This should not be copied. It will be recomputed if necessary.
     // This can cause some problems with inline functions and autocast, as inline functions are evaluated
-    // as functions, and also each time they are inlined.
+    // as functions, and also each time they are inline.
     if (context.cloneFlags & CLONE_RAW)
     {
         semFlags |= from->semFlags & SEMFLAG_USER_CAST;
+        semFlags |= from->semFlags & SEMFLAG_FROM_REF;
+        semFlags |= from->semFlags & SEMFLAG_FROM_PTR_REF;
         castedTypeInfo = from->castedTypeInfo;
     }
 
