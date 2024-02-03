@@ -396,7 +396,10 @@ bool Semantic::resolveRange(SemanticContext* context)
 
     auto typeInfo = TypeManager::concreteType(node->expressionLow->typeInfo);
     if (!typeInfo->isNativeIntegerOrRune() && !typeInfo->isNativeFloat())
-        return context->report({node->expressionLow, Fmt(Err(Err0364), node->expressionLow->typeInfo->getDisplayNameC())});
+    {
+        Diagnostic diag{node->expressionLow, Fmt(Err(Err0364), node->expressionLow->typeInfo->getDisplayNameC())};
+        return context->report(diag, Diagnostic::note(Nte(Nte0200)));
+    }
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, node->expressionLow, node->expressionUp, CASTFLAG_COMMUTATIVE));
 
