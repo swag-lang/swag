@@ -198,6 +198,12 @@ bool ByteCodeGen::emitIntrinsicCountOf(ByteCodeGenContext* context, AstNode* nod
         return true;
     }
 
+    if (typeInfo->isNative(NativeTypeKind::U64))
+    {
+        node->resultRegisterRC = expr->resultRegisterRC;
+        return true;
+    }
+
     return Report::internalError(context->node, "emitIntrinsicCountOf, type not supported");
 }
 

@@ -268,10 +268,8 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
     typeInfo = TypeManager::concretePtrRefType(typeInfo);
     if (typeInfo->isString())
     {
-        // :ConcreteRef
-        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
-
-        node->typeInfo = g_TypeMgr->typeInfoU64;
+        expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
+        node->typeInfo       = g_TypeMgr->typeInfoU64;
         if (expression->hasComputedValue())
         {
             node->setFlagsValueIsComputed();
@@ -288,9 +286,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
     }
     else if (typeInfo->isArray())
     {
-        // :ConcreteRef
-        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
-
+        expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
         node->setFlagsValueIsComputed();
         auto typeArray               = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         node->computedValue->reg.u64 = typeArray->count;
@@ -301,8 +297,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
     }
     else if (typeInfo->isSlice())
     {
-        // :ConcreteRef
-        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
+        expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
 
         // :SliceLiteral
         // Slice literal. This can happen for enum values
@@ -323,10 +318,8 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
     }
     else if (typeInfo->isListTuple() || typeInfo->isListArray())
     {
-        // :ConcreteRef
-        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
-
-        auto typeList = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
+        expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
+        auto typeList        = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = typeList->subTypes.size();
         if (node->computedValue->reg.u64 > UINT32_MAX)
@@ -351,8 +344,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
     }
     else
     {
-        // :ConcreteRef
-        expression->typeInfo = getConcreteTypeUnRef(expression, 0);
+        expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
         node->inheritComputedValue(expression);
         node->typeInfo = expression->typeInfo;
 
@@ -383,6 +375,10 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
                     break;
                 }
             }
+        }
+        else if (!node->byteCodeFct)
+        {
+            node->byteCodeFct = ByteCodeGen::emitIntrinsicCountOf;
         }
 
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, typeInfo, nullptr, node, CASTFLAG_TRY_COERCE));

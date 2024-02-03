@@ -1748,11 +1748,6 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
         }
     }
 
-    if (fromType->isPointerRef())
-    {
-        fromType = concretePtrRef(fromType);
-    }
-
     return castToNative(context, toType, fromType, fromNode, castFlags);
 }
 
@@ -3271,6 +3266,9 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
     if (!result)
     {
+        if (!toType->isPointer() && fromType->isPointerRef())
+            fromType = concretePtrRef(fromType);
+
         switch (toType->kind)
         {
             // Cast to pointer
