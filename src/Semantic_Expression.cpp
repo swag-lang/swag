@@ -394,8 +394,11 @@ bool Semantic::resolveRange(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, node->expressionLow));
     SWAG_CHECK(checkIsConcrete(context, node->expressionUp));
 
-    auto typeInfo = TypeManager::concreteType(node->expressionLow->typeInfo);
-    if (!typeInfo->isNativeIntegerOrRune() && !typeInfo->isNativeFloat())
+    node->expressionLow->typeInfo = getConcreteTypeUnRef(node->expressionLow, CONCRETE_FUNC | CONCRETE_ALIAS);
+    node->expressionUp->typeInfo  = getConcreteTypeUnRef(node->expressionUp, CONCRETE_FUNC | CONCRETE_ALIAS);
+
+    auto leftTypeInfo = TypeManager::concreteType(node->expressionLow->typeInfo);
+    if (!leftTypeInfo->isNativeIntegerOrRune() && !leftTypeInfo->isNativeFloat())
     {
         Diagnostic diag{node->expressionLow, Fmt(Err(Err0364), node->expressionLow->typeInfo->getDisplayNameC())};
         return context->report(diag, Diagnostic::note(Nte(Nte0200)));
