@@ -1,8 +1,8 @@
 #pragma once
-#include "Tokenizer.h"
 #include "AstFlags.h"
-#include "Scope.h"
 #include "ErrorContext.h"
+#include "Scope.h"
+#include "Tokenizer.h"
 
 struct SourceFile;
 struct AstVarDecl;

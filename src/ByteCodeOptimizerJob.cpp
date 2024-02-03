@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "ByteCodeOptimizer.h"
 #include "ByteCodeOptimizerJob.h"
+#include "ByteCodeOptimizer.h"
 #include "Module.h"
 #include "Statistics.h"
 #include "Timer.h"

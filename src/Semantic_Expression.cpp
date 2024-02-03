@@ -1,13 +1,13 @@
 #include "pch.h"
-#include "Semantic.h"
-#include "ByteCodeGen.h"
 #include "Ast.h"
-#include "TypeManager.h"
-#include "LanguageSpec.h"
-#include "ErrorIds.h"
-#include "Diagnostic.h"
-#include "Symbol.h"
 #include "AstFlags.h"
+#include "ByteCodeGen.h"
+#include "Diagnostic.h"
+#include "ErrorIds.h"
+#include "LanguageSpec.h"
+#include "Semantic.h"
+#include "Symbol.h"
+#include "TypeManager.h"
 
 bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* expression, const Utf8& errMsg, const Utf8& errParam)
 {

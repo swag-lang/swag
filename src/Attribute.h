@@ -1,7 +1,7 @@
 #pragma once
-#include "Tokenizer.h"
-#include "RaceCondition.h"
 #include "ComputedValue.h"
+#include "RaceCondition.h"
+#include "Tokenizer.h"
 
 struct TypeInfo;
 

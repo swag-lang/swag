@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "ByteCodeOptimizer.h"
 #include "AstNode.h"
-#include "SourceFile.h"
+#include "ByteCodeOptimizer.h"
 #include "Module.h"
+#include "SourceFile.h"
 
 // Eliminate unnecessary jumps
 bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)

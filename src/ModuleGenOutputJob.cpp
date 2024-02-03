@@ -2,8 +2,8 @@
 #include "ModuleGenOutputJob.h"
 #include "Backend.h"
 #include "Module.h"
-#include "Timer.h"
 #include "Statistics.h"
+#include "Timer.h"
 
 JobResult ModuleGenOutputJob::execute()
 {

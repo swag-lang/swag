@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "Ast.h"
-#include "Module.h"
 #include "Parser.h"
+#include "Ast.h"
 #include "Diagnostic.h"
-#include "Scoped.h"
 #include "JobThread.h"
-#include "TypeManager.h"
+#include "Module.h"
 #include "Naming.h"
+#include "Scoped.h"
+#include "TypeManager.h"
 #ifdef SWAG_STATS
 #include "Timer.h"
 #endif

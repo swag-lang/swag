@@ -1,14 +1,14 @@
 #include "pch.h"
-#include "SCBE.h"
-#include "SCBE_Coff.h"
-#include "SCBE_Macros.h"
+#include "AstFlags.h"
 #include "ByteCode.h"
 #include "ByteCodeGen.h"
 #include "LanguageSpec.h"
 #include "Module.h"
 #include "Report.h"
+#include "SCBE.h"
+#include "SCBE_Coff.h"
+#include "SCBE_Macros.h"
 #include "TypeManager.h"
-#include "AstFlags.h"
 
 void SCBE::computeUnwind(const VectorNative<CPURegister>& unwindRegs,
                          const VectorNative<uint32_t>&    unwindOffsetRegs,

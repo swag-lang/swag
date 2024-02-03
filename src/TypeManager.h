@@ -1,6 +1,6 @@
 #pragma once
-#include "TypeInfo.h"
 #include "Statistics.h"
+#include "TypeInfo.h"
 
 struct AstNode;
 struct SourceFile;

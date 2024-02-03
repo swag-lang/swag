@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "TypeInfo.h"
 #include "AstNode.h"
-#include "TypeManager.h"
 #include "Scope.h"
+#include "TypeManager.h"
 
 void TypeInfo::clearName()
 {

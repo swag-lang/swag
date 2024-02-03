@@ -1,6 +1,6 @@
 #pragma once
-#include "Mutex.h"
 #include "Job.h"
+#include "Mutex.h"
 
 struct JobGroup
 {

@@ -1,13 +1,13 @@
 #include "pch.h"
-#include "Semantic.h"
-#include "ByteCodeGen.h"
-#include "Module.h"
 #include "Ast.h"
+#include "AstFlags.h"
+#include "ByteCodeGen.h"
 #include "Diagnostic.h"
 #include "LanguageSpec.h"
+#include "Module.h"
 #include "Naming.h"
+#include "Semantic.h"
 #include "TypeManager.h"
-#include "AstFlags.h"
 
 uint32_t Semantic::alignOf(AstVarDecl* node)
 {

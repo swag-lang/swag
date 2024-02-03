@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "Workspace.h"
 #include "Backend.h"
 #include "Module.h"
-#include "ThreadManager.h"
 #include "Os.h"
+#include "ThreadManager.h"
+#include "Workspace.h"
 
 namespace BackendLinker
 {

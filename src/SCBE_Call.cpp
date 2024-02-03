@@ -1,7 +1,7 @@
 #include "pch.h"
+#include "Module.h"
 #include "SCBE.h"
 #include "TypeManager.h"
-#include "Module.h"
 #include "Workspace.h"
 
 void SCBE::emitGetParam(SCBE_X64& pp, CPUFunction* cpuFct, int reg, uint32_t paramIdx, int sizeOf, uint64_t toAdd, int deRefSize)

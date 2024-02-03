@@ -1,8 +1,8 @@
 #pragma once
 #include "AstNode.h"
-#include "SourceFile.h"
-#include "Module.h"
 #include "ByteCodeInstruction.h"
+#include "Module.h"
+#include "SourceFile.h"
 
 inline bool isPowerOfTwo(size_t v)
 {

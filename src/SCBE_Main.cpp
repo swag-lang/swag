@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "SCBE.h"
 #include "ByteCode.h"
 #include "Context.h"
 #include "LanguageSpec.h"
 #include "Module.h"
 #include "Report.h"
+#include "SCBE.h"
 #include "TypeManager.h"
 
 bool SCBE::emitOS(const BuildParameters& buildParameters)

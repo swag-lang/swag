@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CallConv.h"
-#include "TypeInfo.h"
 #include "Ast.h"
+#include "TypeInfo.h"
 
 CallConv g_CallConv[CallConvKind::Max];
 

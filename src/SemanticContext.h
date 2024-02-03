@@ -1,9 +1,9 @@
 #pragma once
-#include "Job.h"
-#include "TypeInfo.h"
 #include "AstNode.h"
 #include "Concat.h"
 #include "Generic.h"
+#include "Job.h"
+#include "TypeInfo.h"
 
 struct AstFuncCallParam;
 struct SymbolName;

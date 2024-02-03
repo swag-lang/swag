@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "LanguageSpec.h"
-#include "TypeManager.h"
 #include "Parser.h"
+#include "TypeManager.h"
 
 LanguageSpec* g_LangSpec = nullptr;
 

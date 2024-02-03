@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Tokenizer.h"
 #include "ErrorIds.h"
+#include "Tokenizer.h"
 
 bool Tokenizer::doMultiLineComment(TokenParse& token)
 {

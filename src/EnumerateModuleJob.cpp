@@ -1,14 +1,14 @@
 #include "pch.h"
 #include "EnumerateModuleJob.h"
-#include "Workspace.h"
-#include "Os.h"
+#include "Diagnostic.h"
+#include "LoadSourceFileJob.h"
 #include "Module.h"
 #include "ModuleDepManager.h"
-#include "LoadSourceFileJob.h"
-#include "ThreadManager.h"
-#include "SyntaxJob.h"
-#include "Diagnostic.h"
+#include "Os.h"
 #include "Report.h"
+#include "SyntaxJob.h"
+#include "ThreadManager.h"
+#include "Workspace.h"
 
 SourceFile* EnumerateModuleJob::addFileToModule(Module*              theModule,
                                                 Vector<SourceFile*>& allFiles,

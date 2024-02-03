@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Ast.h"
-#include "TypeManager.h"
 #include "Parser.h"
+#include "TypeManager.h"
 
 void Ast::initNewNode(AstNode* node, Parser* parser, AstNodeKind kind, SourceFile* sourceFile, AstNode* parent)
 {

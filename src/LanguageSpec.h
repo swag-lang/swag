@@ -1,7 +1,7 @@
 #pragma once
-#include "TypeInfo.h"
-#include "Tokenizer.h"
 #include "LangHashTable.h"
+#include "Tokenizer.h"
+#include "TypeInfo.h"
 
 struct TypeInfoNative;
 

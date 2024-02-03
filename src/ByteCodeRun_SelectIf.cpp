@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "Diagnostic.h"
-#include "ByteCode.h"
-#include "Module.h"
-#include "ErrorIds.h"
-#include "ByteCodeGen.h"
-#include "TypeInfo.h"
 #include "AstFlags.h"
+#include "ByteCode.h"
+#include "ByteCodeGen.h"
+#include "Diagnostic.h"
+#include "ErrorIds.h"
+#include "Module.h"
+#include "TypeInfo.h"
 
 bool ByteCodeRun::getVariadicSI(ByteCodeRunContext* context, ByteCodeInstruction* ip, Register* regPtr, Register* regCount)
 {

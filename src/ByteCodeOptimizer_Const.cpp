@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "ByteCodeOptimizer.h"
 #include "ByteCodeGen.h"
+#include "ByteCodeOptimizer.h"
 #include "Math.h"
 #include "TypeManager.h"
 

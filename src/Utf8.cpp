@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Crc32.h"
-#include "Statistics.h"
 #include "Runtime.h"
+#include "Statistics.h"
 
 Utf8::Utf8()
 {

@@ -1,8 +1,8 @@
 #pragma once
-#include "Register.h"
-#include "Log.h"
-#include "SourceFile.h"
 #include "Job.h"
+#include "Log.h"
+#include "Register.h"
+#include "SourceFile.h"
 struct SemanticContext;
 struct AstNode;
 struct ByteCodeRunContext;

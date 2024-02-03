@@ -1,13 +1,13 @@
 #include "pch.h"
 #include "ModulePrepOutputJob.h"
 #include "Backend.h"
-#include "Workspace.h"
-#include "Timer.h"
-#include "Module.h"
-#include "Statistics.h"
-#include "ErrorIds.h"
-#include "Report.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
+#include "Module.h"
+#include "Report.h"
+#include "Statistics.h"
+#include "Timer.h"
+#include "Workspace.h"
 
 JobResult ModulePrepOutputStage1Job::execute()
 {

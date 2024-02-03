@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Module.h"
 #include "ModuleSemanticJob.h"
+#include "Module.h"
 #include "SemanticJob.h"
 
 JobResult ModuleSemanticJob::execute()

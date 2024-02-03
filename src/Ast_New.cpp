@@ -2,8 +2,8 @@
 #include "pch.h"
 #include "Ast.h"
 #include "AstFlags.h"
-#include "Semantic.h"
 #include "ByteCodeGen.h"
+#include "Semantic.h"
 
 AstInline* Ast::newInline(SourceFile* sourceFile, AstNode* parent, Parser* parser)
 {

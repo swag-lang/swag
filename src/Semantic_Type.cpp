@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Ast.h"
+#include "AstFlags.h"
 #include "ByteCodeGen.h"
 #include "Diagnostic.h"
 #include "Module.h"
@@ -8,7 +9,6 @@
 #include "Semantic.h"
 #include "SemanticError.h"
 #include "TypeManager.h"
-#include "AstFlags.h"
 
 bool Semantic::makeIntrinsicKindof(SemanticContext* context, AstNode* node)
 {

@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "AstFlags.h"
-#include "Generic.h"
 #include "Ast.h"
+#include "AstFlags.h"
 #include "Diagnostic.h"
+#include "Generic.h"
 #include "SemanticJob.h"
-#include "TypeManager.h"
 #include "Symbol.h"
+#include "TypeManager.h"
 
 bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl* node)
 {

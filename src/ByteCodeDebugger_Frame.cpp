@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "ByteCodeStack.h"
 #include "ByteCodeDebugger.h"
+#include "ByteCodeStack.h"
 
 BcDbgCommandResult ByteCodeDebugger::cmdBackTrace(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {

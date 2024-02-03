@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "TypeInfo.h"
+#include "Ast.h"
 #include "ByteCode.h"
 #include "ByteCodeDebugger.h"
-#include "Workspace.h"
-#include "Ast.h"
 #include "SyntaxColor.h"
+#include "TypeInfo.h"
+#include "Workspace.h"
 
 void ByteCodeDebugger::printLong(const Utf8& all)
 {

@@ -1,10 +1,10 @@
 #pragma once
 #include "Backend.h"
-#include "SCBE_Debug.h"
-#include "ComputedValue.h"
-#include "DataSegment.h"
 #include "CallConv.h"
+#include "ComputedValue.h"
 #include "Concat.h"
+#include "DataSegment.h"
+#include "SCBE_Debug.h"
 
 struct AstNode;
 

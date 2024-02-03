@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "Ast.h"
+#include "AstFlags.h"
+#include "Scope.h"
 #include "Semantic.h"
 #include "TypeManager.h"
-#include "Scope.h"
-#include "AstFlags.h"
 
 bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {

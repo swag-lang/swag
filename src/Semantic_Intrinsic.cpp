@@ -1,15 +1,15 @@
 #include "pch.h"
-#include "Semantic.h"
-#include "ByteCodeGen.h"
 #include "Ast.h"
+#include "AstFlags.h"
 #include "AstOutput.h"
-#include "Module.h"
-#include "TypeManager.h"
+#include "ByteCodeGen.h"
+#include "Diagnostic.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "Module.h"
+#include "Semantic.h"
+#include "TypeManager.h"
 #include "Workspace.h"
-#include "Diagnostic.h"
-#include "AstFlags.h"
 
 bool Semantic::resolveIntrinsicTag(SemanticContext* context)
 {

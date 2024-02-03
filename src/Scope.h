@@ -1,7 +1,7 @@
 #pragma once
 #include "DependentJobs.h"
-#include "SymTable.h"
 #include "Mutex.h"
+#include "SymTable.h"
 
 struct Scope;
 struct AstNode;

@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "SemanticError.h"
 #include "Ast.h"
 #include "LanguageSpec.h"
 #include "Scope.h"
+#include "SemanticError.h"
 
 Utf8 SemanticError::findClosestMatchesMsg(const Utf8& searchName, const Vector<Utf8>& best)
 {

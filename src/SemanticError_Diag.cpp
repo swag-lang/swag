@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "AstFlags.h"
-#include "SemanticError.h"
 #include "Ast.h"
+#include "AstFlags.h"
 #include "Diagnostic.h"
 #include "Naming.h"
 #include "Semantic.h"
+#include "SemanticError.h"
 #include "TypeManager.h"
 
 struct ErrorParam

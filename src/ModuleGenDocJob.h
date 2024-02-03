@@ -1,6 +1,6 @@
 #pragma once
-#include "Job.h"
 #include "GenDoc.h"
+#include "Job.h"
 #include "Runtime.h"
 
 struct ModuleGenDocJob : public Job

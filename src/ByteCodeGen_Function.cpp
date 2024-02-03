@@ -7,9 +7,9 @@
 #include "Module.h"
 #include "ModuleManager.h"
 #include "Report.h"
+#include "Scope.h"
 #include "SemanticJob.h"
 #include "TypeManager.h"
-#include "Scope.h"
 
 bool ByteCodeGen::emitLocalFuncDecl(ByteCodeGenContext* context)
 {

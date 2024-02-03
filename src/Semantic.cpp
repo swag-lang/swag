@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "AstFlags.h"
 #include "Semantic.h"
 #include "Ast.h"
+#include "AstFlags.h"
 #include "Module.h"
 #include "TypeManager.h"
 

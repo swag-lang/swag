@@ -1,7 +1,7 @@
 #pragma once
-#include "CommandLine.h"
-#include "ByteCodeRunContext.h"
 #include "ByteCodeInstruction.h"
+#include "ByteCodeRunContext.h"
+#include "CommandLine.h"
 
 struct ByteCode;
 

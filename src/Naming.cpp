@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "AstFlags.h"
-#include "TypeInfo.h"
-#include "AstNode.h"
 #include "Naming.h"
 #include "Ast.h"
+#include "AstFlags.h"
+#include "AstNode.h"
+#include "TypeInfo.h"
 
 Utf8 Naming::kindName(SymbolName* symbol, AstNode* node, TypeInfo* typeInfo, uint32_t overFlags, Utf8& article)
 {

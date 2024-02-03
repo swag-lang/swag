@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Ast.h"
+#include "AstFlags.h"
 #include "ByteCode.h"
 #include "LanguageSpec.h"
 #include "Module.h"
@@ -7,7 +8,6 @@
 #include "Report.h"
 #include "Semantic.h"
 #include "SemanticError.h"
-#include "AstFlags.h"
 
 bool SemanticError::warnDeprecated(SemanticContext* context, AstNode* identifier)
 {

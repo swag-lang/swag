@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "Module.h"
 #include "ByteCode.h"
 #include "Context.h"
-#include "Semantic.h"
+#include "Module.h"
 #include "PrepCompilerMsgJob.h"
+#include "Semantic.h"
 #include "ThreadManager.h"
 
 bool Module::postCompilerMessage(JobContext* context, CompilerMessage& msg)

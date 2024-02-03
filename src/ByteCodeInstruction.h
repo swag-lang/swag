@@ -1,6 +1,6 @@
 #pragma once
-#include "Register.h"
 #include "ByteCodeOp.h"
+#include "Register.h"
 
 enum class ByteCodeOp : uint16_t;
 struct AstNode;

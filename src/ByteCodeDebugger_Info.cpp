@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "ByteCode.h"
-#include "Workspace.h"
-#include "Module.h"
 #include "Ast.h"
+#include "ByteCode.h"
 #include "ByteCodeDebugger.h"
+#include "Module.h"
+#include "Workspace.h"
 
 BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {

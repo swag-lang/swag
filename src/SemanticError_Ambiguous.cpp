@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "SemanticError.h"
 #include "Diagnostic.h"
 #include "Naming.h"
 #include "Semantic.h"
+#include "SemanticError.h"
 #include "TypeManager.h"
 
 bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& overloads, VectorNative<OneMatch*>& genericMatches)

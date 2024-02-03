@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "FileJob.h"
-#include "Os.h"
-#include "Module.h"
-#include "Report.h"
 #include "ErrorIds.h"
+#include "Module.h"
+#include "Os.h"
+#include "Report.h"
 
 JobResult CopyFileJob::execute()
 {

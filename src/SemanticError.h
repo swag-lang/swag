@@ -1,6 +1,6 @@
 #pragma once
-#include "TypeMatch.h"
 #include "Symbol.h"
+#include "TypeMatch.h"
 
 struct AlternativeScope;
 struct AstIdentifier;

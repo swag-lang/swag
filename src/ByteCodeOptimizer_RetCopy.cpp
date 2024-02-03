@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "ByteCodeOptimizer.h"
-#include "SourceFile.h"
 #include "AstNode.h"
+#include "ByteCodeOptimizer.h"
 #include "Scope.h"
+#include "SourceFile.h"
 #include "TypeInfo.h"
 #include "TypeManager.h"
 

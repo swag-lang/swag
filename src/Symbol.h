@@ -1,8 +1,8 @@
 #pragma once
-#include "DependentJobs.h"
-#include "Register.h"
 #include "ComputedValue.h"
+#include "DependentJobs.h"
 #include "Mutex.h"
+#include "Register.h"
 
 struct TypeInfo;
 struct Job;

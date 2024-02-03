@@ -1,12 +1,12 @@
 #include "pch.h"
+#include "ByteCodeDebugger.h"
 #include "AstFlags.h"
 #include "ByteCode.h"
 #include "Module.h"
+#include "Scope.h"
 #include "Semantic.h"
 #include "SemanticJob.h"
-#include "ByteCodeDebugger.h"
 #include "Workspace.h"
-#include "Scope.h"
 
 ByteCodeDebugger g_ByteCodeDebugger;
 

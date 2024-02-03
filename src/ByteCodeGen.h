@@ -1,8 +1,8 @@
 #pragma once
-#include "Job.h"
+#include "AstNode.h"
 #include "ByteCodeGenContext.h"
 #include "DependentJobs.h"
-#include "AstNode.h"
+#include "Job.h"
 #include "TypeInfo.h"
 
 struct SourceFile;

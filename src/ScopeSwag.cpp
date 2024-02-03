@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "ScopeSwag.h"
-#include "TypeManager.h"
 #include "LanguageSpec.h"
+#include "TypeManager.h"
 
 void ScopeSwag::registerType(TypeInfo* typeInfo)
 {

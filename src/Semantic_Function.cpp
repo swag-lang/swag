@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Ast.h"
+#include "AstFlags.h"
 #include "ByteCodeGen.h"
 #include "Diagnostic.h"
 #include "LanguageSpec.h"
@@ -9,7 +10,6 @@
 #include "SemanticError.h"
 #include "SemanticJob.h"
 #include "TypeManager.h"
-#include "AstFlags.h"
 
 void Semantic::allocateOnStack(AstNode* node, TypeInfo* typeInfo)
 {

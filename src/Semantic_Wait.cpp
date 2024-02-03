@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "Semantic.h"
 #include "Ast.h"
-#include "Module.h"
-#include "TypeManager.h"
-#include "LanguageSpec.h"
-#include "Scope.h"
 #include "AstFlags.h"
+#include "LanguageSpec.h"
+#include "Module.h"
+#include "Scope.h"
+#include "Semantic.h"
+#include "TypeManager.h"
 
 void Semantic::waitSymbolNoLock(Job* job, SymbolName* symbol)
 {

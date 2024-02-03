@@ -1,8 +1,8 @@
 #pragma once
-#include "Concat.h"
 #include "Ast.h"
 #include "AstOutput.h"
 #include "BackendParameters.h"
+#include "Concat.h"
 
 struct Module;
 struct BuildParameters;

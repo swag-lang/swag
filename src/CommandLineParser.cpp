@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "CommandLine.h"
 #include "CommandLineParser.h"
-#include "Log.h"
+#include "CommandLine.h"
 #include "ErrorIds.h"
+#include "Log.h"
 #include "Report.h"
 
 void CommandLineParser::setup(CommandLine* cmdLine)

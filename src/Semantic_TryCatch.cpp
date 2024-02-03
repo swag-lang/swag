@@ -1,11 +1,11 @@
 #include "pch.h"
 #include "Ast.h"
+#include "AstFlags.h"
 #include "ByteCodeGen.h"
 #include "Diagnostic.h"
 #include "Naming.h"
 #include "SemanticJob.h"
 #include "TypeManager.h"
-#include "AstFlags.h"
 
 bool Semantic::checkCanThrow(SemanticContext* context)
 {

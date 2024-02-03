@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "Module.h"
 #include "PrepCompilerMsgJob.h"
 #include "JobThread.h"
+#include "Module.h"
 
 JobResult PrepCompilerMsgJob::execute()
 {

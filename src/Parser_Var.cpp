@@ -1,11 +1,11 @@
 #include "pch.h"
 #include "Ast.h"
-#include "Semantic.h"
-#include "Scoped.h"
+#include "Diagnostic.h"
 #include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "Naming.h"
-#include "Diagnostic.h"
+#include "Scoped.h"
+#include "Semantic.h"
 
 bool Parser::checkIsValidVarName(AstNode* node)
 {

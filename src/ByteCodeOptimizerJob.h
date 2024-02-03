@@ -1,6 +1,6 @@
 #pragma once
-#include "Job.h"
 #include "ByteCodeOptContext.h"
+#include "Job.h"
 struct ByteCode;
 
 struct ByteCodeOptimizerJob : public Job

@@ -1,14 +1,14 @@
 #include "pch.h"
-#include "SCBE.h"
 #include "SCBE_CodeView.h"
-#include "SCBE_Coff.h"
 #include "ByteCode.h"
 #include "LanguageSpec.h"
 #include "Module.h"
+#include "SCBE.h"
+#include "SCBE_Coff.h"
+#include "Scope.h"
 #include "TypeManager.h"
 #include "Version.h"
 #include "Workspace.h"
-#include "Scope.h"
 
 static void emitStartRecord(SCBE_CPU& pp, uint16_t what)
 {

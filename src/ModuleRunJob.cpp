@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "ModuleRunJob.h"
-#include "Workspace.h"
+#include "Backend.h"
 #include "Module.h"
 #include "Timer.h"
-#include "Backend.h"
+#include "Workspace.h"
 
 JobResult ModuleRunJob::execute()
 {

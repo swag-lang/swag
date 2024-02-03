@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "Ast.h"
-#include "Scoped.h"
-#include "Semantic.h"
+#include "Diagnostic.h"
 #include "ErrorIds.h"
 #include "Naming.h"
-#include "Diagnostic.h"
+#include "Scoped.h"
+#include "Semantic.h"
 #include "TypeManager.h"
 
 bool Parser::doEnum(AstNode* parent, AstNode** result)

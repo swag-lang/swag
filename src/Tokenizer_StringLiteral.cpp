@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Tokenizer.h"
 #include "ErrorIds.h"
+#include "Tokenizer.h"
 
 // This function is used to 'align' text. This is the same rule as in swift : all blanks before the end mark ("@) will be removed
 // from every other lines.

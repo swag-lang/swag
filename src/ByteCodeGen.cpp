@@ -1,17 +1,17 @@
 #include "pch.h"
 #include "ByteCodeGen.h"
-#include "AstFlags.h"
 #include "Ast.h"
+#include "AstFlags.h"
 #include "ByteCode.h"
 #include "ByteCodeGenJob.h"
 #include "Context.h"
 #include "LanguageSpec.h"
 #include "Module.h"
+#include "Report.h"
+#include "Scope.h"
 #include "Semantic.h"
 #include "ThreadManager.h"
 #include "TypeManager.h"
-#include "Report.h"
-#include "Scope.h"
 
 bool ByteCodeGen::setupRuntime(ByteCodeGenContext* context, AstNode* node)
 {

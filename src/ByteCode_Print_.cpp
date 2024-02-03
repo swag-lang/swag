@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "ByteCode.h"
 #include "Ast.h"
-#include "Module.h"
+#include "ByteCode.h"
 #include "ByteCodeDebugger.h"
+#include "Module.h"
 #include "TypeInfo.h"
 
 void ByteCode::printSourceCode(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, uint32_t* lastLine, SourceFile** lastFile)

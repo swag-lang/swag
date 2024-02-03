@@ -6,6 +6,7 @@ struct AstNode;
 struct TypeInfo;
 struct SymbolOverload;
 enum class SymbolKind : uint8_t;
+enum class TokenId : uint16_t;
 
 namespace Naming
 {

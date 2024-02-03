@@ -1,9 +1,9 @@
 #include "pch.h"
-#include "AstFlags.h"
-#include "Scope.h"
 #include "SemanticJob.h"
-#include "ThreadManager.h"
+#include "AstFlags.h"
 #include "Module.h"
+#include "Scope.h"
+#include "ThreadManager.h"
 #ifdef SWAG_STATS
 #include "Timer.h"
 #endif

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Ast.h"
-#include "TypeManager.h"
 #include "AstFlags.h"
+#include "TypeManager.h"
 
 static const ExportedTypeInfo* concreteAlias(const ExportedTypeInfo* type1)
 {

@@ -1,5 +1,6 @@
 #pragma once
 
+struct AstFuncDecl;
 struct AstNode;
 struct LLVM;
 struct BuildParameters;

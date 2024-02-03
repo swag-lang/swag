@@ -1,11 +1,11 @@
 #include "pch.h"
 #include "Ast.h"
-#include "Semantic.h"
-#include "Scoped.h"
-#include "ErrorIds.h"
 #include "ByteCodeGen.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "Scoped.h"
+#include "Semantic.h"
 
 bool Parser::doIf(AstNode* parent, AstNode** result)
 {

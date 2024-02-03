@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "Scope.h"
+#include "Ast.h"
 #include "AstNode.h"
 #include "Module.h"
 #include "SourceFile.h"
-#include "Ast.h"
 
 Scope::Scope()
 {

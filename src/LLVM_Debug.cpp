@@ -1,14 +1,14 @@
 #include "pch.h"
-#include "LLVM.h"
 #include "LLVM_Debug.h"
-#include "LLVM_Macros.h"
+#include "AstFlags.h"
 #include "ByteCode.h"
+#include "LLVM.h"
+#include "LLVM_Macros.h"
 #include "Module.h"
-#include "Version.h"
 #include "Scope.h"
 #include "TypeManager.h"
+#include "Version.h"
 #include "Workspace.h"
-#include "AstFlags.h"
 
 static llvm::DILocation* debugLocGet(unsigned Line, unsigned Col, const llvm::MDNode* Scope, const llvm::MDNode* InlinedAt = nullptr, bool ImplicitCode = false)
 {

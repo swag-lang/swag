@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "SaveGenJob.h"
-#include "Module.h"
 #include "Diagnostic.h"
 #include "ErrorIds.h"
+#include "Module.h"
 #include "Report.h"
 
 bool SaveGenJob::flush(Module* module)

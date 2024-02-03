@@ -1,8 +1,8 @@
 #pragma once
 #include "Job.h"
-#include "Timer.h"
-#include "Statistics.h"
 #include "Module.h"
+#include "Statistics.h"
+#include "Timer.h"
 struct ModuleDependency;
 
 struct ModuleBuildJob : public Job

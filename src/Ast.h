@@ -1,6 +1,6 @@
 #pragma once
-#include "AstNode.h"
 #include "Allocator.h"
+#include "AstNode.h"
 #include "Statistics.h"
 
 struct Concat;

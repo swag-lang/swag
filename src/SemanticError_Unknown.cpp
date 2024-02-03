@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "Ast.h"
+#include "AstFlags.h"
 #include "Diagnostic.h"
 #include "LanguageSpec.h"
 #include "Naming.h"
 #include "Semantic.h"
 #include "SemanticError.h"
 #include "TypeManager.h"
-#include "AstFlags.h"
 
 static Diagnostic* unknownIdentifierInScope(AstIdentifierRef* identifierRef, AstIdentifier* node, Vector<const Diagnostic*>& notes)
 {

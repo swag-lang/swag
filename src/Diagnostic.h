@@ -1,7 +1,7 @@
 #pragma once
-#include "Tokenizer.h"
 #include "AstNode.h"
 #include "ErrorIds.h"
+#include "Tokenizer.h"
 struct SourceFile;
 struct TypeInfo;
 struct SyntaxColorContext;

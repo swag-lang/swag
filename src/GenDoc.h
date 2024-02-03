@@ -1,8 +1,8 @@
 #pragma once
-#include "Job.h"
-#include "AstOutput.h"
 #include "AstNode.h"
+#include "AstOutput.h"
 #include "Concat.h"
+#include "Job.h"
 
 struct Scope;
 struct AstStruct;

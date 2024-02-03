@@ -798,7 +798,7 @@ bool AstOutput::outputStruct(OutputContext& context, Concat& concat, AstStruct* 
         CONCAT_FIXED_STR(concat, "interface");
     else
     {
-        SWAG_ASSERT(node->kind == AstNodeKind::StructDecl)
+        SWAG_ASSERT(node->kind == AstNodeKind::StructDecl);
         auto structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
         if (structNode->specFlags & AstStruct::SPECFLAG_UNION)
             CONCAT_FIXED_STR(concat, "union");

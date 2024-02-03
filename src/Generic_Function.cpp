@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "Generic.h"
 #include "Ast.h"
 #include "AstFlags.h"
 #include "Diagnostic.h"
+#include "Generic.h"
 #include "SemanticJob.h"
-#include "TypeManager.h"
 #include "Symbol.h"
+#include "TypeManager.h"
 
 void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, AstFuncDecl** specialFct)
 {

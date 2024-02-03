@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "Ast.h"
-#include "Semantic.h"
+#include "Diagnostic.h"
+#include "ErrorIds.h"
 #include "LanguageSpec.h"
 #include "Scoped.h"
-#include "ErrorIds.h"
-#include "Diagnostic.h"
+#include "Semantic.h"
 #include "TypeManager.h"
 
 bool Parser::doLiteral(AstNode* parent, AstNode** result)

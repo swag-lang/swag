@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "ByteCodeRunContext.h"
-#include "ByteCode.h"
 #include "AstNode.h"
-#include "ErrorIds.h"
-#include "Diagnostic.h"
+#include "ByteCode.h"
 #include "ByteCodeStack.h"
+#include "Diagnostic.h"
+#include "ErrorIds.h"
 #include "Module.h"
 #include "Statistics.h"
 

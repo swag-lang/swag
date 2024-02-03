@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "Ast.h"
-#include "SemanticJob.h"
-#include "TypeManager.h"
-#include "Symbol.h"
 #include "AstFlags.h"
+#include "SemanticJob.h"
+#include "Symbol.h"
+#include "TypeManager.h"
 
 void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInfo, TypeInfo*& callTypeInfo, VectorNative<TypeInfo*>& wantedTypeInfos, VectorNative<TypeInfo*>& callTypeInfos, AstNode* callParameter)
 {

@@ -1,17 +1,17 @@
 #pragma once
-#include "Register.h"
 #include "Assert.h"
+#include "AstNode.h"
+#include "ByteCodeInstruction.h"
 #include "ByteCodeOp.h"
 #include "ByteCodeRunContext.h"
-#include "Mutex.h"
 #include "ByteCodeStack.h"
-#include "ByteCodeInstruction.h"
-#include "AstNode.h"
-#include "ErrorIds.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
+#include "Mutex.h"
 #include "OS.h"
-#include "RaceCondition.h"
 #include "Profiler.h"
+#include "RaceCondition.h"
+#include "Register.h"
 
 enum class ByteCodeOp : uint16_t;
 struct AstNode;

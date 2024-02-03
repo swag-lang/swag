@@ -1,9 +1,9 @@
 #include "pch.h"
+#include "ByteCode.h"
 #include "ByteCodeOptimizer.h"
+#include "SourceFile.h"
 #include "TypeInfo.h"
 #include "TypeManager.h"
-#include "SourceFile.h"
-#include "ByteCode.h"
 
 // Remove duplicated pure instructions (set RA to a constant)
 bool ByteCodeOptimizer::optimizePassParam(ByteCodeOptContext* context)

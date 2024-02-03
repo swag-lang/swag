@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Ast.h"
+#include "AstFlags.h"
 #include "ByteCodeGen.h"
 #include "Diagnostic.h"
 #include "LanguageSpec.h"
@@ -9,7 +10,6 @@
 #include "Semantic.h"
 #include "TypeManager.h"
 #include "Version.h"
-#include "AstFlags.h"
 
 bool Semantic::getDigitHexa(SemanticContext* context, const SourceLocation& startLoc, const char* pzs, const char** _pz, int& result, const char* errMsg)
 {

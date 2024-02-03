@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "SemanticError.h"
 #include "Ast.h"
 #include "AstOutput.h"
 #include "Diagnostic.h"
 #include "Naming.h"
 #include "Semantic.h"
+#include "SemanticError.h"
 #include "SyntaxColor.h"
 
 static bool cannotMatchIdentifier(SemanticContext*            context,

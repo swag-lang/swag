@@ -1,9 +1,9 @@
 #include "pch.h"
+#include "ByteCode.h"
 #include "ByteCodeOptimizer.h"
+#include "SourceFile.h"
 #include "TypeInfo.h"
 #include "TypeManager.h"
-#include "SourceFile.h"
-#include "ByteCode.h"
 
 // If a CopyRBRA is followed by the same CopyRBRA, and between them there's no write to RA or RB,
 // then the second CopyRBRA is useless

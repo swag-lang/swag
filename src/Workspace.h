@@ -1,8 +1,8 @@
 #pragma once
-#include "ScopeSwag.h"
 #include "ComputedValue.h"
 #include "Mutex.h"
 #include "Path.h"
+#include "ScopeSwag.h"
 
 struct Module;
 struct Scope;

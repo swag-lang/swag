@@ -1,14 +1,14 @@
 #include "pch.h"
 #include "Ast.h"
+#include "AstFlags.h"
 #include "Diagnostic.h"
 #include "LanguageSpec.h"
 #include "Module.h"
+#include "Scope.h"
 #include "SemanticError.h"
 #include "SemanticJob.h"
 #include "TypeManager.h"
 #include "Workspace.h"
-#include "Scope.h"
-#include "AstFlags.h"
 
 void Semantic::addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, uint32_t asflags)
 {

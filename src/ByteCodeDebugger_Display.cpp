@@ -1,16 +1,5 @@
 #include "pch.h"
-#include "ByteCode.h"
-#include "Module.h"
-#include "Ast.h"
-#include "Semantic.h"
-#include "ByteCodeGen.h"
-#include "Context.h"
-#include "TypeManager.h"
-#include "ThreadManager.h"
-#include "Report.h"
 #include "ByteCodeDebugger.h"
-#include "Parser.h"
-#include "Ast.h"
 
 BcDbgCommandResult ByteCodeDebugger::cmdDisplayAdd(ByteCodeRunContext* context, const BcDbgCommandArg& arg)
 {

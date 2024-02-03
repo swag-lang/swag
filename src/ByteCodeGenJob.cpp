@@ -1,8 +1,8 @@
 #include "pch.h"
-#include "AstFlags.h"
 #include "ByteCodeGenJob.h"
-#include "ByteCodeGen.h"
+#include "AstFlags.h"
 #include "ByteCode.h"
+#include "ByteCodeGen.h"
 #include "Module.h"
 #include "Semantic.h"
 

@@ -1,13 +1,13 @@
 #include "pch.h"
 #include "Tokenizer.h"
 #include "Diagnostic.h"
-#include "SourceFile.h"
-#include "ErrorIds.h"
-#include "Report.h"
-#include "Timer.h"
-#include "LanguageSpec.h"
 #include "ErrorContext.h"
+#include "ErrorIds.h"
+#include "LanguageSpec.h"
+#include "Report.h"
+#include "SourceFile.h"
 #include "Statistics.h"
+#include "Timer.h"
 
 const char* g_TokenNames[] =
     {
@@ -287,7 +287,7 @@ bool Tokenizer::nextToken(TokenParse& token)
             }
         }
 
-        // Compîler
+        // CompÃ®ler
         ///////////////////////////////////////////
         if (c == '#')
         {

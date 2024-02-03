@@ -1,6 +1,6 @@
 #pragma once
-#include "Job.h"
 #include "AstNode.h"
+#include "Job.h"
 
 static const uint32_t BCC_FLAG_NOLOCATION   = 0x00000001;
 static const uint32_t BCC_FLAG_NOSAFETY     = 0x00000002;

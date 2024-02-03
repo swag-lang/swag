@@ -1,11 +1,11 @@
 #include "pch.h"
 #include "Ast.h"
-#include "Scoped.h"
-#include "Semantic.h"
+#include "Diagnostic.h"
 #include "Module.h"
 #include "Naming.h"
+#include "Scoped.h"
+#include "Semantic.h"
 #include "TypeManager.h"
-#include "Diagnostic.h"
 
 bool Parser::doImpl(AstNode* parent, AstNode** result)
 {

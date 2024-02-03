@@ -1,13 +1,13 @@
 #include "pch.h"
 #include "Ast.h"
+#include "ByteCodeGen.h"
+#include "Diagnostic.h"
+#include "LanguageSpec.h"
+#include "Module.h"
+#include "Naming.h"
 #include "Scoped.h"
 #include "Semantic.h"
 #include "TypeManager.h"
-#include "ByteCodeGen.h"
-#include "Module.h"
-#include "Naming.h"
-#include "Diagnostic.h"
-#include "LanguageSpec.h"
 
 bool Parser::doGenericFuncCallParameters(AstNode* parent, AstFuncCallParams** result)
 {

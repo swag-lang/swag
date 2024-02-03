@@ -1,12 +1,12 @@
 #include "pch.h"
 #include "Ast.h"
+#include "AstFlags.h"
 #include "ByteCodeGen.h"
 #include "Diagnostic.h"
 #include "LanguageSpec.h"
 #include "Report.h"
 #include "Semantic.h"
 #include "TypeManager.h"
-#include "AstFlags.h"
 
 bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right)
 {

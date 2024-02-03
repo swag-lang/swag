@@ -1,7 +1,7 @@
 #pragma once
 #include "Mutex.h"
-#include "SymTableHash.h"
 #include "Symbol.h"
+#include "SymTableHash.h"
 
 struct Scope;
 struct TypeInfo;

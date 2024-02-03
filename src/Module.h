@@ -1,14 +1,14 @@
 #pragma once
-#include "ByteCodeRunContext.h"
-#include "ByteCodeRun.h"
 #include "BackendParameters.h"
-#include "TypeGen.h"
+#include "ByteCodeRun.h"
+#include "ByteCodeRunContext.h"
 #include "DataSegment.h"
 #include "DependentJobs.h"
-#include "SymTable.h"
-#include "Tokenizer.h"
 #include "JobGroup.h"
 #include "Path.h"
+#include "SymTable.h"
+#include "Tokenizer.h"
+#include "TypeGen.h"
 
 enum class ModuleBuildPass
 {

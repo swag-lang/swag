@@ -1,4 +1,8 @@
 #pragma once
+#include "SCBE_Debug.h"
+
+struct BuildParameters;
+struct SCBE_CPU;
 
 // https://github.com/microsoft/microsoft-pdb/blob/master/include/cvinfo.h
 

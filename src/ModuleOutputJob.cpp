@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "ModuleOutputJob.h"
-#include "ModuleExportJob.h"
-#include "ModulePrepOutputJob.h"
-#include "ModuleGenOutputJob.h"
 #include "Module.h"
+#include "ModuleExportJob.h"
+#include "ModuleGenOutputJob.h"
+#include "ModulePrepOutputJob.h"
 #include "ThreadManager.h"
 
 JobResult ModuleOutputJob::execute()

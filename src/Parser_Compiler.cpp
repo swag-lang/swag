@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "Workspace.h"
-#include "Semantic.h"
 #include "Ast.h"
-#include "Scoped.h"
-#include "Module.h"
-#include "ErrorIds.h"
 #include "Diagnostic.h"
+#include "ErrorIds.h"
 #include "LanguageSpec.h"
+#include "Module.h"
+#include "Scoped.h"
+#include "Semantic.h"
+#include "Workspace.h"
 
 bool Parser::doIntrinsicTag(AstNode* parent, AstNode** result)
 {
