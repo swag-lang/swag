@@ -426,10 +426,8 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode
     {
         Set<AstNode*> done;
         bool          first = true;
-        for (size_t j = 0; j < attr->allAttributes.size(); j++)
+        for (auto& one : attr->allAttributes)
         {
-            auto& one = attr->allAttributes[j];
-
             // Be sure usage is valid
             if (typeInfo->isStruct() && one.typeFunc && !(one.typeFunc->attributeUsage & (AttributeUsage::All | AttributeUsage::Struct)))
                 continue;

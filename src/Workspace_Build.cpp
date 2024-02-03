@@ -376,7 +376,7 @@ void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
             Vector<const Diagnostic*> notes;
             auto                      prevJob = pendingJob;
 
-            for (size_t idxJob = 0; idxJob < cycle.size(); idxJob++)
+            for (auto depJob : cycle)
             {
                 if (prevJob->nodes.size() > 1 && prevJob->originalNode->kind == AstNodeKind::FuncDecl)
                 {
@@ -389,7 +389,6 @@ void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
                     notes.push_back(note);
                 }
 
-                const auto depJob = cycle[idxJob];
                 const auto note   = errorPendingJob(prevJob, depJob);
                 if (note)
                     notes.push_back(note);
@@ -443,9 +442,8 @@ void Workspace::computeWaitingJobs()
         {
         case JobWaitKind::WaitSymbol:
             SWAG_ASSERT(pendingJob->waitingSymbolSolved);
-            for (int i = 0; i < (int) g_ThreadMgr.waitingJobs.size(); i++)
+            for (auto it : g_ThreadMgr.waitingJobs)
             {
-                auto it = g_ThreadMgr.waitingJobs[i];
                 for (const auto it1 : pendingJob->waitingSymbolSolved->nodes)
                 {
                     if (it->originalNode == it1)
@@ -459,9 +457,9 @@ void Workspace::computeWaitingJobs()
         case JobWaitKind::GenExportedType:
         case JobWaitKind::GenExportedType1:
             SWAG_ASSERT(pendingJob->waitingType);
-            for (int i = 0; i < (int) g_ThreadMgr.waitingJobs.size(); i++)
+            for (auto& waitingJob : g_ThreadMgr.waitingJobs)
             {
-                const auto it = dynamic_cast<TypeGenStructJob*>(g_ThreadMgr.waitingJobs[i]);
+                const auto it = dynamic_cast<TypeGenStructJob*>(waitingJob);
                 if (it && it->typeInfo == pendingJob->waitingType)
                 {
                     pendingJob->waitingJobs.push_back_once(it);
@@ -473,9 +471,8 @@ void Workspace::computeWaitingJobs()
         default:
             if (pendingJob->waitingNode)
             {
-                for (int i = 0; i < (int) g_ThreadMgr.waitingJobs.size(); i++)
+                for (auto it : g_ThreadMgr.waitingJobs)
                 {
-                    auto it = g_ThreadMgr.waitingJobs[i];
                     if (it->originalNode == pendingJob->waitingNode)
                     {
                         pendingJob->waitingJobs.push_back_once(it);
@@ -487,9 +484,8 @@ void Workspace::computeWaitingJobs()
 
             if (pendingJob->waitingType)
             {
-                for (int i = 0; i < (int) g_ThreadMgr.waitingJobs.size(); i++)
+                for (auto it : g_ThreadMgr.waitingJobs)
                 {
-                    auto it = g_ThreadMgr.waitingJobs[i];
                     if (it->originalNode == pendingJob->waitingType->declNode)
                     {
                         pendingJob->waitingJobs.push_back_once(it);

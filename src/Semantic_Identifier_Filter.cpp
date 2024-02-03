@@ -600,13 +600,13 @@ bool Semantic::filterGenericMatches(SemanticContext* context, VectorNative<OneMa
     {
         VectorNative<OneMatch*> newGenericMatches;
         newGenericMatches.reserve((int) genMatches.size());
-        for (size_t im = 0; im < matches.size(); im++)
+        for (auto& matche : matches)
         {
-            for (size_t i = 0; i < genMatches.size(); i++)
+            for (auto& genMatche : genMatches)
             {
-                const auto same = areGenericReplaceTypesIdentical(matches[im]->oneOverload->overload->typeInfo, *genMatches[i]);
+                const auto same = areGenericReplaceTypesIdentical(matche->oneOverload->overload->typeInfo, *genMatche);
                 if (!same)
-                    newGenericMatches.push_back_once(genMatches[i]);
+                    newGenericMatches.push_back_once(genMatche);
             }
         }
 

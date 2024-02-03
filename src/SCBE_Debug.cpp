@@ -346,9 +346,8 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreateType(SCBE_CPU& pp, TypeInfo* typeInfo
             auto tr1              = addTypeRecord(pp);
             tr1->kind             = LF_ARGLIST;
             tr1->LF_ArgList.count = numArgs;
-            for (size_t i = 0; i < typeFunc->parameters.size(); i++)
+            for (auto p : typeFunc->parameters)
             {
-                auto p = typeFunc->parameters[i];
                 tr1->LF_ArgList.args.push_back(getOrCreateType(pp, p->typeInfo));
             }
 

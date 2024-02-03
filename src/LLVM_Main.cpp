@@ -183,9 +183,8 @@ bool LLVM::emitMain(const BuildParameters& buildParameters)
     // Load all dependencies
     VectorNative<ModuleDependency*> moduleDependencies;
     module->sortDependenciesByInitOrder(moduleDependencies);
-    for (size_t i = 0; i < moduleDependencies.size(); i++)
+    for (auto dep : moduleDependencies)
     {
-        auto dep      = moduleDependencies[i];
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);
         auto nameLib = nameDown;
@@ -196,9 +195,8 @@ bool LLVM::emitMain(const BuildParameters& buildParameters)
 
     // Call to global init of all dependencies
     auto funcType = llvm::FunctionType::get(VOID_TY(), {pp.processInfosTy->getPointerTo()}, false);
-    for (size_t i = 0; i < moduleDependencies.size(); i++)
+    for (auto dep : moduleDependencies)
     {
-        auto dep = moduleDependencies[i];
         if (!dep->module->isSwag)
             continue;
         auto nameFct  = dep->module->getGlobalPrivFct(g_LangSpec->name_globalInit);
@@ -214,9 +212,8 @@ bool LLVM::emitMain(const BuildParameters& buildParameters)
     }
 
     // Call to global premain of all dependencies
-    for (size_t i = 0; i < moduleDependencies.size(); i++)
+    for (auto dep : moduleDependencies)
     {
-        auto dep = moduleDependencies[i];
         if (!dep->module->isSwag)
             continue;
         auto nameFct  = dep->module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);

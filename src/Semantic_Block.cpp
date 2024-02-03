@@ -132,9 +132,9 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
             AstFuncCallParam* orgCallParam = nullptr;
             if (identifier && identifier->callParameters)
             {
-                for (size_t j = 0; j < identifier->callParameters->childs.size(); j++)
+                for (auto& child : identifier->callParameters->childs)
                 {
-                    const auto callParam = CastAst<AstFuncCallParam>(identifier->callParameters->childs[j], AstNodeKind::FuncCallParam);
+                    const auto callParam = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
                     if (callParam->indexParam != (int) i)
                         continue;
                     orgCallParam = callParam;

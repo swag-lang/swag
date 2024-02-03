@@ -179,9 +179,9 @@ uint32_t DataSegment::tryOffset(uint8_t* location)
     SharedLock lock(mutex);
 
     uint32_t offset = 0;
-    for (size_t i = 0; i < buckets.size(); i++)
+    for (auto& i : buckets)
     {
-        const auto bucket = &buckets[i];
+        const auto bucket = &i;
         if (location >= bucket->buffer && location < bucket->buffer + bucket->count)
         {
             offset += (uint32_t) (location - bucket->buffer);
@@ -214,9 +214,9 @@ uint8_t* DataSegment::addressNoLock(uint32_t location)
     SWAG_RACE_CONDITION_READ(raceC);
     SWAG_ASSERT(location != UINT32_MAX);
     SWAG_ASSERT(buckets.size());
-    for (size_t i = 0; i < buckets.size(); i++)
+    for (auto& i : buckets)
     {
-        const auto bucket = &buckets[i];
+        const auto bucket = &i;
         if (location < (uint64_t) bucket->count)
             return bucket->buffer + location;
         location -= bucket->count;

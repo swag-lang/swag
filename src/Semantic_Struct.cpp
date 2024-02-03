@@ -186,9 +186,8 @@ bool Semantic::resolveImplFor(SemanticContext* context)
     if (hasRegItf)
         decreaseInterfaceRegCount(typeStruct);
 
-    for (size_t i = 0; i < childs.size(); i++)
+    for (auto child : childs)
     {
-        const auto child = childs[i];
         if (child->kind != AstNodeKind::FuncDecl)
             continue;
         const auto childFct = CastAst<AstFuncDecl>(child, AstNodeKind::FuncDecl);
@@ -400,9 +399,8 @@ bool Semantic::resolveInterface(SemanticContext* context)
     typeITable->scope      = Ast::newScope(node, node->token.text, ScopeKind::Struct, nullptr);
     typeITable->flags |= TYPEINFO_STRUCT_IS_ITABLE;
 
-    for (size_t i = 0; i < childs.size(); i++)
+    for (auto child : childs)
     {
-        auto child = childs[i];
         if (child->kind != AstNodeKind::VarDecl)
             continue;
 
@@ -858,10 +856,8 @@ bool Semantic::resolveStruct(SemanticContext* context)
     typeInfo->sizeOf  = 0;
 
     // If one of my childs is incomplete, then we must wait
-    for (size_t i = 0; i < childs.size(); i++)
+    for (auto child : childs)
     {
-        auto child = childs[i];
-
         // Waiting for myself !
         if (child->typeInfo == typeInfo)
         {
@@ -880,9 +876,8 @@ bool Semantic::resolveStruct(SemanticContext* context)
 
     {
         SWAG_RACE_CONDITION_WRITE(typeInfo->raceFields);
-        for (size_t i = 0; i < childs.size(); i++)
+        for (auto child : childs)
         {
-            auto child = childs[i];
             if (child->kind != AstNodeKind::VarDecl && child->kind != AstNodeKind::ConstDecl)
                 continue;
 

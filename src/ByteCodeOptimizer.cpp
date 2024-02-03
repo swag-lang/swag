@@ -367,10 +367,10 @@ bool ByteCodeOptimizer::insertNopBefore(ByteCodeOptContext* context, ByteCodeIns
     if (context->bc->numInstructions == context->bc->maxInstructions)
         return false;
 
-    for (int it = 0; it < (int) context->nops.size(); it++)
+    for (auto& nop : context->nops)
     {
-        if (context->nops[it] > insert)
-            context->nops[it]++;
+        if (nop > insert)
+            nop++;
     }
 
     for (int it = 0; it < (int) context->jumps.size(); it++)

@@ -136,9 +136,8 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
         if (sourceFile0 && sourceFile0->fileForSourceLocation)
             sourceFile0 = sourceFile0->fileForSourceLocation;
 
-        for (int inote1 = 0; inote1 < (int) notes.size(); inote1++)
+        for (auto note1 : notes)
         {
-            const auto note1 = notes[inote1];
             if (note == note1)
                 continue;
             if (!note1->display)

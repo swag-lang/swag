@@ -38,9 +38,9 @@ void SemanticError::findClosestMatches(const Utf8& searchName, const Vector<Utf8
     result.clear();
 
     const auto searchName1 = searchName;
-    for (uint32_t i = 0; i < (uint32_t) searchList.size(); i++)
+    for (const auto& i : searchList)
     {
-        auto       searchName2 = searchList[i];
+        auto       searchName2 = i;
         const auto score       = Utf8::fuzzyCompare(searchName1, searchName2);
 
         // If number of changes is too big considering the size of the text, cancel
@@ -58,7 +58,7 @@ void SemanticError::findClosestMatches(const Utf8& searchName, const Vector<Utf8
             bool here = false;
             for (auto& n : result)
             {
-                if (n == searchList[i])
+                if (n == i)
                 {
                     here = true;
                     break;
@@ -67,7 +67,7 @@ void SemanticError::findClosestMatches(const Utf8& searchName, const Vector<Utf8
 
             if (!here)
             {
-                result.push_back(searchList[i]);
+                result.push_back(i);
             }
 
             bestScore = score;

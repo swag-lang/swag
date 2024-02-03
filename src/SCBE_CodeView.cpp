@@ -168,8 +168,8 @@ static bool emitDataDebugT(SCBE_CPU& pp)
         {
         case LF_ARGLIST:
             concat.addU32(f->LF_ArgList.count);
-            for (size_t i = 0; i < f->LF_ArgList.args.size(); i++)
-                concat.addU32(f->LF_ArgList.args[i]);
+            for (unsigned int arg : f->LF_ArgList.args)
+                concat.addU32(arg);
             break;
 
         // lfProc
@@ -474,9 +474,8 @@ static bool emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
     /////////////////////////////////
     const auto funcDecl = (AstFuncDecl*) f.node;
     const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
-    for (int i = 0; i < (int) funcDecl->localGlobalVars.size(); i++)
+    for (auto localVar : funcDecl->localGlobalVars)
     {
-        const auto localVar = funcDecl->localGlobalVars[i];
         if (localVar->ownerScope != scope)
             continue;
 
@@ -511,9 +510,8 @@ static bool emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
 
     // Local constants
     /////////////////////////////////
-    for (int i = 0; i < (int) funcDecl->localConstants.size(); i++)
+    for (auto localConst : funcDecl->localConstants)
     {
-        const auto localConst = funcDecl->localConstants[i];
         if (localConst->ownerScope != scope)
             continue;
 
@@ -830,9 +828,8 @@ static bool emitFctDebugS(SCBE_CPU& pp)
         // Inlineed lines table
         /////////////////////////////////
         {
-            for (size_t idxDbgLines = 0; idxDbgLines < f.dbgLines.size(); idxDbgLines++)
+            for (auto& dbgLines : f.dbgLines)
             {
-                auto& dbgLines = f.dbgLines[idxDbgLines];
                 if (!dbgLines.inlined)
                     continue;
 

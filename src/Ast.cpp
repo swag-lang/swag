@@ -426,9 +426,8 @@ Utf8 Ast::computeGenericParametersReplacement(VectorNative<TypeInfoParam*>& para
         return "";
 
     Utf8 result;
-    for (int i = 0; i < (int) params.size(); i++)
+    for (auto param : params)
     {
-        const auto param = params[i];
         if (param->name == param->typeInfo->name)
             continue;
 

@@ -60,11 +60,11 @@ void Generic::deduceSubType(SymbolMatchContext& context, TypeInfo* wantedTypeInf
                 // Then the corresponding field name is searched in the typelist in case the user has specified one.
                 const auto p1        = callList->subTypes[idx];
                 auto typeField = p1->typeInfo;
-                for (size_t j = 0; j < callList->subTypes.size(); j++)
+                for (auto& subType : callList->subTypes)
                 {
-                    if (nameVar == callList->subTypes[j]->name)
+                    if (nameVar == subType->name)
                     {
-                        typeField = callList->subTypes[j]->typeInfo;
+                        typeField = subType->typeInfo;
                         break;
                     }
                 }

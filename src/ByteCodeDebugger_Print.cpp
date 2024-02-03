@@ -25,7 +25,7 @@ void ByteCodeDebugger::printLong(const Vector<Utf8>& all)
 
     int  cpt     = 0;
     bool canStop = true;
-    for (int i = 0; i < (int) all.size(); i++)
+    for (const auto& i : all)
     {
         if (cpt == 60 && canStop)
         {
@@ -56,7 +56,7 @@ void ByteCodeDebugger::printLong(const Vector<Utf8>& all)
 
         cpt++;
 
-        g_Log.print(all[i]);
+        g_Log.print(i);
         g_Log.eol();
     }
 }
@@ -265,9 +265,8 @@ void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* b
 
         // Line breakpoint
         const DebugBreakpoint* hasBkp = nullptr;
-        for (auto it = debugBreakpoints.begin(); it != debugBreakpoints.end(); it++)
+        for (auto& bkp : debugBreakpoints)
         {
-            auto& bkp = *it;
             switch (bkp.type)
             {
             case DebugBkpType::FuncName:

@@ -217,19 +217,19 @@ bool Module::isValidName(const Utf8& name, Utf8& errorStr)
     }
     else
     {
-        for (uint32_t i = 0; i < name.length(); i++)
+        for (char i : name)
         {
-            if (name[i] <= 32)
+            if (i <= 32)
             {
                 error  = true;
                 reason = "name cannot contain blank characters";
                 break;
             }
 
-            if (!isalnum(name[i]) && name[i] != '_')
+            if (!isalnum(i) && i != '_')
             {
                 error  = true;
-                reason = Fmt("forbidden character [[%c]]", name[i]);
+                reason = Fmt("forbidden character [[%c]]", i);
                 break;
             }
         }
@@ -740,9 +740,9 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         }
 
         // Be sure we have a number
-        for (uint32_t j = 0; j < splits[i].length(); j++)
+        for (char j : splits[i])
         {
-            if (!isdigit(splits[i][j]))
+            if (!isdigit(j))
             {
                 const Diagnostic diag{importNode, tokenVersion, Err(Err0312)};
                 const auto       note = Diagnostic::note(Err(Nte0142));
