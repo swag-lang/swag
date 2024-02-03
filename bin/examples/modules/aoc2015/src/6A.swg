@@ -44,19 +44,19 @@ func day6A0()
     {
         if r0.match(l)
         {
-            loop x: assume StrConv.toS32(r0.getCapture(1)) to assume StrConv.toS32(r0.getCapture(3)) do
+            loop x: cast(u64) assume StrConv.toS32(r0.getCapture(1)) to cast(u64) assume StrConv.toS32(r0.getCapture(3)) do
                 loop y: assume StrConv.toS32(r0.getCapture(2)) to assume StrConv.toS32(r0.getCapture(4)) do
                     lights.add((x << 32) | y)
         }
         elif r1.match(l)
         {
-            loop x: assume StrConv.toS32(r1.getCapture(1)) to assume StrConv.toS32(r1.getCapture(3)) do
+            loop x: cast(u64) assume StrConv.toS32(r1.getCapture(1)) to cast(u64) assume StrConv.toS32(r1.getCapture(3)) do
                 loop y: assume StrConv.toS32(r1.getCapture(2)) to assume StrConv.toS32(r1.getCapture(4)) do
                     lights.remove((x << 32) | y)
         }
         elif r2.match(l)
         {
-            loop x: assume StrConv.toS32(r2.getCapture(1)) to assume StrConv.toS32(r2.getCapture(3)) do
+            loop x: cast(u64) assume StrConv.toS32(r2.getCapture(1)) to cast(u64) assume StrConv.toS32(r2.getCapture(3)) do
                 loop y: assume StrConv.toS32(r2.getCapture(2)) to assume StrConv.toS32(r2.getCapture(4)) do
                     if lights.contains((x << 32) | y) do
                         lights.remove((x << 32) | y)

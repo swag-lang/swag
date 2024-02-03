@@ -795,7 +795,6 @@ bool Semantic::getConstantArrayPtr(SemanticContext* context, uint32_t* storageOf
                     auto subTypePtr = CastTypeInfo<TypeInfoArray>(subArray->array->typeInfo, TypeInfoKind::Array);
                     SWAG_CHECK(boundCheck(context, subArray->array->typeInfo, subArray->array, subArray->access, subTypePtr->count));
                     offsetAccess += subArray->access->computedValue->reg.u64 * subTypePtr->pointedType->sizeOf;
-                    typePtr = subTypePtr;
                 }
             }
         }
@@ -1012,7 +1011,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
 
     case TypeInfoKind::Struct:
     {
-        SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
+        arrayNode->access->typeInfo = getConcreteTypeUnRef(arrayNode->access, CONCRETE_FUNC | CONCRETE_ALIAS);
 
         // Only the top level ArrayPointerIndex node (for a given serial) will deal with the call
         if (arrayNode->parent->kind == AstNodeKind::ArrayPointerIndex &&
@@ -1022,7 +1021,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             break;
         }
 
-        // Flatten all operator parameters : self, then all indices
+        // Flatten all operator parameters : self, then all indexes
         // :StructFlatParamsDone
         arrayNode->structFlatParams.clear();
         arrayNode->structFlatParams.push_back(arrayNode->access);

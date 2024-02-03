@@ -583,9 +583,12 @@ bool Semantic::filterGenericMatches(SemanticContext* context, VectorNative<OneMa
     }
 
     // If there's one match, but we match with a untyped int conversion, and there's more than one
-    // generic match. We must remove the match in order to raised on multiple overload error, otherwise
+    // generic match, we must remove the match in order to raise an error on multiple overloads, otherwise
     // we can match or not with an untyped integer depending on instantiation order.
-    if (matches.size() == 1 && genMatches.size() > 1 && matches[0]->castFlagsResult & CASTFLAG_RESULT_UNTYPED_CONVERT)
+    if (matches.size() == 1 &&
+        genMatches.size() > 1 &&
+        matches[0]->castFlagsResult & CASTFLAG_RESULT_UNTYPED_CONVERT &&
+        !matches[0]->oneOverload->overload->node->isSpecialFunctionName())
     {
         matches.clear();
     }
