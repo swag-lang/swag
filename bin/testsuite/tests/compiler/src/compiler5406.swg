@@ -1,22 +1,7 @@
 //#global skip
+var g = 6'u64
 
-struct(T) A
-{
-}
-
-var g = 6'u32
-
-impl A
-{
-    #[Swag.Overload, Swag.Inline]
-    mtd opIndexAffect(i: u64, v: T)
-    {
-        @assert(i == 6)
-        @assert(v == 66)
-    }
-}
-
-func toto()->&u32
+func toto()->&u64
 {
     return &g
 }
@@ -25,6 +10,6 @@ func toto()->&u32
 #[Swag.Safety("", false)]
 #test
 {
-    var a: A'u32
-    a[toto()] = 66
+    let a: u32 = acast toto()
+    @assert(a == 6)
 }

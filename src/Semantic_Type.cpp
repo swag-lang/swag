@@ -778,9 +778,11 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
 
 bool Semantic::resolveExplicitAutoCast(SemanticContext* context)
 {
-    auto node      = CastAst<AstCast>(context->node, AstNodeKind::AutoCast);
-    auto exprNode  = node->childs[0];
-    auto cloneType = exprNode->typeInfo->clone();
+    auto node     = CastAst<AstCast>(context->node, AstNodeKind::AutoCast);
+    auto exprNode = node->childs[0];
+
+    exprNode->typeInfo = getConcreteTypeUnRef(exprNode, CONCRETE_FUNC | CONCRETE_ALIAS);
+    auto cloneType     = exprNode->typeInfo->clone();
     cloneType->flags |= TYPEINFO_AUTO_CAST;
     node->typeInfo = cloneType;
 
