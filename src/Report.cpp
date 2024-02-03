@@ -136,7 +136,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
         if (sourceFile0 && sourceFile0->fileForSourceLocation)
             sourceFile0 = sourceFile0->fileForSourceLocation;
 
-        for (auto note1 : notes)
+        for (const auto note1 : notes)
         {
             if (note == note1)
                 continue;

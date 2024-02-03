@@ -149,7 +149,7 @@ bool SCBE::emitMain(const BuildParameters& buildParameters)
     // Load all dependencies
     VectorNative<ModuleDependency*> moduleDependencies;
     module->sortDependenciesByInitOrder(moduleDependencies);
-    for (auto dep : moduleDependencies)
+    for (const auto dep : moduleDependencies)
     {
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);
@@ -166,7 +166,7 @@ bool SCBE::emitMain(const BuildParameters& buildParameters)
     pp.pushParams.push_back({CPUPushParamType::RelocAddr, pp.symPI_processInfos});
 
     // Call to global init of all dependencies
-    for (auto dep : moduleDependencies)
+    for (const auto dep : moduleDependencies)
     {
         SWAG_ASSERT(dep->module);
         if (!dep->module->isSwag)
@@ -180,7 +180,7 @@ bool SCBE::emitMain(const BuildParameters& buildParameters)
     emitInternalCallExt(pp, module, thisInit, pp.pushParams, UINT32_MAX, g_TypeMgr->typeInfoModuleCall);
 
     // Call to global premain of all dependencies
-    for (auto dep : moduleDependencies)
+    for (const auto dep : moduleDependencies)
     {
         SWAG_ASSERT(dep->module);
         if (!dep->module->isSwag)

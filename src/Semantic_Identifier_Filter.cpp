@@ -600,7 +600,7 @@ bool Semantic::filterGenericMatches(SemanticContext* context, VectorNative<OneMa
     {
         VectorNative<OneMatch*> newGenericMatches;
         newGenericMatches.reserve((int) genMatches.size());
-        for (auto& matche : matches)
+        for (const auto& matche : matches)
         {
             for (auto& genMatche : genMatches)
             {

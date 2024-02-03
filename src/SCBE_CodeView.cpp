@@ -168,7 +168,7 @@ static bool emitDataDebugT(SCBE_CPU& pp)
         {
         case LF_ARGLIST:
             concat.addU32(f->LF_ArgList.count);
-            for (unsigned int arg : f->LF_ArgList.args)
+            for (const unsigned int arg : f->LF_ArgList.args)
                 concat.addU32(arg);
             break;
 
@@ -474,7 +474,7 @@ static bool emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
     /////////////////////////////////
     const auto funcDecl = (AstFuncDecl*) f.node;
     const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
-    for (auto localVar : funcDecl->localGlobalVars)
+    for (const auto localVar : funcDecl->localGlobalVars)
     {
         if (localVar->ownerScope != scope)
             continue;
@@ -510,7 +510,7 @@ static bool emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
 
     // Local constants
     /////////////////////////////////
-    for (auto localConst : funcDecl->localConstants)
+    for (const auto localConst : funcDecl->localConstants)
     {
         if (localConst->ownerScope != scope)
             continue;

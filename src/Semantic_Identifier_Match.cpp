@@ -77,7 +77,7 @@ void Semantic::resolvePendingLambdaTyping(SemanticContext* context, AstNode* fun
     }
 
     // Replace generic parameters, if any
-    for (auto undefinedType : typeUndefinedFct->genericParameters)
+    for (const auto undefinedType : typeUndefinedFct->genericParameters)
     {
         auto it            = typeDefinedFct->replaceTypes.find(undefinedType->name);
         if (it != typeDefinedFct->replaceTypes.end())

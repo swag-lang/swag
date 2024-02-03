@@ -36,7 +36,7 @@ JobResult ByteCodeGenJob::waitForDependenciesGenerated()
 
     while (!context.dependentNodesTmp.empty())
     {
-        for (auto node : context.dependentNodesTmp)
+        for (const auto node : context.dependentNodesTmp)
         {
             SWAG_ASSERT(node->hasExtByteCode() && node->extByteCode()->bc);
 

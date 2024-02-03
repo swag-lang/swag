@@ -434,7 +434,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
         {
             SWAG_ASSERT(!id->extSemantic()->semanticAfterFct);
             id->extSemantic()->semanticAfterFct = Semantic::resolveWith;
-            for (auto& child : id->childs)
+            for (const auto& child : id->childs)
                 node->id.push_back(child->token.text);
         }
         else if (id->kind == AstNodeKind::VarDecl)
@@ -450,7 +450,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
                 id->extSemantic()->semanticAfterFct = Semantic::resolveWithAfterKnownType;
             else
                 id->extSemantic()->semanticAfterFct = Semantic::resolveWith;
-            for (auto& child : id->childs)
+            for (const auto& child : id->childs)
                 node->id.push_back(child->token.text);
         }
         else

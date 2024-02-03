@@ -464,7 +464,7 @@ TypeInfo* TypeInfoEnum::clone()
     newType->rawType    = rawType;
     newType->attributes = attributes;
 
-    for (auto& value : values)
+    for (const auto& value : values)
     {
         auto param = static_cast<TypeInfoParam*>(value);
         param      = static_cast<TypeInfoParam*>(param->clone());
@@ -526,13 +526,13 @@ TypeInfo* TypeInfoFuncAttr::clone()
     newType->callConv             = callConv;
     newType->replaceTypes         = replaceTypes;
 
-    for (auto& genericParameter : genericParameters)
+    for (const auto& genericParameter : genericParameters)
     {
         auto param = genericParameter->clone();
         newType->genericParameters.push_back(param);
     }
 
-    for (auto& parameter : parameters)
+    for (const auto& parameter : parameters)
     {
         auto param = parameter->clone();
         newType->parameters.push_back(param);

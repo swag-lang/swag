@@ -186,7 +186,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
     if (hasRegItf)
         decreaseInterfaceRegCount(typeStruct);
 
-    for (auto child : childs)
+    for (const auto child : childs)
     {
         if (child->kind != AstNodeKind::FuncDecl)
             continue;

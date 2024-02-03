@@ -376,7 +376,7 @@ void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
             Vector<const Diagnostic*> notes;
             auto                      prevJob = pendingJob;
 
-            for (auto depJob : cycle)
+            for (const auto depJob : cycle)
             {
                 if (prevJob->nodes.size() > 1 && prevJob->originalNode->kind == AstNodeKind::FuncDecl)
                 {
@@ -457,7 +457,7 @@ void Workspace::computeWaitingJobs()
         case JobWaitKind::GenExportedType:
         case JobWaitKind::GenExportedType1:
             SWAG_ASSERT(pendingJob->waitingType);
-            for (auto& waitingJob : g_ThreadMgr.waitingJobs)
+            for (const auto& waitingJob : g_ThreadMgr.waitingJobs)
             {
                 const auto it = dynamic_cast<TypeGenStructJob*>(waitingJob);
                 if (it && it->typeInfo == pendingJob->waitingType)
