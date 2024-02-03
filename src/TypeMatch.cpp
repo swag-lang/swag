@@ -1,11 +1,11 @@
 #include "pch.h"
 #include "TypeMatch.h"
 #include "Ast.h"
+#include "AstFlags.h"
 #include "Generic.h"
 #include "Semantic.h"
-#include "TypeManager.h"
 #include "Symbol.h"
-#include "AstFlags.h"
+#include "TypeManager.h"
 
 static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters, uint64_t forceCastFlags = 0)
 {
@@ -59,18 +59,43 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
 
         auto wantedParameter = isAfterVariadic ? parameters.back() : parameters[i];
         auto wantedTypeInfo  = wantedParameter->typeInfo;
+        auto callTypeInfo    = TypeManager::concreteType(callParameter->typeInfo, CONCRETE_FUNC);
 
-        if (wantedTypeInfo->isVariadic() || wantedTypeInfo->isCVariadic())
+        if (wantedTypeInfo->isVariadic())
         {
-            context.cptResolved = (int) context.parameters.size();
-            return;
+            if (callTypeInfo->isCVariadic() || (callTypeInfo->isTypedVariadic() && !(callTypeInfo->flags & TYPEINFO_SPREAD)))
+            {
+                context.badSignatureInfos.badSignatureParameterIdx  = (int) i;
+                context.badSignatureInfos.badSignatureRequestedType = wantedTypeInfo;
+                context.badSignatureInfos.badSignatureGivenType     = callTypeInfo;
+                SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
+                context.result = MatchResult::BadSignature;
+            }
+            else
+            {
+                context.cptResolved = (int) context.parameters.size();
+                return;
+            }
+        }
+        else if (wantedTypeInfo->isCVariadic())
+        {
+            if (callTypeInfo->isVariadic() || callTypeInfo->isTypedVariadic())
+            {
+                context.badSignatureInfos.badSignatureParameterIdx  = (int) i;
+                context.badSignatureInfos.badSignatureRequestedType = wantedTypeInfo;
+                context.badSignatureInfos.badSignatureGivenType     = callTypeInfo;
+                SWAG_ASSERT(context.badSignatureInfos.badSignatureRequestedType);
+                context.result = MatchResult::BadSignature;
+            }
+            else
+            {
+                context.cptResolved = (int) context.parameters.size();
+                return;
+            }
         }
 
-        auto callTypeInfo = TypeManager::concreteType(callParameter->typeInfo, CONCRETE_FUNC);
-
         // For a typed variadic, cast against the underlying type
-        // In case of a spread, match the underlying type too
-        if (wantedTypeInfo->isTypedVariadic())
+        else if (wantedTypeInfo->isTypedVariadic())
         {
             if (!callTypeInfo->isTypedVariadic() && !(callTypeInfo->flags & TYPEINFO_SPREAD))
                 wantedTypeInfo = ((TypeInfoVariadic*) wantedTypeInfo)->rawType;

@@ -13,7 +13,7 @@
 thread_local int  g_SilentError = 0;
 thread_local Utf8 g_SilentErrorMsg;
 
-static void computeAutoRemarks(Vector<Diagnostic*>& notes)
+static void computeAutoRemarks(const Vector<Diagnostic*>& notes)
 {
     Set<void*> doneGenParamsRemarks;
     for (auto note : notes)
@@ -28,8 +28,7 @@ static void computeAutoRemarks(Vector<Diagnostic*>& notes)
         if (genCheckNode && genCheckNode->sourceFile == note->sourceFile)
         {
             // This is a generic instance. Display type replacements.
-            if (genCheckNode &&
-                genCheckNode->ownerFct &&
+            if (genCheckNode->ownerFct &&
                 genCheckNode->ownerFct->typeInfo &&
                 !doneGenParamsRemarks.contains(genCheckNode->ownerFct->typeInfo))
             {
@@ -40,8 +39,7 @@ static void computeAutoRemarks(Vector<Diagnostic*>& notes)
                     note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
             }
 
-            if (genCheckNode &&
-                genCheckNode->ownerStructScope &&
+            if (genCheckNode->ownerStructScope &&
                 genCheckNode->ownerStructScope->owner->typeInfo &&
                 genCheckNode->ownerStructScope->owner->typeInfo->kind == TypeInfoKind::Struct &&
                 !doneGenParamsRemarks.contains(genCheckNode->ownerStructScope->owner->typeInfo))
@@ -53,8 +51,7 @@ static void computeAutoRemarks(Vector<Diagnostic*>& notes)
                     note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
             }
 
-            if (genCheckNode &&
-                genCheckNode->typeInfo &&
+            if (genCheckNode->typeInfo &&
                 genCheckNode->typeInfo->kind == TypeInfoKind::Struct &&
                 !doneGenParamsRemarks.contains(genCheckNode->typeInfo))
             {
