@@ -209,11 +209,11 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
             auto p1        = typeList->subTypes[i];
             auto typeField = p1->typeInfo;
             Utf8 nameVar   = p->name;
-            for (size_t j = 0; j < typeList->subTypes.size(); j++)
+            for (const auto& subType : typeList->subTypes)
             {
-                if (nameVar == typeList->subTypes[j]->name)
+                if (nameVar == subType->name)
                 {
-                    p1        = typeList->subTypes[j];
+                    p1        = subType;
                     typeField = p1->typeInfo;
                     break;
                 }

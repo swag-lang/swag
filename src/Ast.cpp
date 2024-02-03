@@ -52,7 +52,7 @@ Utf8 Ast::enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg
         for (size_t i = 0; i < typeEnum->values.size(); i++)
         {
             const auto value = typeEnum->values[i];
-            bool ok    = false;
+            bool       ok    = false;
             SWAG_ASSERT(value->value);
             switch (typeEnum->rawType->nativeType)
             {
@@ -112,10 +112,10 @@ Utf8 Ast::enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg
         for (size_t i = 0; i < typeEnum->values.size(); i++)
         {
             const auto value = typeEnum->values[i];
-            bool ok    = false;
             SWAG_ASSERT(value->value);
             if (typeEnum->rawType->isNative())
             {
+                bool ok = false;
                 switch (typeEnum->rawType->nativeType)
                 {
                 case NativeTypeKind::S8:
@@ -322,7 +322,7 @@ Scope* Ast::newScope(AstNode* owner, const Utf8& name, ScopeKind kind, Scope* pa
     if (parentScope)
         return parentScope->getOrAddChild(owner, name, kind, matchName);
 
-    const auto newScope         = Allocator::alloc<Scope>();
+    const auto newScope   = Allocator::alloc<Scope>();
     newScope->kind        = kind;
     newScope->parentScope = parentScope;
     newScope->owner       = owner;
@@ -385,7 +385,7 @@ AstNode* Ast::clone(AstNode* source, AstNode* parent, uint64_t forceFlags, uint6
 void Ast::normalizeIdentifierName(Utf8& name)
 {
     const auto len = name.length();
-    auto pz  = name.buffer;
+    auto       pz  = name.buffer;
 
     for (uint32_t i = 0; i < len; i++)
     {
@@ -411,6 +411,8 @@ void Ast::normalizeIdentifierName(Utf8& name)
         case '[':
         case ']':
             *pz = 'A';
+            break;
+        default:
             break;
         }
 
