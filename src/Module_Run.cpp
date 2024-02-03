@@ -24,13 +24,13 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
     // Result is on the stack. Store it in the compiler segment.
     if (node->semFlags & SEMFLAG_EXEC_RET_STACK)
     {
-        auto     storageSegment = &sourceFile->module->compilerSegment;
-        uint8_t* addrDst;
-        auto     storageOffset = storageSegment->reserve(node->typeInfo->sizeOf, &addrDst);
+        const auto storageSegment = &sourceFile->module->compilerSegment;
+        uint8_t*   addrDst;
+        const auto storageOffset = storageSegment->reserve(node->typeInfo->sizeOf, &addrDst);
         node->allocateComputedValue();
         node->computedValue->storageSegment = storageSegment;
         node->computedValue->storageOffset  = storageOffset;
-        auto addrSrc                        = runContext->bp;
+        const auto addrSrc                  = runContext->bp;
         memcpy(addrDst, addrSrc, node->typeInfo->sizeOf);
         return true;
     }
@@ -39,7 +39,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
     if (!node->resultRegisterRC.size())
         return true;
 
-    auto realType  = TypeManager::concreteType(node->typeInfo);
+    const auto realType  = TypeManager::concreteType(node->typeInfo);
     node->typeInfo = TypeManager::concreteType(node->typeInfo, CONCRETE_FUNC);
     node->setFlagsValueIsComputed();
 
@@ -51,8 +51,8 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
     if (realType->isString())
     {
         SWAG_ASSERT(node->resultRegisterRC.size() == 2);
-        const char* pz  = (const char*) runContext->registersRR[0].pointer;
-        uint32_t    len = runContext->registersRR[1].u32;
+        const char*    pz  = (const char*) runContext->registersRR[0].pointer;
+        const uint32_t len = runContext->registersRR[1].u32;
         node->computedValue->text.reserve(len + 1);
         node->computedValue->text.count = len;
         memcpy(node->computedValue->text.buffer, pz, len);
@@ -63,26 +63,26 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
     // Static array
     if (realType->isArray())
     {
-        auto     storageSegment             = Semantic::getConstantSegFromContext(node);
-        uint8_t* addrDst                    = nullptr;
-        auto     offsetStorage              = storageSegment->reserve(realType->sizeOf, &addrDst);
+        const auto storageSegment           = Semantic::getConstantSegFromContext(node);
+        uint8_t*   addrDst                  = nullptr;
+        const auto offsetStorage            = storageSegment->reserve(realType->sizeOf, &addrDst);
         node->computedValue->storageOffset  = offsetStorage;
         node->computedValue->storageSegment = storageSegment;
-        auto addrSrc                        = runContext->registersRR[0].pointer;
+        const auto addrSrc                  = runContext->registersRR[0].pointer;
         memcpy(addrDst, addrSrc, realType->sizeOf);
         return true;
     }
 
     if (realType->isListArray())
     {
-        auto     storageSegment             = Semantic::getConstantSegFromContext(node);
-        uint8_t* addrDst                    = nullptr;
-        auto     offsetStorage              = storageSegment->reserve(realType->sizeOf, &addrDst);
+        const auto storageSegment           = Semantic::getConstantSegFromContext(node);
+        uint8_t*   addrDst                  = nullptr;
+        const auto offsetStorage            = storageSegment->reserve(realType->sizeOf, &addrDst);
         node->computedValue->storageOffset  = offsetStorage;
         node->computedValue->storageSegment = storageSegment;
-        auto addrSrc                        = runContext->registersRR[0].pointer;
+        const auto addrSrc                  = runContext->registersRR[0].pointer;
         memcpy(addrDst, addrSrc, realType->sizeOf);
-        auto typeList  = CastTypeInfo<TypeInfoList>(realType, TypeInfoKind::TypeListArray);
+        const auto typeList  = CastTypeInfo<TypeInfoList>(realType, TypeInfoKind::TypeListArray);
         node->typeInfo = TypeManager::convertTypeListToArray(&runContext->jc, typeList, true);
         return true;
     }
@@ -93,12 +93,12 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         // If struct is marked as constexpr, then we can raw copy the struct content
         if ((realType->declNode->attributeFlags & ATTRIBUTE_CONSTEXPR) || (node->semFlags & SEMFLAG_FORCE_CONST_EXPR))
         {
-            auto     storageSegment             = Semantic::getConstantSegFromContext(node);
-            uint8_t* addrDst                    = nullptr;
-            auto     offsetStorage              = storageSegment->reserve(realType->sizeOf, &addrDst);
+            const auto storageSegment           = Semantic::getConstantSegFromContext(node);
+            uint8_t*   addrDst                  = nullptr;
+            const auto offsetStorage            = storageSegment->reserve(realType->sizeOf, &addrDst);
             node->computedValue->storageOffset  = offsetStorage;
             node->computedValue->storageSegment = storageSegment;
-            auto addrSrc                        = runContext->registersRR[0].pointer;
+            const auto addrSrc                  = runContext->registersRR[0].pointer;
             memcpy(addrDst, addrSrc, realType->sizeOf);
             return true;
         }
@@ -107,7 +107,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         ExecuteNodeParams opParams;
 
         // Make a copy of the returned struct, as we will lose the memory
-        auto selfSize = Allocator::alignSize(realType->sizeOf);
+        const auto selfSize = Allocator::alignSize(realType->sizeOf);
         auto self     = Allocator::alloc(selfSize);
         memcpy(self, runContext->registersRR[0].pointer, realType->sizeOf);
 
@@ -123,7 +123,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         SWAG_ASSERT(params->specReturnOpCount);
         opParams.callParams.push_back((uint64_t) self);
         SWAG_CHECK(executeNode(sourceFile, params->specReturnOpCount->node, callerContext, &opParams));
-        auto count = runContext->registersRR[0].u64;
+        const auto count = runContext->registersRR[0].u64;
         if (!count)
             return callerContext->report({node, Fmt(Err(Err0027), realType->getDisplayNameC())});
 
@@ -137,7 +137,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         if (!runContext->registersRR[0].u64 || !runContext->registersRR[1].u64)
             return callerContext->report({node, Fmt(Err(Err0028), realType->getDisplayNameC())});
 
-        auto      concreteType = TypeManager::concreteType(params->specReturnOpSlice->typeInfo);
+        const auto      concreteType = TypeManager::concreteType(params->specReturnOpSlice->typeInfo);
         uint32_t  sizeSlice    = 0;
         TypeInfo* sliceType    = nullptr;
 
@@ -148,13 +148,13 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         }
         else
         {
-            auto typeSlice = CastTypeInfo<TypeInfoSlice>(concreteType, TypeInfoKind::Slice);
+            const auto typeSlice = CastTypeInfo<TypeInfoSlice>(concreteType, TypeInfoKind::Slice);
             sizeSlice      = (uint32_t) runContext->registersRR[1].u64 * typeSlice->pointedType->sizeOf;
             sliceType      = typeSlice->pointedType;
         }
 
         SWAG_CHECK(callerContext->checkSizeOverflow("array", sizeSlice, SWAG_LIMIT_ARRAY_SIZE));
-        auto addrSrc = runContext->registersRR[0].pointer;
+        const auto addrSrc = runContext->registersRR[0].pointer;
 
         if (concreteType->isString())
         {
@@ -164,15 +164,15 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
         else
         {
             // Copy the content of the slice to the storage segment
-            auto     storageSegment             = Semantic::getConstantSegFromContext(node);
-            uint8_t* addrDst                    = nullptr;
-            auto     offsetStorage              = storageSegment->reserve(sizeSlice, &addrDst);
+            const auto storageSegment           = Semantic::getConstantSegFromContext(node);
+            uint8_t*   addrDst                  = nullptr;
+            const auto offsetStorage            = storageSegment->reserve(sizeSlice, &addrDst);
             node->computedValue->storageOffset  = offsetStorage;
             node->computedValue->storageSegment = storageSegment;
             memcpy(addrDst, addrSrc, sizeSlice);
 
             // Then transform the returned type to a static array
-            auto typeArray         = makeType<TypeInfoArray>();
+            const auto typeArray         = makeType<TypeInfoArray>();
             typeArray->pointedType = sliceType;
             typeArray->finalType   = sliceType;
             typeArray->count       = runContext->registersRR[1].u32;
@@ -220,7 +220,7 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
     // Pointer
     if (realType->isPointerToTypeInfo())
     {
-        auto     module = node->sourceFile->module;
+        const auto     module = node->sourceFile->module;
         uint32_t offset = module->compilerSegment.tryOffset(runContext->registersRR[0].pointer);
         if (offset != UINT32_MAX)
         {

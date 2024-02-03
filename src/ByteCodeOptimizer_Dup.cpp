@@ -22,7 +22,7 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
             mapCopyRB.clear();
         }
 
-        auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
+        const auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
 
         if (ip->op == ByteCodeOp::CopyRBtoRA64)
         {
@@ -66,10 +66,10 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
                 setNop(context, ip + 1);
             }
 
-            auto it = mapCopyRA.find(ip->a.u32);
+            const auto it = mapCopyRA.find(ip->a.u32);
             if (it)
             {
-                auto it1 = mapCopyRB.find(ip->b.u32);
+                const auto it1 = mapCopyRB.find(ip->b.u32);
                 if (it1 && *it1 == *it)
                     setNop(context, ip);
             }
@@ -95,10 +95,10 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
             case ByteCodeOp::JumpIfNotZero32:
                 if (ByteCode::hasReadRegInA(ip) && !ByteCode::hasWriteRegInA(ip))
                 {
-                    auto it = mapCopyRA.find(ip->a.u32);
+                    const auto it = mapCopyRA.find(ip->a.u32);
                     if (it)
                     {
-                        auto it1 = mapCopyRB.find((*it)->b.u32);
+                        const auto it1 = mapCopyRB.find((*it)->b.u32);
                         if (it1 && *it == *it1)
                         {
                             ip->a.u32                     = (*it)->b.u32;
@@ -113,10 +113,10 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
             case ByteCodeOp::AffectOpPlusEqS32:
                 if (ByteCode::hasReadRegInB(ip) && !ByteCode::hasWriteRegInB(ip))
                 {
-                    auto it = mapCopyRA.find(ip->b.u32);
+                    const auto it = mapCopyRA.find(ip->b.u32);
                     if (it)
                     {
-                        auto it1 = mapCopyRB.find((*it)->b.u32);
+                        const auto it1 = mapCopyRB.find((*it)->b.u32);
                         if (it1 && *it == *it1)
                         {
                             ip->b.u32                     = (*it)->b.u32;
@@ -145,10 +145,10 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
             {
                 if (ByteCode::hasReadRegInA(ip) && !ByteCode::hasWriteRegInA(ip))
                 {
-                    auto it = mapCopyRA.find(ip->a.u32);
+                    const auto it = mapCopyRA.find(ip->a.u32);
                     if (it)
                     {
-                        auto it1 = mapCopyRB.find((*it)->b.u32);
+                        const auto it1 = mapCopyRB.find((*it)->b.u32);
                         if (it1 && *it == *it1)
                         {
                             ip->a.u32                     = (*it)->b.u32;
@@ -159,10 +159,10 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
 
                 if (ByteCode::hasReadRegInB(ip) && !ByteCode::hasWriteRegInB(ip))
                 {
-                    auto it = mapCopyRA.find(ip->b.u32);
+                    const auto it = mapCopyRA.find(ip->b.u32);
                     if (it)
                     {
-                        auto it1 = mapCopyRB.find((*it)->b.u32);
+                        const auto it1 = mapCopyRB.find((*it)->b.u32);
                         if (it1 && *it == *it1)
                         {
                             ip->b.u32                     = (*it)->b.u32;
@@ -173,10 +173,10 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
 
                 if (ByteCode::hasReadRegInC(ip) && !ByteCode::hasWriteRegInC(ip))
                 {
-                    auto it = mapCopyRA.find(ip->c.u32);
+                    const auto it = mapCopyRA.find(ip->c.u32);
                     if (it)
                     {
-                        auto it1 = mapCopyRB.find((*it)->b.u32);
+                        const auto it1 = mapCopyRB.find((*it)->b.u32);
                         if (it1 && *it == *it1)
                         {
                             ip->c.u32                     = (*it)->b.u32;
@@ -187,10 +187,10 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
 
                 if (ByteCode::hasReadRegInD(ip) && !ByteCode::hasWriteRegInD(ip))
                 {
-                    auto it = mapCopyRA.find(ip->d.u32);
+                    const auto it = mapCopyRA.find(ip->d.u32);
                     if (it)
                     {
-                        auto it1 = mapCopyRB.find((*it)->b.u32);
+                        const auto it1 = mapCopyRB.find((*it)->b.u32);
                         if (it1 && *it == *it1)
                         {
                             ip->d.u32                     = (*it)->b.u32;
@@ -210,10 +210,10 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
 
         if ((flags & OPFLAG_WRITE_A) && !(ip->flags & BCI_IMM_A))
         {
-            auto it = mapCopyRA.find(ip->a.u32);
+            const auto it = mapCopyRA.find(ip->a.u32);
             if (it)
             {
-                auto it1 = mapCopyRB.find((*it)->b.u32);
+                const auto it1 = mapCopyRB.find((*it)->b.u32);
                 if (it1 && *it == *it1)
                     mapCopyRB.remove((*it)->b.u32);
                 mapCopyRA.remove(ip->a.u32);
@@ -224,10 +224,10 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
 
         if ((flags & OPFLAG_WRITE_B) && !(ip->flags & BCI_IMM_B))
         {
-            auto it = mapCopyRA.find(ip->b.u32);
+            const auto it = mapCopyRA.find(ip->b.u32);
             if (it)
             {
-                auto it1 = mapCopyRB.find((*it)->b.u32);
+                const auto it1 = mapCopyRB.find((*it)->b.u32);
                 if (it1 && *it == *it1)
                     mapCopyRB.remove((*it)->b.u32);
                 mapCopyRA.remove(ip->b.u32);
@@ -238,10 +238,10 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
 
         if ((flags & OPFLAG_WRITE_C) && !(ip->flags & BCI_IMM_C))
         {
-            auto it = mapCopyRA.find(ip->c.u32);
+            const auto it = mapCopyRA.find(ip->c.u32);
             if (it)
             {
-                auto it1 = mapCopyRB.find((*it)->b.u32);
+                const auto it1 = mapCopyRB.find((*it)->b.u32);
                 if (it1 && *it == *it1)
                     mapCopyRB.remove((*it)->b.u32);
                 mapCopyRA.remove(ip->c.u32);
@@ -252,10 +252,10 @@ void ByteCodeOptimizer::optimizePassDupCopyRBRAOp(ByteCodeOptContext* context, B
 
         if ((flags & OPFLAG_WRITE_D) && !(ip->flags & BCI_IMM_D))
         {
-            auto it = mapCopyRA.find(ip->d.u32);
+            const auto it = mapCopyRA.find(ip->d.u32);
             if (it)
             {
-                auto it1 = mapCopyRB.find((*it)->b.u32);
+                const auto it1 = mapCopyRB.find((*it)->b.u32);
                 if (it1 && *it == *it1)
                     mapCopyRB.remove((*it)->b.u32);
                 mapCopyRA.remove(ip->d.u32);
@@ -291,7 +291,7 @@ void ByteCodeOptimizer::optimizePassDupCopyOp(ByteCodeOptContext* context, ByteC
 
         if (ip->op == op)
         {
-            auto it = mapRA.find(ip->a.u32);
+            const auto it = mapRA.find(ip->a.u32);
             if (it)
             {
                 if ((*it)->b.u64 == ip->b.u64 &&

@@ -17,12 +17,12 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
         Semantic::waitSymbolNoLock(job, symbol);
 
     // Run semantic on that struct/function
-    auto sourceFile = context->sourceFile;
-    auto newJob     = SemanticJob::newJob(job->dependentJob, sourceFile, newNode, false);
+    const auto sourceFile = context->sourceFile;
+    const auto newJob     = SemanticJob::newJob(job->dependentJob, sourceFile, newNode, false);
 
     // Store stack of instantiation contexts
-    auto srcCxt  = context;
-    auto destCxt = &newJob->context;
+    const auto srcCxt  = context;
+    const auto destCxt = &newJob->context;
     destCxt->errCxtSteps.insert(destCxt->errCxtSteps.end(), srcCxt->errCxtSteps.begin(), srcCxt->errCxtSteps.end());
 
     // New context
@@ -39,7 +39,7 @@ Job* Generic::end(SemanticContext* context, Job* job, SymbolName* symbol, AstNod
 
 void Generic::checkCanInstantiateGenericSymbol(SemanticContext* context, OneMatch& firstMatch)
 {
-    auto symbol = firstMatch.symbolName;
+    const auto symbol = firstMatch.symbolName;
 
     // Be sure number of overloads has not changed since then
     if (firstMatch.numOverloadsWhenChecked != symbol->overloads.size())
@@ -60,9 +60,9 @@ void Generic::checkCanInstantiateGenericSymbol(SemanticContext* context, OneMatc
 
 bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& firstMatch, bool forStruct)
 {
-    auto       node              = context->node;
+    const auto node              = context->node;
     auto&      matches           = context->cacheMatches;
-    auto       symbol            = firstMatch.symbolName;
+    const auto symbol            = firstMatch.symbolName;
     auto       genericParameters = firstMatch.genericParameters;
     ScopedLock lk(symbol->mutex);
 
@@ -80,13 +80,13 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
         if (!genericParameters && (firstMatch.matchFlags & SymbolMatchContext::MATCH_GENERIC_AUTO))
         {
             SWAG_ASSERT(!firstMatch.genericParametersCallTypes.empty());
-            auto identifier               = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+            const auto identifier               = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
             identifier->genericParameters = Ast::newFuncCallGenParams(node->sourceFile, node);
             genericParameters             = identifier->genericParameters;
             for (int i = 0; i < (int) firstMatch.genericParametersCallTypes.size(); i++)
             {
                 const auto& param     = firstMatch.genericParametersCallTypes[i];
-                auto        callParam = Ast::newFuncCallParam(node->sourceFile, genericParameters);
+                const auto  callParam = Ast::newFuncCallParam(node->sourceFile, genericParameters);
                 callParam->typeInfo   = param.typeInfoReplace;
                 if (param.fromNode)
                     callParam->token = param.fromNode->token;
@@ -106,7 +106,7 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
             SWAG_CHECK(Generic::instantiateStruct(context, genericParameters, firstMatch, alias));
             if (alias)
             {
-                auto oneMatch            = context->getOneMatch();
+                const auto oneMatch            = context->getOneMatch();
                 oneMatch->symbolOverload = firstMatch.symbolOverload;
                 matches.push_back(oneMatch);
             }
@@ -118,7 +118,7 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
         // So we match a generic struct as a normal match without instantiation (for now).
         else if (!(node->flags & AST_IS_GENERIC))
         {
-            auto oneMatch            = context->getOneMatch();
+            const auto oneMatch            = context->getOneMatch();
             oneMatch->symbolOverload = firstMatch.symbolOverload;
             matches.push_back(oneMatch);
             node->flags |= AST_IS_GENERIC;
@@ -128,7 +128,7 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
         else
         {
             SWAG_ASSERT(genericParameters);
-            auto oneMatch            = context->getOneMatch();
+            const auto oneMatch            = context->getOneMatch();
             oneMatch->symbolOverload = firstMatch.symbolOverload;
             matches.push_back(oneMatch);
             node->flags |= AST_IS_GENERIC;
@@ -138,7 +138,7 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
             auto newStructType = CastTypeInfo<TypeInfoStruct>(firstMatch.symbolOverload->typeInfo, TypeInfoKind::Struct);
             if (newStructType->genericParameters.size() == genericParameters->childs.size() && genericParameters->childs.size())
             {
-                auto typeWasForced = firstMatch.symbolOverload->typeInfo->clone();
+                const auto typeWasForced = firstMatch.symbolOverload->typeInfo->clone();
                 newStructType      = CastTypeInfo<TypeInfoStruct>(typeWasForced, TypeInfoKind::Struct);
                 for (size_t i = 0; i < genericParameters->childs.size(); i++)
                 {
@@ -161,8 +161,8 @@ bool Generic::instantiateGenericSymbol(SemanticContext* context, OneMatch& first
 
 void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& genericParameters)
 {
-    int wantedNumGenericParams = (int) genericParameters.size();
-    int numGenericParams       = (int) context.genericParameters.size();
+    const int wantedNumGenericParams = (int) genericParameters.size();
+    const int numGenericParams       = (int) context.genericParameters.size();
     if (!numGenericParams && !wantedNumGenericParams)
         return;
 
@@ -183,9 +183,9 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
     for (int i = 0; i < numGenericParams; i++)
     {
         const auto& genName     = genericParameters[i]->name;
-        auto        genType     = genericParameters[i]->typeInfo;
+        const auto  genType     = genericParameters[i]->typeInfo;
         const auto& genTypeName = genType->name;
-        auto        genNode     = context.genericParameters[i];
+        const auto  genNode     = context.genericParameters[i];
 
         if (!context.genericParametersCallTypes[i].typeInfoReplace)
         {
@@ -219,7 +219,7 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
                         continue;
                     if (v.first == genTypeName)
                         continue;
-                    auto typeInfoReplace = replaceGenericTypes(m, v.second.typeInfoGeneric);
+                    const auto typeInfoReplace = replaceGenericTypes(m, v.second.typeInfoGeneric);
                     if (typeInfoReplace != v.second.typeInfoGeneric)
                     {
                         v.second.typeInfoReplace = typeInfoReplace;
@@ -232,7 +232,7 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
     for (auto i = numGenericParams; i < wantedNumGenericParams; i++)
     {
         const auto& genName     = genericParameters[i]->name;
-        auto        genType     = genericParameters[i]->typeInfo;
+        const auto  genType     = genericParameters[i]->typeInfo;
         const auto& genTypeName = genType->name;
 
         if (context.genericParametersCallTypes[i].typeInfoReplace)
@@ -254,7 +254,7 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
 
     for (int i = 0; i < wantedNumGenericParams; i++)
     {
-        auto genType                                          = genericParameters[i]->typeInfo;
+        const auto genType                                          = genericParameters[i]->typeInfo;
         context.mapGenericTypeToIndex[genType->name]          = i;
         context.genericParametersCallTypes[i].typeInfoGeneric = genType;
     }
@@ -262,7 +262,7 @@ void Generic::setUserGenericTypeReplacement(SymbolMatchContext& context, VectorN
 
 void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneTryMatch& oneTryMatch, SymbolOverload* symOverload, uint32_t flags)
 {
-    auto node = context->node;
+    const auto node = context->node;
 
     // Fresh start on generic types
     oneTryMatch.symMatchContext.genericReplaceTypes.clear();
@@ -292,7 +292,7 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
     // With A.B form, we try to get generic parameters from A if they exist
     if (node->kind == AstNodeKind::Identifier)
     {
-        auto identifier = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
+        const auto identifier = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
         if (identifier->identifierRef()->startScope)
             toCheck.push_back(identifier->identifierRef()->startScope->owner);
     }
@@ -304,18 +304,18 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
     {
         if (oneTryMatch.dependentVarLeaf->typeInfo && oneTryMatch.dependentVarLeaf->typeInfo->isStruct())
         {
-            auto typeStruct = CastTypeInfo<TypeInfoStruct>(oneTryMatch.dependentVarLeaf->typeInfo, TypeInfoKind::Struct);
+            const auto typeStruct = CastTypeInfo<TypeInfoStruct>(oneTryMatch.dependentVarLeaf->typeInfo, TypeInfoKind::Struct);
             toCheck.push_back(typeStruct->declNode);
         }
     }
 
     // Collect all
-    for (auto one : toCheck)
+    for (const auto one : toCheck)
     {
         if (one->kind == AstNodeKind::FuncDecl)
         {
-            auto nodeFunc = CastAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
-            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(nodeFunc->typeInfo, TypeInfoKind::FuncAttr);
+            const auto nodeFunc = CastAst<AstFuncDecl>(one, AstNodeKind::FuncDecl);
+            const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(nodeFunc->typeInfo, TypeInfoKind::FuncAttr);
 
             oneTryMatch.symMatchContext.genericReplaceTypes.reserve(typeFunc->replaceTypes.size());
             for (auto oneReplace : typeFunc->replaceTypes)
@@ -327,8 +327,8 @@ void Generic::setContextualGenericTypeReplacement(SemanticContext* context, OneT
         }
         else if (one->kind == AstNodeKind::StructDecl)
         {
-            auto nodeStruct = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
-            auto typeStruct = CastTypeInfo<TypeInfoStruct>(nodeStruct->typeInfo, TypeInfoKind::Struct);
+            const auto nodeStruct = CastAst<AstStruct>(one, AstNodeKind::StructDecl);
+            const auto typeStruct = CastTypeInfo<TypeInfoStruct>(nodeStruct->typeInfo, TypeInfoKind::Struct);
 
             oneTryMatch.symMatchContext.genericReplaceTypes.reserve(typeStruct->replaceTypes.size());
             for (auto oneReplace : typeStruct->replaceTypes)

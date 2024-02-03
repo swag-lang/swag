@@ -65,7 +65,7 @@ void ByteCodeGen::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcD
 
     if (funcDecl && !bc && funcDecl->attributeFlags & ATTRIBUTE_FOREIGN)
     {
-        auto inst       = EMIT_INST0(context, ByteCodeOp::ForeignCall);
+        const auto inst       = EMIT_INST0(context, ByteCodeOp::ForeignCall);
         inst->a.pointer = (uint8_t*) funcDecl;
         inst->b.pointer = (uint8_t*) funcDecl->typeInfo;
         context->bc->hasForeignFunctionCallsModules.insert(ModuleManager::getForeignModuleName(funcDecl));
@@ -73,9 +73,9 @@ void ByteCodeGen::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcD
     }
     else
     {
-        auto inst = EMIT_INST0(context, ByteCodeOp::LocalCall);
+        const auto inst = EMIT_INST0(context, ByteCodeOp::LocalCall);
         SWAG_ASSERT(bc || (funcDecl && funcDecl->hasExtByteCode() && funcDecl->extByteCode()->bc));
-        auto bcReal     = bc ? bc : funcDecl->extByteCode()->bc;
+        const auto bcReal     = bc ? bc : funcDecl->extByteCode()->bc;
         bcReal->isUsed  = true;
         inst->a.pointer = (uint8_t*) bcReal;
         SWAG_ASSERT(inst->a.pointer);
@@ -89,19 +89,19 @@ void ByteCodeGen::emitOpCallUser(ByteCodeGenContext* context, AstFuncDecl* funcD
 void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct)
 {
     ScopedLock lk(typeInfoStruct->mutexGen);
-    auto       structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+    const auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
     if (typeInfoStruct->flags & TYPEINFO_SPECOP_GENERATED)
         return;
 
     // Type of those functions
-    auto typeInfoFunc                     = (TypeInfoFuncAttr*) g_TypeMgr->typeInfoOpCall->clone();
+    const auto typeInfoFunc                     = (TypeInfoFuncAttr*) g_TypeMgr->typeInfoOpCall->clone();
     typeInfoFunc->parameters[0]->typeInfo = g_TypeMgr->makePointerTo(typeInfoStruct, typeInfoFunc->parameters[0]->typeInfo->flags);
     typeInfoFunc->forceComputeName();
 
     for (int i = 0; i < (int) EmitOpUserKind::Max; i++)
     {
-        auto        kind  = (EmitOpUserKind) i;
+        const auto        kind  = (EmitOpUserKind) i;
         ByteCode**  resOp = nullptr;
         Utf8        addName;
         SymbolName* symbol = nullptr;
@@ -275,14 +275,14 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
         // Be sure sub structs are generated too
         {
             SWAG_RACE_CONDITION_READ(typeInfoStruct->raceFields);
-            for (auto typeParam : typeInfoStruct->fields)
+            for (const auto typeParam : typeInfoStruct->fields)
             {
                 auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
                 if (typeVar->isArray())
                     typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
                 if (!typeVar->isStruct())
                     continue;
-                auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+                const auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
                 generateStructAlloc(context, typeStructVar);
                 if (context->result != ContextResult::Done)
                     return;
@@ -322,7 +322,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
             break;
         }
 
-        auto      sourceFile = context->sourceFile;
+        const auto      sourceFile = context->sourceFile;
         ByteCode* opInit     = Allocator::alloc<ByteCode>();
         opInit->sourceFile   = sourceFile;
         opInit->typeInfoFunc = typeInfoFunc;
@@ -340,7 +340,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
             // Export generated function if necessary
             if (!(structNode->flags & AST_FROM_GENERIC))
             {
-                auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
+                const auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
                 funcNode->typeInfo   = opInit->typeInfoFunc;
                 funcNode->ownerScope = structNode->scope;
                 funcNode->token.text = g_LangSpec->name_opInitGenerated;
@@ -358,7 +358,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
             // Export generated function if necessary
             if ((structNode->attributeFlags & ATTRIBUTE_PUBLIC) && !(structNode->flags & AST_FROM_GENERIC))
             {
-                auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
+                const auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
                 funcNode->typeInfo   = opInit->typeInfoFunc;
                 funcNode->ownerScope = structNode->scope;
                 funcNode->token.text = g_LangSpec->name_opDropGenerated;
@@ -375,7 +375,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
             // Export generated function if necessary
             if ((structNode->attributeFlags & ATTRIBUTE_PUBLIC) && !(structNode->flags & AST_FROM_GENERIC))
             {
-                auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
+                const auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
                 funcNode->typeInfo   = opInit->typeInfoFunc;
                 funcNode->ownerScope = structNode->scope;
                 funcNode->token.text = g_LangSpec->name_opPostCopyGenerated;
@@ -392,7 +392,7 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
             // Export generated function if necessary
             if ((structNode->attributeFlags & ATTRIBUTE_PUBLIC) && !(structNode->flags & AST_FROM_GENERIC))
             {
-                auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
+                const auto funcNode        = Ast::newNode<AstFuncDecl>(nullptr, AstNodeKind::FuncDecl, sourceFile, structNode);
                 funcNode->typeInfo   = opInit->typeInfoFunc;
                 funcNode->ownerScope = structNode->scope;
                 funcNode->token.text = g_LangSpec->name_opPostMoveGenerated;
@@ -419,8 +419,8 @@ void ByteCodeGen::generateStructAlloc(ByteCodeGenContext* context, TypeInfoStruc
 void ByteCodeGen::emitOpCallUserArrayOfStruct(ByteCodeGenContext* context, TypeInfo* typeVar, EmitOpUserKind kind, bool pushParam, uint32_t offset)
 {
     SWAG_ASSERT(typeVar->isArrayOfStruct());
-    auto typeArray     = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
-    auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);
+    const auto typeArray     = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
+    const auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);
     if (typeArray->totalCount == 1)
     {
         if (!pushParam)
@@ -432,7 +432,7 @@ void ByteCodeGen::emitOpCallUserArrayOfStruct(ByteCodeGenContext* context, TypeI
         if (!pushParam)
             EMIT_INST1(context, ByteCodeOp::PushRAParam, 0);
         emitOpCallUser(context, typeStructVar, kind, pushParam, offset);
-        auto inst = EMIT_INST0(context, ByteCodeOp::IncPointer64);
+        const auto inst = EMIT_INST0(context, ByteCodeOp::IncPointer64);
         inst->flags |= BCI_IMM_B;
         inst->b.u64 = typeStructVar->sizeOf;
         EMIT_INST1(context, ByteCodeOp::PushRAParam, 0);
@@ -456,9 +456,9 @@ void ByteCodeGen::emitOpCallUserArrayOfStruct(ByteCodeGenContext* context, TypeI
         // Need to loop on every element of the array
         RegisterList r0 = reserveRegisterRC(context);
 
-        auto inst     = EMIT_INST1(context, ByteCodeOp::SetImmediate32, r0);
-        inst->b.u64   = typeArray->totalCount;
-        auto seekJump = context->bc->numInstructions;
+        auto inst           = EMIT_INST1(context, ByteCodeOp::SetImmediate32, r0);
+        inst->b.u64         = typeArray->totalCount;
+        const auto seekJump = context->bc->numInstructions;
 
         EMIT_INST1(context, ByteCodeOp::PushRAParam, 0);
         emitOpCallUser(context, typeStructVar, kind, false);
@@ -476,15 +476,15 @@ void ByteCodeGen::emitOpCallUserArrayOfStruct(ByteCodeGenContext* context, TypeI
 
 void ByteCodeGen::emitOpCallUserFields(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct, EmitOpUserKind kind)
 {
-    for (auto typeParam : typeInfoStruct->fields)
+    for (const auto typeParam : typeInfoStruct->fields)
     {
         PushLocation pl(context, typeParam->declNode);
 
-        auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
+        const auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
         if (typeVar->isArrayOfStruct())
         {
-            auto typeArray     = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
-            auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);
+            const auto typeArray     = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array);
+            const auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeArray->finalType, TypeInfoKind::Struct);
 
             switch (kind)
             {
@@ -512,7 +512,7 @@ void ByteCodeGen::emitOpCallUserFields(ByteCodeGenContext* context, TypeInfoStru
         }
         else if (typeVar->isStruct())
         {
-            auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+            const auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
             emitOpCallUser(context, typeStructVar, kind, true, typeParam->offset);
         }
     }
@@ -801,8 +801,8 @@ bool ByteCodeGen::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStr
         return true;
 
     SWAG_ASSERT(typeInfoStruct->declNode);
-    auto sourceFile = context->sourceFile;
-    auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+    const auto sourceFile = context->sourceFile;
+    const auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
     SymbolName* symbol = nullptr;
 
@@ -849,14 +849,14 @@ bool ByteCodeGen::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStr
     }
 
     // Be sure sub structs are generated too
-    for (auto typeParam : typeInfoStruct->fields)
+    for (const auto typeParam : typeInfoStruct->fields)
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
         if (typeVar->isArray())
             typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
         if (!typeVar->isStruct())
             continue;
-        auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+        const auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         Semantic::waitStructGenerated(context->baseJob, typeStructVar);
         YIELD();
         SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPECOP_GENERATED);
@@ -872,7 +872,7 @@ bool ByteCodeGen::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStr
     if (!needDrop)
         return true;
 
-    auto opDrop = typeInfoStruct->opDrop;
+    const auto opDrop = typeInfoStruct->opDrop;
     SWAG_ASSERT(opDrop);
 
     ByteCodeGenContext cxt{*context};
@@ -897,7 +897,7 @@ bool ByteCodeGen::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStr
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_GEN_BC)
     {
-        ByteCodePrintOptions opt;
+        const ByteCodePrintOptions opt;
         cxt.bc->print(opt);
     }
 
@@ -913,8 +913,8 @@ bool ByteCodeGen::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInf
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_COPY)
         return true;
 
-    auto sourceFile = context->sourceFile;
-    auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+    const auto sourceFile = context->sourceFile;
+    const auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
     SymbolName* symbol = nullptr;
 
@@ -961,14 +961,14 @@ bool ByteCodeGen::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInf
     }
 
     // Be sure sub structs are generated too
-    for (auto typeParam : typeInfoStruct->fields)
+    for (const auto typeParam : typeInfoStruct->fields)
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
         if (typeVar->isArray())
             typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
         if (!typeVar->isStruct())
             continue;
-        auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+        const auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         Semantic::waitStructGenerated(context->baseJob, typeStructVar);
         YIELD();
         SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPECOP_GENERATED);
@@ -984,7 +984,7 @@ bool ByteCodeGen::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInf
     if (!needPostCopy)
         return true;
 
-    auto opPostCopy = typeInfoStruct->opPostCopy;
+    const auto opPostCopy = typeInfoStruct->opPostCopy;
     SWAG_ASSERT(opPostCopy);
 
     ByteCodeGenContext cxt{*context};
@@ -1009,7 +1009,7 @@ bool ByteCodeGen::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInf
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_GEN_BC)
     {
-        ByteCodePrintOptions opt;
+        const ByteCodePrintOptions opt;
         cxt.bc->print(opt);
     }
 
@@ -1023,8 +1023,8 @@ bool ByteCodeGen::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInf
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_POST_MOVE)
         return true;
 
-    auto sourceFile = context->sourceFile;
-    auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+    const auto sourceFile = context->sourceFile;
+    const auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
     SymbolName* symbol = nullptr;
 
@@ -1071,14 +1071,14 @@ bool ByteCodeGen::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInf
     }
 
     // Be sure sub structs are generated too
-    for (auto typeParam : typeInfoStruct->fields)
+    for (const auto typeParam : typeInfoStruct->fields)
     {
         auto typeVar = TypeManager::concreteType(typeParam->typeInfo);
         if (typeVar->isArray())
             typeVar = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->pointedType;
         if (!typeVar->isStruct())
             continue;
-        auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
+        const auto typeStructVar = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
         Semantic::waitStructGenerated(context->baseJob, typeStructVar);
         YIELD();
         SWAG_ASSERT(typeStructVar->flags & TYPEINFO_SPECOP_GENERATED);
@@ -1094,7 +1094,7 @@ bool ByteCodeGen::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInf
     if (!needPostMove)
         return true;
 
-    auto opPostMove = typeInfoStruct->opPostMove;
+    const auto opPostMove = typeInfoStruct->opPostMove;
     SWAG_ASSERT(opPostMove);
 
     ByteCodeGenContext cxt{*context};
@@ -1119,7 +1119,7 @@ bool ByteCodeGen::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInf
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_GEN_BC)
     {
-        ByteCodePrintOptions opt;
+        const ByteCodePrintOptions opt;
         cxt.bc->print(opt);
     }
 
@@ -1144,7 +1144,7 @@ bool ByteCodeGen::emitStruct(ByteCodeGenContext* context)
     SWAG_CHECK(generateStruct_opPostMove(context, typeInfoStruct));
     YIELD();
 
-    auto       structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+    const auto       structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
     ScopedLock lk(structNode->mutex);
     structNode->semFlags |= SEMFLAG_BYTECODE_GENERATED;
     node->dependentJobs.setRunning();
@@ -1153,12 +1153,12 @@ bool ByteCodeGen::emitStruct(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r0, RegisterList& r1, TypeInfo* typeInfo, AstNode* from)
 {
-    TypeInfoStruct* typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    const TypeInfoStruct* typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
 
     // Need to drop first
     if (typeInfoStruct->opDrop || typeInfoStruct->opUserDropFct)
     {
-        bool mustDrop = (from->flags & AST_NO_LEFT_DROP) ? false : true;
+        const bool mustDrop = (from->flags & AST_NO_LEFT_DROP) ? false : true;
         if (mustDrop)
         {
             EMIT_INST1(context, ByteCodeOp::PushRAParam, r0);
@@ -1171,12 +1171,12 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r0, 
         emitMemCpy(context, r0, r1, typeInfoStruct->sizeOf);
 
     // A copy
-    bool mustCopy = (from->flags & (AST_TRANSIENT | AST_FORCE_MOVE)) ? false : true;
+    const bool mustCopy = (from->flags & (AST_TRANSIENT | AST_FORCE_MOVE)) ? false : true;
     if (mustCopy)
     {
         if (typeInfoStruct->flags & TYPEINFO_STRUCT_NO_COPY)
         {
-            Diagnostic diag{from, Fmt(Err(Err0113), typeInfo->getDisplayNameC())};
+            const Diagnostic diag{from, Fmt(Err(Err0113), typeInfo->getDisplayNameC())};
             return context->report(diag);
         }
 
@@ -1236,10 +1236,10 @@ bool ByteCodeGen::emitCopyStruct(ByteCodeGenContext* context, RegisterList& r0, 
 
 void ByteCodeGen::emitRetValRef(ByteCodeGenContext* context, SymbolOverload* resolved, RegisterList& r0, bool retVal, uint32_t stackOffset)
 {
-    auto node = context->node;
+    const auto node = context->node;
     if (retVal)
     {
-        auto overload = node->resolvedSymbolOverload;
+        const auto overload = node->resolvedSymbolOverload;
         SWAG_ASSERT(overload);
         if (overload->node->ownerInline && overload->node->ownerInline->resultRegisterRC.countResults)
             EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r0, overload->node->ownerInline->resultRegisterRC);
@@ -1248,7 +1248,7 @@ void ByteCodeGen::emitRetValRef(ByteCodeGenContext* context, SymbolOverload* res
     }
     else
     {
-        auto inst = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, r0);
+        const auto inst = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, r0);
         SWAG_ASSERT(stackOffset != UINT32_MAX);
         inst->b.s32     = stackOffset;
         inst->c.pointer = (uint8_t*) resolved;
@@ -1257,8 +1257,8 @@ void ByteCodeGen::emitRetValRef(ByteCodeGenContext* context, SymbolOverload* res
 
 bool ByteCodeGen::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct* typeInfoStruct, uint32_t regOffset, bool retVal)
 {
-    auto node     = context->node;
-    auto resolved = node->resolvedSymbolOverload;
+    const auto node     = context->node;
+    const auto resolved = node->resolvedSymbolOverload;
 
     // All fields are explicitly not initialized, so we are done
     if (typeInfoStruct->flags & TYPEINFO_STRUCT_ALL_UNINITIALIZED)
@@ -1302,22 +1302,22 @@ bool ByteCodeGen::emitStructInit(ByteCodeGenContext* context, TypeInfoStruct* ty
 void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t regOffset, bool retVal)
 {
     PushContextFlags cf(context, BCC_FLAG_NOSAFETY);
-    auto             node     = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
-    auto             resolved = node->resolvedSymbolOverload;
+    const auto       node     = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+    const auto       resolved = node->resolvedSymbolOverload;
 
     if (node->type && (node->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
     {
         RegisterList r0 = reserveRegisterRC(context);
 
-        auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
+        const auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
         auto typeId         = typeExpression;
         while (typeId->typeFlags & TYPEFLAG_IS_SUB_TYPE)
             typeId = CastAst<AstTypeExpression>(typeId->childs.back(), AstNodeKind::TypeExpression);
-        auto identifier = CastAst<AstIdentifier>(typeId->identifier->childs.back(), AstNodeKind::Identifier);
+        const auto identifier = CastAst<AstIdentifier>(typeId->identifier->childs.back(), AstNodeKind::Identifier);
 
         if (identifier->callParameters)
         {
-            for (auto child : identifier->callParameters->childs)
+            for (const auto child : identifier->callParameters->childs)
             {
                 // Already set by something else, as a direct reference, so no need to copy
                 if (child->semFlags & SEMFLAG_FIELD_STRUCT)
@@ -1326,14 +1326,14 @@ void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t reg
                     continue;
                 }
 
-                auto param = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
+                const auto param = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
                 SWAG_ASSERT(param->resolvedParameter);
-                auto typeParam = param->resolvedParameter;
+                const auto typeParam = param->resolvedParameter;
 
                 emitRetValRef(context, resolved, r0, retVal, resolved->computedValue.storageOffset + typeParam->offset);
                 if (retVal && typeParam->offset)
                 {
-                    auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, r0, 0, r0);
+                    const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, r0, 0, r0);
                     SWAG_ASSERT(typeParam->offset != 0xFFFFFFFF);
                     inst->b.u64 = typeParam->offset;
                     inst->flags |= BCI_IMM_B;
@@ -1361,16 +1361,16 @@ void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t reg
 
 void ByteCodeGen::freeStructParametersRegisters(ByteCodeGenContext* context)
 {
-    auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl);
+    const auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl);
     if (node->type && (node->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
     {
         auto typeExpression = CastAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
         while (typeExpression->typeFlags & TYPEFLAG_IS_SUB_TYPE)
             typeExpression = CastAst<AstTypeExpression>(typeExpression->childs.back(), AstNodeKind::TypeExpression);
-        auto identifier = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
+        const auto identifier = CastAst<AstIdentifier>(typeExpression->identifier->childs.back(), AstNodeKind::Identifier);
         if (identifier->callParameters)
         {
-            for (auto child : identifier->callParameters->childs)
+            for (const auto child : identifier->callParameters->childs)
             {
                 freeRegisterRC(context, child);
             }
@@ -1380,7 +1380,7 @@ void ByteCodeGen::freeStructParametersRegisters(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitInit(ByteCodeGenContext* context)
 {
-    auto node = CastAst<AstInit>(context->node, AstNodeKind::Init);
+    const auto node = CastAst<AstInit>(context->node, AstNodeKind::Init);
 
     // Number of values to initialize. 0 is dynamic (comes from a register)
     uint64_t numToInit = 0;
@@ -1398,7 +1398,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context)
     TypeInfo* pointedType = nullptr;
     if (node->count)
     {
-        auto typeExpression = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->expression->typeInfo), TypeInfoKind::Pointer);
+        const auto typeExpression = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->expression->typeInfo), TypeInfoKind::Pointer);
         pointedType         = typeExpression->pointedType;
     }
     else
@@ -1406,7 +1406,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context)
         pointedType = node->expression->typeInfo;
         if (pointedType->isArray())
         {
-            auto typeArray = CastTypeInfo<TypeInfoArray>(pointedType, TypeInfoKind::Array);
+            const auto typeArray = CastTypeInfo<TypeInfoArray>(pointedType, TypeInfoKind::Array);
             pointedType    = typeArray->finalType;
             numToInit      = typeArray->totalCount;
         }
@@ -1419,7 +1419,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context)
     freeRegisterRC(context, node->count);
     if (node->parameters)
     {
-        for (auto c : node->parameters->childs)
+        for (const auto c : node->parameters->childs)
             freeRegisterRC(context, c);
     }
 
@@ -1432,7 +1432,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
     bool justClear = true;
     if (parameters)
     {
-        for (auto child : parameters->childs)
+        for (const auto child : parameters->childs)
         {
             if (!child->hasComputedValue())
             {
@@ -1490,13 +1490,13 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
             uint32_t regCount = 0;
             if (numToInit > 1)
             {
-                regCount    = reserveRegisterRC(context);
-                auto inst   = EMIT_INST1(context, ByteCodeOp::SetImmediate64, regCount);
-                inst->b.u64 = numToInit;
+                regCount        = reserveRegisterRC(context);
+                const auto inst = EMIT_INST1(context, ByteCodeOp::SetImmediate64, regCount);
+                inst->b.u64     = numToInit;
             }
 
             ensureCanBeChangedRC(context, rExpr);
-            auto startLoop = context->bc->numInstructions;
+            const auto startLoop = context->bc->numInstructions;
 
             // Dynamic loop
             uint32_t jumpAfter = 0;
@@ -1514,10 +1514,10 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
             // Dynamic loop
             if (numToInit == 0)
             {
-                auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
+                const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
                 inst->flags |= BCI_IMM_B;
                 inst->b.u64                       = typeStruct->sizeOf;
-                auto instJump                     = EMIT_INST0(context, ByteCodeOp::Jump);
+                const auto instJump               = EMIT_INST0(context, ByteCodeOp::Jump);
                 instJump->b.s32                   = startLoop - context->bc->numInstructions;
                 context->bc->out[jumpAfter].b.s32 = context->bc->numInstructions - jumpAfter - 1;
             }
@@ -1525,11 +1525,11 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
             // Constant loop
             else if (numToInit > 1)
             {
-                auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
+                const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
                 inst->flags |= BCI_IMM_B;
                 inst->b.u64 = typeStruct->sizeOf;
                 EMIT_INST1(context, ByteCodeOp::DecrementRA64, regCount);
-                auto instJump   = EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, regCount);
+                const auto instJump   = EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, regCount);
                 instJump->b.s32 = startLoop - context->bc->numInstructions;
                 freeRegisterRC(context, regCount);
             }
@@ -1537,20 +1537,20 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
     }
     else if (!typeStruct)
     {
-        auto child = parameters->childs.front();
+        const auto child = parameters->childs.front();
         ensureCanBeChangedRC(context, rExpr);
 
         uint32_t regCount     = count ? count->resultRegisterRC[0] : 0;
         bool     freeRegCount = false;
         if (numToInit > 1 && !count)
         {
-            regCount     = reserveRegisterRC(context);
-            auto inst    = EMIT_INST1(context, ByteCodeOp::SetImmediate64, regCount);
-            inst->b.u64  = numToInit;
-            freeRegCount = true;
+            regCount        = reserveRegisterRC(context);
+            const auto inst = EMIT_INST1(context, ByteCodeOp::SetImmediate64, regCount);
+            inst->b.u64     = numToInit;
+            freeRegCount    = true;
         }
 
-        auto startLoop = context->bc->numInstructions;
+        const auto startLoop = context->bc->numInstructions;
 
         uint32_t jumpAfter = 0;
         if (numToInit != 1)
@@ -1565,11 +1565,11 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
 
         if (numToInit != 1)
         {
-            auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
+            const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
             inst->flags |= BCI_IMM_B;
             inst->b.u64 = pointedType->sizeOf;
 
-            auto instJump                     = EMIT_INST0(context, ByteCodeOp::Jump);
+            const auto instJump                     = EMIT_INST0(context, ByteCodeOp::Jump);
             instJump->b.s32                   = startLoop - context->bc->numInstructions;
             context->bc->out[jumpAfter].b.s32 = context->bc->numInstructions - jumpAfter - 1;
         }
@@ -1587,13 +1587,13 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
         bool     freeRegCount = false;
         if (numToInit > 1 && !count)
         {
-            regCount     = reserveRegisterRC(context);
-            auto inst    = EMIT_INST1(context, ByteCodeOp::SetImmediate64, regCount);
-            inst->b.u64  = numToInit;
-            freeRegCount = true;
+            regCount        = reserveRegisterRC(context);
+            const auto inst = EMIT_INST1(context, ByteCodeOp::SetImmediate64, regCount);
+            inst->b.u64     = numToInit;
+            freeRegCount    = true;
         }
 
-        auto startLoop = context->bc->numInstructions;
+        const auto startLoop = context->bc->numInstructions;
 
         uint32_t jumpAfter = 0;
         if (numToInit != 1)
@@ -1603,10 +1603,10 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
             EMIT_INST1(context, ByteCodeOp::DecrementRA64, regCount);
         }
 
-        for (auto child : parameters->childs)
+        for (const auto child : parameters->childs)
         {
-            auto param     = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
-            auto typeParam = param->resolvedParameter;
+            const auto param     = CastAst<AstFuncCallParam>(child, AstNodeKind::FuncCallParam);
+            const auto typeParam = param->resolvedParameter;
             EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r1, rExpr);
             if (typeParam->offset)
                 EMIT_INST1(context, ByteCodeOp::Add64byVB64, r1)->b.u64 = typeParam->offset;
@@ -1616,16 +1616,16 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
 
         if (numToInit != 1)
         {
-            auto inst   = EMIT_INST3(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
+            const auto inst   = EMIT_INST3(context, ByteCodeOp::IncPointer64, rExpr, 0, rExpr);
             inst->b.u64 = pointedType->sizeOf;
             inst->flags |= BCI_IMM_B;
 
-            auto instJump                     = EMIT_INST0(context, ByteCodeOp::Jump);
+            const auto instJump                     = EMIT_INST0(context, ByteCodeOp::Jump);
             instJump->b.s32                   = startLoop - context->bc->numInstructions;
             context->bc->out[jumpAfter].b.s32 = context->bc->numInstructions - jumpAfter - 1;
         }
 
-        for (auto child : parameters->childs)
+        for (const auto child : parameters->childs)
             freeRegisterRC(context, child);
         freeRegisterRC(context, r1);
         if (freeRegCount)
@@ -1637,8 +1637,8 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
 
 bool ByteCodeGen::emitDropCopyMove(ByteCodeGenContext* context)
 {
-    auto node           = CastAst<AstDropCopyMove>(context->node, AstNodeKind::Drop, AstNodeKind::PostCopy, AstNodeKind::PostMove);
-    auto typeExpression = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->expression->typeInfo), TypeInfoKind::Pointer);
+    const auto node           = CastAst<AstDropCopyMove>(context->node, AstNodeKind::Drop, AstNodeKind::PostCopy, AstNodeKind::PostMove);
+    const auto typeExpression = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(node->expression->typeInfo), TypeInfoKind::Pointer);
 
     if (!typeExpression->pointedType->isStruct())
     {
@@ -1660,7 +1660,7 @@ bool ByteCodeGen::emitDropCopyMove(ByteCodeGenContext* context)
         node->count->semFlags |= SEMFLAG_CAST1;
     }
 
-    auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeExpression->pointedType, TypeInfoKind::Struct);
+    const auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeExpression->pointedType, TypeInfoKind::Struct);
     Semantic::waitTypeCompleted(context->baseJob, typeStruct);
     YIELD();
 
@@ -1696,7 +1696,7 @@ bool ByteCodeGen::emitDropCopyMove(ByteCodeGenContext* context)
     {
         ensureCanBeChangedRC(context, node->expression->resultRegisterRC);
 
-        auto startLoop = context->bc->numInstructions;
+        const auto startLoop = context->bc->numInstructions;
 
         uint32_t jumpAfter = 0;
         if (numToDo != 1)
@@ -1725,10 +1725,10 @@ bool ByteCodeGen::emitDropCopyMove(ByteCodeGenContext* context)
 
         if (numToDo != 1)
         {
-            auto inst   = EMIT_INST3(context, ByteCodeOp::IncPointer64, node->expression->resultRegisterRC, 0, node->expression->resultRegisterRC);
+            const auto inst   = EMIT_INST3(context, ByteCodeOp::IncPointer64, node->expression->resultRegisterRC, 0, node->expression->resultRegisterRC);
             inst->b.u64 = typeExpression->pointedType->sizeOf;
             inst->flags |= BCI_IMM_B;
-            auto instJump                     = EMIT_INST0(context, ByteCodeOp::Jump);
+            const auto instJump                     = EMIT_INST0(context, ByteCodeOp::Jump);
             instJump->b.s32                   = startLoop - context->bc->numInstructions;
             context->bc->out[jumpAfter].b.s32 = context->bc->numInstructions - jumpAfter - 1;
         }

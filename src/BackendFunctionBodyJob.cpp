@@ -11,7 +11,7 @@ JobResult BackendFunctionBodyJob::execute()
     Timer timer1{&g_Stats.prepOutputTimeJob_GenFunc};
 #endif
 
-    for (auto one : byteCodeFunc)
+    for (const auto one : byteCodeFunc)
     {
         if (one->node && one->node->attributeFlags & (ATTRIBUTE_MIXIN | ATTRIBUTE_MACRO | ATTRIBUTE_COMPILER))
             continue;

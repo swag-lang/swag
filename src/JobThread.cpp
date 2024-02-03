@@ -31,7 +31,7 @@ void JobThread::loop()
 
     while (!requestEnd)
     {
-        auto job = g_ThreadMgr.getJob(this);
+        const auto job = g_ThreadMgr.getJob(this);
         if (job == nullptr)
         {
             if (requestEnd)

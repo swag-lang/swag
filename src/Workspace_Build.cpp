@@ -16,8 +16,8 @@
 
 void Workspace::computeModuleName(const Path& path, Utf8& moduleName, Path& moduleFolder, ModuleKind& kind)
 {
-    auto parent    = path.parent_path().filename();
-    auto cFileName = path.filename().string();
+    const auto parent    = path.parent_path().filename();
+    const auto cFileName = path.filename().string();
 
     // Be sure module name is valid
     Utf8 errorStr;
@@ -52,7 +52,7 @@ void Workspace::computeModuleName(const Path& path, Utf8& moduleName, Path& modu
 SourceFile* Workspace::findFile(const char* fileName)
 {
     SourceFile* sourceFile = nullptr;
-    for (auto m : mapModulesNames)
+    for (const auto m : mapModulesNames)
     {
         sourceFile = m.second->findFile(fileName);
         if (sourceFile)
@@ -69,7 +69,7 @@ SourceFile* Workspace::findFile(const char* fileName)
 Module* Workspace::getModuleByName(const Utf8& moduleName)
 {
     SharedLock lk(mutexModules);
-    auto       it = mapModulesNames.find(moduleName);
+    const auto it = mapModulesNames.find(moduleName);
     if (it == mapModulesNames.end())
         return nullptr;
     return it->second;
@@ -96,7 +96,7 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName, const Path& moduleP
     module->setup(moduleName, modulePath);
 
     // Setup from the config module, if it exists
-    auto cfgModule = g_ModuleCfgMgr->getCfgModule(moduleName);
+    const auto cfgModule = g_ModuleCfgMgr->getCfgModule(moduleName);
     if (cfgModule)
     {
         // :GetCfgFileParams
@@ -132,7 +132,7 @@ void Workspace::addBootstrap()
     bootstrapModule->setup("bootstrap", "");
     modules.push_back(bootstrapModule);
 
-    auto file  = Allocator::alloc<SourceFile>();
+    const auto file  = Allocator::alloc<SourceFile>();
     file->name = "bootstrap.swg";
     file->path = g_CommandLine.exePath.parent_path();
     file->path.append("runtime");
@@ -144,7 +144,7 @@ void Workspace::addBootstrap()
 
 void Workspace::addRuntimeFile(const char* fileName)
 {
-    auto file  = Allocator::alloc<SourceFile>();
+    const auto file  = Allocator::alloc<SourceFile>();
     file->name = fileName;
     file->path = g_CommandLine.exePath.parent_path();
     file->path.append("runtime");
@@ -214,7 +214,7 @@ void Workspace::setupTarget()
         OS::exit(-1);
     }
 
-    auto targetFullName = getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
+    const auto targetFullName = getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
     cachePath.append(workspacePath.filename().string() + "-" + targetFullName.c_str());
     if (!filesystem::exists(cachePath, err) && !filesystem::create_directories(cachePath, err))
     {
@@ -297,7 +297,7 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, Job* depJob)
         }
     }
 
-    auto note         = Diagnostic::note(prevNodeLocal, prevNodeLocal->token, msg);
+    const auto note         = Diagnostic::note(prevNodeLocal, prevNodeLocal->token, msg);
     note->canBeMerged = false;
     note->hint        = hint;
 
@@ -359,10 +359,10 @@ bool errorPendingCycle(Job* pendingJob, VectorNative<Job*>& waitingJobs, Set<Job
 
 void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
 {
-    for (auto& it : pendingJobs)
+    for (const auto& it : pendingJobs)
     {
-        auto pendingJob = it.pendingJob;
-        auto node       = it.node;
+        const auto pendingJob = it.pendingJob;
+        const auto node       = it.node;
 
         if (node->sourceFile->module->hasCycleError)
             continue;
@@ -370,7 +370,7 @@ void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
         // Is there a dependency cycle ?
         Set<Job*>          done;
         VectorNative<Job*> cycle;
-        bool               isCycle = errorPendingCycle(pendingJob, pendingJob->waitingJobs, done, cycle);
+        const bool         isCycle = errorPendingCycle(pendingJob, pendingJob->waitingJobs, done, cycle);
         if (isCycle)
         {
             Vector<const Diagnostic*> notes;
@@ -380,30 +380,30 @@ void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
             {
                 if (prevJob->nodes.size() > 1 && prevJob->originalNode->kind == AstNodeKind::FuncDecl)
                 {
-                    auto front        = prevJob->nodes.front();
-                    auto back         = prevJob->nodes.back();
-                    auto msg          = Fmt(Nte(Nte0110), Naming::kindName(front).c_str(), front->token.ctext(), Naming::kindName(back).c_str(), back->token.ctext());
-                    auto note         = Diagnostic::note(back, back->token, msg);
+                    const auto front  = prevJob->nodes.front();
+                    const auto back   = prevJob->nodes.back();
+                    auto       msg    = Fmt(Nte(Nte0110), Naming::kindName(front).c_str(), front->token.ctext(), Naming::kindName(back).c_str(), back->token.ctext());
+                    const auto note   = Diagnostic::note(back, back->token, msg);
                     note->canBeMerged = false;
                     note->hint        = Diagnostic::isType(back->typeInfo);
                     notes.push_back(note);
                 }
 
-                auto depJob = cycle[idxJob];
-                auto note   = errorPendingJob(prevJob, depJob);
+                const auto depJob = cycle[idxJob];
+                const auto note   = errorPendingJob(prevJob, depJob);
                 if (note)
                     notes.push_back(note);
                 prevJob = depJob;
             }
 
-            auto note = errorPendingJob(prevJob, pendingJob);
+            const auto note = errorPendingJob(prevJob, pendingJob);
             if (note)
                 notes.push_back(note);
 
-            auto       prevNodeLocal = pendingJob->originalNode ? pendingJob->originalNode : pendingJob->nodes.front();
+            const auto       prevNodeLocal = pendingJob->originalNode ? pendingJob->originalNode : pendingJob->nodes.front();
             Diagnostic diag{prevNodeLocal, prevNodeLocal->token, Fmt(Err(Err0624), Naming::kindName(prevNodeLocal).c_str(), prevNodeLocal->token.ctext())};
             Report::report(diag, notes);
-            auto sourceFile                   = Report::getDiagFile(diag);
+            const auto sourceFile                   = Report::getDiagFile(diag);
             sourceFile->module->hasCycleError = true;
             continue;
         }
@@ -411,7 +411,7 @@ void Workspace::errorPendingJobs(Vector<PendingJob>& pendingJobs)
         // Job is not done, and we do not wait for a specific other job...
         if (pendingJob->waitingJobs.empty())
         {
-            auto note = errorPendingJob(pendingJob, nullptr);
+            const auto note = errorPendingJob(pendingJob, nullptr);
             if (!note)
                 continue;
             Diagnostic diag{note->sourceFile, note->startLocation, note->endLocation, Err(Err0087)};
@@ -424,12 +424,12 @@ void Workspace::computeWaitingJobs()
 {
     for (auto pendingJob : g_ThreadMgr.waitingJobs)
     {
-        for (auto dep : pendingJob->dependentJobs.list)
+        for (const auto dep : pendingJob->dependentJobs.list)
         {
             dep->waitingJobs.push_back_once(pendingJob);
         }
 
-        for (auto dep : pendingJob->jobsToAdd)
+        for (const auto dep : pendingJob->jobsToAdd)
         {
             dep->waitingJobs.push_back_once(pendingJob);
         }
@@ -446,7 +446,7 @@ void Workspace::computeWaitingJobs()
             for (int i = 0; i < (int) g_ThreadMgr.waitingJobs.size(); i++)
             {
                 auto it = g_ThreadMgr.waitingJobs[i];
-                for (auto it1 : pendingJob->waitingSymbolSolved->nodes)
+                for (const auto it1 : pendingJob->waitingSymbolSolved->nodes)
                 {
                     if (it->originalNode == it1)
                     {
@@ -461,7 +461,7 @@ void Workspace::computeWaitingJobs()
             SWAG_ASSERT(pendingJob->waitingType);
             for (int i = 0; i < (int) g_ThreadMgr.waitingJobs.size(); i++)
             {
-                auto it = dynamic_cast<TypeGenStructJob*>(g_ThreadMgr.waitingJobs[i]);
+                const auto it = dynamic_cast<TypeGenStructJob*>(g_ThreadMgr.waitingJobs[i]);
                 if (it && it->typeInfo == pendingJob->waitingType)
                 {
                     pendingJob->waitingJobs.push_back_once(it);
@@ -513,9 +513,9 @@ void Workspace::checkPendingJobs()
 
     // Collect unsolved jobs
     Vector<PendingJob> pendingJobs;
-    for (auto pendingJob : g_ThreadMgr.waitingJobs)
+    for (const auto pendingJob : g_ThreadMgr.waitingJobs)
     {
-        auto sourceFile = pendingJob->sourceFile;
+        const auto sourceFile = pendingJob->sourceFile;
         if (!sourceFile)
             continue;
 
@@ -545,9 +545,9 @@ void Workspace::checkPendingJobs()
 
 bool Workspace::buildRTModule(Module* module)
 {
-    for (auto f : module->files)
+    for (const auto f : module->files)
     {
-        auto job        = Allocator::alloc<SyntaxJob>();
+        const auto job        = Allocator::alloc<SyntaxJob>();
         job->sourceFile = f;
         g_ThreadMgr.addJob(job);
     }
@@ -560,7 +560,7 @@ bool Workspace::buildRTModule(Module* module)
         return false;
     }
 
-    auto job    = Allocator::alloc<ModuleSemanticJob>();
+    const auto job    = Allocator::alloc<ModuleSemanticJob>();
     job->module = module;
     g_ThreadMgr.addJob(job);
     g_ThreadMgr.waitEndJobs();
@@ -590,7 +590,7 @@ bool Workspace::buildTarget()
 
     if (g_ThreadMgr.numWorkers != 1 && !g_CommandLine.scriptCommand)
     {
-        auto enumJob0          = Allocator::alloc<EnumerateModuleJob>();
+        const auto enumJob0          = Allocator::alloc<EnumerateModuleJob>();
         enumJob0->readFileMode = true;
         g_ThreadMgr.addJob(enumJob0);
     }
@@ -640,7 +640,7 @@ bool Workspace::buildTarget()
     // Ask for a syntax pass on all files of all modules
     //////////////////////////////////////////////////
 
-    auto enumJob1          = Allocator::alloc<EnumerateModuleJob>();
+    const auto enumJob1          = Allocator::alloc<EnumerateModuleJob>();
     enumJob1->readFileMode = false;
     g_ThreadMgr.addJob(enumJob1);
     g_ThreadMgr.waitEndJobs();
@@ -663,7 +663,7 @@ bool Workspace::buildTarget()
         filteredModule->addedToBuild = true;
         for (size_t i = 0; i < toBuild.size(); i++)
         {
-            for (auto& dep : toBuild[i]->moduleDependencies)
+            for (const auto& dep : toBuild[i]->moduleDependencies)
             {
                 ScopedLock lk(mutexModules);
                 auto       it = g_Workspace->mapModulesNames.find(dep->name);
@@ -688,15 +688,15 @@ bool Workspace::buildTarget()
     //////////////////////////////////////////////////
     {
         SharedLock lk(mutexModules);
-        for (auto module : toBuild)
+        for (const auto module : toBuild)
             module->addedToBuild = true;
-        for (auto module : toBuild)
+        for (const auto module : toBuild)
         {
             if (module == bootstrapModule || module == runtimeModule)
                 continue;
             if (module->isErrorModule)
                 continue;
-            auto job    = Allocator::alloc<ModuleBuildJob>();
+            const auto job    = Allocator::alloc<ModuleBuildJob>();
             job->module = module;
             g_ThreadMgr.addJob(job);
         }
@@ -712,7 +712,7 @@ bool Workspace::buildTarget()
         auto waitingJobs = g_ThreadMgr.waitingJobs;
         for (size_t i = 0; i < waitingJobs.size(); i++)
         {
-            auto job = waitingJobs[i];
+            const auto job = waitingJobs[i];
             if (job->flags & JOB_PENDING_PLACE_HOLDER)
             {
                 SWAG_ASSERT(!(job->flags & JOB_IS_IN_THREAD));
@@ -807,14 +807,14 @@ bool Workspace::build()
                 g_Log.messageHeaderCentered("Workspace", workspacePath.filename().string().c_str());
             else
             {
-                auto targetFullName = g_Workspace->getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
+                const auto targetFullName = g_Workspace->getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
                 g_Log.messageHeaderCentered("Workspace", Fmt("%s [%s]", workspacePath.filename().string().c_str(), targetFullName.c_str()));
             }
         }
         else
         {
-            auto targetFullName = g_Workspace->getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
-            Path p              = g_CommandLine.scriptName;
+            const auto targetFullName = g_Workspace->getTargetFullName(g_CommandLine.buildCfg, g_CommandLine.target);
+            const Path p              = g_CommandLine.scriptName;
             g_Log.messageHeaderCentered("Script", Fmt("%s [%s]", p.filename().string().c_str(), targetFullName.c_str()));
         }
 

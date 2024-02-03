@@ -12,7 +12,7 @@
 
 void Semantic::addDependentSymbol(VectorNative<OneSymbolMatch>& symbols, SymbolName* symName, Scope* scope, uint32_t asflags)
 {
-    for (auto& ds : symbols)
+    for (const auto& ds : symbols)
     {
         if (ds.symbol == symName)
             return;
@@ -32,7 +32,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, AstIdentifierRef
 
 bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<OneSymbolMatch>& dependentSymbols, AstIdentifierRef* identifierRef, AstIdentifier* node)
 {
-    auto job = context->baseJob;
+    const auto job = context->baseJob;
 
     // When this is "retval" type, no need to do fancy things, we take the corresponding function
     // return symbol. This will avoid some ambiguous resolutions with multiple tuples/structs.
@@ -40,9 +40,9 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
     {
         // Be sure this is correct
         SWAG_CHECK(resolveRetVal(context));
-        auto fctDecl = node->ownerInline ? node->ownerInline->func : node->ownerFct;
+        const auto fctDecl = node->ownerInline ? node->ownerInline->func : node->ownerFct;
         SWAG_ASSERT(fctDecl);
-        auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(fctDecl->typeInfo, TypeInfoKind::FuncAttr);
+        const auto typeFct = CastTypeInfo<TypeInfoFuncAttr>(fctDecl->typeInfo, TypeInfoKind::FuncAttr);
         SWAG_ASSERT(typeFct->returnType->isStruct());
         addDependentSymbol(dependentSymbols, typeFct->returnType->declNode->resolvedSymbolName, nullptr, 0);
         return true;
@@ -86,9 +86,9 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         return true;
     }
 
-    auto& scopeHierarchy     = context->cacheScopeHierarchy;
-    auto& scopeHierarchyVars = context->cacheScopeHierarchyVars;
-    auto  crc                = node->token.text.hash();
+    auto&      scopeHierarchy     = context->cacheScopeHierarchy;
+    auto&      scopeHierarchyVars = context->cacheScopeHierarchyVars;
+    const auto crc                = node->token.text.hash();
 
     bool forceEnd  = false;
     bool checkWait = false;
@@ -100,9 +100,9 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         auto startScope = identifierRef->startScope;
         if (!startScope || oneTry == 1)
         {
-            uint32_t collectFlags = COLLECT_ALL;
-            auto     scopeUpMode  = node->identifierExtension ? node->identifierExtension->scopeUpMode : IdentifierScopeUpMode::None;
-            auto     scopeUpValue = node->identifierExtension ? node->identifierExtension->scopeUpValue : TokenParse{};
+            const uint32_t collectFlags = COLLECT_ALL;
+            const auto     scopeUpMode  = node->identifierExtension ? node->identifierExtension->scopeUpMode : IdentifierScopeUpMode::None;
+            auto           scopeUpValue = node->identifierExtension ? node->identifierExtension->scopeUpValue : TokenParse{};
 
             startScope = node->ownerScope;
 
@@ -120,9 +120,9 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                 // More than one match : ambiguous
                 if (typeEnum.size() > 1)
                 {
-                    Diagnostic                diag{identifierRef, Fmt(Err(Err0018), node->token.ctext())};
+                    const Diagnostic                diag{identifierRef, Fmt(Err(Err0018), node->token.ctext())};
                     Vector<const Diagnostic*> notes;
-                    for (auto t : typeEnum)
+                    for (const auto t : typeEnum)
                     {
                         auto msg = Fmt(Nte(Nte0197), t->getDisplayNameC());
                         notes.push_back(Diagnostic::note(t->declNode, t->declNode->getTokenName(), msg));
@@ -142,14 +142,14 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                 // No match, we will try 'with'
                 else
                 {
-                    auto withNodeP = node->findParent(AstNodeKind::With);
+                    const auto withNodeP = node->findParent(AstNodeKind::With);
                     if (!withNodeP)
                     {
                         if (hasEnum.size())
                         {
-                            Diagnostic                diag{identifierRef, Fmt(Err(Err0708), node->token.ctext(), hasEnum[0].second->getDisplayNameC())};
+                            const Diagnostic          diag{identifierRef, Fmt(Err(Err0708), node->token.ctext(), hasEnum[0].second->getDisplayNameC())};
                             Vector<const Diagnostic*> notes;
-                            auto                      closest = SemanticError::findClosestMatchesMsg(node->token.text, {{hasEnum[0].second->scope, 0}}, IdentifierSearchFor::Whatever);
+                            const auto                closest = SemanticError::findClosestMatchesMsg(node->token.text, {{hasEnum[0].second->scope, 0}}, IdentifierSearchFor::Whatever);
                             if (!closest.empty())
                                 notes.push_back(Diagnostic::note(closest));
                             if (hasEnum[0].first)
@@ -158,21 +158,21 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                             return context->report(diag, notes);
                         }
 
-                        Diagnostic diag{identifierRef, Fmt(Err(Err0718), node->token.ctext())};
+                        const Diagnostic diag{identifierRef, Fmt(Err(Err0718), node->token.ctext())};
 
                         // Call to a function ?
-                        Diagnostic* note = nullptr;
+                        const Diagnostic* note = nullptr;
                         if (testedOver.size() == 1)
                             note = Diagnostic::hereIs(testedOver[0]);
                         return context->report(diag, note);
                     }
 
-                    auto withNode = CastAst<AstWith>(withNodeP, AstNodeKind::With);
+                    const auto withNode = CastAst<AstWith>(withNodeP, AstNodeKind::With);
 
                     // Prepend the 'with' identifier, and reevaluate
                     for (int wi = (int) withNode->id.size() - 1; wi >= 0; wi--)
                     {
-                        auto id = Ast::newIdentifier(context->sourceFile, withNode->id[wi], identifierRef, identifierRef);
+                        const auto id = Ast::newIdentifier(context->sourceFile, withNode->id[wi], identifierRef, identifierRef);
                         id->flags |= AST_GENERATED;
                         id->addSpecFlags(AstIdentifier::SPECFLAG_FROM_WITH);
                         id->allocateIdentifierExtension();
@@ -202,7 +202,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
             addAlternativeScopeOnce(scopeHierarchy, startScope);
 
             // No need to go further if we have found the symbol in the parent identifierRef scope (if specified).
-            auto symbol = startScope->symTable.find(node->token.text, crc);
+            const auto symbol = startScope->symTable.find(node->token.text, crc);
             if (symbol)
             {
                 addDependentSymbol(dependentSymbols, symbol, startScope, 0);
@@ -245,7 +245,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
 
                 if (as.scope->symTable.tryRead())
                 {
-                    auto symbol = as.scope->symTable.findNoLock(node->token.text, crc);
+                    const auto symbol = as.scope->symTable.findNoLock(node->token.text, crc);
                     as.scope->symTable.endRead();
                     if (symbol)
                         addDependentSymbol(dependentSymbols, symbol, as.scope, as.flags);
@@ -272,7 +272,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
             }
 
             // Same if dereference is implied by a using var
-            for (auto& sv : scopeHierarchyVars)
+            for (const auto& sv : scopeHierarchyVars)
             {
                 Semantic::waitTypeCompleted(job, sv.scope->owner->typeInfo);
                 YIELD();
@@ -334,7 +334,7 @@ void Semantic::collectAlternativeScopes(AstNode* startNode, VectorNative<Alterna
                     // become the dependentVar node, and will be converted by cast to the correct type.
                     {
                         SharedLock lk1(it0.scope->owner->extMisc()->mutexAltScopes);
-                        for (auto& it1 : it0.scope->owner->extMisc()->alternativeScopes)
+                        for (const auto& it1 : it0.scope->owner->extMisc()->alternativeScopes)
                             toAdd.push_back({it1.scope, it1.flags});
                     }
                 }
@@ -376,17 +376,17 @@ void Semantic::collectAlternativeScopeVars(AstNode* startNode, VectorNative<Alte
                     // become the dependentVar node, and will be converted by cast to the correct type.
                     {
                         SharedLock lk1(it0.scope->owner->extMisc()->mutexAltScopes);
-                        for (auto& it1 : it0.scope->owner->extMisc()->alternativeScopesVars)
+                        for (const auto& it1 : it0.scope->owner->extMisc()->alternativeScopesVars)
                             toAdd.push_back({it0.node, it1.node, it1.scope, it1.flags});
                     }
 
                     // If this is a struct that comes from a generic, we need to also register the generic scope in order
                     // to be able to find generic functions to instantiate
                     SWAG_ASSERT(it0.scope->owner->typeInfo->isStruct());
-                    auto typeStruct = CastTypeInfo<TypeInfoStruct>(it0.scope->owner->typeInfo, TypeInfoKind::Struct);
+                    const auto typeStruct = CastTypeInfo<TypeInfoStruct>(it0.scope->owner->typeInfo, TypeInfoKind::Struct);
                     if (typeStruct->fromGeneric)
                     {
-                        auto structDecl = CastAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
+                        const auto structDecl = CastAst<AstStruct>(typeStruct->fromGeneric->declNode, AstNodeKind::StructDecl);
                         addAlternativeScopeOnce(scopes, structDecl->scope, 0);
                     }
                 }
@@ -404,7 +404,7 @@ void Semantic::addAlternativeScopeOnce(VectorNative<AlternativeScope>& scopes, S
 
 bool Semantic::hasAlternativeScope(VectorNative<AlternativeScope>& scopes, Scope* scope)
 {
-    for (auto& as : scopes)
+    for (const auto& as : scopes)
     {
         if (as.scope == scope)
             return true;
@@ -438,12 +438,12 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
     // Add registered alternative scopes of the node of the owner scope
     if (startNode->ownerScope && startNode->ownerScope->owner)
     {
-        auto owner = startNode->ownerScope->owner;
+        const auto owner = startNode->ownerScope->owner;
         if (owner->hasExtMisc())
         {
             SharedLock lk(owner->extMisc()->mutexAltScopes);
             auto&      toProcess = context->scopesToProcess;
-            for (auto& as : owner->extMisc()->alternativeScopes)
+            for (const auto& as : owner->extMisc()->alternativeScopes)
             {
                 if (!hasAlternativeScope(scopes, as.scope) && (as.flags & ALTSCOPE_USING))
                 {
@@ -459,7 +459,7 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
     {
         SharedLock lk(startNode->extMisc()->mutexAltScopes);
         auto&      toProcess = context->scopesToProcess;
-        for (auto& as : startNode->extMisc()->alternativeScopes)
+        for (const auto& as : startNode->extMisc()->alternativeScopes)
         {
             if (!hasAlternativeScope(scopes, as.scope))
             {
@@ -482,7 +482,7 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
     // That scope does not have a parent, so the hierarchy scan will stop at it.
     if (startNode->kind == AstNodeKind::Inline && !(flags & COLLECT_NO_INLINE_PARAMS))
     {
-        auto inlineNode = CastAst<AstInline>(startNode, AstNodeKind::Inline);
+        const auto inlineNode = CastAst<AstInline>(startNode, AstNodeKind::Inline);
         SWAG_ASSERT(inlineNode->parametersScope);
         addAlternativeScopeOnce(scopes, inlineNode->parametersScope);
     }
@@ -511,7 +511,7 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
     // Not that the function parent can be null in case of inlined expression in a global for example (compile time execution)
     else if (startNode->kind == AstNodeKind::Inline)
     {
-        auto inlineBlock = CastAst<AstInline>(startNode, AstNodeKind::Inline);
+        const auto inlineBlock = CastAst<AstInline>(startNode, AstNodeKind::Inline);
         if (!(inlineBlock->func->attributeFlags & ATTRIBUTE_MIXIN))
         {
             if (!(inlineBlock->func->attributeFlags & ATTRIBUTE_MACRO))
@@ -552,7 +552,7 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
 
         if (startNode->kind == AstNodeKind::Inline)
         {
-            auto inlineNode = CastAst<AstInline>(startNode, AstNodeKind::Inline);
+            const auto inlineNode = CastAst<AstInline>(startNode, AstNodeKind::Inline);
             SWAG_ASSERT(inlineNode->parametersScope);
             addAlternativeScopeOnce(scopes, inlineNode->parametersScope);
         }
@@ -568,8 +568,8 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
                                      IdentifierScopeUpMode              scopeUpMode,
                                      TokenParse*                        scopeUpValue)
 {
-    auto& toProcess  = context->scopesToProcess;
-    auto  sourceFile = context->sourceFile;
+    auto&      toProcess  = context->scopesToProcess;
+    const auto sourceFile = context->sourceFile;
 
     toProcess.clear();
     scopes.clear();
@@ -590,13 +590,13 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
 
                 if (!startScope && i == 0)
                 {
-                    Diagnostic diag{context->node, *scopeUpValue, Err(Err0449)};
+                    const Diagnostic diag{context->node, *scopeUpValue, Err(Err0449)};
                     return context->report(diag);
                 }
 
                 if (!startScope && i)
                 {
-                    Diagnostic diag{context->node, *scopeUpValue, Fmt(Err(Err0148), scopeUpValue->literalValue.u8)};
+                    const Diagnostic diag{context->node, *scopeUpValue, Fmt(Err(Err0148), scopeUpValue->literalValue.u8)};
                     return context->report(diag);
                 }
 
@@ -629,7 +629,7 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
 
     for (size_t i = 0; i < toProcess.size(); i++)
     {
-        auto& as    = toProcess[i];
+        const auto& as    = toProcess[i];
         auto  scope = as.scope;
         if (!scope)
             continue;
@@ -643,7 +643,7 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
         // For a macro scope, jump right to the inline
         else if (scope->kind == ScopeKind::Macro)
         {
-            auto orgScope = scope;
+            const auto orgScope = scope;
             if (scope->hieScope)
                 scope = scope->hieScope;
             else

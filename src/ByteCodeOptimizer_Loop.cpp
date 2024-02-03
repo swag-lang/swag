@@ -11,7 +11,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
         if (!ByteCode::isJump(ip) || ip->b.s32 > 0)
             continue;
 
-        auto ipStart = ip + ip->b.s32 + 1;
+        const auto ipStart = ip + ip->b.s32 + 1;
         auto ipScan  = ipStart;
         if (ipScan->op == ByteCodeOp::IncJumpIfEqual64)
             ipScan++;
@@ -24,7 +24,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
             // Test an inside jump that will escape the loop
             if (ByteCode::isJump(ipScan))
             {
-                auto test = ipScan + ipScan->b.s32 + 1;
+                const auto test = ipScan + ipScan->b.s32 + 1;
                 if (test < ipStart || test > ip)
                     break;
             }
@@ -75,7 +75,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
             continue;
 
         // Be sure there's no external jump inside that loop
-        for (auto it : context->jumps)
+        for (const auto it : context->jumps)
         {
             if (it == ipStart || it == ipScan)
                 continue;
@@ -83,10 +83,10 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
                 break;
             if (ByteCode::isJumpDyn(it))
             {
-                int32_t* table = (int32_t*) context->module->compilerSegment.address(it->d.u32);
+                const int32_t* table = (int32_t*) context->module->compilerSegment.address(it->d.u32);
                 for (uint32_t i = 0; i < it->c.u32; i++)
                 {
-                    auto ipJump = it + table[i] + 1;
+                    const auto ipJump = it + table[i] + 1;
                     if (ipJump >= ipStart && ipJump <= ipScan)
                     {
                         if (it < ipStart || it > ipScan)
@@ -99,7 +99,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
             }
             else
             {
-                auto ipJump = it + it->b.s32 + 1;
+                const auto ipJump = it + it->b.s32 + 1;
                 if (ipJump >= ipStart && ipJump <= ipScan)
                 {
                     if (it < ipStart || it > ipScan)
@@ -115,7 +115,7 @@ bool ByteCodeOptimizer::optimizePassLoop(ByteCodeOptContext* context)
             continue;
 
         int shift = 0;
-        for (auto it : context->vecInst)
+        for (const auto it : context->vecInst)
         {
             auto cstOp = it + shift;
 

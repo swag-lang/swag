@@ -26,7 +26,7 @@ inline bool addWillOverflow(ByteCodeInstruction* ip, AstNode* node, int8_t x, in
 {
     if (!overflowIsEnabled(ip, node))
     {
-        int32_t result = (int32_t) x + (int32_t) y;
+        const int32_t result = (int32_t) x + (int32_t) y;
         if (result < INT8_MIN || result > INT8_MAX)
             return true;
     }
@@ -38,7 +38,7 @@ inline bool addWillOverflow(ByteCodeInstruction* ip, AstNode* node, int16_t x, i
 {
     if (!overflowIsEnabled(ip, node))
     {
-        int32_t result = (int32_t) x + (int32_t) y;
+        const int32_t result = (int32_t) x + (int32_t) y;
         if (result < INT16_MIN || result > INT16_MAX)
             return true;
     }
@@ -50,7 +50,7 @@ inline bool addWillOverflow(ByteCodeInstruction* ip, AstNode* node, int32_t x, i
 {
     if (!overflowIsEnabled(ip, node))
     {
-        int64_t result = (int64_t) x + (int64_t) y;
+        const int64_t result = (int64_t) x + (int64_t) y;
         if (result < INT32_MIN || result > INT32_MAX)
             return true;
     }
@@ -75,7 +75,7 @@ inline bool addWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint8_t x, u
 {
     if (!overflowIsEnabled(ip, node))
     {
-        uint32_t result = (uint32_t) x + (uint32_t) y;
+        const uint32_t result = (uint32_t) x + (uint32_t) y;
         if (result > UINT8_MAX)
             return true;
     }
@@ -87,7 +87,7 @@ inline bool addWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint16_t x, 
 {
     if (!overflowIsEnabled(ip, node))
     {
-        uint32_t result = (uint32_t) x + (uint32_t) y;
+        const uint32_t result = (uint32_t) x + (uint32_t) y;
         if (result > UINT16_MAX)
             return true;
     }
@@ -99,7 +99,7 @@ inline bool addWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint32_t x, 
 {
     if (!overflowIsEnabled(ip, node))
     {
-        uint64_t result = (uint64_t) x + (uint64_t) y;
+        const uint64_t result = (uint64_t) x + (uint64_t) y;
         if (result > UINT32_MAX)
             return true;
     }
@@ -122,7 +122,7 @@ inline bool subWillOverflow(ByteCodeInstruction* ip, AstNode* node, int8_t x, in
 {
     if (!overflowIsEnabled(ip, node))
     {
-        int32_t result = (int32_t) x - (int32_t) y;
+        const int32_t result = (int32_t) x - (int32_t) y;
         if (result < INT8_MIN || result > INT8_MAX)
             return true;
     }
@@ -134,7 +134,7 @@ inline bool subWillOverflow(ByteCodeInstruction* ip, AstNode* node, int16_t x, i
 {
     if (!overflowIsEnabled(ip, node))
     {
-        int32_t result = (int32_t) x - (int32_t) y;
+        const int32_t result = (int32_t) x - (int32_t) y;
         if (result < INT16_MIN || result > INT16_MAX)
             return true;
     }
@@ -146,7 +146,7 @@ inline bool subWillOverflow(ByteCodeInstruction* ip, AstNode* node, int32_t x, i
 {
     if (!overflowIsEnabled(ip, node))
     {
-        int64_t result = (int64_t) x - (int64_t) y;
+        const int64_t result = (int64_t) x - (int64_t) y;
         if (result < INT32_MIN || result > INT32_MAX)
             return true;
     }
@@ -168,7 +168,7 @@ inline bool subWillOverflow(ByteCodeInstruction* ip, AstNode* node, int64_t x, i
 
 inline bool subWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint8_t x, uint8_t y)
 {
-    uint32_t result = (uint32_t) x - (uint32_t) y;
+    const uint32_t result = (uint32_t) x - (uint32_t) y;
     if (!overflowIsEnabled(ip, node))
     {
         if (result > UINT8_MAX)
@@ -180,7 +180,7 @@ inline bool subWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint8_t x, u
 
 inline bool subWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint16_t x, uint16_t y)
 {
-    uint32_t result = (uint32_t) x - (uint32_t) y;
+    const uint32_t result = (uint32_t) x - (uint32_t) y;
     if (!overflowIsEnabled(ip, node))
     {
         if (result > UINT16_MAX)
@@ -192,7 +192,7 @@ inline bool subWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint16_t x, 
 
 inline bool subWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint32_t x, uint32_t y)
 {
-    uint64_t result = (uint64_t) x - (uint64_t) y;
+    const uint64_t result = (uint64_t) x - (uint64_t) y;
     if (!overflowIsEnabled(ip, node))
     {
         if (result > UINT32_MAX)
@@ -217,7 +217,7 @@ inline bool mulWillOverflow(ByteCodeInstruction* ip, AstNode* node, int8_t x, in
 {
     if (!overflowIsEnabled(ip, node))
     {
-        int32_t result = (int32_t) x * (int32_t) y;
+        const int32_t result = (int32_t) x * (int32_t) y;
         if (result < INT8_MIN || result > INT8_MAX)
             return true;
     }
@@ -229,7 +229,7 @@ inline bool mulWillOverflow(ByteCodeInstruction* ip, AstNode* node, int16_t x, i
 {
     if (!overflowIsEnabled(ip, node))
     {
-        int32_t result = (int32_t) x * (int32_t) y;
+        const int32_t result = (int32_t) x * (int32_t) y;
         if (result < INT16_MIN || result > INT16_MAX)
             return true;
     }
@@ -241,7 +241,7 @@ inline bool mulWillOverflow(ByteCodeInstruction* ip, AstNode* node, int32_t x, i
 {
     if (!overflowIsEnabled(ip, node))
     {
-        int64_t result = (int64_t) x * (int64_t) y;
+        const int64_t result = (int64_t) x * (int64_t) y;
         if (result < INT32_MIN || result > INT32_MAX)
             return true;
     }
@@ -267,7 +267,7 @@ inline bool mulWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint8_t x, u
 {
     if (!overflowIsEnabled(ip, node))
     {
-        uint32_t result = (uint32_t) x * (uint32_t) y;
+        const uint32_t result = (uint32_t) x * (uint32_t) y;
         if (result > UINT8_MAX)
             return true;
     }
@@ -279,7 +279,7 @@ inline bool mulWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint16_t x, 
 {
     if (!overflowIsEnabled(ip, node))
     {
-        uint32_t result = (uint32_t) x * (uint32_t) y;
+        const uint32_t result = (uint32_t) x * (uint32_t) y;
         if (result > UINT16_MAX)
             return true;
     }
@@ -291,7 +291,7 @@ inline bool mulWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint32_t x, 
 {
     if (!overflowIsEnabled(ip, node))
     {
-        uint64_t result = (uint64_t) x * (uint64_t) y;
+        const uint64_t result = (uint64_t) x * (uint64_t) y;
         if (result > UINT32_MAX)
             return true;
     }
@@ -303,7 +303,7 @@ inline bool mulWillOverflow(ByteCodeInstruction* ip, AstNode* node, uint64_t x, 
 {
     if (!overflowIsEnabled(ip, node))
     {
-        auto res = x * y;
+        const auto res = x * y;
         if (res > 0 && (UINT64_MAX / y) < x)
             return true;
     }

@@ -19,7 +19,7 @@ SymbolName* SymTableHash::find(const Utf8& str, uint32_t crc)
     if (!allocated)
         return nullptr;
 
-    uint32_t a = (str[0] | 0x20) - 'a';
+    const uint32_t a = (str[0] | 0x20) - 'a';
     if (a < 32 && !(fastReject & (1 << a)))
         return nullptr;
     if ((uint32_t) str.length() > maxLength)
@@ -41,7 +41,7 @@ SymbolName* SymTableHash::find(const Utf8& str, uint32_t crc)
 
 void SymTableHash::addElem(SymbolName* data, uint32_t crc)
 {
-    uint32_t a = (data->name[0] | 0x20) - 'a';
+    const uint32_t a = (data->name[0] | 0x20) - 'a';
     if (a < 32)
         fastReject |= 1 << a;
 
@@ -78,9 +78,9 @@ void SymTableHash::add(SymbolName* data)
     // Need to grow the hash table, and add back the old values
     else if (count >= allocated / 2)
     {
-        auto oldAllocated = allocated;
-        auto oldBuffer    = buffer;
-        auto oldCount     = count;
+        auto       oldAllocated = allocated;
+        const auto oldBuffer    = buffer;
+        auto       oldCount     = count;
 
         allocated *= 2;
         buffer = (Entry*) Allocator::alloc(allocated * sizeof(Entry));

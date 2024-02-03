@@ -6,9 +6,9 @@
 
 void SCBE::emitGetParam(SCBE_X64& pp, CPUFunction* cpuFct, int reg, uint32_t paramIdx, int sizeOf, uint64_t toAdd, int deRefSize)
 {
-    auto        typeFunc   = cpuFct->typeFunc;
+    const auto  typeFunc   = cpuFct->typeFunc;
     const auto& cc         = typeFunc->getCallConv();
-    int         paramStack = pp.getParamStackOffset(cpuFct, paramIdx);
+    const int   paramStack = pp.getParamStackOffset(cpuFct, paramIdx);
     auto        typeParam  = TypeManager::concreteType(typeFunc->parameters[typeFunc->registerIdxToParamIdx(paramIdx)]->typeInfo);
     if (typeParam->isAutoConstPointerRef())
         typeParam = TypeManager::concretePtrRefType(typeParam);
@@ -43,12 +43,12 @@ void SCBE::emitGetParam(SCBE_X64& pp, CPUFunction* cpuFct, int reg, uint32_t par
 
     SWAG_ASSERT(toAdd <= 0x7FFFFFFFF);
 
-    bool structByValue = CallConv::structParamByValue(typeFunc, typeParam);
+    const bool structByValue = CallConv::structParamByValue(typeFunc, typeParam);
 
     // Use scratch registers
     if (paramIdx < cpuFct->numScratchRegs && !structByValue)
     {
-        auto scratch = (CPURegister) (cc.firstScratchRegister + paramIdx);
+        const auto scratch = (CPURegister) (cc.firstScratchRegister + paramIdx);
         if (toAdd == 0 && deRefSize == 0)
         {
             pp.emit_Store64_Indirect(REG_OFFSET(reg), scratch);
@@ -143,14 +143,14 @@ void SCBE::emitCall(SCBE_X64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcNa
 void SCBE::emitCall(SCBE_X64& pp, TypeInfoFuncAttr* typeFunc, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, bool localCall)
 {
     VectorNative<CPUPushParam> p;
-    for (auto r : pushRAParams)
+    for (const auto r : pushRAParams)
         p.push_back({CPUPushParamType::Reg, r});
     emitCall(pp, typeFunc, funcName, p, offsetRT, localCall);
 }
 
 void SCBE::emitInternalCall(SCBE_X64& pp, Module* moduleToGen, const Utf8& funcName, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT)
 {
-    auto typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
+    const auto typeFunc = g_Workspace->runtimeModule->getRuntimeTypeFct(funcName);
     SWAG_ASSERT(typeFunc);
 
     // Invert order
@@ -218,23 +218,23 @@ void SCBE::emitByteCodeCallParameters(SCBE_X64& pp, TypeInfoFuncAttr* typeFuncBC
     // one for the lambda (omit first parameter)
     if (typeFuncBC->isClosure())
     {
-        auto reg = pushRAParams.back();
+        const auto reg = pushRAParams.back();
         pp.emit_Load64_Indirect(REG_OFFSET(reg), RAX);
         pp.emit_TestN(RAX, RAX, CPUBits::B64);
 
         // If not zero, jump to closure call
         pp.emit_LongJumpOp(JZ);
         pp.concat.addU32(0);
-        auto seekPtrClosure = pp.concat.getSeekPtr() - 4;
-        auto seekJmpClosure = pp.concat.totalCount();
+        const auto seekPtrClosure = pp.concat.getSeekPtr() - 4;
+        const auto seekJmpClosure = pp.concat.totalCount();
 
         emitByteCodeCall(pp, typeFuncBC, offsetRT, pushRAParams);
 
         // Jump to after closure call
         pp.emit_LongJumpOp(JUMP);
         pp.concat.addU32(0);
-        auto seekPtrAfterClosure = pp.concat.getSeekPtr() - 4;
-        auto seekJmpAfterClosure = pp.concat.totalCount();
+        const auto seekPtrAfterClosure = pp.concat.getSeekPtr() - 4;
+        const auto seekJmpAfterClosure = pp.concat.totalCount();
 
         // Update jump to closure call
         *seekPtrClosure = (uint8_t) (pp.concat.totalCount() - seekJmpClosure);

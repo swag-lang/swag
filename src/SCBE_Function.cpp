@@ -16,7 +16,7 @@ void SCBE::computeUnwind(const VectorNative<CPURegister>& unwindRegs,
                          uint32_t                         offsetSubRSP,
                          VectorNative<uint16_t>&          unwind)
 {
-    auto objFileType = Backend::getObjType(g_CommandLine.target);
+    const auto objFileType = Backend::getObjType(g_CommandLine.target);
     switch (objFileType)
     {
     case BackendObjType::Coff:

@@ -10,7 +10,7 @@
 
 bool ByteCodeGen::emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
+    const auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
     if (typeInfo->isNative())
     {
@@ -53,11 +53,11 @@ bool ByteCodeGen::emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typeIn
     }
     else if (typeInfo->isPointer())
     {
-        auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(typeInfo), TypeInfoKind::Pointer);
-        auto sizeOf  = typePtr->pointedType->sizeOf;
+        const auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(typeInfo), TypeInfoKind::Pointer);
+        const auto sizeOf  = typePtr->pointedType->sizeOf;
         if (sizeOf > 1)
         {
-            auto rt = reserveRegisterRC(context);
+            const auto rt = reserveRegisterRC(context);
 
             // Be sure that the pointer is on the left side, because ptr = 1 + ptr is possible
             if (context->node->childs[0]->typeInfo->isPointer())
@@ -88,18 +88,18 @@ bool ByteCodeGen::emitBinaryOpPlus(ByteCodeGenContext* context, TypeInfo* typeIn
 
 bool ByteCodeGen::emitBinaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    AstNode* node     = context->node;
-    auto     typeInfo = TypeManager::concreteType(typeInfoExpr);
+    AstNode*   node     = context->node;
+    const auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
     // This is the substract of two pointers if we have a s64 on the left, and a pointer on the right
     if (typeInfo->isNative(NativeTypeKind::S64))
     {
-        auto rightTypeInfo = TypeManager::concreteType(node->childs[1]->typeInfo);
+        const auto rightTypeInfo = TypeManager::concreteType(node->childs[1]->typeInfo);
         if (rightTypeInfo->isPointer())
         {
-            auto rightTypePointer = CastTypeInfo<TypeInfoPointer>(rightTypeInfo, TypeInfoKind::Pointer);
+            const auto rightTypePointer = CastTypeInfo<TypeInfoPointer>(rightTypeInfo, TypeInfoKind::Pointer);
             EMIT_INST3(context, ByteCodeOp::BinOpMinusS64, r0, r1, r2);
-            auto sizeOf = rightTypePointer->pointedType->sizeOf;
+            const auto sizeOf = rightTypePointer->pointedType->sizeOf;
             if (sizeOf > 1)
                 EMIT_INST1(context, ByteCodeOp::Div64byVB64, r2)->b.u64 = sizeOf;
             return true;
@@ -147,11 +147,11 @@ bool ByteCodeGen::emitBinaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeI
     }
     else if (typeInfo->isPointer())
     {
-        auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(typeInfo), TypeInfoKind::Pointer);
-        auto sizeOf  = typePtr->pointedType->sizeOf;
+        const auto typePtr = CastTypeInfo<TypeInfoPointer>(TypeManager::concreteType(typeInfo), TypeInfoKind::Pointer);
+        const auto sizeOf  = typePtr->pointedType->sizeOf;
         if (sizeOf > 1)
         {
-            auto rt = reserveRegisterRC(context);
+            const auto rt = reserveRegisterRC(context);
             EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, rt, r1);
             EMIT_INST1(context, ByteCodeOp::Mul64byVB64, rt)->b.u64 = sizeOf;
             EMIT_INST3(context, ByteCodeOp::DecPointer64, r0, rt, r2);
@@ -174,7 +174,7 @@ bool ByteCodeGen::emitBinaryOpMul(ByteCodeGenContext* context, TypeInfo* typeInf
     if (context->node->specFlags & AstOp::SPECFLAG_FMA)
         return true;
 
-    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
+    const auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
     if (!typeInfo->isNative())
         return Report::internalError(context->node, "emitBinaryOpMul, type not native");
@@ -219,7 +219,7 @@ bool ByteCodeGen::emitBinaryOpMul(ByteCodeGenContext* context, TypeInfo* typeInf
 
 bool ByteCodeGen::emitBinaryOpDiv(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
+    const auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
     if (!typeInfo->isNative())
         return Report::internalError(context->node, "emitBinaryOpDiv, type not native");
@@ -274,7 +274,7 @@ bool ByteCodeGen::emitBinaryOpDiv(ByteCodeGenContext* context, TypeInfo* typeInf
 
 bool ByteCodeGen::emitBinaryOpModulo(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
+    const auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
     if (!typeInfo->isNative())
         return Report::internalError(context->node, "emitBinaryOpModulo, type not native");
@@ -321,7 +321,7 @@ bool ByteCodeGen::emitBinaryOpModulo(ByteCodeGenContext* context, TypeInfo* type
 
 bool ByteCodeGen::emitBitmaskAnd(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
+    const auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
     if (!typeInfo->isNative())
         return Report::internalError(context->node, "emitBitmaskAnd, type not native");
@@ -353,7 +353,7 @@ bool ByteCodeGen::emitBitmaskAnd(ByteCodeGenContext* context, TypeInfo* typeInfo
 
 bool ByteCodeGen::emitBitmaskOr(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
+    const auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
     if (!typeInfo->isNative())
         return Report::internalError(context->node, "emitBitmaskOr, type not native");
@@ -385,7 +385,7 @@ bool ByteCodeGen::emitBitmaskOr(ByteCodeGenContext* context, TypeInfo* typeInfoE
 
 bool ByteCodeGen::emitShiftLeft(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
+    const auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
     if (!typeInfo->isNative())
         return Report::internalError(context->node, "emitShiftLeft, type not native");
@@ -427,7 +427,7 @@ bool ByteCodeGen::emitShiftLeft(ByteCodeGenContext* context, TypeInfo* typeInfoE
 
 bool ByteCodeGen::emitShiftRight(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
+    const auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
     if (!typeInfo->isNative())
         return Report::internalError(context->node, "emitShiftRight, type not native");
@@ -467,7 +467,7 @@ bool ByteCodeGen::emitShiftRight(ByteCodeGenContext* context, TypeInfo* typeInfo
 
 bool ByteCodeGen::emitXor(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
+    const auto typeInfo = TypeManager::concreteType(typeInfoExpr);
 
     if (!typeInfo->isNative())
         return Report::internalError(context->node, "emitXor, type not native");
@@ -499,8 +499,8 @@ bool ByteCodeGen::emitXor(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, u
 
 bool ByteCodeGen::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
 {
-    auto left    = context->node;
-    auto binNode = CastAst<AstBinaryOpNode>(left->parent, AstNodeKind::BinaryOp);
+    const auto left    = context->node;
+    const auto binNode = CastAst<AstBinaryOpNode>(left->parent, AstNodeKind::BinaryOp);
 
     // We need to cast right now, in case the shortcut is activated
     SWAG_CHECK(emitCast(context, left, TypeManager::concreteType(left->typeInfo), left->castedTypeInfo));
@@ -531,7 +531,7 @@ bool ByteCodeGen::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
             auto child1 = binNode->childs[1];
             while (child1->kind == AstNodeKind::BinaryOp && (child1->tokenId == TokenId::KwdAnd || child1->tokenId == TokenId::KwdOr))
             {
-                auto child0 = child1->childs[0];
+                const auto child0 = child1->childs[0];
                 child0->allocateExtension(ExtensionKind::Misc);
                 child0->extMisc()->additionalRegisterRC            = left->extMisc()->additionalRegisterRC;
                 child0->extMisc()->additionalRegisterRC.cannotFree = true;
@@ -553,7 +553,7 @@ bool ByteCodeGen::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitLogicalAnd(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    auto node = CastAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
+    const auto node = CastAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
 
     // Because of the shortcuts, there's no need to actually do a 'and' here, as we are sure that the
     // expression on the left is true because of the shortcut
@@ -562,15 +562,15 @@ bool ByteCodeGen::emitLogicalAnd(ByteCodeGenContext* context, uint32_t r0, uint3
         EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r2, r1);
 
     // And we update the shortcut jump after the 'right' side of the expression
-    auto inst   = &context->bc->out[node->seekJumpExpression];
+    const auto inst   = &context->bc->out[node->seekJumpExpression];
     inst->b.s32 = context->bc->numInstructions - node->seekJumpExpression - 1;
     return true;
 }
 
 bool ByteCodeGen::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
 {
-    auto left    = context->node;
-    auto binNode = CastAst<AstBinaryOpNode>(left->parent, AstNodeKind::BinaryOp);
+    const auto left    = context->node;
+    const auto binNode = CastAst<AstBinaryOpNode>(left->parent, AstNodeKind::BinaryOp);
 
     // We need to cast right now, in case the shortcut is activated
     SWAG_CHECK(emitCast(context, left, TypeManager::concreteType(left->typeInfo), left->castedTypeInfo));
@@ -595,7 +595,7 @@ bool ByteCodeGen::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
             auto child1 = binNode->childs[1];
             while (child1->kind == AstNodeKind::BinaryOp && (child1->tokenId == TokenId::KwdAnd || child1->tokenId == TokenId::KwdOr))
             {
-                auto child0 = child1->childs[0];
+                const auto child0 = child1->childs[0];
                 child0->allocateExtension(ExtensionKind::Misc);
                 child0->extMisc()->additionalRegisterRC            = left->extMisc()->additionalRegisterRC;
                 child0->extMisc()->additionalRegisterRC.cannotFree = true;
@@ -617,10 +617,10 @@ bool ByteCodeGen::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitLogicalOr(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t r2)
 {
-    auto node = CastAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
+    const auto node = CastAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
     if (r2 != r1)
         EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r2, r1);
-    auto inst   = &context->bc->out[node->seekJumpExpression];
+    const auto inst   = &context->bc->out[node->seekJumpExpression];
     inst->b.s32 = context->bc->numInstructions - node->seekJumpExpression - 1;
     return true;
 }
@@ -654,8 +654,8 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
         }
         else if (node->tokenId == TokenId::SymPlus && node->specFlags & AstOp::SPECFLAG_FMA)
         {
-            auto front             = node->childs[0];
-            auto typeInfo          = TypeManager::concreteType(front->typeInfo);
+            const auto front       = node->childs[0];
+            const auto typeInfo    = TypeManager::concreteType(front->typeInfo);
             node->resultRegisterRC = reserveRegisterRC(context);
 
             switch (typeInfo->nativeType)
@@ -690,7 +690,7 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
             if (node->tokenId == TokenId::KwdAnd || node->tokenId == TokenId::KwdOr)
             {
                 // :BinOpAndOr
-                auto front             = node->childs[0];
+                const auto front             = node->childs[0];
                 r2                     = front->extMisc()->additionalRegisterRC;
                 node->resultRegisterRC = front->extMisc()->additionalRegisterRC;
                 front->extMisc()->additionalRegisterRC.clear();
@@ -701,7 +701,7 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
                 node->resultRegisterRC = r2;
             }
 
-            auto typeInfoExpr = node->castedTypeInfo ? node->castedTypeInfo : node->typeInfo;
+            const auto typeInfoExpr = node->castedTypeInfo ? node->castedTypeInfo : node->typeInfo;
 
             switch (node->tokenId)
             {
@@ -765,9 +765,9 @@ bool ByteCodeGen::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, As
 {
     AstNode* node = forNode ? forNode : context->node;
     SWAG_ASSERT(node->extension);
-    auto symbolOverload = node->extMisc()->resolvedUserOpSymbolOverload;
+    const auto symbolOverload = node->extMisc()->resolvedUserOpSymbolOverload;
     SWAG_ASSERT(symbolOverload);
-    auto funcDecl = CastAst<AstFuncDecl>(symbolOverload->node, AstNodeKind::FuncDecl);
+    const auto funcDecl = CastAst<AstFuncDecl>(symbolOverload->node, AstNodeKind::FuncDecl);
 
     // Note: Do not inline a call when evaluation compile time affectation (SEMFLAG_EXEC_RET_STACK)
     if (funcDecl->mustInline() && !(node->semFlags & SEMFLAG_EXEC_RET_STACK))
@@ -792,7 +792,7 @@ bool ByteCodeGen::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, As
             if (!(node->semFlags & SEMFLAG_RESOLVE_INLINED))
             {
                 node->semFlags |= SEMFLAG_RESOLVE_INLINED;
-                auto back = node->childs.back();
+                const auto back = node->childs.back();
                 SWAG_ASSERT(back->kind == AstNodeKind::Inline);
                 context->baseJob->nodes.push_back(back);
                 context->result = ContextResult::NewChilds;
@@ -802,13 +802,13 @@ bool ByteCodeGen::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, As
         }
     }
 
-    bool foreign = funcDecl->isForeign();
+    const bool foreign = funcDecl->isForeign();
 
     // We are less restrictive on type parameters for useop, as type are more in control.
     // Se we could have a needed cast now.
     if (allParams)
     {
-        for (auto c : allParams->childs)
+        for (const auto c : allParams->childs)
         {
             SWAG_CHECK(emitCast(context, c, c->typeInfo, c->castedTypeInfo));
             SWAG_ASSERT(context->result == ContextResult::Done);

@@ -99,8 +99,8 @@ uint32_t Tokenizer::peekChar(unsigned& offset)
 
 uint32_t Tokenizer::readChar()
 {
-    unsigned offset;
-    auto     c = peekChar(offset);
+    unsigned   offset;
+    const auto c = peekChar(offset);
     eatChar(c, offset);
     return c;
 }

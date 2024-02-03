@@ -21,13 +21,13 @@ static void cleanMatches(VectorNative<OneMatch*>& matches)
 
 bool Semantic::filterMatchesDirect(SemanticContext* context, VectorNative<OneMatch*>& matches)
 {
-    auto node         = context->node;
-    auto countMatches = matches.size();
+    const auto node         = context->node;
+    const auto countMatches = matches.size();
 
     // Sometimes we don't care about multiple symbols with the same name
     if (countMatches > 1 && node->parent && node->parent->parent)
     {
-        auto grandParent = node->parent->parent;
+        const auto grandParent = node->parent->parent;
         if (grandParent->kind == AstNodeKind::IntrinsicDefined ||
             (grandParent->kind == AstNodeKind::IntrinsicProp && grandParent->tokenId == TokenId::IntrinsicNameOf))
         {
@@ -38,16 +38,16 @@ bool Semantic::filterMatchesDirect(SemanticContext* context, VectorNative<OneMat
 
     for (size_t i = 0; i < countMatches; i++)
     {
-        auto curMatch = matches[i];
-        auto over     = curMatch->symbolOverload;
-        auto overSym  = over->symbol;
+        const auto curMatch = matches[i];
+        const auto over     = curMatch->symbolOverload;
+        const auto overSym  = over->symbol;
 
         // Take care of #validif/#validifx
         if (overSym->kind == SymbolKind::Function &&
             !(context->node->flags & AST_IN_VALIDIF) &&
             !(context->node->attributeFlags & ATTRIBUTE_MATCH_VALIDIF_OFF))
         {
-            auto funcDecl = CastAst<AstFuncDecl>(over->node, AstNodeKind::FuncDecl);
+            const auto funcDecl = CastAst<AstFuncDecl>(over->node, AstNodeKind::FuncDecl);
             if (funcDecl->validif)
             {
                 SWAG_CHECK(solveValidIf(context, curMatch, funcDecl));
@@ -83,16 +83,16 @@ bool Semantic::filterMatchesDirect(SemanticContext* context, VectorNative<OneMat
 
 bool Semantic::filterMatchesCompare(SemanticContext* context, VectorNative<OneMatch*>& matches)
 {
-    auto countMatches = matches.size();
+    const auto countMatches = matches.size();
     if (countMatches <= 1)
         return true;
 
-    auto node = context->node;
+    const auto node = context->node;
     for (size_t i = 0; i < countMatches; i++)
     {
-        auto curMatch = matches[i];
-        auto over     = curMatch->symbolOverload;
-        auto overSym  = over->symbol;
+        const auto curMatch = matches[i];
+        const auto over     = curMatch->symbolOverload;
+        const auto overSym  = over->symbol;
 
         // In case of an alias, we take the first one, which should be the 'closest' one.
         // Not sure this is true, perhaps one day will have to change the way we find it.
@@ -211,12 +211,12 @@ bool Semantic::filterMatchesCompare(SemanticContext* context, VectorNative<OneMa
         }
 
         // Priority to a concrete type versus a generic one
-        auto lastOverloadType = overSym->ownerTable->scope->owner->typeInfo;
+        const auto lastOverloadType = overSym->ownerTable->scope->owner->typeInfo;
         if (lastOverloadType && lastOverloadType->isGeneric())
         {
             for (size_t j = 0; j < countMatches; j++)
             {
-                auto newOverloadType = matches[j]->symbolOverload->symbol->ownerTable->scope->owner->typeInfo;
+                const auto newOverloadType = matches[j]->symbolOverload->symbol->ownerTable->scope->owner->typeInfo;
                 if (newOverloadType && !newOverloadType->isGeneric())
                 {
                     curMatch->remove = true;
@@ -272,14 +272,14 @@ bool Semantic::filterMatchesCompare(SemanticContext* context, VectorNative<OneMa
         // Priority to lambda call in a parameter over a function outside the actual function
         if (over->typeInfo->isLambdaClosure())
         {
-            auto callParams = over->node->findParent(AstNodeKind::FuncCallParams);
+            const auto callParams = over->node->findParent(AstNodeKind::FuncCallParams);
             if (callParams)
             {
                 for (size_t j = 0; j < countMatches; j++)
                 {
                     if (matches[j]->symbolOverload->symbol->kind == SymbolKind::Function)
                     {
-                        auto nodeFct = matches[j]->symbolOverload->node;
+                        const auto nodeFct = matches[j]->symbolOverload->node;
                         if (!callParams->ownerFct->isParentOf(nodeFct))
                         {
                             matches[j]->remove = true;
@@ -296,13 +296,13 @@ bool Semantic::filterMatchesCompare(SemanticContext* context, VectorNative<OneMa
             {
                 for (size_t j = 0; j < countMatches; j++)
                 {
-                    auto nodeToKeep = matches[j]->symbolOverload->node;
+                    const auto nodeToKeep = matches[j]->symbolOverload->node;
                     if (node->ownerInline->scope->isParentOf(nodeToKeep->ownerScope))
                     {
-                        auto inMixin = nodeToKeep->findParent(AstNodeKind::CompilerMixin);
+                        const auto inMixin = nodeToKeep->findParent(AstNodeKind::CompilerMixin);
                         if (inMixin)
                         {
-                            auto inMacro = inMixin->findParent(AstNodeKind::CompilerMacro);
+                            const auto inMacro = inMixin->findParent(AstNodeKind::CompilerMacro);
                             if (inMacro)
                             {
                                 break;
@@ -350,14 +350,14 @@ bool Semantic::filterMatchesCompare(SemanticContext* context, VectorNative<OneMa
         // If we didn't match with ufcs, then priority to a match that do not start with 'self'
         if (!curMatch->ufcs && over->typeInfo->isFuncAttr())
         {
-            auto typeFunc0 = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+            const auto typeFunc0 = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (!typeFunc0->parameters.empty() && typeFunc0->parameters[0]->typeInfo->isSelf())
             {
                 for (size_t j = 0; j < countMatches; j++)
                 {
                     if (matches[j]->symbolOverload->typeInfo->isFuncAttr())
                     {
-                        auto typeFunc1 = CastTypeInfo<TypeInfoFuncAttr>(matches[j]->symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
+                        const auto typeFunc1 = CastTypeInfo<TypeInfoFuncAttr>(matches[j]->symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
                         if (typeFunc1->parameters.empty() || !typeFunc1->parameters[0]->typeInfo->isSelf())
                         {
                             curMatch->remove = true;
@@ -371,14 +371,14 @@ bool Semantic::filterMatchesCompare(SemanticContext* context, VectorNative<OneMa
         // If we did match with ufcs, then priority to a match that starts with 'self'
         if (curMatch->ufcs && over->typeInfo->isFuncAttr())
         {
-            auto typeFunc0 = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+            const auto typeFunc0 = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (typeFunc0->parameters.empty() || !typeFunc0->parameters[0]->typeInfo->isSelf())
             {
                 for (size_t j = 0; j < countMatches; j++)
                 {
                     if (matches[j]->symbolOverload->typeInfo->isFuncAttr())
                     {
-                        auto typeFunc1 = CastTypeInfo<TypeInfoFuncAttr>(matches[j]->symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
+                        const auto typeFunc1 = CastTypeInfo<TypeInfoFuncAttr>(matches[j]->symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
                         if (!typeFunc1->parameters.empty() && (typeFunc1->parameters[0]->typeInfo->isSelf()))
                         {
                             curMatch->remove = true;
@@ -392,14 +392,14 @@ bool Semantic::filterMatchesCompare(SemanticContext* context, VectorNative<OneMa
         // 2 ufcs : priority to the first parameter that is not const
         if (curMatch->ufcs && over->typeInfo->isFuncAttr())
         {
-            auto typeFunc0 = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+            const auto typeFunc0 = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (typeFunc0->parameters[0]->typeInfo->isConst())
             {
                 for (size_t j = 0; j < countMatches; j++)
                 {
                     if (matches[j]->ufcs && matches[j]->symbolOverload->typeInfo->isFuncAttr())
                     {
-                        auto typeFunc1 = CastTypeInfo<TypeInfoFuncAttr>(matches[j]->symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
+                        const auto typeFunc1 = CastTypeInfo<TypeInfoFuncAttr>(matches[j]->symbolOverload->typeInfo, TypeInfoKind::FuncAttr);
                         if (!typeFunc1->parameters[0]->typeInfo->isConst())
                         {
                             curMatch->remove = true;
@@ -420,13 +420,13 @@ bool Semantic::filterMatchesPrio(SemanticContext* context, VectorNative<OneMatch
     if (matches.size() <= 1)
         return true;
 
-    for (auto m : matches)
+    for (const auto m : matches)
     {
         if (m->symbolOverload->symbol->kind != SymbolKind::Function)
             continue;
 
         m->prio = 0;
-        for (auto flags : m->solvedCastFlags)
+        for (const auto flags : m->solvedCastFlags)
         {
             if (!(flags & CASTFLAG_RESULT_COERCE) || (flags & CASTFLAG_RESULT_UNTYPED_CONVERT))
                 continue;
@@ -437,8 +437,8 @@ bool Semantic::filterMatchesPrio(SemanticContext* context, VectorNative<OneMatch
     sort(matches.begin(), matches.end(), [](OneMatch* x, OneMatch* y)
          { return x->prio < y->prio; });
 
-    auto prio = matches[0]->prio;
-    for (auto m : matches)
+    const auto prio = matches[0]->prio;
+    for (const auto m : matches)
     {
         if (m->symbolOverload->symbol->kind != SymbolKind::Function)
             continue;
@@ -456,7 +456,7 @@ static bool areGenericReplaceTypesIdentical(TypeInfo* typeInfo, OneMatch& match)
     if (typeInfo->kind != TypeInfoKind::FuncAttr)
         return false;
 
-    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
+    const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
     if (match.genericReplaceTypes.size() != typeFunc->replaceTypes.size())
         return false;
 
@@ -498,8 +498,8 @@ bool Semantic::filterGenericMatches(SemanticContext* context, VectorNative<OneMa
 
         for (size_t i = 0; i < genMatches.size(); i++)
         {
-            auto& p    = genMatches[i];
-            auto  cost = scopeCost(context->node->ownerScope, p->symbolOverload->node->ownerScope);
+            const auto& p    = genMatches[i];
+            const auto  cost = scopeCost(context->node->ownerScope, p->symbolOverload->node->ownerScope);
             if (cost < idCost)
             {
                 bestIsIdCost = false;
@@ -511,7 +511,7 @@ bool Semantic::filterGenericMatches(SemanticContext* context, VectorNative<OneMa
         if (!bestIsIdCost)
         {
             matches.clear();
-            auto temp = genMatches[bestGenId];
+            const auto temp = genMatches[bestGenId];
             genMatches.clear();
             genMatches.push_back(temp);
         }
@@ -604,7 +604,7 @@ bool Semantic::filterGenericMatches(SemanticContext* context, VectorNative<OneMa
         {
             for (size_t i = 0; i < genMatches.size(); i++)
             {
-                auto same = areGenericReplaceTypesIdentical(matches[im]->oneOverload->overload->typeInfo, *genMatches[i]);
+                const auto same = areGenericReplaceTypesIdentical(matches[im]->oneOverload->overload->typeInfo, *genMatches[i]);
                 if (!same)
                     newGenericMatches.push_back_once(genMatches[i]);
             }
@@ -623,8 +623,8 @@ bool Semantic::filterMatchesInContext(SemanticContext* context, VectorNative<One
 
     for (size_t i = 0; i < matches.size(); i++)
     {
-        auto                                             oneMatch = matches[i];
-        auto                                             over     = oneMatch->symbolOverload;
+        const auto                                       oneMatch = matches[i];
+        const auto                                       over     = oneMatch->symbolOverload;
         VectorNative<TypeInfoEnum*>                      typeEnum;
         VectorNative<std::pair<AstNode*, TypeInfoEnum*>> hasEnum;
         VectorNative<SymbolOverload*>                    testedOver;
@@ -643,10 +643,10 @@ bool Semantic::filterMatchesInContext(SemanticContext* context, VectorNative<One
         // if the generic type has not been deduced from parameters (if any).
         if (over->symbol->kind == SymbolKind::Function)
         {
-            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+            const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (typeFunc->replaceTypes.size())
             {
-                auto                   node = context->node;
+                const auto                   node = context->node;
                 VectorNative<AstNode*> toCheck;
 
                 // Pick contextual generic type replacements
@@ -655,9 +655,9 @@ bool Semantic::filterMatchesInContext(SemanticContext* context, VectorNative<One
                 if (node->ownerInline)
                     toCheck.push_back(node->ownerInline->func);
 
-                for (auto c : toCheck)
+                for (const auto c : toCheck)
                 {
-                    auto typeFuncCheck = CastTypeInfo<TypeInfoFuncAttr>(c->typeInfo, TypeInfoKind::FuncAttr);
+                    const auto typeFuncCheck = CastTypeInfo<TypeInfoFuncAttr>(c->typeInfo, TypeInfoKind::FuncAttr);
                     if (typeFuncCheck->replaceTypes.size() != typeFunc->replaceTypes.size())
                         continue;
                     for (auto& it : typeFunc->replaceTypes)
@@ -685,7 +685,7 @@ bool Semantic::filterMatchesInContext(SemanticContext* context, VectorNative<One
 
 bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
 {
-    auto  identifierRef    = node->identifierRef();
+    const auto  identifierRef    = node->identifierRef();
     auto& dependentSymbols = context->cacheDependentSymbols;
 
     if (dependentSymbols.size() == 1)
@@ -693,7 +693,7 @@ bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
 
     for (auto& p : dependentSymbols)
     {
-        auto oneSymbol = p.symbol;
+        const auto oneSymbol = p.symbol;
         if (p.remove)
             continue;
 
@@ -721,7 +721,7 @@ bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
             oneSymbol->kind == SymbolKind::Variable)
         {
             bool ok = false;
-            for (auto& o : oneSymbol->overloads)
+            for (const auto& o : oneSymbol->overloads)
             {
                 if (o->typeInfo->isLambdaClosure())
                 {
@@ -759,7 +759,7 @@ bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
         {
             isValid                  = false;
             auto& scopeHierarchyVars = context->cacheScopeHierarchyVars;
-            for (auto& dep : scopeHierarchyVars)
+            for (const auto& dep : scopeHierarchyVars)
             {
                 if (dep.scope->getFullName() == oneSymbol->ownerTable->scope->getFullName())
                 {

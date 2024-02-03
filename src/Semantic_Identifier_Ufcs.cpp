@@ -23,12 +23,12 @@ bool Semantic::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, 
         return true;
 
     // Compare first function parameter with ufcsNode type.
-    bool cmpTypeUfcs = TypeManager::makeCompatibles(context,
-                                                    typeFunc->parameters[0]->typeInfo,
-                                                    ufcsNode->typeInfo,
-                                                    nullptr,
-                                                    ufcsNode,
-                                                    CASTFLAG_JUST_CHECK | CASTFLAG_UFCS | CASTFLAG_ACCEPT_PENDING);
+    const bool cmpTypeUfcs = TypeManager::makeCompatibles(context,
+                                                          typeFunc->parameters[0]->typeInfo,
+                                                          ufcsNode->typeInfo,
+                                                          nullptr,
+                                                          ufcsNode,
+                                                          CASTFLAG_JUST_CHECK | CASTFLAG_UFCS | CASTFLAG_ACCEPT_PENDING);
     if (context->result != ContextResult::Done)
         return false;
 
@@ -41,7 +41,7 @@ bool Semantic::canTryUfcs(SemanticContext* context, TypeInfoFuncAttr* typeFunc, 
 
 bool Semantic::getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node, SymbolOverload* overload, AstNode** ufcsFirstParam)
 {
-    auto symbol = overload->symbol;
+    const auto symbol = overload->symbol;
 
     bool canDoUfcs = false;
     if (symbol->kind == SymbolKind::Function)
@@ -84,12 +84,12 @@ bool Semantic::getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef
             SWAG_ASSERT(identifierRef->previousResolvedNode);
             if (!node->callParameters)
             {
-                Diagnostic diag{node, Fmt(Err(Err0540), Naming::kindName(overload).c_str())};
-                auto       note = Diagnostic::hereIs(overload);
+                const Diagnostic diag{node, Fmt(Err(Err0540), Naming::kindName(overload).c_str())};
+                const auto       note = Diagnostic::hereIs(overload);
                 return context->report(diag, note);
             }
 
-            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+            const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
             canTry        = canTryUfcs(context, typeFunc, node->callParameters, identifierRef->previousResolvedNode, true);
             YIELD();
             if (canTry)
@@ -122,7 +122,7 @@ bool Semantic::getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef
         {
             if (identifierRef->resolvedSymbolName && identifierRef->resolvedSymbolName->kind != SymbolKind::Variable)
             {
-                auto       subNode = identifierRef->previousResolvedNode ? identifierRef->previousResolvedNode : node;
+                const auto       subNode = identifierRef->previousResolvedNode ? identifierRef->previousResolvedNode : node;
                 Diagnostic diag{subNode, subNode->token, Fmt(Err(Err0317), identifierRef->resolvedSymbolName->name.c_str(), Naming::aKindName(identifierRef->resolvedSymbolName->kind).c_str())};
                 diag.addRange(node->token, Nte(Nte0159));
                 return context->report(diag);
@@ -135,11 +135,11 @@ bool Semantic::getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef
 
 bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* identifierRef, OneMatch& match)
 {
-    auto symbol       = match.symbolOverload->symbol;
-    auto dependentVar = match.dependentVar;
-    auto node         = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+    const auto symbol       = match.symbolOverload->symbol;
+    const auto dependentVar = match.dependentVar;
+    const auto node         = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
 
-    auto fctCallParam = Ast::newNode<AstFuncCallParam>(nullptr, AstNodeKind::FuncCallParam, node->sourceFile, nullptr);
+    const auto fctCallParam = Ast::newNode<AstFuncCallParam>(nullptr, AstNodeKind::FuncCallParam, node->sourceFile, nullptr);
     if (!node->callParameters)
         node->callParameters = Ast::newFuncCallParams(context->sourceFile, node);
 
@@ -167,7 +167,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
     SWAG_ASSERT(match.solvedParameters[0]->index == 0);
     fctCallParam->resolvedParameter = match.solvedParameters[0];
 
-    auto idRef = Ast::newIdentifierRef(node->sourceFile, fctCallParam);
+    const auto idRef = Ast::newIdentifierRef(node->sourceFile, fctCallParam);
     if (symbol->kind == SymbolKind::Variable)
     {
         if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->kind == AstNodeKind::FuncCall)
@@ -177,7 +177,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
             // :SpecUfcsNode
             identifierRef->previousResolvedNode->flags |= AST_TO_UFCS;
             fctCallParam->specUfcsNode = identifierRef->previousResolvedNode;
-            auto id                    = Ast::newIdentifier(node->sourceFile, Fmt("__8tmp_%d", g_UniqueID.fetch_add(1)), idRef, idRef);
+            const auto id              = Ast::newIdentifier(node->sourceFile, Fmt("__8tmp_%d", g_UniqueID.fetch_add(1)), idRef, idRef);
             id->flags |= AST_NO_BYTECODE;
         }
         else
@@ -185,9 +185,9 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
             // Call from a lambda, on a variable : we need to keep the original variable, and put the UFCS one in its own identifierref
             // Copy all previous references to the one we want to pass as parameter
             // X.Y.call(...) => X.Y.call(X.Y, ...)
-            for (auto child : identifierRef->childs)
+            for (const auto child : identifierRef->childs)
             {
-                auto copyChild = Ast::cloneRaw(child, idRef);
+                const auto copyChild = Ast::cloneRaw(child, idRef);
 
                 // We want to generate bytecode for the expression on the left only if the lambda is dereferenced from a struct/itf
                 // Otherwise the left expression is only used for scoping
@@ -214,9 +214,9 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
         // the first call parameter
         if (dependentVar == identifierRef->previousResolvedNode)
         {
-            for (auto child : dependentVar->childs)
+            for (const auto child : dependentVar->childs)
             {
-                auto copyChild = Ast::newIdentifier(node->sourceFile, child->token.text.empty() ? dependentVar->token.text : child->token.text, idRef, idRef);
+                const auto copyChild = Ast::newIdentifier(node->sourceFile, child->token.text.empty() ? dependentVar->token.text : child->token.text, idRef, idRef);
                 copyChild->inheritOwners(fctCallParam);
                 copyChild->inheritOrFlag(idRef, AST_IN_MIXIN);
                 if (!child->resolvedSymbolOverload)
@@ -232,7 +232,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
                         // Really, but REALLY not sure about that fix !! Seems really like a hack...
                         if (!copyChild->isSameStackFrame(copyChild->resolvedSymbolOverload))
                         {
-                            auto sym = copyChild->ownerInline->parametersScope->symTable.find(dependentVar->resolvedSymbolOverload->symbol->name);
+                            const auto sym = copyChild->ownerInline->parametersScope->symTable.find(dependentVar->resolvedSymbolOverload->symbol->name);
                             if (sym)
                             {
                                 ScopedLock lk(sym->mutex);
@@ -261,9 +261,9 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
             // Copy all previous references to the one we want to pass as parameter
             // X.Y.call(...) => X.Y.call(X.Y, ...)
             // We copy instead of moving in case this will be evaluated another time (inline)
-            for (auto child : identifierRef->childs)
+            for (const auto child : identifierRef->childs)
             {
-                auto copyChild = Ast::cloneRaw(child, idRef);
+                const auto copyChild = Ast::cloneRaw(child, idRef);
                 child->flags |= AST_NO_BYTECODE;
                 if (child == identifierRef->previousResolvedNode)
                 {

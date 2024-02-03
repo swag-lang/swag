@@ -10,7 +10,7 @@
 
 bool ByteCodeGen::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo)
 {
-    auto node = context->node;
+    const auto node = context->node;
 
     if (fromTypeInfo->isPointerNull())
     {
@@ -77,7 +77,7 @@ bool ByteCodeGen::emitCastToNativeAny(ByteCodeGenContext* context, AstNode* expr
 
 bool ByteCodeGen::emitCastToInterface(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
 {
-    auto node = context->node;
+    const auto node = context->node;
     if (fromTypeInfo->isPointerNull())
     {
         node->semFlags |= SEMFLAG_FROM_NULL;
@@ -109,7 +109,7 @@ bool ByteCodeGen::emitCastToInterface(ByteCodeGenContext* context, AstNode* expr
     // Need to make the pointer on the data
     if (exprNode->hasExtMisc() && exprNode->extMisc()->castOffset)
     {
-        auto inst   = EMIT_INST3(context, ByteCodeOp::IncPointer64, exprNode->resultRegisterRC, 0, exprNode->resultRegisterRC);
+        const auto inst   = EMIT_INST3(context, ByteCodeOp::IncPointer64, exprNode->resultRegisterRC, 0, exprNode->resultRegisterRC);
         inst->b.u64 = exprNode->extMisc()->castOffset;
         inst->flags |= BCI_IMM_B;
     }
@@ -123,7 +123,7 @@ bool ByteCodeGen::emitCastToInterface(ByteCodeGenContext* context, AstNode* expr
 
 bool ByteCodeGen::emitCastToNativeBool(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo)
 {
-    auto r0 = reserveRegisterRC(context);
+    const auto r0 = reserveRegisterRC(context);
 
     if (typeInfo->isClosure())
     {
@@ -586,7 +586,7 @@ bool ByteCodeGen::emitCastToNativeF64(ByteCodeGenContext* context, AstNode* expr
 
 bool ByteCodeGen::emitCastToNativeString(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* fromTypeInfo)
 {
-    auto node = context->node;
+    const auto node = context->node;
 
     if (fromTypeInfo->isString())
     {
@@ -610,10 +610,10 @@ bool ByteCodeGen::emitCastToNativeString(ByteCodeGenContext* context, AstNode* e
 
     if (fromTypeInfo->isArray())
     {
-        auto typeArray = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
+        const auto typeArray = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
         transformResultToLinear2(context, exprNode->resultRegisterRC);
         node->resultRegisterRC = exprNode->resultRegisterRC;
-        auto inst              = EMIT_INST1(context, ByteCodeOp::SetImmediate64, exprNode->resultRegisterRC[1]);
+        const auto inst        = EMIT_INST1(context, ByteCodeOp::SetImmediate64, exprNode->resultRegisterRC[1]);
         inst->b.u64            = typeArray->count;
         return true;
     }
@@ -637,12 +637,12 @@ bool ByteCodeGen::emitCastToNativeString(ByteCodeGenContext* context, AstNode* e
 
 bool ByteCodeGen::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprNode, TypeInfo* typeInfo, TypeInfo* fromTypeInfo)
 {
-    auto node        = context->node;
-    auto toTypeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+    const auto node        = context->node;
+    const auto toTypeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
 
     if (fromTypeInfo->isTypedVariadic())
     {
-        auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(fromTypeInfo, TypeInfoKind::TypedVariadic);
+        const auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(fromTypeInfo, TypeInfoKind::TypedVariadic);
         fromTypeInfo      = TypeManager::concreteType(typeVariadic->rawType);
     }
 
@@ -652,47 +652,47 @@ bool ByteCodeGen::emitCastToSlice(ByteCodeGenContext* context, AstNode* exprNode
     }
     else if (fromTypeInfo->isSlice())
     {
-        auto fromTypeSlice = CastTypeInfo<TypeInfoSlice>(fromTypeInfo, TypeInfoKind::Slice);
+        const auto fromTypeSlice = CastTypeInfo<TypeInfoSlice>(fromTypeInfo, TypeInfoKind::Slice);
 
         ensureCanBeChangedRC(context, exprNode->resultRegisterRC);
         if (fromTypeSlice->pointedType->sizeOf > toTypeSlice->pointedType->sizeOf)
         {
-            auto diff   = fromTypeSlice->pointedType->sizeOf / toTypeSlice->pointedType->sizeOf;
-            auto inst   = EMIT_INST1(context, ByteCodeOp::Mul64byVB64, exprNode->resultRegisterRC[1]);
-            inst->b.u64 = diff;
+            const auto diff = fromTypeSlice->pointedType->sizeOf / toTypeSlice->pointedType->sizeOf;
+            const auto inst = EMIT_INST1(context, ByteCodeOp::Mul64byVB64, exprNode->resultRegisterRC[1]);
+            inst->b.u64     = diff;
         }
         else if (fromTypeSlice->pointedType->sizeOf < toTypeSlice->pointedType->sizeOf)
         {
-            auto diff   = toTypeSlice->pointedType->sizeOf / fromTypeSlice->pointedType->sizeOf;
-            auto inst   = EMIT_INST1(context, ByteCodeOp::Div64byVB64, exprNode->resultRegisterRC[1]);
-            inst->b.u64 = diff;
+            const auto diff = toTypeSlice->pointedType->sizeOf / fromTypeSlice->pointedType->sizeOf;
+            const auto inst = EMIT_INST1(context, ByteCodeOp::Div64byVB64, exprNode->resultRegisterRC[1]);
+            inst->b.u64     = diff;
         }
 
         node->resultRegisterRC = exprNode->resultRegisterRC;
     }
     else if (fromTypeInfo->isListTuple())
     {
-        auto fromTypeList = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeListTuple);
-        auto diff         = fromTypeList->subTypes.front()->typeInfo->sizeOf / toTypeSlice->pointedType->sizeOf;
+        const auto fromTypeList = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeListTuple);
+        const auto diff         = fromTypeList->subTypes.front()->typeInfo->sizeOf / toTypeSlice->pointedType->sizeOf;
         ensureCanBeChangedRC(context, exprNode->resultRegisterRC);
-        auto inst              = EMIT_INST1(context, ByteCodeOp::Mul64byVB64, exprNode->resultRegisterRC[1]);
+        const auto inst              = EMIT_INST1(context, ByteCodeOp::Mul64byVB64, exprNode->resultRegisterRC[1]);
         inst->b.u64            = diff;
         node->resultRegisterRC = exprNode->resultRegisterRC;
     }
     else if (fromTypeInfo->isListArray())
     {
-        auto fromTypeList = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeListArray);
+        const auto fromTypeList = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeListArray);
         transformResultToLinear2(context, exprNode->resultRegisterRC);
         node->resultRegisterRC = exprNode->resultRegisterRC;
-        auto inst              = EMIT_INST1(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1]);
+        const auto inst        = EMIT_INST1(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1]);
         inst->b.u64            = fromTypeList->subTypes.count;
     }
     else if (fromTypeInfo->isArray())
     {
-        auto fromTypeArray = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
+        const auto fromTypeArray = CastTypeInfo<TypeInfoArray>(fromTypeInfo, TypeInfoKind::Array);
         transformResultToLinear2(context, exprNode->resultRegisterRC);
         node->resultRegisterRC = exprNode->resultRegisterRC;
-        auto inst              = EMIT_INST1(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1]);
+        const auto inst        = EMIT_INST1(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1]);
         inst->b.u64            = fromTypeArray->sizeOf / toTypeSlice->pointedType->sizeOf;
     }
     else if (fromTypeInfo->isPointer())
@@ -740,7 +740,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
         YIELD();
 
         // If it has been inlined, then the inline block contains the register we need
-        auto back = context->allParamsTmp->childs.back();
+        const auto back = context->allParamsTmp->childs.back();
         if (back->kind == AstNodeKind::Inline)
         {
             exprNode->resultRegisterRC = back->resultRegisterRC;
@@ -757,7 +757,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
     }
 
     // Cast from any to something real
-    auto node = context->node;
+    const auto node = context->node;
     if (fromTypeInfo->isAny())
     {
         ensureCanBeChangedRC(context, exprNode->resultRegisterRC);
@@ -807,7 +807,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
 
         if (exprNode->hasExtMisc() && exprNode->extMisc()->castOffset)
         {
-            auto inst   = EMIT_INST3(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
+            const auto inst   = EMIT_INST3(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
             inst->b.u64 = exprNode->extMisc()->castOffset;
             inst->flags |= BCI_IMM_B;
         }
@@ -859,7 +859,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
 
             if (exprNode->hasExtMisc() && exprNode->extMisc()->castOffset)
             {
-                auto inst   = EMIT_INST3(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
+                const auto inst   = EMIT_INST3(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
                 inst->b.u64 = exprNode->extMisc()->castOffset;
                 inst->flags |= BCI_IMM_B;
             }
@@ -976,10 +976,10 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
 
 bool ByteCodeGen::emitExplicitCast(ByteCodeGenContext* context)
 {
-    auto node         = CastAst<AstCast>(context->node, AstNodeKind::Cast);
-    auto typeInfo     = node->toCastTypeInfo;
-    auto exprNode     = node->childs[1];
-    auto fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
+    const auto node         = CastAst<AstCast>(context->node, AstNodeKind::Cast);
+    const auto typeInfo     = node->toCastTypeInfo;
+    const auto exprNode     = node->childs[1];
+    const auto fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
 
     // First we cast with the user requested type. This is important to keep it, to
     // properly deref an 'any' for example
@@ -999,8 +999,8 @@ bool ByteCodeGen::emitExplicitCast(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitExplicitAutoCast(ByteCodeGenContext* context)
 {
-    auto node     = CastAst<AstCast>(context->node, AstNodeKind::AutoCast);
-    auto exprNode = node->childs[0];
+    const auto node     = CastAst<AstCast>(context->node, AstNodeKind::AutoCast);
+    const auto exprNode = node->childs[0];
 
     // Will be done by parent in case of a func call param
     if (node->parent->kind == AstNodeKind::FuncCallParam)
@@ -1010,8 +1010,8 @@ bool ByteCodeGen::emitExplicitAutoCast(ByteCodeGenContext* context)
         return true;
     }
 
-    auto typeInfo     = TypeManager::concreteType(node->typeInfo);
-    auto fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
+    const auto typeInfo     = TypeManager::concreteType(node->typeInfo);
+    const auto fromTypeInfo = TypeManager::concreteType(exprNode->typeInfo);
     SWAG_CHECK(emitCast(context, exprNode, typeInfo, fromTypeInfo, EMIT_CASTFLAG_AUTO));
     YIELD();
     node->castedTypeInfo = nullptr;

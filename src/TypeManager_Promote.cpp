@@ -22,7 +22,7 @@ void TypeManager::promoteUntypedInteger(AstNode* left, AstNode* right)
     if (!rightTypeInfo->isNativeInteger())
         return;
 
-    auto leftNative = CastTypeInfo<TypeInfoNative>(leftTypeInfo, TypeInfoKind::Native);
+    const auto leftNative = CastTypeInfo<TypeInfoNative>(leftTypeInfo, TypeInfoKind::Native);
     if (leftNative->valueInteger == 0)
     {
         left->typeInfo = rightTypeInfo;
@@ -114,7 +114,7 @@ bool TypeManager::promoteLeft(SemanticContext* context, AstNode* left, AstNode* 
         rightTypeInfo = right->typeInfo;
     }
 
-    auto newLeftTypeInfo = g_TypeMgr->promoteMatrix[(int) leftTypeInfo->nativeType][(int) rightTypeInfo->nativeType];
+    const auto newLeftTypeInfo = g_TypeMgr->promoteMatrix[(int) leftTypeInfo->nativeType][(int) rightTypeInfo->nativeType];
     SWAG_ASSERT(newLeftTypeInfo);
     if (newLeftTypeInfo == leftTypeInfo)
         return true;
@@ -126,7 +126,7 @@ bool TypeManager::promoteLeft(SemanticContext* context, AstNode* left, AstNode* 
         return true;
     }
 
-    auto newLeft = newLeftTypeInfo->nativeType;
+    const auto newLeft = newLeftTypeInfo->nativeType;
     switch (leftTypeInfo->nativeType)
     {
     case NativeTypeKind::U8:

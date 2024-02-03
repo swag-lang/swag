@@ -10,9 +10,9 @@
 
 void SymTable::release()
 {
-    for (auto s : allSymbols)
+    for (const auto s : allSymbols)
     {
-        for (auto over :
+        for (const auto over :
              s->overloads)
             Allocator::free<SymbolOverload>(over);
         Allocator::free<SymbolName>(s);
@@ -29,7 +29,7 @@ SymbolName* SymTable::find(const Utf8& name, uint32_t crc)
 
 SymbolName* SymTable::findNoLock(const Utf8& name, uint32_t crc)
 {
-    auto symbol = mapNames.find(name, crc);
+    const auto symbol = mapNames.find(name, crc);
     if (symbol && symbol->cptOverloadsInit == 0)
         return nullptr;
     return symbol;
@@ -38,9 +38,9 @@ SymbolName* SymTable::findNoLock(const Utf8& name, uint32_t crc)
 SymbolName* SymTable::registerSymbolName(ErrorContext* context, AstNode* node, SymbolKind kind, Utf8* aliasName)
 {
     ScopedLock lk(mutex);
-    occupied    = true;
-    auto result = registerSymbolNameNoLock(context, node, kind, aliasName);
-    occupied    = false;
+    occupied          = true;
+    const auto result = registerSymbolNameNoLock(context, node, kind, aliasName);
+    occupied          = false;
     return result;
 }
 
@@ -98,12 +98,12 @@ SymbolOverload* SymTable::addSymbolTypeInfo(ErrorContext* context, AddSymbolType
     occupied = true;
 
     // Be sure we have a symbol
-    auto symName     = toAdd.aliasName ? toAdd.aliasName : &toAdd.node->token.text;
+    const auto symName     = toAdd.aliasName ? toAdd.aliasName : &toAdd.node->token.text;
     toAdd.symbolName = findNoLock(*symName);
     if (!toAdd.symbolName)
         toAdd.symbolName = registerSymbolNameNoLock(context, toAdd.node, toAdd.kind, symName);
 
-    auto res = addSymbolTypeInfoNoLock(context, toAdd);
+    const auto res = addSymbolTypeInfoNoLock(context, toAdd);
     occupied = false;
     return res;
 }
@@ -118,7 +118,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
     // In case an #if block has passed before us
     if (symbol->cptOverloadsInit == 0)
     {
-        auto symName     = toAdd.aliasName ? toAdd.aliasName : &toAdd.node->token.text;
+        const auto symName     = toAdd.aliasName ? toAdd.aliasName : &toAdd.node->token.text;
         symbol           = registerSymbolNameNoLock(context, toAdd.node, toAdd.kind, symName);
         toAdd.symbolName = symbol;
     }
@@ -143,7 +143,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
         symbol->kind == SymbolKind::Interface ||
         symbol->kind == SymbolKind::Function)
     {
-        for (auto resolved : symbol->overloads)
+        for (const auto resolved : symbol->overloads)
         {
             if (!(toAdd.flags & OVERLOAD_INCOMPLETE))
             {
@@ -244,7 +244,7 @@ void SymTable::addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32
     // An array of structs
     else if (typeInfo->isArrayOfStruct())
     {
-        auto typeArr  = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        const auto typeArr  = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         st.typeStruct = CastTypeInfo<TypeInfoStruct>(typeArr->finalType->getConcreteAlias(), TypeInfoKind::Struct);
     }
     else
@@ -253,7 +253,7 @@ void SymTable::addVarToDrop(SymbolOverload* overload, TypeInfo* typeInfo, uint32
     }
 
     // Be sure this is done only once
-    for (auto& td : structVarsToDrop)
+    for (const auto& td : structVarsToDrop)
     {
         if (td.storageOffset == storageOffset)
         {
@@ -285,13 +285,13 @@ void SymTable::disabledIfBlockOverloadNoLock(AstNode* node, SymbolName* symbol)
     {
     case AstNodeKind::EnumDecl:
     {
-        auto enumNode   = CastAst<AstEnum>(node, AstNodeKind::EnumDecl);
+        const auto enumNode   = CastAst<AstEnum>(node, AstNodeKind::EnumDecl);
         enumNode->scope = nullptr;
         break;
     }
     case AstNodeKind::StructDecl:
     {
-        auto structNode   = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
+        const auto structNode   = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
         structNode->scope = nullptr;
         break;
     }
@@ -328,7 +328,7 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, Typ
     auto token = &node->token;
     if (node->kind == AstNodeKind::FuncDecl)
     {
-        auto funcNode = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        const auto funcNode = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
         token         = &funcNode->tokenName;
     }
 
@@ -342,7 +342,7 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, Typ
     // A symbol with a different kind already exists
     if (symbol->kind != kind)
     {
-        auto front = symbol->nodes.front();
+        const auto front = symbol->nodes.front();
         return SemanticError::duplicatedSymbolError(context, node->sourceFile, *token, kind, symbol->name, symbol->kind, front);
     }
 
@@ -355,12 +355,12 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, Typ
         canOverload = true;
     if (!canOverload && !symbol->overloads.empty())
     {
-        auto firstOverload = symbol->overloads[0];
+        const auto firstOverload = symbol->overloads[0];
         return SemanticError::duplicatedSymbolError(context, node->sourceFile, *token, symbol->kind, symbol->name, firstOverload->symbol->kind, firstOverload->node);
     }
 
     // A symbol with the same type already exists
-    auto overload = symbol->findOverload(typeInfo);
+    const auto overload = symbol->findOverload(typeInfo);
     if (overload)
     {
         // This is fine to define an empty function multiple times, if the signatures are the same
@@ -370,7 +370,7 @@ bool SymTable::checkHiddenSymbolNoLock(ErrorContext* context, AstNode* node, Typ
             !(node->flags & AST_HAS_SELECT_IF) &&
             !(overload->node->flags & AST_HAS_SELECT_IF))
         {
-            auto firstOverload = overload;
+            const auto firstOverload = overload;
             return SemanticError::duplicatedSymbolError(context, node->sourceFile, *token, symbol->kind, symbol->name, firstOverload->symbol->kind, firstOverload->node);
         }
     }
@@ -386,7 +386,7 @@ bool SymTable::registerNameAlias(ErrorContext* context, AstNode* node, SymbolNam
     if (!symbol->overloads.empty())
     {
         auto firstOverload = symbol->overloads[0];
-        for (auto over : symbol->overloads)
+        for (const auto over : symbol->overloads)
         {
             if (over->symbol->name == symbol->name)
             {
@@ -403,7 +403,7 @@ bool SymTable::registerNameAlias(ErrorContext* context, AstNode* node, SymbolNam
     if (otherOverload)
     {
         symbol->cptOverloadsInit += 1;
-        auto copy = Allocator::alloc<SymbolOverload>();
+        const auto copy = Allocator::alloc<SymbolOverload>();
         copy->from(otherOverload);
         otherOverload->flags |= OVERLOAD_HAS_AFFECT;
         symbol->overloads.push_back(copy);
@@ -411,7 +411,7 @@ bool SymTable::registerNameAlias(ErrorContext* context, AstNode* node, SymbolNam
     else
     {
         symbol->cptOverloadsInit += otherSymbol->cptOverloadsInit;
-        for (auto o : otherSymbol->overloads)
+        for (const auto o : otherSymbol->overloads)
         {
             auto copy = Allocator::alloc<SymbolOverload>();
             copy->from(o);

@@ -142,16 +142,16 @@ void Module::release()
     mutableSegment.release();
     bssSegment.release();
     tlsSegment.release();
-    for (auto c : compilerSegmentPerThread)
+    for (const auto c : compilerSegmentPerThread)
         c->release();
 
-    for (auto& b : byteCodeFunc)
+    for (const auto& b : byteCodeFunc)
         b->release();
 
     // In case of errors, it's too tricky for now to release ASTs, because of possible shared values (like scopes).
     if (!isErrorModule && !numErrors)
     {
-        for (auto f : files)
+        for (const auto f : files)
             f->release();
     }
 }
@@ -287,7 +287,7 @@ void Module::buildModulesSlice()
     resultPtr += sizeof(void*);
     offset += sizeof(void*);
 
-    for (auto& dep : moduleDependencies)
+    for (const auto& dep : moduleDependencies)
     {
         // Module name
         offsetStr = constantSegment.addString(dep->module->name, &str);
@@ -324,7 +324,7 @@ void Module::buildGlobalVarsToDropSlice()
     auto offset                 = globalVarsToDropSliceOffset;
 
     auto oneVar = globalVarsToDropSlice;
-    for (auto& g : globalVarsToDrop)
+    for (const auto& g : globalVarsToDrop)
     {
         // Variable address
         oneVar->ptr = g.storageSegment->address(g.storageOffset);
@@ -339,13 +339,13 @@ void Module::buildGlobalVarsToDropSlice()
         else
         {
             SWAG_ASSERT(g.type->opDrop);
-            auto opDrop     = g.type->opDrop;
+            const auto opDrop     = g.type->opDrop;
             oneVar->opDrop  = opDrop;
             opDrop->isInSeg = true;
 
             if (opDrop->node)
             {
-                auto funcNode = CastAst<AstFuncDecl>(opDrop->node, AstNodeKind::FuncDecl);
+                const auto funcNode = CastAst<AstFuncDecl>(opDrop->node, AstNodeKind::FuncDecl);
                 mutableSegment.addInitPtrFunc(offset + sizeof(void*), funcNode->getCallName());
             }
             else
@@ -367,9 +367,9 @@ void Module::buildTypesSlice()
     if (modulesSliceOffset == UINT32_MAX)
         return;
 
-    auto&    mapTypes = typeGen.getMapPerSeg(&constantSegment).exportedTypes;
-    uint8_t* resultPtr;
-    uint32_t numTypes = (uint32_t) mapTypes.size();
+    const auto&    mapTypes = typeGen.getMapPerSeg(&constantSegment).exportedTypes;
+    uint8_t*       resultPtr;
+    const uint32_t numTypes = (uint32_t) mapTypes.size();
 
     typesSliceOffset = constantSegment.reserve(sizeof(uint64_t) + (numTypes * sizeof(ExportedTypeInfo*)), &resultPtr);
     auto offset      = typesSliceOffset;
@@ -380,12 +380,12 @@ void Module::buildTypesSlice()
     offset += sizeof(uint64_t);
 
     // Initialize the "current module" slice of types
-    auto moduleSlice          = (SwagModule*) constantSegment.address(modulesSliceOffset);
+    const auto moduleSlice          = (SwagModule*) constantSegment.address(modulesSliceOffset);
     moduleSlice->types.buffer = resultPtr;
     moduleSlice->types.count  = numTypes;
     constantSegment.addInitPtr(modulesSliceOffset + offsetof(SwagModule, types), typesSliceOffset + sizeof(uint64_t));
 
-    for (auto t : mapTypes)
+    for (const auto t : mapTypes)
     {
         *(ExportedTypeInfo**) resultPtr = t.second.exportedType;
         constantSegment.addInitPtr(offset, t.second.storageOffset);
@@ -396,10 +396,10 @@ void Module::buildTypesSlice()
 
     // Patch module list
     int i = 1;
-    for (auto& dep : moduleDependencies)
+    for (const auto& dep : moduleDependencies)
     {
-        auto callTable = dep->module->getGlobalPrivFct(g_LangSpec->name_getTypeTable);
-        auto ptr       = g_ModuleMgr->getFnPointer(dep->module->name, callTable);
+        auto       callTable = dep->module->getGlobalPrivFct(g_LangSpec->name_getTypeTable);
+        const auto ptr       = g_ModuleMgr->getFnPointer(dep->module->name, callTable);
         if (!ptr)
         {
             moduleSlice[i].types.buffer = nullptr;
@@ -408,7 +408,7 @@ void Module::buildTypesSlice()
         else
         {
             typedef uint8_t* (*funcCall)();
-            auto valPtr = ((funcCall) ptr)();
+            const auto         valPtr = ((funcCall) ptr)();
 
             moduleSlice[i].types.buffer = valPtr + sizeof(uint64_t);
             moduleSlice[i].types.count  = *(uint64_t*) valPtr;
@@ -420,7 +420,7 @@ void Module::buildTypesSlice()
 
 SourceFile* Module::findFile(const Utf8& fileName)
 {
-    for (auto p : files)
+    for (const auto p : files)
     {
         if (p->path == fileName.c_str())
             return p;
@@ -522,7 +522,7 @@ void Module::removeFile(SourceFile* file)
 
     SWAG_ASSERT(file->module == this);
 
-    auto idx = file->indexInModule;
+    const auto idx = file->indexInModule;
     SWAG_ASSERT(files[idx] == file);
     files[idx]                = files.back();
     files[idx]->indexInModule = idx;
@@ -531,7 +531,7 @@ void Module::removeFile(SourceFile* file)
     file->indexInModule = UINT32_MAX;
 
     // If the file is flagged as '#global export', unregister it
-    auto it1 = exportSourceFiles.find(file);
+    const auto it1 = exportSourceFiles.find(file);
     if (it1 != exportSourceFiles.end())
         exportSourceFiles.erase(it1);
 }
@@ -564,7 +564,7 @@ void Module::addGlobalVarToDrop(AstNode* node, uint32_t storageOffset, DataSegme
     uint32_t count = 1;
     if (typeNode->isArrayOfStruct())
     {
-        auto typeArray = CastTypeInfo<TypeInfoArray>(typeNode, TypeInfoKind::Array);
+        const auto typeArray = CastTypeInfo<TypeInfoArray>(typeNode, TypeInfoKind::Array);
         typeNode       = typeArray->finalType;
         count          = typeArray->totalCount;
     }
@@ -576,13 +576,13 @@ void Module::addGlobalVarToDrop(AstNode* node, uint32_t storageOffset, DataSegme
 
 void Module::addCompilerFunc(ByteCode* bc)
 {
-    auto funcDecl = CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
+    const auto funcDecl = CastAst<AstFuncDecl>(bc->node, AstNodeKind::FuncDecl);
 
     SWAG_ASSERT(funcDecl->parameters);
     SWAG_ASSERT(funcDecl->parameters->hasComputedValue());
 
     // Register the function in all the corresponding buckets
-    auto filter = funcDecl->parameters->computedValue->reg.u64;
+    const auto filter = funcDecl->parameters->computedValue->reg.u64;
     for (uint32_t i = 0; i < 64; i++)
     {
         if (filter & ((uint64_t) 1 << i))
@@ -607,8 +607,8 @@ void Module::addByteCodeFunc(ByteCode* bc)
 
     if (bc->node)
     {
-        auto attributeFlags = bc->node->attributeFlags;
-        auto flags          = bc->node->flags;
+        const auto attributeFlags = bc->node->attributeFlags;
+        const auto flags          = bc->node->flags;
 
         // Register for export
         if ((attributeFlags & ATTRIBUTE_PUBLIC) &&
@@ -675,21 +675,21 @@ bool Module::removeFileToLoad(AstNode* includeNode)
 bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, const Token& tokenVersion)
 {
     ScopedLock lk(mutexDependency);
-    for (auto& dep : moduleDependencies)
+    for (const auto& dep : moduleDependencies)
     {
         if (dep->name == importNode->token.text)
         {
             if (dep->location != tokenLocation.text && !tokenLocation.text.empty() && !dep->location.empty())
             {
-                Diagnostic diag{importNode, tokenLocation, Fmt(Err(Err0066), dep->name.c_str(), dep->location.c_str())};
-                auto       note = Diagnostic::note(dep->node, Nte(Nte0073));
+                const Diagnostic diag{importNode, tokenLocation, Fmt(Err(Err0066), dep->name.c_str(), dep->location.c_str())};
+                const auto       note = Diagnostic::note(dep->node, Nte(Nte0073));
                 return Report::report(diag, note);
             }
 
             if (dep->version != tokenVersion.text && !tokenVersion.text.empty() && !dep->version.empty())
             {
-                Diagnostic diag{importNode, tokenVersion, Fmt(Err(Err0067), dep->name.c_str(), dep->version.c_str())};
-                auto       note = Diagnostic::note(dep->node, Nte(Nte0073));
+                const Diagnostic diag{importNode, tokenVersion, Fmt(Err(Err0067), dep->name.c_str(), dep->version.c_str())};
+                const auto       note = Diagnostic::note(dep->node, Nte(Nte0073));
                 return Report::report(diag, note);
             }
 
@@ -712,8 +712,8 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
 
     if (splits.size() != 3 || splits[0].empty() || splits[1].empty() || splits[2].empty())
     {
-        Diagnostic diag{importNode, tokenVersion, Err(Err0312)};
-        auto       note = Diagnostic::note(Nte(Nte0142));
+        const Diagnostic diag{importNode, tokenVersion, Err(Err0312)};
+        const auto       note = Diagnostic::note(Nte(Nte0142));
         return Report::report(diag, note);
     }
 
@@ -744,8 +744,8 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         {
             if (!isdigit(splits[i][j]))
             {
-                Diagnostic diag{importNode, tokenVersion, Err(Err0312)};
-                auto       note = Diagnostic::note(Err(Nte0142));
+                const Diagnostic diag{importNode, tokenVersion, Err(Err0312)};
+                const auto       note = Diagnostic::note(Err(Nte0142));
                 return Report::report(diag, note);
             }
         }
@@ -789,7 +789,7 @@ bool Module::removeDependency(AstNode* importNode)
 
 bool Module::hasDependencyTo(Module* module)
 {
-    for (auto dep : moduleDependencies)
+    for (const auto dep : moduleDependencies)
     {
         if (dep->module == module)
             return true;
@@ -802,9 +802,9 @@ bool Module::hasDependencyTo(Module* module)
 
 bool Module::waitForDependenciesDone(Job* job, const SetUtf8& modules)
 {
-    for (auto& dep : moduleDependencies)
+    for (const auto& dep : moduleDependencies)
     {
-        auto depModule = dep->module;
+        const auto depModule = dep->module;
         SWAG_ASSERT(depModule);
 
         if (depModule->numErrors)
@@ -831,9 +831,9 @@ bool Module::waitForDependenciesDone(Job* job)
     if (dependenciesDone)
         return true;
 
-    for (auto& dep : moduleDependencies)
+    for (const auto& dep : moduleDependencies)
     {
-        auto depModule = dep->module;
+        const auto depModule = dep->module;
         SWAG_ASSERT(depModule);
 
         if (depModule->numErrors)
@@ -893,8 +893,8 @@ void Module::startBuilding(const BuildParameters& bp)
 
 void Module::printBC()
 {
-    ByteCodePrintOptions opt;
-    for (auto bc : byteCodePrintBC)
+    const ByteCodePrintOptions opt;
+    for (const auto bc : byteCodePrintBC)
         bc->print(opt);
 }
 
@@ -1041,8 +1041,8 @@ bool Module::compileString(const Utf8& text)
     SWAG_ASSERT(g_RunContext->ip->node);
     SWAG_ASSERT(g_RunContext->ip->node->sourceFile);
 
-    auto ip         = g_RunContext->ip != g_RunContext->bc->out ? g_RunContext->ip - 1 : g_RunContext->ip;
-    auto sourceFile = ip->node->sourceFile;
+    const auto ip         = g_RunContext->ip != g_RunContext->bc->out ? g_RunContext->ip - 1 : g_RunContext->ip;
+    const auto sourceFile = ip->node->sourceFile;
 
     // Is it still possible to generate some code ?
     if (!acceptsCompileString)
@@ -1051,7 +1051,7 @@ bool Module::compileString(const Utf8& text)
         return false;
     }
 
-    auto parent = Ast::newNode<AstNode>(nullptr, AstNodeKind::StatementNoScope, files[0], sourceFile->astRoot);
+    const auto parent = Ast::newNode<AstNode>(nullptr, AstNodeKind::StatementNoScope, files[0], sourceFile->astRoot);
 
     JobContext jobContext;
     Parser     parser;
@@ -1072,11 +1072,11 @@ TypeInfoFuncAttr* Module::getRuntimeTypeFct(const Utf8& fctName)
 {
     SharedLock lk(mutexFile);
 
-    auto it = mapRuntimeFcts.find(fctName);
+    const auto it = mapRuntimeFcts.find(fctName);
     if (it != mapRuntimeFcts.end())
         return it->second->typeInfoFunc;
 
-    auto it1 = mapRuntimeFctsTypes.find(fctName);
+    const auto it1 = mapRuntimeFctsTypes.find(fctName);
     if (it1 != mapRuntimeFctsTypes.end())
         return it1->second;
     return nullptr;
@@ -1086,7 +1086,7 @@ ByteCode* Module::getRuntimeFct(const Utf8& fctName)
 {
     SharedLock lk(mutexFile);
 
-    auto it = mapRuntimeFcts.find(fctName);
+    const auto it = mapRuntimeFcts.find(fctName);
     SWAG_ASSERT(it != mapRuntimeFcts.end());
     return it->second;
 }
@@ -1111,7 +1111,7 @@ bool Module::waitImplForToSolve(Job* job, TypeInfoStruct* typeStruct)
 
     if (typeStruct->declNode && typeStruct->declNode->flags & AST_FROM_GENERIC)
         return false;
-    auto it = implForToSolve.find(typeStruct->structName);
+    const auto it = implForToSolve.find(typeStruct->structName);
     if (it == implForToSolve.end())
         return false;
     if (it->second.count == 0)
@@ -1125,7 +1125,7 @@ void Module::decImplForToSolve(TypeInfoStruct* typeStruct)
 {
     ScopedLock lk(mutexFile);
 
-    auto it = implForToSolve.find(typeStruct->structName);
+    const auto it = implForToSolve.find(typeStruct->structName);
     SWAG_ASSERT(it != implForToSolve.end());
     SWAG_ASSERT(it->second.count != 0);
     it->second.count--;
@@ -1143,12 +1143,12 @@ void Module::initProcessInfos()
 
 void Module::callPreMain()
 {
-    for (auto& dep : moduleDependencies)
+    for (const auto& dep : moduleDependencies)
     {
         if (!dep->module->isSwag)
             continue;
-        auto nameFct = dep->module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
-        auto ptr     = g_ModuleMgr->getFnPointer(dep->name, nameFct);
+        auto       nameFct = dep->module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
+        const auto ptr     = g_ModuleMgr->getFnPointer(dep->name, nameFct);
         if (!ptr)
             continue;
         typedef void (*funcCall)(SwagProcessInfos*);
@@ -1180,7 +1180,7 @@ bool Module::filterFunctionsToEmit()
 
 void Module::flushGenFiles()
 {
-    auto newJob    = Allocator::alloc<SaveGenJob>();
+    const auto newJob    = Allocator::alloc<SaveGenJob>();
     newJob->module = this;
     g_ThreadMgr.addJob(newJob);
 }

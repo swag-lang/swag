@@ -42,10 +42,10 @@ bool Parser::checkIsValidUserName(AstNode* node, Token* loc)
     if (!testIsValidUserName(node))
         return error(loc ? *loc : node->token, Fmt(Err(Err0617), node->token.ctext()));
 
-    // Pour toi frangouille, ajouté le jour de ton départ
+    // Pour toi frangouille, ajoutÃ© le jour de ton dÃ©part
     if (node->token.text.compareNoCase("jyb37"))
     {
-        Diagnostic diag{node, "I'm sorry, but 'JYB' is my little brother's nickname, and '37' is the age when he passed away at 1:29 AM on 11-26-2023. Please, please use another identifier. I love you, bro."};
+        const Diagnostic diag{node, "I'm sorry, but 'JYB' is my little brother's nickname, and '37' is the age when he passed away at 1:29 AM on 11-26-2023. Please, please use another identifier. I love you, bro."};
         context->report(diag);
         return false;
     }
@@ -221,7 +221,7 @@ bool Parser::doIdentifier(AstNode* parent, uint32_t identifierFlags)
 
 bool Parser::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t identifierFlags)
 {
-    auto identifierRef = Ast::newIdentifierRef(sourceFile, parent, this);
+    const auto identifierRef = Ast::newIdentifierRef(sourceFile, parent, this);
     *result            = identifierRef;
 
     switch (token.id)
@@ -279,7 +279,7 @@ bool Parser::doIdentifierRef(AstNode* parent, AstNode** result, uint32_t identif
 
 bool Parser::doDiscard(AstNode* parent, AstNode** result)
 {
-    auto discardToken = token;
+    const auto discardToken = token;
     SWAG_CHECK(eatToken());
 
     AstNode* idRef;
@@ -297,9 +297,9 @@ bool Parser::doDiscard(AstNode* parent, AstNode** result)
     default:
         if (Tokenizer::isIntrinsicReturn(token.id))
         {
-            Diagnostic diag{sourceFile, token, Fmt(Err(Err0748), token.ctext())};
-            auto       note  = Diagnostic::note(sourceFile, discardToken, Nte(Nte0149));
-            auto       note1 = Diagnostic::note(Nte(Nte0012));
+            const Diagnostic diag{sourceFile, token, Fmt(Err(Err0748), token.ctext())};
+            const auto       note  = Diagnostic::note(sourceFile, discardToken, Nte(Nte0149));
+            const auto       note1 = Diagnostic::note(Nte(Nte0012));
             return context->report(diag, note, note1);
         }
 
@@ -317,7 +317,7 @@ bool Parser::doDiscard(AstNode* parent, AstNode** result)
     SWAG_ASSERT(idRef);
 
     // This is where AST_DISCARD will be really used
-    for (auto c : idRef->childs)
+    for (const auto c : idRef->childs)
     {
         if (c->kind != AstNodeKind::Identifier)
             break;
@@ -390,7 +390,7 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
 
 bool Parser::doThrow(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Throw, sourceFile, parent);
+    const auto node = Ast::newNode<AstTryCatchAssume>(this, AstNodeKind::Throw, sourceFile, parent);
     *result   = node;
     SWAG_VERIFY(node->ownerFct, error(node, Err(Err0471)));
     node->semanticFct = Semantic::resolveThrow;
@@ -413,7 +413,7 @@ bool Parser::doThrow(AstNode* parent, AstNode** result)
 
 bool Parser::doTypeAlias(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstAlias>(this, AstNodeKind::TypeAlias, sourceFile, parent);
+    const auto node         = Ast::newNode<AstAlias>(this, AstNodeKind::TypeAlias, sourceFile, parent);
     node->kwdLoc      = token;
     node->semanticFct = Semantic::resolveUsing;
 
@@ -441,7 +441,7 @@ bool Parser::doTypeAlias(AstNode* parent, AstNode** result)
 
 bool Parser::doNameAlias(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstAlias>(this, AstNodeKind::NameAlias, sourceFile, parent);
+    const auto node         = Ast::newNode<AstAlias>(this, AstNodeKind::NameAlias, sourceFile, parent);
     node->kwdLoc      = token;
     node->semanticFct = Semantic::resolveUsing;
 
@@ -469,10 +469,10 @@ bool Parser::doNameAlias(AstNode* parent, AstNode** result)
 
 bool Parser::doTopLevelIdentifier(AstNode* parent, AstNode** result)
 {
-    auto tokenIdentifier = token;
+    const auto tokenIdentifier = token;
     eatToken();
 
-    Diagnostic                diag{sourceFile, tokenIdentifier, Fmt(Err(Err0689), tokenIdentifier.ctext())};
+    const Diagnostic                diag{sourceFile, tokenIdentifier, Fmt(Err(Err0689), tokenIdentifier.ctext())};
     Vector<const Diagnostic*> notes;
 
     if (token.id == TokenId::Identifier)
@@ -486,7 +486,7 @@ bool Parser::doTopLevelIdentifier(AstNode* parent, AstNode** result)
         notes.push_back(Diagnostic::note(Nte(Nte0053)));
     }
 
-    Utf8 appendMsg = SemanticError::findClosestMatchesMsg(tokenIdentifier.text, {}, IdentifierSearchFor::TopLevelInstruction);
+    const Utf8 appendMsg = SemanticError::findClosestMatchesMsg(tokenIdentifier.text, {}, IdentifierSearchFor::TopLevelInstruction);
     if (!appendMsg.empty())
         notes.push_back(Diagnostic::note(appendMsg));
     return context->report(diag, notes);

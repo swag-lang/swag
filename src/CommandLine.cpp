@@ -51,7 +51,7 @@ bool CommandLine::check()
     {
         workspacePath = filesystem::absolute(workspacePath);
         error_code err;
-        auto       workspacePath1 = filesystem::canonical(workspacePath, err);
+        const auto workspacePath1 = filesystem::canonical(workspacePath, err);
         if (!err)
             workspacePath = workspacePath1;
     }
@@ -60,7 +60,7 @@ bool CommandLine::check()
     {
         cachePath = filesystem::absolute(cachePath);
         error_code err;
-        auto       cachePath1 = filesystem::canonical(cachePath, err);
+        const auto cachePath1 = filesystem::canonical(cachePath, err);
         if (!err)
             cachePath = cachePath1;
     }
@@ -68,7 +68,7 @@ bool CommandLine::check()
     // Add/check script file extension
     if (!g_CommandLine.scriptName.empty())
     {
-        Path p = g_CommandLine.scriptName;
+        const Path p = g_CommandLine.scriptName;
         if (p.extension().string().empty())
         {
             g_CommandLine.scriptName += ".swgs";

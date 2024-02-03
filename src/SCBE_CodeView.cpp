@@ -35,11 +35,11 @@ static void emitCompilerFlagsDebugS(SCBE_CPU& pp)
     auto& concat = pp.concat;
 
     concat.addU32(DEBUG_S_SYMBOLS);
-    auto patchSCount  = concat.addU32Addr(0); // Size of sub section
-    auto patchSOffset = concat.totalCount();
+    const auto patchSCount  = concat.addU32Addr(0); // Size of sub section
+    const auto patchSOffset = concat.totalCount();
 
-    auto patchRecordCount  = concat.addU16Addr(0); // Record length, starting from &RecordKind.
-    auto patchRecordOffset = concat.totalCount();
+    const auto patchRecordCount  = concat.addU16Addr(0); // Record length, starting from &RecordKind.
+    const auto patchRecordOffset = concat.totalCount();
     concat.addU16(S_COMPILE3); // Record kind enum (SymRecordKind or TypeRecordKind)
 
     concat.addU32(0);    // Flags/Language (C)
@@ -58,7 +58,7 @@ static void emitCompilerFlagsDebugS(SCBE_CPU& pp)
     concat.addU16(0);
 
     // Compiler version
-    Utf8 version = Fmt("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
+    const Utf8 version = Fmt("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
     concat.addString(version.c_str(), version.length() + 1);
     concat.align(4);
     *patchRecordCount = (uint16_t) (concat.totalCount() - patchRecordOffset);
@@ -217,7 +217,7 @@ static bool emitDataDebugT(SCBE_CPU& pp)
 
         case LF_DERIVED:
             concat.addU32((uint16_t) f->LF_DerivedList.derived.size());
-            for (auto& p : f->LF_DerivedList.derived)
+            for (const auto& p : f->LF_DerivedList.derived)
                 concat.addU32(p);
             break;
 
@@ -248,12 +248,12 @@ static bool emitDataDebugT(SCBE_CPU& pp)
         case LF_POINTER:
         {
             concat.addU32(f->LF_Pointer.pointeeType);
-            uint32_t kind      = 0x0C; // Near64
-            uint32_t mode      = f->LF_Pointer.asRef ? CV_PTR_MODE_LVREF : 0;
-            uint32_t modifiers = 0;
-            uint32_t size      = 8; // 64 bits
-            uint32_t flags     = 0;
-            uint32_t layout    = (flags << 19) | (size << 13) | (modifiers << 8) | (mode << 5) | kind;
+            const uint32_t kind      = 0x0C; // Near64
+            const uint32_t mode      = f->LF_Pointer.asRef ? CV_PTR_MODE_LVREF : 0;
+            const uint32_t modifiers = 0;
+            const uint32_t size      = 8; // 64 bits
+            const uint32_t flags     = 0;
+            const uint32_t layout    = (flags << 19) | (size << 13) | (modifiers << 8) | (mode << 5) | kind;
             concat.addU32(layout); // attributes
             break;
         }
@@ -332,10 +332,10 @@ static void emitGlobalDebugS(SCBE_CPU& pp, VectorNative<AstNode*>& gVars, uint32
 {
     auto& concat = pp.concat;
     concat.addU32(DEBUG_S_SYMBOLS);
-    auto patchSCount  = concat.addU32Addr(0);
-    auto patchSOffset = concat.totalCount();
+    const auto patchSCount  = concat.addU32Addr(0);
+    const auto patchSOffset = concat.totalCount();
 
-    for (auto& p : gVars)
+    for (const auto& p : gVars)
     {
         // Compile time constant
         if (p->hasComputedValue())
@@ -390,7 +390,7 @@ static uint32_t getFileChecksum(MapPath<uint32_t>& mapFileNames,
     auto checkSymIndex = 0;
 
     using P                      = MapPath<uint32_t>;
-    pair<P::iterator, bool> iter = mapFileNames.insert(P::value_type(sourceFile->path, 0));
+    const pair<P::iterator, bool> iter = mapFileNames.insert(P::value_type(sourceFile->path, 0));
     if (iter.second)
     {
         checkSymIndex = (uint32_t) arrFileNames.size();
@@ -415,17 +415,17 @@ static bool emitLines(SCBE_CPU&          pp,
                       CPUFunction&       f,
                       size_t             idxDbgLines)
 {
-    auto& dbgLines   = f.dbgLines[idxDbgLines];
-    auto  sourceFile = dbgLines.sourceFile;
-    auto& lines      = dbgLines.lines;
+    const auto& dbgLines   = f.dbgLines[idxDbgLines];
+    const auto  sourceFile = dbgLines.sourceFile;
+    const auto& lines      = dbgLines.lines;
     concat.addU32(DEBUG_S_LINES);
-    auto patchLTCount  = concat.addU32Addr(0); // Size of sub section
-    auto patchLTOffset = concat.totalCount();
+    const auto patchLTCount  = concat.addU32Addr(0); // Size of sub section
+    const auto patchLTOffset = concat.totalCount();
 
     // Function symbol index relocation
     // Relocate to the first (relative) byte offset of the first line
     // Size is the address of the next subsection start, or the end of the function for the last one
-    auto startByteIndex = lines[0].byteOffset;
+    const auto startByteIndex = lines[0].byteOffset;
     emitSecRel(pp, f.symbolIndex, pp.symCOIndex, lines[0].byteOffset);
     concat.addU16(0); // Flags
     uint32_t endAddress;
@@ -436,13 +436,13 @@ static bool emitLines(SCBE_CPU&          pp,
     concat.addU32(endAddress - lines[0].byteOffset); // Code size
 
     // Compute file name index in the checksum table
-    auto checkSymIndex = getFileChecksum(mapFileNames, arrFileNames, stringTable, sourceFile);
+    const auto checkSymIndex = getFileChecksum(mapFileNames, arrFileNames, stringTable, sourceFile);
 
-    auto numLines = (uint32_t) lines.size();
+    const auto numLines = (uint32_t) lines.size();
     concat.addU32(checkSymIndex);     // File index in checksum buffer (in bytes!)
     concat.addU32(numLines);          // NumLines
     concat.addU32(12 + numLines * 8); // Code size block in bytes (12 + number of lines * 8)
-    for (auto& line : lines)
+    for (const auto& line : lines)
     {
         concat.addU32(line.byteOffset - startByteIndex); // Offset in bytes from the start of the section
         concat.addU32(line.line);                        // Line number
@@ -472,16 +472,16 @@ static bool emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
 
     // Local variables marked as global
     /////////////////////////////////
-    auto funcDecl = (AstFuncDecl*) f.node;
-    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
+    const auto funcDecl = (AstFuncDecl*) f.node;
+    const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(funcDecl->typeInfo, TypeInfoKind::FuncAttr);
     for (int i = 0; i < (int) funcDecl->localGlobalVars.size(); i++)
     {
-        auto localVar = funcDecl->localGlobalVars[i];
+        const auto localVar = funcDecl->localGlobalVars[i];
         if (localVar->ownerScope != scope)
             continue;
 
-        SymbolOverload* overload = localVar->resolvedSymbolOverload;
-        auto            typeInfo = overload->typeInfo;
+        const SymbolOverload* overload = localVar->resolvedSymbolOverload;
+        const auto      typeInfo = overload->typeInfo;
 
         SWAG_ASSERT(localVar->attributeFlags & ATTRIBUTE_GLOBAL);
 
@@ -489,7 +489,7 @@ static bool emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
         concat.addU32(SCBE_Debug::getOrCreateType(pp, typeInfo));
 
         CPURelocation reloc;
-        auto          segSymIndex = overload->flags & OVERLOAD_VAR_BSS ? pp.symBSIndex : pp.symMSIndex;
+        const auto    segSymIndex = overload->flags & OVERLOAD_VAR_BSS ? pp.symBSIndex : pp.symMSIndex;
 
         // symbol index relocation inside segment
         reloc.type           = IMAGE_REL_AMD64_SECREL;
@@ -513,7 +513,7 @@ static bool emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
     /////////////////////////////////
     for (int i = 0; i < (int) funcDecl->localConstants.size(); i++)
     {
-        auto localConst = funcDecl->localConstants[i];
+        const auto localConst = funcDecl->localConstants[i];
         if (localConst->ownerScope != scope)
             continue;
 
@@ -524,12 +524,12 @@ static bool emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
     /////////////////////////////////
     for (int i = 0; i < (int) f.node->extByteCode()->bc->localVars.size(); i++)
     {
-        auto localVar = f.node->extByteCode()->bc->localVars[i];
+        const auto localVar = f.node->extByteCode()->bc->localVars[i];
         if (localVar->ownerScope != scope)
             continue;
 
-        SymbolOverload* overload = localVar->resolvedSymbolOverload;
-        auto            typeInfo = overload->typeInfo;
+        const SymbolOverload* overload = localVar->resolvedSymbolOverload;
+        const auto      typeInfo = overload->typeInfo;
 
         //////////
         emitStartRecord(pp, S_LOCAL);
@@ -550,7 +550,7 @@ static bool emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
         else
             concat.addU32(overload->computedValue.storageOffset + f.offsetStack);
         emitSecRel(pp, f.symbolIndex, pp.symCOIndex, localVar->ownerScope->backendStart);
-        auto endOffsetVar = localVar->ownerScope->backendEnd == 0 ? f.endAddress : localVar->ownerScope->backendEnd;
+        const auto endOffsetVar = localVar->ownerScope->backendEnd == 0 ? f.endAddress : localVar->ownerScope->backendEnd;
         concat.addU16((uint16_t) (endOffsetVar - localVar->ownerScope->backendStart)); // Range
         emitEndRecord(pp);
     }
@@ -564,7 +564,7 @@ static bool emitScope(SCBE_CPU& pp, CPUFunction& f, Scope* scope)
              { return n1->backendStart < n2->backendStart; });
     }
 
-    for (auto c : scope->childScopes)
+    for (const auto c : scope->childScopes)
         emitScope(pp, f, c);
 
     // End
@@ -587,17 +587,17 @@ static bool emitFctDebugS(SCBE_CPU& pp)
         if (!f.node || f.node->isSpecialFunctionGenerated())
             continue;
 
-        auto decl     = CastAst<AstFuncDecl>(f.node, AstNodeKind::FuncDecl);
-        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(decl->typeInfo, TypeInfoKind::FuncAttr);
+        const auto decl     = CastAst<AstFuncDecl>(f.node, AstNodeKind::FuncDecl);
+        const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(decl->typeInfo, TypeInfoKind::FuncAttr);
 
         // Add a func id type record
         /////////////////////////////////
-        auto tr  = SCBE_Debug::addTypeRecord(pp);
+        const auto tr  = SCBE_Debug::addTypeRecord(pp);
         tr->node = f.node;
         if (typeFunc->isMethod())
         {
             tr->kind                  = LF_MFUNC_ID;
-            auto typeThis             = CastTypeInfo<TypeInfoPointer>(typeFunc->parameters[0]->typeInfo, TypeInfoKind::Pointer);
+            const auto typeThis       = CastTypeInfo<TypeInfoPointer>(typeFunc->parameters[0]->typeInfo, TypeInfoKind::Pointer);
             tr->LF_MFuncId.parentType = SCBE_Debug::getOrCreateType(pp, typeThis->pointedType);
             tr->LF_MFuncId.type       = SCBE_Debug::getOrCreateType(pp, typeFunc);
         }
@@ -611,8 +611,8 @@ static bool emitFctDebugS(SCBE_CPU& pp)
         /////////////////////////////////
         {
             concat.addU32(DEBUG_S_SYMBOLS);
-            auto patchSCount  = concat.addU32Addr(0);
-            auto patchSOffset = concat.totalCount();
+            const auto patchSCount  = concat.addU32Addr(0);
+            const auto patchSOffset = concat.totalCount();
 
             // Proc ID
             // PROCSYM32
@@ -647,14 +647,14 @@ static bool emitFctDebugS(SCBE_CPU& pp)
             /////////////////////////////////
             if (decl->captureParameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
             {
-                auto countParams = decl->captureParameters->childs.size();
+                const auto countParams = decl->captureParameters->childs.size();
                 for (size_t i = 0; i < countParams; i++)
                 {
-                    auto child     = decl->captureParameters->childs[i];
-                    auto typeParam = child->typeInfo;
+                    auto       child     = decl->captureParameters->childs[i];
+                    const auto typeParam = child->typeInfo;
                     if (child->kind == AstNodeKind::MakePointer)
                         child = child->childs.front();
-                    auto overload = child->resolvedSymbolOverload;
+                    const auto overload = child->resolvedSymbolOverload;
                     if (!typeParam || !overload)
                         continue;
 
@@ -691,12 +691,12 @@ static bool emitFctDebugS(SCBE_CPU& pp)
             /////////////////////////////////
             if (decl->parameters && !(decl->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
             {
-                auto countParams = decl->parameters->childs.size();
+                const auto countParams = decl->parameters->childs.size();
                 int  regCounter  = 0;
                 for (size_t i = 0; i < countParams; i++)
                 {
-                    auto child     = decl->parameters->childs[i];
-                    auto typeParam = typeFunc->parameters[i]->typeInfo;
+                    const auto child     = decl->parameters->childs[i];
+                    const auto typeParam = typeFunc->parameters[i]->typeInfo;
 
                     SCBE_DebugTypeIndex typeIdx;
                     switch (typeParam->kind)
@@ -712,7 +712,7 @@ static bool emitFctDebugS(SCBE_CPU& pp)
                     {
                         if (typeParam->isAutoConstPointerRef())
                         {
-                            auto typeRef = TypeManager::concretePtrRefType(typeParam);
+                            const auto typeRef = TypeManager::concretePtrRefType(typeParam);
                             if (CallConv::structParamByValue(typeFunc, typeRef))
                                 typeIdx = SCBE_Debug::getOrCreateType(pp, typeRef);
                             else
@@ -816,7 +816,7 @@ static bool emitFctDebugS(SCBE_CPU& pp)
 
             // Lexical blocks
             /////////////////////////////////
-            auto funcDecl = CastAst<AstFuncDecl>(f.node, AstNodeKind::FuncDecl);
+            const auto funcDecl = CastAst<AstFuncDecl>(f.node, AstNodeKind::FuncDecl);
             emitScope(pp, f, funcDecl->scope);
 
             // End
@@ -837,16 +837,16 @@ static bool emitFctDebugS(SCBE_CPU& pp)
                     continue;
 
                 concat.addU32(DEBUG_S_INLINEELINES);
-                auto patchLTCount  = concat.addU32Addr(0); // Size of sub section
-                auto patchLTOffset = concat.totalCount();
+                const auto patchLTCount  = concat.addU32Addr(0); // Size of sub section
+                const auto patchLTOffset = concat.totalCount();
 
                 const uint32_t CV_INLINEE_SOURCE_LINE_SIGNATURE = 0;
                 concat.addU32(CV_INLINEE_SOURCE_LINE_SIGNATURE);
 
-                auto checkSymIndex = getFileChecksum(mapFileNames, arrFileNames, stringTable, dbgLines.sourceFile);
-                auto typeIdx       = SCBE_Debug::getOrCreateType(pp, dbgLines.inlined->typeInfo);
+                const auto checkSymIndex = getFileChecksum(mapFileNames, arrFileNames, stringTable, dbgLines.sourceFile);
+                const auto typeIdx       = SCBE_Debug::getOrCreateType(pp, dbgLines.inlined->typeInfo);
 
-                for (auto l : dbgLines.lines)
+                for (const auto l : dbgLines.lines)
                 {
                     concat.addU32(typeIdx);
                     concat.addU32(checkSymIndex);
@@ -869,7 +869,7 @@ static bool emitFctDebugS(SCBE_CPU& pp)
     /////////////////////////////////
     concat.addU32(DEBUG_S_FILECHKSMS);
     concat.addU32((int) arrFileNames.size() * 8); // Size of sub section
-    for (auto& p : arrFileNames)
+    for (const auto& p : arrFileNames)
     {
         concat.addU32(p); // Offset of file name in string table
         concat.addU32(0);
@@ -888,8 +888,8 @@ static bool emitFctDebugS(SCBE_CPU& pp)
 
 bool SCBE_CodeView::emit(const BuildParameters& buildParameters, SCBE_CPU& pp)
 {
-    auto& concat = pp.concat;
-    auto  module = buildParameters.module;
+    auto&      concat = pp.concat;
+    const auto module = buildParameters.module;
 
     // .debug$S
     concat.align(16);

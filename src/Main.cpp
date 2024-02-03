@@ -32,8 +32,8 @@ int main(int argc, const char* argv[])
     }
 
     // Special mode if the first argument is a script file with ".swgs" extension
-    Utf8 command = argv[1];
-    Path p       = argv[1];
+    Utf8       command = argv[1];
+    const Path p       = argv[1];
     if (p.extension() == ".swgs")
     {
         command                  = "script";

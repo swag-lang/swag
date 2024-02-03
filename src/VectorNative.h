@@ -58,7 +58,7 @@ struct VectorNative
         if (newcapacity <= allocated)
             return;
 
-        auto oldAllocated = allocated;
+        const auto oldAllocated = allocated;
         allocated *= 2;
         allocated = max(allocated, 4);
         allocated = max(allocated, newcapacity);

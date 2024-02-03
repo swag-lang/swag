@@ -23,9 +23,9 @@ SCBE::SCBE()
 
 bool SCBE::createRuntime(const BuildParameters& buildParameters)
 {
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *perThread[ct][precompileIndex];
+    const int ct              = buildParameters.compileType;
+    const int precompileIndex = buildParameters.precompileIndex;
+    auto&     pp              = *perThread[ct][precompileIndex];
 
     if (precompileIndex == 0)
     {
@@ -81,7 +81,7 @@ bool SCBE::createRuntime(const BuildParameters& buildParameters)
         {
             offset                   = pp.globalSegment.reserve(32, nullptr, 2 * sizeof(uint64_t));
             pp.symCst_U64F64         = pp.getOrAddSymbol("swag_cast_u64f64", CPUSymbolKind::Custom, offset, pp.sectionIndexGS)->index;
-            auto addr                = pp.globalSegment.address(offset);
+            const auto addr          = pp.globalSegment.address(offset);
             *(uint32_t*) (addr + 0)  = 0x43300000;
             *(uint32_t*) (addr + 4)  = 0x45300000;
             *(uint32_t*) (addr + 8)  = 0x00000000;
@@ -118,9 +118,9 @@ bool SCBE::createRuntime(const BuildParameters& buildParameters)
 
 JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob)
 {
-    int  ct              = buildParameters.compileType;
-    int  precompileIndex = buildParameters.precompileIndex;
-    auto objFileType     = Backend::getObjType(g_CommandLine.target);
+    const int  ct              = buildParameters.compileType;
+    const int  precompileIndex = buildParameters.precompileIndex;
+    const auto objFileType     = Backend::getObjType(g_CommandLine.target);
 
     SWAG_ASSERT(module == buildParameters.module);
 
@@ -217,7 +217,7 @@ JobResult SCBE::prepareOutput(const BuildParameters& buildParameters, int stage,
     if (pp.pass == BackendPreCompilePass::GenerateObj)
     {
         pp.pass           = BackendPreCompilePass::Release;
-        auto job          = Allocator::alloc<SCBE_SaveObjJob>();
+        const auto job    = Allocator::alloc<SCBE_SaveObjJob>();
         job->module       = module;
         job->dependentJob = ownerJob;
         job->prepJob      = (ModulePrepOutputStage1Job*) ownerJob;
@@ -238,13 +238,13 @@ void SCBE::initFunction(CPUFunction* fct, uint32_t startAddress, uint32_t endAdd
 
 bool SCBE::saveObjFile(const BuildParameters& buildParameters)
 {
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *perThread[ct][precompileIndex];
+    const int ct              = buildParameters.compileType;
+    const int precompileIndex = buildParameters.precompileIndex;
+    auto&     pp              = *perThread[ct][precompileIndex];
 
     auto path = Backend::getCacheFolder(buildParameters);
     path.append(pp.filename.c_str());
-    auto filename = path;
+    const auto filename = path;
 
     FILE* f = nullptr;
     if (fopen_s(&f, filename.string().c_str(), "wb"))
@@ -253,7 +253,7 @@ bool SCBE::saveObjFile(const BuildParameters& buildParameters)
         return false;
     }
 
-    auto objFileType = Backend::getObjType(g_CommandLine.target);
+    const auto objFileType = Backend::getObjType(g_CommandLine.target);
     switch (objFileType)
     {
     case BackendObjType::Coff:

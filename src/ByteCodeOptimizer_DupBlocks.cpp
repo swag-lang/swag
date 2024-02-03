@@ -10,7 +10,7 @@ bool ByteCodeOptimizer::optimizePassDupBlocks(ByteCodeOptContext* context)
                     ByteCodeOptTreeNode* node = &context->tree[parseCxt.curNode];
                     parseCxt.curIp = node->end;
 
-                    uint64_t countBlock = (node->end - node->start) + 1;
+                    const uint64_t countBlock = (node->end - node->start) + 1;
 
                     // Only factorize terminal blocks
                     if (!ByteCode::isRet(node->end) && node->end->op != ByteCodeOp::Jump)
@@ -29,10 +29,10 @@ bool ByteCodeOptimizer::optimizePassDupBlocks(ByteCodeOptContext* context)
                     //if (ByteCode::isRet(node->end) && countBlock <= 2)
                     //    return;
 
-                    auto it = context->map32Node.find(node->crc);
+                    const auto it = context->map32Node.find(node->crc);
                     if (it != context->map32Node.end())
                     {
-                        bool same = context->bc->areSame(node->start, node->end + 1, it->second->start, it->second->end + 1, true, false);
+                        const bool same = context->bc->areSame(node->start, node->end + 1, it->second->start, it->second->end + 1, true, false);
                         if (same)
                         {
                             SET_OP(node->start, ByteCodeOp::Jump);

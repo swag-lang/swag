@@ -9,7 +9,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
 {
     for (size_t idx = 0; idx < context->jumps.size(); idx++)
     {
-        auto ip = context->jumps[idx];
+        const auto ip = context->jumps[idx];
         if (!ByteCode::isJump(ip))
             continue;
 
@@ -1470,7 +1470,7 @@ bool ByteCodeOptimizer::optimizePassJumps(ByteCodeOptContext* context)
                 destIp = ip + ip->b.s32 + 1;
                 if (destIp->op == ByteCodeOp::JumpIfZero64)
                 {
-                    auto destIp1 = destIp + destIp->b.s32 + 1;
+                    const auto destIp1 = destIp + destIp->b.s32 + 1;
                     if (destIp1 == ip + 1)
                     {
                         SET_OP(ip, ByteCodeOp::JumpIfNotZero64);
@@ -1841,27 +1841,27 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
         break;
     }
 
-    int64_t minJumpTableSize = 4;
-    int64_t maxJumpTableSize = UINT32_MAX;
-    int64_t minDensity       = 10;
+    const int64_t minJumpTableSize = 4;
+    const int64_t maxJumpTableSize = UINT32_MAX;
+    const int64_t minDensity       = 10;
 
     for (size_t idx = 0; idx < context->jumps.size(); idx++)
     {
-        auto ip = context->jumps[idx];
+        const auto ip = context->jumps[idx];
         if (!ByteCode::isJump(ip))
             continue;
 
-        auto orgValue0 = ip->a.u32;
+        const auto orgValue0 = ip->a.u32;
         auto orgValue1 = UINT32_MAX;
         if (ip[-1].op == ByteCodeOp::CopyRBtoRA64 && ip[-1].b.u32 == ip->a.u32 && !(ip->flags & BCI_START_STMT))
             orgValue1 = ip[-1].a.u32;
 
-        auto ipStart = ip;
+        const auto ipStart = ip;
         context->map6432.clear();
         context->vecInst.clear();
 
-        auto                 destIp    = ip;
-        ByteCodeInstruction* defaultIp = nullptr;
+        auto                       destIp    = ip;
+        const ByteCodeInstruction* defaultIp = nullptr;
         while (true)
         {
             defaultIp = destIp;
@@ -1873,7 +1873,7 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
                     break;
 
                 context->vecInst.push_back(destIp);
-                auto offset = (uint32_t) (destIp - ipStart) + destIp->b.s32;
+                const auto offset = (uint32_t) (destIp - ipStart) + destIp->b.s32;
                 switch (sizeOf)
                 {
                 case 1:
@@ -1901,7 +1901,7 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
                     break;
 
                 context->vecInst.push_back(destIp);
-                auto offset = (uint32_t) (destIp - ipStart);
+                const auto offset = (uint32_t) (destIp - ipStart);
                 switch (sizeOf)
                 {
                 case 1:
@@ -1927,7 +1927,7 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
 
         int64_t minValue = INT64_MAX;
         int64_t maxValue = 0;
-        for (auto inst : context->vecInst)
+        for (const auto inst : context->vecInst)
         {
             switch (sizeOf)
             {
@@ -1955,18 +1955,18 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
         // TargetLoweringBase::getMinimumJumpTableEntries()
         // TargetLoweringBase::isSuitableForJumpTable in llvm
 
-        auto range    = (maxValue - minValue) + 1;
-        auto numCases = (int64_t) context->vecInst.size();
+        const auto range    = (maxValue - minValue) + 1;
+        const auto numCases = (int64_t) context->vecInst.size();
         if (numCases < 4)
             continue;
-        bool canGen = range >= minJumpTableSize && range <= maxJumpTableSize && (numCases * 100 >= range * minDensity);
+        const bool canGen = range >= minJumpTableSize && range <= maxJumpTableSize && (numCases * 100 >= range * minDensity);
         if (!canGen)
             continue;
 
         // Create the jump table
         // First element is always the "default" one
-        uint8_t* addrCompiler        = nullptr;
-        auto     offsetTableCompiler = context->module->compilerSegment.reserve(((uint32_t) range + 1) * sizeof(uint32_t), &addrCompiler);
+        uint8_t*   addrCompiler        = nullptr;
+        const auto offsetTableCompiler = context->module->compilerSegment.reserve(((uint32_t) range + 1) * sizeof(uint32_t), &addrCompiler);
 
         int32_t* patchCompiler = (int32_t*) addrCompiler;
 
@@ -1975,9 +1975,9 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
             patchCompiler[i] = (int32_t) (defaultIp - ipStart) - 1;
 
         // Then register each value
-        for (auto& it : context->map6432)
+        for (const auto& it : context->map6432)
         {
-            int64_t v            = it.first - minValue;
+            const int64_t v            = it.first - minValue;
             patchCompiler[v + 1] = it.second;
         }
 

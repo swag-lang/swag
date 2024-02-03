@@ -42,7 +42,7 @@ void Concat::release()
     while (p)
     {
         Allocator::free(p->datas, p->capacity);
-        auto n = p->nextBucket;
+        const auto n = p->nextBucket;
         Allocator::free(p, sizeof(ConcatBucket));
         p = n;
     }
@@ -61,13 +61,13 @@ void Concat::align(uint32_t align)
 
 bool Concat::hasEnoughSpace(uint32_t numBytes)
 {
-    auto count = (int) (currentSP - lastBucket->datas);
+    const auto count = (int) (currentSP - lastBucket->datas);
     return lastBucket->capacity - count >= (int) numBytes;
 }
 
 void Concat::ensureSpace(int numBytes)
 {
-    auto count = (int) (currentSP - lastBucket->datas);
+    const auto count = (int) (currentSP - lastBucket->datas);
     if (count + numBytes <= lastBucket->capacity)
         return;
 
@@ -86,7 +86,7 @@ void Concat::ensureSpace(int numBytes)
     }
 
     // Need to allocate a new bucket
-    auto newBucket = Allocator::alloc<ConcatBucket>();
+    const auto newBucket = Allocator::alloc<ConcatBucket>();
     SWAG_ASSERT(firstBucket && lastBucket);
     lastBucket->nextBucket = newBucket;
     lastBucket             = newBucket;
@@ -205,7 +205,7 @@ void Concat::addPointer(void* v)
 
 void Concat::addString(const Utf8& v)
 {
-    auto len = (int) v.length();
+    const auto len = (int) v.length();
     ensureSpace(len);
     memcpy(currentSP, v.buffer, len);
     currentSP += len;
@@ -257,7 +257,7 @@ void Concat::addString(const char* v, int len)
 
 void Concat::addString(const char* v)
 {
-    auto len = (int) strlen(v);
+    const auto len = (int) strlen(v);
     ensureSpace(len);
     memcpy(currentSP, v, len);
     currentSP += len;
@@ -304,7 +304,7 @@ void Concat::addStringFormat(const char* format, ...)
     char    buf[4096];
     va_list args;
     va_start(args, format);
-    auto len = vsnprintf(buf, 4096, format, args);
+    const auto len = vsnprintf(buf, 4096, format, args);
     SWAG_ASSERT(len < 4095);
     va_end(args);
     addString(buf, len);
@@ -332,7 +332,7 @@ void Concat::addS32Str8(int value)
             *pz = '0';
         else
         {
-            auto id = value - (10 * (value / 10));
+            const auto id = value - (10 * (value / 10));
             value /= 10;
             *pz = (char) ('0' + id);
         }

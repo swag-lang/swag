@@ -251,7 +251,7 @@ void CommandLineParser::logArguments(const Utf8& cmd)
 
 void CommandLineParser::addArg(const char* commands, const char* longName, const char* shortName, CommandLineType type, void* address, const char* param, const char* help)
 {
-    auto arg = new CommandLineArgument{commands, type, address, param, help};
+    const auto arg = new CommandLineArgument{commands, type, address, param, help};
 
     if (longName)
         arg->longName = longName;
@@ -301,7 +301,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
             }
         }
 
-        auto arg = it->second;
+        const auto arg = it->second;
 
         // Be sure the argument is valid for the swag command
         if (!isArgValidFor(swagCmd, arg))

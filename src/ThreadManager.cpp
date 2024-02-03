@@ -115,7 +115,7 @@ void ThreadManager::addJobNoLock(Job* job)
     {
         if (!availableThreads.empty())
         {
-            auto thread = availableThreads.back();
+            const auto thread = availableThreads.back();
             availableThreads.pop_back();
             thread->notifyJob();
         }
@@ -143,7 +143,7 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
     job->wakeUpBy = nullptr;
 
     // Some jobs have been registered to be pushed
-    for (auto toRun : job->jobsToAdd)
+    for (const auto toRun : job->jobsToAdd)
     {
         toRun->wakeUpBy = job;
         addJobNoLock(toRun);
@@ -167,7 +167,7 @@ void ThreadManager::jobHasEnded(Job* job, JobResult result)
     if (result == JobResult::ReleaseJob)
     {
         ScopedLock lk2(job->mutexDependent);
-        for (auto toRun : job->dependentJobs.list)
+        for (const auto toRun : job->dependentJobs.list)
         {
             toRun->wakeUpBy = job;
             addJobNoLock(toRun);
@@ -244,7 +244,7 @@ static void exceptionMessage(Job* job, SWAG_LPEXCEPTION_POINTERS args)
 
     if (job->nodes.size())
     {
-        auto node = job->nodes.back();
+        const auto node = job->nodes.back();
         g_Log.printHeaderDot("current node", node->token.text, LogColor::White, LogColor::White, " ");
         if (node->sourceFile)
             g_Log.printHeaderDot("current location", Fmt("%s:%d:%d", node->sourceFile->path.string().c_str(), node->token.startLocation.line + 1, node->token.startLocation.column + 1), LogColor::White, LogColor::White, " ");
@@ -278,7 +278,7 @@ void ThreadManager::executeOneJob(Job* job)
 {
     SWAG_TRY
     {
-        auto result = job->execute();
+        const auto result = job->execute();
         jobHasEnded(job, result);
         if (result == JobResult::ReleaseJob)
             job->release();
@@ -303,7 +303,7 @@ void ThreadManager::clearOptionalJobs()
     {
         ScopedLock lk(mutexAdd);
 
-        for (auto p : queueJobsOpt.jobs)
+        for (const auto p : queueJobsOpt.jobs)
         {
             p->release();
         }
@@ -311,7 +311,7 @@ void ThreadManager::clearOptionalJobs()
 
         for (uint32_t i = 0; i < numWorkers; i++)
         {
-            for (auto p : queueJobsOpt.affinity[i])
+            for (const auto p : queueJobsOpt.affinity[i])
                 p->release();
             queueJobsOpt.affinity[i].clear();
         }
@@ -369,7 +369,7 @@ Job* ThreadManager::getJob(JobQueue& queue)
     }
 
     ScopedLock lk0(mutexAdd);
-    bool       jEmpty = queue.jobs.empty();
+    const bool jEmpty = queue.jobs.empty();
     if (jEmpty && !queue.affinityCount)
         return nullptr;
 
@@ -458,7 +458,7 @@ Job* ThreadManager::getJob()
 
     // Otherwise, steal a syntax job from a module if we can
     SharedLock lk(g_Workspace->mutexModules);
-    for (auto p : g_Workspace->modules)
+    for (const auto p : g_Workspace->modules)
     {
         if (!p->addedToBuild)
             continue;
@@ -476,7 +476,7 @@ Job* ThreadManager::getJob()
 
 Job* ThreadManager::getJob(JobThread* thread)
 {
-    auto job = getJob();
+    const auto job = getJob();
     if (job)
     {
         job->jobThread = thread;
@@ -494,7 +494,7 @@ Job* ThreadManager::getJob(JobThread* thread)
 
 bool ThreadManager::tryExecuteJob()
 {
-    auto job = getJob();
+    const auto job = getJob();
     if (!job)
         return false;
     executeOneJob(job);

@@ -66,7 +66,7 @@ Utf8 Semantic::getSpecialOpSignature(AstFuncDecl* node)
 
 bool Semantic::checkFuncPrototypeOpNumParams(SemanticContext* context, AstFuncDecl* node, AstNode* parameters, uint32_t numWanted, bool exact)
 {
-    auto numCur = parameters->childs.size();
+    const auto numCur = parameters->childs.size();
     if (exact && (numCur != numWanted))
     {
         if (numCur > numWanted)
@@ -84,7 +84,7 @@ bool Semantic::checkFuncPrototypeOpNumParams(SemanticContext* context, AstFuncDe
 
 bool Semantic::checkFuncPrototypeOpReturnType(SemanticContext* context, AstFuncDecl* node, TypeInfo* wanted)
 {
-    auto returnType = node->returnType->typeInfo->getConcreteAlias();
+    const auto returnType = node->returnType->typeInfo->getConcreteAlias();
 
     // Whatever except nothing
     if (wanted == nullptr)
@@ -109,7 +109,7 @@ bool Semantic::checkFuncPrototypeOpReturnType(SemanticContext* context, AstFuncD
 
 bool Semantic::checkFuncPrototypeOpParam(SemanticContext* context, AstFuncDecl* node, AstNode* parameters, uint32_t index, TypeInfo* wanted)
 {
-    auto typeParam = parameters->childs[index]->typeInfo->getConcreteAlias();
+    const auto typeParam = parameters->childs[index]->typeInfo->getConcreteAlias();
     if (!typeParam->isSame(wanted, CASTFLAG_CAST))
         return context->report({parameters->childs[index], Fmt(Err(Err0649), wanted->getDisplayNameC(), typeParam->getDisplayNameC())});
     return true;
@@ -120,56 +120,56 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
     if (!node->isSpecialFunctionName())
         return true;
 
-    auto& name      = node->token.text;
-    bool  isOpVisit = name.find(g_LangSpec->name_opVisit) == 0;
-    auto  parent    = node->findParent(AstNodeKind::Impl);
+    const auto& name      = node->token.text;
+    const bool  isOpVisit = name.find(g_LangSpec->name_opVisit) == 0;
+    const auto  parent    = node->findParent(AstNodeKind::Impl);
 
     // opVisit variant should be a name
     if (isOpVisit && name != g_LangSpec->name_opVisit && !SWAG_IS_ALPHA(name[7]))
     {
         auto start = node->tokenName.startLocation;
         start.column += 7;
-        Diagnostic diag{node->sourceFile, start, node->getTokenName().endLocation, Fmt(Err(Err0164), node->token.ctext() + 7)};
+        const Diagnostic diag{node->sourceFile, start, node->getTokenName().endLocation, Fmt(Err(Err0164), node->token.ctext() + 7)};
         return context->report(diag);
     }
 
     // Special function outside an impl block
     if (!parent)
     {
-        Diagnostic diag{node, node->getTokenName(), Fmt(Err(Err0509), node->token.ctext())};
+        const Diagnostic diag{node, node->getTokenName(), Fmt(Err(Err0509), node->token.ctext())};
         return context->report(diag);
     }
 
     if (node->ownerScope->kind == ScopeKind::Impl)
     {
-        Diagnostic diag{node, node->getTokenName(), Fmt(Err(Err0508), node->token.ctext())};
+        const Diagnostic diag{node, node->getTokenName(), Fmt(Err(Err0508), node->token.ctext())};
         return context->report(diag);
     }
 
     if ((node->ownerScope->owner->attributeFlags & ATTRIBUTE_PUBLIC) && !(node->attributeFlags & ATTRIBUTE_PUBLIC))
     {
-        Diagnostic diag{node, node->getTokenName(), Fmt(Err(Err0427), node->token.ctext())};
-        auto       note  = Diagnostic::note(Nte(Nte0106));
-        auto       note1 = Diagnostic::hereIs(node->findParent(TokenId::KwdInternal));
+        const Diagnostic diag{node, node->getTokenName(), Fmt(Err(Err0427), node->token.ctext())};
+        const auto       note  = Diagnostic::note(Nte(Nte0106));
+        const auto       note1 = Diagnostic::hereIs(node->findParent(TokenId::KwdInternal));
         return context->report(diag, note, note1);
     }
 
     if (!(node->ownerScope->owner->attributeFlags & ATTRIBUTE_PUBLIC) && (node->attributeFlags & ATTRIBUTE_PUBLIC))
     {
-        Diagnostic diag{node, node->getTokenName(), Fmt(Err(Err0428), node->token.ctext())};
-        auto       note  = Diagnostic::note(Nte(Nte0087));
-        auto       note1 = Diagnostic::hereIs(node->findParent(TokenId::KwdPublic));
+        const Diagnostic diag{node, node->getTokenName(), Fmt(Err(Err0428), node->token.ctext())};
+        const auto       note  = Diagnostic::note(Nte(Nte0087));
+        const auto       note1 = Diagnostic::hereIs(node->findParent(TokenId::KwdPublic));
         return context->report(diag, note, note1);
     }
 
     PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [node]()
                       { return getSpecialOpSignature(node); });
 
-    auto      parameters = node->parameters;
+    const auto      parameters = node->parameters;
     TypeInfo* typeStruct = nullptr;
     if (parent)
     {
-        auto implNode = CastAst<AstImpl>(parent, AstNodeKind::Impl);
+        const auto implNode = CastAst<AstImpl>(parent, AstNodeKind::Impl);
 
         // No need to raise an error, the semantic pass on the impl node will fail
         typeStruct = implNode->identifier->typeInfo;
@@ -178,10 +178,10 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
 
         // First parameter must be be struct
         SWAG_VERIFY(node->parameters, context->report({node, node->getTokenName(), Fmt(Err(Err0572), name.c_str())}));
-        auto firstGen  = node->parameters->childs.front();
-        auto firstType = firstGen->typeInfo;
+        auto       firstGen  = node->parameters->childs.front();
+        const auto firstType = firstGen->typeInfo;
         SWAG_VERIFY(firstType->isPointer(), context->report({firstGen, Fmt(Err(Err0397), name.c_str(), typeStruct->getDisplayNameC(), firstType->getDisplayNameC())}));
-        auto firstTypePtr = CastTypeInfo<TypeInfoPointer>(firstType, firstType->kind);
+        const auto firstTypePtr = CastTypeInfo<TypeInfoPointer>(firstType, firstType->kind);
         SWAG_VERIFY(firstTypePtr->pointedType->isSame(typeStruct, CASTFLAG_CAST), context->report({firstGen, Fmt(Err(Err0397), name.c_str(), typeStruct->getDisplayNameC(), firstType->getDisplayNameC())}));
     }
 
@@ -276,21 +276,21 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 2));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoVoid));
-        auto second = TypeManager::concretePtrRef(parameters->childs[1]->typeInfo);
+        const auto second = TypeManager::concretePtrRef(parameters->childs[1]->typeInfo);
         SWAG_VERIFY(!second->isSame(typeStruct, CASTFLAG_EXACT), context->report({parameters->childs[1], Fmt(Err(Err0390), name.c_str(), typeStruct->name.c_str())}));
     }
     else if (name == g_LangSpec->name_opAffectSuffix)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 2));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoVoid));
-        auto second = TypeManager::concretePtrRef(parameters->childs[1]->typeInfo);
+        const auto second = TypeManager::concretePtrRef(parameters->childs[1]->typeInfo);
         SWAG_VERIFY(!second->isSame(typeStruct, CASTFLAG_EXACT), context->report({parameters->childs[1], Fmt(Err(Err0390), name.c_str(), typeStruct->name.c_str())}));
     }
     else if (name == g_LangSpec->name_opSlice)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 3));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, nullptr));
-        auto returnType = node->returnType->typeInfo->getConcreteAlias();
+        const auto returnType = node->returnType->typeInfo->getConcreteAlias();
         if (!returnType->isString() && !returnType->isSlice())
             return context->report({node->returnType, Fmt(Err(Err0370), node->returnType->typeInfo->getDisplayNameC())});
         SWAG_CHECK(checkFuncPrototypeOpParam(context, node, parameters, 1, g_TypeMgr->typeInfoU64));
@@ -339,18 +339,18 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         searchList.push_back(g_LangSpec->name_opVisit);
 
         SemanticError::findClosestMatches(node->tokenName.text, searchList, best);
-        Utf8 appendMsg = SemanticError::findClosestMatchesMsg(node->tokenName.text, best);
+        const Utf8 appendMsg = SemanticError::findClosestMatchesMsg(node->tokenName.text, best);
 
-        Diagnostic diag{node, node->getTokenName(), Fmt(Err(Err0616), name.c_str())};
+        const Diagnostic diag{node, node->getTokenName(), Fmt(Err(Err0616), name.c_str())};
         if (appendMsg.empty())
         {
-            auto note = Diagnostic::note(Nte(Nte0058));
+            const auto note = Diagnostic::note(Nte(Nte0058));
             return context->report(diag, note);
         }
         else
         {
-            auto note  = Diagnostic::note(node, node->getTokenName(), appendMsg);
-            auto note1 = Diagnostic::note(Nte(Nte0058));
+            const auto note  = Diagnostic::note(node, node->getTokenName(), appendMsg);
+            const auto note1 = Diagnostic::note(Nte(Nte0058));
             return context->report(diag, note, note1);
         }
     }
@@ -360,9 +360,9 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
 
 bool Semantic::resolveUserOpCommutative(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, uint32_t ropFlags)
 {
-    auto node          = context->node;
-    auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
+    const auto node          = context->node;
+    const auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
+    const auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
 
     // Simple case if the right expression is not a struct (and left is)
     // Only one way of solving.
@@ -408,12 +408,12 @@ bool Semantic::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStr
 
     if (results.size() > 1)
     {
-        Diagnostic                diag{context->node, Fmt(Err(Err0020), name.c_str())};
+        const Diagnostic                diag{context->node, Fmt(Err(Err0020), name.c_str())};
         Vector<const Diagnostic*> notes;
         notes.push_back(Diagnostic::note(context->node, Fmt(Nte(Nte0144), name.c_str())));
-        for (auto& f : results)
+        for (const auto& f : results)
         {
-            auto note = Diagnostic::note(f.usingField->declNode, Fmt(Nte(Nte0009), name.c_str(), f.parentStruct->getDisplayNameC()));
+            const auto note = Diagnostic::note(f.usingField->declNode, Fmt(Nte(Nte0009), name.c_str(), f.parentStruct->getDisplayNameC()));
             notes.push_back(note);
         }
 
@@ -431,18 +431,18 @@ bool Semantic::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStr
     if (leftStruct->fromGeneric)
         leftStruct = leftStruct->fromGeneric;
 
-    auto symbol = leftStruct->scope->symTable.find(name);
+    const auto symbol = leftStruct->scope->symTable.find(name);
     if (symbol)
         result.push_back({symbol, leftStruct, parentField});
 
     if (!symbol && name != g_LangSpec->name_opPostCopy && name != g_LangSpec->name_opPostMove && name != g_LangSpec->name_opDrop)
     {
         // Struct in using hierarchy
-        for (auto field : leftStruct->fields)
+        for (const auto field : leftStruct->fields)
         {
             if (!(field->flags & TYPEINFOPARAM_HAS_USING))
                 continue;
-            auto typeS = field->typeInfo->getStructOrPointedStruct();
+            const auto typeS = field->typeInfo->getStructOrPointedStruct();
             if (!typeS)
                 continue;
 
@@ -464,8 +464,8 @@ bool Semantic::hasUserOp(SemanticContext* context, const Utf8& name, AstNode* le
         leftType = CastTypeInfo<TypeInfoArray>(leftType, TypeInfoKind::Array)->finalType;
     else if (leftType->isPointer())
         leftType = CastTypeInfo<TypeInfoPointer>(leftType, TypeInfoKind::Pointer)->pointedType;
-    leftType        = leftType->getConcreteAlias();
-    auto leftStruct = CastTypeInfo<TypeInfoStruct>(leftType, TypeInfoKind::Struct);
+    leftType              = leftType->getConcreteAlias();
+    const auto leftStruct = CastTypeInfo<TypeInfoStruct>(leftType, TypeInfoKind::Struct);
     return hasUserOp(context, name, leftStruct, result);
 }
 
@@ -475,7 +475,7 @@ bool Semantic::waitUserOp(SemanticContext* context, const Utf8& name, AstNode* l
     if (!*result)
         return true;
 
-    auto       symbol = *result;
+    const auto       symbol = *result;
     ScopedLock lkn(symbol->mutex);
     if (symbol->cptOverloads)
         Semantic::waitSymbolNoLock(context->baseJob, symbol);
@@ -514,8 +514,8 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
             YIELD();
 
             Diagnostic diag{context->node, context->node->token, Fmt(Err(Err0342), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC())};
-            auto       note0 = Diagnostic::note(right->childs.front(), Fmt(Nte(Nte0166), suffix.c_str()));
-            auto       note1 = Diagnostic::hereIs(leftTypeInfo->declNode);
+            const auto note0 = Diagnostic::note(right->childs.front(), Fmt(Nte(Nte0166), suffix.c_str()));
+            const auto note1 = Diagnostic::hereIs(leftTypeInfo->declNode);
             diag.hint        = Fmt(Nte(Nte0144), g_LangSpec->name_opAffectSuffix.c_str());
             diag.addRange(left->token, Diagnostic::isType(leftTypeInfo));
             return context->report(diag, note0, note1);
@@ -540,8 +540,8 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
             Diagnostic diag{right, Fmt(Err(Err0642), leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC())};
             diag.hint = Diagnostic::isType(rightTypeInfo);
             diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-            auto note  = Diagnostic::note(context->node, context->node->token, Fmt(Nte(Nte0144), g_LangSpec->name_opAffect.c_str()));
-            auto note1 = Diagnostic::hereIs(leftTypeInfo->declNode->resolvedSymbolOverload);
+            const auto note  = Diagnostic::note(context->node, context->node->token, Fmt(Nte(Nte0144), g_LangSpec->name_opAffect.c_str()));
+            const auto note1 = Diagnostic::hereIs(leftTypeInfo->declNode->resolvedSymbolOverload);
             return context->report(diag, note, note1);
         }
 

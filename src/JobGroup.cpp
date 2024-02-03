@@ -11,7 +11,7 @@ Job* JobGroup::pickJob()
         return nullptr;
     }
 
-    auto job = jobs.back();
+    const auto job = jobs.back();
     jobs.pop_back();
     job->jobGroup = this;
     runningJobs++;

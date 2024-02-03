@@ -4,7 +4,7 @@
 
 void ByteCodeRun::executeLeftShift(Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits, bool isSigned)
 {
-    auto shift = rright.u32;
+    const auto shift = rright.u32;
     if (shift >= numBits)
         rdest->u64 = 0;
     else
@@ -13,7 +13,7 @@ void ByteCodeRun::executeLeftShift(Register* rdest, const Register& rleft, const
 
 void ByteCodeRun::executeRightShift(Register* rdest, const Register& rleft, const Register& rright, uint32_t numBits, bool isSigned)
 {
-    auto shift = rright.u32;
+    const auto shift = rright.u32;
     if (shift >= numBits)
     {
         if (isSigned)

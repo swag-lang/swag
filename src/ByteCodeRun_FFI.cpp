@@ -8,7 +8,7 @@
 
 void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, ByteCodeInstruction* ip)
 {
-    auto nodeFunc = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
+    const auto nodeFunc = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
     return ffiGetFuncAddress(context, nodeFunc);
 }
 
@@ -16,18 +16,18 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
 {
     SWAG_ASSERT(nodeFunc->resolvedSymbolOverload);
     SWAG_ASSERT(nodeFunc->resolvedSymbolOverload->typeInfo);
-    auto  typeFunc = CastTypeInfo<TypeInfoFuncAttr>(nodeFunc->resolvedSymbolOverload->typeInfo, TypeInfoKind::FuncAttr);
-    auto& funcName = nodeFunc->token.text;
+    const auto  typeFunc = CastTypeInfo<TypeInfoFuncAttr>(nodeFunc->resolvedSymbolOverload->typeInfo, TypeInfoKind::FuncAttr);
+    const auto& funcName = nodeFunc->token.text;
 
     // Load module if specified
-    auto moduleName = ModuleManager::getForeignModuleName(nodeFunc);
+    const auto moduleName = ModuleManager::getForeignModuleName(nodeFunc);
     if (!g_ModuleMgr->loadModule(moduleName))
     {
         // Perhaps the module is dependent on another module, so we need to be sure that our dependencies are
         // all loaded : load all, from last to first (dependencies are added in reverse order, latest first)
         SWAG_ASSERT(context->sourceFile);
-        auto module = context->sourceFile->module;
-        for (auto& dep : module->moduleDependencies)
+        const auto module = context->sourceFile->module;
+        for (const auto& dep : module->moduleDependencies)
             g_ModuleMgr->loadModule(dep->name);
 
         // Then try again
@@ -60,8 +60,8 @@ void* ByteCodeRun::ffiGetFuncAddress(JobContext* context, AstFuncDecl* nodeFunc)
         }
     }
 
-    void* fn           = nullptr;
-    auto  foreignValue = typeFunc->attributes.getValue(g_LangSpec->name_Swag_Foreign, g_LangSpec->name_function);
+    void*      fn           = nullptr;
+    const auto foreignValue = typeFunc->attributes.getValue(g_LangSpec->name_Swag_Foreign, g_LangSpec->name_function);
     if (foreignValue && !foreignValue->text.empty())
         fn = g_ModuleMgr->getFnPointer(moduleName, foreignValue->text);
     else
@@ -88,7 +88,7 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip)
             return;
     }
 
-    auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::FuncAttr);
+    const auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>((TypeInfo*) ip->b.pointer, TypeInfoKind::FuncAttr);
     ffiCall(context, ip, (void*) ip->d.pointer, typeInfoFunc, ip->numVariadicParams);
 }
 

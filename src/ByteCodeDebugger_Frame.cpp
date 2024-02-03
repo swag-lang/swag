@@ -23,11 +23,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrame(ByteCodeRunContext* context, const
         return BcDbgCommandResult::Continue;
     }
 
-    uint32_t off      = atoi(arg.split[1].c_str());
-    uint32_t maxLevel = g_ByteCodeStackTrace->maxLevel(context);
-    off               = min(off, maxLevel);
+    uint32_t       off      = atoi(arg.split[1].c_str());
+    const uint32_t maxLevel = g_ByteCodeStackTrace->maxLevel(context);
+    off                     = min(off, maxLevel);
 
-    auto oldIndex                  = context->debugStackFrameOffset;
+    const auto oldIndex                  = context->debugStackFrameOffset;
     context->debugStackFrameOffset = maxLevel - off;
     g_ByteCodeDebugger.computeDebugContext(context);
     if (!g_ByteCodeDebugger.debugCxtIp)
@@ -52,14 +52,14 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameUp(ByteCodeRunContext* context, con
     uint32_t off = 1;
     if (arg.split.size() == 2)
         off = atoi(arg.split[1].c_str());
-    uint32_t maxLevel = g_ByteCodeStackTrace->maxLevel(context);
+    const uint32_t maxLevel = g_ByteCodeStackTrace->maxLevel(context);
     if (context->debugStackFrameOffset == maxLevel)
     {
         g_ByteCodeDebugger.printCmdError("initial frame selected; you cannot go up");
         return BcDbgCommandResult::Continue;
     }
 
-    auto oldIndex = context->debugStackFrameOffset;
+    const auto oldIndex = context->debugStackFrameOffset;
     context->debugStackFrameOffset += off;
     g_ByteCodeDebugger.computeDebugContext(context);
     if (!g_ByteCodeDebugger.debugCxtIp)
@@ -90,7 +90,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameDown(ByteCodeRunContext* context, c
         return BcDbgCommandResult::Continue;
     }
 
-    auto oldIndex = context->debugStackFrameOffset;
+    const auto oldIndex = context->debugStackFrameOffset;
     context->debugStackFrameOffset -= min(context->debugStackFrameOffset, off);
     g_ByteCodeDebugger.computeDebugContext(context);
     if (!g_ByteCodeDebugger.debugCxtIp)

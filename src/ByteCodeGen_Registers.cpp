@@ -51,7 +51,7 @@ uint32_t ByteCodeGen::reserveRegisterRC(ByteCodeGenContext* context, const Symbo
             SharedLock lk(overload->symbol->mutex);
             if (overload->flags & OVERLOAD_HINT_REG)
             {
-                auto it = context->bc->availableRegistersRC.find(overload->symRegisters[0]);
+                const auto it = context->bc->availableRegistersRC.find(overload->symRegisters[0]);
                 if (it != -1)
                 {
                     context->bc->availableRegistersRC.erase_unordered(it);
@@ -60,7 +60,7 @@ uint32_t ByteCodeGen::reserveRegisterRC(ByteCodeGenContext* context, const Symbo
             }
         }
 
-        auto result = context->bc->availableRegistersRC.back();
+        const auto result = context->bc->availableRegistersRC.back();
         context->bc->availableRegistersRC.pop_back();
         return result;
     }
@@ -72,7 +72,7 @@ void ByteCodeGen::reserveLinearRegisterRC2(ByteCodeGenContext* context, Register
 {
     freeRegisterRC(context, rc);
 
-    auto size = context->bc->availableRegistersRC.size();
+    const auto size = context->bc->availableRegistersRC.size();
     if (size > 1)
     {
         sortRegistersRC(context);

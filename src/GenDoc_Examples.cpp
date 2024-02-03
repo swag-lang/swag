@@ -95,7 +95,7 @@ bool GenDoc::generateExamples()
 
     // Parse all files
     tocLastTitleLevel = 1;
-    for (auto file : module->files)
+    for (const auto file : module->files)
     {
         Path path = file->name;
         path.replace_extension("");

@@ -16,7 +16,7 @@ thread_local Utf8 g_SilentErrorMsg;
 static void computeAutoRemarks(const Vector<Diagnostic*>& notes)
 {
     Set<void*> doneGenParamsRemarks;
-    for (auto note : notes)
+    for (const auto note : notes)
     {
         if (!note->display)
             continue;
@@ -24,7 +24,7 @@ static void computeAutoRemarks(const Vector<Diagnostic*>& notes)
         // It can happen that the location has nothing to do with the node where the error occurs
         // (because of @location in a @compilererror for example).
         // So hack to avoid displaying generic informations not relevant.
-        auto genCheckNode = note->sourceNode ? note->sourceNode : note->contextNode;
+        const auto genCheckNode = note->sourceNode ? note->sourceNode : note->contextNode;
         if (genCheckNode && genCheckNode->sourceFile == note->sourceFile)
         {
             // This is a generic instance. Display type replacements.
@@ -33,7 +33,7 @@ static void computeAutoRemarks(const Vector<Diagnostic*>& notes)
                 !doneGenParamsRemarks.contains(genCheckNode->ownerFct->typeInfo))
             {
                 doneGenParamsRemarks.insert(genCheckNode->ownerFct->typeInfo);
-                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(genCheckNode->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+                const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(genCheckNode->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
                 auto remarks  = Generic::computeGenericParametersReplacement(typeFunc->replaceTypes);
                 if (!remarks.empty())
                     note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
@@ -45,7 +45,7 @@ static void computeAutoRemarks(const Vector<Diagnostic*>& notes)
                 !doneGenParamsRemarks.contains(genCheckNode->ownerStructScope->owner->typeInfo))
             {
                 doneGenParamsRemarks.insert(genCheckNode->ownerStructScope->owner->typeInfo);
-                auto typeStruct = CastTypeInfo<TypeInfoStruct>(genCheckNode->ownerStructScope->owner->typeInfo, TypeInfoKind::Struct);
+                const auto typeStruct = CastTypeInfo<TypeInfoStruct>(genCheckNode->ownerStructScope->owner->typeInfo, TypeInfoKind::Struct);
                 auto remarks    = Generic::computeGenericParametersReplacement(typeStruct->replaceTypes);
                 if (!remarks.empty())
                     note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
@@ -56,7 +56,7 @@ static void computeAutoRemarks(const Vector<Diagnostic*>& notes)
                 !doneGenParamsRemarks.contains(genCheckNode->typeInfo))
             {
                 doneGenParamsRemarks.insert(genCheckNode->typeInfo);
-                auto typeStruct = CastTypeInfo<TypeInfoStruct>(genCheckNode->typeInfo, TypeInfoKind::Struct);
+                const auto typeStruct = CastTypeInfo<TypeInfoStruct>(genCheckNode->typeInfo, TypeInfoKind::Struct);
                 auto remarks    = Generic::computeGenericParametersReplacement(typeStruct->replaceTypes);
                 if (!remarks.empty())
                     note->autoRemarks.insert(note->autoRemarks.end(), remarks.begin(), remarks.end());
@@ -80,7 +80,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
 
     // Error message can have different parts.
     // We generate hint and notes...
-    auto         err = notes[0];
+    const auto         err = notes[0];
     Vector<Utf8> parts;
     Diagnostic::tokenizeError(err->textMsg, parts);
     if (parts.size() > 1)
@@ -89,7 +89,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
 
         if (!err->hint.empty())
         {
-            auto newNote = Diagnostic::note(err->sourceFile, err->startLocation, err->endLocation, err->hint);
+            const auto newNote = Diagnostic::note(err->sourceFile, err->startLocation, err->endLocation, err->hint);
             if (notes.size() == 1)
                 notes.push_back(newNote);
             else
@@ -107,7 +107,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
 
     computeAutoRemarks(notes);
 
-    for (auto note : notes)
+    for (const auto note : notes)
     {
         if (!note->display)
             continue;
@@ -128,7 +128,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
     // Move ranges from note to note if they share the same line of code, and they do not overlap
     for (int inote = 0; inote < (int) notes.size(); inote++)
     {
-        auto note = notes[inote];
+        const auto note = notes[inote];
         if (!note->display || !note->canBeMerged)
             continue;
 
@@ -138,7 +138,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
 
         for (int inote1 = 0; inote1 < (int) notes.size(); inote1++)
         {
-            auto note1 = notes[inote1];
+            const auto note1 = notes[inote1];
             if (note == note1)
                 continue;
             if (!note1->display)
@@ -211,7 +211,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
     // No need to repeat the same source file line reference
     for (int inote = 0; inote < (int) notes.size(); inote++)
     {
-        auto note = notes[inote];
+        const auto note = notes[inote];
         if (!note->display)
             continue;
         if (!note->showFileName)
@@ -223,7 +223,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
 
         for (int inote1 = inote + 1; inote1 < (int) notes.size(); inote1++)
         {
-            auto note1 = notes[inote1];
+            const auto note1 = notes[inote1];
             if (!note1->display || !note1->hasLocation)
                 continue;
 
@@ -239,9 +239,9 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
 
     // Compute the space needed to display all line numbers
     int lineCodeMaxDigits = 0;
-    for (auto note : notes)
+    for (const auto note : notes)
         lineCodeMaxDigits = max(lineCodeMaxDigits, note->lineCodeNumDigits);
-    for (auto note : notes)
+    for (const auto note : notes)
         note->lineCodeMaxDigits = lineCodeMaxDigits;
 }
 
@@ -249,7 +249,7 @@ static void reportInternal(const Diagnostic& diag, const Vector<const Diagnostic
 {
     if (g_CommandLine.errorOneLine)
     {
-        auto c = new Diagnostic{diag};
+        const auto c = new Diagnostic{diag};
         c->reportCompact();
         g_Log.setDefaultColor();
         return;
@@ -257,16 +257,16 @@ static void reportInternal(const Diagnostic& diag, const Vector<const Diagnostic
 
     // Make a copy
     Vector<Diagnostic*> notes;
-    auto                c = new Diagnostic{diag};
+    const auto          c = new Diagnostic{diag};
     notes.push_back(c);
-    for (auto n : inNotes)
+    for (const auto n : inNotes)
         notes.push_back(new Diagnostic{*n});
 
     cleanNotes(notes);
     g_Log.eol();
 
     bool marginBefore = true;
-    for (auto n : notes)
+    for (const auto n : notes)
     {
         if (!n->display)
             continue;
@@ -293,16 +293,16 @@ static void reportInternal(const Diagnostic& diag, const Vector<const Diagnostic
 
 static bool dealWithWarning(AstAttrUse* attrUse, const Utf8& warnMsg, Diagnostic& diag, Vector<const Diagnostic*>& inNotes, bool& retResult)
 {
-    auto attrWarn = attrUse->attributes.getAttribute(g_LangSpec->name_Swag_Warn);
+    const auto attrWarn = attrUse->attributes.getAttribute(g_LangSpec->name_Swag_Warn);
     if (!attrWarn)
         return false;
 
-    auto what    = attrWarn->getValue(g_LangSpec->name_what);
-    auto level   = attrWarn->getValue(g_LangSpec->name_level);
-    auto whatVal = what->text;
+    const auto what    = attrWarn->getValue(g_LangSpec->name_what);
+    const auto level   = attrWarn->getValue(g_LangSpec->name_level);
+    auto       whatVal = what->text;
     whatVal.trim();
 
-    auto l = (WarnLevel) level->reg.u8;
+    const auto l = (WarnLevel) level->reg.u8;
     if (whatVal.empty())
     {
         if (l == WarnLevel::Disable)
@@ -354,10 +354,10 @@ static bool dealWithWarning(Diagnostic& diag, Vector<const Diagnostic*>& notes)
         return true;
 
     // No warning if it's in a dependency
-    auto sourceFile = Report::getDiagFile(diag);
+    const auto sourceFile = Report::getDiagFile(diag);
     if (sourceFile->imported && sourceFile->imported->kind == ModuleKind::Dependency)
         return false;
-    auto module = sourceFile->module;
+    const auto module = sourceFile->module;
     if (module->kind == ModuleKind::Dependency)
         return false;
 
@@ -380,7 +380,7 @@ static bool dealWithWarning(Diagnostic& diag, Vector<const Diagnostic*>& notes)
     {
         if (node->kind == AstNodeKind::AttrUse)
         {
-            auto attrUse   = CastAst<AstAttrUse>(node, AstNodeKind::AttrUse);
+            const auto attrUse   = CastAst<AstAttrUse>(node, AstNodeKind::AttrUse);
             bool retResult = true;
             if (dealWithWarning(attrUse, warnMsg, diag, notes, retResult))
                 return retResult;
@@ -486,16 +486,16 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
 
     ScopedLock lock(g_Log.mutexAccess);
 
-    auto copyDiag  = new Diagnostic{inDiag};
+    const auto copyDiag  = new Diagnostic{inDiag};
     auto copyNotes = inNotes;
 
     if (!dealWithWarning(*copyDiag, copyNotes))
         return true;
 
-    auto& diag  = *copyDiag;
-    auto& notes = copyNotes;
+    auto&       diag  = *copyDiag;
+    const auto& notes = copyNotes;
 
-    auto sourceFile = Report::getDiagFile(diag);
+    const auto sourceFile = Report::getDiagFile(diag);
     SaveGenJob::flush(sourceFile->module);
 
     switch (diag.errorLevel)
@@ -600,12 +600,12 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
 
         if (g_CommandLine.dbgCallStack)
         {
-            SwagContext* context = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
+            const SwagContext* context = (SwagContext*) OS::tlsGetValue(g_TlsContextId);
 
             // Bytecode callstack
             if (context && (context->flags & (uint64_t) ContextFlags::ByteCode))
             {
-                auto callStack = g_ByteCodeStackTrace->log(runContext);
+                const auto callStack = g_ByteCodeStackTrace->log(runContext);
                 if (!callStack.empty())
                 {
                     g_Log.print("[bytecode callstack]\n", LogColor::Cyan);
@@ -622,7 +622,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
                 Utf8 str;
                 for (int i = context->traceIndex - 1; i >= 0; i--)
                 {
-                    auto sourceFile1 = g_Workspace->findFile((const char*) context->traces[i]->fileName.buffer);
+                    const auto sourceFile1 = g_Workspace->findFile((const char*) context->traces[i]->fileName.buffer);
                     if (sourceFile1)
                     {
                         str += Log::colorToVTS(LogColor::DarkYellow);
@@ -646,7 +646,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
             // Runtime callstack
             if (runContext)
             {
-                auto nativeStack = OS::captureStack();
+                const auto nativeStack = OS::captureStack();
                 if (!nativeStack.empty())
                 {
                     g_Log.print("[runtime callstack]\n", LogColor::Cyan);
@@ -690,7 +690,7 @@ SourceFile* Report::getDiagFile(const Diagnostic& diag)
 
 bool Report::report(const Diagnostic& diag, const Vector<const Diagnostic*>& notes, ByteCodeRunContext* runContext)
 {
-    bool result = reportInternal(diag, notes, runContext);
+    const bool result = reportInternal(diag, notes, runContext);
     return result;
 }
 
@@ -734,7 +734,7 @@ void Report::error(const Utf8& msg)
 void Report::errorOS(const Utf8& msg)
 {
     g_Log.lock();
-    auto str = OS::getLastErrorAsString();
+    const auto str = OS::getLastErrorAsString();
     g_Log.setColor(LogColor::Red);
     g_Log.print(Diagnostic::oneLiner(msg));
     if (!str.empty())
@@ -750,7 +750,7 @@ void Report::errorOS(const Utf8& msg)
 
 bool Report::internalError(AstNode* node, const char* msg)
 {
-    Diagnostic diag{node, Fmt("[compiler internal] %s", msg)};
+    const Diagnostic diag{node, Fmt("[compiler internal] %s", msg)};
     report(diag);
     return false;
 }

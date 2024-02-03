@@ -12,8 +12,8 @@
 
 bool Semantic::resolveMove(SemanticContext* context)
 {
-    auto node  = context->node;
-    auto right = node->childs[0];
+    const auto node  = context->node;
+    const auto right = node->childs[0];
     SWAG_CHECK(checkIsConcrete(context, right));
     node->inheritOrFlag(right, AST_NO_LEFT_DROP | AST_FORCE_MOVE | AST_NO_RIGHT_DROP);
     node->typeInfo    = right->typeInfo;
@@ -25,10 +25,10 @@ bool Semantic::resolveMove(SemanticContext* context)
     {
         if ((right->typeInfo->isStruct() && right->typeInfo->isConst()) || right->typeInfo->isConstPointerRef())
         {
-            Diagnostic diag{right, Fmt(Err(Err0327), right->typeInfo->getDisplayNameC())};
+            const Diagnostic diag{right, Fmt(Err(Err0327), right->typeInfo->getDisplayNameC())};
             if (right->resolvedSymbolOverload && right->resolvedSymbolOverload->flags & OVERLOAD_VAR_FUNC_PARAM)
             {
-                auto note = Diagnostic::note(Nte(Nte0059));
+                const auto note = Diagnostic::note(Nte(Nte0059));
                 return context->report(diag, note);
             }
 
@@ -44,15 +44,15 @@ bool Semantic::resolveMove(SemanticContext* context)
 // This will launch the evaluation of the lambda now that we can deduce some missing types (like parameters)
 bool Semantic::resolveAfterKnownType(SemanticContext* context)
 {
-    auto node     = context->node;
-    auto typeInfo = TypeManager::concreteType(node->typeInfo);
+    const auto node     = context->node;
+    const auto typeInfo = TypeManager::concreteType(node->typeInfo);
     if (!typeInfo->isLambdaClosure() && !typeInfo->isStruct())
         return true;
 
-    auto findMpl = node->parent->findChild(AstNodeKind::MakePointerLambda);
+    const auto findMpl = node->parent->findChild(AstNodeKind::MakePointerLambda);
     if (!findMpl)
         return true;
-    auto mpl = CastAst<AstMakePointer>(findMpl, AstNodeKind::MakePointerLambda);
+    const auto mpl = CastAst<AstMakePointer>(findMpl, AstNodeKind::MakePointerLambda);
     if (!(mpl->specFlags & AstMakePointer::SPECFLAG_DEP_TYPE))
         return true;
 
@@ -61,7 +61,7 @@ bool Semantic::resolveAfterKnownType(SemanticContext* context)
     {
         Diagnostic diag{mpl, Err(Err0641)};
         diag.addRange(node, Diagnostic::isType(node->typeInfo));
-        auto note = Diagnostic::note(Nte(Nte0191));
+        const auto note = Diagnostic::note(Nte(Nte0191));
         return context->report(diag, note);
     }
 
@@ -99,24 +99,24 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, AstNo
         return true;
     }
 
-    Utf8        hint;
-    auto        node    = context->node;
-    Diagnostic* note    = nullptr;
-    auto        orgLeft = left;
+    Utf8              hint;
+    const auto        node    = context->node;
+    const Diagnostic* note    = nullptr;
+    const auto        orgLeft = left;
 
     if (left->kind == AstNodeKind::IdentifierRef)
     {
         // If not, try to find the culprit type
         for (int i = left->childs.count - 1; i >= 0; i--)
         {
-            auto child     = left->childs[i];
-            auto typeChild = TypeManager::concreteType(child->typeInfo, CONCRETE_FORCEALIAS);
+            const auto child     = left->childs[i];
+            const auto typeChild = TypeManager::concreteType(child->typeInfo, CONCRETE_FORCEALIAS);
             if (!typeChild)
                 continue;
 
             if (child->kind == AstNodeKind::ArrayPointerIndex)
             {
-                auto arr = CastAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
+                const auto arr = CastAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
                 if (arr->array->typeInfo->isString())
                 {
                     left = arr->array;
@@ -140,11 +140,11 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, AstNo
 
         if (left->kind == AstNodeKind::Identifier && left->specFlags & (AstIdentifier::SPECFLAG_FROM_USING | AstIdentifier::SPECFLAG_FROM_WITH))
         {
-            auto leftId = CastAst<AstIdentifier>(left, AstNodeKind::Identifier);
+            const auto leftId = CastAst<AstIdentifier>(left, AstNodeKind::Identifier);
             hint        = "this is equivalent to [[";
             for (size_t ic = 0; ic < orgLeft->childs.size(); ic++)
             {
-                auto c = orgLeft->childs[ic];
+                const auto c = orgLeft->childs[ic];
                 if (ic)
                     hint += ".";
                 hint += c->token.text;
@@ -169,7 +169,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, AstNo
         {
             Diagnostic diag{node, node->token, Fmt(Err(Err0106), left->resolvedSymbolName->name.c_str())};
             diag.addRange(left, Diagnostic::isType(left->typeInfo));
-            auto note1 = Diagnostic::note(Nte(Nte0059));
+            const auto note1 = Diagnostic::note(Nte(Nte0059));
             return context->report(diag, note, note1);
         }
         else if (left->typeInfo->isConstPointerRef())
@@ -223,10 +223,10 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, AstNo
 
 bool Semantic::resolveAffect(SemanticContext* context)
 {
-    auto node    = CastAst<AstOp>(context->node, AstNodeKind::AffectOp);
-    auto left    = node->childs[0];
-    auto right   = node->childs[1];
-    auto tokenId = node->tokenId;
+    auto       node    = CastAst<AstOp>(context->node, AstNodeKind::AffectOp);
+    auto       left    = node->childs[0];
+    auto       right   = node->childs[1];
+    const auto tokenId = node->tokenId;
 
     SWAG_CHECK(checkIsConcrete(context, left));
     SWAG_CHECK(checkIsConcreteOrType(context, right));
@@ -248,7 +248,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
     bool forEnumFlags = false;
     if (node->tokenId != TokenId::SymEqual)
     {
-        auto leftReal = TypeManager::concreteType(leftTypeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
+        const auto leftReal = TypeManager::concreteType(leftTypeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
         if (leftReal->kind != TypeInfoKind::Struct)
         {
             if (leftTypeInfo->getConcreteAlias()->isEnum() || rightTypeInfo->getConcreteAlias()->isEnum())
@@ -275,7 +275,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
         PushErrCxtStep ec(context, right, ErrCxtStepKind::Note, [rightTypeInfo]()
                           { return Diagnostic::isType(rightTypeInfo); });
 
-        auto leftConcrete = TypeManager::concreteType(leftTypeInfo);
+        const auto leftConcrete = TypeManager::concreteType(leftTypeInfo);
         if (right->flags & AST_NO_LEFT_DROP)
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CASTFLAG_CAST), context->report({node, node->token, Fmt(Err(Err0651), g_LangSpec->name_nodrop.c_str(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
         if (right->flags & AST_NO_RIGHT_DROP)
@@ -296,8 +296,8 @@ bool Semantic::resolveAffect(SemanticContext* context)
     AstArrayPointerIndex* arrayNode = nullptr;
     if (left->kind == AstNodeKind::IdentifierRef && left->childs.back()->kind == AstNodeKind::ArrayPointerIndex)
     {
-        arrayNode      = CastAst<AstArrayPointerIndex>(left->childs.back(), AstNodeKind::ArrayPointerIndex);
-        auto arrayType = TypeManager::concretePtrRefType(arrayNode->array->typeInfo);
+        arrayNode            = CastAst<AstArrayPointerIndex>(left->childs.back(), AstNodeKind::ArrayPointerIndex);
+        const auto arrayType = TypeManager::concretePtrRefType(arrayNode->array->typeInfo);
         if (!arrayType->isStruct())
             arrayNode = nullptr;
 
@@ -318,8 +318,8 @@ bool Semantic::resolveAffect(SemanticContext* context)
 
     node->typeInfo = g_TypeMgr->typeInfoBool;
 
-    bool forStruct = leftTypeInfo->isStruct();
-    bool forTuple  = leftTypeInfo->isTuple();
+    const bool forStruct = leftTypeInfo->isStruct();
+    const bool forTuple  = leftTypeInfo->isTuple();
 
     SWAG_CHECK(evaluateConstExpression(context, right));
     YIELD();
@@ -338,8 +338,8 @@ bool Semantic::resolveAffect(SemanticContext* context)
     // For tuples, we can only affect
     else if (forTuple)
     {
-        Diagnostic diag{node, node->token, Fmt(Err(Err0350), node->token.ctext())};
-        auto       note = Diagnostic::note(left, Diagnostic::isType(leftTypeInfo));
+        const Diagnostic diag{node, node->token, Fmt(Err(Err0350), node->token.ctext())};
+        const auto       note = Diagnostic::note(left, Diagnostic::isType(leftTypeInfo));
         return context->report(diag, note);
     }
 
@@ -396,7 +396,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                         diag.hint = Diagnostic::isType(rightTypeInfo);
                         diag.addRange(left, Diagnostic::isType(leftTypeInfo));
 
-                        auto note = Diagnostic::note(node, node->token, Fmt(Nte(Nte0143), "opIndexAffect", rightTypeInfo->getDisplayNameC()));
+                        const auto note = Diagnostic::note(node, node->token, Fmt(Nte(Nte0143), "opIndexAffect", rightTypeInfo->getDisplayNameC()));
                         return context->report(diag, note);
                     }
 
@@ -522,7 +522,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
             {
                 Diagnostic diag{node, node->token, Err(Err0359)};
                 diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-                auto note = Diagnostic::note(Nte(Nte0103));
+                const auto note = Diagnostic::note(Nte(Nte0103));
                 return context->report(diag, note);
             }
 

@@ -11,9 +11,9 @@ void ByteCode::printSourceCode(const ByteCodePrintOptions& options, ByteCodeInst
         return;
 
     // Print source code
-    bool forDbg = options.curIp != nullptr;
-    auto loc    = ByteCode::getLocation(this, ip, true);
-    auto loc1   = ByteCode::getLocation(this, ip);
+    const bool forDbg = options.curIp != nullptr;
+    const auto loc    = ByteCode::getLocation(this, ip, true);
+    const auto loc1   = ByteCode::getLocation(this, ip);
 
     if (!loc.location)
         return;
@@ -56,8 +56,8 @@ void ByteCode::printSourceCode(const ByteCodePrintOptions& options, ByteCodeInst
 
 Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
 {
-    Utf8 str   = g_ByteCodeOpDesc[(int) ip->op].display;
-    auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
+    Utf8       str   = g_ByteCodeOpDesc[(int) ip->op].display;
+    const auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
 
     if (ip->flags & BCI_IMM_A || flags & OPFLAG_READ_VAL32_A || flags & OPFLAG_READ_VAL64_A)
     {
@@ -237,7 +237,7 @@ Utf8 ByteCode::getInstructionReg(const char* header, const Register& reg, bool r
 
 void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, PrintInstructionLine& line)
 {
-    int  i      = (int) (ip - out);
+    const int  i      = (int) (ip - out);
     bool forDbg = options.curIp != nullptr;
 
     // Instruction rank
@@ -254,7 +254,7 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
     line.name += g_ByteCodeOpDesc[(int) ip->op].name;
 
     // Parameters
-    auto opFlags = g_ByteCodeOpDesc[(int) ip->op].flags;
+    const auto opFlags = g_ByteCodeOpDesc[(int) ip->op].flags;
     line.instRef += getInstructionReg("A", ip->a, opFlags & OPFLAG_WRITE_A, opFlags & OPFLAG_READ_A, opFlags & (OPFLAG_READ_VAL32_A | OPFLAG_READ_VAL64_A) || ip->flags & BCI_IMM_A);
     line.instRef += getInstructionReg("B", ip->b, opFlags & OPFLAG_WRITE_B, opFlags & OPFLAG_READ_B, opFlags & (OPFLAG_READ_VAL32_B | OPFLAG_READ_VAL64_B) || ip->flags & BCI_IMM_B);
     line.instRef += getInstructionReg("C", ip->c, opFlags & OPFLAG_WRITE_C, opFlags & OPFLAG_READ_C, opFlags & (OPFLAG_READ_VAL32_C | OPFLAG_READ_VAL64_C) || ip->flags & BCI_IMM_C);
@@ -293,7 +293,7 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
 
     case ByteCodeOp::MakeLambda:
     {
-        auto funcNode = (AstFuncDecl*) ip->b.pointer;
+        const auto funcNode = (AstFuncDecl*) ip->b.pointer;
         SWAG_ASSERT(funcNode);
         line.pretty += Utf8::truncateDisplay(funcNode->sourceFile->name, 30);
         line.pretty += "/";
@@ -305,7 +305,7 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
     case ByteCodeOp::ForeignCall:
     case ByteCodeOp::ForeignCallPop:
     {
-        auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
+        const auto funcNode = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
         line.pretty += Utf8::truncateDisplay(funcNode->token.text, 30);
         line.pretty += " ";
         break;
@@ -316,7 +316,7 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
     case ByteCodeOp::LocalCallPopParam:
     case ByteCodeOp::LocalCallPopRC:
     {
-        auto bc = (ByteCode*) ip->a.pointer;
+        const auto bc = (ByteCode*) ip->a.pointer;
         SWAG_ASSERT(bc);
         line.pretty += bc->name;
         if (bc->node && bc->node->typeInfo)
@@ -530,7 +530,7 @@ void ByteCode::print(const ByteCodePrintOptions& options, uint32_t start, uint32
 
 void ByteCode::printName()
 {
-    auto str = getPrintRefName();
+    const auto str = getPrintRefName();
     g_Log.print(str);
     g_Log.eol();
 }

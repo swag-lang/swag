@@ -35,7 +35,7 @@ struct JobGroup
         ScopedLock lk(mutex);
         while (runningJobs.load() > 0)
             this_thread::yield();
-        for (auto j : jobs)
+        for (const auto j : jobs)
             j->release();
         jobs.clear();
     }

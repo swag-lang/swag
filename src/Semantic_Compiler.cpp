@@ -20,7 +20,7 @@ Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
 
     for (int i = (int) childs.size() - 1; i >= 0; i--)
     {
-        auto c = childs[i];
+        const auto c = childs[i];
         if (c->flags & AST_CONST_EXPR)
             continue;
 
@@ -32,7 +32,7 @@ Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
                 {
                     if (!(c->resolvedSymbolOverload->node->attributeFlags & ATTRIBUTE_CONSTEXPR))
                     {
-                        auto result  = Diagnostic::note(c, c->token, Fmt(Nte(Nte0117), c->resolvedSymbolName->name.c_str()));
+                        const auto result  = Diagnostic::note(c, c->token, Fmt(Nte(Nte0117), c->resolvedSymbolName->name.c_str()));
                         result->hint = Nte(Nte0079);
                         return result;
                     }
@@ -291,19 +291,19 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
 
 bool Semantic::resolveCompilerForeignLib(SemanticContext* context)
 {
-    auto node   = context->node;
-    auto module = context->sourceFile->module;
+    const auto node   = context->node;
+    const auto module = context->sourceFile->module;
     module->addForeignLib(node->childs.front()->token.text);
     return true;
 }
 
 bool Semantic::resolveCompilerRun(SemanticContext* context)
 {
-    auto node = CastAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerRun, AstNodeKind::CompilerRunExpression);
+    const auto node = CastAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerRun, AstNodeKind::CompilerRunExpression);
     if (node->flags & AST_IS_GENERIC)
         return true;
 
-    auto expression = context->node->childs.back();
+    const auto expression = context->node->childs.back();
 
     if (!expression->typeInfo)
         expression->typeInfo = g_TypeMgr->typeInfoVoid;
@@ -321,15 +321,15 @@ bool Semantic::resolveCompilerRun(SemanticContext* context)
 
 bool Semantic::resolveCompilerValidIfExpression(SemanticContext* context)
 {
-    auto node = CastAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerValidIf, AstNodeKind::CompilerValidIfx);
+    const auto node = CastAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerValidIf, AstNodeKind::CompilerValidIfx);
     if (node->flags & AST_IS_GENERIC)
         return true;
 
-    auto expression = context->node->childs.back();
-    auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
+    const auto expression = context->node->childs.back();
+    const auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
     if (!typeInfo->isBool())
     {
-        Diagnostic diag{expression, Fmt(Err(Err0191), node->token.ctext(), typeInfo->getDisplayNameC())};
+        const Diagnostic diag{expression, Fmt(Err(Err0191), node->token.ctext(), typeInfo->getDisplayNameC())};
         return context->report(diag);
     }
 
@@ -338,7 +338,7 @@ bool Semantic::resolveCompilerValidIfExpression(SemanticContext* context)
 
 bool Semantic::resolveCompilerAstExpression(SemanticContext* context)
 {
-    auto node = CastAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerAst);
+    const auto node = CastAst<AstCompilerSpecFunc>(context->node, AstNodeKind::CompilerAst);
     if (node->flags & AST_IS_GENERIC)
         return true;
 
@@ -346,9 +346,9 @@ bool Semantic::resolveCompilerAstExpression(SemanticContext* context)
     if (node->specFlags & AstCompilerSpecFunc::SPECFLAG_AST_BLOCK)
         return true;
 
-    auto job        = context->baseJob;
-    auto expression = context->node->childs.back();
-    auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
+    const auto job        = context->baseJob;
+    auto       expression = context->node->childs.back();
+    const auto typeInfo   = TypeManager::concreteType(expression->typeInfo);
     SWAG_VERIFY(typeInfo->isString(), context->report({expression, Fmt(Err(Err0620), expression->typeInfo->getDisplayNameC())}));
 
     SWAG_CHECK(executeCompilerNode(context, expression, false));
@@ -388,33 +388,33 @@ bool Semantic::resolveCompilerAstExpression(SemanticContext* context)
 
 bool Semantic::resolveCompilerError(SemanticContext* context)
 {
-    auto node = context->node;
+    const auto node = context->node;
     if (node->flags & AST_IS_GENERIC)
         return true;
 
-    auto msg = node->childs.front();
+    const auto msg = node->childs.front();
     SWAG_CHECK(evaluateConstExpression(context, msg));
     YIELD();
     SWAG_CHECK(checkIsConstExpr(context, msg->hasComputedValue(), msg, Fmt(Err(Err0034), node->token.ctext())));
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 
-    Diagnostic diag{node, node->token, Fmt(Err(Err0001), msg->computedValue->text.c_str()), DiagnosticLevel::Error};
+    const Diagnostic diag{node, node->token, Fmt(Err(Err0001), msg->computedValue->text.c_str()), DiagnosticLevel::Error};
     return context->report(diag);
 }
 
 bool Semantic::resolveCompilerWarning(SemanticContext* context)
 {
-    auto node = context->node;
+    const auto node = context->node;
     if (node->flags & AST_IS_GENERIC)
         return true;
 
-    auto msg = node->childs.front();
+    const auto msg = node->childs.front();
     SWAG_CHECK(evaluateConstExpression(context, msg));
     YIELD();
     SWAG_CHECK(checkIsConstExpr(context, msg->hasComputedValue(), msg, Fmt(Err(Err0034), node->token.ctext())));
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
 
-    Diagnostic diag{node, node->token, msg->computedValue->text, DiagnosticLevel::Warning};
+    const Diagnostic diag{node, node->token, msg->computedValue->text, DiagnosticLevel::Warning};
     return context->report(diag);
 }
 
@@ -425,7 +425,7 @@ bool Semantic::resolveCompilerAssert(SemanticContext* context)
         return true;
 
     // Expression to check
-    auto expr = node->childs[0];
+    const auto expr = node->childs[0];
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, expr, CASTFLAG_AUTO_BOOL | CASTFLAG_JUST_CHECK));
     SWAG_CHECK(executeCompilerNode(context, expr, true));
     YIELD();
@@ -440,8 +440,8 @@ bool Semantic::resolveCompilerAssert(SemanticContext* context)
 
 bool Semantic::resolveCompilerMacro(SemanticContext* context)
 {
-    auto node             = context->node;
-    auto scope            = node->childs.back()->ownerScope;
+    auto       node       = context->node;
+    const auto scope      = node->childs.back()->ownerScope;
     scope->startStackSize = node->ownerScope->startStackSize;
 
     node->setBcNotifAfter(ByteCodeGen::emitLeaveScope);
@@ -455,7 +455,7 @@ bool Semantic::resolveCompilerMacro(SemanticContext* context)
 
 bool Semantic::resolveCompilerMixin(SemanticContext* context)
 {
-    auto node = CastAst<AstCompilerMixin>(context->node, AstNodeKind::CompilerMixin);
+    const auto node = CastAst<AstCompilerMixin>(context->node, AstNodeKind::CompilerMixin);
 
     if (node->semFlags & SEMFLAG_COMPILER_INSERT)
     {
@@ -472,7 +472,7 @@ bool Semantic::resolveCompilerMixin(SemanticContext* context)
     node->byteCodeFct = ByteCodeGen::emitDebugNop;
     expr->flags |= AST_NO_BYTECODE;
 
-    auto typeCode = CastTypeInfo<TypeInfoCode>(expr->typeInfo, TypeInfoKind::Code);
+    const auto typeCode = CastTypeInfo<TypeInfoCode>(expr->typeInfo, TypeInfoKind::Code);
     SWAG_ASSERT(typeCode->content);
 
     CloneContext cloneContext;
@@ -484,7 +484,7 @@ bool Semantic::resolveCompilerMixin(SemanticContext* context)
     cloneContext.replaceTokens          = node->replaceTokens;
     cloneContext.forceFlags             = AST_IN_MIXIN;
     cloneContext.ownerFct               = node->ownerFct;
-    auto cloneContent                   = typeCode->content->clone(cloneContext);
+    const auto cloneContent             = typeCode->content->clone(cloneContext);
     cloneContent->allocateExtension(ExtensionKind::Misc);
     cloneContent->extMisc()->alternativeNode = typeCode->content->parent;
     cloneContent->addAlternativeScope(typeCode->content->parent->ownerScope);
@@ -498,7 +498,7 @@ bool Semantic::resolveCompilerMixin(SemanticContext* context)
 
 bool Semantic::preResolveCompilerInstruction(SemanticContext* context)
 {
-    auto node = context->node;
+    const auto node = context->node;
     if (!(node->flags & AST_FROM_GENERIC))
     {
         if (!node->ownerFct || !(node->ownerFct->flags & AST_FROM_GENERIC))
@@ -531,7 +531,7 @@ bool Semantic::preResolveCompilerInstruction(SemanticContext* context)
 
     if (node->flags & AST_IS_GENERIC)
     {
-        for (auto& c : node->childs)
+        for (const auto& c : node->childs)
             c->flags |= AST_NO_SEMANTIC;
         node->semFlags |= SEMFLAG_ON_CLONE;
     }
@@ -541,11 +541,11 @@ bool Semantic::preResolveCompilerInstruction(SemanticContext* context)
 
 bool Semantic::resolveCompilerPrint(SemanticContext* context)
 {
-    auto node = context->node;
+    const auto node = context->node;
     if (node->flags & AST_IS_GENERIC)
         return true;
 
-    auto expr = context->node->childs[0];
+    const auto expr = context->node->childs[0];
     SWAG_CHECK(executeCompilerNode(context, expr, true));
     YIELD();
 
@@ -615,10 +615,10 @@ void Semantic::disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlo
     block->flags |= AST_NO_SEMANTIC;
 
     // Revert test errors in case #global testerror is inside a disabled #if branch
-    auto sourceFile = context->sourceFile;
+    const auto sourceFile = context->sourceFile;
 
     // Unregister one overload
-    for (auto it : block->symbols)
+    for (const auto it : block->symbols)
     {
         ScopedLock lk(it.second->mutex);
         ScopedLock lk1(it.first->mutex);
@@ -628,7 +628,7 @@ void Semantic::disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlo
     }
 
     // Decrease interfaces count to resolve
-    for (auto typeStruct : block->interfacesCount)
+    for (const auto typeStruct : block->interfacesCount)
     {
         sourceFile->module->decImplForToSolve(typeStruct);
         decreaseInterfaceRegCount(typeStruct);
@@ -637,7 +637,7 @@ void Semantic::disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlo
 
     // Decrease methods count to resolve
     Set<TypeInfoStruct*> allStructs;
-    for (auto& typeStructPair : block->methodsCount)
+    for (const auto& typeStructPair : block->methodsCount)
     {
         // Remove the corresponding method
         auto typeStruct = typeStructPair.typeInfo;
@@ -650,7 +650,7 @@ void Semantic::disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlo
     }
 
     // Clean array
-    for (auto typeStruct : allStructs)
+    for (const auto typeStruct : allStructs)
     {
         for (size_t i = 0; i < typeStruct->methods.size(); i++)
         {
@@ -663,21 +663,21 @@ void Semantic::disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlo
     }
 
     // Eliminate imports
-    for (auto imp : block->imports)
+    for (const auto imp : block->imports)
         sourceFile->module->removeDependency(imp);
 
     // Eliminate includes
-    for (auto imp : block->includes)
+    for (const auto imp : block->includes)
         sourceFile->module->removeFileToLoad(imp);
 
     // Do the same for all embedded blocks
-    for (auto p : block->blocks)
+    for (const auto p : block->blocks)
         disableCompilerIfBlock(context, p);
 }
 
 bool Semantic::resolveCompilerIf(SemanticContext* context)
 {
-    auto node = CastAst<AstIf>(context->node->parent, AstNodeKind::CompilerIf);
+    const auto node = CastAst<AstIf>(context->node->parent, AstNodeKind::CompilerIf);
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CASTFLAG_AUTO_BOOL));
 
     SWAG_CHECK(executeCompilerNode(context, node->boolExpression, true));
@@ -700,7 +700,7 @@ bool Semantic::resolveCompilerIf(SemanticContext* context)
     // We can know solve function sub declarations in that block
     if (validatedNode)
     {
-        for (auto n : validatedNode->subDecls)
+        for (const auto n : validatedNode->subDecls)
             launchResolveSubDecl(context, n);
     }
 
@@ -709,10 +709,10 @@ bool Semantic::resolveCompilerIf(SemanticContext* context)
 
 bool Semantic::resolveCompilerInclude(SemanticContext* context)
 {
-    auto job    = context->baseJob;
-    auto node   = context->node;
-    auto module = context->sourceFile->module;
-    auto back   = node->childs[0];
+    const auto job    = context->baseJob;
+    const auto node   = context->node;
+    const auto module = context->sourceFile->module;
+    auto       back   = node->childs[0];
 
     SWAG_CHECK(checkIsConstExpr(context, back->hasComputedValue(), back, Err(Err0030)));
     SWAG_VERIFY(back->typeInfo == g_TypeMgr->typeInfoString, context->report({back, Fmt(Err(Err0192), back->typeInfo->getDisplayNameC())}));
@@ -722,7 +722,7 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
     {
         node->semFlags |= SEMFLAG_LOAD;
 
-        auto filename = back->computedValue->text;
+        const auto filename = back->computedValue->text;
         Path fullFileName;
 
         // Search first in the same folder as the source file
@@ -744,13 +744,13 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
         }
 
         struct stat stat_buf;
-        int         rc = stat(fullFileName.string().c_str(), &stat_buf);
+        const int   rc = stat(fullFileName.string().c_str(), &stat_buf);
         SWAG_VERIFY(rc == 0, context->report({back, Fmt(Err(Err0097), back->computedValue->text.c_str())}));
         SWAG_CHECK(context->checkSizeOverflow("[[#load]]", stat_buf.st_size, SWAG_LIMIT_COMPILER_LOAD));
 
-        auto     newJob         = Allocator::alloc<LoadFileJob>();
-        auto     storageSegment = getConstantSegFromContext(node);
-        uint8_t* addrDst;
+        const auto newJob         = Allocator::alloc<LoadFileJob>();
+        const auto storageSegment = getConstantSegFromContext(node);
+        uint8_t*   addrDst;
         node->computedValue->storageOffset  = storageSegment->reserve(stat_buf.st_size, &addrDst);
         node->computedValue->storageSegment = storageSegment;
         newJob->destBuffer                  = addrDst;
@@ -764,7 +764,7 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
         job->setPending(JobWaitKind::LoadFile, nullptr, node, nullptr);
 
         // Creates return type
-        auto ptrArray         = makeType<TypeInfoArray>();
+        const auto ptrArray         = makeType<TypeInfoArray>();
         ptrArray->count       = stat_buf.st_size;
         ptrArray->pointedType = g_TypeMgr->typeInfoU8;
         ptrArray->finalType   = g_TypeMgr->typeInfoU8;
@@ -781,7 +781,7 @@ bool Semantic::resolveCompilerInclude(SemanticContext* context)
 
 bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
 {
-    auto node      = context->node;
+    const auto node      = context->node;
     auto locNode   = node->childs.front();
     node->typeInfo = g_TypeMgr->makeConst(g_Workspace->swagScope.regTypeInfoSourceLoc);
 
@@ -806,7 +806,7 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
 
         if (locNode->kind == AstNodeKind::FuncCallParam && locNode->childs.front()->kind == AstNodeKind::IdentifierRef)
         {
-            auto id = CastAst<AstIdentifier>(locNode->childs.back()->childs.back(), AstNodeKind::Identifier);
+            const auto id = CastAst<AstIdentifier>(locNode->childs.back()->childs.back(), AstNodeKind::Identifier);
             if (id->identifierExtension && id->identifierExtension->fromAlternateVar)
             {
                 locNode = id->identifierExtension->fromAlternateVar;
@@ -818,7 +818,7 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
         // :ForLocationInValidIf
         if (locNode->kind == AstNodeKind::IdentifierRef)
         {
-            auto id = CastAst<AstIdentifier>(locNode->childs.back(), AstNodeKind::Identifier);
+            const auto id = CastAst<AstIdentifier>(locNode->childs.back(), AstNodeKind::Identifier);
             if (id->identifierExtension && id->identifierExtension->fromAlternateVar)
             {
                 locNode = id->identifierExtension->fromAlternateVar;
@@ -829,8 +829,8 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
 
         if (locNode->ownerFct && locNode->ownerFct->typeInfo && locNode->ownerFct->requestedGeneric)
         {
-            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(locNode->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
-            for (auto it : typeFunc->replaceTypes)
+            const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(locNode->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+            for (const auto it : typeFunc->replaceTypes)
             {
                 bool fromGen = false;
                 if (it.second.typeInfoReplace == locNode->typeInfo)
@@ -866,7 +866,7 @@ bool Semantic::resolveIntrinsicLocation(SemanticContext* context)
 
 bool Semantic::resolveIntrinsicDefined(SemanticContext* context)
 {
-    auto node = context->node;
+    const auto node = context->node;
     node->setFlagsValueIsComputed();
     node->computedValue->reg.b = node->childs.back()->resolvedSymbolOverload != nullptr;
     node->typeInfo             = g_TypeMgr->typeInfoBool;

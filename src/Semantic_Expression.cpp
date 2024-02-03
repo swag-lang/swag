@@ -55,7 +55,7 @@ bool Semantic::checkIsConstExpr(JobContext* context, AstNode* expression, const 
 
 bool Semantic::resolveExplicitNoInit(SemanticContext* context)
 {
-    auto node = context->node;
+    const auto node = context->node;
     node->parent->flags |= AST_EXPLICITLY_NOT_INITIALIZED;
     node->flags |= AST_CONST_EXPR;
     node->typeInfo = g_TypeMgr->typeInfoVoid;
@@ -64,19 +64,19 @@ bool Semantic::resolveExplicitNoInit(SemanticContext* context)
 
 bool Semantic::computeExpressionListTupleType(SemanticContext* context, AstNode* node)
 {
-    for (auto child : node->childs)
+    for (const auto child : node->childs)
     {
         SWAG_CHECK(checkIsConcreteOrType(context, child));
         YIELD();
     }
 
-    auto typeInfo      = makeType<TypeInfoList>(TypeInfoKind::TypeListTuple);
+    const auto typeInfo      = makeType<TypeInfoList>(TypeInfoKind::TypeListTuple);
     typeInfo->name     = "{";
     typeInfo->sizeOf   = 0;
     typeInfo->declNode = node;
 
     node->flags |= AST_CONST_EXPR | AST_R_VALUE;
-    for (auto child : node->childs)
+    for (const auto child : node->childs)
     {
         if (!typeInfo->subTypes.empty())
             typeInfo->name += ", ";
@@ -115,7 +115,7 @@ bool Semantic::computeExpressionListTupleType(SemanticContext* context, AstNode*
 
 bool Semantic::resolveExpressionListTuple(SemanticContext* context)
 {
-    auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
+    const auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
     SWAG_CHECK(computeExpressionListTupleType(context, node));
     YIELD();
 
@@ -135,24 +135,24 @@ bool Semantic::resolveExpressionListTuple(SemanticContext* context)
 
 bool Semantic::resolveExpressionListArray(SemanticContext* context)
 {
-    auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
+    const auto node = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
-    for (auto child : node->childs)
+    for (const auto child : node->childs)
     {
         SWAG_CHECK(checkIsConcreteOrType(context, child));
         YIELD();
     }
 
-    auto typeInfo = makeType<TypeInfoList>(TypeInfoKind::TypeListArray);
+    const auto typeInfo = makeType<TypeInfoList>(TypeInfoKind::TypeListArray);
     SWAG_ASSERT(node->childs.size());
     typeInfo->declNode = node;
 
     node->flags |= AST_CONST_EXPR | AST_R_VALUE;
-    for (auto child : node->childs)
+    for (const auto child : node->childs)
     {
-        auto typeParam      = g_TypeMgr->makeParam();
-        auto childType      = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
-        typeParam->typeInfo = childType;
+        auto       typeParam = g_TypeMgr->makeParam();
+        const auto childType = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
+        typeParam->typeInfo  = childType;
         typeInfo->subTypes.push_back(typeParam);
         typeInfo->sizeOf += childType->sizeOf;
         if (!(child->flags & AST_CONST_EXPR))
@@ -218,12 +218,12 @@ bool Semantic::evaluateConstExpression(SemanticContext* context, AstNode* node1,
 
 bool Semantic::resolveConditionalOp(SemanticContext* context)
 {
-    auto node = context->node;
+    const auto node = context->node;
     SWAG_ASSERT(node->childs.size() == 3);
 
-    auto expression = node->childs[0];
-    auto ifTrue     = node->childs[1];
-    auto ifFalse    = node->childs[2];
+    const auto expression = node->childs[0];
+    const auto ifTrue     = node->childs[1];
+    const auto ifFalse    = node->childs[2];
     SWAG_CHECK(checkIsConcrete(context, expression));
     SWAG_CHECK(checkIsConcreteOrType(context, ifTrue));
     SWAG_CHECK(checkIsConcreteOrType(context, ifFalse));
@@ -291,18 +291,18 @@ bool Semantic::resolveConditionalOp(SemanticContext* context)
 
 bool Semantic::resolveNullConditionalOp(SemanticContext* context)
 {
-    auto node = context->node;
+    const auto node = context->node;
     SWAG_ASSERT(node->childs.size() >= 2);
 
-    auto expression = node->childs[0];
-    auto ifZero     = node->childs[1];
+    const auto expression = node->childs[0];
+    const auto ifZero     = node->childs[1];
     SWAG_CHECK(checkIsConcrete(context, expression));
     SWAG_CHECK(checkIsConcrete(context, ifZero));
 
     SWAG_CHECK(evaluateConstExpression(context, expression, ifZero));
     YIELD();
 
-    auto typeInfo = getConcreteTypeUnRef(expression, CONCRETE_ALL);
+    const auto typeInfo = getConcreteTypeUnRef(expression, CONCRETE_ALL);
     if (typeInfo->isStruct())
     {
         Diagnostic diag{node->sourceFile, node->token, Err(Err0166)};
@@ -378,11 +378,11 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
 
 bool Semantic::resolveDefer(SemanticContext* context)
 {
-    auto node         = CastAst<AstDefer>(context->node, AstNodeKind::Defer);
+    const auto node         = CastAst<AstDefer>(context->node, AstNodeKind::Defer);
     node->byteCodeFct = ByteCodeGen::emitDefer;
 
     SWAG_ASSERT(node->childs.size() == 1);
-    auto expr = node->childs.front();
+    const auto expr = node->childs.front();
     expr->flags |= AST_NO_BYTECODE;
 
     return true;
@@ -390,17 +390,17 @@ bool Semantic::resolveDefer(SemanticContext* context)
 
 bool Semantic::resolveRange(SemanticContext* context)
 {
-    auto node = CastAst<AstRange>(context->node, AstNodeKind::Range);
+    const auto node = CastAst<AstRange>(context->node, AstNodeKind::Range);
     SWAG_CHECK(checkIsConcrete(context, node->expressionLow));
     SWAG_CHECK(checkIsConcrete(context, node->expressionUp));
 
     node->expressionLow->typeInfo = getConcreteTypeUnRef(node->expressionLow, CONCRETE_FUNC | CONCRETE_ALIAS);
     node->expressionUp->typeInfo  = getConcreteTypeUnRef(node->expressionUp, CONCRETE_FUNC | CONCRETE_ALIAS);
 
-    auto leftTypeInfo = TypeManager::concreteType(node->expressionLow->typeInfo);
+    const auto leftTypeInfo = TypeManager::concreteType(node->expressionLow->typeInfo);
     if (!leftTypeInfo->isNativeIntegerOrRune() && !leftTypeInfo->isNativeFloat())
     {
-        Diagnostic diag{node->expressionLow, Fmt(Err(Err0364), node->expressionLow->typeInfo->getDisplayNameC())};
+        const Diagnostic diag{node->expressionLow, Fmt(Err(Err0364), node->expressionLow->typeInfo->getDisplayNameC())};
         return context->report(diag, Diagnostic::note(Nte(Nte0200)));
     }
 

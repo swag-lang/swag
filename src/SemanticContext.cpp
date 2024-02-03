@@ -7,11 +7,11 @@ void SemanticContext::release()
     clearGenericMatch();
     clearMatch();
 
-    for (auto p : cacheFreeTryMatch)
+    for (const auto p : cacheFreeTryMatch)
         Allocator::free<OneTryMatch>(p);
-    for (auto p : cacheFreeGenericMatches)
+    for (const auto p : cacheFreeGenericMatches)
         Allocator::free<OneMatch>(p);
-    for (auto p : cacheFreeMatches)
+    for (const auto p : cacheFreeMatches)
         Allocator::free<OneMatch>(p);
     tmpConcat.release();
     if (tmpIdRef)
@@ -29,7 +29,7 @@ OneTryMatch* SemanticContext::getTryMatch()
 {
     if (cacheFreeTryMatch.empty())
         return Allocator::alloc<OneTryMatch>();
-    auto res = cacheFreeTryMatch.back();
+    const auto res = cacheFreeTryMatch.back();
     cacheFreeTryMatch.pop_back();
     res->reset();
     return res;
@@ -46,7 +46,7 @@ OneMatch* SemanticContext::getOneMatch()
 {
     if (cacheFreeMatches.empty())
         return Allocator::alloc<OneMatch>();
-    auto res = cacheFreeMatches.back();
+    const auto res = cacheFreeMatches.back();
     cacheFreeMatches.pop_back();
     res->reset();
     return res;
@@ -64,7 +64,7 @@ OneMatch* SemanticContext::getOneGenericMatch()
 {
     if (cacheFreeGenericMatches.empty())
         return Allocator::alloc<OneMatch>();
-    auto res = cacheFreeGenericMatches.back();
+    const auto res = cacheFreeGenericMatches.back();
     cacheFreeGenericMatches.pop_back();
     res->reset();
     return res;

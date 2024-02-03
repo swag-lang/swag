@@ -64,7 +64,7 @@ void TypeManager::setup()
     typeInfoOpCall             = new TypeInfoFuncAttr();
     typeInfoOpCall->returnType = typeInfoVoid;
     typeInfoOpCall->parameters.push_back(new TypeInfoParam());
-    auto typePtr         = new TypeInfoPointer();
+    const auto typePtr         = new TypeInfoPointer();
     typePtr->pointedType = typeInfoVoid;
     typePtr->sizeOf      = sizeof(void*);
     typePtr->computeName();
@@ -197,7 +197,7 @@ void TypeManager::convertStructParamToRef(AstNode* node, TypeInfo* typeInfo)
     // A struct/interface is forced to be a const reference
     if (!node->typeInfo->isGeneric() && typeInfo->isStruct())
     {
-        auto typeRef         = makeType<TypeInfoPointer>();
+        const auto typeRef         = makeType<TypeInfoPointer>();
         typeInfo             = typeInfo->getConstAlias();
         typeRef->flags       = typeInfo->flags | TYPEINFO_CONST | TYPEINFO_POINTER_REF | TYPEINFO_POINTER_AUTO_REF;
         typeRef->pointedType = typeInfo;
@@ -209,9 +209,9 @@ void TypeManager::convertStructParamToRef(AstNode* node, TypeInfo* typeInfo)
 
 TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfoList* typeList, bool isCompilerConstant)
 {
-    auto      typeArray    = makeType<TypeInfoArray>();
-    auto      orgTypeArray = typeArray;
-    TypeInfo* finalType    = nullptr;
+    auto       typeArray    = makeType<TypeInfoArray>();
+    const auto orgTypeArray = typeArray;
+    TypeInfo*  finalType    = nullptr;
 
     while (true)
     {
@@ -259,7 +259,7 @@ TypeInfoArray* TypeManager::convertTypeListToArray(JobContext* context, TypeInfo
 
 TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeInfoList* typeList, bool isCompilerConstant)
 {
-    auto typeStruct = makeType<TypeInfoStruct>();
+    const auto typeStruct = makeType<TypeInfoStruct>();
 
     Utf8 name = context->sourceFile->scopeFile->name + "_tpl4_";
     name += Fmt("%d", g_UniqueID.fetch_add(1));
@@ -270,7 +270,7 @@ TypeInfoStruct* TypeManager::convertTypeListToStruct(JobContext* context, TypeIn
     typeStruct->fields.reserve((int) typeList->subTypes.size());
     for (size_t idx = 0; idx < typeList->subTypes.size(); idx++)
     {
-        auto one          = typeList->subTypes[idx];
+        const auto one          = typeList->subTypes[idx];
         auto typeParam    = (TypeInfoParam*) one->clone();
         typeParam->offset = typeStruct->sizeOf;
 
@@ -304,7 +304,7 @@ TypeInfo* TypeManager::resolveUntypedType(TypeInfo* typeInfo, uint32_t value)
 {
     if (typeInfo->isUntypedInteger())
     {
-        auto it = g_MapUntypedValuesI.find(value);
+        const auto it = g_MapUntypedValuesI.find(value);
         if (it != g_MapUntypedValuesI.end())
         {
             SWAG_ASSERT(it->second->isUntypedInteger());
@@ -319,7 +319,7 @@ TypeInfo* TypeManager::resolveUntypedType(TypeInfo* typeInfo, uint32_t value)
     }
     else if (typeInfo->isUntypedBinHex())
     {
-        auto it = g_MapUntypedValuesB.find(value);
+        const auto it = g_MapUntypedValuesB.find(value);
         if (it != g_MapUntypedValuesB.end())
         {
             SWAG_ASSERT(it->second->isUntypedBinHex());
@@ -334,7 +334,7 @@ TypeInfo* TypeManager::resolveUntypedType(TypeInfo* typeInfo, uint32_t value)
     }
     else if (typeInfo->isUntypedFloat())
     {
-        auto it = g_MapUntypedValuesF.find(value);
+        const auto it = g_MapUntypedValuesF.find(value);
         if (it != g_MapUntypedValuesF.end())
         {
             SWAG_ASSERT(it->second->isUntypedFloat());
@@ -354,7 +354,7 @@ TypeInfo* TypeManager::resolveUntypedType(TypeInfo* typeInfo, uint32_t value)
 TypeInfo* TypeManager::literalTypeToType(LiteralType literalType)
 {
     SWAG_ASSERT(literalType < LiteralType::TT_MAX);
-    auto result = g_LiteralTypeToType[(int) literalType];
+    const auto result = g_LiteralTypeToType[(int) literalType];
     SWAG_ASSERT(result);
     return result;
 }
@@ -382,14 +382,14 @@ uint32_t TypeManager::alignOf(TypeInfo* typeInfo)
 {
     if (typeInfo->isStruct())
     {
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        const auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
         SWAG_ASSERT(typeStruct->sizeOf);
         SWAG_ASSERT(typeStruct->alignOf);
         return typeStruct->alignOf;
     }
     else if (typeInfo->isArray())
     {
-        auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        const auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         return alignOf(typeArray->finalType);
     }
     else if (typeInfo->isPointer())
@@ -422,11 +422,11 @@ TypeInfo* TypeManager::makeUnConst(TypeInfo* typeInfo)
 
     ScopedLock lk(mutex);
 
-    auto it = mapUnConst.find(typeInfo);
+    const auto it = mapUnConst.find(typeInfo);
     if (it != mapUnConst.end())
         return it->second;
 
-    auto typeUnConst = typeInfo->clone();
+    const auto typeUnConst = typeInfo->clone();
     typeUnConst->flags &= ~TYPEINFO_CONST;
     typeUnConst->forceComputeName();
     mapUnConst[typeInfo] = typeUnConst;
@@ -441,13 +441,13 @@ TypeInfo* TypeManager::makeConst(TypeInfo* typeInfo)
 
     ScopedLock lk(mutex);
 
-    auto it = mapConst.find(typeInfo);
+    const auto it = mapConst.find(typeInfo);
     if (it != mapConst.end())
         return it->second;
 
     if (typeInfo->isStruct())
     {
-        auto typeAlias = makeType<TypeInfoAlias>();
+        const auto typeAlias = makeType<TypeInfoAlias>();
         typeAlias->copyFrom(typeInfo);
         typeAlias->rawType = typeInfo;
         typeAlias->flags |= TYPEINFO_CONST | TYPEINFO_CONST_ALIAS;
@@ -456,7 +456,7 @@ TypeInfo* TypeManager::makeConst(TypeInfo* typeInfo)
     }
     else
     {
-        auto typeConst = typeInfo->clone();
+        const auto typeConst = typeInfo->clone();
         typeConst->setConst();
         mapConst[typeInfo] = typeConst;
         return typeConst;
@@ -467,17 +467,17 @@ TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, uint64_t ptrFlags)
 {
     ScopedLock lk(mutex);
 
-    auto it = mapPointers.find(toType);
+    const auto it = mapPointers.find(toType);
     if (it != mapPointers.end())
     {
-        for (auto& it1 : it->second)
+        for (const auto& it1 : it->second)
         {
             if (it1.flags == ptrFlags)
                 return it1.pointerTo;
         }
     }
 
-    auto ptrType         = makeType<TypeInfoPointer>();
+    const auto ptrType         = makeType<TypeInfoPointer>();
     ptrType->pointedType = toType;
     ptrType->sizeOf      = sizeof(Register);
     ptrType->flags       = ptrFlags;
@@ -493,7 +493,7 @@ TypeInfoPointer* TypeManager::makePointerTo(TypeInfo* toType, uint64_t ptrFlags)
 
 TypeInfoParam* TypeManager::makeParam()
 {
-    auto typeParam = Allocator::alloc<TypeInfoParam>();
+    const auto typeParam = Allocator::alloc<TypeInfoParam>();
 #ifdef SWAG_STATS
     g_Stats.memParams += Allocator::alignSize(sizeof(TypeInfoParam));
 #endif

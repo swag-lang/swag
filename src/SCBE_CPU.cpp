@@ -13,7 +13,7 @@ void SCBE_CPU::clearInstructionCache()
 
 CPUSymbol* SCBE_CPU::getSymbol(const Utf8& name)
 {
-    auto it = mapSymbols.find(name);
+    const auto it = mapSymbols.find(name);
     if (it != mapSymbols.end())
         return &allSymbols[it->second];
     return nullptr;
@@ -21,7 +21,7 @@ CPUSymbol* SCBE_CPU::getSymbol(const Utf8& name)
 
 CPUSymbol* SCBE_CPU::getOrAddSymbol(const Utf8& name, CPUSymbolKind kind, uint32_t value, uint16_t sectionIdx)
 {
-    auto it = getSymbol(name);
+    const auto it = getSymbol(name);
     if (it)
     {
         if (it->kind == kind)
@@ -61,13 +61,13 @@ void SCBE_CPU::addSymbolRelocation(uint32_t virtualAddr, uint32_t symbolIndex, u
 
 CPUSymbol* SCBE_CPU ::getOrCreateGlobalString(const Utf8& str)
 {
-    auto       it  = globalStrings.find(str);
+    const auto       it  = globalStrings.find(str);
     CPUSymbol* sym = nullptr;
     if (it != globalStrings.end())
         sym = &allSymbols[it->second];
     else
     {
-        Utf8 symName       = Fmt("__str%u", (uint32_t) globalStrings.size());
+        const Utf8 symName       = Fmt("__str%u", (uint32_t) globalStrings.size());
         sym                = getOrAddSymbol(symName, CPUSymbolKind::GlobalString);
         globalStrings[str] = sym->index;
         sym->value         = stringSegment.addStringNoLock(str);
@@ -78,10 +78,10 @@ CPUSymbol* SCBE_CPU ::getOrCreateGlobalString(const Utf8& str)
 
 uint32_t SCBE_CPU ::getOrCreateLabel(uint32_t ip)
 {
-    auto it = labels.find(ip);
+    const auto it = labels.find(ip);
     if (it == labels.end())
     {
-        auto count = concat.totalCount();
+        const auto count = concat.totalCount();
         labels[ip] = count;
         return count;
     }

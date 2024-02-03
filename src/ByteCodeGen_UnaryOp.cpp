@@ -7,7 +7,7 @@
 
 bool ByteCodeGen::emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t rt, uint32_t r0)
 {
-    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
+    const auto typeInfo = TypeManager::concreteType(typeInfoExpr);
     if (!typeInfo->isNative())
         return Report::internalError(context->node, "emitUnaryOpMinus, type not native");
 
@@ -37,7 +37,7 @@ bool ByteCodeGen::emitUnaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeIn
 
 bool ByteCodeGen::emitUnaryOpInvert(ByteCodeGenContext* context, TypeInfo* typeInfoExpr, uint32_t rt, uint32_t r0)
 {
-    auto typeInfo = TypeManager::concreteType(typeInfoExpr);
+    const auto typeInfo = TypeManager::concreteType(typeInfoExpr);
     if (!typeInfo->isNative())
         return Report::internalError(context->node, "emitUnaryOpInvert, type not native");
 
@@ -66,8 +66,8 @@ bool ByteCodeGen::emitUnaryOpInvert(ByteCodeGenContext* context, TypeInfo* typeI
 
 bool ByteCodeGen::emitUnaryOp(ByteCodeGenContext* context)
 {
-    AstNode* node  = context->node;
-    auto     front = node->childs[0];
+    AstNode*   node  = context->node;
+    const auto front = node->childs[0];
 
     node->resultRegisterRC = front->resultRegisterRC;
     ensureCanBeChangedRC(context, node->resultRegisterRC);
@@ -83,7 +83,7 @@ bool ByteCodeGen::emitUnaryOp(ByteCodeGenContext* context)
         }
         else
         {
-            auto typeInfoExpr = front->castedTypeInfo ? front->castedTypeInfo : front->typeInfo;
+            const auto typeInfoExpr = front->castedTypeInfo ? front->castedTypeInfo : front->typeInfo;
 
             switch (node->tokenId)
             {
@@ -91,7 +91,7 @@ bool ByteCodeGen::emitUnaryOp(ByteCodeGenContext* context)
             {
                 SWAG_CHECK(emitCast(context, node, front->typeInfo, front->castedTypeInfo));
                 SWAG_ASSERT(context->result == ContextResult::Done);
-                auto rt = reserveRegisterRC(context);
+                const auto rt = reserveRegisterRC(context);
                 EMIT_INST2(context, ByteCodeOp::NegBool, rt, node->resultRegisterRC);
                 freeRegisterRC(context, node->resultRegisterRC);
                 node->resultRegisterRC = rt;

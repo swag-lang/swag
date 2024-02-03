@@ -23,7 +23,7 @@ bool ModuleManager::isModuleFailedLoaded(const Utf8& moduleName)
 void ModuleManager::resetFailedModule(const Utf8& moduleName)
 {
     SharedLock lk(mutexLoaded);
-    auto       it = failedLoadedModules.find(moduleName);
+    const auto it = failedLoadedModules.find(moduleName);
     if (it != failedLoadedModules.end())
         failedLoadedModules.erase(it);
 }
@@ -36,7 +36,7 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
         return false;
 
     // First try in the target folder (local modules)
-    auto ext  = Backend::getOutputFileExtension(OS::getNativeTarget(), BuildCfgBackendKind::DynamicLib);
+    const auto ext  = Backend::getOutputFileExtension(OS::getNativeTarget(), BuildCfgBackendKind::DynamicLib);
     Path path = g_Workspace->getTargetPath(g_CommandLine.buildCfg, OS::getNativeTarget());
     path.append(name.c_str());
     path += ext.c_str();
@@ -72,8 +72,8 @@ bool ModuleManager::loadModule(const Utf8& name, bool canBeSystem)
     // will initialize it with its internal function
     auto callName = name;
     Ast::normalizeIdentifierName(callName);
-    Utf8 funcName = Fmt(g_LangSpec->name_globalInit, callName.c_str());
-    auto ptr      = OS::getProcAddress(h, funcName.c_str());
+    const Utf8 funcName = Fmt(g_LangSpec->name_globalInit, callName.c_str());
+    const auto ptr      = OS::getProcAddress(h, funcName.c_str());
     if (ptr)
     {
         typedef void (*funcCall)(void*);
@@ -92,10 +92,10 @@ void* ModuleManager::getFnPointer(const Utf8& moduleName, const Utf8& funcName)
 {
     SWAG_ASSERT(!moduleName.empty());
     SharedLock lk(mutexLoaded);
-    auto       here = loadedModules.find(moduleName);
+    const auto here = loadedModules.find(moduleName);
     if (here != loadedModules.end())
     {
-        auto name = funcName.toZeroTerminated();
+        const auto name = funcName.toZeroTerminated();
         return OS::getProcAddress(here->second, name.c_str());
     }
 
@@ -104,21 +104,21 @@ void* ModuleManager::getFnPointer(const Utf8& moduleName, const Utf8& funcName)
 
 const Utf8& ModuleManager::getForeignModuleName(AstFuncDecl* func)
 {
-    auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(func->typeInfo, TypeInfoKind::FuncAttr);
-    auto moduleName = typeFunc->attributes.getValue(g_LangSpec->name_Swag_Foreign, g_LangSpec->name_module);
+    const auto typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(func->typeInfo, TypeInfoKind::FuncAttr);
+    const auto moduleName = typeFunc->attributes.getValue(g_LangSpec->name_Swag_Foreign, g_LangSpec->name_module);
     SWAG_ASSERT(moduleName && !moduleName->text.empty());
     return moduleName->text;
 }
 
 void ModuleManager::addPatchFuncAddress(DataSegment* seg, void** patchAddress, AstFuncDecl* func)
 {
-    auto       moduleName = getForeignModuleName(func);
+    const auto       moduleName = getForeignModuleName(func);
     ScopedLock lk(mutexPatch);
 
     // Apply patch now, because module is already loaded
     if (isModuleLoaded(moduleName))
     {
-        auto fnPtr = getFnPointer(moduleName, func->fullnameForeign);
+        const auto fnPtr = getFnPointer(moduleName, func->fullnameForeign);
         SWAG_ASSERT(fnPtr);
         *patchAddress = fnPtr;
     }
@@ -132,7 +132,7 @@ void ModuleManager::addPatchFuncAddress(DataSegment* seg, void** patchAddress, A
         *(uint64_t*) patchAddress = SWAG_PATCH_MARKER;
 #endif
 
-        auto it = patchOffsets.find(moduleName);
+        const auto it = patchOffsets.find(moduleName);
         if (it == patchOffsets.end())
             patchOffsets[moduleName] = {newPatch};
         else
@@ -144,7 +144,7 @@ bool ModuleManager::applyPatches(const Utf8& moduleName, void* moduleHandle)
 {
     ScopedLock lk(mutexPatch);
 
-    auto it = patchOffsets.find(moduleName);
+    const auto it = patchOffsets.find(moduleName);
     if (it == patchOffsets.end())
         return true;
 
@@ -158,8 +158,8 @@ bool ModuleManager::applyPatches(const Utf8& moduleName, void* moduleHandle)
         SWAG_ASSERT(*(uint64_t*) one.patchAddress == SWAG_PATCH_MARKER);
 #endif
 
-        auto foreign = one.funcDecl->fullnameForeign.toZeroTerminated();
-        auto fnPtr   = OS::getProcAddress(moduleHandle, foreign.c_str());
+        auto       foreign = one.funcDecl->fullnameForeign.toZeroTerminated();
+        const auto fnPtr   = OS::getProcAddress(moduleHandle, foreign.c_str());
         if (!fnPtr)
         {
             loadModuleError = OS::getLastErrorAsString();

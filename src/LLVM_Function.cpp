@@ -5827,23 +5827,23 @@ bool LLVM::emitFunctionBody(const BuildParameters& buildParameters, Module* modu
 
 llvm::Type* LLVM::swagTypeToLLVMType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfo* typeInfo)
 {
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *perThread[ct][precompileIndex];
-    auto& context         = *pp.context;
+    const int   ct              = buildParameters.compileType;
+    const int   precompileIndex = buildParameters.precompileIndex;
+    const auto& pp              = *perThread[ct][precompileIndex];
+    auto&       context         = *pp.context;
 
     typeInfo = typeInfo->getConcreteAlias();
 
     if (typeInfo->isEnum())
     {
-        auto typeInfoEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+        const auto typeInfoEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
         return swagTypeToLLVMType(buildParameters, moduleToGen, typeInfoEnum->rawType);
     }
 
     if (typeInfo->isPointer())
     {
-        auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        auto pointedType     = TypeManager::concreteType(typeInfoPointer->pointedType);
+        const auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+        const auto pointedType     = TypeManager::concreteType(typeInfoPointer->pointedType);
         if (pointedType->isVoid())
             return PTR_I8_TY();
         return swagTypeToLLVMType(buildParameters, moduleToGen, pointedType)->getPointerTo();
@@ -5898,7 +5898,7 @@ llvm::BasicBlock* LLVM::getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func
 {
     auto& context = *pp.context;
 
-    auto it = pp.labels.find(ip);
+    const auto it = pp.labels.find(ip);
     if (it == pp.labels.end())
     {
         llvm::BasicBlock* label = llvm::BasicBlock::Create(context, Fmt("%lld", ip).c_str(), func);

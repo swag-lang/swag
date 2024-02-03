@@ -37,7 +37,7 @@ void ByteCodeDebugger::printLong(const Vector<Utf8>& all)
             int  c = 0;
             while (true)
             {
-                auto key = OS::promptChar(c, ctrl, shift);
+                const auto key = OS::promptChar(c, ctrl, shift);
                 if (key == OS::Key::Return)
                     break;
                 if (key == OS::Key::Ascii && c == 'q')
@@ -111,7 +111,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
         force = true;
     debugForcePrintContext = false;
 
-    auto loc = ByteCode::getLocation(debugCxtBc, debugCxtIp, true);
+    const auto loc = ByteCode::getLocation(debugCxtBc, debugCxtIp, true);
 
     // Print file
     bool printSomething = false;
@@ -125,9 +125,9 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     }
 
     // Get current function
-    AstNode* newFunc   = nullptr;
-    bool     isInlined = false;
-    auto     node      = debugCxtIp->node;
+    AstNode*   newFunc   = nullptr;
+    bool       isInlined = false;
+    const auto node      = debugCxtIp->node;
     if (node)
     {
         if (node->ownerInline)
@@ -194,8 +194,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
     if (arg.split.size() != 1)
         return BcDbgCommandResult::BadArguments;
 
-    auto ipNode = g_ByteCodeDebugger.debugCxtIp->node;
-    auto bc     = g_ByteCodeDebugger.debugCxtBc;
+    const auto ipNode = g_ByteCodeDebugger.debugCxtIp->node;
+    const auto bc     = g_ByteCodeDebugger.debugCxtBc;
 
     if (ipNode && ipNode->ownerFct)
     {
@@ -212,7 +212,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
     g_ByteCodeDebugger.printTitleNameType("bytecode", bc->getPrintName(), bc->typeInfoFunc->getDisplayNameC());
     if (bc->sourceFile && bc->node)
     {
-        auto loc = Fmt("%s:%u:%u", bc->sourceFile->path.string().c_str(), bc->node->token.startLocation.line + 1, bc->node->token.startLocation.column + 1);
+        const auto loc = Fmt("%s:%u:%u", bc->sourceFile->path.string().c_str(), bc->node->token.startLocation.line + 1, bc->node->token.startLocation.column + 1);
         g_ByteCodeDebugger.printTitleNameType("bytecode location", loc, "");
     }
     else if (bc->sourceFile)
@@ -224,7 +224,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
 
     if (ipNode && ipNode->sourceFile)
     {
-        auto loc = Fmt("%s:%u:%u", ipNode->sourceFile->path.string().c_str(), ipNode->token.startLocation.line + 1, ipNode->token.startLocation.column + 1);
+        const auto loc = Fmt("%s:%u:%u", ipNode->sourceFile->path.string().c_str(), ipNode->token.startLocation.line + 1, ipNode->token.startLocation.column + 1);
         g_ByteCodeDebugger.printTitleNameType("instruction location", loc, "");
     }
 
@@ -244,8 +244,8 @@ void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* b
     Vector<Utf8>       toPrint;
     for (const auto& l : lines)
     {
-        Utf8 oneLine;
-        bool currentLine = curLocation->line == startLine + lineIdx;
+        Utf8       oneLine;
+        const bool currentLine = curLocation->line == startLine + lineIdx;
 
         // Current line
         if (currentLine)
@@ -264,7 +264,7 @@ void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* b
         oneLine += ByteCodeDebugger::COLOR_VTS_DEFAULT;
 
         // Line breakpoint
-        DebugBreakpoint* hasBkp = nullptr;
+        const DebugBreakpoint* hasBkp = nullptr;
         for (auto it = debugBreakpoints.begin(); it != debugBreakpoints.end(); it++)
         {
             auto& bkp = *it;
@@ -272,7 +272,7 @@ void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* b
             {
             case DebugBkpType::FuncName:
             {
-                auto loc = ByteCode::getLocation(bc, bc->out);
+                const auto loc = ByteCode::getLocation(bc, bc->out);
                 if (context->bc->getPrintName().find(bkp.name) != -1 && loc.location && startLine + lineIdx + 1 == loc.location->line)
                     hasBkp = &bkp;
                 break;
@@ -336,7 +336,7 @@ void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* b
 
 void ByteCodeDebugger::printInstructions(ByteCodeRunContext* context, ByteCode* bc, ByteCodeInstruction* ip, int num)
 {
-    int count = num;
+    const int count = num;
     int cpt   = 1;
     while (--num)
     {
@@ -432,7 +432,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
 
     while (count > 0)
     {
-        auto addrLine = addrB;
+        const auto addrLine = addrB;
 
         g_Log.print(Fmt("0x%016llx ", addrLine), LogColor::DarkYellow);
         g_Log.setColor(LogColor::Gray);
@@ -514,7 +514,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext* cont
 
     if (arg.split.size() > 1)
     {
-        auto name = arg.split[1];
+        const auto name = arg.split[1];
         toLogBc   = g_ByteCodeDebugger.findCmdBc(name);
         if (!toLogBc)
             return BcDbgCommandResult::Continue;
@@ -539,8 +539,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
     if (arg.split.size() > 1 && !Utf8::isNumber(arg.split[1].c_str()))
         return BcDbgCommandResult::BadArguments;
 
-    auto toLogBc                   = g_ByteCodeDebugger.debugCxtBc;
-    auto toLogIp                   = g_ByteCodeDebugger.debugCxtIp;
+    const auto toLogBc             = g_ByteCodeDebugger.debugCxtBc;
+    const auto toLogIp             = g_ByteCodeDebugger.debugCxtIp;
     g_ByteCodeDebugger.debugBcMode = false;
 
     if (toLogBc->node && toLogBc->node->kind == AstNodeKind::FuncDecl && toLogBc->node->sourceFile)
@@ -549,15 +549,15 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
         if (arg.split.size() == 2)
             offset = atoi(arg.split[1].c_str());
 
-        auto inl = g_ByteCodeDebugger.debugLastBreakIp->node->ownerInline;
+        const auto inl = g_ByteCodeDebugger.debugLastBreakIp->node->ownerInline;
         if (inl)
         {
-            auto loc = ByteCode::getLocation(toLogBc, toLogIp, true);
+            const auto loc = ByteCode::getLocation(toLogBc, toLogIp, true);
             g_ByteCodeDebugger.printSourceLines(context, toLogBc, inl->func->sourceFile, loc.location, offset);
         }
         else
         {
-            auto loc = ByteCode::getLocation(toLogBc, toLogIp, false);
+            const auto loc = ByteCode::getLocation(toLogBc, toLogIp, false);
             g_ByteCodeDebugger.printSourceLines(context, toLogBc, toLogBc->node->sourceFile, loc.location, offset);
         }
     }
@@ -578,7 +578,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
 
     if (arg.split.size() > 1)
     {
-        auto name = arg.split[1];
+        const auto name = arg.split[1];
         toLogBc   = g_ByteCodeDebugger.findCmdBc(name);
         if (!toLogBc)
             return BcDbgCommandResult::Continue;
@@ -587,24 +587,24 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
 
     if (toLogBc->node && toLogBc->node->kind == AstNodeKind::FuncDecl && toLogBc->node->sourceFile)
     {
-        auto funcNode = CastAst<AstFuncDecl>(toLogBc->node, AstNodeKind::FuncDecl);
+        const auto funcNode = CastAst<AstFuncDecl>(toLogBc->node, AstNodeKind::FuncDecl);
         if (funcNode->content)
         {
             toLogBc->printName();
 
-            auto inl = g_ByteCodeDebugger.debugLastBreakIp->node->ownerInline;
+            const auto inl = g_ByteCodeDebugger.debugLastBreakIp->node->ownerInline;
             if (inl)
             {
-                auto     loc       = ByteCode::getLocation(toLogBc, toLogIp, true);
-                uint32_t startLine = inl->func->token.startLocation.line;
-                uint32_t endLine   = inl->func->content->token.endLocation.line;
+                const auto     loc       = ByteCode::getLocation(toLogBc, toLogIp, true);
+                const uint32_t startLine = inl->func->token.startLocation.line;
+                const uint32_t endLine   = inl->func->content->token.endLocation.line;
                 g_ByteCodeDebugger.printSourceLines(context, toLogBc, inl->func->sourceFile, loc.location, startLine, endLine);
             }
             else
             {
-                auto     loc       = ByteCode::getLocation(toLogBc, toLogIp, false);
-                uint32_t startLine = toLogBc->node->token.startLocation.line;
-                uint32_t endLine   = funcNode->content->token.endLocation.line;
+                const auto     loc       = ByteCode::getLocation(toLogBc, toLogIp, false);
+                const uint32_t startLine = toLogBc->node->token.startLocation.line;
+                const uint32_t endLine   = funcNode->content->token.endLocation.line;
                 g_ByteCodeDebugger.printSourceLines(context, toLogBc, toLogBc->node->sourceFile, loc.location, startLine, endLine);
             }
         }

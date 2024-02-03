@@ -37,7 +37,7 @@ static bool emitPData(const BuildParameters& buildParameters, SCBE_CPU& pp)
     *pp.patchPDOffset = concat.totalCount();
 
     uint32_t offset = 0;
-    for (auto& f : pp.functions)
+    for (const auto& f : pp.functions)
     {
         SWAG_ASSERT(f.symbolIndex < pp.allSymbols.size());
         SWAG_ASSERT(f.endAddress > f.startAddress);
@@ -97,7 +97,7 @@ static bool emitSymbolTable(const BuildParameters& buildParameters, SCBE_CPU& pp
             // Be sure it's stuffed with 0 after the name, or we can have weird things
             // in the compiler
             concat.addU64(0);
-            auto ptr = concat.getSeekPtr() - 8;
+            const auto ptr = concat.getSeekPtr() - 8;
             memcpy(ptr, symbol.name.buffer, symbol.name.length());
         }
         else
@@ -150,7 +150,7 @@ static bool emitStringTable(const BuildParameters& buildParameters, SCBE_CPU& pp
 
     concat.addU32(pp.stringTableOffset); // .Size of table in bytes + 4
     SWAG_IF_ASSERT(uint32_t subTotal = 4);
-    for (auto str : pp.stringTable)
+    for (const auto str : pp.stringTable)
     {
         concat.addString(str->buffer, str->count);
         concat.addU8(0);
@@ -163,11 +163,11 @@ static bool emitStringTable(const BuildParameters& buildParameters, SCBE_CPU& pp
 
 bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
 {
-    int       precompileIndex = buildParameters.precompileIndex;
-    auto      module          = buildParameters.module;
-    auto&     concat          = pp.concat;
-    const int NUM_SECTIONS_0  = 12;
-    const int NUM_SECTIONS_X  = 7;
+    const int  precompileIndex = buildParameters.precompileIndex;
+    const auto module          = buildParameters.module;
+    auto&      concat          = pp.concat;
+    const int  NUM_SECTIONS_0  = 12;
+    const int  NUM_SECTIONS_X  = 7;
 
     // Coff header
     /////////////////////////////////////////////
@@ -375,7 +375,7 @@ void SCBE_Coff::emitUnwind(Concat& concat, uint32_t& offset, uint32_t sizeProlog
     offset += 4;
 
     // Unwind array
-    for (auto un : unwind)
+    for (const auto un : unwind)
     {
         concat.addU16(un);
         offset += 2;
@@ -392,7 +392,7 @@ void SCBE_Coff::emitUnwind(Concat& concat, uint32_t& offset, uint32_t sizeProlog
 bool SCBE_Coff::emitRelocationTable(Concat& concat, CPURelocationTable& cofftable, uint32_t* sectionFlags, uint16_t* count)
 {
     SWAG_ASSERT(cofftable.table.size() < UINT32_MAX);
-    auto tableSize = (uint32_t) cofftable.table.size();
+    const auto tableSize = (uint32_t) cofftable.table.size();
     if (tableSize > 0xFFFF)
     {
         *count = 0xFFFF;
@@ -407,7 +407,7 @@ bool SCBE_Coff::emitRelocationTable(Concat& concat, CPURelocationTable& cofftabl
         *count = (uint16_t) tableSize;
     }
 
-    for (auto& reloc : cofftable.table)
+    for (const auto& reloc : cofftable.table)
     {
         concat.ensureSpace(4 + 4 + 2);
         concat.addU32(reloc.virtualAddress);
@@ -420,9 +420,9 @@ bool SCBE_Coff::emitRelocationTable(Concat& concat, CPURelocationTable& cofftabl
 
 bool SCBE_Coff::emitPostFunc(const BuildParameters& buildParameters, SCBE_CPU& pp)
 {
-    auto  module          = buildParameters.module;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& concat          = pp.concat;
+    const auto module          = buildParameters.module;
+    const int  precompileIndex = buildParameters.precompileIndex;
+    auto&      concat          = pp.concat;
 
     emitSymbolTable(buildParameters, pp);
     emitStringTable(buildParameters, pp);
@@ -453,7 +453,7 @@ bool SCBE_Coff::emitPostFunc(const BuildParameters& buildParameters, SCBE_CPU& p
     }
 
     // Segments
-    uint32_t ssOffset = concat.totalCount();
+    const uint32_t ssOffset = concat.totalCount();
     if (pp.stringSegment.totalCount)
     {
         *pp.patchSSCount  = pp.stringSegment.totalCount;
@@ -462,10 +462,10 @@ bool SCBE_Coff::emitPostFunc(const BuildParameters& buildParameters, SCBE_CPU& p
 
     if (precompileIndex == 0)
     {
-        uint32_t gsOffset  = ssOffset + pp.stringSegment.totalCount;
-        uint32_t csOffset  = gsOffset + pp.globalSegment.totalCount;
-        uint32_t msOffset  = csOffset + module->constantSegment.totalCount;
-        uint32_t tlsOffset = msOffset + module->mutableSegment.totalCount;
+        const uint32_t gsOffset  = ssOffset + pp.stringSegment.totalCount;
+        const uint32_t csOffset  = gsOffset + pp.globalSegment.totalCount;
+        const uint32_t msOffset  = csOffset + module->constantSegment.totalCount;
+        const uint32_t tlsOffset = msOffset + module->mutableSegment.totalCount;
 
         // We do not use concat to avoid dummy copies. We will save the segments as they are
         if (pp.globalSegment.totalCount)
@@ -497,7 +497,7 @@ bool SCBE_Coff::emitPostFunc(const BuildParameters& buildParameters, SCBE_CPU& p
         pp.postConcat.init();
 
         // Warning ! Should be the last segment
-        uint32_t csRelocOffset = tlsOffset + module->tlsSegment.totalCount;
+        const uint32_t csRelocOffset = tlsOffset + module->tlsSegment.totalCount;
 
         if (!pp.relocTableCSSection.table.empty())
         {
@@ -505,14 +505,14 @@ bool SCBE_Coff::emitPostFunc(const BuildParameters& buildParameters, SCBE_CPU& p
             emitRelocationTable(pp.postConcat, pp.relocTableCSSection, pp.patchCSSectionFlags, pp.patchCSSectionRelocTableCount);
         }
 
-        uint32_t msRelocOffset = csRelocOffset + pp.postConcat.totalCount();
+        const uint32_t msRelocOffset = csRelocOffset + pp.postConcat.totalCount();
         if (!pp.relocTableMSSection.table.empty())
         {
             *pp.patchMSSectionRelocTableOffset = msRelocOffset;
             emitRelocationTable(pp.postConcat, pp.relocTableMSSection, pp.patchMSSectionFlags, pp.patchMSSectionRelocTableCount);
         }
 
-        uint32_t tlsRelocOffset = csRelocOffset + pp.postConcat.totalCount();
+        const uint32_t tlsRelocOffset = csRelocOffset + pp.postConcat.totalCount();
         if (!pp.relocTableTLSSection.table.empty())
         {
             *pp.patchTLSSectionRelocTableOffset = tlsRelocOffset;
@@ -525,15 +525,15 @@ bool SCBE_Coff::emitPostFunc(const BuildParameters& buildParameters, SCBE_CPU& p
 
 bool SCBE_Coff::saveFileBuffer(FILE* f, const BuildParameters& buildParameters, SCBE_CPU& pp)
 {
-    auto module          = buildParameters.module;
-    int  precompileIndex = buildParameters.precompileIndex;
+    const auto module          = buildParameters.module;
+    const int  precompileIndex = buildParameters.precompileIndex;
 
     // Output the full concat buffer
     SWAG_IF_ASSERT(uint32_t totalCount = 0);
     auto bucket = pp.concat.firstBucket;
     while (bucket != pp.concat.lastBucket->nextBucket)
     {
-        auto count = pp.concat.bucketCount(bucket);
+        const auto count = pp.concat.bucketCount(bucket);
         fwrite(bucket->datas, count, 1, f);
         SWAG_IF_ASSERT(totalCount += count);
         bucket = bucket->nextBucket;
@@ -544,7 +544,7 @@ bool SCBE_Coff::saveFileBuffer(FILE* f, const BuildParameters& buildParameters, 
 
     // The global strings segment
     SWAG_ASSERT(totalCount == *pp.patchSSOffset || *pp.patchSSOffset == 0);
-    for (auto oneB : pp.stringSegment.buckets)
+    for (const auto oneB : pp.stringSegment.buckets)
     {
         SWAG_IF_ASSERT(totalCount += oneB.count);
         SWAG_IF_ASSERT(subTotal += oneB.count);
@@ -557,7 +557,7 @@ bool SCBE_Coff::saveFileBuffer(FILE* f, const BuildParameters& buildParameters, 
         // The global segment to store context & process infos
         SWAG_ASSERT(totalCount == *pp.patchGSOffset || *pp.patchGSOffset == 0);
         SWAG_IF_ASSERT(subTotal = 0);
-        for (auto oneB : pp.globalSegment.buckets)
+        for (const auto oneB : pp.globalSegment.buckets)
         {
             SWAG_IF_ASSERT(totalCount += oneB.count);
             SWAG_IF_ASSERT(subTotal += oneB.count);
@@ -569,7 +569,7 @@ bool SCBE_Coff::saveFileBuffer(FILE* f, const BuildParameters& buildParameters, 
         // The constant segment
         SWAG_ASSERT(totalCount == *pp.patchCSOffset || *pp.patchCSOffset == 0);
         SWAG_IF_ASSERT(subTotal = 0);
-        for (auto oneB : module->constantSegment.buckets)
+        for (const auto oneB : module->constantSegment.buckets)
         {
             SWAG_IF_ASSERT(totalCount += oneB.count);
             SWAG_IF_ASSERT(subTotal += oneB.count);
@@ -581,7 +581,7 @@ bool SCBE_Coff::saveFileBuffer(FILE* f, const BuildParameters& buildParameters, 
         // The mutable segment
         SWAG_ASSERT(totalCount == *pp.patchMSOffset || *pp.patchMSOffset == 0);
         SWAG_IF_ASSERT(subTotal = 0);
-        for (auto oneB : module->mutableSegment.buckets)
+        for (const auto oneB : module->mutableSegment.buckets)
         {
             SWAG_IF_ASSERT(totalCount += oneB.count);
             SWAG_IF_ASSERT(subTotal += oneB.count);
@@ -593,7 +593,7 @@ bool SCBE_Coff::saveFileBuffer(FILE* f, const BuildParameters& buildParameters, 
         // The tls segment
         SWAG_ASSERT(totalCount == *pp.patchTLSOffset || *pp.patchTLSOffset == 0);
         SWAG_IF_ASSERT(subTotal = 0);
-        for (auto oneB : module->tlsSegment.buckets)
+        for (const auto oneB : module->tlsSegment.buckets)
         {
             SWAG_IF_ASSERT(totalCount += oneB.count);
             SWAG_IF_ASSERT(subTotal += oneB.count);
@@ -606,7 +606,7 @@ bool SCBE_Coff::saveFileBuffer(FILE* f, const BuildParameters& buildParameters, 
         bucket = pp.postConcat.firstBucket;
         while (bucket != pp.postConcat.lastBucket->nextBucket)
         {
-            auto count = pp.postConcat.bucketCount(bucket);
+            const auto count = pp.postConcat.bucketCount(bucket);
             fwrite(bucket->datas, count, 1, f);
             bucket = bucket->nextBucket;
         }

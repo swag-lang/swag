@@ -9,7 +9,7 @@
 
 bool ByteCodeGen::emitLocalVarDeclBefore(ByteCodeGenContext* context)
 {
-    auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+    const auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
     // No need to generate a local variable if it is never used
     if (context->sourceFile->module->mustOptimizeBytecode(node))
@@ -17,7 +17,7 @@ bool ByteCodeGen::emitLocalVarDeclBefore(ByteCodeGenContext* context)
         if (node->resolvedSymbolOverload && !(node->resolvedSymbolOverload->flags & OVERLOAD_USED))
         {
             // Keep structs, because of opDrop
-            auto typeInfo = TypeManager::concreteType(node->resolvedSymbolOverload->typeInfo);
+            const auto typeInfo = TypeManager::concreteType(node->resolvedSymbolOverload->typeInfo);
             if (!typeInfo->isStruct() && !typeInfo->isArrayOfStruct())
             {
                 if (!node->assignment)
@@ -40,7 +40,7 @@ bool ByteCodeGen::emitLocalVarDeclBefore(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
 {
-    auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+    const auto node = CastAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
     // Debug
     context->bc->localVars.push_back(context->node);
@@ -49,11 +49,11 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
     if (node->assignment && node->assignment->flags & AST_TUPLE_UNPACK)
         return true;
 
-    auto resolved = node->resolvedSymbolOverload;
+    const auto resolved = node->resolvedSymbolOverload;
     resolved->flags |= OVERLOAD_EMITTED;
 
-    auto typeInfo = TypeManager::concreteType(resolved->typeInfo, CONCRETE_FORCEALIAS);
-    bool retVal   = resolved->flags & OVERLOAD_RETVAL;
+    const auto typeInfo = TypeManager::concreteType(resolved->typeInfo, CONCRETE_FORCEALIAS);
+    const bool retVal   = resolved->flags & OVERLOAD_RETVAL;
 
     Semantic::waitStructGenerated(context->baseJob, typeInfo);
     YIELD();
@@ -62,7 +62,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
     bool mustDropLeft = false;
     if (typeInfo->isStruct())
     {
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        const auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
 
         // Generate initialization
         // Do not generate if we have a user define affectation, and the operator is marked as 'complete'
@@ -186,8 +186,8 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
 
     if (typeInfo->isArrayOfStruct())
     {
-        auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        auto finalType = typeArray->finalType;
+        const auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        const auto finalType = typeArray->finalType;
         if ((finalType->flags & TYPEINFO_STRUCT_HAS_INIT_VALUES) || (node->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
         {
             if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) || (node->type->specFlags & AstType::SPECFLAG_HAS_STRUCT_PARAMETERS))
@@ -205,7 +205,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
                     reserveRegisterRC(context, r0, 2);
                     EMIT_INST1(context, ByteCodeOp::SetImmediate64, r0[0])->b.u64 = typeArray->totalCount;
                     EMIT_INST1(context, ByteCodeOp::ClearRA, r0[1]);
-                    auto seekJump = context->bc->numInstructions;
+                    const auto seekJump = context->bc->numInstructions;
 
                     if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
                         emitStructInit(context, CastTypeInfo<TypeInfoStruct>(finalType, TypeInfoKind::Struct), r0[1], retVal);

@@ -11,7 +11,7 @@ bool Module::postCompilerMessage(JobContext* context, CompilerMessage& msg)
     // We can decide to filter the message only if all #message functions have been registered
     if (numCompilerFunctions == 0)
     {
-        int index = (int) msg.concrete.kind;
+        const int index = (int) msg.concrete.kind;
         if (byteCodeCompiler[index].empty())
             return true;
     }
@@ -32,7 +32,7 @@ bool Module::prepareCompilerMessages(JobContext* context, uint32_t pass)
         auto& msg = compilerMessages[pass][i];
 
         // If no #message function corresponding to the message, remove
-        int index = (int) msg.concrete.kind;
+        const int index = (int) msg.concrete.kind;
         if (byteCodeCompiler[index].empty())
         {
             compilerMessages[pass][i] = std::move(compilerMessages[pass].back());
@@ -52,7 +52,7 @@ bool Module::prepareCompilerMessages(JobContext* context, uint32_t pass)
     size_t startIndex = 0;
     while (startIndex < compilerMessages[pass].size())
     {
-        auto newJob          = Allocator::alloc<PrepCompilerMsgJob>();
+        const auto newJob          = Allocator::alloc<PrepCompilerMsgJob>();
         newJob->module       = this;
         newJob->pass         = pass;
         newJob->startIndex   = (int) startIndex;
@@ -129,7 +129,7 @@ bool Module::sendCompilerMessage(ExportedCompilerMessage* msg, Job* dependentJob
     // :PushDefaultCxt
     PushSwagContext cxt;
 
-    for (auto bc : byteCodeCompiler[(int) msg->kind])
+    for (const auto bc : byteCodeCompiler[(int) msg->kind])
     {
         SWAG_CHECK(executeNode(bc->node->sourceFile, bc->node, &context));
     }

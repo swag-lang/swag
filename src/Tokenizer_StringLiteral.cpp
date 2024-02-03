@@ -22,7 +22,7 @@ void Tokenizer::trimMultilineString(Utf8& text)
     // Now remove the same amount of blank at the start of each new line
     Utf8 copyText;
     copyText.reserve(text.length());
-    auto endPz = pz;
+    const auto endPz = pz;
 
     pz     = text.buffer;
     auto i = text.count;

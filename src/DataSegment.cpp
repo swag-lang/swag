@@ -63,16 +63,16 @@ void DataSegment::initFrom(DataSegment* other)
     // We need pointers to be in the right segment, not the original one, because sometimes
     // we have to find back the offset from the pointer.
     // :BackPtrOffset
-    for (auto& it : other->initPtr)
+    for (const auto& it : other->initPtr)
     {
         // If this asserts, then this means that the bootstrap/runtime makes cross references between
         // segments. The update will have to be changed in that case, because here we will have to
         // get the address from another segment.
         SWAG_ASSERT(it.fromSegment == SegmentKind::Me || it.fromSegment == kind);
 
-        auto patchAddr      = address(it.patchOffset);
-        auto fromAddr       = address(it.fromOffset);
-        *(void**) patchAddr = fromAddr;
+        const auto patchAddr = address(it.patchOffset);
+        const auto fromAddr  = address(it.fromOffset);
+        *(void**) patchAddr  = fromAddr;
         addInitPtr(it.patchOffset, it.fromOffset, it.fromSegment);
     }
 
@@ -105,10 +105,10 @@ void DataSegment::alignNoLock(uint32_t alignOf)
     // Align
     if (buckets.size() && alignOf > 1)
     {
-        auto alignOffset = (uint32_t) TypeManager::align(totalCount, alignOf);
+        const auto alignOffset = (uint32_t) TypeManager::align(totalCount, alignOf);
         if (alignOffset != totalCount)
         {
-            auto diff = alignOffset - totalCount;
+            const auto diff = alignOffset - totalCount;
             reserveNoLock(diff);
         }
     }
@@ -169,7 +169,7 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, uint8_t** resultPtr)
         }
     }
 
-    auto result = totalCount;
+    const auto result = totalCount;
     totalCount += size;
     return result;
 }
@@ -181,7 +181,7 @@ uint32_t DataSegment::tryOffset(uint8_t* location)
     uint32_t offset = 0;
     for (size_t i = 0; i < buckets.size(); i++)
     {
-        auto bucket = &buckets[i];
+        const auto bucket = &buckets[i];
         if (location >= bucket->buffer && location < bucket->buffer + bucket->count)
         {
             offset += (uint32_t) (location - bucket->buffer);
@@ -196,7 +196,7 @@ uint32_t DataSegment::tryOffset(uint8_t* location)
 
 uint32_t DataSegment::offset(uint8_t* location)
 {
-    auto offset = tryOffset(location);
+    const auto offset = tryOffset(location);
     if (offset != UINT32_MAX)
         return offset;
     SWAG_ASSERT(false);
@@ -216,7 +216,7 @@ uint8_t* DataSegment::addressNoLock(uint32_t location)
     SWAG_ASSERT(buckets.size());
     for (size_t i = 0; i < buckets.size(); i++)
     {
-        auto bucket = &buckets[i];
+        const auto bucket = &buckets[i];
         if (location < (uint64_t) bucket->count)
             return bucket->buffer + location;
         location -= bucket->count;
@@ -234,12 +234,12 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, TypeInfo* typeInf
 
     if (typeInfo->nativeType == NativeTypeKind::String)
     {
-        auto     stringOffset = addString(computedValue.text);
-        uint8_t* addr;
-        auto     storageOffset = reserve(2 * sizeof(uint64_t), &addr);
-        ((uint64_t*) addr)[0]  = (uint64_t) computedValue.text.buffer;
-        ((uint64_t*) addr)[1]  = (uint32_t) computedValue.text.count;
-        *resultPtr             = addr;
+        const auto stringOffset = addString(computedValue.text);
+        uint8_t*   addr;
+        const auto storageOffset = reserve(2 * sizeof(uint64_t), &addr);
+        ((uint64_t*) addr)[0]    = (uint64_t) computedValue.text.buffer;
+        ((uint64_t*) addr)[1]    = (uint32_t) computedValue.text.count;
+        *resultPtr               = addr;
         addInitPtr(storageOffset, stringOffset);
         return storageOffset;
     }
@@ -249,7 +249,7 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, TypeInfo* typeInf
     {
     case 1:
     {
-        auto it = storedValues8.find(computedValue.reg.u8);
+        const auto it = storedValues8.find(computedValue.reg.u8);
         if (it != storedValues8.end())
         {
             *resultPtr = it->second.addr;
@@ -260,7 +260,7 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, TypeInfo* typeInf
 
     case 2:
     {
-        auto it = storedValues16.find(computedValue.reg.u16);
+        const auto it = storedValues16.find(computedValue.reg.u16);
         if (it != storedValues16.end())
         {
             *resultPtr = it->second.addr;
@@ -271,7 +271,7 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, TypeInfo* typeInf
 
     case 4:
     {
-        auto it = storedValues32.find(computedValue.reg.u32);
+        const auto it = storedValues32.find(computedValue.reg.u32);
         if (it != storedValues32.end())
         {
             *resultPtr = it->second.addr;
@@ -281,7 +281,7 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, TypeInfo* typeInf
     }
     case 8:
     {
-        auto it = storedValues64.find(computedValue.reg.u64);
+        const auto it = storedValues64.find(computedValue.reg.u64);
         if (it != storedValues64.end())
         {
             *resultPtr = it->second.addr;
@@ -291,9 +291,9 @@ uint32_t DataSegment::addComputedValue(SourceFile* sourceFile, TypeInfo* typeInf
     }
     }
 
-    uint8_t* addr;
-    auto     storageOffset = reserveNoLock(typeInfo->sizeOf, &addr);
-    *resultPtr             = addr;
+    uint8_t*   addr;
+    const auto storageOffset = reserveNoLock(typeInfo->sizeOf, &addr);
+    *resultPtr               = addr;
 
     switch (typeInfo->sizeOf)
     {
@@ -330,7 +330,7 @@ uint32_t DataSegment::addStringNoLock(const Utf8& str, uint8_t** resultPtr)
 
     // Same string already there ?
     using P                      = MapUtf8<CacheValue>;
-    pair<P::iterator, bool> iter = storedStrings.insert(P::value_type(str, {}));
+    const pair<P::iterator, bool> iter = storedStrings.insert(P::value_type(str, {}));
     if (!iter.second)
     {
         if (resultPtr)
@@ -338,8 +338,8 @@ uint32_t DataSegment::addStringNoLock(const Utf8& str, uint8_t** resultPtr)
         return iter.first->second.offset;
     }
 
-    uint8_t* addr;
-    auto     offset = reserveNoLock(str.count + 1, &addr);
+    uint8_t*   addr;
+    const auto offset = reserveNoLock(str.count + 1, &addr);
     if (resultPtr)
         *resultPtr = addr;
     memcpy(addr, str.buffer, str.count);
@@ -362,7 +362,7 @@ void DataSegment::addPatchPtr(int64_t* addr, int64_t value)
 
 void DataSegment::applyPatchPtr()
 {
-    for (auto& it : patchPtr)
+    for (const auto& it : patchPtr)
         *it.addr = it.value;
 }
 
@@ -376,9 +376,9 @@ void DataSegment::addPatchMethod(AstFuncDecl* funcDecl, uint32_t storageOffset)
 void DataSegment::doPatchMethods(JobContext* context)
 {
     ScopedLock lk(mutexPatchMethod);
-    for (auto it : patchMethods)
+    for (const auto it : patchMethods)
     {
-        auto      funcNode  = it.first;
+        const auto      funcNode  = it.first;
         void*     lambdaPtr = nullptr;
         ByteCode* bc        = nullptr;
         if (funcNode->isForeign())
@@ -398,7 +398,7 @@ void DataSegment::doPatchMethods(JobContext* context)
 
         if (lambdaPtr)
         {
-            auto addr      = address(it.second);
+            const auto addr      = address(it.second);
             *(void**) addr = lambdaPtr;
         }
     }
@@ -453,20 +453,20 @@ bool DataSegment::readU64(Seek& seek, uint64_t& result)
     if (seek.seekBucket == buckets.size())
         return false;
 
-    auto* curBucket = &buckets[seek.seekBucket];
+    const auto* curBucket = &buckets[seek.seekBucket];
     if (seek.seekRead + 8 <= curBucket->count)
     {
-        uint64_t* ptr = (uint64_t*) (curBucket->buffer + seek.seekRead);
+        const uint64_t* ptr = (uint64_t*) (curBucket->buffer + seek.seekRead);
         seek.seekRead += 8;
         result = *ptr;
         return true;
     }
 
-    int cpt              = 0;
-    result               = 0;
-    uint8_t* ptr         = curBucket->buffer + seek.seekRead;
-    uint32_t shift       = 0;
-    bool     resultValid = false;
+    int cpt                    = 0;
+    result                     = 0;
+    const uint8_t* ptr         = curBucket->buffer + seek.seekRead;
+    uint32_t       shift       = 0;
+    bool           resultValid = false;
     while (cpt != 8 && seek.seekBucket != buckets.size())
     {
         while (cpt != 8 && (seek.seekRead < curBucket->count))
@@ -499,7 +499,7 @@ bool DataSegment::readU64(Seek& seek, uint64_t& result)
 void DataSegment::saveValue(void* address, uint32_t size, bool zero)
 {
     ScopedLock lk(mutex);
-    auto       it = savedValues.find(address);
+    const auto it = savedValues.find(address);
     if (it != savedValues.end())
         return;
 
@@ -524,7 +524,7 @@ void DataSegment::saveValue(void* address, uint32_t size, bool zero)
         savedValues[address] = {(void*) (size_t) * (uint64_t*) address, size};
         break;
     default:
-        auto buf = Allocator::alloc(Allocator::alignSize(size));
+        const auto buf = Allocator::alloc(Allocator::alignSize(size));
         memcpy(buf, address, size);
         savedValues[address] = {buf, size};
         break;
@@ -569,7 +569,7 @@ void DataSegment::restoreAllValues()
 void DataSegment::release()
 {
     deleted = true;
-    for (auto& b : buckets)
+    for (const auto& b : buckets)
         Allocator::free(b.buffer, Allocator::alignSize(b.size));
     buckets.clear();
 }
@@ -587,7 +587,7 @@ void DataSegment::makeLinear()
     h.buffer = (uint8_t*) Allocator::alloc(h.count);
 
     auto ptr = h.buffer;
-    for (auto& b : buckets)
+    for (const auto& b : buckets)
     {
         memcpy(ptr, b.buffer, b.count);
         ptr += b.count;

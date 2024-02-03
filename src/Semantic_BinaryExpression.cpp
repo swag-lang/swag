@@ -12,11 +12,11 @@
 
 bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node          = CastAst<AstOp>(context->node, AstNodeKind::FactorOp);
-    auto sourceFile    = context->sourceFile;
-    auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
-    auto module        = sourceFile->module;
+    auto       node          = CastAst<AstOp>(context->node, AstNodeKind::FactorOp);
+    const auto sourceFile    = context->sourceFile;
+    auto       leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
+    const auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
+    const auto module        = sourceFile->module;
 
     if (leftTypeInfo->isStruct())
     {
@@ -33,7 +33,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
         {
             Diagnostic diag{node, node->token, Err(Err0359)};
             diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-            auto note = Diagnostic::note(Nte(Nte0103));
+            const auto note = Diagnostic::note(Nte(Nte0103));
             return context->report(diag, note);
         }
 
@@ -56,7 +56,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
         {
             Diagnostic diag{node, node->token, Err(Err0359)};
             diag.addRange(right, Diagnostic::isType(rightTypeInfo));
-            auto note = Diagnostic::note(Nte(Nte0103));
+            const auto note = Diagnostic::note(Nte(Nte0103));
             return context->report(diag, note);
         }
 
@@ -202,11 +202,11 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
 
 bool Semantic::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node          = context->node;
-    auto sourceFile    = context->sourceFile;
-    auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
-    auto module        = sourceFile->module;
+    auto       node          = context->node;
+    const auto sourceFile    = context->sourceFile;
+    auto       leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
+    const auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
+    const auto module        = sourceFile->module;
 
     if (leftTypeInfo->isStruct())
     {
@@ -232,7 +232,7 @@ bool Semantic::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, Ast
         {
             Diagnostic diag{node, node->token, Err(Err0359)};
             diag.addRange(left, Diagnostic::isType(leftTypeInfo));
-            auto note = Diagnostic::note(Nte(Nte0103));
+            const auto note = Diagnostic::note(Nte(Nte0103));
             return context->report(diag, note);
         }
 
@@ -344,11 +344,11 @@ bool Semantic::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, Ast
 
 bool Semantic::resolveBinaryOpMul(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node          = context->node;
-    auto sourceFile    = context->sourceFile;
-    auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
-    auto module        = sourceFile->module;
+    auto       node          = context->node;
+    const auto sourceFile    = context->sourceFile;
+    auto       leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
+    const auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
+    const auto module        = sourceFile->module;
 
     if (leftTypeInfo->isStruct())
     {
@@ -475,11 +475,11 @@ bool Semantic::resolveBinaryOpMul(SemanticContext* context, AstNode* left, AstNo
 
 bool Semantic::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node          = context->node;
-    auto sourceFile    = context->sourceFile;
-    auto module        = sourceFile->module;
-    auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
+    const auto node          = context->node;
+    const auto sourceFile    = context->sourceFile;
+    const auto module        = sourceFile->module;
+    auto       leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
+    const auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
 
     if (leftTypeInfo->isStruct())
     {
@@ -581,9 +581,9 @@ bool Semantic::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNo
 
 bool Semantic::resolveBinaryOpModulo(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node          = context->node;
-    auto leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
-    auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
+    const auto node          = context->node;
+    auto       leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
+    const auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
 
     if (leftTypeInfo->isStruct())
     {
@@ -670,9 +670,9 @@ bool Semantic::resolveBinaryOpModulo(SemanticContext* context, AstNode* left, As
 
 bool Semantic::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node         = context->node;
-    auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
-    auto module       = node->sourceFile->module;
+    const auto node         = context->node;
+    const auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
+    const auto module       = node->sourceFile->module;
 
     if (leftTypeInfo->isStruct())
     {
@@ -780,9 +780,9 @@ bool Semantic::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstNode
 
 bool Semantic::resolveBitmaskAnd(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node         = context->node;
-    auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
-    auto module       = node->sourceFile->module;
+    const auto node         = context->node;
+    const auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
+    const auto module       = node->sourceFile->module;
 
     if (leftTypeInfo->isStruct())
     {
@@ -887,7 +887,7 @@ bool Semantic::resolveBitmaskAnd(SemanticContext* context, AstNode* left, AstNod
 
 bool Semantic::resolveAppend(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node = context->node;
+    const auto node = context->node;
 
     {
         PushErrCxtStep ec(
@@ -912,8 +912,8 @@ bool Semantic::resolveAppend(SemanticContext* context, AstNode* left, AstNode* r
 
 bool Semantic::resolveXor(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node         = context->node;
-    auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
+    const auto node         = context->node;
+    const auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
     if (leftTypeInfo->isStruct())
     {
@@ -1154,8 +1154,8 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
 
 bool Semantic::resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node         = CastAst<AstOp>(context->node, AstNodeKind::FactorOp);
-    auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
+    const auto node         = CastAst<AstOp>(context->node, AstNodeKind::FactorOp);
+    const auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
     if (leftTypeInfo->isStruct())
     {
@@ -1165,12 +1165,12 @@ bool Semantic::resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode
     }
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, right, CASTFLAG_TRY_COERCE));
-    auto module = node->sourceFile->module;
+    const auto module = node->sourceFile->module;
 
     if (!leftTypeInfo->isNativeIntegerOrRune())
     {
-        Diagnostic diag{node, node->token, Fmt(Err(Err0388), leftTypeInfo->getDisplayNameC())};
-        auto       note = Diagnostic::note(left, Diagnostic::isType(left));
+        const Diagnostic diag{node, node->token, Fmt(Err(Err0388), leftTypeInfo->getDisplayNameC())};
+        const auto       note = Diagnostic::note(left, Diagnostic::isType(left));
         return context->report(diag, note);
     }
 
@@ -1232,8 +1232,8 @@ bool Semantic::resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode
 
 bool Semantic::resolveShiftRight(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node         = CastAst<AstOp>(context->node, AstNodeKind::FactorOp);
-    auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
+    const auto node         = CastAst<AstOp>(context->node, AstNodeKind::FactorOp);
+    const auto leftTypeInfo = TypeManager::concretePtrRefType(left->typeInfo);
 
     if (leftTypeInfo->isStruct())
     {
@@ -1243,12 +1243,12 @@ bool Semantic::resolveShiftRight(SemanticContext* context, AstNode* left, AstNod
     }
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU32, nullptr, right, CASTFLAG_TRY_COERCE));
-    auto module = node->sourceFile->module;
+    const auto module = node->sourceFile->module;
 
     if (!leftTypeInfo->isNativeIntegerOrRune())
     {
-        Diagnostic diag{node, node->token, Fmt(Err(Err0389), leftTypeInfo->getDisplayNameC())};
-        auto       note = Diagnostic::note(left, Diagnostic::isType(left));
+        const Diagnostic diag{node, node->token, Fmt(Err(Err0389), leftTypeInfo->getDisplayNameC())};
+        const auto       note = Diagnostic::note(left, Diagnostic::isType(left));
         return context->report(diag, note);
     }
 
@@ -1310,9 +1310,9 @@ bool Semantic::resolveShiftRight(SemanticContext* context, AstNode* left, AstNod
 
 bool Semantic::resolveShiftExpression(SemanticContext* context)
 {
-    auto node  = context->node;
-    auto left  = node->childs[0];
-    auto right = node->childs[1];
+    const auto node  = context->node;
+    const auto left  = node->childs[0];
+    const auto right = node->childs[1];
 
     SWAG_CHECK(checkIsConcrete(context, left));
     SWAG_CHECK(checkIsConcrete(context, right));
@@ -1321,10 +1321,10 @@ bool Semantic::resolveShiftExpression(SemanticContext* context)
     YIELD();
 
     // :ConcreteRef
-    left->typeInfo     = getConcreteTypeUnRef(left, CONCRETE_ALL);
-    right->typeInfo    = getConcreteTypeUnRef(right, CONCRETE_ALL);
-    auto leftTypeInfo  = left->typeInfo;
-    auto rightTypeInfo = right->typeInfo;
+    left->typeInfo           = getConcreteTypeUnRef(left, CONCRETE_ALL);
+    right->typeInfo          = getConcreteTypeUnRef(right, CONCRETE_ALL);
+    const auto leftTypeInfo  = left->typeInfo;
+    const auto rightTypeInfo = right->typeInfo;
 
     // Keep it generic if it's generic on one side
     if (leftTypeInfo->isKindGeneric())
@@ -1372,10 +1372,10 @@ bool Semantic::resolveShiftExpression(SemanticContext* context)
 
 bool Semantic::resolveBoolExpression(SemanticContext* context)
 {
-    auto node   = context->node;
-    auto left   = node->childs[0];
-    auto right  = node->childs[1];
-    auto module = context->sourceFile->module;
+    const auto node   = context->node;
+    const auto left   = node->childs[0];
+    const auto right  = node->childs[1];
+    const auto module = context->sourceFile->module;
 
     SWAG_CHECK(checkIsConcrete(context, left));
     SWAG_CHECK(checkIsConcrete(context, right));

@@ -17,10 +17,10 @@ static Diagnostic* unknownIdentifierInScope(AstIdentifierRef* identifierRef, Ast
     // Error inside a tuple
     if (typeRef && typeRef->isTuple())
     {
-        auto diag       = new Diagnostic{node, Fmt(Err(Err0716), node->token.ctext())};
-        auto structNode = CastAst<AstStruct>(identifierRef->startScope->owner, AstNodeKind::StructDecl);
-        auto errNode    = structNode->originalParent ? structNode->originalParent : identifierRef->startScope->owner;
-        auto note       = Diagnostic::note(errNode, Nte(Nte0078));
+        const auto diag       = new Diagnostic{node, Fmt(Err(Err0716), node->token.ctext())};
+        const auto structNode = CastAst<AstStruct>(identifierRef->startScope->owner, AstNodeKind::StructDecl);
+        const auto errNode    = structNode->originalParent ? structNode->originalParent : identifierRef->startScope->owner;
+        const auto note       = Diagnostic::note(errNode, Nte(Nte0078));
         notes.push_back(note);
         return diag;
     }
@@ -29,7 +29,7 @@ static Diagnostic* unknownIdentifierInScope(AstIdentifierRef* identifierRef, Ast
     if (identifierRef->previousResolvedNode && identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier)
         prevIdentifier = CastAst<AstIdentifier>(identifierRef->previousResolvedNode, AstNodeKind::Identifier);
 
-    Utf8 whereScopeName = Naming::kindName(identifierRef->startScope->kind).c_str();
+    const Utf8 whereScopeName = Naming::kindName(identifierRef->startScope->kind).c_str();
 
     Utf8 displayName;
     if (!(identifierRef->startScope->flags & SCOPE_FILE))
@@ -42,19 +42,19 @@ static Diagnostic* unknownIdentifierInScope(AstIdentifierRef* identifierRef, Ast
         return nullptr;
 
     Diagnostic* diag      = nullptr;
-    auto        typeWhere = identifierRef->startScope->owner->typeInfo;
+    const auto  typeWhere = identifierRef->startScope->owner->typeInfo;
 
-    auto varDecl = node->findParent(AstNodeKind::VarDecl);
-    auto idRef   = node->identifierRef();
+    const auto varDecl = node->findParent(AstNodeKind::VarDecl);
+    const auto idRef   = node->identifierRef();
     if (idRef && (idRef->flags & AST_TUPLE_UNPACK) && varDecl)
     {
         diag = new Diagnostic{node, Fmt(Err(Err0719), varDecl->token.ctext(), displayName.c_str())};
     }
     else if (prevIdentifier && prevIdentifier->identifierExtension && prevIdentifier->identifierExtension->alternateEnum)
     {
-        auto altEnum = prevIdentifier->identifierExtension->alternateEnum;
-        auto msg     = Fmt(Err(Err0714), node->token.ctext(), altEnum->getDisplayNameC(), whereScopeName.c_str(), displayName.c_str());
-        diag         = new Diagnostic{node, node->token, msg};
+        const auto altEnum = prevIdentifier->identifierExtension->alternateEnum;
+        const auto msg     = Fmt(Err(Err0714), node->token.ctext(), altEnum->getDisplayNameC(), whereScopeName.c_str(), displayName.c_str());
+        diag               = new Diagnostic{node, node->token, msg};
         notes.push_back(Diagnostic::hereIs(altEnum->declNode));
     }
     else if (!typeWhere)
@@ -71,8 +71,8 @@ static Diagnostic* unknownIdentifierInScope(AstIdentifierRef* identifierRef, Ast
     }
     else if (typeWhere->kind == TypeInfoKind::Struct && node->token.text.startsWith(g_LangSpec->name_opVisit))
     {
-        auto visitNode = CastAst<AstVisit>(node->findParent(AstNodeKind::Visit), AstNodeKind::Visit);
-        Utf8 variant{node->token.text.buffer + g_LangSpec->name_opVisit.length()};
+        const auto visitNode = CastAst<AstVisit>(node->findParent(AstNodeKind::Visit), AstNodeKind::Visit);
+        const Utf8 variant{node->token.text.buffer + g_LangSpec->name_opVisit.length()};
         diag = new Diagnostic{visitNode, visitNode->extraNameToken, Fmt(Err(Err0419), variant.c_str(), typeWhere->getDisplayNameC())};
     }
     else if (typeWhere->kind == TypeInfoKind::Struct && node->callParameters)
@@ -99,7 +99,7 @@ static Diagnostic* unknownIdentifierInScope(AstIdentifierRef* identifierRef, Ast
     case AstNodeKind::InterfaceDecl:
     case AstNodeKind::EnumDecl:
     {
-        auto note = Diagnostic::hereIs(identifierRef->startScope->owner);
+        const auto note = Diagnostic::hereIs(identifierRef->startScope->owner);
         notes.push_back(note);
         break;
     }
@@ -115,28 +115,28 @@ static bool badParentScope(AstIdentifier* identifier, Vector<const Diagnostic*>&
     if (identifier->identifierRef()->startScope || identifier == identifier->parent->childs.front())
         return false;
 
-    auto prev = identifier->identifierRef()->childs[identifier->childParentIdx() - 1];
+    const auto prev = identifier->identifierRef()->childs[identifier->childParentIdx() - 1];
     if (!prev->resolvedSymbolName)
         return false;
 
     if (prev->hasExtMisc() && prev->extMisc()->resolvedUserOpSymbolOverload)
     {
-        auto typeInfo = TypeManager::concreteType(prev->extMisc()->resolvedUserOpSymbolOverload->typeInfo);
-        auto msg      = Fmt(Nte(Nte0114), prev->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str(), typeInfo->getDisplayNameC());
-        auto note     = Diagnostic::note(prev, msg);
+        const auto typeInfo = TypeManager::concreteType(prev->extMisc()->resolvedUserOpSymbolOverload->typeInfo);
+        const auto msg      = Fmt(Nte(Nte0114), prev->extMisc()->resolvedUserOpSymbolOverload->symbol->name.c_str(), typeInfo->getDisplayNameC());
+        const auto note     = Diagnostic::note(prev, msg);
         notes.push_back(note);
     }
     else if (prev->kind == AstNodeKind::ArrayPointerIndex)
     {
-        auto api       = CastAst<AstArrayPointerIndex>(prev, AstNodeKind::ArrayPointerIndex);
-        auto typeArray = CastTypeInfo<TypeInfoArray>(api->array->typeInfo, TypeInfoKind::Array);
-        auto note      = Diagnostic::note(api->array, Fmt(Nte(Nte0006), api->array->token.ctext(), typeArray->finalType->getDisplayNameC()));
+        const auto api       = CastAst<AstArrayPointerIndex>(prev, AstNodeKind::ArrayPointerIndex);
+        const auto typeArray = CastTypeInfo<TypeInfoArray>(api->array->typeInfo, TypeInfoKind::Array);
+        const auto note      = Diagnostic::note(api->array, Fmt(Nte(Nte0006), api->array->token.ctext(), typeArray->finalType->getDisplayNameC()));
         notes.push_back(note);
     }
     else
     {
-        Diagnostic* note     = nullptr;
-        auto        kindName = Naming::aKindName(prev->resolvedSymbolName->kind);
+        const Diagnostic* note     = nullptr;
+        const auto  kindName = Naming::aKindName(prev->resolvedSymbolName->kind);
         if (prev->typeInfo)
             note = Diagnostic::note(prev, Fmt(Nte(Nte0004), prev->token.ctext(), kindName.c_str(), prev->typeInfo->getDisplayNameC()));
         else
@@ -200,14 +200,14 @@ void SemanticError::unknownIdentifierError(SemanticContext* context, AstIdentifi
             Semantic::addAlternativeScopeOnce(scopeHierarchy, identifierRef->startScope);
         else
             Semantic::collectScopeHierarchy(context, scopeHierarchy, scopeHierarchyVars, node, COLLECT_ALL);
-        Utf8 appendMsg = findClosestMatchesMsg(node->token.text, scopeHierarchy, searchFor);
+        const Utf8 appendMsg = findClosestMatchesMsg(node->token.text, scopeHierarchy, searchFor);
         notes.push_back(Diagnostic::note(appendMsg));
     }
 
     // Error in scope context
     if (identifierRef->startScope)
     {
-        auto specDiag = unknownIdentifierInScope(identifierRef, node, notes);
+        const auto specDiag = unknownIdentifierInScope(identifierRef, node, notes);
         if (specDiag)
             diag = specDiag;
     }

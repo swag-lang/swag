@@ -103,8 +103,8 @@ void GenDoc::outputStyles()
         .code-block a { color: inherit; }\n\
         \n";
 
-    float    lum        = module->buildCfg.genDoc.syntaxColorLum;
-    uint32_t defaultCol = module->buildCfg.genDoc.syntaxDefaultColor;
+    const float    lum        = module->buildCfg.genDoc.syntaxColorLum;
+    const uint32_t defaultCol = module->buildCfg.genDoc.syntaxDefaultColor;
     helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_CODE, defaultCol);
     helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_COMMENT, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxComment, lum));
     helpOutput += Fmt("    .%s { color: #%x; }\n", SYN_COMPILER, getSyntaxColor(SyntaxColorMode::ForDoc, SyntaxColor::SyntaxCompiler, lum));
@@ -162,7 +162,7 @@ const char* GenDoc::tokenizeReference(const char* pz, Utf8& name, Utf8& link, bo
 
 Utf8 GenDoc::findReference(const Utf8& name)
 {
-    auto it = collectInvert.find(name);
+    const auto it = collectInvert.find(name);
     if (it != collectInvert.end())
         return Fmt("<a href=\"#%s\">%s</a>", toRef(it->second).c_str(), name.c_str());
 
@@ -391,7 +391,7 @@ void GenDoc::computeUserBlocks(Vector<UserBlock*>& blocks, Vector<Utf8>& lines, 
 
         for (; start < (int) lines.size(); start++)
         {
-            bool lastLine = start == (int) lines.size() - 1;
+            const bool lastLine = start == (int) lines.size() - 1;
             auto line     = lines[start];
             line.trim();
 
@@ -1259,7 +1259,7 @@ void GenDoc::constructPage()
     helpOutput += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n";
 
     // User start of the <head> section
-    Utf8 startHead = Utf8{module->buildCfg.genDoc.startHead};
+    const Utf8 startHead = Utf8{module->buildCfg.genDoc.startHead};
     helpOutput += startHead;
 
     // Page title
@@ -1267,12 +1267,12 @@ void GenDoc::constructPage()
         helpOutput += Fmt("<title>%s</title>\n", titleContent.c_str());
 
     // User icon
-    Utf8 icon = Utf8{module->buildCfg.genDoc.icon};
+    const Utf8 icon = Utf8{module->buildCfg.genDoc.icon};
     if (!icon.empty())
         helpOutput += Fmt("<link rel=\"icon\" type=\"image/x-icon\" href=\"%s\">\n", icon.c_str());
 
     // User css ref
-    Utf8 css{module->buildCfg.genDoc.css};
+    const Utf8 css{module->buildCfg.genDoc.css};
     if (!css.empty())
         helpOutput += Fmt("<link rel=\"stylesheet\" type=\"text/css\" href=\"%s\">\n", css.c_str());
 
@@ -1285,7 +1285,7 @@ void GenDoc::constructPage()
         outputStyles();
 
     // User end of the <head> section
-    Utf8 endHead = Utf8{module->buildCfg.genDoc.endHead};
+    const Utf8 endHead = Utf8{module->buildCfg.genDoc.endHead};
     helpOutput += endHead;
 
     helpOutput += "\n</head>\n";
@@ -1296,7 +1296,7 @@ void GenDoc::constructPage()
     helpOutput += "<body>\n";
 
     // User start of the <body> section
-    Utf8 startBody = Utf8{module->buildCfg.genDoc.startBody};
+    const Utf8 startBody = Utf8{module->buildCfg.genDoc.startBody};
     helpOutput += startBody;
 
     helpOutput += "\n<div class=\"container\">\n";
@@ -1318,12 +1318,12 @@ void GenDoc::constructPage()
     if (module->buildCfg.genDoc.hasSwagWatermark)
     {
         helpOutput += "<div class=\"swag-watermark\">\n";
-        time_t t = time(nullptr);
+        const time_t t = time(nullptr);
         tm     nt;
         localtime_s(&nt, &t);
         std::ostringstream oss;
         oss << std::put_time(&nt, "%d-%m-%Y");
-        string dateTime = oss.str();
+        const string dateTime = oss.str();
         helpOutput += Fmt("Generated on %s with <a href=\"https://swag-lang.org/index.php\">swag</a> %d.%d.%d", dateTime.c_str(), SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
         helpOutput += "</div>\n";
     }
@@ -1362,7 +1362,7 @@ void GenDoc::constructPage()
     </script>\n)";
 
     // User end of the <body> section
-    Utf8 endBody = Utf8{module->buildCfg.genDoc.endBody};
+    const Utf8 endBody = Utf8{module->buildCfg.genDoc.endBody};
     helpOutput += endBody;
 
     helpOutput += "</body>\n";
@@ -1415,7 +1415,7 @@ void GenDoc::addTocTitle(const Utf8& name, const Utf8& title, int titleLevel)
     }
 
     titleRefStack.push_back(toRef(name));
-    auto ref = getTocTitleRef();
+    const auto ref = getTocTitleRef();
     helpToc += Fmt("<li><a href=\"#%s\">%s</a></li>\n", ref.c_str(), title.c_str());
 }
 
@@ -1464,8 +1464,8 @@ bool GenDoc::generate(Module* mdl, BuildCfgDocKind kind)
     }
 
     // Output filename
-    auto filePath = g_Workspace->targetPath;
-    Utf8 fileName{module->buildCfg.genDoc.outputName};
+    auto       filePath = g_Workspace->targetPath;
+    const Utf8 fileName{module->buildCfg.genDoc.outputName};
     if (fileName.empty())
     {
         filePath.append(g_Workspace->workspacePath.filename().string().c_str());
@@ -1477,7 +1477,7 @@ bool GenDoc::generate(Module* mdl, BuildCfgDocKind kind)
         filePath.append(fileName.c_str());
     }
 
-    auto extName = getFileExtension(module);
+    const auto extName = getFileExtension(module);
     filePath += extName.c_str();
 
     fullFileName = filePath.string();

@@ -19,7 +19,7 @@ SourceFile* EnumerateModuleJob::addFileToModule(Module*              theModule,
                                                 Module*              imported,
                                                 bool                 markDown)
 {
-    auto file       = Allocator::alloc<SourceFile>();
+    const auto file       = Allocator::alloc<SourceFile>();
     file->fromTests = theModule->kind == ModuleKind::Test;
     file->name      = fileName;
     file->imported  = imported;
@@ -62,7 +62,7 @@ SourceFile* EnumerateModuleJob::addFileToModule(Module*              theModule,
 
         if (!markDown)
         {
-            auto syntaxJob        = Allocator::alloc<SyntaxJob>();
+            const auto syntaxJob        = Allocator::alloc<SyntaxJob>();
             syntaxJob->sourceFile = file;
             syntaxJob->module     = theModule;
             syntaxJob->flags |= JOB_IS_OPT;
@@ -79,7 +79,7 @@ bool EnumerateModuleJob::dealWithFileToLoads(Module* theModule)
     Vector<SourceFile*> allFiles;
 
     // Treat #load
-    for (auto n : theModule->compilerLoads)
+    for (const auto n : theModule->compilerLoads)
     {
         Path orgFilePath = n->token.ctext();
 
@@ -90,20 +90,20 @@ bool EnumerateModuleJob::dealWithFileToLoads(Module* theModule)
         {
             filePath = theModule->path;
             filePath.append(orgFilePath.string());
-            filePath       = filesystem::absolute(filePath);
-            auto filePath1 = filesystem::canonical(filePath, err);
+            filePath             = filesystem::absolute(filePath);
+            const auto filePath1 = filesystem::canonical(filePath, err);
             if (!err)
                 filePath = filePath1;
             if (!filesystem::exists(filePath, err))
             {
-                Diagnostic diag{n->sourceFile, n->token, Fmt(Err(Err0709), n->token.ctext())};
+                const Diagnostic diag{n->sourceFile, n->token, Fmt(Err(Err0709), n->token.ctext())};
                 Report::report(diag);
                 return false;
             }
         }
 
-        auto fileName  = filePath.filename().string();
-        auto writeTime = OS::getFileWriteTime(filePath.string().c_str());
+        auto       fileName  = filePath.filename().string();
+        const auto writeTime = OS::getFileWriteTime(filePath.string().c_str());
         addFileToModule(theModule, allFiles, filePath.parent_path(), fileName, writeTime, nullptr, nullptr, true);
     }
 
@@ -112,7 +112,7 @@ bool EnumerateModuleJob::dealWithFileToLoads(Module* theModule)
     {
         sort(allFiles.begin(), allFiles.end(), [](SourceFile* a, SourceFile* b)
              { return strcmp(a->name.c_str(), b->name.c_str()) == -1; });
-        for (auto file : allFiles)
+        for (const auto file : allFiles)
             theModule->addFile(file);
     }
 
@@ -131,14 +131,14 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
         return;
 
     // Is the list of files already computed ?
-    auto it = g_Workspace->mapFirstPassModulesNames.find(path);
+    const auto it = g_Workspace->mapFirstPassModulesNames.find(path);
     if (it != g_Workspace->mapFirstPassModulesNames.end())
     {
-        for (auto f : it->second->files)
+        for (const auto f : it->second->files)
         {
             if (theModule->kind != ModuleKind::Test || g_CommandLine.testFilter.empty() || f->name.containsNoCase(g_CommandLine.testFilter))
             {
-                auto pz = strrchr(f->name, '.');
+                const auto pz = strrchr(f->name, '.');
                 if (pz && !_strcmpi(pz, ".swg"))
                 {
                     addFileToModule(theModule, allFiles, f->path, f->name.c_str(), f->writeTime, f, nullptr, false);
@@ -179,10 +179,10 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
                                   }
                                   else
                                   {
-                                      Utf8 fileN = cFileName;
+                                      const Utf8 fileN = cFileName;
                                       if (theModule->kind != ModuleKind::Test || g_CommandLine.testFilter.empty() || fileN.containsNoCase(g_CommandLine.testFilter))
                                       {
-                                          auto pz = strrchr(cFileName, '.');
+                                          const auto pz = strrchr(cFileName, '.');
                                           if (pz && !_strcmpi(pz, ".swg"))
                                           {
                                               addFileToModule(theModule, allFiles, tmp, cFileName, writeTime, nullptr, nullptr, false);
@@ -204,15 +204,15 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
     }
 
     // Add the config file, second pass
-    auto cfgModule = g_ModuleCfgMgr->getCfgModule(theModule->name);
+    const auto cfgModule = g_ModuleCfgMgr->getCfgModule(theModule->name);
     if (cfgModule)
     {
         auto cfgFile = theModule->path;
         cfgFile      = g_ModuleCfgMgr->getAliasPath(cfgFile);
         cfgFile.append(SWAG_CFG_FILE);
-        auto writeTime  = OS::getFileWriteTime(cfgFile.string().c_str());
-        auto file       = addFileToModule(theModule, allFiles, cfgFile.parent_path(), SWAG_CFG_FILE, writeTime, nullptr, nullptr, false);
-        file->isCfgFile = true;
+        const auto writeTime = OS::getFileWriteTime(cfgFile.string().c_str());
+        const auto file      = addFileToModule(theModule, allFiles, cfgFile.parent_path(), SWAG_CFG_FILE, writeTime, nullptr, nullptr, false);
+        file->isCfgFile      = true;
     }
 
     // Sort files, and register them in a constant order
@@ -220,7 +220,7 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
     {
         sort(allFiles.begin(), allFiles.end(), [](SourceFile* a, SourceFile* b)
              { return strcmp(a->name.c_str(), b->name.c_str()) == -1; });
-        for (auto file : allFiles)
+        for (const auto file : allFiles)
             theModule->addFile(file);
     }
 }
@@ -236,7 +236,7 @@ void EnumerateModuleJob::loadFilesInModules(const Path& basePath)
                          path = g_ModuleCfgMgr->getAliasPath(path);
                          path.append(SWAG_SRC_FOLDER);
 
-                         auto module                                 = Allocator::alloc<Module>();
+                         const auto module                                 = Allocator::alloc<Module>();
                          g_Workspace->mapFirstPassModulesNames[path] = module;
 
                          // Scan source folder
@@ -260,7 +260,7 @@ void EnumerateModuleJob::loadFilesInModules(const Path& basePath)
                                                        }
                                                        else
                                                        {
-                                                           auto file     = Allocator::alloc<SourceFile>();
+                                                           const auto file     = Allocator::alloc<SourceFile>();
                                                            file->module  = module;
                                                            file->name    = cFileName;
                                                            Path pathFile = tmp;
@@ -269,10 +269,10 @@ void EnumerateModuleJob::loadFilesInModules(const Path& basePath)
                                                            file->writeTime = writeTime;
                                                            module->files.push_back(file);
 
-                                                           auto pz = strrchr(cFileName, '.');
+                                                           const auto pz = strrchr(cFileName, '.');
                                                            if (pz && !_strcmpi(pz, ".swg"))
                                                            {
-                                                               auto readFileJob        = Allocator::alloc<LoadSourceFileJob>();
+                                                               const auto readFileJob        = Allocator::alloc<LoadSourceFileJob>();
                                                                readFileJob->flags      = JOB_IS_OPT;
                                                                readFileJob->sourceFile = file;
                                                                g_ThreadMgr.addJob(readFileJob);
@@ -293,7 +293,7 @@ Module* EnumerateModuleJob::addModule(const Path& path)
     g_Workspace->computeModuleName(path, moduleName, moduleFolder, kind);
 
     // Create theModule
-    auto theModule = g_Workspace->createOrUseModule(moduleName, moduleFolder, kind);
+    const auto theModule = g_Workspace->createOrUseModule(moduleName, moduleFolder, kind);
 
     // Parse all files in the source tree
     enumerateFilesInModule(path, theModule);
@@ -359,10 +359,10 @@ JobResult EnumerateModuleJob::execute()
         enumerateModules(g_Workspace->dependenciesPath);
 
         // If we are in script mode, then we add one single module with the script file
-        auto parentFolder          = Path(g_CommandLine.scriptName.c_str()).parent_path();
-        auto file                  = Allocator::alloc<SourceFile>();
+        const auto parentFolder    = Path(g_CommandLine.scriptName.c_str()).parent_path();
+        const auto file            = Allocator::alloc<SourceFile>();
         file->name                 = Path(g_CommandLine.scriptName).filename().replace_extension().string();
-        auto scriptModule          = g_Workspace->createOrUseModule(file->name, parentFolder, ModuleKind::Script);
+        const auto scriptModule    = g_Workspace->createOrUseModule(file->name, parentFolder, ModuleKind::Script);
         file->path                 = g_CommandLine.scriptName;
         file->module               = scriptModule;
         file->isScriptFile         = true;
@@ -375,7 +375,7 @@ JobResult EnumerateModuleJob::execute()
     }
 
     // Deal with embedded modules
-    for (auto m : g_Workspace->modules)
+    for (const auto m : g_Workspace->modules)
     {
         if (!m->buildCfg.embeddedImports)
             continue;
@@ -394,26 +394,26 @@ JobResult EnumerateModuleJob::execute()
 
             m->moduleEmbedded.push_back(mod);
 
-            for (auto f : mod->files)
+            for (const auto f : mod->files)
             {
                 if (f->isCfgFile)
                     continue;
-                auto newFile                  = addFileToModule(m, allFiles, f->path.parent_path(), f->name, f->writeTime, nullptr, mod, false);
+                const auto newFile                  = addFileToModule(m, allFiles, f->path.parent_path(), f->name, f->writeTime, nullptr, mod, false);
                 newFile->isEmbedded           = true;
                 newFile->globalUsingsEmbedded = mod->buildParameters.globalUsings;
             }
 
             // Add the dependencies of the embedded module too
-            for (auto otherDep : mod->moduleDependencies)
+            for (const auto otherDep : mod->moduleDependencies)
             {
-                auto cpt = m->moduleDependencies.size();
+                const auto cpt = m->moduleDependencies.size();
 
                 if (!m->addDependency(otherDep->node, otherDep->tokenLocation, otherDep->tokenVersion))
                     return JobResult::ReleaseJob;
 
                 if (m->moduleDependencies.size() > cpt)
                 {
-                    auto cfgModule = g_ModuleCfgMgr->getCfgModule(mod->name);
+                    const auto cfgModule = g_ModuleCfgMgr->getCfgModule(mod->name);
 
                     // :GetCfgFileParams
                     for (const auto& fl : cfgModule->buildParameters.foreignLibs)
@@ -429,7 +429,7 @@ JobResult EnumerateModuleJob::execute()
         {
             sort(allFiles.begin(), allFiles.end(), [](SourceFile* a, SourceFile* b)
                  { return strcmp(a->name.c_str(), b->name.c_str()) == -1; });
-            for (auto file : allFiles)
+            for (const auto file : allFiles)
                 m->addFile(file);
         }
 

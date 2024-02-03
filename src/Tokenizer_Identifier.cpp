@@ -14,13 +14,13 @@ bool Tokenizer::doIdentifier(TokenParse& token)
 
     appendTokenName(token);
 
-    auto it = g_LangSpec->keywords.find(token.text);
+    const auto it = g_LangSpec->keywords.find(token.text);
     if (it)
     {
         token.id = *it;
         if (token.id == TokenId::NativeType)
         {
-            auto it1 = g_LangSpec->nativeTypes.find(token.text);
+            const auto it1 = g_LangSpec->nativeTypes.find(token.text);
             SWAG_ASSERT(it1);
             token.literalType = *it1;
         }
@@ -38,12 +38,12 @@ bool Tokenizer::doIdentifier(TokenParse& token)
         else
         {
             token.endLocation = location;
-            Diagnostic diag{sourceFile, token, Fmt(Err(Err0245), token.ctext())};
+            const Diagnostic diag{sourceFile, token, Fmt(Err(Err0245), token.ctext())};
 
             Vector<Utf8> searchList{};
             for (int i = 0; i < (int) g_LangSpec->keywords.allocated; i++)
             {
-                auto& k = g_LangSpec->keywords.buffer[i].key;
+                const auto& k = g_LangSpec->keywords.buffer[i].key;
                 if (k && k[0] == '#')
                     searchList.push_back(k);
             }
@@ -59,12 +59,12 @@ bool Tokenizer::doIdentifier(TokenParse& token)
     else if (token.text[0] == '@')
     {
         token.endLocation = location;
-        Diagnostic diag{sourceFile, token, Fmt(Err(Err0316), token.ctext())};
+        const Diagnostic diag{sourceFile, token, Fmt(Err(Err0316), token.ctext())};
 
         Vector<Utf8> searchList{};
         for (int i = 0; i < (int) g_LangSpec->keywords.allocated; i++)
         {
-            auto& k = g_LangSpec->keywords.buffer[i].key;
+            const auto& k = g_LangSpec->keywords.buffer[i].key;
             if (k && k[0] == '@')
                 searchList.push_back(k);
         }

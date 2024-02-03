@@ -43,15 +43,15 @@ Utf8 Ast::enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg
 
     Utf8 result;
 
-    bool found    = false;
-    auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+    bool       found    = false;
+    const auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
 
     if (typeEnum->declNode->attributeFlags & ATTRIBUTE_ENUM_FLAGS)
     {
         SWAG_ASSERT(typeEnum->rawType->isNative());
         for (size_t i = 0; i < typeEnum->values.size(); i++)
         {
-            auto value = typeEnum->values[i];
+            const auto value = typeEnum->values[i];
             bool ok    = false;
             SWAG_ASSERT(value->value);
             switch (typeEnum->rawType->nativeType)
@@ -111,7 +111,7 @@ Utf8 Ast::enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg
         result += ".";
         for (size_t i = 0; i < typeEnum->values.size(); i++)
         {
-            auto value = typeEnum->values[i];
+            const auto value = typeEnum->values[i];
             bool ok    = false;
             SWAG_ASSERT(value->value);
             if (typeEnum->rawType->isNative())
@@ -223,7 +223,7 @@ Utf8 Ast::literalToString(TypeInfo* typeInfo, const ComputedValue& value)
         return result;
     case NativeTypeKind::String:
     {
-        for (auto c : value.text)
+        for (const auto c : value.text)
         {
             if (c < 32)
                 result += Fmt("\\x%02x", c);
@@ -247,13 +247,13 @@ void Ast::removeFromParent(AstNode* child)
 {
     if (!child)
         return;
-    auto parent = child->parent;
+    const auto parent = child->parent;
     if (!parent)
         return;
 
     ScopedLock lk(parent->mutex);
     SWAG_RACE_CONDITION_WRITE(parent->raceC);
-    auto idx = child->childParentIdx();
+    const auto idx = child->childParentIdx();
     parent->childs.erase(idx);
     child->parent = nullptr;
 }
@@ -322,7 +322,7 @@ Scope* Ast::newScope(AstNode* owner, const Utf8& name, ScopeKind kind, Scope* pa
     if (parentScope)
         return parentScope->getOrAddChild(owner, name, kind, matchName);
 
-    auto newScope         = Allocator::alloc<Scope>();
+    const auto newScope         = Allocator::alloc<Scope>();
     newScope->kind        = kind;
     newScope->parentScope = parentScope;
     newScope->owner       = owner;
@@ -337,7 +337,7 @@ Scope* Ast::newScope(AstNode* owner, const Utf8& name, ScopeKind kind, Scope* pa
 void Ast::visit(AstNode* root, const function<void(AstNode*)>& fctor)
 {
     fctor(root);
-    for (auto child : root->childs)
+    for (const auto child : root->childs)
         visit(child, fctor);
 }
 
@@ -349,7 +349,7 @@ Ast::VisitResult Ast::visit(ErrorContext* context, AstNode* root, const function
     if (result == Ast::VisitResult::NoChilds)
         return Ast::VisitResult::Continue;
 
-    for (auto child : root->childs)
+    for (const auto child : root->childs)
     {
         result = visit(context, child, fctor);
         if (result == Ast::VisitResult::Stop)
@@ -384,7 +384,7 @@ AstNode* Ast::clone(AstNode* source, AstNode* parent, uint64_t forceFlags, uint6
 
 void Ast::normalizeIdentifierName(Utf8& name)
 {
-    auto len = name.length();
+    const auto len = name.length();
     auto pz  = name.buffer;
 
     for (uint32_t i = 0; i < len; i++)
@@ -426,7 +426,7 @@ Utf8 Ast::computeGenericParametersReplacement(VectorNative<TypeInfoParam*>& para
     Utf8 result;
     for (int i = 0; i < (int) params.size(); i++)
     {
-        auto param = params[i];
+        const auto param = params[i];
         if (param->name == param->typeInfo->name)
             continue;
 

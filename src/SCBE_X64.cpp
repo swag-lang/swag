@@ -69,7 +69,7 @@ static void emit_Spec8(Concat& concat, uint8_t value, CPUBits numBits)
 
 void SCBE_X64::emit_Symbol_RelocationRef(const Utf8& name)
 {
-    auto callSym = getOrAddSymbol(name, CPUSymbolKind::Extern);
+    const auto callSym = getOrAddSymbol(name, CPUSymbolKind::Extern);
     if (callSym->kind == CPUSymbolKind::Function)
     {
         concat.addS32((callSym->value + textSectionOffset) - (concat.totalCount() + 4));
@@ -104,7 +104,7 @@ void SCBE_X64::emit_Symbol_RelocationValue(CPURegister reg, uint32_t symbolIndex
 void SCBE_X64::emit_Symbol_GlobalString(CPURegister reg, const Utf8& str)
 {
     emit_Load64_Immediate(reg, 0, true);
-    auto sym = getOrCreateGlobalString(str);
+    const auto sym = getOrCreateGlobalString(str);
     addSymbolRelocation((concat.totalCount() - 8) - textSectionOffset, sym->index, IMAGE_REL_AMD64_ADDR64);
 }
 
@@ -1587,7 +1587,7 @@ void SCBE_X64::emit_Jump(CPUJumpType jumpType, int32_t instructionCount, int32_t
     label.ipDest = jumpOffset + instructionCount + 1;
 
     // Can we solve the label now ?
-    auto it = labels.find(label.ipDest);
+    const auto it = labels.find(label.ipDest);
     if (it != labels.end())
     {
         auto currentOffset = (int32_t) concat.totalCount() + 1;
@@ -1761,7 +1761,7 @@ void SCBE_X64::emit_Call_Far(const Utf8& symbolName)
 {
     concat.addU8(0xFF);
     concat.addU8(0x15);
-    auto callSym = getOrAddSymbol(symbolName, CPUSymbolKind::Extern);
+    const auto callSym = getOrAddSymbol(symbolName, CPUSymbolKind::Extern);
     addSymbolRelocation(concat.totalCount() - textSectionOffset, callSym->index, IMAGE_REL_AMD64_REL32);
     concat.addU32(0);
 }
@@ -1770,7 +1770,7 @@ void SCBE_X64::emit_Call(const Utf8& symbolName)
 {
     concat.addU8(0xE8);
 
-    auto callSym = getOrAddSymbol(symbolName, CPUSymbolKind::Extern);
+    const auto callSym = getOrAddSymbol(symbolName, CPUSymbolKind::Extern);
     if (callSym->kind == CPUSymbolKind::Function)
     {
         concat.addS32((callSym->value + textSectionOffset) - (concat.totalCount() + 4));
@@ -1785,17 +1785,17 @@ void SCBE_X64::emit_Call(const Utf8& symbolName)
 void SCBE_X64::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<CPUPushParam>& paramsRegisters, VectorNative<TypeInfo*>& paramsTypes, void* retCopyAddr)
 {
     const auto& cc                = typeFuncBC->getCallConv();
-    bool        returnByStackAddr = CallConv::returnByStackAddress(typeFuncBC);
+    const bool  returnByStackAddr = CallConv::returnByStackAddress(typeFuncBC);
 
-    int callConvRegisters    = cc.paramByRegisterCount;
-    int maxParamsPerRegister = (int) paramsRegisters.size();
+    const int callConvRegisters    = cc.paramByRegisterCount;
+    const int maxParamsPerRegister = (int) paramsRegisters.size();
 
     // Set the first N parameters. Can be return register, or function parameter.
     int i = 0;
     for (; i < min(callConvRegisters, maxParamsPerRegister); i++)
     {
-        auto type = paramsTypes[i];
-        auto reg  = (uint32_t) paramsRegisters[i].reg;
+        auto       type = paramsTypes[i];
+        const auto reg  = (uint32_t) paramsRegisters[i].reg;
 
         if (type->isAutoConstPointerRef())
             type = TypeManager::concretePtrRef(type);
@@ -1903,7 +1903,7 @@ void SCBE_X64::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<C
         if (type->isAutoConstPointerRef())
             type = TypeManager::concretePtrRef(type);
 
-        auto reg = (uint32_t) paramsRegisters[i].reg;
+        const auto reg = (uint32_t) paramsRegisters[i].reg;
         SWAG_ASSERT(paramsRegisters[i].type == CPUPushParamType::Reg);
 
         // This is a C variadic parameter
@@ -1929,7 +1929,7 @@ void SCBE_X64::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<C
         // This is for a normal parameter
         else
         {
-            auto sizeOf = type->sizeOf;
+            const auto sizeOf = type->sizeOf;
 
             // Struct by copy. Will be a pointer to the stack
             if (type->isStruct())
@@ -2001,7 +2001,7 @@ void SCBE_X64::emit_Call_Parameters(TypeInfoFuncAttr* typeFuncBC, VectorNative<C
 void SCBE_X64::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNative<uint32_t>& pushRAParams, uint32_t offsetRT, void* retCopyAddr)
 {
     pushParams2.clear();
-    for (auto r : pushRAParams)
+    for (const auto r : pushRAParams)
         pushParams2.push_back({CPUPushParamType::Reg, r});
     emit_Call_Parameters(typeFunc, pushParams2, offsetRT, retCopyAddr);
 }
@@ -2117,16 +2117,16 @@ void SCBE_X64::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNati
         // If not zero, jump to closure call
         emit_LongJumpOp(JZ);
         concat.addU32(0);
-        auto seekPtrClosure = concat.getSeekPtr() - 4;
-        auto seekJmpClosure = concat.totalCount();
+        const auto seekPtrClosure = concat.getSeekPtr() - 4;
+        const auto seekJmpClosure = concat.totalCount();
 
         emit_Call_Parameters(typeFunc, pushParams3, pushParamsTypes, retCopyAddr);
 
         // Jump to after closure call
         emit_LongJumpOp(JUMP);
         concat.addU32(0);
-        auto seekPtrAfterClosure = concat.getSeekPtr() - 4;
-        auto seekJmpAfterClosure = concat.totalCount();
+        const auto seekPtrAfterClosure = concat.getSeekPtr() - 4;
+        const auto seekJmpAfterClosure = concat.totalCount();
 
         // Update jump to closure call
         *seekPtrClosure = (uint8_t) (concat.totalCount() - seekJmpClosure);
@@ -2158,7 +2158,7 @@ void SCBE_X64::emit_Call_Result(TypeInfoFuncAttr* typeFunc, uint32_t offsetRT)
     if (CallConv::returnByValue(typeFunc))
     {
         const auto& cc         = typeFunc->getCallConv();
-        auto        returnType = typeFunc->concreteReturnType();
+        const auto  returnType = typeFunc->concreteReturnType();
         if (returnType->isNativeFloat())
             emit_StoreF64_Indirect(offsetRT, cc.returnByRegisterFloat, RDI);
         else

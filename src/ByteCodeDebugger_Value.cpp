@@ -495,7 +495,7 @@ void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, Utf8& str, 
 
 void ByteCodeDebugger::appendTypedValue(ByteCodeRunContext* context, const Utf8& filter, AstNode* node, uint8_t* baseAddr, uint8_t* realAddr, Utf8& result)
 {
-    auto over = node->resolvedSymbolOverload;
+    const auto over = node->resolvedSymbolOverload;
     if (!over)
         return;
     if (over->symbol->name.length() > 2 && over->symbol->name[0] == '_' && over->symbol->name[1] == '_') // Generated

@@ -34,13 +34,13 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
         returnRegisters.push_back(r);
     }
 
-    auto saveNode       = g_RunContext->node;
-    auto saveSourceFile = g_RunContext->jc.sourceFile;
+    const auto saveNode       = g_RunContext->node;
+    const auto saveSourceFile = g_RunContext->jc.sourceFile;
 
-    auto node = bc->node ? bc->node : saveNode;
+    const auto node = bc->node ? bc->node : saveNode;
     SWAG_ASSERT(node);
 
-    auto module         = node->sourceFile->module;
+    const auto module         = node->sourceFile->module;
     bool stackAllocated = false;
 
     if (!g_RunContext->stack)
@@ -66,13 +66,13 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
         paramRegisters.push_back(&fakeRegisters.back());
     }
 
-    auto saveSp      = g_RunContext->sp;
-    auto saveSpAlt   = g_RunContext->spAlt;
-    auto saveFirstRC = g_RunContext->firstRC;
+    const auto saveSp      = g_RunContext->sp;
+    const auto saveSpAlt   = g_RunContext->spAlt;
+    const auto saveFirstRC = g_RunContext->firstRC;
 
     while (!paramRegisters.empty())
     {
-        auto r = paramRegisters.back();
+        const auto r = paramRegisters.back();
         paramRegisters.pop_back();
         g_RunContext->push(r->pointer);
     }
@@ -89,7 +89,7 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
     g_RunContext->bc->enterByteCode(g_RunContext);
 
     g_ByteCodeStackTrace->push({nullptr, nullptr});
-    auto result = module->runner.run(g_RunContext);
+    const auto result = module->runner.run(g_RunContext);
 
     g_RunContext->sp            = saveSp;
     g_RunContext->spAlt         = saveSpAlt;
@@ -100,7 +100,7 @@ static void byteCodeRun(bool forCallback, void* byteCodePtr, va_list valist)
     // Get result
     for (size_t i = 0; i < returnRegisters.size(); i++)
     {
-        auto r = returnRegisters[i];
+        const auto r = returnRegisters[i];
         *r     = g_RunContext->registersRR[i];
     }
 
@@ -196,7 +196,7 @@ static void* doCallback(FuncCB cb, void* p1, void* p2, void* p3, void* p4, void*
     SWAG_ASSERT(cbIndex != UINT32_MAX);
 
     void*             result   = nullptr;
-    ByteCode*         bc       = (ByteCode*) ByteCode::undoByteCodeLambda(g_CallbackArr[cbIndex].bytecode);
+    const ByteCode*   bc       = (ByteCode*) ByteCode::undoByteCodeLambda(g_CallbackArr[cbIndex].bytecode);
     TypeInfoFuncAttr* typeFunc = CastTypeInfo<TypeInfoFuncAttr>(bc->node->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_ASSERT(typeFunc->numReturnRegisters() <= 1);
 

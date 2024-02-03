@@ -244,7 +244,7 @@ static void fixRange(const Utf8& lineCode, SourceLocation& startLocation, int& r
     if (range == 1)
         return;
 
-    uint32_t decal = startLocation.column;
+    const uint32_t decal = startLocation.column;
     uint32_t cpt   = 0;
     for (uint32_t i = decal; i < lineCode.length() && i < decal + range; i++)
     {
@@ -335,7 +335,7 @@ void Diagnostic::collectRanges()
             // If this is a word, than take the whole word
             if ((lineCode[decal] & 0x80) == 0)
             {
-                bool isCWord = isalpha(lineCode[decal]) || lineCode[decal] == '_' || lineCode[decal] == '#' || lineCode[decal] == '@';
+                const bool isCWord = isalpha(lineCode[decal]) || lineCode[decal] == '_' || lineCode[decal] == '#' || lineCode[decal] == '@';
                 if (isCWord)
                 {
                     while (SWAG_IS_ALNUM(lineCode[decal + 1]) || lineCode[decal + 1] == '_')
@@ -422,7 +422,7 @@ void Diagnostic::printSourceCode()
 
     g_Log.setColor(LogColor::White);
 
-    auto colored = syntaxColor(lineCode.c_str() + minBlanks, cxt);
+    const auto colored = syntaxColor(lineCode.c_str() + minBlanks, cxt);
     g_Log.print(colored, true);
     g_Log.eol();
 }
@@ -479,12 +479,12 @@ int Diagnostic::printRangesVerticalBars(size_t maxMarks)
 
 void Diagnostic::printLastRangeHint(int curColumn)
 {
-    auto& r = ranges.back();
+    const auto& r = ranges.back();
 
-    auto leftColumn = curColumn;
+    const auto leftColumn = curColumn;
 
     Vector<Utf8> tokens;
-    int          maxLength = g_CommandLine.errorRightColumn - leftColumn + minBlanks;
+    const int    maxLength = g_CommandLine.errorRightColumn - leftColumn + minBlanks;
     Utf8::wordWrap(r.hint, tokens, max(maxLength, (int) g_CommandLine.errorRightColumn / 2));
 
     for (size_t i = 0; i < tokens.size(); i++)
@@ -534,13 +534,13 @@ void Diagnostic::printRanges()
         }
     }
 
-    auto orgNumRanges = ranges.size();
+    const auto orgNumRanges = ranges.size();
 
     // The last one in on the same line as the underline if there is enough room
     if (ranges.size())
     {
-        auto& r        = ranges.back();
-        auto  unformat = g_Log.removeFormat(r.hint.c_str());
+        const auto&      r        = ranges.back();
+        const auto unformat = g_Log.removeFormat(r.hint.c_str());
         if (curColumn + 1 + unformat.length() < g_CommandLine.errorRightColumn)
         {
             g_Log.print(" ");
@@ -551,15 +551,15 @@ void Diagnostic::printRanges()
 
     while (ranges.size())
     {
-        auto& r        = ranges.back();
-        auto  unformat = g_Log.removeFormat(r.hint.c_str());
-        auto  mid      = r.mid - minBlanks;
+        auto&      r        = ranges.back();
+        auto       unformat = g_Log.removeFormat(r.hint.c_str());
+        const auto mid      = r.mid - minBlanks;
 
         curColumn = printRangesVerticalBars(ranges.size() - 1);
         g_Log.setColor(rangeNoteColor);
 
-        bool notEnoughRoomRight = ((mid + 3 + (int) unformat.length() > (int) g_CommandLine.errorRightColumn) || orgNumRanges >= 2);
-        bool enoughRoomLeft     = mid - 2 - (int) unformat.length() >= 0;
+        const bool notEnoughRoomRight = ((mid + 3 + (int) unformat.length() > (int) g_CommandLine.errorRightColumn) || orgNumRanges >= 2);
+        const bool enoughRoomLeft     = mid - 2 - (int) unformat.length() >= 0;
 
         // Can we stick the hint before the line reference ? (must be the last one)
         if (ranges.size() == 1 && notEnoughRoomRight && enoughRoomLeft)
@@ -692,7 +692,7 @@ Utf8 Diagnostic::isType(TypeInfo* typeInfo)
 
     if (typeInfo->isAlias())
     {
-        auto typeAlias = CastTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
+        const auto typeAlias = CastTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
         if (typeAlias->rawType)
             str += Fmt(" (aka [[%s]])", typeAlias->rawType->getConcreteAlias()->getDisplayNameC());
     }
@@ -732,7 +732,7 @@ Diagnostic* Diagnostic::hereIs(AstNode* node)
         node->tokenId != TokenId::KwdPublic)
         return nullptr;
 
-    auto msg = Fmt(Nte(Nte0062), Naming::kindName(node).c_str(), node->token.ctext());
+    const auto msg = Fmt(Nte(Nte0062), Naming::kindName(node).c_str(), node->token.ctext());
     return Diagnostic::note(node, node->getTokenName(), msg);
 }
 

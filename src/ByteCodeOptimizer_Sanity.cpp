@@ -276,7 +276,7 @@ static void setStackConstant(Context& cxt, ValueKind kind, ByteCodeInstruction* 
     if (!cxt.bc->sourceFile->module->mustOptimizeBytecode(cxt.bc->node))
         return;
 
-    auto context = cxt.context;
+    const auto context = cxt.context;
     switch (sizeOf)
     {
     case 1:
@@ -315,7 +315,7 @@ static void setConstant(Context& cxt, ValueKind kind, ByteCodeInstruction* ip, u
     if (!cxt.bc->sourceFile->module->mustOptimizeBytecode(cxt.bc->node))
         return;
 
-    auto context = cxt.context;
+    const auto context = cxt.context;
     switch (cstKind)
     {
     case ConstantKind::SetImmediateA:
@@ -334,7 +334,7 @@ static void setConstant(Context& cxt, ValueKind kind, ByteCodeInstruction* ip, u
 
 static bool getStackValue(Value& result, Context& cxt, void* addr, uint32_t sizeOf)
 {
-    auto offset = (uint8_t*) addr - STATE()->stack.buffer;
+    const auto offset = (uint8_t*) addr - STATE()->stack.buffer;
     SWAG_ASSERT(offset + sizeOf <= STATE()->stackValue.count);
     auto addrValue = STATE()->stackValue.buffer + offset;
 
@@ -344,7 +344,7 @@ static bool getStackValue(Value& result, Context& cxt, void* addr, uint32_t size
 
     for (uint32_t i = 1; i < sizeOf; i++)
     {
-        auto value = *addrValue;
+        const auto value = *addrValue;
         addrValue++;
 
         if (value.kind != result.kind)
@@ -369,8 +369,8 @@ static bool raiseError(Context& cxt, Utf8 msg, SymbolOverload* overload = nullpt
     if (!cxt.bc->sourceFile->module->mustEmitSafety(STATE()->ip->node, SAFETY_SANITY))
         return true;
 
-    AstNode* nodeLoc = nullptr;
-    auto     ip      = cxt.states[cxt.state]->ip;
+    AstNode*   nodeLoc = nullptr;
+    const auto ip      = cxt.states[cxt.state]->ip;
     if (overload && ip->node)
     {
         Ast::visit(ip->node, [&](AstNode* n)
@@ -383,13 +383,13 @@ static bool raiseError(Context& cxt, Utf8 msg, SymbolOverload* overload = nullpt
 
     if (nodeLoc)
     {
-        Diagnostic diag({nodeLoc, nodeLoc->token, msg});
+        const Diagnostic diag({nodeLoc, nodeLoc->token, msg});
         return cxt.context->report(diag);
     }
 
-    auto loc = ByteCode::getLocation(cxt.bc, cxt.states[cxt.state]->ip);
+    const auto loc = ByteCode::getLocation(cxt.bc, cxt.states[cxt.state]->ip);
 
-    Diagnostic diag({loc.file, *loc.location, msg});
+    const Diagnostic diag({loc.file, *loc.location, msg});
     return cxt.context->report(diag);
 }
 
@@ -531,7 +531,7 @@ static bool getStackAddress(uint8_t*& result, Context& cxt, uint64_t stackOffset
 
 static void setStackValue(Context& cxt, void* addr, uint32_t sizeOf, ValueKind kind)
 {
-    auto offset = (uint32_t) ((uint8_t*) addr - STATE()->stack.buffer);
+    const auto offset = (uint32_t) ((uint8_t*) addr - STATE()->stack.buffer);
     SWAG_ASSERT(offset + sizeOf <= (uint32_t) STATE()->stackValue.count);
     for (uint32_t i = offset; i < offset + sizeOf; i++)
         STATE()->stackValue[i].kind = kind;
@@ -2359,7 +2359,7 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
     state->ip   = nullptr;
     cxt.context = context;
 
-    auto funcDecl = CastAst<AstFuncDecl>(cxt.bc->node, AstNodeKind::FuncDecl);
+    const auto funcDecl = CastAst<AstFuncDecl>(cxt.bc->node, AstNodeKind::FuncDecl);
 
     state->stack.reserve(funcDecl->stackSize);
     state->stack.count = funcDecl->stackSize;
@@ -2376,9 +2376,9 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
     state->ip = cxt.bc->out;
 
     // Initialize information of stack
-    for (auto l : cxt.bc->localVars)
+    for (const auto l : cxt.bc->localVars)
     {
-        auto over = l->resolvedSymbolOverload;
+        const auto over = l->resolvedSymbolOverload;
         SWAG_ASSERT(over);
         if (over->computedValue.storageOffset == UINT32_MAX)
             continue;
@@ -2401,7 +2401,7 @@ bool ByteCodeOptimizer::optimizePassSanity(ByteCodeOptContext* context)
             cxt.bc->out[j].dynFlags &= ~BCID_SAN_PASS;
     }
 
-    for (auto s : cxt.states)
+    for (const auto s : cxt.states)
         delete s;
 
     return true;

@@ -9,7 +9,7 @@
 
 bool Parser::doIf(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstIf>(this, AstNodeKind::If, sourceFile, parent);
+    const auto node         = Ast::newNode<AstIf>(this, AstNodeKind::If, sourceFile, parent);
     node->semanticFct = Semantic::resolveIf;
     *result           = node;
 
@@ -21,7 +21,7 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
     {
         node->addSpecFlags(AstIf::SPECFLAG_ASSIGN);
 
-        auto   newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
+        const auto   newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
         Scoped scoped(this, newScope);
 
         AstNode* varDecl;
@@ -37,7 +37,7 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
 
         if (token.id == TokenId::KwdElse)
         {
-            auto tokenElse = token;
+            const auto tokenElse = token;
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doScopedStatement(node, tokenElse, (AstNode**) &node->elseBlock));
         }
@@ -55,7 +55,7 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
 
         if (token.id == TokenId::KwdElse)
         {
-            auto tokenElse = token;
+            const auto tokenElse = token;
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doScopedStatement(node, tokenElse, (AstNode**) &node->elseBlock));
         }
@@ -70,7 +70,7 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
 
 bool Parser::doWhile(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstWhile>(this, AstNodeKind::While, sourceFile, parent);
+    const auto node         = Ast::newNode<AstWhile>(this, AstNodeKind::While, sourceFile, parent);
     node->semanticFct = Semantic::resolveWhile;
     *result           = node;
 
@@ -88,7 +88,7 @@ bool Parser::doWhile(AstNode* parent, AstNode** result)
 
 bool Parser::doSwitch(AstNode* parent, AstNode** result)
 {
-    auto switchNode         = Ast::newNode<AstSwitch>(this, AstNodeKind::Switch, sourceFile, parent);
+    const auto switchNode         = Ast::newNode<AstSwitch>(this, AstNodeKind::Switch, sourceFile, parent);
     switchNode->semanticFct = Semantic::resolveSwitch;
     *result                 = switchNode;
 
@@ -101,7 +101,7 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
         switchNode->expression->extSemantic()->semanticAfterFct = Semantic::resolveSwitchAfterExpr;
     }
 
-    auto startLoc = token.startLocation;
+    const auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[switch]] body"));
 
     AstSwitchCase* defaultCase = nullptr;
@@ -109,17 +109,17 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
     while (token.id != TokenId::SymRightCurly && token.id != TokenId::EndOfFile)
     {
         SWAG_VERIFY(token.id == TokenId::KwdCase || token.id == TokenId::KwdDefault, error(token, Fmt(Err(Err0168), token.ctext())));
-        bool isDefault = token.id == TokenId::KwdDefault;
+        const bool isDefault = token.id == TokenId::KwdDefault;
         SWAG_VERIFY(!isDefault || !hasDefault, error(token, Err(Err0007)));
         if (isDefault)
             hasDefault = true;
 
         // One case
-        auto caseNode         = Ast::newNode<AstSwitchCase>(this, AstNodeKind::SwitchCase, sourceFile, isDefault ? nullptr : switchNode);
-        caseNode->specFlags   = isDefault ? AstSwitchCase::SPECFLAG_IS_DEFAULT : 0;
-        caseNode->ownerSwitch = switchNode;
-        caseNode->semanticFct = Semantic::resolveCase;
-        auto previousToken    = token;
+        auto caseNode            = Ast::newNode<AstSwitchCase>(this, AstNodeKind::SwitchCase, sourceFile, isDefault ? nullptr : switchNode);
+        caseNode->specFlags      = isDefault ? AstSwitchCase::SPECFLAG_IS_DEFAULT : 0;
+        caseNode->ownerSwitch    = switchNode;
+        caseNode->semanticFct    = Semantic::resolveCase;
+        const auto previousToken = token;
         SWAG_CHECK(eatToken());
         if (isDefault)
             defaultCase = caseNode;
@@ -152,10 +152,10 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
 
         // Content
         {
-            auto   newScope = Ast::newScope(switchNode, "", ScopeKind::Statement, currentScope);
+            const auto   newScope = Ast::newScope(switchNode, "", ScopeKind::Statement, currentScope);
             Scoped scoped(this, newScope);
 
-            auto statement = Ast::newNode<AstSwitchCaseBlock>(this, AstNodeKind::SwitchCaseBlock, sourceFile, caseNode);
+            const auto statement = Ast::newNode<AstSwitchCaseBlock>(this, AstNodeKind::SwitchCaseBlock, sourceFile, caseNode);
             statement->allocateExtension(ExtensionKind::Semantic);
             statement->extSemantic()->semanticBeforeFct = Semantic::resolveScopedStmtBefore;
             statement->extSemantic()->semanticAfterFct  = Semantic::resolveScopedStmtAfter;
@@ -188,10 +188,10 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
 
 bool Parser::doFor(AstNode* parent, AstNode** result)
 {
-    auto   newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
+    const auto   newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
     Scoped scoped(this, newScope);
 
-    auto node = Ast::newNode<AstFor>(this, AstNodeKind::For, sourceFile, parent);
+    const auto node = Ast::newNode<AstFor>(this, AstNodeKind::For, sourceFile, parent);
     node->allocateExtension(ExtensionKind::Semantic);
     node->extSemantic()->semanticBeforeFct = Semantic::resolveForBefore;
     node->semanticFct                      = Semantic::resolveFor;
@@ -229,7 +229,7 @@ bool Parser::doFor(AstNode* parent, AstNode** result)
 
 bool Parser::doVisit(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstVisit>(this, AstNodeKind::Visit, sourceFile, parent);
+    const auto node         = Ast::newNode<AstVisit>(this, AstNodeKind::Visit, sourceFile, parent);
     node->semanticFct = Semantic::resolveVisit;
     *result           = node;
 
@@ -302,10 +302,10 @@ bool Parser::doVisit(AstNode* parent, AstNode** result)
 
 bool Parser::doLoop(AstNode* parent, AstNode** result)
 {
-    auto   newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
+    const auto   newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
     Scoped scoped(this, newScope);
 
-    auto node = Ast::newNode<AstLoop>(this, AstNodeKind::Loop, sourceFile, parent);
+    const auto node = Ast::newNode<AstLoop>(this, AstNodeKind::Loop, sourceFile, parent);
     node->allocateExtension(ExtensionKind::Semantic);
     node->extSemantic()->semanticBeforeFct = Semantic::resolveLoopBefore;
     node->semanticFct                      = Semantic::resolveLoop;
@@ -376,12 +376,12 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
     // Creates a variable if we have a named index
     if (!name.empty())
     {
-        auto var   = Ast::newVarDecl(sourceFile, name, node, this, AstNodeKind::VarDecl);
+        const auto var   = Ast::newVarDecl(sourceFile, name, node, this, AstNodeKind::VarDecl);
         var->token = tokenName;
         var->addSpecFlags(AstVarDecl::SPECFLAG_CONST_ASSIGN | AstVarDecl::SPECFLAG_IS_LET);
         node->specificName = var;
 
-        auto identifer         = Ast::newNode<AstNode>(this, AstNodeKind::Index, sourceFile, var);
+        const auto identifer         = Ast::newNode<AstNode>(this, AstNodeKind::Index, sourceFile, var);
         identifer->semanticFct = Semantic::resolveIndex;
         identifer->inheritTokenLocation(var);
 
@@ -395,7 +395,7 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
 bool Parser::doWith(AstNode* parent, AstNode** result)
 {
     SWAG_CHECK(eatToken());
-    auto node = Ast::newNode<AstWith>(this, AstNodeKind::With, sourceFile, parent);
+    const auto node = Ast::newNode<AstWith>(this, AstNodeKind::With, sourceFile, parent);
     *result   = node;
 
     AstNode* id = nullptr;
@@ -404,8 +404,8 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
         SWAG_CHECK(doVarDecl(node, &id));
         if (id->kind != AstNodeKind::VarDecl)
         {
-            Diagnostic diag{id->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Err0311)};
-            auto       note = Diagnostic::note(Nte(Nte0014));
+            const Diagnostic diag{id->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Err0311)};
+            const auto       note = Diagnostic::note(Nte(Nte0014));
             return context->report(diag, note);
         }
 
@@ -419,8 +419,8 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
 
         if (id->kind == AstNodeKind::StatementNoScope)
         {
-            Diagnostic diag{node->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Err0311)};
-            auto       note = Diagnostic::note(Nte(Nte0014));
+            const Diagnostic diag{node->sourceFile, id->childs.front()->token.startLocation, id->childs.back()->token.endLocation, Err(Err0311)};
+            const auto       note = Diagnostic::note(Nte(Nte0014));
             return context->report(diag, note);
         }
 
@@ -465,7 +465,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
 
 bool Parser::doDefer(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstDefer>(this, AstNodeKind::Defer, sourceFile, parent);
+    const auto node         = Ast::newNode<AstDefer>(this, AstNodeKind::Defer, sourceFile, parent);
     *result           = node;
     node->semanticFct = Semantic::resolveDefer;
 
@@ -474,7 +474,7 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
     // Defer kind
     if (token.id == TokenId::SymLeftParen)
     {
-        auto startLoc = token.startLocation;
+        const auto startLoc = token.startLocation;
         SWAG_CHECK(eatToken());
         if (token.text == g_LangSpec->name_err)
             node->deferKind = DeferKind::Error;
@@ -494,7 +494,7 @@ bool Parser::doDefer(AstNode* parent, AstNode** result)
 
 bool Parser::doIndex(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Index, sourceFile, parent);
+    const auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Index, sourceFile, parent);
     node->semanticFct = Semantic::resolveIndex;
     *result           = node;
     SWAG_CHECK(eatToken());
@@ -503,7 +503,7 @@ bool Parser::doIndex(AstNode* parent, AstNode** result)
 
 bool Parser::doFallThrough(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstBreakContinue>(this, AstNodeKind::FallThrough, sourceFile, parent);
+    const auto node         = Ast::newNode<AstBreakContinue>(this, AstNodeKind::FallThrough, sourceFile, parent);
     node->semanticFct = Semantic::resolveFallThrough;
     *result           = node;
     SWAG_CHECK(eatToken());
@@ -512,7 +512,7 @@ bool Parser::doFallThrough(AstNode* parent, AstNode** result)
 
 bool Parser::doUnreachable(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Unreachable, sourceFile, parent);
+    const auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Unreachable, sourceFile, parent);
     node->semanticFct = Semantic::resolveUnreachable;
     *result           = node;
     SWAG_CHECK(eatToken());
@@ -521,7 +521,7 @@ bool Parser::doUnreachable(AstNode* parent, AstNode** result)
 
 bool Parser::doBreak(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstBreakContinue>(this, AstNodeKind::Break, sourceFile, parent);
+    const auto node         = Ast::newNode<AstBreakContinue>(this, AstNodeKind::Break, sourceFile, parent);
     node->semanticFct = Semantic::resolveBreak;
     *result           = node;
     SWAG_CHECK(eatToken());
@@ -540,7 +540,7 @@ bool Parser::doBreak(AstNode* parent, AstNode** result)
 
 bool Parser::doContinue(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstBreakContinue>(this, AstNodeKind::Continue, sourceFile, parent);
+    const auto node         = Ast::newNode<AstBreakContinue>(this, AstNodeKind::Continue, sourceFile, parent);
     node->semanticFct = Semantic::resolveContinue;
     if (result)
         *result = node;

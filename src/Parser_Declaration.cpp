@@ -67,9 +67,9 @@ bool Parser::doPublicInternal(AstNode* parent, AstNode** result, bool forGlobal)
     tokenizer.propagateComment = true;
 
     SWAG_ASSERT(newScope);
-    Scoped scoped(this, newScope);
-    auto   attrUse = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
-    *result        = attrUse;
+    Scoped     scoped(this, newScope);
+    const auto attrUse = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
+    *result            = attrUse;
     attrUse->flags |= AST_GENERATED;
     attrUse->attributeFlags = attr;
     SWAG_CHECK(eatToken());
@@ -104,9 +104,9 @@ bool Parser::doPrivate(AstNode* parent, AstNode** result)
 {
     SWAG_VERIFY(currentScope->isGlobalOrImpl(), error(token, Fmt(Err(Err0481), token.ctext())));
 
-    auto privName = token;
-    auto attrUse  = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
-    *result       = attrUse;
+    auto       privName = token;
+    const auto attrUse  = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
+    *result             = attrUse;
     attrUse->flags |= AST_GENERATED;
     attrUse->attributeFlags = ATTRIBUTE_PRIVATE;
     SWAG_CHECK(eatToken());
@@ -140,7 +140,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
         AstNode* varNode;
         SWAG_CHECK(doVarDecl(parent, &varNode));
 
-        auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Using, sourceFile, parent);
+        const auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Using, sourceFile, parent);
         *result           = node;
         node->semanticFct = Semantic::resolveUsing;
         Ast::newIdentifierRef(sourceFile, varNode->token.text, node, this);
@@ -153,7 +153,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
     // We must ensure that no job can be run before the using
     if (!parent->ownerFct)
     {
-        for (auto child : parent->childs)
+        for (const auto child : parent->childs)
         {
             switch (child->kind)
             {
@@ -170,8 +170,8 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
                     break;
             default:
             {
-                Diagnostic diag{sourceFile, token, Err(Err0510)};
-                auto       note = Diagnostic::note(child, child->token, Nte(Nte0074));
+                const Diagnostic diag{sourceFile, token, Err(Err0510)};
+                const auto       note = Diagnostic::note(child, child->token, Nte(Nte0074));
                 return context->report(diag, note);
             }
             }
@@ -180,7 +180,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result)
 
     while (true)
     {
-        auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Using, sourceFile, parent);
+        const auto node         = Ast::newNode<AstNode>(this, AstNodeKind::Using, sourceFile, parent);
         *result           = node;
         node->semanticFct = Semantic::resolveUsing;
 
@@ -223,7 +223,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
     if (sourceFile->isRuntimeFile && token.text == g_LangSpec->name_Swag)
         currentScope = g_Workspace->bootstrapModule->files[0]->astRoot->ownerScope;
 
-    bool scopeFilePriv = privName != nullptr;
+    const bool scopeFilePriv = privName != nullptr;
     while (true)
     {
         namespaceNode = Ast::newNode<AstNameSpace>(this, AstNodeKind::Namespace, sourceFile, parent);
@@ -260,10 +260,10 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
         // Add/Get namespace
         {
             ScopedLock lk(currentScope->symTable.mutex);
-            auto       symbol = currentScope->symTable.findNoLock(namespaceNode->token.text);
+            const auto symbol = currentScope->symTable.findNoLock(namespaceNode->token.text);
             if (!symbol)
             {
-                auto typeInfo  = makeType<TypeInfoNamespace>();
+                const auto typeInfo  = makeType<TypeInfoNamespace>();
                 typeInfo->name = namespaceNode->token.text;
                 newScope       = Ast::newScope(namespaceNode, namespaceNode->token.text, ScopeKind::Namespace, currentScope);
                 if (scopeFilePriv)
@@ -322,7 +322,7 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
     }
     else
     {
-        auto startLoc = token.startLocation;
+        const auto startLoc = token.startLocation;
 
         // Content of namespace is toplevel
         if (token.id == TokenId::SymLeftCurly)
@@ -349,10 +349,10 @@ bool Parser::doNamespaceOnName(AstNode* parent, AstNode** result, bool forGlobal
 
 bool Parser::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+    const auto node = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
     *result   = node;
 
-    auto startLoc = token.startLocation;
+    const auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the statement block"));
     while (token.id != TokenId::EndOfFile && token.id != TokenId::SymRightCurly)
         SWAG_CHECK(doTopLevelInstruction(node, &dummyResult));
@@ -362,11 +362,11 @@ bool Parser::doGlobalCurlyStatement(AstNode* parent, AstNode** result)
 
 bool Parser::doCurlyStatement(AstNode* parent, AstNode** result)
 {
-    auto node = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+    const auto node = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
     *result   = node;
 
-    bool isGlobal = currentScope->isGlobalOrImpl();
-    auto startLoc = token.startLocation;
+    const bool isGlobal = currentScope->isGlobalOrImpl();
+    const auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the statement block"));
 
     if (isGlobal)
@@ -391,7 +391,7 @@ bool Parser::doCurlyStatement(AstNode* parent, AstNode** result)
 
 bool Parser::doScopedCurlyStatement(AstNode* parent, AstNode** result, ScopeKind scopeKind)
 {
-    auto   newScope = Ast::newScope(parent, "", scopeKind, currentScope);
+    const auto   newScope = Ast::newScope(parent, "", scopeKind, currentScope);
     Scoped scoped(this, newScope);
 
     AstNode* statement;
@@ -420,11 +420,11 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
     {
         if (mustHaveDo)
         {
-            auto tokenDo = token;
+            const auto tokenDo = token;
             if (token.id != TokenId::KwdDo)
             {
-                Diagnostic diag{sourceFile, token, Fmt(Err(Err0533), token.ctext())};
-                auto       note = Diagnostic::note(parent, forToken, Fmt(Nte(Nte0016), forToken.ctext()));
+                const Diagnostic diag{sourceFile, token, Fmt(Err(Err0533), token.ctext())};
+                const auto       note = Diagnostic::note(parent, forToken, Fmt(Nte(Nte0016), forToken.ctext()));
                 return context->report(diag, note);
             }
 
@@ -432,14 +432,14 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
 
             if (token.id == TokenId::SymLeftCurly)
             {
-                Diagnostic diag{sourceFile, tokenDo, Err(Err0460)};
+                const Diagnostic diag{sourceFile, tokenDo, Err(Err0460)};
                 return context->report(diag);
             }
         }
 
         SWAG_ASSERT(!currentScope->isGlobalOrImpl());
 
-        auto     newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
+        const auto     newScope = Ast::newScope(parent, "", ScopeKind::Statement, currentScope);
         Scoped   scoped(this, newScope);
         AstNode* statement = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
         *result            = statement;
@@ -464,11 +464,11 @@ bool Parser::doStatement(AstNode* parent, AstNode** result)
     }
     else
     {
-        auto tokenDo = token;
+        const auto tokenDo = token;
         if (token.id != TokenId::CompilerDo)
         {
-            Diagnostic diag{sourceFile, token, Fmt(Err(Err0516), token.ctext())};
-            auto       note = Diagnostic::note(parent->parent, parent->parent->token, Fmt(Nte(Nte0015), parent->parent->token.ctext()));
+            const Diagnostic diag{sourceFile, token, Fmt(Err(Err0516), token.ctext())};
+            const auto       note = Diagnostic::note(parent->parent, parent->parent->token, Fmt(Nte(Nte0015), parent->parent->token.ctext()));
             return context->report(diag, note);
         }
 
@@ -476,7 +476,7 @@ bool Parser::doStatement(AstNode* parent, AstNode** result)
 
         if (token.id == TokenId::SymLeftCurly)
         {
-            Diagnostic diag{sourceFile, tokenDo, Err(Err0434)};
+            const Diagnostic diag{sourceFile, tokenDo, Err(Err0434)};
             return context->report(diag);
         }
 
@@ -518,7 +518,7 @@ bool Parser::doStatementFor(AstNode* parent, AstNode** result, AstNodeKind kind)
 void Parser::registerSubDecl(AstNode* subDecl)
 {
     SWAG_ASSERT(subDecl->ownerFct);
-    auto orgSubDecl = subDecl;
+    const auto orgSubDecl = subDecl;
     subDecl->ownerFct->subDecls.push_back(subDecl);
     subDecl->flags |= AST_NO_SEMANTIC | AST_SUB_DECL | AST_INTERNAL;
 
@@ -550,7 +550,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
             for (size_t i = 0; i < testParent->childs.size() - 1; i++) // Do not clone content
             {
                 cloneContext.parent = newAttrUse;
-                auto child          = testParent->childs[i]->clone(cloneContext);
+                const auto child    = testParent->childs[i]->clone(cloneContext);
 
                 // Only the last attribute of the block needs to have a semanticAfterFct, so
                 // we rest it, and we will set it later for the last child
@@ -568,8 +568,8 @@ void Parser::registerSubDecl(AstNode* subDecl)
         }
     }
 
-    auto newParent = subDecl->parent;
-    auto orgParent = newParent;
+    auto       newParent = subDecl->parent;
+    const auto orgParent = newParent;
     Ast::removeFromParent(subDecl);
 
     // :SubDeclParent
@@ -581,7 +581,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
     {
         // The last child must have the semanticAfterFct set
         // :AttrUseLastChild
-        auto back = newAttrUse->childs.back();
+        const auto back = newAttrUse->childs.back();
         back->allocateExtension(ExtensionKind::Semantic);
         SWAG_ASSERT(!back->extSemantic()->semanticAfterFct);
         back->extSemantic()->semanticAfterFct = Semantic::resolveAttrUse;
@@ -601,7 +601,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
     // when it is evaluated.
     if (orgSubDecl->kind != AstNodeKind::FuncDecl || !(orgSubDecl->specFlags & AstFuncDecl::SPECFLAG_IS_LAMBDA_EXPRESSION))
     {
-        auto solver         = Ast::newNode<AstRefSubDecl>(this, AstNodeKind::RefSubDecl, sourceFile, orgParent);
+        const auto solver         = Ast::newNode<AstRefSubDecl>(this, AstNodeKind::RefSubDecl, sourceFile, orgParent);
         solver->semanticFct = Semantic::resolveSubDeclRef;
         solver->flags |= AST_GENERATED | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
         solver->refSubDecl = orgSubDecl;
@@ -611,7 +611,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
 
 bool Parser::doCompilerScopeBreakable(AstNode* parent, AstNode** result)
 {
-    auto labelNode         = Ast::newNode<AstScopeBreakable>(this, AstNodeKind::ScopeBreakable, sourceFile, parent);
+    const auto labelNode         = Ast::newNode<AstScopeBreakable>(this, AstNodeKind::ScopeBreakable, sourceFile, parent);
     *result                = labelNode;
     labelNode->semanticFct = Semantic::resolveScopeBreakable;
 
@@ -898,7 +898,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 
     case TokenId::SymDot:
     {
-        auto withNode = parent->findParent(AstNodeKind::With);
+        const auto withNode = parent->findParent(AstNodeKind::With);
         SWAG_VERIFY(withNode, error(token, Err(Err0507)));
         Token tokenDot = token;
         eatToken();
@@ -909,9 +909,9 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 
     case TokenId::NativeType:
     {
-        Diagnostic diag{sourceFile, token, Err(Err0699)};
+        const Diagnostic diag{sourceFile, token, Err(Err0699)};
         eatToken();
-        Diagnostic* note = nullptr;
+        const Diagnostic* note = nullptr;
         if (token.id == TokenId::Identifier)
             note = Diagnostic::note(Nte(Nte0181));
         return context->report(diag, note);

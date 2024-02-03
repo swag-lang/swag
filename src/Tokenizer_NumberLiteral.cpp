@@ -153,7 +153,7 @@ bool Tokenizer::doFloatLiteral(TokenParse& token, uint32_t c)
         acceptSep = true;
         rank++;
 
-        auto val = (c - '0');
+        const auto val = (c - '0');
         SWAG_VERIFY(token.literalValue.u64 <= 18446744073709551615ULL - val, error(token, Err(Err0609)));
         token.literalValue.f64 += val * fractPart;
         fractPart *= 0.1;
@@ -198,7 +198,7 @@ bool Tokenizer::doIntLiteral(TokenParse& token, uint32_t c)
         token.literalValue.u64 *= 10;
         rank++;
 
-        auto val = (c - '0');
+        const auto val = (c - '0');
         SWAG_VERIFY(token.literalValue.u64 <= 18446744073709551615ULL - val, error(token, Err(Err0609)));
         token.literalValue.u64 += val;
 
@@ -312,8 +312,8 @@ bool Tokenizer::doNumberLiteral(TokenParse& token, uint32_t c)
 {
     if (c == '0')
     {
-        unsigned offset;
-        auto     startLoc = token.startLocation;
+        unsigned   offset;
+        const auto startLoc = token.startLocation;
 
         c = peekChar(offset);
 

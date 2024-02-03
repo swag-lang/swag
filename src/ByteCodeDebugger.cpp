@@ -120,7 +120,7 @@ ByteCode* ByteCodeDebugger::findCmdBc(const Utf8& name)
     if (bc.size() > 1)
     {
         g_ByteCodeDebugger.printCmdError("multiple functions");
-        for (auto one : bc)
+        for (const auto one : bc)
             one->printName();
         return nullptr;
     }
@@ -138,7 +138,7 @@ VectorNative<ByteCode*> ByteCodeDebugger::findBc(const char* bcName)
     modules.push_back(g_Workspace->runtimeModule);
 
     VectorNative<ByteCode*> tryMatch;
-    for (auto m : modules)
+    for (const auto m : modules)
     {
         for (auto bc : m->byteCodeFunc)
         {
@@ -202,7 +202,7 @@ void ByteCodeDebugger::computeDebugContext(ByteCodeRunContext* context)
     if (steps.empty())
         return;
 
-    uint32_t maxLevel              = g_ByteCodeStackTrace->maxLevel(context);
+    const uint32_t maxLevel              = g_ByteCodeStackTrace->maxLevel(context);
     context->debugStackFrameOffset = min(context->debugStackFrameOffset, maxLevel);
     uint32_t ns                    = 0;
 
@@ -211,7 +211,7 @@ void ByteCodeDebugger::computeDebugContext(ByteCodeRunContext* context)
         if (i >= (int) steps.size())
             continue;
 
-        auto& step = steps[i];
+        const auto& step = steps[i];
         if (ns == context->debugStackFrameOffset)
         {
             debugCxtBc    = step.bc;
@@ -282,8 +282,8 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
 
     while (true)
     {
-        int  c   = 0;
-        auto key = OS::promptChar(c, ctrl, shift);
+        int        c   = 0;
+        const auto key = OS::promptChar(c, ctrl, shift);
 
         if (key == OS::Key::Return)
             break;
@@ -421,7 +421,7 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
         {
             Utf8 str = OS::getClipboardString();
             fputs(Fmt("\x1B[%d@", str.length()), stdout); // Insert n blanks and shift right
-            for (auto cc : str)
+            for (const auto cc : str)
             {
                 fputc(cc, stdout);
                 line.insert(cursorX, (char) cc);
@@ -481,7 +481,7 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
 
 bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
 {
-    auto ip           = context->ip;
+    const auto ip           = context->ip;
     bool zapCurrentIp = false;
 
     switch (debugStepMode)
@@ -525,8 +525,8 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
 
     case DebugStepMode::NextLineStepIn:
     {
-        debugBcMode = false;
-        auto loc    = ByteCode::getLocation(context->bc, ip, true);
+        debugBcMode    = false;
+        const auto loc = ByteCode::getLocation(context->bc, ip, true);
         if (!loc.file || !loc.location)
         {
             zapCurrentIp = true;
@@ -579,7 +579,7 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
                 break;
             }
 
-            auto loc = ByteCode::getLocation(context->bc, ip, true);
+            const auto loc = ByteCode::getLocation(context->bc, ip, true);
             if (loc.file != debugStepLastFile)
             {
                 zapCurrentIp = true;
@@ -598,7 +598,7 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
                 break;
             }
 
-            auto loc = ByteCode::getLocation(context->bc, ip, true);
+            const auto loc = ByteCode::getLocation(context->bc, ip, true);
             if (loc.file != debugStepLastFile)
             {
                 zapCurrentIp = true;
@@ -606,7 +606,7 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
             }
         }
 
-        auto loc = ByteCode::getLocation(context->bc, ip, true);
+        const auto loc = ByteCode::getLocation(context->bc, ip, true);
         if (!loc.file || !loc.location)
         {
             zapCurrentIp = true;
@@ -679,7 +679,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
     static mutex dbgMutex;
     ScopedLock   sc(dbgMutex);
 
-    auto ip = context->ip;
+    const auto ip = context->ip;
 
     if (context->debugEntry)
     {
@@ -706,7 +706,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
 
             g_Log.print(Fmt("build configuration            = [[%s]]\n", g_CommandLine.buildCfg.c_str()));
 
-            Module* module = nullptr;
+            const Module* module = nullptr;
             if (context->bc->sourceFile)
                 module = context->bc->sourceFile->module;
             if (!module && context->bc->node && context->bc->node->sourceFile)
@@ -846,7 +846,7 @@ void ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cm
             if (!getRegIdx(context, pz + 1, regN))
                 return;
 
-            auto& regP = context->getRegBuffer(debugCxtRc)[regN];
+            const auto& regP = context->getRegBuffer(debugCxtRc)[regN];
             result += Fmt("0x%llx", regP.u64);
             pz += 2;
             while (SWAG_IS_DIGIT(*pz))

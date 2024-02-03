@@ -69,7 +69,7 @@ bool Semantic::canInheritAccess(AstNode* node)
 
 void Semantic::setNodeAccess(AstNode* node)
 {
-    auto overload = node->resolvedSymbolOverload;
+    const auto overload = node->resolvedSymbolOverload;
     if (!overload)
         return;
     if (!overload->node)
@@ -111,7 +111,7 @@ void Semantic::inheritAccess(AstNode* node)
     doInheritAccess(node->parent, node);
     if (node->typeInfo)
     {
-        auto retType = node->typeInfo->getFinalType();
+        const auto retType = node->typeInfo->getFinalType();
         if (retType->declNode && node->parent != retType->declNode)
             doInheritAccess(node->parent, retType->declNode);
     }
@@ -130,7 +130,7 @@ void Semantic::computeAccess(AstNode* node)
 void Semantic::computeAccessRec(AstNode* node)
 {
     setNodeAccess(node);
-    for (auto c : node->childs)
+    for (const auto c : node->childs)
     {
         if (!canInheritAccess(c))
             continue;
@@ -174,14 +174,14 @@ void Semantic::setDefaultAccess(AstNode* node)
     {
         if (node->kind == AstNodeKind::StructDecl)
         {
-            auto structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
+            const auto structNode = CastAst<AstStruct>(node, AstNodeKind::StructDecl);
             SWAG_ASSERT(structNode->originalGeneric);
             node->semFlags |= structNode->originalGeneric->semFlags & SEMFLAG_ACCESS_MASK;
         }
 
         if (node->kind == AstNodeKind::FuncDecl)
         {
-            auto funcNode = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+            const auto funcNode = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
             SWAG_ASSERT(funcNode->originalGeneric);
             node->semFlags |= funcNode->originalGeneric->semFlags & SEMFLAG_ACCESS_MASK;
         }
@@ -224,10 +224,10 @@ static AstNode* getErrorCulprit(AstNode* n, AstNode** onNode)
     {
         if (n->typeInfo)
         {
-            auto retType = n->typeInfo->getFinalType();
+            const auto retType = n->typeInfo->getFinalType();
             if (retType->declNode)
             {
-                auto res = getErrorCulprit(retType->declNode, onNode);
+                const auto res = getErrorCulprit(retType->declNode, onNode);
                 if (res)
                 {
                     if (*onNode == nullptr)
@@ -239,7 +239,7 @@ static AstNode* getErrorCulprit(AstNode* n, AstNode** onNode)
                 {
                     if (n->kind == AstNodeKind::ConstDecl || n->kind == AstNodeKind::VarDecl)
                     {
-                        auto varDecl = CastAst<AstVarDecl>(n, AstNodeKind::ConstDecl, AstNodeKind::VarDecl);
+                        const auto varDecl = CastAst<AstVarDecl>(n, AstNodeKind::ConstDecl, AstNodeKind::VarDecl);
                         if (varDecl->type)
                             *onNode = varDecl->type;
                     }
@@ -251,9 +251,9 @@ static AstNode* getErrorCulprit(AstNode* n, AstNode** onNode)
         }
     }
 
-    for (auto c : n->childs)
+    for (const auto c : n->childs)
     {
-        auto res = getErrorCulprit(c, onNode);
+        const auto res = getErrorCulprit(c, onNode);
         if (res)
             return res;
     }
@@ -269,25 +269,25 @@ bool Semantic::checkAccess(JobContext* context, AstNode* node)
     if (!(node->semFlags & (SEMFLAG_ACCESS_INTERNAL | SEMFLAG_ACCESS_PRIVATE)))
         return true;
 
-    AstNode* onNode  = nullptr;
-    auto     culprit = getErrorCulprit(node, &onNode);
+    AstNode*   onNode  = nullptr;
+    const auto culprit = getErrorCulprit(node, &onNode);
     if (!culprit)
         return Report::internalError(node, "bad access, but cannot find the culprit");
     if (!onNode)
         onNode = culprit;
 
-    auto       accessCulprit = (culprit->semFlags & SEMFLAG_ACCESS_PRIVATE) ? "private" : "internal";
-    Diagnostic diag{node,
-                    node->getTokenName(),
-                    Fmt(Err(Err0426),
-                        Naming::kindName(node->resolvedSymbolOverload).c_str(),
-                        node->token.ctext(),
-                        Naming::kindName(culprit->resolvedSymbolOverload).c_str(),
-                        culprit->token.ctext(),
-                        accessCulprit)};
+    const auto       accessCulprit = (culprit->semFlags & SEMFLAG_ACCESS_PRIVATE) ? "private" : "internal";
+    const Diagnostic diag{node,
+                          node->getTokenName(),
+                          Fmt(Err(Err0426),
+                              Naming::kindName(node->resolvedSymbolOverload).c_str(),
+                              node->token.ctext(),
+                              Naming::kindName(culprit->resolvedSymbolOverload).c_str(),
+                              culprit->token.ctext(),
+                              accessCulprit)};
 
-    Diagnostic* note  = nullptr;
-    Diagnostic* note1 = nullptr;
+    const Diagnostic* note  = nullptr;
+    const Diagnostic* note1 = nullptr;
     if (onNode == culprit)
         note = Diagnostic::note(culprit, culprit->token, Fmt(Nte(Nte0146), Naming::kindName(culprit->resolvedSymbolOverload).c_str(), accessCulprit));
     else

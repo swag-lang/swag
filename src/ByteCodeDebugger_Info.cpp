@@ -10,15 +10,15 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
     if (arg.split.size() > 3)
         return BcDbgCommandResult::BadArguments;
 
-    auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
+    const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
 
     Vector<Utf8> all;
     g_Log.setColor(LogColor::Gray);
 
     uint32_t total = 0;
-    for (auto m : g_Workspace->modules)
+    for (const auto m : g_Workspace->modules)
     {
-        for (auto bc : m->byteCodeFunc)
+        for (const auto bc : m->byteCodeFunc)
         {
             if (!bc->out)
                 continue;
@@ -49,7 +49,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoModules(ByteCodeRunContext* context,
         return BcDbgCommandResult::BadArguments;
 
     Vector<Utf8> all;
-    for (auto m : g_Workspace->modules)
+    for (const auto m : g_Workspace->modules)
         all.push_back(m->name);
     sort(all.begin(), all.end(), [](const Utf8& a, const Utf8& b)
          { return strcmp(a.c_str(), b.c_str()) < 0; });
@@ -61,12 +61,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoVariables(ByteCodeRunContext* contex
 {
     if (arg.split.size() > 3)
         return BcDbgCommandResult::BadArguments;
-    auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
+    const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
 
-    Utf8 result;
-    auto m = context->jc.sourceFile->module;
+    Utf8       result;
+    const auto m = context->jc.sourceFile->module;
 
-    for (auto n : m->globalVarsBss)
+    for (const auto n : m->globalVarsBss)
     {
         if (!n->resolvedSymbolOverload)
             continue;
@@ -74,7 +74,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoVariables(ByteCodeRunContext* contex
         g_ByteCodeDebugger.appendTypedValue(context, filter, n, nullptr, addr, result);
     }
 
-    for (auto n : m->globalVarsMutable)
+    for (const auto n : m->globalVarsMutable)
     {
         if (!n->resolvedSymbolOverload)
             continue;
@@ -90,7 +90,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, 
 {
     if (arg.split.size() > 3)
         return BcDbgCommandResult::BadArguments;
-    auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
+    const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
 
     if (g_ByteCodeDebugger.debugCxtBc->localVars.empty())
     {
@@ -99,7 +99,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, 
     }
 
     Utf8 result;
-    for (auto l : g_ByteCodeDebugger.debugCxtBc->localVars)
+    for (const auto l : g_ByteCodeDebugger.debugCxtBc->localVars)
         g_ByteCodeDebugger.appendTypedValue(context, filter, l, g_ByteCodeDebugger.debugCxtBp, nullptr, result);
     g_ByteCodeDebugger.printLong(result);
 
@@ -110,9 +110,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, co
 {
     if (arg.split.size() > 3)
         return BcDbgCommandResult::BadArguments;
-    auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
+    const auto filter = arg.split.size() == 3 ? arg.split[2] : Utf8("");
 
-    auto funcDecl = CastAst<AstFuncDecl>(g_ByteCodeDebugger.debugCxtBc->node, AstNodeKind::FuncDecl);
+    const auto funcDecl = CastAst<AstFuncDecl>(g_ByteCodeDebugger.debugCxtBc->node, AstNodeKind::FuncDecl);
     if (!funcDecl->parameters || funcDecl->parameters->childs.empty())
     {
         g_ByteCodeDebugger.printCmdError("no arguments");
@@ -120,7 +120,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, co
     }
 
     Utf8 result;
-    for (auto l : funcDecl->parameters->childs)
+    for (const auto l : funcDecl->parameters->childs)
         g_ByteCodeDebugger.appendTypedValue(context, filter, l, g_ByteCodeDebugger.debugCxtBp, nullptr, result);
     g_ByteCodeDebugger.printLong(result);
 

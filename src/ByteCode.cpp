@@ -15,7 +15,7 @@ ByteCodeOpDesc g_ByteCodeOpDesc[] = {
 
 void ByteCode::release()
 {
-    auto s = Allocator::alignSize(maxInstructions * sizeof(ByteCodeInstruction));
+    const auto s = Allocator::alignSize(maxInstructions * sizeof(ByteCodeInstruction));
     Allocator::free(out, s);
     out = nullptr;
 }
@@ -55,7 +55,7 @@ Utf8 ByteCode::getPrintRefName()
     str = ByteCodeDebugger::COLOR_VTS_NAME;
     str += getPrintName();
 
-    auto type = getCallType();
+    const auto type = getCallType();
     if (type)
     {
         str += " ";
@@ -66,7 +66,7 @@ Utf8 ByteCode::getPrintRefName()
     if (!out)
         return str;
 
-    auto loc = ByteCode::getLocation(this, out);
+    const auto loc = ByteCode::getLocation(this, out);
     if (loc.file || loc.location)
         str += " ";
 
@@ -103,7 +103,7 @@ Utf8 ByteCode::getCallNameFromDecl()
 {
     if (node)
     {
-        auto funcNode = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        const auto funcNode = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
         return funcNode->getCallName();
     }
 
@@ -168,7 +168,7 @@ void ByteCode::markLabels()
         }
         else if (ByteCode::isJumpDyn(ip))
         {
-            int32_t* table = (int32_t*) sourceFile->module->compilerSegment.address(ip->d.u32);
+            const int32_t* table = (int32_t*) sourceFile->module->compilerSegment.address(ip->d.u32);
             for (uint32_t idx = 0; idx < ip->c.u32; idx++)
             {
                 ip[table[idx] + 1].flags |= BCI_JUMP_DEST;
@@ -241,7 +241,7 @@ void* ByteCode::undoByteCodeLambda(void* ptr)
 
 bool ByteCode::isByteCodeLambda(void* ptr)
 {
-    uint64_t u = (uint64_t) ptr;
+    const uint64_t u = (uint64_t) ptr;
     return u & SWAG_LAMBDA_BC_MARKER;
 }
 
@@ -250,7 +250,7 @@ bool ByteCode::canEmit()
     if (!node)
         return true;
 
-    auto funcNode = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+    const auto funcNode = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
 
     // Do we need to generate that function ?
     if (funcNode->attributeFlags & ATTRIBUTE_COMPILER)
@@ -277,9 +277,9 @@ bool ByteCode::canEmit()
 
 bool ByteCode::areSame(ByteCodeInstruction* start0, ByteCodeInstruction* end0, ByteCodeInstruction* start1, ByteCodeInstruction* end1, bool specialJump, bool specialCall)
 {
-    bool                 same = end0 - start0 == end1 - start1;
-    ByteCodeInstruction* ip0  = start0;
-    ByteCodeInstruction* ip1  = start1;
+    bool                       same = end0 - start0 == end1 - start1;
+    ByteCodeInstruction*       ip0  = start0;
+    const ByteCodeInstruction* ip1  = start1;
     while (same && ip0 != end0)
     {
         if (ip0->op != ip1->op)
@@ -288,8 +288,8 @@ bool ByteCode::areSame(ByteCodeInstruction* start0, ByteCodeInstruction* end0, B
             break;
         }
 
-        uint32_t flags0 = ip0->flags & ~(BCI_JUMP_DEST | BCI_START_STMT);
-        uint32_t flags1 = ip1->flags & ~(BCI_JUMP_DEST | BCI_START_STMT);
+        const uint32_t flags0 = ip0->flags & ~(BCI_JUMP_DEST | BCI_START_STMT);
+        const uint32_t flags1 = ip1->flags & ~(BCI_JUMP_DEST | BCI_START_STMT);
         if (flags0 != flags1)
         {
             same = false;
@@ -314,8 +314,8 @@ bool ByteCode::areSame(ByteCodeInstruction* start0, ByteCodeInstruction* end0, B
                             ip0->op == ByteCodeOp::LocalCallPopParam ||
                             ip0->op == ByteCodeOp::LocalCallPopRC))
         {
-            ByteCode* bc0 = (ByteCode*) ip0->a.u64;
-            ByteCode* bc1 = (ByteCode*) ip1->a.u64;
+            const ByteCode* bc0 = (ByteCode*) ip0->a.u64;
+            const ByteCode* bc1 = (ByteCode*) ip1->a.u64;
             if (bc0 && bc0->alias)
                 bc0 = bc0->alias;
             if (bc1 && bc1->alias)
@@ -332,8 +332,8 @@ bool ByteCode::areSame(ByteCodeInstruction* start0, ByteCodeInstruction* end0, B
         // Compare if the 2 jump destinations are the same
         if (specialJump && ip0->op == ByteCodeOp::Jump)
         {
-            auto destIp0 = ip0 + ip0->b.s32 + 1;
-            auto destIp1 = ip1 + ip1->b.s32 + 1;
+            const auto destIp0 = ip0 + ip0->b.s32 + 1;
+            const auto destIp1 = ip1 + ip1->b.s32 + 1;
             if (destIp0 != destIp1)
                 same = false;
         }
@@ -354,7 +354,7 @@ uint32_t ByteCode::computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool spe
 {
     oldCrc = Crc32::compute2((const uint8_t*) &ip->op, oldCrc);
 
-    uint32_t flags = ip->flags & ~(BCI_JUMP_DEST | BCI_START_STMT);
+    const uint32_t flags = ip->flags & ~(BCI_JUMP_DEST | BCI_START_STMT);
     oldCrc         = Crc32::compute2((const uint8_t*) &flags, oldCrc);
 
     if (ByteCode::hasSomethingInC(ip))
@@ -381,9 +381,9 @@ uint32_t ByteCode::computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool spe
     // are going to the same instruction, then we consider they are equal)
     if (specialJump && ip->op == ByteCodeOp::Jump)
     {
-        auto destIp = ip + ip->b.s32 + 1;
-        auto destN  = destIp - out;
-        oldCrc      = Crc32::compute8((const uint8_t*) &destN, oldCrc);
+        const auto destIp = ip + ip->b.s32 + 1;
+        const auto destN  = destIp - out;
+        oldCrc            = Crc32::compute8((const uint8_t*) &destN, oldCrc);
     }
     else if (ByteCode::hasSomethingInB(ip))
         oldCrc = Crc32::compute8((const uint8_t*) &ip->b.u64, oldCrc);
@@ -406,13 +406,13 @@ void ByteCode::makeRoomForInstructions(uint32_t room)
     // This is to mitigate the number of reallocations, without wasting too much memory.
     if (!maxInstructions && node && node->kind == AstNodeKind::FuncDecl)
     {
-        auto funcDecl = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
+        const auto funcDecl = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);
         // 0.8f is kind of magical, based on various measures.
         maxInstructions = (int) (funcDecl->nodeCounts * 0.8f);
     }
 
-    maxInstructions     = max(maxInstructions, 8);
-    auto newInstuctions = (ByteCodeInstruction*) Allocator::alloc(maxInstructions * sizeof(ByteCodeInstruction));
+    maxInstructions           = max(maxInstructions, 8);
+    const auto newInstuctions = (ByteCodeInstruction*) Allocator::alloc(maxInstructions * sizeof(ByteCodeInstruction));
     memcpy(newInstuctions, out, numInstructions * sizeof(ByteCodeInstruction));
     Allocator::free(out, oldSize);
 

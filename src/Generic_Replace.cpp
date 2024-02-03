@@ -18,16 +18,16 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
 {
     for (size_t i = 0; i < typeGenericParameters.size(); i++)
     {
-        auto param = typeGenericParameters[i];
+        const auto param = typeGenericParameters[i];
 
         if (doType)
         {
-            auto varDecl = CastAst<AstVarDecl>(nodeGenericParameters[i], AstNodeKind::FuncDeclParam);
+            const auto varDecl = CastAst<AstVarDecl>(nodeGenericParameters[i], AstNodeKind::FuncDeclParam);
 
             // If the user has specified a generic type, take it
             if (callGenericParameters && i < callGenericParameters->childs.size())
             {
-                auto genParam             = callGenericParameters->childs[i];
+                const auto genParam             = callGenericParameters->childs[i];
                 param->typeInfo           = genParam->typeInfo;
                 varDecl->genTypeComesFrom = genParam;
 
@@ -72,18 +72,18 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
         }
 
         // We should not instantiate with unresolved types
-        auto genGen = match.genericParametersCallTypes[i].typeInfoGeneric;
+        const auto genGen = match.genericParametersCallTypes[i].typeInfoGeneric;
         if (genGen->isKindGeneric())
         {
             if (param->typeInfo->isUntypedInteger() || param->typeInfo->isUntypedFloat())
             {
-                auto symbol  = match.symbolName;
+                const auto symbol  = match.symbolName;
                 auto errNode = context->node;
 
                 TypeInfo* errType = nullptr;
-                for (auto& v : match.genericReplaceTypes)
+                for (const auto& v : match.genericReplaceTypes)
                 {
-                    auto fromNode = v.second.fromNode;
+                    const auto fromNode = v.second.fromNode;
                     if (!fromNode)
                         continue;
 
@@ -96,7 +96,7 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
 
                     if (fromNode->typeInfo->isListArray())
                     {
-                        auto listArr = CastTypeInfo<TypeInfoList>(fromNode->typeInfo, TypeInfoKind::TypeListArray);
+                        const auto listArr = CastTypeInfo<TypeInfoList>(fromNode->typeInfo, TypeInfoKind::TypeListArray);
                         if (listArr->subTypes[0]->typeInfo->isUntypedInteger() || listArr->subTypes[0]->typeInfo->isUntypedFloat())
                         {
                             errType = fromNode->typeInfo = listArr->subTypes[0]->typeInfo;
@@ -120,7 +120,7 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
 
         if (doNode)
         {
-            auto nodeParam = nodeGenericParameters[i];
+            const auto nodeParam = nodeGenericParameters[i];
             nodeParam->setFlagsValueIsComputed();
             nodeParam->kind = AstNodeKind::ConstDecl;
             nodeParam->flags |= AST_FROM_GENERIC;
@@ -133,9 +133,9 @@ bool Generic::replaceGenericParameters(SemanticContext*              context,
                 if (param->typeInfo->isListArray() && nodeParam->typeInfo->isSlice())
                 {
                     SwagSlice* slice;
-                    auto       storageSegment               = nodeParam->computedValue->storageSegment;
+                    const auto storageSegment               = nodeParam->computedValue->storageSegment;
                     nodeParam->computedValue->storageOffset = storageSegment->reserve(sizeof(SwagSlice), (uint8_t**) &slice);
-                    auto typeList                           = CastTypeInfo<TypeInfoList>(param->typeInfo, TypeInfoKind::TypeListArray);
+                    const auto typeList                     = CastTypeInfo<TypeInfoList>(param->typeInfo, TypeInfoKind::TypeListArray);
                     slice->buffer                           = storageSegment->address(param->value->storageOffset);
                     slice->count                            = typeList->subTypes.size();
                 }
@@ -156,14 +156,14 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
         return typeInfo;
 
     // Search if the type has a corresponding replacement
-    auto it = replaceTypes.find(typeInfo->name);
+    const auto it = replaceTypes.find(typeInfo->name);
     if (it != replaceTypes.end())
     {
         // We can have a match on a lambda for a function attribute, when function has been generated
         // In that case, we want to be sure that the kind is function
         if (typeInfo->isFuncAttr() && it->second.typeInfoReplace->isLambdaClosure())
         {
-            auto t  = it->second.typeInfoReplace->clone();
+            const auto t  = it->second.typeInfoReplace->clone();
             t->kind = TypeInfoKind::FuncAttr;
             return t;
         }
@@ -180,8 +180,8 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
     {
     case TypeInfoKind::TypedVariadic:
     {
-        auto typeVariadic = CastTypeInfo<TypeInfoVariadic>(typeInfo, TypeInfoKind::TypedVariadic);
-        auto newType      = replaceGenericTypes(replaceTypes, typeVariadic->rawType);
+        auto       typeVariadic = CastTypeInfo<TypeInfoVariadic>(typeInfo, TypeInfoKind::TypedVariadic);
+        const auto newType      = replaceGenericTypes(replaceTypes, typeVariadic->rawType);
         if (newType != typeVariadic->rawType)
         {
             typeVariadic          = CastTypeInfo<TypeInfoVariadic>(typeVariadic->clone(), TypeInfoKind::TypedVariadic);
@@ -196,8 +196,8 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
 
     case TypeInfoKind::Alias:
     {
-        auto typeAlias = CastTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
-        auto newType   = replaceGenericTypes(replaceTypes, typeAlias->rawType);
+        auto       typeAlias = CastTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
+        const auto newType   = replaceGenericTypes(replaceTypes, typeAlias->rawType);
         if (newType != typeAlias->rawType)
         {
             typeAlias          = CastTypeInfo<TypeInfoAlias>(typeAlias->clone(), TypeInfoKind::Alias);
@@ -212,8 +212,8 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
 
     case TypeInfoKind::Pointer:
     {
-        auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
-        auto newType     = replaceGenericTypes(replaceTypes, typePointer->pointedType);
+        auto       typePointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+        const auto newType     = replaceGenericTypes(replaceTypes, typePointer->pointedType);
         if (newType != typePointer->pointedType)
         {
             typePointer = g_TypeMgr->makePointerTo(newType, (typePointer->flags & ~TYPEINFO_GENERIC) | TYPEINFO_FROM_GENERIC);
@@ -225,9 +225,9 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
 
     case TypeInfoKind::Array:
     {
-        auto      typeArray      = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        auto      newPointedType = replaceGenericTypes(replaceTypes, typeArray->pointedType);
-        TypeInfo* newFinalType   = newPointedType;
+        auto       typeArray      = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        const auto newPointedType = replaceGenericTypes(replaceTypes, typeArray->pointedType);
+        TypeInfo*  newFinalType   = newPointedType;
         if (typeArray->pointedType != typeArray->finalType)
             newFinalType = replaceGenericTypes(replaceTypes, typeArray->finalType);
         if (newPointedType != typeArray->pointedType || newFinalType != typeArray->finalType)
@@ -247,8 +247,8 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
 
     case TypeInfoKind::Slice:
     {
-        auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
-        auto newType   = replaceGenericTypes(replaceTypes, typeSlice->pointedType);
+        auto       typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+        const auto newType   = replaceGenericTypes(replaceTypes, typeSlice->pointedType);
         if (newType != typeSlice->pointedType)
         {
             typeSlice              = CastTypeInfo<TypeInfoSlice>(typeSlice->clone(), TypeInfoKind::Slice);
@@ -265,7 +265,7 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
     case TypeInfoKind::FuncAttr:
     {
         TypeInfoFuncAttr* newLambda  = nullptr;
-        auto              typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+        const auto        typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
 
         auto newType = replaceGenericTypes(replaceTypes, typeLambda->returnType);
         if (newType != typeLambda->returnType)
@@ -276,10 +276,10 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
             newLambda->replaceTypes = replaceTypes;
         }
 
-        auto numParams = typeLambda->parameters.size();
+        const auto numParams = typeLambda->parameters.size();
         for (size_t idx = 0; idx < numParams; idx++)
         {
-            auto param = typeLambda->parameters[idx];
+            const auto param = typeLambda->parameters[idx];
             newType    = replaceGenericTypes(replaceTypes, param->typeInfo);
 
             // If generic parameter is a closure, but the instantiated type is a lambda, then a conversion will
@@ -292,9 +292,9 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
                 newType->sizeOf = SWAG_LIMIT_CLOSURE_SIZEOF;
                 newType->flags |= TYPEINFO_CLOSURE;
 
-                auto newParam      = g_TypeMgr->makeParam();
-                newParam->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
-                auto newTypeFct    = CastTypeInfo<TypeInfoFuncAttr>(newType, newType->kind);
+                auto newParam         = g_TypeMgr->makeParam();
+                newParam->typeInfo    = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
+                const auto newTypeFct = CastTypeInfo<TypeInfoFuncAttr>(newType, newType->kind);
                 newTypeFct->parameters.push_front(newParam);
             }
 
@@ -307,7 +307,7 @@ TypeInfo* Generic::replaceGenericTypes(VectorMap<Utf8, GenericReplaceType>& repl
                     newLambda->replaceTypes = replaceTypes;
                 }
 
-                auto newParam      = newLambda->parameters[idx];
+                const auto newParam      = newLambda->parameters[idx];
                 newParam->typeInfo = newType;
                 newParam->flags |= TYPEINFOPARAM_FROM_GENERIC;
             }

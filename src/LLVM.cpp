@@ -12,8 +12,8 @@
 
 bool LLVM::createRuntime(const BuildParameters& buildParameters)
 {
-    int ct              = buildParameters.compileType;
-    int precompileIndex = buildParameters.precompileIndex;
+    const int ct              = buildParameters.compileType;
+    const int precompileIndex = buildParameters.precompileIndex;
     if (!perThread[ct][precompileIndex])
         perThread[ct][precompileIndex] = new LLVMPerThread;
 
@@ -202,8 +202,8 @@ bool LLVM::createRuntime(const BuildParameters& buildParameters)
 
 JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob)
 {
-    int ct              = buildParameters.compileType;
-    int precompileIndex = buildParameters.precompileIndex;
+    const int ct              = buildParameters.compileType;
+    const int precompileIndex = buildParameters.precompileIndex;
     if (!perThread[ct][precompileIndex])
         perThread[ct][precompileIndex] = new LLVMPerThread;
     auto& pp = *perThread[ct][precompileIndex];

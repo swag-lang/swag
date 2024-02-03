@@ -8,8 +8,8 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
 {
     parseTree(context, 0, context->tree[0].start, BCOTN_USER1, [](ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt)
               {
-                  auto ip    = parseCxt.curIp;
-                  auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
+                  const auto ip    = parseCxt.curIp;
+                  const auto flags = g_ByteCodeOpDesc[(int) ip->op].flags;
 
                   uint32_t regScan = UINT32_MAX;
                   if (flags & OPFLAG_WRITE_A && !(flags & (OPFLAG_READ_A | OPFLAG_WRITE_B | OPFLAG_WRITE_C | OPFLAG_WRITE_D)))
@@ -28,11 +28,11 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
                   bool hasWrite = false;
                   parseTree(context, parseCxt.curNode, parseCxt.curIp, BCOTN_USER2, [&](ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt1)
                             {
-                                auto ip1 = parseCxt1.curIp;
+                                const auto ip1 = parseCxt1.curIp;
                                 if (ip1 == ip)
                                     return;
 
-                                auto flags1 = g_ByteCodeOpDesc[(int) ip1->op].flags;
+                                const auto flags1 = g_ByteCodeOpDesc[(int) ip1->op].flags;
                                 if ((flags1 & OPFLAG_READ_A) && !(ip1->flags & BCI_IMM_A))
                                 {
                                     if (ip1->a.u32 == regScan)
@@ -126,10 +126,10 @@ static bool optimizePassDeadStoreDupScan(ByteCodeOptContext* context, uint32_t c
 {
     node->mark = context->mark;
 
-    bool hasA = ByteCode::hasWriteRegInA(ip);
-    bool hasB = ByteCode::hasWriteRegInB(ip);
-    bool hasC = ByteCode::hasWriteRegInC(ip);
-    bool hasD = ByteCode::hasWriteRegInD(ip);
+    const bool hasA = ByteCode::hasWriteRegInA(ip);
+    const bool hasB = ByteCode::hasWriteRegInB(ip);
+    const bool hasC = ByteCode::hasWriteRegInC(ip);
+    const bool hasD = ByteCode::hasWriteRegInD(ip);
 
     if (ipScan >= node->start)
     {
@@ -219,7 +219,7 @@ static bool optimizePassDeadStoreDupScan(ByteCodeOptContext* context, uint32_t c
     if (!node->parent.size())
         return false;
 
-    for (auto n : node->parent)
+    for (const auto n : node->parent)
     {
         ByteCodeOptTreeNode* parentNode = &context->tree[n];
         if (parentNode->mark == context->mark && n != curNode)
@@ -237,7 +237,7 @@ bool ByteCodeOptimizer::optimizePassDeadStoreDup(ByteCodeOptContext* context)
     context->mark = 0;
     parseTree(context, 0, context->tree[0].start, BCOTN_USER1, [](ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt)
               {
-                  auto ip = parseCxt.curIp;
+                  const auto ip = parseCxt.curIp;
                   switch (ip->op)
                   {
                   case ByteCodeOp::GetParam8:

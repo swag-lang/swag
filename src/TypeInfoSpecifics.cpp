@@ -5,7 +5,7 @@
 
 TypeInfo* TypeInfoNative::clone()
 {
-    auto newType = makeType<TypeInfoNative>();
+    const auto newType = makeType<TypeInfoNative>();
     newType->copyFrom(this);
     newType->valueInteger = valueInteger;
     return newType;
@@ -30,7 +30,7 @@ bool TypeInfoNative::isSame(TypeInfo* to, uint64_t castFlags)
     if (to->kind != TypeInfoKind::Native)
         return false;
 
-    auto other = static_cast<TypeInfoNative*>(to);
+    const auto other = static_cast<TypeInfoNative*>(to);
     if (nativeType != other->nativeType)
         return false;
 
@@ -39,7 +39,7 @@ bool TypeInfoNative::isSame(TypeInfo* to, uint64_t castFlags)
 
 TypeInfo* TypeInfoNamespace::clone()
 {
-    auto newType   = makeType<TypeInfoNamespace>();
+    const auto newType   = makeType<TypeInfoNamespace>();
     newType->scope = scope;
     newType->copyFrom(this);
     return newType;
@@ -47,7 +47,7 @@ TypeInfo* TypeInfoNamespace::clone()
 
 TypeInfo* TypeInfoCode::clone()
 {
-    auto newType = makeType<TypeInfoCode>();
+    const auto newType = makeType<TypeInfoCode>();
     newType->copyFrom(this);
     return newType;
 }
@@ -65,7 +65,7 @@ bool TypeInfoCode::isSame(TypeInfo* to, uint64_t castFlags)
 
 TypeInfo* TypeInfoAlias::clone()
 {
-    auto newType     = makeType<TypeInfoAlias>();
+    const auto newType     = makeType<TypeInfoAlias>();
     newType->rawType = rawType;
     newType->copyFrom(this);
     return newType;
@@ -92,7 +92,7 @@ bool TypeInfoAlias::isSame(TypeInfo* to, uint64_t castFlags)
 
     if (!TypeInfo::isSame(to, castFlags) || name != to->name)
     {
-        auto me = TypeManager::concreteType(this, CONCRETE_ALIAS);
+        const auto me = TypeManager::concreteType(this, CONCRETE_ALIAS);
         if (me != this)
             return me->isSame(to, castFlags);
         return false;
@@ -100,7 +100,7 @@ bool TypeInfoAlias::isSame(TypeInfo* to, uint64_t castFlags)
 
     if (to->isAlias())
     {
-        auto other = static_cast<TypeInfoAlias*>(to);
+        const auto other = static_cast<TypeInfoAlias*>(to);
         return rawType->isSame(other->rawType, castFlags);
     }
 
@@ -110,7 +110,7 @@ bool TypeInfoAlias::isSame(TypeInfo* to, uint64_t castFlags)
 
 TypeInfo* TypeInfoPointer::clone()
 {
-    auto newType         = makeType<TypeInfoPointer>();
+    const auto newType         = makeType<TypeInfoPointer>();
     newType->pointedType = pointedType;
     newType->copyFrom(this);
     return newType;
@@ -184,7 +184,7 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint64_t castFlags)
             return true;
     }
 
-    auto other = static_cast<TypeInfoPointer*>(to);
+    const auto other = static_cast<TypeInfoPointer*>(to);
 
     // Anonymous pointers
     if (castFlags & CASTFLAG_CAST)
@@ -202,7 +202,7 @@ bool TypeInfoPointer::isSame(TypeInfo* to, uint64_t castFlags)
 
 TypeInfo* TypeInfoArray::clone()
 {
-    auto newType         = makeType<TypeInfoArray>();
+    const auto newType         = makeType<TypeInfoArray>();
     newType->pointedType = pointedType;
     newType->finalType   = finalType;
     newType->count       = count;
@@ -221,7 +221,7 @@ bool TypeInfoArray::isSame(TypeInfo* to, uint64_t castFlags)
     if (!TypeInfo::isSame(to, castFlags))
         return false;
 
-    auto other = static_cast<TypeInfoArray*>(to);
+    const auto other = static_cast<TypeInfoArray*>(to);
     if ((flags & TYPEINFO_GENERIC) == (other->flags & TYPEINFO_GENERIC))
     {
         if (count != other->count)
@@ -253,7 +253,7 @@ void TypeInfoArray::computeWhateverName(Utf8& resName, uint32_t nameType)
         auto pType = pointedType;
         while (pType->isArray() && pType != finalType)
         {
-            auto subType = CastTypeInfo<TypeInfoArray>(pType, TypeInfoKind::Array);
+            const auto subType = CastTypeInfo<TypeInfoArray>(pType, TypeInfoKind::Array);
             if (subType->count == 0)
                 resName += Fmt(",?", subType->count);
             else
@@ -279,7 +279,7 @@ void TypeInfoSlice::computeWhateverName(Utf8& resName, uint32_t nameType)
 
 TypeInfo* TypeInfoSlice::clone()
 {
-    auto newType         = makeType<TypeInfoSlice>();
+    const auto newType         = makeType<TypeInfoSlice>();
     newType->pointedType = pointedType;
     newType->copyFrom(this);
     return newType;
@@ -291,7 +291,7 @@ bool TypeInfoSlice::isSame(TypeInfo* to, uint64_t castFlags)
         return true;
     if (!TypeInfo::isSame(to, castFlags))
         return false;
-    auto castedFrom = static_cast<TypeInfoSlice*>(to);
+    const auto castedFrom = static_cast<TypeInfoSlice*>(to);
     return pointedType->isSame(castedFrom->pointedType, castFlags);
 }
 
@@ -316,9 +316,9 @@ void TypeInfoList::computeWhateverName(Utf8& resName, uint32_t nameType)
 
 TypeInfo* TypeInfoList::clone()
 {
-    auto newType = makeType<TypeInfoList>(kind);
+    const auto newType = makeType<TypeInfoList>(kind);
 
-    int size = (int) subTypes.size();
+    const int size = (int) subTypes.size();
     newType->subTypes.reserve(size);
     for (int i = 0; i < size; i++)
     {
@@ -347,7 +347,7 @@ bool TypeInfoList::isSame(TypeInfo* to, uint64_t castFlags)
 
     if (!TypeInfo::isSame(to, castFlags))
         return false;
-    auto other = static_cast<TypeInfoList*>(to);
+    const auto other = static_cast<TypeInfoList*>(to);
     if (subTypes.size() != other->subTypes.size())
         return false;
 
@@ -368,7 +368,7 @@ bool TypeInfoList::isSame(TypeInfo* to, uint64_t castFlags)
 
 TypeInfo* TypeInfoVariadic::clone()
 {
-    auto newType = makeType<TypeInfoVariadic>();
+    const auto newType = makeType<TypeInfoVariadic>();
     newType->copyFrom(this);
     newType->rawType = rawType;
     return newType;
@@ -391,7 +391,7 @@ bool TypeInfoVariadic::isSame(TypeInfo* to, uint64_t castFlags)
 {
     if (!TypeInfo::isSame(to, castFlags))
         return false;
-    auto other = static_cast<TypeInfoVariadic*>(to);
+    const auto other = static_cast<TypeInfoVariadic*>(to);
     if (rawType && !other->rawType)
         return false;
     if (!rawType && other->rawType)
@@ -403,7 +403,7 @@ bool TypeInfoVariadic::isSame(TypeInfo* to, uint64_t castFlags)
 
 TypeInfo* TypeInfoGeneric::clone()
 {
-    auto newType = makeType<TypeInfoGeneric>();
+    const auto newType = makeType<TypeInfoGeneric>();
     newType->copyFrom(this);
     newType->rawType = rawType;
     return newType;
@@ -431,7 +431,7 @@ Utf8 TypeInfoEnum::getDisplayName()
 
 bool TypeInfoEnum::contains(const Utf8& valueName)
 {
-    for (auto p : values)
+    for (const auto p : values)
     {
         if (p->name == valueName)
             return true;
@@ -447,7 +447,7 @@ void TypeInfoEnum::collectEnums(VectorNative<TypeInfoEnum*>& collect)
     if (!(flags & TYPEINFO_ENUM_HAS_USING))
         return;
 
-    for (auto value : values)
+    for (const auto value : values)
     {
         if (value->typeInfo->isEnum())
         {
@@ -459,7 +459,7 @@ void TypeInfoEnum::collectEnums(VectorNative<TypeInfoEnum*>& collect)
 
 TypeInfo* TypeInfoEnum::clone()
 {
-    auto newType        = makeType<TypeInfoEnum>();
+    const auto newType        = makeType<TypeInfoEnum>();
     newType->scope      = scope;
     newType->rawType    = rawType;
     newType->attributes = attributes;
@@ -492,7 +492,7 @@ bool TypeInfoEnum::isSame(TypeInfo* to, uint64_t castFlags)
     if (name != to->name)
         return false;
 
-    auto other = static_cast<TypeInfoEnum*>(to);
+    const auto other = static_cast<TypeInfoEnum*>(to);
     if (!rawType->isSame(other->rawType, castFlags))
         return false;
     if (values.size() != other->values.size())
@@ -500,7 +500,7 @@ bool TypeInfoEnum::isSame(TypeInfo* to, uint64_t castFlags)
 
     if (!(castFlags & CASTFLAG_CAST))
     {
-        auto childSize = values.size();
+        const auto childSize = values.size();
         if (childSize != other->values.size())
             return false;
         for (size_t i = 0; i < childSize; i++)
@@ -517,7 +517,7 @@ TypeInfo* TypeInfoFuncAttr::clone()
 {
     ScopedLock lk(mutex);
 
-    auto newType                  = makeType<TypeInfoFuncAttr>();
+    const auto newType                  = makeType<TypeInfoFuncAttr>();
     newType->firstDefaultValueIdx = firstDefaultValueIdx;
     newType->returnType           = returnType;
     newType->stackSize            = stackSize;
@@ -557,12 +557,12 @@ static void computeNameGenericParameters(VectorNative<TypeInfoParam*>& genericPa
         if (i)
             resName += ", ";
 
-        auto genParam = genericParameters[i];
+        const auto genParam = genericParameters[i];
         if (genParam->flags & TYPEINFOPARAM_DEFINED_VALUE)
         {
             SWAG_ASSERT(genParam->typeInfo);
             SWAG_ASSERT(genParam->value);
-            auto str = Ast::literalToString(genParam->typeInfo, *genParam->value);
+            const auto str = Ast::literalToString(genParam->typeInfo, *genParam->value);
             if (genParam->typeInfo->isString())
                 resName += "\"";
             resName += str;
@@ -715,10 +715,10 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint64_t castFlags, BadSi
         // If the types does not match, then the two functions are not the same.
         if (declNode && declNode->kind == AstNodeKind::FuncDecl && other->declNode && other->declNode->kind == AstNodeKind::FuncDecl)
         {
-            auto myFunc        = CastAst<AstFuncDecl>(declNode, AstNodeKind::FuncDecl);
-            auto typeMyFunc    = CastTypeInfo<TypeInfoFuncAttr>(myFunc->typeInfo, TypeInfoKind::FuncAttr);
-            auto otherFunc     = CastAst<AstFuncDecl>(other->declNode, AstNodeKind::FuncDecl);
-            auto typeOtherFunc = CastTypeInfo<TypeInfoFuncAttr>(otherFunc->typeInfo, TypeInfoKind::FuncAttr);
+            const auto myFunc        = CastAst<AstFuncDecl>(declNode, AstNodeKind::FuncDecl);
+            const auto typeMyFunc    = CastTypeInfo<TypeInfoFuncAttr>(myFunc->typeInfo, TypeInfoKind::FuncAttr);
+            const auto otherFunc     = CastAst<AstFuncDecl>(other->declNode, AstNodeKind::FuncDecl);
+            const auto typeOtherFunc = CastTypeInfo<TypeInfoFuncAttr>(otherFunc->typeInfo, TypeInfoKind::FuncAttr);
             if (typeMyFunc->replaceTypes.size() != typeOtherFunc->replaceTypes.size())
                 return false;
             for (auto r : typeMyFunc->replaceTypes)
@@ -754,8 +754,8 @@ bool TypeInfoFuncAttr::isSame(TypeInfoFuncAttr* other, uint64_t castFlags, BadSi
                 continue;
             if (other->capture[i]->typeInfo->isUndefined())
                 continue;
-            auto type1 = TypeManager::concretePtrRef(capture[i]->typeInfo);
-            auto type2 = TypeManager::concretePtrRef(other->capture[i]->typeInfo);
+            const auto type1 = TypeManager::concretePtrRef(capture[i]->typeInfo);
+            const auto type2 = TypeManager::concretePtrRef(other->capture[i]->typeInfo);
             if (!type1->isSame(type2, castFlags))
                 return false;
         }
@@ -819,7 +819,7 @@ bool TypeInfoFuncAttr::isSame(TypeInfo* to, uint64_t castFlags)
     if (!TypeInfo::isSame(to, castFlags))
         return false;
 
-    auto other = static_cast<TypeInfoFuncAttr*>(to);
+    const auto other = static_cast<TypeInfoFuncAttr*>(to);
     SWAG_ASSERT(to->isFuncAttr() || to->isLambdaClosure());
     if (!isSame(other, castFlags))
         return false;
@@ -841,7 +841,7 @@ bool TypeInfoFuncAttr::isVariadic()
 {
     if (parameters.empty())
         return false;
-    auto typeParam = ((TypeInfoParam*) parameters.back())->typeInfo;
+    const auto typeParam = ((TypeInfoParam*) parameters.back())->typeInfo;
     if (typeParam->isVariadic() || typeParam->isTypedVariadic())
         return true;
     return false;
@@ -851,7 +851,7 @@ bool TypeInfoFuncAttr::isCVariadic()
 {
     if (parameters.empty())
         return false;
-    auto typeParam = ((TypeInfoParam*) parameters.back())->typeInfo;
+    const auto typeParam = ((TypeInfoParam*) parameters.back())->typeInfo;
     if (typeParam->isCVariadic())
         return true;
     return false;
@@ -883,8 +883,8 @@ uint32_t TypeInfoFuncAttr::registerIdxToParamIdx(int argIdx)
             return (uint32_t) parameters.size() - 1;
         }
 
-        auto typeParam = TypeManager::concreteType(parameters[argNo]->typeInfo);
-        auto n         = typeParam->numRegisters();
+        const auto typeParam = TypeManager::concreteType(parameters[argNo]->typeInfo);
+        const auto n         = typeParam->numRegisters();
         if (argIdx < n)
             return (uint32_t) argNo;
         argIdx -= n;
@@ -896,7 +896,7 @@ uint32_t TypeInfoFuncAttr::registerIdxToParamIdx(int argIdx)
 
 TypeInfo* TypeInfoFuncAttr::registerIdxToType(int argIdx)
 {
-    auto argNo = registerIdxToParamIdx(argIdx);
+    const auto argNo = registerIdxToParamIdx(argIdx);
     if (argNo >= parameters.size())
         return nullptr;
     return TypeManager::concreteType(parameters[argNo]->typeInfo);
@@ -905,9 +905,9 @@ TypeInfo* TypeInfoFuncAttr::registerIdxToType(int argIdx)
 int TypeInfoFuncAttr::numParamsRegisters()
 {
     int total = 0;
-    for (auto param : parameters)
+    for (const auto param : parameters)
     {
-        auto typeParam = TypeManager::concreteType(param->typeInfo);
+        const auto typeParam = TypeManager::concreteType(param->typeInfo);
         total += typeParam->numRegisters();
     }
 
@@ -937,14 +937,14 @@ static void flatten(VectorNative<TypeInfoParam*>& result, TypeInfoParam* param)
         return;
     }
 
-    auto typeStruct = CastTypeInfo<TypeInfoStruct>(param->typeInfo, TypeInfoKind::Struct);
-    for (auto p : typeStruct->fields)
+    const auto typeStruct = CastTypeInfo<TypeInfoStruct>(param->typeInfo, TypeInfoKind::Struct);
+    for (const auto p : typeStruct->fields)
         flatten(result, p);
 }
 
 TypeInfoParam* TypeInfoStruct::findChildByNameNoLock(const Utf8& childName)
 {
-    for (auto child : fields)
+    for (const auto child : fields)
     {
         if (child->name == childName)
             return child;
@@ -961,7 +961,7 @@ TypeInfoParam* TypeInfoStruct::hasInterface(TypeInfoStruct* itf)
 
 TypeInfoParam* TypeInfoStruct::hasInterfaceNoLock(TypeInfoStruct* itf)
 {
-    for (auto child : interfaces)
+    for (const auto child : interfaces)
     {
         if (child->typeInfo->isSame(itf, CASTFLAG_CAST))
             return child;
@@ -976,7 +976,7 @@ void TypeInfoStruct::flattenUsingFields()
     if (flattenFields.size())
         return;
     flattenFields.reserve((uint32_t) fields.size());
-    for (auto p : fields)
+    for (const auto p : fields)
         flatten(flattenFields, p);
 }
 
@@ -984,7 +984,7 @@ TypeInfo* TypeInfoStruct::clone()
 {
     ScopedLock lk(mutex);
 
-    auto newType               = makeType<TypeInfoStruct>();
+    const auto newType               = makeType<TypeInfoStruct>();
     newType->scope             = scope;
     newType->opInit            = opInit;
     newType->opUserInitFct     = opUserInitFct;
@@ -1058,7 +1058,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint64_t castFlags)
     {
         if (kind == TypeInfoKind::Interface && to->isStruct())
         {
-            auto other = CastTypeInfo<TypeInfoStruct>(to, to->kind);
+            const auto other = CastTypeInfo<TypeInfoStruct>(to, to->kind);
             if (other->hasInterface(this))
                 return true;
         }
@@ -1076,11 +1076,11 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint64_t castFlags)
             return false;
     }
 
-    bool hasTuple = isTuple() || to->isTuple();
-    auto other    = CastTypeInfo<TypeInfoStruct>(to, to->kind);
+    const bool hasTuple = isTuple() || to->isTuple();
+    const auto other    = CastTypeInfo<TypeInfoStruct>(to, to->kind);
 
     // Do not compare names if one is a tuple
-    bool sameName = declNode->ownerScope == to->declNode->ownerScope && structName == other->structName;
+    const bool sameName = declNode->ownerScope == to->declNode->ownerScope && structName == other->structName;
     if (!hasTuple && !sameName)
         return false;
 
@@ -1089,13 +1089,13 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint64_t castFlags)
     {
         if ((flags & (TYPEINFO_GENERIC | TYPEINFO_FROM_GENERIC)) && (other->flags & (TYPEINFO_GENERIC | TYPEINFO_FROM_GENERIC)))
         {
-            auto numGenParams = genericParameters.size();
+            const auto numGenParams = genericParameters.size();
             if (numGenParams != other->genericParameters.size())
                 return false;
             for (size_t i = 0; i < numGenParams; i++)
             {
-                auto myGenParam    = genericParameters[i];
-                auto otherGenParam = other->genericParameters[i];
+                const auto myGenParam    = genericParameters[i];
+                const auto otherGenParam = other->genericParameters[i];
                 if (castFlags & CASTFLAG_CAST)
                 {
                     if (otherGenParam->typeInfo->isKindGeneric())
@@ -1144,7 +1144,7 @@ bool TypeInfoStruct::isSame(TypeInfo* to, uint64_t castFlags)
 
     if (compareFields)
     {
-        size_t childCount = fields.size();
+        const size_t childCount = fields.size();
         if (childCount != other->fields.size())
             return false;
 
@@ -1202,7 +1202,7 @@ Utf8 TypeInfoStruct::computeTupleDisplayName(const VectorNative<TypeInfoParam*>&
 {
     Utf8 resName = "{";
     bool first   = true;
-    for (auto param : fields)
+    for (const auto param : fields)
     {
         if (!first)
             resName += ",";

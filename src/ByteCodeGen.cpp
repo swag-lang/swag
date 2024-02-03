@@ -18,11 +18,11 @@ bool ByteCodeGen::setupRuntime(ByteCodeGenContext* context, AstNode* node)
     // Register allocator interface to the default bytecode context
     if (node->token.text == g_LangSpec->name_SystemAllocator)
     {
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+        const auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
         Semantic::waitAllStructInterfaces(context->baseJob, typeStruct);
         YIELD();
         SWAG_ASSERT(typeStruct->interfaces.size() == 1);
-        auto itable = context->sourceFile->module->constantSegment.address(typeStruct->interfaces[0]->offset);
+        const auto itable = context->sourceFile->module->constantSegment.address(typeStruct->interfaces[0]->offset);
         SWAG_ASSERT(itable);
         SWAG_ASSERT(((void**) itable)[0]);
         g_SystemAllocatorTable = itable;
@@ -30,11 +30,11 @@ bool ByteCodeGen::setupRuntime(ByteCodeGenContext* context, AstNode* node)
 
     if (node->token.text == g_LangSpec->name_DebugAllocator)
     {
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+        const auto typeStruct = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
         Semantic::waitAllStructInterfaces(context->baseJob, typeStruct);
         YIELD();
         SWAG_ASSERT(typeStruct->interfaces.size() == 1);
-        auto itable = context->sourceFile->module->constantSegment.address(typeStruct->interfaces[0]->offset);
+        const auto itable = context->sourceFile->module->constantSegment.address(typeStruct->interfaces[0]->offset);
         SWAG_ASSERT(itable);
         SWAG_ASSERT(((void**) itable)[0]);
         g_DebugAllocatorTable = itable;
@@ -70,7 +70,7 @@ bool ByteCodeGen::setupByteCodeGenerated(ByteCodeGenContext* context, AstNode* n
 
             if (node->attributeFlags & ATTRIBUTE_PRINT_GEN_BC && !(node->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
             {
-                ByteCodePrintOptions opt;
+                const ByteCodePrintOptions opt;
                 context->bc->print(opt);
             }
         }
@@ -79,7 +79,7 @@ bool ByteCodeGen::setupByteCodeGenerated(ByteCodeGenContext* context, AstNode* n
         if (context->bc->node &&
             context->bc->node->kind == AstNodeKind::FuncDecl)
         {
-            auto funcNode = CastAst<AstFuncDecl>(context->bc->node, AstNodeKind::FuncDecl);
+            const auto funcNode = CastAst<AstFuncDecl>(context->bc->node, AstNodeKind::FuncDecl);
 
             // Retrieve the persistent registers
             if (funcNode->registerGetContext != UINT32_MAX)
@@ -127,7 +127,7 @@ bool ByteCodeGen::setupByteCodeResolved(ByteCodeGenContext* context, AstNode* no
         {
             if (node->attributeFlags & ATTRIBUTE_GENERATED_FUNC || node->kind != AstNodeKind::FuncDecl)
             {
-                ByteCodePrintOptions opt;
+                const ByteCodePrintOptions opt;
                 context->bc->print(opt);
             }
         }
@@ -143,7 +143,7 @@ bool ByteCodeGen::setupByteCodeResolved(ByteCodeGenContext* context, AstNode* no
     if (context->bc->node &&
         context->bc->node->kind == AstNodeKind::FuncDecl)
     {
-        auto funcNode = CastAst<AstFuncDecl>(context->bc->node, AstNodeKind::FuncDecl);
+        const auto funcNode = CastAst<AstFuncDecl>(context->bc->node, AstNodeKind::FuncDecl);
         if (!funcNode->sourceFile->shouldHaveError)
         {
             // Be sure that every used registers have been released
@@ -152,7 +152,7 @@ bool ByteCodeGen::setupByteCodeResolved(ByteCodeGenContext* context, AstNode* no
                 Report::internalError(funcNode, Fmt("function [[%s]] does not release all registers !", funcNode->token.ctext()));
                 if (node->attributeFlags & ATTRIBUTE_PRINT_BC)
                 {
-                    ByteCodePrintOptions opt;
+                    const ByteCodePrintOptions opt;
                     context->bc->print(opt);
                 }
             }
@@ -161,7 +161,7 @@ bool ByteCodeGen::setupByteCodeResolved(ByteCodeGenContext* context, AstNode* no
                 Report::internalError(funcNode, Fmt("function [[%s]] releases too many registers !", funcNode->token.ctext()));
                 if (node->attributeFlags & ATTRIBUTE_PRINT_BC)
                 {
-                    ByteCodePrintOptions opt;
+                    const ByteCodePrintOptions opt;
                     context->bc->print(opt);
                 }
             }
@@ -174,17 +174,17 @@ bool ByteCodeGen::setupByteCodeResolved(ByteCodeGenContext* context, AstNode* no
 bool ByteCodeGen::skipNodes(ByteCodeGenContext* context, AstNode* node)
 {
     node->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
-    auto res = Ast::visit(context, node, [](ErrorContext* cxt, AstNode* n)
-                          {
-                              if (n->kind != AstNodeKind::Literal)
-                                  return Ast::VisitResult::Continue;
-                              if (n->semFlags & SEMFLAG_LITERAL_SUFFIX)
-                              {
-                                  cxt->report({ n->childs.front(), Fmt(Err(Err0403), n->childs.front()->token.ctext()) });
-                                  return Ast::VisitResult::Stop;
-                              }
+    const auto res = Ast::visit(context, node, [](ErrorContext* cxt, AstNode* n)
+    {
+        if (n->kind != AstNodeKind::Literal)
+            return Ast::VisitResult::Continue;
+        if (n->semFlags & SEMFLAG_LITERAL_SUFFIX)
+        {
+            cxt->report({ n->childs.front(), Fmt(Err(Err0403), n->childs.front()->token.ctext()) });
+            return Ast::VisitResult::Stop;
+        }
 
-                              return Ast::VisitResult::Continue; });
+        return Ast::VisitResult::Continue; });
 
     return res == Ast::VisitResult::Stop ? false : true;
 }
@@ -194,7 +194,7 @@ void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCo
     if (!node)
         return;
 
-    auto sourceFile = node->sourceFile;
+    const auto sourceFile = node->sourceFile;
 
     // If this is a foreign function, we do not need bytecode
     AstFuncDecl* funcDecl = nullptr;
@@ -252,7 +252,7 @@ void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCo
         }
 
         node->allocateExtensionNoLock(ExtensionKind::ByteCode);
-        auto extension = node->extByteCode();
+        const auto extension = node->extByteCode();
         if (!extension->byteCodeJob)
         {
             Job* dependentJob;
@@ -303,7 +303,7 @@ void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCo
         SWAG_ASSERT(job);
         if (!(node->semFlags & SEMFLAG_BYTECODE_RESOLVED))
         {
-            auto extension = node->extByteCode();
+            const auto extension = node->extByteCode();
             SWAG_ASSERT(extension && extension->byteCodeJob);
 
             ScopedLock lk1(extension->byteCodeJob->mutexDependent);
@@ -334,7 +334,7 @@ void ByteCodeGen::getDependantCalls(AstNode* depNode, VectorNative<AstNode*>& de
     // Struct: special functions
     else
     {
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(depNode->typeInfo, TypeInfoKind::Struct);
+        const auto typeStruct = CastTypeInfo<TypeInfoStruct>(depNode->typeInfo, TypeInfoKind::Struct);
         if (typeStruct->opInit)
             dep.append(typeStruct->opInit->dependentCalls);
         if (typeStruct->opDrop)

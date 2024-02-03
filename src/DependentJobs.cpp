@@ -20,7 +20,7 @@ void DependentJobs::clear()
 
 void DependentJobs::setRunning()
 {
-    for (auto job : list)
+    for (const auto job : list)
         g_ThreadMgr.addJob(job);
     list.clear();
 }

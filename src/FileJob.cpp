@@ -11,8 +11,8 @@ JobResult CopyFileJob::execute()
     error_code err;
     if (filesystem::exists(destPath, err))
     {
-        auto tsrc  = OS::getFileWriteTime(sourcePath.string().c_str());
-        auto tdest = OS::getFileWriteTime(destPath.string().c_str());
+        const auto tsrc  = OS::getFileWriteTime(sourcePath.string().c_str());
+        const auto tdest = OS::getFileWriteTime(destPath.string().c_str());
         if (tdest > tsrc)
             return JobResult::ReleaseJob;
     }
@@ -37,7 +37,7 @@ JobResult CopyFileJob::execute()
     uint8_t buffer[4096];
     while (true)
     {
-        auto numRead = fread(buffer, 1, sizeof(buffer), fsrc);
+        const auto numRead = fread(buffer, 1, sizeof(buffer), fsrc);
         if (numRead)
             fwrite(buffer, 1, numRead, fdest);
         if (numRead != sizeof(buffer))

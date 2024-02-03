@@ -75,7 +75,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
 
         case DebugBkpType::FileLine:
         {
-            auto loc = ByteCode::getLocation(context->bc, context->ip, true);
+            const auto loc = ByteCode::getLocation(context->bc, context->ip, true);
             if (loc.file && loc.location && loc.file->name == bkp.name && loc.location->line + 1 == bkp.line)
             {
                 if (!bkp.autoDisabled)
@@ -100,7 +100,7 @@ void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
 
         case DebugBkpType::InstructionIndex:
         {
-            uint32_t offset = (uint32_t) (context->ip - context->bc->out);
+            const uint32_t offset = (uint32_t) (context->ip - context->bc->out);
             if (offset == bkp.line && context->bc == bkp.bc)
             {
                 if (!bkp.autoDisabled)
@@ -148,7 +148,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakEnable(ByteCodeRunContext* context,
     if (!Utf8::isNumber(arg.split[2].c_str()))
         return BcDbgCommandResult::BadArguments;
 
-    int numB = atoi(arg.split[2].c_str());
+    const int numB = atoi(arg.split[2].c_str());
     if (!numB || numB - 1 >= (int) g_ByteCodeDebugger.debugBreakpoints.size())
         g_ByteCodeDebugger.printCmdError("invalid breakpoint number");
     else
@@ -167,7 +167,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakDisable(ByteCodeRunContext* context
     if (!Utf8::isNumber(arg.split[2].c_str()))
         return BcDbgCommandResult::BadArguments;
 
-    int numB = atoi(arg.split[2].c_str());
+    const int numB = atoi(arg.split[2].c_str());
     if (!numB || numB - 1 >= (int) g_ByteCodeDebugger.debugBreakpoints.size())
         g_ByteCodeDebugger.printCmdError("invalid breakpoint number");
     else
@@ -196,7 +196,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakClear(ByteCodeRunContext* context, 
     if (!Utf8::isNumber(arg.split[2].c_str()))
         return BcDbgCommandResult::BadArguments;
 
-    int numB = atoi(arg.split[2].c_str());
+    const int numB = atoi(arg.split[2].c_str());
     if (!numB || numB - 1 >= (int) g_ByteCodeDebugger.debugBreakpoints.size())
         g_ByteCodeDebugger.printCmdError("invalid breakpoint number");
     else
@@ -219,7 +219,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFunc(ByteCodeRunContext* context, c
     if (arg.split.size() != 3)
         return BcDbgCommandResult::BadArguments;
 
-    auto cmd     = arg.split[0];
+    const auto cmd     = arg.split[0];
     bool oneShot = false;
     if (cmd == "tb" || cmd == "tbreak")
         oneShot = true;
@@ -245,12 +245,12 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakLine(ByteCodeRunContext* context, c
     if (!Utf8::isNumber(arg.split[2].c_str()))
         return BcDbgCommandResult::BadArguments;
 
-    auto cmd     = arg.split[0];
+    const auto cmd     = arg.split[0];
     bool oneShot = false;
     if (cmd == "tb" || cmd == "tbreak")
         oneShot = true;
 
-    auto loc = ByteCode::getLocation(g_ByteCodeDebugger.debugCxtBc, g_ByteCodeDebugger.debugCxtIp);
+    const auto loc = ByteCode::getLocation(g_ByteCodeDebugger.debugCxtBc, g_ByteCodeDebugger.debugCxtIp);
 
     DebugBreakpoint bkp;
     bkp.type       = DebugBkpType::FileLine;
@@ -272,7 +272,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFileLine(ByteCodeRunContext* contex
     if (!Utf8::isNumber(arg.split[3].c_str()))
         return BcDbgCommandResult::BadArguments;
 
-    auto cmd     = arg.split[0];
+    const auto cmd     = arg.split[0];
     bool oneShot = false;
     if (cmd == "tb" || cmd == "tbreak")
         oneShot = true;

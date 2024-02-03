@@ -7,7 +7,7 @@ static const ExportedTypeInfo* concreteAlias(const ExportedTypeInfo* type1)
 {
     if (type1->kind != TypeInfoKind::Alias || (type1->flags & (uint16_t) ExportedTypeInfoFlags::Strict))
         return type1;
-    auto typeAlias = (const ExportedTypeInfoAlias*) type1;
+    const auto typeAlias = (const ExportedTypeInfoAlias*) type1;
     return concreteAlias((ExportedTypeInfo*) typeAlias->rawType);
 }
 
@@ -40,7 +40,7 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, uint32_t flags)
     case TypeInfoKind::FuncAttr:
         if (flags & CONCRETE_FUNC)
         {
-            auto returnType = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr)->returnType;
+            const auto returnType = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr)->returnType;
             if (!returnType)
                 return g_TypeMgr->typeInfoVoid;
             return concreteType(returnType, flags);
@@ -55,7 +55,7 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, uint32_t flags)
     case TypeInfoKind::Alias:
         if (flags & (CONCRETE_ALIAS | CONCRETE_FORCEALIAS))
         {
-            auto typeAlias = CastTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
+            const auto typeAlias = CastTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
             if (typeAlias->isStrict() && !(flags & CONCRETE_FORCEALIAS))
                 return typeAlias;
             return concreteType(typeAlias->rawType, flags);
@@ -65,7 +65,7 @@ TypeInfo* TypeManager::concreteType(TypeInfo* typeInfo, uint32_t flags)
     case TypeInfoKind::Generic:
         if (flags & CONCRETE_GENERIC)
         {
-            auto typeGeneric = CastTypeInfo<TypeInfoGeneric>(typeInfo, TypeInfoKind::Generic);
+            const auto typeGeneric = CastTypeInfo<TypeInfoGeneric>(typeInfo, TypeInfoKind::Generic);
             if (!typeGeneric->rawType)
                 return typeGeneric;
             return concreteType(typeGeneric->rawType, flags);

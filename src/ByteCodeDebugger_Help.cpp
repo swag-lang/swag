@@ -45,7 +45,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext* context, const 
     if (arg.split.size() == 2)
     {
         bool ok = false;
-        for (auto& c : g_ByteCodeDebugger.commands)
+        for (const auto& c : g_ByteCodeDebugger.commands)
         {
             if (c.name == arg.split[1] || c.shortname == arg.split[1])
             {

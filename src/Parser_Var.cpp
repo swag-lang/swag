@@ -14,7 +14,7 @@ bool Parser::checkIsValidVarName(AstNode* node)
 
     if (node->kind == AstNodeKind::Identifier)
     {
-        auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+        const auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (identifier->genericParameters)
             return error(identifier->genericParameters, Fmt(Err(Err0410), identifier->token.ctext()));
         if (identifier->callParameters)
@@ -33,7 +33,7 @@ bool Parser::checkIsValidVarName(AstNode* node)
                 return error(node->token, Err(Err0525));
 
             const char* pz    = node->token.text.buffer + 6;
-            auto        endpz = node->token.text.buffer + node->token.text.count;
+            const auto  endpz = node->token.text.buffer + node->token.text.count;
             int         num   = 0;
             while (pz != endpz)
             {
@@ -59,7 +59,7 @@ bool Parser::checkIsValidVarName(AstNode* node)
                 return error(node->token, Err(Err0515));
 
             const char* pz    = node->token.text.buffer + 6;
-            auto        endpz = node->token.text.buffer + node->token.text.count;
+            const auto  endpz = node->token.text.buffer + node->token.text.count;
             int         num   = 0;
             while (pz != endpz)
             {
@@ -99,14 +99,14 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
         }
 
         // Declare first variable, and affect it
-        auto front = CastAst<AstIdentifierRef>(leftNode->childs.front(), AstNodeKind::IdentifierRef);
+        const auto front = CastAst<AstIdentifierRef>(leftNode->childs.front(), AstNodeKind::IdentifierRef);
 
         // Then declare all other variables, and assign them to the first one
         bool firstDone = false;
-        for (auto child : leftNode->childs)
+        for (const auto child : leftNode->childs)
         {
             SWAG_CHECK(checkIsSingleIdentifier(child, "as a variable name"));
-            auto identifier = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
+            const auto identifier = CastAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
             identifier->computeName();
             SWAG_CHECK(checkIsValidVarName(identifier));
 
@@ -156,11 +156,11 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
     {
         SWAG_VERIFY(acceptDeref, error(leftNode, Fmt(Err(Err0511), Naming::aKindName(currentScope->kind).c_str())));
 
-        auto parentNode = Ast::newNode<AstNode>(this, AstNodeKind::StatementNoScope, sourceFile, parent);
+        const auto parentNode = Ast::newNode<AstNode>(this, AstNodeKind::StatementNoScope, sourceFile, parent);
         *result         = parentNode;
 
         // Generate an expression of the form "var __tmp_0 = assignment"
-        auto        tmpVarName  = Fmt("__5tmp_%d", g_UniqueID.fetch_add(1));
+        const auto        tmpVarName  = Fmt("__5tmp_%d", g_UniqueID.fetch_add(1));
         AstVarDecl* orgVarNode  = Ast::newVarDecl(sourceFile, tmpVarName, parentNode, this);
         orgVarNode->kind        = kind;
         orgVarNode->assignToken = assignToken;
@@ -193,7 +193,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
         int idx = 0;
         for (size_t i = 0; i < leftNode->childs.size(); i++)
         {
-            auto child = leftNode->childs[i];
+            const auto child = leftNode->childs[i];
 
             // Ignore field if '?', otherwise check that this is a valid variable name
             SWAG_CHECK(checkIsSingleIdentifier(child, "as a variable name"));
@@ -216,7 +216,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
                 orgVarNode->publicName += ", ";
             orgVarNode->publicName += identifier->token.text;
 
-            auto varNode         = Ast::newVarDecl(sourceFile, identifier->token.text, parentNode, this);
+            const auto varNode         = Ast::newVarDecl(sourceFile, identifier->token.text, parentNode, this);
             varNode->kind        = kind;
             varNode->token       = identifier->token;
             varNode->assignToken = assignToken;
@@ -238,7 +238,7 @@ bool Parser::doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* ty
     else
     {
         SWAG_CHECK(checkIsSingleIdentifier(leftNode, "as a variable name"));
-        auto identifier = leftNode->childs.back();
+        const auto identifier = leftNode->childs.back();
         SWAG_CHECK(checkIsValidVarName(identifier));
         AstVarDecl* varNode = Ast::newVarDecl(sourceFile, identifier->token.text, parent, this);
         *result             = varNode;
@@ -302,7 +302,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
             else
                 msg = Fmt(Err(Err0584), token.ctext());
 
-            Diagnostic diag{sourceFile, token, msg};
+            const Diagnostic diag{sourceFile, token, msg};
             if (token.id == TokenId::SymEqualEqual)
                 return context->report(diag, Diagnostic::note(Nte(Nte0010)));
             return context->report(diag);
@@ -322,12 +322,12 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
                 !(token.flags & TOKENPARSE_LAST_EOL) &&
                 type->kind == AstNodeKind::TypeExpression)
             {
-                auto typeExpr = CastAst<AstTypeExpression>(type, AstNodeKind::TypeExpression);
+                const auto typeExpr = CastAst<AstTypeExpression>(type, AstNodeKind::TypeExpression);
                 if (typeExpr->identifier)
                 {
-                    Diagnostic diag{sourceFile, token, Fmt(Err(Err0021), typeExpr->identifier->token.ctext())};
-                    auto       note  = Diagnostic::note(Fmt(Nte(Nte0183), typeExpr->identifier->token.ctext(), typeExpr->identifier->token.ctext()));
-                    auto       note1 = Diagnostic::note(Nte(Nte0179));
+                    const Diagnostic diag{sourceFile, token, Fmt(Err(Err0021), typeExpr->identifier->token.ctext())};
+                    const auto       note  = Diagnostic::note(Fmt(Nte(Nte0183), typeExpr->identifier->token.ctext(), typeExpr->identifier->token.ctext()));
+                    const auto       note1 = Diagnostic::note(Nte(Nte0179));
                     return context->report(diag, note, note1);
                 }
             }
@@ -356,10 +356,10 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, bool
 
             if (typeExpression->identifier && typeExpression->identifier->kind == AstNodeKind::IdentifierRef)
             {
-                auto back = typeExpression->identifier->childs.back();
+                const auto back = typeExpression->identifier->childs.back();
                 if (back->kind == AstNodeKind::Identifier)
                 {
-                    auto identifier = CastAst<AstIdentifier>(back, AstNodeKind::Identifier);
+                    const auto identifier = CastAst<AstIdentifier>(back, AstNodeKind::Identifier);
                     if (identifier->callParameters)
                     {
                         typeExpression->flags &= ~AST_NO_BYTECODE_CHILDS;

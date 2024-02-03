@@ -13,7 +13,7 @@
 
 bool Semantic::resolveIntrinsicTag(SemanticContext* context)
 {
-    auto node = context->node;
+    const auto node = context->node;
     switch (node->tokenId)
     {
     case TokenId::IntrinsicSafety:
@@ -27,7 +27,7 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
         node->setFlagsValueIsComputed();
 
         const auto& w      = front->computedValue->text;
-        auto        module = node->sourceFile->module;
+        const auto  module = node->sourceFile->module;
         bool        done   = false;
 
 #define CHECK_SAFETY_NAME(__name, __flag)                                  \
@@ -63,7 +63,7 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
         YIELD();
         SWAG_CHECK(checkIsConstExpr(context, front->hasComputedValue(), front, Err(Err0033), node->token.text));
         SWAG_VERIFY(front->typeInfo->isString(), context->report({front, Fmt(Err(Err0200), node->token.ctext(), front->typeInfo->getDisplayNameC())}));
-        auto tag       = g_Workspace->hasTag(front->computedValue->text);
+        const auto tag       = g_Workspace->hasTag(front->computedValue->text);
         node->typeInfo = g_TypeMgr->typeInfoBool;
         node->setFlagsValueIsComputed();
         node->computedValue->reg.b = tag ? true : false;
@@ -72,9 +72,9 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
 
     case TokenId::IntrinsicGetTag:
     {
-        auto nameNode   = node->childs[0];
-        auto typeNode   = node->childs[1];
-        auto defaultVal = node->childs[2];
+        auto       nameNode   = node->childs[0];
+        const auto typeNode   = node->childs[1];
+        auto       defaultVal = node->childs[2];
         SWAG_CHECK(evaluateConstExpression(context, nameNode));
         YIELD();
         SWAG_CHECK(evaluateConstExpression(context, defaultVal));
@@ -88,15 +88,15 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
         node->setFlagsValueIsComputed();
         node->typeInfo = typeNode->typeInfo;
 
-        auto tag = g_Workspace->hasTag(nameNode->computedValue->text);
+        const auto tag = g_Workspace->hasTag(nameNode->computedValue->text);
         if (tag)
         {
             if (!TypeManager::makeCompatibles(context, typeNode->typeInfo, tag->type, nullptr, typeNode, CASTFLAG_JUST_CHECK))
             {
-                Diagnostic diag{typeNode, Fmt(Err(Err0652), typeNode->typeInfo->getDisplayNameC(), tag->type->getDisplayNameC(), tag->name.c_str())};
-                auto       note      = Diagnostic::note(typeNode, Fmt(Nte(Nte0022), tag->cmdLine.c_str()));
-                note->sourceFile     = nullptr;
-                note->showSourceCode = false;
+                const Diagnostic diag{typeNode, Fmt(Err(Err0652), typeNode->typeInfo->getDisplayNameC(), tag->type->getDisplayNameC(), tag->name.c_str())};
+                const auto       note = Diagnostic::note(typeNode, Fmt(Nte(Nte0022), tag->cmdLine.c_str()));
+                note->sourceFile      = nullptr;
+                note->showSourceCode  = false;
                 return context->report(diag);
             }
 
@@ -118,23 +118,23 @@ bool Semantic::resolveIntrinsicTag(SemanticContext* context)
 
 bool Semantic::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode* node)
 {
-    auto first     = node->childs.front();
-    auto typeFirst = TypeManager::concreteType(first->typeInfo);
+    auto       first     = node->childs.front();
+    const auto typeFirst = TypeManager::concreteType(first->typeInfo);
 
     // Check first parameter
     if (!typeFirst->isLambdaClosure())
         return context->report({first, Fmt(Err(Err0204), typeFirst->getDisplayNameC())});
 
-    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeFirst, TypeInfoKind::LambdaClosure);
+    const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeFirst, TypeInfoKind::LambdaClosure);
     if (typeFunc->parameters.size() > SWAG_LIMIT_CB_MAX_PARAMS)
     {
-        Diagnostic diag{first, Fmt(Err(Err0738), SWAG_LIMIT_CB_MAX_PARAMS, typeFunc->parameters.size())};
+        const Diagnostic diag{first, Fmt(Err(Err0738), SWAG_LIMIT_CB_MAX_PARAMS, typeFunc->parameters.size())};
         return context->report(diag, Diagnostic::hereIs(typeFunc->declNode));
     }
 
     if (typeFunc->numReturnRegisters() > 1)
     {
-        Diagnostic diag{first, Fmt(Err(Err0737), typeFunc->returnType->getDisplayNameC())};
+        const Diagnostic diag{first, Fmt(Err(Err0737), typeFunc->returnType->getDisplayNameC())};
         return context->report(diag, Diagnostic::hereIs(typeFunc->declNode));
     }
 
@@ -145,8 +145,8 @@ bool Semantic::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode* n
 
 bool Semantic::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, const char* name)
 {
-    auto first  = node->childs.front();
-    auto second = node->childs.back();
+    auto       first  = node->childs.front();
+    const auto second = node->childs.back();
 
     // Must start with a pointer of the same type as the slice
     if (!first->typeInfo->isPointer())
@@ -154,14 +154,14 @@ bool Semantic::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node
     if (!first->typeInfo->isPointerArithmetic() && !first->typeInfo->isCString())
         return context->report({first, Fmt(Err(Err0195), name, first->typeInfo->getDisplayNameC())});
 
-    auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
+    const auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
     SWAG_ASSERT(ptrPointer->pointedType);
 
     // Slice count
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, second->typeInfo, nullptr, second, CASTFLAG_TRY_COERCE));
 
     // Create slice type
-    auto ptrSlice         = makeType<TypeInfoSlice>();
+    const auto ptrSlice         = makeType<TypeInfoSlice>();
     ptrSlice->pointedType = ptrPointer->pointedType;
     if (ptrPointer->isConst())
         ptrSlice->flags |= TYPEINFO_CONST;
@@ -181,7 +181,7 @@ bool Semantic::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node, 
     if (!first->typeInfo->isPointer())
         return context->report({first, Fmt(Err(Err0196), node->token.ctext(), first->typeInfo->getDisplayNameC())});
 
-    auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
+    const auto ptrPointer = CastTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
     if (!ptrPointer->pointedType)
         return context->report({first, Err(Err0202)});
 
@@ -189,8 +189,8 @@ bool Semantic::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node, 
     SWAG_CHECK(checkIsConcreteOrType(context, second));
     if (second->isConstantGenTypeInfo())
     {
-        auto genType  = second->getConstantGenTypeInfo();
-        auto realType = context->sourceFile->module->typeGen.getRealType(second->computedValue->storageSegment, genType);
+        const auto genType  = second->getConstantGenTypeInfo();
+        const auto realType = context->sourceFile->module->typeGen.getRealType(second->computedValue->storageSegment, genType);
 
         if (!TypeManager::makeCompatibles(context, ptrPointer->pointedType, realType, nullptr, second, CASTFLAG_JUST_CHECK))
         {
@@ -211,15 +211,15 @@ bool Semantic::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node, 
 
 bool Semantic::resolveIntrinsicMakeInterface(SemanticContext* context)
 {
-    auto node   = context->node;
-    auto params = node->childs.front();
+    const auto node   = context->node;
+    const auto params = node->childs.front();
 
-    auto  first      = params->childs[0];
-    auto  second     = params->childs[1];
-    auto  third      = params->childs[2];
-    auto  sourceFile = context->sourceFile;
-    auto  module     = sourceFile->module;
-    auto& typeGen    = module->typeGen;
+    auto       first      = params->childs[0];
+    auto       second     = params->childs[1];
+    auto       third      = params->childs[2];
+    const auto sourceFile = context->sourceFile;
+    const auto module     = sourceFile->module;
+    auto&      typeGen    = module->typeGen;
 
     SWAG_CHECK(checkIsConcrete(context, first));
     SWAG_CHECK(checkIsConcreteOrType(context, second));
@@ -230,10 +230,10 @@ bool Semantic::resolveIntrinsicMakeInterface(SemanticContext* context)
     SWAG_CHECK(typeGen.genExportedTypeInfo(context, third->typeInfo, third->computedValue->storageSegment, &third->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT));
     YIELD();
 
-    auto firstTypeInfo = first->typeInfo->getConcreteAlias();
+    const auto firstTypeInfo = first->typeInfo->getConcreteAlias();
     SWAG_VERIFY(firstTypeInfo->isPointer() || firstTypeInfo->isStruct(), context->report({first, Fmt(Err(Err0205), firstTypeInfo->getDisplayNameC())}));
     SWAG_VERIFY(second->typeInfo->isPointerToTypeInfo(), context->report({second, Fmt(Err(Err0206), second->typeInfo->getDisplayNameC())}));
-    auto thirdTypeInfo = third->typeInfo->getConcreteAlias();
+    const auto thirdTypeInfo = third->typeInfo->getConcreteAlias();
     SWAG_VERIFY(thirdTypeInfo->isInterface(), context->report({third, Fmt(Err(Err0207), thirdTypeInfo->getDisplayNameC())}));
 
     node->typeInfo = third->typeInfo;
@@ -255,7 +255,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
 
     if (typeInfo->isEnum())
     {
-        auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+        const auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = typeEnum->values.size();
         if (node->computedValue->reg.u64 > UINT32_MAX)
@@ -288,7 +288,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
     {
         expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
         node->setFlagsValueIsComputed();
-        auto typeArray               = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        const auto typeArray               = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         node->computedValue->reg.u64 = typeArray->count;
         if (node->computedValue->reg.u64 > UINT32_MAX)
             node->typeInfo = g_TypeMgr->typeInfoU64;
@@ -303,7 +303,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
         // Slice literal. This can happen for enum values
         if (expression->hasComputedValue())
         {
-            auto slice = (SwagSlice*) node->computedValue->getStorageAddr();
+            const auto slice = (SwagSlice*) node->computedValue->getStorageAddr();
             if (slice->count > UINT32_MAX)
                 node->typeInfo = g_TypeMgr->typeInfoU64;
             else
@@ -319,7 +319,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
     else if (typeInfo->isListTuple() || typeInfo->isListArray())
     {
         expression->typeInfo = getConcreteTypeUnRef(expression, CONCRETE_FUNC | CONCRETE_ALIAS);
-        auto typeList        = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
+        const auto typeList  = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = typeList->subTypes.size();
         if (node->computedValue->reg.u64 > UINT32_MAX)
@@ -393,8 +393,8 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
 
     if (typeInfo->isListArray())
     {
-        auto typeList  = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListArray);
-        auto typeArray = TypeManager::convertTypeListToArray(context, typeList, expression->flags & AST_CONST_EXPR);
+        const auto typeList  = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListArray);
+        const auto typeArray = TypeManager::convertTypeListToArray(context, typeList, expression->flags & AST_CONST_EXPR);
         SWAG_CHECK(TypeManager::makeCompatibles(context, typeArray, nullptr, expression, CASTFLAG_DEFAULT));
         typeInfo = typeArray;
     }
@@ -430,7 +430,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
         // :ConcreteRef
         expression->typeInfo = getConcreteTypeUnRef(expression, 0);
 
-        auto ptrSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+        const auto ptrSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         auto ptrFlags = TYPEINFO_POINTER_ARITHMETIC;
         if (ptrSlice->isConst())
             ptrFlags |= TYPEINFO_CONST;
@@ -439,7 +439,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
         if (expression->hasComputedValue())
         {
             node->inheritComputedValue(expression);
-            auto slice = (SwagSlice*) node->computedValue->getStorageAddr();
+            const auto slice = (SwagSlice*) node->computedValue->getStorageAddr();
             if (!slice->buffer)
             {
                 node->typeInfo                      = g_TypeMgr->typeInfoNull;
@@ -461,7 +461,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
         // :ConcreteRef
         expression->typeInfo = getConcreteTypeUnRef(expression, 0);
 
-        auto ptrArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        const auto ptrArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         auto ptrFlags = TYPEINFO_POINTER_ARITHMETIC;
         if (ptrArray->isConst())
             ptrFlags |= TYPEINFO_CONST;
@@ -501,7 +501,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
             }
             else
             {
-                auto any = (SwagAny*) expression->computedValue->getStorageAddr();
+                const auto any = (SwagAny*) expression->computedValue->getStorageAddr();
                 if (!any->value)
                 {
                     node->typeInfo                      = g_TypeMgr->typeInfoNull;
@@ -544,9 +544,9 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
 
 bool Semantic::resolveIntrinsicStringOf(SemanticContext* context)
 {
-    auto node     = context->node;
-    auto expr     = node->childs.front();
-    auto typeInfo = expr->typeInfo;
+    const auto node     = context->node;
+    auto       expr     = node->childs.front();
+    const auto typeInfo = expr->typeInfo;
 
     node->setFlagsValueIsComputed();
     SWAG_CHECK(checkIsConcreteOrType(context, expr, true));
@@ -571,7 +571,7 @@ bool Semantic::resolveIntrinsicStringOf(SemanticContext* context)
         concat.init(4 * 1024);
 
         AstOutput::OutputContext outputContext;
-        auto                     typeCode = CastTypeInfo<TypeInfoCode>(expr->typeInfo, TypeInfoKind::Code);
+        const auto               typeCode = CastTypeInfo<TypeInfoCode>(expr->typeInfo, TypeInfoKind::Code);
         AstOutput::outputNode(outputContext, concat, typeCode->content);
         for (auto b = concat.firstBucket; b; b = b->nextBucket)
             node->computedValue->text.append((const char*) b->datas, concat.bucketCount(b));
@@ -589,7 +589,7 @@ bool Semantic::resolveIntrinsicStringOf(SemanticContext* context)
 
 bool Semantic::resolveIntrinsicNameOf(SemanticContext* context)
 {
-    auto node = context->node;
+    const auto node = context->node;
     auto expr = node->childs.front();
 
     node->setFlagsValueIsComputed();
@@ -611,9 +611,9 @@ bool Semantic::resolveIntrinsicNameOf(SemanticContext* context)
 
 bool Semantic::resolveIntrinsicRunes(SemanticContext* context)
 {
-    auto node     = context->node;
-    auto expr     = node->childs.front();
-    auto typeInfo = expr->typeInfo;
+    const auto node     = context->node;
+    auto       expr     = node->childs.front();
+    const auto typeInfo = expr->typeInfo;
 
     SWAG_CHECK(checkIsConstExpr(context, expr->hasComputedValue(), expr));
     SWAG_VERIFY(typeInfo->isString(), context->report({expr, Fmt(Err(Err0209), typeInfo->getDisplayNameC())}));
@@ -633,7 +633,7 @@ bool Semantic::resolveIntrinsicRunes(SemanticContext* context)
     }
 
     // :SliceLiteral
-    auto storageSegment                 = Semantic::getConstantSegFromContext(context->node);
+    const auto storageSegment                 = Semantic::getConstantSegFromContext(context->node);
     node->computedValue->storageSegment = storageSegment;
 
     SwagSlice* slice;
@@ -653,30 +653,30 @@ bool Semantic::resolveIntrinsicRunes(SemanticContext* context)
 
 bool Semantic::resolveIntrinsicSpread(SemanticContext* context)
 {
-    auto node         = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-    auto expr         = node->childs.front();
-    auto typeInfo     = TypeManager::concreteType(expr->typeInfo);
-    node->byteCodeFct = ByteCodeGen::emitIntrinsicSpread;
+    auto       node     = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
+    auto       expr     = node->childs.front();
+    const auto typeInfo = TypeManager::concreteType(expr->typeInfo);
+    node->byteCodeFct   = ByteCodeGen::emitIntrinsicSpread;
 
     SWAG_VERIFY(node->parent && node->parent->parent && node->parent->parent->kind == AstNodeKind::FuncCallParam, context->report({node, node->token, Err(Err0453)}));
 
     if (typeInfo->isArray())
     {
-        auto typeArr   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        const auto typeArr   = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         node->typeInfo = typeArr->pointedType;
     }
     else if (typeInfo->isSlice())
     {
-        auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+        const auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
         node->typeInfo = typeSlice->pointedType;
     }
     else if (typeInfo->isListArray())
     {
-        auto typeList  = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListArray);
+        const auto typeList  = CastTypeInfo<TypeInfoList>(typeInfo, TypeInfoKind::TypeListArray);
         node->typeInfo = typeList->subTypes[0]->typeInfo;
 
         // Need to be sure that the expression list can be casted to the equivalent array
-        auto typeArr         = makeType<TypeInfoArray>();
+        const auto typeArr         = makeType<TypeInfoArray>();
         typeArr->count       = (uint32_t) typeList->subTypes.size();
         typeArr->pointedType = typeList->subTypes[0]->typeInfo;
         typeArr->finalType   = typeArr->pointedType;
@@ -694,7 +694,7 @@ bool Semantic::resolveIntrinsicSpread(SemanticContext* context)
         return context->report({expr, Fmt(Err(Err0387), typeInfo->getDisplayNameC())});
     }
 
-    auto typeVar     = makeType<TypeInfoVariadic>(TypeInfoKind::TypedVariadic);
+    const auto typeVar     = makeType<TypeInfoVariadic>(TypeInfoKind::TypedVariadic);
     typeVar->rawType = node->typeInfo;
     typeVar->computeName();
     node->typeInfo = typeVar;
@@ -705,10 +705,10 @@ bool Semantic::resolveIntrinsicSpread(SemanticContext* context)
 
 bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
 {
-    auto  node       = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-    auto  expr       = node->childs.front();
-    auto  sourceFile = context->sourceFile;
-    auto& typeGen    = sourceFile->module->typeGen;
+    const auto node       = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
+    const auto expr       = node->childs.front();
+    const auto sourceFile = context->sourceFile;
+    auto&      typeGen    = sourceFile->module->typeGen;
 
     // Will be runtime for an 'any' type
     if (expr->typeInfo->isAny())
@@ -717,7 +717,7 @@ bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
 
         if (expr->hasComputedValue())
         {
-            auto any                           = (SwagAny*) expr->computedValue->getStorageAddr();
+            const auto any                           = (SwagAny*) expr->computedValue->getStorageAddr();
             expr->computedValue->storageOffset = expr->computedValue->storageSegment->offset((uint8_t*) any->type);
             node->inheritComputedValue(expr);
             node->flags |= AST_VALUE_IS_GEN_TYPEINFO;
@@ -765,7 +765,7 @@ bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
     // For an enum, this is the raw type
     if (expr->typeInfo->isEnum())
     {
-        auto typeEnum = CastTypeInfo<TypeInfoEnum>(expr->typeInfo, TypeInfoKind::Enum);
+        const auto typeEnum = CastTypeInfo<TypeInfoEnum>(expr->typeInfo, TypeInfoKind::Enum);
         SWAG_CHECK(resolveTypeAsExpression(context, expr, typeEnum->rawType, &node->typeInfo));
         YIELD();
         node->inheritComputedValue(expr);
@@ -776,7 +776,7 @@ bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
     // For an alias, this is the raw type
     if (expr->typeInfo->isAlias())
     {
-        auto typeAlias = CastTypeInfo<TypeInfoAlias>(expr->typeInfo, TypeInfoKind::Alias);
+        const auto typeAlias = CastTypeInfo<TypeInfoAlias>(expr->typeInfo, TypeInfoKind::Alias);
         SWAG_CHECK(resolveTypeAsExpression(context, expr, typeAlias->rawType, &node->typeInfo));
         YIELD();
         node->inheritComputedValue(expr);
@@ -790,7 +790,7 @@ bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
 
 bool Semantic::resolveIntrinsicDeclType(SemanticContext* context)
 {
-    auto node     = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
+    const auto node     = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     auto expr     = node->childs.front();
     auto typeInfo = expr->typeInfo;
 
@@ -810,8 +810,8 @@ bool Semantic::resolveIntrinsicDeclType(SemanticContext* context)
         expr->computedValue->storageOffset != UINT32_MAX &&
         expr->computedValue->storageSegment != nullptr)
     {
-        auto addr        = expr->computedValue->getStorageAddr();
-        auto newTypeInfo = context->sourceFile->module->typeGen.getRealType(expr->computedValue->storageSegment, (ExportedTypeInfo*) addr);
+        const auto addr        = expr->computedValue->getStorageAddr();
+        const auto newTypeInfo = context->sourceFile->module->typeGen.getRealType(expr->computedValue->storageSegment, (ExportedTypeInfo*) addr);
         if (newTypeInfo)
             typeInfo = newTypeInfo;
     }
@@ -830,9 +830,9 @@ bool Semantic::resolveIntrinsicDeclType(SemanticContext* context)
 
 bool Semantic::resolveIntrinsicTypeOf(SemanticContext* context)
 {
-    auto node     = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
-    auto expr     = node->childs.front();
-    auto typeInfo = expr->typeInfo;
+    const auto node     = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
+    auto       expr     = node->childs.front();
+    const auto typeInfo = expr->typeInfo;
 
     SWAG_VERIFY(!typeInfo->isKindGeneric(), context->report({expr, Err(Err0396)}));
 
@@ -857,7 +857,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
 
     case TokenId::IntrinsicIsConstExpr:
     {
-        auto expr      = node->childs.front();
+        const auto expr      = node->childs.front();
         node->typeInfo = g_TypeMgr->typeInfoBool;
         expr->flags |= AST_NO_BYTECODE;
 
@@ -901,7 +901,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
 
     case TokenId::IntrinsicOffsetOf:
     {
-        auto expr = node->childs.front();
+        const auto expr = node->childs.front();
         SWAG_CHECK(checkIsConstExpr(context, expr->resolvedSymbolOverload, expr));
         node->setFlagsValueIsComputed();
         node->computedValue->reg.u64 = expr->resolvedSymbolOverload->computedValue.storageOffset;
@@ -937,8 +937,8 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
 
     case TokenId::IntrinsicCountOf:
     {
-        auto expr     = node->childs.front();
-        auto typeInfo = expr->typeInfo->getConcreteAlias();
+        const auto expr     = node->childs.front();
+        const auto typeInfo = expr->typeInfo->getConcreteAlias();
         if (!typeInfo->isEnum() && !typeInfo->isArray())
             SWAG_CHECK(checkIsConcrete(context, expr));
         node->inheritComputedValue(expr);
@@ -948,7 +948,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
 
     case TokenId::IntrinsicDataOf:
     {
-        auto expr = node->childs.front();
+        const auto expr = node->childs.front();
         SWAG_CHECK(checkIsConcrete(context, expr));
         SWAG_CHECK(resolveIntrinsicDataOf(context, node, expr));
         break;
@@ -956,7 +956,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
 
     case TokenId::IntrinsicMakeAny:
     {
-        auto expr = node->childs.front();
+        const auto expr = node->childs.front();
         SWAG_CHECK(checkIsConcrete(context, expr));
         SWAG_CHECK(resolveIntrinsicMakeAny(context, node, expr->typeInfo));
         break;
@@ -964,7 +964,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
 
     case TokenId::IntrinsicMakeSlice:
     {
-        auto expr = node->childs.front();
+        const auto expr = node->childs.front();
         SWAG_CHECK(checkIsConcrete(context, expr));
         SWAG_CHECK(resolveIntrinsicMakeSlice(context, node, expr->typeInfo, "@mkslice"));
         break;
@@ -983,7 +983,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
 
     case TokenId::IntrinsicMakeCallback:
     {
-        auto expr = node->childs.front();
+        const auto expr = node->childs.front();
         SWAG_CHECK(checkIsConcrete(context, expr));
         SWAG_CHECK(resolveIntrinsicMakeCallback(context, node));
         break;
@@ -999,14 +999,14 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
     case TokenId::IntrinsicCVaEnd:
     case TokenId::IntrinsicCVaArg:
     {
-        auto typeInfo = node->childs[0]->typeInfo;
+        const auto typeInfo = node->childs[0]->typeInfo;
         typeInfo->computeScopedName();
         SWAG_VERIFY(typeInfo->scopedName == "*Swag.CVaList", context->report({node, Fmt(Err(Err0650), typeInfo->getDisplayNameC())}));
 
         if (node->tokenId == TokenId::IntrinsicCVaStart)
         {
             SWAG_VERIFY(node->ownerFct && node->ownerFct->parameters && node->ownerFct->parameters->childs.size(), context->report({node, node->token, Err(Err0452)}));
-            auto typeParam = node->ownerFct->parameters->childs.back()->typeInfo;
+            const auto typeParam = node->ownerFct->parameters->childs.back()->typeInfo;
             SWAG_VERIFY(typeParam->isCVariadic(), context->report({node, node->token, Err(Err0452)}));
             node->byteCodeFct = ByteCodeGen::emitIntrinsicCVaStart;
         }

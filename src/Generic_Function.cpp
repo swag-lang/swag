@@ -9,7 +9,7 @@
 
 void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, CloneContext& cloneContext, AstFuncDecl** specialFct)
 {
-    auto funcNode = *specialFct;
+    const auto funcNode = *specialFct;
     if (!funcNode)
         return;
 
@@ -47,16 +47,16 @@ void Generic::instantiateSpecialFunc(SemanticContext* context, Job* structJob, C
     newTypeFunc->forceComputeName();
 
     ScopedLock lk(newFunc->resolvedSymbolName->mutex);
-    auto       newJob = end(context, context->baseJob, newFunc->resolvedSymbolName, newFunc, false, cloneContext.replaceTypes);
+    const auto newJob = end(context, context->baseJob, newFunc->resolvedSymbolName, newFunc, false, cloneContext.replaceTypes);
     structJob->dependentJobs.add(newJob);
 }
 
 bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericParameters, OneMatch& match, bool validif)
 {
-    auto node = context->node;
+    const auto node = context->node;
 
     // We should have types to replace
-    bool noReplaceTypes = match.genericReplaceTypes.empty();
+    const bool noReplaceTypes = match.genericReplaceTypes.empty();
     if (noReplaceTypes)
     {
         // If we do not have types to replace, perhaps we will be able to deduce them in case of a
@@ -74,21 +74,21 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
 
     // If we instantiate with a tuple list (literal), then we must convert that to a proper struct decl and make
     // a reference to it.
-    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(match.symbolOverload->node->typeInfo, TypeInfoKind::FuncAttr);
-    for (auto& v : match.genericReplaceTypes)
+    const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(match.symbolOverload->node->typeInfo, TypeInfoKind::FuncAttr);
+    for (const auto& v : match.genericReplaceTypes)
     {
         if (v.second.typeInfoReplace->isListTuple())
         {
-            auto tpt = CastTypeInfo<TypeInfoList>(v.second.typeInfoReplace, TypeInfoKind::TypeListTuple);
+            const auto tpt = CastTypeInfo<TypeInfoList>(v.second.typeInfoReplace, TypeInfoKind::TypeListTuple);
             int  idx = 0;
-            for (auto p : match.parameters)
+            for (const auto p : match.parameters)
             {
                 if (p->typeInfo == tpt)
                 {
                     if (match.solvedParameters[idx]->typeInfo->kind != TypeInfoKind::Generic)
                     {
                         PushErrCxtStep ec(context, typeFunc->declNode, ErrCxtStepKind::HereIs, nullptr);
-                        auto           typeDest = CastTypeInfo<TypeInfoStruct>(match.solvedParameters[idx]->typeInfo, TypeInfoKind::Struct);
+                        const auto     typeDest = CastTypeInfo<TypeInfoStruct>(match.solvedParameters[idx]->typeInfo, TypeInfoKind::Struct);
                         SWAG_CHECK(Ast::convertLiteralTupleToStructType(context, match.solvedParameters[idx]->declNode, typeDest, p));
                         SWAG_ASSERT(context->result != ContextResult::Done);
                         return true;
@@ -96,7 +96,7 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
                     else
                     {
                         PushErrCxtStep ec(context, typeFunc->declNode, ErrCxtStepKind::HereIs, nullptr);
-                        auto           typeDest = TypeManager::convertTypeListToStruct(context, tpt, true);
+                        const auto     typeDest = TypeManager::convertTypeListToStruct(context, tpt, true);
                         SWAG_CHECK(Ast::convertLiteralTupleToStructType(context, nullptr, typeDest, p));
                         SWAG_ASSERT(context->result != ContextResult::Done);
                         return true;
@@ -119,12 +119,12 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
         GenericReplaceType st;
         st.typeInfoReplace = g_TypeMgr->typeInfoUndefined;
 
-        for (auto p : typeFunc->genericParameters)
+        for (const auto p : typeFunc->genericParameters)
         {
             cloneContext.replaceTypes[p->typeInfo->name] = st;
         }
 
-        for (auto p : typeFunc->parameters)
+        for (const auto p : typeFunc->parameters)
         {
             if (p->typeInfo->isGeneric())
                 cloneContext.replaceTypes[p->typeInfo->name] = st;
@@ -139,8 +139,8 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     }
 
     // Clone original node
-    auto overload = match.symbolOverload;
-    auto funcNode = overload->node;
+    const auto overload = match.symbolOverload;
+    const auto funcNode = overload->node;
 
     // If function has some attributes, we need to clone the attributes too
     auto cloneNode = funcNode;
@@ -175,13 +175,13 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     // an alternative scope
     if (context->node->kind == AstNodeKind::Identifier)
     {
-        auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+        const auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (identifier->identifierRef()->resolvedSymbolOverload)
         {
-            auto concreteType = TypeManager::concreteType(identifier->identifierRef()->resolvedSymbolOverload->typeInfo);
+            const auto concreteType = TypeManager::concreteType(identifier->identifierRef()->resolvedSymbolOverload->typeInfo);
             if (concreteType->isStruct())
             {
-                auto contextualStruct = CastAst<AstStruct>(concreteType->declNode, AstNodeKind::StructDecl);
+                const auto contextualStruct = CastAst<AstStruct>(concreteType->declNode, AstNodeKind::StructDecl);
                 newFunc->addAlternativeScope(contextualStruct->scope);
             }
         }
@@ -225,22 +225,22 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
     SWAG_CHECK(replaceGenericParameters(context, true, true, newTypeFunc->genericParameters, newFunc->genericParameters->childs, genericParameters, match));
     newTypeFunc->forceComputeName();
 
-    auto job = end(context, context->baseJob, match.symbolName, cloneNode, true, cloneContext.replaceTypes);
+    const auto job = end(context, context->baseJob, match.symbolName, cloneNode, true, cloneContext.replaceTypes);
     context->baseJob->jobsToAdd.push_back(job);
     return true;
 }
 
 bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
 {
-    auto node = context->node;
+    const auto node = context->node;
 
     if (node->kind == AstNodeKind::Identifier)
     {
-        auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+        const auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
         if (!identifier->genericParameters)
         {
-            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
-            auto nodeFunc = CastAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
+            const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+            const auto nodeFunc = CastAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
             if (nodeFunc->genericParameters)
             {
                 identifier->typeInfo          = nullptr;
@@ -250,16 +250,16 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
                 Ast::addChildFront(identifier, identifier->genericParameters);
 
                 CloneContext cloneContext;
-                for (auto p : nodeFunc->genericParameters->childs)
+                for (const auto p : nodeFunc->genericParameters->childs)
                 {
-                    auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
+                    const auto param = CastAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
                     if (!param->assignment)
                     {
-                        Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0556), identifier->resolvedSymbolName->name.c_str())};
+                        const Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0556), identifier->resolvedSymbolName->name.c_str())};
                         return context->report(diag, Diagnostic::hereIs(identifier->resolvedSymbolOverload));
                     }
 
-                    auto child          = Ast::newFuncCallParam(context->sourceFile, identifier->genericParameters);
+                    const auto child          = Ast::newFuncCallParam(context->sourceFile, identifier->genericParameters);
                     cloneContext.parent = child;
                     param->assignment->clone(cloneContext);
                 }
@@ -281,17 +281,17 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
     // Get the contextual structure call if it exists
     if (context->node->kind == AstNodeKind::Identifier)
     {
-        auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
-        auto idRef      = identifier->identifierRef();
+        const auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+        const auto idRef      = identifier->identifierRef();
         if (idRef->resolvedSymbolOverload)
         {
-            auto concreteType = TypeManager::concreteType(idRef->resolvedSymbolOverload->typeInfo);
+            const auto concreteType = TypeManager::concreteType(idRef->resolvedSymbolOverload->typeInfo);
             if (concreteType->isStruct())
             {
-                auto contextualNode = idRef->previousResolvedNode;
+                const auto contextualNode = idRef->previousResolvedNode;
                 if (contextualNode)
                 {
-                    Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0556), node->token.ctext())};
+                    const Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0556), node->token.ctext())};
                     return context->report(diag);
                 }
             }

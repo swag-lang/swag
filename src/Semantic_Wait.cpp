@@ -20,7 +20,7 @@ void Semantic::waitAllStructInterfacesReg(Job* job, TypeInfo* typeInfo)
     if (!typeInfo->isStruct())
         return;
 
-    auto       typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    const auto       typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     ScopedLock lk(typeInfoStruct->mutex);
 
     if (job->module->waitImplForToSolve(job, typeInfoStruct))
@@ -45,7 +45,7 @@ void Semantic::waitAllStructInterfaces(Job* job, TypeInfo* typeInfo)
     if (!typeInfo->isStruct())
         return;
 
-    auto       typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    const auto       typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     ScopedLock lk(typeInfoStruct->mutex);
 
     if (job->module->waitImplForToSolve(job, typeInfoStruct))
@@ -70,7 +70,7 @@ void Semantic::waitAllStructSpecialMethods(Job* job, TypeInfo* typeInfo)
     if (!typeInfo->isStruct())
         return;
 
-    auto       typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    const auto       typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     ScopedLock lk(typeInfoStruct->mutex);
     if (typeInfoStruct->cptRemainingSpecialMethods == 0)
         return;
@@ -88,7 +88,7 @@ void Semantic::waitAllStructMethods(Job* job, TypeInfo* typeInfo)
     if (!typeInfo->isStruct())
         return;
 
-    auto       typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    const auto       typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     ScopedLock lk(typeInfoStruct->mutex);
     if (typeInfoStruct->cptRemainingMethods == 0)
         return;
@@ -110,7 +110,7 @@ void Semantic::waitStructGeneratedAlloc(Job* job, TypeInfo* typeInfo)
     if (typeInfo->isGeneric())
         return;
 
-    auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    const auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     if (!typeInfoStruct->declNode)
         return;
     if (typeInfoStruct->flags & TYPEINFO_GHOST_TUPLE)
@@ -118,7 +118,7 @@ void Semantic::waitStructGeneratedAlloc(Job* job, TypeInfo* typeInfo)
     if (typeInfoStruct->declNode->kind == AstNodeKind::InterfaceDecl)
         return;
 
-    auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+    const auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
     ScopedLock lk(structNode->mutex);
     if (!(structNode->semFlags & SEMFLAG_STRUCT_OP_ALLOCATED))
@@ -141,7 +141,7 @@ void Semantic::waitStructGenerated(Job* job, TypeInfo* typeInfo)
     if (typeInfo->isGeneric())
         return;
 
-    auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+    const auto typeInfoStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
     if (!typeInfoStruct->declNode)
         return;
     if (typeInfoStruct->flags & TYPEINFO_GHOST_TUPLE)
@@ -149,7 +149,7 @@ void Semantic::waitStructGenerated(Job* job, TypeInfo* typeInfo)
     if (typeInfoStruct->declNode->kind == AstNodeKind::InterfaceDecl)
         return;
 
-    auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
+    const auto structNode = CastAst<AstStruct>(typeInfoStruct->declNode, AstNodeKind::StructDecl);
 
     ScopedLock lk(structNode->mutex);
     if (!(structNode->semFlags & SEMFLAG_BYTECODE_GENERATED))
@@ -208,7 +208,7 @@ void Semantic::waitTypeCompleted(Job* job, TypeInfo* typeInfo)
         return;
 
     //  :BecauseOfThat
-    auto       structNode = CastAst<AstStruct>(typeInfo->declNode, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
+    const auto       structNode = CastAst<AstStruct>(typeInfo->declNode, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
     ScopedLock lk(structNode->mutex);
     if (!structNode->resolvedSymbolOverload)
     {
@@ -247,10 +247,10 @@ bool Semantic::waitForStructUserOps(SemanticContext* context, AstNode* node)
 
 void Semantic::waitForGenericParameters(SemanticContext* context, OneMatch& match)
 {
-    for (auto it : match.genericReplaceTypes)
+    for (const auto it : match.genericReplaceTypes)
     {
-        auto typeInfo = it.second.typeInfoReplace;
-        auto declNode = typeInfo->declNode;
+        const auto typeInfo = it.second.typeInfoReplace;
+        const auto declNode = typeInfo->declNode;
         if (!declNode)
             continue;
         if (!declNode->resolvedSymbolOverload)
@@ -259,7 +259,7 @@ void Semantic::waitForGenericParameters(SemanticContext* context, OneMatch& matc
             continue;
         if (typeInfo->isStruct())
         {
-            auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+            const auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
             if (typeStruct->fromGeneric)
                 continue;
 

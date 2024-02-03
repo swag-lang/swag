@@ -7,11 +7,11 @@
 
 bool ByteCodeGen::emitPassThrough(ByteCodeGenContext* context)
 {
-    auto node = context->node;
+    const auto node = context->node;
     if (node->childs.empty())
         return true;
 
-    auto child = node->childs.back();
+    const auto child = node->childs.back();
     if (node->flags & AST_DISCARD)
         freeRegisterRC(context, child);
     else
@@ -52,7 +52,7 @@ void ByteCodeGen::emitDebugLine(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitDebugNop(ByteCodeGenContext* context)
 {
-    auto node = context->node;
+    const auto node = context->node;
     if (!node->childs.empty())
         node->resultRegisterRC = node->childs.back()->resultRegisterRC;
     emitDebugLine(context, node);
@@ -149,8 +149,8 @@ ByteCodeInstruction* ByteCodeGen::emitGetFromSeg(ByteCodeGenContext* context, Da
 
 ByteCodeInstruction* ByteCodeGen::emitInstruction(ByteCodeGenContext* context, ByteCodeOp op, uint32_t r0, uint32_t r1, uint32_t r2, uint32_t r3, const char* file, uint32_t line)
 {
-    AstNode* node = context->node;
-    auto     bc   = context->bc;
+    AstNode*   node = context->node;
+    const auto bc   = context->bc;
 
     context->bc->makeRoomForInstructions();
 

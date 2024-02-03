@@ -13,7 +13,7 @@ ModuleDepManager* g_ModuleCfgMgr = nullptr;
 
 Module* ModuleDepManager::getCfgModule(const Utf8& name)
 {
-    auto it = allModules.find(name);
+    const auto it = allModules.find(name);
     if (it != allModules.end())
         return it->second;
     return nullptr;
@@ -21,10 +21,10 @@ Module* ModuleDepManager::getCfgModule(const Utf8& name)
 
 void ModuleDepManager::parseCfgFile(Module* cfgModule)
 {
-    auto buildJob    = Allocator::alloc<ModuleBuildJob>();
+    const auto buildJob    = Allocator::alloc<ModuleBuildJob>();
     buildJob->module = cfgModule;
 
-    auto syntaxJob        = Allocator::alloc<SyntaxJob>();
+    const auto syntaxJob        = Allocator::alloc<SyntaxJob>();
     syntaxJob->sourceFile = cfgModule->files.front();
     syntaxJob->addDependentJob(buildJob);
 
@@ -37,7 +37,7 @@ void ModuleDepManager::registerCfgFile(SourceFile* file)
     Path       moduleFolder;
     ModuleKind kind = ModuleKind::Module;
 
-    auto parentFolder = file->path.parent_path();
+    const auto parentFolder = file->path.parent_path();
     if (file->isScriptFile)
     {
         moduleName   = file->path.filename().replace_extension().string();
@@ -46,7 +46,7 @@ void ModuleDepManager::registerCfgFile(SourceFile* file)
     else
         g_Workspace->computeModuleName(parentFolder, moduleName, moduleFolder, kind);
 
-    auto cfgModule          = Allocator::alloc<Module>();
+    const auto cfgModule          = Allocator::alloc<Module>();
     cfgModule->kind         = ModuleKind::Config;
     cfgModule->isScriptFile = file->isScriptFile;
     cfgModule->setup(moduleName, moduleFolder);
@@ -73,7 +73,7 @@ void ModuleDepManager::registerCfgFile(SourceFile* file)
 
 void ModuleDepManager::newCfgFile(Vector<SourceFile*>& allFiles, const Utf8& dirName, const Utf8& fileName)
 {
-    auto file       = Allocator::alloc<SourceFile>();
+    const auto file       = Allocator::alloc<SourceFile>();
     file->name      = fileName;
     file->isCfgFile = true;
     Path pathFile   = dirName.c_str();
@@ -136,7 +136,7 @@ void ModuleDepManager::enumerateCfgFiles(const Path& path)
     {
         sort(allFiles.begin(), allFiles.end(), [](SourceFile* a, SourceFile* b)
              { return strcmp(a->name.c_str(), b->name.c_str()) == -1; });
-        for (auto file : allFiles)
+        for (const auto file : allFiles)
             registerCfgFile(file);
     }
 }
@@ -178,7 +178,7 @@ bool ModuleDepManager::fetchModuleCfgLocal(ModuleDependency* dep, Utf8& cfgFileP
     uint8_t buffer[4096];
     while (true)
     {
-        auto numRead = fread(buffer, 1, sizeof(buffer), fsrc);
+        const auto numRead = fread(buffer, 1, sizeof(buffer), fsrc);
         if (numRead)
             fwrite(buffer, 1, numRead, fdest);
         if (numRead != sizeof(buffer))
@@ -201,7 +201,7 @@ bool ModuleDepManager::fetchModuleCfgSwag(ModuleDependency* dep, Utf8& cfgFilePa
 
     remotePath = filesystem::absolute(remotePath);
     error_code err;
-    auto       remotePath1 = filesystem::canonical(remotePath, err);
+    const auto remotePath1 = filesystem::canonical(remotePath, err);
     if (!err)
         remotePath = remotePath1;
     if (!filesystem::exists(remotePath, err))
@@ -220,7 +220,7 @@ bool ModuleDepManager::fetchModuleCfgDisk(ModuleDependency* dep, Utf8& cfgFilePa
 
     remotePath = filesystem::absolute(remotePath);
     error_code err;
-    auto       remotePath1 = filesystem::canonical(remotePath, err);
+    const auto remotePath1 = filesystem::canonical(remotePath, err);
     if (!err)
         remotePath = remotePath1;
     if (!filesystem::exists(remotePath, err))
@@ -302,7 +302,7 @@ bool ModuleDepManager::resolveModuleDependency(Module* srcModule, ModuleDependen
     // Now we can set the location of the module with the location of the dependency
     dep->module->remoteLocationDep = dep->location;
 
-    auto cfgModule = dep->module;
+    const auto cfgModule = dep->module;
 
     // If this is the first time, that means that we compare the requested dependency with the local version of the
     // module.
@@ -310,7 +310,7 @@ bool ModuleDepManager::resolveModuleDependency(Module* srcModule, ModuleDependen
     {
         cfgModule->fetchDep = dep;
 
-        auto cmp = compareVersions(dep->verNum, dep->revNum, dep->buildNum, cfgModule->buildCfg.moduleVersion, cfgModule->buildCfg.moduleRevision, cfgModule->buildCfg.moduleBuildNum);
+        const auto cmp = compareVersions(dep->verNum, dep->revNum, dep->buildNum, cfgModule->buildCfg.moduleVersion, cfgModule->buildCfg.moduleRevision, cfgModule->buildCfg.moduleBuildNum);
         switch (cmp)
         {
         // If the dependency requests a bigger version, then we will have to fetch the dependency configuration from the
@@ -349,14 +349,14 @@ bool ModuleDepManager::resolveModuleDependency(Module* srcModule, ModuleDependen
     // two different major versions.
     else if (cfgModule->fetchDep != dep)
     {
-        auto cmp = compareVersions(dep->verNum, dep->revNum, dep->buildNum, cfgModule->fetchDep->verNum, cfgModule->fetchDep->revNum, cfgModule->fetchDep->buildNum);
+        const auto cmp = compareVersions(dep->verNum, dep->revNum, dep->buildNum, cfgModule->fetchDep->verNum, cfgModule->fetchDep->revNum, cfgModule->fetchDep->buildNum);
         switch (cmp)
         {
         case CompareVersionResult::VERSION_GREATER:
         case CompareVersionResult::VERSION_LOWER:
         {
-            Diagnostic diag{dep->node, Fmt(Err(Err0059), dep->name.c_str(), dep->verNum, cfgModule->fetchDep->verNum)};
-            auto       note = Diagnostic::note(cfgModule->fetchDep->node, Nte(Nte0070));
+            const Diagnostic diag{dep->node, Fmt(Err(Err0059), dep->name.c_str(), dep->verNum, cfgModule->fetchDep->verNum)};
+            const auto       note = Diagnostic::note(cfgModule->fetchDep->node, Nte(Nte0070));
             Report::report(diag, note);
             return false;
         }

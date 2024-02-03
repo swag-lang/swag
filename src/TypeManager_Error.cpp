@@ -144,9 +144,9 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
     }
     else if (castError == CastErrorType::SliceArray)
     {
-        auto to   = CastTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
-        auto from = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
-        hint      = Fmt(Nte(Nte0113), from->totalCount, from->finalType->getDisplayNameC(), to->pointedType->getDisplayNameC());
+        const auto to   = CastTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
+        const auto from = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
+        hint            = Fmt(Nte(Nte0113), from->totalCount, from->finalType->getDisplayNameC(), to->pointedType->getDisplayNameC());
     }
     else if (toType->isPointerArithmetic() && !fromType->isPointerArithmetic())
     {
@@ -177,13 +177,13 @@ void TypeManager::getCastErrorMsg(Utf8&         msg,
     }
     else if (toType->isLambdaClosure() && fromType->isLambdaClosure())
     {
-        auto fromTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(fromType, TypeInfoKind::LambdaClosure);
+        const auto fromTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(fromType, TypeInfoKind::LambdaClosure);
         if (fromTypeFunc->firstDefaultValueIdx != UINT32_MAX)
             msg = Fmt(ErrNte(Err0251, forNote));
     }
     else if (!fromType->isPointer() && toType->isPointerRef())
     {
-        auto toPtrRef = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
+        const auto toPtrRef = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
         if (fromType->isSame(toPtrRef->pointedType, CASTFLAG_CAST))
             hint = Nte(Nte0196);
     }
@@ -243,10 +243,10 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         // Add a note in case we affect to an identifier.
         if (context->node->kind == AstNodeKind::AffectOp)
         {
-            auto left = context->node->childs.front();
+            const auto left = context->node->childs.front();
             if (left->kind == AstNodeKind::IdentifierRef)
             {
-                auto* note = Diagnostic::note(left->childs.back(), Diagnostic::isType(left->childs.back()));
+                const auto* note = Diagnostic::note(left->childs.back(), Diagnostic::isType(left->childs.back()));
                 notes.push_back(note);
             }
         }

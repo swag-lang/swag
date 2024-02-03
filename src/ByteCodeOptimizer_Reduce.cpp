@@ -374,7 +374,7 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
         // GetErr/Jump on another GetErr/Jump, make a shortcut
         if (ip[1].op == ByteCodeOp::JumpIfZero32)
         {
-            auto ipNext = &ip[1] + ip[1].b.s32 + 1;
+            const auto ipNext = &ip[1] + ip[1].b.s32 + 1;
             if (ipNext[0].op == ByteCodeOp::InternalHasErr && ipNext[1].op == ByteCodeOp::JumpIfZero32)
             {
                 ip[1].b.s32 += ipNext[1].b.s32 + 2;
@@ -539,7 +539,7 @@ void ByteCodeOptimizer::reduceCallEmptyFct(ByteCodeOptContext* context, ByteCode
         ip->op == ByteCodeOp::LocalCallPopParam ||
         ip->op == ByteCodeOp::LocalCallPopRC)
     {
-        auto destBC = (ByteCode*) ip->a.pointer;
+        const auto destBC = (ByteCode*) ip->a.pointer;
         if (destBC->isEmpty.load() != true)
             return;
 
@@ -696,7 +696,7 @@ void ByteCodeOptimizer::reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstru
         {
         case ByteCodeOp::MemCpy8:
         {
-            auto ptr = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
+            const auto ptr = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
             SET_OP(ip + 2, ByteCodeOp::SetAtStackPointer8);
             ip[2].a.u64 = ip[1].b.u64;
             ip[2].b.u64 = *(uint8_t*) ptr;
@@ -705,7 +705,7 @@ void ByteCodeOptimizer::reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstru
         }
         case ByteCodeOp::MemCpy16:
         {
-            auto ptr = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
+            const auto ptr = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
             SET_OP(ip + 2, ByteCodeOp::SetAtStackPointer16);
             ip[2].a.u64 = ip[1].b.u64;
             ip[2].b.u64 = *(uint16_t*) ptr;
@@ -714,7 +714,7 @@ void ByteCodeOptimizer::reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstru
         }
         case ByteCodeOp::MemCpy32:
         {
-            auto ptr = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
+            const auto ptr = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
             SET_OP(ip + 2, ByteCodeOp::SetAtStackPointer32);
             ip[2].a.u64 = ip[1].b.u64;
             ip[2].b.u64 = *(uint32_t*) ptr;
@@ -723,7 +723,7 @@ void ByteCodeOptimizer::reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstru
         }
         case ByteCodeOp::MemCpy64:
         {
-            auto ptr = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
+            const auto ptr = context->bc->sourceFile->module->constantSegment.address(ip->b.u32);
             SET_OP(ip + 2, ByteCodeOp::SetAtStackPointer64);
             ip[2].a.u64 = ip[1].b.u64;
             ip[2].b.u64 = *(uint64_t*) ptr;
@@ -739,7 +739,7 @@ void ByteCodeOptimizer::reduceMemcpy(ByteCodeOptContext* context, ByteCodeInstru
 
 void ByteCodeOptimizer::reduceAppend(ByteCodeOptContext* context, ByteCodeInstruction* ip)
 {
-    auto opFlags = g_ByteCodeOpDesc[(int) ip->op].flags;
+    const auto opFlags = g_ByteCodeOpDesc[(int) ip->op].flags;
 
     // Multiple InternalGetTlsPtr, just copy registers, as InternalGetTlsPtr has a function call cost
     if (ip[0].op == ByteCodeOp::InternalGetTlsPtr &&
@@ -853,7 +853,7 @@ void ByteCodeOptimizer::reduceAppend(ByteCodeOptContext* context, ByteCodeInstru
         case ByteCodeOp::DeRef32:
         case ByteCodeOp::DeRef64:
         {
-            auto s                        = ip[1].a.u32;
+            const auto s                        = ip[1].a.u32;
             ip[1]                         = ip[0];
             ip[1].a.u32                   = s;
             context->passHasDoneSomething = true;
@@ -3358,7 +3358,7 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
             if (ip->b.u8 == 0)
             {
                 SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
-                auto s    = ip->a.u32;
+                const auto s    = ip->a.u32;
                 ip->a.u32 = ip->c.u32;
                 ip->b.u32 = s;
                 ip->flags &= ~BCI_IMM_B;
@@ -3376,7 +3376,7 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
             if (ip->b.u16 == 0)
             {
                 SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
-                auto s    = ip->a.u32;
+                const auto s    = ip->a.u32;
                 ip->a.u32 = ip->c.u32;
                 ip->b.u32 = s;
                 ip->flags &= ~BCI_IMM_B;
@@ -3394,7 +3394,7 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
             if (ip->b.u32 == 0)
             {
                 SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
-                auto s    = ip->a.u32;
+                const auto s    = ip->a.u32;
                 ip->a.u32 = ip->c.u32;
                 ip->b.u32 = s;
                 ip->flags &= ~BCI_IMM_B;
@@ -3412,7 +3412,7 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
             if (ip->b.u64 == 0)
             {
                 SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
-                auto s    = ip->a.u32;
+                const auto s    = ip->a.u32;
                 ip->a.u32 = ip->c.u32;
                 ip->b.u32 = s;
                 ip->flags &= ~BCI_IMM_B;
@@ -3426,7 +3426,7 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
             if (ip->b.u32 == 1)
             {
                 SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
-                auto s    = ip->a.u32;
+                const auto s    = ip->a.u32;
                 ip->a.u32 = ip->c.u32;
                 ip->b.u32 = s;
                 ip->flags &= ~BCI_IMM_B;
@@ -3440,7 +3440,7 @@ void ByteCodeOptimizer::reduceNoOp(ByteCodeOptContext* context, ByteCodeInstruct
             if (ip->b.u64 == 1)
             {
                 SET_OP(ip, ByteCodeOp::CopyRBtoRA64);
-                auto s    = ip->a.u32;
+                const auto s    = ip->a.u32;
                 ip->a.u32 = ip->c.u32;
                 ip->b.u32 = s;
                 ip->flags &= ~BCI_IMM_B;
@@ -3462,10 +3462,10 @@ void ByteCodeOptimizer::reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruc
         auto     size0 = ByteCode::getSetZeroStackSize(ip, offset0);
         if (size0)
         {
-            auto size1 = ByteCode::getSetZeroStackSize(ip + 1, offset1);
+            const auto size1 = ByteCode::getSetZeroStackSize(ip + 1, offset1);
             if (size1 && offset0 + size0 == offset1)
             {
-                auto totalSize = size0 + size1;
+                const auto totalSize = size0 + size1;
                 switch (totalSize)
                 {
                 case 2:
@@ -3493,10 +3493,10 @@ void ByteCodeOptimizer::reduceSetAt(ByteCodeOptContext* context, ByteCodeInstruc
         size0 = ByteCode::getSetZeroAtPointerSize(ip, offset0);
         if (size0)
         {
-            auto size1 = ByteCode::getSetZeroAtPointerSize(ip + 1, offset1);
+            const auto size1 = ByteCode::getSetZeroAtPointerSize(ip + 1, offset1);
             if (size1 && offset0 + size0 == offset1)
             {
-                auto totalSize = size0 + size1;
+                const auto totalSize = size0 + size1;
                 switch (totalSize)
                 {
                 case 2:
@@ -6485,8 +6485,8 @@ void ByteCodeOptimizer::reduceDupInstr(ByteCodeOptContext* context, ByteCodeInst
         return;
     }
 
-    auto ipn  = ip + 1;
-    bool exit = false;
+    auto       ipn  = ip + 1;
+    const bool exit = false;
     while (!exit)
     {
         if (ipn->flags & BCI_START_STMT)
@@ -6538,7 +6538,7 @@ void ByteCodeOptimizer::reduceCopy(ByteCodeOptContext* context, ByteCodeInstruct
         ip->op != ByteCodeOp::CopyRBtoRA64)
         return;
 
-    auto ipn = ip + 1;
+    const auto ipn = ip + 1;
 
     if (ipn->flags & BCI_START_STMT)
         return;
@@ -6547,8 +6547,8 @@ void ByteCodeOptimizer::reduceCopy(ByteCodeOptContext* context, ByteCodeInstruct
         ByteCode::isCall(ipn))
         return;
 
-    auto fl0 = g_ByteCodeOpDesc[(int) ip->op].flags;
-    auto fl1 = g_ByteCodeOpDesc[(int) ipn->op].flags;
+    const auto fl0 = g_ByteCodeOpDesc[(int) ip->op].flags;
+    const auto fl1 = g_ByteCodeOpDesc[(int) ipn->op].flags;
 
     if (fl0 & OPFLAG_IS_8B && !(fl1 & (OPFLAG_IS_8B)))
         return;

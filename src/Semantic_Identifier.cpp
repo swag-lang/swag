@@ -14,7 +14,7 @@
 
 bool Semantic::resolveNameAlias(SemanticContext* context)
 {
-    auto node = CastAst<AstAlias>(context->node, AstNodeKind::NameAlias);
+    const auto node = CastAst<AstAlias>(context->node, AstNodeKind::NameAlias);
     auto back = node->childs.back();
 
     SWAG_ASSERT(node->resolvedSymbolName);
@@ -30,7 +30,7 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
         if (back->kind == AstNodeKind::IdentifierRef)
         {
             int cptVar = 0;
-            for (auto& c : back->childs)
+            for (const auto& c : back->childs)
             {
                 if (c->resolvedSymbolName && c->resolvedSymbolName->kind == SymbolKind::Variable)
                 {
@@ -45,7 +45,7 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
         back->resolvedSymbolName->kind != SymbolKind::Function &&
         back->resolvedSymbolName->kind != SymbolKind::Variable)
     {
-        Diagnostic                diag{back, Fmt(Err(Err0328), Naming::aKindName(back->resolvedSymbolName->kind).c_str())};
+        const Diagnostic                diag{back, Fmt(Err(Err0328), Naming::aKindName(back->resolvedSymbolName->kind).c_str())};
         Vector<const Diagnostic*> notes;
 
         notes.push_back(Diagnostic::note(Nte(Nte0013)));
@@ -69,7 +69,7 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
 
 bool Semantic::preResolveIdentifierRef(SemanticContext* context)
 {
-    auto node = CastAst<AstIdentifierRef>(context->node, AstNodeKind::IdentifierRef);
+    const auto node = CastAst<AstIdentifierRef>(context->node, AstNodeKind::IdentifierRef);
 
     // When duplicating an identifier ref, and solve it again, we need to be sure that all that
     // stuff is reset
@@ -85,8 +85,8 @@ bool Semantic::preResolveIdentifierRef(SemanticContext* context)
 
 bool Semantic::resolveIdentifierRef(SemanticContext* context)
 {
-    auto node      = static_cast<AstIdentifierRef*>(context->node);
-    auto childBack = node->childs.back();
+    const auto node      = static_cast<AstIdentifierRef*>(context->node);
+    const auto childBack = node->childs.back();
 
     // Keep resolution
     if (!node->typeInfo || !(node->semFlags & SEMFLAG_TYPE_SOLVED))
@@ -101,7 +101,7 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
 
     // Flag inheritance
     node->flags |= AST_CONST_EXPR | AST_FROM_GENERIC_REPLACE;
-    for (auto child : node->childs)
+    for (const auto child : node->childs)
     {
         if (!(child->flags & AST_CONST_EXPR))
             node->flags &= ~AST_CONST_EXPR;
@@ -142,14 +142,14 @@ bool Semantic::setupIdentifierRef(SemanticContext* context, AstNode* node)
     // If type of previous one was const, then we force this node to be const (cannot change it)
     if (node->parent->typeInfo && node->parent->typeInfo->isConst())
         node->flags |= AST_IS_CONST;
-    auto overload = node->resolvedSymbolOverload;
+    const auto overload = node->resolvedSymbolOverload;
     if (overload && overload->flags & OVERLOAD_CONST_ASSIGN)
         node->semFlags |= SEMFLAG_IS_CONST_ASSIGN;
 
     if (node->parent->kind != AstNodeKind::IdentifierRef)
         return true;
 
-    auto identifierRef = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
+    const auto identifierRef = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
 
     // If we cannot assign previous, and this was AST_IS_CONST_ASSIGN_INHERIT, then we cannot assign
     // this one either
@@ -162,11 +162,11 @@ bool Semantic::setupIdentifierRef(SemanticContext* context, AstNode* node)
     identifierRef->previousResolvedNode = node;
     identifierRef->startScope           = nullptr;
 
-    auto typeInfo  = TypeManager::concreteType(node->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
+    const auto typeInfo  = TypeManager::concreteType(node->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
     auto scopeType = typeInfo->getConcreteAlias();
     if (scopeType->isLambdaClosure())
     {
-        auto funcType = CastTypeInfo<TypeInfoFuncAttr>(scopeType, TypeInfoKind::LambdaClosure);
+        const auto funcType = CastTypeInfo<TypeInfoFuncAttr>(scopeType, TypeInfoKind::LambdaClosure);
         scopeType     = TypeManager::concreteType(funcType->returnType, CONCRETE_FORCEALIAS);
     }
 
@@ -193,8 +193,8 @@ bool Semantic::setupIdentifierRef(SemanticContext* context, AstNode* node)
     }
     case TypeInfoKind::Pointer:
     {
-        auto typePointer = CastTypeInfo<TypeInfoPointer>(scopeType, TypeInfoKind::Pointer);
-        auto subType     = TypeManager::concreteType(typePointer->pointedType);
+        const auto typePointer = CastTypeInfo<TypeInfoPointer>(scopeType, TypeInfoKind::Pointer);
+        const auto subType     = TypeManager::concreteType(typePointer->pointedType);
         if (subType->isStruct() || subType->isInterface())
             identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
         node->typeInfo = typeInfo;
@@ -215,8 +215,8 @@ bool Semantic::setupIdentifierRef(SemanticContext* context, AstNode* node)
 
     case TypeInfoKind::Array:
     {
-        auto typeArray = CastTypeInfo<TypeInfoArray>(scopeType, TypeInfoKind::Array);
-        auto subType   = TypeManager::concreteType(typeArray->finalType);
+        const auto typeArray = CastTypeInfo<TypeInfoArray>(scopeType, TypeInfoKind::Array);
+        const auto subType   = TypeManager::concreteType(typeArray->finalType);
         if (subType->isStruct())
             identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
         node->typeInfo = typeInfo;
@@ -225,8 +225,8 @@ bool Semantic::setupIdentifierRef(SemanticContext* context, AstNode* node)
 
     case TypeInfoKind::Slice:
     {
-        auto typeSlice = CastTypeInfo<TypeInfoSlice>(scopeType, TypeInfoKind::Slice);
-        auto subType   = TypeManager::concreteType(typeSlice->pointedType);
+        const auto typeSlice = CastTypeInfo<TypeInfoSlice>(scopeType, TypeInfoKind::Slice);
+        const auto subType   = TypeManager::concreteType(typeSlice->pointedType);
         if (subType->isStruct())
             identifierRef->startScope = CastTypeInfo<TypeInfoStruct>(subType, subType->kind)->scope;
         node->typeInfo = typeInfo;
@@ -252,7 +252,7 @@ bool Semantic::isFunctionButNotACall(SemanticContext* context, AstNode* node, Sy
 
     if (node && node->parent && node->parent->parent)
     {
-        auto grandParent = node->parent->parent;
+        const auto grandParent = node->parent->parent;
         if (symbol->kind == SymbolKind::Attribute)
         {
             if (grandParent->kind != AstNodeKind::AttrUse)
@@ -302,21 +302,21 @@ TypeInfoEnum* Semantic::findEnumTypeInContext(SemanticContext* context, TypeInfo
 
         if (typeInfo->isArray())
         {
-            auto typeArr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+            const auto typeArr = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
             typeInfo     = typeArr->finalType;
             continue;
         }
 
         if (typeInfo->isSlice())
         {
-            auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+            const auto typeSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
             typeInfo       = typeSlice->pointedType;
             continue;
         }
 
         if (typeInfo->isPointer())
         {
-            auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+            const auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
             typeInfo         = typePointer->pointedType;
             continue;
         }
@@ -342,18 +342,18 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
     has.clear();
 
     // If this is a parameter of a function call, we will try to deduce the type with a function signature
-    auto fctCallParam = node->findParent(AstNodeKind::FuncCallParam);
+    const auto fctCallParam = node->findParent(AstNodeKind::FuncCallParam);
     if (fctCallParam &&
         fctCallParam->parent->kind == AstNodeKind::FuncCallParams &&
         fctCallParam->parent->parent->kind == AstNodeKind::Identifier)
     {
         VectorNative<OneSymbolMatch> symbolMatch;
 
-        auto idref = CastAst<AstIdentifierRef>(fctCallParam->parent->parent->parent, AstNodeKind::IdentifierRef);
-        auto id    = CastAst<AstIdentifier>(fctCallParam->parent->parent, AstNodeKind::Identifier);
+        const auto idref = CastAst<AstIdentifierRef>(fctCallParam->parent->parent->parent, AstNodeKind::IdentifierRef);
+        const auto id    = CastAst<AstIdentifier>(fctCallParam->parent->parent, AstNodeKind::Identifier);
 
         context->silentError++;
-        auto found = findIdentifierInScopes(context, symbolMatch, idref, id);
+        const auto found = findIdentifierInScopes(context, symbolMatch, idref, id);
         context->silentError--;
         YIELD();
 
@@ -363,7 +363,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
         // Be sure symbols have been solved, because we need the types to be deduced
         for (const auto& sm : symbolMatch)
         {
-            auto symbol = sm.symbol;
+            const auto symbol = sm.symbol;
             if (symbol->kind != SymbolKind::Function && symbol->kind != SymbolKind::Variable)
                 continue;
 
@@ -377,25 +377,25 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
 
         for (const auto& sm : symbolMatch)
         {
-            auto symbol = sm.symbol;
+            const auto symbol = sm.symbol;
             if (symbol->kind != SymbolKind::Function && symbol->kind != SymbolKind::Variable)
                 continue;
 
             for (auto& overload : symbol->overloads)
             {
-                auto concrete = TypeManager::concreteType(overload->typeInfo, CONCRETE_FORCEALIAS);
+                const auto concrete = TypeManager::concreteType(overload->typeInfo, CONCRETE_FORCEALIAS);
                 if (!concrete->isFuncAttr() && !concrete->isLambdaClosure())
                     continue;
                 if (concrete->isGeneric() || concrete->isFromGeneric())
                     continue;
 
                 testedOver.push_back(overload);
-                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(concrete, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+                const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(concrete, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
 
                 // If there's only one corresponding type in the function, then take it
                 // If it's not the correct parameter, the match will not be done, so we do not really care here
                 VectorNative<TypeInfoEnum*> subResult;
-                for (auto param : typeFunc->parameters)
+                for (const auto param : typeFunc->parameters)
                 {
                     auto typeEnum = findEnumTypeInContext(context, param->typeInfo);
                     if (!typeEnum)
@@ -417,7 +417,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
                     int enumIdx = 0;
                     for (size_t i = 0; i < fctCallParam->parent->childs.size(); i++)
                     {
-                        auto child = fctCallParam->parent->childs[i];
+                        const auto child = fctCallParam->parent->childs[i];
                         if (child == fctCallParam)
                             break;
                         if (child->typeInfo && child->typeInfo->getConcreteAlias()->isEnum())
@@ -426,9 +426,9 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
                             enumIdx++;
                     }
 
-                    for (auto p : typeFunc->parameters)
+                    for (const auto p : typeFunc->parameters)
                     {
-                        auto concreteP = TypeManager::concreteType(p->typeInfo, CONCRETE_FORCEALIAS);
+                        const auto concreteP = TypeManager::concreteType(p->typeInfo, CONCRETE_FORCEALIAS);
                         if (concreteP->isEnum())
                         {
                             if (!enumIdx)
@@ -450,13 +450,13 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
     }
     else
     {
-        auto fctReturn = node->findParent(AstNodeKind::Return);
+        const auto fctReturn = node->findParent(AstNodeKind::Return);
         if (fctReturn)
         {
-            auto funcNode = getFunctionForReturn(fctReturn);
+            const auto funcNode = getFunctionForReturn(fctReturn);
             if (funcNode->returnType)
             {
-                auto typeInfo = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_FUNC | CONCRETE_FORCEALIAS);
+                const auto typeInfo = TypeManager::concreteType(funcNode->returnType->typeInfo, CONCRETE_FUNC | CONCRETE_FORCEALIAS);
                 if (typeInfo->isEnum())
                 {
                     auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
@@ -498,7 +498,7 @@ bool Semantic::findEnumTypeInContext(SemanticContext*                           
                 // Take first child of an expression list
                 if (c->kind == AstNodeKind::ExpressionList)
                 {
-                    auto expr     = CastAst<AstExpressionList>(c, AstNodeKind::ExpressionList);
+                    const auto expr     = CastAst<AstExpressionList>(c, AstNodeKind::ExpressionList);
                     typeInfoChild = expr->childs[0]->typeInfo;
                 }
 
@@ -553,7 +553,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
     if (overload->flags & OVERLOAD_VAR_GLOBAL)
         return true;
 
-    auto kind = overload->symbol->kind;
+    const auto kind = overload->symbol->kind;
     switch (kind)
     {
     case SymbolKind::Enum:
@@ -565,8 +565,8 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
         break;
     }
 
-    auto                        symbol   = overload->symbol;
-    auto                        symScope = symbol->ownerTable->scope;
+    const auto                  symbol   = overload->symbol;
+    const auto                  symScope = symbol->ownerTable->scope;
     Vector<AlternativeScopeVar> toCheck;
 
     // Collect all matches
@@ -580,10 +580,10 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
         bool okForUfcs = false;
         if (symbol->kind == SymbolKind::Function)
         {
-            auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
+            const auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
             if (typeInfo->parameters.size())
             {
-                auto firstParam = typeInfo->parameters.front()->typeInfo;
+                const auto firstParam = typeInfo->parameters.front()->typeInfo;
                 if (firstParam->isSame(dep.node->typeInfo, CASTFLAG_EXACT))
                     okForUfcs = true;
             }
@@ -619,7 +619,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
         for (auto& dep : toCheck)
         {
             SWAG_ASSERT(dep.node->parent);
-            bool isWith = dep.node->parent->kind == AstNodeKind::With;
+            const bool isWith = dep.node->parent->kind == AstNodeKind::With;
             if (!isWith)
                 dep.node = nullptr;
         }
@@ -638,7 +638,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
     // Get one
     AstNode* dependentVar     = nullptr;
     AstNode* dependentVarLeaf = nullptr;
-    for (auto& dep : toCheck)
+    for (const auto& dep : toCheck)
     {
         if (!dep.node)
             continue;
@@ -649,16 +649,16 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
         {
             if (dep.node->isGeneratedSelf())
             {
-                Diagnostic diag{dependentVar, Fmt(Err(Err0013), dependentVar->typeInfo->getDisplayNameC())};
-                auto       note  = Diagnostic::note(dep.node->ownerFct, dep.node->ownerFct->token, Nte(Nte0115));
-                auto       note1 = Diagnostic::note(Nte(Nte0034));
+                const Diagnostic diag{dependentVar, Fmt(Err(Err0013), dependentVar->typeInfo->getDisplayNameC())};
+                const auto       note  = Diagnostic::note(dep.node->ownerFct, dep.node->ownerFct->token, Nte(Nte0115));
+                const auto       note1 = Diagnostic::note(Nte(Nte0034));
                 return context->report(diag, note, note1);
             }
             else
             {
-                Diagnostic diag{dep.node, Fmt(Err(Err0013), dependentVar->typeInfo->getDisplayNameC())};
-                auto       note  = Diagnostic::note(dependentVar, Nte(Nte0060));
-                auto       note1 = Diagnostic::note(Nte(Nte0034));
+                const Diagnostic diag{dep.node, Fmt(Err(Err0013), dependentVar->typeInfo->getDisplayNameC())};
+                const auto       note  = Diagnostic::note(dependentVar, Nte(Nte0060));
+                const auto       note1 = Diagnostic::note(Nte(Nte0034));
                 return context->report(diag, note, note1);
             }
         }
@@ -672,8 +672,8 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
             if (symbol->kind == SymbolKind::Function)
             {
                 // Be sure we have a missing parameter in order to try ufcs
-                auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
-                bool canTry   = canTryUfcs(context, typeFunc, node->callParameters, dependentVar, false);
+                const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
+                const bool canTry   = canTryUfcs(context, typeFunc, node->callParameters, dependentVar, false);
                 YIELD();
                 if (canTry)
                 {
@@ -697,7 +697,7 @@ bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* 
         node->semFlags |= SEMFLAG_LAST_PARAM_CODE;
 
         // If last parameter is of type code, and the call last parameter is not, then take the next statement
-        auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
+        const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
         if (!typeFunc->parameters.empty() && typeFunc->parameters.back()->typeInfo->isCode())
         {
             if (node->callParameters && node->callParameters->childs.size() < typeFunc->parameters.size())
@@ -709,13 +709,13 @@ bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* 
                     parent->parent->kind == AstNodeKind::TryCatch)
                     parent = parent->parent;
 
-                auto parentIdx = parent->childParentIdx();
+                const auto parentIdx = parent->childParentIdx();
                 if (parentIdx != parent->parent->childs.size() - 1)
                 {
-                    auto brother = parent->parent->childs[parentIdx + 1];
+                    const auto brother = parent->parent->childs[parentIdx + 1];
                     if (brother->kind == AstNodeKind::Statement)
                     {
-                        auto brotherParent = brother->parent;
+                        const auto brotherParent = brother->parent;
                         switch (brotherParent->kind)
                         {
                         case AstNodeKind::Loop:
@@ -723,20 +723,20 @@ bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* 
                         case AstNodeKind::CompilerIf:
                         case AstNodeKind::While:
                         {
-                            Diagnostic diag{node, node->token, Fmt(Err(Err0156), Naming::kindName(overload).c_str(), overload->node->token.ctext(), brotherParent->token.ctext())};
+                            const Diagnostic diag{node, node->token, Fmt(Err(Err0156), Naming::kindName(overload).c_str(), overload->node->token.ctext(), brotherParent->token.ctext())};
                             return context->report(diag, Diagnostic::hereIs(overload->node));
                         }
                         default:
                             break;
                         }
 
-                        auto fctCallParam = Ast::newFuncCallParam(context->sourceFile, node->callParameters);
-                        auto codeNode     = Ast::newNode<AstNode>(nullptr, AstNodeKind::CompilerCode, node->sourceFile, fctCallParam);
+                        const auto fctCallParam = Ast::newFuncCallParam(context->sourceFile, node->callParameters);
+                        const auto codeNode     = Ast::newNode<AstNode>(nullptr, AstNodeKind::CompilerCode, node->sourceFile, fctCallParam);
                         codeNode->flags |= AST_NO_BYTECODE;
 
                         Ast::removeFromParent(brother);
                         Ast::addChildBack(codeNode, brother);
-                        auto typeCode     = makeType<TypeInfoCode>();
+                        const auto typeCode     = makeType<TypeInfoCode>();
                         typeCode->content = brother;
                         brother->flags |= AST_NO_SEMANTIC;
                         fctCallParam->semFlags |= SEMFLAG_AUTO_CODE_PARAM;
@@ -753,16 +753,16 @@ bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* 
 
 bool Semantic::fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* identifier, SymbolOverload* overload, AstNode* ufcsFirstParam)
 {
-    auto symbol         = overload->symbol;
-    auto symbolKind     = symbol->kind;
-    auto callParameters = identifier->callParameters;
+    const auto symbol         = overload->symbol;
+    const auto symbolKind     = symbol->kind;
+    const auto callParameters = identifier->callParameters;
 
     auto typeRef = TypeManager::concreteType(overload->typeInfo, CONCRETE_FORCEALIAS);
 
     if (identifier->isSilentCall())
     {
         SWAG_ASSERT(typeRef->isArray());
-        auto typeArr = CastTypeInfo<TypeInfoArray>(overload->typeInfo, TypeInfoKind::Array);
+        const auto typeArr = CastTypeInfo<TypeInfoArray>(overload->typeInfo, TypeInfoKind::Array);
         typeRef      = TypeManager::concreteType(typeArr->finalType, CONCRETE_FORCEALIAS);
     }
 
@@ -796,12 +796,12 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext* context, SymbolMa
         {
             if (symbolKind == SymbolKind::Variable)
             {
-                Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0290), identifier->token.ctext(), symbol->overloads[0]->typeInfo->getDisplayNameC())};
+                const Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0290), identifier->token.ctext(), symbol->overloads[0]->typeInfo->getDisplayNameC())};
                 return context->report(diag, Diagnostic::hereIs(symbol->overloads[0]));
             }
             else
             {
-                Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0289), identifier->token.ctext(), Naming::aKindName(symbol->kind).c_str())};
+                const Diagnostic diag{identifier, identifier->token, Fmt(Err(Err0289), identifier->token.ctext(), Naming::aKindName(symbol->kind).c_str())};
                 return context->report(diag, Diagnostic::hereIs(symbol->overloads[0]));
             }
         }
@@ -809,21 +809,21 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext* context, SymbolMa
 
     if (callParameters)
     {
-        auto childCount = callParameters->childs.size();
+        const auto childCount = callParameters->childs.size();
         for (size_t i = 0; i < childCount; i++)
         {
-            auto oneParam = CastAst<AstFuncCallParam>(callParameters->childs[i], AstNodeKind::FuncCallParam);
+            const auto oneParam = CastAst<AstFuncCallParam>(callParameters->childs[i], AstNodeKind::FuncCallParam);
             symMatchContext.parameters.push_back(oneParam);
 
             // Be sure all interfaces of the structure have been solved, in case a cast to an interface is necessary to match
             // a function
             // :WaitInterfaceReg
-            TypeInfoStruct* typeStruct = nullptr;
+            const TypeInfoStruct* typeStruct = nullptr;
             if (oneParam->typeInfo->isStruct())
                 typeStruct = CastTypeInfo<TypeInfoStruct>(oneParam->typeInfo, TypeInfoKind::Struct);
             else if (oneParam->typeInfo->isPointerTo(TypeInfoKind::Struct))
             {
-                auto typePtr = CastTypeInfo<TypeInfoPointer>(oneParam->typeInfo, TypeInfoKind::Pointer);
+                const auto typePtr = CastTypeInfo<TypeInfoPointer>(oneParam->typeInfo, TypeInfoKind::Pointer);
                 typeStruct   = CastTypeInfo<TypeInfoStruct>(typePtr->pointedType, TypeInfoKind::Struct);
             }
 
@@ -853,13 +853,13 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext* context, SymbolMa
 
 bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, SymbolOverload* overload)
 {
-    auto genericParameters = node->genericParameters;
+    const auto genericParameters = node->genericParameters;
 
     // User generic parameters
     if (genericParameters)
     {
-        auto symbol     = overload->symbol;
-        auto symbolKind = symbol->kind;
+        const auto symbol     = overload->symbol;
+        const auto symbolKind = symbol->kind;
 
         node->inheritOrFlag(genericParameters, AST_IS_GENERIC);
         if (symbolKind != SymbolKind::Function &&
@@ -867,16 +867,16 @@ bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, Symbo
             symbolKind != SymbolKind::Interface &&
             symbolKind != SymbolKind::TypeAlias)
         {
-            auto       firstNode = symbol->nodes.front();
-            Diagnostic diag{genericParameters, Fmt(Err(Err0683), Naming::aKindName(symbol->kind).c_str())};
-            auto       note = Diagnostic::note(node, node->token, Fmt(Nte(Nte0199), node->token.ctext(), Naming::aKindName(symbol->kind).c_str()));
+            const auto       firstNode = symbol->nodes.front();
+            const Diagnostic diag{genericParameters, Fmt(Err(Err0683), Naming::aKindName(symbol->kind).c_str())};
+            const auto       note = Diagnostic::note(node, node->token, Fmt(Nte(Nte0199), node->token.ctext(), Naming::aKindName(symbol->kind).c_str()));
             return context->report(diag, note, Diagnostic::hereIs(firstNode));
         }
 
-        auto childCount = genericParameters->childs.size();
+        const auto childCount = genericParameters->childs.size();
         for (size_t i = 0; i < childCount; i++)
         {
-            auto oneParam = CastAst<AstFuncCallParam>(genericParameters->childs[i], AstNodeKind::FuncCallParam);
+            const auto oneParam = CastAst<AstFuncCallParam>(genericParameters->childs[i], AstNodeKind::FuncCallParam);
             symMatchContext.genericParameters.push_back(oneParam);
             GenericReplaceType st;
             st.typeInfoReplace = oneParam->typeInfo;
@@ -903,7 +903,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
     }
 
     // Execute #validif/#validifx block
-    auto expr = funcDecl->validif->childs.back();
+    const auto expr = funcDecl->validif->childs.back();
 
     // #validifx is evaluated for each call, so we remove the AST_VALUE_COMPUTED computed flag.
     // #validif is evaluated once, so keep it.
@@ -912,7 +912,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
 
     if (!expr->hasComputedValue())
     {
-        auto node                  = context->node;
+        const auto node                  = context->node;
         context->validIfParameters = oneMatch->oneOverload->callParameters;
 
         ErrCxtStepKind type;
@@ -922,7 +922,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
             type = ErrCxtStepKind::ValidIf;
 
         PushErrCxtStep ec(context, node, type, nullptr);
-        auto           result      = executeCompilerNode(context, expr, false);
+        const auto     result      = executeCompilerNode(context, expr, false);
         context->validIfParameters = nullptr;
         if (!result)
             return false;
@@ -946,8 +946,8 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
         // It's safe to create a job with the content as it has been fully evaluated.
         // It's NOT safe for the function itself as the job that deals with it can be
         // still running
-        auto job     = SemanticJob::newJob(context->baseJob->dependentJob, context->sourceFile, funcDecl->content, false);
-        auto baseJob = (SemanticJob*) context->baseJob;
+        const auto job     = SemanticJob::newJob(context->baseJob->dependentJob, context->sourceFile, funcDecl->content, false);
+        const auto baseJob = (SemanticJob*) context->baseJob;
         job->context.errCxtSteps.insert(job->context.errCxtSteps.begin(),
                                         baseJob->context.errCxtSteps.begin(),
                                         baseJob->context.errCxtSteps.end());
@@ -957,7 +957,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
         {
             ErrorCxtStep expNode;
 
-            auto typeFunc        = CastTypeInfo<TypeInfoFuncAttr>(oneMatch->oneOverload->overload->typeInfo, TypeInfoKind::FuncAttr);
+            const auto typeFunc        = CastTypeInfo<TypeInfoFuncAttr>(oneMatch->oneOverload->overload->typeInfo, TypeInfoKind::FuncAttr);
             expNode.node         = context->node;
             expNode.replaceTypes = typeFunc->replaceTypes;
             if (expNode.node->hasExtMisc() && expNode.node->extMisc()->exportNode)
@@ -969,7 +969,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
         // To avoid a race condition with the job that is currently dealing with the funcDecl,
         // we will reevaluate it with a semanticAfterFct trick
         funcDecl->content->allocateExtension(ExtensionKind::Semantic);
-        auto sem = funcDecl->content->extSemantic();
+        const auto sem = funcDecl->content->extSemantic();
         SWAG_ASSERT(!sem->semanticAfterFct ||
                     sem->semanticAfterFct == Semantic::resolveFuncDeclAfterSI ||
                     sem->semanticAfterFct == Semantic::resolveScopedStmtAfter);
@@ -983,7 +983,7 @@ bool Semantic::solveValidIf(SemanticContext* context, OneMatch* oneMatch, AstFun
 
 bool Semantic::resolveIdentifier(SemanticContext* context)
 {
-    auto node = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+    const auto node = CastAst<AstIdentifier>(context->node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
     return resolveIdentifier(context, node, RI_ZERO);
 }
 

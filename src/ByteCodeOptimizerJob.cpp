@@ -16,12 +16,12 @@ JobResult ByteCodeOptimizerJob::execute()
     bool restart = false;
     for (int i = startIndex; i < endIndex; i++)
     {
-        auto bc = module->byteCodeFunc[i];
+        const auto bc = module->byteCodeFunc[i];
         if (!ByteCodeOptimizer::optimize(optContext, bc, restart))
         {
             if (bc->node && bc->node->attributeFlags & ATTRIBUTE_PRINT_BC)
             {
-                ByteCodePrintOptions opt;
+                const ByteCodePrintOptions opt;
                 bc->print(opt);
             }
 

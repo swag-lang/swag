@@ -92,7 +92,7 @@ Utf8 GenDoc::getDocComment(AstNode* node)
 void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint32_t collectFlags)
 {
     MapUtf8<VectorNative<AstNode*>> symbolsMap;
-    for (auto sym : scope->symTable.allSymbols)
+    for (const auto sym : scope->symTable.allSymbols)
     {
         for (auto n1 : sym->nodes)
         {
@@ -120,12 +120,12 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
         symbols.append(c.second);
     sort(symbols.begin(), symbols.end(), [](AstNode* a, AstNode* b)
          {
-            auto a0 = a->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
-            auto b0 = b->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
+             const auto a0 = a->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
+             const auto b0 = b->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
             return strcmp(a0.c_str(), b0.c_str()) < 0; });
 
     bool first = true;
-    for (auto n1 : symbols)
+    for (const auto n1 : symbols)
     {
         if (first)
         {
@@ -143,16 +143,16 @@ void GenDoc::outputTable(Scope* scope, AstNodeKind kind, const char* title, uint
             Utf8 parameters;
             if (symbolsMap.find(n1->token.text)->second.size() > 1)
             {
-                AstFuncDecl* funcNode = CastAst<AstFuncDecl>(n1, AstNodeKind::FuncDecl);
+                const AstFuncDecl* funcNode = CastAst<AstFuncDecl>(n1, AstNodeKind::FuncDecl);
                 parameters            = "(";
                 if (funcNode->parameters && !funcNode->parameters->childs.empty())
                 {
                     bool firstParam = true;
-                    for (auto c : funcNode->parameters->childs)
+                    for (const auto c : funcNode->parameters->childs)
                     {
                         if (c->kind != AstNodeKind::FuncDeclParam)
                             continue;
-                        AstVarDecl* varNode = CastAst<AstVarDecl>(c, AstNodeKind::FuncDeclParam);
+                        const AstVarDecl* varNode = CastAst<AstVarDecl>(c, AstNodeKind::FuncDeclParam);
                         if (!varNode->type && !varNode->typeInfo)
                             continue;
                         if (!firstParam)
@@ -319,12 +319,12 @@ void GenDoc::outputType(AstNode* node)
     }
     else if (node->kind == AstNodeKind::VarDecl || node->kind == AstNodeKind::ConstDecl)
     {
-        auto varDecl = CastAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
+        const auto varDecl = CastAst<AstVarDecl>(node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
         outputCode(getOutputNode(varDecl->type), GENDOC_CODE_REFS | GENDOC_CODE_SYNTAX_COL);
     }
     else if (node->kind == AstNodeKind::TypeAlias)
     {
-        auto typeDecl = CastAst<AstAlias>(node, AstNodeKind::TypeAlias);
+        const auto typeDecl = CastAst<AstAlias>(node, AstNodeKind::TypeAlias);
         outputCode(getOutputNode(typeDecl->childs.front()), GENDOC_CODE_REFS | GENDOC_CODE_SYNTAX_COL);
     }
 }
@@ -334,10 +334,10 @@ void GenDoc::collectNode(AstNode* node)
     if (!canCollectNode(node))
         return;
 
-    Utf8 name = node->getScopedName();
+    const Utf8 name = node->getScopedName();
     if (!name.empty())
     {
-        auto it = collect.find(name);
+        const auto it = collect.find(name);
         if (it != collect.end())
             collect[name].push_back(node);
         else
@@ -355,14 +355,14 @@ void GenDoc::collectScopes(Scope* root)
     if (!root->owner)
         return;
 
-    auto count = collect.size();
+    const auto count = collect.size();
 
-    for (auto c : root->childScopes)
+    for (const auto c : root->childScopes)
         collectScopes(c);
 
     if (root->kind == ScopeKind::Namespace)
     {
-        for (auto s : root->symTable.allSymbols)
+        for (const auto s : root->symTable.allSymbols)
         {
             if (s->nodes.empty())
                 continue;
@@ -384,7 +384,7 @@ void GenDoc::generateTocCateg(bool& first, AstNodeKind kind, const char* section
     if (pendingNodes.empty())
         return;
 
-    for (auto& n : pendingNodes)
+    for (const auto& n : pendingNodes)
     {
         Vector<Utf8> tkn;
         Utf8::tokenize(n->fullName, '.', tkn);
@@ -406,7 +406,7 @@ void GenDoc::generateTocCateg(bool& first, AstNodeKind kind, const char* section
         SetUtf8 here;
         SetUtf8 conflict;
 
-        for (auto& n : pendingNodes)
+        for (const auto& n : pendingNodes)
         {
             if (here.contains(n->tocName))
                 conflict.insert(n->tocName);
@@ -414,7 +414,7 @@ void GenDoc::generateTocCateg(bool& first, AstNodeKind kind, const char* section
                 here.insert(n->tocName);
         }
 
-        for (auto& n : pendingNodes)
+        for (const auto& n : pendingNodes)
         {
             if (conflict.contains(n->tocName))
             {
@@ -434,7 +434,7 @@ void GenDoc::generateTocCateg(bool& first, AstNodeKind kind, const char* section
     }
 
     // Invert references
-    for (auto& n : pendingNodes)
+    for (const auto& n : pendingNodes)
     {
         collectInvert[n->tocName]  = n->fullName;
         collectInvert[n->fullName] = n->fullName;
@@ -451,7 +451,7 @@ void GenDoc::generateTocCateg(bool& first, AstNodeKind kind, const char* section
 
     helpToc += Fmt("<h4>%s</h4>\n", categName);
     helpToc += "<ul>\n";
-    for (auto& t : pendingNodes)
+    for (const auto& t : pendingNodes)
         helpToc += Fmt("<li><a href=\"#%s\">%s</a></li>\n", toRef(t->fullName).c_str(), t->tocName.c_str());
     helpToc += "</ul>\n";
 
@@ -485,8 +485,8 @@ void GenDoc::generateToc()
 {
     sort(allNodes.begin(), allNodes.end(), [](OneRef& a, OneRef& b)
          {
-            int s0 = sortOrder(a.nodes[0]->kind);
-            int s1 = sortOrder(b.nodes[0]->kind);
+             const int s0 = sortOrder(a.nodes[0]->kind);
+             const int s1 = sortOrder(b.nodes[0]->kind);
             if (s0 != s1)
                 return s0 < s1;
             if (a.category == b.category)
@@ -923,7 +923,7 @@ bool GenDoc::generateApi()
             if (c.second[0]->kind != AstNodeKind::Namespace)
             {
                 oneRef.category = c.second[0]->sourceFile->path.parent_path().string();
-                auto len        = (uint32_t) c.second[0]->sourceFile->module->path.string().size();
+                const auto len  = (uint32_t) c.second[0]->sourceFile->module->path.string().size();
                 if (oneRef.category.length() <= len + 5) // +5 because of /src/
                     oneRef.category.clear();
                 else
@@ -950,9 +950,9 @@ bool GenDoc::generateApi()
         }
 
         sort(oneRef.nodes.begin(), oneRef.nodes.end(), [](AstNode* a, AstNode* b)
-             { 
-                auto a0 = a->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
-                auto b0 = b->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
+             {
+                 const auto a0 = a->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
+                 const auto b0 = b->typeInfo->computeWhateverName(COMPUTE_SCOPED_NAME);
                 return strcmp(a0.c_str(), b0.c_str()) < 0; });
         allNodes.push_back(oneRef);
     }

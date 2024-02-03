@@ -118,8 +118,8 @@ Utf8 Naming::kindName(SymbolOverload* overload)
 
 Utf8 Naming::aKindName(SymbolOverload* overload)
 {
-    Utf8 article;
-    auto result = kindName(overload->symbol, overload->node, overload->typeInfo, overload->flags, article);
+    Utf8       article;
+    const auto result = kindName(overload->symbol, overload->node, overload->typeInfo, overload->flags, article);
     article += " ";
     article += result;
     return article;
@@ -181,8 +181,8 @@ Utf8 Naming::kindName(SymbolKind kind)
 
 Utf8 Naming::aKindName(SymbolKind kind)
 {
-    Utf8 article;
-    auto result = kindName(kind, article);
+    Utf8       article;
+    const auto result = kindName(kind, article);
     article += " ";
     article += result;
     return article;
@@ -274,8 +274,8 @@ Utf8 Naming::kindName(TypeInfo* typeInfo)
 
 Utf8 Naming::aKindName(TypeInfo* typeInfo)
 {
-    Utf8 article;
-    auto result = kindName(typeInfo, article);
+    Utf8       article;
+    const auto result = kindName(typeInfo, article);
     article += " ";
     article += result;
     return article;
@@ -343,8 +343,8 @@ Utf8 Naming::kindName(AstNode* node, Utf8& article)
 
     case AstNodeKind::Impl:
     {
-        article  = "an";
-        auto ast = CastAst<AstImpl>(node, AstNodeKind::Impl);
+        article        = "an";
+        const auto ast = CastAst<AstImpl>(node, AstNodeKind::Impl);
         if (ast->identifierFor)
             return "interface implementation block";
         else
@@ -392,8 +392,8 @@ Utf8 Naming::kindName(AstNode* node)
 
 Utf8 Naming::aKindName(AstNode* node)
 {
-    Utf8 article;
-    auto result = kindName(node, article);
+    Utf8       article;
+    const auto result = kindName(node, article);
     article += " ";
     article += result;
     return article;
@@ -455,8 +455,8 @@ Utf8 Naming::kindName(ScopeKind kind)
 
 Utf8 Naming::aKindName(ScopeKind kind)
 {
-    Utf8 article;
-    auto result = kindName(kind, article);
+    Utf8       article;
+    const auto result = kindName(kind, article);
     article += " ";
     article += result;
     return article;

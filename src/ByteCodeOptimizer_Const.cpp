@@ -88,8 +88,8 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
         if (!(ip->flags & (BCI_IMM_A | BCI_IMM_B | BCI_IMM_C)))
             continue;
 
-        auto node       = ip->node;
-        auto sourceFile = node->sourceFile;
+        auto       node       = ip->node;
+        const auto sourceFile = node->sourceFile;
 
         if (ip->flags & BCI_IMM_C)
         {

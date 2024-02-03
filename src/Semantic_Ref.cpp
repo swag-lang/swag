@@ -33,7 +33,7 @@ bool Semantic::boundCheck(SemanticContext* context, TypeInfo* forType, AstNode* 
         }
     }
 
-    auto idx = arrayAccess->computedValue->reg.u64;
+    const auto idx = arrayAccess->computedValue->reg.u64;
     if (idx >= maxCount)
         return context->report({arrayAccess, Fmt(Err(Err0136), idx, maxCount - 1)});
     return true;
@@ -62,9 +62,9 @@ bool Semantic::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl* fu
 
     if (!msg.empty())
     {
-        Diagnostic diag{node, msg};
-        auto       note  = Diagnostic::hereIs(funcNode);
-        auto       note1 = Diagnostic::note(msg1);
+        const Diagnostic diag{node, msg};
+        const auto       note  = Diagnostic::hereIs(funcNode);
+        const auto       note1 = Diagnostic::note(msg1);
         return context->report(diag, note, note1);
     }
 
@@ -78,11 +78,11 @@ bool Semantic::checkCanTakeAddress(SemanticContext* context, AstNode* node)
     {
         if (node->resolvedSymbolName->kind != SymbolKind::Variable)
         {
-            Diagnostic diag{node, Fmt(Err(Err0179), Naming::aKindName(node->resolvedSymbolName->kind).c_str())};
+            const Diagnostic diag{node, Fmt(Err(Err0179), Naming::aKindName(node->resolvedSymbolName->kind).c_str())};
             return context->report(diag);
         }
 
-        Diagnostic diag{node, Fmt(Err(Err0180), node->typeInfo->getDisplayNameC())};
+        const Diagnostic diag{node, Fmt(Err(Err0180), node->typeInfo->getDisplayNameC())};
         return context->report(diag);
     }
 
@@ -91,7 +91,7 @@ bool Semantic::checkCanTakeAddress(SemanticContext* context, AstNode* node)
 
 bool Semantic::resolveMakePointerLambda(SemanticContext* context)
 {
-    auto     node  = CastAst<AstMakePointer>(context->node, AstNodeKind::MakePointerLambda, AstNodeKind::MakePointer);
+    const auto     node  = CastAst<AstMakePointer>(context->node, AstNodeKind::MakePointerLambda, AstNodeKind::MakePointer);
     AstNode* child = nullptr;
 
     // When this is a closure, we have /capture params/ref to the function/capture block/ref to the capture block
@@ -106,10 +106,10 @@ bool Semantic::resolveMakePointerLambda(SemanticContext* context)
     node->resolvedSymbolName     = child->resolvedSymbolName;
     node->resolvedSymbolOverload = child->resolvedSymbolOverload;
 
-    auto funcNode = node->resolvedSymbolOverload->node;
+    const auto funcNode = node->resolvedSymbolOverload->node;
     SWAG_CHECK(checkCanMakeFuncPointer(context, (AstFuncDecl*) funcNode, child));
 
-    auto lambdaType  = child->typeInfo->clone();
+    const auto lambdaType  = child->typeInfo->clone();
     lambdaType->kind = TypeInfoKind::LambdaClosure;
     if (child->typeInfo->isClosure())
         lambdaType->sizeOf = SWAG_LIMIT_CLOSURE_SIZEOF;
@@ -122,7 +122,7 @@ bool Semantic::resolveMakePointerLambda(SemanticContext* context)
     // Block capture
     if (node->lambda && node->lambda->captureParameters)
     {
-        auto       typeBlock = CastTypeInfo<TypeInfoStruct>(node->childs.back()->typeInfo, TypeInfoKind::Struct);
+        const auto       typeBlock = CastTypeInfo<TypeInfoStruct>(node->childs.back()->typeInfo, TypeInfoKind::Struct);
         const auto MaxSize   = SWAG_LIMIT_CLOSURE_SIZEOF - 2 * sizeof(void*);
         SWAG_VERIFY(typeBlock->sizeOf <= MaxSize, context->report({node->lambda->captureParameters, Fmt(Err(Err0026), typeBlock->sizeOf, MaxSize)}));
     }
@@ -132,9 +132,9 @@ bool Semantic::resolveMakePointerLambda(SemanticContext* context)
 
 bool Semantic::resolveMakePointer(SemanticContext* context)
 {
-    auto node     = CastAst<AstMakePointer>(context->node, AstNodeKind::MakePointer);
-    auto child    = node->childs.front();
-    auto typeInfo = child->typeInfo;
+    const auto node     = CastAst<AstMakePointer>(context->node, AstNodeKind::MakePointer);
+    const auto child    = node->childs.front();
+    auto       typeInfo = child->typeInfo;
 
     if (!child->resolvedSymbolName)
     {
@@ -153,7 +153,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
     {
         if (child->kind != AstNodeKind::IdentifierRef || child->childs.back()->kind != AstNodeKind::ArrayPointerIndex)
         {
-            Diagnostic diag{node, node->token, Err(Err0185)};
+            const Diagnostic diag{node, node->token, Err(Err0185)};
             return context->report(diag, Diagnostic::hereIs(child->resolvedSymbolOverload->node));
         }
     }
@@ -161,13 +161,13 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
     if (child->resolvedSymbolName->kind == SymbolKind::Function)
     {
         // For a function, if no parameters, then this is for a lambda
-        auto back = child->childs.back();
+        const auto back = child->childs.back();
         if (back->kind != AstNodeKind::FuncCall)
         {
             if (back->kind != AstNodeKind::Identifier)
                 return resolveMakePointerLambda(context);
 
-            auto idBack = CastAst<AstIdentifier>(back, AstNodeKind::Identifier);
+            const auto idBack = CastAst<AstIdentifier>(back, AstNodeKind::Identifier);
             if (!idBack->callParameters)
                 return resolveMakePointerLambda(context);
         }
@@ -179,13 +179,13 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
         {
             if (typeInfo->isVoid())
             {
-                Diagnostic diag{node, node->token, Fmt(Err(Err0178), typeInfo->getDisplayNameC())};
+                const Diagnostic diag{node, node->token, Fmt(Err(Err0178), typeInfo->getDisplayNameC())};
                 return context->report(diag, Diagnostic::hereIs(child->resolvedSymbolOverload));
             }
             else
             {
-                Diagnostic diag{node, node->token, Fmt(Err(Err0182), typeInfo->getDisplayNameC())};
-                auto       note = Diagnostic::note(Fmt(Nte(Nte0100), Naming::aKindName(typeInfo).c_str()));
+                const Diagnostic diag{node, node->token, Fmt(Err(Err0182), typeInfo->getDisplayNameC())};
+                const auto       note = Diagnostic::note(Fmt(Nte(Nte0100), Naming::aKindName(typeInfo).c_str()));
                 return context->report(diag, Diagnostic::hereIs(child->resolvedSymbolOverload), note);
             }
         }
@@ -219,7 +219,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
     {
         while (typeInfo->isArray())
         {
-            auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+            const auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
             typeInfo       = typeArray->pointedType;
         }
 
@@ -230,7 +230,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
     // Taking the address of an array element is ok for pointer arithmetic
     if (child->kind == AstNodeKind::IdentifierRef)
     {
-        auto last = child->childs.back();
+        const auto last = child->childs.back();
         if (last->kind == AstNodeKind::ArrayPointerIndex)
             ptrFlags |= TYPEINFO_POINTER_ARITHMETIC;
     }
@@ -244,7 +244,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
     // Type is constant if we take address of a readonly variable
     else if (child->resolvedSymbolOverload && !child->typeInfo->isPointerRef())
     {
-        auto typeResolved = child->resolvedSymbolOverload->typeInfo->getConcreteAlias();
+        const auto typeResolved = child->resolvedSymbolOverload->typeInfo->getConcreteAlias();
 
         if ((child->resolvedSymbolOverload->flags & OVERLOAD_CONST_ASSIGN) &&
             !typeResolved->isPointerArithmetic() &&
@@ -269,16 +269,16 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
         ptrFlags |= TYPEINFO_POINTER_REF;
     }
 
-    auto ptrType   = g_TypeMgr->makePointerTo(typeInfo, ptrFlags);
+    const auto ptrType   = g_TypeMgr->makePointerTo(typeInfo, ptrFlags);
     node->typeInfo = ptrType;
     return true;
 }
 
 bool Semantic::resolveArrayPointerSlicingUpperBound(SemanticContext* context)
 {
-    auto arrayNode = context->node;
-    auto slicing   = CastAst<AstArrayPointerSlicing>(context->node->parent, AstNodeKind::ArrayPointerSlicing);
-    auto upperNode = slicing->upperBound;
+    const auto arrayNode = context->node;
+    const auto slicing   = CastAst<AstArrayPointerSlicing>(context->node->parent, AstNodeKind::ArrayPointerSlicing);
+    const auto upperNode = slicing->upperBound;
 
     context->node = upperNode;
     SWAG_CHECK(resolveIntrinsicCountOf(context, upperNode, arrayNode));
@@ -323,7 +323,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
     {
         if (!node->upperBound->computedValue->reg.u64)
         {
-            Diagnostic diag{node->upperBound, Err(Err0612)};
+            const Diagnostic diag{node->upperBound, Err(Err0612)};
             return context->report(diag);
         }
 
@@ -334,7 +334,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
     // Slicing of an array
     if (typeVar->isArray())
     {
-        auto typeInfoArray = CastTypeInfo<TypeInfoArray>(node->array->typeInfo, TypeInfoKind::Array);
+        const auto typeInfoArray = CastTypeInfo<TypeInfoArray>(node->array->typeInfo, TypeInfoKind::Array);
         if (typeInfoArray->totalCount != typeInfoArray->count)
         {
             Diagnostic diag{node, node->token, Err(Err0376)};
@@ -342,7 +342,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
             return context->report(diag);
         }
 
-        auto ptrSlice         = makeType<TypeInfoSlice>();
+        const auto ptrSlice         = makeType<TypeInfoSlice>();
         ptrSlice->pointedType = typeInfoArray->finalType;
         if (typeInfoArray->isConst())
             ptrSlice->flags |= TYPEINFO_CONST;
@@ -370,9 +370,9 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
             return context->report(diag);
         }
 
-        auto typeInfoPointer  = CastTypeInfo<TypeInfoPointer>(node->array->typeInfo, TypeInfoKind::Pointer);
-        auto ptrSlice         = makeType<TypeInfoSlice>();
-        ptrSlice->pointedType = typeInfoPointer->pointedType;
+        const auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(node->array->typeInfo, TypeInfoKind::Pointer);
+        const auto ptrSlice        = makeType<TypeInfoSlice>();
+        ptrSlice->pointedType      = typeInfoPointer->pointedType;
         if (typeInfoPointer->isConst())
             ptrSlice->flags |= TYPEINFO_CONST;
         ptrSlice->computeName();
@@ -397,7 +397,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
         node->structFlatParams.push_front(node->array);
 
         // Resolve call
-        auto        typeInfo = node->array->typeInfo;
+        const auto        typeInfo = node->array->typeInfo;
         SymbolName* symbol   = nullptr;
         SWAG_CHECK(hasUserOp(context, g_LangSpec->name_opSlice, node->array, &symbol));
         YIELD();
@@ -433,7 +433,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
     {
         if (node->upperBound->computedValue->reg.u64 > maxBound)
         {
-            Diagnostic diag{node->upperBound, Fmt(Err(Err0610), node->upperBound->computedValue->reg.u64, maxBound)};
+            const Diagnostic diag{node->upperBound, Fmt(Err(Err0610), node->upperBound->computedValue->reg.u64, maxBound)};
             return context->report(diag);
         }
     }
@@ -444,15 +444,15 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
 
 bool Semantic::resolveMoveRef(SemanticContext* context)
 {
-    auto node  = context->node;
-    auto front = node->childs.front();
+    const auto node  = context->node;
+    const auto front = node->childs.front();
     node->inheritAndFlag1(AST_CONST_EXPR);
 
     auto typeInfo = TypeManager::concreteType(front->typeInfo);
 
     if (front->hasComputedValue())
     {
-        Diagnostic diag(node, node->token, Err(Err0464));
+        const Diagnostic diag(node, node->token, Err(Err0464));
         return context->report(diag);
     }
 
@@ -481,8 +481,8 @@ bool Semantic::resolveMoveRef(SemanticContext* context)
 
 bool Semantic::resolveKeepRef(SemanticContext* context)
 {
-    auto node  = context->node;
-    auto front = node->childs.front();
+    const auto node  = context->node;
+    const auto front = node->childs.front();
     node->inheritAndFlag1(AST_CONST_EXPR);
 
     auto typeInfo = TypeManager::concreteType(front->typeInfo);
@@ -497,8 +497,8 @@ bool Semantic::resolveKeepRef(SemanticContext* context)
         }
         else if (front->kind == AstNodeKind::IdentifierRef)
         {
-            diag.hint = Nte(Nte0129);
-            auto note = Diagnostic::note(front, Fmt(Nte(Nte0195), front->token.ctext()));
+            diag.hint       = Nte(Nte0129);
+            const auto note = Diagnostic::note(front, Fmt(Nte(Nte0195), front->token.ctext()));
             return context->report(diag, note);
         }
         else
@@ -529,7 +529,7 @@ bool Semantic::resolveKeepRef(SemanticContext* context)
 
 bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
 {
-    auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
+    const auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
 
     if (node->forceTakeAddress())
         SWAG_CHECK(resolveArrayPointerRef(context));
@@ -544,7 +544,7 @@ bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
     // we must take the address and not dereference that identifier
     if (node->parent->kind == AstNodeKind::IdentifierRef)
     {
-        auto parent = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
+        const auto parent = CastAst<AstIdentifierRef>(node->parent, AstNodeKind::IdentifierRef);
         if (node != parent->childs.back())
         {
             // The last ArrayPointerIndex in a list [0, 0, 0] must dereference
@@ -561,7 +561,7 @@ bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
             // Unref
             if (typeReturn->isPointerRef() && !(node->semFlags & SEMFLAG_FROM_REF))
             {
-                auto returnType = CastTypeInfo<TypeInfoPointer>(typeReturn, TypeInfoKind::Pointer)->pointedType;
+                const auto returnType = CastTypeInfo<TypeInfoPointer>(typeReturn, TypeInfoKind::Pointer)->pointedType;
                 if (returnType->isPointer())
                     node->semFlags |= SEMFLAG_FROM_PTR_REF;
             }
@@ -571,14 +571,14 @@ bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
             // Get the pointed type if we have a pointer
             if (typeReturn->isPointer())
             {
-                auto typePointer = CastTypeInfo<TypeInfoPointer>(typeReturn, TypeInfoKind::Pointer);
+                const auto typePointer = CastTypeInfo<TypeInfoPointer>(typeReturn, TypeInfoKind::Pointer);
                 typeReturn       = typePointer->pointedType;
             }
 
             // And if this is a struct or an interface, we fill the startScope
             if (typeReturn->isStruct() || typeReturn->isInterface())
             {
-                auto typeStruct    = CastTypeInfo<TypeInfoStruct>(typeReturn, TypeInfoKind::Struct, TypeInfoKind::Interface);
+                const auto typeStruct    = CastTypeInfo<TypeInfoStruct>(typeReturn, TypeInfoKind::Struct, TypeInfoKind::Interface);
                 parent->startScope = typeStruct->scope;
             }
         }
@@ -591,7 +591,7 @@ bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
 
 bool Semantic::resolveArrayPointerRef(SemanticContext* context)
 {
-    auto arrayNode                    = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
+    const auto arrayNode                    = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     arrayNode->resolvedSymbolName     = arrayNode->array->resolvedSymbolName;
     arrayNode->resolvedSymbolOverload = arrayNode->array->resolvedSymbolOverload;
     arrayNode->inheritOrFlag(arrayNode->array, AST_L_VALUE);
@@ -600,8 +600,8 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
     SWAG_CHECK(checkIsConcrete(context, arrayNode->access));
     arrayNode->flags |= AST_R_VALUE;
 
-    auto baseType  = arrayNode->array->typeInfo;
-    auto arrayType = TypeManager::concretePtrRefType(baseType, CONCRETE_FORCEALIAS | CONCRETE_FUNC);
+    const auto baseType  = arrayNode->array->typeInfo;
+    const auto arrayType = TypeManager::concretePtrRefType(baseType, CONCRETE_FORCEALIAS | CONCRETE_FUNC);
 
     // When we are building a pointer, this is fine to be const, because in fact we do no generate an address to modify the content
     // (or it will be done later on a pointer, and it will be const too)
@@ -621,12 +621,12 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
             arrayNode->parent->parent->flags |= AST_IS_CONST;
     }
 
-    auto accessType = TypeManager::concreteType(arrayNode->access->typeInfo);
+    const auto accessType = TypeManager::concreteType(arrayNode->access->typeInfo);
     if (!arrayType->isStruct())
     {
         if (!(accessType->isNativeInteger()) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
         {
-            Diagnostic diag{arrayNode->access, Fmt(Err(Err0740), arrayNode->access->typeInfo->getDisplayNameC())};
+            const Diagnostic diag{arrayNode->access, Fmt(Err(Err0740), arrayNode->access->typeInfo->getDisplayNameC())};
             return context->report(diag);
         }
     }
@@ -637,12 +637,12 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
     {
         if (!arrayType->isPointerArithmetic() && !(arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DREF))
         {
-            Diagnostic diag{arrayNode->array, Fmt(Err(Err0256), arrayNode->resolvedSymbolName->name.c_str(), arrayType->getDisplayNameC())};
+            const Diagnostic diag{arrayNode->array, Fmt(Err(Err0256), arrayNode->resolvedSymbolName->name.c_str(), arrayType->getDisplayNameC())};
             return context->report(diag);
         }
 
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
-        auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
+        const auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
 
         if (typePtr->pointedType->isVoid())
         {
@@ -681,7 +681,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
     case TypeInfoKind::Array:
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
-        auto typeArray         = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
+        const auto typeArray         = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
         arrayNode->typeInfo    = typeArray->pointedType;
         arrayNode->byteCodeFct = ByteCodeGen::emitArrayRef;
 
@@ -705,7 +705,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
     case TypeInfoKind::Slice:
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
-        auto typePtr           = CastTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
+        const auto typePtr           = CastTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
         arrayNode->typeInfo    = typePtr->pointedType;
         arrayNode->byteCodeFct = ByteCodeGen::emitSliceRef;
         break;
@@ -753,7 +753,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
                 AstNode* child = arrayNode->array;
                 while (child->kind == AstNodeKind::ArrayPointerIndex)
                 {
-                    auto arrayChild = CastAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
+                    const auto arrayChild = CastAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
                     arrayNode->structFlatParams.push_front(arrayChild->access);
                     child = arrayChild->array;
                 }
@@ -772,9 +772,9 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
 
 bool Semantic::getConstantArrayPtr(SemanticContext* context, uint32_t* storageOffset, DataSegment** storageSegment)
 {
-    auto arrayNode = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
-    auto arrayType = TypeManager::concreteType(arrayNode->array->typeInfo);
-    auto typePtr   = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
+    const auto arrayNode = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
+    const auto arrayType = TypeManager::concreteType(arrayNode->array->typeInfo);
+    const auto typePtr   = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
 
     if (!arrayNode->typeInfo->isArray() && arrayNode->access->hasComputedValue())
     {
@@ -794,7 +794,7 @@ bool Semantic::getConstantArrayPtr(SemanticContext* context, uint32_t* storageOf
                     isConstAccess = false;
                 else
                 {
-                    auto subTypePtr = CastTypeInfo<TypeInfoArray>(subArray->array->typeInfo, TypeInfoKind::Array);
+                    const auto subTypePtr = CastTypeInfo<TypeInfoArray>(subArray->array->typeInfo, TypeInfoKind::Array);
                     SWAG_CHECK(boundCheck(context, subArray->array->typeInfo, subArray->array, subArray->access, subTypePtr->count));
                     offsetAccess += subArray->access->computedValue->reg.u64 * subTypePtr->pointedType->sizeOf;
                 }
@@ -803,7 +803,7 @@ bool Semantic::getConstantArrayPtr(SemanticContext* context, uint32_t* storageOf
 
         if (isConstAccess)
         {
-            auto overload = subArray->array->resolvedSymbolOverload;
+            const auto overload = subArray->array->resolvedSymbolOverload;
             if (overload && (overload->flags & OVERLOAD_COMPUTED_VALUE))
             {
                 SWAG_ASSERT(overload->computedValue.storageOffset != UINT32_MAX);
@@ -830,9 +830,9 @@ bool Semantic::getConstantArrayPtr(SemanticContext* context, uint32_t* storageOf
 
 bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
 {
-    auto arrayNode         = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
-    auto arrayAccess       = arrayNode->access;
-    auto arrayType         = getConcreteTypeUnRef(arrayNode->array, CONCRETE_ALL);
+    const auto arrayNode   = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
+    const auto arrayAccess = arrayNode->access;
+    const auto arrayType   = getConcreteTypeUnRef(arrayNode->array, CONCRETE_ALL);
     arrayNode->byteCodeFct = ByteCodeGen::emitPointerDeRef;
 
     SWAG_CHECK(checkIsConcrete(context, arrayNode->array));
@@ -856,12 +856,12 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
 
     arrayNode->flags |= AST_R_VALUE;
 
-    auto accessType = getConcreteTypeUnRef(arrayNode->access, CONCRETE_ALL);
+    const auto accessType = getConcreteTypeUnRef(arrayNode->access, CONCRETE_ALL);
     if (!arrayType->isStruct())
     {
         if (!(accessType->isNativeInteger()) && !(accessType->flags & TYPEINFO_ENUM_INDEX))
         {
-            Diagnostic diag{arrayNode->access, Fmt(Err(Err0740), arrayNode->access->typeInfo->getDisplayNameC())};
+            const Diagnostic diag{arrayNode->access, Fmt(Err(Err0740), arrayNode->access->typeInfo->getDisplayNameC())};
             return context->report(diag);
         }
     }
@@ -878,9 +878,9 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
             {
                 arrayNode->setFlagsValueIsComputed();
-                auto& text = arrayNode->array->resolvedSymbolOverload->computedValue.text;
+                const auto& text = arrayNode->array->resolvedSymbolOverload->computedValue.text;
                 SWAG_CHECK(boundCheck(context, arrayType, arrayNode->array, arrayNode->access, text.length()));
-                auto idx                         = arrayAccess->computedValue->reg.u32;
+                const auto idx                         = arrayAccess->computedValue->reg.u32;
                 arrayNode->computedValue->reg.u8 = text[idx];
             }
         }
@@ -901,7 +901,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
         }
 
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
-        auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
+        const auto typePtr = CastTypeInfo<TypeInfoPointer>(arrayType, TypeInfoKind::Pointer);
 
         if (typePtr->pointedType->isVoid())
         {
@@ -916,18 +916,18 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
         // Try to dereference as a constant if we can
         if (arrayNode->array->hasComputedValue() && arrayNode->access->hasComputedValue())
         {
-            auto storageSegment = arrayNode->array->computedValue->storageSegment;
+            const auto storageSegment = arrayNode->array->computedValue->storageSegment;
             if (!storageSegment)
             {
-                Diagnostic diag{arrayNode, Err(Err0599)};
+                const Diagnostic diag{arrayNode, Err(Err0599)};
                 return context->report(diag);
             }
 
-            auto storageOffset = arrayNode->array->computedValue->storageOffset;
+            const auto storageOffset = arrayNode->array->computedValue->storageOffset;
             SWAG_ASSERT(storageOffset != UINT32_MAX);
 
-            auto offset = arrayNode->access->computedValue->reg.u32 * typePtr->pointedType->sizeOf;
-            auto ptr    = storageSegment->address(storageOffset + offset);
+            const auto offset = arrayNode->access->computedValue->reg.u32 * typePtr->pointedType->sizeOf;
+            const auto ptr    = storageSegment->address(storageOffset + offset);
             if (!derefConstantValue(context, arrayNode, typePtr->pointedType, storageSegment, ptr))
             {
                 if (typePtr->pointedType->isStruct())
@@ -946,7 +946,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
     case TypeInfoKind::Array:
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
-        auto typePtr        = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
+        const auto typePtr        = CastTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
         arrayNode->typeInfo = typePtr->pointedType;
         setupIdentifierRef(context, arrayNode);
 
@@ -956,7 +956,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
         SWAG_CHECK(getConstantArrayPtr(context, &storageOffset, &storageSegment));
         if (storageSegment)
         {
-            auto ptr = storageSegment->address(storageOffset);
+            const auto ptr = storageSegment->address(storageOffset);
             if (!derefConstantValue(context, arrayNode, typePtr->finalType, storageSegment, ptr))
             {
                 if (typePtr->finalType->isStruct())
@@ -975,7 +975,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
     case TypeInfoKind::Slice:
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
-        auto typeSlice      = CastTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
+        const auto typeSlice      = CastTypeInfo<TypeInfoSlice>(arrayType, TypeInfoKind::Slice);
         arrayNode->typeInfo = typeSlice->pointedType;
         setupIdentifierRef(context, arrayNode);
 
@@ -984,8 +984,8 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
         {
             if (arrayNode->array->resolvedSymbolOverload && (arrayNode->array->resolvedSymbolOverload->flags & OVERLOAD_COMPUTED_VALUE))
             {
-                auto& computedValue = arrayNode->array->resolvedSymbolOverload->computedValue;
-                auto  slice         = (SwagSlice*) computedValue.getStorageAddr();
+                const auto&      computedValue = arrayNode->array->resolvedSymbolOverload->computedValue;
+                const auto slice         = (SwagSlice*) computedValue.getStorageAddr();
                 SWAG_CHECK(boundCheck(context, arrayType, arrayNode->array, arrayNode->access, slice->count));
 
                 auto ptr = (uint8_t*) slice->buffer;
@@ -1005,7 +1005,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
     case TypeInfoKind::TypedVariadic:
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, arrayNode->access, CASTFLAG_TRY_COERCE | CASTFLAG_INDEX));
-        auto typeVariadic   = CastTypeInfo<TypeInfoVariadic>(arrayType, TypeInfoKind::TypedVariadic);
+        const auto typeVariadic   = CastTypeInfo<TypeInfoVariadic>(arrayType, TypeInfoKind::TypedVariadic);
         arrayNode->typeInfo = typeVariadic->rawType;
         setupIdentifierRef(context, arrayNode);
         break;
@@ -1028,12 +1028,12 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
         arrayNode->structFlatParams.clear();
         arrayNode->structFlatParams.push_back(arrayNode->access);
 
-        uint16_t serial = arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_SERIAL;
+        const uint16_t serial = arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_SERIAL;
         AstNode* child  = arrayNode->array;
         while (child->kind == AstNodeKind::ArrayPointerIndex &&
                (child->specFlags & AstArrayPointerIndex::SPECFLAG_SERIAL) == serial)
         {
-            auto arrayChild = CastAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
+            const auto arrayChild = CastAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
             arrayNode->structFlatParams.push_front(arrayChild->access);
             child = arrayChild->array;
         }
@@ -1085,7 +1085,7 @@ bool Semantic::checkInitDropCount(SemanticContext* context, AstNode* node, AstNo
     if (!count)
         return true;
 
-    auto countTypeInfo = TypeManager::concreteType(count->typeInfo);
+    const auto countTypeInfo = TypeManager::concreteType(count->typeInfo);
     SWAG_VERIFY(countTypeInfo->isNativeInteger(), context->report({count, Fmt(Err(Err0194), node->token.ctext(), countTypeInfo->getDisplayNameC())}));
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, count, CASTFLAG_TRY_COERCE));
 
@@ -1113,7 +1113,7 @@ bool Semantic::checkInitDropCount(SemanticContext* context, AstNode* node, AstNo
 
 bool Semantic::resolveInit(SemanticContext* context)
 {
-    auto node               = CastAst<AstInit>(context->node, AstNodeKind::Init);
+    const auto node               = CastAst<AstInit>(context->node, AstNodeKind::Init);
     auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
     if (!node->count)
@@ -1122,7 +1122,7 @@ bool Semantic::resolveInit(SemanticContext* context)
         SWAG_VERIFY(node->expression->kind == AstNodeKind::IdentifierRef, context->report({node->expression, Fmt(Err(Err0199), node->token.ctext())}));
         SWAG_VERIFY(node->expression->resolvedSymbolOverload, context->report({node->expression, Fmt(Err(Err0199), node->token.ctext())}));
         SWAG_VERIFY(!expressionTypeInfo->isConst(), context->report({node->expression, Fmt(Err(Err0057), node->token.ctext(), expressionTypeInfo->getDisplayNameC())}));
-        auto back = node->expression->childs.back();
+        const auto back = node->expression->childs.back();
         back->semFlags |= SEMFLAG_FORCE_TAKE_ADDRESS;
         back->resolvedSymbolOverload->flags |= OVERLOAD_HAS_MAKE_POINTER;
     }
@@ -1138,7 +1138,7 @@ bool Semantic::resolveInit(SemanticContext* context)
         TypeInfo* pointedType = nullptr;
         if (node->count)
         {
-            auto typeinfoPointer = CastTypeInfo<TypeInfoPointer>(expressionTypeInfo, TypeInfoKind::Pointer);
+            const auto typeinfoPointer = CastTypeInfo<TypeInfoPointer>(expressionTypeInfo, TypeInfoKind::Pointer);
             pointedType          = typeinfoPointer->pointedType;
         }
         else
@@ -1151,12 +1151,12 @@ bool Semantic::resolveInit(SemanticContext* context)
         if (pointedType->isNative() || pointedType->isPointer())
         {
             SWAG_VERIFY(node->parameters->childs.size() == 1, context->report({node->parameters, Fmt(Err(Err0637), pointedType->getDisplayNameC())}));
-            auto child = node->parameters->childs.front();
+            const auto child = node->parameters->childs.front();
             SWAG_CHECK(TypeManager::makeCompatibles(context, pointedType, child->typeInfo, nullptr, child));
         }
         else if (pointedType->isStruct())
         {
-            auto typeStruct = CastTypeInfo<TypeInfoStruct>(pointedType, TypeInfoKind::Struct);
+            const auto typeStruct = CastTypeInfo<TypeInfoStruct>(pointedType, TypeInfoKind::Struct);
 
             SymbolMatchContext symMatchContext;
             symMatchContext.reset();
@@ -1167,11 +1167,11 @@ bool Semantic::resolveInit(SemanticContext* context)
             while (true)
             {
                 context->clearTryMatch();
-                auto symbol = typeStruct->declNode->resolvedSymbolName;
+                const auto symbol = typeStruct->declNode->resolvedSymbolName;
 
                 {
                     SharedLock lk(symbol->mutex);
-                    for (auto overload : symbol->overloads)
+                    for (const auto overload : symbol->overloads)
                     {
                         auto t               = context->getTryMatch();
                         t->symMatchContext   = symMatchContext;
@@ -1204,8 +1204,8 @@ bool Semantic::resolveInit(SemanticContext* context)
 
 bool Semantic::resolveDropCopyMove(SemanticContext* context)
 {
-    auto node               = CastAst<AstDropCopyMove>(context->node, AstNodeKind::Drop, AstNodeKind::PostCopy, AstNodeKind::PostMove);
-    auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
+    const auto node               = CastAst<AstDropCopyMove>(context->node, AstNodeKind::Drop, AstNodeKind::PostCopy, AstNodeKind::PostMove);
+    const auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
     SWAG_VERIFY(expressionTypeInfo->isPointer(), context->report({node->expression, Fmt(Err(Err0196), node->token.ctext(), expressionTypeInfo->getDisplayNameC())}));
     SWAG_VERIFY(!node->expression->typeInfo->isConst(), context->report({node->expression, Fmt(Err(Err0056), node->token.ctext(), expressionTypeInfo->getDisplayNameC())}));
@@ -1214,8 +1214,8 @@ bool Semantic::resolveDropCopyMove(SemanticContext* context)
     // Be sure struct if not marked as nocopy
     if (node->kind == AstNodeKind::PostCopy)
     {
-        auto ptrType     = CastTypeInfo<TypeInfoPointer>(expressionTypeInfo, TypeInfoKind::Pointer);
-        auto pointedType = TypeManager::concreteType(ptrType->pointedType);
+        const auto ptrType     = CastTypeInfo<TypeInfoPointer>(expressionTypeInfo, TypeInfoKind::Pointer);
+        const auto pointedType = TypeManager::concreteType(ptrType->pointedType);
         if (pointedType->flags & TYPEINFO_STRUCT_NO_COPY)
         {
             return context->report({node->expression, Fmt(Err(Err0101), pointedType->getDisplayNameC())});

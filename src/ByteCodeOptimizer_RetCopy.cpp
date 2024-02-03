@@ -55,7 +55,7 @@ static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
     bool sameStackOffset = false;
 
     SWAG_ASSERT(ipOrg->op == ByteCodeOp::MakeStackPointer);
-    auto orgOffset = ipOrg->b.u32;
+    const auto orgOffset = ipOrg->b.u32;
 
     // If the second MakeStackPointer is the same as the first one (the parameter), then the
     // return copy is totally useless, se we must not simulate a drop, because there's in fact
@@ -78,7 +78,7 @@ static void optimRetCopy(ByteCodeOptContext* context, ByteCodeInstruction* ipOrg
     }
 
     // Is there a corresponding drop in the scope ?
-    bool hasDrop = !sameStackOffset && ipOrg->node->ownerScope->symTable.structVarsToDrop.count > 0;
+    const bool hasDrop = !sameStackOffset && ipOrg->node->ownerScope->symTable.structVarsToDrop.count > 0;
 
     // Remove opDrop to the old variable that is no more affected.
     // Make a nop, and detect all drops of that variable to remove them also.
@@ -165,7 +165,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyLocal(ByteCodeOptContext* context)
         // Detect pushing pointer to the stack for a return value
         if (startOk)
         {
-            auto ipOrg = ip;
+            const auto ipOrg = ip;
 
             // Find the following call
             context->vecReg.clear();
@@ -228,7 +228,7 @@ void ByteCodeOptimizer::registerMakeAddr(ByteCodeOptContext* context, ByteCodeIn
         // If parameter is a simple native, then this is a copy, so this is safe
         if (context->bc->typeInfoFunc)
         {
-            auto param = context->bc->typeInfoFunc->registerIdxToType(ip->c.u32);
+            const auto param = context->bc->typeInfoFunc->registerIdxToType(ip->c.u32);
             if (param->isNativeIntegerOrRune() || param->isNativeFloat() || param->isBool())
                 break;
         }
@@ -277,8 +277,8 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
         // Detect pushing pointer to the stack for a return value
         if (startOk)
         {
-            auto ipOrg     = ip;
-            auto orgOffset = ipOrg->b.u32;
+            const auto ipOrg     = ip;
+            const auto orgOffset = ipOrg->b.u32;
 
             // Find the following call
             context->vecReg.clear();
@@ -310,13 +310,13 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
             {
                 // Pointer aliasing. Do not make the optimization if the wanted result is also a parameter
                 // to the call. For example a = toto(a, b).
-                bool ok = true;
-                auto it = context->mapRegReg.find(ip->a.u32);
+                bool       ok = true;
+                const auto it = context->mapRegReg.find(ip->a.u32);
                 if (it)
                 {
-                    for (auto it1 : context->vecReg)
+                    for (const auto it1 : context->vecReg)
                     {
-                        auto it2 = context->mapRegReg.find(it1);
+                        const auto it2 = context->mapRegReg.find(it1);
                         if (!it2)
                             continue;
                         if ((*it2) == UINT32_MAX || (*it) == UINT32_MAX || *it2 == *it)
@@ -344,7 +344,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyGlobal(ByteCodeOptContext* context)
                     }
 
                     // Is there a corresponding drop in the scope ?
-                    bool hasDrop = ipOrg->node->ownerScope->symTable.structVarsToDrop.count > 0;
+                    const bool hasDrop = ipOrg->node->ownerScope->symTable.structVarsToDrop.count > 0;
 
                     // Remove opDrop to the old variable that is no more affected.
                     // Make a nop, and detect all drops of that variable to remove them also.
@@ -383,8 +383,8 @@ bool ByteCodeOptimizer::optimizePassRetCopyInline(ByteCodeOptContext* context)
 
     for (auto ip = context->bc->out; ip->op != ByteCodeOp::End; ip++)
     {
-        bool       startOk     = false;
-        AstInline* inlineBlock = nullptr;
+        bool             startOk     = false;
+        const AstInline* inlineBlock = nullptr;
 
         if (ip->op == ByteCodeOp::MakeStackPointer &&
             ip[1].node->ownerInline != ip[0].node->ownerInline)
@@ -404,7 +404,7 @@ bool ByteCodeOptimizer::optimizePassRetCopyInline(ByteCodeOptContext* context)
         // Detect pushing pointer to the stack for a return value
         if (startOk)
         {
-            auto ipOrg = ip;
+            const auto ipOrg = ip;
 
             // Go to the end of the inline block
             ip++;

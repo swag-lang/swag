@@ -80,7 +80,7 @@ static bool cannotMatchIdentifier(SemanticContext*            context,
     AstOutput::OutputContext outCxt;
     concat.init(10 * 1024);
 
-    auto maxOverloads = min(tryResult.size(), MAX_OVERLOADS);
+    const auto maxOverloads = min(tryResult.size(), MAX_OVERLOADS);
 
     // Additional error message per overload
     Vector<Utf8> addMsg;
@@ -116,13 +116,13 @@ static bool cannotMatchIdentifier(SemanticContext*            context,
         concat.clear();
         if (tryResult[i]->overload->node->kind == AstNodeKind::FuncDecl)
         {
-            auto funcNode = CastAst<AstFuncDecl>(tryResult[i]->overload->node, AstNodeKind::FuncDecl);
+            const auto funcNode = CastAst<AstFuncDecl>(tryResult[i]->overload->node, AstNodeKind::FuncDecl);
             AstOutput::outputFuncSignature(outCxt, concat, funcNode, funcNode->genericParameters, funcNode->parameters, nullptr);
         }
         else if (tryResult[i]->overload->node->kind == AstNodeKind::VarDecl)
         {
-            auto varNode = CastAst<AstVarDecl>(tryResult[i]->overload->node, AstNodeKind::VarDecl);
-            auto lambda  = CastAst<AstTypeLambda>(varNode->typeInfo->declNode, AstNodeKind::TypeLambda);
+            const auto varNode = CastAst<AstVarDecl>(tryResult[i]->overload->node, AstNodeKind::VarDecl);
+            const auto lambda  = CastAst<AstTypeLambda>(varNode->typeInfo->declNode, AstNodeKind::TypeLambda);
             AstOutput::outputFuncSignature(outCxt, concat, varNode, nullptr, lambda->parameters, nullptr);
         }
         else
@@ -203,7 +203,7 @@ static bool cannotMatchOverload(SemanticContext* context, AstNode* node, VectorN
         while (true)
         {
             Vector<const Diagnostic*> notesTmp;
-            auto                      m = what == 0 ? MatchResult::BadSignature : MatchResult::BadGenericSignature;
+            const auto                m = what == 0 ? MatchResult::BadSignature : MatchResult::BadGenericSignature;
             if (!cannotMatchIdentifier(context, m, paramIdx++, tryMatches, node, notesTmp, overloadIndex))
                 break;
             notesSig = notesTmp;
@@ -217,8 +217,8 @@ static bool cannotMatchOverload(SemanticContext* context, AstNode* node, VectorN
 
 bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node)
 {
-    AstIdentifier* identifier        = nullptr;
-    AstNode*       genericParameters = nullptr;
+    const AstIdentifier* identifier        = nullptr;
+    const AstNode*       genericParameters = nullptr;
 
     // node can be null when we try to resolve a userOp
     if (node && (node->kind == AstNodeKind::Identifier || node->kind == AstNodeKind::FuncCall))
@@ -234,7 +234,7 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
         Vector<OneTryMatch*> n;
         for (auto oneMatch : tryMatches)
         {
-            auto& one = *oneMatch;
+            const auto& one = *oneMatch;
             switch (one.symMatchContext.result)
             {
             case MatchResult::BadSignature:
@@ -263,7 +263,7 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
         Vector<OneTryMatch*> n;
         for (auto oneMatch : tryMatches)
         {
-            for (auto oneMatch1 : tryMatches)
+            for (const auto oneMatch1 : tryMatches)
             {
                 if (oneMatch == oneMatch1)
                     continue;
@@ -308,7 +308,7 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
         Vector<OneTryMatch*> n;
         for (auto oneMatch : tryMatches)
         {
-            auto& one = *oneMatch;
+            const auto& one = *oneMatch;
             if (!(one.overload->flags & OVERLOAD_GENERIC))
                 n.push_back(oneMatch);
         }
@@ -322,7 +322,7 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
         Vector<OneTryMatch*> n;
         for (auto oneMatch : tryMatches)
         {
-            auto& one = *oneMatch;
+            const auto& one = *oneMatch;
             if (one.overload->flags & OVERLOAD_GENERIC)
                 n.push_back(oneMatch);
         }
@@ -335,7 +335,7 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
         Vector<OneTryMatch*> n;
         for (auto oneMatch : tryMatches)
         {
-            auto& one = *oneMatch;
+            const auto& one = *oneMatch;
             if (one.symMatchContext.result == MatchResult::ValidIfFailed)
                 n.push_back(oneMatch);
         }

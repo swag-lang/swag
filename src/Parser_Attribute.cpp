@@ -9,7 +9,7 @@
 
 bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
 {
-    auto attrNode = Ast::newNode<AstAttrDecl>(this, AstNodeKind::AttrDecl, sourceFile, parent);
+    const auto attrNode = Ast::newNode<AstAttrDecl>(this, AstNodeKind::AttrDecl, sourceFile, parent);
     *result       = attrNode;
     attrNode->allocateExtension(ExtensionKind::Semantic);
     attrNode->extSemantic()->semanticBeforeFct = Semantic::preResolveAttrDecl;
@@ -21,7 +21,7 @@ bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
     attrNode->inheritTokenName(token);
     attrNode->tokenName = token;
 
-    auto typeInfo      = makeType<TypeInfoFuncAttr>();
+    const auto typeInfo      = makeType<TypeInfoFuncAttr>();
     typeInfo->declNode = attrNode;
     attrNode->typeInfo = typeInfo;
     typeInfo->flags |= TYPEINFO_FUNC_IS_ATTR;
@@ -61,7 +61,7 @@ bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
 
 bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
 {
-    auto attrBlockNode = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
+    const auto attrBlockNode = Ast::newNode<AstAttrUse>(this, AstNodeKind::AttrUse, sourceFile, parent);
     *result            = attrBlockNode;
 
     if (tokenizer.comment.length())
@@ -97,7 +97,7 @@ bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
 
     // :AttrUseLastChild
     SWAG_VERIFY(!attrBlockNode->childs.empty(), error(attrBlockNode, Err(Err0263)));
-    auto back = attrBlockNode->childs.back();
+    const auto back = attrBlockNode->childs.back();
     back->allocateExtension(ExtensionKind::Semantic);
     SWAG_ASSERT(!back->extSemantic()->semanticAfterFct);
     back->extSemantic()->semanticAfterFct = Semantic::resolveAttrUse;

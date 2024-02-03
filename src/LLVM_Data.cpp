@@ -11,11 +11,11 @@ bool LLVM::emitDataSegment(const BuildParameters& buildParameters, DataSegment* 
     if (!dataSegment->totalCount)
         return true;
 
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *perThread[ct][precompileIndex];
-    auto& context         = *pp.context;
-    auto& modu            = *pp.module;
+    const int ct              = buildParameters.compileType;
+    const int precompileIndex = buildParameters.precompileIndex;
+    auto&     pp              = *perThread[ct][precompileIndex];
+    auto&     context         = *pp.context;
+    auto&     modu            = *pp.module;
 
     llvm::Type* type       = I64_TY();
     auto        totalCount = dataSegment->totalCount / 8;
@@ -105,16 +105,16 @@ bool LLVM::emitDataSegment(const BuildParameters& buildParameters, DataSegment* 
 
 bool LLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegment* dataSegment, SegmentKind me)
 {
-    int ct              = buildParameters.compileType;
-    int precompileIndex = buildParameters.precompileIndex;
+    const int ct              = buildParameters.compileType;
+    const int precompileIndex = buildParameters.precompileIndex;
     SWAG_ASSERT(precompileIndex == 0);
 
-    auto& pp      = *perThread[ct][precompileIndex];
+    const auto& pp      = *perThread[ct][precompileIndex];
     auto& context = *pp.context;
     auto& builder = *pp.builder;
     auto& modu    = *pp.module;
 
-    auto                  fctType = llvm::FunctionType::get(VOID_TY(), false);
+    const auto                  fctType = llvm::FunctionType::get(VOID_TY(), false);
     const char*           name    = nullptr;
     llvm::GlobalVariable* gVar    = nullptr;
     switch (me)
@@ -140,26 +140,26 @@ bool LLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegment* data
     llvm::BasicBlock* BB  = llvm::BasicBlock::Create(context, "entry", fct);
     builder.SetInsertPoint(BB);
 
-    for (auto& k : dataSegment->initPtr)
+    for (const auto& k : dataSegment->initPtr)
     {
         auto fromSegment = k.fromSegment;
         if (fromSegment == SegmentKind::Me)
             fromSegment = me;
 
-        auto dest = GEP8_PTR_I64(gVar, k.patchOffset);
+        const auto dest = GEP8_PTR_I64(gVar, k.patchOffset);
         if (fromSegment == SegmentKind::Constant)
         {
-            auto src = GEP8_PTR_I64(pp.constantSeg, k.fromOffset);
+            const auto src = GEP8_PTR_I64(pp.constantSeg, k.fromOffset);
             builder.CreateStore(src, dest);
         }
         else if (fromSegment == SegmentKind::Bss)
         {
-            auto src = GEP8_PTR_I64(pp.bssSeg, k.fromOffset);
+            const auto src = GEP8_PTR_I64(pp.bssSeg, k.fromOffset);
             builder.CreateStore(src, dest);
         }
         else if (fromSegment == SegmentKind::Data)
         {
-            auto src = GEP8_PTR_I64(pp.mutableSeg, k.fromOffset);
+            const auto src = GEP8_PTR_I64(pp.mutableSeg, k.fromOffset);
             builder.CreateStore(src, dest);
         }
         else
@@ -170,9 +170,9 @@ bool LLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegment* data
 
     for (auto& k : dataSegment->initFuncPtr)
     {
-        auto dest = GEP8_PTR_I64(gVar, k.first);
-        auto F    = modu.getOrInsertFunction(k.second.c_str(), fctType);
-        auto src  = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, F.getCallee(), I64_TY());
+        const auto dest = GEP8_PTR_I64(gVar, k.first);
+        auto       F    = modu.getOrInsertFunction(k.second.c_str(), fctType);
+        const auto src  = builder.CreateCast(llvm::Instruction::CastOps::PtrToInt, F.getCallee(), I64_TY());
         builder.CreateStore(src, dest);
     }
 

@@ -17,10 +17,10 @@ void SourceFile::release()
 bool SourceFile::checkFormat()
 {
     // Read header
-    uint8_t c1 = buffer[0];
-    uint8_t c2 = buffer[1];
-    uint8_t c3 = buffer[2];
-    uint8_t c4 = buffer[3];
+    const uint8_t c1 = buffer[0];
+    const uint8_t c2 = buffer[1];
+    const uint8_t c3 = buffer[2];
+    const uint8_t c4 = buffer[3];
 
     offsetStartBuffer = 0;
     if (c1 == 0xEF && c2 == 0xBB && c3 == 0xBF)
@@ -93,7 +93,7 @@ bool SourceFile::load()
     g_Stats.memFileBuffer += allocBufferSize;
 #endif
 
-    auto result = fread(buffer, 1, bufferSize, handle);
+    const auto result = fread(buffer, 1, bufferSize, handle);
     fclose(handle);
 
     if (result != bufferSize)
@@ -142,7 +142,7 @@ Utf8 SourceFile::getLine(uint32_t lineNo, bool* eof)
         }
         else
         {
-            auto     fileToRead = fileForSourceLocation ? fileForSourceLocation : this;
+            const auto     fileToRead = fileForSourceLocation ? fileForSourceLocation : this;
             ifstream fle(fileToRead->path, ios::binary);
             if (!fle.is_open())
                 return "?";
@@ -154,7 +154,7 @@ Utf8 SourceFile::getLine(uint32_t lineNo, bool* eof)
                 // Remove BOM
                 if (allLines.empty() && line.length() >= 3)
                 {
-                    auto pz = (const uint8_t*) line.c_str();
+                    const auto pz = (const uint8_t*) line.c_str();
                     if (pz[0] == 0xEF && pz[1] == 0xBB && pz[2] == 0xBF)
                         line.erase(0, 3);
                 }
@@ -182,7 +182,7 @@ Utf8 SourceFile::getLine(uint32_t lineNo, bool* eof)
 
 void SourceFile::addGlobalUsing(Scope* scope)
 {
-    for (auto p : globalUsings)
+    for (const auto p : globalUsings)
     {
         if (p->getFullName() == scope->getFullName())
             return;

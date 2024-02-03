@@ -11,10 +11,10 @@
 
 bool ByteCodeGen::emitNullConditionalOp(ByteCodeGenContext* context)
 {
-    auto node     = context->node;
-    auto child0   = node->childs[0];
-    auto child1   = node->childs[1];
-    auto typeInfo = TypeManager::concreteType(child0->typeInfo);
+    const auto node     = context->node;
+    const auto child0   = node->childs[0];
+    const auto child1   = node->childs[1];
+    const auto typeInfo = TypeManager::concreteType(child0->typeInfo);
 
     if (!(child0->semFlags & SEMFLAG_CAST1))
     {
@@ -71,8 +71,8 @@ bool ByteCodeGen::emitNullConditionalOp(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitConditionalOpAfterExpr(ByteCodeGenContext* context)
 {
-    auto expr    = context->node;
-    auto binNode = CastAst<AstConditionalOpNode>(expr->parent, AstNodeKind::ConditionalExpression);
+    const auto expr    = context->node;
+    const auto binNode = CastAst<AstConditionalOpNode>(expr->parent, AstNodeKind::ConditionalExpression);
 
     // We need to cast right now, in case the shortcut is activated
     SWAG_CHECK(emitCast(context, expr, TypeManager::concreteType(expr->typeInfo), expr->castedTypeInfo));
@@ -87,8 +87,8 @@ bool ByteCodeGen::emitConditionalOpAfterExpr(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitConditionalOpAfterIfTrue(ByteCodeGenContext* context)
 {
-    auto ifTrue  = context->node;
-    auto binNode = CastAst<AstConditionalOpNode>(ifTrue->parent, AstNodeKind::ConditionalExpression);
+    const auto ifTrue  = context->node;
+    const auto binNode = CastAst<AstConditionalOpNode>(ifTrue->parent, AstNodeKind::ConditionalExpression);
 
     // Reserve registers in the main node to copy the result
     reserveRegisterRC(context, binNode->resultRegisterRC, ifTrue->resultRegisterRC.size());
@@ -100,7 +100,7 @@ bool ByteCodeGen::emitConditionalOpAfterIfTrue(ByteCodeGenContext* context)
     EMIT_INST1(context, ByteCodeOp::Jump, ifTrue->resultRegisterRC);
 
     // After this, this is the IfFalse block, so update jump value after the expression
-    auto inst   = &context->bc->out[binNode->seekJumpIfFalse];
+    const auto inst   = &context->bc->out[binNode->seekJumpIfFalse];
     inst->b.s32 = context->bc->numInstructions - binNode->seekJumpIfFalse - 1;
 
     return true;
@@ -108,10 +108,10 @@ bool ByteCodeGen::emitConditionalOpAfterIfTrue(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitConditionalOp(ByteCodeGenContext* context)
 {
-    auto node       = CastAst<AstConditionalOpNode>(context->node, AstNodeKind::ConditionalExpression);
-    auto expression = node->childs[0];
-    auto ifTrue     = node->childs[1];
-    auto ifFalse    = node->childs[2];
+    const auto node       = CastAst<AstConditionalOpNode>(context->node, AstNodeKind::ConditionalExpression);
+    const auto expression = node->childs[0];
+    const auto ifTrue     = node->childs[1];
+    const auto ifFalse    = node->childs[2];
 
     // Copy If false result
     EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[0], ifFalse->resultRegisterRC[0]);
@@ -121,7 +121,7 @@ bool ByteCodeGen::emitConditionalOp(ByteCodeGenContext* context)
         EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[1], ifFalse->resultRegisterRC[0]);
 
     // Update jump after the IfTrue block
-    auto inst   = &context->bc->out[node->seekJumpAfterIfFalse];
+    const auto inst   = &context->bc->out[node->seekJumpAfterIfFalse];
     inst->b.s32 = context->bc->numInstructions - node->seekJumpAfterIfFalse - 1;
 
     freeRegisterRC(context, expression);
@@ -133,7 +133,7 @@ bool ByteCodeGen::emitConditionalOp(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitExpressionListBefore(ByteCodeGenContext* context)
 {
-    auto node = context->node;
+    const auto node = context->node;
 
     // Do not generate bytecode for childs in case of a constant expression, because
     // the full content of the expression is in the constant segment
@@ -156,8 +156,8 @@ void ByteCodeGen::collectLiteralsChilds(AstNode* node, VectorNative<AstNode*>* o
 
 bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
 {
-    auto node     = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
-    auto typeList = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
+    const auto node     = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
+    const auto typeList = CastTypeInfo<TypeInfoList>(node->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
 
     // A non const expression list will be collected by the top ExpressionList
     if (!(node->flags & AST_CONST_EXPR))
@@ -177,9 +177,9 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
         collectLiteralsChilds(node, &context->collectChilds);
 
         // Wait for generated struct if necessary
-        for (auto child : context->collectChilds)
+        for (const auto child : context->collectChilds)
         {
-            auto typeChild = TypeManager::concreteType(child->typeInfo);
+            const auto typeChild = TypeManager::concreteType(child->typeInfo);
             if (typeChild->isStruct())
             {
                 Semantic::waitStructGenerated(context->baseJob, typeChild);
@@ -188,7 +188,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
         }
 
         // Must be called only on the real node !
-        auto listNode = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
+        const auto listNode = CastAst<AstExpressionList>(context->node, AstNodeKind::ExpressionList);
 
         // If in a return expression, just push the caller retval
         AstNode* parentReturn = listNode->inSimpleReturn();
@@ -213,17 +213,17 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
         // That way can avoid one affectation.
         else if (listNode->parent->kind == AstNodeKind::VarDecl)
         {
-            auto varDecl = CastAst<AstVarDecl>(listNode->parent, AstNodeKind::VarDecl);
+            const auto varDecl = CastAst<AstVarDecl>(listNode->parent, AstNodeKind::VarDecl);
             if (varDecl->assignment == listNode)
             {
-                auto typeVar = TypeManager::concreteType(varDecl->typeInfo, CONCRETE_ALIAS);
+                const auto typeVar = TypeManager::concreteType(varDecl->typeInfo, CONCRETE_ALIAS);
                 if (!typeVar->isSlice() &&
                     (!varDecl->hasExtMisc() || !varDecl->extMisc()->resolvedUserOpSymbolOverload))
                 {
-                    startOffset = listNode->parent->resolvedSymbolOverload->computedValue.storageOffset;
-                    auto inst   = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
-                    inst->b.u64 = startOffset;
-                    canDrop     = false;
+                    startOffset     = listNode->parent->resolvedSymbolOverload->computedValue.storageOffset;
+                    const auto inst = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
+                    inst->b.u64     = startOffset;
+                    canDrop         = false;
                 }
             }
         }
@@ -231,26 +231,26 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
         // Default : assign to temporary storage
         if (canDrop)
         {
-            startOffset = listNode->computedValue->storageOffset;
-            auto inst   = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
-            inst->b.u64 = startOffset;
+            startOffset     = listNode->computedValue->storageOffset;
+            const auto inst = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
+            inst->b.u64     = startOffset;
         }
 
         // Emit one affectation per child
-        auto         oneOffset   = typeList->subTypes.front()->typeInfo->sizeOf;
+        const auto         oneOffset   = typeList->subTypes.front()->typeInfo->sizeOf;
         size_t       totalOffset = 0;
         RegisterList r0;
         reserveRegisterRC(context, r0, 1);
-        for (auto child : context->collectChilds)
+        for (const auto child : context->collectChilds)
         {
             child->flags |= AST_NO_LEFT_DROP;
 
-            auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, r0);
+            const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, r0);
             SWAG_ASSERT(totalOffset != 0xFFFFFFFF);
             inst->b.u64 = totalOffset;
             inst->flags |= BCI_IMM_B;
 
-            auto saveR = context->node->resultRegisterRC;
+            const auto saveR = context->node->resultRegisterRC;
             SWAG_CHECK(emitCast(context, child, child->typeInfo, child->castedTypeInfo));
             context->node->resultRegisterRC = saveR;
 
@@ -261,7 +261,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
 
             if (canDrop)
             {
-                auto varOffset = (uint32_t) (listNode->computedValue->storageOffset + totalOffset);
+                const auto varOffset = (uint32_t) (listNode->computedValue->storageOffset + totalOffset);
                 node->ownerScope->symTable.addVarToDrop(nullptr, child->typeInfo, varOffset);
             }
 
@@ -305,7 +305,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context)
 {
-    auto node = context->node;
+    const auto node = context->node;
     if (node->semFlags & SEMFLAG_LITERAL_SUFFIX)
         return context->report({node->childs.front(), Fmt(Err(Err0403), node->childs.front()->token.ctext())});
     SWAG_CHECK(emitLiteral(context, node, nullptr, node->resultRegisterRC));
@@ -320,7 +320,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, TypeIn
     AstIdentifierRef* identifierRef = nullptr;
     if (node->kind == AstNodeKind::Identifier)
     {
-        auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+        const auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
         identifierRef   = identifier->identifierRef();
     }
     else if (node->kind == AstNodeKind::ArrayPointerIndex)
@@ -429,8 +429,8 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, TypeIn
         case NativeTypeKind::String:
         {
             reserveLinearRegisterRC2(context, regList);
-            auto storageSegment = Semantic::getConstantSegFromContext(node);
-            auto storageOffset  = storageSegment->addString(node->computedValue->text);
+            const auto storageSegment = Semantic::getConstantSegFromContext(node);
+            const auto storageOffset  = storageSegment->addString(node->computedValue->text);
             SWAG_ASSERT(storageOffset != UINT32_MAX);
             emitMakeSegPointer(context, storageSegment, storageOffset, regList[0]);
             EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = node->computedValue->text.length();
@@ -455,7 +455,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, TypeIn
     }
     else if (typeInfo->isArray())
     {
-        auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        const auto typeArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
         reserveLinearRegisterRC2(context, regList);
         emitMakeSegPointer(context, node->computedValue->storageSegment, node->computedValue->storageOffset, regList[0]);
         EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = typeArray->count;
@@ -466,16 +466,16 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, TypeIn
     }
     else if (typeInfo->isPointer() && node->castedTypeInfo && node->castedTypeInfo->isString())
     {
-        auto storageSegment = Semantic::getConstantSegFromContext(node);
-        auto storageOffset  = storageSegment->addString(node->computedValue->text);
+        const auto storageSegment = Semantic::getConstantSegFromContext(node);
+        const auto storageOffset  = storageSegment->addString(node->computedValue->text);
         SWAG_ASSERT(storageOffset != UINT32_MAX);
         emitMakeSegPointer(context, storageSegment, storageOffset, regList[0]);
     }
     else if (typeInfo->isSlice() && node->castedTypeInfo && node->castedTypeInfo->isString())
     {
         reserveLinearRegisterRC2(context, regList);
-        auto storageSegment = Semantic::getConstantSegFromContext(node);
-        auto storageOffset  = storageSegment->addString(node->computedValue->text);
+        const auto storageSegment = Semantic::getConstantSegFromContext(node);
+        const auto storageOffset  = storageSegment->addString(node->computedValue->text);
         SWAG_ASSERT(storageOffset != UINT32_MAX);
         emitMakeSegPointer(context, storageSegment, storageOffset, regList[0]);
         EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = node->computedValue->text.length();
@@ -485,8 +485,8 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, TypeIn
         // :SliceLiteral
         reserveLinearRegisterRC2(context, regList);
         SWAG_ASSERT(node->computedValue);
-        auto slice        = (SwagSlice*) node->computedValue->getStorageAddr();
-        auto offsetValues = node->computedValue->storageSegment->offset((uint8_t*) slice->buffer);
+        const auto slice        = (SwagSlice*) node->computedValue->getStorageAddr();
+        const auto offsetValues = node->computedValue->storageSegment->offset((uint8_t*) slice->buffer);
         emitMakeSegPointer(context, node->computedValue->storageSegment, offsetValues, regList[0]);
         EMIT_INST1(context, ByteCodeOp::SetImmediate64, regList[1])->b.u64 = slice->count;
     }
@@ -504,7 +504,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, TypeIn
 
 bool ByteCodeGen::emitComputedValue(ByteCodeGenContext* context)
 {
-    auto node = context->node;
+    const auto node = context->node;
     SWAG_CHECK(emitLiteral(context));
     SWAG_CHECK(emitCast(context, node, TypeManager::concreteType(node->typeInfo), node->castedTypeInfo));
     SWAG_ASSERT(context->result == ContextResult::Done);
@@ -517,7 +517,7 @@ bool ByteCodeGen::emitComputedValue(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitDefer(ByteCodeGenContext* context)
 {
-    auto node = CastAst<AstDefer>(context->node, AstNodeKind::Defer);
+    const auto node = CastAst<AstDefer>(context->node, AstNodeKind::Defer);
     SWAG_ASSERT(node->childs.size() == 1);
     node->ownerScope->deferredNodes.push_back(node);
     return true;

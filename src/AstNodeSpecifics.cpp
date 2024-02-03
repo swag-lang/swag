@@ -10,7 +10,7 @@
 
 AstNode* AstVarDecl::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstVarDecl>();
+    const auto newNode = Ast::newNode<AstVarDecl>();
     newNode->copyFrom(context, this);
     newNode->publicName  = publicName;
     newNode->attributes  = attributes;
@@ -27,7 +27,7 @@ AstNode* AstVarDecl::clone(CloneContext& context)
         newNode->typeConstraint->flags &= ~AST_NO_SEMANTIC;
 
     // Is there an alias ?
-    auto it = context.replaceNames.find(newNode->token.text);
+    const auto it = context.replaceNames.find(newNode->token.text);
     if (it != context.replaceNames.end())
     {
         context.usedReplaceNames.insert(it->second);
@@ -49,7 +49,7 @@ bool AstVarDecl::isConstDecl()
 void AstIdentifierRef::computeName()
 {
     token.text.clear();
-    for (auto child : childs)
+    for (const auto child : childs)
     {
         if (!token.text.empty())
             token.text += ".";
@@ -59,7 +59,7 @@ void AstIdentifierRef::computeName()
 
 AstNode* AstIdentifierRef::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstIdentifierRef>();
+    const auto newNode = Ast::newNode<AstIdentifierRef>();
     newNode->copyFrom(context, this);
     return newNode;
 }
@@ -94,11 +94,11 @@ void AstIdentifier::allocateIdentifierExtension()
 
 AstNode* AstIdentifier::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstIdentifier>();
+    const auto newNode = Ast::newNode<AstIdentifier>();
     newNode->copyFrom(context, this);
 
     // Is there an alias ?
-    auto itn = context.replaceNames.find(newNode->token.text);
+    const auto itn = context.replaceNames.find(newNode->token.text);
     if (itn != context.replaceNames.end())
     {
         context.usedReplaceNames.insert(itn->second);
@@ -118,7 +118,7 @@ AstNode* AstIdentifier::clone(CloneContext& context)
 
     // Check if we need to replace the token.text with a type substitution
     // That way the new resolveIdentifier will just try to keep the typeinfo
-    auto it = context.replaceTypes.find(newNode->token.text);
+    const auto it = context.replaceTypes.find(newNode->token.text);
     if (it != context.replaceTypes.end())
     {
         // :ForLocationInValidIf
@@ -209,7 +209,7 @@ Utf8 AstFuncDecl::getNameForUserCompiler()
 
 const char* AstFuncDecl::getDisplayNameC()
 {
-    auto res = getDisplayName();
+    const auto res = getDisplayName();
     return _strdup(res.c_str()); // Leak and slow, but only for messages
 }
 
@@ -257,10 +257,10 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
     if (!fullnameForeign.empty())
         return;
 
-    auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
+    const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::FuncAttr);
     if (!forExport)
     {
-        auto value = typeFunc->attributes.getValue(g_LangSpec->name_Swag_Foreign, g_LangSpec->name_function);
+        const auto value = typeFunc->attributes.getValue(g_LangSpec->name_Swag_Foreign, g_LangSpec->name_function);
         if (value && !value->text.empty())
             fullnameForeign = value->text;
         else
@@ -279,7 +279,7 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
         // Empty (forward) decl are counted as overloads, so be sure it's not a bunch of
         // empty functions.
         uint32_t countNoEmpty = 0;
-        for (auto r : resolvedSymbolName->overloads)
+        for (const auto r : resolvedSymbolName->overloads)
         {
             if (!r->node->isEmptyFct())
             {
@@ -293,7 +293,7 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
         {
             nameForeign += "@@";
             typeFunc->computeScopedName();
-            auto pz = strstr(typeFunc->scopedName.c_str(), "(");
+            const auto pz = strstr(typeFunc->scopedName.c_str(), "(");
             SWAG_ASSERT(pz);
             nameForeign += pz;
         }
@@ -302,7 +302,7 @@ void AstFuncDecl::computeFullNameForeign(bool forExport)
     fullnameForeign = nameForeign;
 
     // Normalize token.text
-    auto len = nameForeign.length();
+    const auto len = nameForeign.length();
     auto pz  = nameForeign.buffer;
     auto pzd = fullnameForeign.buffer;
     for (uint32_t i = 0; i < len; i++)
@@ -336,9 +336,9 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
         // the duplicated parent node that corresponds to the original one, in order to get the corresponding new
         // scope (if a sub declaration is declared inside an if statement scope for example, we need the duplicated
         // sub declaration to be registered in the corresponding new scope).
-        auto newScopeNode = oldOwnerNode->findChildRefRec(f->ownerScope->owner, refNode);
+        const auto newScopeNode = oldOwnerNode->findChildRefRec(f->ownerScope->owner, refNode);
         SWAG_ASSERT(newScopeNode);
-        auto subFuncScope = newScopeNode->ownerScope;
+        const auto subFuncScope = newScopeNode->ownerScope;
 
         cloneContext.parentScope = subFuncScope;
         cloneContext.parent      = nullptr; // Register in parent will be done at the end (race condition)
@@ -349,7 +349,7 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
         subDecl->typeInfo = subDecl->typeInfo->clone();
 
         // Be sure symbol is not already there. This can happen when using mixins
-        SymbolName* sym = nullptr;
+        const SymbolName* sym = nullptr;
         if (context)
             sym = subFuncScope->symTable.find(subDecl->token.text);
 
@@ -358,10 +358,10 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
         {
         case AstNodeKind::FuncDecl:
         {
-            auto nodeFunc = CastAst<AstFuncDecl>(subDecl, AstNodeKind::FuncDecl);
+            const auto nodeFunc = CastAst<AstFuncDecl>(subDecl, AstNodeKind::FuncDecl);
             if (sym)
             {
-                Diagnostic diag{nodeFunc, nodeFunc->tokenName, Fmt(Err(Err0627), "function", subDecl->token.ctext())};
+                const Diagnostic diag{nodeFunc, nodeFunc->tokenName, Fmt(Err(Err0627), "function", subDecl->token.ctext())};
                 return context->report(diag);
             }
 
@@ -386,9 +386,9 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
             // Example 4506.
             if (nodeFunc->makePointerLambda)
             {
-                int id = g_UniqueID.fetch_add(1);
+                const int id = g_UniqueID.fetch_add(1);
                 subDecl->token.text += to_string(id);
-                auto idRef        = CastAst<AstIdentifier>(nodeFunc->makePointerLambda->childs.front()->childs.back(), AstNodeKind::Identifier);
+                const auto idRef        = CastAst<AstIdentifier>(nodeFunc->makePointerLambda->childs.front()->childs.back(), AstNodeKind::Identifier);
                 idRef->token.text = subDecl->token.text;
             }
 
@@ -396,22 +396,22 @@ bool AstFuncDecl::cloneSubDecls(ErrorContext* context, CloneContext& cloneContex
         }
         case AstNodeKind::StructDecl:
         {
-            auto nodeStruct = CastAst<AstStruct>(subDecl, AstNodeKind::StructDecl);
+            const auto nodeStruct = CastAst<AstStruct>(subDecl, AstNodeKind::StructDecl);
             if (sym)
             {
-                Diagnostic diag{nodeStruct, nodeStruct->tokenName, Fmt(Err(Err0627), "struct", subDecl->token.ctext())};
+                const Diagnostic diag{nodeStruct, nodeStruct->tokenName, Fmt(Err(Err0627), "struct", subDecl->token.ctext())};
                 return context->report(diag);
             }
 
-            symKind           = SymbolKind::Struct;
-            auto typeStruct   = CastTypeInfo<TypeInfoStruct>(subDecl->typeInfo, TypeInfoKind::Struct);
-            typeStruct->scope = nodeStruct->scope;
+            symKind               = SymbolKind::Struct;
+            const auto typeStruct = CastTypeInfo<TypeInfoStruct>(subDecl->typeInfo, TypeInfoKind::Struct);
+            typeStruct->scope     = nodeStruct->scope;
             break;
         }
         case AstNodeKind::InterfaceDecl:
             if (sym)
             {
-                Diagnostic diag{subDecl, subDecl->token, Fmt(Err(Err0627), "interface", subDecl->token.ctext())};
+                const Diagnostic diag{subDecl, subDecl->token, Fmt(Err(Err0627), "interface", subDecl->token.ctext())};
                 return context->report(diag);
             }
 
@@ -454,7 +454,7 @@ AstFuncDecl::~AstFuncDecl()
 
 AstNode* AstFuncDecl::clone(CloneContext& context)
 {
-    auto newNode      = Ast::newNode<AstFuncDecl>();
+    const auto newNode      = Ast::newNode<AstFuncDecl>();
     auto cloneContext = context;
     cloneContext.forceFlags &= ~AST_SPEC_STACKSIZE;
 
@@ -466,10 +466,10 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
 
     newNode->removeSpecFlags(AstFuncDecl::SPECFLAG_FULL_RESOLVE | AstFuncDecl::SPECFLAG_PARTIAL_RESOLVE | AstFuncDecl::SPECFLAG_SHORT_FORM);
 
-    cloneContext.ownerFct = newNode;
-    cloneContext.parent   = newNode;
-    auto functionScope    = Ast::newScope(newNode, newNode->token.text, ScopeKind::Function, context.parentScope ? context.parentScope : ownerScope);
-    newNode->scope        = functionScope;
+    cloneContext.ownerFct    = newNode;
+    cloneContext.parent      = newNode;
+    const auto functionScope = Ast::newScope(newNode, newNode->token.text, ScopeKind::Function, context.parentScope ? context.parentScope : ownerScope);
+    newNode->scope           = functionScope;
 
     cloneContext.parentScope = functionScope;
 
@@ -495,7 +495,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
         {
             if (p.node->kind == AstNodeKind::MakePointerLambda)
             {
-                auto mpl = CastAst<AstMakePointer>(p.node, AstNodeKind::MakePointerLambda);
+                const auto mpl = CastAst<AstMakePointer>(p.node, AstNodeKind::MakePointerLambda);
                 if (mpl->lambda == newNode)
                     newNode->makePointerLambda = mpl;
             }
@@ -508,7 +508,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
 
     if (content)
     {
-        auto bodyScope           = Ast::newScope(newNode, newNode->token.text, ScopeKind::FunctionBody, functionScope);
+        const auto bodyScope           = Ast::newScope(newNode, newNode->token.text, ScopeKind::FunctionBody, functionScope);
         cloneContext.parentScope = bodyScope;
         newNode->content         = content->clone(cloneContext);
 
@@ -536,7 +536,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
 
 AstNode* AstAttrDecl::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstAttrDecl>();
+    const auto newNode = Ast::newNode<AstAttrDecl>();
     newNode->copyFrom(context, this);
     newNode->tokenName = tokenName;
 
@@ -546,7 +546,7 @@ AstNode* AstAttrDecl::clone(CloneContext& context)
 
 AstNode* AstAttrUse::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstAttrUse>();
+    const auto newNode = Ast::newNode<AstAttrUse>();
     newNode->copyFrom(context, this);
 
     newNode->content = findChildRef(content, newNode);
@@ -558,7 +558,7 @@ AstNode* AstAttrUse::clone(CloneContext& context)
 
 AstNode* AstFuncCallParam::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstFuncCallParam>();
+    const auto newNode = Ast::newNode<AstFuncCallParam>();
     newNode->copyFrom(context, this);
 
     // :ReverseLiteralStruct
@@ -572,21 +572,21 @@ AstNode* AstFuncCallParam::clone(CloneContext& context)
 
 AstNode* AstBinaryOpNode::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstBinaryOpNode>();
+    const auto newNode = Ast::newNode<AstBinaryOpNode>();
     newNode->copyFrom(context, this);
     return newNode;
 }
 
 AstNode* AstConditionalOpNode::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstConditionalOpNode>();
+    const auto newNode = Ast::newNode<AstConditionalOpNode>();
     newNode->copyFrom(context, this);
     return newNode;
 }
 
 AstNode* AstIf::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstIf>();
+    const auto newNode = Ast::newNode<AstIf>();
     newNode->copyFrom(context, this);
 
     newNode->boolExpression = findChildRef(boolExpression, newNode);
@@ -615,10 +615,10 @@ AstNode* AstBreakContinue::clone(CloneContext& context)
     // not a 'new' breakable in the user code
     if (context.ownerBreakable == context.replaceTokensBreakable)
     {
-        auto it = context.replaceTokens.find(tokenId);
+        const auto it = context.replaceTokens.find(tokenId);
         if (it != context.replaceTokens.end())
         {
-            auto newNode = Ast::newNode<AstSubstBreakContinue>(nullptr, AstNodeKind::SubstBreakContinue, sourceFile, context.parent);
+            const auto newNode = Ast::newNode<AstSubstBreakContinue>(nullptr, AstNodeKind::SubstBreakContinue, sourceFile, context.parent);
             newNode->allocateExtension(ExtensionKind::Semantic);
             newNode->extSemantic()->semanticBeforeFct = Semantic::preResolveSubstBreakContinue;
 
@@ -635,7 +635,7 @@ AstNode* AstBreakContinue::clone(CloneContext& context)
         }
     }
 
-    auto newNode = Ast::newNode<AstBreakContinue>();
+    const auto newNode = Ast::newNode<AstBreakContinue>();
     newNode->copyFrom(context, this);
     newNode->label = label;
 
@@ -652,7 +652,7 @@ AstNode* AstBreakContinue::clone(CloneContext& context)
 
 AstNode* AstScopeBreakable::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstScopeBreakable>();
+    const auto newNode = Ast::newNode<AstScopeBreakable>();
     newNode->AstBreakable::copyFrom(context, this);
 
     auto cloneContext           = context;
@@ -666,7 +666,7 @@ AstNode* AstScopeBreakable::clone(CloneContext& context)
 
 AstNode* AstWhile::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstWhile>();
+    const auto newNode = Ast::newNode<AstWhile>();
     newNode->AstBreakable::copyFrom(context, this);
 
     auto cloneContext           = context;
@@ -686,7 +686,7 @@ AstFor::~AstFor()
 
 AstNode* AstFor::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstFor>();
+    const auto newNode = Ast::newNode<AstFor>();
 
     auto cloneContext        = context;
     cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
@@ -711,7 +711,7 @@ AstLoop::~AstLoop()
 
 AstNode* AstLoop::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstLoop>();
+    const auto newNode = Ast::newNode<AstLoop>();
 
     auto cloneContext        = context;
     cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
@@ -729,7 +729,7 @@ AstNode* AstLoop::clone(CloneContext& context)
 
 AstNode* AstVisit::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstVisit>();
+    const auto newNode = Ast::newNode<AstVisit>();
     newNode->copyFrom(context, this);
 
     newNode->extraNameToken   = extraNameToken;
@@ -743,7 +743,7 @@ AstNode* AstVisit::clone(CloneContext& context)
 
 AstNode* AstSwitch::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstSwitch>();
+    const auto newNode = Ast::newNode<AstSwitch>();
     newNode->AstBreakable::copyFrom(context, this);
 
     auto cloneContext           = context;
@@ -752,20 +752,20 @@ AstNode* AstSwitch::clone(CloneContext& context)
     context.propageResult(cloneContext);
 
     newNode->expression = findChildRef(expression, newNode);
-    for (auto expr : cases)
+    for (const auto expr : cases)
         newNode->cases.push_back((AstSwitchCase*) findChildRef(expr, newNode));
     return newNode;
 }
 
 AstNode* AstSwitchCase::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstSwitchCase>();
+    const auto newNode = Ast::newNode<AstSwitchCase>();
     newNode->copyFrom(context, this);
 
     newNode->block       = findChildRef(block, newNode);
     newNode->ownerSwitch = CastAst<AstSwitch>(context.parent, AstNodeKind::Switch);
     newNode->caseIndex   = caseIndex;
-    for (auto expr : expressions)
+    for (const auto expr : expressions)
         newNode->expressions.push_back(findChildRef(expr, newNode));
     return newNode;
 }
@@ -777,7 +777,7 @@ AstSwitchCaseBlock::~AstSwitchCaseBlock()
 
 AstNode* AstSwitchCaseBlock::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstSwitchCaseBlock>();
+    const auto newNode = Ast::newNode<AstSwitchCaseBlock>();
 
     auto cloneContext        = context;
     cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
@@ -790,7 +790,7 @@ AstNode* AstSwitchCaseBlock::clone(CloneContext& context)
 
 AstNode* AstTypeExpression::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstTypeExpression>();
+    const auto newNode = Ast::newNode<AstTypeExpression>();
     newNode->copyFrom(context, this);
 
     newNode->identifier      = findChildRef(identifier, newNode);
@@ -810,7 +810,7 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
         {
             SWAG_ASSERT(newNode->identifier);
             newNode->identifier->flags &= ~AST_NO_SEMANTIC;
-            auto back = CastAst<AstIdentifier>(newNode->identifier->childs.back(), AstNodeKind::Identifier);
+            const auto back = CastAst<AstIdentifier>(newNode->identifier->childs.back(), AstNodeKind::Identifier);
             SWAG_ASSERT(back->callParameters);
             back->callParameters->flags &= ~AST_NO_SEMANTIC;
         }
@@ -821,7 +821,7 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
 
 AstNode* AstTypeLambda::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstTypeLambda>();
+    const auto newNode = Ast::newNode<AstTypeLambda>();
     newNode->copyFrom(context, this);
 
     newNode->parameters = findChildRef(parameters, newNode);
@@ -831,13 +831,13 @@ AstNode* AstTypeLambda::clone(CloneContext& context)
 
 AstNode* AstArrayPointerSlicing::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstArrayPointerSlicing>();
+    const auto newNode = Ast::newNode<AstArrayPointerSlicing>();
     newNode->copyFrom(context, this);
 
     newNode->array      = findChildRef(array, newNode);
     newNode->lowerBound = findChildRef(lowerBound, newNode);
     newNode->upperBound = findChildRef(upperBound, newNode);
-    for (auto f : structFlatParams)
+    for (const auto f : structFlatParams)
         newNode->structFlatParams.push_back(findChildRef(f, newNode));
 
     return newNode;
@@ -845,19 +845,19 @@ AstNode* AstArrayPointerSlicing::clone(CloneContext& context)
 
 AstNode* AstExpressionList::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstExpressionList>();
+    const auto newNode = Ast::newNode<AstExpressionList>();
     newNode->copyFrom(context, this);
     return newNode;
 }
 
 AstNode* AstArrayPointerIndex::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstArrayPointerIndex>();
+    const auto newNode = Ast::newNode<AstArrayPointerIndex>();
     newNode->copyFrom(context, this);
 
     newNode->array  = findChildRef(array, newNode);
     newNode->access = findChildRef(access, newNode);
-    for (auto f : structFlatParams)
+    for (const auto f : structFlatParams)
         newNode->structFlatParams.push_back(findChildRef(f, newNode));
 
     return newNode;
@@ -871,7 +871,7 @@ AstStruct::~AstStruct()
 
 AstNode* AstStruct::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstStruct>();
+    const auto newNode = Ast::newNode<AstStruct>();
     newNode->copyFrom(context, this, false);
     newNode->packing = packing;
 
@@ -910,7 +910,7 @@ AstImpl::~AstImpl()
 
 AstNode* AstImpl::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstImpl>();
+    const auto newNode = Ast::newNode<AstImpl>();
     newNode->copyFrom(context, this, false);
 
     auto cloneContext        = context;
@@ -925,13 +925,13 @@ AstNode* AstImpl::clone(CloneContext& context)
     // :SubScopeImplFor
     if (identifierFor)
     {
-        auto baseScope           = cloneContext.ownerStructScope;
+        const auto baseScope           = cloneContext.ownerStructScope;
         auto itfName             = childs.front()->token.text;
         cloneContext.parentScope = Ast::newScope(newNode, itfName, ScopeKind::Impl, baseScope);
         newNode->scope           = cloneContext.parentScope;
 
         // :FakeImplForType
-        auto implTypeInfo        = makeType<TypeInfoStruct>();
+        const auto implTypeInfo        = makeType<TypeInfoStruct>();
         implTypeInfo->name       = itfName;
         implTypeInfo->structName = implTypeInfo->name;
         implTypeInfo->scope      = newNode->scope;
@@ -946,13 +946,13 @@ AstNode* AstImpl::clone(CloneContext& context)
         baseScope->symTable.addSymbolTypeInfo(nullptr, toAdd);
     }
 
-    for (auto c : childs)
+    for (const auto c : childs)
     {
-        auto newChild = c->clone(cloneContext);
+        const auto newChild = c->clone(cloneContext);
 
         if (newChild->kind == AstNodeKind::FuncDecl)
         {
-            auto newFunc             = CastAst<AstFuncDecl>(newChild, AstNodeKind::FuncDecl);
+            const auto newFunc             = CastAst<AstFuncDecl>(newChild, AstNodeKind::FuncDecl);
             newFunc->originalGeneric = c;
 
             // Resolution of 'impl' needs all functions to have their symbol registered in the 'impl' scope,
@@ -979,7 +979,7 @@ AstNode* AstImpl::clone(CloneContext& context)
                 // consider it to be generic
                 newFunc->flags &= ~AST_FROM_GENERIC;
                 newFunc->flags |= AST_IS_GENERIC;
-                for (auto g : newFunc->genericParameters->childs)
+                for (const auto g : newFunc->genericParameters->childs)
                 {
                     g->flags &= ~AST_FROM_GENERIC;
                     g->flags |= AST_IS_GENERIC;
@@ -1014,7 +1014,7 @@ AstEnum::~AstEnum()
 
 AstNode* AstEnum::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstEnum>();
+    const auto newNode = Ast::newNode<AstEnum>();
     newNode->copyFrom(context, this, false);
     newNode->tokenName = tokenName;
     newNode->type      = findChildRef(type, newNode);
@@ -1038,7 +1038,7 @@ AstNode* AstEnum::clone(CloneContext& context)
 
 AstNode* AstEnumValue::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstEnumValue>();
+    const auto newNode = Ast::newNode<AstEnumValue>();
     newNode->copyFrom(context, this);
     newNode->attributes = attributes;
     return newNode;
@@ -1046,7 +1046,7 @@ AstNode* AstEnumValue::clone(CloneContext& context)
 
 AstNode* AstInit::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstInit>();
+    const auto newNode = Ast::newNode<AstInit>();
     newNode->copyFrom(context, this);
 
     newNode->expression = findChildRef(expression, newNode);
@@ -1057,7 +1057,7 @@ AstNode* AstInit::clone(CloneContext& context)
 
 AstNode* AstDropCopyMove::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstDropCopyMove>();
+    const auto newNode = Ast::newNode<AstDropCopyMove>();
     newNode->copyFrom(context, this);
 
     newNode->expression = findChildRef(expression, newNode);
@@ -1067,7 +1067,7 @@ AstNode* AstDropCopyMove::clone(CloneContext& context)
 
 AstNode* AstReturn::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstReturn>();
+    const auto newNode = Ast::newNode<AstReturn>();
     newNode->copyFrom(context, this);
 
     // If return in an inline block has already been solved, we need this flag !
@@ -1085,7 +1085,7 @@ AstCompilerMacro::~AstCompilerMacro()
 
 AstNode* AstCompilerMacro::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstCompilerMacro>();
+    const auto newNode = Ast::newNode<AstCompilerMacro>();
     newNode->copyFrom(context, this, false);
 
     auto cloneContext        = context;
@@ -1100,7 +1100,7 @@ AstNode* AstCompilerMacro::clone(CloneContext& context)
 
 AstNode* AstCompilerMixin::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstCompilerMixin>();
+    const auto newNode = Ast::newNode<AstCompilerMixin>();
     newNode->copyFrom(context, this);
     newNode->replaceTokens = replaceTokens;
     return newNode;
@@ -1114,7 +1114,7 @@ AstInline::~AstInline()
 
 AstNode* AstInline::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstInline>();
+    const auto newNode = Ast::newNode<AstInline>();
     newNode->copyFrom(context, this, false);
 
     // If we clone an inline block after bytecode generation (this happens if we have a mixin inside an inline function
@@ -1148,7 +1148,7 @@ AstNode* AstInline::clone(CloneContext& context)
 
 AstNode* AstCompilerIfBlock::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstCompilerIfBlock>();
+    const auto newNode = Ast::newNode<AstCompilerIfBlock>();
     newNode->copyFrom(context, this, false);
 
     auto cloneContext                 = context;
@@ -1164,7 +1164,7 @@ AstNode* AstCompilerIfBlock::clone(CloneContext& context)
 
 AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstCompilerSpecFunc>();
+    const auto newNode = Ast::newNode<AstCompilerSpecFunc>();
 
     auto cloneContext = context;
     cloneContext.forceFlags &= ~AST_SPEC_STACKSIZE;
@@ -1174,7 +1174,7 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
     // Clone childs by hand, because a compiler block can contain a sub function, and this sub
     // function shouldn't have the ownerInline set (if the #ast is in an inline block)
     cloneContext.parent = newNode;
-    for (auto p : childs)
+    for (const auto p : childs)
     {
         if (p->kind == AstNodeKind::FuncDecl)
         {
@@ -1197,10 +1197,10 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
         // We also want to replace the name of the function (and the reference to it) in case
         // the block is in a mixin block, because in that case the function can be registered
         // more than once in the same scope.
-        int  id      = g_UniqueID.fetch_add(1);
-        Utf8 newName = "__cmpfunc" + to_string(id);
+        const int  id      = g_UniqueID.fetch_add(1);
+        const Utf8 newName = "__cmpfunc" + to_string(id);
 
-        auto func        = CastAst<AstFuncDecl>(newNode->childs.front(), AstNodeKind::FuncDecl);
+        const auto func        = CastAst<AstFuncDecl>(newNode->childs.front(), AstNodeKind::FuncDecl);
         func->token.text = newName;
         func->flags &= ~AST_NO_SEMANTIC;
         func->content->flags &= ~AST_NO_SEMANTIC;
@@ -1208,7 +1208,7 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
         newNode->ownerScope->symTable.registerSymbolName(nullptr, func, SymbolKind::Function);
 
         // Ref to the function
-        auto idRef                       = CastAst<AstIdentifierRef>(newNode->childs.back(), AstNodeKind::IdentifierRef);
+        const auto idRef                       = CastAst<AstIdentifierRef>(newNode->childs.back(), AstNodeKind::IdentifierRef);
         idRef->childs.back()->token.text = newName;
     }
 
@@ -1218,14 +1218,14 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
 
 AstNode* AstNameSpace::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstNameSpace>();
+    const auto newNode = Ast::newNode<AstNameSpace>();
     newNode->copyFrom(context, this);
     return newNode;
 }
 
 AstNode* AstTryCatchAssume::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstTryCatchAssume>();
+    const auto newNode = Ast::newNode<AstTryCatchAssume>();
     newNode->copyFrom(context, this, false);
 
     auto cloneContext                = context;
@@ -1238,7 +1238,7 @@ AstNode* AstTryCatchAssume::clone(CloneContext& context)
 
 AstNode* AstAlias::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstAlias>();
+    const auto newNode = Ast::newNode<AstAlias>();
     newNode->copyFrom(context, this);
     newNode->kwdLoc = kwdLoc;
     if (resolvedSymbolName)
@@ -1248,7 +1248,7 @@ AstNode* AstAlias::clone(CloneContext& context)
 
 AstNode* AstCast::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstCast>();
+    const auto newNode = Ast::newNode<AstCast>();
     newNode->copyFrom(context, this);
     newNode->toCastTypeInfo = toCastTypeInfo;
     return newNode;
@@ -1256,7 +1256,7 @@ AstNode* AstCast::clone(CloneContext& context)
 
 AstNode* AstFuncCallParams::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstFuncCallParams>();
+    const auto newNode = Ast::newNode<AstFuncCallParams>();
     newNode->copyFrom(context, this);
     newNode->aliasNames = aliasNames;
 
@@ -1279,7 +1279,7 @@ AstNode* AstFuncCallParams::clone(CloneContext& context)
 
 AstNode* AstRange::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstRange>();
+    const auto newNode = Ast::newNode<AstRange>();
     newNode->copyFrom(context, this);
     newNode->expressionLow = findChildRef(expressionLow, newNode);
     newNode->expressionUp  = findChildRef(expressionUp, newNode);
@@ -1288,7 +1288,7 @@ AstNode* AstRange::clone(CloneContext& context)
 
 AstNode* AstRefSubDecl::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstRefSubDecl>();
+    const auto newNode = Ast::newNode<AstRefSubDecl>();
     newNode->copyFrom(context, this);
     newNode->refSubDecl = refSubDecl;
     context.nodeRefsToUpdate.push_back({newNode, &newNode->refSubDecl});
@@ -1297,7 +1297,7 @@ AstNode* AstRefSubDecl::clone(CloneContext& context)
 
 AstNode* AstMakePointer::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstMakePointer>();
+    const auto newNode = Ast::newNode<AstMakePointer>();
     newNode->copyFrom(context, this);
 
     if (lambda)
@@ -1326,14 +1326,14 @@ AstNode* AstMakePointer::clone(CloneContext& context)
 
 AstNode* AstOp::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstOp>();
+    const auto newNode = Ast::newNode<AstOp>();
     newNode->copyFrom(context, this);
     return newNode;
 }
 
 AstNode* AstDefer::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstDefer>();
+    const auto newNode = Ast::newNode<AstDefer>();
     newNode->copyFrom(context, this);
     newNode->deferKind = deferKind;
     return newNode;
@@ -1341,7 +1341,7 @@ AstNode* AstDefer::clone(CloneContext& context)
 
 AstNode* AstWith::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstWith>();
+    const auto newNode = Ast::newNode<AstWith>();
     newNode->copyFrom(context, this);
     newNode->id = id;
     return newNode;
@@ -1349,7 +1349,7 @@ AstNode* AstWith::clone(CloneContext& context)
 
 AstNode* AstLiteral::clone(CloneContext& context)
 {
-    auto newNode = Ast::newNode<AstLiteral>();
+    const auto newNode = Ast::newNode<AstLiteral>();
     newNode->copyFrom(context, this);
     newNode->literalType  = literalType;
     newNode->literalValue = literalValue;

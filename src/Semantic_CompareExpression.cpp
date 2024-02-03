@@ -10,15 +10,15 @@
 
 bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node          = context->node;
+    const auto node          = context->node;
     auto leftTypeInfo  = TypeManager::concreteType(left->typeInfo);
     auto rightTypeInfo = TypeManager::concreteType(right->typeInfo);
 
     // Compile time compare of two types
     if (left->isConstantGenTypeInfo() && right->isConstantGenTypeInfo())
     {
-        auto ptr1 = left->getConstantGenTypeInfo();
-        auto ptr2 = right->getConstantGenTypeInfo();
+        const auto ptr1 = left->getConstantGenTypeInfo();
+        const auto ptr2 = right->getConstantGenTypeInfo();
         node->setFlagsValueIsComputed();
         node->computedValue->reg.b = TypeManager::compareConcreteType(ptr1, ptr2);
         return true;
@@ -33,7 +33,7 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
             // Can only be compared to null
             // :ComparedToNull
             SWAG_ASSERT(right->castedTypeInfo && right->castedTypeInfo->isPointerNull());
-            auto slice                 = (SwagSlice*) left->computedValue->getStorageAddr();
+            const auto slice                 = (SwagSlice*) left->computedValue->getStorageAddr();
             node->computedValue->reg.b = !slice->buffer;
             return true;
         }
@@ -43,7 +43,7 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
             // Can only be compared to null
             // :ComparedToNull
             SWAG_ASSERT(right->castedTypeInfo && right->castedTypeInfo->isPointerNull());
-            auto slice                 = (SwagInterface*) left->computedValue->getStorageAddr();
+            const auto slice                 = (SwagInterface*) left->computedValue->getStorageAddr();
             node->computedValue->reg.b = !slice->itable;
             return true;
         }
@@ -51,7 +51,7 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
         if (leftTypeInfo->isAny())
         {
             // Can only be compared to null
-            auto any = (SwagAny*) left->computedValue->getStorageAddr();
+            const auto any = (SwagAny*) left->computedValue->getStorageAddr();
             if (right->castedTypeInfo)
             {
                 // :ComparedToNull
@@ -60,8 +60,8 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
             }
             else
             {
-                auto ptr1                  = any->type;
-                auto ptr2                  = right->getConstantGenTypeInfo();
+                const auto ptr1            = any->type;
+                const auto ptr2            = right->getConstantGenTypeInfo();
                 node->computedValue->reg.b = TypeManager::compareConcreteType(ptr1, ptr2);
             }
             return true;
@@ -164,8 +164,8 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
 
 bool Semantic::resolveCompOp3Way(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node         = context->node;
-    auto leftTypeInfo = left->typeInfo;
+    const auto node         = context->node;
+    const auto leftTypeInfo = left->typeInfo;
 
 #define CMP3(__a, __b) __a < __b ? -1 : (__a > __b ? 1 : 0)
 
@@ -244,8 +244,8 @@ bool Semantic::resolveCompOp3Way(SemanticContext* context, AstNode* left, AstNod
 
 bool Semantic::resolveCompOpLower(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node         = context->node;
-    auto leftTypeInfo = left->typeInfo;
+    const auto node         = context->node;
+    const auto leftTypeInfo = left->typeInfo;
 
     if (left->hasComputedValue() && right->hasComputedValue())
     {
@@ -315,8 +315,8 @@ bool Semantic::resolveCompOpLower(SemanticContext* context, AstNode* left, AstNo
 
 bool Semantic::resolveCompOpGreater(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto node         = context->node;
-    auto leftTypeInfo = left->typeInfo;
+    const auto node         = context->node;
+    const auto leftTypeInfo = left->typeInfo;
 
     if (left->hasComputedValue() && right->hasComputedValue())
     {
@@ -385,7 +385,7 @@ bool Semantic::resolveCompOpGreater(SemanticContext* context, AstNode* left, Ast
 
 bool Semantic::resolveCompareExpression(SemanticContext* context)
 {
-    auto node  = CastAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
+    const auto node  = CastAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
     auto left  = node->childs[0];
     auto right = node->childs[1];
 
@@ -398,8 +398,8 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
     YIELD();
 
     // :ConcreteRef
-    auto leftTypeInfo  = getConcreteTypeUnRef(left, CONCRETE_ALL);
-    auto rightTypeInfo = getConcreteTypeUnRef(right, CONCRETE_ALL);
+    const auto leftTypeInfo  = getConcreteTypeUnRef(left, CONCRETE_ALL);
+    const auto rightTypeInfo = getConcreteTypeUnRef(right, CONCRETE_ALL);
     SWAG_ASSERT(leftTypeInfo);
     SWAG_ASSERT(rightTypeInfo);
 

@@ -30,7 +30,7 @@ void Utf8::release()
 
 Utf8::Utf8(const char* from)
 {
-    uint32_t len = from ? (uint32_t) strlen(from) : 0;
+    const uint32_t len = from ? (uint32_t) strlen(from) : 0;
     if (!len)
         return;
 
@@ -61,7 +61,7 @@ Utf8::Utf8(const char* from, uint32_t len)
 
 Utf8::Utf8(const string& from)
 {
-    uint32_t len = (uint32_t) from.length();
+    const uint32_t len = (uint32_t) from.length();
     if (!len)
         return;
 
@@ -72,7 +72,7 @@ Utf8::Utf8(const string& from)
 
 Utf8::Utf8(const Utf8& from)
 {
-    uint32_t len = from.count;
+    const uint32_t len = from.count;
     if (!len)
         return;
 
@@ -92,7 +92,7 @@ Utf8::Utf8(const Utf8& from)
 
 Utf8::Utf8(const Utf8& from, uint32_t capcity)
 {
-    uint32_t len = from.count;
+    const uint32_t len = from.count;
     if (!len)
         return;
 
@@ -128,8 +128,8 @@ void Utf8::reserve(uint32_t newSize)
 
     auto lastAllocated = allocated;
     allocated *= 2;
-    allocated      = max(allocated, newSize);
-    auto newBuffer = (char*) Allocator::alloc(allocated);
+    allocated            = max(allocated, newSize);
+    const auto newBuffer = (char*) Allocator::alloc(allocated);
     if (count)
         memcpy(newBuffer, buffer, count + 1);
 
@@ -175,8 +175,8 @@ const char* Utf8::c_str() const
 
     // Big huge leak... not so huge in fact
     // Should limit the call to c_str() as much as possible in a normal run (no errors)
-    auto size = count + 1;
-    auto buf  = (char*) Allocator::alloc(size);
+    auto       size = count + 1;
+    const auto buf  = (char*) Allocator::alloc(size);
     memcpy(buf, buffer, count);
     buf[count] = 0;
 
@@ -327,7 +327,7 @@ bool operator==(const Utf8& str1, const char* str2)
     SWAG_ASSERT(str2);
     if (str1.count == 0)
         return false;
-    auto len = (uint32_t) strlen(str2);
+    const auto len = (uint32_t) strlen(str2);
     if (str1.count != len)
         return false;
     return !strncmp(str1.buffer, str2, str1.count);
@@ -456,7 +456,7 @@ int Utf8::find(const Utf8& str, uint32_t startPos) const
         return -1;
 
     SWAG_ASSERT(startPos < count);
-    auto pz = std::search(buffer + startPos, buffer + count, str.buffer, str.buffer + str.count);
+    const auto pz = std::search(buffer + startPos, buffer + count, str.buffer, str.buffer + str.count);
     if (pz == buffer + count)
         return -1;
     return (int) (pz - buffer);
@@ -479,7 +479,7 @@ void Utf8::toUni32(VectorNative<uint32_t>& uni, int maxChars)
 
     unsigned    offset;
     const char* pz    = buffer;
-    auto        endpz = buffer + count;
+    const auto  endpz = buffer + count;
     while (pz != endpz)
     {
         if (maxChars != -1 && uni.size() >= (size_t) maxChars)
@@ -496,7 +496,7 @@ void Utf8::toUni16(VectorNative<uint16_t>& uni, int maxChars)
 
     unsigned    offset;
     const char* pz    = buffer;
-    auto        endpz = buffer + count;
+    const auto  endpz = buffer + count;
     while (pz != endpz)
     {
         if (maxChars != -1 && uni.size() >= (size_t) maxChars)
@@ -528,8 +528,8 @@ void Utf8::makeLocal()
     if (allocated || !buffer || !count)
         return;
 
-    allocated = count + 1;
-    auto buf  = (char*) Allocator::alloc(allocated);
+    allocated      = count + 1;
+    const auto buf = (char*) Allocator::alloc(allocated);
     memcpy(buf, buffer, count);
     buffer        = buf;
     buffer[count] = 0;
@@ -554,7 +554,7 @@ void Utf8::append(const char* txt)
 {
     if (!txt)
         return;
-    uint32_t len = (uint32_t) strlen(txt);
+    const uint32_t len = (uint32_t) strlen(txt);
     if (!len)
         return;
     reserve(count + len + 1);
@@ -565,7 +565,7 @@ void Utf8::append(const char* txt)
 
 void Utf8::append(const Utf8& txt)
 {
-    int len = txt.count;
+    const int len = txt.count;
     if (!len)
         return;
     reserve(count + len + 1);
@@ -639,7 +639,7 @@ void Utf8::insert(uint32_t index, const char* str)
     }
 
     makeLocal();
-    uint32_t len = (uint32_t) strlen(str);
+    const uint32_t len = (uint32_t) strlen(str);
     reserve(count + len + 1);
     memmove(buffer + index + len, buffer + index, count - index);
     memcpy(buffer + index, str, len);
@@ -666,12 +666,12 @@ void Utf8::insert(uint32_t index, char c)
 void Utf8::replace(const char* src, const char* dst)
 {
     makeLocal();
-    uint32_t len    = (uint32_t) strlen(src);
-    uint32_t lenins = (uint32_t) strlen(dst);
-    uint32_t pos    = 0;
+    const uint32_t len    = (uint32_t) strlen(src);
+    const uint32_t lenins = (uint32_t) strlen(dst);
+    uint32_t       pos    = 0;
     while (true)
     {
-        auto npos = find(src, pos);
+        const auto npos = find(src, pos);
         if (npos == -1)
             break;
         pos = (uint32_t) npos;
@@ -688,7 +688,7 @@ uint32_t Utf8::hash() const
 
 const char* Utf8::decodeUtf8(const char* pz, uint32_t& wc, unsigned& offset)
 {
-    uint8_t c = *pz++;
+    const uint8_t c = *pz++;
 
     if ((c & 0x80) == 0)
     {
@@ -756,7 +756,7 @@ Utf8 Utf8::format(const char* format, ...)
 {
     va_list args;
     va_start(args, format);
-    size_t len = vsnprintf(nullptr, 0, format, args);
+    const size_t len = vsnprintf(nullptr, 0, format, args);
     va_end(args);
 
     Utf8 vec;
@@ -952,7 +952,7 @@ uint32_t Utf8::fuzzyCompare(const Utf8& str1, const Utf8& str2)
         }
     }
 
-    auto result = column[s1len];
+    const auto result = column[s1len];
     return result;
 }
 
@@ -998,7 +998,7 @@ bool Utf8::isNumber(const char* pz)
 
 bool Utf8::startsWith(const char* pz) const
 {
-    auto len = strlen(pz);
+    const auto len = strlen(pz);
     if (len > count)
         return false;
     return memcmp(buffer, pz, len) == 0;

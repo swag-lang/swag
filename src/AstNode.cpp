@@ -134,7 +134,7 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
         // Force semantic on specific nodes on generic instantiation
         if ((from->flags & AST_IS_GENERIC) && (from->semFlags & SEMFLAG_ON_CLONE))
         {
-            for (auto one : childs)
+            for (const auto one : childs)
                 one->flags &= ~AST_NO_SEMANTIC;
         }
     }
@@ -142,9 +142,9 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
 
 void AstNode::cloneChilds(CloneContext& context, AstNode* from)
 {
-    auto oldParent = context.parent;
-    context.parent = this;
-    auto num       = from->childs.size();
+    const auto oldParent = context.parent;
+    context.parent       = this;
+    const auto num       = from->childs.size();
     for (size_t i = 0; i < num; i++)
     {
         // Do not duplicate a struct if it's a child of something else (i.e. another struct), because
@@ -158,7 +158,7 @@ void AstNode::cloneChilds(CloneContext& context, AstNode* from)
 
 void AstNode::releaseChilds()
 {
-    for (auto c : childs)
+    for (const auto c : childs)
         c->release();
     childs.release();
 }
@@ -186,7 +186,7 @@ void AstNode::release()
 
     if (hasExtOwner())
     {
-        for (auto c : extOwner()->nodesToFree)
+        for (const auto c : extOwner()->nodesToFree)
             c->release();
         Allocator::free<AstNode::NodeExtensionOwner>(extOwner());
     }
@@ -204,7 +204,7 @@ void AstNode::release()
     {
     case AstNodeKind::FuncDecl:
     {
-        auto funcDecl = CastAst<AstFuncDecl>(this, AstNodeKind::FuncDecl);
+        const auto funcDecl = CastAst<AstFuncDecl>(this, AstNodeKind::FuncDecl);
         if (funcDecl->content)
             funcDecl->content->ownerScope->release();
         break;
@@ -214,7 +214,7 @@ void AstNode::release()
     }
 
     // Release childs first
-    for (auto c : childs)
+    for (const auto c : childs)
         c->release();
 
     // Then destruct node
@@ -522,7 +522,7 @@ AstNode* AstNode::clone(CloneContext& context)
 
     default:
     {
-        auto newNode = Ast::newNode<AstNode>();
+        const auto newNode = Ast::newNode<AstNode>();
         if (flags & AST_NEED_SCOPE)
         {
             auto cloneContext        = context;
@@ -545,7 +545,7 @@ AstNode* AstNode::clone(CloneContext& context)
 
 void AstNode::inheritOrFlag(uint64_t flag)
 {
-    for (auto child : childs)
+    for (const auto child : childs)
         flags |= child->flags & flag;
 }
 
@@ -573,7 +573,7 @@ void AstNode::inheritAndFlag3(uint64_t flag1, uint64_t flag2, uint64_t flag3)
 
 void AstNode::inheritAndFlag1(AstNode* who, uint64_t flag)
 {
-    for (auto child : who->childs)
+    for (const auto child : who->childs)
     {
         if (!(child->flags & flag))
             return;
@@ -587,7 +587,7 @@ void AstNode::inheritAndFlag2(AstNode* who, uint64_t flag1, uint64_t flag2)
     flags |= flag1;
     flags |= flag2;
 
-    for (auto child : who->childs)
+    for (const auto child : who->childs)
     {
         if (!(child->flags & flag1))
             flags &= ~flag1;
@@ -604,7 +604,7 @@ void AstNode::inheritAndFlag3(AstNode* who, uint64_t flag1, uint64_t flag2, uint
     flags |= flag2;
     flags |= flag3;
 
-    for (auto child : who->childs)
+    for (const auto child : who->childs)
     {
         if (!(child->flags & flag1))
             flags &= ~flag1;
@@ -754,7 +754,7 @@ bool AstNode::isEmptyFct()
 {
     if (kind != AstNodeKind::FuncDecl)
         return false;
-    auto funcDecl = CastAst<AstFuncDecl>(this, AstNodeKind::FuncDecl);
+    const auto funcDecl = CastAst<AstFuncDecl>(this, AstNodeKind::FuncDecl);
     return funcDecl->content == nullptr;
 }
 
@@ -784,7 +784,7 @@ bool AstNode::isFunctionCall()
     if (kind != AstNodeKind::Identifier)
         return false;
 
-    auto id = CastAst<AstIdentifier>(this, AstNodeKind::Identifier);
+    const auto id = CastAst<AstIdentifier>(this, AstNodeKind::Identifier);
     return id->callParameters != nullptr;
 }
 
@@ -800,7 +800,7 @@ bool AstNode::forceTakeAddress()
 void AstNode::swap2Childs()
 {
     SWAG_ASSERT(childs.size() == 2);
-    auto tmp  = childs[0];
+    const auto tmp  = childs[0];
     childs[0] = childs[1];
     childs[1] = tmp;
 }
@@ -822,7 +822,7 @@ bool AstNode::hasSpecialFuncCall(const Utf8& name)
 
 AstNode* AstNode::inSimpleReturn()
 {
-    auto test = parent;
+    const auto test = parent;
     if (!test)
         return nullptr;
     if (test->kind == AstNodeKind::Return)
@@ -1014,37 +1014,37 @@ const Token& AstNode::getTokenName()
 {
     if (kind == AstNodeKind::FuncDecl)
     {
-        auto fctDecl = CastAst<AstFuncDecl>(this, AstNodeKind::FuncDecl);
+        const auto fctDecl = CastAst<AstFuncDecl>(this, AstNodeKind::FuncDecl);
         return fctDecl->tokenName;
     }
 
     if (kind == AstNodeKind::AttrDecl)
     {
-        auto attrDecl = CastAst<AstAttrDecl>(this, AstNodeKind::AttrDecl);
+        const auto attrDecl = CastAst<AstAttrDecl>(this, AstNodeKind::AttrDecl);
         return attrDecl->tokenName;
     }
 
     if (kind == AstNodeKind::StructDecl)
     {
-        auto structDecl = CastAst<AstStruct>(this, AstNodeKind::StructDecl);
+        const auto structDecl = CastAst<AstStruct>(this, AstNodeKind::StructDecl);
         return structDecl->tokenName;
     }
 
     if (kind == AstNodeKind::InterfaceDecl)
     {
-        auto itfDecl = CastAst<AstStruct>(this, AstNodeKind::InterfaceDecl);
+        const auto itfDecl = CastAst<AstStruct>(this, AstNodeKind::InterfaceDecl);
         return itfDecl->tokenName;
     }
 
     if (kind == AstNodeKind::EnumDecl)
     {
-        auto enumDecl = CastAst<AstEnum>(this, AstNodeKind::EnumDecl);
+        const auto enumDecl = CastAst<AstEnum>(this, AstNodeKind::EnumDecl);
         return enumDecl->tokenName;
     }
 
     if (kind == AstNodeKind::Impl)
     {
-        auto implDecl = CastAst<AstImpl>(this, AstNodeKind::Impl);
+        const auto implDecl = CastAst<AstImpl>(this, AstNodeKind::Impl);
         return implDecl->identifier->getTokenName();
     }
 
@@ -1103,7 +1103,7 @@ bool AstNode::isSameStackFrame(SymbolOverload* overload)
     if (!(overload->flags & OVERLOAD_VAR_FUNC_PARAM) && !(overload->flags & OVERLOAD_VAR_LOCAL))
         return true;
 
-    auto nodeVar = overload->node;
+    const auto nodeVar = overload->node;
     if ((flags & AST_IN_RUN_BLOCK) != (nodeVar->flags & AST_IN_RUN_BLOCK))
         return false;
     if (ownerFct != nodeVar->ownerFct)
@@ -1171,7 +1171,7 @@ void AstNode::computeLocation(SourceLocation& start, SourceLocation& end)
 {
     start = token.startLocation;
     end   = token.endLocation;
-    for (auto p : childs)
+    for (const auto p : childs)
     {
         if (p->kind == AstNodeKind::Statement)
             break;
@@ -1212,8 +1212,8 @@ AstNode* AstNode::findParentAttrUse(const Utf8& name)
     {
         if (search->kind == AstNodeKind::AttrUse)
         {
-            auto attrDecl = CastAst<AstAttrUse>(search, AstNodeKind::AttrUse);
-            auto it       = attrDecl->attributes.getAttribute(name);
+            const auto attrDecl = CastAst<AstAttrUse>(search, AstNodeKind::AttrUse);
+            const auto it       = attrDecl->attributes.getAttribute(name);
             if (it)
                 return it->child ? it->child : it->node;
         }
@@ -1250,7 +1250,7 @@ AstNode* AstNode::findParent(AstNodeKind parentKind1, AstNodeKind parentKind2)
 
 AstNode* AstNode::findChild(AstNodeKind childKind)
 {
-    for (auto c : childs)
+    for (const auto c : childs)
     {
         if (c->kind == childKind)
             return c;
@@ -1285,7 +1285,7 @@ AstNode* AstNode::findChildRefRec(AstNode* ref, AstNode* fromChild)
 
         if (childs[i]->childs.count == fromChild->childs[i]->childs.count)
         {
-            auto result = childs[i]->findChildRefRec(ref, fromChild->childs[i]);
+            const auto result = childs[i]->findChildRefRec(ref, fromChild->childs[i]);
             if (result)
                 return result;
         }
@@ -1305,7 +1305,7 @@ void AstNode::setOwnerAttrUse(AstAttrUse* attrUse)
     case AstNodeKind::CompilerIf:
     case AstNodeKind::CompilerIfBlock:
     case AstNodeKind::SwitchCaseBlock:
-        for (auto s : childs)
+        for (const auto s : childs)
             s->setOwnerAttrUse(attrUse);
         break;
 

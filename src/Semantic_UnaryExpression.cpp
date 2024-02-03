@@ -9,8 +9,8 @@
 
 bool Semantic::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNode* child)
 {
-    auto node     = context->node;
-    auto typeInfo = TypeManager::concreteType(child->typeInfo);
+    const auto node     = context->node;
+    const auto typeInfo = TypeManager::concreteType(child->typeInfo);
 
     switch (typeInfo->nativeType)
     {
@@ -106,7 +106,7 @@ bool Semantic::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNod
 
 bool Semantic::resolveUnaryOpExclam(SemanticContext* context, AstNode* child)
 {
-    auto typeInfo = TypeManager::concreteType(child->typeInfo);
+    const auto typeInfo = TypeManager::concreteType(child->typeInfo);
     if (typeInfo->isLambdaClosure() || typeInfo->isPointer() || typeInfo->isInterface() || typeInfo->isSlice())
     {
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, child, CASTFLAG_AUTO_BOOL));
@@ -151,8 +151,8 @@ bool Semantic::resolveUnaryOpExclam(SemanticContext* context, AstNode* child)
 
 bool Semantic::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
 {
-    auto node     = context->node;
-    auto typeInfo = TypeManager::concreteType(child->typeInfo);
+    const auto node     = context->node;
+    const auto typeInfo = TypeManager::concreteType(child->typeInfo);
 
     switch (typeInfo->nativeType)
     {
@@ -219,8 +219,8 @@ bool Semantic::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
 
 bool Semantic::resolveUnaryOp(SemanticContext* context)
 {
-    auto op    = context->node;
-    auto child = op->childs[0];
+    const auto op    = context->node;
+    const auto child = op->childs[0];
 
     op->typeInfo    = child->typeInfo;
     op->byteCodeFct = ByteCodeGen::emitUnaryOp;

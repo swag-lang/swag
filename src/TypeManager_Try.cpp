@@ -11,7 +11,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 
     if (castFlags & CASTFLAG_UFCS && structType->isPointerTo(TypeInfoKind::Struct))
     {
-        auto typePtr = CastTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
+        const auto typePtr = CastTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
         structType   = typePtr->pointedType;
     }
 
@@ -20,7 +20,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
     // Cast to a const reference, must take the pointed struct
     if (structType->isConstPointerRef() && castFlags & CASTFLAG_PARAMS)
     {
-        auto typePtr = CastTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
+        const auto typePtr = CastTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
         structType   = typePtr->pointedType;
         toType       = structType;
     }
@@ -28,7 +28,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
     // We can also match a moveref with an opAffect
     else if (structType->isPointerMoveRef() && castFlags & CASTFLAG_PARAMS)
     {
-        auto typePtr = CastTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
+        const auto typePtr = CastTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
         structType   = typePtr->pointedType;
         toType       = structType;
         isMoveRef    = true;
@@ -36,7 +36,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
 
     if (!structType->isStruct() || !(castFlags & (CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OPCAST)))
         return false;
-    auto typeStruct = CastTypeInfo<TypeInfoStruct>(structType, TypeInfoKind::Struct);
+    const auto typeStruct = CastTypeInfo<TypeInfoStruct>(structType, TypeInfoKind::Struct);
     if (!typeStruct->declNode)
         return false;
 
@@ -73,7 +73,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
     {
         SharedLock lkOp(typeStruct->mutexCache);
 
-        auto it = typeStruct->mapOpAffect[idxMap].find(fromType);
+        const auto it = typeStruct->mapOpAffect[idxMap].find(fromType);
         if (it != typeStruct->mapOpAffect[idxMap].end())
         {
             if (!it->second)
@@ -114,7 +114,7 @@ bool TypeManager::tryOpAffect(SemanticContext* context, TypeInfo* toType, TypeIn
         SharedLock ls(symbol->mutex);
         for (auto over : symbol->overloads)
         {
-            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+            const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (!(typeFunc->declNode->attributeFlags & ATTRIBUTE_IMPLICIT) && !(castFlags & CASTFLAG_EXPLICIT))
                 continue;
             if (typeFunc->parameters.size() <= 1)
@@ -160,20 +160,20 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
     auto structType = fromType;
     if (castFlags & CASTFLAG_UFCS && structType->isPointerTo(TypeInfoKind::Struct))
     {
-        auto typePtr = CastTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
+        const auto typePtr = CastTypeInfo<TypeInfoPointer>(structType, TypeInfoKind::Pointer);
         structType   = typePtr->pointedType;
     }
 
     if (!structType->isStruct() || !(castFlags & (CASTFLAG_EXPLICIT | CASTFLAG_AUTO_OPCAST)))
         return false;
-    auto typeStruct = CastTypeInfo<TypeInfoStruct>(structType, TypeInfoKind::Struct);
+    const auto typeStruct = CastTypeInfo<TypeInfoStruct>(structType, TypeInfoKind::Struct);
     if (!typeStruct->declNode)
         return false;
 
     // In the cache of possible matches
     {
         SharedLock lkOp(typeStruct->mutexCache);
-        auto       it = typeStruct->mapOpCast.find(toType);
+        const auto it = typeStruct->mapOpCast.find(toType);
         if (it != typeStruct->mapOpCast.end())
         {
             if (!it->second)
@@ -225,7 +225,7 @@ bool TypeManager::tryOpCast(SemanticContext* context, TypeInfo* toType, TypeInfo
         SharedLock ls(symbol->mutex);
         for (auto over : symbol->overloads)
         {
-            auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
+            const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
             if (typeFunc->isGeneric() || typeFunc->returnType->isGeneric())
                 continue;
             if (!(typeFunc->declNode->attributeFlags & ATTRIBUTE_IMPLICIT) && !(castFlags & CASTFLAG_EXPLICIT))

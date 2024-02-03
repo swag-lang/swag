@@ -10,12 +10,12 @@ bool LLVM::emitOS(const BuildParameters& buildParameters)
 {
     if (g_CommandLine.target.os == SwagTargetOs::Windows)
     {
-        int   ct              = buildParameters.compileType;
-        int   precompileIndex = buildParameters.precompileIndex;
-        auto& pp              = *perThread[ct][precompileIndex];
-        auto& context         = *pp.context;
-        auto& builder         = *pp.builder;
-        auto& modu            = *pp.module;
+        const int   ct              = buildParameters.compileType;
+        const int   precompileIndex = buildParameters.precompileIndex;
+        const auto& pp              = *perThread[ct][precompileIndex];
+        auto&       context         = *pp.context;
+        auto&       builder         = *pp.builder;
+        auto&       modu            = *pp.module;
 
         // int _DllMainCRTStartup(void*, int, void*)
         {
@@ -279,16 +279,16 @@ bool LLVM::emitMain(const BuildParameters& buildParameters)
 
 bool LLVM::emitGetTypeTable(const BuildParameters& buildParameters)
 {
-    int ct              = buildParameters.compileType;
-    int precompileIndex = buildParameters.precompileIndex;
+    const int ct              = buildParameters.compileType;
+    const int precompileIndex = buildParameters.precompileIndex;
 
-    auto& pp      = *perThread[ct][precompileIndex];
+    const auto& pp      = *perThread[ct][precompileIndex];
     auto& context = *pp.context;
     auto& builder = *pp.builder;
     auto& modu    = *pp.module;
 
-    auto            fctType  = llvm::FunctionType::get(PTR_I8_TY(), {}, false);
-    auto            funcName = module->getGlobalPrivFct(g_LangSpec->name_getTypeTable);
+    const auto      fctType  = llvm::FunctionType::get(PTR_I8_TY(), {}, false);
+    const auto      funcName = module->getGlobalPrivFct(g_LangSpec->name_getTypeTable);
     llvm::Function* fct      = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, funcName.c_str(), modu);
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
         fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
@@ -296,7 +296,7 @@ bool LLVM::emitGetTypeTable(const BuildParameters& buildParameters)
     llvm::BasicBlock* BB = llvm::BasicBlock::Create(context, "entry", fct);
     builder.SetInsertPoint(BB);
 
-    auto r1 = builder.CreateInBoundsGEP(I8_TY(), pp.constantSeg, builder.getInt32(module->typesSliceOffset));
+    const auto r1 = builder.CreateInBoundsGEP(I8_TY(), pp.constantSeg, builder.getInt32(module->typesSliceOffset));
     builder.CreateRet(TO_PTR_I8(r1));
 
     return true;
@@ -304,16 +304,16 @@ bool LLVM::emitGetTypeTable(const BuildParameters& buildParameters)
 
 bool LLVM::emitGlobalPreMain(const BuildParameters& buildParameters)
 {
-    int ct              = buildParameters.compileType;
-    int precompileIndex = buildParameters.precompileIndex;
+    const int ct              = buildParameters.compileType;
+    const int precompileIndex = buildParameters.precompileIndex;
 
-    auto& pp      = *perThread[ct][precompileIndex];
+    const auto& pp      = *perThread[ct][precompileIndex];
     auto& context = *pp.context;
     auto& builder = *pp.builder;
     auto& modu    = *pp.module;
 
-    auto            fctType = llvm::FunctionType::get(VOID_TY(), {pp.processInfosTy->getPointerTo()}, false);
-    auto            nameFct = module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
+    const auto      fctType = llvm::FunctionType::get(VOID_TY(), {pp.processInfosTy->getPointerTo()}, false);
+    const auto      nameFct = module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
     llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, nameFct.c_str(), modu);
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
         fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
@@ -323,19 +323,19 @@ bool LLVM::emitGlobalPreMain(const BuildParameters& buildParameters)
 
     // __process_infos = *processInfos;
     {
-        auto p0 = TO_PTR_I8(pp.processInfos);
-        auto p1 = TO_PTR_I8(fct->getArg(0));
+        const auto p0 = TO_PTR_I8(pp.processInfos);
+        const auto p1 = TO_PTR_I8(fct->getArg(0));
         builder.CreateMemCpy(p0, llvm::Align{}, p1, llvm::Align{}, builder.getInt64(sizeof(SwagProcessInfos)));
     }
 
     // Call to #premain functions
-    auto fctType1 = llvm::FunctionType::get(VOID_TY(), {}, false);
-    for (auto bc : module->byteCodePreMainFunc)
+    const auto fctType1 = llvm::FunctionType::get(VOID_TY(), {}, false);
+    for (const auto bc : module->byteCodePreMainFunc)
     {
-        auto node = bc->node;
+        const auto node = bc->node;
         if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
-        auto func = modu.getOrInsertFunction(bc->getCallName().c_str(), fctType1);
+        const auto func = modu.getOrInsertFunction(bc->getCallName().c_str(), fctType1);
         builder.CreateCall(func);
     }
 
@@ -345,16 +345,16 @@ bool LLVM::emitGlobalPreMain(const BuildParameters& buildParameters)
 
 bool LLVM::emitGlobalInit(const BuildParameters& buildParameters)
 {
-    int ct              = buildParameters.compileType;
-    int precompileIndex = buildParameters.precompileIndex;
+    const int ct              = buildParameters.compileType;
+    const int precompileIndex = buildParameters.precompileIndex;
 
     auto& pp      = *perThread[ct][precompileIndex];
     auto& context = *pp.context;
     auto& builder = *pp.builder;
     auto& modu    = *pp.module;
 
-    auto            fctType = llvm::FunctionType::get(VOID_TY(), {pp.processInfosTy->getPointerTo()}, false);
-    auto            nameFct = module->getGlobalPrivFct(g_LangSpec->name_globalInit);
+    const auto      fctType = llvm::FunctionType::get(VOID_TY(), {pp.processInfosTy->getPointerTo()}, false);
+    const auto      nameFct = module->getGlobalPrivFct(g_LangSpec->name_globalInit);
     llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, nameFct.c_str(), modu);
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
         fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
@@ -364,14 +364,14 @@ bool LLVM::emitGlobalInit(const BuildParameters& buildParameters)
 
     // __process_infos = *processInfos;
     {
-        auto p0 = TO_PTR_I8(pp.processInfos);
-        auto p1 = TO_PTR_I8(fct->getArg(0));
+        const auto p0 = TO_PTR_I8(pp.processInfos);
+        const auto p1 = TO_PTR_I8(fct->getArg(0));
         builder.CreateMemCpy(p0, llvm::Align{}, p1, llvm::Align{}, builder.getInt64(sizeof(SwagProcessInfos)));
     }
 
     // Init thread local storage id
     {
-        auto allocT = builder.CreateAlloca(I64_TY(), builder.getInt64(1));
+        const auto allocT = builder.CreateAlloca(I64_TY(), builder.getInt64(1));
         allocT->setAlignment(llvm::Align{16});
         emitCall(buildParameters, module, g_LangSpec->name__tlsAlloc, nullptr, allocT, {UINT32_MAX}, {pp.symTls_threadLocalId});
     }
@@ -383,7 +383,7 @@ bool LLVM::emitGlobalInit(const BuildParameters& buildParameters)
 
     // Init type table slice for each dependency (by calling ???_getTypeTable)
     auto r1 = builder.CreateInBoundsGEP(I8_TY(), pp.constantSeg, builder.getInt32(module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types)));
-    for (auto& dep : module->moduleDependencies)
+    for (const auto& dep : module->moduleDependencies)
     {
         if (!dep->module->isSwag)
         {
@@ -391,30 +391,30 @@ bool LLVM::emitGlobalInit(const BuildParameters& buildParameters)
             continue;
         }
 
-        auto callTable = dep->module->getGlobalPrivFct(g_LangSpec->name_getTypeTable);
-        auto callType  = llvm::FunctionType::get(PTR_I8_TY(), {}, false);
-        auto func      = modu.getOrInsertFunction(callTable.c_str(), callType);
-        auto r0        = builder.CreateCall(func);
+        auto       callTable = dep->module->getGlobalPrivFct(g_LangSpec->name_getTypeTable);
+        const auto callType  = llvm::FunctionType::get(PTR_I8_TY(), {}, false);
+        const auto func      = modu.getOrInsertFunction(callTable.c_str(), callType);
+        const auto r0        = builder.CreateCall(func);
 
         // Count types is stored as a uint64_t at the start of the address
-        auto numTypes = builder.CreateLoad(I64_TY(), r0);
-        auto ptrTypes = builder.CreateInBoundsGEP(I8_TY(), r0, builder.getInt64(sizeof(uint64_t)));
+        const auto numTypes = builder.CreateLoad(I64_TY(), r0);
+        const auto ptrTypes = builder.CreateInBoundsGEP(I8_TY(), r0, builder.getInt64(sizeof(uint64_t)));
 
         builder.CreateStore(ptrTypes, TO_PTR_PTR_I8(r1));
-        auto r2 = builder.CreateInBoundsGEP(I8_TY(), r1, builder.getInt64(sizeof(void*)));
+        const auto r2 = builder.CreateInBoundsGEP(I8_TY(), r1, builder.getInt64(sizeof(void*)));
         builder.CreateStore(numTypes, TO_PTR_I64(r2));
 
         r1 = builder.CreateInBoundsGEP(I8_TY(), r1, builder.getInt64(sizeof(SwagModule)));
     }
 
     // Call to #init functions
-    auto initFctType = llvm::FunctionType::get(VOID_TY(), false);
-    for (auto bc : module->byteCodeInitFunc)
+    const auto initFctType = llvm::FunctionType::get(VOID_TY(), false);
+    for (const auto bc : module->byteCodeInitFunc)
     {
-        auto node = bc->node;
+        const auto node = bc->node;
         if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
-        auto func = modu.getOrInsertFunction(bc->getCallName().c_str(), initFctType);
+        const auto func = modu.getOrInsertFunction(bc->getCallName().c_str(), initFctType);
         builder.CreateCall(func);
     }
 
@@ -424,16 +424,16 @@ bool LLVM::emitGlobalInit(const BuildParameters& buildParameters)
 
 bool LLVM::emitGlobalDrop(const BuildParameters& buildParameters)
 {
-    int ct              = buildParameters.compileType;
-    int precompileIndex = buildParameters.precompileIndex;
+    const int ct              = buildParameters.compileType;
+    const int precompileIndex = buildParameters.precompileIndex;
 
-    auto& pp      = *perThread[ct][precompileIndex];
+    const auto& pp      = *perThread[ct][precompileIndex];
     auto& context = *pp.context;
     auto& builder = *pp.builder;
     auto& modu    = *pp.module;
 
-    auto            fctType = llvm::FunctionType::get(VOID_TY(), false);
-    auto            nameFct = module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
+    const auto      fctType = llvm::FunctionType::get(VOID_TY(), false);
+    const auto      nameFct = module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
     llvm::Function* fct     = llvm::Function::Create(fctType, llvm::Function::ExternalLinkage, nameFct.c_str(), modu);
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
         fct->setDLLStorageClass(llvm::GlobalValue::DLLExportStorageClass);
@@ -442,12 +442,12 @@ bool LLVM::emitGlobalDrop(const BuildParameters& buildParameters)
     builder.SetInsertPoint(BB);
 
     // Call to #drop functions
-    for (auto bc : module->byteCodeDropFunc)
+    for (const auto bc : module->byteCodeDropFunc)
     {
-        auto node = bc->node;
+        const auto node = bc->node;
         if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
-        auto func = modu.getOrInsertFunction(bc->getCallName().c_str(), fctType);
+        const auto func = modu.getOrInsertFunction(bc->getCallName().c_str(), fctType);
         builder.CreateCall(func);
     }
 

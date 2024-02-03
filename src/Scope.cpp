@@ -180,7 +180,7 @@ Scope* Scope::getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind
     // Do not create a scope if a scope with the same name already exists
     if (matchName)
     {
-        for (auto child : childScopes)
+        for (const auto child : childScopes)
         {
             if (child->name == scopeName)
             {
@@ -189,7 +189,7 @@ Scope* Scope::getOrAddChild(AstNode* nodeOwner, const Utf8& scopeName, ScopeKind
         }
     }
 
-    auto newScope         = Allocator::alloc<Scope>();
+    const auto newScope         = Allocator::alloc<Scope>();
     newScope->kind        = scopeKind;
     newScope->parentScope = this;
     SWAG_ASSERT(nodeOwner);

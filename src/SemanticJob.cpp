@@ -16,7 +16,7 @@ void SemanticJob::release()
 
 SemanticJob* SemanticJob::newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* rootNode, bool run)
 {
-    auto job          = Allocator::alloc<SemanticJob>();
+    const auto job          = Allocator::alloc<SemanticJob>();
     job->sourceFile   = sourceFile;
     job->module       = sourceFile->module;
     job->dependentJob = dependentJob;
@@ -28,7 +28,7 @@ SemanticJob* SemanticJob::newJob(Job* dependentJob, SourceFile* sourceFile, AstN
 
 bool SemanticJob::spawnJob()
 {
-    auto node = context.node;
+    const auto node = context.node;
 
     // Some nodes need to spawn a new semantic job
     if (context.canSpawn && node != originalNode)
@@ -67,7 +67,7 @@ bool SemanticJob::spawnJob()
             if (!(node->flags & AST_NO_SEMANTIC) && !(node->semFlags & SEMFLAG_FILE_JOB_PASS))
             {
                 SWAG_ASSERT(sourceFile->module == module);
-                auto job                 = newJob(dependentJob, sourceFile, node, false);
+                const auto job                 = newJob(dependentJob, sourceFile, node, false);
                 job->context.errCxtSteps = context.errCxtSteps;
                 g_ThreadMgr.addJob(job);
             }
@@ -107,7 +107,7 @@ JobResult SemanticJob::execute()
 
     while (!nodes.empty())
     {
-        auto node      = nodes.back();
+        const auto node      = nodes.back();
         context.node   = node;
         context.result = ContextResult::Done;
 

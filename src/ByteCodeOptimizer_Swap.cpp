@@ -88,10 +88,10 @@ bool ByteCodeOptimizer::optimizePassSwap(ByteCodeOptContext* context)
             }
         }
 
-        for (auto it : context->mapInstInst)
+        for (const auto it : context->mapInstInst)
         {
-            auto ip  = it.first;
-            auto ipn = it.second;
+            auto       ip  = it.first;
+            const auto ipn = it.second;
 
             if (ipn == ip + 1)
                 continue;

@@ -92,8 +92,8 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
 
         if (g_CommandLine.moduleName.empty())
         {
-            Utf8 modulePath = module->path.string();
-            Utf8 srcPath    = g_Workspace->dependenciesPath.string();
+            const Utf8 modulePath = module->path.string();
+            const Utf8 srcPath    = g_Workspace->dependenciesPath.string();
             if (modulePath.find(srcPath) != 0)
                 return false;
         }
@@ -110,11 +110,11 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
     // Be sure the output file is here, and is more recent than the export file
     if (module->buildCfg.backendKind != BuildCfgBackendKind::None && module->buildCfg.backendKind != BuildCfgBackendKind::Export)
     {
-        auto       outFileFame = getOutputFileName(module->buildParameters);
+        const auto       outFileFame = getOutputFileName(module->buildParameters);
         error_code err;
         if (!filesystem::exists(outFileFame, err))
             return false;
-        auto timeOut = OS::getFileWriteTime(outFileFame.string().c_str());
+        const auto timeOut = OS::getFileWriteTime(outFileFame.string().c_str());
         if (!invert && (timeOut < moreRecentSourceFile))
             return false;
         if (invert && (timeOut > moreRecentSourceFile))
@@ -133,11 +133,11 @@ bool Backend::isUpToDate(uint64_t moreRecentSourceFile, bool invert)
         return false;
 
     // If one of my dependency is more recent than me, then need to rebuild
-    for (auto dep : module->moduleDependencies)
+    for (const auto dep : module->moduleDependencies)
     {
-        auto it = g_Workspace->mapModulesNames.find(dep->name);
+        const auto it = g_Workspace->mapModulesNames.find(dep->name);
         SWAG_ASSERT(it != g_Workspace->mapModulesNames.end());
-        auto depModule = it->second;
+        const auto depModule = it->second;
         if (!depModule->backend->isUpToDate(timeToTest, true))
             return false;
     }
@@ -229,7 +229,7 @@ const char* Backend::getOsName(const BackendTarget& target)
 
 uint64_t Backend::getRuntimeFlags(Module* module)
 {
-    uint64_t flags = (uint64_t) SwagRuntimeFlags::Zero;
+    const uint64_t flags = (uint64_t) SwagRuntimeFlags::Zero;
     return flags;
 }
 
@@ -242,7 +242,7 @@ bool Backend::setupExportFile(bool force)
     if (publicPath.empty())
         return false;
 
-    Utf8 exportName = module->name + ".swg";
+    const Utf8 exportName = module->name + ".swg";
     publicPath.append(exportName.c_str());
     exportFileName = exportName;
     exportFilePath = publicPath;
@@ -290,7 +290,7 @@ JobResult Backend::generateExportFile(Job* ownerJob)
     if (passExport == BackendPreCompilePass::GenerateObj)
     {
         passExport        = BackendPreCompilePass::Release;
-        auto job          = Allocator::alloc<ModuleSaveExportJob>();
+        const auto job    = Allocator::alloc<ModuleSaveExportJob>();
         job->module       = module;
         job->dependentJob = ownerJob;
         ownerJob->jobsToAdd.push_back(job);
@@ -304,7 +304,7 @@ bool Backend::saveExportFile()
 {
     if (mustCompile && g_CommandLine.output)
     {
-        auto result = bufferSwg.flushToFile(exportFilePath);
+        const auto result = bufferSwg.flushToFile(exportFilePath);
         if (!result)
             return false;
         timeExportFile = OS::getFileWriteTime(exportFilePath.string().c_str());
@@ -326,11 +326,11 @@ void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJob* job
 
 void Backend::getRangeFunctionIndexForJob(const BuildParameters& buildParameters, Module* moduleToGen, int& start, int& end)
 {
-    int size            = (int) moduleToGen->byteCodeFuncToGen.size();
-    int precompileIndex = buildParameters.precompileIndex;
+    const int size            = (int) moduleToGen->byteCodeFuncToGen.size();
+    const int precompileIndex = buildParameters.precompileIndex;
 
     SWAG_ASSERT(numPreCompileBuffers > 1);
-    int range = size / (numPreCompileBuffers - 1);
+    const int range = size / (numPreCompileBuffers - 1);
 
     // First precompileIndex is dedicated to datas and main
     // :SegZeroIsData
@@ -364,7 +364,7 @@ bool Backend::emitAllFunctionBodies(const BuildParameters& buildParameters, Modu
     job->backend                = this;
 
     // Put the bootstrap and the runtime in the first file
-    int precompileIndex = buildParameters.precompileIndex;
+    const int precompileIndex = buildParameters.precompileIndex;
     if (precompileIndex == 1) // :SegZeroIsData
     {
         SWAG_ASSERT(g_Workspace->bootstrapModule);

@@ -10,9 +10,9 @@
 
 JobResult FetchModuleFileSystemJob::execute()
 {
-    auto dep = module->fetchDep;
+    const auto dep = module->fetchDep;
 
-    auto depName = Fmt("%s %u.%d.%d",
+    const auto depName = Fmt("%s %u.%d.%d",
                        dep->name.c_str(),
                        dep->module->buildCfg.moduleVersion,
                        dep->module->buildCfg.moduleRevision,
@@ -28,8 +28,8 @@ JobResult FetchModuleFileSystemJob::execute()
     OS::visitFilesRec(dep->resolvedLocation.string().c_str(),
                       [&](const char* fileName)
                       {
-                          Path n    = fileName;
-                          Utf8 subN = fileName + dep->resolvedLocation.string().length() + 1;
+                          const Path n    = fileName;
+                          const Utf8 subN = fileName + dep->resolvedLocation.string().length() + 1;
 
                           if (collectSourceFiles)
                           {
@@ -67,8 +67,8 @@ JobResult FetchModuleFileSystemJob::execute()
     OS::visitFilesRec(destPath.string().c_str(),
                       [&](const char* fileName)
                       {
-                          Path n    = fileName;
-                          Utf8 subN = fileName + destPath.string().length() + 1;
+                          const Path n    = fileName;
+                          const Utf8 subN = fileName + destPath.string().length() + 1;
 
                           // Do not collect public folder
                           Path publicFolder = dep->resolvedLocation;
@@ -114,7 +114,7 @@ JobResult FetchModuleFileSystemJob::execute()
             return JobResult::ReleaseJob;
         }
 
-        auto job        = Allocator::alloc<CopyFileJob>();
+        const auto job        = Allocator::alloc<CopyFileJob>();
         job->module     = module;
         job->sourcePath = srcFileName;
         job->destPath   = destFileName;

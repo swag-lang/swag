@@ -41,14 +41,14 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
 
     if (checkNode->kind == AstNodeKind::Statement || checkNode->kind == AstNodeKind::StatementNoScope)
     {
-        for (auto s : checkNode->childs)
+        for (const auto s : checkNode->childs)
             SWAG_CHECK(checkAttribute(context, oneAttribute, s));
         return true;
     }
 
     if (checkNode->kind == AstNodeKind::AttrUse)
     {
-        auto attrUse = CastAst<AstAttrUse>(checkNode, AstNodeKind::AttrUse);
+        const auto attrUse = CastAst<AstAttrUse>(checkNode, AstNodeKind::AttrUse);
         if (checkNode->flags & AST_GENERATED && attrUse->content->kind == AstNodeKind::Namespace && attrUse->content->flags & AST_GENERATED)
             SWAG_CHECK(checkAttribute(context, oneAttribute, attrUse->content->childs.front()));
         else
@@ -60,17 +60,17 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
     if (!oneAttribute->typeInfo->isFuncAttr())
         return context->report({oneAttribute, Fmt(Err(Err0218), oneAttribute->typeInfo->getDisplayNameC(), Naming::aKindName(oneAttribute->typeInfo).c_str())});
 
-    auto kind     = checkNode->kind;
-    auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);
+    const auto kind     = checkNode->kind;
+    const auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_ASSERT(checkNode);
 
     if (typeInfo->attributeUsage & AttributeUsage::All)
         return true;
 
-    bool        isGlobalVar = kind == AstNodeKind::VarDecl && checkNode->ownerScope->isGlobalOrImpl();
-    bool        isStructVar = kind == AstNodeKind::VarDecl && (checkNode->flags & AST_STRUCT_MEMBER);
-    bool        isLocalVar  = kind == AstNodeKind::VarDecl && !isGlobalVar && !isStructVar;
-    bool        isFuncParam = kind == AstNodeKind::FuncDeclParam;
+    const bool  isGlobalVar = kind == AstNodeKind::VarDecl && checkNode->ownerScope->isGlobalOrImpl();
+    const bool  isStructVar = kind == AstNodeKind::VarDecl && (checkNode->flags & AST_STRUCT_MEMBER);
+    const bool  isLocalVar  = kind == AstNodeKind::VarDecl && !isGlobalVar && !isStructVar;
+    const bool  isFuncParam = kind == AstNodeKind::FuncDeclParam;
     const char* specificMsg = nullptr;
 
     // Check specific hard coded attributes
@@ -175,24 +175,24 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
 
     if (specificMsg)
     {
-        auto       nakedName = Naming::kindName(checkNode);
-        Diagnostic diag{oneAttribute, Fmt(Err(Err0491), oneAttribute->token.ctext(), specificMsg)};
-        auto       note1 = Diagnostic::note(checkNode, checkNode->token, Fmt(Nte(Nte0024), nakedName.c_str()));
+        const auto       nakedName = Naming::kindName(checkNode);
+        const Diagnostic diag{oneAttribute, Fmt(Err(Err0491), oneAttribute->token.ctext(), specificMsg)};
+        const auto       note1 = Diagnostic::note(checkNode, checkNode->token, Fmt(Nte(Nte0024), nakedName.c_str()));
         return context->report(diag, note1, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
     }
     else
     {
-        auto nakedName = Naming::aKindName(checkNode);
+        const auto nakedName = Naming::aKindName(checkNode);
         if (nakedName == "<node>")
         {
-            Diagnostic diag{oneAttribute, Fmt(Err(Err0495), oneAttribute->token.ctext())};
+            const Diagnostic diag{oneAttribute, Fmt(Err(Err0495), oneAttribute->token.ctext())};
             return context->report(diag, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
         }
         else
         {
-            auto       nakedName1 = Naming::kindName(checkNode);
-            Diagnostic diag{oneAttribute, Fmt(Err(Err0492), oneAttribute->token.ctext(), nakedName.c_str())};
-            auto       note1 = Diagnostic::note(checkNode, checkNode->token, Fmt(Nte(Nte0063), nakedName1.c_str()));
+            const auto       nakedName1 = Naming::kindName(checkNode);
+            const Diagnostic diag{oneAttribute, Fmt(Err(Err0492), oneAttribute->token.ctext(), nakedName.c_str())};
+            const auto       note1 = Diagnostic::note(checkNode, checkNode->token, Fmt(Nte(Nte0063), nakedName1.c_str()));
             return context->report(diag, note1, Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload));
         }
     }
@@ -235,9 +235,9 @@ void Semantic::inheritAttributesFromOwnerFunc(AstNode* child)
     SWAG_ASSERT(child->kind == AstNodeKind::FuncDecl);
     SWAG_ASSERT(child->ownerFct);
 
-    auto attributeFlags = child->ownerFct->attributeFlags;
-    auto safetyOn       = child->ownerFct->safetyOn;
-    auto safetyOff      = child->ownerFct->safetyOff;
+    const auto attributeFlags = child->ownerFct->attributeFlags;
+    const auto safetyOn       = child->ownerFct->safetyOn;
+    const auto safetyOff      = child->ownerFct->safetyOff;
 
     child->attributeFlags |= attributeFlags & ATTRIBUTE_PRINT_BC;
     child->attributeFlags |= attributeFlags & ATTRIBUTE_PRINT_GEN_BC;
@@ -246,7 +246,7 @@ void Semantic::inheritAttributesFromOwnerFunc(AstNode* child)
 
 bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, AttributeList* result)
 {
-    auto attrUse = forNode->hasExtOwner() ? forNode->extOwner()->ownerAttrUse : nullptr;
+    const auto attrUse = forNode->hasExtOwner() ? forNode->extOwner()->ownerAttrUse : nullptr;
     SWAG_CHECK(collectAttributes(context, forNode, result, attrUse));
     setDefaultAccess(forNode);
     return true;
@@ -627,16 +627,16 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
 
 bool Semantic::preResolveAttrDecl(SemanticContext* context)
 {
-    auto node     = CastAst<AstAttrDecl>(context->node, AstNodeKind::AttrDecl);
-    auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+    const auto node     = CastAst<AstAttrDecl>(context->node, AstNodeKind::AttrDecl);
+    const auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
     SWAG_CHECK(collectAttributes(context, node, &typeInfo->attributes));
     return true;
 }
 
 bool Semantic::resolveAttrDecl(SemanticContext* context)
 {
-    auto node     = CastAst<AstAttrDecl>(context->node, AstNodeKind::AttrDecl);
-    auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
+    const auto node     = CastAst<AstAttrDecl>(context->node, AstNodeKind::AttrDecl);
+    const auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(node->typeInfo, TypeInfoKind::FuncAttr);
 
     SWAG_CHECK(setupFuncDeclParams(context, typeInfo, node, node->parameters, false));
 

@@ -8,13 +8,13 @@ bool SCBE::buildRelocSegment(const BuildParameters& buildParameters, DataSegment
     if (!dataSegment->totalCount)
         return true;
 
-    int           ct              = buildParameters.compileType;
-    int           precompileIndex = buildParameters.precompileIndex;
+    const int     ct              = buildParameters.compileType;
+    const int     precompileIndex = buildParameters.precompileIndex;
     auto&         pp              = *perThread[ct][precompileIndex];
     CPURelocation reloc;
 
     SWAG_ASSERT(precompileIndex == 0);
-    for (auto& k : dataSegment->initPtr)
+    for (const auto& k : dataSegment->initPtr)
     {
         uint32_t sym;
         SWAG_ASSERT(k.patchOffset <= dataSegment->totalCount - sizeof(void*));
@@ -54,7 +54,7 @@ bool SCBE::buildRelocSegment(const BuildParameters& buildParameters, DataSegment
     {
         *(void**) dataSegment->address(k.first) = 0;
 
-        auto sym             = pp.getOrAddSymbol(k.second, CPUSymbolKind::Extern);
+        const auto sym             = pp.getOrAddSymbol(k.second, CPUSymbolKind::Extern);
         reloc.virtualAddress = k.first;
         reloc.symbolIndex    = sym->index;
         reloc.type           = IMAGE_REL_AMD64_ADDR64;

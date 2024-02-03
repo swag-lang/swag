@@ -130,7 +130,7 @@ void Workspace::cleanCommand()
         OS::visitFolders(cachePath.string().c_str(),
                          [this](const char* folder)
                          {
-                             auto wkPath = workspacePath.filename().string() + "-";
+                             const auto wkPath = workspacePath.filename().string() + "-";
 
                              // We sure to only clean for the given workspace
                              if (strstr(folder, wkPath.c_str()) == folder)
@@ -152,7 +152,7 @@ void Workspace::cleanCommand()
     {
         if (filesystem::exists(dependenciesPath, err))
         {
-            auto path = dependenciesPath;
+            const auto path = dependenciesPath;
             g_Log.messageHeaderCentered("Cleaning", path.string().c_str());
             if (!g_CommandLine.cleanLog)
                 cleanFolderContent(dependenciesPath);

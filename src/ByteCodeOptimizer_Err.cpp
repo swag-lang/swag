@@ -11,7 +11,7 @@ bool ByteCodeOptimizer::optimizePassErr(ByteCodeOptContext* context)
     if (!(context->contextBcFlags & OCF_HAS_ERR))
         return true;
 
-    auto bc = context->bc;
+    const auto bc = context->bc;
     if (context->nops.size())
         return true;
 
@@ -21,13 +21,13 @@ bool ByteCodeOptimizer::optimizePassErr(ByteCodeOptContext* context)
         if (ip->op != ByteCodeOp::JumpIfNoError)
             continue;
 
-        auto countErrInst = ip->b.s32;
+        const auto countErrInst = ip->b.s32;
         bc->makeRoomForInstructions(countErrInst);
         ip = bc->out + cpt;
 
-        auto ipJump = ip;
+        const auto ipJump = ip;
         ip += 1;
-        auto saveEnd = bc->out[bc->numInstructions - 1];
+        const auto saveEnd = bc->out[bc->numInstructions - 1];
 
         bool invalid = false;
         if (ip[countErrInst - 1].op != ByteCodeOp::Ret)

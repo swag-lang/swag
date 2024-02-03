@@ -37,11 +37,11 @@ void SemanticError::findClosestMatches(const Utf8& searchName, const Vector<Utf8
     uint32_t bestScore = UINT32_MAX;
     result.clear();
 
-    auto searchName1 = searchName;
+    const auto searchName1 = searchName;
     for (uint32_t i = 0; i < (uint32_t) searchList.size(); i++)
     {
-        auto searchName2 = searchList[i];
-        auto score       = Utf8::fuzzyCompare(searchName1, searchName2);
+        auto       searchName2 = searchList[i];
+        const auto score       = Utf8::fuzzyCompare(searchName1, searchName2);
 
         // If number of changes is too big considering the size of the text, cancel
         if (searchName.count > 1 && score > (uint32_t) searchName.count / 2)
@@ -80,10 +80,10 @@ void SemanticError::findClosestMatches(const Utf8& searchName, const VectorNativ
     Vector<Utf8> searchList;
     for (auto& as : scopeHierarchy)
     {
-        auto s = as.scope;
+        const auto s = as.scope;
         for (uint32_t i = 0; i < s->symTable.mapNames.allocated; i++)
         {
-            auto one = s->symTable.mapNames.buffer[i];
+            const auto one = s->symTable.mapNames.buffer[i];
             if (!one.symbolName)
                 continue;
 
@@ -139,7 +139,7 @@ void SemanticError::findClosestMatches(const Utf8& searchName, const VectorNativ
         case IdentifierSearchFor::Function:
             if (searchName[0] == '@' || searchName[0] == '#')
             {
-                auto& k = g_LangSpec->keywords.buffer[i].key;
+                const auto& k = g_LangSpec->keywords.buffer[i].key;
                 if (k && k[0] == searchName[0])
                     searchList.push_back(k);
             }

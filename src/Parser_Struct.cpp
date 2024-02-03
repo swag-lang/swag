@@ -17,7 +17,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
 
     auto scopeKind = ScopeKind::Struct;
     SWAG_CHECK(eatToken());
-    auto kindLoc = token;
+    const auto kindLoc = token;
     switch (token.id)
     {
     case TokenId::KwdEnum:
@@ -57,7 +57,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         identifierStruct                          = implNode->identifierFor;
         implInterface                             = true;
 
-        auto last = CastAst<AstIdentifier>(identifierStruct->childs.back(), AstNodeKind::Identifier);
+        const auto last = CastAst<AstIdentifier>(identifierStruct->childs.back(), AstNodeKind::Identifier);
         SWAG_VERIFY(!last->genericParameters, context->report({last->genericParameters, Err(Err0686)}));
     }
     else
@@ -66,19 +66,19 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     }
 
     // Content of impl block
-    auto startLoc = token.startLocation;
+    const auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[impl]] body"));
 
     // Get existing scope or create a new one
-    auto& structName     = identifierStruct->childs.back()->token.text;
+    const auto& structName     = identifierStruct->childs.back()->token.text;
     implNode->token.text = structName;
 
-    auto newScope = Ast::newScope(implNode, structName, scopeKind, currentScope, true);
+    const auto newScope = Ast::newScope(implNode, structName, scopeKind, currentScope, true);
     if (scopeKind != newScope->kind)
     {
-        Diagnostic  diag{implNode, Fmt(Err(Err0008), Naming::kindName(scopeKind).c_str(), implNode->token.ctext(), Naming::kindName(newScope->kind).c_str())};
-        auto        note  = Diagnostic::hereIs(newScope->owner);
-        Diagnostic* note1 = nullptr;
+        const Diagnostic  diag{implNode, Fmt(Err(Err0008), Naming::kindName(scopeKind).c_str(), implNode->token.ctext(), Naming::kindName(newScope->kind).c_str())};
+        const auto        note  = Diagnostic::hereIs(newScope->owner);
+        const Diagnostic* note1 = nullptr;
         if (newScope->kind == ScopeKind::Enum)
             note1 = Diagnostic::note(Fmt(Nte(Nte0043), implNode->token.ctext()));
         else if (newScope->kind == ScopeKind::Struct)
@@ -91,19 +91,19 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     // Be sure we have associated a struct typeinfo (we can parse an impl block before the corresponding struct)
     {
         ScopedLock lk1(newScope->owner->mutex);
-        auto       typeInfo = newScope->owner->typeInfo;
+        const auto typeInfo = newScope->owner->typeInfo;
         if (!typeInfo)
         {
             if (scopeKind == ScopeKind::Enum)
             {
-                auto typeEnum             = makeType<TypeInfoEnum>();
+                const auto typeEnum             = makeType<TypeInfoEnum>();
                 typeEnum->scope           = newScope;
                 typeEnum->name            = structName;
                 newScope->owner->typeInfo = typeEnum;
             }
             else
             {
-                auto typeStruct           = makeType<TypeInfoStruct>();
+                const auto typeStruct           = makeType<TypeInfoStruct>();
                 typeStruct->scope         = newScope;
                 typeStruct->name          = structName;
                 typeStruct->structName    = structName;
@@ -122,7 +122,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         // See test 2909 for that kind of case...
         module->addImplForToSolve(structName);
 
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(newScope->owner->typeInfo, TypeInfoKind::Struct);
+        const auto typeStruct = CastTypeInfo<TypeInfoStruct>(newScope->owner->typeInfo, TypeInfoKind::Struct);
         typeStruct->cptRemainingInterfacesReg++;
         typeStruct->cptRemainingInterfaces++;
 
@@ -137,14 +137,14 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
     {
         ScopedLock lk(newScope->symTable.mutex);
         Utf8       itfName  = implNode->identifier->childs.back()->token.text;
-        auto       symbol   = newScope->symTable.findNoLock(itfName);
+        const auto symbol   = newScope->symTable.findNoLock(itfName);
         Scope*     subScope = nullptr;
         if (!symbol)
         {
             subScope = Ast::newScope(implNode, itfName, ScopeKind::Impl, newScope, false);
 
             // :FakeImplForType
-            auto typeInfo        = makeType<TypeInfoStruct>();
+            const auto typeInfo        = makeType<TypeInfoStruct>();
             typeInfo->name       = implNode->identifier->childs.back()->token.text;
             typeInfo->structName = typeInfo->name;
             typeInfo->scope      = subScope;
@@ -161,7 +161,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         }
         else
         {
-            auto typeInfo = CastTypeInfo<TypeInfoStruct>(symbol->overloads[0]->typeInfo, TypeInfoKind::Struct);
+            const auto typeInfo = CastTypeInfo<TypeInfoStruct>(symbol->overloads[0]->typeInfo, TypeInfoKind::Struct);
             subScope      = typeInfo->scope;
         }
 
@@ -185,7 +185,7 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
 
 bool Parser::doStruct(AstNode* parent, AstNode** result)
 {
-    auto structNode         = Ast::newNode<AstStruct>(this, AstNodeKind::StructDecl, sourceFile, parent);
+    const auto structNode         = Ast::newNode<AstStruct>(this, AstNodeKind::StructDecl, sourceFile, parent);
     *result                 = structNode;
     structNode->semanticFct = Semantic::resolveStruct;
     structNode->allocateExtension(ExtensionKind::Semantic);
@@ -222,7 +222,7 @@ bool Parser::doStruct(AstNode* parent, AstNode** result)
     // If a struct is declared inside a generic struct, force the sub struct to have generic parameters
     else if (currentScope && currentScope->kind == ScopeKind::Struct && currentScope->owner->kind == AstNodeKind::StructDecl)
     {
-        auto parentStruct = CastAst<AstStruct>(currentScope->owner, AstNodeKind::StructDecl);
+        const auto parentStruct = CastAst<AstStruct>(currentScope->owner, AstNodeKind::StructDecl);
         if (parentStruct->genericParameters)
         {
             structNode->genericParameters = Ast::clone(parentStruct->genericParameters, structNode, AST_GENERATED_GENERIC_PARAM);
@@ -256,16 +256,16 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
         {
             if (newScope->owner->kind == AstNodeKind::Impl)
             {
-                auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-                Diagnostic diag{implNode->identifier, Fmt(Err(Err0008), Naming::kindName(newScope->kind).c_str(), implNode->token.ctext(), Naming::kindName(ScopeKind::Struct).c_str())};
-                auto       note = Diagnostic::hereIs(structNode);
+                const auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
+                const Diagnostic diag{implNode->identifier, Fmt(Err(Err0008), Naming::kindName(newScope->kind).c_str(), implNode->token.ctext(), Naming::kindName(ScopeKind::Struct).c_str())};
+                const auto       note = Diagnostic::hereIs(structNode);
                 return context->report(diag, note);
             }
             else
             {
-                Utf8       asA = Fmt("as %s", Naming::aKindName(newScope->kind).c_str());
-                Diagnostic diag{structNode->sourceFile, token, Fmt(Err(Err0626), "struct", structNode->token.ctext(), asA.c_str())};
-                auto       note = Diagnostic::note(newScope->owner, newScope->owner->getTokenName(), Nte(Nte0071));
+                const Utf8       asA = Fmt("as %s", Naming::aKindName(newScope->kind).c_str());
+                const Diagnostic diag{structNode->sourceFile, token, Fmt(Err(Err0626), "struct", structNode->token.ctext(), asA.c_str())};
+                const auto       note = Diagnostic::note(newScope->owner, newScope->owner->getTokenName(), Nte(Nte0071));
                 return context->report(diag, note);
             }
         }
@@ -316,7 +316,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
                        n->flags |= AST_IS_GENERIC;
                        if (n->kind == AstNodeKind::FuncDeclParam)
                        {
-                           auto param = CastAst<AstVarDecl>(n, AstNodeKind::FuncDeclParam);
+                           const auto param = CastAst<AstVarDecl>(n, AstNodeKind::FuncDeclParam);
                            newScope->symTable.registerSymbolName(context, n, param->type ? SymbolKind::Variable : SymbolKind::GenericType);
                        } });
     }
@@ -338,12 +338,12 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
         Scoped       scoped(this, newScope);
         ScopedStruct scopedStruct(this, newScope);
 
-        auto contentNode    = Ast::newNode<AstNode>(this, AstNodeKind::StructContent, sourceFile, structNode);
+        const auto contentNode    = Ast::newNode<AstNode>(this, AstNodeKind::StructContent, sourceFile, structNode);
         structNode->content = contentNode;
         contentNode->allocateExtension(ExtensionKind::Semantic);
         contentNode->extSemantic()->semanticBeforeFct = Semantic::preResolveStructContent;
 
-        auto startLoc = token.startLocation;
+        const auto startLoc = token.startLocation;
         SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[struct]] body"));
         while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
             SWAG_CHECK(doStructBody(contentNode, structType, &dummyResult));
@@ -355,10 +355,10 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
 
 bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode** result)
 {
-    auto startLoc = token.startLocation;
+    const auto startLoc = token.startLocation;
     if (token.id == TokenId::SymLeftCurly)
     {
-        auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+        const auto stmt = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
         *result   = stmt;
         SWAG_CHECK(eatToken());
         while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
@@ -438,7 +438,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
         SWAG_VERIFY(structType != SyntaxStructType::Interface, context->report({parent, token, Err(Err0478)}));
         SWAG_CHECK(eatToken());
-        auto structNode = CastAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl);
+        const auto structNode = CastAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl);
         structNode->addSpecFlags(AstStruct::SPECFLAG_HAS_USING);
         AstNode* varDecl;
         SWAG_CHECK(doVarDecl(parent, &varDecl, AstNodeKind::VarDecl, true));
@@ -457,7 +457,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
 
     case TokenId::KwdVar:
     {
-        Diagnostic diag{parent, token, Err(Err0672)};
+        const Diagnostic diag{parent, token, Err(Err0672)};
         return context->report(diag);
     }
 
@@ -466,12 +466,12 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
     {
         SWAG_VERIFY(structType == SyntaxStructType::Interface, error(token, Err(Err0503)));
 
-        auto kind = token.id;
+        const auto kind = token.id;
         SWAG_CHECK(eatToken());
 
         SWAG_VERIFY(token.id != TokenId::SymLeftParen, error(token, Err(Err0685)));
 
-        bool isMethod      = kind == TokenId::KwdMethod;
+        const bool isMethod      = kind == TokenId::KwdMethod;
         bool isConstMethod = false;
 
         if (token.id == TokenId::KwdConst)
@@ -481,13 +481,13 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             SWAG_CHECK(eatToken());
         }
 
-        auto funcNode = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, nullptr);
+        const auto funcNode = Ast::newNode<AstFuncDecl>(this, AstNodeKind::FuncDecl, sourceFile, nullptr);
 
         SWAG_CHECK(checkIsValidUserName(funcNode));
         SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err0295), token.ctext())));
         SWAG_CHECK(eatToken());
 
-        auto scope = Ast::newScope(funcNode, "", ScopeKind::Function, parent->ownerStructScope);
+        const auto scope = Ast::newScope(funcNode, "", ScopeKind::Function, parent->ownerStructScope);
 
         {
             Scoped scoped(this, scope);
@@ -495,12 +495,12 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
         }
 
         ScopedFlags scopedFlags(this, AST_STRUCT_MEMBER);
-        auto        varNode = Ast::newVarDecl(sourceFile, funcNode->token.text, parent, this);
+        const auto  varNode = Ast::newVarDecl(sourceFile, funcNode->token.text, parent, this);
         varNode->inheritTokenLocation(funcNode->token);
         Semantic::setVarDeclResolve(varNode);
         varNode->flags |= AST_R_VALUE;
 
-        auto typeNode         = Ast::newNode<AstTypeLambda>(this, AstNodeKind::TypeLambda, sourceFile, varNode);
+        const auto typeNode         = Ast::newNode<AstTypeLambda>(this, AstNodeKind::TypeLambda, sourceFile, varNode);
         typeNode->semanticFct = Semantic::resolveTypeLambdaClosure;
         varNode->type         = typeNode;
         varNode->type->inheritTokenLocation(funcNode->token);
@@ -515,7 +515,7 @@ bool Parser::doStructBody(AstNode* parent, SyntaxStructType structType, AstNode*
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doTypeExpression(typeNode, EXPR_FLAG_NONE, &typeNode->returnType));
 
-            auto retNode = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclType, sourceFile, funcNode);
+            const auto retNode = Ast::newNode<AstNode>(this, AstNodeKind::FuncDeclType, sourceFile, funcNode);
             retNode->addSpecFlags(AstFuncDecl::SPECFLAG_RETURN_DEFINED);
             funcNode->returnType = retNode;
             funcNode->returnType->allocateExtension(ExtensionKind::Misc);

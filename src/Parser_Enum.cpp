@@ -9,7 +9,7 @@
 
 bool Parser::doEnum(AstNode* parent, AstNode** result)
 {
-    auto enumNode         = Ast::newNode<AstEnum>(this, AstNodeKind::EnumDecl, sourceFile, parent);
+    const auto enumNode         = Ast::newNode<AstEnum>(this, AstNodeKind::EnumDecl, sourceFile, parent);
     enumNode->semanticFct = Semantic::resolveEnum;
     enumNode->allocateExtension(ExtensionKind::Semantic);
     enumNode->extSemantic()->semanticAfterFct = Semantic::sendCompilerMsgTypeDecl;
@@ -38,17 +38,17 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
         {
             if (newScope->owner->kind == AstNodeKind::Impl)
             {
-                auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
-                Diagnostic diag{implNode->identifier, Fmt(Err(Err0008), Naming::kindName(newScope->kind).c_str(), implNode->token.ctext(), Naming::kindName(ScopeKind::Enum).c_str())};
-                auto       note  = Diagnostic::hereIs(enumNode);
-                auto       note1 = Diagnostic::note(Fmt(Nte(Nte0043), implNode->token.ctext()));
+                const auto       implNode = CastAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
+                const Diagnostic diag{implNode->identifier, Fmt(Err(Err0008), Naming::kindName(newScope->kind).c_str(), implNode->token.ctext(), Naming::kindName(ScopeKind::Enum).c_str())};
+                const auto       note  = Diagnostic::hereIs(enumNode);
+                const auto       note1 = Diagnostic::note(Fmt(Nte(Nte0043), implNode->token.ctext()));
                 return context->report(diag, note, note1);
             }
             else
             {
-                Utf8       asA = Fmt("as %s", Naming::aKindName(newScope->kind).c_str());
-                Diagnostic diag{enumNode->sourceFile, token, Fmt(Err(Err0626), "enum", enumNode->token.ctext(), asA.c_str())};
-                auto       note = Diagnostic::note(newScope->owner, newScope->owner->getTokenName(), Nte(Nte0071));
+                const Utf8       asA = Fmt("as %s", Naming::aKindName(newScope->kind).c_str());
+                const Diagnostic diag{enumNode->sourceFile, token, Fmt(Err(Err0626), "enum", enumNode->token.ctext(), asA.c_str())};
+                const auto       note = Diagnostic::note(newScope->owner, newScope->owner->getTokenName(), Nte(Nte0071));
                 return context->report(diag, note);
             }
         }
@@ -75,7 +75,7 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
 
     // Raw type
     SWAG_CHECK(eatToken());
-    auto typeNode         = Ast::newNode<AstNode>(this, AstNodeKind::EnumType, sourceFile, enumNode);
+    const auto typeNode         = Ast::newNode<AstNode>(this, AstNodeKind::EnumType, sourceFile, enumNode);
     typeNode->semanticFct = Semantic::resolveEnumType;
     if (token.id == TokenId::SymColon)
     {
@@ -84,8 +84,8 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
     }
 
     // Content of enum
-    Scoped scoped(this, newScope);
-    auto   startLoc = token.startLocation;
+    Scoped     scoped(this, newScope);
+    const auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[enum]] body"));
     while (token.id != TokenId::SymRightCurly && token.id != TokenId::EndOfFile)
         SWAG_CHECK(doEnumContent(enumNode, &dummyResult));
@@ -97,9 +97,9 @@ bool Parser::doEnumContent(AstNode* parent, AstNode** result)
 {
     if (token.id == TokenId::SymLeftCurly)
     {
-        auto startLoc = token.startLocation;
-        auto stmt     = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
-        *result       = stmt;
+        const auto startLoc = token.startLocation;
+        const auto stmt     = Ast::newNode<AstNode>(this, AstNodeKind::Statement, sourceFile, parent);
+        *result             = stmt;
         SWAG_CHECK(eatToken());
         while (token.id != TokenId::SymRightCurly && token.id != TokenId::EndOfFile)
             SWAG_CHECK(doEnumContent(stmt, &dummyResult));
@@ -149,7 +149,7 @@ bool Parser::doSubEnumValue(AstNode* parent, AstNode** result)
 {
     SWAG_CHECK(eatToken());
 
-    auto enumValue = Ast::newNode<AstEnumValue>(this, AstNodeKind::EnumValue, sourceFile, parent);
+    const auto enumValue = Ast::newNode<AstEnumValue>(this, AstNodeKind::EnumValue, sourceFile, parent);
     enumValue->addSpecFlags(AstEnumValue::SPECFLAG_HAS_USING);
     enumValue->semanticFct = Semantic::resolveSubEnumValue;
     *result                = enumValue;
@@ -174,7 +174,7 @@ bool Parser::doEnumValue(AstNode* parent, AstNode** result)
 {
     SWAG_CHECK(checkIsIdentifier(token, Fmt(Err(Err0265), token.ctext())));
 
-    auto enumValue = Ast::newNode<AstEnumValue>(this, AstNodeKind::EnumValue, sourceFile, parent);
+    const auto enumValue = Ast::newNode<AstEnumValue>(this, AstNodeKind::EnumValue, sourceFile, parent);
     *result        = enumValue;
     enumValue->inheritTokenName(token);
     enumValue->semanticFct = Semantic::resolveEnumValue;

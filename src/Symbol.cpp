@@ -52,7 +52,7 @@ void SymbolName::decreaseOverloadNoLock()
 
 SymbolOverload* SymbolName::addOverloadNoLock(AstNode* node, TypeInfo* typeInfo, ComputedValue* computedValue)
 {
-    auto overload      = Allocator::alloc<SymbolOverload>();
+    const auto overload      = Allocator::alloc<SymbolOverload>();
     overload->typeInfo = typeInfo;
     overload->node     = node;
 #ifdef SWAG_STATS
@@ -72,7 +72,7 @@ SymbolOverload* SymbolName::addOverloadNoLock(AstNode* node, TypeInfo* typeInfo,
 
 SymbolOverload* SymbolName::findOverload(TypeInfo* typeInfo)
 {
-    for (auto it : overloads)
+    for (const auto it : overloads)
     {
         if (it->typeInfo == typeInfo)
             return it;

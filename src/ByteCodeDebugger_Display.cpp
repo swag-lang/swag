@@ -6,7 +6,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdDisplayAdd(ByteCodeRunContext* context, 
     if (arg.split.size() < 2)
         return BcDbgCommandResult::BadArguments;
 
-    auto line = arg.cmd + " " + arg.cmdExpr;
+    const auto line = arg.cmd + " " + arg.cmdExpr;
     g_ByteCodeDebugger.debugDisplay.push_back(line);
     g_ByteCodeDebugger.printDisplay(context);
     return BcDbgCommandResult::Continue;
@@ -29,7 +29,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdDisplayClear(ByteCodeRunContext* context
     if (!Utf8::isNumber(arg.split[2].c_str()))
         return BcDbgCommandResult::BadArguments;
 
-    int numB = atoi(arg.split[2].c_str());
+    const int numB = atoi(arg.split[2].c_str());
     if (!numB || numB - 1 >= (int) g_ByteCodeDebugger.debugDisplay.size())
         g_ByteCodeDebugger.printCmdError("invalid expression number");
     else

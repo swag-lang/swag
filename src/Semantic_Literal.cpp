@@ -13,9 +13,9 @@
 
 bool Semantic::getDigitHexa(SemanticContext* context, const SourceLocation& startLoc, const char* pzs, const char** _pz, int& result, const char* errMsg)
 {
-    auto node = context->node;
-    auto pz   = *_pz;
-    auto c    = *pz;
+    const auto node = context->node;
+    const auto pz   = *_pz;
+    const auto c    = *pz;
     (*_pz)++;
 
     if (!SWAG_IS_HEX(c))
@@ -36,18 +36,18 @@ bool Semantic::getDigitHexa(SemanticContext* context, const SourceLocation& star
 
 bool Semantic::processLiteralString(SemanticContext* context)
 {
-    auto node = CastAst<AstLiteral>(context->node, AstNodeKind::Literal);
+    const auto node = CastAst<AstLiteral>(context->node, AstNodeKind::Literal);
     if (node->literalType != LiteralType::TT_STRING_ESCAPE &&
         node->literalType != LiteralType::TT_STRING_MULTILINE_ESCAPE &&
         node->literalType != LiteralType::TT_CHARACTER_ESCAPE)
         return true;
 
-    auto loc = node->token.startLocation;
-    Utf8 result;
-    auto len = node->computedValue->text.length();
+    auto       loc = node->token.startLocation;
+    Utf8       result;
+    const auto len = node->computedValue->text.length();
     result.reserve(len);
 
-    auto start = (const char*) node->computedValue->text.buffer;
+    const auto start = (const char*) node->computedValue->text.buffer;
     auto pz    = start;
     while (pz - start < len)
     {
@@ -109,35 +109,35 @@ bool Semantic::processLiteralString(SemanticContext* context)
             continue;
         case 'x':
         {
-            int  c1, c2;
-            auto msg = Err(Err0278);
-            auto pzs = pz;
+            int        c1, c2;
+            auto       msg = Err(Err0278);
+            const auto pzs = pz;
             SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c1, msg));
             SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c2, msg));
-            char32_t cw = (c1 << 4) + c2;
+            const char32_t cw = (c1 << 4) + c2;
             result.append((char) cw);
             loc.column += 2;
             continue;
         }
         case 'u':
         {
-            int  c1, c2, c3, c4;
-            auto msg = Err(Err0277);
-            auto pzs = pz;
+            int        c1, c2, c3, c4;
+            auto       msg = Err(Err0277);
+            const auto pzs = pz;
             SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c1, msg));
             SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c2, msg));
             SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c3, msg));
             SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c4, msg));
-            char32_t cw = (c1 << 12) + (c2 << 8) + (c3 << 4) + c4;
+            const char32_t cw = (c1 << 12) + (c2 << 8) + (c3 << 4) + c4;
             result.append(cw);
             loc.column += 4;
             continue;
         }
         case 'U':
         {
-            int  c1, c2, c3, c4, c5, c6, c7, c8;
-            auto msg = Err(Err0276);
-            auto pzs = pz;
+            int        c1, c2, c3, c4, c5, c6, c7, c8;
+            auto       msg = Err(Err0276);
+            const auto pzs = pz;
             SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c1, msg));
             SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c2, msg));
             SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c3, msg));
@@ -146,7 +146,7 @@ bool Semantic::processLiteralString(SemanticContext* context)
             SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c6, msg));
             SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c7, msg));
             SWAG_CHECK(getDigitHexa(context, loc, pzs, &pz, c8, msg));
-            char32_t cw = (c1 << 28) + (c2 << 24) + (c3 << 20) + (c4 << 16) + (c5 << 12) + (c6 << 8) + (c7 << 4) + c8;
+            const char32_t cw = (c1 << 28) + (c2 << 24) + (c3 << 20) + (c4 << 16) + (c5 << 12) + (c6 << 8) + (c7 << 4) + c8;
             if (cw > Utf8::MAX_ENCODED_UNICODE)
                 return context->report({node->sourceFile, loc, Fmt(Err(Err0405), cw)});
             result.append(cw);
@@ -369,12 +369,12 @@ Utf8 Semantic::checkLiteralValue(ComputedValue& computedValue, LiteralType& lite
 
 bool Semantic::resolveLiteralSuffix(SemanticContext* context)
 {
-    auto node = context->node;
+    const auto node = context->node;
 
     // Can be a predefined native type
     if (node->tokenId == TokenId::NativeType)
     {
-        auto it = g_LangSpec->nativeTypes.find(node->token.text);
+        const auto it = g_LangSpec->nativeTypes.find(node->token.text);
         SWAG_ASSERT(it);
         node->typeInfo = TypeManager::literalTypeToType(*it);
         return true;
@@ -383,12 +383,12 @@ bool Semantic::resolveLiteralSuffix(SemanticContext* context)
     // Search if identifier is a type
     if (node->tokenId == TokenId::Identifier)
     {
-        auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
+        const auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
 
         // We do not want error. If identifier is not known, then we consider it as a 'user' suffix
         identifier->identifierRef()->flags |= AST_SILENT_CHECK;
 
-        auto res = resolveIdentifier(context, identifier, RI_ZERO);
+        const auto res = resolveIdentifier(context, identifier, RI_ZERO);
         YIELD();
         if (res && identifier->typeInfo)
             return true;
@@ -403,8 +403,8 @@ bool Semantic::resolveLiteralSuffix(SemanticContext* context)
 
 bool Semantic::resolveLiteral(SemanticContext* context)
 {
-    auto node       = CastAst<AstLiteral>(context->node, AstNodeKind::Literal);
-    auto sourceFile = context->sourceFile;
+    auto       node       = CastAst<AstLiteral>(context->node, AstNodeKind::Literal);
+    const auto sourceFile = context->sourceFile;
 
     switch (node->tokenId)
     {
@@ -499,7 +499,7 @@ bool Semantic::resolveLiteral(SemanticContext* context)
         }
     }
 
-    auto suffixType = TypeManager::concreteType(suffix->typeInfo, CONCRETE_ALIAS);
+    const auto suffixType = TypeManager::concreteType(suffix->typeInfo, CONCRETE_ALIAS);
     SWAG_VERIFY(suffixType->isNative(), context->report({suffix, Fmt(Err(Err0320), suffixType->getDisplayNameC())}));
 
     switch (suffixType->nativeType)
@@ -539,11 +539,11 @@ bool Semantic::resolveLiteral(SemanticContext* context)
         }
     }
 
-    auto errMsg = checkLiteralValue(*node->computedValue, node->literalType, node->literalValue, suffixType, negApplied);
+    const auto errMsg = checkLiteralValue(*node->computedValue, node->literalType, node->literalValue, suffixType, negApplied);
     if (!errMsg.empty())
     {
-        Diagnostic  diag{node, node->token, errMsg};
-        Diagnostic* note = nullptr;
+        const Diagnostic  diag{node, node->token, errMsg};
+        const Diagnostic* note = nullptr;
         if (suffix && suffix->typeInfo)
             note = Diagnostic::note(suffix, Fmt(Nte(Nte0198), suffix->typeInfo->getDisplayNameC()));
         return context->report(diag, note);

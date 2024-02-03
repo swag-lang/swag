@@ -334,8 +334,8 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
             {
                 if (!fromNode)
                 {
-                    auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
-                    auto value  = native->valueInteger;
+                    const auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
+                    const auto value  = native->valueInteger;
                     if (value < 0)
                         return false;
                 }
@@ -357,8 +357,8 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
             {
                 if (!fromNode)
                 {
-                    auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
-                    auto value  = (uint32_t) native->valueInteger;
+                    const auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
+                    const auto value  = (uint32_t) native->valueInteger;
                     if (value > UINT8_MAX)
                         return false;
                 }
@@ -449,7 +449,7 @@ bool TypeManager::castToNativeU8(SemanticContext* context, TypeInfo* fromType, A
     if (castFlags & CASTFLAG_EXPLICIT)
     {
         // clang-format off
-        bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags & CASTFLAG_JUST_CHECK);
+        const bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags & CASTFLAG_JUST_CHECK);
         if (canChange)
             fromNode->typeInfo = g_TypeMgr->typeInfoU8;
         switch (fromType->nativeType)
@@ -499,8 +499,8 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (!fromNode)
                 {
-                    auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
-                    auto value  = native->valueInteger;
+                    const auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
+                    const auto value  = native->valueInteger;
                     if (value < 0)
                         return false;
                 }
@@ -522,8 +522,8 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (!fromNode)
                 {
-                    auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
-                    auto value  = (uint32_t) native->valueInteger;
+                    const auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
+                    const auto value  = (uint32_t) native->valueInteger;
                     if (value > UINT16_MAX)
                         return false;
                 }
@@ -614,7 +614,7 @@ bool TypeManager::castToNativeU16(SemanticContext* context, TypeInfo* fromType, 
     if (castFlags & CASTFLAG_EXPLICIT)
     {
         // clang-format off
-        bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags & CASTFLAG_JUST_CHECK);
+        const bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags & CASTFLAG_JUST_CHECK);
         if (canChange)
             fromNode->typeInfo = g_TypeMgr->typeInfoU16;
         switch (fromType->nativeType)
@@ -664,8 +664,8 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (!fromNode)
                 {
-                    auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
-                    auto value  = native->valueInteger;
+                    const auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
+                    const auto value  = native->valueInteger;
                     if (value < 0)
                         return false;
                 }
@@ -774,7 +774,7 @@ bool TypeManager::castToNativeU32(SemanticContext* context, TypeInfo* fromType, 
     if (castFlags & CASTFLAG_EXPLICIT)
     {
         // clang-format off
-        bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags & CASTFLAG_JUST_CHECK);
+        const bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags & CASTFLAG_JUST_CHECK);
         if (canChange)
             fromNode->typeInfo = g_TypeMgr->typeInfoU32;
         switch (fromType->nativeType)
@@ -834,8 +834,8 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (!fromNode)
                 {
-                    auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
-                    auto value  = native->valueInteger;
+                    const auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
+                    const auto value  = native->valueInteger;
                     if (value < 0)
                         return false;
                 }
@@ -926,7 +926,7 @@ bool TypeManager::castToNativeU64(SemanticContext* context, TypeInfo* fromType, 
     if (castFlags & CASTFLAG_EXPLICIT)
     {
         // clang-format off
-        bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags & CASTFLAG_JUST_CHECK);
+        const bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags & CASTFLAG_JUST_CHECK);
         if (canChange)
             fromNode->typeInfo = g_TypeMgr->typeInfoU64;
         switch (fromType->nativeType)
@@ -965,8 +965,8 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
         case NativeTypeKind::U64:
             if (fromType->isUntypedBinHex())
             {
-                auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
-                auto value  = native->valueInteger;
+                const auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
+                const auto value  = native->valueInteger;
                 if (value > UINT8_MAX)
                 {
                     if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -1002,8 +1002,8 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
             {
                 if (!fromNode)
                 {
-                    auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
-                    auto value  = native->valueInteger;
+                    const auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
+                    const auto value  = native->valueInteger;
                     if (value < INT8_MIN || value > INT8_MAX)
                         return false;
                 }
@@ -1058,8 +1058,8 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
         case NativeTypeKind::U32:
             if (fromType->isUntypedBinHex())
             {
-                auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
-                auto value  = native->valueInteger;
+                const auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
+                const auto value  = native->valueInteger;
                 if (value <= UINT8_MAX)
                     return true;
             }
@@ -1099,7 +1099,7 @@ bool TypeManager::castToNativeS8(SemanticContext* context, TypeInfo* fromType, A
     if (castFlags & CASTFLAG_EXPLICIT)
     {
         // clang-format off
-        bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags & CASTFLAG_JUST_CHECK);
+        const bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags & CASTFLAG_JUST_CHECK);
         if (canChange)
             fromNode->typeInfo = g_TypeMgr->typeInfoS8;
         switch (fromType->nativeType)
@@ -1137,8 +1137,8 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
         case NativeTypeKind::U64:
             if (fromType->isUntypedBinHex())
             {
-                auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
-                auto value  = native->valueInteger;
+                const auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
+                const auto value  = native->valueInteger;
                 if (value > UINT16_MAX)
                 {
                     if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -1173,8 +1173,8 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (!fromNode)
                 {
-                    auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
-                    auto value  = native->valueInteger;
+                    const auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
+                    const auto value  = native->valueInteger;
                     if (value < INT16_MIN || value > INT16_MAX)
                         return false;
                 }
@@ -1229,8 +1229,8 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
         case NativeTypeKind::U32:
             if (fromType->isUntypedBinHex())
             {
-                auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
-                auto value  = native->valueInteger;
+                const auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
+                const auto value  = native->valueInteger;
                 if (value <= UINT16_MAX)
                     return true;
             }
@@ -1273,7 +1273,7 @@ bool TypeManager::castToNativeS16(SemanticContext* context, TypeInfo* fromType, 
     if (castFlags & CASTFLAG_EXPLICIT)
     {
         // clang-format off
-        bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags & CASTFLAG_JUST_CHECK);
+        const bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags & CASTFLAG_JUST_CHECK);
         if (canChange)
             fromNode->typeInfo = g_TypeMgr->typeInfoS16;
         switch (fromType->nativeType)
@@ -1310,8 +1310,8 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
         case NativeTypeKind::U64:
             if (fromType->isUntypedBinHex())
             {
-                auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
-                auto value  = native->valueInteger;
+                const auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
+                const auto value  = native->valueInteger;
                 if (value > INT32_MAX)
                 {
                     if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -1345,8 +1345,8 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
             {
                 if (!fromNode)
                 {
-                    auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
-                    auto value  = native->valueInteger;
+                    const auto native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
+                    const auto value  = native->valueInteger;
                     if (value < INT32_MIN || value > INT32_MAX)
                         return false;
                 }
@@ -1441,7 +1441,7 @@ bool TypeManager::castToNativeS32(SemanticContext* context, TypeInfo* fromType, 
     if (castFlags & CASTFLAG_EXPLICIT)
     {
         // clang-format off
-        bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags & CASTFLAG_JUST_CHECK);
+        const bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags & CASTFLAG_JUST_CHECK);
         if (canChange)
             fromNode->typeInfo = g_TypeMgr->typeInfoS32;
         switch (fromType->nativeType)
@@ -1575,7 +1575,7 @@ bool TypeManager::castToNativeS64(SemanticContext* context, TypeInfo* fromType, 
     if (castFlags & CASTFLAG_EXPLICIT)
     {
         // clang-format off
-        bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags & CASTFLAG_JUST_CHECK);
+        const bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags & CASTFLAG_JUST_CHECK);
         if (canChange)
             fromNode->typeInfo = g_TypeMgr->typeInfoS64;
         switch (fromType->nativeType)
@@ -1608,10 +1608,10 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
     {
         if (!fromNode && fromType->isUntypedInteger())
         {
-            auto    native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
-            auto    value  = native->valueInteger;
-            float   tmpF   = (float) value;
-            int64_t tmpI   = (int64_t) tmpF;
+            const auto    native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
+            const auto    value  = native->valueInteger;
+            const float   tmpF   = (float) value;
+            const int64_t tmpI   = (int64_t) tmpF;
             if (tmpI != value)
                 return false;
         }
@@ -1640,7 +1640,7 @@ bool TypeManager::castToNativeF32(SemanticContext* context, TypeInfo* fromType, 
     if (castFlags & CASTFLAG_EXPLICIT)
     {
         // clang-format off
-        bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags & CASTFLAG_JUST_CHECK);
+        const bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags & CASTFLAG_JUST_CHECK);
         if (canChange)
             fromNode->typeInfo = g_TypeMgr->typeInfoF32;
         switch (fromType->nativeType)
@@ -1673,10 +1673,10 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
     {
         if (!fromNode && fromType->isUntypedInteger())
         {
-            auto    native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
-            auto    value  = native->valueInteger;
-            double  tmpF   = (double) value;
-            int64_t tmpI   = (int64_t) tmpF;
+            const auto    native = CastTypeInfo<TypeInfoNative>(fromType, fromType->kind);
+            const auto    value  = native->valueInteger;
+            const double  tmpF   = (double) value;
+            const int64_t tmpI   = (int64_t) tmpF;
             if (tmpI != value)
                 return false;
         }
@@ -1707,7 +1707,7 @@ bool TypeManager::castToNativeF64(SemanticContext* context, TypeInfo* fromType, 
     if (castFlags & CASTFLAG_EXPLICIT)
     {
         // clang-format off
-        bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags & CASTFLAG_JUST_CHECK);
+        const bool canChange = (fromNode && fromNode->hasComputedValue()) && !(castFlags & CASTFLAG_JUST_CHECK);
         if (canChange)
             fromNode->typeInfo = g_TypeMgr->typeInfoF64;
         switch (fromType->nativeType)
@@ -1758,10 +1758,10 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
     {
         if (toType->sizeOf >= fromType->sizeOf)
         {
-            auto leftIsInt    = toType->isNativeIntegerOrRune();
-            auto rightIsInt   = fromType->isNativeIntegerOrRune();
-            auto leftIsFloat  = toType->isNativeFloat();
-            auto rightIsFloat = fromType->isNativeFloat();
+            const auto leftIsInt    = toType->isNativeIntegerOrRune();
+            const auto rightIsInt   = fromType->isNativeIntegerOrRune();
+            const auto leftIsFloat  = toType->isNativeFloat();
+            const auto rightIsFloat = fromType->isNativeFloat();
             if ((leftIsInt && rightIsInt) || (leftIsFloat && rightIsFloat))
                 castFlags |= CASTFLAG_EXPLICIT | CASTFLAG_COERCE;
             else if (leftIsFloat && fromType->isNativeInteger())
@@ -1850,7 +1850,7 @@ bool TypeManager::castToEnum(SemanticContext* context, TypeInfo* toType, TypeInf
     // Cast from enum to enum, take care of 'using'
     if (fromType->isEnum())
     {
-        auto fromEnum = CastTypeInfo<TypeInfoEnum>(fromType, TypeInfoKind::Enum);
+        const auto fromEnum = CastTypeInfo<TypeInfoEnum>(fromType, TypeInfoKind::Enum);
 
         context->castCollectEnum.clear();
         context->castCollectEnumDone.clear();
@@ -1875,7 +1875,7 @@ bool TypeManager::castToEnum(SemanticContext* context, TypeInfo* toType, TypeInf
             if (!(toEnum->flags & TYPEINFO_ENUM_HAS_USING))
                 continue;
 
-            for (auto value : toEnum->values)
+            for (const auto value : toEnum->values)
             {
                 if (value->typeInfo->isEnum())
                 {
@@ -1895,9 +1895,9 @@ bool TypeManager::castToEnum(SemanticContext* context, TypeInfo* toType, TypeInf
 
 bool TypeManager::castSubExpressionList(SemanticContext* context, AstNode* child, TypeInfo* toType, uint64_t castFlags)
 {
-    auto exprNode          = CastAst<AstExpressionList>(child, AstNodeKind::ExpressionList);
-    auto toTypeStruct      = CastTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::Struct);
-    exprNode->castToStruct = toTypeStruct;
+    const auto exprNode     = CastAst<AstExpressionList>(child, AstNodeKind::ExpressionList);
+    const auto toTypeStruct = CastTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::Struct);
+    exprNode->castToStruct  = toTypeStruct;
 
     bool hasChanged = false;
 
@@ -1910,8 +1910,8 @@ bool TypeManager::castSubExpressionList(SemanticContext* context, AstNode* child
     // Too many fields
     else if (toTypeStruct->fields.size() < child->childs.size())
     {
-        auto       msg = Fmt(Err(Err0634), toTypeStruct->fields.size(), toTypeStruct->getDisplayNameC(), child->childs.size());
-        Diagnostic diag{child->childs[toTypeStruct->fields.count], msg};
+        const auto       msg = Fmt(Err(Err0634), toTypeStruct->fields.size(), toTypeStruct->getDisplayNameC(), child->childs.size());
+        const Diagnostic diag{child->childs[toTypeStruct->fields.count], msg};
         return context->report(diag);
     }
 
@@ -1944,10 +1944,10 @@ bool TypeManager::castSubExpressionList(SemanticContext* context, AstNode* child
 
     for (size_t j = 0; j < child->childs.size(); j++)
     {
-        auto           childJ = child->childs[j];
-        TypeInfoParam* fieldJ = symContext.solvedCallParameters[j];
+        const auto           childJ = child->childs[j];
+        const TypeInfoParam* fieldJ = symContext.solvedCallParameters[j];
 
-        auto oldType = childJ->typeInfo;
+        const auto oldType = childJ->typeInfo;
         SWAG_CHECK(TypeManager::makeCompatibles(context, fieldJ->typeInfo, childJ->typeInfo, nullptr, childJ, castFlags | CASTFLAG_TRY_COERCE));
         if (childJ->typeInfo != oldType)
             hasChanged = true;
@@ -1962,7 +1962,7 @@ bool TypeManager::castSubExpressionList(SemanticContext* context, AstNode* child
         // We use castOffset to store the offset to the field, in order to collect later at the right position
         // Note that offset is +1 to differentiate it from a "default" 0.
         childJ->allocateExtension(ExtensionKind::Misc);
-        auto newOffset = (uint32_t) fieldJ->offset + 1;
+        const auto newOffset = (uint32_t) fieldJ->offset + 1;
         if (childJ->extMisc()->castOffset != newOffset)
         {
             childJ->extMisc()->castOffset = newOffset;
@@ -1985,7 +1985,7 @@ bool TypeManager::castSubExpressionList(SemanticContext* context, AstNode* child
 
 bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fromTypeList, TypeInfo* toType, AstNode* fromNode, uint64_t castFlags)
 {
-    auto fromSize = fromTypeList->subTypes.size();
+    const auto fromSize = fromTypeList->subTypes.size();
     while (fromNode && fromNode->kind != AstNodeKind::ExpressionList)
         fromNode = fromNode->childs.front();
     SWAG_ASSERT(!fromNode || fromSize == fromNode->childs.size());
@@ -1999,7 +1999,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
 
     for (size_t i = 0; i < fromSize; i++)
     {
-        auto child = fromNode ? fromNode->childs[i] : nullptr;
+        const auto child = fromNode ? fromNode->childs[i] : nullptr;
 
         // Expression list inside another expression list (like a struct inside an array)
         if (child && child->kind == AstNodeKind::ExpressionList && toType->isStruct())
@@ -2011,7 +2011,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
 
         if (child)
         {
-            auto childType = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
+            const auto childType = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
             newSizeof += childType->sizeOf;
             if (!(child->flags & AST_CONST_EXPR))
                 fromNode->flags &= ~AST_CONST_EXPR;
@@ -2020,7 +2020,7 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
 
     if (fromNode && (fromTypeList->sizeOf != newSizeof))
     {
-        auto oldSizeof = fromTypeList->sizeOf;
+        const auto oldSizeof = fromTypeList->sizeOf;
         fromTypeList   = (TypeInfoList*) fromTypeList->clone();
         for (size_t i = 0; i < fromTypeList->subTypes.size(); i++)
             fromTypeList->subTypes[i]->typeInfo = fromNode->childs[i]->typeInfo;
@@ -2060,8 +2060,8 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
         // [..] u8 to string, this is possible !
         if (fromType->isSlice())
         {
-            auto fromTypeSlice = CastTypeInfo<TypeInfoSlice>(fromType, TypeInfoKind::Slice);
-            auto concreteType  = TypeManager::concreteType(fromTypeSlice->pointedType, CONCRETE_ALIAS);
+            const auto fromTypeSlice = CastTypeInfo<TypeInfoSlice>(fromType, TypeInfoKind::Slice);
+            const auto concreteType  = TypeManager::concreteType(fromTypeSlice->pointedType, CONCRETE_ALIAS);
             if (concreteType->isNative(NativeTypeKind::U8))
             {
                 if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
@@ -2077,8 +2077,8 @@ bool TypeManager::castToString(SemanticContext* context, TypeInfo* toType, TypeI
         // [] u8 to string, this is possible !
         if (fromType->isArray())
         {
-            auto fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
-            auto concreteType  = TypeManager::concreteType(fromTypeArray->pointedType, CONCRETE_ALIAS);
+            const auto fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
+            const auto concreteType  = TypeManager::concreteType(fromTypeArray->pointedType, CONCRETE_ALIAS);
             if (concreteType->isNative(NativeTypeKind::U8))
             {
                 if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
@@ -2127,8 +2127,8 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 
                 toNode->castedTypeInfo = toType;
                 toNode->typeInfo       = fromType;
-                auto  module           = context->sourceFile->module;
-                auto& typeGen          = module->typeGen;
+                const auto module      = context->sourceFile->module;
+                auto&      typeGen     = module->typeGen;
 
                 // :AnyTypeSegment
                 toNode->allocateExtension(ExtensionKind::Misc);
@@ -2154,8 +2154,8 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 
             fromNode->castedTypeInfo = fromType;
             fromNode->typeInfo       = toType;
-            auto  module             = context->sourceFile->module;
-            auto& typeGen            = module->typeGen;
+            const auto module        = context->sourceFile->module;
+            auto&      typeGen       = module->typeGen;
 
             // :AnyTypeSegment
             fromNode->allocateExtension(ExtensionKind::Misc);
@@ -2165,7 +2165,7 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
     }
     else if (fromType->isAny())
     {
-        auto toRealType = TypeManager::concretePtrRef(toType);
+        const auto toRealType = TypeManager::concretePtrRef(toType);
 
         if (!(castFlags & CASTFLAG_EXPLICIT))
         {
@@ -2195,8 +2195,8 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             }
             else
             {
-                SwagAny* any         = (SwagAny*) fromNode->computedValue->getStorageAddr();
-                auto     newTypeInfo = context->sourceFile->module->typeGen.getRealType(fromNode->computedValue->storageSegment, (ExportedTypeInfo*) any->type);
+                const SwagAny*   any         = (SwagAny*) fromNode->computedValue->getStorageAddr();
+                const auto newTypeInfo = context->sourceFile->module->typeGen.getRealType(fromNode->computedValue->storageSegment, (ExportedTypeInfo*) any->type);
 
                 // need to check the type
                 if (newTypeInfo && context->sourceFile->module->mustEmitSafety(fromNode, SAFETY_ANY, true))
@@ -2235,8 +2235,8 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
 
             fromNode->castedTypeInfo = fromType;
             fromNode->typeInfo       = toType;
-            auto  module             = context->sourceFile->module;
-            auto& typeGen            = module->typeGen;
+            const auto module        = context->sourceFile->module;
+            auto&      typeGen       = module->typeGen;
 
             // :AnyTypeSegment
             fromNode->allocateExtension(ExtensionKind::Misc);
@@ -2256,10 +2256,10 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
     stack.push_back({fromStruct, 0, nullptr});
     while (!stack.empty())
     {
-        auto it = stack.back();
+        const auto it = stack.back();
         stack.pop_back();
 
-        auto testStruct = it.typeStruct->getStructOrPointedStruct();
+        const auto testStruct = it.typeStruct->getStructOrPointedStruct();
         SWAG_ASSERT(testStruct);
         if (testStruct->isSame(toStruct, castFlags | CASTFLAG_CAST))
         {
@@ -2296,7 +2296,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
         if ((castFlags & CASTFLAG_FOR_GENERIC) && !(it.typeStruct->flags & TYPEINFO_STRUCT_TYPEINFO))
             return true;
 
-        auto structNode = CastAst<AstStruct>(it.typeStruct->declNode, AstNodeKind::StructDecl);
+        const auto structNode = CastAst<AstStruct>(it.typeStruct->declNode, AstNodeKind::StructDecl);
         if (!(structNode->specFlags & AstStruct::SPECFLAG_HAS_USING))
             continue;
 
@@ -2314,9 +2314,9 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
         Semantic::waitOverloadCompleted(context->baseJob, structNode->resolvedSymbolOverload);
         YIELD();
 
-        TypeInfoParam*  foundField  = nullptr;
+        const TypeInfoParam*  foundField  = nullptr;
         TypeInfoStruct* foundStruct = nullptr;
-        for (auto field : it.typeStruct->fields)
+        for (const auto field : it.typeStruct->fields)
         {
             if (!(field->flags & TYPEINFOPARAM_HAS_USING))
                 continue;
@@ -2330,7 +2330,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
             }
             else if (field->typeInfo->isPointerTo(TypeInfoKind::Struct))
             {
-                auto typePointer = CastTypeInfo<TypeInfoPointer>(field->typeInfo, TypeInfoKind::Pointer);
+                const auto typePointer = CastTypeInfo<TypeInfoPointer>(field->typeInfo, TypeInfoKind::Pointer);
                 typeStruct       = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             }
 
@@ -2339,15 +2339,15 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
                 // Ambiguous ! Two fields with a 'using' on the same struct
                 if (foundStruct)
                 {
-                    auto foundTypeStruct0 = foundStruct->getStructOrPointedStruct();
-                    auto foundTypeStruct1 = typeStruct->getStructOrPointedStruct();
+                    const auto foundTypeStruct0 = foundStruct->getStructOrPointedStruct();
+                    const auto foundTypeStruct1 = typeStruct->getStructOrPointedStruct();
                     if (foundTypeStruct0 && foundTypeStruct1 && foundTypeStruct0->isSame(foundTypeStruct1, castFlags | CASTFLAG_CAST))
                     {
                         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
                         {
-                            Diagnostic diag{fromNode, Fmt(Err(Err0014), fromType->getDisplayNameC(), toType->getDisplayNameC(), fromStruct->getDisplayNameC(), toStruct->getDisplayNameC())};
-                            auto       note1 = Diagnostic::note(foundField->declNode, Nte(Nte0061));
-                            auto       note2 = Diagnostic::note(field->declNode, Nte(Nte0060));
+                            const Diagnostic diag{fromNode, Fmt(Err(Err0014), fromType->getDisplayNameC(), toType->getDisplayNameC(), fromStruct->getDisplayNameC(), toStruct->getDisplayNameC())};
+                            const auto       note1 = Diagnostic::note(foundField->declNode, Nte(Nte0061));
+                            const auto       note2 = Diagnostic::note(field->declNode, Nte(Nte0060));
                             return context->report(diag, note1, note2);
                         }
                     }
@@ -2365,7 +2365,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
 
 bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fromTypeStruct, TypeInfoStruct* toTypeItf, InterfaceRef& ref, bool skipFirst)
 {
-    TypeInfoParam* foundField = nullptr;
+    const TypeInfoParam* foundField = nullptr;
 
     context->castCollectInterfaceField.clear();
     auto& stack = context->castCollectInterfaceField;
@@ -2373,19 +2373,19 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
     stack.push_back({fromTypeStruct, 0, nullptr, nullptr});
     while (!stack.empty())
     {
-        auto it = stack.back();
+        const auto it = stack.back();
         stack.pop_back();
 
         if (!skipFirst)
         {
-            auto foundItf = it.typeStruct->hasInterface(toTypeItf);
+            const auto foundItf = it.typeStruct->hasInterface(toTypeItf);
             if (foundItf)
             {
                 if (foundField)
                 {
-                    Diagnostic diag{context->node, Fmt(Err(Err0016), fromTypeStruct->structName.c_str(), toTypeItf->name.c_str())};
-                    auto       note1 = Diagnostic::note(it.field->declNode, Nte(Nte0150));
-                    auto       note2 = Diagnostic::note(foundField->declNode, Nte(Nte0152));
+                    const Diagnostic diag{context->node, Fmt(Err(Err0016), fromTypeStruct->structName.c_str(), toTypeItf->name.c_str())};
+                    const auto       note1 = Diagnostic::note(it.field->declNode, Nte(Nte0150));
+                    const auto       note2 = Diagnostic::note(foundField->declNode, Nte(Nte0152));
                     return context->report(diag, note1, note2);
                 }
 
@@ -2397,22 +2397,22 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
             }
         }
 
-        skipFirst       = false;
-        auto structNode = CastAst<AstStruct>(it.typeStruct->declNode, AstNodeKind::StructDecl);
+        skipFirst             = false;
+        const auto structNode = CastAst<AstStruct>(it.typeStruct->declNode, AstNodeKind::StructDecl);
         if (!(structNode->specFlags & AstStruct::SPECFLAG_HAS_USING))
             continue;
 
         Semantic::waitOverloadCompleted(context->baseJob, it.typeStruct->declNode->resolvedSymbolOverload);
         YIELD();
 
-        for (auto field : it.typeStruct->fields)
+        for (const auto field : it.typeStruct->fields)
         {
             if (!(field->flags & TYPEINFOPARAM_HAS_USING))
                 continue;
             if (!field->typeInfo->isStruct())
                 continue;
 
-            auto typeStruct = CastTypeInfo<TypeInfoStruct>(field->typeInfo, TypeInfoKind::Struct);
+            const auto typeStruct = CastTypeInfo<TypeInfoStruct>(field->typeInfo, TypeInfoKind::Struct);
             if (typeStruct == it.typeStruct)
                 continue;
 
@@ -2436,7 +2436,7 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
     if (castFlags & CASTFLAG_FOR_GENERIC)
         return castError(context, toType, fromType, fromNode, castFlags);
 
-    auto toTypeItf = CastTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::Interface);
+    const auto toTypeItf = CastTypeInfo<TypeInfoStruct>(toType, TypeInfoKind::Interface);
 
     if (fromType->isPointerNull())
     {
@@ -2475,11 +2475,11 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
         auto typeStruct = fromType;
         if (fromType->isPointer())
         {
-            auto typePointer = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
+            const auto typePointer = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
             typeStruct       = typePointer->pointedType;
         }
 
-        auto fromTypeStruct = CastTypeInfo<TypeInfoStruct>(typeStruct, TypeInfoKind::Struct);
+        const auto fromTypeStruct = CastTypeInfo<TypeInfoStruct>(typeStruct, TypeInfoKind::Struct);
 
         InterfaceRef itfRef;
         SWAG_CHECK(collectInterface(context, fromTypeStruct, toTypeItf, itfRef));
@@ -2509,7 +2509,7 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
 
 bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
-    auto toTypePointer = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
+    const auto toTypePointer = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
 
     if (fromType->isPointer())
     {
@@ -2528,7 +2528,7 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
         }
 
         // Compare pointed types
-        auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
+        const auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
         if (toTypePointer->pointedType->isSame(fromTypePointer->pointedType, castFlags | CASTFLAG_CAST))
             return true;
     }
@@ -2546,8 +2546,8 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
     // Structure to interface reference
     if (fromType->isStruct() && toTypePointer->pointedType->isInterface())
     {
-        auto toTypeItf      = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Interface);
-        auto fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
+        const auto toTypeItf      = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Interface);
+        const auto fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
         if (!fromTypeStruct->hasInterface(toTypeItf))
             return castError(context, toType, fromType, fromNode, castFlags);
 
@@ -2563,9 +2563,9 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
     // Struct to automatic const ref struct
     if (fromType->isStruct() && toTypePointer->pointedType->isStruct() && toTypePointer->isAutoConstPointerRef())
     {
-        auto fromStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
-        auto toStruct   = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Struct);
-        bool ok         = false;
+        const auto fromStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
+        const auto toStruct   = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Struct);
+        bool       ok         = false;
         SWAG_CHECK(castStructToStruct(context, toStruct, fromStruct, toType, fromType, fromNode, castFlags, ok));
         if (ok || context->result == ContextResult::Pending)
         {
@@ -2578,10 +2578,10 @@ bool TypeManager::castToPointerRef(SemanticContext* context, TypeInfo* toType, T
     // Struct to struct pointer
     if (fromType->isPointerTo(TypeInfoKind::Struct) && toTypePointer->pointedType->isStruct())
     {
-        auto fromPtr    = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
-        auto fromStruct = CastTypeInfo<TypeInfoStruct>(fromPtr->pointedType, TypeInfoKind::Struct);
-        auto toStruct   = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Struct);
-        bool ok         = false;
+        const auto fromPtr    = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
+        const auto fromStruct = CastTypeInfo<TypeInfoStruct>(fromPtr->pointedType, TypeInfoKind::Struct);
+        const auto toStruct   = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Struct);
+        bool       ok         = false;
         SWAG_CHECK(castStructToStruct(context, toStruct, fromStruct, toType, fromType, fromNode, castFlags, ok));
         if (ok || context->result == ContextResult::Pending)
         {
@@ -2634,17 +2634,17 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         }
     }
 
-    auto toTypePointer = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
+    const auto toTypePointer = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
 
     // Pointer to struct to pointer to struct. Take care of using
     if (fromType->isPointer() && toTypePointer->pointedType->isStruct())
     {
-        auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
+        const auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
         if (fromTypePointer->pointedType->isStruct())
         {
-            auto fromStruct = CastTypeInfo<TypeInfoStruct>(fromTypePointer->pointedType, TypeInfoKind::Struct);
-            auto toStruct   = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Struct);
-            bool ok         = false;
+            const auto fromStruct = CastTypeInfo<TypeInfoStruct>(fromTypePointer->pointedType, TypeInfoKind::Struct);
+            const auto toStruct   = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Struct);
+            bool       ok         = false;
             SWAG_CHECK(castStructToStruct(context, toStruct, fromStruct, toType, fromType, fromNode, castFlags, ok));
             if (ok || context->result == ContextResult::Pending)
             {
@@ -2659,9 +2659,9 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
     // Accept only if this is ufcs, to simulate calling a method of a base 'class'
     if ((castFlags & CASTFLAG_UFCS) && fromType->isStruct() && toTypePointer->pointedType->isStruct())
     {
-        auto fromStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
-        auto toStruct   = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Struct);
-        bool ok         = false;
+        const auto fromStruct = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Struct);
+        const auto toStruct   = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Struct);
+        bool       ok         = false;
         SWAG_CHECK(castStructToStruct(context, toStruct, fromStruct, toType, fromType, fromNode, castFlags, ok));
         if (ok || context->result == ContextResult::Pending)
         {
@@ -2723,7 +2723,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
     // Array to pointer of the same type
     if (fromType->isArray())
     {
-        auto fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
+        const auto fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
         if ((!(castFlags & CASTFLAG_NO_IMPLICIT) && toTypePointer->pointedType->isVoid()) ||
             (!(castFlags & CASTFLAG_NO_IMPLICIT) && toTypePointer->pointedType->isSame(fromTypeArray->pointedType, castFlags | CASTFLAG_CAST)) ||
             (castFlags & CASTFLAG_EXPLICIT))
@@ -2741,7 +2741,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
     // Slice to pointer of the same type
     if (fromType->isSlice())
     {
-        auto fromTypeSlice = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Slice);
+        const auto fromTypeSlice = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Slice);
         if ((!(castFlags & CASTFLAG_NO_IMPLICIT) && toTypePointer->pointedType->isVoid()) ||
             (!(castFlags & CASTFLAG_NO_IMPLICIT) && toTypePointer->pointedType->isSame(fromTypeSlice->pointedType, castFlags | CASTFLAG_CAST)) ||
             (castFlags & CASTFLAG_EXPLICIT))
@@ -2781,8 +2781,8 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
     {
         if (castFlags & CASTFLAG_EXPLICIT)
         {
-            auto fromTypeItf  = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Interface);
-            auto toTypeStruct = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Struct);
+            const auto fromTypeItf  = CastTypeInfo<TypeInfoStruct>(fromType, TypeInfoKind::Interface);
+            const auto toTypeStruct = CastTypeInfo<TypeInfoStruct>(toTypePointer->pointedType, TypeInfoKind::Struct);
             if (!toTypeStruct->hasInterface(fromTypeItf))
                 return castError(context, toType, fromType, fromNode, castFlags);
 
@@ -2841,11 +2841,11 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 
 bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags)
 {
-    TypeInfoArray* toTypeArray = CastTypeInfo<TypeInfoArray>(toType, TypeInfoKind::Array);
+    const TypeInfoArray* toTypeArray = CastTypeInfo<TypeInfoArray>(toType, TypeInfoKind::Array);
     if (fromType->isListArray())
     {
         TypeInfoList* fromTypeList = CastTypeInfo<TypeInfoList>(fromType, TypeInfoKind::TypeListArray);
-        auto          fromSize     = fromTypeList->subTypes.size();
+        const auto    fromSize     = fromTypeList->subTypes.size();
         if (toTypeArray->count != fromSize)
         {
             if (!(castFlags & CASTFLAG_JUST_CHECK))
@@ -2873,7 +2873,7 @@ bool TypeManager::castToArray(SemanticContext* context, TypeInfo* toType, TypeIn
     {
         if (toTypeArray->finalType->isSame(fromType, castFlags | CASTFLAG_CAST))
         {
-            auto finalType = TypeManager::concreteType(toTypeArray->finalType, CONCRETE_ENUM | CONCRETE_ALIAS);
+            const auto finalType = TypeManager::concreteType(toTypeArray->finalType, CONCRETE_ENUM | CONCRETE_ALIAS);
             if (finalType->isString() ||
                 finalType->isNativeFloat() ||
                 finalType->isNativeIntegerOrRune() ||
@@ -2940,15 +2940,15 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
     }
     else if (fromType->isArray())
     {
-        TypeInfoArray* fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
+        const TypeInfoArray* fromTypeArray = CastTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
         if ((!(castFlags & CASTFLAG_NO_IMPLICIT) && toTypeSlice->pointedType->isSame(fromTypeArray->pointedType, castFlags | CASTFLAG_CAST)) ||
             (castFlags & CASTFLAG_EXPLICIT))
         {
-            int s = toTypeSlice->pointedType->sizeOf;
-            int d = fromTypeArray->sizeOf;
+            const int s = toTypeSlice->pointedType->sizeOf;
+            const int d = fromTypeArray->sizeOf;
             SWAG_ASSERT(s != 0 || toTypeSlice->pointedType->isGeneric());
 
-            bool match = s == 0 || (d / s) * s == d;
+            const bool match = s == 0 || (d / s) * s == d;
             if (match)
             {
                 if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
@@ -2975,9 +2975,9 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
                 // Need to make a slice literal from the string
                 if (fromNode->hasComputedValue())
                 {
-                    auto     storageSegment = Semantic::getConstantSegFromContext(fromNode);
-                    uint8_t* addrString;
-                    auto     stringOffset = storageSegment->addString(fromNode->computedValue->text, &addrString);
+                    const auto storageSegment = Semantic::getConstantSegFromContext(fromNode);
+                    uint8_t*   addrString;
+                    const auto stringOffset = storageSegment->addString(fromNode->computedValue->text, &addrString);
 
                     SwagSlice* slice;
                     fromNode->computedValue->storageSegment = storageSegment;
@@ -3016,7 +3016,7 @@ bool TypeManager::castToSlice(SemanticContext* context, TypeInfo* toType, TypeIn
     }
     else if (fromType->isSlice())
     {
-        auto fromTypeSlice = CastTypeInfo<TypeInfoSlice>(fromType, TypeInfoKind::Slice);
+        const auto fromTypeSlice = CastTypeInfo<TypeInfoSlice>(fromType, TypeInfoKind::Slice);
         if (castFlags & CASTFLAG_EXPLICIT || toTypeSlice->pointedType->isSame(fromTypeSlice->pointedType, castFlags | CASTFLAG_CAST))
             return true;
     }
@@ -3036,7 +3036,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
     if (!(castFlags & CASTFLAG_NO_TUPLE_TO_STRUCT))
     {
         SWAG_ASSERT(fromNode->typeInfo);
-        auto fromType = concreteType(fromNode->typeInfo, CONCRETE_ALIAS);
+        const auto fromType = concreteType(fromNode->typeInfo, CONCRETE_ALIAS);
         if (fromType->isListTuple())
         {
             bool convert = false;
@@ -3045,7 +3045,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
 
             if (toType->isPointerRef() && toType->isConst())
             {
-                auto ptrRef = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
+                const auto ptrRef = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
                 if (ptrRef->pointedType->isStruct())
                 {
                     toType  = ptrRef->pointedType;
@@ -3099,7 +3099,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
                 TypeInfoList* typeList = CastTypeInfo<TypeInfoList>(fromNode->typeInfo, TypeInfoKind::TypeListTuple, TypeInfoKind::TypeListArray);
                 SWAG_ASSERT(typeList->subTypes.size() == fromNode->childs.size());
 #endif
-                auto exprList = CastAst<AstExpressionList>(fromNode, AstNodeKind::ExpressionList);
+                const auto exprList = CastAst<AstExpressionList>(fromNode, AstNodeKind::ExpressionList);
                 if (exprList && !(exprList->semFlags & SEMFLAG_EXPRLIST_CST))
                 {
                     exprList->semFlags |= SEMFLAG_EXPRLIST_CST;
@@ -3107,7 +3107,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
                     // Test sizeof because {} is legit to initialize a struct (for default values in function arguments)
                     if (fromNode->typeInfo->sizeOf)
                     {
-                        auto constSegment = Semantic::getConstantSegFromContext(exprList);
+                        const auto constSegment = Semantic::getConstantSegFromContext(exprList);
                         exprList->allocateComputedValue();
                         exprList->computedValue->storageSegment = constSegment;
                         SWAG_CHECK(Semantic::reserveAndStoreToSegment(context, exprList->computedValue->storageSegment, exprList->computedValue->storageOffset, nullptr, fromNode->typeInfo, exprList));
@@ -3123,8 +3123,8 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
 bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* toNode, AstNode* fromNode, uint64_t castFlags)
 {
     // convert {...} expression list to a structure : this will create a variable, with parameters
-    auto realFromType = concreteType(fromType, CONCRETE_ALIAS);
-    auto realToType   = concreteType(toType, CONCRETE_ALIAS);
+    const auto realFromType = concreteType(fromType, CONCRETE_ALIAS);
+    const auto realToType   = concreteType(toType, CONCRETE_ALIAS);
     SWAG_ASSERT(realFromType && realToType);
     if (realFromType->isListTuple())
     {
@@ -3133,7 +3133,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
 
         if (realToType->isConstPointerRef())
         {
-            auto ptrRef = CastTypeInfo<TypeInfoPointer>(realToType, TypeInfoKind::Pointer);
+            const auto ptrRef = CastTypeInfo<TypeInfoPointer>(realToType, TypeInfoKind::Pointer);
             if (ptrRef->pointedType->isStruct())
                 return true;
         }
@@ -3230,7 +3230,7 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     if (fromType->isPointerRef() ||
         (fromNode && fromNode->kind == AstNodeKind::KeepRef && fromType->isPointer()))
     {
-        auto fromTypeRef = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer)->pointedType;
+        const auto fromTypeRef = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer)->pointedType;
         if (fromTypeRef == toType)
         {
             castFlags |= CASTFLAG_FORCE_UNCONST;
@@ -3334,9 +3334,9 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
                 (!toType->isBool() || !(castFlags & CASTFLAG_AUTO_BOOL)) &&
                 (!toType->isNative(NativeTypeKind::U64) || !fromType->isPointer()))
             {
-                bool toConst   = toType->isConst();
-                bool fromConst = fromType->isConst();
-                bool diff      = false;
+                const bool toConst   = toType->isConst();
+                const bool fromConst = fromType->isConst();
+                bool       diff      = false;
                 if (castFlags & CASTFLAG_FOR_GENERIC)
                     diff = toConst != fromConst;
                 else

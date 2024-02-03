@@ -9,7 +9,7 @@
 
 bool ByteCodeGen::emitPointerRef(ByteCodeGenContext* context)
 {
-    auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
+    const auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
 
     if (!(node->access->semFlags & SEMFLAG_CAST1))
     {
@@ -21,7 +21,7 @@ bool ByteCodeGen::emitPointerRef(ByteCodeGenContext* context)
     // In case of a deref, no need to increment pointer because we are sure that index is 0
     if (!(node->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DREF))
     {
-        auto sizeOf = node->typeInfo->sizeOf;
+        const auto sizeOf = node->typeInfo->sizeOf;
         if (sizeOf > 1)
         {
             ensureCanBeChangedRC(context, node->access->resultRegisterRC);
@@ -41,7 +41,7 @@ bool ByteCodeGen::emitPointerRef(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitStringRef(ByteCodeGenContext* context)
 {
-    auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
+    const auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
 
     if (!(node->access->semFlags & SEMFLAG_CAST1))
     {
@@ -62,9 +62,9 @@ bool ByteCodeGen::emitStringRef(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitArrayRef(ByteCodeGenContext* context)
 {
-    auto node          = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
-    auto typeArray     = TypeManager::concreteType(node->array->typeInfo, CONCRETE_FORCEALIAS);
-    auto typeInfoArray = CastTypeInfo<TypeInfoArray>(typeArray, TypeInfoKind::Array);
+    const auto node          = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
+    const auto typeArray     = TypeManager::concreteType(node->array->typeInfo, CONCRETE_FORCEALIAS);
+    const auto typeInfoArray = CastTypeInfo<TypeInfoArray>(typeArray, TypeInfoKind::Array);
 
     if (!(node->access->semFlags & SEMFLAG_CAST1))
     {
@@ -77,7 +77,7 @@ bool ByteCodeGen::emitArrayRef(ByteCodeGenContext* context)
         emitSafetyBoundCheckArray(context, node->access->resultRegisterRC, typeInfoArray);
 
     // Pointer increment
-    auto sizeOf = node->typeInfo->sizeOf;
+    const auto sizeOf = node->typeInfo->sizeOf;
     if (sizeOf > 1)
     {
         ensureCanBeChangedRC(context, node->access->resultRegisterRC);
@@ -94,7 +94,7 @@ bool ByteCodeGen::emitArrayRef(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitSliceRef(ByteCodeGenContext* context)
 {
-    auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
+    const auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
 
     if (!(node->access->semFlags & SEMFLAG_CAST1))
     {
@@ -114,7 +114,7 @@ bool ByteCodeGen::emitSliceRef(ByteCodeGenContext* context)
     emitSafetyBoundCheckSlice(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
     // Pointer increment
-    auto sizeOf = node->typeInfo->sizeOf;
+    const auto sizeOf = node->typeInfo->sizeOf;
     if (sizeOf > 1)
     {
         ensureCanBeChangedRC(context, node->access->resultRegisterRC);
@@ -132,7 +132,7 @@ bool ByteCodeGen::emitSliceRef(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitStructDeRef(ByteCodeGenContext* context, TypeInfo* typeInfo)
 {
-    auto node = context->node;
+    const auto node = context->node;
 
     ensureCanBeChangedRC(context, node->resultRegisterRC);
 
@@ -183,7 +183,7 @@ bool ByteCodeGen::emitStructDeRef(ByteCodeGenContext* context, TypeInfo* typeInf
     if (typeInfo->isFuncAttr())
     {
         truncRegisterRC(context, node->resultRegisterRC, 1);
-        auto inst       = EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+        const auto inst       = EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         inst->d.pointer = (uint8_t*) node->resolvedSymbolOverload;
         return true;
     }
@@ -191,7 +191,7 @@ bool ByteCodeGen::emitStructDeRef(ByteCodeGenContext* context, TypeInfo* typeInf
     if (typeInfo->isPointer())
     {
         truncRegisterRC(context, node->resultRegisterRC, 1);
-        auto inst       = EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+        const auto inst       = EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         inst->d.pointer = (uint8_t*) node->resolvedSymbolOverload;
         return true;
     }
@@ -253,9 +253,9 @@ bool ByteCodeGen::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, T
 
 bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
 {
-    auto node     = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
-    auto typeInfo = TypeManager::concretePtrRefType(node->array->typeInfo);
-    auto castInfo = node->array->castedTypeInfo ? node->array->castedTypeInfo : nullptr;
+    const auto node     = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
+    const auto typeInfo = TypeManager::concretePtrRefType(node->array->typeInfo);
+    const auto castInfo = node->array->castedTypeInfo ? node->array->castedTypeInfo : nullptr;
 
     if (!(node->access->semFlags & SEMFLAG_CAST3))
     {
@@ -284,12 +284,12 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
     {
         emitSafetyBoundCheckSlice(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
-        auto typeInfoSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
+        const auto typeInfoSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
 
         // Increment pointer (if increment is not 0)
         if (!node->access->isConstant0())
         {
-            auto sizeOf = typeInfoSlice->pointedType->sizeOf;
+            const auto sizeOf = typeInfoSlice->pointedType->sizeOf;
             if (sizeOf > 1)
             {
                 ensureCanBeChangedRC(context, node->access->resultRegisterRC);
@@ -335,12 +335,12 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
     // Dereference of a pointer
     else if (typeInfo->isPointer())
     {
-        auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
+        const auto typeInfoPointer = CastTypeInfo<TypeInfoPointer>(typeInfo, TypeInfoKind::Pointer);
 
         // Increment pointer (if increment is not 0)
         if (!node->access->isConstant0())
         {
-            auto sizeOf = typeInfoPointer->pointedType->sizeOf;
+            const auto sizeOf = typeInfoPointer->pointedType->sizeOf;
             if (sizeOf > 1)
             {
                 ensureCanBeChangedRC(context, node->access->resultRegisterRC);
@@ -363,7 +363,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
     // Dereference of an array
     else if (typeInfo->isArray())
     {
-        auto typeInfoArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
+        const auto typeInfoArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
 
         if (!node->access->hasComputedValue())
             emitSafetyBoundCheckArray(context, node->access->resultRegisterRC, typeInfoArray);
@@ -372,7 +372,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
         // Increment pointer (if increment is not 0)
         if (!node->access->isConstant0())
         {
-            auto sizeOf = typeInfoArray->pointedType->sizeOf;
+            const auto sizeOf = typeInfoArray->pointedType->sizeOf;
             if (sizeOf > 1)
             {
                 ensureCanBeChangedRC(context, node->access->resultRegisterRC);
@@ -382,7 +382,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
             EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
         }
 
-        auto pointedType = TypeManager::concreteType(typeInfoArray->pointedType, CONCRETE_FORCEALIAS);
+        const auto pointedType = TypeManager::concreteType(typeInfoArray->pointedType, CONCRETE_FORCEALIAS);
 
         if (pointedType->isString())
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, pointedType));
@@ -421,7 +421,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
     {
         emitSafetyBoundCheckSlice(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
 
-        auto rawType = ((TypeInfoVariadic*) typeInfo)->rawType;
+        const auto rawType = ((TypeInfoVariadic*) typeInfo)->rawType;
 
         // Increment pointer (if increment is not 0)
         if (!node->access->isConstant0())
@@ -450,7 +450,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitMakeLambda(ByteCodeGenContext* context)
 {
-    auto node = CastAst<AstMakePointer>(context->node, AstNodeKind::MakePointerLambda, AstNodeKind::MakePointer);
+    const auto node = CastAst<AstMakePointer>(context->node, AstNodeKind::MakePointerLambda, AstNodeKind::MakePointer);
 
     AstNode* front;
     if (node->lambda && node->lambda->captureParameters)
@@ -458,7 +458,7 @@ bool ByteCodeGen::emitMakeLambda(ByteCodeGenContext* context)
     else
         front = node->childs.front();
 
-    auto funcNode = CastAst<AstFuncDecl>(front->resolvedSymbolOverload->node, AstNodeKind::FuncDecl);
+    const auto funcNode = CastAst<AstFuncDecl>(front->resolvedSymbolOverload->node, AstNodeKind::FuncDecl);
 
     if (!funcNode->isForeign())
     {
@@ -470,7 +470,7 @@ bool ByteCodeGen::emitMakeLambda(ByteCodeGenContext* context)
     freeRegisterRC(context, front);
     node->resultRegisterRC = reserveRegisterRC(context);
 
-    auto inst       = EMIT_INST1(context, ByteCodeOp::MakeLambda, node->resultRegisterRC);
+    const auto inst       = EMIT_INST1(context, ByteCodeOp::MakeLambda, node->resultRegisterRC);
     inst->b.pointer = (uint8_t*) funcNode;
     inst->c.pointer = nullptr;
     if (funcNode->hasExtByteCode() && funcNode->extByteCode()->bc)
@@ -492,17 +492,17 @@ bool ByteCodeGen::emitMakeLambda(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitMakePointer(ByteCodeGenContext* context)
 {
-    auto node              = context->node;
-    auto front             = node->childs.front();
+    const auto node        = context->node;
+    const auto front       = node->childs.front();
     node->resultRegisterRC = front->resultRegisterRC;
     return true;
 }
 
 bool ByteCodeGen::emitMakeArrayPointerSlicingUpperBound(ByteCodeGenContext* context)
 {
-    auto upperNode = context->node;
-    auto slicing   = CastAst<AstArrayPointerSlicing>(context->node->parent, AstNodeKind::ArrayPointerSlicing);
-    auto arrayNode = slicing->array;
+    const auto upperNode = context->node;
+    const auto slicing   = CastAst<AstArrayPointerSlicing>(context->node->parent, AstNodeKind::ArrayPointerSlicing);
+    const auto arrayNode = slicing->array;
 
     if (upperNode->hasExtMisc() && upperNode->extMisc()->resolvedUserOpSymbolOverload)
     {
@@ -514,7 +514,7 @@ bool ByteCodeGen::emitMakeArrayPointerSlicingUpperBound(ByteCodeGenContext* cont
         return true;
     }
 
-    auto typeInfo = TypeManager::concretePtrRefType(arrayNode->typeInfo);
+    const auto typeInfo = TypeManager::concretePtrRefType(arrayNode->typeInfo);
     if (typeInfo->isString() ||
         typeInfo->isSlice() ||
         typeInfo->isVariadic() ||
@@ -531,8 +531,8 @@ bool ByteCodeGen::emitMakeArrayPointerSlicingUpperBound(ByteCodeGenContext* cont
 
 bool ByteCodeGen::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
 {
-    auto node    = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
-    auto typeVar = TypeManager::concretePtrRefType(node->array->typeInfo);
+    const auto node    = CastAst<AstArrayPointerSlicing>(context->node, AstNodeKind::ArrayPointerSlicing);
+    const auto typeVar = TypeManager::concretePtrRefType(node->array->typeInfo);
 
     if (!(node->lowerBound->semFlags & SEMFLAG_CAST1))
     {
@@ -677,7 +677,7 @@ void ByteCodeGen::emitMemCpy(ByteCodeGenContext* context, uint32_t r0, uint32_t 
         break;
     default:
     {
-        auto inst = EMIT_INST2(context, ByteCodeOp::IntrinsicMemCpy, r0, r1);
+        const auto inst = EMIT_INST2(context, ByteCodeOp::IntrinsicMemCpy, r0, r1);
         inst->flags |= BCI_IMM_C;
         inst->c.u64 = sizeOf;
         break;

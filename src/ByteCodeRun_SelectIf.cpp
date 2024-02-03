@@ -9,8 +9,8 @@
 
 bool ByteCodeRun::getVariadicSI(ByteCodeRunContext* context, ByteCodeInstruction* ip, Register* regPtr, Register* regCount)
 {
-    auto paramIdx   = ip->c.u32;
-    auto callParams = context->callerContext->validIfParameters;
+    const auto paramIdx   = ip->c.u32;
+    const auto callParams = context->callerContext->validIfParameters;
 
     // Nothing
     if (!callParams)
@@ -24,9 +24,9 @@ bool ByteCodeRun::getVariadicSI(ByteCodeRunContext* context, ByteCodeInstruction
         regPtr->pointer = nullptr;
 
     // Count
-    auto numParamsCall = callParams->childs.size();
-    auto numParamsFunc = ip->c.u32;
-    auto count         = numParamsCall - numParamsFunc;
+    const auto numParamsCall = callParams->childs.size();
+    const auto numParamsFunc = ip->c.u32;
+    const auto count         = numParamsCall - numParamsFunc;
     if (regCount)
         regCount->u64 = numParamsCall - numParamsFunc;
     if (count != 1)
@@ -45,7 +45,7 @@ bool ByteCodeRun::getVariadicSI(ByteCodeRunContext* context, ByteCodeInstruction
 
     if (child->typeInfo->isListArray())
     {
-        auto typeList = CastTypeInfo<TypeInfoList>(child->typeInfo, TypeInfoKind::TypeListArray);
+        const auto typeList = CastTypeInfo<TypeInfoList>(child->typeInfo, TypeInfoKind::TypeListArray);
         if (regCount)
             regCount->u64 = typeList->subTypes.size();
         return true;
@@ -53,7 +53,7 @@ bool ByteCodeRun::getVariadicSI(ByteCodeRunContext* context, ByteCodeInstruction
 
     if (child->typeInfo->isArray())
     {
-        auto typeArray = CastTypeInfo<TypeInfoArray>(child->typeInfo, TypeInfoKind::Array);
+        const auto typeArray = CastTypeInfo<TypeInfoArray>(child->typeInfo, TypeInfoKind::Array);
         if (regCount)
             regCount->u64 = typeArray->totalCount;
         return true;
@@ -64,14 +64,14 @@ bool ByteCodeRun::getVariadicSI(ByteCodeRunContext* context, ByteCodeInstruction
 
 void* ByteCodeRun::executeLocationSI(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
-    uint32_t paramIdx   = ip->c.u32;
-    auto     callParams = context->callerContext->validIfParameters;
+    const uint32_t paramIdx   = ip->c.u32;
+    const auto     callParams = context->callerContext->validIfParameters;
     if (!callParams)
         return nullptr;
     if (paramIdx >= callParams->childs.size())
         return nullptr;
 
-    auto         child          = callParams->childs[paramIdx];
+    const auto         child          = callParams->childs[paramIdx];
     uint32_t     storageOffset  = UINT32_MAX;
     DataSegment* storageSegment = nullptr;
     ByteCodeGen::computeSourceLocation(context->callerContext, child, &storageOffset, &storageSegment, true);
@@ -80,21 +80,21 @@ void* ByteCodeRun::executeLocationSI(ByteCodeRunContext* context, ByteCodeInstru
 
 bool ByteCodeRun::executeIsConstExprSI(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
-    auto solved = (SymbolOverload*) ip->d.pointer;
+    const auto solved = (SymbolOverload*) ip->d.pointer;
 
     // Variadic
     /////////////////////////////////////////
     if (solved->typeInfo->isVariadic() || solved->typeInfo->isTypedVariadic())
         return getVariadicSI(context, ip, nullptr, nullptr);
 
-    uint32_t paramIdx   = ip->c.u32;
-    auto     callParams = context->callerContext->validIfParameters;
+    const uint32_t paramIdx   = ip->c.u32;
+    const auto     callParams = context->callerContext->validIfParameters;
     if (!callParams)
         return true;
     if (paramIdx >= callParams->childs.size())
         return true;
 
-    auto child = callParams->childs[paramIdx];
+    const auto child = callParams->childs[paramIdx];
 
     // Slice
     /////////////////////////////////////////
@@ -117,16 +117,16 @@ bool ByteCodeRun::executeIsConstExprSI(ByteCodeRunContext* context, ByteCodeInst
 void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeInstruction* ip)
 {
     // Is this constexpr ?
-    auto solved = (SymbolOverload*) ip->d.pointer;
+    const auto solved = (SymbolOverload*) ip->d.pointer;
     if (!executeIsConstExprSI(context, ip))
     {
         callInternalCompilerError(context, ip, Fmt(Err(Err0031), solved->symbol->name.c_str()));
         return;
     }
 
-    auto paramIdx    = ip->c.u32;
-    auto callParams  = context->callerContext->validIfParameters;
-    auto registersRC = context->curRegistersRC;
+    const auto paramIdx    = ip->c.u32;
+    const auto callParams  = context->callerContext->validIfParameters;
+    const auto registersRC = context->curRegistersRC;
 
     if (!callParams || paramIdx >= callParams->childs.size())
     {
@@ -148,7 +148,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
         return;
     }
 
-    auto child = callParams->childs[paramIdx];
+    const auto child = callParams->childs[paramIdx];
 
     // Slice
     /////////////////////////////////////////
@@ -156,7 +156,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
     {
         if (child->typeInfo->isArray())
         {
-            auto typeArray                 = CastTypeInfo<TypeInfoArray>(child->typeInfo, TypeInfoKind::Array);
+            const auto typeArray                 = CastTypeInfo<TypeInfoArray>(child->typeInfo, TypeInfoKind::Array);
             registersRC[ip->a.u32].pointer = nullptr;
             registersRC[ip->b.u32].u64     = typeArray->totalCount;
             return;
@@ -164,7 +164,7 @@ void ByteCodeRun::executeGetFromStackSI(ByteCodeRunContext* context, ByteCodeIns
 
         if (child->typeInfo->isListArray())
         {
-            auto typeList                  = CastTypeInfo<TypeInfoList>(child->typeInfo, TypeInfoKind::TypeListArray);
+            const auto typeList                  = CastTypeInfo<TypeInfoList>(child->typeInfo, TypeInfoKind::TypeListArray);
             registersRC[ip->a.u32].pointer = nullptr;
             registersRC[ip->b.u32].u64     = typeList->subTypes.size();
             return;

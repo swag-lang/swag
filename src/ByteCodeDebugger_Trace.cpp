@@ -128,7 +128,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
 
     context->debugStackFrameOffset = 0;
 
-    uint32_t to = (uint32_t) atoi(arg.split[1].c_str());
+    const uint32_t to = (uint32_t) atoi(arg.split[1].c_str());
 
     auto curIp = context->bc->out;
     while (true)
@@ -139,7 +139,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
             return BcDbgCommandResult::Continue;
         }
 
-        auto loc = ByteCode::getLocation(context->bc, curIp);
+        const auto loc = ByteCode::getLocation(context->bc, curIp);
         if (loc.location && loc.location->line + 1 == to)
         {
             context->ip                   = curIp;
@@ -163,7 +163,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdJumpi(ByteCodeRunContext* context, const
 
     context->debugStackFrameOffset = 0;
 
-    uint32_t to = (uint32_t) atoi(arg.split[1].c_str());
+    const uint32_t to = (uint32_t) atoi(arg.split[1].c_str());
 
     if (to >= context->bc->numInstructions - 1)
     {

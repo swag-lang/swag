@@ -103,8 +103,8 @@ void SCBE::emitShiftEqLogical(SCBE_X64& pp, ByteCodeInstruction* ip, CPUOp op, C
         pp.emit_CmpN_Immediate(RCX, (uint32_t) numBits, CPUBits::B32);
         pp.emit_NearJumpOp(JL);
         pp.concat.addU8(0); // clear + store below
-        auto seekPtr = pp.concat.getSeekPtr() - 1;
-        auto seekJmp = pp.concat.totalCount();
+        const auto seekPtr = pp.concat.getSeekPtr() - 1;
+        const auto seekJmp = pp.concat.totalCount();
         pp.emit_ClearN(RCX, numBits);
         pp.emit_StoreN_Indirect(0, RCX, RAX, numBits);
         *seekPtr = (uint8_t) (pp.concat.totalCount() - seekJmp);
@@ -114,13 +114,13 @@ void SCBE::emitShiftEqLogical(SCBE_X64& pp, ByteCodeInstruction* ip, CPUOp op, C
 
 void SCBE::emitOverflowSigned(SCBE_X64& pp, ByteCodeInstruction* ip, const char* msg)
 {
-    bool nw = (ip->node->attributeFlags & ATTRIBUTE_CAN_OVERFLOW_ON) || (ip->flags & BCI_CAN_OVERFLOW) ? false : true;
+    const bool nw = (ip->node->attributeFlags & ATTRIBUTE_CAN_OVERFLOW_ON) || (ip->flags & BCI_CAN_OVERFLOW) ? false : true;
     if (nw && module->mustEmitSafetyOverflow(ip->node) && !(ip->flags & BCI_CANT_OVERFLOW))
     {
         pp.emit_LongJumpOp(JNO);
         pp.concat.addU32(0);
-        auto addr      = (uint32_t*) pp.concat.getSeekPtr() - 1;
-        auto prevCount = pp.concat.totalCount();
+        const auto addr      = (uint32_t*) pp.concat.getSeekPtr() - 1;
+        const auto prevCount = pp.concat.totalCount();
         emitInternalPanic(pp, ip->node, msg);
         *addr = pp.concat.totalCount() - prevCount;
     }
@@ -128,13 +128,13 @@ void SCBE::emitOverflowSigned(SCBE_X64& pp, ByteCodeInstruction* ip, const char*
 
 void SCBE::emitOverflowUnsigned(SCBE_X64& pp, ByteCodeInstruction* ip, const char* msg)
 {
-    bool nw = (ip->node->attributeFlags & ATTRIBUTE_CAN_OVERFLOW_ON) || (ip->flags & BCI_CAN_OVERFLOW) ? false : true;
+    const bool nw = (ip->node->attributeFlags & ATTRIBUTE_CAN_OVERFLOW_ON) || (ip->flags & BCI_CAN_OVERFLOW) ? false : true;
     if (nw && module->mustEmitSafetyOverflow(ip->node) && !(ip->flags & BCI_CANT_OVERFLOW))
     {
         pp.emit_LongJumpOp(JAE);
         pp.concat.addU32(0);
-        auto addr      = (uint32_t*) pp.concat.getSeekPtr() - 1;
-        auto prevCount = pp.concat.totalCount();
+        const auto addr      = (uint32_t*) pp.concat.getSeekPtr() - 1;
+        const auto prevCount = pp.concat.totalCount();
         emitInternalPanic(pp, ip->node, msg);
         *addr = pp.concat.totalCount() - prevCount;
     }
@@ -142,7 +142,7 @@ void SCBE::emitOverflowUnsigned(SCBE_X64& pp, ByteCodeInstruction* ip, const cha
 
 void SCBE::emitInternalPanic(SCBE_X64& pp, AstNode* node, const char* msg)
 {
-    auto np = node->sourceFile->path.string();
+    const auto np = node->sourceFile->path.string();
     pp.pushParams.clear();
     pp.pushParams.push_back({CPUPushParamType::GlobalString, (uint64_t) np.c_str()});
     pp.pushParams.push_back({CPUPushParamType::Imm, node->token.startLocation.line});
@@ -336,7 +336,7 @@ void SCBE::emitAddSubMul64(SCBE_X64& pp, ByteCodeInstruction* ip, uint64_t mul, 
 {
     SWAG_ASSERT(op == CPUOp::ADD || op == CPUOp::SUB);
 
-    auto val = ip->b.u64 * mul;
+    const auto val = ip->b.u64 * mul;
     if (ip->flags & BCI_IMM_B && val <= 0x7FFFFFFF && ip->a.u32 == ip->c.u32)
     {
         pp.emit_OpN_IndirectDst(REG_OFFSET(ip->a.u32), (uint32_t) val, RDI, op, CPUBits::B64);

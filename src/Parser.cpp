@@ -13,8 +13,8 @@
 
 bool Parser::error(AstNode* node, const Utf8& msg, const char* help, const char* hint)
 {
-    Diagnostic  diag{node, msg.c_str()};
-    Diagnostic* note = nullptr;
+    Diagnostic        diag{node, msg.c_str()};
+    const Diagnostic* note = nullptr;
     if (help)
         note = Diagnostic::note(help);
     if (hint)
@@ -24,8 +24,8 @@ bool Parser::error(AstNode* node, const Utf8& msg, const char* help, const char*
 
 bool Parser::error(const Token& tk, const Utf8& msg, const char* help, const char* hint)
 {
-    Diagnostic  diag{sourceFile, tk, msg.c_str()};
-    Diagnostic* note = nullptr;
+    Diagnostic        diag{sourceFile, tk, msg.c_str()};
+    const Diagnostic* note = nullptr;
     if (help)
         note = Diagnostic::note(help);
     if (hint)
@@ -35,8 +35,8 @@ bool Parser::error(const Token& tk, const Utf8& msg, const char* help, const cha
 
 bool Parser::error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg, const char* help)
 {
-    Diagnostic  diag{sourceFile, startLocation, endLocation, msg.c_str()};
-    Diagnostic* note = nullptr;
+    const Diagnostic  diag{sourceFile, startLocation, endLocation, msg.c_str()};
+    const Diagnostic* note = nullptr;
     if (help)
         note = Diagnostic::note(help);
     return context->report(diag, note);
@@ -107,13 +107,13 @@ bool Parser::invalidTokenError(InvalidTokenError kind, AstNode* parent)
         // Bad character syntax as an expression
         if (token.id == TokenId::SymQuote)
         {
-            auto startToken = token;
+            const auto startToken = token;
             eatToken();
-            auto inToken = token;
+            const auto inToken = token;
             eatToken();
             if (token.id == TokenId::SymQuote)
             {
-                Diagnostic diag{sourceFile, startToken.startLocation, token.endLocation, Fmt(Err(Err0237), inToken.ctext())};
+                const Diagnostic diag{sourceFile, startToken.startLocation, token.endLocation, Fmt(Err(Err0237), inToken.ctext())};
                 return context->report(diag);
             }
 
@@ -127,17 +127,17 @@ bool Parser::invalidTokenError(InvalidTokenError kind, AstNode* parent)
         {
             if (Tokenizer::isKeyword(parent->tokenId))
             {
-                Utf8 forWhat = Fmt("[[%s]]", parent->token.ctext());
+                const Utf8 forWhat = Fmt("[[%s]]", parent->token.ctext());
                 msg          = Fmt(Err(Err0281), forWhat.c_str(), token.ctext());
             }
             else if (Tokenizer::isCompiler(parent->tokenId))
             {
-                Utf8 forWhat = Fmt("the compiler directive [[%s]]", parent->token.ctext());
+                const Utf8 forWhat = Fmt("the compiler directive [[%s]]", parent->token.ctext());
                 msg          = Fmt(Err(Err0281), forWhat.c_str(), token.ctext());
             }
             else if (Tokenizer::isSymbol(parent->tokenId))
             {
-                Utf8 forWhat = Fmt("the symbol [[%s]]", parent->token.ctext());
+                const Utf8 forWhat = Fmt("the symbol [[%s]]", parent->token.ctext());
                 msg          = Fmt(Err(Err0281), forWhat.c_str(), token.ctext());
             }
         }
@@ -150,12 +150,12 @@ bool Parser::invalidTokenError(InvalidTokenError kind, AstNode* parent)
 
 bool Parser::invalidIdentifierError(TokenParse& tokenParse, const char* msg)
 {
-    Diagnostic* note = nullptr;
+    const Diagnostic* note = nullptr;
 
     if (Tokenizer::isKeyword(tokenParse.id))
         note = Diagnostic::note(Fmt(Nte(Nte0125), tokenParse.ctext()));
 
-    Diagnostic diag{sourceFile, token, msg ? msg : Fmt(Err(Err0310), token.ctext()).c_str()};
+    const Diagnostic diag{sourceFile, token, msg ? msg : Fmt(Err(Err0310), token.ctext()).c_str()};
     return context->report(diag, note);
 }
 
@@ -172,18 +172,18 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
 
     if (token.id != id)
     {
-        Utf8 related = Naming::tokenToName(id);
-        auto diagMsg = Fmt(Err(Err0545), Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, token.ctext());
+        const Utf8 related = Naming::tokenToName(id);
+        const auto diagMsg = Fmt(Err(Err0545), Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, token.ctext());
 
         if (token.id == TokenId::EndOfFile)
         {
-            Diagnostic diag{sourceFile, start, start, diagMsg};
+            const Diagnostic diag{sourceFile, start, start, diagMsg};
             return context->report(diag);
         }
         else
         {
-            Diagnostic diag{sourceFile, token, diagMsg};
-            auto       note = Diagnostic::note(sourceFile, start, start, Fmt(Nte(Nte0180), related.c_str()));
+            const Diagnostic diag{sourceFile, token, diagMsg};
+            const auto       note = Diagnostic::note(sourceFile, start, start, Fmt(Nte(Nte0180), related.c_str()));
             return context->report(diag, note);
         }
     }
@@ -208,7 +208,7 @@ bool Parser::eatTokenError(TokenId id, const Utf8& err)
     if (token.id != id)
     {
         prepareExpectTokenError();
-        Diagnostic diag{sourceFile, token, Fmt(err.c_str(), token.ctext())};
+        const Diagnostic diag{sourceFile, token, Fmt(err.c_str(), token.ctext())};
         return context->report(diag);
     }
 
@@ -222,7 +222,7 @@ bool Parser::eatToken(TokenId id, const char* msg)
     if (token.id != id)
     {
         prepareExpectTokenError();
-        Diagnostic diag{sourceFile, token, Fmt(Err(Err0083), Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, token.ctext())};
+        const Diagnostic diag{sourceFile, token, Fmt(Err(Err0083), Naming::tokenToName(id).c_str(), Naming::tokenToName(id).c_str(), msg, token.ctext())};
         return context->report(diag);
     }
 
@@ -238,7 +238,7 @@ bool Parser::eatSemiCol(const char* msg)
     {
         if (token.id == TokenId::SymAsterisk)
         {
-            auto st = token;
+            const auto st = token;
             eatToken();
             if (token.id == TokenId::SymSlash)
             {
@@ -259,20 +259,20 @@ bool Parser::eatSemiCol(const char* msg)
 
 bool Parser::saveEmbeddedAst(const Utf8& content, AstNode* fromNode, Path& tmpFilePath, Utf8& tmpFileName, uint32_t& previousLogLine)
 {
-    auto modl = fromNode->sourceFile->module;
+    const auto modl = fromNode->sourceFile->module;
 
     tmpFilePath = modl->publicPath;
     tmpFileName = Fmt("%s%d.gwg", modl->name.c_str(), g_ThreadIndex);
 
-    uint32_t countEol = 0;
-    auto     size     = content.length();
+    uint32_t   countEol = 0;
+    const auto size     = content.length();
     for (uint32_t i = 0; i < size; i++)
     {
         if (content[i] == '\n')
             countEol++;
     }
 
-    Utf8 sourceCode = Fmt("// %s:%d:%d:%d:%d\n", fromNode->sourceFile->path.string().c_str(), fromNode->token.startLocation.line + 1, fromNode->token.startLocation.column + 1, fromNode->token.endLocation.line + 1, fromNode->token.endLocation.column + 1);
+    const Utf8 sourceCode = Fmt("// %s:%d:%d:%d:%d\n", fromNode->sourceFile->path.string().c_str(), fromNode->token.startLocation.line + 1, fromNode->token.startLocation.column + 1, fromNode->token.endLocation.line + 1, fromNode->token.endLocation.column + 1);
     modl->contentJobGeneratedFile[g_ThreadIndex] += sourceCode;
     modl->countLinesGeneratedFile[g_ThreadIndex] += 1;
     previousLogLine = modl->countLinesGeneratedFile[g_ThreadIndex];
@@ -327,7 +327,7 @@ bool Parser::constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode*
 
     if (kind == CompilerAstKind::MissingInterfaceMtd)
     {
-        auto impl          = CastAst<AstImpl>(parent, AstNodeKind::Impl);
+        const auto impl          = CastAst<AstImpl>(parent, AstNodeKind::Impl);
         currentScope       = impl->scope;
         currentStructScope = impl->structScope;
     }
@@ -414,7 +414,7 @@ bool Parser::generateAst()
     // Creates a top namespace with the module namespace name
     if (module->kind != ModuleKind::BootStrap && module->kind != ModuleKind::Runtime)
     {
-        auto moduleForNp = sourceFile->imported ? sourceFile->imported : sourceFile->module;
+        const auto moduleForNp = sourceFile->imported ? sourceFile->imported : sourceFile->module;
 
         Utf8 npName;
         npName.append((const char*) moduleForNp->buildCfg.moduleNamespace.buffer, (int) moduleForNp->buildCfg.moduleNamespace.count);
@@ -422,14 +422,14 @@ bool Parser::generateAst()
             npName = moduleForNp->name;
         Ast::normalizeIdentifierName(npName);
 
-        auto namespaceNode        = Ast::newNode<AstNameSpace>(this, AstNodeKind::Namespace, sourceFile, sourceFile->astRoot);
+        const auto namespaceNode        = Ast::newNode<AstNameSpace>(this, AstNodeKind::Namespace, sourceFile, sourceFile->astRoot);
         namespaceNode->token.text = npName;
 
         ScopedLock lk(parentScope->symTable.mutex);
-        auto       symbol = parentScope->symTable.findNoLock(npName);
+        const auto symbol = parentScope->symTable.findNoLock(npName);
         if (!symbol)
         {
-            auto typeInfo           = makeType<TypeInfoNamespace>();
+            const auto typeInfo           = makeType<TypeInfoNamespace>();
             typeInfo->name          = npName;
             typeInfo->scope         = Ast::newScope(namespaceNode, npName, ScopeKind::Namespace, parentScope);
             namespaceNode->typeInfo = typeInfo;
@@ -470,25 +470,25 @@ bool Parser::generateAst()
     // Make a copy of all #global using of the config file
     if (!sourceFile->isCfgFile && !sourceFile->imported && !sourceFile->isEmbedded)
     {
-        for (auto s : module->buildParameters.globalUsings)
+        for (const auto s : module->buildParameters.globalUsings)
         {
             CloneContext cxt;
             cxt.parent       = sourceFile->astRoot;
             cxt.parentScope  = currentScope;
             cxt.removeFlags  = AST_NO_SEMANTIC; // because of :FirstPassCfgNoSem
-            auto node        = s->clone(cxt);
+            const auto node  = s->clone(cxt);
             node->sourceFile = sourceFile;
         }
     }
     else if (sourceFile->isEmbedded)
     {
-        for (auto s : sourceFile->globalUsingsEmbedded)
+        for (const auto s : sourceFile->globalUsingsEmbedded)
         {
             CloneContext cxt;
             cxt.parent       = sourceFile->astRoot;
             cxt.parentScope  = currentScope;
             cxt.removeFlags  = AST_NO_SEMANTIC; // because of :FirstPassCfgNoSem
-            auto node        = s->clone(cxt);
+            const auto node  = s->clone(cxt);
             node->sourceFile = sourceFile;
         }
     }

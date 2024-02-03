@@ -16,19 +16,19 @@
 
 bool Semantic::resolveImplForAfterFor(SemanticContext* context)
 {
-    auto id   = context->node;
-    auto node = CastAst<AstImpl>(context->node->parent, AstNodeKind::Impl);
+    const auto id   = context->node;
+    const auto node = CastAst<AstImpl>(context->node->parent, AstNodeKind::Impl);
 
     if (id->resolvedSymbolName->kind != SymbolKind::Struct)
         return context->report({id->childs.back(), Fmt(Err(Err0160), id->resolvedSymbolName->name.c_str(), Naming::aKindName(id->resolvedSymbolName->kind).c_str())});
 
-    auto structDecl = CastAst<AstStruct>(id->resolvedSymbolOverload->node, AstNodeKind::StructDecl);
+    const auto structDecl = CastAst<AstStruct>(id->resolvedSymbolOverload->node, AstNodeKind::StructDecl);
 
     if (id->resolvedSymbolOverload->flags & OVERLOAD_GENERIC)
     {
         if (!(node->flags & AST_FROM_GENERIC))
         {
-            auto typeStruct = CastTypeInfo<TypeInfoStruct>(structDecl->typeInfo, TypeInfoKind::Struct);
+            const auto typeStruct = CastTypeInfo<TypeInfoStruct>(structDecl->typeInfo, TypeInfoKind::Struct);
             node->sourceFile->module->decImplForToSolve(typeStruct);
         }
 
@@ -37,7 +37,7 @@ bool Semantic::resolveImplForAfterFor(SemanticContext* context)
 
     if (structDecl->scope != node->structScope)
     {
-        auto       typeStruct = CastTypeInfo<TypeInfoStruct>(structDecl->typeInfo, TypeInfoKind::Struct);
+        const auto       typeStruct = CastTypeInfo<TypeInfoStruct>(structDecl->typeInfo, TypeInfoKind::Struct);
         ScopedLock lk1(typeStruct->mutex);
         typeStruct->cptRemainingInterfacesReg++;
         typeStruct->cptRemainingInterfaces++;
@@ -47,7 +47,7 @@ bool Semantic::resolveImplForAfterFor(SemanticContext* context)
         ScopedLock lk3(node->structScope->mutex);
 
         node->structScope->parentScope->removeChildNoLock(node->structScope);
-        for (auto s : node->structScope->childScopes)
+        for (const auto s : node->structScope->childScopes)
         {
             s->parentScope->removeChildNoLock(s);
             structDecl->scope->addChildNoLock(s);
@@ -55,7 +55,7 @@ bool Semantic::resolveImplForAfterFor(SemanticContext* context)
     }
     else
     {
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(structDecl->typeInfo, TypeInfoKind::Struct);
+        const auto typeStruct = CastTypeInfo<TypeInfoStruct>(structDecl->typeInfo, TypeInfoKind::Struct);
         node->sourceFile->module->decImplForToSolve(typeStruct);
     }
 
@@ -64,11 +64,11 @@ bool Semantic::resolveImplForAfterFor(SemanticContext* context)
 
 bool Semantic::resolveImplForType(SemanticContext* context)
 {
-    auto     node       = CastAst<AstImpl>(context->node, AstNodeKind::Impl);
-    auto     sourceFile = node->sourceFile;
-    auto     module     = sourceFile->module;
-    AstNode* first;
-    AstNode* back;
+    const auto node       = CastAst<AstImpl>(context->node, AstNodeKind::Impl);
+    const auto sourceFile = node->sourceFile;
+    const auto module     = sourceFile->module;
+    AstNode*   first;
+    AstNode*   back;
 
     // Race condition in case a templated function is instantiated in the impl block during that access
     {
@@ -77,7 +77,7 @@ bool Semantic::resolveImplForType(SemanticContext* context)
         back  = node->childs[1];
     }
 
-    auto typeStruct = CastTypeInfo<TypeInfoStruct>(back->typeInfo, TypeInfoKind::Struct);
+    const auto typeStruct = CastTypeInfo<TypeInfoStruct>(back->typeInfo, TypeInfoKind::Struct);
 
     if (node->identifierFor->typeInfo->isGeneric())
         return true;
@@ -95,11 +95,11 @@ bool Semantic::resolveImplForType(SemanticContext* context)
     SWAG_CHECK(typeGen.genExportedTypeInfo(context, first->typeInfo, first->computedValue->storageSegment, &first->computedValue->storageOffset, GEN_EXPORTED_TYPE_SHOULD_WAIT));
     YIELD();
 
-    auto typeBaseInterface = CastTypeInfo<TypeInfoStruct>(first->typeInfo, TypeInfoKind::Interface);
-    auto typeParamItf      = typeStruct->hasInterface(typeBaseInterface);
+    const auto typeBaseInterface = CastTypeInfo<TypeInfoStruct>(first->typeInfo, TypeInfoKind::Interface);
+    const auto typeParamItf      = typeStruct->hasInterface(typeBaseInterface);
     SWAG_ASSERT(typeParamItf);
 
-    auto constSegment = back->computedValue->storageSegment;
+    const auto constSegment = back->computedValue->storageSegment;
     SWAG_ASSERT(typeParamItf->offset);
     auto itable = (void**) constSegment->address(typeParamItf->offset);
 
@@ -119,14 +119,14 @@ bool Semantic::resolveImplForType(SemanticContext* context)
 
 bool Semantic::resolveImplFor(SemanticContext* context)
 {
-    auto node = CastAst<AstImpl>(context->node, AstNodeKind::Impl);
-    auto job  = context->baseJob;
+    const auto node = CastAst<AstImpl>(context->node, AstNodeKind::Impl);
+    const auto job  = context->baseJob;
 
     // Be sure the first identifier is an interface
     auto typeInfo = node->identifier->typeInfo;
     if (!typeInfo->isInterface())
     {
-        Diagnostic diag{node->identifier, Fmt(Err(Err0162), node->identifier->token.ctext(), Naming::aKindName(typeInfo).c_str())};
+        const Diagnostic diag{node->identifier, Fmt(Err(Err0162), node->identifier->token.ctext(), Naming::aKindName(typeInfo).c_str())};
         return context->report(diag, Diagnostic::hereIs(node->identifier->resolvedSymbolOverload));
     }
 
@@ -140,8 +140,8 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 
     SWAG_ASSERT(node->childs[0]->kind == AstNodeKind::IdentifierRef);
     SWAG_ASSERT(node->childs[1]->kind == AstNodeKind::IdentifierRef);
-    auto typeBaseInterface = CastTypeInfo<TypeInfoStruct>(node->childs[0]->typeInfo, TypeInfoKind::Interface);
-    auto typeStruct        = CastTypeInfo<TypeInfoStruct>(node->childs[1]->typeInfo, TypeInfoKind::Struct);
+    const auto typeBaseInterface = CastTypeInfo<TypeInfoStruct>(node->childs[0]->typeInfo, TypeInfoKind::Interface);
+    const auto typeStruct        = CastTypeInfo<TypeInfoStruct>(node->childs[1]->typeInfo, TypeInfoKind::Struct);
 
     // Be sure interface has been fully solved
     {
@@ -155,8 +155,8 @@ bool Semantic::resolveImplFor(SemanticContext* context)
     }
 
     // We need now the pointer to the itable
-    auto     typeInterface   = CastTypeInfo<TypeInfoStruct>(typeBaseInterface->itable, TypeInfoKind::Struct);
-    uint32_t numFctInterface = (uint32_t) typeInterface->fields.size();
+    const auto     typeInterface   = CastTypeInfo<TypeInfoStruct>(typeBaseInterface->itable, TypeInfoKind::Struct);
+    const uint32_t numFctInterface = (uint32_t) typeInterface->fields.size();
 
     Map<TypeInfoParam*, AstNode*> mapItToFunc;
     VectorNative<AstFuncDecl*>    mapItIdxToFunc;
@@ -188,10 +188,10 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 
     for (size_t i = 0; i < childs.size(); i++)
     {
-        auto child = childs[i];
+        const auto child = childs[i];
         if (child->kind != AstNodeKind::FuncDecl)
             continue;
-        auto childFct = CastAst<AstFuncDecl>(child, AstNodeKind::FuncDecl);
+        const auto childFct = CastAst<AstFuncDecl>(child, AstNodeKind::FuncDecl);
 
         // We need to search the function (as a variable) in the interface
         auto itfSymbol = typeInterface->findChildByNameNoLock(child->token.text); // O(n) !
@@ -203,8 +203,8 @@ bool Semantic::resolveImplFor(SemanticContext* context)
             if (itfSymbol)
             {
                 Diagnostic diag{childFct, childFct->tokenName, Fmt(Err(Err0535), childFct->token.text.c_str(), typeInterface->name.c_str())};
-                diag.hint = Nte(Nte0080);
-                auto hlp  = Diagnostic::note(Nte(Nte0019));
+                diag.hint      = Nte(Nte0080);
+                const auto hlp = Diagnostic::note(Nte(Nte0019));
                 return context->report(diag, hlp);
             }
 
@@ -213,14 +213,14 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 
         if (!itfSymbol)
         {
-            Diagnostic diag{childFct, childFct->tokenName, Fmt(Err(Err0720), childFct->token.text.c_str(), typeInterface->name.c_str())};
-            auto       note = Diagnostic::note(SemanticError::findClosestMatchesMsg(childFct->token.text, {{typeInterface->scope, 0}}, IdentifierSearchFor::Whatever));
+            const Diagnostic diag{childFct, childFct->tokenName, Fmt(Err(Err0720), childFct->token.text.c_str(), typeInterface->name.c_str())};
+            const auto       note = Diagnostic::note(SemanticError::findClosestMatchesMsg(childFct->token.text, {{typeInterface->scope, 0}}, IdentifierSearchFor::Whatever));
             return context->report(diag, note);
         }
 
         // We need to be sure function semantic is done
         {
-            auto symbolName = node->scope->symTable.find(child->token.text);
+            const auto symbolName = node->scope->symTable.find(child->token.text);
             SWAG_ASSERT(symbolName);
             ScopedLock lk(symbolName->mutex);
             if (symbolName->cptOverloads)
@@ -250,40 +250,40 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 
         // Match function signature
         BadSignatureInfos bi;
-        auto              typeLambda = CastTypeInfo<TypeInfoFuncAttr>(itfSymbol->typeInfo, TypeInfoKind::LambdaClosure);
-        auto              typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
+        const auto        typeLambda = CastTypeInfo<TypeInfoFuncAttr>(itfSymbol->typeInfo, TypeInfoKind::LambdaClosure);
+        const auto        typeFunc   = CastTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
         if (!typeLambda->isSame(typeFunc, CASTFLAG_EXACT | CASTFLAG_INTERFACE, bi))
         {
             switch (bi.matchResult)
             {
             case MatchResult::BadSignature:
             {
-                Diagnostic diag{childFct, childFct->getTokenName(), Fmt(Err(Err0430), child->token.ctext(), typeBaseInterface->name.c_str())};
-                auto       note  = Diagnostic::note(childFct->parameters->childs[bi.badSignatureNum2], Fmt(Nte(Nte0102), childFct->parameters->childs[bi.badSignatureNum2]->typeInfo->getDisplayNameC()));
-                auto       note1 = Diagnostic::note(typeLambda->parameters[bi.badSignatureNum1]->declNode, Fmt(Nte(Nte0108), typeLambda->parameters[bi.badSignatureNum1]->typeInfo->getDisplayNameC()));
+                const Diagnostic diag{childFct, childFct->getTokenName(), Fmt(Err(Err0430), child->token.ctext(), typeBaseInterface->name.c_str())};
+                const auto       note  = Diagnostic::note(childFct->parameters->childs[bi.badSignatureNum2], Fmt(Nte(Nte0102), childFct->parameters->childs[bi.badSignatureNum2]->typeInfo->getDisplayNameC()));
+                const auto       note1 = Diagnostic::note(typeLambda->parameters[bi.badSignatureNum1]->declNode, Fmt(Nte(Nte0108), typeLambda->parameters[bi.badSignatureNum1]->typeInfo->getDisplayNameC()));
                 return context->report(diag, note, note1);
             }
 
             case MatchResult::MissingReturnType:
             {
                 Diagnostic diag{child, child->getTokenName(), Fmt(Err(Err0430), child->token.ctext(), typeBaseInterface->name.c_str())};
-                diag.hint = Nte(Nte0018);
-                auto note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Fmt(Nte(Nte0123), typeLambda->returnType->getDisplayNameC()));
+                diag.hint       = Nte(Nte0018);
+                const auto note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Fmt(Nte(Nte0123), typeLambda->returnType->getDisplayNameC()));
                 return context->report(diag, note);
             }
 
             case MatchResult::NoReturnType:
             {
-                Diagnostic diag{childFct->returnType, Fmt(Err(Err0430), child->token.ctext(), typeBaseInterface->name.c_str())};
-                auto       note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0124));
+                const Diagnostic diag{childFct->returnType, Fmt(Err(Err0430), child->token.ctext(), typeBaseInterface->name.c_str())};
+                const auto       note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0124));
                 return context->report(diag, note);
             }
 
             case MatchResult::MismatchReturnType:
             {
                 Diagnostic diag{childFct->returnType, Fmt(Err(Err0430), child->token.ctext(), typeBaseInterface->name.c_str())};
-                diag.hint = Diagnostic::isType(childFct->returnType->typeInfo);
-                auto note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Fmt(Nte(Nte0123), typeLambda->returnType->getDisplayNameC()));
+                diag.hint       = Diagnostic::isType(childFct->returnType->typeInfo);
+                const auto note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Fmt(Nte(Nte0123), typeLambda->returnType->getDisplayNameC()));
                 return context->report(diag, note);
             }
 
@@ -291,16 +291,16 @@ bool Semantic::resolveImplFor(SemanticContext* context)
             {
                 Diagnostic diag{child, child->getTokenName(), Fmt(Err(Err0430), child->token.ctext(), typeBaseInterface->name.c_str())};
                 diag.hint         = Nte(Nte0099);
-                auto note         = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0163));
+                const auto note   = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0163));
                 note->canBeMerged = false;
                 return context->report(diag, note);
             }
 
             default:
             {
-                Diagnostic diag{child, child->getTokenName(), Fmt(Err(Err0430), child->token.ctext(), typeBaseInterface->name.c_str())};
-                auto       note   = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0163));
-                note->canBeMerged = false;
+                const Diagnostic diag{child, child->getTokenName(), Fmt(Err(Err0430), child->token.ctext(), typeBaseInterface->name.c_str())};
+                const auto       note = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->token, Nte(Nte0163));
+                note->canBeMerged     = false;
                 return context->report(diag, note);
             }
             }
@@ -326,11 +326,11 @@ bool Semantic::resolveImplFor(SemanticContext* context)
     // Construct itable in the constant segment
     // Header has 2 pointers
     // :itableHeader
-    auto     constSegment = getConstantSegFromContext(node);
-    void**   ptrITable;
-    int      sizeOfHeader = 2 * sizeof(void*);
-    uint32_t itableOffset = constSegment->reserve((numFctInterface * sizeof(void*)) + sizeOfHeader, (uint8_t**) &ptrITable, sizeof(void*));
-    auto     offset       = itableOffset;
+    const auto     constSegment = getConstantSegFromContext(node);
+    void**         ptrITable;
+    const int      sizeOfHeader = 2 * sizeof(void*);
+    const uint32_t itableOffset = constSegment->reserve((numFctInterface * sizeof(void*)) + sizeOfHeader, (uint8_t**) &ptrITable, sizeof(void*));
+    auto           offset       = itableOffset;
 
     // :itableHeader
     // The first value will be the concrete type to the interface
@@ -342,7 +342,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 
     for (uint32_t i = 0; i < numFctInterface; i++)
     {
-        auto funcChild = mapItIdxToFunc[i];
+        const auto funcChild = mapItIdxToFunc[i];
         if (funcChild->isForeign())
         {
             funcChild->computeFullNameForeign(true);
@@ -375,9 +375,9 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 
 bool Semantic::resolveInterface(SemanticContext* context)
 {
-    auto node          = CastAst<AstStruct>(context->node, AstNodeKind::InterfaceDecl);
-    auto sourceFile    = context->sourceFile;
-    auto typeInterface = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
+    auto       node          = CastAst<AstStruct>(context->node, AstNodeKind::InterfaceDecl);
+    const auto sourceFile    = context->sourceFile;
+    const auto typeInterface = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Interface);
 
     typeInterface->declNode   = node;
     typeInterface->name       = node->token.text;
@@ -394,7 +394,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
     }
 
     // itable
-    auto typeITable        = makeType<TypeInfoStruct>();
+    const auto typeITable        = makeType<TypeInfoStruct>();
     typeITable->name       = node->token.text;
     typeITable->structName = node->token.text;
     typeITable->scope      = Ast::newScope(node, node->token.text, ScopeKind::Struct, nullptr);
@@ -406,7 +406,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
         if (child->kind != AstNodeKind::VarDecl)
             continue;
 
-        auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
+        const auto varDecl = CastAst<AstVarDecl>(child, AstNodeKind::VarDecl);
 
         TypeInfoParam* typeParam = nullptr;
         if (!(node->flags & AST_FROM_GENERIC))
@@ -419,18 +419,18 @@ bool Semantic::resolveInterface(SemanticContext* context)
             typeITable->fields.push_back(typeParam);
 
             // Verify signature
-            typeParam->typeInfo = child->typeInfo->getConcreteAlias();
-            auto typeLambda     = CastTypeInfo<TypeInfoFuncAttr>(typeParam->typeInfo, TypeInfoKind::LambdaClosure);
+            typeParam->typeInfo   = child->typeInfo->getConcreteAlias();
+            const auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeParam->typeInfo, TypeInfoKind::LambdaClosure);
 
             if (typeLambda->parameters.size() == 0)
             {
-                Diagnostic diag{varDecl->type, Fmt(Err(Err0130), child->token.ctext())};
+                const Diagnostic diag{varDecl->type, Fmt(Err(Err0130), child->token.ctext())};
                 return context->report(diag);
             }
 
-            auto firstParamType = typeLambda->parameters[0]->typeInfo;
+            const auto firstParamType = typeLambda->parameters[0]->typeInfo;
             SWAG_VERIFY(firstParamType->isPointer(), context->report({typeLambda->parameters[0]->declNode, Fmt(Err(Err0315), firstParamType->getDisplayNameC())}));
-            auto firstParamPtr = CastTypeInfo<TypeInfoPointer>(firstParamType, TypeInfoKind::Pointer);
+            const auto firstParamPtr = CastTypeInfo<TypeInfoPointer>(firstParamType, TypeInfoKind::Pointer);
             SWAG_VERIFY(firstParamPtr->pointedType == typeInterface, context->report({typeLambda->parameters[0]->declNode, Fmt(Err(Err0315), firstParamType->getDisplayNameC())}));
         }
 
@@ -446,7 +446,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
 
         if (typeParam->attributes.hasAttribute(g_LangSpec->name_Swag_Offset))
         {
-            auto attr = typeParam->attributes.getAttribute(g_LangSpec->name_Swag_Offset);
+            const auto attr = typeParam->attributes.getAttribute(g_LangSpec->name_Swag_Offset);
             SWAG_ASSERT(attr);
             return context->report({attr->node, attr->node->token, Err(Err0484)});
         }
@@ -459,7 +459,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
         typeITable->sizeOf += sizeof(void*);
 
         // Register lambda variable in the scope of the itable struct
-        auto              overload = child->resolvedSymbolOverload;
+        const auto              overload = child->resolvedSymbolOverload;
         auto&             symTable = typeITable->scope->symTable;
         AddSymbolTypeInfo toAdd;
         toAdd.node          = child;
@@ -552,7 +552,7 @@ void Semantic::decreaseMethodCount(AstFuncDecl* funcNode, TypeInfoStruct* typeIn
 
     SWAG_ASSERT(typeInfoStruct->cptRemainingMethods);
     typeInfoStruct->cptRemainingMethods--;
-    bool isSpecOp = funcNode->isSpecialFunctionName();
+    const bool isSpecOp = funcNode->isSpecialFunctionName();
     if (isSpecOp)
         typeInfoStruct->cptRemainingSpecialMethods--;
 
@@ -565,8 +565,8 @@ bool Semantic::checkImplScopes(SemanticContext* context, AstImpl* node, Scope* s
     // impl scope and corresponding identifier scope must be the same !
     if (scopeImpl != scope)
     {
-        Diagnostic diag{node, node->token, Fmt(Err(Err0431), node->token.ctext())};
-        auto       note = Diagnostic::note(Fmt(Nte(Nte0132), scopeImpl->parentScope->getFullName().c_str(), node->token.ctext(), scope->parentScope->getFullName().c_str()));
+        const Diagnostic diag{node, node->token, Fmt(Err(Err0431), node->token.ctext())};
+        const auto       note = Diagnostic::note(Fmt(Nte(Nte0132), scopeImpl->parentScope->getFullName().c_str(), node->token.ctext(), scope->parentScope->getFullName().c_str()));
         return context->report(diag, Diagnostic::hereIs(node->identifier->resolvedSymbolOverload), note);
     }
 
@@ -575,30 +575,30 @@ bool Semantic::checkImplScopes(SemanticContext* context, AstImpl* node, Scope* s
 
 bool Semantic::resolveImpl(SemanticContext* context)
 {
-    auto node = CastAst<AstImpl>(context->node, AstNodeKind::Impl);
+    const auto node = CastAst<AstImpl>(context->node, AstNodeKind::Impl);
 
     // Be sure this is a struct
-    auto typeInfo = node->identifier->typeInfo;
+    const auto typeInfo = node->identifier->typeInfo;
     if (!typeInfo->isStruct() && !typeInfo->isEnum())
     {
-        Diagnostic diag{node->identifier, Fmt(Err(Err0161), node->identifier->token.ctext(), typeInfo->getDisplayNameC())};
+        const Diagnostic diag{node->identifier, Fmt(Err(Err0161), node->identifier->token.ctext(), typeInfo->getDisplayNameC())};
         return context->report(diag, Diagnostic::hereIs(node->identifier->resolvedSymbolOverload));
     }
 
-    auto typeIdentifier = node->identifier->resolvedSymbolOverload->typeInfo;
+    const auto typeIdentifier = node->identifier->resolvedSymbolOverload->typeInfo;
     SWAG_VERIFY(!typeIdentifier->isAlias(), context->report({node->identifier, Err(Err0700)}));
 
     switch (typeInfo->kind)
     {
     case TypeInfoKind::Struct:
     {
-        auto structNode = CastAst<AstStruct>(node->identifier->resolvedSymbolOverload->node, AstNodeKind::StructDecl);
+        const auto structNode = CastAst<AstStruct>(node->identifier->resolvedSymbolOverload->node, AstNodeKind::StructDecl);
         SWAG_CHECK(checkImplScopes(context, node, node->structScope, structNode->scope));
         break;
     }
     case TypeInfoKind::Enum:
     {
-        auto enumNode = CastAst<AstEnum>(node->identifier->resolvedSymbolOverload->node, AstNodeKind::EnumDecl);
+        const auto enumNode = CastAst<AstEnum>(node->identifier->resolvedSymbolOverload->node, AstNodeKind::EnumDecl);
         SWAG_CHECK(checkImplScopes(context, node, node->structScope, enumNode->scope));
         break;
     }
@@ -612,8 +612,8 @@ bool Semantic::resolveImpl(SemanticContext* context)
 
 bool Semantic::preResolveGeneratedStruct(SemanticContext* context)
 {
-    auto structNode = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl);
-    auto parent     = structNode->originalParent;
+    const auto structNode = CastAst<AstStruct>(context->node, AstNodeKind::StructDecl);
+    const auto parent     = structNode->originalParent;
     if (!parent)
         return true;
     if (structNode->genericParameters)
@@ -625,14 +625,14 @@ bool Semantic::preResolveGeneratedStruct(SemanticContext* context)
     // But this will not work in all cases
     if (parent->ownerFct)
     {
-        auto parentFunc = CastAst<AstFuncDecl>(parent->ownerFct, AstNodeKind::FuncDecl);
+        const auto parentFunc = CastAst<AstFuncDecl>(parent->ownerFct, AstNodeKind::FuncDecl);
         if (parentFunc->genericParameters)
             structNode->genericParameters = Ast::clone(parentFunc->genericParameters, nullptr, AST_GENERATED_GENERIC_PARAM);
     }
 
     if (parent->ownerStructScope && !structNode->genericParameters)
     {
-        auto parentStruct = (AstStruct*) parent->ownerStructScope->owner;
+        const auto parentStruct = (AstStruct*) parent->ownerStructScope->owner;
         if (parentStruct->genericParameters)
             structNode->genericParameters = Ast::clone(parentStruct->genericParameters, nullptr, AST_GENERATED_GENERIC_PARAM);
     }
@@ -654,10 +654,10 @@ bool Semantic::preResolveGeneratedStruct(SemanticContext* context)
 
 bool Semantic::preResolveStructContent(SemanticContext* context)
 {
-    auto node = (AstStruct*) context->node->parent;
+    const auto node = (AstStruct*) context->node->parent;
     SWAG_ASSERT(node->kind == AstNodeKind::StructDecl || node->kind == AstNodeKind::InterfaceDecl);
 
-    auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
+    const auto typeInfo = CastTypeInfo<TypeInfoStruct>(node->typeInfo, TypeInfoKind::Struct);
     SWAG_CHECK(collectAttributes(context, node, &typeInfo->attributes));
 
     if (node->attributeFlags & ATTRIBUTE_NO_COPY)
@@ -672,7 +672,7 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
     {
         if (node->genericParameters)
         {
-            for (auto param : node->genericParameters->childs)
+            for (const auto param : node->genericParameters->childs)
             {
                 auto funcParam      = g_TypeMgr->makeParam();
                 funcParam->name     = param->token.text;
@@ -744,7 +744,7 @@ void Semantic::flattenStructChilds(SemanticContext* context, AstNode* parent, Ve
 
         case AstNodeKind::CompilerIf:
         {
-            AstIf* compilerIf = CastAst<AstIf>(child, AstNodeKind::CompilerIf);
+            const AstIf* compilerIf = CastAst<AstIf>(child, AstNodeKind::CompilerIf);
             if (!(compilerIf->ifBlock->flags & AST_NO_SEMANTIC))
                 flattenStructChilds(context, compilerIf->ifBlock, result);
             else if (compilerIf->elseBlock)
@@ -754,7 +754,7 @@ void Semantic::flattenStructChilds(SemanticContext* context, AstNode* parent, Ve
 
         case AstNodeKind::AttrUse:
         {
-            AstAttrUse* attrUse = CastAst<AstAttrUse>(child, AstNodeKind::AttrUse);
+            const AstAttrUse* attrUse = CastAst<AstAttrUse>(child, AstNodeKind::AttrUse);
             if (attrUse->content->kind == AstNodeKind::Statement)
                 flattenStructChilds(context, attrUse->content, result);
             else
@@ -774,15 +774,15 @@ bool Semantic::solveValidIf(SemanticContext* context, AstStruct* structDecl)
     ScopedLock lk1(structDecl->mutex);
 
     // Execute #validif/#validifx block
-    auto expr = structDecl->validif->childs.back();
+    const auto expr = structDecl->validif->childs.back();
 
     if (!expr->hasComputedValue())
     {
-        auto node                  = context->node;
+        const auto node                  = context->node;
         context->validIfParameters = structDecl->genericParameters;
 
         PushErrCxtStep ec(context, node, ErrCxtStepKind::ValidIf, nullptr);
-        auto           result      = executeCompilerNode(context, expr, false);
+        const auto     result      = executeCompilerNode(context, expr, false);
         context->validIfParameters = nullptr;
         if (!result)
             return false;
@@ -793,7 +793,7 @@ bool Semantic::solveValidIf(SemanticContext* context, AstStruct* structDecl)
     SWAG_ASSERT(expr->computedValue);
     if (!expr->computedValue->reg.b)
     {
-        Diagnostic diag{structDecl->validif, structDecl->validif->token, Fmt(Err(Err0084), structDecl->typeInfo->getDisplayNameC())};
+        const Diagnostic diag{structDecl->validif, structDecl->validif->token, Fmt(Err(Err0084), structDecl->typeInfo->getDisplayNameC())};
         return context->report(diag);
     }
 

@@ -38,9 +38,9 @@ struct ErrorParam
 
 static void errorValidIfFailed(SemanticContext* context, ErrorParam& errorParam)
 {
-    auto destFuncDecl = errorParam.destFuncDecl;
-    auto msg          = Fmt(Err(Err0085), destFuncDecl->validif->token.ctext(), destFuncDecl->token.ctext(), destFuncDecl->validif->token.ctext());
-    auto diag         = new Diagnostic{errorParam.errorNode, errorParam.errorNode->token, msg};
+    const auto destFuncDecl = errorParam.destFuncDecl;
+    const auto msg          = Fmt(Err(Err0085), destFuncDecl->validif->token.ctext(), destFuncDecl->token.ctext(), destFuncDecl->validif->token.ctext());
+    const auto diag         = new Diagnostic{errorParam.errorNode, errorParam.errorNode->token, msg};
     errorParam.addError(diag);
     errorParam.addNote(Diagnostic::hereIs(destFuncDecl->validif));
 }
@@ -49,11 +49,11 @@ static void errorMissingNamedParameter(SemanticContext* context, ErrorParam& err
 {
     SWAG_ASSERT(errorParam.failedParam);
     SWAG_ASSERT(errorParam.badParamIdx >= 2);
-    auto msg  = Fmt(Err(Err0570), Naming::niceArgumentRank(errorParam.badParamIdx).c_str());
-    auto diag = new Diagnostic{errorParam.failedParam, msg};
+    const auto msg  = Fmt(Err(Err0570), Naming::niceArgumentRank(errorParam.badParamIdx).c_str());
+    const auto diag = new Diagnostic{errorParam.failedParam, msg};
     errorParam.addError(diag);
 
-    auto note = Diagnostic::note(errorParam.oneTry->callParameters->childs[errorParam.badParamIdx - 2], Nte(Nte0151));
+    const auto note = Diagnostic::note(errorParam.oneTry->callParameters->childs[errorParam.badParamIdx - 2], Nte(Nte0151));
     errorParam.addNote(note);
 }
 
@@ -61,8 +61,8 @@ static void errorInvalidNamedParameter(SemanticContext* context, ErrorParam& err
 {
     SWAG_ASSERT(errorParam.failedParam && errorParam.failedParam->hasExtMisc() && errorParam.failedParam->extMisc()->isNamed);
 
-    auto isNamed  = errorParam.failedParam->extMisc()->isNamed;
-    auto typeInfo = errorParam.oneTry->type;
+    const auto isNamed  = errorParam.failedParam->extMisc()->isNamed;
+    const auto typeInfo = errorParam.oneTry->type;
     SWAG_ASSERT(typeInfo);
 
     if (errorParam.destStructDecl)
@@ -75,7 +75,7 @@ static void errorInvalidNamedParameter(SemanticContext* context, ErrorParam& err
 
         AlternativeScope altScope;
         altScope.scope = errorParam.destStructDecl->scope;
-        auto msg       = SemanticError::findClosestMatchesMsg(isNamed->token.text, {altScope}, IdentifierSearchFor::Whatever);
+        const auto msg = SemanticError::findClosestMatchesMsg(isNamed->token.text, {altScope}, IdentifierSearchFor::Whatever);
         errorParam.addNote(Diagnostic::note(msg));
     }
     else
@@ -88,13 +88,13 @@ static void errorInvalidNamedParameter(SemanticContext* context, ErrorParam& err
 static void errorDuplicatedNamedParameter(SemanticContext* context, ErrorParam& errorParam)
 {
     SWAG_ASSERT(errorParam.failedParam && errorParam.failedParam->hasExtMisc() && errorParam.failedParam->extMisc()->isNamed);
-    auto msg  = Fmt(Err(Err0023), errorParam.failedParam->extMisc()->isNamed->token.ctext());
-    auto diag = new Diagnostic{errorParam.failedParam->extMisc()->isNamed, msg};
+    const auto msg  = Fmt(Err(Err0023), errorParam.failedParam->extMisc()->isNamed->token.ctext());
+    const auto diag = new Diagnostic{errorParam.failedParam->extMisc()->isNamed, msg};
     errorParam.addError(diag);
 
-    size_t other = errorParam.oneTry->symMatchContext.badSignatureInfos.badSignatureNum1;
+    const size_t other = errorParam.oneTry->symMatchContext.badSignatureInfos.badSignatureNum1;
     SWAG_ASSERT(other < errorParam.oneTry->callParameters->childs.size());
-    auto note = Diagnostic::note(errorParam.oneTry->callParameters->childs[other], Nte(Nte0165));
+    const auto note = Diagnostic::note(errorParam.oneTry->callParameters->childs[other], Nte(Nte0165));
     errorParam.addNote(note);
 }
 
@@ -104,19 +104,19 @@ static void errorMissingParameters(SemanticContext* context, ErrorParam& errorPa
     if (!node)
         node = errorParam.errorNode;
 
-    auto overload = errorParam.oneTry->overload;
-    auto diag     = new Diagnostic{node, Fmt(Err(Err0540), Naming::kindName(overload).c_str())};
+    const auto overload = errorParam.oneTry->overload;
+    const auto diag     = new Diagnostic{node, Fmt(Err(Err0540), Naming::kindName(overload).c_str())};
     errorParam.addError(diag);
     errorParam.addNote(Diagnostic::hereIs(overload));
 }
 
 static void errorNotEnoughParameters(SemanticContext* context, ErrorParam& errorParam)
 {
-    auto        node           = errorParam.errorNode;
-    auto        overload       = errorParam.oneTry->overload;
-    auto        callParameters = errorParam.oneTry->callParameters;
+    const auto  node           = errorParam.errorNode;
+    const auto  overload       = errorParam.oneTry->overload;
+    const auto  callParameters = errorParam.oneTry->callParameters;
     const auto& match          = errorParam.oneTry->symMatchContext;
-    Utf8        niceName       = "the " + Naming::kindName(overload);
+    const Utf8  niceName       = "the " + Naming::kindName(overload);
 
     Diagnostic* diag;
     if (!callParameters || callParameters->childs.empty())
@@ -127,7 +127,7 @@ static void errorNotEnoughParameters(SemanticContext* context, ErrorParam& error
         diag = new Diagnostic{node, node->token, Fmt(Err(Err0592), niceName.c_str())};
 
     errorParam.addError(diag);
-    auto note = Diagnostic::hereIs(overload);
+    const auto note = Diagnostic::hereIs(overload);
     errorParam.addNote(note);
 
     for (uint32_t si = 0; si < match.solvedParameters.size(); si++)
@@ -150,9 +150,9 @@ static void errorNotEnoughParameters(SemanticContext* context, ErrorParam& error
 
 static void errorNotEnoughGenericParameters(SemanticContext* context, ErrorParam& errorParam)
 {
-    auto overload          = errorParam.oneTry->overload;
-    Utf8 niceName          = "the " + Naming::kindName(overload);
-    auto genericParameters = errorParam.oneTry->genericParameters;
+    const auto overload          = errorParam.oneTry->overload;
+    const Utf8 niceName          = "the " + Naming::kindName(overload);
+    const auto genericParameters = errorParam.oneTry->genericParameters;
 
     AstNode* errNode = genericParameters;
     if (!errNode)
@@ -173,7 +173,7 @@ static void errorNotEnoughGenericParameters(SemanticContext* context, ErrorParam
 
 static void errorTooManyParameters(SemanticContext* context, ErrorParam& errorParam)
 {
-    auto        overload = errorParam.oneTry->overload;
+    const auto        overload = errorParam.oneTry->overload;
     const auto& match    = errorParam.oneTry->symMatchContext;
 
     AstNode* site = errorParam.failedParam;
@@ -181,18 +181,18 @@ static void errorTooManyParameters(SemanticContext* context, ErrorParam& errorPa
         site = errorParam.oneTry->callParameters;
     SWAG_ASSERT(site);
 
-    auto msg  = Fmt(Err(Err0630), match.badSignatureInfos.badSignatureNum2, match.badSignatureInfos.badSignatureNum1);
-    auto diag = new Diagnostic{site, msg};
+    const auto msg  = Fmt(Err(Err0630), match.badSignatureInfos.badSignatureNum2, match.badSignatureInfos.badSignatureNum1);
+    const auto diag = new Diagnostic{site, msg};
     errorParam.addError(diag);
     errorParam.addNote(Diagnostic::hereIs(overload));
 }
 
 static void errorTooManyGenericParameters(SemanticContext* context, ErrorParam& errorParam)
 {
-    auto        overload          = errorParam.oneTry->overload;
-    auto        symbol            = errorParam.oneTry->overload->symbol;
+    const auto  overload          = errorParam.oneTry->overload;
+    const auto  symbol            = errorParam.oneTry->overload->symbol;
     Utf8        niceName          = "the " + Naming::kindName(overload);
-    auto        genericParameters = errorParam.oneTry->genericParameters;
+    const auto  genericParameters = errorParam.oneTry->genericParameters;
     const auto& match             = errorParam.oneTry->symMatchContext;
 
     AstNode* errNode = genericParameters;
@@ -204,14 +204,14 @@ static void errorTooManyGenericParameters(SemanticContext* context, ErrorParam& 
     Diagnostic* diag;
     if (!match.badSignatureInfos.badSignatureNum2)
     {
-        auto msg = Fmt(Err(Err0504), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str());
+        const auto msg = Fmt(Err(Err0504), Naming::kindName(symbol->kind).c_str(), symbol->name.c_str());
         diag     = new Diagnostic{errNode, msg};
     }
     else
     {
         if (genericParameters)
             errNode = genericParameters->childs[match.badSignatureInfos.badSignatureNum2];
-        auto msg = Fmt(Err(Err0631), match.badSignatureInfos.badSignatureNum2, Naming::kindName(symbol->kind).c_str(), symbol->name.c_str(), match.badSignatureInfos.badSignatureNum1);
+        const auto msg = Fmt(Err(Err0631), match.badSignatureInfos.badSignatureNum2, Naming::kindName(symbol->kind).c_str(), symbol->name.c_str(), match.badSignatureInfos.badSignatureNum1);
         diag     = new Diagnostic{errNode, msg};
     }
 
@@ -223,8 +223,8 @@ static void errorMismatchGenericValue(SemanticContext* context, ErrorParam& erro
 {
     const BadSignatureInfos& bi = errorParam.oneTry->symMatchContext.badSignatureInfos;
 
-    auto msg  = Fmt(Err(Err0302), bi.badGenMatch.c_str(), Ast::literalToString(bi.badSignatureGivenType, *bi.badGenValue1).c_str(), Ast::literalToString(bi.badSignatureGivenType, *bi.badGenValue2).c_str());
-    auto diag = new Diagnostic{bi.badNode, msg};
+    const auto msg  = Fmt(Err(Err0302), bi.badGenMatch.c_str(), Ast::literalToString(bi.badSignatureGivenType, *bi.badGenValue1).c_str(), Ast::literalToString(bi.badSignatureGivenType, *bi.badGenValue2).c_str());
+    const auto diag = new Diagnostic{bi.badNode, msg};
     errorParam.addError(diag);
 }
 
@@ -233,33 +233,33 @@ static void errorCannotDeduceGenericType(SemanticContext* context, ErrorParam& e
     const auto&              match = errorParam.oneTry->symMatchContext;
     const BadSignatureInfos& bi    = match.badSignatureInfos;
 
-    auto msg  = Fmt(Err(Err0299), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
-    auto diag = new Diagnostic{match.parameters[bi.badSignatureParameterIdx], msg};
+    const auto msg  = Fmt(Err(Err0299), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
+    const auto diag = new Diagnostic{match.parameters[bi.badSignatureParameterIdx], msg};
     errorParam.addError(diag);
 }
 
 static void errorBadGenericSignature(SemanticContext* context, ErrorParam& errorParam)
 {
-    auto                     overload  = errorParam.oneTry->overload;
+    const auto               overload  = errorParam.oneTry->overload;
     const auto&              match     = errorParam.oneTry->symMatchContext;
     const BadSignatureInfos& bi        = match.badSignatureInfos;
-    Utf8                     niceArg   = Naming::niceArgumentRank(errorParam.badParamIdx);
-    auto                     errorNode = match.genericParameters[bi.badSignatureParameterIdx];
+    const Utf8               niceArg   = Naming::niceArgumentRank(errorParam.badParamIdx);
+    const auto               errorNode = match.genericParameters[bi.badSignatureParameterIdx];
 
     Diagnostic* diag;
     if (match.matchFlags & SymbolMatchContext::MATCH_ERROR_VALUE_TYPE)
     {
-        auto msg = Fmt(Err(Err0304));
+        const auto msg = Fmt(Err(Err0304));
         diag     = new Diagnostic{errorNode, msg};
     }
     else if (match.matchFlags & SymbolMatchContext::MATCH_ERROR_TYPE_VALUE)
     {
-        auto msg = Fmt(Err(Err0305));
+        const auto msg = Fmt(Err(Err0305));
         diag     = new Diagnostic{errorNode, msg};
     }
     else
     {
-        auto msg   = Fmt(Err(Err0115), bi.badSignatureRequestedType->getDisplayNameC(), niceArg.c_str(), bi.badSignatureGivenType->getDisplayNameC());
+        const auto msg   = Fmt(Err(Err0115), bi.badSignatureRequestedType->getDisplayNameC(), niceArg.c_str(), bi.badSignatureGivenType->getDisplayNameC());
         diag       = new Diagnostic{errorNode, msg};
         diag->hint = errorParam.explicitCastMsg;
     }
@@ -270,8 +270,8 @@ static void errorBadGenericSignature(SemanticContext* context, ErrorParam& error
     if (errorParam.destFuncDecl &&
         bi.badSignatureParameterIdx < (int) errorParam.destFuncDecl->genericParameters->childs.size())
     {
-        auto reqParam = errorParam.destFuncDecl->genericParameters->childs[bi.badSignatureParameterIdx];
-        auto note     = Diagnostic::note(reqParam, Fmt(Nte(Nte0068), reqParam->token.ctext(), Naming::kindName(overload).c_str()));
+        const auto reqParam = errorParam.destFuncDecl->genericParameters->childs[bi.badSignatureParameterIdx];
+        const auto note     = Diagnostic::note(reqParam, Fmt(Nte(Nte0068), reqParam->token.ctext(), Naming::kindName(overload).c_str()));
         errorParam.addNote(note);
     }
     else
@@ -284,15 +284,15 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
 {
     SWAG_ASSERT(errorParam.oneTry->callParameters);
 
-    auto                     overload = errorParam.oneTry->overload;
+    const auto                     overload = errorParam.oneTry->overload;
     const auto&              match    = errorParam.oneTry->symMatchContext;
     const BadSignatureInfos& bi       = match.badSignatureInfos;
 
     // In case of lambda, replace undefined with the corresponding match, if possible
     if (bi.badSignatureRequestedType->isLambdaClosure() && bi.badSignatureGivenType->isLambdaClosure())
     {
-        auto type1 = CastTypeInfo<TypeInfoFuncAttr>(bi.badSignatureRequestedType, TypeInfoKind::LambdaClosure);
-        auto type2 = CastTypeInfo<TypeInfoFuncAttr>(bi.badSignatureGivenType, TypeInfoKind::LambdaClosure);
+        const auto type1 = CastTypeInfo<TypeInfoFuncAttr>(bi.badSignatureRequestedType, TypeInfoKind::LambdaClosure);
+        const auto type2 = CastTypeInfo<TypeInfoFuncAttr>(bi.badSignatureGivenType, TypeInfoKind::LambdaClosure);
         for (uint32_t i = 0; i < min(type1->parameters.count, type2->parameters.count); i++)
         {
             if (type2->parameters[i]->typeInfo->isUndefined())
@@ -306,31 +306,31 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
     AstNode* destParamNode = nullptr;
     if (errorParam.destParameters && bi.badSignatureParameterIdx < (int) errorParam.destParameters->childs.size())
         destParamNode = errorParam.destParameters->childs[bi.badSignatureParameterIdx];
-    auto callParamNode = match.parameters[bi.badSignatureParameterIdx];
+    const auto callParamNode = match.parameters[bi.badSignatureParameterIdx];
 
     Diagnostic* diag               = nullptr;
     bool        addSpecificCastErr = true;
     if (overload->typeInfo->isStruct())
     {
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
+        const auto typeStruct = CastTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
         typeStruct->flattenUsingFields();
-        auto msg = Fmt(Err(Err0653), bi.badSignatureRequestedType->getDisplayNameC(), typeStruct->flattenFields[errorParam.badParamIdx - 1]->name.c_str(), bi.badSignatureGivenType->getDisplayNameC());
+        const auto msg = Fmt(Err(Err0653), bi.badSignatureRequestedType->getDisplayNameC(), typeStruct->flattenFields[errorParam.badParamIdx - 1]->name.c_str(), bi.badSignatureGivenType->getDisplayNameC());
         diag     = new Diagnostic{callParamNode, msg};
     }
     else if (errorParam.oneTry->ufcs && bi.badSignatureParameterIdx == 0 && bi.castErrorType == CastErrorType::Const)
     {
-        auto msg           = Fmt(Err(Err0055), bi.badSignatureGivenType->getDisplayNameC());
+        const auto msg           = Fmt(Err(Err0055), bi.badSignatureGivenType->getDisplayNameC());
         diag               = new Diagnostic{callParamNode, callParamNode->token, msg};
         addSpecificCastErr = false;
     }
     else if (errorParam.oneTry->ufcs && bi.badSignatureParameterIdx == 0)
     {
-        auto msg = Fmt(Err(Err0648), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
+        const auto msg = Fmt(Err(Err0648), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
         diag     = new Diagnostic{callParamNode, callParamNode->token, msg};
     }
     else
     {
-        auto msg = Fmt(Err(Err0649), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
+        const auto msg = Fmt(Err(Err0649), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
         diag     = new Diagnostic{callParamNode, msg};
     }
 
@@ -340,7 +340,7 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
     // Let var with a const problem
     if (bi.castErrorType == CastErrorType::Const)
     {
-        auto callOver = callParamNode->resolvedSymbolOverload;
+        const auto callOver = callParamNode->resolvedSymbolOverload;
         if (callOver && callOver->flags & OVERLOAD_IS_LET)
             errorParam.addNote(Diagnostic::note(callOver->node, callOver->node->token, Nte(Nte0017)));
     }
@@ -348,8 +348,8 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
     // Generic comes from
     if (bi.genMatchFromNode)
     {
-        auto msg  = Fmt(Nte(Nte0069), bi.genMatchFromNode->typeInfo->getDisplayNameC());
-        auto note = Diagnostic::note(bi.genMatchFromNode, msg);
+        const auto msg  = Fmt(Nte(Nte0069), bi.genMatchFromNode->typeInfo->getDisplayNameC());
+        const auto note = Diagnostic::note(bi.genMatchFromNode, msg);
         errorParam.addNote(note);
     }
 
@@ -374,14 +374,14 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
                 }
                 else
                 {
-                    auto note  = Diagnostic::note(errorParam.oneTry->dependentVar, castMsg);
+                    const auto note  = Diagnostic::note(errorParam.oneTry->dependentVar, castMsg);
                     note->hint = castHint;
                     errorParam.addNote(note);
                 }
             }
             else
             {
-                auto note  = Diagnostic::note(diag->sourceNode, diag->sourceNode->token, castMsg);
+                const auto note  = Diagnostic::note(diag->sourceNode, diag->sourceNode->token, castMsg);
                 note->hint = castHint;
                 errorParam.addNote(note);
             }
@@ -405,7 +405,7 @@ static void errorBadSignature(SemanticContext* context, ErrorParam& errorParam)
     }
     else if (destParamNode)
     {
-        auto        msg  = Fmt(Nte(Nte0064), destParamNode->token.ctext());
+        const auto        msg  = Fmt(Nte(Nte0064), destParamNode->token.ctext());
         Diagnostic* note = Diagnostic::note(destParamNode, destParamNode->token, msg);
         errorParam.addNote(note);
     }
@@ -457,7 +457,7 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
         oneTry.type = oneTry.overload->typeInfo;
 
     // Get the call parameter that failed
-    auto callParameters    = oneTry.callParameters;
+    const auto callParameters    = oneTry.callParameters;
     errorParam.badParamIdx = getBadParamIdx(oneTry, callParameters);
     if (oneTry.callParameters && errorParam.badParamIdx >= 0 && errorParam.badParamIdx < (int) callParameters->childs.size())
         errorParam.failedParam = static_cast<AstFuncCallParam*>(callParameters->childs[errorParam.badParamIdx]);

@@ -12,8 +12,8 @@
 
 bool Semantic::resolveIf(SemanticContext* context)
 {
-    auto module = context->sourceFile->module;
-    auto node   = CastAst<AstIf>(context->node, AstNodeKind::If);
+    const auto module = context->sourceFile->module;
+    const auto node   = CastAst<AstIf>(context->node, AstNodeKind::If);
     SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
 
     // :ConcreteRef
@@ -46,8 +46,8 @@ bool Semantic::resolveIf(SemanticContext* context)
 
 bool Semantic::resolveWhile(SemanticContext* context)
 {
-    auto module = context->sourceFile->module;
-    auto node   = CastAst<AstWhile>(context->node, AstNodeKind::While);
+    const auto module = context->sourceFile->module;
+    const auto node   = CastAst<AstWhile>(context->node, AstNodeKind::While);
     SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
 
     // :ConcreteRef
@@ -67,7 +67,7 @@ bool Semantic::resolveWhile(SemanticContext* context)
 
     if (node->boolExpression->hasComputedValue() && node->boolExpression->computedValue->reg.b)
     {
-        Diagnostic diag{node->boolExpression, Err(Err0137)};
+        const Diagnostic diag{node->boolExpression, Err(Err0137)};
         return context->report(diag);
     }
 
@@ -85,7 +85,7 @@ bool Semantic::resolveWhile(SemanticContext* context)
 
 bool Semantic::resolveInlineBefore(SemanticContext* context)
 {
-    auto node = CastAst<AstInline>(context->node, AstNodeKind::Inline);
+    const auto node = CastAst<AstInline>(context->node, AstNodeKind::Inline);
 
     ErrorCxtStep expNode;
     expNode.node = node->parent;
@@ -96,8 +96,8 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
         return true;
     node->semFlags |= SEMFLAG_RESOLVE_INLINED;
 
-    auto func         = node->func;
-    auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(func->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
+    const auto func         = node->func;
+    const auto typeInfoFunc = CastTypeInfo<TypeInfoFuncAttr>(func->typeInfo, TypeInfoKind::FuncAttr, TypeInfoKind::LambdaClosure);
 
     // :DirectInlineLocalVar
     // For a return by copy, need to reserve room on the stack for the return result
@@ -116,12 +116,12 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
     // Register all function parameters as inline symbols
     if (func->parameters)
     {
-        AstIdentifier* identifier = nullptr;
+        const AstIdentifier* identifier = nullptr;
         if (node->parent->kind == AstNodeKind::Identifier)
             identifier = CastAst<AstIdentifier>(node->parent, AstNodeKind::Identifier, AstNodeKind::FuncCall);
         for (size_t i = 0; i < func->parameters->childs.size(); i++)
         {
-            auto funcParam = func->parameters->childs[i];
+            const auto funcParam = func->parameters->childs[i];
 
             // If the call parameter of the inlined function is constant, then we register it in a specific
             // constant scope, not in the caller (for mixins)/inline scope.
@@ -134,7 +134,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
             {
                 for (size_t j = 0; j < identifier->callParameters->childs.size(); j++)
                 {
-                    auto callParam = CastAst<AstFuncCallParam>(identifier->callParameters->childs[j], AstNodeKind::FuncCallParam);
+                    const auto callParam = CastAst<AstFuncCallParam>(identifier->callParameters->childs[j], AstNodeKind::FuncCallParam);
                     if (callParam->indexParam != (int) i)
                         continue;
                     orgCallParam = callParam;
@@ -149,7 +149,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
                     toAdd.storageOffset       = callParam->computedValue->storageOffset;
                     toAdd.storageSegment      = callParam->computedValue->storageSegment;
                     toAdd.aliasName           = &funcParam->token.text;
-                    auto overload             = node->parametersScope->symTable.addSymbolTypeInfo(context, toAdd);
+                    const auto overload       = node->parametersScope->symTable.addSymbolTypeInfo(context, toAdd);
                     overload->fromInlineParam = orgCallParam;
                     isConstant                = true;
                     break;
@@ -164,7 +164,7 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
                 toAdd.typeInfo            = funcParam->typeInfo;
                 toAdd.kind                = SymbolKind::Variable;
                 toAdd.flags               = OVERLOAD_VAR_INLINE | OVERLOAD_CONST_ASSIGN;
-                auto overload             = node->parametersScope->symTable.addSymbolTypeInfo(context, toAdd);
+                const auto overload       = node->parametersScope->symTable.addSymbolTypeInfo(context, toAdd);
                 overload->fromInlineParam = orgCallParam;
             }
         }
@@ -179,8 +179,8 @@ bool Semantic::resolveInlineBefore(SemanticContext* context)
 
 bool Semantic::resolveInlineAfter(SemanticContext* context)
 {
-    auto node = CastAst<AstInline>(context->node, AstNodeKind::Inline);
-    auto fct  = node->func;
+    const auto node = CastAst<AstInline>(context->node, AstNodeKind::Inline);
+    const auto fct  = node->func;
 
     // No need to check missing return for inline only, because the function has already been
     // checked as a separated function
@@ -203,21 +203,21 @@ bool Semantic::resolveInlineAfter(SemanticContext* context)
 
 bool Semantic::resolveForBefore(SemanticContext* context)
 {
-    auto node                        = CastAst<AstFor>(context->node, AstNodeKind::For);
+    const auto node                        = CastAst<AstFor>(context->node, AstNodeKind::For);
     node->ownerScope->startStackSize = node->ownerScope->parentScope->startStackSize;
     return true;
 }
 
 bool Semantic::resolveLoopBefore(SemanticContext* context)
 {
-    auto node                        = CastAst<AstLoop>(context->node, AstNodeKind::Loop);
+    const auto node                        = CastAst<AstLoop>(context->node, AstNodeKind::Loop);
     node->ownerScope->startStackSize = node->ownerScope->parentScope->startStackSize;
     return true;
 }
 
 bool Semantic::resolveFor(SemanticContext* context)
 {
-    auto node = CastAst<AstFor>(context->node, AstNodeKind::For);
+    const auto node = CastAst<AstFor>(context->node, AstNodeKind::For);
     SWAG_CHECK(checkIsConcrete(context, node->boolExpression));
 
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression));
@@ -238,16 +238,16 @@ bool Semantic::resolveFor(SemanticContext* context)
 
 bool Semantic::resolveSwitchAfterExpr(SemanticContext* context)
 {
-    auto node       = context->node;
-    auto switchNode = CastAst<AstSwitch>(node->parent, AstNodeKind::Switch);
-    auto typeInfo   = TypeManager::concreteType(node->typeInfo, CONCRETE_FUNC);
+    const auto node       = context->node;
+    const auto switchNode = CastAst<AstSwitch>(node->parent, AstNodeKind::Switch);
+    const auto typeInfo   = TypeManager::concreteType(node->typeInfo, CONCRETE_FUNC);
 
     // For a switch on an enum, force a 'using' for each case
     if (typeInfo->isEnum())
     {
         // :AutoScope
-        auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
-        for (auto switchCase : switchNode->cases)
+        const auto typeEnum = CastTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+        for (const auto switchCase : switchNode->cases)
         {
             switchCase->addAlternativeScope(typeEnum->scope);
         }
@@ -272,9 +272,9 @@ bool Semantic::resolveSwitch(SemanticContext* context)
 
     if ((node->attributeFlags & ATTRIBUTE_COMPLETE) && !node->expression)
     {
-        Diagnostic diag{node, node->token, Err(Err0483)};
-        auto       attr = node->findParentAttrUse(g_LangSpec->name_Swag_Complete);
-        auto       note = Diagnostic::note(attr, Fmt(Nte(Nte0063), "attribute"));
+        const Diagnostic diag{node, node->token, Err(Err0483)};
+        const auto       attr = node->findParentAttrUse(g_LangSpec->name_Swag_Complete);
+        const auto       note = Diagnostic::note(attr, Fmt(Nte(Nte0063), "attribute"));
         return context->report(diag, note);
     }
 
@@ -292,7 +292,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
     node->expression->typeInfo = getConcreteTypeUnRef(node->expression, CONCRETE_FUNC | CONCRETE_ALIAS);
     node->typeInfo             = node->expression->typeInfo;
 
-    auto typeSwitch = TypeManager::concreteType(node->typeInfo);
+    const auto typeSwitch = TypeManager::concreteType(node->typeInfo);
 
     switch (typeSwitch->kind)
     {
@@ -310,19 +310,19 @@ bool Semantic::resolveSwitch(SemanticContext* context)
     VectorNative<AstNode*> valDef;
     VectorNative<uint64_t> val64;
     Vector<Utf8>           valText;
-    for (auto switchCase : node->cases)
+    for (const auto switchCase : node->cases)
     {
         for (auto expr : switchCase->expressions)
         {
             if (expr->hasComputedValue())
             {
-                auto typeExpr = TypeManager::concreteType(expr->typeInfo);
+                const auto typeExpr = TypeManager::concreteType(expr->typeInfo);
                 if (typeExpr->isString())
                 {
-                    int idx = valText.find(expr->computedValue->text);
+                    const int idx = valText.find(expr->computedValue->text);
                     if (idx != -1)
                     {
-                        auto note = Diagnostic::note(valDef[idx], Nte(Nte0071));
+                        const auto note = Diagnostic::note(valDef[idx], Nte(Nte0071));
                         return context->report({expr, Fmt(Err(Err0011), expr->computedValue->text.c_str())}, note);
                     }
 
@@ -335,10 +335,10 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                     if (expr->isConstantGenTypeInfo())
                         value = expr->computedValue->storageOffset;
 
-                    int idx = val64.find(value);
+                    const int idx = val64.find(value);
                     if (idx != -1)
                     {
-                        auto note = Diagnostic::note(valDef[idx], Nte(Nte0071));
+                        const auto note = Diagnostic::note(valDef[idx], Nte(Nte0071));
                         if (expr->isConstantGenTypeInfo())
                             return context->report({expr, Fmt(Err(Err0011), expr->token.ctext())}, note);
                         if (expr->typeInfo->isEnum())
@@ -365,43 +365,43 @@ bool Semantic::resolveSwitch(SemanticContext* context)
         auto back = node->cases.back();
         if (back->expressions.empty())
         {
-            auto attr = back->findParentAttrUse(g_LangSpec->name_Swag_Complete);
-            auto note = Diagnostic::note(attr, Fmt(Nte(Nte0063), "attribute"));
+            const auto attr = back->findParentAttrUse(g_LangSpec->name_Swag_Complete);
+            const auto note = Diagnostic::note(attr, Fmt(Nte(Nte0063), "attribute"));
             return context->report({back, back->token, Err(Err0663)}, note);
         }
 
         // When a switch is marked as complete, be sure every definitions have been covered
         if (node->typeInfo->isEnum())
         {
-            auto                        typeEnum0 = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
+            const auto                        typeEnum0 = CastTypeInfo<TypeInfoEnum>(node->typeInfo, TypeInfoKind::Enum);
             VectorNative<TypeInfoEnum*> collect;
             typeEnum0->collectEnums(collect);
-            for (auto typeEnum : collect)
+            for (const auto typeEnum : collect)
             {
                 if (typeSwitch->isString())
                 {
-                    for (auto one : typeEnum->values)
+                    for (const auto one : typeEnum->values)
                     {
                         if (!one->value)
                             continue;
                         if (!valText.contains(one->value->text))
                         {
-                            Diagnostic diag{node, node->token, Fmt(Err(Err0119), typeEnum->name.c_str(), one->name.c_str())};
-                            auto       note = Diagnostic::note(one->declNode, one->declNode->token, Nte(Nte0126));
+                            const Diagnostic diag{node, node->token, Fmt(Err(Err0119), typeEnum->name.c_str(), one->name.c_str())};
+                            const auto       note = Diagnostic::note(one->declNode, one->declNode->token, Nte(Nte0126));
                             return context->report(diag, note);
                         }
                     }
                 }
                 else
                 {
-                    for (auto one : typeEnum->values)
+                    for (const auto one : typeEnum->values)
                     {
                         if (!one->value)
                             continue;
                         if (!val64.contains(one->value->reg.u64))
                         {
-                            Diagnostic diag{node, node->token, Fmt(Err(Err0119), typeEnum->name.c_str(), one->name.c_str())};
-                            auto       note = Diagnostic::note(one->declNode, one->declNode->token, Nte(Nte0126));
+                            const Diagnostic diag{node, node->token, Fmt(Err(Err0119), typeEnum->name.c_str(), one->name.c_str())};
+                            const auto       note = Diagnostic::note(one->declNode, one->declNode->token, Nte(Nte0126));
                             return context->report(diag, note);
                         }
                     }
@@ -410,7 +410,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
         }
 
         // Add a safety test in a switch default to catch runtime invalid values
-        auto caseNode = Ast::newNode<AstSwitchCase>(nullptr, AstNodeKind::SwitchCase, context->sourceFile, node);
+        const auto caseNode = Ast::newNode<AstSwitchCase>(nullptr, AstNodeKind::SwitchCase, context->sourceFile, node);
         caseNode->flags |= AST_GENERATED;
         caseNode->specFlags   = AstSwitchCase::SPECFLAG_IS_DEFAULT;
         caseNode->ownerSwitch = node;
@@ -423,8 +423,8 @@ bool Semantic::resolveSwitch(SemanticContext* context)
 
 bool Semantic::resolveCase(SemanticContext* context)
 {
-    auto node = CastAst<AstSwitchCase>(context->node, AstNodeKind::SwitchCase);
-    for (auto oneExpression : node->expressions)
+    const auto node = CastAst<AstSwitchCase>(context->node, AstNodeKind::SwitchCase);
+    for (const auto oneExpression : node->expressions)
     {
         oneExpression->typeInfo = getConcreteTypeUnRef(oneExpression, CONCRETE_FUNC | CONCRETE_ALIAS);
 
@@ -434,7 +434,7 @@ bool Semantic::resolveCase(SemanticContext* context)
             auto rangeNode = CastAst<AstRange>(oneExpression, AstNodeKind::Range);
             if (node->ownerSwitch->expression)
             {
-                auto typeInfo = TypeManager::concreteType(node->ownerSwitch->expression->typeInfo);
+                const auto typeInfo = TypeManager::concreteType(node->ownerSwitch->expression->typeInfo);
                 if (typeInfo->isStruct())
                 {
                     SWAG_CHECK(resolveUserOpCommutative(context, g_LangSpec->name_opCmp, nullptr, nullptr, node->ownerSwitch->expression, rangeNode->expressionLow));
@@ -476,7 +476,7 @@ bool Semantic::resolveCase(SemanticContext* context)
                 {
                     PushErrCxtStep ec(context, node->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo]()
                                       { return Fmt(Nte(Nte0141), typeInfo->getDisplayNameC(), "the switch expression"), Diagnostic::isType(typeInfo); });
-                    auto           typeSwitch = TypeManager::concretePtrRefType(node->ownerSwitch->expression->typeInfo, CONCRETE_FUNC);
+                    const auto           typeSwitch = TypeManager::concretePtrRefType(node->ownerSwitch->expression->typeInfo, CONCRETE_FUNC);
                     SWAG_CHECK(TypeManager::makeCompatibles(context, typeSwitch, node->ownerSwitch->expression, oneExpression, CASTFLAG_FOR_COMPARE));
                 }
 
@@ -516,15 +516,15 @@ bool Semantic::resolveCase(SemanticContext* context)
 
 bool Semantic::resolveLoop(SemanticContext* context)
 {
-    auto module = context->sourceFile->module;
-    auto node   = CastAst<AstLoop>(context->node, AstNodeKind::Loop);
+    const auto module = context->sourceFile->module;
+    const auto node   = CastAst<AstLoop>(context->node, AstNodeKind::Loop);
 
     if (node->expression)
     {
         // No range
         if (node->expression->kind != AstNodeKind::Range)
         {
-            auto typeInfo = TypeManager::concretePtrRef(node->expression->typeInfo);
+            const auto typeInfo = TypeManager::concretePtrRef(node->expression->typeInfo);
             if (!typeInfo->isEnum())
                 SWAG_CHECK(checkIsConcrete(context, node->expression));
 
@@ -555,7 +555,7 @@ bool Semantic::resolveLoop(SemanticContext* context)
         // Range
         else
         {
-            auto rangeNode = CastAst<AstRange>(node->expression, AstNodeKind::Range);
+            const auto rangeNode = CastAst<AstRange>(node->expression, AstNodeKind::Range);
             SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoS64, rangeNode->expressionLow->typeInfo, nullptr, rangeNode->expressionLow, CASTFLAG_TRY_COERCE));
             SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoS64, rangeNode->expressionUp->typeInfo, nullptr, rangeNode->expressionUp, CASTFLAG_TRY_COERCE));
         }
@@ -1006,7 +1006,7 @@ bool Semantic::resolveIndex(SemanticContext* context)
     // Take the type from the expression
     if (ownerBreakable->kind == AstNodeKind::Loop)
     {
-        auto loopNode = CastAst<AstLoop>(ownerBreakable, AstNodeKind::Loop);
+        const auto loopNode = CastAst<AstLoop>(ownerBreakable, AstNodeKind::Loop);
         if (loopNode->expression && loopNode->expression->typeInfo->isNativeInteger())
             node->typeInfo = loopNode->expression->typeInfo;
     }
@@ -1019,7 +1019,7 @@ bool Semantic::resolveIndex(SemanticContext* context)
 
 bool Semantic::preResolveSubstBreakContinue(SemanticContext* context)
 {
-    auto node = CastAst<AstSubstBreakContinue>(context->node, AstNodeKind::SubstBreakContinue);
+    const auto node = CastAst<AstSubstBreakContinue>(context->node, AstNodeKind::SubstBreakContinue);
 
     if (node->ownerBreakable == node->altSubstBreakable)
         node->defaultSubst->flags |= AST_NO_SEMANTIC | AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
@@ -1053,7 +1053,7 @@ bool Semantic::resolveBreak(SemanticContext* context)
 
 bool Semantic::resolveUnreachable(SemanticContext* context)
 {
-    auto node = context->node;
+    const auto node = context->node;
     SWAG_CHECK(SemanticError::warnUnreachableCode(context));
     node->byteCodeFct = ByteCodeGen::emitUnreachable;
     return true;
@@ -1074,7 +1074,7 @@ bool Semantic::resolveFallThrough(SemanticContext* context)
     SWAG_VERIFY(node->switchCase->caseIndex != -1, context->report({node, Err(Err0462)}));
 
     // 'fallthrough' cannot be used on the last case, this has no sens
-    auto switchBlock = CastAst<AstSwitch>(node->ownerBreakable, AstNodeKind::Switch);
+    const auto switchBlock = CastAst<AstSwitch>(node->ownerBreakable, AstNodeKind::Switch);
     SWAG_VERIFY(node->switchCase->caseIndex < (int) switchBlock->cases.size() - 1, context->report({node, Err(Err0461)}));
 
     SWAG_CHECK(SemanticError::warnUnreachableCode(context));
@@ -1102,7 +1102,7 @@ bool Semantic::resolveContinue(SemanticContext* context)
 
 bool Semantic::resolveScopeBreakable(SemanticContext* context)
 {
-    auto node = CastAst<AstScopeBreakable>(context->node, AstNodeKind::ScopeBreakable);
+    const auto node = CastAst<AstScopeBreakable>(context->node, AstNodeKind::ScopeBreakable);
     node->block->setBcNotifBefore(ByteCodeGen::emitLabelBeforeBlock);
     node->block->setBcNotifAfter(ByteCodeGen::emitLoopAfterBlock, ByteCodeGen::emitLeaveScope);
     return true;

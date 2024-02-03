@@ -10,7 +10,7 @@
 static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters, uint64_t forceCastFlags = 0)
 {
     // One boolean per used parameter
-    auto maxParams = max((int) parameters.size(), context.parameters.size());
+    const auto maxParams = max((int) parameters.size(), context.parameters.size());
     context.doneParameters.set_size_clear(maxParams);
     context.solvedParameters.set_size_clear(maxParams);
     context.solvedCastFlags.set_size_clear(maxParams);
@@ -18,11 +18,11 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
     context.resetTmp();
 
     // Solve unnamed parameters
-    bool isAfterVariadic = false;
-    auto numParams       = context.parameters.size();
+    bool       isAfterVariadic = false;
+    const auto numParams       = context.parameters.size();
     for (size_t i = 0; i < numParams; i++)
     {
-        auto callParameter = context.parameters[i];
+        const auto callParameter = context.parameters[i];
 
         if (callParameter->hasExtMisc() && callParameter->extMisc()->isNamed)
         {
@@ -49,7 +49,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         if (callParameter->semFlags & SEMFLAG_AUTO_CODE_PARAM)
         {
             context.cptResolved                             = (int) context.parameters.size();
-            auto param                                      = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
+            const auto param                                = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
             param->resolvedParameter                        = parameters.back();
             param->indexParam                               = (int) parameters.size() - 1;
             context.doneParameters[param->indexParam]       = true;
@@ -58,9 +58,9 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
             return;
         }
 
-        auto wantedParameter = isAfterVariadic ? parameters.back() : parameters[i];
-        auto wantedTypeInfo  = wantedParameter->typeInfo;
-        auto callTypeInfo    = TypeManager::concreteType(callParameter->typeInfo, CONCRETE_FUNC);
+        const auto wantedParameter = isAfterVariadic ? parameters.back() : parameters[i];
+        auto       wantedTypeInfo  = wantedParameter->typeInfo;
+        const auto callTypeInfo    = TypeManager::concreteType(callParameter->typeInfo, CONCRETE_FUNC);
 
         if (wantedTypeInfo->isVariadic())
         {
@@ -132,7 +132,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
         context.semContext->castErrorFlags    = 0;
         context.semContext->castErrorType     = CastErrorType::Zero;
 
-        bool same = TypeManager::makeCompatibles(context.semContext, wantedTypeInfo, callTypeInfo, nullptr, nullptr, castFlags);
+        const bool same = TypeManager::makeCompatibles(context.semContext, wantedTypeInfo, callTypeInfo, nullptr, nullptr, castFlags);
         if (context.semContext->result != ContextResult::Done)
             return;
 
@@ -173,7 +173,7 @@ static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoPa
 
         if (callParameter->kind == AstNodeKind::FuncCallParam)
         {
-            auto param               = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
+            const auto param               = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
             param->resolvedParameter = wantedParameter;
             param->indexParam        = context.cptResolved;
         }
@@ -186,7 +186,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
 {
     for (size_t j = 0; j < parameters.size(); j++)
     {
-        auto wantedParameter = parameters[j];
+        const auto wantedParameter = parameters[j];
         if (callParameter->hasExtMisc() &&
             callParameter->extMisc()->isNamed &&
             parameters[j]->name == callParameter->extMisc()->isNamed->token.text)
@@ -196,7 +196,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
                 context.badSignatureInfos.badSignatureNum1 = (int) j;
                 for (size_t k = 0; k < context.parameters.size(); k++)
                 {
-                    auto checkParam = context.parameters[k];
+                    const auto checkParam = context.parameters[k];
                     if (checkParam->hasExtMisc() &&
                         checkParam->extMisc()->isNamed &&
                         checkParam->extMisc()->isNamed->token.text == parameters[j]->name)
@@ -210,7 +210,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
                 return;
             }
 
-            auto callTypeInfo   = TypeManager::concreteType(callParameter->typeInfo, CONCRETE_FUNC);
+            const auto callTypeInfo   = TypeManager::concreteType(callParameter->typeInfo, CONCRETE_FUNC);
             auto wantedTypeInfo = wantedParameter->typeInfo;
 
             // For a typed variadic, cast against the underlying type
@@ -233,7 +233,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
 
             uint64_t castFlags = CASTFLAG_JUST_CHECK | CASTFLAG_PARAMS;
             castFlags |= forceCastFlags;
-            bool same = TypeManager::makeCompatibles(context.semContext, wantedParameter->typeInfo, callTypeInfo, nullptr, nullptr, castFlags);
+            const bool same = TypeManager::makeCompatibles(context.semContext, wantedParameter->typeInfo, callTypeInfo, nullptr, nullptr, castFlags);
             if (context.semContext->result != ContextResult::Done)
                 return;
 
@@ -262,7 +262,7 @@ static void matchNamedParameter(SymbolMatchContext& context, AstFuncCallParam* c
         // Search inside a sub structure marked with 'using'
         if (parameters[j]->typeInfo->isStruct() && parameters[j]->declNode->flags & AST_DECL_USING)
         {
-            auto subStruct = CastTypeInfo<TypeInfoStruct>(parameters[j]->typeInfo, TypeInfoKind::Struct);
+            const auto subStruct = CastTypeInfo<TypeInfoStruct>(parameters[j]->typeInfo, TypeInfoKind::Struct);
             matchNamedParameter(context, callParameter, parameterIndex, subStruct->fields, forceCastFlags);
             if (callParameter->resolvedParameter)
                 return;
@@ -284,7 +284,7 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
     Ast::constructNode(&fakeParam);
     fakeParam.kind = AstNodeKind::FuncCallParam;
 
-    auto startResolved = context.cptResolved;
+    const auto startResolved = context.cptResolved;
     for (size_t i = startResolved; i < context.parameters.size(); i++)
     {
         callParameter = context.parameters[i];
@@ -296,7 +296,7 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
             callParameter       = &fakeParam;
         }
 
-        auto param = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
+        const auto param = CastAst<AstFuncCallParam>(callParameter, AstNodeKind::FuncCallParam);
 
         // If this is a code parameter added by the semantic, force to match the last parameter
         // of the function
@@ -333,8 +333,8 @@ static void matchNamedParameters(SymbolMatchContext& context, VectorNative<TypeI
 static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myTypeInfo, VectorNative<TypeInfoParam*>& genericParameters)
 {
     // Solve generic parameters
-    int wantedNumGenericParams = (int) genericParameters.size();
-    int userGenericParams      = (int) context.genericParameters.size();
+    const int wantedNumGenericParams = (int) genericParameters.size();
+    const int userGenericParams      = (int) context.genericParameters.size();
 
     // It's valid to not specify generic parameters. They will be deduced.
     // A reference to a generic without specifying the generic parameters is a match
@@ -350,8 +350,8 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
             {
                 for (int i = 0; i < wantedNumGenericParams; i++)
                 {
-                    auto symbolParameter = genericParameters[i];
-                    auto genType         = symbolParameter->typeInfo;
+                    const auto symbolParameter = genericParameters[i];
+                    const auto genType         = symbolParameter->typeInfo;
                     SWAG_ASSERT(genType);
 
                     // If we try to match a generic type, and there's a contextual generic type replacement,
@@ -423,7 +423,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
     {
         for (int i = 0; i < wantedNumGenericParams; i++)
         {
-            auto symbolParameter = genericParameters[i];
+            const auto symbolParameter = genericParameters[i];
             if (!symbolParameter->typeInfo->isUndefined())
             {
                 auto it = context.genericReplaceTypes.find(symbolParameter->typeInfo->name);
@@ -452,8 +452,8 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
     {
         if (myTypeInfo->declNode->kind == AstNodeKind::FuncDecl)
         {
-            auto myFunc     = CastAst<AstFuncDecl>(myTypeInfo->declNode, AstNodeKind::FuncDecl);
-            auto typeMyFunc = CastTypeInfo<TypeInfoFuncAttr>(myFunc->typeInfo, TypeInfoKind::FuncAttr);
+            const auto myFunc     = CastAst<AstFuncDecl>(myTypeInfo->declNode, AstNodeKind::FuncDecl);
+            const auto typeMyFunc = CastTypeInfo<TypeInfoFuncAttr>(myFunc->typeInfo, TypeInfoKind::FuncAttr);
             if (!(typeMyFunc->replaceTypes.empty()))
             {
                 for (auto one : context.genericReplaceTypes)
@@ -471,13 +471,13 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
 
     for (int i = 0; i < userGenericParams; i++)
     {
-        auto callParameter   = context.genericParameters[i];
-        auto typeInfo        = TypeManager::concreteType(context.genericParametersCallTypes[i].typeInfoReplace, CONCRETE_FUNC);
-        auto symbolParameter = genericParameters[i];
+        const auto callParameter   = context.genericParameters[i];
+        const auto typeInfo        = TypeManager::concreteType(context.genericParametersCallTypes[i].typeInfoReplace, CONCRETE_FUNC);
+        const auto symbolParameter = genericParameters[i];
 
         if (myTypeInfo->isGeneric())
         {
-            auto firstChild = callParameter->childs.empty() ? nullptr : callParameter->childs.front();
+            const auto firstChild = callParameter->childs.empty() ? nullptr : callParameter->childs.front();
             if (firstChild)
             {
                 bool isValue = false;
@@ -494,7 +494,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
                         firstChild->setFlagsValueIsComputed();
                         Semantic::reserveAndStoreToSegment(context.semContext, storageSegment, storageOffset, firstChild->computedValue, firstChild->typeInfo, firstChild);
 
-                        auto typeList                             = CastTypeInfo<TypeInfoList>(firstChild->typeInfo, TypeInfoKind::TypeListArray);
+                        const auto typeList                             = CastTypeInfo<TypeInfoList>(firstChild->typeInfo, TypeInfoKind::TypeListArray);
                         firstChild->computedValue->reg.u64        = typeList->subTypes.size();
                         firstChild->computedValue->storageOffset  = storageOffset;
                         firstChild->computedValue->storageSegment = storageSegment;
@@ -629,7 +629,7 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
     context.castFlagsResult &= ~CASTFLAG_RESULT_GEN_AUTO_OPCAST;
     if (typeFunc->declNode && typeFunc->declNode->kind == AstNodeKind::FuncDecl)
     {
-        auto funcNode = CastAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
+        const auto funcNode = CastAst<AstFuncDecl>(typeFunc->declNode, AstNodeKind::FuncDecl);
         if (funcNode->parameters && (funcNode->parameters->flags & AST_IS_GENERIC))
         {
             SymbolMatchContext cpyContext = context;
@@ -666,7 +666,7 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
     int cptDone = 0;
     if (!context.doneParameters.empty())
     {
-        for (auto b : context.doneParameters)
+        for (const auto b : context.doneParameters)
         {
             if (!b)
                 break;
@@ -677,11 +677,11 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
     context.cptResolved = min(context.cptResolved, cptDone);
 
     // Not enough parameters
-    size_t firstDefault  = typeFunc->firstDefaultValueIdx == UINT32_MAX ? typeFunc->parameters.size() : typeFunc->firstDefaultValueIdx;
+    const size_t firstDefault  = typeFunc->firstDefaultValueIdx == UINT32_MAX ? typeFunc->parameters.size() : typeFunc->firstDefaultValueIdx;
     context.firstDefault = (uint32_t) firstDefault;
     if (context.cptResolved < (int) firstDefault && typeFunc->parameters.size() && context.result == MatchResult::Ok)
     {
-        auto back = typeFunc->parameters.back()->typeInfo;
+        const auto back = typeFunc->parameters.back()->typeInfo;
         if (!back->isVariadic() && !back->isTypedVariadic() && !back->isCVariadic())
         {
             context.result = MatchResult::NotEnoughParameters;

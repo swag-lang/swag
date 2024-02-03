@@ -19,7 +19,7 @@ uint32_t ByteCodeStack::maxLevel(ByteCodeRunContext* runContext)
 
     // The last stack step can be the same as the current context. If it's not the case,
     // then it's like we have one more step.
-    auto& back = steps.back();
+    const auto& back = steps.back();
     if (back.bc == runContext->bc && back.ip == runContext->ip)
         return (uint32_t) steps.size() - 1;
 
@@ -29,7 +29,7 @@ uint32_t ByteCodeStack::maxLevel(ByteCodeRunContext* runContext)
 
 Utf8 ByteCodeStack::getStepName(AstNode* node, ByteCodeInstruction* ip)
 {
-    auto fct = node->ownerInline && node->ownerInline->ownerFct == ip->node->ownerFct ? node->ownerInline->func : node->ownerFct;
+    const auto fct = node->ownerInline && node->ownerInline->ownerFct == ip->node->ownerFct ? node->ownerInline->func : node->ownerFct;
     if (fct && fct->hasExtByteCode() && fct->extByteCode()->bc)
         return fct->extByteCode()->bc->getPrintName();
     if (fct)
@@ -184,9 +184,9 @@ Utf8 ByteCodeStack::log(ByteCodeRunContext* runContext)
     if (copySteps.empty())
         return "";
 
-    Utf8 str;
-    int  maxSteps = 20;
-    int  nb       = (int) copySteps.size() - 1;
+    Utf8      str;
+    int       maxSteps = 20;
+    const int nb       = (int) copySteps.size() - 1;
     for (int i = nb; i >= 0; i--)
     {
         bool current = false;

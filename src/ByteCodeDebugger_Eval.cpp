@@ -198,7 +198,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     if (res.type->isVoid())
         return BcDbgCommandResult::Continue;
 
-    auto concrete = res.type->getConcreteAlias();
+    const auto concrete = res.type->getConcreteAlias();
     Utf8 str;
     if (hasFormat)
     {

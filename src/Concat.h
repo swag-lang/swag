@@ -98,7 +98,7 @@ struct Concat
     {
         if (b != lastBucket)
             return b->countBytes;
-        auto count = (int) (currentSP - lastBucket->datas);
+        const auto count = (int) (currentSP - lastBucket->datas);
         SWAG_ASSERT(count <= bucketSize);
         return count;
     }

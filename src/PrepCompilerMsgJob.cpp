@@ -23,7 +23,7 @@ JobResult PrepCompilerMsgJob::execute()
         {
             // As we give to the user the pointer to the type, we can store it wherever we want.
             // So we store the concrete type in a specific 'per thread' segment to avoid contention
-            auto     storageSegment = context.sourceFile->module->compilerSegmentPerThread[g_ThreadIndex];
+            const auto     storageSegment = context.sourceFile->module->compilerSegmentPerThread[g_ThreadIndex];
             uint32_t storageOffset;
 
             context.result = ContextResult::Done;

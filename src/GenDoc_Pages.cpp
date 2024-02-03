@@ -8,11 +8,11 @@
 bool GenDoc::generatePages()
 {
     Vector<Path> files;
-    for (auto file : module->files)
+    for (const auto file : module->files)
         files.push_back(file->path);
 
     // Import additional pages
-    Utf8         morePages(module->buildCfg.genDoc.morePages);
+    const Utf8         morePages(module->buildCfg.genDoc.morePages);
     Vector<Utf8> pages;
     Utf8::tokenize(morePages, ';', pages);
     for (auto& addPage : pages)
@@ -22,7 +22,7 @@ bool GenDoc::generatePages()
 
         path = filesystem::absolute(path);
         error_code err;
-        auto       path1 = filesystem::canonical(path, err);
+        const auto path1 = filesystem::canonical(path, err);
         if (!err)
             path = path1;
 

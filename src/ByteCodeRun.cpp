@@ -82,9 +82,9 @@ SWAG_FORCE_INLINE void ByteCodeRun::localCall(ByteCodeRunContext* context, ByteC
 
 void ByteCodeRun::callInternalCompilerError(ByteCodeRunContext* context, ByteCodeInstruction* ip, const char* msg)
 {
-    msg      = _strdup(msg); // Leak and slow, but only for messages
-    auto bc  = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__compilererror);
-    auto loc = ByteCode::getLocation(context->bc, ip);
+    msg            = _strdup(msg); // Leak and slow, but only for messages
+    const auto bc  = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__compilererror);
+    const auto loc = ByteCode::getLocation(context->bc, ip);
     context->push(msg);
     context->push<uint64_t>(loc.location->column);
     context->push<uint64_t>(loc.location->line);
@@ -94,9 +94,9 @@ void ByteCodeRun::callInternalCompilerError(ByteCodeRunContext* context, ByteCod
 
 void ByteCodeRun::callInternalPanic(ByteCodeRunContext* context, ByteCodeInstruction* ip, const char* msg)
 {
-    msg      = _strdup(msg); // Leak and slow, but only for messages
-    auto bc  = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__panic);
-    auto loc = ByteCode::getLocation(context->bc, ip);
+    msg            = _strdup(msg); // Leak and slow, but only for messages
+    const auto bc  = g_Workspace->runtimeModule->getRuntimeFct(g_LangSpec->name__panic);
+    const auto loc = ByteCode::getLocation(context->bc, ip);
     context->push(msg);
     context->push<uint64_t>(loc.location->column);
     context->push<uint64_t>(loc.location->line);
@@ -108,7 +108,7 @@ void* ByteCodeRun::makeLambda(JobContext* context, AstFuncDecl* funcNode, ByteCo
 {
     if (funcNode && funcNode->isForeign())
     {
-        auto funcPtr = ffiGetFuncAddress(context, funcNode);
+        const auto funcPtr = ffiGetFuncAddress(context, funcNode);
         if (!funcPtr)
             return nullptr;
 
@@ -4194,17 +4194,17 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     if (args->ExceptionRecord->ExceptionCode == SWAG_EXCEPTION_TO_PREV_HANDLER)
         return SWAG_EXCEPTION_EXECUTE_HANDLER;
 
-    Diagnostic*               diag = nullptr;
-    Vector<const Diagnostic*> notes;
-    SwagSourceCodeLocation*   location = nullptr;
-    SwagSourceCodeLocation    tmpLoc;
-    DiagnosticLevel           level = DiagnosticLevel::Error;
-    Utf8                      userMsg;
-    int                       returnValue = SWAG_EXCEPTION_EXECUTE_HANDLER;
+    Diagnostic*                   diag = nullptr;
+    Vector<const Diagnostic*>     notes;
+    const SwagSourceCodeLocation* location = nullptr;
+    SwagSourceCodeLocation        tmpLoc;
+    DiagnosticLevel               level = DiagnosticLevel::Error;
+    Utf8                          userMsg;
+    int                           returnValue = SWAG_EXCEPTION_EXECUTE_HANDLER;
 
     if (runContext->ip != runContext->bc->out)
         runContext->ip--;
-    auto loc = ByteCode::getLocation(runContext->bc, runContext->ip);
+    const auto loc = ByteCode::getLocation(runContext->bc, runContext->ip);
     if (runContext->ip != runContext->bc->out)
         runContext->ip++;
 
@@ -4223,10 +4223,10 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
             location = (SwagSourceCodeLocation*) args->ExceptionRecord->ExceptionInformation[0];
 
         // User messsage
-        auto txt = Utf8{(const char*) args->ExceptionRecord->ExceptionInformation[1], (uint32_t) args->ExceptionRecord->ExceptionInformation[2]};
+        const auto txt = Utf8{(const char*) args->ExceptionRecord->ExceptionInformation[1], (uint32_t) args->ExceptionRecord->ExceptionInformation[2]};
 
         // Kind of exception
-        auto exceptionKind = (SwagExceptionKind) args->ExceptionRecord->ExceptionInformation[3];
+        const auto exceptionKind = (SwagExceptionKind) args->ExceptionRecord->ExceptionInformation[3];
         switch (exceptionKind)
         {
         case SwagExceptionKind::Error:
@@ -4333,7 +4333,7 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
 
 bool ByteCodeRun::run(ByteCodeRunContext* runContext)
 {
-    auto module = runContext->jc.sourceFile->module;
+    const auto module = runContext->jc.sourceFile->module;
 
     while (true)
     {

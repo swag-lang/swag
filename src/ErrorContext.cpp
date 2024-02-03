@@ -79,7 +79,7 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
             if (exp.hide)
                 continue;
 
-            DiagnosticLevel level = DiagnosticLevel::Note;
+            const DiagnosticLevel level = DiagnosticLevel::Note;
 
             Utf8 msg;
             if (exp.err)
@@ -96,7 +96,7 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
                     name = exp.node->token.text;
             }
 
-            Diagnostic* note = nullptr;
+            const Diagnostic* note = nullptr;
             switch (exp.type)
             {
             case ErrCxtStepKind::Note:
@@ -159,12 +159,12 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
         sourceNode = sourceNode->extMisc()->exportNode;
     if (sourceNode && sourceNode->sourceFile && sourceNode->sourceFile->fromNode && !sourceNode->sourceFile->fileForSourceLocation)
     {
-        auto note = Diagnostic::note(sourceNode->sourceFile->fromNode, Nte(Nte0098));
+        const auto note = Diagnostic::note(sourceNode->sourceFile->fromNode, Nte(Nte0098));
         notes.push_back(note);
     }
     else if (diag.sourceFile && diag.sourceFile->isExternal && diag.sourceFile->isFromAst && sourceNode)
     {
-        auto note = Diagnostic::note(sourceNode, Nte(Nte0098));
+        const auto note = Diagnostic::note(sourceNode, Nte(Nte0098));
         notes.push_back(note);
     }
 }

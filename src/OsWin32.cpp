@@ -42,7 +42,7 @@ namespace OS
         if (rc != S_OK)
             return false;
 
-        auto value = new wchar_t[length + 1];
+        const auto value = new wchar_t[length + 1];
         rc         = RegQueryValueExW(hKey, L"KitsRoot10", NULL, NULL, (LPBYTE) value, &length);
         RegCloseKey(hKey);
         if (rc != S_OK)
@@ -50,9 +50,9 @@ namespace OS
         value[length] = 0;
 
         // Convert to UTF8
-        std::wstring wstr{value};
-        int          sizeNeeded = WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int) wstr.size(), NULL, 0, NULL, NULL);
-        std::string  str(sizeNeeded, 0);
+        const std::wstring wstr{value};
+        const int          sizeNeeded = WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int) wstr.size(), NULL, 0, NULL, NULL);
+        std::string        str(sizeNeeded, 0);
         WideCharToMultiByte(CP_UTF8, 0, &wstr[0], (int) wstr.size(), &str[0], sizeNeeded, NULL, NULL);
 
         winSdkFolder = str.c_str();
@@ -62,8 +62,8 @@ namespace OS
         Utf8 bestName;
         visitFolders(winSdkFolder.string().c_str(), [&](const char* cFileName)
                      {
-                         int  i0, i1, i2, i3;
-                         auto success = sscanf_s(cFileName, "%d.%d.%d.%d", &i0, &i1, &i2, &i3);
+                         int        i0, i1, i2, i3;
+                         const auto success = sscanf_s(cFileName, "%d.%d.%d.%d", &i0, &i1, &i2, &i3);
                          if (success < 4)
                              return;
 
@@ -220,7 +220,7 @@ namespace OS
             PeekNamedPipe(hChildStdoutRd, chBuf, 4096, &dwRead, nullptr, nullptr);
             if (dwRead || !strout.empty())
             {
-                bool notLast = dwRead != 0;
+                const bool notLast = dwRead != 0;
 
                 // Read compiler results
                 if (notLast && ReadFile(hChildStdoutRd, chBuf, 4096, &dwRead, nullptr))
@@ -257,8 +257,8 @@ namespace OS
                         oneLine.removeBack();
 
                     // Error
-                    auto pz0 = strstr(oneLine.c_str(), "error:");
-                    auto pz1 = strstr(oneLine.c_str(), "panic:");
+                    const auto pz0 = strstr(oneLine.c_str(), "error:");
+                    const auto pz1 = strstr(oneLine.c_str(), "panic:");
                     if (pz0 || pz1)
                     {
                         numErrors++;
@@ -329,18 +329,18 @@ namespace OS
     Utf8 getLastErrorAsString()
     {
         // Get the error message, if any.
-        DWORD errorMessageID = GetLastError();
+        const DWORD errorMessageID = GetLastError();
         if (errorMessageID == 0)
             return std::string(); // No error message has been recorded
 
-        LPSTR  messageBuffer = nullptr;
-        size_t size          = FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-                                     NULL,
-                                     errorMessageID,
-                                     MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT),
-                                     (LPSTR) &messageBuffer,
-                                     0,
-                                     NULL);
+        LPSTR        messageBuffer = nullptr;
+        const size_t size          = FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+                                                    NULL,
+                                                    errorMessageID,
+                                                    MAKELANGID(LANG_ENGLISH, SUBLANG_DEFAULT),
+                                                    (LPSTR) &messageBuffer,
+                                                    0,
+                                                    NULL);
 
         // Remove unwanted characters
         char* pz = messageBuffer;
@@ -372,7 +372,7 @@ namespace OS
 
     uint64_t getFileWriteTime(const char* fileName)
     {
-        auto hFile = CreateFileA(fileName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
+        const auto hFile = CreateFileA(fileName, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, 0, NULL);
         if (hFile == INVALID_HANDLE_VALUE)
             return 0;
 
@@ -404,7 +404,7 @@ namespace OS
         WIN32_FIND_DATAA findfile;
         Utf8             searchPath = folder;
         searchPath += "\\*";
-        HANDLE h = FindFirstFileA(searchPath.c_str(), &findfile);
+        const HANDLE h = FindFirstFileA(searchPath.c_str(), &findfile);
         if (h != INVALID_HANDLE_VALUE)
         {
             do
@@ -424,7 +424,7 @@ namespace OS
         Utf8             searchPath = folder;
         searchPath += "\\";
         searchPath += match;
-        HANDLE h = FindFirstFileA(searchPath.c_str(), &findfile);
+        const HANDLE h = FindFirstFileA(searchPath.c_str(), &findfile);
         if (h != INVALID_HANDLE_VALUE)
         {
             do
@@ -445,7 +445,7 @@ namespace OS
         WIN32_FIND_DATAA findfile;
         Utf8             searchPath = folder;
         searchPath += "\\*";
-        HANDLE h = FindFirstFileA(searchPath.c_str(), &findfile);
+        const HANDLE h = FindFirstFileA(searchPath.c_str(), &findfile);
         if (h != INVALID_HANDLE_VALUE)
         {
             do
@@ -459,7 +459,7 @@ namespace OS
                 uint64_t writeTime = ((uint64_t) findfile.ftLastWriteTime.dwHighDateTime) << 32;
                 writeTime |= findfile.ftLastWriteTime.dwLowDateTime;
 
-                bool isFolder = findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY;
+                const bool isFolder = findfile.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY;
                 user(writeTime, findfile.cFileName, isFolder);
 
             } while (FindNextFileA(h, &findfile));
@@ -474,8 +474,8 @@ namespace OS
         Path             searchPath = folder;
         searchPath += "\\*";
 
-        Path   path = folder;
-        HANDLE h    = FindFirstFileA(searchPath.string().c_str(), &findfile);
+        Path         path = folder;
+        const HANDLE h    = FindFirstFileA(searchPath.string().c_str(), &findfile);
         if (h != INVALID_HANDLE_VALUE)
         {
             do
@@ -535,8 +535,8 @@ namespace OS
 
     void setThreadName(thread* thread, const char* threadName)
     {
-        auto  handle   = static_cast<HANDLE>(thread->native_handle());
-        DWORD threadId = GetThreadId(handle);
+        const auto  handle   = static_cast<HANDLE>(thread->native_handle());
+        const DWORD threadId = GetThreadId(handle);
         setThreadName(threadId, threadName);
         // SetThreadPriority(handle, THREAD_PRIORITY_TIME_CRITICAL);
     }
@@ -577,24 +577,24 @@ namespace OS
         TCHAR     sym[sizeof(SYMBOL_INFO) + SYM_LEN_NAME * sizeof(TCHAR)];
         DWORD64   displacement = 0;
 
-        auto psym          = (SYMBOL_INFO*) sym;
+        const auto psym          = (SYMBOL_INFO*) sym;
         psym->SizeOfStruct = sizeof(SYMBOL_INFO);
         psym->MaxNameLen   = SYM_LEN_NAME;
 
         IMAGEHLP_LINE64 line;
         line.SizeOfStruct = sizeof(IMAGEHLP_LINE64);
 
-        Utf8  str;
-        void* where[100];
-        auto  nb = RtlCaptureStackBackTrace(2, sizeof(where) / sizeof(void*), where, nullptr);
+        Utf8       str;
+        void*      where[100];
+        const auto nb = RtlCaptureStackBackTrace(2, sizeof(where) / sizeof(void*), where, nullptr);
         if (SymInitialize(GetCurrentProcess(), nullptr, TRUE))
         {
             for (int i = 0; i < nb; i++)
             {
-                displacement   = 0;
-                auto hasSymbol = SymFromAddr(GetCurrentProcess(), (ULONG64) where[i], (DWORD64*) &displacement, psym);
-                displacement   = 0;
-                auto hasLine   = SymGetLineFromAddr64(GetCurrentProcess(), (ULONG64) where[i], (DWORD*) &displacement, &line);
+                displacement         = 0;
+                const auto hasSymbol = SymFromAddr(GetCurrentProcess(), (ULONG64) where[i], (DWORD64*) &displacement, psym);
+                displacement         = 0;
+                const auto hasLine   = SymGetLineFromAddr64(GetCurrentProcess(), (ULONG64) where[i], (DWORD*) &displacement, &line);
 
                 if (hasSymbol)
                 {
@@ -645,7 +645,7 @@ namespace OS
         strcat_s(msg, expr);
         strcat_s(msg, "\n");
 
-        auto result = MessageBoxA(NULL, msg, "Swag meditation !", MB_CANCELTRYCONTINUE | MB_ICONERROR);
+        const auto result = MessageBoxA(NULL, msg, "Swag meditation !", MB_CANCELTRYCONTINUE | MB_ICONERROR);
         switch (result)
         {
         case IDCANCEL:
@@ -834,7 +834,7 @@ namespace OS
     uint8_t bitcounttz(uint8_t value)
     {
         unsigned long index;
-        auto          res = _BitScanForward(&index, value);
+        const auto    res = _BitScanForward(&index, value);
         if (!res)
             return 8;
         return (uint8_t) index;
@@ -843,7 +843,7 @@ namespace OS
     uint16_t bitcounttz(uint16_t value)
     {
         unsigned long index;
-        auto          res = _BitScanForward(&index, value);
+        const auto    res = _BitScanForward(&index, value);
         if (!res)
             return 16;
         return (uint16_t) index;
@@ -852,7 +852,7 @@ namespace OS
     uint32_t bitcounttz(uint32_t value)
     {
         unsigned long index;
-        auto          res = _BitScanForward(&index, value);
+        const auto    res = _BitScanForward(&index, value);
         if (!res)
             return 32;
         return (uint32_t) index;
@@ -861,7 +861,7 @@ namespace OS
     uint64_t bitcounttz(uint64_t value)
     {
         unsigned long index;
-        auto          res = _BitScanForward64(&index, value);
+        const auto    res = _BitScanForward64(&index, value);
         if (!res)
             return 64;
         return (uint64_t) index;
@@ -870,7 +870,7 @@ namespace OS
     uint8_t bitcountlz(uint8_t value)
     {
         unsigned long index;
-        auto          res = _BitScanReverse(&index, value);
+        const auto    res = _BitScanReverse(&index, value);
         if (!res)
             return 8;
         return (uint8_t) (8 - index - 1);
@@ -879,7 +879,7 @@ namespace OS
     uint16_t bitcountlz(uint16_t value)
     {
         unsigned long index;
-        auto          res = _BitScanReverse(&index, value);
+        const auto    res = _BitScanReverse(&index, value);
         if (!res)
             return 16;
         return (uint8_t) (16 - index - 1);
@@ -888,7 +888,7 @@ namespace OS
     uint32_t bitcountlz(uint32_t value)
     {
         unsigned long index;
-        auto          res = _BitScanReverse(&index, value);
+        const auto    res = _BitScanReverse(&index, value);
         if (!res)
             return 32;
         return (uint8_t) (32 - index - 1);
@@ -897,7 +897,7 @@ namespace OS
     uint64_t bitcountlz(uint64_t value)
     {
         unsigned long index;
-        auto          res = _BitScanReverse64(&index, value);
+        const auto    res = _BitScanReverse64(&index, value);
         if (!res)
             return 64;
         return (uint8_t) (64 - index - 1);
@@ -923,7 +923,7 @@ namespace OS
     void ffi(ByteCodeRunContext* context, void* foreignPtr, TypeInfoFuncAttr* typeInfoFunc, const VectorNative<uint32_t>& pushRAParam, void* retCopyAddr)
     {
         const auto& cc         = typeInfoFunc->getCallConv();
-        auto        returnType = TypeManager::concreteType(typeInfoFunc->returnType);
+        const auto  returnType = TypeManager::concreteType(typeInfoFunc->returnType);
 
         uint32_t stackSize = (uint32_t) max(cc.paramByRegisterCount, pushRAParam.size()) * sizeof(void*);
         stackSize += sizeof(void*);
@@ -953,7 +953,7 @@ namespace OS
             unwindRegs.push_back(RDI);
             unwindOffsetRegs.push_back(gen.concat.totalCount());
             gen.emit_OpN_Immediate(RSP, stackSize, CPUOp::SUB, CPUBits::B64);
-            auto sizeProlog = gen.concat.totalCount();
+            const auto sizeProlog = gen.concat.totalCount();
             SCBE_Coff::computeUnwind(unwindRegs, unwindOffsetRegs, stackSize, sizeProlog, unwind);
 
             // Add function table
@@ -970,7 +970,7 @@ namespace OS
             concat.currentSP = gen.concat.firstBucket->datas;
         }
 
-        auto startOffset = gen.concat.currentSP - gen.concat.firstBucket->datas;
+        const auto startOffset = gen.concat.currentSP - gen.concat.firstBucket->datas;
         SWAG_ASSERT(startOffset < JIT_SIZE_BUFFER);
 
         gen.emit_Push(RDI);
@@ -992,7 +992,7 @@ namespace OS
 
         // The real deal : make the call
         typedef void (*funcPtr)();
-        auto ptr = (funcPtr) (gen.concat.firstBucket->datas + startOffset);
+        const auto     ptr = (funcPtr) (gen.concat.firstBucket->datas + startOffset);
         ptr();
 
         gen.concat.currentSP = (uint8_t*) ptr;
@@ -1005,10 +1005,10 @@ namespace OS
 
         if (IsClipboardFormatAvailable(CF_TEXT))
         {
-            auto hglob = GetClipboardData(CF_TEXT);
+            const auto hglob = GetClipboardData(CF_TEXT);
             if (hglob)
             {
-                auto pz     = GlobalLock(hglob);
+                const auto pz     = GlobalLock(hglob);
                 Utf8 result = (const char*) pz;
                 GlobalUnlock(pz);
                 return result;
@@ -1025,7 +1025,7 @@ namespace OS
         static DWORD        dwRead      = 0;
         static DWORD        dwReadIndex = 0;
 
-        auto hStdin = GetStdHandle(STD_INPUT_HANDLE);
+        const auto hStdin = GetStdHandle(STD_INPUT_HANDLE);
         SetConsoleMode(hStdin, ENABLE_WINDOW_INPUT);
 
         while (true)

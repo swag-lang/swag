@@ -16,8 +16,8 @@ void SemanticError::commonErrorNotes(SemanticContext* context, const VectorNativ
         tryMatches[0]->dependentVar &&
         !tryMatches[0]->dependentVar->isGeneratedSelf())
     {
-        auto msg  = Fmt(Nte(Nte0137), tryMatches[0]->overload->symbol->getFullName().c_str());
-        auto note = Diagnostic::note(tryMatches[0]->dependentVar, tryMatches[0]->dependentVar->token, msg);
+        const auto msg  = Fmt(Nte(Nte0137), tryMatches[0]->overload->symbol->getFullName().c_str());
+        const auto note = Diagnostic::note(tryMatches[0]->dependentVar, tryMatches[0]->dependentVar->token, msg);
         notes.push_back(note);
     }
 
@@ -26,9 +26,9 @@ void SemanticError::commonErrorNotes(SemanticContext* context, const VectorNativ
     if ((node->kind == AstNodeKind::Identifier || node->kind == AstNodeKind::FuncCall) &&
         tryMatches.size() == 1)
     {
-        auto identifier    = CastAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
-        auto identifierRef = identifier->identifierRef();
-        auto overload      = tryMatches[0]->overload;
+        const auto identifier    = CastAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+        const auto identifierRef = identifier->identifierRef();
+        const auto overload      = tryMatches[0]->overload;
 
         if (identifierRef->startScope &&
             identifier->ownerStructScope &&
@@ -38,11 +38,11 @@ void SemanticError::commonErrorNotes(SemanticContext* context, const VectorNativ
         {
             if (identifierRef->typeInfo)
             {
-                auto msg = Fmt(Nte(Nte0111), Naming::kindName(overload).c_str(), node->token.ctext(), identifierRef->typeInfo->getDisplayNameC(), overload->node->ownerStructScope->owner->token.ctext());
+                const auto msg = Fmt(Nte(Nte0111), Naming::kindName(overload).c_str(), node->token.ctext(), identifierRef->typeInfo->getDisplayNameC(), overload->node->ownerStructScope->owner->token.ctext());
                 diag->remarks.push_back(msg);
             }
 
-            for (auto s : identifierRef->startScope->childScopes)
+            for (const auto s : identifierRef->startScope->childScopes)
             {
                 if (s->kind == ScopeKind::Impl && s->symTable.find(node->token.text))
                 {
@@ -75,8 +75,8 @@ bool SemanticError::duplicatedSymbolError(ErrorContext* context, SourceFile* sou
     if (thisKind != otherKind)
         as = Fmt("as %s", Naming::aKindName(otherKind).c_str());
 
-    Diagnostic diag{sourceFile, token, Fmt(Err(Err0626), Naming::kindName(thisKind).c_str(), thisName.c_str(), as.c_str())};
-    auto       note = Diagnostic::note(otherSymbolDecl, otherSymbolDecl->getTokenName(), Nte(Nte0071));
+    const Diagnostic diag{sourceFile, token, Fmt(Err(Err0626), Naming::kindName(thisKind).c_str(), thisName.c_str(), as.c_str())};
+    const auto       note = Diagnostic::note(otherSymbolDecl, otherSymbolDecl->getTokenName(), Nte(Nte0071));
     return context->report(diag, note);
 }
 

@@ -13,7 +13,7 @@
 
 SCBE_DebugTypeIndex SCBE_Debug::getTypeSlice(SCBE_CPU& pp, TypeInfo* typeInfo, TypeInfo* pointedType, SCBE_DebugTypeIndex* value)
 {
-    auto                tr0 = addTypeRecord(pp);
+    const auto                tr0 = addTypeRecord(pp);
     SCBE_DebugTypeField field;
     tr0->kind           = LF_FIELDLIST;
     field.kind          = LF_MEMBER;
@@ -29,7 +29,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getTypeSlice(SCBE_CPU& pp, TypeInfo* typeInfo, T
     field.name.setView(g_LangSpec->name_count);
     tr0->LF_FieldList.fields.emplace_back(std::move(field));
 
-    auto tr1                      = addTypeRecord(pp);
+    const auto tr1                      = addTypeRecord(pp);
     tr1->kind                     = LF_STRUCTURE;
     tr1->LF_Structure.memberCount = 2;
     tr1->LF_Structure.sizeOf      = 2 * sizeof(void*);
@@ -49,7 +49,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getTypeSlice(SCBE_CPU& pp, TypeInfo* typeInfo, T
 void SCBE_Debug::getStructFields(SCBE_CPU& pp, SCBE_DebugTypeRecord* tr, TypeInfoStruct* typeStruct, uint32_t baseOffset)
 {
     tr->LF_FieldList.fields.reserve(typeStruct->fields.count);
-    for (auto& p : typeStruct->fields)
+    for (const auto& p : typeStruct->fields)
     {
         SCBE_DebugTypeField field;
         field.kind = LF_MEMBER;
@@ -60,7 +60,7 @@ void SCBE_Debug::getStructFields(SCBE_CPU& pp, SCBE_DebugTypeRecord* tr, TypeInf
 
         if (p->flags & TYPEINFOPARAM_HAS_USING && p->typeInfo->isStruct())
         {
-            auto typeStructField = CastTypeInfo<TypeInfoStruct>(p->typeInfo, TypeInfoKind::Struct);
+            const auto typeStructField = CastTypeInfo<TypeInfoStruct>(p->typeInfo, TypeInfoKind::Struct);
             getStructFields(pp, tr, typeStructField, baseOffset + p->offset);
         }
     }
@@ -444,12 +444,12 @@ SCBE_DebugTypeIndex SCBE_Debug::getSimpleType(TypeInfo* typeInfo)
 
 SCBE_DebugTypeIndex SCBE_Debug::getOrCreatePointerToType(SCBE_CPU& pp, TypeInfo* typeInfo, bool asRef)
 {
-    auto simpleType = getSimpleType(typeInfo);
+    const auto simpleType = getSimpleType(typeInfo);
     if (simpleType != SimpleTypeKind::None)
         return (SCBE_DebugTypeIndex) (simpleType | (NearPointer64 << 8));
 
     // Pointer to something complex
-    auto tr                    = addTypeRecord(pp);
+    const auto tr                    = addTypeRecord(pp);
     tr->kind                   = LF_POINTER;
     tr->LF_Pointer.pointeeType = getOrCreateType(pp, typeInfo, !asRef);
     tr->LF_Pointer.asRef       = asRef;
@@ -459,7 +459,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreatePointerToType(SCBE_CPU& pp, TypeInfo*
 SCBE_DebugTypeIndex SCBE_Debug::getOrCreatePointerPointerToType(SCBE_CPU& pp, TypeInfo* typeInfo)
 {
     // Pointer to something complex
-    auto tr                    = addTypeRecord(pp);
+    const auto tr                    = addTypeRecord(pp);
     tr->kind                   = LF_POINTER;
     tr->LF_Pointer.pointeeType = getOrCreatePointerToType(pp, typeInfo, false);
     return tr->index;
@@ -467,7 +467,7 @@ SCBE_DebugTypeIndex SCBE_Debug::getOrCreatePointerPointerToType(SCBE_CPU& pp, Ty
 
 SCBE_DebugTypeRecord* SCBE_Debug::addTypeRecord(SCBE_CPU& pp)
 {
-    auto tr   = pp.dbgTypeRecords.addObj<SCBE_DebugTypeRecord>();
+    const auto tr   = pp.dbgTypeRecords.addObj<SCBE_DebugTypeRecord>();
     tr->index = (SCBE_DebugTypeIndex) pp.dbgTypeRecordsCount + 0x1000;
     pp.dbgTypeRecordsCount++;
     return tr;
@@ -475,7 +475,7 @@ SCBE_DebugTypeRecord* SCBE_Debug::addTypeRecord(SCBE_CPU& pp)
 
 Utf8 SCBE_Debug::getScopedName(AstNode* node)
 {
-    auto nn = node->getScopedName();
+    const auto nn = node->getScopedName();
     Utf8 result;
     result.reserve(nn.allocated);
 
@@ -521,7 +521,7 @@ void SCBE_Debug::setLocation(CPUFunction* cpuFct, ByteCode* bc, ByteCodeInstruct
         return;
     }
 
-    auto loc = ByteCode::getLocation(bc, ip, bc->sourceFile && bc->sourceFile->module->buildCfg.backendDebugInline);
+    const auto loc = ByteCode::getLocation(bc, ip, bc->sourceFile && bc->sourceFile->module->buildCfg.backendDebugInline);
     if (!loc.location)
         return;
 

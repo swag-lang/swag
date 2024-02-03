@@ -11,27 +11,27 @@
 
 bool Semantic::resolveUsingVar(SemanticContext* context, AstNode* varNode, TypeInfo* typeInfoVar)
 {
-    auto node    = context->node;
-    auto regNode = node->ownerScope ? node->ownerScope->owner : node;
+    auto       node    = context->node;
+    const auto regNode = node->ownerScope ? node->ownerScope->owner : node;
 
     SWAG_ASSERT(regNode);
     SWAG_VERIFY(node->ownerFct || node->ownerScope->kind == ScopeKind::Struct, context->report({node, Fmt(Err(Err0477), Naming::kindName(node->ownerScope->kind).c_str())}));
 
-    uint32_t altFlags = node->flags & AST_STRUCT_MEMBER ? ALTSCOPE_STRUCT_USING : 0;
+    const uint32_t altFlags = node->flags & AST_STRUCT_MEMBER ? ALTSCOPE_STRUCT_USING : 0;
 
     typeInfoVar = TypeManager::concretePtrRef(typeInfoVar);
     if (typeInfoVar->isStruct())
     {
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfoVar, TypeInfoKind::Struct);
+        const auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeInfoVar, TypeInfoKind::Struct);
         regNode->allocateExtension(ExtensionKind::Misc);
         regNode->addAlternativeScope(typeStruct->scope, altFlags);
         regNode->addAlternativeScopeVar(typeStruct->scope, varNode, altFlags);
     }
     else if (typeInfoVar->isPointer())
     {
-        auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfoVar, TypeInfoKind::Pointer);
+        const auto typePointer = CastTypeInfo<TypeInfoPointer>(typeInfoVar, TypeInfoKind::Pointer);
         SWAG_VERIFY(typePointer->pointedType->isStruct(), context->report({node, Fmt(Err(Err0476), typePointer->pointedType->getDisplayNameC())}));
-        auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+        const auto typeStruct = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
         regNode->addAlternativeScope(typeStruct->scope, altFlags);
         regNode->addAlternativeScopeVar(typeStruct->scope, varNode, altFlags);
     }
@@ -59,14 +59,14 @@ bool Semantic::resolveWithAfterKnownType(SemanticContext* context)
 
 bool Semantic::resolveWith(SemanticContext* context)
 {
-    auto n = context->node->findParent(AstNodeKind::With);
+    const auto n = context->node->findParent(AstNodeKind::With);
     SWAG_ASSERT(n);
     auto node = CastAst<AstWith>(n, AstNodeKind::With);
 
     // If this is a simple identifier, no bytecode generation
-    TypeInfo* typeResolved = nullptr;
-    auto      front        = node->childs.front();
-    bool      fromVar      = false;
+    TypeInfo*  typeResolved = nullptr;
+    const auto front        = node->childs.front();
+    bool       fromVar      = false;
     if (front->kind == AstNodeKind::IdentifierRef)
     {
         front->flags |= AST_NO_BYTECODE | AST_NO_BYTECODE_CHILDS;
@@ -113,8 +113,8 @@ bool Semantic::resolveWith(SemanticContext* context)
 
 bool Semantic::resolveUsing(SemanticContext* context)
 {
-    auto node  = context->node;
-    auto idref = CastAst<AstIdentifierRef>(node->childs[0], AstNodeKind::IdentifierRef);
+    auto       node  = context->node;
+    const auto idref = CastAst<AstIdentifierRef>(node->childs[0], AstNodeKind::IdentifierRef);
     node->flags |= AST_NO_BYTECODE;
 
     SWAG_ASSERT(idref->resolvedSymbolName);
@@ -124,25 +124,25 @@ bool Semantic::resolveUsing(SemanticContext* context)
         return true;
     }
 
-    Scope* scope        = nullptr;
-    auto   typeResolved = idref->resolvedSymbolOverload->typeInfo;
+    Scope*     scope        = nullptr;
+    const auto typeResolved = idref->resolvedSymbolOverload->typeInfo;
     switch (typeResolved->kind)
     {
     case TypeInfoKind::Namespace:
     {
-        auto typeInfo = CastTypeInfo<TypeInfoNamespace>(typeResolved, typeResolved->kind);
+        const auto typeInfo = CastTypeInfo<TypeInfoNamespace>(typeResolved, typeResolved->kind);
         scope         = typeInfo->scope;
         break;
     }
     case TypeInfoKind::Enum:
     {
-        auto typeInfo = CastTypeInfo<TypeInfoEnum>(typeResolved, typeResolved->kind);
+        const auto typeInfo = CastTypeInfo<TypeInfoEnum>(typeResolved, typeResolved->kind);
         scope         = typeInfo->scope;
         break;
     }
     case TypeInfoKind::Struct:
     {
-        auto typeInfo = CastTypeInfo<TypeInfoStruct>(typeResolved, typeResolved->kind);
+        const auto typeInfo = CastTypeInfo<TypeInfoStruct>(typeResolved, typeResolved->kind);
         scope         = typeInfo->scope;
         break;
     }
@@ -160,12 +160,12 @@ bool Semantic::resolveUsing(SemanticContext* context)
 
 bool Semantic::resolveScopedStmtBefore(SemanticContext* context)
 {
-    auto node                        = context->node;
+    const auto node                        = context->node;
     node->ownerScope->startStackSize = node->ownerScope->parentScope->startStackSize;
     node->allocateExtension(ExtensionKind::ByteCode);
 
     // Can already been set in some cases... So be sure to not overwrite it.
-    auto afterFct = node->extByteCode()->byteCodeAfterFct;
+    const auto afterFct = node->extByteCode()->byteCodeAfterFct;
     if (afterFct != ByteCodeGen::emitIfAfterIf &&
         afterFct != ByteCodeGen::emitSwitchCaseAfterBlock &&
         afterFct != ByteCodeGen::emitLoopAfterBlock &&
@@ -186,7 +186,7 @@ bool Semantic::resolveScopedStmtAfter(SemanticContext* context)
 
 bool Semantic::resolveSubDeclRef(SemanticContext* context)
 {
-    auto node = CastAst<AstRefSubDecl>(context->node, AstNodeKind::RefSubDecl);
+    const auto node = CastAst<AstRefSubDecl>(context->node, AstNodeKind::RefSubDecl);
 
     ScopedLock lk(node->refSubDecl->mutex);
     if (node->refSubDecl->flags & AST_SPEC_SEMANTIC3)

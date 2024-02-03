@@ -19,7 +19,7 @@ bool ByteCodeOptimizer::optimizePassDeadCode(ByteCodeOptContext* context)
     ADD_TODO(context->bc->out);
     while (!context->vecInst.empty())
     {
-        auto ip = context->vecInst.back();
+        const auto ip = context->vecInst.back();
         context->vecInst.pop_back();
 
         if (ip->op == ByteCodeOp::Jump)
@@ -33,7 +33,7 @@ bool ByteCodeOptimizer::optimizePassDeadCode(ByteCodeOptContext* context)
         }
         else if (ByteCode::isJumpDyn(ip))
         {
-            int32_t* table = (int32_t*) context->module->compilerSegment.address(ip->d.u32);
+            const int32_t* table = (int32_t*) context->module->compilerSegment.address(ip->d.u32);
             for (uint32_t i = 0; i < ip->c.u32; i++)
             {
                 ADD_TODO(ip + table[i] + 1);

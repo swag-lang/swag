@@ -9,18 +9,18 @@
 
 bool SCBE::emitOS(const BuildParameters& buildParameters)
 {
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *perThread[ct][precompileIndex];
-    auto& concat          = pp.concat;
+    const int ct              = buildParameters.compileType;
+    const int precompileIndex = buildParameters.precompileIndex;
+    auto&     pp              = *perThread[ct][precompileIndex];
+    auto&     concat          = pp.concat;
 
     concat.align(16);
     if (g_CommandLine.target.os == SwagTargetOs::Windows)
     {
         // :ChkStk Stack probing
         // See SWAG_LIMIT_PAGE_STACK
-        auto symbolFuncIndex = pp.getOrAddSymbol("__chkstk", CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
-        auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
+        const auto symbolFuncIndex = pp.getOrAddSymbol("__chkstk", CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+        const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
         SWAG_ASSERT(g_CommandLine.target.arch == SwagTargetArch::X86_64);
         cpuFct->startAddress = concat.totalCount();
         if (g_CommandLine.target.arch == SwagTargetArch::X86_64)
@@ -58,13 +58,13 @@ bool SCBE::emitOS(const BuildParameters& buildParameters)
 
 bool SCBE::emitMain(const BuildParameters& buildParameters)
 {
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *perThread[ct][precompileIndex];
-    auto& concat          = pp.concat;
+    const int ct              = buildParameters.compileType;
+    const int precompileIndex = buildParameters.precompileIndex;
+    auto&     pp              = *perThread[ct][precompileIndex];
+    auto&     concat          = pp.concat;
 
     concat.align(16);
-    auto startAddress = concat.totalCount();
+    const auto startAddress = concat.totalCount();
 
     const char* entryPoint = nullptr;
     switch (g_CommandLine.target.os)
@@ -80,18 +80,18 @@ bool SCBE::emitMain(const BuildParameters& buildParameters)
         return false;
     }
 
-    auto symbolFuncIndex = pp.getOrAddSymbol(entryPoint, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
-    auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
+    const auto symbolFuncIndex = pp.getOrAddSymbol(entryPoint, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 
     VectorNative<uint16_t> unwind;
-    auto                   beforeProlog = concat.totalCount();
+    const auto             beforeProlog = concat.totalCount();
     pp.emit_OpN_Immediate(RSP, 40, CPUOp::SUB, CPUBits::B64);
-    auto sizeProlog = concat.totalCount() - beforeProlog;
+    const auto sizeProlog = concat.totalCount() - beforeProlog;
     SCBE::computeUnwind({}, {}, 40, sizeProlog, unwind);
 
     // Set default system allocator function
     SWAG_ASSERT(g_SystemAllocatorTable);
-    auto bcAlloc = (ByteCode*) ByteCode::undoByteCodeLambda(((void**) g_SystemAllocatorTable)[0]);
+    const auto bcAlloc = (ByteCode*) ByteCode::undoByteCodeLambda(((void**) g_SystemAllocatorTable)[0]);
     SWAG_ASSERT(bcAlloc);
     pp.emit_Symbol_RelocationAddr(RAX, pp.symDefaultAllocTable, 0);
     pp.emit_LoadAddress_Indirect(0, RCX, RIP);
@@ -104,7 +104,7 @@ bool SCBE::emitMain(const BuildParameters& buildParameters)
 
     // main context flags
     pp.emit_Symbol_RelocationAddr(RCX, pp.symMC_mainContext_flags, 0);
-    uint64_t contextFlags = getDefaultContextFlags(module);
+    const uint64_t contextFlags = getDefaultContextFlags(module);
     pp.emit_Store64_Immediate(0, contextFlags, RCX);
 
     //__process_infos.contextTlsId = swag_runtime_tlsAlloc();
@@ -141,7 +141,7 @@ bool SCBE::emitMain(const BuildParameters& buildParameters)
     emitInternalCallExt(pp, module, g_LangSpec->name__tlsSetValue, pp.pushParams);
 
     // Setup runtime
-    auto rtFlags = Backend::getRuntimeFlags(module);
+    const auto rtFlags = Backend::getRuntimeFlags(module);
     pp.pushParams.clear();
     pp.pushParams.push_back({CPUPushParamType::Imm64, rtFlags});
     emitInternalCallExt(pp, module, g_LangSpec->name__setupRuntime, pp.pushParams);
@@ -151,7 +151,7 @@ bool SCBE::emitMain(const BuildParameters& buildParameters)
     module->sortDependenciesByInitOrder(moduleDependencies);
     for (size_t i = 0; i < moduleDependencies.size(); i++)
     {
-        auto dep      = moduleDependencies[i];
+        const auto dep      = moduleDependencies[i];
         auto nameDown = dep->name;
         Ast::normalizeIdentifierName(nameDown);
         auto nameLib = nameDown;
@@ -169,7 +169,7 @@ bool SCBE::emitMain(const BuildParameters& buildParameters)
     // Call to global init of all dependencies
     for (size_t i = 0; i < moduleDependencies.size(); i++)
     {
-        auto dep = moduleDependencies[i];
+        const auto dep = moduleDependencies[i];
         SWAG_ASSERT(dep->module);
         if (!dep->module->isSwag)
             continue;
@@ -184,7 +184,7 @@ bool SCBE::emitMain(const BuildParameters& buildParameters)
     // Call to global premain of all dependencies
     for (size_t i = 0; i < moduleDependencies.size(); i++)
     {
-        auto dep = moduleDependencies[i];
+        const auto dep = moduleDependencies[i];
         SWAG_ASSERT(dep->module);
         if (!dep->module->isSwag)
             continue;
@@ -200,9 +200,9 @@ bool SCBE::emitMain(const BuildParameters& buildParameters)
     // Call to test functions
     if (buildParameters.compileType == BackendCompileType::Test)
     {
-        for (auto bc : module->byteCodeTestFunc)
+        for (const auto bc : module->byteCodeTestFunc)
         {
-            auto node = bc->node;
+            const auto node = bc->node;
             if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
                 continue;
 
@@ -217,13 +217,13 @@ bool SCBE::emitMain(const BuildParameters& buildParameters)
     }
 
     // Call to global drop of this module
-    auto thisDrop = module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
+    const auto thisDrop = module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
     pp.emit_Call(thisDrop);
 
     // Call to global drop of all dependencies
     for (int i = (int) moduleDependencies.size() - 1; i >= 0; i--)
     {
-        auto dep = moduleDependencies[i];
+        const auto dep = moduleDependencies[i];
         if (!dep->module->isSwag)
             continue;
         auto nameFct = dep->module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
@@ -236,7 +236,7 @@ bool SCBE::emitMain(const BuildParameters& buildParameters)
     pp.emit_OpN_Immediate(RSP, 40, CPUOp::ADD, CPUBits::B64);
     pp.emit_Ret();
 
-    uint32_t endAddress = concat.totalCount();
+    const uint32_t endAddress = concat.totalCount();
     initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
     return true;
 }
@@ -246,33 +246,33 @@ bool SCBE::emitGetTypeTable(const BuildParameters& buildParameters)
     if (buildParameters.buildCfg->backendKind != BuildCfgBackendKind::DynamicLib)
         return true;
 
-    int         ct              = buildParameters.compileType;
-    int         precompileIndex = buildParameters.precompileIndex;
+    const int   ct              = buildParameters.compileType;
+    const int   precompileIndex = buildParameters.precompileIndex;
     auto&       pp              = *perThread[ct][precompileIndex];
     auto&       concat          = pp.concat;
     const auto& cc              = g_TypeMgr->typeInfoModuleCall->getCallConv();
 
     concat.align(16);
-    auto startAddress = concat.totalCount();
+    const auto startAddress = concat.totalCount();
 
-    auto thisInit        = module->getGlobalPrivFct(g_LangSpec->name_getTypeTable);
-    auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
-    auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
+    const auto thisInit        = module->getGlobalPrivFct(g_LangSpec->name_getTypeTable);
+    const auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
         pp.directives += Fmt("/EXPORT:%s ", thisInit.c_str());
 
     VectorNative<uint16_t> unwind;
-    auto                   beforeProlog = concat.totalCount();
+    const auto             beforeProlog = concat.totalCount();
     pp.emit_OpN_Immediate(RSP, 40, CPUOp::SUB, CPUBits::B64);
-    auto sizeProlog = concat.totalCount() - beforeProlog;
+    const auto sizeProlog = concat.totalCount() - beforeProlog;
     SCBE::computeUnwind({}, {}, 40, sizeProlog, unwind);
 
     pp.emit_OpN_Immediate(RSP, 40, CPUOp::ADD, CPUBits::B64);
     pp.emit_Symbol_RelocationAddr(cc.returnByRegisterInteger, pp.symCSIndex, module->typesSliceOffset);
     pp.emit_Ret();
 
-    uint32_t endAddress = concat.totalCount();
+    const uint32_t endAddress = concat.totalCount();
     initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
 
     return true;
@@ -280,27 +280,27 @@ bool SCBE::emitGetTypeTable(const BuildParameters& buildParameters)
 
 bool SCBE::emitGlobalPreMain(const BuildParameters& buildParameters)
 {
-    int         ct              = buildParameters.compileType;
-    int         precompileIndex = buildParameters.precompileIndex;
+    const int   ct              = buildParameters.compileType;
+    const int   precompileIndex = buildParameters.precompileIndex;
     auto&       pp              = *perThread[ct][precompileIndex];
     auto&       concat          = pp.concat;
     const auto& cc              = g_TypeMgr->typeInfoModuleCall->getCallConv();
 
     concat.align(16);
-    auto startAddress = concat.totalCount();
+    const auto startAddress = concat.totalCount();
 
-    auto thisInit        = module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
-    auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
-    auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
+    const auto thisInit        = module->getGlobalPrivFct(g_LangSpec->name_globalPreMain);
+    const auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
         pp.directives += Fmt("/EXPORT:%s ", thisInit.c_str());
 
     VectorNative<uint16_t> unwind;
-    auto                   beforeProlog = concat.totalCount();
+    const auto             beforeProlog = concat.totalCount();
     pp.emit_Push(RDI);
     pp.emit_OpN_Immediate(RSP, 48, CPUOp::SUB, CPUBits::B64);
-    auto sizeProlog = concat.totalCount() - beforeProlog;
+    const auto sizeProlog = concat.totalCount() - beforeProlog;
     SCBE::computeUnwind({}, {}, 48, sizeProlog, unwind);
 
     // Store first parameter on stack (process infos ptr)
@@ -316,9 +316,9 @@ bool SCBE::emitGlobalPreMain(const BuildParameters& buildParameters)
     emitInternalCallExt(pp, module, g_LangSpec->name_memcpy, pp.pushParams);
 
     // Call to #premain functions
-    for (auto bc : module->byteCodePreMainFunc)
+    for (const auto bc : module->byteCodePreMainFunc)
     {
-        auto node = bc->node;
+        const auto node = bc->node;
         if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
         pp.emit_Call(bc->getCallName());
@@ -328,34 +328,34 @@ bool SCBE::emitGlobalPreMain(const BuildParameters& buildParameters)
     pp.emit_Pop(RDI);
     pp.emit_Ret();
 
-    uint32_t endAddress = concat.totalCount();
+    const uint32_t endAddress = concat.totalCount();
     initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
     return true;
 }
 
 bool SCBE::emitGlobalInit(const BuildParameters& buildParameters)
 {
-    int         ct              = buildParameters.compileType;
-    int         precompileIndex = buildParameters.precompileIndex;
+    const int   ct              = buildParameters.compileType;
+    const int   precompileIndex = buildParameters.precompileIndex;
     auto&       pp              = *perThread[ct][precompileIndex];
     auto&       concat          = pp.concat;
     const auto& cc              = g_TypeMgr->typeInfoModuleCall->getCallConv();
 
     concat.align(16);
-    auto startAddress = concat.totalCount();
+    const auto startAddress = concat.totalCount();
 
-    auto thisInit        = module->getGlobalPrivFct(g_LangSpec->name_globalInit);
-    auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
-    auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
+    const auto thisInit        = module->getGlobalPrivFct(g_LangSpec->name_globalInit);
+    const auto symbolFuncIndex = pp.getOrAddSymbol(thisInit, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
         pp.directives += Fmt("/EXPORT:%s ", thisInit.c_str());
 
     VectorNative<uint16_t> unwind;
-    auto                   beforeProlog = concat.totalCount();
+    const auto             beforeProlog = concat.totalCount();
     pp.emit_Push(RDI);
     pp.emit_OpN_Immediate(RSP, 48, CPUOp::SUB, CPUBits::B64);
-    auto sizeProlog = concat.totalCount() - beforeProlog;
+    const auto sizeProlog = concat.totalCount() - beforeProlog;
     SCBE::computeUnwind({}, {}, 48, sizeProlog, unwind);
 
     // Store first parameter on stack (process infos ptr)
@@ -376,7 +376,7 @@ bool SCBE::emitGlobalInit(const BuildParameters& buildParameters)
 
     // Init type table slice for each dependency (by calling ???_getTypeTable)
     pp.emit_Symbol_RelocationAddr(RCX, pp.symCSIndex, module->modulesSliceOffset + sizeof(SwagModule) + offsetof(SwagModule, types));
-    for (auto& dep : module->moduleDependencies)
+    for (const auto& dep : module->moduleDependencies)
     {
         if (!dep->module->isSwag)
         {
@@ -397,9 +397,9 @@ bool SCBE::emitGlobalInit(const BuildParameters& buildParameters)
     }
 
     // Call to #init functions
-    for (auto bc : module->byteCodeInitFunc)
+    for (const auto bc : module->byteCodeInitFunc)
     {
-        auto node = bc->node;
+        const auto node = bc->node;
         if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
         pp.emit_Call(bc->getCallName());
@@ -409,38 +409,38 @@ bool SCBE::emitGlobalInit(const BuildParameters& buildParameters)
     pp.emit_Pop(RDI);
     pp.emit_Ret();
 
-    uint32_t endAddress = concat.totalCount();
+    const uint32_t endAddress = concat.totalCount();
     initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
     return true;
 }
 
 bool SCBE::emitGlobalDrop(const BuildParameters& buildParameters)
 {
-    int   ct              = buildParameters.compileType;
-    int   precompileIndex = buildParameters.precompileIndex;
-    auto& pp              = *perThread[ct][precompileIndex];
-    auto& concat          = pp.concat;
+    const int ct              = buildParameters.compileType;
+    const int precompileIndex = buildParameters.precompileIndex;
+    auto&     pp              = *perThread[ct][precompileIndex];
+    auto&     concat          = pp.concat;
 
     concat.align(16);
-    auto startAddress = concat.totalCount();
+    const auto startAddress = concat.totalCount();
 
-    auto thisDrop        = module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
-    auto symbolFuncIndex = pp.getOrAddSymbol(thisDrop, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
-    auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
+    const auto thisDrop        = module->getGlobalPrivFct(g_LangSpec->name_globalDrop);
+    const auto symbolFuncIndex = pp.getOrAddSymbol(thisDrop, CPUSymbolKind::Function, concat.totalCount() - pp.textSectionOffset)->index;
+    const auto cpuFct          = pp.registerFunction(nullptr, symbolFuncIndex);
 
     if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
         pp.directives += Fmt("/EXPORT:%s ", thisDrop.c_str());
 
     VectorNative<uint16_t> unwind;
-    auto                   beforeProlog = concat.totalCount();
+    const auto             beforeProlog = concat.totalCount();
     pp.emit_OpN_Immediate(RSP, 40, CPUOp::SUB, CPUBits::B64);
-    auto sizeProlog = concat.totalCount() - beforeProlog;
+    const auto sizeProlog = concat.totalCount() - beforeProlog;
     SCBE::computeUnwind({}, {}, 40, sizeProlog, unwind);
 
     // Call to #drop functions
-    for (auto bc : module->byteCodeDropFunc)
+    for (const auto bc : module->byteCodeDropFunc)
     {
-        auto node = bc->node;
+        const auto node = bc->node;
         if (node && node->attributeFlags & ATTRIBUTE_COMPILER)
             continue;
         pp.emit_Call(bc->getCallName());
@@ -452,7 +452,7 @@ bool SCBE::emitGlobalDrop(const BuildParameters& buildParameters)
     pp.emit_OpN_Immediate(RSP, 40, CPUOp::ADD, CPUBits::B64);
     pp.emit_Ret();
 
-    uint32_t endAddress = concat.totalCount();
+    const uint32_t endAddress = concat.totalCount();
     initFunction(cpuFct, startAddress, endAddress, sizeProlog, unwind);
     return true;
 }

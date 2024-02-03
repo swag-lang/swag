@@ -9,13 +9,13 @@
 
 bool Parser::doLambdaClosureType(AstNode* parent, AstNode** result, bool inTypeVarDecl)
 {
-    auto node         = Ast::newNode<AstTypeLambda>(this, AstNodeKind::TypeLambda, sourceFile, parent);
+    const auto node         = Ast::newNode<AstTypeLambda>(this, AstNodeKind::TypeLambda, sourceFile, parent);
     *result           = node;
     node->semanticFct = Semantic::resolveTypeLambdaClosure;
 
     if (inTypeVarDecl)
     {
-        auto        newScope = Ast::newScope(node, node->token.text, ScopeKind::TypeLambda, currentScope);
+        const auto        newScope = Ast::newScope(node, node->token.text, ScopeKind::TypeLambda, currentScope);
         Scoped      scoped(this, newScope);
         ScopedFlags sf(this, AST_IN_TYPE_VAR_DECLARATION);
         SWAG_CHECK(doLambdaClosureTypePriv(node, result, inTypeVarDecl));
@@ -321,7 +321,7 @@ bool Parser::doLambdaClosureTypePriv(AstTypeLambda* node, AstNode** result, bool
 
 bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, bool isUnion)
 {
-    auto structNode = Ast::newStructDecl(sourceFile, parent, this);
+    const auto structNode = Ast::newStructDecl(sourceFile, parent, this);
     structNode->flags |= AST_INTERNAL | AST_GENERATED;
     structNode->originalParent = parent;
     structNode->allocateExtension(ExtensionKind::Semantic);
@@ -332,7 +332,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
     structNode->allocateExtension(ExtensionKind::Misc);
     structNode->extMisc()->exportNode = structNode;
 
-    auto contentNode    = Ast::newNode<AstNode>(this, AstNodeKind::TupleContent, sourceFile, structNode);
+    const auto contentNode    = Ast::newNode<AstNode>(this, AstNodeKind::TupleContent, sourceFile, structNode);
     structNode->content = contentNode;
     contentNode->allocateExtension(ExtensionKind::Semantic);
     contentNode->extSemantic()->semanticBeforeFct = Semantic::preResolveStructContent;
@@ -361,7 +361,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
     structNode->allocateExtension(ExtensionKind::Misc);
     structNode->extMisc()->alternativeNode = parent;
 
-    auto newScope     = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, rootScope, true);
+    const auto newScope     = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, rootScope, true);
     structNode->scope = newScope;
 
     {
@@ -369,7 +369,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
         Scoped           sc(this, structNode->scope);
         ScopedStruct     ss(this, structNode->scope);
 
-        auto startLoc = token.startLocation;
+        const auto startLoc = token.startLocation;
         SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the [[tuple]] body"));
         while (token.id != TokenId::SymRightCurly && (token.id != TokenId::EndOfFile))
             SWAG_CHECK(doStructBody(contentNode, SyntaxStructType::Struct, &dummyResult));
@@ -377,7 +377,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
     }
 
     // Reference to that struct
-    auto idRef = Ast::newIdentifierRef(sourceFile, structNode->token.text, parent, this);
+    const auto idRef = Ast::newIdentifierRef(sourceFile, structNode->token.text, parent, this);
     *result    = idRef;
 
     idRef->childs.back()->flags |= AST_GENERATED;
@@ -385,7 +385,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
     Ast::addChildBack(newParent, structNode);
     structNode->inheritOwners(newParent);
 
-    auto typeInfo        = makeType<TypeInfoStruct>();
+    const auto typeInfo        = makeType<TypeInfoStruct>();
     typeInfo->declNode   = structNode;
     typeInfo->name       = structNode->token.text;
     typeInfo->structName = structNode->token.text;
@@ -406,7 +406,7 @@ bool Parser::doAnonymousStruct(AstNode* parent, AstNode** result, bool isConst, 
 
 bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
-    bool inTypeVarDecl = exprFlags & EXPR_FLAG_IN_VAR_DECL;
+    const bool inTypeVarDecl = exprFlags & EXPR_FLAG_IN_VAR_DECL;
 
     // This is a @typeof
     if (token.id == TokenId::IntrinsicDeclType)
@@ -462,11 +462,11 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, ui
     // Specific error messages
     if (node->parent && node->parent->kind == AstNodeKind::TupleContent)
     {
-        Diagnostic diag{sourceFile, token, Fmt(Err(Err0401), token.ctext())};
+        const Diagnostic diag{sourceFile, token, Fmt(Err(Err0401), token.ctext())};
         return context->report(diag);
     }
 
-    Diagnostic* note = nullptr;
+    const Diagnostic* note = nullptr;
     if (token.id == TokenId::SymLeftParen)
         note = Diagnostic::note(Nte(Nte0084));
     else if (token.id == TokenId::SymDotDotDot)
@@ -476,15 +476,15 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, AstNode* parent, ui
     else if (token.id == TokenId::IntrinsicTypeOf || token.id == TokenId::IntrinsicKindOf)
         note = Diagnostic::note(Nte(Nte0085));
 
-    Diagnostic diag{sourceFile, token, Fmt(Err(Err0400), token.ctext())};
+    const Diagnostic diag{sourceFile, token, Fmt(Err(Err0400), token.ctext())};
     return context->report(diag, note);
 }
 
 bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** result)
 {
-    bool inTypeVarDecl = exprFlags & EXPR_FLAG_IN_VAR_DECL;
+    const bool inTypeVarDecl = exprFlags & EXPR_FLAG_IN_VAR_DECL;
 
-    auto node = Ast::newTypeExpression(sourceFile, parent, this);
+    const auto node = Ast::newTypeExpression(sourceFile, parent, this);
     *result   = node;
     node->flags |= AST_NO_BYTECODE_CHILDS;
 
@@ -497,7 +497,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
 
         if (token.id == TokenId::SymAmpersandAmpersand)
         {
-            Diagnostic diag{sourceFile, token, Err(Err0247)};
+            const Diagnostic diag{sourceFile, token, Err(Err0247)};
             return context->report(diag);
         }
     }
@@ -526,7 +526,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
     // Array or slice of something
     if (token.id == TokenId::SymLeftSquare)
     {
-        auto leftSquareToken = token;
+        const auto leftSquareToken = token;
 
         SWAG_CHECK(eatToken());
         while (true)
@@ -566,7 +566,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
             {
                 if (inTypeVarDecl)
                     return context->report({sourceFile, rightSquareToken, Err(Err0692)});
-                Diagnostic diag{sourceFile, rightSquareToken, Err(Err0692)};
+                const Diagnostic diag{sourceFile, rightSquareToken, Err(Err0692)};
                 return context->report(diag);
             }
             else
@@ -577,7 +577,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
 
         if (token.id == TokenId::SymComma)
         {
-            Diagnostic diag{sourceFile, token, Fmt(Err(Err0402), token.ctext())};
+            const Diagnostic diag{sourceFile, token, Fmt(Err(Err0402), token.ctext())};
             return context->report(diag);
         }
 
@@ -606,7 +606,7 @@ bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
     // Code
     if (token.id == TokenId::KwdCode)
     {
-        auto node = Ast::newTypeExpression(sourceFile, parent, this);
+        const auto node = Ast::newTypeExpression(sourceFile, parent, this);
         *result   = node;
         node->flags |= AST_NO_BYTECODE_CHILDS;
         node->typeInfo = g_TypeMgr->typeInfoCode;
@@ -618,7 +618,7 @@ bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
     // retval
     if (token.id == TokenId::KwdRetVal)
     {
-        auto node         = Ast::newTypeExpression(sourceFile, parent, this);
+        const auto node         = Ast::newTypeExpression(sourceFile, parent, this);
         *result           = node;
         node->semanticFct = Semantic::resolveRetVal;
         node->flags |= AST_NO_BYTECODE_CHILDS;
@@ -633,7 +633,7 @@ bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
         if (!(token.flags & TOKENPARSE_LAST_EOL) && token.id == TokenId::SymLeftCurly)
         {
             node->identifier = Ast::newIdentifierRef(sourceFile, g_LangSpec->name_retval, node, this);
-            auto id          = CastAst<AstIdentifier>(node->identifier->childs.back(), AstNodeKind::Identifier);
+            const auto id    = CastAst<AstIdentifier>(node->identifier->childs.back(), AstNodeKind::Identifier);
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doFuncCallParameters(id, &id->callParameters, TokenId::SymRightCurly));
             id->flags |= AST_IN_TYPE_VAR_DECLARATION;
@@ -657,7 +657,7 @@ bool Parser::doTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** res
 
 bool Parser::doCast(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstCast>(this, AstNodeKind::Cast, sourceFile, parent);
+    const auto node         = Ast::newNode<AstCast>(this, AstNodeKind::Cast, sourceFile, parent);
     *result           = node;
     node->semanticFct = Semantic::resolveExplicitCast;
     SWAG_CHECK(eatToken());
@@ -687,7 +687,7 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
         node->addSpecFlags(AstCast::SPECFLAG_UNCONST);
     }
 
-    auto startLoc = token.startLocation;
+    const auto startLoc = token.startLocation;
     SWAG_CHECK(eatToken(TokenId::SymLeftParen, "after [[cast]]"));
     SWAG_CHECK(doTypeExpression(node, EXPR_FLAG_NONE, &dummyResult));
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the [[cast]] type expression"));
@@ -698,7 +698,7 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
 
 bool Parser::doAutoCast(AstNode* parent, AstNode** result)
 {
-    auto node         = Ast::newNode<AstCast>(this, AstNodeKind::AutoCast, sourceFile, parent);
+    const auto node         = Ast::newNode<AstCast>(this, AstNodeKind::AutoCast, sourceFile, parent);
     *result           = node;
     node->semanticFct = Semantic::resolveExplicitAutoCast;
 

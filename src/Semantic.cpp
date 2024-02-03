@@ -21,7 +21,7 @@ void Semantic::start(SemanticContext* context, SourceFile* sourceFile, AstNode* 
     // In configuration pass1, we only treat the #dependencies block
     if (context->sourceFile->module->kind == ModuleKind::Config && originalNode->kind == AstNodeKind::File)
     {
-        for (auto c : originalNode->childs)
+        for (const auto c : originalNode->childs)
         {
             if (c->kind != AstNodeKind::CompilerDependencies)
             {
@@ -81,7 +81,7 @@ AstIdentifier* Semantic::createTmpId(SemanticContext* context, AstNode* node, co
     }
 
     context->tmpIdRef->parent = node;
-    auto id                   = CastAst<AstIdentifier>(context->tmpIdRef->childs.back(), AstNodeKind::Identifier);
+    const auto id             = CastAst<AstIdentifier>(context->tmpIdRef->childs.back(), AstNodeKind::Identifier);
     id->sourceFile            = context->sourceFile;
     id->token.text            = node->token.text;
     id->inheritOwners(node);
@@ -108,8 +108,8 @@ bool Semantic::valueEqualsTo(const ComputedValue* value1, const ComputedValue* v
         if (value1->reg.u64 == value2->reg.u64)
             return true;
 
-        auto typeInfo1 = (TypeInfo*) value1->reg.u64;
-        auto typeInfo2 = (TypeInfo*) value2->reg.u64;
+        const auto typeInfo1 = (TypeInfo*) value1->reg.u64;
+        const auto typeInfo2 = (TypeInfo*) value2->reg.u64;
         if (!typeInfo1 || !typeInfo2)
             return false;
 
@@ -130,8 +130,8 @@ bool Semantic::valueEqualsTo(const ComputedValue* value1, const ComputedValue* v
         if (value1->storageOffset == value2->storageOffset)
             return true;
 
-        void* addr1 = value1->getStorageAddr();
-        void* addr2 = value2->getStorageAddr();
+        const void* addr1 = value1->getStorageAddr();
+        const void* addr2 = value2->getStorageAddr();
         return memcmp(addr1, addr2, typeInfo->sizeOf) == 0;
     }
 
@@ -160,7 +160,7 @@ bool Semantic::isCompilerContext(AstNode* node)
 
 DataSegment* Semantic::getConstantSegFromContext(AstNode* node, bool forceCompiler)
 {
-    auto module = node->sourceFile->module;
+    const auto module = node->sourceFile->module;
     if (forceCompiler || isCompilerContext(node))
         return &module->compilerSegment;
     return &module->constantSegment;

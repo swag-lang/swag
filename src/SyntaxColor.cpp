@@ -10,12 +10,12 @@ struct RGBColor
 
 static void rgbToHsl(RGBColor color, float* h, float* s, float* l)
 {
-    float r = color.r / 255.0f;
-    float g = color.g / 255.0f;
-    float b = color.b / 255.0f;
+    const float r = color.r / 255.0f;
+    const float g = color.g / 255.0f;
+    const float b = color.b / 255.0f;
 
-    float maxVal = fmaxf(fmaxf(r, g), b);
-    float minVal = fminf(fminf(r, g), b);
+    const float maxVal = fmaxf(fmaxf(r, g), b);
+    const float minVal = fminf(fminf(r, g), b);
 
     *l = (maxVal + minVal) / 2;
 
@@ -25,7 +25,7 @@ static void rgbToHsl(RGBColor color, float* h, float* s, float* l)
     }
     else
     {
-        float d = maxVal - minVal;
+        const float d = maxVal - minVal;
         *s      = (*l > 0.5) ? d / (2 - maxVal - minVal) : d / (maxVal + minVal);
 
         if (maxVal == r)
@@ -69,8 +69,8 @@ static RGBColor hslToRgb(float h, float s, float l)
     }
     else
     {
-        float q = (l < 0.5) ? l * (1 + s) : l + s - l * s;
-        float p = 2 * l - q;
+        const float q = (l < 0.5) ? l * (1 + s) : l + s - l * s;
+        const float p = 2 * l - q;
 
         r = hueToRgb(p, q, h + 1.0f / 3);
         g = hueToRgb(p, q, h);
@@ -152,7 +152,7 @@ static Utf8 getColor(SyntaxColorMode mode, SyntaxColor color)
     {
         if (color == SyntaxColor::SyntaxDefault)
             color = SyntaxColor::SyntaxCode;
-        auto rgb = getSyntaxColor(mode, color, g_CommandLine.errorSyntaxColorLum);
+        const auto rgb = getSyntaxColor(mode, color, g_CommandLine.errorSyntaxColorLum);
         return Fmt("\x1b[38;2;%d;%d;%dm", (rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF);
     }
     break;

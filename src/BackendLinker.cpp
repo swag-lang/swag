@@ -23,7 +23,7 @@ namespace BackendLinker
                 startLine = false;
             }
 
-            Utf8 str{ptr, (uint32_t) len};
+            const Utf8 str{ptr, (uint32_t) len};
             errMsg += str;
 
             if (strstr(ptr, "\n"))
@@ -34,8 +34,8 @@ namespace BackendLinker
                 g_Log.lock();
                 for (auto& l : subNames)
                 {
-                    auto pze = strstr(l.c_str(), ": error:");
-                    auto pzw = strstr(l.c_str(), ": warning:");
+                    auto       pze = strstr(l.c_str(), ": error:");
+                    const auto pzw = strstr(l.c_str(), ": warning:");
                     if (pze || pzw)
                     {
                         errCount++;
@@ -46,14 +46,14 @@ namespace BackendLinker
                             {
                                 Utf8 l2 = pze + 8;
                                 l2.trim();
-                                auto l1 = Fmt("module [[%s]]: linker error: %s", module->name.c_str(), l2.c_str());
+                                const auto l1 = Fmt("module [[%s]]: linker error: %s", module->name.c_str(), l2.c_str());
                                 l       = l1;
                             }
                             else
                             {
                                 Utf8 l2 = pzw + 10;
                                 l2.trim();
-                                auto l1 = Fmt("module [[%s]]: linker warning: %s", module->name.c_str(), l2.c_str());
+                                const auto l1 = Fmt("module [[%s]]: linker warning: %s", module->name.c_str(), l2.c_str());
                                 l       = l1;
                             }
                         }
@@ -120,7 +120,7 @@ namespace BackendLinker
         // Register #foreignlib
         // As this is defined by the user, we consider the library must exists
         Utf8 one;
-        for (auto fl : buildParameters.foreignLibs)
+        for (const auto fl : buildParameters.foreignLibs)
         {
             one = fl;
             if (Utf8::getExtension(one) != Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::StaticLib))
@@ -197,13 +197,13 @@ namespace BackendLinker
         if (buildParameters.buildCfg->backendKind == BuildCfgBackendKind::DynamicLib)
             arguments.push_back("/DLL");
 
-        auto resultFile = Backend::getOutputFileName(buildParameters);
+        const auto resultFile = Backend::getOutputFileName(buildParameters);
         arguments.push_back("/OUT:" + resultFile.string());
     }
 
     void getArguments(const BuildParameters& buildParameters, Module* module, Vector<Utf8>& arguments, bool forCmdLine)
     {
-        auto objFileType = Backend::getObjType(g_CommandLine.target);
+        const auto objFileType = Backend::getObjType(g_CommandLine.target);
         switch (objFileType)
         {
         case BackendObjType::Coff:
@@ -243,7 +243,7 @@ namespace BackendLinker
         getArguments(buildParameters, module, linkArguments, false);
 
         // Add all object files
-        auto targetPath = Backend::getCacheFolder(buildParameters);
+        const auto targetPath = Backend::getCacheFolder(buildParameters);
         for (auto& file : objectFiles)
         {
             auto path = targetPath;
@@ -260,7 +260,7 @@ namespace BackendLinker
         if (g_CommandLine.verboseLink)
         {
             Utf8 linkStr;
-            for (auto& one : linkArguments)
+            for (const auto& one : linkArguments)
             {
                 linkStr += one;
                 linkStr += " ";
@@ -269,7 +269,7 @@ namespace BackendLinker
             g_Log.messageVerbose(linkStr);
         }
 
-        llvm::ArrayRef<const char*> array_ref_args(linkArgumentsPtr.buffer, linkArgumentsPtr.size());
+        const llvm::ArrayRef<const char*> array_ref_args(linkArgumentsPtr.buffer, linkArgumentsPtr.size());
 
         MyOStream diag_stdout;
         MyOStream diag_stderr;
@@ -284,7 +284,7 @@ namespace BackendLinker
             this_thread::yield();
         }
 
-        auto objFileType = Backend::getObjType(g_CommandLine.target);
+        const auto objFileType = Backend::getObjType(g_CommandLine.target);
         bool result      = true;
         switch (objFileType)
         {

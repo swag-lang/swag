@@ -14,7 +14,7 @@ void ByteCodeGenJob::release()
 
 ByteCodeGenJob* ByteCodeGenJob::newJob(Job* dependentJob, SourceFile* sourceFile, AstNode* root)
 {
-    auto byteCodeJob          = Allocator::alloc<ByteCodeGenJob>();
+    const auto byteCodeJob          = Allocator::alloc<ByteCodeGenJob>();
     byteCodeJob->sourceFile   = sourceFile;
     byteCodeJob->module       = sourceFile->module;
     byteCodeJob->dependentJob = dependentJob;
@@ -38,7 +38,7 @@ JobResult ByteCodeGenJob::waitForDependenciesGenerated()
     {
         for (size_t i = 0; i < context.dependentNodesTmp.size(); i++)
         {
-            auto node = context.dependentNodesTmp[i];
+            const auto node = context.dependentNodesTmp[i];
             SWAG_ASSERT(node->hasExtByteCode() && node->extByteCode()->bc);
 
             // Wait for the node if not generated
@@ -68,7 +68,7 @@ JobResult ByteCodeGenJob::waitForDependenciesGenerated()
         save = std::move(context.dependentNodesTmp);
         while (save.size())
         {
-            auto node = save.get_pop_back();
+            const auto node = save.get_pop_back();
             if (node == originalNode)
                 continue;
 
@@ -147,7 +147,7 @@ JobResult ByteCodeGenJob::execute()
             if (sourceFile->numErrors)
                 return leaveJob(originalNode);
 
-            auto node      = nodes.back();
+            const auto node      = nodes.back();
             context.node   = node;
             context.result = ContextResult::Done;
 
@@ -245,7 +245,7 @@ JobResult ByteCodeGenJob::execute()
     // for the next pass
     if (pass == Pass::WaitForDependenciesGenerated)
     {
-        auto res = waitForDependenciesGenerated();
+        const auto res = waitForDependenciesGenerated();
         if (res != JobResult::Continue)
             return res;
         pass = Pass::ComputeDependenciesResolved;

@@ -12,7 +12,7 @@ bool ByteCodeGen::emitInitStackTrace(ByteCodeGenContext* context)
     if (context->sourceFile->module->buildCfg.errorStackTrace)
     {
         PushICFlags ic(context, BCI_TRYCATCH);
-        auto        node = context->node;
+        const auto  node = context->node;
         SWAG_ASSERT(node->ownerFct && node->ownerFct->registerGetContext != UINT32_MAX);
         EMIT_INST1(context, ByteCodeOp::InternalInitStackTrace, node->ownerFct->registerGetContext);
     }
@@ -22,7 +22,7 @@ bool ByteCodeGen::emitInitStackTrace(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNode)
 {
-    auto node = CastAst<AstTryCatchAssume>(fromNode, AstNodeKind::Try, AstNodeKind::TryCatch, AstNodeKind::Throw);
+    const auto node = CastAst<AstTryCatchAssume>(fromNode, AstNodeKind::Try, AstNodeKind::TryCatch, AstNodeKind::Throw);
 
     // Push current error context in case the leave scope triggers some errors too
     if (!(context->node->semFlags & SEMFLAG_STACK_TRACE))
@@ -45,7 +45,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
 
         if (context->sourceFile->module->buildCfg.errorStackTrace)
         {
-            auto         r0 = reserveRegisterRC(context);
+            const auto         r0 = reserveRegisterRC(context);
             uint32_t     storageOffset;
             DataSegment* storageSegment;
             computeSourceLocation(context, context->node, &storageOffset, &storageSegment);
@@ -94,7 +94,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
         }
         else if (returnType->isArray())
         {
-            auto typeArr = CastTypeInfo<TypeInfoArray>(returnType, TypeInfoKind::Array);
+            const auto typeArr = CastTypeInfo<TypeInfoArray>(returnType, TypeInfoKind::Array);
             if (!typeArr->finalType->isStruct())
             {
                 if (node->ownerInline)
@@ -103,7 +103,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
                 }
                 else
                 {
-                    auto r0 = reserveRegisterRC(context);
+                    const auto r0 = reserveRegisterRC(context);
                     EMIT_INST1(context, ByteCodeOp::CopyRRtoRA, r0);
                     EMIT_INST1(context, ByteCodeOp::SetZeroAtPointerX, r0)->b.u64 = typeArr->sizeOf;
                     freeRegisterRC(context, r0);
@@ -137,7 +137,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
             }
             else
             {
-                auto r0 = reserveRegisterRC(context);
+                const auto r0 = reserveRegisterRC(context);
                 EMIT_INST1(context, ByteCodeOp::ClearRA, r0);
                 EMIT_INST1(context, ByteCodeOp::CopyRAtoRR, r0);
                 freeRegisterRC(context, r0);
@@ -152,7 +152,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
             }
             else
             {
-                auto r0 = reserveRegisterRC(context);
+                const auto r0 = reserveRegisterRC(context);
                 EMIT_INST1(context, ByteCodeOp::ClearRA, r0);
                 EMIT_INST2(context, ByteCodeOp::CopyRARBtoRR2, r0, r0);
                 freeRegisterRC(context, r0);
@@ -185,9 +185,9 @@ bool ByteCodeGen::checkEscapedThrow(ByteCodeGenContext* context)
     if (!(node->flags & AST_IN_DEFER))
         return true;
 
-    auto parent = node->findParent(AstNodeKind::Defer);
+    const auto parent = node->findParent(AstNodeKind::Defer);
     SWAG_ASSERT(parent);
-    auto defer = CastAst<AstDefer>(parent, AstNodeKind::Defer);
+    const auto defer = CastAst<AstDefer>(parent, AstNodeKind::Defer);
     if (defer->deferKind == DeferKind::NoError)
         return true;
 
@@ -205,7 +205,7 @@ bool ByteCodeGen::checkEscapedThrow(ByteCodeGenContext* context)
         }
     }
 
-    Diagnostic diag{node, Err(Err0058)};
+    const Diagnostic diag{node, Err(Err0058)};
     return context->report(diag, Diagnostic::hereIs(defer));
 }
 
@@ -214,8 +214,8 @@ bool ByteCodeGen::emitThrow(ByteCodeGenContext* context)
     SWAG_CHECK(checkEscapedThrow(context));
 
     PushICFlags ic(context, BCI_TRYCATCH);
-    auto        node = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Throw);
-    auto        expr = node->childs.front();
+    const auto  node = CastAst<AstTryCatchAssume>(context->node, AstNodeKind::Throw);
+    const auto  expr = node->childs.front();
 
     if (!(node->semFlags & SEMFLAG_CAST1))
     {
@@ -233,7 +233,7 @@ bool ByteCodeGen::emitThrow(ByteCodeGenContext* context)
     }
 
     // In a top level function, 'throw' is like a failed 'assume'
-    auto parentFct = (node->semFlags & SEMFLAG_EMBEDDED_RETURN) ? node->ownerInline->func : node->ownerFct;
+    const auto parentFct = (node->semFlags & SEMFLAG_EMBEDDED_RETURN) ? node->ownerInline->func : node->ownerFct;
     if (parentFct->attributeFlags & ATTRIBUTE_SHARP_FUNC)
     {
         if (context->sourceFile->module->buildCfg.errorStackTrace)
@@ -246,7 +246,7 @@ bool ByteCodeGen::emitThrow(ByteCodeGenContext* context)
         DataSegment* storageSegment;
         computeSourceLocation(context, node, &storageOffset, &storageSegment);
 
-        auto r1 = reserveRegisterRC(context);
+        const auto r1 = reserveRegisterRC(context);
         emitMakeSegPointer(context, storageSegment, storageOffset, r1);
         EMIT_INST1(context, ByteCodeOp::InternalFailedAssume, r1);
         freeRegisterRC(context, expr->resultRegisterRC);
@@ -267,11 +267,11 @@ bool ByteCodeGen::emitTry(ByteCodeGenContext* context)
     SWAG_CHECK(checkEscapedThrow(context));
 
     PushICFlags ic(context, BCI_TRYCATCH);
-    auto        node    = context->node;
-    auto        tryNode = CastAst<AstTryCatchAssume>(node->extOwner()->ownerTryCatchAssume, AstNodeKind::Try);
+    const auto  node    = context->node;
+    const auto  tryNode = CastAst<AstTryCatchAssume>(node->extOwner()->ownerTryCatchAssume, AstNodeKind::Try);
 
     // try in a top level function is equivalent to assume
-    AstFuncDecl* parentFct = nullptr;
+    const AstFuncDecl* parentFct = nullptr;
     if (node->ownerInline && (tryNode->semFlags & SEMFLAG_EMBEDDED_RETURN))
         parentFct = node->ownerInline->func;
     else
@@ -282,7 +282,7 @@ bool ByteCodeGen::emitTry(ByteCodeGenContext* context)
     if (!(node->semFlags & SEMFLAG_TRY_1))
     {
         SWAG_ASSERT(node->ownerFct->registerGetContext != UINT32_MAX);
-        auto r0 = reserveRegisterRC(context);
+        const auto r0 = reserveRegisterRC(context);
         EMIT_INST2(context, ByteCodeOp::InternalHasErr, r0, node->ownerFct->registerGetContext);
         tryNode->seekInsideJump = context->bc->numInstructions;
         EMIT_INST1(context, ByteCodeOp::JumpIfZero32, r0);
@@ -300,13 +300,13 @@ bool ByteCodeGen::emitTry(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitTryCatch(ByteCodeGenContext* context)
 {
-    auto node    = context->node;
-    auto tryNode = CastAst<AstTryCatchAssume>(node->extOwner()->ownerTryCatchAssume, AstNodeKind::TryCatch);
+    const auto node    = context->node;
+    const auto tryNode = CastAst<AstTryCatchAssume>(node->extOwner()->ownerTryCatchAssume, AstNodeKind::TryCatch);
 
     if (!(node->semFlags & SEMFLAG_TRY_1))
     {
         SWAG_ASSERT(node->ownerFct->registerGetContext != UINT32_MAX);
-        auto r0 = reserveRegisterRC(context);
+        const auto r0 = reserveRegisterRC(context);
         EMIT_INST2(context, ByteCodeOp::InternalHasErr, r0, node->ownerFct->registerGetContext);
         tryNode->seekInsideJump = context->bc->numInstructions;
         EMIT_INST1(context, ByteCodeOp::JumpIfZero32, r0);
@@ -336,11 +336,11 @@ bool ByteCodeGen::emitAssume(ByteCodeGenContext* context)
 
     PushICFlags ic(context, BCI_TRYCATCH);
 
-    auto node       = context->node;
-    auto assumeNode = CastAst<AstTryCatchAssume>(node->extOwner()->ownerTryCatchAssume, AstNodeKind::Try, AstNodeKind::Assume);
+    const auto node       = context->node;
+    const auto assumeNode = CastAst<AstTryCatchAssume>(node->extOwner()->ownerTryCatchAssume, AstNodeKind::Try, AstNodeKind::Assume);
 
     SWAG_ASSERT(node->ownerFct->registerGetContext != UINT32_MAX);
-    auto rt = reserveRegisterRC(context);
+    const auto rt = reserveRegisterRC(context);
     EMIT_INST2(context, ByteCodeOp::InternalHasErr, rt, node->ownerFct->registerGetContext);
     assumeNode->seekInsideJump = context->bc->numInstructions;
     EMIT_INST1(context, ByteCodeOp::JumpIfZero32, rt);
@@ -350,7 +350,7 @@ bool ByteCodeGen::emitAssume(ByteCodeGenContext* context)
     DataSegment* storageSegment;
     computeSourceLocation(context, context->node, &storageOffset, &storageSegment);
 
-    auto r1 = reserveRegisterRC(context);
+    const auto r1 = reserveRegisterRC(context);
     emitMakeSegPointer(context, storageSegment, storageOffset, r1);
     EMIT_INST1(context, ByteCodeOp::InternalFailedAssume, r1);
     freeRegisterRC(context, r1);
