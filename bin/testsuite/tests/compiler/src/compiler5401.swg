@@ -5,6 +5,7 @@ var g: s32 = 6
 func toto(a: s32...)
 {
     @assert(a[0] == 6)
+    @assert(a[1] == 6)
 }
 
 func titi()->const &s32
@@ -17,5 +18,6 @@ func titi()->const &s32
 //#[Swag.PrintBc]
 #test
 {
-    toto(titi())
+
+    toto(titi(), titi())
 }
