@@ -388,7 +388,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
     // Slicing of a struct with a special function
     else if (typeVar->isStruct())
     {
-        // Flatten all operator parameters : self, then all indices
+        // Flatten all operator parameters : self, then all indexes
         node->structFlatParams.clear();
         node->structFlatParams.push_back(node->lowerBound);
         node->structFlatParams.push_back(node->upperBound);
@@ -712,6 +712,8 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
     }
 
     case TypeInfoKind::Struct:
+        arrayNode->access->typeInfo = getConcreteTypeUnRef(arrayNode->access, CONCRETE_FUNC | CONCRETE_ALIAS);
+
         if (arrayType->isTuple())
         {
             if (arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DREF)
@@ -741,7 +743,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
         // Only the top level ArrayPointerIndex node will deal with the call
         if (arrayNode->parent->kind != AstNodeKind::ArrayPointerIndex)
         {
-            // Flatten all indices. self and value will be set before the call later
+            // Flatten all indexes. self and value will be set before the call later
             // Can be already done, so do not overwrite
             // :StructFlatParamsDone
             if (arrayNode->structFlatParams.empty())

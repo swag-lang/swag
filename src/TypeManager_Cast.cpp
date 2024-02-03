@@ -1748,6 +1748,11 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
         }
     }
 
+    if (fromType->isPointerRef())
+    {
+        fromType = concretePtrRef(fromType);
+    }
+
     return castToNative(context, toType, fromType, fromNode, castFlags);
 }
 
