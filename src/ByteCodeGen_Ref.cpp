@@ -183,7 +183,7 @@ bool ByteCodeGen::emitStructDeRef(ByteCodeGenContext* context, TypeInfo* typeInf
     if (typeInfo->isFuncAttr())
     {
         truncRegisterRC(context, node->resultRegisterRC, 1);
-        const auto inst       = EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+        const auto inst = EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         inst->d.pointer = (uint8_t*) node->resolvedSymbolOverload;
         return true;
     }
@@ -191,7 +191,7 @@ bool ByteCodeGen::emitStructDeRef(ByteCodeGenContext* context, TypeInfo* typeInf
     if (typeInfo->isPointer())
     {
         truncRegisterRC(context, node->resultRegisterRC, 1);
-        const auto inst       = EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+        const auto inst = EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
         inst->d.pointer = (uint8_t*) node->resolvedSymbolOverload;
         return true;
     }
@@ -327,8 +327,10 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
                 return true;
             }
 
-            if (node->semFlags & SEMFLAG_FROM_PTR_REF)
+            if ((node->semFlags & SEMFLAG_FROM_PTR_REF) && !(node->semFlags & SEMFLAG_FROM_REF))
+            {
                 EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+            }
         }
     }
 
@@ -470,7 +472,7 @@ bool ByteCodeGen::emitMakeLambda(ByteCodeGenContext* context)
     freeRegisterRC(context, front);
     node->resultRegisterRC = reserveRegisterRC(context);
 
-    const auto inst       = EMIT_INST1(context, ByteCodeOp::MakeLambda, node->resultRegisterRC);
+    const auto inst = EMIT_INST1(context, ByteCodeOp::MakeLambda, node->resultRegisterRC);
     inst->b.pointer = (uint8_t*) funcNode;
     inst->c.pointer = nullptr;
     if (funcNode->hasExtByteCode() && funcNode->extByteCode()->bc)
@@ -490,6 +492,7 @@ bool ByteCodeGen::emitMakeLambda(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitMakePointer(ByteCodeGenContext* context)
 {
     const auto node        = context->node;
@@ -571,7 +574,7 @@ bool ByteCodeGen::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
         return Report::internalError(context->node, "emitMakeArrayPointerSlicing, type not supported");
     }
 
-    uint64_t sizeOf = 1;
+    uint64_t sizeOf;
     if (typeVar->isArray())
         sizeOf = CastTypeInfo<TypeInfoArray>(typeVar, TypeInfoKind::Array)->finalType->sizeOf;
     else if (typeVar->isString())

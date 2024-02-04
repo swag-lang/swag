@@ -74,19 +74,17 @@ impl Array
     }
 
     #[Inline, Overload]
-    mtd const opIndex(index: u64)->&T
-        #validif Reflection.isStruct(T)
+    mtd const opIndex(index: u64)->const &T
     {
         Debug.safetyBoundCheck(index < count, "index out of range")
         return buffer + index
     }
 
     #[Inline, Overload]
-    mtd const opIndex(index: u64)->T
-        #validif !Reflection.isStruct(T)
+    mtd opIndex(index: u64)->&T
     {
         Debug.safetyBoundCheck(index < count, "index out of range")
-        return buffer[index]
+        return buffer + index
     }
 
     #[Inline]

@@ -1996,7 +1996,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context, AstNode* allParams, AstF
         inst->b.u32              = (uint32_t) offset * sizeof(Register);
         context->bc->maxSPVaargs = max(context->bc->maxSPVaargs, maxCallParams + 2);
 
-        // If this is a closure, the first parameter is optionnal, depending on node->additionalRegisterRC[1] content
+        // If this is a closure, the first parameter is optional, depending on node->additionalRegisterRC[1] content
         // So we remove the first parameter by default, and will add it below is necessary
         if (node->typeInfo && node->typeInfo->isClosure())
             inst->b.u32 -= sizeof(Register);
@@ -2036,7 +2036,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context, AstNode* allParams, AstF
         inst->b.u32              = (uint32_t) offset * sizeof(Register);
         context->bc->maxSPVaargs = max(context->bc->maxSPVaargs, maxCallParams + 2);
 
-        // If this is a closure, the first parameter is optionnal, depending on node->additionalRegisterRC[1] content
+        // If this is a closure, the first parameter is optional, depending on node->additionalRegisterRC[1] content
         // So we remove the first parameter by default, and will add it below is necessary
         if (node->typeInfo && node->typeInfo->isClosure())
             inst->b.u32 -= sizeof(Register);
@@ -2130,7 +2130,6 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context, AstNode* allParams, AstF
             else
             {
                 SWAG_ASSERT(numRegs == 2);
-                SWAG_ASSERT(!(node->semFlags & SEMFLAG_FROM_REF));
                 EMIT_INST2(context, ByteCodeOp::CopyRT2toRARB, node->resultRegisterRC[0], node->resultRegisterRC[1]);
             }
         }
@@ -2161,7 +2160,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context, AstNode* allParams, AstF
         EMIT_INST0(context, ByteCodeOp::PopRR);
     }
 
-    // This is usefull when function call is inside an expression like func().something
+    // This is useful when function call is inside an expression like func().something
     // The emitIdentifier will have to know the register where the result of func() is stored
     switch (node->parent->kind)
     {

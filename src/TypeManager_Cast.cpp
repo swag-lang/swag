@@ -1778,7 +1778,7 @@ bool TypeManager::castToNative(SemanticContext* context, TypeInfo* toType, TypeI
         context->castFlagsResult |= CASTFLAG_RESULT_COERCE;
 
     // If it matches, then it matches with a conversion
-    // Usefull to discriminate generics
+    // useful to discriminate generics
     if (fromType->isUntypedInteger() || fromType->isUntypedFloat())
         context->castFlagsResult |= CASTFLAG_RESULT_UNTYPED_CONVERT;
 
