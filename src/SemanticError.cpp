@@ -72,7 +72,7 @@ bool SemanticError::notAllowedError(ErrorContext* context, AstNode* node, TypeIn
 
 bool SemanticError::duplicatedSymbolError(ErrorContext* context,
                                           SourceFile*   sourceFile,
-                                          Token&        token,
+                                          const Token&  token,
                                           SymbolKind    thisKind,
                                           const Utf8&   thisName,
                                           SymbolKind    otherKind,

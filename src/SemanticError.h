@@ -37,7 +37,7 @@ namespace SemanticError
     void findClosestMatches(const Utf8& searchName, const VectorNative<AlternativeScope>& scopeHierarchy, Vector<Utf8>& best, IdentifierSearchFor searchFor);
     Utf8 findClosestMatchesMsg(const Utf8& searchName, const VectorNative<AlternativeScope>& scopeHierarchy, IdentifierSearchFor searchFor);
 
-    bool warnUnusedFunction(Module* moduleToGen, ByteCode* one);
+    bool warnUnusedFunction(const Module* moduleToGen, const ByteCode* one);
     bool warnUnusedVariables(SemanticContext* context, Scope* scope);
     bool warnUnreachableCode(SemanticContext* context);
     bool warnDeprecated(SemanticContext* context, AstNode* identifier);
@@ -47,15 +47,15 @@ namespace SemanticError
     bool cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node);
     bool ambiguousGenericError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& overloads, VectorNative<OneMatch*>& genericMatches);
     bool ambiguousOverloadError(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& overloads, VectorNative<OneMatch*>& matches, uint32_t flags);
-    bool ambiguousSymbolError(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol, VectorNative<OneSymbolMatch>& dependentSymbols);
+    bool ambiguousSymbolError(SemanticContext* context, AstIdentifier* identifier, const SymbolName* symbol, VectorNative<OneSymbolMatch>& dependentSymbols);
 
-    void unknownIdentifierError(SemanticContext* context, AstIdentifierRef* identifierRef, AstIdentifier* node);
+    void unknownIdentifierError(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* node);
 
     void commonErrorNotes(SemanticContext* context, const VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* diag, Vector<const Diagnostic*>& notes);
     bool notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg = nullptr, AstNode* hintType = nullptr);
     bool duplicatedSymbolError(ErrorContext* context,
                                SourceFile*   sourceFile,
-                               Token&        token,
+                               const Token&  token,
                                SymbolKind    thisKind,
                                const Utf8&   thisName,
                                SymbolKind    otherKind,

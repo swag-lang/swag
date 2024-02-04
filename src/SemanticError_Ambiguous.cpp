@@ -55,7 +55,7 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
     for (const auto match : matches)
     {
         const auto  overload = match->symbolOverload;
-        Diagnostic* note     = nullptr;
+        Diagnostic* note;
 
         if (overload->typeInfo->isFuncAttr() && overload->typeInfo->flags & TYPEINFO_FROM_GENERIC)
         {
@@ -86,7 +86,7 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
     return context->report(diag, notes);
 }
 
-bool SemanticError::ambiguousSymbolError(SemanticContext* context, AstIdentifier* identifier, SymbolName* symbol, VectorNative<OneSymbolMatch>& dependentSymbols)
+bool SemanticError::ambiguousSymbolError(SemanticContext* context, AstIdentifier* identifier, const SymbolName* symbol, VectorNative<OneSymbolMatch>& dependentSymbols)
 {
     const Diagnostic diag{identifier, Fmt(Err(Err0017), Naming::kindName(symbol->kind).c_str(), identifier->token.ctext())};
 

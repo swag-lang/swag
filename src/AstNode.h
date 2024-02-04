@@ -87,16 +87,16 @@ struct CloneContext
 
 struct AlternativeScope
 {
-    Scope*   scope;
-    uint32_t flags;
+    Scope*   scope = nullptr;
+    uint32_t flags = 0;
 };
 
 struct AlternativeScopeVar
 {
-    AstNode* node;
-    AstNode* leafNode;
-    Scope*   scope;
-    uint32_t flags;
+    AstNode* node     = nullptr;
+    AstNode* leafNode = nullptr;
+    Scope*   scope    = nullptr;
+    uint32_t flags    = 0;
 };
 
 enum class IdentifierScopeUpMode : uint8_t

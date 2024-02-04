@@ -27,6 +27,8 @@ Utf8 SemanticError::findClosestMatchesMsg(const Utf8& searchName, const Vector<U
     case 3:
         appendMsg = Fmt("do you mean [[%s]], [[%s]] or [[%s]]?", best[0].c_str(), best[1].c_str(), best[2].c_str());
         break;
+    default:
+        break;
     }
 
     return appendMsg;

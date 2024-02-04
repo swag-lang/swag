@@ -14,9 +14,9 @@ bool SemanticError::warnDeprecated(SemanticContext* context, AstNode* identifier
     const auto node = identifier->resolvedSymbolOverload->node;
     if (!(node->attributeFlags & ATTRIBUTE_DEPRECATED))
         return true;
-    const auto symbol = identifier->resolvedSymbolOverload->symbol;
 
-    const ComputedValue* v = nullptr;
+    const auto           symbol = identifier->resolvedSymbolOverload->symbol;
+    const ComputedValue* v      = nullptr;
     switch (node->kind)
     {
     case AstNodeKind::FuncDecl:
@@ -69,7 +69,7 @@ bool SemanticError::warnDeprecated(SemanticContext* context, AstNode* identifier
     }
 }
 
-bool SemanticError::warnUnusedFunction(Module* moduleToGen, ByteCode* one)
+bool SemanticError::warnUnusedFunction(const Module* moduleToGen, const ByteCode* one)
 {
     if (moduleToGen->kind == ModuleKind::Test)
         return true;

@@ -7,224 +7,226 @@
 #include "SemanticError.h"
 #include "SyntaxColor.h"
 
-static bool cannotMatchIdentifier(SemanticContext*            context,
-                                  MatchResult                 result,
-                                  int                         paramIdx,
-                                  VectorNative<OneTryMatch*>& tryMatches,
-                                  AstNode*                    node,
-                                  Vector<const Diagnostic*>&  notes,
-                                  int&                        overloadIndex)
+namespace
 {
-    if (tryMatches.empty())
-        return false;
-
-    // Filter matches depending on argument
-    bool                       hasCorrectResult = false;
-    VectorNative<OneTryMatch*> tryResult;
-    for (size_t i = 0; i < tryMatches.size(); i++)
+    bool cannotMatchIdentifier(SemanticContext*            context,
+                               const MatchResult           result,
+                               int                         paramIdx,
+                               VectorNative<OneTryMatch*>& tryMatches,
+                               AstNode*                    node,
+                               Vector<const Diagnostic*>&  notes,
+                               int&                        overloadIndex)
     {
-        auto one = tryMatches[i];
-        if (one->symMatchContext.result == result)
+        if (tryMatches.empty())
+            return false;
+
+        // Filter matches depending on argument
+        bool                       hasCorrectResult = false;
+        VectorNative<OneTryMatch*> tryResult;
+        for (size_t i = 0; i < tryMatches.size(); i++)
         {
-            hasCorrectResult = true;
-            bool take        = true;
-            if (result == MatchResult::BadSignature || result == MatchResult::BadGenericSignature)
-                take = one->symMatchContext.badSignatureInfos.badSignatureParameterIdx == paramIdx;
-            if (take)
+            auto one = tryMatches[i];
+            if (one->symMatchContext.result == result)
             {
-                tryResult.push_back(one);
-                tryMatches.erase(i);
-                i--;
+                hasCorrectResult = true;
+                bool take        = true;
+                if (result == MatchResult::BadSignature || result == MatchResult::BadGenericSignature)
+                    take = one->symMatchContext.badSignatureInfos.badSignatureParameterIdx == paramIdx;
+                if (take)
+                {
+                    tryResult.push_back(one);
+                    tryMatches.erase(i);
+                    i--;
+                }
             }
         }
-    }
 
-    if (tryResult.empty())
-        return hasCorrectResult;
+        if (tryResult.empty())
+            return hasCorrectResult;
 
-    static constexpr int MAX_OVERLOADS = 5;
-    Diagnostic*          note          = nullptr;
+        static constexpr int MAX_OVERLOADS = 5;
+        Diagnostic*          note          = nullptr;
 
-    switch (result)
-    {
-    case MatchResult::ValidIfFailed:
-        note = Diagnostic::note(node, node->token, "all [[#validif]] have failed");
-        break;
-    case MatchResult::TooManyParameters:
-        note = Diagnostic::note(node, node->token, "too many arguments");
-        break;
-    case MatchResult::TooManyGenericParameters:
-        note = Diagnostic::note(node, node->token, "too many generic arguments");
-        break;
-    case MatchResult::NotEnoughParameters:
-        note = Diagnostic::note(node, node->token, "not enough arguments");
-        break;
-    case MatchResult::NotEnoughGenericParameters:
-        note = Diagnostic::note(node, node->token, "not enough generic arguments");
-        break;
-    case MatchResult::BadSignature:
-        if (tryResult[0]->ufcs && paramIdx == 0)
-            note = Diagnostic::note(node, node->token, "the UFCS argument does not match");
-        else
-            note = Diagnostic::note(node, node->token, Fmt("the %s does not match", Naming::niceArgumentRank(paramIdx + 1).c_str()));
-        break;
-    case MatchResult::BadGenericSignature:
-        note = Diagnostic::note(node, node->token, Fmt("the generic %s does not match", Naming::niceArgumentRank(paramIdx + 1).c_str()));
-        break;
-    default:
-        SWAG_ASSERT(false);
-        break;
-    }
-
-    Concat                   concat;
-    AstOutput::OutputContext outCxt;
-    concat.init(10 * 1024);
-
-    const auto maxOverloads = min(tryResult.size(), MAX_OVERLOADS);
-
-    // Additional error message per overload
-    Vector<Utf8> addMsg;
-    for (size_t i = 0; i < maxOverloads; i++)
-    {
-        Vector<const Diagnostic*> errs0, errs1;
-        Vector<Utf8>              parts;
-
-        SemanticError::getDiagnosticForMatch(context, *tryResult[i], errs0, errs1);
-        Diagnostic::tokenizeError(errs0[0]->textMsg, parts);
-        SWAG_ASSERT(parts.size() > 1);
-        addMsg.push_back(parts[1]);
-    }
-
-    // Determine if all "per function" errors are the same
-    bool allAddMsgAreEquals = true;
-    for (size_t i = 1; i < maxOverloads; i++)
-    {
-        if (addMsg[i] != addMsg[0])
-            allAddMsgAreEquals = false;
-    }
-
-    // Replace the generic error message with the most specific one, if all specifics are equals
-    if (result == MatchResult::BadSignature || result == MatchResult::BadGenericSignature)
-    {
-        if (allAddMsgAreEquals)
-            note->textMsg = addMsg[0];
-    }
-
-    for (size_t i = 0; i < maxOverloads; i++)
-    {
-        // Output the function signature
-        concat.clear();
-        if (tryResult[i]->overload->node->kind == AstNodeKind::FuncDecl)
+        switch (result)
         {
-            const auto funcNode = CastAst<AstFuncDecl>(tryResult[i]->overload->node, AstNodeKind::FuncDecl);
-            AstOutput::outputFuncSignature(outCxt, concat, funcNode, funcNode->genericParameters, funcNode->parameters, nullptr);
-        }
-        else if (tryResult[i]->overload->node->kind == AstNodeKind::VarDecl)
-        {
-            const auto varNode = CastAst<AstVarDecl>(tryResult[i]->overload->node, AstNodeKind::VarDecl);
-            const auto lambda  = CastAst<AstTypeLambda>(varNode->typeInfo->declNode, AstNodeKind::TypeLambda);
-            AstOutput::outputFuncSignature(outCxt, concat, varNode, nullptr, lambda->parameters, nullptr);
-        }
-        else
-        {
+        case MatchResult::ValidIfFailed:
+            note = Diagnostic::note(node, node->token, "all [[#validif]] have failed");
+            break;
+        case MatchResult::TooManyParameters:
+            note = Diagnostic::note(node, node->token, "too many arguments");
+            break;
+        case MatchResult::TooManyGenericParameters:
+            note = Diagnostic::note(node, node->token, "too many generic arguments");
+            break;
+        case MatchResult::NotEnoughParameters:
+            note = Diagnostic::note(node, node->token, "not enough arguments");
+            break;
+        case MatchResult::NotEnoughGenericParameters:
+            note = Diagnostic::note(node, node->token, "not enough generic arguments");
+            break;
+        case MatchResult::BadSignature:
+            if (tryResult[0]->ufcs && paramIdx == 0)
+                note = Diagnostic::note(node, node->token, "the UFCS argument does not match");
+            else
+                note = Diagnostic::note(node, node->token, Fmt("the %s does not match", Naming::niceArgumentRank(paramIdx + 1).c_str()));
+            break;
+        case MatchResult::BadGenericSignature:
+            note = Diagnostic::note(node, node->token, Fmt("the generic %s does not match", Naming::niceArgumentRank(paramIdx + 1).c_str()));
+            break;
+        default:
             SWAG_ASSERT(false);
+            break;
         }
 
-        Utf8 n = Utf8{(const char*) concat.firstBucket->datas, concat.bucketCount(concat.firstBucket)};
-        if (n.back() == '\n')
-            n.count--;
-        if (n.back() == ';')
-            n.count--;
+        Concat                   concat;
+        AstOutput::OutputContext outCxt;
+        concat.init(10 * 1024);
 
-        SyntaxColorContext cxt;
-        n = syntaxColor(n, cxt);
+        const auto maxOverloads = min(tryResult.size(), MAX_OVERLOADS);
 
-        note->preRemarks.push_back(Fmt("overload %d: %s", overloadIndex++, n.c_str()));
+        // Additional error message per overload
+        Vector<Utf8> addMsg;
+        for (size_t i = 0; i < maxOverloads; i++)
+        {
+            Vector<const Diagnostic*> errs0, errs1;
+            Vector<Utf8>              parts;
 
-        // Additional (more precise) information in case of bad signature
+            SemanticError::getDiagnosticForMatch(context, *tryResult[i], errs0, errs1);
+            Diagnostic::tokenizeError(errs0[0]->textMsg, parts);
+            SWAG_ASSERT(parts.size() > 1);
+            addMsg.push_back(parts[1]);
+        }
+
+        // Determine if all "per function" errors are the same
+        bool allAddMsgAreEquals = true;
+        for (size_t i = 1; i < maxOverloads; i++)
+        {
+            if (addMsg[i] != addMsg[0])
+                allAddMsgAreEquals = false;
+        }
+
+        // Replace the generic error message with the most specific one, if all specifics are equals
         if (result == MatchResult::BadSignature || result == MatchResult::BadGenericSignature)
         {
-            if (!allAddMsgAreEquals)
+            if (allAddMsgAreEquals)
+                note->textMsg = addMsg[0];
+        }
+
+        for (size_t i = 0; i < maxOverloads; i++)
+        {
+            // Output the function signature
+            concat.clear();
+            if (tryResult[i]->overload->node->kind == AstNodeKind::FuncDecl)
             {
-                Utf8 msg = " => ";
-                msg += addMsg[i];
-                note->preRemarks.push_back(msg);
+                const auto funcNode = CastAst<AstFuncDecl>(tryResult[i]->overload->node, AstNodeKind::FuncDecl);
+                AstOutput::outputFuncSignature(outCxt, concat, funcNode, funcNode->genericParameters, funcNode->parameters, nullptr);
+            }
+            else if (tryResult[i]->overload->node->kind == AstNodeKind::VarDecl)
+            {
+                const auto varNode = CastAst<AstVarDecl>(tryResult[i]->overload->node, AstNodeKind::VarDecl);
+                const auto lambda  = CastAst<AstTypeLambda>(varNode->typeInfo->declNode, AstNodeKind::TypeLambda);
+                AstOutput::outputFuncSignature(outCxt, concat, varNode, nullptr, lambda->parameters, nullptr);
+            }
+            else
+            {
+                SWAG_ASSERT(false);
+            }
+
+            Utf8 n = Utf8{(const char*) concat.firstBucket->datas, concat.bucketCount(concat.firstBucket)};
+            if (n.back() == '\n')
+                n.count--;
+            if (n.back() == ';')
+                n.count--;
+
+            SyntaxColorContext cxt;
+            n = syntaxColor(n, cxt);
+
+            note->preRemarks.push_back(Fmt("overload %d: %s", overloadIndex++, n.c_str()));
+
+            // Additional (more precise) information in case of bad signature
+            if (result == MatchResult::BadSignature || result == MatchResult::BadGenericSignature)
+            {
+                if (!allAddMsgAreEquals)
+                {
+                    Utf8 msg = " => ";
+                    msg += addMsg[i];
+                    note->preRemarks.push_back(msg);
+                }
             }
         }
+
+        if (tryResult.size() > MAX_OVERLOADS)
+            note->preRemarks.push_back("...");
+
+        // Locate to the first error
+        Vector<const Diagnostic*> errs0, errs1;
+        SemanticError::getDiagnosticForMatch(context, *tryResult[0], errs0, errs1);
+        note->sourceFile    = errs0[0]->sourceFile;
+        note->startLocation = errs0[0]->startLocation;
+        note->endLocation   = errs0[0]->endLocation;
+        note->canBeMerged   = false;
+        notes.push_back(note);
+
+        return true;
     }
 
-    if (tryResult.size() > MAX_OVERLOADS)
-        note->preRemarks.push_back("...");
-
-    // Locate to the first error
-    Vector<const Diagnostic*> errs0, errs1;
-    SemanticError::getDiagnosticForMatch(context, *tryResult[0], errs0, errs1);
-    note->sourceFile    = errs0[0]->sourceFile;
-    note->startLocation = errs0[0]->startLocation;
-    note->endLocation   = errs0[0]->endLocation;
-    note->canBeMerged   = false;
-    notes.push_back(note);
-
-    return true;
-}
-
-static bool cannotMatchSingle(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches)
-{
-    // Be sure this is not because of an invalid special function signature
-    if (tryMatches[0]->overload->node->kind == AstNodeKind::FuncDecl)
-        SWAG_CHECK(Semantic::checkFuncPrototype(context, CastAst<AstFuncDecl>(tryMatches[0]->overload->node, AstNodeKind::FuncDecl)));
-
-    Vector<const Diagnostic*> errs0, errs1;
-    SemanticError::getDiagnosticForMatch(context, *tryMatches[0], errs0, errs1);
-    SWAG_ASSERT(!errs0.empty());
-    SemanticError::commonErrorNotes(context, tryMatches, node, const_cast<Diagnostic*>(errs0[0]), errs1);
-    return context->report(*errs0[0], errs1);
-}
-
-static bool cannotMatchOverload(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches)
-{
-    // Multiple tryMatches
-    Diagnostic                diag{node, node->token, Fmt(Err(Err0613), tryMatches.size(), tryMatches[0]->overload->symbol->name.c_str())};
-    Vector<const Diagnostic*> notes;
-    SemanticError::commonErrorNotes(context, tryMatches, node, &diag, notes);
-
-    int overloadIndex = 1;
-    cannotMatchIdentifier(context, MatchResult::ValidIfFailed, 0, tryMatches, node, notes, overloadIndex);
-    cannotMatchIdentifier(context, MatchResult::NotEnoughParameters, 0, tryMatches, node, notes, overloadIndex);
-    cannotMatchIdentifier(context, MatchResult::TooManyParameters, 0, tryMatches, node, notes, overloadIndex);
-    cannotMatchIdentifier(context, MatchResult::NotEnoughGenericParameters, 0, tryMatches, node, notes, overloadIndex);
-    cannotMatchIdentifier(context, MatchResult::TooManyGenericParameters, 0, tryMatches, node, notes, overloadIndex);
-
-    // For a bad signature, only show the ones with the greatest match
-    for (int what = 0; what < 2; what++)
+    bool cannotMatchSingle(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches)
     {
-        Vector<const Diagnostic*> notesSig;
-        int                       paramIdx = 0;
-        while (true)
+        // Be sure this is not because of an invalid special function signature
+        if (tryMatches[0]->overload->node->kind == AstNodeKind::FuncDecl)
+            SWAG_CHECK(Semantic::checkFuncPrototype(context, CastAst<AstFuncDecl>(tryMatches[0]->overload->node, AstNodeKind::FuncDecl)));
+
+        Vector<const Diagnostic*> errs0, errs1;
+        SemanticError::getDiagnosticForMatch(context, *tryMatches[0], errs0, errs1);
+        SWAG_ASSERT(!errs0.empty());
+        SemanticError::commonErrorNotes(context, tryMatches, node, const_cast<Diagnostic*>(errs0[0]), errs1);
+        return context->report(*errs0[0], errs1);
+    }
+
+    bool cannotMatchOverload(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches)
+    {
+        // Multiple tryMatches
+        Diagnostic                diag{node, node->token, Fmt(Err(Err0613), tryMatches.size(), tryMatches[0]->overload->symbol->name.c_str())};
+        Vector<const Diagnostic*> notes;
+        SemanticError::commonErrorNotes(context, tryMatches, node, &diag, notes);
+
+        int overloadIndex = 1;
+        cannotMatchIdentifier(context, MatchResult::ValidIfFailed, 0, tryMatches, node, notes, overloadIndex);
+        cannotMatchIdentifier(context, MatchResult::NotEnoughParameters, 0, tryMatches, node, notes, overloadIndex);
+        cannotMatchIdentifier(context, MatchResult::TooManyParameters, 0, tryMatches, node, notes, overloadIndex);
+        cannotMatchIdentifier(context, MatchResult::NotEnoughGenericParameters, 0, tryMatches, node, notes, overloadIndex);
+        cannotMatchIdentifier(context, MatchResult::TooManyGenericParameters, 0, tryMatches, node, notes, overloadIndex);
+
+        // For a bad signature, only show the ones with the greatest match
+        for (int what = 0; what < 2; what++)
         {
-            Vector<const Diagnostic*> notesTmp;
-            const auto                m = what == 0 ? MatchResult::BadSignature : MatchResult::BadGenericSignature;
-            if (!cannotMatchIdentifier(context, m, paramIdx++, tryMatches, node, notesTmp, overloadIndex))
-                break;
-            notesSig = notesTmp;
+            Vector<const Diagnostic*> notesSig;
+            int                       paramIdx = 0;
+            while (true)
+            {
+                Vector<const Diagnostic*> notesTmp;
+                const auto                m = what == 0 ? MatchResult::BadSignature : MatchResult::BadGenericSignature;
+                if (!cannotMatchIdentifier(context, m, paramIdx++, tryMatches, node, notesTmp, overloadIndex))
+                    break;
+                notesSig = notesTmp;
+            }
+
+            notes.insert(notes.end(), notesSig.begin(), notesSig.end());
         }
 
-        notes.insert(notes.end(), notesSig.begin(), notesSig.end());
+        return context->report(diag, notes);
     }
-
-    return context->report(diag, notes);
 }
 
 bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorNative<OneTryMatch*>& tryMatches, AstNode* node)
 {
-    const AstIdentifier* identifier        = nullptr;
-    const AstNode*       genericParameters = nullptr;
+    const AstNode* genericParameters = nullptr;
 
     // node can be null when we try to resolve a userOp
     if (node && (node->kind == AstNodeKind::Identifier || node->kind == AstNodeKind::FuncCall))
     {
-        identifier        = CastAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
-        genericParameters = identifier->genericParameters;
+        const auto identifier = CastAst<AstIdentifier>(node, AstNodeKind::Identifier, AstNodeKind::FuncCall);
+        genericParameters     = identifier->genericParameters;
     }
     else
         node = context->node;
@@ -274,7 +276,7 @@ bool SemanticError::cannotMatchIdentifierError(SemanticContext* context, VectorN
                 if (oneMatch->ufcs && oneMatch->symMatchContext.badSignatureInfos.badSignatureParameterIdx > 0)
                     oneMatch1->overload = nullptr;
 
-                    // If the UFCS has failed because of constness, takes the UFCS error
+                    // If the UFCS has failed because of const, takes the UFCS error
                 else if (oneMatch->ufcs && oneMatch->symMatchContext.badSignatureInfos.badSignatureParameterIdx == 0 && oneMatch->symMatchContext.badSignatureInfos.castErrorType ==
                          CastErrorType::Const)
                     oneMatch1->overload = nullptr;
