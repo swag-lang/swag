@@ -19,7 +19,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrame(ByteCodeRunContext* context, const
 
     if (!Utf8::isNumber(arg.split[1].c_str()))
     {
-        g_ByteCodeDebugger.printCmdError("invalid 'frame' number");
+        printCmdError("invalid 'frame' number");
         return BcDbgCommandResult::Continue;
     }
 
@@ -34,7 +34,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrame(ByteCodeRunContext* context, const
     {
         context->debugStackFrameOffset = oldIndex;
         g_ByteCodeDebugger.computeDebugContext(context);
-        g_ByteCodeDebugger.printCmdError("this frame is external; you cannot go there");
+        printCmdError("this frame is external; you cannot go there");
         return BcDbgCommandResult::Continue;
     }
 
@@ -55,7 +55,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameUp(ByteCodeRunContext* context, con
     const uint32_t maxLevel = g_ByteCodeStackTrace->maxLevel(context);
     if (context->debugStackFrameOffset == maxLevel)
     {
-        g_ByteCodeDebugger.printCmdError("initial frame selected; you cannot go up");
+        printCmdError("initial frame selected; you cannot go up");
         return BcDbgCommandResult::Continue;
     }
 
@@ -66,7 +66,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameUp(ByteCodeRunContext* context, con
     {
         context->debugStackFrameOffset = oldIndex;
         g_ByteCodeDebugger.computeDebugContext(context);
-        g_ByteCodeDebugger.printCmdError("the up frame is external; you cannot go there");
+        printCmdError("the up frame is external; you cannot go there");
         return BcDbgCommandResult::Continue;
     }
 
@@ -86,7 +86,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameDown(ByteCodeRunContext* context, c
         off = atoi(arg.split[1].c_str());
     if (context->debugStackFrameOffset == 0)
     {
-        g_ByteCodeDebugger.printCmdError("bottom(innermost) frame selected; you cannot go down");
+        printCmdError("bottom(innermost) frame selected; you cannot go down");
         return BcDbgCommandResult::Continue;
     }
 
@@ -97,7 +97,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdFrameDown(ByteCodeRunContext* context, c
     {
         context->debugStackFrameOffset = oldIndex;
         g_ByteCodeDebugger.computeDebugContext(context);
-        g_ByteCodeDebugger.printCmdError("the down frame is external; you cannot go there");
+        printCmdError("the down frame is external; you cannot go there");
         return BcDbgCommandResult::Continue;
     }
 

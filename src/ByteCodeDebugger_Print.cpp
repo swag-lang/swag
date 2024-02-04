@@ -184,7 +184,7 @@ void ByteCodeDebugger::printDebugContext(ByteCodeRunContext* context, bool force
     debugStepLastLocation = loc.location;
     debugStepLastFunc     = newFunc;
 
-    if (debugDisplay.size())
+    if (!debugDisplay.empty())
         g_Log.eol();
     printDisplay(context);
 }
@@ -232,7 +232,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdWhere(ByteCodeRunContext* context, const
     return BcDbgCommandResult::Continue;
 }
 
-void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* bc, SourceFile* file, SourceLocation* curLocation, int startLine, int endLine)
+void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* bc, SourceFile* file, const SourceLocation* curLocation, int startLine, int endLine) const
 {
     Vector<Utf8> lines;
     bool         eof = false;
@@ -322,21 +322,21 @@ void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* b
     printLong(toPrint);
 }
 
-void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* bc, SourceFile* file, SourceLocation* curLocation, uint32_t offset)
+void ByteCodeDebugger::printSourceLines(ByteCodeRunContext* context, ByteCode* bc, SourceFile* file, const SourceLocation* curLocation, uint32_t offset) const
 {
-    int startLine, endLine;
+    int startLine;
     if (offset > curLocation->line)
         startLine = 0;
     else
         startLine = curLocation->line - offset;
-    endLine = curLocation->line + offset;
+    const int endLine = curLocation->line + offset;
     printSourceLines(context, bc, file, curLocation, startLine, endLine);
 }
 
-void ByteCodeDebugger::printInstructions(ByteCodeRunContext* context, ByteCode* bc, ByteCodeInstruction* ip, int num)
+void ByteCodeDebugger::printInstructions(ByteCodeRunContext* context, ByteCode* bc, const ByteCodeInstruction* ip, int num) const
 {
     const int count = num;
-    int cpt   = 1;
+    int       cpt   = 1;
     while (--num)
     {
         if (ip == bc->out)
@@ -361,7 +361,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
     // Print format
     ValueFormat fmt;
     size_t      startIdx = 0;
-    if (exprCmds.size() && g_ByteCodeDebugger.getValueFormat(exprCmds[0], fmt))
+    if (!exprCmds.empty() && g_ByteCodeDebugger.getValueFormat(exprCmds[0], fmt))
         startIdx++;
     fmt.print0x = false;
 
@@ -391,7 +391,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
     expr.trim();
     if (expr.empty())
     {
-        g_ByteCodeDebugger.printCmdError("invalid 'x' expression");
+        printCmdError("invalid 'x' expression");
         return BcDbgCommandResult::Continue;
     }
 
@@ -425,10 +425,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
     case 64:
         perLine = 4;
         break;
+    default:
+        break;
     }
 
-    const uint8_t* addrB = (const uint8_t*) addrVal;
-
+    auto addrB = (const uint8_t*) addrVal;
     while (count > 0)
     {
         const auto addrLine = addrB;
@@ -514,7 +515,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInstructionDump(ByteCodeRunContext* cont
     if (arg.split.size() > 1)
     {
         const auto name = arg.split[1];
-        toLogBc   = g_ByteCodeDebugger.findCmdBc(name);
+        toLogBc         = g_ByteCodeDebugger.findCmdBc(name);
         if (!toLogBc)
             return BcDbgCommandResult::Continue;
         toLogIp = toLogBc->out;
@@ -561,7 +562,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdList(ByteCodeRunContext* context, const 
         }
     }
     else
-        g_ByteCodeDebugger.printCmdError("no source code");
+        printCmdError("no source code");
 
     return BcDbgCommandResult::Continue;
 }
@@ -578,7 +579,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
     if (arg.split.size() > 1)
     {
         const auto name = arg.split[1];
-        toLogBc   = g_ByteCodeDebugger.findCmdBc(name);
+        toLogBc         = g_ByteCodeDebugger.findCmdBc(name);
         if (!toLogBc)
             return BcDbgCommandResult::Continue;
         toLogIp = toLogBc->out;
@@ -608,10 +609,10 @@ BcDbgCommandResult ByteCodeDebugger::cmdLongList(ByteCodeRunContext* context, co
             }
         }
         else
-            g_ByteCodeDebugger.printCmdError("no source code");
+            printCmdError("no source code");
     }
     else
-        g_ByteCodeDebugger.printCmdError("no source code");
+        printCmdError("no source code");
 
     return BcDbgCommandResult::Continue;
 }

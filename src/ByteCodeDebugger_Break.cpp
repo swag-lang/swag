@@ -7,7 +7,7 @@ void ByteCodeDebugger::printBreakpoints(ByteCodeRunContext* context)
 {
     if (debugBreakpoints.empty())
     {
-        g_ByteCodeDebugger.printCmdError("no breakpoint");
+        printCmdError("no breakpoint");
         return;
     }
 
@@ -40,7 +40,7 @@ void ByteCodeDebugger::printBreakpoints(ByteCodeRunContext* context)
 void ByteCodeDebugger::checkBreakpoints(ByteCodeRunContext* context)
 {
     int idxBkp = 1;
-    for (auto it = debugBreakpoints.begin(); it != debugBreakpoints.end(); it++, idxBkp++)
+    for (auto it = debugBreakpoints.begin(); it != debugBreakpoints.end(); ++it, idxBkp++)
     {
         auto& bkp = *it;
         if (bkp.disabled)
@@ -132,7 +132,7 @@ bool ByteCodeDebugger::addBreakpoint(ByteCodeRunContext* context, const DebugBre
     {
         if (b.type == bkp.type && b.name == bkp.name && b.line == bkp.line && b.autoRemove == bkp.autoRemove)
         {
-            g_ByteCodeDebugger.printCmdError("breakpoint already exists");
+            printCmdError("breakpoint already exists");
             return false;
         }
     }
@@ -150,11 +150,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakEnable(ByteCodeRunContext* context,
 
     const int numB = atoi(arg.split[2].c_str());
     if (!numB || numB - 1 >= (int) g_ByteCodeDebugger.debugBreakpoints.size())
-        g_ByteCodeDebugger.printCmdError("invalid breakpoint number");
+        printCmdError("invalid breakpoint number");
     else
     {
         g_ByteCodeDebugger.debugBreakpoints[numB - 1].disabled = false;
-        g_ByteCodeDebugger.printCmdResult(Fmt("breakpoint #%d has been enabled", numB));
+        printCmdResult(Fmt("breakpoint #%d has been enabled", numB));
     }
 
     return BcDbgCommandResult::Continue;
@@ -169,11 +169,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakDisable(ByteCodeRunContext* context
 
     const int numB = atoi(arg.split[2].c_str());
     if (!numB || numB - 1 >= (int) g_ByteCodeDebugger.debugBreakpoints.size())
-        g_ByteCodeDebugger.printCmdError("invalid breakpoint number");
+        printCmdError("invalid breakpoint number");
     else
     {
         g_ByteCodeDebugger.debugBreakpoints[numB - 1].disabled = true;
-        g_ByteCodeDebugger.printCmdResult(Fmt("breakpoint #%d has been disabled", numB));
+        printCmdResult(Fmt("breakpoint #%d has been disabled", numB));
     }
 
     return BcDbgCommandResult::Continue;
@@ -184,9 +184,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakClear(ByteCodeRunContext* context, 
     if (arg.split.size() == 2)
     {
         if (g_ByteCodeDebugger.debugBreakpoints.empty())
-            g_ByteCodeDebugger.printCmdError("no breakpoint to remove");
+            printCmdError("no breakpoint to remove");
         else
-            g_ByteCodeDebugger.printCmdResult(Fmt("%d breakpoint(s) have been removed", g_ByteCodeDebugger.debugBreakpoints.size()));
+            printCmdResult(Fmt("%d breakpoint(s) have been removed", g_ByteCodeDebugger.debugBreakpoints.size()));
         g_ByteCodeDebugger.debugBreakpoints.clear();
         return BcDbgCommandResult::Continue;
     }
@@ -198,11 +198,11 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakClear(ByteCodeRunContext* context, 
 
     const int numB = atoi(arg.split[2].c_str());
     if (!numB || numB - 1 >= (int) g_ByteCodeDebugger.debugBreakpoints.size())
-        g_ByteCodeDebugger.printCmdError("invalid breakpoint number");
+        printCmdError("invalid breakpoint number");
     else
     {
         g_ByteCodeDebugger.debugBreakpoints.erase(g_ByteCodeDebugger.debugBreakpoints.begin() + numB - 1);
-        g_ByteCodeDebugger.printCmdResult(Fmt("breakpoint #%d has been removed", numB));
+        printCmdResult(Fmt("breakpoint #%d has been removed", numB));
     }
 
     return BcDbgCommandResult::Continue;
@@ -232,7 +232,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFunc(ByteCodeRunContext* context, c
 
     if (g_ByteCodeDebugger.addBreakpoint(context, bkp))
     {
-        g_ByteCodeDebugger.printCmdResult(Fmt("breakpoint #%d function with a match on [[%s]]", g_ByteCodeDebugger.debugBreakpoints.size(), bkp.name.c_str()));
+        printCmdResult(Fmt("breakpoint #%d function with a match on [[%s]]", g_ByteCodeDebugger.debugBreakpoints.size(), bkp.name.c_str()));
     }
 
     return BcDbgCommandResult::Continue;
@@ -259,7 +259,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakLine(ByteCodeRunContext* context, c
     bkp.autoRemove = oneShot;
     if (g_ByteCodeDebugger.addBreakpoint(context, bkp))
     {
-        g_ByteCodeDebugger.printCmdResult(Fmt("breakpoint #%d, file [[%s]], line [[%d]]", g_ByteCodeDebugger.debugBreakpoints.size(), bkp.name.c_str(), bkp.line));
+        printCmdResult(Fmt("breakpoint #%d, file [[%s]], line [[%d]]", g_ByteCodeDebugger.debugBreakpoints.size(), bkp.name.c_str(), bkp.line));
     }
 
     return BcDbgCommandResult::Continue;
@@ -284,7 +284,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFileLine(ByteCodeRunContext* contex
         curFile = g_Workspace->findFile(arg.split[2] + ".swgs");
     if (!curFile)
     {
-        g_ByteCodeDebugger.printCmdError(Fmt("cannot find file [[%s]]", arg.split[2].c_str()));
+        printCmdError(Fmt("cannot find file [[%s]]", arg.split[2].c_str()));
         return BcDbgCommandResult::Continue;
     }
 
@@ -295,7 +295,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdBreakFileLine(ByteCodeRunContext* contex
     bkp.autoRemove = oneShot;
     if (g_ByteCodeDebugger.addBreakpoint(context, bkp))
     {
-        g_ByteCodeDebugger.printCmdResult(Fmt("breakpoint #%d, file [[%s]], line [[%d]]", g_ByteCodeDebugger.debugBreakpoints.size(), bkp.name.c_str(), bkp.line));
+        printCmdResult(Fmt("breakpoint #%d, file [[%s]], line [[%d]]", g_ByteCodeDebugger.debugBreakpoints.size(), bkp.name.c_str(), bkp.line));
     }
 
     return BcDbgCommandResult::Continue;

@@ -223,22 +223,22 @@ Utf8 ByteCode::getPrettyInstruction(ByteCodeInstruction* ip)
     return str;
 }
 
-Utf8 ByteCode::getInstructionReg(const char* header, const Register& reg, bool regW, bool regR, bool regImm)
+Utf8 ByteCode::getInstructionReg(const char* name, const Register& reg, bool regW, bool regR, bool regImm)
 {
     Utf8 str;
     if (regW)
-        str += Fmt("%s[%u] ", header, reg.u32);
+        str += Fmt("%s[%u] ", name, reg.u32);
     if (regR && !regImm)
-        str += Fmt("%s(%u) ", header, reg.u32);
+        str += Fmt("%s(%u) ", name, reg.u32);
     if (regImm)
-        str += Fmt("%s{0x%llX} ", header, reg.u64);
+        str += Fmt("%s{0x%llX} ", name, reg.u64);
     return str;
 }
 
-void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, PrintInstructionLine& line)
+void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, PrintInstructionLine& line) const
 {
-    const int  i      = (int) (ip - out);
-    bool forDbg = options.curIp != nullptr;
+    const int i      = (int) (ip - out);
+    bool      forDbg = options.curIp != nullptr;
 
     // Instruction rank
     if (forDbg)
@@ -255,10 +255,14 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
 
     // Parameters
     const auto opFlags = g_ByteCodeOpDesc[(int) ip->op].flags;
-    line.instRef += getInstructionReg("A", ip->a, opFlags & OPFLAG_WRITE_A, opFlags & OPFLAG_READ_A, opFlags & (OPFLAG_READ_VAL32_A | OPFLAG_READ_VAL64_A) || ip->flags & BCI_IMM_A);
-    line.instRef += getInstructionReg("B", ip->b, opFlags & OPFLAG_WRITE_B, opFlags & OPFLAG_READ_B, opFlags & (OPFLAG_READ_VAL32_B | OPFLAG_READ_VAL64_B) || ip->flags & BCI_IMM_B);
-    line.instRef += getInstructionReg("C", ip->c, opFlags & OPFLAG_WRITE_C, opFlags & OPFLAG_READ_C, opFlags & (OPFLAG_READ_VAL32_C | OPFLAG_READ_VAL64_C) || ip->flags & BCI_IMM_C);
-    line.instRef += getInstructionReg("D", ip->d, opFlags & OPFLAG_WRITE_D, opFlags & OPFLAG_READ_D, opFlags & (OPFLAG_READ_VAL32_D | OPFLAG_READ_VAL64_D) || ip->flags & BCI_IMM_D);
+    line.instRef += getInstructionReg("A", ip->a, opFlags & OPFLAG_WRITE_A, opFlags & OPFLAG_READ_A,
+                                      opFlags & (OPFLAG_READ_VAL32_A | OPFLAG_READ_VAL64_A) || ip->flags & BCI_IMM_A);
+    line.instRef += getInstructionReg("B", ip->b, opFlags & OPFLAG_WRITE_B, opFlags & OPFLAG_READ_B,
+                                      opFlags & (OPFLAG_READ_VAL32_B | OPFLAG_READ_VAL64_B) || ip->flags & BCI_IMM_B);
+    line.instRef += getInstructionReg("C", ip->c, opFlags & OPFLAG_WRITE_C, opFlags & OPFLAG_READ_C,
+                                      opFlags & (OPFLAG_READ_VAL32_C | OPFLAG_READ_VAL64_C) || ip->flags & BCI_IMM_C);
+    line.instRef += getInstructionReg("D", ip->d, opFlags & OPFLAG_WRITE_D, opFlags & OPFLAG_READ_D,
+                                      opFlags & (OPFLAG_READ_VAL32_D | OPFLAG_READ_VAL64_D) || ip->flags & BCI_IMM_D);
     line.instRef.trim();
 
     // Flags
@@ -487,7 +491,7 @@ void ByteCode::alignPrintInstructions(const ByteCodePrintOptions& options, Vecto
 #endif
 }
 
-void ByteCode::printInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip)
+void ByteCode::printInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip) const
 {
     PrintInstructionLine line;
 

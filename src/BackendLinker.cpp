@@ -47,14 +47,14 @@ namespace BackendLinker
                                 Utf8 l2 = pze + 8;
                                 l2.trim();
                                 const auto l1 = Fmt("module [[%s]]: linker error: %s", module->name.c_str(), l2.c_str());
-                                l       = l1;
+                                l             = l1;
                             }
                             else
                             {
                                 Utf8 l2 = pzw + 10;
                                 l2.trim();
                                 const auto l1 = Fmt("module [[%s]]: linker warning: %s", module->name.c_str(), l2.c_str());
-                                l       = l1;
+                                l             = l1;
                             }
                         }
 
@@ -119,10 +119,9 @@ namespace BackendLinker
 
         // Register #foreignlib
         // As this is defined by the user, we consider the library must exists
-        Utf8 one;
-        for (const auto fl : buildParameters.foreignLibs)
+        for (const auto& fl : buildParameters.foreignLibs)
         {
-            one = fl;
+            Utf8 one = fl;
             if (Utf8::getExtension(one) != Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::StaticLib))
                 one += Backend::getOutputFileExtension(g_CommandLine.target, BuildCfgBackendKind::StaticLib);
             arguments.push_back(one);
@@ -223,7 +222,7 @@ namespace BackendLinker
         // Add user additional linker arguments
         if (buildParameters.buildCfg->linkerArgs.count)
         {
-            const char* pz  = (const char*) buildParameters.buildCfg->linkerArgs.buffer;
+            auto        pz  = (const char*) buildParameters.buildCfg->linkerArgs.buffer;
             const char* pze = pz + buildParameters.buildCfg->linkerArgs.count;
             while (pz < pze)
             {
@@ -285,7 +284,7 @@ namespace BackendLinker
         }
 
         const auto objFileType = Backend::getObjType(g_CommandLine.target);
-        bool result      = true;
+        bool       result      = true;
         switch (objFileType)
         {
         case BackendObjType::Coff:

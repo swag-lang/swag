@@ -50,9 +50,7 @@ ByteCode::Location ByteCode::getLocation(ByteCode* bc, ByteCodeInstruction* ip, 
 
 Utf8 ByteCode::getPrintRefName()
 {
-    Utf8 str;
-
-    str = ByteCodeDebugger::COLOR_VTS_NAME;
+    Utf8 str = ByteCodeDebugger::COLOR_VTS_NAME;
     str += getPrintName();
 
     const auto type = getCallType();
@@ -92,7 +90,7 @@ Utf8 ByteCode::getPrintName()
     return name;
 }
 
-Utf8 ByteCode::getPrintFileName()
+Utf8 ByteCode::getPrintFileName() const
 {
     if (sourceFile)
         return sourceFile->name;
@@ -143,7 +141,7 @@ Utf8 ByteCode::getCallName()
     return callName;
 }
 
-TypeInfoFuncAttr* ByteCode::getCallType()
+TypeInfoFuncAttr* ByteCode::getCallType() const
 {
     if (isCompilerGenerated)
         return g_TypeMgr->typeInfoOpCall;
@@ -154,7 +152,7 @@ TypeInfoFuncAttr* ByteCode::getCallType()
     return typeInfoFunc;
 }
 
-void ByteCode::markLabels()
+void ByteCode::markLabels() const
 {
     uint32_t count = numJumps;
     auto     ip    = out;
@@ -179,7 +177,7 @@ void ByteCode::markLabels()
     }
 }
 
-bool ByteCode::isDoingNothing()
+bool ByteCode::isDoingNothing() const
 {
     if (!getCallType()->returnType->isVoid())
         return false;
@@ -245,7 +243,7 @@ bool ByteCode::isByteCodeLambda(void* ptr)
     return u & SWAG_LAMBDA_BC_MARKER;
 }
 
-bool ByteCode::canEmit()
+bool ByteCode::canEmit() const
 {
     if (!node)
         return true;
@@ -275,7 +273,12 @@ bool ByteCode::canEmit()
     return true;
 }
 
-bool ByteCode::areSame(ByteCodeInstruction* start0, ByteCodeInstruction* end0, ByteCodeInstruction* start1, ByteCodeInstruction* end1, bool specialJump, bool specialCall)
+bool ByteCode::areSame(ByteCodeInstruction*       start0,
+                       const ByteCodeInstruction* end0,
+                       const ByteCodeInstruction* start1,
+                       const ByteCodeInstruction* end1,
+                       bool                       specialJump,
+                       bool                       specialCall)
 {
     bool                       same = end0 - start0 == end1 - start1;
     ByteCodeInstruction*       ip0  = start0;
@@ -350,19 +353,19 @@ bool ByteCode::areSame(ByteCodeInstruction* start0, ByteCodeInstruction* end0, B
     return same;
 }
 
-uint32_t ByteCode::computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool specialJump, bool specialCall)
+uint32_t ByteCode::computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool specialJump, bool specialCall) const
 {
     oldCrc = Crc32::compute2((const uint8_t*) &ip->op, oldCrc);
 
     const uint32_t flags = ip->flags & ~(BCI_JUMP_DEST | BCI_START_STMT);
-    oldCrc         = Crc32::compute2((const uint8_t*) &flags, oldCrc);
+    oldCrc               = Crc32::compute2((const uint8_t*) &flags, oldCrc);
 
     if (ByteCode::hasSomethingInC(ip))
         oldCrc = Crc32::compute8((const uint8_t*) &ip->c.u64, oldCrc);
     if (ByteCode::hasSomethingInD(ip))
         oldCrc = Crc32::compute8((const uint8_t*) &ip->d.u64, oldCrc);
 
-    // Special call. We add the alias if it exitsts instead of the called bytecode
+    // Special call. We add the alias if it exists instead of the called bytecode
     if (specialCall && (ip->op == ByteCodeOp::LocalCall ||
                         ip->op == ByteCodeOp::LocalCallPop ||
                         ip->op == ByteCodeOp::LocalCallPopParam ||
@@ -411,9 +414,9 @@ void ByteCode::makeRoomForInstructions(uint32_t room)
         maxInstructions = (int) (funcDecl->nodeCounts * 0.8f);
     }
 
-    maxInstructions           = max(maxInstructions, 8);
-    const auto newInstuctions = (ByteCodeInstruction*) Allocator::alloc(maxInstructions * sizeof(ByteCodeInstruction));
-    memcpy(newInstuctions, out, numInstructions * sizeof(ByteCodeInstruction));
+    maxInstructions            = max(maxInstructions, 8);
+    const auto newInstructions = (ByteCodeInstruction*) Allocator::alloc(maxInstructions * sizeof(ByteCodeInstruction));
+    memcpy(newInstructions, out, numInstructions * sizeof(ByteCodeInstruction));
     Allocator::free(out, oldSize);
 
 #ifdef SWAG_STATS
@@ -421,5 +424,5 @@ void ByteCode::makeRoomForInstructions(uint32_t room)
     g_Stats.memInstructions += maxInstructions * sizeof(ByteCodeInstruction);
 #endif
 
-    out = newInstuctions;
+    out = newInstructions;
 }

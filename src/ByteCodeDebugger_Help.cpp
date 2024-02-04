@@ -31,7 +31,7 @@ void ByteCodeDebugger::printHelp(const BcDbgCommand& cmd)
     g_Log.setColor(LogColor::Gray);
 }
 
-void ByteCodeDebugger::printHelp()
+void ByteCodeDebugger::printHelp() const
 {
     for (auto& c : commands)
         printHelp(c);
@@ -60,7 +60,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdHelp(ByteCodeRunContext* context, const 
         }
 
         if (!ok)
-            g_ByteCodeDebugger.printCmdError(Fmt("unknown debugger command [[%s]]", arg.split[1].c_str()));
+            printCmdError(Fmt("unknown debugger command [[%s]]", arg.split[1].c_str()));
         return BcDbgCommandResult::Continue;
     }
 

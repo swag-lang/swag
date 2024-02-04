@@ -17,9 +17,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdDisplayClear(ByteCodeRunContext* context
     if (arg.split.size() == 2)
     {
         if (g_ByteCodeDebugger.debugDisplay.empty())
-            g_ByteCodeDebugger.printCmdError("no expression to remove");
+            printCmdError("no expression to remove");
         else
-            g_ByteCodeDebugger.printCmdResult(Fmt("%d expression(s) have been removed", g_ByteCodeDebugger.debugDisplay.size()));
+            printCmdResult(Fmt("%d expression(s) have been removed", g_ByteCodeDebugger.debugDisplay.size()));
         g_ByteCodeDebugger.debugDisplay.clear();
         return BcDbgCommandResult::Continue;
     }
@@ -31,21 +31,21 @@ BcDbgCommandResult ByteCodeDebugger::cmdDisplayClear(ByteCodeRunContext* context
 
     const int numB = atoi(arg.split[2].c_str());
     if (!numB || numB - 1 >= (int) g_ByteCodeDebugger.debugDisplay.size())
-        g_ByteCodeDebugger.printCmdError("invalid expression number");
+        printCmdError("invalid expression number");
     else
     {
         g_ByteCodeDebugger.debugDisplay.erase(g_ByteCodeDebugger.debugDisplay.begin() + numB - 1);
-        g_ByteCodeDebugger.printCmdResult(Fmt("expression #%d has been removed", numB));
+        printCmdResult(Fmt("expression #%d has been removed", numB));
     }
 
     return BcDbgCommandResult::Continue;
 }
 
-void ByteCodeDebugger::printDisplayList()
+void ByteCodeDebugger::printDisplayList() const
 {
     if (debugDisplay.empty())
     {
-        g_ByteCodeDebugger.printCmdError("no expression");
+        printCmdError("no expression");
         return;
     }
 

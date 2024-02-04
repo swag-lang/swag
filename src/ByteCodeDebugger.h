@@ -106,30 +106,30 @@ struct ByteCodeDebugger
         {
             return *(T*) addr;
         }
-        SWAG_EXCEPT(SWAG_EXCEPTION_EXECUTE_HANDLER)
+        SWAG_EXCEPT (SWAG_EXCEPTION_EXECUTE_HANDLER)
         {
             return 0;
         }
     }
 
-    bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res, CompilerAstKind kind, bool silent = false);
-    bool evalExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res, bool silent = false);
+    bool evalDynExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res, CompilerAstKind kind, bool silent = false) const;
+    bool evalExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res, bool silent = false) const;
 
-    bool getValueFormat(const Utf8& cmd, ValueFormat& fmt);
+    static bool getValueFormat(const Utf8& cmd, ValueFormat& fmt);
 
     void printBreakpoints(ByteCodeRunContext* context);
     void checkBreakpoints(ByteCodeRunContext* context);
     bool addBreakpoint(ByteCodeRunContext* context, const DebugBreakpoint& bkp);
 
-    void appendTypedValue(ByteCodeRunContext* context, const Utf8& filter, AstNode* node, uint8_t* baseAddr, uint8_t* realAddr, Utf8& result);
-    void appendTypedValue(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent);
-    void appendTypedValueProtected(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent);
-    void appendLiteralValue(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr);
-    void appendLiteralValueProtected(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr);
+    static void appendTypedValue(ByteCodeRunContext* context, const Utf8& filter, AstNode* node, uint8_t* baseAddr, uint8_t* realAddr, Utf8& result);
+    void        appendTypedValue(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent);
+    void        appendTypedValueProtected(ByteCodeRunContext* context, Utf8& str, const EvaluateResult& res, int indent);
+    static void appendLiteralValue(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr);
+    static void appendLiteralValueProtected(ByteCodeRunContext* context, Utf8& result, const ValueFormat& fmt, const void* addr);
 
-    void printSourceLines(ByteCodeRunContext* context, ByteCode* bc, SourceFile* file, SourceLocation* curLocation, int startLine, int endLine);
-    void printSourceLines(ByteCodeRunContext* context, ByteCode* bc, SourceFile* file, SourceLocation* curLocation, uint32_t offset = 3);
-    void printInstructions(ByteCodeRunContext* context, ByteCode* bc, ByteCodeInstruction* ip, int num = 1);
+    void printSourceLines(ByteCodeRunContext* context, ByteCode* bc, SourceFile* file, const SourceLocation* curLocation, int startLine, int endLine) const;
+    void printSourceLines(ByteCodeRunContext* context, ByteCode* bc, SourceFile* file, const SourceLocation* curLocation, uint32_t offset = 3) const;
+    void printInstructions(ByteCodeRunContext* context, ByteCode* bc, const ByteCodeInstruction* ip, int num = 1) const;
 
     static BcDbgCommandResult cmdBackTrace(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdFrame(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
@@ -178,32 +178,32 @@ struct ByteCodeDebugger
     static BcDbgCommandResult cmdBreakLine(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
     static BcDbgCommandResult cmdBreakFileLine(ByteCodeRunContext* context, const BcDbgCommandArg& arg);
 
-    void                    commandSubstitution(ByteCodeRunContext* context, Utf8& cmdExpr);
-    void                    tokenizeCommand(ByteCodeRunContext* context, const Utf8& line, BcDbgCommandArg& arg);
-    void                    setup();
-    void                    printLong(const Utf8& all);
-    void                    printLong(const Vector<Utf8>& all);
-    void                    printSeparator();
-    bool                    getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN);
-    void                    printDebugContext(ByteCodeRunContext* context, bool force = false);
-    void                    computeDebugContext(ByteCodeRunContext* context);
-    Utf8                    completion(ByteCodeRunContext* context, const Utf8& line, Utf8& toComplete);
-    Utf8                    getCommandLine(ByteCodeRunContext* context, bool& ctrl, bool& shift);
-    bool                    mustBreak(ByteCodeRunContext* context);
-    bool                    step(ByteCodeRunContext* context);
-    ByteCode*               findCmdBc(const Utf8& name);
-    VectorNative<ByteCode*> findBc(const char* name);
-    bool                    testNameFilter(const Utf8& name, const Utf8& filter);
+    void                           commandSubstitution(ByteCodeRunContext* context, Utf8& cmdExpr) const;
+    static void                    tokenizeCommand(ByteCodeRunContext* context, const Utf8& line, BcDbgCommandArg& arg);
+    void                           setup();
+    static void                    printLong(const Utf8& all);
+    static void                    printLong(const Vector<Utf8>& all);
+    static void                    printSeparator();
+    bool                           getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN) const;
+    void                           printDebugContext(ByteCodeRunContext* context, bool force = false);
+    void                           computeDebugContext(ByteCodeRunContext* context);
+    Utf8                           completion(ByteCodeRunContext* context, const Utf8& line, Utf8& toComplete) const;
+    Utf8                           getCommandLine(ByteCodeRunContext* context, bool& ctrl, bool& shift) const;
+    bool                           mustBreak(ByteCodeRunContext* context);
+    bool                           step(ByteCodeRunContext* context);
+    static ByteCode*               findCmdBc(const Utf8& name);
+    static VectorNative<ByteCode*> findBc(const char* name);
+    static bool                    testNameFilter(const Utf8& name, const Utf8& filter);
 
-    void printTitleNameType(const Utf8& title, const Utf8& name, const Utf8& type);
-    void printCmdError(const Utf8& msg);
-    void printCmdResult(const Utf8& msg);
-    void printMsgBkp(const Utf8& msg);
-    void printHelp();
-    void printHelp(const BcDbgCommand& cmd);
-    void printDisplayList();
-    void printDisplay(ByteCodeRunContext* context);
-    void printSet(ByteCodeRunContext* context);
+    static void printTitleNameType(const Utf8& title, const Utf8& name, const Utf8& type);
+    static void printCmdError(const Utf8& msg);
+    static void printCmdResult(const Utf8& msg);
+    static void printMsgBkp(const Utf8& msg);
+    void        printHelp() const;
+    static void printHelp(const BcDbgCommand& cmd);
+    void        printDisplayList() const;
+    void        printDisplay(ByteCodeRunContext* context);
+    static void printSet(ByteCodeRunContext* context);
 
     Vector<BcDbgCommand> commands;
 
@@ -222,8 +222,8 @@ struct ByteCodeDebugger
     uint8_t*                debugCxtSp             = nullptr;
     uint8_t*                debugCxtSpAlt          = nullptr;
     uint8_t*                debugCxtStack          = nullptr;
-    uint32_t                debugLastCurRC         = 0;
-    int32_t                 debugStepRC            = 0;
+    uint32_t                debugLastCurRc         = 0;
+    int32_t                 debugStepRc            = 0;
     DebugStepMode           debugStepMode          = DebugStepMode::None;
     uint32_t                debugCxtRc             = 0;
     int                     debugStepCount         = 0;

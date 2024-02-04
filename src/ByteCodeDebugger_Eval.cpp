@@ -12,7 +12,7 @@
 #include "ThreadManager.h"
 #include "TypeManager.h"
 
-bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8& inExpr, EvaluateResult& res, CompilerAstKind kind, bool silent)
+bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8& inExpr, EvaluateResult& res, CompilerAstKind kind, bool silent) const
 {
     PushSilentError se;
 
@@ -39,11 +39,11 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         if (silent)
             return false;
         if (g_SilentErrorMsg.empty())
-            g_ByteCodeDebugger.printCmdError("expression syntax error");
+            printCmdError("expression syntax error");
         else
         {
             g_SilentErrorMsg = Diagnostic::oneLiner(g_SilentErrorMsg);
-            g_ByteCodeDebugger.printCmdError(Fmt("%s", g_SilentErrorMsg.c_str()));
+            printCmdError(Fmt("%s", g_SilentErrorMsg.c_str()));
         }
         return false;
     }
@@ -62,7 +62,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         if (silent)
             return false;
         g_SilentErrorMsg = Diagnostic::oneLiner(g_SilentErrorMsg);
-        g_ByteCodeDebugger.printCmdError(Fmt("%s", g_SilentErrorMsg.c_str()));
+        printCmdError(Fmt("%s", g_SilentErrorMsg.c_str()));
         return false;
     }
 
@@ -101,7 +101,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         if (silent)
             return false;
         g_SilentErrorMsg = Diagnostic::oneLiner(g_SilentErrorMsg);
-        g_ByteCodeDebugger.printCmdError(Fmt("%s", g_SilentErrorMsg.c_str()));
+        printCmdError(Fmt("%s", g_SilentErrorMsg.c_str()));
         return false;
     }
 
@@ -132,11 +132,11 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
         if (silent)
             return false;
         if (g_SilentErrorMsg.empty())
-            g_ByteCodeDebugger.printCmdError("cannot run expression");
+            printCmdError("cannot run expression");
         else
         {
             g_SilentErrorMsg = Diagnostic::oneLiner(g_SilentErrorMsg);
-            g_ByteCodeDebugger.printCmdError(Fmt("%s", g_SilentErrorMsg.c_str()));
+            printCmdError(Fmt("%s", g_SilentErrorMsg.c_str()));
         }
         return false;
     }
@@ -151,7 +151,7 @@ bool ByteCodeDebugger::evalDynExpression(ByteCodeRunContext* context, const Utf8
     return true;
 }
 
-bool ByteCodeDebugger::evalExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res, bool silent)
+bool ByteCodeDebugger::evalExpression(ByteCodeRunContext* context, const Utf8& expr, EvaluateResult& res, bool silent) const
 {
     return evalDynExpression(context, expr, res, CompilerAstKind::Expression, silent);
 }
@@ -204,7 +204,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdPrint(ByteCodeRunContext* context, const
     {
         if (!concrete->isNativeIntegerOrRune() && !concrete->isNativeFloat())
         {
-            g_ByteCodeDebugger.printCmdError(Fmt("cannot apply print format to type [[%s]]", concrete->getDisplayNameC()));
+            printCmdError(Fmt("cannot apply print format to type [[%s]]", concrete->getDisplayNameC()));
             return BcDbgCommandResult::Continue;
         }
 

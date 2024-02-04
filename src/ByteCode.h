@@ -199,28 +199,28 @@ struct ByteCode
     };
 
     void              printSourceCode(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, uint32_t* lastLine = nullptr, SourceFile** lastFile = nullptr);
-    Utf8              getPrettyInstruction(ByteCodeInstruction* ip);
-    Utf8              getInstructionReg(const char* name, const Register& reg, bool regW, bool regR, bool regImm);
-    void              getPrintInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, PrintInstructionLine& line);
-    void              printInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, const PrintInstructionLine& line);
-    void              printInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip);
-    void              alignPrintInstructions(const ByteCodePrintOptions& options, Vector<PrintInstructionLine>& lines, bool defaultLen = false);
+    static Utf8       getPrettyInstruction(ByteCodeInstruction* ip);
+    static Utf8       getInstructionReg(const char* name, const Register& reg, bool regW, bool regR, bool regImm);
+    void              getPrintInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, PrintInstructionLine& line) const;
+    static void       printInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, const PrintInstructionLine& line);
+    void              printInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip) const;
+    static void       alignPrintInstructions(const ByteCodePrintOptions& options, Vector<PrintInstructionLine>& lines, bool defaultLen = false);
     void              print(const ByteCodePrintOptions& options, uint32_t start, uint32_t count);
     void              print(const ByteCodePrintOptions& options);
     void              printName();
     Utf8              getPrintRefName();
     Utf8              getPrintName();
-    Utf8              getPrintFileName();
+    Utf8              getPrintFileName() const;
     Utf8              getCallNameFromDecl();
     Utf8              getCallName();
-    TypeInfoFuncAttr* getCallType();
-    bool              canEmit();
-    void              markLabels();
-    bool              isDoingNothing();
+    TypeInfoFuncAttr* getCallType() const;
+    bool              canEmit() const;
+    void              markLabels() const;
+    bool              isDoingNothing() const;
     void              makeRoomForInstructions(uint32_t room = 1);
 
-    bool     areSame(ByteCodeInstruction* start0, ByteCodeInstruction* end0, ByteCodeInstruction* start1, ByteCodeInstruction* end1, bool specialJump, bool specialCall);
-    uint32_t computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool specialJump, bool specialCall);
+    static bool areSame(ByteCodeInstruction* start0, const ByteCodeInstruction* end0, const ByteCodeInstruction* start1, const ByteCodeInstruction* end1, bool specialJump, bool specialCall);
+    uint32_t    computeCrc(ByteCodeInstruction* ip, uint32_t oldCrc, bool specialJump, bool specialCall) const;
 
     VectorNative<uint32_t>            availableRegistersRC;
     VectorNative<pair<void*, size_t>> autoFree;

@@ -21,7 +21,7 @@ int  ByteCodeDebugger::LINE_W;
 
 void ByteCodeDebugger::setup()
 {
-    if (commands.size())
+    if (!commands.empty())
         return;
 
     COLOR_VTS_CUR_INSTRUCTION = Log::colorToVTS(COLOR_CUR_INSTRUCTION);
@@ -34,80 +34,80 @@ void ByteCodeDebugger::setup()
     LINE_W                    = 71;
 
     // clang-format off
-    commands.push_back({"<RET>",       "",  "",                       "repeat the last command", nullptr});
-    commands.push_back({"<TAB>",       "",  "",                       "contextual completion of the current word", nullptr});
+    commands.push_back({"<RET>", "", "", "repeat the last command", nullptr});
+    commands.push_back({"<TAB>", "", "", "contextual completion of the current word", nullptr});
     commands.push_back({});
 
-    commands.push_back({"step",        "s",    "[count]",             "execute [count] source line(s)", cmdStep});
-    commands.push_back({"next",        "n",    "[count]",             "like 'step', but does not enter functions or inlined code", cmdNext});
-    commands.push_back({"until",       "u",    "<line>",              "runs until the given <line> in the current function has been reached", cmdUntil});
-    commands.push_back({"jump",        "j",    "<line>",              "jump to the given <line> in the current function", cmdJump});
-    commands.push_back({});  
-    commands.push_back({"stepi",       "si",   "[count]",             "execute [count] bytecode instruction(s)", cmdStepi});
-    commands.push_back({"nexti",       "ni",   "[count]",             "like 'stepi', but does not enter functions or inlined code", cmdNexti});
-    commands.push_back({"untili",      "ui",   "<instruction>",       "runs until the given bytecode <instruction> has been reached", cmdUntili});
-    commands.push_back({"jumpi",       "ji",   "<instruction>",       "jump to the given bytecode instruction", cmdJumpi});
-    commands.push_back({});  
-    commands.push_back({"finish",      "f",    "",                    "continue running until the current function is done", cmdFinish});
-    commands.push_back({"continue",    "c",    "",                    "continue running until another breakpoint is reached", cmdContinue});
-    commands.push_back({});                    
-                                               
-    commands.push_back({"execute",     "e",    "<stmt>",              "execute the code statement <stmt> in the current context", cmdExecute});
-    commands.push_back({"print",       "p",    "[/format] <expr>",    "print the result of the expression <expr> in the current context (/format is the same as 'x' command)", cmdPrint});
-    commands.push_back({});  
-    commands.push_back({"display",     "d",    "[/format] <expr>",    "same as 'print', but will be done at each step", cmdDisplay});
-    commands.push_back({"display",     "",     "",                    "print all expressions to display", cmdDisplay});
-    commands.push_back({"display",     "d",    "(cl)ear",             "remove all expressions to display", cmdDisplay});
-    commands.push_back({"display",     "d",    "(cl)ear <num>",       "remove expression <num>", cmdDisplay});
-    commands.push_back({});                    
-                                               
-    commands.push_back({"x",           "",     "[/format] [/num] <address>",     "print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|x8|x16|x32|x64|f32|f64)", cmdMemory});
-    commands.push_back({});                    
-                                               
-    commands.push_back({"list",        "l",    "[num]",               "print the current source code line and [num] lines around", cmdList});
-    commands.push_back({"ll",          "",     "[name]",              "print the current function (or function [name]) source code", cmdLongList});
-    commands.push_back({});  
-    commands.push_back({"i",           "",     "[num]",               "print the current bytecode instruction and [num] instructions around", cmdInstruction});
-    commands.push_back({"ii",          "",     "[name]",              "print the current function (or function [name]) bytecode", cmdInstructionDump});
-    commands.push_back({});                                           
-                                               
-    commands.push_back({"info",        "o",    "(reg)isters [/format]",      "print all registers (/format is the same as 'x' command)", cmdInfo});
-    commands.push_back({"info",        "o",    "(loc)als [filter]",          "print all current local variables", cmdInfo});
-    commands.push_back({"info",        "o",    "(arg)uments [filter]",       "print all current function arguments", cmdInfo});
-    commands.push_back({"info",        "o",    "(func)tions [filter]",       "print all functions", cmdInfo});
-    commands.push_back({"info",        "o",    "(var)iables [filter]",       "print all global variables", cmdInfo});
-    commands.push_back({"info",        "o",    "modules",                    "print all modules", cmdInfo});
+    commands.push_back({"step", "s", "[count]", "execute [count] source line(s)", cmdStep});
+    commands.push_back({"next", "n", "[count]", "like 'step', but does not enter functions or inlined code", cmdNext});
+    commands.push_back({"until", "u", "<line>", "runs until the given <line> in the current function has been reached", cmdUntil});
+    commands.push_back({"jump", "j", "<line>", "jump to the given <line> in the current function", cmdJump});
     commands.push_back({});
-    commands.push_back({"where",       "w",    "",                    "print contextual informations", cmdWhere});
-    commands.push_back({});            
-                                       
-    commands.push_back({"break",       "b",    "",                    "print all breakpoints", cmdBreak});
-    commands.push_back({"break",       "b",    "(f)unc <name>",       "add breakpoint when entering function with exact <name>", cmdBreak});
-    commands.push_back({"break",       "b",    "(f)unc *<name>",      "add breakpoint when entering function containing <name>", cmdBreak});
-    commands.push_back({"break",       "b",    "line <line>",         "add breakpoint in the current source file at <line>", cmdBreak});
-    commands.push_back({"break",       "b",    "file <file> <line>",  "add breakpoint in <file> at <line>", cmdBreak});
-    commands.push_back({"break",       "b",    "(cl)ear",             "remove all breakpoints", cmdBreak});
-    commands.push_back({"break",       "b",    "(cl)ear <num>",       "remove breakpoint <num>", cmdBreak});
-    commands.push_back({"break",       "b",    "(en)able <num>",      "enable breakpoint <num>", cmdBreak});
-    commands.push_back({"break",       "b",    "(di)sable <num>",     "disable breakpoint <num>", cmdBreak});
-    commands.push_back({"tbreak",      "tb",   "",                    "same as 'break' except that the breakpoint will be automatically removed on hit", cmdBreak});
-    commands.push_back({});                                           
-                                                                      
-    commands.push_back({"bt",          "",     "",                    "backtrace, print callstack", cmdBackTrace});
-    commands.push_back({"up",          "",     "[num]",               "move stack frame [num] level up", cmdFrameUp});
-    commands.push_back({"down",        "",     "[num]",               "move stack frame [num] level down", cmdFrameDown});
-    commands.push_back({"frame",       "",     "<num>",               "set stack frame to level <num>", cmdFrame});
-    commands.push_back({});                                           
-                          
-    commands.push_back({"set",         "",     "",                          "print all actual debug parameters", cmdSet});
-    commands.push_back({"set",         "",     "bkp <on|off>",              "enable/disable @breakpoint()", cmdSet});
-    commands.push_back({"set",         "",     "print struct <on|off>",     "print the content of structs when printing values", cmdSet});
-    commands.push_back({"set",         "",     "print array <on|off>",      "print the content of arrays when printing values", cmdSet});
+    commands.push_back({"stepi", "si", "[count]", "execute [count] bytecode instruction(s)", cmdStepi});
+    commands.push_back({"nexti", "ni", "[count]", "like 'stepi', but does not enter functions or inlined code", cmdNexti});
+    commands.push_back({"untili", "ui", "<instruction>", "runs until the given bytecode <instruction> has been reached", cmdUntili});
+    commands.push_back({"jumpi", "ji", "<instruction>", "jump to the given bytecode instruction", cmdJumpi});
     commands.push_back({});
-                                                                     
-    commands.push_back({"help",        "?",    "",                    "print this list of commands", cmdHelp});
-    commands.push_back({"help",        "?",    "<command>",           "print help about a specific command", cmdHelp});
-    commands.push_back({"quit",        "q",    "",                    "quit the compiler", cmdQuit});
+    commands.push_back({"finish", "f", "", "continue running until the current function is done", cmdFinish});
+    commands.push_back({"continue", "c", "", "continue running until another breakpoint is reached", cmdContinue});
+    commands.push_back({});
+
+    commands.push_back({"execute", "e", "<stmt>", "execute the code statement <stmt> in the current context", cmdExecute});
+    commands.push_back({"print", "p", "[/format] <expr>", "print the result of the expression <expr> in the current context (/format is the same as 'x' command)", cmdPrint});
+    commands.push_back({});
+    commands.push_back({"display", "d", "[/format] <expr>", "same as 'print', but will be done at each step", cmdDisplay});
+    commands.push_back({"display", "", "", "print all expressions to display", cmdDisplay});
+    commands.push_back({"display", "d", "(cl)ear", "remove all expressions to display", cmdDisplay});
+    commands.push_back({"display", "d", "(cl)ear <num>", "remove expression <num>", cmdDisplay});
+    commands.push_back({});
+
+    commands.push_back({"x", "", "[/format] [/num] <address>", "print memory (format = s8|s16|s32|s64|u8|u16|u32|u64|x8|x16|x32|x64|f32|f64)", cmdMemory});
+    commands.push_back({});
+
+    commands.push_back({"list", "l", "[num]", "print the current source code line and [num] lines around", cmdList});
+    commands.push_back({"ll", "", "[name]", "print the current function (or function [name]) source code", cmdLongList});
+    commands.push_back({});
+    commands.push_back({"i", "", "[num]", "print the current bytecode instruction and [num] instructions around", cmdInstruction});
+    commands.push_back({"ii", "", "[name]", "print the current function (or function [name]) bytecode", cmdInstructionDump});
+    commands.push_back({});
+
+    commands.push_back({"info", "o", "(reg)isters [/format]", "print all registers (/format is the same as 'x' command)", cmdInfo});
+    commands.push_back({"info", "o", "(loc)als [filter]", "print all current local variables", cmdInfo});
+    commands.push_back({"info", "o", "(arg)uments [filter]", "print all current function arguments", cmdInfo});
+    commands.push_back({"info", "o", "(func)tions [filter]", "print all functions", cmdInfo});
+    commands.push_back({"info", "o", "(var)iables [filter]", "print all global variables", cmdInfo});
+    commands.push_back({"info", "o", "modules", "print all modules", cmdInfo});
+    commands.push_back({});
+    commands.push_back({"where", "w", "", "print contextual information", cmdWhere});
+    commands.push_back({});
+
+    commands.push_back({"break", "b", "", "print all breakpoints", cmdBreak});
+    commands.push_back({"break", "b", "(f)unc <name>", "add breakpoint when entering function with exact <name>", cmdBreak});
+    commands.push_back({"break", "b", "(f)unc *<name>", "add breakpoint when entering function containing <name>", cmdBreak});
+    commands.push_back({"break", "b", "line <line>", "add breakpoint in the current source file at <line>", cmdBreak});
+    commands.push_back({"break", "b", "file <file> <line>", "add breakpoint in <file> at <line>", cmdBreak});
+    commands.push_back({"break", "b", "(cl)ear", "remove all breakpoints", cmdBreak});
+    commands.push_back({"break", "b", "(cl)ear <num>", "remove breakpoint <num>", cmdBreak});
+    commands.push_back({"break", "b", "(en)able <num>", "enable breakpoint <num>", cmdBreak});
+    commands.push_back({"break", "b", "(di)sable <num>", "disable breakpoint <num>", cmdBreak});
+    commands.push_back({"tbreak", "tb", "", "same as 'break' except that the breakpoint will be automatically removed on hit", cmdBreak});
+    commands.push_back({});
+
+    commands.push_back({"bt", "", "", "backtrace, print callstack", cmdBackTrace});
+    commands.push_back({"up", "", "[num]", "move stack frame [num] level up", cmdFrameUp});
+    commands.push_back({"down", "", "[num]", "move stack frame [num] level down", cmdFrameDown});
+    commands.push_back({"frame", "", "<num>", "set stack frame to level <num>", cmdFrame});
+    commands.push_back({});
+
+    commands.push_back({"set", "", "", "print all actual debug parameters", cmdSet});
+    commands.push_back({"set", "", "bkp <on|off>", "enable/disable @breakpoint()", cmdSet});
+    commands.push_back({"set", "", "print struct <on|off>", "print the content of structs when printing values", cmdSet});
+    commands.push_back({"set", "", "print array <on|off>", "print the content of arrays when printing values", cmdSet});
+    commands.push_back({});
+
+    commands.push_back({"help", "?", "", "print this list of commands", cmdHelp});
+    commands.push_back({"help", "?", "<command>", "print help about a specific command", cmdHelp});
+    commands.push_back({"quit", "q", "", "quit the compiler", cmdQuit});
     // clang-format on
 }
 
@@ -119,13 +119,13 @@ ByteCode* ByteCodeDebugger::findCmdBc(const Utf8& name)
 
     if (bc.size() > 1)
     {
-        g_ByteCodeDebugger.printCmdError("multiple functions");
+        printCmdError("multiple functions");
         for (const auto one : bc)
             one->printName();
         return nullptr;
     }
 
-    g_ByteCodeDebugger.printCmdError(Fmt("cannot find function [[%s]]", name.c_str()));
+    printCmdError(Fmt("cannot find function [[%s]]", name.c_str()));
     return nullptr;
 }
 
@@ -167,18 +167,18 @@ bool ByteCodeDebugger::testNameFilter(const Utf8& name, const Utf8& filter)
     return false;
 }
 
-bool ByteCodeDebugger::getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN)
+bool ByteCodeDebugger::getRegIdx(ByteCodeRunContext* context, const Utf8& arg, int& regN) const
 {
     regN = atoi(arg.c_str() + 1);
     if (!context->getRegCount(debugCxtRc))
     {
-        g_ByteCodeDebugger.printCmdError("no available register");
+        printCmdError("no available register");
         return false;
     }
 
     if (regN >= context->getRegCount(debugCxtRc))
     {
-        g_ByteCodeDebugger.printCmdError(Fmt("invalid register number, maximum value is [[%u]]", (uint32_t) context->getRegCount(debugCxtRc) - 1));
+        printCmdError(Fmt("invalid register number, maximum value is [[%u]]", (uint32_t) context->getRegCount(debugCxtRc) - 1));
         return false;
     }
 
@@ -202,7 +202,7 @@ void ByteCodeDebugger::computeDebugContext(ByteCodeRunContext* context)
     if (steps.empty())
         return;
 
-    const uint32_t maxLevel              = g_ByteCodeStackTrace->maxLevel(context);
+    const uint32_t maxLevel        = g_ByteCodeStackTrace->maxLevel(context);
     context->debugStackFrameOffset = min(context->debugStackFrameOffset, maxLevel);
     uint32_t ns                    = 0;
 
@@ -231,7 +231,7 @@ void ByteCodeDebugger::computeDebugContext(ByteCodeRunContext* context)
     }
 }
 
-Utf8 ByteCodeDebugger::completion(ByteCodeRunContext* context, const Utf8& line, Utf8& toComplete)
+Utf8 ByteCodeDebugger::completion(ByteCodeRunContext* context, const Utf8& line, Utf8& toComplete) const
 {
     Vector<Utf8> tokens;
     Utf8::tokenize(line, ' ', tokens);
@@ -272,7 +272,7 @@ Utf8 ByteCodeDebugger::completion(ByteCodeRunContext* context, const Utf8& line,
     return "";
 }
 
-Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, bool& shift)
+Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, bool& shift) const
 {
     static Vector<Utf8> debugCmdHistory;
     static uint32_t     debugCmdHistoryIndex = 0;
@@ -289,15 +289,17 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
             break;
 
 #define MOVE_LEFT()               \
+    do                            \
     {                             \
         fputs("\x1B[1D", stdout); \
         cursorX--;                \
-    }
+    } while(0)
 #define MOVE_RIGHT()              \
+    do                            \
     {                             \
         fputs("\x1B[1C", stdout); \
         cursorX++;                \
-    }
+    } while(0)
 
         switch (key)
         {
@@ -482,7 +484,7 @@ Utf8 ByteCodeDebugger::getCommandLine(ByteCodeRunContext* context, bool& ctrl, b
 bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
 {
     const auto ip           = context->ip;
-    bool zapCurrentIp = false;
+    bool       zapCurrentIp = false;
 
     switch (debugStepMode)
     {
@@ -505,7 +507,7 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
 
     case DebugStepMode::NextInstructionStepOut:
         // If inside a sub function
-        if (context->curRC > debugStepRC)
+        if (context->curRC > debugStepRc)
         {
             zapCurrentIp = true;
             break;
@@ -558,7 +560,7 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
         debugBcMode = false;
 
         // If inside a sub function
-        if (context->curRC > debugStepRC)
+        if (context->curRC > debugStepRc)
         {
             zapCurrentIp = true;
             break;
@@ -636,14 +638,14 @@ bool ByteCodeDebugger::mustBreak(ByteCodeRunContext* context)
     case DebugStepMode::FinishedFunction:
     {
         // Top level function, break on ret
-        if (context->curRC == 0 && debugStepRC == -1 && ByteCode::isRet(ip))
+        if (context->curRC == 0 && debugStepRc == -1 && ByteCode::isRet(ip))
         {
             debugStepMode = DebugStepMode::None;
             break;
         }
 
         // We are in a sub function
-        if (context->curRC > debugStepRC)
+        if (context->curRC > debugStepRc)
         {
             zapCurrentIp = true;
             break;
@@ -737,7 +739,7 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
     checkBreakpoints(context);
     if (!mustBreak(context))
     {
-        debugLastCurRC = context->curRC;
+        debugLastCurRc = context->curRC;
         debugLastIp    = ip;
         return true;
     }
@@ -801,18 +803,18 @@ bool ByteCodeDebugger::step(ByteCodeRunContext* context)
         else if (result == BcDbgCommandResult::Return)
             return false;
         else if (result == BcDbgCommandResult::BadArguments)
-            g_ByteCodeDebugger.printCmdError(Fmt("bad [[%s]] arguments", arg.cmd.c_str()));
+            printCmdError(Fmt("bad [[%s]] arguments", arg.cmd.c_str()));
         else if (result == BcDbgCommandResult::Invalid)
-            g_ByteCodeDebugger.printCmdError(Fmt("unknown debugger command [[%s]]", arg.cmd.c_str()));
+            printCmdError(Fmt("unknown debugger command [[%s]]", arg.cmd.c_str()));
         continue;
     }
 
-    debugLastCurRC = context->curRC;
+    debugLastCurRc = context->curRC;
     debugLastIp    = ip;
     return true;
 }
 
-void ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cmdExpr)
+void ByteCodeDebugger::commandSubstitution(ByteCodeRunContext* context, Utf8& cmdExpr) const
 {
     Utf8 result;
     result.reserve(cmdExpr.length());

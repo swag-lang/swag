@@ -13,7 +13,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdStep(ByteCodeRunContext* context, const 
     {
         if (!Utf8::isNumber(arg.split[1].c_str()))
         {
-            g_ByteCodeDebugger.printCmdError("invalid 'step' number");
+            printCmdError("invalid 'step' number");
             return BcDbgCommandResult::Continue;
         }
 
@@ -35,7 +35,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdStepi(ByteCodeRunContext* context, const
     {
         if (!Utf8::isNumber(arg.split[1].c_str()))
         {
-            g_ByteCodeDebugger.printCmdError("invalid 'stepi' number");
+            printCmdError("invalid 'stepi' number");
             return BcDbgCommandResult::Continue;
         }
 
@@ -57,7 +57,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdNext(ByteCodeRunContext* context, const 
     {
         if (!Utf8::isNumber(arg.split[1].c_str()))
         {
-            g_ByteCodeDebugger.printCmdError("invalid 'next' number");
+            printCmdError("invalid 'next' number");
             return BcDbgCommandResult::Continue;
         }
 
@@ -66,7 +66,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdNext(ByteCodeRunContext* context, const 
 
     context->debugStackFrameOffset   = 0;
     g_ByteCodeDebugger.debugStepMode = DebugStepMode::NextLineStepOut;
-    g_ByteCodeDebugger.debugStepRC   = context->curRC;
+    g_ByteCodeDebugger.debugStepRc   = context->curRC;
     return BcDbgCommandResult::Break;
 }
 
@@ -80,7 +80,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdNexti(ByteCodeRunContext* context, const
     {
         if (!Utf8::isNumber(arg.split[1].c_str()))
         {
-            g_ByteCodeDebugger.printCmdError("invalid 'nexti' number");
+            printCmdError("invalid 'nexti' number");
             return BcDbgCommandResult::Continue;
         }
 
@@ -89,7 +89,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdNexti(ByteCodeRunContext* context, const
 
     context->debugStackFrameOffset   = 0;
     g_ByteCodeDebugger.debugStepMode = DebugStepMode::NextInstructionStepOut;
-    g_ByteCodeDebugger.debugStepRC   = context->curRC;
+    g_ByteCodeDebugger.debugStepRc   = context->curRC;
     return BcDbgCommandResult::Break;
 }
 
@@ -101,9 +101,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdFinish(ByteCodeRunContext* context, cons
     context->debugStackFrameOffset   = 0;
     g_ByteCodeDebugger.debugStepMode = DebugStepMode::FinishedFunction;
     if (g_ByteCodeDebugger.debugLastBreakIp->node->ownerInline)
-        g_ByteCodeDebugger.debugStepRC = context->curRC;
+        g_ByteCodeDebugger.debugStepRc = context->curRC;
     else
-        g_ByteCodeDebugger.debugStepRC = context->curRC - 1;
+        g_ByteCodeDebugger.debugStepRc = context->curRC - 1;
     return BcDbgCommandResult::Break;
 }
 
@@ -112,7 +112,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdContinue(ByteCodeRunContext* context, co
     if (arg.split.size() > 1)
         return BcDbgCommandResult::BadArguments;
 
-    g_ByteCodeDebugger.printCmdResult("continue...");
+    printCmdResult("continue...");
     context->debugOn                 = false;
     context->debugStackFrameOffset   = 0;
     g_ByteCodeDebugger.debugStepMode = DebugStepMode::ToNextBreakpoint;
@@ -135,7 +135,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdJump(ByteCodeRunContext* context, const 
     {
         if (curIp >= context->bc->out + context->bc->numInstructions - 1)
         {
-            g_ByteCodeDebugger.printCmdError("cannot reach this 'jump' destination");
+            printCmdError("cannot reach this 'jump' destination");
             return BcDbgCommandResult::Continue;
         }
 
@@ -167,7 +167,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdJumpi(ByteCodeRunContext* context, const
 
     if (to >= context->bc->numInstructions - 1)
     {
-        g_ByteCodeDebugger.printCmdError("cannot reach this 'jump' destination");
+        printCmdError("cannot reach this 'jump' destination");
         return BcDbgCommandResult::Continue;
     }
 

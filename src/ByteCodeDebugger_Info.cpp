@@ -23,8 +23,8 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
             if (!bc->out)
                 continue;
             total++;
-            if (g_ByteCodeDebugger.testNameFilter(bc->getPrintName(), filter) ||
-                g_ByteCodeDebugger.testNameFilter(bc->getPrintFileName(), filter))
+            if (testNameFilter(bc->getPrintName(), filter) ||
+                testNameFilter(bc->getPrintFileName(), filter))
             {
                 all.push_back(bc->getPrintRefName());
             }
@@ -33,7 +33,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoFuncs(ByteCodeRunContext* context, c
 
     if (all.empty())
     {
-        g_ByteCodeDebugger.printCmdError(Fmt("...no match (%d parsed functions)", total));
+        printCmdError(Fmt("...no match (%d parsed functions)", total));
         return BcDbgCommandResult::Continue;
     }
 
@@ -94,7 +94,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoLocals(ByteCodeRunContext* context, 
 
     if (g_ByteCodeDebugger.debugCxtBc->localVars.empty())
     {
-        g_ByteCodeDebugger.printCmdError("no locals");
+        printCmdError("no locals");
         return BcDbgCommandResult::Continue;
     }
 
@@ -115,7 +115,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdInfoArgs(ByteCodeRunContext* context, co
     const auto funcDecl = CastAst<AstFuncDecl>(g_ByteCodeDebugger.debugCxtBc->node, AstNodeKind::FuncDecl);
     if (!funcDecl->parameters || funcDecl->parameters->childs.empty())
     {
-        g_ByteCodeDebugger.printCmdError("no arguments");
+        printCmdError("no arguments");
         return BcDbgCommandResult::Continue;
     }
 
