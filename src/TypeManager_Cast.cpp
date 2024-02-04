@@ -2021,8 +2021,8 @@ bool TypeManager::castExpressionList(SemanticContext* context, TypeInfoList* fro
     if (fromNode && (fromTypeList->sizeOf != newSizeof))
     {
         const auto oldSizeof = fromTypeList->sizeOf;
-        fromTypeList   = (TypeInfoList*) fromTypeList->clone();
-        for (size_t i = 0; i < fromTypeList->subTypes.size(); i++)
+        fromTypeList         = (TypeInfoList*) fromTypeList->clone();
+        for (size_t i                           = 0; i < fromTypeList->subTypes.size(); i++)
             fromTypeList->subTypes[i]->typeInfo = fromNode->childs[i]->typeInfo;
         fromTypeList->sizeOf = newSizeof;
         fromNode->typeInfo   = fromTypeList;
@@ -2195,8 +2195,8 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
             }
             else
             {
-                const SwagAny*   any         = (SwagAny*) fromNode->computedValue->getStorageAddr();
-                const auto newTypeInfo = context->sourceFile->module->typeGen.getRealType(fromNode->computedValue->storageSegment, (ExportedTypeInfo*) any->type);
+                const SwagAny* any         = (SwagAny*) fromNode->computedValue->getStorageAddr();
+                const auto     newTypeInfo = context->sourceFile->module->typeGen.getRealType(fromNode->computedValue->storageSegment, (ExportedTypeInfo*) any->type);
 
                 // need to check the type
                 if (newTypeInfo && context->sourceFile->module->mustEmitSafety(fromNode, SAFETY_ANY, true))
@@ -2248,7 +2248,14 @@ bool TypeManager::castToFromAny(SemanticContext* context, TypeInfo* toType, Type
     return true;
 }
 
-bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* toStruct, TypeInfoStruct* fromStruct, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, uint64_t castFlags, bool& ok)
+bool TypeManager::castStructToStruct(SemanticContext* context,
+                                     TypeInfoStruct*  toStruct,
+                                     TypeInfoStruct*  fromStruct,
+                                     TypeInfo*        toType,
+                                     TypeInfo*        fromType,
+                                     AstNode*         fromNode,
+                                     uint64_t         castFlags,
+                                     bool&            ok)
 {
     context->castStructStructFields.clear();
     auto& stack = context->castStructStructFields;
@@ -2314,8 +2321,8 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
         Semantic::waitOverloadCompleted(context->baseJob, structNode->resolvedSymbolOverload);
         YIELD();
 
-        const TypeInfoParam*  foundField  = nullptr;
-        TypeInfoStruct* foundStruct = nullptr;
+        const TypeInfoParam* foundField  = nullptr;
+        TypeInfoStruct*      foundStruct = nullptr;
         for (const auto field : it.typeStruct->fields)
         {
             if (!(field->flags & TYPEINFOPARAM_HAS_USING))
@@ -2331,7 +2338,7 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
             else if (field->typeInfo->isPointerTo(TypeInfoKind::Struct))
             {
                 const auto typePointer = CastTypeInfo<TypeInfoPointer>(field->typeInfo, TypeInfoKind::Pointer);
-                typeStruct       = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
+                typeStruct             = CastTypeInfo<TypeInfoStruct>(typePointer->pointedType, TypeInfoKind::Struct);
             }
 
             if (typeStruct)
@@ -2345,9 +2352,10 @@ bool TypeManager::castStructToStruct(SemanticContext* context, TypeInfoStruct* t
                     {
                         if (fromNode && !(castFlags & CASTFLAG_JUST_CHECK))
                         {
-                            const Diagnostic diag{fromNode, Fmt(Err(Err0014), fromType->getDisplayNameC(), toType->getDisplayNameC(), fromStruct->getDisplayNameC(), toStruct->getDisplayNameC())};
-                            const auto       note1 = Diagnostic::note(foundField->declNode, Nte(Nte0061));
-                            const auto       note2 = Diagnostic::note(field->declNode, Nte(Nte0060));
+                            const Diagnostic diag{fromNode, Fmt(Err(Err0014), fromType->getDisplayNameC(), toType->getDisplayNameC(), fromStruct->getDisplayNameC(),
+                                                                toStruct->getDisplayNameC())};
+                            const auto note1 = Diagnostic::note(foundField->declNode, Nte(Nte0061));
+                            const auto note2 = Diagnostic::note(field->declNode, Nte(Nte0060));
                             return context->report(diag, note1, note2);
                         }
                     }
@@ -2476,7 +2484,7 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
         if (fromType->isPointer())
         {
             const auto typePointer = CastTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
-            typeStruct       = typePointer->pointedType;
+            typeStruct             = typePointer->pointedType;
         }
 
         const auto fromTypeStruct = CastTypeInfo<TypeInfoStruct>(typeStruct, TypeInfoKind::Struct);
@@ -3110,7 +3118,9 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
                         const auto constSegment = Semantic::getConstantSegFromContext(exprList);
                         exprList->allocateComputedValue();
                         exprList->computedValue->storageSegment = constSegment;
-                        SWAG_CHECK(Semantic::reserveAndStoreToSegment(context, exprList->computedValue->storageSegment, exprList->computedValue->storageOffset, nullptr, fromNode->typeInfo, exprList));
+                        SWAG_CHECK(
+                            Semantic::reserveAndStoreToSegment(context, exprList->computedValue->storageSegment, exprList->computedValue->storageOffset, nullptr, fromNode->typeInfo
+                                , exprList));
                     }
                 }
             }
@@ -3267,11 +3277,14 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
     if (!result)
     {
         if (!toType->isPointer() && fromType->isPointerRef())
+        {
+            context->castFlagsResult |= CASTFLAG_RESULT_FROM_REF;
             fromType = concretePtrRef(fromType);
+        }
 
         switch (toType->kind)
         {
-            // Cast to pointer
+        // Cast to pointer
         case TypeInfoKind::Pointer:
             if (toType->isPointerRef())
                 SWAG_CHECK(castToPointerRef(context, toType, fromType, fromNode, castFlags));
@@ -3279,32 +3292,32 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, Ty
                 SWAG_CHECK(castToPointer(context, toType, fromType, fromNode, castFlags));
             break;
 
-            // Cast to native type
+        // Cast to native type
         case TypeInfoKind::Native:
             SWAG_CHECK(castToNative(context, toType, fromType, toNode, fromNode, castFlags));
             break;
 
-            // Cast to enum
+        // Cast to enum
         case TypeInfoKind::Enum:
             SWAG_CHECK(castToEnum(context, toType, fromType, toNode, fromNode, castFlags));
             break;
 
-            // Cast to array
+        // Cast to array
         case TypeInfoKind::Array:
             SWAG_CHECK(castToArray(context, toType, fromType, fromNode, castFlags));
             break;
 
-            // Cast to slice
+        // Cast to slice
         case TypeInfoKind::Slice:
             SWAG_CHECK(castToSlice(context, toType, fromType, fromNode, castFlags));
             break;
 
-            // Cast to interface
+        // Cast to interface
         case TypeInfoKind::Interface:
             SWAG_CHECK(castToInterface(context, toType, fromType, fromNode, castFlags));
             break;
 
-            // Cast to lambda
+        // Cast to lambda
         case TypeInfoKind::LambdaClosure:
             if (toType->isClosure())
                 SWAG_CHECK(castToClosure(context, toType, fromType, fromNode, castFlags));

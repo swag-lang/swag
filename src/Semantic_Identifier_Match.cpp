@@ -21,10 +21,11 @@ void Semantic::sortParameters(AstNode* allParams)
         return;
 
     sort(allParams->childs.begin(), allParams->childs.end(), [](AstNode* n1, AstNode* n2)
-         {
-             const AstFuncCallParam* p1 = CastAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
-             const AstFuncCallParam* p2 = CastAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
-             return p1->indexParam < p2->indexParam; });
+    {
+        const AstFuncCallParam* p1 = CastAst<AstFuncCallParam>(n1, AstNodeKind::FuncCallParam);
+        const AstFuncCallParam* p2 = CastAst<AstFuncCallParam>(n2, AstNodeKind::FuncCallParam);
+        return p1->indexParam < p2->indexParam;
+    });
 
     allParams->flags ^= AST_MUST_SORT_CHILDS;
 }
@@ -79,7 +80,7 @@ void Semantic::resolvePendingLambdaTyping(SemanticContext* context, AstNode* fun
     // Replace generic parameters, if any
     for (const auto undefinedType : typeUndefinedFct->genericParameters)
     {
-        auto it            = typeDefinedFct->replaceTypes.find(undefinedType->name);
+        auto it = typeDefinedFct->replaceTypes.find(undefinedType->name);
         if (it != typeDefinedFct->replaceTypes.end())
         {
             undefinedType->name     = it->second.typeInfoReplace->name;
@@ -89,14 +90,15 @@ void Semantic::resolvePendingLambdaTyping(SemanticContext* context, AstNode* fun
 
     // Replace every types inside the function
     Ast::visit(funcDecl, [&](AstNode* p)
-               {
-                   const auto it = typeDefinedFct->replaceTypes.find(p->token.text);
-                   if (it == typeDefinedFct->replaceTypes.end())
-                       return;
-                   p->token.text = it->second.typeInfoReplace->name;
-                   if (p->resolvedSymbolOverload)
-                       p->resolvedSymbolOverload->typeInfo = it->second.typeInfoReplace;
-                   p->typeInfo = it->second.typeInfoReplace; });
+    {
+        const auto it = typeDefinedFct->replaceTypes.find(p->token.text);
+        if (it == typeDefinedFct->replaceTypes.end())
+            return;
+        p->token.text = it->second.typeInfoReplace->name;
+        if (p->resolvedSymbolOverload)
+            p->resolvedSymbolOverload->typeInfo = it->second.typeInfoReplace;
+        p->typeInfo = it->second.typeInfoReplace;
+    });
 
     // Set return type
     if (typeUndefinedFct->returnType->isUndefined())
@@ -185,7 +187,10 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
             const auto typeCall = TypeManager::concreteType(nodeCall->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
             if (!toType->isPointerRef() && typeCall->isPointerRef())
             {
-                // :ConcreteRef
+                setUnRef(nodeCall);
+            }
+            else if(oneMatch.solvedCastFlags[i] & CASTFLAG_RESULT_FROM_REF)
+            {
                 setUnRef(nodeCall);
             }
             else if (toType->isConstPointerRef() &&
@@ -206,7 +211,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                     Ast::addChildBack(varNode, front);
                     varNode->assignment = front;
 
-                    const auto toPtr              = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
+                    const auto toPtr        = CastTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
                     varNode->type           = Ast::newIdentifierRef(sourceFile, "dummy", varNode);
                     varNode->type->typeInfo = toPtr->pointedType;
                     varNode->type->flags |= AST_NO_SEMANTIC;
@@ -256,7 +261,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
         // If passing a closure
         // :FctCallParamClosure
         const auto toTypeRef = TypeManager::concreteType(toType, CONCRETE_FORCEALIAS);
-        auto makePtrL  = nodeCall->childs.empty() ? nullptr : nodeCall->childs.front();
+        auto       makePtrL  = nodeCall->childs.empty() ? nullptr : nodeCall->childs.front();
 
         if (makePtrL && toTypeRef && toTypeRef->isClosure())
         {
@@ -341,8 +346,8 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 Ast::removeFromParent(varNode);
                 Ast::addChildFront(identifier, varNode);
 
-                const auto typeExpr      = Ast::newTypeExpression(sourceFile, varNode);
-                typeExpr->typeInfo = nodeCall->typeInfo;
+                const auto typeExpr = Ast::newTypeExpression(sourceFile, varNode);
+                typeExpr->typeInfo  = nodeCall->typeInfo;
                 typeExpr->flags |= AST_NO_SEMANTIC;
                 varNode->type = typeExpr;
 
@@ -357,7 +362,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
 
                 Ast::removeFromParent(nodeCall);
 
-                const auto newParam        = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
+                const auto newParam  = Ast::newFuncCallParam(sourceFile, identifier->callParameters);
                 newParam->indexParam = nodeCall->indexParam;
                 Ast::removeFromParent(newParam);
                 Ast::insertChild(identifier->callParameters, newParam, (uint32_t) i);
@@ -407,12 +412,12 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
         if (typeInfoFunc->declNode->kind == AstNodeKind::FuncDecl)
         {
             const auto funcDecl = CastAst<AstFuncDecl>(typeInfoFunc->declNode, AstNodeKind::FuncDecl);
-            parameters    = funcDecl->parameters;
+            parameters          = funcDecl->parameters;
         }
         else
         {
             const auto funcDecl = CastAst<AstTypeLambda>(typeInfoFunc->declNode, AstNodeKind::TypeLambda, AstNodeKind::TypeClosure);
-            parameters    = funcDecl->childs.front();
+            parameters          = funcDecl->childs.front();
         }
 
         for (uint32_t i = 0; i < parameters->childs.size(); i++)
@@ -601,7 +606,8 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             Vector<const Diagnostic*> notes;
             auto                      prevIdentifier = CastAst<AstIdentifier>(prevNode, AstNodeKind::Identifier);
             auto                      widthNode      = prevIdentifier->identifierExtension->fromAlternateVar;
-            notes.push_back(Diagnostic::note(oneMatch.oneOverload->overload->node, oneMatch.oneOverload->overload->node->getTokenName(), Fmt(Nte(Nte0154), prevNode->typeInfo->getDisplayNameC())));
+            notes.push_back(Diagnostic::note(oneMatch.oneOverload->overload->node, oneMatch.oneOverload->overload->node->getTokenName(),
+                                             Fmt(Nte(Nte0154), prevNode->typeInfo->getDisplayNameC())));
             notes.push_back(Diagnostic::hereIs(widthNode));
             notes.push_back(Diagnostic::note(Fmt(Nte(Nte0031), identifierRef->startScope->name.c_str())));
             return context->report(diag, notes);
@@ -1600,7 +1606,8 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                         asMatch = true;
                     else if (isLast && grandParent->kind == AstNodeKind::BinaryOp && grandParent->tokenId == TokenId::SymEqualEqual && overload->symbol->kind == SymbolKind::Struct)
                         asMatch = true;
-                    else if (isLast && grandParent->kind == AstNodeKind::BinaryOp && grandParent->tokenId == TokenId::SymExclamEqual && overload->symbol->kind == SymbolKind::Struct)
+                    else if (isLast && grandParent->kind == AstNodeKind::BinaryOp && grandParent->tokenId == TokenId::SymExclamEqual && overload->symbol->kind ==
+                             SymbolKind::Struct)
                         asMatch = true;
                     else if (grandParent->kind == AstNodeKind::IntrinsicDefined)
                         asMatch = true;
@@ -1786,7 +1793,8 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
 
             auto symbol = overloads[0]->overload->symbol;
             auto match  = matches[0];
-            return SemanticError::duplicatedSymbolError(context, node->sourceFile, node->token, symbol->kind, symbol->name, match->symbolOverload->symbol->kind, match->symbolOverload->node);
+            return SemanticError::duplicatedSymbolError(context, node->sourceFile, node->token, symbol->kind, symbol->name, match->symbolOverload->symbol->kind,
+                                                        match->symbolOverload->node);
         }
 
         return true;
