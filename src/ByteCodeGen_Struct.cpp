@@ -1347,7 +1347,7 @@ void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t reg
                 // When generating parameters for a closure call, keep the reference if we want one !
                 auto noRef = child->typeInfo;
                 if (param->childs.front()->kind != AstNodeKind::MakePointer || !(param->childs.front()->specFlags & AstMakePointer::SPECFLAG_TOREF))
-                    noRef = TypeManager::concretePtrRef(noRef);
+                    noRef = TypeManager::concretePtrRefType(noRef);
 
                 emitAffectEqual(context, r0, child->resultRegisterRC, noRef, child);
                 SWAG_ASSERT(context->result == ContextResult::Done);

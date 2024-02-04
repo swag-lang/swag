@@ -94,7 +94,7 @@ bool ByteCodeGen::emitBinaryOpMinus(ByteCodeGenContext* context, TypeInfo* typeI
     // This is the substract of two pointers if we have a s64 on the left, and a pointer on the right
     if (typeInfo->isNative(NativeTypeKind::S64))
     {
-        const auto rightTypeInfo = TypeManager::concreteType(node->childs[1]->typeInfo);
+        const auto rightTypeInfo = TypeManager::concretePtrRefType(node->childs[1]->typeInfo);
         if (rightTypeInfo->isPointer())
         {
             const auto rightTypePointer = CastTypeInfo<TypeInfoPointer>(rightTypeInfo, TypeInfoKind::Pointer);
@@ -562,8 +562,8 @@ bool ByteCodeGen::emitLogicalAnd(ByteCodeGenContext* context, uint32_t r0, uint3
         EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r2, r1);
 
     // And we update the shortcut jump after the 'right' side of the expression
-    const auto inst   = &context->bc->out[node->seekJumpExpression];
-    inst->b.s32 = context->bc->numInstructions - node->seekJumpExpression - 1;
+    const auto inst = &context->bc->out[node->seekJumpExpression];
+    inst->b.s32     = context->bc->numInstructions - node->seekJumpExpression - 1;
     return true;
 }
 
@@ -620,8 +620,8 @@ bool ByteCodeGen::emitLogicalOr(ByteCodeGenContext* context, uint32_t r0, uint32
     const auto node = CastAst<AstBinaryOpNode>(context->node, AstNodeKind::BinaryOp);
     if (r2 != r1)
         EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r2, r1);
-    const auto inst   = &context->bc->out[node->seekJumpExpression];
-    inst->b.s32 = context->bc->numInstructions - node->seekJumpExpression - 1;
+    const auto inst = &context->bc->out[node->seekJumpExpression];
+    inst->b.s32     = context->bc->numInstructions - node->seekJumpExpression - 1;
     return true;
 }
 
@@ -661,10 +661,12 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
             switch (typeInfo->nativeType)
             {
             case NativeTypeKind::F32:
-                EMIT_INST4(context, ByteCodeOp::IntrinsicMulAddF32, node->resultRegisterRC, front->childs[0]->resultRegisterRC, front->childs[1]->resultRegisterRC, node->childs[1]->resultRegisterRC);
+                EMIT_INST4(context, ByteCodeOp::IntrinsicMulAddF32, node->resultRegisterRC, front->childs[0]->resultRegisterRC, front->childs[1]->resultRegisterRC,
+                           node->childs[1]->resultRegisterRC);
                 break;
             case NativeTypeKind::F64:
-                EMIT_INST4(context, ByteCodeOp::IntrinsicMulAddF64, node->resultRegisterRC, front->childs[0]->resultRegisterRC, front->childs[1]->resultRegisterRC, node->childs[1]->resultRegisterRC);
+                EMIT_INST4(context, ByteCodeOp::IntrinsicMulAddF64, node->resultRegisterRC, front->childs[0]->resultRegisterRC, front->childs[1]->resultRegisterRC,
+                           node->childs[1]->resultRegisterRC);
                 break;
             default:
                 return Report::internalError(context->node, "emitBinaryOpPlus, muladd, type not supported");
@@ -690,7 +692,7 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
             if (node->tokenId == TokenId::KwdAnd || node->tokenId == TokenId::KwdOr)
             {
                 // :BinOpAndOr
-                const auto front             = node->childs[0];
+                const auto front       = node->childs[0];
                 r2                     = front->extMisc()->additionalRegisterRC;
                 node->resultRegisterRC = front->extMisc()->additionalRegisterRC;
                 front->extMisc()->additionalRegisterRC.clear();
@@ -701,7 +703,8 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
                 node->resultRegisterRC = r2;
             }
 
-            const auto typeInfoExpr = node->castedTypeInfo ? node->castedTypeInfo : node->typeInfo;
+            auto typeInfoExpr = node->castedTypeInfo ? node->castedTypeInfo : node->typeInfo;
+            typeInfoExpr      = TypeManager::concretePtrRefType(typeInfoExpr);
 
             switch (node->tokenId)
             {
