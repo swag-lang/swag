@@ -145,7 +145,7 @@ bool Semantic::resolveExpressionListArray(SemanticContext* context)
     }
 
     const auto typeInfo = makeType<TypeInfoList>(TypeInfoKind::TypeListArray);
-    SWAG_ASSERT(node->childs.size());
+    SWAG_ASSERT(!node->childs.empty());
     typeInfo->declNode = node;
 
     node->flags |= AST_CONST_EXPR | AST_R_VALUE;

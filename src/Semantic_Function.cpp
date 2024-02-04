@@ -19,7 +19,7 @@ void Semantic::allocateOnStack(AstNode* node, TypeInfo* typeInfo)
     Semantic::setOwnerMaxStackSize(node, node->ownerScope->startStackSize);
 }
 
-bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, AstNode* funcNode, AstNode* parameters, bool forGenerics)
+bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* typeInfo, const AstNode* funcNode, AstNode* parameters, bool forGenerics)
 {
     if (!parameters || (funcNode->attributeFlags & ATTRIBUTE_COMPILER_FUNC))
         return true;
@@ -187,6 +187,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveFuncDeclParams(SemanticContext* context)
 {
     const auto node = context->node;
@@ -424,7 +425,7 @@ bool Semantic::setFullResolve(SemanticContext* context, AstFuncDecl* funcNode)
     return true;
 }
 
-void Semantic::setFuncDeclParamsIndex(AstFuncDecl* funcNode)
+void Semantic::setFuncDeclParamsIndex(const AstFuncDecl* funcNode)
 {
     if (funcNode->parameters)
     {
@@ -1002,7 +1003,7 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
     return true;
 }
 
-bool Semantic::isMethod(AstFuncDecl* funcNode)
+bool Semantic::isMethod(const AstFuncDecl* funcNode)
 {
     if (funcNode->ownerStructScope &&
         funcNode->parent->kind != AstNodeKind::CompilerAst &&
@@ -1021,7 +1022,7 @@ bool Semantic::isMethod(AstFuncDecl* funcNode)
     return false;
 }
 
-void Semantic::launchResolveSubDecl(JobContext* context, AstNode* node)
+void Semantic::launchResolveSubDecl(const JobContext* context, AstNode* node)
 {
     if (node->flags & (AST_SPEC_SEMANTIC1 | AST_SPEC_SEMANTIC2 | AST_SPEC_SEMANTIC3))
         return;
@@ -1153,6 +1154,7 @@ bool Semantic::resolveFuncCallGenParams(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveFuncCallParams(SemanticContext* context)
 {
     const auto node = context->node;
@@ -1274,7 +1276,7 @@ void Semantic::propagateReturn(AstNode* node)
 
     AstNode* scanNode = node;
 
-    // Search if we are in an infinit loop
+    // Search if we are in an infinite loop
     auto breakable = node->ownerBreakable;
     while (breakable)
     {
@@ -1305,7 +1307,7 @@ void Semantic::propagateReturn(AstNode* node)
         breakable = breakable->ownerBreakable;
     }
 
-    // Propage the return in the corresponding scope
+    // Propagate the return in the corresponding scope
     while (scanNode && scanNode != stopFct)
     {
         if (scanNode->semFlags & SEMFLAG_SCOPE_HAS_RETURN && !(scanNode->semFlags & SEMFLAG_SCOPE_FORCE_HAS_RETURN))
@@ -1572,7 +1574,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
         child->flags |= AST_TRANSIENT;
     }
 
-    auto childType = TypeManager::concreteType(child->typeInfo);
+    const auto childType = TypeManager::concreteType(child->typeInfo);
     if (!returnType->isPointerRef() && childType->isPointerRef())
         setUnRef(child);
 
@@ -1733,7 +1735,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     if (funcDecl->hasExtMisc())
     {
         SharedLock lk1(funcDecl->extMisc()->mutexAltScopes);
-        if (funcDecl->extMisc()->alternativeScopes.size() || funcDecl->extMisc()->alternativeScopesVars.size())
+        if (!funcDecl->extMisc()->alternativeScopes.empty() || !funcDecl->extMisc()->alternativeScopesVars.empty())
         {
             inlineNode->allocateExtension(ExtensionKind::Misc);
             ScopedLock lk(inlineNode->extMisc()->mutexAltScopes);
@@ -1789,7 +1791,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
 
     // We also need to add all alternatives scopes (using), in case the function relies on them to
     // be solved
-    AstNode* parentNode = funcDecl;
+    const AstNode* parentNode = funcDecl;
     while (parentNode)
     {
         if (parentNode->hasExtMisc())
@@ -1812,7 +1814,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
         }
     }
 
-    // A mixin behave exactly like if it is in the caller scope, so do not create a subscope for them
+    // A mixin behave exactly like if it is in the caller scope, so do not create a sub-scope for them
     Scope* newScope = identifier->ownerScope;
     if (!(funcDecl->attributeFlags & ATTRIBUTE_MIXIN))
     {
