@@ -11,7 +11,7 @@ AstInline* Ast::newInline(SourceFile* sourceFile, AstNode* parent, Parser* parse
     node->allocateExtension(ExtensionKind::Semantic);
     node->extSemantic()->semanticAfterFct  = Semantic::resolveInlineAfter;
     node->extSemantic()->semanticBeforeFct = Semantic::resolveInlineBefore;
-    node->setBcNotifBefore(ByteCodeGen::emitInlineBefore);
+    node->setBcNotifyBefore(ByteCodeGen::emitInlineBefore);
     node->byteCodeFct = ByteCodeGen::emitInline;
     return node;
 }

@@ -246,7 +246,7 @@ bool ByteCodeGen::emitInline(ByteCodeGenContext* context)
         context->bc->out[r->seekJump].b.s32 = context->bc->numInstructions - r->seekJump - 1;
 
     // If the inlined function returns a reference, and we want a value, we need to unref
-    if (node->parent->semFlags & SEMFLAG_FROM_REF && !node->parent->forceTakeAddress())
+    if (node->parent->semFlags & SEMFLAG_FROM_REF && !node->parent->isForceTakeAddress())
     {
         SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRC, node->typeInfo));
         node->parent->resultRegisterRC = node->resultRegisterRC;

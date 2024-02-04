@@ -1074,16 +1074,16 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
                 switch (identifier->extOwner()->ownerTryCatchAssume->kind)
                 {
                 case AstNodeKind::Try:
-                    identifier->setBcNotifAfter(ByteCodeGen::emitTry);
+                    identifier->setBcNotifyAfter(ByteCodeGen::emitTry);
                     break;
                 case AstNodeKind::TryCatch:
-                    identifier->setBcNotifAfter(ByteCodeGen::emitTryCatch);
+                    identifier->setBcNotifyAfter(ByteCodeGen::emitTryCatch);
                     break;
                 case AstNodeKind::Catch:
-                    identifier->setBcNotifAfter(ByteCodeGen::emitCatch);
+                    identifier->setBcNotifyAfter(ByteCodeGen::emitCatch);
                     break;
                 case AstNodeKind::Assume:
-                    identifier->setBcNotifAfter(ByteCodeGen::emitAssume);
+                    identifier->setBcNotifyAfter(ByteCodeGen::emitAssume);
                     break;
                 default:
                     break;
@@ -1199,7 +1199,7 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             }
         }
 
-        if (identifier->forceTakeAddress())
+        if (identifier->isForceTakeAddress())
         {
             // This is for a lambda
             if (identifier->parent->parent->kind == AstNodeKind::MakePointer || identifier->parent->parent->kind == AstNodeKind::MakePointerLambda)
@@ -1331,16 +1331,16 @@ bool Semantic::setSymbolMatch(SemanticContext* context, AstIdentifierRef* identi
             switch (identifier->extOwner()->ownerTryCatchAssume->kind)
             {
             case AstNodeKind::Try:
-                identifier->setBcNotifAfter(ByteCodeGen::emitTry);
+                identifier->setBcNotifyAfter(ByteCodeGen::emitTry);
                 break;
             case AstNodeKind::TryCatch:
-                identifier->setBcNotifAfter(ByteCodeGen::emitTryCatch);
+                identifier->setBcNotifyAfter(ByteCodeGen::emitTryCatch);
                 break;
             case AstNodeKind::Catch:
-                identifier->setBcNotifAfter(ByteCodeGen::emitCatch);
+                identifier->setBcNotifyAfter(ByteCodeGen::emitCatch);
                 break;
             case AstNodeKind::Assume:
-                identifier->setBcNotifAfter(ByteCodeGen::emitAssume);
+                identifier->setBcNotifyAfter(ByteCodeGen::emitAssume);
                 break;
             default:
                 break;

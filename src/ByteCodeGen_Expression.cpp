@@ -329,7 +329,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, TypeIn
     }
 
     // A reference to a segment
-    if (node->forceTakeAddress() || (typeInfo->isPointer() && !typeInfo->isPointerNull()))
+    if (node->isForceTakeAddress() || (typeInfo->isPointer() && !typeInfo->isPointerNull()))
     {
         if (node->computedValue->storageSegment && node->computedValue->storageOffset != UINT32_MAX)
         {

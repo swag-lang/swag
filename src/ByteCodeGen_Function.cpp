@@ -2111,7 +2111,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context, AstNode* allParams, AstF
                 auto returnType = typeInfoFunc->concreteReturnType();
                 EMIT_INST1(context, ByteCodeOp::CopyRTtoRA, node->resultRegisterRC[0]);
 
-                if (node->semFlags & SEMFLAG_FROM_REF && !node->forceTakeAddress())
+                if (node->semFlags & SEMFLAG_FROM_REF && !node->isForceTakeAddress())
                 {
                     auto ptrPointer = CastTypeInfo<TypeInfoPointer>(typeInfoFunc->returnType, TypeInfoKind::Pointer);
                     SWAG_ASSERT(ptrPointer->flags & TYPEINFO_POINTER_REF);

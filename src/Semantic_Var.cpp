@@ -1271,7 +1271,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             }
         }
 
-        node->setBcNotifBefore(ByteCodeGen::emitLocalVarDeclBefore);
+        node->setBcNotifyBefore(ByteCodeGen::emitLocalVarDeclBefore);
         node->byteCodeFct = ByteCodeGen::emitLocalVarDecl;
         node->flags |= AST_R_VALUE;
     }

@@ -1007,7 +1007,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
         newScope->owner = resStmt;
         resStmt->allocateExtension(ExtensionKind::Semantic);
         resStmt->extSemantic()->semanticAfterFct = Semantic::resolveScopedStmtAfter;
-        resStmt->setBcNotifAfter(ByteCodeGen::emitLeaveScope);
+        resStmt->setBcNotifyAfter(ByteCodeGen::emitLeaveScope);
     }
 
     return true;
@@ -1095,7 +1095,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
                 SWAG_CHECK(doIdentifierRef(parentId, &idRef, IDENTIFIER_NO_PARAMS));
 
                 if (byRef)
-                    forceTakeAddress(idRef);
+                    isForceTakeAddress(idRef);
 
                 if (token.id == TokenId::SymVertical)
                     break;
@@ -1180,7 +1180,7 @@ bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMiss
             funcNode->content->token = token;
         }
 
-        funcNode->content->setBcNotifAfter(ByteCodeGen::emitLeaveScope);
+        funcNode->content->setBcNotifyAfter(ByteCodeGen::emitLeaveScope);
         newScope->owner = funcNode->content;
     }
 
@@ -1259,7 +1259,7 @@ bool Parser::doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** r
         AstNode* identifierRef = Ast::newIdentifierRef(sourceFile, lambda->token.text, exprNode, this);
         identifierRef->inheritTokenLocation(lambda);
         identifierRef->childs.back()->inheritTokenLocation(lambda);
-        forceTakeAddress(identifierRef);
+        isForceTakeAddress(identifierRef);
 
         // Create the capture block (a tuple)
         const auto nameCaptureBlock = Fmt("__captureblock%d", g_UniqueID.fetch_add(1));
@@ -1282,7 +1282,7 @@ bool Parser::doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** r
         identifierRef = Ast::newIdentifierRef(sourceFile, nameCaptureBlock, exprNode, this);
         identifierRef->inheritTokenLocation(lambdaDecl->captureParameters);
         identifierRef->childs.back()->inheritTokenLocation(lambdaDecl->captureParameters);
-        forceTakeAddress(identifierRef);
+        isForceTakeAddress(identifierRef);
     }
     else
     {
@@ -1290,7 +1290,7 @@ bool Parser::doLambdaExpression(AstNode* parent, uint32_t exprFlags, AstNode** r
         AstNode* identifierRef = Ast::newIdentifierRef(sourceFile, lambda->token.text, exprNode, this);
         identifierRef->inheritTokenLocation(lambda);
         identifierRef->childs.back()->inheritTokenLocation(lambda);
-        forceTakeAddress(identifierRef);
+        isForceTakeAddress(identifierRef);
     }
 
     // :DeduceLambdaType

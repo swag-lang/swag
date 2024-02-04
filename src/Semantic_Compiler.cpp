@@ -444,7 +444,7 @@ bool Semantic::resolveCompilerMacro(SemanticContext* context)
     const auto scope      = node->childs.back()->ownerScope;
     scope->startStackSize = node->ownerScope->startStackSize;
 
-    node->setBcNotifAfter(ByteCodeGen::emitLeaveScope);
+    node->setBcNotifyAfter(ByteCodeGen::emitLeaveScope);
 
     // Be sure #macro is used inside a macro
     if (!node->ownerInline || (node->ownerInline->attributeFlags & ATTRIBUTE_MIXIN) || !(node->ownerInline->attributeFlags & ATTRIBUTE_MACRO))
@@ -468,7 +468,7 @@ bool Semantic::resolveCompilerMixin(SemanticContext* context)
     auto expr = node->childs[0];
     SWAG_VERIFY(expr->typeInfo->isCode(), context->report({expr, Fmt(Err(Err0193), expr->typeInfo->getDisplayNameC())}));
 
-    node->setBcNotifBefore(ByteCodeGen::emitDebugNop);
+    node->setBcNotifyBefore(ByteCodeGen::emitDebugNop);
     node->byteCodeFct = ByteCodeGen::emitDebugNop;
     expr->flags |= AST_NO_BYTECODE;
 

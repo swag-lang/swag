@@ -531,7 +531,7 @@ bool Semantic::resolveArrayPointerIndex(SemanticContext* context)
 {
     const auto node = CastAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
 
-    if (node->forceTakeAddress())
+    if (node->isForceTakeAddress())
         SWAG_CHECK(resolveArrayPointerRef(context));
     else
         SWAG_CHECK(resolveArrayPointerDeRef(context));

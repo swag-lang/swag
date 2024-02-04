@@ -119,7 +119,7 @@ bool Semantic::resolveExpressionListTuple(SemanticContext* context)
     SWAG_CHECK(computeExpressionListTupleType(context, node));
     YIELD();
 
-    node->setBcNotifBefore(ByteCodeGen::emitExpressionListBefore);
+    node->setBcNotifyBefore(ByteCodeGen::emitExpressionListBefore);
     node->byteCodeFct = ByteCodeGen::emitExpressionList;
 
     // If the literal tuple is not constant, then we need to reserve some space in the
@@ -165,7 +165,7 @@ bool Semantic::resolveExpressionListArray(SemanticContext* context)
         typeInfo->setConst();
 
     typeInfo->forceComputeName();
-    node->setBcNotifBefore(ByteCodeGen::emitExpressionListBefore);
+    node->setBcNotifyBefore(ByteCodeGen::emitExpressionListBefore);
     node->byteCodeFct = ByteCodeGen::emitExpressionList;
     node->typeInfo    = typeInfo;
 
@@ -282,8 +282,8 @@ bool Semantic::resolveConditionalOp(SemanticContext* context)
         return true;
     }
 
-    expression->setBcNotifAfter(ByteCodeGen::emitConditionalOpAfterExpr);
-    ifTrue->setBcNotifAfter(ByteCodeGen::emitConditionalOpAfterIfTrue);
+    expression->setBcNotifyAfter(ByteCodeGen::emitConditionalOpAfterExpr);
+    ifTrue->setBcNotifyAfter(ByteCodeGen::emitConditionalOpAfterIfTrue);
     node->byteCodeFct = ByteCodeGen::emitConditionalOp;
 
     return true;

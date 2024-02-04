@@ -1234,7 +1234,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
 
             // This if for a lambda
             bool forLambda = false;
-            if (identifier->forceTakeAddress() && isFunctionButNotACall(context, identifier, symbolOverload->symbol))
+            if (identifier->isForceTakeAddress() && isFunctionButNotACall(context, identifier, symbolOverload->symbol))
                 forLambda = true;
 
             // Will try with ufcs, and will try without

@@ -1412,10 +1412,10 @@ bool Semantic::resolveBoolExpression(SemanticContext* context)
     switch (node->tokenId)
     {
     case TokenId::KwdAnd:
-        left->setBcNotifAfter(ByteCodeGen::emitLogicalAndAfterLeft);
+        left->setBcNotifyAfter(ByteCodeGen::emitLogicalAndAfterLeft);
         break;
     case TokenId::KwdOr:
-        left->setBcNotifAfter(ByteCodeGen::emitLogicalOrAfterLeft);
+        left->setBcNotifyAfter(ByteCodeGen::emitLogicalOrAfterLeft);
         break;
     default:
         break;

@@ -321,7 +321,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
 
     // Can be null for intrinsics etc...
     if (funcNode->content)
-        funcNode->content->setBcNotifBefore(ByteCodeGen::emitBeforeFuncDeclContent);
+        funcNode->content->setBcNotifyBefore(ByteCodeGen::emitBeforeFuncDeclContent);
 
     // Do we have a return value
     if (funcNode->content && funcNode->returnType && !funcNode->returnType->typeInfo->isVoid())
@@ -1739,16 +1739,16 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
         switch (inlineNode->extOwner()->ownerTryCatchAssume->kind)
         {
         case AstNodeKind::Try:
-            inlineNode->setBcNotifAfter(ByteCodeGen::emitTry);
+            inlineNode->setBcNotifyAfter(ByteCodeGen::emitTry);
             break;
         case AstNodeKind::TryCatch:
-            inlineNode->setBcNotifAfter(ByteCodeGen::emitTryCatch);
+            inlineNode->setBcNotifyAfter(ByteCodeGen::emitTryCatch);
             break;
         case AstNodeKind::Catch:
-            inlineNode->setBcNotifAfter(ByteCodeGen::emitCatch);
+            inlineNode->setBcNotifyAfter(ByteCodeGen::emitCatch);
             break;
         case AstNodeKind::Assume:
-            inlineNode->setBcNotifAfter(ByteCodeGen::emitAssume);
+            inlineNode->setBcNotifyAfter(ByteCodeGen::emitAssume);
             break;
         default:
             break;

@@ -504,7 +504,7 @@ bool Parser::doPrimaryExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
 
         AstNode* identifierRef;
         SWAG_CHECK(doIdentifierRef(nullptr, &identifierRef));
-        forceTakeAddress(identifierRef);
+        isForceTakeAddress(identifierRef);
 
         if (hasDot)
             identifierRef->addSpecFlags(AstIdentifierRef::SPECFLAG_AUTO_SCOPE);
@@ -1272,16 +1272,16 @@ bool Parser::doInitializationExpression(TokenParse& forToken, AstNode* parent, u
     return doMoveExpression(forToken, forToken.id, parent, exprFlags, result);
 }
 
-void Parser::forceTakeAddress(AstNode* node)
+void Parser::isForceTakeAddress(AstNode* node)
 {
     node->flags |= AST_TAKE_ADDRESS;
     switch (node->kind)
     {
     case AstNodeKind::IdentifierRef:
-        forceTakeAddress(node->childs.back());
+        isForceTakeAddress(node->childs.back());
         break;
     case AstNodeKind::ArrayPointerIndex:
-        forceTakeAddress(static_cast<AstArrayPointerIndex*>(node)->array);
+        isForceTakeAddress(static_cast<AstArrayPointerIndex*>(node)->array);
         break;
     default:
         break;
@@ -1487,7 +1487,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
                 affectNode->tokenId   = savedtoken.id;
                 Ast::removeFromParent(child);
                 Ast::addChildBack(affectNode, child);
-                forceTakeAddress(child);
+                isForceTakeAddress(child);
 
                 // First create 'firstVar = assignment'
                 if (!firstDone)
@@ -1566,7 +1566,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
                 affectNode->token.text = savedtoken.text;
                 Ast::removeFromParent(child);
                 Ast::addChildBack(affectNode, child);
-                forceTakeAddress(child);
+                isForceTakeAddress(child);
                 const auto idRef = Ast::newMultiIdentifierRef(sourceFile, Fmt("%s.item%u", tmpVarName.c_str(), idx++), affectNode, this);
 
                 // Force a move between the generated temporary variable and the real var
@@ -1584,7 +1584,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result, AstWith* with
             affectNode->token   = std::move(savedtoken);
 
             Ast::addChildBack(affectNode, leftNode);
-            forceTakeAddress(leftNode);
+            isForceTakeAddress(leftNode);
 
             if (affectNode->tokenId == TokenId::SymEqual)
                 SWAG_CHECK(doMoveExpression(affectNode->token, affectNode->tokenId, affectNode, EXPR_FLAG_NONE, &dummyResult));

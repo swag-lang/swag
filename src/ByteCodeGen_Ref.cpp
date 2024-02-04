@@ -302,7 +302,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
 
         if (typeInfoSlice->pointedType->isString())
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoSlice->pointedType));
-        else if (!(node->forceTakeAddress()) || typeInfoSlice->pointedType->isPointer())
+        else if (!(node->isForceTakeAddress()) || typeInfoSlice->pointedType->isPointer())
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoSlice->pointedType));
 
         node->resultRegisterRC         = node->array->resultRegisterRC;
@@ -352,7 +352,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
 
         if (typeInfoPointer->pointedType->isString())
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoPointer->pointedType));
-        else if (!(node->forceTakeAddress()))
+        else if (!(node->isForceTakeAddress()))
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoPointer->pointedType));
 
         node->resultRegisterRC         = node->array->resultRegisterRC;
@@ -388,7 +388,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, pointedType));
         else if (pointedType->isPointer())
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, pointedType));
-        else if (!node->forceTakeAddress() && !pointedType->isArray())
+        else if (!node->isForceTakeAddress() && !pointedType->isArray())
             SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, pointedType));
 
         node->resultRegisterRC         = node->array->resultRegisterRC;

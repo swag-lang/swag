@@ -534,7 +534,7 @@ AstNode* AstNode::clone(CloneContext& context)
                 cloneContext.parentScope->symTable.mapNames.clone(&ownerScope->symTable.mapNames);
 
             newNode->copyFrom(cloneContext, this);
-            context.propageResult(cloneContext);
+            context.propagateResult(cloneContext);
         }
         else
             newNode->copyFrom(context, this);
@@ -623,13 +623,13 @@ void AstNode::inheritTokenName(Token& tkn)
     token.text = std::move(tkn.text);
 }
 
-void AstNode::inheritTokenLocation(Token& tkn)
+void AstNode::inheritTokenLocation(const Token& tkn)
 {
     token.startLocation = tkn.startLocation;
     token.endLocation   = tkn.endLocation;
 }
 
-void AstNode::inheritTokenLocation(AstNode* node)
+void AstNode::inheritTokenLocation(const AstNode* node)
 {
     token.startLocation = node->token.startLocation;
     token.endLocation   = node->token.endLocation;
@@ -657,7 +657,7 @@ void AstNode::inheritOwners(AstNode* op)
     }
 }
 
-void AstNode::inheritOwnersAndFlags(Parser* parser)
+void AstNode::inheritOwnersAndFlags(const Parser* parser)
 {
     ownerStructScope = parser->currentStructScope;
     ownerScope       = parser->currentScope;
@@ -718,34 +718,34 @@ void AstNode::inheritComputedValue(AstNode* from)
     }
 }
 
-bool AstNode::hasComputedValue()
+bool AstNode::hasComputedValue() const
 {
     return flags & AST_VALUE_COMPUTED;
 }
 
-bool AstNode::isConstantGenTypeInfo()
+bool AstNode::isConstantGenTypeInfo() const
 {
     return flags & AST_VALUE_IS_GEN_TYPEINFO;
 }
 
-ExportedTypeInfo* AstNode::getConstantGenTypeInfo()
+ExportedTypeInfo* AstNode::getConstantGenTypeInfo() const
 {
     SWAG_ASSERT(computedValue);
     SWAG_ASSERT(isConstantGenTypeInfo());
     return (ExportedTypeInfo*) computedValue->getStorageAddr();
 }
 
-bool AstNode::isConstantTrue()
+bool AstNode::isConstantTrue() const
 {
     return (flags & AST_VALUE_COMPUTED) && computedValue->reg.b;
 }
 
-bool AstNode::isConstantFalse()
+bool AstNode::isConstantFalse() const
 {
     return (flags & AST_VALUE_COMPUTED) && !computedValue->reg.b;
 }
 
-bool AstNode::isGeneratedSelf()
+bool AstNode::isGeneratedSelf() const
 {
     return kind == AstNodeKind::FuncDeclParam && specFlags & AstVarDecl::SPECFLAG_GENERATED_SELF;
 }
@@ -758,17 +758,17 @@ bool AstNode::isEmptyFct()
     return funcDecl->content == nullptr;
 }
 
-bool AstNode::isForeign()
+bool AstNode::isForeign() const
 {
     return attributeFlags & ATTRIBUTE_FOREIGN;
 }
 
-bool AstNode::isSilentCall()
+bool AstNode::isSilentCall() const
 {
     return kind == AstNodeKind::Identifier && (specFlags & AstIdentifier::SPECFLAG_SILENT_CALL);
 }
 
-bool AstNode::isPublic()
+bool AstNode::isPublic() const
 {
     if (attributeFlags & ATTRIBUTE_PUBLIC)
         return true;
@@ -788,7 +788,7 @@ bool AstNode::isFunctionCall()
     return id->callParameters != nullptr;
 }
 
-bool AstNode::forceTakeAddress()
+bool AstNode::isForceTakeAddress() const
 {
     if ((flags & AST_TAKE_ADDRESS) && !(semFlags & SEMFLAG_FORCE_NO_TAKE_ADDRESS))
         return true;
@@ -800,9 +800,9 @@ bool AstNode::forceTakeAddress()
 void AstNode::swap2Childs()
 {
     SWAG_ASSERT(childs.size() == 2);
-    const auto tmp  = childs[0];
-    childs[0] = childs[1];
-    childs[1] = tmp;
+    const auto tmp = childs[0];
+    childs[0]      = childs[1];
+    childs[1]      = tmp;
 }
 
 bool AstNode::hasSpecialFuncCall()
@@ -820,7 +820,7 @@ bool AstNode::hasSpecialFuncCall(const Utf8& name)
            extMisc()->resolvedUserOpSymbolOverload->symbol->name == name;
 }
 
-AstNode* AstNode::inSimpleReturn()
+AstNode* AstNode::inSimpleReturn() const
 {
     const auto test = parent;
     if (!test)
@@ -841,7 +841,7 @@ bool AstNode::isSpecialFunctionGenerated()
     return true;
 }
 
-bool AstNode::isSpecialFunctionName()
+bool AstNode::isSpecialFunctionName() const
 {
     // Check operators
     const auto& name = token.text;
@@ -855,7 +855,7 @@ bool AstNode::isSpecialFunctionName()
     return true;
 }
 
-void AstNode::setBcNotifBefore(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf)
+void AstNode::setBcNotifyBefore(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf)
 {
     allocateExtension(ExtensionKind::ByteCode);
 
@@ -871,7 +871,7 @@ void AstNode::setBcNotifBefore(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf)
     extByteCode()->byteCodeBeforeFct = fct;
 }
 
-void AstNode::setBcNotifAfter(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf)
+void AstNode::setBcNotifyAfter(ByteCodeNotifyFct fct, ByteCodeNotifyFct checkIf)
 {
     allocateExtension(ExtensionKind::ByteCode);
 
@@ -953,7 +953,7 @@ void AstNode::allocateExtensionNoLock(ExtensionKind extensionKind)
     }
 }
 
-bool AstNode::isConstant0()
+bool AstNode::isConstant0() const
 {
     SWAG_ASSERT(typeInfo);
     if (!typeInfo->isNative())
@@ -971,12 +971,14 @@ bool AstNode::isConstant0()
         return computedValue->reg.u32 == 0;
     case 8:
         return computedValue->reg.u64 == 0;
+    default:
+        break;
     }
 
     return false;
 }
 
-bool AstNode::isConstant1()
+bool AstNode::isConstant1() const
 {
     SWAG_ASSERT(typeInfo);
     if (!typeInfo->isNative())
@@ -1063,7 +1065,7 @@ void AstNode::setPassThrough()
     }
 }
 
-bool AstNode::isParentOf(AstNode* child)
+bool AstNode::isParentOf(const AstNode* child) const
 {
     if (!child)
         return false;
@@ -1077,7 +1079,7 @@ bool AstNode::isParentOf(AstNode* child)
     return false;
 }
 
-bool AstNode::isValidIfParam(SymbolOverload* overload)
+bool AstNode::isValidIfParam(const SymbolOverload* overload) const
 {
     if (!(flags & AST_IN_VALIDIF))
         return false;
@@ -1090,7 +1092,7 @@ bool AstNode::isValidIfParam(SymbolOverload* overload)
     return true;
 }
 
-bool AstNode::isSameStackFrame(SymbolOverload* overload)
+bool AstNode::isSameStackFrame(const SymbolOverload* overload) const
 {
     if (overload->symbol->kind != SymbolKind::Variable)
         return true;
@@ -1112,14 +1114,14 @@ bool AstNode::isSameStackFrame(SymbolOverload* overload)
     return true;
 }
 
-void AstNode::printLoc()
+void AstNode::printLoc() const
 {
     if (!sourceFile)
         return;
     printf("%s:%d:%d\n", sourceFile->path.string().c_str(), token.startLocation.line + 1, token.startLocation.column + 1);
 }
 
-uint32_t AstNode::childParentIdx()
+uint32_t AstNode::childParentIdx() const
 {
     SWAG_ASSERT(parent);
     for (uint32_t it = 0; it < parent->childs.size(); it++)
@@ -1205,7 +1207,7 @@ Utf8 AstNode::getScopedName()
     return result;
 }
 
-AstNode* AstNode::findParentAttrUse(const Utf8& name)
+AstNode* AstNode::findParentAttrUse(const Utf8& name) const
 {
     auto search = parent;
     while (search)
@@ -1224,7 +1226,7 @@ AstNode* AstNode::findParentAttrUse(const Utf8& name)
     return nullptr;
 }
 
-AstNode* AstNode::findParent(TokenId tkn)
+AstNode* AstNode::findParent(TokenId tkn) const
 {
     auto find = parent;
     while (find && find->tokenId != tkn)
@@ -1232,7 +1234,7 @@ AstNode* AstNode::findParent(TokenId tkn)
     return find;
 }
 
-AstNode* AstNode::findParent(AstNodeKind parentKind)
+AstNode* AstNode::findParent(AstNodeKind parentKind) const
 {
     auto find = parent;
     while (find && find->kind != parentKind)
@@ -1240,7 +1242,7 @@ AstNode* AstNode::findParent(AstNodeKind parentKind)
     return find;
 }
 
-AstNode* AstNode::findParent(AstNodeKind parentKind1, AstNodeKind parentKind2)
+AstNode* AstNode::findParent(AstNodeKind parentKind1, AstNodeKind parentKind2) const
 {
     auto find = parent;
     while (find && find->kind != parentKind1 && find->kind != parentKind2)
@@ -1259,7 +1261,7 @@ AstNode* AstNode::findChild(AstNodeKind childKind)
     return nullptr;
 }
 
-AstNode* AstNode::findChildRef(AstNode* ref, AstNode* fromChild)
+AstNode* AstNode::findChildRef(const AstNode* ref, AstNode* fromChild)
 {
     if (!ref)
         return nullptr;

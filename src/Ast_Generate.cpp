@@ -73,8 +73,8 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
 
     Parser parser;
     parser.setup(context, context->sourceFile->module, context->sourceFile);
-    const auto     structDecl = CastAst<AstStruct>(typeLeft->declNode, AstNodeKind::StructDecl);
-    AstNode* result     = nullptr;
+    const auto structDecl = CastAst<AstStruct>(typeLeft->declNode, AstNodeKind::StructDecl);
+    AstNode*   result     = nullptr;
     SWAG_CHECK(parser.constructEmbeddedAst(content, structDecl, structDecl, CompilerAstKind::TopLevelInstruction, true, &result));
 
     result->addAlternativeScope(typeRightStruct->declNode->ownerScope);
@@ -88,7 +88,11 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
     return true;
 }
 
-bool Ast::generateMissingInterfaceFct(SemanticContext* context, VectorNative<AstFuncDecl*>& mapItIdxToFunc, TypeInfoStruct* typeStruct, TypeInfoStruct* typeBaseInterface, TypeInfoStruct* typeInterface)
+bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
+                                      VectorNative<AstFuncDecl*>& mapItIdxToFunc,
+                                      TypeInfoStruct*             typeStruct,
+                                      TypeInfoStruct*             typeBaseInterface,
+                                      TypeInfoStruct*             typeInterface)
 {
     const auto     node            = CastAst<AstImpl>(context->node, AstNodeKind::Impl);
     const uint32_t numFctInterface = (uint32_t) typeInterface->fields.size();

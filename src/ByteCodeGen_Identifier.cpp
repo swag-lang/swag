@@ -97,7 +97,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             return true;
         }
 
-        if (node->forceTakeAddress() && (!typeInfo->isString() || node->parent->kind != AstNodeKind::ArrayPointerIndex))
+        if (node->isForceTakeAddress() && (!typeInfo->isString() || node->parent->kind != AstNodeKind::ArrayPointerIndex))
         {
             if (resolved->computedValue.storageOffset)
                 EMIT_INST1(context, ByteCodeOp::Add64byVB64, node->resultRegisterRC[0])->b.u64 = resolved->computedValue.storageOffset;
@@ -196,7 +196,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             typeField = ptrPointer->pointedType;
         }
 
-        if (!node->forceTakeAddress())
+        if (!node->isForceTakeAddress())
             emitStructDeRef(context, typeField);
         else if (node->parent->flags & AST_ARRAY_POINTER_REF)
             EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
@@ -251,14 +251,14 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             const auto inst           = EMIT_INST1(context, ByteCodeOp::GetParam64, node->resultRegisterRC);
             inst->b.u64u32.low  = resolved->computedValue.storageOffset;
             inst->b.u64u32.high = resolved->storageIndex;
-            if (!node->forceTakeAddress())
+            if (!node->isForceTakeAddress())
             {
                 const auto ptrPointer = CastTypeInfo<TypeInfoPointer>(node->typeInfo, TypeInfoKind::Pointer);
                 SWAG_ASSERT(ptrPointer->flags & TYPEINFO_POINTER_REF);
                 SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRC, ptrPointer->pointedType));
             }
         }
-        else if (node->forceTakeAddress() && !typeInfo->isLambdaClosure() && !typeInfo->isArray())
+        else if (node->isForceTakeAddress() && !typeInfo->isLambdaClosure() && !typeInfo->isArray())
         {
             if (node->parent->flags & AST_ARRAY_POINTER_REF)
             {
@@ -374,10 +374,10 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
                  typeInfo->isStruct())
         {
             ByteCodeInstruction* inst = emitMakeSegPointer(context, resolved->computedValue.storageSegment, resolved->computedValue.storageOffset, node->resultRegisterRC);
-            if (node->forceTakeAddress())
+            if (node->isForceTakeAddress())
                 inst->c.pointer = (uint8_t*) resolved;
         }
-        else if (node->forceTakeAddress() && (!typeInfo->isString() || node->parent->kind != AstNodeKind::ArrayPointerIndex))
+        else if (node->isForceTakeAddress() && (!typeInfo->isString() || node->parent->kind != AstNodeKind::ArrayPointerIndex))
         {
             ByteCodeInstruction* inst = emitMakeSegPointer(context, resolved->computedValue.storageSegment, resolved->computedValue.storageOffset, node->resultRegisterRC);
             inst->c.pointer           = (uint8_t*) resolved;
@@ -448,7 +448,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
                 inst->b.u64 = resolved->computedValue.storageOffset;
             }
 
-            if (!node->forceTakeAddress())
+            if (!node->isForceTakeAddress())
                 SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRC, node->typeInfo));
         }
         else if (typeInfo->isArray() ||
@@ -462,7 +462,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             inst->b.u64            = resolved->computedValue.storageOffset;
             inst->c.pointer        = (uint8_t*) resolved;
         }
-        else if (node->forceTakeAddress() && (!typeInfo->isString() || node->parent->kind != AstNodeKind::ArrayPointerIndex))
+        else if (node->isForceTakeAddress() && (!typeInfo->isString() || node->parent->kind != AstNodeKind::ArrayPointerIndex))
         {
             if (persistentReg)
             {
