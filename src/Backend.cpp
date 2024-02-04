@@ -229,7 +229,7 @@ const char* Backend::getOsName(const BackendTarget& target)
 
 uint64_t Backend::getRuntimeFlags(Module* module)
 {
-    const uint64_t flags = (uint64_t) SwagRuntimeFlags::Zero;
+    constexpr uint64_t flags = (uint64_t) SwagRuntimeFlags::Zero;
     return flags;
 }
 

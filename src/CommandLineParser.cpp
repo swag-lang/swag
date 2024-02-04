@@ -151,7 +151,7 @@ void CommandLineParser::logArguments(const Utf8& cmd)
 
     size_t columns[10] = {4};
 
-    static const size_t SPACE = 4;
+    static constexpr size_t SPACE = 4;
 
     columns[0] = SPACE + strlen("Argument");
     columns[1] = SPACE + strlen("Short");

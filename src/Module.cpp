@@ -893,7 +893,7 @@ void Module::startBuilding(const BuildParameters& bp)
 
 void Module::printBC()
 {
-    const ByteCodePrintOptions opt;
+    constexpr ByteCodePrintOptions opt;
     for (const auto bc : byteCodePrintBC)
         bc->print(opt);
 }

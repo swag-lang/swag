@@ -36,13 +36,13 @@ struct BcDbgCommand
 
 struct ByteCodeDebugger
 {
-    static const LogColor COLOR_BREAKPOINT      = LogColor::Red;
-    static const LogColor COLOR_CUR_INSTRUCTION = LogColor::Red;
-    static const LogColor COLOR_NAME            = LogColor::DarkYellow;
-    static const LogColor COLOR_TYPE            = LogColor::DarkCyan;
-    static const LogColor COLOR_LOCATION        = LogColor::DarkMagenta;
-    static const LogColor COLOR_INDEX           = LogColor::Cyan;
-    static const LogColor COLOR_DEFAULT         = LogColor::Gray;
+    static constexpr LogColor COLOR_BREAKPOINT      = LogColor::Red;
+    static constexpr LogColor COLOR_CUR_INSTRUCTION = LogColor::Red;
+    static constexpr LogColor COLOR_NAME            = LogColor::DarkYellow;
+    static constexpr LogColor COLOR_TYPE            = LogColor::DarkCyan;
+    static constexpr LogColor COLOR_LOCATION        = LogColor::DarkMagenta;
+    static constexpr LogColor COLOR_INDEX           = LogColor::Cyan;
+    static constexpr LogColor COLOR_DEFAULT         = LogColor::Gray;
 
     static Utf8 COLOR_VTS_CUR_INSTRUCTION;
     static Utf8 COLOR_VTS_NAME;

@@ -15,14 +15,14 @@ enum class TokenId : uint16_t
 extern const char*    g_TokenNames[];
 extern const uint32_t g_TokenFlags[];
 
-const uint32_t TOKEN_SYM                = 0x00000001;
-const uint32_t TOKEN_INTRINSIC_NORETURN = 0x00000002;
-const uint32_t TOKEN_INTRINSIC_RETURN   = 0x00000004;
-const uint32_t TOKEN_KWD                = 0x00000008;
-const uint32_t TOKEN_COMPILER           = 0x00000010;
-const uint32_t TOKEN_LITERAL            = 0x00000020;
-const uint32_t TOKEN_COMPILER_FUNC      = 0x00000040;
-const uint32_t TOKEN_TOP_LEVEL_INST     = 0x00000080;
+constexpr uint32_t TOKEN_SYM                = 0x00000001;
+constexpr uint32_t TOKEN_INTRINSIC_NORETURN = 0x00000002;
+constexpr uint32_t TOKEN_INTRINSIC_RETURN   = 0x00000004;
+constexpr uint32_t TOKEN_KWD                = 0x00000008;
+constexpr uint32_t TOKEN_COMPILER           = 0x00000010;
+constexpr uint32_t TOKEN_LITERAL            = 0x00000020;
+constexpr uint32_t TOKEN_COMPILER_FUNC      = 0x00000040;
+constexpr uint32_t TOKEN_TOP_LEVEL_INST     = 0x00000080;
 
 enum class LiteralType : uint8_t
 {
@@ -84,9 +84,9 @@ struct Token
     }
 };
 
-const uint8_t TOKENPARSE_LAST_EOL           = 0x01;
-const uint8_t TOKENPARSE_LAST_BLANK         = 0x02;
-const uint8_t TOKENPARSE_EOL_BEFORE_COMMENT = 0x04;
+constexpr uint8_t TOKENPARSE_LAST_EOL           = 0x01;
+constexpr uint8_t TOKENPARSE_LAST_BLANK         = 0x02;
+constexpr uint8_t TOKENPARSE_EOL_BEFORE_COMMENT = 0x04;
 
 struct TokenParse : public Token
 {

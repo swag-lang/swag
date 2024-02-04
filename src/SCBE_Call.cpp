@@ -194,7 +194,7 @@ void SCBE::emitByteCodeCall(SCBE_X64& pp, TypeInfoFuncAttr* typeFuncBC, uint32_t
     uint32_t stackOffset = typeFuncBC->numReturnRegisters() * sizeof(Register);
     for (int idxParam = (int) pushRAParams.size() - 1; idxParam >= 0; idxParam--, idxReg++)
     {
-        static const CPURegister idxToReg[4] = {RDX, R8, R9};
+        static constexpr CPURegister idxToReg[4] = {RDX, R8, R9};
 
         // Pass by value
         stackOffset += sizeof(Register);

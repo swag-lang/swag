@@ -11,8 +11,8 @@ struct ByteCodeInstruction;
 struct Module;
 struct Job;
 
-const uint32_t BCOTN_USER1 = 0x00000001;
-const uint32_t BCOTN_USER2 = 0x00000002;
+constexpr uint32_t BCOTN_USER1 = 0x00000001;
+constexpr uint32_t BCOTN_USER2 = 0x00000002;
 
 struct ByteCodeOptTreeNode
 {
@@ -38,13 +38,13 @@ struct ByteCodeOptTreeParseContext
     function<void(ByteCodeOptContext*, ByteCodeOptTreeParseContext&)> cb;
 };
 
-const uint32_t OCF_HAS_COPY_RBRA = 0x00000001;
-const uint32_t OCF_HAS_DUP_COPY  = 0x00000002;
-const uint32_t OCF_HAS_COPY_RTRC = 0x00000004;
-const uint32_t OCF_HAS_COPY_RCRT = 0x00000008;
-const uint32_t OCF_HAS_INLINE    = 0x00000010;
-const uint32_t OCF_HAS_PARAM     = 0x00000020;
-const uint32_t OCF_HAS_ERR       = 0x00000040;
+constexpr uint32_t OCF_HAS_COPY_RBRA = 0x00000001;
+constexpr uint32_t OCF_HAS_DUP_COPY  = 0x00000002;
+constexpr uint32_t OCF_HAS_COPY_RTRC = 0x00000004;
+constexpr uint32_t OCF_HAS_COPY_RCRT = 0x00000008;
+constexpr uint32_t OCF_HAS_INLINE    = 0x00000010;
+constexpr uint32_t OCF_HAS_PARAM     = 0x00000020;
+constexpr uint32_t OCF_HAS_ERR       = 0x00000040;
 
 struct ByteCodeOptContext : public JobContext
 {

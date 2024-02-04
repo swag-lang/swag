@@ -42,35 +42,35 @@ enum class SyntaxStructType
     Interface,
 };
 
-const uint32_t MODIFIER_OVERFLOW      = 0x00000001;
-const uint32_t MODIFIER_UP            = 0x00000002;
-const uint32_t MODIFIER_NO_LEFT_DROP  = 0x00000004;
-const uint32_t MODIFIER_MOVE          = 0x00000008;
-const uint32_t MODIFIER_NO_RIGHT_DROP = 0x00000010;
-const uint32_t MODIFIER_BIT           = 0x00000020;
-const uint32_t MODIFIER_UNCONST       = 0x00000040;
-const uint32_t MODIFIER_BACK          = 0x00000080;
+constexpr uint32_t MODIFIER_OVERFLOW      = 0x00000001;
+constexpr uint32_t MODIFIER_UP            = 0x00000002;
+constexpr uint32_t MODIFIER_NO_LEFT_DROP  = 0x00000004;
+constexpr uint32_t MODIFIER_MOVE          = 0x00000008;
+constexpr uint32_t MODIFIER_NO_RIGHT_DROP = 0x00000010;
+constexpr uint32_t MODIFIER_BIT           = 0x00000020;
+constexpr uint32_t MODIFIER_UNCONST       = 0x00000040;
+constexpr uint32_t MODIFIER_BACK          = 0x00000080;
 
-const uint32_t IDENTIFIER_NO_FCT_PARAMS   = 0x00000001;
-const uint32_t IDENTIFIER_NO_GEN_PARAMS   = 0x00000002;
-const uint32_t IDENTIFIER_TYPE_DECL       = 0x00000004;
-const uint32_t IDENTIFIER_ACCEPT_QUESTION = 0x00000008;
-const uint32_t IDENTIFIER_NO_ARRAY        = 0x00000010;
-const uint32_t IDENTIFIER_NO_PARAMS       = IDENTIFIER_NO_FCT_PARAMS | IDENTIFIER_NO_GEN_PARAMS | IDENTIFIER_NO_ARRAY;
+constexpr uint32_t IDENTIFIER_NO_FCT_PARAMS   = 0x00000001;
+constexpr uint32_t IDENTIFIER_NO_GEN_PARAMS   = 0x00000002;
+constexpr uint32_t IDENTIFIER_TYPE_DECL       = 0x00000004;
+constexpr uint32_t IDENTIFIER_ACCEPT_QUESTION = 0x00000008;
+constexpr uint32_t IDENTIFIER_NO_ARRAY        = 0x00000010;
+constexpr uint32_t IDENTIFIER_NO_PARAMS       = IDENTIFIER_NO_FCT_PARAMS | IDENTIFIER_NO_GEN_PARAMS | IDENTIFIER_NO_ARRAY;
 
-const uint32_t EXPR_FLAG_NONE                  = 0x00000000;
-const uint32_t EXPR_FLAG_SIMPLE                = 0x00000001;
-const uint32_t EXPR_FLAG_ALIAS                 = 0x00000002;
-const uint32_t EXPR_FLAG_TYPEOF                = 0x00000004;
-const uint32_t EXPR_FLAG_STOP_AFFECT           = 0x00000008;
-const uint32_t EXPR_FLAG_PARAMETER             = 0x00000010;
-const uint32_t EXPR_FLAG_IN_CALL               = 0x00000020;
-const uint32_t EXPR_FLAG_IN_VAR_DECL           = 0x00000040;
-const uint32_t EXPR_FLAG_TYPE_EXPR             = 0x00000080;
-const uint32_t EXPR_FLAG_IN_VAR_DECL_WITH_TYPE = 0x00000100;
-const uint32_t EXPR_FLAG_NAMED_PARAM           = 0x00000200;
+constexpr uint32_t EXPR_FLAG_NONE                  = 0x00000000;
+constexpr uint32_t EXPR_FLAG_SIMPLE                = 0x00000001;
+constexpr uint32_t EXPR_FLAG_ALIAS                 = 0x00000002;
+constexpr uint32_t EXPR_FLAG_TYPEOF                = 0x00000004;
+constexpr uint32_t EXPR_FLAG_STOP_AFFECT           = 0x00000008;
+constexpr uint32_t EXPR_FLAG_PARAMETER             = 0x00000010;
+constexpr uint32_t EXPR_FLAG_IN_CALL               = 0x00000020;
+constexpr uint32_t EXPR_FLAG_IN_VAR_DECL           = 0x00000040;
+constexpr uint32_t EXPR_FLAG_TYPE_EXPR             = 0x00000080;
+constexpr uint32_t EXPR_FLAG_IN_VAR_DECL_WITH_TYPE = 0x00000100;
+constexpr uint32_t EXPR_FLAG_NAMED_PARAM           = 0x00000200;
 
-const uint32_t CONTEXT_FLAG_EXPRESSION = 0x00000001;
+constexpr uint32_t CONTEXT_FLAG_EXPRESSION = 0x00000001;
 
 struct Parser
 {

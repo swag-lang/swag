@@ -100,9 +100,9 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         auto startScope = identifierRef->startScope;
         if (!startScope || oneTry == 1)
         {
-            const uint32_t collectFlags = COLLECT_ALL;
-            const auto     scopeUpMode  = node->identifierExtension ? node->identifierExtension->scopeUpMode : IdentifierScopeUpMode::None;
-            auto           scopeUpValue = node->identifierExtension ? node->identifierExtension->scopeUpValue : TokenParse{};
+            constexpr uint32_t collectFlags = COLLECT_ALL;
+            const auto         scopeUpMode  = node->identifierExtension ? node->identifierExtension->scopeUpMode : IdentifierScopeUpMode::None;
+            auto               scopeUpValue = node->identifierExtension ? node->identifierExtension->scopeUpValue : TokenParse{};
 
             startScope = node->ownerScope;
 
@@ -120,7 +120,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                 // More than one match : ambiguous
                 if (typeEnum.size() > 1)
                 {
-                    const Diagnostic                diag{identifierRef, Fmt(Err(Err0018), node->token.ctext())};
+                    const Diagnostic          diag{identifierRef, Fmt(Err(Err0018), node->token.ctext())};
                     Vector<const Diagnostic*> notes;
                     for (const auto t : typeEnum)
                     {
@@ -147,9 +147,9 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                     {
                         if (hasEnum.size())
                         {
-                            const Diagnostic          diag{identifierRef, Fmt(Err(Err0708), node->token.ctext(), hasEnum[0].second->getDisplayNameC())};
+                            const Diagnostic diag{identifierRef, Fmt(Err(Err0708), node->token.ctext(), hasEnum[0].second->getDisplayNameC())};
                             Vector<const Diagnostic*> notes;
-                            const auto                closest = SemanticError::findClosestMatchesMsg(node->token.text, {{hasEnum[0].second->scope, 0}}, IdentifierSearchFor::Whatever);
+                            const auto closest = SemanticError::findClosestMatchesMsg(node->token.text, {{hasEnum[0].second->scope, 0}}, IdentifierSearchFor::Whatever);
                             if (!closest.empty())
                                 notes.push_back(Diagnostic::note(closest));
                             if (hasEnum[0].first)
@@ -630,7 +630,7 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                   context,
     for (size_t i = 0; i < toProcess.size(); i++)
     {
         const auto& as    = toProcess[i];
-        auto  scope = as.scope;
+        auto        scope = as.scope;
         if (!scope)
             continue;
 

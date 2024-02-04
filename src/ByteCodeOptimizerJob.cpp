@@ -21,7 +21,7 @@ JobResult ByteCodeOptimizerJob::execute()
         {
             if (bc->node && bc->node->attributeFlags & ATTRIBUTE_PRINT_BC)
             {
-                const ByteCodePrintOptions opt;
+                constexpr ByteCodePrintOptions opt;
                 bc->print(opt);
             }
 

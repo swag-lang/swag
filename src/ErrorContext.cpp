@@ -79,7 +79,7 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
             if (exp.hide)
                 continue;
 
-            const DiagnosticLevel level = DiagnosticLevel::Note;
+            constexpr DiagnosticLevel level = DiagnosticLevel::Note;
 
             Utf8 msg;
             if (exp.err)

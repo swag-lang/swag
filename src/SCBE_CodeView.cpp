@@ -248,12 +248,12 @@ static bool emitDataDebugT(SCBE_CPU& pp)
         case LF_POINTER:
         {
             concat.addU32(f->LF_Pointer.pointeeType);
-            const uint32_t kind      = 0x0C; // Near64
-            const uint32_t mode      = f->LF_Pointer.asRef ? CV_PTR_MODE_LVREF : 0;
-            const uint32_t modifiers = 0;
-            const uint32_t size      = 8; // 64 bits
-            const uint32_t flags     = 0;
-            const uint32_t layout    = (flags << 19) | (size << 13) | (modifiers << 8) | (mode << 5) | kind;
+            constexpr uint32_t kind      = 0x0C; // Near64
+            const uint32_t     mode      = f->LF_Pointer.asRef ? CV_PTR_MODE_LVREF : 0;
+            constexpr uint32_t modifiers = 0;
+            constexpr uint32_t size      = 8; // 64 bits
+            constexpr uint32_t flags     = 0;
+            const uint32_t     layout    = (flags << 19) | (size << 13) | (modifiers << 8) | (mode << 5) | kind;
             concat.addU32(layout); // attributes
             break;
         }
@@ -837,7 +837,7 @@ static bool emitFctDebugS(SCBE_CPU& pp)
                 const auto patchLTCount  = concat.addU32Addr(0); // Size of sub section
                 const auto patchLTOffset = concat.totalCount();
 
-                const uint32_t CV_INLINEE_SOURCE_LINE_SIGNATURE = 0;
+                constexpr uint32_t CV_INLINEE_SOURCE_LINE_SIGNATURE = 0;
                 concat.addU32(CV_INLINEE_SOURCE_LINE_SIGNATURE);
 
                 const auto checkSymIndex = getFileChecksum(mapFileNames, arrFileNames, stringTable, dbgLines.sourceFile);

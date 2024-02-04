@@ -288,7 +288,7 @@ struct SCBE_CPU
     BackendPreCompilePass pass = {BackendPreCompilePass::Init};
 
     // Debug infos
-    static const int                    MAX_RECORD   = 4;
+    static constexpr int                    MAX_RECORD   = 4;
     uint16_t                            dbgRecordIdx = 0;
     uint16_t*                           dbgStartRecordPtr[MAX_RECORD];
     uint32_t                            dbgStartRecordOffset[MAX_RECORD];

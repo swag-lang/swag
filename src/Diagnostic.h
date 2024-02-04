@@ -122,7 +122,7 @@ struct Diagnostic
         setup();
     }
 
-    static const uint32_t        MAX_INDENT_BLANKS       = 10;
+    static constexpr uint32_t        MAX_INDENT_BLANKS       = 10;
     static constexpr const char* ERROR_MESSAGE_SEPARATOR = "$";
 
     // clang-format off

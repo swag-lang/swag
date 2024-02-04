@@ -42,7 +42,7 @@ static bool cannotMatchIdentifier(SemanticContext*            context,
     if (tryResult.empty())
         return hasCorrectResult;
 
-    static const int MAX_OVERLOADS = 5;
+    static constexpr int MAX_OVERLOADS = 5;
     Diagnostic*      note          = nullptr;
 
     switch (result)

@@ -282,7 +282,7 @@ void Log::eol()
         cout << "\n";
 }
 
-const int CENTER_COLUMN = 24;
+constexpr int CENTER_COLUMN = 24;
 
 void Log::printHeaderDot(const Utf8& header, const Utf8& message, LogColor headerColor, LogColor msgColor, const char* dot)
 {

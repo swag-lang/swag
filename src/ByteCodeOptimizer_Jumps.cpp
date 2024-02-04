@@ -1841,9 +1841,9 @@ void ByteCodeOptimizer::optimizePassSwitch(ByteCodeOptContext* context, ByteCode
         break;
     }
 
-    const int64_t minJumpTableSize = 4;
-    const int64_t maxJumpTableSize = UINT32_MAX;
-    const int64_t minDensity       = 10;
+    constexpr int64_t minJumpTableSize = 4;
+    constexpr int64_t maxJumpTableSize = UINT32_MAX;
+    constexpr int64_t minDensity       = 10;
 
     for (size_t idx = 0; idx < context->jumps.size(); idx++)
     {

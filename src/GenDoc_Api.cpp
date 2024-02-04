@@ -8,8 +8,8 @@
 #include "TypeInfo.h"
 #include "Workspace.h"
 
-const uint32_t COLLECT_TABLE_ZERO     = 0x00000000;
-const uint32_t COLLECT_TABLE_SPECFUNC = 0x00000001;
+constexpr uint32_t COLLECT_TABLE_ZERO     = 0x00000000;
+constexpr uint32_t COLLECT_TABLE_SPECFUNC = 0x00000001;
 
 static int sortOrder(AstNodeKind kind)
 {

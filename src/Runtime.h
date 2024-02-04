@@ -5,20 +5,20 @@
 // MUST BE IN SYNC IN BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-const uint64_t SAFETY_BOUNDCHECK  = 0x0001;
-const uint64_t SAFETY_OVERFLOW    = 0x0002;
-const uint64_t SAFETY_MATH        = 0x0004;
-const uint64_t SAFETY_ANY         = 0x0008;
-const uint64_t SAFETY_SWITCH      = 0x0010;
-const uint64_t SAFETY_BOOL        = 0x0020;
-const uint64_t SAFETY_NAN         = 0x0040;
-const uint64_t SAFETY_SANITY      = 0x0080;
-const uint64_t SAFETY_UNREACHABLE = 0x0100;
-const uint64_t SAFETY_NULL        = 0x0200;
-const uint64_t SAFETY_ALL         = 0xFFFF;
+constexpr uint64_t SAFETY_BOUNDCHECK  = 0x0001;
+constexpr uint64_t SAFETY_OVERFLOW    = 0x0002;
+constexpr uint64_t SAFETY_MATH        = 0x0004;
+constexpr uint64_t SAFETY_ANY         = 0x0008;
+constexpr uint64_t SAFETY_SWITCH      = 0x0010;
+constexpr uint64_t SAFETY_BOOL        = 0x0020;
+constexpr uint64_t SAFETY_NAN         = 0x0040;
+constexpr uint64_t SAFETY_SANITY      = 0x0080;
+constexpr uint64_t SAFETY_UNREACHABLE = 0x0100;
+constexpr uint64_t SAFETY_NULL        = 0x0200;
+constexpr uint64_t SAFETY_ALL         = 0xFFFF;
 
-const int SWAG_EXCEPTION_TO_PREV_HANDLER     = 665;
-const int SWAG_EXCEPTION_TO_COMPILER_HANDLER = 666; // must be the same value in __raiseException666 in runtime_windows.h
+constexpr int SWAG_EXCEPTION_TO_PREV_HANDLER     = 665;
+constexpr int SWAG_EXCEPTION_TO_COMPILER_HANDLER = 666; // must be the same value in __raiseException666 in runtime_windows.h
 
 enum WarnLevel : uint8_t
 {
@@ -117,8 +117,8 @@ enum class SwagExceptionKind
     Warning,
 };
 
-const auto SWAG_MAX_ERRORS = 32;
-const auto SWAG_MAX_TRACES = 32;
+constexpr auto SWAG_MAX_ERRORS = 32;
+constexpr auto SWAG_MAX_TRACES = 32;
 
 typedef struct SwagErrorValue
 {
@@ -544,11 +544,11 @@ struct ExportedCompilerMessage
     CompilerMsgKind   kind = CompilerMsgKind::Max;
 };
 
-static const uint64_t SWAG_LAMBDA_BC_MARKER_BIT = 63;
-static const uint64_t SWAG_LAMBDA_BC_MARKER     = 1ULL << SWAG_LAMBDA_BC_MARKER_BIT;
+static constexpr uint64_t SWAG_LAMBDA_BC_MARKER_BIT = 63;
+static constexpr uint64_t SWAG_LAMBDA_BC_MARKER     = 1ULL << SWAG_LAMBDA_BC_MARKER_BIT;
 
-const uint32_t SWAG_COMPARE_STRICT   = 0x00000000;
-const uint32_t SWAG_COMPARE_CAST_ANY = 0x00000001;
+constexpr uint32_t SWAG_COMPARE_STRICT   = 0x00000000;
+constexpr uint32_t SWAG_COMPARE_CAST_ANY = 0x00000001;
 
 inline void setSlice(SwagSlice& slice, const char* value)
 {

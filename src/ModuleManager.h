@@ -37,5 +37,5 @@ struct ModuleManager
 
 extern ModuleManager* g_ModuleMgr;
 #ifdef SWAG_DEV_MODE
-const uint64_t SWAG_PATCH_MARKER = 0xAABBCCDD00112233;
+constexpr uint64_t SWAG_PATCH_MARKER = 0xAABBCCDD00112233;
 #endif

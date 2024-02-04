@@ -70,7 +70,7 @@ bool ByteCodeGen::setupByteCodeGenerated(ByteCodeGenContext* context, AstNode* n
 
             if (node->attributeFlags & ATTRIBUTE_PRINT_GEN_BC && !(node->attributeFlags & ATTRIBUTE_GENERATED_FUNC))
             {
-                const ByteCodePrintOptions opt;
+                constexpr ByteCodePrintOptions opt;
                 context->bc->print(opt);
             }
         }
@@ -127,7 +127,7 @@ bool ByteCodeGen::setupByteCodeResolved(ByteCodeGenContext* context, AstNode* no
         {
             if (node->attributeFlags & ATTRIBUTE_GENERATED_FUNC || node->kind != AstNodeKind::FuncDecl)
             {
-                const ByteCodePrintOptions opt;
+                constexpr ByteCodePrintOptions opt;
                 context->bc->print(opt);
             }
         }
@@ -152,7 +152,7 @@ bool ByteCodeGen::setupByteCodeResolved(ByteCodeGenContext* context, AstNode* no
                 Report::internalError(funcNode, Fmt("function [[%s]] does not release all registers !", funcNode->token.ctext()));
                 if (node->attributeFlags & ATTRIBUTE_PRINT_BC)
                 {
-                    const ByteCodePrintOptions opt;
+                    constexpr ByteCodePrintOptions opt;
                     context->bc->print(opt);
                 }
             }
@@ -161,7 +161,7 @@ bool ByteCodeGen::setupByteCodeResolved(ByteCodeGenContext* context, AstNode* no
                 Report::internalError(funcNode, Fmt("function [[%s]] releases too many registers !", funcNode->token.ctext()));
                 if (node->attributeFlags & ATTRIBUTE_PRINT_BC)
                 {
-                    const ByteCodePrintOptions opt;
+                    constexpr ByteCodePrintOptions opt;
                     context->bc->print(opt);
                 }
             }

@@ -25,20 +25,20 @@ struct FindUserOp
     TypeInfoParam*  usingField;
 };
 
-const uint32_t COLLECT_ALL              = 0x00000000;
-const uint32_t COLLECT_NO_STRUCT        = 0x00000001;
-const uint32_t COLLECT_NO_INLINE_PARAMS = 0x00000002;
+constexpr uint32_t COLLECT_ALL              = 0x00000000;
+constexpr uint32_t COLLECT_NO_STRUCT        = 0x00000001;
+constexpr uint32_t COLLECT_NO_INLINE_PARAMS = 0x00000002;
 
-const uint32_t MIP_JUST_CHECK         = 0x00000001;
-const uint32_t MIP_FOR_GHOSTING       = 0x00000002;
-const uint32_t MIP_FOR_ZERO_GHOSTING  = 0x00000004;
-const uint32_t MIP_SECOND_GENERIC_TRY = 0x00000008;
+constexpr uint32_t MIP_JUST_CHECK         = 0x00000001;
+constexpr uint32_t MIP_FOR_GHOSTING       = 0x00000002;
+constexpr uint32_t MIP_FOR_ZERO_GHOSTING  = 0x00000004;
+constexpr uint32_t MIP_SECOND_GENERIC_TRY = 0x00000008;
 
-const uint32_t ROP_SIMPLE_CAST = 0x00000001;
+constexpr uint32_t ROP_SIMPLE_CAST = 0x00000001;
 
-const uint32_t RI_ZERO              = 0x00000000;
-const uint32_t RI_FOR_GHOSTING      = 0x00000001;
-const uint32_t RI_FOR_ZERO_GHOSTING = 0x00000002;
+constexpr uint32_t RI_ZERO              = 0x00000000;
+constexpr uint32_t RI_FOR_GHOSTING      = 0x00000001;
+constexpr uint32_t RI_FOR_ZERO_GHOSTING = 0x00000002;
 
 namespace Semantic
 {

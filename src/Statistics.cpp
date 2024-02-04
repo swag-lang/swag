@@ -113,8 +113,8 @@ void Stats::print()
     g_Log.setColor(LogColor::DarkCyan);
     g_Log.eol();
 
-    static const LogColor COLOR_HEADER = LogColor::Cyan;
-    static const LogColor COLOR_VALUE  = LogColor::Yellow;
+    static constexpr LogColor COLOR_HEADER = LogColor::Cyan;
+    static constexpr LogColor COLOR_VALUE  = LogColor::Yellow;
 
     /////////////////////////
     g_Log.messageHeaderDot("workers", Fmt("%u", g_ThreadMgr.numWorkers), COLOR_HEADER, COLOR_VALUE);

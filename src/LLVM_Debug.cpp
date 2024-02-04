@@ -157,9 +157,9 @@ llvm::DIType* LLVM_Debug::getStructType(TypeInfo* typeInfo, llvm::DIFile* file)
     if (it != mapTypes.end())
         return it->second;
 
-    const auto scope  = file->getScope();
-    const auto noFlag = llvm::DINode::DIFlags::FlagZero;
-    const auto lineNo = typeInfo->declNode->token.startLocation.line + 1;
+    const auto     scope  = file->getScope();
+    constexpr auto noFlag = llvm::DINode::DIFlags::FlagZero;
+    const auto     lineNo = typeInfo->declNode->token.startLocation.line + 1;
     typeInfo->computeScopedName();
     auto result = dbgBuilder->createStructType(scope, typeInfo->scopedName.c_str(), file, lineNo, typeInfo->sizeOf * 8, 0, noFlag, nullptr, llvm::DINodeArray(), 0, nullptr, typeInfo->scopedName.c_str());
 
@@ -191,10 +191,10 @@ llvm::DIType* LLVM_Debug::getSliceType(TypeInfo* typeInfo, TypeInfo* pointedType
     if (it != mapTypes.end())
         return it->second;
 
-    const auto fileScope = file->getScope();
-    const auto noFlag    = llvm::DINode::DIFlags::FlagZero;
-    const auto name      = Fmt("[..] %s", pointedType->name.c_str()); // debugger doesn't like 'const' before slice name
-    auto       result    = dbgBuilder->createStructType(fileScope, name.c_str(), file, 0, 2 * sizeof(void*) * 8, 0, noFlag, nullptr, llvm::DINodeArray());
+    const auto     fileScope = file->getScope();
+    constexpr auto noFlag    = llvm::DINode::DIFlags::FlagZero;
+    const auto     name      = Fmt("[..] %s", pointedType->name.c_str()); // debugger doesn't like 'const' before slice name
+    auto           result    = dbgBuilder->createStructType(fileScope, name.c_str(), file, 0, 2 * sizeof(void*) * 8, 0, noFlag, nullptr, llvm::DINodeArray());
 
     const auto realType = getPointerToType(pointedType, file);
     auto       v1       = dbgBuilder->createMemberType(result, "data", file, 0, 64, 0, 0, noFlag, realType);
@@ -404,7 +404,7 @@ llvm::DISubprogram* LLVM_Debug::startFunction(ByteCode* bc, AstFuncDecl** result
     if (!decl || !(decl->attributeFlags & ATTRIBUTE_PUBLIC))
         spFlags |= llvm::DISubprogram::SPFlagLocalToUnit;
 
-    const llvm::DINode::DIFlags diFlags = llvm::DINode::FlagPrototyped | llvm::DINode::FlagStaticMember;
+    constexpr llvm::DINode::DIFlags diFlags = llvm::DINode::FlagPrototyped | llvm::DINode::FlagStaticMember;
 
     // Register function
     const auto                mangledName = typeFunc->declNode->getScopedName();

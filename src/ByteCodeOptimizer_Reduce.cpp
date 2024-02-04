@@ -6485,8 +6485,8 @@ void ByteCodeOptimizer::reduceDupInstr(ByteCodeOptContext* context, ByteCodeInst
         return;
     }
 
-    auto       ipn  = ip + 1;
-    const bool exit = false;
+    auto           ipn  = ip + 1;
+    constexpr bool exit = false;
     while (!exit)
     {
         if (ipn->flags & BCI_START_STMT)

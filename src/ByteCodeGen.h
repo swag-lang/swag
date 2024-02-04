@@ -32,9 +32,9 @@ enum class TokenId : uint16_t;
 
 #define SAFETY_ZERO_EPSILON 0.00001f
 
-const uint32_t EMIT_CASTFLAG_DEFAULT  = 0x00000000;
-const uint32_t EMIT_CASTFLAG_EXPLICIT = 0x00000001;
-const uint32_t EMIT_CASTFLAG_AUTO     = 0x00000002;
+constexpr uint32_t EMIT_CASTFLAG_DEFAULT  = 0x00000000;
+constexpr uint32_t EMIT_CASTFLAG_EXPLICIT = 0x00000001;
+constexpr uint32_t EMIT_CASTFLAG_AUTO     = 0x00000002;
 
 enum class EmitOpUserKind
 {
@@ -78,9 +78,9 @@ enum class SafetyMsg
     Count,
 };
 
-const uint32_t ASKBC_WAIT_SEMANTIC_RESOLVED = 0x00000001;
-const uint32_t ASKBC_WAIT_DONE              = 0x00000002;
-const uint32_t ASKBC_WAIT_RESOLVED          = 0x00000004;
+constexpr uint32_t ASKBC_WAIT_SEMANTIC_RESOLVED = 0x00000001;
+constexpr uint32_t ASKBC_WAIT_DONE              = 0x00000002;
+constexpr uint32_t ASKBC_WAIT_RESOLVED          = 0x00000004;
 
 namespace ByteCodeGen
 {

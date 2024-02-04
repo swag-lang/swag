@@ -3,8 +3,8 @@
 #include "mimalloc/mimalloc.h"
 
 #ifdef SWAG_CHECK_MEMORY
-const uint64_t MAGIC_ALLOC = 0xC0DEC0DEC0DEC0DE;
-const uint64_t MAGIC_FREE  = 0xCAFECAFECAFECAFE;
+constexpr uint64_t MAGIC_ALLOC = 0xC0DEC0DEC0DEC0DE;
+constexpr uint64_t MAGIC_FREE  = 0xCAFECAFECAFECAFE;
 #endif
 
 void* operator new(size_t t)

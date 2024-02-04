@@ -9,9 +9,9 @@ struct AstStruct;
 struct AstFuncDecl;
 enum class BuildCfgDocKind;
 
-static const uint32_t GENDOC_CODE_REFS       = 0x00000001;
-static const uint32_t GENDOC_CODE_BLOCK      = 0x00000002;
-static const uint32_t GENDOC_CODE_SYNTAX_COL = 0x00000004;
+static constexpr uint32_t GENDOC_CODE_REFS       = 0x00000001;
+static constexpr uint32_t GENDOC_CODE_BLOCK      = 0x00000002;
+static constexpr uint32_t GENDOC_CODE_SYNTAX_COL = 0x00000004;
 
 struct GenDoc
 {

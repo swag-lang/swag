@@ -897,7 +897,7 @@ bool ByteCodeGen::generateStruct_opDrop(ByteCodeGenContext* context, TypeInfoStr
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_GEN_BC)
     {
-        const ByteCodePrintOptions opt;
+        constexpr ByteCodePrintOptions opt;
         cxt.bc->print(opt);
     }
 
@@ -1009,7 +1009,7 @@ bool ByteCodeGen::generateStruct_opPostCopy(ByteCodeGenContext* context, TypeInf
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_GEN_BC)
     {
-        const ByteCodePrintOptions opt;
+        constexpr ByteCodePrintOptions opt;
         cxt.bc->print(opt);
     }
 
@@ -1119,7 +1119,7 @@ bool ByteCodeGen::generateStruct_opPostMove(ByteCodeGenContext* context, TypeInf
 
     if (structNode->attributeFlags & ATTRIBUTE_PRINT_GEN_BC)
     {
-        const ByteCodePrintOptions opt;
+        constexpr ByteCodePrintOptions opt;
         cxt.bc->print(opt);
     }
 

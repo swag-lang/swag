@@ -4,10 +4,10 @@
 #include "Workspace.h"
 #ifdef SWAG_STATS
 
-const int COL1 = 12;
-const int COL2 = 24;
-const int COL3 = 36;
-const int COL4 = 48;
+constexpr int COL1 = 12;
+constexpr int COL2 = 24;
+constexpr int COL3 = 36;
+constexpr int COL4 = 48;
 
 static Utf8 getProfileBc(ByteCode* bc, int level)
 {

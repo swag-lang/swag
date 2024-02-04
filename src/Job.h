@@ -14,16 +14,16 @@ struct TypeInfo;
 struct AstFuncDecl;
 struct JobGroup;
 
-const uint32_t JOB_IS_IN_QUEUE          = 0x00000001;
-const uint32_t JOB_IS_IN_THREAD         = 0x00000002;
-const uint32_t JOB_IS_PENDING           = 0x00000004;
-const uint32_t JOB_IS_PENDING_RUN       = 0x00000008;
-const uint32_t JOB_COMPILER_PASS        = 0x00000010;
-const uint32_t JOB_IS_IO                = 0x00000020;
-const uint32_t JOB_IS_OPT               = 0x00000040;
-const uint32_t JOB_PENDING_PLACE_HOLDER = 0x00000080;
-const uint32_t JOB_ACCEPT_PENDING_COUNT = 0x00000100;
-const uint32_t JOB_IS_DEBUGGER          = 0x00000200;
+constexpr uint32_t JOB_IS_IN_QUEUE          = 0x00000001;
+constexpr uint32_t JOB_IS_IN_THREAD         = 0x00000002;
+constexpr uint32_t JOB_IS_PENDING           = 0x00000004;
+constexpr uint32_t JOB_IS_PENDING_RUN       = 0x00000008;
+constexpr uint32_t JOB_COMPILER_PASS        = 0x00000010;
+constexpr uint32_t JOB_IS_IO                = 0x00000020;
+constexpr uint32_t JOB_IS_OPT               = 0x00000040;
+constexpr uint32_t JOB_PENDING_PLACE_HOLDER = 0x00000080;
+constexpr uint32_t JOB_ACCEPT_PENDING_COUNT = 0x00000100;
+constexpr uint32_t JOB_IS_DEBUGGER          = 0x00000200;
 
 enum class ContextResult
 {

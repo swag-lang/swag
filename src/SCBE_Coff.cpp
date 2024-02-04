@@ -163,11 +163,11 @@ static bool emitStringTable(const BuildParameters& buildParameters, SCBE_CPU& pp
 
 bool SCBE_Coff::emitHeader(const BuildParameters& buildParameters, SCBE_CPU& pp)
 {
-    const int  precompileIndex = buildParameters.precompileIndex;
-    const auto module          = buildParameters.module;
-    auto&      concat          = pp.concat;
-    const int  NUM_SECTIONS_0  = 12;
-    const int  NUM_SECTIONS_X  = 7;
+    const int     precompileIndex = buildParameters.precompileIndex;
+    const auto    module          = buildParameters.module;
+    auto&         concat          = pp.concat;
+    constexpr int NUM_SECTIONS_0  = 12;
+    constexpr int NUM_SECTIONS_X  = 7;
 
     // Coff header
     /////////////////////////////////////////////

@@ -6,24 +6,24 @@ struct SCBE_CPU;
 
 // https://github.com/microsoft/microsoft-pdb/blob/master/include/cvinfo.h
 
-const uint32_t DEBUG_SECTION_MAGIC = 4;
+constexpr uint32_t DEBUG_SECTION_MAGIC = 4;
 
-const uint32_t DEBUG_S_SYMBOLS      = 0xF1; // DebugSubsectionKind::Symbols in llvm
-const uint32_t DEBUG_S_LINES        = 0xF2;
-const uint32_t DEBUG_S_STRINGTABLE  = 0xF3;
-const uint32_t DEBUG_S_FILECHKSMS   = 0xF4;
-const uint32_t DEBUG_S_INLINEELINES = 0xF6;
+constexpr uint32_t DEBUG_S_SYMBOLS      = 0xF1; // DebugSubsectionKind::Symbols in llvm
+constexpr uint32_t DEBUG_S_LINES        = 0xF2;
+constexpr uint32_t DEBUG_S_STRINGTABLE  = 0xF3;
+constexpr uint32_t DEBUG_S_FILECHKSMS   = 0xF4;
+constexpr uint32_t DEBUG_S_INLINEELINES = 0xF6;
 
-const uint16_t S_END                   = 0x0006;
-const uint16_t S_FRAMEPROC             = 0x1012;
-const uint16_t S_BLOCK32               = 0x1103;
-const uint16_t S_COMPILE3              = 0x113c;
-const uint16_t S_LPROC32_ID            = 0x1146;
-const uint16_t S_PROC_ID_END           = 0x114F;
-const uint16_t S_LOCAL                 = 0x113E;
-const uint16_t S_DEFRANGE_REGISTER_REL = 0x1145;
-const uint16_t S_CONSTANT              = 0x1107;
-const uint16_t S_LDATA32               = 0x110C;
+constexpr uint16_t S_END                   = 0x0006;
+constexpr uint16_t S_FRAMEPROC             = 0x1012;
+constexpr uint16_t S_BLOCK32               = 0x1103;
+constexpr uint16_t S_COMPILE3              = 0x113c;
+constexpr uint16_t S_LPROC32_ID            = 0x1146;
+constexpr uint16_t S_PROC_ID_END           = 0x114F;
+constexpr uint16_t S_LOCAL                 = 0x113E;
+constexpr uint16_t S_DEFRANGE_REGISTER_REL = 0x1145;
+constexpr uint16_t S_CONSTANT              = 0x1107;
+constexpr uint16_t S_LDATA32               = 0x110C;
 // const uint16_t S_INLINESITE            = 0x114d;
 // const uint16_t S_INLINESITE_END        = 0x114e;
 // const uint16_t S_GPROC32_ID                = 0x1147;
@@ -31,37 +31,37 @@ const uint16_t S_LDATA32               = 0x110C;
 // const uint16_t S_DEFRANGE_REGISTER         = 0x1141;
 // const uint16_t S_DEFRANGE_FRAMEPOINTER_REL = 0x1142;
 
-const uint16_t LF_POINTER   = 0x1002;
-const uint16_t LF_PROCEDURE = 0x1008;
-const uint16_t LF_MFUNCTION = 0x1009;
-const uint16_t LF_ARGLIST   = 0x1201;
-const uint16_t LF_FIELDLIST = 0x1203;
-const uint16_t LF_DERIVED   = 0x1204;
-const uint16_t LF_ENUMERATE = 0x1502;
-const uint16_t LF_ARRAY     = 0x1503;
-const uint16_t LF_STRUCTURE = 0x1505;
-const uint16_t LF_ENUM      = 0x1507;
-const uint16_t LF_MEMBER    = 0x150d;
-const uint16_t LF_ONEMETHOD = 0x1511;
-const uint16_t LF_FUNC_ID   = 0x1601;
-const uint16_t LF_MFUNC_ID  = 0x1602;
+constexpr uint16_t LF_POINTER   = 0x1002;
+constexpr uint16_t LF_PROCEDURE = 0x1008;
+constexpr uint16_t LF_MFUNCTION = 0x1009;
+constexpr uint16_t LF_ARGLIST   = 0x1201;
+constexpr uint16_t LF_FIELDLIST = 0x1203;
+constexpr uint16_t LF_DERIVED   = 0x1204;
+constexpr uint16_t LF_ENUMERATE = 0x1502;
+constexpr uint16_t LF_ARRAY     = 0x1503;
+constexpr uint16_t LF_STRUCTURE = 0x1505;
+constexpr uint16_t LF_ENUM      = 0x1507;
+constexpr uint16_t LF_MEMBER    = 0x150d;
+constexpr uint16_t LF_ONEMETHOD = 0x1511;
+constexpr uint16_t LF_FUNC_ID   = 0x1601;
+constexpr uint16_t LF_MFUNC_ID  = 0x1602;
 // const uint16_t LF_METHOD       = 0x150f;
 // const uint16_t LF_UDT_SRC_LINE = 0x1606;
 
 // const uint16_t LF_NUMERIC   = 0x8000;
-const uint16_t LF_CHAR      = 0x8000;
-const uint16_t LF_SHORT     = 0x8001;
-const uint16_t LF_USHORT    = 0x8002;
-const uint16_t LF_LONG      = 0x8003;
-const uint16_t LF_ULONG     = 0x8004;
-const uint16_t LF_REAL32    = 0x8005;
-const uint16_t LF_REAL64    = 0x8006;
-const uint16_t LF_QUADWORD  = 0x8009;
-const uint16_t LF_UQUADWORD = 0x800a;
+constexpr uint16_t LF_CHAR      = 0x8000;
+constexpr uint16_t LF_SHORT     = 0x8001;
+constexpr uint16_t LF_USHORT    = 0x8002;
+constexpr uint16_t LF_LONG      = 0x8003;
+constexpr uint16_t LF_ULONG     = 0x8004;
+constexpr uint16_t LF_REAL32    = 0x8005;
+constexpr uint16_t LF_REAL64    = 0x8006;
+constexpr uint16_t LF_QUADWORD  = 0x8009;
+constexpr uint16_t LF_UQUADWORD = 0x800a;
 // const uint16_t LF_REAL80    = 0x8007;
 // const uint16_t LF_REAL128   = 0x8008;
 
-const uint8_t CV_PTR_MODE_LVREF = 0x01; // l-value reference
+constexpr uint8_t CV_PTR_MODE_LVREF = 0x01; // l-value reference
 // const uint8_t CV_PTR_MODE_PTR      = 0x00; // "normal" pointer
 // const uint8_t CV_PTR_MODE_REF      = 0x01; // "old" reference
 // const uint8_t CV_PTR_MODE_PMEM     = 0x02; // pointer to data member
@@ -70,9 +70,9 @@ const uint8_t CV_PTR_MODE_LVREF = 0x01; // l-value reference
 // const uint8_t CV_PTR_MODE_RESERVED = 0x05; // first unused pointer mode
 
 // https://github.com/microsoft/checkedc-llvm/blob/master/include/llvm/DebugInfo/CodeView/CodeViewRegisters.def
-const uint16_t R_RDI = 333;
+constexpr uint16_t R_RDI = 333;
 // const uint16_t R_R11 = 339;
-const uint16_t R_R12 = 340;
+constexpr uint16_t R_R12 = 340;
 // const uint16_t R_RCX = 330;
 // const uint16_t R_RDX = 331;
 // const uint16_t R_RBP = 334;

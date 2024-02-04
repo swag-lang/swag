@@ -500,7 +500,7 @@ namespace OS
         }
     }
 
-    const DWORD MS_VC_EXCEPTION = 0x406D1388;
+    constexpr DWORD MS_VC_EXCEPTION = 0x406D1388;
 
 #pragma pack(push, 8)
     typedef struct tagTHREADNAME_INFO
@@ -573,7 +573,7 @@ namespace OS
 
     Utf8 captureStack()
     {
-        const int SYM_LEN_NAME = 128;
+        constexpr int SYM_LEN_NAME = 128;
         TCHAR     sym[sizeof(SYMBOL_INFO) + SYM_LEN_NAME * sizeof(TCHAR)];
         DWORD64   displacement = 0;
 
@@ -929,7 +929,7 @@ namespace OS
         stackSize += sizeof(void*);
         MK_ALIGN16(stackSize);
 
-        static const int JIT_SIZE_BUFFER = 16 * 1024;
+        static constexpr int JIT_SIZE_BUFFER = 16 * 1024;
         auto&            gen             = g_X64GenFFI;
         if (!gen.concat.firstBucket)
         {
