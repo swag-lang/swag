@@ -15,11 +15,11 @@ SourceFile* EnumerateModuleJob::addFileToModule(Module*              theModule,
                                                 const Path&          dirName,
                                                 const Utf8&          fileName,
                                                 uint64_t             writeTime,
-                                                SourceFile*          prePass,
+                                                const SourceFile*    prePass,
                                                 Module*              imported,
                                                 bool                 markDown)
 {
-    const auto file       = Allocator::alloc<SourceFile>();
+    const auto file = Allocator::alloc<SourceFile>();
     file->fromTests = theModule->kind == ModuleKind::Test;
     file->name      = fileName;
     file->imported  = imported;
@@ -62,7 +62,7 @@ SourceFile* EnumerateModuleJob::addFileToModule(Module*              theModule,
 
         if (!markDown)
         {
-            const auto syntaxJob        = Allocator::alloc<SyntaxJob>();
+            const auto syntaxJob  = Allocator::alloc<SyntaxJob>();
             syntaxJob->sourceFile = file;
             syntaxJob->module     = theModule;
             syntaxJob->flags |= JOB_IS_OPT;
@@ -111,7 +111,9 @@ bool EnumerateModuleJob::dealWithFileToLoads(Module* theModule)
     if (!allFiles.empty())
     {
         sort(allFiles.begin(), allFiles.end(), [](SourceFile* a, SourceFile* b)
-             { return strcmp(a->name.c_str(), b->name.c_str()) == -1; });
+        {
+            return strcmp(a->name.c_str(), b->name.c_str()) == -1;
+        });
         for (const auto file : allFiles)
             theModule->addFile(file);
     }
@@ -161,11 +163,11 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
     Vector<Path> directories;
     directories.push_back(path);
 
-    Path tmp, tmp1;
+    Path tmp1;
     Path modulePath;
-    while (directories.size())
+    while (!directories.empty())
     {
-        tmp = std::move(directories.back());
+        Path tmp = std::move(directories.back());
         directories.pop_back();
 
         OS::visitFilesFolders(tmp.string().c_str(),
@@ -219,7 +221,9 @@ void EnumerateModuleJob::enumerateFilesInModule(const Path& basePath, Module* th
     if (!allFiles.empty())
     {
         sort(allFiles.begin(), allFiles.end(), [](SourceFile* a, SourceFile* b)
-             { return strcmp(a->name.c_str(), b->name.c_str()) == -1; });
+        {
+            return strcmp(a->name.c_str(), b->name.c_str()) == -1;
+        });
         for (const auto file : allFiles)
             theModule->addFile(file);
     }
@@ -236,17 +240,17 @@ void EnumerateModuleJob::loadFilesInModules(const Path& basePath)
                          path = g_ModuleCfgMgr->getAliasPath(path);
                          path.append(SWAG_SRC_FOLDER);
 
-                         const auto module                                 = Allocator::alloc<Module>();
+                         const auto module                           = Allocator::alloc<Module>();
                          g_Workspace->mapFirstPassModulesNames[path] = module;
 
                          // Scan source folder
                          Vector<Path> directories;
                          directories.push_back(path);
 
-                         Path tmp, tmp1;
-                         while (directories.size())
+                         Path tmp1;
+                         while (!directories.empty())
                          {
-                             tmp = std::move(directories.back());
+                             Path tmp = std::move(directories.back());
                              directories.pop_back();
 
                              OS::visitFilesFolders(tmp.string().c_str(),
@@ -260,10 +264,10 @@ void EnumerateModuleJob::loadFilesInModules(const Path& basePath)
                                                        }
                                                        else
                                                        {
-                                                           const auto file     = Allocator::alloc<SourceFile>();
-                                                           file->module  = module;
-                                                           file->name    = cFileName;
-                                                           Path pathFile = tmp;
+                                                           const auto file = Allocator::alloc<SourceFile>();
+                                                           file->module    = module;
+                                                           file->name      = cFileName;
+                                                           Path pathFile   = tmp;
                                                            pathFile.append(cFileName);
                                                            file->path      = pathFile;
                                                            file->writeTime = writeTime;
@@ -272,7 +276,7 @@ void EnumerateModuleJob::loadFilesInModules(const Path& basePath)
                                                            const auto pz = strrchr(cFileName, '.');
                                                            if (pz && !_strcmpi(pz, ".swg"))
                                                            {
-                                                               const auto readFileJob        = Allocator::alloc<LoadSourceFileJob>();
+                                                               const auto readFileJob  = Allocator::alloc<LoadSourceFileJob>();
                                                                readFileJob->flags      = JOB_IS_OPT;
                                                                readFileJob->sourceFile = file;
                                                                g_ThreadMgr.addJob(readFileJob);
@@ -398,7 +402,7 @@ JobResult EnumerateModuleJob::execute()
             {
                 if (f->isCfgFile)
                     continue;
-                const auto newFile                  = addFileToModule(m, allFiles, f->path.parent_path(), f->name, f->writeTime, nullptr, mod, false);
+                const auto newFile            = addFileToModule(m, allFiles, f->path.parent_path(), f->name, f->writeTime, nullptr, mod, false);
                 newFile->isEmbedded           = true;
                 newFile->globalUsingsEmbedded = mod->buildParameters.globalUsings;
             }
@@ -428,7 +432,9 @@ JobResult EnumerateModuleJob::execute()
         if (!allFiles.empty())
         {
             sort(allFiles.begin(), allFiles.end(), [](SourceFile* a, SourceFile* b)
-                 { return strcmp(a->name.c_str(), b->name.c_str()) == -1; });
+            {
+                return strcmp(a->name.c_str(), b->name.c_str()) == -1;
+            });
             for (const auto file : allFiles)
                 m->addFile(file);
         }

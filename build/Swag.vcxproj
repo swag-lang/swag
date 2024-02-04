@@ -5,12 +5,12 @@
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release (DevMode)|x64">
-      <Configuration>Release (DevMode)</Configuration>
+    <ProjectConfiguration Include="ReleaseDevMode|x64">
+      <Configuration>ReleaseDevMode</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release (Stats)|x64">
-      <Configuration>Release (Stats)</Configuration>
+    <ProjectConfiguration Include="ReleaseStats|x64">
+      <Configuration>ReleaseStats</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
     <ProjectConfiguration Include="Release|x64">
@@ -41,7 +41,7 @@
     <CharacterSet>Unicode</CharacterSet>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (Stats)|x64'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStats|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>ClangCL</PlatformToolset>
@@ -49,7 +49,7 @@
     <CharacterSet>Unicode</CharacterSet>
     <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'" Label="Configuration">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDevMode|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
@@ -68,10 +68,10 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release (Stats)|x64'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStats|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'" Label="PropertySheets">
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDevMode|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
@@ -88,13 +88,13 @@
     <IntDir>..\.tmp\swag\$(Configuration)\</IntDir>
     <TargetName>swag</TargetName>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (Stats)|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStats|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>..\bin\</OutDir>
     <IntDir>..\.tmp\swag\$(Configuration)\</IntDir>
     <TargetName>swag_stats</TargetName>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'">
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDevMode|x64'">
     <LinkIncremental>false</LinkIncremental>
     <OutDir>..\bin\</OutDir>
     <IntDir>..\.tmp\swag\$(Configuration)\</IntDir>
@@ -155,7 +155,7 @@
       <AdditionalOptions> /ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release (Stats)|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseStats|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
@@ -183,7 +183,7 @@
       <AdditionalOptions> /ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'">
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDevMode|x64'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
@@ -423,8 +423,8 @@
     <ClCompile Include="../src/CommandLineParser.cpp" />
     <ClCompile Include="../src/Concat.cpp">
       <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ShowIncludes>
-      <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Release (Stats)|x64'">false</ShowIncludes>
-      <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'">false</ShowIncludes>
+      <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='ReleaseStats|x64'">false</ShowIncludes>
+      <ShowIncludes Condition="'$(Configuration)|$(Platform)'=='ReleaseDevMode|x64'">false</ShowIncludes>
     </ClCompile>
     <ClCompile Include="../src/ByteCodeStack.cpp" />
     <ClCompile Include="../src/EnumerateModuleJob.cpp" />
@@ -465,8 +465,8 @@
     <ClCompile Include="..\src\LoadSourceFileJob.cpp" />
     <ClCompile Include="..\src\mimalloc\static.c">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (Stats)|x64'">NotUsing</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseStats|x64'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseDevMode|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\src\ModuleGenDocJob.cpp" />
@@ -540,8 +540,8 @@
     <ClCompile Include="../src/pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (Stats)|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release (DevMode)|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseStats|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseDevMode|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="../src/SyntaxJob.cpp" />
     <ClCompile Include="../src/SourceFile.cpp" />

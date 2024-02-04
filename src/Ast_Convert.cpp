@@ -161,8 +161,8 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
     structNode->allocateExtension(ExtensionKind::Misc);
     structNode->extMisc()->exportNode = paramNode;
 
-    const auto contentNode    = Ast::newNode<AstNode>(nullptr, AstNodeKind::TupleContent, sourceFile, structNode);
-    structNode->content = contentNode;
+    const auto contentNode = Ast::newNode<AstNode>(nullptr, AstNodeKind::TupleContent, sourceFile, structNode);
+    structNode->content    = contentNode;
     contentNode->allocateExtension(ExtensionKind::Semantic);
     contentNode->extSemantic()->semanticBeforeFct = Semantic::preResolveStructContent;
 
@@ -180,11 +180,11 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
     structNode->addAlternativeScope(fromNode->parent->ownerScope);
     structNode->extMisc()->alternativeNode = newParent;
 
-    const auto newScope     = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, rootScope, true);
-    structNode->scope = newScope;
+    const auto newScope = Ast::newScope(structNode, structNode->token.text, ScopeKind::Struct, rootScope, true);
+    structNode->scope   = newScope;
 
     // Create type
-    const auto typeInfo        = makeType<TypeInfoStruct>();
+    const auto typeInfo  = makeType<TypeInfoStruct>();
     structNode->typeInfo = typeInfo;
     typeInfo->flags |= TYPEINFO_STRUCT_IS_TUPLE | TYPEINFO_GENERATED_TUPLE;
     typeInfo->declNode   = structNode;
@@ -256,7 +256,7 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
 
 bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignment, AstStruct** result)
 {
-    const auto       sourceFile = context->sourceFile;
+    const auto sourceFile = context->sourceFile;
     AstStruct* structNode = Ast::newStructDecl(sourceFile, nullptr);
     *result               = structNode;
     structNode->flags |= AST_GENERATED;
@@ -350,9 +350,10 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignme
     structNode->typeInfo = typeInfo;
     structNode->scope    = newScope;
     Ast::visit(structNode->content, [&](AstNode* n)
-               {
-                        n->ownerStructScope = newScope;
-                        n->ownerScope = newScope; });
+    {
+        n->ownerStructScope = newScope;
+        n->ownerScope       = newScope;
+    });
 
     rootScope->symTable.registerSymbolName(context, structNode, SymbolKind::Struct);
     Ast::addChildBack(sourceFile->astRoot, structNode);
@@ -363,7 +364,7 @@ bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* assignme
 
 bool Ast::convertLiteralTupleToStructDecl(JobContext* context, AstNode* parent, AstNode* assignment, AstNode** result)
 {
-    const auto       sourceFile = context->sourceFile;
+    const auto sourceFile = context->sourceFile;
     AstStruct* structNode;
     SWAG_CHECK(convertLiteralTupleToStructDecl(context, assignment, &structNode));
 
@@ -445,8 +446,8 @@ bool Ast::convertStructParamsToTmpVar(JobContext* context, AstIdentifier* identi
     if (identifier->parent->parent->kind == AstNodeKind::ConstDecl)
         varNode->kind = AstNodeKind::ConstDecl;
 
-    // At global scope, this should be a constant declaration, not a variable, as we cannot assign a global variable to
-    // another global variable at compile time
+        // At global scope, this should be a constant declaration, not a variable, as we cannot assign a global variable to
+        // another global variable at compile time
     else if (identifier->ownerScope->isGlobalOrImpl())
         varNode->kind = AstNodeKind::ConstDecl;
 
@@ -517,7 +518,7 @@ AstNode* Ast::convertTypeToTypeExpression(JobContext* context, AstNode* parent, 
             typeExprLambda->addSpecFlags(AstTypeLambda::SPECFLAG_CAN_THROW);
 
         // Parameters
-        const auto params                = Ast::newNode<AstNode>(nullptr, AstNodeKind::FuncDeclParams, sourceFile, typeExprLambda);
+        const auto params          = Ast::newNode<AstNode>(nullptr, AstNodeKind::FuncDeclParams, sourceFile, typeExprLambda);
         typeExprLambda->parameters = params;
         for (const auto p : typeLambda->parameters)
         {
