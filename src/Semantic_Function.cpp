@@ -1565,6 +1565,10 @@ bool Semantic::resolveReturn(SemanticContext* context)
         child->flags |= AST_TRANSIENT;
     }
 
+    auto childType = TypeManager::concreteType(child->typeInfo);
+    if(!returnType->isPointerRef() && childType->isPointerRef())
+        setUnRef(child);
+    
     // When returning a struct, we need to know if postcopy or postmove are here, and wait for them to resolve
     if (returnType && (returnType->isStruct() || returnType->isArrayOfStruct()))
     {
