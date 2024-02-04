@@ -82,7 +82,7 @@ bool Semantic::computeExpressionListTupleType(SemanticContext* context, AstNode*
         if (!typeInfo->subTypes.empty())
             typeInfo->name += ", ";
 
-        auto typeParam = g_TypeMgr->makeParam();
+        auto typeParam = TypeManager::makeParam();
 
         // When generating parameters for a closure call, keep the reference if we want one !
         if (child->kind != AstNodeKind::MakePointer || !(child->specFlags & AstMakePointer::SPECFLAG_TOREF))
@@ -151,7 +151,7 @@ bool Semantic::resolveExpressionListArray(SemanticContext* context)
     node->flags |= AST_CONST_EXPR | AST_R_VALUE;
     for (const auto child : node->childs)
     {
-        auto       typeParam = g_TypeMgr->makeParam();
+        auto       typeParam = TypeManager::makeParam();
         const auto childType = TypeManager::concreteType(child->typeInfo, CONCRETE_FUNC);
         typeParam->typeInfo  = childType;
         typeInfo->subTypes.push_back(typeParam);
@@ -305,20 +305,23 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
     SWAG_CHECK(evaluateConstExpression(context, expression, ifZero));
     YIELD();
 
+    ifZero->typeInfo    = getConcreteTypeUnRef(ifZero, CONCRETE_ALL);
     const auto typeInfo = getConcreteTypeUnRef(expression, CONCRETE_ALL);
+
     if (typeInfo->isStruct())
     {
         Diagnostic diag{node->sourceFile, node->token, Err(Err0166)};
         diag.addRange(expression, Diagnostic::isType(typeInfo));
         return context->report(diag);
     }
-    else if (!typeInfo->isString() &&
-             !typeInfo->isPointer() &&
-             !typeInfo->isInterface() &&
-             !typeInfo->isNativeIntegerOrRune() &&
-             !typeInfo->isBool() &&
-             !typeInfo->isNativeFloat() &&
-             !typeInfo->isLambdaClosure())
+
+    if (!typeInfo->isString() &&
+        !typeInfo->isPointer() &&
+        !typeInfo->isInterface() &&
+        !typeInfo->isNativeIntegerOrRune() &&
+        !typeInfo->isBool() &&
+        !typeInfo->isNativeFloat() &&
+        !typeInfo->isLambdaClosure())
     {
         Diagnostic diag{node->sourceFile, node->token, Fmt(Err(Err0165), typeInfo->getDisplayNameC())};
         diag.addRange(expression, Diagnostic::isType(typeInfo));
@@ -357,15 +360,18 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
             }
         }
 
+        node->setPassThrough();
         if (notNull)
         {
             node->inheritComputedValue(expression);
             node->typeInfo = expression->typeInfo;
+            ifZero->flags |= AST_NO_BYTECODE;
         }
         else
         {
             node->inheritComputedValue(ifZero);
             node->typeInfo = ifZero->typeInfo;
+            expression->flags |= AST_NO_BYTECODE;
         }
     }
     else

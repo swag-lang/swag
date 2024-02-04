@@ -761,7 +761,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId)
     if (currentScope->kind == ScopeKind::Struct && !funcForCompiler)
     {
         auto typeStruct       = CastTypeInfo<TypeInfoStruct>(currentScope->owner->typeInfo, TypeInfoKind::Struct);
-        auto typeParam        = g_TypeMgr->makeParam();
+        auto typeParam        = TypeManager::makeParam();
         typeParam->name       = funcNode->token.text;
         typeParam->typeInfo   = funcNode->typeInfo;
         typeParam->declNode   = funcNode;

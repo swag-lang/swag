@@ -472,7 +472,7 @@ bool Semantic::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* n
 
                 for (size_t i = 0; i < nodeParam->ownerFct->parameters->childs.size(); i++)
                 {
-                    auto p      = g_TypeMgr->makeParam();
+                    auto p      = TypeManager::makeParam();
                     p->typeInfo = g_TypeMgr->typeInfoUndefined;
                     tryType->parameters.push_back(p);
                 }

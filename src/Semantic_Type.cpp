@@ -228,7 +228,7 @@ bool Semantic::resolveTypeLambdaClosure(SemanticContext* context)
         size_t index = 0;
         for (auto param : node->parameters->childs)
         {
-            auto typeParam      = g_TypeMgr->makeParam();
+            auto typeParam      = TypeManager::makeParam();
             typeParam->typeInfo = param->typeInfo;
             typeParam->declNode = param;
 

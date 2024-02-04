@@ -250,7 +250,7 @@ bool Semantic::resolveSubEnumValue(SemanticContext* context)
     SWAG_CHECK(node->resolvedSymbolOverload);
 
     // Store the value in the enum type
-    const auto typeParam = g_TypeMgr->makeParam();
+    const auto typeParam = TypeManager::makeParam();
     typeParam->name      = node->token.text;
     typeParam->typeInfo  = typeSubEnum;
     typeParam->index     = (uint32_t) typeEnum->values.size();
@@ -450,7 +450,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
     SWAG_CHECK(valNode->resolvedSymbolOverload);
 
     // Store the value in the enum type
-    const auto typeParam = g_TypeMgr->makeParam();
+    const auto typeParam = TypeManager::makeParam();
     typeParam->flags |= TYPEINFOPARAM_DEFINED_VALUE;
     typeParam->name     = valNode->token.text;
     typeParam->typeInfo = rawTypeInfo;

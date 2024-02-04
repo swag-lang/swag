@@ -170,7 +170,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
         typeParamItf = typeStruct->hasInterfaceNoLock(typeBaseInterface);
         if (!typeParamItf)
         {
-            typeParamItf = g_TypeMgr->makeParam();
+            typeParamItf = TypeManager::makeParam();
             typeBaseInterface->computeScopedName();
             typeParamItf->name = typeBaseInterface->scopedName;
             SWAG_ASSERT(!typeParamItf->name.empty());
@@ -411,7 +411,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
         TypeInfoParam* typeParam = nullptr;
         if (!(node->flags & AST_FROM_GENERIC))
         {
-            typeParam           = g_TypeMgr->makeParam();
+            typeParam           = TypeManager::makeParam();
             typeParam->name     = child->token.text;
             typeParam->offset   = storageOffset;
             typeParam->declNode = child;
@@ -479,13 +479,13 @@ bool Semantic::resolveInterface(SemanticContext* context)
     // Struct interface, with one pointer for the data, and one pointer for itable
     if (!(node->flags & AST_FROM_GENERIC))
     {
-        auto typeParam      = g_TypeMgr->makeParam();
+        auto typeParam      = TypeManager::makeParam();
         typeParam->typeInfo = g_TypeMgr->makePointerTo(g_TypeMgr->typeInfoVoid);
         typeParam->offset   = 0;
         typeInterface->fields.push_back(typeParam);
         typeInterface->sizeOf += sizeof(void*);
 
-        typeParam           = g_TypeMgr->makeParam();
+        typeParam           = TypeManager::makeParam();
         typeParam->typeInfo = typeITable;
         typeParam->offset   = sizeof(void*);
         typeParam->index    = 1;
@@ -675,7 +675,7 @@ bool Semantic::preResolveStructContent(SemanticContext* context)
         {
             for (const auto param : node->genericParameters->childs)
             {
-                auto funcParam      = g_TypeMgr->makeParam();
+                auto funcParam      = TypeManager::makeParam();
                 funcParam->name     = param->token.text;
                 funcParam->typeInfo = param->typeInfo;
                 if (param->specFlags & AstVarDecl::SPECFLAG_GENERIC_TYPE)
@@ -895,7 +895,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
             TypeInfoParam* typeParam = nullptr;
             if (!(node->flags & AST_FROM_GENERIC) || !(child->flags & AST_REGISTERED_IN_STRUCT))
             {
-                typeParam           = g_TypeMgr->makeParam();
+                typeParam           = TypeManager::makeParam();
                 typeParam->name     = child->token.text;
                 typeParam->typeInfo = child->typeInfo;
                 typeParam->offset   = storageOffset;

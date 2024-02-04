@@ -359,7 +359,7 @@ int TypeInfoParam::numRegisters() const
 
 TypeInfoParam* TypeInfoParam::clone() const
 {
-    const auto newType  = g_TypeMgr->makeParam();
+    const auto newType  = TypeManager::makeParam();
     newType->name       = name;
     newType->attributes = attributes;
     newType->typeInfo   = typeInfo;

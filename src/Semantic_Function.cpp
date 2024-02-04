@@ -75,7 +75,7 @@ bool Semantic::setupFuncDeclParams(SemanticContext* context, TypeInfoFuncAttr* t
     for (const auto param : parameters->childs)
     {
         auto nodeParam        = CastAst<AstVarDecl>(param, AstNodeKind::FuncDeclParam);
-        auto funcParam        = g_TypeMgr->makeParam();
+        auto funcParam        = TypeManager::makeParam();
         funcParam->name       = param->token.text;
         funcParam->typeInfo   = param->typeInfo;
         funcParam->index      = index++;
