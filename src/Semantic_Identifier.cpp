@@ -242,7 +242,7 @@ bool Semantic::setupIdentifierRef(SemanticContext* context, AstNode* node)
 
 bool Semantic::isFunctionButNotACall(SemanticContext* context, AstNode* node, SymbolName* symbol)
 {
-    AstIdentifier* id = nullptr;
+    const AstIdentifier* id = nullptr;
     if (node && node->kind == AstNodeKind::Identifier)
     {
         id = CastAst<AstIdentifier>(node, AstNodeKind::Identifier);
@@ -581,7 +581,7 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
         if (symbol->kind == SymbolKind::Function)
         {
             const auto typeInfo = CastTypeInfo<TypeInfoFuncAttr>(overload->typeInfo, TypeInfoKind::FuncAttr);
-            if (typeInfo->parameters.size())
+            if (!typeInfo->parameters.empty())
             {
                 const auto firstParam = typeInfo->parameters.front()->typeInfo;
                 if (firstParam->isSame(dep.node->typeInfo, CASTFLAG_EXACT))

@@ -164,7 +164,7 @@ llvm::Value* LLVM::getImmediateConstantA(llvm::LLVMContext& context, llvm::IRBui
     return builder.CreateLoad(IX_TY(numBits), r0);
 }
 
-void LLVM::storeTypedValueToRegister(llvm::LLVMContext& context, const BuildParameters& buildParameters, llvm::Value* value, uint32_t reg, llvm::AllocaInst* allocR)
+void LLVM::storeTypedValueToRegister(llvm::LLVMContext& context, const BuildParameters& buildParameters, llvm::Value* value, uint32_t reg, llvm::AllocaInst* allocR) const
 {
     const int   ct              = buildParameters.compileType;
     const int   precompileIndex = buildParameters.precompileIndex;
@@ -195,7 +195,7 @@ void LLVM::storeRT2ToRegisters(llvm::LLVMContext&     context,
                                uint32_t               reg0,
                                uint32_t               reg1,
                                llvm::AllocaInst*      allocR,
-                               llvm::AllocaInst*      allocRR)
+                               llvm::AllocaInst*      allocRR) const
 {
     const int   ct              = buildParameters.compileType;
     const int   precompileIndex = buildParameters.precompileIndex;

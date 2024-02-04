@@ -50,7 +50,7 @@ bool Tokenizer::doIdentifier(TokenParse& token)
 
             Vector<Utf8> result;
             SemanticError::findClosestMatches(token.text, searchList, result);
-            if (result.size())
+            if (!result.empty())
                 return errorContext->report(diag, Diagnostic::note(SemanticError::findClosestMatchesMsg(token.text, result)));
 
             return errorContext->report(diag);
@@ -71,7 +71,7 @@ bool Tokenizer::doIdentifier(TokenParse& token)
 
         Vector<Utf8> result;
         SemanticError::findClosestMatches(token.text, searchList, result);
-        if (result.size())
+        if (!result.empty())
             return errorContext->report(diag, Diagnostic::note(SemanticError::findClosestMatchesMsg(token.text, result)));
 
         return errorContext->report(diag);

@@ -4,9 +4,9 @@
 #include "LLVM_Macros.h"
 #include "Module.h"
 
-bool LLVM::emitDataSegment(const BuildParameters& buildParameters, DataSegment* dataSegment)
+bool LLVM::emitDataSegment(const BuildParameters& buildParameters, DataSegment* dataSegment) const
 {
-    if (!dataSegment->buckets.size())
+    if (dataSegment->buckets.empty())
         return true;
     if (!dataSegment->totalCount)
         return true;
@@ -103,7 +103,7 @@ bool LLVM::emitDataSegment(const BuildParameters& buildParameters, DataSegment* 
     return true;
 }
 
-bool LLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegment* dataSegment, SegmentKind me)
+bool LLVM::emitInitSeg(const BuildParameters& buildParameters, DataSegment* dataSegment, SegmentKind me) const
 {
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;

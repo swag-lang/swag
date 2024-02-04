@@ -35,7 +35,7 @@ void newScriptFile()
     g_Log.messageInfo(Fmt("=> type [[swag script -f:%s]] or [[swag %s]] to run that script", g_CommandLine.scriptName.c_str(), g_CommandLine.scriptName.c_str()));
 }
 
-void Workspace::newModule(const Utf8& moduleName)
+void Workspace::newModule(const Utf8& moduleName) const
 {
     error_code err;
 

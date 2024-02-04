@@ -5909,7 +5909,7 @@ llvm::BasicBlock* LLVM::getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func
     return it->second;
 }
 
-void LLVM::setFuncAttributes(const BuildParameters& buildParameters, Module* moduleToGen, AstFuncDecl* funcNode, ByteCode* bc, llvm::Function* func)
+void LLVM::setFuncAttributes(const BuildParameters& buildParameters, Module* moduleToGen, const AstFuncDecl* funcNode, const ByteCode* bc, llvm::Function* func)
 {
     if (!moduleToGen->mustOptimizeBackend(bc->node))
     {

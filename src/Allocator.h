@@ -52,18 +52,18 @@ struct StdAllocator
 
     StdAllocator() = default;
 
-    T* allocate(size_t n, const T* hint = 0)
+    static T* allocate(size_t n, const T* hint = nullptr)
     {
-        auto size = Allocator::alignSize(n * sizeof(T));
+        const auto size = Allocator::alignSize(n * sizeof(T));
 #ifdef SWAG_STATS
         g_Stats.memStd += size;
 #endif
         return (T*) Allocator::alloc(size);
     }
 
-    void deallocate(T* p, size_t n)
+    static void deallocate(T* p, size_t n)
     {
-        auto size = n * sizeof(T);
+        const auto size = n * sizeof(T);
 #ifdef SWAG_STATS
         g_Stats.memStd -= size;
 #endif

@@ -64,7 +64,7 @@ void Diagnostic::addRange(AstNode* node, const Utf8& h)
     addRange(start, end, h);
 }
 
-void Diagnostic::printSourceLine()
+void Diagnostic::printSourceLine() const
 {
     SWAG_ASSERT(sourceFile);
     auto checkFile = sourceFile;
@@ -84,7 +84,7 @@ void Diagnostic::printSourceLine()
         g_Log.print(": ");
 }
 
-void Diagnostic::printMarginLineNo(int lineNo)
+void Diagnostic::printMarginLineNo(int lineNo) const
 {
     g_Log.setColor(codeLineNoColor);
 
@@ -429,7 +429,7 @@ void Diagnostic::printSourceCode()
     g_Log.eol();
 }
 
-void Diagnostic::setColorRanges(DiagnosticLevel level)
+void Diagnostic::setColorRanges(DiagnosticLevel level) const
 {
     switch (level)
     {
@@ -448,7 +448,7 @@ void Diagnostic::setColorRanges(DiagnosticLevel level)
     }
 }
 
-int Diagnostic::alignRangeColumn(int curColumn, int where, bool withCode)
+int Diagnostic::alignRangeColumn(int curColumn, int where, bool withCode) const
 {
     while (curColumn < where)
     {
@@ -539,7 +539,7 @@ void Diagnostic::printRanges()
     const auto orgNumRanges = ranges.size();
 
     // The last one in on the same line as the underline if there is enough room
-    if (ranges.size())
+    if (!ranges.empty())
     {
         const auto& r        = ranges.back();
         const auto  unformat = g_Log.removeFormat(r.hint.c_str());
@@ -551,7 +551,7 @@ void Diagnostic::printRanges()
         }
     }
 
-    while (ranges.size())
+    while (!ranges.empty())
     {
         auto&      r        = ranges.back();
         auto       unformat = g_Log.removeFormat(r.hint.c_str());

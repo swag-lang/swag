@@ -20,10 +20,10 @@ enum class DiagnosticLevel
 struct Diagnostic
 {
     Diagnostic(SourceFile* file, const SourceLocation& start, const SourceLocation& end, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
-        : startLocation{start}
-        , endLocation{end}
-        , textMsg{msg}
+        : textMsg{msg}
         , errorLevel{level}
+        , startLocation{start}
+        , endLocation{end}
         , sourceFile{file}
         , showSourceCode{true}
         , hasLocation{true}
@@ -32,10 +32,10 @@ struct Diagnostic
     }
 
     Diagnostic(SourceFile* file, const SourceLocation& start, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
-        : startLocation{start}
-        , endLocation{start}
-        , textMsg{msg}
+        : textMsg{msg}
         , errorLevel{level}
+        , startLocation{start}
+        , endLocation{start}
         , sourceFile{file}
         , showSourceCode{true}
         , hasLocation{true}
@@ -44,10 +44,10 @@ struct Diagnostic
     }
 
     Diagnostic(SourceFile* file, const Token& token, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
-        : startLocation{token.startLocation}
-        , endLocation{token.endLocation}
-        , textMsg{msg}
+        : textMsg{msg}
         , errorLevel{level}
+        , startLocation{token.startLocation}
+        , endLocation{token.endLocation}
         , sourceFile{file}
         , showSourceCode{true}
         , hasLocation{true}
@@ -56,10 +56,10 @@ struct Diagnostic
     }
 
     Diagnostic(AstNode* node, const Token& token, const Utf8& msg, DiagnosticLevel level = DiagnosticLevel::Error)
-        : startLocation{token.startLocation}
-        , endLocation{token.endLocation}
-        , textMsg{msg}
+        : textMsg{msg}
         , errorLevel{level}
+        , startLocation{token.startLocation}
+        , endLocation{token.endLocation}
         , sourceFile{node->sourceFile}
         , sourceNode{node}
         , showSourceCode{true}
@@ -69,11 +69,11 @@ struct Diagnostic
     }
 
     Diagnostic(AstNode* node, const Token& token, const Utf8& msg, const Utf8& hint, DiagnosticLevel level = DiagnosticLevel::Error)
-        : startLocation{token.startLocation}
+        : textMsg{msg}
+        , errorLevel{level}
+        , startLocation{token.startLocation}
         , endLocation{token.endLocation}
         , hint{hint}
-        , textMsg{msg}
-        , errorLevel{level}
         , sourceFile{node->sourceFile}
         , sourceNode{node}
         , showSourceCode{true}
@@ -95,9 +95,9 @@ struct Diagnostic
     }
 
     Diagnostic(AstNode* node, const Utf8& msg, const Utf8& hint, DiagnosticLevel level = DiagnosticLevel::Error)
-        : hint{hint}
-        , textMsg{msg}
+        : textMsg{msg}
         , errorLevel{level}
+        , hint{hint}
         , sourceFile{node->sourceFile}
         , sourceNode{node}
         , showSourceCode{true}
@@ -137,21 +137,21 @@ struct Diagnostic
     void setup();
     void addRange(const SourceLocation& start, const SourceLocation& end, const Utf8& h);
     void addRange(AstNode* node, const Utf8& h);
-    void addRange(const Token& node, const Utf8& h);
+    void addRange(const Token& token, const Utf8& h);
 
     void setupColors();
     void collectSourceCode();
     void sortRanges();
     void collectRanges();
     void printSourceCode();
-    void printSourceLine();
+    void printSourceLine() const;
     void printErrorLevel();
-    void printMarginLineNo(int lineNo);
-    void printMargin(bool eol = false, bool maxDigits = false, int lineNo = 0);
+    void printMarginLineNo(int lineNo) const;
+    void printMargin(bool eol = false, bool printLineNo = false, int lineNo = 0);
     void printPreRemarks();
     void printRemarks();
-    void setColorRanges(DiagnosticLevel level);
-    int  alignRangeColumn(int curColumn, int where, bool withCode = true);
+    void setColorRanges(DiagnosticLevel level) const;
+    int  alignRangeColumn(int curColumn, int where, bool withCode = true) const;
     int  printRangesVerticalBars(size_t maxMarks);
     void printLastRangeHint(int curColumn);
     void printRanges();

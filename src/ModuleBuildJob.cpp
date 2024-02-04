@@ -46,7 +46,7 @@ void ModuleBuildJob::publishFilesToPublic(Module* moduleToPublish)
                        // if the one from the source code is more recent
                        Utf8 pubName = filename;
                        pubName.makeUpper();
-                       if (publicFiles.find(pubName) != publicFiles.end())
+                       if (publicFiles.contains(pubName))
                            return;
 
                        // Otherwise, remove it !
@@ -192,7 +192,7 @@ bool ModuleBuildJob::loadDependency(Module* depModule)
     return true;
 }
 
-void ModuleBuildJob::checkMissingErrors()
+void ModuleBuildJob::checkMissingErrors() const
 {
     // During unit testing, be sure we don't have untriggered errors
     if (g_CommandLine.test && g_CommandLine.runByteCodeTests)

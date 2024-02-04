@@ -14,7 +14,7 @@ struct ModuleBuildJob : public Job
     void      publishFilesToTarget(Module* moduleToPublish);
     void      publishFilesToPublic();
     void      publishFilesToTarget();
-    void      checkMissingErrors();
+    void      checkMissingErrors() const;
     JobResult execute() override;
 
     ModuleBuildPass pass      = ModuleBuildPass::Init;

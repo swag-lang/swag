@@ -12,7 +12,7 @@ bool ByteCodeOptimizer::optimizePassErr(ByteCodeOptContext* context)
         return true;
 
     const auto bc = context->bc;
-    if (context->nops.size())
+    if (!context->nops.empty())
         return true;
 
     for (uint32_t cpt = 0; cpt < bc->numInstructions; cpt++)

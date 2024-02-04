@@ -368,7 +368,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                 auto id = CastAst<AstIdentifier>(child->childs.back(), AstNodeKind::Identifier);
                 id->flags |= AST_NO_SEMANTIC;
 
-                SWAG_VERIFY(id->callParameters && id->callParameters->childs.size() >= 1, context->report({id, Err(Err0541)}));
+                SWAG_VERIFY(id->callParameters && !id->callParameters->childs.empty(), context->report({id, Err(Err0541)}));
                 for (auto c : id->callParameters->childs)
                 {
                     auto ptr       = c->getConstantGenTypeInfo();

@@ -25,7 +25,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
         if (arg.split[2] != "on" && arg.split[2] != "off")
             return BcDbgCommandResult::BadArguments;
 
-        g_CommandLine.dbgOff = arg.split[2] == "off" ? true : false;
+        g_CommandLine.dbgOff = arg.split[2] == "off";
 
         if (g_CommandLine.dbgOff)
             printCmdResult("stop on @breakpoint(): on");
@@ -44,7 +44,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
             if (arg.split[3] != "on" && arg.split[3] != "off")
                 return BcDbgCommandResult::BadArguments;
 
-            g_ByteCodeDebugger.debugPrintStruct = arg.split[2] == "on" ? true : false;
+            g_ByteCodeDebugger.debugPrintStruct = arg.split[2] == "on";
 
             if (g_CommandLine.dbgOff)
                 printCmdResult("print struct content: on");
@@ -58,7 +58,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdSet(ByteCodeRunContext* context, const B
             if (arg.split[3] != "on" && arg.split[3] != "off")
                 return BcDbgCommandResult::BadArguments;
 
-            g_ByteCodeDebugger.debugPrintArray = arg.split[2] == "on" ? true : false;
+            g_ByteCodeDebugger.debugPrintArray = arg.split[2] == "on";
 
             if (g_CommandLine.dbgOff)
                 printCmdResult("print array content: on");

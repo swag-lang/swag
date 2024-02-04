@@ -126,7 +126,7 @@ void Utf8::reserve(uint32_t newSize)
         return;
     makeLocal();
 
-    auto lastAllocated = allocated;
+    const auto lastAllocated = allocated;
     allocated *= 2;
     allocated            = max(allocated, newSize);
     const auto newBuffer = (char*) Allocator::alloc(allocated);
@@ -175,7 +175,7 @@ const char* Utf8::c_str() const
 
     // Big huge leak... not so huge in fact
     // Should limit the call to c_str() as much as possible in a normal run (no errors)
-    auto       size = count + 1;
+    const auto size = count + 1;
     const auto buf  = (char*) Allocator::alloc(size);
     memcpy(buf, buffer, count);
     buf[count] = 0;
@@ -934,25 +934,25 @@ uint32_t Utf8::fuzzyCompare(const Utf8& str1, const Utf8& str2)
 
 #define MIN3(a, b, c) ((a) < (b) ? ((a) < (c) ? (a) : (c)) : ((b) < (c) ? (b) : (c)))
 
-    unsigned int s1len, s2len, x, y, lastdiag, olddiag;
-    s1len = str1.length();
-    s2len = str2.length();
+    unsigned int       y, lastdiag;
+    const unsigned int s1Len = str1.length();
+    const unsigned int s2Len = str2.length();
 
-    unsigned int* column = new unsigned int[s1len + 1];
-    for (y        = 1; y <= s1len; y++)
+    unsigned int* column = new unsigned int[s1Len + 1];
+    for (y        = 1; y <= s1Len; y++)
         column[y] = y;
-    for (x = 1; x <= s2len; x++)
+    for (unsigned int x = 1; x <= s2Len; x++)
     {
         column[0] = x;
-        for (y = 1, lastdiag = x - 1; y <= s1len; y++)
+        for (y = 1, lastdiag = x - 1; y <= s1Len; y++)
         {
-            olddiag   = column[y];
-            column[y] = MIN3(column[y] + 1, column[y - 1] + 1, lastdiag + (str1[y - 1] == str2[x - 1] ? 0 : 1));
-            lastdiag  = olddiag;
+            const unsigned int olddiag = column[y];
+            column[y]                  = MIN3(column[y] + 1, column[y - 1] + 1, lastdiag + (str1[y - 1] == str2[x - 1] ? 0 : 1));
+            lastdiag                   = olddiag;
         }
     }
 
-    const auto result = column[s1len];
+    const auto result = column[s1Len];
     return result;
 }
 

@@ -85,14 +85,14 @@ bool ByteCodeGen::emitCastToInterface(ByteCodeGenContext* context, AstNode* expr
         return true;
     }
 
-    SWAG_IF_ASSERT(TypeInfoStruct* fromTypeStruct = nullptr);
+    SWAG_IF_ASSERT(const TypeInfoStruct* fromTypeStruct = nullptr);
     if (fromTypeInfo->isStruct())
     {
         SWAG_IF_ASSERT(fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromTypeInfo, TypeInfoKind::Struct));
     }
     else if (fromTypeInfo->isPointerTo(TypeInfoKind::Struct))
     {
-        SWAG_IF_ASSERT(auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromTypeInfo, TypeInfoKind::Pointer));
+        SWAG_IF_ASSERT(const auto fromTypePointer = CastTypeInfo<TypeInfoPointer>(fromTypeInfo, TypeInfoKind::Pointer));
         SWAG_IF_ASSERT(fromTypeStruct = CastTypeInfo<TypeInfoStruct>(fromTypePointer->pointedType, TypeInfoKind::Struct));
     }
     else
@@ -621,7 +621,7 @@ bool ByteCodeGen::emitCastToNativeString(ByteCodeGenContext* context, AstNode* e
     if (fromTypeInfo->isListTuple())
     {
 #ifdef SWAG_HAS_ASSERT
-        auto typeList = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeListTuple);
+        const auto typeList = CastTypeInfo<TypeInfoList>(fromTypeInfo, TypeInfoKind::TypeListTuple);
         SWAG_ASSERT(typeList->subTypes.size() == 2);
         SWAG_ASSERT(typeList->subTypes[0]->typeInfo->isPointer() || typeList->subTypes[0]->typeInfo->isArray());
         SWAG_ASSERT(typeList->subTypes[1]->typeInfo->isNative());
@@ -766,7 +766,7 @@ bool ByteCodeGen::emitCast(ByteCodeGenContext* context, AstNode* exprNode, TypeI
         auto anyNode = exprNode;
         if (!anyNode->hasExtMisc() || !anyNode->extMisc()->anyTypeSegment)
         {
-            SWAG_ASSERT(anyNode->childs.size());
+            SWAG_ASSERT(!anyNode->childs.empty());
             anyNode = anyNode->childs.front();
         }
 

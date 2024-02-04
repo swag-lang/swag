@@ -82,7 +82,7 @@ JobResult FetchModuleFileSystemJob::execute()
     // Remove all files in the dependency folder that are no more in the module source folder
     for (const auto& f : dstFiles)
     {
-        if (srcFiles.find(f) == srcFiles.end())
+        if (!srcFiles.contains(f))
         {
             if (f == SWAG_ALIAS_FILENAME)
                 continue;

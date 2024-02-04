@@ -602,7 +602,7 @@ void AstBreakable::copyFrom(CloneContext& context, AstBreakable* from)
     registerIndex  = from->registerIndex;
 }
 
-AstNode* AstSubstBreakContinue::clone(CloneContext& context)
+AstNode* AstSubstBreakContinue::clone(CloneContext& context) const
 {
     if (altSubstBreakable == context.ownerBreakable)
         return altSubst->clone(context);

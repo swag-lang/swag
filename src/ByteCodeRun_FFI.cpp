@@ -161,8 +161,8 @@ void ByteCodeRun::ffiCall(ByteCodeRunContext* context, ByteCodeInstruction* ip, 
 
         if (ip->op == ByteCodeOp::ForeignCall || ip->op == ByteCodeOp::ForeignCallPop)
         {
-            auto funcDecl = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
-            auto callName = funcDecl->getCallName();
+            const auto funcDecl = CastAst<AstFuncDecl>((AstNode*) ip->a.pointer, AstNodeKind::FuncDecl);
+            const auto callName = funcDecl->getCallName();
             context->bc->ffiProfile[callName].count += 1;
             context->bc->ffiProfile[callName].cum += now - context->bc->profileStart;
         }

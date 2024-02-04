@@ -103,7 +103,7 @@ void DataSegment::align(uint32_t alignOf)
 void DataSegment::alignNoLock(uint32_t alignOf)
 {
     // Align
-    if (buckets.size() && alignOf > 1)
+    if (!buckets.empty() && alignOf > 1)
     {
         const auto alignOffset = (uint32_t) TypeManager::align(totalCount, alignOf);
         if (alignOffset != totalCount)
@@ -132,7 +132,7 @@ uint32_t DataSegment::reserveNoLock(uint32_t size, uint8_t** resultPtr)
 
     SWAG_ASSERT(size);
     Bucket* last = nullptr;
-    if (buckets.size())
+    if (!buckets.empty())
         last = &buckets.back();
 
     if (last && last->count + size <= last->size)
@@ -213,7 +213,7 @@ uint8_t* DataSegment::addressNoLock(uint32_t location)
 {
     SWAG_RACE_CONDITION_READ(raceC);
     SWAG_ASSERT(location != UINT32_MAX);
-    SWAG_ASSERT(buckets.size());
+    SWAG_ASSERT(!buckets.empty());
     for (auto& i : buckets)
     {
         const auto bucket = &i;
@@ -360,7 +360,7 @@ void DataSegment::addPatchPtr(int64_t* addr, int64_t value)
     patchPtr.push_back(st);
 }
 
-void DataSegment::applyPatchPtr()
+void DataSegment::applyPatchPtr() const
 {
     for (const auto& it : patchPtr)
         *it.addr = it.value;
@@ -427,7 +427,7 @@ void DataSegment::addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKi
     // (even if no optimal)
     for (size_t i = 0; i < initPtr.size(); i++)
     {
-        auto diff = abs((int) initPtr[i].patchOffset - (int) patchOffset);
+        const auto diff = abs((int) initPtr[i].patchOffset - (int) patchOffset);
         SWAG_ASSERT(diff == 0 || diff >= 8);
     }
 #endif

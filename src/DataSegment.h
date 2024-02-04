@@ -89,7 +89,7 @@ struct DataSegment
     void     addInitPtr(uint32_t patchOffset, uint32_t srcOffset, SegmentKind seg = SegmentKind::Me);
     void     addInitPtrFunc(uint32_t offset, const Utf8& funcName);
     void     addPatchPtr(int64_t* addr, int64_t value);
-    void     applyPatchPtr();
+    void     applyPatchPtr() const;
     void     addPatchMethod(AstFuncDecl* funcDecl, uint32_t storageOffset);
     void     doPatchMethods(JobContext* context);
 

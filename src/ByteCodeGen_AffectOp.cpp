@@ -183,7 +183,7 @@ bool ByteCodeGen::emitAffectEqual(ByteCodeGenContext* context, RegisterList& r0,
             const auto nodeCapture = CastAst<AstMakePointer>(from, AstNodeKind::MakePointerLambda);
             SWAG_ASSERT(nodeCapture->lambda->captureParameters);
             const auto typeBlock = CastTypeInfo<TypeInfoStruct>(nodeCapture->childs.back()->typeInfo, TypeInfoKind::Struct);
-            if (typeBlock->fields.size())
+            if (!typeBlock->fields.empty())
             {
                 EMIT_INST1(context, ByteCodeOp::Add64byVB64, r0)->b.u64 = 2 * sizeof(void*);
                 emitMemCpy(context, r0, r1[1], typeBlock->sizeOf);

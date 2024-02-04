@@ -3,7 +3,7 @@
 #include "ByteCodeDebugger.h"
 #include "Workspace.h"
 
-void ByteCodeDebugger::printBreakpoints(ByteCodeRunContext* context)
+void ByteCodeDebugger::printBreakpoints(ByteCodeRunContext* context) const
 {
     if (debugBreakpoints.empty())
     {

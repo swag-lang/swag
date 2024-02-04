@@ -101,26 +101,26 @@ struct LLVM : public Backend
     }
 
     JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob) override;
-    bool      generateOutput(const BuildParameters& backendParameters) override;
+    bool      generateOutput(const BuildParameters& buildParameters) override;
     bool      emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc) override;
 
-    bool createRuntime(const BuildParameters& buildParameters);
-    llvm::Value* getImmediateConstantA(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits);
-    llvm::Type* swagTypeToLLVMType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfo* typeInfo);
-    void createRet(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, TypeInfo* returnType, llvm::AllocaInst* allocResult);
+    bool                createRuntime(const BuildParameters& buildParameters);
+    llvm::Value*        getImmediateConstantA(llvm::LLVMContext& context, llvm::IRBuilder<>& builder, llvm::AllocaInst* allocR, ByteCodeInstruction* ip, uint32_t numBits);
+    llvm::Type*         swagTypeToLLVMType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfo* typeInfo);
+    void                createRet(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFunc, TypeInfo* returnType, llvm::AllocaInst* allocResult);
     llvm::FunctionType* getOrCreateFuncType(const BuildParameters& buildParameters, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, bool closureToLambda = false);
-    void emitInternalPanic(const BuildParameters& buildParameters, Module* moduleToGen, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, AstNode* node, const char* message);
-    void setFuncAttributes(const BuildParameters& buildParameters, Module* moduleToGen, AstFuncDecl* funcNode, ByteCode* bc, llvm::Function* func);
-    void storeTypedValueToRegister(llvm::LLVMContext& context, const BuildParameters& buildParameters, llvm::Value* value, uint32_t reg, llvm::AllocaInst* allocR);
-    void storeRT2ToRegisters(llvm::LLVMContext& context, const BuildParameters& buildParameters, uint32_t reg0, uint32_t reg1, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR);
-    void getReturnResult(llvm::LLVMContext& context,
-                         const BuildParameters& buildParameters,
-                         Module* moduleToGen,
-                         TypeInfo* returnType,
-                         bool imm,
-                         Register& reg,
-                         llvm::AllocaInst* allocR,
-                         llvm::AllocaInst* allocResult);
+    void                emitInternalPanic(const BuildParameters& buildParameters, Module* moduleToGen, llvm::AllocaInst* allocR, llvm::AllocaInst* allocT, AstNode* node, const char* message);
+    void                setFuncAttributes(const BuildParameters& buildParameters, Module* moduleToGen, const AstFuncDecl* funcNode, const ByteCode* bc, llvm::Function* func);
+    void                storeTypedValueToRegister(llvm::LLVMContext& context, const BuildParameters& buildParameters, llvm::Value* value, uint32_t reg, llvm::AllocaInst* allocR) const;
+    void                storeRT2ToRegisters(llvm::LLVMContext& context, const BuildParameters& buildParameters, uint32_t reg0, uint32_t reg1, llvm::AllocaInst* allocR, llvm::AllocaInst* allocRR) const;
+    void                getReturnResult(llvm::LLVMContext& context,
+                         const BuildParameters&            buildParameters,
+                         Module*                           moduleToGen,
+                         TypeInfo*                         returnType,
+                         bool                              imm,
+                         Register&                         reg,
+                         llvm::AllocaInst*                 allocR,
+                         llvm::AllocaInst*                 allocResult);
     void emitByteCodeCallParameters(const BuildParameters&      buildParameters,
                                     llvm::AllocaInst*           allocR,
                                     llvm::AllocaInst*           allocRR,
@@ -145,7 +145,7 @@ struct LLVM : public Backend
                             const VectorNative<uint32_t>& pushParams,
                             const Vector<llvm::Value*>&   values,
                             bool                          closureToLambda = false);
-    bool         emitCallReturnValue(const BuildParameters& buildParameters, llvm::AllocaInst* allocRR, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, llvm::Value* callResult);
+    bool         emitCallReturnValue(const BuildParameters& buildParameters, llvm::AllocaInst* allocRR, Module* moduleToGen, TypeInfoFuncAttr* typeFuncBC, llvm::Value* callResult) const;
     llvm::Value* emitCall(const BuildParameters&        buildParameters,
                           Module*                       moduleToGen,
                           const Utf8&                   funcName,
@@ -156,16 +156,16 @@ struct LLVM : public Backend
                           const Vector<llvm::Value*>&   values,
                           bool                          localCall);
 
-    bool generateObjFile(const BuildParameters& buildParameters);
+    bool generateObjFile(const BuildParameters& buildParameters) const;
 
-    bool emitDataSegment(const BuildParameters& buildParameters, DataSegment* dataSegment);
-    bool emitInitSeg(const BuildParameters& buildParameters, DataSegment* dataSegment, SegmentKind me);
+    bool emitDataSegment(const BuildParameters& buildParameters, DataSegment* dataSegment) const;
+    bool emitInitSeg(const BuildParameters& buildParameters, DataSegment* dataSegment, SegmentKind me) const;
 
-    bool emitGetTypeTable(const BuildParameters& buildParameters);
-    bool emitGlobalPreMain(const BuildParameters& buildParameters);
+    bool emitGetTypeTable(const BuildParameters& buildParameters) const;
+    bool emitGlobalPreMain(const BuildParameters& buildParameters) const;
     bool emitGlobalInit(const BuildParameters& buildParameters);
     bool emitGlobalDrop(const BuildParameters& buildParameters);
-    bool emitOS(const BuildParameters& buildParameters);
+    bool emitOS(const BuildParameters& buildParameters) const;
     bool emitMain(const BuildParameters& buildParameters);
 
     llvm::BasicBlock* getOrCreateLabel(LLVMPerThread& pp, llvm::Function* func, int64_t ip);

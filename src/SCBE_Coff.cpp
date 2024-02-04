@@ -431,7 +431,7 @@ bool SCBE_Coff::emitPostFunc(const BuildParameters& buildParameters, SCBE_CPU& p
     emitPData(buildParameters, pp);
 
 #ifdef SWAG_STATS
-    auto beforeCount = pp.concat.totalCount();
+    const auto beforeCount = pp.concat.totalCount();
 #endif
     SCBE_CodeView::emit(buildParameters, pp);
 #ifdef SWAG_STATS

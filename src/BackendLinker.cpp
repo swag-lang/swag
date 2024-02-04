@@ -34,7 +34,7 @@ namespace BackendLinker
                 g_Log.lock();
                 for (auto& l : subNames)
                 {
-                    auto       pze = strstr(l.c_str(), ": error:");
+                    const auto pze = strstr(l.c_str(), ": error:");
                     const auto pzw = strstr(l.c_str(), ": warning:");
                     if (pze || pzw)
                     {

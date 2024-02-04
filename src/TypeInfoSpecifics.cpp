@@ -973,7 +973,7 @@ TypeInfoParam* TypeInfoStruct::hasInterfaceNoLock(TypeInfoStruct* itf)
 void TypeInfoStruct::flattenUsingFields()
 {
     ScopedLock lk(mutexCache);
-    if (flattenFields.size())
+    if (!flattenFields.empty())
         return;
     flattenFields.reserve((uint32_t) fields.size());
     for (const auto p : fields)

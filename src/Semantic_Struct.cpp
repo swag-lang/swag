@@ -422,7 +422,7 @@ bool Semantic::resolveInterface(SemanticContext* context)
             typeParam->typeInfo   = child->typeInfo->getConcreteAlias();
             const auto typeLambda = CastTypeInfo<TypeInfoFuncAttr>(typeParam->typeInfo, TypeInfoKind::LambdaClosure);
 
-            if (typeLambda->parameters.size() == 0)
+            if (typeLambda->parameters.empty())
             {
                 const Diagnostic diag{varDecl->type, Fmt(Err(Err0130), child->token.ctext())};
                 return context->report(diag);

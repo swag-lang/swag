@@ -2,7 +2,7 @@
 #include "ByteCodeGenContext.h"
 #include "Ast.h"
 
-void ByteCodeGenContext::release()
+void ByteCodeGenContext::release() const
 {
     if (allParamsTmp)
     {

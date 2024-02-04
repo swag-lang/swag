@@ -8,8 +8,6 @@
 #include "Module.h"
 #include "Statistics.h"
 
-extern bool g_Exiting;
-
 static Mutex g_FreeStackMutex;
 static void* g_FirstFreeStack = nullptr;
 

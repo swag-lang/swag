@@ -299,7 +299,7 @@ struct AstNode
     bool isValidIfParam(const SymbolOverload* overload) const;
     bool isSameStackFrame(const SymbolOverload* overload) const;
     bool isSpecialFunctionName() const;
-    bool isSpecialFunctionGenerated();
+    bool isSpecialFunctionGenerated() const;
     bool isFunctionCall();
     bool isGeneratedSelf() const;
     bool isEmptyFct();
@@ -320,8 +320,8 @@ struct AstNode
     void         setPassThrough();
     void         setOwnerAttrUse(AstAttrUse* attrUse);
     void         swap2Childs();
-    bool         hasSpecialFuncCall();
-    bool         hasSpecialFuncCall(const Utf8& name);
+    bool         hasSpecialFuncCall() const;
+    bool         hasSpecialFuncCall(const Utf8& name) const;
     AstNode*     inSimpleReturn() const;
     bool         isForceTakeAddress() const;
     void         computeLocation(SourceLocation& start, SourceLocation& end);
@@ -1090,7 +1090,7 @@ struct AstRefSubDecl : public AstNode
 
 struct AstSubstBreakContinue : public AstNode
 {
-    AstNode* clone(CloneContext& context);
+    AstNode* clone(CloneContext& context) const;
 
     AstNode*      defaultSubst;
     AstNode*      altSubst;

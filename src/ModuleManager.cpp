@@ -11,13 +11,13 @@ ModuleManager* g_ModuleMgr = nullptr;
 bool ModuleManager::isModuleLoaded(const Utf8& moduleName)
 {
     SharedLock lk(mutexLoaded);
-    return loadedModules.find(moduleName) != loadedModules.end();
+    return loadedModules.contains(moduleName);
 }
 
 bool ModuleManager::isModuleFailedLoaded(const Utf8& moduleName)
 {
     SharedLock lk(mutexLoaded);
-    return failedLoadedModules.find(moduleName) != failedLoadedModules.end();
+    return failedLoadedModules.contains(moduleName);
 }
 
 void ModuleManager::resetFailedModule(const Utf8& moduleName)
@@ -148,7 +148,7 @@ bool ModuleManager::applyPatches(const Utf8& moduleName, void* moduleHandle)
     if (it == patchOffsets.end())
         return true;
 
-    for (auto& one : it->second)
+    for (const auto& one : it->second)
     {
         // Address is no more valid !!!
         if (one.segment->deleted)

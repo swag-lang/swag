@@ -105,21 +105,21 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
 
     // Overwrite with command line
     if (g_CommandLine.buildCfgInlineBC != "default")
-        buildCfg.byteCodeInline = g_CommandLine.buildCfgInlineBC == "true" ? true : false;
+        buildCfg.byteCodeInline = g_CommandLine.buildCfgInlineBC == "true";
     if (g_CommandLine.buildCfgOptimBC != "default")
         buildCfg.byteCodeOptimizeLevel = max(0, min(atoi(g_CommandLine.buildCfgOptimBC.c_str()), 2));
     if (g_CommandLine.buildCfgDebug != "default")
-        buildCfg.backendDebugInformations = g_CommandLine.buildCfgDebug == "true" ? true : false;
+        buildCfg.backendDebugInformations = g_CommandLine.buildCfgDebug == "true";
     if (g_CommandLine.buildCfgOptim != "default")
         buildCfg.backendOptimize = (BuildCfgBackendOptim) max(0, min(atoi(g_CommandLine.buildCfgOptim.c_str()), 5));
     if (g_CommandLine.buildCfgSafety != "default")
         buildCfg.safetyGuards = g_CommandLine.buildCfgSafety == "true" ? SAFETY_ALL : 0;
     if (g_CommandLine.buildCfgStackTrace != "default")
-        buildCfg.errorStackTrace = g_CommandLine.buildCfgStackTrace == "true" ? true : false;
+        buildCfg.errorStackTrace = g_CommandLine.buildCfgStackTrace == "true";
     if (g_CommandLine.buildCfgDebugAlloc != "default")
-        buildCfg.debugAllocator = g_CommandLine.buildCfgDebugAlloc == "true" ? true : false;
+        buildCfg.debugAllocator = g_CommandLine.buildCfgDebugAlloc == "true";
     if (g_CommandLine.buildCfgLlvmIR != "default")
-        buildCfg.backendLLVM.outputIR = g_CommandLine.buildCfgLlvmIR == "true" ? true : false;
+        buildCfg.backendLLVM.outputIR = g_CommandLine.buildCfgLlvmIR == "true";
 
     if (!g_CommandLine.docCss.empty())
     {
@@ -315,7 +315,7 @@ void Module::buildGlobalVarsToDropSlice()
 {
     if (kind == ModuleKind::Config || kind == ModuleKind::BootStrap || kind == ModuleKind::Runtime)
         return;
-    if (globalVarsToDrop.size() == 0)
+    if (globalVarsToDrop.empty())
         return;
 
     uint8_t* resultPtr;
@@ -809,7 +809,7 @@ bool Module::waitForDependenciesDone(Job* job, const SetUtf8& modules)
 
         if (depModule->numErrors)
             continue;
-        if (modules.find(depModule->name) == modules.end())
+        if (!modules.contains(depModule->name))
             continue;
 
         ScopedLock lk(depModule->mutexDependency);
@@ -854,7 +854,7 @@ bool Module::waitForDependenciesDone(Job* job)
     return true;
 }
 
-void Module::sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result)
+void Module::sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result) const
 {
     result = moduleDependencies;
     sort(result.begin(), result.end(), [](ModuleDependency* n1, ModuleDependency* n2)
@@ -885,7 +885,7 @@ uint32_t Module::getHasBeenBuilt()
     return hasBeenBuilt;
 }
 
-void Module::startBuilding(const BuildParameters& bp)
+void Module::startBuilding(const BuildParameters& bp) const
 {
     if (!backend->mustCompile)
     {
@@ -900,12 +900,12 @@ void Module::printBC()
         bc->print(opt);
 }
 
-bool Module::mustEmitSafetyOverflow(AstNode* node, bool compileTime)
+bool Module::mustEmitSafetyOverflow(AstNode* node, bool compileTime) const
 {
     return mustEmitSafety(node, SAFETY_OVERFLOW, compileTime);
 }
 
-bool Module::mustEmitSafety(AstNode* node, uint16_t what, bool compileTime)
+bool Module::mustEmitSafety(AstNode* node, uint16_t what, bool compileTime) const
 {
     if (what == SAFETY_OVERFLOW)
     {
@@ -925,7 +925,7 @@ bool Module::mustEmitSafety(AstNode* node, uint16_t what, bool compileTime)
     return (buildCfg.safetyGuards & what);
 }
 
-bool Module::mustOptimizeBytecode(AstNode* node)
+bool Module::mustOptimizeBytecode(AstNode* node) const
 {
     if (!node)
         return buildCfg.byteCodeOptimizeLevel > 0;
@@ -942,14 +942,14 @@ bool Module::mustOptimizeBytecode(AstNode* node)
     return buildCfg.byteCodeOptimizeLevel > 0;
 }
 
-bool Module::mustOptimizeBackend(AstNode* node)
+bool Module::mustOptimizeBackend(AstNode* node) const
 {
     if (!node)
         return buildCfg.byteCodeOptimizeLevel > 0;
     return (buildCfg.byteCodeOptimizeLevel > 0 || (node->attributeFlags & ATTRIBUTE_OPTIM_BACKEND_ON)) && !(node->attributeFlags & ATTRIBUTE_OPTIM_BACKEND_OFF);
 }
 
-bool Module::hasBytecodeToRun()
+bool Module::hasBytecodeToRun() const
 {
     bool runByteCode = false;
     // If we have some #test functions, and we are in test mode
@@ -964,7 +964,7 @@ bool Module::hasBytecodeToRun()
     return runByteCode;
 }
 
-bool Module::mustGenerateTestExe()
+bool Module::mustGenerateTestExe() const
 {
     if (!g_CommandLine.test)
         return false;
@@ -984,7 +984,7 @@ bool Module::mustGenerateTestExe()
     return true;
 }
 
-bool Module::mustGenerateLegit()
+bool Module::mustGenerateLegit() const
 {
     // Normal module
     if (kind != ModuleKind::Test)
@@ -1009,7 +1009,7 @@ bool Module::mustGenerateLegit()
     return true;
 }
 
-bool Module::mustOutputSomething()
+bool Module::mustOutputSomething() const
 {
     bool mustOutput = true;
     // do not generate an executable that has been run in script mode
@@ -1158,7 +1158,7 @@ void Module::callPreMain()
     }
 }
 
-Utf8 Module::getGlobalPrivFct(const Utf8& nameFct)
+Utf8 Module::getGlobalPrivFct(const Utf8& nameFct) const
 {
     return Fmt(nameFct.c_str(), nameNormalized.c_str());
 }
@@ -1189,7 +1189,7 @@ void Module::flushGenFiles()
     g_ThreadMgr.addJob(newJob);
 }
 
-void Module::logStage(const char* msg)
+void Module::logStage(const char* msg) const
 {
     if (!g_CommandLine.verboseStages)
         return;

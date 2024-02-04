@@ -171,9 +171,8 @@ namespace OS
         DWORD               dwRead;
         CHAR                chBuf[4096];
         DWORD               exit;
-        UINT                errmode;
 
-        errmode = GetErrorMode();
+        const UINT errmode = GetErrorMode();
         SetErrorMode(SEM_FAILCRITICALERRORS);
 
         // Create a pipe to receive compiler results
@@ -216,7 +215,7 @@ namespace OS
         Utf8 strout;
         bool ok  = true;
         chBuf[0] = 0;
-        while (1)
+        while (true)
         {
             PeekNamedPipe(hChildStdoutRd, chBuf, 4096, &dwRead, nullptr, nullptr);
             if (dwRead || !strout.empty())

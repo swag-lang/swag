@@ -74,7 +74,7 @@ bool Semantic::getUfcs(SemanticContext* context, AstIdentifierRef* identifierRef
         else if (identifierRef->resolvedSymbolName->kind == SymbolKind::Function &&
                  identifierRef->previousResolvedNode &&
                  identifierRef->previousResolvedNode->kind == AstNodeKind::Identifier &&
-                 identifierRef->previousResolvedNode->childs.size() &&
+                 !identifierRef->previousResolvedNode->childs.empty() &&
                  identifierRef->previousResolvedNode->childs.front()->kind == AstNodeKind::FuncCallParams &&
                  identifierRef->previousResolvedNode->childs.back()->kind == AstNodeKind::Inline)
             canTry = true;
@@ -164,7 +164,7 @@ bool Semantic::ufcsSetFirstParam(SemanticContext* context, AstIdentifierRef* ide
     if (match.symbolOverload->typeInfo->isClosure())
         fctCallParam->indexParam = 1;
 
-    SWAG_ASSERT(match.solvedParameters.size() > 0);
+    SWAG_ASSERT(!match.solvedParameters.empty());
     SWAG_ASSERT(match.solvedParameters[0]->index == 0);
     fctCallParam->resolvedParameter = match.solvedParameters[0];
 

@@ -237,8 +237,8 @@ Utf8 ByteCode::getInstructionReg(const char* name, const Register& reg, bool reg
 
 void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, PrintInstructionLine& line) const
 {
-    const int i      = (int) (ip - out);
-    bool      forDbg = options.curIp != nullptr;
+    const int  i      = (int) (ip - out);
+    const bool forDbg = options.curIp != nullptr;
 
     // Instruction rank
     if (forDbg)
@@ -342,7 +342,7 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
         // line.devMode = Fmt("%08d %08X %08d ", ip->treeNode, ip->crc, ip->serial);
         if (ip->sourceFile)
         {
-            Path sf = ip->sourceFile;
+            const Path sf = ip->sourceFile;
             line.devMode += Fmt("%s:%d", sf.filename().string().c_str(), ip->sourceLine);
         }
     }
@@ -351,7 +351,7 @@ void ByteCode::getPrintInstruction(const ByteCodePrintOptions& options, ByteCode
 
 void ByteCode::printInstruction(const ByteCodePrintOptions& options, ByteCodeInstruction* ip, const PrintInstructionLine& line)
 {
-    bool forDbg = options.curIp != nullptr;
+    const bool forDbg = options.curIp != nullptr;
 
     if (forDbg && ip == options.curIp)
         g_Log.setColor(ByteCodeDebugger::COLOR_CUR_INSTRUCTION);

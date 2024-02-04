@@ -59,7 +59,7 @@ void Concat::align(uint32_t align)
         addU8(0);
 }
 
-bool Concat::hasEnoughSpace(uint32_t numBytes)
+bool Concat::hasEnoughSpace(uint32_t numBytes) const
 {
     const auto count = (int) (currentSP - lastBucket->datas);
     return lastBucket->capacity - count >= (int) numBytes;

@@ -222,7 +222,7 @@ static bool optimizePassDeadStoreDupScan(ByteCodeOptContext*  context,
     }
 
     // In on first block, then we must keep the instruction
-    if (!node->parent.size())
+    if (node->parent.empty())
         return false;
 
     for (const auto n : node->parent)

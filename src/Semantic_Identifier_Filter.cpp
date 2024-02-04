@@ -598,7 +598,7 @@ bool Semantic::filterGenericMatches(SemanticContext* context, VectorNative<OneMa
     // We eliminate all generic matches that will create an already existing match.
     // This way we can keep some matches with autoOpCast if we have no choice (we will not try to
     // instantiate 'without' autoOpCast, because it would result in a autoOpCast too).
-    if (matches.size() && genMatches.size())
+    if (!matches.empty() && !genMatches.empty())
     {
         VectorNative<OneMatch*> newGenericMatches;
         newGenericMatches.reserve((int) genMatches.size());
@@ -646,7 +646,7 @@ bool Semantic::filterMatchesInContext(SemanticContext* context, VectorNative<One
         if (over->symbol->kind == SymbolKind::Function)
         {
             const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
-            if (typeFunc->replaceTypes.size())
+            if (!typeFunc->replaceTypes.empty())
             {
                 const auto             node = context->node;
                 VectorNative<AstNode*> toCheck;

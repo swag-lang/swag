@@ -28,7 +28,7 @@ void ErrorContext::extract(Diagnostic& diag, Vector<const Diagnostic*>& notes)
     if (diag.errorLevel == DiagnosticLevel::Error)
         hasError = true;
 
-    if (errCxtSteps.size())
+    if (!errCxtSteps.empty())
     {
         bool doneGeneric  = false;
         bool doneInline   = false;

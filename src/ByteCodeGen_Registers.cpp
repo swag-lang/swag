@@ -34,7 +34,7 @@ void ByteCodeGen::sortRegistersRC(ByteCodeGenContext* context)
 void ByteCodeGen::freeRegisterRC(ByteCodeGenContext* context, uint32_t rc)
 {
 #ifdef SWAG_DEV_MODE
-    for (auto r : context->bc->availableRegistersRC)
+    for (const auto& r : context->bc->availableRegistersRC)
         SWAG_ASSERT(r != rc);
 #endif
 

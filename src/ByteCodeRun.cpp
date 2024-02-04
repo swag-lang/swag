@@ -4041,19 +4041,19 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
     /////////////////////////////////////
 
     case ByteCodeOp::ZeroToTrue:
-        registersRC[ip->a.u32].b = registersRC[ip->a.u32].s32 == 0 ? true : false;
+        registersRC[ip->a.u32].b = registersRC[ip->a.u32].s32 == 0;
         break;
     case ByteCodeOp::LowerZeroToTrue:
-        registersRC[ip->a.u32].b = registersRC[ip->a.u32].s32 < 0 ? true : false;
+        registersRC[ip->a.u32].b = registersRC[ip->a.u32].s32 < 0;
         break;
     case ByteCodeOp::LowerEqZeroToTrue:
-        registersRC[ip->a.u32].b = registersRC[ip->a.u32].s32 <= 0 ? true : false;
+        registersRC[ip->a.u32].b = registersRC[ip->a.u32].s32 <= 0;
         break;
     case ByteCodeOp::GreaterZeroToTrue:
-        registersRC[ip->a.u32].b = registersRC[ip->a.u32].s32 > 0 ? true : false;
+        registersRC[ip->a.u32].b = registersRC[ip->a.u32].s32 > 0;
         break;
     case ByteCodeOp::GreaterEqZeroToTrue:
-        registersRC[ip->a.u32].b = registersRC[ip->a.u32].s32 >= 0 ? true : false;
+        registersRC[ip->a.u32].b = registersRC[ip->a.u32].s32 >= 0;
         break;
 
     case ByteCodeOp::IntrinsicAtomicAddS8:
@@ -4300,14 +4300,14 @@ static int exceptionHandler(ByteCodeRunContext* runContext, LPEXCEPTION_POINTERS
     //
     // If we have an expansion, and the first expansion requests test error, then raise
     // in its context to dismiss the error (like an error during a #validif for example)
-    if (runContext->callerContext->errCxtSteps.size() && runContext->callerContext->errCxtSteps[0].node->sourceFile->shouldHaveError)
+    if (!runContext->callerContext->errCxtSteps.empty() && runContext->callerContext->errCxtSteps[0].node->sourceFile->shouldHaveError)
         diag->contextFile = runContext->callerContext->errCxtSteps[0].node->sourceFile;
-    else if (runContext->callerContext->errCxtSteps.size() && runContext->callerContext->errCxtSteps[0].node->sourceFile->shouldHaveWarning)
+    else if (!runContext->callerContext->errCxtSteps.empty() && runContext->callerContext->errCxtSteps[0].node->sourceFile->shouldHaveWarning)
         diag->contextFile = runContext->callerContext->errCxtSteps[0].node->sourceFile;
         // Otherwise get the source file from the top of the bytecode stack if possible
-    else if (g_ByteCodeStackTrace->steps.size() && g_ByteCodeStackTrace->steps[0].bc)
+    else if (!g_ByteCodeStackTrace->steps.empty() && g_ByteCodeStackTrace->steps[0].bc)
         diag->contextFile = g_ByteCodeStackTrace->steps[0].bc->sourceFile;
-    else if (g_ByteCodeStackTrace->steps.size() > 1 && g_ByteCodeStackTrace->steps[1].bc)
+    else if (!g_ByteCodeStackTrace->steps.empty() && g_ByteCodeStackTrace->steps[1].bc)
         diag->contextFile = g_ByteCodeStackTrace->steps[1].bc->sourceFile;
         // Otherwise take the current bytecode source file
     else

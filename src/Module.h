@@ -144,7 +144,7 @@ struct Module
     void        buildTypesSlice();
     void        initProcessInfos();
     void        callPreMain();
-    Utf8        getGlobalPrivFct(const Utf8& name);
+    Utf8        getGlobalPrivFct(const Utf8& name) const;
     void        inheritCfgFrom(Module* from);
 
     void        addExportSourceFile(SourceFile* file);
@@ -154,18 +154,18 @@ struct Module
     void        removeFile(SourceFile* file);
     SourceFile* findFile(const Utf8& fileName);
 
-    void startBuilding(const BuildParameters& bp);
+    void startBuilding(const BuildParameters& bp) const;
     void printBC();
 
     bool computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* sourceFile, AstNode* node, JobContext* callerContext, ExecuteNodeParams* params);
     bool executeNode(SourceFile* sourceFile, AstNode* node, JobContext* callerContext, ExecuteNodeParams* params = nullptr);
-    bool compileString(const Utf8& str);
-    bool hasBytecodeToRun();
+    bool compileString(const Utf8& text);
+    bool hasBytecodeToRun() const;
 
-    bool mustOptimizeBytecode(AstNode* node);
-    bool mustOptimizeBackend(AstNode* node);
-    bool mustEmitSafetyOverflow(AstNode* node, bool compileTime = false);
-    bool mustEmitSafety(AstNode* node, uint16_t what, bool compileTime = false);
+    bool mustOptimizeBytecode(AstNode* node) const;
+    bool mustOptimizeBackend(AstNode* node) const;
+    bool mustEmitSafetyOverflow(AstNode* node, bool compileTime = false) const;
+    bool mustEmitSafety(AstNode* node, uint16_t what, bool compileTime = false) const;
 
     void setBuildPass(BuildPass buildP);
 
@@ -188,14 +188,14 @@ struct Module
     bool addDependency(AstNode* importNode, const Token& tokenLocation, const Token& tokenVersion);
     bool removeDependency(AstNode* importNode);
     bool hasDependencyTo(Module* module);
-    void sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result);
+    void sortDependenciesByInitOrder(VectorNative<ModuleDependency*>& result) const;
     bool waitForDependenciesDone(Job* job, const SetUtf8& modules);
     bool waitForDependenciesDone(Job* job);
     bool filterFunctionsToEmit();
 
-    bool     mustOutputSomething();
-    bool     mustGenerateTestExe();
-    bool     mustGenerateLegit();
+    bool     mustOutputSomething() const;
+    bool     mustGenerateTestExe() const;
+    bool     mustGenerateLegit() const;
     void     setHasBeenBuilt(uint32_t buildResult);
     uint32_t getHasBeenBuilt();
     void     flushGenFiles();
@@ -204,7 +204,7 @@ struct Module
     bool waitImplForToSolve(Job* job, TypeInfoStruct* typeStruct);
     void decImplForToSolve(TypeInfoStruct* typeStruct);
 
-    void logStage(const char* msg);
+    void logStage(const char* msg) const;
     void logPass(ModuleBuildPass pass);
 
     struct ForToSolve

@@ -32,7 +32,6 @@ JobResult ByteCodeGenJob::waitForDependenciesGenerated()
 {
     VectorNative<AstNode*> done;
     VectorNative<AstNode*> depNodes;
-    VectorNative<AstNode*> save;
 
     while (!context.dependentNodesTmp.empty())
     {
@@ -64,8 +63,8 @@ JobResult ByteCodeGenJob::waitForDependenciesGenerated()
             }
         }
 
-        save = std::move(context.dependentNodesTmp);
-        while (save.size())
+        VectorNative<AstNode*> save = std::move(context.dependentNodesTmp);
+        while (!save.empty())
         {
             const auto node = save.get_pop_back();
             if (node == originalNode)

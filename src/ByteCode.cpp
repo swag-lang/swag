@@ -401,12 +401,12 @@ void ByteCode::makeRoomForInstructions(uint32_t room)
     if (numInstructions + room < maxInstructions)
         return;
 
-    auto oldSize    = (int) (maxInstructions * sizeof(ByteCodeInstruction));
-    maxInstructions = max(numInstructions + room * 2, maxInstructions * 2);
+    const auto oldSize = (int) (maxInstructions * sizeof(ByteCodeInstruction));
+    maxInstructions    = max(numInstructions + room * 2, maxInstructions * 2);
 
     // Evaluate the first number of instructions for a given function.
     // We take the number of ast nodes in the function as a metric.
-    // This is to mitigate the number of reallocations, without wasting too much memory.
+    // This is to mitigate the number of re-allocations, without wasting too much memory.
     if (!maxInstructions && node && node->kind == AstNodeKind::FuncDecl)
     {
         const auto funcDecl = CastAst<AstFuncDecl>(node, AstNodeKind::FuncDecl);

@@ -55,13 +55,13 @@ struct Workspace
 
     void        addBootstrap();
     void        addRuntime();
-    void        addRuntimeFile(const char* fileName);
+    void        addRuntimeFile(const char* fileName) const;
     void        setupPaths();
     void        setupInternalTags();
     void        setupUserTags();
     void        setup();
     void        computeModuleName(const Path& path, Utf8& moduleName, Path& moduleFolder, ModuleKind& kind);
-    SourceFile* findFile(const char* fileName);
+    SourceFile* findFile(const char* fileName) const;
     Module*     getModuleByName(const Utf8& moduleName);
     void        cleanFolderContent(const Path& path);
     OneTag*     hasTag(const Utf8& name);
@@ -74,7 +74,7 @@ struct Workspace
     void cleanPublic(const Path& basePath);
     void cleanScript(bool all);
     void cleanCommand();
-    void newModule(const Utf8& moduleName);
+    void newModule(const Utf8& moduleName) const;
     void newCommand();
     void scriptCommand();
 

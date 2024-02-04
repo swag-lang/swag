@@ -82,7 +82,7 @@ uint8_t* Allocator::markDebugBlock(uint8_t* blockAddr, uint64_t userSize, uint64
 uint8_t* Allocator::checkUserBlock(uint8_t* userAddr, uint64_t userSize, uint64_t marker)
 {
     userAddr -= 2 * sizeof(uint64_t);
-    auto blockAddr = userAddr;
+    const auto blockAddr = userAddr;
     SWAG_ASSERT(*(uint64_t*) userAddr == marker);
     userAddr += sizeof(uint64_t);
     SWAG_ASSERT(*(uint64_t*) userAddr == userSize);

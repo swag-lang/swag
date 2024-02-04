@@ -151,7 +151,7 @@ static void cleanNotes(Vector<Diagnostic*>& notes)
                 note->startLocation.line == note1->startLocation.line &&
                 note->endLocation.line == note1->endLocation.line &&
                 note1->canBeMerged &&
-                note1->ranges.size() &&
+                !note1->ranges.empty() &&
                 (note1->errorLevel == DiagnosticLevel::Note))
             {
                 for (size_t i = 0; i < note1->ranges.size(); i++)
@@ -513,7 +513,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
         if (sourceFile->shouldHaveError)
         {
             bool dismiss = true;
-            if (sourceFile->shouldHaveErrorString.size())
+            if (!sourceFile->shouldHaveErrorString.empty())
             {
                 dismiss   = false;
                 auto str1 = diag.textMsg;
@@ -553,7 +553,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
         if (sourceFile->shouldHaveWarning)
         {
             bool dismiss = true;
-            if (sourceFile->shouldHaveWarningString.size())
+            if (!sourceFile->shouldHaveWarningString.empty())
             {
                 dismiss = false;
                 for (const auto& filter : sourceFile->shouldHaveWarningString)
@@ -670,7 +670,7 @@ static bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnost
         }
     }
 
-    return diag.errorLevel == DiagnosticLevel::Error || diag.errorLevel == DiagnosticLevel::Panic ? false : true;
+    return diag.errorLevel != DiagnosticLevel::Error && diag.errorLevel != DiagnosticLevel::Panic;
 }
 
 SourceFile* Report::getDiagFile(const Diagnostic& diag)

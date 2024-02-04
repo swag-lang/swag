@@ -49,7 +49,7 @@ void Workspace::computeModuleName(const Path& path, Utf8& moduleName, Path& modu
     moduleFolder = path;
 }
 
-SourceFile* Workspace::findFile(const char* fileName)
+SourceFile* Workspace::findFile(const char* fileName) const
 {
     SourceFile* sourceFile = nullptr;
     for (const auto m : mapModulesNames)
@@ -83,7 +83,7 @@ Module* Workspace::createOrUseModule(const Utf8& moduleName, const Path& moduleP
         ScopedLock lk(mutexModules);
 
 #ifdef SWAG_DEV_MODE
-        auto it = mapModulesNames.find(moduleName);
+        const auto it = mapModulesNames.find(moduleName);
         SWAG_ASSERT(it == mapModulesNames.end());
 #endif
 
@@ -142,7 +142,7 @@ void Workspace::addBootstrap()
     bootstrapModule->addFile(file);
 }
 
-void Workspace::addRuntimeFile(const char* fileName)
+void Workspace::addRuntimeFile(const char* fileName) const
 {
     const auto file = Allocator::alloc<SourceFile>();
     file->name      = fileName;
@@ -343,7 +343,7 @@ bool errorPendingCycle(Job* pendingJob, VectorNative<Job*>& waitingJobs, Set<Job
         if (depJob == pendingJob)
             return true;
 
-        if (done.find(depJob) != done.end())
+        if (done.contains(depJob))
             return false;
         done.insert(depJob);
 
@@ -756,7 +756,7 @@ bool Workspace::build()
         if (!g_CommandLine.randSeed)
         {
             using namespace std::chrono;
-            milliseconds ms        = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+            const milliseconds ms  = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
             g_CommandLine.randSeed = (int) ms.count() & 0x7FFFFFFF;
             srand(g_CommandLine.randSeed);
             g_CommandLine.randSeed = rand() & 0x7FFFFFFF;
@@ -784,7 +784,7 @@ bool Workspace::build()
         g_CommandLine.userArgumentsStr.push_back(oneArg);
     }
 
-    g_CommandLine.userArgumentsSlice.first  = &g_CommandLine.userArgumentsStr[0];
+    g_CommandLine.userArgumentsSlice.first  = g_CommandLine.userArgumentsStr.data();
     g_CommandLine.userArgumentsSlice.second = (void*) g_CommandLine.userArgumentsStr.size();
 
     // Build !

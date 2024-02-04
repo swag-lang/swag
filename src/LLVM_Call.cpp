@@ -209,7 +209,7 @@ llvm::FunctionType* LLVM::getOrCreateFuncType(const BuildParameters& buildParame
     else
         llvmReturnType = llvmRealReturnType;
 
-    if (typeFunc->parameters.size())
+    if (!typeFunc->parameters.empty())
     {
         auto numParams = typeFunc->parameters.size();
 
@@ -593,7 +593,7 @@ bool LLVM::emitCallReturnValue(const BuildParameters& buildParameters,
                                llvm::AllocaInst*      allocRR,
                                Module*                moduleToGen,
                                TypeInfoFuncAttr*      typeFuncBC,
-                               llvm::Value*           callResult)
+                               llvm::Value*           callResult) const
 {
     const int   ct              = buildParameters.compileType;
     const int   precompileIndex = buildParameters.precompileIndex;
@@ -618,20 +618,26 @@ bool LLVM::emitCallReturnValue(const BuildParameters& buildParameters,
             case NativeTypeKind::Bool:
             case NativeTypeKind::Void:
                 r = TO_PTR_I8(allocRR);
+                break;
             case NativeTypeKind::S16:
             case NativeTypeKind::U16:
                 r = TO_PTR_I16(allocRR);
+                break;
             case NativeTypeKind::S32:
             case NativeTypeKind::U32:
             case NativeTypeKind::Rune:
                 r = TO_PTR_I32(allocRR);
+                break;
             case NativeTypeKind::S64:
             case NativeTypeKind::U64:
                 r = TO_PTR_I64(allocRR);
+                break;
             case NativeTypeKind::F32:
                 r = TO_PTR_F32(allocRR);
+                break;
             case NativeTypeKind::F64:
                 r = TO_PTR_F64(allocRR);
+                break;
             default:
                 break;
             }

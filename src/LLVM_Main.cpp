@@ -6,7 +6,7 @@
 #include "LLVM_Macros.h"
 #include "Module.h"
 
-bool LLVM::emitOS(const BuildParameters& buildParameters)
+bool LLVM::emitOS(const BuildParameters& buildParameters) const
 {
     if (g_CommandLine.target.os == SwagTargetOs::Windows)
     {
@@ -274,7 +274,7 @@ bool LLVM::emitMain(const BuildParameters& buildParameters)
     return true;
 }
 
-bool LLVM::emitGetTypeTable(const BuildParameters& buildParameters)
+bool LLVM::emitGetTypeTable(const BuildParameters& buildParameters) const
 {
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;
@@ -299,7 +299,7 @@ bool LLVM::emitGetTypeTable(const BuildParameters& buildParameters)
     return true;
 }
 
-bool LLVM::emitGlobalPreMain(const BuildParameters& buildParameters)
+bool LLVM::emitGlobalPreMain(const BuildParameters& buildParameters) const
 {
     const int ct              = buildParameters.compileType;
     const int precompileIndex = buildParameters.precompileIndex;

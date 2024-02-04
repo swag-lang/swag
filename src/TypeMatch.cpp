@@ -350,7 +350,7 @@ static void matchGenericParameters(SymbolMatchContext& context, TypeInfo* myType
             !context.genericReplaceTypes.empty())
         {
             context.matchFlags |= SymbolMatchContext::MATCH_GENERIC_AUTO;
-            if (!myTypeInfo->isGeneric() || !context.parameters.size())
+            if (!myTypeInfo->isGeneric() || context.parameters.empty())
             {
                 for (int i = 0; i < wantedNumGenericParams; i++)
                 {
@@ -684,7 +684,7 @@ void Match::match(TypeInfoFuncAttr* typeFunc, SymbolMatchContext& context)
     // Not enough parameters
     const size_t firstDefault = typeFunc->firstDefaultValueIdx == UINT32_MAX ? typeFunc->parameters.size() : typeFunc->firstDefaultValueIdx;
     context.firstDefault      = (uint32_t) firstDefault;
-    if (context.cptResolved < (int) firstDefault && typeFunc->parameters.size() && context.result == MatchResult::Ok)
+    if (context.cptResolved < (int) firstDefault && !typeFunc->parameters.empty() && context.result == MatchResult::Ok)
     {
         const auto back = typeFunc->parameters.back()->typeInfo;
         if (!back->isVariadic() && !back->isTypedVariadic() && !back->isCVariadic())

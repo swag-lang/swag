@@ -72,7 +72,7 @@ BcDbgCommandResult ByteCodeDebugger::cmdDisplay(ByteCodeRunContext* context, con
     return cmdDisplayAdd(context, arg);
 }
 
-void ByteCodeDebugger::printDisplay(ByteCodeRunContext* context)
+void ByteCodeDebugger::printDisplay(ByteCodeRunContext* context) const
 {
     if (debugDisplay.empty())
         return;

@@ -138,7 +138,7 @@ void Stats::print()
     g_Log.eol();
 
     g_Log.messageHeaderDot("instructions", Fmt("%u", numInstructions.load()), COLOR_HEADER, COLOR_VALUE);
-    float pc1 = (totalOptimsBC.load() * 100.0f) / (numInstructions.load());
+    const float pc1 = (totalOptimsBC.load() * 100.0f) / (numInstructions.load());
     g_Log.messageHeaderDot("kicked", Fmt("%d %.1f%%", totalOptimsBC.load(), pc1), COLOR_HEADER, COLOR_VALUE);
     g_Log.messageHeaderDot("total", Fmt("%u", numInstructions.load() - totalOptimsBC.load()), COLOR_HEADER, COLOR_VALUE);
     g_Log.eol();
@@ -197,7 +197,7 @@ void Stats::print()
 
     /////////////////////////
     g_Log.eol();
-    for (auto m : g_Workspace->modules)
+    for (const auto m : g_Workspace->modules)
     {
         if (m->isErrorModule)
             continue;

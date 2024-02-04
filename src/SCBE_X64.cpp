@@ -2103,11 +2103,10 @@ void SCBE_X64::emit_Call_Parameters(TypeInfoFuncAttr* typeFunc, const VectorNati
     if (typeFunc->isClosure())
     {
         SWAG_ASSERT(pushParams3[0].type == CPUPushParamType::Reg);
-        uint32_t reg;
 
         // First register is closure context, except if variadic, where we have 2 registers for the slice first
         // :VariadicAndClosure
-        reg = (uint32_t) pushParams3[0].reg;
+        uint32_t reg = (uint32_t) pushParams3[0].reg;
         if (typeFunc->isVariadic())
             reg = (uint32_t) pushParams3[2].reg;
 

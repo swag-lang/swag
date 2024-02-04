@@ -937,27 +937,27 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
 
             case ByteCodeOp::ZeroToTrue:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.b = ip->c.s32 == 0 ? true : false;
+                ip->b.b = ip->c.s32 == 0;
                 OK();
                 break;
             case ByteCodeOp::LowerZeroToTrue:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.b = ip->c.s32 < 0 ? true : false;
+                ip->b.b = ip->c.s32 < 0;
                 OK();
                 break;
             case ByteCodeOp::GreaterZeroToTrue:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.b = ip->c.s32 > 0 ? true : false;
+                ip->b.b = ip->c.s32 > 0;
                 OK();
                 break;
             case ByteCodeOp::LowerEqZeroToTrue:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.b = ip->c.s32 <= 0 ? true : false;
+                ip->b.b = ip->c.s32 <= 0;
                 OK();
                 break;
             case ByteCodeOp::GreaterEqZeroToTrue:
                 SET_OP(ip, ByteCodeOp::SetImmediate32);
-                ip->b.b = ip->c.s32 >= 0 ? true : false;
+                ip->b.b = ip->c.s32 >= 0;
                 OK();
                 break;
 

@@ -168,7 +168,7 @@ bool ByteCodeGen::emitIdentifier(ByteCodeGenContext* context)
             {
                 const auto idIdx = identifier->childParentIdx();
                 const auto prev  = identifier->identifierRef()->childs[idIdx - 1];
-                if (prev->childs.size())
+                if (!prev->childs.empty())
                 {
                     const auto back = prev->childs.back();
                     if (back->kind == AstNodeKind::Inline)

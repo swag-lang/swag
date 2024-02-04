@@ -6,7 +6,7 @@
 #include "Scope.h"
 #include "Timer.h"
 
-void SourceFile::release()
+void SourceFile::release() const
 {
     if (astRoot)
         astRoot->release();

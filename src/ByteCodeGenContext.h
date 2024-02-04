@@ -8,7 +8,7 @@ static constexpr uint32_t BCC_FLAG_FOR_DEBUGGER = 0x00000004;
 
 struct ByteCodeGenContext : public JobContext
 {
-    void release();
+    void release() const;
     void allocateTempCallParams();
 
     void setNoLocation();

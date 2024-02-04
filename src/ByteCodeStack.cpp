@@ -156,7 +156,7 @@ Utf8 ByteCodeStack::getLogStep(int level, bool current, ByteCodeStackStep& step)
     return str;
 }
 
-void ByteCodeStack::getSteps(VectorNative<ByteCodeStackStep>& copySteps, ByteCodeRunContext* runContext)
+void ByteCodeStack::getSteps(VectorNative<ByteCodeStackStep>& copySteps, const ByteCodeRunContext* runContext) const
 {
     // Add one step for the current context if necessary
     copySteps = steps;

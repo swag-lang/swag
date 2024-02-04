@@ -145,7 +145,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
                     const auto withNodeP = node->findParent(AstNodeKind::With);
                     if (!withNodeP)
                     {
-                        if (hasEnum.size())
+                        if (!hasEnum.empty())
                         {
                             const Diagnostic diag{identifierRef, Fmt(Err(Err0708), node->token.ctext(), hasEnum[0].second->getDisplayNameC())};
                             Vector<const Diagnostic*> notes;
@@ -231,7 +231,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
             break;
 
         // Search symbol in all the scopes of the hierarchy
-        while (scopeHierarchy.size())
+        while (!scopeHierarchy.empty())
         {
             for (size_t i = 0; i < scopeHierarchy.size(); i++)
             {

@@ -135,7 +135,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
                     const auto nodeCapture = CastAst<AstMakePointer>(returnExpression, AstNodeKind::MakePointerLambda);
                     SWAG_ASSERT(nodeCapture->lambda->captureParameters);
                     const auto typeBlock = CastTypeInfo<TypeInfoStruct>(nodeCapture->childs.back()->typeInfo, TypeInfoKind::Struct);
-                    if (typeBlock->fields.size())
+                    if (!typeBlock->fields.empty())
                     {
                         const auto r1 = reserveRegisterRC(context);
                         EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r1, node->ownerInline->resultRegisterRC);
@@ -254,7 +254,7 @@ bool ByteCodeGen::emitReturn(ByteCodeGenContext* context)
                     const auto nodeCapture = CastAst<AstMakePointer>(child, AstNodeKind::MakePointerLambda);
                     SWAG_ASSERT(nodeCapture->lambda->captureParameters);
                     const auto typeBlock = CastTypeInfo<TypeInfoStruct>(nodeCapture->childs.back()->typeInfo, TypeInfoKind::Struct);
-                    if (typeBlock->fields.size())
+                    if (!typeBlock->fields.empty())
                     {
                         EMIT_INST1(context, ByteCodeOp::Add64byVB64, r1)->b.u64 = 2 * sizeof(void*);
                         emitMemCpy(context, r1, child->resultRegisterRC[1], typeBlock->sizeOf);
@@ -1514,13 +1514,13 @@ bool ByteCodeGen::emitReturnByCopyAddress(ByteCodeGenContext* context, AstNode* 
         {
             if (node->ownerInline)
             {
-                SWAG_IF_ASSERT(auto parentTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->ownerInline->func->typeInfo, TypeInfoKind::FuncAttr));
+                SWAG_IF_ASSERT(const auto parentTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->ownerInline->func->typeInfo, TypeInfoKind::FuncAttr));
                 SWAG_ASSERT(CallConv::returnByStackAddress(parentTypeFunc));
                 EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->ownerInline->resultRegisterRC);
             }
             else
             {
-                SWAG_IF_ASSERT(auto parentTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr));
+                SWAG_IF_ASSERT(const auto parentTypeFunc = CastTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr));
                 SWAG_ASSERT(CallConv::returnByStackAddress(parentTypeFunc));
                 EMIT_INST1(context, ByteCodeOp::CopyRRtoRA, node->resultRegisterRC);
                 EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->resultRegisterRC);

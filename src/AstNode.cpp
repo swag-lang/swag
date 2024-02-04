@@ -805,14 +805,14 @@ void AstNode::swap2Childs()
     childs[1]      = tmp;
 }
 
-bool AstNode::hasSpecialFuncCall()
+bool AstNode::hasSpecialFuncCall() const
 {
     return hasExtMisc() &&
            extMisc()->resolvedUserOpSymbolOverload &&
            extMisc()->resolvedUserOpSymbolOverload->symbol->kind == SymbolKind::Function;
 }
 
-bool AstNode::hasSpecialFuncCall(const Utf8& name)
+bool AstNode::hasSpecialFuncCall(const Utf8& name) const
 {
     return hasExtMisc() &&
            extMisc()->resolvedUserOpSymbolOverload &&
@@ -834,7 +834,7 @@ AstNode* AstNode::inSimpleReturn() const
     return nullptr;
 }
 
-bool AstNode::isSpecialFunctionGenerated()
+bool AstNode::isSpecialFunctionGenerated() const
 {
     if (!hasExtByteCode() || !extByteCode()->bc || !extByteCode()->bc->isCompilerGenerated)
         return false;

@@ -264,9 +264,9 @@ void CommandLineParser::addArg(const char* commands, const char* longName, const
         shortNameArgs[shortName] = arg;
 }
 
-bool CommandLineParser::isArgValidFor(const Utf8& swagCmd, CommandLineArgument* arg)
+bool CommandLineParser::isArgValidFor(const Utf8& swagCmd, const CommandLineArgument* arg)
 {
-    return arg->cmds.find(swagCmd) != arg->cmds.end();
+    return arg->cmds.contains(swagCmd);
 }
 
 bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[])
@@ -424,7 +424,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
         case CommandLineType::Int:
         {
             pz               = argument.c_str();
-            bool thisIsAnInt = argument.empty() ? false : true;
+            bool thisIsAnInt = !(argument.empty());
 
             while (*pz)
             {
@@ -456,7 +456,7 @@ bool CommandLineParser::process(const Utf8& swagCmd, int argc, const char* argv[
     return result;
 }
 
-Utf8 CommandLineParser::buildString(bool full)
+Utf8 CommandLineParser::buildString(bool full) const
 {
     CommandLine       defaultValues;
     CommandLineParser defaultParser;

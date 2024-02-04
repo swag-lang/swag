@@ -859,7 +859,7 @@ void LLVM_Debug::createGlobalVariablesForSegment(const BuildParameters& buildPar
     }
 }
 
-void LLVM_Debug::finalize()
+void LLVM_Debug::finalize() const
 {
     SWAG_ASSERT(dbgBuilder);
     dbgBuilder->finalize();

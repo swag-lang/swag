@@ -324,7 +324,7 @@ void Backend::addFunctionsToJob(Module* moduleToGen, BackendFunctionBodyJob* job
     }
 }
 
-void Backend::getRangeFunctionIndexForJob(const BuildParameters& buildParameters, Module* moduleToGen, int& start, int& end)
+void Backend::getRangeFunctionIndexForJob(const BuildParameters& buildParameters, const Module* moduleToGen, int& start, int& end) const
 {
     const int size            = (int) moduleToGen->byteCodeFuncToGen.size();
     const int precompileIndex = buildParameters.precompileIndex;

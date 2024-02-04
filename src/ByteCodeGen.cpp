@@ -187,7 +187,7 @@ bool ByteCodeGen::skipNodes(ByteCodeGenContext* context, AstNode* node)
         return Ast::VisitResult::Continue;
     });
 
-    return res == Ast::VisitResult::Stop ? false : true;
+    return res != Ast::VisitResult::Stop;
 }
 
 void ByteCodeGen::askForByteCode(Job* job, AstNode* node, uint32_t flags, ByteCode* caller)

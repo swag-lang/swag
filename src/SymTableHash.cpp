@@ -78,7 +78,7 @@ void SymTableHash::add(SymbolName* data)
     // Need to grow the hash table, and add back the old values
     else if (count >= allocated / 2)
     {
-        auto       oldAllocated = allocated;
+        const auto oldAllocated = allocated;
         const auto oldBuffer    = buffer;
         auto       oldCount     = count;
 

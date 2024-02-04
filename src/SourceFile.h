@@ -13,7 +13,7 @@ struct Scope;
 
 struct SourceFile
 {
-    void release();
+    void release() const;
     bool checkFormat();
     bool load();
     Utf8 getLine(uint32_t lineNo, bool* eof = nullptr);

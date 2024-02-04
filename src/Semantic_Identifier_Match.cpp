@@ -251,7 +251,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
                 }
             }
         }
-        else if (oneMatch.solvedParameters.size() && oneMatch.solvedParameters.back() && oneMatch.solvedParameters.back()->typeInfo->isTypedVariadic())
+        else if (!oneMatch.solvedParameters.empty() && oneMatch.solvedParameters.back() && oneMatch.solvedParameters.back()->typeInfo->isTypedVariadic())
         {
             toType = oneMatch.solvedParameters.back()->typeInfo;
             SWAG_CHECK(TypeManager::makeCompatibles(context, oneMatch.solvedParameters.back()->typeInfo, nullptr, nodeCall));
@@ -406,7 +406,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, AstIdentifier*
     // Deal with default values for structs and uncomputed values
     // We need to add a temporary variable initialized with the default value, and reference
     // that temporary variable as a new function call parameter
-    if (typeInfoFunc->parameters.size() && maxParams < typeInfoFunc->parameters.size())
+    if (!typeInfoFunc->parameters.empty() && maxParams < typeInfoFunc->parameters.size())
     {
         AstNode* parameters = nullptr;
         if (typeInfoFunc->declNode->kind == AstNodeKind::FuncDecl)
@@ -1460,7 +1460,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
                 {
                     auto rawTypeStruct    = CastTypeInfo<TypeInfoStruct>(rawTypeInfo, TypeInfoKind::Struct);
                     auto returnStructType = CastTypeInfo<TypeInfoStruct>(fctTypeInfo->returnType, TypeInfoKind::Struct);
-                    if (returnStructType->genericParameters.size() == rawTypeStruct->genericParameters.size() && rawTypeStruct->genericParameters.size())
+                    if (returnStructType->genericParameters.size() == rawTypeStruct->genericParameters.size() && !rawTypeStruct->genericParameters.empty())
                     {
                         rawTypeStruct = (TypeInfoStruct*) rawTypeInfo->clone();
                         rawTypeInfo   = rawTypeStruct;
@@ -1725,14 +1725,14 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
     // to create an instance with the exact type.
     // We only test the first match here, because the filtering of matches would have remove it if some other instances
     // without autoOpCast are present.
-    if (matches.size() > 0 && (matches[0]->castFlagsResult & CASTFLAG_RESULT_GEN_AUTO_OPCAST) && (genericMatches.size() > 0 || genericMatchesSI.size() > 0))
+    if (!matches.empty() && (matches[0]->castFlagsResult & CASTFLAG_RESULT_GEN_AUTO_OPCAST) && (!genericMatches.empty() || !genericMatchesSI.empty()))
     {
         prevMatchesCount = 0;
         matches.clear();
     }
 
     // All choices were removed because of #validif
-    if (!genericMatches.size() && genericMatchesSI.size() && matches.empty() && prevMatchesCount)
+    if (genericMatches.empty() && !genericMatchesSI.empty() && matches.empty() && prevMatchesCount)
     {
         if (justCheck)
             return false;
@@ -1740,7 +1740,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
     }
 
     // Multi instantiation in case of #validif
-    if (genericMatchesSI.size() && matches.empty() && !prevMatchesCount)
+    if (!genericMatchesSI.empty() && matches.empty() && !prevMatchesCount)
     {
         if (justCheck)
             return true;
@@ -1827,7 +1827,7 @@ bool Semantic::matchIdentifierParameters(SemanticContext* context, VectorNative<
         overloads.push_back(oneTry);
 
     // There's no match at all
-    if (matches.size() == 0)
+    if (matches.empty())
     {
         if (!(flags & MIP_SECOND_GENERIC_TRY))
         {

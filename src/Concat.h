@@ -16,7 +16,7 @@ struct Concat
     void init(int size = 32 * 1024);
     void clear();
     void release();
-    bool hasEnoughSpace(uint32_t numBytes);
+    bool hasEnoughSpace(uint32_t numBytes) const;
     void ensureSpace(int numBytes);
     void align(uint32_t align);
     bool flushToFile(const Path& path);
@@ -61,19 +61,19 @@ struct Concat
         return result;
     }
 
-    uint8_t* getSeekPtr()
+    uint8_t* getSeekPtr() const
     {
         return currentSP;
     }
 
-    uint32_t totalCount()
+    uint32_t totalCount() const
     {
         if (!lastBucket)
             return 0;
         return totalCountBytes + (int) (currentSP - lastBucket->datas);
     }
 
-    uint8_t* getPtr(int seek)
+    uint8_t* getPtr(int seek) const
     {
         SWAG_ASSERT(firstBucket);
         auto ptr = firstBucket;
@@ -90,11 +90,9 @@ struct Concat
             seek -= ptr->countBytes;
             ptr = ptr->nextBucket;
         }
-
-        return nullptr;
     }
 
-    uint32_t bucketCount(ConcatBucket* b)
+    uint32_t bucketCount(ConcatBucket* b) const
     {
         if (b != lastBucket)
             return b->countBytes;

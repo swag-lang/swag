@@ -285,7 +285,7 @@ JobResult LLVM::prepareOutput(const BuildParameters& buildParameters, int stage,
     return JobResult::ReleaseJob;
 }
 
-bool LLVM::generateObjFile(const BuildParameters& buildParameters)
+bool LLVM::generateObjFile(const BuildParameters& buildParameters) const
 {
     int   ct              = buildParameters.compileType;
     int   precompileIndex = buildParameters.precompileIndex;

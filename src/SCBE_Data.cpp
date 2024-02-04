@@ -3,7 +3,7 @@
 
 bool SCBE::buildRelocSegment(const BuildParameters& buildParameters, DataSegment* dataSegment, CPURelocationTable& relocTable, SegmentKind me)
 {
-    if (!dataSegment->buckets.size())
+    if (dataSegment->buckets.empty())
         return true;
     if (!dataSegment->totalCount)
         return true;

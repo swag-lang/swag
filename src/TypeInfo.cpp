@@ -279,7 +279,7 @@ bool TypeInfo::isMethod()
     if (kind != TypeInfoKind::FuncAttr)
         return false;
     const auto ptr = CastTypeInfo<TypeInfoFuncAttr>(this, kind);
-    if (ptr->parameters.size() == 0)
+    if (ptr->parameters.empty())
         return false;
     const auto param = ptr->parameters[0];
     if (!param->typeInfo->isPointer())

@@ -946,23 +946,23 @@ static bool optimizePassSanityStack(ByteCodeOptContext* context, Context& cxt)
 
         case ByteCodeOp::ZeroToTrue:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.b = ra->reg.s32 == 0 ? true : false;
+            ra->reg.b = ra->reg.s32 == 0;
             break;
         case ByteCodeOp::GreaterEqZeroToTrue:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.b = ra->reg.s32 >= 0 ? true : false;
+            ra->reg.b = ra->reg.s32 >= 0;
             break;
         case ByteCodeOp::GreaterZeroToTrue:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.b = ra->reg.s32 > 0 ? true : false;
+            ra->reg.b = ra->reg.s32 > 0;
             break;
         case ByteCodeOp::LowerEqZeroToTrue:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.b = ra->reg.s32 <= 0 ? true : false;
+            ra->reg.b = ra->reg.s32 <= 0;
             break;
         case ByteCodeOp::LowerZeroToTrue:
             SWAG_CHECK(getRegister(ra, cxt, ip->a.u32));
-            ra->reg.b = ra->reg.s32 < 0 ? true : false;
+            ra->reg.b = ra->reg.s32 < 0;
             break;
 
         case ByteCodeOp::IncrementRA64:

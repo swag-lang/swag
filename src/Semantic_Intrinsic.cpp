@@ -334,7 +334,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
     }
     else if (typeInfo->isStruct())
     {
-        SWAG_VERIFY(!(typeInfo->isTuple()), context->report({expression, Err(Err0742)}));
+        SWAG_VERIFY(!typeInfo->isTuple(), context->report({expression, Err(Err0742)}));
         node->typeInfo = typeInfo;
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opCount, nullptr, nullptr, node, nullptr));
         YIELD();
@@ -645,7 +645,7 @@ bool Semantic::resolveIntrinsicRunes(SemanticContext* context)
     slice->buffer = addrDst;
 
     // Setup array
-    memcpy(addrDst, &runes[0], runes.size() * sizeof(uint32_t));
+    memcpy(addrDst, runes.data(), runes.size() * sizeof(uint32_t));
 
     node->typeInfo = g_TypeMgr->typeInfoSliceRunes;
     return true;
@@ -1009,7 +1009,7 @@ bool Semantic::resolveIntrinsicProperty(SemanticContext* context)
 
         if (node->tokenId == TokenId::IntrinsicCVaStart)
         {
-            SWAG_VERIFY(node->ownerFct && node->ownerFct->parameters && node->ownerFct->parameters->childs.size(), context->report({node, node->token, Err(Err0452)}));
+            SWAG_VERIFY(node->ownerFct && node->ownerFct->parameters && !node->ownerFct->parameters->childs.empty(), context->report({node, node->token, Err(Err0452)}));
             const auto typeParam = node->ownerFct->parameters->childs.back()->typeInfo;
             SWAG_VERIFY(typeParam->isCVariadic(), context->report({node, node->token, Err(Err0452)}));
             node->byteCodeFct = ByteCodeGen::emitIntrinsicCVaStart;

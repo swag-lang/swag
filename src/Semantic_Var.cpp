@@ -61,7 +61,7 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
     const auto typeStruct = CastTypeInfo<TypeInfoStruct>(typeVar, TypeInfoKind::Struct);
     const auto numUnpack  = scopeNode->childs.size() - 1;
 
-    if (typeStruct->fields.size() == 0)
+    if (typeStruct->fields.empty())
     {
         const Diagnostic diag{varDecl, varDecl->token, Err(Err0383)};
         return context->report(diag);
@@ -539,7 +539,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     auto module     = sourceFile->module;
     auto node       = static_cast<AstVarDecl*>(context->node);
 
-    bool isCompilerConstant = node->kind == AstNodeKind::ConstDecl ? true : false;
+    bool isCompilerConstant = node->kind == AstNodeKind::ConstDecl;
     bool isLocalConstant    = false;
 
     // Check #mixin
@@ -1248,7 +1248,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             // :DirectInlineLocalVar
             if (assignment &&
                 assignment->kind == AstNodeKind::IdentifierRef &&
-                assignment->childs.back()->childs.size() &&
+                !assignment->childs.back()->childs.empty() &&
                 assignment->typeInfo == node->typeInfo &&
                 assignment->childs.back()->childs.back()->kind == AstNodeKind::Inline &&
                 assignment->childs.back()->childs.back()->flags & AST_TRANSIENT)

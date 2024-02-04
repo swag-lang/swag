@@ -117,7 +117,7 @@ struct ByteCodeDebugger
 
     static bool getValueFormat(const Utf8& cmd, ValueFormat& fmt);
 
-    void printBreakpoints(ByteCodeRunContext* context);
+    void printBreakpoints(ByteCodeRunContext* context) const;
     void checkBreakpoints(ByteCodeRunContext* context);
     bool addBreakpoint(ByteCodeRunContext* context, const DebugBreakpoint& bkp);
 
@@ -202,7 +202,7 @@ struct ByteCodeDebugger
     void        printHelp() const;
     static void printHelp(const BcDbgCommand& cmd);
     void        printDisplayList() const;
-    void        printDisplay(ByteCodeRunContext* context);
+    void        printDisplay(ByteCodeRunContext* context) const;
     static void printSet(ByteCodeRunContext* context);
 
     Vector<BcDbgCommand> commands;

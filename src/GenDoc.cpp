@@ -1370,7 +1370,7 @@ void GenDoc::constructPage()
     helpOutput += "</html>\n";
 }
 
-Utf8 GenDoc::getTocTitleRef()
+Utf8 GenDoc::getTocTitleRef() const
 {
     Utf8 ref;
     for (const auto& o : titleRefStack)

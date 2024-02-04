@@ -64,7 +64,7 @@ static void printChilds(ByteCode* bc, int level)
         return;
 
     level++;
-    for (auto child : bc->profileChilds)
+    for (const auto child : bc->profileChilds)
     {
         Utf8 line = getProfileBc(child, level);
         g_Log.print(line);
@@ -88,7 +88,7 @@ void profiler()
     Vector<FFIStat>   linFFi;
     Vector<ByteCode*> bcs;
 
-    for (auto m : g_Workspace->modules)
+    for (const auto m : g_Workspace->modules)
     {
         for (auto bc : m->byteCodeFunc)
         {
@@ -133,7 +133,7 @@ void profiler()
     g_Log.print(line);
     g_Log.eol();
 
-    for (auto bc : bcs)
+    for (const auto bc : bcs)
     {
         if (!g_CommandLine.profileFilter.empty() && bc->name.find(g_CommandLine.profileFilter.c_str()) == -1)
             continue;

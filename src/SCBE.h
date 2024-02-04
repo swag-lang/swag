@@ -21,7 +21,7 @@ struct SCBE : public Backend
 
     bool      createRuntime(const BuildParameters& buildParameters);
     JobResult prepareOutput(const BuildParameters& buildParameters, int stage, Job* ownerJob) override;
-    bool      generateOutput(const BuildParameters& backendParameters) override;
+    bool      generateOutput(const BuildParameters& buildParameters) override;
     bool      emitFunctionBody(const BuildParameters& buildParameters, Module* moduleToGen, ByteCode* bc) override;
 
     bool saveObjFile(const BuildParameters& buildParameters);
