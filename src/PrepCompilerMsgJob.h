@@ -2,7 +2,7 @@
 #include "Job.h"
 struct Module;
 
-struct PrepCompilerMsgJob : public Job
+struct PrepCompilerMsgJob : Job
 {
     JobResult execute() override;
 

@@ -53,37 +53,37 @@ bool ByteCodeGen::emitInRange(ByteCodeGenContext* context, AstNode* left, AstNod
     // Lower bound
     if (left->hasSpecialFuncCall())
     {
-        SWAG_CHECK(emitCompareOpSpecialFunc(context, left, low, r0, low->resultRegisterRC, excludeLow ? TokenId::SymGreater : TokenId::SymGreaterEqual));
+        SWAG_CHECK(emitCompareOpSpecialFunc(context, left, low, r0, low->resultRegisterRc, excludeLow ? TokenId::SymGreater : TokenId::SymGreaterEqual));
         YIELD();
-        ra = context->node->resultRegisterRC;
+        ra = context->node->resultRegisterRc;
     }
     else if (excludeLow)
     {
         ra = reserveRegisterRC(context);
-        SWAG_CHECK(emitCompareOpGreater(context, left, low, r0, low->resultRegisterRC, ra));
+        SWAG_CHECK(emitCompareOpGreater(context, left, low, r0, low->resultRegisterRc, ra));
     }
     else
     {
         ra = reserveRegisterRC(context);
-        SWAG_CHECK(emitCompareOpGreaterEq(context, left, low, r0, low->resultRegisterRC, ra));
+        SWAG_CHECK(emitCompareOpGreaterEq(context, left, low, r0, low->resultRegisterRc, ra));
     }
 
     // Upper bound
     if (left->hasSpecialFuncCall())
     {
-        SWAG_CHECK(emitCompareOpSpecialFunc(context, left, up, r0, up->resultRegisterRC, excludeUp ? TokenId::SymLower : TokenId::SymLowerEqual));
+        SWAG_CHECK(emitCompareOpSpecialFunc(context, left, up, r0, up->resultRegisterRc, excludeUp ? TokenId::SymLower : TokenId::SymLowerEqual));
         YIELD();
-        rb = context->node->resultRegisterRC;
+        rb = context->node->resultRegisterRc;
     }
     else if (excludeUp)
     {
         rb = reserveRegisterRC(context);
-        SWAG_CHECK(emitCompareOpLower(context, left, up, r0, up->resultRegisterRC, rb));
+        SWAG_CHECK(emitCompareOpLower(context, left, up, r0, up->resultRegisterRc, rb));
     }
     else
     {
         rb = reserveRegisterRC(context);
-        SWAG_CHECK(emitCompareOpLowerEq(context, left, up, r0, up->resultRegisterRC, rb));
+        SWAG_CHECK(emitCompareOpLowerEq(context, left, up, r0, up->resultRegisterRc, rb));
     }
 
     EMIT_INST3(context, ByteCodeOp::CompareOpEqual8, ra, rb, r2);
@@ -102,8 +102,8 @@ bool ByteCodeGen::emitCompareOpSpecialFunc(ByteCodeGenContext* context, AstNode*
     context->allocateTempCallParams();
     context->allParamsTmp->childs.push_back(left);
     context->allParamsTmp->childs.push_back(right);
-    left->resultRegisterRC  = r0;
-    right->resultRegisterRC = r1;
+    left->resultRegisterRc  = r0;
+    right->resultRegisterRc = r1;
     SWAG_CHECK(emitUserOp(context, context->allParamsTmp, left, false));
     YIELD();
     SWAG_CHECK(emitCompareOpPostSpecialFunc(context, op));
@@ -114,7 +114,7 @@ bool ByteCodeGen::emitCompareOpSpecialFunc(ByteCodeGenContext* context, AstNode*
 bool ByteCodeGen::emitCompareOpPostSpecialFunc(ByteCodeGenContext* context, TokenId op)
 {
     const auto node = context->node;
-    auto       r2   = node->resultRegisterRC;
+    auto       r2   = node->resultRegisterRc;
     if (node->semFlags & SEMFLAG_INVERSE_PARAMS)
     {
         switch (op)
@@ -124,7 +124,7 @@ bool ByteCodeGen::emitCompareOpPostSpecialFunc(ByteCodeGenContext* context, Toke
             const auto rt = reserveRegisterRC(context);
             EMIT_INST2(context, ByteCodeOp::NegS32, rt, r2);
             freeRegisterRC(context, r2);
-            node->resultRegisterRC = rt;
+            node->resultRegisterRc = rt;
             break;
         }
         case TokenId::SymExclamEqual:
@@ -132,7 +132,7 @@ bool ByteCodeGen::emitCompareOpPostSpecialFunc(ByteCodeGenContext* context, Toke
             const auto rt = reserveRegisterRC(context);
             EMIT_INST2(context, ByteCodeOp::NegBool, rt, r2);
             freeRegisterRC(context, r2);
-            node->resultRegisterRC = rt;
+            node->resultRegisterRc = rt;
             break;
         }
 
@@ -161,7 +161,7 @@ bool ByteCodeGen::emitCompareOpPostSpecialFunc(ByteCodeGenContext* context, Toke
             const auto rt = reserveRegisterRC(context);
             EMIT_INST2(context, ByteCodeOp::NegBool, rt, r2);
             freeRegisterRC(context, r2);
-            node->resultRegisterRC = rt;
+            node->resultRegisterRc = rt;
             break;
         }
         case TokenId::SymLower:
@@ -833,11 +833,11 @@ bool ByteCodeGen::emitCompareOp(ByteCodeGenContext* context)
     }
     else
     {
-        auto& r0 = node->childs[0]->resultRegisterRC;
-        auto& r1 = node->childs[1]->resultRegisterRC;
+        auto& r0 = node->childs[0]->resultRegisterRc;
+        auto& r1 = node->childs[1]->resultRegisterRc;
 
         RegisterList r2        = reserveRegisterRC(context);
-        node->resultRegisterRC = r2;
+        node->resultRegisterRc = r2;
 
         switch (node->tokenId)
         {

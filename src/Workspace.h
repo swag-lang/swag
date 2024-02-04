@@ -71,7 +71,7 @@ struct Workspace
     Path        getTargetPath(const Utf8& buildCfg, const BackendTarget& target) const;
     void        setupTarget();
 
-    void        cleanPublic(const Path& basePath);
+    static void cleanPublic(const Path& basePath);
     void        cleanScript(bool all);
     void        cleanCommand();
     void        newModule(const Utf8& moduleName) const;

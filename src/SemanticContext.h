@@ -138,7 +138,7 @@ struct OneSymbolMatch
     }
 };
 
-struct SemanticContext : public JobContext
+struct SemanticContext : JobContext
 {
     void         release();
     void         clearTryMatch();

@@ -734,7 +734,7 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
     }
 
     uint32_t castFlags = CASTFLAG_EXPLICIT | CASTFLAG_ACCEPT_PENDING;
-    if (node->specFlags & AstCast::SPECFLAG_UNCONST)
+    if (node->specFlags & AstCast::SPECFLAG_UN_CONST)
         castFlags |= CASTFLAG_FORCE_UNCONST;
     if (node->specFlags & AstCast::SPECFLAG_OVERFLOW)
         castFlags |= CASTFLAG_CAN_OVERFLOW;
@@ -745,7 +745,7 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
     node->toCastTypeInfo = typeNode->typeInfo;
 
     node->byteCodeFct = ByteCodeGen::emitExplicitCast;
-    node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_IS_GEN_TYPEINFO | AST_VALUE_COMPUTED | AST_R_VALUE | AST_L_VALUE | AST_SIDE_EFFECTS | AST_OPAFFECT_CAST);
+    node->inheritOrFlag(exprNode, AST_CONST_EXPR | AST_VALUE_IS_GEN_TYPEINFO | AST_VALUE_COMPUTED | AST_R_VALUE | AST_L_VALUE | AST_SIDE_EFFECTS | AST_OP_AFFECT_CAST);
     node->inheritComputedValue(exprNode);
     node->resolvedSymbolName     = exprNode->resolvedSymbolName;
     node->resolvedSymbolOverload = exprNode->resolvedSymbolOverload;
@@ -763,7 +763,7 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
     // (we cannot use castedTypeInfo from node, because an explicit cast result could be casted itself with an implicit cast)
     if (exprNode->castedTypeInfo)
     {
-        if (!(node->flags & (AST_VALUE_COMPUTED | AST_OPAFFECT_CAST)))
+        if (!(node->flags & (AST_VALUE_COMPUTED | AST_OP_AFFECT_CAST)))
         {
             exprNode->typeInfo       = exprNode->castedTypeInfo;
             exprNode->castedTypeInfo = nullptr;

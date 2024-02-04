@@ -19,21 +19,21 @@ bool ByteCodeGen::emitPointerRef(ByteCodeGenContext* context)
     }
 
     // In case of a deref, no need to increment pointer because we are sure that index is 0
-    if (!(node->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DREF))
+    if (!(node->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DEREF))
     {
         const auto sizeOf = node->typeInfo->sizeOf;
         if (sizeOf > 1)
         {
-            ensureCanBeChangedRC(context, node->access->resultRegisterRC);
-            EMIT_INST1(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = sizeOf;
+            ensureCanBeChangedRC(context, node->access->resultRegisterRc);
+            EMIT_INST1(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRc)->b.u64 = sizeOf;
         }
 
-        ensureCanBeChangedRC(context, node->array->resultRegisterRC);
-        EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+        ensureCanBeChangedRC(context, node->array->resultRegisterRc);
+        EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRc, node->access->resultRegisterRc, node->array->resultRegisterRc);
     }
 
-    node->resultRegisterRC         = node->array->resultRegisterRC;
-    node->parent->resultRegisterRC = node->resultRegisterRC;
+    node->resultRegisterRc         = node->array->resultRegisterRc;
+    node->parent->resultRegisterRc = node->resultRegisterRc;
 
     freeRegisterRC(context, node->access);
     return true;
@@ -50,11 +50,11 @@ bool ByteCodeGen::emitStringRef(ByteCodeGenContext* context)
         node->access->semFlags |= SEMFLAG_CAST1;
     }
 
-    emitSafetyBoundCheckString(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
+    emitSafetyBoundCheckString(context, node->access->resultRegisterRc, node->array->resultRegisterRc[1]);
 
-    ensureCanBeChangedRC(context, node->array->resultRegisterRC);
-    EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
-    node->resultRegisterRC = node->array->resultRegisterRC;
+    ensureCanBeChangedRC(context, node->array->resultRegisterRc);
+    EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRc, node->access->resultRegisterRc, node->array->resultRegisterRc);
+    node->resultRegisterRc = node->array->resultRegisterRc;
 
     freeRegisterRC(context, node->access);
     return true;
@@ -74,19 +74,19 @@ bool ByteCodeGen::emitArrayRef(ByteCodeGenContext* context)
     }
 
     if (!node->access->hasComputedValue())
-        emitSafetyBoundCheckArray(context, node->access->resultRegisterRC, typeInfoArray);
+        emitSafetyBoundCheckArray(context, node->access->resultRegisterRc, typeInfoArray);
 
     // Pointer increment
     const auto sizeOf = node->typeInfo->sizeOf;
     if (sizeOf > 1)
     {
-        ensureCanBeChangedRC(context, node->access->resultRegisterRC);
-        EMIT_INST1(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = sizeOf;
+        ensureCanBeChangedRC(context, node->access->resultRegisterRc);
+        EMIT_INST1(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRc)->b.u64 = sizeOf;
     }
 
-    ensureCanBeChangedRC(context, node->array->resultRegisterRC);
-    EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
-    node->resultRegisterRC = node->array->resultRegisterRC;
+    ensureCanBeChangedRC(context, node->array->resultRegisterRc);
+    EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRc, node->access->resultRegisterRc, node->array->resultRegisterRc);
+    node->resultRegisterRc = node->array->resultRegisterRc;
 
     freeRegisterRC(context, node->access);
     return true;
@@ -104,27 +104,27 @@ bool ByteCodeGen::emitSliceRef(ByteCodeGenContext* context)
     }
 
     // Slice is already dereferenced ? (from function parameter)
-    if (node->array->resultRegisterRC.size() != 2)
+    if (node->array->resultRegisterRc.size() != 2)
     {
-        ensureCanBeChangedRC(context, node->array->resultRegisterRC);
-        node->array->resultRegisterRC += reserveRegisterRC(context);
-        EMIT_INST2(context, ByteCodeOp::DeRefStringSlice, node->array->resultRegisterRC[0], node->array->resultRegisterRC[1]);
+        ensureCanBeChangedRC(context, node->array->resultRegisterRc);
+        node->array->resultRegisterRc += reserveRegisterRC(context);
+        EMIT_INST2(context, ByteCodeOp::DeRefStringSlice, node->array->resultRegisterRc[0], node->array->resultRegisterRc[1]);
     }
 
-    emitSafetyBoundCheckSlice(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
+    emitSafetyBoundCheckSlice(context, node->access->resultRegisterRc, node->array->resultRegisterRc[1]);
 
     // Pointer increment
     const auto sizeOf = node->typeInfo->sizeOf;
     if (sizeOf > 1)
     {
-        ensureCanBeChangedRC(context, node->access->resultRegisterRC);
-        EMIT_INST1(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = sizeOf;
+        ensureCanBeChangedRC(context, node->access->resultRegisterRc);
+        EMIT_INST1(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRc)->b.u64 = sizeOf;
     }
 
-    ensureCanBeChangedRC(context, node->array->resultRegisterRC);
-    EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
-    node->resultRegisterRC = node->array->resultRegisterRC;
-    truncRegisterRC(context, node->resultRegisterRC, 1);
+    ensureCanBeChangedRC(context, node->array->resultRegisterRc);
+    EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRc, node->access->resultRegisterRc, node->array->resultRegisterRc);
+    node->resultRegisterRc = node->array->resultRegisterRc;
+    truncRegisterRC(context, node->resultRegisterRc, 1);
 
     freeRegisterRC(context, node->access);
     return true;
@@ -134,38 +134,38 @@ bool ByteCodeGen::emitStructDeRef(ByteCodeGenContext* context, TypeInfo* typeInf
 {
     const auto node = context->node;
 
-    ensureCanBeChangedRC(context, node->resultRegisterRC);
+    ensureCanBeChangedRC(context, node->resultRegisterRc);
 
     if (typeInfo->isInterface() && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !(node->flags & AST_UFCS_FCT))
     {
         if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
-            EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC)->c.u64 = sizeof(void*);
+            EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc)->c.u64 = sizeof(void*);
         else if (node->flags & AST_TO_UFCS) // Get the structure pointer
-            EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
         return true;
     }
 
     if (typeInfo->isPointerTo(TypeInfoKind::Interface) && (node->flags & (AST_FROM_UFCS | AST_TO_UFCS)) && !(node->flags & AST_UFCS_FCT))
     {
-        EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+        EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
         if (node->flags & AST_FROM_UFCS) // Get the ITable pointer
-            EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC)->c.u64 = sizeof(void*);
+            EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc)->c.u64 = sizeof(void*);
         else if (node->flags & AST_TO_UFCS) // Get the structure pointer
-            EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+            EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
         return true;
     }
 
     if (typeInfo->isSlice())
     {
-        transformResultToLinear2(context, node->resultRegisterRC);
-        EMIT_INST2(context, ByteCodeOp::DeRefStringSlice, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+        transformResultToLinear2(context, node->resultRegisterRc);
+        EMIT_INST2(context, ByteCodeOp::DeRefStringSlice, node->resultRegisterRc[0], node->resultRegisterRc[1]);
         return true;
     }
 
     if (typeInfo->isInterface())
     {
-        transformResultToLinear2(context, node->resultRegisterRC);
-        EMIT_INST2(context, ByteCodeOp::DeRefStringSlice, node->resultRegisterRC[0], node->resultRegisterRC[1]);
+        transformResultToLinear2(context, node->resultRegisterRc);
+        EMIT_INST2(context, ByteCodeOp::DeRefStringSlice, node->resultRegisterRc[0], node->resultRegisterRc[1]);
         return true;
     }
 
@@ -176,27 +176,27 @@ bool ByteCodeGen::emitStructDeRef(ByteCodeGenContext* context, TypeInfo* typeInf
 
     if (typeInfo->isClosure())
     {
-        truncRegisterRC(context, node->resultRegisterRC, 1);
+        truncRegisterRC(context, node->resultRegisterRc, 1);
         return true;
     }
 
     if (typeInfo->isFuncAttr())
     {
-        truncRegisterRC(context, node->resultRegisterRC, 1);
-        const auto inst = EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+        truncRegisterRC(context, node->resultRegisterRc, 1);
+        const auto inst = EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
         inst->d.pointer = (uint8_t*) node->resolvedSymbolOverload;
         return true;
     }
 
     if (typeInfo->isPointer())
     {
-        truncRegisterRC(context, node->resultRegisterRC, 1);
-        const auto inst = EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+        truncRegisterRC(context, node->resultRegisterRc, 1);
+        const auto inst = EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
         inst->d.pointer = (uint8_t*) node->resolvedSymbolOverload;
         return true;
     }
 
-    SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRC, typeInfo));
+    SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRc, typeInfo));
     return true;
 }
 
@@ -227,7 +227,7 @@ bool ByteCodeGen::emitTypeDeRef(ByteCodeGenContext* context, RegisterList& r0, T
 
     // Register list can be stored in the parent, so we need to update it, otherwise we
     // will free one register twice
-    context->node->parent->resultRegisterRC = r0;
+    context->node->parent->resultRegisterRc = r0;
 
     switch (typeInfo->sizeOf)
     {
@@ -267,22 +267,22 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
     // Dereference of a string constant
     if (typeInfo->isString())
     {
-        emitSafetyBoundCheckString(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
+        emitSafetyBoundCheckString(context, node->access->resultRegisterRc, node->array->resultRegisterRc[1]);
 
-        ensureCanBeChangedRC(context, node->array->resultRegisterRC);
-        EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
-        EMIT_INST2(context, ByteCodeOp::DeRef8, node->array->resultRegisterRC, node->array->resultRegisterRC);
-        node->resultRegisterRC         = node->array->resultRegisterRC;
-        node->parent->resultRegisterRC = node->resultRegisterRC;
+        ensureCanBeChangedRC(context, node->array->resultRegisterRc);
+        EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRc, node->access->resultRegisterRc, node->array->resultRegisterRc);
+        EMIT_INST2(context, ByteCodeOp::DeRef8, node->array->resultRegisterRc, node->array->resultRegisterRc);
+        node->resultRegisterRc         = node->array->resultRegisterRc;
+        node->parent->resultRegisterRc = node->resultRegisterRc;
         freeRegisterRC(context, node->access);
-        ensureCanBeChangedRC(context, node->resultRegisterRC);
-        truncRegisterRC(context, node->resultRegisterRC, 1);
+        ensureCanBeChangedRC(context, node->resultRegisterRc);
+        truncRegisterRC(context, node->resultRegisterRc, 1);
     }
 
     // Dereference of a slice
     else if (typeInfo->isSlice())
     {
-        emitSafetyBoundCheckSlice(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
+        emitSafetyBoundCheckSlice(context, node->access->resultRegisterRc, node->array->resultRegisterRc[1]);
 
         const auto typeInfoSlice = CastTypeInfo<TypeInfoSlice>(typeInfo, TypeInfoKind::Slice);
 
@@ -292,21 +292,21 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
             const auto sizeOf = typeInfoSlice->pointedType->sizeOf;
             if (sizeOf > 1)
             {
-                ensureCanBeChangedRC(context, node->access->resultRegisterRC);
-                EMIT_INST1(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = sizeOf;
+                ensureCanBeChangedRC(context, node->access->resultRegisterRc);
+                EMIT_INST1(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRc)->b.u64 = sizeOf;
             }
 
-            ensureCanBeChangedRC(context, node->array->resultRegisterRC);
-            EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+            ensureCanBeChangedRC(context, node->array->resultRegisterRc);
+            EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRc, node->access->resultRegisterRc, node->array->resultRegisterRc);
         }
 
         if (typeInfoSlice->pointedType->isString())
-            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoSlice->pointedType));
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRc, typeInfoSlice->pointedType));
         else if (!(node->isForceTakeAddress()) || typeInfoSlice->pointedType->isPointer())
-            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoSlice->pointedType));
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRc, typeInfoSlice->pointedType));
 
-        node->resultRegisterRC         = node->array->resultRegisterRC;
-        node->parent->resultRegisterRC = node->resultRegisterRC;
+        node->resultRegisterRc         = node->array->resultRegisterRc;
+        node->parent->resultRegisterRc = node->resultRegisterRc;
         freeRegisterRC(context, node->access);
     }
 
@@ -329,7 +329,7 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
 
             if ((node->semFlags & SEMFLAG_FROM_PTR_REF) && !(node->semFlags & SEMFLAG_FROM_REF))
             {
-                EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+                EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
             }
         }
     }
@@ -345,20 +345,20 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
             const auto sizeOf = typeInfoPointer->pointedType->sizeOf;
             if (sizeOf > 1)
             {
-                ensureCanBeChangedRC(context, node->access->resultRegisterRC);
-                EMIT_INST1(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = sizeOf;
+                ensureCanBeChangedRC(context, node->access->resultRegisterRc);
+                EMIT_INST1(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRc)->b.u64 = sizeOf;
             }
-            ensureCanBeChangedRC(context, node->array->resultRegisterRC);
-            EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+            ensureCanBeChangedRC(context, node->array->resultRegisterRc);
+            EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRc, node->access->resultRegisterRc, node->array->resultRegisterRc);
         }
 
         if (typeInfoPointer->pointedType->isString())
-            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoPointer->pointedType));
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRc, typeInfoPointer->pointedType));
         else if (!(node->isForceTakeAddress()))
-            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, typeInfoPointer->pointedType));
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRc, typeInfoPointer->pointedType));
 
-        node->resultRegisterRC         = node->array->resultRegisterRC;
-        node->parent->resultRegisterRC = node->resultRegisterRC;
+        node->resultRegisterRc         = node->array->resultRegisterRc;
+        node->parent->resultRegisterRc = node->resultRegisterRc;
         freeRegisterRC(context, node->access);
     }
 
@@ -368,8 +368,8 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
         const auto typeInfoArray = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
 
         if (!node->access->hasComputedValue())
-            emitSafetyBoundCheckArray(context, node->access->resultRegisterRC, typeInfoArray);
-        truncRegisterRC(context, node->array->resultRegisterRC, 1);
+            emitSafetyBoundCheckArray(context, node->access->resultRegisterRc, typeInfoArray);
+        truncRegisterRC(context, node->array->resultRegisterRc, 1);
 
         // Increment pointer (if increment is not 0)
         if (!node->access->isConstant0())
@@ -377,69 +377,69 @@ bool ByteCodeGen::emitPointerDeRef(ByteCodeGenContext* context)
             const auto sizeOf = typeInfoArray->pointedType->sizeOf;
             if (sizeOf > 1)
             {
-                ensureCanBeChangedRC(context, node->access->resultRegisterRC);
-                EMIT_INST1(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = sizeOf;
+                ensureCanBeChangedRC(context, node->access->resultRegisterRc);
+                EMIT_INST1(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRc)->b.u64 = sizeOf;
             }
-            ensureCanBeChangedRC(context, node->array->resultRegisterRC);
-            EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+            ensureCanBeChangedRC(context, node->array->resultRegisterRc);
+            EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRc, node->access->resultRegisterRc, node->array->resultRegisterRc);
         }
 
         const auto pointedType = TypeManager::concreteType(typeInfoArray->pointedType, CONCRETE_FORCEALIAS);
 
         if (pointedType->isString())
-            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, pointedType));
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRc, pointedType));
         else if (pointedType->isPointer())
-            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, pointedType));
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRc, pointedType));
         else if (!node->isForceTakeAddress() && !pointedType->isArray())
-            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, pointedType));
+            SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRc, pointedType));
 
-        node->resultRegisterRC         = node->array->resultRegisterRC;
-        node->parent->resultRegisterRC = node->resultRegisterRC;
+        node->resultRegisterRc         = node->array->resultRegisterRc;
+        node->parent->resultRegisterRc = node->resultRegisterRc;
         freeRegisterRC(context, node->access);
     }
 
     // Dereference a variadic parameter
     else if (typeInfo->isVariadic())
     {
-        emitSafetyBoundCheckSlice(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
+        emitSafetyBoundCheckSlice(context, node->access->resultRegisterRc, node->array->resultRegisterRc[1]);
 
         // Increment pointer (if increment is not 0)
         if (!node->access->isConstant0())
         {
-            ensureCanBeChangedRC(context, node->access->resultRegisterRC);
-            EMIT_INST1(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = 2 * sizeof(Register); // 2 is sizeof(any)
-            ensureCanBeChangedRC(context, node->array->resultRegisterRC);
-            EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+            ensureCanBeChangedRC(context, node->access->resultRegisterRc);
+            EMIT_INST1(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRc)->b.u64 = 2 * sizeof(Register); // 2 is sizeof(any)
+            ensureCanBeChangedRC(context, node->array->resultRegisterRc);
+            EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRc, node->access->resultRegisterRc, node->array->resultRegisterRc);
         }
 
-        SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, g_TypeMgr->typeInfoAny));
-        node->resultRegisterRC         = node->array->resultRegisterRC;
-        node->parent->resultRegisterRC = node->resultRegisterRC;
+        SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRc, g_TypeMgr->typeInfoAny));
+        node->resultRegisterRc         = node->array->resultRegisterRc;
+        node->parent->resultRegisterRc = node->resultRegisterRc;
         freeRegisterRC(context, node->access);
     }
 
     // Dereference a typed variadic parameter
     else if (typeInfo->isTypedVariadic())
     {
-        emitSafetyBoundCheckSlice(context, node->access->resultRegisterRC, node->array->resultRegisterRC[1]);
+        emitSafetyBoundCheckSlice(context, node->access->resultRegisterRc, node->array->resultRegisterRc[1]);
 
         const auto rawType = ((TypeInfoVariadic*) typeInfo)->rawType;
 
         // Increment pointer (if increment is not 0)
         if (!node->access->isConstant0())
         {
-            ensureCanBeChangedRC(context, node->access->resultRegisterRC);
+            ensureCanBeChangedRC(context, node->access->resultRegisterRc);
             if (rawType->isNative() && rawType->sizeOf < sizeof(Register))
-                EMIT_INST1(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = rawType->sizeOf;
+                EMIT_INST1(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRc)->b.u64 = rawType->sizeOf;
             else
-                EMIT_INST1(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRC)->b.u64 = rawType->numRegisters() * sizeof(Register);
-            ensureCanBeChangedRC(context, node->array->resultRegisterRC);
-            EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRC, node->access->resultRegisterRC, node->array->resultRegisterRC);
+                EMIT_INST1(context, ByteCodeOp::Mul64byVB64, node->access->resultRegisterRc)->b.u64 = rawType->numRegisters() * sizeof(Register);
+            ensureCanBeChangedRC(context, node->array->resultRegisterRc);
+            EMIT_INST3(context, ByteCodeOp::IncPointer64, node->array->resultRegisterRc, node->access->resultRegisterRc, node->array->resultRegisterRc);
         }
 
-        SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRC, rawType));
-        node->resultRegisterRC         = node->array->resultRegisterRC;
-        node->parent->resultRegisterRC = node->resultRegisterRC;
+        SWAG_CHECK(emitTypeDeRef(context, node->array->resultRegisterRc, rawType));
+        node->resultRegisterRc         = node->array->resultRegisterRc;
+        node->parent->resultRegisterRc = node->resultRegisterRc;
         freeRegisterRC(context, node->access);
     }
     else
@@ -470,9 +470,9 @@ bool ByteCodeGen::emitMakeLambda(ByteCodeGenContext* context)
     }
 
     freeRegisterRC(context, front);
-    node->resultRegisterRC = reserveRegisterRC(context);
+    node->resultRegisterRc = reserveRegisterRC(context);
 
-    const auto inst = EMIT_INST1(context, ByteCodeOp::MakeLambda, node->resultRegisterRC);
+    const auto inst = EMIT_INST1(context, ByteCodeOp::MakeLambda, node->resultRegisterRc);
     inst->b.pointer = (uint8_t*) funcNode;
     inst->c.pointer = nullptr;
     if (funcNode->hasExtByteCode() && funcNode->extByteCode()->bc)
@@ -486,7 +486,7 @@ bool ByteCodeGen::emitMakeLambda(ByteCodeGenContext* context)
     // Block capture
     if (node->typeInfo->isClosure())
     {
-        node->resultRegisterRC += node->childs.back()->resultRegisterRC[0];
+        node->resultRegisterRc += node->childs.back()->resultRegisterRc[0];
     }
 
     return true;
@@ -497,7 +497,7 @@ bool ByteCodeGen::emitMakePointer(ByteCodeGenContext* context)
 {
     const auto node        = context->node;
     const auto front       = node->childs.front();
-    node->resultRegisterRC = front->resultRegisterRC;
+    node->resultRegisterRc = front->resultRegisterRc;
     return true;
 }
 
@@ -513,7 +513,7 @@ bool ByteCodeGen::emitMakeArrayPointerSlicingUpperBound(ByteCodeGenContext* cont
         context->allParamsTmp->childs.push_back(arrayNode);
         SWAG_CHECK(emitUserOp(context, context->allParamsTmp, nullptr, false));
         YIELD();
-        EMIT_INST1(context, ByteCodeOp::Add64byVB64, upperNode->resultRegisterRC)->b.s64 = -1;
+        EMIT_INST1(context, ByteCodeOp::Add64byVB64, upperNode->resultRegisterRc)->b.s64 = -1;
         return true;
     }
 
@@ -523,9 +523,9 @@ bool ByteCodeGen::emitMakeArrayPointerSlicingUpperBound(ByteCodeGenContext* cont
         typeInfo->isVariadic() ||
         typeInfo->isTypedVariadic())
     {
-        upperNode->resultRegisterRC = reserveRegisterRC(context);
-        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, upperNode->resultRegisterRC, arrayNode->resultRegisterRC[1]);
-        EMIT_INST1(context, ByteCodeOp::Add64byVB64, upperNode->resultRegisterRC)->b.s64 = -1;
+        upperNode->resultRegisterRc = reserveRegisterRC(context);
+        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, upperNode->resultRegisterRc, arrayNode->resultRegisterRc[1]);
+        EMIT_INST1(context, ByteCodeOp::Add64byVB64, upperNode->resultRegisterRc)->b.s64 = -1;
         return true;
     }
 
@@ -554,8 +554,8 @@ bool ByteCodeGen::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
     // Exclude upper bound limit
     if (node->specFlags & AstArrayPointerSlicing::SPECFLAG_EXCLUDE_UP && !node->upperBound->hasComputedValue())
     {
-        ensureCanBeChangedRC(context, node->upperBound->resultRegisterRC);
-        EMIT_INST1(context, ByteCodeOp::Add64byVB64, node->upperBound->resultRegisterRC)->b.s64 = -1;
+        ensureCanBeChangedRC(context, node->upperBound->resultRegisterRc);
+        EMIT_INST1(context, ByteCodeOp::Add64byVB64, node->upperBound->resultRegisterRc)->b.s64 = -1;
     }
 
     // Slicing of a structure, with a special function
@@ -592,28 +592,28 @@ bool ByteCodeGen::emitMakeArrayPointerSlicing(ByteCodeGenContext* context)
     reserveLinearRegisterRC2(context, r0);
 
     // Compute size of slice
-    ensureCanBeChangedRC(context, node->upperBound->resultRegisterRC);
+    ensureCanBeChangedRC(context, node->upperBound->resultRegisterRc);
     if (node->lowerBound)
-        EMIT_INST3(context, ByteCodeOp::BinOpMinusS64, node->upperBound->resultRegisterRC, node->lowerBound->resultRegisterRC, node->upperBound->resultRegisterRC);
-    EMIT_INST1(context, ByteCodeOp::Add64byVB64, node->upperBound->resultRegisterRC)->b.u64 = 1;
-    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r0[1], node->upperBound->resultRegisterRC);
+        EMIT_INST3(context, ByteCodeOp::BinOpMinusS64, node->upperBound->resultRegisterRc, node->lowerBound->resultRegisterRc, node->upperBound->resultRegisterRc);
+    EMIT_INST1(context, ByteCodeOp::Add64byVB64, node->upperBound->resultRegisterRc)->b.u64 = 1;
+    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r0[1], node->upperBound->resultRegisterRc);
 
     // Increment start pointer
-    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r0[0], node->array->resultRegisterRC);
+    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r0[0], node->array->resultRegisterRc);
     if (node->lowerBound)
     {
         if (sizeOf > 1)
         {
-            ensureCanBeChangedRC(context, node->lowerBound->resultRegisterRC);
-            EMIT_INST1(context, ByteCodeOp::Mul64byVB64, node->lowerBound->resultRegisterRC)->b.u64 = sizeOf;
+            ensureCanBeChangedRC(context, node->lowerBound->resultRegisterRc);
+            EMIT_INST1(context, ByteCodeOp::Mul64byVB64, node->lowerBound->resultRegisterRc)->b.u64 = sizeOf;
         }
-        EMIT_INST3(context, ByteCodeOp::IncPointer64, r0[0], node->lowerBound->resultRegisterRC, r0[0]);
+        EMIT_INST3(context, ByteCodeOp::IncPointer64, r0[0], node->lowerBound->resultRegisterRc, r0[0]);
     }
 
     freeRegisterRC(context, node->array);
     freeRegisterRC(context, node->lowerBound);
     freeRegisterRC(context, node->upperBound);
-    node->resultRegisterRC = r0;
+    node->resultRegisterRc = r0;
 
     return true;
 }

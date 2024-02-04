@@ -11,9 +11,9 @@ bool ByteCodeGen::emitIntrinsicMakeAny(ByteCodeGenContext* context)
     const auto node  = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     const auto front = node->childs.front();
     const auto back  = node->childs.back();
-    reserveRegisterRC(context, node->resultRegisterRC, 2);
-    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[0], front->resultRegisterRC);
-    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[1], back->resultRegisterRC);
+    reserveRegisterRC(context, node->resultRegisterRc, 2);
+    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc[0], front->resultRegisterRc);
+    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc[1], back->resultRegisterRc);
     freeRegisterRC(context, front);
     freeRegisterRC(context, back);
     return true;
@@ -23,8 +23,8 @@ bool ByteCodeGen::emitIntrinsicMakeCallback(ByteCodeGenContext* context)
 {
     const auto node    = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     const auto ptrNode = node->childs.front();
-    EMIT_INST1(context, ByteCodeOp::IntrinsicMakeCallback, ptrNode->resultRegisterRC);
-    node->resultRegisterRC = ptrNode->resultRegisterRC;
+    EMIT_INST1(context, ByteCodeOp::IntrinsicMakeCallback, ptrNode->resultRegisterRc);
+    node->resultRegisterRc = ptrNode->resultRegisterRc;
     return true;
 }
 
@@ -35,9 +35,9 @@ bool ByteCodeGen::emitIntrinsicMakeSlice(ByteCodeGenContext* context)
     const auto countNode = node->childs.back();
 
     SWAG_CHECK(emitCast(context, countNode, countNode->typeInfo, countNode->castedTypeInfo));
-    reserveRegisterRC(context, node->resultRegisterRC, 2);
-    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[0], ptrNode->resultRegisterRC);
-    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[1], countNode->resultRegisterRC);
+    reserveRegisterRC(context, node->resultRegisterRc, 2);
+    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc[0], ptrNode->resultRegisterRc);
+    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc[1], countNode->resultRegisterRc);
     freeRegisterRC(context, ptrNode);
     freeRegisterRC(context, countNode);
     return true;
@@ -48,7 +48,7 @@ bool ByteCodeGen::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
     const auto node   = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     const auto params = node->childs.front();
 
-    reserveLinearRegisterRC2(context, node->resultRegisterRC);
+    reserveLinearRegisterRC2(context, node->resultRegisterRc);
 
     // Reference to the interface concrete type info
     const auto childItf = params->childs[2];
@@ -61,10 +61,10 @@ bool ByteCodeGen::emitIntrinsicMakeInterface(ByteCodeGenContext* context)
     emitMakeSegPointer(context, constSegment, childItf->computedValue->storageOffset, r0);
 
     // Copy object pointer to first result register
-    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[0], params->childs[0]->resultRegisterRC);
+    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc[0], params->childs[0]->resultRegisterRc);
 
     // Get interface itable pointer in the second result register
-    EMIT_INST3(context, ByteCodeOp::IntrinsicItfTableOf, params->childs[1]->resultRegisterRC, r0, node->resultRegisterRC[1]);
+    EMIT_INST3(context, ByteCodeOp::IntrinsicItfTableOf, params->childs[1]->resultRegisterRc, r0, node->resultRegisterRc[1]);
 
     freeRegisterRC(context, params->childs[0]);
     freeRegisterRC(context, params->childs[1]);
@@ -81,15 +81,15 @@ bool ByteCodeGen::emitIntrinsicSpread(ByteCodeGenContext* context)
 
     if (typeInfo->isArray())
     {
-        transformResultToLinear2(context, expr->resultRegisterRC);
-        node->resultRegisterRC = expr->resultRegisterRC;
+        transformResultToLinear2(context, expr->resultRegisterRc);
+        node->resultRegisterRc = expr->resultRegisterRc;
         const auto typeArr     = CastTypeInfo<TypeInfoArray>(typeInfo, TypeInfoKind::Array);
-        const auto inst        = EMIT_INST1(context, ByteCodeOp::SetImmediate64, expr->resultRegisterRC[1]);
+        const auto inst        = EMIT_INST1(context, ByteCodeOp::SetImmediate64, expr->resultRegisterRc[1]);
         inst->b.u64            = typeArr->count;
     }
     else if (typeInfo->isListArray() || typeInfo->isSlice())
     {
-        node->resultRegisterRC = expr->resultRegisterRC;
+        node->resultRegisterRc = expr->resultRegisterRc;
     }
     else
     {
@@ -104,8 +104,8 @@ bool ByteCodeGen::emitIntrinsicLocationSI(ByteCodeGenContext* context)
     const auto node  = CastAst<AstNode>(context->node, AstNodeKind::IntrinsicLocation);
     const auto front = node->childs.front();
 
-    node->resultRegisterRC = reserveRegisterRC(context);
-    const auto inst        = EMIT_INST1(context, ByteCodeOp::IntrinsicLocationSI, node->resultRegisterRC);
+    node->resultRegisterRc = reserveRegisterRC(context);
+    const auto inst        = EMIT_INST1(context, ByteCodeOp::IntrinsicLocationSI, node->resultRegisterRc);
     SWAG_ASSERT(front->resolvedSymbolOverload);
     SWAG_ASSERT(front->resolvedSymbolOverload->node->ownerFct);
     const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(front->resolvedSymbolOverload->node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
@@ -120,8 +120,8 @@ bool ByteCodeGen::emitIntrinsicIsConstExprSI(ByteCodeGenContext* context)
     const auto node  = CastAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     const auto front = node->childs.front();
 
-    node->resultRegisterRC = reserveRegisterRC(context);
-    const auto inst        = EMIT_INST1(context, ByteCodeOp::IntrinsicIsConstExprSI, node->resultRegisterRC);
+    node->resultRegisterRc = reserveRegisterRC(context);
+    const auto inst        = EMIT_INST1(context, ByteCodeOp::IntrinsicIsConstExprSI, node->resultRegisterRc);
     SWAG_ASSERT(front->resolvedSymbolOverload);
     SWAG_ASSERT(front->resolvedSymbolOverload->node->ownerFct);
     const auto typeFunc = CastTypeInfo<TypeInfoFuncAttr>(front->resolvedSymbolOverload->node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
@@ -133,20 +133,20 @@ bool ByteCodeGen::emitIntrinsicIsConstExprSI(ByteCodeGenContext* context)
 
 bool ByteCodeGen::emitKindOf(ByteCodeGenContext* context, AstNode* node, TypeInfoKind from)
 {
-    SWAG_ASSERT(node->resultRegisterRC.size() == 2);
-    ensureCanBeChangedRC(context, node->resultRegisterRC);
-    const auto rc = node->resultRegisterRC[1];
-    freeRegisterRC(context, node->resultRegisterRC[0]);
-    node->resultRegisterRC = rc;
+    SWAG_ASSERT(node->resultRegisterRc.size() == 2);
+    ensureCanBeChangedRC(context, node->resultRegisterRc);
+    const auto rc = node->resultRegisterRc[1];
+    freeRegisterRC(context, node->resultRegisterRc[0]);
+    node->resultRegisterRc = rc;
 
     // Deref the type from the itable
     if (from == TypeInfoKind::Interface)
     {
-        EMIT_INST2(context, ByteCodeOp::JumpIfZero64, node->resultRegisterRC, 2);
-        const auto inst = EMIT_INST3(context, ByteCodeOp::DecPointer64, node->resultRegisterRC, 0, node->resultRegisterRC);
+        EMIT_INST2(context, ByteCodeOp::JumpIfZero64, node->resultRegisterRc, 2);
+        const auto inst = EMIT_INST3(context, ByteCodeOp::DecPointer64, node->resultRegisterRc, 0, node->resultRegisterRc);
         inst->b.u64     = sizeof(void*);
         inst->flags |= BCI_IMM_B;
-        EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRC, node->resultRegisterRC);
+        EMIT_INST2(context, ByteCodeOp::DeRef64, node->resultRegisterRc, node->resultRegisterRc);
     }
 
     return true;
@@ -170,8 +170,8 @@ bool ByteCodeGen::emitIntrinsicKindOf(ByteCodeGenContext* context)
     const auto front    = node->childs.front();
     const auto typeInfo = TypeManager::concretePtrRefType(front->typeInfo);
     SWAG_CHECK(emitKindOf(context, front, typeInfo->kind));
-    node->resultRegisterRC         = front->resultRegisterRC;
-    node->parent->resultRegisterRC = node->resultRegisterRC;
+    node->resultRegisterRc         = front->resultRegisterRc;
+    node->parent->resultRegisterRc = node->resultRegisterRc;
     return true;
 }
 
@@ -191,16 +191,16 @@ bool ByteCodeGen::emitIntrinsicCountOf(ByteCodeGenContext* context, AstNode* nod
         typeInfo->isVariadic() ||
         typeInfo->isTypedVariadic())
     {
-        ensureCanBeChangedRC(context, expr->resultRegisterRC);
-        node->resultRegisterRC = expr->resultRegisterRC[1];
-        SWAG_ASSERT(expr->resultRegisterRC.size() <= 2);
-        freeRegisterRC(context, expr->resultRegisterRC[0]);
+        ensureCanBeChangedRC(context, expr->resultRegisterRc);
+        node->resultRegisterRc = expr->resultRegisterRc[1];
+        SWAG_ASSERT(expr->resultRegisterRc.size() <= 2);
+        freeRegisterRC(context, expr->resultRegisterRc[0]);
         return true;
     }
 
     if (typeInfo->isNative(NativeTypeKind::U64))
     {
-        node->resultRegisterRC = expr->resultRegisterRC;
+        node->resultRegisterRc = expr->resultRegisterRc;
         return true;
     }
 
@@ -235,10 +235,10 @@ bool ByteCodeGen::emitIntrinsicDataOf(ByteCodeGenContext* context)
         typeInfo->isArray() ||
         typeInfo->isListArray())
     {
-        ensureCanBeChangedRC(context, front->resultRegisterRC);
-        truncRegisterRC(context, front->resultRegisterRC, 1);
-        node->resultRegisterRC         = front->resultRegisterRC;
-        node->parent->resultRegisterRC = node->resultRegisterRC;
+        ensureCanBeChangedRC(context, front->resultRegisterRc);
+        truncRegisterRC(context, front->resultRegisterRc, 1);
+        node->resultRegisterRc         = front->resultRegisterRc;
+        node->parent->resultRegisterRc = node->resultRegisterRc;
         return true;
     }
 

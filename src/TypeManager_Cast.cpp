@@ -3108,9 +3108,9 @@ bool TypeManager::makeCompatibles(SemanticContext* context, TypeInfo* toType, As
                 SWAG_ASSERT(typeList->subTypes.size() == fromNode->childs.size());
 #endif
                 const auto exprList = CastAst<AstExpressionList>(fromNode, AstNodeKind::ExpressionList);
-                if (exprList && !(exprList->semFlags & SEMFLAG_EXPRLIST_CST))
+                if (exprList && !(exprList->semFlags & SEMFLAG_EXPR_LIST_CST))
                 {
-                    exprList->semFlags |= SEMFLAG_EXPRLIST_CST;
+                    exprList->semFlags |= SEMFLAG_EXPR_LIST_CST;
 
                     // Test sizeof because {} is legit to initialize a struct (for default values in function arguments)
                     if (fromNode->typeInfo->sizeOf)

@@ -51,11 +51,11 @@ void Tokenizer::setup(ErrorContext* errorCxt, SourceFile* file)
     curBuffer       = sourceFile->buffer + sourceFile->offsetStartBuffer;
     endBuffer       = sourceFile->buffer + sourceFile->bufferSize;
 
-    for (int i       = (int) 'a'; i <= (int) 'z'; i++)
+    for (int i       = 'a'; i <= (int) 'z'; i++)
         idLetters[i] = true;
-    for (int i       = (int) 'A'; i <= (int) 'Z'; i++)
+    for (int i       = 'A'; i <= (int) 'Z'; i++)
         idLetters[i] = true;
-    for (int i       = (int) '0'; i <= (int) '9'; i++)
+    for (int i       = '0'; i <= (int) '9'; i++)
         idLetters[i] = true;
     idLetters[(int) '_'] = true;
 }

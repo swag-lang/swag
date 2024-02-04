@@ -1196,15 +1196,15 @@ bool Semantic::resolveFuncCallParam(SemanticContext* context)
     }
 
     node->inheritComputedValue(child);
-    node->inheritOrFlag(child, AST_CONST_EXPR | AST_IS_GENERIC | AST_VALUE_IS_GEN_TYPEINFO | AST_OPAFFECT_CAST | AST_TRANSIENT);
+    node->inheritOrFlag(child, AST_CONST_EXPR | AST_IS_GENERIC | AST_VALUE_IS_GEN_TYPEINFO | AST_OP_AFFECT_CAST | AST_TRANSIENT);
     if (node->childs.front()->semFlags & SEMFLAG_LITERAL_SUFFIX)
         node->semFlags |= SEMFLAG_LITERAL_SUFFIX;
 
     // Inherit the original type in case of computed values, in order to make the cast if necessary
-    if (node->flags & (AST_VALUE_COMPUTED | AST_OPAFFECT_CAST))
+    if (node->flags & (AST_VALUE_COMPUTED | AST_OP_AFFECT_CAST))
         node->castedTypeInfo = child->castedTypeInfo;
 
-    if (checkForConcrete & !(node->flags & AST_OPAFFECT_CAST))
+    if (checkForConcrete & !(node->flags & AST_OP_AFFECT_CAST))
     {
         SWAG_CHECK(evaluateConstExpression(context, node));
         YIELD();
@@ -1284,7 +1284,7 @@ void Semantic::propagateReturn(AstNode* node)
         {
             const auto loopNode = CastAst<AstLoop>(breakable, AstNodeKind::Loop);
             if (!loopNode->expression)
-                loopNode->breakableFlags |= BREAKABLE_RETURN_IN_INFINIT_LOOP;
+                loopNode->breakableFlags |= BREAKABLE_RETURN_IN_INFINITE_LOOP;
             break;
         }
 
@@ -1292,7 +1292,7 @@ void Semantic::propagateReturn(AstNode* node)
         {
             const auto whileNode = CastAst<AstWhile>(breakable, AstNodeKind::While);
             if ((whileNode->boolExpression->hasComputedValue()) && (whileNode->boolExpression->computedValue->reg.b))
-                whileNode->breakableFlags |= BREAKABLE_RETURN_IN_INFINIT_LOOP;
+                whileNode->breakableFlags |= BREAKABLE_RETURN_IN_INFINITE_LOOP;
             break;
         }
 
@@ -1300,7 +1300,7 @@ void Semantic::propagateReturn(AstNode* node)
         {
             const auto forNode = CastAst<AstFor>(breakable, AstNodeKind::For);
             if ((forNode->boolExpression->hasComputedValue()) && (forNode->boolExpression->computedValue->reg.b))
-                forNode->breakableFlags |= BREAKABLE_RETURN_IN_INFINIT_LOOP;
+                forNode->breakableFlags |= BREAKABLE_RETURN_IN_INFINITE_LOOP;
             break;
         }
 
@@ -1659,7 +1659,7 @@ uint32_t Semantic::getMaxStackSize(AstNode* node)
 {
     auto decSP = node->ownerScope->startStackSize;
 
-    if (node->flags & AST_SPEC_STACKSIZE)
+    if (node->flags & AST_SPEC_STACK_SIZE)
     {
         auto p = node;
         while (p->parent && p->parent->kind != AstNodeKind::File)
@@ -1681,7 +1681,7 @@ void Semantic::setOwnerMaxStackSize(AstNode* node, uint32_t size)
     size = max(size, 1);
     size = (uint32_t) TypeManager::align(size, sizeof(void*));
 
-    if (node->flags & AST_SPEC_STACKSIZE)
+    if (node->flags & AST_SPEC_STACK_SIZE)
     {
         auto p = node;
         while (p->parent && p->parent->kind != AstNodeKind::File)
@@ -1843,10 +1843,10 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* i
     // do not want to change the stackSize of the original function because of local variables.
     if (!cloneContext.ownerFct)
     {
-        identifier->flags |= AST_SPEC_STACKSIZE;
+        identifier->flags |= AST_SPEC_STACK_SIZE;
         if (identifier->kind == AstNodeKind::Identifier)
-            identifier->parent->flags |= AST_SPEC_STACKSIZE;
-        cloneContext.forceFlags |= AST_SPEC_STACKSIZE;
+            identifier->parent->flags |= AST_SPEC_STACK_SIZE;
+        cloneContext.forceFlags |= AST_SPEC_STACK_SIZE;
     }
 
     // Register all aliases

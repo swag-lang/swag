@@ -406,7 +406,7 @@ bool Parser::doThrow(AstNode* parent, AstNode** result)
     if (token.id == TokenId::IntrinsicGetErr)
     {
         SWAG_CHECK(doIdentifierRef(node, &dummyResult));
-        node->addSpecFlags(AstTryCatchAssume::SPECFLAG_THROW_GETERR);
+        node->addSpecFlags(AstTryCatchAssume::SPECFLAG_THROW_GET_ERR);
     }
     else
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));

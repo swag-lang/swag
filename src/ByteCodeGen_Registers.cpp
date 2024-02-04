@@ -151,7 +151,7 @@ void ByteCodeGen::freeRegisterRC(ByteCodeGenContext* context, AstNode* node)
 {
     if (!node)
         return;
-    freeRegisterRC(context, node->resultRegisterRC);
+    freeRegisterRC(context, node->resultRegisterRc);
     if (node->hasExtMisc())
         freeRegisterRC(context, node->extMisc()->additionalRegisterRC);
 }

@@ -71,7 +71,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
             node->extMisc()->resolvedUserOpSymbolOverload->symbol->kind != SymbolKind::Function ||
             !(node->extMisc()->resolvedUserOpSymbolOverload->node->attributeFlags & ATTRIBUTE_COMPLETE))
         {
-            if (!(node->semFlags & SEMFLAG_VARDECL_STRUCT_PARAMETERS))
+            if (!(node->semFlags & SEMFLAG_VAR_DECL_STRUCT_PARAMETERS))
             {
                 mustDropLeft = true;
                 if (!(node->flags & AST_EXPLICITLY_NOT_INITIALIZED) && !(node->flags & AST_HAS_FULL_STRUCT_PARAMETERS))
@@ -85,19 +85,19 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
                 }
 
                 emitStructParameters(context, UINT32_MAX, retVal);
-                node->semFlags |= SEMFLAG_VARDECL_STRUCT_PARAMETERS;
+                node->semFlags |= SEMFLAG_VAR_DECL_STRUCT_PARAMETERS;
             }
         }
 
         // User special function
         if (node->hasSpecialFuncCall())
         {
-            if (!(node->semFlags & SEMFLAG_VARDECL_REF_CALL))
+            if (!(node->semFlags & SEMFLAG_VAR_DECL_REF_CALL))
             {
                 RegisterList r0 = reserveRegisterRC(context);
                 emitRetValRef(context, resolved, r0, retVal, resolved->computedValue.storageOffset);
-                node->type->resultRegisterRC = r0;
-                node->semFlags |= SEMFLAG_VARDECL_REF_CALL;
+                node->type->resultRegisterRc = r0;
+                node->semFlags |= SEMFLAG_VAR_DECL_REF_CALL;
             }
 
             SWAG_CHECK(emitUserOp(context, nullptr, node));
@@ -118,14 +118,14 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
             freeRegisterRC(context, node->assignment);
         }
         // :ForceNoAffect
-        else if (node->assignment->resultRegisterRC.size())
+        else if (node->assignment->resultRegisterRc.size())
         {
             if (!(node->semFlags & SEMFLAG_PRE_CAST))
             {
                 node->allocateExtension(ExtensionKind::Misc);
                 node->extMisc()->additionalRegisterRC = reserveRegisterRC(context);
                 emitRetValRef(context, resolved, node->extMisc()->additionalRegisterRC, retVal, resolved->computedValue.storageOffset);
-                node->resultRegisterRC = node->assignment->resultRegisterRC;
+                node->resultRegisterRc = node->assignment->resultRegisterRc;
                 node->semFlags |= SEMFLAG_PRE_CAST;
             }
 
@@ -147,21 +147,21 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
             // Keep the value in a persistent register, as it cannot be changed
             if (isLet && !(resolved->flags & OVERLOAD_PERSISTENT_REG))
             {
-                context->bc->staticRegs += node->resultRegisterRC.size();
-                node->resultRegisterRC.cannotFree = true;
-                resolved->setRegisters(node->resultRegisterRC, OVERLOAD_PERSISTENT_REG);
+                context->bc->staticRegs += node->resultRegisterRc.size();
+                node->resultRegisterRc.cannotFree = true;
+                resolved->setRegisters(node->resultRegisterRc, OVERLOAD_PERSISTENT_REG);
 
                 switch (resolved->typeInfo->sizeOf)
                 {
                 case 1:
-                    EMIT_INST1(context, ByteCodeOp::ClearMaskU64, node->resultRegisterRC)->b.u64 = 0x000000FF;
+                    EMIT_INST1(context, ByteCodeOp::ClearMaskU64, node->resultRegisterRc)->b.u64 = 0x000000FF;
                     break;
                 case 2:
-                    EMIT_INST1(context, ByteCodeOp::ClearMaskU64, node->resultRegisterRC)->b.u64 = 0x0000FFFF;
+                    EMIT_INST1(context, ByteCodeOp::ClearMaskU64, node->resultRegisterRc)->b.u64 = 0x0000FFFF;
                     break;
                 case 4:
                     if (!resolved->typeInfo->isNativeFloat())
-                        EMIT_INST1(context, ByteCodeOp::ClearMaskU64, node->resultRegisterRC)->b.u64 = 0xFFFFFFFF;
+                        EMIT_INST1(context, ByteCodeOp::ClearMaskU64, node->resultRegisterRc)->b.u64 = 0xFFFFFFFF;
                     break;
                 }
             }
@@ -170,7 +170,7 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
             if (!isLet || (resolved->flags & OVERLOAD_HAS_MAKE_POINTER) || (context->sourceFile->module->buildCfg.byteCodeOptimizeLevel != 2))
             {
                 node->allocateExtension(ExtensionKind::Misc);
-                emitAffectEqual(context, node->extMisc()->additionalRegisterRC, node->resultRegisterRC, node->typeInfo, node->assignment);
+                emitAffectEqual(context, node->extMisc()->additionalRegisterRC, node->resultRegisterRc, node->typeInfo, node->assignment);
                 YIELD();
             }
 

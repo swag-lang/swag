@@ -3,7 +3,7 @@
 
 struct Module;
 
-struct SaveGenJob : public Job
+struct SaveGenJob : Job
 {
     virtual ~SaveGenJob() = default;
 

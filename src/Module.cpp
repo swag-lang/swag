@@ -385,7 +385,7 @@ void Module::buildTypesSlice()
     moduleSlice->types.count  = numTypes;
     constantSegment.addInitPtr(modulesSliceOffset + offsetof(SwagModule, types), typesSliceOffset + sizeof(uint64_t));
 
-    for (const auto t : mapTypes)
+    for (const auto& t : mapTypes)
     {
         *(ExportedTypeInfo**) resultPtr = t.second.exportedType;
         constantSegment.addInitPtr(offset, t.second.storageOffset);

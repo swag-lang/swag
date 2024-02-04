@@ -2,7 +2,7 @@
 #include "Job.h"
 struct Module;
 
-struct CopyFileJob : public Job
+struct CopyFileJob : Job
 {
     virtual ~CopyFileJob() = default;
 
@@ -22,7 +22,7 @@ struct CopyFileJob : public Job
     Path destPath;
 };
 
-struct LoadFileJob : public Job
+struct LoadFileJob : Job
 {
     LoadFileJob()
     {

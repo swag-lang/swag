@@ -6,7 +6,7 @@ static constexpr uint32_t BCC_FLAG_NOLOCATION   = 0x00000001;
 static constexpr uint32_t BCC_FLAG_NOSAFETY     = 0x00000002;
 static constexpr uint32_t BCC_FLAG_FOR_DEBUGGER = 0x00000004;
 
-struct ByteCodeGenContext : public JobContext
+struct ByteCodeGenContext : JobContext
 {
     void release() const;
     void allocateTempCallParams();

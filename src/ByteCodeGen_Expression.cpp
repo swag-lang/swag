@@ -28,13 +28,13 @@ bool ByteCodeGen::emitNullConditionalOp(ByteCodeGenContext* context)
     {
         SWAG_CHECK(emitUserOp(context, child0, nullptr, false));
         YIELD();
-        EMIT_INST1(context, ByteCodeOp::JumpIfZero64, node->resultRegisterRC)->b.s32 = child0->resultRegisterRC.size(); // After the "if not null"
-        freeRegisterRC(context, node->resultRegisterRC);
-        node->resultRegisterRC = child1->resultRegisterRC;
+        EMIT_INST1(context, ByteCodeOp::JumpIfZero64, node->resultRegisterRc)->b.s32 = child0->resultRegisterRc.size(); // After the "if not null"
+        freeRegisterRC(context, node->resultRegisterRc);
+        node->resultRegisterRc = child1->resultRegisterRc;
     }
     else
     {
-        node->resultRegisterRC = child1->resultRegisterRC;
+        node->resultRegisterRc = child1->resultRegisterRc;
 
         // For an interface, check the itable pointer
         int regIdx = 0;
@@ -45,25 +45,25 @@ bool ByteCodeGen::emitNullConditionalOp(ByteCodeGenContext* context)
         switch (typeInfo->sizeOf)
         {
         case 1:
-            inst = EMIT_INST1(context, ByteCodeOp::JumpIfZero8, child0->resultRegisterRC[regIdx]);
+            inst = EMIT_INST1(context, ByteCodeOp::JumpIfZero8, child0->resultRegisterRc[regIdx]);
             break;
         case 2:
-            inst = EMIT_INST1(context, ByteCodeOp::JumpIfZero16, child0->resultRegisterRC[regIdx]);
+            inst = EMIT_INST1(context, ByteCodeOp::JumpIfZero16, child0->resultRegisterRc[regIdx]);
             break;
         case 4:
-            inst = EMIT_INST1(context, ByteCodeOp::JumpIfZero32, child0->resultRegisterRC[regIdx]);
+            inst = EMIT_INST1(context, ByteCodeOp::JumpIfZero32, child0->resultRegisterRc[regIdx]);
             break;
         default:
-            inst = EMIT_INST1(context, ByteCodeOp::JumpIfZero64, child0->resultRegisterRC[regIdx]);
+            inst = EMIT_INST1(context, ByteCodeOp::JumpIfZero64, child0->resultRegisterRc[regIdx]);
             break;
         }
 
-        inst->b.s32 = child0->resultRegisterRC.size(); // After the "if not null"
+        inst->b.s32 = child0->resultRegisterRc.size(); // After the "if not null"
     }
 
     // If not null
-    for (int r = 0; r < node->resultRegisterRC.size(); r++)
-        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[r], child0->resultRegisterRC[r]);
+    for (int r = 0; r < node->resultRegisterRc.size(); r++)
+        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc[r], child0->resultRegisterRc[r]);
 
     freeRegisterRC(context, child0);
     return true;
@@ -81,7 +81,7 @@ bool ByteCodeGen::emitConditionalOpAfterExpr(ByteCodeGenContext* context)
 
     // Jump to ifFalse child
     binNode->seekJumpIfFalse = context->bc->numInstructions;
-    EMIT_INST1(context, ByteCodeOp::JumpIfFalse, expr->resultRegisterRC);
+    EMIT_INST1(context, ByteCodeOp::JumpIfFalse, expr->resultRegisterRc);
     return true;
 }
 
@@ -91,13 +91,13 @@ bool ByteCodeGen::emitConditionalOpAfterIfTrue(ByteCodeGenContext* context)
     const auto binNode = CastAst<AstConditionalOpNode>(ifTrue->parent, AstNodeKind::ConditionalExpression);
 
     // Reserve registers in the main node to copy the result
-    reserveRegisterRC(context, binNode->resultRegisterRC, ifTrue->resultRegisterRC.size());
-    for (int r = 0; r < ifTrue->resultRegisterRC.size(); r++)
-        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, binNode->resultRegisterRC[r], ifTrue->resultRegisterRC[r]);
+    reserveRegisterRC(context, binNode->resultRegisterRc, ifTrue->resultRegisterRc.size());
+    for (int r = 0; r < ifTrue->resultRegisterRc.size(); r++)
+        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, binNode->resultRegisterRc[r], ifTrue->resultRegisterRc[r]);
 
     // Jump after ifFalse block
     binNode->seekJumpAfterIfFalse = context->bc->numInstructions;
-    EMIT_INST1(context, ByteCodeOp::Jump, ifTrue->resultRegisterRC);
+    EMIT_INST1(context, ByteCodeOp::Jump, ifTrue->resultRegisterRc);
 
     // After this, this is the IfFalse block, so update jump value after the expression
     const auto inst = &context->bc->out[binNode->seekJumpIfFalse];
@@ -114,11 +114,11 @@ bool ByteCodeGen::emitConditionalOp(ByteCodeGenContext* context)
     const auto ifFalse    = node->childs[2];
 
     // Copy If false result
-    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[0], ifFalse->resultRegisterRC[0]);
-    if (node->resultRegisterRC.size() == 2 && ifFalse->resultRegisterRC.size() == 2)
-        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[1], ifFalse->resultRegisterRC[1]);
-    else if (node->resultRegisterRC.size() == 2 && ifFalse->resultRegisterRC.size() == 1)
-        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC[1], ifFalse->resultRegisterRC[0]);
+    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc[0], ifFalse->resultRegisterRc[0]);
+    if (node->resultRegisterRc.size() == 2 && ifFalse->resultRegisterRc.size() == 2)
+        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc[1], ifFalse->resultRegisterRc[1]);
+    else if (node->resultRegisterRc.size() == 2 && ifFalse->resultRegisterRc.size() == 1)
+        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc[1], ifFalse->resultRegisterRc[0]);
 
     // Update jump after the IfTrue block
     const auto inst = &context->bc->out[node->seekJumpAfterIfFalse];
@@ -167,9 +167,9 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
     }
 
     if (node->specFlags & AstExpressionList::SPECFLAG_FOR_TUPLE)
-        node->resultRegisterRC = reserveRegisterRC(context);
+        node->resultRegisterRc = reserveRegisterRC(context);
     else
-        reserveLinearRegisterRC2(context, node->resultRegisterRC);
+        reserveLinearRegisterRC2(context, node->resultRegisterRc);
 
     if (!(node->flags & AST_CONST_EXPR))
     {
@@ -197,11 +197,11 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
         if (parentReturn)
         {
             if (node->ownerInline)
-                EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->ownerInline->resultRegisterRC);
+                EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->ownerInline->resultRegisterRc);
             else
             {
-                EMIT_INST1(context, ByteCodeOp::CopyRRtoRA, node->resultRegisterRC);
-                EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->resultRegisterRC);
+                EMIT_INST1(context, ByteCodeOp::CopyRRtoRA, node->resultRegisterRc);
+                EMIT_INST1(context, ByteCodeOp::CopyRAtoRT, node->resultRegisterRc);
             }
 
             context->bc->maxCallResults = max(context->bc->maxCallResults, 1);
@@ -221,7 +221,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
                     (!varDecl->hasExtMisc() || !varDecl->extMisc()->resolvedUserOpSymbolOverload))
                 {
                     startOffset     = listNode->parent->resolvedSymbolOverload->computedValue.storageOffset;
-                    const auto inst = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
+                    const auto inst = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc);
                     inst->b.u64     = startOffset;
                     canDrop         = false;
                 }
@@ -232,7 +232,7 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
         if (canDrop)
         {
             startOffset     = listNode->computedValue->storageOffset;
-            const auto inst = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
+            const auto inst = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc);
             inst->b.u64     = startOffset;
         }
 
@@ -245,16 +245,16 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
         {
             child->flags |= AST_NO_LEFT_DROP;
 
-            const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, node->resultRegisterRC, 0, r0);
+            const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, node->resultRegisterRc, 0, r0);
             SWAG_ASSERT(totalOffset != 0xFFFFFFFF);
             inst->b.u64 = totalOffset;
             inst->flags |= BCI_IMM_B;
 
-            const auto saveR = context->node->resultRegisterRC;
+            const auto saveR = context->node->resultRegisterRc;
             SWAG_CHECK(emitCast(context, child, child->typeInfo, child->castedTypeInfo));
-            context->node->resultRegisterRC = saveR;
+            context->node->resultRegisterRc = saveR;
 
-            emitAffectEqual(context, r0, child->resultRegisterRC, child->typeInfo, child);
+            emitAffectEqual(context, r0, child->resultRegisterRc, child->typeInfo, child);
 
             SWAG_ASSERT(context->result == ContextResult::Done);
             freeRegisterRC(context, child);
@@ -272,9 +272,9 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
         // Reference to the stack, and store the number of element in a register
         if (canDrop)
         {
-            EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC[0])->b.u64 = startOffset;
+            EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc[0])->b.u64 = startOffset;
             if (!(node->specFlags & AstExpressionList::SPECFLAG_FOR_TUPLE))
-                EMIT_INST1(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1])->b.u64 = listNode->childs.size();
+                EMIT_INST1(context, ByteCodeOp::SetImmediate64, node->resultRegisterRc[1])->b.u64 = listNode->childs.size();
         }
         else
         {
@@ -287,17 +287,17 @@ bool ByteCodeGen::emitExpressionList(ByteCodeGenContext* context)
         // Be sure it has been collected to the constant segment. Usually, this is done after casting, because
         // we could need to change the values before the collect. If it's not done yet, that means that the cast
         // did not take place (when passing to a varargs for example).
-        if (!(node->semFlags & SEMFLAG_EXPRLIST_CST))
+        if (!(node->semFlags & SEMFLAG_EXPR_LIST_CST))
         {
-            node->semFlags |= SEMFLAG_EXPRLIST_CST;
+            node->semFlags |= SEMFLAG_EXPR_LIST_CST;
             node->allocateComputedValue();
             node->computedValue->storageSegment = Semantic::getConstantSegFromContext(node);
             SWAG_CHECK(Semantic::reserveAndStoreToSegment(context, node->computedValue->storageSegment, node->computedValue->storageOffset, nullptr, typeList, node));
         }
 
-        emitMakeSegPointer(context, node->computedValue->storageSegment, node->computedValue->storageOffset, node->resultRegisterRC[0]);
+        emitMakeSegPointer(context, node->computedValue->storageSegment, node->computedValue->storageOffset, node->resultRegisterRc[0]);
         if (!(node->specFlags & AstExpressionList::SPECFLAG_FOR_TUPLE))
-            EMIT_INST1(context, ByteCodeOp::SetImmediate64, node->resultRegisterRC[1])->b.u64 = typeList->subTypes.size();
+            EMIT_INST1(context, ByteCodeOp::SetImmediate64, node->resultRegisterRc[1])->b.u64 = typeList->subTypes.size();
     }
 
     return true;
@@ -308,7 +308,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context)
     const auto node = context->node;
     if (node->semFlags & SEMFLAG_LITERAL_SUFFIX)
         return context->report({node->childs.front(), Fmt(Err(Err0403), node->childs.front()->token.ctext())});
-    SWAG_CHECK(emitLiteral(context, node, nullptr, node->resultRegisterRC));
+    SWAG_CHECK(emitLiteral(context, node, nullptr, node->resultRegisterRc));
     return true;
 }
 
@@ -336,7 +336,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, TypeIn
             regList = reserveRegisterRC(context);
             emitMakeSegPointer(context, node->computedValue->storageSegment, node->computedValue->storageOffset, regList[0]);
             if (identifierRef)
-                identifierRef->resultRegisterRC = regList;
+                identifierRef->resultRegisterRc = regList;
             return true;
         }
     }

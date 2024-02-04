@@ -8,7 +8,7 @@ enum X64DispMode
     REGREG = 0b11,
 };
 
-struct SCBE_X64 : public SCBE_CPU
+struct SCBE_X64 : SCBE_CPU
 {
     void emit_Symbol_RelocationRef(const Utf8& name);
     void emit_Symbol_RelocationAddr(CPURegister reg, uint32_t symbolIndex, uint32_t offset);

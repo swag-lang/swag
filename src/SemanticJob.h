@@ -5,7 +5,7 @@
 struct SourceFile;
 struct AstNode;
 
-struct SemanticJob : public Job
+struct SemanticJob : Job
 {
     virtual ~SemanticJob() = default;
     void    release() override;

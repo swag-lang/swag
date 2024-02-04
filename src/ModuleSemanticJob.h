@@ -2,7 +2,7 @@
 #include "Job.h"
 struct Module;
 
-struct ModuleSemanticJob : public Job
+struct ModuleSemanticJob : Job
 {
     JobResult execute() override;
 };

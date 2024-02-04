@@ -3,7 +3,7 @@
 #include "Job.h"
 struct ByteCode;
 
-struct ByteCodeOptimizerJob : public Job
+struct ByteCodeOptimizerJob : Job
 {
     virtual   ~ByteCodeOptimizerJob() = default;
     JobResult execute() override;

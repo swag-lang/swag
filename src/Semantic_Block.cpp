@@ -77,7 +77,7 @@ bool Semantic::resolveWhile(SemanticContext* context)
     node->block->setBcNotifyAfter(ByteCodeGen::emitLoopAfterBlock, ByteCodeGen::emitLeaveScope);
 
     // :SpecPropagateReturn
-    if (node->breakableFlags & BREAKABLE_RETURN_IN_INFINIT_LOOP && node->breakList.empty())
+    if (node->breakableFlags & BREAKABLE_RETURN_IN_INFINITE_LOOP && node->breakList.empty())
         propagateReturn(node->parent);
 
     return true;
@@ -230,7 +230,7 @@ bool Semantic::resolveFor(SemanticContext* context)
     node->block->setBcNotifyAfter(ByteCodeGen::emitLoopAfterBlock, ByteCodeGen::emitLeaveScope);
 
     // :SpecPropagateReturn
-    if (node->breakableFlags & BREAKABLE_RETURN_IN_INFINIT_LOOP && node->breakList.empty())
+    if (node->breakableFlags & BREAKABLE_RETURN_IN_INFINITE_LOOP && node->breakList.empty())
         propagateReturn(node->parent);
 
     return true;
@@ -576,7 +576,7 @@ bool Semantic::resolveLoop(SemanticContext* context)
         node->block->setBcNotifyBefore(ByteCodeGen::emitLoopBeforeBlock);
 
     // :SpecPropagateReturn
-    if (node->breakableFlags & BREAKABLE_RETURN_IN_INFINIT_LOOP && node->breakList.empty())
+    if (node->breakableFlags & BREAKABLE_RETURN_IN_INFINITE_LOOP && node->breakList.empty())
         propagateReturn(node->parent);
 
     return true;

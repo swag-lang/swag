@@ -33,7 +33,7 @@ enum class ContextResult
     NewChilds1,
 };
 
-struct JobContext : public ErrorContext
+struct JobContext : ErrorContext
 {
     void reset()
     {

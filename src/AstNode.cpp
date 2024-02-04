@@ -176,28 +176,28 @@ void AstNode::release()
     {
         if (extByteCode()->bc)
             extByteCode()->bc->release();
-        Allocator::free<AstNode::NodeExtensionByteCode>(extByteCode());
+        Allocator::free<NodeExtensionByteCode>(extByteCode());
     }
 
     if (hasExtSemantic())
     {
-        Allocator::free<AstNode::NodeExtensionSemantic>(extSemantic());
+        Allocator::free<NodeExtensionSemantic>(extSemantic());
     }
 
     if (hasExtOwner())
     {
         for (const auto c : extOwner()->nodesToFree)
             c->release();
-        Allocator::free<AstNode::NodeExtensionOwner>(extOwner());
+        Allocator::free<NodeExtensionOwner>(extOwner());
     }
 
     if (hasExtMisc())
     {
-        Allocator::free<AstNode::NodeExtensionMisc>(extMisc());
+        Allocator::free<NodeExtensionMisc>(extMisc());
     }
 
     if (extension)
-        Allocator::free<AstNode::NodeExtension>(extension);
+        Allocator::free<NodeExtension>(extension);
 
     // Prerelease, if we need to childs to be alive
     switch (kind)

@@ -700,11 +700,11 @@ bool Semantic::filterSymbols(SemanticContext* context, AstIdentifier* node)
             continue;
 
         // A variable inside a scopefile has priority
-        if (p.asFlags & ALTSCOPE_FILE_PRIV)
+        if (p.asFlags & ALTSCOPE_FILE_PRIVATE)
         {
             for (auto& p1 : dependentSymbols)
             {
-                if (!(p1.asFlags & ALTSCOPE_FILE_PRIV))
+                if (!(p1.asFlags & ALTSCOPE_FILE_PRIVATE))
                     p1.remove = true;
             }
         }

@@ -2,12 +2,12 @@
 #include "Job.h"
 struct SyntaxJob;
 
-struct SyntaxContext : public JobContext
+struct SyntaxContext : JobContext
 {
     SyntaxJob* job = nullptr;
 };
 
-struct SyntaxJob : public Job
+struct SyntaxJob : Job
 {
     virtual ~SyntaxJob() = default;
 

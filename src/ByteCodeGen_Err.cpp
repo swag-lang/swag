@@ -76,7 +76,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
         if (returnType->isStruct())
         {
             if (node->ownerInline)
-                node->regInit = node->ownerInline->resultRegisterRC;
+                node->regInit = node->ownerInline->resultRegisterRc;
             else if (!(context->node->semFlags & SEMFLAG_TRY_2))
             {
                 reserveRegisterRC(context, node->regInit, 1);
@@ -99,7 +99,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
             {
                 if (node->ownerInline)
                 {
-                    EMIT_INST1(context, ByteCodeOp::SetZeroAtPointerX, node->ownerInline->resultRegisterRC)->b.u64 = typeArr->sizeOf;
+                    EMIT_INST1(context, ByteCodeOp::SetZeroAtPointerX, node->ownerInline->resultRegisterRc)->b.u64 = typeArr->sizeOf;
                 }
                 else
                 {
@@ -115,7 +115,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
                 {
                     reserveRegisterRC(context, node->regInit, 1);
                     if (node->ownerInline)
-                        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->regInit, node->ownerInline->resultRegisterRC);
+                        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->regInit, node->ownerInline->resultRegisterRc);
                     else
                         EMIT_INST1(context, ByteCodeOp::CopyRRtoRA, node->regInit);
                     context->node->semFlags |= SEMFLAG_TRY_2;
@@ -133,7 +133,7 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
         {
             if (node->ownerInline)
             {
-                EMIT_INST1(context, ByteCodeOp::ClearRA, node->ownerInline->resultRegisterRC[0]);
+                EMIT_INST1(context, ByteCodeOp::ClearRA, node->ownerInline->resultRegisterRc[0]);
             }
             else
             {
@@ -147,8 +147,8 @@ bool ByteCodeGen::emitTryThrowExit(ByteCodeGenContext* context, AstNode* fromNod
         {
             if (node->ownerInline)
             {
-                EMIT_INST1(context, ByteCodeOp::ClearRA, node->ownerInline->resultRegisterRC[0]);
-                EMIT_INST1(context, ByteCodeOp::ClearRA, node->ownerInline->resultRegisterRC[1]);
+                EMIT_INST1(context, ByteCodeOp::ClearRA, node->ownerInline->resultRegisterRc[0]);
+                EMIT_INST1(context, ByteCodeOp::ClearRA, node->ownerInline->resultRegisterRc[1]);
             }
             else
             {
@@ -226,8 +226,8 @@ bool ByteCodeGen::emitThrow(ByteCodeGenContext* context)
 
     if (!(node->semFlags & SEMFLAG_TRY_1))
     {
-        emitSafetyErrCheck(context, expr->resultRegisterRC[1]);
-        EMIT_INST2(context, ByteCodeOp::InternalSetErr, expr->resultRegisterRC[0], expr->resultRegisterRC[1]);
+        emitSafetyErrCheck(context, expr->resultRegisterRc[1]);
+        EMIT_INST2(context, ByteCodeOp::InternalSetErr, expr->resultRegisterRc[0], expr->resultRegisterRc[1]);
         node->semFlags |= SEMFLAG_TRY_1;
         EMIT_INST0(context, ByteCodeOp::PopRR);
     }
@@ -249,12 +249,12 @@ bool ByteCodeGen::emitThrow(ByteCodeGenContext* context)
         const auto r1 = reserveRegisterRC(context);
         emitMakeSegPointer(context, storageSegment, storageOffset, r1);
         EMIT_INST1(context, ByteCodeOp::InternalFailedAssume, r1);
-        freeRegisterRC(context, expr->resultRegisterRC);
+        freeRegisterRC(context, expr->resultRegisterRc);
         freeRegisterRC(context, r1);
     }
     else
     {
-        freeRegisterRC(context, expr->resultRegisterRC);
+        freeRegisterRC(context, expr->resultRegisterRc);
         SWAG_CHECK(emitTryThrowExit(context, context->node));
         YIELD();
     }

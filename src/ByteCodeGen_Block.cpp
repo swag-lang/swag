@@ -22,15 +22,15 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
     SWAG_CHECK(checkCatchError(context, node->func->typeInfo->declNode, node, node->func, parent, node->func->typeInfo));
 
     // Reserve registers for return value
-    reserveRegisterRC(context, node->resultRegisterRC, node->func->returnType->typeInfo->numRegisters());
-    node->parent->resultRegisterRC = node->resultRegisterRC;
+    reserveRegisterRC(context, node->resultRegisterRc, node->func->returnType->typeInfo->numRegisters());
+    node->parent->resultRegisterRc = node->resultRegisterRc;
 
     // If the inline returns a copy, then initialize the register with the address of the temporary
     // variable on the stack, so that the inline block can copy it's result to it. Of course, this is
     // not the top for speed, but anyway there's room for improvement for inline in all cases.
     if (CallConv::returnByStackAddress(typeInfoFunc))
     {
-        auto inst   = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRC);
+        auto inst   = EMIT_INST1(context, ByteCodeOp::MakeStackPointer, node->resultRegisterRc);
         inst->b.u64 = node->computedValue->storageOffset;
         node->ownerScope->symTable.addVarToDrop(nullptr, returnType, node->computedValue->storageOffset);
     }
@@ -48,12 +48,12 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
         numCallParams = (int) allParams->childs.size() - 1; // Remove the inline block
         while (parent->kind == AstNodeKind::ArrayPointerIndex || parent->kind == AstNodeKind::ArrayPointerSlicing)
             parent = parent->parent;
-        parent->resultRegisterRC = node->resultRegisterRC;
+        parent->resultRegisterRc = node->resultRegisterRc;
     }
     else if (parent->kind == AstNodeKind::Identifier)
     {
         auto identifier                               = CastAst<AstIdentifier>(parent, AstNodeKind::Identifier);
-        identifier->identifierRef()->resultRegisterRC = node->resultRegisterRC;
+        identifier->identifierRef()->resultRegisterRc = node->resultRegisterRc;
         allParams                                     = identifier->callParameters;
         numCallParams                                 = allParams ? allParams->childs.size() : 0;
     }
@@ -149,7 +149,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
                 {
                     if (overload->flags & OVERLOAD_VAR_INLINE)
                     {
-                        overload->setRegisters(callParam->resultRegisterRC, OVERLOAD_INLINE_REG);
+                        overload->setRegisters(callParam->resultRegisterRc, OVERLOAD_INLINE_REG);
                         SWAG_ASSERT(overload->symRegisters.countResults > 0);
                         if (!overload->symRegisters.cannotFree && canFreeRegParams)
                         {
@@ -187,7 +187,7 @@ bool ByteCodeGen::emitInlineBefore(ByteCodeGenContext* context)
                         {
                             if (overload->flags & OVERLOAD_VAR_INLINE)
                             {
-                                overload->setRegisters(callParam->resultRegisterRC, OVERLOAD_INLINE_REG);
+                                overload->setRegisters(callParam->resultRegisterRc, OVERLOAD_INLINE_REG);
                                 if (!overload->symRegisters.cannotFree)
                                 {
                                     SWAG_ASSERT(canFreeRegParams);
@@ -248,8 +248,8 @@ bool ByteCodeGen::emitInline(ByteCodeGenContext* context)
     // If the inlined function returns a reference, and we want a value, we need to unref
     if (node->parent->semFlags & SEMFLAG_FROM_REF && !node->parent->isForceTakeAddress())
     {
-        SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRC, node->typeInfo));
-        node->parent->resultRegisterRC = node->resultRegisterRC;
+        SWAG_CHECK(emitTypeDeRef(context, node->resultRegisterRc, node->typeInfo));
+        node->parent->resultRegisterRc = node->resultRegisterRc;
     }
 
     // Release persistent list of registers (except if mixin, because in that
@@ -320,7 +320,7 @@ bool ByteCodeGen::emitIfAfterExpr(ByteCodeGenContext* context)
     YIELD();
 
     ifNode->seekJumpExpression = context->bc->numInstructions;
-    EMIT_INST1(context, ByteCodeOp::JumpIfFalse, node->resultRegisterRC);
+    EMIT_INST1(context, ByteCodeOp::JumpIfFalse, node->resultRegisterRc);
     freeRegisterRC(context, node);
     return true;
 }
@@ -440,7 +440,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
 
         // If opCount has been inlined, then the register of the inline block contains the result
         if (loopNode->childs.back()->kind == AstNodeKind::Inline)
-            node->resultRegisterRC = loopNode->childs.back()->resultRegisterRC;
+            node->resultRegisterRc = loopNode->childs.back()->resultRegisterRc;
     }
 
     SWAG_CHECK(emitCast(context, node, node->typeInfo, node->castedTypeInfo));
@@ -462,7 +462,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
             }
             else
             {
-                EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, loopNode->registerIndex, loopNode->expression->resultRegisterRC[0]);
+                EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, loopNode->registerIndex, loopNode->expression->resultRegisterRc[0]);
             }
 
             loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
@@ -485,7 +485,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
             EMIT_INST1(context, ByteCodeOp::IncrementRA64, loopNode->registerIndex);
             loopNode->seekJumpExpression = context->bc->numInstructions;
 
-            const auto inst = EMIT_INST3(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, node->resultRegisterRC);
+            const auto inst = EMIT_INST3(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, node->resultRegisterRc);
             if (loopNode->expression->hasComputedValue())
             {
                 inst->c.u64 = loopNode->expression->computedValue->reg.u64;
@@ -561,9 +561,9 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
 
     if (loopNode->specFlags & AstLoop::SPECFLAG_BACK)
     {
-        EMIT_INST1(context, ByteCodeOp::DecrementRA64, rangeNode->expressionLow->resultRegisterRC[0]);
+        EMIT_INST1(context, ByteCodeOp::DecrementRA64, rangeNode->expressionLow->resultRegisterRc[0]);
 
-        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, loopNode->registerIndex, rangeNode->expressionUp->resultRegisterRC[0]);
+        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, loopNode->registerIndex, rangeNode->expressionUp->resultRegisterRc[0]);
         if (!(rangeNode->specFlags & AstRange::SPECFLAG_EXCLUDE_UP))
             EMIT_INST1(context, ByteCodeOp::IncrementRA64, loopNode->registerIndex);
 
@@ -572,15 +572,15 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
 
         EMIT_INST1(context, ByteCodeOp::DecrementRA64, loopNode->registerIndex);
         loopNode->seekJumpExpression = context->bc->numInstructions;
-        EMIT_INST3(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, rangeNode->expressionLow->resultRegisterRC[0]);
+        EMIT_INST3(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, rangeNode->expressionLow->resultRegisterRc[0]);
         return true;
     }
     else
     {
         if (!(rangeNode->specFlags & AstRange::SPECFLAG_EXCLUDE_UP))
-            EMIT_INST1(context, ByteCodeOp::IncrementRA64, rangeNode->expressionUp->resultRegisterRC[0]);
+            EMIT_INST1(context, ByteCodeOp::IncrementRA64, rangeNode->expressionUp->resultRegisterRc[0]);
 
-        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, loopNode->registerIndex, rangeNode->expressionLow->resultRegisterRC[0]);
+        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, loopNode->registerIndex, rangeNode->expressionLow->resultRegisterRc[0]);
         EMIT_INST1(context, ByteCodeOp::DecrementRA64, loopNode->registerIndex);
 
         loopNode->seekJumpBeforeExpression = context->bc->numInstructions;
@@ -589,7 +589,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
         EMIT_INST1(context, ByteCodeOp::IncrementRA64, loopNode->registerIndex);
         loopNode->seekJumpExpression = context->bc->numInstructions;
 
-        EMIT_INST3(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, rangeNode->expressionUp->resultRegisterRC[0]);
+        EMIT_INST3(context, ByteCodeOp::JumpIfEqual64, loopNode->registerIndex, 0, rangeNode->expressionUp->resultRegisterRc[0]);
         return true;
     }
 }
@@ -666,7 +666,7 @@ bool ByteCodeGen::emitWhileAfterExpr(ByteCodeGenContext* context)
 
     const auto whileNode          = CastAst<AstWhile>(node->parent, AstNodeKind::While);
     whileNode->seekJumpExpression = context->bc->numInstructions;
-    EMIT_INST1(context, ByteCodeOp::JumpIfFalse, node->resultRegisterRC);
+    EMIT_INST1(context, ByteCodeOp::JumpIfFalse, node->resultRegisterRc);
 
     // Increment the index
     if (whileNode->needIndex())
@@ -694,7 +694,7 @@ bool ByteCodeGen::emitForAfterExpr(ByteCodeGenContext* context)
     const auto forNode = CastAst<AstFor>(node->parent, AstNodeKind::For);
 
     forNode->seekJumpExpression = context->bc->numInstructions;
-    EMIT_INST1(context, ByteCodeOp::JumpIfFalse, node->resultRegisterRC);
+    EMIT_INST1(context, ByteCodeOp::JumpIfFalse, node->resultRegisterRc);
 
     return true;
 }
@@ -732,7 +732,7 @@ bool ByteCodeGen::emitSwitch(ByteCodeGenContext* context)
     const auto switchNode = CastAst<AstSwitch>(node, AstNodeKind::Switch);
 
     if (switchNode->expression)
-        freeRegisterRC(context, switchNode->expression->resultRegisterRC);
+        freeRegisterRC(context, switchNode->expression->resultRegisterRc);
 
     // Resolve the jump to go outside the switch
     auto inst   = context->bc->out + switchNode->seekJumpExpression;
@@ -806,7 +806,7 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
     const auto caseNode  = blockNode->ownerCase;
 
     if (caseNode->ownerSwitch->expression)
-        caseNode->ownerSwitch->resultRegisterRC = caseNode->ownerSwitch->expression->resultRegisterRC;
+        caseNode->ownerSwitch->resultRegisterRc = caseNode->ownerSwitch->expression->resultRegisterRc;
 
     // Default case does not have expressions
     VectorNative<uint32_t> allJumps;
@@ -821,7 +821,7 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
                 if (expr->kind == AstNodeKind::Range)
                 {
                     r0 = reserveRegisterRC(context);
-                    SWAG_CHECK(emitInRange(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRC, r0));
+                    SWAG_CHECK(emitInRange(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRc, r0));
                     if (context->result != ContextResult::Done)
                     {
                         freeRegisterRC(context, r0);
@@ -833,21 +833,21 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
                     // This registers are shared and must be kept.
                     // We need to do that because the special function could be inlined, and in that case will want to release
                     // the parameters, which are our registers. And we do not want them to be released except by us...
-                    caseNode->ownerSwitch->resultRegisterRC.cannotFree             = true;
-                    caseNode->ownerSwitch->expression->resultRegisterRC.cannotFree = true;
-                    expr->resultRegisterRC.cannotFree                              = true;
+                    caseNode->ownerSwitch->resultRegisterRc.cannotFree             = true;
+                    caseNode->ownerSwitch->expression->resultRegisterRc.cannotFree = true;
+                    expr->resultRegisterRc.cannotFree                              = true;
 
-                    SWAG_CHECK(emitCompareOpSpecialFunc(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRC, expr->resultRegisterRC, TokenId::SymEqualEqual));
+                    SWAG_CHECK(emitCompareOpSpecialFunc(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRc, expr->resultRegisterRc, TokenId::SymEqualEqual));
                     YIELD();
 
-                    caseNode->ownerSwitch->resultRegisterRC.cannotFree             = false;
-                    caseNode->ownerSwitch->expression->resultRegisterRC.cannotFree = false;
-                    expr->resultRegisterRC.cannotFree                              = false;
+                    caseNode->ownerSwitch->resultRegisterRc.cannotFree             = false;
+                    caseNode->ownerSwitch->expression->resultRegisterRc.cannotFree = false;
+                    expr->resultRegisterRc.cannotFree                              = false;
 
                     if (caseNode->childs.back()->kind == AstNodeKind::Inline)
-                        r0 = caseNode->childs.back()->resultRegisterRC;
+                        r0 = caseNode->childs.back()->resultRegisterRc;
                     else
-                        r0 = node->resultRegisterRC;
+                        r0 = node->resultRegisterRc;
                 }
                 else if (caseNode->specFlags & AstSwitchCase::SPECFLAG_IS_TRUE)
                 {
@@ -863,7 +863,7 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
                 else
                 {
                     r0 = reserveRegisterRC(context);
-                    SWAG_CHECK(emitCompareOpEqual(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRC, expr->resultRegisterRC, r0));
+                    SWAG_CHECK(emitCompareOpEqual(context, caseNode, expr, caseNode->ownerSwitch->resultRegisterRc, expr->resultRegisterRc, r0));
                 }
 
                 allJumps.push_back(context->bc->numInstructions);
@@ -879,13 +879,13 @@ bool ByteCodeGen::emitSwitchCaseBeforeBlock(ByteCodeGenContext* context)
             for (const auto expr : caseNode->expressions)
             {
                 allJumps.push_back(context->bc->numInstructions);
-                const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, expr->resultRegisterRC);
+                const auto inst = EMIT_INST1(context, ByteCodeOp::JumpIfTrue, expr->resultRegisterRc);
                 inst->b.u64     = context->bc->numInstructions; // Remember start of the jump, to compute the relative offset
             }
         }
 
         for (const auto expr : caseNode->expressions)
-            freeRegisterRC(context, expr->resultRegisterRC);
+            freeRegisterRC(context, expr->resultRegisterRc);
 
         // Jump to the next case, except for the default, which is the last
         blockNode->seekJumpNextCase = context->bc->numInstructions;
@@ -989,13 +989,13 @@ bool ByteCodeGen::emitContinue(ByteCodeGenContext* context)
 bool ByteCodeGen::emitIndex(ByteCodeGenContext* context)
 {
     const auto node        = context->node;
-    node->resultRegisterRC = reserveRegisterRC(context);
+    node->resultRegisterRc = reserveRegisterRC(context);
 
     auto ownerBreakable = node->ownerBreakable;
     while (ownerBreakable && !(ownerBreakable->breakableFlags & BREAKABLE_CAN_HAVE_INDEX))
         ownerBreakable = ownerBreakable->ownerBreakable;
     SWAG_ASSERT(ownerBreakable);
-    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRC, ownerBreakable->registerIndex);
+    EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, node->resultRegisterRc, ownerBreakable->registerIndex);
     return true;
 }
 
@@ -1137,7 +1137,7 @@ bool ByteCodeGen::emitLeaveScopeReturn(ByteCodeGenContext* context, VectorNative
     const auto funcNode = node->ownerFct;
 
     // Leave all scopes
-    const Scope* topScope = nullptr;
+    const Scope* topScope;
     if (node->ownerInline && ((node->semFlags & SEMFLAG_EMBEDDED_RETURN) || node->kind != AstNodeKind::Return))
     {
         // If the inline comes from a mixin, then the node->ownerInline->scope is the one the mixin is included

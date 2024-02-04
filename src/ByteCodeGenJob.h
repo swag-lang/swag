@@ -2,7 +2,7 @@
 #include "ByteCodeGenContext.h"
 #include "Job.h"
 
-struct ByteCodeGenJob : public Job
+struct ByteCodeGenJob : Job
 {
     virtual ~ByteCodeGenJob() = default;
     void    release() override;

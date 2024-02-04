@@ -262,13 +262,10 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
                 const auto note = Diagnostic::hereIs(structNode);
                 return context->report(diag, note);
             }
-            else
-            {
-                const Utf8       asA = Fmt("as %s", Naming::aKindName(newScope->kind).c_str());
-                const Diagnostic diag{structNode->sourceFile, token, Fmt(Err(Err0626), "struct", structNode->token.ctext(), asA.c_str())};
-                const auto       note = Diagnostic::note(newScope->owner, newScope->owner->getTokenName(), Nte(Nte0071));
-                return context->report(diag, note);
-            }
+            const Utf8       asA = Fmt("as %s", Naming::aKindName(newScope->kind).c_str());
+            const Diagnostic diag{structNode->sourceFile, token, Fmt(Err(Err0626), "struct", structNode->token.ctext(), asA.c_str())};
+            const auto       note = Diagnostic::note(newScope->owner, newScope->owner->getTokenName(), Nte(Nte0071));
+            return context->report(diag, note);
         }
 
         structNode->scope = newScope;

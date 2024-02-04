@@ -1,7 +1,7 @@
 #pragma once
 struct Utf8;
 
-struct Path : public filesystem::path
+struct Path : filesystem::path
 {
     Path() = default;
 

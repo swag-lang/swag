@@ -3,7 +3,7 @@
 #include "Job.h"
 struct SourceFile;
 
-struct LoadSourceFileJob : public Job
+struct LoadSourceFileJob : Job
 {
     virtual ~LoadSourceFileJob() = default;
 

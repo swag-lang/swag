@@ -17,7 +17,7 @@ bool ByteCodeGen::emitPassThrough(ByteCodeGenContext* context)
     else
     {
         SWAG_CHECK(emitCast(context, child, TypeManager::concreteType(child->typeInfo), child->castedTypeInfo));
-        node->resultRegisterRC = child->resultRegisterRC;
+        node->resultRegisterRc = child->resultRegisterRc;
     }
 
     if (child->hasExtMisc())
@@ -54,7 +54,7 @@ bool ByteCodeGen::emitDebugNop(ByteCodeGenContext* context)
 {
     const auto node = context->node;
     if (!node->childs.empty())
-        node->resultRegisterRC = node->childs.back()->resultRegisterRC;
+        node->resultRegisterRc = node->childs.back()->resultRegisterRc;
     emitDebugLine(context, node);
     return true;
 }

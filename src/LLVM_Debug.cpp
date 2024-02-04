@@ -27,14 +27,14 @@ void LLVM_Debug::setup(LLVM* m, llvm::Module* modu)
     exportFile          = dbgBuilder->createFile(m->exportFileName.string(), expPath.parent_path().string());
     const Utf8 compiler = Fmt("swag %d.%d.%d", SWAG_BUILD_VERSION, SWAG_BUILD_REVISION, SWAG_BUILD_NUM);
     compileUnit         = dbgBuilder->createCompileUnit(llvm::dwarf::DW_LANG_C99,
-                                                        mainFile,
-                                                        compiler.c_str(),
-                                                        isOptimized,
-                                                        "",
-                                                        0,
-                                                        "",
-                                                        llvm::DICompileUnit::DebugEmissionKind::FullDebug,
-                                                        0);
+                                                mainFile,
+                                                compiler.c_str(),
+                                                isOptimized,
+                                                "",
+                                                0,
+                                                "",
+                                                llvm::DICompileUnit::DebugEmissionKind::FullDebug,
+                                                0);
 
     modu->addModuleFlag(llvm::Module::Warning, "Debug Info Version", llvm::DEBUG_METADATA_VERSION);
 #ifdef _WIN32
@@ -432,14 +432,10 @@ void LLVM_Debug::startFunction(const BuildParameters& buildParameters, LLVMPerTh
     llvm::DISubprogram* SP = startFunction(bc, &decl);
     func->setSubprogram(SP);
 
-    Utf8              name     = bc->name;
     TypeInfoFuncAttr* typeFunc = bc->typeInfoFunc;
     llvm::DIFile*     file     = getOrCreateFile(bc->sourceFile);
     if (decl)
-    {
-        name     = decl->token.text;
         typeFunc = CastTypeInfo<TypeInfoFuncAttr>(decl->typeInfo, TypeInfoKind::FuncAttr);
-    }
 
     VectorNative<llvm::AllocaInst*> allocaParams;
     VectorNative<llvm::AllocaInst*> allocaRetval;

@@ -24,8 +24,8 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
         if (regScan == UINT32_MAX)
             return;
 
-        bool                                                                                      hasRead  = false;
-        bool                                                                                      hasWrite = false;
+        bool hasRead = false;
+
         parseTree(context, parseCxt.curNode, parseCxt.curIp, BCOTN_USER2, [&](ByteCodeOptContext* context, ByteCodeOptTreeParseContext& parseCxt1)
         {
             const auto ip1 = parseCxt1.curIp;
@@ -77,7 +77,6 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
             {
                 if (ip1->a.u32 == regScan)
                 {
-                    hasWrite                = true;
                     parseCxt1.mustStopBlock = true;
                     return;
                 }
@@ -87,7 +86,6 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
             {
                 if (ip1->b.u32 == regScan)
                 {
-                    hasWrite                = true;
                     parseCxt1.mustStopBlock = true;
                     return;
                 }
@@ -97,7 +95,6 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
             {
                 if (ip1->c.u32 == regScan)
                 {
-                    hasWrite                = true;
                     parseCxt1.mustStopBlock = true;
                     return;
                 }
@@ -107,7 +104,6 @@ bool ByteCodeOptimizer::optimizePassDeadStore(ByteCodeOptContext* context)
             {
                 if (ip1->d.u32 == regScan)
                 {
-                    hasWrite                = true;
                     parseCxt1.mustStopBlock = true;
                     return;
                 }

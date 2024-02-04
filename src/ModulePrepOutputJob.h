@@ -4,13 +4,13 @@
 #include "Job.h"
 struct Module;
 
-struct ModulePrepOutputStage1Job : public Job
+struct ModulePrepOutputStage1Job : Job
 {
     JobResult       execute() override;
     BuildParameters buildParameters;
 };
 
-struct ModulePrepOutputStage2Job : public Job
+struct ModulePrepOutputStage2Job : Job
 {
     JobResult       execute() override;
     BuildParameters buildParameters;

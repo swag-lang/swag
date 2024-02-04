@@ -432,13 +432,13 @@ bool AstOutput::outputAttributes(OutputContext& context, Concat& concat, AstNode
         for (auto& one : attr->allAttributes)
         {
             // Be sure usage is valid
-            if (typeInfo->isStruct() && one.typeFunc && !(one.typeFunc->attributeUsage & (AttributeUsage::All | AttributeUsage::Struct)))
+            if (typeInfo->isStruct() && one.typeFunc && !(one.typeFunc->attributeUsage & (All | Struct)))
                 continue;
-            if (typeInfo->isInterface() && one.typeFunc && !(one.typeFunc->attributeUsage & (AttributeUsage::All | AttributeUsage::Struct)))
+            if (typeInfo->isInterface() && one.typeFunc && !(one.typeFunc->attributeUsage & (All | Struct)))
                 continue;
-            if (typeInfo->isFuncAttr() && one.typeFunc && !(one.typeFunc->attributeUsage & (AttributeUsage::All | AttributeUsage::Function)))
+            if (typeInfo->isFuncAttr() && one.typeFunc && !(one.typeFunc->attributeUsage & (All | Function)))
                 continue;
-            if (typeInfo->isEnum() && one.typeFunc && !(one.typeFunc->attributeUsage & (AttributeUsage::All | AttributeUsage::Enum)))
+            if (typeInfo->isEnum() && one.typeFunc && !(one.typeFunc->attributeUsage & (All | Enum)))
                 continue;
 
             if (one.node)
@@ -1311,7 +1311,7 @@ bool AstOutput::outputNode(OutputContext& context, Concat& concat, AstNode* node
     case AstNodeKind::ArrayPointerIndex:
     {
         const auto arrayNode = CastAst<AstArrayPointerIndex>(node, AstNodeKind::ArrayPointerIndex);
-        if (arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DREF)
+        if (arrayNode->specFlags & AstArrayPointerIndex::SPECFLAG_IS_DEREF)
         {
             CONCAT_FIXED_STR(concat, "dref ");
             SWAG_CHECK(outputNode(context, concat, arrayNode->array));

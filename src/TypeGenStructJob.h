@@ -6,7 +6,7 @@ struct ExportedTypeInfo;
 struct AstFuncDecl;
 struct DataSegment;
 
-struct TypeGenStructJob : public Job
+struct TypeGenStructJob : Job
 {
     JobResult execute() override;
     bool      computeStruct();

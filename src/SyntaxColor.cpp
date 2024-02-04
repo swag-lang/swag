@@ -3,90 +3,164 @@
 #include "LanguageSpec.h"
 #include "SourceFile.h"
 
-struct RGBColor
+struct RgbColor
 {
     unsigned char r, g, b;
 };
 
-static void rgbToHsl(RGBColor color, float* h, float* s, float* l)
+namespace
 {
-    const float r = color.r / 255.0f;
-    const float g = color.g / 255.0f;
-    const float b = color.b / 255.0f;
-
-    const float maxVal = fmaxf(fmaxf(r, g), b);
-    const float minVal = fminf(fminf(r, g), b);
-
-    *l = (maxVal + minVal) / 2;
-
-    if (maxVal == minVal)
+    void rgbToHsl(const RgbColor& color, float* h, float* s, float* l)
     {
-        *h = *s = 0;
-    }
-    else
-    {
-        const float d = maxVal - minVal;
-        *s            = (*l > 0.5) ? d / (2 - maxVal - minVal) : d / (maxVal + minVal);
+        const float r = color.r / 255.0f;
+        const float g = color.g / 255.0f;
+        const float b = color.b / 255.0f;
 
-        if (maxVal == r)
+        const float maxVal = fmaxf(fmaxf(r, g), b);
+        const float minVal = fminf(fminf(r, g), b);
+
+        *l = (maxVal + minVal) / 2;
+
+        if (maxVal == minVal)
         {
-            *h = (g - b) / d + ((g < b) ? 6 : 0);
+            *h = *s = 0;
         }
-        else if (maxVal == g)
+        else
         {
-            *h = (b - r) / d + 2;
+            const float d = maxVal - minVal;
+            *s            = (*l > 0.5) ? d / (2 - maxVal - minVal) : d / (maxVal + minVal);
+
+            if (maxVal == r)
+            {
+                *h = (g - b) / d + ((g < b) ? 6 : 0);
+            }
+            else if (maxVal == g)
+            {
+                *h = (b - r) / d + 2;
+            }
+            else if (maxVal == b)
+            {
+                *h = (r - g) / d + 4;
+            }
+            *h /= 6;
         }
-        else if (maxVal == b)
+    }
+
+    float hueToRgb(float p, float q, float t)
+    {
+        if (t < 0)
+            t += 1;
+        if (t > 1)
+            t -= 1;
+        if (t < 1.0f / 6)
+            return p + (q - p) * 6 * t;
+        if (t < 1.0f / 2)
+            return q;
+        if (t < 2.0f / 3)
+            return p + (q - p) * (2.0f / 3 - t) * 6;
+        return p;
+    }
+
+    RgbColor hslToRgb(float h, float s, float l)
+    {
+        float r, g, b;
+
+        if (s == 0)
         {
-            *h = (r - g) / d + 4;
+            r = g = b = l;
         }
-        *h /= 6;
+        else
+        {
+            const float q = (l < 0.5) ? l * (1 + s) : l + s - l * s;
+            const float p = 2 * l - q;
+
+            r = hueToRgb(p, q, h + 1.0f / 3);
+            g = hueToRgb(p, q, h);
+            b = hueToRgb(p, q, h - 1.0f / 3);
+        }
+
+        RgbColor result;
+        result.r = (unsigned char) (r * 255.0f);
+        result.g = (unsigned char) (g * 255.0f);
+        result.b = (unsigned char) (b * 255.0f);
+        return result;
     }
-}
 
-static float hueToRgb(float p, float q, float t)
-{
-    if (t < 0)
-        t += 1;
-    if (t > 1)
-        t -= 1;
-    if (t < 1.0f / 6)
-        return p + (q - p) * 6 * t;
-    if (t < 1.0f / 2)
-        return q;
-    if (t < 2.0f / 3)
-        return p + (q - p) * (2.0f / 3 - t) * 6;
-    return p;
-}
-
-static RGBColor hslToRgb(float h, float s, float l)
-{
-    float r, g, b;
-
-    if (s == 0)
+    Utf8 getColor(SyntaxColorMode mode, SyntaxColor color)
     {
-        r = g = b = l;
-    }
-    else
-    {
-        const float q = (l < 0.5) ? l * (1 + s) : l + s - l * s;
-        const float p = 2 * l - q;
+        switch (mode)
+        {
+        case SyntaxColorMode::ForLog:
+        {
+            if (color == SyntaxColor::SyntaxDefault)
+                color = SyntaxColor::SyntaxCode;
+            const auto rgb = getSyntaxColor(mode, color, g_CommandLine.errorSyntaxColorLum);
+            return Fmt("\x1b[38;2;%d;%d;%dm", (rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF);
+        }
 
-        r = hueToRgb(p, q, h + 1.0f / 3);
-        g = hueToRgb(p, q, h);
-        b = hueToRgb(p, q, h - 1.0f / 3);
+        case SyntaxColorMode::ForDoc:
+        {
+            const char* colorName = nullptr;
+            switch (color)
+            {
+            case SyntaxColor::SyntaxDefault:
+                return "</span>";
+            case SyntaxColor::SyntaxCode:
+                colorName = SYN_CODE;
+                break;
+            case SyntaxColor::SyntaxComment:
+                colorName = SYN_COMMENT;
+                break;
+            case SyntaxColor::SyntaxCompiler:
+                colorName = SYN_COMPILER;
+                break;
+            case SyntaxColor::SyntaxFunction:
+                colorName = SYN_FUNCTION;
+                break;
+            case SyntaxColor::SyntaxConstant:
+                colorName = SYN_CONSTANT;
+                break;
+            case SyntaxColor::SyntaxIntrinsic:
+                colorName = SYN_INTRINSIC;
+                break;
+            case SyntaxColor::SyntaxType:
+                colorName = SYN_TYPE;
+                break;
+            case SyntaxColor::SyntaxKeyword:
+                colorName = SYN_KEYWORD;
+                break;
+            case SyntaxColor::SyntaxLogic:
+                colorName = SYN_LOGIC;
+                break;
+            case SyntaxColor::SyntaxNumber:
+                colorName = SYN_NUMBER;
+                break;
+            case SyntaxColor::SyntaxString:
+                colorName = SYN_STRING;
+                break;
+            case SyntaxColor::SyntaxAttribute:
+                colorName = SYN_ATTRIBUTE;
+                break;
+            case SyntaxColor::SyntaxInvalid:
+                colorName = SYN_INVALID;
+                break;
+            }
+
+            if (colorName)
+                return Fmt("<span class=\"%s\">", colorName);
+            break;
+        }
+        }
+
+        SWAG_ASSERT(false);
+        return "";
     }
 
-    RGBColor result;
-    result.r = (unsigned char) (r * 255.0f);
-    result.g = (unsigned char) (g * 255.0f);
-    result.b = (unsigned char) (b * 255.0f);
-    return result;
 }
 
 uint32_t getSyntaxColor(SyntaxColorMode mode, SyntaxColor color, float lum)
 {
-    RGBColor rgb;
+    RgbColor rgb;
     switch (color)
     {
     case SyntaxColor::SyntaxCode:
@@ -142,77 +216,6 @@ uint32_t getSyntaxColor(SyntaxColorMode mode, SyntaxColor color, float lum)
     }
 
     return (rgb.r << 16) | (rgb.g << 8) | (rgb.b);
-}
-
-static Utf8 getColor(SyntaxColorMode mode, SyntaxColor color)
-{
-    switch (mode)
-    {
-    case SyntaxColorMode::ForLog:
-    {
-        if (color == SyntaxColor::SyntaxDefault)
-            color = SyntaxColor::SyntaxCode;
-        const auto rgb = getSyntaxColor(mode, color, g_CommandLine.errorSyntaxColorLum);
-        return Fmt("\x1b[38;2;%d;%d;%dm", (rgb >> 16) & 0xFF, (rgb >> 8) & 0xFF, rgb & 0xFF);
-    }
-    break;
-
-    case SyntaxColorMode::ForDoc:
-    {
-        const char* colorName = nullptr;
-        switch (color)
-        {
-        case SyntaxColor::SyntaxDefault:
-            return "</span>";
-        case SyntaxColor::SyntaxCode:
-            colorName = SYN_CODE;
-            break;
-        case SyntaxColor::SyntaxComment:
-            colorName = SYN_COMMENT;
-            break;
-        case SyntaxColor::SyntaxCompiler:
-            colorName = SYN_COMPILER;
-            break;
-        case SyntaxColor::SyntaxFunction:
-            colorName = SYN_FUNCTION;
-            break;
-        case SyntaxColor::SyntaxConstant:
-            colorName = SYN_CONSTANT;
-            break;
-        case SyntaxColor::SyntaxIntrinsic:
-            colorName = SYN_INTRINSIC;
-            break;
-        case SyntaxColor::SyntaxType:
-            colorName = SYN_TYPE;
-            break;
-        case SyntaxColor::SyntaxKeyword:
-            colorName = SYN_KEYWORD;
-            break;
-        case SyntaxColor::SyntaxLogic:
-            colorName = SYN_LOGIC;
-            break;
-        case SyntaxColor::SyntaxNumber:
-            colorName = SYN_NUMBER;
-            break;
-        case SyntaxColor::SyntaxString:
-            colorName = SYN_STRING;
-            break;
-        case SyntaxColor::SyntaxAttribute:
-            colorName = SYN_ATTRIBUTE;
-            break;
-        case SyntaxColor::SyntaxInvalid:
-            colorName = SYN_INVALID;
-            break;
-        }
-
-        if (colorName)
-            return Fmt("<span class=\"%s\">", colorName);
-        break;
-    }
-    }
-
-    SWAG_ASSERT(false);
-    return "";
 }
 
 Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
@@ -310,7 +313,7 @@ Utf8 syntaxColor(const Utf8& line, SyntaxColorContext& context)
                         result += *pz++;
                     continue;
                 }
-                else if (*pz == '[')
+                if (*pz == '[')
                     cpt++;
                 else if (*pz == ']')
                     cpt--;

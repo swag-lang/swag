@@ -34,4 +34,4 @@ namespace Naming
     Utf8 niceParameterRank(size_t idx);
 
     Utf8 tokenToName(TokenId id);
-}; // namespace Naming
+} // namespace Naming

@@ -14,7 +14,7 @@ enum class ModuleOutputJobPass
     Done,
 };
 
-struct ModuleOutputJob : public Job
+struct ModuleOutputJob : Job
 {
     JobResult           execute() override;
     ModuleOutputJobPass pass = ModuleOutputJobPass::Init;

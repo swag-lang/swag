@@ -247,7 +247,7 @@ bool Semantic::waitForStructUserOps(SemanticContext* context, AstNode* node)
 
 void Semantic::waitForGenericParameters(SemanticContext* context, OneMatch& match)
 {
-    for (const auto it : match.genericReplaceTypes)
+    for (const auto& it : match.genericReplaceTypes)
     {
         const auto typeInfo = it.second.typeInfoReplace;
         const auto declNode = typeInfo->declNode;

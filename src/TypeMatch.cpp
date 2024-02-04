@@ -10,7 +10,7 @@
 static void matchParameters(SymbolMatchContext& context, VectorNative<TypeInfoParam*>& parameters, uint64_t forceCastFlags = 0)
 {
     // One boolean per used parameter
-    const auto maxParams = max((int) parameters.size(), context.parameters.size());
+    const auto maxParams = max(parameters.size(), context.parameters.size());
     context.doneParameters.set_size_clear(maxParams);
     context.solvedParameters.set_size_clear(maxParams);
     context.solvedCastFlags.set_size_clear(maxParams);

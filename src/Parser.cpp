@@ -180,12 +180,9 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
             const Diagnostic diag{sourceFile, start, start, diagMsg};
             return context->report(diag);
         }
-        else
-        {
-            const Diagnostic diag{sourceFile, token, diagMsg};
-            const auto       note = Diagnostic::note(sourceFile, start, start, Fmt(Nte(Nte0180), related.c_str()));
-            return context->report(diag, note);
-        }
+        const Diagnostic diag{sourceFile, token, diagMsg};
+        const auto       note = Diagnostic::note(sourceFile, start, start, Fmt(Nte(Nte0180), related.c_str()));
+        return context->report(diag, note);
     }
 
     SWAG_CHECK(eatToken());

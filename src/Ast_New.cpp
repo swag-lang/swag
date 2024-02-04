@@ -107,7 +107,7 @@ AstIdentifierRef* Ast::newIdentifierRef(SourceFile* sourceFile, const Utf8& name
 {
     SWAG_ASSERT(!name.empty());
 
-    const auto node  = Ast::newIdentifierRef(sourceFile, parent, parser);
+    const auto node  = newIdentifierRef(sourceFile, parent, parser);
     node->token.text = name;
 
     const auto id   = Ast::newNode<AstIdentifier>(parser, AstNodeKind::Identifier, sourceFile, node);
@@ -123,7 +123,7 @@ AstIdentifierRef* Ast::newMultiIdentifierRef(SourceFile* sourceFile, const Utf8&
 {
     SWAG_ASSERT(!name.empty());
 
-    const auto node  = Ast::newIdentifierRef(sourceFile, parent, parser);
+    const auto node  = newIdentifierRef(sourceFile, parent, parser);
     node->token.text = name;
 
     auto       pz    = name.buffer;
@@ -139,7 +139,7 @@ AstIdentifierRef* Ast::newMultiIdentifierRef(SourceFile* sourceFile, const Utf8&
         id->token.text.count = (int) (pz - pzStart);
         if (name.allocated)
         {
-            id->token.text = Utf8{pzStart, (uint32_t) id->token.text.count};
+            id->token.text = Utf8{pzStart, id->token.text.count};
         }
         else
         {

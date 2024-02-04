@@ -22,7 +22,7 @@ void Workspace::cleanFolderContent(const Path& path)
                       });
 
     std::error_code err;
-    if (filesystem::remove_all(path, err) == static_cast<std::uintmax_t>(-1))
+    if (remove_all(path, err) == static_cast<std::uintmax_t>(-1))
     {
         Report::errorOS(Fmt(Err(Fat0022), path.string().c_str()));
         OS::exit(-1);
@@ -32,25 +32,25 @@ void Workspace::cleanFolderContent(const Path& path)
 void Workspace::cleanPublic(const Path& basePath)
 {
     error_code err;
-    if (filesystem::exists(basePath, err))
+    if (exists(basePath, err))
     {
         OS::visitFolders(basePath.string().c_str(),
-                         [&, this](const char* folder)
+                         [&](const char* folder)
                          {
                              auto path = basePath;
                              path.append(folder);
                              path.append(SWAG_PUBLIC_FOLDER);
                              error_code err;
-                             if (filesystem::exists(path, err))
+                             if (exists(path, err))
                              {
                                  // Clean all targets
                                  OS::visitFolders(path.string().c_str(),
-                                                  [&, this](const char* folder)
+                                                  [&](const char* folder)
                                                   {
                                                       auto cfgpath = path;
                                                       cfgpath.append(folder);
                                                       error_code err;
-                                                      if (filesystem::exists(path, err))
+                                                      if (exists(path, err))
                                                       {
                                                           g_Log.messageHeaderCentered("Cleaning", cfgpath.string().c_str());
                                                           cleanFolderContent(cfgpath);
@@ -69,18 +69,12 @@ void Workspace::cleanScript(bool all)
 {
     setupCachePath();
     error_code err;
-    if (!filesystem::exists(g_Workspace->cachePath, err))
+    if (!exists(g_Workspace->cachePath, err))
         return;
     auto cacheFolder = g_Workspace->cachePath;
     cacheFolder.append(SWAG_CACHE_FOLDER);
-    if (!filesystem::exists(cacheFolder, err))
+    if (!exists(cacheFolder, err))
         return;
-
-    Utf8 pathToClean;
-    if (all)
-        pathToClean = SWAG_SCRIPT_WORKSPACE;
-    else
-        pathToClean = workspacePath.filename().string();
 
     // Clean all folders of the form 'SWAG_SCRIPT_WORKSPACE-??'
     OS::visitFolders(
@@ -111,7 +105,7 @@ void Workspace::cleanCommand()
     targetPath = workspacePath;
     targetPath.append(SWAG_OUTPUT_FOLDER);
     error_code err;
-    if (filesystem::exists(targetPath, err))
+    if (exists(targetPath, err))
     {
         OS::visitFolders(targetPath.string().c_str(),
                          [this](const char* folder)
@@ -126,7 +120,7 @@ void Workspace::cleanCommand()
     // Clean all cache folders for the given workspace
     setupCachePath();
     cachePath.append(SWAG_CACHE_FOLDER);
-    if (filesystem::exists(cachePath, err))
+    if (exists(cachePath, err))
     {
         OS::visitFolders(cachePath.string().c_str(),
                          [this](const char* folder)
@@ -151,7 +145,7 @@ void Workspace::cleanCommand()
     // Clean the full content of the dependency path
     if (g_CommandLine.cleanDep)
     {
-        if (filesystem::exists(dependenciesPath, err))
+        if (exists(dependenciesPath, err))
         {
             const auto path = dependenciesPath;
             g_Log.messageHeaderCentered("Cleaning", path.string().c_str());

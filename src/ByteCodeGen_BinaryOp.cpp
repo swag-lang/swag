@@ -515,12 +515,12 @@ bool ByteCodeGen::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
         // The result register will be stored in additionalRegisterRC of the left expression and retrieved
         // when evaluating the binary expression.
         // :BinOpAndOr
-        if (left->resultRegisterRC.cannotFree)
+        if (left->resultRegisterRc.cannotFree)
             left->extMisc()->additionalRegisterRC = reserveRegisterRC(context);
         else
         {
-            left->extMisc()->additionalRegisterRC = left->resultRegisterRC;
-            left->resultRegisterRC.cannotFree     = true;
+            left->extMisc()->additionalRegisterRC = left->resultRegisterRc;
+            left->resultRegisterRc.cannotFree     = true;
         }
 
         // We try to share the result register with other 'and'/'or' to give optimization opportunities when we
@@ -542,8 +542,8 @@ bool ByteCodeGen::emitLogicalAndAfterLeft(ByteCodeGenContext* context)
         }
     }
 
-    if (!left->extMisc()->additionalRegisterRC.isSame(left->resultRegisterRC))
-        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, left->extMisc()->additionalRegisterRC, left->resultRegisterRC);
+    if (!left->extMisc()->additionalRegisterRC.isSame(left->resultRegisterRc))
+        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, left->extMisc()->additionalRegisterRC, left->resultRegisterRc);
 
     // Short cut. Will just after the right expression in the the left expression is false. A and B => do not evaluate B
     binNode->seekJumpExpression = context->bc->numInstructions;
@@ -582,12 +582,12 @@ bool ByteCodeGen::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
     if (left->extMisc()->additionalRegisterRC.size() == 0)
     {
         // :BinOpAndOr
-        if (left->resultRegisterRC.cannotFree)
+        if (left->resultRegisterRc.cannotFree)
             left->extMisc()->additionalRegisterRC = reserveRegisterRC(context);
         else
         {
-            left->extMisc()->additionalRegisterRC = left->resultRegisterRC;
-            left->resultRegisterRC.cannotFree     = true;
+            left->extMisc()->additionalRegisterRC = left->resultRegisterRc;
+            left->resultRegisterRc.cannotFree     = true;
         }
 
         if (binNode->childs.size() == 2)
@@ -606,12 +606,12 @@ bool ByteCodeGen::emitLogicalOrAfterLeft(ByteCodeGenContext* context)
         }
     }
 
-    if (!left->extMisc()->additionalRegisterRC.isSame(left->resultRegisterRC))
-        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, left->extMisc()->additionalRegisterRC, left->resultRegisterRC);
+    if (!left->extMisc()->additionalRegisterRC.isSame(left->resultRegisterRc))
+        EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, left->extMisc()->additionalRegisterRC, left->resultRegisterRc);
 
     // Short cut. Will just after the right expression in the the left expression is true. A or B => do not evaluate B
     binNode->seekJumpExpression = context->bc->numInstructions;
-    EMIT_INST1(context, ByteCodeOp::JumpIfTrue, left->resultRegisterRC);
+    EMIT_INST1(context, ByteCodeOp::JumpIfTrue, left->resultRegisterRc);
     return true;
 }
 
@@ -656,25 +656,25 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
         {
             const auto front       = node->childs[0];
             const auto typeInfo    = TypeManager::concreteType(front->typeInfo);
-            node->resultRegisterRC = reserveRegisterRC(context);
+            node->resultRegisterRc = reserveRegisterRC(context);
 
             switch (typeInfo->nativeType)
             {
             case NativeTypeKind::F32:
-                EMIT_INST4(context, ByteCodeOp::IntrinsicMulAddF32, node->resultRegisterRC, front->childs[0]->resultRegisterRC, front->childs[1]->resultRegisterRC,
-                           node->childs[1]->resultRegisterRC);
+                EMIT_INST4(context, ByteCodeOp::IntrinsicMulAddF32, node->resultRegisterRc, front->childs[0]->resultRegisterRc, front->childs[1]->resultRegisterRc,
+                           node->childs[1]->resultRegisterRc);
                 break;
             case NativeTypeKind::F64:
-                EMIT_INST4(context, ByteCodeOp::IntrinsicMulAddF64, node->resultRegisterRC, front->childs[0]->resultRegisterRC, front->childs[1]->resultRegisterRC,
-                           node->childs[1]->resultRegisterRC);
+                EMIT_INST4(context, ByteCodeOp::IntrinsicMulAddF64, node->resultRegisterRc, front->childs[0]->resultRegisterRc, front->childs[1]->resultRegisterRc,
+                           node->childs[1]->resultRegisterRc);
                 break;
             default:
                 return Report::internalError(context->node, "emitBinaryOpPlus, muladd, type not supported");
             }
 
-            freeRegisterRC(context, front->childs[0]->resultRegisterRC);
-            freeRegisterRC(context, front->childs[1]->resultRegisterRC);
-            freeRegisterRC(context, node->childs[1]->resultRegisterRC);
+            freeRegisterRC(context, front->childs[0]->resultRegisterRc);
+            freeRegisterRC(context, front->childs[1]->resultRegisterRc);
+            freeRegisterRC(context, node->childs[1]->resultRegisterRc);
             node->semFlags |= SEMFLAG_EMIT_OP;
         }
         else if (node->tokenId == TokenId::SymAsterisk && node->specFlags & AstOp::SPECFLAG_FMA)
@@ -683,9 +683,9 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
         }
         else
         {
-            auto     r0 = node->childs[0]->resultRegisterRC;
-            auto     r1 = node->childs[1]->resultRegisterRC;
-            uint32_t r2 = 0;
+            auto     r0 = node->childs[0]->resultRegisterRc;
+            auto     r1 = node->childs[1]->resultRegisterRc;
+            uint32_t r2;
 
             // Register for the binary operation has already been allocated in 'additionalRegisterRC' by the left expression in case of a logical test
             // So we take it as the result register.
@@ -694,13 +694,13 @@ bool ByteCodeGen::emitBinaryOp(ByteCodeGenContext* context)
                 // :BinOpAndOr
                 const auto front       = node->childs[0];
                 r2                     = front->extMisc()->additionalRegisterRC;
-                node->resultRegisterRC = front->extMisc()->additionalRegisterRC;
+                node->resultRegisterRc = front->extMisc()->additionalRegisterRC;
                 front->extMisc()->additionalRegisterRC.clear();
             }
             else
             {
                 r2                     = reserveRegisterRC(context);
-                node->resultRegisterRC = r2;
+                node->resultRegisterRc = r2;
             }
 
             auto typeInfoExpr = node->castedTypeInfo ? node->castedTypeInfo : node->typeInfo;
@@ -818,5 +818,5 @@ bool ByteCodeGen::emitUserOp(ByteCodeGenContext* context, AstNode* allParams, As
         }
     }
 
-    return emitCall(context, allParams ? allParams : node, funcDecl, nullptr, funcDecl->resultRegisterRC, foreign, false, freeRegisterParams);
+    return emitCall(context, allParams ? allParams : node, funcDecl, nullptr, funcDecl->resultRegisterRc, foreign, false, freeRegisterParams);
 }

@@ -43,7 +43,7 @@ constexpr uint32_t CLONE_RAW             = 0x00000001;
 constexpr uint32_t CLONE_FORCE_OWNER_FCT = 0x00000002;
 
 constexpr uint32_t ALTSCOPE_STRUCT_USING = 0x00000001;
-constexpr uint32_t ALTSCOPE_FILE_PRIV    = 0x00000002;
+constexpr uint32_t ALTSCOPE_FILE_PRIVATE = 0x00000002;
 constexpr uint32_t ALTSCOPE_UFCS         = 0x00000004;
 constexpr uint32_t ALTSCOPE_USING        = 0x00000008;
 
@@ -438,7 +438,7 @@ struct AstNode
     uint64_t semFlags;
     uint64_t attributeFlags;
 
-    RegisterList resultRegisterRC;
+    RegisterList resultRegisterRc;
     uint16_t     safetyOn;
     uint16_t     safetyOff;
 
@@ -449,7 +449,7 @@ struct AstNode
     SWAG_RACE_CONDITION_INSTANCE(raceC);
 };
 
-struct AstVarDecl : public AstNode
+struct AstVarDecl : AstNode
 {
     static constexpr uint16_t SPECFLAG_CONST_ASSIGN     = 0x0001;
     static constexpr uint16_t SPECFLAG_IS_LET_TO_CONST  = 0x0002;
@@ -476,7 +476,7 @@ struct AstVarDecl : public AstNode
     AstNode*    genTypeComesFrom;
 };
 
-struct AstIdentifierRef : public AstNode
+struct AstIdentifierRef : AstNode
 {
     static constexpr uint16_t SPECFLAG_AUTO_SCOPE = 0x0001;
     static constexpr uint16_t SPECFLAG_WITH_SCOPE = 0x0002;
@@ -488,7 +488,7 @@ struct AstIdentifierRef : public AstNode
     AstNode* previousResolvedNode;
 };
 
-struct AstIdentifier : public AstNode
+struct AstIdentifier : AstNode
 {
     static constexpr uint16_t SPECFLAG_NO_INLINE           = 0x0001;
     static constexpr uint16_t SPECFLAG_FROM_WITH           = 0x0002;
@@ -516,7 +516,7 @@ struct AstIdentifier : public AstNode
     IdentifierExtension* identifierExtension;
 };
 
-struct AstFuncDecl : public AstNode
+struct AstFuncDecl : AstNode
 {
     static constexpr uint16_t SPECFLAG_THROW                = 0x0001;
     static constexpr uint16_t SPECFLAG_PATCH                = 0x0002;
@@ -577,7 +577,7 @@ struct AstFuncDecl : public AstNode
     uint32_t registerStoreRR    = UINT32_MAX;
 };
 
-struct AstAttrDecl : public AstNode
+struct AstAttrDecl : AstNode
 {
     AstNode* clone(CloneContext& context);
 
@@ -585,7 +585,7 @@ struct AstAttrDecl : public AstNode
     AstNode* parameters;
 };
 
-struct AstAttrUse : public AstNode
+struct AstAttrUse : AstNode
 {
     static constexpr uint16_t SPECFLAG_GLOBAL = 0x0001;
 
@@ -596,7 +596,7 @@ struct AstAttrUse : public AstNode
     AstNode* content;
 };
 
-struct AstFuncCallParams : public AstNode
+struct AstFuncCallParams : AstNode
 {
     static constexpr uint16_t SPECFLAG_CALL_FOR_STRUCT = 0x0001;
 
@@ -605,7 +605,7 @@ struct AstFuncCallParams : public AstNode
     Vector<Token> aliasNames;
 };
 
-struct AstFuncCallParam : public AstNode
+struct AstFuncCallParam : AstNode
 {
     AstNode* clone(CloneContext& context);
 
@@ -616,7 +616,7 @@ struct AstFuncCallParam : public AstNode
     int indexParam = 0;
 };
 
-struct AstBinaryOpNode : public AstNode
+struct AstBinaryOpNode : AstNode
 {
     static constexpr uint16_t SPECFLAG_IMPLICIT_KINDOF = 0x0001;
 
@@ -625,7 +625,7 @@ struct AstBinaryOpNode : public AstNode
     int seekJumpExpression;
 };
 
-struct AstConditionalOpNode : public AstNode
+struct AstConditionalOpNode : AstNode
 {
     AstNode* clone(CloneContext& context);
 
@@ -633,7 +633,7 @@ struct AstConditionalOpNode : public AstNode
     int seekJumpAfterIfFalse;
 };
 
-struct AstIf : public AstNode
+struct AstIf : AstNode
 {
     static constexpr uint16_t SPECFLAG_ASSIGN = 0x0001;
 
@@ -647,7 +647,7 @@ struct AstIf : public AstNode
     int seekJumpAfterIf;
 };
 
-struct AstBreakContinue : public AstNode
+struct AstBreakContinue : AstNode
 {
     AstNode* clone(CloneContext& context);
 
@@ -658,12 +658,12 @@ struct AstBreakContinue : public AstNode
     int jumpInstruction;
 };
 
-constexpr uint32_t BREAKABLE_CAN_HAVE_INDEX         = 0x00000001;
-constexpr uint32_t BREAKABLE_CAN_HAVE_CONTINUE      = 0x00000002;
-constexpr uint32_t BREAKABLE_NEED_INDEX             = 0x00000004;
-constexpr uint32_t BREAKABLE_RETURN_IN_INFINIT_LOOP = 0x00000008;
+constexpr uint32_t BREAKABLE_CAN_HAVE_INDEX          = 0x00000001;
+constexpr uint32_t BREAKABLE_CAN_HAVE_CONTINUE       = 0x00000002;
+constexpr uint32_t BREAKABLE_NEED_INDEX              = 0x00000004;
+constexpr uint32_t BREAKABLE_RETURN_IN_INFINITE_LOOP = 0x00000008;
 
-struct AstBreakable : public AstNode
+struct AstBreakable : AstNode
 {
     void copyFrom(CloneContext& context, AstBreakable* from);
 
@@ -684,7 +684,7 @@ struct AstBreakable : public AstNode
     int seekJumpAfterBlock;
 };
 
-struct AstScopeBreakable : public AstBreakable
+struct AstScopeBreakable : AstBreakable
 {
     AstScopeBreakable()
     {
@@ -696,7 +696,7 @@ struct AstScopeBreakable : public AstBreakable
     AstNode* block;
 };
 
-struct AstWhile : public AstBreakable
+struct AstWhile : AstBreakable
 {
     AstNode* clone(CloneContext& context);
 
@@ -704,7 +704,7 @@ struct AstWhile : public AstBreakable
     AstNode* block;
 };
 
-struct AstFor : public AstBreakable
+struct AstFor : AstBreakable
 {
     ~AstFor();
     AstNode* clone(CloneContext& context);
@@ -717,7 +717,7 @@ struct AstFor : public AstBreakable
     int seekJumpToExpression = 0;
 };
 
-struct AstLoop : public AstBreakable
+struct AstLoop : AstBreakable
 {
     static constexpr uint16_t SPECFLAG_BACK = 0x0001;
 
@@ -729,7 +729,7 @@ struct AstLoop : public AstBreakable
     AstNode* block;
 };
 
-struct AstVisit : public AstNode
+struct AstVisit : AstNode
 {
     static constexpr uint16_t SPECFLAG_WANT_POINTER = 0x0001;
     static constexpr uint16_t SPECFLAG_BACK         = 0x0002;
@@ -744,7 +744,7 @@ struct AstVisit : public AstNode
     AstNode* block;
 };
 
-struct AstSwitch : public AstBreakable
+struct AstSwitch : AstBreakable
 {
     AstSwitch()
     {
@@ -759,7 +759,7 @@ struct AstSwitch : public AstBreakable
     AstNode* expression;
 };
 
-struct AstSwitchCase : public AstNode
+struct AstSwitchCase : AstNode
 {
     static constexpr uint16_t SPECFLAG_IS_DEFAULT = 0x0001;
     static constexpr uint16_t SPECFLAG_IS_FALSE   = 0x0002;
@@ -775,7 +775,7 @@ struct AstSwitchCase : public AstNode
     int caseIndex = 0;
 };
 
-struct AstSwitchCaseBlock : public AstNode
+struct AstSwitchCaseBlock : AstNode
 {
     ~AstSwitchCaseBlock();
     AstNode* clone(CloneContext& context);
@@ -786,7 +786,7 @@ struct AstSwitchCaseBlock : public AstNode
     int seekJumpNextCase;
 };
 
-struct AstType : public AstNode
+struct AstType : AstNode
 {
     static constexpr uint16_t SPECFLAG_FORCE_TYPE                = 0x1000;
     static constexpr uint16_t SPECFLAG_HAS_STRUCT_PARAMETERS     = 0x2000;
@@ -808,7 +808,7 @@ constexpr uint16_t TYPEFLAG_IS_PTR_ARITHMETIC = 0x0800;
 constexpr uint16_t TYPEFLAG_IS_SUB_TYPE       = 0x1000;
 constexpr uint16_t TYPEFLAG_HAS_LOC_CONST     = 0x2000;
 
-struct AstTypeExpression : public AstType
+struct AstTypeExpression : AstType
 {
     static constexpr uint16_t SPECFLAG_DONE_GEN = 0x0001;
 
@@ -824,7 +824,7 @@ struct AstTypeExpression : public AstType
     uint8_t     arrayDim;
 };
 
-struct AstTypeLambda : public AstType
+struct AstTypeLambda : AstType
 {
     static constexpr uint16_t SPECFLAG_CAN_THROW = 0x0001;
 
@@ -834,10 +834,10 @@ struct AstTypeLambda : public AstType
     AstNode* returnType;
 };
 
-struct AstArrayPointerIndex : public AstNode
+struct AstArrayPointerIndex : AstNode
 {
-    static constexpr uint16_t SPECFLAG_SERIAL  = 0x0001;
-    static constexpr uint16_t SPECFLAG_IS_DREF = 0x0002;
+    static constexpr uint16_t SPECFLAG_SERIAL   = 0x0001;
+    static constexpr uint16_t SPECFLAG_IS_DEREF = 0x0002;
 
     AstNode* clone(CloneContext& context);
 
@@ -847,7 +847,7 @@ struct AstArrayPointerIndex : public AstNode
     AstNode* access;
 };
 
-struct AstArrayPointerSlicing : public AstNode
+struct AstArrayPointerSlicing : AstNode
 {
     static constexpr uint16_t SPECFLAG_EXCLUDE_UP = 0x0001;
 
@@ -860,11 +860,11 @@ struct AstArrayPointerSlicing : public AstNode
     AstNode* upperBound;
 };
 
-struct AstIntrinsicProp : public AstNode
+struct AstIntrinsicProp : AstNode
 {
 };
 
-struct AstExpressionList : public AstNode
+struct AstExpressionList : AstNode
 {
     static constexpr uint16_t SPECFLAG_FOR_TUPLE   = 0x0001;
     static constexpr uint16_t SPECFLAG_FOR_CAPTURE = 0x0002;
@@ -874,7 +874,7 @@ struct AstExpressionList : public AstNode
     TypeInfo* castToStruct;
 };
 
-struct AstStruct : public AstNode
+struct AstStruct : AstNode
 {
     static constexpr uint16_t SPECFLAG_HAS_USING = 0x0001;
     static constexpr uint16_t SPECFLAG_UNION     = 0x0002;
@@ -896,7 +896,7 @@ struct AstStruct : public AstNode
     uint32_t packing = sizeof(uint64_t);
 };
 
-struct AstEnum : public AstNode
+struct AstEnum : AstNode
 {
     ~AstEnum();
     AstNode* clone(CloneContext& context);
@@ -906,7 +906,7 @@ struct AstEnum : public AstNode
     Scope*   scope;
 };
 
-struct AstEnumValue : public AstNode
+struct AstEnumValue : AstNode
 {
     static constexpr uint16_t SPECFLAG_HAS_USING = 0x0001;
 
@@ -915,7 +915,7 @@ struct AstEnumValue : public AstNode
     AttributeList attributes;
 };
 
-struct AstImpl : public AstNode
+struct AstImpl : AstNode
 {
     ~AstImpl();
     AstNode* clone(CloneContext& context);
@@ -926,7 +926,7 @@ struct AstImpl : public AstNode
     AstNode* identifierFor;
 };
 
-struct AstInit : public AstNode
+struct AstInit : AstNode
 {
     AstNode* clone(CloneContext& context);
 
@@ -935,7 +935,7 @@ struct AstInit : public AstNode
     AstFuncCallParams* parameters;
 };
 
-struct AstDropCopyMove : public AstNode
+struct AstDropCopyMove : AstNode
 {
     AstNode* clone(CloneContext& context);
 
@@ -943,7 +943,7 @@ struct AstDropCopyMove : public AstNode
     AstNode* count;
 };
 
-struct AstReturn : public AstNode
+struct AstReturn : AstNode
 {
     AstNode* clone(CloneContext& context);
 
@@ -954,7 +954,7 @@ struct AstReturn : public AstNode
     int seekJump;
 };
 
-struct AstCompilerMacro : public AstNode
+struct AstCompilerMacro : AstNode
 {
     ~AstCompilerMacro();
     AstNode* clone(CloneContext& context);
@@ -962,14 +962,14 @@ struct AstCompilerMacro : public AstNode
     Scope* scope;
 };
 
-struct AstCompilerMixin : public AstNode
+struct AstCompilerMixin : AstNode
 {
     AstNode* clone(CloneContext& context);
 
     Map<TokenId, AstNode*> replaceTokens;
 };
 
-struct AstInline : public AstNode
+struct AstInline : AstNode
 {
     ~AstInline();
     AstNode* clone(CloneContext& context);
@@ -981,7 +981,7 @@ struct AstInline : public AstNode
     Scope*       parametersScope;
 };
 
-struct AstCompilerIfBlock : public AstNode
+struct AstCompilerIfBlock : AstNode
 {
     AstNode* clone(CloneContext& context);
 
@@ -1008,23 +1008,23 @@ struct AstCompilerIfBlock : public AstNode
     VectorNative<AstNode*>    includes;
 };
 
-struct AstCompilerSpecFunc : public AstNode
+struct AstCompilerSpecFunc : AstNode
 {
     static constexpr uint16_t SPECFLAG_AST_BLOCK = 0x0001;
 
     AstNode* clone(CloneContext& context);
 };
 
-struct AstNameSpace : public AstNode
+struct AstNameSpace : AstNode
 {
     AstNode* clone(CloneContext& context);
 };
 
-struct AstTryCatchAssume : public AstReturn
+struct AstTryCatchAssume : AstReturn
 {
-    static constexpr uint16_t SPECFLAG_BLOCK        = 0x0001;
-    static constexpr uint16_t SPECFLAG_GENERATED    = 0x0002;
-    static constexpr uint16_t SPECFLAG_THROW_GETERR = 0x0004;
+    static constexpr uint16_t SPECFLAG_BLOCK         = 0x0001;
+    static constexpr uint16_t SPECFLAG_GENERATED     = 0x0002;
+    static constexpr uint16_t SPECFLAG_THROW_GET_ERR = 0x0004;
 
     AstNode* clone(CloneContext& context);
 
@@ -1033,25 +1033,25 @@ struct AstTryCatchAssume : public AstReturn
     int seekInsideJump;
 };
 
-struct AstAlias : public AstNode
+struct AstAlias : AstNode
 {
     AstNode* clone(CloneContext& context);
 
     Token kwdLoc;
 };
 
-struct AstCast : public AstNode
+struct AstCast : AstNode
 {
     static constexpr uint16_t SPECFLAG_OVERFLOW = 0x0001;
     static constexpr uint16_t SPECFLAG_BIT      = 0x0002;
-    static constexpr uint16_t SPECFLAG_UNCONST  = 0x0004;
+    static constexpr uint16_t SPECFLAG_UN_CONST = 0x0004;
 
     AstNode* clone(CloneContext& context);
 
     TypeInfo* toCastTypeInfo;
 };
 
-struct AstOp : public AstNode
+struct AstOp : AstNode
 {
     static constexpr uint16_t SPECFLAG_OVERFLOW = 0x0001;
     static constexpr uint16_t SPECFLAG_UP       = 0x0002;
@@ -1060,7 +1060,7 @@ struct AstOp : public AstNode
     AstNode* clone(CloneContext& context);
 };
 
-struct AstRange : public AstNode
+struct AstRange : AstNode
 {
     static constexpr uint16_t SPECFLAG_EXCLUDE_UP = 0x0001;
 
@@ -1070,9 +1070,9 @@ struct AstRange : public AstNode
     AstNode* expressionUp;
 };
 
-struct AstMakePointer : public AstNode
+struct AstMakePointer : AstNode
 {
-    static constexpr uint16_t SPECFLAG_TOREF    = 0x0001;
+    static constexpr uint16_t SPECFLAG_TO_REF   = 0x0001;
     static constexpr uint16_t SPECFLAG_DEP_TYPE = 0x0002;
 
     AstNode* clone(CloneContext& context);
@@ -1082,13 +1082,13 @@ struct AstMakePointer : public AstNode
     TypeInfoFuncAttr* tryLambdaType     = nullptr;
 };
 
-struct AstRefSubDecl : public AstNode
+struct AstRefSubDecl : AstNode
 {
     AstNode* clone(CloneContext& context);
     AstNode* refSubDecl;
 };
 
-struct AstSubstBreakContinue : public AstNode
+struct AstSubstBreakContinue : AstNode
 {
     AstNode* clone(CloneContext& context) const;
 
@@ -1097,21 +1097,21 @@ struct AstSubstBreakContinue : public AstNode
     AstBreakable* altSubstBreakable;
 };
 
-struct AstDefer : public AstNode
+struct AstDefer : AstNode
 {
     AstNode* clone(CloneContext& context);
 
     DeferKind deferKind;
 };
 
-struct AstWith : public AstNode
+struct AstWith : AstNode
 {
     AstNode* clone(CloneContext& context);
 
     Vector<Utf8> id;
 };
 
-struct AstLiteral : public AstNode
+struct AstLiteral : AstNode
 {
     AstNode* clone(CloneContext& context);
 

@@ -1,7 +1,7 @@
 #pragma once
 #include "Job.h"
 
-struct FetchModuleFileSystemJob : public Job
+struct FetchModuleFileSystemJob : Job
 {
     FetchModuleFileSystemJob()
     {

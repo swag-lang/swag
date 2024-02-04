@@ -154,7 +154,7 @@ bool AstFuncDecl::mustAutoInline() const
         return false;
 
     // All short functions
-    if (specFlags & AstFuncDecl::SPECFLAG_SHORT_FORM)
+    if (specFlags & SPECFLAG_SHORT_FORM)
         return true;
 
     return false;
@@ -237,7 +237,7 @@ Utf8 AstFuncDecl::getDisplayName() const
     if (attributeFlags & ATTRIBUTE_PREMAIN_FUNC)
         return "[[#premain]] block";
 
-    if (specFlags & AstFuncDecl::SPECFLAG_IS_LAMBDA_EXPRESSION)
+    if (specFlags & SPECFLAG_IS_LAMBDA_EXPRESSION)
         return "lambda";
 
     if (attributeFlags & ATTRIBUTE_SHARP_FUNC)
@@ -456,7 +456,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
 {
     const auto newNode      = Ast::newNode<AstFuncDecl>();
     auto       cloneContext = context;
-    cloneContext.forceFlags &= ~AST_SPEC_STACKSIZE;
+    cloneContext.forceFlags &= ~AST_SPEC_STACK_SIZE;
 
     newNode->copyFrom(context, this, false);
     newNode->aliasMask   = aliasMask;
@@ -464,7 +464,7 @@ AstNode* AstFuncDecl::clone(CloneContext& context)
     newNode->methodParam = methodParam;
     newNode->tokenName   = tokenName;
 
-    newNode->removeSpecFlags(AstFuncDecl::SPECFLAG_FULL_RESOLVE | AstFuncDecl::SPECFLAG_PARTIAL_RESOLVE | AstFuncDecl::SPECFLAG_SHORT_FORM);
+    newNode->removeSpecFlags(SPECFLAG_FULL_RESOLVE | SPECFLAG_PARTIAL_RESOLVE | SPECFLAG_SHORT_FORM);
 
     cloneContext.ownerFct    = newNode;
     cloneContext.parent      = newNode;
@@ -653,7 +653,7 @@ AstNode* AstBreakContinue::clone(CloneContext& context)
 AstNode* AstScopeBreakable::clone(CloneContext& context)
 {
     const auto newNode = Ast::newNode<AstScopeBreakable>();
-    newNode->AstBreakable::copyFrom(context, this);
+    newNode->copyFrom(context, this);
 
     auto cloneContext           = context;
     cloneContext.ownerBreakable = newNode;
@@ -667,7 +667,7 @@ AstNode* AstScopeBreakable::clone(CloneContext& context)
 AstNode* AstWhile::clone(CloneContext& context)
 {
     const auto newNode = Ast::newNode<AstWhile>();
-    newNode->AstBreakable::copyFrom(context, this);
+    newNode->copyFrom(context, this);
 
     auto cloneContext           = context;
     cloneContext.ownerBreakable = newNode;
@@ -690,7 +690,7 @@ AstNode* AstFor::clone(CloneContext& context)
 
     auto cloneContext        = context;
     cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
-    newNode->AstBreakable::copyFrom(cloneContext, this);
+    newNode->copyFrom(cloneContext, this);
 
     cloneContext.ownerBreakable = newNode;
     newNode->cloneChilds(cloneContext, this);
@@ -715,7 +715,7 @@ AstNode* AstLoop::clone(CloneContext& context)
 
     auto cloneContext        = context;
     cloneContext.parentScope = Ast::newScope(newNode, "", ScopeKind::Statement, context.parentScope ? context.parentScope : ownerScope);
-    newNode->AstBreakable::copyFrom(cloneContext, this);
+    newNode->copyFrom(cloneContext, this);
 
     cloneContext.ownerBreakable = newNode;
     newNode->cloneChilds(cloneContext, this);
@@ -744,7 +744,7 @@ AstNode* AstVisit::clone(CloneContext& context)
 AstNode* AstSwitch::clone(CloneContext& context)
 {
     const auto newNode = Ast::newNode<AstSwitch>();
-    newNode->AstBreakable::copyFrom(context, this);
+    newNode->copyFrom(context, this);
 
     auto cloneContext           = context;
     cloneContext.ownerBreakable = newNode;
@@ -804,7 +804,7 @@ AstNode* AstTypeExpression::clone(CloneContext& context)
     // We need to revaluate the call parameters of the struct initialization, because inside we can have some
     // symbols, and we want them to be correctly found in the right function (inline).
     // Otherwise we can have a out of frame error, because the original symbol is not in the same stack frame.
-    if (specFlags & AstType::SPECFLAG_CREATED_STRUCT_PARAMETERS)
+    if (specFlags & SPECFLAG_CREATED_STRUCT_PARAMETERS)
     {
         if (context.cloneFlags & CLONE_FORCE_OWNER_FCT)
         {
@@ -1167,7 +1167,7 @@ AstNode* AstCompilerSpecFunc::clone(CloneContext& context)
     const auto newNode = Ast::newNode<AstCompilerSpecFunc>();
 
     auto cloneContext = context;
-    cloneContext.forceFlags &= ~AST_SPEC_STACKSIZE;
+    cloneContext.forceFlags &= ~AST_SPEC_STACK_SIZE;
 
     newNode->copyFrom(cloneContext, this, false);
 

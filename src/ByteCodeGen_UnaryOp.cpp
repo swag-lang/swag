@@ -69,8 +69,8 @@ bool ByteCodeGen::emitUnaryOp(ByteCodeGenContext* context)
     AstNode*   node  = context->node;
     const auto front = node->childs[0];
 
-    node->resultRegisterRC = front->resultRegisterRC;
-    ensureCanBeChangedRC(context, node->resultRegisterRC);
+    node->resultRegisterRc = front->resultRegisterRc;
+    ensureCanBeChangedRC(context, node->resultRegisterRc);
 
     if (!(node->semFlags & SEMFLAG_EMIT_OP))
     {
@@ -92,17 +92,17 @@ bool ByteCodeGen::emitUnaryOp(ByteCodeGenContext* context)
                 SWAG_CHECK(emitCast(context, node, front->typeInfo, front->castedTypeInfo));
                 SWAG_ASSERT(context->result == ContextResult::Done);
                 const auto rt = reserveRegisterRC(context);
-                EMIT_INST2(context, ByteCodeOp::NegBool, rt, node->resultRegisterRC);
-                freeRegisterRC(context, node->resultRegisterRC);
-                node->resultRegisterRC = rt;
+                EMIT_INST2(context, ByteCodeOp::NegBool, rt, node->resultRegisterRc);
+                freeRegisterRC(context, node->resultRegisterRc);
+                node->resultRegisterRc = rt;
                 break;
             }
 
             case TokenId::SymMinus:
-                SWAG_CHECK(emitUnaryOpMinus(context, typeInfoExpr, node->resultRegisterRC, node->resultRegisterRC));
+                SWAG_CHECK(emitUnaryOpMinus(context, typeInfoExpr, node->resultRegisterRc, node->resultRegisterRc));
                 break;
             case TokenId::SymTilde:
-                SWAG_CHECK(emitUnaryOpInvert(context, typeInfoExpr, node->resultRegisterRC, node->resultRegisterRC));
+                SWAG_CHECK(emitUnaryOpInvert(context, typeInfoExpr, node->resultRegisterRc, node->resultRegisterRc));
                 break;
 
             default:

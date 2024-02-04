@@ -45,13 +45,10 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
                 const auto note1 = Diagnostic::note(Fmt(Nte(Nte0043), implNode->token.ctext()));
                 return context->report(diag, note, note1);
             }
-            else
-            {
-                const Utf8       asA = Fmt("as %s", Naming::aKindName(newScope->kind).c_str());
-                const Diagnostic diag{enumNode->sourceFile, token, Fmt(Err(Err0626), "enum", enumNode->token.ctext(), asA.c_str())};
-                const auto       note = Diagnostic::note(newScope->owner, newScope->owner->getTokenName(), Nte(Nte0071));
-                return context->report(diag, note);
-            }
+            const Utf8       asA = Fmt("as %s", Naming::aKindName(newScope->kind).c_str());
+            const Diagnostic diag{enumNode->sourceFile, token, Fmt(Err(Err0626), "enum", enumNode->token.ctext(), asA.c_str())};
+            const auto       note = Diagnostic::note(newScope->owner, newScope->owner->getTokenName(), Nte(Nte0071));
+            return context->report(diag, note);
         }
 
         enumNode->scope = newScope;

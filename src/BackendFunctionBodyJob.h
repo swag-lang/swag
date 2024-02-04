@@ -6,7 +6,7 @@ struct Module;
 struct Backend;
 struct ByteCode;
 
-struct BackendFunctionBodyJob : public Job
+struct BackendFunctionBodyJob : Job
 {
     virtual   ~BackendFunctionBodyJob() = default;
     JobResult execute() override;

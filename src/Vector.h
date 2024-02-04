@@ -1,7 +1,7 @@
 #pragma once
 
 template<typename T>
-struct Vector : public vector<T, StdAllocator<T>>
+struct Vector : vector<T, StdAllocator<T>>
 {
     Vector()
         : vector<T, StdAllocator<T>>()
@@ -45,7 +45,7 @@ struct Vector : public vector<T, StdAllocator<T>>
 };
 
 template<typename K, typename V>
-struct VectorMap : public Vector<pair<K, V>>
+struct VectorMap : Vector<pair<K, V>>
 {
     using IT = typename Vector<pair<K, V>>::iterator;
     IT find(const K& key)

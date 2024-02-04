@@ -3,7 +3,7 @@
 #include "Job.h"
 struct Module;
 
-struct ModuleRunJob : public Job
+struct ModuleRunJob : Job
 {
     JobResult execute() override;
 

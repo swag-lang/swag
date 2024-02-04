@@ -395,8 +395,9 @@ BcDbgCommandResult ByteCodeDebugger::cmdMemory(ByteCodeRunContext* context, cons
         return BcDbgCommandResult::Continue;
     }
 
-    uint64_t       addrVal = 0;
+    uint64_t       addrVal;
     EvaluateResult res;
+
     if (!g_ByteCodeDebugger.evalExpression(context, expr, res))
         return BcDbgCommandResult::Continue;
 

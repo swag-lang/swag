@@ -1244,8 +1244,8 @@ void ByteCodeGen::emitRetValRef(ByteCodeGenContext* context, SymbolOverload* res
     {
         const auto overload = node->resolvedSymbolOverload;
         SWAG_ASSERT(overload);
-        if (overload->node->ownerInline && overload->node->ownerInline->resultRegisterRC.countResults)
-            EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r0, overload->node->ownerInline->resultRegisterRC);
+        if (overload->node->ownerInline && overload->node->ownerInline->resultRegisterRc.countResults)
+            EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r0, overload->node->ownerInline->resultRegisterRc);
         else
             EMIT_INST1(context, ByteCodeOp::CopyRRtoRA, r0);
     }
@@ -1349,10 +1349,10 @@ void ByteCodeGen::emitStructParameters(ByteCodeGenContext* context, uint32_t reg
 
                 // When generating parameters for a closure call, keep the reference if we want one !
                 auto noRef = child->typeInfo;
-                if (param->childs.front()->kind != AstNodeKind::MakePointer || !(param->childs.front()->specFlags & AstMakePointer::SPECFLAG_TOREF))
+                if (param->childs.front()->kind != AstNodeKind::MakePointer || !(param->childs.front()->specFlags & AstMakePointer::SPECFLAG_TO_REF))
                     noRef = TypeManager::concretePtrRefType(noRef);
 
-                emitAffectEqual(context, r0, child->resultRegisterRC, noRef, child);
+                emitAffectEqual(context, r0, child->resultRegisterRc, noRef, child);
                 SWAG_ASSERT(context->result == ContextResult::Done);
                 freeRegisterRC(context, child);
             }
@@ -1415,7 +1415,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context)
         }
     }
 
-    SWAG_CHECK(emitInit(context, pointedType, node->expression->resultRegisterRC, numToInit, node->count, node->parameters));
+    SWAG_CHECK(emitInit(context, pointedType, node->expression->resultRegisterRc, numToInit, node->count, node->parameters));
     YIELD();
 
     freeRegisterRC(context, node->expression);
@@ -1474,7 +1474,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
             else
             {
                 SWAG_ASSERT(count);
-                EMIT_INST2(context, ByteCodeOp::SetZeroAtPointerXRB, rExpr, count->resultRegisterRC)->c.u64 = sizeToClear;
+                EMIT_INST2(context, ByteCodeOp::SetZeroAtPointerXRB, rExpr, count->resultRegisterRc)->c.u64 = sizeToClear;
             }
         }
     }
@@ -1506,8 +1506,8 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
             if (numToInit == 0)
             {
                 jumpAfter = context->bc->numInstructions;
-                EMIT_INST1(context, ByteCodeOp::JumpIfZero64, count->resultRegisterRC);
-                EMIT_INST1(context, ByteCodeOp::DecrementRA64, count->resultRegisterRC);
+                EMIT_INST1(context, ByteCodeOp::JumpIfZero64, count->resultRegisterRc);
+                EMIT_INST1(context, ByteCodeOp::DecrementRA64, count->resultRegisterRc);
             }
 
             EMIT_INST1(context, ByteCodeOp::PushRAParam, rExpr);
@@ -1543,7 +1543,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
         const auto child = parameters->childs.front();
         ensureCanBeChangedRC(context, rExpr);
 
-        uint32_t regCount     = count ? count->resultRegisterRC[0] : 0;
+        uint32_t regCount     = count ? count->resultRegisterRc[0] : 0;
         bool     freeRegCount = false;
         if (numToInit > 1 && !count)
         {
@@ -1563,7 +1563,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
             EMIT_INST1(context, ByteCodeOp::DecrementRA64, regCount);
         }
 
-        SWAG_CHECK(emitAffectEqual(context, rExpr, child->resultRegisterRC, child->typeInfo, child));
+        SWAG_CHECK(emitAffectEqual(context, rExpr, child->resultRegisterRc, child->typeInfo, child));
         SWAG_ASSERT(context->result == ContextResult::Done);
 
         if (numToInit != 1)
@@ -1586,7 +1586,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
         reserveRegisterRC(context, r1, 1);
         ensureCanBeChangedRC(context, rExpr);
 
-        uint32_t regCount     = count ? count->resultRegisterRC[0] : 0;
+        uint32_t regCount     = count ? count->resultRegisterRc[0] : 0;
         bool     freeRegCount = false;
         if (numToInit > 1 && !count)
         {
@@ -1613,7 +1613,7 @@ bool ByteCodeGen::emitInit(ByteCodeGenContext* context, TypeInfo* pointedType, R
             EMIT_INST2(context, ByteCodeOp::CopyRBtoRA64, r1, rExpr);
             if (typeParam->offset)
                 EMIT_INST1(context, ByteCodeOp::Add64byVB64, r1)->b.u64 = typeParam->offset;
-            emitAffectEqual(context, r1, child->resultRegisterRC, child->typeInfo, child);
+            emitAffectEqual(context, r1, child->resultRegisterRc, child->typeInfo, child);
             SWAG_ASSERT(context->result == ContextResult::Done);
         }
 
@@ -1697,7 +1697,7 @@ bool ByteCodeGen::emitDropCopyMove(ByteCodeGenContext* context)
 
     if (somethingToDo)
     {
-        ensureCanBeChangedRC(context, node->expression->resultRegisterRC);
+        ensureCanBeChangedRC(context, node->expression->resultRegisterRc);
 
         const auto startLoop = context->bc->numInstructions;
 
@@ -1705,11 +1705,11 @@ bool ByteCodeGen::emitDropCopyMove(ByteCodeGenContext* context)
         if (numToDo != 1)
         {
             jumpAfter = context->bc->numInstructions;
-            EMIT_INST1(context, ByteCodeOp::JumpIfZero64, node->count->resultRegisterRC);
-            EMIT_INST1(context, ByteCodeOp::DecrementRA64, node->count->resultRegisterRC);
+            EMIT_INST1(context, ByteCodeOp::JumpIfZero64, node->count->resultRegisterRc);
+            EMIT_INST1(context, ByteCodeOp::DecrementRA64, node->count->resultRegisterRc);
         }
 
-        EMIT_INST1(context, ByteCodeOp::PushRAParam, node->expression->resultRegisterRC);
+        EMIT_INST1(context, ByteCodeOp::PushRAParam, node->expression->resultRegisterRc);
 
         switch (node->kind)
         {
@@ -1728,7 +1728,7 @@ bool ByteCodeGen::emitDropCopyMove(ByteCodeGenContext* context)
 
         if (numToDo != 1)
         {
-            const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, node->expression->resultRegisterRC, 0, node->expression->resultRegisterRC);
+            const auto inst = EMIT_INST3(context, ByteCodeOp::IncPointer64, node->expression->resultRegisterRc, 0, node->expression->resultRegisterRc);
             inst->b.u64     = typeExpression->pointedType->sizeOf;
             inst->flags |= BCI_IMM_B;
             const auto instJump               = EMIT_INST0(context, ByteCodeOp::Jump);

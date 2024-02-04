@@ -28,16 +28,16 @@ namespace Ast
     void addChildBack(AstNode* parent, AstNode* child);
     void addChildFront(AstNode* parent, AstNode* child);
 
-    void             visit(AstNode* root, const function<void(AstNode*)>& fctor);
-    Ast::VisitResult visit(ErrorContext* context, AstNode* root, const function<VisitResult(ErrorContext*, AstNode*)>& fctor);
-    void             setForceConstType(AstNode* node);
-    Utf8             enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg, bool scoped = true);
-    Utf8             literalToString(TypeInfo* typeInfo, const ComputedValue& value);
-    void             normalizeIdentifierName(const Utf8& name);
-    AstNode*         cloneRaw(AstNode* source, AstNode* parent, uint64_t forceFlags = 0, uint64_t removeFlags = 0);
-    AstNode*         clone(AstNode* source, AstNode* parent, uint64_t forceFlags = 0, uint64_t removeFlags = 0);
-    Utf8             computeGenericParametersReplacement(VectorNative<TypeInfoParam*>& params);
-    Vector<Utf8>     computeGenericParametersReplacement(VectorMap<Utf8, GenericReplaceType>& replace);
+    void         visit(AstNode* root, const function<void(AstNode*)>& fctor);
+    VisitResult  visit(ErrorContext* context, AstNode* root, const function<VisitResult(ErrorContext*, AstNode*)>& fctor);
+    void         setForceConstType(AstNode* node);
+    Utf8         enumToString(TypeInfo* typeInfo, const Utf8& text, const Register& reg, bool scoped = true);
+    Utf8         literalToString(TypeInfo* typeInfo, const ComputedValue& value);
+    void         normalizeIdentifierName(const Utf8& name);
+    AstNode*     cloneRaw(AstNode* source, AstNode* parent, uint64_t forceFlags = 0, uint64_t removeFlags = 0);
+    AstNode*     clone(AstNode* source, AstNode* parent, uint64_t forceFlags = 0, uint64_t removeFlags = 0);
+    Utf8         computeGenericParametersReplacement(VectorNative<TypeInfoParam*>& params);
+    Vector<Utf8> computeGenericParametersReplacement(VectorMap<Utf8, GenericReplaceType>& replace);
 
     Scope*             newScope(AstNode* owner, const Utf8& name, ScopeKind kind, Scope* parentScope, bool matchName = false);
     AstStruct*         newStructDecl(SourceFile* sourceFile, AstNode* parent, Parser* parser = nullptr);

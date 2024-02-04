@@ -3,7 +3,7 @@
 #include "Job.h"
 struct Module;
 
-struct ModuleGenOutputJob : public Job
+struct ModuleGenOutputJob : Job
 {
     ModuleGenOutputJob()
     {

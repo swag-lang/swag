@@ -52,7 +52,7 @@ void Workspace::computeModuleName(const Path& path, Utf8& moduleName, Path& modu
 SourceFile* Workspace::findFile(const char* fileName) const
 {
     SourceFile* sourceFile = nullptr;
-    for (const auto m : mapModulesNames)
+    for (const auto& m : mapModulesNames)
     {
         sourceFile = m.second->findFile(fileName);
         if (sourceFile)

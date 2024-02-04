@@ -18,7 +18,7 @@ enum class ScopeKind : uint8_t;
 
 struct AstOutput
 {
-    struct OutputContext : public JobContext
+    struct OutputContext : JobContext
     {
         AstNode* exportedNode = nullptr;
         int      indent       = 0;

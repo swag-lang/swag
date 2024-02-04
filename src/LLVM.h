@@ -92,7 +92,7 @@ struct LLVMPerThread
     LLVM_Debug* dbg = nullptr;
 };
 
-struct LLVM : public Backend
+struct LLVM : Backend
 {
     LLVM(Module* mdl)
         : Backend{mdl}

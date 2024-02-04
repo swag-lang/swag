@@ -5,7 +5,7 @@
 #include "Timer.h"
 struct ModuleDependency;
 
-struct ModuleBuildJob : public Job
+struct ModuleBuildJob : Job
 {
     void      release() override;
     bool      loadDependency(ModuleDependency* dep);

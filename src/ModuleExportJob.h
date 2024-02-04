@@ -2,7 +2,7 @@
 #include "Job.h"
 struct Backend;
 
-struct ModuleExportJob : public Job
+struct ModuleExportJob : Job
 {
     JobResult execute() override;
 

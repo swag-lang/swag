@@ -2,7 +2,7 @@
 #include "Job.h"
 struct Module;
 
-struct ModuleSaveExportJob : public Job
+struct ModuleSaveExportJob : Job
 {
     ModuleSaveExportJob()
     {

@@ -88,7 +88,7 @@ constexpr uint8_t TOKENPARSE_LAST_EOL           = 0x01;
 constexpr uint8_t TOKENPARSE_LAST_BLANK         = 0x02;
 constexpr uint8_t TOKENPARSE_EOL_BEFORE_COMMENT = 0x04;
 
-struct TokenParse : public Token
+struct TokenParse : Token
 {
     Register    literalValue;
     TokenId     id          = TokenId::Invalid;

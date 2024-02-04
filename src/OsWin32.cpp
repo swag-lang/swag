@@ -367,7 +367,7 @@ namespace OS
 
     void* getProcAddress(void* handle, const char* name)
     {
-        return GetProcAddress((HMODULE) handle, name);
+        return (void*) GetProcAddress((HMODULE) handle, name);
     }
 
     uint64_t getFileWriteTime(const char* fileName)

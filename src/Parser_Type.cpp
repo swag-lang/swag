@@ -570,10 +570,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, uint32_t exprFlags, AstNode** 
                 const Diagnostic diag{sourceFile, rightSquareToken, Err(Err0692)};
                 return context->report(diag);
             }
-            else
-            {
-                return error(rightSquareToken, Err(Err0692));
-            }
+            return error(rightSquareToken, Err(Err0692));
         }
 
         if (token.id == TokenId::SymComma)
@@ -685,7 +682,7 @@ bool Parser::doCast(AstNode* parent, AstNode** result)
 
     if (mdfFlags & MODIFIER_UNCONST)
     {
-        node->addSpecFlags(AstCast::SPECFLAG_UNCONST);
+        node->addSpecFlags(AstCast::SPECFLAG_UN_CONST);
     }
 
     const auto startLoc = token.startLocation;

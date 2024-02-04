@@ -107,7 +107,7 @@ bool Tokenizer::doStringLiteral(TokenParse& token)
                 token.endLocation = location;
                 continue;
             }
-            else if (SWAG_IS_EOL(curBuffer[1]))
+            if (SWAG_IS_EOL(curBuffer[1]))
             {
                 appendTokenName(token);
                 processChar('\n', 1);

@@ -11,11 +11,11 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
 {
     if (params && params->forDebugger)
     {
-        if (!node->resultRegisterRC.size())
+        if (!node->resultRegisterRc.size())
             return true;
-        runContext->registersRR[0].pointer = runContext->registers.buffer[node->resultRegisterRC[0]].pointer;
-        if (node->resultRegisterRC.size() > 1)
-            runContext->registersRR[1].pointer = runContext->registers.buffer[node->resultRegisterRC[1]].pointer;
+        runContext->registersRR[0].pointer = runContext->registers.buffer[node->resultRegisterRc[0]].pointer;
+        if (node->resultRegisterRc.size() > 1)
+            runContext->registersRR[1].pointer = runContext->registers.buffer[node->resultRegisterRc[1]].pointer;
         return true;
     }
 
@@ -36,21 +36,21 @@ bool Module::computeExecuteResult(ByteCodeRunContext* runContext, SourceFile* so
     }
 
     // Transform result to a literal value
-    if (!node->resultRegisterRC.size())
+    if (!node->resultRegisterRc.size())
         return true;
 
     const auto realType = TypeManager::concreteType(node->typeInfo);
     node->typeInfo      = TypeManager::concreteType(node->typeInfo, CONCRETE_FUNC);
     node->setFlagsValueIsComputed();
 
-    runContext->registersRR[0].u64 = runContext->registers.buffer[node->resultRegisterRC[0]].u64;
-    if (node->resultRegisterRC.size() > 1)
-        runContext->registersRR[1].u64 = runContext->registers.buffer[node->resultRegisterRC[1]].u64;
+    runContext->registersRR[0].u64 = runContext->registers.buffer[node->resultRegisterRc[0]].u64;
+    if (node->resultRegisterRc.size() > 1)
+        runContext->registersRR[1].u64 = runContext->registers.buffer[node->resultRegisterRc[1]].u64;
 
     // String
     if (realType->isString())
     {
-        SWAG_ASSERT(node->resultRegisterRC.size() == 2);
+        SWAG_ASSERT(node->resultRegisterRc.size() == 2);
         const char*    pz  = (const char*) runContext->registersRR[0].pointer;
         const uint32_t len = runContext->registersRR[1].u32;
         node->computedValue->text.reserve(len + 1);

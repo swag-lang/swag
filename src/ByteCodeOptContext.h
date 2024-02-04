@@ -45,7 +45,7 @@ constexpr uint32_t OCF_HAS_INLINE    = 0x00000010;
 constexpr uint32_t OCF_HAS_PARAM     = 0x00000020;
 constexpr uint32_t OCF_HAS_ERR       = 0x00000040;
 
-struct ByteCodeOptContext : public JobContext
+struct ByteCodeOptContext : JobContext
 {
     VectorNative<ByteCodeInstruction*>                  jumps;
     VectorNative<ByteCodeInstruction*>                  nops;

@@ -1,5 +1,4 @@
 #pragma once
-#include "Log.h"
 
 enum class SyntaxColor
 {

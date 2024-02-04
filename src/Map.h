@@ -2,7 +2,7 @@
 #include "Path.h"
 
 template<typename K, typename V>
-struct Map : public unordered_map<K, V, hash<K>, equal_to<K>, StdAllocator<pair<const K, V>>>
+struct Map : unordered_map<K, V, hash<K>, equal_to<K>, StdAllocator<pair<const K, V>>>
 {
     Map()
         : unordered_map<K, V, hash<K>, equal_to<K>, StdAllocator<pair<const K, V>>>()
@@ -17,7 +17,7 @@ struct Map : public unordered_map<K, V, hash<K>, equal_to<K>, StdAllocator<pair<
 };
 
 template<typename V>
-struct MapUtf8 : public unordered_map<Utf8, V, HashUtf8, equal_to<Utf8>, StdAllocator<pair<const Utf8, V>>>
+struct MapUtf8 : unordered_map<Utf8, V, HashUtf8, equal_to<Utf8>, StdAllocator<pair<const Utf8, V>>>
 {
     MapUtf8()
         : unordered_map<Utf8, V, HashUtf8, equal_to<Utf8>, StdAllocator<pair<const Utf8, V>>>()
@@ -32,7 +32,7 @@ struct MapUtf8 : public unordered_map<Utf8, V, HashUtf8, equal_to<Utf8>, StdAllo
 };
 
 template<typename V>
-struct MapPath : public unordered_map<Path, V, HashPath, equal_to<Path>, StdAllocator<pair<const Path, V>>>
+struct MapPath : unordered_map<Path, V, HashPath, equal_to<Path>, StdAllocator<pair<const Path, V>>>
 {
     MapPath()
         : unordered_map<Path, V, HashPath, equal_to<Path>, StdAllocator<pair<const Path, V>>>()

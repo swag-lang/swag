@@ -147,7 +147,7 @@ bool Semantic::resolveThrow(SemanticContext* context)
     const auto type = TypeManager::concretePtrRefType(expr->typeInfo);
 
     SWAG_VERIFY(!type->isVoid(), context->report({expr, Err(Err0379)}));
-    if (!type->isAny() || !(node->specFlags & AstTryCatchAssume::SPECFLAG_THROW_GETERR))
+    if (!type->isAny() || !(node->specFlags & AstTryCatchAssume::SPECFLAG_THROW_GET_ERR))
         SWAG_VERIFY(type->isStruct(), context->report({expr, Fmt(Err(Err0380), type->getDisplayNameC())}));
 
     if (type->isString())

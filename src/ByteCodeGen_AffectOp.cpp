@@ -824,8 +824,8 @@ bool ByteCodeGen::emitAffect(ByteCodeGenContext* context)
         return true;
     }
 
-    auto r0 = node->childs[0]->resultRegisterRC;
-    auto r1 = node->childs[1]->resultRegisterRC;
+    auto r0 = node->childs[0]->resultRegisterRc;
+    auto r1 = node->childs[1]->resultRegisterRc;
 
     switch (node->tokenId)
     {

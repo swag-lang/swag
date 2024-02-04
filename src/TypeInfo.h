@@ -229,7 +229,7 @@ struct TypeInfoParam
     uint32_t offset     = 0;
 };
 
-struct TypeInfoNative : public TypeInfo
+struct TypeInfoNative : TypeInfo
 {
     TypeInfoNative()
         : TypeInfo{TypeInfoKind::Native}
@@ -257,7 +257,7 @@ struct TypeInfoNative : public TypeInfo
     };
 };
 
-struct TypeInfoNamespace : public TypeInfo
+struct TypeInfoNamespace : TypeInfo
 {
     TypeInfoNamespace()
         : TypeInfo{TypeInfoKind::Namespace}
@@ -269,7 +269,7 @@ struct TypeInfoNamespace : public TypeInfo
     Scope* scope = nullptr;
 };
 
-struct TypeInfoEnum : public TypeInfo
+struct TypeInfoEnum : TypeInfo
 {
     TypeInfoEnum()
         : TypeInfo{TypeInfoKind::Enum}
@@ -290,7 +290,7 @@ struct TypeInfoEnum : public TypeInfo
     TypeInfo* rawType = nullptr;
 };
 
-struct TypeInfoFuncAttr : public TypeInfo
+struct TypeInfoFuncAttr : TypeInfo
 {
     TypeInfoFuncAttr()
         : TypeInfo{TypeInfoKind::FuncAttr}
@@ -333,7 +333,7 @@ struct TypeInfoFuncAttr : public TypeInfo
     CallConvKind callConv             = CallConvKind::Swag;
 };
 
-struct TypeInfoPointer : public TypeInfo
+struct TypeInfoPointer : TypeInfo
 {
     TypeInfoPointer()
         : TypeInfo{TypeInfoKind::Pointer}
@@ -348,7 +348,7 @@ struct TypeInfoPointer : public TypeInfo
     TypeInfo* pointedType = nullptr;
 };
 
-struct TypeInfoArray : public TypeInfo
+struct TypeInfoArray : TypeInfo
 {
     TypeInfoArray()
         : TypeInfo{TypeInfoKind::Array}
@@ -372,7 +372,7 @@ struct TypeInfoArray : public TypeInfo
     uint32_t totalCount = 0;
 };
 
-struct TypeInfoSlice : public TypeInfo
+struct TypeInfoSlice : TypeInfo
 {
     TypeInfoSlice()
         : TypeInfo{TypeInfoKind::Slice}
@@ -387,7 +387,7 @@ struct TypeInfoSlice : public TypeInfo
     TypeInfo* pointedType = nullptr;
 };
 
-struct TypeInfoList : public TypeInfo
+struct TypeInfoList : TypeInfo
 {
     TypeInfoList()
     {
@@ -407,7 +407,7 @@ struct TypeInfoList : public TypeInfo
     Scope* scope = nullptr;
 };
 
-struct TypeInfoVariadic : public TypeInfo
+struct TypeInfoVariadic : TypeInfo
 {
     TypeInfoVariadic()
         : TypeInfo{TypeInfoKind::Variadic}
@@ -421,7 +421,7 @@ struct TypeInfoVariadic : public TypeInfo
     TypeInfo* rawType = nullptr;
 };
 
-struct TypeInfoGeneric : public TypeInfo
+struct TypeInfoGeneric : TypeInfo
 {
     TypeInfoGeneric()
         : TypeInfo{TypeInfoKind::Generic}
@@ -435,7 +435,7 @@ struct TypeInfoGeneric : public TypeInfo
     TypeInfo* rawType = nullptr;
 };
 
-struct TypeInfoStruct : public TypeInfo
+struct TypeInfoStruct : TypeInfo
 {
     TypeInfoStruct()
         : TypeInfo{TypeInfoKind::Struct}
@@ -499,7 +499,7 @@ struct TypeInfoStruct : public TypeInfo
     SWAG_RACE_CONDITION_INSTANCE(raceFields);
 };
 
-struct TypeInfoAlias : public TypeInfo
+struct TypeInfoAlias : TypeInfo
 {
     TypeInfoAlias()
         : TypeInfo{TypeInfoKind::Alias}
@@ -518,7 +518,7 @@ struct TypeInfoAlias : public TypeInfo
     TypeInfo* rawType = nullptr;
 };
 
-struct TypeInfoCode : public TypeInfo
+struct TypeInfoCode : TypeInfo
 {
     TypeInfoCode()
         : TypeInfo{"code", TypeInfoKind::Code}
